@@ -17,12 +17,11 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	precache();
-	core_frontend_fx::main();
-	core_frontend_sound::main();
-	setdvar("compassmaxrange", "2100");
+function main() {
+  precache();
+  core_frontend_fx::main();
+  core_frontend_sound::main();
+  setdvar("compassmaxrange", "2100");
 }
 
 /*
@@ -34,7 +33,4 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function precache()
-{
-}
-
+function precache() {}

@@ -12,9 +12,8 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	// Unsupported VM revision (1B).
+function main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -26,8 +25,6 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function precache_scripted_fx()
-{
-	// Unsupported VM revision (1B).
+function precache_scripted_fx() {
+  // Unsupported VM revision (1B).
 }
-

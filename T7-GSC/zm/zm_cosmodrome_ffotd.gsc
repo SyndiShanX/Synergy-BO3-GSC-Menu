@@ -22,9 +22,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main_start()
-{
-}
+function main_start() {}
 
 /*
 	Name: main_end
@@ -35,32 +33,30 @@ function main_start()
 	Parameters: 0
 	Flags: Linked
 */
-function main_end()
-{
-	spawncollision("collision_player_64x64x256", "collider", (189.68, 666.753, -208), vectorscale((0, 1, 0), 45.4));
-	spawncollision("collision_player_wall_64x64x10", "collider", (-48, 1135, -454), vectorscale((0, 1, 0), 270));
-	spawncollision("collision_player_wall_64x64x10", "collider", (-48, 1135, -390), vectorscale((0, 1, 0), 270));
-	spawncollision("collision_player_wall_64x64x10", "collider", (-48, 1135, -334), vectorscale((0, 1, 0), 270));
-	spawncollision("collision_player_wall_64x64x10", "collider", (-104, 1135, -454), vectorscale((0, 1, 0), 270));
-	spawncollision("collision_player_wall_64x64x10", "collider", (-104, 1135, -390), vectorscale((0, 1, 0), 270));
-	spawncollision("collision_player_wall_64x64x10", "collider", (-104, 1135, -334), vectorscale((0, 1, 0), 270));
-	spawncollision("collision_player_wall_512x512x10", "collider", (-1803.5, 1895, 333), (0, 0, 0));
-	spawncollision("collision_player_wall_512x512x10", "collider", (-1815.5, 1743, 333), (0, 0, 0));
-	spawncollision("collision_player_wall_512x512x10", "collider", (-1822.5, 1881, 333), (0, 0, 0));
-	spawncollision("collision_player_wall_512x512x10", "collider", (-1822.5, 1755, 333), (0, 0, 0));
-	spawncollision("collision_player_wedge_32x256", "collider", (-1541, 1648, 156), vectorscale((0, 1, 0), 180));
-	spawncollision("collision_player_wall_512x512x10", "collider", (-1303.83, 1560.5, 353), vectorscale((0, 1, 0), 111.398));
-	spawncollision("collision_player_wall_512x512x10", "collider", (-1254, 1717.5, 353), (0, 0, 0));
-	spawncollision("collision_player_wall_512x512x10", "collider", (-883, 2232, 5), (0, 0, 0));
-	spawncollision("collision_player_wall_256x256x10", "collider", (-883, 1728, -44), (0, 0, 0));
-	spawncollision("collision_player_wall_512x512x10", "collider", (158, 2172, 5), (0, 0, 0));
-	spawncollision("collision_player_ramp_256x24", "collider", (151, 1768, -40), (270, 82.546, 97.454));
-	spawncollision("collision_player_ramp_256x24", "collider", (151, 1738, -40), (270, 82.546, 97.454));
-	spawncollision("collision_player_64x64x256", "collider", (-742.002, 866.631, 348), vectorscale((0, 1, 0), 334.8));
-	spawncollision("collision_player_64x64x256", "collider", (-760.949, 1008.22, 460.75), vectorscale((0, 1, 0), 334.2));
-	spawncollision("collision_player_wall_256x256x10", "collider", (84, -173.5, -44), vectorscale((0, 1, 0), 270));
-	e_temp = spawncollision("collision_clip_wall_128x128x10", "collider", (-72, 1136, -421.5), vectorscale((0, 1, 0), 270));
-	e_temp disconnectpaths();
-	spawncollision("collision_clip_wall_128x128x10", "collider", (-72, 1136, -373.5), vectorscale((0, 1, 0), 270));
+function main_end() {
+  spawncollision("collision_player_64x64x256", "collider", (189.68, 666.753, -208), vectorscale((0, 1, 0), 45.4));
+  spawncollision("collision_player_wall_64x64x10", "collider", (-48, 1135, -454), vectorscale((0, 1, 0), 270));
+  spawncollision("collision_player_wall_64x64x10", "collider", (-48, 1135, -390), vectorscale((0, 1, 0), 270));
+  spawncollision("collision_player_wall_64x64x10", "collider", (-48, 1135, -334), vectorscale((0, 1, 0), 270));
+  spawncollision("collision_player_wall_64x64x10", "collider", (-104, 1135, -454), vectorscale((0, 1, 0), 270));
+  spawncollision("collision_player_wall_64x64x10", "collider", (-104, 1135, -390), vectorscale((0, 1, 0), 270));
+  spawncollision("collision_player_wall_64x64x10", "collider", (-104, 1135, -334), vectorscale((0, 1, 0), 270));
+  spawncollision("collision_player_wall_512x512x10", "collider", (-1803.5, 1895, 333), (0, 0, 0));
+  spawncollision("collision_player_wall_512x512x10", "collider", (-1815.5, 1743, 333), (0, 0, 0));
+  spawncollision("collision_player_wall_512x512x10", "collider", (-1822.5, 1881, 333), (0, 0, 0));
+  spawncollision("collision_player_wall_512x512x10", "collider", (-1822.5, 1755, 333), (0, 0, 0));
+  spawncollision("collision_player_wedge_32x256", "collider", (-1541, 1648, 156), vectorscale((0, 1, 0), 180));
+  spawncollision("collision_player_wall_512x512x10", "collider", (-1303.83, 1560.5, 353), vectorscale((0, 1, 0), 111.398));
+  spawncollision("collision_player_wall_512x512x10", "collider", (-1254, 1717.5, 353), (0, 0, 0));
+  spawncollision("collision_player_wall_512x512x10", "collider", (-883, 2232, 5), (0, 0, 0));
+  spawncollision("collision_player_wall_256x256x10", "collider", (-883, 1728, -44), (0, 0, 0));
+  spawncollision("collision_player_wall_512x512x10", "collider", (158, 2172, 5), (0, 0, 0));
+  spawncollision("collision_player_ramp_256x24", "collider", (151, 1768, -40), (270, 82.546, 97.454));
+  spawncollision("collision_player_ramp_256x24", "collider", (151, 1738, -40), (270, 82.546, 97.454));
+  spawncollision("collision_player_64x64x256", "collider", (-742.002, 866.631, 348), vectorscale((0, 1, 0), 334.8));
+  spawncollision("collision_player_64x64x256", "collider", (-760.949, 1008.22, 460.75), vectorscale((0, 1, 0), 334.2));
+  spawncollision("collision_player_wall_256x256x10", "collider", (84, -173.5, -44), vectorscale((0, 1, 0), 270));
+  e_temp = spawncollision("collision_clip_wall_128x128x10", "collider", (-72, 1136, -421.5), vectorscale((0, 1, 0), 270));
+  e_temp disconnectpaths();
+  spawncollision("collision_clip_wall_128x128x10", "collider", (-72, 1136, -373.5), vectorscale((0, 1, 0), 270));
 }
-

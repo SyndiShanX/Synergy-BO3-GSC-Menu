@@ -10,20 +10,18 @@
 	Parameters: 2
 	Flags: Linked
 */
-function registerbehaviortreescriptapiinternal(functionname, functionptr)
-{
-	if(!isdefined(level._behaviortreescriptfunctions))
-	{
-		level._behaviortreescriptfunctions = [];
-	}
-	functionname = tolower(functionname);
-	/#
-		assert(isdefined(functionname) && isdefined(functionptr), "");
-	#/
-	/#
-		assert(!isdefined(level._behaviortreescriptfunctions[functionname]), "");
-	#/
-	level._behaviortreescriptfunctions[functionname] = functionptr;
+function registerbehaviortreescriptapiinternal(functionname, functionptr) {
+  if(!isdefined(level._behaviortreescriptfunctions)) {
+    level._behaviortreescriptfunctions = [];
+  }
+  functionname = tolower(functionname);
+  /#
+  assert(isdefined(functionname) && isdefined(functionptr), "");
+  # /
+    /#
+  assert(!isdefined(level._behaviortreescriptfunctions[functionname]), "");
+  # /
+    level._behaviortreescriptfunctions[functionname] = functionptr;
 }
 
 /*
@@ -35,41 +33,36 @@ function registerbehaviortreescriptapiinternal(functionname, functionptr)
 	Parameters: 4
 	Flags: Linked
 */
-function registerbehaviortreeactioninternal(actionname, startfuncptr, updatefuncptr, terminatefuncptr)
-{
-	if(!isdefined(level._behaviortreeactions))
-	{
-		level._behaviortreeactions = [];
-	}
-	actionname = tolower(actionname);
-	/#
-		assert(isstring(actionname), "");
-	#/
-	/#
-		assert(!isdefined(level._behaviortreeactions[actionname]), ("" + actionname) + "");
-	#/
-	level._behaviortreeactions[actionname] = array();
-	if(isdefined(startfuncptr))
-	{
-		/#
-			assert(isfunctionptr(startfuncptr), "");
-		#/
-		level._behaviortreeactions[actionname]["bhtn_action_start"] = startfuncptr;
-	}
-	if(isdefined(updatefuncptr))
-	{
-		/#
-			assert(isfunctionptr(updatefuncptr), "");
-		#/
-		level._behaviortreeactions[actionname]["bhtn_action_update"] = updatefuncptr;
-	}
-	if(isdefined(terminatefuncptr))
-	{
-		/#
-			assert(isfunctionptr(terminatefuncptr), "");
-		#/
-		level._behaviortreeactions[actionname]["bhtn_action_terminate"] = terminatefuncptr;
-	}
+function registerbehaviortreeactioninternal(actionname, startfuncptr, updatefuncptr, terminatefuncptr) {
+  if(!isdefined(level._behaviortreeactions)) {
+    level._behaviortreeactions = [];
+  }
+  actionname = tolower(actionname);
+  /#
+  assert(isstring(actionname), "");
+  # /
+    /#
+  assert(!isdefined(level._behaviortreeactions[actionname]), ("" + actionname) + "");
+  # /
+    level._behaviortreeactions[actionname] = array();
+  if(isdefined(startfuncptr)) {
+    /#
+    assert(isfunctionptr(startfuncptr), "");
+    # /
+      level._behaviortreeactions[actionname]["bhtn_action_start"] = startfuncptr;
+  }
+  if(isdefined(updatefuncptr)) {
+    /#
+    assert(isfunctionptr(updatefuncptr), "");
+    # /
+      level._behaviortreeactions[actionname]["bhtn_action_update"] = updatefuncptr;
+  }
+  if(isdefined(terminatefuncptr)) {
+    /#
+    assert(isfunctionptr(terminatefuncptr), "");
+    # /
+      level._behaviortreeactions[actionname]["bhtn_action_terminate"] = terminatefuncptr;
+  }
 }
 
 #namespace behaviortreenetworkutility;
@@ -83,9 +76,8 @@ function registerbehaviortreeactioninternal(actionname, startfuncptr, updatefunc
 	Parameters: 2
 	Flags: Linked
 */
-function registerbehaviortreescriptapi(functionname, functionptr)
-{
-	behaviortreenetwork::registerbehaviortreescriptapiinternal(functionname, functionptr);
+function registerbehaviortreescriptapi(functionname, functionptr) {
+  behaviortreenetwork::registerbehaviortreescriptapiinternal(functionname, functionptr);
 }
 
 /*
@@ -97,8 +89,6 @@ function registerbehaviortreescriptapi(functionname, functionptr)
 	Parameters: 4
 	Flags: Linked
 */
-function registerbehaviortreeaction(actionname, startfuncptr, updatefuncptr, terminatefuncptr)
-{
-	behaviortreenetwork::registerbehaviortreeactioninternal(actionname, startfuncptr, updatefuncptr, terminatefuncptr);
+function registerbehaviortreeaction(actionname, startfuncptr, updatefuncptr, terminatefuncptr) {
+  behaviortreenetwork::registerbehaviortreeactioninternal(actionname, startfuncptr, updatefuncptr, terminatefuncptr);
 }
-

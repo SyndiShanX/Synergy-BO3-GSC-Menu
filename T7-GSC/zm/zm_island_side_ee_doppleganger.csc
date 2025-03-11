@@ -17,7 +17,4 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-}
-
+function init() {}

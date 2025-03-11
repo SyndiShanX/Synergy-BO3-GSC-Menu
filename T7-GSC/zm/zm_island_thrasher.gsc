@@ -27,9 +27,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec init()
-{
-	spawner::add_archetype_spawn_function("thrasher", &function_f8333089);
+function autoexec init() {
+  spawner::add_archetype_spawn_function("thrasher", & function_f8333089);
 }
 
 /*
@@ -41,9 +40,8 @@ function autoexec init()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private function_f8333089()
-{
-	self thread function_9b57ea16();
+function private function_f8333089() {
+  self thread function_9b57ea16();
 }
 
 /*
@@ -55,10 +53,8 @@ function private function_f8333089()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private function_9b57ea16()
-{
-	self endon(#"death");
-	wait(1);
-	self ai::set_behavior_attribute("use_attackable", 1);
+function private function_9b57ea16() {
+  self endon(# "death");
+  wait(1);
+  self ai::set_behavior_attribute("use_attackable", 1);
 }
-

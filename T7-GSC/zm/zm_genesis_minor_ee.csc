@@ -26,9 +26,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_genesis_minor_ee", &__init__, &__main__, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_genesis_minor_ee", & __init__, & __main__, undefined);
 }
 
 /*
@@ -40,9 +39,7 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-}
+function __init__() {}
 
 /*
 	Name: __main__
@@ -53,10 +50,8 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function __main__()
-{
-	level.explode_1st_offset = 0;
-	level.explode_2nd_offset = 0;
-	level.explode_main_offset = 0;
+function __main__() {
+  level.explode_1st_offset = 0;
+  level.explode_2nd_offset = 0;
+  level.explode_main_offset = 0;
 }
-

@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	thread snd_start_autofx_audio();
+function main() {
+  thread snd_start_autofx_audio();
 }
 
 /*
@@ -27,7 +26,4 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function snd_start_autofx_audio()
-{
-}
-
+function snd_start_autofx_audio() {}

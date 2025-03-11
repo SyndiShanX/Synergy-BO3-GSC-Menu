@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_powerup_island_seed", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_powerup_island_seed", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,11 +29,10 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	register_clientfields();
-	zm_powerups::include_zombie_powerup("island_seed");
-	zm_powerups::add_zombie_powerup("island_seed");
+function __init__() {
+  register_clientfields();
+  zm_powerups::include_zombie_powerup("island_seed");
+  zm_powerups::add_zombie_powerup("island_seed");
 }
 
 /*
@@ -46,12 +44,10 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function register_clientfields()
-{
-	clientfield::register("toplayer", "has_island_seed", 1, 2, "int", undefined, 0, 0);
-	clientfield::register("clientuimodel", "zmInventory.widget_seed_parts", 9000, 1, "int", undefined, 0, 0);
-	clientfield::register("toplayer", "bucket_seed_01", 9000, 1, "int", &zm_utility::setinventoryuimodels, 0, 1);
-	clientfield::register("toplayer", "bucket_seed_02", 9000, 1, "int", &zm_utility::setinventoryuimodels, 0, 1);
-	clientfield::register("toplayer", "bucket_seed_03", 9000, 1, "int", &zm_utility::setinventoryuimodels, 0, 1);
+function register_clientfields() {
+  clientfield::register("toplayer", "has_island_seed", 1, 2, "int", undefined, 0, 0);
+  clientfield::register("clientuimodel", "zmInventory.widget_seed_parts", 9000, 1, "int", undefined, 0, 0);
+  clientfield::register("toplayer", "bucket_seed_01", 9000, 1, "int", & zm_utility::setinventoryuimodels, 0, 1);
+  clientfield::register("toplayer", "bucket_seed_02", 9000, 1, "int", & zm_utility::setinventoryuimodels, 0, 1);
+  clientfield::register("toplayer", "bucket_seed_03", 9000, 1, "int", & zm_utility::setinventoryuimodels, 0, 1);
 }
-

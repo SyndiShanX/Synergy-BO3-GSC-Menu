@@ -15,9 +15,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_playerhealth", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_playerhealth", & __init__, undefined, undefined);
 }
 
 /*
@@ -29,10 +28,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("toplayer", "sndZombieHealth", 21000, 1, "int", &sndzombiehealth, 0, 1);
-	visionset_mgr::register_overlay_info_style_speed_blur("zm_health_blur", 1, 1, 0.1, 0.5, 0.75, 0, 0, 500, 500, 0);
+function __init__() {
+  clientfield::register("toplayer", "sndZombieHealth", 21000, 1, "int", & sndzombiehealth, 0, 1);
+  visionset_mgr::register_overlay_info_style_speed_blur("zm_health_blur", 1, 1, 0.1, 0.5, 0.75, 0, 0, 500, 500, 0);
 }
 
 /*
@@ -44,24 +42,17 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function sndzombiehealth(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		if(!isdefined(self.sndzombiehealthid))
-		{
-			playsound(0, "zmb_health_lowhealth_enter", self.origin);
-			self.sndzombiehealthid = self playloopsound("zmb_health_lowhealth_loop");
-		}
-	}
-	else if(isdefined(self.sndzombiehealthid))
-	{
-		self stoploopsound(self.sndzombiehealthid);
-		self.sndzombiehealthid = undefined;
-		if(!(isdefined(self.inlaststand) && self.inlaststand))
-		{
-			playsound(0, "zmb_health_lowhealth_exit", self.origin);
-		}
-	}
+function sndzombiehealth(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    if(!isdefined(self.sndzombiehealthid)) {
+      playsound(0, "zmb_health_lowhealth_enter", self.origin);
+      self.sndzombiehealthid = self playloopsound("zmb_health_lowhealth_loop");
+    }
+  } else if(isdefined(self.sndzombiehealthid)) {
+    self stoploopsound(self.sndzombiehealthid);
+    self.sndzombiehealthid = undefined;
+    if(!(isdefined(self.inlaststand) && self.inlaststand)) {
+      playsound(0, "zmb_health_lowhealth_exit", self.origin);
+    }
+  }
 }
-

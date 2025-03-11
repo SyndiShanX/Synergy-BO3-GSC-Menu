@@ -41,9 +41,8 @@
 	Parameters: 0
 	Flags: None
 */
-function setup_rex_starts()
-{
-	// Unsupported VM revision (1B).
+function setup_rex_starts() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -55,9 +54,8 @@ function setup_rex_starts()
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	// Unsupported VM revision (1B).
+function main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -69,9 +67,8 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function init_fx()
-{
-	// Unsupported VM revision (1B).
+function init_fx() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -83,9 +80,8 @@ function init_fx()
 	Parameters: 0
 	Flags: None
 */
-function init_clientfields()
-{
-	// Unsupported VM revision (1B).
+function init_clientfields() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -97,9 +93,8 @@ function init_clientfields()
 	Parameters: 0
 	Flags: None
 */
-function init_flags()
-{
-	// Unsupported VM revision (1B).
+function init_flags() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -111,9 +106,8 @@ function init_flags()
 	Parameters: 0
 	Flags: None
 */
-function level_threads()
-{
-	// Unsupported VM revision (1B).
+function level_threads() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -125,9 +119,8 @@ function level_threads()
 	Parameters: 0
 	Flags: None
 */
-function on_player_spawn()
-{
-	// Unsupported VM revision (1B).
+function on_player_spawn() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -139,9 +132,8 @@ function on_player_spawn()
 	Parameters: 0
 	Flags: None
 */
-function on_player_connect()
-{
-	// Unsupported VM revision (1B).
+function on_player_connect() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -153,9 +145,8 @@ function on_player_connect()
 	Parameters: 0
 	Flags: None
 */
-function setup_skiptos()
-{
-	// Unsupported VM revision (1B).
+function setup_skiptos() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -167,9 +158,8 @@ function setup_skiptos()
 	Parameters: 0
 	Flags: None
 */
-function civilian_spawn_function()
-{
-	// Unsupported VM revision (1B).
+function civilian_spawn_function() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -181,9 +171,8 @@ function civilian_spawn_function()
 	Parameters: 1
 	Flags: None
 */
-function function_3840d81a()
-{
-	// Unsupported VM revision (1B).
+function function_3840d81a() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -195,9 +184,8 @@ function function_3840d81a()
 	Parameters: 0
 	Flags: None
 */
-function civilian_touch_death()
-{
-	// Unsupported VM revision (1B).
+function civilian_touch_death() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -209,8 +197,6 @@ function civilian_touch_death()
 	Parameters: 1
 	Flags: None
 */
-function civilian_cleanup_death()
-{
-	// Unsupported VM revision (1B).
+function civilian_cleanup_death() {
+  // Unsupported VM revision (1B).
 }
-

@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	// Unsupported VM revision (1B).
+function autoexec __init__sytem__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -34,9 +33,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-	// Unsupported VM revision (1B).
+function __init__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -48,9 +46,8 @@ function __init__()
 	Parameters: 0
 	Flags: None
 */
-function turret_aa_lotus_init()
-{
-	// Unsupported VM revision (1B).
+function turret_aa_lotus_init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -62,9 +59,8 @@ function turret_aa_lotus_init()
 	Parameters: 1
 	Flags: None
 */
-function isads()
-{
-	// Unsupported VM revision (1B).
+function isads() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -76,9 +72,8 @@ function isads()
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	// Unsupported VM revision (1B).
+function main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -90,9 +85,8 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function thread_check_lock_on()
-{
-	// Unsupported VM revision (1B).
+function thread_check_lock_on() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -104,9 +98,8 @@ function thread_check_lock_on()
 	Parameters: 1
 	Flags: None
 */
-function turret_off()
-{
-	// Unsupported VM revision (1B).
+function turret_off() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -118,8 +111,6 @@ function turret_off()
 	Parameters: 0
 	Flags: None
 */
-function turret_on()
-{
-	// Unsupported VM revision (1B).
+function turret_on() {
+  // Unsupported VM revision (1B).
 }
-

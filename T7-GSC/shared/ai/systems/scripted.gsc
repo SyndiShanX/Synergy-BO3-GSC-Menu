@@ -12,15 +12,14 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	self endon(#"death");
-	self notify(#"killanimscript");
-	self notify(#"clearsuppressionattack");
-	self.codescripted["root"] = %generic::body;
-	self endon(#"end_sequence");
-	self.a.script = "scripted";
-	self waittill(#"killanimscript");
+function main() {
+  self endon(# "death");
+  self notify(# "killanimscript");
+  self notify(# "clearsuppressionattack");
+  self.codescripted["root"] = % generic::body;
+  self endon(# "end_sequence");
+  self.a.script = "scripted";
+  self waittill(# "killanimscript");
 }
 
 /*
@@ -32,9 +31,7 @@ function main()
 	Parameters: 9
 	Flags: None
 */
-function init(notifyname, origin, angles, theanim, animmode, root, rate, goaltime, lerptime)
-{
-}
+function init(notifyname, origin, angles, theanim, animmode, root, rate, goaltime, lerptime) {}
 
 /*
 	Name: end_script
@@ -45,11 +42,10 @@ function init(notifyname, origin, angles, theanim, animmode, root, rate, goaltim
 	Parameters: 0
 	Flags: Linked
 */
-function end_script()
-{
-	if(isdefined(self.___archetypeonbehavecallback))
-	{
-		[[self.___archetypeonbehavecallback]](self);
-	}
+function end_script() {
+  if(isdefined(self.___archetypeonbehavecallback)) {
+    [
+      [self.___archetypeonbehavecallback]
+    ](self);
+  }
 }
-

@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_ai_sonic", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_ai_sonic", & __init__, undefined, undefined);
 }
 
 /*
@@ -27,9 +26,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	init_clientfields();
+function __init__() {
+  init_clientfields();
 }
 
 /*
@@ -41,9 +39,8 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function init_clientfields()
-{
-	clientfield::register("actor", "issonic", 21000, 1, "int", &sonic_zombie_callback, 0, 0);
+function init_clientfields() {
+  clientfield::register("actor", "issonic", 21000, 1, "int", & sonic_zombie_callback, 0, 0);
 }
 
 /*
@@ -55,16 +52,12 @@ function init_clientfields()
 	Parameters: 7
 	Flags: Linked
 */
-function sonic_zombie_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump)
-{
-	if(newval)
-	{
-		self thread sonic_ambient_sounds(localclientnum);
-	}
-	else
-	{
-		self thread function_59e62cc8(localclientnum);
-	}
+function sonic_zombie_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
+  if(newval) {
+    self thread sonic_ambient_sounds(localclientnum);
+  } else {
+    self thread function_59e62cc8(localclientnum);
+  }
 }
 
 /*
@@ -76,13 +69,11 @@ function sonic_zombie_callback(localclientnum, oldval, newval, bnewent, binitial
 	Parameters: 1
 	Flags: Linked
 */
-function sonic_ambient_sounds(client_num)
-{
-	if(client_num != 0)
-	{
-		return;
-	}
-	self playloopsound("evt_sonic_ambient_loop", 1);
+function sonic_ambient_sounds(client_num) {
+  if(client_num != 0) {
+    return;
+  }
+  self playloopsound("evt_sonic_ambient_loop", 1);
 }
 
 /*
@@ -94,8 +85,6 @@ function sonic_ambient_sounds(client_num)
 	Parameters: 1
 	Flags: Linked
 */
-function function_59e62cc8(client_num)
-{
-	self notify(#"stop_sounds");
+function function_59e62cc8(client_num) {
+  self notify(# "stop_sounds");
 }
-

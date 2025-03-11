@@ -19,10 +19,9 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main_start()
-{
-	var_a62cd68b = findstaticmodelindex((414, 3524.5, 697));
-	hidestaticmodel(var_a62cd68b);
+function main_start() {
+  var_a62cd68b = findstaticmodelindex((414, 3524.5, 697));
+  hidestaticmodel(var_a62cd68b);
 }
 
 /*
@@ -34,7 +33,4 @@ function main_start()
 	Parameters: 0
 	Flags: Linked
 */
-function main_end()
-{
-}
-
+function main_end() {}

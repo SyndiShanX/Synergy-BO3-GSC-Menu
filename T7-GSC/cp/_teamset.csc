@@ -12,9 +12,7 @@
 	Parameters: 0
 	Flags: None
 */
-function level_init()
-{
-	level.allies_team = "allies";
-	level.axis_team = "axis";
+function level_init() {
+  level.allies_team = "allies";
+  level.axis_team = "axis";
 }
-

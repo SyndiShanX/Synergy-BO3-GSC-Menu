@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("weaponobjects", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("weaponobjects", & __init__, undefined, undefined);
 }
 
 /*
@@ -34,10 +33,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	init_shared();
-	callback::on_start_gametype(&start_gametype);
+function __init__() {
+  init_shared();
+  callback::on_start_gametype( & start_gametype);
 }
 
 /*
@@ -49,10 +47,9 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function start_gametype()
-{
-	callback::on_connect(&on_player_connect);
-	callback::on_spawned(&on_player_spawned);
+function start_gametype() {
+  callback::on_connect( & on_player_connect);
+  callback::on_spawned( & on_player_spawned);
 }
 
 /*
@@ -64,8 +61,6 @@ function start_gametype()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_spawned()
-{
-	self createspikelauncherwatcher("hero_spike_launcher");
+function on_player_spawned() {
+  self createspikelauncherwatcher("hero_spike_launcher");
 }
-

@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("menus", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("menus", & __init__, undefined, undefined);
 }
 
 /*
@@ -31,10 +30,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_start_gametype(&init);
-	callback::on_connect(&on_player_connect);
+function __init__() {
+  callback::on_start_gametype( & init);
+  callback::on_connect( & on_player_connect);
 }
 
 /*
@@ -46,20 +44,18 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	game["menu_start_menu"] = "StartMenu_Main";
-	game["menu_team"] = "ChangeTeam";
-	game["menu_class"] = "class";
-	game["menu_changeclass"] = "ChooseClass_InGame";
-	game["menu_changeclass_offline"] = "ChooseClass_InGame";
-	foreach(team in level.teams)
-	{
-		game["menu_changeclass_" + team] = "ChooseClass_InGame";
-	}
-	game["menu_controls"] = "ingame_controls";
-	game["menu_options"] = "ingame_options";
-	game["menu_leavegame"] = "popup_leavegame";
+function init() {
+  game["menu_start_menu"] = "StartMenu_Main";
+  game["menu_team"] = "ChangeTeam";
+  game["menu_class"] = "class";
+  game["menu_changeclass"] = "ChooseClass_InGame";
+  game["menu_changeclass_offline"] = "ChooseClass_InGame";
+  foreach(team in level.teams) {
+    game["menu_changeclass_" + team] = "ChooseClass_InGame";
+  }
+  game["menu_controls"] = "ingame_controls";
+  game["menu_options"] = "ingame_options";
+  game["menu_leavegame"] = "popup_leavegame";
 }
 
 /*
@@ -71,9 +67,8 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_connect()
-{
-	self thread on_menu_response();
+function on_player_connect() {
+  self thread on_menu_response();
 }
 
 /*
@@ -85,110 +80,83 @@ function on_player_connect()
 	Parameters: 0
 	Flags: Linked
 */
-function on_menu_response()
-{
-	self endon(#"disconnect");
-	for(;;)
-	{
-		self waittill(#"menuresponse", menu, response);
-		if(response == "back")
-		{
-			self closeingamemenu();
-			if(level.console)
-			{
-				if(menu == game["menu_changeclass"] || menu == game["menu_changeclass_offline"] || menu == game["menu_team"] || menu == game["menu_controls"])
-				{
-					if(isdefined(level.teams[self.pers["team"]]))
-					{
-						self openmenu(game["menu_start_menu"]);
-					}
-				}
-			}
-			continue;
-		}
-		if(response == "changeteam" && level.allow_teamchange == "1")
-		{
-			self closeingamemenu();
-			self openmenu(game["menu_team"]);
-		}
-		if(response == "endgame")
-		{
-			if(level.splitscreen)
-			{
-				level.skipvote = 1;
-				if(!level.gameended)
-				{
-					level thread globallogic::forceend();
-				}
-			}
-			continue;
-		}
-		if(response == "killserverpc")
-		{
-			level thread globallogic::killserverpc();
-			continue;
-		}
-		if(response == "endround")
-		{
-			if(!level.gameended)
-			{
-				self globallogic::gamehistoryplayerquit();
-				level thread globallogic::forceend();
-			}
-			else
-			{
-				self closeingamemenu();
-				self iprintln(&"MP_HOST_ENDGAME_RESPONSE");
-			}
-			continue;
-		}
-		if(menu == game["menu_team"] && level.allow_teamchange == "1")
-		{
-			switch(response)
-			{
-				case "autoassign":
-				{
-					self [[level.autoassign]](1);
-					break;
-				}
-				case "spectator":
-				{
-					self [[level.spectator]]();
-					break;
-				}
-				default:
-				{
-					self [[level.teammenu]](response);
-					break;
-				}
-			}
-			continue;
-		}
-		if(menu == game["menu_changeclass"] || menu == game["menu_changeclass_offline"])
-		{
-			if(response != "cancel")
-			{
-				self closeingamemenu();
-				if(level.rankedmatch && issubstr(response, "custom"))
-				{
-					if(self isitemlocked(rank::getitemindex("feature_cac")))
-					{
-						kick(self getentitynumber());
-					}
-				}
-				self.selectedclass = 1;
-				self [[level.curclass]](response);
-			}
-			continue;
-		}
-		if(menu == "spectate")
-		{
-			player = util::getplayerfromclientnum(int(response));
-			if(isdefined(player))
-			{
-				self setcurrentspectatorclient(player);
-			}
-		}
-	}
+function on_menu_response() {
+  self endon(# "disconnect");
+  for (;;) {
+    self waittill(# "menuresponse", menu, response);
+    if(response == "back") {
+      self closeingamemenu();
+      if(level.console) {
+        if(menu == game["menu_changeclass"] || menu == game["menu_changeclass_offline"] || menu == game["menu_team"] || menu == game["menu_controls"]) {
+          if(isdefined(level.teams[self.pers["team"]])) {
+            self openmenu(game["menu_start_menu"]);
+          }
+        }
+      }
+      continue;
+    }
+    if(response == "changeteam" && level.allow_teamchange == "1") {
+      self closeingamemenu();
+      self openmenu(game["menu_team"]);
+    }
+    if(response == "endgame") {
+      if(level.splitscreen) {
+        level.skipvote = 1;
+        if(!level.gameended) {
+          level thread globallogic::forceend();
+        }
+      }
+      continue;
+    }
+    if(response == "killserverpc") {
+      level thread globallogic::killserverpc();
+      continue;
+    }
+    if(response == "endround") {
+      if(!level.gameended) {
+        self globallogic::gamehistoryplayerquit();
+        level thread globallogic::forceend();
+      } else {
+        self closeingamemenu();
+        self iprintln( & "MP_HOST_ENDGAME_RESPONSE");
+      }
+      continue;
+    }
+    if(menu == game["menu_team"] && level.allow_teamchange == "1") {
+      switch (response) {
+        case "autoassign": {
+          self[[level.autoassign]](1);
+          break;
+        }
+        case "spectator": {
+          self[[level.spectator]]();
+          break;
+        }
+        default: {
+          self[[level.teammenu]](response);
+          break;
+        }
+      }
+      continue;
+    }
+    if(menu == game["menu_changeclass"] || menu == game["menu_changeclass_offline"]) {
+      if(response != "cancel") {
+        self closeingamemenu();
+        if(level.rankedmatch && issubstr(response, "custom")) {
+          if(self isitemlocked(rank::getitemindex("feature_cac"))) {
+            kick(self getentitynumber());
+          }
+        }
+        self.selectedclass = 1;
+        self[[level.curclass]](response);
+      }
+      continue;
+    }
+    if(menu == "spectate") {
+      player = util::getplayerfromclientnum(int(response));
+      if(isdefined(player)) {
+        self setcurrentspectatorclient(player);
+      }
+    }
+  }
 }
-

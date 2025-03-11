@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("controllable_spider", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("controllable_spider", & __init__, undefined, undefined);
 }
 
 /*
@@ -32,10 +31,9 @@ function autoexec __init__sytem__()
 	Parameters: 1
 	Flags: Linked
 */
-function __init__(localclientnum)
-{
-	clientfield::register("scriptmover", "player_cocooned_fx", 9000, 1, "int", &player_cocooned_fx, 0, 0);
-	clientfield::register("allplayers", "player_cocooned_fx", 9000, 1, "int", &player_cocooned_fx, 0, 0);
+function __init__(localclientnum) {
+  clientfield::register("scriptmover", "player_cocooned_fx", 9000, 1, "int", & player_cocooned_fx, 0, 0);
+  clientfield::register("allplayers", "player_cocooned_fx", 9000, 1, "int", & player_cocooned_fx, 0, 0);
 }
 
 /*
@@ -47,15 +45,11 @@ function __init__(localclientnum)
 	Parameters: 7
 	Flags: Linked
 */
-function player_cocooned_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval == 1)
-	{
-		if(!isdefined(self.var_e3645e32))
-		{
-			self.var_e3645e32 = [];
-		}
-		self.var_e3645e32[localclientnum] = playfxontag(localclientnum, level._effect["cocooned_fx"], self, "tag_origin");
-	}
+function player_cocooned_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval == 1) {
+    if(!isdefined(self.var_e3645e32)) {
+      self.var_e3645e32 = [];
+    }
+    self.var_e3645e32[localclientnum] = playfxontag(localclientnum, level._effect["cocooned_fx"], self, "tag_origin");
+  }
 }
-

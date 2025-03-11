@@ -15,9 +15,7 @@
 	Parameters: 0
 	Flags: None
 */
-function precache()
-{
-}
+function precache() {}
 
 /*
 	Name: main
@@ -28,7 +26,4 @@ function precache()
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-}
-
+function main() {}

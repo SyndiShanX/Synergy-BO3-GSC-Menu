@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_perk_juggernaut", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_perk_juggernaut", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,11 +29,10 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	zm_perks::register_perk_clientfields("specialty_armorvest", &juggernaut_client_field_func, &juggernaut_code_callback_func);
-	zm_perks::register_perk_effects("specialty_armorvest", "jugger_light");
-	zm_perks::register_perk_init_thread("specialty_armorvest", &init_juggernaut);
+function __init__() {
+  zm_perks::register_perk_clientfields("specialty_armorvest", & juggernaut_client_field_func, & juggernaut_code_callback_func);
+  zm_perks::register_perk_effects("specialty_armorvest", "jugger_light");
+  zm_perks::register_perk_init_thread("specialty_armorvest", & init_juggernaut);
 }
 
 /*
@@ -46,12 +44,10 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function init_juggernaut()
-{
-	if(isdefined(level.enable_magic) && level.enable_magic)
-	{
-		level._effect["jugger_light"] = "zombie/fx_perk_juggernaut_zmb";
-	}
+function init_juggernaut() {
+  if(isdefined(level.enable_magic) && level.enable_magic) {
+    level._effect["jugger_light"] = "zombie/fx_perk_juggernaut_zmb";
+  }
 }
 
 /*
@@ -63,9 +59,8 @@ function init_juggernaut()
 	Parameters: 0
 	Flags: Linked
 */
-function juggernaut_client_field_func()
-{
-	clientfield::register("clientuimodel", "hudItems.perks.juggernaut", 1, 2, "int", undefined, 0, 1);
+function juggernaut_client_field_func() {
+  clientfield::register("clientuimodel", "hudItems.perks.juggernaut", 1, 2, "int", undefined, 0, 1);
 }
 
 /*
@@ -77,7 +72,4 @@ function juggernaut_client_field_func()
 	Parameters: 0
 	Flags: Linked
 */
-function juggernaut_code_callback_func()
-{
-}
-
+function juggernaut_code_callback_func() {}

@@ -20,25 +20,23 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	precache();
-	setdvar("phys_buoyancy", 1);
-	clientfield::register("scriptmover", "mp_metro_train_timer", 1, 1, "int");
-	mp_metro_fx::main();
-	mp_metro_sound::main();
-	load::main();
-	compass::setupminimap("compass_map_mp_metro");
-	setdvar("compassmaxrange", "2100");
-	level.cleandepositpoints = array((-399.059, 1.39783, -47.875), (-1539.2, -239.678, -207.875), (878.216, -0.543464, -47.875), (69.9086, 1382.49, 0.125));
-	if(getgametypesetting("allowMapScripting"))
-	{
-		level thread mp_metro_train::init();
-	}
-	/#
-		level thread devgui_metro();
-		execdevgui("");
-	#/
+function main() {
+  precache();
+  setdvar("phys_buoyancy", 1);
+  clientfield::register("scriptmover", "mp_metro_train_timer", 1, 1, "int");
+  mp_metro_fx::main();
+  mp_metro_sound::main();
+  load::main();
+  compass::setupminimap("compass_map_mp_metro");
+  setdvar("compassmaxrange", "2100");
+  level.cleandepositpoints = array((-399.059, 1.39783, -47.875), (-1539.2, -239.678, -207.875), (878.216, -0.543464, -47.875), (69.9086, 1382.49, 0.125));
+  if(getgametypesetting("allowMapScripting")) {
+    level thread mp_metro_train::init();
+  }
+  /#
+  level thread devgui_metro();
+  execdevgui("");
+  # /
 }
 
 /*
@@ -50,9 +48,7 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function precache()
-{
-}
+function precache() {}
 
 /*
 	Name: devgui_metro
@@ -63,40 +59,31 @@ function precache()
 	Parameters: 0
 	Flags: Linked
 */
-function devgui_metro()
-{
-	/#
-		setdvar("", "");
-		for(;;)
-		{
-			wait(0.5);
-			devgui_string = getdvarstring("");
-			switch(devgui_string)
-			{
-				case "":
-				{
-					break;
-				}
-				case "":
-				{
-					level notify(#"train_start_1");
-					break;
-				}
-				case "":
-				{
-					level notify(#"train_start_2");
-					break;
-				}
-				default:
-				{
-					break;
-				}
-			}
-			if(getdvarstring("") != "")
-			{
-				setdvar("", "");
-			}
-		}
-	#/
+function devgui_metro() {
+  /#
+  setdvar("", "");
+  for (;;) {
+    wait(0.5);
+    devgui_string = getdvarstring("");
+    switch (devgui_string) {
+      case "": {
+        break;
+      }
+      case "": {
+        level notify(# "train_start_1");
+        break;
+      }
+      case "": {
+        level notify(# "train_start_2");
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    if(getdvarstring("") != "") {
+      setdvar("", "");
+    }
+  }
+  # /
 }
-

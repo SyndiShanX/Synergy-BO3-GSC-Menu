@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_respin_cycle", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_respin_cycle", & __init__, undefined, undefined);
 }
 
 /*
@@ -32,15 +31,13 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_respin_cycle", "activated");
-	clientfield::register("zbarrier", "zm_bgb_respin_cycle", 1, 1, "counter", &function_74ecbbd7, 0, 0);
-	level._effect["zm_bgb_respin_cycle"] = "zombie/fx_bgb_respin_cycle_box_flash_zmb";
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_respin_cycle", "activated");
+  clientfield::register("zbarrier", "zm_bgb_respin_cycle", 1, 1, "counter", & function_74ecbbd7, 0, 0);
+  level._effect["zm_bgb_respin_cycle"] = "zombie/fx_bgb_respin_cycle_box_flash_zmb";
 }
 
 /*
@@ -52,8 +49,6 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function function_74ecbbd7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	playfx(localclientnum, level._effect["zm_bgb_respin_cycle"], self.origin, anglestoforward(self.angles), anglestoup(self.angles));
+function function_74ecbbd7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  playfx(localclientnum, level._effect["zm_bgb_respin_cycle"], self.origin, anglestoforward(self.angles), anglestoup(self.angles));
 }
-

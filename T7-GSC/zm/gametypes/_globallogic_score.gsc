@@ -23,37 +23,30 @@
 	Parameters: 0
 	Flags: Linked
 */
-function gethighestscoringplayer()
-{
-	players = level.players;
-	winner = undefined;
-	tie = 0;
-	for(i = 0; i < players.size; i++)
-	{
-		if(!isdefined(players[i].score))
-		{
-			continue;
-		}
-		if(players[i].score < 1)
-		{
-			continue;
-		}
-		if(!isdefined(winner) || players[i].score > winner.score)
-		{
-			winner = players[i];
-			tie = 0;
-			continue;
-		}
-		if(players[i].score == winner.score)
-		{
-			tie = 1;
-		}
-	}
-	if(tie || !isdefined(winner))
-	{
-		return undefined;
-	}
-	return winner;
+function gethighestscoringplayer() {
+  players = level.players;
+  winner = undefined;
+  tie = 0;
+  for (i = 0; i < players.size; i++) {
+    if(!isdefined(players[i].score)) {
+      continue;
+    }
+    if(players[i].score < 1) {
+      continue;
+    }
+    if(!isdefined(winner) || players[i].score > winner.score) {
+      winner = players[i];
+      tie = 0;
+      continue;
+    }
+    if(players[i].score == winner.score) {
+      tie = 1;
+    }
+  }
+  if(tie || !isdefined(winner)) {
+    return undefined;
+  }
+  return winner;
 }
 
 /*
@@ -65,11 +58,10 @@ function gethighestscoringplayer()
 	Parameters: 0
 	Flags: Linked
 */
-function resetscorechain()
-{
-	self notify(#"reset_score_chain");
-	self.scorechain = 0;
-	self.rankupdatetotal = 0;
+function resetscorechain() {
+  self notify(# "reset_score_chain");
+  self.scorechain = 0;
+  self.rankupdatetotal = 0;
 }
 
 /*
@@ -81,15 +73,14 @@ function resetscorechain()
 	Parameters: 0
 	Flags: Linked
 */
-function scorechaintimer()
-{
-	self notify(#"score_chain_timer");
-	self endon(#"reset_score_chain");
-	self endon(#"score_chain_timer");
-	self endon(#"death");
-	self endon(#"disconnect");
-	wait(20);
-	self thread resetscorechain();
+function scorechaintimer() {
+  self notify(# "score_chain_timer");
+  self endon(# "reset_score_chain");
+  self endon(# "score_chain_timer");
+  self endon(# "death");
+  self endon(# "disconnect");
+  wait(20);
+  self thread resetscorechain();
 }
 
 /*
@@ -101,14 +92,12 @@ function scorechaintimer()
 	Parameters: 1
 	Flags: Linked
 */
-function roundtonearestfive(score)
-{
-	rounding = score % 5;
-	if(rounding <= 2)
-	{
-		return score - rounding;
-	}
-	return score + (5 - rounding);
+function roundtonearestfive(score) {
+  rounding = score % 5;
+  if(rounding <= 2) {
+    return score - rounding;
+  }
+  return score + (5 - rounding);
 }
 
 /*
@@ -120,36 +109,29 @@ function roundtonearestfive(score)
 	Parameters: 4
 	Flags: Linked
 */
-function giveplayermomentumnotification(score, label, descvalue, countstowardrampage)
-{
-	rampagebonus = 0;
-	if(isdefined(level.usingrampage) && level.usingrampage)
-	{
-		if(countstowardrampage)
-		{
-			if(!isdefined(self.scorechain))
-			{
-				self.scorechain = 0;
-			}
-			self.scorechain++;
-			self thread scorechaintimer();
-		}
-		if(isdefined(self.scorechain) && self.scorechain >= 999)
-		{
-			rampagebonus = roundtonearestfive(int((score * level.rampagebonusscale) + 0.5));
-		}
-	}
-	combat_efficiency_factor = 0;
-	if(score != 0)
-	{
-		self luinotifyevent(&"score_event", 4, label, score, rampagebonus, combat_efficiency_factor);
-	}
-	score = score + rampagebonus;
-	if(score > 0 && self hasperk("specialty_earnmoremomentum"))
-	{
-		score = roundtonearestfive(int((score * getdvarfloat("perk_killstreakMomentumMultiplier")) + 0.5));
-	}
-	_setplayermomentum(self, self.pers["momentum"] + score);
+function giveplayermomentumnotification(score, label, descvalue, countstowardrampage) {
+  rampagebonus = 0;
+  if(isdefined(level.usingrampage) && level.usingrampage) {
+    if(countstowardrampage) {
+      if(!isdefined(self.scorechain)) {
+        self.scorechain = 0;
+      }
+      self.scorechain++;
+      self thread scorechaintimer();
+    }
+    if(isdefined(self.scorechain) && self.scorechain >= 999) {
+      rampagebonus = roundtonearestfive(int((score * level.rampagebonusscale) + 0.5));
+    }
+  }
+  combat_efficiency_factor = 0;
+  if(score != 0) {
+    self luinotifyevent( & "score_event", 4, label, score, rampagebonus, combat_efficiency_factor);
+  }
+  score = score + rampagebonus;
+  if(score > 0 && self hasperk("specialty_earnmoremomentum")) {
+    score = roundtonearestfive(int((score * getdvarfloat("perk_killstreakMomentumMultiplier")) + 0.5));
+  }
+  _setplayermomentum(self, self.pers["momentum"] + score);
 }
 
 /*
@@ -161,13 +143,11 @@ function giveplayermomentumnotification(score, label, descvalue, countstowardram
 	Parameters: 0
 	Flags: Linked
 */
-function resetplayermomentumondeath()
-{
-	if(isdefined(level.usingscorestreaks) && level.usingscorestreaks)
-	{
-		_setplayermomentum(self, 0);
-		self thread resetscorechain();
-	}
+function resetplayermomentumondeath() {
+  if(isdefined(level.usingscorestreaks) && level.usingscorestreaks) {
+    _setplayermomentum(self, 0);
+    self thread resetscorechain();
+  }
 }
 
 /*
@@ -179,27 +159,24 @@ function resetplayermomentumondeath()
 	Parameters: 4
 	Flags: Linked
 */
-function giveplayerxpdisplay(event, player, victim, descvalue)
-{
-	score = rank::getscoreinfovalue(event);
-	/#
-		assert(isdefined(score));
-	#/
-	xp = rank::getscoreinfoxp(event);
-	/#
-		assert(isdefined(xp));
-	#/
-	label = rank::getscoreinfolabel(event);
-	if(xp && !level.gameended && isdefined(label))
-	{
-		xpscale = player getxpscale();
-		if(1 != xpscale)
-		{
-			xp = int((xp * xpscale) + 0.5);
-		}
-		player luinotifyevent(&"score_event", 2, label, xp);
-	}
-	return score;
+function giveplayerxpdisplay(event, player, victim, descvalue) {
+  score = rank::getscoreinfovalue(event);
+  /#
+  assert(isdefined(score));
+  # /
+    xp = rank::getscoreinfoxp(event);
+  /#
+  assert(isdefined(xp));
+  # /
+    label = rank::getscoreinfolabel(event);
+  if(xp && !level.gameended && isdefined(label)) {
+    xpscale = player getxpscale();
+    if(1 != xpscale) {
+      xp = int((xp * xpscale) + 0.5);
+    }
+    player luinotifyevent( & "score_event", 2, label, xp);
+  }
+  return score;
 }
 
 /*
@@ -211,9 +188,8 @@ function giveplayerxpdisplay(event, player, victim, descvalue)
 	Parameters: 5
 	Flags: Linked
 */
-function giveplayerscore(event, player, victim, descvalue, weapon)
-{
-	return giveplayerxpdisplay(event, player, victim, descvalue);
+function giveplayerscore(event, player, victim, descvalue, weapon) {
+  return giveplayerxpdisplay(event, player, victim, descvalue);
 }
 
 /*
@@ -225,9 +201,7 @@ function giveplayerscore(event, player, victim, descvalue, weapon)
 	Parameters: 3
 	Flags: Linked
 */
-function default_onplayerscore(event, player, victim)
-{
-}
+function default_onplayerscore(event, player, victim) {}
 
 /*
 	Name: _setplayerscore
@@ -238,9 +212,7 @@ function default_onplayerscore(event, player, victim)
 	Parameters: 2
 	Flags: Linked
 */
-function _setplayerscore(player, score)
-{
-}
+function _setplayerscore(player, score) {}
 
 /*
 	Name: _getplayerscore
@@ -251,9 +223,8 @@ function _setplayerscore(player, score)
 	Parameters: 1
 	Flags: Linked
 */
-function _getplayerscore(player)
-{
-	return player.pers["score"];
+function _getplayerscore(player) {
+  return player.pers["score"];
 }
 
 /*
@@ -265,23 +236,20 @@ function _getplayerscore(player)
 	Parameters: 2
 	Flags: Linked
 */
-function _setplayermomentum(player, momentum)
-{
-	momentum = math::clamp(momentum, 0, 2000);
-	oldmomentum = player.pers["momentum"];
-	if(momentum == oldmomentum)
-	{
-		return;
-	}
-	player bb::add_to_stat("momentum", momentum - oldmomentum);
-	if(momentum > oldmomentum)
-	{
-		highestmomentumcost = 0;
-		numkillstreaks = player.killstreak.size;
-		killstreaktypearray = [];
-	}
-	player.pers["momentum"] = momentum;
-	player.momentum = player.pers["momentum"];
+function _setplayermomentum(player, momentum) {
+  momentum = math::clamp(momentum, 0, 2000);
+  oldmomentum = player.pers["momentum"];
+  if(momentum == oldmomentum) {
+    return;
+  }
+  player bb::add_to_stat("momentum", momentum - oldmomentum);
+  if(momentum > oldmomentum) {
+    highestmomentumcost = 0;
+    numkillstreaks = player.killstreak.size;
+    killstreaktypearray = [];
+  }
+  player.pers["momentum"] = momentum;
+  player.momentum = player.pers["momentum"];
 }
 
 /*
@@ -293,9 +261,7 @@ function _setplayermomentum(player, momentum)
 	Parameters: 4
 	Flags: None
 */
-function _giveplayerkillstreakinternal(player, momentum, oldmomentum, killstreaktypearray)
-{
-}
+function _giveplayerkillstreakinternal(player, momentum, oldmomentum, killstreaktypearray) {}
 
 /*
 	Name: setplayermomentumdebug
@@ -306,28 +272,23 @@ function _giveplayerkillstreakinternal(player, momentum, oldmomentum, killstreak
 	Parameters: 0
 	Flags: Linked
 */
-function setplayermomentumdebug()
-{
-	/#
-		setdvar("", 0);
-		while(true)
-		{
-			wait(1);
-			momentumpercent = getdvarfloat("", 0);
-			if(momentumpercent != 0)
-			{
-				player = util::gethostplayer();
-				if(!isdefined(player))
-				{
-					return;
-				}
-				if(isdefined(player.killstreak))
-				{
-					_setplayermomentum(player, int(2000 * (momentumpercent / 100)));
-				}
-			}
-		}
-	#/
+function setplayermomentumdebug() {
+  /#
+  setdvar("", 0);
+  while (true) {
+    wait(1);
+    momentumpercent = getdvarfloat("", 0);
+    if(momentumpercent != 0) {
+      player = util::gethostplayer();
+      if(!isdefined(player)) {
+        return;
+      }
+      if(isdefined(player.killstreak)) {
+        _setplayermomentum(player, int(2000 * (momentumpercent / 100)));
+      }
+    }
+  }
+  # /
 }
 
 /*
@@ -339,24 +300,23 @@ function setplayermomentumdebug()
 	Parameters: 4
 	Flags: Linked
 */
-function giveteamscore(event, team, player, victim)
-{
-	if(level.overrideteamscore)
-	{
-		return;
-	}
-	pixbeginevent("level.onTeamScore");
-	teamscore = game["teamScores"][team];
-	[[level.onteamscore]](event, team);
-	pixendevent();
-	newscore = game["teamScores"][team];
-	bbprint("mpteamscores", "gametime %d event %s team %d diff %d score %d", gettime(), event, team, newscore - teamscore, newscore);
-	if(teamscore == newscore)
-	{
-		return;
-	}
-	updateteamscores(team);
-	thread globallogic::checkscorelimit();
+function giveteamscore(event, team, player, victim) {
+  if(level.overrideteamscore) {
+    return;
+  }
+  pixbeginevent("level.onTeamScore");
+  teamscore = game["teamScores"][team];
+  [
+    [level.onteamscore]
+  ](event, team);
+  pixendevent();
+  newscore = game["teamScores"][team];
+  bbprint("mpteamscores", "gametime %d event %s team %d diff %d score %d", gettime(), event, team, newscore - teamscore, newscore);
+  if(teamscore == newscore) {
+    return;
+  }
+  updateteamscores(team);
+  thread globallogic::checkscorelimit();
 }
 
 /*
@@ -368,17 +328,15 @@ function giveteamscore(event, team, player, victim)
 	Parameters: 2
 	Flags: None
 */
-function giveteamscoreforobjective(team, score)
-{
-	teamscore = game["teamScores"][team];
-	onteamscore(score, team);
-	newscore = game["teamScores"][team];
-	if(teamscore == newscore)
-	{
-		return;
-	}
-	updateteamscores(team);
-	thread globallogic::checkscorelimit();
+function giveteamscoreforobjective(team, score) {
+  teamscore = game["teamScores"][team];
+  onteamscore(score, team);
+  newscore = game["teamScores"][team];
+  if(teamscore == newscore) {
+    return;
+  }
+  updateteamscores(team);
+  thread globallogic::checkscorelimit();
 }
 
 /*
@@ -390,15 +348,13 @@ function giveteamscoreforobjective(team, score)
 	Parameters: 2
 	Flags: Linked
 */
-function _setteamscore(team, teamscore)
-{
-	if(teamscore == game["teamScores"][team])
-	{
-		return;
-	}
-	game["teamScores"][team] = teamscore;
-	updateteamscores(team);
-	thread globallogic::checkscorelimit();
+function _setteamscore(team, teamscore) {
+  if(teamscore == game["teamScores"][team]) {
+    return;
+  }
+  game["teamScores"][team] = teamscore;
+  updateteamscores(team);
+  thread globallogic::checkscorelimit();
 }
 
 /*
@@ -410,16 +366,13 @@ function _setteamscore(team, teamscore)
 	Parameters: 0
 	Flags: Linked
 */
-function resetteamscores()
-{
-	if(level.scoreroundwinbased || util::isfirstround())
-	{
-		foreach(team in level.teams)
-		{
-			game["teamScores"][team] = 0;
-		}
-	}
-	updateallteamscores();
+function resetteamscores() {
+  if(level.scoreroundwinbased || util::isfirstround()) {
+    foreach(team in level.teams) {
+      game["teamScores"][team] = 0;
+    }
+  }
+  updateallteamscores();
 }
 
 /*
@@ -431,10 +384,9 @@ function resetteamscores()
 	Parameters: 0
 	Flags: None
 */
-function resetallscores()
-{
-	resetteamscores();
-	resetplayerscores();
+function resetallscores() {
+  resetteamscores();
+  resetplayerscores();
 }
 
 /*
@@ -446,18 +398,15 @@ function resetallscores()
 	Parameters: 0
 	Flags: Linked
 */
-function resetplayerscores()
-{
-	players = level.players;
-	winner = undefined;
-	tie = 0;
-	for(i = 0; i < players.size; i++)
-	{
-		if(isdefined(players[i].pers["score"]))
-		{
-			_setplayerscore(players[i], 0);
-		}
-	}
+function resetplayerscores() {
+  players = level.players;
+  winner = undefined;
+  tie = 0;
+  for (i = 0; i < players.size; i++) {
+    if(isdefined(players[i].pers["score"])) {
+      _setplayerscore(players[i], 0);
+    }
+  }
 }
 
 /*
@@ -469,10 +418,9 @@ function resetplayerscores()
 	Parameters: 1
 	Flags: Linked
 */
-function updateteamscores(team)
-{
-	setteamscore(team, game["teamScores"][team]);
-	level thread globallogic::checkteamscorelimitsoon(team);
+function updateteamscores(team) {
+  setteamscore(team, game["teamScores"][team]);
+  level thread globallogic::checkteamscorelimitsoon(team);
 }
 
 /*
@@ -484,12 +432,10 @@ function updateteamscores(team)
 	Parameters: 0
 	Flags: Linked
 */
-function updateallteamscores()
-{
-	foreach(team in level.teams)
-	{
-		updateteamscores(team);
-	}
+function updateallteamscores() {
+  foreach(team in level.teams) {
+    updateteamscores(team);
+  }
 }
 
 /*
@@ -501,9 +447,8 @@ function updateallteamscores()
 	Parameters: 1
 	Flags: Linked
 */
-function _getteamscore(team)
-{
-	return game["teamScores"][team];
+function _getteamscore(team) {
+  return game["teamScores"][team];
 }
 
 /*
@@ -515,24 +460,20 @@ function _getteamscore(team)
 	Parameters: 0
 	Flags: Linked
 */
-function gethighestteamscoreteam()
-{
-	score = 0;
-	winning_teams = [];
-	foreach(team in level.teams)
-	{
-		team_score = game["teamScores"][team];
-		if(team_score > score)
-		{
-			score = team_score;
-			winning_teams = [];
-		}
-		if(team_score == score)
-		{
-			winning_teams[team] = team;
-		}
-	}
-	return winning_teams;
+function gethighestteamscoreteam() {
+  score = 0;
+  winning_teams = [];
+  foreach(team in level.teams) {
+    team_score = game["teamScores"][team];
+    if(team_score > score) {
+      score = team_score;
+      winning_teams = [];
+    }
+    if(team_score == score) {
+      winning_teams[team] = team;
+    }
+  }
+  return winning_teams;
 }
 
 /*
@@ -544,20 +485,16 @@ function gethighestteamscoreteam()
 	Parameters: 2
 	Flags: Linked
 */
-function areteamarraysequal(teamsa, teamsb)
-{
-	if(teamsa.size != teamsb.size)
-	{
-		return false;
-	}
-	foreach(team in teamsa)
-	{
-		if(!isdefined(teamsb[team]))
-		{
-			return false;
-		}
-	}
-	return true;
+function areteamarraysequal(teamsa, teamsb) {
+  if(teamsa.size != teamsb.size) {
+    return false;
+  }
+  foreach(team in teamsa) {
+    if(!isdefined(teamsb[team])) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /*
@@ -569,68 +506,52 @@ function areteamarraysequal(teamsa, teamsb)
 	Parameters: 2
 	Flags: Linked
 */
-function onteamscore(score, team)
-{
-	game["teamScores"][team] = game["teamScores"][team] + score;
-	if(level.scorelimit && game["teamScores"][team] > level.scorelimit)
-	{
-		game["teamScores"][team] = level.scorelimit;
-	}
-	if(level.splitscreen)
-	{
-		return;
-	}
-	if(level.scorelimit == 1)
-	{
-		return;
-	}
-	iswinning = gethighestteamscoreteam();
-	if(iswinning.size == 0)
-	{
-		return;
-	}
-	if((gettime() - level.laststatustime) < 5000)
-	{
-		return;
-	}
-	if(areteamarraysequal(iswinning, level.waswinning))
-	{
-		return;
-	}
-	level.laststatustime = gettime();
-	if(iswinning.size == 1)
-	{
-		foreach(team in iswinning)
-		{
-			if(isdefined(level.waswinning[team]))
-			{
-				if(level.waswinning.size == 1)
-				{
-					continue;
-				}
-			}
-			globallogic_audio::leaderdialog("lead_taken", team, "status");
-		}
-	}
-	if(level.waswinning.size == 1)
-	{
-		foreach(team in level.waswinning)
-		{
-			if(isdefined(iswinning[team]))
-			{
-				if(iswinning.size == 1)
-				{
-					continue;
-				}
-				if(level.waswinning.size > 1)
-				{
-					continue;
-				}
-			}
-			globallogic_audio::leaderdialog("lead_lost", team, "status");
-		}
-	}
-	level.waswinning = iswinning;
+function onteamscore(score, team) {
+  game["teamScores"][team] = game["teamScores"][team] + score;
+  if(level.scorelimit && game["teamScores"][team] > level.scorelimit) {
+    game["teamScores"][team] = level.scorelimit;
+  }
+  if(level.splitscreen) {
+    return;
+  }
+  if(level.scorelimit == 1) {
+    return;
+  }
+  iswinning = gethighestteamscoreteam();
+  if(iswinning.size == 0) {
+    return;
+  }
+  if((gettime() - level.laststatustime) < 5000) {
+    return;
+  }
+  if(areteamarraysequal(iswinning, level.waswinning)) {
+    return;
+  }
+  level.laststatustime = gettime();
+  if(iswinning.size == 1) {
+    foreach(team in iswinning) {
+      if(isdefined(level.waswinning[team])) {
+        if(level.waswinning.size == 1) {
+          continue;
+        }
+      }
+      globallogic_audio::leaderdialog("lead_taken", team, "status");
+    }
+  }
+  if(level.waswinning.size == 1) {
+    foreach(team in level.waswinning) {
+      if(isdefined(iswinning[team])) {
+        if(iswinning.size == 1) {
+          continue;
+        }
+        if(level.waswinning.size > 1) {
+          continue;
+        }
+      }
+      globallogic_audio::leaderdialog("lead_lost", team, "status");
+    }
+  }
+  level.waswinning = iswinning;
 }
 
 /*
@@ -642,9 +563,7 @@ function onteamscore(score, team)
 	Parameters: 2
 	Flags: Linked
 */
-function default_onteamscore(event, team)
-{
-}
+function default_onteamscore(event, team) {}
 
 /*
 	Name: initpersstat
@@ -655,20 +574,16 @@ function default_onteamscore(event, team)
 	Parameters: 3
 	Flags: Linked
 */
-function initpersstat(dataname, record_stats, init_to_stat_value)
-{
-	if(!isdefined(self.pers[dataname]))
-	{
-		self.pers[dataname] = 0;
-	}
-	if(!isdefined(record_stats) || record_stats == 1)
-	{
-		recordplayerstats(self, dataname, int(self.pers[dataname]));
-	}
-	if(isdefined(init_to_stat_value) && init_to_stat_value == 1)
-	{
-		self.pers[dataname] = self getdstat("PlayerStatsList", dataname, "StatValue");
-	}
+function initpersstat(dataname, record_stats, init_to_stat_value) {
+  if(!isdefined(self.pers[dataname])) {
+    self.pers[dataname] = 0;
+  }
+  if(!isdefined(record_stats) || record_stats == 1) {
+    recordplayerstats(self, dataname, int(self.pers[dataname]));
+  }
+  if(isdefined(init_to_stat_value) && init_to_stat_value == 1) {
+    self.pers[dataname] = self getdstat("PlayerStatsList", dataname, "StatValue");
+  }
 }
 
 /*
@@ -680,9 +595,8 @@ function initpersstat(dataname, record_stats, init_to_stat_value)
 	Parameters: 1
 	Flags: Linked
 */
-function getpersstat(dataname)
-{
-	return self.pers[dataname];
+function getpersstat(dataname) {
+  return self.pers[dataname];
 }
 
 /*
@@ -694,16 +608,14 @@ function getpersstat(dataname)
 	Parameters: 4
 	Flags: Linked
 */
-function incpersstat(dataname, increment, record_stats, includegametype)
-{
-	pixbeginevent("incPersStat");
-	self.pers[dataname] = self.pers[dataname] + increment;
-	self addplayerstat(dataname, increment);
-	if(!isdefined(record_stats) || record_stats == 1)
-	{
-		self thread threadedrecordplayerstats(dataname);
-	}
-	pixendevent();
+function incpersstat(dataname, increment, record_stats, includegametype) {
+  pixbeginevent("incPersStat");
+  self.pers[dataname] = self.pers[dataname] + increment;
+  self addplayerstat(dataname, increment);
+  if(!isdefined(record_stats) || record_stats == 1) {
+    self thread threadedrecordplayerstats(dataname);
+  }
+  pixendevent();
 }
 
 /*
@@ -715,11 +627,10 @@ function incpersstat(dataname, increment, record_stats, includegametype)
 	Parameters: 1
 	Flags: Linked
 */
-function threadedrecordplayerstats(dataname)
-{
-	self endon(#"disconnect");
-	waittillframeend();
-	recordplayerstats(self, dataname, self.pers[dataname]);
+function threadedrecordplayerstats(dataname) {
+  self endon(# "disconnect");
+  waittillframeend();
+  recordplayerstats(self, dataname, self.pers[dataname]);
 }
 
 /*
@@ -731,18 +642,15 @@ function threadedrecordplayerstats(dataname)
 	Parameters: 1
 	Flags: Linked
 */
-function inckillstreaktracker(weapon)
-{
-	self endon(#"disconnect");
-	waittillframeend();
-	if(weapon.name == "artillery")
-	{
-		self.pers["artillery_kills"]++;
-	}
-	if(weapon.name == "dog_bite")
-	{
-		self.pers["dog_kills"]++;
-	}
+function inckillstreaktracker(weapon) {
+  self endon(# "disconnect");
+  waittillframeend();
+  if(weapon.name == "artillery") {
+    self.pers["artillery_kills"]++;
+  }
+  if(weapon.name == "dog_bite") {
+    self.pers["dog_kills"]++;
+  }
 }
 
 /*
@@ -754,45 +662,37 @@ function inckillstreaktracker(weapon)
 	Parameters: 5
 	Flags: Linked
 */
-function trackattackerkill(name, rank, xp, prestige, xuid)
-{
-	self endon(#"disconnect");
-	attacker = self;
-	waittillframeend();
-	pixbeginevent("trackAttackerKill");
-	if(!isdefined(attacker.pers["killed_players"][name]))
-	{
-		attacker.pers["killed_players"][name] = 0;
-	}
-	if(!isdefined(attacker.killedplayerscurrent[name]))
-	{
-		attacker.killedplayerscurrent[name] = 0;
-	}
-	if(!isdefined(attacker.pers["nemesis_tracking"][name]))
-	{
-		attacker.pers["nemesis_tracking"][name] = 0;
-	}
-	attacker.pers["killed_players"][name]++;
-	attacker.killedplayerscurrent[name]++;
-	attacker.pers["nemesis_tracking"][name] = attacker.pers["nemesis_tracking"][name] + 1;
-	if(attacker.pers["nemesis_name"] == name)
-	{
-		attacker challenges::killednemesis();
-	}
-	if(attacker.pers["nemesis_name"] == "" || attacker.pers["nemesis_tracking"][name] > attacker.pers["nemesis_tracking"][attacker.pers["nemesis_name"]])
-	{
-		attacker.pers["nemesis_name"] = name;
-		attacker.pers["nemesis_rank"] = rank;
-		attacker.pers["nemesis_rankIcon"] = prestige;
-		attacker.pers["nemesis_xp"] = xp;
-		attacker.pers["nemesis_xuid"] = xuid;
-	}
-	else if(isdefined(attacker.pers["nemesis_name"]) && attacker.pers["nemesis_name"] == name)
-	{
-		attacker.pers["nemesis_rank"] = rank;
-		attacker.pers["nemesis_xp"] = xp;
-	}
-	pixendevent();
+function trackattackerkill(name, rank, xp, prestige, xuid) {
+  self endon(# "disconnect");
+  attacker = self;
+  waittillframeend();
+  pixbeginevent("trackAttackerKill");
+  if(!isdefined(attacker.pers["killed_players"][name])) {
+    attacker.pers["killed_players"][name] = 0;
+  }
+  if(!isdefined(attacker.killedplayerscurrent[name])) {
+    attacker.killedplayerscurrent[name] = 0;
+  }
+  if(!isdefined(attacker.pers["nemesis_tracking"][name])) {
+    attacker.pers["nemesis_tracking"][name] = 0;
+  }
+  attacker.pers["killed_players"][name]++;
+  attacker.killedplayerscurrent[name]++;
+  attacker.pers["nemesis_tracking"][name] = attacker.pers["nemesis_tracking"][name] + 1;
+  if(attacker.pers["nemesis_name"] == name) {
+    attacker challenges::killednemesis();
+  }
+  if(attacker.pers["nemesis_name"] == "" || attacker.pers["nemesis_tracking"][name] > attacker.pers["nemesis_tracking"][attacker.pers["nemesis_name"]]) {
+    attacker.pers["nemesis_name"] = name;
+    attacker.pers["nemesis_rank"] = rank;
+    attacker.pers["nemesis_rankIcon"] = prestige;
+    attacker.pers["nemesis_xp"] = xp;
+    attacker.pers["nemesis_xuid"] = xuid;
+  } else if(isdefined(attacker.pers["nemesis_name"]) && attacker.pers["nemesis_name"] == name) {
+    attacker.pers["nemesis_rank"] = rank;
+    attacker.pers["nemesis_xp"] = xp;
+  }
+  pixendevent();
 }
 
 /*
@@ -804,43 +704,34 @@ function trackattackerkill(name, rank, xp, prestige, xuid)
 	Parameters: 5
 	Flags: Linked
 */
-function trackattackeedeath(attackername, rank, xp, prestige, xuid)
-{
-	self endon(#"disconnect");
-	waittillframeend();
-	pixbeginevent("trackAttackeeDeath");
-	if(!isdefined(self.pers["killed_by"][attackername]))
-	{
-		self.pers["killed_by"][attackername] = 0;
-	}
-	self.pers["killed_by"][attackername]++;
-	if(!isdefined(self.pers["nemesis_tracking"][attackername]))
-	{
-		self.pers["nemesis_tracking"][attackername] = 0;
-	}
-	self.pers["nemesis_tracking"][attackername] = self.pers["nemesis_tracking"][attackername] + 1.5;
-	if(self.pers["nemesis_name"] == "" || self.pers["nemesis_tracking"][attackername] > self.pers["nemesis_tracking"][self.pers["nemesis_name"]])
-	{
-		self.pers["nemesis_name"] = attackername;
-		self.pers["nemesis_rank"] = rank;
-		self.pers["nemesis_rankIcon"] = prestige;
-		self.pers["nemesis_xp"] = xp;
-		self.pers["nemesis_xuid"] = xuid;
-	}
-	else if(isdefined(self.pers["nemesis_name"]) && self.pers["nemesis_name"] == attackername)
-	{
-		self.pers["nemesis_rank"] = rank;
-		self.pers["nemesis_xp"] = xp;
-	}
-	if(self.pers["nemesis_name"] == attackername && self.pers["nemesis_tracking"][attackername] >= 2)
-	{
-		self setclientuivisibilityflag("killcam_nemesis", 1);
-	}
-	else
-	{
-		self setclientuivisibilityflag("killcam_nemesis", 0);
-	}
-	pixendevent();
+function trackattackeedeath(attackername, rank, xp, prestige, xuid) {
+  self endon(# "disconnect");
+  waittillframeend();
+  pixbeginevent("trackAttackeeDeath");
+  if(!isdefined(self.pers["killed_by"][attackername])) {
+    self.pers["killed_by"][attackername] = 0;
+  }
+  self.pers["killed_by"][attackername]++;
+  if(!isdefined(self.pers["nemesis_tracking"][attackername])) {
+    self.pers["nemesis_tracking"][attackername] = 0;
+  }
+  self.pers["nemesis_tracking"][attackername] = self.pers["nemesis_tracking"][attackername] + 1.5;
+  if(self.pers["nemesis_name"] == "" || self.pers["nemesis_tracking"][attackername] > self.pers["nemesis_tracking"][self.pers["nemesis_name"]]) {
+    self.pers["nemesis_name"] = attackername;
+    self.pers["nemesis_rank"] = rank;
+    self.pers["nemesis_rankIcon"] = prestige;
+    self.pers["nemesis_xp"] = xp;
+    self.pers["nemesis_xuid"] = xuid;
+  } else if(isdefined(self.pers["nemesis_name"]) && self.pers["nemesis_name"] == attackername) {
+    self.pers["nemesis_rank"] = rank;
+    self.pers["nemesis_xp"] = xp;
+  }
+  if(self.pers["nemesis_name"] == attackername && self.pers["nemesis_tracking"][attackername] >= 2) {
+    self setclientuivisibilityflag("killcam_nemesis", 1);
+  } else {
+    self setclientuivisibilityflag("killcam_nemesis", 0);
+  }
+  pixendevent();
 }
 
 /*
@@ -852,9 +743,8 @@ function trackattackeedeath(attackername, rank, xp, prestige, xuid)
 	Parameters: 0
 	Flags: Linked
 */
-function default_iskillboosting()
-{
-	return false;
+function default_iskillboosting() {
+  return false;
 }
 
 /*
@@ -866,29 +756,26 @@ function default_iskillboosting()
 	Parameters: 3
 	Flags: Linked
 */
-function givekillstats(smeansofdeath, weapon, evictim)
-{
-	self endon(#"disconnect");
-	waittillframeend();
-	if(level.rankedmatch && self [[level.iskillboosting]]())
-	{
-		/#
-			self iprintlnbold("");
-		#/
-		return;
-	}
-	pixbeginevent("giveKillStats");
-	self incpersstat("kills", 1, 1, 1);
-	self.kills = self getpersstat("kills");
-	self updatestatratio("kdratio", "kills", "deaths");
-	attacker = self;
-	if(smeansofdeath == "MOD_HEAD_SHOT")
-	{
-		attacker thread incpersstat("headshots", 1, 1, 0);
-		attacker.headshots = attacker.pers["headshots"];
-		evictim recordkillmodifier("headshot");
-	}
-	pixendevent();
+function givekillstats(smeansofdeath, weapon, evictim) {
+  self endon(# "disconnect");
+  waittillframeend();
+  if(level.rankedmatch && self[[level.iskillboosting]]()) {
+    /#
+    self iprintlnbold("");
+    # /
+      return;
+  }
+  pixbeginevent("giveKillStats");
+  self incpersstat("kills", 1, 1, 1);
+  self.kills = self getpersstat("kills");
+  self updatestatratio("kdratio", "kills", "deaths");
+  attacker = self;
+  if(smeansofdeath == "MOD_HEAD_SHOT") {
+    attacker thread incpersstat("headshots", 1, 1, 0);
+    attacker.headshots = attacker.pers["headshots"];
+    evictim recordkillmodifier("headshot");
+  }
+  pixendevent();
 }
 
 /*
@@ -900,13 +787,11 @@ function givekillstats(smeansofdeath, weapon, evictim)
 	Parameters: 1
 	Flags: Linked
 */
-function inctotalkills(team)
-{
-	if(level.teambased && isdefined(level.teams[team]))
-	{
-		game["totalKillsTeam"][team]++;
-	}
-	game["totalKills"]++;
+function inctotalkills(team) {
+  if(level.teambased && isdefined(level.teams[team])) {
+    game["totalKillsTeam"][team]++;
+  }
+  game["totalKills"]++;
 }
 
 /*
@@ -918,39 +803,31 @@ function inctotalkills(team)
 	Parameters: 3
 	Flags: None
 */
-function setinflictorstat(einflictor, eattacker, weapon)
-{
-	if(!isdefined(eattacker))
-	{
-		return;
-	}
-	if(!isdefined(einflictor))
-	{
-		eattacker addweaponstat(weapon, "hits", 1);
-		return;
-	}
-	if(!isdefined(einflictor.playeraffectedarray))
-	{
-		einflictor.playeraffectedarray = [];
-	}
-	foundnewplayer = 1;
-	for(i = 0; i < einflictor.playeraffectedarray.size; i++)
-	{
-		if(einflictor.playeraffectedarray[i] == self)
-		{
-			foundnewplayer = 0;
-			break;
-		}
-	}
-	if(foundnewplayer)
-	{
-		einflictor.playeraffectedarray[einflictor.playeraffectedarray.size] = self;
-		if(weapon == "concussion_grenade" || weapon == "tabun_gas")
-		{
-			eattacker addweaponstat(weapon, "used", 1);
-		}
-		eattacker addweaponstat(weapon, "hits", 1);
-	}
+function setinflictorstat(einflictor, eattacker, weapon) {
+  if(!isdefined(eattacker)) {
+    return;
+  }
+  if(!isdefined(einflictor)) {
+    eattacker addweaponstat(weapon, "hits", 1);
+    return;
+  }
+  if(!isdefined(einflictor.playeraffectedarray)) {
+    einflictor.playeraffectedarray = [];
+  }
+  foundnewplayer = 1;
+  for (i = 0; i < einflictor.playeraffectedarray.size; i++) {
+    if(einflictor.playeraffectedarray[i] == self) {
+      foundnewplayer = 0;
+      break;
+    }
+  }
+  if(foundnewplayer) {
+    einflictor.playeraffectedarray[einflictor.playeraffectedarray.size] = self;
+    if(weapon == "concussion_grenade" || weapon == "tabun_gas") {
+      eattacker addweaponstat(weapon, "used", 1);
+    }
+    eattacker addweaponstat(weapon, "hits", 1);
+  }
 }
 
 /*
@@ -962,26 +839,22 @@ function setinflictorstat(einflictor, eattacker, weapon)
 	Parameters: 1
 	Flags: None
 */
-function processshieldassist(killedplayer)
-{
-	self endon(#"disconnect");
-	killedplayer endon(#"disconnect");
-	wait(0.05);
-	util::waittillslowprocessallowed();
-	if(!isdefined(level.teams[self.pers["team"]]))
-	{
-		return;
-	}
-	if(self.pers["team"] == killedplayer.pers["team"])
-	{
-		return;
-	}
-	if(!level.teambased)
-	{
-		return;
-	}
-	self incpersstat("assists", 1, 1, 1);
-	self.assists = self getpersstat("assists");
+function processshieldassist(killedplayer) {
+  self endon(# "disconnect");
+  killedplayer endon(# "disconnect");
+  wait(0.05);
+  util::waittillslowprocessallowed();
+  if(!isdefined(level.teams[self.pers["team"]])) {
+    return;
+  }
+  if(self.pers["team"] == killedplayer.pers["team"]) {
+    return;
+  }
+  if(!level.teambased) {
+    return;
+  }
+  self incpersstat("assists", 1, 1, 1);
+  self.assists = self getpersstat("assists");
 }
 
 /*
@@ -993,62 +866,50 @@ function processshieldassist(killedplayer)
 	Parameters: 3
 	Flags: None
 */
-function processassist(killedplayer, damagedone, weapon)
-{
-	self endon(#"disconnect");
-	killedplayer endon(#"disconnect");
-	wait(0.05);
-	util::waittillslowprocessallowed();
-	if(!isdefined(level.teams[self.pers["team"]]))
-	{
-		return;
-	}
-	if(self.pers["team"] == killedplayer.pers["team"])
-	{
-		return;
-	}
-	if(!level.teambased)
-	{
-		return;
-	}
-	assist_level = "assist";
-	assist_level_value = int(ceil(damagedone / 25));
-	if(assist_level_value < 1)
-	{
-		assist_level_value = 1;
-	}
-	else if(assist_level_value > 3)
-	{
-		assist_level_value = 3;
-	}
-	assist_level = (assist_level + "_") + (assist_level_value * 25);
-	self incpersstat("assists", 1, 1, 1);
-	self.assists = self getpersstat("assists");
-	switch(weapon.name)
-	{
-		case "concussion_grenade":
-		{
-			assist_level = "assist_concussion";
-			break;
-		}
-		case "flash_grenade":
-		{
-			assist_level = "assist_flash";
-			break;
-		}
-		case "emp_grenade":
-		{
-			assist_level = "assist_emp";
-			break;
-		}
-		case "proximity_grenade":
-		case "proximity_grenade_aoe":
-		{
-			assist_level = "assist_proximity";
-			break;
-		}
-	}
-	self challenges::assisted();
+function processassist(killedplayer, damagedone, weapon) {
+  self endon(# "disconnect");
+  killedplayer endon(# "disconnect");
+  wait(0.05);
+  util::waittillslowprocessallowed();
+  if(!isdefined(level.teams[self.pers["team"]])) {
+    return;
+  }
+  if(self.pers["team"] == killedplayer.pers["team"]) {
+    return;
+  }
+  if(!level.teambased) {
+    return;
+  }
+  assist_level = "assist";
+  assist_level_value = int(ceil(damagedone / 25));
+  if(assist_level_value < 1) {
+    assist_level_value = 1;
+  } else if(assist_level_value > 3) {
+    assist_level_value = 3;
+  }
+  assist_level = (assist_level + "_") + (assist_level_value * 25);
+  self incpersstat("assists", 1, 1, 1);
+  self.assists = self getpersstat("assists");
+  switch (weapon.name) {
+    case "concussion_grenade": {
+      assist_level = "assist_concussion";
+      break;
+    }
+    case "flash_grenade": {
+      assist_level = "assist_flash";
+      break;
+    }
+    case "emp_grenade": {
+      assist_level = "assist_emp";
+      break;
+    }
+    case "proximity_grenade":
+    case "proximity_grenade_aoe": {
+      assist_level = "assist_proximity";
+      break;
+    }
+  }
+  self challenges::assisted();
 }
 
 /*
@@ -1060,9 +921,7 @@ function processassist(killedplayer, damagedone, weapon)
 	Parameters: 0
 	Flags: Linked
 */
-function xpratethread()
-{
-	/#
-	#/
+function xpratethread() {
+  /#
+  # /
 }
-

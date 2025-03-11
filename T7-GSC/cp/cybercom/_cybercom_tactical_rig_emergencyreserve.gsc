@@ -26,9 +26,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-}
+function init() {}
 
 /*
 	Name: main
@@ -39,15 +37,14 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	callback::on_connect(&on_player_connect);
-	callback::on_spawned(&on_player_spawned);
-	setdvar("scr_emergency_reserve_timer", 5);
-	setdvar("scr_emergency_reserve_timer_upgraded", 8);
-	cybercom_tacrig::register_cybercom_rig_ability("cybercom_emergencyreserve", 3);
-	cybercom_tacrig::register_cybercom_rig_possession_callbacks("cybercom_emergencyreserve", &emergencyreservegive, &emergencyreservetake);
-	cybercom_tacrig::register_cybercom_rig_activation_callbacks("cybercom_emergencyreserve", &emergencyreserveactivate, &emergencyreservedeactivate);
+function main() {
+  callback::on_connect( & on_player_connect);
+  callback::on_spawned( & on_player_spawned);
+  setdvar("scr_emergency_reserve_timer", 5);
+  setdvar("scr_emergency_reserve_timer_upgraded", 8);
+  cybercom_tacrig::register_cybercom_rig_ability("cybercom_emergencyreserve", 3);
+  cybercom_tacrig::register_cybercom_rig_possession_callbacks("cybercom_emergencyreserve", & emergencyreservegive, & emergencyreservetake);
+  cybercom_tacrig::register_cybercom_rig_activation_callbacks("cybercom_emergencyreserve", & emergencyreserveactivate, & emergencyreservedeactivate);
 }
 
 /*
@@ -59,9 +56,7 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_connect()
-{
-}
+function on_player_connect() {}
 
 /*
 	Name: on_player_spawned
@@ -72,9 +67,7 @@ function on_player_connect()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_spawned()
-{
-}
+function on_player_spawned() {}
 
 /*
 	Name: emergencyreservegive
@@ -85,10 +78,9 @@ function on_player_spawned()
 	Parameters: 1
 	Flags: Linked
 */
-function emergencyreservegive(type)
-{
-	self.lives = self savegame::get_player_data("lives", 1);
-	self clientfield::set_to_player("sndTacRig", 1);
+function emergencyreservegive(type) {
+  self.lives = self savegame::get_player_data("lives", 1);
+  self clientfield::set_to_player("sndTacRig", 1);
 }
 
 /*
@@ -100,10 +92,9 @@ function emergencyreservegive(type)
 	Parameters: 1
 	Flags: Linked
 */
-function emergencyreservetake(type)
-{
-	self.lives = 0;
-	self clientfield::set_to_player("sndTacRig", 0);
+function emergencyreservetake(type) {
+  self.lives = 0;
+  self clientfield::set_to_player("sndTacRig", 0);
 }
 
 /*
@@ -115,19 +106,16 @@ function emergencyreservetake(type)
 	Parameters: 1
 	Flags: Linked
 */
-function emergencyreserveactivate(type)
-{
-	if(self.lives < 1)
-	{
-		return;
-	}
-	if(self hascybercomrig("cybercom_emergencyreserve") == 2)
-	{
-		level thread cybercom_tacrig_proximitydeterrent::function_c0ba5acc(self);
-	}
-	self cybercom_tacrig::turn_rig_ability_off("cybercom_emergencyreserve");
-	self playlocalsound("gdt_cybercore_regen_godown");
-	playfx("player/fx_plyr_ability_emergency_reserve_1p", self.origin);
+function emergencyreserveactivate(type) {
+  if(self.lives < 1) {
+    return;
+  }
+  if(self hascybercomrig("cybercom_emergencyreserve") == 2) {
+    level thread cybercom_tacrig_proximitydeterrent::function_c0ba5acc(self);
+  }
+  self cybercom_tacrig::turn_rig_ability_off("cybercom_emergencyreserve");
+  self playlocalsound("gdt_cybercore_regen_godown");
+  playfx("player/fx_plyr_ability_emergency_reserve_1p", self.origin);
 }
 
 /*
@@ -139,9 +127,7 @@ function emergencyreserveactivate(type)
 	Parameters: 1
 	Flags: Linked
 */
-function emergencyreservedeactivate(type)
-{
-}
+function emergencyreservedeactivate(type) {}
 
 /*
 	Name: validdeathtypesforemergencyreserve
@@ -152,12 +138,9 @@ function emergencyreservedeactivate(type)
 	Parameters: 1
 	Flags: Linked
 */
-function validdeathtypesforemergencyreserve(smeansofdeath)
-{
-	if(isdefined(smeansofdeath))
-	{
-		return issubstr(smeansofdeath, "_BULLET") || issubstr(smeansofdeath, "_GRENADE") || issubstr(smeansofdeath, "_MELEE") || smeansofdeath == "MOD_EXPLOSIVE" || smeansofdeath == "MOD_SUICIDE" || smeansofdeath == "MOD_HEAD_SHOT";
-	}
-	return 0;
+function validdeathtypesforemergencyreserve(smeansofdeath) {
+  if(isdefined(smeansofdeath)) {
+    return issubstr(smeansofdeath, "_BULLET") || issubstr(smeansofdeath, "_GRENADE") || issubstr(smeansofdeath, "_MELEE") || smeansofdeath == "MOD_EXPLOSIVE" || smeansofdeath == "MOD_SUICIDE" || smeansofdeath == "MOD_HEAD_SHOT";
+  }
+  return 0;
 }
-

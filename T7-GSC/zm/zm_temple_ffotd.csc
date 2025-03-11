@@ -12,17 +12,14 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main_start()
-{
-	a_wallbuys = struct::get_array("weapon_upgrade", "targetname");
-	foreach(s_wallbuy in a_wallbuys)
-	{
-		if(s_wallbuy.zombie_weapon_upgrade == "smg_standard")
-		{
-			s_wallbuy.origin = s_wallbuy.origin + vectorscale((0, 1, 0), 5);
-		}
-	}
-	level._effect["powerup_on_red"] = "zombie/fx_powerup_on_red_zmb";
+function main_start() {
+  a_wallbuys = struct::get_array("weapon_upgrade", "targetname");
+  foreach(s_wallbuy in a_wallbuys) {
+    if(s_wallbuy.zombie_weapon_upgrade == "smg_standard") {
+      s_wallbuy.origin = s_wallbuy.origin + vectorscale((0, 1, 0), 5);
+    }
+  }
+  level._effect["powerup_on_red"] = "zombie/fx_powerup_on_red_zmb";
 }
 
 /*
@@ -34,7 +31,4 @@ function main_start()
 	Parameters: 0
 	Flags: Linked
 */
-function main_end()
-{
-}
-
+function main_end() {}

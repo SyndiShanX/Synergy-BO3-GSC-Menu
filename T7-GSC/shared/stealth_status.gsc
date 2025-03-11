@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: None
 */
-function init()
-{
-	// Unsupported VM revision (1B).
+function init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -31,9 +30,8 @@ function init()
 	Parameters: 0
 	Flags: None
 */
-function enabled()
-{
-	// Unsupported VM revision (1B).
+function enabled() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -45,9 +43,8 @@ function enabled()
 	Parameters: 4
 	Flags: None
 */
-function create_stealth_indicator()
-{
-	// Unsupported VM revision (1B).
+function create_stealth_indicator() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -59,9 +56,8 @@ function create_stealth_indicator()
 	Parameters: 2
 	Flags: None
 */
-function icon_show()
-{
-	// Unsupported VM revision (1B).
+function icon_show() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -73,9 +69,8 @@ function icon_show()
 	Parameters: 2
 	Flags: None
 */
-function function_180adb28()
-{
-	// Unsupported VM revision (1B).
+function function_180adb28() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -87,9 +82,8 @@ function function_180adb28()
 	Parameters: 0
 	Flags: None
 */
-function status_monitor_thread()
-{
-	// Unsupported VM revision (1B).
+function status_monitor_thread() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -101,9 +95,8 @@ function status_monitor_thread()
 	Parameters: 1
 	Flags: None
 */
-function shader_for_alert_level()
-{
-	// Unsupported VM revision (1B).
+function shader_for_alert_level() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -115,9 +108,8 @@ function shader_for_alert_level()
 	Parameters: 0
 	Flags: None
 */
-function update()
-{
-	// Unsupported VM revision (1B).
+function update() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -129,8 +121,6 @@ function update()
 	Parameters: 0
 	Flags: None
 */
-function clean_icon_on_death()
-{
-	// Unsupported VM revision (1B).
+function clean_icon_on_death() {
+  // Unsupported VM revision (1B).
 }
-

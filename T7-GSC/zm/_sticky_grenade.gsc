@@ -12,9 +12,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-}
+function init() {}
 
 /*
 	Name: watch_bolt_detonation
@@ -25,7 +23,4 @@ function init()
 	Parameters: 1
 	Flags: None
 */
-function watch_bolt_detonation(owner)
-{
-}
-
+function watch_bolt_detonation(owner) {}

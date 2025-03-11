@@ -12,9 +12,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	thread party_stop();
+function main() {
+  thread party_stop();
 }
 
 /*
@@ -26,8 +25,6 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function party_stop()
-{
-	level notify(#"no_party");
+function party_stop() {
+  level notify(# "no_party");
 }
-

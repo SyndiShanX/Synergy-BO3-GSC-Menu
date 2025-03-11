@@ -15,9 +15,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("skeleton", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("skeleton", & __init__, undefined, undefined);
 }
 
 /*
@@ -29,9 +28,7 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec precache()
-{
-}
+function autoexec precache() {}
 
 /*
 	Name: __init__
@@ -42,12 +39,10 @@ function autoexec precache()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(ai::shouldregisterclientfieldforarchetype("skeleton"))
-	{
-		clientfield::register("actor", "skeleton", 1, 1, "int", &zombieclientutils::zombiehandler, 0, 0);
-	}
+function __init__() {
+  if(ai::shouldregisterclientfieldforarchetype("skeleton")) {
+    clientfield::register("actor", "skeleton", 1, 1, "int", & zombieclientutils::zombiehandler, 0, 0);
+  }
 }
 
 #namespace zombieclientutils;
@@ -61,22 +56,19 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function zombiehandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump)
-{
-	entity = self;
-	if(isdefined(entity.archetype) && entity.archetype != "zombie")
-	{
-		return;
-	}
-	if(!isdefined(entity.initializedgibcallbacks) || !entity.initializedgibcallbacks)
-	{
-		entity.initializedgibcallbacks = 1;
-		gibclientutils::addgibcallback(localclientnum, entity, 8, &_gibcallback);
-		gibclientutils::addgibcallback(localclientnum, entity, 16, &_gibcallback);
-		gibclientutils::addgibcallback(localclientnum, entity, 32, &_gibcallback);
-		gibclientutils::addgibcallback(localclientnum, entity, 128, &_gibcallback);
-		gibclientutils::addgibcallback(localclientnum, entity, 256, &_gibcallback);
-	}
+function zombiehandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
+  entity = self;
+  if(isdefined(entity.archetype) && entity.archetype != "zombie") {
+    return;
+  }
+  if(!isdefined(entity.initializedgibcallbacks) || !entity.initializedgibcallbacks) {
+    entity.initializedgibcallbacks = 1;
+    gibclientutils::addgibcallback(localclientnum, entity, 8, & _gibcallback);
+    gibclientutils::addgibcallback(localclientnum, entity, 16, & _gibcallback);
+    gibclientutils::addgibcallback(localclientnum, entity, 32, & _gibcallback);
+    gibclientutils::addgibcallback(localclientnum, entity, 128, & _gibcallback);
+    gibclientutils::addgibcallback(localclientnum, entity, 256, & _gibcallback);
+  }
 }
 
 /*
@@ -88,23 +80,18 @@ function zombiehandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap
 	Parameters: 3
 	Flags: Linked, Private
 */
-function private _gibcallback(localclientnum, entity, gibflag)
-{
-	switch(gibflag)
-	{
-		case 8:
-		{
-			playsound(0, "zmb_zombie_head_gib", self.origin);
-			break;
-		}
-		case 16:
-		case 32:
-		case 128:
-		case 256:
-		{
-			playsound(0, "zmb_death_gibs", self.origin);
-			break;
-		}
-	}
+function private _gibcallback(localclientnum, entity, gibflag) {
+  switch (gibflag) {
+    case 8: {
+      playsound(0, "zmb_zombie_head_gib", self.origin);
+      break;
+    }
+    case 16:
+    case 32:
+    case 128:
+    case 256: {
+      playsound(0, "zmb_death_gibs", self.origin);
+      break;
+    }
+  }
 }
-

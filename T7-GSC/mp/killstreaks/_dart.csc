@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("dart", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("dart", & __init__, undefined, undefined);
 }
 
 /*
@@ -31,15 +30,14 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("toplayer", "dart_update_ammo", 1, 2, "int", &update_ammo, 0, 0);
-	clientfield::register("toplayer", "fog_bank_3", 1, 1, "int", &fog_bank_3_callback, 0, 0);
-	level.dartbundle = struct::get_script_bundle("killstreak", "killstreak_dart");
-	vehicle::add_vehicletype_callback(level.dartbundle.ksdartvehicle, &spawned);
-	visionset_mgr::register_visionset_info("dart_visionset", 1, 1, undefined, "mp_vehicles_dart");
-	visionset_mgr::register_visionset_info("sentinel_visionset", 1, 1, undefined, "mp_vehicles_sentinel");
-	visionset_mgr::register_visionset_info("remote_missile_visionset", 1, 1, undefined, "mp_hellstorm");
+function __init__() {
+  clientfield::register("toplayer", "dart_update_ammo", 1, 2, "int", & update_ammo, 0, 0);
+  clientfield::register("toplayer", "fog_bank_3", 1, 1, "int", & fog_bank_3_callback, 0, 0);
+  level.dartbundle = struct::get_script_bundle("killstreak", "killstreak_dart");
+  vehicle::add_vehicletype_callback(level.dartbundle.ksdartvehicle, & spawned);
+  visionset_mgr::register_visionset_info("dart_visionset", 1, 1, undefined, "mp_vehicles_dart");
+  visionset_mgr::register_visionset_info("sentinel_visionset", 1, 1, undefined, "mp_vehicles_sentinel");
+  visionset_mgr::register_visionset_info("remote_missile_visionset", 1, 1, undefined, "mp_hellstorm");
 }
 
 /*
@@ -51,9 +49,8 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function update_ammo(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	setuimodelvalue(getuimodel(getuimodelforcontroller(localclientnum), "vehicle.ammo"), newval);
+function update_ammo(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  setuimodelvalue(getuimodel(getuimodelforcontroller(localclientnum), "vehicle.ammo"), newval);
 }
 
 /*
@@ -65,9 +62,8 @@ function update_ammo(localclientnum, oldval, newval, bnewent, binitialsnap, fiel
 	Parameters: 1
 	Flags: Linked
 */
-function spawned(localclientnum)
-{
-	self.killstreakbundle = level.dartbundle;
+function spawned(localclientnum) {
+  self.killstreakbundle = level.dartbundle;
 }
 
 /*
@@ -79,18 +75,12 @@ function spawned(localclientnum)
 	Parameters: 7
 	Flags: Linked
 */
-function fog_bank_3_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(oldval != newval)
-	{
-		if(newval == 1)
-		{
-			setworldfogactivebank(localclientnum, 4);
-		}
-		else
-		{
-			setworldfogactivebank(localclientnum, 1);
-		}
-	}
+function fog_bank_3_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(oldval != newval) {
+    if(newval == 1) {
+      setworldfogactivebank(localclientnum, 4);
+    } else {
+      setworldfogactivebank(localclientnum, 1);
+    }
+  }
 }
-

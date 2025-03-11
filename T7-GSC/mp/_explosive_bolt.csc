@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("explosive_bolt", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("explosive_bolt", & __init__, undefined, undefined);
 }
 
 /*
@@ -31,10 +30,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	level._effect["crossbow_light"] = "weapon/fx_equip_light_os";
-	callback::add_weapon_type("explosive_bolt", &spawned);
+function __init__() {
+  level._effect["crossbow_light"] = "weapon/fx_equip_light_os";
+  callback::add_weapon_type("explosive_bolt", & spawned);
 }
 
 /*
@@ -46,13 +44,11 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function spawned(localclientnum)
-{
-	if(self isgrenadedud())
-	{
-		return;
-	}
-	self thread fx_think(localclientnum);
+function spawned(localclientnum) {
+  if(self isgrenadedud()) {
+    return;
+  }
+  self thread fx_think(localclientnum);
 }
 
 /*
@@ -64,22 +60,20 @@ function spawned(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function fx_think(localclientnum)
-{
-	self notify(#"light_disable");
-	self endon(#"entityshutdown");
-	self endon(#"light_disable");
-	self util::waittill_dobj(localclientnum);
-	interval = 0.3;
-	for(;;)
-	{
-		self stop_light_fx(localclientnum);
-		self start_light_fx(localclientnum);
-		self fullscreen_fx(localclientnum);
-		self playsound(localclientnum, "wpn_semtex_alert");
-		util::server_wait(localclientnum, interval, 0.016, "player_switch");
-		interval = math::clamp(interval / 1.2, 0.08, 0.3);
-	}
+function fx_think(localclientnum) {
+  self notify(# "light_disable");
+  self endon(# "entityshutdown");
+  self endon(# "light_disable");
+  self util::waittill_dobj(localclientnum);
+  interval = 0.3;
+  for (;;) {
+    self stop_light_fx(localclientnum);
+    self start_light_fx(localclientnum);
+    self fullscreen_fx(localclientnum);
+    self playsound(localclientnum, "wpn_semtex_alert");
+    util::server_wait(localclientnum, interval, 0.016, "player_switch");
+    interval = math::clamp(interval / 1.2, 0.08, 0.3);
+  }
 }
 
 /*
@@ -91,10 +85,9 @@ function fx_think(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function start_light_fx(localclientnum)
-{
-	player = getlocalplayer(localclientnum);
-	self.fx = playfxontag(localclientnum, level._effect["crossbow_light"], self, "tag_origin");
+function start_light_fx(localclientnum) {
+  player = getlocalplayer(localclientnum);
+  self.fx = playfxontag(localclientnum, level._effect["crossbow_light"], self, "tag_origin");
 }
 
 /*
@@ -106,13 +99,11 @@ function start_light_fx(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function stop_light_fx(localclientnum)
-{
-	if(isdefined(self.fx) && self.fx != 0)
-	{
-		stopfx(localclientnum, self.fx);
-		self.fx = undefined;
-	}
+function stop_light_fx(localclientnum) {
+  if(isdefined(self.fx) && self.fx != 0) {
+    stopfx(localclientnum, self.fx);
+    self.fx = undefined;
+  }
 }
 
 /*
@@ -124,28 +115,21 @@ function stop_light_fx(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function fullscreen_fx(localclientnum)
-{
-	player = getlocalplayer(localclientnum);
-	if(isdefined(player))
-	{
-		if(player getinkillcam(localclientnum))
-		{
-			return;
-		}
-		if(player util::is_player_view_linked_to_entity(localclientnum))
-		{
-			return;
-		}
-	}
-	if(self util::friend_not_foe(localclientnum))
-	{
-		return;
-	}
-	parent = self getparententity();
-	if(isdefined(parent) && parent == player)
-	{
-		parent playrumbleonentity(localclientnum, "buzz_high");
-	}
+function fullscreen_fx(localclientnum) {
+  player = getlocalplayer(localclientnum);
+  if(isdefined(player)) {
+    if(player getinkillcam(localclientnum)) {
+      return;
+    }
+    if(player util::is_player_view_linked_to_entity(localclientnum)) {
+      return;
+    }
+  }
+  if(self util::friend_not_foe(localclientnum)) {
+    return;
+  }
+  parent = self getparententity();
+  if(isdefined(parent) && parent == player) {
+    parent playrumbleonentity(localclientnum, "buzz_high");
+  }
 }
-

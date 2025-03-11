@@ -34,11 +34,10 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec init()
-{
-	initthrasherbehaviorsandasm();
-	spawner::add_archetype_spawn_function("human_clone", &archetypecloneblackboardinit);
-	spawner::add_archetype_spawn_function("human_clone", &clonespawnsetup);
+function autoexec init() {
+  initthrasherbehaviorsandasm();
+  spawner::add_archetype_spawn_function("human_clone", & archetypecloneblackboardinit);
+  spawner::add_archetype_spawn_function("human_clone", & clonespawnsetup);
 }
 
 /*
@@ -50,9 +49,7 @@ function autoexec init()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private initthrasherbehaviorsandasm()
-{
-}
+function private initthrasherbehaviorsandasm() {}
 
 /*
 	Name: archetypecloneblackboardinit
@@ -63,16 +60,15 @@ function private initthrasherbehaviorsandasm()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private archetypecloneblackboardinit()
-{
-	entity = self;
-	blackboard::createblackboardforentity(entity);
-	entity aiutility::registerutilityblackboardattributes();
-	ai::createinterfaceforentity(entity);
-	entity.___archetypeonanimscriptedcallback = &archetypecloneonanimscriptedcallback;
-	/#
-		entity finalizetrackedblackboardattributes();
-	#/
+function private archetypecloneblackboardinit() {
+  entity = self;
+  blackboard::createblackboardforentity(entity);
+  entity aiutility::registerutilityblackboardattributes();
+  ai::createinterfaceforentity(entity);
+  entity.___archetypeonanimscriptedcallback = & archetypecloneonanimscriptedcallback;
+  /#
+  entity finalizetrackedblackboardattributes();
+  # /
 }
 
 /*
@@ -84,10 +80,9 @@ function private archetypecloneblackboardinit()
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private archetypecloneonanimscriptedcallback(entity)
-{
-	entity.__blackboard = undefined;
-	entity archetypecloneblackboardinit();
+function private archetypecloneonanimscriptedcallback(entity) {
+  entity.__blackboard = undefined;
+  entity archetypecloneblackboardinit();
 }
 
 /*
@@ -99,18 +94,15 @@ function private archetypecloneonanimscriptedcallback(entity)
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private perfectinfothread()
-{
-	entity = self;
-	entity endon(#"death");
-	while(true)
-	{
-		if(isdefined(entity.enemy))
-		{
-			entity getperfectinfo(entity.enemy, 1);
-		}
-		wait(0.05);
-	}
+function private perfectinfothread() {
+  entity = self;
+  entity endon(# "death");
+  while (true) {
+    if(isdefined(entity.enemy)) {
+      entity getperfectinfo(entity.enemy, 1);
+    }
+    wait(0.05);
+  }
 }
 
 /*
@@ -122,15 +114,14 @@ function private perfectinfothread()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private clonespawnsetup()
-{
-	entity = self;
-	entity.ignoreme = 1;
-	entity.ignoreall = 1;
-	entity setcontents(8192);
-	entity setavoidancemask("avoid none");
-	entity setclone();
-	entity thread perfectinfothread();
+function private clonespawnsetup() {
+  entity = self;
+  entity.ignoreme = 1;
+  entity.ignoreall = 1;
+  entity setcontents(8192);
+  entity setavoidancemask("avoid none");
+  entity setclone();
+  entity thread perfectinfothread();
 }
 
 #namespace cloneserverutils;
@@ -144,39 +135,33 @@ function private clonespawnsetup()
 	Parameters: 3
 	Flags: Linked
 */
-function cloneplayerlook(clone, cloneplayer, targetplayer)
-{
-	/#
-		assert(isactor(clone));
-	#/
-	/#
-		assert(isplayer(cloneplayer));
-	#/
-	/#
-		assert(isplayer(targetplayer));
-	#/
-	clone.owner = cloneplayer;
-	clone setentitytarget(targetplayer, 1);
-	clone setentityowner(cloneplayer);
-	clone detachall();
-	bodymodel = cloneplayer getcharacterbodymodel();
-	if(isdefined(bodymodel))
-	{
-		clone setmodel(bodymodel);
-	}
-	headmodel = cloneplayer getcharacterheadmodel();
-	if(isdefined(headmodel) && headmodel != "tag_origin")
-	{
-		if(isdefined(clone.head))
-		{
-			clone detach(clone.head);
-		}
-		clone attach(headmodel);
-	}
-	helmetmodel = cloneplayer getcharacterhelmetmodel();
-	if(isdefined(helmetmodel) && headmodel != "tag_origin")
-	{
-		clone attach(helmetmodel);
-	}
+function cloneplayerlook(clone, cloneplayer, targetplayer) {
+  /#
+  assert(isactor(clone));
+  # /
+    /#
+  assert(isplayer(cloneplayer));
+  # /
+    /#
+  assert(isplayer(targetplayer));
+  # /
+    clone.owner = cloneplayer;
+  clone setentitytarget(targetplayer, 1);
+  clone setentityowner(cloneplayer);
+  clone detachall();
+  bodymodel = cloneplayer getcharacterbodymodel();
+  if(isdefined(bodymodel)) {
+    clone setmodel(bodymodel);
+  }
+  headmodel = cloneplayer getcharacterheadmodel();
+  if(isdefined(headmodel) && headmodel != "tag_origin") {
+    if(isdefined(clone.head)) {
+      clone detach(clone.head);
+    }
+    clone attach(headmodel);
+  }
+  helmetmodel = cloneplayer getcharacterhelmetmodel();
+  if(isdefined(helmetmodel) && headmodel != "tag_origin") {
+    clone attach(helmetmodel);
+  }
 }
-

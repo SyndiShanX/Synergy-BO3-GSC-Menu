@@ -38,9 +38,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_ai_clone", &__init__, &__main__, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_ai_clone", & __init__, & __main__, undefined);
 }
 
 /*
@@ -52,14 +51,13 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	level flag::init("thrasher_round");
-	/#
-		execdevgui("");
-		thread function_78933fc2();
-	#/
-	init();
+function __init__() {
+  level flag::init("thrasher_round");
+  /#
+  execdevgui("");
+  thread function_78933fc2();
+  # /
+    init();
 }
 
 /*
@@ -71,9 +69,8 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function __main__()
-{
-	register_clientfields();
+function __main__() {
+  register_clientfields();
 }
 
 /*
@@ -85,9 +82,7 @@ function __main__()
 	Parameters: 0
 	Flags: Linked
 */
-function register_clientfields()
-{
-}
+function register_clientfields() {}
 
 /*
 	Name: init
@@ -98,9 +93,8 @@ function register_clientfields()
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	precache();
+function init() {
+  precache();
 }
 
 /*
@@ -112,9 +106,7 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function precache()
-{
-}
+function precache() {}
 
 /*
 	Name: function_78933fc2
@@ -125,12 +117,11 @@ function precache()
 	Parameters: 0
 	Flags: Linked
 */
-function function_78933fc2()
-{
-	/#
-		level flagsys::wait_till("");
-		zm_devgui::add_custom_devgui_callback(&clone_devgui_callback);
-	#/
+function function_78933fc2() {
+  /#
+  level flagsys::wait_till("");
+  zm_devgui::add_custom_devgui_callback( & clone_devgui_callback);
+  # /
 }
 
 /*
@@ -142,35 +133,27 @@ function function_78933fc2()
 	Parameters: 1
 	Flags: Linked
 */
-function clone_devgui_callback(cmd)
-{
-	/#
-		switch(cmd)
-		{
-			case "":
-			{
-				players = getplayers();
-				queryresult = positionquery_source_navigation(players[0].origin, 128, 256, 128, 20);
-				if(isdefined(queryresult) && queryresult.data.size > 0)
-				{
-					clone = spawnactor("", queryresult.data[0].origin, (0, 0, 0), "", 1);
-					clone cloneserverutils::cloneplayerlook(clone, players[0], players[0]);
-				}
-				break;
-			}
-			case "":
-			{
-				clones = getaiarchetypearray("");
-				if(clones.size > 0)
-				{
-					foreach(clone in clones)
-					{
-						clone kill();
-					}
-				}
-				break;
-			}
-		}
-	#/
+function clone_devgui_callback(cmd) {
+  /#
+  switch (cmd) {
+    case "": {
+      players = getplayers();
+      queryresult = positionquery_source_navigation(players[0].origin, 128, 256, 128, 20);
+      if(isdefined(queryresult) && queryresult.data.size > 0) {
+        clone = spawnactor("", queryresult.data[0].origin, (0, 0, 0), "", 1);
+        clone cloneserverutils::cloneplayerlook(clone, players[0], players[0]);
+      }
+      break;
+    }
+    case "": {
+      clones = getaiarchetypearray("");
+      if(clones.size > 0) {
+        foreach(clone in clones) {
+          clone kill();
+        }
+      }
+      break;
+    }
+  }
+  # /
 }
-

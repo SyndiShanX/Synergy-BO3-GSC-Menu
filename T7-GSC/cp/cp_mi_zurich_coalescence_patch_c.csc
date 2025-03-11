@@ -22,9 +22,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function function_7403e82b()
-{
-	var_49997a8a = findstaticmodelindex((-10564.2, 39630.2, 392));
-	hidestaticmodel(var_49997a8a);
+function function_7403e82b() {
+  var_49997a8a = findstaticmodelindex((-10564.2, 39630.2, 392));
+  hidestaticmodel(var_49997a8a);
 }
-

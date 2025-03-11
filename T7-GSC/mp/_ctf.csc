@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("client_flag", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("client_flag", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,9 +27,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("scriptmover", "ctf_flag_away", 1, 1, "int", &setctfaway, 0, 0);
+function __init__() {
+  clientfield::register("scriptmover", "ctf_flag_away", 1, 1, "int", & setctfaway, 0, 0);
 }
 
 /*
@@ -42,11 +40,10 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function setctfaway(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	team = self.team;
-	setflagasaway(localclientnum, team, newval);
-	self thread clearctfaway(localclientnum, team);
+function setctfaway(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  team = self.team;
+  setflagasaway(localclientnum, team, newval);
+  self thread clearctfaway(localclientnum, team);
 }
 
 /*
@@ -58,9 +55,7 @@ function setctfaway(localclientnum, oldval, newval, bnewent, binitialsnap, field
 	Parameters: 2
 	Flags: Linked
 */
-function clearctfaway(localclientnum, team)
-{
-	self waittill(#"entityshutdown");
-	setflagasaway(localclientnum, team, 0);
+function clearctfaway(localclientnum, team) {
+  self waittill(# "entityshutdown");
+  setflagasaway(localclientnum, team, 0);
 }
-

@@ -15,34 +15,31 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec main()
-{
-	clientfield::register("actor", "destructible_character_state", 1, 21, "int");
-	destructibles = struct::get_script_bundles("destructiblecharacterdef");
-	processedbundles = [];
-	foreach(destructiblename, destructible in destructibles)
-	{
-		destructbundle = spawnstruct();
-		destructbundle.piececount = destructible.piececount;
-		destructbundle.pieces = [];
-		destructbundle.name = destructiblename;
-		for(index = 1; index <= destructbundle.piececount; index++)
-		{
-			piecestruct = spawnstruct();
-			piecestruct.gibmodel = getstructfield(destructible, ("piece" + index) + "_gibmodel");
-			piecestruct.gibtag = getstructfield(destructible, ("piece" + index) + "_gibtag");
-			piecestruct.gibfx = getstructfield(destructible, ("piece" + index) + "_gibfx");
-			piecestruct.gibfxtag = getstructfield(destructible, ("piece" + index) + "_gibeffecttag");
-			piecestruct.gibdynentfx = getstructfield(destructible, ("piece" + index) + "_gibdynentfx");
-			piecestruct.gibsound = getstructfield(destructible, ("piece" + index) + "_gibsound");
-			piecestruct.hitlocation = getstructfield(destructible, ("piece" + index) + "_hitlocation");
-			piecestruct.hidetag = getstructfield(destructible, ("piece" + index) + "_hidetag");
-			piecestruct.detachmodel = getstructfield(destructible, ("piece" + index) + "_detachmodel");
-			destructbundle.pieces[destructbundle.pieces.size] = piecestruct;
-		}
-		processedbundles[destructiblename] = destructbundle;
-	}
-	level.scriptbundles["destructiblecharacterdef"] = processedbundles;
+function autoexec main() {
+  clientfield::register("actor", "destructible_character_state", 1, 21, "int");
+  destructibles = struct::get_script_bundles("destructiblecharacterdef");
+  processedbundles = [];
+  foreach(destructiblename, destructible in destructibles) {
+    destructbundle = spawnstruct();
+    destructbundle.piececount = destructible.piececount;
+    destructbundle.pieces = [];
+    destructbundle.name = destructiblename;
+    for (index = 1; index <= destructbundle.piececount; index++) {
+      piecestruct = spawnstruct();
+      piecestruct.gibmodel = getstructfield(destructible, ("piece" + index) + "_gibmodel");
+      piecestruct.gibtag = getstructfield(destructible, ("piece" + index) + "_gibtag");
+      piecestruct.gibfx = getstructfield(destructible, ("piece" + index) + "_gibfx");
+      piecestruct.gibfxtag = getstructfield(destructible, ("piece" + index) + "_gibeffecttag");
+      piecestruct.gibdynentfx = getstructfield(destructible, ("piece" + index) + "_gibdynentfx");
+      piecestruct.gibsound = getstructfield(destructible, ("piece" + index) + "_gibsound");
+      piecestruct.hitlocation = getstructfield(destructible, ("piece" + index) + "_hitlocation");
+      piecestruct.hidetag = getstructfield(destructible, ("piece" + index) + "_hidetag");
+      piecestruct.detachmodel = getstructfield(destructible, ("piece" + index) + "_detachmodel");
+      destructbundle.pieces[destructbundle.pieces.size] = piecestruct;
+    }
+    processedbundles[destructiblename] = destructbundle;
+  }
+  level.scriptbundles["destructiblecharacterdef"] = processedbundles;
 }
 
 #namespace destructserverutils;
@@ -56,13 +53,11 @@ function autoexec main()
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private _getdestructstate(entity)
-{
-	if(isdefined(entity._destruct_state))
-	{
-		return entity._destruct_state;
-	}
-	return 0;
+function private _getdestructstate(entity) {
+  if(isdefined(entity._destruct_state)) {
+    return entity._destruct_state;
+  }
+  return 0;
 }
 
 /*
@@ -74,10 +69,9 @@ function private _getdestructstate(entity)
 	Parameters: 2
 	Flags: Linked, Private
 */
-function private _setdestructed(entity, destructflag)
-{
-	entity._destruct_state = _getdestructstate(entity) | destructflag;
-	entity clientfield::set("destructible_character_state", entity._destruct_state);
+function private _setdestructed(entity, destructflag) {
+  entity._destruct_state = _getdestructstate(entity) | destructflag;
+  entity clientfield::set("destructible_character_state", entity._destruct_state);
 }
 
 /*
@@ -89,11 +83,10 @@ function private _setdestructed(entity, destructflag)
 	Parameters: 2
 	Flags: Linked
 */
-function copydestructstate(originalentity, newentity)
-{
-	newentity._destruct_state = _getdestructstate(originalentity);
-	togglespawngibs(newentity, 0);
-	reapplydestructedpieces(newentity);
+function copydestructstate(originalentity, newentity) {
+  newentity._destruct_state = _getdestructstate(originalentity);
+  togglespawngibs(newentity, 0);
+  reapplydestructedpieces(newentity);
 }
 
 /*
@@ -105,20 +98,16 @@ function copydestructstate(originalentity, newentity)
 	Parameters: 2
 	Flags: Linked
 */
-function destructhitlocpieces(entity, hitloc)
-{
-	if(isdefined(entity.destructibledef))
-	{
-		destructbundle = struct::get_script_bundle("destructiblecharacterdef", entity.destructibledef);
-		for(index = 1; index <= destructbundle.pieces.size; index++)
-		{
-			piece = destructbundle.pieces[index - 1];
-			if(isdefined(piece.hitlocation) && piece.hitlocation == hitloc)
-			{
-				destructpiece(entity, index);
-			}
-		}
-	}
+function destructhitlocpieces(entity, hitloc) {
+  if(isdefined(entity.destructibledef)) {
+    destructbundle = struct::get_script_bundle("destructiblecharacterdef", entity.destructibledef);
+    for (index = 1; index <= destructbundle.pieces.size; index++) {
+      piece = destructbundle.pieces[index - 1];
+      if(isdefined(piece.hitlocation) && piece.hitlocation == hitloc) {
+        destructpiece(entity, index);
+      }
+    }
+  }
 }
 
 /*
@@ -130,11 +119,10 @@ function destructhitlocpieces(entity, hitloc)
 	Parameters: 1
 	Flags: Linked
 */
-function destructleftarmpieces(entity)
-{
-	destructhitlocpieces(entity, "left_arm_upper");
-	destructhitlocpieces(entity, "left_arm_lower");
-	destructhitlocpieces(entity, "left_hand");
+function destructleftarmpieces(entity) {
+  destructhitlocpieces(entity, "left_arm_upper");
+  destructhitlocpieces(entity, "left_arm_lower");
+  destructhitlocpieces(entity, "left_hand");
 }
 
 /*
@@ -146,11 +134,10 @@ function destructleftarmpieces(entity)
 	Parameters: 1
 	Flags: Linked
 */
-function destructleftlegpieces(entity)
-{
-	destructhitlocpieces(entity, "left_leg_upper");
-	destructhitlocpieces(entity, "left_leg_lower");
-	destructhitlocpieces(entity, "left_foot");
+function destructleftlegpieces(entity) {
+  destructhitlocpieces(entity, "left_leg_upper");
+  destructhitlocpieces(entity, "left_leg_lower");
+  destructhitlocpieces(entity, "left_foot");
 }
 
 /*
@@ -162,32 +149,27 @@ function destructleftlegpieces(entity)
 	Parameters: 2
 	Flags: Linked
 */
-function destructpiece(entity, piecenumber)
-{
-	/#
-		/#
-			assert(1 <= piecenumber && piecenumber <= 20);
-		#/
-	#/
-	if(isdestructed(entity, piecenumber))
-	{
-		return;
-	}
-	_setdestructed(entity, 1 << piecenumber);
-	if(!isdefined(entity.destructibledef))
-	{
-		return;
-	}
-	destructbundle = struct::get_script_bundle("destructiblecharacterdef", entity.destructibledef);
-	piece = destructbundle.pieces[piecenumber - 1];
-	if(isdefined(piece.hidetag) && entity haspart(piece.hidetag))
-	{
-		entity hidepart(piece.hidetag);
-	}
-	if(isdefined(piece.detachmodel))
-	{
-		entity detach(piece.detachmodel, "");
-	}
+function destructpiece(entity, piecenumber) {
+  /# /
+  #
+  assert(1 <= piecenumber && piecenumber <= 20);
+  # /
+    # /
+    if(isdestructed(entity, piecenumber)) {
+      return;
+    }
+  _setdestructed(entity, 1 << piecenumber);
+  if(!isdefined(entity.destructibledef)) {
+    return;
+  }
+  destructbundle = struct::get_script_bundle("destructiblecharacterdef", entity.destructibledef);
+  piece = destructbundle.pieces[piecenumber - 1];
+  if(isdefined(piece.hidetag) && entity haspart(piece.hidetag)) {
+    entity hidepart(piece.hidetag);
+  }
+  if(isdefined(piece.detachmodel)) {
+    entity detach(piece.detachmodel, "");
+  }
 }
 
 /*
@@ -199,31 +181,25 @@ function destructpiece(entity, piecenumber)
 	Parameters: 2
 	Flags: Linked
 */
-function destructnumberrandompieces(entity, num_pieces_to_destruct = 0)
-{
-	destructible_pieces_list = [];
-	destructablepieces = getpiececount(entity);
-	if(num_pieces_to_destruct == 0)
-	{
-		num_pieces_to_destruct = destructablepieces;
-	}
-	for(i = 0; i < destructablepieces; i++)
-	{
-		destructible_pieces_list[i] = i + 1;
-	}
-	destructible_pieces_list = array::randomize(destructible_pieces_list);
-	foreach(piece in destructible_pieces_list)
-	{
-		if(!isdestructed(entity, piece))
-		{
-			destructpiece(entity, piece);
-			num_pieces_to_destruct--;
-			if(num_pieces_to_destruct == 0)
-			{
-				break;
-			}
-		}
-	}
+function destructnumberrandompieces(entity, num_pieces_to_destruct = 0) {
+  destructible_pieces_list = [];
+  destructablepieces = getpiececount(entity);
+  if(num_pieces_to_destruct == 0) {
+    num_pieces_to_destruct = destructablepieces;
+  }
+  for (i = 0; i < destructablepieces; i++) {
+    destructible_pieces_list[i] = i + 1;
+  }
+  destructible_pieces_list = array::randomize(destructible_pieces_list);
+  foreach(piece in destructible_pieces_list) {
+    if(!isdestructed(entity, piece)) {
+      destructpiece(entity, piece);
+      num_pieces_to_destruct--;
+      if(num_pieces_to_destruct == 0) {
+        break;
+      }
+    }
+  }
 }
 
 /*
@@ -235,16 +211,13 @@ function destructnumberrandompieces(entity, num_pieces_to_destruct = 0)
 	Parameters: 1
 	Flags: Linked
 */
-function destructrandompieces(entity)
-{
-	destructpieces = getpiececount(entity);
-	for(index = 0; index < destructpieces; index++)
-	{
-		if(math::cointoss())
-		{
-			destructpiece(entity, index + 1);
-		}
-	}
+function destructrandompieces(entity) {
+  destructpieces = getpiececount(entity);
+  for (index = 0; index < destructpieces; index++) {
+    if(math::cointoss()) {
+      destructpiece(entity, index + 1);
+    }
+  }
 }
 
 /*
@@ -256,11 +229,10 @@ function destructrandompieces(entity)
 	Parameters: 1
 	Flags: Linked
 */
-function destructrightarmpieces(entity)
-{
-	destructhitlocpieces(entity, "right_arm_upper");
-	destructhitlocpieces(entity, "right_arm_lower");
-	destructhitlocpieces(entity, "right_hand");
+function destructrightarmpieces(entity) {
+  destructhitlocpieces(entity, "right_arm_upper");
+  destructhitlocpieces(entity, "right_arm_lower");
+  destructhitlocpieces(entity, "right_hand");
 }
 
 /*
@@ -272,11 +244,10 @@ function destructrightarmpieces(entity)
 	Parameters: 1
 	Flags: Linked
 */
-function destructrightlegpieces(entity)
-{
-	destructhitlocpieces(entity, "right_leg_upper");
-	destructhitlocpieces(entity, "right_leg_lower");
-	destructhitlocpieces(entity, "right_foot");
+function destructrightlegpieces(entity) {
+  destructhitlocpieces(entity, "right_leg_upper");
+  destructhitlocpieces(entity, "right_leg_lower");
+  destructhitlocpieces(entity, "right_foot");
 }
 
 /*
@@ -288,17 +259,14 @@ function destructrightlegpieces(entity)
 	Parameters: 1
 	Flags: Linked
 */
-function getpiececount(entity)
-{
-	if(isdefined(entity.destructibledef))
-	{
-		destructbundle = struct::get_script_bundle("destructiblecharacterdef", entity.destructibledef);
-		if(isdefined(destructbundle))
-		{
-			return destructbundle.piececount;
-		}
-	}
-	return 0;
+function getpiececount(entity) {
+  if(isdefined(entity.destructibledef)) {
+    destructbundle = struct::get_script_bundle("destructiblecharacterdef", entity.destructibledef);
+    if(isdefined(destructbundle)) {
+      return destructbundle.piececount;
+    }
+  }
+  return 0;
 }
 
 /*
@@ -310,20 +278,17 @@ function getpiececount(entity)
 	Parameters: 12
 	Flags: Linked
 */
-function handledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, sweapon, vpoint, vdir, shitloc, psoffsettime, boneindex, modelindex)
-{
-	entity = self;
-	if(isdefined(entity.skipdeath) && entity.skipdeath)
-	{
-		return idamage;
-	}
-	if(isdefined(entity.var_132756fd) && entity.var_132756fd)
-	{
-		return idamage;
-	}
-	togglespawngibs(entity, 1);
-	destructhitlocpieces(entity, shitloc);
-	return idamage;
+function handledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, sweapon, vpoint, vdir, shitloc, psoffsettime, boneindex, modelindex) {
+  entity = self;
+  if(isdefined(entity.skipdeath) && entity.skipdeath) {
+    return idamage;
+  }
+  if(isdefined(entity.var_132756fd) && entity.var_132756fd) {
+    return idamage;
+  }
+  togglespawngibs(entity, 1);
+  destructhitlocpieces(entity, shitloc);
+  return idamage;
 }
 
 /*
@@ -335,14 +300,13 @@ function handledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, sw
 	Parameters: 2
 	Flags: Linked
 */
-function isdestructed(entity, piecenumber)
-{
-	/#
-		/#
-			assert(1 <= piecenumber && piecenumber <= 20);
-		#/
-	#/
-	return _getdestructstate(entity) & (1 << piecenumber);
+function isdestructed(entity, piecenumber) {
+  /# /
+  #
+  assert(1 <= piecenumber && piecenumber <= 20);
+  # /
+    # /
+    return _getdestructstate(entity) & (1 << piecenumber);
 }
 
 /*
@@ -354,25 +318,20 @@ function isdestructed(entity, piecenumber)
 	Parameters: 1
 	Flags: Linked
 */
-function reapplydestructedpieces(entity)
-{
-	if(!isdefined(entity.destructibledef))
-	{
-		return;
-	}
-	destructbundle = struct::get_script_bundle("destructiblecharacterdef", entity.destructibledef);
-	for(index = 1; index <= destructbundle.pieces.size; index++)
-	{
-		if(!isdestructed(entity, index))
-		{
-			continue;
-		}
-		piece = destructbundle.pieces[index - 1];
-		if(isdefined(piece.hidetag) && entity haspart(piece.hidetag))
-		{
-			entity hidepart(piece.hidetag);
-		}
-	}
+function reapplydestructedpieces(entity) {
+  if(!isdefined(entity.destructibledef)) {
+    return;
+  }
+  destructbundle = struct::get_script_bundle("destructiblecharacterdef", entity.destructibledef);
+  for (index = 1; index <= destructbundle.pieces.size; index++) {
+    if(!isdestructed(entity, index)) {
+      continue;
+    }
+    piece = destructbundle.pieces[index - 1];
+    if(isdefined(piece.hidetag) && entity haspart(piece.hidetag)) {
+      entity hidepart(piece.hidetag);
+    }
+  }
 }
 
 /*
@@ -384,21 +343,17 @@ function reapplydestructedpieces(entity)
 	Parameters: 1
 	Flags: Linked
 */
-function showdestructedpieces(entity)
-{
-	if(!isdefined(entity.destructibledef))
-	{
-		return;
-	}
-	destructbundle = struct::get_script_bundle("destructiblecharacterdef", entity.destructibledef);
-	for(index = 1; index <= destructbundle.pieces.size; index++)
-	{
-		piece = destructbundle.pieces[index - 1];
-		if(isdefined(piece.hidetag) && entity haspart(piece.hidetag))
-		{
-			entity showpart(piece.hidetag);
-		}
-	}
+function showdestructedpieces(entity) {
+  if(!isdefined(entity.destructibledef)) {
+    return;
+  }
+  destructbundle = struct::get_script_bundle("destructiblecharacterdef", entity.destructibledef);
+  for (index = 1; index <= destructbundle.pieces.size; index++) {
+    piece = destructbundle.pieces[index - 1];
+    if(isdefined(piece.hidetag) && entity haspart(piece.hidetag)) {
+      entity showpart(piece.hidetag);
+    }
+  }
 }
 
 /*
@@ -410,16 +365,11 @@ function showdestructedpieces(entity)
 	Parameters: 2
 	Flags: Linked
 */
-function togglespawngibs(entity, shouldspawngibs)
-{
-	if(shouldspawngibs)
-	{
-		entity._destruct_state = _getdestructstate(entity) | 1;
-	}
-	else
-	{
-		entity._destruct_state = _getdestructstate(entity) & -2;
-	}
-	entity clientfield::set("destructible_character_state", entity._destruct_state);
+function togglespawngibs(entity, shouldspawngibs) {
+  if(shouldspawngibs) {
+    entity._destruct_state = _getdestructstate(entity) | 1;
+  } else {
+    entity._destruct_state = _getdestructstate(entity) & -2;
+  }
+  entity clientfield::set("destructible_character_state", entity._destruct_state);
 }
-

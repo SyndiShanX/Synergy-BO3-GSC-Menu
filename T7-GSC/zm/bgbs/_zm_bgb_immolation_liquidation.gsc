@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_immolation_liquidation", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_immolation_liquidation", & __init__, undefined, "bgb");
 }
 
 /*
@@ -31,13 +30,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_immolation_liquidation", "activated", 3, undefined, undefined, &function_3d1f600e, &activation);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_immolation_liquidation", "activated", 3, undefined, undefined, & function_3d1f600e, & activation);
 }
 
 /*
@@ -49,9 +46,8 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function activation()
-{
-	self thread bgb::function_dea74fb0("fire_sale");
+function activation() {
+  self thread bgb::function_dea74fb0("fire_sale");
 }
 
 /*
@@ -63,12 +59,9 @@ function activation()
 	Parameters: 0
 	Flags: Linked
 */
-function function_3d1f600e()
-{
-	if(level.zombie_vars["zombie_powerup_fire_sale_on"] === 1 || (isdefined(level.disable_firesale_drop) && level.disable_firesale_drop))
-	{
-		return false;
-	}
-	return true;
+function function_3d1f600e() {
+  if(level.zombie_vars["zombie_powerup_fire_sale_on"] === 1 || (isdefined(level.disable_firesale_drop) && level.disable_firesale_drop)) {
+    return false;
+  }
+  return true;
 }
-

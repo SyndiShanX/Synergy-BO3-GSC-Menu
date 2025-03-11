@@ -22,9 +22,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("gadget_camo", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("gadget_camo", & __init__, undefined, undefined);
 }
 
 /*
@@ -36,9 +35,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("allplayers", "camo_shader", 1, 3, "int", &ent_camo_material_callback, 0, 1);
+function __init__() {
+  clientfield::register("allplayers", "camo_shader", 1, 3, "int", & ent_camo_material_callback, 0, 1);
 }
 
 /*
@@ -50,35 +48,27 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function ent_camo_material_callback(local_client_num, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(oldval == newval && oldval == 0 && !bwastimejump)
-	{
-		return;
-	}
-	flags_changed = self duplicate_render::set_dr_flag_not_array("gadget_camo_friend", util::friend_not_foe(local_client_num, 1));
-	flags_changed = flags_changed | self duplicate_render::set_dr_flag_not_array("gadget_camo_flicker", newval == 2);
-	flags_changed = flags_changed | self duplicate_render::set_dr_flag_not_array("gadget_camo_break", newval == 3);
-	flags_changed = flags_changed | self duplicate_render::set_dr_flag_not_array("gadget_camo_reveal", newval != oldval);
-	flags_changed = flags_changed | self duplicate_render::set_dr_flag_not_array("gadget_camo_on", newval != 0);
-	flags_changed = flags_changed | self duplicate_render::set_dr_flag_not_array("hide_model", newval == 0);
-	flags_changed = flags_changed | bnewent;
-	if(flags_changed)
-	{
-		self duplicate_render::update_dr_filters(local_client_num);
-	}
-	self notify(#"endtest");
-	if(newval && (bwastimejump || bnewent))
-	{
-		self thread gadget_camo_render::forceon(local_client_num);
-	}
-	else if(newval != oldval)
-	{
-		self thread gadget_camo_render::doreveal(local_client_num, newval != 0);
-	}
-	if(newval && !oldval || (newval && (bwastimejump || bnewent)))
-	{
-		self gadgetpulseresetreveal();
-	}
+function ent_camo_material_callback(local_client_num, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(oldval == newval && oldval == 0 && !bwastimejump) {
+    return;
+  }
+  flags_changed = self duplicate_render::set_dr_flag_not_array("gadget_camo_friend", util::friend_not_foe(local_client_num, 1));
+  flags_changed = flags_changed | self duplicate_render::set_dr_flag_not_array("gadget_camo_flicker", newval == 2);
+  flags_changed = flags_changed | self duplicate_render::set_dr_flag_not_array("gadget_camo_break", newval == 3);
+  flags_changed = flags_changed | self duplicate_render::set_dr_flag_not_array("gadget_camo_reveal", newval != oldval);
+  flags_changed = flags_changed | self duplicate_render::set_dr_flag_not_array("gadget_camo_on", newval != 0);
+  flags_changed = flags_changed | self duplicate_render::set_dr_flag_not_array("hide_model", newval == 0);
+  flags_changed = flags_changed | bnewent;
+  if(flags_changed) {
+    self duplicate_render::update_dr_filters(local_client_num);
+  }
+  self notify(# "endtest");
+  if(newval && (bwastimejump || bnewent)) {
+    self thread gadget_camo_render::forceon(local_client_num);
+  } else if(newval != oldval) {
+    self thread gadget_camo_render::doreveal(local_client_num, newval != 0);
+  }
+  if(newval && !oldval || (newval && (bwastimejump || bnewent))) {
+    self gadgetpulseresetreveal();
+  }
 }
-

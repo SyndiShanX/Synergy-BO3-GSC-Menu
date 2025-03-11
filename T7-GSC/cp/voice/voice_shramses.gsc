@@ -12,8 +12,6 @@
 	Parameters: 0
 	Flags: None
 */
-function init_voice()
-{
-	dialog::add("kane_level_creation_line_3", "vox_shram_100_00_000_kane");
+function init_voice() {
+  dialog::add("kane_level_creation_line_3", "vox_shram_100_00_000_kane");
 }
-

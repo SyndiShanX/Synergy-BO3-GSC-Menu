@@ -46,9 +46,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_prototype", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_prototype", & __init__, undefined, undefined);
 }
 
 /*
@@ -60,11 +59,10 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	/#
-		println("");
-	#/
+function __init__() {
+  /#
+  println("");
+  # /
 }
 
 /*
@@ -76,10 +74,9 @@ function __init__()
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec function_d9af860b()
-{
-	level.aat_in_use = 1;
-	level.bgb_in_use = 1;
+function autoexec function_d9af860b() {
+  level.aat_in_use = 1;
+  level.bgb_in_use = 1;
 }
 
 /*
@@ -91,18 +88,17 @@ function autoexec function_d9af860b()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	zm_prototype_ffotd::main_start();
-	zm_prototype_fx::main();
-	level.default_game_mode = "zclassic";
-	level.default_start_location = "default";
-	level._uses_sticky_grenades = 1;
-	start_zombie_stuff();
-	level thread zm_prototype_amb::main();
-	util::waitforclient(0);
-	level thread function_6ac83719();
-	zm_prototype_ffotd::main_end();
+function main() {
+  zm_prototype_ffotd::main_start();
+  zm_prototype_fx::main();
+  level.default_game_mode = "zclassic";
+  level.default_start_location = "default";
+  level._uses_sticky_grenades = 1;
+  start_zombie_stuff();
+  level thread zm_prototype_amb::main();
+  util::waitforclient(0);
+  level thread function_6ac83719();
+  zm_prototype_ffotd::main_end();
 }
 
 /*
@@ -114,12 +110,11 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function start_zombie_stuff()
-{
-	include_weapons();
-	load::main();
-	_zm_weap_cymbal_monkey::init();
-	level thread function_d87a7dcc();
+function start_zombie_stuff() {
+  include_weapons();
+  load::main();
+  _zm_weap_cymbal_monkey::init();
+  level thread function_d87a7dcc();
 }
 
 /*
@@ -131,9 +126,8 @@ function start_zombie_stuff()
 	Parameters: 0
 	Flags: Linked
 */
-function include_weapons()
-{
-	zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_prototype_weapons.csv", 1);
+function include_weapons() {
+  zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_prototype_weapons.csv", 1);
 }
 
 /*
@@ -145,24 +139,20 @@ function include_weapons()
 	Parameters: 0
 	Flags: Linked
 */
-function function_d87a7dcc()
-{
-	var_bd7ba30 = 0;
-	while(true)
-	{
-		if(!level clientfield::get("zombie_power_on"))
-		{
-			level.power_on = 0;
-			if(var_bd7ba30)
-			{
-				level notify(#"power_controlled_light");
-			}
-			level util::waittill_any("power_on", "pwr", "ZPO");
-		}
-		level notify(#"power_controlled_light");
-		level util::waittill_any("pwo", "ZPOff");
-		var_bd7ba30 = 1;
-	}
+function function_d87a7dcc() {
+  var_bd7ba30 = 0;
+  while (true) {
+    if(!level clientfield::get("zombie_power_on")) {
+      level.power_on = 0;
+      if(var_bd7ba30) {
+        level notify(# "power_controlled_light");
+      }
+      level util::waittill_any("power_on", "pwr", "ZPO");
+    }
+    level notify(# "power_controlled_light");
+    level util::waittill_any("pwo", "ZPOff");
+    var_bd7ba30 = 1;
+  }
 }
 
 /*
@@ -174,10 +164,8 @@ function function_d87a7dcc()
 	Parameters: 0
 	Flags: Linked
 */
-function function_6ac83719()
-{
-	visionset_mgr::init_fog_vol_to_visionset_monitor("zm_prototype", 0.1);
-	visionset_mgr::fog_vol_to_visionset_set_suffix("");
-	visionset_mgr::fog_vol_to_visionset_set_info(0, "zm_prototype");
+function function_6ac83719() {
+  visionset_mgr::init_fog_vol_to_visionset_monitor("zm_prototype", 0.1);
+  visionset_mgr::fog_vol_to_visionset_set_suffix("");
+  visionset_mgr::fog_vol_to_visionset_set_info(0, "zm_prototype");
 }
-

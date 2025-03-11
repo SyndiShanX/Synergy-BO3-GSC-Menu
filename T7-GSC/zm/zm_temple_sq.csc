@@ -12,10 +12,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init_clientfields()
-{
-	zm_sidequests::register_sidequest_icon("vril", 21000);
-	zm_sidequests::register_sidequest_icon("dynamite", 21000);
-	zm_sidequests::register_sidequest_icon("anti115", 21000);
+function init_clientfields() {
+  zm_sidequests::register_sidequest_icon("vril", 21000);
+  zm_sidequests::register_sidequest_icon("dynamite", 21000);
+  zm_sidequests::register_sidequest_icon("anti115", 21000);
 }
-

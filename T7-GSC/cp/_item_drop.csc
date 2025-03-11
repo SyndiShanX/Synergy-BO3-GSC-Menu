@@ -14,7 +14,4 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec main()
-{
-}
-
+function autoexec main() {}

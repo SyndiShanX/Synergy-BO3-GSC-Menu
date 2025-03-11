@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("hackable", &init, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("hackable", & init, undefined, undefined);
 }
 
 /*
@@ -31,9 +30,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function init()
-{
-	callback::on_localclient_connect(&on_player_connect);
+function init() {
+  callback::on_localclient_connect( & on_player_connect);
 }
 
 /*
@@ -45,9 +43,8 @@ function init()
 	Parameters: 1
 	Flags: None
 */
-function on_player_connect(localclientnum)
-{
-	duplicate_render::set_dr_filter_offscreen("hacking", 75, "being_hacked", undefined, 2, "mc/hud_keyline_orange", 1);
+function on_player_connect(localclientnum) {
+  duplicate_render::set_dr_filter_offscreen("hacking", 75, "being_hacked", undefined, 2, "mc/hud_keyline_orange", 1);
 }
 
 /*
@@ -59,19 +56,14 @@ function on_player_connect(localclientnum)
 	Parameters: 2
 	Flags: None
 */
-function set_hacked_ent(local_client_num, ent)
-{
-	if(!ent === self.hacked_ent)
-	{
-		if(isdefined(self.hacked_ent))
-		{
-			self.hacked_ent duplicate_render::change_dr_flags(local_client_num, undefined, "being_hacked");
-		}
-		self.hacked_ent = ent;
-		if(isdefined(self.hacked_ent))
-		{
-			self.hacked_ent duplicate_render::change_dr_flags(local_client_num, "being_hacked", undefined);
-		}
-	}
+function set_hacked_ent(local_client_num, ent) {
+  if(!ent === self.hacked_ent) {
+    if(isdefined(self.hacked_ent)) {
+      self.hacked_ent duplicate_render::change_dr_flags(local_client_num, undefined, "being_hacked");
+    }
+    self.hacked_ent = ent;
+    if(isdefined(self.hacked_ent)) {
+      self.hacked_ent duplicate_render::change_dr_flags(local_client_num, "being_hacked", undefined);
+    }
+  }
 }
-

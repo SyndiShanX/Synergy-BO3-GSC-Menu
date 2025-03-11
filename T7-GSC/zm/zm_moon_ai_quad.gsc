@@ -33,10 +33,9 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec init()
-{
-	function_e9b3dfb0();
-	spawner::add_archetype_spawn_function("zombie_quad", &function_5076473f);
+function autoexec init() {
+  function_e9b3dfb0();
+  spawner::add_archetype_spawn_function("zombie_quad", & function_5076473f);
 }
 
 /*
@@ -48,17 +47,16 @@ function autoexec init()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private function_e9b3dfb0()
-{
-	behaviortreenetworkutility::registerbehaviortreescriptapi("quadPhasingService", &quadphasingservice);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("shouldPhase", &shouldphase);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("phaseActionStart", &phaseactionstart);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("phaseActionTerminate", &phaseactionterminate);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("moonQuadKilledByMicrowaveGunDw", &killedbymicrowavegundw);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("moonQuadKilledByMicrowaveGun", &killedbymicrowavegun);
-	animationstatenetwork::registernotetrackhandlerfunction("phase_start", &function_51ab54f7);
-	animationstatenetwork::registernotetrackhandlerfunction("phase_end", &function_428f351c);
-	animationstatenetwork::registeranimationmocomp("quad_phase", &function_4e0a671e, undefined, undefined);
+function private function_e9b3dfb0() {
+  behaviortreenetworkutility::registerbehaviortreescriptapi("quadPhasingService", & quadphasingservice);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("shouldPhase", & shouldphase);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("phaseActionStart", & phaseactionstart);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("phaseActionTerminate", & phaseactionterminate);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("moonQuadKilledByMicrowaveGunDw", & killedbymicrowavegundw);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("moonQuadKilledByMicrowaveGun", & killedbymicrowavegun);
+  animationstatenetwork::registernotetrackhandlerfunction("phase_start", & function_51ab54f7);
+  animationstatenetwork::registernotetrackhandlerfunction("phase_end", & function_428f351c);
+  animationstatenetwork::registeranimationmocomp("quad_phase", & function_4e0a671e, undefined, undefined);
 }
 
 /*
@@ -70,74 +68,51 @@ function private function_e9b3dfb0()
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private quadphasingservice(entity)
-{
-	if(isdefined(entity.is_phasing) && entity.is_phasing)
-	{
-		return false;
-	}
-	entity.var_662afd11 = 0;
-	if(entity.var_20535e44 == 0)
-	{
-		if(math::cointoss())
-		{
-			entity.var_3b07930a = "quad_phase_right";
-		}
-		else
-		{
-			entity.var_3b07930a = "quad_phase_left";
-		}
-	}
-	else
-	{
-		if(entity.var_20535e44 == -1)
-		{
-			entity.var_3b07930a = "quad_phase_right";
-		}
-		else
-		{
-			entity.var_3b07930a = "quad_phase_left";
-		}
-	}
-	if(entity.var_3b07930a == "quad_phase_left")
-	{
-		if(isplayer(entity.enemy) && entity.enemy islookingat(entity))
-		{
-			if(entity maymovefrompointtopoint(entity.origin, zombie_utility::getanimendpos(level.var_9fcbbc83["phase_left_long"])))
-			{
-				entity.var_662afd11 = 1;
-			}
-		}
-	}
-	else if(isplayer(entity.enemy) && entity.enemy islookingat(entity))
-	{
-		if(entity maymovefrompointtopoint(entity.origin, zombie_utility::getanimendpos(level.var_9fcbbc83["phase_right_long"])))
-		{
-			entity.var_662afd11 = 1;
-		}
-	}
-	if(!(isdefined(entity.var_662afd11) && entity.var_662afd11))
-	{
-		if(entity maymovefrompointtopoint(entity.origin, zombie_utility::getanimendpos(level.var_9fcbbc83["phase_forward"])))
-		{
-			entity.var_662afd11 = 1;
-			entity.var_3b07930a = "quad_phase_forward";
-		}
-	}
-	if(isdefined(entity.var_662afd11) && entity.var_662afd11)
-	{
-		blackboard::setblackboardattribute(entity, "_quad_phase_direction", entity.var_3b07930a);
-		if(math::cointoss())
-		{
-			blackboard::setblackboardattribute(entity, "_quad_phase_distance", "quad_phase_short");
-		}
-		else
-		{
-			blackboard::setblackboardattribute(entity, "_quad_phase_distance", "quad_phase_long");
-		}
-		return true;
-	}
-	return false;
+function private quadphasingservice(entity) {
+  if(isdefined(entity.is_phasing) && entity.is_phasing) {
+    return false;
+  }
+  entity.var_662afd11 = 0;
+  if(entity.var_20535e44 == 0) {
+    if(math::cointoss()) {
+      entity.var_3b07930a = "quad_phase_right";
+    } else {
+      entity.var_3b07930a = "quad_phase_left";
+    }
+  } else {
+    if(entity.var_20535e44 == -1) {
+      entity.var_3b07930a = "quad_phase_right";
+    } else {
+      entity.var_3b07930a = "quad_phase_left";
+    }
+  }
+  if(entity.var_3b07930a == "quad_phase_left") {
+    if(isplayer(entity.enemy) && entity.enemy islookingat(entity)) {
+      if(entity maymovefrompointtopoint(entity.origin, zombie_utility::getanimendpos(level.var_9fcbbc83["phase_left_long"]))) {
+        entity.var_662afd11 = 1;
+      }
+    }
+  } else if(isplayer(entity.enemy) && entity.enemy islookingat(entity)) {
+    if(entity maymovefrompointtopoint(entity.origin, zombie_utility::getanimendpos(level.var_9fcbbc83["phase_right_long"]))) {
+      entity.var_662afd11 = 1;
+    }
+  }
+  if(!(isdefined(entity.var_662afd11) && entity.var_662afd11)) {
+    if(entity maymovefrompointtopoint(entity.origin, zombie_utility::getanimendpos(level.var_9fcbbc83["phase_forward"]))) {
+      entity.var_662afd11 = 1;
+      entity.var_3b07930a = "quad_phase_forward";
+    }
+  }
+  if(isdefined(entity.var_662afd11) && entity.var_662afd11) {
+    blackboard::setblackboardattribute(entity, "_quad_phase_direction", entity.var_3b07930a);
+    if(math::cointoss()) {
+      blackboard::setblackboardattribute(entity, "_quad_phase_distance", "quad_phase_short");
+    } else {
+      blackboard::setblackboardattribute(entity, "_quad_phase_distance", "quad_phase_long");
+    }
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -149,54 +124,43 @@ function private quadphasingservice(entity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private shouldphase(entity)
-{
-	if(!(isdefined(entity.var_662afd11) && entity.var_662afd11))
-	{
-		return false;
-	}
-	if(isdefined(entity.is_phasing) && entity.is_phasing)
-	{
-		return false;
-	}
-	if((gettime() - entity.var_b7d765b3) < 2000)
-	{
-		return false;
-	}
-	if(!isdefined(entity.enemy))
-	{
-		return false;
-	}
-	dist_sq = distancesquared(entity.origin, entity.enemy.origin);
-	min_dist_sq = 4096;
-	max_dist_sq = 1000000;
-	if(entity.var_3b07930a == "quad_phase_forward")
-	{
-		min_dist_sq = 14400;
-		max_dist_sq = 5760000;
-	}
-	if(dist_sq < min_dist_sq)
-	{
-		return false;
-	}
-	if(dist_sq > max_dist_sq)
-	{
-		return false;
-	}
-	if(!isdefined(entity.pathgoalpos) || distancesquared(entity.origin, entity.pathgoalpos) < min_dist_sq)
-	{
-		return false;
-	}
-	if(abs(entity getmotionangle()) > 15)
-	{
-		return false;
-	}
-	yaw = zombie_utility::getyawtoorigin(entity.enemy.origin);
-	if(abs(yaw) > 45)
-	{
-		return false;
-	}
-	return true;
+function private shouldphase(entity) {
+  if(!(isdefined(entity.var_662afd11) && entity.var_662afd11)) {
+    return false;
+  }
+  if(isdefined(entity.is_phasing) && entity.is_phasing) {
+    return false;
+  }
+  if((gettime() - entity.var_b7d765b3) < 2000) {
+    return false;
+  }
+  if(!isdefined(entity.enemy)) {
+    return false;
+  }
+  dist_sq = distancesquared(entity.origin, entity.enemy.origin);
+  min_dist_sq = 4096;
+  max_dist_sq = 1000000;
+  if(entity.var_3b07930a == "quad_phase_forward") {
+    min_dist_sq = 14400;
+    max_dist_sq = 5760000;
+  }
+  if(dist_sq < min_dist_sq) {
+    return false;
+  }
+  if(dist_sq > max_dist_sq) {
+    return false;
+  }
+  if(!isdefined(entity.pathgoalpos) || distancesquared(entity.origin, entity.pathgoalpos) < min_dist_sq) {
+    return false;
+  }
+  if(abs(entity getmotionangle()) > 15) {
+    return false;
+  }
+  yaw = zombie_utility::getyawtoorigin(entity.enemy.origin);
+  if(abs(yaw) > 45) {
+    return false;
+  }
+  return true;
 }
 
 /*
@@ -208,17 +172,13 @@ function private shouldphase(entity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private phaseactionstart(entity)
-{
-	entity.is_phasing = 1;
-	if(entity.var_3b07930a == "quad_phase_left")
-	{
-		entity.var_20535e44--;
-	}
-	else if(entity.var_3b07930a == "quad_phase_right")
-	{
-		entity.var_20535e44++;
-	}
+function private phaseactionstart(entity) {
+  entity.is_phasing = 1;
+  if(entity.var_3b07930a == "quad_phase_left") {
+    entity.var_20535e44--;
+  } else if(entity.var_3b07930a == "quad_phase_right") {
+    entity.var_20535e44++;
+  }
 }
 
 /*
@@ -230,10 +190,9 @@ function private phaseactionstart(entity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private phaseactionterminate(entity)
-{
-	entity.var_b7d765b3 = gettime();
-	entity.is_phasing = 0;
+function private phaseactionterminate(entity) {
+  entity.var_b7d765b3 = gettime();
+  entity.is_phasing = 0;
 }
 
 /*
@@ -245,9 +204,8 @@ function private phaseactionterminate(entity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private killedbymicrowavegundw(entity)
-{
-	return isdefined(entity.microwavegun_dw_death) && entity.microwavegun_dw_death;
+function private killedbymicrowavegundw(entity) {
+  return isdefined(entity.microwavegun_dw_death) && entity.microwavegun_dw_death;
 }
 
 /*
@@ -259,9 +217,8 @@ function private killedbymicrowavegundw(entity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private killedbymicrowavegun(entity)
-{
-	return isdefined(entity.microwavegun_death) && entity.microwavegun_death;
+function private killedbymicrowavegun(entity) {
+  return isdefined(entity.microwavegun_death) && entity.microwavegun_death;
 }
 
 /*
@@ -273,10 +230,9 @@ function private killedbymicrowavegun(entity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private function_51ab54f7(entity)
-{
-	entity thread moon_quad_phase_fx("quad_phasing_out");
-	entity ghost();
+function private function_51ab54f7(entity) {
+  entity thread moon_quad_phase_fx("quad_phasing_out");
+  entity ghost();
 }
 
 /*
@@ -288,10 +244,9 @@ function private function_51ab54f7(entity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private function_428f351c(entity)
-{
-	entity thread moon_quad_phase_fx("quad_phasing_in");
-	entity show();
+function private function_428f351c(entity) {
+  entity thread moon_quad_phase_fx("quad_phasing_in");
+  entity show();
 }
 
 /*
@@ -303,9 +258,8 @@ function private function_428f351c(entity)
 	Parameters: 5
 	Flags: Linked, Private
 */
-function private function_4e0a671e(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration)
-{
-	entity animmode("gravity", 0);
+function private function_4e0a671e(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
+  entity animmode("gravity", 0);
 }
 
 /*
@@ -317,20 +271,18 @@ function private function_4e0a671e(entity, mocompanim, mocompanimblendouttime, m
 	Parameters: 0
 	Flags: Linked
 */
-function function_5076473f()
-{
-	self.var_662afd11 = 0;
-	self.var_b7d765b3 = gettime();
-	self.var_20535e44 = 0;
-	if(!isdefined(level.var_9fcbbc83))
-	{
-		level.var_9fcbbc83 = [];
-		level.var_9fcbbc83["phase_forward"] = self animmappingsearch(istring("anim_zombie_phase_f_long_b"));
-		level.var_9fcbbc83["phase_left_long"] = self animmappingsearch(istring("anim_zombie_phase_l_long_b"));
-		level.var_9fcbbc83["phase_left_short"] = self animmappingsearch(istring("anim_zombie_phase_l_short_b"));
-		level.var_9fcbbc83["phase_right_long"] = self animmappingsearch(istring("anim_zombie_phase_r_long_b"));
-		level.var_9fcbbc83["phase_right_short"] = self animmappingsearch(istring("anim_zombie_phase_r_short_a"));
-	}
+function function_5076473f() {
+  self.var_662afd11 = 0;
+  self.var_b7d765b3 = gettime();
+  self.var_20535e44 = 0;
+  if(!isdefined(level.var_9fcbbc83)) {
+    level.var_9fcbbc83 = [];
+    level.var_9fcbbc83["phase_forward"] = self animmappingsearch(istring("anim_zombie_phase_f_long_b"));
+    level.var_9fcbbc83["phase_left_long"] = self animmappingsearch(istring("anim_zombie_phase_l_long_b"));
+    level.var_9fcbbc83["phase_left_short"] = self animmappingsearch(istring("anim_zombie_phase_l_short_b"));
+    level.var_9fcbbc83["phase_right_long"] = self animmappingsearch(istring("anim_zombie_phase_r_long_b"));
+    level.var_9fcbbc83["phase_right_short"] = self animmappingsearch(istring("anim_zombie_phase_r_short_a"));
+  }
 }
 
 /*
@@ -342,13 +294,12 @@ function function_5076473f()
 	Parameters: 0
 	Flags: None
 */
-function moon_quad_prespawn()
-{
-	self.no_gib = 1;
-	self.zombie_can_sidestep = 1;
-	self.zombie_can_forwardstep = 1;
-	self.sidestepfunc = &moon_quad_sidestep;
-	self.fastsprintfunc = &moon_quad_fastsprint;
+function moon_quad_prespawn() {
+  self.no_gib = 1;
+  self.zombie_can_sidestep = 1;
+  self.zombie_can_forwardstep = 1;
+  self.sidestepfunc = & moon_quad_sidestep;
+  self.fastsprintfunc = & moon_quad_fastsprint;
 }
 
 /*
@@ -360,30 +311,25 @@ function moon_quad_prespawn()
 	Parameters: 2
 	Flags: Linked
 */
-function moon_quad_sidestep(animname, stepanim)
-{
-	self endon(#"death");
-	self endon(#"stop_sidestep");
-	self thread moon_quad_wait_phase_end(stepanim);
-	self thread moon_quad_exit_align(stepanim);
-	while(true)
-	{
-		self waittill(animname, note);
-		if(note == "phase_start")
-		{
-			self thread moon_quad_phase_fx("quad_phasing_out");
-			self playsound("zmb_quad_phase_out");
-			self ghost();
-		}
-		else if(note == "phase_end")
-		{
-			self notify(#"stop_wait_phase_end");
-			self thread moon_quad_phase_fx("quad_phasing_in");
-			self show();
-			self playsound("zmb_quad_phase_in");
-			break;
-		}
-	}
+function moon_quad_sidestep(animname, stepanim) {
+  self endon(# "death");
+  self endon(# "stop_sidestep");
+  self thread moon_quad_wait_phase_end(stepanim);
+  self thread moon_quad_exit_align(stepanim);
+  while (true) {
+    self waittill(animname, note);
+    if(note == "phase_start") {
+      self thread moon_quad_phase_fx("quad_phasing_out");
+      self playsound("zmb_quad_phase_out");
+      self ghost();
+    } else if(note == "phase_end") {
+      self notify(# "stop_wait_phase_end");
+      self thread moon_quad_phase_fx("quad_phasing_in");
+      self show();
+      self playsound("zmb_quad_phase_in");
+      break;
+    }
+  }
 }
 
 /*
@@ -395,13 +341,11 @@ function moon_quad_sidestep(animname, stepanim)
 	Parameters: 0
 	Flags: Linked
 */
-function moon_quad_fastsprint()
-{
-	if(isdefined(self.in_low_gravity) && self.in_low_gravity)
-	{
-		return "low_g_super_sprint";
-	}
-	return "super_sprint";
+function moon_quad_fastsprint() {
+  if(isdefined(self.in_low_gravity) && self.in_low_gravity) {
+    return "low_g_super_sprint";
+  }
+  return "super_sprint";
 }
 
 /*
@@ -413,15 +357,14 @@ function moon_quad_fastsprint()
 	Parameters: 1
 	Flags: Linked
 */
-function moon_quad_wait_phase_end(stepanim)
-{
-	self endon(#"death");
-	self endon(#"stop_wait_phase_end");
-	anim_length = getanimlength(stepanim);
-	wait(anim_length);
-	self thread moon_quad_phase_fx("quad_phasing_in");
-	self show();
-	self notify(#"stop_sidestep");
+function moon_quad_wait_phase_end(stepanim) {
+  self endon(# "death");
+  self endon(# "stop_wait_phase_end");
+  anim_length = getanimlength(stepanim);
+  wait(anim_length);
+  self thread moon_quad_phase_fx("quad_phasing_in");
+  self show();
+  self notify(# "stop_sidestep");
 }
 
 /*
@@ -433,15 +376,13 @@ function moon_quad_wait_phase_end(stepanim)
 	Parameters: 1
 	Flags: Linked
 */
-function moon_quad_exit_align(stepanim)
-{
-	self endon(#"death");
-	anim_length = getanimlength(stepanim);
-	wait(anim_length);
-	if(!(isdefined(self.exit_align) && self.exit_align))
-	{
-		self notify(#"stepanim", "exit_align");
-	}
+function moon_quad_exit_align(stepanim) {
+  self endon(# "death");
+  anim_length = getanimlength(stepanim);
+  wait(anim_length);
+  if(!(isdefined(self.exit_align) && self.exit_align)) {
+    self notify(# "stepanim", "exit_align");
+  }
 }
 
 /*
@@ -453,13 +394,11 @@ function moon_quad_exit_align(stepanim)
 	Parameters: 1
 	Flags: Linked
 */
-function moon_quad_phase_fx(var_99a8589b)
-{
-	self endon(#"death");
-	if(isdefined(level._effect[var_99a8589b]))
-	{
-		playfxontag(level._effect[var_99a8589b], self, "j_spine4");
-	}
+function moon_quad_phase_fx(var_99a8589b) {
+  self endon(# "death");
+  if(isdefined(level._effect[var_99a8589b])) {
+    playfxontag(level._effect[var_99a8589b], self, "j_spine4");
+  }
 }
 
 /*
@@ -471,9 +410,7 @@ function moon_quad_phase_fx(var_99a8589b)
 	Parameters: 0
 	Flags: None
 */
-function moon_quad_gas_immune()
-{
-	self endon(#"disconnect");
-	self endon(#"death");
+function moon_quad_gas_immune() {
+  self endon(# "disconnect");
+  self endon(# "death");
 }
-

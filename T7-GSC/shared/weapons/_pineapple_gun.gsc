@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("pineapple_gun", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("pineapple_gun", & __init__, undefined, undefined);
 }
 
 /*
@@ -27,9 +26,7 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-}
+function __init__() {}
 
 /*
 	Name: watch_bolt_detonation
@@ -40,7 +37,4 @@ function __init__()
 	Parameters: 1
 	Flags: None
 */
-function watch_bolt_detonation(owner)
-{
-}
-
+function watch_bolt_detonation(owner) {}

@@ -24,11 +24,10 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	level.botpostcombat = &bot_post_combat;
-	level.botidle = &bot_idle;
-	level.botupdatethreatgoal = &update_threat_goal;
+function init() {
+  level.botpostcombat = & bot_post_combat;
+  level.botidle = & bot_idle;
+  level.botupdatethreatgoal = & update_threat_goal;
 }
 
 /*
@@ -40,29 +39,23 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function bot_post_combat()
-{
-	if(isdefined(self.targethub))
-	{
-		if(self.carriedtacos == 0 || self.targethub.interactteam == "none")
-		{
-			self.targethub = undefined;
-			self botsetgoal(self.origin);
-		}
-	}
-	if(isdefined(self.targettaco))
-	{
-		if(self.targettaco.interactteam == "none" || self.targettaco.droptime != self.targettacodroptime)
-		{
-			self.targettaco = undefined;
-			self botsetgoal(self.origin);
-		}
-	}
-	if(!self bot_combat::has_threat())
-	{
-		look_for_taco(1024);
-	}
-	self bot_combat::mp_post_combat();
+function bot_post_combat() {
+  if(isdefined(self.targethub)) {
+    if(self.carriedtacos == 0 || self.targethub.interactteam == "none") {
+      self.targethub = undefined;
+      self botsetgoal(self.origin);
+    }
+  }
+  if(isdefined(self.targettaco)) {
+    if(self.targettaco.interactteam == "none" || self.targettaco.droptime != self.targettacodroptime) {
+      self.targettaco = undefined;
+      self botsetgoal(self.origin);
+    }
+  }
+  if(!self bot_combat::has_threat()) {
+    look_for_taco(1024);
+  }
+  self bot_combat::mp_post_combat();
 }
 
 /*
@@ -74,33 +67,27 @@ function bot_post_combat()
 	Parameters: 0
 	Flags: Linked
 */
-function bot_idle()
-{
-	if(isdefined(self.targethub))
-	{
-		self bot::path_to_point_in_trigger(self.targethub.trigger);
-		self bot::sprint_to_goal();
-		return;
-	}
-	if(randomint(10) < self.carriedtacos)
-	{
-		foreach(hub in level.cleandeposithubs)
-		{
-			if(hub.interactteam == "any")
-			{
-				self.targethub = hub;
-				self.targettaco = undefined;
-				self bot::path_to_point_in_trigger(self.targethub.trigger);
-				self bot::sprint_to_goal();
-				return;
-			}
-		}
-	}
-	if(look_for_taco(1024))
-	{
-		return;
-	}
-	self bot::bot_idle();
+function bot_idle() {
+  if(isdefined(self.targethub)) {
+    self bot::path_to_point_in_trigger(self.targethub.trigger);
+    self bot::sprint_to_goal();
+    return;
+  }
+  if(randomint(10) < self.carriedtacos) {
+    foreach(hub in level.cleandeposithubs) {
+      if(hub.interactteam == "any") {
+        self.targethub = hub;
+        self.targettaco = undefined;
+        self bot::path_to_point_in_trigger(self.targethub.trigger);
+        self bot::sprint_to_goal();
+        return;
+      }
+    }
+  }
+  if(look_for_taco(1024)) {
+    return;
+  }
+  self bot::bot_idle();
 }
 
 /*
@@ -112,18 +99,16 @@ function bot_idle()
 	Parameters: 1
 	Flags: Linked
 */
-function look_for_taco(radius)
-{
-	besttaco = get_best_taco(radius);
-	if(!isdefined(besttaco))
-	{
-		return false;
-	}
-	self.targettaco = besttaco;
-	self.targettacodroptime = besttaco.droptime;
-	self bot::path_to_point_in_trigger(besttaco.trigger);
-	self bot::sprint_to_goal();
-	return true;
+function look_for_taco(radius) {
+  besttaco = get_best_taco(radius);
+  if(!isdefined(besttaco)) {
+    return false;
+  }
+  self.targettaco = besttaco;
+  self.targettacodroptime = besttaco.droptime;
+  self bot::path_to_point_in_trigger(besttaco.trigger);
+  self bot::sprint_to_goal();
+  return true;
 }
 
 /*
@@ -135,29 +120,24 @@ function look_for_taco(radius)
 	Parameters: 1
 	Flags: Linked
 */
-function get_best_taco(radius)
-{
-	radiussq = radius * radius;
-	besttaco = undefined;
-	besttacodistsq = undefined;
-	foreach(taco in level.tacos)
-	{
-		if(taco.interactteam == "none" || !ispointonnavmesh(taco.origin, self))
-		{
-			continue;
-		}
-		tacodistsq = distance2dsquared(self.origin, taco.origin);
-		if(taco.attacker != self && tacodistsq > radiussq)
-		{
-			continue;
-		}
-		if(!isdefined(besttaco) || tacodistsq < besttacodistsq)
-		{
-			besttaco = taco;
-			besttacodistsq = tacodistsq;
-		}
-	}
-	return besttaco;
+function get_best_taco(radius) {
+  radiussq = radius * radius;
+  besttaco = undefined;
+  besttacodistsq = undefined;
+  foreach(taco in level.tacos) {
+    if(taco.interactteam == "none" || !ispointonnavmesh(taco.origin, self)) {
+      continue;
+    }
+    tacodistsq = distance2dsquared(self.origin, taco.origin);
+    if(taco.attacker != self && tacodistsq > radiussq) {
+      continue;
+    }
+    if(!isdefined(besttaco) || tacodistsq < besttacodistsq) {
+      besttaco = taco;
+      besttacodistsq = tacodistsq;
+    }
+  }
+  return besttaco;
 }
 
 /*
@@ -169,30 +149,23 @@ function get_best_taco(radius)
 	Parameters: 0
 	Flags: Linked
 */
-function update_threat_goal()
-{
-	if(isdefined(self.targethub))
-	{
-		if(!self botgoalset())
-		{
-			self bot::path_to_point_in_trigger(self.targethub.trigger);
-			self bot::sprint_to_goal();
-		}
-		return;
-	}
-	radiussq = 65536;
-	if(isdefined(self.targettaco))
-	{
-		tacodistsq = distance2dsquared(self.origin, self.targettaco.origin);
-		if(tacodistsq > radiussq)
-		{
-			self.targettaco = undefined;
-		}
-	}
-	if(isdefined(self.targettaco) || self look_for_taco(1024))
-	{
-		return;
-	}
-	self bot_combat::update_threat_goal();
+function update_threat_goal() {
+  if(isdefined(self.targethub)) {
+    if(!self botgoalset()) {
+      self bot::path_to_point_in_trigger(self.targethub.trigger);
+      self bot::sprint_to_goal();
+    }
+    return;
+  }
+  radiussq = 65536;
+  if(isdefined(self.targettaco)) {
+    tacodistsq = distance2dsquared(self.origin, self.targettaco.origin);
+    if(tacodistsq > radiussq) {
+      self.targettaco = undefined;
+    }
+  }
+  if(isdefined(self.targettaco) || self look_for_taco(1024)) {
+    return;
+  }
+  self bot_combat::update_threat_goal();
 }
-

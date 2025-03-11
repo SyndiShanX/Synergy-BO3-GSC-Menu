@@ -14,13 +14,11 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	callback::on_spawned(&on_player_spawned);
-	if(getgametypesetting("silentPlant") != 0)
-	{
-		setsoundcontext("bomb_plant", "silent");
-	}
+function main() {
+  callback::on_spawned( & on_player_spawned);
+  if(getgametypesetting("silentPlant") != 0) {
+    setsoundcontext("bomb_plant", "silent");
+  }
 }
 
 /*
@@ -32,9 +30,7 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function onstartgametype()
-{
-}
+function onstartgametype() {}
 
 /*
 	Name: on_player_spawned
@@ -45,10 +41,9 @@ function onstartgametype()
 	Parameters: 1
 	Flags: None
 */
-function on_player_spawned(localclientnum)
-{
-	self thread player_sound_context_hack();
-	self thread globallogic::watch_plant_sound(localclientnum);
+function on_player_spawned(localclientnum) {
+  self thread player_sound_context_hack();
+  self thread globallogic::watch_plant_sound(localclientnum);
 }
 
 /*
@@ -60,18 +55,14 @@ function on_player_spawned(localclientnum)
 	Parameters: 0
 	Flags: None
 */
-function player_sound_context_hack()
-{
-	if(getgametypesetting("silentPlant") != 0)
-	{
-		self endon(#"entityshutdown");
-		self notify(#"player_sound_context_hack");
-		self endon(#"player_sound_context_hack");
-		while(true)
-		{
-			self setsoundentcontext("bomb_plant", "silent");
-			wait(1);
-		}
-	}
+function player_sound_context_hack() {
+  if(getgametypesetting("silentPlant") != 0) {
+    self endon(# "entityshutdown");
+    self notify(# "player_sound_context_hack");
+    self endon(# "player_sound_context_hack");
+    while (true) {
+      self setsoundentcontext("bomb_plant", "silent");
+      wait(1);
+    }
+  }
 }
-

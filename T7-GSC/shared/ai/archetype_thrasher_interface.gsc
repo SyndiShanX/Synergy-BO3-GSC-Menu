@@ -13,10 +13,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function registerthrasherinterfaceattributes()
-{
-	ai::registermatchedinterface("thrasher", "stunned", 0, array(1, 0));
-	ai::registermatchedinterface("thrasher", "move_mode", "normal", array("normal", "friendly"), &thrasherserverutils::thrashermovemodeattributecallback);
-	ai::registermatchedinterface("thrasher", "use_attackable", 0, array(1, 0));
+function registerthrasherinterfaceattributes() {
+  ai::registermatchedinterface("thrasher", "stunned", 0, array(1, 0));
+  ai::registermatchedinterface("thrasher", "move_mode", "normal", array("normal", "friendly"), & thrasherserverutils::thrashermovemodeattributecallback);
+  ai::registermatchedinterface("thrasher", "use_attackable", 0, array(1, 0));
 }
-

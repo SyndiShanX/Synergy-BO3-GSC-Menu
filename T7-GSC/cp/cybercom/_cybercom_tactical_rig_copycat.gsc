@@ -24,9 +24,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-}
+function init() {}
 
 /*
 	Name: main
@@ -37,12 +35,11 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	callback::on_connect(&on_player_connect);
-	callback::on_spawned(&on_player_spawned);
-	cybercom_tacrig::register_cybercom_rig_ability("cybercom_copycat", 6);
-	cybercom_tacrig::register_cybercom_rig_possession_callbacks("cybercom_copycat", &copycatgive, &copycattake);
+function main() {
+  callback::on_connect( & on_player_connect);
+  callback::on_spawned( & on_player_spawned);
+  cybercom_tacrig::register_cybercom_rig_ability("cybercom_copycat", 6);
+  cybercom_tacrig::register_cybercom_rig_possession_callbacks("cybercom_copycat", & copycatgive, & copycattake);
 }
 
 /*
@@ -54,9 +51,7 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_connect()
-{
-}
+function on_player_connect() {}
 
 /*
 	Name: on_player_spawned
@@ -67,9 +62,7 @@ function on_player_connect()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_spawned()
-{
-}
+function on_player_spawned() {}
 
 /*
 	Name: copycatgive
@@ -80,9 +73,8 @@ function on_player_spawned()
 	Parameters: 1
 	Flags: Linked
 */
-function copycatgive(type)
-{
-	self thread cybercom_tacrig::turn_rig_ability_on(type);
+function copycatgive(type) {
+  self thread cybercom_tacrig::turn_rig_ability_on(type);
 }
 
 /*
@@ -94,9 +86,7 @@ function copycatgive(type)
 	Parameters: 1
 	Flags: Linked
 */
-function copycattake(type)
-{
-	self thread cybercom_tacrig::turn_rig_ability_off(type);
-	self notify(#"copycattake");
+function copycattake(type) {
+  self thread cybercom_tacrig::turn_rig_ability_off(type);
+  self notify(# "copycattake");
 }
-

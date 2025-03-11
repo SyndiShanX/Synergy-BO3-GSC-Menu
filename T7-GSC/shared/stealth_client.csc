@@ -15,9 +15,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	// Unsupported VM revision (1B).
+function autoexec __init__sytem__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -29,9 +28,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-	// Unsupported VM revision (1B).
+function __init__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -43,9 +41,8 @@ function __init__()
 	Parameters: 0
 	Flags: None
 */
-function init_clientfields()
-{
-	// Unsupported VM revision (1B).
+function init_clientfields() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -57,9 +54,8 @@ function init_clientfields()
 	Parameters: 7
 	Flags: None
 */
-function callback_stealth_sighting()
-{
-	// Unsupported VM revision (1B).
+function callback_stealth_sighting() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -71,9 +67,8 @@ function callback_stealth_sighting()
 	Parameters: 7
 	Flags: None
 */
-function callback_stealth_alerted()
-{
-	// Unsupported VM revision (1B).
+function callback_stealth_alerted() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -85,9 +80,8 @@ function callback_stealth_alerted()
 	Parameters: 0
 	Flags: None
 */
-function stealth_sighted_sound()
-{
-	// Unsupported VM revision (1B).
+function stealth_sighted_sound() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -99,8 +93,6 @@ function stealth_sighted_sound()
 	Parameters: 0
 	Flags: None
 */
-function stealth_alerted_sound()
-{
-	// Unsupported VM revision (1B).
+function stealth_alerted_sound() {
+  // Unsupported VM revision (1B).
 }
-

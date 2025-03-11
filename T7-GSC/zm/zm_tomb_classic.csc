@@ -16,9 +16,7 @@
 	Parameters: 0
 	Flags: None
 */
-function precache()
-{
-}
+function precache() {}
 
 /*
 	Name: premain
@@ -29,10 +27,9 @@ function precache()
 	Parameters: 0
 	Flags: None
 */
-function premain()
-{
-	zm_tomb_craftables::include_craftables();
-	zm_tomb_craftables::init_craftables();
+function premain() {
+  zm_tomb_craftables::include_craftables();
+  zm_tomb_craftables::init_craftables();
 }
 
 /*
@@ -44,7 +41,4 @@ function premain()
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-}
-
+function main() {}

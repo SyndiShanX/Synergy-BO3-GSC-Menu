@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	// Unsupported VM revision (1B).
+function main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -27,9 +26,8 @@ function main()
 	Parameters: 1
 	Flags: None
 */
-function function_fda9ad5f()
-{
-	// Unsupported VM revision (1B).
+function function_fda9ad5f() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -41,9 +39,8 @@ function function_fda9ad5f()
 	Parameters: 7
 	Flags: None
 */
-function function_ba9197c()
-{
-	// Unsupported VM revision (1B).
+function function_ba9197c() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -55,8 +52,6 @@ function function_ba9197c()
 	Parameters: 7
 	Flags: None
 */
-function function_55f87893()
-{
-	// Unsupported VM revision (1B).
+function function_55f87893() {
+  // Unsupported VM revision (1B).
 }
-

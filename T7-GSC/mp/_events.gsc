@@ -15,15 +15,13 @@
 	Parameters: 3
 	Flags: None
 */
-function add_timed_event(seconds, notify_string, client_notify_string)
-{
-	/#
-		assert(seconds >= 0);
-	#/
-	if(level.timelimit > 0)
-	{
-		level thread timed_event_monitor(seconds, notify_string, client_notify_string);
-	}
+function add_timed_event(seconds, notify_string, client_notify_string) {
+  /#
+  assert(seconds >= 0);
+  # /
+    if(level.timelimit > 0) {
+      level thread timed_event_monitor(seconds, notify_string, client_notify_string);
+    }
 }
 
 /*
@@ -35,23 +33,19 @@ function add_timed_event(seconds, notify_string, client_notify_string)
 	Parameters: 3
 	Flags: None
 */
-function timed_event_monitor(seconds, notify_string, client_notify_string)
-{
-	for(;;)
-	{
-		wait(0.5);
-		if(!isdefined(level.starttime))
-		{
-			continue;
-		}
-		millisecs_remaining = globallogic_utils::gettimeremaining();
-		seconds_remaining = millisecs_remaining / 1000;
-		if(seconds_remaining <= seconds)
-		{
-			event_notify(notify_string, client_notify_string);
-			return;
-		}
-	}
+function timed_event_monitor(seconds, notify_string, client_notify_string) {
+  for (;;) {
+    wait(0.5);
+    if(!isdefined(level.starttime)) {
+      continue;
+    }
+    millisecs_remaining = globallogic_utils::gettimeremaining();
+    seconds_remaining = millisecs_remaining / 1000;
+    if(seconds_remaining <= seconds) {
+      event_notify(notify_string, client_notify_string);
+      return;
+    }
+  }
 }
 
 /*
@@ -63,22 +57,17 @@ function timed_event_monitor(seconds, notify_string, client_notify_string)
 	Parameters: 3
 	Flags: None
 */
-function add_score_event(score, notify_string, client_notify_string)
-{
-	/#
-		assert(score >= 0);
-	#/
-	if(level.scorelimit > 0)
-	{
-		if(level.teambased)
-		{
-			level thread score_team_event_monitor(score, notify_string, client_notify_string);
-		}
-		else
-		{
-			level thread score_event_monitor(score, notify_string, client_notify_string);
-		}
-	}
+function add_score_event(score, notify_string, client_notify_string) {
+  /#
+  assert(score >= 0);
+  # /
+    if(level.scorelimit > 0) {
+      if(level.teambased) {
+        level thread score_team_event_monitor(score, notify_string, client_notify_string);
+      } else {
+        level thread score_event_monitor(score, notify_string, client_notify_string);
+      }
+    }
 }
 
 /*
@@ -90,23 +79,18 @@ function add_score_event(score, notify_string, client_notify_string)
 	Parameters: 3
 	Flags: None
 */
-function add_round_score_event(score, notify_string, client_notify_string)
-{
-	/#
-		assert(score >= 0);
-	#/
-	if(level.roundscorelimit > 0)
-	{
-		roundscoretobeat = (level.roundscorelimit * game["roundsplayed"]) + score;
-		if(level.teambased)
-		{
-			level thread score_team_event_monitor(roundscoretobeat, notify_string, client_notify_string);
-		}
-		else
-		{
-			level thread score_event_monitor(roundscoretobeat, notify_string, client_notify_string);
-		}
-	}
+function add_round_score_event(score, notify_string, client_notify_string) {
+  /#
+  assert(score >= 0);
+  # /
+    if(level.roundscorelimit > 0) {
+      roundscoretobeat = (level.roundscorelimit * game["roundsplayed"]) + score;
+      if(level.teambased) {
+        level thread score_team_event_monitor(roundscoretobeat, notify_string, client_notify_string);
+      } else {
+        level thread score_event_monitor(roundscoretobeat, notify_string, client_notify_string);
+      }
+    }
 }
 
 /*
@@ -118,16 +102,13 @@ function add_round_score_event(score, notify_string, client_notify_string)
 	Parameters: 1
 	Flags: None
 */
-function any_team_reach_score(score)
-{
-	foreach(team in level.teams)
-	{
-		if(game["teamScores"][team] >= score)
-		{
-			return true;
-		}
-	}
-	return false;
+function any_team_reach_score(score) {
+  foreach(team in level.teams) {
+    if(game["teamScores"][team] >= score) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /*
@@ -139,17 +120,14 @@ function any_team_reach_score(score)
 	Parameters: 3
 	Flags: None
 */
-function score_team_event_monitor(score, notify_string, client_notify_string)
-{
-	for(;;)
-	{
-		wait(0.5);
-		if(any_team_reach_score(score))
-		{
-			event_notify(notify_string, client_notify_string);
-			return;
-		}
-	}
+function score_team_event_monitor(score, notify_string, client_notify_string) {
+  for (;;) {
+    wait(0.5);
+    if(any_team_reach_score(score)) {
+      event_notify(notify_string, client_notify_string);
+      return;
+    }
+  }
 }
 
 /*
@@ -161,21 +139,17 @@ function score_team_event_monitor(score, notify_string, client_notify_string)
 	Parameters: 3
 	Flags: None
 */
-function score_event_monitor(score, notify_string, client_notify_string)
-{
-	for(;;)
-	{
-		wait(0.5);
-		players = getplayers();
-		for(i = 0; i < players.size; i++)
-		{
-			if(isdefined(players[i].score) && players[i].score >= score)
-			{
-				event_notify(notify_string, client_notify_string);
-				return;
-			}
-		}
-	}
+function score_event_monitor(score, notify_string, client_notify_string) {
+  for (;;) {
+    wait(0.5);
+    players = getplayers();
+    for (i = 0; i < players.size; i++) {
+      if(isdefined(players[i].score) && players[i].score >= score) {
+        event_notify(notify_string, client_notify_string);
+        return;
+      }
+    }
+  }
 }
 
 /*
@@ -187,15 +161,11 @@ function score_event_monitor(score, notify_string, client_notify_string)
 	Parameters: 2
 	Flags: None
 */
-function event_notify(notify_string, client_notify_string)
-{
-	if(isdefined(notify_string))
-	{
-		level notify(notify_string);
-	}
-	if(isdefined(client_notify_string))
-	{
-		util::clientnotify(client_notify_string);
-	}
+function event_notify(notify_string, client_notify_string) {
+  if(isdefined(notify_string)) {
+    level notify(notify_string);
+  }
+  if(isdefined(client_notify_string)) {
+    util::clientnotify(client_notify_string);
+  }
 }
-

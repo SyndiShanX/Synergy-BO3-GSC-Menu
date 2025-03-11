@@ -29,11 +29,10 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec main()
-{
-	spawner::add_archetype_spawn_function("human_rpg", &humanrpgbehavior::archetypehumanrpgblackboardinit);
-	humanrpgbehavior::registerbehaviorscriptfunctions();
-	humanrpginterface::registerhumanrpginterfaceattributes();
+function autoexec main() {
+  spawner::add_archetype_spawn_function("human_rpg", & humanrpgbehavior::archetypehumanrpgblackboardinit);
+  humanrpgbehavior::registerbehaviorscriptfunctions();
+  humanrpginterface::registerhumanrpginterfaceattributes();
 }
 
 #namespace humanrpgbehavior;
@@ -47,9 +46,7 @@ function autoexec main()
 	Parameters: 0
 	Flags: Linked
 */
-function registerbehaviorscriptfunctions()
-{
-}
+function registerbehaviorscriptfunctions() {}
 
 /*
 	Name: archetypehumanrpgblackboardinit
@@ -60,17 +57,16 @@ function registerbehaviorscriptfunctions()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private archetypehumanrpgblackboardinit()
-{
-	entity = self;
-	blackboard::createblackboardforentity(entity);
-	ai::createinterfaceforentity(entity);
-	entity aiutility::registerutilityblackboardattributes();
-	self.___archetypeonanimscriptedcallback = &archetypehumanrpgonanimscriptedcallback;
-	/#
-		entity finalizetrackedblackboardattributes();
-	#/
-	entity asmchangeanimmappingtable(1);
+function private archetypehumanrpgblackboardinit() {
+  entity = self;
+  blackboard::createblackboardforentity(entity);
+  ai::createinterfaceforentity(entity);
+  entity aiutility::registerutilityblackboardattributes();
+  self.___archetypeonanimscriptedcallback = & archetypehumanrpgonanimscriptedcallback;
+  /#
+  entity finalizetrackedblackboardattributes();
+  # /
+    entity asmchangeanimmappingtable(1);
 }
 
 /*
@@ -82,9 +78,7 @@ function private archetypehumanrpgblackboardinit()
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private archetypehumanrpgonanimscriptedcallback(entity)
-{
-	entity.__blackboard = undefined;
-	entity archetypehumanrpgblackboardinit();
+function private archetypehumanrpgonanimscriptedcallback(entity) {
+  entity.__blackboard = undefined;
+  entity archetypehumanrpgblackboardinit();
 }
-

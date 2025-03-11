@@ -23,9 +23,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_genesis_mechz", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_genesis_mechz", & __init__, undefined, undefined);
 }
 
 /*
@@ -37,14 +36,12 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	level._effect["tesla_zombie_shock"] = "dlc4/genesis/fx_elec_trap_body_shock";
-	if(ai::shouldregisterclientfieldforarchetype("mechz"))
-	{
-		clientfield::register("actor", "death_ray_shock_fx", 15000, 1, "int", &death_ray_shock_fx, 0, 0);
-	}
-	clientfield::register("actor", "mechz_fx_spawn", 15000, 1, "counter", &function_4b9cfd4c, 0, 0);
+function __init__() {
+  level._effect["tesla_zombie_shock"] = "dlc4/genesis/fx_elec_trap_body_shock";
+  if(ai::shouldregisterclientfieldforarchetype("mechz")) {
+    clientfield::register("actor", "death_ray_shock_fx", 15000, 1, "int", & death_ray_shock_fx, 0, 0);
+  }
+  clientfield::register("actor", "mechz_fx_spawn", 15000, 1, "counter", & function_4b9cfd4c, 0, 0);
 }
 
 /*
@@ -56,26 +53,21 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function death_ray_shock_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self function_51adc559(localclientnum);
-	if(newval)
-	{
-		if(!isdefined(self.tesla_shock_fx))
-		{
-			tag = "J_SpineUpper";
-			if(!self isai())
-			{
-				tag = "tag_origin";
-			}
-			self.tesla_shock_fx = playfxontag(localclientnum, level._effect["tesla_zombie_shock"], self, tag);
-			self playsound(0, "zmb_electrocute_zombie");
-		}
-		if(isdemoplaying())
-		{
-			self thread function_7772592b(localclientnum);
-		}
-	}
+function death_ray_shock_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self function_51adc559(localclientnum);
+  if(newval) {
+    if(!isdefined(self.tesla_shock_fx)) {
+      tag = "J_SpineUpper";
+      if(!self isai()) {
+        tag = "tag_origin";
+      }
+      self.tesla_shock_fx = playfxontag(localclientnum, level._effect["tesla_zombie_shock"], self, tag);
+      self playsound(0, "zmb_electrocute_zombie");
+    }
+    if(isdemoplaying()) {
+      self thread function_7772592b(localclientnum);
+    }
+  }
 }
 
 /*
@@ -87,12 +79,11 @@ function death_ray_shock_fx(localclientnum, oldval, newval, bnewent, binitialsna
 	Parameters: 1
 	Flags: Linked
 */
-function function_7772592b(localclientnum)
-{
-	self notify(#"hash_51adc559");
-	self endon(#"hash_51adc559");
-	level waittill(#"demo_jump");
-	self function_51adc559(localclientnum);
+function function_7772592b(localclientnum) {
+  self notify(# "hash_51adc559");
+  self endon(# "hash_51adc559");
+  level waittill(# "demo_jump");
+  self function_51adc559(localclientnum);
 }
 
 /*
@@ -104,14 +95,12 @@ function function_7772592b(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function function_51adc559(localclientnum)
-{
-	if(isdefined(self.tesla_shock_fx))
-	{
-		deletefx(localclientnum, self.tesla_shock_fx, 1);
-		self.tesla_shock_fx = undefined;
-	}
-	self notify(#"hash_51adc559");
+function function_51adc559(localclientnum) {
+  if(isdefined(self.tesla_shock_fx)) {
+    deletefx(localclientnum, self.tesla_shock_fx, 1);
+    self.tesla_shock_fx = undefined;
+  }
+  self notify(# "hash_51adc559");
 }
 
 /*
@@ -123,12 +112,9 @@ function function_51adc559(localclientnum)
 	Parameters: 7
 	Flags: Linked
 */
-function function_4b9cfd4c(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump)
-{
-	if(newvalue)
-	{
-		self.spawnfx = playfxontag(localclientnum, level._effect["mechz_ground_spawn"], self, "tag_origin");
-		playsound(0, "zmb_mechz_spawn_nofly", self.origin);
-	}
+function function_4b9cfd4c(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
+  if(newvalue) {
+    self.spawnfx = playfxontag(localclientnum, level._effect["mechz_ground_spawn"], self, "tag_origin");
+    playsound(0, "zmb_mechz_spawn_nofly", self.origin);
+  }
 }
-

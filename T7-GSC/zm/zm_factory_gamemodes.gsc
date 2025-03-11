@@ -12,7 +12,4 @@
 	Parameters: 0
 	Flags: None
 */
-function init()
-{
-}
-
+function init() {}

@@ -14,9 +14,7 @@
 	Parameters: 5
 	Flags: None
 */
-function empty(a, b, c, d, e)
-{
-}
+function empty(a, b, c, d, e) {}
 
 /*
 	Name: waitforallclients
@@ -27,25 +25,20 @@ function empty(a, b, c, d, e)
 	Parameters: 0
 	Flags: Linked
 */
-function waitforallclients()
-{
-	localclient = 0;
-	if(!isdefined(level.localplayers))
-	{
-		while(!isdefined(level.localplayers))
-		{
-			wait(0.016);
-		}
-	}
-	while(level.localplayers.size <= 0)
-	{
-		wait(0.016);
-	}
-	while(localclient < level.localplayers.size)
-	{
-		waitforclient(localclient);
-		localclient++;
-	}
+function waitforallclients() {
+  localclient = 0;
+  if(!isdefined(level.localplayers)) {
+    while (!isdefined(level.localplayers)) {
+      wait(0.016);
+    }
+  }
+  while (level.localplayers.size <= 0) {
+    wait(0.016);
+  }
+  while (localclient < level.localplayers.size) {
+    waitforclient(localclient);
+    localclient++;
+  }
 }
 
 /*
@@ -57,12 +50,10 @@ function waitforallclients()
 	Parameters: 1
 	Flags: Linked
 */
-function waitforclient(client)
-{
-	while(!clienthassnapshot(client))
-	{
-		wait(0.016);
-	}
+function waitforclient(client) {
+  while (!clienthassnapshot(client)) {
+    wait(0.016);
+  }
 }
 
 /*
@@ -74,10 +65,9 @@ function waitforclient(client)
 	Parameters: 2
 	Flags: None
 */
-function get_dvar_float_default(str_dvar, default_val)
-{
-	value = getdvarstring(str_dvar);
-	return (value != "" ? float(value) : default_val);
+function get_dvar_float_default(str_dvar, default_val) {
+  value = getdvarstring(str_dvar);
+  return (value != "" ? float(value) : default_val);
 }
 
 /*
@@ -89,10 +79,9 @@ function get_dvar_float_default(str_dvar, default_val)
 	Parameters: 2
 	Flags: None
 */
-function get_dvar_int_default(str_dvar, default_val)
-{
-	value = getdvarstring(str_dvar);
-	return (value != "" ? int(value) : default_val);
+function get_dvar_int_default(str_dvar, default_val) {
+  value = getdvarstring(str_dvar);
+  return (value != "" ? int(value) : default_val);
 }
 
 /*
@@ -104,12 +93,11 @@ function get_dvar_int_default(str_dvar, default_val)
 	Parameters: 4
 	Flags: Linked
 */
-function spawn_model(n_client, str_model, origin = (0, 0, 0), angles = (0, 0, 0))
-{
-	model = spawn(n_client, origin, "script_model");
-	model setmodel(str_model);
-	model.angles = angles;
-	return model;
+function spawn_model(n_client, str_model, origin = (0, 0, 0), angles = (0, 0, 0)) {
+  model = spawn(n_client, origin, "script_model");
+  model setmodel(str_model);
+  model.angles = angles;
+  return model;
 }
 
 /*
@@ -121,15 +109,13 @@ function spawn_model(n_client, str_model, origin = (0, 0, 0), angles = (0, 0, 0)
 	Parameters: 2
 	Flags: Linked
 */
-function waittill_string(msg, ent)
-{
-	if(msg != "entityshutdown")
-	{
-		self endon(#"entityshutdown");
-	}
-	ent endon(#"die");
-	self waittill(msg);
-	ent notify(#"returned", msg);
+function waittill_string(msg, ent) {
+  if(msg != "entityshutdown") {
+    self endon(# "entityshutdown");
+  }
+  ent endon(# "die");
+  self waittill(msg);
+  ent notify(# "returned", msg);
 }
 
 /*
@@ -141,18 +127,15 @@ function waittill_string(msg, ent)
 	Parameters: 1
 	Flags: Variadic
 */
-function waittill_multiple(...)
-{
-	s_tracker = spawnstruct();
-	s_tracker._wait_count = 0;
-	for(i = 0; i < vararg.size; i++)
-	{
-		self thread _waitlogic(s_tracker, vararg[i]);
-	}
-	if(s_tracker._wait_count > 0)
-	{
-		s_tracker waittill(#"waitlogic_finished");
-	}
+function waittill_multiple(...) {
+  s_tracker = spawnstruct();
+  s_tracker._wait_count = 0;
+  for (i = 0; i < vararg.size; i++) {
+    self thread _waitlogic(s_tracker, vararg[i]);
+  }
+  if(s_tracker._wait_count > 0) {
+    s_tracker waittill(# "waitlogic_finished");
+  }
 }
 
 /*
@@ -164,49 +147,37 @@ function waittill_multiple(...)
 	Parameters: 1
 	Flags: Variadic
 */
-function waittill_multiple_ents(...)
-{
-	a_ents = [];
-	a_notifies = [];
-	for(i = 0; i < vararg.size; i++)
-	{
-		if(i % 2)
-		{
-			if(!isdefined(a_notifies))
-			{
-				a_notifies = [];
-			}
-			else if(!isarray(a_notifies))
-			{
-				a_notifies = array(a_notifies);
-			}
-			a_notifies[a_notifies.size] = vararg[i];
-			continue;
-		}
-		if(!isdefined(a_ents))
-		{
-			a_ents = [];
-		}
-		else if(!isarray(a_ents))
-		{
-			a_ents = array(a_ents);
-		}
-		a_ents[a_ents.size] = vararg[i];
-	}
-	s_tracker = spawnstruct();
-	s_tracker._wait_count = 0;
-	for(i = 0; i < a_ents.size; i++)
-	{
-		ent = a_ents[i];
-		if(isdefined(ent))
-		{
-			ent thread _waitlogic(s_tracker, a_notifies[i]);
-		}
-	}
-	if(s_tracker._wait_count > 0)
-	{
-		s_tracker waittill(#"waitlogic_finished");
-	}
+function waittill_multiple_ents(...) {
+  a_ents = [];
+  a_notifies = [];
+  for (i = 0; i < vararg.size; i++) {
+    if(i % 2) {
+      if(!isdefined(a_notifies)) {
+        a_notifies = [];
+      } else if(!isarray(a_notifies)) {
+        a_notifies = array(a_notifies);
+      }
+      a_notifies[a_notifies.size] = vararg[i];
+      continue;
+    }
+    if(!isdefined(a_ents)) {
+      a_ents = [];
+    } else if(!isarray(a_ents)) {
+      a_ents = array(a_ents);
+    }
+    a_ents[a_ents.size] = vararg[i];
+  }
+  s_tracker = spawnstruct();
+  s_tracker._wait_count = 0;
+  for (i = 0; i < a_ents.size; i++) {
+    ent = a_ents[i];
+    if(isdefined(ent)) {
+      ent thread _waitlogic(s_tracker, a_notifies[i]);
+    }
+  }
+  if(s_tracker._wait_count > 0) {
+    s_tracker waittill(# "waitlogic_finished");
+  }
 }
 
 /*
@@ -218,24 +189,19 @@ function waittill_multiple_ents(...)
 	Parameters: 2
 	Flags: Linked
 */
-function _waitlogic(s_tracker, notifies)
-{
-	s_tracker._wait_count++;
-	if(!isdefined(notifies))
-	{
-		notifies = [];
-	}
-	else if(!isarray(notifies))
-	{
-		notifies = array(notifies);
-	}
-	notifies[notifies.size] = "entityshutdown";
-	waittill_any_array(notifies);
-	s_tracker._wait_count--;
-	if(s_tracker._wait_count == 0)
-	{
-		s_tracker notify(#"waitlogic_finished");
-	}
+function _waitlogic(s_tracker, notifies) {
+  s_tracker._wait_count++;
+  if(!isdefined(notifies)) {
+    notifies = [];
+  } else if(!isarray(notifies)) {
+    notifies = array(notifies);
+  }
+  notifies[notifies.size] = "entityshutdown";
+  waittill_any_array(notifies);
+  s_tracker._wait_count--;
+  if(s_tracker._wait_count == 0) {
+    s_tracker notify(# "waitlogic_finished");
+  }
 }
 
 /*
@@ -247,44 +213,35 @@ function _waitlogic(s_tracker, notifies)
 	Parameters: 7
 	Flags: Linked
 */
-function waittill_any_return(string1, string2, string3, string4, string5, string6, string7)
-{
-	if(!isdefined(string1) || string1 != "entityshutdown" && (!isdefined(string2) || string2 != "entityshutdown") && (!isdefined(string3) || string3 != "entityshutdown") && (!isdefined(string4) || string4 != "entityshutdown") && (!isdefined(string5) || string5 != "entityshutdown") && (!isdefined(string6) || string6 != "entityshutdown") && (!isdefined(string7) || string7 != "entityshutdown"))
-	{
-		self endon(#"entityshutdown");
-	}
-	ent = spawnstruct();
-	if(isdefined(string1))
-	{
-		self thread waittill_string(string1, ent);
-	}
-	if(isdefined(string2))
-	{
-		self thread waittill_string(string2, ent);
-	}
-	if(isdefined(string3))
-	{
-		self thread waittill_string(string3, ent);
-	}
-	if(isdefined(string4))
-	{
-		self thread waittill_string(string4, ent);
-	}
-	if(isdefined(string5))
-	{
-		self thread waittill_string(string5, ent);
-	}
-	if(isdefined(string6))
-	{
-		self thread waittill_string(string6, ent);
-	}
-	if(isdefined(string7))
-	{
-		self thread waittill_string(string7, ent);
-	}
-	ent waittill(#"returned", msg);
-	ent notify(#"die");
-	return msg;
+function waittill_any_return(string1, string2, string3, string4, string5, string6, string7) {
+  if(!isdefined(string1) || string1 != "entityshutdown" && (!isdefined(string2) || string2 != "entityshutdown") && (!isdefined(string3) || string3 != "entityshutdown") && (!isdefined(string4) || string4 != "entityshutdown") && (!isdefined(string5) || string5 != "entityshutdown") && (!isdefined(string6) || string6 != "entityshutdown") && (!isdefined(string7) || string7 != "entityshutdown")) {
+    self endon(# "entityshutdown");
+  }
+  ent = spawnstruct();
+  if(isdefined(string1)) {
+    self thread waittill_string(string1, ent);
+  }
+  if(isdefined(string2)) {
+    self thread waittill_string(string2, ent);
+  }
+  if(isdefined(string3)) {
+    self thread waittill_string(string3, ent);
+  }
+  if(isdefined(string4)) {
+    self thread waittill_string(string4, ent);
+  }
+  if(isdefined(string5)) {
+    self thread waittill_string(string5, ent);
+  }
+  if(isdefined(string6)) {
+    self thread waittill_string(string6, ent);
+  }
+  if(isdefined(string7)) {
+    self thread waittill_string(string7, ent);
+  }
+  ent waittill(# "returned", msg);
+  ent notify(# "die");
+  return msg;
 }
 
 /*
@@ -296,45 +253,36 @@ function waittill_any_return(string1, string2, string3, string4, string5, string
 	Parameters: 1
 	Flags: Linked, Variadic
 */
-function waittill_any_ex(...)
-{
-	s_common = spawnstruct();
-	e_current = self;
-	n_arg_index = 0;
-	if(strisnumber(vararg[0]))
-	{
-		n_timeout = vararg[0];
-		n_arg_index++;
-		if(n_timeout > 0)
-		{
-			s_common thread _timeout(n_timeout);
-		}
-	}
-	if(isarray(vararg[n_arg_index]))
-	{
-		a_params = vararg[n_arg_index];
-		n_start_index = 0;
-	}
-	else
-	{
-		a_params = vararg;
-		n_start_index = n_arg_index;
-	}
-	for(i = n_start_index; i < a_params.size; i++)
-	{
-		if(!isstring(a_params[i]))
-		{
-			e_current = a_params[i];
-			continue;
-		}
-		if(isdefined(e_current))
-		{
-			e_current thread waittill_string(a_params[i], s_common);
-		}
-	}
-	s_common waittill(#"returned", str_notify);
-	s_common notify(#"die");
-	return str_notify;
+function waittill_any_ex(...) {
+  s_common = spawnstruct();
+  e_current = self;
+  n_arg_index = 0;
+  if(strisnumber(vararg[0])) {
+    n_timeout = vararg[0];
+    n_arg_index++;
+    if(n_timeout > 0) {
+      s_common thread _timeout(n_timeout);
+    }
+  }
+  if(isarray(vararg[n_arg_index])) {
+    a_params = vararg[n_arg_index];
+    n_start_index = 0;
+  } else {
+    a_params = vararg;
+    n_start_index = n_arg_index;
+  }
+  for (i = n_start_index; i < a_params.size; i++) {
+    if(!isstring(a_params[i])) {
+      e_current = a_params[i];
+      continue;
+    }
+    if(isdefined(e_current)) {
+      e_current thread waittill_string(a_params[i], s_common);
+    }
+  }
+  s_common waittill(# "returned", str_notify);
+  s_common notify(# "die");
+  return str_notify;
 }
 
 /*
@@ -346,23 +294,19 @@ function waittill_any_ex(...)
 	Parameters: 1
 	Flags: None
 */
-function waittill_any_array_return(a_notifies)
-{
-	if(isinarray(a_notifies, "entityshutdown"))
-	{
-		self endon(#"entityshutdown");
-	}
-	s_tracker = spawnstruct();
-	foreach(str_notify in a_notifies)
-	{
-		if(isdefined(str_notify))
-		{
-			self thread waittill_string(str_notify, s_tracker);
-		}
-	}
-	s_tracker waittill(#"returned", msg);
-	s_tracker notify(#"die");
-	return msg;
+function waittill_any_array_return(a_notifies) {
+  if(isinarray(a_notifies, "entityshutdown")) {
+    self endon(# "entityshutdown");
+  }
+  s_tracker = spawnstruct();
+  foreach(str_notify in a_notifies) {
+    if(isdefined(str_notify)) {
+      self thread waittill_string(str_notify, s_tracker);
+    }
+  }
+  s_tracker waittill(# "returned", msg);
+  s_tracker notify(# "die");
+  return msg;
 }
 
 /*
@@ -374,12 +318,11 @@ function waittill_any_array_return(a_notifies)
 	Parameters: 5
 	Flags: Linked
 */
-function waittill_any(str_notify1, str_notify2, str_notify3, str_notify4, str_notify5)
-{
-	/#
-		assert(isdefined(str_notify1));
-	#/
-	waittill_any_array(array(str_notify1, str_notify2, str_notify3, str_notify4, str_notify5));
+function waittill_any(str_notify1, str_notify2, str_notify3, str_notify4, str_notify5) {
+  /#
+  assert(isdefined(str_notify1));
+  # /
+    waittill_any_array(array(str_notify1, str_notify2, str_notify3, str_notify4, str_notify5));
 }
 
 /*
@@ -391,19 +334,16 @@ function waittill_any(str_notify1, str_notify2, str_notify3, str_notify4, str_no
 	Parameters: 1
 	Flags: Linked
 */
-function waittill_any_array(a_notifies)
-{
-	/#
-		assert(isdefined(a_notifies[0]), "");
-	#/
-	for(i = 1; i < a_notifies.size; i++)
-	{
-		if(isdefined(a_notifies[i]))
-		{
-			self endon(a_notifies[i]);
-		}
-	}
-	self waittill(a_notifies[0]);
+function waittill_any_array(a_notifies) {
+  /#
+  assert(isdefined(a_notifies[0]), "");
+  # /
+    for (i = 1; i < a_notifies.size; i++) {
+      if(isdefined(a_notifies[i])) {
+        self endon(a_notifies[i]);
+      }
+    }
+  self waittill(a_notifies[0]);
 }
 
 /*
@@ -415,37 +355,30 @@ function waittill_any_array(a_notifies)
 	Parameters: 6
 	Flags: Linked
 */
-function waittill_any_timeout(n_timeout, string1, string2, string3, string4, string5)
-{
-	if(!isdefined(string1) || string1 != "entityshutdown" && (!isdefined(string2) || string2 != "entityshutdown") && (!isdefined(string3) || string3 != "entityshutdown") && (!isdefined(string4) || string4 != "entityshutdown") && (!isdefined(string5) || string5 != "entityshutdown"))
-	{
-		self endon(#"entityshutdown");
-	}
-	ent = spawnstruct();
-	if(isdefined(string1))
-	{
-		self thread waittill_string(string1, ent);
-	}
-	if(isdefined(string2))
-	{
-		self thread waittill_string(string2, ent);
-	}
-	if(isdefined(string3))
-	{
-		self thread waittill_string(string3, ent);
-	}
-	if(isdefined(string4))
-	{
-		self thread waittill_string(string4, ent);
-	}
-	if(isdefined(string5))
-	{
-		self thread waittill_string(string5, ent);
-	}
-	ent thread _timeout(n_timeout);
-	ent waittill(#"returned", msg);
-	ent notify(#"die");
-	return msg;
+function waittill_any_timeout(n_timeout, string1, string2, string3, string4, string5) {
+  if(!isdefined(string1) || string1 != "entityshutdown" && (!isdefined(string2) || string2 != "entityshutdown") && (!isdefined(string3) || string3 != "entityshutdown") && (!isdefined(string4) || string4 != "entityshutdown") && (!isdefined(string5) || string5 != "entityshutdown")) {
+    self endon(# "entityshutdown");
+  }
+  ent = spawnstruct();
+  if(isdefined(string1)) {
+    self thread waittill_string(string1, ent);
+  }
+  if(isdefined(string2)) {
+    self thread waittill_string(string2, ent);
+  }
+  if(isdefined(string3)) {
+    self thread waittill_string(string3, ent);
+  }
+  if(isdefined(string4)) {
+    self thread waittill_string(string4, ent);
+  }
+  if(isdefined(string5)) {
+    self thread waittill_string(string5, ent);
+  }
+  ent thread _timeout(n_timeout);
+  ent waittill(# "returned", msg);
+  ent notify(# "die");
+  return msg;
 }
 
 /*
@@ -457,11 +390,10 @@ function waittill_any_timeout(n_timeout, string1, string2, string3, string4, str
 	Parameters: 1
 	Flags: Linked
 */
-function _timeout(delay)
-{
-	self endon(#"die");
-	wait(delay);
-	self notify(#"returned", "timeout");
+function _timeout(delay) {
+  self endon(# "die");
+  wait(delay);
+  self notify(# "returned", "timeout");
 }
 
 /*
@@ -473,10 +405,9 @@ function _timeout(delay)
 	Parameters: 2
 	Flags: Linked
 */
-function waittill_notify_or_timeout(msg, timer)
-{
-	self endon(msg);
-	wait(timer);
+function waittill_notify_or_timeout(msg, timer) {
+  self endon(msg);
+  wait(timer);
 }
 
 /*
@@ -488,39 +419,32 @@ function waittill_notify_or_timeout(msg, timer)
 	Parameters: 14
 	Flags: Linked
 */
-function waittill_any_ents(ent1, string1, ent2, string2, ent3, string3, ent4, string4, ent5, string5, ent6, string6, ent7, string7)
-{
-	/#
-		assert(isdefined(ent1));
-	#/
-	/#
-		assert(isdefined(string1));
-	#/
-	if(isdefined(ent2) && isdefined(string2))
-	{
-		ent2 endon(string2);
-	}
-	if(isdefined(ent3) && isdefined(string3))
-	{
-		ent3 endon(string3);
-	}
-	if(isdefined(ent4) && isdefined(string4))
-	{
-		ent4 endon(string4);
-	}
-	if(isdefined(ent5) && isdefined(string5))
-	{
-		ent5 endon(string5);
-	}
-	if(isdefined(ent6) && isdefined(string6))
-	{
-		ent6 endon(string6);
-	}
-	if(isdefined(ent7) && isdefined(string7))
-	{
-		ent7 endon(string7);
-	}
-	ent1 waittill(string1);
+function waittill_any_ents(ent1, string1, ent2, string2, ent3, string3, ent4, string4, ent5, string5, ent6, string6, ent7, string7) {
+  /#
+  assert(isdefined(ent1));
+  # /
+    /#
+  assert(isdefined(string1));
+  # /
+    if(isdefined(ent2) && isdefined(string2)) {
+      ent2 endon(string2);
+    }
+  if(isdefined(ent3) && isdefined(string3)) {
+    ent3 endon(string3);
+  }
+  if(isdefined(ent4) && isdefined(string4)) {
+    ent4 endon(string4);
+  }
+  if(isdefined(ent5) && isdefined(string5)) {
+    ent5 endon(string5);
+  }
+  if(isdefined(ent6) && isdefined(string6)) {
+    ent6 endon(string6);
+  }
+  if(isdefined(ent7) && isdefined(string7)) {
+    ent7 endon(string7);
+  }
+  ent1 waittill(string1);
 }
 
 /*
@@ -532,19 +456,17 @@ function waittill_any_ents(ent1, string1, ent2, string2, ent3, string3, ent4, st
 	Parameters: 4
 	Flags: None
 */
-function waittill_any_ents_two(ent1, string1, ent2, string2)
-{
-	/#
-		assert(isdefined(ent1));
-	#/
-	/#
-		assert(isdefined(string1));
-	#/
-	if(isdefined(ent2) && isdefined(string2))
-	{
-		ent2 endon(string2);
-	}
-	ent1 waittill(string1);
+function waittill_any_ents_two(ent1, string1, ent2, string2) {
+  /#
+  assert(isdefined(ent1));
+  # /
+    /#
+  assert(isdefined(string1));
+  # /
+    if(isdefined(ent2) && isdefined(string2)) {
+      ent2 endon(string2);
+    }
+  ent1 waittill(string1);
 }
 
 /*
@@ -556,33 +478,26 @@ function waittill_any_ents_two(ent1, string1, ent2, string2)
 	Parameters: 8
 	Flags: Linked
 */
-function single_func(entity = level, func, arg1, arg2, arg3, arg4, arg5, arg6)
-{
-	if(isdefined(arg6))
-	{
-		return entity [[func]](arg1, arg2, arg3, arg4, arg5, arg6);
-	}
-	if(isdefined(arg5))
-	{
-		return entity [[func]](arg1, arg2, arg3, arg4, arg5);
-	}
-	if(isdefined(arg4))
-	{
-		return entity [[func]](arg1, arg2, arg3, arg4);
-	}
-	if(isdefined(arg3))
-	{
-		return entity [[func]](arg1, arg2, arg3);
-	}
-	if(isdefined(arg2))
-	{
-		return entity [[func]](arg1, arg2);
-	}
-	if(isdefined(arg1))
-	{
-		return entity [[func]](arg1);
-	}
-	return entity [[func]]();
+function single_func(entity = level, func, arg1, arg2, arg3, arg4, arg5, arg6) {
+  if(isdefined(arg6)) {
+    return entity[[func]](arg1, arg2, arg3, arg4, arg5, arg6);
+  }
+  if(isdefined(arg5)) {
+    return entity[[func]](arg1, arg2, arg3, arg4, arg5);
+  }
+  if(isdefined(arg4)) {
+    return entity[[func]](arg1, arg2, arg3, arg4);
+  }
+  if(isdefined(arg3)) {
+    return entity[[func]](arg1, arg2, arg3);
+  }
+  if(isdefined(arg2)) {
+    return entity[[func]](arg1, arg2);
+  }
+  if(isdefined(arg1)) {
+    return entity[[func]](arg1);
+  }
+  return entity[[func]]();
 }
 
 /*
@@ -594,17 +509,16 @@ function single_func(entity = level, func, arg1, arg2, arg3, arg4, arg5, arg6)
 	Parameters: 7
 	Flags: None
 */
-function new_func(func, arg1, arg2, arg3, arg4, arg5, arg6)
-{
-	s_func = spawnstruct();
-	s_func.func = func;
-	s_func.arg1 = arg1;
-	s_func.arg2 = arg2;
-	s_func.arg3 = arg3;
-	s_func.arg4 = arg4;
-	s_func.arg5 = arg5;
-	s_func.arg6 = arg6;
-	return s_func;
+function new_func(func, arg1, arg2, arg3, arg4, arg5, arg6) {
+  s_func = spawnstruct();
+  s_func.func = func;
+  s_func.arg1 = arg1;
+  s_func.arg2 = arg2;
+  s_func.arg3 = arg3;
+  s_func.arg4 = arg4;
+  s_func.arg5 = arg5;
+  s_func.arg6 = arg6;
+  return s_func;
 }
 
 /*
@@ -616,9 +530,8 @@ function new_func(func, arg1, arg2, arg3, arg4, arg5, arg6)
 	Parameters: 1
 	Flags: None
 */
-function call_func(s_func)
-{
-	return single_func(self, s_func.func, s_func.arg1, s_func.arg2, s_func.arg3, s_func.arg4, s_func.arg5, s_func.arg6);
+function call_func(s_func) {
+  return single_func(self, s_func.func, s_func.arg1, s_func.arg2, s_func.arg3, s_func.arg4, s_func.arg5, s_func.arg6);
 }
 
 /*
@@ -630,29 +543,24 @@ function call_func(s_func)
 	Parameters: 7
 	Flags: None
 */
-function array_ent_thread(entities, func, arg1, arg2, arg3, arg4, arg5)
-{
-	/#
-		assert(isdefined(entities), "");
-	#/
-	/#
-		assert(isdefined(func), "");
-	#/
-	if(isarray(entities))
-	{
-		if(entities.size)
-		{
-			keys = getarraykeys(entities);
-			for(i = 0; i < keys.size; i++)
-			{
-				single_thread(self, func, entities[keys[i]], arg1, arg2, arg3, arg4, arg5);
-			}
-		}
-	}
-	else
-	{
-		single_thread(self, func, entities, arg1, arg2, arg3, arg4, arg5);
-	}
+function array_ent_thread(entities, func, arg1, arg2, arg3, arg4, arg5) {
+  /#
+  assert(isdefined(entities), "");
+  # /
+    /#
+  assert(isdefined(func), "");
+  # /
+    if(isarray(entities)) {
+      if(entities.size) {
+        keys = getarraykeys(entities);
+        for (i = 0; i < keys.size; i++) {
+          single_thread(self, func, entities[keys[i]], arg1, arg2, arg3, arg4, arg5);
+        }
+      }
+    }
+  else {
+    single_thread(self, func, entities, arg1, arg2, arg3, arg4, arg5);
+  }
 }
 
 /*
@@ -664,54 +572,36 @@ function array_ent_thread(entities, func, arg1, arg2, arg3, arg4, arg5)
 	Parameters: 8
 	Flags: Linked
 */
-function single_thread(entity, func, arg1, arg2, arg3, arg4, arg5, arg6)
-{
-	/#
-		assert(isdefined(entity), "");
-	#/
-	if(isdefined(arg6))
-	{
-		entity thread [[func]](arg1, arg2, arg3, arg4, arg5, arg6);
-	}
-	else
-	{
-		if(isdefined(arg5))
-		{
-			entity thread [[func]](arg1, arg2, arg3, arg4, arg5);
-		}
-		else
-		{
-			if(isdefined(arg4))
-			{
-				entity thread [[func]](arg1, arg2, arg3, arg4);
-			}
-			else
-			{
-				if(isdefined(arg3))
-				{
-					entity thread [[func]](arg1, arg2, arg3);
-				}
-				else
-				{
-					if(isdefined(arg2))
-					{
-						entity thread [[func]](arg1, arg2);
-					}
-					else
-					{
-						if(isdefined(arg1))
-						{
-							entity thread [[func]](arg1);
-						}
-						else
-						{
-							entity thread [[func]]();
-						}
-					}
-				}
-			}
-		}
-	}
+function single_thread(entity, func, arg1, arg2, arg3, arg4, arg5, arg6) {
+  /#
+  assert(isdefined(entity), "");
+  # /
+    if(isdefined(arg6)) {
+      entity thread[[func]](arg1, arg2, arg3, arg4, arg5, arg6);
+    }
+  else {
+    if(isdefined(arg5)) {
+      entity thread[[func]](arg1, arg2, arg3, arg4, arg5);
+    } else {
+      if(isdefined(arg4)) {
+        entity thread[[func]](arg1, arg2, arg3, arg4);
+      } else {
+        if(isdefined(arg3)) {
+          entity thread[[func]](arg1, arg2, arg3);
+        } else {
+          if(isdefined(arg2)) {
+            entity thread[[func]](arg1, arg2);
+          } else {
+            if(isdefined(arg1)) {
+              entity thread[[func]](arg1);
+            } else {
+              entity thread[[func]]();
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 /*
@@ -723,9 +613,8 @@ function single_thread(entity, func, arg1, arg2, arg3, arg4, arg5, arg6)
 	Parameters: 7
 	Flags: None
 */
-function add_listen_thread(wait_till, func, param1, param2, param3, param4, param5)
-{
-	level thread add_listen_thread_internal(wait_till, func, param1, param2, param3, param4, param5);
+function add_listen_thread(wait_till, func, param1, param2, param3, param4, param5) {
+  level thread add_listen_thread_internal(wait_till, func, param1, param2, param3, param4, param5);
 }
 
 /*
@@ -737,13 +626,11 @@ function add_listen_thread(wait_till, func, param1, param2, param3, param4, para
 	Parameters: 7
 	Flags: Linked
 */
-function add_listen_thread_internal(wait_till, func, param1, param2, param3, param4, param5)
-{
-	for(;;)
-	{
-		level waittill(wait_till);
-		single_thread(level, func, param1, param2, param3, param4, param5);
-	}
+function add_listen_thread_internal(wait_till, func, param1, param2, param3, param4, param5) {
+  for (;;) {
+    level waittill(wait_till);
+    single_thread(level, func, param1, param2, param3, param4, param5);
+  }
 }
 
 /*
@@ -755,16 +642,14 @@ function add_listen_thread_internal(wait_till, func, param1, param2, param3, par
 	Parameters: 8
 	Flags: Linked
 */
-function timeout(n_time, func, arg1, arg2, arg3, arg4, arg5, arg6)
-{
-	self endon(#"entityshutdown");
-	if(isdefined(n_time))
-	{
-		__s = spawnstruct();
-		__s endon(#"timeout");
-		__s delay_notify(n_time, "timeout");
-	}
-	single_func(self, func, arg1, arg2, arg3, arg4, arg5, arg6);
+function timeout(n_time, func, arg1, arg2, arg3, arg4, arg5, arg6) {
+  self endon(# "entityshutdown");
+  if(isdefined(n_time)) {
+    __s = spawnstruct();
+    __s endon(# "timeout");
+    __s delay_notify(n_time, "timeout");
+  }
+  single_func(self, func, arg1, arg2, arg3, arg4, arg5, arg6);
 }
 
 /*
@@ -776,9 +661,8 @@ function timeout(n_time, func, arg1, arg2, arg3, arg4, arg5, arg6)
 	Parameters: 9
 	Flags: None
 */
-function delay(time_or_notify, str_endon, func, arg1, arg2, arg3, arg4, arg5, arg6)
-{
-	self thread _delay(time_or_notify, str_endon, func, arg1, arg2, arg3, arg4, arg5, arg6);
+function delay(time_or_notify, str_endon, func, arg1, arg2, arg3, arg4, arg5, arg6) {
+  self thread _delay(time_or_notify, str_endon, func, arg1, arg2, arg3, arg4, arg5, arg6);
 }
 
 /*
@@ -790,22 +674,17 @@ function delay(time_or_notify, str_endon, func, arg1, arg2, arg3, arg4, arg5, ar
 	Parameters: 9
 	Flags: Linked
 */
-function _delay(time_or_notify, str_endon, func, arg1, arg2, arg3, arg4, arg5, arg6)
-{
-	self endon(#"entityshutdown");
-	if(isdefined(str_endon))
-	{
-		self endon(str_endon);
-	}
-	if(isstring(time_or_notify))
-	{
-		self waittill(time_or_notify);
-	}
-	else
-	{
-		wait(time_or_notify);
-	}
-	single_func(self, func, arg1, arg2, arg3, arg4, arg5, arg6);
+function _delay(time_or_notify, str_endon, func, arg1, arg2, arg3, arg4, arg5, arg6) {
+  self endon(# "entityshutdown");
+  if(isdefined(str_endon)) {
+    self endon(str_endon);
+  }
+  if(isstring(time_or_notify)) {
+    self waittill(time_or_notify);
+  } else {
+    wait(time_or_notify);
+  }
+  single_func(self, func, arg1, arg2, arg3, arg4, arg5, arg6);
 }
 
 /*
@@ -817,9 +696,8 @@ function _delay(time_or_notify, str_endon, func, arg1, arg2, arg3, arg4, arg5, a
 	Parameters: 3
 	Flags: Linked
 */
-function delay_notify(time_or_notify, str_notify, str_endon)
-{
-	self thread _delay_notify(time_or_notify, str_notify, str_endon);
+function delay_notify(time_or_notify, str_notify, str_endon) {
+  self thread _delay_notify(time_or_notify, str_notify, str_endon);
 }
 
 /*
@@ -831,22 +709,17 @@ function delay_notify(time_or_notify, str_notify, str_endon)
 	Parameters: 3
 	Flags: Linked
 */
-function _delay_notify(time_or_notify, str_notify, str_endon)
-{
-	self endon(#"entityshutdown");
-	if(isdefined(str_endon))
-	{
-		self endon(str_endon);
-	}
-	if(isstring(time_or_notify))
-	{
-		self waittill(time_or_notify);
-	}
-	else
-	{
-		wait(time_or_notify);
-	}
-	self notify(str_notify);
+function _delay_notify(time_or_notify, str_notify, str_endon) {
+  self endon(# "entityshutdown");
+  if(isdefined(str_endon)) {
+    self endon(str_endon);
+  }
+  if(isstring(time_or_notify)) {
+    self waittill(time_or_notify);
+  } else {
+    wait(time_or_notify);
+  }
+  self notify(str_notify);
 }
 
 /*
@@ -858,12 +731,11 @@ function _delay_notify(time_or_notify, str_notify, str_endon)
 	Parameters: 1
 	Flags: Linked
 */
-function new_timer(n_timer_length)
-{
-	s_timer = spawnstruct();
-	s_timer.n_time_created = gettime();
-	s_timer.n_length = n_timer_length;
-	return s_timer;
+function new_timer(n_timer_length) {
+  s_timer = spawnstruct();
+  s_timer.n_time_created = gettime();
+  s_timer.n_length = n_timer_length;
+  return s_timer;
 }
 
 /*
@@ -875,10 +747,9 @@ function new_timer(n_timer_length)
 	Parameters: 0
 	Flags: Linked
 */
-function get_time()
-{
-	t_now = gettime();
-	return t_now - self.n_time_created;
+function get_time() {
+  t_now = gettime();
+  return t_now - self.n_time_created;
 }
 
 /*
@@ -890,9 +761,8 @@ function get_time()
 	Parameters: 0
 	Flags: Linked
 */
-function get_time_in_seconds()
-{
-	return get_time() / 1000;
+function get_time_in_seconds() {
+  return get_time() / 1000;
 }
 
 /*
@@ -904,9 +774,8 @@ function get_time_in_seconds()
 	Parameters: 1
 	Flags: None
 */
-function get_time_frac(n_end_time = self.n_length)
-{
-	return lerpfloat(0, 1, get_time_in_seconds() / n_end_time);
+function get_time_frac(n_end_time = self.n_length) {
+  return lerpfloat(0, 1, get_time_in_seconds() / n_end_time);
 }
 
 /*
@@ -918,14 +787,12 @@ function get_time_frac(n_end_time = self.n_length)
 	Parameters: 0
 	Flags: Linked
 */
-function get_time_left()
-{
-	if(isdefined(self.n_length))
-	{
-		n_current_time = get_time_in_seconds();
-		return max(self.n_length - n_current_time, 0);
-	}
-	return -1;
+function get_time_left() {
+  if(isdefined(self.n_length)) {
+    n_current_time = get_time_in_seconds();
+    return max(self.n_length - n_current_time, 0);
+  }
+  return -1;
 }
 
 /*
@@ -937,9 +804,8 @@ function get_time_left()
 	Parameters: 0
 	Flags: None
 */
-function is_time_left()
-{
-	return get_time_left() != 0;
+function is_time_left() {
+  return get_time_left() != 0;
 }
 
 /*
@@ -951,15 +817,13 @@ function is_time_left()
 	Parameters: 1
 	Flags: Linked
 */
-function timer_wait(n_wait)
-{
-	if(isdefined(self.n_length))
-	{
-		n_wait = min(n_wait, get_time_left());
-	}
-	wait(n_wait);
-	n_current_time = get_time_in_seconds();
-	return n_current_time;
+function timer_wait(n_wait) {
+  if(isdefined(self.n_length)) {
+    n_wait = min(n_wait, get_time_left());
+  }
+  wait(n_wait);
+  n_current_time = get_time_in_seconds();
+  return n_current_time;
 }
 
 /*
@@ -971,19 +835,14 @@ function timer_wait(n_wait)
 	Parameters: 2
 	Flags: Linked
 */
-function add_remove_list(&a = [], on_off)
-{
-	if(on_off)
-	{
-		if(!isinarray(a, self))
-		{
-			arrayinsert(a, self, a.size);
-		}
-	}
-	else
-	{
-		arrayremovevalue(a, self, 0);
-	}
+function add_remove_list( & a = [], on_off) {
+  if(on_off) {
+    if(!isinarray(a, self)) {
+      arrayinsert(a, self, a.size);
+    }
+  } else {
+    arrayremovevalue(a, self, 0);
+  }
 }
 
 /*
@@ -995,22 +854,18 @@ function add_remove_list(&a = [], on_off)
 	Parameters: 1
 	Flags: Linked
 */
-function clean_deleted(&array)
-{
-	done = 0;
-	while(!done && array.size > 0)
-	{
-		done = 1;
-		foreach(key, val in array)
-		{
-			if(!isdefined(val))
-			{
-				arrayremoveindex(array, key, 0);
-				done = 0;
-				break;
-			}
-		}
-	}
+function clean_deleted( & array) {
+  done = 0;
+  while (!done && array.size > 0) {
+    done = 1;
+    foreach(key, val in array) {
+      if(!isdefined(val)) {
+        arrayremoveindex(array, key, 0);
+        done = 0;
+        break;
+      }
+    }
+  }
 }
 
 /*
@@ -1022,25 +877,20 @@ function clean_deleted(&array)
 	Parameters: 0
 	Flags: None
 */
-function get_eye()
-{
-	if(sessionmodeiscampaigngame())
-	{
-		if(self isplayer())
-		{
-			linked_ent = self getlinkedent();
-			if(isdefined(linked_ent) && getdvarint("cg_cameraUseTagCamera") > 0)
-			{
-				camera = linked_ent gettagorigin("tag_camera");
-				if(isdefined(camera))
-				{
-					return camera;
-				}
-			}
-		}
-	}
-	pos = self geteye();
-	return pos;
+function get_eye() {
+  if(sessionmodeiscampaigngame()) {
+    if(self isplayer()) {
+      linked_ent = self getlinkedent();
+      if(isdefined(linked_ent) && getdvarint("cg_cameraUseTagCamera") > 0) {
+        camera = linked_ent gettagorigin("tag_camera");
+        if(isdefined(camera)) {
+          return camera;
+        }
+      }
+    }
+  }
+  pos = self geteye();
+  return pos;
 }
 
 /*
@@ -1052,18 +902,14 @@ function get_eye()
 	Parameters: 0
 	Flags: None
 */
-function spawn_player_arms()
-{
-	arms = spawn(self getlocalclientnumber(), self.origin + (vectorscale((0, 0, -1), 1000)), "script_model");
-	if(isdefined(level.player_viewmodel))
-	{
-		arms setmodel(level.player_viewmodel);
-	}
-	else
-	{
-		arms setmodel("c_usa_cia_masonjr_viewhands");
-	}
-	return arms;
+function spawn_player_arms() {
+  arms = spawn(self getlocalclientnumber(), self.origin + (vectorscale((0, 0, -1), 1000)), "script_model");
+  if(isdefined(level.player_viewmodel)) {
+    arms setmodel(level.player_viewmodel);
+  } else {
+    arms setmodel("c_usa_cia_masonjr_viewhands");
+  }
+  return arms;
 }
 
 /*
@@ -1075,23 +921,18 @@ function spawn_player_arms()
 	Parameters: 7
 	Flags: None
 */
-function lerp_dvar(str_dvar, n_start_val = getdvarfloat(str_dvar), n_end_val, n_lerp_time, b_saved_dvar, b_client_dvar, n_client = 0)
-{
-	s_timer = new_timer();
-	do
-	{
-		n_time_delta = s_timer timer_wait(0.01666);
-		n_curr_val = lerpfloat(n_start_val, n_end_val, n_time_delta / n_lerp_time);
-		if(isdefined(b_saved_dvar) && b_saved_dvar)
-		{
-			setsaveddvar(str_dvar, n_curr_val);
-		}
-		else
-		{
-			setdvar(str_dvar, n_curr_val);
-		}
-	}
-	while(n_time_delta < n_lerp_time);
+function lerp_dvar(str_dvar, n_start_val = getdvarfloat(str_dvar), n_end_val, n_lerp_time, b_saved_dvar, b_client_dvar, n_client = 0) {
+  s_timer = new_timer();
+  do {
+    n_time_delta = s_timer timer_wait(0.01666);
+    n_curr_val = lerpfloat(n_start_val, n_end_val, n_time_delta / n_lerp_time);
+    if(isdefined(b_saved_dvar) && b_saved_dvar) {
+      setsaveddvar(str_dvar, n_curr_val);
+    } else {
+      setdvar(str_dvar, n_curr_val);
+    }
+  }
+  while (n_time_delta < n_lerp_time);
 }
 
 /*
@@ -1103,29 +944,25 @@ function lerp_dvar(str_dvar, n_start_val = getdvarfloat(str_dvar), n_end_val, n_
 	Parameters: 1
 	Flags: None
 */
-function is_valid_type_for_callback(type)
-{
-	switch(type)
-	{
-		case "NA":
-		case "actor":
-		case "general":
-		case "helicopter":
-		case "missile":
-		case "plane":
-		case "player":
-		case "scriptmover":
-		case "trigger":
-		case "turret":
-		case "vehicle":
-		{
-			return true;
-		}
-		default:
-		{
-			return false;
-		}
-	}
+function is_valid_type_for_callback(type) {
+  switch (type) {
+    case "NA":
+    case "actor":
+    case "general":
+    case "helicopter":
+    case "missile":
+    case "plane":
+    case "player":
+    case "scriptmover":
+    case "trigger":
+    case "turret":
+    case "vehicle": {
+      return true;
+    }
+    default: {
+      return false;
+    }
+  }
 }
 
 /*
@@ -1137,20 +974,18 @@ function is_valid_type_for_callback(type)
 	Parameters: 2
 	Flags: None
 */
-function wait_till_not_touching(e_to_check, e_to_touch)
-{
-	/#
-		assert(isdefined(e_to_check), "");
-	#/
-	/#
-		assert(isdefined(e_to_touch), "");
-	#/
-	e_to_check endon(#"entityshutdown");
-	e_to_touch endon(#"entityshutdown");
-	while(e_to_check istouching(e_to_touch))
-	{
-		wait(0.05);
-	}
+function wait_till_not_touching(e_to_check, e_to_touch) {
+  /#
+  assert(isdefined(e_to_check), "");
+  # /
+    /#
+  assert(isdefined(e_to_touch), "");
+  # /
+    e_to_check endon(# "entityshutdown");
+  e_to_touch endon(# "entityshutdown");
+  while (e_to_check istouching(e_to_touch)) {
+    wait(0.05);
+  }
 }
 
 /*
@@ -1162,12 +997,11 @@ function wait_till_not_touching(e_to_check, e_to_touch)
 	Parameters: 1
 	Flags: Linked
 */
-function error(message)
-{
-	/#
-		println("", message);
-		wait(0.05);
-	#/
+function error(message) {
+  /#
+  println("", message);
+  wait(0.05);
+  # /
 }
 
 /*
@@ -1179,28 +1013,24 @@ function error(message)
 	Parameters: 2
 	Flags: Linked
 */
-function register_system(ssysname, cbfunc)
-{
-	if(!isdefined(level._systemstates))
-	{
-		level._systemstates = [];
-	}
-	if(level._systemstates.size >= 32)
-	{
-		/#
-			error("");
-		#/
-		return;
-	}
-	if(isdefined(level._systemstates[ssysname]))
-	{
-		/#
-			error("" + ssysname);
-		#/
-		return;
-	}
-	level._systemstates[ssysname] = spawnstruct();
-	level._systemstates[ssysname].callback = cbfunc;
+function register_system(ssysname, cbfunc) {
+  if(!isdefined(level._systemstates)) {
+    level._systemstates = [];
+  }
+  if(level._systemstates.size >= 32) {
+    /#
+    error("");
+    # /
+      return;
+  }
+  if(isdefined(level._systemstates[ssysname])) {
+    /#
+    error("" + ssysname);
+    # /
+      return;
+  }
+  level._systemstates[ssysname] = spawnstruct();
+  level._systemstates[ssysname].callback = cbfunc;
 }
 
 /*
@@ -1212,9 +1042,8 @@ function register_system(ssysname, cbfunc)
 	Parameters: 7
 	Flags: Linked
 */
-function field_set_lighting_ent(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	level.light_entity = self;
+function field_set_lighting_ent(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  level.light_entity = self;
 }
 
 /*
@@ -1226,9 +1055,7 @@ function field_set_lighting_ent(localclientnum, oldval, newval, bnewent, binitia
 	Parameters: 7
 	Flags: Linked
 */
-function field_use_lighting_ent(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-}
+function field_use_lighting_ent(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
 /*
 	Name: waittill_dobj
@@ -1239,12 +1066,10 @@ function field_use_lighting_ent(localclientnum, oldval, newval, bnewent, binitia
 	Parameters: 1
 	Flags: Linked
 */
-function waittill_dobj(localclientnum)
-{
-	while(isdefined(self) && !self hasdobj(localclientnum))
-	{
-		wait(0.016);
-	}
+function waittill_dobj(localclientnum) {
+  while (isdefined(self) && !self hasdobj(localclientnum)) {
+    wait(0.016);
+  }
 }
 
 /*
@@ -1256,38 +1081,30 @@ function waittill_dobj(localclientnum)
 	Parameters: 4
 	Flags: Linked
 */
-function server_wait(localclientnum, seconds, waitbetweenchecks, level_endon)
-{
-	if(isdefined(level_endon))
-	{
-		level endon(level_endon);
-	}
-	if(level.isdemoplaying && seconds != 0)
-	{
-		if(!isdefined(waitbetweenchecks))
-		{
-			waitbetweenchecks = 0.2;
-		}
-		waitcompletedsuccessfully = 0;
-		starttime = level.servertime;
-		lasttime = starttime;
-		endtime = starttime + (seconds * 1000);
-		while(level.servertime < endtime && level.servertime >= lasttime)
-		{
-			lasttime = level.servertime;
-			wait(waitbetweenchecks);
-		}
-		if(lasttime < level.servertime)
-		{
-			waitcompletedsuccessfully = 1;
-		}
-	}
-	else
-	{
-		waitrealtime(seconds);
-		waitcompletedsuccessfully = 1;
-	}
-	return waitcompletedsuccessfully;
+function server_wait(localclientnum, seconds, waitbetweenchecks, level_endon) {
+  if(isdefined(level_endon)) {
+    level endon(level_endon);
+  }
+  if(level.isdemoplaying && seconds != 0) {
+    if(!isdefined(waitbetweenchecks)) {
+      waitbetweenchecks = 0.2;
+    }
+    waitcompletedsuccessfully = 0;
+    starttime = level.servertime;
+    lasttime = starttime;
+    endtime = starttime + (seconds * 1000);
+    while (level.servertime < endtime && level.servertime >= lasttime) {
+      lasttime = level.servertime;
+      wait(waitbetweenchecks);
+    }
+    if(lasttime < level.servertime) {
+      waitcompletedsuccessfully = 1;
+    }
+  } else {
+    waitrealtime(seconds);
+    waitcompletedsuccessfully = 1;
+  }
+  return waitcompletedsuccessfully;
 }
 
 /*
@@ -1299,30 +1116,23 @@ function server_wait(localclientnum, seconds, waitbetweenchecks, level_endon)
 	Parameters: 2
 	Flags: Linked
 */
-function friend_not_foe(localclientindex, predicted)
-{
-	player = getnonpredictedlocalplayer(localclientindex);
-	if(isdefined(predicted) && predicted || (isdefined(player) && isdefined(player.team) && player.team == "spectator"))
-	{
-		player = getlocalplayer(localclientindex);
-	}
-	if(isdefined(player) && isdefined(player.team))
-	{
-		team = player.team;
-		if(team == "free")
-		{
-			owner = self getowner(localclientindex);
-			if(isdefined(owner) && owner == player)
-			{
-				return true;
-			}
-		}
-		else if(self.team == team)
-		{
-			return true;
-		}
-	}
-	return false;
+function friend_not_foe(localclientindex, predicted) {
+  player = getnonpredictedlocalplayer(localclientindex);
+  if(isdefined(predicted) && predicted || (isdefined(player) && isdefined(player.team) && player.team == "spectator")) {
+    player = getlocalplayer(localclientindex);
+  }
+  if(isdefined(player) && isdefined(player.team)) {
+    team = player.team;
+    if(team == "free") {
+      owner = self getowner(localclientindex);
+      if(isdefined(owner) && owner == player) {
+        return true;
+      }
+    } else if(self.team == team) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /*
@@ -1334,21 +1144,17 @@ function friend_not_foe(localclientindex, predicted)
 	Parameters: 3
 	Flags: None
 */
-function friend_not_foe_team(localclientindex, team, predicted)
-{
-	player = getnonpredictedlocalplayer(localclientindex);
-	if(isdefined(predicted) && predicted || (isdefined(player) && isdefined(player.team) && player.team == "spectator"))
-	{
-		player = getlocalplayer(localclientindex);
-	}
-	if(isdefined(player) && isdefined(player.team))
-	{
-		if(player.team == team)
-		{
-			return true;
-		}
-	}
-	return false;
+function friend_not_foe_team(localclientindex, team, predicted) {
+  player = getnonpredictedlocalplayer(localclientindex);
+  if(isdefined(predicted) && predicted || (isdefined(player) && isdefined(player.team) && player.team == "spectator")) {
+    player = getlocalplayer(localclientindex);
+  }
+  if(isdefined(player) && isdefined(player.team)) {
+    if(player.team == team) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /*
@@ -1360,27 +1166,21 @@ function friend_not_foe_team(localclientindex, team, predicted)
 	Parameters: 1
 	Flags: None
 */
-function isenemyplayer(player)
-{
-	/#
-		assert(isdefined(player));
-	#/
-	if(!player isplayer())
-	{
-		return false;
-	}
-	if(player.team != "free")
-	{
-		if(player.team == self.team)
-		{
-			return false;
-		}
-	}
-	else if(player == self)
-	{
-		return false;
-	}
-	return true;
+function isenemyplayer(player) {
+  /#
+  assert(isdefined(player));
+  # /
+    if(!player isplayer()) {
+      return false;
+    }
+  if(player.team != "free") {
+    if(player.team == self.team) {
+      return false;
+    }
+  } else if(player == self) {
+    return false;
+  }
+  return true;
 }
 
 /*
@@ -1392,17 +1192,14 @@ function isenemyplayer(player)
 	Parameters: 1
 	Flags: Linked
 */
-function is_player_view_linked_to_entity(localclientnum)
-{
-	if(self isdriving(localclientnum))
-	{
-		return true;
-	}
-	if(self islocalplayerweaponviewonlylinked())
-	{
-		return true;
-	}
-	return false;
+function is_player_view_linked_to_entity(localclientnum) {
+  if(self isdriving(localclientnum)) {
+    return true;
+  }
+  if(self islocalplayerweaponviewonlylinked()) {
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -1414,20 +1211,18 @@ function is_player_view_linked_to_entity(localclientnum)
 	Parameters: 0
 	Flags: Linked
 */
-function init_utility()
-{
-	level.isdemoplaying = isdemoplaying();
-	level.localplayers = [];
-	level.numgametypereservedobjectives = [];
-	level.releasedobjectives = [];
-	maxlocalclients = getmaxlocalclients();
-	for(localclientnum = 0; localclientnum < maxlocalclients; localclientnum++)
-	{
-		level.releasedobjectives[localclientnum] = [];
-		level.numgametypereservedobjectives[localclientnum] = 0;
-	}
-	waitforclient(0);
-	level.localplayers = getlocalplayers();
+function init_utility() {
+  level.isdemoplaying = isdemoplaying();
+  level.localplayers = [];
+  level.numgametypereservedobjectives = [];
+  level.releasedobjectives = [];
+  maxlocalclients = getmaxlocalclients();
+  for (localclientnum = 0; localclientnum < maxlocalclients; localclientnum++) {
+    level.releasedobjectives[localclientnum] = [];
+    level.numgametypereservedobjectives[localclientnum] = 0;
+  }
+  waitforclient(0);
+  level.localplayers = getlocalplayers();
 }
 
 /*
@@ -1439,12 +1234,11 @@ function init_utility()
 	Parameters: 4
 	Flags: None
 */
-function within_fov(start_origin, start_angles, end_origin, fov)
-{
-	normal = vectornormalize(end_origin - start_origin);
-	forward = anglestoforward(start_angles);
-	dot = vectordot(forward, normal);
-	return dot >= fov;
+function within_fov(start_origin, start_angles, end_origin, fov) {
+  normal = vectornormalize(end_origin - start_origin);
+  forward = anglestoforward(start_angles);
+  dot = vectordot(forward, normal);
+  return dot >= fov;
 }
 
 /*
@@ -1456,9 +1250,8 @@ function within_fov(start_origin, start_angles, end_origin, fov)
 	Parameters: 0
 	Flags: Linked
 */
-function is_mature()
-{
-	return ismaturecontentenabled();
+function is_mature() {
+  return ismaturecontentenabled();
 }
 
 /*
@@ -1470,13 +1263,11 @@ function is_mature()
 	Parameters: 0
 	Flags: Linked
 */
-function is_gib_restricted_build()
-{
-	if(!(ismaturecontentenabled() && isshowgibsenabled()))
-	{
-		return true;
-	}
-	return false;
+function is_gib_restricted_build() {
+  if(!(ismaturecontentenabled() && isshowgibsenabled())) {
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -1488,28 +1279,24 @@ function is_gib_restricted_build()
 	Parameters: 2
 	Flags: None
 */
-function registersystem(ssysname, cbfunc)
-{
-	if(!isdefined(level._systemstates))
-	{
-		level._systemstates = [];
-	}
-	if(level._systemstates.size >= 32)
-	{
-		/#
-			error("");
-		#/
-		return;
-	}
-	if(isdefined(level._systemstates[ssysname]))
-	{
-		/#
-			error("" + ssysname);
-		#/
-		return;
-	}
-	level._systemstates[ssysname] = spawnstruct();
-	level._systemstates[ssysname].callback = cbfunc;
+function registersystem(ssysname, cbfunc) {
+  if(!isdefined(level._systemstates)) {
+    level._systemstates = [];
+  }
+  if(level._systemstates.size >= 32) {
+    /#
+    error("");
+    # /
+      return;
+  }
+  if(isdefined(level._systemstates[ssysname])) {
+    /#
+    error("" + ssysname);
+    # /
+      return;
+  }
+  level._systemstates[ssysname] = spawnstruct();
+  level._systemstates[ssysname].callback = cbfunc;
 }
 
 /*
@@ -1521,17 +1308,14 @@ function registersystem(ssysname, cbfunc)
 	Parameters: 0
 	Flags: Linked
 */
-function getstatstablename()
-{
-	if(sessionmodeiscampaigngame())
-	{
-		return "gamedata/stats/cp/cp_statstable.csv";
-	}
-	if(sessionmodeiszombiesgame())
-	{
-		return "gamedata/stats/zm/zm_statstable.csv";
-	}
-	return "gamedata/stats/mp/mp_statstable.csv";
+function getstatstablename() {
+  if(sessionmodeiscampaigngame()) {
+    return "gamedata/stats/cp/cp_statstable.csv";
+  }
+  if(sessionmodeiszombiesgame()) {
+    return "gamedata/stats/zm/zm_statstable.csv";
+  }
+  return "gamedata/stats/mp/mp_statstable.csv";
 }
 
 /*
@@ -1543,13 +1327,11 @@ function getstatstablename()
 	Parameters: 2
 	Flags: Linked
 */
-function add_trigger_to_ent(ent, trig)
-{
-	if(!isdefined(ent._triggers))
-	{
-		ent._triggers = [];
-	}
-	ent._triggers[trig getentitynumber()] = 1;
+function add_trigger_to_ent(ent, trig) {
+  if(!isdefined(ent._triggers)) {
+    ent._triggers = [];
+  }
+  ent._triggers[trig getentitynumber()] = 1;
 }
 
 /*
@@ -1561,17 +1343,14 @@ function add_trigger_to_ent(ent, trig)
 	Parameters: 2
 	Flags: Linked
 */
-function remove_trigger_from_ent(ent, trig)
-{
-	if(!isdefined(ent._triggers))
-	{
-		return;
-	}
-	if(!isdefined(ent._triggers[trig getentitynumber()]))
-	{
-		return;
-	}
-	ent._triggers[trig getentitynumber()] = 0;
+function remove_trigger_from_ent(ent, trig) {
+  if(!isdefined(ent._triggers)) {
+    return;
+  }
+  if(!isdefined(ent._triggers[trig getentitynumber()])) {
+    return;
+  }
+  ent._triggers[trig getentitynumber()] = 0;
 }
 
 /*
@@ -1583,21 +1362,17 @@ function remove_trigger_from_ent(ent, trig)
 	Parameters: 1
 	Flags: Linked
 */
-function ent_already_in_trigger(trig)
-{
-	if(!isdefined(self._triggers))
-	{
-		return false;
-	}
-	if(!isdefined(self._triggers[trig getentitynumber()]))
-	{
-		return false;
-	}
-	if(!self._triggers[trig getentitynumber()])
-	{
-		return false;
-	}
-	return true;
+function ent_already_in_trigger(trig) {
+  if(!isdefined(self._triggers)) {
+    return false;
+  }
+  if(!isdefined(self._triggers[trig getentitynumber()])) {
+    return false;
+  }
+  if(!self._triggers[trig getentitynumber()]) {
+    return false;
+  }
+  return true;
 }
 
 /*
@@ -1609,30 +1384,28 @@ function ent_already_in_trigger(trig)
 	Parameters: 3
 	Flags: None
 */
-function trigger_thread(ent, on_enter_payload, on_exit_payload)
-{
-	ent endon(#"entityshutdown");
-	if(ent ent_already_in_trigger(self))
-	{
-		return;
-	}
-	add_trigger_to_ent(ent, self);
-	if(isdefined(on_enter_payload))
-	{
-		[[on_enter_payload]](ent);
-	}
-	while(isdefined(ent) && ent istouching(self))
-	{
-		wait(0.016);
-	}
-	if(isdefined(ent) && isdefined(on_exit_payload))
-	{
-		[[on_exit_payload]](ent);
-	}
-	if(isdefined(ent))
-	{
-		remove_trigger_from_ent(ent, self);
-	}
+function trigger_thread(ent, on_enter_payload, on_exit_payload) {
+  ent endon(# "entityshutdown");
+  if(ent ent_already_in_trigger(self)) {
+    return;
+  }
+  add_trigger_to_ent(ent, self);
+  if(isdefined(on_enter_payload)) {
+    [
+      [on_enter_payload]
+    ](ent);
+  }
+  while (isdefined(ent) && ent istouching(self)) {
+    wait(0.016);
+  }
+  if(isdefined(ent) && isdefined(on_exit_payload)) {
+    [
+      [on_exit_payload]
+    ](ent);
+  }
+  if(isdefined(ent)) {
+    remove_trigger_from_ent(ent, self);
+  }
 }
 
 /*
@@ -1644,29 +1417,27 @@ function trigger_thread(ent, on_enter_payload, on_exit_payload)
 	Parameters: 3
 	Flags: None
 */
-function local_player_trigger_thread_always_exit(ent, on_enter_payload, on_exit_payload)
-{
-	if(ent ent_already_in_trigger(self))
-	{
-		return;
-	}
-	add_trigger_to_ent(ent, self);
-	if(isdefined(on_enter_payload))
-	{
-		[[on_enter_payload]](ent);
-	}
-	while(isdefined(ent) && ent istouching(self) && ent issplitscreenhost())
-	{
-		wait(0.016);
-	}
-	if(isdefined(on_exit_payload))
-	{
-		[[on_exit_payload]](ent);
-	}
-	if(isdefined(ent))
-	{
-		remove_trigger_from_ent(ent, self);
-	}
+function local_player_trigger_thread_always_exit(ent, on_enter_payload, on_exit_payload) {
+  if(ent ent_already_in_trigger(self)) {
+    return;
+  }
+  add_trigger_to_ent(ent, self);
+  if(isdefined(on_enter_payload)) {
+    [
+      [on_enter_payload]
+    ](ent);
+  }
+  while (isdefined(ent) && ent istouching(self) && ent issplitscreenhost()) {
+    wait(0.016);
+  }
+  if(isdefined(on_exit_payload)) {
+    [
+      [on_exit_payload]
+    ](ent);
+  }
+  if(isdefined(ent)) {
+    remove_trigger_from_ent(ent, self);
+  }
 }
 
 /*
@@ -1678,11 +1449,10 @@ function local_player_trigger_thread_always_exit(ent, on_enter_payload, on_exit_
 	Parameters: 7
 	Flags: Linked
 */
-function local_player_entity_thread(localclientnum, entity, func, arg1, arg2, arg3, arg4)
-{
-	entity endon(#"entityshutdown");
-	entity waittill_dobj(localclientnum);
-	single_thread(entity, func, localclientnum, arg1, arg2, arg3, arg4);
+function local_player_entity_thread(localclientnum, entity, func, arg1, arg2, arg3, arg4) {
+  entity endon(# "entityshutdown");
+  entity waittill_dobj(localclientnum);
+  single_thread(entity, func, localclientnum, arg1, arg2, arg3, arg4);
 }
 
 /*
@@ -1694,13 +1464,11 @@ function local_player_entity_thread(localclientnum, entity, func, arg1, arg2, ar
 	Parameters: 6
 	Flags: None
 */
-function local_players_entity_thread(entity, func, arg1, arg2, arg3, arg4)
-{
-	players = level.localplayers;
-	for(i = 0; i < players.size; i++)
-	{
-		players[i] thread local_player_entity_thread(i, entity, func, arg1, arg2, arg3, arg4);
-	}
+function local_players_entity_thread(entity, func, arg1, arg2, arg3, arg4) {
+  players = level.localplayers;
+  for (i = 0; i < players.size; i++) {
+    players[i] thread local_player_entity_thread(i, entity, func, arg1, arg2, arg3, arg4);
+  }
 }
 
 /*
@@ -1712,19 +1480,16 @@ function local_players_entity_thread(entity, func, arg1, arg2, arg3, arg4)
 	Parameters: 4
 	Flags: None
 */
-function debug_line(from, to, color, time)
-{
-	/#
-		level.debug_line = getdvarint("", 0);
-		if(isdefined(level.debug_line) && level.debug_line == 1)
-		{
-			if(!isdefined(time))
-			{
-				time = 1000;
-			}
-			line(from, to, color, 1, 1, time);
-		}
-	#/
+function debug_line(from, to, color, time) {
+  /#
+  level.debug_line = getdvarint("", 0);
+  if(isdefined(level.debug_line) && level.debug_line == 1) {
+    if(!isdefined(time)) {
+      time = 1000;
+    }
+    line(from, to, color, 1, 1, time);
+  }
+  # /
 }
 
 /*
@@ -1736,23 +1501,19 @@ function debug_line(from, to, color, time)
 	Parameters: 3
 	Flags: None
 */
-function debug_star(origin, color, time)
-{
-	/#
-		level.debug_star = getdvarint("", 0);
-		if(isdefined(level.debug_star) && level.debug_star == 1)
-		{
-			if(!isdefined(time))
-			{
-				time = 1000;
-			}
-			if(!isdefined(color))
-			{
-				color = (1, 1, 1);
-			}
-			debugstar(origin, time, color);
-		}
-	#/
+function debug_star(origin, color, time) {
+  /#
+  level.debug_star = getdvarint("", 0);
+  if(isdefined(level.debug_star) && level.debug_star == 1) {
+    if(!isdefined(time)) {
+      time = 1000;
+    }
+    if(!isdefined(color)) {
+      color = (1, 1, 1);
+    }
+    debugstar(origin, time, color);
+  }
+  # /
 }
 
 /*
@@ -1764,13 +1525,11 @@ function debug_star(origin, color, time)
 	Parameters: 0
 	Flags: None
 */
-function servertime()
-{
-	for(;;)
-	{
-		level.servertime = getservertime(0);
-		wait(0.016);
-	}
+function servertime() {
+  for (;;) {
+    level.servertime = getservertime(0);
+    wait(0.016);
+  }
 }
 
 /*
@@ -1782,33 +1541,27 @@ function servertime()
 	Parameters: 1
 	Flags: None
 */
-function getnextobjid(localclientnum)
-{
-	nextid = 0;
-	if(level.releasedobjectives[localclientnum].size > 0)
-	{
-		nextid = level.releasedobjectives[localclientnum][level.releasedobjectives[localclientnum].size - 1];
-		level.releasedobjectives[localclientnum][level.releasedobjectives[localclientnum].size - 1] = undefined;
-	}
-	else
-	{
-		nextid = level.numgametypereservedobjectives[localclientnum];
-		level.numgametypereservedobjectives[localclientnum]++;
-	}
-	/#
-		if(nextid > 31)
-		{
-			println("");
-		}
-		/#
-			assert(nextid < 32);
-		#/
-	#/
-	if(nextid > 31)
-	{
-		nextid = 31;
-	}
-	return nextid;
+function getnextobjid(localclientnum) {
+  nextid = 0;
+  if(level.releasedobjectives[localclientnum].size > 0) {
+    nextid = level.releasedobjectives[localclientnum][level.releasedobjectives[localclientnum].size - 1];
+    level.releasedobjectives[localclientnum][level.releasedobjectives[localclientnum].size - 1] = undefined;
+  } else {
+    nextid = level.numgametypereservedobjectives[localclientnum];
+    level.numgametypereservedobjectives[localclientnum]++;
+  }
+  /#
+  if(nextid > 31) {
+    println("");
+  }
+  /#
+  assert(nextid < 32);
+  # /
+    # /
+    if(nextid > 31) {
+      nextid = 31;
+    }
+  return nextid;
 }
 
 /*
@@ -1820,19 +1573,16 @@ function getnextobjid(localclientnum)
 	Parameters: 2
 	Flags: None
 */
-function releaseobjid(localclientnum, objid)
-{
-	/#
-		assert(objid < level.numgametypereservedobjectives[localclientnum]);
-	#/
-	for(i = 0; i < level.releasedobjectives[localclientnum].size; i++)
-	{
-		if(objid == level.releasedobjectives[localclientnum][i])
-		{
-			return;
-		}
-	}
-	level.releasedobjectives[localclientnum][level.releasedobjectives[localclientnum].size] = objid;
+function releaseobjid(localclientnum, objid) {
+  /#
+  assert(objid < level.numgametypereservedobjectives[localclientnum]);
+  # /
+    for (i = 0; i < level.releasedobjectives[localclientnum].size; i++) {
+      if(objid == level.releasedobjectives[localclientnum][i]) {
+        return;
+      }
+    }
+  level.releasedobjectives[localclientnum][level.releasedobjectives[localclientnum].size] = objid;
 }
 
 /*
@@ -1844,27 +1594,22 @@ function releaseobjid(localclientnum, objid)
 	Parameters: 1
 	Flags: Linked
 */
-function get_next_safehouse(str_next_map)
-{
-	switch(str_next_map)
-	{
-		case "cp_mi_sing_biodomes":
-		case "cp_mi_sing_blackstation":
-		case "cp_mi_sing_sgen":
-		{
-			return "cp_sh_singapore";
-		}
-		case "cp_mi_cairo_aquifer":
-		case "cp_mi_cairo_infection":
-		case "cp_mi_cairo_lotus":
-		{
-			return "cp_sh_cairo";
-		}
-		default:
-		{
-			return "cp_sh_mobile";
-		}
-	}
+function get_next_safehouse(str_next_map) {
+  switch (str_next_map) {
+    case "cp_mi_sing_biodomes":
+    case "cp_mi_sing_blackstation":
+    case "cp_mi_sing_sgen": {
+      return "cp_sh_singapore";
+    }
+    case "cp_mi_cairo_aquifer":
+    case "cp_mi_cairo_infection":
+    case "cp_mi_cairo_lotus": {
+      return "cp_sh_cairo";
+    }
+    default: {
+      return "cp_sh_mobile";
+    }
+  }
 }
 
 /*
@@ -1876,21 +1621,17 @@ function get_next_safehouse(str_next_map)
 	Parameters: 1
 	Flags: Linked
 */
-function is_safehouse(str_next_map = tolower(getdvarstring("mapname")))
-{
-	switch(str_next_map)
-	{
-		case "cp_sh_cairo":
-		case "cp_sh_mobile":
-		case "cp_sh_singapore":
-		{
-			return true;
-		}
-		default:
-		{
-			return false;
-		}
-	}
+function is_safehouse(str_next_map = tolower(getdvarstring("mapname"))) {
+  switch (str_next_map) {
+    case "cp_sh_cairo":
+    case "cp_sh_mobile":
+    case "cp_sh_singapore": {
+      return true;
+    }
+    default: {
+      return false;
+    }
+  }
 }
 
 /*
@@ -1902,46 +1643,34 @@ function is_safehouse(str_next_map = tolower(getdvarstring("mapname")))
 	Parameters: 1
 	Flags: Linked
 */
-function button_held_think(which_button)
-{
-	/#
-		self endon(#"disconnect");
-		if(!isdefined(self._holding_button))
-		{
-			self._holding_button = [];
-		}
-		self._holding_button[which_button] = 0;
-		time_started = 0;
-		while(true)
-		{
-			if(self._holding_button[which_button])
-			{
-				if(!self [[level._button_funcs[which_button]]]())
-				{
-					self._holding_button[which_button] = 0;
-				}
-			}
-			else
-			{
-				if(self [[level._button_funcs[which_button]]]())
-				{
-					if(time_started == 0)
-					{
-						time_started = gettime();
-					}
-					if((gettime() - time_started) > 250)
-					{
-						self._holding_button[which_button] = 1;
-					}
-				}
-				else if(time_started != 0)
-				{
-					time_started = 0;
-				}
-			}
-			wait(0.016);
-		}
-	#/
+function button_held_think(which_button) {
+  /#
+  self endon(# "disconnect");
+  if(!isdefined(self._holding_button)) {
+    self._holding_button = [];
+  }
+  self._holding_button[which_button] = 0;
+  time_started = 0;
+  while (true) {
+    if(self._holding_button[which_button]) {
+      if(!self[[level._button_funcs[which_button]]]()) {
+        self._holding_button[which_button] = 0;
+      }
+    } else {
+      if(self[[level._button_funcs[which_button]]]()) {
+        if(time_started == 0) {
+          time_started = gettime();
+        }
+        if((gettime() - time_started) > 250) {
+          self._holding_button[which_button] = 1;
+        }
+      } else if(time_started != 0) {
+        time_started = 0;
+      }
+    }
+    wait(0.016);
+  }
+  # /
 }
 
 /*
@@ -1953,15 +1682,13 @@ function button_held_think(which_button)
 	Parameters: 0
 	Flags: Linked
 */
-function init_button_wrappers()
-{
-	/#
-		if(!isdefined(level._button_funcs))
-		{
-			level._button_funcs[4] = &up_button_pressed;
-			level._button_funcs[5] = &down_button_pressed;
-		}
-	#/
+function init_button_wrappers() {
+  /#
+  if(!isdefined(level._button_funcs)) {
+    level._button_funcs[4] = & up_button_pressed;
+    level._button_funcs[5] = & down_button_pressed;
+  }
+  # /
 }
 
 /*
@@ -1973,17 +1700,15 @@ function init_button_wrappers()
 	Parameters: 0
 	Flags: Linked
 */
-function up_button_held()
-{
-	/#
-		init_button_wrappers();
-		if(!isdefined(self._up_button_think_threaded))
-		{
-			self thread button_held_think(4);
-			self._up_button_think_threaded = 1;
-		}
-		return self._holding_button[4];
-	#/
+function up_button_held() {
+  /#
+  init_button_wrappers();
+  if(!isdefined(self._up_button_think_threaded)) {
+    self thread button_held_think(4);
+    self._up_button_think_threaded = 1;
+  }
+  return self._holding_button[4];
+  # /
 }
 
 /*
@@ -1995,17 +1720,15 @@ function up_button_held()
 	Parameters: 0
 	Flags: Linked
 */
-function down_button_held()
-{
-	/#
-		init_button_wrappers();
-		if(!isdefined(self._down_button_think_threaded))
-		{
-			self thread button_held_think(5);
-			self._down_button_think_threaded = 1;
-		}
-		return self._holding_button[5];
-	#/
+function down_button_held() {
+  /#
+  init_button_wrappers();
+  if(!isdefined(self._down_button_think_threaded)) {
+    self thread button_held_think(5);
+    self._down_button_think_threaded = 1;
+  }
+  return self._holding_button[5];
+  # /
 }
 
 /*
@@ -2017,11 +1740,10 @@ function down_button_held()
 	Parameters: 0
 	Flags: Linked
 */
-function up_button_pressed()
-{
-	/#
-		return self buttonpressed("") || self buttonpressed("");
-	#/
+function up_button_pressed() {
+  /#
+  return self buttonpressed("") || self buttonpressed("");
+  # /
 }
 
 /*
@@ -2033,14 +1755,12 @@ function up_button_pressed()
 	Parameters: 0
 	Flags: None
 */
-function waittill_up_button_pressed()
-{
-	/#
-		while(!self up_button_pressed())
-		{
-			wait(0.05);
-		}
-	#/
+function waittill_up_button_pressed() {
+  /#
+  while (!self up_button_pressed()) {
+    wait(0.05);
+  }
+  # /
 }
 
 /*
@@ -2052,11 +1772,10 @@ function waittill_up_button_pressed()
 	Parameters: 0
 	Flags: Linked
 */
-function down_button_pressed()
-{
-	/#
-		return self buttonpressed("") || self buttonpressed("");
-	#/
+function down_button_pressed() {
+  /#
+  return self buttonpressed("") || self buttonpressed("");
+  # /
 }
 
 /*
@@ -2068,13 +1787,10 @@ function down_button_pressed()
 	Parameters: 0
 	Flags: None
 */
-function waittill_down_button_pressed()
-{
-	/#
-		while(!self down_button_pressed())
-		{
-			wait(0.05);
-		}
-	#/
+function waittill_down_button_pressed() {
+  /#
+  while (!self down_button_pressed()) {
+    wait(0.05);
+  }
+  # /
 }
-

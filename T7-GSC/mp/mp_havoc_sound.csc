@@ -12,7 +12,4 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-}
-
+function main() {}

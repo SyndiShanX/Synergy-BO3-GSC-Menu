@@ -14,10 +14,9 @@
 	Parameters: 0
 	Flags: None
 */
-function init_shared()
-{
-	level thread level_watch_for_fake_fire();
-	callback::add_weapon_type("nightingale", &spawned);
+function init_shared() {
+  level thread level_watch_for_fake_fire();
+  callback::add_weapon_type("nightingale", & spawned);
 }
 
 /*
@@ -29,9 +28,8 @@ function init_shared()
 	Parameters: 1
 	Flags: None
 */
-function spawned(localclientnum)
-{
-	self thread watch_for_fake_fire(localclientnum);
+function spawned(localclientnum) {
+  self thread watch_for_fake_fire(localclientnum);
 }
 
 /*
@@ -43,14 +41,12 @@ function spawned(localclientnum)
 	Parameters: 1
 	Flags: None
 */
-function watch_for_fake_fire(localclientnum)
-{
-	self endon(#"entityshutdown");
-	while(true)
-	{
-		self waittill(#"fake_fire");
-		playfxontag(localclientnum, level._effect["decoy_fire"], self, "tag_origin");
-	}
+function watch_for_fake_fire(localclientnum) {
+  self endon(# "entityshutdown");
+  while (true) {
+    self waittill(# "fake_fire");
+    playfxontag(localclientnum, level._effect["decoy_fire"], self, "tag_origin");
+  }
 }
 
 /*
@@ -62,11 +58,8 @@ function watch_for_fake_fire(localclientnum)
 	Parameters: 0
 	Flags: None
 */
-function level_watch_for_fake_fire()
-{
-	while(true)
-	{
-		self waittill(#"fake_fire", origin);
-	}
+function level_watch_for_fake_fire() {
+  while (true) {
+    self waittill(# "fake_fire", origin);
+  }
 }
-

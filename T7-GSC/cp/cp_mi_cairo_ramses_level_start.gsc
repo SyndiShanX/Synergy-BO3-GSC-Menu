@@ -32,9 +32,8 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	// Unsupported VM revision (1B).
+function main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -46,9 +45,8 @@ function main()
 	Parameters: 1
 	Flags: None
 */
-function init_heroes()
-{
-	// Unsupported VM revision (1B).
+function init_heroes() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -60,9 +58,8 @@ function init_heroes()
 	Parameters: 0
 	Flags: None
 */
-function setup_players_for_station_walk()
-{
-	// Unsupported VM revision (1B).
+function setup_players_for_station_walk() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -74,9 +71,8 @@ function setup_players_for_station_walk()
 	Parameters: 0
 	Flags: None
 */
-function tether_player_to_hendricks()
-{
-	// Unsupported VM revision (1B).
+function tether_player_to_hendricks() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -88,9 +84,8 @@ function tether_player_to_hendricks()
 	Parameters: 0
 	Flags: None
 */
-function setup_players_for_station_fight()
-{
-	// Unsupported VM revision (1B).
+function setup_players_for_station_fight() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -102,9 +97,8 @@ function setup_players_for_station_fight()
 	Parameters: 0
 	Flags: None
 */
-function ramses_station_intro_igc()
-{
-	// Unsupported VM revision (1B).
+function ramses_station_intro_igc() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -116,9 +110,8 @@ function ramses_station_intro_igc()
 	Parameters: 0
 	Flags: None
 */
-function function_1f8e97be()
-{
-	// Unsupported VM revision (1B).
+function function_1f8e97be() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -130,9 +123,8 @@ function function_1f8e97be()
 	Parameters: 0
 	Flags: None
 */
-function set_up_train()
-{
-	// Unsupported VM revision (1B).
+function set_up_train() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -144,9 +136,8 @@ function set_up_train()
 	Parameters: 1
 	Flags: None
 */
-function station_intro_scene_init()
-{
-	// Unsupported VM revision (1B).
+function station_intro_scene_init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -158,9 +149,8 @@ function station_intro_scene_init()
 	Parameters: 1
 	Flags: None
 */
-function enterstation_1st_ride_done_func()
-{
-	// Unsupported VM revision (1B).
+function enterstation_1st_ride_done_func() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -172,9 +162,8 @@ function enterstation_1st_ride_done_func()
 	Parameters: 1
 	Flags: None
 */
-function attach_extracam_to_traincar()
-{
-	// Unsupported VM revision (1B).
+function attach_extracam_to_traincar() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -186,9 +175,8 @@ function attach_extracam_to_traincar()
 	Parameters: 0
 	Flags: None
 */
-function enterstation_1st_ride_arrival_rumble()
-{
-	// Unsupported VM revision (1B).
+function enterstation_1st_ride_arrival_rumble() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -200,9 +188,8 @@ function enterstation_1st_ride_arrival_rumble()
 	Parameters: 0
 	Flags: None
 */
-function enterstation_1st_ride_stop_rumble()
-{
-	// Unsupported VM revision (1B).
+function enterstation_1st_ride_stop_rumble() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -214,9 +201,8 @@ function enterstation_1st_ride_stop_rumble()
 	Parameters: 1
 	Flags: None
 */
-function function_ba280036()
-{
-	// Unsupported VM revision (1B).
+function function_ba280036() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -228,9 +214,8 @@ function function_ba280036()
 	Parameters: 0
 	Flags: None
 */
-function turn_on_reflection_extracam()
-{
-	// Unsupported VM revision (1B).
+function turn_on_reflection_extracam() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -242,9 +227,8 @@ function turn_on_reflection_extracam()
 	Parameters: 0
 	Flags: None
 */
-function turn_off_reflection_extracam()
-{
-	// Unsupported VM revision (1B).
+function turn_off_reflection_extracam() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -256,9 +240,8 @@ function turn_off_reflection_extracam()
 	Parameters: 2
 	Flags: None
 */
-function link_ents()
-{
-	// Unsupported VM revision (1B).
+function link_ents() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -270,8 +253,6 @@ function link_ents()
 	Parameters: 0
 	Flags: None
 */
-function link_players()
-{
-	// Unsupported VM revision (1B).
+function link_players() {
+  // Unsupported VM revision (1B).
 }
-

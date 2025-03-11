@@ -22,9 +22,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main_start()
-{
-}
+function main_start() {}
 
 /*
 	Name: main_end
@@ -35,8 +33,6 @@ function main_start()
 	Parameters: 0
 	Flags: Linked
 */
-function main_end()
-{
-	spawncollision("collision_player_wall_64x64x10", "collider", (1256, 355.5, 197), vectorscale((0, 1, 0), 270));
+function main_end() {
+  spawncollision("collision_player_wall_64x64x10", "collider", (1256, 355.5, 197), vectorscale((0, 1, 0), 270));
 }
-

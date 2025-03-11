@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_powerup_ww_grenade", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_powerup_ww_grenade", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,9 +27,7 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	zm_powerups::include_zombie_powerup("ww_grenade");
-	zm_powerups::add_zombie_powerup("ww_grenade");
+function __init__() {
+  zm_powerups::include_zombie_powerup("ww_grenade");
+  zm_powerups::add_zombie_powerup("ww_grenade");
 }
-

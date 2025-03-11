@@ -36,11 +36,10 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec init()
-{
-	initzombiebehaviorsandasm();
-	spawner::add_archetype_spawn_function("zombie_quad", &archetypequadblackboardinit);
-	spawner::add_archetype_spawn_function("zombie_quad", &quadspawnsetup);
+function autoexec init() {
+  initzombiebehaviorsandasm();
+  spawner::add_archetype_spawn_function("zombie_quad", & archetypequadblackboardinit);
+  spawner::add_archetype_spawn_function("zombie_quad", & quadspawnsetup);
 }
 
 /*
@@ -52,43 +51,38 @@ function autoexec init()
 	Parameters: 0
 	Flags: Linked
 */
-function archetypequadblackboardinit()
-{
-	blackboard::createblackboardforentity(self);
-	self aiutility::registerutilityblackboardattributes();
-	ai::createinterfaceforentity(self);
-	blackboard::registerblackboardattribute(self, "_locomotion_speed", "locomotion_speed_walk", &zombiebehavior::bb_getlocomotionspeedtype);
-	if(isactor(self))
-	{
-		/#
-			self trackblackboardattribute("");
-		#/
-	}
-	blackboard::registerblackboardattribute(self, "_quad_wall_crawl", undefined, undefined);
-	if(isactor(self))
-	{
-		/#
-			self trackblackboardattribute("");
-		#/
-	}
-	blackboard::registerblackboardattribute(self, "_quad_phase_direction", undefined, undefined);
-	if(isactor(self))
-	{
-		/#
-			self trackblackboardattribute("");
-		#/
-	}
-	blackboard::registerblackboardattribute(self, "_quad_phase_distance", undefined, undefined);
-	if(isactor(self))
-	{
-		/#
-			self trackblackboardattribute("");
-		#/
-	}
-	self.___archetypeonanimscriptedcallback = &archetypequadonanimscriptedcallback;
-	/#
-		self finalizetrackedblackboardattributes();
-	#/
+function archetypequadblackboardinit() {
+  blackboard::createblackboardforentity(self);
+  self aiutility::registerutilityblackboardattributes();
+  ai::createinterfaceforentity(self);
+  blackboard::registerblackboardattribute(self, "_locomotion_speed", "locomotion_speed_walk", & zombiebehavior::bb_getlocomotionspeedtype);
+  if(isactor(self)) {
+    /#
+    self trackblackboardattribute("");
+    # /
+  }
+  blackboard::registerblackboardattribute(self, "_quad_wall_crawl", undefined, undefined);
+  if(isactor(self)) {
+    /#
+    self trackblackboardattribute("");
+    # /
+  }
+  blackboard::registerblackboardattribute(self, "_quad_phase_direction", undefined, undefined);
+  if(isactor(self)) {
+    /#
+    self trackblackboardattribute("");
+    # /
+  }
+  blackboard::registerblackboardattribute(self, "_quad_phase_distance", undefined, undefined);
+  if(isactor(self)) {
+    /#
+    self trackblackboardattribute("");
+    # /
+  }
+  self.___archetypeonanimscriptedcallback = & archetypequadonanimscriptedcallback;
+  /#
+  self finalizetrackedblackboardattributes();
+  # /
 }
 
 /*
@@ -100,10 +94,9 @@ function archetypequadblackboardinit()
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private archetypequadonanimscriptedcallback(entity)
-{
-	entity.__blackboard = undefined;
-	entity archetypequadblackboardinit();
+function private archetypequadonanimscriptedcallback(entity) {
+  entity.__blackboard = undefined;
+  entity archetypequadblackboardinit();
 }
 
 /*
@@ -115,9 +108,8 @@ function private archetypequadonanimscriptedcallback(entity)
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private initzombiebehaviorsandasm()
-{
-	animationstatenetwork::registeranimationmocomp("mocomp_teleport_traversal@zombie_quad", &quadteleporttraversalmocompstart, undefined, undefined);
+function private initzombiebehaviorsandasm() {
+  animationstatenetwork::registeranimationmocomp("mocomp_teleport_traversal@zombie_quad", & quadteleporttraversalmocompstart, undefined, undefined);
 }
 
 /*
@@ -129,9 +121,8 @@ function private initzombiebehaviorsandasm()
 	Parameters: 0
 	Flags: Linked
 */
-function quadspawnsetup()
-{
-	self setpitchorient();
+function quadspawnsetup() {
+  self setpitchorient();
 }
 
 /*
@@ -143,18 +134,15 @@ function quadspawnsetup()
 	Parameters: 5
 	Flags: Linked
 */
-function quadteleporttraversalmocompstart(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration)
-{
-	entity orientmode("face angle", entity.angles[1]);
-	entity animmode("normal");
-	if(isdefined(entity.traverseendnode))
-	{
-		/#
-			print3d(entity.traversestartnode.origin, "", (1, 0, 0), 1, 1, 60);
-			print3d(entity.traverseendnode.origin, "", (0, 1, 0), 1, 1, 60);
-			line(entity.traversestartnode.origin, entity.traverseendnode.origin, (0, 1, 0), 1, 0, 60);
-		#/
-		entity forceteleport(entity.traverseendnode.origin, entity.traverseendnode.angles, 0);
-	}
+function quadteleporttraversalmocompstart(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
+  entity orientmode("face angle", entity.angles[1]);
+  entity animmode("normal");
+  if(isdefined(entity.traverseendnode)) {
+    /#
+    print3d(entity.traversestartnode.origin, "", (1, 0, 0), 1, 1, 60);
+    print3d(entity.traverseendnode.origin, "", (0, 1, 0), 1, 1, 60);
+    line(entity.traversestartnode.origin, entity.traverseendnode.origin, (0, 1, 0), 1, 0, 60);
+    # /
+      entity forceteleport(entity.traverseendnode.origin, entity.traverseendnode.angles, 0);
+  }
 }
-

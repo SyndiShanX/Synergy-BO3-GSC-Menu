@@ -19,11 +19,9 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	core_frontend_fx::main();
-	core_frontend_sound::main();
-	util::waitforclient(0);
-	forcestreamxmodel("p7_monitor_wall_theater_01");
+function main() {
+  core_frontend_fx::main();
+  core_frontend_sound::main();
+  util::waitforclient(0);
+  forcestreamxmodel("p7_monitor_wall_theater_01");
 }
-

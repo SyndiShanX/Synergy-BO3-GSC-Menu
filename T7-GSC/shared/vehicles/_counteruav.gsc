@@ -23,9 +23,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("counteruav", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("counteruav", & __init__, undefined, undefined);
 }
 
 /*
@@ -37,9 +36,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-	vehicle::add_main_callback("counteruav", &counteruav_initialize);
+function __init__() {
+  vehicle::add_main_callback("counteruav", & counteruav_initialize);
 }
 
 /*
@@ -51,27 +49,27 @@ function __init__()
 	Parameters: 0
 	Flags: None
 */
-function counteruav_initialize()
-{
-	self useanimtree($generic);
-	target_set(self, (0, 0, 0));
-	self.health = self.healthdefault;
-	self vehicle::friendly_fire_shield();
-	self setvehicleavoidance(1);
-	self sethoverparams(50, 100, 100);
-	self.vehaircraftcollisionenabled = 1;
-	/#
-		assert(isdefined(self.scriptbundlesettings));
-	#/
-	self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
-	self.goalradius = 999999;
-	self.goalheight = 999999;
-	self setgoal(self.origin, 0, self.goalradius, self.goalheight);
-	self.overridevehicledamage = &drone_callback_damage;
-	if(isdefined(level.vehicle_initializer_cb))
-	{
-		[[level.vehicle_initializer_cb]](self);
-	}
+function counteruav_initialize() {
+  self useanimtree($generic);
+  target_set(self, (0, 0, 0));
+  self.health = self.healthdefault;
+  self vehicle::friendly_fire_shield();
+  self setvehicleavoidance(1);
+  self sethoverparams(50, 100, 100);
+  self.vehaircraftcollisionenabled = 1;
+  /#
+  assert(isdefined(self.scriptbundlesettings));
+  # /
+    self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
+  self.goalradius = 999999;
+  self.goalheight = 999999;
+  self setgoal(self.origin, 0, self.goalradius, self.goalheight);
+  self.overridevehicledamage = & drone_callback_damage;
+  if(isdefined(level.vehicle_initializer_cb)) {
+    [
+      [level.vehicle_initializer_cb]
+    ](self);
+  }
 }
 
 /*
@@ -83,9 +81,7 @@ function counteruav_initialize()
 	Parameters: 15
 	Flags: None
 */
-function drone_callback_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal)
-{
-	idamage = vehicle_ai::shared_callback_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal);
-	return idamage;
+function drone_callback_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
+  idamage = vehicle_ai::shared_callback_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal);
+  return idamage;
 }
-

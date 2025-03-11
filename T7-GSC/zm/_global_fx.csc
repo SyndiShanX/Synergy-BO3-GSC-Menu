@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("global_fx", &__init__, &main, undefined);
+function autoexec __init__sytem__() {
+  system::register("global_fx", & __init__, & main, undefined);
 }
 
 /*
@@ -27,9 +26,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	wind_initial_setting();
+function __init__() {
+  wind_initial_setting();
 }
 
 /*
@@ -41,9 +39,8 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	check_for_wind_override();
+function main() {
+  check_for_wind_override();
 }
 
 /*
@@ -55,13 +52,12 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function wind_initial_setting()
-{
-	setsaveddvar("enable_global_wind", 0);
-	setsaveddvar("wind_global_vector", "0 0 0");
-	setsaveddvar("wind_global_low_altitude", 0);
-	setsaveddvar("wind_global_hi_altitude", 10000);
-	setsaveddvar("wind_global_low_strength_percent", 0.5);
+function wind_initial_setting() {
+  setsaveddvar("enable_global_wind", 0);
+  setsaveddvar("wind_global_vector", "0 0 0");
+  setsaveddvar("wind_global_low_altitude", 0);
+  setsaveddvar("wind_global_hi_altitude", 10000);
+  setsaveddvar("wind_global_low_strength_percent", 0.5);
 }
 
 /*
@@ -73,11 +69,8 @@ function wind_initial_setting()
 	Parameters: 0
 	Flags: Linked
 */
-function check_for_wind_override()
-{
-	if(isdefined(level.custom_wind_callback))
-	{
-		level thread [[level.custom_wind_callback]]();
-	}
+function check_for_wind_override() {
+  if(isdefined(level.custom_wind_callback)) {
+    level thread[[level.custom_wind_callback]]();
+  }
 }
-

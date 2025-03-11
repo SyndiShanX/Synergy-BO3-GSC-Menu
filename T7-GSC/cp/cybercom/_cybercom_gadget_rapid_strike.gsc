@@ -29,9 +29,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-}
+function init() {}
 
 /*
 	Name: main
@@ -42,18 +40,17 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	cybercom_gadget::registerability(1, 64);
-	callback::on_spawned(&on_player_spawned);
-	level.cybercom.rapid_strike = spawnstruct();
-	level.cybercom.rapid_strike._is_flickering = &_is_flickering;
-	level.cybercom.rapid_strike._on_flicker = &_on_flicker;
-	level.cybercom.rapid_strike._on_give = &_on_give;
-	level.cybercom.rapid_strike._on_take = &_on_take;
-	level.cybercom.rapid_strike._on_connect = &_on_connect;
-	level.cybercom.rapid_strike._on = &_on;
-	level.cybercom.rapid_strike._off = &_off;
+function main() {
+  cybercom_gadget::registerability(1, 64);
+  callback::on_spawned( & on_player_spawned);
+  level.cybercom.rapid_strike = spawnstruct();
+  level.cybercom.rapid_strike._is_flickering = & _is_flickering;
+  level.cybercom.rapid_strike._on_flicker = & _on_flicker;
+  level.cybercom.rapid_strike._on_give = & _on_give;
+  level.cybercom.rapid_strike._on_take = & _on_take;
+  level.cybercom.rapid_strike._on_connect = & _on_connect;
+  level.cybercom.rapid_strike._on = & _on;
+  level.cybercom.rapid_strike._off = & _off;
 }
 
 /*
@@ -65,9 +62,7 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_spawned()
-{
-}
+function on_player_spawned() {}
 
 /*
 	Name: _is_flickering
@@ -78,9 +73,7 @@ function on_player_spawned()
 	Parameters: 1
 	Flags: Linked
 */
-function _is_flickering(slot)
-{
-}
+function _is_flickering(slot) {}
 
 /*
 	Name: _on_flicker
@@ -91,9 +84,7 @@ function _is_flickering(slot)
 	Parameters: 2
 	Flags: Linked
 */
-function _on_flicker(slot, weapon)
-{
-}
+function _on_flicker(slot, weapon) {}
 
 /*
 	Name: _on_give
@@ -104,9 +95,8 @@ function _on_flicker(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function _on_give(slot, weapon)
-{
-	self thread function_677ed44f(weapon);
+function _on_give(slot, weapon) {
+  self thread function_677ed44f(weapon);
 }
 
 /*
@@ -118,9 +108,8 @@ function _on_give(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function _on_take(slot, weapon)
-{
-	self notify(#"hash_343d4580");
+function _on_take(slot, weapon) {
+  self notify(# "hash_343d4580");
 }
 
 /*
@@ -132,9 +121,7 @@ function _on_take(slot, weapon)
 	Parameters: 0
 	Flags: Linked
 */
-function _on_connect()
-{
-}
+function _on_connect() {}
 
 /*
 	Name: _on
@@ -145,9 +132,7 @@ function _on_connect()
 	Parameters: 2
 	Flags: Linked
 */
-function _on(slot, weapon)
-{
-}
+function _on(slot, weapon) {}
 
 /*
 	Name: _off
@@ -158,9 +143,7 @@ function _on(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function _off(slot, weapon)
-{
-}
+function _off(slot, weapon) {}
 
 /*
 	Name: function_677ed44f
@@ -171,27 +154,22 @@ function _off(slot, weapon)
 	Parameters: 1
 	Flags: Linked
 */
-function function_677ed44f(weapon)
-{
-	self notify(#"hash_677ed44f");
-	self endon(#"hash_677ed44f");
-	self endon(#"hash_343d4580");
-	self endon(#"disconnect");
-	while(true)
-	{
-		level waittill(#"rapid_strike", target, attacker, damage, weapon, hitorigin);
-		self notify(weapon.name + "_fired");
-		level notify(weapon.name + "_fired");
-		wait(0.05);
-		if(isplayer(self))
-		{
-			itemindex = getitemindexfromref("cybercom_rapidstrike");
-			if(isdefined(itemindex))
-			{
-				self adddstat("ItemStats", itemindex, "stats", "kills", "statValue", 1);
-				self adddstat("ItemStats", itemindex, "stats", "used", "statValue", 1);
-			}
-		}
-	}
+function function_677ed44f(weapon) {
+  self notify(# "hash_677ed44f");
+  self endon(# "hash_677ed44f");
+  self endon(# "hash_343d4580");
+  self endon(# "disconnect");
+  while (true) {
+    level waittill(# "rapid_strike", target, attacker, damage, weapon, hitorigin);
+    self notify(weapon.name + "_fired");
+    level notify(weapon.name + "_fired");
+    wait(0.05);
+    if(isplayer(self)) {
+      itemindex = getitemindexfromref("cybercom_rapidstrike");
+      if(isdefined(itemindex)) {
+        self adddstat("ItemStats", itemindex, "stats", "kills", "statValue", 1);
+        self adddstat("ItemStats", itemindex, "stats", "used", "statValue", 1);
+      }
+    }
+  }
 }
-

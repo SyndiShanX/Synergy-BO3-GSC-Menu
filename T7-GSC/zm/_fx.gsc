@@ -16,21 +16,19 @@
 	Parameters: 4
 	Flags: None
 */
-function print_org(fxcommand, fxid, fxpos, waittime)
-{
-	/#
-		if(getdvarstring("") == "")
-		{
-			println("");
-			println(((((("" + fxpos[0]) + "") + fxpos[1]) + "") + fxpos[2]) + "");
-			println("");
-			println("");
-			println(("" + fxcommand) + "");
-			println(("" + fxid) + "");
-			println(("" + waittime) + "");
-			println("");
-		}
-	#/
+function print_org(fxcommand, fxid, fxpos, waittime) {
+  /#
+  if(getdvarstring("") == "") {
+    println("");
+    println(((((("" + fxpos[0]) + "") + fxpos[1]) + "") + fxpos[2]) + "");
+    println("");
+    println("");
+    println(("" + fxcommand) + "");
+    println(("" + fxid) + "");
+    println(("" + waittime) + "");
+    println("");
+  }
+  # /
 }
 
 /*
@@ -42,9 +40,8 @@ function print_org(fxcommand, fxid, fxpos, waittime)
 	Parameters: 8
 	Flags: None
 */
-function gunfireloopfx(fxid, fxpos, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax)
-{
-	thread gunfireloopfxthread(fxid, fxpos, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax);
+function gunfireloopfx(fxid, fxpos, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax) {
+  thread gunfireloopfxthread(fxid, fxpos, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax);
 }
 
 /*
@@ -56,45 +53,39 @@ function gunfireloopfx(fxid, fxpos, shotsmin, shotsmax, shotdelaymin, shotdelaym
 	Parameters: 8
 	Flags: None
 */
-function gunfireloopfxthread(fxid, fxpos, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax)
-{
-	level endon(#"hash_ce9de5d2");
-	wait(0.05);
-	if(betweensetsmax < betweensetsmin)
-	{
-		temp = betweensetsmax;
-		betweensetsmax = betweensetsmin;
-		betweensetsmin = temp;
-	}
-	betweensetsbase = betweensetsmin;
-	betweensetsrange = betweensetsmax - betweensetsmin;
-	if(shotdelaymax < shotdelaymin)
-	{
-		temp = shotdelaymax;
-		shotdelaymax = shotdelaymin;
-		shotdelaymin = temp;
-	}
-	shotdelaybase = shotdelaymin;
-	shotdelayrange = shotdelaymax - shotdelaymin;
-	if(shotsmax < shotsmin)
-	{
-		temp = shotsmax;
-		shotsmax = shotsmin;
-		shotsmin = temp;
-	}
-	shotsbase = shotsmin;
-	shotsrange = shotsmax - shotsmin;
-	fxent = spawnfx(level._effect[fxid], fxpos);
-	for(;;)
-	{
-		shotnum = shotsbase + randomint(shotsrange);
-		for(i = 0; i < shotnum; i++)
-		{
-			triggerfx(fxent);
-			wait(shotdelaybase + randomfloat(shotdelayrange));
-		}
-		wait(betweensetsbase + randomfloat(betweensetsrange));
-	}
+function gunfireloopfxthread(fxid, fxpos, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax) {
+  level endon(# "hash_ce9de5d2");
+  wait(0.05);
+  if(betweensetsmax < betweensetsmin) {
+    temp = betweensetsmax;
+    betweensetsmax = betweensetsmin;
+    betweensetsmin = temp;
+  }
+  betweensetsbase = betweensetsmin;
+  betweensetsrange = betweensetsmax - betweensetsmin;
+  if(shotdelaymax < shotdelaymin) {
+    temp = shotdelaymax;
+    shotdelaymax = shotdelaymin;
+    shotdelaymin = temp;
+  }
+  shotdelaybase = shotdelaymin;
+  shotdelayrange = shotdelaymax - shotdelaymin;
+  if(shotsmax < shotsmin) {
+    temp = shotsmax;
+    shotsmax = shotsmin;
+    shotsmin = temp;
+  }
+  shotsbase = shotsmin;
+  shotsrange = shotsmax - shotsmin;
+  fxent = spawnfx(level._effect[fxid], fxpos);
+  for (;;) {
+    shotnum = shotsbase + randomint(shotsrange);
+    for (i = 0; i < shotnum; i++) {
+      triggerfx(fxent);
+      wait(shotdelaybase + randomfloat(shotdelayrange));
+    }
+    wait(betweensetsbase + randomfloat(betweensetsrange));
+  }
 }
 
 /*
@@ -106,9 +97,8 @@ function gunfireloopfxthread(fxid, fxpos, shotsmin, shotsmax, shotdelaymin, shot
 	Parameters: 9
 	Flags: None
 */
-function gunfireloopfxvec(fxid, fxpos, fxpos2, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax)
-{
-	thread gunfireloopfxvecthread(fxid, fxpos, fxpos2, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax);
+function gunfireloopfxvec(fxid, fxpos, fxpos2, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax) {
+  thread gunfireloopfxvecthread(fxid, fxpos, fxpos2, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax);
 }
 
 /*
@@ -120,52 +110,45 @@ function gunfireloopfxvec(fxid, fxpos, fxpos2, shotsmin, shotsmax, shotdelaymin,
 	Parameters: 9
 	Flags: None
 */
-function gunfireloopfxvecthread(fxid, fxpos, fxpos2, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax)
-{
-	level endon(#"hash_ce9de5d2");
-	wait(0.05);
-	if(betweensetsmax < betweensetsmin)
-	{
-		temp = betweensetsmax;
-		betweensetsmax = betweensetsmin;
-		betweensetsmin = temp;
-	}
-	betweensetsbase = betweensetsmin;
-	betweensetsrange = betweensetsmax - betweensetsmin;
-	if(shotdelaymax < shotdelaymin)
-	{
-		temp = shotdelaymax;
-		shotdelaymax = shotdelaymin;
-		shotdelaymin = temp;
-	}
-	shotdelaybase = shotdelaymin;
-	shotdelayrange = shotdelaymax - shotdelaymin;
-	if(shotsmax < shotsmin)
-	{
-		temp = shotsmax;
-		shotsmax = shotsmin;
-		shotsmin = temp;
-	}
-	shotsbase = shotsmin;
-	shotsrange = shotsmax - shotsmin;
-	fxpos2 = vectornormalize(fxpos2 - fxpos);
-	fxent = spawnfx(level._effect[fxid], fxpos, fxpos2);
-	for(;;)
-	{
-		shotnum = shotsbase + randomint(shotsrange);
-		for(i = 0; i < (int(shotnum / level.fxfireloopmod)); i++)
-		{
-			triggerfx(fxent);
-			delay = (shotdelaybase + randomfloat(shotdelayrange)) * level.fxfireloopmod;
-			if(delay < 0.05)
-			{
-				delay = 0.05;
-			}
-			wait(delay);
-		}
-		wait(shotdelaybase + randomfloat(shotdelayrange));
-		wait(betweensetsbase + randomfloat(betweensetsrange));
-	}
+function gunfireloopfxvecthread(fxid, fxpos, fxpos2, shotsmin, shotsmax, shotdelaymin, shotdelaymax, betweensetsmin, betweensetsmax) {
+  level endon(# "hash_ce9de5d2");
+  wait(0.05);
+  if(betweensetsmax < betweensetsmin) {
+    temp = betweensetsmax;
+    betweensetsmax = betweensetsmin;
+    betweensetsmin = temp;
+  }
+  betweensetsbase = betweensetsmin;
+  betweensetsrange = betweensetsmax - betweensetsmin;
+  if(shotdelaymax < shotdelaymin) {
+    temp = shotdelaymax;
+    shotdelaymax = shotdelaymin;
+    shotdelaymin = temp;
+  }
+  shotdelaybase = shotdelaymin;
+  shotdelayrange = shotdelaymax - shotdelaymin;
+  if(shotsmax < shotsmin) {
+    temp = shotsmax;
+    shotsmax = shotsmin;
+    shotsmin = temp;
+  }
+  shotsbase = shotsmin;
+  shotsrange = shotsmax - shotsmin;
+  fxpos2 = vectornormalize(fxpos2 - fxpos);
+  fxent = spawnfx(level._effect[fxid], fxpos, fxpos2);
+  for (;;) {
+    shotnum = shotsbase + randomint(shotsrange);
+    for (i = 0; i < (int(shotnum / level.fxfireloopmod)); i++) {
+      triggerfx(fxent);
+      delay = (shotdelaybase + randomfloat(shotdelayrange)) * level.fxfireloopmod;
+      if(delay < 0.05) {
+        delay = 0.05;
+      }
+      wait(delay);
+    }
+    wait(shotdelaybase + randomfloat(shotdelayrange));
+    wait(betweensetsbase + randomfloat(betweensetsrange));
+  }
 }
 
 /*
@@ -177,9 +160,7 @@ function gunfireloopfxvecthread(fxid, fxpos, fxpos2, shotsmin, shotsmax, shotdel
 	Parameters: 1
 	Flags: None
 */
-function grenadeexplosionfx(pos)
-{
-	playfx(level._effect["mechanical explosion"], pos);
-	earthquake(0.15, 0.5, pos, 250);
+function grenadeexplosionfx(pos) {
+  playfx(level._effect["mechanical explosion"], pos);
+  earthquake(0.15, 0.5, pos, 250);
 }
-

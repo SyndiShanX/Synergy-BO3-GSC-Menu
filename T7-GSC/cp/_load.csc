@@ -65,12 +65,10 @@
 	Parameters: 3
 	Flags: Linked
 */
-function levelnotifyhandler(clientnum, state, oldstate)
-{
-	if(state != "")
-	{
-		level notify(state, clientnum);
-	}
+function levelnotifyhandler(clientnum, state, oldstate) {
+  if(state != "") {
+    level notify(state, clientnum);
+  }
 }
 
 /*
@@ -82,31 +80,29 @@ function levelnotifyhandler(clientnum, state, oldstate)
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	/#
-		/#
-			assert(isdefined(level.first_frame), "");
-		#/
-	#/
-	if(isdefined(level._loadstarted) && level._loadstarted)
-	{
-		return;
-	}
-	level._loadstarted = 1;
-	level thread util::servertime();
-	level thread util::init_utility();
-	level thread register_clientfields();
-	util::registersystem("levelNotify", &levelnotifyhandler);
-	level.createfx_disable_fx = getdvarint("disable_fx") == 1;
-	level thread _claymore::init();
-	level thread _explosive_bolt::main();
-	callback::add_callback(#"hash_da8d7d74", &basic_player_connect);
-	callback::on_spawned(&on_player_spawned);
-	system::wait_till("all");
-	art_review();
-	level flagsys::set("load_main_complete");
-	setdvar("phys_wind_enabled", 0);
+function main() {
+  /# /
+  #
+  assert(isdefined(level.first_frame), "");
+  # /
+    # /
+    if(isdefined(level._loadstarted) && level._loadstarted) {
+      return;
+    }
+  level._loadstarted = 1;
+  level thread util::servertime();
+  level thread util::init_utility();
+  level thread register_clientfields();
+  util::registersystem("levelNotify", & levelnotifyhandler);
+  level.createfx_disable_fx = getdvarint("disable_fx") == 1;
+  level thread _claymore::init();
+  level thread _explosive_bolt::main();
+  callback::add_callback(# "hash_da8d7d74", & basic_player_connect);
+  callback::on_spawned( & on_player_spawned);
+  system::wait_till("all");
+  art_review();
+  level flagsys::set("load_main_complete");
+  setdvar("phys_wind_enabled", 0);
 }
 
 /*
@@ -118,14 +114,12 @@ function main()
 	Parameters: 1
 	Flags: Linked
 */
-function basic_player_connect(localclientnum)
-{
-	if(!isdefined(level._laststand))
-	{
-		level._laststand = [];
-	}
-	level._laststand[localclientnum] = 0;
-	forcegamemodemappings(localclientnum, "default");
+function basic_player_connect(localclientnum) {
+  if(!isdefined(level._laststand)) {
+    level._laststand = [];
+  }
+  level._laststand[localclientnum] = 0;
+  forcegamemodemappings(localclientnum, "default");
 }
 
 /*
@@ -137,9 +131,8 @@ function basic_player_connect(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function on_player_spawned(localclientnum)
-{
-	self thread force_update_player_clientfields(localclientnum);
+function on_player_spawned(localclientnum) {
+  self thread force_update_player_clientfields(localclientnum);
 }
 
 /*
@@ -151,15 +144,13 @@ function on_player_spawned(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function force_update_player_clientfields(localclientnum)
-{
-	self endon(#"entityshutdown");
-	while(!clienthassnapshot(localclientnum))
-	{
-		wait(0.25);
-	}
-	wait(0.25);
-	self processclientfieldsasifnew();
+function force_update_player_clientfields(localclientnum) {
+  self endon(# "entityshutdown");
+  while (!clienthassnapshot(localclientnum)) {
+    wait(0.25);
+  }
+  wait(0.25);
+  self processclientfieldsasifnew();
 }
 
 /*
@@ -171,8 +162,6 @@ function force_update_player_clientfields(localclientnum)
 	Parameters: 0
 	Flags: Linked
 */
-function register_clientfields()
-{
-	clientfield::register("toplayer", "sndHealth", 1, 2, "int", &audio::sndhealthsystem, 0, 0);
+function register_clientfields() {
+  clientfield::register("toplayer", "sndHealth", 1, 2, "int", & audio::sndhealthsystem, 0, 0);
 }
-

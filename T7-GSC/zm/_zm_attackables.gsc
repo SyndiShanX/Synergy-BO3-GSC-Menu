@@ -27,9 +27,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_attackables", &__init__, &__main__, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_attackables", & __init__, & __main__, undefined);
 }
 
 /*
@@ -41,25 +40,21 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	level.attackablecallback = &attackable_callback;
-	level.attackables = struct::get_array("scriptbundle_attackables", "classname");
-	foreach(attackable in level.attackables)
-	{
-		attackable.bundle = struct::get_script_bundle("attackables", attackable.scriptbundlename);
-		if(isdefined(attackable.target))
-		{
-			attackable.slot = struct::get_array(attackable.target, "targetname");
-		}
-		attackable.is_active = 0;
-		attackable.health = attackable.bundle.max_health;
-		if(getdvarint("zm_attackables") > 0)
-		{
-			attackable.is_active = 1;
-			attackable.health = 1000;
-		}
-	}
+function __init__() {
+  level.attackablecallback = & attackable_callback;
+  level.attackables = struct::get_array("scriptbundle_attackables", "classname");
+  foreach(attackable in level.attackables) {
+    attackable.bundle = struct::get_script_bundle("attackables", attackable.scriptbundlename);
+    if(isdefined(attackable.target)) {
+      attackable.slot = struct::get_array(attackable.target, "targetname");
+    }
+    attackable.is_active = 0;
+    attackable.health = attackable.bundle.max_health;
+    if(getdvarint("zm_attackables") > 0) {
+      attackable.is_active = 1;
+      attackable.health = 1000;
+    }
+  }
 }
 
 /*
@@ -71,9 +66,7 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function __main__()
-{
-}
+function __main__() {}
 
 /*
 	Name: get_attackable
@@ -84,33 +77,26 @@ function __main__()
 	Parameters: 0
 	Flags: Linked
 */
-function get_attackable()
-{
-	foreach(attackable in level.attackables)
-	{
-		if(!(isdefined(attackable.is_active) && attackable.is_active))
-		{
-			continue;
-		}
-		dist = distance(self.origin, attackable.origin);
-		if(dist < attackable.bundle.aggro_distance)
-		{
-			if(attackable get_attackable_slot(self))
-			{
-				return attackable;
-			}
-		}
-		/#
-			if(getdvarint("") > 1)
-			{
-				if(attackable get_attackable_slot(self))
-				{
-					return attackable;
-				}
-			}
-		#/
-	}
-	return undefined;
+function get_attackable() {
+  foreach(attackable in level.attackables) {
+    if(!(isdefined(attackable.is_active) && attackable.is_active)) {
+      continue;
+    }
+    dist = distance(self.origin, attackable.origin);
+    if(dist < attackable.bundle.aggro_distance) {
+      if(attackable get_attackable_slot(self)) {
+        return attackable;
+      }
+    }
+    /#
+    if(getdvarint("") > 1) {
+      if(attackable get_attackable_slot(self)) {
+        return attackable;
+      }
+    }
+    # /
+  }
+  return undefined;
 }
 
 /*
@@ -122,19 +108,16 @@ function get_attackable()
 	Parameters: 1
 	Flags: Linked
 */
-function get_attackable_slot(entity)
-{
-	self clear_slots();
-	foreach(slot in self.slot)
-	{
-		if(!isdefined(slot.entity))
-		{
-			slot.entity = entity;
-			entity.attackable_slot = slot;
-			return true;
-		}
-	}
-	return false;
+function get_attackable_slot(entity) {
+  self clear_slots();
+  foreach(slot in self.slot) {
+    if(!isdefined(slot.entity)) {
+      slot.entity = entity;
+      entity.attackable_slot = slot;
+      return true;
+    }
+  }
+  return false;
 }
 
 /*
@@ -146,20 +129,16 @@ function get_attackable_slot(entity)
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private clear_slots()
-{
-	foreach(slot in self.slot)
-	{
-		if(!isalive(slot.entity))
-		{
-			slot.entity = undefined;
-			continue;
-		}
-		if(isdefined(slot.entity.missinglegs) && slot.entity.missinglegs)
-		{
-			slot.entity = undefined;
-		}
-	}
+function private clear_slots() {
+  foreach(slot in self.slot) {
+    if(!isalive(slot.entity)) {
+      slot.entity = undefined;
+      continue;
+    }
+    if(isdefined(slot.entity.missinglegs) && slot.entity.missinglegs) {
+      slot.entity = undefined;
+    }
+  }
 }
 
 /*
@@ -171,13 +150,11 @@ function private clear_slots()
 	Parameters: 0
 	Flags: None
 */
-function activate()
-{
-	self.is_active = 1;
-	if(self.health <= 0)
-	{
-		self.health = self.bundle.max_health;
-	}
+function activate() {
+  self.is_active = 1;
+  if(self.health <= 0) {
+    self.health = self.bundle.max_health;
+  }
 }
 
 /*
@@ -189,9 +166,8 @@ function activate()
 	Parameters: 0
 	Flags: Linked
 */
-function deactivate()
-{
-	self.is_active = 0;
+function deactivate() {
+  self.is_active = 0;
 }
 
 /*
@@ -203,18 +179,15 @@ function deactivate()
 	Parameters: 1
 	Flags: Linked
 */
-function do_damage(damage)
-{
-	self.health = self.health - damage;
-	self notify(#"attackable_damaged");
-	if(self.health <= 0)
-	{
-		self notify(#"attackable_deactivated");
-		if(!(isdefined(self.b_deferred_deactivation) && self.b_deferred_deactivation))
-		{
-			self deactivate();
-		}
-	}
+function do_damage(damage) {
+  self.health = self.health - damage;
+  self notify(# "attackable_damaged");
+  if(self.health <= 0) {
+    self notify(# "attackable_deactivated");
+    if(!(isdefined(self.b_deferred_deactivation) && self.b_deferred_deactivation)) {
+      self deactivate();
+    }
+  }
 }
 
 /*
@@ -226,15 +199,10 @@ function do_damage(damage)
 	Parameters: 1
 	Flags: Linked
 */
-function attackable_callback(entity)
-{
-	if(entity.archetype === "thrasher" && (self.scriptbundlename === "zm_island_trap_plant_attackable" || self.scriptbundlename === "zm_island_trap_plant_upgraded_attackable"))
-	{
-		self do_damage(self.health);
-	}
-	else
-	{
-		self do_damage(entity.meleeweapon.meleedamage);
-	}
+function attackable_callback(entity) {
+  if(entity.archetype === "thrasher" && (self.scriptbundlename === "zm_island_trap_plant_attackable" || self.scriptbundlename === "zm_island_trap_plant_upgraded_attackable")) {
+    self do_damage(self.health);
+  } else {
+    self do_damage(entity.meleeweapon.meleedamage);
+  }
 }
-

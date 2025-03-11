@@ -18,9 +18,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function capture_zone_init_start()
-{
-}
+function capture_zone_init_start() {}
 
 /*
 	Name: capture_zone_init_end
@@ -31,9 +29,7 @@ function capture_zone_init_start()
 	Parameters: 0
 	Flags: Linked
 */
-function capture_zone_init_end()
-{
-}
+function capture_zone_init_end() {}
 
 /*
 	Name: capture_event_start
@@ -44,9 +40,7 @@ function capture_zone_init_end()
 	Parameters: 0
 	Flags: Linked
 */
-function capture_event_start()
-{
-}
+function capture_event_start() {}
 
 /*
 	Name: capture_event_end
@@ -57,9 +51,7 @@ function capture_event_start()
 	Parameters: 0
 	Flags: Linked
 */
-function capture_event_end()
-{
-}
+function capture_event_end() {}
 
 /*
 	Name: recapture_event_start
@@ -70,9 +62,7 @@ function capture_event_end()
 	Parameters: 0
 	Flags: Linked
 */
-function recapture_event_start()
-{
-}
+function recapture_event_start() {}
 
 /*
 	Name: recapture_event_end
@@ -83,7 +73,4 @@ function recapture_event_start()
 	Parameters: 0
 	Flags: Linked
 */
-function recapture_event_end()
-{
-}
-
+function recapture_event_end() {}

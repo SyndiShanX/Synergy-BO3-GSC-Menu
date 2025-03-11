@@ -22,9 +22,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("gadget_shock_field", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("gadget_shock_field", & __init__, undefined, undefined);
 }
 
 /*
@@ -36,10 +35,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("allplayers", "shock_field", 1, 1, "int", &player_shock_changed, 0, 1);
-	level.shock_field_fx = [];
+function __init__() {
+  clientfield::register("allplayers", "shock_field", 1, 1, "int", & player_shock_changed, 0, 1);
+  level.shock_field_fx = [];
 }
 
 /*
@@ -51,15 +49,13 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function is_local_player(localclientnum)
-{
-	player_view = getlocalplayer(localclientnum);
-	if(!isdefined(player_view))
-	{
-		return 0;
-	}
-	sameentity = self == player_view;
-	return sameentity;
+function is_local_player(localclientnum) {
+  player_view = getlocalplayer(localclientnum);
+  if(!isdefined(player_view)) {
+    return 0;
+  }
+  sameentity = self == player_view;
+  return sameentity;
 }
 
 /*
@@ -71,26 +67,19 @@ function is_local_player(localclientnum)
 	Parameters: 7
 	Flags: Linked
 */
-function player_shock_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	entid = getlocalplayer(localclientnum) getentitynumber();
-	if(newval)
-	{
-		if(!isdefined(level.shock_field_fx[entid]))
-		{
-			fx = "player/fx_plyr_shock_field";
-			if(is_local_player(localclientnum))
-			{
-				fx = "player/fx_plyr_shock_field_1p";
-			}
-			tag = "j_spinelower";
-			level.shock_field_fx[entid] = playfxontag(localclientnum, fx, self, tag);
-		}
-	}
-	else if(isdefined(level.shock_field_fx[entid]))
-	{
-		stopfx(localclientnum, level.shock_field_fx[entid]);
-		level.shock_field_fx[entid] = undefined;
-	}
+function player_shock_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  entid = getlocalplayer(localclientnum) getentitynumber();
+  if(newval) {
+    if(!isdefined(level.shock_field_fx[entid])) {
+      fx = "player/fx_plyr_shock_field";
+      if(is_local_player(localclientnum)) {
+        fx = "player/fx_plyr_shock_field_1p";
+      }
+      tag = "j_spinelower";
+      level.shock_field_fx[entid] = playfxontag(localclientnum, fx, self, tag);
+    }
+  } else if(isdefined(level.shock_field_fx[entid])) {
+    stopfx(localclientnum, level.shock_field_fx[entid]);
+    level.shock_field_fx[entid] = undefined;
+  }
 }
-

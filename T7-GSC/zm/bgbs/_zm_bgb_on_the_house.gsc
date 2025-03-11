@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_on_the_house", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_on_the_house", & __init__, undefined, "bgb");
 }
 
 /*
@@ -32,13 +31,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_on_the_house", "activated", 1, undefined, undefined, undefined, &activation);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_on_the_house", "activated", 1, undefined, undefined, undefined, & activation);
 }
 
 /*
@@ -50,8 +47,6 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function activation()
-{
-	self thread bgb::function_dea74fb0("free_perk");
+function activation() {
+  self thread bgb::function_dea74fb0("free_perk");
 }
-

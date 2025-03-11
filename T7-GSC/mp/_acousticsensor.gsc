@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("acousticsensor", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("acousticsensor", & __init__, undefined, undefined);
 }
 
 /*
@@ -31,8 +30,6 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-	init_shared();
+function __init__() {
+  init_shared();
 }
-

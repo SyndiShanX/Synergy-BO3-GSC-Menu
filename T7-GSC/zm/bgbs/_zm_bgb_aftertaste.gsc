@@ -21,9 +21,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_aftertaste", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_aftertaste", & __init__, undefined, "bgb");
 }
 
 /*
@@ -35,14 +34,12 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_aftertaste", "rounds", 3, &event, undefined, undefined, undefined);
-	bgb::register_lost_perk_override("zm_bgb_aftertaste", &lost_perk_override, 0);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_aftertaste", "rounds", 3, & event, undefined, undefined, undefined);
+  bgb::register_lost_perk_override("zm_bgb_aftertaste", & lost_perk_override, 0);
 }
 
 /*
@@ -54,17 +51,14 @@ function __init__()
 	Parameters: 3
 	Flags: Linked
 */
-function lost_perk_override(perk, var_2488e46a = undefined, var_24df4040 = undefined)
-{
-	if(zm_perks::use_solo_revive() && perk == "specialty_quickrevive")
-	{
-		return false;
-	}
-	if(isdefined(var_2488e46a) && isdefined(var_24df4040) && var_2488e46a == var_24df4040)
-	{
-		return true;
-	}
-	return false;
+function lost_perk_override(perk, var_2488e46a = undefined, var_24df4040 = undefined) {
+  if(zm_perks::use_solo_revive() && perk == "specialty_quickrevive") {
+    return false;
+  }
+  if(isdefined(var_2488e46a) && isdefined(var_24df4040) && var_2488e46a == var_24df4040) {
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -76,15 +70,12 @@ function lost_perk_override(perk, var_2488e46a = undefined, var_24df4040 = undef
 	Parameters: 0
 	Flags: Linked
 */
-function event()
-{
-	self endon(#"disconnect");
-	self endon(#"bled_out");
-	self endon(#"bgb_update");
-	while(true)
-	{
-		self waittill(#"player_downed");
-		self bgb::do_one_shot_use(1);
-	}
+function event() {
+  self endon(# "disconnect");
+  self endon(# "bled_out");
+  self endon(# "bgb_update");
+  while (true) {
+    self waittill(# "player_downed");
+    self bgb::do_one_shot_use(1);
+  }
 }
-

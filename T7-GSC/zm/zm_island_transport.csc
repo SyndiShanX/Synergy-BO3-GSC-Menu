@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	clientfield::register("vehicle", "sewer_current_fx", 9000, 1, "int", &sewer_current_fx, 0, 0);
+function init() {
+  clientfield::register("vehicle", "sewer_current_fx", 9000, 1, "int", & sewer_current_fx, 0, 0);
 }
 
 /*
@@ -31,24 +30,18 @@ function init()
 	Parameters: 7
 	Flags: Linked
 */
-function sewer_current_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval == 1)
-	{
-		if(!isdefined(self.var_7e61ace3))
-		{
-			self.var_7e61ace3 = [];
-		}
-		self thread function_a39e4663(localclientnum);
-	}
-	else
-	{
-		self notify(#"hash_ab837d11");
-		if(isdefined(self.var_7e61ace3[localclientnum]))
-		{
-			deletefx(localclientnum, self.var_7e61ace3[localclientnum], 0);
-		}
-	}
+function sewer_current_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval == 1) {
+    if(!isdefined(self.var_7e61ace3)) {
+      self.var_7e61ace3 = [];
+    }
+    self thread function_a39e4663(localclientnum);
+  } else {
+    self notify(# "hash_ab837d11");
+    if(isdefined(self.var_7e61ace3[localclientnum])) {
+      deletefx(localclientnum, self.var_7e61ace3[localclientnum], 0);
+    }
+  }
 }
 
 /*
@@ -60,13 +53,10 @@ function sewer_current_fx(localclientnum, oldval, newval, bnewent, binitialsnap,
 	Parameters: 1
 	Flags: Linked
 */
-function function_a39e4663(localclientnum)
-{
-	self endon(#"hash_ab837d11");
-	while(true)
-	{
-		self.var_7e61ace3[localclientnum] = playfxontag(localclientnum, level._effect["current_effect"], self, "tag_origin");
-		wait(0.05);
-	}
+function function_a39e4663(localclientnum) {
+  self endon(# "hash_ab837d11");
+  while (true) {
+    self.var_7e61ace3[localclientnum] = playfxontag(localclientnum, level._effect["current_effect"], self, "tag_origin");
+    wait(0.05);
+  }
 }
-

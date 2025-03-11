@@ -17,9 +17,8 @@
 	Parameters: 2
 	Flags: None
 */
-function init()
-{
-	// Unsupported VM revision (1B).
+function init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -31,9 +30,8 @@ function init()
 	Parameters: 3
 	Flags: None
 */
-function set_external_functions()
-{
-	// Unsupported VM revision (1B).
+function set_external_functions() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -45,9 +43,8 @@ function set_external_functions()
 	Parameters: 0
 	Flags: None
 */
-function get_platform_vehicle()
-{
-	// Unsupported VM revision (1B).
+function get_platform_vehicle() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -59,9 +56,8 @@ function get_platform_vehicle()
 	Parameters: 1
 	Flags: None
 */
-function set_node_start()
-{
-	// Unsupported VM revision (1B).
+function set_node_start() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -73,9 +69,8 @@ function set_node_start()
 	Parameters: 0
 	Flags: None
 */
-function damage_watcher()
-{
-	// Unsupported VM revision (1B).
+function damage_watcher() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -87,9 +82,8 @@ function damage_watcher()
 	Parameters: 1
 	Flags: None
 */
-function trigger_think()
-{
-	// Unsupported VM revision (1B).
+function trigger_think() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -101,9 +95,8 @@ function trigger_think()
 	Parameters: 1
 	Flags: None
 */
-function attach_to_vehicle_node()
-{
-	// Unsupported VM revision (1B).
+function attach_to_vehicle_node() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -115,9 +108,8 @@ function attach_to_vehicle_node()
 	Parameters: 2
 	Flags: None
 */
-function set_speed()
-{
-	// Unsupported VM revision (1B).
+function set_speed() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -129,9 +121,8 @@ function set_speed()
 	Parameters: 1
 	Flags: None
 */
-function start_platform()
-{
-	// Unsupported VM revision (1B).
+function start_platform() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -143,9 +134,8 @@ function start_platform()
 	Parameters: 0
 	Flags: None
 */
-function stop_platform()
-{
-	// Unsupported VM revision (1B).
+function stop_platform() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -157,9 +147,8 @@ function stop_platform()
 	Parameters: 3
 	Flags: None
 */
-function looping_sounds()
-{
-	// Unsupported VM revision (1B).
+function looping_sounds() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -171,9 +160,8 @@ function looping_sounds()
 	Parameters: 1
 	Flags: None
 */
-function setup_elevator_doors()
-{
-	// Unsupported VM revision (1B).
+function setup_elevator_doors() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -185,9 +173,8 @@ function setup_elevator_doors()
 	Parameters: 5
 	Flags: None
 */
-function move_elevator_doors()
-{
-	// Unsupported VM revision (1B).
+function move_elevator_doors() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -199,9 +186,8 @@ function move_elevator_doors()
 	Parameters: 0
 	Flags: None
 */
-function __constructor()
-{
-	// Unsupported VM revision (1B).
+function __constructor() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -213,9 +199,8 @@ function __constructor()
 	Parameters: 0
 	Flags: None
 */
-function __destructor()
-{
-	// Unsupported VM revision (1B).
+function __destructor() {
+  // Unsupported VM revision (1B).
 }
 
 #namespace vehicle_platform;
@@ -229,8 +214,6 @@ function __destructor()
 	Parameters: 0
 	Flags: AutoExec, Private
 */
-function private autoexec cvehicleplatform()
-{
-	// Unsupported VM revision (1B).
+function private autoexec cvehicleplatform() {
+  // Unsupported VM revision (1B).
 }
-

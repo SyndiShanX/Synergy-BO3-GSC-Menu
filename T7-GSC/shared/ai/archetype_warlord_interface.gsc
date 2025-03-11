@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function registerwarlordinterfaceattributes()
-{
-	ai::registermatchedinterface("warlord", "can_be_meleed", 0, array(1, 0));
+function registerwarlordinterfaceattributes() {
+  ai::registermatchedinterface("warlord", "can_be_meleed", 0, array(1, 0));
 }
 
 /*
@@ -27,9 +26,8 @@ function registerwarlordinterfaceattributes()
 	Parameters: 4
 	Flags: None
 */
-function addpreferedpoint(position, min_duration, max_duration, name)
-{
-	warlordserverutils::addpreferedpoint(self, position, min_duration, max_duration, name);
+function addpreferedpoint(position, min_duration, max_duration, name) {
+  warlordserverutils::addpreferedpoint(self, position, min_duration, max_duration, name);
 }
 
 /*
@@ -41,9 +39,8 @@ function addpreferedpoint(position, min_duration, max_duration, name)
 	Parameters: 1
 	Flags: None
 */
-function deletepreferedpoint(name)
-{
-	warlordserverutils::deletepreferedpoint(self, name);
+function deletepreferedpoint(name) {
+  warlordserverutils::deletepreferedpoint(self, name);
 }
 
 /*
@@ -55,9 +52,8 @@ function deletepreferedpoint(name)
 	Parameters: 0
 	Flags: None
 */
-function clearallpreferedpoints()
-{
-	warlordserverutils::clearallpreferedpoints(self);
+function clearallpreferedpoints() {
+  warlordserverutils::clearallpreferedpoints(self);
 }
 
 /*
@@ -69,9 +65,8 @@ function clearallpreferedpoints()
 	Parameters: 0
 	Flags: None
 */
-function clearpreferedpointsoutsidegoal()
-{
-	warlordserverutils::clearpreferedpointsoutsidegoal(self);
+function clearpreferedpointsoutsidegoal() {
+  warlordserverutils::clearpreferedpointsoutsidegoal(self);
 }
 
 /*
@@ -83,8 +78,6 @@ function clearpreferedpointsoutsidegoal()
 	Parameters: 1
 	Flags: None
 */
-function setwarlordaggressivemode(b_aggressive_mode)
-{
-	warlordserverutils::setwarlordaggressivemode(self);
+function setwarlordaggressivemode(b_aggressive_mode) {
+  warlordserverutils::setwarlordaggressivemode(self);
 }
-

@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("teamset_seals", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("teamset_seals", & __init__, undefined, undefined);
 }
 
 /*
@@ -27,9 +26,7 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-	level.allies_team = "allies";
-	level.axis_team = "axis";
+function __init__() {
+  level.allies_team = "allies";
+  level.axis_team = "axis";
 }
-

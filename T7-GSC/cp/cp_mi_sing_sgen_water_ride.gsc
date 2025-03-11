@@ -31,9 +31,8 @@
 	Parameters: 2
 	Flags: None
 */
-function skipto_underwater_rail_init()
-{
-	// Unsupported VM revision (1B).
+function skipto_underwater_rail_init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -45,9 +44,8 @@ function skipto_underwater_rail_init()
 	Parameters: 4
 	Flags: None
 */
-function skipto_underwater_rail_done()
-{
-	// Unsupported VM revision (1B).
+function skipto_underwater_rail_done() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -59,9 +57,8 @@ function skipto_underwater_rail_done()
 	Parameters: 0
 	Flags: None
 */
-function hendricks_blow_wall()
-{
-	// Unsupported VM revision (1B).
+function hendricks_blow_wall() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -73,9 +70,8 @@ function hendricks_blow_wall()
 	Parameters: 0
 	Flags: None
 */
-function vo()
-{
-	// Unsupported VM revision (1B).
+function vo() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -87,9 +83,8 @@ function vo()
 	Parameters: 1
 	Flags: None
 */
-function player_rail_sequence_init()
-{
-	// Unsupported VM revision (1B).
+function player_rail_sequence_init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -101,9 +96,8 @@ function player_rail_sequence_init()
 	Parameters: 1
 	Flags: None
 */
-function player_rail_sequence_start()
-{
-	// Unsupported VM revision (1B).
+function player_rail_sequence_start() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -115,9 +109,8 @@ function player_rail_sequence_start()
 	Parameters: 0
 	Flags: None
 */
-function setup_debris()
-{
-	// Unsupported VM revision (1B).
+function setup_debris() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -129,9 +122,8 @@ function setup_debris()
 	Parameters: 0
 	Flags: None
 */
-function debris_impact()
-{
-	// Unsupported VM revision (1B).
+function debris_impact() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -143,9 +135,8 @@ function debris_impact()
 	Parameters: 0
 	Flags: None
 */
-function static_hurt()
-{
-	// Unsupported VM revision (1B).
+function static_hurt() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -157,9 +148,8 @@ function static_hurt()
 	Parameters: 0
 	Flags: None
 */
-function play_current_fx()
-{
-	// Unsupported VM revision (1B).
+function play_current_fx() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -171,9 +161,8 @@ function play_current_fx()
 	Parameters: 0
 	Flags: None
 */
-function handle_split_off()
-{
-	// Unsupported VM revision (1B).
+function handle_split_off() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -185,9 +174,8 @@ function handle_split_off()
 	Parameters: 1
 	Flags: None
 */
-function player_rail_sequence()
-{
-	// Unsupported VM revision (1B).
+function player_rail_sequence() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -199,9 +187,8 @@ function player_rail_sequence()
 	Parameters: 1
 	Flags: None
 */
-function function_4f28280b()
-{
-	// Unsupported VM revision (1B).
+function function_4f28280b() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -213,9 +200,8 @@ function function_4f28280b()
 	Parameters: 1
 	Flags: None
 */
-function player_rail_control()
-{
-	// Unsupported VM revision (1B).
+function player_rail_control() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -227,9 +213,8 @@ function player_rail_control()
 	Parameters: 2
 	Flags: None
 */
-function handle_impact()
-{
-	// Unsupported VM revision (1B).
+function handle_impact() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -241,8 +226,6 @@ function handle_impact()
 	Parameters: 0
 	Flags: None
 */
-function init_rail_bot()
-{
-	// Unsupported VM revision (1B).
+function init_rail_bot() {
+  // Unsupported VM revision (1B).
 }
-

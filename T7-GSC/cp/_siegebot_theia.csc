@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	// Unsupported VM revision (1B).
+function autoexec __init__sytem__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -30,9 +29,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-	// Unsupported VM revision (1B).
+function __init__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -44,9 +42,8 @@ function __init__()
 	Parameters: 1
 	Flags: None
 */
-function _setup_()
-{
-	// Unsupported VM revision (1B).
+function _setup_() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -58,9 +55,8 @@ function _setup_()
 	Parameters: 7
 	Flags: None
 */
-function sarah_rumble_on_landing()
-{
-	// Unsupported VM revision (1B).
+function sarah_rumble_on_landing() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -72,8 +68,6 @@ function sarah_rumble_on_landing()
 	Parameters: 7
 	Flags: None
 */
-function sarah_minigun_spin()
-{
-	// Unsupported VM revision (1B).
+function sarah_minigun_spin() {
+  // Unsupported VM revision (1B).
 }
-

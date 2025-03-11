@@ -13,10 +13,9 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec init()
-{
-	registerclientfield("playercorpse", "hide_body", 1, 1, "int", &function_d630ecfc, 0);
-	registerclientfield("toplayer", "killcam_menu", 1, 1, "int", &function_9f1677e1, 0);
+function autoexec init() {
+  registerclientfield("playercorpse", "hide_body", 1, 1, "int", & function_d630ecfc, 0);
+  registerclientfield("toplayer", "killcam_menu", 1, 1, "int", & function_9f1677e1, 0);
 }
 
 /*
@@ -28,9 +27,7 @@ function autoexec init()
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-}
+function main() {}
 
 /*
 	Name: onprecachegametype
@@ -41,9 +38,7 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function onprecachegametype()
-{
-}
+function onprecachegametype() {}
 
 /*
 	Name: onstartgametype
@@ -54,9 +49,7 @@ function onprecachegametype()
 	Parameters: 0
 	Flags: None
 */
-function onstartgametype()
-{
-}
+function onstartgametype() {}
 
 /*
 	Name: function_9f1677e1
@@ -67,24 +60,18 @@ function onstartgametype()
 	Parameters: 7
 	Flags: Linked
 */
-function function_9f1677e1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(getinkillcam(localclientnum))
-	{
-		return;
-	}
-	if(!isdefined(self.killcam_menu))
-	{
-		self.killcam_menu = createluimenu(localclientnum, "CPKillcam");
-	}
-	if(newval)
-	{
-		openluimenu(localclientnum, self.killcam_menu);
-	}
-	else
-	{
-		closeluimenu(localclientnum, self.killcam_menu);
-	}
+function function_9f1677e1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(getinkillcam(localclientnum)) {
+    return;
+  }
+  if(!isdefined(self.killcam_menu)) {
+    self.killcam_menu = createluimenu(localclientnum, "CPKillcam");
+  }
+  if(newval) {
+    openluimenu(localclientnum, self.killcam_menu);
+  } else {
+    closeluimenu(localclientnum, self.killcam_menu);
+  }
 }
 
 /*
@@ -96,15 +83,10 @@ function function_9f1677e1(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 7
 	Flags: Linked
 */
-function function_d630ecfc(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval && !getinkillcam(localclientnum))
-	{
-		self hide();
-	}
-	else
-	{
-		self show();
-	}
+function function_d630ecfc(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval && !getinkillcam(localclientnum)) {
+    self hide();
+  } else {
+    self show();
+  }
 }
-

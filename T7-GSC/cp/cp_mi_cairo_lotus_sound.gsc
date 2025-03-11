@@ -15,10 +15,9 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	level thread function_cf637cc();
-	level thread function_ba59ec78();
+function main() {
+  level thread function_cf637cc();
+  level thread function_ba59ec78();
 }
 
 /*
@@ -30,10 +29,9 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function function_cf637cc()
-{
-	level waittill(#"hash_72d53556");
-	level util::clientnotify("start_battle_sound");
+function function_cf637cc() {
+  level waittill(# "hash_72d53556");
+  level util::clientnotify("start_battle_sound");
 }
 
 /*
@@ -45,10 +43,9 @@ function function_cf637cc()
 	Parameters: 0
 	Flags: Linked
 */
-function function_ba59ec78()
-{
-	level waittill(#"hash_fe7439eb");
-	level util::clientnotify("kill_security_chatter");
+function function_ba59ec78() {
+  level waittill(# "hash_fe7439eb");
+  level util::clientnotify("kill_security_chatter");
 }
 
 #namespace namespace_66fe78fb;
@@ -62,9 +59,8 @@ function function_ba59ec78()
 	Parameters: 0
 	Flags: Linked
 */
-function play_intro()
-{
-	music::setmusicstate("intro");
+function play_intro() {
+  music::setmusicstate("intro");
 }
 
 /*
@@ -76,9 +72,8 @@ function play_intro()
 	Parameters: 0
 	Flags: Linked
 */
-function function_36e942f6()
-{
-	music::setmusicstate("battle_one_part_one");
+function function_36e942f6() {
+  music::setmusicstate("battle_one_part_one");
 }
 
 /*
@@ -90,9 +85,8 @@ function function_36e942f6()
 	Parameters: 0
 	Flags: Linked
 */
-function function_f3bdd599()
-{
-	music::setmusicstate("elevator_ride");
+function function_f3bdd599() {
+  music::setmusicstate("elevator_ride");
 }
 
 /*
@@ -104,10 +98,9 @@ function function_f3bdd599()
 	Parameters: 0
 	Flags: Linked
 */
-function function_d116b1d8()
-{
-	wait(10);
-	music::setmusicstate("battle_one_part_two");
+function function_d116b1d8() {
+  wait(10);
+  music::setmusicstate("battle_one_part_two");
 }
 
 /*
@@ -119,13 +112,12 @@ function function_d116b1d8()
 	Parameters: 0
 	Flags: Linked
 */
-function function_f2d3d939()
-{
-	music::setmusicstate("air_duct");
-	wait(15);
-	util::clientnotify("sndRampair");
-	wait(25);
-	util::clientnotify("sndRampEnd");
+function function_f2d3d939() {
+  music::setmusicstate("air_duct");
+  wait(15);
+  util::clientnotify("sndRampair");
+  wait(25);
+  util::clientnotify("sndRampEnd");
 }
 
 /*
@@ -137,10 +129,9 @@ function function_f2d3d939()
 	Parameters: 0
 	Flags: Linked
 */
-function function_86781870()
-{
-	wait(0.5);
-	music::setmusicstate("hq_battle");
+function function_86781870() {
+  wait(0.5);
+  music::setmusicstate("hq_battle");
 }
 
 /*
@@ -152,9 +143,8 @@ function function_86781870()
 	Parameters: 0
 	Flags: Linked
 */
-function function_8836c025()
-{
-	music::setmusicstate("computer_hack");
+function function_8836c025() {
+  music::setmusicstate("computer_hack");
 }
 
 /*
@@ -166,9 +156,8 @@ function function_8836c025()
 	Parameters: 0
 	Flags: None
 */
-function function_fd00a4f2()
-{
-	music::setmusicstate("breach_stinger");
+function function_fd00a4f2() {
+  music::setmusicstate("breach_stinger");
 }
 
 /*
@@ -180,9 +169,8 @@ function function_fd00a4f2()
 	Parameters: 0
 	Flags: None
 */
-function function_51e72857()
-{
-	music::setmusicstate("battle_two");
+function function_51e72857() {
+  music::setmusicstate("battle_two");
 }
 
 /*
@@ -194,8 +182,6 @@ function function_51e72857()
 	Parameters: 0
 	Flags: Linked
 */
-function function_973b77f9()
-{
-	music::setmusicstate("none");
+function function_973b77f9() {
+  music::setmusicstate("none");
 }
-

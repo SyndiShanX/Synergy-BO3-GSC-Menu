@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("helicopter_gunner", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("helicopter_gunner", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,13 +29,12 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("vehicle", "vtol_turret_destroyed_0", 1, 1, "int", &turret_destroyed_0, 0, 0);
-	clientfield::register("vehicle", "vtol_turret_destroyed_1", 1, 1, "int", &turret_destroyed_1, 0, 0);
-	clientfield::register("toplayer", "vtol_update_client", 1, 1, "counter", &update_client, 0, 0);
-	clientfield::register("toplayer", "fog_bank_2", 1, 1, "int", &fog_bank_2_callback, 0, 0);
-	visionset_mgr::register_visionset_info("mothership_visionset", 1, 1, undefined, "mp_vehicles_mothership");
+function __init__() {
+  clientfield::register("vehicle", "vtol_turret_destroyed_0", 1, 1, "int", & turret_destroyed_0, 0, 0);
+  clientfield::register("vehicle", "vtol_turret_destroyed_1", 1, 1, "int", & turret_destroyed_1, 0, 0);
+  clientfield::register("toplayer", "vtol_update_client", 1, 1, "counter", & update_client, 0, 0);
+  clientfield::register("toplayer", "fog_bank_2", 1, 1, "int", & fog_bank_2_callback, 0, 0);
+  visionset_mgr::register_visionset_info("mothership_visionset", 1, 1, undefined, "mp_vehicles_mothership");
 }
 
 /*
@@ -48,9 +46,7 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function turret_destroyed_0(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-}
+function turret_destroyed_0(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
 /*
 	Name: turret_destroyed_1
@@ -61,9 +57,7 @@ function turret_destroyed_0(localclientnum, oldval, newval, bnewent, binitialsna
 	Parameters: 7
 	Flags: Linked
 */
-function turret_destroyed_1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-}
+function turret_destroyed_1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
 /*
 	Name: update_turret_destroyed
@@ -74,13 +68,11 @@ function turret_destroyed_1(localclientnum, oldval, newval, bnewent, binitialsna
 	Parameters: 3
 	Flags: Linked
 */
-function update_turret_destroyed(localclientnum, ui_model_name, new_value)
-{
-	part_destroyed_ui_model = getuimodel(getuimodelforcontroller(localclientnum), ui_model_name);
-	if(isdefined(part_destroyed_ui_model))
-	{
-		setuimodelvalue(part_destroyed_ui_model, new_value);
-	}
+function update_turret_destroyed(localclientnum, ui_model_name, new_value) {
+  part_destroyed_ui_model = getuimodel(getuimodelforcontroller(localclientnum), ui_model_name);
+  if(isdefined(part_destroyed_ui_model)) {
+    setuimodelvalue(part_destroyed_ui_model, new_value);
+  }
 }
 
 /*
@@ -92,14 +84,12 @@ function update_turret_destroyed(localclientnum, ui_model_name, new_value)
 	Parameters: 7
 	Flags: Linked
 */
-function update_client(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	veh = getplayervehicle(self);
-	if(isdefined(veh))
-	{
-		update_turret_destroyed(localclientnum, "vehicle.partDestroyed.0", veh clientfield::get("vtol_turret_destroyed_0"));
-		update_turret_destroyed(localclientnum, "vehicle.partDestroyed.1", veh clientfield::get("vtol_turret_destroyed_1"));
-	}
+function update_client(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  veh = getplayervehicle(self);
+  if(isdefined(veh)) {
+    update_turret_destroyed(localclientnum, "vehicle.partDestroyed.0", veh clientfield::get("vtol_turret_destroyed_0"));
+    update_turret_destroyed(localclientnum, "vehicle.partDestroyed.1", veh clientfield::get("vtol_turret_destroyed_1"));
+  }
 }
 
 /*
@@ -111,18 +101,12 @@ function update_client(localclientnum, oldval, newval, bnewent, binitialsnap, fi
 	Parameters: 7
 	Flags: Linked
 */
-function fog_bank_2_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(oldval != newval)
-	{
-		if(newval == 1)
-		{
-			setlitfogbank(localclientnum, -1, 1, 0);
-		}
-		else
-		{
-			setlitfogbank(localclientnum, -1, 0, 0);
-		}
-	}
+function fog_bank_2_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(oldval != newval) {
+    if(newval == 1) {
+      setlitfogbank(localclientnum, -1, 1, 0);
+    } else {
+      setlitfogbank(localclientnum, -1, 0, 0);
+    }
+  }
 }
-

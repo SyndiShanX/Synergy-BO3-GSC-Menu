@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("clientids", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("clientids", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,10 +27,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_start_gametype(&init);
-	callback::on_connect(&on_player_connect);
+function __init__() {
+  callback::on_start_gametype( & init);
+  callback::on_connect( & on_player_connect);
 }
 
 /*
@@ -43,9 +41,8 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	level.clientid = 0;
+function init() {
+  level.clientid = 0;
 }
 
 /*
@@ -57,16 +54,13 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_connect()
-{
-	self.clientid = matchrecordnewplayer(self);
-	if(!isdefined(self.clientid) || self.clientid == -1)
-	{
-		self.clientid = level.clientid;
-		level.clientid++;
-	}
-	/#
-		println((("" + self.name) + "") + self.clientid);
-	#/
+function on_player_connect() {
+  self.clientid = matchrecordnewplayer(self);
+  if(!isdefined(self.clientid) || self.clientid == -1) {
+    self.clientid = level.clientid;
+    level.clientid++;
+  }
+  /#
+  println((("" + self.name) + "") + self.clientid);
+  # /
 }
-

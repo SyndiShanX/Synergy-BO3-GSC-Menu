@@ -15,9 +15,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function callback_hostmigrationsave()
-{
-}
+function callback_hostmigrationsave() {}
 
 /*
 	Name: callback_prehostmigrationsave
@@ -28,9 +26,7 @@ function callback_hostmigrationsave()
 	Parameters: 0
 	Flags: Linked
 */
-function callback_prehostmigrationsave()
-{
-}
+function callback_prehostmigrationsave() {}
 
 /*
 	Name: callback_hostmigration
@@ -41,41 +37,36 @@ function callback_prehostmigrationsave()
 	Parameters: 0
 	Flags: Linked
 */
-function callback_hostmigration()
-{
-	setslowmotion(1, 1, 0);
-	level.hostmigrationreturnedplayercount = 0;
-	if(level.inprematchperiod)
-	{
-		level waittill(#"prematch_over");
-	}
-	if(level.gameended)
-	{
-		/#
-			println(("" + gettime()) + "");
-		#/
-		return;
-	}
-	/#
-		println("" + gettime());
-	#/
-	level.hostmigrationtimer = 1;
-	sethostmigrationstatus(1);
-	level notify(#"host_migration_begin");
-	thread locktimer();
-	players = level.players;
-	for(i = 0; i < players.size; i++)
-	{
-		player = players[i];
-		player thread hostmigrationtimerthink();
-	}
-	level endon(#"host_migration_begin");
-	hostmigrationwait();
-	level.hostmigrationtimer = undefined;
-	sethostmigrationstatus(0);
-	/#
-		println("" + gettime());
-	#/
-	level notify(#"host_migration_end");
+function callback_hostmigration() {
+  setslowmotion(1, 1, 0);
+  level.hostmigrationreturnedplayercount = 0;
+  if(level.inprematchperiod) {
+    level waittill(# "prematch_over");
+  }
+  if(level.gameended) {
+    /#
+    println(("" + gettime()) + "");
+    # /
+      return;
+  }
+  /#
+  println("" + gettime());
+  # /
+    level.hostmigrationtimer = 1;
+  sethostmigrationstatus(1);
+  level notify(# "host_migration_begin");
+  thread locktimer();
+  players = level.players;
+  for (i = 0; i < players.size; i++) {
+    player = players[i];
+    player thread hostmigrationtimerthink();
+  }
+  level endon(# "host_migration_begin");
+  hostmigrationwait();
+  level.hostmigrationtimer = undefined;
+  sethostmigrationstatus(0);
+  /#
+  println("" + gettime());
+  # /
+    level notify(# "host_migration_end");
 }
-

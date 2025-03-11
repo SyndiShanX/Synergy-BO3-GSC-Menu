@@ -17,12 +17,10 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	namespace_5d379c9::main();
-	namespace_83fbe97c::main();
-	load::main();
-	util::waitforclient(0);
-	level.endgamexcamname = "ui_cam_endgame_mp_infection";
+function main() {
+  namespace_5d379c9::main();
+  namespace_83fbe97c::main();
+  load::main();
+  util::waitforclient(0);
+  level.endgamexcamname = "ui_cam_endgame_mp_infection";
 }
-

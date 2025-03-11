@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("idgun", &init, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("idgun", & init, undefined, undefined);
 }
 
 /*
@@ -34,13 +33,12 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	level.weaponnone = getweapon("none");
-	level.var_29323b70 = getweapon("robotech_launcher");
-	level.var_672ab258 = getweapon("robotech_launcher_upgraded");
-	construct_idgun_weapon_array();
-	callback::on_spawned(&function_50ee0a95);
+function init() {
+  level.weaponnone = getweapon("none");
+  level.var_29323b70 = getweapon("robotech_launcher");
+  level.var_672ab258 = getweapon("robotech_launcher_upgraded");
+  construct_idgun_weapon_array();
+  callback::on_spawned( & function_50ee0a95);
 }
 
 /*
@@ -52,9 +50,7 @@ function init()
 	Parameters: 1
 	Flags: Linked
 */
-function function_50ee0a95(localclientnum)
-{
-}
+function function_50ee0a95(localclientnum) {}
 
 /*
 	Name: function_e1efbc50
@@ -65,20 +61,15 @@ function function_50ee0a95(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function function_e1efbc50(var_9727e47e)
-{
-	if(var_9727e47e != level.weaponnone)
-	{
-		if(!isdefined(level.idgun_weapons))
-		{
-			level.idgun_weapons = [];
-		}
-		else if(!isarray(level.idgun_weapons))
-		{
-			level.idgun_weapons = array(level.idgun_weapons);
-		}
-		level.idgun_weapons[level.idgun_weapons.size] = var_9727e47e;
-	}
+function function_e1efbc50(var_9727e47e) {
+  if(var_9727e47e != level.weaponnone) {
+    if(!isdefined(level.idgun_weapons)) {
+      level.idgun_weapons = [];
+    } else if(!isarray(level.idgun_weapons)) {
+      level.idgun_weapons = array(level.idgun_weapons);
+    }
+    level.idgun_weapons[level.idgun_weapons.size] = var_9727e47e;
+  }
 }
 
 /*
@@ -90,17 +81,16 @@ function function_e1efbc50(var_9727e47e)
 	Parameters: 0
 	Flags: Linked
 */
-function construct_idgun_weapon_array()
-{
-	level.idgun_weapons = [];
-	function_e1efbc50(getweapon("idgun_0"));
-	function_e1efbc50(getweapon("idgun_1"));
-	function_e1efbc50(getweapon("idgun_2"));
-	function_e1efbc50(getweapon("idgun_3"));
-	function_e1efbc50(getweapon("idgun_upgraded_0"));
-	function_e1efbc50(getweapon("idgun_upgraded_1"));
-	function_e1efbc50(getweapon("idgun_upgraded_2"));
-	function_e1efbc50(getweapon("idgun_upgraded_3"));
+function construct_idgun_weapon_array() {
+  level.idgun_weapons = [];
+  function_e1efbc50(getweapon("idgun_0"));
+  function_e1efbc50(getweapon("idgun_1"));
+  function_e1efbc50(getweapon("idgun_2"));
+  function_e1efbc50(getweapon("idgun_3"));
+  function_e1efbc50(getweapon("idgun_upgraded_0"));
+  function_e1efbc50(getweapon("idgun_upgraded_1"));
+  function_e1efbc50(getweapon("idgun_upgraded_2"));
+  function_e1efbc50(getweapon("idgun_upgraded_3"));
 }
 
 /*
@@ -112,13 +102,11 @@ function construct_idgun_weapon_array()
 	Parameters: 1
 	Flags: None
 */
-function function_9b7ac6a9(weapon)
-{
-	if(weapon === getweapon("idgun_upgraded_0") || weapon === getweapon("idgun_upgraded_1") || weapon === getweapon("idgun_upgraded_2") || weapon === getweapon("idgun_upgraded_3"))
-	{
-		return true;
-	}
-	return false;
+function function_9b7ac6a9(weapon) {
+  if(weapon === getweapon("idgun_upgraded_0") || weapon === getweapon("idgun_upgraded_1") || weapon === getweapon("idgun_upgraded_2") || weapon === getweapon("idgun_upgraded_3")) {
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -130,15 +118,11 @@ function function_9b7ac6a9(weapon)
 	Parameters: 1
 	Flags: None
 */
-function is_idgun_damage(weapon)
-{
-	if(isdefined(level.idgun_weapons))
-	{
-		if(isinarray(level.idgun_weapons, weapon))
-		{
-			return true;
-		}
-	}
-	return false;
+function is_idgun_damage(weapon) {
+  if(isdefined(level.idgun_weapons)) {
+    if(isinarray(level.idgun_weapons, weapon)) {
+      return true;
+    }
+  }
+  return false;
 }
-

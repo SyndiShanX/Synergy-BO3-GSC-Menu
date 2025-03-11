@@ -16,7 +16,4 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec registerbehaviorscriptfunctions()
-{
-}
-
+function autoexec registerbehaviorscriptfunctions() {}

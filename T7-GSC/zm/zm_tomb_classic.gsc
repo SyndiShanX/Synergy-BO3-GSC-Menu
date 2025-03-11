@@ -20,12 +20,11 @@
 	Parameters: 0
 	Flags: None
 */
-function precache()
-{
-	zm_craftables::init();
-	zm_tomb_craftables::randomize_craftable_spawns();
-	zm_tomb_craftables::include_craftables();
-	zm_tomb_craftables::init_craftables();
+function precache() {
+  zm_craftables::init();
+  zm_tomb_craftables::randomize_craftable_spawns();
+  zm_tomb_craftables::include_craftables();
+  zm_tomb_craftables::init_craftables();
 }
 
 /*
@@ -37,11 +36,10 @@ function precache()
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	zm_game_module::set_current_game_module(level.game_module_standard_index);
-	level thread zm_craftables::think_craftables();
-	level flag::wait_till("initial_blackscreen_passed");
+function main() {
+  zm_game_module::set_current_game_module(level.game_module_standard_index);
+  level thread zm_craftables::think_craftables();
+  level flag::wait_till("initial_blackscreen_passed");
 }
 
 /*
@@ -53,19 +51,14 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function zm_treasure_chest_init()
-{
-	chest1 = struct::get("start_chest", "script_noteworthy");
-	level.chests = [];
-	if(!isdefined(level.chests))
-	{
-		level.chests = [];
-	}
-	else if(!isarray(level.chests))
-	{
-		level.chests = array(level.chests);
-	}
-	level.chests[level.chests.size] = chest1;
-	zm_magicbox::treasure_chest_init("start_chest");
+function zm_treasure_chest_init() {
+  chest1 = struct::get("start_chest", "script_noteworthy");
+  level.chests = [];
+  if(!isdefined(level.chests)) {
+    level.chests = [];
+  } else if(!isarray(level.chests)) {
+    level.chests = array(level.chests);
+  }
+  level.chests[level.chests.size] = chest1;
+  zm_magicbox::treasure_chest_init("start_chest");
 }
-

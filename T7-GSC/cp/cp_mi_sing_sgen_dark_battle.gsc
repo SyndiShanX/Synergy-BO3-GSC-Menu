@@ -38,9 +38,8 @@
 	Parameters: 2
 	Flags: None
 */
-function skipto_dark_battle_init()
-{
-	// Unsupported VM revision (1B).
+function skipto_dark_battle_init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -52,9 +51,8 @@ function skipto_dark_battle_init()
 	Parameters: 0
 	Flags: None
 */
-function electromagnetic_room_vo()
-{
-	// Unsupported VM revision (1B).
+function electromagnetic_room_vo() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -66,9 +64,8 @@ function electromagnetic_room_vo()
 	Parameters: 1
 	Flags: None
 */
-function function_d791b0a9()
-{
-	// Unsupported VM revision (1B).
+function function_d791b0a9() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -80,9 +77,8 @@ function function_d791b0a9()
 	Parameters: 0
 	Flags: None
 */
-function electromagnetic_room_vo_nag()
-{
-	// Unsupported VM revision (1B).
+function electromagnetic_room_vo_nag() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -94,9 +90,8 @@ function electromagnetic_room_vo_nag()
 	Parameters: 0
 	Flags: None
 */
-function jump_down_bot_mind_control()
-{
-	// Unsupported VM revision (1B).
+function jump_down_bot_mind_control() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -108,9 +103,8 @@ function jump_down_bot_mind_control()
 	Parameters: 4
 	Flags: None
 */
-function skipto_dark_battle_done()
-{
-	// Unsupported VM revision (1B).
+function skipto_dark_battle_done() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -122,9 +116,8 @@ function skipto_dark_battle_done()
 	Parameters: 0
 	Flags: None
 */
-function handle_player_raise_animation()
-{
-	// Unsupported VM revision (1B).
+function handle_player_raise_animation() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -136,9 +129,8 @@ function handle_player_raise_animation()
 	Parameters: 1
 	Flags: None
 */
-function function_f45def6e()
-{
-	// Unsupported VM revision (1B).
+function function_f45def6e() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -150,9 +142,8 @@ function function_f45def6e()
 	Parameters: 0
 	Flags: None
 */
-function surgical_facility()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -164,9 +155,8 @@ function surgical_facility()
 	Parameters: 0
 	Flags: None
 */
-function surgical_facility_objective()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_objective() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -178,9 +168,8 @@ function surgical_facility_objective()
 	Parameters: 0
 	Flags: None
 */
-function surgical_facility_door()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_door() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -192,9 +181,8 @@ function surgical_facility_door()
 	Parameters: 0
 	Flags: None
 */
-function surgical_facility_hendricks()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_hendricks() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -206,9 +194,8 @@ function surgical_facility_hendricks()
 	Parameters: 1
 	Flags: None
 */
-function surgical_facility_hendricks_a()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_hendricks_a() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -220,9 +207,8 @@ function surgical_facility_hendricks_a()
 	Parameters: 1
 	Flags: None
 */
-function surgical_facility_hendricks_b()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_hendricks_b() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -234,9 +220,8 @@ function surgical_facility_hendricks_b()
 	Parameters: 1
 	Flags: None
 */
-function surgical_facility_hendricks_c()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_hendricks_c() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -248,9 +233,8 @@ function surgical_facility_hendricks_c()
 	Parameters: 1
 	Flags: None
 */
-function surgical_facility_hendricks_d()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_hendricks_d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -262,9 +246,8 @@ function surgical_facility_hendricks_d()
 	Parameters: 0
 	Flags: None
 */
-function function_9a64520()
-{
-	// Unsupported VM revision (1B).
+function function_9a64520() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -276,9 +259,8 @@ function function_9a64520()
 	Parameters: 0
 	Flags: None
 */
-function function_a8cfe9ae()
-{
-	// Unsupported VM revision (1B).
+function function_a8cfe9ae() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -290,9 +272,8 @@ function function_a8cfe9ae()
 	Parameters: 1
 	Flags: None
 */
-function surgical_facility_hendricks_stop()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_hendricks_stop() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -304,9 +285,8 @@ function surgical_facility_hendricks_stop()
 	Parameters: 0
 	Flags: None
 */
-function surgical_facility_robots()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_robots() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -318,9 +298,8 @@ function surgical_facility_robots()
 	Parameters: 0
 	Flags: None
 */
-function function_80aab711()
-{
-	// Unsupported VM revision (1B).
+function function_80aab711() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -332,9 +311,8 @@ function function_80aab711()
 	Parameters: 0
 	Flags: None
 */
-function surgical_facility_spawn_trigger()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_spawn_trigger() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -346,9 +324,8 @@ function surgical_facility_spawn_trigger()
 	Parameters: 2
 	Flags: None
 */
-function surgical_facility_robot()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_robot() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -360,9 +337,8 @@ function surgical_facility_robot()
 	Parameters: 0
 	Flags: None
 */
-function surgical_facility_interior_door()
-{
-	// Unsupported VM revision (1B).
+function surgical_facility_interior_door() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -374,9 +350,8 @@ function surgical_facility_interior_door()
 	Parameters: 2
 	Flags: None
 */
-function skipto_charging_station_init()
-{
-	// Unsupported VM revision (1B).
+function skipto_charging_station_init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -388,9 +363,8 @@ function skipto_charging_station_init()
 	Parameters: 4
 	Flags: None
 */
-function skipto_charging_station_done()
-{
-	// Unsupported VM revision (1B).
+function skipto_charging_station_done() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -402,9 +376,8 @@ function skipto_charging_station_done()
 	Parameters: 0
 	Flags: None
 */
-function function_bed8321d()
-{
-	// Unsupported VM revision (1B).
+function function_bed8321d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -416,9 +389,8 @@ function function_bed8321d()
 	Parameters: 0
 	Flags: None
 */
-function charging_station()
-{
-	// Unsupported VM revision (1B).
+function charging_station() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -430,9 +402,8 @@ function charging_station()
 	Parameters: 0
 	Flags: None
 */
-function charging_station_objective()
-{
-	// Unsupported VM revision (1B).
+function charging_station_objective() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -444,9 +415,8 @@ function charging_station_objective()
 	Parameters: 0
 	Flags: None
 */
-function charging_station_power_on()
-{
-	// Unsupported VM revision (1B).
+function charging_station_power_on() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -458,9 +428,8 @@ function charging_station_power_on()
 	Parameters: 0
 	Flags: None
 */
-function function_fe4282f()
-{
-	// Unsupported VM revision (1B).
+function function_fe4282f() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -472,9 +441,8 @@ function function_fe4282f()
 	Parameters: 0
 	Flags: None
 */
-function charging_station_corner_robot_init()
-{
-	// Unsupported VM revision (1B).
+function charging_station_corner_robot_init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -486,9 +454,8 @@ function charging_station_corner_robot_init()
 	Parameters: 1
 	Flags: None
 */
-function wait_till_trigger_or_flag()
-{
-	// Unsupported VM revision (1B).
+function wait_till_trigger_or_flag() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -500,9 +467,8 @@ function wait_till_trigger_or_flag()
 	Parameters: 0
 	Flags: None
 */
-function charging_station_trigger()
-{
-	// Unsupported VM revision (1B).
+function charging_station_trigger() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -514,9 +480,8 @@ function charging_station_trigger()
 	Parameters: 0
 	Flags: None
 */
-function function_16c18dca()
-{
-	// Unsupported VM revision (1B).
+function function_16c18dca() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -528,9 +493,8 @@ function function_16c18dca()
 	Parameters: 0
 	Flags: None
 */
-function function_54efd092()
-{
-	// Unsupported VM revision (1B).
+function function_54efd092() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -542,9 +506,8 @@ function function_54efd092()
 	Parameters: 1
 	Flags: None
 */
-function charging_station_spawn_robot()
-{
-	// Unsupported VM revision (1B).
+function charging_station_spawn_robot() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -556,9 +519,8 @@ function charging_station_spawn_robot()
 	Parameters: 0
 	Flags: None
 */
-function charging_station_spawner()
-{
-	// Unsupported VM revision (1B).
+function charging_station_spawner() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -570,9 +532,8 @@ function charging_station_spawner()
 	Parameters: 0
 	Flags: None
 */
-function charging_station_fake_spawner_think()
-{
-	// Unsupported VM revision (1B).
+function charging_station_fake_spawner_think() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -584,9 +545,8 @@ function charging_station_fake_spawner_think()
 	Parameters: 0
 	Flags: None
 */
-function charging_station_spawner_think()
-{
-	// Unsupported VM revision (1B).
+function charging_station_spawner_think() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -598,9 +558,8 @@ function charging_station_spawner_think()
 	Parameters: 1
 	Flags: None
 */
-function charging_station_spawner_break_glass()
-{
-	// Unsupported VM revision (1B).
+function charging_station_spawner_break_glass() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -612,9 +571,8 @@ function charging_station_spawner_break_glass()
 	Parameters: 0
 	Flags: None
 */
-function charging_station_player_vo()
-{
-	// Unsupported VM revision (1B).
+function charging_station_player_vo() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -626,8 +584,6 @@ function charging_station_player_vo()
 	Parameters: 0
 	Flags: None
 */
-function function_a022fef1()
-{
-	// Unsupported VM revision (1B).
+function function_a022fef1() {
+  // Unsupported VM revision (1B).
 }
-

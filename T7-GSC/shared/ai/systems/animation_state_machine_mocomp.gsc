@@ -10,9 +10,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec initanimationmocomps()
-{
-	level._animationmocomps = [];
+function autoexec initanimationmocomps() {
+  level._animationmocomps = [];
 }
 
 /*
@@ -24,31 +23,25 @@ function autoexec initanimationmocomps()
 	Parameters: 6
 	Flags: Linked
 */
-function runanimationmocomp(mocompname, mocompstatus, asmentity, mocompanim, mocompanimblendouttime, mocompduration)
-{
-	/#
-		assert(mocompstatus >= 0 && mocompstatus <= 2, ("" + mocompstatus) + "");
-	#/
-	/#
-		assert(isdefined(level._animationmocomps[mocompname]), ("" + mocompname) + "");
-	#/
-	if(mocompstatus == 0)
-	{
-		mocompstatus = "asm_mocomp_start";
-	}
-	else
-	{
-		if(mocompstatus == 1)
-		{
-			mocompstatus = "asm_mocomp_update";
-		}
-		else
-		{
-			mocompstatus = "asm_mocomp_terminate";
-		}
-	}
-	animationmocompresult = asmentity [[level._animationmocomps[mocompname][mocompstatus]]](asmentity, mocompanim, mocompanimblendouttime, "", mocompduration);
-	return animationmocompresult;
+function runanimationmocomp(mocompname, mocompstatus, asmentity, mocompanim, mocompanimblendouttime, mocompduration) {
+  /#
+  assert(mocompstatus >= 0 && mocompstatus <= 2, ("" + mocompstatus) + "");
+  # /
+    /#
+  assert(isdefined(level._animationmocomps[mocompname]), ("" + mocompname) + "");
+  # /
+    if(mocompstatus == 0) {
+      mocompstatus = "asm_mocomp_start";
+    }
+  else {
+    if(mocompstatus == 1) {
+      mocompstatus = "asm_mocomp_update";
+    } else {
+      mocompstatus = "asm_mocomp_terminate";
+    }
+  }
+  animationmocompresult = asmentity[[level._animationmocomps[mocompname][mocompstatus]]](asmentity, mocompanim, mocompanimblendouttime, "", mocompduration);
+  return animationmocompresult;
 }
 
 /*
@@ -60,42 +53,35 @@ function runanimationmocomp(mocompname, mocompstatus, asmentity, mocompanim, moc
 	Parameters: 4
 	Flags: Linked
 */
-function registeranimationmocomp(mocompname, startfuncptr, updatefuncptr, terminatefuncptr)
-{
-	mocompname = tolower(mocompname);
-	/#
-		assert(isstring(mocompname), "");
-	#/
-	/#
-		assert(!isdefined(level._animationmocomps[mocompname]), ("" + mocompname) + "");
-	#/
-	level._animationmocomps[mocompname] = array();
-	/#
-		assert(isdefined(startfuncptr) && isfunctionptr(startfuncptr), "");
-	#/
-	level._animationmocomps[mocompname]["asm_mocomp_start"] = startfuncptr;
-	if(isdefined(updatefuncptr))
-	{
-		/#
-			assert(isfunctionptr(updatefuncptr), "");
-		#/
-		level._animationmocomps[mocompname]["asm_mocomp_update"] = updatefuncptr;
-	}
-	else
-	{
-		level._animationmocomps[mocompname]["asm_mocomp_update"] = &animationmocompemptyfunc;
-	}
-	if(isdefined(terminatefuncptr))
-	{
-		/#
-			assert(isfunctionptr(terminatefuncptr), "");
-		#/
-		level._animationmocomps[mocompname]["asm_mocomp_terminate"] = terminatefuncptr;
-	}
-	else
-	{
-		level._animationmocomps[mocompname]["asm_mocomp_terminate"] = &animationmocompemptyfunc;
-	}
+function registeranimationmocomp(mocompname, startfuncptr, updatefuncptr, terminatefuncptr) {
+  mocompname = tolower(mocompname);
+  /#
+  assert(isstring(mocompname), "");
+  # /
+    /#
+  assert(!isdefined(level._animationmocomps[mocompname]), ("" + mocompname) + "");
+  # /
+    level._animationmocomps[mocompname] = array();
+  /#
+  assert(isdefined(startfuncptr) && isfunctionptr(startfuncptr), "");
+  # /
+    level._animationmocomps[mocompname]["asm_mocomp_start"] = startfuncptr;
+  if(isdefined(updatefuncptr)) {
+    /#
+    assert(isfunctionptr(updatefuncptr), "");
+    # /
+      level._animationmocomps[mocompname]["asm_mocomp_update"] = updatefuncptr;
+  } else {
+    level._animationmocomps[mocompname]["asm_mocomp_update"] = & animationmocompemptyfunc;
+  }
+  if(isdefined(terminatefuncptr)) {
+    /#
+    assert(isfunctionptr(terminatefuncptr), "");
+    # /
+      level._animationmocomps[mocompname]["asm_mocomp_terminate"] = terminatefuncptr;
+  } else {
+    level._animationmocomps[mocompname]["asm_mocomp_terminate"] = & animationmocompemptyfunc;
+  }
 }
 
 /*
@@ -107,7 +93,4 @@ function registeranimationmocomp(mocompname, startfuncptr, updatefuncptr, termin
 	Parameters: 5
 	Flags: Linked
 */
-function animationmocompemptyfunc(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration)
-{
-}
-
+function animationmocompemptyfunc(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {}

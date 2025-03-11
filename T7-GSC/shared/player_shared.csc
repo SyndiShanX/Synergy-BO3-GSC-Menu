@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("player", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("player", & __init__, undefined, undefined);
 }
 
 /*
@@ -27,9 +26,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("world", "gameplay_started", 4000, 1, "int", &gameplay_started_callback, 0, 1);
+function __init__() {
+  clientfield::register("world", "gameplay_started", 4000, 1, "int", & gameplay_started_callback, 0, 1);
 }
 
 /*
@@ -41,8 +39,6 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function gameplay_started_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	setdvar("cg_isGameplayActive", newval);
+function gameplay_started_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  setdvar("cg_isGameplayActive", newval);
 }
-

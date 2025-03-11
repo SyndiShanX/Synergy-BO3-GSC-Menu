@@ -25,9 +25,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_ai_raps", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_ai_raps", & __init__, undefined, undefined);
 }
 
 /*
@@ -39,13 +38,12 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("toplayer", "elemental_round_fx", 1, 1, "counter", &elemental_round_fx, 0, 0);
-	clientfield::register("toplayer", "elemental_round_ring_fx", 1, 1, "counter", &elemental_round_ring_fx, 0, 0);
-	visionset_mgr::register_visionset_info("zm_elemental_round_visionset", 1, 31, undefined, "zm_elemental_round_visionset");
-	level._effect["elemental_round"] = "zombie/fx_meatball_round_tell_zod_zmb";
-	vehicle::add_vehicletype_callback("raps", &_setup_);
+function __init__() {
+  clientfield::register("toplayer", "elemental_round_fx", 1, 1, "counter", & elemental_round_fx, 0, 0);
+  clientfield::register("toplayer", "elemental_round_ring_fx", 1, 1, "counter", & elemental_round_ring_fx, 0, 0);
+  visionset_mgr::register_visionset_info("zm_elemental_round_visionset", 1, 31, undefined, "zm_elemental_round_visionset");
+  level._effect["elemental_round"] = "zombie/fx_meatball_round_tell_zod_zmb";
+  vehicle::add_vehicletype_callback("raps", & _setup_);
 }
 
 /*
@@ -57,16 +55,14 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function _setup_(localclientnum)
-{
-	self.notifyonbulletimpact = 1;
-	self thread wait_for_bullet_impact(localclientnum);
-	self setanim("ai_zombie_zod_insanity_elemental_idle", 1);
-	if(isdefined(level.debug_keyline_zombies) && level.debug_keyline_zombies)
-	{
-		self duplicate_render::set_dr_flag("keyline_active", 1);
-		self duplicate_render::update_dr_filters(localclientnum);
-	}
+function _setup_(localclientnum) {
+  self.notifyonbulletimpact = 1;
+  self thread wait_for_bullet_impact(localclientnum);
+  self setanim("ai_zombie_zod_insanity_elemental_idle", 1);
+  if(isdefined(level.debug_keyline_zombies) && level.debug_keyline_zombies) {
+    self duplicate_render::set_dr_flag("keyline_active", 1);
+    self duplicate_render::update_dr_filters(localclientnum);
+  }
 }
 
 /*
@@ -78,16 +74,14 @@ function _setup_(localclientnum)
 	Parameters: 7
 	Flags: Linked
 */
-function elemental_round_fx(n_local_client, n_val_old, n_val_new, b_ent_new, b_initial_snap, str_field, b_demo_jump)
-{
-	self endon(#"disconnect");
-	if(isspectating(n_local_client))
-	{
-		return;
-	}
-	self.n_elemental_round_fx_id = playfxoncamera(n_local_client, level._effect["elemental_round"]);
-	wait(3.5);
-	deletefx(n_local_client, self.n_elemental_round_fx_id);
+function elemental_round_fx(n_local_client, n_val_old, n_val_new, b_ent_new, b_initial_snap, str_field, b_demo_jump) {
+  self endon(# "disconnect");
+  if(isspectating(n_local_client)) {
+    return;
+  }
+  self.n_elemental_round_fx_id = playfxoncamera(n_local_client, level._effect["elemental_round"]);
+  wait(3.5);
+  deletefx(n_local_client, self.n_elemental_round_fx_id);
 }
 
 /*
@@ -99,16 +93,14 @@ function elemental_round_fx(n_local_client, n_val_old, n_val_new, b_ent_new, b_i
 	Parameters: 7
 	Flags: Linked
 */
-function elemental_round_ring_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self endon(#"disconnect");
-	if(isspectating(localclientnum))
-	{
-		return;
-	}
-	self thread postfx::playpostfxbundle("pstfx_ring_loop");
-	wait(1.5);
-	self postfx::exitpostfxbundle();
+function elemental_round_ring_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self endon(# "disconnect");
+  if(isspectating(localclientnum)) {
+    return;
+  }
+  self thread postfx::playpostfxbundle("pstfx_ring_loop");
+  wait(1.5);
+  self postfx::exitpostfxbundle();
 }
 
 /*
@@ -120,21 +112,15 @@ function elemental_round_ring_fx(localclientnum, oldval, newval, bnewent, biniti
 	Parameters: 1
 	Flags: Linked
 */
-function wait_for_bullet_impact(localclientnum)
-{
-	self endon(#"entityshutdown");
-	if(isdefined(self.scriptbundlesettings))
-	{
-		settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
-	}
-	else
-	{
-		return;
-	}
-	while(true)
-	{
-		self waittill(#"damage", attacker, impactpos, effectdir, partname);
-		playfx(localclientnum, settings.weakspotfx, impactpos, effectdir);
-	}
+function wait_for_bullet_impact(localclientnum) {
+  self endon(# "entityshutdown");
+  if(isdefined(self.scriptbundlesettings)) {
+    settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
+  } else {
+    return;
+  }
+  while (true) {
+    self waittill(# "damage", attacker, impactpos, effectdir, partname);
+    playfx(localclientnum, settings.weakspotfx, impactpos, effectdir);
+  }
 }
-

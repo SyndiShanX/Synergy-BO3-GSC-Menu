@@ -20,14 +20,13 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec main()
-{
-	clientfield::register("actor", "arch_actor_fire_fx", 1, 2, "int");
-	clientfield::register("actor", "arch_actor_char", 1, 2, "int");
-	callback::on_actor_damage(&onactordamagecallback);
-	callback::on_vehicle_damage(&onvehicledamagecallback);
-	callback::on_actor_killed(&onactorkilledcallback);
-	callback::on_vehicle_killed(&onvehiclekilledcallback);
+function autoexec main() {
+  clientfield::register("actor", "arch_actor_fire_fx", 1, 2, "int");
+  clientfield::register("actor", "arch_actor_char", 1, 2, "int");
+  callback::on_actor_damage( & onactordamagecallback);
+  callback::on_vehicle_damage( & onvehicledamagecallback);
+  callback::on_actor_killed( & onactorkilledcallback);
+  callback::on_vehicle_killed( & onvehiclekilledcallback);
 }
 
 /*
@@ -39,9 +38,8 @@ function autoexec main()
 	Parameters: 1
 	Flags: Linked
 */
-function onactordamagecallback(params)
-{
-	onactordamage(params);
+function onactordamagecallback(params) {
+  onactordamage(params);
 }
 
 /*
@@ -53,9 +51,8 @@ function onactordamagecallback(params)
 	Parameters: 1
 	Flags: Linked
 */
-function onvehicledamagecallback(params)
-{
-	onvehicledamage(params);
+function onvehicledamagecallback(params) {
+  onvehicledamage(params);
 }
 
 /*
@@ -67,22 +64,18 @@ function onvehicledamagecallback(params)
 	Parameters: 1
 	Flags: Linked
 */
-function onactorkilledcallback(params)
-{
-	onactorkilled();
-	switch(self.archetype)
-	{
-		case "human":
-		{
-			onhumankilled();
-			break;
-		}
-		case "robot":
-		{
-			onrobotkilled();
-			break;
-		}
-	}
+function onactorkilledcallback(params) {
+  onactorkilled();
+  switch (self.archetype) {
+    case "human": {
+      onhumankilled();
+      break;
+    }
+    case "robot": {
+      onrobotkilled();
+      break;
+    }
+  }
 }
 
 /*
@@ -94,9 +87,8 @@ function onactorkilledcallback(params)
 	Parameters: 1
 	Flags: Linked
 */
-function onvehiclekilledcallback(params)
-{
-	onvehiclekilled(params);
+function onvehiclekilledcallback(params) {
+  onvehiclekilled(params);
 }
 
 /*
@@ -108,9 +100,7 @@ function onvehiclekilledcallback(params)
 	Parameters: 1
 	Flags: Linked
 */
-function onactordamage(params)
-{
-}
+function onactordamage(params) {}
 
 /*
 	Name: onvehicledamage
@@ -121,9 +111,8 @@ function onactordamage(params)
 	Parameters: 1
 	Flags: Linked
 */
-function onvehicledamage(params)
-{
-	onvehiclekilled(params);
+function onvehicledamage(params) {
+  onvehiclekilled(params);
 }
 
 /*
@@ -135,18 +124,14 @@ function onvehicledamage(params)
 	Parameters: 0
 	Flags: Linked
 */
-function onactorkilled()
-{
-	if(isdefined(self.damagemod))
-	{
-		if(self.damagemod == "MOD_BURNED")
-		{
-			if(isdefined(self.damageweapon) && isdefined(self.damageweapon.specialpain) && self.damageweapon.specialpain == 0)
-			{
-				self clientfield::set("arch_actor_fire_fx", 2);
-			}
-		}
-	}
+function onactorkilled() {
+  if(isdefined(self.damagemod)) {
+    if(self.damagemod == "MOD_BURNED") {
+      if(isdefined(self.damageweapon) && isdefined(self.damageweapon.specialpain) && self.damageweapon.specialpain == 0) {
+        self clientfield::set("arch_actor_fire_fx", 2);
+      }
+    }
+  }
 }
 
 /*
@@ -158,9 +143,7 @@ function onactorkilled()
 	Parameters: 0
 	Flags: Linked
 */
-function onhumankilled()
-{
-}
+function onhumankilled() {}
 
 /*
 	Name: onrobotkilled
@@ -171,9 +154,7 @@ function onhumankilled()
 	Parameters: 0
 	Flags: Linked
 */
-function onrobotkilled()
-{
-}
+function onrobotkilled() {}
 
 /*
 	Name: onvehiclekilled
@@ -184,7 +165,4 @@ function onrobotkilled()
 	Parameters: 1
 	Flags: Linked
 */
-function onvehiclekilled(params)
-{
-}
-
+function onvehiclekilled(params) {}

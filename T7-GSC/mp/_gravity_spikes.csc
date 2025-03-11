@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("gravity_spikes", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("gravity_spikes", & __init__, undefined, undefined);
 }
 
 /*
@@ -32,15 +31,14 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	level._effect["gravity_spike_dust"] = "weapon/fx_hero_grvity_spk_grnd_hit_dust";
-	level.gravity_spike_table = "surface_explosion_gravityspikes";
-	level thread watchforgravityspikeexplosion();
-	level.dirt_enable_gravity_spikes = getdvarint("scr_dirt_enable_gravity_spikes", 0);
-	/#
-		level thread updatedvars();
-	#/
+function __init__() {
+  level._effect["gravity_spike_dust"] = "weapon/fx_hero_grvity_spk_grnd_hit_dust";
+  level.gravity_spike_table = "surface_explosion_gravityspikes";
+  level thread watchforgravityspikeexplosion();
+  level.dirt_enable_gravity_spikes = getdvarint("scr_dirt_enable_gravity_spikes", 0);
+  /#
+  level thread updatedvars();
+  # /
 }
 
 /*
@@ -52,15 +50,13 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function updatedvars()
-{
-	/#
-		while(true)
-		{
-			level.dirt_enable_gravity_spikes = getdvarint("", level.dirt_enable_gravity_spikes);
-			wait(1);
-		}
-	#/
+function updatedvars() {
+  /#
+  while (true) {
+    level.dirt_enable_gravity_spikes = getdvarint("", level.dirt_enable_gravity_spikes);
+    wait(1);
+  }
+  # /
 }
 
 /*
@@ -72,27 +68,22 @@ function updatedvars()
 	Parameters: 0
 	Flags: Linked
 */
-function watchforgravityspikeexplosion()
-{
-	if(getactivelocalclients() > 1)
-	{
-		return;
-	}
-	weapon_proximity = getweapon("hero_gravityspikes");
-	while(true)
-	{
-		level waittill(#"explode", localclientnum, position, mod, weapon, owner_cent);
-		if(weapon.rootweapon != weapon_proximity)
-		{
-			continue;
-		}
-		if(isdefined(owner_cent) && getlocalplayer(localclientnum) == owner_cent && level.dirt_enable_gravity_spikes)
-		{
-			owner_cent thread explode::dothedirty(localclientnum, 0, 1, 0, 1000, 500);
-		}
-		thread do_gravity_spike_fx(localclientnum, owner_cent, weapon, position);
-		thread audio::dorattle(position, 200, 700);
-	}
+function watchforgravityspikeexplosion() {
+  if(getactivelocalclients() > 1) {
+    return;
+  }
+  weapon_proximity = getweapon("hero_gravityspikes");
+  while (true) {
+    level waittill(# "explode", localclientnum, position, mod, weapon, owner_cent);
+    if(weapon.rootweapon != weapon_proximity) {
+      continue;
+    }
+    if(isdefined(owner_cent) && getlocalplayer(localclientnum) == owner_cent && level.dirt_enable_gravity_spikes) {
+      owner_cent thread explode::dothedirty(localclientnum, 0, 1, 0, 1000, 500);
+    }
+    thread do_gravity_spike_fx(localclientnum, owner_cent, weapon, position);
+    thread audio::dorattle(position, 200, 700);
+  }
 }
 
 /*
@@ -104,21 +95,19 @@ function watchforgravityspikeexplosion()
 	Parameters: 4
 	Flags: Linked
 */
-function do_gravity_spike_fx(localclientnum, owner, weapon, position)
-{
-	radius_of_effect = 40;
-	number_of_circles = 3;
-	base_number_of_effects = 3;
-	additional_number_of_effects_per_circle = 7;
-	explosion_radius = weapon.explosionradius;
-	radius_per_circle = (explosion_radius - radius_of_effect) / number_of_circles;
-	for(circle = 0; circle < number_of_circles; circle++)
-	{
-		wait(0.1);
-		radius_for_this_circle = radius_per_circle * (circle + 1);
-		number_for_this_circle = base_number_of_effects + (additional_number_of_effects_per_circle * circle);
-		thread do_gravity_spike_fx_circle(localclientnum, owner, position, radius_for_this_circle, number_for_this_circle);
-	}
+function do_gravity_spike_fx(localclientnum, owner, weapon, position) {
+  radius_of_effect = 40;
+  number_of_circles = 3;
+  base_number_of_effects = 3;
+  additional_number_of_effects_per_circle = 7;
+  explosion_radius = weapon.explosionradius;
+  radius_per_circle = (explosion_radius - radius_of_effect) / number_of_circles;
+  for (circle = 0; circle < number_of_circles; circle++) {
+    wait(0.1);
+    radius_for_this_circle = radius_per_circle * (circle + 1);
+    number_for_this_circle = base_number_of_effects + (additional_number_of_effects_per_circle * circle);
+    thread do_gravity_spike_fx_circle(localclientnum, owner, position, radius_for_this_circle, number_for_this_circle);
+  }
 }
 
 /*
@@ -130,12 +119,11 @@ function do_gravity_spike_fx(localclientnum, owner, weapon, position)
 	Parameters: 5
 	Flags: Linked
 */
-function getideallocationforfx(startpos, fxindex, fxcount, defaultdistance, rotation)
-{
-	currentangle = (360 / fxcount) * fxindex;
-	coscurrent = cos(currentangle + rotation);
-	sincurrent = sin(currentangle + rotation);
-	return startpos + (defaultdistance * coscurrent, defaultdistance * sincurrent, 0);
+function getideallocationforfx(startpos, fxindex, fxcount, defaultdistance, rotation) {
+  currentangle = (360 / fxcount) * fxindex;
+  coscurrent = cos(currentangle + rotation);
+  sincurrent = sin(currentangle + rotation);
+  return startpos + (defaultdistance * coscurrent, defaultdistance * sincurrent, 0);
 }
 
 /*
@@ -147,13 +135,12 @@ function getideallocationforfx(startpos, fxindex, fxcount, defaultdistance, rota
 	Parameters: 3
 	Flags: Linked
 */
-function randomizelocation(startpos, max_x_offset, max_y_offset)
-{
-	half_x = int(max_x_offset / 2);
-	half_y = int(max_y_offset / 2);
-	rand_x = randomintrange(half_x * -1, half_x);
-	rand_y = randomintrange(half_y * -1, half_y);
-	return startpos + (rand_x, rand_y, 0);
+function randomizelocation(startpos, max_x_offset, max_y_offset) {
+  half_x = int(max_x_offset / 2);
+  half_y = int(max_y_offset / 2);
+  rand_x = randomintrange(half_x * -1, half_x);
+  rand_y = randomintrange(half_y * -1, half_y);
+  return startpos + (rand_x, rand_y, 0);
 }
 
 /*
@@ -165,11 +152,10 @@ function randomizelocation(startpos, max_x_offset, max_y_offset)
 	Parameters: 2
 	Flags: Linked
 */
-function ground_trace(startpos, owner)
-{
-	trace_height = 50;
-	trace_depth = 100;
-	return bullettrace(startpos + (0, 0, trace_height), startpos - (0, 0, trace_depth), 0, owner);
+function ground_trace(startpos, owner) {
+  trace_height = 50;
+  trace_depth = 100;
+  return bullettrace(startpos + (0, 0, trace_height), startpos - (0, 0, trace_depth), 0, owner);
 }
 
 /*
@@ -181,42 +167,34 @@ function ground_trace(startpos, owner)
 	Parameters: 5
 	Flags: Linked
 */
-function do_gravity_spike_fx_circle(localclientnum, owner, center, radius, count)
-{
-	segment = 360 / count;
-	up = (0, 0, 1);
-	randomization = 40;
-	sphere_size = 5;
-	for(i = 0; i < count; i++)
-	{
-		fx_position = getideallocationforfx(center, i, count, radius, 0);
-		/#
-		#/
-		fx_position = randomizelocation(fx_position, randomization, randomization);
-		trace = ground_trace(fx_position, owner);
-		if(trace["fraction"] < 1)
-		{
-			/#
-			#/
-			fx = getfxfromsurfacetable(level.gravity_spike_table, trace["surfacetype"]);
-			if(isdefined(fx))
-			{
-				angles = (0, randomintrange(0, 359), 0);
-				forward = anglestoforward(angles);
-				normal = trace["normal"];
-				if(lengthsquared(normal) == 0)
-				{
-					normal = (1, 0, 0);
-				}
-				playfx(localclientnum, fx, trace["position"], normal, forward);
-			}
-		}
-		else
-		{
-			/#
-			#/
-		}
-		wait(0.016);
-	}
+function do_gravity_spike_fx_circle(localclientnum, owner, center, radius, count) {
+  segment = 360 / count;
+  up = (0, 0, 1);
+  randomization = 40;
+  sphere_size = 5;
+  for (i = 0; i < count; i++) {
+    fx_position = getideallocationforfx(center, i, count, radius, 0);
+    /#
+    # /
+      fx_position = randomizelocation(fx_position, randomization, randomization);
+    trace = ground_trace(fx_position, owner);
+    if(trace["fraction"] < 1) {
+      /#
+      # /
+        fx = getfxfromsurfacetable(level.gravity_spike_table, trace["surfacetype"]);
+      if(isdefined(fx)) {
+        angles = (0, randomintrange(0, 359), 0);
+        forward = anglestoforward(angles);
+        normal = trace["normal"];
+        if(lengthsquared(normal) == 0) {
+          normal = (1, 0, 0);
+        }
+        playfx(localclientnum, fx, trace["position"], normal, forward);
+      }
+    } else {
+      /#
+      # /
+    }
+    wait(0.016);
+  }
 }
-

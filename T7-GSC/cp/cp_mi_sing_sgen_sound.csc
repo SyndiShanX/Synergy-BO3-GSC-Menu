@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	// Unsupported VM revision (1B).
+function main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -28,9 +27,8 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function decon_light()
-{
-	// Unsupported VM revision (1B).
+function decon_light() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -42,9 +40,8 @@ function decon_light()
 	Parameters: 0
 	Flags: None
 */
-function force_underwater_context()
-{
-	// Unsupported VM revision (1B).
+function force_underwater_context() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -56,9 +53,8 @@ function force_underwater_context()
 	Parameters: 0
 	Flags: None
 */
-function release_underwater_context()
-{
-	// Unsupported VM revision (1B).
+function release_underwater_context() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -70,9 +66,8 @@ function release_underwater_context()
 	Parameters: 0
 	Flags: None
 */
-function sndmusicrampers()
-{
-	// Unsupported VM revision (1B).
+function sndmusicrampers() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -84,9 +79,8 @@ function sndmusicrampers()
 	Parameters: 0
 	Flags: None
 */
-function sndrobothall()
-{
-	// Unsupported VM revision (1B).
+function sndrobothall() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -98,9 +92,8 @@ function sndrobothall()
 	Parameters: 0
 	Flags: None
 */
-function sndrobothallend()
-{
-	// Unsupported VM revision (1B).
+function sndrobothallend() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -112,9 +105,8 @@ function sndrobothallend()
 	Parameters: 13
 	Flags: None
 */
-function sndramperthink()
-{
-	// Unsupported VM revision (1B).
+function sndramperthink() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -126,9 +118,8 @@ function sndramperthink()
 	Parameters: 4
 	Flags: None
 */
-function function_860d167b()
-{
-	// Unsupported VM revision (1B).
+function function_860d167b() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -140,9 +131,8 @@ function function_860d167b()
 	Parameters: 0
 	Flags: None
 */
-function sndscares()
-{
-	// Unsupported VM revision (1B).
+function sndscares() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -154,9 +144,8 @@ function sndscares()
 	Parameters: 0
 	Flags: None
 */
-function sndscaretrig()
-{
-	// Unsupported VM revision (1B).
+function sndscaretrig() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -168,9 +157,8 @@ function sndscaretrig()
 	Parameters: 0
 	Flags: None
 */
-function sndjumpland()
-{
-	// Unsupported VM revision (1B).
+function sndjumpland() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -182,9 +170,8 @@ function sndjumpland()
 	Parameters: 0
 	Flags: None
 */
-function sndjumplandtrig()
-{
-	// Unsupported VM revision (1B).
+function sndjumplandtrig() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -196,9 +183,8 @@ function sndjumplandtrig()
 	Parameters: 1
 	Flags: None
 */
-function sndjumplandtrigplaysound()
-{
-	// Unsupported VM revision (1B).
+function sndjumplandtrigplaysound() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -210,9 +196,8 @@ function sndjumplandtrigplaysound()
 	Parameters: 0
 	Flags: None
 */
-function function_4e5472a7()
-{
-	// Unsupported VM revision (1B).
+function function_4e5472a7() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -224,9 +209,8 @@ function function_4e5472a7()
 	Parameters: 0
 	Flags: None
 */
-function function_45100b4d()
-{
-	// Unsupported VM revision (1B).
+function function_45100b4d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -238,9 +222,8 @@ function function_45100b4d()
 	Parameters: 0
 	Flags: None
 */
-function battle_cry()
-{
-	// Unsupported VM revision (1B).
+function battle_cry() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -252,9 +235,8 @@ function battle_cry()
 	Parameters: 0
 	Flags: None
 */
-function function_6c080ebb()
-{
-	// Unsupported VM revision (1B).
+function function_6c080ebb() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -266,9 +248,8 @@ function function_6c080ebb()
 	Parameters: 3
 	Flags: None
 */
-function function_9d912a9d()
-{
-	// Unsupported VM revision (1B).
+function function_9d912a9d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -280,9 +261,8 @@ function function_9d912a9d()
 	Parameters: 7
 	Flags: None
 */
-function function_698dfbe4()
-{
-	// Unsupported VM revision (1B).
+function function_698dfbe4() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -294,8 +274,6 @@ function function_698dfbe4()
 	Parameters: 0
 	Flags: None
 */
-function function_66507a64()
-{
-	// Unsupported VM revision (1B).
+function function_66507a64() {
+  // Unsupported VM revision (1B).
 }
-

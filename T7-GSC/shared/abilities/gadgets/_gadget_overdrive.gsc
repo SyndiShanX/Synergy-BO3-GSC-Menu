@@ -21,9 +21,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("gadget_overdrive", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("gadget_overdrive", & __init__, undefined, undefined);
 }
 
 /*
@@ -35,20 +34,18 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	ability_player::register_gadget_activation_callbacks(28, &gadget_overdrive_on, &gadget_overdrive_off);
-	ability_player::register_gadget_possession_callbacks(28, &gadget_overdrive_on_give, &gadget_overdrive_on_take);
-	ability_player::register_gadget_flicker_callbacks(28, &gadget_overdrive_on_flicker);
-	ability_player::register_gadget_is_inuse_callbacks(28, &gadget_overdrive_is_inuse);
-	ability_player::register_gadget_is_flickering_callbacks(28, &gadget_overdrive_is_flickering);
-	if(!isdefined(level.vsmgr_prio_visionset_overdrive))
-	{
-		level.vsmgr_prio_visionset_overdrive = 65;
-	}
-	visionset_mgr::register_info("visionset", "overdrive", 1, level.vsmgr_prio_visionset_overdrive, 15, 1, &visionset_mgr::ramp_in_out_thread_per_player, 0);
-	callback::on_connect(&gadget_overdrive_on_connect);
-	clientfield::register("toplayer", "overdrive_state", 1, 1, "int");
+function __init__() {
+  ability_player::register_gadget_activation_callbacks(28, & gadget_overdrive_on, & gadget_overdrive_off);
+  ability_player::register_gadget_possession_callbacks(28, & gadget_overdrive_on_give, & gadget_overdrive_on_take);
+  ability_player::register_gadget_flicker_callbacks(28, & gadget_overdrive_on_flicker);
+  ability_player::register_gadget_is_inuse_callbacks(28, & gadget_overdrive_is_inuse);
+  ability_player::register_gadget_is_flickering_callbacks(28, & gadget_overdrive_is_flickering);
+  if(!isdefined(level.vsmgr_prio_visionset_overdrive)) {
+    level.vsmgr_prio_visionset_overdrive = 65;
+  }
+  visionset_mgr::register_info("visionset", "overdrive", 1, level.vsmgr_prio_visionset_overdrive, 15, 1, & visionset_mgr::ramp_in_out_thread_per_player, 0);
+  callback::on_connect( & gadget_overdrive_on_connect);
+  clientfield::register("toplayer", "overdrive_state", 1, 1, "int");
 }
 
 /*
@@ -60,9 +57,8 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function gadget_overdrive_is_inuse(slot)
-{
-	return self flagsys::get("gadget_overdrive_on");
+function gadget_overdrive_is_inuse(slot) {
+  return self flagsys::get("gadget_overdrive_on");
 }
 
 /*
@@ -74,9 +70,7 @@ function gadget_overdrive_is_inuse(slot)
 	Parameters: 1
 	Flags: Linked
 */
-function gadget_overdrive_is_flickering(slot)
-{
-}
+function gadget_overdrive_is_flickering(slot) {}
 
 /*
 	Name: gadget_overdrive_on_flicker
@@ -87,9 +81,7 @@ function gadget_overdrive_is_flickering(slot)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_overdrive_on_flicker(slot, weapon)
-{
-}
+function gadget_overdrive_on_flicker(slot, weapon) {}
 
 /*
 	Name: gadget_overdrive_on_give
@@ -100,12 +92,10 @@ function gadget_overdrive_on_flicker(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_overdrive_on_give(slot, weapon)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.overdrive))
-	{
-		self [[level.cybercom.overdrive._on_give]](slot, weapon);
-	}
+function gadget_overdrive_on_give(slot, weapon) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.overdrive)) {
+    self[[level.cybercom.overdrive._on_give]](slot, weapon);
+  }
 }
 
 /*
@@ -117,12 +107,10 @@ function gadget_overdrive_on_give(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_overdrive_on_take(slot, weapon)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.overdrive))
-	{
-		self [[level.cybercom.overdrive._on_take]](slot, weapon);
-	}
+function gadget_overdrive_on_take(slot, weapon) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.overdrive)) {
+    self[[level.cybercom.overdrive._on_take]](slot, weapon);
+  }
 }
 
 /*
@@ -134,9 +122,7 @@ function gadget_overdrive_on_take(slot, weapon)
 	Parameters: 0
 	Flags: Linked
 */
-function gadget_overdrive_on_connect()
-{
-}
+function gadget_overdrive_on_connect() {}
 
 /*
 	Name: gadget_overdrive_on
@@ -147,13 +133,11 @@ function gadget_overdrive_on_connect()
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_overdrive_on(slot, weapon)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.overdrive))
-	{
-		self thread [[level.cybercom.overdrive._on]](slot, weapon);
-		self flagsys::set("gadget_overdrive_on");
-	}
+function gadget_overdrive_on(slot, weapon) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.overdrive)) {
+    self thread[[level.cybercom.overdrive._on]](slot, weapon);
+    self flagsys::set("gadget_overdrive_on");
+  }
 }
 
 /*
@@ -165,12 +149,9 @@ function gadget_overdrive_on(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_overdrive_off(slot, weapon)
-{
-	self flagsys::clear("gadget_overdrive_on");
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.overdrive))
-	{
-		self thread [[level.cybercom.overdrive._off]](slot, weapon);
-	}
+function gadget_overdrive_off(slot, weapon) {
+  self flagsys::clear("gadget_overdrive_on");
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.overdrive)) {
+    self thread[[level.cybercom.overdrive._off]](slot, weapon);
+  }
 }
-

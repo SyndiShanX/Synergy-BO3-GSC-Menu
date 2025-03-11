@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	// Unsupported VM revision (1B).
+function autoexec __init__sytem__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -33,9 +32,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-	// Unsupported VM revision (1B).
+function __init__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -47,9 +45,8 @@ function __init__()
 	Parameters: 7
 	Flags: None
 */
-function ent_material_callback()
-{
-	// Unsupported VM revision (1B).
+function ent_material_callback() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -61,9 +58,8 @@ function ent_material_callback()
 	Parameters: 7
 	Flags: None
 */
-function ent_camo_material_callback()
-{
-	// Unsupported VM revision (1B).
+function ent_camo_material_callback() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -75,9 +71,8 @@ function ent_camo_material_callback()
 	Parameters: 7
 	Flags: None
 */
-function squad_indicator_callback()
-{
-	// Unsupported VM revision (1B).
+function squad_indicator_callback() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -89,9 +84,8 @@ function squad_indicator_callback()
 	Parameters: 1
 	Flags: None
 */
-function draw_squad_indicator()
-{
-	// Unsupported VM revision (1B).
+function draw_squad_indicator() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -103,8 +97,6 @@ function draw_squad_indicator()
 	Parameters: 1
 	Flags: None
 */
-function delete_squad_indicator()
-{
-	// Unsupported VM revision (1B).
+function delete_squad_indicator() {
+  // Unsupported VM revision (1B).
 }
-

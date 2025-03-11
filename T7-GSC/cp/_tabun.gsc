@@ -16,8 +16,6 @@
 	Parameters: 0
 	Flags: None
 */
-function init()
-{
-	init_shared();
+function init() {
+  init_shared();
 }
-

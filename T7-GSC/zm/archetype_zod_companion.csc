@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_zod_companion", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_zod_companion", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,14 +29,13 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("allplayers", "being_robot_revived", 1, 1, "int", &play_revival_fx, 0, 0);
-	ai::add_archetype_spawn_function("zod_companion", &zodcompanionspawnsetup);
-	level._effect["fx_dest_robot_head_sparks"] = "destruct/fx_dest_robot_head_sparks";
-	level._effect["fx_dest_robot_body_sparks"] = "destruct/fx_dest_robot_body_sparks";
-	level._effect["companion_revive_effect"] = "zombie/fx_robot_helper_revive_player_zod_zmb";
-	ai::add_archetype_spawn_function("robot", &zodcompanionspawnsetup);
+function __init__() {
+  clientfield::register("allplayers", "being_robot_revived", 1, 1, "int", & play_revival_fx, 0, 0);
+  ai::add_archetype_spawn_function("zod_companion", & zodcompanionspawnsetup);
+  level._effect["fx_dest_robot_head_sparks"] = "destruct/fx_dest_robot_head_sparks";
+  level._effect["fx_dest_robot_body_sparks"] = "destruct/fx_dest_robot_body_sparks";
+  level._effect["companion_revive_effect"] = "zombie/fx_robot_helper_revive_player_zod_zmb";
+  ai::add_archetype_spawn_function("robot", & zodcompanionspawnsetup);
 }
 
 /*
@@ -49,16 +47,15 @@ function __init__()
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private zodcompanionspawnsetup(localclientnum)
-{
-	entity = self;
-	gibclientutils::addgibcallback(localclientnum, entity, 8, &zodcompanionheadgibfx);
-	gibclientutils::addgibcallback(localclientnum, entity, 8, &_gibcallback);
-	gibclientutils::addgibcallback(localclientnum, entity, 16, &_gibcallback);
-	gibclientutils::addgibcallback(localclientnum, entity, 32, &_gibcallback);
-	gibclientutils::addgibcallback(localclientnum, entity, 128, &_gibcallback);
-	gibclientutils::addgibcallback(localclientnum, entity, 256, &_gibcallback);
-	fxclientutils::playfxbundle(localclientnum, entity, entity.fxdef);
+function private zodcompanionspawnsetup(localclientnum) {
+  entity = self;
+  gibclientutils::addgibcallback(localclientnum, entity, 8, & zodcompanionheadgibfx);
+  gibclientutils::addgibcallback(localclientnum, entity, 8, & _gibcallback);
+  gibclientutils::addgibcallback(localclientnum, entity, 16, & _gibcallback);
+  gibclientutils::addgibcallback(localclientnum, entity, 32, & _gibcallback);
+  gibclientutils::addgibcallback(localclientnum, entity, 128, & _gibcallback);
+  gibclientutils::addgibcallback(localclientnum, entity, 256, & _gibcallback);
+  fxclientutils::playfxbundle(localclientnum, entity, entity.fxdef);
 }
 
 /*
@@ -70,19 +67,16 @@ function private zodcompanionspawnsetup(localclientnum)
 	Parameters: 3
 	Flags: Linked
 */
-function zodcompanionheadgibfx(localclientnum, entity, gibflag)
-{
-	if(!isdefined(entity) || !entity isai() || !isalive(entity))
-	{
-		return;
-	}
-	if(isdefined(entity.mindcontrolheadfx))
-	{
-		stopfx(localclientnum, entity.mindcontrolheadfx);
-		entity.mindcontrolheadfx = undefined;
-	}
-	entity.headgibfx = playfxontag(localclientnum, level._effect["fx_dest_robot_head_sparks"], entity, "j_neck");
-	playsound(0, "prj_bullet_impact_robot_headshot", entity.origin);
+function zodcompanionheadgibfx(localclientnum, entity, gibflag) {
+  if(!isdefined(entity) || !entity isai() || !isalive(entity)) {
+    return;
+  }
+  if(isdefined(entity.mindcontrolheadfx)) {
+    stopfx(localclientnum, entity.mindcontrolheadfx);
+    entity.mindcontrolheadfx = undefined;
+  }
+  entity.headgibfx = playfxontag(localclientnum, level._effect["fx_dest_robot_head_sparks"], entity, "j_neck");
+  playsound(0, "prj_bullet_impact_robot_headshot", entity.origin);
 }
 
 /*
@@ -94,13 +88,11 @@ function zodcompanionheadgibfx(localclientnum, entity, gibflag)
 	Parameters: 2
 	Flags: None
 */
-function zodcompaniondamagedfx(localclientnum, entity)
-{
-	if(!isdefined(entity) || !entity isai() || !isalive(entity))
-	{
-		return;
-	}
-	entity.damagedfx = playfxontag(localclientnum, level._effect["fx_dest_robot_body_sparks"], entity, "j_spine4");
+function zodcompaniondamagedfx(localclientnum, entity) {
+  if(!isdefined(entity) || !entity isai() || !isalive(entity)) {
+    return;
+  }
+  entity.damagedfx = playfxontag(localclientnum, level._effect["fx_dest_robot_body_sparks"], entity, "j_spine4");
 }
 
 /*
@@ -112,12 +104,10 @@ function zodcompaniondamagedfx(localclientnum, entity)
 	Parameters: 2
 	Flags: None
 */
-function zodcompanionclearfx(localclientnum, entity)
-{
-	if(!isdefined(entity) || !entity isai())
-	{
-		return;
-	}
+function zodcompanionclearfx(localclientnum, entity) {
+  if(!isdefined(entity) || !entity isai()) {
+    return;
+  }
 }
 
 /*
@@ -129,35 +119,27 @@ function zodcompanionclearfx(localclientnum, entity)
 	Parameters: 3
 	Flags: Linked, Private
 */
-function private _gibcallback(localclientnum, entity, gibflag)
-{
-	if(!isdefined(entity) || !entity isai())
-	{
-		return;
-	}
-	switch(gibflag)
-	{
-		case 8:
-		{
-			break;
-		}
-		case 16:
-		{
-			break;
-		}
-		case 32:
-		{
-			break;
-		}
-		case 128:
-		{
-			break;
-		}
-		case 256:
-		{
-			break;
-		}
-	}
+function private _gibcallback(localclientnum, entity, gibflag) {
+  if(!isdefined(entity) || !entity isai()) {
+    return;
+  }
+  switch (gibflag) {
+    case 8: {
+      break;
+    }
+    case 16: {
+      break;
+    }
+    case 32: {
+      break;
+    }
+    case 128: {
+      break;
+    }
+    case 256: {
+      break;
+    }
+  }
 }
 
 /*
@@ -169,16 +151,12 @@ function private _gibcallback(localclientnum, entity, gibflag)
 	Parameters: 7
 	Flags: Linked
 */
-function play_revival_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(isdefined(self.robot_revival_fx) && oldval == 1 && newval == 0)
-	{
-		stopfx(localclientnum, self.robot_revival_fx);
-	}
-	if(newval === 1)
-	{
-		self playsound(0, "evt_civil_protector_revive_plr");
-		self.robot_revival_fx = playfxontag(localclientnum, level._effect["companion_revive_effect"], self, "j_spineupper");
-	}
+function play_revival_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(isdefined(self.robot_revival_fx) && oldval == 1 && newval == 0) {
+    stopfx(localclientnum, self.robot_revival_fx);
+  }
+  if(newval === 1) {
+    self playsound(0, "evt_civil_protector_revive_plr");
+    self.robot_revival_fx = playfxontag(localclientnum, level._effect["companion_revive_effect"], self, "j_spineupper");
+  }
 }
-

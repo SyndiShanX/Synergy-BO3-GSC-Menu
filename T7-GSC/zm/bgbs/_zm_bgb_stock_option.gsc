@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_stock_option", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_stock_option", & __init__, undefined, "bgb");
 }
 
 /*
@@ -32,13 +31,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_stock_option", "time", 180, &enable, &disable, undefined);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_stock_option", "time", 180, & enable, & disable, undefined);
 }
 
 /*
@@ -50,9 +47,8 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function enable()
-{
-	self setperk("specialty_ammodrainsfromstockfirst");
+function enable() {
+  self setperk("specialty_ammodrainsfromstockfirst");
 }
 
 /*
@@ -64,8 +60,6 @@ function enable()
 	Parameters: 0
 	Flags: Linked
 */
-function disable()
-{
-	self unsetperk("specialty_ammodrainsfromstockfirst");
+function disable() {
+  self unsetperk("specialty_ammodrainsfromstockfirst");
 }
-

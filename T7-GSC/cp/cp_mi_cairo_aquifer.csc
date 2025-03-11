@@ -23,9 +23,8 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	// Unsupported VM revision (1B).
+function main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -37,9 +36,8 @@ function main()
 	Parameters: 1
 	Flags: None
 */
-function force_streamer()
-{
-	// Unsupported VM revision (1B).
+function force_streamer() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -51,9 +49,8 @@ function force_streamer()
 	Parameters: 3
 	Flags: None
 */
-function enable_filter_binoculars()
-{
-	// Unsupported VM revision (1B).
+function enable_filter_binoculars() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -65,8 +62,6 @@ function enable_filter_binoculars()
 	Parameters: 1
 	Flags: None
 */
-function mapped_material_id()
-{
-	// Unsupported VM revision (1B).
+function mapped_material_id() {
+  // Unsupported VM revision (1B).
 }
-

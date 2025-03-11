@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_temple_achievement", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_temple_achievement", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,10 +29,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	level thread achievement_temple_sidequest();
-	callback::on_connect(&onplayerconnect);
+function __init__() {
+  level thread achievement_temple_sidequest();
+  callback::on_connect( & onplayerconnect);
 }
 
 /*
@@ -45,9 +43,8 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function onplayerconnect()
-{
-	self thread achievement_small_consolation();
+function onplayerconnect() {
+  self thread achievement_small_consolation();
 }
 
 /*
@@ -59,11 +56,10 @@ function onplayerconnect()
 	Parameters: 0
 	Flags: Linked
 */
-function achievement_temple_sidequest()
-{
-	level waittill(#"temple_sidequest_achieved");
-	level thread zm::set_sidequest_completed("EOA");
-	level zm_utility::giveachievement_wrapper("DLC4_ZOM_TEMPLE_SIDEQUEST", 1);
+function achievement_temple_sidequest() {
+  level waittill(# "temple_sidequest_achieved");
+  level thread zm::set_sidequest_completed("EOA");
+  level zm_utility::giveachievement_wrapper("DLC4_ZOM_TEMPLE_SIDEQUEST", 1);
 }
 
 /*
@@ -75,10 +71,9 @@ function achievement_temple_sidequest()
 	Parameters: 0
 	Flags: None
 */
-function achievement_zomb_disposal()
-{
-	level endon(#"end_game");
-	level waittill(#"zomb_disposal_achieved");
+function achievement_zomb_disposal() {
+  level endon(# "end_game");
+  level waittill(# "zomb_disposal_achieved");
 }
 
 /*
@@ -90,9 +85,8 @@ function achievement_zomb_disposal()
 	Parameters: 0
 	Flags: None
 */
-function achievement_monkey_see_monkey_dont()
-{
-	level waittill(#"monkey_see_monkey_dont_achieved");
+function achievement_monkey_see_monkey_dont() {
+  level waittill(# "monkey_see_monkey_dont_achieved");
 }
 
 /*
@@ -104,11 +98,10 @@ function achievement_monkey_see_monkey_dont()
 	Parameters: 0
 	Flags: None
 */
-function achievement_blinded_by_the_fright()
-{
-	level endon(#"end_game");
-	self endon(#"disconnect");
-	self waittill(#"blinded_by_the_fright_achieved");
+function achievement_blinded_by_the_fright() {
+  level endon(# "end_game");
+  self endon(# "disconnect");
+  self waittill(# "blinded_by_the_fright_achieved");
 }
 
 /*
@@ -120,24 +113,19 @@ function achievement_blinded_by_the_fright()
 	Parameters: 0
 	Flags: Linked
 */
-function achievement_small_consolation()
-{
-	level endon(#"end_game");
-	self endon(#"disconnect");
-	while(true)
-	{
-		self waittill(#"weapon_fired");
-		currentweapon = self getcurrentweapon();
-		if(currentweapon.name != "shrink_ray" && currentweapon.name != "shrink_ray_upgraded")
-		{
-			continue;
-		}
-		waittillframeend();
-		if(isdefined(self.shrinked_zombies) && (isdefined(self.shrinked_zombies["zombie"]) && self.shrinked_zombies["zombie"]) && (isdefined(self.shrinked_zombies["sonic_zombie"]) && self.shrinked_zombies["sonic_zombie"]) && (isdefined(self.shrinked_zombies["napalm_zombie"]) && self.shrinked_zombies["napalm_zombie"]) && (isdefined(self.shrinked_zombies["monkey_zombie"]) && self.shrinked_zombies["monkey_zombie"]))
-		{
-			break;
-		}
-	}
-	self zm_utility::giveachievement_wrapper("DLC4_ZOM_SMALL_CONSOLATION");
+function achievement_small_consolation() {
+  level endon(# "end_game");
+  self endon(# "disconnect");
+  while (true) {
+    self waittill(# "weapon_fired");
+    currentweapon = self getcurrentweapon();
+    if(currentweapon.name != "shrink_ray" && currentweapon.name != "shrink_ray_upgraded") {
+      continue;
+    }
+    waittillframeend();
+    if(isdefined(self.shrinked_zombies) && (isdefined(self.shrinked_zombies["zombie"]) && self.shrinked_zombies["zombie"]) && (isdefined(self.shrinked_zombies["sonic_zombie"]) && self.shrinked_zombies["sonic_zombie"]) && (isdefined(self.shrinked_zombies["napalm_zombie"]) && self.shrinked_zombies["napalm_zombie"]) && (isdefined(self.shrinked_zombies["monkey_zombie"]) && self.shrinked_zombies["monkey_zombie"])) {
+      break;
+    }
+  }
+  self zm_utility::giveachievement_wrapper("DLC4_ZOM_SMALL_CONSOLATION");
 }
-

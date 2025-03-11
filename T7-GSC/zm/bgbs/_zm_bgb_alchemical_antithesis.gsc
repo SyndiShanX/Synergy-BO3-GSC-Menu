@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_alchemical_antithesis", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_alchemical_antithesis", & __init__, undefined, "bgb");
 }
 
 /*
@@ -32,15 +31,13 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_alchemical_antithesis", "activated", 2, undefined, undefined, &validation, &activation);
-	bgb::function_336ffc4e("zm_bgb_alchemical_antithesis");
-	bgb::function_ff4b2998("zm_bgb_alchemical_antithesis", &add_to_player_score_override, 0);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_alchemical_antithesis", "activated", 2, undefined, undefined, & validation, & activation);
+  bgb::function_336ffc4e("zm_bgb_alchemical_antithesis");
+  bgb::function_ff4b2998("zm_bgb_alchemical_antithesis", & add_to_player_score_override, 0);
 }
 
 /*
@@ -52,9 +49,8 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function validation()
-{
-	return !(isdefined(self bgb::get_active()) && self bgb::get_active());
+function validation() {
+  return !(isdefined(self bgb::get_active()) && self bgb::get_active());
 }
 
 /*
@@ -66,11 +62,10 @@ function validation()
 	Parameters: 0
 	Flags: Linked
 */
-function activation()
-{
-	self.ready_for_score_events = 0;
-	self bgb::run_timer(60);
-	self.ready_for_score_events = 1;
+function activation() {
+  self.ready_for_score_events = 0;
+  self bgb::run_timer(60);
+  self.ready_for_score_events = 1;
 }
 
 /*
@@ -82,32 +77,27 @@ function activation()
 	Parameters: 3
 	Flags: Linked
 */
-function add_to_player_score_override(points, str_awarded_by, var_1ed9bd9b)
-{
-	if(!(isdefined(self.bgb_active) && self.bgb_active))
-	{
-		return points;
-	}
-	var_4375ef8a = int(points / 10);
-	current_weapon = self getcurrentweapon();
-	if(zm_utility::is_offhand_weapon(current_weapon))
-	{
-		return points;
-	}
-	if(isdefined(self.is_drinking) && self.is_drinking)
-	{
-		return points;
-	}
-	if(current_weapon == level.weaponrevivetool)
-	{
-		return points;
-	}
-	var_b8f62d73 = self getweaponammostock(current_weapon);
-	var_b8f62d73 = var_b8f62d73 + var_4375ef8a;
-	self setweaponammostock(current_weapon, var_b8f62d73);
-	self thread function_a6bf711f();
-	self zm_stats::increment_challenge_stat("GUM_GOBBLER_ALCHEMICAL_ANTITHESIS", var_4375ef8a);
-	return 0;
+function add_to_player_score_override(points, str_awarded_by, var_1ed9bd9b) {
+  if(!(isdefined(self.bgb_active) && self.bgb_active)) {
+    return points;
+  }
+  var_4375ef8a = int(points / 10);
+  current_weapon = self getcurrentweapon();
+  if(zm_utility::is_offhand_weapon(current_weapon)) {
+    return points;
+  }
+  if(isdefined(self.is_drinking) && self.is_drinking) {
+    return points;
+  }
+  if(current_weapon == level.weaponrevivetool) {
+    return points;
+  }
+  var_b8f62d73 = self getweaponammostock(current_weapon);
+  var_b8f62d73 = var_b8f62d73 + var_4375ef8a;
+  self setweaponammostock(current_weapon, var_b8f62d73);
+  self thread function_a6bf711f();
+  self zm_stats::increment_challenge_stat("GUM_GOBBLER_ALCHEMICAL_ANTITHESIS", var_4375ef8a);
+  return 0;
 }
 
 /*
@@ -119,21 +109,16 @@ function add_to_player_score_override(points, str_awarded_by, var_1ed9bd9b)
 	Parameters: 0
 	Flags: Linked
 */
-function function_a6bf711f()
-{
-	if(!isdefined(self.var_82764e33))
-	{
-		self.var_82764e33 = 0;
-	}
-	if(!self.var_82764e33)
-	{
-		self.var_82764e33 = 1;
-		self playsoundtoplayer("zmb_bgb_alchemical_ammoget", self);
-		wait(0.5);
-		if(isdefined(self))
-		{
-			self.var_82764e33 = 0;
-		}
-	}
+function function_a6bf711f() {
+  if(!isdefined(self.var_82764e33)) {
+    self.var_82764e33 = 0;
+  }
+  if(!self.var_82764e33) {
+    self.var_82764e33 = 1;
+    self playsoundtoplayer("zmb_bgb_alchemical_ammoget", self);
+    wait(0.5);
+    if(isdefined(self)) {
+      self.var_82764e33 = 0;
+    }
+  }
 }
-

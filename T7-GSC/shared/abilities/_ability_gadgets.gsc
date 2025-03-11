@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("ability_gadgets", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("ability_gadgets", & __init__, undefined, undefined);
 }
 
 /*
@@ -33,10 +32,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_connect(&on_player_connect);
-	callback::on_spawned(&on_player_spawned);
+function __init__() {
+  callback::on_connect( & on_player_connect);
+  callback::on_spawned( & on_player_spawned);
 }
 
 /*
@@ -48,15 +46,13 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function gadgets_print(str)
-{
-	/#
-		if(getdvarint(""))
-		{
-			toprint = str;
-			println(((self.playername + "") + "") + toprint);
-		}
-	#/
+function gadgets_print(str) {
+  /#
+  if(getdvarint("")) {
+    toprint = str;
+    println(((self.playername + "") + "") + toprint);
+  }
+  # /
 }
 
 /*
@@ -68,9 +64,7 @@ function gadgets_print(str)
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_connect()
-{
-}
+function on_player_connect() {}
 
 /*
 	Name: setflickering
@@ -81,9 +75,8 @@ function on_player_connect()
 	Parameters: 2
 	Flags: Linked
 */
-function setflickering(slot, length = 0)
-{
-	self gadgetflickering(slot, 1, length);
+function setflickering(slot, length = 0) {
+  self gadgetflickering(slot, 1, length);
 }
 
 /*
@@ -95,9 +88,7 @@ function setflickering(slot, length = 0)
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_spawned()
-{
-}
+function on_player_spawned() {}
 
 /*
 	Name: gadget_give_callback
@@ -108,12 +99,11 @@ function on_player_spawned()
 	Parameters: 3
 	Flags: Linked
 */
-function gadget_give_callback(ent, slot, weapon)
-{
-	/#
-		ent gadgets_print(("" + slot) + "");
-	#/
-	ent ability_player::give_gadget(slot, weapon);
+function gadget_give_callback(ent, slot, weapon) {
+  /#
+  ent gadgets_print(("" + slot) + "");
+  # /
+    ent ability_player::give_gadget(slot, weapon);
 }
 
 /*
@@ -125,12 +115,11 @@ function gadget_give_callback(ent, slot, weapon)
 	Parameters: 3
 	Flags: Linked
 */
-function gadget_take_callback(ent, slot, weapon)
-{
-	/#
-		ent gadgets_print(("" + slot) + "");
-	#/
-	ent ability_player::take_gadget(slot, weapon);
+function gadget_take_callback(ent, slot, weapon) {
+  /#
+  ent gadgets_print(("" + slot) + "");
+  # /
+    ent ability_player::take_gadget(slot, weapon);
 }
 
 /*
@@ -142,12 +131,11 @@ function gadget_take_callback(ent, slot, weapon)
 	Parameters: 3
 	Flags: Linked
 */
-function gadget_primed_callback(ent, slot, weapon)
-{
-	/#
-		ent gadgets_print(("" + slot) + "");
-	#/
-	ent ability_player::gadget_primed(slot, weapon);
+function gadget_primed_callback(ent, slot, weapon) {
+  /#
+  ent gadgets_print(("" + slot) + "");
+  # /
+    ent ability_player::gadget_primed(slot, weapon);
 }
 
 /*
@@ -159,12 +147,11 @@ function gadget_primed_callback(ent, slot, weapon)
 	Parameters: 3
 	Flags: Linked
 */
-function gadget_ready_callback(ent, slot, weapon)
-{
-	/#
-		ent gadgets_print(("" + slot) + "");
-	#/
-	ent ability_player::gadget_ready(slot, weapon);
+function gadget_ready_callback(ent, slot, weapon) {
+  /#
+  ent gadgets_print(("" + slot) + "");
+  # /
+    ent ability_player::gadget_ready(slot, weapon);
 }
 
 /*
@@ -176,16 +163,14 @@ function gadget_ready_callback(ent, slot, weapon)
 	Parameters: 3
 	Flags: Linked
 */
-function gadget_on_callback(ent, slot, weapon)
-{
-	/#
-		ent gadgets_print(("" + slot) + "");
-	#/
-	if(isdefined(level.bzmoncybercomoncallback))
-	{
-		level thread [[level.bzmoncybercomoncallback]](ent);
-	}
-	ent ability_player::turn_gadget_on(slot, weapon);
+function gadget_on_callback(ent, slot, weapon) {
+  /#
+  ent gadgets_print(("" + slot) + "");
+  # /
+    if(isdefined(level.bzmoncybercomoncallback)) {
+      level thread[[level.bzmoncybercomoncallback]](ent);
+    }
+  ent ability_player::turn_gadget_on(slot, weapon);
 }
 
 /*
@@ -197,12 +182,11 @@ function gadget_on_callback(ent, slot, weapon)
 	Parameters: 3
 	Flags: Linked
 */
-function gadget_off_callback(ent, slot, weapon)
-{
-	/#
-		ent gadgets_print(("" + slot) + "");
-	#/
-	ent ability_player::turn_gadget_off(slot, weapon);
+function gadget_off_callback(ent, slot, weapon) {
+  /#
+  ent gadgets_print(("" + slot) + "");
+  # /
+    ent ability_player::turn_gadget_off(slot, weapon);
 }
 
 /*
@@ -214,11 +198,9 @@ function gadget_off_callback(ent, slot, weapon)
 	Parameters: 3
 	Flags: Linked
 */
-function gadget_flicker_callback(ent, slot, weapon)
-{
-	/#
-		ent gadgets_print(("" + slot) + "");
-	#/
-	ent ability_player::gadget_flicker(slot, weapon);
+function gadget_flicker_callback(ent, slot, weapon) {
+  /#
+  ent gadgets_print(("" + slot) + "");
+  # /
+    ent ability_player::gadget_flicker(slot, weapon);
 }
-

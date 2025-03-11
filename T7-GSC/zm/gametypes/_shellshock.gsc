@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("shellshock", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("shellshock", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,10 +29,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_start_gametype(&main);
-	level.shellshockonplayerdamage = &on_damage;
+function __init__() {
+  callback::on_start_gametype( & main);
+  level.shellshockonplayerdamage = & on_damage;
 }
 
 /*
@@ -45,9 +43,7 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-}
+function main() {}
 
 /*
 	Name: on_damage
@@ -58,41 +54,28 @@ function main()
 	Parameters: 3
 	Flags: Linked
 */
-function on_damage(cause, damage, weapon)
-{
-	if(cause == "MOD_EXPLOSIVE" || cause == "MOD_GRENADE" || cause == "MOD_GRENADE_SPLASH" || cause == "MOD_PROJECTILE" || cause == "MOD_PROJECTILE_SPLASH")
-	{
-		time = 0;
-		if(damage >= 90)
-		{
-			time = 4;
-		}
-		else
-		{
-			if(damage >= 50)
-			{
-				time = 3;
-			}
-			else
-			{
-				if(damage >= 25)
-				{
-					time = 2;
-				}
-				else if(damage > 10)
-				{
-					time = 2;
-				}
-			}
-		}
-		if(time)
-		{
-			if(self util::mayapplyscreeneffect())
-			{
-				self shellshock("frag_grenade_mp", 0.5);
-			}
-		}
-	}
+function on_damage(cause, damage, weapon) {
+  if(cause == "MOD_EXPLOSIVE" || cause == "MOD_GRENADE" || cause == "MOD_GRENADE_SPLASH" || cause == "MOD_PROJECTILE" || cause == "MOD_PROJECTILE_SPLASH") {
+    time = 0;
+    if(damage >= 90) {
+      time = 4;
+    } else {
+      if(damage >= 50) {
+        time = 3;
+      } else {
+        if(damage >= 25) {
+          time = 2;
+        } else if(damage > 10) {
+          time = 2;
+        }
+      }
+    }
+    if(time) {
+      if(self util::mayapplyscreeneffect()) {
+        self shellshock("frag_grenade_mp", 0.5);
+      }
+    }
+  }
 }
 
 /*
@@ -104,11 +87,10 @@ function on_damage(cause, damage, weapon)
 	Parameters: 0
 	Flags: None
 */
-function endondeath()
-{
-	self waittill(#"death");
-	waittillframeend();
-	self notify(#"end_explode");
+function endondeath() {
+  self waittill(# "death");
+  waittillframeend();
+  self notify(# "end_explode");
 }
 
 /*
@@ -120,11 +102,10 @@ function endondeath()
 	Parameters: 1
 	Flags: None
 */
-function endontimer(timer)
-{
-	self endon(#"disconnect");
-	wait(timer);
-	self notify(#"end_on_timer");
+function endontimer(timer) {
+  self endon(# "disconnect");
+  wait(timer);
+  self notify(# "end_on_timer");
 }
 
 /*
@@ -136,9 +117,7 @@ function endontimer(timer)
 	Parameters: 1
 	Flags: None
 */
-function rcbomb_earthquake(position)
-{
-	playrumbleonposition("grenade_rumble", position);
-	earthquake(0.5, 0.5, self.origin, 512);
+function rcbomb_earthquake(position) {
+  playrumbleonposition("grenade_rumble", position);
+  earthquake(0.5, 0.5, self.origin, 512);
 }
-

@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("weaponobjects", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("weaponobjects", & __init__, undefined, undefined);
 }
 
 /*
@@ -32,11 +31,10 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	init_shared();
-	level setupscriptmovercompassicons();
-	level setupmissilecompassicons();
+function __init__() {
+  init_shared();
+  level setupscriptmovercompassicons();
+  level setupmissilecompassicons();
 }
 
 /*
@@ -48,18 +46,16 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function setupscriptmovercompassicons()
-{
-	if(!isdefined(level.scriptmovercompassicons))
-	{
-		level.scriptmovercompassicons = [];
-	}
-	level.scriptmovercompassicons["wpn_t7_turret_emp_core"] = "compass_empcore_white";
-	level.scriptmovercompassicons["t6_wpn_turret_ads_world"] = "compass_guardian_white";
-	level.scriptmovercompassicons["veh_t7_drone_uav_enemy_vista"] = "compass_uav";
-	level.scriptmovercompassicons["veh_t7_mil_vtol_fighter_mp"] = "compass_lightningstrike";
-	level.scriptmovercompassicons["veh_t7_drone_rolling_thunder"] = "compass_lodestar";
-	level.scriptmovercompassicons["veh_t7_drone_srv_blimp"] = "t7_hud_minimap_hatr";
+function setupscriptmovercompassicons() {
+  if(!isdefined(level.scriptmovercompassicons)) {
+    level.scriptmovercompassicons = [];
+  }
+  level.scriptmovercompassicons["wpn_t7_turret_emp_core"] = "compass_empcore_white";
+  level.scriptmovercompassicons["t6_wpn_turret_ads_world"] = "compass_guardian_white";
+  level.scriptmovercompassicons["veh_t7_drone_uav_enemy_vista"] = "compass_uav";
+  level.scriptmovercompassicons["veh_t7_mil_vtol_fighter_mp"] = "compass_lightningstrike";
+  level.scriptmovercompassicons["veh_t7_drone_rolling_thunder"] = "compass_lodestar";
+  level.scriptmovercompassicons["veh_t7_drone_srv_blimp"] = "t7_hud_minimap_hatr";
 }
 
 /*
@@ -71,15 +67,11 @@ function setupscriptmovercompassicons()
 	Parameters: 0
 	Flags: Linked
 */
-function setupmissilecompassicons()
-{
-	if(!isdefined(level.missilecompassicons))
-	{
-		level.missilecompassicons = [];
-	}
-	if(isdefined(getweapon("drone_strike")))
-	{
-		level.missilecompassicons[getweapon("drone_strike")] = "compass_lodestar";
-	}
+function setupmissilecompassicons() {
+  if(!isdefined(level.missilecompassicons)) {
+    level.missilecompassicons = [];
+  }
+  if(isdefined(getweapon("drone_strike"))) {
+    level.missilecompassicons[getweapon("drone_strike")] = "compass_lodestar";
+  }
 }
-

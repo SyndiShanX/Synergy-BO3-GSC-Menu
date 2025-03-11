@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	// Unsupported VM revision (1B).
+function autoexec __init__sytem__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -32,9 +31,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-	// Unsupported VM revision (1B).
+function __init__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -46,9 +44,8 @@ function __init__()
 	Parameters: 7
 	Flags: None
 */
-function callback_sun_color_set()
-{
-	// Unsupported VM revision (1B).
+function callback_sun_color_set() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -60,9 +57,8 @@ function callback_sun_color_set()
 	Parameters: 7
 	Flags: None
 */
-function function_1561b96d()
-{
-	// Unsupported VM revision (1B).
+function function_1561b96d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -74,8 +70,6 @@ function function_1561b96d()
 	Parameters: 7
 	Flags: None
 */
-function function_1edfa950()
-{
-	// Unsupported VM revision (1B).
+function function_1edfa950() {
+  // Unsupported VM revision (1B).
 }
-

@@ -17,12 +17,10 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	namespace_f7008227::main();
-	namespace_8f273e4e::main();
-	load::main();
-	util::waitforclient(0);
-	level.endgamexcamname = "ui_cam_endgame_mp_veiled";
+function main() {
+  namespace_f7008227::main();
+  namespace_8f273e4e::main();
+  load::main();
+  util::waitforclient(0);
+  level.endgamexcamname = "ui_cam_endgame_mp_veiled";
 }
-

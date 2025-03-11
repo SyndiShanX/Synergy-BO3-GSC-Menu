@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	clientfield::register("scriptmover", "vine_door_play_fx", 9000, 1, "int", &vine_door_play_fx, 0, 0);
+function init() {
+  clientfield::register("scriptmover", "vine_door_play_fx", 9000, 1, "int", & vine_door_play_fx, 0, 0);
 }
 
 /*
@@ -32,9 +31,8 @@ function init()
 	Parameters: 7
 	Flags: Linked
 */
-function vine_door_play_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	playfxontag(localclientnum, level._effect["door_vine_fx"], self, "tag_fx_origin");
+function vine_door_play_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  playfxontag(localclientnum, level._effect["door_vine_fx"], self, "tag_fx_origin");
 }
 
 /*
@@ -46,7 +44,4 @@ function vine_door_play_fx(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-}
-
+function main() {}

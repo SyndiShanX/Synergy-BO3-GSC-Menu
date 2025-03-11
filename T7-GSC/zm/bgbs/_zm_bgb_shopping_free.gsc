@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_shopping_free", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_shopping_free", & __init__, undefined, "bgb");
 }
 
 /*
@@ -31,13 +30,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_shopping_free", "time", 60, &enable, &disable, undefined, undefined);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_shopping_free", "time", 60, & enable, & disable, undefined, undefined);
 }
 
 /*
@@ -49,11 +46,10 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function enable()
-{
-	self endon(#"disconnect");
-	self endon(#"bled_out");
-	self endon(#"bgb_update");
+function enable() {
+  self endon(# "disconnect");
+  self endon(# "bled_out");
+  self endon(# "bgb_update");
 }
 
 /*
@@ -65,7 +61,4 @@ function enable()
 	Parameters: 0
 	Flags: Linked
 */
-function disable()
-{
-}
-
+function disable() {}

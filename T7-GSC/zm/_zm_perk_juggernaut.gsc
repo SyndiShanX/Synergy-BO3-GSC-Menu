@@ -25,9 +25,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_perk_juggernaut", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_perk_juggernaut", & __init__, undefined, undefined);
 }
 
 /*
@@ -39,9 +38,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	enable_juggernaut_perk_for_level();
+function __init__() {
+  enable_juggernaut_perk_for_level();
 }
 
 /*
@@ -53,14 +51,13 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function enable_juggernaut_perk_for_level()
-{
-	zm_perks::register_perk_basic_info("specialty_armorvest", "juggernog", 2500, &"ZOMBIE_PERK_JUGGERNAUT", getweapon("zombie_perk_bottle_jugg"));
-	zm_perks::register_perk_precache_func("specialty_armorvest", &juggernaut_precache);
-	zm_perks::register_perk_clientfields("specialty_armorvest", &juggernaut_register_clientfield, &juggernaut_set_clientfield);
-	zm_perks::register_perk_machine("specialty_armorvest", &juggernaut_perk_machine_setup, &init_juggernaut);
-	zm_perks::register_perk_threads("specialty_armorvest", &give_juggernaut_perk, &take_juggernaut_perk);
-	zm_perks::register_perk_host_migration_params("specialty_armorvest", "vending_jugg", "jugger_light");
+function enable_juggernaut_perk_for_level() {
+  zm_perks::register_perk_basic_info("specialty_armorvest", "juggernog", 2500, & "ZOMBIE_PERK_JUGGERNAUT", getweapon("zombie_perk_bottle_jugg"));
+  zm_perks::register_perk_precache_func("specialty_armorvest", & juggernaut_precache);
+  zm_perks::register_perk_clientfields("specialty_armorvest", & juggernaut_register_clientfield, & juggernaut_set_clientfield);
+  zm_perks::register_perk_machine("specialty_armorvest", & juggernaut_perk_machine_setup, & init_juggernaut);
+  zm_perks::register_perk_threads("specialty_armorvest", & give_juggernaut_perk, & take_juggernaut_perk);
+  zm_perks::register_perk_host_migration_params("specialty_armorvest", "vending_jugg", "jugger_light");
 }
 
 /*
@@ -72,10 +69,9 @@ function enable_juggernaut_perk_for_level()
 	Parameters: 0
 	Flags: Linked
 */
-function init_juggernaut()
-{
-	zombie_utility::set_zombie_var("zombie_perk_juggernaut_health", 100);
-	zombie_utility::set_zombie_var("zombie_perk_juggernaut_health_upgrade", 150);
+function init_juggernaut() {
+  zombie_utility::set_zombie_var("zombie_perk_juggernaut_health", 100);
+  zombie_utility::set_zombie_var("zombie_perk_juggernaut_health_upgrade", 150);
 }
 
 /*
@@ -87,18 +83,18 @@ function init_juggernaut()
 	Parameters: 0
 	Flags: Linked
 */
-function juggernaut_precache()
-{
-	if(isdefined(level.juggernaut_precache_override_func))
-	{
-		[[level.juggernaut_precache_override_func]]();
-		return;
-	}
-	level._effect["jugger_light"] = "zombie/fx_perk_juggernaut_zmb";
-	level.machine_assets["specialty_armorvest"] = spawnstruct();
-	level.machine_assets["specialty_armorvest"].weapon = getweapon("zombie_perk_bottle_jugg");
-	level.machine_assets["specialty_armorvest"].off_model = "p7_zm_vending_jugg";
-	level.machine_assets["specialty_armorvest"].on_model = "p7_zm_vending_jugg";
+function juggernaut_precache() {
+  if(isdefined(level.juggernaut_precache_override_func)) {
+    [
+      [level.juggernaut_precache_override_func]
+    ]();
+    return;
+  }
+  level._effect["jugger_light"] = "zombie/fx_perk_juggernaut_zmb";
+  level.machine_assets["specialty_armorvest"] = spawnstruct();
+  level.machine_assets["specialty_armorvest"].weapon = getweapon("zombie_perk_bottle_jugg");
+  level.machine_assets["specialty_armorvest"].off_model = "p7_zm_vending_jugg";
+  level.machine_assets["specialty_armorvest"].on_model = "p7_zm_vending_jugg";
 }
 
 /*
@@ -110,9 +106,8 @@ function juggernaut_precache()
 	Parameters: 0
 	Flags: Linked
 */
-function juggernaut_register_clientfield()
-{
-	clientfield::register("clientuimodel", "hudItems.perks.juggernaut", 1, 2, "int");
+function juggernaut_register_clientfield() {
+  clientfield::register("clientuimodel", "hudItems.perks.juggernaut", 1, 2, "int");
 }
 
 /*
@@ -124,9 +119,8 @@ function juggernaut_register_clientfield()
 	Parameters: 1
 	Flags: Linked
 */
-function juggernaut_set_clientfield(state)
-{
-	self clientfield::set_player_uimodel("hudItems.perks.juggernaut", state);
+function juggernaut_set_clientfield(state) {
+  self clientfield::set_player_uimodel("hudItems.perks.juggernaut", state);
 }
 
 /*
@@ -138,19 +132,17 @@ function juggernaut_set_clientfield(state)
 	Parameters: 4
 	Flags: Linked
 */
-function juggernaut_perk_machine_setup(use_trigger, perk_machine, bump_trigger, collision)
-{
-	use_trigger.script_sound = "mus_perks_jugganog_jingle";
-	use_trigger.script_string = "jugg_perk";
-	use_trigger.script_label = "mus_perks_jugganog_sting";
-	use_trigger.longjinglewait = 1;
-	use_trigger.target = "vending_jugg";
-	perk_machine.script_string = "jugg_perk";
-	perk_machine.targetname = "vending_jugg";
-	if(isdefined(bump_trigger))
-	{
-		bump_trigger.script_string = "jugg_perk";
-	}
+function juggernaut_perk_machine_setup(use_trigger, perk_machine, bump_trigger, collision) {
+  use_trigger.script_sound = "mus_perks_jugganog_jingle";
+  use_trigger.script_string = "jugg_perk";
+  use_trigger.script_label = "mus_perks_jugganog_sting";
+  use_trigger.longjinglewait = 1;
+  use_trigger.target = "vending_jugg";
+  perk_machine.script_string = "jugg_perk";
+  perk_machine.targetname = "vending_jugg";
+  if(isdefined(bump_trigger)) {
+    bump_trigger.script_string = "jugg_perk";
+  }
 }
 
 /*
@@ -162,9 +154,8 @@ function juggernaut_perk_machine_setup(use_trigger, perk_machine, bump_trigger, 
 	Parameters: 0
 	Flags: Linked
 */
-function give_juggernaut_perk()
-{
-	self zm_perks::perk_set_max_health_if_jugg("specialty_armorvest", 1, 0);
+function give_juggernaut_perk() {
+  self zm_perks::perk_set_max_health_if_jugg("specialty_armorvest", 1, 0);
 }
 
 /*
@@ -176,8 +167,6 @@ function give_juggernaut_perk()
 	Parameters: 3
 	Flags: Linked
 */
-function take_juggernaut_perk(b_pause, str_perk, str_result)
-{
-	self zm_perks::perk_set_max_health_if_jugg("health_reboot", 1, 1);
+function take_juggernaut_perk(b_pause, str_perk, str_result) {
+  self zm_perks::perk_set_max_health_if_jugg("health_reboot", 1, 1);
 }
-

@@ -24,12 +24,10 @@
 	Parameters: 0
 	Flags: Linked
 */
-function function_7403e82b()
-{
-	spawncollision("collision_clip_wall_128x128x10", "collider", (16141, -864, 416), (0, 0, 0));
-	spawncollision("collision_clip_wall_512x512x10", "collider", (8004.5, 4701, 384), vectorscale((0, 1, 0), 315));
-	spawncollision("collision_clip_wall_512x512x10", "collider", (8260.5, 4957, 384), vectorscale((0, 1, 0), 315));
-	spawncollision("collision_clip_wall_512x512x10", "collider", (9652.5, 6349, 384), vectorscale((0, 1, 0), 315));
-	spawncollision("collision_clip_wall_512x512x10", "collider", (9908.5, 6605, 384), vectorscale((0, 1, 0), 315));
+function function_7403e82b() {
+  spawncollision("collision_clip_wall_128x128x10", "collider", (16141, -864, 416), (0, 0, 0));
+  spawncollision("collision_clip_wall_512x512x10", "collider", (8004.5, 4701, 384), vectorscale((0, 1, 0), 315));
+  spawncollision("collision_clip_wall_512x512x10", "collider", (8260.5, 4957, 384), vectorscale((0, 1, 0), 315));
+  spawncollision("collision_clip_wall_512x512x10", "collider", (9652.5, 6349, 384), vectorscale((0, 1, 0), 315));
+  spawncollision("collision_clip_wall_512x512x10", "collider", (9908.5, 6605, 384), vectorscale((0, 1, 0), 315));
 }
-

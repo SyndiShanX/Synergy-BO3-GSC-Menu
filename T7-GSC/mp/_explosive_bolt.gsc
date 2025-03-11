@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("explosive_bolt", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("explosive_bolt", & __init__, undefined, undefined);
 }
 
 /*
@@ -31,9 +30,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_spawned(&on_player_spawned);
+function __init__() {
+  callback::on_spawned( & on_player_spawned);
 }
 
 /*
@@ -45,9 +43,8 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_spawned()
-{
-	self thread begin_other_grenade_tracking();
+function on_player_spawned() {
+  self thread begin_other_grenade_tracking();
 }
 
 /*
@@ -59,28 +56,24 @@ function on_player_spawned()
 	Parameters: 0
 	Flags: Linked
 */
-function begin_other_grenade_tracking()
-{
-	self endon(#"death");
-	self endon(#"disconnect");
-	self notify(#"bolttrackingstart");
-	self endon(#"bolttrackingstart");
-	weapon_bolt = getweapon("explosive_bolt");
-	for(;;)
-	{
-		self waittill(#"grenade_fire", grenade, weapon, cooktime);
-		if(grenade util::ishacked())
-		{
-			continue;
-		}
-		if(weapon == weapon_bolt)
-		{
-			grenade.ownerweaponatlaunch = self.currentweapon;
-			grenade.owneradsatlaunch = (self playerads() == 1 ? 1 : 0);
-			grenade thread watch_bolt_detonation(self);
-			grenade thread weapons::check_stuck_to_player(1, 0, weapon);
-		}
-	}
+function begin_other_grenade_tracking() {
+  self endon(# "death");
+  self endon(# "disconnect");
+  self notify(# "bolttrackingstart");
+  self endon(# "bolttrackingstart");
+  weapon_bolt = getweapon("explosive_bolt");
+  for (;;) {
+    self waittill(# "grenade_fire", grenade, weapon, cooktime);
+    if(grenade util::ishacked()) {
+      continue;
+    }
+    if(weapon == weapon_bolt) {
+      grenade.ownerweaponatlaunch = self.currentweapon;
+      grenade.owneradsatlaunch = (self playerads() == 1 ? 1 : 0);
+      grenade thread watch_bolt_detonation(self);
+      grenade thread weapons::check_stuck_to_player(1, 0, weapon);
+    }
+  }
 }
 
 /*
@@ -92,7 +85,4 @@ function begin_other_grenade_tracking()
 	Parameters: 1
 	Flags: Linked
 */
-function watch_bolt_detonation(owner)
-{
-}
-
+function watch_bolt_detonation(owner) {}

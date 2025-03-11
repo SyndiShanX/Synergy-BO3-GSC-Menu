@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("gadget_clone_render", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("gadget_clone_render", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,12 +27,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	duplicate_render::set_dr_filter_framebuffer("clone_ally", 90, "clone_ally_on", "clone_damage", 0, "mc/ability_clone_ally", 0);
-	duplicate_render::set_dr_filter_framebuffer("clone_enemy", 90, "clone_enemy_on", "clone_damage", 0, "mc/ability_clone_enemy", 0);
-	duplicate_render::set_dr_filter_framebuffer("clone_damage_ally", 90, "clone_ally_on,clone_damage", undefined, 0, "mc/ability_clone_ally_damage", 0);
-	duplicate_render::set_dr_filter_framebuffer("clone_damage_enemy", 90, "clone_enemy_on,clone_damage", undefined, 0, "mc/ability_clone_enemy_damage", 0);
+function __init__() {
+  duplicate_render::set_dr_filter_framebuffer("clone_ally", 90, "clone_ally_on", "clone_damage", 0, "mc/ability_clone_ally", 0);
+  duplicate_render::set_dr_filter_framebuffer("clone_enemy", 90, "clone_enemy_on", "clone_damage", 0, "mc/ability_clone_enemy", 0);
+  duplicate_render::set_dr_filter_framebuffer("clone_damage_ally", 90, "clone_ally_on,clone_damage", undefined, 0, "mc/ability_clone_ally_damage", 0);
+  duplicate_render::set_dr_filter_framebuffer("clone_damage_enemy", 90, "clone_enemy_on,clone_damage", undefined, 0, "mc/ability_clone_enemy_damage", 0);
 }
 
 #namespace gadget_clone_render;
@@ -47,19 +45,15 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function transition_shader(localclientnum)
-{
-	self endon(#"entityshutdown");
-	self endon(#"clone_shader_off");
-	rampinshader = 0;
-	while(rampinshader < 1)
-	{
-		if(isdefined(self))
-		{
-			self mapshaderconstant(localclientnum, 0, "scriptVector3", 1, rampinshader, 0, 0.04);
-		}
-		rampinshader = rampinshader + 0.04;
-		wait(0.016);
-	}
+function transition_shader(localclientnum) {
+  self endon(# "entityshutdown");
+  self endon(# "clone_shader_off");
+  rampinshader = 0;
+  while (rampinshader < 1) {
+    if(isdefined(self)) {
+      self mapshaderconstant(localclientnum, 0, "scriptVector3", 1, rampinshader, 0, 0.04);
+    }
+    rampinshader = rampinshader + 0.04;
+    wait(0.016);
+  }
 }
-

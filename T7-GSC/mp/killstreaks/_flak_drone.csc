@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("flak_drone", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("flak_drone", & __init__, undefined, undefined);
 }
 
 /*
@@ -34,9 +33,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("vehicle", "flak_drone_camo", 1, 3, "int", &active_camo_changed, 0, 0);
+function __init__() {
+  clientfield::register("vehicle", "flak_drone_camo", 1, 3, "int", & active_camo_changed, 0, 0);
 }
 
 /*
@@ -48,17 +46,15 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function active_camo_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	flags_changed = self duplicate_render::set_dr_flag("active_camo_flicker", newval == 2);
-	flags_changed = self duplicate_render::set_dr_flag("active_camo_on", 0) || flags_changed;
-	flags_changed = self duplicate_render::set_dr_flag("active_camo_reveal", 1) || flags_changed;
-	if(flags_changed)
-	{
-		self duplicate_render::update_dr_filters(localclientnum);
-	}
-	self notify(#"endtest");
-	self thread doreveal(localclientnum, newval != 0);
+function active_camo_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  flags_changed = self duplicate_render::set_dr_flag("active_camo_flicker", newval == 2);
+  flags_changed = self duplicate_render::set_dr_flag("active_camo_on", 0) || flags_changed;
+  flags_changed = self duplicate_render::set_dr_flag("active_camo_reveal", 1) || flags_changed;
+  if(flags_changed) {
+    self duplicate_render::update_dr_filters(localclientnum);
+  }
+  self notify(# "endtest");
+  self thread doreveal(localclientnum, newval != 0);
 }
 
 /*
@@ -70,37 +66,27 @@ function active_camo_changed(localclientnum, oldval, newval, bnewent, binitialsn
 	Parameters: 2
 	Flags: Linked
 */
-function doreveal(localclientnum, direction)
-{
-	self notify(#"endtest");
-	self endon(#"endtest");
-	self endon(#"entityshutdown");
-	if(direction)
-	{
-		startval = 1;
-	}
-	else
-	{
-		startval = 0;
-	}
-	while(startval >= 0 && startval <= 1)
-	{
-		self mapshaderconstant(localclientnum, 0, "scriptVector0", startval, 0, 0, 0);
-		if(direction)
-		{
-			startval = startval - 0.032;
-		}
-		else
-		{
-			startval = startval + 0.032;
-		}
-		wait(0.016);
-	}
-	flags_changed = self duplicate_render::set_dr_flag("active_camo_reveal", 0);
-	flags_changed = self duplicate_render::set_dr_flag("active_camo_on", direction) || flags_changed;
-	if(flags_changed)
-	{
-		self duplicate_render::update_dr_filters(localclientnum);
-	}
+function doreveal(localclientnum, direction) {
+  self notify(# "endtest");
+  self endon(# "endtest");
+  self endon(# "entityshutdown");
+  if(direction) {
+    startval = 1;
+  } else {
+    startval = 0;
+  }
+  while (startval >= 0 && startval <= 1) {
+    self mapshaderconstant(localclientnum, 0, "scriptVector0", startval, 0, 0, 0);
+    if(direction) {
+      startval = startval - 0.032;
+    } else {
+      startval = startval + 0.032;
+    }
+    wait(0.016);
+  }
+  flags_changed = self duplicate_render::set_dr_flag("active_camo_reveal", 0);
+  flags_changed = self duplicate_render::set_dr_flag("active_camo_on", direction) || flags_changed;
+  if(flags_changed) {
+    self duplicate_render::update_dr_filters(localclientnum);
+  }
 }
-

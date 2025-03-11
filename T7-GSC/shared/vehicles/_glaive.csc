@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec main()
-{
-	clientfield::register("vehicle", "glaive_blood_fx", 1, 1, "int", &glaivebloodfxhandler, 0, 0);
+function autoexec main() {
+  clientfield::register("vehicle", "glaive_blood_fx", 1, 1, "int", & glaivebloodfxhandler, 0, 0);
 }
 
 /*
@@ -32,20 +31,15 @@ function autoexec main()
 	Parameters: 7
 	Flags: Linked, Private
 */
-function private glaivebloodfxhandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump)
-{
-	if(isdefined(self.bloodfxhandle))
-	{
-		stopfx(localclientnum, self.bloodfxhandle);
-		self.bloodfxhandle = undefined;
-	}
-	settings = struct::get_script_bundle("vehiclecustomsettings", "glaivesettings");
-	if(isdefined(settings))
-	{
-		if(newvalue)
-		{
-			self.bloodfxhandle = playfxontag(localclientnum, settings.weakspotfx, self, "j_spineupper");
-		}
-	}
+function private glaivebloodfxhandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
+  if(isdefined(self.bloodfxhandle)) {
+    stopfx(localclientnum, self.bloodfxhandle);
+    self.bloodfxhandle = undefined;
+  }
+  settings = struct::get_script_bundle("vehiclecustomsettings", "glaivesettings");
+  if(isdefined(settings)) {
+    if(newvalue) {
+      self.bloodfxhandle = playfxontag(localclientnum, settings.weakspotfx, self, "j_spineupper");
+    }
+  }
 }
-

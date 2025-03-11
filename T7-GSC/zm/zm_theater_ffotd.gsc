@@ -22,9 +22,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main_start()
-{
-}
+function main_start() {}
 
 /*
 	Name: main_end
@@ -35,21 +33,19 @@ function main_start()
 	Parameters: 0
 	Flags: Linked
 */
-function main_end()
-{
-	spawncollision("collision_player_wall_256x256x10", "collider", (366, -1491, 208), vectorscale((0, 1, 0), 270));
-	spawncollision("collision_player_256x256x256", "collider", (-976, 1660, -48), (0, 0, 0));
-	spawncollision("collision_player_wall_256x256x10", "collider", (-737, 1637, 224), vectorscale((0, 1, 0), 270));
-	spawncollision("collision_player_slick_wedge_32x128", "collider", (-1668.5, -581, 113), vectorscale((1, 0, 0), 270));
-	spawncollision("collision_player_wall_256x256x10", "collider", (-1454.26, -308.955, 311.017), vectorscale((0, 1, 0), 64.7));
-	spawncollision("collision_player_slick_wedge_32x128", "collider", (-911.5, 1214.5, 80), vectorscale((1, 0, 0), 270));
-	spawncollision("collision_player_slick_wedge_32x128", "collider", (-779, 1663, 96), (270, 180, 0));
-	spawncollision("collision_player_slick_wedge_32x128", "collider", (415.5, 1924.5, 96), (270, 180, 0));
-	spawncollision("collision_player_wall_64x64x10", "collider", (584.5, -546, 455), vectorscale((0, 1, 0), 356.599));
-	spawncollision("collision_player_wall_64x64x10", "collider", (577.5, -723, 455), (0, 0, 0));
-	spawncollision("collision_player_slick_wedge_32x256", "collider", (407.5, -1356.5, 240), (270, 90, 0));
-	spawncollision("collision_player_slick_wedge_32x128", "collider", (171, -1519, 193), vectorscale((1, 0, 0), 270));
-	spawncollision("collision_player_wall_128x128x10", "collider", (-136.5, -518.5, 140.5), vectorscale((0, 1, 0), 273.899));
-	zm::spawn_kill_brush((-968, 1603.5, -2.5), 110, 50);
+function main_end() {
+  spawncollision("collision_player_wall_256x256x10", "collider", (366, -1491, 208), vectorscale((0, 1, 0), 270));
+  spawncollision("collision_player_256x256x256", "collider", (-976, 1660, -48), (0, 0, 0));
+  spawncollision("collision_player_wall_256x256x10", "collider", (-737, 1637, 224), vectorscale((0, 1, 0), 270));
+  spawncollision("collision_player_slick_wedge_32x128", "collider", (-1668.5, -581, 113), vectorscale((1, 0, 0), 270));
+  spawncollision("collision_player_wall_256x256x10", "collider", (-1454.26, -308.955, 311.017), vectorscale((0, 1, 0), 64.7));
+  spawncollision("collision_player_slick_wedge_32x128", "collider", (-911.5, 1214.5, 80), vectorscale((1, 0, 0), 270));
+  spawncollision("collision_player_slick_wedge_32x128", "collider", (-779, 1663, 96), (270, 180, 0));
+  spawncollision("collision_player_slick_wedge_32x128", "collider", (415.5, 1924.5, 96), (270, 180, 0));
+  spawncollision("collision_player_wall_64x64x10", "collider", (584.5, -546, 455), vectorscale((0, 1, 0), 356.599));
+  spawncollision("collision_player_wall_64x64x10", "collider", (577.5, -723, 455), (0, 0, 0));
+  spawncollision("collision_player_slick_wedge_32x256", "collider", (407.5, -1356.5, 240), (270, 90, 0));
+  spawncollision("collision_player_slick_wedge_32x128", "collider", (171, -1519, 193), vectorscale((1, 0, 0), 270));
+  spawncollision("collision_player_wall_128x128x10", "collider", (-136.5, -518.5, 140.5), vectorscale((0, 1, 0), 273.899));
+  zm::spawn_kill_brush((-968, 1603.5, -2.5), 110, 50);
 }
-

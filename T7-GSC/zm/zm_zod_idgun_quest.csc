@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_zod_idgun_quest", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_zod_idgun_quest", & __init__, undefined, undefined);
 }
 
 /*
@@ -33,10 +32,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("world", "add_idgun_to_box", 1, 4, "int", &add_idgun_to_box, 0, 0);
-	clientfield::register("world", "remove_idgun_from_box", 1, 4, "int", &remove_idgun_from_box, 0, 0);
+function __init__() {
+  clientfield::register("world", "add_idgun_to_box", 1, 4, "int", & add_idgun_to_box, 0, 0);
+  clientfield::register("world", "remove_idgun_from_box", 1, 4, "int", & remove_idgun_from_box, 0, 0);
 }
 
 /*
@@ -48,10 +46,9 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function add_idgun_to_box(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	weapon_idgun = getweapon(("idgun" + "_") + newval);
-	addzombieboxweapon(weapon_idgun, weapon_idgun.worldmodel, weapon_idgun.isdualwield);
+function add_idgun_to_box(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  weapon_idgun = getweapon(("idgun" + "_") + newval);
+  addzombieboxweapon(weapon_idgun, weapon_idgun.worldmodel, weapon_idgun.isdualwield);
 }
 
 /*
@@ -63,9 +60,7 @@ function add_idgun_to_box(localclientnum, oldval, newval, bnewent, binitialsnap,
 	Parameters: 7
 	Flags: Linked
 */
-function remove_idgun_from_box(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	weapon_idgun = getweapon(("idgun" + "_") + newval);
-	removezombieboxweapon(weapon_idgun);
+function remove_idgun_from_box(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  weapon_idgun = getweapon(("idgun" + "_") + newval);
+  removezombieboxweapon(weapon_idgun);
 }
-

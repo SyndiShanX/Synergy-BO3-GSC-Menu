@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main_start()
-{
-	level.custom_umbra_hotfix = &function_36b03ba5;
+function main_start() {
+  level.custom_umbra_hotfix = & function_36b03ba5;
 }
 
 /*
@@ -33,9 +32,8 @@ function main_start()
 	Parameters: 1
 	Flags: Linked
 */
-function function_36b03ba5(localclientnum)
-{
-	return false;
+function function_36b03ba5(localclientnum) {
+  return false;
 }
 
 /*
@@ -47,7 +45,4 @@ function function_36b03ba5(localclientnum)
 	Parameters: 0
 	Flags: Linked
 */
-function main_end()
-{
-}
-
+function main_end() {}

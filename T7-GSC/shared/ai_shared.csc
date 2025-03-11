@@ -10,9 +10,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec main()
-{
-	level._customactorcbfunc = &ai::spawned_callback;
+function autoexec main() {
+  level._customactorcbfunc = & ai::spawned_callback;
 }
 
 #namespace ai;
@@ -26,15 +25,13 @@ function autoexec main()
 	Parameters: 1
 	Flags: Linked
 */
-function add_ai_spawn_function(spawn_func)
-{
-	if(!isdefined(level.spawn_ai_func))
-	{
-		level.spawn_ai_func = [];
-	}
-	func = [];
-	func["function"] = spawn_func;
-	level.spawn_ai_func[level.spawn_ai_func.size] = func;
+function add_ai_spawn_function(spawn_func) {
+  if(!isdefined(level.spawn_ai_func)) {
+    level.spawn_ai_func = [];
+  }
+  func = [];
+  func["function"] = spawn_func;
+  level.spawn_ai_func[level.spawn_ai_func.size] = func;
 }
 
 /*
@@ -46,27 +43,21 @@ function add_ai_spawn_function(spawn_func)
 	Parameters: 2
 	Flags: Linked
 */
-function add_archetype_spawn_function(archetype, spawn_func)
-{
-	if(!isdefined(level.spawn_funcs))
-	{
-		level.spawn_funcs = [];
-	}
-	if(!isdefined(level.spawn_funcs[archetype]))
-	{
-		level.spawn_funcs[archetype] = [];
-	}
-	func = [];
-	func["function"] = spawn_func;
-	if(!isdefined(level.spawn_funcs[archetype]))
-	{
-		level.spawn_funcs[archetype] = [];
-	}
-	else if(!isarray(level.spawn_funcs[archetype]))
-	{
-		level.spawn_funcs[archetype] = array(level.spawn_funcs[archetype]);
-	}
-	level.spawn_funcs[archetype][level.spawn_funcs[archetype].size] = func;
+function add_archetype_spawn_function(archetype, spawn_func) {
+  if(!isdefined(level.spawn_funcs)) {
+    level.spawn_funcs = [];
+  }
+  if(!isdefined(level.spawn_funcs[archetype])) {
+    level.spawn_funcs[archetype] = [];
+  }
+  func = [];
+  func["function"] = spawn_func;
+  if(!isdefined(level.spawn_funcs[archetype])) {
+    level.spawn_funcs[archetype] = [];
+  } else if(!isarray(level.spawn_funcs[archetype])) {
+    level.spawn_funcs[archetype] = array(level.spawn_funcs[archetype]);
+  }
+  level.spawn_funcs[archetype][level.spawn_funcs[archetype].size] = func;
 }
 
 /*
@@ -78,24 +69,19 @@ function add_archetype_spawn_function(archetype, spawn_func)
 	Parameters: 1
 	Flags: Linked
 */
-function spawned_callback(localclientnum)
-{
-	if(isdefined(level.spawn_ai_func))
-	{
-		for(index = 0; index < level.spawn_ai_func.size; index++)
-		{
-			func = level.spawn_ai_func[index];
-			self thread [[func["function"]]](localclientnum);
-		}
-	}
-	if(isdefined(level.spawn_funcs) && isdefined(level.spawn_funcs[self.archetype]))
-	{
-		for(index = 0; index < level.spawn_funcs[self.archetype].size; index++)
-		{
-			func = level.spawn_funcs[self.archetype][index];
-			self thread [[func["function"]]](localclientnum);
-		}
-	}
+function spawned_callback(localclientnum) {
+  if(isdefined(level.spawn_ai_func)) {
+    for (index = 0; index < level.spawn_ai_func.size; index++) {
+      func = level.spawn_ai_func[index];
+      self thread[[func["function"]]](localclientnum);
+    }
+  }
+  if(isdefined(level.spawn_funcs) && isdefined(level.spawn_funcs[self.archetype])) {
+    for (index = 0; index < level.spawn_funcs[self.archetype].size; index++) {
+      func = level.spawn_funcs[self.archetype][index];
+      self thread[[func["function"]]](localclientnum);
+    }
+  }
 }
 
 /*
@@ -107,12 +93,9 @@ function spawned_callback(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function shouldregisterclientfieldforarchetype(archetype)
-{
-	if(isdefined(level.clientfieldaicheck) && level.clientfieldaicheck && !isarchetypeloaded(archetype))
-	{
-		return false;
-	}
-	return true;
+function shouldregisterclientfieldforarchetype(archetype) {
+  if(isdefined(level.clientfieldaicheck) && level.clientfieldaicheck && !isarchetypeloaded(archetype)) {
+    return false;
+  }
+  return true;
 }
-

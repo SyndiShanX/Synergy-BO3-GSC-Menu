@@ -13,16 +13,14 @@
 	Parameters: 2
 	Flags: Linked
 */
-function server_choke_init(id, max)
-{
-	if(!isdefined(level.zombie_server_choke_ids_max))
-	{
-		level.zombie_server_choke_ids_max = [];
-		level.zombie_server_choke_ids_count = [];
-	}
-	level.zombie_server_choke_ids_max[id] = max;
-	level.zombie_server_choke_ids_count[id] = 0;
-	level thread server_choke_thread(id);
+function server_choke_init(id, max) {
+  if(!isdefined(level.zombie_server_choke_ids_max)) {
+    level.zombie_server_choke_ids_max = [];
+    level.zombie_server_choke_ids_count = [];
+  }
+  level.zombie_server_choke_ids_max[id] = max;
+  level.zombie_server_choke_ids_count[id] = 0;
+  level thread server_choke_thread(id);
 }
 
 /*
@@ -34,13 +32,11 @@ function server_choke_init(id, max)
 	Parameters: 1
 	Flags: Linked
 */
-function server_choke_thread(id)
-{
-	while(true)
-	{
-		wait(0.05);
-		level.zombie_server_choke_ids_count[id] = 0;
-	}
+function server_choke_thread(id) {
+  while (true) {
+    wait(0.05);
+    level.zombie_server_choke_ids_count[id] = 0;
+  }
 }
 
 /*
@@ -52,9 +48,8 @@ function server_choke_thread(id)
 	Parameters: 1
 	Flags: Linked
 */
-function server_choke_safe(id)
-{
-	return level.zombie_server_choke_ids_count[id] < level.zombie_server_choke_ids_max[id];
+function server_choke_safe(id) {
+  return level.zombie_server_choke_ids_count[id] < level.zombie_server_choke_ids_max[id];
 }
 
 /*
@@ -66,29 +61,32 @@ function server_choke_safe(id)
 	Parameters: 5
 	Flags: Linked
 */
-function server_choke_action(id, choke_action, arg1, arg2, arg3)
-{
-	/#
-		assert(isdefined(level.zombie_server_choke_ids_max[id]), ("" + id) + "");
-	#/
-	while(!server_choke_safe(id))
-	{
-		wait(0.05);
-	}
-	level.zombie_server_choke_ids_count[id]++;
-	if(!isdefined(arg1))
-	{
-		return [[choke_action]]();
-	}
-	if(!isdefined(arg2))
-	{
-		return [[choke_action]](arg1);
-	}
-	if(!isdefined(arg3))
-	{
-		return [[choke_action]](arg1, arg2);
-	}
-	return [[choke_action]](arg1, arg2, arg3);
+function server_choke_action(id, choke_action, arg1, arg2, arg3) {
+  /#
+  assert(isdefined(level.zombie_server_choke_ids_max[id]), ("" + id) + "");
+  # /
+    while (!server_choke_safe(id)) {
+      wait(0.05);
+    }
+  level.zombie_server_choke_ids_count[id]++;
+  if(!isdefined(arg1)) {
+    return [
+      [choke_action]
+    ]();
+  }
+  if(!isdefined(arg2)) {
+    return [
+      [choke_action]
+    ](arg1);
+  }
+  if(!isdefined(arg3)) {
+    return [
+      [choke_action]
+    ](arg1, arg2);
+  }
+  return [
+    [choke_action]
+  ](arg1, arg2, arg3);
 }
 
 /*
@@ -100,13 +98,11 @@ function server_choke_action(id, choke_action, arg1, arg2, arg3)
 	Parameters: 1
 	Flags: None
 */
-function server_entity_valid(entity)
-{
-	if(!isdefined(entity))
-	{
-		return false;
-	}
-	return true;
+function server_entity_valid(entity) {
+  if(!isdefined(entity)) {
+    return false;
+  }
+  return true;
 }
 
 /*
@@ -118,15 +114,13 @@ function server_entity_valid(entity)
 	Parameters: 2
 	Flags: Linked
 */
-function server_safe_init(id, max)
-{
-	if(!isdefined(level.zombie_server_choke_ids_max) || !isdefined(level.zombie_server_choke_ids_max[id]))
-	{
-		server_choke_init(id, max);
-	}
-	/#
-		assert(max == level.zombie_server_choke_ids_max[id]);
-	#/
+function server_safe_init(id, max) {
+  if(!isdefined(level.zombie_server_choke_ids_max) || !isdefined(level.zombie_server_choke_ids_max[id])) {
+    server_choke_init(id, max);
+  }
+  /#
+  assert(max == level.zombie_server_choke_ids_max[id]);
+  # /
 }
 
 /*
@@ -138,9 +132,8 @@ function server_safe_init(id, max)
 	Parameters: 1
 	Flags: Linked
 */
-function _server_safe_ground_trace(pos)
-{
-	return zm_utility::groundpos(pos);
+function _server_safe_ground_trace(pos) {
+  return zm_utility::groundpos(pos);
 }
 
 /*
@@ -152,10 +145,9 @@ function _server_safe_ground_trace(pos)
 	Parameters: 3
 	Flags: Linked
 */
-function server_safe_ground_trace(id, max, origin)
-{
-	server_safe_init(id, max);
-	return server_choke_action(id, &_server_safe_ground_trace, origin);
+function server_safe_ground_trace(id, max, origin) {
+  server_safe_init(id, max);
+  return server_choke_action(id, & _server_safe_ground_trace, origin);
 }
 
 /*
@@ -167,9 +159,8 @@ function server_safe_ground_trace(id, max, origin)
 	Parameters: 1
 	Flags: Linked
 */
-function _server_safe_ground_trace_ignore_water(pos)
-{
-	return zm_utility::groundpos_ignore_water(pos);
+function _server_safe_ground_trace_ignore_water(pos) {
+  return zm_utility::groundpos_ignore_water(pos);
 }
 
 /*
@@ -181,9 +172,7 @@ function _server_safe_ground_trace_ignore_water(pos)
 	Parameters: 3
 	Flags: None
 */
-function server_safe_ground_trace_ignore_water(id, max, origin)
-{
-	server_safe_init(id, max);
-	return server_choke_action(id, &_server_safe_ground_trace_ignore_water, origin);
+function server_safe_ground_trace_ignore_water(id, max, origin) {
+  server_safe_init(id, max);
+  return server_choke_action(id, & _server_safe_ground_trace_ignore_water, origin);
 }
-

@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("scoreboard", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("scoreboard", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,9 +27,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_start_gametype(&init);
+function __init__() {
+  callback::on_start_gametype( & init);
 }
 
 /*
@@ -42,10 +40,6 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	if(sessionmodeiszombiesgame())
-	{
-	}
+function init() {
+  if(sessionmodeiszombiesgame()) {}
 }
-

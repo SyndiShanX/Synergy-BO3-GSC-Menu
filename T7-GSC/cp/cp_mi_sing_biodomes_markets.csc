@@ -13,7 +13,4 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-}
-
+function main() {}

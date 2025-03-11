@@ -18,11 +18,9 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	namespace_43c49144::main();
-	namespace_94ce943b::main();
-	load::main();
-	util::waitforclient(0);
+function main() {
+  namespace_43c49144::main();
+  namespace_94ce943b::main();
+  load::main();
+  util::waitforclient(0);
 }
-

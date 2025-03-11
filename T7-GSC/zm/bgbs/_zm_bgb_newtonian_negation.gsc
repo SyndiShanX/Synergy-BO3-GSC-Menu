@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_newtonian_negation", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_newtonian_negation", & __init__, undefined, "bgb");
 }
 
 /*
@@ -33,13 +32,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_newtonian_negation", "time", 1500, &enable, &disable, undefined);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_newtonian_negation", "time", 1500, & enable, & disable, undefined);
 }
 
 /*
@@ -51,10 +48,9 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function enable()
-{
-	function_2b4ff13a(1);
-	self thread function_7d6ddd3a();
+function enable() {
+  function_2b4ff13a(1);
+  self thread function_7d6ddd3a();
 }
 
 /*
@@ -66,11 +62,10 @@ function enable()
 	Parameters: 0
 	Flags: Linked
 */
-function function_7d6ddd3a()
-{
-	self endon(#"hash_7e8cbf8f");
-	self waittill(#"disconnect");
-	thread disable();
+function function_7d6ddd3a() {
+  self endon(# "hash_7e8cbf8f");
+  self waittill(# "disconnect");
+  thread disable();
 }
 
 /*
@@ -82,21 +77,17 @@ function function_7d6ddd3a()
 	Parameters: 0
 	Flags: Linked
 */
-function disable()
-{
-	if(isdefined(self))
-	{
-		self notify(#"hash_7e8cbf8f");
-	}
-	foreach(player in level.players)
-	{
-		if(player !== self && player bgb::is_enabled("zm_bgb_newtonian_negation"))
-		{
-			return;
-		}
-	}
-	function_2b4ff13a(0);
-	zombie_utility::clear_all_corpses();
+function disable() {
+  if(isdefined(self)) {
+    self notify(# "hash_7e8cbf8f");
+  }
+  foreach(player in level.players) {
+    if(player !== self && player bgb::is_enabled("zm_bgb_newtonian_negation")) {
+      return;
+    }
+  }
+  function_2b4ff13a(0);
+  zombie_utility::clear_all_corpses();
 }
 
 /*
@@ -108,15 +99,10 @@ function disable()
 	Parameters: 1
 	Flags: Linked
 */
-function function_2b4ff13a(var_365c612)
-{
-	if(var_365c612)
-	{
-		setdvar("phys_gravity_dir", (0, 0, -1));
-	}
-	else
-	{
-		setdvar("phys_gravity_dir", (0, 0, 1));
-	}
+function function_2b4ff13a(var_365c612) {
+  if(var_365c612) {
+    setdvar("phys_gravity_dir", (0, 0, -1));
+  } else {
+    setdvar("phys_gravity_dir", (0, 0, 1));
+  }
 }
-

@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_prototype_barrels", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_prototype_barrels", & __init__, undefined, undefined);
 }
 
 /*
@@ -33,10 +32,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("scriptmover", "exploding_barrel_burn_fx", 21000, 1, "int", &function_66d46c7d, 0, 0);
-	clientfield::register("scriptmover", "exploding_barrel_explode_fx", 21000, 1, "int", &function_b6fe19c5, 0, 0);
+function __init__() {
+  clientfield::register("scriptmover", "exploding_barrel_burn_fx", 21000, 1, "int", & function_66d46c7d, 0, 0);
+  clientfield::register("scriptmover", "exploding_barrel_explode_fx", 21000, 1, "int", & function_b6fe19c5, 0, 0);
 }
 
 /*
@@ -48,12 +46,10 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function function_66d46c7d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		self.var_39bdc445 = playfxontag(localclientnum, level.breakables_fx["barrel"]["burn_start"], self, "tag_fx_btm");
-	}
+function function_66d46c7d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    self.var_39bdc445 = playfxontag(localclientnum, level.breakables_fx["barrel"]["burn_start"], self, "tag_fx_btm");
+  }
 }
 
 /*
@@ -65,15 +61,11 @@ function function_66d46c7d(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 7
 	Flags: Linked
 */
-function function_b6fe19c5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		if(isdefined(self.var_39bdc445))
-		{
-			stopfx(localclientnum, self.var_39bdc445);
-		}
-		self.var_4360e059 = playfxontag(localclientnum, level.breakables_fx["barrel"]["explode"], self, "tag_fx_btm");
-	}
+function function_b6fe19c5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    if(isdefined(self.var_39bdc445)) {
+      stopfx(localclientnum, self.var_39bdc445);
+    }
+    self.var_4360e059 = playfxontag(localclientnum, level.breakables_fx["barrel"]["explode"], self, "tag_fx_btm");
+  }
 }
-

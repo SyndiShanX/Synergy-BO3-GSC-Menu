@@ -15,9 +15,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("counteruav", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("counteruav", & __init__, undefined, undefined);
 }
 
 /*
@@ -29,9 +28,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-	clientfield::register("scriptmover", "counteruav", 1, 1, "int", &spawned, 0, 0);
+function __init__() {
+  clientfield::register("scriptmover", "counteruav", 1, 1, "int", & spawned, 0, 0);
 }
 
 /*
@@ -43,30 +41,25 @@ function __init__()
 	Parameters: 7
 	Flags: None
 */
-function spawned(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(!isdefined(level.counteruavs))
-	{
-		level.counteruavs = [];
-	}
-	if(!isdefined(level.counteruavs[localclientnum]))
-	{
-		level.counteruavs[localclientnum] = 0;
-	}
-	player = getlocalplayer(localclientnum);
-	/#
-		assert(isdefined(player));
-	#/
-	if(newval)
-	{
-		level.counteruavs[localclientnum]++;
-		self thread counteruav_think(localclientnum);
-		player setenemyglobalscrambler(1);
-	}
-	else
-	{
-		self notify(#"counteruav_off");
-	}
+function spawned(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(!isdefined(level.counteruavs)) {
+    level.counteruavs = [];
+  }
+  if(!isdefined(level.counteruavs[localclientnum])) {
+    level.counteruavs[localclientnum] = 0;
+  }
+  player = getlocalplayer(localclientnum);
+  /#
+  assert(isdefined(player));
+  # /
+    if(newval) {
+      level.counteruavs[localclientnum]++;
+      self thread counteruav_think(localclientnum);
+      player setenemyglobalscrambler(1);
+    }
+  else {
+    self notify(# "counteruav_off");
+  }
 }
 
 /*
@@ -78,21 +71,17 @@ function spawned(localclientnum, oldval, newval, bnewent, binitialsnap, fieldnam
 	Parameters: 1
 	Flags: None
 */
-function counteruav_think(localclientnum)
-{
-	self util::waittill_any("entityshutdown", "counteruav_off");
-	level.counteruavs[localclientnum]--;
-	if(level.counteruavs[localclientnum] < 0)
-	{
-		level.counteruavs[localclientnum] = 0;
-	}
-	player = getlocalplayer(localclientnum);
-	/#
-		assert(isdefined(player));
-	#/
-	if(level.counteruavs[localclientnum] == 0)
-	{
-		player setenemyglobalscrambler(0);
-	}
+function counteruav_think(localclientnum) {
+  self util::waittill_any("entityshutdown", "counteruav_off");
+  level.counteruavs[localclientnum]--;
+  if(level.counteruavs[localclientnum] < 0) {
+    level.counteruavs[localclientnum] = 0;
+  }
+  player = getlocalplayer(localclientnum);
+  /#
+  assert(isdefined(player));
+  # /
+    if(level.counteruavs[localclientnum] == 0) {
+      player setenemyglobalscrambler(0);
+    }
 }
-

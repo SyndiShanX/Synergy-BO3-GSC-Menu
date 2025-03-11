@@ -12,13 +12,12 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	level._zombie_gamemodeprecache = &onprecachegametype;
-	level._zombie_gamemodemain = &onstartgametype;
-	/#
-		println("");
-	#/
+function main() {
+  level._zombie_gamemodeprecache = & onprecachegametype;
+  level._zombie_gamemodemain = & onstartgametype;
+  /#
+  println("");
+  # /
 }
 
 /*
@@ -30,11 +29,10 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function onprecachegametype()
-{
-	/#
-		println("");
-	#/
+function onprecachegametype() {
+  /#
+  println("");
+  # /
 }
 
 /*
@@ -46,10 +44,8 @@ function onprecachegametype()
 	Parameters: 0
 	Flags: Linked
 */
-function onstartgametype()
-{
-	/#
-		println("");
-	#/
+function onstartgametype() {
+  /#
+  println("");
+  # /
 }
-

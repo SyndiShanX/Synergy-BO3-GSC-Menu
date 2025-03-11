@@ -15,9 +15,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function precache_util_fx()
-{
-}
+function precache_util_fx() {}
 
 /*
 	Name: main
@@ -28,11 +26,10 @@ function precache_util_fx()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	precache_util_fx();
-	precache_createfx_fx();
-	precache_scripted_fx();
+function main() {
+  precache_util_fx();
+  precache_createfx_fx();
+  precache_scripted_fx();
 }
 
 /*
@@ -44,13 +41,12 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function precache_scripted_fx()
-{
-	level._effect["zapper"] = "dlc1/castle/fx_elec_trap_castle";
-	level._effect["rocket_warning_smoke"] = "smoke/fx_smk_ambient_cieling_newworld";
-	level._effect["rocket_warning_fire"] = "explosions/fx_exp_vtol_crash_trail_prologue";
-	level._effect["rocket_side_blast"] = "fire/fx_fire_side_lrg";
-	level._effect["death_ray_shock_eyes"] = "zombie/fx_tesla_shock_eyes_zmb";
+function precache_scripted_fx() {
+  level._effect["zapper"] = "dlc1/castle/fx_elec_trap_castle";
+  level._effect["rocket_warning_smoke"] = "smoke/fx_smk_ambient_cieling_newworld";
+  level._effect["rocket_warning_fire"] = "explosions/fx_exp_vtol_crash_trail_prologue";
+  level._effect["rocket_side_blast"] = "fire/fx_fire_side_lrg";
+  level._effect["death_ray_shock_eyes"] = "zombie/fx_tesla_shock_eyes_zmb";
 }
 
 /*
@@ -62,7 +58,4 @@ function precache_scripted_fx()
 	Parameters: 0
 	Flags: Linked
 */
-function precache_createfx_fx()
-{
-}
-
+function precache_createfx_fx() {}

@@ -26,9 +26,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_powerup_bonus_points_player", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_powerup_bonus_points_player", & __init__, undefined, undefined);
 }
 
 /*
@@ -40,13 +39,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	zm_powerups::register_powerup("bonus_points_player", &grab_bonus_points_player);
-	if(tolower(getdvarstring("g_gametype")) != "zcleansed")
-	{
-		zm_powerups::add_zombie_powerup("bonus_points_player", "zombie_z_money_icon", &"ZOMBIE_POWERUP_BONUS_POINTS", &zm_powerups::func_should_never_drop, 1, 0, 0);
-	}
+function __init__() {
+  zm_powerups::register_powerup("bonus_points_player", & grab_bonus_points_player);
+  if(tolower(getdvarstring("g_gametype")) != "zcleansed") {
+    zm_powerups::add_zombie_powerup("bonus_points_player", "zombie_z_money_icon", & "ZOMBIE_POWERUP_BONUS_POINTS", & zm_powerups::func_should_never_drop, 1, 0, 0);
+  }
 }
 
 /*
@@ -58,10 +55,9 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function grab_bonus_points_player(player)
-{
-	level thread bonus_points_player_powerup(self, player);
-	player thread zm_powerups::powerup_vo("bonus_points_solo");
+function grab_bonus_points_player(player) {
+  level thread bonus_points_player_powerup(self, player);
+  player thread zm_powerups::powerup_vo("bonus_points_solo");
 }
 
 /*
@@ -73,20 +69,19 @@ function grab_bonus_points_player(player)
 	Parameters: 2
 	Flags: Linked
 */
-function bonus_points_player_powerup(item, player)
-{
-	points = randomintrange(1, 25) * 100;
-	if(isdefined(level.bonus_points_powerup_override))
-	{
-		points = [[level.bonus_points_powerup_override]]();
-	}
-	if(isdefined(item.bonus_points_powerup_override))
-	{
-		points = [[item.bonus_points_powerup_override]]();
-	}
-	if(!player laststand::player_is_in_laststand() && !player.sessionstate == "spectator")
-	{
-		player zm_score::player_add_points("bonus_points_powerup", points);
-	}
+function bonus_points_player_powerup(item, player) {
+  points = randomintrange(1, 25) * 100;
+  if(isdefined(level.bonus_points_powerup_override)) {
+    points = [
+      [level.bonus_points_powerup_override]
+    ]();
+  }
+  if(isdefined(item.bonus_points_powerup_override)) {
+    points = [
+      [item.bonus_points_powerup_override]
+    ]();
+  }
+  if(!player laststand::player_is_in_laststand() && !player.sessionstate == "spectator") {
+    player zm_score::player_add_points("bonus_points_powerup", points);
+  }
 }
-

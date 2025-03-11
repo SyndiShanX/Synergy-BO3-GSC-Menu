@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	coop::main();
+function main() {
+  coop::main();
 }
 
 /*
@@ -27,9 +26,7 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function onprecachegametype()
-{
-}
+function onprecachegametype() {}
 
 /*
 	Name: onstartgametype
@@ -40,7 +37,4 @@ function onprecachegametype()
 	Parameters: 0
 	Flags: None
 */
-function onstartgametype()
-{
-}
-
+function onstartgametype() {}

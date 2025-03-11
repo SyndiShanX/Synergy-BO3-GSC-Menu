@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_weap_tomb_shield", &__init__, &__main__, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_weap_tomb_shield", & __init__, & __main__, undefined);
 }
 
 /*
@@ -33,11 +32,10 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	zm_craft_shield::init("craft_shield_zm", "tomb_shield", "wpn_t7_zmb_hd_origins_shield_dmg00_world");
-	level.weaponriotshield = getweapon("tomb_shield");
-	zm_equipment::register("tomb_shield", &"ZOMBIE_EQUIP_RIOTSHIELD_PICKUP_HINT_STRING", &"ZOMBIE_EQUIP_RIOTSHIELD_HOWTO", undefined, "riotshield");
+function __init__() {
+  zm_craft_shield::init("craft_shield_zm", "tomb_shield", "wpn_t7_zmb_hd_origins_shield_dmg00_world");
+  level.weaponriotshield = getweapon("tomb_shield");
+  zm_equipment::register("tomb_shield", & "ZOMBIE_EQUIP_RIOTSHIELD_PICKUP_HINT_STRING", & "ZOMBIE_EQUIP_RIOTSHIELD_HOWTO", undefined, "riotshield");
 }
 
 /*
@@ -49,9 +47,7 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function __main__()
-{
-	zm_equipment::register_for_level("tomb_shield");
-	zm_equipment::include("tomb_shield");
+function __main__() {
+  zm_equipment::register_for_level("tomb_shield");
+  zm_equipment::include("tomb_shield");
 }
-

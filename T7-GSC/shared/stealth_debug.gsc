@@ -15,9 +15,8 @@
 	Parameters: 0
 	Flags: None
 */
-function init()
-{
-	// Unsupported VM revision (1B).
+function init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -29,9 +28,8 @@ function init()
 	Parameters: 0
 	Flags: None
 */
-function enabled()
-{
-	// Unsupported VM revision (1B).
+function enabled() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -43,9 +41,8 @@ function enabled()
 	Parameters: 0
 	Flags: None
 */
-function init_debug()
-{
-	// Unsupported VM revision (1B).
+function init_debug() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -57,9 +54,8 @@ function init_debug()
 	Parameters: 0
 	Flags: None
 */
-function function_70b08fc4()
-{
-	// Unsupported VM revision (1B).
+function function_70b08fc4() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -71,9 +67,8 @@ function function_70b08fc4()
 	Parameters: 0
 	Flags: None
 */
-function draw_awareness_thread()
-{
-	// Unsupported VM revision (1B).
+function draw_awareness_thread() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -85,9 +80,8 @@ function draw_awareness_thread()
 	Parameters: 0
 	Flags: None
 */
-function draw_detect_cone_thread()
-{
-	// Unsupported VM revision (1B).
+function draw_detect_cone_thread() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -99,9 +93,8 @@ function draw_detect_cone_thread()
 	Parameters: 6
 	Flags: None
 */
-function draw_detect_cone()
-{
-	// Unsupported VM revision (1B).
+function draw_detect_cone() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -113,9 +106,8 @@ function draw_detect_cone()
 	Parameters: 6
 	Flags: None
 */
-function rising_text()
-{
-	// Unsupported VM revision (1B).
+function rising_text() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -127,8 +119,6 @@ function rising_text()
 	Parameters: 1
 	Flags: None
 */
-function debug_text()
-{
-	// Unsupported VM revision (1B).
+function debug_text() {
+  // Unsupported VM revision (1B).
 }
-

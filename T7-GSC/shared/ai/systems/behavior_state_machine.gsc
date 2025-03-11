@@ -10,19 +10,16 @@
 	Parameters: 2
 	Flags: Linked
 */
-function registerbsmscriptapiinternal(functionname, scriptfunction)
-{
-	if(!isdefined(level._bsmscriptfunctions))
-	{
-		level._bsmscriptfunctions = [];
-	}
-	functionname = tolower(functionname);
-	/#
-		assert(isdefined(scriptfunction) && isdefined(scriptfunction), "");
-	#/
-	/#
-		assert(!isdefined(level._bsmscriptfunctions[functionname]), "");
-	#/
-	level._bsmscriptfunctions[functionname] = scriptfunction;
+function registerbsmscriptapiinternal(functionname, scriptfunction) {
+  if(!isdefined(level._bsmscriptfunctions)) {
+    level._bsmscriptfunctions = [];
+  }
+  functionname = tolower(functionname);
+  /#
+  assert(isdefined(scriptfunction) && isdefined(scriptfunction), "");
+  # /
+    /#
+  assert(!isdefined(level._bsmscriptfunctions[functionname]), "");
+  # /
+    level._bsmscriptfunctions[functionname] = scriptfunction;
 }
-

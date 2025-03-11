@@ -21,9 +21,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("gadget_speed_burst", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("gadget_speed_burst", & __init__, undefined, undefined);
 }
 
 /*
@@ -35,11 +34,10 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_localplayer_spawned(&on_localplayer_spawned);
-	clientfield::register("toplayer", "speed_burst", 1, 1, "int", &player_speed_changed, 0, 1);
-	visionset_mgr::register_visionset_info("speed_burst", 1, 9, undefined, "speed_burst_initialize");
+function __init__() {
+  callback::on_localplayer_spawned( & on_localplayer_spawned);
+  clientfield::register("toplayer", "speed_burst", 1, 1, "int", & player_speed_changed, 0, 1);
+  visionset_mgr::register_visionset_info("speed_burst", 1, 9, undefined, "speed_burst_initialize");
 }
 
 /*
@@ -51,14 +49,12 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function on_localplayer_spawned(localclientnum)
-{
-	if(self != getlocalplayer(localclientnum))
-	{
-		return;
-	}
-	filter::init_filter_speed_burst(self);
-	filter::disable_filter_speed_burst(self, 3);
+function on_localplayer_spawned(localclientnum) {
+  if(self != getlocalplayer(localclientnum)) {
+    return;
+  }
+  filter::init_filter_speed_burst(self);
+  filter::disable_filter_speed_burst(self, 3);
 }
 
 /*
@@ -70,18 +66,12 @@ function on_localplayer_spawned(localclientnum)
 	Parameters: 7
 	Flags: Linked
 */
-function player_speed_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		if(self == getlocalplayer(localclientnum))
-		{
-			filter::enable_filter_speed_burst(self, 3);
-		}
-	}
-	else if(self == getlocalplayer(localclientnum))
-	{
-		filter::disable_filter_speed_burst(self, 3);
-	}
+function player_speed_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    if(self == getlocalplayer(localclientnum)) {
+      filter::enable_filter_speed_burst(self, 3);
+    }
+  } else if(self == getlocalplayer(localclientnum)) {
+    filter::disable_filter_speed_burst(self, 3);
+  }
 }
-

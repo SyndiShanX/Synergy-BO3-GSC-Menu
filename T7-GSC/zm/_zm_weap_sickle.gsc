@@ -15,9 +15,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("sickle", &__init__, &__main__, undefined);
+function autoexec __init__sytem__() {
+  system::register("sickle", & __init__, & __main__, undefined);
 }
 
 /*
@@ -29,9 +28,7 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private __init__()
-{
-}
+function private __init__() {}
 
 /*
 	Name: __main__
@@ -42,25 +39,20 @@ function private __init__()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private __main__()
-{
-	if(isdefined(level.var_c81f7742))
-	{
-		cost = level.var_c81f7742;
-	}
-	else
-	{
-		cost = 3000;
-	}
-	prompt = &"ZOMBIE_WEAPONCOSTONLY_CFILL";
-	if(!(isdefined(level.weapon_cost_client_filled) && level.weapon_cost_client_filled))
-	{
-		prompt = &"DLC5_WEAPON_SICKLE_BUY";
-	}
-	zm_melee_weapon::init("sickle_knife", "sickle_flourish", "knife_ballistic_sickle", "knife_ballistic_sickle_upgraded", cost, "sickle_upgrade", prompt, "sickle", undefined);
-	zm_melee_weapon::set_fallback_weapon("sickle_knife", "zombie_fists_sickle");
-	zm_weapons::add_retrievable_knife_init_name("knife_ballistic_sickle");
-	zm_weapons::add_retrievable_knife_init_name("knife_ballistic_sickle_upgraded");
+function private __main__() {
+  if(isdefined(level.var_c81f7742)) {
+    cost = level.var_c81f7742;
+  } else {
+    cost = 3000;
+  }
+  prompt = & "ZOMBIE_WEAPONCOSTONLY_CFILL";
+  if(!(isdefined(level.weapon_cost_client_filled) && level.weapon_cost_client_filled)) {
+    prompt = & "DLC5_WEAPON_SICKLE_BUY";
+  }
+  zm_melee_weapon::init("sickle_knife", "sickle_flourish", "knife_ballistic_sickle", "knife_ballistic_sickle_upgraded", cost, "sickle_upgrade", prompt, "sickle", undefined);
+  zm_melee_weapon::set_fallback_weapon("sickle_knife", "zombie_fists_sickle");
+  zm_weapons::add_retrievable_knife_init_name("knife_ballistic_sickle");
+  zm_weapons::add_retrievable_knife_init_name("knife_ballistic_sickle_upgraded");
 }
 
 /*
@@ -72,7 +64,4 @@ function private __main__()
 	Parameters: 0
 	Flags: None
 */
-function init()
-{
-}
-
+function init() {}

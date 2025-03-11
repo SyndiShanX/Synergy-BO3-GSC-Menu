@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("music", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("music", & __init__, undefined, undefined);
 }
 
 /*
@@ -27,12 +26,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	level.activemusicstate = "";
-	level.nextmusicstate = "";
-	level.musicstates = [];
-	util::register_system("musicCmd", &musiccmdhandler);
+function __init__() {
+  level.activemusicstate = "";
+  level.nextmusicstate = "";
+  level.musicstates = [];
+  util::register_system("musicCmd", & musiccmdhandler);
 }
 
 /*
@@ -44,13 +42,10 @@ function __init__()
 	Parameters: 3
 	Flags: Linked
 */
-function musiccmdhandler(clientnum, state, oldstate)
-{
-	if(state != "death")
-	{
-		level._lastmusicstate = state;
-	}
-	state = tolower(state);
-	soundsetmusicstate(state);
+function musiccmdhandler(clientnum, state, oldstate) {
+  if(state != "death") {
+    level._lastmusicstate = state;
+  }
+  state = tolower(state);
+  soundsetmusicstate(state);
 }
-

@@ -12,9 +12,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-}
+function main() {}
 
 /*
 	Name: onprecachegametype
@@ -25,9 +23,7 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function onprecachegametype()
-{
-}
+function onprecachegametype() {}
 
 /*
 	Name: onstartgametype
@@ -38,7 +34,4 @@ function onprecachegametype()
 	Parameters: 0
 	Flags: None
 */
-function onstartgametype()
-{
-}
-
+function onstartgametype() {}

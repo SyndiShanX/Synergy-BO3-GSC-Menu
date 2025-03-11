@@ -30,9 +30,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_island_takeo_fight", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_island_takeo_fight", & __init__, undefined, undefined);
 }
 
 /*
@@ -44,10 +43,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("toplayer", "takeofight_teleport_fx", 9000, 1, "int", &takeofight_teleport_fx, 0, 0);
-	clientfield::register("scriptmover", "takeo_arm_hit_fx", 1, 3, "int", &takeo_arm_hit_fx, 0, 0);
+function __init__() {
+  clientfield::register("toplayer", "takeofight_teleport_fx", 9000, 1, "int", & takeofight_teleport_fx, 0, 0);
+  clientfield::register("scriptmover", "takeo_arm_hit_fx", 1, 3, "int", & takeo_arm_hit_fx, 0, 0);
 }
 
 /*
@@ -59,9 +57,7 @@ function __init__()
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-}
+function main() {}
 
 /*
 	Name: takeofight_teleport_fx
@@ -72,9 +68,7 @@ function main()
 	Parameters: 7
 	Flags: Linked
 */
-function takeofight_teleport_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-}
+function takeofight_teleport_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
 /*
 	Name: takeo_arm_hit_fx
@@ -85,12 +79,9 @@ function takeofight_teleport_fx(localclientnum, oldval, newval, bnewent, binitia
 	Parameters: 7
 	Flags: Linked
 */
-function takeo_arm_hit_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval > 0)
-	{
-		str_tag = ("tag_fx_eye" + newval) + "_jnt";
-		self.var_2c75d806 = playfxontag(localclientnum, level._effect["takeofight_postule_burst"], self, str_tag);
-	}
+function takeo_arm_hit_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval > 0) {
+    str_tag = ("tag_fx_eye" + newval) + "_jnt";
+    self.var_2c75d806 = playfxontag(localclientnum, level._effect["takeofight_postule_burst"], self, str_tag);
+  }
 }
-

@@ -53,9 +53,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_genesis_boss", &__init__, &__main__, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_genesis_boss", & __init__, & __main__, undefined);
 }
 
 /*
@@ -67,17 +66,15 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("scriptmover", "boss_clone_fx", 15000, getminbitcountfornum(3), "int");
-	clientfield::register("world", "sophia_state", 15000, getminbitcountfornum(4), "int");
-	clientfield::register("world", "boss_beam_state", 15000, 1, "int");
-	/#
-		if(getdvarint("") > 0)
-		{
-			level thread function_7a5b2191();
-		}
-	#/
+function __init__() {
+  clientfield::register("scriptmover", "boss_clone_fx", 15000, getminbitcountfornum(3), "int");
+  clientfield::register("world", "sophia_state", 15000, getminbitcountfornum(4), "int");
+  clientfield::register("world", "boss_beam_state", 15000, 1, "int");
+  /#
+  if(getdvarint("") > 0) {
+    level thread function_7a5b2191();
+  }
+  # /
 }
 
 /*
@@ -89,9 +86,8 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function __main__()
-{
-	wait(0.1);
+function __main__() {
+  wait(0.1);
 }
 
 /*
@@ -103,12 +99,11 @@ function __main__()
 	Parameters: 0
 	Flags: Linked
 */
-function function_7a5b2191()
-{
-	/#
-		level thread zm_genesis_util::setup_devgui_func("", "", 0, &function_92d90d50);
-		level thread zm_genesis_util::setup_devgui_func("", "", 2, &function_92d90d50);
-	#/
+function function_7a5b2191() {
+  /#
+  level thread zm_genesis_util::setup_devgui_func("", "", 0, & function_92d90d50);
+  level thread zm_genesis_util::setup_devgui_func("", "", 2, & function_92d90d50);
+  # /
 }
 
 /*
@@ -120,10 +115,8 @@ function function_7a5b2191()
 	Parameters: 1
 	Flags: Linked
 */
-function function_92d90d50(n_val)
-{
-	/#
-		level thread clientfield::set("", n_val);
-	#/
+function function_92d90d50(n_val) {
+  /#
+  level thread clientfield::set("", n_val);
+  # /
 }
-

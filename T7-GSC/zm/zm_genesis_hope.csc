@@ -26,9 +26,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_genesis_hope", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_genesis_hope", & __init__, undefined, undefined);
 }
 
 /*
@@ -40,13 +39,12 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	level._effect["spark_of_hope"] = "dlc4/genesis/fx_quest_hope";
-	clientfield::register("world", "hope_state", 15000, getminbitcountfornum(4), "int", &super_ee, 0, 0);
-	clientfield::register("clientuimodel", "zmInventory.super_ee", 15000, 1, "int", undefined, 0, 0);
-	clientfield::register("toplayer", "hope_spark", 15000, 1, "int", &function_2e70599d, 0, 0);
-	clientfield::register("scriptmover", "hope_spark", 15000, 1, "int", &function_2e70599d, 0, 0);
+function __init__() {
+  level._effect["spark_of_hope"] = "dlc4/genesis/fx_quest_hope";
+  clientfield::register("world", "hope_state", 15000, getminbitcountfornum(4), "int", & super_ee, 0, 0);
+  clientfield::register("clientuimodel", "zmInventory.super_ee", 15000, 1, "int", undefined, 0, 0);
+  clientfield::register("toplayer", "hope_spark", 15000, 1, "int", & function_2e70599d, 0, 0);
+  clientfield::register("scriptmover", "hope_spark", 15000, 1, "int", & function_2e70599d, 0, 0);
 }
 
 /*
@@ -58,35 +56,29 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function super_ee(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	level notify(#"hope_state");
-	level endon(#"hope_state");
-	var_d461c73e = struct::get("hope_spark", "targetname");
-	switch(newval)
-	{
-		case 0:
-		{
-			var_d461c73e thread function_5f968055(localclientnum, 0);
-			break;
-		}
-		case 1:
-		{
-			var_d461c73e thread function_5f968055(localclientnum, 1);
-			break;
-		}
-		case 2:
-		{
-			var_d461c73e thread function_5f968055(localclientnum, 0);
-			break;
-		}
-		case 3:
-		{
-			var_d461c73e thread function_5f968055(localclientnum, 0);
-			audio::playloopat("zmb_overachiever_musicbox_lp", (-6147, 202, 162));
-			break;
-		}
-	}
+function super_ee(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  level notify(# "hope_state");
+  level endon(# "hope_state");
+  var_d461c73e = struct::get("hope_spark", "targetname");
+  switch (newval) {
+    case 0: {
+      var_d461c73e thread function_5f968055(localclientnum, 0);
+      break;
+    }
+    case 1: {
+      var_d461c73e thread function_5f968055(localclientnum, 1);
+      break;
+    }
+    case 2: {
+      var_d461c73e thread function_5f968055(localclientnum, 0);
+      break;
+    }
+    case 3: {
+      var_d461c73e thread function_5f968055(localclientnum, 0);
+      audio::playloopat("zmb_overachiever_musicbox_lp", (-6147, 202, 162));
+      break;
+    }
+  }
 }
 
 /*
@@ -98,25 +90,19 @@ function super_ee(localclientnum, oldval, newval, bnewent, binitialsnap, fieldna
 	Parameters: 7
 	Flags: Linked
 */
-function function_2e70599d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		self.fx_spark = playfxontag(localclientnum, level._effect["spark_of_hope"], self, "j_spine4");
-		self.var_d0642fb4 = self playloopsound("zmb_overachiever_spark_lp", 1);
-	}
-	else
-	{
-		if(isdefined(self.fx_spark))
-		{
-			stopfx(localclientnum, self.fx_spark);
-		}
-		if(isdefined(self.var_d0642fb4))
-		{
-			self stoploopsound(self.var_d0642fb4);
-			self.var_d0642fb4 = undefined;
-		}
-	}
+function function_2e70599d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    self.fx_spark = playfxontag(localclientnum, level._effect["spark_of_hope"], self, "j_spine4");
+    self.var_d0642fb4 = self playloopsound("zmb_overachiever_spark_lp", 1);
+  } else {
+    if(isdefined(self.fx_spark)) {
+      stopfx(localclientnum, self.fx_spark);
+    }
+    if(isdefined(self.var_d0642fb4)) {
+      self stoploopsound(self.var_d0642fb4);
+      self.var_d0642fb4 = undefined;
+    }
+  }
 }
 
 /*
@@ -128,21 +114,15 @@ function function_2e70599d(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 2
 	Flags: Linked
 */
-function function_5f968055(localclientnum, b_on)
-{
-	if(isdefined(self.fx_spark))
-	{
-		stopfx(localclientnum, self.fx_spark);
-	}
-	if(b_on)
-	{
-		self.fx_spark = playfx(localclientnum, level._effect["spark_of_hope"], self.origin);
-		playsound(0, "zmb_overachiever_spark_spawn", self.origin);
-		audio::playloopat("zmb_overachiever_spark_lp_3d", self.origin);
-	}
-	else
-	{
-		audio::stoploopat("zmb_overachiever_spark_lp_3d", self.origin);
-	}
+function function_5f968055(localclientnum, b_on) {
+  if(isdefined(self.fx_spark)) {
+    stopfx(localclientnum, self.fx_spark);
+  }
+  if(b_on) {
+    self.fx_spark = playfx(localclientnum, level._effect["spark_of_hope"], self.origin);
+    playsound(0, "zmb_overachiever_spark_spawn", self.origin);
+    audio::playloopat("zmb_overachiever_spark_lp_3d", self.origin);
+  } else {
+    audio::stoploopat("zmb_overachiever_spark_lp_3d", self.origin);
+  }
 }
-

@@ -19,19 +19,17 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init_parameters()
-{
-	if(!isdefined(level.pack_a_punch))
-	{
-		level.pack_a_punch = spawnstruct();
-		level.pack_a_punch.timeout = 15;
-		level.pack_a_punch.interaction_height = 35;
-		level.pack_a_punch.move_in_func = &pap_weapon_move_in;
-		level.pack_a_punch.move_out_func = &pap_weapon_move_out;
-		level.pack_a_punch.grabbable_by_anyone = 0;
-		level.pack_a_punch.swap_attachments_on_reuse = 0;
-		level.pack_a_punch.triggers = [];
-	}
+function init_parameters() {
+  if(!isdefined(level.pack_a_punch)) {
+    level.pack_a_punch = spawnstruct();
+    level.pack_a_punch.timeout = 15;
+    level.pack_a_punch.interaction_height = 35;
+    level.pack_a_punch.move_in_func = & pap_weapon_move_in;
+    level.pack_a_punch.move_out_func = & pap_weapon_move_out;
+    level.pack_a_punch.grabbable_by_anyone = 0;
+    level.pack_a_punch.swap_attachments_on_reuse = 0;
+    level.pack_a_punch.triggers = [];
+  }
 }
 
 /*
@@ -43,10 +41,9 @@ function init_parameters()
 	Parameters: 1
 	Flags: None
 */
-function set_timeout(n_timeout_s)
-{
-	init_parameters();
-	level.pack_a_punch.timeout = n_timeout_s;
+function set_timeout(n_timeout_s) {
+  init_parameters();
+  level.pack_a_punch.timeout = n_timeout_s;
 }
 
 /*
@@ -58,10 +55,9 @@ function set_timeout(n_timeout_s)
 	Parameters: 1
 	Flags: None
 */
-function set_interaction_height(n_height)
-{
-	init_parameters();
-	level.pack_a_punch.interaction_height = n_height;
+function set_interaction_height(n_height) {
+  init_parameters();
+  level.pack_a_punch.interaction_height = n_height;
 }
 
 /*
@@ -73,10 +69,9 @@ function set_interaction_height(n_height)
 	Parameters: 1
 	Flags: None
 */
-function set_interaction_trigger_radius(n_radius)
-{
-	init_parameters();
-	level.pack_a_punch.interaction_trigger_radius = n_radius;
+function set_interaction_trigger_radius(n_radius) {
+  init_parameters();
+  level.pack_a_punch.interaction_trigger_radius = n_radius;
 }
 
 /*
@@ -88,10 +83,9 @@ function set_interaction_trigger_radius(n_radius)
 	Parameters: 1
 	Flags: None
 */
-function set_interaction_trigger_height(n_height)
-{
-	init_parameters();
-	level.pack_a_punch.set_interaction_trigger_height = n_height;
+function set_interaction_trigger_height(n_height) {
+  init_parameters();
+  level.pack_a_punch.set_interaction_trigger_height = n_height;
 }
 
 /*
@@ -103,10 +97,9 @@ function set_interaction_trigger_height(n_height)
 	Parameters: 1
 	Flags: Linked
 */
-function set_move_in_func(fn_move_weapon_in)
-{
-	init_parameters();
-	level.pack_a_punch.move_in_func = fn_move_weapon_in;
+function set_move_in_func(fn_move_weapon_in) {
+  init_parameters();
+  level.pack_a_punch.move_in_func = fn_move_weapon_in;
 }
 
 /*
@@ -118,10 +111,9 @@ function set_move_in_func(fn_move_weapon_in)
 	Parameters: 1
 	Flags: Linked
 */
-function set_move_out_func(fn_move_weapon_out)
-{
-	init_parameters();
-	level.pack_a_punch.move_out_func = fn_move_weapon_out;
+function set_move_out_func(fn_move_weapon_out) {
+  init_parameters();
+  level.pack_a_punch.move_out_func = fn_move_weapon_out;
 }
 
 /*
@@ -133,10 +125,9 @@ function set_move_out_func(fn_move_weapon_out)
 	Parameters: 0
 	Flags: None
 */
-function set_grabbable_by_anyone()
-{
-	init_parameters();
-	level.pack_a_punch.grabbable_by_anyone = 1;
+function set_grabbable_by_anyone() {
+  init_parameters();
+  level.pack_a_punch.grabbable_by_anyone = 1;
 }
 
 /*
@@ -148,16 +139,14 @@ function set_grabbable_by_anyone()
 	Parameters: 0
 	Flags: Linked
 */
-function get_triggers()
-{
-	init_parameters();
-	/#
-		if(level.pack_a_punch.triggers.size == 0)
-		{
-			println("");
-		}
-	#/
-	return level.pack_a_punch.triggers;
+function get_triggers() {
+  init_parameters();
+  /#
+  if(level.pack_a_punch.triggers.size == 0) {
+    println("");
+  }
+  # /
+    return level.pack_a_punch.triggers;
 }
 
 /*
@@ -169,9 +158,8 @@ function get_triggers()
 	Parameters: 0
 	Flags: None
 */
-function is_pap_trigger()
-{
-	return isdefined(self.script_noteworthy) && self.script_noteworthy == "pack_a_punch";
+function is_pap_trigger() {
+  return isdefined(self.script_noteworthy) && self.script_noteworthy == "pack_a_punch";
 }
 
 /*
@@ -183,10 +171,9 @@ function is_pap_trigger()
 	Parameters: 0
 	Flags: None
 */
-function enable_swap_attachments()
-{
-	init_parameters();
-	level.pack_a_punch.swap_attachments_on_reuse = 1;
+function enable_swap_attachments() {
+  init_parameters();
+  level.pack_a_punch.swap_attachments_on_reuse = 1;
 }
 
 /*
@@ -198,13 +185,11 @@ function enable_swap_attachments()
 	Parameters: 0
 	Flags: Linked
 */
-function can_swap_attachments()
-{
-	if(!isdefined(level.pack_a_punch))
-	{
-		return 0;
-	}
-	return level.pack_a_punch.swap_attachments_on_reuse;
+function can_swap_attachments() {
+  if(!isdefined(level.pack_a_punch)) {
+    return 0;
+  }
+  return level.pack_a_punch.swap_attachments_on_reuse;
 }
 
 /*
@@ -216,22 +201,17 @@ function can_swap_attachments()
 	Parameters: 1
 	Flags: Linked
 */
-function update_hint_string(player)
-{
-	if(self flag::get("pap_offering_gun"))
-	{
-		self sethintstring(&"ZOMBIE_GET_UPGRADED_FILL");
-		return;
-	}
-	w_curr_player_weapon = player getcurrentweapon();
-	if(zm_weapons::is_weapon_upgraded(w_curr_player_weapon))
-	{
-		self sethintstring(&"ZOMBIE_PERK_PACKAPUNCH_AAT", self.aat_cost);
-	}
-	else
-	{
-		self sethintstring(&"ZOMBIE_PERK_PACKAPUNCH", self.cost);
-	}
+function update_hint_string(player) {
+  if(self flag::get("pap_offering_gun")) {
+    self sethintstring( & "ZOMBIE_GET_UPGRADED_FILL");
+    return;
+  }
+  w_curr_player_weapon = player getcurrentweapon();
+  if(zm_weapons::is_weapon_upgraded(w_curr_player_weapon)) {
+    self sethintstring( & "ZOMBIE_PERK_PACKAPUNCH_AAT", self.aat_cost);
+  } else {
+    self sethintstring( & "ZOMBIE_PERK_PACKAPUNCH", self.cost);
+  }
 }
 
 /*
@@ -243,10 +223,9 @@ function update_hint_string(player)
 	Parameters: 4
 	Flags: Linked, Private
 */
-function private pap_weapon_move_in(player, trigger, origin_offset, angles_offset)
-{
-	level endon(#"pack_a_punch_off");
-	trigger endon(#"pap_player_disconnected");
+function private pap_weapon_move_in(player, trigger, origin_offset, angles_offset) {
+  level endon(# "pack_a_punch_off");
+  trigger endon(# "pap_player_disconnected");
 }
 
 /*
@@ -258,9 +237,7 @@ function private pap_weapon_move_in(player, trigger, origin_offset, angles_offse
 	Parameters: 4
 	Flags: Linked, Private
 */
-function private pap_weapon_move_out(player, trigger, origin_offset, interact_offset)
-{
-	level endon(#"pack_a_punch_off");
-	trigger endon(#"pap_player_disconnected");
+function private pap_weapon_move_out(player, trigger, origin_offset, interact_offset) {
+  level endon(# "pack_a_punch_off");
+  trigger endon(# "pap_player_disconnected");
 }
-

@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	// Unsupported VM revision (1B).
+function main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -27,9 +26,8 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function hornsndtrigger()
-{
-	// Unsupported VM revision (1B).
+function hornsndtrigger() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -41,9 +39,8 @@ function hornsndtrigger()
 	Parameters: 0
 	Flags: None
 */
-function defibsndtrigger()
-{
-	// Unsupported VM revision (1B).
+function defibsndtrigger() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -55,9 +52,8 @@ function defibsndtrigger()
 	Parameters: 0
 	Flags: None
 */
-function sndpaannouncer()
-{
-	// Unsupported VM revision (1B).
+function sndpaannouncer() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -69,9 +65,8 @@ function sndpaannouncer()
 	Parameters: 0
 	Flags: None
 */
-function post_interview_weapon_snapshot()
-{
-	// Unsupported VM revision (1B).
+function post_interview_weapon_snapshot() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -83,9 +78,8 @@ function post_interview_weapon_snapshot()
 	Parameters: 0
 	Flags: None
 */
-function vital_snd()
-{
-	// Unsupported VM revision (1B).
+function vital_snd() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -97,9 +91,8 @@ function vital_snd()
 	Parameters: 0
 	Flags: None
 */
-function sndplayrandomexplosions_vtol_ride_start()
-{
-	// Unsupported VM revision (1B).
+function sndplayrandomexplosions_vtol_ride_start() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -111,8 +104,6 @@ function sndplayrandomexplosions_vtol_ride_start()
 	Parameters: 0
 	Flags: None
 */
-function sndlevelfadeout()
-{
-	// Unsupported VM revision (1B).
+function sndlevelfadeout() {
+  // Unsupported VM revision (1B).
 }
-

@@ -89,11 +89,10 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec opt_in()
-{
-	level.aat_in_use = 1;
-	level.bgb_in_use = 1;
-	level.clientfieldaicheck = 1;
+function autoexec opt_in() {
+  level.aat_in_use = 1;
+  level.bgb_in_use = 1;
+  level.clientfieldaicheck = 1;
 }
 
 /*
@@ -105,30 +104,29 @@ function autoexec opt_in()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	callback::on_localclient_connect(&on_player_connected);
-	zm_genesis_ffotd::main_start();
-	zm_genesis_fx::main();
-	zm_genesis_undercroft_low_grav::main();
-	level.debug_keyline_zombies = 0;
-	level.setupcustomcharacterexerts = &setup_personality_character_exerts;
-	level._effect["eye_glow"] = "dlc3/stalingrad/fx_glow_eye_red_stal";
-	level._uses_sticky_grenades = 1;
-	level._uses_taser_knuckles = 1;
-	include_weapons();
-	zm_genesis_flingers::main();
-	zm_genesis_apothicon_god::main();
-	setdvar("waypointVerticalSeparation", -2001);
-	zm_genesis_wearables::function_ad78a144();
-	clientfield::register("clientuimodel", "zmInventory.widget_shield_parts", 12000, 1, "int", undefined, 0, 0);
-	clientfield::register("clientuimodel", "zmInventory.widget_dragon_strike", 12000, 1, "int", undefined, 0, 0);
-	clientfield::register("clientuimodel", "zmInventory.player_crafted_shield", 12000, 1, "int", undefined, 0, 0);
-	load::main();
-	level thread zm_genesis_amb::main();
-	level thread zm_genesis_fx::function_2c301fae();
-	util::waitforclient(0);
-	zm_genesis_ffotd::main_end();
+function main() {
+  callback::on_localclient_connect( & on_player_connected);
+  zm_genesis_ffotd::main_start();
+  zm_genesis_fx::main();
+  zm_genesis_undercroft_low_grav::main();
+  level.debug_keyline_zombies = 0;
+  level.setupcustomcharacterexerts = & setup_personality_character_exerts;
+  level._effect["eye_glow"] = "dlc3/stalingrad/fx_glow_eye_red_stal";
+  level._uses_sticky_grenades = 1;
+  level._uses_taser_knuckles = 1;
+  include_weapons();
+  zm_genesis_flingers::main();
+  zm_genesis_apothicon_god::main();
+  setdvar("waypointVerticalSeparation", -2001);
+  zm_genesis_wearables::function_ad78a144();
+  clientfield::register("clientuimodel", "zmInventory.widget_shield_parts", 12000, 1, "int", undefined, 0, 0);
+  clientfield::register("clientuimodel", "zmInventory.widget_dragon_strike", 12000, 1, "int", undefined, 0, 0);
+  clientfield::register("clientuimodel", "zmInventory.player_crafted_shield", 12000, 1, "int", undefined, 0, 0);
+  load::main();
+  level thread zm_genesis_amb::main();
+  level thread zm_genesis_fx::function_2c301fae();
+  util::waitforclient(0);
+  zm_genesis_ffotd::main_end();
 }
 
 /*
@@ -140,9 +138,8 @@ function main()
 	Parameters: 1
 	Flags: Linked
 */
-function on_player_connected(n_local_client)
-{
-	self thread sun_flame(n_local_client);
+function on_player_connected(n_local_client) {
+  self thread sun_flame(n_local_client);
 }
 
 /*
@@ -154,31 +151,27 @@ function on_player_connected(n_local_client)
 	Parameters: 1
 	Flags: Linked
 */
-function sun_flame(n_local_client)
-{
-	self endon(#"disconnect");
-	self endon(#"death");
-	self endon(#"entityshutdown");
-	var_c2a0c80a = getent(n_local_client, "sun_flame", "targetname");
-	var_c2a0c80a setscale(6);
-	player = getlocalplayer(n_local_client);
-	while(isdefined(player))
-	{
-		if(!var_c2a0c80a hasdobj(n_local_client))
-		{
-			var_c2a0c80a util::waittill_dobj(n_local_client);
-			wait(0.016);
-		}
-		if(!isdefined(player))
-		{
-			player = getlocalplayer(n_local_client);
-			wait(0.016);
-		}
-		v_to_player = player.origin - var_c2a0c80a.origin;
-		var_b514ffc0 = vectortoangles(v_to_player) + vectorscale((1, 0, 0), 89);
-		var_c2a0c80a.angles = var_b514ffc0;
-		wait(0.01);
-	}
+function sun_flame(n_local_client) {
+  self endon(# "disconnect");
+  self endon(# "death");
+  self endon(# "entityshutdown");
+  var_c2a0c80a = getent(n_local_client, "sun_flame", "targetname");
+  var_c2a0c80a setscale(6);
+  player = getlocalplayer(n_local_client);
+  while (isdefined(player)) {
+    if(!var_c2a0c80a hasdobj(n_local_client)) {
+      var_c2a0c80a util::waittill_dobj(n_local_client);
+      wait(0.016);
+    }
+    if(!isdefined(player)) {
+      player = getlocalplayer(n_local_client);
+      wait(0.016);
+    }
+    v_to_player = player.origin - var_c2a0c80a.origin;
+    var_b514ffc0 = vectortoangles(v_to_player) + vectorscale((1, 0, 0), 89);
+    var_c2a0c80a.angles = var_b514ffc0;
+    wait(0.01);
+  }
 }
 
 /*
@@ -190,10 +183,9 @@ function sun_flame(n_local_client)
 	Parameters: 0
 	Flags: Linked
 */
-function include_weapons()
-{
-	zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_genesis_weapons.csv", 1);
-	zm_weapons::autofill_wallbuys_init();
+function include_weapons() {
+  zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_genesis_weapons.csv", 1);
+  zm_weapons::autofill_wallbuys_init();
 }
 
 /*
@@ -205,115 +197,113 @@ function include_weapons()
 	Parameters: 0
 	Flags: Linked
 */
-function setup_personality_character_exerts()
-{
-	level.exert_sounds[1]["playerbreathinsound"][0] = "vox_plr_0_exert_inhale_0";
-	level.exert_sounds[2]["playerbreathinsound"][0] = "vox_plr_1_exert_inhale_0";
-	level.exert_sounds[3]["playerbreathinsound"][0] = "vox_plr_2_exert_inhale_0";
-	level.exert_sounds[4]["playerbreathinsound"][0] = "vox_plr_3_exert_inhale_0";
-	level.exert_sounds[1]["playerbreathoutsound"][0] = "vox_plr_0_exert_exhale_0";
-	level.exert_sounds[2]["playerbreathoutsound"][0] = "vox_plr_1_exert_exhale_0";
-	level.exert_sounds[3]["playerbreathoutsound"][0] = "vox_plr_2_exert_exhale_0";
-	level.exert_sounds[4]["playerbreathoutsound"][0] = "vox_plr_3_exert_exhale_0";
-	level.exert_sounds[1]["playerbreathgaspsound"][0] = "vox_plr_0_exert_exhale_0";
-	level.exert_sounds[2]["playerbreathgaspsound"][0] = "vox_plr_1_exert_exhale_0";
-	level.exert_sounds[3]["playerbreathgaspsound"][0] = "vox_plr_2_exert_exhale_0";
-	level.exert_sounds[4]["playerbreathgaspsound"][0] = "vox_plr_3_exert_exhale_0";
-	level.exert_sounds[1]["falldamage"][0] = "vox_plr_0_exert_pain_low_0";
-	level.exert_sounds[1]["falldamage"][1] = "vox_plr_0_exert_pain_low_1";
-	level.exert_sounds[1]["falldamage"][2] = "vox_plr_0_exert_pain_low_2";
-	level.exert_sounds[1]["falldamage"][3] = "vox_plr_0_exert_pain_low_3";
-	level.exert_sounds[1]["falldamage"][4] = "vox_plr_0_exert_pain_low_4";
-	level.exert_sounds[1]["falldamage"][5] = "vox_plr_0_exert_pain_low_5";
-	level.exert_sounds[1]["falldamage"][6] = "vox_plr_0_exert_pain_low_6";
-	level.exert_sounds[1]["falldamage"][7] = "vox_plr_0_exert_pain_low_7";
-	level.exert_sounds[2]["falldamage"][0] = "vox_plr_1_exert_pain_low_0";
-	level.exert_sounds[2]["falldamage"][1] = "vox_plr_1_exert_pain_low_1";
-	level.exert_sounds[2]["falldamage"][2] = "vox_plr_1_exert_pain_low_2";
-	level.exert_sounds[2]["falldamage"][3] = "vox_plr_1_exert_pain_low_3";
-	level.exert_sounds[2]["falldamage"][4] = "vox_plr_1_exert_pain_low_4";
-	level.exert_sounds[2]["falldamage"][5] = "vox_plr_1_exert_pain_low_5";
-	level.exert_sounds[2]["falldamage"][6] = "vox_plr_1_exert_pain_low_6";
-	level.exert_sounds[2]["falldamage"][7] = "vox_plr_1_exert_pain_low_7";
-	level.exert_sounds[3]["falldamage"][0] = "vox_plr_2_exert_pain_low_0";
-	level.exert_sounds[3]["falldamage"][1] = "vox_plr_2_exert_pain_low_1";
-	level.exert_sounds[3]["falldamage"][2] = "vox_plr_2_exert_pain_low_2";
-	level.exert_sounds[3]["falldamage"][3] = "vox_plr_2_exert_pain_low_3";
-	level.exert_sounds[3]["falldamage"][4] = "vox_plr_2_exert_pain_low_4";
-	level.exert_sounds[3]["falldamage"][5] = "vox_plr_2_exert_pain_low_5";
-	level.exert_sounds[3]["falldamage"][6] = "vox_plr_2_exert_pain_low_6";
-	level.exert_sounds[3]["falldamage"][7] = "vox_plr_2_exert_pain_low_7";
-	level.exert_sounds[4]["falldamage"][0] = "vox_plr_3_exert_pain_low_0";
-	level.exert_sounds[4]["falldamage"][1] = "vox_plr_3_exert_pain_low_1";
-	level.exert_sounds[4]["falldamage"][2] = "vox_plr_3_exert_pain_low_2";
-	level.exert_sounds[4]["falldamage"][3] = "vox_plr_3_exert_pain_low_3";
-	level.exert_sounds[4]["falldamage"][4] = "vox_plr_3_exert_pain_low_4";
-	level.exert_sounds[4]["falldamage"][5] = "vox_plr_3_exert_pain_low_5";
-	level.exert_sounds[4]["falldamage"][6] = "vox_plr_3_exert_pain_low_6";
-	level.exert_sounds[4]["falldamage"][7] = "vox_plr_3_exert_pain_low_7";
-	level.exert_sounds[1]["mantlesoundplayer"][0] = "vox_plr_0_exert_grunt_0";
-	level.exert_sounds[1]["mantlesoundplayer"][1] = "vox_plr_0_exert_grunt_1";
-	level.exert_sounds[1]["mantlesoundplayer"][2] = "vox_plr_0_exert_grunt_2";
-	level.exert_sounds[1]["mantlesoundplayer"][3] = "vox_plr_0_exert_grunt_3";
-	level.exert_sounds[1]["mantlesoundplayer"][4] = "vox_plr_0_exert_grunt_4";
-	level.exert_sounds[1]["mantlesoundplayer"][5] = "vox_plr_0_exert_grunt_5";
-	level.exert_sounds[1]["mantlesoundplayer"][6] = "vox_plr_0_exert_grunt_6";
-	level.exert_sounds[2]["mantlesoundplayer"][0] = "vox_plr_1_exert_grunt_0";
-	level.exert_sounds[2]["mantlesoundplayer"][1] = "vox_plr_1_exert_grunt_1";
-	level.exert_sounds[2]["mantlesoundplayer"][2] = "vox_plr_1_exert_grunt_2";
-	level.exert_sounds[2]["mantlesoundplayer"][3] = "vox_plr_1_exert_grunt_3";
-	level.exert_sounds[2]["mantlesoundplayer"][4] = "vox_plr_1_exert_grunt_4";
-	level.exert_sounds[2]["mantlesoundplayer"][5] = "vox_plr_1_exert_grunt_5";
-	level.exert_sounds[2]["mantlesoundplayer"][6] = "vox_plr_1_exert_grunt_6";
-	level.exert_sounds[3]["mantlesoundplayer"][0] = "vox_plr_2_exert_grunt_0";
-	level.exert_sounds[3]["mantlesoundplayer"][1] = "vox_plr_2_exert_grunt_1";
-	level.exert_sounds[3]["mantlesoundplayer"][2] = "vox_plr_2_exert_grunt_2";
-	level.exert_sounds[3]["mantlesoundplayer"][3] = "vox_plr_2_exert_grunt_3";
-	level.exert_sounds[3]["mantlesoundplayer"][4] = "vox_plr_2_exert_grunt_4";
-	level.exert_sounds[3]["mantlesoundplayer"][5] = "vox_plr_2_exert_grunt_5";
-	level.exert_sounds[3]["mantlesoundplayer"][6] = "vox_plr_2_exert_grunt_6";
-	level.exert_sounds[4]["mantlesoundplayer"][0] = "vox_plr_3_exert_grunt_0";
-	level.exert_sounds[4]["mantlesoundplayer"][1] = "vox_plr_3_exert_grunt_1";
-	level.exert_sounds[4]["mantlesoundplayer"][2] = "vox_plr_3_exert_grunt_2";
-	level.exert_sounds[4]["mantlesoundplayer"][3] = "vox_plr_3_exert_grunt_3";
-	level.exert_sounds[4]["mantlesoundplayer"][4] = "vox_plr_3_exert_grunt_4";
-	level.exert_sounds[4]["mantlesoundplayer"][5] = "vox_plr_3_exert_grunt_5";
-	level.exert_sounds[4]["mantlesoundplayer"][6] = "vox_plr_3_exert_grunt_6";
-	level.exert_sounds[1]["meleeswipesoundplayer"][0] = "vox_plr_0_exert_knife_swipe_0";
-	level.exert_sounds[1]["meleeswipesoundplayer"][1] = "vox_plr_0_exert_knife_swipe_1";
-	level.exert_sounds[1]["meleeswipesoundplayer"][2] = "vox_plr_0_exert_knife_swipe_2";
-	level.exert_sounds[1]["meleeswipesoundplayer"][3] = "vox_plr_0_exert_knife_swipe_3";
-	level.exert_sounds[1]["meleeswipesoundplayer"][4] = "vox_plr_0_exert_knife_swipe_4";
-	level.exert_sounds[2]["meleeswipesoundplayer"][0] = "vox_plr_1_exert_knife_swipe_0";
-	level.exert_sounds[2]["meleeswipesoundplayer"][1] = "vox_plr_1_exert_knife_swipe_1";
-	level.exert_sounds[2]["meleeswipesoundplayer"][2] = "vox_plr_1_exert_knife_swipe_2";
-	level.exert_sounds[2]["meleeswipesoundplayer"][3] = "vox_plr_1_exert_knife_swipe_3";
-	level.exert_sounds[2]["meleeswipesoundplayer"][4] = "vox_plr_1_exert_knife_swipe_4";
-	level.exert_sounds[3]["meleeswipesoundplayer"][0] = "vox_plr_2_exert_knife_swipe_0";
-	level.exert_sounds[3]["meleeswipesoundplayer"][1] = "vox_plr_2_exert_knife_swipe_1";
-	level.exert_sounds[3]["meleeswipesoundplayer"][2] = "vox_plr_2_exert_knife_swipe_2";
-	level.exert_sounds[3]["meleeswipesoundplayer"][3] = "vox_plr_2_exert_knife_swipe_3";
-	level.exert_sounds[3]["meleeswipesoundplayer"][4] = "vox_plr_2_exert_knife_swipe_4";
-	level.exert_sounds[4]["meleeswipesoundplayer"][0] = "vox_plr_3_exert_knife_swipe_0";
-	level.exert_sounds[4]["meleeswipesoundplayer"][1] = "vox_plr_3_exert_knife_swipe_1";
-	level.exert_sounds[4]["meleeswipesoundplayer"][2] = "vox_plr_3_exert_knife_swipe_2";
-	level.exert_sounds[4]["meleeswipesoundplayer"][3] = "vox_plr_3_exert_knife_swipe_3";
-	level.exert_sounds[4]["meleeswipesoundplayer"][4] = "vox_plr_3_exert_knife_swipe_4";
-	level.exert_sounds[1]["dtplandsoundplayer"][0] = "vox_plr_0_exert_pain_medium_0";
-	level.exert_sounds[1]["dtplandsoundplayer"][1] = "vox_plr_0_exert_pain_medium_1";
-	level.exert_sounds[1]["dtplandsoundplayer"][2] = "vox_plr_0_exert_pain_medium_2";
-	level.exert_sounds[1]["dtplandsoundplayer"][3] = "vox_plr_0_exert_pain_medium_3";
-	level.exert_sounds[2]["dtplandsoundplayer"][0] = "vox_plr_1_exert_pain_medium_0";
-	level.exert_sounds[2]["dtplandsoundplayer"][1] = "vox_plr_1_exert_pain_medium_1";
-	level.exert_sounds[2]["dtplandsoundplayer"][2] = "vox_plr_1_exert_pain_medium_2";
-	level.exert_sounds[2]["dtplandsoundplayer"][3] = "vox_plr_1_exert_pain_medium_3";
-	level.exert_sounds[3]["dtplandsoundplayer"][0] = "vox_plr_2_exert_pain_medium_0";
-	level.exert_sounds[3]["dtplandsoundplayer"][1] = "vox_plr_2_exert_pain_medium_1";
-	level.exert_sounds[3]["dtplandsoundplayer"][2] = "vox_plr_2_exert_pain_medium_2";
-	level.exert_sounds[3]["dtplandsoundplayer"][3] = "vox_plr_2_exert_pain_medium_3";
-	level.exert_sounds[4]["dtplandsoundplayer"][0] = "vox_plr_3_exert_pain_medium_0";
-	level.exert_sounds[4]["dtplandsoundplayer"][1] = "vox_plr_3_exert_pain_medium_1";
-	level.exert_sounds[4]["dtplandsoundplayer"][2] = "vox_plr_3_exert_pain_medium_2";
-	level.exert_sounds[4]["dtplandsoundplayer"][3] = "vox_plr_3_exert_pain_medium_3";
+function setup_personality_character_exerts() {
+  level.exert_sounds[1]["playerbreathinsound"][0] = "vox_plr_0_exert_inhale_0";
+  level.exert_sounds[2]["playerbreathinsound"][0] = "vox_plr_1_exert_inhale_0";
+  level.exert_sounds[3]["playerbreathinsound"][0] = "vox_plr_2_exert_inhale_0";
+  level.exert_sounds[4]["playerbreathinsound"][0] = "vox_plr_3_exert_inhale_0";
+  level.exert_sounds[1]["playerbreathoutsound"][0] = "vox_plr_0_exert_exhale_0";
+  level.exert_sounds[2]["playerbreathoutsound"][0] = "vox_plr_1_exert_exhale_0";
+  level.exert_sounds[3]["playerbreathoutsound"][0] = "vox_plr_2_exert_exhale_0";
+  level.exert_sounds[4]["playerbreathoutsound"][0] = "vox_plr_3_exert_exhale_0";
+  level.exert_sounds[1]["playerbreathgaspsound"][0] = "vox_plr_0_exert_exhale_0";
+  level.exert_sounds[2]["playerbreathgaspsound"][0] = "vox_plr_1_exert_exhale_0";
+  level.exert_sounds[3]["playerbreathgaspsound"][0] = "vox_plr_2_exert_exhale_0";
+  level.exert_sounds[4]["playerbreathgaspsound"][0] = "vox_plr_3_exert_exhale_0";
+  level.exert_sounds[1]["falldamage"][0] = "vox_plr_0_exert_pain_low_0";
+  level.exert_sounds[1]["falldamage"][1] = "vox_plr_0_exert_pain_low_1";
+  level.exert_sounds[1]["falldamage"][2] = "vox_plr_0_exert_pain_low_2";
+  level.exert_sounds[1]["falldamage"][3] = "vox_plr_0_exert_pain_low_3";
+  level.exert_sounds[1]["falldamage"][4] = "vox_plr_0_exert_pain_low_4";
+  level.exert_sounds[1]["falldamage"][5] = "vox_plr_0_exert_pain_low_5";
+  level.exert_sounds[1]["falldamage"][6] = "vox_plr_0_exert_pain_low_6";
+  level.exert_sounds[1]["falldamage"][7] = "vox_plr_0_exert_pain_low_7";
+  level.exert_sounds[2]["falldamage"][0] = "vox_plr_1_exert_pain_low_0";
+  level.exert_sounds[2]["falldamage"][1] = "vox_plr_1_exert_pain_low_1";
+  level.exert_sounds[2]["falldamage"][2] = "vox_plr_1_exert_pain_low_2";
+  level.exert_sounds[2]["falldamage"][3] = "vox_plr_1_exert_pain_low_3";
+  level.exert_sounds[2]["falldamage"][4] = "vox_plr_1_exert_pain_low_4";
+  level.exert_sounds[2]["falldamage"][5] = "vox_plr_1_exert_pain_low_5";
+  level.exert_sounds[2]["falldamage"][6] = "vox_plr_1_exert_pain_low_6";
+  level.exert_sounds[2]["falldamage"][7] = "vox_plr_1_exert_pain_low_7";
+  level.exert_sounds[3]["falldamage"][0] = "vox_plr_2_exert_pain_low_0";
+  level.exert_sounds[3]["falldamage"][1] = "vox_plr_2_exert_pain_low_1";
+  level.exert_sounds[3]["falldamage"][2] = "vox_plr_2_exert_pain_low_2";
+  level.exert_sounds[3]["falldamage"][3] = "vox_plr_2_exert_pain_low_3";
+  level.exert_sounds[3]["falldamage"][4] = "vox_plr_2_exert_pain_low_4";
+  level.exert_sounds[3]["falldamage"][5] = "vox_plr_2_exert_pain_low_5";
+  level.exert_sounds[3]["falldamage"][6] = "vox_plr_2_exert_pain_low_6";
+  level.exert_sounds[3]["falldamage"][7] = "vox_plr_2_exert_pain_low_7";
+  level.exert_sounds[4]["falldamage"][0] = "vox_plr_3_exert_pain_low_0";
+  level.exert_sounds[4]["falldamage"][1] = "vox_plr_3_exert_pain_low_1";
+  level.exert_sounds[4]["falldamage"][2] = "vox_plr_3_exert_pain_low_2";
+  level.exert_sounds[4]["falldamage"][3] = "vox_plr_3_exert_pain_low_3";
+  level.exert_sounds[4]["falldamage"][4] = "vox_plr_3_exert_pain_low_4";
+  level.exert_sounds[4]["falldamage"][5] = "vox_plr_3_exert_pain_low_5";
+  level.exert_sounds[4]["falldamage"][6] = "vox_plr_3_exert_pain_low_6";
+  level.exert_sounds[4]["falldamage"][7] = "vox_plr_3_exert_pain_low_7";
+  level.exert_sounds[1]["mantlesoundplayer"][0] = "vox_plr_0_exert_grunt_0";
+  level.exert_sounds[1]["mantlesoundplayer"][1] = "vox_plr_0_exert_grunt_1";
+  level.exert_sounds[1]["mantlesoundplayer"][2] = "vox_plr_0_exert_grunt_2";
+  level.exert_sounds[1]["mantlesoundplayer"][3] = "vox_plr_0_exert_grunt_3";
+  level.exert_sounds[1]["mantlesoundplayer"][4] = "vox_plr_0_exert_grunt_4";
+  level.exert_sounds[1]["mantlesoundplayer"][5] = "vox_plr_0_exert_grunt_5";
+  level.exert_sounds[1]["mantlesoundplayer"][6] = "vox_plr_0_exert_grunt_6";
+  level.exert_sounds[2]["mantlesoundplayer"][0] = "vox_plr_1_exert_grunt_0";
+  level.exert_sounds[2]["mantlesoundplayer"][1] = "vox_plr_1_exert_grunt_1";
+  level.exert_sounds[2]["mantlesoundplayer"][2] = "vox_plr_1_exert_grunt_2";
+  level.exert_sounds[2]["mantlesoundplayer"][3] = "vox_plr_1_exert_grunt_3";
+  level.exert_sounds[2]["mantlesoundplayer"][4] = "vox_plr_1_exert_grunt_4";
+  level.exert_sounds[2]["mantlesoundplayer"][5] = "vox_plr_1_exert_grunt_5";
+  level.exert_sounds[2]["mantlesoundplayer"][6] = "vox_plr_1_exert_grunt_6";
+  level.exert_sounds[3]["mantlesoundplayer"][0] = "vox_plr_2_exert_grunt_0";
+  level.exert_sounds[3]["mantlesoundplayer"][1] = "vox_plr_2_exert_grunt_1";
+  level.exert_sounds[3]["mantlesoundplayer"][2] = "vox_plr_2_exert_grunt_2";
+  level.exert_sounds[3]["mantlesoundplayer"][3] = "vox_plr_2_exert_grunt_3";
+  level.exert_sounds[3]["mantlesoundplayer"][4] = "vox_plr_2_exert_grunt_4";
+  level.exert_sounds[3]["mantlesoundplayer"][5] = "vox_plr_2_exert_grunt_5";
+  level.exert_sounds[3]["mantlesoundplayer"][6] = "vox_plr_2_exert_grunt_6";
+  level.exert_sounds[4]["mantlesoundplayer"][0] = "vox_plr_3_exert_grunt_0";
+  level.exert_sounds[4]["mantlesoundplayer"][1] = "vox_plr_3_exert_grunt_1";
+  level.exert_sounds[4]["mantlesoundplayer"][2] = "vox_plr_3_exert_grunt_2";
+  level.exert_sounds[4]["mantlesoundplayer"][3] = "vox_plr_3_exert_grunt_3";
+  level.exert_sounds[4]["mantlesoundplayer"][4] = "vox_plr_3_exert_grunt_4";
+  level.exert_sounds[4]["mantlesoundplayer"][5] = "vox_plr_3_exert_grunt_5";
+  level.exert_sounds[4]["mantlesoundplayer"][6] = "vox_plr_3_exert_grunt_6";
+  level.exert_sounds[1]["meleeswipesoundplayer"][0] = "vox_plr_0_exert_knife_swipe_0";
+  level.exert_sounds[1]["meleeswipesoundplayer"][1] = "vox_plr_0_exert_knife_swipe_1";
+  level.exert_sounds[1]["meleeswipesoundplayer"][2] = "vox_plr_0_exert_knife_swipe_2";
+  level.exert_sounds[1]["meleeswipesoundplayer"][3] = "vox_plr_0_exert_knife_swipe_3";
+  level.exert_sounds[1]["meleeswipesoundplayer"][4] = "vox_plr_0_exert_knife_swipe_4";
+  level.exert_sounds[2]["meleeswipesoundplayer"][0] = "vox_plr_1_exert_knife_swipe_0";
+  level.exert_sounds[2]["meleeswipesoundplayer"][1] = "vox_plr_1_exert_knife_swipe_1";
+  level.exert_sounds[2]["meleeswipesoundplayer"][2] = "vox_plr_1_exert_knife_swipe_2";
+  level.exert_sounds[2]["meleeswipesoundplayer"][3] = "vox_plr_1_exert_knife_swipe_3";
+  level.exert_sounds[2]["meleeswipesoundplayer"][4] = "vox_plr_1_exert_knife_swipe_4";
+  level.exert_sounds[3]["meleeswipesoundplayer"][0] = "vox_plr_2_exert_knife_swipe_0";
+  level.exert_sounds[3]["meleeswipesoundplayer"][1] = "vox_plr_2_exert_knife_swipe_1";
+  level.exert_sounds[3]["meleeswipesoundplayer"][2] = "vox_plr_2_exert_knife_swipe_2";
+  level.exert_sounds[3]["meleeswipesoundplayer"][3] = "vox_plr_2_exert_knife_swipe_3";
+  level.exert_sounds[3]["meleeswipesoundplayer"][4] = "vox_plr_2_exert_knife_swipe_4";
+  level.exert_sounds[4]["meleeswipesoundplayer"][0] = "vox_plr_3_exert_knife_swipe_0";
+  level.exert_sounds[4]["meleeswipesoundplayer"][1] = "vox_plr_3_exert_knife_swipe_1";
+  level.exert_sounds[4]["meleeswipesoundplayer"][2] = "vox_plr_3_exert_knife_swipe_2";
+  level.exert_sounds[4]["meleeswipesoundplayer"][3] = "vox_plr_3_exert_knife_swipe_3";
+  level.exert_sounds[4]["meleeswipesoundplayer"][4] = "vox_plr_3_exert_knife_swipe_4";
+  level.exert_sounds[1]["dtplandsoundplayer"][0] = "vox_plr_0_exert_pain_medium_0";
+  level.exert_sounds[1]["dtplandsoundplayer"][1] = "vox_plr_0_exert_pain_medium_1";
+  level.exert_sounds[1]["dtplandsoundplayer"][2] = "vox_plr_0_exert_pain_medium_2";
+  level.exert_sounds[1]["dtplandsoundplayer"][3] = "vox_plr_0_exert_pain_medium_3";
+  level.exert_sounds[2]["dtplandsoundplayer"][0] = "vox_plr_1_exert_pain_medium_0";
+  level.exert_sounds[2]["dtplandsoundplayer"][1] = "vox_plr_1_exert_pain_medium_1";
+  level.exert_sounds[2]["dtplandsoundplayer"][2] = "vox_plr_1_exert_pain_medium_2";
+  level.exert_sounds[2]["dtplandsoundplayer"][3] = "vox_plr_1_exert_pain_medium_3";
+  level.exert_sounds[3]["dtplandsoundplayer"][0] = "vox_plr_2_exert_pain_medium_0";
+  level.exert_sounds[3]["dtplandsoundplayer"][1] = "vox_plr_2_exert_pain_medium_1";
+  level.exert_sounds[3]["dtplandsoundplayer"][2] = "vox_plr_2_exert_pain_medium_2";
+  level.exert_sounds[3]["dtplandsoundplayer"][3] = "vox_plr_2_exert_pain_medium_3";
+  level.exert_sounds[4]["dtplandsoundplayer"][0] = "vox_plr_3_exert_pain_medium_0";
+  level.exert_sounds[4]["dtplandsoundplayer"][1] = "vox_plr_3_exert_pain_medium_1";
+  level.exert_sounds[4]["dtplandsoundplayer"][2] = "vox_plr_3_exert_pain_medium_2";
+  level.exert_sounds[4]["dtplandsoundplayer"][3] = "vox_plr_3_exert_pain_medium_3";
 }
-

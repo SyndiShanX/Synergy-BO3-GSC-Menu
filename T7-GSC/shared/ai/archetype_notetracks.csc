@@ -13,17 +13,14 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec main()
-{
-	if(sessionmodeiszombiesgame() && getdvarint("splitscreen_playerCount") > 2)
-	{
-		return;
-	}
-	if(sessionmodeiscampaigndeadopsgame() && getdvarint("splitscreen_playerCount") > 2)
-	{
-		return;
-	}
-	ai::add_ai_spawn_function(&initializenotetrackhandlers);
+function autoexec main() {
+  if(sessionmodeiszombiesgame() && getdvarint("splitscreen_playerCount") > 2) {
+    return;
+  }
+  if(sessionmodeiscampaigndeadopsgame() && getdvarint("splitscreen_playerCount") > 2) {
+    return;
+  }
+  ai::add_ai_spawn_function( & initializenotetrackhandlers);
 }
 
 /*
@@ -35,11 +32,10 @@ function autoexec main()
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private initializenotetrackhandlers(localclientnum)
-{
-	addsurfacenotetrackfxhandler(localclientnum, "jumping", "surfacefxtable_jumping");
-	addsurfacenotetrackfxhandler(localclientnum, "landing", "surfacefxtable_landing");
-	addsurfacenotetrackfxhandler(localclientnum, "vtol_landing", "surfacefxtable_vtollanding");
+function private initializenotetrackhandlers(localclientnum) {
+  addsurfacenotetrackfxhandler(localclientnum, "jumping", "surfacefxtable_jumping");
+  addsurfacenotetrackfxhandler(localclientnum, "landing", "surfacefxtable_landing");
+  addsurfacenotetrackfxhandler(localclientnum, "vtol_landing", "surfacefxtable_vtollanding");
 }
 
 /*
@@ -51,10 +47,9 @@ function private initializenotetrackhandlers(localclientnum)
 	Parameters: 3
 	Flags: Linked, Private
 */
-function private addsurfacenotetrackfxhandler(localclientnum, notetrack, surfacetable)
-{
-	entity = self;
-	entity thread handlesurfacenotetrackfx(localclientnum, notetrack, surfacetable);
+function private addsurfacenotetrackfxhandler(localclientnum, notetrack, surfacetable) {
+  entity = self;
+  entity thread handlesurfacenotetrackfx(localclientnum, notetrack, surfacetable);
 }
 
 /*
@@ -66,18 +61,14 @@ function private addsurfacenotetrackfxhandler(localclientnum, notetrack, surface
 	Parameters: 3
 	Flags: Linked, Private
 */
-function private handlesurfacenotetrackfx(localclientnum, notetrack, surfacetable)
-{
-	entity = self;
-	entity endon(#"entityshutdown");
-	while(true)
-	{
-		entity waittill(notetrack);
-		fxname = entity getaifxname(localclientnum, surfacetable);
-		if(isdefined(fxname))
-		{
-			playfx(localclientnum, fxname, entity.origin);
-		}
-	}
+function private handlesurfacenotetrackfx(localclientnum, notetrack, surfacetable) {
+  entity = self;
+  entity endon(# "entityshutdown");
+  while (true) {
+    entity waittill(notetrack);
+    fxname = entity getaifxname(localclientnum, surfacetable);
+    if(isdefined(fxname)) {
+      playfx(localclientnum, fxname, entity.origin);
+    }
+  }
 }
-

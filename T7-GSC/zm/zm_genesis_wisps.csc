@@ -26,9 +26,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_genesis_wisps", &__init__, &__main__, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_genesis_wisps", & __init__, & __main__, undefined);
 }
 
 /*
@@ -40,10 +39,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("toplayer", "set_funfact_fx", 15000, 3, "int", &set_funfact_fx, 0, 0);
-	clientfield::register("scriptmover", "wisp_fx", 15000, 2, "int", &wisp_fx, 0, 0);
+function __init__() {
+  clientfield::register("toplayer", "set_funfact_fx", 15000, 3, "int", & set_funfact_fx, 0, 0);
+  clientfield::register("scriptmover", "wisp_fx", 15000, 2, "int", & wisp_fx, 0, 0);
 }
 
 /*
@@ -55,9 +53,7 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function __main__()
-{
-}
+function __main__() {}
 
 /*
 	Name: wisp_fx
@@ -68,16 +64,13 @@ function __main__()
 	Parameters: 7
 	Flags: Linked
 */
-function wisp_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval == 1)
-	{
-		playfxontag(localclientnum, level._effect["wisp_abcd"], self, "tag_origin");
-	}
-	if(newval == 2)
-	{
-		playfxontag(localclientnum, level._effect["wisp_shad"], self, "tag_origin");
-	}
+function wisp_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval == 1) {
+    playfxontag(localclientnum, level._effect["wisp_abcd"], self, "tag_origin");
+  }
+  if(newval == 2) {
+    playfxontag(localclientnum, level._effect["wisp_shad"], self, "tag_origin");
+  }
 }
 
 /*
@@ -89,28 +82,20 @@ function wisp_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldnam
 	Parameters: 7
 	Flags: Linked
 */
-function set_funfact_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		if(!isdefined(self.var_ab2ca08f))
-		{
-			var_6aa3898e = array("stub", "s_fx_funfact_demp", "s_fx_funfact_niko", "s_fx_funfact_rich", "s_fx_funfact_take");
-			var_43845c37 = var_6aa3898e[newval];
-			s_fx = struct::get(var_43845c37, "targetname");
-			if(isdefined(s_fx))
-			{
-				self.var_ab2ca08f = util::spawn_model(localclientnum, "tag_origin", s_fx.origin, s_fx.angles);
-				if(isdefined(self.var_ab2ca08f))
-				{
-					playfxontag(localclientnum, level._effect["wisp_abcd"], self.var_ab2ca08f, "tag_origin");
-				}
-			}
-		}
-	}
-	else if(isdefined(self.var_ab2ca08f))
-	{
-		self.var_ab2ca08f delete();
-	}
+function set_funfact_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    if(!isdefined(self.var_ab2ca08f)) {
+      var_6aa3898e = array("stub", "s_fx_funfact_demp", "s_fx_funfact_niko", "s_fx_funfact_rich", "s_fx_funfact_take");
+      var_43845c37 = var_6aa3898e[newval];
+      s_fx = struct::get(var_43845c37, "targetname");
+      if(isdefined(s_fx)) {
+        self.var_ab2ca08f = util::spawn_model(localclientnum, "tag_origin", s_fx.origin, s_fx.angles);
+        if(isdefined(self.var_ab2ca08f)) {
+          playfxontag(localclientnum, level._effect["wisp_abcd"], self.var_ab2ca08f, "tag_origin");
+        }
+      }
+    }
+  } else if(isdefined(self.var_ab2ca08f)) {
+    self.var_ab2ca08f delete();
+  }
 }
-

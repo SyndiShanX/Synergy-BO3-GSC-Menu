@@ -10,9 +10,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-}
+function main() {}
 
 /*
 	Name: end_script
@@ -23,11 +21,10 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function end_script()
-{
-	if(isdefined(self.___archetypeonanimscriptedcallback))
-	{
-		[[self.___archetypeonanimscriptedcallback]](self);
-	}
+function end_script() {
+  if(isdefined(self.___archetypeonanimscriptedcallback)) {
+    [
+      [self.___archetypeonanimscriptedcallback]
+    ](self);
+  }
 }
-

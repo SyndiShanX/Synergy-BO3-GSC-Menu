@@ -20,35 +20,30 @@
 	Parameters: 7
 	Flags: None
 */
-function register_game_module(index, module_name, pre_init_func, post_init_func, pre_init_zombie_spawn_func, post_init_zombie_spawn_func, hub_start_func)
-{
-	if(!isdefined(level._game_modules))
-	{
-		level._game_modules = [];
-		level._num_registered_game_modules = 0;
-	}
-	for(i = 0; i < level._num_registered_game_modules; i++)
-	{
-		if(!isdefined(level._game_modules[i]))
-		{
-			continue;
-		}
-		if(isdefined(level._game_modules[i].index) && level._game_modules[i].index == index)
-		{
-			/#
-				assert(level._game_modules[i].index != index, ("" + index) + "");
-			#/
-		}
-	}
-	level._game_modules[level._num_registered_game_modules] = spawnstruct();
-	level._game_modules[level._num_registered_game_modules].index = index;
-	level._game_modules[level._num_registered_game_modules].module_name = module_name;
-	level._game_modules[level._num_registered_game_modules].pre_init_func = pre_init_func;
-	level._game_modules[level._num_registered_game_modules].post_init_func = post_init_func;
-	level._game_modules[level._num_registered_game_modules].pre_init_zombie_spawn_func = pre_init_zombie_spawn_func;
-	level._game_modules[level._num_registered_game_modules].post_init_zombie_spawn_func = post_init_zombie_spawn_func;
-	level._game_modules[level._num_registered_game_modules].hub_start_func = hub_start_func;
-	level._num_registered_game_modules++;
+function register_game_module(index, module_name, pre_init_func, post_init_func, pre_init_zombie_spawn_func, post_init_zombie_spawn_func, hub_start_func) {
+  if(!isdefined(level._game_modules)) {
+    level._game_modules = [];
+    level._num_registered_game_modules = 0;
+  }
+  for (i = 0; i < level._num_registered_game_modules; i++) {
+    if(!isdefined(level._game_modules[i])) {
+      continue;
+    }
+    if(isdefined(level._game_modules[i].index) && level._game_modules[i].index == index) {
+      /#
+      assert(level._game_modules[i].index != index, ("" + index) + "");
+      # /
+    }
+  }
+  level._game_modules[level._num_registered_game_modules] = spawnstruct();
+  level._game_modules[level._num_registered_game_modules].index = index;
+  level._game_modules[level._num_registered_game_modules].module_name = module_name;
+  level._game_modules[level._num_registered_game_modules].pre_init_func = pre_init_func;
+  level._game_modules[level._num_registered_game_modules].post_init_func = post_init_func;
+  level._game_modules[level._num_registered_game_modules].pre_init_zombie_spawn_func = pre_init_zombie_spawn_func;
+  level._game_modules[level._num_registered_game_modules].post_init_zombie_spawn_func = post_init_zombie_spawn_func;
+  level._game_modules[level._num_registered_game_modules].hub_start_func = hub_start_func;
+  level._num_registered_game_modules++;
 }
 
 /*
@@ -60,23 +55,20 @@ function register_game_module(index, module_name, pre_init_func, post_init_func,
 	Parameters: 1
 	Flags: None
 */
-function set_current_game_module(game_module_index)
-{
-	if(!isdefined(game_module_index))
-	{
-		level.current_game_module = level.game_module_classic_index;
-		level.scr_zm_game_module = level.game_module_classic_index;
-		return;
-	}
-	game_module = get_game_module(game_module_index);
-	if(!isdefined(game_module))
-	{
-		/#
-			assert(isdefined(game_module), ("" + game_module_index) + "");
-		#/
-		return;
-	}
-	level.current_game_module = game_module_index;
+function set_current_game_module(game_module_index) {
+  if(!isdefined(game_module_index)) {
+    level.current_game_module = level.game_module_classic_index;
+    level.scr_zm_game_module = level.game_module_classic_index;
+    return;
+  }
+  game_module = get_game_module(game_module_index);
+  if(!isdefined(game_module)) {
+    /#
+    assert(isdefined(game_module), ("" + game_module_index) + "");
+    # /
+      return;
+  }
+  level.current_game_module = game_module_index;
 }
 
 /*
@@ -88,9 +80,8 @@ function set_current_game_module(game_module_index)
 	Parameters: 0
 	Flags: Linked
 */
-function get_current_game_module()
-{
-	return get_game_module(level.current_game_module);
+function get_current_game_module() {
+  return get_game_module(level.current_game_module);
 }
 
 /*
@@ -102,20 +93,16 @@ function get_current_game_module()
 	Parameters: 1
 	Flags: Linked
 */
-function get_game_module(game_module_index)
-{
-	if(!isdefined(game_module_index))
-	{
-		return undefined;
-	}
-	for(i = 0; i < level._game_modules.size; i++)
-	{
-		if(level._game_modules[i].index == game_module_index)
-		{
-			return level._game_modules[i];
-		}
-	}
-	return undefined;
+function get_game_module(game_module_index) {
+  if(!isdefined(game_module_index)) {
+    return undefined;
+  }
+  for (i = 0; i < level._game_modules.size; i++) {
+    if(level._game_modules[i].index == game_module_index) {
+      return level._game_modules[i];
+    }
+  }
+  return undefined;
 }
 
 /*
@@ -127,14 +114,12 @@ function get_game_module(game_module_index)
 	Parameters: 0
 	Flags: None
 */
-function game_module_pre_zombie_spawn_init()
-{
-	current_module = get_current_game_module();
-	if(!isdefined(current_module) || !isdefined(current_module.pre_init_zombie_spawn_func))
-	{
-		return;
-	}
-	self [[current_module.pre_init_zombie_spawn_func]]();
+function game_module_pre_zombie_spawn_init() {
+  current_module = get_current_game_module();
+  if(!isdefined(current_module) || !isdefined(current_module.pre_init_zombie_spawn_func)) {
+    return;
+  }
+  self[[current_module.pre_init_zombie_spawn_func]]();
 }
 
 /*
@@ -146,14 +131,12 @@ function game_module_pre_zombie_spawn_init()
 	Parameters: 0
 	Flags: None
 */
-function game_module_post_zombie_spawn_init()
-{
-	current_module = get_current_game_module();
-	if(!isdefined(current_module) || !isdefined(current_module.post_init_zombie_spawn_func))
-	{
-		return;
-	}
-	self [[current_module.post_init_zombie_spawn_func]]();
+function game_module_post_zombie_spawn_init() {
+  current_module = get_current_game_module();
+  if(!isdefined(current_module) || !isdefined(current_module.post_init_zombie_spawn_func)) {
+    return;
+  }
+  self[[current_module.post_init_zombie_spawn_func]]();
 }
 
 /*
@@ -165,13 +148,11 @@ function game_module_post_zombie_spawn_init()
 	Parameters: 1
 	Flags: Linked
 */
-function freeze_players(freeze)
-{
-	players = getplayers();
-	for(i = 0; i < players.size; i++)
-	{
-		players[i] util::freeze_player_controls(freeze);
-	}
+function freeze_players(freeze) {
+  players = getplayers();
+  for (i = 0; i < players.size; i++) {
+    players[i] util::freeze_player_controls(freeze);
+  }
 }
 
 /*
@@ -183,21 +164,17 @@ function freeze_players(freeze)
 	Parameters: 0
 	Flags: None
 */
-function respawn_spectators_and_freeze_players()
-{
-	players = getplayers();
-	foreach(player in players)
-	{
-		if(player.sessionstate == "spectator")
-		{
-			if(isdefined(player.spectate_hud))
-			{
-				player.spectate_hud destroy();
-			}
-			player [[level.spawnplayer]]();
-		}
-		player util::freeze_player_controls(1);
-	}
+function respawn_spectators_and_freeze_players() {
+  players = getplayers();
+  foreach(player in players) {
+    if(player.sessionstate == "spectator") {
+      if(isdefined(player.spectate_hud)) {
+        player.spectate_hud destroy();
+      }
+      player[[level.spawnplayer]]();
+    }
+    player util::freeze_player_controls(1);
+  }
 }
 
 /*
@@ -209,21 +186,17 @@ function respawn_spectators_and_freeze_players()
 	Parameters: 10
 	Flags: None
 */
-function damage_callback_no_pvp_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, eapon, vpoint, vdir, shitloc, psoffsettime)
-{
-	if(isdefined(eattacker) && isplayer(eattacker) && eattacker == self)
-	{
-		return idamage;
-	}
-	if(isdefined(eattacker) && !isplayer(eattacker))
-	{
-		return idamage;
-	}
-	if(!isdefined(eattacker))
-	{
-		return idamage;
-	}
-	return 0;
+function damage_callback_no_pvp_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, eapon, vpoint, vdir, shitloc, psoffsettime) {
+  if(isdefined(eattacker) && isplayer(eattacker) && eattacker == self) {
+    return idamage;
+  }
+  if(isdefined(eattacker) && !isplayer(eattacker)) {
+    return idamage;
+  }
+  if(!isdefined(eattacker)) {
+    return idamage;
+  }
+  return 0;
 }
 
 /*
@@ -235,14 +208,12 @@ function damage_callback_no_pvp_damage(einflictor, eattacker, idamage, idflags, 
 	Parameters: 0
 	Flags: Linked
 */
-function respawn_players()
-{
-	players = getplayers();
-	foreach(player in players)
-	{
-		player [[level.spawnplayer]]();
-		player util::freeze_player_controls(1);
-	}
+function respawn_players() {
+  players = getplayers();
+  foreach(player in players) {
+    player[[level.spawnplayer]]();
+    player util::freeze_player_controls(1);
+  }
 }
 
 /*
@@ -254,25 +225,21 @@ function respawn_players()
 	Parameters: 1
 	Flags: None
 */
-function zombie_goto_round(target_round)
-{
-	level notify(#"restart_round");
-	if(target_round < 1)
-	{
-		target_round = 1;
-	}
-	level.zombie_total = 0;
-	zombie_utility::ai_calculate_health(target_round);
-	zombies = zombie_utility::get_round_enemy_array();
-	if(isdefined(zombies))
-	{
-		for(i = 0; i < zombies.size; i++)
-		{
-			zombies[i] dodamage(zombies[i].health + 666, zombies[i].origin);
-		}
-	}
-	respawn_players();
-	wait(1);
+function zombie_goto_round(target_round) {
+  level notify(# "restart_round");
+  if(target_round < 1) {
+    target_round = 1;
+  }
+  level.zombie_total = 0;
+  zombie_utility::ai_calculate_health(target_round);
+  zombies = zombie_utility::get_round_enemy_array();
+  if(isdefined(zombies)) {
+    for (i = 0; i < zombies.size; i++) {
+      zombies[i] dodamage(zombies[i].health + 666, zombies[i].origin);
+    }
+  }
+  respawn_players();
+  wait(1);
 }
 
 /*
@@ -284,9 +251,8 @@ function zombie_goto_round(target_round)
 	Parameters: 0
 	Flags: None
 */
-function make_supersprinter()
-{
-	self zombie_utility::set_zombie_run_cycle("super_sprint");
+function make_supersprinter() {
+  self zombie_utility::set_zombie_run_cycle("super_sprint");
 }
 
 /*
@@ -298,46 +264,43 @@ function make_supersprinter()
 	Parameters: 1
 	Flags: None
 */
-function game_module_custom_intermission(intermission_struct)
-{
-	self closeingamemenu();
-	level endon(#"stop_intermission");
-	self endon(#"disconnect");
-	self endon(#"death");
-	self notify(#"_zombie_game_over");
-	self.score = self.score_total;
-	self.sessionstate = "intermission";
-	self.spectatorclient = -1;
-	self.killcamentity = -1;
-	self.archivetime = 0;
-	self.psoffsettime = 0;
-	self.friendlydamage = undefined;
-	s_point = struct::get(intermission_struct, "targetname");
-	if(!isdefined(level.intermission_cam_model))
-	{
-		level.intermission_cam_model = spawn("script_model", s_point.origin);
-		level.intermission_cam_model.angles = s_point.angles;
-		level.intermission_cam_model setmodel("tag_origin");
-	}
-	self.game_over_bg = newclienthudelem(self);
-	self.game_over_bg.horzalign = "fullscreen";
-	self.game_over_bg.vertalign = "fullscreen";
-	self.game_over_bg setshader("black", 640, 480);
-	self.game_over_bg.alpha = 1;
-	self spawn(level.intermission_cam_model.origin, level.intermission_cam_model.angles);
-	self camerasetposition(level.intermission_cam_model);
-	self camerasetlookat();
-	self cameraactivate(1);
-	self linkto(level.intermission_cam_model);
-	level.intermission_cam_model moveto(struct::get(s_point.target, "targetname").origin, 12);
-	if(isdefined(level.intermission_cam_model.angles))
-	{
-		level.intermission_cam_model rotateto(struct::get(s_point.target, "targetname").angles, 12);
-	}
-	self.game_over_bg fadeovertime(2);
-	self.game_over_bg.alpha = 0;
-	wait(2);
-	self.game_over_bg thread zm::fade_up_over_time(1);
+function game_module_custom_intermission(intermission_struct) {
+  self closeingamemenu();
+  level endon(# "stop_intermission");
+  self endon(# "disconnect");
+  self endon(# "death");
+  self notify(# "_zombie_game_over");
+  self.score = self.score_total;
+  self.sessionstate = "intermission";
+  self.spectatorclient = -1;
+  self.killcamentity = -1;
+  self.archivetime = 0;
+  self.psoffsettime = 0;
+  self.friendlydamage = undefined;
+  s_point = struct::get(intermission_struct, "targetname");
+  if(!isdefined(level.intermission_cam_model)) {
+    level.intermission_cam_model = spawn("script_model", s_point.origin);
+    level.intermission_cam_model.angles = s_point.angles;
+    level.intermission_cam_model setmodel("tag_origin");
+  }
+  self.game_over_bg = newclienthudelem(self);
+  self.game_over_bg.horzalign = "fullscreen";
+  self.game_over_bg.vertalign = "fullscreen";
+  self.game_over_bg setshader("black", 640, 480);
+  self.game_over_bg.alpha = 1;
+  self spawn(level.intermission_cam_model.origin, level.intermission_cam_model.angles);
+  self camerasetposition(level.intermission_cam_model);
+  self camerasetlookat();
+  self cameraactivate(1);
+  self linkto(level.intermission_cam_model);
+  level.intermission_cam_model moveto(struct::get(s_point.target, "targetname").origin, 12);
+  if(isdefined(level.intermission_cam_model.angles)) {
+    level.intermission_cam_model rotateto(struct::get(s_point.target, "targetname").angles, 12);
+  }
+  self.game_over_bg fadeovertime(2);
+  self.game_over_bg.alpha = 0;
+  wait(2);
+  self.game_over_bg thread zm::fade_up_over_time(1);
 }
 
 /*
@@ -349,22 +312,18 @@ function game_module_custom_intermission(intermission_struct)
 	Parameters: 4
 	Flags: None
 */
-function create_fireworks(launch_spots, min_wait, max_wait, randomize)
-{
-	level endon(#"stop_fireworks");
-	while(true)
-	{
-		if(isdefined(randomize) && randomize)
-		{
-			launch_spots = array::randomize(launch_spots);
-		}
-		foreach(spot in launch_spots)
-		{
-			level thread fireworks_launch(spot);
-			wait(randomfloatrange(min_wait, max_wait));
-		}
-		wait(randomfloatrange(min_wait, max_wait));
-	}
+function create_fireworks(launch_spots, min_wait, max_wait, randomize) {
+  level endon(# "stop_fireworks");
+  while (true) {
+    if(isdefined(randomize) && randomize) {
+      launch_spots = array::randomize(launch_spots);
+    }
+    foreach(spot in launch_spots) {
+      level thread fireworks_launch(spot);
+      wait(randomfloatrange(min_wait, max_wait));
+    }
+    wait(randomfloatrange(min_wait, max_wait));
+  }
 }
 
 /*
@@ -376,27 +335,24 @@ function create_fireworks(launch_spots, min_wait, max_wait, randomize)
 	Parameters: 1
 	Flags: Linked
 */
-function fireworks_launch(launch_spot)
-{
-	firework = spawn("script_model", launch_spot.origin + (randomintrange(-60, 60), randomintrange(-60, 60), 0));
-	firework setmodel("tag_origin");
-	util::wait_network_frame();
-	playfxontag(level._effect["fw_trail_cheap"], firework, "tag_origin");
-	firework playloopsound("zmb_souls_loop", 0.75);
-	dest = launch_spot;
-	while(isdefined(dest) && isdefined(dest.target))
-	{
-		random_offset = (randomintrange(-60, 60), randomintrange(-60, 60), 0);
-		new_dests = struct::get_array(dest.target, "targetname");
-		new_dest = array::random(new_dests);
-		dest = new_dest;
-		dist = distance(new_dest.origin + random_offset, firework.origin);
-		time = dist / 700;
-		firework moveto(new_dest.origin + random_offset, time);
-		firework waittill(#"movedone");
-	}
-	firework playsound("zmb_souls_end");
-	playfx(level._effect["fw_pre_burst"], firework.origin);
-	firework delete();
+function fireworks_launch(launch_spot) {
+  firework = spawn("script_model", launch_spot.origin + (randomintrange(-60, 60), randomintrange(-60, 60), 0));
+  firework setmodel("tag_origin");
+  util::wait_network_frame();
+  playfxontag(level._effect["fw_trail_cheap"], firework, "tag_origin");
+  firework playloopsound("zmb_souls_loop", 0.75);
+  dest = launch_spot;
+  while (isdefined(dest) && isdefined(dest.target)) {
+    random_offset = (randomintrange(-60, 60), randomintrange(-60, 60), 0);
+    new_dests = struct::get_array(dest.target, "targetname");
+    new_dest = array::random(new_dests);
+    dest = new_dest;
+    dist = distance(new_dest.origin + random_offset, firework.origin);
+    time = dist / 700;
+    firework moveto(new_dest.origin + random_offset, time);
+    firework waittill(# "movedone");
+  }
+  firework playsound("zmb_souls_end");
+  playfx(level._effect["fw_pre_burst"], firework.origin);
+  firework delete();
 }
-

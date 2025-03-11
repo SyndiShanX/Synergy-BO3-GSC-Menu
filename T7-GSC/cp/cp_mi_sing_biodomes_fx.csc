@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	precache_scripted_fx();
+function main() {
+  precache_scripted_fx();
 }
 
 /*
@@ -27,8 +26,6 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function precache_scripted_fx()
-{
-	level._effect["player_dust"] = "dirt/fx_dust_motes_player_loop";
+function precache_scripted_fx() {
+  level._effect["player_dust"] = "dirt/fx_dust_motes_player_loop";
 }
-

@@ -19,9 +19,7 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec precache()
-{
-}
+function autoexec precache() {}
 
 /*
 	Name: main
@@ -32,9 +30,8 @@ function autoexec precache()
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec main()
-{
-	clientfield::register("actor", "facial_dial", 1, 1, "int", &humanclientutils::facialdialoguehandler, 0, 1);
+function autoexec main() {
+  clientfield::register("actor", "facial_dial", 1, 1, "int", & humanclientutils::facialdialoguehandler, 0, 1);
 }
 
 #namespace humanclientutils;
@@ -48,15 +45,10 @@ function autoexec main()
 	Parameters: 7
 	Flags: Linked
 */
-function facialdialoguehandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump)
-{
-	if(newvalue)
-	{
-		self.facialdialogueactive = 1;
-	}
-	else if(isdefined(self.facialdialogueactive) && self.facialdialogueactive)
-	{
-		self clearanim(%generic::faces, 0);
-	}
+function facialdialoguehandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
+  if(newvalue) {
+    self.facialdialogueactive = 1;
+  } else if(isdefined(self.facialdialogueactive) && self.facialdialogueactive) {
+    self clearanim( % generic::faces, 0);
+  }
 }
-

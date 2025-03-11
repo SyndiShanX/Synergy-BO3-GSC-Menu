@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_mind_blown", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_mind_blown", & __init__, undefined, undefined);
 }
 
 /*
@@ -32,15 +31,13 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	clientfield::register("actor", "zm_bgb_mind_pop_fx", 15000, 1, "int", &function_f10358c6, 0, 0);
-	clientfield::register("actor", "zm_bgb_mind_ray_fx", 15000, 1, "int", &function_57f7c3a1, 0, 0);
-	bgb::register("zm_bgb_mind_blown", "activated");
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  clientfield::register("actor", "zm_bgb_mind_pop_fx", 15000, 1, "int", & function_f10358c6, 0, 0);
+  clientfield::register("actor", "zm_bgb_mind_ray_fx", 15000, 1, "int", & function_57f7c3a1, 0, 0);
+  bgb::register("zm_bgb_mind_blown", "activated");
 }
 
 /*
@@ -52,11 +49,10 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function function_57f7c3a1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	playsound(0, "zmb_bgb_mindblown_start", self gettagorigin("j_neck"));
-	self.var_f40a5f31 = playfxontag(localclientnum, "zombie/fx_bgb_head_pop_ray", self, "j_neck");
-	self.var_bbd257f7 = playfxontag(localclientnum, "dlc4/genesis/fx_bgb_mindblown_heatup", self, "j_spine4");
+function function_57f7c3a1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  playsound(0, "zmb_bgb_mindblown_start", self gettagorigin("j_neck"));
+  self.var_f40a5f31 = playfxontag(localclientnum, "zombie/fx_bgb_head_pop_ray", self, "j_neck");
+  self.var_bbd257f7 = playfxontag(localclientnum, "dlc4/genesis/fx_bgb_mindblown_heatup", self, "j_spine4");
 }
 
 /*
@@ -68,16 +64,12 @@ function function_57f7c3a1(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 7
 	Flags: Linked
 */
-function function_f10358c6(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(isdefined(self.var_f40a5f31))
-	{
-		killfx(localclientnum, self.var_f40a5f31);
-	}
-	if(isdefined(self.var_bbd257f7))
-	{
-		stopfx(localclientnum, self.var_bbd257f7);
-	}
-	playfxontag(localclientnum, "zombie/fx_bgb_head_pop", self, "j_neck");
+function function_f10358c6(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(isdefined(self.var_f40a5f31)) {
+    killfx(localclientnum, self.var_f40a5f31);
+  }
+  if(isdefined(self.var_bbd257f7)) {
+    stopfx(localclientnum, self.var_bbd257f7);
+  }
+  playfxontag(localclientnum, "zombie/fx_bgb_head_pop", self, "j_neck");
 }
-

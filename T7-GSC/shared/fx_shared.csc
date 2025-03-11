@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("fx", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("fx", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,9 +29,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_localclient_connect(&player_init);
+function __init__() {
+  callback::on_localclient_connect( & player_init);
 }
 
 /*
@@ -44,51 +42,40 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function player_init(clientnum)
-{
-	if(!isdefined(level.createfxent))
-	{
-		return;
-	}
-	creatingexploderarray = 0;
-	if(!isdefined(level.createfxexploders))
-	{
-		creatingexploderarray = 1;
-		level.createfxexploders = [];
-	}
-	for(i = 0; i < level.createfxent.size; i++)
-	{
-		ent = level.createfxent[i];
-		if(!isdefined(level._createfxforwardandupset))
-		{
-			if(!isdefined(level._createfxforwardandupset))
-			{
-				ent set_forward_and_up_vectors();
-			}
-		}
-		if(ent.v["type"] == "loopfx")
-		{
-			ent thread loop_thread(clientnum);
-		}
-		if(ent.v["type"] == "oneshotfx")
-		{
-			ent thread oneshot_thread(clientnum);
-		}
-		if(ent.v["type"] == "soundfx")
-		{
-			ent thread loop_sound(clientnum);
-		}
-		if(creatingexploderarray && ent.v["type"] == "exploder")
-		{
-			if(!isdefined(level.createfxexploders[ent.v["exploder"]]))
-			{
-				level.createfxexploders[ent.v["exploder"]] = [];
-			}
-			ent.v["exploder_id"] = exploder::getexploderid(ent);
-			level.createfxexploders[ent.v["exploder"]][level.createfxexploders[ent.v["exploder"]].size] = ent;
-		}
-	}
-	level._createfxforwardandupset = 1;
+function player_init(clientnum) {
+  if(!isdefined(level.createfxent)) {
+    return;
+  }
+  creatingexploderarray = 0;
+  if(!isdefined(level.createfxexploders)) {
+    creatingexploderarray = 1;
+    level.createfxexploders = [];
+  }
+  for (i = 0; i < level.createfxent.size; i++) {
+    ent = level.createfxent[i];
+    if(!isdefined(level._createfxforwardandupset)) {
+      if(!isdefined(level._createfxforwardandupset)) {
+        ent set_forward_and_up_vectors();
+      }
+    }
+    if(ent.v["type"] == "loopfx") {
+      ent thread loop_thread(clientnum);
+    }
+    if(ent.v["type"] == "oneshotfx") {
+      ent thread oneshot_thread(clientnum);
+    }
+    if(ent.v["type"] == "soundfx") {
+      ent thread loop_sound(clientnum);
+    }
+    if(creatingexploderarray && ent.v["type"] == "exploder") {
+      if(!isdefined(level.createfxexploders[ent.v["exploder"]])) {
+        level.createfxexploders[ent.v["exploder"]] = [];
+      }
+      ent.v["exploder_id"] = exploder::getexploderid(ent);
+      level.createfxexploders[ent.v["exploder"]][level.createfxexploders[ent.v["exploder"]].size] = ent;
+    }
+  }
+  level._createfxforwardandupset = 1;
 }
 
 /*
@@ -100,16 +87,14 @@ function player_init(clientnum)
 	Parameters: 2
 	Flags: Linked
 */
-function validate(fxid, origin)
-{
-	/#
-		if(!isdefined(level._effect[fxid]))
-		{
-			/#
-				assertmsg((("" + fxid) + "") + origin);
-			#/
-		}
-	#/
+function validate(fxid, origin) {
+  /#
+  if(!isdefined(level._effect[fxid])) {
+    /#
+    assertmsg((("" + fxid) + "") + origin);
+    # /
+  }
+  # /
 }
 
 /*
@@ -121,22 +106,20 @@ function validate(fxid, origin)
 	Parameters: 0
 	Flags: None
 */
-function create_loop_sound()
-{
-	ent = spawnstruct();
-	if(!isdefined(level.createfxent))
-	{
-		level.createfxent = [];
-	}
-	level.createfxent[level.createfxent.size] = ent;
-	ent.v = [];
-	ent.v["type"] = "soundfx";
-	ent.v["fxid"] = "No FX";
-	ent.v["soundalias"] = "nil";
-	ent.v["angles"] = (0, 0, 0);
-	ent.v["origin"] = (0, 0, 0);
-	ent.drawn = 1;
-	return ent;
+function create_loop_sound() {
+  ent = spawnstruct();
+  if(!isdefined(level.createfxent)) {
+    level.createfxent = [];
+  }
+  level.createfxent[level.createfxent.size] = ent;
+  ent.v = [];
+  ent.v["type"] = "soundfx";
+  ent.v["fxid"] = "No FX";
+  ent.v["soundalias"] = "nil";
+  ent.v["angles"] = (0, 0, 0);
+  ent.v["origin"] = (0, 0, 0);
+  ent.drawn = 1;
+  return ent;
 }
 
 /*
@@ -148,21 +131,19 @@ function create_loop_sound()
 	Parameters: 2
 	Flags: Linked
 */
-function create_effect(type, fxid)
-{
-	ent = spawnstruct();
-	if(!isdefined(level.createfxent))
-	{
-		level.createfxent = [];
-	}
-	level.createfxent[level.createfxent.size] = ent;
-	ent.v = [];
-	ent.v["type"] = type;
-	ent.v["fxid"] = fxid;
-	ent.v["angles"] = (0, 0, 0);
-	ent.v["origin"] = (0, 0, 0);
-	ent.drawn = 1;
-	return ent;
+function create_effect(type, fxid) {
+  ent = spawnstruct();
+  if(!isdefined(level.createfxent)) {
+    level.createfxent = [];
+  }
+  level.createfxent[level.createfxent.size] = ent;
+  ent.v = [];
+  ent.v["type"] = type;
+  ent.v["fxid"] = fxid;
+  ent.v["angles"] = (0, 0, 0);
+  ent.v["origin"] = (0, 0, 0);
+  ent.drawn = 1;
+  return ent;
 }
 
 /*
@@ -174,11 +155,10 @@ function create_effect(type, fxid)
 	Parameters: 1
 	Flags: None
 */
-function create_oneshot_effect(fxid)
-{
-	ent = create_effect("oneshotfx", fxid);
-	ent.v["delay"] = -15;
-	return ent;
+function create_oneshot_effect(fxid) {
+  ent = create_effect("oneshotfx", fxid);
+  ent.v["delay"] = -15;
+  return ent;
 }
 
 /*
@@ -190,11 +170,10 @@ function create_oneshot_effect(fxid)
 	Parameters: 1
 	Flags: None
 */
-function create_loop_effect(fxid)
-{
-	ent = create_effect("loopfx", fxid);
-	ent.v["delay"] = 0.5;
-	return ent;
+function create_loop_effect(fxid) {
+  ent = create_effect("loopfx", fxid);
+  ent.v["delay"] = 0.5;
+  return ent;
 }
 
 /*
@@ -206,10 +185,9 @@ function create_loop_effect(fxid)
 	Parameters: 0
 	Flags: Linked
 */
-function set_forward_and_up_vectors()
-{
-	self.v["up"] = anglestoup(self.v["angles"]);
-	self.v["forward"] = anglestoforward(self.v["angles"]);
+function set_forward_and_up_vectors() {
+  self.v["up"] = anglestoup(self.v["angles"]);
+  self.v["forward"] = anglestoforward(self.v["angles"]);
 }
 
 /*
@@ -221,13 +199,11 @@ function set_forward_and_up_vectors()
 	Parameters: 1
 	Flags: Linked
 */
-function oneshot_thread(clientnum)
-{
-	if(self.v["delay"] > 0)
-	{
-		waitrealtime(self.v["delay"]);
-	}
-	create_trigger(clientnum);
+function oneshot_thread(clientnum) {
+  if(self.v["delay"] > 0) {
+    waitrealtime(self.v["delay"]);
+  }
+  create_trigger(clientnum);
 }
 
 /*
@@ -239,10 +215,9 @@ function oneshot_thread(clientnum)
 	Parameters: 0
 	Flags: None
 */
-function report_num_effects()
-{
-	/#
-	#/
+function report_num_effects() {
+  /#
+  # /
 }
 
 /*
@@ -254,24 +229,18 @@ function report_num_effects()
 	Parameters: 1
 	Flags: Linked
 */
-function loop_sound(clientnum)
-{
-	if(clientnum != 0)
-	{
-		return;
-	}
-	self notify(#"stop_loop");
-	if(isdefined(self.v["soundalias"]) && self.v["soundalias"] != "nil")
-	{
-		if(isdefined(self.v["stopable"]) && self.v["stopable"])
-		{
-			thread sound::loop_fx_sound(clientnum, self.v["soundalias"], self.v["origin"], "stop_loop");
-		}
-		else
-		{
-			thread sound::loop_fx_sound(clientnum, self.v["soundalias"], self.v["origin"]);
-		}
-	}
+function loop_sound(clientnum) {
+  if(clientnum != 0) {
+    return;
+  }
+  self notify(# "stop_loop");
+  if(isdefined(self.v["soundalias"]) && self.v["soundalias"] != "nil") {
+    if(isdefined(self.v["stopable"]) && self.v["stopable"]) {
+      thread sound::loop_fx_sound(clientnum, self.v["soundalias"], self.v["origin"], "stop_loop");
+    } else {
+      thread sound::loop_fx_sound(clientnum, self.v["soundalias"], self.v["origin"]);
+    }
+  }
 }
 
 /*
@@ -283,11 +252,14 @@ function loop_sound(clientnum)
 	Parameters: 2
 	Flags: Linked
 */
-function lightning(normalfunc, flashfunc)
-{
-	[[flashfunc]]();
-	waitrealtime(randomfloatrange(0.05, 0.1));
-	[[normalfunc]]();
+function lightning(normalfunc, flashfunc) {
+  [
+    [flashfunc]
+  ]();
+  waitrealtime(randomfloatrange(0.05, 0.1));
+  [
+    [normalfunc]
+  ]();
 }
 
 /*
@@ -299,40 +271,29 @@ function lightning(normalfunc, flashfunc)
 	Parameters: 1
 	Flags: Linked
 */
-function loop_thread(clientnum)
-{
-	if(isdefined(self.fxstart))
-	{
-		level waittill("start fx" + self.fxstart);
-	}
-	while(true)
-	{
-		create_looper(clientnum);
-		if(isdefined(self.timeout))
-		{
-			thread loop_stop(clientnum, self.timeout);
-		}
-		if(isdefined(self.fxstop))
-		{
-			level waittill("stop fx" + self.fxstop);
-		}
-		else
-		{
-			return;
-		}
-		if(isdefined(self.looperfx))
-		{
-			deletefx(clientnum, self.looperfx);
-		}
-		if(isdefined(self.fxstart))
-		{
-			level waittill("start fx" + self.fxstart);
-		}
-		else
-		{
-			return;
-		}
-	}
+function loop_thread(clientnum) {
+  if(isdefined(self.fxstart)) {
+    level waittill("start fx" + self.fxstart);
+  }
+  while (true) {
+    create_looper(clientnum);
+    if(isdefined(self.timeout)) {
+      thread loop_stop(clientnum, self.timeout);
+    }
+    if(isdefined(self.fxstop)) {
+      level waittill("stop fx" + self.fxstop);
+    } else {
+      return;
+    }
+    if(isdefined(self.looperfx)) {
+      deletefx(clientnum, self.looperfx);
+    }
+    if(isdefined(self.fxstart)) {
+      level waittill("start fx" + self.fxstart);
+    } else {
+      return;
+    }
+  }
 }
 
 /*
@@ -344,14 +305,12 @@ function loop_thread(clientnum)
 	Parameters: 2
 	Flags: Linked
 */
-function loop_stop(clientnum, timeout)
-{
-	self endon(#"death");
-	wait(timeout);
-	if(isdefined(self.looper))
-	{
-		deletefx(clientnum, self.looper);
-	}
+function loop_stop(clientnum, timeout) {
+  self endon(# "death");
+  wait(timeout);
+  if(isdefined(self.looper)) {
+    deletefx(clientnum, self.looper);
+  }
 }
 
 /*
@@ -363,10 +322,9 @@ function loop_stop(clientnum, timeout)
 	Parameters: 1
 	Flags: Linked
 */
-function create_looper(clientnum)
-{
-	self thread loop(clientnum);
-	loop_sound(clientnum);
+function create_looper(clientnum) {
+  self thread loop(clientnum);
+  loop_sound(clientnum);
 }
 
 /*
@@ -378,22 +336,18 @@ function create_looper(clientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function loop(clientnum)
-{
-	validate(self.v["fxid"], self.v["origin"]);
-	self.looperfx = playfx(clientnum, level._effect[self.v["fxid"]], self.v["origin"], self.v["forward"], self.v["up"], self.v["delay"], self.v["primlightfrac"], self.v["lightoriginoffs"]);
-	while(true)
-	{
-		if(isdefined(self.v["delay"]))
-		{
-			waitrealtime(self.v["delay"]);
-		}
-		while(isfxplaying(clientnum, self.looperfx))
-		{
-			wait(0.25);
-		}
-		self.looperfx = playfx(clientnum, level._effect[self.v["fxid"]], self.v["origin"], self.v["forward"], self.v["up"], 0, self.v["primlightfrac"], self.v["lightoriginoffs"]);
-	}
+function loop(clientnum) {
+  validate(self.v["fxid"], self.v["origin"]);
+  self.looperfx = playfx(clientnum, level._effect[self.v["fxid"]], self.v["origin"], self.v["forward"], self.v["up"], self.v["delay"], self.v["primlightfrac"], self.v["lightoriginoffs"]);
+  while (true) {
+    if(isdefined(self.v["delay"])) {
+      waitrealtime(self.v["delay"]);
+    }
+    while (isfxplaying(clientnum, self.looperfx)) {
+      wait(0.25);
+    }
+    self.looperfx = playfx(clientnum, level._effect[self.v["fxid"]], self.v["origin"], self.v["forward"], self.v["up"], 0, self.v["primlightfrac"], self.v["lightoriginoffs"]);
+  }
 }
 
 /*
@@ -405,17 +359,15 @@ function loop(clientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function create_trigger(clientnum)
-{
-	validate(self.v["fxid"], self.v["origin"]);
-	/#
-		if(getdvarint("") > 0)
-		{
-			println("" + self.v[""]);
-		}
-	#/
-	self.looperfx = playfx(clientnum, level._effect[self.v["fxid"]], self.v["origin"], self.v["forward"], self.v["up"], self.v["delay"], self.v["primlightfrac"], self.v["lightoriginoffs"]);
-	loop_sound(clientnum);
+function create_trigger(clientnum) {
+  validate(self.v["fxid"], self.v["origin"]);
+  /#
+  if(getdvarint("") > 0) {
+    println("" + self.v[""]);
+  }
+  # /
+    self.looperfx = playfx(clientnum, level._effect[self.v["fxid"]], self.v["origin"], self.v["forward"], self.v["up"], self.v["delay"], self.v["primlightfrac"], self.v["lightoriginoffs"]);
+  loop_sound(clientnum);
 }
 
 /*
@@ -427,33 +379,26 @@ function create_trigger(clientnum)
 	Parameters: 4
 	Flags: None
 */
-function blinky_light(localclientnum, tagname, friendlyfx, enemyfx)
-{
-	self endon(#"entityshutdown");
-	self endon(#"stop_blinky_light");
-	self.lighttagname = tagname;
-	self util::waittill_dobj(localclientnum);
-	self thread blinky_emp_wait(localclientnum);
-	while(true)
-	{
-		if(isdefined(self.stunned) && self.stunned)
-		{
-			wait(0.1);
-			continue;
-		}
-		if(isdefined(self))
-		{
-			if(util::friend_not_foe(localclientnum))
-			{
-				self.blinkylightfx = playfxontag(localclientnum, friendlyfx, self, self.lighttagname);
-			}
-			else
-			{
-				self.blinkylightfx = playfxontag(localclientnum, enemyfx, self, self.lighttagname);
-			}
-		}
-		util::server_wait(localclientnum, 0.5, 0.016);
-	}
+function blinky_light(localclientnum, tagname, friendlyfx, enemyfx) {
+  self endon(# "entityshutdown");
+  self endon(# "stop_blinky_light");
+  self.lighttagname = tagname;
+  self util::waittill_dobj(localclientnum);
+  self thread blinky_emp_wait(localclientnum);
+  while (true) {
+    if(isdefined(self.stunned) && self.stunned) {
+      wait(0.1);
+      continue;
+    }
+    if(isdefined(self)) {
+      if(util::friend_not_foe(localclientnum)) {
+        self.blinkylightfx = playfxontag(localclientnum, friendlyfx, self, self.lighttagname);
+      } else {
+        self.blinkylightfx = playfxontag(localclientnum, enemyfx, self, self.lighttagname);
+      }
+    }
+    util::server_wait(localclientnum, 0.5, 0.016);
+  }
 }
 
 /*
@@ -465,15 +410,13 @@ function blinky_light(localclientnum, tagname, friendlyfx, enemyfx)
 	Parameters: 1
 	Flags: Linked
 */
-function stop_blinky_light(localclientnum)
-{
-	self notify(#"stop_blinky_light");
-	if(!isdefined(self.blinkylightfx))
-	{
-		return;
-	}
-	stopfx(localclientnum, self.blinkylightfx);
-	self.blinkylightfx = undefined;
+function stop_blinky_light(localclientnum) {
+  self notify(# "stop_blinky_light");
+  if(!isdefined(self.blinkylightfx)) {
+    return;
+  }
+  stopfx(localclientnum, self.blinkylightfx);
+  self.blinkylightfx = undefined;
 }
 
 /*
@@ -485,11 +428,9 @@ function stop_blinky_light(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function blinky_emp_wait(localclientnum)
-{
-	self endon(#"entityshutdown");
-	self endon(#"stop_blinky_light");
-	self waittill(#"emp");
-	self stop_blinky_light(localclientnum);
+function blinky_emp_wait(localclientnum) {
+  self endon(# "entityshutdown");
+  self endon(# "stop_blinky_light");
+  self waittill(# "emp");
+  self stop_blinky_light(localclientnum);
 }
-

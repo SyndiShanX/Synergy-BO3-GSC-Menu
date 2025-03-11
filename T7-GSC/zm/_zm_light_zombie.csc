@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_light_zombie", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_light_zombie", & __init__, undefined, undefined);
 }
 
 /*
@@ -33,10 +32,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	init_fx();
-	register_clientfields();
+function __init__() {
+  init_fx();
+  register_clientfields();
 }
 
 /*
@@ -48,11 +46,10 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function init_fx()
-{
-	level._effect["light_zombie_fx"] = "dlc1/zmb_weapon/fx_bow_wolf_wrap_torso";
-	level._effect["light_zombie_suicide"] = "explosions/fx_exp_grenade_flshbng";
-	level._effect["dlc1/zmb_weapon/fx_bow_wolf_impact_zm"] = "lihgt_zombie_damage_fx";
+function init_fx() {
+  level._effect["light_zombie_fx"] = "dlc1/zmb_weapon/fx_bow_wolf_wrap_torso";
+  level._effect["light_zombie_suicide"] = "explosions/fx_exp_grenade_flshbng";
+  level._effect["dlc1/zmb_weapon/fx_bow_wolf_impact_zm"] = "lihgt_zombie_damage_fx";
 }
 
 /*
@@ -64,11 +61,10 @@ function init_fx()
 	Parameters: 0
 	Flags: Linked
 */
-function register_clientfields()
-{
-	clientfield::register("actor", "light_zombie_clientfield_aura_fx", 15000, 1, "int", &function_98e8bc87, 0, 0);
-	clientfield::register("actor", "light_zombie_clientfield_death_fx", 15000, 1, "int", &function_9127e2f8, 0, 0);
-	clientfield::register("actor", "light_zombie_clientfield_damaged_fx", 15000, 1, "counter", &function_ad4789b4, 0, 0);
+function register_clientfields() {
+  clientfield::register("actor", "light_zombie_clientfield_aura_fx", 15000, 1, "int", & function_98e8bc87, 0, 0);
+  clientfield::register("actor", "light_zombie_clientfield_death_fx", 15000, 1, "int", & function_9127e2f8, 0, 0);
+  clientfield::register("actor", "light_zombie_clientfield_damaged_fx", 15000, 1, "counter", & function_ad4789b4, 0, 0);
 }
 
 /*
@@ -80,12 +76,10 @@ function register_clientfields()
 	Parameters: 7
 	Flags: Linked
 */
-function function_9127e2f8(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(oldval !== newval && newval === 1)
-	{
-		fx = playfxontag(localclientnum, level._effect["light_zombie_suicide"], self, "j_spineupper");
-	}
+function function_9127e2f8(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(oldval !== newval && newval === 1) {
+    fx = playfxontag(localclientnum, level._effect["light_zombie_suicide"], self, "j_spineupper");
+  }
 }
 
 /*
@@ -97,24 +91,20 @@ function function_9127e2f8(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 7
 	Flags: Linked
 */
-function function_ad4789b4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self endon(#"entityshutdown");
-	self util::waittill_dobj(localclientnum);
-	if(!isdefined(self))
-	{
-		return;
-	}
-	if(newval)
-	{
-		if(isdefined(level._effect["dlc1/zmb_weapon/fx_bow_wolf_impact_zm"]))
-		{
-			playsound(localclientnum, "gdt_electro_bounce", self.origin);
-			locs = array("j_wrist_le", "j_wrist_ri");
-			fx = playfxontag(localclientnum, level._effect["dlc1/zmb_weapon/fx_bow_wolf_impact_zm"], self, array::random(locs));
-			setfxignorepause(localclientnum, fx, 1);
-		}
-	}
+function function_ad4789b4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self endon(# "entityshutdown");
+  self util::waittill_dobj(localclientnum);
+  if(!isdefined(self)) {
+    return;
+  }
+  if(newval) {
+    if(isdefined(level._effect["dlc1/zmb_weapon/fx_bow_wolf_impact_zm"])) {
+      playsound(localclientnum, "gdt_electro_bounce", self.origin);
+      locs = array("j_wrist_le", "j_wrist_ri");
+      fx = playfxontag(localclientnum, level._effect["dlc1/zmb_weapon/fx_bow_wolf_impact_zm"], self, array::random(locs));
+      setfxignorepause(localclientnum, fx, 1);
+    }
+  }
 }
 
 /*
@@ -126,16 +116,12 @@ function function_ad4789b4(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 7
 	Flags: Linked
 */
-function function_98e8bc87(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(!isdefined(newval))
-	{
-		return;
-	}
-	if(newval == 1)
-	{
-		fx = playfxontag(localclientnum, level._effect["light_zombie_fx"], self, "j_spineupper");
-		setfxignorepause(localclientnum, fx, 1);
-	}
+function function_98e8bc87(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(!isdefined(newval)) {
+    return;
+  }
+  if(newval == 1) {
+    fx = playfxontag(localclientnum, level._effect["light_zombie_fx"], self, "j_spineupper");
+    setfxignorepause(localclientnum, fx, 1);
+  }
 }
-

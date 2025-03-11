@@ -12,9 +12,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function precache_scripted_fx()
-{
-}
+function precache_scripted_fx() {}
 
 /*
 	Name: precache_fx_anims
@@ -25,10 +23,9 @@ function precache_scripted_fx()
 	Parameters: 0
 	Flags: None
 */
-function precache_fx_anims()
-{
-	level.scr_anim = [];
-	level.scr_anim["fxanim_props"] = [];
+function precache_fx_anims() {
+  level.scr_anim = [];
+  level.scr_anim["fxanim_props"] = [];
 }
 
 /*
@@ -40,12 +37,9 @@ function precache_fx_anims()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	disablefx = getdvarint("disable_fx");
-	if(!isdefined(disablefx) || disablefx <= 0)
-	{
-		precache_scripted_fx();
-	}
+function main() {
+  disablefx = getdvarint("disable_fx");
+  if(!isdefined(disablefx) || disablefx <= 0) {
+    precache_scripted_fx();
+  }
 }
-

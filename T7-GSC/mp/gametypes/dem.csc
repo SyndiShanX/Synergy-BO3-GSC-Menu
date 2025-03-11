@@ -14,13 +14,11 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	callback::on_spawned(&on_player_spawned);
-	if(getgametypesetting("silentPlant") != 0)
-	{
-		setsoundcontext("bomb_plant", "silent");
-	}
+function main() {
+  callback::on_spawned( & on_player_spawned);
+  if(getgametypesetting("silentPlant") != 0) {
+    setsoundcontext("bomb_plant", "silent");
+  }
 }
 
 /*
@@ -32,9 +30,7 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function onprecachegametype()
-{
-}
+function onprecachegametype() {}
 
 /*
 	Name: onstartgametype
@@ -45,9 +41,7 @@ function onprecachegametype()
 	Parameters: 0
 	Flags: None
 */
-function onstartgametype()
-{
-}
+function onstartgametype() {}
 
 /*
 	Name: on_player_spawned
@@ -58,8 +52,6 @@ function onstartgametype()
 	Parameters: 1
 	Flags: None
 */
-function on_player_spawned(localclientnum)
-{
-	self thread globallogic::watch_plant_sound(localclientnum);
+function on_player_spawned(localclientnum) {
+  self thread globallogic::watch_plant_sound(localclientnum);
 }
-

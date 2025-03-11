@@ -19,10 +19,9 @@
 	Parameters: 1
 	Flags: None
 */
-function init_shared(localclientnum)
-{
-	clientfield::register("missile", "trophy_system_state", 1, 2, "int", &trophy_state_change, 0, 1);
-	clientfield::register("scriptmover", "trophy_system_state", 1, 2, "int", &trophy_state_change_recon, 0, 0);
+function init_shared(localclientnum) {
+  clientfield::register("missile", "trophy_system_state", 1, 2, "int", & trophy_state_change, 0, 1);
+  clientfield::register("scriptmover", "trophy_system_state", 1, 2, "int", & trophy_state_change_recon, 0, 0);
 }
 
 /*
@@ -34,35 +33,28 @@ function init_shared(localclientnum)
 	Parameters: 7
 	Flags: None
 */
-function trophy_state_change(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self endon(#"entityshutdown");
-	self util::waittill_dobj(localclientnum);
-	if(!isdefined(self))
-	{
-		return;
-	}
-	switch(newval)
-	{
-		case 1:
-		{
-			self thread trophy_rolling_anim(localclientnum);
-			break;
-		}
-		case 2:
-		{
-			self thread trophy_stationary_anim(localclientnum);
-			break;
-		}
-		case 3:
-		{
-			break;
-		}
-		case 0:
-		{
-			break;
-		}
-	}
+function trophy_state_change(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self endon(# "entityshutdown");
+  self util::waittill_dobj(localclientnum);
+  if(!isdefined(self)) {
+    return;
+  }
+  switch (newval) {
+    case 1: {
+      self thread trophy_rolling_anim(localclientnum);
+      break;
+    }
+    case 2: {
+      self thread trophy_stationary_anim(localclientnum);
+      break;
+    }
+    case 3: {
+      break;
+    }
+    case 0: {
+      break;
+    }
+  }
 }
 
 /*
@@ -74,35 +66,28 @@ function trophy_state_change(localclientnum, oldval, newval, bnewent, binitialsn
 	Parameters: 7
 	Flags: None
 */
-function trophy_state_change_recon(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self endon(#"entityshutdown");
-	self util::waittill_dobj(localclientnum);
-	if(!isdefined(self))
-	{
-		return;
-	}
-	switch(newval)
-	{
-		case 1:
-		{
-			self thread trophy_rolling_anim(localclientnum);
-			break;
-		}
-		case 2:
-		{
-			self thread trophy_stationary_anim(localclientnum);
-			break;
-		}
-		case 3:
-		{
-			break;
-		}
-		case 0:
-		{
-			break;
-		}
-	}
+function trophy_state_change_recon(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self endon(# "entityshutdown");
+  self util::waittill_dobj(localclientnum);
+  if(!isdefined(self)) {
+    return;
+  }
+  switch (newval) {
+    case 1: {
+      self thread trophy_rolling_anim(localclientnum);
+      break;
+    }
+    case 2: {
+      self thread trophy_stationary_anim(localclientnum);
+      break;
+    }
+    case 3: {
+      break;
+    }
+    case 0: {
+      break;
+    }
+  }
 }
 
 /*
@@ -114,11 +99,10 @@ function trophy_state_change_recon(localclientnum, oldval, newval, bnewent, bini
 	Parameters: 1
 	Flags: None
 */
-function trophy_rolling_anim(localclientnum)
-{
-	self endon(#"entityshutdown");
-	self useanimtree($mp_trophy_system);
-	self setanim(%mp_trophy_system::o_trophy_deploy, 1);
+function trophy_rolling_anim(localclientnum) {
+  self endon(# "entityshutdown");
+  self useanimtree($mp_trophy_system);
+  self setanim( % mp_trophy_system::o_trophy_deploy, 1);
 }
 
 /*
@@ -130,11 +114,9 @@ function trophy_rolling_anim(localclientnum)
 	Parameters: 1
 	Flags: None
 */
-function trophy_stationary_anim(localclientnum)
-{
-	self endon(#"entityshutdown");
-	self useanimtree($mp_trophy_system);
-	self setanim(%mp_trophy_system::o_trophy_deploy, 0);
-	self setanim(%mp_trophy_system::o_trophy_spin, 1);
+function trophy_stationary_anim(localclientnum) {
+  self endon(# "entityshutdown");
+  self useanimtree($mp_trophy_system);
+  self setanim( % mp_trophy_system::o_trophy_deploy, 0);
+  self setanim( % mp_trophy_system::o_trophy_spin, 1);
 }
-

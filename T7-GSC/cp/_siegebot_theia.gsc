@@ -33,9 +33,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	// Unsupported VM revision (1B).
+function autoexec __init__sytem__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -47,9 +46,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-	// Unsupported VM revision (1B).
+function __init__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -61,9 +59,8 @@ function __init__()
 	Parameters: 0
 	Flags: None
 */
-function siegebot_initialize()
-{
-	// Unsupported VM revision (1B).
+function siegebot_initialize() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -75,9 +72,8 @@ function siegebot_initialize()
 	Parameters: 0
 	Flags: None
 */
-function init_clientfields()
-{
-	// Unsupported VM revision (1B).
+function init_clientfields() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -89,9 +85,8 @@ function init_clientfields()
 	Parameters: 0
 	Flags: None
 */
-function defaultrole()
-{
-	// Unsupported VM revision (1B).
+function defaultrole() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -103,9 +98,8 @@ function defaultrole()
 	Parameters: 1
 	Flags: None
 */
-function state_death_update()
-{
-	// Unsupported VM revision (1B).
+function state_death_update() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -117,9 +111,8 @@ function state_death_update()
 	Parameters: 0
 	Flags: None
 */
-function clean_up_spawned()
-{
-	// Unsupported VM revision (1B).
+function clean_up_spawned() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -131,9 +124,8 @@ function clean_up_spawned()
 	Parameters: 1
 	Flags: None
 */
-function pain_toggle()
-{
-	// Unsupported VM revision (1B).
+function pain_toggle() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -145,9 +137,8 @@ function pain_toggle()
 	Parameters: 0
 	Flags: None
 */
-function pain_canenter()
-{
-	// Unsupported VM revision (1B).
+function pain_canenter() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -159,9 +150,8 @@ function pain_canenter()
 	Parameters: 1
 	Flags: None
 */
-function pain_enter()
-{
-	// Unsupported VM revision (1B).
+function pain_enter() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -173,9 +163,8 @@ function pain_enter()
 	Parameters: 1
 	Flags: None
 */
-function pain_exit()
-{
-	// Unsupported VM revision (1B).
+function pain_exit() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -187,9 +176,8 @@ function pain_exit()
 	Parameters: 1
 	Flags: None
 */
-function pain_update()
-{
-	// Unsupported VM revision (1B).
+function pain_update() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -201,9 +189,8 @@ function pain_update()
 	Parameters: 3
 	Flags: None
 */
-function should_prepare_death()
-{
-	// Unsupported VM revision (1B).
+function should_prepare_death() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -215,9 +202,8 @@ function should_prepare_death()
 	Parameters: 1
 	Flags: None
 */
-function prepare_death_update()
-{
-	// Unsupported VM revision (1B).
+function prepare_death_update() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -229,9 +215,8 @@ function prepare_death_update()
 	Parameters: 1
 	Flags: None
 */
-function scripted_exit()
-{
-	// Unsupported VM revision (1B).
+function scripted_exit() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -243,9 +228,8 @@ function scripted_exit()
 	Parameters: 0
 	Flags: None
 */
-function initjumpstruct()
-{
-	// Unsupported VM revision (1B).
+function initjumpstruct() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -257,9 +241,8 @@ function initjumpstruct()
 	Parameters: 3
 	Flags: None
 */
-function can_jump_up()
-{
-	// Unsupported VM revision (1B).
+function can_jump_up() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -271,9 +254,8 @@ function can_jump_up()
 	Parameters: 1
 	Flags: None
 */
-function state_jumpup_enter()
-{
-	// Unsupported VM revision (1B).
+function state_jumpup_enter() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -285,9 +267,8 @@ function state_jumpup_enter()
 	Parameters: 3
 	Flags: None
 */
-function can_jump_down()
-{
-	// Unsupported VM revision (1B).
+function can_jump_down() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -299,9 +280,8 @@ function can_jump_down()
 	Parameters: 1
 	Flags: None
 */
-function state_jumpdown_enter()
-{
-	// Unsupported VM revision (1B).
+function state_jumpdown_enter() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -313,9 +293,8 @@ function state_jumpdown_enter()
 	Parameters: 3
 	Flags: None
 */
-function can_jump_ground_to_ground()
-{
-	// Unsupported VM revision (1B).
+function can_jump_ground_to_ground() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -327,9 +306,8 @@ function can_jump_ground_to_ground()
 	Parameters: 1
 	Flags: None
 */
-function state_jump_exit()
-{
-	// Unsupported VM revision (1B).
+function state_jump_exit() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -341,9 +319,8 @@ function state_jump_exit()
 	Parameters: 1
 	Flags: None
 */
-function state_jumpdown_exit()
-{
-	// Unsupported VM revision (1B).
+function state_jumpdown_exit() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -355,9 +332,8 @@ function state_jumpdown_exit()
 	Parameters: 1
 	Flags: None
 */
-function state_jump_update()
-{
-	// Unsupported VM revision (1B).
+function state_jump_update() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -369,9 +345,8 @@ function state_jump_update()
 	Parameters: 1
 	Flags: None
 */
-function state_balconycombat_enter()
-{
-	// Unsupported VM revision (1B).
+function state_balconycombat_enter() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -383,9 +358,8 @@ function state_balconycombat_enter()
 	Parameters: 1
 	Flags: None
 */
-function state_balconycombat_update()
-{
-	// Unsupported VM revision (1B).
+function state_balconycombat_update() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -397,9 +371,8 @@ function state_balconycombat_update()
 	Parameters: 0
 	Flags: None
 */
-function side_step()
-{
-	// Unsupported VM revision (1B).
+function side_step() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -411,9 +384,8 @@ function side_step()
 	Parameters: 1
 	Flags: None
 */
-function state_balconycombat_exit()
-{
-	// Unsupported VM revision (1B).
+function state_balconycombat_exit() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -425,9 +397,8 @@ function state_balconycombat_exit()
 	Parameters: 1
 	Flags: None
 */
-function state_groundcombat_update()
-{
-	// Unsupported VM revision (1B).
+function state_groundcombat_update() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -439,9 +410,8 @@ function state_groundcombat_update()
 	Parameters: 1
 	Flags: None
 */
-function footstep_damage()
-{
-	// Unsupported VM revision (1B).
+function footstep_damage() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -453,9 +423,8 @@ function footstep_damage()
 	Parameters: 0
 	Flags: None
 */
-function footstep_left_monitor()
-{
-	// Unsupported VM revision (1B).
+function footstep_left_monitor() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -467,9 +436,8 @@ function footstep_left_monitor()
 	Parameters: 0
 	Flags: None
 */
-function footstep_right_monitor()
-{
-	// Unsupported VM revision (1B).
+function footstep_right_monitor() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -481,9 +449,8 @@ function footstep_right_monitor()
 	Parameters: 4
 	Flags: None
 */
-function highgroundpoint()
-{
-	// Unsupported VM revision (1B).
+function highgroundpoint() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -495,9 +462,8 @@ function highgroundpoint()
 	Parameters: 1
 	Flags: None
 */
-function state_groundcombat_exit()
-{
-	// Unsupported VM revision (1B).
+function state_groundcombat_exit() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -509,9 +475,8 @@ function state_groundcombat_exit()
 	Parameters: 1
 	Flags: None
 */
-function get_player_vehicle()
-{
-	// Unsupported VM revision (1B).
+function get_player_vehicle() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -523,9 +488,8 @@ function get_player_vehicle()
 	Parameters: 0
 	Flags: None
 */
-function get_player_and_vehicle_array()
-{
-	// Unsupported VM revision (1B).
+function get_player_and_vehicle_array() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -537,9 +501,8 @@ function get_player_and_vehicle_array()
 	Parameters: 1
 	Flags: None
 */
-function init_player_threat()
-{
-	// Unsupported VM revision (1B).
+function init_player_threat() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -551,9 +514,8 @@ function init_player_threat()
 	Parameters: 0
 	Flags: None
 */
-function init_player_threat_all()
-{
-	// Unsupported VM revision (1B).
+function init_player_threat_all() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -565,9 +527,8 @@ function init_player_threat_all()
 	Parameters: 1
 	Flags: None
 */
-function reset_player_threat()
-{
-	// Unsupported VM revision (1B).
+function reset_player_threat() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -579,9 +540,8 @@ function reset_player_threat()
 	Parameters: 2
 	Flags: None
 */
-function add_player_threat_damage()
-{
-	// Unsupported VM revision (1B).
+function add_player_threat_damage() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -593,9 +553,8 @@ function add_player_threat_damage()
 	Parameters: 3
 	Flags: None
 */
-function add_player_threat_boost()
-{
-	// Unsupported VM revision (1B).
+function add_player_threat_boost() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -607,9 +566,8 @@ function add_player_threat_boost()
 	Parameters: 1
 	Flags: None
 */
-function get_player_threat()
-{
-	// Unsupported VM revision (1B).
+function get_player_threat() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -621,9 +579,8 @@ function get_player_threat()
 	Parameters: 0
 	Flags: None
 */
-function update_target_player()
-{
-	// Unsupported VM revision (1B).
+function update_target_player() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -635,9 +592,8 @@ function update_target_player()
 	Parameters: 1
 	Flags: None
 */
-function shoulder_light_focus()
-{
-	// Unsupported VM revision (1B).
+function shoulder_light_focus() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -649,9 +605,8 @@ function shoulder_light_focus()
 	Parameters: 3
 	Flags: None
 */
-function debug_line_to_target()
-{
-	// Unsupported VM revision (1B).
+function debug_line_to_target() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -663,9 +618,8 @@ function debug_line_to_target()
 	Parameters: 1
 	Flags: None
 */
-function pin_first_three_spikes_to_ground()
-{
-	// Unsupported VM revision (1B).
+function pin_first_three_spikes_to_ground() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -677,9 +631,8 @@ function pin_first_three_spikes_to_ground()
 	Parameters: 0
 	Flags: None
 */
-function attack_thread_gun()
-{
-	// Unsupported VM revision (1B).
+function attack_thread_gun() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -691,9 +644,8 @@ function attack_thread_gun()
 	Parameters: 0
 	Flags: None
 */
-function attack_thread_rocket()
-{
-	// Unsupported VM revision (1B).
+function attack_thread_rocket() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -705,9 +657,8 @@ function attack_thread_rocket()
 	Parameters: 1
 	Flags: None
 */
-function toggle_rocketaim()
-{
-	// Unsupported VM revision (1B).
+function toggle_rocketaim() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -719,9 +670,8 @@ function toggle_rocketaim()
 	Parameters: 0
 	Flags: None
 */
-function locomotion_start()
-{
-	// Unsupported VM revision (1B).
+function locomotion_start() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -733,9 +683,8 @@ function locomotion_start()
 	Parameters: 0
 	Flags: None
 */
-function get_strong_target()
-{
-	// Unsupported VM revision (1B).
+function get_strong_target() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -747,9 +696,8 @@ function get_strong_target()
 	Parameters: 0
 	Flags: None
 */
-function movement_thread()
-{
-	// Unsupported VM revision (1B).
+function movement_thread() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -761,9 +709,8 @@ function movement_thread()
 	Parameters: 0
 	Flags: None
 */
-function path_update_interrupt()
-{
-	// Unsupported VM revision (1B).
+function path_update_interrupt() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -775,9 +722,8 @@ function path_update_interrupt()
 	Parameters: 1
 	Flags: None
 */
-function getnextmoveposition()
-{
-	// Unsupported VM revision (1B).
+function getnextmoveposition() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -789,9 +735,8 @@ function getnextmoveposition()
 	Parameters: 3
 	Flags: None
 */
-function _sort_by_distance2d()
-{
-	// Unsupported VM revision (1B).
+function _sort_by_distance2d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -803,9 +748,8 @@ function _sort_by_distance2d()
 	Parameters: 2
 	Flags: None
 */
-function too_close_to_high_ground()
-{
-	// Unsupported VM revision (1B).
+function too_close_to_high_ground() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -817,9 +761,8 @@ function too_close_to_high_ground()
 	Parameters: 6
 	Flags: None
 */
-function get_jumpon_target()
-{
-	// Unsupported VM revision (1B).
+function get_jumpon_target() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -831,9 +774,8 @@ function get_jumpon_target()
 	Parameters: 0
 	Flags: None
 */
-function stopmovementandsetbrake()
-{
-	// Unsupported VM revision (1B).
+function stopmovementandsetbrake() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -845,9 +787,8 @@ function stopmovementandsetbrake()
 	Parameters: 2
 	Flags: None
 */
-function face_target()
-{
-	// Unsupported VM revision (1B).
+function face_target() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -859,9 +800,8 @@ function face_target()
 	Parameters: 13
 	Flags: None
 */
-function theia_callback_damage()
-{
-	// Unsupported VM revision (1B).
+function theia_callback_damage() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -873,9 +813,8 @@ function theia_callback_damage()
 	Parameters: 0
 	Flags: None
 */
-function attack_javelin()
-{
-	// Unsupported VM revision (1B).
+function attack_javelin() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -887,9 +826,8 @@ function attack_javelin()
 	Parameters: 1
 	Flags: None
 */
-function javeline_incoming()
-{
-	// Unsupported VM revision (1B).
+function javeline_incoming() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -901,9 +839,8 @@ function javeline_incoming()
 	Parameters: 0
 	Flags: None
 */
-function init_fake_targets()
-{
-	// Unsupported VM revision (1B).
+function init_fake_targets() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -915,9 +852,8 @@ function init_fake_targets()
 	Parameters: 0
 	Flags: None
 */
-function pin_to_ground()
-{
-	// Unsupported VM revision (1B).
+function pin_to_ground() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -929,9 +865,8 @@ function pin_to_ground()
 	Parameters: 0
 	Flags: None
 */
-function pin_spike_to_ground()
-{
-	// Unsupported VM revision (1B).
+function pin_spike_to_ground() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -943,9 +878,8 @@ function pin_spike_to_ground()
 	Parameters: 1
 	Flags: None
 */
-function spike_score()
-{
-	// Unsupported VM revision (1B).
+function spike_score() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -957,9 +891,8 @@ function spike_score()
 	Parameters: 3
 	Flags: None
 */
-function spike_group_score()
-{
-	// Unsupported VM revision (1B).
+function spike_group_score() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -971,9 +904,8 @@ function spike_group_score()
 	Parameters: 0
 	Flags: None
 */
-function attack_spike_minefield()
-{
-	// Unsupported VM revision (1B).
+function attack_spike_minefield() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -985,9 +917,8 @@ function attack_spike_minefield()
 	Parameters: 3
 	Flags: None
 */
-function delay_target_toenemy_thread()
-{
-	// Unsupported VM revision (1B).
+function delay_target_toenemy_thread() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -999,9 +930,8 @@ function delay_target_toenemy_thread()
 	Parameters: 1
 	Flags: None
 */
-function is_valid_target()
-{
-	// Unsupported VM revision (1B).
+function is_valid_target() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1013,9 +943,8 @@ function is_valid_target()
 	Parameters: 0
 	Flags: None
 */
-function get_enemy()
-{
-	// Unsupported VM revision (1B).
+function get_enemy() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1027,8 +956,6 @@ function get_enemy()
 	Parameters: 0
 	Flags: None
 */
-function attack_minigun_sweep()
-{
-	// Unsupported VM revision (1B).
+function attack_minigun_sweep() {
+  // Unsupported VM revision (1B).
 }
-

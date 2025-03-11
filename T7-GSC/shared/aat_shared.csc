@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("aat", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("aat", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,14 +29,13 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private __init__()
-{
-	level.aat_initializing = 1;
-	level.aat_default_info_name = "none";
-	level.aat_default_info_icon = "blacktransparent";
-	level.aat = [];
-	register("none", level.aat_default_info_name, level.aat_default_info_icon);
-	callback::on_finalize_initialization(&finalize_clientfields);
+function private __init__() {
+  level.aat_initializing = 1;
+  level.aat_default_info_name = "none";
+  level.aat_default_info_icon = "blacktransparent";
+  level.aat = [];
+  register("none", level.aat_default_info_name, level.aat_default_info_icon);
+  callback::on_finalize_initialization( & finalize_clientfields);
 }
 
 /*
@@ -49,27 +47,26 @@ function private __init__()
 	Parameters: 3
 	Flags: Linked
 */
-function register(name, localized_string, icon)
-{
-	/#
-		assert(isdefined(level.aat_initializing) && level.aat_initializing, "");
-	#/
-	/#
-		assert(isdefined(name), "");
-	#/
-	/#
-		assert(!isdefined(level.aat[name]), ("" + name) + "");
-	#/
-	/#
-		assert(isdefined(localized_string), "");
-	#/
-	/#
-		assert(isdefined(icon), "");
-	#/
-	level.aat[name] = spawnstruct();
-	level.aat[name].name = name;
-	level.aat[name].localized_string = localized_string;
-	level.aat[name].icon = icon;
+function register(name, localized_string, icon) {
+  /#
+  assert(isdefined(level.aat_initializing) && level.aat_initializing, "");
+  # /
+    /#
+  assert(isdefined(name), "");
+  # /
+    /#
+  assert(!isdefined(level.aat[name]), ("" + name) + "");
+  # /
+    /#
+  assert(isdefined(localized_string), "");
+  # /
+    /#
+  assert(isdefined(icon), "");
+  # /
+    level.aat[name] = spawnstruct();
+  level.aat[name].name = name;
+  level.aat[name].localized_string = localized_string;
+  level.aat[name].icon = icon;
 }
 
 /*
@@ -81,12 +78,12 @@ function register(name, localized_string, icon)
 	Parameters: 7
 	Flags: Linked
 */
-function aat_hud_manager(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(isdefined(level.update_aat_hud))
-	{
-		[[level.update_aat_hud]](localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump);
-	}
+function aat_hud_manager(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(isdefined(level.update_aat_hud)) {
+    [
+      [level.update_aat_hud]
+    ](localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump);
+  }
 }
 
 /*
@@ -98,27 +95,24 @@ function aat_hud_manager(localclientnum, oldval, newval, bnewent, binitialsnap, 
 	Parameters: 0
 	Flags: Linked
 */
-function finalize_clientfields()
-{
-	/#
-		println("");
-	#/
-	if(level.aat.size > 1)
-	{
-		array::alphabetize(level.aat);
-		i = 0;
-		foreach(aat in level.aat)
-		{
-			aat.n_index = i;
-			i++;
-			/#
-				println("" + aat.name);
-			#/
-		}
-		n_bits = getminbitcountfornum(level.aat.size - 1);
-		clientfield::register("toplayer", "aat_current", 1, n_bits, "int", &aat_hud_manager, 0, 1);
-	}
-	level.aat_initializing = 0;
+function finalize_clientfields() {
+  /#
+  println("");
+  # /
+    if(level.aat.size > 1) {
+      array::alphabetize(level.aat);
+      i = 0;
+      foreach(aat in level.aat) {
+        aat.n_index = i;
+        i++;
+        /#
+        println("" + aat.name);
+        # /
+      }
+      n_bits = getminbitcountfornum(level.aat.size - 1);
+      clientfield::register("toplayer", "aat_current", 1, n_bits, "int", & aat_hud_manager, 0, 1);
+    }
+  level.aat_initializing = 0;
 }
 
 /*
@@ -130,16 +124,13 @@ function finalize_clientfields()
 	Parameters: 1
 	Flags: Linked
 */
-function get_string(n_aat_index)
-{
-	foreach(aat in level.aat)
-	{
-		if(aat.n_index == n_aat_index)
-		{
-			return aat.localized_string;
-		}
-	}
-	return level.aat_default_info_name;
+function get_string(n_aat_index) {
+  foreach(aat in level.aat) {
+    if(aat.n_index == n_aat_index) {
+      return aat.localized_string;
+    }
+  }
+  return level.aat_default_info_name;
 }
 
 /*
@@ -151,15 +142,11 @@ function get_string(n_aat_index)
 	Parameters: 1
 	Flags: Linked
 */
-function get_icon(n_aat_index)
-{
-	foreach(aat in level.aat)
-	{
-		if(aat.n_index == n_aat_index)
-		{
-			return aat.icon;
-		}
-	}
-	return level.aat_default_info_icon;
+function get_icon(n_aat_index) {
+  foreach(aat in level.aat) {
+    if(aat.n_index == n_aat_index) {
+      return aat.icon;
+    }
+  }
+  return level.aat_default_info_icon;
 }
-

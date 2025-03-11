@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	clientfield::register("world", "light_show", 21000, 2, "int", &function_b6f5f7f5, 0, 0);
+function main() {
+  clientfield::register("world", "light_show", 21000, 2, "int", & function_b6f5f7f5, 0, 0);
 }
 
 /*
@@ -30,34 +29,27 @@ function main()
 	Parameters: 7
 	Flags: Linked
 */
-function function_b6f5f7f5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump)
-{
-	switch(newval)
-	{
-		case 1:
-		{
-			level.var_fdb98849 = vectorscale((1, 1, 1), 2);
-			level.var_656c2f5 = vectorscale((1, 1, 1), 0.25);
-			break;
-		}
-		case 2:
-		{
-			level.var_fdb98849 = (2, 0.1, 0.1);
-			level.var_656c2f5 = (0.5, 0.1, 0.1);
-			break;
-		}
-		case 3:
-		{
-			level.var_fdb98849 = (0.1, 2, 0.1);
-			level.var_656c2f5 = (0.1, 0.5, 0.1);
-			break;
-		}
-		default:
-		{
-			level.var_fdb98849 = undefined;
-			level.var_656c2f5 = undefined;
-			break;
-		}
-	}
+function function_b6f5f7f5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
+  switch (newval) {
+    case 1: {
+      level.var_fdb98849 = vectorscale((1, 1, 1), 2);
+      level.var_656c2f5 = vectorscale((1, 1, 1), 0.25);
+      break;
+    }
+    case 2: {
+      level.var_fdb98849 = (2, 0.1, 0.1);
+      level.var_656c2f5 = (0.5, 0.1, 0.1);
+      break;
+    }
+    case 3: {
+      level.var_fdb98849 = (0.1, 2, 0.1);
+      level.var_656c2f5 = (0.1, 0.5, 0.1);
+      break;
+    }
+    default: {
+      level.var_fdb98849 = undefined;
+      level.var_656c2f5 = undefined;
+      break;
+    }
+  }
 }
-

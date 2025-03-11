@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("gadget_unstoppable_force", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("gadget_unstoppable_force", & __init__, undefined, undefined);
 }
 
 /*
@@ -34,15 +33,14 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	ability_player::register_gadget_activation_callbacks(29, &gadget_unstoppable_force_on, &gadget_unstoppable_force_off);
-	ability_player::register_gadget_possession_callbacks(29, &gadget_unstoppable_force_on_give, &gadget_unstoppable_force_on_take);
-	ability_player::register_gadget_flicker_callbacks(29, &gadget_unstoppable_force_on_flicker);
-	ability_player::register_gadget_is_inuse_callbacks(29, &gadget_unstoppable_force_is_inuse);
-	ability_player::register_gadget_is_flickering_callbacks(29, &gadget_unstoppable_force_is_flickering);
-	callback::on_connect(&gadget_unstoppable_force_on_connect);
-	clientfield::register("toplayer", "unstoppableforce_state", 1, 1, "int");
+function __init__() {
+  ability_player::register_gadget_activation_callbacks(29, & gadget_unstoppable_force_on, & gadget_unstoppable_force_off);
+  ability_player::register_gadget_possession_callbacks(29, & gadget_unstoppable_force_on_give, & gadget_unstoppable_force_on_take);
+  ability_player::register_gadget_flicker_callbacks(29, & gadget_unstoppable_force_on_flicker);
+  ability_player::register_gadget_is_inuse_callbacks(29, & gadget_unstoppable_force_is_inuse);
+  ability_player::register_gadget_is_flickering_callbacks(29, & gadget_unstoppable_force_is_flickering);
+  callback::on_connect( & gadget_unstoppable_force_on_connect);
+  clientfield::register("toplayer", "unstoppableforce_state", 1, 1, "int");
 }
 
 /*
@@ -54,9 +52,8 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function gadget_unstoppable_force_is_inuse(slot)
-{
-	return self flagsys::get("gadget_unstoppable_force_on");
+function gadget_unstoppable_force_is_inuse(slot) {
+  return self flagsys::get("gadget_unstoppable_force_on");
 }
 
 /*
@@ -68,13 +65,11 @@ function gadget_unstoppable_force_is_inuse(slot)
 	Parameters: 1
 	Flags: Linked
 */
-function gadget_unstoppable_force_is_flickering(slot)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force))
-	{
-		return self [[level.cybercom.unstoppable_force._is_flickering]](slot);
-	}
-	return 0;
+function gadget_unstoppable_force_is_flickering(slot) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force)) {
+    return self[[level.cybercom.unstoppable_force._is_flickering]](slot);
+  }
+  return 0;
 }
 
 /*
@@ -86,12 +81,10 @@ function gadget_unstoppable_force_is_flickering(slot)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_unstoppable_force_on_flicker(slot, weapon)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force))
-	{
-		self [[level.cybercom.unstoppable_force._on_flicker]](slot, weapon);
-	}
+function gadget_unstoppable_force_on_flicker(slot, weapon) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force)) {
+    self[[level.cybercom.unstoppable_force._on_flicker]](slot, weapon);
+  }
 }
 
 /*
@@ -103,12 +96,10 @@ function gadget_unstoppable_force_on_flicker(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_unstoppable_force_on_give(slot, weapon)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force))
-	{
-		self [[level.cybercom.unstoppable_force._on_give]](slot, weapon);
-	}
+function gadget_unstoppable_force_on_give(slot, weapon) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force)) {
+    self[[level.cybercom.unstoppable_force._on_give]](slot, weapon);
+  }
 }
 
 /*
@@ -120,12 +111,10 @@ function gadget_unstoppable_force_on_give(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_unstoppable_force_on_take(slot, weapon)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force))
-	{
-		self [[level.cybercom.unstoppable_force._on_take]](slot, weapon);
-	}
+function gadget_unstoppable_force_on_take(slot, weapon) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force)) {
+    self[[level.cybercom.unstoppable_force._on_take]](slot, weapon);
+  }
 }
 
 /*
@@ -137,12 +126,10 @@ function gadget_unstoppable_force_on_take(slot, weapon)
 	Parameters: 0
 	Flags: Linked
 */
-function gadget_unstoppable_force_on_connect()
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force))
-	{
-		self [[level.cybercom.unstoppable_force._on_connect]]();
-	}
+function gadget_unstoppable_force_on_connect() {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force)) {
+    self[[level.cybercom.unstoppable_force._on_connect]]();
+  }
 }
 
 /*
@@ -154,13 +141,11 @@ function gadget_unstoppable_force_on_connect()
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_unstoppable_force_on(slot, weapon)
-{
-	self flagsys::set("gadget_unstoppable_force_on");
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force))
-	{
-		self [[level.cybercom.unstoppable_force._on]](slot, weapon);
-	}
+function gadget_unstoppable_force_on(slot, weapon) {
+  self flagsys::set("gadget_unstoppable_force_on");
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force)) {
+    self[[level.cybercom.unstoppable_force._on]](slot, weapon);
+  }
 }
 
 /*
@@ -172,13 +157,11 @@ function gadget_unstoppable_force_on(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_unstoppable_force_off(slot, weapon)
-{
-	self flagsys::clear("gadget_unstoppable_force_on");
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force))
-	{
-		self [[level.cybercom.unstoppable_force._off]](slot, weapon);
-	}
+function gadget_unstoppable_force_off(slot, weapon) {
+  self flagsys::clear("gadget_unstoppable_force_on");
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force)) {
+    self[[level.cybercom.unstoppable_force._off]](slot, weapon);
+  }
 }
 
 /*
@@ -190,11 +173,8 @@ function gadget_unstoppable_force_off(slot, weapon)
 	Parameters: 2
 	Flags: None
 */
-function gadget_firefly_is_primed(slot, weapon)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force))
-	{
-		self [[level.cybercom.unstoppable_force._is_primed]](slot, weapon);
-	}
+function gadget_firefly_is_primed(slot, weapon) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.unstoppable_force)) {
+    self[[level.cybercom.unstoppable_force._is_primed]](slot, weapon);
+  }
 }
-

@@ -11,8 +11,6 @@
 	Parameters: 0
 	Flags: None
 */
-function init_voice()
-{
-	// Unsupported VM revision (1B).
+function init_voice() {
+  // Unsupported VM revision (1B).
 }
-

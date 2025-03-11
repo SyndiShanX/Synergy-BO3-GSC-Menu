@@ -13,8 +13,6 @@
 	Parameters: 0
 	Flags: Linked
 */
-function function_e7b6b58c()
-{
-	ai::registermatchedinterface("keeper_companion", "sprint", 0, array(1, 0));
+function function_e7b6b58c() {
+  ai::registermatchedinterface("keeper_companion", "sprint", 0, array(1, 0));
 }
-

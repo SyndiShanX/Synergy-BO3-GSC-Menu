@@ -26,9 +26,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	zm_sidequests::declare_sidequest_stage("little_girl_lost", "step_1", &init_stage, &stage_logic, &exit_stage);
+function init() {
+  zm_sidequests::declare_sidequest_stage("little_girl_lost", "step_1", & init_stage, & stage_logic, & exit_stage);
 }
 
 /*
@@ -40,9 +39,8 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function init_stage()
-{
-	level._cur_stage_name = "step_1";
+function init_stage() {
+  level._cur_stage_name = "step_1";
 }
 
 /*
@@ -54,14 +52,13 @@ function init_stage()
 	Parameters: 0
 	Flags: Linked
 */
-function stage_logic()
-{
-	/#
-		iprintln(level._cur_stage_name + "");
-	#/
-	level flag::wait_till("ee_all_staffs_upgraded");
-	util::wait_network_frame();
-	zm_sidequests::stage_completed("little_girl_lost", level._cur_stage_name);
+function stage_logic() {
+  /#
+  iprintln(level._cur_stage_name + "");
+  # /
+    level flag::wait_till("ee_all_staffs_upgraded");
+  util::wait_network_frame();
+  zm_sidequests::stage_completed("little_girl_lost", level._cur_stage_name);
 }
 
 /*
@@ -73,8 +70,6 @@ function stage_logic()
 	Parameters: 1
 	Flags: Linked
 */
-function exit_stage(success)
-{
-	level notify(#"hash_e6967d42");
+function exit_stage(success) {
+  level notify(# "hash_e6967d42");
 }
-

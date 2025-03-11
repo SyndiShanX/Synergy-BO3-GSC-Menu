@@ -12,17 +12,16 @@
 	Parameters: 3
 	Flags: None
 */
-function init(id, playerbegincallback, playerendcallback)
-{
-	handler = spawnstruct();
-	handler.id = id;
-	handler.playerbegincallback = playerbegincallback;
-	handler.playerendcallback = playerendcallback;
-	handler.enabled = 0;
-	handler.players = [];
-	thread onplayerconnect(handler);
-	level.handlerglobalflagval = 0;
-	return handler;
+function init(id, playerbegincallback, playerendcallback) {
+  handler = spawnstruct();
+  handler.id = id;
+  handler.playerbegincallback = playerbegincallback;
+  handler.playerendcallback = playerendcallback;
+  handler.enabled = 0;
+  handler.players = [];
+  thread onplayerconnect(handler);
+  level.handlerglobalflagval = 0;
+  return handler;
 }
 
 /*
@@ -34,31 +33,25 @@ function init(id, playerbegincallback, playerendcallback)
 	Parameters: 1
 	Flags: None
 */
-function enable(handler)
-{
-	if(handler.enabled)
-	{
-		return;
-	}
-	handler.enabled = 1;
-	level.handlerglobalflagval++;
-	players = getplayers();
-	for(i = 0; i < players.size; i++)
-	{
-		players[i].handlerflagval = level.handlerglobalflagval;
-	}
-	players = handler.players;
-	for(i = 0; i < players.size; i++)
-	{
-		if(players[i].handlerflagval != level.handlerglobalflagval)
-		{
-			continue;
-		}
-		if(players[i].handlers[handler.id].ready)
-		{
-			players[i] handleplayer(handler);
-		}
-	}
+function enable(handler) {
+  if(handler.enabled) {
+    return;
+  }
+  handler.enabled = 1;
+  level.handlerglobalflagval++;
+  players = getplayers();
+  for (i = 0; i < players.size; i++) {
+    players[i].handlerflagval = level.handlerglobalflagval;
+  }
+  players = handler.players;
+  for (i = 0; i < players.size; i++) {
+    if(players[i].handlerflagval != level.handlerglobalflagval) {
+      continue;
+    }
+    if(players[i].handlers[handler.id].ready) {
+      players[i] handleplayer(handler);
+    }
+  }
 }
 
 /*
@@ -70,31 +63,25 @@ function enable(handler)
 	Parameters: 1
 	Flags: None
 */
-function disable(handler)
-{
-	if(!handler.enabled)
-	{
-		return;
-	}
-	handler.enabled = 0;
-	level.handlerglobalflagval++;
-	players = getplayers();
-	for(i = 0; i < players.size; i++)
-	{
-		players[i].handlerflagval = level.handlerglobalflagval;
-	}
-	players = handler.players;
-	for(i = 0; i < players.size; i++)
-	{
-		if(players[i].handlerflagval != level.handlerglobalflagval)
-		{
-			continue;
-		}
-		if(players[i].handlers[handler.id].ready)
-		{
-			players[i] unhandleplayer(handler, 0, 0);
-		}
-	}
+function disable(handler) {
+  if(!handler.enabled) {
+    return;
+  }
+  handler.enabled = 0;
+  level.handlerglobalflagval++;
+  players = getplayers();
+  for (i = 0; i < players.size; i++) {
+    players[i].handlerflagval = level.handlerglobalflagval;
+  }
+  players = handler.players;
+  for (i = 0; i < players.size; i++) {
+    if(players[i].handlerflagval != level.handlerglobalflagval) {
+      continue;
+    }
+    if(players[i].handlers[handler.id].ready) {
+      players[i] unhandleplayer(handler, 0, 0);
+    }
+  }
 }
 
 /*
@@ -106,26 +93,23 @@ function disable(handler)
 	Parameters: 1
 	Flags: None
 */
-function onplayerconnect(handler)
-{
-	for(;;)
-	{
-		level waittill(#"connecting", player);
-		if(!isdefined(player.handlers))
-		{
-			player.handlers = [];
-		}
-		player.handlers[handler.id] = spawnstruct();
-		player.handlers[handler.id].ready = 0;
-		player.handlers[handler.id].handled = 0;
-		player.handlerflagval = -1;
-		handler.players[handler.players.size] = player;
-		player thread onplayerdisconnect(handler);
-		player thread onplayerspawned(handler);
-		player thread onjoinedteam(handler);
-		player thread onjoinedspectators(handler);
-		player thread onplayerkilled(handler);
-	}
+function onplayerconnect(handler) {
+  for (;;) {
+    level waittill(# "connecting", player);
+    if(!isdefined(player.handlers)) {
+      player.handlers = [];
+    }
+    player.handlers[handler.id] = spawnstruct();
+    player.handlers[handler.id].ready = 0;
+    player.handlers[handler.id].handled = 0;
+    player.handlerflagval = -1;
+    handler.players[handler.players.size] = player;
+    player thread onplayerdisconnect(handler);
+    player thread onplayerspawned(handler);
+    player thread onjoinedteam(handler);
+    player thread onjoinedspectators(handler);
+    player thread onplayerkilled(handler);
+  }
 }
 
 /*
@@ -137,19 +121,16 @@ function onplayerconnect(handler)
 	Parameters: 1
 	Flags: None
 */
-function onplayerdisconnect(handler)
-{
-	self waittill(#"disconnect");
-	newplayers = [];
-	for(i = 0; i < handler.players.size; i++)
-	{
-		if(handler.players[i] != self)
-		{
-			newplayers[newplayers.size] = handler.players[i];
-		}
-	}
-	handler.players = newplayers;
-	self thread unhandleplayer(handler, 1, 1);
+function onplayerdisconnect(handler) {
+  self waittill(# "disconnect");
+  newplayers = [];
+  for (i = 0; i < handler.players.size; i++) {
+    if(handler.players[i] != self) {
+      newplayers[newplayers.size] = handler.players[i];
+    }
+  }
+  handler.players = newplayers;
+  self thread unhandleplayer(handler, 1, 1);
 }
 
 /*
@@ -161,14 +142,12 @@ function onplayerdisconnect(handler)
 	Parameters: 1
 	Flags: None
 */
-function onjoinedteam(handler)
-{
-	self endon(#"disconnect");
-	for(;;)
-	{
-		self waittill(#"joined_team");
-		self thread unhandleplayer(handler, 1, 0);
-	}
+function onjoinedteam(handler) {
+  self endon(# "disconnect");
+  for (;;) {
+    self waittill(# "joined_team");
+    self thread unhandleplayer(handler, 1, 0);
+  }
 }
 
 /*
@@ -180,14 +159,12 @@ function onjoinedteam(handler)
 	Parameters: 1
 	Flags: None
 */
-function onjoinedspectators(handler)
-{
-	self endon(#"disconnect");
-	for(;;)
-	{
-		self waittill(#"joined_spectators");
-		self thread unhandleplayer(handler, 1, 0);
-	}
+function onjoinedspectators(handler) {
+  self endon(# "disconnect");
+  for (;;) {
+    self waittill(# "joined_spectators");
+    self thread unhandleplayer(handler, 1, 0);
+  }
 }
 
 /*
@@ -199,14 +176,12 @@ function onjoinedspectators(handler)
 	Parameters: 1
 	Flags: None
 */
-function onplayerspawned(handler)
-{
-	self endon(#"disconnect");
-	for(;;)
-	{
-		self waittill(#"spawned_player");
-		self thread handleplayer(handler);
-	}
+function onplayerspawned(handler) {
+  self endon(# "disconnect");
+  for (;;) {
+    self waittill(# "spawned_player");
+    self thread handleplayer(handler);
+  }
 }
 
 /*
@@ -218,14 +193,12 @@ function onplayerspawned(handler)
 	Parameters: 1
 	Flags: None
 */
-function onplayerkilled(handler)
-{
-	self endon(#"disconnect");
-	for(;;)
-	{
-		self waittill(#"killed_player");
-		self thread unhandleplayer(handler, 1, 0);
-	}
+function onplayerkilled(handler) {
+  self endon(# "disconnect");
+  for (;;) {
+    self waittill(# "killed_player");
+    self thread unhandleplayer(handler, 1, 0);
+  }
 }
 
 /*
@@ -237,19 +210,16 @@ function onplayerkilled(handler)
 	Parameters: 1
 	Flags: None
 */
-function handleplayer(handler)
-{
-	self.handlers[handler.id].ready = 1;
-	if(!handler.enabled)
-	{
-		return;
-	}
-	if(self.handlers[handler.id].handled)
-	{
-		return;
-	}
-	self.handlers[handler.id].handled = 1;
-	self thread [[handler.playerbegincallback]]();
+function handleplayer(handler) {
+  self.handlers[handler.id].ready = 1;
+  if(!handler.enabled) {
+    return;
+  }
+  if(self.handlers[handler.id].handled) {
+    return;
+  }
+  self.handlers[handler.id].handled = 1;
+  self thread[[handler.playerbegincallback]]();
 }
 
 /*
@@ -261,20 +231,15 @@ function handleplayer(handler)
 	Parameters: 3
 	Flags: None
 */
-function unhandleplayer(handler, unsetready, disconnected)
-{
-	if(!disconnected && unsetready)
-	{
-		self.handlers[handler.id].ready = 0;
-	}
-	if(!self.handlers[handler.id].handled)
-	{
-		return;
-	}
-	if(!disconnected)
-	{
-		self.handlers[handler.id].handled = 0;
-	}
-	self thread [[handler.playerendcallback]](disconnected);
+function unhandleplayer(handler, unsetready, disconnected) {
+  if(!disconnected && unsetready) {
+    self.handlers[handler.id].ready = 0;
+  }
+  if(!self.handlers[handler.id].handled) {
+    return;
+  }
+  if(!disconnected) {
+    self.handlers[handler.id].handled = 0;
+  }
+  self thread[[handler.playerendcallback]](disconnected);
 }
-

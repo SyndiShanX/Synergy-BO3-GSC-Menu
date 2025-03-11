@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_always_done_swiftly", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_always_done_swiftly", & __init__, undefined, "bgb");
 }
 
 /*
@@ -32,13 +31,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_always_done_swiftly", "rounds", 3, &enable, &disable, undefined);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_always_done_swiftly", "rounds", 3, & enable, & disable, undefined);
 }
 
 /*
@@ -50,10 +47,9 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function enable()
-{
-	self setperk("specialty_fastads");
-	self setperk("specialty_stalker");
+function enable() {
+  self setperk("specialty_fastads");
+  self setperk("specialty_stalker");
 }
 
 /*
@@ -65,9 +61,7 @@ function enable()
 	Parameters: 0
 	Flags: Linked
 */
-function disable()
-{
-	self unsetperk("specialty_fastads");
-	self unsetperk("specialty_stalker");
+function disable() {
+  self unsetperk("specialty_fastads");
+  self unsetperk("specialty_stalker");
 }
-

@@ -12,9 +12,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	precache_scripted_fx();
+function main() {
+  precache_scripted_fx();
 }
 
 /*
@@ -26,8 +25,6 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function precache_scripted_fx()
-{
-	level._effect["fx_snow_lotus"] = "weather/fx_snow_player_os_lotus";
+function precache_scripted_fx() {
+  level._effect["fx_snow_lotus"] = "weather/fx_snow_player_os_lotus";
 }
-

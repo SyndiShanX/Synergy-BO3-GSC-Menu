@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("wasp", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("wasp", & __init__, undefined, undefined);
 }
 
 /*
@@ -33,14 +32,12 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("vehicle", "rocket_wasp_hijacked", 1, 1, "int", &handle_lod_display_for_driver, 0, 0);
-	level.sentinelbundle = struct::get_script_bundle("killstreak", "killstreak_sentinel");
-	if(isdefined(level.sentinelbundle))
-	{
-		vehicle::add_vehicletype_callback(level.sentinelbundle.ksvehicle, &spawned);
-	}
+function __init__() {
+  clientfield::register("vehicle", "rocket_wasp_hijacked", 1, 1, "int", & handle_lod_display_for_driver, 0, 0);
+  level.sentinelbundle = struct::get_script_bundle("killstreak", "killstreak_sentinel");
+  if(isdefined(level.sentinelbundle)) {
+    vehicle::add_vehicletype_callback(level.sentinelbundle.ksvehicle, & spawned);
+  }
 }
 
 /*
@@ -52,9 +49,8 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function spawned(localclientnum)
-{
-	self.killstreakbundle = level.sentinelbundle;
+function spawned(localclientnum) {
+  self.killstreakbundle = level.sentinelbundle;
 }
 
 /*
@@ -66,17 +62,13 @@ function spawned(localclientnum)
 	Parameters: 7
 	Flags: Linked
 */
-function handle_lod_display_for_driver(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self endon(#"entityshutdown");
-	if(isdefined(self))
-	{
-		if(self islocalclientdriver(localclientnum))
-		{
-			self sethighdetail(1);
-			wait(0.05);
-			self vehicle::lights_off(localclientnum);
-		}
-	}
+function handle_lod_display_for_driver(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self endon(# "entityshutdown");
+  if(isdefined(self)) {
+    if(self islocalclientdriver(localclientnum)) {
+      self sethighdetail(1);
+      wait(0.05);
+      self vehicle::lights_off(localclientnum);
+    }
+  }
 }
-

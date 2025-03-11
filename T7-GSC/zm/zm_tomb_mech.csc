@@ -24,9 +24,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	clientfield::register("actor", "tomb_mech_eye", 21000, 1, "int", &function_8c8b6484, 0, 0);
+function init() {
+  clientfield::register("actor", "tomb_mech_eye", 21000, 1, "int", & function_8c8b6484, 0, 0);
 }
 
 /*
@@ -38,17 +37,12 @@ function init()
 	Parameters: 7
 	Flags: Linked
 */
-function function_8c8b6484(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump)
-{
-	if(newval)
-	{
-		waittillframeend();
-		var_f9e79b00 = self mapshaderconstant(localclientnum, 0, "scriptVector2", 0, 1, 3, 0);
-	}
-	else
-	{
-		waittillframeend();
-		var_f9e79b00 = self mapshaderconstant(localclientnum, 0, "scriptVector2", 0, 0, 3, 0);
-	}
+function function_8c8b6484(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
+  if(newval) {
+    waittillframeend();
+    var_f9e79b00 = self mapshaderconstant(localclientnum, 0, "scriptVector2", 0, 1, 3, 0);
+  } else {
+    waittillframeend();
+    var_f9e79b00 = self mapshaderconstant(localclientnum, 0, "scriptVector2", 0, 0, 3, 0);
+  }
 }
-

@@ -28,9 +28,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-}
+function init() {}
 
 /*
 	Name: main
@@ -41,14 +39,13 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	cybercom_gadget::registerability(1, 16);
-	level.cybercom.overdrive = spawnstruct();
-	level.cybercom.overdrive._on_give = &_on_give;
-	level.cybercom.overdrive._on_take = &_on_take;
-	level.cybercom.overdrive._on = &_on;
-	level.cybercom.overdrive._off = &_off;
+function main() {
+  cybercom_gadget::registerability(1, 16);
+  level.cybercom.overdrive = spawnstruct();
+  level.cybercom.overdrive._on_give = & _on_give;
+  level.cybercom.overdrive._on_take = & _on_take;
+  level.cybercom.overdrive._on = & _on;
+  level.cybercom.overdrive._off = & _off;
 }
 
 /*
@@ -60,9 +57,7 @@ function main()
 	Parameters: 2
 	Flags: None
 */
-function _on_flicker(slot, weapon)
-{
-}
+function _on_flicker(slot, weapon) {}
 
 /*
 	Name: _on_give
@@ -73,11 +68,10 @@ function _on_flicker(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function _on_give(slot, weapon)
-{
-	self.cybercom.targetlockcb = undefined;
-	self.cybercom.targetlockrequirementcb = undefined;
-	self thread cybercom::function_b5f4e597(weapon);
+function _on_give(slot, weapon) {
+  self.cybercom.targetlockcb = undefined;
+  self.cybercom.targetlockrequirementcb = undefined;
+  self thread cybercom::function_b5f4e597(weapon);
 }
 
 /*
@@ -89,9 +83,8 @@ function _on_give(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function _on_take(slot, weapon)
-{
-	_off(slot, weapon);
+function _on_take(slot, weapon) {
+  _off(slot, weapon);
 }
 
 /*
@@ -103,9 +96,7 @@ function _on_take(slot, weapon)
 	Parameters: 0
 	Flags: None
 */
-function _on_connect()
-{
-}
+function _on_connect() {}
 
 /*
 	Name: _on_disconnect
@@ -116,9 +107,8 @@ function _on_connect()
 	Parameters: 0
 	Flags: None
 */
-function _on_disconnect()
-{
-	self notify(#"hash_3ca9ab77");
+function _on_disconnect() {
+  self notify(# "hash_3ca9ab77");
 }
 
 /*
@@ -130,38 +120,32 @@ function _on_disconnect()
 	Parameters: 2
 	Flags: Linked
 */
-function _on(slot, weapon)
-{
-	self endon(#"hash_3ca9ab77");
-	self endon(#"death");
-	self endon(#"disconnect");
-	if(flagsys::get("gadget_overdrive_on"))
-	{
-		return;
-	}
-	wait(getdvarfloat("scr_overdrive_activationDelay_sec", 0.4));
-	self.var_7d73f4ba = self hasperk("specialty_deadshot");
-	if(!(isdefined(self.var_7d73f4ba) && self.var_7d73f4ba))
-	{
-		self setperk("specialty_deadshot");
-	}
-	self clientfield::set_to_player("overdrive_state", 1);
-	visionset_mgr::activate("visionset", "overdrive", self, 0.4, 0.1, 1.35);
-	self notify(weapon.name + "_fired");
-	level notify(weapon.name + "_fired");
-	if(self.health < (self.maxhealth * getdvarfloat("scr_overdrive_min_health", 0.35)))
-	{
-		self setnormalhealth(getdvarfloat("scr_overdrive_min_health", 0.35));
-	}
-	self playrumbleonentity("tank_rumble");
-	if(isplayer(self))
-	{
-		itemindex = getitemindexfromref("cybercom_overdrive");
-		if(isdefined(itemindex))
-		{
-			self adddstat("ItemStats", itemindex, "stats", "used", "statValue", 1);
-		}
-	}
+function _on(slot, weapon) {
+  self endon(# "hash_3ca9ab77");
+  self endon(# "death");
+  self endon(# "disconnect");
+  if(flagsys::get("gadget_overdrive_on")) {
+    return;
+  }
+  wait(getdvarfloat("scr_overdrive_activationDelay_sec", 0.4));
+  self.var_7d73f4ba = self hasperk("specialty_deadshot");
+  if(!(isdefined(self.var_7d73f4ba) && self.var_7d73f4ba)) {
+    self setperk("specialty_deadshot");
+  }
+  self clientfield::set_to_player("overdrive_state", 1);
+  visionset_mgr::activate("visionset", "overdrive", self, 0.4, 0.1, 1.35);
+  self notify(weapon.name + "_fired");
+  level notify(weapon.name + "_fired");
+  if(self.health < (self.maxhealth * getdvarfloat("scr_overdrive_min_health", 0.35))) {
+    self setnormalhealth(getdvarfloat("scr_overdrive_min_health", 0.35));
+  }
+  self playrumbleonentity("tank_rumble");
+  if(isplayer(self)) {
+    itemindex = getitemindexfromref("cybercom_overdrive");
+    if(isdefined(itemindex)) {
+      self adddstat("ItemStats", itemindex, "stats", "used", "statValue", 1);
+    }
+  }
 }
 
 /*
@@ -173,13 +157,10 @@ function _on(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function _off(slot, weapon)
-{
-	self notify(#"hash_3ca9ab77");
-	if(!(isdefined(self.var_7d73f4ba) && self.var_7d73f4ba))
-	{
-		self unsetperk("specialty_deadshot");
-	}
-	self clientfield::set_to_player("overdrive_state", 0);
+function _off(slot, weapon) {
+  self notify(# "hash_3ca9ab77");
+  if(!(isdefined(self.var_7d73f4ba) && self.var_7d73f4ba)) {
+    self unsetperk("specialty_deadshot");
+  }
+  self clientfield::set_to_player("overdrive_state", 0);
 }
-

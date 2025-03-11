@@ -17,38 +17,29 @@
 	Parameters: 2
 	Flags: Linked
 */
-function callback(event, params)
-{
-	if(isdefined(level._callbacks) && isdefined(level._callbacks[event]))
-	{
-		for(i = 0; i < level._callbacks[event].size; i++)
-		{
-			callback = level._callbacks[event][i][0];
-			obj = level._callbacks[event][i][1];
-			if(!isdefined(callback))
-			{
-				continue;
-			}
-			if(isdefined(obj))
-			{
-				if(isdefined(params))
-				{
-					obj thread [[callback]](self, params);
-				}
-				else
-				{
-					obj thread [[callback]](self);
-				}
-				continue;
-			}
-			if(isdefined(params))
-			{
-				self thread [[callback]](params);
-				continue;
-			}
-			self thread [[callback]]();
-		}
-	}
+function callback(event, params) {
+  if(isdefined(level._callbacks) && isdefined(level._callbacks[event])) {
+    for (i = 0; i < level._callbacks[event].size; i++) {
+      callback = level._callbacks[event][i][0];
+      obj = level._callbacks[event][i][1];
+      if(!isdefined(callback)) {
+        continue;
+      }
+      if(isdefined(obj)) {
+        if(isdefined(params)) {
+          obj thread[[callback]](self, params);
+        } else {
+          obj thread[[callback]](self);
+        }
+        continue;
+      }
+      if(isdefined(params)) {
+        self thread[[callback]](params);
+        continue;
+      }
+      self thread[[callback]]();
+    }
+  }
 }
 
 /*
@@ -60,30 +51,24 @@ function callback(event, params)
 	Parameters: 3
 	Flags: Linked
 */
-function add_callback(event, func, obj)
-{
-	/#
-		assert(isdefined(event), "");
-	#/
-	if(!isdefined(level._callbacks) || !isdefined(level._callbacks[event]))
-	{
-		level._callbacks[event] = [];
-	}
-	foreach(callback in level._callbacks[event])
-	{
-		if(callback[0] == func)
-		{
-			if(!isdefined(obj) || callback[1] == obj)
-			{
-				return;
-			}
-		}
-	}
-	array::add(level._callbacks[event], array(func, obj), 0);
-	if(isdefined(obj))
-	{
-		obj thread remove_callback_on_death(event, func);
-	}
+function add_callback(event, func, obj) {
+  /#
+  assert(isdefined(event), "");
+  # /
+    if(!isdefined(level._callbacks) || !isdefined(level._callbacks[event])) {
+      level._callbacks[event] = [];
+    }
+  foreach(callback in level._callbacks[event]) {
+    if(callback[0] == func) {
+      if(!isdefined(obj) || callback[1] == obj) {
+        return;
+      }
+    }
+  }
+  array::add(level._callbacks[event], array(func, obj), 0);
+  if(isdefined(obj)) {
+    obj thread remove_callback_on_death(event, func);
+  }
 }
 
 /*
@@ -95,10 +80,9 @@ function add_callback(event, func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function remove_callback_on_death(event, func)
-{
-	self waittill(#"death");
-	remove_callback(event, func, self);
+function remove_callback_on_death(event, func) {
+  self waittill(# "death");
+  remove_callback(event, func, self);
 }
 
 /*
@@ -110,25 +94,21 @@ function remove_callback_on_death(event, func)
 	Parameters: 3
 	Flags: Linked
 */
-function remove_callback(event, func, obj)
-{
-	/#
-		assert(isdefined(event), "");
-	#/
-	/#
-		assert(isdefined(level._callbacks[event]), "");
-	#/
-	foreach(index, func_group in level._callbacks[event])
-	{
-		if(func_group[0] == func)
-		{
-			if(func_group[1] === obj)
-			{
-				arrayremoveindex(level._callbacks[event], index, 0);
-				break;
-			}
-		}
-	}
+function remove_callback(event, func, obj) {
+  /#
+  assert(isdefined(event), "");
+  # /
+    /#
+  assert(isdefined(level._callbacks[event]), "");
+  # /
+    foreach(index, func_group in level._callbacks[event]) {
+      if(func_group[0] == func) {
+        if(func_group[1] === obj) {
+          arrayremoveindex(level._callbacks[event], index, 0);
+          break;
+        }
+      }
+    }
 }
 
 /*
@@ -140,9 +120,8 @@ function remove_callback(event, func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_finalize_initialization(func, obj)
-{
-	add_callback(#"hash_36fb1b1a", func, obj);
+function on_finalize_initialization(func, obj) {
+  add_callback(# "hash_36fb1b1a", func, obj);
 }
 
 /*
@@ -154,9 +133,8 @@ function on_finalize_initialization(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_connect(func, obj)
-{
-	add_callback(#"hash_eaffea17", func, obj);
+function on_connect(func, obj) {
+  add_callback(# "hash_eaffea17", func, obj);
 }
 
 /*
@@ -168,9 +146,8 @@ function on_connect(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function remove_on_connect(func, obj)
-{
-	remove_callback(#"hash_eaffea17", func, obj);
+function remove_on_connect(func, obj) {
+  remove_callback(# "hash_eaffea17", func, obj);
 }
 
 /*
@@ -182,9 +159,8 @@ function remove_on_connect(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_connecting(func, obj)
-{
-	add_callback(#"hash_fefe13f5", func, obj);
+function on_connecting(func, obj) {
+  add_callback(# "hash_fefe13f5", func, obj);
 }
 
 /*
@@ -196,9 +172,8 @@ function on_connecting(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_connecting(func, obj)
-{
-	remove_callback(#"hash_fefe13f5", func, obj);
+function remove_on_connecting(func, obj) {
+  remove_callback(# "hash_fefe13f5", func, obj);
 }
 
 /*
@@ -210,9 +185,8 @@ function remove_on_connecting(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_disconnect(func, obj)
-{
-	add_callback(#"hash_aebdd257", func, obj);
+function on_disconnect(func, obj) {
+  add_callback(# "hash_aebdd257", func, obj);
 }
 
 /*
@@ -224,9 +198,8 @@ function on_disconnect(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_disconnect(func, obj)
-{
-	remove_callback(#"hash_aebdd257", func, obj);
+function remove_on_disconnect(func, obj) {
+  remove_callback(# "hash_aebdd257", func, obj);
 }
 
 /*
@@ -238,9 +211,8 @@ function remove_on_disconnect(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_spawned(func, obj)
-{
-	add_callback(#"hash_bc12b61f", func, obj);
+function on_spawned(func, obj) {
+  add_callback(# "hash_bc12b61f", func, obj);
 }
 
 /*
@@ -252,9 +224,8 @@ function on_spawned(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_spawned(func, obj)
-{
-	remove_callback(#"hash_bc12b61f", func, obj);
+function remove_on_spawned(func, obj) {
+  remove_callback(# "hash_bc12b61f", func, obj);
 }
 
 /*
@@ -266,9 +237,8 @@ function remove_on_spawned(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_loadout(func, obj)
-{
-	add_callback(#"hash_33bba039", func, obj);
+function on_loadout(func, obj) {
+  add_callback(# "hash_33bba039", func, obj);
 }
 
 /*
@@ -280,9 +250,8 @@ function on_loadout(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function remove_on_loadout(func, obj)
-{
-	remove_callback(#"hash_33bba039", func, obj);
+function remove_on_loadout(func, obj) {
+  remove_callback(# "hash_33bba039", func, obj);
 }
 
 /*
@@ -294,9 +263,8 @@ function remove_on_loadout(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function on_player_damage(func, obj)
-{
-	add_callback(#"hash_ab5ecf6c", func, obj);
+function on_player_damage(func, obj) {
+  add_callback(# "hash_ab5ecf6c", func, obj);
 }
 
 /*
@@ -308,9 +276,8 @@ function on_player_damage(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_player_damage(func, obj)
-{
-	remove_callback(#"hash_ab5ecf6c", func, obj);
+function remove_on_player_damage(func, obj) {
+  remove_callback(# "hash_ab5ecf6c", func, obj);
 }
 
 /*
@@ -322,9 +289,8 @@ function remove_on_player_damage(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_start_gametype(func, obj)
-{
-	add_callback(#"hash_cc62acca", func, obj);
+function on_start_gametype(func, obj) {
+  add_callback(# "hash_cc62acca", func, obj);
 }
 
 /*
@@ -336,9 +302,8 @@ function on_start_gametype(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_joined_team(func, obj)
-{
-	add_callback(#"hash_95a6c4c0", func, obj);
+function on_joined_team(func, obj) {
+  add_callback(# "hash_95a6c4c0", func, obj);
 }
 
 /*
@@ -350,9 +315,8 @@ function on_joined_team(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_joined_spectate(func, obj)
-{
-	add_callback(#"hash_4c5ae192", func, obj);
+function on_joined_spectate(func, obj) {
+  add_callback(# "hash_4c5ae192", func, obj);
 }
 
 /*
@@ -364,9 +328,8 @@ function on_joined_spectate(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_player_killed(func, obj)
-{
-	add_callback(#"hash_bc435202", func, obj);
+function on_player_killed(func, obj) {
+  add_callback(# "hash_bc435202", func, obj);
 }
 
 /*
@@ -378,9 +341,8 @@ function on_player_killed(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_player_killed(func, obj)
-{
-	remove_callback(#"hash_bc435202", func, obj);
+function remove_on_player_killed(func, obj) {
+  remove_callback(# "hash_bc435202", func, obj);
 }
 
 /*
@@ -392,9 +354,8 @@ function remove_on_player_killed(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function on_ai_killed(func, obj)
-{
-	add_callback(#"hash_fc2ec5ff", func, obj);
+function on_ai_killed(func, obj) {
+  add_callback(# "hash_fc2ec5ff", func, obj);
 }
 
 /*
@@ -406,9 +367,8 @@ function on_ai_killed(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_ai_killed(func, obj)
-{
-	remove_callback(#"hash_fc2ec5ff", func, obj);
+function remove_on_ai_killed(func, obj) {
+  remove_callback(# "hash_fc2ec5ff", func, obj);
 }
 
 /*
@@ -420,9 +380,8 @@ function remove_on_ai_killed(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_actor_killed(func, obj)
-{
-	add_callback(#"hash_8c38c12e", func, obj);
+function on_actor_killed(func, obj) {
+  add_callback(# "hash_8c38c12e", func, obj);
 }
 
 /*
@@ -434,9 +393,8 @@ function on_actor_killed(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_actor_killed(func, obj)
-{
-	remove_callback(#"hash_8c38c12e", func, obj);
+function remove_on_actor_killed(func, obj) {
+  remove_callback(# "hash_8c38c12e", func, obj);
 }
 
 /*
@@ -448,9 +406,8 @@ function remove_on_actor_killed(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_vehicle_spawned(func, obj)
-{
-	add_callback(#"hash_bae82b92", func, obj);
+function on_vehicle_spawned(func, obj) {
+  add_callback(# "hash_bae82b92", func, obj);
 }
 
 /*
@@ -462,9 +419,8 @@ function on_vehicle_spawned(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_vehicle_spawned(func, obj)
-{
-	remove_callback(#"hash_bae82b92", func, obj);
+function remove_on_vehicle_spawned(func, obj) {
+  remove_callback(# "hash_bae82b92", func, obj);
 }
 
 /*
@@ -476,9 +432,8 @@ function remove_on_vehicle_spawned(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_vehicle_killed(func, obj)
-{
-	add_callback(#"hash_acb66515", func, obj);
+function on_vehicle_killed(func, obj) {
+  add_callback(# "hash_acb66515", func, obj);
 }
 
 /*
@@ -490,9 +445,8 @@ function on_vehicle_killed(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_vehicle_killed(func, obj)
-{
-	remove_callback(#"hash_acb66515", func, obj);
+function remove_on_vehicle_killed(func, obj) {
+  remove_callback(# "hash_acb66515", func, obj);
 }
 
 /*
@@ -504,9 +458,8 @@ function remove_on_vehicle_killed(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function on_ai_damage(func, obj)
-{
-	add_callback(#"hash_eb4a4369", func, obj);
+function on_ai_damage(func, obj) {
+  add_callback(# "hash_eb4a4369", func, obj);
 }
 
 /*
@@ -518,9 +471,8 @@ function on_ai_damage(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_ai_damage(func, obj)
-{
-	remove_callback(#"hash_eb4a4369", func, obj);
+function remove_on_ai_damage(func, obj) {
+  remove_callback(# "hash_eb4a4369", func, obj);
 }
 
 /*
@@ -532,9 +484,8 @@ function remove_on_ai_damage(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_ai_spawned(func, obj)
-{
-	add_callback(#"hash_f96ca9bc", func, obj);
+function on_ai_spawned(func, obj) {
+  add_callback(# "hash_f96ca9bc", func, obj);
 }
 
 /*
@@ -546,9 +497,8 @@ function on_ai_spawned(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_ai_spawned(func, obj)
-{
-	remove_callback(#"hash_f96ca9bc", func, obj);
+function remove_on_ai_spawned(func, obj) {
+  remove_callback(# "hash_f96ca9bc", func, obj);
 }
 
 /*
@@ -560,9 +510,8 @@ function remove_on_ai_spawned(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_actor_damage(func, obj)
-{
-	add_callback(#"hash_7b543e98", func, obj);
+function on_actor_damage(func, obj) {
+  add_callback(# "hash_7b543e98", func, obj);
 }
 
 /*
@@ -574,9 +523,8 @@ function on_actor_damage(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_actor_damage(func, obj)
-{
-	remove_callback(#"hash_7b543e98", func, obj);
+function remove_on_actor_damage(func, obj) {
+  remove_callback(# "hash_7b543e98", func, obj);
 }
 
 /*
@@ -588,9 +536,8 @@ function remove_on_actor_damage(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_vehicle_damage(func, obj)
-{
-	add_callback(#"hash_9bd1e27f", func, obj);
+function on_vehicle_damage(func, obj) {
+  add_callback(# "hash_9bd1e27f", func, obj);
 }
 
 /*
@@ -602,9 +549,8 @@ function on_vehicle_damage(func, obj)
 	Parameters: 2
 	Flags: None
 */
-function remove_on_vehicle_damage(func, obj)
-{
-	remove_callback(#"hash_9bd1e27f", func, obj);
+function remove_on_vehicle_damage(func, obj) {
+  remove_callback(# "hash_9bd1e27f", func, obj);
 }
 
 /*
@@ -616,9 +562,8 @@ function remove_on_vehicle_damage(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_laststand(func, obj)
-{
-	add_callback(#"hash_6751ab5b", func, obj);
+function on_laststand(func, obj) {
+  add_callback(# "hash_6751ab5b", func, obj);
 }
 
 /*
@@ -630,9 +575,8 @@ function on_laststand(func, obj)
 	Parameters: 2
 	Flags: Linked
 */
-function on_challenge_complete(func, obj)
-{
-	add_callback(#"hash_b286c65c", func, obj);
+function on_challenge_complete(func, obj) {
+  add_callback(# "hash_b286c65c", func, obj);
 }
 
 /*
@@ -644,10 +588,9 @@ function on_challenge_complete(func, obj)
 	Parameters: 0
 	Flags: Linked
 */
-function codecallback_preinitialization()
-{
-	callback(#"hash_ecc6aecf");
-	system::run_pre_systems();
+function codecallback_preinitialization() {
+  callback(# "hash_ecc6aecf");
+  system::run_pre_systems();
 }
 
 /*
@@ -659,10 +602,9 @@ function codecallback_preinitialization()
 	Parameters: 0
 	Flags: Linked
 */
-function codecallback_finalizeinitialization()
-{
-	system::run_post_systems();
-	callback(#"hash_36fb1b1a");
+function codecallback_finalizeinitialization() {
+  system::run_post_systems();
+  callback(# "hash_36fb1b1a");
 }
 
 /*
@@ -674,13 +616,11 @@ function codecallback_finalizeinitialization()
 	Parameters: 2
 	Flags: Linked
 */
-function add_weapon_damage(weapontype, callback)
-{
-	if(!isdefined(level.weapon_damage_callback_array))
-	{
-		level.weapon_damage_callback_array = [];
-	}
-	level.weapon_damage_callback_array[weapontype] = callback;
+function add_weapon_damage(weapontype, callback) {
+  if(!isdefined(level.weapon_damage_callback_array)) {
+    level.weapon_damage_callback_array = [];
+  }
+  level.weapon_damage_callback_array[weapontype] = callback;
 }
 
 /*
@@ -692,22 +632,18 @@ function add_weapon_damage(weapontype, callback)
 	Parameters: 5
 	Flags: None
 */
-function callback_weapon_damage(eattacker, einflictor, weapon, meansofdeath, damage)
-{
-	if(isdefined(level.weapon_damage_callback_array))
-	{
-		if(isdefined(level.weapon_damage_callback_array[weapon]))
-		{
-			self thread [[level.weapon_damage_callback_array[weapon]]](eattacker, einflictor, weapon, meansofdeath, damage);
-			return true;
-		}
-		if(isdefined(level.weapon_damage_callback_array[weapon.rootweapon]))
-		{
-			self thread [[level.weapon_damage_callback_array[weapon.rootweapon]]](eattacker, einflictor, weapon, meansofdeath, damage);
-			return true;
-		}
-	}
-	return false;
+function callback_weapon_damage(eattacker, einflictor, weapon, meansofdeath, damage) {
+  if(isdefined(level.weapon_damage_callback_array)) {
+    if(isdefined(level.weapon_damage_callback_array[weapon])) {
+      self thread[[level.weapon_damage_callback_array[weapon]]](eattacker, einflictor, weapon, meansofdeath, damage);
+      return true;
+    }
+    if(isdefined(level.weapon_damage_callback_array[weapon.rootweapon])) {
+      self thread[[level.weapon_damage_callback_array[weapon.rootweapon]]](eattacker, einflictor, weapon, meansofdeath, damage);
+      return true;
+    }
+  }
+  return false;
 }
 
 /*
@@ -719,13 +655,11 @@ function callback_weapon_damage(eattacker, einflictor, weapon, meansofdeath, dam
 	Parameters: 1
 	Flags: Linked
 */
-function add_weapon_watcher(callback)
-{
-	if(!isdefined(level.weapon_watcher_callback_array))
-	{
-		level.weapon_watcher_callback_array = [];
-	}
-	array::add(level.weapon_watcher_callback_array, callback);
+function add_weapon_watcher(callback) {
+  if(!isdefined(level.weapon_watcher_callback_array)) {
+    level.weapon_watcher_callback_array = [];
+  }
+  array::add(level.weapon_watcher_callback_array, callback);
 }
 
 /*
@@ -737,15 +671,12 @@ function add_weapon_watcher(callback)
 	Parameters: 0
 	Flags: Linked
 */
-function callback_weapon_watcher()
-{
-	if(isdefined(level.weapon_watcher_callback_array))
-	{
-		for(x = 0; x < level.weapon_watcher_callback_array.size; x++)
-		{
-			self [[level.weapon_watcher_callback_array[x]]]();
-		}
-	}
+function callback_weapon_watcher() {
+  if(isdefined(level.weapon_watcher_callback_array)) {
+    for (x = 0; x < level.weapon_watcher_callback_array.size; x++) {
+      self[[level.weapon_watcher_callback_array[x]]]();
+    }
+  }
 }
 
 /*
@@ -757,13 +688,13 @@ function callback_weapon_watcher()
 	Parameters: 0
 	Flags: Linked
 */
-function codecallback_startgametype()
-{
-	if(!isdefined(level.gametypestarted) || !level.gametypestarted)
-	{
-		[[level.callbackstartgametype]]();
-		level.gametypestarted = 1;
-	}
+function codecallback_startgametype() {
+  if(!isdefined(level.gametypestarted) || !level.gametypestarted) {
+    [
+      [level.callbackstartgametype]
+    ]();
+    level.gametypestarted = 1;
+  }
 }
 
 /*
@@ -775,10 +706,11 @@ function codecallback_startgametype()
 	Parameters: 0
 	Flags: Linked
 */
-function codecallback_playerconnect()
-{
-	self endon(#"disconnect");
-	[[level.callbackplayerconnect]]();
+function codecallback_playerconnect() {
+  self endon(# "disconnect");
+  [
+    [level.callbackplayerconnect]
+  ]();
 }
 
 /*
@@ -790,14 +722,15 @@ function codecallback_playerconnect()
 	Parameters: 0
 	Flags: Linked
 */
-function codecallback_playerdisconnect()
-{
-	self notify(#"death");
-	self.player_disconnected = 1;
-	self notify(#"disconnect");
-	level notify(#"disconnect", self);
-	[[level.callbackplayerdisconnect]]();
-	callback(#"hash_aebdd257");
+function codecallback_playerdisconnect() {
+  self notify(# "death");
+  self.player_disconnected = 1;
+  self notify(# "disconnect");
+  level notify(# "disconnect", self);
+  [
+    [level.callbackplayerdisconnect]
+  ]();
+  callback(# "hash_aebdd257");
 }
 
 /*
@@ -809,12 +742,11 @@ function codecallback_playerdisconnect()
 	Parameters: 0
 	Flags: None
 */
-function codecallback_migration_setupgametype()
-{
-	/#
-		println("");
-	#/
-	simple_hostmigration::migration_setupgametype();
+function codecallback_migration_setupgametype() {
+  /#
+  println("");
+  # /
+    simple_hostmigration::migration_setupgametype();
 }
 
 /*
@@ -826,12 +758,12 @@ function codecallback_migration_setupgametype()
 	Parameters: 0
 	Flags: Linked
 */
-function codecallback_hostmigration()
-{
-	/#
-		println("");
-	#/
-	[[level.callbackhostmigration]]();
+function codecallback_hostmigration() {
+  /#
+  println("");
+  # / [
+    [level.callbackhostmigration]
+  ]();
 }
 
 /*
@@ -843,12 +775,12 @@ function codecallback_hostmigration()
 	Parameters: 0
 	Flags: Linked
 */
-function codecallback_hostmigrationsave()
-{
-	/#
-		println("");
-	#/
-	[[level.callbackhostmigrationsave]]();
+function codecallback_hostmigrationsave() {
+  /#
+  println("");
+  # / [
+    [level.callbackhostmigrationsave]
+  ]();
 }
 
 /*
@@ -860,12 +792,12 @@ function codecallback_hostmigrationsave()
 	Parameters: 0
 	Flags: Linked
 */
-function codecallback_prehostmigrationsave()
-{
-	/#
-		println("");
-	#/
-	[[level.callbackprehostmigrationsave]]();
+function codecallback_prehostmigrationsave() {
+  /#
+  println("");
+  # / [
+    [level.callbackprehostmigrationsave]
+  ]();
 }
 
 /*
@@ -877,12 +809,12 @@ function codecallback_prehostmigrationsave()
 	Parameters: 0
 	Flags: Linked
 */
-function codecallback_playermigrated()
-{
-	/#
-		println("");
-	#/
-	[[level.callbackplayermigrated]]();
+function codecallback_playermigrated() {
+  /#
+  println("");
+  # / [
+    [level.callbackplayermigrated]
+  ]();
 }
 
 /*
@@ -894,10 +826,11 @@ function codecallback_playermigrated()
 	Parameters: 13
 	Flags: Linked
 */
-function codecallback_playerdamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, vsurfacenormal)
-{
-	self endon(#"disconnect");
-	[[level.callbackplayerdamage]](einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, vsurfacenormal);
+function codecallback_playerdamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, vsurfacenormal) {
+  self endon(# "disconnect");
+  [
+    [level.callbackplayerdamage]
+  ](einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, vsurfacenormal);
 }
 
 /*
@@ -909,10 +842,11 @@ function codecallback_playerdamage(einflictor, eattacker, idamage, idflags, smea
 	Parameters: 9
 	Flags: Linked
 */
-function codecallback_playerkilled(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset, deathanimduration)
-{
-	self endon(#"disconnect");
-	[[level.callbackplayerkilled]](einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset, deathanimduration);
+function codecallback_playerkilled(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset, deathanimduration) {
+  self endon(# "disconnect");
+  [
+    [level.callbackplayerkilled]
+  ](einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset, deathanimduration);
 }
 
 /*
@@ -924,10 +858,11 @@ function codecallback_playerkilled(einflictor, eattacker, idamage, smeansofdeath
 	Parameters: 9
 	Flags: Linked
 */
-function codecallback_playerlaststand(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset, delayoverride)
-{
-	self endon(#"disconnect");
-	[[level.callbackplayerlaststand]](einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset, delayoverride);
+function codecallback_playerlaststand(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset, delayoverride) {
+  self endon(# "disconnect");
+  [
+    [level.callbackplayerlaststand]
+  ](einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset, delayoverride);
 }
 
 /*
@@ -939,10 +874,11 @@ function codecallback_playerlaststand(einflictor, eattacker, idamage, smeansofde
 	Parameters: 8
 	Flags: Linked
 */
-function codecallback_playermelee(eattacker, idamage, weapon, vorigin, vdir, boneindex, shieldhit, frombehind)
-{
-	self endon(#"disconnect");
-	[[level.callbackplayermelee]](eattacker, idamage, weapon, vorigin, vdir, boneindex, shieldhit, frombehind);
+function codecallback_playermelee(eattacker, idamage, weapon, vorigin, vdir, boneindex, shieldhit, frombehind) {
+  self endon(# "disconnect");
+  [
+    [level.callbackplayermelee]
+  ](eattacker, idamage, weapon, vorigin, vdir, boneindex, shieldhit, frombehind);
 }
 
 /*
@@ -954,9 +890,10 @@ function codecallback_playermelee(eattacker, idamage, weapon, vorigin, vdir, bon
 	Parameters: 1
 	Flags: Linked
 */
-function codecallback_actorspawned(spawner)
-{
-	[[level.callbackactorspawned]](spawner);
+function codecallback_actorspawned(spawner) {
+  [
+    [level.callbackactorspawned]
+  ](spawner);
 }
 
 /*
@@ -968,9 +905,10 @@ function codecallback_actorspawned(spawner)
 	Parameters: 15
 	Flags: Linked
 */
-function codecallback_actordamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, modelindex, surfacetype, surfacenormal)
-{
-	[[level.callbackactordamage]](einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, modelindex, surfacetype, surfacenormal);
+function codecallback_actordamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, modelindex, surfacetype, surfacenormal) {
+  [
+    [level.callbackactordamage]
+  ](einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, modelindex, surfacetype, surfacenormal);
 }
 
 /*
@@ -982,9 +920,10 @@ function codecallback_actordamage(einflictor, eattacker, idamage, idflags, smean
 	Parameters: 8
 	Flags: Linked
 */
-function codecallback_actorkilled(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset)
-{
-	[[level.callbackactorkilled]](einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset);
+function codecallback_actorkilled(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset) {
+  [
+    [level.callbackactorkilled]
+  ](einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, timeoffset);
 }
 
 /*
@@ -996,9 +935,10 @@ function codecallback_actorkilled(einflictor, eattacker, idamage, smeansofdeath,
 	Parameters: 1
 	Flags: Linked
 */
-function codecallback_actorcloned(original)
-{
-	[[level.callbackactorcloned]](original);
+function codecallback_actorcloned(original) {
+  [
+    [level.callbackactorcloned]
+  ](original);
 }
 
 /*
@@ -1010,12 +950,12 @@ function codecallback_actorcloned(original)
 	Parameters: 1
 	Flags: Linked
 */
-function codecallback_vehiclespawned(spawner)
-{
-	if(isdefined(level.callbackvehiclespawned))
-	{
-		[[level.callbackvehiclespawned]](spawner);
-	}
+function codecallback_vehiclespawned(spawner) {
+  if(isdefined(level.callbackvehiclespawned)) {
+    [
+      [level.callbackvehiclespawned]
+    ](spawner);
+  }
 }
 
 /*
@@ -1027,9 +967,10 @@ function codecallback_vehiclespawned(spawner)
 	Parameters: 8
 	Flags: Linked
 */
-function codecallback_vehiclekilled(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime)
-{
-	[[level.callbackvehiclekilled]](einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime);
+function codecallback_vehiclekilled(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
+  [
+    [level.callbackvehiclekilled]
+  ](einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime);
 }
 
 /*
@@ -1041,9 +982,10 @@ function codecallback_vehiclekilled(einflictor, eattacker, idamage, smeansofdeat
 	Parameters: 15
 	Flags: Linked
 */
-function codecallback_vehicledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, damagefromunderneath, modelindex, partname, vsurfacenormal)
-{
-	[[level.callbackvehicledamage]](einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, damagefromunderneath, modelindex, partname, vsurfacenormal);
+function codecallback_vehicledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, damagefromunderneath, modelindex, partname, vsurfacenormal) {
+  [
+    [level.callbackvehicledamage]
+  ](einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, damagefromunderneath, modelindex, partname, vsurfacenormal);
 }
 
 /*
@@ -1055,9 +997,10 @@ function codecallback_vehicledamage(einflictor, eattacker, idamage, idflags, sme
 	Parameters: 13
 	Flags: Linked
 */
-function codecallback_vehicleradiusdamage(einflictor, eattacker, idamage, finnerdamage, fouterdamage, idflags, smeansofdeath, weapon, vpoint, fradius, fconeanglecos, vconedir, timeoffset)
-{
-	[[level.callbackvehicleradiusdamage]](einflictor, eattacker, idamage, finnerdamage, fouterdamage, idflags, smeansofdeath, weapon, vpoint, fradius, fconeanglecos, vconedir, timeoffset);
+function codecallback_vehicleradiusdamage(einflictor, eattacker, idamage, finnerdamage, fouterdamage, idflags, smeansofdeath, weapon, vpoint, fradius, fconeanglecos, vconedir, timeoffset) {
+  [
+    [level.callbackvehicleradiusdamage]
+  ](einflictor, eattacker, idamage, finnerdamage, fouterdamage, idflags, smeansofdeath, weapon, vpoint, fradius, fconeanglecos, vconedir, timeoffset);
 }
 
 /*
@@ -1069,17 +1012,16 @@ function codecallback_vehicleradiusdamage(einflictor, eattacker, idamage, finner
 	Parameters: 0
 	Flags: Linked
 */
-function finishcustomtraversallistener()
-{
-	self endon(#"death");
-	self waittillmatch(#"custom_traversal_anim_finished");
-	self finishtraversal();
-	self unlink();
-	self.usegoalanimweight = 0;
-	self.blockingpain = 0;
-	self.customtraverseendnode = undefined;
-	self.customtraversestartnode = undefined;
-	self notify(#"custom_traversal_cleanup", "end");
+function finishcustomtraversallistener() {
+  self endon(# "death");
+  self waittillmatch(# "custom_traversal_anim_finished");
+  self finishtraversal();
+  self unlink();
+  self.usegoalanimweight = 0;
+  self.blockingpain = 0;
+  self.customtraverseendnode = undefined;
+  self.customtraversestartnode = undefined;
+  self notify(# "custom_traversal_cleanup", "end");
 }
 
 /*
@@ -1091,16 +1033,14 @@ function finishcustomtraversallistener()
 	Parameters: 0
 	Flags: Linked
 */
-function killedcustomtraversallistener()
-{
-	self endon(#"custom_traversal_cleanup");
-	self waittill(#"death");
-	if(isdefined(self))
-	{
-		self finishtraversal();
-		self stopanimscripted();
-		self unlink();
-	}
+function killedcustomtraversallistener() {
+  self endon(# "custom_traversal_cleanup");
+  self waittill(# "death");
+  if(isdefined(self)) {
+    self finishtraversal();
+    self stopanimscripted();
+    self unlink();
+  }
 }
 
 /*
@@ -1112,22 +1052,20 @@ function killedcustomtraversallistener()
 	Parameters: 10
 	Flags: Linked
 */
-function codecallback_playcustomtraversal(entity, beginparent, endparent, origin, angles, animhandle, animmode, playbackspeed, goaltime, lerptime)
-{
-	entity.blockingpain = 1;
-	entity.usegoalanimweight = 1;
-	entity.customtraverseendnode = entity.traverseendnode;
-	entity.customtraversestartnode = entity.traversestartnode;
-	entity animmode("noclip", 0);
-	entity orientmode("face angle", angles[1]);
-	if(isdefined(endparent))
-	{
-		offset = entity.origin - endparent.origin;
-		entity linkto(endparent, "", offset);
-	}
-	entity animscripted("custom_traversal_anim_finished", origin, angles, animhandle, animmode, undefined, playbackspeed, goaltime, lerptime);
-	entity thread finishcustomtraversallistener();
-	entity thread killedcustomtraversallistener();
+function codecallback_playcustomtraversal(entity, beginparent, endparent, origin, angles, animhandle, animmode, playbackspeed, goaltime, lerptime) {
+  entity.blockingpain = 1;
+  entity.usegoalanimweight = 1;
+  entity.customtraverseendnode = entity.traverseendnode;
+  entity.customtraversestartnode = entity.traversestartnode;
+  entity animmode("noclip", 0);
+  entity orientmode("face angle", angles[1]);
+  if(isdefined(endparent)) {
+    offset = entity.origin - endparent.origin;
+    entity linkto(endparent, "", offset);
+  }
+  entity animscripted("custom_traversal_anim_finished", origin, angles, animhandle, animmode, undefined, playbackspeed, goaltime, lerptime);
+  entity thread finishcustomtraversallistener();
+  entity thread killedcustomtraversallistener();
 }
 
 /*
@@ -1139,15 +1077,12 @@ function codecallback_playcustomtraversal(entity, beginparent, endparent, origin
 	Parameters: 2
 	Flags: None
 */
-function codecallback_faceeventnotify(notify_msg, ent)
-{
-	if(isdefined(ent) && isdefined(ent.do_face_anims) && ent.do_face_anims)
-	{
-		if(isdefined(level.face_event_handler) && isdefined(level.face_event_handler.events[notify_msg]))
-		{
-			ent sendfaceevent(level.face_event_handler.events[notify_msg]);
-		}
-	}
+function codecallback_faceeventnotify(notify_msg, ent) {
+  if(isdefined(ent) && isdefined(ent.do_face_anims) && ent.do_face_anims) {
+    if(isdefined(level.face_event_handler) && isdefined(level.face_event_handler.events[notify_msg])) {
+      ent sendfaceevent(level.face_event_handler.events[notify_msg]);
+    }
+  }
 }
 
 /*
@@ -1159,19 +1094,17 @@ function codecallback_faceeventnotify(notify_msg, ent)
 	Parameters: 2
 	Flags: Linked
 */
-function codecallback_menuresponse(action, arg)
-{
-	if(!isdefined(level.menuresponsequeue))
-	{
-		level.menuresponsequeue = [];
-		level thread menu_response_queue_pump();
-	}
-	index = level.menuresponsequeue.size;
-	level.menuresponsequeue[index] = spawnstruct();
-	level.menuresponsequeue[index].action = action;
-	level.menuresponsequeue[index].arg = arg;
-	level.menuresponsequeue[index].ent = self;
-	level notify(#"menuresponse_queue");
+function codecallback_menuresponse(action, arg) {
+  if(!isdefined(level.menuresponsequeue)) {
+    level.menuresponsequeue = [];
+    level thread menu_response_queue_pump();
+  }
+  index = level.menuresponsequeue.size;
+  level.menuresponsequeue[index] = spawnstruct();
+  level.menuresponsequeue[index].action = action;
+  level.menuresponsequeue[index].arg = arg;
+  level.menuresponsequeue[index].ent = self;
+  level notify(# "menuresponse_queue");
 }
 
 /*
@@ -1183,19 +1116,16 @@ function codecallback_menuresponse(action, arg)
 	Parameters: 0
 	Flags: Linked
 */
-function menu_response_queue_pump()
-{
-	while(true)
-	{
-		level waittill(#"menuresponse_queue");
-		do
-		{
-			level.menuresponsequeue[0].ent notify(#"menuresponse", level.menuresponsequeue[0].action, level.menuresponsequeue[0].arg);
-			arrayremoveindex(level.menuresponsequeue, 0, 0);
-			wait(0.05);
-		}
-		while(level.menuresponsequeue.size > 0);
-	}
+function menu_response_queue_pump() {
+  while (true) {
+    level waittill(# "menuresponse_queue");
+    do {
+      level.menuresponsequeue[0].ent notify(# "menuresponse", level.menuresponsequeue[0].action, level.menuresponsequeue[0].arg);
+      arrayremoveindex(level.menuresponsequeue, 0, 0);
+      wait(0.05);
+    }
+    while (level.menuresponsequeue.size > 0);
+  }
 }
 
 /*
@@ -1207,16 +1137,13 @@ function menu_response_queue_pump()
 	Parameters: 3
 	Flags: Linked
 */
-function codecallback_callserverscript(pself, label, param)
-{
-	if(!isdefined(level._animnotifyfuncs))
-	{
-		return;
-	}
-	if(isdefined(level._animnotifyfuncs[label]))
-	{
-		pself [[level._animnotifyfuncs[label]]](param);
-	}
+function codecallback_callserverscript(pself, label, param) {
+  if(!isdefined(level._animnotifyfuncs)) {
+    return;
+  }
+  if(isdefined(level._animnotifyfuncs[label])) {
+    pself[[level._animnotifyfuncs[label]]](param);
+  }
 }
 
 /*
@@ -1228,16 +1155,13 @@ function codecallback_callserverscript(pself, label, param)
 	Parameters: 2
 	Flags: Linked
 */
-function codecallback_callserverscriptonlevel(label, param)
-{
-	if(!isdefined(level._animnotifyfuncs))
-	{
-		return;
-	}
-	if(isdefined(level._animnotifyfuncs[label]))
-	{
-		level [[level._animnotifyfuncs[label]]](param);
-	}
+function codecallback_callserverscriptonlevel(label, param) {
+  if(!isdefined(level._animnotifyfuncs)) {
+    return;
+  }
+  if(isdefined(level._animnotifyfuncs[label])) {
+    level[[level._animnotifyfuncs[label]]](param);
+  }
 }
 
 /*
@@ -1249,13 +1173,12 @@ function codecallback_callserverscriptonlevel(label, param)
 	Parameters: 4
 	Flags: Linked
 */
-function codecallback_launchsidemission(str_mapname, str_gametype, int_list_index, int_lighting)
-{
-	switchmap_preload(str_mapname, str_gametype, int_lighting);
-	luinotifyevent(&"open_side_mission_countdown", 1, int_list_index);
-	wait(10);
-	luinotifyevent(&"close_side_mission_countdown");
-	switchmap_switch();
+function codecallback_launchsidemission(str_mapname, str_gametype, int_list_index, int_lighting) {
+  switchmap_preload(str_mapname, str_gametype, int_lighting);
+  luinotifyevent( & "open_side_mission_countdown", 1, int_list_index);
+  wait(10);
+  luinotifyevent( & "close_side_mission_countdown");
+  switchmap_switch();
 }
 
 /*
@@ -1267,15 +1190,12 @@ function codecallback_launchsidemission(str_mapname, str_gametype, int_list_inde
 	Parameters: 2
 	Flags: Linked
 */
-function codecallback_fadeblackscreen(duration, blendtime)
-{
-	for(i = 0; i < level.players.size; i++)
-	{
-		if(isdefined(level.players[i]))
-		{
-			level.players[i] thread hud::fade_to_black_for_x_sec(0, duration, blendtime, blendtime);
-		}
-	}
+function codecallback_fadeblackscreen(duration, blendtime) {
+  for (i = 0; i < level.players.size; i++) {
+    if(isdefined(level.players[i])) {
+      level.players[i] thread hud::fade_to_black_for_x_sec(0, duration, blendtime, blendtime);
+    }
+  }
 }
 
 /*
@@ -1287,9 +1207,8 @@ function codecallback_fadeblackscreen(duration, blendtime)
 	Parameters: 1
 	Flags: Linked
 */
-function codecallback_setactivecybercomability(new_ability)
-{
-	self notify(#"setcybercomability", new_ability);
+function codecallback_setactivecybercomability(new_ability) {
+  self notify(# "setcybercomability", new_ability);
 }
 
 /*
@@ -1301,29 +1220,27 @@ function codecallback_setactivecybercomability(new_ability)
 	Parameters: 0
 	Flags: Linked
 */
-function abort_level()
-{
-	/#
-		println("");
-	#/
-	level.callbackstartgametype = &callback_void;
-	level.callbackplayerconnect = &callback_void;
-	level.callbackplayerdisconnect = &callback_void;
-	level.callbackplayerdamage = &callback_void;
-	level.callbackplayerkilled = &callback_void;
-	level.callbackplayerlaststand = &callback_void;
-	level.callbackplayermelee = &callback_void;
-	level.callbackactordamage = &callback_void;
-	level.callbackactorkilled = &callback_void;
-	level.callbackvehicledamage = &callback_void;
-	level.callbackvehiclekilled = &callback_void;
-	level.callbackactorspawned = &callback_void;
-	level.callbackbotentereduseredge = &callback_void;
-	if(isdefined(level._gametype_default))
-	{
-		setdvar("g_gametype", level._gametype_default);
-	}
-	exitlevel(0);
+function abort_level() {
+  /#
+  println("");
+  # /
+    level.callbackstartgametype = & callback_void;
+  level.callbackplayerconnect = & callback_void;
+  level.callbackplayerdisconnect = & callback_void;
+  level.callbackplayerdamage = & callback_void;
+  level.callbackplayerkilled = & callback_void;
+  level.callbackplayerlaststand = & callback_void;
+  level.callbackplayermelee = & callback_void;
+  level.callbackactordamage = & callback_void;
+  level.callbackactorkilled = & callback_void;
+  level.callbackvehicledamage = & callback_void;
+  level.callbackvehiclekilled = & callback_void;
+  level.callbackactorspawned = & callback_void;
+  level.callbackbotentereduseredge = & callback_void;
+  if(isdefined(level._gametype_default)) {
+    setdvar("g_gametype", level._gametype_default);
+  }
+  exitlevel(0);
 }
 
 /*
@@ -1335,9 +1252,8 @@ function abort_level()
 	Parameters: 2
 	Flags: Linked
 */
-function codecallback_glasssmash(pos, dir)
-{
-	level notify(#"glass_smash", pos, dir);
+function codecallback_glasssmash(pos, dir) {
+  level notify(# "glass_smash", pos, dir);
 }
 
 /*
@@ -1349,9 +1265,10 @@ function codecallback_glasssmash(pos, dir)
 	Parameters: 2
 	Flags: Linked
 */
-function codecallback_botentereduseredge(startnode, endnode)
-{
-	[[level.callbackbotentereduseredge]](startnode, endnode);
+function codecallback_botentereduseredge(startnode, endnode) {
+  [
+    [level.callbackbotentereduseredge]
+  ](startnode, endnode);
 }
 
 /*
@@ -1363,24 +1280,22 @@ function codecallback_botentereduseredge(startnode, endnode)
 	Parameters: 1
 	Flags: Linked
 */
-function codecallback_decoration(name)
-{
-	a_decorations = self getdecorations(1);
-	if(!isdefined(a_decorations))
-	{
-		return;
-	}
-	if(a_decorations.size == 12)
-	{
-		self notify(#"give_achievement", "CP_ALL_DECORATIONS");
-	}
-	a_all_decorations = self getdecorations();
-	if(a_decorations.size == (a_all_decorations.size - 1))
-	{
-		self givedecoration("cp_medal_all_decorations");
-	}
-	level notify(#"decoration_awarded");
-	[[level.callbackdecorationawarded]]();
+function codecallback_decoration(name) {
+  a_decorations = self getdecorations(1);
+  if(!isdefined(a_decorations)) {
+    return;
+  }
+  if(a_decorations.size == 12) {
+    self notify(# "give_achievement", "CP_ALL_DECORATIONS");
+  }
+  a_all_decorations = self getdecorations();
+  if(a_decorations.size == (a_all_decorations.size - 1)) {
+    self givedecoration("cp_medal_all_decorations");
+  }
+  level notify(# "decoration_awarded");
+  [
+    [level.callbackdecorationawarded]
+  ]();
 }
 
 /*
@@ -1392,7 +1307,4 @@ function codecallback_decoration(name)
 	Parameters: 0
 	Flags: Linked
 */
-function callback_void()
-{
-}
-
+function callback_void() {}

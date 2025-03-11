@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("friendicons", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("friendicons", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,9 +27,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_start_gametype(&init);
+function __init__() {
+  callback::on_start_gametype( & init);
 }
 
 /*
@@ -42,30 +40,26 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	if(!level.teambased)
-	{
-		return;
-	}
-	if(getdvarstring("scr_drawfriend") == "")
-	{
-		setdvar("scr_drawfriend", "0");
-	}
-	level.drawfriend = getdvarint("scr_drawfriend");
-	/#
-		assert(isdefined(game[""]), "");
-	#/
-	/#
-		assert(isdefined(game[""]), "");
-	#/
-	callback::on_spawned(&on_player_spawned);
-	callback::on_player_killed(&on_player_killed);
-	for(;;)
-	{
-		updatefriendiconsettings();
-		wait(5);
-	}
+function init() {
+  if(!level.teambased) {
+    return;
+  }
+  if(getdvarstring("scr_drawfriend") == "") {
+    setdvar("scr_drawfriend", "0");
+  }
+  level.drawfriend = getdvarint("scr_drawfriend");
+  /#
+  assert(isdefined(game[""]), "");
+  # /
+    /#
+  assert(isdefined(game[""]), "");
+  # /
+    callback::on_spawned( & on_player_spawned);
+  callback::on_player_killed( & on_player_killed);
+  for (;;) {
+    updatefriendiconsettings();
+    wait(5);
+  }
 }
 
 /*
@@ -77,10 +71,9 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_killed()
-{
-	self endon(#"disconnect");
-	self.headicon = "";
+function on_player_killed() {
+  self endon(# "disconnect");
+  self.headicon = "";
 }
 
 /*
@@ -92,10 +85,9 @@ function on_player_killed()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_spawned()
-{
-	self endon(#"disconnect");
-	self thread showfriendicon();
+function on_player_spawned() {
+  self endon(# "disconnect");
+  self thread showfriendicon();
 }
 
 /*
@@ -107,14 +99,12 @@ function on_player_spawned()
 	Parameters: 0
 	Flags: Linked
 */
-function showfriendicon()
-{
-	if(level.drawfriend)
-	{
-		team = self.pers["team"];
-		self.headicon = game["headicon_" + team];
-		self.headiconteam = team;
-	}
+function showfriendicon() {
+  if(level.drawfriend) {
+    team = self.pers["team"];
+    self.headicon = game["headicon_" + team];
+    self.headiconteam = team;
+  }
 }
 
 /*
@@ -126,14 +116,12 @@ function showfriendicon()
 	Parameters: 0
 	Flags: Linked
 */
-function updatefriendiconsettings()
-{
-	drawfriend = getdvarfloat("scr_drawfriend");
-	if(level.drawfriend != drawfriend)
-	{
-		level.drawfriend = drawfriend;
-		updatefriendicons();
-	}
+function updatefriendiconsettings() {
+  drawfriend = getdvarfloat("scr_drawfriend");
+  if(level.drawfriend != drawfriend) {
+    level.drawfriend = drawfriend;
+    updatefriendicons();
+  }
 }
 
 /*
@@ -145,31 +133,24 @@ function updatefriendiconsettings()
 	Parameters: 0
 	Flags: Linked
 */
-function updatefriendicons()
-{
-	players = level.players;
-	for(i = 0; i < players.size; i++)
-	{
-		player = players[i];
-		if(isdefined(player.pers["team"]) && player.pers["team"] != "spectator" && player.sessionstate == "playing")
-		{
-			if(level.drawfriend)
-			{
-				team = self.pers["team"];
-				self.headicon = game["headicon_" + team];
-				self.headiconteam = team;
-				continue;
-			}
-			players = level.players;
-			for(i = 0; i < players.size; i++)
-			{
-				player = players[i];
-				if(isdefined(player.pers["team"]) && player.pers["team"] != "spectator" && player.sessionstate == "playing")
-				{
-					player.headicon = "";
-				}
-			}
-		}
-	}
+function updatefriendicons() {
+  players = level.players;
+  for (i = 0; i < players.size; i++) {
+    player = players[i];
+    if(isdefined(player.pers["team"]) && player.pers["team"] != "spectator" && player.sessionstate == "playing") {
+      if(level.drawfriend) {
+        team = self.pers["team"];
+        self.headicon = game["headicon_" + team];
+        self.headiconteam = team;
+        continue;
+      }
+      players = level.players;
+      for (i = 0; i < players.size; i++) {
+        player = players[i];
+        if(isdefined(player.pers["team"]) && player.pers["team"] != "spectator" && player.sessionstate == "playing") {
+          player.headicon = "";
+        }
+      }
+    }
+  }
 }
-

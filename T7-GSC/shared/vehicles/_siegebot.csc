@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec main()
-{
-	vehicle::add_vehicletype_callback("siegebot", &_setup_);
+function autoexec main() {
+  vehicle::add_vehicletype_callback("siegebot", & _setup_);
 }
 
 /*
@@ -31,15 +30,11 @@ function autoexec main()
 	Parameters: 1
 	Flags: Linked
 */
-function _setup_(localclientnum)
-{
-	if(isdefined(self.scriptbundlesettings))
-	{
-		settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
-	}
-	if(!isdefined(settings))
-	{
-		return;
-	}
+function _setup_(localclientnum) {
+  if(isdefined(self.scriptbundlesettings)) {
+    settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
+  }
+  if(!isdefined(settings)) {
+    return;
+  }
 }
-

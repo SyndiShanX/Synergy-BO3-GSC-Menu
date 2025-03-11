@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("classicmode", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("classicmode", & __init__, undefined, undefined);
 }
 
 /*
@@ -32,13 +31,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	level.classicmode = getgametypesetting("classicMode");
-	if(level.classicmode)
-	{
-		enableclassicmode();
-	}
+function __init__() {
+  level.classicmode = getgametypesetting("classicMode");
+  if(level.classicmode) {
+    enableclassicmode();
+  }
 }
 
 /*
@@ -50,24 +47,22 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function enableclassicmode()
-{
-	setdvar("bg_t7BlockMeleeUsageTime", 100);
-	setdvar("doublejump_enabled", 0);
-	setdvar("wallRun_enabled", 0);
-	setdvar("slide_maxTime", 550);
-	setdvar("playerEnergy_slideEnergyEnabled", 0);
-	setdvar("trm_maxSideMantleHeight", 0);
-	setdvar("trm_maxBackMantleHeight", 0);
-	setdvar("player_swimming_enabled", 0);
-	setdvar("player_swimHeightRatio", 0.9);
-	setdvar("player_sprintSpeedScale", 1.5);
-	setdvar("jump_slowdownEnable", 1);
-	setdvar("player_sprintUnlimited", 0);
-	setdvar("sprint_allowRestore", 0);
-	setdvar("sprint_allowReload", 0);
-	setdvar("sprint_allowRechamber", 0);
-	setdvar("cg_blur_time", 500);
-	setdvar("tu11_enableClassicMode", 1);
+function enableclassicmode() {
+  setdvar("bg_t7BlockMeleeUsageTime", 100);
+  setdvar("doublejump_enabled", 0);
+  setdvar("wallRun_enabled", 0);
+  setdvar("slide_maxTime", 550);
+  setdvar("playerEnergy_slideEnergyEnabled", 0);
+  setdvar("trm_maxSideMantleHeight", 0);
+  setdvar("trm_maxBackMantleHeight", 0);
+  setdvar("player_swimming_enabled", 0);
+  setdvar("player_swimHeightRatio", 0.9);
+  setdvar("player_sprintSpeedScale", 1.5);
+  setdvar("jump_slowdownEnable", 1);
+  setdvar("player_sprintUnlimited", 0);
+  setdvar("sprint_allowRestore", 0);
+  setdvar("sprint_allowReload", 0);
+  setdvar("sprint_allowRechamber", 0);
+  setdvar("cg_blur_time", 500);
+  setdvar("tu11_enableClassicMode", 1);
 }
-

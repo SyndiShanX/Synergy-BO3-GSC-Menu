@@ -23,9 +23,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("callback", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("callback", & __init__, undefined, undefined);
 }
 
 /*
@@ -37,9 +36,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	level thread set_default_callbacks();
+function __init__() {
+  level thread set_default_callbacks();
 }
 
 /*
@@ -51,15 +49,14 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function set_default_callbacks()
-{
-	level.callbackplayerspawned = &playerspawned;
-	level.callbacklocalclientconnect = &localclientconnect;
-	level.callbackentityspawned = &entityspawned;
-	level.callbackhostmigration = &host_migration;
-	level.callbackplayaifootstep = &footsteps::playaifootstep;
-	level.callbackplaylightloopexploder = &exploder::playlightloopexploder;
-	level._custom_weapon_cb_func = &spawned_weapon_type;
+function set_default_callbacks() {
+  level.callbackplayerspawned = & playerspawned;
+  level.callbacklocalclientconnect = & localclientconnect;
+  level.callbackentityspawned = & entityspawned;
+  level.callbackhostmigration = & host_migration;
+  level.callbackplayaifootstep = & footsteps::playaifootstep;
+  level.callbackplaylightloopexploder = & exploder::playlightloopexploder;
+  level._custom_weapon_cb_func = & spawned_weapon_type;
 }
 
 /*
@@ -71,16 +68,16 @@ function set_default_callbacks()
 	Parameters: 1
 	Flags: Linked
 */
-function localclientconnect(localclientnum)
-{
-	/#
-		println("" + localclientnum);
-	#/
-	callback(#"hash_da8d7d74", localclientnum);
-	if(isdefined(level.charactercustomizationsetup))
-	{
-		[[level.charactercustomizationsetup]](localclientnum);
-	}
+function localclientconnect(localclientnum) {
+  /#
+  println("" + localclientnum);
+  # /
+    callback(# "hash_da8d7d74", localclientnum);
+  if(isdefined(level.charactercustomizationsetup)) {
+    [
+      [level.charactercustomizationsetup]
+    ](localclientnum);
+  }
 }
 
 /*
@@ -92,23 +89,20 @@ function localclientconnect(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function playerspawned(localclientnum)
-{
-	self endon(#"entityshutdown");
-	if(isdefined(level._playerspawned_override))
-	{
-		self thread [[level._playerspawned_override]](localclientnum);
-		return;
-	}
-	/#
-		println("");
-	#/
-	if(self islocalplayer())
-	{
-		callback(#"hash_842e788a", localclientnum);
-	}
-	callback(#"hash_bc12b61f", localclientnum);
-	level.localplayers = getlocalplayers();
+function playerspawned(localclientnum) {
+  self endon(# "entityshutdown");
+  if(isdefined(level._playerspawned_override)) {
+    self thread[[level._playerspawned_override]](localclientnum);
+    return;
+  }
+  /#
+  println("");
+  # /
+    if(self islocalplayer()) {
+      callback(# "hash_842e788a", localclientnum);
+    }
+  callback(# "hash_bc12b61f", localclientnum);
+  level.localplayers = getlocalplayers();
 }
 
 /*
@@ -120,70 +114,51 @@ function playerspawned(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function entityspawned(localclientnum)
-{
-	self endon(#"entityshutdown");
-	if(self isplayer())
-	{
-		if(isdefined(level._clientfaceanimonplayerspawned))
-		{
-			self thread [[level._clientfaceanimonplayerspawned]](localclientnum);
-		}
-	}
-	if(isdefined(level._entityspawned_override))
-	{
-		self thread [[level._entityspawned_override]](localclientnum);
-		return;
-	}
-	if(!isdefined(self.type))
-	{
-		/#
-			println("");
-		#/
-		return;
-	}
-	if(self.type == "missile")
-	{
-		if(isdefined(level._custom_weapon_cb_func))
-		{
-			self thread [[level._custom_weapon_cb_func]](localclientnum);
-		}
-		switch(self.weapon.name)
-		{
-			case "sticky_grenade":
-			{
-				self thread _sticky_grenade::spawned(localclientnum);
-				break;
-			}
-		}
-	}
-	else
-	{
-		if(self.type == "vehicle" || self.type == "helicopter" || self.type == "plane")
-		{
-			if(isdefined(level._customvehiclecbfunc))
-			{
-				self thread [[level._customvehiclecbfunc]](localclientnum);
-			}
-			self thread vehicle::field_toggle_exhaustfx_handler(localclientnum, undefined, 0, 1);
-			self thread vehicle::field_toggle_lights_handler(localclientnum, undefined, 0, 1);
-			if(self.type == "plane" || self.type == "helicopter")
-			{
-				self thread vehicle::aircraft_dustkick();
-			}
-			else
-			{
-				self thread driving_fx::play_driving_fx(localclientnum);
-			}
-		}
-		else if(self.type == "actor")
-		{
-			if(isdefined(level._customactorcbfunc))
-			{
-				self thread [[level._customactorcbfunc]](localclientnum);
-			}
-		}
-	}
+function entityspawned(localclientnum) {
+  self endon(# "entityshutdown");
+  if(self isplayer()) {
+    if(isdefined(level._clientfaceanimonplayerspawned)) {
+      self thread[[level._clientfaceanimonplayerspawned]](localclientnum);
+    }
+  }
+  if(isdefined(level._entityspawned_override)) {
+    self thread[[level._entityspawned_override]](localclientnum);
+    return;
+  }
+  if(!isdefined(self.type)) {
+    /#
+    println("");
+    # /
+      return;
+  }
+  if(self.type == "missile") {
+    if(isdefined(level._custom_weapon_cb_func)) {
+      self thread[[level._custom_weapon_cb_func]](localclientnum);
+    }
+    switch (self.weapon.name) {
+      case "sticky_grenade": {
+        self thread _sticky_grenade::spawned(localclientnum);
+        break;
+      }
+    }
+  } else {
+    if(self.type == "vehicle" || self.type == "helicopter" || self.type == "plane") {
+      if(isdefined(level._customvehiclecbfunc)) {
+        self thread[[level._customvehiclecbfunc]](localclientnum);
+      }
+      self thread vehicle::field_toggle_exhaustfx_handler(localclientnum, undefined, 0, 1);
+      self thread vehicle::field_toggle_lights_handler(localclientnum, undefined, 0, 1);
+      if(self.type == "plane" || self.type == "helicopter") {
+        self thread vehicle::aircraft_dustkick();
+      } else {
+        self thread driving_fx::play_driving_fx(localclientnum);
+      }
+    } else if(self.type == "actor") {
+      if(isdefined(level._customactorcbfunc)) {
+        self thread[[level._customactorcbfunc]](localclientnum);
+      }
+    }
+  }
 }
 
 /*
@@ -195,9 +170,8 @@ function entityspawned(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function host_migration(localclientnum)
-{
-	level thread prevent_round_switch_animation();
+function host_migration(localclientnum) {
+  level thread prevent_round_switch_animation();
 }
 
 /*
@@ -209,8 +183,6 @@ function host_migration(localclientnum)
 	Parameters: 0
 	Flags: Linked
 */
-function prevent_round_switch_animation()
-{
-	wait(3);
+function prevent_round_switch_animation() {
+  wait(3);
 }
-

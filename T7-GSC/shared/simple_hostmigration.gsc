@@ -12,9 +12,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function migration_setupgametype()
-{
-}
+function migration_setupgametype() {}
 
 /*
 	Name: migration_getindexforplayer
@@ -25,9 +23,7 @@ function migration_setupgametype()
 	Parameters: 1
 	Flags: None
 */
-function migration_getindexforplayer(player)
-{
-}
+function migration_getindexforplayer(player) {}
 
 /*
 	Name: migration_setupplayerdata
@@ -38,9 +34,7 @@ function migration_getindexforplayer(player)
 	Parameters: 2
 	Flags: None
 */
-function migration_setupplayerdata(player, index)
-{
-}
+function migration_setupplayerdata(player, index) {}
 
 /*
 	Name: migration_onplayerconnect
@@ -51,9 +45,7 @@ function migration_setupplayerdata(player, index)
 	Parameters: 0
 	Flags: None
 */
-function migration_onplayerconnect()
-{
-}
+function migration_onplayerconnect() {}
 
 /*
 	Name: migration_writegamedata
@@ -64,9 +56,7 @@ function migration_onplayerconnect()
 	Parameters: 0
 	Flags: None
 */
-function migration_writegamedata()
-{
-}
+function migration_writegamedata() {}
 
 /*
 	Name: migration_writeteamdata
@@ -77,9 +67,7 @@ function migration_writegamedata()
 	Parameters: 1
 	Flags: None
 */
-function migration_writeteamdata(team)
-{
-}
+function migration_writeteamdata(team) {}
 
 /*
 	Name: migration_writeplayerdata
@@ -90,9 +78,7 @@ function migration_writeteamdata(team)
 	Parameters: 2
 	Flags: None
 */
-function migration_writeplayerdata(player, i)
-{
-}
+function migration_writeplayerdata(player, i) {}
 
 /*
 	Name: updatehostmigrationdata
@@ -103,7 +89,4 @@ function migration_writeplayerdata(player, i)
 	Parameters: 0
 	Flags: Linked
 */
-function updatehostmigrationdata()
-{
-}
-
+function updatehostmigrationdata() {}

@@ -12,8 +12,6 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec init()
-{
-	dummyvar = %generic::faces;
+function autoexec init() {
+  dummyvar = % generic::faces;
 }
-

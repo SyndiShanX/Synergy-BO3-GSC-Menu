@@ -18,7 +18,4 @@
 	Parameters: 0
 	Flags: None
 */
-function init_shared()
-{
-}
-
+function init_shared() {}

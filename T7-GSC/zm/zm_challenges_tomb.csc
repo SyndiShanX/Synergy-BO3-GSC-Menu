@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_challenges_tomb", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_challenges_tomb", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,12 +27,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("toplayer", "challenges.challenge_complete_1", 21000, 2, "int", &zm_utility::setinventoryuimodels, 0, 1);
-	clientfield::register("toplayer", "challenges.challenge_complete_2", 21000, 2, "int", &zm_utility::setinventoryuimodels, 0, 1);
-	clientfield::register("toplayer", "challenges.challenge_complete_3", 21000, 2, "int", &zm_utility::setinventoryuimodels, 0, 1);
-	clientfield::register("toplayer", "challenges.challenge_complete_4", 21000, 2, "int", &function_2d46c9fd, 0, 1);
+function __init__() {
+  clientfield::register("toplayer", "challenges.challenge_complete_1", 21000, 2, "int", & zm_utility::setinventoryuimodels, 0, 1);
+  clientfield::register("toplayer", "challenges.challenge_complete_2", 21000, 2, "int", & zm_utility::setinventoryuimodels, 0, 1);
+  clientfield::register("toplayer", "challenges.challenge_complete_3", 21000, 2, "int", & zm_utility::setinventoryuimodels, 0, 1);
+  clientfield::register("toplayer", "challenges.challenge_complete_4", 21000, 2, "int", & function_2d46c9fd, 0, 1);
 }
 
 /*
@@ -45,12 +43,9 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function function_2d46c9fd(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump)
-{
-	if(newval == 2 && isspectating(localclientnum))
-	{
-		return;
-	}
-	zm_utility::setsharedinventoryuimodels(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump);
+function function_2d46c9fd(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
+  if(newval == 2 && isspectating(localclientnum)) {
+    return;
+  }
+  zm_utility::setsharedinventoryuimodels(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump);
 }
-

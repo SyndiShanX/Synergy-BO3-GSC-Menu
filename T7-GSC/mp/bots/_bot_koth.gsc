@@ -18,11 +18,10 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	level.onbotspawned = &on_bot_spawned;
-	level.botupdatethreatgoal = &bot_update_threat_goal;
-	level.botidle = &bot_idle;
+function init() {
+  level.onbotspawned = & on_bot_spawned;
+  level.botupdatethreatgoal = & bot_update_threat_goal;
+  level.botidle = & bot_idle;
 }
 
 /*
@@ -34,10 +33,9 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function on_bot_spawned()
-{
-	self thread wait_zone_moved();
-	self bot::on_bot_spawned();
+function on_bot_spawned() {
+  self thread wait_zone_moved();
+  self bot::on_bot_spawned();
 }
 
 /*
@@ -49,18 +47,15 @@ function on_bot_spawned()
 	Parameters: 0
 	Flags: Linked
 */
-function wait_zone_moved()
-{
-	self endon(#"death");
-	level endon(#"game_ended");
-	while(true)
-	{
-		level waittill(#"zone_moved");
-		if(!self bot_combat::has_threat() && self botgoalset())
-		{
-			self botsetgoal(self.origin);
-		}
-	}
+function wait_zone_moved() {
+  self endon(# "death");
+  level endon(# "game_ended");
+  while (true) {
+    level waittill(# "zone_moved");
+    if(!self bot_combat::has_threat() && self botgoalset()) {
+      self botsetgoal(self.origin);
+    }
+  }
 }
 
 /*
@@ -72,17 +67,14 @@ function wait_zone_moved()
 	Parameters: 0
 	Flags: Linked
 */
-function bot_update_threat_goal()
-{
-	if(isdefined(level.zone) && self istouching(level.zone.gameobject.trigger))
-	{
-		if(self botgoalreached())
-		{
-			self bot::path_to_point_in_trigger(level.zone.gameobject.trigger);
-		}
-		return;
-	}
-	self bot_combat::update_threat_goal();
+function bot_update_threat_goal() {
+  if(isdefined(level.zone) && self istouching(level.zone.gameobject.trigger)) {
+    if(self botgoalreached()) {
+      self bot::path_to_point_in_trigger(level.zone.gameobject.trigger);
+    }
+    return;
+  }
+  self bot_combat::update_threat_goal();
 }
 
 /*
@@ -94,21 +86,15 @@ function bot_update_threat_goal()
 	Parameters: 0
 	Flags: Linked
 */
-function bot_idle()
-{
-	if(isdefined(level.zone))
-	{
-		if(self istouching(level.zone.gameobject.trigger))
-		{
-			self bot::path_to_point_in_trigger(level.zone.gameobject.trigger);
-		}
-		else
-		{
-			self bot::approach_goal_trigger(level.zone.gameobject.trigger);
-			self bot::sprint_to_goal();
-		}
-		return;
-	}
-	self bot::bot_idle();
+function bot_idle() {
+  if(isdefined(level.zone)) {
+    if(self istouching(level.zone.gameobject.trigger)) {
+      self bot::path_to_point_in_trigger(level.zone.gameobject.trigger);
+    } else {
+      self bot::approach_goal_trigger(level.zone.gameobject.trigger);
+      self bot::sprint_to_goal();
+    }
+    return;
+  }
+  self bot::bot_idle();
 }
-

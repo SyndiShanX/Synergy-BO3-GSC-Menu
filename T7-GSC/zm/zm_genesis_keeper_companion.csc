@@ -23,9 +23,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_genesis_keeper_companion", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_genesis_keeper_companion", & __init__, undefined, undefined);
 }
 
 /*
@@ -37,12 +36,10 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	registerclientfield("world", "keeper_callbox_head", 15000, 1, "int", &zm_utility::setsharedinventoryuimodels, 0, 1);
-	registerclientfield("world", "keeper_callbox_totem", 15000, 1, "int", &zm_utility::setsharedinventoryuimodels, 0, 1);
-	registerclientfield("world", "keeper_callbox_gem", 15000, 1, "int", &zm_utility::setsharedinventoryuimodels, 0, 1);
-	clientfield::register("clientuimodel", "zmInventory.widget_keeper_protector_parts", 15000, 1, "int", undefined, 0, 0);
-	clientfield::register("clientuimodel", "zmInventory.player_keeper_protector", 15000, 1, "int", undefined, 0, 0);
+function __init__() {
+  registerclientfield("world", "keeper_callbox_head", 15000, 1, "int", & zm_utility::setsharedinventoryuimodels, 0, 1);
+  registerclientfield("world", "keeper_callbox_totem", 15000, 1, "int", & zm_utility::setsharedinventoryuimodels, 0, 1);
+  registerclientfield("world", "keeper_callbox_gem", 15000, 1, "int", & zm_utility::setsharedinventoryuimodels, 0, 1);
+  clientfield::register("clientuimodel", "zmInventory.widget_keeper_protector_parts", 15000, 1, "int", undefined, 0, 0);
+  clientfield::register("clientuimodel", "zmInventory.player_keeper_protector", 15000, 1, "int", undefined, 0, 0);
 }
-

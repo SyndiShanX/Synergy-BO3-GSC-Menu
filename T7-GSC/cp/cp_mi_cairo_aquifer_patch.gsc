@@ -24,8 +24,6 @@
 	Parameters: 0
 	Flags: Linked
 */
-function function_7403e82b()
-{
-	spawncollision("collision_clip_wall_512x512x10", "collider", (11119, 2965, 2620), vectorscale((0, 1, 0), 270));
+function function_7403e82b() {
+  spawncollision("collision_clip_wall_512x512x10", "collider", (11119, 2965, 2620), vectorscale((0, 1, 0), 270));
 }
-

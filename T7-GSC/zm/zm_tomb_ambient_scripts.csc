@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	clientfield::register("scriptmover", "zeppelin_fx", 21000, 1, "int", &zeppelin_fx, 0, 0);
+function main() {
+  clientfield::register("scriptmover", "zeppelin_fx", 21000, 1, "int", & zeppelin_fx, 0, 0);
 }
 
 /*
@@ -30,15 +29,10 @@ function main()
 	Parameters: 7
 	Flags: Linked
 */
-function zeppelin_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump)
-{
-	if(newval)
-	{
-		self.var_1f4bb75 = playfxontag(localclientnum, level._effect["zeppelin_lights"], self, "tag_body");
-	}
-	else if(isdefined(self.var_1f4bb75))
-	{
-		stopfx(localclientnum, self.var_1f4bb75);
-	}
+function zeppelin_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
+  if(newval) {
+    self.var_1f4bb75 = playfxontag(localclientnum, level._effect["zeppelin_lights"], self, "tag_body");
+  } else if(isdefined(self.var_1f4bb75)) {
+    stopfx(localclientnum, self.var_1f4bb75);
+  }
 }
-

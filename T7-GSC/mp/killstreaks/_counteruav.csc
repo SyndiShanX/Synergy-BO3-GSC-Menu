@@ -15,9 +15,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("counteruav", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("counteruav", & __init__, undefined, undefined);
 }
 
 /*
@@ -29,9 +28,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("toplayer", "counteruav", 1, 1, "int", &counteruavchanged, 0, 1);
+function __init__() {
+  clientfield::register("toplayer", "counteruav", 1, 1, "int", & counteruavchanged, 0, 1);
 }
 
 /*
@@ -43,12 +41,10 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function counteruavchanged(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	player = getlocalplayer(localclientnum);
-	/#
-		assert(isdefined(player));
-	#/
-	player setenemyglobalscrambler(newval);
+function counteruavchanged(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  player = getlocalplayer(localclientnum);
+  /#
+  assert(isdefined(player));
+  # /
+    player setenemyglobalscrambler(newval);
 }
-

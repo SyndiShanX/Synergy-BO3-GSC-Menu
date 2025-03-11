@@ -31,13 +31,12 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec init()
-{
-	function_ee90a52a();
-	setdvar("tu5_zmPathDistanceCheckTolarance", 20);
-	setdvar("scr_zm_use_code_enemy_selection", 0);
-	level.move_valid_poi_to_navmesh = 1;
-	level.pathdist_type = 2;
+function autoexec init() {
+  function_ee90a52a();
+  setdvar("tu5_zmPathDistanceCheckTolarance", 20);
+  setdvar("scr_zm_use_code_enemy_selection", 0);
+  level.move_valid_poi_to_navmesh = 1;
+  level.pathdist_type = 2;
 }
 
 /*
@@ -49,11 +48,10 @@ function autoexec init()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private function_ee90a52a()
-{
-	animationstatenetwork::registeranimationmocomp("mocomp_teleport_traversal@zombie", &teleporttraversalmocompstart, undefined, undefined);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("zodShouldMove", &zodshouldmove);
-	spawner::add_archetype_spawn_function("zombie", &function_5bf6989a);
+function private function_ee90a52a() {
+  animationstatenetwork::registeranimationmocomp("mocomp_teleport_traversal@zombie", & teleporttraversalmocompstart, undefined, undefined);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("zodShouldMove", & zodshouldmove);
+  spawner::add_archetype_spawn_function("zombie", & function_5bf6989a);
 }
 
 /*
@@ -65,19 +63,17 @@ function private function_ee90a52a()
 	Parameters: 5
 	Flags: Linked
 */
-function teleporttraversalmocompstart(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration)
-{
-	entity orientmode("face angle", entity.angles[1]);
-	entity animmode("normal");
-	if(isdefined(entity.traverseendnode))
-	{
-		/#
-			print3d(entity.traversestartnode.origin, "", (1, 0, 0), 1, 1, 60);
-			print3d(entity.traverseendnode.origin, "", (0, 1, 0), 1, 1, 60);
-			line(entity.traversestartnode.origin, entity.traverseendnode.origin, (0, 1, 0), 1, 0, 60);
-		#/
-		entity forceteleport(entity.traverseendnode.origin, entity.traverseendnode.angles, 0);
-	}
+function teleporttraversalmocompstart(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
+  entity orientmode("face angle", entity.angles[1]);
+  entity animmode("normal");
+  if(isdefined(entity.traverseendnode)) {
+    /#
+    print3d(entity.traversestartnode.origin, "", (1, 0, 0), 1, 1, 60);
+    print3d(entity.traverseendnode.origin, "", (0, 1, 0), 1, 1, 60);
+    line(entity.traversestartnode.origin, entity.traverseendnode.origin, (0, 1, 0), 1, 0, 60);
+    # /
+      entity forceteleport(entity.traverseendnode.origin, entity.traverseendnode.angles, 0);
+  }
 }
 
 /*
@@ -89,48 +85,37 @@ function teleporttraversalmocompstart(entity, mocompanim, mocompanimblendouttime
 	Parameters: 1
 	Flags: Linked
 */
-function zodshouldmove(entity)
-{
-	if(isdefined(entity.zombie_tesla_hit) && entity.zombie_tesla_hit && (!(isdefined(entity.tesla_death) && entity.tesla_death)))
-	{
-		return false;
-	}
-	if(isdefined(entity.pushed) && entity.pushed)
-	{
-		return false;
-	}
-	if(isdefined(entity.knockdown) && entity.knockdown)
-	{
-		return false;
-	}
-	if(isdefined(entity.grapple_is_fatal) && entity.grapple_is_fatal)
-	{
-		return false;
-	}
-	if(level.wait_and_revive)
-	{
-		if(!(isdefined(entity.var_1e3fb1c) && entity.var_1e3fb1c))
-		{
-			return false;
-		}
-	}
-	if(isdefined(entity.stumble))
-	{
-		return false;
-	}
-	if(zombiebehavior::zombieshouldmeleecondition(entity))
-	{
-		return false;
-	}
-	if(entity haspath())
-	{
-		return true;
-	}
-	if(isdefined(entity.keep_moving) && entity.keep_moving)
-	{
-		return true;
-	}
-	return false;
+function zodshouldmove(entity) {
+  if(isdefined(entity.zombie_tesla_hit) && entity.zombie_tesla_hit && (!(isdefined(entity.tesla_death) && entity.tesla_death))) {
+    return false;
+  }
+  if(isdefined(entity.pushed) && entity.pushed) {
+    return false;
+  }
+  if(isdefined(entity.knockdown) && entity.knockdown) {
+    return false;
+  }
+  if(isdefined(entity.grapple_is_fatal) && entity.grapple_is_fatal) {
+    return false;
+  }
+  if(level.wait_and_revive) {
+    if(!(isdefined(entity.var_1e3fb1c) && entity.var_1e3fb1c)) {
+      return false;
+    }
+  }
+  if(isdefined(entity.stumble)) {
+    return false;
+  }
+  if(zombiebehavior::zombieshouldmeleecondition(entity)) {
+    return false;
+  }
+  if(entity haspath()) {
+    return true;
+  }
+  if(isdefined(entity.keep_moving) && entity.keep_moving) {
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -142,9 +127,8 @@ function zodshouldmove(entity)
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private function_5bf6989a()
-{
-	self.cant_move_cb = &function_9f18c3b1;
+function private function_5bf6989a() {
+  self.cant_move_cb = & function_9f18c3b1;
 }
 
 /*
@@ -156,9 +140,7 @@ function private function_5bf6989a()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private function_9f18c3b1()
-{
-	self pushactors(0);
-	self.enablepushtime = gettime() + 1000;
+function private function_9f18c3b1() {
+  self pushactors(0);
+  self.enablepushtime = gettime() + 1000;
 }
-

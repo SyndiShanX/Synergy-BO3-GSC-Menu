@@ -21,10 +21,9 @@
 	Parameters: 0
 	Flags: Linked
 */
-function setupattackproperties()
-{
-	self.ignoreall = 0;
-	self.meleeattackdist = 64;
+function setupattackproperties() {
+  self.ignoreall = 0;
+  self.meleeattackdist = 64;
 }
 
 /*
@@ -36,10 +35,8 @@ function setupattackproperties()
 	Parameters: 0
 	Flags: Linked
 */
-function enteredplayablearea()
-{
-	self zm_spawner::zombie_complete_emerging_into_playable_area();
-	self.pushable = 1;
-	self setupattackproperties();
+function enteredplayablearea() {
+  self zm_spawner::zombie_complete_emerging_into_playable_area();
+  self.pushable = 1;
+  self setupattackproperties();
 }
-

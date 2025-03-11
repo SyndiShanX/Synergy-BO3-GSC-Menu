@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_weap_rocketshield", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_weap_rocketshield", & __init__, undefined, undefined);
 }
 
 /*
@@ -33,9 +32,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("allplayers", "rs_ammo", 1, 1, "int", &set_rocketshield_ammo, 0, 0);
+function __init__() {
+  clientfield::register("allplayers", "rs_ammo", 1, 1, "int", & set_rocketshield_ammo, 0, 0);
 }
 
 /*
@@ -47,15 +45,10 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function set_rocketshield_ammo(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval == 1)
-	{
-		self mapshaderconstant(localclientnum, 0, "scriptVector2", 0, 1, 0, 0);
-	}
-	else
-	{
-		self mapshaderconstant(localclientnum, 0, "scriptVector2", 0, 0, 0, 0);
-	}
+function set_rocketshield_ammo(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval == 1) {
+    self mapshaderconstant(localclientnum, 0, "scriptVector2", 0, 1, 0, 0);
+  } else {
+    self mapshaderconstant(localclientnum, 0, "scriptVector2", 0, 0, 0, 0);
+  }
 }
-

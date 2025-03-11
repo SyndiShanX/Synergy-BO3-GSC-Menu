@@ -21,9 +21,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_impatient", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_impatient", & __init__, undefined, "bgb");
 }
 
 /*
@@ -35,13 +34,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_impatient", "event", &event, undefined, undefined, undefined);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_impatient", "event", & event, undefined, undefined, undefined);
 }
 
 /*
@@ -53,12 +50,11 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function event()
-{
-	self endon(#"disconnect");
-	self endon(#"bgb_update");
-	self waittill(#"bgb_about_to_take_on_bled_out");
-	self thread special_revive();
+function event() {
+  self endon(# "disconnect");
+  self endon(# "bgb_update");
+  self waittill(# "bgb_about_to_take_on_bled_out");
+  self thread special_revive();
 }
 
 /*
@@ -70,15 +66,12 @@ function event()
 	Parameters: 0
 	Flags: Linked
 */
-function special_revive()
-{
-	self endon(#"disconnect");
-	wait(1);
-	while(level.zombie_total > 0)
-	{
-		wait(0.05);
-	}
-	self zm::spectator_respawn_player();
-	self bgb::do_one_shot_use();
+function special_revive() {
+  self endon(# "disconnect");
+  wait(1);
+  while (level.zombie_total > 0) {
+    wait(0.05);
+  }
+  self zm::spectator_respawn_player();
+  self bgb::do_one_shot_use();
 }
-

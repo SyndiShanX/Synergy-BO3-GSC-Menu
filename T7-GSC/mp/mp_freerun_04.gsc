@@ -17,15 +17,14 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	precache();
-	namespace_c68b7fb6::main();
-	namespace_8a3acb29::main();
-	load::main();
-	setdvar("glassMinVelocityToBreakFromJump", "380");
-	setdvar("glassMinVelocityToBreakFromWallRun", "180");
-	setdvar("compassmaxrange", "2100");
+function main() {
+  precache();
+  namespace_c68b7fb6::main();
+  namespace_8a3acb29::main();
+  load::main();
+  setdvar("glassMinVelocityToBreakFromJump", "380");
+  setdvar("glassMinVelocityToBreakFromWallRun", "180");
+  setdvar("compassmaxrange", "2100");
 }
 
 /*
@@ -37,7 +36,4 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function precache()
-{
-}
-
+function precache() {}

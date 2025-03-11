@@ -17,15 +17,13 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	clientfield::register("world", "player0hasItem", 15000, 2, "int", &zm_utility::setsharedinventoryuimodels, 0, 0);
-	clientfield::register("world", "player1hasItem", 15000, 2, "int", &zm_utility::setsharedinventoryuimodels, 0, 0);
-	clientfield::register("world", "player2hasItem", 15000, 2, "int", &zm_utility::setsharedinventoryuimodels, 0, 0);
-	clientfield::register("world", "player3hasItem", 15000, 2, "int", &zm_utility::setsharedinventoryuimodels, 0, 0);
-	clientfield::register("world", "player0wearableItem", 15000, 1, "int", &zm_utility::setsharedinventoryuimodels, 0, 0);
-	clientfield::register("world", "player1wearableItem", 15000, 1, "int", &zm_utility::setsharedinventoryuimodels, 0, 0);
-	clientfield::register("world", "player2wearableItem", 15000, 1, "int", &zm_utility::setsharedinventoryuimodels, 0, 0);
-	clientfield::register("world", "player3wearableItem", 15000, 1, "int", &zm_utility::setsharedinventoryuimodels, 0, 0);
+function init() {
+  clientfield::register("world", "player0hasItem", 15000, 2, "int", & zm_utility::setsharedinventoryuimodels, 0, 0);
+  clientfield::register("world", "player1hasItem", 15000, 2, "int", & zm_utility::setsharedinventoryuimodels, 0, 0);
+  clientfield::register("world", "player2hasItem", 15000, 2, "int", & zm_utility::setsharedinventoryuimodels, 0, 0);
+  clientfield::register("world", "player3hasItem", 15000, 2, "int", & zm_utility::setsharedinventoryuimodels, 0, 0);
+  clientfield::register("world", "player0wearableItem", 15000, 1, "int", & zm_utility::setsharedinventoryuimodels, 0, 0);
+  clientfield::register("world", "player1wearableItem", 15000, 1, "int", & zm_utility::setsharedinventoryuimodels, 0, 0);
+  clientfield::register("world", "player2wearableItem", 15000, 1, "int", & zm_utility::setsharedinventoryuimodels, 0, 0);
+  clientfield::register("world", "player3wearableItem", 15000, 1, "int", & zm_utility::setsharedinventoryuimodels, 0, 0);
 }
-

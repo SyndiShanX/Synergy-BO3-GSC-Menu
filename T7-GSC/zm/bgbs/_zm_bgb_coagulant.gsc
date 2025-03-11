@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_coagulant", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_coagulant", & __init__, undefined, "bgb");
 }
 
 /*
@@ -34,13 +33,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_coagulant", "time", 1200, &enable, &disable, undefined, undefined);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_coagulant", "time", 1200, & enable, & disable, undefined, undefined);
 }
 
 /*
@@ -52,17 +49,15 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function enable()
-{
-	self endon(#"disconnect");
-	self endon(#"bled_out");
-	self endon(#"bgb_update");
-	self.n_bleedout_time_multiplier = 3;
-	while(true)
-	{
-		self waittill(#"player_downed");
-		self bgb::do_one_shot_use(1);
-	}
+function enable() {
+  self endon(# "disconnect");
+  self endon(# "bled_out");
+  self endon(# "bgb_update");
+  self.n_bleedout_time_multiplier = 3;
+  while (true) {
+    self waittill(# "player_downed");
+    self bgb::do_one_shot_use(1);
+  }
 }
 
 /*
@@ -74,8 +69,6 @@ function enable()
 	Parameters: 0
 	Flags: Linked
 */
-function disable()
-{
-	self.n_bleedout_time_multiplier = undefined;
+function disable() {
+  self.n_bleedout_time_multiplier = undefined;
 }
-

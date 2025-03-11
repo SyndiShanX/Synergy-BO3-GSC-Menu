@@ -15,9 +15,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("plunger_knife", &__init__, &__main__, undefined);
+function autoexec __init__sytem__() {
+  system::register("plunger_knife", & __init__, & __main__, undefined);
 }
 
 /*
@@ -29,9 +28,7 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private __init__()
-{
-}
+function private __init__() {}
 
 /*
 	Name: __main__
@@ -42,11 +39,10 @@ function private __init__()
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private __main__()
-{
-	cost = 3000;
-	zm_melee_weapon::init("knife_plunger", "zombie_plunger_flourish", undefined, undefined, cost, "bowie_upgrade", &"ZMWEAPON_NONE", "plunger", undefined);
-	zm_melee_weapon::set_fallback_weapon("knife_plunger", "zombie_fists_plunger");
+function private __main__() {
+  cost = 3000;
+  zm_melee_weapon::init("knife_plunger", "zombie_plunger_flourish", undefined, undefined, cost, "bowie_upgrade", & "ZMWEAPON_NONE", "plunger", undefined);
+  zm_melee_weapon::set_fallback_weapon("knife_plunger", "zombie_fists_plunger");
 }
 
 /*
@@ -58,7 +54,4 @@ function private __main__()
 	Parameters: 0
 	Flags: None
 */
-function init()
-{
-}
-
+function init() {}

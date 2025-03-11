@@ -13,8 +13,6 @@
 	Parameters: 0
 	Flags: Linked
 */
-function registerzodcompanioninterfaceattributes()
-{
-	ai::registermatchedinterface("zod_companion", "sprint", 0, array(1, 0));
+function registerzodcompanioninterfaceattributes() {
+  ai::registermatchedinterface("zod_companion", "sprint", 0, array(1, 0));
 }
-

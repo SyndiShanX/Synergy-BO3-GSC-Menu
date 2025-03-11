@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("gadget_es_strike", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("gadget_es_strike", & __init__, undefined, undefined);
 }
 
 /*
@@ -34,9 +33,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_spawned(&on_player_spawned);
+function __init__() {
+  callback::on_spawned( & on_player_spawned);
 }
 
 /*
@@ -48,7 +46,4 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function on_player_spawned(local_client_num)
-{
-}
-
+function on_player_spawned(local_client_num) {}

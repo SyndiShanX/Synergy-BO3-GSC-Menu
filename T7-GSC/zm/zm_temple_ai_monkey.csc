@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_temple_ai_monkey", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_temple_ai_monkey", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,9 +27,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("scriptmover", "monkey_ragdoll", 21000, 1, "int", &monkey_ragdoll, 1, 0);
+function __init__() {
+  clientfield::register("scriptmover", "monkey_ragdoll", 21000, 1, "int", & monkey_ragdoll, 1, 0);
 }
 
 /*
@@ -42,11 +40,8 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function monkey_ragdoll(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump)
-{
-	if(newval == 1)
-	{
-		self suppressragdollselfcollision(1);
-	}
+function monkey_ragdoll(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
+  if(newval == 1) {
+    self suppressragdollselfcollision(1);
+  }
 }
-

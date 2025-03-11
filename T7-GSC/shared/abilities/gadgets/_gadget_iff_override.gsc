@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("gadget_iff_override", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("gadget_iff_override", & __init__, undefined, undefined);
 }
 
 /*
@@ -34,15 +33,14 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	ability_player::register_gadget_activation_callbacks(24, &gadget_iff_override_on, &gadget_iff_override_off);
-	ability_player::register_gadget_possession_callbacks(24, &gadget_iff_override_on_give, &gadget_iff_override_on_take);
-	ability_player::register_gadget_flicker_callbacks(24, &gadget_iff_override_on_flicker);
-	ability_player::register_gadget_is_inuse_callbacks(24, &gadget_iff_override_is_inuse);
-	ability_player::register_gadget_is_flickering_callbacks(24, &gadget_iff_override_is_flickering);
-	ability_player::register_gadget_primed_callbacks(24, &gadget_iff_override_is_primed);
-	callback::on_connect(&gadget_iff_override_on_connect);
+function __init__() {
+  ability_player::register_gadget_activation_callbacks(24, & gadget_iff_override_on, & gadget_iff_override_off);
+  ability_player::register_gadget_possession_callbacks(24, & gadget_iff_override_on_give, & gadget_iff_override_on_take);
+  ability_player::register_gadget_flicker_callbacks(24, & gadget_iff_override_on_flicker);
+  ability_player::register_gadget_is_inuse_callbacks(24, & gadget_iff_override_is_inuse);
+  ability_player::register_gadget_is_flickering_callbacks(24, & gadget_iff_override_is_flickering);
+  ability_player::register_gadget_primed_callbacks(24, & gadget_iff_override_is_primed);
+  callback::on_connect( & gadget_iff_override_on_connect);
 }
 
 /*
@@ -54,9 +52,8 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function gadget_iff_override_is_inuse(slot)
-{
-	return self flagsys::get("gadget_iff_override_on");
+function gadget_iff_override_is_inuse(slot) {
+  return self flagsys::get("gadget_iff_override_on");
 }
 
 /*
@@ -68,13 +65,11 @@ function gadget_iff_override_is_inuse(slot)
 	Parameters: 1
 	Flags: Linked
 */
-function gadget_iff_override_is_flickering(slot)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override))
-	{
-		return self [[level.cybercom.iff_override._is_flickering]](slot);
-	}
-	return 0;
+function gadget_iff_override_is_flickering(slot) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override)) {
+    return self[[level.cybercom.iff_override._is_flickering]](slot);
+  }
+  return 0;
 }
 
 /*
@@ -86,12 +81,10 @@ function gadget_iff_override_is_flickering(slot)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_iff_override_on_flicker(slot, weapon)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override))
-	{
-		self [[level.cybercom.iff_override._on_flicker]](slot, weapon);
-	}
+function gadget_iff_override_on_flicker(slot, weapon) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override)) {
+    self[[level.cybercom.iff_override._on_flicker]](slot, weapon);
+  }
 }
 
 /*
@@ -103,12 +96,10 @@ function gadget_iff_override_on_flicker(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_iff_override_on_give(slot, weapon)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override))
-	{
-		self [[level.cybercom.iff_override._on_give]](slot, weapon);
-	}
+function gadget_iff_override_on_give(slot, weapon) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override)) {
+    self[[level.cybercom.iff_override._on_give]](slot, weapon);
+  }
 }
 
 /*
@@ -120,12 +111,10 @@ function gadget_iff_override_on_give(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_iff_override_on_take(slot, weapon)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override))
-	{
-		self [[level.cybercom.iff_override._on_take]](slot, weapon);
-	}
+function gadget_iff_override_on_take(slot, weapon) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override)) {
+    self[[level.cybercom.iff_override._on_take]](slot, weapon);
+  }
 }
 
 /*
@@ -137,12 +126,10 @@ function gadget_iff_override_on_take(slot, weapon)
 	Parameters: 0
 	Flags: Linked
 */
-function gadget_iff_override_on_connect()
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override))
-	{
-		self [[level.cybercom.iff_override._on_connect]]();
-	}
+function gadget_iff_override_on_connect() {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override)) {
+    self[[level.cybercom.iff_override._on_connect]]();
+  }
 }
 
 /*
@@ -154,13 +141,11 @@ function gadget_iff_override_on_connect()
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_iff_override_on(slot, weapon)
-{
-	self flagsys::set("gadget_iff_override_on");
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override))
-	{
-		self [[level.cybercom.iff_override._on]](slot, weapon);
-	}
+function gadget_iff_override_on(slot, weapon) {
+  self flagsys::set("gadget_iff_override_on");
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override)) {
+    self[[level.cybercom.iff_override._on]](slot, weapon);
+  }
 }
 
 /*
@@ -172,13 +157,11 @@ function gadget_iff_override_on(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_iff_override_off(slot, weapon)
-{
-	self flagsys::clear("gadget_iff_override_on");
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override))
-	{
-		self [[level.cybercom.iff_override._off]](slot, weapon);
-	}
+function gadget_iff_override_off(slot, weapon) {
+  self flagsys::clear("gadget_iff_override_on");
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override)) {
+    self[[level.cybercom.iff_override._off]](slot, weapon);
+  }
 }
 
 /*
@@ -190,11 +173,8 @@ function gadget_iff_override_off(slot, weapon)
 	Parameters: 2
 	Flags: Linked
 */
-function gadget_iff_override_is_primed(slot, weapon)
-{
-	if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override))
-	{
-		self [[level.cybercom.iff_override._is_primed]](slot, weapon);
-	}
+function gadget_iff_override_is_primed(slot, weapon) {
+  if(isdefined(level.cybercom) && isdefined(level.cybercom.iff_override)) {
+    self[[level.cybercom.iff_override._is_primed]](slot, weapon);
+  }
 }
-

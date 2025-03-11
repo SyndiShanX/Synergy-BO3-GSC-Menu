@@ -27,9 +27,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_powerup_free_perk", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_powerup_free_perk", & __init__, undefined, undefined);
 }
 
 /*
@@ -41,13 +40,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	zm_powerups::register_powerup("free_perk", &grab_free_perk);
-	if(tolower(getdvarstring("g_gametype")) != "zcleansed")
-	{
-		zm_powerups::add_zombie_powerup("free_perk", "zombie_pickup_perk_bottle", &"ZOMBIE_POWERUP_FREE_PERK", &zm_powerups::func_should_never_drop, 0, 0, 0);
-	}
+function __init__() {
+  zm_powerups::register_powerup("free_perk", & grab_free_perk);
+  if(tolower(getdvarstring("g_gametype")) != "zcleansed") {
+    zm_powerups::add_zombie_powerup("free_perk", "zombie_pickup_perk_bottle", & "ZOMBIE_POWERUP_FREE_PERK", & zm_powerups::func_should_never_drop, 0, 0, 0);
+  }
 }
 
 /*
@@ -59,9 +56,8 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function grab_free_perk(player)
-{
-	level thread free_perk_powerup(self);
+function grab_free_perk(player) {
+  level thread free_perk_powerup(self);
 }
 
 /*
@@ -73,31 +69,25 @@ function grab_free_perk(player)
 	Parameters: 1
 	Flags: Linked
 */
-function free_perk_powerup(item)
-{
-	players = getplayers();
-	for(i = 0; i < players.size; i++)
-	{
-		if(!players[i] laststand::player_is_in_laststand() && !players[i].sessionstate == "spectator")
-		{
-			player = players[i];
-			if(isdefined(item.ghost_powerup))
-			{
-				player zm_stats::increment_client_stat("buried_ghost_perk_acquired", 0);
-				player zm_stats::increment_player_stat("buried_ghost_perk_acquired");
-				player notify(#"player_received_ghost_round_free_perk");
-			}
-			free_perk = player zm_perks::give_random_perk();
-			if(isdefined(level.disable_free_perks_before_power) && level.disable_free_perks_before_power)
-			{
-				player thread disable_perk_before_power(free_perk);
-			}
-			if(isdefined(free_perk) && isdefined(level.perk_bought_func))
-			{
-				player [[level.perk_bought_func]](free_perk);
-			}
-		}
-	}
+function free_perk_powerup(item) {
+  players = getplayers();
+  for (i = 0; i < players.size; i++) {
+    if(!players[i] laststand::player_is_in_laststand() && !players[i].sessionstate == "spectator") {
+      player = players[i];
+      if(isdefined(item.ghost_powerup)) {
+        player zm_stats::increment_client_stat("buried_ghost_perk_acquired", 0);
+        player zm_stats::increment_player_stat("buried_ghost_perk_acquired");
+        player notify(# "player_received_ghost_round_free_perk");
+      }
+      free_perk = player zm_perks::give_random_perk();
+      if(isdefined(level.disable_free_perks_before_power) && level.disable_free_perks_before_power) {
+        player thread disable_perk_before_power(free_perk);
+      }
+      if(isdefined(free_perk) && isdefined(level.perk_bought_func)) {
+        player[[level.perk_bought_func]](free_perk);
+      }
+    }
+  }
 }
 
 /*
@@ -109,23 +99,18 @@ function free_perk_powerup(item)
 	Parameters: 1
 	Flags: Linked
 */
-function disable_perk_before_power(perk)
-{
-	self endon(#"disconnect");
-	if(isdefined(perk))
-	{
-		wait(0.1);
-		if(!level flag::get("power_on"))
-		{
-			a_players = getplayers();
-			if(isdefined(a_players) && a_players.size == 1 && perk == "specialty_quickrevive")
-			{
-				return;
-			}
-			self zm_perks::perk_pause(perk);
-			level flag::wait_till("power_on");
-			self zm_perks::perk_unpause(perk);
-		}
-	}
+function disable_perk_before_power(perk) {
+  self endon(# "disconnect");
+  if(isdefined(perk)) {
+    wait(0.1);
+    if(!level flag::get("power_on")) {
+      a_players = getplayers();
+      if(isdefined(a_players) && a_players.size == 1 && perk == "specialty_quickrevive") {
+        return;
+      }
+      self zm_perks::perk_pause(perk);
+      level flag::wait_till("power_on");
+      self zm_perks::perk_unpause(perk);
+    }
+  }
 }
-

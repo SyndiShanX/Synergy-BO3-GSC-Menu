@@ -10,29 +10,25 @@
 	Parameters: 4
 	Flags: Linked
 */
-function registerblackboardattribute(entity, attributename, defaultattributevalue, getterfunction)
-{
-	/#
-		assert(isdefined(entity.__blackboard), "");
-	#/
-	/#
-		assert(!isdefined(entity.__blackboard[attributename]), ("" + attributename) + "");
-	#/
-	if(isdefined(getterfunction))
-	{
-		/#
-			assert(isfunctionptr(getterfunction));
-		#/
-		entity.__blackboard[attributename] = getterfunction;
-	}
-	else
-	{
-		if(!isdefined(defaultattributevalue))
-		{
-			defaultattributevalue = undefined;
-		}
-		entity.__blackboard[attributename] = defaultattributevalue;
-	}
+function registerblackboardattribute(entity, attributename, defaultattributevalue, getterfunction) {
+  /#
+  assert(isdefined(entity.__blackboard), "");
+  # /
+    /#
+  assert(!isdefined(entity.__blackboard[attributename]), ("" + attributename) + "");
+  # /
+    if(isdefined(getterfunction)) {
+      /#
+      assert(isfunctionptr(getterfunction));
+      # /
+        entity.__blackboard[attributename] = getterfunction;
+    }
+  else {
+    if(!isdefined(defaultattributevalue)) {
+      defaultattributevalue = undefined;
+    }
+    entity.__blackboard[attributename] = defaultattributevalue;
+  }
 }
 
 /*
@@ -44,27 +40,23 @@ function registerblackboardattribute(entity, attributename, defaultattributevalu
 	Parameters: 2
 	Flags: Linked
 */
-function getblackboardattribute(entity, attributename)
-{
-	if(isfunctionptr(entity.__blackboard[attributename]))
-	{
-		getterfunction = entity.__blackboard[attributename];
-		attributevalue = entity [[getterfunction]]();
-		/#
-			if(isactor(entity))
-			{
-				entity updatetrackedblackboardattribute(attributename);
-			}
-		#/
-		return attributevalue;
-	}
-	/#
-		if(isactor(entity))
-		{
-			entity updatetrackedblackboardattribute(attributename);
-		}
-	#/
-	return entity.__blackboard[attributename];
+function getblackboardattribute(entity, attributename) {
+  if(isfunctionptr(entity.__blackboard[attributename])) {
+    getterfunction = entity.__blackboard[attributename];
+    attributevalue = entity[[getterfunction]]();
+    /#
+    if(isactor(entity)) {
+      entity updatetrackedblackboardattribute(attributename);
+    }
+    # /
+      return attributevalue;
+  }
+  /#
+  if(isactor(entity)) {
+    entity updatetrackedblackboardattribute(attributename);
+  }
+  # /
+    return entity.__blackboard[attributename];
 }
 
 /*
@@ -76,25 +68,21 @@ function getblackboardattribute(entity, attributename)
 	Parameters: 3
 	Flags: Linked
 */
-function setblackboardattribute(entity, attributename, attributevalue)
-{
-	if(isdefined(entity.__blackboard[attributename]))
-	{
-		if(!isdefined(attributevalue) && isfunctionptr(entity.__blackboard[attributename]))
-		{
-			return;
-		}
-		/#
-			assert(!isfunctionptr(entity.__blackboard[attributename]), "");
-		#/
-	}
-	entity.__blackboard[attributename] = attributevalue;
-	/#
-		if(isactor(entity))
-		{
-			entity updatetrackedblackboardattribute(attributename);
-		}
-	#/
+function setblackboardattribute(entity, attributename, attributevalue) {
+  if(isdefined(entity.__blackboard[attributename])) {
+    if(!isdefined(attributevalue) && isfunctionptr(entity.__blackboard[attributename])) {
+      return;
+    }
+    /#
+    assert(!isfunctionptr(entity.__blackboard[attributename]), "");
+    # /
+  }
+  entity.__blackboard[attributename] = attributevalue;
+  /#
+  if(isactor(entity)) {
+    entity updatetrackedblackboardattribute(attributename);
+  }
+  # /
 }
 
 /*
@@ -106,15 +94,11 @@ function setblackboardattribute(entity, attributename, attributevalue)
 	Parameters: 1
 	Flags: Linked
 */
-function createblackboardforentity(entity)
-{
-	if(!isdefined(entity.__blackboard))
-	{
-		entity.__blackboard = [];
-	}
-	if(!isdefined(level._setblackboardattributefunc))
-	{
-		level._setblackboardattributefunc = &setblackboardattribute;
-	}
+function createblackboardforentity(entity) {
+  if(!isdefined(entity.__blackboard)) {
+    entity.__blackboard = [];
+  }
+  if(!isdefined(level._setblackboardattributefunc)) {
+    level._setblackboardattributefunc = & setblackboardattribute;
+  }
 }
-

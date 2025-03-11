@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_weap_shrink_ray", &__init__, &__main__, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_weap_shrink_ray", & __init__, & __main__, undefined);
 }
 
 /*
@@ -34,9 +33,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("actor", "fun_size", 5000, 1, "int", &fun_size, 0, 0);
+function __init__() {
+  clientfield::register("actor", "fun_size", 5000, 1, "int", & fun_size, 0, 0);
 }
 
 /*
@@ -48,9 +46,7 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function __main__()
-{
-}
+function __main__() {}
 
 /*
 	Name: fun_size
@@ -61,9 +57,7 @@ function __main__()
 	Parameters: 7
 	Flags: Linked
 */
-function fun_size(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self suppressragdollselfcollision(newval);
-	self.shrunken = newval;
+function fun_size(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self suppressragdollselfcollision(newval);
+  self.shrunken = newval;
 }
-

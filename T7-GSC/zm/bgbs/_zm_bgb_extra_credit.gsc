@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_extra_credit", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_extra_credit", & __init__, undefined, "bgb");
 }
 
 /*
@@ -33,13 +32,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_extra_credit", "activated", 4, undefined, undefined, undefined, &activation);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_extra_credit", "activated", 4, undefined, undefined, undefined, & activation);
 }
 
 /*
@@ -51,10 +48,9 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function activation()
-{
-	powerup_origin = self bgb::get_player_dropped_powerup_origin();
-	self thread function_b18c3b2d(powerup_origin);
+function activation() {
+  powerup_origin = self bgb::get_player_dropped_powerup_origin();
+  self thread function_b18c3b2d(powerup_origin);
 }
 
 /*
@@ -66,17 +62,15 @@ function activation()
 	Parameters: 1
 	Flags: Linked
 */
-function function_b18c3b2d(origin)
-{
-	self endon(#"disconnect");
-	self endon(#"bled_out");
-	var_93eb638b = zm_powerups::specific_powerup_drop("bonus_points_player", origin, undefined, undefined, 0.1);
-	var_93eb638b.bonus_points_powerup_override = &function_3258dd42;
-	wait(1);
-	if(isdefined(var_93eb638b) && (!var_93eb638b zm::in_enabled_playable_area() && !var_93eb638b zm::in_life_brush()))
-	{
-		level thread bgb::function_434235f9(var_93eb638b);
-	}
+function function_b18c3b2d(origin) {
+  self endon(# "disconnect");
+  self endon(# "bled_out");
+  var_93eb638b = zm_powerups::specific_powerup_drop("bonus_points_player", origin, undefined, undefined, 0.1);
+  var_93eb638b.bonus_points_powerup_override = & function_3258dd42;
+  wait(1);
+  if(isdefined(var_93eb638b) && (!var_93eb638b zm::in_enabled_playable_area() && !var_93eb638b zm::in_life_brush())) {
+    level thread bgb::function_434235f9(var_93eb638b);
+  }
 }
 
 /*
@@ -88,8 +82,6 @@ function function_b18c3b2d(origin)
 	Parameters: 0
 	Flags: Linked
 */
-function function_3258dd42()
-{
-	return 1250;
+function function_3258dd42() {
+  return 1250;
 }
-

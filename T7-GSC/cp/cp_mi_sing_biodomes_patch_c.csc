@@ -22,7 +22,4 @@
 	Parameters: 0
 	Flags: Linked
 */
-function function_7403e82b()
-{
-}
-
+function function_7403e82b() {}

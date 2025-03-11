@@ -30,9 +30,8 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	// Unsupported VM revision (1B).
+function main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -44,9 +43,8 @@ function main()
 	Parameters: 1
 	Flags: None
 */
-function on_player_spawned()
-{
-	// Unsupported VM revision (1B).
+function on_player_spawned() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -58,9 +56,8 @@ function on_player_spawned()
 	Parameters: 0
 	Flags: None
 */
-function init_clientfields()
-{
-	// Unsupported VM revision (1B).
+function init_clientfields() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -72,9 +69,8 @@ function init_clientfields()
 	Parameters: 0
 	Flags: None
 */
-function function_fe72942e()
-{
-	// Unsupported VM revision (1B).
+function function_fe72942e() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -86,9 +82,8 @@ function function_fe72942e()
 	Parameters: 0
 	Flags: None
 */
-function setup_skiptos()
-{
-	// Unsupported VM revision (1B).
+function setup_skiptos() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -100,9 +95,8 @@ function setup_skiptos()
 	Parameters: 2
 	Flags: None
 */
-function skipto_init()
-{
-	// Unsupported VM revision (1B).
+function skipto_init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -114,9 +108,8 @@ function skipto_init()
 	Parameters: 2
 	Flags: None
 */
-function function_70fafd70()
-{
-	// Unsupported VM revision (1B).
+function function_70fafd70() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -128,9 +121,8 @@ function function_70fafd70()
 	Parameters: 2
 	Flags: None
 */
-function function_12a6900b()
-{
-	// Unsupported VM revision (1B).
+function function_12a6900b() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -142,9 +134,8 @@ function function_12a6900b()
 	Parameters: 2
 	Flags: None
 */
-function skipto_pallas_start()
-{
-	// Unsupported VM revision (1B).
+function skipto_pallas_start() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -156,9 +147,8 @@ function skipto_pallas_start()
 	Parameters: 2
 	Flags: None
 */
-function skipto_intro()
-{
-	// Unsupported VM revision (1B).
+function skipto_intro() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -170,9 +160,8 @@ function skipto_intro()
 	Parameters: 2
 	Flags: None
 */
-function skipto_post_intro()
-{
-	// Unsupported VM revision (1B).
+function skipto_post_intro() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -184,9 +173,8 @@ function skipto_post_intro()
 	Parameters: 2
 	Flags: None
 */
-function skipto_enter_sgen()
-{
-	// Unsupported VM revision (1B).
+function skipto_enter_sgen() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -198,9 +186,8 @@ function skipto_enter_sgen()
 	Parameters: 2
 	Flags: None
 */
-function skipto_enter_lobby()
-{
-	// Unsupported VM revision (1B).
+function skipto_enter_lobby() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -212,9 +199,8 @@ function skipto_enter_lobby()
 	Parameters: 2
 	Flags: None
 */
-function skipto_enter_lobby_done()
-{
-	// Unsupported VM revision (1B).
+function skipto_enter_lobby_done() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -226,9 +212,8 @@ function skipto_enter_lobby_done()
 	Parameters: 2
 	Flags: None
 */
-function skipto_discover_data()
-{
-	// Unsupported VM revision (1B).
+function skipto_discover_data() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -240,9 +225,8 @@ function skipto_discover_data()
 	Parameters: 2
 	Flags: None
 */
-function skipto_aquarium_shimmy()
-{
-	// Unsupported VM revision (1B).
+function skipto_aquarium_shimmy() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -254,9 +238,8 @@ function skipto_aquarium_shimmy()
 	Parameters: 2
 	Flags: None
 */
-function skipto_gen_lab()
-{
-	// Unsupported VM revision (1B).
+function skipto_gen_lab() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -268,9 +251,8 @@ function skipto_gen_lab()
 	Parameters: 2
 	Flags: None
 */
-function skipto_post_gen_lab()
-{
-	// Unsupported VM revision (1B).
+function skipto_post_gen_lab() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -282,9 +264,8 @@ function skipto_post_gen_lab()
 	Parameters: 2
 	Flags: None
 */
-function skipto_chem_lab()
-{
-	// Unsupported VM revision (1B).
+function skipto_chem_lab() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -296,9 +277,8 @@ function skipto_chem_lab()
 	Parameters: 2
 	Flags: None
 */
-function skipto_post_chem_lab()
-{
-	// Unsupported VM revision (1B).
+function skipto_post_chem_lab() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -310,9 +290,8 @@ function skipto_post_chem_lab()
 	Parameters: 2
 	Flags: None
 */
-function skipto_silo_floor()
-{
-	// Unsupported VM revision (1B).
+function skipto_silo_floor() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -324,9 +303,8 @@ function skipto_silo_floor()
 	Parameters: 2
 	Flags: None
 */
-function skipto_silo_floor_done()
-{
-	// Unsupported VM revision (1B).
+function skipto_silo_floor_done() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -338,9 +316,8 @@ function skipto_silo_floor_done()
 	Parameters: 2
 	Flags: None
 */
-function skipto_under_silo()
-{
-	// Unsupported VM revision (1B).
+function skipto_under_silo() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -352,9 +329,8 @@ function skipto_under_silo()
 	Parameters: 2
 	Flags: None
 */
-function function_8a68f6ae()
-{
-	// Unsupported VM revision (1B).
+function function_8a68f6ae() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -366,9 +342,8 @@ function function_8a68f6ae()
 	Parameters: 2
 	Flags: None
 */
-function function_9dd018de()
-{
-	// Unsupported VM revision (1B).
+function function_9dd018de() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -380,9 +355,8 @@ function function_9dd018de()
 	Parameters: 0
 	Flags: None
 */
-function init_interior_fx_anims()
-{
-	// Unsupported VM revision (1B).
+function init_interior_fx_anims() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -394,9 +368,8 @@ function init_interior_fx_anims()
 	Parameters: 0
 	Flags: None
 */
-function init_fx_anims_from_gen_lab()
-{
-	// Unsupported VM revision (1B).
+function init_fx_anims_from_gen_lab() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -408,9 +381,8 @@ function init_fx_anims_from_gen_lab()
 	Parameters: 0
 	Flags: None
 */
-function init_fx_anims_from_chem_lab()
-{
-	// Unsupported VM revision (1B).
+function init_fx_anims_from_chem_lab() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -422,9 +394,8 @@ function init_fx_anims_from_chem_lab()
 	Parameters: 7
 	Flags: None
 */
-function function_1561b96d()
-{
-	// Unsupported VM revision (1B).
+function function_1561b96d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -436,9 +407,8 @@ function function_1561b96d()
 	Parameters: 7
 	Flags: None
 */
-function function_8b62fa9d()
-{
-	// Unsupported VM revision (1B).
+function function_8b62fa9d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -450,9 +420,8 @@ function function_8b62fa9d()
 	Parameters: 7
 	Flags: None
 */
-function function_47257e43()
-{
-	// Unsupported VM revision (1B).
+function function_47257e43() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -464,9 +433,8 @@ function function_47257e43()
 	Parameters: 4
 	Flags: None
 */
-function function_2370f00f()
-{
-	// Unsupported VM revision (1B).
+function function_2370f00f() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -478,9 +446,8 @@ function function_2370f00f()
 	Parameters: 7
 	Flags: None
 */
-function robot_window_break()
-{
-	// Unsupported VM revision (1B).
+function robot_window_break() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -492,9 +459,8 @@ function robot_window_break()
 	Parameters: 7
 	Flags: None
 */
-function debris_bridge()
-{
-	// Unsupported VM revision (1B).
+function debris_bridge() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -506,9 +472,8 @@ function debris_bridge()
 	Parameters: 7
 	Flags: None
 */
-function debris_wall()
-{
-	// Unsupported VM revision (1B).
+function debris_wall() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -520,9 +485,8 @@ function debris_wall()
 	Parameters: 0
 	Flags: None
 */
-function function_4b788e97()
-{
-	// Unsupported VM revision (1B).
+function function_4b788e97() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -534,9 +498,8 @@ function function_4b788e97()
 	Parameters: 7
 	Flags: None
 */
-function debris_fall()
-{
-	// Unsupported VM revision (1B).
+function debris_fall() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -548,9 +511,8 @@ function debris_fall()
 	Parameters: 7
 	Flags: None
 */
-function debris_catwalk()
-{
-	// Unsupported VM revision (1B).
+function debris_catwalk() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -562,9 +524,8 @@ function debris_catwalk()
 	Parameters: 7
 	Flags: None
 */
-function truck_flip()
-{
-	// Unsupported VM revision (1B).
+function truck_flip() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -576,9 +537,8 @@ function truck_flip()
 	Parameters: 7
 	Flags: None
 */
-function set_structural_weakness()
-{
-	// Unsupported VM revision (1B).
+function set_structural_weakness() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -590,9 +550,8 @@ function set_structural_weakness()
 	Parameters: 7
 	Flags: None
 */
-function silo_swim_bridge_fall()
-{
-	// Unsupported VM revision (1B).
+function silo_swim_bridge_fall() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -604,9 +563,8 @@ function silo_swim_bridge_fall()
 	Parameters: 7
 	Flags: None
 */
-function set_drone_cam()
-{
-	// Unsupported VM revision (1B).
+function set_drone_cam() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -618,9 +576,8 @@ function set_drone_cam()
 	Parameters: 7
 	Flags: None
 */
-function oed_interference()
-{
-	// Unsupported VM revision (1B).
+function oed_interference() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -632,9 +589,8 @@ function oed_interference()
 	Parameters: 1
 	Flags: None
 */
-function oed_futz_think()
-{
-	// Unsupported VM revision (1B).
+function oed_futz_think() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -646,9 +602,8 @@ function oed_futz_think()
 	Parameters: 7
 	Flags: None
 */
-function function_f8965920()
-{
-	// Unsupported VM revision (1B).
+function function_f8965920() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -660,9 +615,8 @@ function function_f8965920()
 	Parameters: 7
 	Flags: None
 */
-function function_ef39e6b6()
-{
-	// Unsupported VM revision (1B).
+function function_ef39e6b6() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -674,9 +628,8 @@ function function_ef39e6b6()
 	Parameters: 7
 	Flags: None
 */
-function ceiling_collapse()
-{
-	// Unsupported VM revision (1B).
+function ceiling_collapse() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -688,9 +641,8 @@ function ceiling_collapse()
 	Parameters: 7
 	Flags: None
 */
-function function_e76aa170()
-{
-	// Unsupported VM revision (1B).
+function function_e76aa170() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -702,9 +654,8 @@ function function_e76aa170()
 	Parameters: 1
 	Flags: None
 */
-function function_cacf88e6()
-{
-	// Unsupported VM revision (1B).
+function function_cacf88e6() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -716,9 +667,8 @@ function function_cacf88e6()
 	Parameters: 0
 	Flags: None
 */
-function function_5799c6c0()
-{
-	// Unsupported VM revision (1B).
+function function_5799c6c0() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -730,9 +680,8 @@ function function_5799c6c0()
 	Parameters: 0
 	Flags: None
 */
-function function_39b5ac35()
-{
-	// Unsupported VM revision (1B).
+function function_39b5ac35() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -744,9 +693,8 @@ function function_39b5ac35()
 	Parameters: 1
 	Flags: None
 */
-function function_b84a3557()
-{
-	// Unsupported VM revision (1B).
+function function_b84a3557() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -758,9 +706,8 @@ function function_b84a3557()
 	Parameters: 1
 	Flags: None
 */
-function function_6f15ec64()
-{
-	// Unsupported VM revision (1B).
+function function_6f15ec64() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -772,9 +719,8 @@ function function_6f15ec64()
 	Parameters: 7
 	Flags: None
 */
-function water_sheeting_toggle()
-{
-	// Unsupported VM revision (1B).
+function water_sheeting_toggle() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -786,9 +732,8 @@ function water_sheeting_toggle()
 	Parameters: 7
 	Flags: None
 */
-function underwater_state_toggle()
-{
-	// Unsupported VM revision (1B).
+function underwater_state_toggle() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -800,9 +745,8 @@ function underwater_state_toggle()
 	Parameters: 7
 	Flags: None
 */
-function flood_combat_windows_b()
-{
-	// Unsupported VM revision (1B).
+function flood_combat_windows_b() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -814,9 +758,8 @@ function flood_combat_windows_b()
 	Parameters: 7
 	Flags: None
 */
-function flood_combat_windows_c()
-{
-	// Unsupported VM revision (1B).
+function flood_combat_windows_c() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -828,9 +771,8 @@ function flood_combat_windows_c()
 	Parameters: 7
 	Flags: None
 */
-function link_elevator_light_probe()
-{
-	// Unsupported VM revision (1B).
+function link_elevator_light_probe() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -842,9 +784,8 @@ function link_elevator_light_probe()
 	Parameters: 7
 	Flags: None
 */
-function flood_defend_hallway_flood_siege()
-{
-	// Unsupported VM revision (1B).
+function flood_defend_hallway_flood_siege() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -856,9 +797,8 @@ function flood_defend_hallway_flood_siege()
 	Parameters: 7
 	Flags: None
 */
-function set_elevator_shader()
-{
-	// Unsupported VM revision (1B).
+function set_elevator_shader() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -870,9 +810,8 @@ function set_elevator_shader()
 	Parameters: 7
 	Flags: None
 */
-function set_elevator_door_state()
-{
-	// Unsupported VM revision (1B).
+function set_elevator_door_state() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -884,9 +823,8 @@ function set_elevator_door_state()
 	Parameters: 7
 	Flags: None
 */
-function observation_deck_destroy()
-{
-	// Unsupported VM revision (1B).
+function observation_deck_destroy() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -898,9 +836,8 @@ function observation_deck_destroy()
 	Parameters: 7
 	Flags: None
 */
-function tower_chunks1()
-{
-	// Unsupported VM revision (1B).
+function tower_chunks1() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -912,9 +849,8 @@ function tower_chunks1()
 	Parameters: 7
 	Flags: None
 */
-function tower_chunks2()
-{
-	// Unsupported VM revision (1B).
+function tower_chunks2() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -926,9 +862,8 @@ function tower_chunks2()
 	Parameters: 7
 	Flags: None
 */
-function tower_chunks3()
-{
-	// Unsupported VM revision (1B).
+function tower_chunks3() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -940,9 +875,8 @@ function tower_chunks3()
 	Parameters: 7
 	Flags: None
 */
-function play_robot_eye_fx()
-{
-	// Unsupported VM revision (1B).
+function play_robot_eye_fx() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -954,9 +888,8 @@ function play_robot_eye_fx()
 	Parameters: 7
 	Flags: None
 */
-function function_4fdcffa3()
-{
-	// Unsupported VM revision (1B).
+function function_4fdcffa3() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -968,9 +901,8 @@ function function_4fdcffa3()
 	Parameters: 7
 	Flags: None
 */
-function sndsilobg()
-{
-	// Unsupported VM revision (1B).
+function sndsilobg() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -982,9 +914,8 @@ function sndsilobg()
 	Parameters: 3
 	Flags: None
 */
-function sndsilobgthink()
-{
-	// Unsupported VM revision (1B).
+function sndsilobgthink() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -996,9 +927,8 @@ function sndsilobgthink()
 	Parameters: 3
 	Flags: None
 */
-function snddeleteents()
-{
-	// Unsupported VM revision (1B).
+function snddeleteents() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1010,9 +940,8 @@ function snddeleteents()
 	Parameters: 7
 	Flags: None
 */
-function dust_motes()
-{
-	// Unsupported VM revision (1B).
+function dust_motes() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1024,9 +953,8 @@ function dust_motes()
 	Parameters: 7
 	Flags: None
 */
-function water_motes()
-{
-	// Unsupported VM revision (1B).
+function water_motes() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1038,9 +966,8 @@ function water_motes()
 	Parameters: 7
 	Flags: None
 */
-function water_teleport_transition()
-{
-	// Unsupported VM revision (1B).
+function water_teleport_transition() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1052,9 +979,8 @@ function water_teleport_transition()
 	Parameters: 7
 	Flags: None
 */
-function silo_debris()
-{
-	// Unsupported VM revision (1B).
+function silo_debris() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1066,9 +992,8 @@ function silo_debris()
 	Parameters: 1
 	Flags: None
 */
-function force_streamer()
-{
-	// Unsupported VM revision (1B).
+function force_streamer() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1080,9 +1005,8 @@ function force_streamer()
 	Parameters: 7
 	Flags: None
 */
-function weakpoint()
-{
-	// Unsupported VM revision (1B).
+function weakpoint() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1094,9 +1018,8 @@ function weakpoint()
 	Parameters: 7
 	Flags: None
 */
-function fallen_soldiers_client_fxanims()
-{
-	// Unsupported VM revision (1B).
+function fallen_soldiers_client_fxanims() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1108,9 +1031,8 @@ function fallen_soldiers_client_fxanims()
 	Parameters: 7
 	Flags: None
 */
-function intro_flyover_client_fxanims()
-{
-	// Unsupported VM revision (1B).
+function intro_flyover_client_fxanims() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1122,9 +1044,8 @@ function intro_flyover_client_fxanims()
 	Parameters: 7
 	Flags: None
 */
-function sndstepset()
-{
-	// Unsupported VM revision (1B).
+function sndstepset() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1136,9 +1057,8 @@ function sndstepset()
 	Parameters: 2
 	Flags: None
 */
-function sndstepsetthreaded()
-{
-	// Unsupported VM revision (1B).
+function sndstepsetthreaded() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1150,9 +1070,8 @@ function sndstepsetthreaded()
 	Parameters: 7
 	Flags: None
 */
-function function_59c47b1()
-{
-	// Unsupported VM revision (1B).
+function function_59c47b1() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1164,9 +1083,8 @@ function function_59c47b1()
 	Parameters: 7
 	Flags: None
 */
-function set_depth_charge_fx()
-{
-	// Unsupported VM revision (1B).
+function set_depth_charge_fx() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1178,9 +1096,8 @@ function set_depth_charge_fx()
 	Parameters: 7
 	Flags: None
 */
-function twin_igc_client_fxanims()
-{
-	// Unsupported VM revision (1B).
+function twin_igc_client_fxanims() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1192,8 +1109,6 @@ function twin_igc_client_fxanims()
 	Parameters: 7
 	Flags: None
 */
-function function_1e832062()
-{
-	// Unsupported VM revision (1B).
+function function_1e832062() {
+  // Unsupported VM revision (1B).
 }
-

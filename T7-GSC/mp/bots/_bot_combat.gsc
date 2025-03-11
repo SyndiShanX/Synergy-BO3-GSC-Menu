@@ -24,13 +24,11 @@
 	Parameters: 1
 	Flags: Linked
 */
-function bot_ignore_threat(entity)
-{
-	if(threat_requires_launcher(entity) && !self bot::has_launcher())
-	{
-		return true;
-	}
-	return false;
+function bot_ignore_threat(entity) {
+  if(threat_requires_launcher(entity) && !self bot::has_launcher()) {
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -42,27 +40,22 @@ function bot_ignore_threat(entity)
 	Parameters: 0
 	Flags: Linked
 */
-function mp_pre_combat()
-{
-	self bot_pre_combat();
-	if(self isreloading() || self isswitchingweapons() || self isthrowinggrenade() || self ismeleeing() || self isremotecontrolling() || self isinvehicle() || self isweaponviewonlylinked())
-	{
-		return;
-	}
-	if(self has_threat())
-	{
-		self threat_switch_weapon();
-		return;
-	}
-	if(self switch_weapon())
-	{
-		return;
-	}
-	if(self reload_weapon())
-	{
-		return;
-	}
-	self bot::use_killstreak();
+function mp_pre_combat() {
+  self bot_pre_combat();
+  if(self isreloading() || self isswitchingweapons() || self isthrowinggrenade() || self ismeleeing() || self isremotecontrolling() || self isinvehicle() || self isweaponviewonlylinked()) {
+    return;
+  }
+  if(self has_threat()) {
+    self threat_switch_weapon();
+    return;
+  }
+  if(self switch_weapon()) {
+    return;
+  }
+  if(self reload_weapon()) {
+    return;
+  }
+  self bot::use_killstreak();
 }
 
 /*
@@ -74,35 +67,25 @@ function mp_pre_combat()
 	Parameters: 0
 	Flags: Linked
 */
-function mp_post_combat()
-{
-	if(!isdefined(level.dogtags))
-	{
-		return;
-	}
-	if(isdefined(self.bot.goaltag))
-	{
-		if(!self.bot.goaltag gameobjects::can_interact_with(self))
-		{
-			self.bot.goaltag = undefined;
-			if(!self has_threat() && self botgoalset())
-			{
-				self botsetgoal(self.origin);
-			}
-		}
-		else if(!self.bot.goaltagonground && !self has_threat() && self isonground() && distance2dsquared(self.origin, self.bot.goaltag.origin) < 16384 && self botsighttrace(self.bot.goaltag))
-		{
-			self thread bot::jump_to(self.bot.goaltag.origin);
-		}
-	}
-	else if(!self botgoalset())
-	{
-		closesttag = self get_closest_tag();
-		if(isdefined(closesttag))
-		{
-			self set_goal_tag(closesttag);
-		}
-	}
+function mp_post_combat() {
+  if(!isdefined(level.dogtags)) {
+    return;
+  }
+  if(isdefined(self.bot.goaltag)) {
+    if(!self.bot.goaltag gameobjects::can_interact_with(self)) {
+      self.bot.goaltag = undefined;
+      if(!self has_threat() && self botgoalset()) {
+        self botsetgoal(self.origin);
+      }
+    } else if(!self.bot.goaltagonground && !self has_threat() && self isonground() && distance2dsquared(self.origin, self.bot.goaltag.origin) < 16384 && self botsighttrace(self.bot.goaltag)) {
+      self thread bot::jump_to(self.bot.goaltag.origin);
+    }
+  } else if(!self botgoalset()) {
+    closesttag = self get_closest_tag();
+    if(isdefined(closesttag)) {
+      self set_goal_tag(closesttag);
+    }
+  }
 }
 
 /*
@@ -114,36 +97,28 @@ function mp_post_combat()
 	Parameters: 1
 	Flags: Linked
 */
-function threat_requires_launcher(enemy)
-{
-	if(!isdefined(enemy) || isplayer(enemy))
-	{
-		return false;
-	}
-	killstreaktype = undefined;
-	if(isdefined(enemy.killstreaktype))
-	{
-		killstreaktype = enemy.killstreaktype;
-	}
-	else if(isdefined(enemy.parentstruct) && isdefined(enemy.parentstruct.killstreaktype))
-	{
-		killstreaktype = enemy.parentstruct.killstreaktype;
-	}
-	if(!isdefined(killstreaktype))
-	{
-		return false;
-	}
-	switch(killstreaktype)
-	{
-		case "counteruav":
-		case "helicopter_gunner":
-		case "satellite":
-		case "uav":
-		{
-			return true;
-		}
-	}
-	return false;
+function threat_requires_launcher(enemy) {
+  if(!isdefined(enemy) || isplayer(enemy)) {
+    return false;
+  }
+  killstreaktype = undefined;
+  if(isdefined(enemy.killstreaktype)) {
+    killstreaktype = enemy.killstreaktype;
+  } else if(isdefined(enemy.parentstruct) && isdefined(enemy.parentstruct.killstreaktype)) {
+    killstreaktype = enemy.parentstruct.killstreaktype;
+  }
+  if(!isdefined(killstreaktype)) {
+    return false;
+  }
+  switch (killstreaktype) {
+    case "counteruav":
+    case "helicopter_gunner":
+    case "satellite":
+    case "uav": {
+      return true;
+    }
+  }
+  return false;
 }
 
 /*
@@ -155,9 +130,7 @@ function threat_requires_launcher(enemy)
 	Parameters: 1
 	Flags: Linked
 */
-function combat_throw_proximity(origin)
-{
-}
+function combat_throw_proximity(origin) {}
 
 /*
 	Name: combat_throw_smoke
@@ -168,9 +141,7 @@ function combat_throw_proximity(origin)
 	Parameters: 1
 	Flags: Linked
 */
-function combat_throw_smoke(origin)
-{
-}
+function combat_throw_smoke(origin) {}
 
 /*
 	Name: combat_throw_lethal
@@ -181,9 +152,7 @@ function combat_throw_smoke(origin)
 	Parameters: 1
 	Flags: Linked
 */
-function combat_throw_lethal(origin)
-{
-}
+function combat_throw_lethal(origin) {}
 
 /*
 	Name: combat_throw_tactical
@@ -194,9 +163,7 @@ function combat_throw_lethal(origin)
 	Parameters: 1
 	Flags: Linked
 */
-function combat_throw_tactical(origin)
-{
-}
+function combat_throw_tactical(origin) {}
 
 /*
 	Name: combat_toss_frag
@@ -207,9 +174,7 @@ function combat_throw_tactical(origin)
 	Parameters: 1
 	Flags: None
 */
-function combat_toss_frag(origin)
-{
-}
+function combat_toss_frag(origin) {}
 
 /*
 	Name: combat_toss_flash
@@ -220,9 +185,7 @@ function combat_toss_frag(origin)
 	Parameters: 1
 	Flags: None
 */
-function combat_toss_flash(origin)
-{
-}
+function combat_toss_flash(origin) {}
 
 /*
 	Name: combat_tactical_insertion
@@ -233,9 +196,8 @@ function combat_toss_flash(origin)
 	Parameters: 1
 	Flags: Linked
 */
-function combat_tactical_insertion(origin)
-{
-	return false;
+function combat_tactical_insertion(origin) {
+  return false;
 }
 
 /*
@@ -247,9 +209,8 @@ function combat_tactical_insertion(origin)
 	Parameters: 1
 	Flags: None
 */
-function nearest_node(origin)
-{
-	return undefined;
+function nearest_node(origin) {
+  return undefined;
 }
 
 /*
@@ -261,9 +222,8 @@ function nearest_node(origin)
 	Parameters: 1
 	Flags: None
 */
-function dot_product(origin)
-{
-	return bot::fwd_dot(origin);
+function dot_product(origin) {
+  return bot::fwd_dot(origin);
 }
 
 /*
@@ -275,24 +235,20 @@ function dot_product(origin)
 	Parameters: 0
 	Flags: Linked
 */
-function get_closest_tag()
-{
-	closesttag = undefined;
-	closesttagdistsq = undefined;
-	foreach(tag in level.dogtags)
-	{
-		if(!tag gameobjects::can_interact_with(self))
-		{
-			continue;
-		}
-		distsq = distancesquared(self.origin, tag.origin);
-		if(!isdefined(closesttag) || distsq < closesttagdistsq)
-		{
-			closesttag = tag;
-			closesttagdistsq = distsq;
-		}
-	}
-	return closesttag;
+function get_closest_tag() {
+  closesttag = undefined;
+  closesttagdistsq = undefined;
+  foreach(tag in level.dogtags) {
+    if(!tag gameobjects::can_interact_with(self)) {
+      continue;
+    }
+    distsq = distancesquared(self.origin, tag.origin);
+    if(!isdefined(closesttag) || distsq < closesttagdistsq) {
+      closesttag = tag;
+      closesttagdistsq = distsq;
+    }
+  }
+  return closesttag;
 }
 
 /*
@@ -304,14 +260,12 @@ function get_closest_tag()
 	Parameters: 1
 	Flags: Linked
 */
-function set_goal_tag(tag)
-{
-	self.bot.goaltag = tag;
-	tracestart = tag.origin;
-	traceend = tag.origin + (vectorscale((0, 0, -1), 64));
-	trace = bullettrace(tracestart, traceend, 0, undefined);
-	self.bot.goaltagonground = trace["fraction"] < 1;
-	self bot::path_to_trigger(tag.trigger);
-	self bot::sprint_to_goal();
+function set_goal_tag(tag) {
+  self.bot.goaltag = tag;
+  tracestart = tag.origin;
+  traceend = tag.origin + (vectorscale((0, 0, -1), 64));
+  trace = bullettrace(tracestart, traceend, 0, undefined);
+  self.bot.goaltagonground = trace["fraction"] < 1;
+  self bot::path_to_trigger(tag.trigger);
+  self bot::sprint_to_goal();
 }
-

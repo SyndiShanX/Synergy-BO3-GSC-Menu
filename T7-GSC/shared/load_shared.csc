@@ -23,9 +23,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("load", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("load", & __init__, undefined, undefined);
 }
 
 /*
@@ -37,12 +36,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	/#
-		level thread first_frame();
-	#/
-	init_push_out_threshold();
+function __init__() {
+  /#
+  level thread first_frame();
+  # /
+    init_push_out_threshold();
 }
 
 /*
@@ -54,13 +52,12 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function first_frame()
-{
-	/#
-		level.first_frame = 1;
-		wait(0.05);
-		level.first_frame = undefined;
-	#/
+function first_frame() {
+  /#
+  level.first_frame = 1;
+  wait(0.05);
+  level.first_frame = undefined;
+  # /
 }
 
 /*
@@ -72,13 +69,11 @@ function first_frame()
 	Parameters: 0
 	Flags: Linked
 */
-function init_push_out_threshold()
-{
-	push_out_threshold = getdvarfloat("tu16_physicsPushOutThreshold", -1);
-	if(push_out_threshold != -1)
-	{
-		setdvar("tu16_physicsPushOutThreshold", 20);
-	}
+function init_push_out_threshold() {
+  push_out_threshold = getdvarfloat("tu16_physicsPushOutThreshold", -1);
+  if(push_out_threshold != -1) {
+    setdvar("tu16_physicsPushOutThreshold", 20);
+  }
 }
 
 /*
@@ -90,15 +85,11 @@ function init_push_out_threshold()
 	Parameters: 0
 	Flags: Linked
 */
-function art_review()
-{
-	if(getdvarstring("art_review") == "")
-	{
-		setdvar("art_review", "0");
-	}
-	if(getdvarstring("art_review") == "1")
-	{
-		level waittill(#"forever");
-	}
+function art_review() {
+  if(getdvarstring("art_review") == "") {
+    setdvar("art_review", "0");
+  }
+  if(getdvarstring("art_review") == "1") {
+    level waittill(# "forever");
+  }
 }
-

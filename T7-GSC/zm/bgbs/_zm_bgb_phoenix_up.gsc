@@ -21,9 +21,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_phoenix_up", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_phoenix_up", & __init__, undefined, "bgb");
 }
 
 /*
@@ -35,14 +34,12 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_phoenix_up", "activated", 1, undefined, undefined, &validation, &activation);
-	bgb::register_lost_perk_override("zm_bgb_phoenix_up", &lost_perk_override, 1);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_phoenix_up", "activated", 1, undefined, undefined, & validation, & activation);
+  bgb::register_lost_perk_override("zm_bgb_phoenix_up", & lost_perk_override, 1);
 }
 
 /*
@@ -54,25 +51,20 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function validation()
-{
-	players = level.players;
-	foreach(player in players)
-	{
-		if(isdefined(player.var_df0decf1) && player.var_df0decf1)
-		{
-			return false;
-		}
-		if(isdefined(level.var_11b06c2f) && self [[level.var_11b06c2f]](player, 1, 1))
-		{
-			return true;
-		}
-		if(self zm_laststand::can_revive(player, 1, 1))
-		{
-			return true;
-		}
-	}
-	return false;
+function validation() {
+  players = level.players;
+  foreach(player in players) {
+    if(isdefined(player.var_df0decf1) && player.var_df0decf1) {
+      return false;
+    }
+    if(isdefined(level.var_11b06c2f) && self[[level.var_11b06c2f]](player, 1, 1)) {
+      return true;
+    }
+    if(self zm_laststand::can_revive(player, 1, 1)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /*
@@ -84,28 +76,22 @@ function validation()
 	Parameters: 0
 	Flags: Linked
 */
-function activation()
-{
-	playsoundatposition("zmb_bgb_phoenix_activate", (0, 0, 0));
-	players = level.players;
-	foreach(player in players)
-	{
-		can_revive = 0;
-		if(isdefined(level.var_11b06c2f) && self [[level.var_11b06c2f]](player, 1, 1))
-		{
-			can_revive = 1;
-		}
-		else if(self zm_laststand::can_revive(player, 1, 1))
-		{
-			can_revive = 1;
-		}
-		if(can_revive)
-		{
-			player thread bgb::bgb_revive_watcher();
-			player zm_laststand::auto_revive(self, 0);
-			self zm_stats::increment_challenge_stat("GUM_GOBBLER_PHOENIX_UP");
-		}
-	}
+function activation() {
+  playsoundatposition("zmb_bgb_phoenix_activate", (0, 0, 0));
+  players = level.players;
+  foreach(player in players) {
+    can_revive = 0;
+    if(isdefined(level.var_11b06c2f) && self[[level.var_11b06c2f]](player, 1, 1)) {
+      can_revive = 1;
+    } else if(self zm_laststand::can_revive(player, 1, 1)) {
+      can_revive = 1;
+    }
+    if(can_revive) {
+      player thread bgb::bgb_revive_watcher();
+      player zm_laststand::auto_revive(self, 0);
+      self zm_stats::increment_challenge_stat("GUM_GOBBLER_PHOENIX_UP");
+    }
+  }
 }
 
 /*
@@ -117,9 +103,7 @@ function activation()
 	Parameters: 3
 	Flags: Linked
 */
-function lost_perk_override(perk, var_2488e46a = undefined, var_24df4040 = undefined)
-{
-	self thread bgb::revive_and_return_perk_on_bgb_activation(perk);
-	return false;
+function lost_perk_override(perk, var_2488e46a = undefined, var_24df4040 = undefined) {
+  self thread bgb::revive_and_return_perk_on_bgb_activation(perk);
+  return false;
 }
-

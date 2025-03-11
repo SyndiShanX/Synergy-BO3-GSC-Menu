@@ -22,9 +22,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("gadget_cleanse", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("gadget_cleanse", & __init__, undefined, undefined);
 }
 
 /*
@@ -36,10 +35,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("allplayers", "gadget_cleanse_on", 1, 1, "int", &has_cleanse_changed, 0, 1);
-	duplicate_render::set_dr_filter_offscreen("cleanse_pl", 50, "cleanse_player", undefined, 2, "mc/hud_outline_model_z_green");
+function __init__() {
+  clientfield::register("allplayers", "gadget_cleanse_on", 1, 1, "int", & has_cleanse_changed, 0, 1);
+  duplicate_render::set_dr_filter_offscreen("cleanse_pl", 50, "cleanse_player", undefined, 2, "mc/hud_outline_model_z_green");
 }
 
 /*
@@ -51,11 +49,8 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function has_cleanse_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval != oldval)
-	{
-		self duplicate_render::update_dr_flag(localclientnum, "cleanse_player", newval);
-	}
+function has_cleanse_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval != oldval) {
+    self duplicate_render::update_dr_flag(localclientnum, "cleanse_player", newval);
+  }
 }
-

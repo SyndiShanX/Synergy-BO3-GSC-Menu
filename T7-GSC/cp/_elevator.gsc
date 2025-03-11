@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	// Unsupported VM revision (1B).
+function autoexec __init__sytem__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -32,9 +31,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: None
 */
-function __init__()
-{
-	// Unsupported VM revision (1B).
+function __init__() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -46,9 +44,8 @@ function __init__()
 	Parameters: 0
 	Flags: None
 */
-function define_elevator_parts()
-{
-	// Unsupported VM revision (1B).
+function define_elevator_parts() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -60,9 +57,8 @@ function define_elevator_parts()
 	Parameters: 1
 	Flags: None
 */
-function get_start_point_in_path()
-{
-	// Unsupported VM revision (1B).
+function get_start_point_in_path() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -74,9 +70,8 @@ function get_start_point_in_path()
 	Parameters: 1
 	Flags: None
 */
-function trigger_think()
-{
-	// Unsupported VM revision (1B).
+function trigger_think() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -88,9 +83,8 @@ function trigger_think()
 	Parameters: 1
 	Flags: None
 */
-function wait_for_all_heroes()
-{
-	// Unsupported VM revision (1B).
+function wait_for_all_heroes() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -102,9 +96,8 @@ function wait_for_all_heroes()
 	Parameters: 2
 	Flags: None
 */
-function elevator_looping_sounds()
-{
-	// Unsupported VM revision (1B).
+function elevator_looping_sounds() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -116,9 +109,8 @@ function elevator_looping_sounds()
 	Parameters: 2
 	Flags: None
 */
-function setup_elevator_doors()
-{
-	// Unsupported VM revision (1B).
+function setup_elevator_doors() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -130,9 +122,8 @@ function setup_elevator_doors()
 	Parameters: 6
 	Flags: None
 */
-function move_elevator_doors()
-{
-	// Unsupported VM revision (1B).
+function move_elevator_doors() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -144,9 +135,8 @@ function move_elevator_doors()
 	Parameters: 3
 	Flags: None
 */
-function move_platform()
-{
-	// Unsupported VM revision (1B).
+function move_platform() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -158,9 +148,8 @@ function move_platform()
 	Parameters: 0
 	Flags: None
 */
-function stop()
-{
-	// Unsupported VM revision (1B).
+function stop() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -172,9 +161,8 @@ function stop()
 	Parameters: 2
 	Flags: None
 */
-function process_node()
-{
-	// Unsupported VM revision (1B).
+function process_node() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -186,8 +174,6 @@ function process_node()
 	Parameters: 2
 	Flags: None
 */
-function get_speed()
-{
-	// Unsupported VM revision (1B).
+function get_speed() {
+  // Unsupported VM revision (1B).
 }
-

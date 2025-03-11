@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_pop_shocks", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_pop_shocks", & __init__, undefined, "bgb");
 }
 
 /*
@@ -34,15 +33,13 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_pop_shocks", "event", &event, undefined, undefined, undefined);
-	bgb::register_actor_damage_override("zm_bgb_pop_shocks", &actor_damage_override);
-	bgb::register_vehicle_damage_override("zm_bgb_pop_shocks", &vehicle_damage_override);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_pop_shocks", "event", & event, undefined, undefined, undefined);
+  bgb::register_actor_damage_override("zm_bgb_pop_shocks", & actor_damage_override);
+  bgb::register_vehicle_damage_override("zm_bgb_pop_shocks", & vehicle_damage_override);
 }
 
 /*
@@ -54,16 +51,14 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function event()
-{
-	self endon(#"disconnect");
-	self endon(#"death");
-	self endon(#"bgb_update");
-	self.var_69d5dd7c = 5;
-	while(self.var_69d5dd7c > 0)
-	{
-		wait(0.1);
-	}
+function event() {
+  self endon(# "disconnect");
+  self endon(# "death");
+  self endon(# "bgb_update");
+  self.var_69d5dd7c = 5;
+  while (self.var_69d5dd7c > 0) {
+    wait(0.1);
+  }
 }
 
 /*
@@ -75,13 +70,11 @@ function event()
 	Parameters: 12
 	Flags: Linked
 */
-function actor_damage_override(inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex, surfacetype)
-{
-	if(meansofdeath === "MOD_MELEE")
-	{
-		attacker function_e0e68a99(self);
-	}
-	return damage;
+function actor_damage_override(inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex, surfacetype) {
+  if(meansofdeath === "MOD_MELEE") {
+    attacker function_e0e68a99(self);
+  }
+  return damage;
 }
 
 /*
@@ -93,13 +86,11 @@ function actor_damage_override(inflictor, attacker, damage, flags, meansofdeath,
 	Parameters: 15
 	Flags: Linked
 */
-function vehicle_damage_override(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal)
-{
-	if(smeansofdeath === "MOD_MELEE")
-	{
-		eattacker function_e0e68a99(self);
-	}
-	return idamage;
+function vehicle_damage_override(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
+  if(smeansofdeath === "MOD_MELEE") {
+    eattacker function_e0e68a99(self);
+  }
+  return idamage;
 }
 
 /*
@@ -111,30 +102,25 @@ function vehicle_damage_override(einflictor, eattacker, idamage, idflags, smeans
 	Parameters: 1
 	Flags: Linked
 */
-function function_e0e68a99(target)
-{
-	if(isdefined(self.beastmode) && self.beastmode)
-	{
-		return;
-	}
-	self bgb::do_one_shot_use();
-	self.var_69d5dd7c = self.var_69d5dd7c - 1;
-	self bgb::set_timer(self.var_69d5dd7c, 5);
-	self playsound("zmb_bgb_popshocks_impact");
-	zombie_list = getaiteamarray(level.zombie_team);
-	foreach(ai in zombie_list)
-	{
-		if(!isdefined(ai) || !isalive(ai))
-		{
-			continue;
-		}
-		test_origin = ai getcentroid();
-		dist_sq = distancesquared(target.origin, test_origin);
-		if(dist_sq < 16384)
-		{
-			self thread electrocute_actor(ai);
-		}
-	}
+function function_e0e68a99(target) {
+  if(isdefined(self.beastmode) && self.beastmode) {
+    return;
+  }
+  self bgb::do_one_shot_use();
+  self.var_69d5dd7c = self.var_69d5dd7c - 1;
+  self bgb::set_timer(self.var_69d5dd7c, 5);
+  self playsound("zmb_bgb_popshocks_impact");
+  zombie_list = getaiteamarray(level.zombie_team);
+  foreach(ai in zombie_list) {
+    if(!isdefined(ai) || !isalive(ai)) {
+      continue;
+    }
+    test_origin = ai getcentroid();
+    dist_sq = distancesquared(target.origin, test_origin);
+    if(dist_sq < 16384) {
+      self thread electrocute_actor(ai);
+    }
+  }
 }
 
 /*
@@ -146,22 +132,19 @@ function function_e0e68a99(target)
 	Parameters: 1
 	Flags: Linked
 */
-function electrocute_actor(ai)
-{
-	self endon(#"disconnect");
-	if(!isdefined(ai) || !isalive(ai))
-	{
-		return;
-	}
-	ai notify(#"bhtn_action_notify", "electrocute");
-	if(!isdefined(self.tesla_enemies_hit))
-	{
-		self.tesla_enemies_hit = 1;
-	}
-	create_lightning_params();
-	ai.tesla_death = 0;
-	ai thread arc_damage_init(self);
-	ai thread tesla_death();
+function electrocute_actor(ai) {
+  self endon(# "disconnect");
+  if(!isdefined(ai) || !isalive(ai)) {
+    return;
+  }
+  ai notify(# "bhtn_action_notify", "electrocute");
+  if(!isdefined(self.tesla_enemies_hit)) {
+    self.tesla_enemies_hit = 1;
+  }
+  create_lightning_params();
+  ai.tesla_death = 0;
+  ai thread arc_damage_init(self);
+  ai thread tesla_death();
 }
 
 /*
@@ -173,12 +156,11 @@ function electrocute_actor(ai)
 	Parameters: 0
 	Flags: Linked
 */
-function create_lightning_params()
-{
-	level.zm_bgb_pop_shocks_lightning_params = lightning_chain::create_lightning_chain_params(5);
-	level.zm_bgb_pop_shocks_lightning_params.head_gib_chance = 100;
-	level.zm_bgb_pop_shocks_lightning_params.network_death_choke = 4;
-	level.zm_bgb_pop_shocks_lightning_params.should_kill_enemies = 0;
+function create_lightning_params() {
+  level.zm_bgb_pop_shocks_lightning_params = lightning_chain::create_lightning_chain_params(5);
+  level.zm_bgb_pop_shocks_lightning_params.head_gib_chance = 100;
+  level.zm_bgb_pop_shocks_lightning_params.network_death_choke = 4;
+  level.zm_bgb_pop_shocks_lightning_params.should_kill_enemies = 0;
 }
 
 /*
@@ -190,14 +172,12 @@ function create_lightning_params()
 	Parameters: 1
 	Flags: Linked
 */
-function arc_damage_init(player)
-{
-	player endon(#"disconnect");
-	if(isdefined(self.zombie_tesla_hit) && self.zombie_tesla_hit)
-	{
-		return;
-	}
-	self lightning_chain::arc_damage_ent(player, 1, level.zm_bgb_pop_shocks_lightning_params);
+function arc_damage_init(player) {
+  player endon(# "disconnect");
+  if(isdefined(self.zombie_tesla_hit) && self.zombie_tesla_hit) {
+    return;
+  }
+  self lightning_chain::arc_damage_ent(player, 1, level.zm_bgb_pop_shocks_lightning_params);
 }
 
 /*
@@ -209,12 +189,11 @@ function arc_damage_init(player)
 	Parameters: 0
 	Flags: Linked
 */
-function tesla_death()
-{
-	self endon(#"death");
-	self thread function_862aadab(1);
-	wait(2);
-	self dodamage(self.health + 1, self.origin);
+function tesla_death() {
+  self endon(# "death");
+  self thread function_862aadab(1);
+  wait(2);
+  self dodamage(self.health + 1, self.origin);
 }
 
 /*
@@ -226,27 +205,20 @@ function tesla_death()
 	Parameters: 1
 	Flags: Linked
 */
-function function_862aadab(random_gibs)
-{
-	self waittill(#"death");
-	if(isdefined(self) && isactor(self))
-	{
-		if(!random_gibs || randomint(100) < 50)
-		{
-			gibserverutils::gibhead(self);
-		}
-		if(!random_gibs || randomint(100) < 50)
-		{
-			gibserverutils::gibleftarm(self);
-		}
-		if(!random_gibs || randomint(100) < 50)
-		{
-			gibserverutils::gibrightarm(self);
-		}
-		if(!random_gibs || randomint(100) < 50)
-		{
-			gibserverutils::giblegs(self);
-		}
-	}
+function function_862aadab(random_gibs) {
+  self waittill(# "death");
+  if(isdefined(self) && isactor(self)) {
+    if(!random_gibs || randomint(100) < 50) {
+      gibserverutils::gibhead(self);
+    }
+    if(!random_gibs || randomint(100) < 50) {
+      gibserverutils::gibleftarm(self);
+    }
+    if(!random_gibs || randomint(100) < 50) {
+      gibserverutils::gibrightarm(self);
+    }
+    if(!random_gibs || randomint(100) < 50) {
+      gibserverutils::giblegs(self);
+    }
+  }
 }
-

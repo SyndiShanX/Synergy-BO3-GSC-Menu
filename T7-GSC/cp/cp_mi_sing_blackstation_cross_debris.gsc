@@ -31,9 +31,8 @@
 	Parameters: 2
 	Flags: None
 */
-function objective_cross_debris_init()
-{
-	// Unsupported VM revision (1B).
+function objective_cross_debris_init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -45,9 +44,8 @@ function objective_cross_debris_init()
 	Parameters: 4
 	Flags: None
 */
-function objective_cross_debris_done()
-{
-	// Unsupported VM revision (1B).
+function objective_cross_debris_done() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -59,9 +57,8 @@ function objective_cross_debris_done()
 	Parameters: 0
 	Flags: None
 */
-function function_b0ed4f4f()
-{
-	// Unsupported VM revision (1B).
+function function_b0ed4f4f() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -73,9 +70,8 @@ function function_b0ed4f4f()
 	Parameters: 0
 	Flags: None
 */
-function function_52065393()
-{
-	// Unsupported VM revision (1B).
+function function_52065393() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -87,9 +83,8 @@ function function_52065393()
 	Parameters: 0
 	Flags: None
 */
-function cross_debris_waypoints()
-{
-	// Unsupported VM revision (1B).
+function cross_debris_waypoints() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -101,9 +96,8 @@ function cross_debris_waypoints()
 	Parameters: 0
 	Flags: None
 */
-function cross_debris_dialog()
-{
-	// Unsupported VM revision (1B).
+function cross_debris_dialog() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -115,9 +109,8 @@ function cross_debris_dialog()
 	Parameters: 0
 	Flags: None
 */
-function hendricks_behavior()
-{
-	// Unsupported VM revision (1B).
+function hendricks_behavior() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -129,9 +122,8 @@ function hendricks_behavior()
 	Parameters: 1
 	Flags: None
 */
-function function_8bcb3a1b()
-{
-	// Unsupported VM revision (1B).
+function function_8bcb3a1b() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -143,9 +135,8 @@ function function_8bcb3a1b()
 	Parameters: 0
 	Flags: None
 */
-function atrium_destruction()
-{
-	// Unsupported VM revision (1B).
+function atrium_destruction() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -157,9 +148,8 @@ function atrium_destruction()
 	Parameters: 0
 	Flags: None
 */
-function building_collapse()
-{
-	// Unsupported VM revision (1B).
+function building_collapse() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -171,8 +161,6 @@ function building_collapse()
 	Parameters: 1
 	Flags: None
 */
-function function_beaf4ba6()
-{
-	// Unsupported VM revision (1B).
+function function_beaf4ba6() {
+  // Unsupported VM revision (1B).
 }
-

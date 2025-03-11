@@ -19,20 +19,19 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	clientfield::register("world", "mpSpireExteriorBillboard", 1, 2, "int", &exteriorbillboard, 1, 1);
-	level.disablefxaniminsplitscreencount = 3;
-	load::main();
-	level.domflagbasefxoverride = &dom_flag_base_fx_override;
-	level.domflagcapfxoverride = &dom_flag_cap_fx_override;
-	mp_spire_fx::main();
-	thread mp_spire_amb::main();
-	util::waitforclient(0);
-	level.endgamexcamname = "ui_cam_endgame_mp_spire";
-	/#
-		println("");
-	#/
+function main() {
+  clientfield::register("world", "mpSpireExteriorBillboard", 1, 2, "int", & exteriorbillboard, 1, 1);
+  level.disablefxaniminsplitscreencount = 3;
+  load::main();
+  level.domflagbasefxoverride = & dom_flag_base_fx_override;
+  level.domflagcapfxoverride = & dom_flag_cap_fx_override;
+  mp_spire_fx::main();
+  thread mp_spire_amb::main();
+  util::waitforclient(0);
+  level.endgamexcamname = "ui_cam_endgame_mp_spire";
+  /#
+  println("");
+  # /
 }
 
 /*
@@ -44,9 +43,7 @@ function main()
 	Parameters: 7
 	Flags: Linked
 */
-function exteriorbillboard(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-}
+function exteriorbillboard(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
 /*
 	Name: dom_flag_base_fx_override
@@ -57,47 +54,33 @@ function exteriorbillboard(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 2
 	Flags: Linked
 */
-function dom_flag_base_fx_override(flag, team)
-{
-	switch(flag.name)
-	{
-		case "a":
-		{
-			if(team == "neutral")
-			{
-				return "ui/fx_dom_marker_neutral_r120";
-			}
-			else
-			{
-				return "ui/fx_dom_marker_team_r120";
-			}
-			break;
-		}
-		case "b":
-		{
-			if(team == "neutral")
-			{
-				return "ui/fx_dom_marker_neutral_r120";
-			}
-			else
-			{
-				return "ui/fx_dom_marker_team_r120";
-			}
-			break;
-		}
-		case "c":
-		{
-			if(team == "neutral")
-			{
-				return "ui/fx_dom_marker_neutral_r120";
-			}
-			else
-			{
-				return "ui/fx_dom_marker_team_r120";
-			}
-			break;
-		}
-	}
+function dom_flag_base_fx_override(flag, team) {
+  switch (flag.name) {
+    case "a": {
+      if(team == "neutral") {
+        return "ui/fx_dom_marker_neutral_r120";
+      } else {
+        return "ui/fx_dom_marker_team_r120";
+      }
+      break;
+    }
+    case "b": {
+      if(team == "neutral") {
+        return "ui/fx_dom_marker_neutral_r120";
+      } else {
+        return "ui/fx_dom_marker_team_r120";
+      }
+      break;
+    }
+    case "c": {
+      if(team == "neutral") {
+        return "ui/fx_dom_marker_neutral_r120";
+      } else {
+        return "ui/fx_dom_marker_team_r120";
+      }
+      break;
+    }
+  }
 }
 
 /*
@@ -109,46 +92,31 @@ function dom_flag_base_fx_override(flag, team)
 	Parameters: 2
 	Flags: Linked
 */
-function dom_flag_cap_fx_override(flag, team)
-{
-	switch(flag.name)
-	{
-		case "a":
-		{
-			if(team == "neutral")
-			{
-				return "ui/fx_dom_cap_indicator_neutral_r120";
-			}
-			else
-			{
-				return "ui/fx_dom_cap_indicator_team_r120";
-			}
-			break;
-		}
-		case "b":
-		{
-			if(team == "neutral")
-			{
-				return "ui/fx_dom_cap_indicator_neutral_r120";
-			}
-			else
-			{
-				return "ui/fx_dom_cap_indicator_team_r120";
-			}
-			break;
-		}
-		case "c":
-		{
-			if(team == "neutral")
-			{
-				return "ui/fx_dom_cap_indicator_neutral_r120";
-			}
-			else
-			{
-				return "ui/fx_dom_cap_indicator_team_r120";
-			}
-			break;
-		}
-	}
+function dom_flag_cap_fx_override(flag, team) {
+  switch (flag.name) {
+    case "a": {
+      if(team == "neutral") {
+        return "ui/fx_dom_cap_indicator_neutral_r120";
+      } else {
+        return "ui/fx_dom_cap_indicator_team_r120";
+      }
+      break;
+    }
+    case "b": {
+      if(team == "neutral") {
+        return "ui/fx_dom_cap_indicator_neutral_r120";
+      } else {
+        return "ui/fx_dom_cap_indicator_team_r120";
+      }
+      break;
+    }
+    case "c": {
+      if(team == "neutral") {
+        return "ui/fx_dom_cap_indicator_neutral_r120";
+      } else {
+        return "ui/fx_dom_cap_indicator_team_r120";
+      }
+      break;
+    }
+  }
 }
-

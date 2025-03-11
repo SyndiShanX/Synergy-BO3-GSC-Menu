@@ -87,12 +87,10 @@
 	Parameters: 3
 	Flags: Linked
 */
-function levelnotifyhandler(clientnum, state, oldstate)
-{
-	if(state != "")
-	{
-		level notify(state, clientnum);
-	}
+function levelnotifyhandler(clientnum, state, oldstate) {
+  if(state != "") {
+    level notify(state, clientnum);
+  }
 }
 
 /*
@@ -104,20 +102,19 @@ function levelnotifyhandler(clientnum, state, oldstate)
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	/#
-		/#
-			assert(isdefined(level.first_frame), "");
-		#/
-	#/
-	level thread util::servertime();
-	level thread util::init_utility();
-	util::registersystem("levelNotify", &levelnotifyhandler);
-	register_clientfields();
-	level.createfx_disable_fx = getdvarint("disable_fx") == 1;
-	system::wait_till("all");
-	level flagsys::set("load_main_complete");
+function main() {
+  /# /
+  #
+  assert(isdefined(level.first_frame), "");
+  # /
+    # /
+    level thread util::servertime();
+  level thread util::init_utility();
+  util::registersystem("levelNotify", & levelnotifyhandler);
+  register_clientfields();
+  level.createfx_disable_fx = getdvarint("disable_fx") == 1;
+  system::wait_till("all");
+  level flagsys::set("load_main_complete");
 }
 
 /*
@@ -129,10 +126,8 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function register_clientfields()
-{
-	clientfield::register("missile", "cf_m_proximity", 1, 1, "int", &callback::callback_proximity, 0, 0);
-	clientfield::register("missile", "cf_m_emp", 1, 1, "int", &callback::callback_emp, 0, 0);
-	clientfield::register("missile", "cf_m_stun", 1, 1, "int", &callback::callback_stunned, 0, 0);
+function register_clientfields() {
+  clientfield::register("missile", "cf_m_proximity", 1, 1, "int", & callback::callback_proximity, 0, 0);
+  clientfield::register("missile", "cf_m_emp", 1, 1, "int", & callback::callback_emp, 0, 0);
+  clientfield::register("missile", "cf_m_stun", 1, 1, "int", & callback::callback_stunned, 0, 0);
 }
-

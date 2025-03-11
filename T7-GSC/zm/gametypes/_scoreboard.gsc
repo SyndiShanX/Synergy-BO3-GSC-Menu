@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("scoreboard", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("scoreboard", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,9 +27,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_start_gametype(&main);
+function __init__() {
+  callback::on_start_gametype( & main);
 }
 
 /*
@@ -42,24 +40,19 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	setdvar("g_ScoresColor_Spectator", ".25 .25 .25");
-	setdvar("g_ScoresColor_Free", ".76 .78 .10");
-	setdvar("g_teamColor_MyTeam", ".4 .7 .4");
-	setdvar("g_teamColor_EnemyTeam", "1 .315 0.35");
-	setdvar("g_teamColor_MyTeamAlt", ".35 1 1");
-	setdvar("g_teamColor_EnemyTeamAlt", "1 .5 0");
-	setdvar("g_teamColor_Squad", ".315 0.35 1");
-	if(sessionmodeiszombiesgame())
-	{
-		setdvar("g_TeamIcon_Axis", "faction_cia");
-		setdvar("g_TeamIcon_Allies", "faction_cdc");
-	}
-	else
-	{
-		setdvar("g_TeamIcon_Axis", game["icons"]["axis"]);
-		setdvar("g_TeamIcon_Allies", game["icons"]["allies"]);
-	}
+function main() {
+  setdvar("g_ScoresColor_Spectator", ".25 .25 .25");
+  setdvar("g_ScoresColor_Free", ".76 .78 .10");
+  setdvar("g_teamColor_MyTeam", ".4 .7 .4");
+  setdvar("g_teamColor_EnemyTeam", "1 .315 0.35");
+  setdvar("g_teamColor_MyTeamAlt", ".35 1 1");
+  setdvar("g_teamColor_EnemyTeamAlt", "1 .5 0");
+  setdvar("g_teamColor_Squad", ".315 0.35 1");
+  if(sessionmodeiszombiesgame()) {
+    setdvar("g_TeamIcon_Axis", "faction_cia");
+    setdvar("g_TeamIcon_Allies", "faction_cdc");
+  } else {
+    setdvar("g_TeamIcon_Axis", game["icons"]["axis"]);
+    setdvar("g_TeamIcon_Allies", game["icons"]["allies"]);
+  }
 }
-

@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_perk_staminup", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_perk_staminup", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,9 +29,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	enable_staminup_perk_for_level();
+function __init__() {
+  enable_staminup_perk_for_level();
 }
 
 /*
@@ -44,11 +42,10 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function enable_staminup_perk_for_level()
-{
-	zm_perks::register_perk_clientfields("specialty_staminup", &staminup_client_field_func, &staminup_callback_func);
-	zm_perks::register_perk_effects("specialty_staminup", "marathon_light");
-	zm_perks::register_perk_init_thread("specialty_staminup", &init_staminup);
+function enable_staminup_perk_for_level() {
+  zm_perks::register_perk_clientfields("specialty_staminup", & staminup_client_field_func, & staminup_callback_func);
+  zm_perks::register_perk_effects("specialty_staminup", "marathon_light");
+  zm_perks::register_perk_init_thread("specialty_staminup", & init_staminup);
 }
 
 /*
@@ -60,12 +57,10 @@ function enable_staminup_perk_for_level()
 	Parameters: 0
 	Flags: Linked
 */
-function init_staminup()
-{
-	if(isdefined(level.enable_magic) && level.enable_magic)
-	{
-		level._effect["marathon_light"] = "zombie/fx_perk_stamin_up_zmb";
-	}
+function init_staminup() {
+  if(isdefined(level.enable_magic) && level.enable_magic) {
+    level._effect["marathon_light"] = "zombie/fx_perk_stamin_up_zmb";
+  }
 }
 
 /*
@@ -77,9 +72,8 @@ function init_staminup()
 	Parameters: 0
 	Flags: Linked
 */
-function staminup_client_field_func()
-{
-	clientfield::register("clientuimodel", "hudItems.perks.marathon", 1, 2, "int", undefined, 0, 1);
+function staminup_client_field_func() {
+  clientfield::register("clientuimodel", "hudItems.perks.marathon", 1, 2, "int", undefined, 0, 1);
 }
 
 /*
@@ -91,7 +85,4 @@ function staminup_client_field_func()
 	Parameters: 0
 	Flags: Linked
 */
-function staminup_callback_func()
-{
-}
-
+function staminup_callback_func() {}

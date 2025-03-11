@@ -23,9 +23,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bot", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_bot", & __init__, undefined, undefined);
 }
 
 /*
@@ -37,20 +36,19 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	/#
-		println("");
-	#/
-	/#
-		level.onbotspawned = &on_bot_spawned;
-		level.getbotthreats = &bot_combat::get_ai_threats;
-		level.botprecombat = &bot::coop_pre_combat;
-		level.botpostcombat = &bot::coop_post_combat;
-		level.botidle = &bot::follow_coop_players;
-		level.botdevguicmd = &bot::coop_bot_devgui_cmd;
-		thread debug_coop_bot_test();
-	#/
+function __init__() {
+  /#
+  println("");
+  # /
+    /#
+  level.onbotspawned = & on_bot_spawned;
+  level.getbotthreats = & bot_combat::get_ai_threats;
+  level.botprecombat = & bot::coop_pre_combat;
+  level.botpostcombat = & bot::coop_post_combat;
+  level.botidle = & bot::follow_coop_players;
+  level.botdevguicmd = & bot::coop_bot_devgui_cmd;
+  thread debug_coop_bot_test();
+  # /
 }
 
 /*
@@ -62,45 +60,35 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function debug_coop_bot_test()
-{
-	/#
-		botcount = 0;
-		adddebugcommand("");
-		while(true)
-		{
-			if(getdvarint("") > 0)
-			{
-				while(getdvarint("") > 0)
-				{
-					if(botcount > 0 && randomint(100) > 60)
-					{
-						adddebugcommand("");
-						botcount--;
-						debugmsg("" + botcount);
-					}
-					else if(botcount < getdvarint("") && randomint(100) > 50)
-					{
-						adddebugcommand("");
-						botcount++;
-						debugmsg("" + botcount);
-					}
-					wait(randomintrange(1, 3));
-				}
-			}
-			else
-			{
-				while(botcount > 0)
-				{
-					adddebugcommand("");
-					botcount--;
-					debugmsg("" + botcount);
-					wait(1);
-				}
-			}
-			wait(1);
-		}
-	#/
+function debug_coop_bot_test() {
+  /#
+  botcount = 0;
+  adddebugcommand("");
+  while (true) {
+    if(getdvarint("") > 0) {
+      while (getdvarint("") > 0) {
+        if(botcount > 0 && randomint(100) > 60) {
+          adddebugcommand("");
+          botcount--;
+          debugmsg("" + botcount);
+        } else if(botcount < getdvarint("") && randomint(100) > 50) {
+          adddebugcommand("");
+          botcount++;
+          debugmsg("" + botcount);
+        }
+        wait(randomintrange(1, 3));
+      }
+    } else {
+      while (botcount > 0) {
+        adddebugcommand("");
+        botcount--;
+        debugmsg("" + botcount);
+        wait(1);
+      }
+    }
+    wait(1);
+  }
+  # /
 }
 
 /*
@@ -112,13 +100,12 @@ function debug_coop_bot_test()
 	Parameters: 0
 	Flags: Linked
 */
-function on_bot_spawned()
-{
-	/#
-		host = bot::get_host_player();
-		loadout = host zm_weapons::player_get_loadout();
-		self zm_weapons::player_give_loadout(loadout);
-	#/
+function on_bot_spawned() {
+  /#
+  host = bot::get_host_player();
+  loadout = host zm_weapons::player_get_loadout();
+  self zm_weapons::player_give_loadout(loadout);
+  # /
 }
 
 /*
@@ -130,14 +117,11 @@ function on_bot_spawned()
 	Parameters: 1
 	Flags: Linked
 */
-function debugmsg(str_txt)
-{
-	/#
-		iprintlnbold(str_txt);
-		if(isdefined(level.name))
-		{
-			println((("" + level.name) + "") + str_txt);
-		}
-	#/
+function debugmsg(str_txt) {
+  /#
+  iprintlnbold(str_txt);
+  if(isdefined(level.name)) {
+    println((("" + level.name) + "") + str_txt);
+  }
+  # /
 }
-

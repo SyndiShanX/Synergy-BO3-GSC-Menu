@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_fog", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_fog", & __init__, undefined, undefined);
 }
 
 /*
@@ -33,11 +32,10 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("world", "globalfog_bank", 15000, 2, "int", &function_83c92b90, 0, 0);
-	clientfield::register("world", "litfog_scriptid_to_edit", 15000, 4, "int", undefined, 0, 0);
-	clientfield::register("world", "litfog_bank", 15000, 2, "int", &function_7ac70b3c, 0, 0);
+function __init__() {
+  clientfield::register("world", "globalfog_bank", 15000, 2, "int", & function_83c92b90, 0, 0);
+  clientfield::register("world", "litfog_scriptid_to_edit", 15000, 4, "int", undefined, 0, 0);
+  clientfield::register("world", "litfog_bank", 15000, 2, "int", & function_7ac70b3c, 0, 0);
 }
 
 /*
@@ -49,9 +47,8 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function function_83c92b90(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	setworldfogactivebank(localclientnum, newval + 1);
+function function_83c92b90(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  setworldfogactivebank(localclientnum, newval + 1);
 }
 
 /*
@@ -63,9 +60,7 @@ function function_83c92b90(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 7
 	Flags: Linked
 */
-function function_7ac70b3c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	var_18b9a65a = clientfield::get("litfog_scriptid_to_edit");
-	setlitfogbank(localclientnum, var_18b9a65a, newval, -1);
+function function_7ac70b3c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  var_18b9a65a = clientfield::get("litfog_scriptid_to_edit");
+  setlitfogbank(localclientnum, var_18b9a65a, newval, -1);
 }
-

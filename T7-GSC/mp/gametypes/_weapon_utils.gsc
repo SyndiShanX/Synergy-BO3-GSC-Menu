@@ -12,8 +12,6 @@
 	Parameters: 1
 	Flags: Linked
 */
-function getbaseweaponparam(weapon)
-{
-	return (weapon.rootweapon.altweapon != level.weaponnone ? weapon.rootweapon.altweapon.rootweapon : weapon.rootweapon);
+function getbaseweaponparam(weapon) {
+  return (weapon.rootweapon.altweapon != level.weaponnone ? weapon.rootweapon.altweapon.rootweapon : weapon.rootweapon);
 }
-

@@ -23,9 +23,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-}
+function init() {}
 
 /*
 	Name: main
@@ -36,13 +34,12 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	callback::on_connect(&on_player_connect);
-	callback::on_spawned(&on_player_spawned);
-	cybercom_tacrig::register_cybercom_rig_ability("cybercom_sensorybuffer", 4);
-	cybercom_tacrig::register_cybercom_rig_possession_callbacks("cybercom_sensorybuffer", &sensorybuffergive, &sensorybuffertake);
-	cybercom_tacrig::register_cybercom_rig_activation_callbacks("cybercom_sensorybuffer", &sensorybufferactivate, &sensorybufferdeactivate);
+function main() {
+  callback::on_connect( & on_player_connect);
+  callback::on_spawned( & on_player_spawned);
+  cybercom_tacrig::register_cybercom_rig_ability("cybercom_sensorybuffer", 4);
+  cybercom_tacrig::register_cybercom_rig_possession_callbacks("cybercom_sensorybuffer", & sensorybuffergive, & sensorybuffertake);
+  cybercom_tacrig::register_cybercom_rig_activation_callbacks("cybercom_sensorybuffer", & sensorybufferactivate, & sensorybufferdeactivate);
 }
 
 /*
@@ -54,9 +51,7 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_connect()
-{
-}
+function on_player_connect() {}
 
 /*
 	Name: on_player_spawned
@@ -67,9 +62,7 @@ function on_player_connect()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_spawned()
-{
-}
+function on_player_spawned() {}
 
 /*
 	Name: sensorybuffergive
@@ -80,9 +73,8 @@ function on_player_spawned()
 	Parameters: 1
 	Flags: Linked
 */
-function sensorybuffergive(type)
-{
-	self thread cybercom_tacrig::turn_rig_ability_on(type);
+function sensorybuffergive(type) {
+  self thread cybercom_tacrig::turn_rig_ability_on(type);
 }
 
 /*
@@ -94,9 +86,8 @@ function sensorybuffergive(type)
 	Parameters: 1
 	Flags: Linked
 */
-function sensorybuffertake(type)
-{
-	self thread cybercom_tacrig::turn_rig_ability_off(type);
+function sensorybuffertake(type) {
+  self thread cybercom_tacrig::turn_rig_ability_off(type);
 }
 
 /*
@@ -108,14 +99,12 @@ function sensorybuffertake(type)
 	Parameters: 1
 	Flags: Linked
 */
-function sensorybufferactivate(type)
-{
-	self setperk("specialty_bulletflinch");
-	self setperk("specialty_flashprotection");
-	if(self hascybercomrig(type) == 2)
-	{
-		self setperk("specialty_flakjacket");
-	}
+function sensorybufferactivate(type) {
+  self setperk("specialty_bulletflinch");
+  self setperk("specialty_flashprotection");
+  if(self hascybercomrig(type) == 2) {
+    self setperk("specialty_flakjacket");
+  }
 }
 
 /*
@@ -127,13 +116,10 @@ function sensorybufferactivate(type)
 	Parameters: 1
 	Flags: Linked
 */
-function sensorybufferdeactivate(type)
-{
-	self unsetperk("specialty_bulletflinch");
-	self unsetperk("specialty_flashprotection");
-	if(self hascybercomrig(type) == 2)
-	{
-		self unsetperk("specialty_flakjacket");
-	}
+function sensorybufferdeactivate(type) {
+  self unsetperk("specialty_bulletflinch");
+  self unsetperk("specialty_flashprotection");
+  if(self hascybercomrig(type) == 2) {
+    self unsetperk("specialty_flakjacket");
+  }
 }
-

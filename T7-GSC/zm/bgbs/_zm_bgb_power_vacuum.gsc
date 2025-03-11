@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_power_vacuum", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_power_vacuum", & __init__, undefined, "bgb");
 }
 
 /*
@@ -32,13 +31,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_power_vacuum", "rounds", 4, &enable, &disable, undefined);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_power_vacuum", "rounds", 4, & enable, & disable, undefined);
 }
 
 /*
@@ -50,18 +47,16 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function enable()
-{
-	self endon(#"disconnect");
-	self endon(#"bled_out");
-	self endon(#"bgb_update");
-	level.powerup_drop_count = 0;
-	while(true)
-	{
-		level waittill(#"powerup_dropped");
-		self bgb::do_one_shot_use();
-		level.powerup_drop_count = 0;
-	}
+function enable() {
+  self endon(# "disconnect");
+  self endon(# "bled_out");
+  self endon(# "bgb_update");
+  level.powerup_drop_count = 0;
+  while (true) {
+    level waittill(# "powerup_dropped");
+    self bgb::do_one_shot_use();
+    level.powerup_drop_count = 0;
+  }
 }
 
 /*
@@ -73,7 +68,4 @@ function enable()
 	Parameters: 0
 	Flags: Linked
 */
-function disable()
-{
-}
-
+function disable() {}

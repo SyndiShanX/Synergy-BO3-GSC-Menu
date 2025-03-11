@@ -21,9 +21,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("gadget_resurrect", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("gadget_resurrect", & __init__, undefined, undefined);
 }
 
 /*
@@ -35,13 +34,12 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("allplayers", "resurrecting", 1, 1, "int", &player_resurrect_changed, 0, 1);
-	clientfield::register("toplayer", "resurrect_state", 1, 2, "int", &player_resurrect_state_changed, 0, 1);
-	duplicate_render::set_dr_filter_offscreen("resurrecting", 99, "resurrecting", undefined, 2, "mc/hud_keyline_resurrect", 0);
-	visionset_mgr::register_visionset_info("resurrect", 1, 16, undefined, "mp_ability_resurrection");
-	visionset_mgr::register_visionset_info("resurrect_up", 1, 16, undefined, "mp_ability_wakeup");
+function __init__() {
+  clientfield::register("allplayers", "resurrecting", 1, 1, "int", & player_resurrect_changed, 0, 1);
+  clientfield::register("toplayer", "resurrect_state", 1, 2, "int", & player_resurrect_state_changed, 0, 1);
+  duplicate_render::set_dr_filter_offscreen("resurrecting", 99, "resurrecting", undefined, 2, "mc/hud_keyline_resurrect", 0);
+  visionset_mgr::register_visionset_info("resurrect", 1, 16, undefined, "mp_ability_resurrection");
+  visionset_mgr::register_visionset_info("resurrect_up", 1, 16, undefined, "mp_ability_wakeup");
 }
 
 /*
@@ -53,9 +51,8 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function player_resurrect_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self duplicate_render::update_dr_flag(localclientnum, "resurrecting", newval);
+function player_resurrect_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self duplicate_render::update_dr_flag(localclientnum, "resurrecting", newval);
 }
 
 /*
@@ -67,13 +64,12 @@ function player_resurrect_changed(localclientnum, oldval, newval, bnewent, binit
 	Parameters: 1
 	Flags: Linked
 */
-function resurrect_down_fx(localclientnum)
-{
-	self endon(#"entityshutdown");
-	self endon(#"finish_rejack");
-	self thread postfx::playpostfxbundle("pstfx_resurrection_close");
-	wait(0.5);
-	self thread postfx::playpostfxbundle("pstfx_resurrection_pus");
+function resurrect_down_fx(localclientnum) {
+  self endon(# "entityshutdown");
+  self endon(# "finish_rejack");
+  self thread postfx::playpostfxbundle("pstfx_resurrection_close");
+  wait(0.5);
+  self thread postfx::playpostfxbundle("pstfx_resurrection_pus");
 }
 
 /*
@@ -85,11 +81,10 @@ function resurrect_down_fx(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function resurrect_up_fx(localclientnum)
-{
-	self endon(#"entityshutdown");
-	self notify(#"finish_rejack");
-	self thread postfx::playpostfxbundle("pstfx_resurrection_open");
+function resurrect_up_fx(localclientnum) {
+  self endon(# "entityshutdown");
+  self notify(# "finish_rejack");
+  self thread postfx::playpostfxbundle("pstfx_resurrection_open");
 }
 
 /*
@@ -101,22 +96,14 @@ function resurrect_up_fx(localclientnum)
 	Parameters: 7
 	Flags: Linked
 */
-function player_resurrect_state_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval == 1)
-	{
-		self thread resurrect_down_fx(localclientnum);
-	}
-	else
-	{
-		if(newval == 2)
-		{
-			self thread resurrect_up_fx(localclientnum);
-		}
-		else
-		{
-			self thread postfx::stoppostfxbundle();
-		}
-	}
+function player_resurrect_state_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval == 1) {
+    self thread resurrect_down_fx(localclientnum);
+  } else {
+    if(newval == 2) {
+      self thread resurrect_up_fx(localclientnum);
+    } else {
+      self thread postfx::stoppostfxbundle();
+    }
+  }
 }
-

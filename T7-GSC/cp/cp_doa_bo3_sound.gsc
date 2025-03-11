@@ -13,9 +13,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-}
+function main() {}
 
 #namespace namespace_1a381543;
 
@@ -28,14 +26,12 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function function_68fdd800()
-{
-	if(!isdefined(level.var_ae4549e5))
-	{
-		level.var_ae4549e5 = spawn("script_origin", (0, 0, 0));
-	}
-	level.var_ae4549e5 playloopsound("amb_rally_bg");
-	level.var_ae4549e5 function_42b6c406();
+function function_68fdd800() {
+  if(!isdefined(level.var_ae4549e5)) {
+    level.var_ae4549e5 = spawn("script_origin", (0, 0, 0));
+  }
+  level.var_ae4549e5 playloopsound("amb_rally_bg");
+  level.var_ae4549e5 function_42b6c406();
 }
 
 /*
@@ -47,11 +43,9 @@ function function_68fdd800()
 	Parameters: 0
 	Flags: Linked
 */
-function function_42b6c406()
-{
-	level waittill(#"ro");
-	self stoploopsound();
-	wait(1);
-	self delete();
+function function_42b6c406() {
+  level waittill(# "ro");
+  self stoploopsound();
+  wait(1);
+  self delete();
 }
-

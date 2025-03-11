@@ -15,9 +15,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("bot_cp", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("bot_cp", & __init__, undefined, undefined);
 }
 
 /*
@@ -29,16 +28,15 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	/#
-		level.onbotconnect = &on_bot_connect;
-		level.getbotthreats = &bot_combat::get_ai_threats;
-		level.botprecombat = &coop_pre_combat;
-		level.botpostcombat = &coop_post_combat;
-		level.botidle = &follow_coop_players;
-		level.botdevguicmd = &coop_bot_devgui_cmd;
-	#/
+function __init__() {
+  /#
+  level.onbotconnect = & on_bot_connect;
+  level.getbotthreats = & bot_combat::get_ai_threats;
+  level.botprecombat = & coop_pre_combat;
+  level.botpostcombat = & coop_post_combat;
+  level.botidle = & follow_coop_players;
+  level.botdevguicmd = & coop_bot_devgui_cmd;
+  # /
 }
 
 /*
@@ -50,17 +48,14 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function on_bot_connect()
-{
-	/#
-		self endon(#"disconnect");
-		wait(0.25);
-		self notify(#"menuresponse", "", "");
-		wait(0.25);
-		if(isdefined(self.pers))
-		{
-			self.bcvoicenumber = self.pers[""];
-		}
-	#/
+function on_bot_connect() {
+  /#
+  self endon(# "disconnect");
+  wait(0.25);
+  self notify(# "menuresponse", "", "");
+  wait(0.25);
+  if(isdefined(self.pers)) {
+    self.bcvoicenumber = self.pers[""];
+  }
+  # /
 }
-

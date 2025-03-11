@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("weaponobjects", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("weaponobjects", & __init__, undefined, undefined);
 }
 
 /*
@@ -34,8 +33,6 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	init_shared();
+function __init__() {
+  init_shared();
 }
-

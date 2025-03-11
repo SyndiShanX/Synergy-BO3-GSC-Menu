@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("deathicons", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("deathicons", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,10 +29,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_start_gametype(&init);
-	callback::on_connect(&on_player_connect);
+function __init__() {
+  callback::on_start_gametype( & init);
+  callback::on_connect( & on_player_connect);
 }
 
 /*
@@ -45,16 +43,13 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	if(!isdefined(level.ragdoll_override))
-	{
-		level.ragdoll_override = &ragdoll_override;
-	}
-	if(!level.teambased)
-	{
-		return;
-	}
+function init() {
+  if(!isdefined(level.ragdoll_override)) {
+    level.ragdoll_override = & ragdoll_override;
+  }
+  if(!level.teambased) {
+    return;
+  }
 }
 
 /*
@@ -66,9 +61,8 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_connect()
-{
-	self.selfdeathicons = [];
+function on_player_connect() {
+  self.selfdeathicons = [];
 }
 
 /*
@@ -80,9 +74,7 @@ function on_player_connect()
 	Parameters: 0
 	Flags: None
 */
-function update_enabled()
-{
-}
+function update_enabled() {}
 
 /*
 	Name: add
@@ -93,49 +85,41 @@ function update_enabled()
 	Parameters: 4
 	Flags: Linked
 */
-function add(entity, dyingplayer, team, timeout)
-{
-	if(!level.teambased || (isdefined(level.is_safehouse) && level.is_safehouse))
-	{
-		return;
-	}
-	iconorg = entity.origin;
-	dyingplayer endon(#"spawned_player");
-	dyingplayer endon(#"disconnect");
-	wait(0.05);
-	util::waittillslowprocessallowed();
-	/#
-		assert(isdefined(level.teams[team]));
-	#/
-	if(getdvarstring("ui_hud_showdeathicons") == "0")
-	{
-		return;
-	}
-	if(level.hardcoremode)
-	{
-		return;
-	}
-	if(isdefined(self.lastdeathicon))
-	{
-		self.lastdeathicon destroy();
-	}
-	newdeathicon = newteamhudelem(team);
-	newdeathicon.x = iconorg[0];
-	newdeathicon.y = iconorg[1];
-	newdeathicon.z = iconorg[2] + 54;
-	newdeathicon.alpha = 0.61;
-	newdeathicon.archived = 1;
-	if(level.splitscreen)
-	{
-		newdeathicon setshader("headicon_dead", 14, 14);
-	}
-	else
-	{
-		newdeathicon setshader("headicon_dead", 7, 7);
-	}
-	newdeathicon setwaypoint(1);
-	self.lastdeathicon = newdeathicon;
-	newdeathicon thread destroy_slowly(timeout);
+function add(entity, dyingplayer, team, timeout) {
+  if(!level.teambased || (isdefined(level.is_safehouse) && level.is_safehouse)) {
+    return;
+  }
+  iconorg = entity.origin;
+  dyingplayer endon(# "spawned_player");
+  dyingplayer endon(# "disconnect");
+  wait(0.05);
+  util::waittillslowprocessallowed();
+  /#
+  assert(isdefined(level.teams[team]));
+  # /
+    if(getdvarstring("ui_hud_showdeathicons") == "0") {
+      return;
+    }
+  if(level.hardcoremode) {
+    return;
+  }
+  if(isdefined(self.lastdeathicon)) {
+    self.lastdeathicon destroy();
+  }
+  newdeathicon = newteamhudelem(team);
+  newdeathicon.x = iconorg[0];
+  newdeathicon.y = iconorg[1];
+  newdeathicon.z = iconorg[2] + 54;
+  newdeathicon.alpha = 0.61;
+  newdeathicon.archived = 1;
+  if(level.splitscreen) {
+    newdeathicon setshader("headicon_dead", 14, 14);
+  } else {
+    newdeathicon setshader("headicon_dead", 7, 7);
+  }
+  newdeathicon setwaypoint(1);
+  self.lastdeathicon = newdeathicon;
+  newdeathicon thread destroy_slowly(timeout);
 }
 
 /*
@@ -147,14 +131,13 @@ function add(entity, dyingplayer, team, timeout)
 	Parameters: 1
 	Flags: Linked
 */
-function destroy_slowly(timeout)
-{
-	self endon(#"death");
-	wait(timeout);
-	self fadeovertime(1);
-	self.alpha = 0;
-	wait(1);
-	self destroy();
+function destroy_slowly(timeout) {
+  self endon(# "death");
+  wait(timeout);
+  self fadeovertime(1);
+  self.alpha = 0;
+  wait(1);
+  self destroy();
 }
 
 /*
@@ -166,17 +149,13 @@ function destroy_slowly(timeout)
 	Parameters: 10
 	Flags: Linked
 */
-function ragdoll_override(idamage, smeansofdeath, sweapon, shitloc, vdir, vattackerorigin, deathanimduration, einflictor, ragdoll_jib, body)
-{
-	if(smeansofdeath == "MOD_FALLING" && self isonground() == 1)
-	{
-		body startragdoll();
-		if(!isdefined(self.switching_teams))
-		{
-			thread add(body, self, self.team, 5);
-		}
-		return true;
-	}
-	return false;
+function ragdoll_override(idamage, smeansofdeath, sweapon, shitloc, vdir, vattackerorigin, deathanimduration, einflictor, ragdoll_jib, body) {
+  if(smeansofdeath == "MOD_FALLING" && self isonground() == 1) {
+    body startragdoll();
+    if(!isdefined(self.switching_teams)) {
+      thread add(body, self, self.team, 5);
+    }
+    return true;
+  }
+  return false;
 }
-

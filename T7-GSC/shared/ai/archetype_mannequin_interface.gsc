@@ -13,10 +13,8 @@
 	Parameters: 0
 	Flags: Linked
 */
-function registermannequininterfaceattributes()
-{
-	ai::registermatchedinterface("mannequin", "can_juke", 0, array(1, 0));
-	ai::registermatchedinterface("mannequin", "suicidal_behavior", 0, array(1, 0));
-	ai::registermatchedinterface("mannequin", "spark_behavior", 0, array(1, 0));
+function registermannequininterfaceattributes() {
+  ai::registermatchedinterface("mannequin", "can_juke", 0, array(1, 0));
+  ai::registermatchedinterface("mannequin", "suicidal_behavior", 0, array(1, 0));
+  ai::registermatchedinterface("mannequin", "spark_behavior", 0, array(1, 0));
 }
-

@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_powerup_nuke", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_powerup_nuke", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,12 +29,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	zm_powerups::include_zombie_powerup("nuke");
-	zm_powerups::add_zombie_powerup("nuke");
-	clientfield::register("actor", "zm_nuked", 1000, 1, "counter", &zombie_nuked, 0, 0);
-	clientfield::register("vehicle", "zm_nuked", 1000, 1, "counter", &zombie_nuked, 0, 0);
+function __init__() {
+  zm_powerups::include_zombie_powerup("nuke");
+  zm_powerups::add_zombie_powerup("nuke");
+  clientfield::register("actor", "zm_nuked", 1000, 1, "counter", & zombie_nuked, 0, 0);
+  clientfield::register("vehicle", "zm_nuked", 1000, 1, "counter", & zombie_nuked, 0, 0);
 }
 
 /*
@@ -47,8 +45,6 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function zombie_nuked(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self zombie_death::flame_death_fx(localclientnum);
+function zombie_nuked(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self zombie_death::flame_death_fx(localclientnum);
 }
-

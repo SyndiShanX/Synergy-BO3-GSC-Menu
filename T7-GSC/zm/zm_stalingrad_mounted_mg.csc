@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_stalingrad_mounted_mg", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_stalingrad_mounted_mg", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,10 +29,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	level._effect["mounted_mg_overheat"] = "dlc3/stalingrad/fx_mg42_over_heat";
-	clientfield::register("vehicle", "overheat_fx", 12000, 1, "int", &function_c71f5e4a, 0, 0);
+function __init__() {
+  level._effect["mounted_mg_overheat"] = "dlc3/stalingrad/fx_mg42_over_heat";
+  clientfield::register("vehicle", "overheat_fx", 12000, 1, "int", & function_c71f5e4a, 0, 0);
 }
 
 /*
@@ -45,15 +43,10 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function function_c71f5e4a(n_local_client, n_old, n_new, b_new_ent, b_initial_snap, str_field, b_was_time_jump)
-{
-	if(n_new)
-	{
-		self.var_b4b6b5a6 = playfxontag(n_local_client, level._effect["mounted_mg_overheat"], self, "tag_flash");
-	}
-	else if(isdefined(self.var_b4b6b5a6))
-	{
-		stopfx(n_local_client, self.var_b4b6b5a6);
-	}
+function function_c71f5e4a(n_local_client, n_old, n_new, b_new_ent, b_initial_snap, str_field, b_was_time_jump) {
+  if(n_new) {
+    self.var_b4b6b5a6 = playfxontag(n_local_client, level._effect["mounted_mg_overheat"], self, "tag_flash");
+  } else if(isdefined(self.var_b4b6b5a6)) {
+    stopfx(n_local_client, self.var_b4b6b5a6);
+  }
 }
-

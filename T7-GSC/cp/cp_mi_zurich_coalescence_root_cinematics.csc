@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	// Unsupported VM revision (1B).
+function main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -28,9 +27,8 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function init_clientfields()
-{
-	// Unsupported VM revision (1B).
+function init_clientfields() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -42,8 +40,6 @@ function init_clientfields()
 	Parameters: 7
 	Flags: None
 */
-function function_85138237()
-{
-	// Unsupported VM revision (1B).
+function function_85138237() {
+  // Unsupported VM revision (1B).
 }
-

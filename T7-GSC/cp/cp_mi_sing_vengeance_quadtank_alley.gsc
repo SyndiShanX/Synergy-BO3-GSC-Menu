@@ -38,9 +38,8 @@
 	Parameters: 2
 	Flags: None
 */
-function skipto_quadtank_alley_init()
-{
-	// Unsupported VM revision (1B).
+function skipto_quadtank_alley_init() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -52,9 +51,8 @@ function skipto_quadtank_alley_init()
 	Parameters: 2
 	Flags: None
 */
-function quadtank_alley_main()
-{
-	// Unsupported VM revision (1B).
+function quadtank_alley_main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -66,9 +64,8 @@ function quadtank_alley_main()
 	Parameters: 0
 	Flags: None
 */
-function function_c231d685()
-{
-	// Unsupported VM revision (1B).
+function function_c231d685() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -80,9 +77,8 @@ function function_c231d685()
 	Parameters: 0
 	Flags: None
 */
-function function_32620a97()
-{
-	// Unsupported VM revision (1B).
+function function_32620a97() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -94,9 +90,8 @@ function function_32620a97()
 	Parameters: 0
 	Flags: None
 */
-function quadtank_alley_quadtank_setup()
-{
-	// Unsupported VM revision (1B).
+function quadtank_alley_quadtank_setup() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -108,9 +103,8 @@ function quadtank_alley_quadtank_setup()
 	Parameters: 0
 	Flags: None
 */
-function quadtank_alley_quadtank_notetracks()
-{
-	// Unsupported VM revision (1B).
+function quadtank_alley_quadtank_notetracks() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -122,9 +116,8 @@ function quadtank_alley_quadtank_notetracks()
 	Parameters: 0
 	Flags: None
 */
-function quadtank_fire_missile_watcher()
-{
-	// Unsupported VM revision (1B).
+function quadtank_fire_missile_watcher() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -136,9 +129,8 @@ function quadtank_fire_missile_watcher()
 	Parameters: 0
 	Flags: None
 */
-function quadtank_fire_mg_watcher()
-{
-	// Unsupported VM revision (1B).
+function quadtank_fire_mg_watcher() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -150,9 +142,8 @@ function quadtank_fire_mg_watcher()
 	Parameters: 1
 	Flags: None
 */
-function setup_quadtank_alley_hendricks()
-{
-	// Unsupported VM revision (1B).
+function setup_quadtank_alley_hendricks() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -164,9 +155,8 @@ function setup_quadtank_alley_hendricks()
 	Parameters: 0
 	Flags: None
 */
-function function_c58f9e9a()
-{
-	// Unsupported VM revision (1B).
+function function_c58f9e9a() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -178,9 +168,8 @@ function function_c58f9e9a()
 	Parameters: 0
 	Flags: None
 */
-function function_323d0a39()
-{
-	// Unsupported VM revision (1B).
+function function_323d0a39() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -192,9 +181,8 @@ function function_323d0a39()
 	Parameters: 1
 	Flags: None
 */
-function function_5a90d7e8()
-{
-	// Unsupported VM revision (1B).
+function function_5a90d7e8() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -206,9 +194,8 @@ function function_5a90d7e8()
 	Parameters: 4
 	Flags: None
 */
-function skipto_quadtank_alley_done()
-{
-	// Unsupported VM revision (1B).
+function skipto_quadtank_alley_done() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -220,8 +207,6 @@ function skipto_quadtank_alley_done()
 	Parameters: 0
 	Flags: None
 */
-function cleanup_quadtank_alley()
-{
-	// Unsupported VM revision (1B).
+function cleanup_quadtank_alley() {
+  // Unsupported VM revision (1B).
 }
-

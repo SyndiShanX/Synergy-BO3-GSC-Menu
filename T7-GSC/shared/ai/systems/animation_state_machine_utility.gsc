@@ -12,12 +12,11 @@
 	Parameters: 2
 	Flags: Linked
 */
-function requeststate(entity, statename)
-{
-	/#
-		assert(isdefined(entity));
-	#/
-	entity asmrequestsubstate(statename);
+function requeststate(entity, statename) {
+  /#
+  assert(isdefined(entity));
+  # /
+    entity asmrequestsubstate(statename);
 }
 
 /*
@@ -29,15 +28,11 @@ function requeststate(entity, statename)
 	Parameters: 2
 	Flags: Linked
 */
-function searchanimationmap(entity, aliasname)
-{
-	if(isdefined(entity) && isdefined(aliasname))
-	{
-		animationname = entity animmappingsearch(istring(aliasname));
-		if(isdefined(animationname))
-		{
-			return findanimbyname("generic", animationname);
-		}
-	}
+function searchanimationmap(entity, aliasname) {
+  if(isdefined(entity) && isdefined(aliasname)) {
+    animationname = entity animmappingsearch(istring(aliasname));
+    if(isdefined(animationname)) {
+      return findanimbyname("generic", animationname);
+    }
+  }
 }
-

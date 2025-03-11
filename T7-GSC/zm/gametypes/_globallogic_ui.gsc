@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("globallogic_ui", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("globallogic_ui", & __init__, undefined, undefined);
 }
 
 /*
@@ -34,9 +33,7 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-}
+function __init__() {}
 
 /*
 	Name: setupcallbacks
@@ -47,12 +44,11 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function setupcallbacks()
-{
-	level.autoassign = &menuautoassign;
-	level.spectator = &menuspectator;
-	level.curclass = &menuclass;
-	level.teammenu = &menuteam;
+function setupcallbacks() {
+  level.autoassign = & menuautoassign;
+  level.spectator = & menuspectator;
+  level.curclass = & menuclass;
+  level.teammenu = & menuteam;
 }
 
 /*
@@ -64,66 +60,50 @@ function setupcallbacks()
 	Parameters: 0
 	Flags: Linked
 */
-function freegameplayhudelems()
-{
-	if(isdefined(self.perkicon))
-	{
-		for(numspecialties = 0; numspecialties < level.maxspecialties; numspecialties++)
-		{
-			if(isdefined(self.perkicon[numspecialties]))
-			{
-				self.perkicon[numspecialties] hud::destroyelem();
-				self.perkname[numspecialties] hud::destroyelem();
-			}
-		}
-	}
-	if(isdefined(self.perkhudelem))
-	{
-		self.perkhudelem hud::destroyelem();
-	}
-	if(isdefined(self.killstreakicon))
-	{
-		if(isdefined(self.killstreakicon[0]))
-		{
-			self.killstreakicon[0] hud::destroyelem();
-		}
-		if(isdefined(self.killstreakicon[1]))
-		{
-			self.killstreakicon[1] hud::destroyelem();
-		}
-		if(isdefined(self.killstreakicon[2]))
-		{
-			self.killstreakicon[2] hud::destroyelem();
-		}
-		if(isdefined(self.killstreakicon[3]))
-		{
-			self.killstreakicon[3] hud::destroyelem();
-		}
-		if(isdefined(self.killstreakicon[4]))
-		{
-			self.killstreakicon[4] hud::destroyelem();
-		}
-	}
-	if(isdefined(self.lowermessage))
-	{
-		self.lowermessage hud::destroyelem();
-	}
-	if(isdefined(self.lowertimer))
-	{
-		self.lowertimer hud::destroyelem();
-	}
-	if(isdefined(self.proxbar))
-	{
-		self.proxbar hud::destroyelem();
-	}
-	if(isdefined(self.proxbartext))
-	{
-		self.proxbartext hud::destroyelem();
-	}
-	if(isdefined(self.carryicon))
-	{
-		self.carryicon hud::destroyelem();
-	}
+function freegameplayhudelems() {
+  if(isdefined(self.perkicon)) {
+    for (numspecialties = 0; numspecialties < level.maxspecialties; numspecialties++) {
+      if(isdefined(self.perkicon[numspecialties])) {
+        self.perkicon[numspecialties] hud::destroyelem();
+        self.perkname[numspecialties] hud::destroyelem();
+      }
+    }
+  }
+  if(isdefined(self.perkhudelem)) {
+    self.perkhudelem hud::destroyelem();
+  }
+  if(isdefined(self.killstreakicon)) {
+    if(isdefined(self.killstreakicon[0])) {
+      self.killstreakicon[0] hud::destroyelem();
+    }
+    if(isdefined(self.killstreakicon[1])) {
+      self.killstreakicon[1] hud::destroyelem();
+    }
+    if(isdefined(self.killstreakicon[2])) {
+      self.killstreakicon[2] hud::destroyelem();
+    }
+    if(isdefined(self.killstreakicon[3])) {
+      self.killstreakicon[3] hud::destroyelem();
+    }
+    if(isdefined(self.killstreakicon[4])) {
+      self.killstreakicon[4] hud::destroyelem();
+    }
+  }
+  if(isdefined(self.lowermessage)) {
+    self.lowermessage hud::destroyelem();
+  }
+  if(isdefined(self.lowertimer)) {
+    self.lowertimer hud::destroyelem();
+  }
+  if(isdefined(self.proxbar)) {
+    self.proxbar hud::destroyelem();
+  }
+  if(isdefined(self.proxbartext)) {
+    self.proxbartext hud::destroyelem();
+  }
+  if(isdefined(self.carryicon)) {
+    self.carryicon hud::destroyelem();
+  }
 }
 
 /*
@@ -135,22 +115,18 @@ function freegameplayhudelems()
 	Parameters: 1
 	Flags: None
 */
-function teamplayercountsequal(playercounts)
-{
-	count = undefined;
-	foreach(team in level.teams)
-	{
-		if(!isdefined(count))
-		{
-			count = playercounts[team];
-			continue;
-		}
-		if(count != playercounts[team])
-		{
-			return false;
-		}
-	}
-	return true;
+function teamplayercountsequal(playercounts) {
+  count = undefined;
+  foreach(team in level.teams) {
+    if(!isdefined(count)) {
+      count = playercounts[team];
+      continue;
+    }
+    if(count != playercounts[team]) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /*
@@ -162,19 +138,16 @@ function teamplayercountsequal(playercounts)
 	Parameters: 2
 	Flags: None
 */
-function teamwithlowestplayercount(playercounts, ignore_team)
-{
-	count = 9999;
-	lowest_team = undefined;
-	foreach(team in level.teams)
-	{
-		if(count > playercounts[team])
-		{
-			count = playercounts[team];
-			lowest_team = team;
-		}
-	}
-	return lowest_team;
+function teamwithlowestplayercount(playercounts, ignore_team) {
+  count = 9999;
+  lowest_team = undefined;
+  foreach(team in level.teams) {
+    if(count > playercounts[team]) {
+      count = playercounts[team];
+      lowest_team = team;
+    }
+  }
+  return lowest_team;
 }
 
 /*
@@ -186,124 +159,94 @@ function teamwithlowestplayercount(playercounts, ignore_team)
 	Parameters: 1
 	Flags: Linked
 */
-function menuautoassign(comingfrommenu)
-{
-	teamkeys = getarraykeys(level.teams);
-	assignment = teamkeys[randomint(teamkeys.size)];
-	self closemenus();
-	if(isdefined(level.forceallallies) && level.forceallallies)
-	{
-		assignment = "allies";
-	}
-	else
-	{
-		if(level.teambased)
-		{
-			if(getdvarint("party_autoteams") == 1)
-			{
-				if(level.allow_teamchange == "1" && (self.hasspawned || comingfrommenu))
-				{
-					assignment = "";
-				}
-				else
-				{
-					team = getassignedteam(self);
-					switch(team)
-					{
-						case 1:
-						{
-							assignment = teamkeys[1];
-							break;
-						}
-						case 2:
-						{
-							assignment = teamkeys[0];
-							break;
-						}
-						case 3:
-						{
-							assignment = teamkeys[2];
-							break;
-						}
-						case 4:
-						{
-							if(!isdefined(level.forceautoassign) || !level.forceautoassign)
-							{
-								self setclientscriptmainmenu(game["menu_start_menu"]);
-								return;
-							}
-						}
-						default:
-						{
-							assignment = "";
-							if(isdefined(level.teams[team]))
-							{
-								assignment = team;
-							}
-							else if(team == "spectator" && !level.forceautoassign)
-							{
-								self setclientscriptmainmenu(game["menu_start_menu"]);
-								return;
-							}
-						}
-					}
-				}
-			}
-			if(assignment == "" || getdvarint("party_autoteams") == 0)
-			{
-				if(sessionmodeiszombiesgame())
-				{
-					assignment = "allies";
-				}
-			}
-			if(assignment == self.pers["team"] && (self.sessionstate == "playing" || self.sessionstate == "dead"))
-			{
-				self beginclasschoice();
-				return;
-			}
-		}
-		else if(getdvarint("party_autoteams") == 1)
-		{
-			if(level.allow_teamchange != "1" || (!self.hasspawned && !comingfrommenu))
-			{
-				team = getassignedteam(self);
-				if(isdefined(level.teams[team]))
-				{
-					assignment = team;
-				}
-				else if(team == "spectator" && !level.forceautoassign)
-				{
-					self setclientscriptmainmenu(game["menu_start_menu"]);
-					return;
-				}
-			}
-		}
-	}
-	if(assignment != self.pers["team"] && (self.sessionstate == "playing" || self.sessionstate == "dead"))
-	{
-		self.switching_teams = 1;
-		self.joining_team = assignment;
-		self.leaving_team = self.pers["team"];
-		self suicide();
-	}
-	self.pers["team"] = assignment;
-	self.team = assignment;
-	self.pers["class"] = undefined;
-	self.curclass = undefined;
-	self.pers["weapon"] = undefined;
-	self.pers["savedmodel"] = undefined;
-	self updateobjectivetext();
-	self.sessionteam = assignment;
-	if(!isalive(self))
-	{
-		self.statusicon = "hud_status_dead";
-	}
-	self notify(#"joined_team");
-	level notify(#"joined_team");
-	self callback::callback(#"hash_95a6c4c0");
-	self notify(#"end_respawn");
-	self beginclasschoice();
-	self setclientscriptmainmenu(game["menu_start_menu"]);
+function menuautoassign(comingfrommenu) {
+  teamkeys = getarraykeys(level.teams);
+  assignment = teamkeys[randomint(teamkeys.size)];
+  self closemenus();
+  if(isdefined(level.forceallallies) && level.forceallallies) {
+    assignment = "allies";
+  } else {
+    if(level.teambased) {
+      if(getdvarint("party_autoteams") == 1) {
+        if(level.allow_teamchange == "1" && (self.hasspawned || comingfrommenu)) {
+          assignment = "";
+        } else {
+          team = getassignedteam(self);
+          switch (team) {
+            case 1: {
+              assignment = teamkeys[1];
+              break;
+            }
+            case 2: {
+              assignment = teamkeys[0];
+              break;
+            }
+            case 3: {
+              assignment = teamkeys[2];
+              break;
+            }
+            case 4: {
+              if(!isdefined(level.forceautoassign) || !level.forceautoassign) {
+                self setclientscriptmainmenu(game["menu_start_menu"]);
+                return;
+              }
+            }
+            default: {
+              assignment = "";
+              if(isdefined(level.teams[team])) {
+                assignment = team;
+              } else if(team == "spectator" && !level.forceautoassign) {
+                self setclientscriptmainmenu(game["menu_start_menu"]);
+                return;
+              }
+            }
+          }
+        }
+      }
+      if(assignment == "" || getdvarint("party_autoteams") == 0) {
+        if(sessionmodeiszombiesgame()) {
+          assignment = "allies";
+        }
+      }
+      if(assignment == self.pers["team"] && (self.sessionstate == "playing" || self.sessionstate == "dead")) {
+        self beginclasschoice();
+        return;
+      }
+    } else if(getdvarint("party_autoteams") == 1) {
+      if(level.allow_teamchange != "1" || (!self.hasspawned && !comingfrommenu)) {
+        team = getassignedteam(self);
+        if(isdefined(level.teams[team])) {
+          assignment = team;
+        } else if(team == "spectator" && !level.forceautoassign) {
+          self setclientscriptmainmenu(game["menu_start_menu"]);
+          return;
+        }
+      }
+    }
+  }
+  if(assignment != self.pers["team"] && (self.sessionstate == "playing" || self.sessionstate == "dead")) {
+    self.switching_teams = 1;
+    self.joining_team = assignment;
+    self.leaving_team = self.pers["team"];
+    self suicide();
+  }
+  self.pers["team"] = assignment;
+  self.team = assignment;
+  self.pers["class"] = undefined;
+  self.curclass = undefined;
+  self.pers["weapon"] = undefined;
+  self.pers["savedmodel"] = undefined;
+  self updateobjectivetext();
+  self.sessionteam = assignment;
+  if(!isalive(self)) {
+    self.statusicon = "hud_status_dead";
+  }
+  self notify(# "joined_team");
+  level notify(# "joined_team");
+  self callback::callback(# "hash_95a6c4c0");
+  self notify(# "end_respawn");
+  self beginclasschoice();
+  self setclientscriptmainmenu(game["menu_start_menu"]);
 }
 
 /*
@@ -315,22 +258,18 @@ function menuautoassign(comingfrommenu)
 	Parameters: 0
 	Flags: Linked
 */
-function teamscoresequal()
-{
-	score = undefined;
-	foreach(team in level.teams)
-	{
-		if(!isdefined(score))
-		{
-			score = getteamscore(team);
-			continue;
-		}
-		if(score != getteamscore(team))
-		{
-			return false;
-		}
-	}
-	return true;
+function teamscoresequal() {
+  score = undefined;
+  foreach(team in level.teams) {
+    if(!isdefined(score)) {
+      score = getteamscore(team);
+      continue;
+    }
+    if(score != getteamscore(team)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /*
@@ -342,18 +281,15 @@ function teamscoresequal()
 	Parameters: 0
 	Flags: Linked
 */
-function teamwithlowestscore()
-{
-	score = 99999999;
-	lowest_team = undefined;
-	foreach(team in level.teams)
-	{
-		if(score > getteamscore(team))
-		{
-			lowest_team = team;
-		}
-	}
-	return lowest_team;
+function teamwithlowestscore() {
+  score = 99999999;
+  lowest_team = undefined;
+  foreach(team in level.teams) {
+    if(score > getteamscore(team)) {
+      lowest_team = team;
+    }
+  }
+  return lowest_team;
 }
 
 /*
@@ -365,18 +301,14 @@ function teamwithlowestscore()
 	Parameters: 1
 	Flags: None
 */
-function pickteamfromscores(teams)
-{
-	assignment = "allies";
-	if(teamscoresequal())
-	{
-		assignment = teams[randomint(teams.size)];
-	}
-	else
-	{
-		assignment = teamwithlowestscore();
-	}
-	return assignment;
+function pickteamfromscores(teams) {
+  assignment = "allies";
+  if(teamscoresequal()) {
+    assignment = teams[randomint(teams.size)];
+  } else {
+    assignment = teamwithlowestscore();
+  }
+  return assignment;
 }
 
 /*
@@ -388,29 +320,23 @@ function pickteamfromscores(teams)
 	Parameters: 0
 	Flags: None
 */
-function getsplitscreenteam()
-{
-	for(index = 0; index < level.players.size; index++)
-	{
-		if(!isdefined(level.players[index]))
-		{
-			continue;
-		}
-		if(level.players[index] == self)
-		{
-			continue;
-		}
-		if(!self isplayeronsamemachine(level.players[index]))
-		{
-			continue;
-		}
-		team = level.players[index].sessionteam;
-		if(team != "spectator")
-		{
-			return team;
-		}
-	}
-	return "";
+function getsplitscreenteam() {
+  for (index = 0; index < level.players.size; index++) {
+    if(!isdefined(level.players[index])) {
+      continue;
+    }
+    if(level.players[index] == self) {
+      continue;
+    }
+    if(!self isplayeronsamemachine(level.players[index])) {
+      continue;
+    }
+    team = level.players[index].sessionteam;
+    if(team != "spectator") {
+      return team;
+    }
+  }
+  return "";
 }
 
 /*
@@ -422,21 +348,16 @@ function getsplitscreenteam()
 	Parameters: 0
 	Flags: Linked
 */
-function updateobjectivetext()
-{
-	if(sessionmodeiszombiesgame() || self.pers["team"] == "spectator")
-	{
-		self setclientcgobjectivetext("");
-		return;
-	}
-	if(level.scorelimit > 0)
-	{
-		self setclientcgobjectivetext(util::getobjectivescoretext(self.pers["team"]));
-	}
-	else
-	{
-		self setclientcgobjectivetext(util::getobjectivetext(self.pers["team"]));
-	}
+function updateobjectivetext() {
+  if(sessionmodeiszombiesgame() || self.pers["team"] == "spectator") {
+    self setclientcgobjectivetext("");
+    return;
+  }
+  if(level.scorelimit > 0) {
+    self setclientcgobjectivetext(util::getobjectivescoretext(self.pers["team"]));
+  } else {
+    self setclientcgobjectivetext(util::getobjectivetext(self.pers["team"]));
+  }
 }
 
 /*
@@ -448,9 +369,8 @@ function updateobjectivetext()
 	Parameters: 0
 	Flags: Linked
 */
-function closemenus()
-{
-	self closeingamemenu();
+function closemenus() {
+  self closeingamemenu();
 }
 
 /*
@@ -462,25 +382,22 @@ function closemenus()
 	Parameters: 1
 	Flags: Linked
 */
-function beginclasschoice(forcenewchoice)
-{
-	/#
-		assert(isdefined(level.teams[self.pers[""]]));
-	#/
-	team = self.pers["team"];
-	if(level.disablecac == 1)
-	{
-		self.pers["class"] = level.defaultclass;
-		self.curclass = level.defaultclass;
-		if(self.sessionstate != "playing" && game["state"] == "playing")
-		{
-			self thread [[level.spawnclient]]();
-		}
-		level thread globallogic::updateteamstatus();
-		self thread spectating::setspectatepermissionsformachine();
-		return;
-	}
-	self openmenu(game["menu_changeclass_" + team]);
+function beginclasschoice(forcenewchoice) {
+  /#
+  assert(isdefined(level.teams[self.pers[""]]));
+  # /
+    team = self.pers["team"];
+  if(level.disablecac == 1) {
+    self.pers["class"] = level.defaultclass;
+    self.curclass = level.defaultclass;
+    if(self.sessionstate != "playing" && game["state"] == "playing") {
+      self thread[[level.spawnclient]]();
+    }
+    level thread globallogic::updateteamstatus();
+    self thread spectating::setspectatepermissionsformachine();
+    return;
+  }
+  self openmenu(game["menu_changeclass_" + team]);
 }
 
 /*
@@ -492,13 +409,12 @@ function beginclasschoice(forcenewchoice)
 	Parameters: 0
 	Flags: Linked
 */
-function showmainmenuforteam()
-{
-	/#
-		assert(isdefined(level.teams[self.pers[""]]));
-	#/
-	team = self.pers["team"];
-	self openmenu(game["menu_changeclass_" + team]);
+function showmainmenuforteam() {
+  /#
+  assert(isdefined(level.teams[self.pers[""]]));
+  # /
+    team = self.pers["team"];
+  self openmenu(game["menu_changeclass_" + team]);
 }
 
 /*
@@ -510,41 +426,36 @@ function showmainmenuforteam()
 	Parameters: 1
 	Flags: Linked
 */
-function menuteam(team)
-{
-	self closemenus();
-	if(!level.console && level.allow_teamchange == "0" && (isdefined(self.hasdonecombat) && self.hasdonecombat))
-	{
-		return;
-	}
-	if(self.pers["team"] != team)
-	{
-		if(level.ingraceperiod && (!isdefined(self.hasdonecombat) || !self.hasdonecombat))
-		{
-			self.hasspawned = 0;
-		}
-		if(self.sessionstate == "playing")
-		{
-			self.switching_teams = 1;
-			self.joining_team = team;
-			self.leaving_team = self.pers["team"];
-			self suicide();
-		}
-		self.pers["team"] = team;
-		self.team = team;
-		self.pers["class"] = undefined;
-		self.curclass = undefined;
-		self.pers["weapon"] = undefined;
-		self.pers["savedmodel"] = undefined;
-		self updateobjectivetext();
-		self.sessionteam = team;
-		self setclientscriptmainmenu(game["menu_start_menu"]);
-		self notify(#"joined_team");
-		level notify(#"joined_team");
-		self callback::callback(#"hash_95a6c4c0");
-		self notify(#"end_respawn");
-	}
-	self beginclasschoice();
+function menuteam(team) {
+  self closemenus();
+  if(!level.console && level.allow_teamchange == "0" && (isdefined(self.hasdonecombat) && self.hasdonecombat)) {
+    return;
+  }
+  if(self.pers["team"] != team) {
+    if(level.ingraceperiod && (!isdefined(self.hasdonecombat) || !self.hasdonecombat)) {
+      self.hasspawned = 0;
+    }
+    if(self.sessionstate == "playing") {
+      self.switching_teams = 1;
+      self.joining_team = team;
+      self.leaving_team = self.pers["team"];
+      self suicide();
+    }
+    self.pers["team"] = team;
+    self.team = team;
+    self.pers["class"] = undefined;
+    self.curclass = undefined;
+    self.pers["weapon"] = undefined;
+    self.pers["savedmodel"] = undefined;
+    self updateobjectivetext();
+    self.sessionteam = team;
+    self setclientscriptmainmenu(game["menu_start_menu"]);
+    self notify(# "joined_team");
+    level notify(# "joined_team");
+    self callback::callback(# "hash_95a6c4c0");
+    self notify(# "end_respawn");
+  }
+  self beginclasschoice();
 }
 
 /*
@@ -556,31 +467,30 @@ function menuteam(team)
 	Parameters: 0
 	Flags: Linked
 */
-function menuspectator()
-{
-	self closemenus();
-	if(self.pers["team"] != "spectator")
-	{
-		if(isalive(self))
-		{
-			self.switching_teams = 1;
-			self.joining_team = "spectator";
-			self.leaving_team = self.pers["team"];
-			self suicide();
-		}
-		self.pers["team"] = "spectator";
-		self.team = "spectator";
-		self.pers["class"] = undefined;
-		self.curclass = undefined;
-		self.pers["weapon"] = undefined;
-		self.pers["savedmodel"] = undefined;
-		self updateobjectivetext();
-		self.sessionteam = "spectator";
-		[[level.spawnspectator]]();
-		self thread globallogic_player::spectate_player_watcher();
-		self setclientscriptmainmenu(game["menu_start_menu"]);
-		self notify(#"joined_spectators");
-	}
+function menuspectator() {
+  self closemenus();
+  if(self.pers["team"] != "spectator") {
+    if(isalive(self)) {
+      self.switching_teams = 1;
+      self.joining_team = "spectator";
+      self.leaving_team = self.pers["team"];
+      self suicide();
+    }
+    self.pers["team"] = "spectator";
+    self.team = "spectator";
+    self.pers["class"] = undefined;
+    self.curclass = undefined;
+    self.pers["weapon"] = undefined;
+    self.pers["savedmodel"] = undefined;
+    self updateobjectivetext();
+    self.sessionteam = "spectator";
+    [
+      [level.spawnspectator]
+    ]();
+    self thread globallogic_player::spectate_player_watcher();
+    self setclientscriptmainmenu(game["menu_start_menu"]);
+    self notify(# "joined_spectators");
+  }
 }
 
 /*
@@ -592,9 +502,8 @@ function menuspectator()
 	Parameters: 1
 	Flags: Linked
 */
-function menuclass(response)
-{
-	self closemenus();
+function menuclass(response) {
+  self closemenus();
 }
 
 /*
@@ -606,12 +515,10 @@ function menuclass(response)
 	Parameters: 1
 	Flags: Linked
 */
-function removespawnmessageshortly(delay)
-{
-	self endon(#"disconnect");
-	waittillframeend();
-	self endon(#"end_respawn");
-	wait(delay);
-	self util::clearlowermessage(2);
+function removespawnmessageshortly(delay) {
+  self endon(# "disconnect");
+  waittillframeend();
+  self endon(# "end_respawn");
+  wait(delay);
+  self util::clearlowermessage(2);
 }
-

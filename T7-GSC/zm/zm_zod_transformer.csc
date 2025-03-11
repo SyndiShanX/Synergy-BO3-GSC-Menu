@@ -15,9 +15,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_zod_transformer", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_zod_transformer", & __init__, undefined, undefined);
 }
 
 /*
@@ -29,10 +28,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	n_bits = getminbitcountfornum(16);
-	clientfield::register("scriptmover", "transformer_light_switch", 1, n_bits, "int", &transformer_light_switch, 0, 0);
+function __init__() {
+  n_bits = getminbitcountfornum(16);
+  clientfield::register("scriptmover", "transformer_light_switch", 1, n_bits, "int", & transformer_light_switch, 0, 0);
 }
 
 /*
@@ -44,11 +42,8 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function transformer_light_switch(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		exploder::exploder("powerbox_" + newval);
-	}
+function transformer_light_switch(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    exploder::exploder("powerbox_" + newval);
+  }
 }
-

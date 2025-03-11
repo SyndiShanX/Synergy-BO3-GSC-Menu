@@ -25,9 +25,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("vehicle_ai", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("vehicle_ai", & __init__, undefined, undefined);
 }
 
 /*
@@ -39,9 +38,7 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-}
+function __init__() {}
 
 /*
 	Name: registersharedinterfaceattributes
@@ -52,9 +49,8 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function registersharedinterfaceattributes(archetype)
-{
-	ai::registermatchedinterface(archetype, "force_high_speed", 0, array(1, 0));
+function registersharedinterfaceattributes(archetype) {
+  ai::registermatchedinterface(archetype, "force_high_speed", 0, array(1, 0));
 }
 
 /*
@@ -66,24 +62,19 @@ function registersharedinterfaceattributes(archetype)
 	Parameters: 0
 	Flags: Linked
 */
-function initthreatbias()
-{
-	aiarray = getaiarray();
-	foreach(ai in aiarray)
-	{
-		if(ai === self)
-		{
-			continue;
-		}
-		if(self.ignorefirefly === 1 && ai.firefly === 1)
-		{
-			self setpersonalignore(ai);
-		}
-		if(self.ignoredecoy === 1 && ai.var_e42818a3 === 1)
-		{
-			self setpersonalignore(ai);
-		}
-	}
+function initthreatbias() {
+  aiarray = getaiarray();
+  foreach(ai in aiarray) {
+    if(ai === self) {
+      continue;
+    }
+    if(self.ignorefirefly === 1 && ai.firefly === 1) {
+      self setpersonalignore(ai);
+    }
+    if(self.ignoredecoy === 1 && ai.var_e42818a3 === 1) {
+      self setpersonalignore(ai);
+    }
+  }
 }
 
 /*
@@ -95,21 +86,17 @@ function initthreatbias()
 	Parameters: 2
 	Flags: None
 */
-function entityisarchetype(entity, archetype)
-{
-	if(!isdefined(entity))
-	{
-		return false;
-	}
-	if(isplayer(entity) && entity.usingvehicle && isdefined(entity.viewlockedentity) && entity.viewlockedentity.archetype === archetype)
-	{
-		return true;
-	}
-	if(isvehicle(entity) && entity.archetype === archetype)
-	{
-		return true;
-	}
-	return false;
+function entityisarchetype(entity, archetype) {
+  if(!isdefined(entity)) {
+    return false;
+  }
+  if(isplayer(entity) && entity.usingvehicle && isdefined(entity.viewlockedentity) && entity.viewlockedentity.archetype === archetype) {
+    return true;
+  }
+  if(isvehicle(entity) && entity.archetype === archetype) {
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -121,17 +108,14 @@ function entityisarchetype(entity, archetype)
 	Parameters: 0
 	Flags: Linked
 */
-function getenemytarget()
-{
-	if(isdefined(self.enemy) && self vehcansee(self.enemy))
-	{
-		return self.enemy;
-	}
-	if(isdefined(self.enemylastseenpos))
-	{
-		return self.enemylastseenpos;
-	}
-	return undefined;
+function getenemytarget() {
+  if(isdefined(self.enemy) && self vehcansee(self.enemy)) {
+    return self.enemy;
+  }
+  if(isdefined(self.enemylastseenpos)) {
+    return self.enemylastseenpos;
+  }
+  return undefined;
 }
 
 /*
@@ -143,35 +127,24 @@ function getenemytarget()
 	Parameters: 2
 	Flags: Linked
 */
-function gettargetpos(target, geteye)
-{
-	pos = undefined;
-	if(isdefined(target))
-	{
-		if(isvec(target))
-		{
-			pos = target;
-		}
-		else
-		{
-			if(isdefined(geteye) && geteye && issentient(target))
-			{
-				pos = target geteye();
-			}
-			else
-			{
-				if(isentity(target))
-				{
-					pos = target.origin;
-				}
-				else if(isdefined(target.origin) && isvec(target.origin))
-				{
-					pos = target.origin;
-				}
-			}
-		}
-	}
-	return pos;
+function gettargetpos(target, geteye) {
+  pos = undefined;
+  if(isdefined(target)) {
+    if(isvec(target)) {
+      pos = target;
+    } else {
+      if(isdefined(geteye) && geteye && issentient(target)) {
+        pos = target geteye();
+      } else {
+        if(isentity(target)) {
+          pos = target.origin;
+        } else if(isdefined(target.origin) && isvec(target.origin)) {
+          pos = target.origin;
+        }
+      }
+    }
+  }
+  return pos;
 }
 
 /*
@@ -183,14 +156,12 @@ function gettargetpos(target, geteye)
 	Parameters: 1
 	Flags: Linked
 */
-function gettargeteyeoffset(target)
-{
-	offset = (0, 0, 0);
-	if(isdefined(target) && issentient(target))
-	{
-		offset = target geteye() - target.origin;
-	}
-	return offset;
+function gettargeteyeoffset(target) {
+  offset = (0, 0, 0);
+  if(isdefined(target) && issentient(target)) {
+    offset = target geteye() - target.origin;
+  }
+  return offset;
 }
 
 /*
@@ -202,19 +173,18 @@ function gettargeteyeoffset(target)
 	Parameters: 4
 	Flags: Linked
 */
-function fire_for_time(totalfiretime, turretidx = 0, target, intervalscale = 1)
-{
-	self endon(#"death");
-	self endon(#"change_state");
-	self notify(#"fire_stop");
-	self endon(#"fire_stop");
-	weapon = self seatgetweapon(turretidx);
-	/#
-		assert(isdefined(weapon) && weapon.name != "" && weapon.firetime > 0);
-	#/
-	firetime = weapon.firetime * intervalscale;
-	firecount = (int(floor(totalfiretime / firetime))) + 1;
-	__fire_for_rounds_internal(firecount, firetime, turretidx, target);
+function fire_for_time(totalfiretime, turretidx = 0, target, intervalscale = 1) {
+  self endon(# "death");
+  self endon(# "change_state");
+  self notify(# "fire_stop");
+  self endon(# "fire_stop");
+  weapon = self seatgetweapon(turretidx);
+  /#
+  assert(isdefined(weapon) && weapon.name != "" && weapon.firetime > 0);
+  # /
+    firetime = weapon.firetime * intervalscale;
+  firecount = (int(floor(totalfiretime / firetime))) + 1;
+  __fire_for_rounds_internal(firecount, firetime, turretidx, target);
 }
 
 /*
@@ -226,20 +196,18 @@ function fire_for_time(totalfiretime, turretidx = 0, target, intervalscale = 1)
 	Parameters: 3
 	Flags: Linked
 */
-function fire_for_rounds(firecount, turretidx, target)
-{
-	self endon(#"death");
-	self endon(#"fire_stop");
-	self endon(#"change_state");
-	if(!isdefined(turretidx))
-	{
-		turretidx = 0;
-	}
-	weapon = self seatgetweapon(turretidx);
-	/#
-		assert(isdefined(weapon) && weapon.name != "" && weapon.firetime > 0);
-	#/
-	__fire_for_rounds_internal(firecount, weapon.firetime, turretidx, target);
+function fire_for_rounds(firecount, turretidx, target) {
+  self endon(# "death");
+  self endon(# "fire_stop");
+  self endon(# "change_state");
+  if(!isdefined(turretidx)) {
+    turretidx = 0;
+  }
+  weapon = self seatgetweapon(turretidx);
+  /#
+  assert(isdefined(weapon) && weapon.name != "" && weapon.firetime > 0);
+  # /
+    __fire_for_rounds_internal(firecount, weapon.firetime, turretidx, target);
 }
 
 /*
@@ -251,49 +219,38 @@ function fire_for_rounds(firecount, turretidx, target)
 	Parameters: 4
 	Flags: Linked
 */
-function __fire_for_rounds_internal(firecount, fireinterval, turretidx, target)
-{
-	self endon(#"death");
-	self endon(#"fire_stop");
-	self endon(#"change_state");
-	if(isdefined(target) && issentient(target))
-	{
-		target endon(#"death");
-	}
-	/#
-		assert(isdefined(turretidx));
-	#/
-	aifirechance = 1;
-	if(isdefined(target) && !isplayer(target) && isai(target) || isdefined(self.fire_half_blanks))
-	{
-		aifirechance = 2;
-	}
-	counter = 0;
-	while(counter < firecount)
-	{
-		if(self.avoid_shooting_owner === 1 && self owner_in_line_of_fire())
-		{
-			wait(fireinterval);
-			continue;
-		}
-		if(isdefined(target) && !isvec(target) && isdefined(target.attackeraccuracy) && target.attackeraccuracy == 0)
-		{
-			self fireturret(turretidx, 1);
-		}
-		else
-		{
-			if(aifirechance > 1)
-			{
-				self fireturret(turretidx, counter % aifirechance);
-			}
-			else
-			{
-				self fireturret(turretidx);
-			}
-		}
-		counter++;
-		wait(fireinterval);
-	}
+function __fire_for_rounds_internal(firecount, fireinterval, turretidx, target) {
+  self endon(# "death");
+  self endon(# "fire_stop");
+  self endon(# "change_state");
+  if(isdefined(target) && issentient(target)) {
+    target endon(# "death");
+  }
+  /#
+  assert(isdefined(turretidx));
+  # /
+    aifirechance = 1;
+  if(isdefined(target) && !isplayer(target) && isai(target) || isdefined(self.fire_half_blanks)) {
+    aifirechance = 2;
+  }
+  counter = 0;
+  while (counter < firecount) {
+    if(self.avoid_shooting_owner === 1 && self owner_in_line_of_fire()) {
+      wait(fireinterval);
+      continue;
+    }
+    if(isdefined(target) && !isvec(target) && isdefined(target.attackeraccuracy) && target.attackeraccuracy == 0) {
+      self fireturret(turretidx, 1);
+    } else {
+      if(aifirechance > 1) {
+        self fireturret(turretidx, counter % aifirechance);
+      } else {
+        self fireturret(turretidx);
+      }
+    }
+    counter++;
+    wait(fireinterval);
+  }
 }
 
 /*
@@ -305,18 +262,16 @@ function __fire_for_rounds_internal(firecount, fireinterval, turretidx, target)
 	Parameters: 0
 	Flags: Linked
 */
-function owner_in_line_of_fire()
-{
-	if(!isdefined(self.owner))
-	{
-		return 0;
-	}
-	dist_squared_to_owner = distancesquared(self.owner.origin, self.origin);
-	line_of_fire_dot = (dist_squared_to_owner < 9216 ? 0.866 : 0.9848);
-	gun_angles = self gettagangles((isdefined(self.avoid_shooting_owner_ref_tag) ? self.avoid_shooting_owner_ref_tag : "tag_flash"));
-	gun_forward = anglestoforward(gun_angles);
-	dot = vectordot(gun_forward, vectornormalize(self.owner.origin - self.origin));
-	return dot > line_of_fire_dot;
+function owner_in_line_of_fire() {
+  if(!isdefined(self.owner)) {
+    return 0;
+  }
+  dist_squared_to_owner = distancesquared(self.owner.origin, self.origin);
+  line_of_fire_dot = (dist_squared_to_owner < 9216 ? 0.866 : 0.9848);
+  gun_angles = self gettagangles((isdefined(self.avoid_shooting_owner_ref_tag) ? self.avoid_shooting_owner_ref_tag : "tag_flash"));
+  gun_forward = anglestoforward(gun_angles);
+  dot = vectordot(gun_forward, vectornormalize(self.owner.origin - self.origin));
+  return dot > line_of_fire_dot;
 }
 
 /*
@@ -328,40 +283,27 @@ function owner_in_line_of_fire()
 	Parameters: 3
 	Flags: None
 */
-function setturrettarget(target, turretidx = 0, offset = (0, 0, 0))
-{
-	if(isentity(target))
-	{
-		if(turretidx == 0)
-		{
-			self setturrettargetent(target, offset);
-		}
-		else
-		{
-			self setgunnertargetent(target, offset, turretidx - 1);
-		}
-	}
-	else
-	{
-		if(isvec(target))
-		{
-			origin = target + offset;
-			if(turretidx == 0)
-			{
-				self setturrettargetvec(target);
-			}
-			else
-			{
-				self setgunnertargetvec(target, turretidx - 1);
-			}
-		}
-		else
-		{
-			/#
-				assertmsg("");
-			#/
-		}
-	}
+function setturrettarget(target, turretidx = 0, offset = (0, 0, 0)) {
+  if(isentity(target)) {
+    if(turretidx == 0) {
+      self setturrettargetent(target, offset);
+    } else {
+      self setgunnertargetent(target, offset, turretidx - 1);
+    }
+  } else {
+    if(isvec(target)) {
+      origin = target + offset;
+      if(turretidx == 0) {
+        self setturrettargetvec(target);
+      } else {
+        self setgunnertargetvec(target, turretidx - 1);
+      }
+    } else {
+      /#
+      assertmsg("");
+      # /
+    }
+  }
 }
 
 /*
@@ -373,9 +315,8 @@ function setturrettarget(target, turretidx = 0, offset = (0, 0, 0))
 	Parameters: 2
 	Flags: Linked
 */
-function fireturret(turretidx, isfake)
-{
-	self fireweapon(turretidx, undefined, undefined, self);
+function fireturret(turretidx, isfake) {
+  self fireweapon(turretidx, undefined, undefined, self);
 }
 
 /*
@@ -387,25 +328,21 @@ function fireturret(turretidx, isfake)
 	Parameters: 1
 	Flags: None
 */
-function javelin_losetargetatrighttime(target)
-{
-	self endon(#"death");
-	self waittill(#"weapon_fired", proj);
-	if(!isdefined(proj))
-	{
-		return;
-	}
-	proj endon(#"death");
-	wait(2);
-	while(isdefined(target))
-	{
-		if(proj getvelocity()[2] < -150 && distancesquared(proj.origin, target.origin) < (1200 * 1200))
-		{
-			proj missile_settarget(undefined);
-			break;
-		}
-		wait(0.1);
-	}
+function javelin_losetargetatrighttime(target) {
+  self endon(# "death");
+  self waittill(# "weapon_fired", proj);
+  if(!isdefined(proj)) {
+    return;
+  }
+  proj endon(# "death");
+  wait(2);
+  while (isdefined(target)) {
+    if(proj getvelocity()[2] < -150 && distancesquared(proj.origin, target.origin) < (1200 * 1200)) {
+      proj missile_settarget(undefined);
+      break;
+    }
+    wait(0.1);
+  }
 }
 
 /*
@@ -417,10 +354,9 @@ function javelin_losetargetatrighttime(target)
 	Parameters: 1
 	Flags: Linked
 */
-function waittill_pathing_done(maxtime = 15)
-{
-	self endon(#"change_state");
-	self util::waittill_any_ex(maxtime, "near_goal", "force_goal", "reached_end_node", "goal", "pathfind_failed", "change_state");
+function waittill_pathing_done(maxtime = 15) {
+  self endon(# "change_state");
+  self util::waittill_any_ex(maxtime, "near_goal", "force_goal", "reached_end_node", "goal", "pathfind_failed", "change_state");
 }
 
 /*
@@ -432,12 +368,11 @@ function waittill_pathing_done(maxtime = 15)
 	Parameters: 1
 	Flags: Linked
 */
-function waittill_pathresult(maxtime = 0.5)
-{
-	self endon(#"change_state");
-	result = self util::waittill_any_timeout(maxtime, "pathfind_failed", "pathfind_succeeded", "change_state");
-	succeeded = result === "pathfind_succeeded";
-	return succeeded;
+function waittill_pathresult(maxtime = 0.5) {
+  self endon(# "change_state");
+  result = self util::waittill_any_timeout(maxtime, "pathfind_failed", "pathfind_succeeded", "change_state");
+  succeeded = result === "pathfind_succeeded";
+  return succeeded;
 }
 
 /*
@@ -449,13 +384,12 @@ function waittill_pathresult(maxtime = 0.5)
 	Parameters: 0
 	Flags: Linked
 */
-function waittill_asm_terminated()
-{
-	self endon(#"death");
-	self notify(#"end_asm_terminated_thread");
-	self endon(#"end_asm_terminated_thread");
-	self waittill(#"asm_terminated");
-	self notify(#"asm_complete", "__terminated__");
+function waittill_asm_terminated() {
+  self endon(# "death");
+  self notify(# "end_asm_terminated_thread");
+  self endon(# "end_asm_terminated_thread");
+  self waittill(# "asm_terminated");
+  self notify(# "asm_complete", "__terminated__");
 }
 
 /*
@@ -467,13 +401,12 @@ function waittill_asm_terminated()
 	Parameters: 1
 	Flags: Linked
 */
-function waittill_asm_timeout(timeout)
-{
-	self endon(#"death");
-	self notify(#"end_asm_timeout_thread");
-	self endon(#"end_asm_timeout_thread");
-	wait(timeout);
-	self notify(#"asm_complete", "__timeout__");
+function waittill_asm_timeout(timeout) {
+  self endon(# "death");
+  self notify(# "end_asm_timeout_thread");
+  self endon(# "end_asm_timeout_thread");
+  wait(timeout);
+  self notify(# "asm_complete", "__timeout__");
 }
 
 /*
@@ -485,18 +418,16 @@ function waittill_asm_timeout(timeout)
 	Parameters: 2
 	Flags: Linked
 */
-function waittill_asm_complete(substate_to_wait, timeout = 10)
-{
-	self endon(#"death");
-	self thread waittill_asm_terminated();
-	self thread waittill_asm_timeout(timeout);
-	substate = undefined;
-	while(!isdefined(substate) || (substate != substate_to_wait && substate != "__terminated__" && substate != "__timeout__"))
-	{
-		self waittill(#"asm_complete", substate);
-	}
-	self notify(#"end_asm_terminated_thread");
-	self notify(#"end_asm_timeout_thread");
+function waittill_asm_complete(substate_to_wait, timeout = 10) {
+  self endon(# "death");
+  self thread waittill_asm_terminated();
+  self thread waittill_asm_timeout(timeout);
+  substate = undefined;
+  while (!isdefined(substate) || (substate != substate_to_wait && substate != "__terminated__" && substate != "__timeout__")) {
+    self waittill(# "asm_complete", substate);
+  }
+  self notify(# "end_asm_terminated_thread");
+  self notify(# "end_asm_timeout_thread");
 }
 
 /*
@@ -508,23 +439,19 @@ function waittill_asm_complete(substate_to_wait, timeout = 10)
 	Parameters: 4
 	Flags: None
 */
-function throw_off_balance(damagetype, hitpoint, hitdirection, hitlocationinfo)
-{
-	if(damagetype == "MOD_EXPLOSIVE" || damagetype == "MOD_GRENADE_SPLASH" || damagetype == "MOD_PROJECTILE_SPLASH")
-	{
-		self setvehvelocity(self.velocity + (vectornormalize(hitdirection) * 300));
-		ang_vel = self getangularvelocity();
-		ang_vel = ang_vel + (randomfloatrange(-300, 300), randomfloatrange(-300, 300), randomfloatrange(-300, 300));
-		self setangularvelocity(ang_vel);
-	}
-	else
-	{
-		ang_vel = self getangularvelocity();
-		yaw_vel = randomfloatrange(-320, 320);
-		yaw_vel = yaw_vel + (math::sign(yaw_vel) * 150);
-		ang_vel = ang_vel + (randomfloatrange(-150, 150), yaw_vel, randomfloatrange(-150, 150));
-		self setangularvelocity(ang_vel);
-	}
+function throw_off_balance(damagetype, hitpoint, hitdirection, hitlocationinfo) {
+  if(damagetype == "MOD_EXPLOSIVE" || damagetype == "MOD_GRENADE_SPLASH" || damagetype == "MOD_PROJECTILE_SPLASH") {
+    self setvehvelocity(self.velocity + (vectornormalize(hitdirection) * 300));
+    ang_vel = self getangularvelocity();
+    ang_vel = ang_vel + (randomfloatrange(-300, 300), randomfloatrange(-300, 300), randomfloatrange(-300, 300));
+    self setangularvelocity(ang_vel);
+  } else {
+    ang_vel = self getangularvelocity();
+    yaw_vel = randomfloatrange(-320, 320);
+    yaw_vel = yaw_vel + (math::sign(yaw_vel) * 150);
+    ang_vel = ang_vel + (randomfloatrange(-150, 150), yaw_vel, randomfloatrange(-150, 150));
+    self setangularvelocity(ang_vel);
+  }
 }
 
 /*
@@ -536,18 +463,15 @@ function throw_off_balance(damagetype, hitpoint, hitdirection, hitlocationinfo)
 	Parameters: 0
 	Flags: None
 */
-function predicted_collision()
-{
-	self endon(#"crash_done");
-	self endon(#"death");
-	while(true)
-	{
-		self waittill(#"veh_predictedcollision", velocity, normal);
-		if(normal[2] >= 0.6)
-		{
-			self notify(#"veh_collision", velocity, normal);
-		}
-	}
+function predicted_collision() {
+  self endon(# "crash_done");
+  self endon(# "death");
+  while (true) {
+    self waittill(# "veh_predictedcollision", velocity, normal);
+    if(normal[2] >= 0.6) {
+      self notify(# "veh_collision", velocity, normal);
+    }
+  }
 }
 
 /*
@@ -559,11 +483,10 @@ function predicted_collision()
 	Parameters: 1
 	Flags: Linked
 */
-function collision_fx(normal)
-{
-	tilted = normal[2] < 0.6;
-	fx_origin = self.origin - (normal * (tilted ? 28 : 10));
-	self playsound("veh_wasp_wall_imp");
+function collision_fx(normal) {
+  tilted = normal[2] < 0.6;
+  fx_origin = self.origin - (normal * (tilted ? 28 : 10));
+  self playsound("veh_wasp_wall_imp");
 }
 
 /*
@@ -575,65 +498,52 @@ function collision_fx(normal)
 	Parameters: 0
 	Flags: Linked
 */
-function nudge_collision()
-{
-	self endon(#"crash_done");
-	self endon(#"power_off_done");
-	self endon(#"death");
-	self notify(#"end_nudge_collision");
-	self endon(#"end_nudge_collision");
-	if(self.notsolid === 1)
-	{
-		return;
-	}
-	while(true)
-	{
-		self waittill(#"veh_collision", velocity, normal);
-		ang_vel = self getangularvelocity() * 0.5;
-		self setangularvelocity(ang_vel);
-		empedoroff = self get_current_state() === "emped" || self get_current_state() === "off";
-		if(isalive(self) && (normal[2] < 0.6 || !empedoroff))
-		{
-			self setvehvelocity(self.velocity + (normal * 90));
-			self collision_fx(normal);
-		}
-		else
-		{
-			if(empedoroff)
-			{
-				if(isdefined(self.bounced))
-				{
-					self playsound("veh_wasp_wall_imp");
-					self setvehvelocity((0, 0, 0));
-					self setangularvelocity((0, 0, 0));
-					pitch = self.angles[0];
-					pitch = math::sign(pitch) * math::clamp(abs(pitch), 10, 15);
-					self.angles = (pitch, self.angles[1], self.angles[2]);
-					self.bounced = undefined;
-					self notify(#"landed");
-					return;
-				}
-				self.bounced = 1;
-				self setvehvelocity(self.velocity + (normal * 30));
-				self collision_fx(normal);
-			}
-			else
-			{
-				impact_vel = abs(vectordot(velocity, normal));
-				if(normal[2] < 0.6 && impact_vel < 100)
-				{
-					self setvehvelocity(self.velocity + (normal * 90));
-					self collision_fx(normal);
-				}
-				else
-				{
-					self playsound("veh_wasp_ground_death");
-					self thread vehicle_death::death_fire_loop_audio();
-					self notify(#"crash_done");
-				}
-			}
-		}
-	}
+function nudge_collision() {
+  self endon(# "crash_done");
+  self endon(# "power_off_done");
+  self endon(# "death");
+  self notify(# "end_nudge_collision");
+  self endon(# "end_nudge_collision");
+  if(self.notsolid === 1) {
+    return;
+  }
+  while (true) {
+    self waittill(# "veh_collision", velocity, normal);
+    ang_vel = self getangularvelocity() * 0.5;
+    self setangularvelocity(ang_vel);
+    empedoroff = self get_current_state() === "emped" || self get_current_state() === "off";
+    if(isalive(self) && (normal[2] < 0.6 || !empedoroff)) {
+      self setvehvelocity(self.velocity + (normal * 90));
+      self collision_fx(normal);
+    } else {
+      if(empedoroff) {
+        if(isdefined(self.bounced)) {
+          self playsound("veh_wasp_wall_imp");
+          self setvehvelocity((0, 0, 0));
+          self setangularvelocity((0, 0, 0));
+          pitch = self.angles[0];
+          pitch = math::sign(pitch) * math::clamp(abs(pitch), 10, 15);
+          self.angles = (pitch, self.angles[1], self.angles[2]);
+          self.bounced = undefined;
+          self notify(# "landed");
+          return;
+        }
+        self.bounced = 1;
+        self setvehvelocity(self.velocity + (normal * 30));
+        self collision_fx(normal);
+      } else {
+        impact_vel = abs(vectordot(velocity, normal));
+        if(normal[2] < 0.6 && impact_vel < 100) {
+          self setvehvelocity(self.velocity + (normal * 90));
+          self collision_fx(normal);
+        } else {
+          self playsound("veh_wasp_ground_death");
+          self thread vehicle_death::death_fire_loop_audio();
+          self notify(# "crash_done");
+        }
+      }
+    }
+  }
 }
 
 /*
@@ -645,20 +555,18 @@ function nudge_collision()
 	Parameters: 0
 	Flags: Linked
 */
-function level_out_for_landing()
-{
-	self endon(#"death");
-	self endon(#"change_state");
-	self endon(#"landed");
-	while(true)
-	{
-		velocity = self.velocity;
-		self.angles = (self.angles[0] * 0.85, self.angles[1], self.angles[2] * 0.85);
-		ang_vel = self getangularvelocity() * 0.85;
-		self setangularvelocity(ang_vel);
-		self setvehvelocity(velocity + (vectorscale((0, 0, -1), 60)));
-		wait(0.05);
-	}
+function level_out_for_landing() {
+  self endon(# "death");
+  self endon(# "change_state");
+  self endon(# "landed");
+  while (true) {
+    velocity = self.velocity;
+    self.angles = (self.angles[0] * 0.85, self.angles[1], self.angles[2] * 0.85);
+    ang_vel = self getangularvelocity() * 0.85;
+    self setangularvelocity(ang_vel);
+    self setvehvelocity(velocity + (vectorscale((0, 0, -1), 60)));
+    wait(0.05);
+  }
 }
 
 /*
@@ -670,10 +578,9 @@ function level_out_for_landing()
 	Parameters: 1
 	Flags: None
 */
-function immolate(attacker)
-{
-	self endon(#"death");
-	self thread burning_thread(attacker, attacker);
+function immolate(attacker) {
+  self endon(# "death");
+  self thread burning_thread(attacker, attacker);
 }
 
 /*
@@ -685,47 +592,41 @@ function immolate(attacker)
 	Parameters: 2
 	Flags: Linked
 */
-function burning_thread(attacker, inflictor)
-{
-	self endon(#"death");
-	self notify(#"end_immolating_thread");
-	self endon(#"end_immolating_thread");
-	damagepersecond = self.settings.burn_damagepersecond;
-	if(!isdefined(damagepersecond) || damagepersecond <= 0)
-	{
-		return;
-	}
-	secondsperonedamage = 1 / float(damagepersecond);
-	if(!isdefined(self.abnormal_status))
-	{
-		self.abnormal_status = spawnstruct();
-	}
-	if(self.abnormal_status.burning !== 1)
-	{
-		self vehicle::toggle_burn_fx(1);
-	}
-	self.abnormal_status.burning = 1;
-	self.abnormal_status.attacker = attacker;
-	self.abnormal_status.inflictor = inflictor;
-	lastingtime = self.settings.burn_lastingtime;
-	if(!isdefined(lastingtime))
-	{
-		lastingtime = 999999;
-	}
-	starttime = gettime();
-	interval = max(secondsperonedamage, 0.5);
-	damage = 0;
-	while(timesince(starttime) < lastingtime)
-	{
-		previoustime = gettime();
-		wait(interval);
-		damage = damage + (timesince(previoustime) * damagepersecond);
-		damageint = int(damage);
-		self dodamage(damageint, self.origin, attacker, self, "none", "MOD_BURNED");
-		damage = damage - damageint;
-	}
-	self.abnormal_status.burning = 0;
-	self vehicle::toggle_burn_fx(0);
+function burning_thread(attacker, inflictor) {
+  self endon(# "death");
+  self notify(# "end_immolating_thread");
+  self endon(# "end_immolating_thread");
+  damagepersecond = self.settings.burn_damagepersecond;
+  if(!isdefined(damagepersecond) || damagepersecond <= 0) {
+    return;
+  }
+  secondsperonedamage = 1 / float(damagepersecond);
+  if(!isdefined(self.abnormal_status)) {
+    self.abnormal_status = spawnstruct();
+  }
+  if(self.abnormal_status.burning !== 1) {
+    self vehicle::toggle_burn_fx(1);
+  }
+  self.abnormal_status.burning = 1;
+  self.abnormal_status.attacker = attacker;
+  self.abnormal_status.inflictor = inflictor;
+  lastingtime = self.settings.burn_lastingtime;
+  if(!isdefined(lastingtime)) {
+    lastingtime = 999999;
+  }
+  starttime = gettime();
+  interval = max(secondsperonedamage, 0.5);
+  damage = 0;
+  while (timesince(starttime) < lastingtime) {
+    previoustime = gettime();
+    wait(interval);
+    damage = damage + (timesince(previoustime) * damagepersecond);
+    damageint = int(damage);
+    self dodamage(damageint, self.origin, attacker, self, "none", "MOD_BURNED");
+    damage = damage - damageint;
+  }
+  self.abnormal_status.burning = 0;
+  self vehicle::toggle_burn_fx(0);
 }
 
 /*
@@ -737,11 +638,10 @@ function burning_thread(attacker, inflictor)
 	Parameters: 2
 	Flags: Linked
 */
-function iff_notifymeinnsec(time, note)
-{
-	self endon(#"death");
-	wait(time);
-	self notify(note);
+function iff_notifymeinnsec(time, note) {
+  self endon(# "death");
+  wait(time);
+  self notify(note);
 }
 
 /*
@@ -753,35 +653,30 @@ function iff_notifymeinnsec(time, note)
 	Parameters: 2
 	Flags: None
 */
-function iff_override(owner, time = 60)
-{
-	self endon(#"death");
-	self._iffoverride_oldteam = self.team;
-	self iff_override_team_switch_behavior(owner.team);
-	if(isdefined(self.iff_override_cb))
-	{
-		self [[self.iff_override_cb]](1);
-	}
-	if(isdefined(self.settings) && (!(isdefined(self.settings.iffshouldrevertteam) && self.settings.iffshouldrevertteam)))
-	{
-		return;
-	}
-	timeout = (isdefined(self.settings) ? self.settings.ifftimetillrevert : time);
-	/#
-		assert(timeout > 10);
-	#/
-	self thread iff_notifymeinnsec(timeout - 10, "iff_override_revert_warn");
-	msg = self util::waittill_any_timeout(timeout, "iff_override_reverted", "death");
-	if(msg == "timeout")
-	{
-		self notify(#"iff_override_reverted");
-	}
-	self playsound("gdt_iff_deactivate");
-	self iff_override_team_switch_behavior(self._iffoverride_oldteam);
-	if(isdefined(self.iff_override_cb))
-	{
-		self [[self.iff_override_cb]](0);
-	}
+function iff_override(owner, time = 60) {
+  self endon(# "death");
+  self._iffoverride_oldteam = self.team;
+  self iff_override_team_switch_behavior(owner.team);
+  if(isdefined(self.iff_override_cb)) {
+    self[[self.iff_override_cb]](1);
+  }
+  if(isdefined(self.settings) && (!(isdefined(self.settings.iffshouldrevertteam) && self.settings.iffshouldrevertteam))) {
+    return;
+  }
+  timeout = (isdefined(self.settings) ? self.settings.ifftimetillrevert : time);
+  /#
+  assert(timeout > 10);
+  # /
+    self thread iff_notifymeinnsec(timeout - 10, "iff_override_revert_warn");
+  msg = self util::waittill_any_timeout(timeout, "iff_override_reverted", "death");
+  if(msg == "timeout") {
+    self notify(# "iff_override_reverted");
+  }
+  self playsound("gdt_iff_deactivate");
+  self iff_override_team_switch_behavior(self._iffoverride_oldteam);
+  if(isdefined(self.iff_override_cb)) {
+    self[[self.iff_override_cb]](0);
+  }
 }
 
 /*
@@ -793,20 +688,19 @@ function iff_override(owner, time = 60)
 	Parameters: 1
 	Flags: Linked
 */
-function iff_override_team_switch_behavior(team)
-{
-	self endon(#"death");
-	old_ignoreme = self.ignoreme;
-	self.ignoreme = 1;
-	self start_scripted();
-	self vehicle::lights_off();
-	wait(0.1);
-	wait(1);
-	self setteam(team);
-	self blink_lights_for_time(1);
-	self stop_scripted();
-	wait(1);
-	self.ignoreme = old_ignoreme;
+function iff_override_team_switch_behavior(team) {
+  self endon(# "death");
+  old_ignoreme = self.ignoreme;
+  self.ignoreme = 1;
+  self start_scripted();
+  self vehicle::lights_off();
+  wait(0.1);
+  wait(1);
+  self setteam(team);
+  self blink_lights_for_time(1);
+  self stop_scripted();
+  wait(1);
+  self.ignoreme = old_ignoreme;
 }
 
 /*
@@ -818,20 +712,18 @@ function iff_override_team_switch_behavior(team)
 	Parameters: 1
 	Flags: Linked
 */
-function blink_lights_for_time(time)
-{
-	self endon(#"death");
-	starttime = gettime();
-	self vehicle::lights_off();
-	wait(0.1);
-	while(gettime() < (starttime + (time * 1000)))
-	{
-		self vehicle::lights_off();
-		wait(0.2);
-		self vehicle::lights_on();
-		wait(0.2);
-	}
-	self vehicle::lights_on();
+function blink_lights_for_time(time) {
+  self endon(# "death");
+  starttime = gettime();
+  self vehicle::lights_off();
+  wait(0.1);
+  while (gettime() < (starttime + (time * 1000))) {
+    self vehicle::lights_off();
+    wait(0.2);
+    self vehicle::lights_on();
+    wait(0.2);
+  }
+  self vehicle::lights_on();
 }
 
 /*
@@ -843,9 +735,8 @@ function blink_lights_for_time(time)
 	Parameters: 0
 	Flags: None
 */
-function turnoff()
-{
-	self notify(#"shut_off");
+function turnoff() {
+  self notify(# "shut_off");
 }
 
 /*
@@ -857,9 +748,8 @@ function turnoff()
 	Parameters: 0
 	Flags: None
 */
-function turnon()
-{
-	self notify(#"start_up");
+function turnon() {
+  self notify(# "start_up");
 }
 
 /*
@@ -871,16 +761,15 @@ function turnon()
 	Parameters: 0
 	Flags: Linked
 */
-function turnoffalllightsandlaser()
-{
-	self laseroff();
-	self vehicle::lights_off();
-	self vehicle::toggle_lights_group(1, 0);
-	self vehicle::toggle_lights_group(2, 0);
-	self vehicle::toggle_lights_group(3, 0);
-	self vehicle::toggle_lights_group(4, 0);
-	self vehicle::toggle_burn_fx(0);
-	self vehicle::toggle_emp_fx(0);
+function turnoffalllightsandlaser() {
+  self laseroff();
+  self vehicle::lights_off();
+  self vehicle::toggle_lights_group(1, 0);
+  self vehicle::toggle_lights_group(2, 0);
+  self vehicle::toggle_lights_group(3, 0);
+  self vehicle::toggle_lights_group(4, 0);
+  self vehicle::toggle_burn_fx(0);
+  self vehicle::toggle_emp_fx(0);
 }
 
 /*
@@ -892,11 +781,10 @@ function turnoffalllightsandlaser()
 	Parameters: 0
 	Flags: Linked
 */
-function turnoffallambientanims()
-{
-	self vehicle::toggle_ambient_anim_group(1, 0);
-	self vehicle::toggle_ambient_anim_group(2, 0);
-	self vehicle::toggle_ambient_anim_group(3, 0);
+function turnoffallambientanims() {
+  self vehicle::toggle_ambient_anim_group(1, 0);
+  self vehicle::toggle_ambient_anim_group(2, 0);
+  self vehicle::toggle_ambient_anim_group(3, 0);
 }
 
 /*
@@ -908,14 +796,13 @@ function turnoffallambientanims()
 	Parameters: 0
 	Flags: Linked
 */
-function clearalllookingandtargeting()
-{
-	self cleartargetentity();
-	self cleargunnertarget(0);
-	self cleargunnertarget(1);
-	self cleargunnertarget(2);
-	self cleargunnertarget(3);
-	self clearlookatent();
+function clearalllookingandtargeting() {
+  self cleartargetentity();
+  self cleargunnertarget(0);
+  self cleargunnertarget(1);
+  self cleargunnertarget(2);
+  self cleargunnertarget(3);
+  self clearlookatent();
 }
 
 /*
@@ -927,22 +814,19 @@ function clearalllookingandtargeting()
 	Parameters: 1
 	Flags: Linked
 */
-function clearallmovement(zerooutspeed = 0)
-{
-	if(!isairborne(self))
-	{
-		self cancelaimove();
-	}
-	self clearvehgoalpos();
-	self pathvariableoffsetclear();
-	self pathfixedoffsetclear();
-	if(zerooutspeed === 1)
-	{
-		self notify(#"landed");
-		self setvehvelocity((0, 0, 0));
-		self setphysacceleration((0, 0, 0));
-		self setangularvelocity((0, 0, 0));
-	}
+function clearallmovement(zerooutspeed = 0) {
+  if(!isairborne(self)) {
+    self cancelaimove();
+  }
+  self clearvehgoalpos();
+  self pathvariableoffsetclear();
+  self pathfixedoffsetclear();
+  if(zerooutspeed === 1) {
+    self notify(# "landed");
+    self setvehvelocity((0, 0, 0));
+    self setphysacceleration((0, 0, 0));
+    self setangularvelocity((0, 0, 0));
+  }
 }
 
 /*
@@ -954,38 +838,31 @@ function clearallmovement(zerooutspeed = 0)
 	Parameters: 15
 	Flags: Linked
 */
-function shared_callback_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal)
-{
-	if(should_emp(self, weapon, smeansofdeath, einflictor, eattacker))
-	{
-		minempdowntime = 0.8 * self.settings.empdowntime;
-		maxempdowntime = 1.2 * self.settings.empdowntime;
-		self notify(#"emped", randomfloatrange(minempdowntime, maxempdowntime), eattacker, einflictor);
-	}
-	if(should_burn(self, weapon, smeansofdeath, einflictor, eattacker))
-	{
-		self thread burning_thread(eattacker, einflictor);
-	}
-	if(!isdefined(self.damagelevel))
-	{
-		self.damagelevel = 0;
-		self.newdamagelevel = self.damagelevel;
-	}
-	newdamagelevel = vehicle::should_update_damage_fx_level(self.health, idamage, self.healthdefault);
-	if(newdamagelevel > self.damagelevel)
-	{
-		self.newdamagelevel = newdamagelevel;
-	}
-	if(self.newdamagelevel > self.damagelevel)
-	{
-		self.damagelevel = self.newdamagelevel;
-		if(self.pain_when_damagelevel_change === 1)
-		{
-			self notify(#"pain");
-		}
-		vehicle::set_damage_fx_level(self.damagelevel);
-	}
-	return idamage;
+function shared_callback_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
+  if(should_emp(self, weapon, smeansofdeath, einflictor, eattacker)) {
+    minempdowntime = 0.8 * self.settings.empdowntime;
+    maxempdowntime = 1.2 * self.settings.empdowntime;
+    self notify(# "emped", randomfloatrange(minempdowntime, maxempdowntime), eattacker, einflictor);
+  }
+  if(should_burn(self, weapon, smeansofdeath, einflictor, eattacker)) {
+    self thread burning_thread(eattacker, einflictor);
+  }
+  if(!isdefined(self.damagelevel)) {
+    self.damagelevel = 0;
+    self.newdamagelevel = self.damagelevel;
+  }
+  newdamagelevel = vehicle::should_update_damage_fx_level(self.health, idamage, self.healthdefault);
+  if(newdamagelevel > self.damagelevel) {
+    self.newdamagelevel = newdamagelevel;
+  }
+  if(self.newdamagelevel > self.damagelevel) {
+    self.damagelevel = self.newdamagelevel;
+    if(self.pain_when_damagelevel_change === 1) {
+      self notify(# "pain");
+    }
+    vehicle::set_damage_fx_level(self.damagelevel);
+  }
+  return idamage;
 }
 
 /*
@@ -997,34 +874,27 @@ function shared_callback_damage(einflictor, eattacker, idamage, idflags, smeanso
 	Parameters: 5
 	Flags: Linked
 */
-function should_emp(vehicle, weapon, meansofdeath, einflictor, eattacker)
-{
-	if(!isdefined(vehicle) || meansofdeath === "MOD_IMPACT" || vehicle.disableelectrodamage === 1)
-	{
-		return 0;
-	}
-	if(!(isdefined(weapon) && weapon.isemp || meansofdeath === "MOD_ELECTROCUTED"))
-	{
-		return 0;
-	}
-	causer = (isdefined(eattacker) ? eattacker : einflictor);
-	if(!isdefined(causer))
-	{
-		return 1;
-	}
-	if(isai(causer) && isvehicle(causer))
-	{
-		return 0;
-	}
-	if(level.teambased)
-	{
-		return vehicle.team != causer.team;
-	}
-	if(isdefined(vehicle.owner))
-	{
-		return vehicle.owner != causer;
-	}
-	return vehicle != causer;
+function should_emp(vehicle, weapon, meansofdeath, einflictor, eattacker) {
+  if(!isdefined(vehicle) || meansofdeath === "MOD_IMPACT" || vehicle.disableelectrodamage === 1) {
+    return 0;
+  }
+  if(!(isdefined(weapon) && weapon.isemp || meansofdeath === "MOD_ELECTROCUTED")) {
+    return 0;
+  }
+  causer = (isdefined(eattacker) ? eattacker : einflictor);
+  if(!isdefined(causer)) {
+    return 1;
+  }
+  if(isai(causer) && isvehicle(causer)) {
+    return 0;
+  }
+  if(level.teambased) {
+    return vehicle.team != causer.team;
+  }
+  if(isdefined(vehicle.owner)) {
+    return vehicle.owner != causer;
+  }
+  return vehicle != causer;
 }
 
 /*
@@ -1036,42 +906,33 @@ function should_emp(vehicle, weapon, meansofdeath, einflictor, eattacker)
 	Parameters: 5
 	Flags: Linked
 */
-function should_burn(vehicle, weapon, meansofdeath, einflictor, eattacker)
-{
-	if(level.disablevehicleburndamage === 1 || vehicle.disableburndamage === 1)
-	{
-		return 0;
-	}
-	if(!isdefined(vehicle))
-	{
-		return 0;
-	}
-	if(meansofdeath !== "MOD_BURNED")
-	{
-		return 0;
-	}
-	if(vehicle === einflictor)
-	{
-		return 0;
-	}
-	causer = (isdefined(eattacker) ? eattacker : einflictor);
-	if(!isdefined(causer))
-	{
-		return 1;
-	}
-	if(isai(causer) && isvehicle(causer))
-	{
-		return 0;
-	}
-	if(level.teambased)
-	{
-		return vehicle.team != causer.team;
-	}
-	if(isdefined(vehicle.owner))
-	{
-		return vehicle.owner != causer;
-	}
-	return vehicle != causer;
+function should_burn(vehicle, weapon, meansofdeath, einflictor, eattacker) {
+  if(level.disablevehicleburndamage === 1 || vehicle.disableburndamage === 1) {
+    return 0;
+  }
+  if(!isdefined(vehicle)) {
+    return 0;
+  }
+  if(meansofdeath !== "MOD_BURNED") {
+    return 0;
+  }
+  if(vehicle === einflictor) {
+    return 0;
+  }
+  causer = (isdefined(eattacker) ? eattacker : einflictor);
+  if(!isdefined(causer)) {
+    return 1;
+  }
+  if(isai(causer) && isvehicle(causer)) {
+    return 0;
+  }
+  if(level.teambased) {
+    return vehicle.team != causer.team;
+  }
+  if(isdefined(vehicle.owner)) {
+    return vehicle.owner != causer;
+  }
+  return vehicle != causer;
 }
 
 /*
@@ -1083,18 +944,14 @@ function should_burn(vehicle, weapon, meansofdeath, einflictor, eattacker)
 	Parameters: 1
 	Flags: Linked
 */
-function startinitialstate(defaultstate = "combat")
-{
-	params = spawnstruct();
-	params.isinitialstate = 1;
-	if(isdefined(self.script_startstate))
-	{
-		self set_state(self.script_startstate, params);
-	}
-	else
-	{
-		self set_state(defaultstate, params);
-	}
+function startinitialstate(defaultstate = "combat") {
+  params = spawnstruct();
+  params.isinitialstate = 1;
+  if(isdefined(self.script_startstate)) {
+    self set_state(self.script_startstate, params);
+  } else {
+    self set_state(defaultstate, params);
+  }
 }
 
 /*
@@ -1106,12 +963,11 @@ function startinitialstate(defaultstate = "combat")
 	Parameters: 2
 	Flags: Linked
 */
-function start_scripted(disable_death_state, no_clear_movement)
-{
-	params = spawnstruct();
-	params.no_clear_movement = no_clear_movement;
-	self set_state("scripted", params);
-	self._no_death_state = disable_death_state;
+function start_scripted(disable_death_state, no_clear_movement) {
+  params = spawnstruct();
+  params.no_clear_movement = no_clear_movement;
+  self set_state("scripted", params);
+  self._no_death_state = disable_death_state;
 }
 
 /*
@@ -1123,19 +979,14 @@ function start_scripted(disable_death_state, no_clear_movement)
 	Parameters: 1
 	Flags: Linked
 */
-function stop_scripted(statename)
-{
-	if(isalive(self) && is_instate("scripted"))
-	{
-		if(isdefined(statename))
-		{
-			self set_state(statename);
-		}
-		else
-		{
-			self set_state("combat");
-		}
-	}
+function stop_scripted(statename) {
+  if(isalive(self) && is_instate("scripted")) {
+    if(isdefined(statename)) {
+      self set_state(statename);
+    } else {
+      self set_state("combat");
+    }
+  }
 }
 
 /*
@@ -1147,9 +998,8 @@ function stop_scripted(statename)
 	Parameters: 1
 	Flags: Linked
 */
-function set_role(rolename)
-{
-	self.current_role = rolename;
+function set_role(rolename) {
+  self.current_role = rolename;
 }
 
 /*
@@ -1161,9 +1011,8 @@ function set_role(rolename)
 	Parameters: 2
 	Flags: Linked
 */
-function set_state(name, params)
-{
-	self.state_machines[self.current_role] thread statemachine::set_state(name, params);
+function set_state(name, params) {
+  self.state_machines[self.current_role] thread statemachine::set_state(name, params);
 }
 
 /*
@@ -1175,9 +1024,8 @@ function set_state(name, params)
 	Parameters: 2
 	Flags: Linked
 */
-function evaluate_connections(eval_func, params)
-{
-	self.state_machines[self.current_role] statemachine::evaluate_connections(eval_func, params);
+function evaluate_connections(eval_func, params) {
+  self.state_machines[self.current_role] statemachine::evaluate_connections(eval_func, params);
 }
 
 /*
@@ -1189,18 +1037,15 @@ function evaluate_connections(eval_func, params)
 	Parameters: 1
 	Flags: Linked
 */
-function get_state_callbacks(statename)
-{
-	rolename = "default";
-	if(isdefined(self.current_role))
-	{
-		rolename = self.current_role;
-	}
-	if(isdefined(self.state_machines[rolename]))
-	{
-		return self.state_machines[rolename].states[statename];
-	}
-	return undefined;
+function get_state_callbacks(statename) {
+  rolename = "default";
+  if(isdefined(self.current_role)) {
+    rolename = self.current_role;
+  }
+  if(isdefined(self.state_machines[rolename])) {
+    return self.state_machines[rolename].states[statename];
+  }
+  return undefined;
 }
 
 /*
@@ -1212,13 +1057,11 @@ function get_state_callbacks(statename)
 	Parameters: 2
 	Flags: None
 */
-function get_state_callbacks_for_role(rolename = "default", statename)
-{
-	if(isdefined(self.state_machines[rolename]))
-	{
-		return self.state_machines[rolename].states[statename];
-	}
-	return undefined;
+function get_state_callbacks_for_role(rolename = "default", statename) {
+  if(isdefined(self.state_machines[rolename])) {
+    return self.state_machines[rolename].states[statename];
+  }
+  return undefined;
 }
 
 /*
@@ -1230,13 +1073,11 @@ function get_state_callbacks_for_role(rolename = "default", statename)
 	Parameters: 0
 	Flags: Linked
 */
-function get_current_state()
-{
-	if(isdefined(self.current_role) && isdefined(self.state_machines[self.current_role].current_state))
-	{
-		return self.state_machines[self.current_role].current_state.name;
-	}
-	return undefined;
+function get_current_state() {
+  if(isdefined(self.current_role) && isdefined(self.state_machines[self.current_role].current_state)) {
+    return self.state_machines[self.current_role].current_state.name;
+  }
+  return undefined;
 }
 
 /*
@@ -1248,13 +1089,11 @@ function get_current_state()
 	Parameters: 0
 	Flags: Linked
 */
-function get_previous_state()
-{
-	if(isdefined(self.current_role) && isdefined(self.state_machines[self.current_role].previous_state))
-	{
-		return self.state_machines[self.current_role].previous_state.name;
-	}
-	return undefined;
+function get_previous_state() {
+  if(isdefined(self.current_role) && isdefined(self.state_machines[self.current_role].previous_state)) {
+    return self.state_machines[self.current_role].previous_state.name;
+  }
+  return undefined;
 }
 
 /*
@@ -1266,13 +1105,11 @@ function get_previous_state()
 	Parameters: 0
 	Flags: Linked
 */
-function get_next_state()
-{
-	if(isdefined(self.current_role) && isdefined(self.state_machines[self.current_role].next_state))
-	{
-		return self.state_machines[self.current_role].next_state.name;
-	}
-	return undefined;
+function get_next_state() {
+  if(isdefined(self.current_role) && isdefined(self.state_machines[self.current_role].next_state)) {
+    return self.state_machines[self.current_role].next_state.name;
+  }
+  return undefined;
 }
 
 /*
@@ -1284,13 +1121,11 @@ function get_next_state()
 	Parameters: 1
 	Flags: Linked
 */
-function is_instate(statename)
-{
-	if(isdefined(self.current_role) && isdefined(self.state_machines[self.current_role].current_state))
-	{
-		return self.state_machines[self.current_role].current_state.name === statename;
-	}
-	return 0;
+function is_instate(statename) {
+  if(isdefined(self.current_role) && isdefined(self.state_machines[self.current_role].current_state)) {
+    return self.state_machines[self.current_role].current_state.name === statename;
+  }
+  return 0;
 }
 
 /*
@@ -1302,18 +1137,15 @@ function is_instate(statename)
 	Parameters: 4
 	Flags: Linked
 */
-function add_state(name, enter_func, update_func, exit_func)
-{
-	if(isdefined(self.current_role))
-	{
-		statemachine = self.state_machines[self.current_role];
-		if(isdefined(statemachine))
-		{
-			state = statemachine statemachine::add_state(name, enter_func, update_func, exit_func);
-			return state;
-		}
-	}
-	return undefined;
+function add_state(name, enter_func, update_func, exit_func) {
+  if(isdefined(self.current_role)) {
+    statemachine = self.state_machines[self.current_role];
+    if(isdefined(statemachine)) {
+      state = statemachine statemachine::add_state(name, enter_func, update_func, exit_func);
+      return state;
+    }
+  }
+  return undefined;
 }
 
 /*
@@ -1325,9 +1157,8 @@ function add_state(name, enter_func, update_func, exit_func)
 	Parameters: 4
 	Flags: Linked
 */
-function add_interrupt_connection(from_state_name, to_state_name, on_notify, checkfunc)
-{
-	self.state_machines[self.current_role] statemachine::add_interrupt_connection(from_state_name, to_state_name, on_notify, checkfunc);
+function add_interrupt_connection(from_state_name, to_state_name, on_notify, checkfunc) {
+  self.state_machines[self.current_role] statemachine::add_interrupt_connection(from_state_name, to_state_name, on_notify, checkfunc);
 }
 
 /*
@@ -1339,9 +1170,8 @@ function add_interrupt_connection(from_state_name, to_state_name, on_notify, che
 	Parameters: 4
 	Flags: Linked
 */
-function add_utility_connection(from_state_name, to_state_name, checkfunc, defaultscore)
-{
-	self.state_machines[self.current_role] statemachine::add_utility_connection(from_state_name, to_state_name, checkfunc, defaultscore);
+function add_utility_connection(from_state_name, to_state_name, checkfunc, defaultscore) {
+  self.state_machines[self.current_role] statemachine::add_utility_connection(from_state_name, to_state_name, checkfunc, defaultscore);
 }
 
 /*
@@ -1353,50 +1183,48 @@ function add_utility_connection(from_state_name, to_state_name, checkfunc, defau
 	Parameters: 1
 	Flags: Linked
 */
-function init_state_machine_for_role(rolename = "default")
-{
-	statemachine = statemachine::create(rolename, self);
-	statemachine.isrole = 1;
-	if(!isdefined(self.current_role))
-	{
-		set_role(rolename);
-	}
-	statemachine statemachine::add_state("suspend", undefined, undefined, undefined);
-	statemachine statemachine::add_state("death", &defaultstate_death_enter, &defaultstate_death_update, undefined);
-	statemachine statemachine::add_state("scripted", &defaultstate_scripted_enter, undefined, &defaultstate_scripted_exit);
-	statemachine statemachine::add_state("combat", &defaultstate_combat_enter, undefined, &defaultstate_combat_exit);
-	statemachine statemachine::add_state("emped", &defaultstate_emped_enter, &defaultstate_emped_update, &defaultstate_emped_exit, &defaultstate_emped_reenter);
-	statemachine statemachine::add_state("surge", &defaultstate_surge_enter, &defaultstate_surge_update, &defaultstate_surge_exit);
-	statemachine statemachine::add_state("off", &defaultstate_off_enter, undefined, &defaultstate_off_exit);
-	statemachine statemachine::add_state("driving", &defaultstate_driving_enter, undefined, &defaultstate_driving_exit);
-	statemachine statemachine::add_state("pain", &defaultstate_pain_enter, undefined, &defaultstate_pain_exit);
-	statemachine statemachine::add_interrupt_connection("off", "combat", "start_up");
-	statemachine statemachine::add_interrupt_connection("driving", "combat", "exit_vehicle");
-	statemachine statemachine::add_utility_connection("emped", "combat");
-	statemachine statemachine::add_utility_connection("pain", "combat");
-	statemachine statemachine::add_interrupt_connection("combat", "emped", "emped");
-	statemachine statemachine::add_interrupt_connection("pain", "emped", "emped");
-	statemachine statemachine::add_interrupt_connection("emped", "emped", "emped");
-	statemachine statemachine::add_interrupt_connection("combat", "surge", "surge");
-	statemachine statemachine::add_interrupt_connection("off", "surge", "surge");
-	statemachine statemachine::add_interrupt_connection("pain", "surge", "surge");
-	statemachine statemachine::add_interrupt_connection("emped", "surge", "surge");
-	statemachine statemachine::add_interrupt_connection("combat", "off", "shut_off");
-	statemachine statemachine::add_interrupt_connection("emped", "off", "shut_off");
-	statemachine statemachine::add_interrupt_connection("pain", "off", "shut_off");
-	statemachine statemachine::add_interrupt_connection("combat", "driving", "enter_vehicle");
-	statemachine statemachine::add_interrupt_connection("emped", "driving", "enter_vehicle");
-	statemachine statemachine::add_interrupt_connection("off", "driving", "enter_vehicle");
-	statemachine statemachine::add_interrupt_connection("pain", "driving", "enter_vehicle");
-	statemachine statemachine::add_interrupt_connection("combat", "pain", "pain");
-	statemachine statemachine::add_interrupt_connection("emped", "pain", "pain");
-	statemachine statemachine::add_interrupt_connection("off", "pain", "pain");
-	statemachine statemachine::add_interrupt_connection("driving", "pain", "pain");
-	self.overridevehiclekilled = &callback_vehiclekilled;
-	self.overridevehicledeathpostgame = &callback_vehiclekilled;
-	statemachine thread statemachine::set_state("suspend");
-	self thread on_death_cleanup();
-	return statemachine;
+function init_state_machine_for_role(rolename = "default") {
+  statemachine = statemachine::create(rolename, self);
+  statemachine.isrole = 1;
+  if(!isdefined(self.current_role)) {
+    set_role(rolename);
+  }
+  statemachine statemachine::add_state("suspend", undefined, undefined, undefined);
+  statemachine statemachine::add_state("death", & defaultstate_death_enter, & defaultstate_death_update, undefined);
+  statemachine statemachine::add_state("scripted", & defaultstate_scripted_enter, undefined, & defaultstate_scripted_exit);
+  statemachine statemachine::add_state("combat", & defaultstate_combat_enter, undefined, & defaultstate_combat_exit);
+  statemachine statemachine::add_state("emped", & defaultstate_emped_enter, & defaultstate_emped_update, & defaultstate_emped_exit, & defaultstate_emped_reenter);
+  statemachine statemachine::add_state("surge", & defaultstate_surge_enter, & defaultstate_surge_update, & defaultstate_surge_exit);
+  statemachine statemachine::add_state("off", & defaultstate_off_enter, undefined, & defaultstate_off_exit);
+  statemachine statemachine::add_state("driving", & defaultstate_driving_enter, undefined, & defaultstate_driving_exit);
+  statemachine statemachine::add_state("pain", & defaultstate_pain_enter, undefined, & defaultstate_pain_exit);
+  statemachine statemachine::add_interrupt_connection("off", "combat", "start_up");
+  statemachine statemachine::add_interrupt_connection("driving", "combat", "exit_vehicle");
+  statemachine statemachine::add_utility_connection("emped", "combat");
+  statemachine statemachine::add_utility_connection("pain", "combat");
+  statemachine statemachine::add_interrupt_connection("combat", "emped", "emped");
+  statemachine statemachine::add_interrupt_connection("pain", "emped", "emped");
+  statemachine statemachine::add_interrupt_connection("emped", "emped", "emped");
+  statemachine statemachine::add_interrupt_connection("combat", "surge", "surge");
+  statemachine statemachine::add_interrupt_connection("off", "surge", "surge");
+  statemachine statemachine::add_interrupt_connection("pain", "surge", "surge");
+  statemachine statemachine::add_interrupt_connection("emped", "surge", "surge");
+  statemachine statemachine::add_interrupt_connection("combat", "off", "shut_off");
+  statemachine statemachine::add_interrupt_connection("emped", "off", "shut_off");
+  statemachine statemachine::add_interrupt_connection("pain", "off", "shut_off");
+  statemachine statemachine::add_interrupt_connection("combat", "driving", "enter_vehicle");
+  statemachine statemachine::add_interrupt_connection("emped", "driving", "enter_vehicle");
+  statemachine statemachine::add_interrupt_connection("off", "driving", "enter_vehicle");
+  statemachine statemachine::add_interrupt_connection("pain", "driving", "enter_vehicle");
+  statemachine statemachine::add_interrupt_connection("combat", "pain", "pain");
+  statemachine statemachine::add_interrupt_connection("emped", "pain", "pain");
+  statemachine statemachine::add_interrupt_connection("off", "pain", "pain");
+  statemachine statemachine::add_interrupt_connection("driving", "pain", "pain");
+  self.overridevehiclekilled = & callback_vehiclekilled;
+  self.overridevehicledeathpostgame = & callback_vehiclekilled;
+  statemachine thread statemachine::set_state("suspend");
+  self thread on_death_cleanup();
+  return statemachine;
 }
 
 /*
@@ -1408,13 +1236,11 @@ function init_state_machine_for_role(rolename = "default")
 	Parameters: 1
 	Flags: Linked
 */
-function register_custom_add_state_callback(func)
-{
-	if(!isdefined(level.level_specific_add_state_callbacks))
-	{
-		level.level_specific_add_state_callbacks = [];
-	}
-	level.level_specific_add_state_callbacks[level.level_specific_add_state_callbacks.size] = func;
+function register_custom_add_state_callback(func) {
+  if(!isdefined(level.level_specific_add_state_callbacks)) {
+    level.level_specific_add_state_callbacks = [];
+  }
+  level.level_specific_add_state_callbacks[level.level_specific_add_state_callbacks.size] = func;
 }
 
 /*
@@ -1426,15 +1252,12 @@ function register_custom_add_state_callback(func)
 	Parameters: 0
 	Flags: Linked
 */
-function call_custom_add_state_callbacks()
-{
-	if(isdefined(level.level_specific_add_state_callbacks))
-	{
-		for(i = 0; i < level.level_specific_add_state_callbacks.size; i++)
-		{
-			self [[level.level_specific_add_state_callbacks[i]]]();
-		}
-	}
+function call_custom_add_state_callbacks() {
+  if(isdefined(level.level_specific_add_state_callbacks)) {
+    for (i = 0; i < level.level_specific_add_state_callbacks.size; i++) {
+      self[[level.level_specific_add_state_callbacks[i]]]();
+    }
+  }
 }
 
 /*
@@ -1446,22 +1269,20 @@ function call_custom_add_state_callbacks()
 	Parameters: 8
 	Flags: Linked
 */
-function callback_vehiclekilled(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime)
-{
-	if(isdefined(self._no_death_state) && self._no_death_state)
-	{
-		return;
-	}
-	death_info = spawnstruct();
-	death_info.inflictor = einflictor;
-	death_info.attacker = eattacker;
-	death_info.damage = idamage;
-	death_info.meansofdeath = smeansofdeath;
-	death_info.weapon = weapon;
-	death_info.dir = vdir;
-	death_info.hitloc = shitloc;
-	death_info.timeoffset = psoffsettime;
-	self set_state("death", death_info);
+function callback_vehiclekilled(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
+  if(isdefined(self._no_death_state) && self._no_death_state) {
+    return;
+  }
+  death_info = spawnstruct();
+  death_info.inflictor = einflictor;
+  death_info.attacker = eattacker;
+  death_info.damage = idamage;
+  death_info.meansofdeath = smeansofdeath;
+  death_info.weapon = weapon;
+  death_info.dir = vdir;
+  death_info.hitloc = shitloc;
+  death_info.timeoffset = psoffsettime;
+  self set_state("death", death_info);
 }
 
 /*
@@ -1473,14 +1294,12 @@ function callback_vehiclekilled(einflictor, eattacker, idamage, smeansofdeath, w
 	Parameters: 0
 	Flags: Linked
 */
-function on_death_cleanup()
-{
-	state_machines = self.state_machines;
-	self waittill(#"free_vehicle");
-	foreach(statemachine in state_machines)
-	{
-		statemachine statemachine::clear();
-	}
+function on_death_cleanup() {
+  state_machines = self.state_machines;
+  self waittill(# "free_vehicle");
+  foreach(statemachine in state_machines) {
+    statemachine statemachine::clear();
+  }
 }
 
 /*
@@ -1492,19 +1311,18 @@ function on_death_cleanup()
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_death_enter(params)
-{
-	self vehicle::toggle_tread_fx(0);
-	self vehicle::toggle_exhaust_fx(0);
-	self vehicle::toggle_sounds(0);
-	self disableaimassist();
-	turnoffalllightsandlaser();
-	turnoffallambientanims();
-	clearalllookingandtargeting();
-	clearallmovement();
-	self cancelaimove();
-	self.takedamage = 0;
-	self vehicle_death::death_cleanup_level_variables();
+function defaultstate_death_enter(params) {
+  self vehicle::toggle_tread_fx(0);
+  self vehicle::toggle_exhaust_fx(0);
+  self vehicle::toggle_sounds(0);
+  self disableaimassist();
+  turnoffalllightsandlaser();
+  turnoffallambientanims();
+  clearalllookingandtargeting();
+  clearallmovement();
+  self cancelaimove();
+  self.takedamage = 0;
+  self vehicle_death::death_cleanup_level_variables();
 }
 
 /*
@@ -1516,16 +1334,13 @@ function defaultstate_death_enter(params)
 	Parameters: 0
 	Flags: Linked
 */
-function burning_death_fx()
-{
-	if(isdefined(self.settings.burn_death_fx_1) && isdefined(self.settings.burn_death_tag_1))
-	{
-		playfxontag(self.settings.burn_death_fx_1, self, self.settings.burn_death_tag_1);
-	}
-	if(isdefined(self.settings.burn_death_sound_1))
-	{
-		self playsound(self.settings.burn_death_sound_1);
-	}
+function burning_death_fx() {
+  if(isdefined(self.settings.burn_death_fx_1) && isdefined(self.settings.burn_death_tag_1)) {
+    playfxontag(self.settings.burn_death_fx_1, self, self.settings.burn_death_tag_1);
+  }
+  if(isdefined(self.settings.burn_death_sound_1)) {
+    self playsound(self.settings.burn_death_sound_1);
+  }
 }
 
 /*
@@ -1537,16 +1352,13 @@ function burning_death_fx()
 	Parameters: 0
 	Flags: Linked
 */
-function emp_death_fx()
-{
-	if(isdefined(self.settings.emp_death_fx_1) && isdefined(self.settings.emp_death_tag_1))
-	{
-		playfxontag(self.settings.emp_death_fx_1, self, self.settings.emp_death_tag_1);
-	}
-	if(isdefined(self.settings.emp_death_sound_1))
-	{
-		self playsound(self.settings.emp_death_sound_1);
-	}
+function emp_death_fx() {
+  if(isdefined(self.settings.emp_death_fx_1) && isdefined(self.settings.emp_death_tag_1)) {
+    playfxontag(self.settings.emp_death_fx_1, self, self.settings.emp_death_tag_1);
+  }
+  if(isdefined(self.settings.emp_death_sound_1)) {
+    self playsound(self.settings.emp_death_sound_1);
+  }
 }
 
 /*
@@ -1558,22 +1370,19 @@ function emp_death_fx()
 	Parameters: 2
 	Flags: Linked
 */
-function death_radius_damage_special(radiusscale, meansofdamage)
-{
-	self endon(#"death");
-	if(!isdefined(self) || self.abandoned === 1 || self.damage_on_death === 0 || self.radiusdamageradius <= 0)
-	{
-		return;
-	}
-	position = self.origin + vectorscale((0, 0, 1), 15);
-	radius = self.radiusdamageradius * radiusscale;
-	damagemax = self.radiusdamagemax;
-	damagemin = self.radiusdamagemin;
-	wait(0.05);
-	if(isdefined(self))
-	{
-		self radiusdamage(position, radius, damagemax, damagemin, undefined, meansofdamage);
-	}
+function death_radius_damage_special(radiusscale, meansofdamage) {
+  self endon(# "death");
+  if(!isdefined(self) || self.abandoned === 1 || self.damage_on_death === 0 || self.radiusdamageradius <= 0) {
+    return;
+  }
+  position = self.origin + vectorscale((0, 0, 1), 15);
+  radius = self.radiusdamageradius * radiusscale;
+  damagemax = self.radiusdamagemax;
+  damagemin = self.radiusdamagemin;
+  wait(0.05);
+  if(isdefined(self)) {
+    self radiusdamage(position, radius, damagemax, damagemin, undefined, meansofdamage);
+  }
 }
 
 /*
@@ -1585,15 +1394,14 @@ function death_radius_damage_special(radiusscale, meansofdamage)
 	Parameters: 1
 	Flags: Linked
 */
-function burning_death(params)
-{
-	self endon(#"death");
-	self burning_death_fx();
-	self.skipfriendlyfirecheck = 1;
-	self thread death_radius_damage_special(2, "MOD_BURNED");
-	self vehicle_death::set_death_model(self.deathmodel, self.modelswapdelay);
-	self vehicle::do_death_dynents(3);
-	self vehicle_death::deletewhensafe(10);
+function burning_death(params) {
+  self endon(# "death");
+  self burning_death_fx();
+  self.skipfriendlyfirecheck = 1;
+  self thread death_radius_damage_special(2, "MOD_BURNED");
+  self vehicle_death::set_death_model(self.deathmodel, self.modelswapdelay);
+  self vehicle::do_death_dynents(3);
+  self vehicle_death::deletewhensafe(10);
 }
 
 /*
@@ -1605,15 +1413,14 @@ function burning_death(params)
 	Parameters: 1
 	Flags: Linked
 */
-function emped_death(params)
-{
-	self endon(#"death");
-	self emp_death_fx();
-	self.skipfriendlyfirecheck = 1;
-	self thread death_radius_damage_special(2, "MOD_ELECTROCUTED");
-	self vehicle_death::set_death_model(self.deathmodel, self.modelswapdelay);
-	self vehicle::do_death_dynents(2);
-	self vehicle_death::deletewhensafe();
+function emped_death(params) {
+  self endon(# "death");
+  self emp_death_fx();
+  self.skipfriendlyfirecheck = 1;
+  self thread death_radius_damage_special(2, "MOD_ELECTROCUTED");
+  self vehicle_death::set_death_model(self.deathmodel, self.modelswapdelay);
+  self vehicle::do_death_dynents(2);
+  self vehicle_death::deletewhensafe();
 }
 
 /*
@@ -1625,14 +1432,13 @@ function emped_death(params)
 	Parameters: 1
 	Flags: Linked
 */
-function gibbed_death(params)
-{
-	self endon(#"death");
-	self vehicle_death::death_fx();
-	self thread vehicle_death::death_radius_damage();
-	self vehicle_death::set_death_model(self.deathmodel, self.modelswapdelay);
-	self vehicle::do_death_dynents();
-	self vehicle_death::deletewhensafe();
+function gibbed_death(params) {
+  self endon(# "death");
+  self vehicle_death::death_fx();
+  self thread vehicle_death::death_radius_damage();
+  self vehicle_death::set_death_model(self.deathmodel, self.modelswapdelay);
+  self vehicle::do_death_dynents();
+  self vehicle_death::deletewhensafe();
 }
 
 /*
@@ -1644,24 +1450,23 @@ function gibbed_death(params)
 	Parameters: 1
 	Flags: Linked
 */
-function default_death(params)
-{
-	self endon(#"death");
-	self vehicle_death::death_fx();
-	self thread vehicle_death::death_radius_damage();
-	self vehicle_death::set_death_model(self.deathmodel, self.modelswapdelay);
-	if(isdefined(level.disable_thermal))
-	{
-		[[level.disable_thermal]]();
-	}
-	waittime = (isdefined(self.waittime_before_delete) ? self.waittime_before_delete : 0);
-	owner = self getvehicleowner();
-	if(isdefined(owner) && self isremotecontrol())
-	{
-		waittime = max(waittime, 4);
-	}
-	util::waitfortime(waittime);
-	vehicle_death::freewhensafe();
+function default_death(params) {
+  self endon(# "death");
+  self vehicle_death::death_fx();
+  self thread vehicle_death::death_radius_damage();
+  self vehicle_death::set_death_model(self.deathmodel, self.modelswapdelay);
+  if(isdefined(level.disable_thermal)) {
+    [
+      [level.disable_thermal]
+    ]();
+  }
+  waittime = (isdefined(self.waittime_before_delete) ? self.waittime_before_delete : 0);
+  owner = self getvehicleowner();
+  if(isdefined(owner) && self isremotecontrol()) {
+    waittime = max(waittime, 4);
+  }
+  util::waitfortime(waittime);
+  vehicle_death::freewhensafe();
 }
 
 /*
@@ -1673,29 +1478,22 @@ function default_death(params)
 	Parameters: 1
 	Flags: Linked
 */
-function get_death_type(params)
-{
-	if(self.delete_on_death === 1)
-	{
-		death_type = "default";
-	}
-	else
-	{
-		death_type = self.death_type;
-	}
-	if(!isdefined(death_type))
-	{
-		death_type = params.death_type;
-	}
-	if(!isdefined(death_type) && isdefined(self.abnormal_status) && self.abnormal_status.burning === 1)
-	{
-		death_type = "burning";
-	}
-	if(!isdefined(death_type) && (isdefined(self.abnormal_status) && self.abnormal_status.emped === 1) || (isdefined(params.weapon) && params.weapon.isemp))
-	{
-		death_type = "emped";
-	}
-	return death_type;
+function get_death_type(params) {
+  if(self.delete_on_death === 1) {
+    death_type = "default";
+  } else {
+    death_type = self.death_type;
+  }
+  if(!isdefined(death_type)) {
+    death_type = params.death_type;
+  }
+  if(!isdefined(death_type) && isdefined(self.abnormal_status) && self.abnormal_status.burning === 1) {
+    death_type = "burning";
+  }
+  if(!isdefined(death_type) && (isdefined(self.abnormal_status) && self.abnormal_status.emped === 1) || (isdefined(params.weapon) && params.weapon.isemp)) {
+    death_type = "emped";
+  }
+  return death_type;
 }
 
 /*
@@ -1707,45 +1505,37 @@ function get_death_type(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_death_update(params)
-{
-	self endon(#"death");
-	if(isdefined(level.vehicle_destructer_cb))
-	{
-		[[level.vehicle_destructer_cb]](self);
-	}
-	if(self.delete_on_death === 1)
-	{
-		default_death(params);
-		vehicle_death::deletewhensafe(0.25);
-	}
-	else
-	{
-		death_type = (isdefined(get_death_type(params)) ? get_death_type(params) : "default");
-		switch(death_type)
-		{
-			case "burning":
-			{
-				burning_death(params);
-				break;
-			}
-			case "emped":
-			{
-				emped_death(params);
-				break;
-			}
-			case "gibbed":
-			{
-				gibbed_death(params);
-				break;
-			}
-			default:
-			{
-				default_death(params);
-				break;
-			}
-		}
-	}
+function defaultstate_death_update(params) {
+  self endon(# "death");
+  if(isdefined(level.vehicle_destructer_cb)) {
+    [
+      [level.vehicle_destructer_cb]
+    ](self);
+  }
+  if(self.delete_on_death === 1) {
+    default_death(params);
+    vehicle_death::deletewhensafe(0.25);
+  } else {
+    death_type = (isdefined(get_death_type(params)) ? get_death_type(params) : "default");
+    switch (death_type) {
+      case "burning": {
+        burning_death(params);
+        break;
+      }
+      case "emped": {
+        emped_death(params);
+        break;
+      }
+      case "gibbed": {
+        gibbed_death(params);
+        break;
+      }
+      default: {
+        default_death(params);
+        break;
+      }
+    }
+  }
 }
 
 /*
@@ -1757,18 +1547,15 @@ function defaultstate_death_update(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_scripted_enter(params)
-{
-	if(params.no_clear_movement !== 1)
-	{
-		clearalllookingandtargeting();
-		clearallmovement();
-		if(hasasm(self))
-		{
-			self asmrequestsubstate("locomotion@movement");
-		}
-		self resumespeed();
-	}
+function defaultstate_scripted_enter(params) {
+  if(params.no_clear_movement !== 1) {
+    clearalllookingandtargeting();
+    clearallmovement();
+    if(hasasm(self)) {
+      self asmrequestsubstate("locomotion@movement");
+    }
+    self resumespeed();
+  }
 }
 
 /*
@@ -1780,13 +1567,11 @@ function defaultstate_scripted_enter(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_scripted_exit(params)
-{
-	if(params.no_clear_movement !== 1)
-	{
-		clearalllookingandtargeting();
-		clearallmovement();
-	}
+function defaultstate_scripted_exit(params) {
+  if(params.no_clear_movement !== 1) {
+    clearalllookingandtargeting();
+    clearallmovement();
+  }
 }
 
 /*
@@ -1798,9 +1583,7 @@ function defaultstate_scripted_exit(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_combat_enter(params)
-{
-}
+function defaultstate_combat_enter(params) {}
 
 /*
 	Name: defaultstate_combat_exit
@@ -1811,9 +1594,7 @@ function defaultstate_combat_enter(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_combat_exit(params)
-{
-}
+function defaultstate_combat_exit(params) {}
 
 /*
 	Name: defaultstate_emped_enter
@@ -1824,28 +1605,25 @@ function defaultstate_combat_exit(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_emped_enter(params)
-{
-	self vehicle::toggle_tread_fx(0);
-	self vehicle::toggle_exhaust_fx(0);
-	self vehicle::toggle_sounds(0);
-	params.laseron = islaseron(self);
-	self laseroff();
-	self vehicle::lights_off();
-	clearalllookingandtargeting();
-	clearallmovement();
-	if(isairborne(self))
-	{
-		self setrotorspeed(0);
-	}
-	if(!isdefined(self.abnormal_status))
-	{
-		self.abnormal_status = spawnstruct();
-	}
-	self.abnormal_status.emped = 1;
-	self.abnormal_status.attacker = params.notify_param[1];
-	self.abnormal_status.inflictor = params.notify_param[2];
-	self vehicle::toggle_emp_fx(1);
+function defaultstate_emped_enter(params) {
+  self vehicle::toggle_tread_fx(0);
+  self vehicle::toggle_exhaust_fx(0);
+  self vehicle::toggle_sounds(0);
+  params.laseron = islaseron(self);
+  self laseroff();
+  self vehicle::lights_off();
+  clearalllookingandtargeting();
+  clearallmovement();
+  if(isairborne(self)) {
+    self setrotorspeed(0);
+  }
+  if(!isdefined(self.abnormal_status)) {
+    self.abnormal_status = spawnstruct();
+  }
+  self.abnormal_status.emped = 1;
+  self.abnormal_status.attacker = params.notify_param[1];
+  self.abnormal_status.inflictor = params.notify_param[2];
+  self vehicle::toggle_emp_fx(1);
 }
 
 /*
@@ -1857,12 +1635,10 @@ function defaultstate_emped_enter(params)
 	Parameters: 0
 	Flags: Linked
 */
-function emp_startup_fx()
-{
-	if(isdefined(self.settings.emp_startup_fx_1) && isdefined(self.settings.emp_startup_tag_1))
-	{
-		playfxontag(self.settings.emp_startup_fx_1, self, self.settings.emp_startup_tag_1);
-	}
+function emp_startup_fx() {
+  if(isdefined(self.settings.emp_startup_fx_1) && isdefined(self.settings.emp_startup_tag_1)) {
+    playfxontag(self.settings.emp_startup_fx_1, self, self.settings.emp_startup_tag_1);
+  }
 }
 
 /*
@@ -1874,25 +1650,23 @@ function emp_startup_fx()
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_emped_update(params)
-{
-	self endon(#"death");
-	self endon(#"change_state");
-	time = params.notify_param[0];
-	/#
-		assert(isdefined(time));
-	#/
-	cooldown("emped_timer", time);
-	while(!iscooldownready("emped_timer"))
-	{
-		timeleft = max(getcooldownleft("emped_timer"), 0.5);
-		wait(timeleft);
-	}
-	self.abnormal_status.emped = 0;
-	self vehicle::toggle_emp_fx(0);
-	self emp_startup_fx();
-	wait(1);
-	self evaluate_connections();
+function defaultstate_emped_update(params) {
+  self endon(# "death");
+  self endon(# "change_state");
+  time = params.notify_param[0];
+  /#
+  assert(isdefined(time));
+  # /
+    cooldown("emped_timer", time);
+  while (!iscooldownready("emped_timer")) {
+    timeleft = max(getcooldownleft("emped_timer"), 0.5);
+    wait(timeleft);
+  }
+  self.abnormal_status.emped = 0;
+  self vehicle::toggle_emp_fx(0);
+  self emp_startup_fx();
+  wait(1);
+  self evaluate_connections();
 }
 
 /*
@@ -1904,22 +1678,19 @@ function defaultstate_emped_update(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_emped_exit(params)
-{
-	self vehicle::toggle_tread_fx(1);
-	self vehicle::toggle_exhaust_fx(1);
-	self vehicle::toggle_sounds(1);
-	if(params.laseron === 1)
-	{
-		self laseron();
-	}
-	self vehicle::lights_on();
-	if(isairborne(self))
-	{
-		self setphysacceleration((0, 0, 0));
-		self thread nudge_collision();
-		self setrotorspeed(1);
-	}
+function defaultstate_emped_exit(params) {
+  self vehicle::toggle_tread_fx(1);
+  self vehicle::toggle_exhaust_fx(1);
+  self vehicle::toggle_sounds(1);
+  if(params.laseron === 1) {
+    self laseron();
+  }
+  self vehicle::lights_on();
+  if(isairborne(self)) {
+    self setphysacceleration((0, 0, 0));
+    self thread nudge_collision();
+    self setrotorspeed(1);
+  }
 }
 
 /*
@@ -1931,9 +1702,8 @@ function defaultstate_emped_exit(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_emped_reenter(params)
-{
-	return true;
+function defaultstate_emped_reenter(params) {
+  return true;
 }
 
 /*
@@ -1945,9 +1715,7 @@ function defaultstate_emped_reenter(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_surge_enter(params)
-{
-}
+function defaultstate_surge_enter(params) {}
 
 /*
 	Name: defaultstate_surge_exit
@@ -1958,9 +1726,7 @@ function defaultstate_surge_enter(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_surge_exit(params)
-{
-}
+function defaultstate_surge_exit(params) {}
 
 /*
 	Name: defaultstate_surge_update
@@ -1971,66 +1737,54 @@ function defaultstate_surge_exit(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_surge_update(params)
-{
-	self endon(#"change_state");
-	self endon(#"death");
-	if(!isdefined(self.abnormal_status))
-	{
-		self.abnormal_status = spawnstruct();
-	}
-	self.abnormal_status.emped = 1;
-	pathfailcount = 0;
-	self thread flash_team_switching_lights();
-	targets = getaiteamarray("axis", "team3");
-	arrayremovevalue(targets, self);
-	closest = arraygetclosest(self.origin, targets);
-	self setspeed(self.settings.surgespeedmultiplier * self.settings.defaultmovespeed);
-	starttime = gettime();
-	self thread swap_team_after_time(params.notify_param[0]);
-	while((gettime() - starttime) < (self.settings.surgetimetolive * 1000))
-	{
-		if(!isdefined(closest))
-		{
-			self detonate(params.notify_param[0]);
-		}
-		else
-		{
-			foundpath = 0;
-			targetpos = closest.origin + vectorscale((0, 0, 1), 32);
-			if(isdefined(targetpos))
-			{
-				queryresult = positionquery_source_navigation(targetpos, 0, 64, 35, 5, self);
-				foreach(point in queryresult.data)
-				{
-					self.current_pathto_pos = point.origin;
-					foundpath = self setvehgoalpos(self.current_pathto_pos, 0, 1);
-					if(foundpath)
-					{
-						self thread path_update_interrupt(closest, params.notify_param[0]);
-						pathfailcount = 0;
-						self waittill_pathing_done(self.settings.surgetimetolive);
-						try_detonate(closest, params.notify_param[0]);
-						break;
-					}
-					waittillframeend();
-				}
-			}
-			if(!foundpath)
-			{
-				pathfailcount++;
-				if(pathfailcount > 10)
-				{
-					self detonate(params.notify_param[0]);
-				}
-			}
-			wait(0.2);
-		}
-	}
-	if(isalive(self))
-	{
-		self detonate(params.notify_param[0]);
-	}
+function defaultstate_surge_update(params) {
+  self endon(# "change_state");
+  self endon(# "death");
+  if(!isdefined(self.abnormal_status)) {
+    self.abnormal_status = spawnstruct();
+  }
+  self.abnormal_status.emped = 1;
+  pathfailcount = 0;
+  self thread flash_team_switching_lights();
+  targets = getaiteamarray("axis", "team3");
+  arrayremovevalue(targets, self);
+  closest = arraygetclosest(self.origin, targets);
+  self setspeed(self.settings.surgespeedmultiplier * self.settings.defaultmovespeed);
+  starttime = gettime();
+  self thread swap_team_after_time(params.notify_param[0]);
+  while ((gettime() - starttime) < (self.settings.surgetimetolive * 1000)) {
+    if(!isdefined(closest)) {
+      self detonate(params.notify_param[0]);
+    } else {
+      foundpath = 0;
+      targetpos = closest.origin + vectorscale((0, 0, 1), 32);
+      if(isdefined(targetpos)) {
+        queryresult = positionquery_source_navigation(targetpos, 0, 64, 35, 5, self);
+        foreach(point in queryresult.data) {
+          self.current_pathto_pos = point.origin;
+          foundpath = self setvehgoalpos(self.current_pathto_pos, 0, 1);
+          if(foundpath) {
+            self thread path_update_interrupt(closest, params.notify_param[0]);
+            pathfailcount = 0;
+            self waittill_pathing_done(self.settings.surgetimetolive);
+            try_detonate(closest, params.notify_param[0]);
+            break;
+          }
+          waittillframeend();
+        }
+      }
+      if(!foundpath) {
+        pathfailcount++;
+        if(pathfailcount > 10) {
+          self detonate(params.notify_param[0]);
+        }
+      }
+      wait(0.2);
+    }
+  }
+  if(isalive(self)) {
+    self detonate(params.notify_param[0]);
+  }
 }
 
 /*
@@ -2042,25 +1796,21 @@ function defaultstate_surge_update(params)
 	Parameters: 2
 	Flags: Linked
 */
-function path_update_interrupt(closest, attacker)
-{
-	self endon(#"death");
-	self endon(#"change_state");
-	self endon(#"near_goal");
-	self endon(#"reached_end_node");
-	wait(0.1);
-	while(!self try_detonate(closest, attacker))
-	{
-		if(isdefined(self.current_pathto_pos))
-		{
-			if(distance2dsquared(self.current_pathto_pos, self.goalpos) > (self.goalradius * self.goalradius))
-			{
-				wait(0.5);
-				self notify(#"near_goal");
-			}
-		}
-		wait(0.1);
-	}
+function path_update_interrupt(closest, attacker) {
+  self endon(# "death");
+  self endon(# "change_state");
+  self endon(# "near_goal");
+  self endon(# "reached_end_node");
+  wait(0.1);
+  while (!self try_detonate(closest, attacker)) {
+    if(isdefined(self.current_pathto_pos)) {
+      if(distance2dsquared(self.current_pathto_pos, self.goalpos) > (self.goalradius * self.goalradius)) {
+        wait(0.5);
+        self notify(# "near_goal");
+      }
+    }
+    wait(0.1);
+  }
 }
 
 /*
@@ -2072,12 +1822,11 @@ function path_update_interrupt(closest, attacker)
 	Parameters: 1
 	Flags: Linked
 */
-function swap_team_after_time(attacker)
-{
-	self endon(#"death");
-	self endon(#"change_state");
-	wait(0.25 * self.settings.surgetimetolive);
-	self setteam(attacker.team);
+function swap_team_after_time(attacker) {
+  self endon(# "death");
+  self endon(# "change_state");
+  wait(0.25 * self.settings.surgetimetolive);
+  self setteam(attacker.team);
 }
 
 /*
@@ -2089,17 +1838,14 @@ function swap_team_after_time(attacker)
 	Parameters: 2
 	Flags: Linked
 */
-function try_detonate(closest, attacker)
-{
-	if(isdefined(closest) && isalive(closest))
-	{
-		if(distancesquared(closest.origin, self.origin) < (80 * 80))
-		{
-			self detonate(attacker);
-			return true;
-		}
-	}
-	return false;
+function try_detonate(closest, attacker) {
+  if(isdefined(closest) && isalive(closest)) {
+    if(distancesquared(closest.origin, self.origin) < (80 * 80)) {
+      self detonate(attacker);
+      return true;
+    }
+  }
+  return false;
 }
 
 /*
@@ -2111,14 +1857,12 @@ function try_detonate(closest, attacker)
 	Parameters: 1
 	Flags: Linked
 */
-function detonate(attacker)
-{
-	self setteam(attacker.team);
-	self radiusdamage(self.origin + vectorscale((0, 0, 1), 5), self.settings.surgedamageradius, 1500, 1000, attacker, "MOD_EXPLOSIVE");
-	if(isalive(self))
-	{
-		self kill();
-	}
+function detonate(attacker) {
+  self setteam(attacker.team);
+  self radiusdamage(self.origin + vectorscale((0, 0, 1), 5), self.settings.surgedamageradius, 1500, 1000, attacker, "MOD_EXPLOSIVE");
+  if(isalive(self)) {
+    self kill();
+  }
 }
 
 /*
@@ -2130,21 +1874,19 @@ function detonate(attacker)
 	Parameters: 0
 	Flags: Linked
 */
-function flash_team_switching_lights()
-{
-	self endon(#"death");
-	self endon(#"change_state");
-	while(true)
-	{
-		self vehicle::lights_off();
-		wait(0.1);
-		self vehicle::lights_on("allies");
-		wait(0.1);
-		self vehicle::lights_off();
-		wait(0.1);
-		self vehicle::lights_on("axis");
-		wait(0.1);
-	}
+function flash_team_switching_lights() {
+  self endon(# "death");
+  self endon(# "change_state");
+  while (true) {
+    self vehicle::lights_off();
+    wait(0.1);
+    self vehicle::lights_on("allies");
+    wait(0.1);
+    self vehicle::lights_off();
+    wait(0.1);
+    self vehicle::lights_on("axis");
+    wait(0.1);
+  }
 }
 
 /*
@@ -2156,30 +1898,28 @@ function flash_team_switching_lights()
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_off_enter(params)
-{
-	self vehicle::toggle_tread_fx(0);
-	self vehicle::toggle_exhaust_fx(0);
-	self vehicle::toggle_sounds(0);
-	self disableaimassist();
-	params.laseron = islaseron(self);
-	turnoffalllightsandlaser();
-	turnoffallambientanims();
-	clearalllookingandtargeting();
-	clearallmovement();
-	if(isdefined(level.disable_thermal))
-	{
-		[[level.disable_thermal]]();
-	}
-	if(isairborne(self))
-	{
-		if(params.isinitialstate !== 1 && params.no_falling !== 1)
-		{
-			self setphysacceleration(vectorscale((0, 0, -1), 300));
-			self thread level_out_for_landing();
-		}
-		self setrotorspeed(0);
-	}
+function defaultstate_off_enter(params) {
+  self vehicle::toggle_tread_fx(0);
+  self vehicle::toggle_exhaust_fx(0);
+  self vehicle::toggle_sounds(0);
+  self disableaimassist();
+  params.laseron = islaseron(self);
+  turnoffalllightsandlaser();
+  turnoffallambientanims();
+  clearalllookingandtargeting();
+  clearallmovement();
+  if(isdefined(level.disable_thermal)) {
+    [
+      [level.disable_thermal]
+    ]();
+  }
+  if(isairborne(self)) {
+    if(params.isinitialstate !== 1 && params.no_falling !== 1) {
+      self setphysacceleration(vectorscale((0, 0, -1), 300));
+      self thread level_out_for_landing();
+    }
+    self setrotorspeed(0);
+  }
 }
 
 /*
@@ -2191,30 +1931,27 @@ function defaultstate_off_enter(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_off_exit(params)
-{
-	self vehicle::toggle_tread_fx(1);
-	self vehicle::toggle_exhaust_fx(1);
-	self vehicle::toggle_sounds(1);
-	self enableaimassist();
-	if(isairborne(self))
-	{
-		self setphysacceleration((0, 0, 0));
-		self thread nudge_collision();
-		self setrotorspeed(1);
-	}
-	if(params.laseron === 1)
-	{
-		self laseron();
-	}
-	if(isdefined(level.enable_thermal))
-	{
-		if(self get_next_state() !== "death")
-		{
-			[[level.enable_thermal]]();
-		}
-	}
-	self vehicle::lights_on();
+function defaultstate_off_exit(params) {
+  self vehicle::toggle_tread_fx(1);
+  self vehicle::toggle_exhaust_fx(1);
+  self vehicle::toggle_sounds(1);
+  self enableaimassist();
+  if(isairborne(self)) {
+    self setphysacceleration((0, 0, 0));
+    self thread nudge_collision();
+    self setrotorspeed(1);
+  }
+  if(params.laseron === 1) {
+    self laseron();
+  }
+  if(isdefined(level.enable_thermal)) {
+    if(self get_next_state() !== "death") {
+      [
+        [level.enable_thermal]
+      ]();
+    }
+  }
+  self vehicle::lights_on();
 }
 
 /*
@@ -2226,32 +1963,28 @@ function defaultstate_off_exit(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_driving_enter(params)
-{
-	params.driver = self getseatoccupant(0);
-	/#
-		assert(isdefined(params.driver));
-	#/
-	self disableaimassist();
-	if(level.playersdrivingvehiclesbecomeinvulnerable)
-	{
-		params.driver enableinvulnerability();
-		params.driver.ignoreme = 1;
-	}
-	self.turretrotscale = 1;
-	self.team = params.driver.team;
-	if(hasasm(self))
-	{
-		self asmrequestsubstate("locomotion@movement");
-	}
-	self setheliheightcap(1);
-	clearalllookingandtargeting();
-	clearallmovement();
-	self cancelaimove();
-	if(isdefined(params.driver) && !isdefined(self.customdamagemonitor))
-	{
-		self thread vehicle::monitor_damage_as_occupant(params.driver);
-	}
+function defaultstate_driving_enter(params) {
+  params.driver = self getseatoccupant(0);
+  /#
+  assert(isdefined(params.driver));
+  # /
+    self disableaimassist();
+  if(level.playersdrivingvehiclesbecomeinvulnerable) {
+    params.driver enableinvulnerability();
+    params.driver.ignoreme = 1;
+  }
+  self.turretrotscale = 1;
+  self.team = params.driver.team;
+  if(hasasm(self)) {
+    self asmrequestsubstate("locomotion@movement");
+  }
+  self setheliheightcap(1);
+  clearalllookingandtargeting();
+  clearallmovement();
+  self cancelaimove();
+  if(isdefined(params.driver) && !isdefined(self.customdamagemonitor)) {
+    self thread vehicle::monitor_damage_as_occupant(params.driver);
+  }
 }
 
 /*
@@ -2263,22 +1996,19 @@ function defaultstate_driving_enter(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_driving_exit(params)
-{
-	self enableaimassist();
-	if(isdefined(params.driver))
-	{
-		params.driver disableinvulnerability();
-		params.driver.ignoreme = 0;
-	}
-	self.turretrotscale = 1;
-	self setheliheightcap(0);
-	clearalllookingandtargeting();
-	clearallmovement();
-	if(isdefined(params.driver))
-	{
-		params.driver vehicle::stop_monitor_damage_as_occupant();
-	}
+function defaultstate_driving_exit(params) {
+  self enableaimassist();
+  if(isdefined(params.driver)) {
+    params.driver disableinvulnerability();
+    params.driver.ignoreme = 0;
+  }
+  self.turretrotscale = 1;
+  self setheliheightcap(0);
+  clearalllookingandtargeting();
+  clearallmovement();
+  if(isdefined(params.driver)) {
+    params.driver vehicle::stop_monitor_damage_as_occupant();
+  }
 }
 
 /*
@@ -2290,10 +2020,9 @@ function defaultstate_driving_exit(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_pain_enter(params)
-{
-	clearalllookingandtargeting();
-	clearallmovement();
+function defaultstate_pain_enter(params) {
+  clearalllookingandtargeting();
+  clearallmovement();
 }
 
 /*
@@ -2305,10 +2034,9 @@ function defaultstate_pain_enter(params)
 	Parameters: 1
 	Flags: Linked
 */
-function defaultstate_pain_exit(params)
-{
-	clearalllookingandtargeting();
-	clearallmovement();
+function defaultstate_pain_exit(params) {
+  clearalllookingandtargeting();
+  clearallmovement();
 }
 
 /*
@@ -2320,10 +2048,9 @@ function defaultstate_pain_exit(params)
 	Parameters: 3
 	Flags: None
 */
-function canseeenemyfromposition(position, enemy, sight_check_height)
-{
-	sightcheckorigin = position + (0, 0, sight_check_height);
-	return sighttracepassed(sightcheckorigin, enemy.origin + vectorscale((0, 0, 1), 30), 0, self);
+function canseeenemyfromposition(position, enemy, sight_check_height) {
+  sightcheckorigin = position + (0, 0, sight_check_height);
+  return sighttracepassed(sightcheckorigin, enemy.origin + vectorscale((0, 0, 1), 30), 0, self);
 }
 
 /*
@@ -2335,134 +2062,109 @@ function canseeenemyfromposition(position, enemy, sight_check_height)
 	Parameters: 1
 	Flags: None
 */
-function findnewposition(sight_check_height)
-{
-	if(self.goalforced)
-	{
-		goalpos = getclosestpointonnavmesh(self.goalpos, self.radius * 2, self.radius);
-		return goalpos;
-	}
-	point_spacing = 90;
-	pixbeginevent("vehicle_ai_shared::FindNewPosition");
-	queryresult = positionquery_source_navigation(self.origin, 0, 2000, 300, point_spacing, self, point_spacing * 2);
-	pixendevent();
-	positionquery_filter_random(queryresult, 0, 50);
-	positionquery_filter_distancetogoal(queryresult, self);
-	positionquery_filter_outofgoalanchor(queryresult, 50);
-	origin = self.goalpos;
-	best_point = undefined;
-	best_score = -999999;
-	if(isdefined(self.enemy))
-	{
-		positionquery_filter_sight(queryresult, self.enemy.origin, self geteye() - self.origin, self, 0, self.enemy);
-		self positionquery_filter_engagementdist(queryresult, self.enemy, self.settings.engagementdistmin, self.settings.engagementdistmax);
-		if(turret::has_turret(1))
-		{
-			side_turret_enemy = turret::get_target(1);
-			if(isdefined(side_turret_enemy) && side_turret_enemy != self.enemy)
-			{
-				positionquery_filter_sight(queryresult, side_turret_enemy.origin, (0, 0, sight_check_height), self, 20, self, "sight2");
-			}
-		}
-		if(turret::has_turret(2))
-		{
-			side_turret_enemy = turret::get_target(2);
-			if(isdefined(side_turret_enemy) && side_turret_enemy != self.enemy)
-			{
-				positionquery_filter_sight(queryresult, side_turret_enemy.origin, (0, 0, sight_check_height), self, 20, self, "sight3");
-			}
-		}
-		foreach(point in queryresult.data)
-		{
-			/#
-				if(!isdefined(point._scoredebug))
-				{
-					point._scoredebug = [];
-				}
-				point._scoredebug[""] = point.distawayfromengagementarea * -1;
-			#/
-			point.score = point.score + (point.distawayfromengagementarea * -1);
-			if(distance2dsquared(self.origin, point.origin) < 28900)
-			{
-				/#
-					if(!isdefined(point._scoredebug))
-					{
-						point._scoredebug = [];
-					}
-					point._scoredebug[""] = -170;
-				#/
-				point.score = point.score + -170;
-			}
-			if(isdefined(point.sight) && point.sight)
-			{
-				/#
-					if(!isdefined(point._scoredebug))
-					{
-						point._scoredebug = [];
-					}
-					point._scoredebug[""] = 250;
-				#/
-				point.score = point.score + 250;
-			}
-			if(isdefined(point.sight2) && point.sight2)
-			{
-				/#
-					if(!isdefined(point._scoredebug))
-					{
-						point._scoredebug = [];
-					}
-					point._scoredebug[""] = 150;
-				#/
-				point.score = point.score + 150;
-			}
-			if(isdefined(point.sight3) && point.sight3)
-			{
-				/#
-					if(!isdefined(point._scoredebug))
-					{
-						point._scoredebug = [];
-					}
-					point._scoredebug[""] = 150;
-				#/
-				point.score = point.score + 150;
-			}
-			if(point.score > best_score)
-			{
-				best_score = point.score;
-				best_point = point;
-			}
-		}
-	}
-	else
-	{
-		foreach(point in queryresult.data)
-		{
-			if(distance2dsquared(self.origin, point.origin) < 28900)
-			{
-				/#
-					if(!isdefined(point._scoredebug))
-					{
-						point._scoredebug = [];
-					}
-					point._scoredebug[""] = -100;
-				#/
-				point.score = point.score + -100;
-			}
-			if(point.score > best_score)
-			{
-				best_score = point.score;
-				best_point = point;
-			}
-		}
-	}
-	self positionquery_debugscores(queryresult);
-	if(isdefined(best_point))
-	{
-		/#
-		#/
-		origin = best_point.origin;
-	}
-	return origin + vectorscale((0, 0, 1), 10);
+function findnewposition(sight_check_height) {
+  if(self.goalforced) {
+    goalpos = getclosestpointonnavmesh(self.goalpos, self.radius * 2, self.radius);
+    return goalpos;
+  }
+  point_spacing = 90;
+  pixbeginevent("vehicle_ai_shared::FindNewPosition");
+  queryresult = positionquery_source_navigation(self.origin, 0, 2000, 300, point_spacing, self, point_spacing * 2);
+  pixendevent();
+  positionquery_filter_random(queryresult, 0, 50);
+  positionquery_filter_distancetogoal(queryresult, self);
+  positionquery_filter_outofgoalanchor(queryresult, 50);
+  origin = self.goalpos;
+  best_point = undefined;
+  best_score = -999999;
+  if(isdefined(self.enemy)) {
+    positionquery_filter_sight(queryresult, self.enemy.origin, self geteye() - self.origin, self, 0, self.enemy);
+    self positionquery_filter_engagementdist(queryresult, self.enemy, self.settings.engagementdistmin, self.settings.engagementdistmax);
+    if(turret::has_turret(1)) {
+      side_turret_enemy = turret::get_target(1);
+      if(isdefined(side_turret_enemy) && side_turret_enemy != self.enemy) {
+        positionquery_filter_sight(queryresult, side_turret_enemy.origin, (0, 0, sight_check_height), self, 20, self, "sight2");
+      }
+    }
+    if(turret::has_turret(2)) {
+      side_turret_enemy = turret::get_target(2);
+      if(isdefined(side_turret_enemy) && side_turret_enemy != self.enemy) {
+        positionquery_filter_sight(queryresult, side_turret_enemy.origin, (0, 0, sight_check_height), self, 20, self, "sight3");
+      }
+    }
+    foreach(point in queryresult.data) {
+      /#
+      if(!isdefined(point._scoredebug)) {
+        point._scoredebug = [];
+      }
+      point._scoredebug[""] = point.distawayfromengagementarea * -1;
+      # /
+        point.score = point.score + (point.distawayfromengagementarea * -1);
+      if(distance2dsquared(self.origin, point.origin) < 28900) {
+        /#
+        if(!isdefined(point._scoredebug)) {
+          point._scoredebug = [];
+        }
+        point._scoredebug[""] = -170;
+        # /
+          point.score = point.score + -170;
+      }
+      if(isdefined(point.sight) && point.sight) {
+        /#
+        if(!isdefined(point._scoredebug)) {
+          point._scoredebug = [];
+        }
+        point._scoredebug[""] = 250;
+        # /
+          point.score = point.score + 250;
+      }
+      if(isdefined(point.sight2) && point.sight2) {
+        /#
+        if(!isdefined(point._scoredebug)) {
+          point._scoredebug = [];
+        }
+        point._scoredebug[""] = 150;
+        # /
+          point.score = point.score + 150;
+      }
+      if(isdefined(point.sight3) && point.sight3) {
+        /#
+        if(!isdefined(point._scoredebug)) {
+          point._scoredebug = [];
+        }
+        point._scoredebug[""] = 150;
+        # /
+          point.score = point.score + 150;
+      }
+      if(point.score > best_score) {
+        best_score = point.score;
+        best_point = point;
+      }
+    }
+  } else {
+    foreach(point in queryresult.data) {
+      if(distance2dsquared(self.origin, point.origin) < 28900) {
+        /#
+        if(!isdefined(point._scoredebug)) {
+          point._scoredebug = [];
+        }
+        point._scoredebug[""] = -100;
+        # /
+          point.score = point.score + -100;
+      }
+      if(point.score > best_score) {
+        best_score = point.score;
+        best_point = point;
+      }
+    }
+  }
+  self positionquery_debugscores(queryresult);
+  if(isdefined(best_point)) {
+    /#
+    # /
+      origin = best_point.origin;
+  }
+  return origin + vectorscale((0, 0, 1), 10);
 }
 
 /*
@@ -2474,9 +2176,8 @@ function findnewposition(sight_check_height)
 	Parameters: 1
 	Flags: Linked
 */
-function timesince(starttimeinmilliseconds)
-{
-	return (gettime() - starttimeinmilliseconds) * 0.001;
+function timesince(starttimeinmilliseconds) {
+  return (gettime() - starttimeinmilliseconds) * 0.001;
 }
 
 /*
@@ -2488,12 +2189,10 @@ function timesince(starttimeinmilliseconds)
 	Parameters: 0
 	Flags: Linked
 */
-function cooldowninit()
-{
-	if(!isdefined(self._cooldown))
-	{
-		self._cooldown = [];
-	}
+function cooldowninit() {
+  if(!isdefined(self._cooldown)) {
+    self._cooldown = [];
+  }
 }
 
 /*
@@ -2505,10 +2204,9 @@ function cooldowninit()
 	Parameters: 2
 	Flags: Linked
 */
-function cooldown(name, time_seconds)
-{
-	cooldowninit();
-	self._cooldown[name] = gettime() + (time_seconds * 1000);
+function cooldown(name, time_seconds) {
+  cooldowninit();
+  self._cooldown[name] = gettime() + (time_seconds * 1000);
 }
 
 /*
@@ -2520,14 +2218,12 @@ function cooldown(name, time_seconds)
 	Parameters: 1
 	Flags: Linked
 */
-function getcooldowntimeraw(name)
-{
-	cooldowninit();
-	if(!isdefined(self._cooldown[name]))
-	{
-		self._cooldown[name] = gettime() - 1;
-	}
-	return self._cooldown[name];
+function getcooldowntimeraw(name) {
+  cooldowninit();
+  if(!isdefined(self._cooldown[name])) {
+    self._cooldown[name] = gettime() - 1;
+  }
+  return self._cooldown[name];
 }
 
 /*
@@ -2539,10 +2235,9 @@ function getcooldowntimeraw(name)
 	Parameters: 1
 	Flags: Linked
 */
-function getcooldownleft(name)
-{
-	cooldowninit();
-	return (getcooldowntimeraw(name) - gettime()) * 0.001;
+function getcooldownleft(name) {
+  cooldowninit();
+  return (getcooldowntimeraw(name) - gettime()) * 0.001;
 }
 
 /*
@@ -2554,15 +2249,13 @@ function getcooldownleft(name)
 	Parameters: 2
 	Flags: Linked
 */
-function iscooldownready(name, timeforward_seconds)
-{
-	cooldowninit();
-	if(!isdefined(timeforward_seconds))
-	{
-		timeforward_seconds = 0;
-	}
-	cooldownreadytime = self._cooldown[name];
-	return !isdefined(cooldownreadytime) || (gettime() + (timeforward_seconds * 1000)) > cooldownreadytime;
+function iscooldownready(name, timeforward_seconds) {
+  cooldowninit();
+  if(!isdefined(timeforward_seconds)) {
+    timeforward_seconds = 0;
+  }
+  cooldownreadytime = self._cooldown[name];
+  return !isdefined(cooldownreadytime) || (gettime() + (timeforward_seconds * 1000)) > cooldownreadytime;
 }
 
 /*
@@ -2574,10 +2267,9 @@ function iscooldownready(name, timeforward_seconds)
 	Parameters: 1
 	Flags: None
 */
-function clearcooldown(name)
-{
-	cooldowninit();
-	self._cooldown[name] = gettime() - 1;
+function clearcooldown(name) {
+  cooldowninit();
+  self._cooldown[name] = gettime() - 1;
 }
 
 /*
@@ -2589,10 +2281,9 @@ function clearcooldown(name)
 	Parameters: 2
 	Flags: None
 */
-function addcooldowntime(name, time_seconds)
-{
-	cooldowninit();
-	self._cooldown[name] = getcooldowntimeraw(name) + (time_seconds * 1000);
+function addcooldowntime(name, time_seconds) {
+  cooldowninit();
+  self._cooldown[name] = getcooldowntimeraw(name) + (time_seconds * 1000);
 }
 
 /*
@@ -2604,15 +2295,12 @@ function addcooldowntime(name, time_seconds)
 	Parameters: 0
 	Flags: Linked
 */
-function clearallcooldowns()
-{
-	if(isdefined(self._cooldown))
-	{
-		foreach(str_name, cooldown in self._cooldown)
-		{
-			self._cooldown[str_name] = gettime() - 1;
-		}
-	}
+function clearallcooldowns() {
+  if(isdefined(self._cooldown)) {
+    foreach(str_name, cooldown in self._cooldown) {
+      self._cooldown[str_name] = gettime() - 1;
+    }
+  }
 }
 
 /*
@@ -2624,16 +2312,13 @@ function clearallcooldowns()
 	Parameters: 1
 	Flags: Linked
 */
-function positionquery_debugscores(queryresult)
-{
-	if(!(isdefined(getdvarint("hkai_debugPositionQuery")) && getdvarint("hkai_debugPositionQuery")))
-	{
-		return;
-	}
-	foreach(point in queryresult.data)
-	{
-		point debugscore(self);
-	}
+function positionquery_debugscores(queryresult) {
+  if(!(isdefined(getdvarint("hkai_debugPositionQuery")) && getdvarint("hkai_debugPositionQuery"))) {
+    return;
+  }
+  foreach(point in queryresult.data) {
+    point debugscore(self);
+  }
 }
 
 /*
@@ -2645,32 +2330,27 @@ function positionquery_debugscores(queryresult)
 	Parameters: 1
 	Flags: Linked
 */
-function debugscore(entity)
-{
-	/#
-		if(!isdefined(self._scoredebug))
-		{
-			return;
-		}
-		if(!(isdefined(getdvarint("")) && getdvarint("")))
-		{
-			return;
-		}
-		step = 10;
-		count = 1;
-		color = (1, 0, 0);
-		if(self.score >= 0)
-		{
-			color = (0, 1, 0);
-		}
-		recordstar(self.origin, color);
-		record3dtext(("" + self.score) + "", self.origin - (0, 0, step * count), color);
-		foreach(name, score in self._scoredebug)
-		{
-			count++;
-			record3dtext((name + "") + score, self.origin - (0, 0, step * count), color);
-		}
-	#/
+function debugscore(entity) {
+  /#
+  if(!isdefined(self._scoredebug)) {
+    return;
+  }
+  if(!(isdefined(getdvarint("")) && getdvarint(""))) {
+    return;
+  }
+  step = 10;
+  count = 1;
+  color = (1, 0, 0);
+  if(self.score >= 0) {
+    color = (0, 1, 0);
+  }
+  recordstar(self.origin, color);
+  record3dtext(("" + self.score) + "", self.origin - (0, 0, step * count), color);
+  foreach(name, score in self._scoredebug) {
+    count++;
+    record3dtext((name + "") + score, self.origin - (0, 0, step * count), color);
+  }
+  # /
 }
 
 /*
@@ -2682,17 +2362,14 @@ function debugscore(entity)
 	Parameters: 2
 	Flags: Linked
 */
-function _less_than_val(left, right)
-{
-	if(!isdefined(left))
-	{
-		return 0;
-	}
-	if(!isdefined(right))
-	{
-		return 1;
-	}
-	return left < right;
+function _less_than_val(left, right) {
+  if(!isdefined(left)) {
+    return 0;
+  }
+  if(!isdefined(right)) {
+    return 1;
+  }
+  return left < right;
 }
 
 /*
@@ -2704,13 +2381,11 @@ function _less_than_val(left, right)
 	Parameters: 3
 	Flags: Linked
 */
-function _cmp_val(left, right, descending)
-{
-	if(descending)
-	{
-		return _less_than_val(right, left);
-	}
-	return _less_than_val(left, right);
+function _cmp_val(left, right, descending) {
+  if(descending) {
+    return _less_than_val(right, left);
+  }
+  return _less_than_val(left, right);
 }
 
 /*
@@ -2722,9 +2397,8 @@ function _cmp_val(left, right, descending)
 	Parameters: 3
 	Flags: Linked
 */
-function _sort_by_score(left, right, descending)
-{
-	return _cmp_val(left.score, right.score, descending);
+function _sort_by_score(left, right, descending) {
+  return _cmp_val(left.score, right.score, descending);
 }
 
 /*
@@ -2736,20 +2410,17 @@ function _sort_by_score(left, right, descending)
 	Parameters: 3
 	Flags: Linked
 */
-function positionquery_filter_random(queryresult, min, max)
-{
-	foreach(point in queryresult.data)
-	{
-		score = randomfloatrange(min, max);
-		/#
-			if(!isdefined(point._scoredebug))
-			{
-				point._scoredebug = [];
-			}
-			point._scoredebug[""] = score;
-		#/
-		point.score = point.score + score;
-	}
+function positionquery_filter_random(queryresult, min, max) {
+  foreach(point in queryresult.data) {
+    score = randomfloatrange(min, max);
+    /#
+    if(!isdefined(point._scoredebug)) {
+      point._scoredebug = [];
+    }
+    point._scoredebug[""] = score;
+    # /
+      point.score = point.score + score;
+  }
 }
 
 /*
@@ -2761,10 +2432,9 @@ function positionquery_filter_random(queryresult, min, max)
 	Parameters: 2
 	Flags: Linked
 */
-function positionquery_postprocess_sortscore(queryresult, descending = 1)
-{
-	sorted = array::merge_sort(queryresult.data, &_sort_by_score, descending);
-	queryresult.data = sorted;
+function positionquery_postprocess_sortscore(queryresult, descending = 1) {
+  sorted = array::merge_sort(queryresult.data, & _sort_by_score, descending);
+  queryresult.data = sorted;
 }
 
 /*
@@ -2776,23 +2446,19 @@ function positionquery_postprocess_sortscore(queryresult, descending = 1)
 	Parameters: 2
 	Flags: Linked
 */
-function positionquery_filter_outofgoalanchor(queryresult, tolerance = 1)
-{
-	foreach(point in queryresult.data)
-	{
-		if(point.disttogoal > tolerance)
-		{
-			score = -10000 - (point.disttogoal * 10);
-			/#
-				if(!isdefined(point._scoredebug))
-				{
-					point._scoredebug = [];
-				}
-				point._scoredebug[""] = score;
-			#/
-			point.score = point.score + score;
-		}
-	}
+function positionquery_filter_outofgoalanchor(queryresult, tolerance = 1) {
+  foreach(point in queryresult.data) {
+    if(point.disttogoal > tolerance) {
+      score = -10000 - (point.disttogoal * 10);
+      /#
+      if(!isdefined(point._scoredebug)) {
+        point._scoredebug = [];
+      }
+      point._scoredebug[""] = score;
+      # /
+        point.score = point.score + score;
+    }
+  }
 }
 
 /*
@@ -2804,44 +2470,37 @@ function positionquery_filter_outofgoalanchor(queryresult, tolerance = 1)
 	Parameters: 4
 	Flags: Linked
 */
-function positionquery_filter_engagementdist(queryresult, enemy, engagementdistancemin, engagementdistancemax)
-{
-	if(!isdefined(enemy))
-	{
-		return;
-	}
-	engagementdistance = (engagementdistancemin + engagementdistancemax) * 0.5;
-	half_engagement_width = abs(engagementdistancemax - engagementdistance);
-	enemy_origin = (enemy.origin[0], enemy.origin[1], 0);
-	vec_enemy_to_self = vectornormalize((self.origin[0], self.origin[1], 0) - enemy_origin);
-	foreach(point in queryresult.data)
-	{
-		point.distawayfromengagementarea = 0;
-		vec_enemy_to_point = (point.origin[0], point.origin[1], 0) - enemy_origin;
-		dist_in_front_of_enemy = vectordot(vec_enemy_to_point, vec_enemy_to_self);
-		if(abs(dist_in_front_of_enemy) < engagementdistancemin)
-		{
-			dist_in_front_of_enemy = engagementdistancemin * -1;
-		}
-		dist_away_from_sweet_line = abs(dist_in_front_of_enemy - engagementdistance);
-		if(dist_away_from_sweet_line > half_engagement_width)
-		{
-			point.distawayfromengagementarea = dist_away_from_sweet_line - half_engagement_width;
-		}
-		too_far_dist = engagementdistancemax * 1.1;
-		too_far_dist_sq = too_far_dist * too_far_dist;
-		dist_from_enemy_sq = distance2dsquared(point.origin, enemy_origin);
-		if(dist_from_enemy_sq > too_far_dist_sq)
-		{
-			ratiosq = dist_from_enemy_sq / too_far_dist_sq;
-			dist = ratiosq * too_far_dist;
-			dist_outside = dist - too_far_dist;
-			if(dist_outside > point.distawayfromengagementarea)
-			{
-				point.distawayfromengagementarea = dist_outside;
-			}
-		}
-	}
+function positionquery_filter_engagementdist(queryresult, enemy, engagementdistancemin, engagementdistancemax) {
+  if(!isdefined(enemy)) {
+    return;
+  }
+  engagementdistance = (engagementdistancemin + engagementdistancemax) * 0.5;
+  half_engagement_width = abs(engagementdistancemax - engagementdistance);
+  enemy_origin = (enemy.origin[0], enemy.origin[1], 0);
+  vec_enemy_to_self = vectornormalize((self.origin[0], self.origin[1], 0) - enemy_origin);
+  foreach(point in queryresult.data) {
+    point.distawayfromengagementarea = 0;
+    vec_enemy_to_point = (point.origin[0], point.origin[1], 0) - enemy_origin;
+    dist_in_front_of_enemy = vectordot(vec_enemy_to_point, vec_enemy_to_self);
+    if(abs(dist_in_front_of_enemy) < engagementdistancemin) {
+      dist_in_front_of_enemy = engagementdistancemin * -1;
+    }
+    dist_away_from_sweet_line = abs(dist_in_front_of_enemy - engagementdistance);
+    if(dist_away_from_sweet_line > half_engagement_width) {
+      point.distawayfromengagementarea = dist_away_from_sweet_line - half_engagement_width;
+    }
+    too_far_dist = engagementdistancemax * 1.1;
+    too_far_dist_sq = too_far_dist * too_far_dist;
+    dist_from_enemy_sq = distance2dsquared(point.origin, enemy_origin);
+    if(dist_from_enemy_sq > too_far_dist_sq) {
+      ratiosq = dist_from_enemy_sq / too_far_dist_sq;
+      dist = ratiosq * too_far_dist;
+      dist_outside = dist - too_far_dist;
+      if(dist_outside > point.distawayfromengagementarea) {
+        point.distawayfromengagementarea = dist_outside;
+      }
+    }
+  }
 }
 
 /*
@@ -2853,51 +2512,38 @@ function positionquery_filter_engagementdist(queryresult, enemy, engagementdista
 	Parameters: 4
 	Flags: Linked
 */
-function positionquery_filter_distawayfromtarget(queryresult, targetarray, distance, tooclosepenalty)
-{
-	if(!isdefined(targetarray) || !isarray(targetarray))
-	{
-		return;
-	}
-	foreach(point in queryresult.data)
-	{
-		tooclose = 0;
-		foreach(target in targetarray)
-		{
-			origin = undefined;
-			if(isvec(target))
-			{
-				origin = target;
-			}
-			else
-			{
-				if(issentient(target) && isalive(target))
-				{
-					origin = target.origin;
-				}
-				else if(isentity(target))
-				{
-					origin = target.origin;
-				}
-			}
-			if(isdefined(origin) && distance2dsquared(point.origin, origin) < (distance * distance))
-			{
-				tooclose = 1;
-				break;
-			}
-		}
-		if(tooclose)
-		{
-			/#
-				if(!isdefined(point._scoredebug))
-				{
-					point._scoredebug = [];
-				}
-				point._scoredebug[""] = tooclosepenalty;
-			#/
-			point.score = point.score + tooclosepenalty;
-		}
-	}
+function positionquery_filter_distawayfromtarget(queryresult, targetarray, distance, tooclosepenalty) {
+  if(!isdefined(targetarray) || !isarray(targetarray)) {
+    return;
+  }
+  foreach(point in queryresult.data) {
+    tooclose = 0;
+    foreach(target in targetarray) {
+      origin = undefined;
+      if(isvec(target)) {
+        origin = target;
+      } else {
+        if(issentient(target) && isalive(target)) {
+          origin = target.origin;
+        } else if(isentity(target)) {
+          origin = target.origin;
+        }
+      }
+      if(isdefined(origin) && distance2dsquared(point.origin, origin) < (distance * distance)) {
+        tooclose = 1;
+        break;
+      }
+    }
+    if(tooclose) {
+      /#
+      if(!isdefined(point._scoredebug)) {
+        point._scoredebug = [];
+      }
+      point._scoredebug[""] = tooclosepenalty;
+      # /
+        point.score = point.score + tooclosepenalty;
+    }
+  }
 }
 
 /*
@@ -2909,22 +2555,19 @@ function positionquery_filter_distawayfromtarget(queryresult, targetarray, dista
 	Parameters: 4
 	Flags: None
 */
-function distancepointtoengagementheight(origin, enemy, engagementheightmin, engagementheightmax)
-{
-	if(!isdefined(enemy))
-	{
-		return undefined;
-	}
-	result = 0;
-	engagementheight = 0.5 * (self.settings.engagementheightmin + self.settings.engagementheightmax);
-	half_height = abs(engagementheightmax - engagementheight);
-	targetheight = enemy.origin[2] + engagementheight;
-	distfromengagementheight = abs(origin[2] - targetheight);
-	if(distfromengagementheight > half_height)
-	{
-		result = distfromengagementheight - half_height;
-	}
-	return result;
+function distancepointtoengagementheight(origin, enemy, engagementheightmin, engagementheightmax) {
+  if(!isdefined(enemy)) {
+    return undefined;
+  }
+  result = 0;
+  engagementheight = 0.5 * (self.settings.engagementheightmin + self.settings.engagementheightmax);
+  half_height = abs(engagementheightmax - engagementheight);
+  targetheight = enemy.origin[2] + engagementheight;
+  distfromengagementheight = abs(origin[2] - targetheight);
+  if(distfromengagementheight > half_height) {
+    result = distfromengagementheight - half_height;
+  }
+  return result;
 }
 
 /*
@@ -2936,24 +2579,20 @@ function distancepointtoengagementheight(origin, enemy, engagementheightmin, eng
 	Parameters: 4
 	Flags: Linked
 */
-function positionquery_filter_engagementheight(queryresult, enemy, engagementheightmin, engagementheightmax)
-{
-	if(!isdefined(enemy))
-	{
-		return;
-	}
-	engagementheight = 0.5 * (engagementheightmin + engagementheightmax);
-	half_height = abs(engagementheightmax - engagementheight);
-	foreach(point in queryresult.data)
-	{
-		point.distengagementheight = 0;
-		targetheight = enemy.origin[2] + engagementheight;
-		distfromengagementheight = abs(point.origin[2] - targetheight);
-		if(distfromengagementheight > half_height)
-		{
-			point.distengagementheight = distfromengagementheight - half_height;
-		}
-	}
+function positionquery_filter_engagementheight(queryresult, enemy, engagementheightmin, engagementheightmax) {
+  if(!isdefined(enemy)) {
+    return;
+  }
+  engagementheight = 0.5 * (engagementheightmin + engagementheightmax);
+  half_height = abs(engagementheightmax - engagementheight);
+  foreach(point in queryresult.data) {
+    point.distengagementheight = 0;
+    targetheight = enemy.origin[2] + engagementheight;
+    distfromengagementheight = abs(point.origin[2] - targetheight);
+    if(distfromengagementheight > half_height) {
+      point.distengagementheight = distfromengagementheight - half_height;
+    }
+  }
 }
 
 /*
@@ -2965,17 +2604,14 @@ function positionquery_filter_engagementheight(queryresult, enemy, engagementhei
 	Parameters: 2
 	Flags: None
 */
-function positionquery_postprocess_removeoutofgoalradius(queryresult, tolerance = 1)
-{
-	for(i = 0; i < queryresult.data.size; i++)
-	{
-		point = queryresult.data[i];
-		if(point.disttogoal > tolerance)
-		{
-			arrayremoveindex(queryresult.data, i);
-			i--;
-		}
-	}
+function positionquery_postprocess_removeoutofgoalradius(queryresult, tolerance = 1) {
+  for (i = 0; i < queryresult.data.size; i++) {
+    point = queryresult.data[i];
+    if(point.disttogoal > tolerance) {
+      arrayremoveindex(queryresult.data, i);
+      i--;
+    }
+  }
 }
 
 /*
@@ -2987,9 +2623,8 @@ function positionquery_postprocess_removeoutofgoalradius(queryresult, tolerance 
 	Parameters: 4
 	Flags: Linked
 */
-function updatepersonalthreatbias_attackerlockedontome(var_9f84050f, var_1e08b2fd, var_9c5ca2c, var_cee3c9e9)
-{
-	function_c8b0c8c2(self.locked_on, var_9f84050f, var_1e08b2fd, var_9c5ca2c, var_cee3c9e9);
+function updatepersonalthreatbias_attackerlockedontome(var_9f84050f, var_1e08b2fd, var_9c5ca2c, var_cee3c9e9) {
+  function_c8b0c8c2(self.locked_on, var_9f84050f, var_1e08b2fd, var_9c5ca2c, var_cee3c9e9);
 }
 
 /*
@@ -3001,9 +2636,8 @@ function updatepersonalthreatbias_attackerlockedontome(var_9f84050f, var_1e08b2f
 	Parameters: 4
 	Flags: Linked
 */
-function updatepersonalthreatbias_attackerlockingontome(var_9f84050f, var_1e08b2fd, var_9c5ca2c, var_cee3c9e9)
-{
-	function_c8b0c8c2(self.locking_on, var_9f84050f, var_1e08b2fd, var_9c5ca2c, var_cee3c9e9);
+function updatepersonalthreatbias_attackerlockingontome(var_9f84050f, var_1e08b2fd, var_9c5ca2c, var_cee3c9e9) {
+  function_c8b0c8c2(self.locking_on, var_9f84050f, var_1e08b2fd, var_9c5ca2c, var_cee3c9e9);
 }
 
 /*
@@ -3015,29 +2649,24 @@ function updatepersonalthreatbias_attackerlockingontome(var_9f84050f, var_1e08b2
 	Parameters: 5
 	Flags: Linked
 */
-function function_c8b0c8c2(client_flags, var_9f84050f, var_1e08b2fd, var_9c5ca2c = 1, var_cee3c9e9 = 1)
-{
-	/#
-		assert(isdefined(client_flags));
-	#/
-	remaining_flags_to_process = client_flags;
-	for(i = 0; remaining_flags_to_process && i < level.players.size; i++)
-	{
-		attacker = level.players[i];
-		if(isdefined(attacker))
-		{
-			client_flag = 1 << attacker getentitynumber();
-			if(client_flag & remaining_flags_to_process)
-			{
-				self setpersonalthreatbias(attacker, int(var_9f84050f), var_1e08b2fd);
-				if(var_9c5ca2c)
-				{
-					self getperfectinfo(attacker, var_cee3c9e9);
-				}
-				remaining_flags_to_process = remaining_flags_to_process & (~client_flag);
-			}
-		}
-	}
+function function_c8b0c8c2(client_flags, var_9f84050f, var_1e08b2fd, var_9c5ca2c = 1, var_cee3c9e9 = 1) {
+  /#
+  assert(isdefined(client_flags));
+  # /
+    remaining_flags_to_process = client_flags;
+  for (i = 0; remaining_flags_to_process && i < level.players.size; i++) {
+    attacker = level.players[i];
+    if(isdefined(attacker)) {
+      client_flag = 1 << attacker getentitynumber();
+      if(client_flag & remaining_flags_to_process) {
+        self setpersonalthreatbias(attacker, int(var_9f84050f), var_1e08b2fd);
+        if(var_9c5ca2c) {
+          self getperfectinfo(attacker, var_cee3c9e9);
+        }
+        remaining_flags_to_process = remaining_flags_to_process & (~client_flag);
+      }
+    }
+  }
 }
 
 /*
@@ -3049,17 +2678,14 @@ function function_c8b0c8c2(client_flags, var_9f84050f, var_1e08b2fd, var_9c5ca2c
 	Parameters: 2
 	Flags: None
 */
-function updatepersonalthreatbias_bots(var_9f84050f, var_1e08b2fd)
-{
-	/#
-		foreach(player in level.players)
-		{
-			if(player util::is_bot())
-			{
-				self setpersonalthreatbias(player, int(var_9f84050f), var_1e08b2fd);
-			}
-		}
-	#/
+function updatepersonalthreatbias_bots(var_9f84050f, var_1e08b2fd) {
+  /#
+  foreach(player in level.players) {
+    if(player util::is_bot()) {
+      self setpersonalthreatbias(player, int(var_9f84050f), var_1e08b2fd);
+    }
+  }
+  # /
 }
 
 /*
@@ -3071,17 +2697,13 @@ function updatepersonalthreatbias_bots(var_9f84050f, var_1e08b2fd)
 	Parameters: 0
 	Flags: Linked
 */
-function target_hijackers()
-{
-	self endon(#"death");
-	while(true)
-	{
-		self waittill(#"ccom_lock_being_targeted", hijackingplayer);
-		self getperfectinfo(hijackingplayer, 1);
-		if(isplayer(hijackingplayer))
-		{
-			self setpersonalthreatbias(hijackingplayer, 1500, 4);
-		}
-	}
+function target_hijackers() {
+  self endon(# "death");
+  while (true) {
+    self waittill(# "ccom_lock_being_targeted", hijackingplayer);
+    self getperfectinfo(hijackingplayer, 1);
+    if(isplayer(hijackingplayer)) {
+      self setpersonalthreatbias(hijackingplayer, 1500, 4);
+    }
+  }
 }
-

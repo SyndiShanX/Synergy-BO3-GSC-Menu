@@ -17,9 +17,8 @@
 	Parameters: 1
 	Flags: None
 */
-function on_investigate()
-{
-	// Unsupported VM revision (1B).
+function on_investigate() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -31,9 +30,8 @@ function on_investigate()
 	Parameters: 3
 	Flags: None
 */
-function get_random_investigation_point()
-{
-	// Unsupported VM revision (1B).
+function get_random_investigation_point() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -45,9 +43,8 @@ function get_random_investigation_point()
 	Parameters: 0
 	Flags: None
 */
-function investigate_stop()
-{
-	// Unsupported VM revision (1B).
+function investigate_stop() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -59,9 +56,8 @@ function investigate_stop()
 	Parameters: 3
 	Flags: None
 */
-function investigate_thread()
-{
-	// Unsupported VM revision (1B).
+function investigate_thread() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -73,9 +69,8 @@ function investigate_thread()
 	Parameters: 1
 	Flags: None
 */
-function function_628d42af()
-{
-	// Unsupported VM revision (1B).
+function function_628d42af() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -87,8 +82,6 @@ function function_628d42af()
 	Parameters: 1
 	Flags: None
 */
-function function_edba2e78()
-{
-	// Unsupported VM revision (1B).
+function function_edba2e78() {
+  // Unsupported VM revision (1B).
 }
-

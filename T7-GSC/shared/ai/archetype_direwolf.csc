@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("direwolf", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("direwolf", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,9 +27,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec precache()
-{
-	level._effect["fx_bio_direwolf_eyes"] = "animals/fx_bio_direwolf_eyes";
+function autoexec precache() {
+  level._effect["fx_bio_direwolf_eyes"] = "animals/fx_bio_direwolf_eyes";
 }
 
 /*
@@ -42,12 +40,10 @@ function autoexec precache()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(ai::shouldregisterclientfieldforarchetype("direwolf"))
-	{
-		clientfield::register("actor", "direwolf_eye_glow_fx", 1, 1, "int", &direwolfeyeglowfxhandler, 0, 1);
-	}
+function __init__() {
+  if(ai::shouldregisterclientfieldforarchetype("direwolf")) {
+    clientfield::register("actor", "direwolf_eye_glow_fx", 1, 1, "int", & direwolfeyeglowfxhandler, 0, 1);
+  }
 }
 
 /*
@@ -59,21 +55,16 @@ function __init__()
 	Parameters: 7
 	Flags: Linked, Private
 */
-function private direwolfeyeglowfxhandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump)
-{
-	entity = self;
-	if(isdefined(entity.archetype) && entity.archetype != "direwolf")
-	{
-		return;
-	}
-	if(isdefined(entity.eyeglowfx))
-	{
-		stopfx(localclientnum, entity.eyeglowfx);
-		entity.eyeglowfx = undefined;
-	}
-	if(newvalue)
-	{
-		entity.eyeglowfx = playfxontag(localclientnum, level._effect["fx_bio_direwolf_eyes"], entity, "tag_eye");
-	}
+function private direwolfeyeglowfxhandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
+  entity = self;
+  if(isdefined(entity.archetype) && entity.archetype != "direwolf") {
+    return;
+  }
+  if(isdefined(entity.eyeglowfx)) {
+    stopfx(localclientnum, entity.eyeglowfx);
+    entity.eyeglowfx = undefined;
+  }
+  if(newvalue) {
+    entity.eyeglowfx = playfxontag(localclientnum, level._effect["fx_bio_direwolf_eyes"], entity, "tag_eye");
+  }
 }
-

@@ -23,11 +23,10 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	level thread achievement_moon_sidequest();
-	level thread achievement_ground_control();
-	callback::on_connect(&onplayerconnect);
+function init() {
+  level thread achievement_moon_sidequest();
+  level thread achievement_ground_control();
+  callback::on_connect( & onplayerconnect);
 }
 
 /*
@@ -39,12 +38,11 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function onplayerconnect()
-{
-	self thread achievement_one_small_hack();
-	self thread achievement_one_giant_leap();
-	self thread achievement_perks_in_space();
-	self thread achievement_fully_armed();
+function onplayerconnect() {
+  self thread achievement_one_small_hack();
+  self thread achievement_one_giant_leap();
+  self thread achievement_perks_in_space();
+  self thread achievement_fully_armed();
 }
 
 /*
@@ -56,21 +54,17 @@ function onplayerconnect()
 	Parameters: 1
 	Flags: Linked
 */
-function achievement_set_interim_sidequest_stat_for_all_players(stat_name)
-{
-	if(level.systemlink)
-	{
-		return;
-	}
-	if(getdvarint("splitscreen_playerCount") == getplayers().size)
-	{
-		return;
-	}
-	players = getplayers();
-	for(i = 0; i < players.size; i++)
-	{
-		players[i] zm_stats::add_global_stat(stat_name, 1);
-	}
+function achievement_set_interim_sidequest_stat_for_all_players(stat_name) {
+  if(level.systemlink) {
+    return;
+  }
+  if(getdvarint("splitscreen_playerCount") == getplayers().size) {
+    return;
+  }
+  players = getplayers();
+  for (i = 0; i < players.size; i++) {
+    players[i] zm_stats::add_global_stat(stat_name, 1);
+  }
 }
 
 /*
@@ -82,19 +76,17 @@ function achievement_set_interim_sidequest_stat_for_all_players(stat_name)
 	Parameters: 0
 	Flags: Linked
 */
-function achievement_moon_sidequest()
-{
-	level endon(#"end_game");
-	level waittill(#"moon_sidequest_reveal_achieved");
-	level achievement_set_interim_sidequest_stat_for_all_players("ZOMBIE_MOON_SIDEQUEST");
-	level zm_utility::giveachievement_wrapper("DLC5_ZOM_CRYOGENIC_PARTY", 1);
-	level waittill(#"moon_sidequest_swap_achieved");
-	level waittill(#"moon_sidequest_big_bang_achieved");
-	level thread zm::set_sidequest_completed("MOON");
-	if(level.xenon)
-	{
-		level zm_utility::giveachievement_wrapper("DLC5_ZOM_BIG_BANG_THEORY", 1);
-	}
+function achievement_moon_sidequest() {
+  level endon(# "end_game");
+  level waittill(# "moon_sidequest_reveal_achieved");
+  level achievement_set_interim_sidequest_stat_for_all_players("ZOMBIE_MOON_SIDEQUEST");
+  level zm_utility::giveachievement_wrapper("DLC5_ZOM_CRYOGENIC_PARTY", 1);
+  level waittill(# "moon_sidequest_swap_achieved");
+  level waittill(# "moon_sidequest_big_bang_achieved");
+  level thread zm::set_sidequest_completed("MOON");
+  if(level.xenon) {
+    level zm_utility::giveachievement_wrapper("DLC5_ZOM_BIG_BANG_THEORY", 1);
+  }
 }
 
 /*
@@ -106,15 +98,14 @@ function achievement_moon_sidequest()
 	Parameters: 0
 	Flags: Linked
 */
-function achievement_ground_control()
-{
-	level endon(#"end_game");
-	level flag::wait_till("teleporter_digger_hacked_before_breached");
-	level flag::wait_till("hangar_digger_hacked_before_breached");
-	level flag::wait_till("biodome_digger_hacked_before_breached");
-	/#
-	#/
-	level zm_utility::giveachievement_wrapper("DLC5_ZOM_GROUND_CONTROL", 1);
+function achievement_ground_control() {
+  level endon(# "end_game");
+  level flag::wait_till("teleporter_digger_hacked_before_breached");
+  level flag::wait_till("hangar_digger_hacked_before_breached");
+  level flag::wait_till("biodome_digger_hacked_before_breached");
+  /#
+  # /
+    level zm_utility::giveachievement_wrapper("DLC5_ZOM_GROUND_CONTROL", 1);
 }
 
 /*
@@ -126,13 +117,12 @@ function achievement_ground_control()
 	Parameters: 0
 	Flags: Linked
 */
-function achievement_one_small_hack()
-{
-	level endon(#"end_game");
-	self endon(#"disconnect");
-	self waittill(#"successful_hack");
-	/#
-	#/
+function achievement_one_small_hack() {
+  level endon(# "end_game");
+  self endon(# "disconnect");
+  self waittill(# "successful_hack");
+  /#
+  # /
 }
 
 /*
@@ -144,18 +134,16 @@ function achievement_one_small_hack()
 	Parameters: 0
 	Flags: Linked
 */
-function achievement_one_giant_leap()
-{
-	level endon(#"end_game");
-	self endon(#"disconnect");
-	self waittill(#"one_giant_leap");
-	/#
-	#/
-	if(!(isdefined(level.played_extra_song_a7x) && level.played_extra_song_a7x))
-	{
-		level thread zm_audio::sndmusicsystem_playstate("nightmare");
-		level.played_extra_song_a7x = 1;
-	}
+function achievement_one_giant_leap() {
+  level endon(# "end_game");
+  self endon(# "disconnect");
+  self waittill(# "one_giant_leap");
+  /#
+  # /
+    if(!(isdefined(level.played_extra_song_a7x) && level.played_extra_song_a7x)) {
+      level thread zm_audio::sndmusicsystem_playstate("nightmare");
+      level.played_extra_song_a7x = 1;
+    }
 }
 
 /*
@@ -167,35 +155,29 @@ function achievement_one_giant_leap()
 	Parameters: 0
 	Flags: Linked
 */
-function achievement_perks_in_space()
-{
-	level endon(#"end_game");
-	self endon(#"disconnect");
-	self.perks_in_space_list = [];
-	vending_triggers = getentarray("zombie_vending", "targetname");
-	for(i = 0; i < vending_triggers.size; i++)
-	{
-		self.perks_in_space_purchased_list[vending_triggers[i].script_noteworthy + "_purchased"] = 0;
-	}
-	while(true)
-	{
-		self waittill(#"perk_bought", perk);
-		self.perks_in_space_purchased_list[perk + "_purchased"] = 1;
-		keys = getarraykeys(self.perks_in_space_purchased_list);
-		for(i = 0; i < keys.size; i++)
-		{
-			if(!self.perks_in_space_purchased_list[keys[i]])
-			{
-				break;
-			}
-		}
-		if(i == self.perks_in_space_purchased_list.size)
-		{
-			/#
-			#/
-			return;
-		}
-	}
+function achievement_perks_in_space() {
+  level endon(# "end_game");
+  self endon(# "disconnect");
+  self.perks_in_space_list = [];
+  vending_triggers = getentarray("zombie_vending", "targetname");
+  for (i = 0; i < vending_triggers.size; i++) {
+    self.perks_in_space_purchased_list[vending_triggers[i].script_noteworthy + "_purchased"] = 0;
+  }
+  while (true) {
+    self waittill(# "perk_bought", perk);
+    self.perks_in_space_purchased_list[perk + "_purchased"] = 1;
+    keys = getarraykeys(self.perks_in_space_purchased_list);
+    for (i = 0; i < keys.size; i++) {
+      if(!self.perks_in_space_purchased_list[keys[i]]) {
+        break;
+      }
+    }
+    if(i == self.perks_in_space_purchased_list.size) {
+      /#
+      # /
+        return;
+    }
+  }
 }
 
 /*
@@ -207,35 +189,27 @@ function achievement_perks_in_space()
 	Parameters: 0
 	Flags: Linked
 */
-function achievement_fully_armed()
-{
-	level endon(#"end_game");
-	self endon(#"disconnect");
-	while(true)
-	{
-		self waittill(#"pap_taken");
-		if(!self hasperk("specialty_additionalprimaryweapon"))
-		{
-			continue;
-		}
-		primaries = self getweaponslistprimaries();
-		if(!isdefined(primaries) || primaries.size != 3)
-		{
-			continue;
-		}
-		for(i = 0; i < primaries.size; i++)
-		{
-			if(!zm_weapons::is_weapon_upgraded(primaries[i]))
-			{
-				break;
-			}
-		}
-		if(i == primaries.size)
-		{
-			/#
-			#/
-			return;
-		}
-	}
+function achievement_fully_armed() {
+  level endon(# "end_game");
+  self endon(# "disconnect");
+  while (true) {
+    self waittill(# "pap_taken");
+    if(!self hasperk("specialty_additionalprimaryweapon")) {
+      continue;
+    }
+    primaries = self getweaponslistprimaries();
+    if(!isdefined(primaries) || primaries.size != 3) {
+      continue;
+    }
+    for (i = 0; i < primaries.size; i++) {
+      if(!zm_weapons::is_weapon_upgraded(primaries[i])) {
+        break;
+      }
+    }
+    if(i == primaries.size) {
+      /#
+      # /
+        return;
+    }
+  }
 }
-

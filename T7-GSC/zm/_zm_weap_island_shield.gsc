@@ -33,9 +33,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_weap_island_shield", &__init__, &__main__, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_weap_island_shield", & __init__, & __main__, undefined);
 }
 
 /*
@@ -47,11 +46,10 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	zm_craft_shield::init("craft_shield_zm", "island_riotshield", "wpn_t7_zmb_dlc2_shield_world");
-	level.weaponriotshield = getweapon("island_riotshield");
-	zm_equipment::register("island_riotshield", &"ZOMBIE_EQUIP_RIOTSHIELD_PICKUP_HINT_STRING", &"ZOMBIE_EQUIP_RIOTSHIELD_HOWTO", undefined, "riotshield");
+function __init__() {
+  zm_craft_shield::init("craft_shield_zm", "island_riotshield", "wpn_t7_zmb_dlc2_shield_world");
+  level.weaponriotshield = getweapon("island_riotshield");
+  zm_equipment::register("island_riotshield", & "ZOMBIE_EQUIP_RIOTSHIELD_PICKUP_HINT_STRING", & "ZOMBIE_EQUIP_RIOTSHIELD_HOWTO", undefined, "riotshield");
 }
 
 /*
@@ -63,16 +61,14 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function __main__()
-{
-	zm_equipment::register_for_level("island_riotshield");
-	zm_equipment::include("island_riotshield");
-	zombie_utility::set_zombie_var("riotshield_fling_damage_shield", 100);
-	zombie_utility::set_zombie_var("riotshield_knockdown_damage_shield", 15);
-	zombie_utility::set_zombie_var("riotshield_juke_damage_shield", 0);
-	zombie_utility::set_zombie_var("riotshield_fling_force_juke", 175);
-	zombie_utility::set_zombie_var("riotshield_fling_range", 120);
-	zombie_utility::set_zombie_var("riotshield_gib_range", 120);
-	zombie_utility::set_zombie_var("riotshield_knockdown_range", 120);
+function __main__() {
+  zm_equipment::register_for_level("island_riotshield");
+  zm_equipment::include("island_riotshield");
+  zombie_utility::set_zombie_var("riotshield_fling_damage_shield", 100);
+  zombie_utility::set_zombie_var("riotshield_knockdown_damage_shield", 15);
+  zombie_utility::set_zombie_var("riotshield_juke_damage_shield", 0);
+  zombie_utility::set_zombie_var("riotshield_fling_force_juke", 175);
+  zombie_utility::set_zombie_var("riotshield_fling_range", 120);
+  zombie_utility::set_zombie_var("riotshield_gib_range", 120);
+  zombie_utility::set_zombie_var("riotshield_knockdown_range", 120);
 }
-

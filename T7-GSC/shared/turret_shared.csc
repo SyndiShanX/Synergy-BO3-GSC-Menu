@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("turret", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("turret", & __init__, undefined, undefined);
 }
 
 /*
@@ -31,9 +30,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("vehicle", "toggle_lensflare", 1, 1, "int", &field_toggle_lensflare, 0, 0);
+function __init__() {
+  clientfield::register("vehicle", "toggle_lensflare", 1, 1, "int", & field_toggle_lensflare, 0, 0);
 }
 
 /*
@@ -45,28 +43,21 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function field_toggle_lensflare(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(!isdefined(self.scriptbundlesettings))
-	{
-		return;
-	}
-	settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
-	if(!isdefined(settings))
-	{
-		return;
-	}
-	if(isdefined(self.turret_lensflare_id))
-	{
-		deletefx(localclientnum, self.turret_lensflare_id);
-		self.turret_lensflare_id = undefined;
-	}
-	if(newval)
-	{
-		if(isdefined(settings.lensflare_fx) && isdefined(settings.lensflare_tag))
-		{
-			self.turret_lensflare_id = playfxontag(localclientnum, settings.lensflare_fx, self, settings.lensflare_tag);
-		}
-	}
+function field_toggle_lensflare(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(!isdefined(self.scriptbundlesettings)) {
+    return;
+  }
+  settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
+  if(!isdefined(settings)) {
+    return;
+  }
+  if(isdefined(self.turret_lensflare_id)) {
+    deletefx(localclientnum, self.turret_lensflare_id);
+    self.turret_lensflare_id = undefined;
+  }
+  if(newval) {
+    if(isdefined(settings.lensflare_fx) && isdefined(settings.lensflare_tag)) {
+      self.turret_lensflare_id = playfxontag(localclientnum, settings.lensflare_fx, self, settings.lensflare_tag);
+    }
+  }
 }
-

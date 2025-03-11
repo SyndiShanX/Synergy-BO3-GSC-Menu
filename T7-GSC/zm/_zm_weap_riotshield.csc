@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_equip_shield", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_equip_shield", & __init__, undefined, undefined);
 }
 
 /*
@@ -31,10 +30,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_spawned(&player_on_spawned);
-	clientfield::register("clientuimodel", "zmInventory.shield_health", 11000, 4, "float", undefined, 0, 0);
+function __init__() {
+  callback::on_spawned( & player_on_spawned);
+  clientfield::register("clientuimodel", "zmInventory.shield_health", 11000, 4, "float", undefined, 0, 0);
 }
 
 /*
@@ -46,9 +44,8 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function player_on_spawned(localclientnum)
-{
-	self thread watch_weapon_changes(localclientnum);
+function player_on_spawned(localclientnum) {
+  self thread watch_weapon_changes(localclientnum);
 }
 
 /*
@@ -60,18 +57,15 @@ function player_on_spawned(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function watch_weapon_changes(localclientnum)
-{
-	self endon(#"disconnect");
-	self endon(#"entityshutdown");
-	while(isdefined(self))
-	{
-		self waittill(#"weapon_change", weapon);
-		if(weapon.isriotshield)
-		{
-			self thread lock_weapon_models(localclientnum, weapon);
-		}
-	}
+function watch_weapon_changes(localclientnum) {
+  self endon(# "disconnect");
+  self endon(# "entityshutdown");
+  while (isdefined(self)) {
+    self waittill(# "weapon_change", weapon);
+    if(weapon.isriotshield) {
+      self thread lock_weapon_models(localclientnum, weapon);
+    }
+  }
 }
 
 /*
@@ -83,24 +77,19 @@ function watch_weapon_changes(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function lock_weapon_model(model)
-{
-	if(isdefined(model))
-	{
-		if(!isdefined(level.model_locks))
-		{
-			level.model_locks = [];
-		}
-		if(!isdefined(level.model_locks[model]))
-		{
-			level.model_locks[model] = 0;
-		}
-		if(level.model_locks[model] < 1)
-		{
-			forcestreamxmodel(model);
-		}
-		level.model_locks[model]++;
-	}
+function lock_weapon_model(model) {
+  if(isdefined(model)) {
+    if(!isdefined(level.model_locks)) {
+      level.model_locks = [];
+    }
+    if(!isdefined(level.model_locks[model])) {
+      level.model_locks[model] = 0;
+    }
+    if(level.model_locks[model] < 1) {
+      forcestreamxmodel(model);
+    }
+    level.model_locks[model]++;
+  }
 }
 
 /*
@@ -112,24 +101,19 @@ function lock_weapon_model(model)
 	Parameters: 1
 	Flags: Linked
 */
-function unlock_weapon_model(model)
-{
-	if(isdefined(model))
-	{
-		if(!isdefined(level.model_locks))
-		{
-			level.model_locks = [];
-		}
-		if(!isdefined(level.model_locks[model]))
-		{
-			level.model_locks[model] = 0;
-		}
-		level.model_locks[model]--;
-		if(level.model_locks[model] < 1)
-		{
-			stopforcestreamingxmodel(model);
-		}
-	}
+function unlock_weapon_model(model) {
+  if(isdefined(model)) {
+    if(!isdefined(level.model_locks)) {
+      level.model_locks = [];
+    }
+    if(!isdefined(level.model_locks[model])) {
+      level.model_locks[model] = 0;
+    }
+    level.model_locks[model]--;
+    if(level.model_locks[model] < 1) {
+      stopforcestreamingxmodel(model);
+    }
+  }
 }
 
 /*
@@ -141,14 +125,12 @@ function unlock_weapon_model(model)
 	Parameters: 2
 	Flags: Linked
 */
-function lock_weapon_models(localclientnum, weapon)
-{
-	lock_weapon_model(weapon.worlddamagedmodel1);
-	lock_weapon_model(weapon.worlddamagedmodel2);
-	lock_weapon_model(weapon.worlddamagedmodel3);
-	self util::waittill_any("weapon_change", "disconnect", "entityshutdown");
-	unlock_weapon_model(weapon.worlddamagedmodel1);
-	unlock_weapon_model(weapon.worlddamagedmodel2);
-	unlock_weapon_model(weapon.worlddamagedmodel3);
+function lock_weapon_models(localclientnum, weapon) {
+  lock_weapon_model(weapon.worlddamagedmodel1);
+  lock_weapon_model(weapon.worlddamagedmodel2);
+  lock_weapon_model(weapon.worlddamagedmodel3);
+  self util::waittill_any("weapon_change", "disconnect", "entityshutdown");
+  unlock_weapon_model(weapon.worlddamagedmodel1);
+  unlock_weapon_model(weapon.worlddamagedmodel2);
+  unlock_weapon_model(weapon.worlddamagedmodel3);
 }
-

@@ -14,9 +14,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-}
+function main() {}
 
 /*
 	Name: onprecachegametype
@@ -27,9 +25,7 @@ function main()
 	Parameters: 0
 	Flags: None
 */
-function onprecachegametype()
-{
-}
+function onprecachegametype() {}
 
 /*
 	Name: onstartgametype
@@ -40,9 +36,7 @@ function onprecachegametype()
 	Parameters: 0
 	Flags: None
 */
-function onstartgametype()
-{
-}
+function onstartgametype() {}
 
 /*
 	Name: ignore_systems
@@ -53,20 +47,18 @@ function onstartgametype()
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec ignore_systems()
-{
-	system::ignore("cybercom");
-	system::ignore("healthoverlay");
-	system::ignore("challenges");
-	system::ignore("rank");
-	system::ignore("hacker_tool");
-	system::ignore("grapple");
-	system::ignore("replay_gun");
-	system::ignore("riotshield");
-	system::ignore("oed");
-	system::ignore("explosive_bolt");
-	system::ignore("empgrenade");
-	system::ignore("spawning");
-	system::ignore("save");
+function autoexec ignore_systems() {
+  system::ignore("cybercom");
+  system::ignore("healthoverlay");
+  system::ignore("challenges");
+  system::ignore("rank");
+  system::ignore("hacker_tool");
+  system::ignore("grapple");
+  system::ignore("replay_gun");
+  system::ignore("riotshield");
+  system::ignore("oed");
+  system::ignore("explosive_bolt");
+  system::ignore("empgrenade");
+  system::ignore("spawning");
+  system::ignore("save");
 }
-

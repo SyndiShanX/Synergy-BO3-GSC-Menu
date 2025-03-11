@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_powerup_empty_perk", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_powerup_empty_perk", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,9 +27,7 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	zm_powerups::include_zombie_powerup("empty_perk");
-	zm_powerups::add_zombie_powerup("empty_perk");
+function __init__() {
+  zm_powerups::include_zombie_powerup("empty_perk");
+  zm_powerups::add_zombie_powerup("empty_perk");
 }
-

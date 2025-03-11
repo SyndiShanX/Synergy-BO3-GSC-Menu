@@ -17,40 +17,39 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec registerbehaviorscriptfunctions()
-{
-	behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCrouchNode", &isatcrouchnode);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCoverCondition", &isatcovercondition);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCoverStrictCondition", &isatcoverstrictcondition);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCoverModeOver", &isatcovermodeover);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCoverModeNone", &isatcovermodenone);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("isExposedAtCoverCondition", &isexposedatcovercondition);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("keepClaimedNodeAndChooseCoverDirection", &keepclaimednodeandchoosecoverdirection);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("resetCoverParameters", &resetcoverparameters);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("cleanupCoverMode", &cleanupcovermode);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("canBeFlankedService", &canbeflankedservice);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("shouldCoverIdleOnly", &shouldcoveridleonly);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("isSuppressedAtCoverCondition", &issuppressedatcovercondition);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverIdleInitialize", &coveridleinitialize);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverIdleUpdate", &coveridleupdate);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverIdleTerminate", &coveridleterminate);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("isFlankedByEnemyAtCover", &isflankedbyenemyatcover);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverFlankedActionStart", &coverflankedinitialize);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverFlankedActionTerminate", &coverflankedactionterminate);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("supportsOverCoverCondition", &supportsovercovercondition);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("shouldOverAtCoverCondition", &shouldoveratcovercondition);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverOverInitialize", &coveroverinitialize);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverOverTerminate", &coveroverterminate);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("supportsLeanCoverCondition", &supportsleancovercondition);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("shouldLeanAtCoverCondition", &shouldleanatcovercondition);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("continueLeaningAtCoverCondition", &continueleaningatcovercondition);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverLeanInitialize", &coverleaninitialize);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverLeanTerminate", &coverleanterminate);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("supportsPeekCoverCondition", &supportspeekcovercondition);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverPeekInitialize", &coverpeekinitialize);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverPeekTerminate", &coverpeekterminate);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("coverReloadInitialize", &coverreloadinitialize);
-	behaviortreenetworkutility::registerbehaviortreescriptapi("refillAmmoAndCleanupCoverMode", &refillammoandcleanupcovermode);
+function autoexec registerbehaviorscriptfunctions() {
+  behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCrouchNode", & isatcrouchnode);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCoverCondition", & isatcovercondition);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCoverStrictCondition", & isatcoverstrictcondition);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCoverModeOver", & isatcovermodeover);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCoverModeNone", & isatcovermodenone);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("isExposedAtCoverCondition", & isexposedatcovercondition);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("keepClaimedNodeAndChooseCoverDirection", & keepclaimednodeandchoosecoverdirection);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("resetCoverParameters", & resetcoverparameters);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("cleanupCoverMode", & cleanupcovermode);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("canBeFlankedService", & canbeflankedservice);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("shouldCoverIdleOnly", & shouldcoveridleonly);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("isSuppressedAtCoverCondition", & issuppressedatcovercondition);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverIdleInitialize", & coveridleinitialize);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverIdleUpdate", & coveridleupdate);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverIdleTerminate", & coveridleterminate);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("isFlankedByEnemyAtCover", & isflankedbyenemyatcover);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverFlankedActionStart", & coverflankedinitialize);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverFlankedActionTerminate", & coverflankedactionterminate);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("supportsOverCoverCondition", & supportsovercovercondition);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("shouldOverAtCoverCondition", & shouldoveratcovercondition);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverOverInitialize", & coveroverinitialize);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverOverTerminate", & coveroverterminate);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("supportsLeanCoverCondition", & supportsleancovercondition);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("shouldLeanAtCoverCondition", & shouldleanatcovercondition);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("continueLeaningAtCoverCondition", & continueleaningatcovercondition);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverLeanInitialize", & coverleaninitialize);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverLeanTerminate", & coverleanterminate);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("supportsPeekCoverCondition", & supportspeekcovercondition);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverPeekInitialize", & coverpeekinitialize);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverPeekTerminate", & coverpeekterminate);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("coverReloadInitialize", & coverreloadinitialize);
+  behaviortreenetworkutility::registerbehaviortreescriptapi("refillAmmoAndCleanupCoverMode", & refillammoandcleanupcovermode);
 }
 
 /*
@@ -62,10 +61,9 @@ function autoexec registerbehaviorscriptfunctions()
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coverreloadinitialize(behaviortreeentity)
-{
-	blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_alert");
-	keepclaimnode(behaviortreeentity);
+function private coverreloadinitialize(behaviortreeentity) {
+  blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_alert");
+  keepclaimnode(behaviortreeentity);
 }
 
 /*
@@ -77,13 +75,11 @@ function private coverreloadinitialize(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function refillammoandcleanupcovermode(behaviortreeentity)
-{
-	if(isalive(behaviortreeentity))
-	{
-		refillammo(behaviortreeentity);
-	}
-	cleanupcovermode(behaviortreeentity);
+function refillammoandcleanupcovermode(behaviortreeentity) {
+  if(isalive(behaviortreeentity)) {
+    refillammo(behaviortreeentity);
+  }
+  cleanupcovermode(behaviortreeentity);
 }
 
 /*
@@ -95,9 +91,8 @@ function refillammoandcleanupcovermode(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private supportspeekcovercondition(behaviortreeentity)
-{
-	return isdefined(behaviortreeentity.node);
+function private supportspeekcovercondition(behaviortreeentity) {
+  return isdefined(behaviortreeentity.node);
 }
 
 /*
@@ -109,11 +104,10 @@ function private supportspeekcovercondition(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coverpeekinitialize(behaviortreeentity)
-{
-	blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_alert");
-	keepclaimnode(behaviortreeentity);
-	choosecoverdirection(behaviortreeentity);
+function private coverpeekinitialize(behaviortreeentity) {
+  blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_alert");
+  keepclaimnode(behaviortreeentity);
+  choosecoverdirection(behaviortreeentity);
 }
 
 /*
@@ -125,10 +119,9 @@ function private coverpeekinitialize(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coverpeekterminate(behaviortreeentity)
-{
-	choosefrontcoverdirection(behaviortreeentity);
-	cleanupcovermode(behaviortreeentity);
+function private coverpeekterminate(behaviortreeentity) {
+  choosefrontcoverdirection(behaviortreeentity);
+  cleanupcovermode(behaviortreeentity);
 }
 
 /*
@@ -140,23 +133,18 @@ function private coverpeekterminate(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private supportsleancovercondition(behaviortreeentity)
-{
-	if(isdefined(behaviortreeentity.node))
-	{
-		if(behaviortreeentity.node.type == "Cover Left" || behaviortreeentity.node.type == "Cover Right")
-		{
-			return true;
-		}
-		if(behaviortreeentity.node.type == "Cover Pillar")
-		{
-			if(!(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 1024) == 1024) || (!(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 2048) == 2048)))
-			{
-				return true;
-			}
-		}
-	}
-	return false;
+function private supportsleancovercondition(behaviortreeentity) {
+  if(isdefined(behaviortreeentity.node)) {
+    if(behaviortreeentity.node.type == "Cover Left" || behaviortreeentity.node.type == "Cover Right") {
+      return true;
+    }
+    if(behaviortreeentity.node.type == "Cover Pillar") {
+      if(!(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 1024) == 1024) || (!(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 2048) == 2048))) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 /*
@@ -168,47 +156,36 @@ function private supportsleancovercondition(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private shouldleanatcovercondition(behaviortreeentity)
-{
-	if(!isdefined(behaviortreeentity.node) || !isdefined(behaviortreeentity.node.type) || !isdefined(behaviortreeentity.enemy) || !isdefined(behaviortreeentity.enemy.origin))
-	{
-		return 0;
-	}
-	yawtoenemyposition = getaimyawtoenemyfromnode(behaviortreeentity, behaviortreeentity.node, behaviortreeentity.enemy);
-	legalaimyaw = 0;
-	if(behaviortreeentity.node.type == "Cover Left")
-	{
-		aimlimitsforcover = behaviortreeentity getaimlimitsfromentry("cover_left_lean");
-		legalaimyaw = yawtoenemyposition <= (aimlimitsforcover["aim_left"] + 10) && yawtoenemyposition >= -10;
-	}
-	else
-	{
-		if(behaviortreeentity.node.type == "Cover Right")
-		{
-			aimlimitsforcover = behaviortreeentity getaimlimitsfromentry("cover_right_lean");
-			legalaimyaw = yawtoenemyposition >= (aimlimitsforcover["aim_right"] - 10) && yawtoenemyposition <= 10;
-		}
-		else if(behaviortreeentity.node.type == "Cover Pillar")
-		{
-			aimlimitsforcover = behaviortreeentity getaimlimitsfromentry("cover");
-			supportsleft = !(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 1024) == 1024);
-			supportsright = !(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 2048) == 2048);
-			angleleeway = 10;
-			if(supportsright && supportsleft)
-			{
-				angleleeway = 0;
-			}
-			if(supportsleft)
-			{
-				legalaimyaw = yawtoenemyposition <= (aimlimitsforcover["aim_left"] + 10) && yawtoenemyposition >= (angleleeway * -1);
-			}
-			if(!legalaimyaw && supportsright)
-			{
-				legalaimyaw = yawtoenemyposition >= (aimlimitsforcover["aim_right"] - 10) && yawtoenemyposition <= angleleeway;
-			}
-		}
-	}
-	return legalaimyaw;
+function private shouldleanatcovercondition(behaviortreeentity) {
+  if(!isdefined(behaviortreeentity.node) || !isdefined(behaviortreeentity.node.type) || !isdefined(behaviortreeentity.enemy) || !isdefined(behaviortreeentity.enemy.origin)) {
+    return 0;
+  }
+  yawtoenemyposition = getaimyawtoenemyfromnode(behaviortreeentity, behaviortreeentity.node, behaviortreeentity.enemy);
+  legalaimyaw = 0;
+  if(behaviortreeentity.node.type == "Cover Left") {
+    aimlimitsforcover = behaviortreeentity getaimlimitsfromentry("cover_left_lean");
+    legalaimyaw = yawtoenemyposition <= (aimlimitsforcover["aim_left"] + 10) && yawtoenemyposition >= -10;
+  } else {
+    if(behaviortreeentity.node.type == "Cover Right") {
+      aimlimitsforcover = behaviortreeentity getaimlimitsfromentry("cover_right_lean");
+      legalaimyaw = yawtoenemyposition >= (aimlimitsforcover["aim_right"] - 10) && yawtoenemyposition <= 10;
+    } else if(behaviortreeentity.node.type == "Cover Pillar") {
+      aimlimitsforcover = behaviortreeentity getaimlimitsfromentry("cover");
+      supportsleft = !(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 1024) == 1024);
+      supportsright = !(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 2048) == 2048);
+      angleleeway = 10;
+      if(supportsright && supportsleft) {
+        angleleeway = 0;
+      }
+      if(supportsleft) {
+        legalaimyaw = yawtoenemyposition <= (aimlimitsforcover["aim_left"] + 10) && yawtoenemyposition >= (angleleeway * -1);
+      }
+      if(!legalaimyaw && supportsright) {
+        legalaimyaw = yawtoenemyposition >= (aimlimitsforcover["aim_right"] - 10) && yawtoenemyposition <= angleleeway;
+      }
+    }
+  }
+  return legalaimyaw;
 }
 
 /*
@@ -220,13 +197,11 @@ function private shouldleanatcovercondition(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private continueleaningatcovercondition(behaviortreeentity)
-{
-	if(behaviortreeentity asmistransitionrunning())
-	{
-		return 1;
-	}
-	return shouldleanatcovercondition(behaviortreeentity);
+function private continueleaningatcovercondition(behaviortreeentity) {
+  if(behaviortreeentity asmistransitionrunning()) {
+    return 1;
+  }
+  return shouldleanatcovercondition(behaviortreeentity);
 }
 
 /*
@@ -238,12 +213,11 @@ function private continueleaningatcovercondition(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coverleaninitialize(behaviortreeentity)
-{
-	setcovershootstarttime(behaviortreeentity);
-	keepclaimnode(behaviortreeentity);
-	blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_lean");
-	choosecoverdirection(behaviortreeentity);
+function private coverleaninitialize(behaviortreeentity) {
+  setcovershootstarttime(behaviortreeentity);
+  keepclaimnode(behaviortreeentity);
+  blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_lean");
+  choosecoverdirection(behaviortreeentity);
 }
 
 /*
@@ -255,11 +229,10 @@ function private coverleaninitialize(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coverleanterminate(behaviortreeentity)
-{
-	choosefrontcoverdirection(behaviortreeentity);
-	cleanupcovermode(behaviortreeentity);
-	clearcovershootstarttime(behaviortreeentity);
+function private coverleanterminate(behaviortreeentity) {
+  choosefrontcoverdirection(behaviortreeentity);
+  cleanupcovermode(behaviortreeentity);
+  clearcovershootstarttime(behaviortreeentity);
 }
 
 /*
@@ -271,31 +244,23 @@ function private coverleanterminate(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private supportsovercovercondition(behaviortreeentity)
-{
-	stance = blackboard::getblackboardattribute(behaviortreeentity, "_stance");
-	if(isdefined(behaviortreeentity.node))
-	{
-		if(!isinarray(getvalidcoverpeekouts(behaviortreeentity.node), "over"))
-		{
-			return false;
-		}
-		if(behaviortreeentity.node.type == "Cover Left" || behaviortreeentity.node.type == "Cover Right" || (behaviortreeentity.node.type == "Cover Crouch" || behaviortreeentity.node.type == "Cover Crouch Window" || behaviortreeentity.node.type == "Conceal Crouch"))
-		{
-			if(stance == "crouch")
-			{
-				return true;
-			}
-		}
-		else if(behaviortreeentity.node.type == "Cover Stand" || behaviortreeentity.node.type == "Conceal Stand")
-		{
-			if(stance == "stand")
-			{
-				return true;
-			}
-		}
-	}
-	return false;
+function private supportsovercovercondition(behaviortreeentity) {
+  stance = blackboard::getblackboardattribute(behaviortreeentity, "_stance");
+  if(isdefined(behaviortreeentity.node)) {
+    if(!isinarray(getvalidcoverpeekouts(behaviortreeentity.node), "over")) {
+      return false;
+    }
+    if(behaviortreeentity.node.type == "Cover Left" || behaviortreeentity.node.type == "Cover Right" || (behaviortreeentity.node.type == "Cover Crouch" || behaviortreeentity.node.type == "Cover Crouch Window" || behaviortreeentity.node.type == "Conceal Crouch")) {
+      if(stance == "crouch") {
+        return true;
+      }
+    } else if(behaviortreeentity.node.type == "Cover Stand" || behaviortreeentity.node.type == "Conceal Stand") {
+      if(stance == "stand") {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 /*
@@ -307,27 +272,23 @@ function private supportsovercovercondition(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private shouldoveratcovercondition(entity)
-{
-	if(!isdefined(entity.node) || !isdefined(entity.node.type) || !isdefined(entity.enemy) || !isdefined(entity.enemy.origin))
-	{
-		return false;
-	}
-	aimtable = (iscoverconcealed(entity.node) ? "cover_concealed_over" : "cover_over");
-	aimlimitsforcover = entity getaimlimitsfromentry(aimtable);
-	yawtoenemyposition = getaimyawtoenemyfromnode(entity, entity.node, entity.enemy);
-	legalaimyaw = yawtoenemyposition >= (aimlimitsforcover["aim_right"] - 10) && yawtoenemyposition <= (aimlimitsforcover["aim_left"] + 10);
-	if(!legalaimyaw)
-	{
-		return false;
-	}
-	pitchtoenemyposition = getaimpitchtoenemyfromnode(entity, entity.node, entity.enemy);
-	legalaimpitch = pitchtoenemyposition >= (aimlimitsforcover["aim_up"] + 10) && pitchtoenemyposition <= (aimlimitsforcover["aim_down"] + 10);
-	if(!legalaimpitch)
-	{
-		return false;
-	}
-	return true;
+function private shouldoveratcovercondition(entity) {
+  if(!isdefined(entity.node) || !isdefined(entity.node.type) || !isdefined(entity.enemy) || !isdefined(entity.enemy.origin)) {
+    return false;
+  }
+  aimtable = (iscoverconcealed(entity.node) ? "cover_concealed_over" : "cover_over");
+  aimlimitsforcover = entity getaimlimitsfromentry(aimtable);
+  yawtoenemyposition = getaimyawtoenemyfromnode(entity, entity.node, entity.enemy);
+  legalaimyaw = yawtoenemyposition >= (aimlimitsforcover["aim_right"] - 10) && yawtoenemyposition <= (aimlimitsforcover["aim_left"] + 10);
+  if(!legalaimyaw) {
+    return false;
+  }
+  pitchtoenemyposition = getaimpitchtoenemyfromnode(entity, entity.node, entity.enemy);
+  legalaimpitch = pitchtoenemyposition >= (aimlimitsforcover["aim_up"] + 10) && pitchtoenemyposition <= (aimlimitsforcover["aim_down"] + 10);
+  if(!legalaimpitch) {
+    return false;
+  }
+  return true;
 }
 
 /*
@@ -339,11 +300,10 @@ function private shouldoveratcovercondition(entity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coveroverinitialize(behaviortreeentity)
-{
-	setcovershootstarttime(behaviortreeentity);
-	keepclaimnode(behaviortreeentity);
-	blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_over");
+function private coveroverinitialize(behaviortreeentity) {
+  setcovershootstarttime(behaviortreeentity);
+  keepclaimnode(behaviortreeentity);
+  blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_over");
 }
 
 /*
@@ -355,10 +315,9 @@ function private coveroverinitialize(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coveroverterminate(behaviortreeentity)
-{
-	cleanupcovermode(behaviortreeentity);
-	clearcovershootstarttime(behaviortreeentity);
+function private coveroverterminate(behaviortreeentity) {
+  cleanupcovermode(behaviortreeentity);
+  clearcovershootstarttime(behaviortreeentity);
 }
 
 /*
@@ -370,10 +329,9 @@ function private coveroverterminate(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coveridleinitialize(behaviortreeentity)
-{
-	keepclaimnode(behaviortreeentity);
-	blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_alert");
+function private coveridleinitialize(behaviortreeentity) {
+  keepclaimnode(behaviortreeentity);
+  blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_alert");
 }
 
 /*
@@ -385,12 +343,10 @@ function private coveridleinitialize(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coveridleupdate(behaviortreeentity)
-{
-	if(!behaviortreeentity asmistransitionrunning())
-	{
-		releaseclaimnode(behaviortreeentity);
-	}
+function private coveridleupdate(behaviortreeentity) {
+  if(!behaviortreeentity asmistransitionrunning()) {
+    releaseclaimnode(behaviortreeentity);
+  }
 }
 
 /*
@@ -402,10 +358,9 @@ function private coveridleupdate(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coveridleterminate(behaviortreeentity)
-{
-	releaseclaimnode(behaviortreeentity);
-	cleanupcovermode(behaviortreeentity);
+function private coveridleterminate(behaviortreeentity) {
+  releaseclaimnode(behaviortreeentity);
+  cleanupcovermode(behaviortreeentity);
 }
 
 /*
@@ -417,9 +372,8 @@ function private coveridleterminate(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private isflankedbyenemyatcover(behaviortreeentity)
-{
-	return canbeflanked(behaviortreeentity) && behaviortreeentity isatcovernodestrict() && behaviortreeentity isflankedatcovernode() && !behaviortreeentity haspath();
+function private isflankedbyenemyatcover(behaviortreeentity) {
+  return canbeflanked(behaviortreeentity) && behaviortreeentity isatcovernodestrict() && behaviortreeentity isflankedatcovernode() && !behaviortreeentity haspath();
 }
 
 /*
@@ -431,9 +385,8 @@ function private isflankedbyenemyatcover(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private canbeflankedservice(behaviortreeentity)
-{
-	setcanbeflanked(behaviortreeentity, 1);
+function private canbeflankedservice(behaviortreeentity) {
+  setcanbeflanked(behaviortreeentity, 1);
 }
 
 /*
@@ -445,17 +398,15 @@ function private canbeflankedservice(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coverflankedinitialize(behaviortreeentity)
-{
-	if(isdefined(behaviortreeentity.enemy))
-	{
-		behaviortreeentity getperfectinfo(behaviortreeentity.enemy);
-		behaviortreeentity pathmode("move delayed", 0, 2);
-	}
-	setcanbeflanked(behaviortreeentity, 0);
-	cleanupcovermode(behaviortreeentity);
-	keepclaimnode(behaviortreeentity);
-	blackboard::setblackboardattribute(behaviortreeentity, "_desired_stance", "stand");
+function private coverflankedinitialize(behaviortreeentity) {
+  if(isdefined(behaviortreeentity.enemy)) {
+    behaviortreeentity getperfectinfo(behaviortreeentity.enemy);
+    behaviortreeentity pathmode("move delayed", 0, 2);
+  }
+  setcanbeflanked(behaviortreeentity, 0);
+  cleanupcovermode(behaviortreeentity);
+  keepclaimnode(behaviortreeentity);
+  blackboard::setblackboardattribute(behaviortreeentity, "_desired_stance", "stand");
 }
 
 /*
@@ -467,10 +418,9 @@ function private coverflankedinitialize(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked, Private
 */
-function private coverflankedactionterminate(behaviortreeentity)
-{
-	behaviortreeentity.newenemyreaction = 0;
-	releaseclaimnode(behaviortreeentity);
+function private coverflankedactionterminate(behaviortreeentity) {
+  behaviortreeentity.newenemyreaction = 0;
+  releaseclaimnode(behaviortreeentity);
 }
 
 /*
@@ -482,16 +432,13 @@ function private coverflankedactionterminate(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function isatcrouchnode(behaviortreeentity)
-{
-	if(isdefined(behaviortreeentity.node) && (behaviortreeentity.node.type == "Exposed" || behaviortreeentity.node.type == "Guard" || behaviortreeentity.node.type == "Path"))
-	{
-		if(distancesquared(behaviortreeentity.origin, behaviortreeentity.node.origin) <= (24 * 24))
-		{
-			return !isstanceallowedatnode("stand", behaviortreeentity.node) && isstanceallowedatnode("crouch", behaviortreeentity.node);
-		}
-	}
-	return 0;
+function isatcrouchnode(behaviortreeentity) {
+  if(isdefined(behaviortreeentity.node) && (behaviortreeentity.node.type == "Exposed" || behaviortreeentity.node.type == "Guard" || behaviortreeentity.node.type == "Path")) {
+    if(distancesquared(behaviortreeentity.origin, behaviortreeentity.node.origin) <= (24 * 24)) {
+      return !isstanceallowedatnode("stand", behaviortreeentity.node) && isstanceallowedatnode("crouch", behaviortreeentity.node);
+    }
+  }
+  return 0;
 }
 
 /*
@@ -503,9 +450,8 @@ function isatcrouchnode(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function isatcovercondition(behaviortreeentity)
-{
-	return behaviortreeentity isatcovernodestrict() && behaviortreeentity shouldusecovernode() && !behaviortreeentity haspath();
+function isatcovercondition(behaviortreeentity) {
+  return behaviortreeentity isatcovernodestrict() && behaviortreeentity shouldusecovernode() && !behaviortreeentity haspath();
 }
 
 /*
@@ -517,9 +463,8 @@ function isatcovercondition(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function isatcoverstrictcondition(behaviortreeentity)
-{
-	return behaviortreeentity isatcovernodestrict() && !behaviortreeentity haspath();
+function isatcoverstrictcondition(behaviortreeentity) {
+  return behaviortreeentity isatcovernodestrict() && !behaviortreeentity haspath();
 }
 
 /*
@@ -531,10 +476,9 @@ function isatcoverstrictcondition(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function isatcovermodeover(behaviortreeentity)
-{
-	covermode = blackboard::getblackboardattribute(behaviortreeentity, "_cover_mode");
-	return covermode == "cover_over";
+function isatcovermodeover(behaviortreeentity) {
+  covermode = blackboard::getblackboardattribute(behaviortreeentity, "_cover_mode");
+  return covermode == "cover_over";
 }
 
 /*
@@ -546,10 +490,9 @@ function isatcovermodeover(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function isatcovermodenone(behaviortreeentity)
-{
-	covermode = blackboard::getblackboardattribute(behaviortreeentity, "_cover_mode");
-	return covermode == "cover_mode_none";
+function isatcovermodenone(behaviortreeentity) {
+  covermode = blackboard::getblackboardattribute(behaviortreeentity, "_cover_mode");
+  return covermode == "cover_mode_none";
 }
 
 /*
@@ -561,9 +504,8 @@ function isatcovermodenone(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function isexposedatcovercondition(behaviortreeentity)
-{
-	return behaviortreeentity isatcovernodestrict() && !behaviortreeentity shouldusecovernode();
+function isexposedatcovercondition(behaviortreeentity) {
+  return behaviortreeentity isatcovernodestrict() && !behaviortreeentity shouldusecovernode();
 }
 
 /*
@@ -575,17 +517,14 @@ function isexposedatcovercondition(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function shouldcoveridleonly(behaviortreeentity)
-{
-	if(behaviortreeentity ai::get_behavior_attribute("coverIdleOnly"))
-	{
-		return true;
-	}
-	if(isdefined(behaviortreeentity.node.script_onlyidle) && behaviortreeentity.node.script_onlyidle)
-	{
-		return true;
-	}
-	return false;
+function shouldcoveridleonly(behaviortreeentity) {
+  if(behaviortreeentity ai::get_behavior_attribute("coverIdleOnly")) {
+    return true;
+  }
+  if(isdefined(behaviortreeentity.node.script_onlyidle) && behaviortreeentity.node.script_onlyidle) {
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -597,9 +536,8 @@ function shouldcoveridleonly(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function issuppressedatcovercondition(behaviortreeentity)
-{
-	return behaviortreeentity.suppressionmeter > behaviortreeentity.suppressionthreshold;
+function issuppressedatcovercondition(behaviortreeentity) {
+  return behaviortreeentity.suppressionmeter > behaviortreeentity.suppressionthreshold;
 }
 
 /*
@@ -611,10 +549,9 @@ function issuppressedatcovercondition(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function keepclaimednodeandchoosecoverdirection(behaviortreeentity)
-{
-	keepclaimnode(behaviortreeentity);
-	choosecoverdirection(behaviortreeentity);
+function keepclaimednodeandchoosecoverdirection(behaviortreeentity) {
+  keepclaimnode(behaviortreeentity);
+  choosecoverdirection(behaviortreeentity);
 }
 
 /*
@@ -626,11 +563,10 @@ function keepclaimednodeandchoosecoverdirection(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function resetcoverparameters(behaviortreeentity)
-{
-	choosefrontcoverdirection(behaviortreeentity);
-	cleanupcovermode(behaviortreeentity);
-	clearcovershootstarttime(behaviortreeentity);
+function resetcoverparameters(behaviortreeentity) {
+  choosefrontcoverdirection(behaviortreeentity);
+  cleanupcovermode(behaviortreeentity);
+  clearcovershootstarttime(behaviortreeentity);
 }
 
 /*
@@ -642,15 +578,13 @@ function resetcoverparameters(behaviortreeentity)
 	Parameters: 2
 	Flags: Linked
 */
-function choosecoverdirection(behaviortreeentity, stepout)
-{
-	if(!isdefined(behaviortreeentity.node))
-	{
-		return;
-	}
-	coverdirection = blackboard::getblackboardattribute(behaviortreeentity, "_cover_direction");
-	blackboard::setblackboardattribute(behaviortreeentity, "_previous_cover_direction", coverdirection);
-	blackboard::setblackboardattribute(behaviortreeentity, "_cover_direction", calculatecoverdirection(behaviortreeentity, stepout));
+function choosecoverdirection(behaviortreeentity, stepout) {
+  if(!isdefined(behaviortreeentity.node)) {
+    return;
+  }
+  coverdirection = blackboard::getblackboardattribute(behaviortreeentity, "_cover_direction");
+  blackboard::setblackboardattribute(behaviortreeentity, "_previous_cover_direction", coverdirection);
+  blackboard::setblackboardattribute(behaviortreeentity, "_cover_direction", calculatecoverdirection(behaviortreeentity, stepout));
 }
 
 /*
@@ -662,80 +596,60 @@ function choosecoverdirection(behaviortreeentity, stepout)
 	Parameters: 2
 	Flags: Linked
 */
-function calculatecoverdirection(behaviortreeentity, stepout)
-{
-	if(isdefined(behaviortreeentity.treatallcoversasgeneric))
-	{
-		if(!isdefined(stepout))
-		{
-			stepout = 0;
-		}
-		coverdirection = "cover_front_direction";
-		if(behaviortreeentity.node.type == "Cover Left")
-		{
-			if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 4) == 4 || math::cointoss() || stepout)
-			{
-				coverdirection = "cover_left_direction";
-			}
-		}
-		else
-		{
-			if(behaviortreeentity.node.type == "Cover Right")
-			{
-				if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 4) == 4 || math::cointoss() || stepout)
-				{
-					coverdirection = "cover_right_direction";
-				}
-			}
-			else if(behaviortreeentity.node.type == "Cover Pillar")
-			{
-				if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 1024) == 1024)
-				{
-					return "cover_right_direction";
-				}
-				if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 2048) == 2048)
-				{
-					return "cover_left_direction";
-				}
-				coverdirection = "cover_left_direction";
-				if(isdefined(behaviortreeentity.enemy))
-				{
-					yawtoenemyposition = getaimyawtoenemyfromnode(behaviortreeentity, behaviortreeentity.node, behaviortreeentity.enemy);
-					aimlimitsfordirectionright = behaviortreeentity getaimlimitsfromentry("pillar_right_lean");
-					legalrightdirectionyaw = yawtoenemyposition >= (aimlimitsfordirectionright["aim_right"] - 10) && yawtoenemyposition <= 0;
-					if(legalrightdirectionyaw)
-					{
-						coverdirection = "cover_right_direction";
-					}
-				}
-			}
-		}
-		return coverdirection;
-	}
-	coverdirection = "cover_front_direction";
-	if(behaviortreeentity.node.type == "Cover Pillar")
-	{
-		if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 1024) == 1024)
-		{
-			return "cover_right_direction";
-		}
-		if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 2048) == 2048)
-		{
-			return "cover_left_direction";
-		}
-		coverdirection = "cover_left_direction";
-		if(isdefined(behaviortreeentity.enemy))
-		{
-			yawtoenemyposition = getaimyawtoenemyfromnode(behaviortreeentity, behaviortreeentity.node, behaviortreeentity.enemy);
-			aimlimitsfordirectionright = behaviortreeentity getaimlimitsfromentry("pillar_right_lean");
-			legalrightdirectionyaw = yawtoenemyposition >= (aimlimitsfordirectionright["aim_right"] - 10) && yawtoenemyposition <= 0;
-			if(legalrightdirectionyaw)
-			{
-				coverdirection = "cover_right_direction";
-			}
-		}
-	}
-	return coverdirection;
+function calculatecoverdirection(behaviortreeentity, stepout) {
+  if(isdefined(behaviortreeentity.treatallcoversasgeneric)) {
+    if(!isdefined(stepout)) {
+      stepout = 0;
+    }
+    coverdirection = "cover_front_direction";
+    if(behaviortreeentity.node.type == "Cover Left") {
+      if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 4) == 4 || math::cointoss() || stepout) {
+        coverdirection = "cover_left_direction";
+      }
+    } else {
+      if(behaviortreeentity.node.type == "Cover Right") {
+        if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 4) == 4 || math::cointoss() || stepout) {
+          coverdirection = "cover_right_direction";
+        }
+      } else if(behaviortreeentity.node.type == "Cover Pillar") {
+        if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 1024) == 1024) {
+          return "cover_right_direction";
+        }
+        if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 2048) == 2048) {
+          return "cover_left_direction";
+        }
+        coverdirection = "cover_left_direction";
+        if(isdefined(behaviortreeentity.enemy)) {
+          yawtoenemyposition = getaimyawtoenemyfromnode(behaviortreeentity, behaviortreeentity.node, behaviortreeentity.enemy);
+          aimlimitsfordirectionright = behaviortreeentity getaimlimitsfromentry("pillar_right_lean");
+          legalrightdirectionyaw = yawtoenemyposition >= (aimlimitsfordirectionright["aim_right"] - 10) && yawtoenemyposition <= 0;
+          if(legalrightdirectionyaw) {
+            coverdirection = "cover_right_direction";
+          }
+        }
+      }
+    }
+    return coverdirection;
+  }
+  coverdirection = "cover_front_direction";
+  if(behaviortreeentity.node.type == "Cover Pillar") {
+    if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 1024) == 1024) {
+      return "cover_right_direction";
+    }
+    if(isdefined(behaviortreeentity.node.spawnflags) && (behaviortreeentity.node.spawnflags & 2048) == 2048) {
+      return "cover_left_direction";
+    }
+    coverdirection = "cover_left_direction";
+    if(isdefined(behaviortreeentity.enemy)) {
+      yawtoenemyposition = getaimyawtoenemyfromnode(behaviortreeentity, behaviortreeentity.node, behaviortreeentity.enemy);
+      aimlimitsfordirectionright = behaviortreeentity getaimlimitsfromentry("pillar_right_lean");
+      legalrightdirectionyaw = yawtoenemyposition >= (aimlimitsfordirectionright["aim_right"] - 10) && yawtoenemyposition <= 0;
+      if(legalrightdirectionyaw) {
+        coverdirection = "cover_right_direction";
+      }
+    }
+  }
+  return coverdirection;
 }
 
 /*
@@ -747,9 +661,8 @@ function calculatecoverdirection(behaviortreeentity, stepout)
 	Parameters: 1
 	Flags: Linked
 */
-function clearcovershootstarttime(behaviortreeentity)
-{
-	behaviortreeentity.covershootstarttime = undefined;
+function clearcovershootstarttime(behaviortreeentity) {
+  behaviortreeentity.covershootstarttime = undefined;
 }
 
 /*
@@ -761,9 +674,8 @@ function clearcovershootstarttime(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function setcovershootstarttime(behaviortreeentity)
-{
-	behaviortreeentity.covershootstarttime = gettime();
+function setcovershootstarttime(behaviortreeentity) {
+  behaviortreeentity.covershootstarttime = gettime();
 }
 
 /*
@@ -775,9 +687,8 @@ function setcovershootstarttime(behaviortreeentity)
 	Parameters: 1
 	Flags: Linked
 */
-function canbeflanked(behaviortreeentity)
-{
-	return isdefined(behaviortreeentity.canbeflanked) && behaviortreeentity.canbeflanked;
+function canbeflanked(behaviortreeentity) {
+  return isdefined(behaviortreeentity.canbeflanked) && behaviortreeentity.canbeflanked;
 }
 
 /*
@@ -789,9 +700,8 @@ function canbeflanked(behaviortreeentity)
 	Parameters: 2
 	Flags: Linked
 */
-function setcanbeflanked(behaviortreeentity, canbeflanked)
-{
-	behaviortreeentity.canbeflanked = canbeflanked;
+function setcanbeflanked(behaviortreeentity, canbeflanked) {
+  behaviortreeentity.canbeflanked = canbeflanked;
 }
 
 /*
@@ -803,18 +713,13 @@ function setcanbeflanked(behaviortreeentity, canbeflanked)
 	Parameters: 1
 	Flags: Linked
 */
-function cleanupcovermode(behaviortreeentity)
-{
-	if(isatcovercondition(behaviortreeentity))
-	{
-		covermode = blackboard::getblackboardattribute(behaviortreeentity, "_cover_mode");
-		blackboard::setblackboardattribute(behaviortreeentity, "_previous_cover_mode", covermode);
-		blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_mode_none");
-	}
-	else
-	{
-		blackboard::setblackboardattribute(behaviortreeentity, "_previous_cover_mode", "cover_mode_none");
-		blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_mode_none");
-	}
+function cleanupcovermode(behaviortreeentity) {
+  if(isatcovercondition(behaviortreeentity)) {
+    covermode = blackboard::getblackboardattribute(behaviortreeentity, "_cover_mode");
+    blackboard::setblackboardattribute(behaviortreeentity, "_previous_cover_mode", covermode);
+    blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_mode_none");
+  } else {
+    blackboard::setblackboardattribute(behaviortreeentity, "_previous_cover_mode", "cover_mode_none");
+    blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_mode_none");
+  }
 }
-

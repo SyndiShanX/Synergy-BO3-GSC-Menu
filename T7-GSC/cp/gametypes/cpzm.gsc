@@ -13,8 +13,6 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	level thread coop::main();
+function main() {
+  level thread coop::main();
 }
-

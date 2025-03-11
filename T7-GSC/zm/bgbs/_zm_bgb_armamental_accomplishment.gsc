@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_armamental_accomplishment", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_armamental_accomplishment", & __init__, undefined, "bgb");
 }
 
 /*
@@ -32,13 +31,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_armamental_accomplishment", "rounds", 3, &enable, &disable, undefined);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_armamental_accomplishment", "rounds", 3, & enable, & disable, undefined);
 }
 
 /*
@@ -50,12 +47,11 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function enable()
-{
-	self setperk("specialty_fastmeleerecovery");
-	self setperk("specialty_fastweaponswitch");
-	self setperk("specialty_fastequipmentuse");
-	self setperk("specialty_fasttoss");
+function enable() {
+  self setperk("specialty_fastmeleerecovery");
+  self setperk("specialty_fastweaponswitch");
+  self setperk("specialty_fastequipmentuse");
+  self setperk("specialty_fasttoss");
 }
 
 /*
@@ -67,11 +63,9 @@ function enable()
 	Parameters: 0
 	Flags: Linked
 */
-function disable()
-{
-	self unsetperk("specialty_fastmeleerecovery");
-	self unsetperk("specialty_fastweaponswitch");
-	self unsetperk("specialty_fastequipmentuse");
-	self unsetperk("specialty_fasttoss");
+function disable() {
+  self unsetperk("specialty_fastmeleerecovery");
+  self unsetperk("specialty_fastweaponswitch");
+  self unsetperk("specialty_fastequipmentuse");
+  self unsetperk("specialty_fasttoss");
 }
-

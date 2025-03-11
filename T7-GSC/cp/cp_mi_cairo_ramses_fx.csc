@@ -13,9 +13,8 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	// Unsupported VM revision (1B).
+function main() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -27,9 +26,8 @@ function main()
 	Parameters: 7
 	Flags: None
 */
-function station_defend_lighting()
-{
-	// Unsupported VM revision (1B).
+function station_defend_lighting() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -41,8 +39,6 @@ function station_defend_lighting()
 	Parameters: 7
 	Flags: None
 */
-function station_start_lighting()
-{
-	// Unsupported VM revision (1B).
+function station_start_lighting() {
+  // Unsupported VM revision (1B).
 }
-

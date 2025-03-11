@@ -19,9 +19,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("vehicle", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("vehicle", & __init__, undefined, undefined);
 }
 
 /*
@@ -33,14 +32,12 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!isdefined(level._effect))
-	{
-		level._effect = [];
-	}
-	level.vehicles_inited = 1;
-	clientfield::register("vehicle", "timeout_beep", 1, 2, "int", &timeout_beep, 0, 0);
+function __init__() {
+  if(!isdefined(level._effect)) {
+    level._effect = [];
+  }
+  level.vehicles_inited = 1;
+  clientfield::register("vehicle", "timeout_beep", 1, 2, "int", & timeout_beep, 0, 0);
 }
 
 /*
@@ -52,86 +49,63 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function vehicle_rumble(localclientnum)
-{
-	self endon(#"entityshutdown");
-	if(!isdefined(level.vehicle_rumble))
-	{
-		return;
-	}
-	type = self.vehicletype;
-	if(!isdefined(level.vehicle_rumble[type]))
-	{
-		return;
-	}
-	rumblestruct = level.vehicle_rumble[type];
-	height = rumblestruct.radius * 2;
-	zoffset = -1 * rumblestruct.radius;
-	if(!isdefined(self.rumbleon))
-	{
-		self.rumbleon = 1;
-	}
-	if(isdefined(rumblestruct.scale))
-	{
-		self.rumble_scale = rumblestruct.scale;
-	}
-	else
-	{
-		self.rumble_scale = 0.15;
-	}
-	if(isdefined(rumblestruct.duration))
-	{
-		self.rumble_duration = rumblestruct.duration;
-	}
-	else
-	{
-		self.rumble_duration = 4.5;
-	}
-	if(isdefined(rumblestruct.radius))
-	{
-		self.rumble_radius = rumblestruct.radius;
-	}
-	else
-	{
-		self.rumble_radius = 600;
-	}
-	if(isdefined(rumblestruct.basetime))
-	{
-		self.rumble_basetime = rumblestruct.basetime;
-	}
-	else
-	{
-		self.rumble_basetime = 1;
-	}
-	if(isdefined(rumblestruct.randomaditionaltime))
-	{
-		self.rumble_randomaditionaltime = rumblestruct.randomaditionaltime;
-	}
-	else
-	{
-		self.rumble_randomaditionaltime = 1;
-	}
-	self.player_touching = 0;
-	radius_squared = rumblestruct.radius * rumblestruct.radius;
-	while(true)
-	{
-		if(distancesquared(self.origin, level.localplayers[localclientnum].origin) > radius_squared || self getspeed() < 35)
-		{
-			wait(0.2);
-			continue;
-		}
-		if(isdefined(self.rumbleon) && !self.rumbleon)
-		{
-			wait(0.2);
-			continue;
-		}
-		self playrumblelooponentity(localclientnum, level.vehicle_rumble[type].rumble);
-		while(distancesquared(self.origin, level.localplayers[localclientnum].origin) < radius_squared && self getspeed() > 5)
-		{
-			wait(self.rumble_basetime + randomfloat(self.rumble_randomaditionaltime));
-		}
-		self stoprumble(localclientnum, level.vehicle_rumble[type].rumble);
-	}
+function vehicle_rumble(localclientnum) {
+  self endon(# "entityshutdown");
+  if(!isdefined(level.vehicle_rumble)) {
+    return;
+  }
+  type = self.vehicletype;
+  if(!isdefined(level.vehicle_rumble[type])) {
+    return;
+  }
+  rumblestruct = level.vehicle_rumble[type];
+  height = rumblestruct.radius * 2;
+  zoffset = -1 * rumblestruct.radius;
+  if(!isdefined(self.rumbleon)) {
+    self.rumbleon = 1;
+  }
+  if(isdefined(rumblestruct.scale)) {
+    self.rumble_scale = rumblestruct.scale;
+  } else {
+    self.rumble_scale = 0.15;
+  }
+  if(isdefined(rumblestruct.duration)) {
+    self.rumble_duration = rumblestruct.duration;
+  } else {
+    self.rumble_duration = 4.5;
+  }
+  if(isdefined(rumblestruct.radius)) {
+    self.rumble_radius = rumblestruct.radius;
+  } else {
+    self.rumble_radius = 600;
+  }
+  if(isdefined(rumblestruct.basetime)) {
+    self.rumble_basetime = rumblestruct.basetime;
+  } else {
+    self.rumble_basetime = 1;
+  }
+  if(isdefined(rumblestruct.randomaditionaltime)) {
+    self.rumble_randomaditionaltime = rumblestruct.randomaditionaltime;
+  } else {
+    self.rumble_randomaditionaltime = 1;
+  }
+  self.player_touching = 0;
+  radius_squared = rumblestruct.radius * rumblestruct.radius;
+  while (true) {
+    if(distancesquared(self.origin, level.localplayers[localclientnum].origin) > radius_squared || self getspeed() < 35) {
+      wait(0.2);
+      continue;
+    }
+    if(isdefined(self.rumbleon) && !self.rumbleon) {
+      wait(0.2);
+      continue;
+    }
+    self playrumblelooponentity(localclientnum, level.vehicle_rumble[type].rumble);
+    while (distancesquared(self.origin, level.localplayers[localclientnum].origin) < radius_squared && self getspeed() > 5) {
+      wait(self.rumble_basetime + randomfloat(self.rumble_randomaditionaltime));
+    }
+    self stoprumble(localclientnum, level.vehicle_rumble[type].rumble);
+  }
 }
 
 /*
@@ -143,17 +117,14 @@ function vehicle_rumble(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function set_static_amount(staticamount)
-{
-	driverlocalclient = self getlocalclientdriver();
-	if(isdefined(driverlocalclient))
-	{
-		driver = getlocalplayer(driverlocalclient);
-		if(isdefined(driver))
-		{
-			setfilterpassconstant(driver.localclientnum, 4, 0, 1, staticamount);
-		}
-	}
+function set_static_amount(staticamount) {
+  driverlocalclient = self getlocalclientdriver();
+  if(isdefined(driverlocalclient)) {
+    driver = getlocalplayer(driverlocalclient);
+    if(isdefined(driver)) {
+      setfilterpassconstant(driver.localclientnum, 4, 0, 1, staticamount);
+    }
+  }
 }
 
 /*
@@ -165,9 +136,7 @@ function set_static_amount(staticamount)
 	Parameters: 1
 	Flags: None
 */
-function vehicle_variants(localclientnum)
-{
-}
+function vehicle_variants(localclientnum) {}
 
 /*
 	Name: timeout_beep
@@ -178,42 +147,32 @@ function vehicle_variants(localclientnum)
 	Parameters: 7
 	Flags: Linked
 */
-function timeout_beep(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self notify(#"timeout_beep");
-	if(!newval)
-	{
-		return;
-	}
-	if(isdefined(self.killstreakbundle))
-	{
-		beepalias = self.killstreakbundle.kstimeoutbeepalias;
-	}
-	self endon(#"entityshutdown");
-	self endon(#"timeout_beep");
-	interval = 1;
-	if(newval == 2)
-	{
-		interval = 0.133;
-	}
-	while(true)
-	{
-		if(isdefined(beepalias))
-		{
-			self playsound(localclientnum, beepalias);
-		}
-		if(self.timeoutlightsoff === 1)
-		{
-			self lights_on(localclientnum);
-			self.timeoutlightsoff = 0;
-		}
-		else
-		{
-			self lights_off(localclientnum);
-			self.timeoutlightsoff = 1;
-		}
-		util::server_wait(localclientnum, interval);
-		interval = math::clamp(interval / 1.17, 0.1, 1);
-	}
+function timeout_beep(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self notify(# "timeout_beep");
+  if(!newval) {
+    return;
+  }
+  if(isdefined(self.killstreakbundle)) {
+    beepalias = self.killstreakbundle.kstimeoutbeepalias;
+  }
+  self endon(# "entityshutdown");
+  self endon(# "timeout_beep");
+  interval = 1;
+  if(newval == 2) {
+    interval = 0.133;
+  }
+  while (true) {
+    if(isdefined(beepalias)) {
+      self playsound(localclientnum, beepalias);
+    }
+    if(self.timeoutlightsoff === 1) {
+      self lights_on(localclientnum);
+      self.timeoutlightsoff = 0;
+    } else {
+      self lights_off(localclientnum);
+      self.timeoutlightsoff = 1;
+    }
+    util::server_wait(localclientnum, interval);
+    interval = math::clamp(interval / 1.17, 0.1, 1);
+  }
 }
-

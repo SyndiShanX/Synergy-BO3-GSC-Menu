@@ -14,9 +14,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("medals", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("medals", & __init__, undefined, undefined);
 }
 
 /*
@@ -28,9 +27,8 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_start_gametype(&init);
+function __init__() {
+  callback::on_start_gametype( & init);
 }
 
 /*
@@ -42,12 +40,11 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	level.medalinfo = [];
-	level.medalcallbacks = [];
-	level.numkills = 0;
-	callback::on_connect(&on_player_connect);
+function init() {
+  level.medalinfo = [];
+  level.medalcallbacks = [];
+  level.numkills = 0;
+  callback::on_connect( & on_player_connect);
 }
 
 /*
@@ -59,9 +56,8 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_connect()
-{
-	self.lastkilledby = undefined;
+function on_player_connect() {
+  self.lastkilledby = undefined;
 }
 
 /*
@@ -73,9 +69,8 @@ function on_player_connect()
 	Parameters: 1
 	Flags: None
 */
-function setlastkilledby(attacker)
-{
-	self.lastkilledby = attacker;
+function setlastkilledby(attacker) {
+  self.lastkilledby = attacker;
 }
 
 /*
@@ -87,9 +82,8 @@ function setlastkilledby(attacker)
 	Parameters: 0
 	Flags: None
 */
-function offenseglobalcount()
-{
-	level.globalteammedals++;
+function offenseglobalcount() {
+  level.globalteammedals++;
 }
 
 /*
@@ -101,9 +95,8 @@ function offenseglobalcount()
 	Parameters: 0
 	Flags: None
 */
-function defenseglobalcount()
-{
-	level.globalteammedals++;
+function defenseglobalcount() {
+  level.globalteammedals++;
 }
 
 /*
@@ -115,9 +108,7 @@ function defenseglobalcount()
 	Parameters: 1
 	Flags: Linked
 */
-function codecallback_medal(medalindex)
-{
-	self luinotifyevent(&"medal_received", 1, medalindex);
-	self luinotifyeventtospectators(&"medal_received", 1, medalindex);
+function codecallback_medal(medalindex) {
+  self luinotifyevent( & "medal_received", 1, medalindex);
+  self luinotifyeventtospectators( & "medal_received", 1, medalindex);
 }
-

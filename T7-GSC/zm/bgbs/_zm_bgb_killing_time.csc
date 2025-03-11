@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_killing_time", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_killing_time", & __init__, undefined, undefined);
 }
 
 /*
@@ -32,15 +31,13 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_killing_time", "activated");
-	clientfield::register("actor", "zombie_instakill_fx", 1, 1, "int", &function_a81107fc, 0, 1);
-	clientfield::register("toplayer", "instakill_upgraded_fx", 1, 1, "int", &function_cf8c9fce, 0, 0);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_killing_time", "activated");
+  clientfield::register("actor", "zombie_instakill_fx", 1, 1, "int", & function_a81107fc, 0, 1);
+  clientfield::register("toplayer", "instakill_upgraded_fx", 1, 1, "int", & function_cf8c9fce, 0, 0);
 }
 
 /*
@@ -52,15 +49,10 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function function_cf8c9fce(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-	}
-	else
-	{
-		self notify(#"hash_eb366021");
-	}
+function function_cf8c9fce(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {} else {
+    self notify(# "hash_eb366021");
+  }
 }
 
 /*
@@ -72,18 +64,16 @@ function function_cf8c9fce(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 1
 	Flags: None
 */
-function function_2a30e2ca(localclientnum)
-{
-	self endon(#"death");
-	self endon(#"end_demo_jump_listener");
-	self endon(#"entityshutdown");
-	self notify(#"hash_eb366021");
-	self endon(#"hash_eb366021");
-	while(true)
-	{
-		self.var_dedf9511 = self playsound(localclientnum, "zmb_music_box", self.origin);
-		wait(4);
-	}
+function function_2a30e2ca(localclientnum) {
+  self endon(# "death");
+  self endon(# "end_demo_jump_listener");
+  self endon(# "entityshutdown");
+  self notify(# "hash_eb366021");
+  self endon(# "hash_eb366021");
+  while (true) {
+    self.var_dedf9511 = self playsound(localclientnum, "zmb_music_box", self.origin);
+    wait(4);
+  }
 }
 
 /*
@@ -95,17 +85,14 @@ function function_2a30e2ca(localclientnum)
 	Parameters: 7
 	Flags: Linked
 */
-function function_a81107fc(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(!isdefined(newval))
-	{
-		return;
-	}
-	if(newval)
-	{
-		fxobj = util::spawn_model(localclientnum, "tag_origin", self.origin, self.angles);
-		fxobj thread function_10dcbf51(localclientnum, fxobj);
-	}
+function function_a81107fc(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(!isdefined(newval)) {
+    return;
+  }
+  if(newval) {
+    fxobj = util::spawn_model(localclientnum, "tag_origin", self.origin, self.angles);
+    fxobj thread function_10dcbf51(localclientnum, fxobj);
+  }
 }
 
 /*
@@ -117,10 +104,8 @@ function function_a81107fc(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 2
 	Flags: Linked, Private
 */
-function private function_10dcbf51(localclientnum, fxobj)
-{
-	fxobj playsound(localclientnum, "evt_ai_explode");
-	wait(1);
-	fxobj delete();
+function private function_10dcbf51(localclientnum, fxobj) {
+  fxobj playsound(localclientnum, "evt_ai_explode");
+  wait(1);
+  fxobj delete();
 }
-

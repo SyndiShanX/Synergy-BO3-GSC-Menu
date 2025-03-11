@@ -59,24 +59,23 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	/#
-		/#
-			assert(isdefined(level.first_frame), "");
-		#/
-	#/
-	zm::init();
-	level._loadstarted = 1;
-	register_clientfields();
-	level.aitriggerspawnflags = getaitriggerflags();
-	level.vehicletriggerspawnflags = getvehicletriggerflags();
-	level thread start_intro_screen_zm();
-	setup_traversals();
-	footsteps();
-	system::wait_till("all");
-	level thread art_review();
-	level flagsys::set("load_main_complete");
+function main() {
+  /# /
+  #
+  assert(isdefined(level.first_frame), "");
+  # /
+    # /
+    zm::init();
+  level._loadstarted = 1;
+  register_clientfields();
+  level.aitriggerspawnflags = getaitriggerflags();
+  level.vehicletriggerspawnflags = getvehicletriggerflags();
+  level thread start_intro_screen_zm();
+  setup_traversals();
+  footsteps();
+  system::wait_till("all");
+  level thread art_review();
+  level flagsys::set("load_main_complete");
 }
 
 /*
@@ -88,29 +87,27 @@ function main()
 	Parameters: 0
 	Flags: Linked
 */
-function footsteps()
-{
-	if(isdefined(level.fx_exclude_footsteps) && level.fx_exclude_footsteps)
-	{
-		return;
-	}
-	zombie_utility::setfootstepeffect("asphalt", "_t6/bio/player/fx_footstep_dust");
-	zombie_utility::setfootstepeffect("brick", "_t6/bio/player/fx_footstep_dust");
-	zombie_utility::setfootstepeffect("carpet", "_t6/bio/player/fx_footstep_dust");
-	zombie_utility::setfootstepeffect("cloth", "_t6/bio/player/fx_footstep_dust");
-	zombie_utility::setfootstepeffect("concrete", "_t6/bio/player/fx_footstep_dust");
-	zombie_utility::setfootstepeffect("dirt", "_t6/bio/player/fx_footstep_sand");
-	zombie_utility::setfootstepeffect("foliage", "_t6/bio/player/fx_footstep_sand");
-	zombie_utility::setfootstepeffect("gravel", "_t6/bio/player/fx_footstep_dust");
-	zombie_utility::setfootstepeffect("grass", "_t6/bio/player/fx_footstep_dust");
-	zombie_utility::setfootstepeffect("metal", "_t6/bio/player/fx_footstep_dust");
-	zombie_utility::setfootstepeffect("mud", "_t6/bio/player/fx_footstep_mud");
-	zombie_utility::setfootstepeffect("paper", "_t6/bio/player/fx_footstep_dust");
-	zombie_utility::setfootstepeffect("plaster", "_t6/bio/player/fx_footstep_dust");
-	zombie_utility::setfootstepeffect("rock", "_t6/bio/player/fx_footstep_dust");
-	zombie_utility::setfootstepeffect("sand", "_t6/bio/player/fx_footstep_sand");
-	zombie_utility::setfootstepeffect("water", "_t6/bio/player/fx_footstep_water");
-	zombie_utility::setfootstepeffect("wood", "_t6/bio/player/fx_footstep_dust");
+function footsteps() {
+  if(isdefined(level.fx_exclude_footsteps) && level.fx_exclude_footsteps) {
+    return;
+  }
+  zombie_utility::setfootstepeffect("asphalt", "_t6/bio/player/fx_footstep_dust");
+  zombie_utility::setfootstepeffect("brick", "_t6/bio/player/fx_footstep_dust");
+  zombie_utility::setfootstepeffect("carpet", "_t6/bio/player/fx_footstep_dust");
+  zombie_utility::setfootstepeffect("cloth", "_t6/bio/player/fx_footstep_dust");
+  zombie_utility::setfootstepeffect("concrete", "_t6/bio/player/fx_footstep_dust");
+  zombie_utility::setfootstepeffect("dirt", "_t6/bio/player/fx_footstep_sand");
+  zombie_utility::setfootstepeffect("foliage", "_t6/bio/player/fx_footstep_sand");
+  zombie_utility::setfootstepeffect("gravel", "_t6/bio/player/fx_footstep_dust");
+  zombie_utility::setfootstepeffect("grass", "_t6/bio/player/fx_footstep_dust");
+  zombie_utility::setfootstepeffect("metal", "_t6/bio/player/fx_footstep_dust");
+  zombie_utility::setfootstepeffect("mud", "_t6/bio/player/fx_footstep_mud");
+  zombie_utility::setfootstepeffect("paper", "_t6/bio/player/fx_footstep_dust");
+  zombie_utility::setfootstepeffect("plaster", "_t6/bio/player/fx_footstep_dust");
+  zombie_utility::setfootstepeffect("rock", "_t6/bio/player/fx_footstep_dust");
+  zombie_utility::setfootstepeffect("sand", "_t6/bio/player/fx_footstep_sand");
+  zombie_utility::setfootstepeffect("water", "_t6/bio/player/fx_footstep_water");
+  zombie_utility::setfootstepeffect("wood", "_t6/bio/player/fx_footstep_dust");
 }
 
 /*
@@ -122,9 +119,7 @@ function footsteps()
 	Parameters: 0
 	Flags: Linked
 */
-function setup_traversals()
-{
-}
+function setup_traversals() {}
 
 /*
 	Name: start_intro_screen_zm
@@ -135,15 +130,13 @@ function setup_traversals()
 	Parameters: 0
 	Flags: Linked
 */
-function start_intro_screen_zm()
-{
-	players = getplayers();
-	for(i = 0; i < players.size; i++)
-	{
-		players[i] lui::screen_fade_out(0, undefined);
-		players[i] freezecontrols(1);
-	}
-	wait(1);
+function start_intro_screen_zm() {
+  players = getplayers();
+  for (i = 0; i < players.size; i++) {
+    players[i] lui::screen_fade_out(0, undefined);
+    players[i] freezecontrols(1);
+  }
+  wait(1);
 }
 
 /*
@@ -155,11 +148,9 @@ function start_intro_screen_zm()
 	Parameters: 0
 	Flags: Linked
 */
-function register_clientfields()
-{
-	clientfield::register("allplayers", "zmbLastStand", 1, 1, "int");
-	clientfield::register("clientuimodel", "zmhud.swordEnergy", 1, 7, "float");
-	clientfield::register("clientuimodel", "zmhud.swordState", 1, 4, "int");
-	clientfield::register("clientuimodel", "zmhud.swordChargeUpdate", 1, 1, "counter");
+function register_clientfields() {
+  clientfield::register("allplayers", "zmbLastStand", 1, 1, "int");
+  clientfield::register("clientuimodel", "zmhud.swordEnergy", 1, 7, "float");
+  clientfield::register("clientuimodel", "zmhud.swordState", 1, 4, "int");
+  clientfield::register("clientuimodel", "zmhud.swordChargeUpdate", 1, 1, "counter");
 }
-

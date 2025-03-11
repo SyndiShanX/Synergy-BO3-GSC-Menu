@@ -16,9 +16,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("multi_extracam", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("multi_extracam", & __init__, undefined, undefined);
 }
 
 /*
@@ -30,9 +29,8 @@ function autoexec __init__sytem__()
 	Parameters: 1
 	Flags: Linked
 */
-function __init__(localclientnum)
-{
-	callback::on_localclient_connect(&multi_extracam_init);
+function __init__(localclientnum) {
+  callback::on_localclient_connect( & multi_extracam_init);
 }
 
 /*
@@ -44,20 +42,16 @@ function __init__(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function multi_extracam_init(localclientnum)
-{
-	triggers = getentarray(localclientnum, "multicam_enable", "targetname");
-	for(i = 1; i <= 4; i++)
-	{
-		camerastruct = struct::get("extracam" + i, "targetname");
-		if(isdefined(camerastruct))
-		{
-			camera_ent = spawn(localclientnum, camerastruct.origin, "script_origin");
-			camera_ent.angles = camerastruct.angles;
-			width = (isdefined(camerastruct.extracam_width) ? camerastruct.extracam_width : -1);
-			height = (isdefined(camerastruct.extracam_height) ? camerastruct.extracam_height : -1);
-			camera_ent setextracam(i - 1, width, height);
-		}
-	}
+function multi_extracam_init(localclientnum) {
+  triggers = getentarray(localclientnum, "multicam_enable", "targetname");
+  for (i = 1; i <= 4; i++) {
+    camerastruct = struct::get("extracam" + i, "targetname");
+    if(isdefined(camerastruct)) {
+      camera_ent = spawn(localclientnum, camerastruct.origin, "script_origin");
+      camera_ent.angles = camerastruct.angles;
+      width = (isdefined(camerastruct.extracam_width) ? camerastruct.extracam_width : -1);
+      height = (isdefined(camerastruct.extracam_height) ? camerastruct.extracam_height : -1);
+      camera_ent setextracam(i - 1, width, height);
+    }
+  }
 }
-

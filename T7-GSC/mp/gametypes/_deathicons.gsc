@@ -17,9 +17,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("deathicons", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("deathicons", & __init__, undefined, undefined);
 }
 
 /*
@@ -31,10 +30,9 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	callback::on_start_gametype(&init);
-	callback::on_connect(&on_player_connect);
+function __init__() {
+  callback::on_start_gametype( & init);
+  callback::on_connect( & on_player_connect);
 }
 
 /*
@@ -46,16 +44,13 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-	if(!isdefined(level.ragdoll_override))
-	{
-		level.ragdoll_override = &ragdoll_override;
-	}
-	if(!level.teambased)
-	{
-		return;
-	}
+function init() {
+  if(!isdefined(level.ragdoll_override)) {
+    level.ragdoll_override = & ragdoll_override;
+  }
+  if(!level.teambased) {
+    return;
+  }
 }
 
 /*
@@ -67,9 +62,8 @@ function init()
 	Parameters: 0
 	Flags: Linked
 */
-function on_player_connect()
-{
-	self.selfdeathicons = [];
+function on_player_connect() {
+  self.selfdeathicons = [];
 }
 
 /*
@@ -81,9 +75,7 @@ function on_player_connect()
 	Parameters: 0
 	Flags: None
 */
-function update_enabled()
-{
-}
+function update_enabled() {}
 
 /*
 	Name: add
@@ -94,35 +86,31 @@ function update_enabled()
 	Parameters: 4
 	Flags: Linked
 */
-function add(entity, dyingplayer, team, timeout)
-{
-	if(!level.teambased)
-	{
-		return;
-	}
-	iconorg = entity.origin;
-	dyingplayer endon(#"spawned_player");
-	dyingplayer endon(#"disconnect");
-	wait(0.05);
-	util::waittillslowprocessallowed();
-	/#
-		assert(isdefined(level.teams[team]));
-	#/
-	/#
-		assert(isdefined(level.teamindex[team]));
-	#/
-	if(getdvarstring("ui_hud_showdeathicons") == "0")
-	{
-		return;
-	}
-	if(level.hardcoremode)
-	{
-		return;
-	}
-	deathiconobjid = gameobjects::get_next_obj_id();
-	objective_add(deathiconobjid, "active", iconorg, &"headicon_dead");
-	objective_team(deathiconobjid, team);
-	level thread destroy_slowly(timeout, deathiconobjid);
+function add(entity, dyingplayer, team, timeout) {
+  if(!level.teambased) {
+    return;
+  }
+  iconorg = entity.origin;
+  dyingplayer endon(# "spawned_player");
+  dyingplayer endon(# "disconnect");
+  wait(0.05);
+  util::waittillslowprocessallowed();
+  /#
+  assert(isdefined(level.teams[team]));
+  # /
+    /#
+  assert(isdefined(level.teamindex[team]));
+  # /
+    if(getdvarstring("ui_hud_showdeathicons") == "0") {
+      return;
+    }
+  if(level.hardcoremode) {
+    return;
+  }
+  deathiconobjid = gameobjects::get_next_obj_id();
+  objective_add(deathiconobjid, "active", iconorg, & "headicon_dead");
+  objective_team(deathiconobjid, team);
+  level thread destroy_slowly(timeout, deathiconobjid);
 }
 
 /*
@@ -134,13 +122,12 @@ function add(entity, dyingplayer, team, timeout)
 	Parameters: 2
 	Flags: Linked
 */
-function destroy_slowly(timeout, deathiconobjid)
-{
-	wait(timeout);
-	objective_state(deathiconobjid, "done");
-	wait(1);
-	objective_delete(deathiconobjid);
-	gameobjects::release_obj_id(deathiconobjid);
+function destroy_slowly(timeout, deathiconobjid) {
+  wait(timeout);
+  objective_state(deathiconobjid, "done");
+  wait(1);
+  objective_delete(deathiconobjid);
+  gameobjects::release_obj_id(deathiconobjid);
 }
 
 /*
@@ -152,17 +139,13 @@ function destroy_slowly(timeout, deathiconobjid)
 	Parameters: 10
 	Flags: Linked
 */
-function ragdoll_override(idamage, smeansofdeath, sweapon, shitloc, vdir, vattackerorigin, deathanimduration, einflictor, ragdoll_jib, body)
-{
-	if(smeansofdeath == "MOD_FALLING" && self isonground() == 1)
-	{
-		body startragdoll();
-		if(!isdefined(self.switching_teams))
-		{
-			thread add(body, self, self.team, 5);
-		}
-		return true;
-	}
-	return false;
+function ragdoll_override(idamage, smeansofdeath, sweapon, shitloc, vdir, vattackerorigin, deathanimduration, einflictor, ragdoll_jib, body) {
+  if(smeansofdeath == "MOD_FALLING" && self isonground() == 1) {
+    body startragdoll();
+    if(!isdefined(self.switching_teams)) {
+      thread add(body, self, self.team, 5);
+    }
+    return true;
+  }
+  return false;
 }
-

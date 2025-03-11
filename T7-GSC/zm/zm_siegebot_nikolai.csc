@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_siegebot_nikolai", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_siegebot_nikolai", & __init__, undefined, undefined);
 }
 
 /*
@@ -32,19 +31,18 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	vehicle::add_vehicletype_callback("siegebot_nikolai", &on_spawned);
-	clientfield::register("vehicle", "nikolai_destroyed_r_arm", 12000, 1, "int", &nikolai_destroyed_r_arm, 0, 0);
-	clientfield::register("vehicle", "nikolai_destroyed_l_arm", 12000, 1, "int", &nikolai_destroyed_l_arm, 0, 0);
-	clientfield::register("vehicle", "nikolai_destroyed_r_chest", 12000, 1, "int", &nikolai_destroyed_r_chest, 0, 0);
-	clientfield::register("vehicle", "nikolai_destroyed_l_chest", 12000, 1, "int", &nikolai_destroyed_l_chest, 0, 0);
-	clientfield::register("vehicle", "nikolai_weakpoint_l_fx", 12000, 1, "int", &nikolai_weakpoint_l_fx, 0, 0);
-	clientfield::register("vehicle", "nikolai_weakpoint_r_fx", 12000, 1, "int", &nikolai_weakpoint_r_fx, 0, 0);
-	clientfield::register("vehicle", "nikolai_gatling_tell", 12000, 1, "int", &nikolai_gatling_tell, 0, 0);
-	clientfield::register("missile", "harpoon_impact", 12000, 1, "int", &harpoon_impact, 0, 0);
-	clientfield::register("vehicle", "play_raps_trail_fx", 12000, 1, "int", &function_66f3947f, 0, 0);
-	clientfield::register("vehicle", "raps_landing", 12000, 1, "int", &raps_landing, 0, 0);
+function __init__() {
+  vehicle::add_vehicletype_callback("siegebot_nikolai", & on_spawned);
+  clientfield::register("vehicle", "nikolai_destroyed_r_arm", 12000, 1, "int", & nikolai_destroyed_r_arm, 0, 0);
+  clientfield::register("vehicle", "nikolai_destroyed_l_arm", 12000, 1, "int", & nikolai_destroyed_l_arm, 0, 0);
+  clientfield::register("vehicle", "nikolai_destroyed_r_chest", 12000, 1, "int", & nikolai_destroyed_r_chest, 0, 0);
+  clientfield::register("vehicle", "nikolai_destroyed_l_chest", 12000, 1, "int", & nikolai_destroyed_l_chest, 0, 0);
+  clientfield::register("vehicle", "nikolai_weakpoint_l_fx", 12000, 1, "int", & nikolai_weakpoint_l_fx, 0, 0);
+  clientfield::register("vehicle", "nikolai_weakpoint_r_fx", 12000, 1, "int", & nikolai_weakpoint_r_fx, 0, 0);
+  clientfield::register("vehicle", "nikolai_gatling_tell", 12000, 1, "int", & nikolai_gatling_tell, 0, 0);
+  clientfield::register("missile", "harpoon_impact", 12000, 1, "int", & harpoon_impact, 0, 0);
+  clientfield::register("vehicle", "play_raps_trail_fx", 12000, 1, "int", & function_66f3947f, 0, 0);
+  clientfield::register("vehicle", "raps_landing", 12000, 1, "int", & raps_landing, 0, 0);
 }
 
 /*
@@ -56,11 +54,10 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function on_spawned(localclientnum)
-{
-	self useanimtree($generic);
-	self thread function_89d7e567(localclientnum);
-	self thread function_48c3fc7d(localclientnum);
+function on_spawned(localclientnum) {
+  self useanimtree($generic);
+  self thread function_89d7e567(localclientnum);
+  self thread function_48c3fc7d(localclientnum);
 }
 
 /*
@@ -72,44 +69,37 @@ function on_spawned(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function function_48c3fc7d(localclientnum)
-{
-	self endon(#"entityshutdown");
-	self notify(#"hash_48c3fc7d");
-	self endon(#"hash_48c3fc7d");
-	nikolai = undefined;
-	while(true)
-	{
-		level waittill(#"hash_eeba0c72");
-		if(!isdefined(nikolai))
-		{
-			allents = getentarray(localclientnum);
-			foreach(ent in allents)
-			{
-				if(ent.model === "c_zom_dlc_waw_nikolai_fb" && self isentitylinkedtotag(ent))
-				{
-					nikolai = ent;
-				}
-			}
-		}
-		bottle = undefined;
-		if(isdefined(nikolai))
-		{
-			origin = nikolai gettagorigin("j_ringbase_le");
-			angles = nikolai gettagangles("j_ringbase_le");
-			up = anglestoup(angles);
-			angles = angles + vectorscale((0, 0, 1), 180);
-			bottle = spawn(localclientnum, origin, "script_model");
-			bottle setmodel("p7_zm_sta_bottle_vodka_01");
-			bottle.angles = angles;
-			nikolai thread function_97181777(bottle);
-		}
-		level waittill(#"hash_13cefe1f");
-		if(isdefined(bottle))
-		{
-			bottle delete();
-		}
-	}
+function function_48c3fc7d(localclientnum) {
+  self endon(# "entityshutdown");
+  self notify(# "hash_48c3fc7d");
+  self endon(# "hash_48c3fc7d");
+  nikolai = undefined;
+  while (true) {
+    level waittill(# "hash_eeba0c72");
+    if(!isdefined(nikolai)) {
+      allents = getentarray(localclientnum);
+      foreach(ent in allents) {
+        if(ent.model === "c_zom_dlc_waw_nikolai_fb" && self isentitylinkedtotag(ent)) {
+          nikolai = ent;
+        }
+      }
+    }
+    bottle = undefined;
+    if(isdefined(nikolai)) {
+      origin = nikolai gettagorigin("j_ringbase_le");
+      angles = nikolai gettagangles("j_ringbase_le");
+      up = anglestoup(angles);
+      angles = angles + vectorscale((0, 0, 1), 180);
+      bottle = spawn(localclientnum, origin, "script_model");
+      bottle setmodel("p7_zm_sta_bottle_vodka_01");
+      bottle.angles = angles;
+      nikolai thread function_97181777(bottle);
+    }
+    level waittill(# "hash_13cefe1f");
+    if(isdefined(bottle)) {
+      bottle delete();
+    }
+  }
 }
 
 /*
@@ -121,21 +111,19 @@ function function_48c3fc7d(localclientnum)
 	Parameters: 1
 	Flags: Linked
 */
-function function_97181777(bottle)
-{
-	while(isdefined(self) && isdefined(bottle))
-	{
-		origin = self gettagorigin("j_ringbase_le");
-		angles = self gettagangles("j_ringbase_le");
-		forward = anglestoforward(angles);
-		right = anglestoright(angles);
-		up = anglestoup(angles);
-		angles = angles + vectorscale((0, 0, 1), 180);
-		offset = (forward * 1.6) + (right * -1.2) + (up * 11);
-		bottle.origin = origin + offset;
-		bottle.angles = angles;
-		wait(0.016);
-	}
+function function_97181777(bottle) {
+  while (isdefined(self) && isdefined(bottle)) {
+    origin = self gettagorigin("j_ringbase_le");
+    angles = self gettagangles("j_ringbase_le");
+    forward = anglestoforward(angles);
+    right = anglestoright(angles);
+    up = anglestoup(angles);
+    angles = angles + vectorscale((0, 0, 1), 180);
+    offset = (forward * 1.6) + (right * -1.2) + (up * 11);
+    bottle.origin = origin + offset;
+    bottle.angles = angles;
+    wait(0.016);
+  }
 }
 
 /*
@@ -147,15 +135,13 @@ function function_97181777(bottle)
 	Parameters: 1
 	Flags: Linked
 */
-function function_89d7e567(localclientnum)
-{
-	self endon(#"disconnect");
-	self endon(#"entityshutdown");
-	while(true)
-	{
-		self waittill(#"gunner_weapon_fired");
-		self setanim("ai_zm_dlc3_russian_mech_shoot_gunbarrel", 1, 0, 1);
-	}
+function function_89d7e567(localclientnum) {
+  self endon(# "disconnect");
+  self endon(# "entityshutdown");
+  while (true) {
+    self waittill(# "gunner_weapon_fired");
+    self setanim("ai_zm_dlc3_russian_mech_shoot_gunbarrel", 1, 0, 1);
+  }
 }
 
 /*
@@ -167,27 +153,21 @@ function function_89d7e567(localclientnum)
 	Parameters: 7
 	Flags: Linked
 */
-function nikolai_gatling_tell(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		self.var_16903828 = playfxontag(localclientnum, level._effect["nikolai_gatling_tell"], self, "tag_gunner_aim1");
-		self playsound(localclientnum, "zmb_nikolaibot_rapidfire_start", self gettagorigin("tag_eye"));
-		self.var_464db63 = self playloopsound("zmb_nikolaibot_rapidfire_barrel_lp");
-	}
-	else
-	{
-		if(isdefined(self.var_16903828))
-		{
-			stopfx(localclientnum, self.var_16903828);
-		}
-		self playsound(localclientnum, "zmb_nikolaibot_rapidfire_end", self gettagorigin("tag_eye"));
-		if(isdefined(self.var_464db63))
-		{
-			self stoploopsound(self.var_464db63);
-			self.var_464db63 = undefined;
-		}
-	}
+function nikolai_gatling_tell(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    self.var_16903828 = playfxontag(localclientnum, level._effect["nikolai_gatling_tell"], self, "tag_gunner_aim1");
+    self playsound(localclientnum, "zmb_nikolaibot_rapidfire_start", self gettagorigin("tag_eye"));
+    self.var_464db63 = self playloopsound("zmb_nikolaibot_rapidfire_barrel_lp");
+  } else {
+    if(isdefined(self.var_16903828)) {
+      stopfx(localclientnum, self.var_16903828);
+    }
+    self playsound(localclientnum, "zmb_nikolaibot_rapidfire_end", self gettagorigin("tag_eye"));
+    if(isdefined(self.var_464db63)) {
+      self stoploopsound(self.var_464db63);
+      self.var_464db63 = undefined;
+    }
+  }
 }
 
 /*
@@ -199,13 +179,11 @@ function nikolai_gatling_tell(localclientnum, oldval, newval, bnewent, binitials
 	Parameters: 7
 	Flags: Linked
 */
-function nikolai_destroyed_r_arm(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		playfxontag(localclientnum, level._effect["nikolai_weakpoint_destroyed"], self, "tag_heat_vent_01_d1");
-		self playsound(localclientnum, "zmb_nikolaibot_damage", self gettagorigin("tag_heat_vent_01_d1"));
-	}
+function nikolai_destroyed_r_arm(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    playfxontag(localclientnum, level._effect["nikolai_weakpoint_destroyed"], self, "tag_heat_vent_01_d1");
+    self playsound(localclientnum, "zmb_nikolaibot_damage", self gettagorigin("tag_heat_vent_01_d1"));
+  }
 }
 
 /*
@@ -217,13 +195,11 @@ function nikolai_destroyed_r_arm(localclientnum, oldval, newval, bnewent, biniti
 	Parameters: 7
 	Flags: Linked
 */
-function nikolai_destroyed_l_arm(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		playfxontag(localclientnum, level._effect["nikolai_weakpoint_destroyed"], self, "tag_heat_vent_02_d1");
-		self playsound(localclientnum, "zmb_nikolaibot_damage", self gettagorigin("tag_heat_vent_02_d1"));
-	}
+function nikolai_destroyed_l_arm(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    playfxontag(localclientnum, level._effect["nikolai_weakpoint_destroyed"], self, "tag_heat_vent_02_d1");
+    self playsound(localclientnum, "zmb_nikolaibot_damage", self gettagorigin("tag_heat_vent_02_d1"));
+  }
 }
 
 /*
@@ -235,13 +211,11 @@ function nikolai_destroyed_l_arm(localclientnum, oldval, newval, bnewent, biniti
 	Parameters: 7
 	Flags: Linked
 */
-function nikolai_destroyed_r_chest(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		playfxontag(localclientnum, level._effect["nikolai_weakpoint_destroyed"], self, "tag_heat_vent_03_d1");
-		self playsound(localclientnum, "zmb_nikolaibot_damage", self gettagorigin("tag_heat_vent_03_d1"));
-	}
+function nikolai_destroyed_r_chest(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    playfxontag(localclientnum, level._effect["nikolai_weakpoint_destroyed"], self, "tag_heat_vent_03_d1");
+    self playsound(localclientnum, "zmb_nikolaibot_damage", self gettagorigin("tag_heat_vent_03_d1"));
+  }
 }
 
 /*
@@ -253,13 +227,11 @@ function nikolai_destroyed_r_chest(localclientnum, oldval, newval, bnewent, bini
 	Parameters: 7
 	Flags: Linked
 */
-function nikolai_destroyed_l_chest(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		playfxontag(localclientnum, level._effect["nikolai_weakpoint_destroyed"], self, "tag_heat_vent_04_d1");
-		self playsound(localclientnum, "zmb_nikolaibot_damage", self gettagorigin("tag_heat_vent_04_d1"));
-	}
+function nikolai_destroyed_l_chest(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    playfxontag(localclientnum, level._effect["nikolai_weakpoint_destroyed"], self, "tag_heat_vent_04_d1");
+    self playsound(localclientnum, "zmb_nikolaibot_damage", self gettagorigin("tag_heat_vent_04_d1"));
+  }
 }
 
 /*
@@ -271,17 +243,13 @@ function nikolai_destroyed_l_chest(localclientnum, oldval, newval, bnewent, bini
 	Parameters: 7
 	Flags: Linked
 */
-function nikolai_weakpoint_r_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		self.var_da48848b = playfxontag(localclientnum, level._effect["nikolai_weakpoint_fx"], self, "tag_heat_vent_01_d0");
-	}
-	else if(isdefined(self.var_da48848b))
-	{
-		stopfx(localclientnum, self.var_da48848b);
-		self.var_da48848b = undefined;
-	}
+function nikolai_weakpoint_r_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    self.var_da48848b = playfxontag(localclientnum, level._effect["nikolai_weakpoint_fx"], self, "tag_heat_vent_01_d0");
+  } else if(isdefined(self.var_da48848b)) {
+    stopfx(localclientnum, self.var_da48848b);
+    self.var_da48848b = undefined;
+  }
 }
 
 /*
@@ -293,17 +261,13 @@ function nikolai_weakpoint_r_fx(localclientnum, oldval, newval, bnewent, binitia
 	Parameters: 7
 	Flags: Linked
 */
-function nikolai_weakpoint_l_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		self.var_f639a615 = playfxontag(localclientnum, level._effect["nikolai_weakpoint_fx"], self, "tag_heat_vent_02_d0");
-	}
-	else if(isdefined(self.var_f639a615))
-	{
-		stopfx(localclientnum, self.var_f639a615);
-		self.var_f639a615 = undefined;
-	}
+function nikolai_weakpoint_l_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    self.var_f639a615 = playfxontag(localclientnum, level._effect["nikolai_weakpoint_fx"], self, "tag_heat_vent_02_d0");
+  } else if(isdefined(self.var_f639a615)) {
+    stopfx(localclientnum, self.var_f639a615);
+    self.var_f639a615 = undefined;
+  }
 }
 
 /*
@@ -315,14 +279,12 @@ function nikolai_weakpoint_l_fx(localclientnum, oldval, newval, bnewent, binitia
 	Parameters: 7
 	Flags: Linked
 */
-function harpoon_impact(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		playfx(localclientnum, level._effect["nikolai_harpoon_impact"], self.origin, anglestoforward(self.angles) * -1);
-		playsound(0, "zmb_nikolaibot_harpoon_impact", self.origin + vectorscale((0, 0, 1), 10));
-		playrumbleonposition(localclientnum, "harpoon_land", self.origin + vectorscale((0, 0, 1), 10));
-	}
+function harpoon_impact(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    playfx(localclientnum, level._effect["nikolai_harpoon_impact"], self.origin, anglestoforward(self.angles) * -1);
+    playsound(0, "zmb_nikolaibot_harpoon_impact", self.origin + vectorscale((0, 0, 1), 10));
+    playrumbleonposition(localclientnum, "harpoon_land", self.origin + vectorscale((0, 0, 1), 10));
+  }
 }
 
 /*
@@ -334,19 +296,15 @@ function harpoon_impact(localclientnum, oldval, newval, bnewent, binitialsnap, f
 	Parameters: 7
 	Flags: Linked
 */
-function function_66f3947f(n_local_client, n_val_old, n_val_new, b_ent_new, b_initial_snap, str_field, b_demo_jump)
-{
-	self endon(#"disconnect");
-	self endon(#"entityshutdown");
-	if(n_val_new)
-	{
-		self.fx_trail = playfxontag(n_local_client, level._effect["nikolai_raps_trail"], self, "tag_body");
-		self playsound(0, "wpn_nikolaibot_raps_launch");
-	}
-	else if(isdefined(self.fx_trail))
-	{
-		stopfx(n_local_client, self.fx_trail);
-	}
+function function_66f3947f(n_local_client, n_val_old, n_val_new, b_ent_new, b_initial_snap, str_field, b_demo_jump) {
+  self endon(# "disconnect");
+  self endon(# "entityshutdown");
+  if(n_val_new) {
+    self.fx_trail = playfxontag(n_local_client, level._effect["nikolai_raps_trail"], self, "tag_body");
+    self playsound(0, "wpn_nikolaibot_raps_launch");
+  } else if(isdefined(self.fx_trail)) {
+    stopfx(n_local_client, self.fx_trail);
+  }
 }
 
 /*
@@ -358,12 +316,9 @@ function function_66f3947f(n_local_client, n_val_old, n_val_new, b_ent_new, b_in
 	Parameters: 7
 	Flags: Linked
 */
-function raps_landing(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		playfxontag(localclientnum, level._effect["nikolai_raps_landing"], self, "tag_origin");
-		self playsound(0, "zmb_nikolaibot_raps_impact");
-	}
+function raps_landing(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    playfxontag(localclientnum, level._effect["nikolai_raps_landing"], self, "tag_origin");
+    self playsound(0, "zmb_nikolaibot_raps_impact");
+  }
 }
-

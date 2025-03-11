@@ -25,9 +25,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_weap_annihilator", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_weap_annihilator", & __init__, undefined, undefined);
 }
 
 /*
@@ -39,11 +38,10 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	zm_spawner::register_zombie_death_event_callback(&check_annihilator_death);
-	zm_hero_weapon::register_hero_weapon("hero_annihilator");
-	level.weaponannihilator = getweapon("hero_annihilator");
+function __init__() {
+  zm_spawner::register_zombie_death_event_callback( & check_annihilator_death);
+  zm_hero_weapon::register_hero_weapon("hero_annihilator");
+  level.weaponannihilator = getweapon("hero_annihilator");
 }
 
 /*
@@ -55,15 +53,11 @@ function __init__()
 	Parameters: 1
 	Flags: Linked
 */
-function check_annihilator_death(attacker)
-{
-	if(isdefined(self.damageweapon) && !self.damageweapon === level.weaponnone)
-	{
-		if(self.damageweapon === level.weaponannihilator)
-		{
-			self zombie_utility::gib_random_parts();
-			gibserverutils::annihilate(self);
-		}
-	}
+function check_annihilator_death(attacker) {
+  if(isdefined(self.damageweapon) && !self.damageweapon === level.weaponnone) {
+    if(self.damageweapon === level.weaponannihilator) {
+      self zombie_utility::gib_random_parts();
+      gibserverutils::annihilate(self);
+    }
+  }
 }
-

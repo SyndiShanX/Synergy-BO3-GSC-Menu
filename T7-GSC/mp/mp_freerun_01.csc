@@ -17,13 +17,11 @@
 	Parameters: 0
 	Flags: None
 */
-function main()
-{
-	namespace_b046f355::main();
-	namespace_db5bc658::main();
-	setdvar("phys_buoyancy", 1);
-	setdvar("phys_ragdoll_buoyancy", 1);
-	load::main();
-	util::waitforclient(0);
+function main() {
+  namespace_b046f355::main();
+  namespace_db5bc658::main();
+  setdvar("phys_buoyancy", 1);
+  setdvar("phys_ragdoll_buoyancy", 1);
+  load::main();
+  util::waitforclient(0);
 }
-

@@ -30,9 +30,8 @@
 	Parameters: 2
 	Flags: None
 */
-function function_3b6587d6()
-{
-	// Unsupported VM revision (1B).
+function function_3b6587d6() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -44,9 +43,8 @@ function function_3b6587d6()
 	Parameters: 6
 	Flags: None
 */
-function mobile_shop_setup()
-{
-	// Unsupported VM revision (1B).
+function mobile_shop_setup() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -58,9 +56,8 @@ function mobile_shop_setup()
 	Parameters: 1
 	Flags: None
 */
-function mobile_weapon_usable()
-{
-	// Unsupported VM revision (1B).
+function mobile_weapon_usable() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -72,9 +69,8 @@ function mobile_weapon_usable()
 	Parameters: 2
 	Flags: None
 */
-function mobile_weapon_pickup()
-{
-	// Unsupported VM revision (1B).
+function mobile_weapon_pickup() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -86,9 +82,8 @@ function mobile_weapon_pickup()
 	Parameters: 0
 	Flags: None
 */
-function mobile_weapon_cleanup()
-{
-	// Unsupported VM revision (1B).
+function mobile_weapon_cleanup() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -100,9 +95,8 @@ function mobile_weapon_cleanup()
 	Parameters: 1
 	Flags: None
 */
-function mobile_weapon_give()
-{
-	// Unsupported VM revision (1B).
+function mobile_weapon_give() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -114,9 +108,8 @@ function mobile_weapon_give()
 	Parameters: 0
 	Flags: None
 */
-function function_d3cb8a55()
-{
-	// Unsupported VM revision (1B).
+function function_d3cb8a55() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -128,9 +121,8 @@ function function_d3cb8a55()
 	Parameters: 0
 	Flags: None
 */
-function function_6fc3995f()
-{
-	// Unsupported VM revision (1B).
+function function_6fc3995f() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -142,9 +134,8 @@ function function_6fc3995f()
 	Parameters: 2
 	Flags: None
 */
-function minigun_usable()
-{
-	// Unsupported VM revision (1B).
+function minigun_usable() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -156,9 +147,8 @@ function minigun_usable()
 	Parameters: 3
 	Flags: None
 */
-function minigun_pickup()
-{
-	// Unsupported VM revision (1B).
+function minigun_pickup() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -170,9 +160,8 @@ function minigun_pickup()
 	Parameters: 2
 	Flags: None
 */
-function minigun_turret_cleanup()
-{
-	// Unsupported VM revision (1B).
+function minigun_turret_cleanup() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -184,9 +173,8 @@ function minigun_turret_cleanup()
 	Parameters: 1
 	Flags: None
 */
-function minigun_give()
-{
-	// Unsupported VM revision (1B).
+function minigun_give() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -198,9 +186,8 @@ function minigun_give()
 	Parameters: 1
 	Flags: None
 */
-function keeping_up_with_minigun_ammo_count()
-{
-	// Unsupported VM revision (1B).
+function keeping_up_with_minigun_ammo_count() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -212,9 +199,8 @@ function keeping_up_with_minigun_ammo_count()
 	Parameters: 0
 	Flags: None
 */
-function waittill_minigun_need_to_drop()
-{
-	// Unsupported VM revision (1B).
+function waittill_minigun_need_to_drop() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -226,9 +212,8 @@ function waittill_minigun_need_to_drop()
 	Parameters: 1
 	Flags: None
 */
-function minigun_drop()
-{
-	// Unsupported VM revision (1B).
+function minigun_drop() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -240,9 +225,8 @@ function minigun_drop()
 	Parameters: 0
 	Flags: None
 */
-function function_a6145523()
-{
-	// Unsupported VM revision (1B).
+function function_a6145523() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -254,9 +238,8 @@ function function_a6145523()
 	Parameters: 0
 	Flags: None
 */
-function function_5408b0dd()
-{
-	// Unsupported VM revision (1B).
+function function_5408b0dd() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -268,9 +251,8 @@ function function_5408b0dd()
 	Parameters: 0
 	Flags: None
 */
-function function_ac865287()
-{
-	// Unsupported VM revision (1B).
+function function_ac865287() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -282,9 +264,8 @@ function function_ac865287()
 	Parameters: 0
 	Flags: None
 */
-function juiced_shotgun_trigger_setup()
-{
-	// Unsupported VM revision (1B).
+function juiced_shotgun_trigger_setup() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -296,9 +277,8 @@ function juiced_shotgun_trigger_setup()
 	Parameters: 0
 	Flags: None
 */
-function juiced_shotgun_watcher()
-{
-	// Unsupported VM revision (1B).
+function juiced_shotgun_watcher() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -310,9 +290,8 @@ function juiced_shotgun_watcher()
 	Parameters: 0
 	Flags: None
 */
-function spawn_funcs_generic_rogue_control()
-{
-	// Unsupported VM revision (1B).
+function spawn_funcs_generic_rogue_control() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -324,9 +303,8 @@ function spawn_funcs_generic_rogue_control()
 	Parameters: 1
 	Flags: None
 */
-function function_b4c5517f()
-{
-	// Unsupported VM revision (1B).
+function function_b4c5517f() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -338,9 +316,8 @@ function function_b4c5517f()
 	Parameters: 1
 	Flags: None
 */
-function destructible_watch()
-{
-	// Unsupported VM revision (1B).
+function destructible_watch() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -352,9 +329,8 @@ function destructible_watch()
 	Parameters: 1
 	Flags: None
 */
-function function_aabc561a()
-{
-	// Unsupported VM revision (1B).
+function function_aabc561a() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -366,9 +342,8 @@ function function_aabc561a()
 	Parameters: 3
 	Flags: None
 */
-function function_8108bdb8()
-{
-	// Unsupported VM revision (1B).
+function function_8108bdb8() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -380,9 +355,8 @@ function function_8108bdb8()
 	Parameters: 2
 	Flags: None
 */
-function function_8effc214()
-{
-	// Unsupported VM revision (1B).
+function function_8effc214() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -394,9 +368,8 @@ function function_8effc214()
 	Parameters: 1
 	Flags: None
 */
-function enemy_on_fire()
-{
-	// Unsupported VM revision (1B).
+function enemy_on_fire() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -408,9 +381,8 @@ function enemy_on_fire()
 	Parameters: 2
 	Flags: None
 */
-function function_2838f054()
-{
-	// Unsupported VM revision (1B).
+function function_2838f054() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -422,9 +394,8 @@ function function_2838f054()
 	Parameters: 2
 	Flags: None
 */
-function function_c9fa49c2()
-{
-	// Unsupported VM revision (1B).
+function function_c9fa49c2() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -436,9 +407,8 @@ function function_c9fa49c2()
 	Parameters: 3
 	Flags: None
 */
-function function_50ae49cd()
-{
-	// Unsupported VM revision (1B).
+function function_50ae49cd() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -450,9 +420,8 @@ function function_50ae49cd()
 	Parameters: 2
 	Flags: None
 */
-function function_20fc45fd()
-{
-	// Unsupported VM revision (1B).
+function function_20fc45fd() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -464,9 +433,8 @@ function function_20fc45fd()
 	Parameters: 1
 	Flags: None
 */
-function function_393c81a5()
-{
-	// Unsupported VM revision (1B).
+function function_393c81a5() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -478,9 +446,8 @@ function function_393c81a5()
 	Parameters: 1
 	Flags: None
 */
-function function_f2596cbe()
-{
-	// Unsupported VM revision (1B).
+function function_f2596cbe() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -492,9 +459,8 @@ function function_f2596cbe()
 	Parameters: 1
 	Flags: None
 */
-function function_5a92c897()
-{
-	// Unsupported VM revision (1B).
+function function_5a92c897() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -506,9 +472,8 @@ function function_5a92c897()
 	Parameters: 1
 	Flags: None
 */
-function function_6c396cfa()
-{
-	// Unsupported VM revision (1B).
+function function_6c396cfa() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -520,9 +485,8 @@ function function_6c396cfa()
 	Parameters: 1
 	Flags: None
 */
-function function_5da90c71()
-{
-	// Unsupported VM revision (1B).
+function function_5da90c71() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -534,9 +498,8 @@ function function_5da90c71()
 	Parameters: 2
 	Flags: None
 */
-function gather_point_wait()
-{
-	// Unsupported VM revision (1B).
+function gather_point_wait() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -548,9 +511,8 @@ function gather_point_wait()
 	Parameters: 1
 	Flags: None
 */
-function function_d720c23e()
-{
-	// Unsupported VM revision (1B).
+function function_d720c23e() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -562,9 +524,8 @@ function function_d720c23e()
 	Parameters: 1
 	Flags: None
 */
-function function_14be4cad()
-{
-	// Unsupported VM revision (1B).
+function function_14be4cad() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -576,9 +537,8 @@ function function_14be4cad()
 	Parameters: 0
 	Flags: None
 */
-function function_ba1b651d()
-{
-	// Unsupported VM revision (1B).
+function function_ba1b651d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -590,9 +550,8 @@ function function_ba1b651d()
 	Parameters: 7
 	Flags: None
 */
-function function_c7bebe99()
-{
-	// Unsupported VM revision (1B).
+function function_c7bebe99() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -604,9 +563,8 @@ function function_c7bebe99()
 	Parameters: 2
 	Flags: None
 */
-function function_de4512ae()
-{
-	// Unsupported VM revision (1B).
+function function_de4512ae() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -618,9 +576,8 @@ function function_de4512ae()
 	Parameters: 4
 	Flags: None
 */
-function function_99514074()
-{
-	// Unsupported VM revision (1B).
+function function_99514074() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -632,9 +589,8 @@ function function_99514074()
 	Parameters: 4
 	Flags: None
 */
-function function_c7cc24f8()
-{
-	// Unsupported VM revision (1B).
+function function_c7cc24f8() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -646,9 +602,8 @@ function function_c7cc24f8()
 	Parameters: 5
 	Flags: None
 */
-function function_c92cb5b()
-{
-	// Unsupported VM revision (1B).
+function function_c92cb5b() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -660,9 +615,8 @@ function function_c92cb5b()
 	Parameters: 6
 	Flags: None
 */
-function function_283fcbc5()
-{
-	// Unsupported VM revision (1B).
+function function_283fcbc5() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -674,9 +628,8 @@ function function_283fcbc5()
 	Parameters: 4
 	Flags: None
 */
-function function_90b3f11f()
-{
-	// Unsupported VM revision (1B).
+function function_90b3f11f() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -688,9 +641,8 @@ function function_90b3f11f()
 	Parameters: 5
 	Flags: None
 */
-function function_bc628f1d()
-{
-	// Unsupported VM revision (1B).
+function function_bc628f1d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -702,9 +654,8 @@ function function_bc628f1d()
 	Parameters: 2
 	Flags: None
 */
-function function_986d0100()
-{
-	// Unsupported VM revision (1B).
+function function_986d0100() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -716,9 +667,8 @@ function function_986d0100()
 	Parameters: 5
 	Flags: None
 */
-function function_df89b05b()
-{
-	// Unsupported VM revision (1B).
+function function_df89b05b() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -730,9 +680,8 @@ function function_df89b05b()
 	Parameters: 1
 	Flags: None
 */
-function function_91986f4b()
-{
-	// Unsupported VM revision (1B).
+function function_91986f4b() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -744,9 +693,8 @@ function function_91986f4b()
 	Parameters: 2
 	Flags: None
 */
-function function_c37d1015()
-{
-	// Unsupported VM revision (1B).
+function function_c37d1015() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -758,9 +706,8 @@ function function_c37d1015()
 	Parameters: 1
 	Flags: None
 */
-function function_e3b58585()
-{
-	// Unsupported VM revision (1B).
+function function_e3b58585() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -772,9 +719,8 @@ function function_e3b58585()
 	Parameters: 0
 	Flags: None
 */
-function function_e58f5689()
-{
-	// Unsupported VM revision (1B).
+function function_e58f5689() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -786,9 +732,8 @@ function function_e58f5689()
 	Parameters: 0
 	Flags: None
 */
-function function_176c92fd()
-{
-	// Unsupported VM revision (1B).
+function function_176c92fd() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -800,9 +745,8 @@ function function_176c92fd()
 	Parameters: 1
 	Flags: None
 */
-function function_f80cafbd()
-{
-	// Unsupported VM revision (1B).
+function function_f80cafbd() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -814,9 +758,8 @@ function function_f80cafbd()
 	Parameters: 2
 	Flags: None
 */
-function wait_to_delete()
-{
-	// Unsupported VM revision (1B).
+function wait_to_delete() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -828,9 +771,8 @@ function wait_to_delete()
 	Parameters: 2
 	Flags: None
 */
-function function_27e365e2()
-{
-	// Unsupported VM revision (1B).
+function function_27e365e2() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -842,9 +784,8 @@ function function_27e365e2()
 	Parameters: 1
 	Flags: None
 */
-function function_510331a4()
-{
-	// Unsupported VM revision (1B).
+function function_510331a4() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -856,9 +797,8 @@ function function_510331a4()
 	Parameters: 0
 	Flags: None
 */
-function function_3e9f1592()
-{
-	// Unsupported VM revision (1B).
+function function_3e9f1592() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -870,9 +810,8 @@ function function_3e9f1592()
 	Parameters: 0
 	Flags: None
 */
-function function_5b57004a()
-{
-	// Unsupported VM revision (1B).
+function function_5b57004a() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -884,9 +823,8 @@ function function_5b57004a()
 	Parameters: 0
 	Flags: None
 */
-function function_a7dc2319()
-{
-	// Unsupported VM revision (1B).
+function function_a7dc2319() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -898,9 +836,8 @@ function function_a7dc2319()
 	Parameters: 1
 	Flags: None
 */
-function function_484bc3aa()
-{
-	// Unsupported VM revision (1B).
+function function_484bc3aa() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -912,9 +849,8 @@ function function_484bc3aa()
 	Parameters: 0
 	Flags: None
 */
-function corpse_cleanup()
-{
-	// Unsupported VM revision (1B).
+function corpse_cleanup() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -926,9 +862,8 @@ function corpse_cleanup()
 	Parameters: 0
 	Flags: None
 */
-function its_raining_men()
-{
-	// Unsupported VM revision (1B).
+function its_raining_men() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -940,9 +875,8 @@ function its_raining_men()
 	Parameters: 3
 	Flags: None
 */
-function function_fe64b86b()
-{
-	// Unsupported VM revision (1B).
+function function_fe64b86b() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -954,9 +888,8 @@ function function_fe64b86b()
 	Parameters: 0
 	Flags: None
 */
-function function_a76d24ab()
-{
-	// Unsupported VM revision (1B).
+function function_a76d24ab() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -968,9 +901,8 @@ function function_a76d24ab()
 	Parameters: 3
 	Flags: None
 */
-function function_a516f0de()
-{
-	// Unsupported VM revision (1B).
+function function_a516f0de() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -982,9 +914,8 @@ function function_a516f0de()
 	Parameters: 2
 	Flags: None
 */
-function function_545a568f()
-{
-	// Unsupported VM revision (1B).
+function function_545a568f() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -996,9 +927,8 @@ function function_545a568f()
 	Parameters: 0
 	Flags: None
 */
-function function_b9976e82()
-{
-	// Unsupported VM revision (1B).
+function function_b9976e82() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1010,9 +940,8 @@ function function_b9976e82()
 	Parameters: 3
 	Flags: None
 */
-function function_511cba45()
-{
-	// Unsupported VM revision (1B).
+function function_511cba45() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1024,9 +953,8 @@ function function_511cba45()
 	Parameters: 3
 	Flags: None
 */
-function function_67212ab4()
-{
-	// Unsupported VM revision (1B).
+function function_67212ab4() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1038,9 +966,8 @@ function function_67212ab4()
 	Parameters: 4
 	Flags: None
 */
-function function_e577c596()
-{
-	// Unsupported VM revision (1B).
+function function_e577c596() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1052,9 +979,8 @@ function function_e577c596()
 	Parameters: 0
 	Flags: None
 */
-function function_c90abe1a()
-{
-	// Unsupported VM revision (1B).
+function function_c90abe1a() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1066,9 +992,8 @@ function function_c90abe1a()
 	Parameters: 0
 	Flags: None
 */
-function function_77bfc3b2()
-{
-	// Unsupported VM revision (1B).
+function function_77bfc3b2() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1080,9 +1005,8 @@ function function_77bfc3b2()
 	Parameters: 1
 	Flags: None
 */
-function function_e547724d()
-{
-	// Unsupported VM revision (1B).
+function function_e547724d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1094,9 +1018,8 @@ function function_e547724d()
 	Parameters: 1
 	Flags: None
 */
-function function_3f6f483d()
-{
-	// Unsupported VM revision (1B).
+function function_3f6f483d() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1108,9 +1031,8 @@ function function_3f6f483d()
 	Parameters: 1
 	Flags: None
 */
-function function_86b1cd8a()
-{
-	// Unsupported VM revision (1B).
+function function_86b1cd8a() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1122,9 +1044,8 @@ function function_86b1cd8a()
 	Parameters: 1
 	Flags: None
 */
-function function_78805698()
-{
-	// Unsupported VM revision (1B).
+function function_78805698() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1136,9 +1057,8 @@ function function_78805698()
 	Parameters: 0
 	Flags: None
 */
-function function_6edd9874()
-{
-	// Unsupported VM revision (1B).
+function function_6edd9874() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1150,9 +1070,8 @@ function function_6edd9874()
 	Parameters: 1
 	Flags: None
 */
-function function_5157e72f()
-{
-	// Unsupported VM revision (1B).
+function function_5157e72f() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1164,9 +1083,8 @@ function function_5157e72f()
 	Parameters: 0
 	Flags: None
 */
-function function_f21ea22f()
-{
-	// Unsupported VM revision (1B).
+function function_f21ea22f() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1178,9 +1096,8 @@ function function_f21ea22f()
 	Parameters: 0
 	Flags: None
 */
-function function_c7402e23()
-{
-	// Unsupported VM revision (1B).
+function function_c7402e23() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1192,9 +1109,8 @@ function function_c7402e23()
 	Parameters: 0
 	Flags: None
 */
-function function_f15e5e64()
-{
-	// Unsupported VM revision (1B).
+function function_f15e5e64() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1206,9 +1122,8 @@ function function_f15e5e64()
 	Parameters: 0
 	Flags: None
 */
-function function_cf37ec3()
-{
-	// Unsupported VM revision (1B).
+function function_cf37ec3() {
+  // Unsupported VM revision (1B).
 }
 
 /*
@@ -1220,8 +1135,6 @@ function function_cf37ec3()
 	Parameters: 0
 	Flags: None
 */
-function function_3684f44b()
-{
-	// Unsupported VM revision (1B).
+function function_3684f44b() {
+  // Unsupported VM revision (1B).
 }
-

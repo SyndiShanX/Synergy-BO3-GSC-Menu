@@ -12,9 +12,8 @@
 	Parameters: 1
 	Flags: None
 */
-function ispistol(weapon)
-{
-	return isdefined(level.side_arm_array[weapon]);
+function ispistol(weapon) {
+  return isdefined(level.side_arm_array[weapon]);
 }
 
 /*
@@ -26,9 +25,8 @@ function ispistol(weapon)
 	Parameters: 1
 	Flags: Linked
 */
-function isflashorstunweapon(weapon)
-{
-	return weapon.isflash || weapon.isstun;
+function isflashorstunweapon(weapon) {
+  return weapon.isflash || weapon.isstun;
 }
 
 /*
@@ -40,9 +38,8 @@ function isflashorstunweapon(weapon)
 	Parameters: 2
 	Flags: None
 */
-function isflashorstundamage(weapon, meansofdeath)
-{
-	return isflashorstunweapon(weapon) && (meansofdeath == "MOD_GRENADE_SPLASH" || meansofdeath == "MOD_GAS");
+function isflashorstundamage(weapon, meansofdeath) {
+  return isflashorstunweapon(weapon) && (meansofdeath == "MOD_GRENADE_SPLASH" || meansofdeath == "MOD_GAS");
 }
 
 /*
@@ -54,9 +51,8 @@ function isflashorstundamage(weapon, meansofdeath)
 	Parameters: 1
 	Flags: None
 */
-function ismeleemod(mod)
-{
-	return mod == "MOD_MELEE" || mod == "MOD_MELEE_WEAPON_BUTT" || mod == "MOD_MELEE_ASSASSINATE";
+function ismeleemod(mod) {
+  return mod == "MOD_MELEE" || mod == "MOD_MELEE_WEAPON_BUTT" || mod == "MOD_MELEE_ASSASSINATE";
 }
 
 /*
@@ -68,9 +64,8 @@ function ismeleemod(mod)
 	Parameters: 1
 	Flags: None
 */
-function ispunch(weapon)
-{
-	return weapon.type == "melee" && weapon.rootweapon.name == "bare_hands";
+function ispunch(weapon) {
+  return weapon.type == "melee" && weapon.rootweapon.name == "bare_hands";
 }
 
 /*
@@ -82,9 +77,8 @@ function ispunch(weapon)
 	Parameters: 1
 	Flags: None
 */
-function isknife(weapon)
-{
-	return weapon.type == "melee" && weapon.rootweapon.name == "knife_loadout";
+function isknife(weapon) {
+  return weapon.type == "melee" && weapon.rootweapon.name == "knife_loadout";
 }
 
 /*
@@ -96,8 +90,6 @@ function isknife(weapon)
 	Parameters: 1
 	Flags: None
 */
-function isnonbarehandsmelee(weapon)
-{
-	return weapon.type == "melee" && weapon.rootweapon.name != "bare_hands" || weapon.isballisticknife;
+function isnonbarehandsmelee(weapon) {
+  return weapon.type == "melee" && weapon.rootweapon.name != "bare_hands" || weapon.isballisticknife;
 }
-

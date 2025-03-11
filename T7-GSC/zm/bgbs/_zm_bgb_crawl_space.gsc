@@ -20,9 +20,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_crawl_space", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_crawl_space", & __init__, undefined, "bgb");
 }
 
 /*
@@ -34,13 +33,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_crawl_space", "activated", 5, undefined, undefined, undefined, &activation);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_crawl_space", "activated", 5, undefined, undefined, undefined, & activation);
 }
 
 /*
@@ -52,19 +49,14 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function activation()
-{
-	a_ai = getaiarray();
-	for(i = 0; i < a_ai.size; i++)
-	{
-		if(isdefined(a_ai[i]) && isalive(a_ai[i]) && a_ai[i].archetype === "zombie" && isdefined(a_ai[i].gibdef))
-		{
-			var_5a3ad5d6 = distancesquared(self.origin, a_ai[i].origin);
-			if(var_5a3ad5d6 < 360000)
-			{
-				a_ai[i] zombie_utility::makezombiecrawler();
-			}
-		}
-	}
+function activation() {
+  a_ai = getaiarray();
+  for (i = 0; i < a_ai.size; i++) {
+    if(isdefined(a_ai[i]) && isalive(a_ai[i]) && a_ai[i].archetype === "zombie" && isdefined(a_ai[i].gibdef)) {
+      var_5a3ad5d6 = distancesquared(self.origin, a_ai[i].origin);
+      if(var_5a3ad5d6 < 360000) {
+        a_ai[i] zombie_utility::makezombiecrawler();
+      }
+    }
+  }
 }
-

@@ -17,13 +17,11 @@
 	Parameters: 0
 	Flags: Linked
 */
-function main()
-{
-	namespace_97daed88::main();
-	namespace_e89da2ff::main();
-	setdvar("phys_buoyancy", 1);
-	setdvar("phys_ragdoll_buoyancy", 1);
-	load::main();
-	util::waitforclient(0);
+function main() {
+  namespace_97daed88::main();
+  namespace_e89da2ff::main();
+  setdvar("phys_buoyancy", 1);
+  setdvar("phys_ragdoll_buoyancy", 1);
+  load::main();
+  util::waitforclient(0);
 }
-

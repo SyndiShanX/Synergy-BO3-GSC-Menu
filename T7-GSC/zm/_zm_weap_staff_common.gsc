@@ -21,9 +21,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_weap_staff", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_weap_staff", & __init__, undefined, undefined);
 }
 
 /*
@@ -35,7 +34,4 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-}
-
+function __init__() {}

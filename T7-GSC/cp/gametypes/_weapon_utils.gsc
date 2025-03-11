@@ -12,8 +12,6 @@
 	Parameters: 1
 	Flags: Linked
 */
-function getbaseweaponparam(weapon)
-{
-	return weapon;
+function getbaseweaponparam(weapon) {
+  return weapon;
 }
-

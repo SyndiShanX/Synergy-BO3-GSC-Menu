@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_bgb_wall_power", &__init__, undefined, "bgb");
+function autoexec __init__sytem__() {
+  system::register("zm_bgb_wall_power", & __init__, undefined, "bgb");
 }
 
 /*
@@ -32,13 +31,11 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	if(!(isdefined(level.bgb_in_use) && level.bgb_in_use))
-	{
-		return;
-	}
-	bgb::register("zm_bgb_wall_power", "event", &event, undefined, undefined, undefined);
+function __init__() {
+  if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
+    return;
+  }
+  bgb::register("zm_bgb_wall_power", "event", & event, undefined, undefined, undefined);
 }
 
 /*
@@ -50,13 +47,11 @@ function __init__()
 	Parameters: 0
 	Flags: Linked
 */
-function event()
-{
-	self endon(#"disconnect");
-	self endon(#"bgb_update");
-	self waittill(#"zm_bgb_wall_power_used");
-	self playsoundtoplayer("zmb_bgb_wall_power", self);
-	self zm_stats::increment_challenge_stat("GUM_GOBBLER_WALL_POWER");
-	self bgb::do_one_shot_use();
+function event() {
+  self endon(# "disconnect");
+  self endon(# "bgb_update");
+  self waittill(# "zm_bgb_wall_power_used");
+  self playsoundtoplayer("zmb_bgb_wall_power", self);
+  self zm_stats::increment_challenge_stat("GUM_GOBBLER_WALL_POWER");
+  self bgb::do_one_shot_use();
 }
-

@@ -10,9 +10,7 @@
 	Parameters: 0
 	Flags: Linked
 */
-function init()
-{
-}
+function init() {}
 
 /*
 	Name: zombie_low_gravity
@@ -23,18 +21,14 @@ function init()
 	Parameters: 7
 	Flags: Linked
 */
-function zombie_low_gravity(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump)
-{
-	self endon(#"death");
-	self endon(#"entityshutdown");
-	if(newval)
-	{
-		self.in_low_g = 1;
-	}
-	else
-	{
-		self.in_low_g = 0;
-	}
+function zombie_low_gravity(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
+  self endon(# "death");
+  self endon(# "entityshutdown");
+  if(newval) {
+    self.in_low_g = 1;
+  } else {
+    self.in_low_g = 0;
+  }
 }
 
 /*
@@ -46,21 +40,15 @@ function zombie_low_gravity(localclientnum, oldval, newval, bnewent, binitialsna
 	Parameters: 7
 	Flags: Linked
 */
-function function_20286238(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump)
-{
-	self endon(#"death");
-	self endon(#"entityshutdown");
-	if(newval)
-	{
-		if(!isdefined(self.var_9f5aac3e))
-		{
-			self.var_9f5aac3e = self playloopsound("zmb_moon_bg_airless");
-		}
-	}
-	else if(isdefined(self.var_9f5aac3e))
-	{
-		self stoploopsound(self.var_9f5aac3e);
-		self.var_9f5aac3e = undefined;
-	}
+function function_20286238(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
+  self endon(# "death");
+  self endon(# "entityshutdown");
+  if(newval) {
+    if(!isdefined(self.var_9f5aac3e)) {
+      self.var_9f5aac3e = self playloopsound("zmb_moon_bg_airless");
+    }
+  } else if(isdefined(self.var_9f5aac3e)) {
+    self stoploopsound(self.var_9f5aac3e);
+    self.var_9f5aac3e = undefined;
+  }
 }
-

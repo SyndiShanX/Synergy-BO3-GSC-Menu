@@ -30,9 +30,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("zm_genesis_ee_quest", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("zm_genesis_ee_quest", & __init__, undefined, undefined);
 }
 
 /*
@@ -44,19 +43,18 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("world", "ee_quest_state", 15000, getminbitcountfornum(13), "int", &ee_quest_state, 0, 0);
-	clientfield::register("scriptmover", "ghost_entity", 15000, 1, "int", &function_2b5ef9a6, 0, 0);
-	clientfield::register("scriptmover", "electric_charge", 15000, 1, "int", &function_ede1c539, 0, 0);
-	clientfield::register("scriptmover", "grand_tour_found_toy_fx", 15000, 1, "int", &function_52d5d371, 0, 0);
-	clientfield::register("scriptmover", "sophia_transition_fx", 15000, 1, "int", &sophia_transition_fx, 0, 0);
-	clientfield::register("allplayers", "sophia_follow", 15000, 3, "int", &sophia_follow, 0, 0);
-	clientfield::register("scriptmover", "sophia_eye_on", 15000, 1, "int", &sophia_eye_on, 0, 0);
-	clientfield::register("allplayers", "sophia_delete_local", 15000, 1, "int", &sophia_delete_local, 0, 0);
-	clientfield::register("world", "GenesisEndGameEEScreen", 15000, 1, "int", &genesisendgameee, 0, 0);
-	duplicate_render::set_dr_filter_framebuffer("zod_ghost", 90, "zod_ghost", undefined, 0, "mc/hud_zod_ghost", 0);
-	level._effect["electric_charge"] = "electric/fx_elec_arc_med_loop_hacktower";
+function __init__() {
+  clientfield::register("world", "ee_quest_state", 15000, getminbitcountfornum(13), "int", & ee_quest_state, 0, 0);
+  clientfield::register("scriptmover", "ghost_entity", 15000, 1, "int", & function_2b5ef9a6, 0, 0);
+  clientfield::register("scriptmover", "electric_charge", 15000, 1, "int", & function_ede1c539, 0, 0);
+  clientfield::register("scriptmover", "grand_tour_found_toy_fx", 15000, 1, "int", & function_52d5d371, 0, 0);
+  clientfield::register("scriptmover", "sophia_transition_fx", 15000, 1, "int", & sophia_transition_fx, 0, 0);
+  clientfield::register("allplayers", "sophia_follow", 15000, 3, "int", & sophia_follow, 0, 0);
+  clientfield::register("scriptmover", "sophia_eye_on", 15000, 1, "int", & sophia_eye_on, 0, 0);
+  clientfield::register("allplayers", "sophia_delete_local", 15000, 1, "int", & sophia_delete_local, 0, 0);
+  clientfield::register("world", "GenesisEndGameEEScreen", 15000, 1, "int", & genesisendgameee, 0, 0);
+  duplicate_render::set_dr_filter_framebuffer("zod_ghost", 90, "zod_ghost", undefined, 0, "mc/hud_zod_ghost", 0);
+  level._effect["electric_charge"] = "electric/fx_elec_arc_med_loop_hacktower";
 }
 
 /*
@@ -68,33 +66,26 @@ function __init__()
 	Parameters: 7
 	Flags: Linked
 */
-function ee_quest_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	level notify(#"ee_quest_state");
-	level endon(#"ee_quest_state");
-	switch(newval)
-	{
-		case 7:
-		{
-			break;
-		}
-		case 8:
-		{
-			break;
-		}
-		case 9:
-		{
-			break;
-		}
-		case 10:
-		{
-			break;
-		}
-		case 12:
-		{
-			break;
-		}
-	}
+function ee_quest_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  level notify(# "ee_quest_state");
+  level endon(# "ee_quest_state");
+  switch (newval) {
+    case 7: {
+      break;
+    }
+    case 8: {
+      break;
+    }
+    case 9: {
+      break;
+    }
+    case 10: {
+      break;
+    }
+    case 12: {
+      break;
+    }
+  }
 }
 
 /*
@@ -106,10 +97,9 @@ function ee_quest_state(localclientnum, oldval, newval, bnewent, binitialsnap, f
 	Parameters: 7
 	Flags: Linked
 */
-function function_2b5ef9a6(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self duplicate_render::set_dr_flag("zod_ghost", newval);
-	self duplicate_render::update_dr_filters(localclientnum);
+function function_2b5ef9a6(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self duplicate_render::set_dr_flag("zod_ghost", newval);
+  self duplicate_render::update_dr_filters(localclientnum);
 }
 
 /*
@@ -121,17 +111,14 @@ function function_2b5ef9a6(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 7
 	Flags: Linked
 */
-function function_ede1c539(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(isdefined(self.var_ebad8041))
-	{
-		deletefx(localclientnum, self.var_ebad8041, 0);
-		self.var_ebad8041 = undefined;
-	}
-	if(newval == 1)
-	{
-		self.var_ebad8041 = playfxontag(localclientnum, level._effect["electric_charge"], self, "tag_origin");
-	}
+function function_ede1c539(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(isdefined(self.var_ebad8041)) {
+    deletefx(localclientnum, self.var_ebad8041, 0);
+    self.var_ebad8041 = undefined;
+  }
+  if(newval == 1) {
+    self.var_ebad8041 = playfxontag(localclientnum, level._effect["electric_charge"], self, "tag_origin");
+  }
 }
 
 /*
@@ -143,18 +130,14 @@ function function_ede1c539(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 7
 	Flags: Linked
 */
-function function_52d5d371(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		playfx(localclientnum, level._effect["ee_toy_found"], self.origin);
-		self.var_22c9fb1a = playfxontag(localclientnum, level._effect["shadow_rq_chomper_light"], self, "tag_origin");
-	}
-	else
-	{
-		deletefx(localclientnum, self.var_22c9fb1a, 0);
-		self.var_22c9fb1a = undefined;
-	}
+function function_52d5d371(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    playfx(localclientnum, level._effect["ee_toy_found"], self.origin);
+    self.var_22c9fb1a = playfxontag(localclientnum, level._effect["shadow_rq_chomper_light"], self, "tag_origin");
+  } else {
+    deletefx(localclientnum, self.var_22c9fb1a, 0);
+    self.var_22c9fb1a = undefined;
+  }
 }
 
 /*
@@ -166,17 +149,13 @@ function function_52d5d371(localclientnum, oldval, newval, bnewent, binitialsnap
 	Parameters: 7
 	Flags: Linked
 */
-function sophia_transition_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	if(newval)
-	{
-		self.n_fx = playfxontag(localclientnum, level._effect["sophia_transition"], self, "tag_origin");
-	}
-	else if(isdefined(self.n_fx))
-	{
-		deletefx(localclientnum, self.n_fx, 0);
-		self.n_fx = undefined;
-	}
+function sophia_transition_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  if(newval) {
+    self.n_fx = playfxontag(localclientnum, level._effect["sophia_transition"], self, "tag_origin");
+  } else if(isdefined(self.n_fx)) {
+    deletefx(localclientnum, self.n_fx, 0);
+    self.n_fx = undefined;
+  }
 }
 
 /*
@@ -188,32 +167,26 @@ function sophia_transition_fx(localclientnum, oldval, newval, bnewent, binitials
 	Parameters: 7
 	Flags: Linked
 */
-function sophia_follow(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	level endon(#"hash_249c0595");
-	var_1c7b6837 = getent(localclientnum, "sophia_eye", "targetname");
-	if(!isdefined(var_1c7b6837))
-	{
-		var_af8a18df = struct::get("ee_beam_sophia", "targetname");
-		var_1c7b6837 = util::spawn_model(localclientnum, "p7_zm_gen_dark_arena_sphere", var_af8a18df.origin, var_af8a18df.angles);
-		var_1c7b6837.targetname = "sophia_eye";
-		var_1c7b6837 mapshaderconstant(localclientnum, 0, "scriptVector2", 1, 0, 0);
-	}
-	level notify(#"hash_deeb3634");
-	wait(0.5);
-	if(!isdefined(var_1c7b6837))
-	{
-		return;
-	}
-	if(newval == 0)
-	{
-		var_1c7b6837 rotateto((0, 0, 0), 0.5);
-	}
-	else
-	{
-		level.var_9a736d20 = 1;
-		var_1c7b6837 thread function_36666e11(self);
-	}
+function sophia_follow(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  level endon(# "hash_249c0595");
+  var_1c7b6837 = getent(localclientnum, "sophia_eye", "targetname");
+  if(!isdefined(var_1c7b6837)) {
+    var_af8a18df = struct::get("ee_beam_sophia", "targetname");
+    var_1c7b6837 = util::spawn_model(localclientnum, "p7_zm_gen_dark_arena_sphere", var_af8a18df.origin, var_af8a18df.angles);
+    var_1c7b6837.targetname = "sophia_eye";
+    var_1c7b6837 mapshaderconstant(localclientnum, 0, "scriptVector2", 1, 0, 0);
+  }
+  level notify(# "hash_deeb3634");
+  wait(0.5);
+  if(!isdefined(var_1c7b6837)) {
+    return;
+  }
+  if(newval == 0) {
+    var_1c7b6837 rotateto((0, 0, 0), 0.5);
+  } else {
+    level.var_9a736d20 = 1;
+    var_1c7b6837 thread function_36666e11(self);
+  }
 }
 
 /*
@@ -225,9 +198,8 @@ function sophia_follow(localclientnum, oldval, newval, bnewent, binitialsnap, fi
 	Parameters: 7
 	Flags: Linked
 */
-function sophia_eye_on(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	self mapshaderconstant(localclientnum, 0, "scriptVector2", 1, 0, 0);
+function sophia_eye_on(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  self mapshaderconstant(localclientnum, 0, "scriptVector2", 1, 0, 0);
 }
 
 /*
@@ -239,20 +211,18 @@ function sophia_eye_on(localclientnum, oldval, newval, bnewent, binitialsnap, fi
 	Parameters: 1
 	Flags: Linked
 */
-function function_36666e11(e_player)
-{
-	level endon(#"demo_jump");
-	level endon(#"hash_deeb3634");
-	e_player endon(#"death");
-	self endon(#"entityshutdown");
-	while(isdefined(e_player))
-	{
-		var_c746e6bf = e_player gettagorigin("j_head");
-		var_933e0d32 = vectortoangles(var_c746e6bf - self.origin);
-		var_933e0d32 = (var_933e0d32[0], var_933e0d32[1], var_933e0d32[2]);
-		self rotateto(var_933e0d32, 0.1);
-		wait(0.1);
-	}
+function function_36666e11(e_player) {
+  level endon(# "demo_jump");
+  level endon(# "hash_deeb3634");
+  e_player endon(# "death");
+  self endon(# "entityshutdown");
+  while (isdefined(e_player)) {
+    var_c746e6bf = e_player gettagorigin("j_head");
+    var_933e0d32 = vectortoangles(var_c746e6bf - self.origin);
+    var_933e0d32 = (var_933e0d32[0], var_933e0d32[1], var_933e0d32[2]);
+    self rotateto(var_933e0d32, 0.1);
+    wait(0.1);
+  }
 }
 
 /*
@@ -264,14 +234,12 @@ function function_36666e11(e_player)
 	Parameters: 7
 	Flags: Linked
 */
-function sophia_delete_local(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	var_1c7b6837 = getent(localclientnum, "sophia_eye", "targetname");
-	if(isdefined(var_1c7b6837))
-	{
-		var_1c7b6837 rotateto((0, 0, 0), 0.2);
-		var_1c7b6837 delete();
-	}
+function sophia_delete_local(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  var_1c7b6837 = getent(localclientnum, "sophia_eye", "targetname");
+  if(isdefined(var_1c7b6837)) {
+    var_1c7b6837 rotateto((0, 0, 0), 0.2);
+    var_1c7b6837 delete();
+  }
 }
 
 /*
@@ -283,8 +251,6 @@ function sophia_delete_local(localclientnum, oldval, newval, bnewent, binitialsn
 	Parameters: 7
 	Flags: Linked
 */
-function genesisendgameee(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump)
-{
-	setuimodelvalue(createuimodel(getuimodelforcontroller(localclientnum), "GenesisEndGameEE"), 1);
+function genesisendgameee(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
+  setuimodelvalue(createuimodel(getuimodelforcontroller(localclientnum), "GenesisEndGameEE"), 1);
 }
-

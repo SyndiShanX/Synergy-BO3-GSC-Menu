@@ -18,9 +18,8 @@
 	Parameters: 0
 	Flags: AutoExec
 */
-function autoexec __init__sytem__()
-{
-	system::register("killstreak_detect", &__init__, undefined, undefined);
+function autoexec __init__sytem__() {
+  system::register("killstreak_detect", & __init__, undefined, undefined);
 }
 
 /*
@@ -32,14 +31,13 @@ function autoexec __init__sytem__()
 	Parameters: 0
 	Flags: Linked
 */
-function __init__()
-{
-	clientfield::register("vehicle", "enemyvehicle", 1, 2, "int");
-	clientfield::register("scriptmover", "enemyvehicle", 1, 2, "int");
-	clientfield::register("helicopter", "enemyvehicle", 1, 2, "int");
-	clientfield::register("missile", "enemyvehicle", 1, 2, "int");
-	clientfield::register("actor", "enemyvehicle", 1, 2, "int");
-	clientfield::register("vehicle", "vehicletransition", 1, 1, "int");
+function __init__() {
+  clientfield::register("vehicle", "enemyvehicle", 1, 2, "int");
+  clientfield::register("scriptmover", "enemyvehicle", 1, 2, "int");
+  clientfield::register("helicopter", "enemyvehicle", 1, 2, "int");
+  clientfield::register("missile", "enemyvehicle", 1, 2, "int");
+  clientfield::register("actor", "enemyvehicle", 1, 2, "int");
+  clientfield::register("vehicle", "vehicletransition", 1, 1, "int");
 }
 
 /*
@@ -51,12 +49,11 @@ function __init__()
 	Parameters: 2
 	Flags: Linked
 */
-function killstreaktargetset(killstreakentity, offset = (0, 0, 0))
-{
-	target_set(killstreakentity, offset);
-	/#
-		killstreakentity thread killstreak_hacking::killstreak_switch_team(killstreakentity.owner);
-	#/
+function killstreaktargetset(killstreakentity, offset = (0, 0, 0)) {
+  target_set(killstreakentity, offset);
+  /#
+  killstreakentity thread killstreak_hacking::killstreak_switch_team(killstreakentity.owner);
+  # /
 }
 
 /*
@@ -68,11 +65,9 @@ function killstreaktargetset(killstreakentity, offset = (0, 0, 0))
 	Parameters: 1
 	Flags: None
 */
-function killstreaktargetclear(killstreakentity)
-{
-	target_remove(killstreakentity);
-	/#
-		killstreakentity thread killstreak_hacking::killstreak_switch_team_end();
-	#/
+function killstreaktargetclear(killstreakentity) {
+  target_remove(killstreakentity);
+  /#
+  killstreakentity thread killstreak_hacking::killstreak_switch_team_end();
+  # /
 }
-
