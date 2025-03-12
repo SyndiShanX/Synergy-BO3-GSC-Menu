@@ -1130,6 +1130,8 @@ function menu_index() {
 			self add_increment("Move Menu X", &modify_x_position, 0, -580, 60, 10);
 			self add_increment("Move Menu Y", &modify_y_position, 0, -170, 130, 10);
 			self add_toggle("Watermark", &watermark, self.watermark);
+			self add_toggle("Hide UI", &hide_ui, self.hide_ui);
+			self add_toggle("Hide Weapon", &hide_weapon, self.hide_weapon);
 			
 			break;
 		case "Powerup Options":
@@ -1393,15 +1395,28 @@ function watermark() {
 	}
 }
 
+function hide_ui() {
+	self.hide_ui = !return_toggle(self.hide_ui);
+	setDvar("\ui_enabled", !self.hide_ui);
+	setDvar("\cg_draw2d", !self.hide_ui);
+}
+
+function hide_weapon() {
+	self.hide_weapon = !return_toggle(self.hide_weapon);
+	setDvar("\cg_drawgun", !self.hide_weapon);
+}
+
 function god_mode() {
 	self.god_mode = !return_toggle(self.god_mode);
 	wait .01;
 	if(self.god_mode) {
 		iPrintString("God Mode [^2ON^7]");
 		self enableInvulnerability();
+		setDvar("\god", self.god_mode);
 		god_mode_loop();
 	} else {
 		iPrintString("God Mode [^1OFF^7]");
+		setDvar("\god", "");
 		self notify("stop_god_mode");
 		self disableInvulnerability();
 	}
