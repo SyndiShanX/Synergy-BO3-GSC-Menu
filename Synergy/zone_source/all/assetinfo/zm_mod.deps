@@ -1,9 +1,9 @@
 version,3421953,593
 scriptparsetree,scripts/zm/gametypes/_clientids.gsc
-	file,D:\SteamLibrary\steamapps\common\Call of Duty Black Ops III\mods\Synergy\scripts\zm\gametypes\_clientids.gsc,1741493005,
-	file,D:\SteamLibrary\steamapps\common\Call of Duty Black Ops III\share\raw\scripts\shared\shared.gsh,1741223871,
+	file,D:\SteamLibrary\steamapps\common\Call of Duty Black Ops III\mods\Synergy\scripts\zm\gametypes\_clientids.gsc,1741760400,
+	file,D:\SteamLibrary\steamapps\common\Call of Duty Black Ops III\share\raw\scripts\shared\shared.gsh,1741227471,
 texturecombo,zm_mod
 assetlist,zm_mod
-	file,D:\SteamLibrary\steamapps\common\Call of Duty Black Ops III\share\raw\gamedata\playeranim\playeranimtypes.txt,1741223582,
-	file,D:\SteamLibrary\steamapps\common\Call of Duty Black Ops III\mods\Synergy\zone_source\zm_mod.zone,1487194442,405e355b,744fcf24,aa7a8222,53d1c655
+	file,D:\SteamLibrary\steamapps\common\Call of Duty Black Ops III\share\raw\gamedata\playeranim\playeranimtypes.txt,1741227182,
+	file,D:\SteamLibrary\steamapps\common\Call of Duty Black Ops III\mods\Synergy\zone_source\zm_mod.zone,1487198042,405e355b,744fcf24,aa7a8222,53d1c655
 errorcount,0
