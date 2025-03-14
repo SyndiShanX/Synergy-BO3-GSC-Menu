@@ -1412,11 +1412,9 @@ function god_mode() {
 	if(self.god_mode) {
 		iPrintString("God Mode [^2ON^7]");
 		self enableInvulnerability();
-		setDvar("\god", self.god_mode);
 		god_mode_loop();
 	} else {
 		iPrintString("God Mode [^1OFF^7]");
-		setDvar("\god", "");
 		self notify("stop_god_mode");
 		self disableInvulnerability();
 	}
@@ -1576,7 +1574,7 @@ function infinite_ammo_loop() {
 		if(self getCurrentOffhand() != "none") {
 			self giveMaxAmmo(self getCurrentOffhand());
 		}
-		wait .5;
+		wait .05;
 	}
 }
 
@@ -1779,10 +1777,15 @@ function third_person() {
 	if(self.third_person) {
 		iPrintString("Third Person [^2ON^7]");
 		self setClientThirdPerson(1);
+		self setClientThirdPersonAngle(354);
+    self setDepthOfField(0, 128, 512, 4000, 6, 1.8);
 	} else {
 		iPrintString("Third Person [^1OFF^7]");
 		self setClientThirdPerson(0);
+		self setClientThirdPersonAngle(0);
+    self setDepthOfField(0, 0, 512, 4000, 4, 0);
 	}
+	self resetFov();
 }
 
 function set_vision(vision) {
