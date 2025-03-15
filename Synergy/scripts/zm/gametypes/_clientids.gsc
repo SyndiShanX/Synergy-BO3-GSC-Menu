@@ -256,7 +256,7 @@ function create_text(text, font, font_scale, align_x, align_y, x, y, color, alph
 	
 	textElement hud::setPoint(align_x, align_y, x, y);
 	
-	if(strisnumber(text)) {
+	if(strisNumber(text)) {
 		textElement setValue(text);
 	} else {
 		textElement set_text(text);
@@ -872,7 +872,6 @@ function update_resize() {
 	
 	self.syn["hud"]["background"][0] setShader("white", self.syn["hud"]["background"][0].width, (height + 16));
 	self.syn["hud"]["background"][1] setShader("white", self.syn["hud"]["background"][1].width, (height + 14));
-	self.syn["hud"]["foreground"][0] setShader("white", self.syn["hud"]["foreground"][0].width, height);
 	self.syn["hud"]["foreground"][2] setShader("white", self.syn["hud"]["foreground"][2].width, adjust);
 	
 	if(isDefined(self.syn["hud"]["foreground"][1])) {
