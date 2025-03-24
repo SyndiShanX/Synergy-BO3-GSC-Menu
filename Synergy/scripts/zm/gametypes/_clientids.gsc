@@ -1,68 +1,74 @@
 #using scripts\codescripts\struct;
-
-#using scripts\codescripts\struct;
-#using scripts\shared\callbacks_shared;
-#using scripts\shared\clientfield_shared;
-#using scripts\shared\math_shared;
-#using scripts\shared\system_shared;
-#using scripts\shared\util_shared;
-#using scripts\shared\hud_util_shared;
-#using scripts\shared\hud_message_shared;
-#using scripts\shared\hud_shared;
-#using scripts\shared\array_shared;
 #using scripts\shared\aat_shared;
-#using scripts\shared\rank_shared;
-#using scripts\shared\ai\zombie_utility;
-#using scripts\shared\ai\systems\gib;
-#using scripts\shared\tweakables_shared;
-#using scripts\shared\ai\systems\shared;
-#using scripts\shared\ai\systems\blackboard;
 #using scripts\shared\ai\systems\ai_interface;
-#using scripts\shared\flag_shared;
-#using scripts\shared\scoreevents_shared;
-#using scripts\shared\audio_shared;
-#using scripts\shared\music_shared;
-#using scripts\shared\lui_shared;
-#using scripts\shared\scene_shared;
-#using scripts\shared\vehicle_ai_shared;
-#using scripts\shared\vehicle_shared;
-#using scripts\shared\exploder_shared;
-#using scripts\shared\ai_shared;
-#using scripts\shared\doors_shared;
-#using scripts\shared\gameskill_shared;
-#using scripts\shared\weapons_shared;
-#using scripts\shared\laststand_shared;
-#using scripts\shared\spawner_shared;
-#using scripts\shared\visionset_mgr_shared;
-#using scripts\shared\laststand_shared;
-#using scripts\zm\_zm_score;
-#using scripts\zm\_zm_bgb;
-#using scripts\zm\_zm_audio;
-#using scripts\zm\_zm_pack_a_punch_util;
-#using scripts\zm\_zm_utility;
-#using scripts\zm\_zm_powerups;
-#using scripts\zm\_zm_zonemgr;
-#using scripts\zm\_zm_stats;
-#using scripts\zm\_zm_magicbox;
-#using scripts\zm\_zm_powerups;
-#using scripts\zm\_zm_power;
-#using scripts\zm\_zm_perks;
-#using scripts\zm\_zm_spawner;
-#using scripts\zm\_zm_laststand;
-#using scripts\zm\_zm_blockers;
-#using scripts\zm\_zm;
-#using scripts\zm\gametypes\_globallogic;
-#using scripts\zm\gametypes\_globallogic_score;
-#using scripts\zm\_zm_weapons;
-#using scripts\zm\craftables\_zm_craftables;
+#using scripts\shared\ai\systems\blackboard;
+#using scripts\shared\ai\systems\destructible_character;
+#using scripts\shared\ai\systems\gib;
+#using scripts\shared\ai\systems\shared;
 #using scripts\shared\ai\zombie_death;
 #using scripts\shared\ai\zombie_shared;
-#using scripts\zm\_zm_unitrigger;
-#using scripts\zm\_zm_traps;
+#using scripts\shared\ai\zombie_utility;
+#using scripts\shared\ai_shared;
+#using scripts\shared\array_shared;
+#using scripts\shared\audio_shared;
+#using scripts\shared\callbacks_shared;
+#using scripts\shared\clientField_shared;
+#using scripts\shared\damagefeedback_shared;
+#using scripts\shared\doors_shared;
+#using scripts\shared\exploder_shared;
+#using scripts\shared\flag_shared;
+#using scripts\shared\gameobjects_shared;
+#using scripts\shared\gameskill_shared;
+#using scripts\shared\hud_message_shared;
+#using scripts\shared\hud_shared;
+#using scripts\shared\hud_util_shared;
+#using scripts\shared\laststand_shared;
+#using scripts\shared\lui_shared;
+#using scripts\shared\math_shared;
+#using scripts\shared\music_shared;
+#using scripts\shared\rank_shared;
+#using scripts\shared\scene_shared;
+#using scripts\shared\scoreevents_shared;
+#using scripts\shared\spawner_shared;
+#using scripts\shared\system_shared;
+#using scripts\shared\tweakables_shared;
+#using scripts\shared\util_shared;
+#using scripts\shared\vehicle_ai_shared;
+#using scripts\shared\vehicle_shared;
+#using scripts\shared\visionset_mgr_shared;
+#using scripts\shared\weapons_shared;
+#using scripts\zm\craftables\_zm_craftables;
+#using scripts\zm\gametypes\_globallogic;
+#using scripts\zm\gametypes\_globallogic_audio;
+#using scripts\zm\gametypes\_globallogic_score;
+#using scripts\zm\gametypes\_hud_message;
 #using scripts\zm\_util;
-#using scripts\zm\_zm_utility;
+#using scripts\zm\_zm;
+#using scripts\zm\_zm_audio;
+#using scripts\zm\_zm_bgb;
+#using scripts\zm\_zm_bgb_machine;
+#using scripts\zm\_zm_bgb_token;
+#using scripts\zm\_zm_blockers;
+#using scripts\zm\_zm_equipment;
+#using scripts\zm\_zm_laststand;
+#using scripts\zm\_zm_lightning_chain;
+#using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_melee_weapon;
+#using scripts\zm\_zm_pack_a_punch_util;
+#using scripts\zm\_zm_perks;
 #using scripts\zm\_zm_pers_upgrades;
+#using scripts\zm\_zm_playerhealth;
+#using scripts\zm\_zm_power;
+#using scripts\zm\_zm_powerup_fire_sale;
+#using scripts\zm\_zm_powerups;
+#using scripts\zm\_zm_score;
+#using scripts\zm\_zm_spawner;
+#using scripts\zm\_zm_stats;
+#using scripts\zm\_zm_traps;
+#using scripts\zm\_zm_unitrigger;
+#using scripts\zm\_zm_utility;
+#using scripts\zm\_zm_weapons;
+#using scripts\zm\_zm_zonemgr;
 
 #insert scripts\shared\shared.gsh;
 
@@ -990,14 +996,15 @@ function on_ended() {
 
 function on_player_connect() {
 	setDvar("sv_cheats", "1");
-	setDvar("/developer", "2");
-	self freezeControls(false);
+	setDvar("developer", "2");
 }
 
 function on_player_spawned() {
+	self freezeControls(false);
 	level flag::wait_till("initial_blackscreen_passed");
 	
 	level.player_out_of_playable_area_monitor = false;
+	self notify("stop_player_out_of_playable_area_monitor");
 	
 	self thread on_event();
 	self thread on_ended();
@@ -1057,8 +1064,8 @@ function menu_index() {
 		case "Basic Options":
 			self add_menu(menu, menu.size, 1);
 			
-			self add_toggle("God Mode (Death Barriers Still Kill You)", &god_mode, self.god_mode);
-			self add_toggle("Demi God Mode (Death Barriers Still Kill You)", &demi_god_mode, self.demi_god_mode);
+			self add_toggle("God Mode", &god_mode, self.god_mode);
+			self add_toggle("Demi God Mode", &demi_god_mode, self.demi_god_mode);
 			self add_toggle("No Clip", &no_clip, self.no_clip);
 			self add_toggle("UFO", &ufo_mode, self.ufo_mode);
 			
@@ -1117,6 +1124,8 @@ function menu_index() {
 			if(!level flag::get("power_on") || !level flag::get("all_power_on") && map == "rev") {
 				if(map != "soe") {
 					self add_option("Turn Power On", &power_on);
+				} else {
+					self add_option("Turn Power On", &shock_all_electrics);
 				}
 			}
 			
@@ -1871,6 +1880,14 @@ function power_on() {
   trigger notify("trigger", self);
 }
 
+function shock_all_electrics() {
+  for (e = 0; e < 50; e++) {
+    if(isDefined(level flag::get("power_on" + e))) {
+      level flag::set("power_on" + e);
+		}
+  }
+}
+
 function restart_match() {
 	self notify("menuResponse", "", "restart_level_zm");
 }
@@ -1959,10 +1976,10 @@ function no_target() {
 	self.no_target = !return_toggle(self.no_target);
 	if(self.no_target) {
 		iPrintString("No Target [^2ON^7]");
-		self zm_utility::increment_ignoreme();
+		self zm_utility::increment_ignoreMe();
 	} else {
 		iPrintString("No Target [^1OFF^7]");
-		self zm_utility::decrement_ignoreme();
+		self zm_utility::decrement_ignoreMe();
 	}
 }
 
