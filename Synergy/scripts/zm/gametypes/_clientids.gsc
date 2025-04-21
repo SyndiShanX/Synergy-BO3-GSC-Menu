@@ -102,10 +102,6 @@ function get_cursor() {
 	return self.cursor[self get_menu()];
 }
 
-function get_title() {
-	return self.syn["title"];
-}
-
 function set_menu(menu) {
 	if(isDefined(menu)) {
 		self.syn["menu"] = menu;
@@ -170,35 +166,40 @@ function set_slider(scrolling, index) {
 		index = self get_cursor();
 	}
 	storage = (menu + "_" + index);
-	if(!isDefined(self.slider[storage])) {
-		if(isDefined(self.structure[index].array)) {
-			self.slider[storage] = 0;
-		} else {
-			self.slider[storage] = self.structure[index].start;
+	if(!isDefined(self.slider)) {
+		if(!isDefined(self.slider[storage])) {
+			if(isDefined(self.structure[index].array)) {
+				self.slider[storage] = 0;
+			} else {
+				self.slider[storage] = self.structure[index].start;
+			}
 		}
 	}
 	
 	if(!isDefined(self.structure[index].array)) {
 		self notify("increment_slider");
-		if(scrolling == -1)
-			self.slider[storage] += self.structure[index].increment;
+		if(isDefined(scrolling)) {
+			if(scrolling == -1) {
+				self.slider[storage] += self.structure[index].increment;
+			}
+			
+			if(scrolling == 1) {
+				self.slider[storage] -= self.structure[index].increment;
+			}
+		}
 		
-		if(scrolling == 1)
-			self.slider[storage] -= self.structure[index].increment;
-		
-		if(self.slider[storage] > self.structure[index].maximum)
+		if(self.slider[storage] > self.structure[index].maximum) {
 			self.slider[storage] = self.structure[index].minimum;
+		}
 		
-		if(self.slider[storage] < self.structure[index].minimum)
+		if(self.slider[storage] < self.structure[index].minimum) {
 			self.slider[storage] = self.structure[index].maximum;
+		}
 		
 		position = abs((self.structure[index].maximum - self.structure[index].minimum)) / ((50 - 8));
 		
-		if(!self.structure[index].text_slider) {
-			self.syn["hud"]["slider"][0][index] setValue(self.slider[storage]);
-		} else {
-			self.syn["hud"]["slider"][0][index].x = self.syn["utility"].x_offset + 85;
-		}
+		self.syn["hud"]["slider"][0][index] setValue(self.slider[storage]);
+		
 		self.syn["hud"]["slider"][2][index].x = (self.syn["hud"]["slider"][1][index].x + (abs((self.slider[storage] - self.structure[index].minimum)) / position));
 	}
 }
@@ -253,7 +254,7 @@ function create_text(text, font, font_scale, align_x, align_y, x, y, color, alph
 		textElement.archived = false;
 	}
 	
-	if(color != "rainbow") {
+	if(strIsNumber(color[0]) || color != "rainbow") {
 		textElement.color = color;
 	} else {
 		textElement.color = level.rainbow_color;
@@ -262,7 +263,7 @@ function create_text(text, font, font_scale, align_x, align_y, x, y, color, alph
 	
 	textElement hud::setPoint(align_x, align_y, x, y);
 	
-	if(strisNumber(text)) {
+	if(strIsNumber(text)) {
 		textElement setValue(text);
 	} else {
 		textElement set_text(text);
@@ -291,7 +292,7 @@ function create_shader(shader, align_x, align_y, x, y, width, height, color, alp
 	shaderElement.hidden = false;
 	shaderElement.hideWhenInMenu = true;
 	
-	if(color != "rainbow") {
+	if(strIsNumber(color[0]) || color != "rainbow") {
 		shaderElement.color = color;
 	} else {
 		shaderElement.color = level.rainbow_color;
@@ -311,10 +312,11 @@ function clear_all(array) {
 	keys = getArrayKeys(array);
 	for(a = 0; a < keys.size; a++) {
 		if(isArray(array[keys[a]])) {
-			forEach(value in array[keys[a]])
+			forEach(value in array[keys[a]]) {
 				if(isDefined(value)) {
 					value destroy();
 				}
+			}
 		} else {
 			if(isDefined(array[keys[a]])) {
 				array[keys[a]] destroy();
@@ -377,12 +379,11 @@ function add_string(text, func, array, argument_1, argument_2, argument_3) {
 	self.structure[self.structure.size] = option;
 }
 
-function add_increment(text, func, start, minimum, maximum, increment, text_slider, slider_text, argument_1, argument_2, argument_3) {
+function add_increment(text, func, start, minimum, maximum, increment, slider_text, argument_1, argument_2, argument_3) {
 	option = spawnStruct();
 	option.text = text;
 	option.func = func;
 	option.slider = true;
-	option.text_slider = text_slider;
 	option.slider_text = slider_text;
 	option.start = start;
 	option.minimum = minimum;
@@ -653,7 +654,7 @@ function open_menu(menu) {
 	}
 	
 	self.syn["hud"] = [];
-	self.syn["hud"]["title"][0] = self create_text(self get_title(), self.syn["utility"].font, self.syn["utility"].font_scale, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 86), (self.syn["utility"].y_offset + 2), self.syn["utility"].color[4], 1, 10);
+	self.syn["hud"]["title"][0] = self create_text(self.syn["title"], self.syn["utility"].font, self.syn["utility"].font_scale, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 86), (self.syn["utility"].y_offset + 2), self.syn["utility"].color[4], 1, 10);
 	self.syn["hud"]["title"][1] = self create_text("______                                   ______", self.syn["utility"].font, self.syn["utility"].font_scale * 1.5, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 4), (self.syn["utility"].y_offset - 4), self.syn["utility"].color[5], 1, 10);
 	
 	self.syn["hud"]["background"][0] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset - 1), (self.syn["utility"].y_offset - 1), 202, 30, self.syn["utility"].color[5], 1, 1);
@@ -676,7 +677,7 @@ function create_title(title) {
 	if(isDefined(title)) {
 		self.syn["hud"]["title"][0] set_text(title);
 	} else {
-		self.syn["hud"]["title"][0] set_text(self get_title());
+		self.syn["hud"]["title"][0] set_text(self.syn["title"]);
 	}
 }
 
@@ -736,9 +737,11 @@ function create_option() {
 			
 			for(x = 0; x < 15; x++) {
 				if(x != self get_cursor()) {
-					if(isDefined(self.syn["hud"]["arrow"][0][x])) {
-						self.syn["hud"]["arrow"][0][x] destroy();
-						self.syn["hud"]["arrow"][1][x] destroy();
+					if(isDefined(self.syn["hud"]["arrow"])) {
+						if(isDefined(self.syn["hud"]["arrow"][0][x])) {
+							self.syn["hud"]["arrow"][0][x] destroy();
+							self.syn["hud"]["arrow"][1][x] destroy();
+						}
 					}
 				}
 			}
@@ -776,53 +779,19 @@ function create_option() {
 				self.syn["hud"]["category"][1][index] = self create_text("______                                   ______", self.syn["utility"].font, self.syn["utility"].font_scale * 1.5, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 4), (self.syn["utility"].y_offset + ((i * self.syn["utility"].option_spacing) + 11)), self.syn["utility"].color[5], 1, 10);
 			}
 			else {
-				if(return_toggle(self.shader_option[self get_menu()])) {
-					if(isDefined(self.structure[index].text)) {
-						shader = self.structure[index].text;
-					} else {
-						shader = "white";
-					}
-					
-					if(isDefined(self.structure[index].argument_2)) {
-						width = self.structure[index].argument_2;
-					} else {
-						width = 18;
-					}
-					
-					if(isDefined(self.structure[index].argument_3)) {
-						height = self.structure[index].argument_3;
-					} else {
-						height = 18;
-					}
-					
-					if(isDefined(self.structure[index].argument_1)) {
-						color = self.structure[index].argument_1;
-					} else {
-						color = (1, 1, 1);
-					}
-					
-					if(cursor) {
-						alpha = 1;
-					} else {
-						alpha = 0.2;
-					}
-					
-					self.syn["hud"]["text"][index] = self create_shader(shader, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + ((i * 20) - ((limit * 10) - 110))), (self.syn["utility"].y_offset + 27), width, height, color, alpha, 10);
+				if(return_toggle(self.structure[index].slider)) {
+					text = self.structure[index].text + ":";
 				} else {
-					if(return_toggle(self.structure[index].slider)) {
-						text = self.structure[index].text + ":";
-					} else {
-						text = self.structure[index].text;
-					}
-					
-					if(isDefined(self.structure[index].toggle)) {
-						x_position = (self.syn["utility"].x_offset + 15);
-					} else {
-						x_position = (self.syn["utility"].x_offset + 4);
-					}
-					
-					self.syn["hud"]["text"][index] = self create_text(text, self.syn["utility"].font, self.syn["utility"].font_scale, "TOP_LEFT", "CENTER", x_position, (self.syn["utility"].y_offset + ((i * self.syn["utility"].option_spacing) + 16)), color[0], 1, 10);
+					text = self.structure[index].text;
 				}
+				
+				if(isDefined(self.structure[index].toggle)) {
+					x_position = (self.syn["utility"].x_offset + 15);
+				} else {
+					x_position = (self.syn["utility"].x_offset + 4);
+				}
+				
+				self.syn["hud"]["text"][index] = self create_text(text, self.syn["utility"].font, self.syn["utility"].font_scale, "TOP_LEFT", "CENTER", x_position, (self.syn["utility"].y_offset + ((i * self.syn["utility"].option_spacing) + 16)), color[0], 1, 10);
 			}
 		}
 		
@@ -834,9 +803,11 @@ function create_option() {
 }
 
 function update_scrolling(scrolling) {	
-	if(return_toggle(self.structure[self get_cursor()].category)) {
-		self set_cursor((self get_cursor() + scrolling));
-		return self update_scrolling(scrolling);
+	if(isDefined(self.structure[self get_cursor()])) {
+		if(return_toggle(self.structure[self get_cursor()].category)) {
+			self set_cursor((self get_cursor() + scrolling));
+			return self update_scrolling(scrolling);
+		}
 	}
 	
 	if((self.structure.size > self.syn["utility"].option_limit) || (self get_cursor() >= 0) || (self get_cursor() <= 0)) {
@@ -864,16 +835,18 @@ function update_resize() {
 		adjust = height;
 	}
 	
-	position = (self.structure.size - 1) / (height - adjust);
+	if((self.structure.size - 1) != 0 && (height - adjust) != 0) {
+		position = (self.structure.size - 1) / (height - adjust);
+	} else {
+		position = 1;
+	}
 	
-	if(!return_toggle(self.shader_option[self get_menu()])) {
-		if(!isDefined(self.syn["hud"]["foreground"][1])) {
-			self.syn["hud"]["foreground"][1] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset), (self.syn["utility"].y_offset + 14), 194, 14, self.syn["utility"].color[3], 1, 4);
-		}
-		
-		if(!isDefined(self.syn["hud"]["foreground"][2])) {
-			self.syn["hud"]["foreground"][2] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 195), (self.syn["utility"].y_offset + 14), 4, 14, self.syn["utility"].color[3], 1, 4);
-		}
+	if(!isDefined(self.syn["hud"]["foreground"][1])) {
+		self.syn["hud"]["foreground"][1] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset), (self.syn["utility"].y_offset + 14), 194, 14, self.syn["utility"].color[3], 1, 4);
+	}
+	
+	if(!isDefined(self.syn["hud"]["foreground"][2])) {
+		self.syn["hud"]["foreground"][2] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 195), (self.syn["utility"].y_offset + 14), 4, 14, self.syn["utility"].color[3], 1, 4);
 	}
 	
 	self.syn["hud"]["background"][0] setShader("white", self.syn["hud"]["background"][0].width, (height + 16));
@@ -1027,17 +1000,18 @@ function on_player_spawned() {
 }
 
 function close_controls_menu() {
-	self.syn["controls-hud"] destroy();
-	self.syn["controls-hud"]["title"][0] destroy();
-	self.syn["controls-hud"]["title"][1] destroy();
-	
-	self.syn["controls-hud"]["background"][0] destroy();
-	self.syn["controls-hud"]["background"][1] destroy();
-	
-	self.syn["controls-hud"]["controls"][0] destroy();
-	self.syn["controls-hud"]["controls"][1] destroy();
-	self.syn["controls-hud"]["controls"][2] destroy();
-	self.syn["controls-hud"]["controls"][3] destroy();
+	if(isDefined(self.syn["controls-hud"]["title"][0])) {
+		self.syn["controls-hud"]["title"][0] destroy();
+		self.syn["controls-hud"]["title"][1] destroy();
+		
+		self.syn["controls-hud"]["background"][0] destroy();
+		self.syn["controls-hud"]["background"][1] destroy();
+		
+		self.syn["controls-hud"]["controls"][0] destroy();
+		self.syn["controls-hud"]["controls"][1] destroy();
+		self.syn["controls-hud"]["controls"][2] destroy();
+		self.syn["controls-hud"]["controls"][3] destroy();
+	}
 }
 
 function menu_index() {
