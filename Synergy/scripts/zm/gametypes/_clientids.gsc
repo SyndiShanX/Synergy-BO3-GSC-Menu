@@ -166,13 +166,11 @@ function set_slider(scrolling, index) {
 		index = self get_cursor();
 	}
 	storage = (menu + "_" + index);
-	if(!isDefined(self.slider)) {
-		if(!isDefined(self.slider[storage])) {
-			if(isDefined(self.structure[index].array)) {
-				self.slider[storage] = 0;
-			} else {
-				self.slider[storage] = self.structure[index].start;
-			}
+	if(!isDefined(self.slider[storage])) {
+		if(isDefined(self.structure[index].array)) {
+			self.slider[storage] = 0;
+		} else {
+			self.slider[storage] = self.structure[index].start;
 		}
 	}
 	
@@ -198,7 +196,16 @@ function set_slider(scrolling, index) {
 		
 		position = abs((self.structure[index].maximum - self.structure[index].minimum)) / ((50 - 8));
 		
-		self.syn["hud"]["slider"][0][index] setValue(self.slider[storage]);
+		if(!self.structure[index].text_slider) {
+			self.syn["hud"]["slider"][0][index] setValue(self.slider[storage]);
+		} else {
+			self.syn["hud"]["slider"][0][index].x = self.syn["utility"].x_offset + 85;
+			if(self.structure[index].slider_text == "outline") {
+				self.syn["hud"]["slider"][0][index] setText(self.syn["outline_colors"][self.slider[storage]]);
+			} else if(self.structure[index].slider_text == "speed") {
+				self.syn["hud"]["slider"][0][index] setText(self.syn["zombie_speed"][self.slider[storage]]);
+			}
+		}
 		
 		self.syn["hud"]["slider"][2][index].x = (self.syn["hud"]["slider"][1][index].x + (abs((self.slider[storage] - self.structure[index].minimum)) / position));
 	}
@@ -379,11 +386,15 @@ function add_string(text, func, array, argument_1, argument_2, argument_3) {
 	self.structure[self.structure.size] = option;
 }
 
-function add_increment(text, func, start, minimum, maximum, increment, slider_text, argument_1, argument_2, argument_3) {
+function add_increment(text, func, start, minimum, maximum, increment, text_slider, slider_text, argument_1, argument_2, argument_3) {
+	if(!isDefined(text_slider)) {
+		text_slider = false;
+	}
 	option = spawnStruct();
 	option.text = text;
 	option.func = func;
 	option.slider = true;
+	option.text_slider = text_slider;
 	option.slider_text = slider_text;
 	option.start = start;
 	option.minimum = minimum;
@@ -463,12 +474,6 @@ function initial_variable() {
 	self.syn["utility"].y_offset = -60;
 	self.syn["utility"].element_list = array("text", "subMenu", "toggle", "category", "slider");
 	
-	self.syn["visions"][0] = array("default", "zm_bgb_eye_candy_vs_1", "zm_bgb_eye_candy_vs_2", "zm_bgb_eye_candy_vs_3", "zm_bgb_eye_candy_vs_4");
-	self.syn["visions"][1] = array("None", "Eye Candy 1", "Eye Candy 2", "Eye Candy 3", "Eye Candy 4");
-	
-	self.syn["visions"]["origins"][0] = array("zm_tomb_in_plain_sight");
-	self.syn["visions"]["origins"][1] = array("Origins Zombie Blood");
-	
 	self.syn["powerups"][0] = array("free_perk", "bonus_points_player", "carpenter", "double_points", "insta_kill", "nuke", "full_ammo", "fire_sale", "minigun");
 	self.syn["powerups"][1] = array("Free Perk", "Bonus Points Player", "Carpenter", "Double Points", "Insta-Kill", "Nuke", "Max Ammo", "Fire Sale", "Minigun");
 	
@@ -478,10 +483,40 @@ function initial_variable() {
 	
 	self.syn["weapons"]["aats"][0] = array("zm_aat_blast_furnace", "zm_aat_dead_wire", "zm_aat_fire_works", "zm_aat_thunder_wall", "zm_aat_turned");
 	self.syn["weapons"]["aats"][1] = array("Blast Furnace", "Dead Wire", "Fireworks", "Thunder Wall", "Turned");
-	
+
 	self.syn["perks"]["common"][0] = array("specialty_quickrevive", "specialty_armorvest", "specialty_doubletap2", "specialty_staminup", "specialty_fastreload", "specialty_additionalprimaryweapon", "specialty_deadshot", "specialty_widowswine", "specialty_electriccherry", "specialty_phdflopper", "specialty_whoswho");
 	self.syn["perks"]["common"][1] = array("Quick Revive", "Juggernog", "Double Tap", "Stamin-Up", "Speed Cola", "Mule Kick", "Deadshot", "Widow's Wine", "Electric Cherry", "PhD Slider", "Who's Who");
 	self.syn["perks"]["all"] = getArrayKeys(level._custom_perks);
+	
+	self.syn["outline_colors"] = array("None", "Orange", "Green", "Purple", "Blue");
+	self.syn["zombie_speed"] = array("Walk", "Run", "Sprint");
+	
+	self.syn["visions"] = [];
+	
+	forEach(type, v_array in level.vsmgr) {
+		forEach(v_name, v_struct in level.vsmgr[type].info) {
+			vision = level.vsmgr[type].info[v_name];
+			if(vision.state.should_activate_per_player) {
+				displayName = construct_string(replace_character(vision.name, "_", " "));
+				if(isSubStr(displayName, "Zm")) {
+					displayName = getSubStr(displayName, 3);
+				}
+				if(isSubStr(displayName, "Bgb")) {
+					displayName = getSubStr(displayName, 4);
+				}
+				vision.displayName = displayName;
+				forEach(existingVision in self.syn["visions"]) {
+					if(vision.name == existingVision.name) {
+						self.isInArray = true;
+					}
+				}
+				if(!isDefined(self.isInArray) && !self.isInArray) {
+					array::add(self.syn["visions"], vision, 0);
+				}
+				self.isInArray = undefined;
+			}
+		}
+	}
 	
 	self.syn["gobblegum"][0] = getArrayKeys(level.bgb);
   self.syn["gobblegum"][1] = [];
@@ -507,6 +542,9 @@ function initial_variable() {
 				if(isInArray(weapon_names, weapon_id)) {
 					weapon = spawnStruct();
 					weapon.name = makeLocalizedString(getWeapon(weapon_id).displayName);
+					if(weapon_id == "pistol_m1911") {
+						weapon.name = "M1911";
+					}
 					weapon.id = weapon_id;
 					weapon.category = weapon_category;
 					level.weapons[i][level.weapons[i].size] = weapon;
@@ -655,7 +693,7 @@ function open_menu(menu) {
 	
 	self.syn["hud"] = [];
 	self.syn["hud"]["title"][0] = self create_text(self.syn["title"], self.syn["utility"].font, self.syn["utility"].font_scale, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 86), (self.syn["utility"].y_offset + 2), self.syn["utility"].color[4], 1, 10);
-	self.syn["hud"]["title"][1] = self create_text("______                                   ______", self.syn["utility"].font, self.syn["utility"].font_scale * 1.5, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 4), (self.syn["utility"].y_offset - 4), self.syn["utility"].color[5], 1, 10);
+	self.syn["hud"]["title"][1] = self create_text("______                                   ______", self.syn["utility"].font, self.syn["utility"].font_scale * 1.5, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 4), (self.syn["utility"].y_offset - 8), self.syn["utility"].color[5], 1, 10);
 	
 	self.syn["hud"]["background"][0] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset - 1), (self.syn["utility"].y_offset - 1), 202, 30, self.syn["utility"].color[5], 1, 1);
 	self.syn["hud"]["background"][1] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset), self.syn["utility"].y_offset, 200, 28, self.syn["utility"].color[1], 1, 2);
@@ -776,7 +814,7 @@ function create_option() {
 			
 			if(return_toggle(self.structure[index].category)) {
 				self.syn["hud"]["category"][0][index] = self create_text(self.structure[index].text, self.syn["utility"].font, self.syn["utility"].font_scale, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 88), (self.syn["utility"].y_offset + ((i * self.syn["utility"].option_spacing) + 17)), self.syn["utility"].color[0], 1, 10);
-				self.syn["hud"]["category"][1][index] = self create_text("______                                   ______", self.syn["utility"].font, self.syn["utility"].font_scale * 1.5, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 4), (self.syn["utility"].y_offset + ((i * self.syn["utility"].option_spacing) + 11)), self.syn["utility"].color[5], 1, 10);
+				self.syn["hud"]["category"][1][index] = self create_text("______                                   ______", self.syn["utility"].font, self.syn["utility"].font_scale * 1.5, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 4), (self.syn["utility"].y_offset + ((i * self.syn["utility"].option_spacing) + 11) - 4), self.syn["utility"].color[5], 1, 10);
 			}
 			else {
 				if(return_toggle(self.structure[index].slider)) {
@@ -984,7 +1022,7 @@ function on_player_spawned() {
 
 	self.syn["controls-hud"] = [];
 	self.syn["controls-hud"]["title"][0] = self create_text("Controls", self.syn["utility"].font, self.syn["utility"].font_scale, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 86), (self.syn["utility"].y_offset + 2), self.syn["utility"].color[4], 1, 10);
-	self.syn["controls-hud"]["title"][1] = self create_text("______                                   ______", self.syn["utility"].font, self.syn["utility"].font_scale * 1.5, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 4), (self.syn["utility"].y_offset - 4), self.syn["utility"].color[5], 1, 10);
+	self.syn["controls-hud"]["title"][1] = self create_text("______                                   ______", self.syn["utility"].font, self.syn["utility"].font_scale * 1.5, "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 4), (self.syn["utility"].y_offset - 8), self.syn["utility"].color[5], 1, 10);
 	
 	self.syn["controls-hud"]["background"][0] = self create_shader("white", "TOP_LEFT", "CENTER", self.syn["utility"].x_offset - 1, (self.syn["utility"].y_offset - 1), 202, 82, self.syn["utility"].color[5], 1, 1);
 	self.syn["controls-hud"]["background"][1] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset), self.syn["utility"].y_offset, 200, 80, self.syn["utility"].color[1], 1, 2);
@@ -1053,6 +1091,8 @@ function menu_index() {
 			self add_option("Give Gobblegum", &new_menu, "Give Gobblegum");
 			
 			self add_increment("Set Points", &set_points, 100, 100, 100000, 100);
+			self add_increment("Add Points", &add_points, 500, 500, 100000, 500);
+			self add_increment("Take Points", &take_points, 500, 500, 100000, 500);
 		
 			break;
 		case "Weapon Options":
@@ -1111,7 +1151,6 @@ function menu_index() {
 		
 			self add_increment("Move Menu X", &modify_x_position, 0, -580, 60, 10);
 			self add_increment("Move Menu Y", &modify_y_position, 0, -170, 130, 10);
-			self add_toggle("Watermark", &watermark, self.watermark);
 			self add_toggle("Hide UI", &hide_ui, self.hide_ui);
 			self add_toggle("Hide Weapon", &hide_weapon, self.hide_weapon);
 			
@@ -1138,21 +1177,18 @@ function menu_index() {
 			
 			self add_option("Kill All Zombies", &kill_all_zombies);
 			self add_toggle("One Shot Zombies", &one_shot_zombies, self.one_shot_zombies);
+			self add_toggle("Set Round 60+ Health Cap", &set_zombie_health_cap, self.zombie_health_cap);
+			
+			self add_increment("Set Zombie Speed", &set_zombie_speed, 0, 0, 2, 1, true, "speed");
+			
+			self add_increment("Set ESP Color", &outline_zombies, 0, 0, 4, 1, true, "outline");
 			
 			break;
 		case "Visions":
 			self add_menu(menu, menu.size);
 			
-			for(i = 0; i < self.syn["visions"][0].size; i++) {
-				self add_option(self.syn["visions"][1][i], &set_vision, self.syn["visions"][0][i]);
-			}
-			
-			map = get_map_name();
-			
-			if(map == "origins") {
-				for(i = 0; i < self.syn["visions"][map][0].size; i++) {
-					self add_option(self.syn["visions"][map][1][i], &set_vision, self.syn["visions"][map][0][i]);
-				}
+			forEach(vision in self.syn["visions"]) {
+				self add_option(vision.displayName, &set_vision, vision.name);
 			}
 
 			break;
@@ -1312,6 +1348,8 @@ function menu_index() {
 	}
 }
 
+// Common Functions
+
 function get_map_name() {
   if(level.script == "zm_prototype") return "nzp";
   if(level.script == "zm_asylum") return "nza";
@@ -1332,7 +1370,7 @@ function get_map_name() {
 
 function iPrintString(string) {
 	if(!isDefined(self.syn["string"])) {
-		self.syn["string"] = self create_text(string, "default", 1, "center", "top", 0, -115, (1,1,1), 1, 9999, false, true);
+		self.syn["string"] = self create_text(string, "default", 1.5, "center", "top", 0, -115, (1,1,1), 1, 9999, false, true);
 	} else {
 		self.syn["string"] set_text(string);
 	}
@@ -1341,6 +1379,8 @@ function iPrintString(string) {
 	self.syn["string"] setText(string);
 	self.syn["string"] thread fade_hud(0, 4);
 }
+
+// Menu Options
 
 function modify_x_position(offset) {
 	self.syn["utility"].x_offset = 160 + offset;
@@ -1366,17 +1406,6 @@ function modify_y_position(offset) {
 	open_menu("Menu Options");
 }
 
-function watermark() {
-	self.watermark = !return_toggle(self.watermark);
-	if(self.watermark) {
-		iPrintString("Watermark [^2ON^7]");
-		self.syn["watermark"] = self create_text("SyndiShanX", "default", 2, "TOP_LEFT", "CENTER", -425, -240, "rainbow", 1, 3);
-	} else {
-		iPrintString("Watermark [^1OFF^7]");
-		self.syn["watermark"] destroy();
-	}
-}
-
 function hide_ui() {
 	self.hide_ui = !return_toggle(self.hide_ui);
 	setDvar("\ui_enabled", !self.hide_ui);
@@ -1387,6 +1416,8 @@ function hide_weapon() {
 	self.hide_weapon = !return_toggle(self.hide_weapon);
 	setDvar("\cg_drawgun", !self.hide_weapon);
 }
+
+// Basic Options
 
 function god_mode() {
 	self.god_mode = !return_toggle(self.god_mode);
@@ -1439,6 +1470,7 @@ function no_clip() {
 
   if(!isDefined(self.no_clip)) {
     self.no_clip = true;
+		self iPrintString("No Clip [^2ON^7], Press ^3[{+frag}]^7 to Enter and ^3[{+melee}]^7 to Exit");
     while (isDefined(self.no_clip)) {
       if(self fragButtonPressed()) {
         if(!isDefined(self.no_clip_loop))
@@ -1448,6 +1480,7 @@ function no_clip() {
     }
   } else
     self.no_clip = undefined;
+		self iPrintString("No Clip [^1OFF^7]");
 }
 
 function no_clip_loop() {
@@ -1634,13 +1667,22 @@ function set_points(value) {
 	self zm_score::add_to_player_score(value);
 }
 
+function add_points(value) {
+	self zm_score::add_to_player_score(value);
+}
+
+function take_points(value) {
+	self zm_score::minus_to_player_score(value);
+}
+
+// Fun Options
+
 function forge_mode() {
 	self.forge_mode = !return_toggle(self.forge_mode);
 	if(self.forge_mode) {
-		self iPrintString("Forge Mode [^2ON^7]");
+		self iPrintString("Forge Mode [^2ON^7], Press ^3[{+speed_throw}]^7 to Pick Up/Drop Objects");
 		self thread forge_mode_loop();
 		wait 1;
-		self iPrintString("Press [{+speed_throw}] To Pick Up/Drop Objects");
 	} else {
 		self iPrintString("Forge Mode [^1OFF^7]");
 		self notify("stop_forge_mode");
@@ -1781,6 +1823,8 @@ function set_vision(vision) {
 	self.prev_vision = vision;
 }
 
+// Map Options
+
 function freeze_box() {
 	self.freeze_box = !return_toggle(self.freeze_box);
 	if(self.freeze_box) {
@@ -1866,6 +1910,8 @@ function restart_match() {
 	self notify("menuResponse", "", "restart_level_zm");
 }
 
+// Powerup Options
+
 function spawn_powerup(powerup) {
 	zm_powerups::specific_powerup_drop(powerup, self.origin + anglesToForward(self.angles) * 115);
 }
@@ -1894,6 +1940,8 @@ function shoot_powerups_loop() {
 		wait .05;
 	}
 }
+
+// Weapon Options
 
 function give_packed_weapon() {
 	self.give_packed_weapon = !return_toggle(self.give_packed_weapon);
@@ -1946,6 +1994,8 @@ function drop_weapon() {
 	self dropitem(self getCurrentWeapon());
 }
 
+// Zombie Options
+
 function no_target() {
 	self.no_target = !return_toggle(self.no_target);
 	if(self.no_target) {
@@ -1962,7 +2012,7 @@ function set_round(value) {
 }
 
 function get_zombies() {
-	return getAITeamArray(level.zombie_team);
+	return zombie_utility::get_zombie_array();
 }
 
 function kill_all_zombies() {
@@ -1993,6 +2043,34 @@ function one_shot_zombies() {
 			zombie.maxHealth = level.prev_health;
 			zombie.health	= level.prev_health;
 		}
+	}
+}
+
+function set_zombie_health_cap() {
+	if(!isDefined(self.zombie_health_cap)) {
+		self iPrintString("Round 60+ Health Cap [^2ON^7]");
+		self.zombie_health_cap = true;
+		while(isDefined(self.zombie_health_cap)) {
+			forEach(zombie in get_zombies()) {
+				if(zombie.maxHealth > 122086) {
+					level.zombie_health = 122086;
+					zombie.maxHealth = 122086;
+				}
+				if(zombie.health > 122086) {
+					zombie.health	= 122086;
+				}
+			}
+			wait 0.01;
+		}
+	} else {
+		self iPrintString("Round 60+ Health Cap [^1OFF^7]");
+		self.zombie_health_cap = undefined;
+		level.zombie_health = level.zombie_vars["zombie_health_start"];
+		forEach(zombie in get_zombies()) {
+			zombie.maxHealth = level.zombie_vars["zombie_health_start"];
+			zombie.health = level.zombie_vars["zombie_health_start"];
+		}
+		zombie_utility::ai_calculate_health(level.round_number);
 	}
 }
 
@@ -2028,4 +2106,34 @@ function disable_spawns() {
 		iPrintString("Disable Spawns [^1OFF^7]");
 		level flag::set("spawn_zombies");
 	}
+}
+
+function set_zombie_speed(value) {
+	if(value == 0) {
+		speed = "walk";
+	} else if(value == 1) {
+		speed = "run";
+	} else if(value == 2) {
+		speed = "sprint";
+	}
+	
+	if(!isDefined(self.zombie_speed)) {
+		self.zombie_speed = true;
+		while(isDefined(self.zombie_speed)) {
+			forEach(zombie in get_zombies()) {
+				zombie.zombie_move_speed = speed;
+				wait .01;
+			}
+			wait .1;
+		}
+	} else {
+		self.zombie_speed = undefined;
+		forEach(zombie in get_zombies()) {
+			zombie.zombie_move_speed = level.round_number * level.zombie_vars["zombie_move_speed_multiplier"];
+		}
+	}
+}
+
+function outline_zombies(value) {
+	self thread clientField::set_to_player("eye_candy_render", value);
 }
