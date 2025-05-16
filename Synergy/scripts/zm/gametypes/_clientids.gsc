@@ -745,6 +745,7 @@ function create_option() {
 		for(i = 0; i < limit; i++) {
 			index = (i + start);
 			cursor = (self get_cursor() == index);
+			color = [];
 			if(cursor) {
 				color[0] = self.syn["utility"].color[0];
 			} else {
