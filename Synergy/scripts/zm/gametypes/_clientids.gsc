@@ -1493,7 +1493,12 @@ function no_clip_loop() {
 
 	clip = spawn("script_origin", self.origin);
 	self playerLinkTo(clip);
-	self enableInvulnerability();
+	
+	if(!isDefined(self.god_mode) || !self.god_mode) {
+		self enableInvulnerability();
+		self.temp_god_mode = true;
+	}
+	
 	self animMode("noclip");
 
 	while (true) {
@@ -1515,8 +1520,11 @@ function no_clip_loop() {
 	self enableWeapons();
 	self enableOffhandWeapons();
 
-	if(!isDefined(self.godmode))
-		self DisableInvulnerability();
+	if(self.temp_god_mode) {
+		self disableInvulnerability();
+		self.temp_god_mode = undefined;
+	}
+	
 	self animmode("noclip", true);
 
 	self.no_clip_loop = undefined;
