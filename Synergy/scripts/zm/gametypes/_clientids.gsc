@@ -367,7 +367,7 @@ function add_toggle(text, func, toggle, array, argument_1, argument_2, argument_
 	
 	if(isDefined(array)) {
 		option.slider = true;
-		option.array  = array;
+		option.array = array;
 	}
 	
 	self.structure[self.structure.size] = option;
@@ -429,39 +429,39 @@ function new_menu(menu) {
 }
 
 function construct_string(string) {
-  final = "";
-  for (e = 0; e < string.size; e++) {
-    if(e == 0)
-      final += toUpper(string[e]);
-    else if(string[e - 1] == " ")
-      final += toUpper(string[e]);
-    else
-      final += string[e];
-  }
-  return final;
+	final = "";
+	for (e = 0; e < string.size; e++) {
+		if(e == 0)
+			final += toUpper(string[e]);
+		else if(string[e - 1] == " ")
+			final += toUpper(string[e]);
+		else
+			final += string[e];
+	}
+	return final;
 }
 
 function replace_character(string, substring, replace) {
-  final = "";
-  for (e = 0; e < string.size; e++) {
-    if(string[e] == substring)
-      final += replace;
-    else
-      final += string[e];
-  }
-  return final;
+	final = "";
+	for (e = 0; e < string.size; e++) {
+		if(string[e] == substring)
+			final += replace;
+		else
+			final += string[e];
+	}
+	return final;
 }
 
 function remove_duplicate_ent_array(name) {
-  new_array = [];
-  saved_array = [];
-  forEach(item in getEntArray(name, "targetname")) {
-    if(!isInArray(new_array, item.script_noteworthy)) {
-      new_array[new_array.size] = item.script_noteworthy;
-      saved_array[saved_array.size] = item;
-    }
-  }
-  return saved_array;
+	new_array = [];
+	saved_array = [];
+	forEach(item in getEntArray(name, "targetname")) {
+		if(!isInArray(new_array, item.script_noteworthy)) {
+			new_array[new_array.size] = item.script_noteworthy;
+			saved_array[saved_array.size] = item;
+		}
+	}
+	return saved_array;
 }
 
 function initial_variable() {
@@ -483,7 +483,7 @@ function initial_variable() {
 	
 	self.syn["weapons"]["aats"][0] = array("zm_aat_blast_furnace", "zm_aat_dead_wire", "zm_aat_fire_works", "zm_aat_thunder_wall", "zm_aat_turned");
 	self.syn["weapons"]["aats"][1] = array("Blast Furnace", "Dead Wire", "Fireworks", "Thunder Wall", "Turned");
-
+	
 	self.syn["perks"]["common"][0] = array("specialty_quickrevive", "specialty_armorvest", "specialty_doubletap2", "specialty_staminup", "specialty_fastreload", "specialty_additionalprimaryweapon", "specialty_deadshot", "specialty_widowswine", "specialty_electriccherry", "specialty_phdflopper", "specialty_whoswho");
 	self.syn["perks"]["common"][1] = array("Quick Revive", "Juggernog", "Double Tap", "Stamin-Up", "Speed Cola", "Mule Kick", "Deadshot", "Widow's Wine", "Electric Cherry", "PhD Slider", "Who's Who");
 	self.syn["perks"]["all"] = getArrayKeys(level._custom_perks);
@@ -519,22 +519,22 @@ function initial_variable() {
 	}
 	
 	self.syn["gobblegum"][0] = getArrayKeys(level.bgb);
-  self.syn["gobblegum"][1] = [];
-  for (e = 0; e < self.syn["gobblegum"][0].size; e++) {
-    self.syn["gobblegum"][1][e] = construct_string(replace_character(getSubStr(self.syn["gobblegum"][0][e], 7), "_", " "));
+	self.syn["gobblegum"][1] = [];
+	for (e = 0; e < self.syn["gobblegum"][0].size; e++) {
+		self.syn["gobblegum"][1][e] = construct_string(replace_character(getSubStr(self.syn["gobblegum"][0][e], 7), "_", " "));
 	}
 	
 	level.weapons = [];
-  weapon_types = array("assault", "smg", "cqb", "lmg", "sniper", "pistol", "launcher");
+	weapon_types = array("assault", "smg", "cqb", "lmg", "sniper", "pistol", "launcher");
 	
-  weapon_names = [];
-  forEach(weapon in getArrayKeys(level.zombie_weapons)) {
+	weapon_names = [];
+	forEach(weapon in getArrayKeys(level.zombie_weapons)) {
 		weapon_names[weapon_names.size] = weapon.name;
 	}
 	
-  for(i = 0; i < weapon_types.size; i++) {
-    level.weapons[i] = [];
-    for(e = 1; e < 100; e++) {
+	for(i = 0; i < weapon_types.size; i++) {
+		level.weapons[i] = [];
+		for(e = 1; e < 100; e++) {
 			weapon_category = tableLookup("gamedata/stats/zm/zm_statstable.csv", 0, e, 2);
 			weapon_id = tableLookup("gamedata/stats/zm/zm_statstable.csv", 0, e, 4);
 	
@@ -550,28 +550,28 @@ function initial_variable() {
 					level.weapons[i][level.weapons[i].size] = weapon;
 				}
 			}
-    }
-  }
-
-  level.weapons[7] = [];
-  forEach(weapon in getArrayKeys(level.zombie_weapons)) {
-    isInArray = false;
-    for (e = 0; e < level.weapons.size; e++) {
-      for (i = 0; i < level.weapons[e].size; i++) {
-        if(isDefined(level.weapons[e][i]) && level.weapons[e][i].id == weapon.name) {
-          isInArray = true;
-          break;
-        }
-      }
-    }
-    if(!isInArray && weapon.displayName != "") {
-      weapons = spawnStruct();
-      weapons.name = makeLocalizedString(weapon.displayName);
-      weapons.id = weapon.name;
-      level.weapons[7][level.weapons[7].size] = weapons;
-    }
-  }
-
+		}
+	}
+	
+	level.weapons[7] = [];
+	forEach(weapon in getArrayKeys(level.zombie_weapons)) {
+		isInArray = false;
+		for (e = 0; e < level.weapons.size; e++) {
+			for (i = 0; i < level.weapons[e].size; i++) {
+				if(isDefined(level.weapons[e][i]) && level.weapons[e][i].id == weapon.name) {
+					isInArray = true;
+					break;
+				}
+			}
+		}
+		if(!isInArray && weapon.displayName != "") {
+			weapons = spawnStruct();
+			weapons.name = makeLocalizedString(weapon.displayName);
+			weapons.id = weapon.name;
+			level.weapons[7][level.weapons[7].size] = weapons;
+		}
+	}
+	
 	self.syn["utility"].interaction = true;
 	
 	self.syn["utility"].color[0] = (0.752941176, 0.752941176, 0.752941176);
@@ -600,6 +600,7 @@ function initial_monitor() {
 					}
 					
 					close_controls_menu();
+					clear_all();
 					
 					self open_menu();
 					wait .15;
@@ -618,9 +619,8 @@ function initial_monitor() {
 						self close_menu();
 					}
 					
-					wait .75;
-				}
-				else if(self adsButtonPressed() && !self attackButtonPressed() || self attackButtonPressed() && !self adsButtonPressed()) {
+					wait .75; // Knife Cooldown
+				} else if(self adsButtonPressed() && !self attackButtonPressed() || self attackButtonPressed() && !self adsButtonPressed()) {
 					if(isDefined(self.structure) && self.structure.size >= 2) {
 						if(return_toggle(self.syn["utility"].interaction)) {
 							self playSoundToPlayer("uin_main_nav", self);
@@ -636,8 +636,7 @@ function initial_monitor() {
 						self update_scrolling(scrolling);
 					}
 					wait .25;
-				}
-				else if(self fragButtonPressed() && !self secondaryOffhandButtonPressed() || self secondaryOffhandButtonPressed() && !self fragButtonPressed()) {
+				} else if(self fragButtonPressed() && !self secondaryOffhandButtonPressed() || self secondaryOffhandButtonPressed() && !self fragButtonPressed()) {
 					if(return_toggle(self.structure[cursor].slider)) {
 						if(return_toggle(self.syn["utility"].interaction)) {
 							self playSoundToPlayer("uin_main_nav", self);
@@ -652,8 +651,7 @@ function initial_monitor() {
 						self set_slider(scrolling);
 					}
 					wait .07;
-				}
-				else if(self useButtonPressed()) {
+				} else if(self useButtonPressed()) {
 					if(isDefined(self.structure[cursor].func)) {
 						if(return_toggle(self.syn["utility"].interaction)) {
 							self playSoundToPlayer("uin_main_pause", self);
@@ -697,8 +695,8 @@ function open_menu(menu) {
 	
 	self.syn["hud"]["background"][0] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset - 1), (self.syn["utility"].y_offset - 1), 202, 30, self.syn["utility"].color[5], 1, 1);
 	self.syn["hud"]["background"][1] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset), self.syn["utility"].y_offset, 200, 28, self.syn["utility"].color[1], 1, 2);
-	self.syn["hud"]["foreground"][1] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset), (self.syn["utility"].y_offset + 14), 194, 14, self.syn["utility"].color[3], 1, 4);
-	self.syn["hud"]["foreground"][2] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 195), (self.syn["utility"].y_offset + 14), 4, 14, self.syn["utility"].color[3], 1, 4);
+	self.syn["hud"]["foreground"][0] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset), (self.syn["utility"].y_offset + 14), 194, 14, self.syn["utility"].color[3], 1, 4);
+	self.syn["hud"]["foreground"][1] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 195), (self.syn["utility"].y_offset + 14), 4, 14, self.syn["utility"].color[3], 1, 4);
 	
 	self set_menu(menu);
 	self create_option();
@@ -880,25 +878,25 @@ function update_resize() {
 		position = 1;
 	}
 	
-	if(!isDefined(self.syn["hud"]["foreground"][1])) {
-		self.syn["hud"]["foreground"][1] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset), (self.syn["utility"].y_offset + 14), 194, 14, self.syn["utility"].color[3], 1, 4);
+	if(!isDefined(self.syn["hud"]["foreground"][0])) {
+		self.syn["hud"]["foreground"][0] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset), (self.syn["utility"].y_offset + 14), 194, 14, self.syn["utility"].color[3], 1, 4);
 	}
 	
-	if(!isDefined(self.syn["hud"]["foreground"][2])) {
-		self.syn["hud"]["foreground"][2] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 195), (self.syn["utility"].y_offset + 14), 4, 14, self.syn["utility"].color[3], 1, 4);
+	if(!isDefined(self.syn["hud"]["foreground"][1])) {
+		self.syn["hud"]["foreground"][1] = self create_shader("white", "TOP_LEFT", "CENTER", (self.syn["utility"].x_offset + 195), (self.syn["utility"].y_offset + 14), 4, 14, self.syn["utility"].color[3], 1, 4);
 	}
 	
 	self.syn["hud"]["background"][0] setShader("white", self.syn["hud"]["background"][0].width, (height + 16));
 	self.syn["hud"]["background"][1] setShader("white", self.syn["hud"]["background"][1].width, (height + 14));
-	self.syn["hud"]["foreground"][2] setShader("white", self.syn["hud"]["foreground"][2].width, adjust);
+	self.syn["hud"]["foreground"][1] setShader("white", self.syn["hud"]["foreground"][1].width, adjust);
 	
-	if(isDefined(self.syn["hud"]["foreground"][1])) {
-		self.syn["hud"]["foreground"][1].y = (self.syn["hud"]["text"][self get_cursor()].y - 2);
+	if(isDefined(self.syn["hud"]["foreground"][0])) {
+		self.syn["hud"]["foreground"][0].y = (self.syn["hud"]["text"][self get_cursor()].y - 2);
 	}
 	
-	self.syn["hud"]["foreground"][2].y = (self.syn["utility"].y_offset + 14);
+	self.syn["hud"]["foreground"][1].y = (self.syn["utility"].y_offset + 14);
 	if(self.structure.size > self.syn["utility"].option_limit) {
-	    self.syn["hud"]["foreground"][2].y += (self get_cursor() / position);
+			self.syn["hud"]["foreground"][1].y += (self get_cursor() / position);
 	}
 }
 
@@ -932,39 +930,41 @@ function create_rainbow_color() {
 	level.rainbow_color = (0, 0, 0);
 	
 	while(true) {
-		if (y >= 0 && y < 258) {
+		if(y >= 0 && y < 258) {
 			r = 255;
 			g = 0;
 			b = x;
-		} else if (y >= 258 && y < 516) {
+		} else if(y >= 258 && y < 516) {
 			r = 255 - x;
 			g = 0;
 			b = 255;
-		} else if (y >= 516 && y < 774) {
+		} else if(y >= 516 && y < 774) {
 			r = 0;
 			g = x;
 			b = 255;
-		} else if (y >= 774 && y < 1032) {
+		} else if(y >= 774 && y < 1032) {
 			r = 0;
 			g = 255;
 			b = 255 - x;
-		} else if (y >= 1032 && y < 1290) {
+		} else if(y >= 1032 && y < 1290) {
 			r = x;
 			g = 255;
 			b = 0;
-		} else if (y >= 1290 && y < 1545) {
+		} else if(y >= 1290 && y < 1545) {
 			r = 255;
 			g = 255 - x;
 			b = 0;
 		}
 		
 		x += 3;
-		if (x > 255)
+		if(x > 255) {
 			x = 0;
+		}
 		
 		y += 3;
-		if (y > 1545)
+		if(y > 1545) {
 			y = 0;
+		}
 		
 		level.rainbow_color = (r/255, g/255, b/255);
 		wait .05;
@@ -1352,21 +1352,21 @@ function menu_index() {
 // Common Functions
 
 function get_map_name() {
-  if(level.script == "zm_prototype") return "nzp";
-  if(level.script == "zm_asylum") return "nza";
-  if(level.script == "zm_sumpf") return "nzs";
-  if(level.script == "credits") return "cred";
-  if(level.script == "zm_factory") return "nzf";
-  if(level.script == "zm_castle") return "de";
-  if(level.script == "zm_island") return "zns";
-  if(level.script == "zm_genesis") return "rev";
-  if(level.script == "zm_stalingrad") return "gk";
-  if(level.script == "zm_zod") return "soe";
-  if(level.script == "zm_tomb") return "origins";
-  if(level.script == "zm_moon") return "moon";
-  if(level.script == "zm_cosmodrome") return "ascen";
-  if(level.script == "zm_theater") return "kino";
-  if(level.script == "zm_temple") return "shang";
+	if(level.script == "zm_prototype") return "nzp";
+	if(level.script == "zm_asylum") return "nza";
+	if(level.script == "zm_sumpf") return "nzs";
+	if(level.script == "credits") return "cred";
+	if(level.script == "zm_factory") return "nzf";
+	if(level.script == "zm_castle") return "de";
+	if(level.script == "zm_island") return "zns";
+	if(level.script == "zm_genesis") return "rev";
+	if(level.script == "zm_stalingrad") return "gk";
+	if(level.script == "zm_zod") return "soe";
+	if(level.script == "zm_tomb") return "origins";
+	if(level.script == "zm_moon") return "moon";
+	if(level.script == "zm_cosmodrome") return "ascen";
+	if(level.script == "zm_theater") return "kino";
+	if(level.script == "zm_temple") return "shang";
 }
 
 function iPrintString(string) {
@@ -1466,104 +1466,104 @@ function demi_god_mode_loop() {
 }
 
 function no_clip() {
-  self endon("disconnect");
-  self endon("game_ended");
+	self endon("disconnect");
+	self endon("game_ended");
 
-  if(!isDefined(self.no_clip)) {
-    self.no_clip = true;
+	if(!isDefined(self.no_clip)) {
+		self.no_clip = true;
 		self iPrintString("No Clip [^2ON^7], Press ^3[{+frag}]^7 to Enter and ^3[{+melee}]^7 to Exit");
-    while (isDefined(self.no_clip)) {
-      if(self fragButtonPressed()) {
-        if(!isDefined(self.no_clip_loop))
-          self thread no_clip_loop();
-      }
-      wait .05;
-    }
-  } else
-    self.no_clip = undefined;
+		while (isDefined(self.no_clip)) {
+			if(self fragButtonPressed()) {
+				if(!isDefined(self.no_clip_loop))
+					self thread no_clip_loop();
+			}
+			wait .05;
+		}
+	} else
+		self.no_clip = undefined;
 		self iPrintString("No Clip [^1OFF^7]");
 }
 
 function no_clip_loop() {
-  self endon("disconnect");
-  self endon("noclip_end");
-  self disableWeapons();
-  self disableOffHandWeapons();
-  self.no_clip_loop = true;
+	self endon("disconnect");
+	self endon("noclip_end");
+	self disableWeapons();
+	self disableOffHandWeapons();
+	self.no_clip_loop = true;
 
-  clip = spawn("script_origin", self.origin);
-  self playerLinkTo(clip);
-  self enableInvulnerability();
-  self animMode("noclip");
+	clip = spawn("script_origin", self.origin);
+	self playerLinkTo(clip);
+	self enableInvulnerability();
+	self animMode("noclip");
 
-  while (true) {
-    vec = anglesToForward(self getPlayerAngles());
-    end = (vec[0] * 60, vec[1] * 60, vec[2] * 60);
-    if(self attackButtonPressed()) {
-      clip.origin = clip.origin + end;
+	while (true) {
+		vec = anglesToForward(self getPlayerAngles());
+		end = (vec[0] * 60, vec[1] * 60, vec[2] * 60);
+		if(self attackButtonPressed()) {
+			clip.origin = clip.origin + end;
 		}
-    if(self adsButtonPressed()) {
-      clip.origin = clip.origin - end;
+		if(self adsButtonPressed()) {
+			clip.origin = clip.origin - end;
 		}
-    if(self meleeButtonPressed()) {
-      break;
+		if(self meleeButtonPressed()) {
+			break;
 		}
-    wait .05;
-  }
+		wait .05;
+	}
 
-  clip delete();
-  self enableWeapons();
-  self enableOffhandWeapons();
+	clip delete();
+	self enableWeapons();
+	self enableOffhandWeapons();
 
-  if(!isDefined(self.godmode))
-    self DisableInvulnerability();
-  self animmode("noclip", true);
+	if(!isDefined(self.godmode))
+		self DisableInvulnerability();
+	self animmode("noclip", true);
 
-  self.no_clip_loop = undefined;
+	self.no_clip_loop = undefined;
 }
 
 function ufo_mode() {
-  if(isDefined(self.no_clip)) {
+	if(isDefined(self.no_clip)) {
 		iPrintString("[^1Error^7] Disable Noclip before Enabling UFO Mode");
 		return;
 	}
 	
 	self close_menu();
 
-  self enableInvulnerability();
-  self disableWeapons();
-  self disableOffHandWeapons();
-  clip = spawn("script_origin", self.origin);
-  self playerLinkTo(clip);
-  self animMode("noclip");
+	self enableInvulnerability();
+	self disableWeapons();
+	self disableOffHandWeapons();
+	clip = spawn("script_origin", self.origin);
+	self playerLinkTo(clip);
+	self animMode("noclip");
 
-  while (1) {
-    vec = anglesToForward(self getPlayerAngles());
-    vecU = anglesToUp(self getPlayerAngles());
-    end = (vec[0] * 35, vec[1] * 35, vec[2] * 35);
-    endU = (vecU[0] * 30, vecU[1] * 30, vecU[2] * 30);
-    if(self attackButtonPressed()) {
-      clip.origin = clip.origin - endU;
-    }
-    if(self adsButtonPressed()) {
-      clip.origin = clip.origin + endU;
-    }
-    if(self fragButtonPressed()) {
-      clip.origin = clip.origin + end;
-    }
-    if(self meleeButtonPressed()) {
-      break;
-    }
-    wait .05;
-  }
-  clip delete();
-  self enableWeapons();
-  self enableOffHandWeapons();
-  if(!isDefined(self.god_mode)) {
-    self disableInvulnerability();
-  }
+	while (1) {
+		vec = anglesToForward(self getPlayerAngles());
+		vecU = anglesToUp(self getPlayerAngles());
+		end = (vec[0] * 35, vec[1] * 35, vec[2] * 35);
+		endU = (vecU[0] * 30, vecU[1] * 30, vecU[2] * 30);
+		if(self attackButtonPressed()) {
+			clip.origin = clip.origin - endU;
+		}
+		if(self adsButtonPressed()) {
+			clip.origin = clip.origin + endU;
+		}
+		if(self fragButtonPressed()) {
+			clip.origin = clip.origin + end;
+		}
+		if(self meleeButtonPressed()) {
+			break;
+		}
+		wait .05;
+	}
+	clip delete();
+	self enableWeapons();
+	self enableOffHandWeapons();
+	if(!isDefined(self.god_mode)) {
+		self disableInvulnerability();
+	}
 	open_menu("Basic Options");
-  self animMode("noclip", true);
+	self animMode("noclip", true);
 }
 
 function infinite_ammo() {
@@ -1627,7 +1627,7 @@ function get_perk_name(perk) {
 function give_perk(perk) {
 	if(!self hasPerk(perk)) {
 		self setPerk(perk); 
-		self zm_perks::vending_trigger_post_think(self, perk);  
+		self zm_perks::vending_trigger_post_think(self, perk);	
 	}
 }
 
@@ -1649,18 +1649,18 @@ function get_gobblegum_name(gobblegum) {
 }
 
 function give_gobblegum(gobblegum) {
-  saved_weapon = self getCurrentWeapon();
-  weapon = getWeapon("zombie_bgb_grab");
-  self giveWeapon(weapon, self calcWeaponOptions(level.bgb[gobblegum].camo_index, 0, 0));
-  self switchToWeapon(weapon);
-  self playSound("zmb_bgb_powerup_default");
+	saved_weapon = self getCurrentWeapon();
+	weapon = getWeapon("zombie_bgb_grab");
+	self giveWeapon(weapon, self calcWeaponOptions(level.bgb[gobblegum].camo_index, 0, 0));
+	self switchToWeapon(weapon);
+	self playSound("zmb_bgb_powerup_default");
 
-  event = self util::waittill_any_return("fake_death", "death", "player_downed", "weapon_change_complete", "disconnect");
-  if(event == "weapon_change_complete") {
-    self takeWeapon(weapon);
-    self zm_weapons::switch_back_primary_weapon(saved_weapon);
-    bgb::give(gobblegum);
-  }
+	event = self util::waittill_any_return("fake_death", "death", "player_downed", "weapon_change_complete", "disconnect");
+	if(event == "weapon_change_complete") {
+		self takeWeapon(weapon);
+		self zm_weapons::switch_back_primary_weapon(saved_weapon);
+		bgb::give(gobblegum);
+	}
 }
 
 function set_points(value) {
@@ -1691,44 +1691,44 @@ function forge_mode() {
 }
 
 function forge_mode_loop() {
-  self endOn("disconnect");
-  self endOn("stop_forge_mode");
+	self endOn("disconnect");
+	self endOn("stop_forge_mode");
 
-  while (true) {
-    trace = beamTrace(self getTagOrigin("j_head"), self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 1000000, 1, self);
-    if(isDefined(trace["entity"])) {
-      if(self adsButtonPressed()) {
-        while (self adsButtonPressed()) {
-          trace["entity"] forceTeleport(self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 200);
-          trace["entity"].origin = self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 200;
-          wait .01;
-        }
-      }
-      if(self attackButtonPressed()) {
-        while (self attackButtonPressed()) {
-          trace["entity"] rotatePitch(1, .01);
-          wait .01;
-        }
-      }
-      if(self fragButtonPressed()) {
-        while (self fragButtonPressed()) {
-          trace["entity"] rotateYaw(1, .01);
-          wait .01;
-        }
-      }
-      if(self secondaryOffhandButtonPressed()) {
-        while (self secondaryOffhandButtonPressed()) {
-          trace["entity"] rotateRoll(1, .01);
-          wait .01;
-        }
-      }
-      if(!isPlayer(trace["entity"]) && self meleeButtonPressed()) {
-        trace["entity"] delete();
-        wait .2;
-      }
-    }
-    wait .05;
-  }
+	while (true) {
+		trace = beamTrace(self getTagOrigin("j_head"), self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 1000000, 1, self);
+		if(isDefined(trace["entity"])) {
+			if(self adsButtonPressed()) {
+				while (self adsButtonPressed()) {
+					trace["entity"] forceTeleport(self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 200);
+					trace["entity"].origin = self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 200;
+					wait .01;
+				}
+			}
+			if(self attackButtonPressed()) {
+				while (self attackButtonPressed()) {
+					trace["entity"] rotatePitch(1, .01);
+					wait .01;
+				}
+			}
+			if(self fragButtonPressed()) {
+				while (self fragButtonPressed()) {
+					trace["entity"] rotateYaw(1, .01);
+					wait .01;
+				}
+			}
+			if(self secondaryOffhandButtonPressed()) {
+				while (self secondaryOffhandButtonPressed()) {
+					trace["entity"] rotateRoll(1, .01);
+					wait .01;
+				}
+			}
+			if(!isPlayer(trace["entity"]) && self meleeButtonPressed()) {
+				trace["entity"] delete();
+				wait .2;
+			}
+		}
+		wait .05;
+	}
 }
 
 function exo_movement() {
@@ -1803,12 +1803,12 @@ function third_person() {
 		iPrintString("Third Person [^2ON^7]");
 		self setClientThirdPerson(1);
 		self setClientThirdPersonAngle(354);
-    self setDepthOfField(0, 128, 512, 4000, 6, 1.8);
+		self setDepthOfField(0, 128, 512, 4000, 6, 1.8);
 	} else {
 		iPrintString("Third Person [^1OFF^7]");
 		self setClientThirdPerson(0);
 		self setClientThirdPersonAngle(0);
-    self setDepthOfField(0, 0, 512, 4000, 4, 0);
+		self setDepthOfField(0, 0, 512, 4000, 4, 0);
 	}
 	self resetFov();
 }
@@ -1862,49 +1862,49 @@ function open_doors() {
 }
 
 function get_power_trigger() {
-  presets = array("elec", "power", "master");
-  forEach(preset in presets) {
-    trigger = getEnt("use_" + preset + "_switch", "targetname");
-    if(isDefined(trigger)) {
-      return trigger;
+	presets = array("elec", "power", "master");
+	forEach(preset in presets) {
+		trigger = getEnt("use_" + preset + "_switch", "targetname");
+		if(isDefined(trigger)) {
+			return trigger;
 		}
-  }
-  return false;
+	}
+	return false;
 }
 
 function power_on() {
 	if(get_map_name() == "rev") {
-    for (i = 1; i < 5; i++) {
-      level flag::set("power_on" + i);
+		for (i = 1; i < 5; i++) {
+			level flag::set("power_on" + i);
 		}
-    level flag::set("all_power_on");
-    waitTillFrameEnd;
+		level flag::set("all_power_on");
+		waitTillFrameEnd;
 
-    while(!level flag::get("apothicon_near_trap")) {
-      wait .1;
+		while(!level flag::get("apothicon_near_trap")) {
+			wait .1;
 		}
-    trigger = struct::get("apothicon_trap_trig", "targetName");
-    trigger notify("trigger_activated", self);
-    return;
-  }
-  if(get_map_name() == "shang") {
-    directions = array("power_trigger_left", "power_trigger_right");
-    forEach(direction in directions) {
-      switch_trigger = getEnt("power_trigger_" + direction, "targetName");
-      switch_trigger notify("trigger", self);
-    }
-    return;
-  }
-  trigger = get_power_trigger();
-  trigger notify("trigger", self);
+		trigger = struct::get("apothicon_trap_trig", "targetName");
+		trigger notify("trigger_activated", self);
+		return;
+	}
+	if(get_map_name() == "shang") {
+		directions = array("power_trigger_left", "power_trigger_right");
+		forEach(direction in directions) {
+			switch_trigger = getEnt("power_trigger_" + direction, "targetName");
+			switch_trigger notify("trigger", self);
+		}
+		return;
+	}
+	trigger = get_power_trigger();
+	trigger notify("trigger", self);
 }
 
 function shock_all_electrics() {
-  for (e = 0; e < 50; e++) {
-    if(isDefined(level flag::get("power_on" + e))) {
-      level flag::set("power_on" + e);
+	for (e = 0; e < 50; e++) {
+		if(isDefined(level flag::get("power_on" + e))) {
+			level flag::set("power_on" + e);
 		}
-  }
+	}
 }
 
 function restart_match() {
@@ -1982,8 +1982,8 @@ function give_weapon(weapon) {
 }
 
 function give_aat(value) {
-  weapon = self getCurrentWeapon();
-  self thread aat::acquire(weapon, value);
+	weapon = self getCurrentWeapon();
+	self thread aat::acquire(weapon, value);
 }
 
 function take_weapon() {
@@ -2033,7 +2033,7 @@ function one_shot_zombies() {
 		while(isDefined(self.one_shot_zombies)) {
 			forEach(zombie in get_zombies()) {
 				zombie.maxHealth = 1;
-				zombie.health	= zombie.maxHealth;
+				zombie.health = zombie.maxHealth;
 			}
 			wait 0.01;
 		}
@@ -2042,7 +2042,7 @@ function one_shot_zombies() {
 		self.one_shot_zombies = undefined;
 		forEach(zombie in get_zombies()) {
 			zombie.maxHealth = level.prev_health;
-			zombie.health	= level.prev_health;
+			zombie.health = level.prev_health;
 		}
 	}
 }
@@ -2058,7 +2058,7 @@ function set_zombie_health_cap() {
 					zombie.maxHealth = 122086;
 				}
 				if(zombie.health > 122086) {
-					zombie.health	= 122086;
+					zombie.health = 122086;
 				}
 			}
 			wait 0.01;
