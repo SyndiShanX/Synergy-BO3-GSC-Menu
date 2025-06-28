@@ -17,7 +17,8 @@ If you have any Issues/Suggestions, please Submit them in [Issues](https://githu
 * Subscribe to the Mod in the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3440309449)
 
 ## Injecting with a BO3 GSC Injector
-*  Download the Latest GSC File from [Releases](https://github.com/SyndiShanX/Synergy-BO3-GSC-Menu/releases)
+
+* Download the Latest GSC File from [Releases](https://github.com/SyndiShanX/Synergy-BO3-GSC-Menu/releases)
 
 * Open your BO3 GSC Injector, select the Script and Inject it while in the Pre-game Lobby
 
@@ -26,6 +27,7 @@ If you have any Issues/Suggestions, please Submit them in [Issues](https://githu
 ### Requirements: BO3 Mod Tools on Steam
 
 #### Zombies:
+
 * Download the Latest ZIP from [Releases](https://github.com/SyndiShanX/Synergy-BO3-GSC-Menu/releases)
 
 * Place the `mods` Folder from the Zip into the Game's Folder
