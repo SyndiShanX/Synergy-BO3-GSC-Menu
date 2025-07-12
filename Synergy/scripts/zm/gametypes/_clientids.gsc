@@ -23,10 +23,10 @@
 #namespace clientids;
 
 REGISTER_SYSTEM("clientids", &__init__, undefined)
-	
+
 function __init__() {
 	callback::on_start_gametype(&init);
-}	
+}
 
 function init() {
 	setDvar("sv_cheats", "1");
@@ -54,110 +54,110 @@ function initial_variable() {
 	self.description_enabled = true;
 	self.randomizing_enabled = true;
 	self.scrolling_buffer = 3;
-	
+
 	self set_menu();
 	self set_title();
-	
+
 	self.menu_color_red = 255;
 	self.menu_color_green = 255;
 	self.menu_color_blue = 255;
 	self.color_theme = "rainbow";
 	self.point_increment = 100;
 	level.doors_done = false;
-	
+
 	self.syn["visions"][0] = array("", "zm_bgb_idle_eyes", "zm_bgb_eye_candy_vs_1", "zm_bgb_eye_candy_vs_2", "zm_bgb_eye_candy_vs_3", "zm_bgb_eye_candy_vs_4", "zm_bgb_now_you_see_me", "zm_bgb_in_plain_sight", "drown_blur", "zm_health_blur");
 	self.syn["visions"][1] = array("None", "Idle Eyes", "Eye Candy 1", "Eye Candy 2", "Eye Candy 3", "Eye Candy 4", "Now You See Me", "In Plain Sight", "Drown Blur", "Health Blur");
-	
+
 	self.syn["visions"]["soe"][0] = array("zm_idgun_vortex_visionset", "zm_idgun_vortex_blur", "zod_ritual_dim", "zombie_beast_2", "zombie_noire", "zm_zod_transported");
 	self.syn["visions"]["soe"][1] = array("Apothicon Servant Vortex", "Apothicon Servant Vortex Blur", "Low Visibility", "Beast Mode", "Noire", "WIP Teleport");
-	
+
 	self.syn["visions"]["de"][0] = array("zm_factory_teleport", "zm_trap_electric");
 	self.syn["visions"]["de"][1] = array("Teleport", "Electric Trap");
-	
+
 	self.syn["visions"]["zns"][0] = array("zm_isl_thrasher_stomach_visionset");
 	self.syn["visions"]["zns"][1] = array("Thrasher Stomach");
-	
+
 	self.syn["visions"]["gk"][0] = array("raygun_mark3_vortex_visionset", "raygun_mark3_vortex_blur", "zm_trap_electric");
 	self.syn["visions"]["gk"][1] = array("Ray Gun Mark 3 Vortex", "Ray Gun Mark 3 Vortex Blur", "Electric Trap");
-	
+
 	self.syn["visions"]["rev"][0] = array("zm_factory_teleport", "zm_trap_electric", "zm_idgun_vortex_visionset", "zm_idgun_vortex_blur", "zm_chaos_organge");
 	self.syn["visions"]["rev"][1] = array("Teleport", "Electric Trap", "Apothicon Servant Vortex", "Apothicon Servant Vortex Blur", "Chaos Orange");
-	
+
 	self.syn["visions"]["nza"][0] = array("zm_trap_electric", "zm_waterfall_postfx", "zm_showerhead_postfx", "zm_showerhead");
 	self.syn["visions"]["nza"][1] = array("Electric Trap", "Waterfall", "Shower","Bloody Shower");
-	
+
 	self.syn["visions"]["nzs"][0] = array("zm_trap_electric");
 	self.syn["visions"]["nzs"][1] = array("Electric Trap");
-	
+
 	self.syn["visions"]["kino"][0] = array("zm_trap_electric", "zm_ai_quad_blur");
 	self.syn["visions"]["kino"][1] = array("Electric Trap", "Blur");
-	
+
 	self.syn["visions"]["ascen"][0] = array("zm_cosmodrome_no_power", "zm_cosmodrome_power_antic", "zm_cosmodrome_power_flare", "zm_cosmodrome_monkey_on", "zm_idgun_vortex_blur");
 	self.syn["visions"]["ascen"][1] = array("No Power", "Dim", "Bright", "Monkey Round", "Vortex Blur");
-	                     
+
 	self.syn["visions"]["shang"][0] = array("zm_ai_screecher_blur", "zm_temple_eclipse", "zm_waterfall_postfx");
 	self.syn["visions"]["shang"][1] = array("Screecher Blur", "Eclipse", "Waterfall");
-	
+
 	self.syn["visions"]["moon"][0] = array("zm_gasmask_postfx", "zm_ai_quad_blur", "zm_idgun_vortex_blur");
 	self.syn["visions"]["moon"][1] = array("Gas Mask", "Blur", "Vortex Blur");
-	
+
 	self.syn["visions"]["origins"][0] = array("zm_tomb_in_plain_sight", "zm_factory_teleport");
 	self.syn["visions"]["origins"][1] = array("Zombie Blood", "Teleport");
-	
+
 	self.syn["weapons"]["category"] = array("Assault Rifles", "Sub Machine Guns", "Sniper Rifles", "Shotguns", "Light Machine Guns", "Pistols", "Launchers", "Extras");
-	
+
 	self.syn["weapons"]["extras"][0] = array("knife", "knife_widows_wine", "bowie_knife", "bowie_knife_widows_wine", "frag_grenade", "sticky_grenade_widows_wine", "bouncingbetty", "ray_gun", "minigun", "defaultweapon");
 	self.syn["weapons"]["extras"][1] = array("Knife", "Widow's Wine Knife", "Bowie Knife", "Bowie Knife Widow's Wine", "Frag Grenade", "Widow's Wine Grenade", "Trip Mines", "Ray Gun", "Death Machine", "Default Weapon");
-	
+
 	self.syn["weapons"]["extras"]["soe"][0] = array("ar_standard_upgraded_companion", "smg_longrange", "pistol_standard", "octobomb", "octobomb_upgraded", "bouncingbetty_devil", "bouncingbetty_holly", "zod_riotshield", "zod_riotshield_upgraded", "glaive_apothicon_0", "glaive_keeper_0", "idgun_0", "idgun_1", "idgun_2", "idgun_3", "hero_gravityspikes");
 	self.syn["weapons"]["extras"]["soe"][1] = array("Civil Protector KN-44", "Razorback", "MR6", "Lil' Arnies", "Upgraded Lil' Arnies", "Donut Trip Mines", "Cream Cake Trip Mines", "Rocket Shield", "Upgraded Rocket Shield", "Sword", "Upgraded Sword", "Kor-Maroth", "Mar-Astagua", "Nar-Ullaqua", "Lor-Zarozzor", "Gravity Spikes");
-	
+
 	self.syn["weapons"]["extras"]["nzf"][0] = array("smg_longrange", "lmg_rpk", "cymbal_monkey", "hero_annihilator", "tesla_gun", "hero_gravityspikes");
 	self.syn["weapons"]["extras"]["nzf"][1] = array("Razorback", "RPK", "Monkey Bombs", "Annihilator", "Wunderwaffe DG-2", "Gravity Spikes");
-	
+
 	self.syn["weapons"]["extras"]["de"][0] = array("smg_longrange", "lmg_rpk", "cymbal_monkey", "castle_riotshield", "hero_gravityspikes_melee", "elemental_bow", "elemental_bow_storm", "elemental_bow_wolf_howl", "elemental_bow_rune_prison", "elemental_bow_demongate", "hero_gravityspikes");
 	self.syn["weapons"]["extras"]["de"][1] = array("Razorback", "RPK", "Monkey Bombs", "Rocket Shield", "Ragnarok DG-4", "Wrath of the Ancients", "Storm Bow", "Wolf Bow", "Fire Bow", "Void Bow", "Gravity Spikes");
-	
+
 	self.syn["weapons"]["extras"]["zns"][0] = array("cymbal_monkey", "island_riotshield", "skull_gun", "hero_mirg2000", "hero_mirg2000_upgraded", "hero_gravityspikes");
 	self.syn["weapons"]["extras"]["zns"][1] = array("Monkey Bombs", "Rocket Shield", "Skull of Nan Sapwe", "KT-4", "Masamune", "Gravity Spikes");
-	
-	self.syn["weapons"]["extras"]["gk"][0] = array("ar_famas", "lmg_rpk", "launcher_multi", "melee_wrench", "melee_dagger", "melee_fireaxe", "melee_sword", "special_crossbow_dw", "cymbal_monkey", "cymbal_monkey_upgraded", "dragonshield", "dragon_gauntlet_flamethrower", "launcher_dragon_strike", "raygun_mark3");
-	self.syn["weapons"]["extras"]["gk"][1] = array("FFAR", "RPK", "L4 Siege", "Wrench", "Malice", "Slash N' Burn", "Fury's Song", "NX Shadowclaw", "Monkey Bombs", "Upgraded Monkey Bombs", "Guard of Fafnir", "Gauntlet of Siegfried", "Dragon Strike", "Ray Gun Mark 3");
-	
-	self.syn["weapons"]["extras"]["rev"][0] = array("ar_peacekeeper", "smg_thompson", "shotgun_energy", "pistol_energy", "melee_nunchuks", "melee_mace", "melee_improvise", "melee_boneglass", "melee_katana", "octobomb", "octobomb_upgraded", "dragonshield", "hero_gravityspikes_melee", "idgun_genesis_0", "thundergun", "hero_gravityspikes");
-	self.syn["weapons"]["extras"]["rev"][1] = array("Peacekeeper MK2", "M1927", "Banshii", "Rift E9", "Nunchuks", "Skull Splitter", "Buzz Cut", "Nightbreaker", "Path of Sorrows", "Lil' Arnies", "Upgraded Lil' Arnies", "Guard of Fafnir", "Ragnarok DG-4", "Estulla Astoth", "Thundergun", "Gravity Spikes");
-	
+
+	self.syn["weapons"]["extras"]["gk"][0] = array("ar_famas", "lmg_rpk", "launcher_multi", "melee_wrench", "melee_dagger", "melee_fireaxe", "melee_sword", "special_crossbow_dw", "cymbal_monkey", "cymbal_monkey_upgraded", "dragonshield", "dragonshield_upgraded", "dragon_gauntlet_flamethrower", "launcher_dragon_strike", "raygun_mark3");
+	self.syn["weapons"]["extras"]["gk"][1] = array("FFAR", "RPK", "L4 Siege", "Wrench", "Malice", "Slash N' Burn", "Fury's Song", "NX Shadowclaw", "Monkey Bombs", "Upgraded Monkey Bombs", "Guard of Fafnir", "Upgraded Guard of Fafnir", "Gauntlet of Siegfried", "Dragon Strike", "Ray Gun Mark 3");
+
+	self.syn["weapons"]["extras"]["rev"][0] = array("ar_peacekeeper", "smg_thompson", "shotgun_energy", "pistol_energy", "melee_nunchuks", "melee_mace", "melee_improvise", "melee_boneglass", "melee_katana", "octobomb", "octobomb_upgraded", "dragonshield", "dragonshield_upgraded", "hero_gravityspikes_melee", "idgun_genesis_0", "thundergun", "hero_gravityspikes");
+	self.syn["weapons"]["extras"]["rev"][1] = array("Peacekeeper MK2", "M1927", "Banshii", "Rift E9", "Nunchuks", "Skull Splitter", "Buzz Cut", "Nightbreaker", "Path of Sorrows", "Lil' Arnies", "Upgraded Lil' Arnies", "Guard of Fafnir", "Upgraded Guard of Fafnir", "Ragnarok DG-4", "Estulla Astoth", "Thundergun", "Gravity Spikes");
+
 	self.syn["weapons"]["extras"]["nzp"][0] = array("ar_stg44", "smg_mp40_1940", "cymbal_monkey", "raygun_mark2");
 	self.syn["weapons"]["extras"]["nzp"][1] = array("STG-44", "MP40", "Monkey Bombs", "Ray Gun Mark II");
-	
+
 	self.syn["weapons"]["extras"]["nza"][0] = array("ar_stg44", "smg_mp40_1940", "cymbal_monkey", "raygun_mark2");
 	self.syn["weapons"]["extras"]["nza"][1] = array("STG-44", "MP40", "Monkey Bombs", "Ray Gun Mark II");
-	
+
 	self.syn["weapons"]["extras"]["nzs"][0] = array("ar_stg44", "smg_mp40_1940", "cymbal_monkey", "raygun_mark2");
 	self.syn["weapons"]["extras"]["nzs"][1] = array("STG-44", "MP40", "Monkey Bombs", "Ray Gun Mark II");
-	
+
 	self.syn["weapons"]["extras"]["kino"][0] = array("ar_m14", "ar_m16", "ar_galil", "smg_mp40_1940", "cymbal_monkey", "raygun_mark2");
 	self.syn["weapons"]["extras"]["kino"][1] = array("M14", "M16", "Galil", "MP40", "Monkey Bombs", "Ray Gun Mark II");
-	
+
 	self.syn["weapons"]["extras"]["ascen"][0] = array("ar_m14", "ar_m16", "ar_galil", "sickle_knife", "nesting_dolls", "black_hole_bomb", "raygun_mark2");
 	self.syn["weapons"]["extras"]["ascen"][1] = array("M14", "M16", "Galil", "Sickle", "Matryoshka Doll", "Gersh Device", "Ray Gun Mark II");
-	                               
+
 	self.syn["weapons"]["extras"]["shang"][0] = array("ar_m14", "ar_m16", "ar_galil", "cymbal_monkey", "raygun_mark2", "shrink_ray");
 	self.syn["weapons"]["extras"]["shang"][1] = array("M14", "M16", "Galil", "Monkey Bombs", "Ray Gun Mark II", "31-79 JGb215");
-	
+
 	self.syn["weapons"]["extras"]["moon"][0] = array("ar_m14", "ar_m16", "ar_galil", "black_hole_bomb", "quantum_bomb", "raygun_mark2", "microwavegundw");
 	self.syn["weapons"]["extras"]["moon"][1] = array("M14", "M16", "Galil", "Gersh Device", "Quantum Entaglement Device", "Ray Gun Mark II", "Zap Gun Dual Wield");
-	
+
 	self.syn["weapons"]["extras"]["origins"][0] = array("ar_m14", "ar_stg44", "smg_mp40_1940", "lmg_mg08", "pistol_c96", "cymbal_monkey", "beacon", "tomb_shield", "raygun_mark2", "staff_water", "staff_lightning", "staff_fire", "staff_air");
 	self.syn["weapons"]["extras"]["origins"][1] = array("M14", "STG-44", "MP40", "MG-08/15", "Mauser C96", "Monkey Bombs", "G-Strike", "Zombie Shield", "Ray Gun Mark II", "Ice Staff", "Lightning Staff", "Wind Staff", "Fire Staff");
-	
+
 	self.syn["weapons"]["aats"][0] = array("zm_aat_blast_furnace", "zm_aat_dead_wire", "zm_aat_fire_works", "zm_aat_thunder_wall", "zm_aat_turned");
 	self.syn["weapons"]["aats"][1] = array("Blast Furnace", "Dead Wire", "Fireworks", "Thunder Wall", "Turned");
-	
+
 	self.syn["perks"]["common"][0] = array("specialty_quickrevive", "specialty_armorvest", "specialty_doubletap2", "specialty_staminup", "specialty_fastreload", "specialty_additionalprimaryweapon", "specialty_deadshot", "specialty_widowswine", "specialty_electriccherry", "specialty_phdflopper", "specialty_whoswho");
 	self.syn["perks"]["common"][1] = array("Quick Revive", "Juggernog", "Double Tap", "Stamin-Up", "Speed Cola", "Mule Kick", "Deadshot", "Widow's Wine", "Electric Cherry", "PhD Slider", "Who's Who");
 	self.syn["perks"]["all"] = getArrayKeys(level._custom_perks);
-	
+
 	forEach(type, v_array in level.vsmgr) {
 		forEach(v_name, v_struct in level.vsmgr[type].info) {
 			vision = level.vsmgr[type].info[v_name];
@@ -182,7 +182,7 @@ function initial_variable() {
 			}
 		}
 	}
-	
+
 	self.syn["powerups"][0] = getArrayKeys(level.zombie_include_powerups);
   self.syn["powerups"][1] = [];
   for (i = 0; i < self.syn["powerups"][0].size; i++) {
@@ -191,26 +191,26 @@ function initial_variable() {
 			self.syn["powerups"][1][i] = "Widow's Wine Grenade";
 		}
 	}
-	
+
 	self.syn["gobblegum"][0] = getArrayKeys(level.bgb);
 	self.syn["gobblegum"][1] = [];
 	for(i = 0; i < self.syn["gobblegum"][0].size; i++) {
 		self.syn["gobblegum"][1][i] = construct_string(replace_character(getSubStr(self.syn["gobblegum"][0][i], 7), "_", " "));
 	}
-	
+
 	weapon_types = array("assault", "smg", "cqb", "lmg", "sniper", "pistol", "launcher");
-	
+
 	weapon_names = [];
 	forEach(weapon in getArrayKeys(level.zombie_weapons)) {
 		weapon_names[weapon_names.size] = weapon.name;
 	}
-	
+
 	for(i = 0; i < weapon_types.size; i++) {
 		self.syn["weapons"][i] = [];
 		for(e = 1; e < 100; e++) {
 			weapon_category = tableLookup("gamedata/stats/zm/zm_statstable.csv", 0, e, 2);
 			weapon_id = tableLookup("gamedata/stats/zm/zm_statstable.csv", 0, e, 4);
-	
+
 			if(weapon_category == "weapon_" + weapon_types[i]) {
 				if(isInArray(weapon_names, weapon_id)) {
 					weapon = spawnStruct();
@@ -225,7 +225,7 @@ function initial_variable() {
 			}
 		}
 	}
-	
+
 	self.syn["weapons"][7] = [];
 	forEach(weapon in getArrayKeys(level.zombie_weapons)) {
 		isInArray = false;
@@ -249,7 +249,7 @@ function initial_variable() {
 function initial_observer() {
 	level endon("game_ended");
 	self endon("disconnect");
-	
+
 	while(self has_access()) {
 		if(!self in_menu()) {
 			if(self adsButtonPressed() && self meleeButtonPressed()) {
@@ -259,7 +259,7 @@ function initial_observer() {
 
 				close_controls_menu();
 				self open_menu();
-				
+
 				while(self adsButtonPressed() && self meleeButtonPressed()) {
 					wait 0.2;
 				}
@@ -345,33 +345,33 @@ function event_system() {
 				self.spawn_angles = self.angles;
 				if(!isDefined(self.finalized) && self has_access()) {
 					self.finalized = true;
-					
+
 					level.player_out_of_playable_area_monitor = false;
 					self notify("stop_player_out_of_playable_area_monitor");
-					
+
 					if(self isHost()) {
 						self freezeControls(false);
 					}
-		
+
 					self initial_variable();
 					self thread initial_observer();
-					
+
 					wait 5;
-					
+
 					self.controls["title"] = self create_text("Controls", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 99), (self.y_offset + 4), self.color_theme, 1, 10);
 					self.controls["separator"][0] = self create_shader("white", "TOP_LEFT", "TOPCENTER", 181, (self.y_offset + 7.5), 37, 1, self.color_theme, 1, 10);
 					self.controls["separator"][1] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", 399, (self.y_offset + 7.5), 37, 1, self.color_theme, 1, 10);
 					self.controls["border"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset - 1), (self.width + 250), 97, self.color_theme, 1, 1);
 					self.controls["background"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 1), self.y_offset, (self.width + 248), 95, (0.075, 0.075, 0.075), 1, 2);
 					self.controls["foreground"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 1), (self.y_offset + 16), (self.width + 248), 79, (0.1, 0.1, 0.1), 1, 3);
-					
+
 					self.controls["text"][0] = self create_text("Open: ^3[{+speed_throw}] ^7and ^3[{+melee}]", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 4), (self.y_offset + 20), (0.75, 0.75, 0.75), 1, 10);
 					self.controls["text"][1] = self create_text("Scroll: ^3[{+speed_throw}] ^7and ^3[{+attack}]", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 4), (self.y_offset + 40), (0.75, 0.75, 0.75), 1, 10);
 					self.controls["text"][2] = self create_text("Select: ^3[{+activate}] ^7Back: ^3[{+melee}]", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 4), (self.y_offset + 60), (0.75, 0.75, 0.75), 1, 10);
 					self.controls["text"][3] = self create_text("Sliders: ^3[{+smoke}] ^7and ^3[{+frag}]", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 4), (self.y_offset + 80), (0.75, 0.75, 0.75), 1, 10);
-					
+
 					wait 8;
-			
+
 					close_controls_menu();
 				}
 				break;
@@ -379,7 +379,7 @@ function event_system() {
 				if(!self has_access()) {
 					continue;
 				}
-		
+
 				if(self in_menu()) {
 					self close_menu();
 				}
@@ -404,7 +404,7 @@ function session_expired() {
 
 function player_connect() {
 	level endon("game_ended");
-	
+
 	for(;;) {
 		level waitTill("connected", player);
 		player.access = set_variable(player isHost(), "Host",  "None");
@@ -460,9 +460,9 @@ function create_rainbow_color() {
 	x = 0; y = 0;
 	r = 0; g = 0; b = 0;
 	level.rainbow_color = (0, 0, 0);
-	
+
 	level endon("game_ended");
-	
+
 	while(true) {
 		if(y >= 0 && y < 258) {
 			r = 255;
@@ -489,17 +489,17 @@ function create_rainbow_color() {
 			g = 255 - x;
 			b = 0;
 		}
-		
+
 		x += 3;
 		if(x > 255) {
 			x = 0;
 		}
-		
+
 		y += 3;
 		if(y > 1545) {
 			y = 0;
 		}
-		
+
 		level.rainbow_color = (r/255, g/255, b/255);
 		wait .05;
 	}
@@ -507,7 +507,7 @@ function create_rainbow_color() {
 
 function start_rainbow() {
 	level endon("game_ended");
-	
+
 	while(isDefined(self)) {
 		self fadeOverTime(.05);
 		self.color = level.rainbow_color;
@@ -523,20 +523,20 @@ function create_text(text, font, font_scale, align_x, align_y, x_offset, y_offse
 	textElement.sort = z_index;
 	textElement.anchor = self;
 	textElement.archived = self auto_archive();
-	
+
 	if(isDefined(hide_when_in_menu)) {
 		textElement.hideWhenInMenu = hide_when_in_menu;
 	} else {
 		textElement.hideWhenInMenu = true;
 	}
-	
+
 	if(strIsNumber(color[0]) || color != "rainbow") {
 		textElement.color = color;
 	} else {
 		textElement.color = level.rainbow_color;
 		textElement thread start_rainbow();
 	}
-	
+
 	if(isDefined(text)) {
 		if(strIsNumber(text)) {
 			textElement setValue(text);
@@ -557,13 +557,13 @@ function create_shader(shader, align_x, align_y, x_offset, y_offset, width, heig
 	shaderElement.sort = z_index;
 	shaderElement.anchor = self;
 	shaderElement.archived = self auto_archive();
-	
+
 	if(isDefined(hide_when_in_menu)) {
 		shaderElement.hideWhenInMenu = hide_when_in_menu;
 	} else {
 		shaderElement.hideWhenInMenu = true;
 	}
-	
+
 	if(strIsNumber(color[0]) || color != "rainbow") {
 		shaderElement.color = color;
 	} else {
@@ -573,7 +573,7 @@ function create_shader(shader, align_x, align_y, x_offset, y_offset, width, heig
 
 	shaderElement hud::setParent(level.uiParent);
 	shaderElement hud::setPoint(align_x, align_y, x_offset, y_offset);
-	
+
 	shaderElement set_shader(shader, width, height);
 
 	self.element_result++;
@@ -842,11 +842,11 @@ function execute_function(command, parameter_1, parameter_2, parameter_3) {
 function add_menu(title, menu_size, extra) {
 	self.structure = [];
 	self set_title(title);
-	
+
 	if(!isDefined(self get_cursor())) {
 		self set_cursor();
 	}
-	
+
 	if(isDefined(self.menu["title"])) {
 		if(isDefined(extra)) {
 			self.menu["title"].x = (self.x_offset + 106) - menu_size - extra;
@@ -1047,9 +1047,9 @@ function display_option() {
 
 				self update_slider(undefined, index);
 			}
-			
+
 			text_string = set_variable((isDefined(self.structure[index].array) || isDefined(self.structure[index].increment)), (self.structure[index].text + ":"), self.structure[index].text);
-			
+
 			if(isDefined(self.structure[index].toggle)) {
 				element_x_offset = (self.x_offset + 16);
 			} else {
@@ -1059,8 +1059,8 @@ function display_option() {
 					element_x_offset = (self.x_offset + 4);
 				}
 			}
-			
-			
+
+
 			if(!isDefined(self.structure[index].command)) {
 				element_color = self.color_theme;
 			} else {
@@ -1070,7 +1070,7 @@ function display_option() {
 					element_color = (0.5, 0.5, 0.5);
 				}
 			}
-			
+
 			self.menu["text"][index] = self create_text(text_string, self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", element_x_offset, (self.y_offset + ((a * self.option_spacing) + 20)), element_color, 1, 10);
 		}
 	}
@@ -1200,7 +1200,7 @@ function menu_option() {
 	switch (menu) {
 		case "Synergy":
 			self add_menu(menu, menu.size);
-			
+
 			self add_option("Basic Options", undefined, &new_menu, "Basic Options");
 			self add_option("Fun Options", undefined, &new_menu, "Fun Options");
 			self add_option("Weapon Options", undefined, &new_menu, "Weapon Options");
@@ -1209,83 +1209,85 @@ function menu_option() {
 			self add_option("Powerup Options", undefined, &new_menu, "Powerup Options");
 			self add_option("Menu Options", undefined, &new_menu, "Menu Options");
 			self add_option("Debug Options", undefined, &new_menu, "Debug Options");
-			
+
 			break;
 		case "Basic Options":
 			self add_menu(menu, menu.size);
-			
+
 			self add_toggle("God Mode", "Makes you Invincible", &god_mode, self.god_mode);
 			self add_toggle("Frag No Clip", "Fly through the Map using (^3[{+frag}]^7)", &frag_no_clip, self.frag_no_clip);
-			
+
 			self add_toggle("Infinite Ammo", "Gives you Infinite Ammo, Grenades, and Specialist", &infinite_ammo, self.infinite_ammo);
 			self add_toggle("Infinite Shield", "Gives you Infinite Shield Durability", &infinite_shield, self.infinite_shield);
-			
+
 			self add_option("Give Perks", undefined, &new_menu, "Give Perks");
 			self add_option("Take Perks", undefined, &new_menu, "Take Perks");
 			self add_option("Give Perkaholic", undefined, &give_perkaholic);
-			
+
 			self add_option("Give Gobblegum", undefined, &new_menu, "Give Gobblegum");
-			
+
 			self add_option("Point Options", undefined, &new_menu, "Point Options");
-			
+
 			break;
 		case "Fun Options":
 			self add_menu(menu, menu.size);
-			
+
 			self add_toggle("Forge Mode", undefined, &forge_mode, self.forge_mode);
-			
+
 			map = get_map_name();
-			
+
 			if(map != "soe") {
 				self add_toggle("Exo Movement", "Enable/Disable Exo-Suits", &exo_movement, self.exo_movement);
 				self add_toggle("Infinite Boost", undefined, &infinite_boost, self.infinite_boost);
 			}
-			
+
 			self add_increment("Set Speed", undefined, &set_speed, 1, 1, 15, 1);
 			self add_increment("Set Timescale", undefined, &set_timescale, 1, 1, 10, 1);
 			self add_increment("Set Gravity", undefined, &set_gravity, 900, 130, 900, 10);
-			
+
 			self add_toggle("Third Person", undefined, &third_person, self.third_person);
-			
+
 			self add_option("Visions", undefined, &new_menu, "Visions");
-			
+
 			break;
 		case "Weapon Options":
 			self add_menu(menu, menu.size);
-			
+
 			self add_option("Give Weapons", undefined, &new_menu, "Give Weapons");
 			self add_toggle("Give Pack-a-Punched Weapons", "Weapons Given will be Pack-a-Punched", &give_packed_weapon, self.give_packed_weapon);
 			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
-			
+
 			self add_option("Take Current Weapon", undefined, &take_weapon);
 			self add_option("Drop Current Weapon", undefined, &drop_weapon);
-			
+
 			break;
 		case "Zombie Options":
 			self add_menu(menu, menu.size);
-			
+
 			self add_toggle("No Target", "Zombies won't Target You", &no_target, self.no_target);
-			
+
 			self add_increment("Set Round", undefined, &set_round, 1, 1, 255, 1);
-			
+
 			self add_toggle("Slow Zombies", "Gives Zombies the Widow's Wine Effect to Slow them Down", &slow_zombies, self.slow_zombies);
 			self add_toggle("Disable Spawns", undefined, &disable_spawns, self.disable_spawns);
-			
+
+			self add_option("Teleport Zombies to Me", undefined, &teleport_zombies);
 			self add_option("Kill All Zombies", undefined, &kill_all_zombies);
+			
 			self add_toggle("One Shot Zombies", undefined, &one_shot_zombies, self.one_shot_zombies);
 			self add_toggle("Set Round 60+ Health Cap", "Cap Zombies Health after Round 60", &set_zombie_health_cap, self.zombie_health_cap);
-			
+
 			self add_array("Zombie ESP", "Set Colored Outlines around Zombies", &outline_zombies, array("None", "Orange", "Green", "Purple", "Blue"));
-			
+
 			break;
 		case "Map Options":
 			self add_menu(menu, menu.size);
-			
+
 			self add_toggle("Freeze Box", "Locks the Mystery Box, so it can't move", &freeze_box, self.freeze_box);
 			self add_option("Open Doors", undefined, &open_doors);
-			
+
 			map = get_map_name();
-			
+
 			if(!level flag::get("power_on") || !level flag::get("all_power_on")) {
 				if(map == "soe") {
 					self add_option("Turn Power On", undefined, &shock_all_electrics);
@@ -1293,36 +1295,36 @@ function menu_option() {
 					self add_option("Turn Power On", undefined, &power_on);
 				}
 			}
-			
+
 			self add_option("Restart Match", undefined, &restart_match);
-			
+
 			break;
 		case "Powerup Options":
 			self add_menu(menu, menu.size);
-			
+
 			self add_toggle("Shoot Powerups", undefined, &shoot_powerups, self.shoot_powerups);
-			
+
 			for(i = 0; i < self.syn["powerups"][0].size; i++) {
 				self add_option("Spawn " + self.syn["powerups"][1][i], undefined, &spawn_powerup, self.syn["powerups"][0][i]);
 			}
-			
+
 			break;
 		case "Menu Options":
 			self add_menu(menu, menu.size);
-			
+
 			self add_increment("Move Menu X", "Move the Menu around Horizontally", &modify_menu_position, 0, -600, 20, 10, "x");
 			self add_increment("Move Menu Y", "Move the Menu around Vertically", &modify_menu_position, 0, -100, 30, 10, "y");
-			
+
 			self add_option("Rainbow Menu", "Set the Menu Outline Color to Cycling Rainbow", &set_menu_rainbow);
-			
+
 			self add_increment("Red", "Set the Red Value for the Menu Outline Color", &set_menu_color, 255, 1, 255, 1, "Red");
 			self add_increment("Green", "Set the Green Value for the Menu Outline Color", &set_menu_color, 255, 1, 255, 1, "Green");
 			self add_increment("Blue", "Set the Blue Value for the Menu Outline Color", &set_menu_color, 255, 1, 255, 1, "Blue");
-			
+
 			self add_toggle("Watermark", "Enable/Disable Watermark in the Top Left Corner", &watermark, self.watermark);
 			self add_toggle("Hide UI", undefined, &hide_ui, self.hide_ui);
 			self add_toggle("Hide Weapon", undefined, &hide_weapon, self.hide_weapon);
-			
+
 			break;
 		case "Give Perks":
 			self add_menu(menu, menu.size);
@@ -1344,7 +1346,7 @@ function menu_option() {
 			break;
 		case "Give Gobblegum":
 			self add_menu(menu, menu.size);
-			
+
 			forEach(gobblegum in self.syn["gobblegum"][0]) {
 				gobblegum_name = get_gobblegum_name(gobblegum);
 				self add_option(gobblegum_name, undefined, &give_gobblegum, gobblegum);
@@ -1353,30 +1355,30 @@ function menu_option() {
 			break;
 		case "Point Options":
 			self add_menu(menu, menu.size);
-			
+
 			self add_increment("Set Increment", undefined, &set_increment, 100, 100, 10000, 100);
-			
+
 			self add_increment("Set Points", undefined, &set_points, 500, 500, 100000, self.point_increment);
 			self add_increment("Add Points", undefined, &add_points, 500, 500, 100000, self.point_increment);
 			self add_increment("Take Points", undefined, &take_points, 500, 500, 100000, self.point_increment);
-			
+
 			break;
 		case "Visions":
 			self add_menu(menu, menu.size);
-			
+
 			for(i = 0; i < self.syn["visions"][0].size; i++) {
 				self add_option(self.syn["visions"][1][i], undefined, &set_vision, self.syn["visions"][0][i]);
 			}
-			
+
 			map = get_map_name();
-			
+
 			if(map == "soe" || map == "nzf" || map == "de" || map == "zns" || map == "gk" || map == "rev" || map == "nzp" || map == "nza" || map == "nzs" || map == "kino" || map == "ascen" || map == "shang" || map == "moon" || map == "origins") {
 				for(i = 0; i < self.syn["visions"][map][0].size; i++) {
 					self add_option(self.syn["visions"][map][1][i], undefined, &set_vision, self.syn["visions"][map][0][i]);
 				}
 			}
-			
-			forEach(vision in self.syn["visions"]) {				
+
+			forEach(vision in self.syn["visions"]) {
 				switch(vision.name) {
 					case "":
 					case "cheat_bw_contrast":
@@ -1435,77 +1437,77 @@ function menu_option() {
 			break;
 		case "Give AAT":
 			self add_menu(menu, menu.size);
-			
+
 			for(i = 0; i < self.syn["weapons"]["aats"][0].size; i++) {
 				self add_option(self.syn["weapons"]["aats"][1][i], undefined, &give_aat, self.syn["weapons"]["aats"][0][i]);
 			}
-			
+
 			break;
 		case "Give Weapons":
 			self add_menu(menu, menu.size);
-			
+
 			for(i = 0; i < self.syn["weapons"]["category"].size; i++) {
 				self add_option(self.syn["weapons"]["category"][i], undefined, &new_menu, self.syn["weapons"]["category"][i]);
 			}
-			
+
 			break;
 		case "Assault Rifles":
 			self add_menu(menu, menu.size);
-			
+
 			load_weapons("weapon_assault");
-			
+
 			break;
 		case "Sub Machine Guns":
 			self add_menu(menu, menu.size);
-			
+
 			load_weapons("weapon_smg");
-			
+
 			break;
 		case "Light Machine Guns":
 			self add_menu(menu, menu.size);
-			
+
 			load_weapons("weapon_lmg");
-			
+
 			break;
 		case "Sniper Rifles":
 			self add_menu(menu, menu.size);
-			
+
 			load_weapons("weapon_sniper");
-			
+
 			break;
 		case "Shotguns":
 			self add_menu(menu, menu.size);
-			
+
 			load_weapons("weapon_cqb");
-			
+
 			break;
 		case "Pistols":
 			self add_menu(menu, menu.size);
-			
+
 			load_weapons("weapon_pistol");
-			
+
 			break;
 		case "Launchers":
 			self add_menu(menu, menu.size);
-			
+
 			load_weapons("weapon_launcher");
-			
+
 			break;
 		case "Extras":
 			self add_menu(menu, menu.size);
-			
+
 			for(i = 0; i < self.syn["weapons"]["extras"][0].size; i++) {
 				self add_option(self.syn["weapons"]["extras"][1][i], undefined, &give_weapon, self.syn["weapons"]["extras"][0][i]);
 			}
-			
+
 			map = get_map_name();
-			
+
 			if(map == "soe" || map == "nzf" || map == "de" || map == "zns" || map == "gk" || map == "rev" || map == "nzp" || map == "nza" || map == "nzs" || map == "kino" || map == "ascen" || map == "shang" || map == "moon" || map == "origins") {
 				for(i = 0; i < self.syn["weapons"]["extras"][map][0].size; i++) {
 					self add_option(self.syn["weapons"]["extras"][map][1][i], undefined, &give_weapon, self.syn["weapons"]["extras"][map][0][i]);
 				}
 			}
-			
+
 			forEach(weapon in self.syn["weapons"][7]) {
 				switch(weapon.id) {
 					case "ar_famas":
@@ -1528,6 +1530,7 @@ function menu_option() {
 					case "defaultweapon":
 					case "dragon_gauntlet_flamethrower":
 					case "dragonshield":
+					case "dragonshield_upgraded":
 					case "elemental_bow":
 					case "elemental_bow_demongate":
 					case "elemental_bow_rune_prison":
@@ -1602,7 +1605,7 @@ function menu_option() {
 						self add_option(weapon.name, weapon.id, &give_weapon, weapon.id);
 				}
 			}
-			
+
 			break;
 		default:
 			if(!isDefined(self.selected_player)) {
@@ -1651,7 +1654,7 @@ function close_controls_menu() {
 		self.controls["border"] destroy();
 		self.controls["background"] destroy();
 		self.controls["foreground"] destroy();
-		
+
 		self.controls["text"][0] destroy();
 		self.controls["text"][1] destroy();
 		self.controls["text"][2] destroy();
@@ -1837,7 +1840,7 @@ function god_mode() {
 function god_mode_loop() {
 	self endOn("stop_god_mode");
 	self endOn("game_ended");
-	
+
 	for(;;) {
 		self enableInvulnerability();
 		wait .1;
@@ -1878,7 +1881,7 @@ function frag_no_clip_loop() {
 		self enableInvulnerability();
 		self.temp_god_mode = true;
 	}
-	
+
 	while (true) {
 		vec = anglesToForward(self getPlayerAngles());
 		end = (vec[0] * 60, vec[1] * 60, vec[2] * 60);
@@ -1920,7 +1923,7 @@ function infinite_ammo() {
 function infinite_ammo_loop() {
 	self endOn("stop_infinite_ammo");
 	self endOn("game_ended");
-	
+
 	for(;;) {
 		weapons = self getWeaponsList();
 		for(i = 0; i < weapons.size; i++) {
@@ -1946,7 +1949,7 @@ function infinite_shield() {
 function infinite_shield_loop() {
 	self endOn("stop_infinite_shield");
 	self endOn("game_ended");
-	
+
 	for(;;) {
 		self [[self.player_shield_reset_health]]();
 		wait 2.5;
@@ -1964,8 +1967,8 @@ function get_perk_name(perk) {
 
 function give_perk(perk) {
 	if(!self hasPerk(perk)) {
-		self setPerk(perk); 
-		self zm_perks::vending_trigger_post_think(self, perk);	
+		self setPerk(perk);
+		self zm_perks::vending_trigger_post_think(self, perk);
 	}
 }
 
@@ -2109,7 +2112,7 @@ function infinite_boost() {
 function infinite_boost_loop() {
 	self endOn("stop_infinite_boost");
 	self endOn("game_ended");
-	
+
 	for(;;) {
 		self setDoubleJumpEnergy(100);
 		wait .1;
@@ -2269,7 +2272,7 @@ function shoot_powerups() {
 function shoot_powerups_loop() {
 	self endOn("stop_shoot_powerups");
 	self endOn("game_ended");
-	
+
 	for(;;) {
 		while(self attackButtonPressed()) {
 			powerup = self.syn["powerups"][0][randomint(self.syn["powerups"][0].size)];
@@ -2288,16 +2291,16 @@ function give_packed_weapon() {
 
 function give_weapon(weapon) {
 	weapon = getWeapon(weapon);
-	
+
 	if(isDefined(self.give_packed_weapon) && self.give_packed_weapon == 1) {
 		if(zm_weapons::can_upgrade_weapon(weapon)) {
 			weapon = level.zombie_weapons[weapon].upgrade;
 		}
 	}
-	
+
 	if(!self hasWeapon(weapon)) {
 		max_weapon_num = zm_utility::get_player_weapon_limit(self);
-		
+
 		switch(weapon) {
 			case "beacon":
 			case "black_hole_bomb":
@@ -2311,6 +2314,7 @@ function give_weapon(weapon) {
 			case "cymbal_monkey_upgraded":
 			case "dragon_gauntlet_flamethrower":
 			case "dragonshield":
+			case "dragonshield_upgraded":
 			case "frag_grenade":
 			case "glaive_apothicon_0":
 			case "glaive_keeper_0":
@@ -2340,9 +2344,9 @@ function give_weapon(weapon) {
 				}
 				break;
 		}
-		
+
 		self zm_weapons::weapon_give(weapon, undefined, undefined, undefined, true);
-		
+
 		if(isDefined(saved_weapon)) {
 			wait .5;
 			self zm_weapons::weapon_give(saved_weapon, undefined, undefined, undefined, true);
@@ -2396,6 +2400,12 @@ function kill_all_zombies() {
 	forEach(zombie in get_zombies()) {
 		zombie dodamage(zombie.health * 5000, (0, 0, 0), self);
 		wait 0.05;
+	}
+}
+
+function teleport_zombies() {
+	forEach(zombie in get_zombies()) {
+		zombie forceTeleport(self.origin + anglesToForward(self.angles) * 115);
 	}
 }
 
@@ -2486,7 +2496,7 @@ function disable_spawns() {
 
 function set_zombie_speed(value) {
 	speed = toLower(value);
-	
+
 	if(!isDefined(self.zombie_speed)) {
 		self.zombie_speed = true;
 		while(isDefined(self.zombie_speed)) {
