@@ -241,6 +241,7 @@ function initial_variable() {
 			weapons = spawnStruct();
 			weapons.name = makeLocalizedString(weapon.displayName);
 			weapons.id = weapon.name;
+			weapons.category = weapon.weapclass;
 			self.syn["weapons"][7][self.syn["weapons"][7].size] = weapons;
 		}
 	}
@@ -1273,7 +1274,7 @@ function menu_option() {
 
 			self add_option("Teleport Zombies to Me", undefined, &teleport_zombies);
 			self add_option("Kill All Zombies", undefined, &kill_all_zombies);
-			
+
 			self add_toggle("One Shot Zombies", undefined, &one_shot_zombies, self.one_shot_zombies);
 			self add_toggle("Set Round 60+ Health Cap", "Cap Zombies Health after Round 60", &set_zombie_health_cap, self.zombie_health_cap);
 
@@ -1602,7 +1603,7 @@ function menu_option() {
 					case "zod_riotshield_upgraded_zm":
 						break;
 					default:
-						self add_option(weapon.name, weapon.id, &give_weapon, weapon.id);
+						self add_option(weapon.name, "ID: " + weapon.id + " | Category: " + weapon.category, &give_weapon, weapon.id);
 				}
 			}
 
@@ -2398,7 +2399,7 @@ function get_zombies() {
 function kill_all_zombies() {
 	level.zombie_total = 0;
 	forEach(zombie in get_zombies()) {
-		zombie dodamage(zombie.health * 5000, (0, 0, 0), self);
+		zombie doDamage(zombie.health * 5000, (0, 0, 0), self);
 		wait 0.05;
 	}
 }
