@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\mechz.csc
+*************************************************/
+
 #using scripts\shared\ai_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\postfx_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace mechz;
 
-/*
-	Name: main
-	Namespace: mechz
-	Checksum: 0x5147F28B
-	Offset: 0x748
-	Size: 0x3AE
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   clientfield::register("actor", "mechz_ft", 5000, 1, "int", & mechzclientutils::mechzflamethrowercallback, 0, 0);
   clientfield::register("actor", "mechz_faceplate_detached", 5000, 1, "int", & mechzclientutils::mechz_detach_faceplate, 0, 0);
@@ -35,15 +29,6 @@ function autoexec main() {
   level._mechz_face[4] = "ai_face_zombie_generic_pain_1";
 }
 
-/*
-	Name: precache
-	Namespace: mechz
-	Checksum: 0xED11CCBE
-	Offset: 0xB00
-	Size: 0x1DE
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec precache() {
   level._effect["fx_mech_wpn_flamethrower"] = "dlc1/castle/fx_mech_wpn_flamethrower";
   level._effect["fx_mech_dmg_armor_face"] = "dlc1/castle/fx_mech_dmg_armor_face";
@@ -66,15 +51,6 @@ function autoexec precache() {
 
 #namespace mechzclientutils;
 
-/*
-	Name: mechzspawn
-	Namespace: mechzclientutils
-	Checksum: 0xEB0EADEB
-	Offset: 0xCE8
-	Size: 0x88
-	Parameters: 1
-	Flags: Private
-*/
 function private mechzspawn(localclientnum) {
   level._footstepcbfuncs[self.archetype] = & mechzprocessfootstep;
   level thread mechzsndcontext(self);
@@ -82,15 +58,6 @@ function private mechzspawn(localclientnum) {
   self.headlamp_on = 1;
 }
 
-/*
-	Name: mechzsndcontext
-	Namespace: mechzclientutils
-	Checksum: 0x47788208
-	Offset: 0xD78
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function mechzsndcontext(mechz) {
   wait(1);
   if(isdefined(mechz)) {
@@ -98,15 +65,6 @@ function mechzsndcontext(mechz) {
   }
 }
 
-/*
-	Name: mechzprocessfootstep
-	Namespace: mechzclientutils
-	Checksum: 0xAC5780DA
-	Offset: 0xDC8
-	Size: 0x2A8
-	Parameters: 5
-	Flags: None
-*/
 function mechzprocessfootstep(localclientnum, pos, surface, notetrack, bone) {
   e_player = getlocalplayer(localclientnum);
   n_dist = distancesquared(pos, e_player.origin);
@@ -144,15 +102,6 @@ function mechzprocessfootstep(localclientnum, pos, surface, notetrack, bone) {
   steam_fx = playfxontag(localclientnum, level._effect["fx_mech_foot_step_steam"], self, steam_bone);
 }
 
-/*
-	Name: mechzflamethrowercallback
-	Namespace: mechzclientutils
-	Checksum: 0x2C0CA02
-	Offset: 0x1078
-	Size: 0x15E
-	Parameters: 7
-	Flags: Private
-*/
 function private mechzflamethrowercallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   switch (newvalue) {
     case 1: {
@@ -162,7 +111,7 @@ function private mechzflamethrowercallback(localclientnum, oldvalue, newvalue, b
       break;
     }
     case 0: {
-      self notify(# "stopflamethrower");
+      self notify("stopflamethrower");
       if(isdefined(self.fire_beam_id)) {
         beamkill(localclientnum, self.fire_beam_id);
         self playsound(0, "wpn_flame_thrower_stop_mechz");
@@ -173,15 +122,6 @@ function private mechzflamethrowercallback(localclientnum, oldvalue, newvalue, b
   }
 }
 
-/*
-	Name: mechz_detach_faceplate
-	Namespace: mechzclientutils
-	Checksum: 0x98322F0D
-	Offset: 0x11E0
-	Size: 0x16C
-	Parameters: 7
-	Flags: None
-*/
 function mechz_detach_faceplate(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   pos = self gettagorigin("j_faceplate");
   ang = self gettagangles("j_faceplate");
@@ -192,15 +132,6 @@ function mechz_detach_faceplate(localclientnum, oldvalue, newvalue, bnewent, bin
   self playsound(0, "zmb_ai_mechz_faceplate");
 }
 
-/*
-	Name: mechz_detach_powercap
-	Namespace: mechzclientutils
-	Checksum: 0xEDC1D086
-	Offset: 0x1358
-	Size: 0x17C
-	Parameters: 7
-	Flags: None
-*/
 function mechz_detach_powercap(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   pos = self gettagorigin("tag_powersupply");
   ang = self gettagangles("tag_powersupply");
@@ -211,15 +142,6 @@ function mechz_detach_powercap(localclientnum, oldvalue, newvalue, bnewent, bini
   self.mechz_powercore_fx = playfxontag(localclientnum, level._effect["fx_mech_dmg_body_light"], self, "tag_powersupply");
 }
 
-/*
-	Name: mechz_detach_claw
-	Namespace: mechzclientutils
-	Checksum: 0x1F772A23
-	Offset: 0x14E0
-	Size: 0x1AC
-	Parameters: 7
-	Flags: None
-*/
 function mechz_detach_claw(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(isdefined(level.mechz_detach_claw_override)) {
     self[[level.mechz_detach_claw_override]](localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump);
@@ -234,28 +156,10 @@ function mechz_detach_claw(localclientnum, oldvalue, newvalue, bnewent, binitial
   playfxontag(localclientnum, level._effect["fx_mech_dmg_sparks"], self, "tag_gun_spin");
 }
 
-/*
-	Name: mechz_115_gun_muzzle_flash
-	Namespace: mechzclientutils
-	Checksum: 0x82862DA8
-	Offset: 0x1698
-	Size: 0x6C
-	Parameters: 7
-	Flags: None
-*/
 function mechz_115_gun_muzzle_flash(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   playfxontag(localclientnum, level._effect["fx_wpn_115_muz"], self, "tag_gun_barrel2");
 }
 
-/*
-	Name: mechz_detach_rknee_armor
-	Namespace: mechzclientutils
-	Checksum: 0xE01CEDF1
-	Offset: 0x1710
-	Size: 0x16C
-	Parameters: 7
-	Flags: None
-*/
 function mechz_detach_rknee_armor(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   pos = self gettagorigin("j_knee_attach_ri");
   ang = self gettagangles("j_knee_attach_ri");
@@ -266,15 +170,6 @@ function mechz_detach_rknee_armor(localclientnum, oldvalue, newvalue, bnewent, b
   playfxontag(localclientnum, level._effect["fx_mech_dmg_knee_sparks"], self, "j_knee_attach_ri");
 }
 
-/*
-	Name: mechz_detach_lknee_armor
-	Namespace: mechzclientutils
-	Checksum: 0x4E303387
-	Offset: 0x1888
-	Size: 0x16C
-	Parameters: 7
-	Flags: None
-*/
 function mechz_detach_lknee_armor(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   pos = self gettagorigin("j_knee_attach_le");
   ang = self gettagangles("j_knee_attach_le");
@@ -285,15 +180,6 @@ function mechz_detach_lknee_armor(localclientnum, oldvalue, newvalue, bnewent, b
   playfxontag(localclientnum, level._effect["fx_mech_dmg_knee_sparks"], self, "j_knee_attach_le");
 }
 
-/*
-	Name: mechz_detach_rshoulder_armor
-	Namespace: mechzclientutils
-	Checksum: 0x5EBC6239
-	Offset: 0x1A00
-	Size: 0x16C
-	Parameters: 7
-	Flags: None
-*/
 function mechz_detach_rshoulder_armor(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   pos = self gettagorigin("j_shoulderarmor_ri");
   ang = self gettagangles("j_shoulderarmor_ri");
@@ -304,15 +190,6 @@ function mechz_detach_rshoulder_armor(localclientnum, oldvalue, newvalue, bnewen
   playfxontag(localclientnum, level._effect["fx_mech_dmg_sparks"], self, "j_shoulderarmor_ri");
 }
 
-/*
-	Name: mechz_detach_lshoulder_armor
-	Namespace: mechzclientutils
-	Checksum: 0xABB2DF30
-	Offset: 0x1B78
-	Size: 0x16C
-	Parameters: 7
-	Flags: None
-*/
 function mechz_detach_lshoulder_armor(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   pos = self gettagorigin("j_shoulderarmor_le");
   ang = self gettagangles("j_shoulderarmor_le");
@@ -323,15 +200,6 @@ function mechz_detach_lshoulder_armor(localclientnum, oldvalue, newvalue, bnewen
   playfxontag(localclientnum, level._effect["fx_mech_dmg_sparks"], self, "j_shoulderarmor_le");
 }
 
-/*
-	Name: mechz_headlamp_off
-	Namespace: mechzclientutils
-	Checksum: 0x2DDDD751
-	Offset: 0x1CF0
-	Size: 0xCC
-	Parameters: 7
-	Flags: None
-*/
 function mechz_headlamp_off(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(self.headlamp_on === 1 && newvalue != 0 && isdefined(self.headlight_fx)) {
     stopfx(localclientnum, self.headlight_fx);
@@ -342,15 +210,6 @@ function mechz_headlamp_off(localclientnum, oldvalue, newvalue, bnewent, binitia
   }
 }
 
-/*
-	Name: mechzfacecallback
-	Namespace: mechzclientutils
-	Checksum: 0x17342B62
-	Offset: 0x1DC8
-	Size: 0xC8
-	Parameters: 7
-	Flags: Private
-*/
 function private mechzfacecallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     if(isdefined(self.prevfaceanim)) {

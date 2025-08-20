@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_zones.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\exploder_shared;
@@ -13,18 +17,8 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_stalingrad;
-
 #namespace zm_stalingrad_zones;
 
-/*
-	Name: init
-	Namespace: zm_stalingrad_zones
-	Checksum: 0x386EFE02
-	Offset: 0x740
-	Size: 0x2424
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level flag::init("always_on");
   level flag::set("always_on");

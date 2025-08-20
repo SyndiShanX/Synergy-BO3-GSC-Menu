@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_sgen_patch.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_load;
 #using scripts\cp\_objectives;
@@ -12,18 +16,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\vehicles\_quadtank;
-
 #namespace namespace_643bc20;
 
-/*
-	Name: function_7403e82b
-	Namespace: namespace_643bc20
-	Checksum: 0xB2BEBC25
-	Offset: 0x268
-	Size: 0x334
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7403e82b() {
   spawncollision("collision_clip_wall_256x256x10", "collider", (-560, 1793, -1264), vectorscale((0, 1, 0), 304.999));
   spawncollision("collision_clip_wall_256x256x10", "collider", (24832, 1744, -6808), vectorscale((0, 1, 0), 270));

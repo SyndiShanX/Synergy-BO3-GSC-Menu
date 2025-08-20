@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\_weapon_customization_icon.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\core\_multi_extracam;
 #using scripts\shared\animation_shared;
@@ -6,31 +10,12 @@
 #using scripts\shared\scene_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace weapon_customization_icon;
 
-/*
-	Name: __init__sytem__
-	Namespace: weapon_customization_icon
-	Checksum: 0xC79D156B
-	Offset: 0x290
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("weapon_customization_icon", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: weapon_customization_icon
-	Checksum: 0x48D085E0
-	Offset: 0x2D0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.extra_cam_wc_paintjob_icon = [];
   level.extra_cam_wc_variant_icon = [];
@@ -39,32 +24,14 @@ function __init__() {
   level.weaponcustomizationiconsetup = & wc_icon_setup;
 }
 
-/*
-	Name: wc_icon_setup
-	Namespace: weapon_customization_icon
-	Checksum: 0xF1A49229
-	Offset: 0x340
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function wc_icon_setup(localclientnum) {
   level.extra_cam_wc_paintjob_icon[localclientnum] = spawnstruct();
   level.extra_cam_wc_variant_icon[localclientnum] = spawnstruct();
   level thread update_wc_icon_extracam(localclientnum);
 }
 
-/*
-	Name: update_wc_icon_extracam
-	Namespace: weapon_customization_icon
-	Checksum: 0xB8B450AF
-	Offset: 0x3B0
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function update_wc_icon_extracam(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   while (true) {
     level waittill("process_wc_icon_extracam_" + localclientnum, extracam_data_struct);
     setup_wc_weapon_model(localclientnum, extracam_data_struct);
@@ -72,15 +39,6 @@ function update_wc_icon_extracam(localclientnum) {
   }
 }
 
-/*
-	Name: wait_for_extracam_close
-	Namespace: weapon_customization_icon
-	Checksum: 0xF3F57DD6
-	Offset: 0x430
-	Size: 0x9C
-	Parameters: 3
-	Flags: Linked
-*/
 function wait_for_extracam_close(localclientnum, camera_ent, extracam_data_struct) {
   level waittill((("render_complete_" + localclientnum) + "_") + extracam_data_struct.extracamindex);
   multi_extracam::extracam_reset_index(localclientnum, extracam_data_struct.extracamindex);
@@ -89,15 +47,6 @@ function wait_for_extracam_close(localclientnum, camera_ent, extracam_data_struc
   }
 }
 
-/*
-	Name: getxcam
-	Namespace: weapon_customization_icon
-	Checksum: 0xBEDD7AD0
-	Offset: 0x4D8
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function getxcam(weapon_name, camera) {
   xcam = getweaponxcam(weapon_name, camera);
   if(!isdefined(xcam)) {
@@ -106,22 +55,11 @@ function getxcam(weapon_name, camera) {
   return xcam;
 }
 
-/*
-	Name: setup_wc_extracam_settings
-	Namespace: weapon_customization_icon
-	Checksum: 0x3466D9A5
-	Offset: 0x560
-	Size: 0x364
-	Parameters: 2
-	Flags: Linked
-*/
 function setup_wc_extracam_settings(localclientnum, extracam_data_struct) {
-  /#
   assert(isdefined(extracam_data_struct.jobindex));
-  # /
-    if(!isdefined(level.camera_ents)) {
-      level.camera_ents = [];
-    }
+  if(!isdefined(level.camera_ents)) {
+    level.camera_ents = [];
+  }
   initializedextracam = 0;
   camera_ent = (isdefined(level.camera_ents[localclientnum]) ? level.camera_ents[localclientnum][extracam_data_struct.extracamindex] : undefined);
   if(!isdefined(camera_ent)) {
@@ -132,14 +70,11 @@ function setup_wc_extracam_settings(localclientnum, extracam_data_struct) {
       camera_ent = multi_extracam::extracam_init_item(localclientnum, get_safehouse_position_struct(), extracam_data_struct.extracamindex);
     }
   }
-  /#
   assert(isdefined(camera_ent));
-  # /
-    if(extracam_data_struct.loadoutslot == "default_camo_render") {
-      extracam_data_struct.xcam = "ui_cam_icon_camo_export";
-      extracam_data_struct.subxcam = "cam_icon";
-    }
-  else {
+  if(extracam_data_struct.loadoutslot == "default_camo_render") {
+    extracam_data_struct.xcam = "ui_cam_icon_camo_export";
+    extracam_data_struct.subxcam = "cam_icon";
+  } else {
     extracam_data_struct.xcam = getxcam(extracam_data_struct.current_weapon, "cam_icon_weapon");
     extracam_data_struct.subxcam = "cam_icon";
   }
@@ -160,15 +95,6 @@ function setup_wc_extracam_settings(localclientnum, extracam_data_struct) {
   }
 }
 
-/*
-	Name: set_wc_icon_weapon_options
-	Namespace: weapon_customization_icon
-	Checksum: 0xF64ECED3
-	Offset: 0x8D0
-	Size: 0xF4
-	Parameters: 2
-	Flags: Linked
-*/
 function set_wc_icon_weapon_options(weapon_options_param, extracam_data_struct) {
   weapon_options = strtok(weapon_options_param, ",");
   if(isdefined(weapon_options) && isdefined(extracam_data_struct.weapon_script_model)) {
@@ -176,15 +102,6 @@ function set_wc_icon_weapon_options(weapon_options_param, extracam_data_struct) 
   }
 }
 
-/*
-	Name: spawn_weapon_model
-	Namespace: weapon_customization_icon
-	Checksum: 0xD6D4BF13
-	Offset: 0x9D0
-	Size: 0x80
-	Parameters: 3
-	Flags: Linked
-*/
 function spawn_weapon_model(localclientnum, origin, angles) {
   weapon_model = spawn(localclientnum, origin, "script_model");
   if(isdefined(angles)) {
@@ -194,15 +111,6 @@ function spawn_weapon_model(localclientnum, origin, angles) {
   return weapon_model;
 }
 
-/*
-	Name: set_wc_icon_cosmetic_variants
-	Namespace: weapon_customization_icon
-	Checksum: 0x1AAC04F6
-	Offset: 0xA58
-	Size: 0xD0
-	Parameters: 3
-	Flags: Linked
-*/
 function set_wc_icon_cosmetic_variants(acv_param, weapon_full_name, extracam_data_struct) {
   acv_indexes = strtok(acv_param, ",");
   i = 0;
@@ -212,15 +120,6 @@ function set_wc_icon_cosmetic_variants(acv_param, weapon_full_name, extracam_dat
   }
 }
 
-/*
-	Name: get_safehouse_position_struct
-	Namespace: weapon_customization_icon
-	Checksum: 0xB329842C
-	Offset: 0xB30
-	Size: 0xE6
-	Parameters: 0
-	Flags: Linked
-*/
 function get_safehouse_position_struct() {
   position = spawnstruct();
   position.angles = (0, 0, 0);
@@ -241,15 +140,6 @@ function get_safehouse_position_struct() {
   return position;
 }
 
-/*
-	Name: setup_wc_weapon_model
-	Namespace: weapon_customization_icon
-	Checksum: 0x4CB8BFE6
-	Offset: 0xC20
-	Size: 0x254
-	Parameters: 2
-	Flags: Linked
-*/
 function setup_wc_weapon_model(localclientnum, extracam_data_struct) {
   base_weapon_slot = extracam_data_struct.loadoutslot;
   weapon_full_name = extracam_data_struct.weaponplusattachments;
@@ -279,15 +169,6 @@ function setup_wc_weapon_model(localclientnum, extracam_data_struct) {
   }
 }
 
-/*
-	Name: process_wc_paintjobicon_extracam_request
-	Namespace: weapon_customization_icon
-	Checksum: 0x3216106C
-	Offset: 0xE80
-	Size: 0x190
-	Parameters: 10
-	Flags: Linked
-*/
 function process_wc_paintjobicon_extracam_request(localclientnum, extracamindex, jobindex, attachmentvariantstring, weaponoptions, weaponplusattachments, loadoutslot, paintjobindex, paintjobslot, isfilesharepreview) {
   level.extra_cam_wc_paintjob_icon[localclientnum].jobindex = jobindex;
   level.extra_cam_wc_paintjob_icon[localclientnum].extracamindex = extracamindex;
@@ -302,15 +183,6 @@ function process_wc_paintjobicon_extracam_request(localclientnum, extracamindex,
   level notify("process_wc_icon_extracam_" + localclientnum, level.extra_cam_wc_paintjob_icon[localclientnum]);
 }
 
-/*
-	Name: process_wc_varianticon_extracam_request
-	Namespace: weapon_customization_icon
-	Checksum: 0xA21AD56
-	Offset: 0x1018
-	Size: 0x190
-	Parameters: 10
-	Flags: Linked
-*/
 function process_wc_varianticon_extracam_request(localclientnum, extracamindex, jobindex, attachmentvariantstring, weaponoptions, weaponplusattachments, loadoutslot, paintjobindex, paintjobslot, isfilesharepreview) {
   level.extra_cam_wc_variant_icon[localclientnum].jobindex = jobindex;
   level.extra_cam_wc_variant_icon[localclientnum].extracamindex = extracamindex;

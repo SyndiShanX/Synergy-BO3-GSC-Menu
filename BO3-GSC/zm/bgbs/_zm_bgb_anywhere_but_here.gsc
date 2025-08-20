@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\bgbs\_zm_bgb_anywhere_but_here.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
@@ -9,31 +13,12 @@
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_bgb_anywhere_but_here;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_bgb_anywhere_but_here
-	Checksum: 0x7458ABDA
-	Offset: 0x310
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_bgb_anywhere_but_here", & __init__, undefined, "bgb");
 }
 
-/*
-	Name: __init__
-	Namespace: zm_bgb_anywhere_but_here
-	Checksum: 0x872DF9D7
-	Offset: 0x350
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -45,15 +30,6 @@ function __init__() {
   bgb::function_4cda71bf("zm_bgb_anywhere_but_here", 1);
 }
 
-/*
-	Name: activation
-	Namespace: zm_bgb_anywhere_but_here
-	Checksum: 0x68EE913A
-	Offset: 0x430
-	Size: 0x534
-	Parameters: 0
-	Flags: Linked
-*/
 function activation() {
   zm_utility::increment_ignoreme();
   playsoundatposition("zmb_bgb_abh_teleport_out", self.origin);
@@ -112,15 +88,6 @@ function activation() {
   zm_utility::decrement_ignoreme();
 }
 
-/*
-	Name: validation
-	Namespace: zm_bgb_anywhere_but_here
-	Checksum: 0x63F86335
-	Offset: 0x970
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function validation() {
   if(isdefined(level.var_9aaae7ae)) {
     return [
@@ -130,15 +97,6 @@ function validation() {
   return 1;
 }
 
-/*
-	Name: function_728dfe3
-	Namespace: zm_bgb_anywhere_but_here
-	Checksum: 0x24692623
-	Offset: 0x9A0
-	Size: 0x2F0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_728dfe3() {
   var_a6abcc5d = zm_zonemgr::get_zone_from_position(self.origin + vectorscale((0, 0, 1), 32), 0);
   if(!isdefined(var_a6abcc5d)) {

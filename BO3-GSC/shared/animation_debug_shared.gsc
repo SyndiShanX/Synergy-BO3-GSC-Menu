@@ -1,51 +1,33 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\animation_debug_shared.gsc
+*************************************************/
+
 #using scripts\shared\animation_shared;
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\util_shared;
-
 #namespace animation;
 
-/*
-	Name: __init__
-	Namespace: animation
-	Checksum: 0x49208920
-	Offset: 0xE0
-	Size: 0xD0
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__() {
-  /#
   setdvar("", 0);
   setdvar("", 0);
   while (true) {
     anim_debug = getdvarint("", 0) || getdvarint("", 0);
     level flagsys::set_val("", anim_debug);
     if(!anim_debug) {
-      level notify(# "kill_anim_debug");
+      level notify("kill_anim_debug");
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: anim_info_render_thread
-	Namespace: animation
-	Checksum: 0xA1BFACD9
-	Offset: 0x1B8
-	Size: 0x6E8
-	Parameters: 7
-	Flags: Linked
-*/
 function anim_info_render_thread(animation, v_origin_or_ent, v_angles_or_tag, n_rate, n_blend_in, n_blend_out, n_lerp) {
-  /#
-  self endon(# "death");
-  self endon(# "scriptedanim");
-  self notify(# "_anim_info_render_thread_");
-  self endon(# "_anim_info_render_thread_");
+  self endon("death");
+  self endon("scriptedanim");
+  self notify("_anim_info_render_thread_");
+  self endon("_anim_info_render_thread_");
   if(!isvec(v_origin_or_ent)) {
-    v_origin_or_ent endon(# "death");
+    v_origin_or_ent endon("death");
   }
   recordent(self);
   while (true) {
@@ -103,20 +85,9 @@ function anim_info_render_thread(animation, v_origin_or_ent, v_angles_or_tag, n_
     _reset_frame();
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: get_ent_type
-	Namespace: animation
-	Checksum: 0x559085F3
-	Offset: 0x8A8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function get_ent_type() {
-  /#
   if(isactor(self)) {
     return "";
   }
@@ -124,50 +95,17 @@ function get_ent_type() {
     return "";
   }
   return ("" + self.classname) + "";
-  # /
 }
 
-/*
-	Name: _init_frame
-	Namespace: animation
-	Checksum: 0x4681CB72
-	Offset: 0x920
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function _init_frame() {
-  /#
   self.v_centroid = self getcentroid();
-  # /
 }
 
-/*
-	Name: _reset_frame
-	Namespace: animation
-	Checksum: 0x5C8339B3
-	Offset: 0x950
-	Size: 0x12
-	Parameters: 0
-	Flags: Linked
-*/
 function _reset_frame() {
-  /#
   self.v_centroid = undefined;
-  # /
 }
 
-/*
-	Name: render_tag
-	Namespace: animation
-	Checksum: 0xA930CFB8
-	Offset: 0x970
-	Size: 0x144
-	Parameters: 3
-	Flags: Linked
-*/
 function render_tag(str_tag, str_label, b_recorder_only) {
-  /#
   if(!isdefined(str_label)) {
     str_label = str_tag;
   }
@@ -183,20 +121,9 @@ function render_tag(str_tag, str_label, b_recorder_only) {
     }
     recordline(self.v_centroid, v_tag_org, vectorscale((1, 1, 1), 0.3), "");
   }
-  # /
 }
 
-/*
-	Name: anim_origin_render
-	Namespace: animation
-	Checksum: 0xE0C0BA68
-	Offset: 0xAC0
-	Size: 0x25C
-	Parameters: 5
-	Flags: Linked
-*/
 function anim_origin_render(org, angles, line_length, str_label, b_recorder_only) {
-  /#
   if(!isdefined(line_length)) {
     line_length = 6;
   }
@@ -219,5 +146,4 @@ function anim_origin_render(org, angles, line_length, str_label, b_recorder_only
       record3dtext(str_label, org, (1, 0.7529412, 0.7960784), "");
     }
   }
-  # /
 }

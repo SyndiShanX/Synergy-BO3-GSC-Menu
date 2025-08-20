@@ -1,52 +1,27 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_ai_thrasher.csc
+*************************************************/
+
 #using scripts\shared\ai_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\lui_shared;
 #using scripts\shared\postfx_shared;
-
 #using_animtree("generic");
-
 #namespace _zm_ai_thrasher;
 
-/*
-	Name: main
-	Namespace: _zm_ai_thrasher
-	Checksum: 0x26529667
-	Offset: 0x210
-	Size: 0x4C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   clientfield::register("actor", "thrasher_mouth_cf", 9000, 8, "int", & thrasherclientutils::function_dc24e0f3, 0, 0);
 }
 
 #namespace thrasherclientutils;
 
-/*
-	Name: function_43bf0af5
-	Namespace: thrasherclientutils
-	Checksum: 0x2D446B35
-	Offset: 0x268
-	Size: 0x74
-	Parameters: 3
-	Flags: Linked
-*/
 function function_43bf0af5(entity, player, state) {
   entitynumber = player getentitynumber();
   var_a2619f0 = 3 << (entitynumber * 2);
   return (state & var_a2619f0) >> (entitynumber * 2);
 }
 
-/*
-	Name: function_dc24e0f3
-	Namespace: thrasherclientutils
-	Checksum: 0x8D88A21E
-	Offset: 0x2E8
-	Size: 0x28E
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private function_dc24e0f3(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   localplayer = getlocalplayer(localclientnum);
@@ -87,15 +62,6 @@ function private function_dc24e0f3(localclientnum, oldvalue, newvalue, bnewent, 
   }
 }
 
-/*
-	Name: function_51fb721f
-	Namespace: thrasherclientutils
-	Checksum: 0xB3DB556E
-	Offset: 0x580
-	Size: 0xBC
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private function_51fb721f(localclientnum, thrasher, player) {
   if(isdefined(thrasher) && isdefined(thrasher.var_18fd72ff)) {
     thrasher.var_18fd72ff clearanim("p7_fxanim_zm_island_thrasher_stomach_close_anim", 0.2);
@@ -104,15 +70,6 @@ function private function_51fb721f(localclientnum, thrasher, player) {
   }
 }
 
-/*
-	Name: function_48032157
-	Namespace: thrasherclientutils
-	Checksum: 0xEC0791A0
-	Offset: 0x648
-	Size: 0x104
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private function_48032157(localclientnum, thrasher, player) {
   if(isdefined(thrasher) && isdefined(thrasher.var_18fd72ff)) {
     thrasher.var_18fd72ff clearanim("p7_fxanim_zm_island_thrasher_stomach_idle_anim", 0.2);
@@ -123,15 +80,6 @@ function private function_48032157(localclientnum, thrasher, player) {
   }
 }
 
-/*
-	Name: function_98817801
-	Namespace: thrasherclientutils
-	Checksum: 0x1E38FBD1
-	Offset: 0x758
-	Size: 0x13C
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private function_98817801(localclientnum, thrasher, player) {
   if(isdefined(thrasher) && isdefined(thrasher.var_18fd72ff)) {
     thrasher.var_18fd72ff clearanim("p7_fxanim_zm_island_thrasher_stomach_idle_anim", 0.2);
@@ -145,20 +93,11 @@ function private function_98817801(localclientnum, thrasher, player) {
   }
 }
 
-/*
-	Name: function_4cf5760d
-	Namespace: thrasherclientutils
-	Checksum: 0x13642A57
-	Offset: 0x8A0
-	Size: 0x41C
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private function_4cf5760d(localclientnum, thrasher, player) {
-  thrasher endon(# "entityshutdown");
-  player endon(# "entityshutdown");
-  player endon(# "hash_d53b1d6d");
-  thrasher endon(# "hash_d53b1d6d");
+  thrasher endon("entityshutdown");
+  player endon("entityshutdown");
+  player endon("hash_d53b1d6d");
+  thrasher endon("hash_d53b1d6d");
   eyeposition = player gettagorigin("tag_eye");
   eyeoffset = (0, 0, (abs((abs(eyeposition[2] - player.origin[2])) - 40)) - 10);
   thrasher.var_18fd72ff = spawn(localclientnum, thrasher.origin, "script_model");
@@ -193,20 +132,11 @@ function private function_4cf5760d(localclientnum, thrasher, player) {
   }
 }
 
-/*
-	Name: function_785afcbe
-	Namespace: thrasherclientutils
-	Checksum: 0x58804144
-	Offset: 0xCC8
-	Size: 0x25E
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private function_785afcbe(localclientnum, thrasher, player) {
-  thrasher endon(# "entityshutdown");
-  player endon(# "entityshutdown");
-  player endon(# "hash_d53b1d6d");
-  thrasher endon(# "hash_d53b1d6d");
+  thrasher endon("entityshutdown");
+  player endon("entityshutdown");
+  player endon("hash_d53b1d6d");
+  thrasher endon("hash_d53b1d6d");
   interpolate = 0.016;
   var_e494fe3c = angleclamp180(getcamanglesbylocalclientnum(player.localclientnum)[1]);
   thrasher.var_18fd72ff.angles = (0, var_e494fe3c, 0);
@@ -229,22 +159,13 @@ function private function_785afcbe(localclientnum, thrasher, player) {
   }
 }
 
-/*
-	Name: function_93c1c40c
-	Namespace: thrasherclientutils
-	Checksum: 0x277F2777
-	Offset: 0xF30
-	Size: 0xCA
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private function_93c1c40c(localclientnum, thrasher, player) {
   if(isdefined(thrasher)) {
-    thrasher notify(# "hash_d53b1d6d");
+    thrasher notify("hash_d53b1d6d");
     thrasher.var_9ed023df = 1;
   }
   if(isdefined(player)) {
-    player notify(# "hash_d53b1d6d");
+    player notify("hash_d53b1d6d");
   }
   if(isdefined(player)) {
     player thread lui::screen_fade_in(2);

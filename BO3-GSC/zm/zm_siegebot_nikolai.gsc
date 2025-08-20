@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_siegebot_nikolai.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\aat_shared;
 #using scripts\shared\ai\blackboard_vehicle;
@@ -27,33 +31,13 @@
 #using scripts\zm\_zm_elemental_zombies;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_stalingrad_util;
-
 #using_animtree("generic");
-
 #namespace siegebot_nikolai;
 
-/*
-	Name: __init__sytem__
-	Namespace: siegebot_nikolai
-	Checksum: 0xFE793309
-	Offset: 0x9E8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_siegebot_nikolai", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: siegebot_nikolai
-	Checksum: 0x5659DF15
-	Offset: 0xA28
-	Size: 0x3EC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   vehicle::add_main_callback("siegebot_nikolai", & siegebot_initialize);
   clientfield::register("vehicle", "nikolai_destroyed_r_arm", 12000, 1, "int");
@@ -78,15 +62,6 @@ function __init__() {
   level thread aat::register_immunity("zm_aat_turned", "raps", 1, 1, 1);
 }
 
-/*
-	Name: siegebot_initialize
-	Namespace: siegebot_nikolai
-	Checksum: 0xFC5FE919
-	Offset: 0xE20
-	Size: 0x3F4
-	Parameters: 0
-	Flags: Linked
-*/
 function siegebot_initialize() {
   self flag::init("halt_thread_gun");
   level.raps_spawners = getentarray("zombie_raps_spawner", "targetname");
@@ -111,10 +86,8 @@ function siegebot_initialize() {
   self.fovcosine = 0;
   self.fovcosinebusy = 0;
   self.maxsightdistsqrd = 10000 * 10000;
-  /#
   assert(isdefined(self.scriptbundlesettings));
-  # /
-    self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
+  self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
   self.goalradius = 9999999;
   self.goalheight = 5000;
   self setgoal(self.origin, 0, self.goalradius, self.goalheight);
@@ -137,15 +110,6 @@ function siegebot_initialize() {
   defaultrole();
 }
 
-/*
-	Name: init_clientfields
-	Namespace: siegebot_nikolai
-	Checksum: 0xF4BF2298
-	Offset: 0x1220
-	Size: 0x7C
-	Parameters: 0
-	Flags: None
-*/
 function init_clientfields() {
   self vehicle::lights_on();
   self vehicle::toggle_lights_group(1, 1);
@@ -153,15 +117,6 @@ function init_clientfields() {
   self vehicle::toggle_lights_group(3, 1);
 }
 
-/*
-	Name: defaultrole
-	Namespace: siegebot_nikolai
-	Checksum: 0x3EE2A51B
-	Offset: 0x12A8
-	Size: 0x1DC
-	Parameters: 0
-	Flags: Linked
-*/
 function defaultrole() {
   self vehicle_ai::init_state_machine_for_role();
   self vehicle_ai::get_state_callbacks("combat").update_func = & state_groundcombat_update;
@@ -176,18 +131,9 @@ function defaultrole() {
   vehicle_ai::startinitialstate("combat");
 }
 
-/*
-	Name: function_f7035c2f
-	Namespace: siegebot_nikolai
-	Checksum: 0x92195D1C
-	Offset: 0x1490
-	Size: 0x132
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f7035c2f(nikolai_driver) {
-  self endon(# "death");
-  nikolai_driver endon(# "death");
+  self endon("death");
+  nikolai_driver endon("death");
   self.nikolai_driver = nikolai_driver;
   self enablelinkto();
   nikolai_driver.origin = self gettagorigin("tag_driver");
@@ -201,18 +147,9 @@ function function_f7035c2f(nikolai_driver) {
   }
 }
 
-/*
-	Name: state_death_update
-	Namespace: siegebot_nikolai
-	Checksum: 0x118B434D
-	Offset: 0x15D0
-	Size: 0x1E4
-	Parameters: 1
-	Flags: Linked
-*/
 function state_death_update(params) {
-  self endon(# "death");
-  self endon(# "nodeath_thread");
+  self endon("death");
+  self endon("nodeath_thread");
   streamermodelhint(self.deathmodel, 6);
   self setturretspinning(0);
   self clean_up_spawned();
@@ -225,7 +162,7 @@ function state_death_update(params) {
   level flag::set("nikolai_complete");
   self asmrequestsubstate("death@stationary");
   self.nikolai_driver thread scene::play("cin_zm_stalingrad_nikolai_cockpit_death");
-  self waittill(# "model_swap");
+  self waittill("model_swap");
   self vehicle_death::death_fx();
   wait(10);
   self vehicle_death::set_death_model(self.deathmodel, self.modelswapdelay);
@@ -233,85 +170,31 @@ function state_death_update(params) {
   self vehicle_death::freewhensafe(150);
 }
 
-/*
-	Name: clean_up_spawned
-	Namespace: siegebot_nikolai
-	Checksum: 0x8DC6C62F
-	Offset: 0x17C0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function clean_up_spawned() {
   if(isdefined(self.jump)) {
     self.jump.linkent delete();
   }
 }
 
-/*
-	Name: pain_toggle
-	Namespace: siegebot_nikolai
-	Checksum: 0xBF97604D
-	Offset: 0x1800
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function pain_toggle(enabled) {
   self._enablepain = enabled;
 }
 
-/*
-	Name: pain_canenter
-	Namespace: siegebot_nikolai
-	Checksum: 0x28255848
-	Offset: 0x1820
-	Size: 0x42
-	Parameters: 0
-	Flags: None
-*/
 function pain_canenter() {
   state = vehicle_ai::get_current_state();
   return isdefined(state) && state != "pain" && self._enablepain;
 }
 
-/*
-	Name: pain_enter
-	Namespace: siegebot_nikolai
-	Checksum: 0xC8255081
-	Offset: 0x1870
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function pain_enter(params) {
   self stopmovementandsetbrake();
 }
 
-/*
-	Name: pain_exit
-	Namespace: siegebot_nikolai
-	Checksum: 0x91CBF7DF
-	Offset: 0x18A0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function pain_exit(params) {
   self setbrake(0);
 }
 
-/*
-	Name: pain_update
-	Namespace: siegebot_nikolai
-	Checksum: 0x92AD65FC
-	Offset: 0x18D0
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function pain_update(params) {
-  self endon(# "death");
+  self endon("death");
   if(1 <= self.damagelevel && self.damagelevel <= 4) {
     asmstate = ("damage_" + self.damagelevel) + "@pain";
   } else {
@@ -324,15 +207,6 @@ function pain_update(params) {
   self vehicle_ai::evaluate_connections();
 }
 
-/*
-	Name: jump_to
-	Namespace: siegebot_nikolai
-	Checksum: 0x5512E890
-	Offset: 0x19D8
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function jump_to(target) {
   if(self vehicle_ai::get_current_state() === "jump") {
     return false;
@@ -353,15 +227,6 @@ function jump_to(target) {
   return false;
 }
 
-/*
-	Name: initjumpstruct
-	Namespace: siegebot_nikolai
-	Checksum: 0xFBB79D4A
-	Offset: 0x1B58
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function initjumpstruct() {
   if(isdefined(self.jump)) {
     self unlink();
@@ -372,20 +237,9 @@ function initjumpstruct() {
   self.jump.linkent = spawn("script_origin", self.origin);
   self.jump.in_air = 0;
   self.arena_center = struct::get("boss_arena_center").origin;
-  /#
   assert(isdefined(self.arena_center));
-  # /
 }
 
-/*
-	Name: state_jump_enter
-	Namespace: siegebot_nikolai
-	Checksum: 0xE62CD6B0
-	Offset: 0x1C68
-	Size: 0x14C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_jump_enter(params) {
   goal = self.jump.var_e8ce546f;
   trace = physicstrace(goal + vectorscale((0, 0, 1), 500), goal - vectorscale((0, 0, 1), 10000), vectorscale((-1, -1, -1), 10), vectorscale((1, 1, 1), 10), self, 2);
@@ -401,31 +255,13 @@ function state_jump_enter(params) {
   self stopmovementandsetbrake();
 }
 
-/*
-	Name: state_jump_exit
-	Namespace: siegebot_nikolai
-	Checksum: 0xD560C746
-	Offset: 0x1DC0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function state_jump_exit(params) {
   self pain_toggle(1);
 }
 
-/*
-	Name: state_jump_update
-	Namespace: siegebot_nikolai
-	Checksum: 0x890A2369
-	Offset: 0x1DF0
-	Size: 0xB5C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_jump_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   goal = self.jump.goal;
   self face_target(goal);
   self.jump.linkent.origin = self.origin;
@@ -469,7 +305,7 @@ function state_jump_update(params) {
     oldheight = self.jump.linkent.origin[2];
     self.jump.linkent.origin = self.jump.linkent.origin + velocity;
     if(self.jump.linkent.origin[2] < heightthreshold && (oldheight > heightthreshold || (oldverticlespeed > 0 && velocity[2] < 0))) {
-      self notify(# "start_landing");
+      self notify("start_landing");
       if(isdefined(self.enemy)) {
         forward = anglestoforward(self.angles);
         dir = vectornormalize(self.enemy.origin - self.origin);
@@ -483,7 +319,7 @@ function state_jump_update(params) {
     wait(0.05);
   }
   self.jump.linkent.origin = (self.jump.linkent.origin[0], self.jump.linkent.origin[1], 0) + (0, 0, goal[2]);
-  self notify(# "land_crush");
+  self notify("land_crush");
   foreach(player in level.players) {
     if(distance2dsquared(self.origin, player.origin) < (200 * 200)) {
       direction = (player.origin - self.origin[0], player.origin - self.origin[1], 0);
@@ -506,20 +342,11 @@ function state_jump_update(params) {
   self setgoal(self.origin, 0, self.goalradius, self.goalheight);
   self vehicle_ai::waittill_asm_complete(params.coptermodel, 3);
   self vehicle_ai::cooldown("jump_cooldown", 3);
-  self notify(# "jump_finished");
+  self notify("jump_finished");
   self locomotion_start();
   self vehicle_ai::evaluate_connections();
 }
 
-/*
-	Name: function_f9508f9e
-	Namespace: siegebot_nikolai
-	Checksum: 0xF64C9088
-	Offset: 0x2958
-	Size: 0xB4
-	Parameters: 0
-	Flags: None
-*/
 function function_f9508f9e() {
   self vehicle_ai::clearalllookingandtargeting();
   self setturrettargetrelativeangles((0, 0, 0), 0);
@@ -529,15 +356,6 @@ function function_f9508f9e() {
   self setturrettargetrelativeangles((0, 0, 0), 4);
 }
 
-/*
-	Name: side_step
-	Namespace: siegebot_nikolai
-	Checksum: 0x9400D642
-	Offset: 0x2A18
-	Size: 0x274
-	Parameters: 0
-	Flags: None
-*/
 function side_step() {
   step_size = 180;
   right_dir = anglestoright(self.angles);
@@ -565,18 +383,9 @@ function side_step() {
   return false;
 }
 
-/*
-	Name: state_groundcombat_update
-	Namespace: siegebot_nikolai
-	Checksum: 0x96A3FA7C
-	Offset: 0x2C98
-	Size: 0xA6
-	Parameters: 1
-	Flags: Linked
-*/
 function state_groundcombat_update(params) {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   self thread attack_thread_gun();
   self thread movement_thread();
   self thread footstep_left_monitor();
@@ -587,74 +396,38 @@ function state_groundcombat_update(params) {
   }
 }
 
-/*
-	Name: footstep_damage
-	Namespace: siegebot_nikolai
-	Checksum: 0x57A3F432
-	Offset: 0x2D48
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function footstep_damage(tag_name) {
   origin = self gettagorigin(tag_name);
   self function_75775e52(origin, 80);
 }
 
-/*
-	Name: footstep_left_monitor
-	Namespace: siegebot_nikolai
-	Checksum: 0xF85F7F4E
-	Offset: 0x2DA0
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function footstep_left_monitor() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self notify(# "stop_left_footstep_damage");
-  self endon(# "stop_left_footstep_damage");
+  self endon("death");
+  self endon("change_state");
+  self notify("stop_left_footstep_damage");
+  self endon("stop_left_footstep_damage");
   while (true) {
-    self waittill(# "footstep_left_large_theia");
+    self waittill("footstep_left_large_theia");
     footstep_damage("tag_leg_left_foot_animate");
   }
 }
 
-/*
-	Name: footstep_right_monitor
-	Namespace: siegebot_nikolai
-	Checksum: 0x8D74778B
-	Offset: 0x2E10
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function footstep_right_monitor() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self notify(# "stop_right_footstep_damage");
-  self endon(# "stop_right_footstep_damage");
+  self endon("death");
+  self endon("change_state");
+  self notify("stop_right_footstep_damage");
+  self endon("stop_right_footstep_damage");
   while (true) {
-    self waittill(# "footstep_right_large_theia");
+    self waittill("footstep_right_large_theia");
     footstep_damage("tag_leg_right_foot_animate");
   }
 }
 
-/*
-	Name: movement_thread
-	Namespace: siegebot_nikolai
-	Checksum: 0x6FB04AAC
-	Offset: 0x2E80
-	Size: 0x1F0
-	Parameters: 0
-	Flags: Linked
-*/
 function movement_thread() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self notify(# "end_movement_thread");
-  self endon(# "end_movement_thread");
+  self endon("death");
+  self endon("change_state");
+  self notify("end_movement_thread");
+  self endon("end_movement_thread");
   self.current_pathto_pos = self.origin;
   while (true) {
     self setspeed(self.settings.defaultmovespeed);
@@ -679,36 +452,18 @@ function movement_thread() {
   }
 }
 
-/*
-	Name: state_groundcombat_exit
-	Namespace: siegebot_nikolai
-	Checksum: 0x2DFE1B7C
-	Offset: 0x3078
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_groundcombat_exit(params) {
-  self notify(# "end_attack_thread");
-  self notify(# "end_movement_thread");
+  self notify("end_attack_thread");
+  self notify("end_movement_thread");
   self clearturrettarget();
 }
 
-/*
-	Name: attack_thread_gun
-	Namespace: siegebot_nikolai
-	Checksum: 0x56A75AB2
-	Offset: 0x30C0
-	Size: 0x260
-	Parameters: 0
-	Flags: Linked
-*/
 function attack_thread_gun() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self endon(# "end_attack_thread");
-  self notify(# "end_attack_thread_gun");
-  self endon(# "end_attack_thread_gun");
+  self endon("death");
+  self endon("change_state");
+  self endon("end_attack_thread");
+  self notify("end_attack_thread_gun");
+  self endon("end_attack_thread_gun");
   while (true) {
     e_enemy = self.enemy;
     if(!isdefined(e_enemy) || self.var_a7cd606 === 1) {
@@ -740,60 +495,24 @@ function attack_thread_gun() {
   }
 }
 
-/*
-	Name: locomotion_start
-	Namespace: siegebot_nikolai
-	Checksum: 0x252A44AF
-	Offset: 0x3328
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function locomotion_start() {
   locomotion = "locomotion@movement";
   self asmrequestsubstate(locomotion);
 }
 
-/*
-	Name: function_7fcc2a80
-	Namespace: siegebot_nikolai
-	Checksum: 0xD853847D
-	Offset: 0x3368
-	Size: 0x12
-	Parameters: 0
-	Flags: None
-*/
 function function_7fcc2a80() {
-  self notify(# "near_goal");
+  self notify("near_goal");
 }
 
-/*
-	Name: _sort_by_distance2d
-	Namespace: siegebot_nikolai
-	Checksum: 0x26FFB85A
-	Offset: 0x3388
-	Size: 0x82
-	Parameters: 3
-	Flags: None
-*/
 function _sort_by_distance2d(left, right, point) {
   distancesqrtoleft = distance2dsquared(left.origin, point);
   distancesqrtoright = distance2dsquared(right.origin, point);
   return distancesqrtoleft > distancesqrtoright;
 }
 
-/*
-	Name: stopmovementandsetbrake
-	Namespace: siegebot_nikolai
-	Checksum: 0xB91CA6E3
-	Offset: 0x3418
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function stopmovementandsetbrake() {
-  self notify(# "end_movement_thread");
-  self notify(# "near_goal");
+  self notify("end_movement_thread");
+  self notify("near_goal");
   self cancelaimove();
   self clearvehgoalpos();
   self clearturrettarget();
@@ -801,15 +520,6 @@ function stopmovementandsetbrake() {
   self setbrake(1);
 }
 
-/*
-	Name: face_target
-	Namespace: siegebot_nikolai
-	Checksum: 0x1F13FB41
-	Offset: 0x34B8
-	Size: 0x23C
-	Parameters: 3
-	Flags: Linked
-*/
 function face_target(position, targetanglediff = 30, var_a39fa3d8 = 1) {
   v_to_enemy = (position - self.origin[0], position - self.origin[1], 0);
   v_to_enemy = vectornormalize(v_to_enemy);
@@ -836,15 +546,6 @@ function face_target(position, targetanglediff = 30, var_a39fa3d8 = 1) {
   self cancelaimove();
 }
 
-/*
-	Name: function_75775e52
-	Namespace: siegebot_nikolai
-	Checksum: 0x4B48CB19
-	Offset: 0x3700
-	Size: 0x16A
-	Parameters: 2
-	Flags: Linked
-*/
 function function_75775e52(point, range) {
   a_zombies = getaiarchetypearray("zombie");
   foreach(zombie in a_zombies) {
@@ -854,15 +555,6 @@ function function_75775e52(point, range) {
   }
 }
 
-/*
-	Name: function_86cc3c11
-	Namespace: siegebot_nikolai
-	Checksum: 0x7EB1B075
-	Offset: 0x3878
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_86cc3c11() {
   count = 0;
   for (i = 1; i < 5; i++) {
@@ -873,15 +565,6 @@ function function_86cc3c11() {
   return count;
 }
 
-/*
-	Name: function_b9b039e0
-	Namespace: siegebot_nikolai
-	Checksum: 0xD8764E20
-	Offset: 0x38E0
-	Size: 0x584
-	Parameters: 15
-	Flags: Linked
-*/
 function function_b9b039e0(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   if(!isplayer(eattacker)) {
     return false;
@@ -943,13 +626,13 @@ function function_b9b039e0(einflictor, eattacker, idamage, idflags, smeansofdeat
   eattacker.var_b3a9099 = eattacker.var_b3a9099 + idamage;
   eattacker show_hit_marker();
   if(var_cf402baf) {
-    self notify(# "nikolai_weakpoint_destroyed");
+    self notify("nikolai_weakpoint_destroyed");
     if(n_index == 1) {
       self hidepart("tag_heat_vent_01_d0_col");
-      self notify(# "hash_5eb926b6");
+      self notify("hash_5eb926b6");
     } else if(n_index == 2) {
       self hidepart("tag_heat_vent_02_d0_col");
-      self notify(# "hash_ae5c218");
+      self notify("hash_ae5c218");
     }
     mod = "MOD_MELEE";
     if(n_index == 5) {
@@ -962,21 +645,12 @@ function function_b9b039e0(einflictor, eattacker, idamage, idflags, smeansofdeat
     }
     if(function_86cc3c11() >= 4) {
       self finishvehicledamage(einflictor, eattacker, 4000, idflags, "MOD_IMPACT", weapon, vpoint, vdir, shitloc, psoffsettime, damagefromunderneath, modelindex, "tag_heat_vent_05_d0", 1);
-      level notify(# "nikolai_final_weakpoint_revealed");
+      level notify("nikolai_final_weakpoint_revealed");
     }
   }
   return false;
 }
 
-/*
-	Name: show_hit_marker
-	Namespace: siegebot_nikolai
-	Checksum: 0x9F774E71
-	Offset: 0x3E70
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function show_hit_marker() {
   if(isdefined(self) && isdefined(self.hud_damagefeedback)) {
     self.hud_damagefeedback setshader("damage_feedback", 24, 48);
@@ -986,15 +660,6 @@ function show_hit_marker() {
   }
 }
 
-/*
-	Name: function_efdfbbf7
-	Namespace: siegebot_nikolai
-	Checksum: 0x968FA3B8
-	Offset: 0x3F00
-	Size: 0x194
-	Parameters: 2
-	Flags: Linked
-*/
 function function_efdfbbf7(var_9d838914, var_e7f2a029) {
   if(var_e7f2a029 == 2) {
     var_e6a3fdd7 = "tag_heat_vent_02_d0_col";
@@ -1020,15 +685,6 @@ function function_efdfbbf7(var_9d838914, var_e7f2a029) {
   }
 }
 
-/*
-	Name: function_37a64cff
-	Namespace: siegebot_nikolai
-	Checksum: 0x8899A5A5
-	Offset: 0x40A0
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_37a64cff(var_ce1b5a05) {
   switch (var_ce1b5a05) {
     case 1: {
@@ -1051,22 +707,13 @@ function function_37a64cff(var_ce1b5a05) {
   self clientfield::set(str_clientfield, 1);
 }
 
-/*
-	Name: function_a3258c2a
-	Namespace: siegebot_nikolai
-	Checksum: 0x7A8A2E53
-	Offset: 0x4150
-	Size: 0x3FC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a3258c2a(var_f8b7c9a1) {
   if(!isalive(self)) {
     return false;
   }
-  self endon(# "death");
+  self endon("death");
   self vehicle_ai::set_state("special_attack");
-  self endon(# "change_state");
+  self endon("change_state");
   foreach(player in level.activeplayers) {
     self getperfectinfo(player, 0);
   }
@@ -1093,7 +740,7 @@ function function_a3258c2a(var_f8b7c9a1) {
     wait(fireinterval);
     self fireweapon(1, undefined, angleoffset + var_8a7bdf21, self);
   }
-  self notify(# "fire_stop");
+  self notify("fire_stop");
   self clientfield::set("nikolai_gatling_tell", 0);
   if(self.var_65850094[2] > 0) {
     self function_efdfbbf7(0, 2);
@@ -1103,27 +750,18 @@ function function_a3258c2a(var_f8b7c9a1) {
   self vehicle_ai::set_state("combat");
 }
 
-/*
-	Name: function_59fe8c9c
-	Namespace: siegebot_nikolai
-	Checksum: 0x7E69090D
-	Offset: 0x4558
-	Size: 0x5EC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_59fe8c9c(targetposition) {
   if(!isalive(self)) {
     return false;
   }
-  self endon(# "death");
+  self endon("death");
   self vehicle_ai::set_state("special_attack");
-  self endon(# "change_state");
+  self endon("change_state");
   self setturrettargetrelativeangles((0, 0, 0), 0);
   self setturrettargetrelativeangles((0, 0, 0), 1);
   self setturrettargetrelativeangles((0, 0, 0), 2);
   self face_target(targetposition, 30);
-  self notify(# "hash_c72aec1e");
+  self notify("hash_c72aec1e");
   if(self.var_65850094[1] > 0) {
     self function_efdfbbf7(1, 1);
   }
@@ -1190,17 +828,8 @@ function function_59fe8c9c(targetposition) {
   self vehicle_ai::set_state("combat");
 }
 
-/*
-	Name: function_853d3b2b
-	Namespace: siegebot_nikolai
-	Checksum: 0xBF633414
-	Offset: 0x4B50
-	Size: 0x1DC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_853d3b2b(var_ff72f147, launchforce) {
-  self endon(# "death");
+  self endon("death");
   self clientfield::set("play_raps_trail_fx", 1);
   self vehicle_ai::set_state("scripted");
   self vehicle::toggle_sounds(0);
@@ -1221,15 +850,6 @@ function function_853d3b2b(var_ff72f147, launchforce) {
   self thread function_902a2c47();
 }
 
-/*
-	Name: function_902a2c47
-	Namespace: siegebot_nikolai
-	Checksum: 0xBEB2A4C
-	Offset: 0x4D38
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function function_902a2c47() {
   wait(10);
   while (level flag::get("world_is_paused")) {
@@ -1240,53 +860,26 @@ function function_902a2c47() {
   }
 }
 
-/*
-	Name: function_6deb3e8d
-	Namespace: siegebot_nikolai
-	Checksum: 0xBCC39E64
-	Offset: 0x4DD8
-	Size: 0xA8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6deb3e8d() {
-  self endon(# "death");
+  self endon("death");
   while (isalive(self)) {
-    self waittill(# "veh_predictedcollision", otherent);
+    self waittill("veh_predictedcollision", otherent);
     if(isalive(otherent) && otherent.archetype === "zombie" && otherent.knockdown !== 1) {
       otherent zombie_utility::setup_zombie_knockdown(self);
     }
   }
 }
 
-/*
-	Name: function_3b145bbb
-	Namespace: siegebot_nikolai
-	Checksum: 0x595A59E2
-	Offset: 0x4E88
-	Size: 0x32
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3b145bbb() {
-  self waittill(# "death");
+  self waittill("death");
   level.var_6d27427c--;
   if(level.var_6d27427c < 1) {
     level.var_5fe02c5a = undefined;
   }
 }
 
-/*
-	Name: pin_spike_to_ground
-	Namespace: siegebot_nikolai
-	Checksum: 0x3FBADC8F
-	Offset: 0x4EC8
-	Size: 0x2E8
-	Parameters: 2
-	Flags: Linked
-*/
 function pin_spike_to_ground(spike, targetorigin) {
-  spike endon(# "death");
+  spike endon("death");
   targetdist = distance2d(spike.origin, targetorigin) - (400 + randomfloat(60));
   startorigin = spike.origin;
   while (distance2dsquared(spike.origin, startorigin) < (targetdist * 0.4) * (targetdist * 0.4)) {
@@ -1315,38 +908,20 @@ function pin_spike_to_ground(spike, targetorigin) {
   }
 }
 
-/*
-	Name: function_db9ecada
-	Namespace: siegebot_nikolai
-	Checksum: 0xFE739314
-	Offset: 0x51B8
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_db9ecada() {
-  self notify(# "hash_f7204730");
-  self endon(# "hash_f7204730");
-  self endon(# "change_state");
+  self notify("hash_f7204730");
+  self endon("hash_f7204730");
+  self endon("change_state");
   while (true) {
-    self waittill(# "grenade_stuck", var_8e857deb, origin, normal);
+    self waittill("grenade_stuck", var_8e857deb, origin, normal);
     var_8e857deb thread function_d7ef4d80();
     self function_75775e52(var_8e857deb.origin, 120);
     var_8e857deb clientfield::set("harpoon_impact", 1);
   }
 }
 
-/*
-	Name: function_d7ef4d80
-	Namespace: siegebot_nikolai
-	Checksum: 0x48CBA058
-	Offset: 0x5288
-	Size: 0x118
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d7ef4d80() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     a_ai_zombies = getaiarchetypearray("zombie");
     a_ai_zombies = arraysortclosest(a_ai_zombies, self.origin, undefined, undefined, 200);
@@ -1360,30 +935,19 @@ function function_d7ef4d80() {
   }
 }
 
-/*
-	Name: function_dfc5ede1
-	Namespace: siegebot_nikolai
-	Checksum: 0x5BD40020
-	Offset: 0x53A8
-	Size: 0x39C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_dfc5ede1(targetent) {
   if(!isalive(self)) {
     return false;
   }
-  self endon(# "death");
-  /#
+  self endon("death");
   assert(isalive(targetent));
-  # /
-    target = targetent.origin;
+  target = targetent.origin;
   vectotarget = (target - self.origin[0], target - self.origin[1], 0);
   if(lengthsquared(vectotarget) < (0.01 * 0.01)) {
     return false;
   }
   self vehicle_ai::set_state("special_attack");
-  self endon(# "change_state");
+  self endon("change_state");
   spikecoverradius = 600;
   randomscale = 40;
   self setturrettargetrelativeangles((0, 0, 0), 0);
@@ -1391,14 +955,14 @@ function function_dfc5ede1(targetent) {
   self setturrettargetrelativeangles((0, 0, 0), 2);
   self vehicle_ai::setturrettarget(targetent, 0);
   self face_target(target, 30, 0);
-  self notify(# "hash_2eb273f0", target);
+  self notify("hash_2eb273f0", target);
   if(self.var_65850094[1] > 0) {
     self function_efdfbbf7(1, 1);
   }
   self asmrequestsubstate("arm_rocket@stationary");
   self thread function_db9ecada();
   for (i = 0; i < 3; i++) {
-    self waittill(# "fire_harpoon");
+    self waittill("fire_harpoon");
     spike = self fireweapon(2);
     self clearturrettarget();
     if(isdefined(spike)) {
@@ -1416,15 +980,6 @@ function function_dfc5ede1(targetent) {
   self vehicle_ai::set_state("combat");
 }
 
-/*
-	Name: is_valid_target
-	Namespace: siegebot_nikolai
-	Checksum: 0x913EEF54
-	Offset: 0x5750
-	Size: 0xD8
-	Parameters: 1
-	Flags: None
-*/
 function is_valid_target(target) {
   if(isdefined(target.ignoreme) && target.ignoreme || target.health <= 0) {
     return false;

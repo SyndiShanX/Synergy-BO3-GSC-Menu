@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_ai_tank.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
@@ -31,20 +35,9 @@
 #using scripts\shared\vehicles\_amws;
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\shared\weapons\_weapons;
-
 #using_animtree("mp_vehicles");
-
 #namespace ai_tank;
 
-/*
-	Name: init
-	Namespace: ai_tank
-	Checksum: 0x374B2FD4
-	Offset: 0xCD0
-	Size: 0x444
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   bundle = struct::get_script_bundle("killstreak", "killstreak_" + "ai_tank_drop");
   level.ai_tank_minigun_flash_3p = "killstreaks/fx_agr_rocket_flash_3p";
@@ -79,21 +72,10 @@ function init() {
     bundle.ksweaponreloadtime = 0.5;
   }
   visionset_mgr::register_info("visionset", "agr_visionset", 1, 80, 16, 1, & visionset_mgr::ramp_in_out_thread_per_player_death_shutdown, 0);
-  /#
   level thread tank_devgui_think();
-  # /
-    thread register();
+  thread register();
 }
 
-/*
-	Name: register
-	Namespace: ai_tank
-	Checksum: 0x86303678
-	Offset: 0x1120
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function register() {
   clientfield::register("vehicle", "ai_tank_death", 1, 1, "int");
   clientfield::register("vehicle", "ai_tank_missile_fire", 1, 2, "int");
@@ -101,15 +83,6 @@ function register() {
   clientfield::register("toplayer", "ai_tank_update_hud", 1, 1, "counter");
 }
 
-/*
-	Name: usekillstreakaitankdrop
-	Namespace: ai_tank
-	Checksum: 0xEB0BEE1
-	Offset: 0x11F0
-	Size: 0x2E0
-	Parameters: 1
-	Flags: Linked
-*/
 function usekillstreakaitankdrop(hardpointtype) {
   team = self.team;
   if(!self supplydrop::issupplydropgrenadeallowed(hardpointtype)) {
@@ -137,7 +110,7 @@ function usekillstreakaitankdrop(hardpointtype) {
   context.droptag = "tag_attach";
   context.droptagoffset = (-35, 0, 10);
   result = self supplydrop::usesupplydropmarker(killstreak_id, context);
-  self notify(# "supply_drop_marker_done");
+  self notify("supply_drop_marker_done");
   if(!isdefined(result) || !result) {
     killstreakrules::killstreakstop(hardpointtype, team, killstreak_id);
     return 0;
@@ -148,15 +121,6 @@ function usekillstreakaitankdrop(hardpointtype) {
   return result;
 }
 
-/*
-	Name: crateland
-	Namespace: ai_tank
-	Checksum: 0x2F56F40
-	Offset: 0x14D8
-	Size: 0x24C
-	Parameters: 5
-	Flags: Linked
-*/
 function crateland(crate, category, owner, team, context) {
   context.perform_physics_trace = 0;
   context.dist_from_boundary = 24;
@@ -180,28 +144,10 @@ function crateland(crate, category, owner, team, context) {
   crate delete();
 }
 
-/*
-	Name: is_location_good
-	Namespace: ai_tank
-	Checksum: 0xBC61D07A
-	Offset: 0x1730
-	Size: 0x42
-	Parameters: 2
-	Flags: Linked
-*/
 function is_location_good(location, context) {
   return supplydrop::islocationgood(location, context) && valid_location(location);
 }
 
-/*
-	Name: valid_location
-	Namespace: ai_tank
-	Checksum: 0x8B7B206B
-	Offset: 0x1780
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked
-*/
 function valid_location(location = self.origin) {
   if(!isplayer(self)) {
     start = self getcentroid();
@@ -217,15 +163,6 @@ function valid_location(location = self.origin) {
   return true;
 }
 
-/*
-	Name: hackedcallbackpre
-	Namespace: ai_tank
-	Checksum: 0xB97972AD
-	Offset: 0x1878
-	Size: 0x14C
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedcallbackpre(hacker) {
   drone = self;
   drone clientfield::set("enemyvehicle", 2);
@@ -240,45 +177,18 @@ function hackedcallbackpre(hacker) {
   drone clientfield::set("vehicletransition", 0);
 }
 
-/*
-	Name: hackedcallbackpost
-	Namespace: ai_tank
-	Checksum: 0x2DCDDE62
-	Offset: 0x19D0
-	Size: 0x70
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedcallbackpost(hacker) {
   drone = self;
   hacker remote_weapons::useremoteweapon(drone, "killstreak_ai_tank", 0);
-  drone notify(# "watchremotecontroldeactivate_remoteweapons");
+  drone notify("watchremotecontroldeactivate_remoteweapons");
   drone.killstreak_end_time = hacker killstreak_hacking::set_vehicle_drivable_time_starting_now(drone);
 }
 
-/*
-	Name: configureteampost
-	Namespace: ai_tank
-	Checksum: 0xBF109E51
-	Offset: 0x1A48
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function configureteampost(owner, ishacked) {
   drone = self;
   drone thread tank_watch_owner_events();
 }
 
-/*
-	Name: ai_tank_killstreak_start
-	Namespace: ai_tank
-	Checksum: 0xFB758726
-	Offset: 0x1A90
-	Size: 0x4F0
-	Parameters: 4
-	Flags: Linked
-*/
 function ai_tank_killstreak_start(owner, origin, killstreak_id, category) {
   team = owner.team;
   waittillframeend();
@@ -331,22 +241,9 @@ function ai_tank_killstreak_start(owner, origin, killstreak_id, category) {
   drone thread deleteonkillbrush(drone.owner);
   drone thread tank_rocket_watch_ai();
   level thread tank_game_end_think(drone);
-  /#
   drone thread tank_think_debug();
-  # /
-    /#
-  # /
 }
 
-/*
-	Name: get_vehicle_name
-	Namespace: ai_tank
-	Checksum: 0x9B0A5E26
-	Offset: 0x1F88
-	Size: 0x4E
-	Parameters: 1
-	Flags: None
-*/
 function get_vehicle_name(vehicle_version) {
   switch (vehicle_version) {
     case 2:
@@ -361,15 +258,6 @@ function get_vehicle_name(vehicle_version) {
   }
 }
 
-/*
-	Name: setup_gameplay_think
-	Namespace: ai_tank
-	Checksum: 0xB3D10147
-	Offset: 0x1FE0
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function setup_gameplay_think(category) {
   drone = self;
   drone thread tank_abort_think();
@@ -380,17 +268,8 @@ function setup_gameplay_think(category) {
   drone thread watchwater();
 }
 
-/*
-	Name: tank_think_debug
-	Namespace: ai_tank
-	Checksum: 0x73275696
-	Offset: 0x2098
-	Size: 0x638
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_think_debug() {
-  self endon(# "death");
+  self endon("death");
   server_frames_to_persist = 1;
   text_scale = 0.5;
   text_alpha = 1;
@@ -412,104 +291,72 @@ function tank_think_debug() {
       }
     }
     target_text = (tank_is_idle ? "Target: none" : "Target: " + target_name);
-    /#
     print3d(self.origin, target_text, text_color, text_alpha, text_scale, server_frames_to_persist);
-    # /
-      duration_text = "Duration: " + ((self.killstreak_end_time - gettime()) * 0.001);
-    /#
+    duration_text = "Duration: " + ((self.killstreak_end_time - gettime()) * 0.001);
     print3d(self.origin + vectorscale((0, 0, 1), 12), duration_text, text_color, text_alpha, text_scale, server_frames_to_persist);
-    # /
-      can_see_text = "Can see: ";
+    can_see_text = "Can see: ";
     if(tank_is_idle) {
       can_see_text = can_see_text + ("---");
     } else {
       can_see_text = can_see_text + (self vehcansee(target_entity) ? "yes" : "no");
     }
-    /#
     print3d(self.origin + (vectorscale((0, 0, -1), 12)), can_see_text, text_color, text_alpha, text_scale, server_frames_to_persist);
-    # /
-      movement_type_text = "Movement: ";
+    movement_type_text = "Movement: ";
     if(isdefined(self.debug_ai_movement_type)) {
       movement_type_text = movement_type_text + self.debug_ai_movement_type;
     } else {
       movement_type_text = movement_type_text + ("---");
     }
-    /#
     print3d(self.origin + (vectorscale((0, 0, -1), 24)), movement_type_text, text_color, text_alpha, text_scale, server_frames_to_persist);
-    # /
-      if(isdefined(self.debug_ai_move_to_point)) {
-        /#
-        util::debug_sphere(self.debug_ai_move_to_point + vectorscale((0, 0, 1), 16), 10, (0.1, 0.95, 0.1), 0.9, server_frames_to_persist);
-        # /
-          if(isdefined(self.debug_ai_move_to_points_considered)) {
-            foreach(point in self.debug_ai_move_to_points_considered) {
-              point_color = vectorscale((1, 1, 1), 0.65);
-              if(isdefined(point.score)) {
-                if(point.score != 0) {
-                  if(point.score < 0) {
-                    point_color = (0.65, 0.1, 0.1);
-                  } else {
-                    if(point.score > 50) {
-                      point_color = (0.1, 0.65, 0.1);
-                    } else {
-                      point_color = (0.95, 0.95, 0.1);
-                    }
-                  }
-                  score_text_scale = text_scale;
-                  score_text_color = text_color;
-                  if(point.origin != self.debug_ai_move_to_point) {
-                    score_text_scale = score_text_scale * 0.67;
-                  } else {
-                    score_text_scale = score_text_scale * 1.5;
-                    score_text_color = (0.05, 0.98, 0.05);
-                  }
-                  /#
-                  print3d(point.origin + vectorscale((0, 0, 1), 16), point.score, score_text_color, text_alpha, score_text_scale, server_frames_to_persist);
-                  # /
+    if(isdefined(self.debug_ai_move_to_point)) {
+      util::debug_sphere(self.debug_ai_move_to_point + vectorscale((0, 0, 1), 16), 10, (0.1, 0.95, 0.1), 0.9, server_frames_to_persist);
+      if(isdefined(self.debug_ai_move_to_points_considered)) {
+        foreach(point in self.debug_ai_move_to_points_considered) {
+          point_color = vectorscale((1, 1, 1), 0.65);
+          if(isdefined(point.score)) {
+            if(point.score != 0) {
+              if(point.score < 0) {
+                point_color = (0.65, 0.1, 0.1);
+              } else {
+                if(point.score > 50) {
+                  point_color = (0.1, 0.65, 0.1);
+                } else {
+                  point_color = (0.95, 0.95, 0.1);
                 }
               }
+              score_text_scale = text_scale;
+              score_text_color = text_color;
               if(point.origin != self.debug_ai_move_to_point) {
-                /#
-                util::debug_sphere(point.origin + vectorscale((0, 0, 1), 16), 3, point_color, 0.5, server_frames_to_persist);
-                # /
+                score_text_scale = score_text_scale * 0.67;
+              } else {
+                score_text_scale = score_text_scale * 1.5;
+                score_text_color = (0.05, 0.98, 0.05);
               }
+              print3d(point.origin + vectorscale((0, 0, 1), 16), point.score, score_text_color, text_alpha, score_text_scale, server_frames_to_persist);
             }
           }
+          if(point.origin != self.debug_ai_move_to_point) {
+            util::debug_sphere(point.origin + vectorscale((0, 0, 1), 16), 3, point_color, 0.5, server_frames_to_persist);
+          }
+        }
       }
+    }
     wait(0.05);
   }
 }
 
-/*
-	Name: tank_team_kill
-	Namespace: ai_tank
-	Checksum: 0xC3F65BCF
-	Offset: 0x26D8
-	Size: 0x2E
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_team_kill() {
-  self endon(# "death");
-  self.owner waittill(# "teamkillkicked");
-  self notify(# "death");
+  self endon("death");
+  self.owner waittill("teamkillkicked");
+  self notify("death");
 }
 
-/*
-	Name: kill_monitor
-	Namespace: ai_tank
-	Checksum: 0x687B8174
-	Offset: 0x2710
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function kill_monitor() {
-  self endon(# "death");
+  self endon("death");
   last_kill_vo = 0;
   kill_vo_spacing = 4000;
   while (true) {
-    self waittill(# "killed", victim);
+    self waittill("killed", victim);
     if(!isdefined(self.owner) || !isdefined(victim)) {
       continue;
     }
@@ -526,48 +373,21 @@ function kill_monitor() {
   }
 }
 
-/*
-	Name: tank_abort_think
-	Namespace: ai_tank
-	Checksum: 0x2F0CC8A5
-	Offset: 0x2820
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_abort_think() {
   tank = self;
   tank thread killstreaks::waitfortimeout("ai_tank_drop", 120000, & tank_timeout_callback, "death", "emp_jammed");
 }
 
-/*
-	Name: tank_timeout_callback
-	Namespace: ai_tank
-	Checksum: 0xEB1859E4
-	Offset: 0x2880
-	Size: 0x46
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_timeout_callback() {
   self killstreaks::play_pilot_dialog_on_owner("timeout", "ai_tank_drop");
   self.timed_out = 1;
-  self notify(# "death");
+  self notify("death");
 }
 
-/*
-	Name: tank_watch_owner_events
-	Namespace: ai_tank
-	Checksum: 0xD682FD17
-	Offset: 0x28D0
-	Size: 0x156
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_watch_owner_events() {
-  self notify(# "tank_watch_owner_events_singleton");
-  self endon(# "tank_watch_owner_events_singleton");
-  self endon(# "death");
+  self notify("tank_watch_owner_events_singleton");
+  self endon("tank_watch_owner_events_singleton");
+  self endon("death");
   self.owner util::waittill_any("joined_team", "disconnect", "joined_spectators");
   self makevehicleusable();
   self.controlled = 0;
@@ -581,33 +401,15 @@ function tank_watch_owner_events() {
     self.owner stop_remote();
   }
   self.abandoned = 1;
-  self notify(# "death");
+  self notify("death");
 }
 
-/*
-	Name: tank_game_end_think
-	Namespace: ai_tank
-	Checksum: 0xF37741EF
-	Offset: 0x2A30
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function tank_game_end_think(drone) {
-  drone endon(# "death");
-  level waittill(# "game_ended");
-  drone notify(# "death");
+  drone endon("death");
+  level waittill("game_ended");
+  drone notify("death");
 }
 
-/*
-	Name: stop_remote
-	Namespace: ai_tank
-	Checksum: 0xD0C8F2C2
-	Offset: 0x2A70
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function stop_remote() {
   if(!isdefined(self)) {
     return;
@@ -617,41 +419,19 @@ function stop_remote() {
   self util::clientnotify("nofutz");
 }
 
-/*
-	Name: tank_hacked_health_update
-	Namespace: ai_tank
-	Checksum: 0xC5F31269
-	Offset: 0x2AD8
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked
-*/
 function tank_hacked_health_update(hacker) {
   tank = self;
   hackeddamagetaken = tank.defaultmaxhealth - tank.hackedhealth;
-  /#
   assert(hackeddamagetaken > 0);
-  # /
-    if(hackeddamagetaken > tank.damagetaken) {
-      tank.damagetaken = hackeddamagetaken;
-    }
+  if(hackeddamagetaken > tank.damagetaken) {
+    tank.damagetaken = hackeddamagetaken;
+  }
 }
 
-/*
-	Name: tank_damage_think
-	Namespace: ai_tank
-	Checksum: 0xCAAA38D5
-	Offset: 0x2B70
-	Size: 0x622
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_damage_think() {
-  self endon(# "death");
-  /#
+  self endon("death");
   assert(isdefined(self.maxhealth));
-  # /
-    self.defaultmaxhealth = self.maxhealth;
+  self.defaultmaxhealth = self.maxhealth;
   maxhealth = self.maxhealth;
   self.maxhealth = 999999;
   self.health = self.maxhealth;
@@ -661,25 +441,23 @@ function tank_damage_think() {
   low_health = 0;
   self.damagetaken = 0;
   for (;;) {
-    self waittill(# "damage", damage, attacker, dir, point, mod, model, tag, part, weapon, flags, inflictor, chargelevel);
+    self waittill("damage", damage, attacker, dir, point, mod, model, tag, part, weapon, flags, inflictor, chargelevel);
     self.maxhealth = 999999;
     self.health = self.maxhealth;
-    /#
     self.damage_debug = ((damage + "") + weapon.name) + "";
-    # /
-      if(weapon.isemp && mod == "MOD_GRENADE_SPLASH") {
-        emp_damage_to_apply = killstreak_bundles::get_emp_grenade_damage("ai_tank_drop", maxhealth);
-        if(!isdefined(emp_damage_to_apply)) {
-          emp_damage_to_apply = maxhealth / 2;
-        }
-        self.damagetaken = self.damagetaken + emp_damage_to_apply;
-        damage = 0;
-        if(!self.isstunned && emp_damage_to_apply > 0) {
-          self.isstunned = 1;
-          challenges::stunnedtankwithempgrenade(attacker);
-          self thread tank_stun(4);
-        }
+    if(weapon.isemp && mod == "MOD_GRENADE_SPLASH") {
+      emp_damage_to_apply = killstreak_bundles::get_emp_grenade_damage("ai_tank_drop", maxhealth);
+      if(!isdefined(emp_damage_to_apply)) {
+        emp_damage_to_apply = maxhealth / 2;
       }
+      self.damagetaken = self.damagetaken + emp_damage_to_apply;
+      damage = 0;
+      if(!self.isstunned && emp_damage_to_apply > 0) {
+        self.isstunned = 1;
+        challenges::stunnedtankwithempgrenade(attacker);
+        self thread tank_stun(4);
+      }
+    }
     if(!self.isstunned) {
       if(weapon.dostun && (mod == "MOD_GRENADE_SPLASH" || mod == "MOD_GAS")) {
         self.isstunned = 1;
@@ -716,7 +494,7 @@ function tank_damage_think() {
         self.owner.dofutz = 1;
       }
       self.health = 0;
-      self notify(# "death", attacker, mod, weapon);
+      self notify("death", attacker, mod, weapon);
       return;
     }
     if(!low_health && self.damagetaken > (maxhealth / 1.8)) {
@@ -727,17 +505,8 @@ function tank_damage_think() {
   }
 }
 
-/*
-	Name: tank_low_health_fx
-	Namespace: ai_tank
-	Checksum: 0x8AF86660
-	Offset: 0x31A0
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_low_health_fx() {
-  self endon(# "death");
+  self endon("death");
   self.damage_fx = spawn("script_model", self gettagorigin("tag_origin") + (vectorscale((0, 0, -1), 14)));
   if(!isdefined(self.damage_fx)) {
     return;
@@ -748,24 +517,15 @@ function tank_low_health_fx() {
   playfxontag(level.ai_tank_damage_fx, self.damage_fx, "tag_origin");
 }
 
-/*
-	Name: deleteonkillbrush
-	Namespace: ai_tank
-	Checksum: 0x59434629
-	Offset: 0x3298
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function deleteonkillbrush(player) {
-  player endon(# "disconnect");
-  self endon(# "death");
+  player endon("disconnect");
+  self endon("death");
   killbrushes = getentarray("trigger_hurt", "classname");
   while (true) {
     for (i = 0; i < killbrushes.size; i++) {
       if(self istouching(killbrushes[i])) {
         if(isdefined(self)) {
-          self notify(# "death", self.owner);
+          self notify("death", self.owner);
         }
         return;
       }
@@ -774,18 +534,9 @@ function deleteonkillbrush(player) {
   }
 }
 
-/*
-	Name: tank_stun
-	Namespace: ai_tank
-	Checksum: 0x378637F7
-	Offset: 0x3370
-	Size: 0x240
-	Parameters: 1
-	Flags: Linked
-*/
 function tank_stun(duration) {
-  self endon(# "death");
-  self notify(# "stunned");
+  self endon("death");
+  self notify("stunned");
   self clearvehgoalpos();
   forward = anglestoforward(self.angles);
   forward = self.origin + (forward * 128);
@@ -816,18 +567,9 @@ function tank_stun(duration) {
   self.isstunned = 0;
 }
 
-/*
-	Name: emp_crazy_death
-	Namespace: ai_tank
-	Checksum: 0xE7CDB907
-	Offset: 0x35B8
-	Size: 0x21C
-	Parameters: 0
-	Flags: None
-*/
 function emp_crazy_death() {
   self clientfield::set("ai_tank_stun", 1);
-  self notify(# "death");
+  self notify("death");
   time = 0;
   randomangle = randomint(360);
   while (time < 1.45) {
@@ -851,19 +593,10 @@ function emp_crazy_death() {
   self hide();
 }
 
-/*
-	Name: tank_death_think
-	Namespace: ai_tank
-	Checksum: 0x54C50B43
-	Offset: 0x37E0
-	Size: 0x62C
-	Parameters: 1
-	Flags: Linked
-*/
 function tank_death_think(hardpointname) {
   team = self.team;
   killstreak_id = self.killstreak_id;
-  self waittill(# "death", attacker, damagefromunderneath, weapon);
+  self waittill("death", attacker, damagefromunderneath, weapon);
   if(!isdefined(self)) {
     killstreak_stop_and_assert(hardpointname, team, killstreak_id, "Failed to handle death. A.");
     return;
@@ -907,7 +640,7 @@ function tank_death_think(hardpointname) {
   if(isdefined(attacker) && isplayer(attacker) && isdefined(self.owner) && attacker != self.owner) {
     if(self.owner util::isenemyplayer(attacker)) {
       scoreevents::processscoreevent("destroyed_aitank", attacker, self.owner, weapon);
-      luinotifyevent( & "player_callout", 2, & "KILLSTREAK_DESTROYED_AI_TANK", attacker.entnum);
+      luinotifyevent(&"player_callout", 2, & "KILLSTREAK_DESTROYED_AI_TANK", attacker.entnum);
       attacker addweaponstat(weapon, "destroyed_aitank", 1);
       controlled = 0;
       if(isdefined(self.wascontrollednowdead) && self.wascontrollednowdead) {
@@ -935,52 +668,23 @@ function tank_death_think(hardpointname) {
   self delete();
 }
 
-/*
-	Name: killstreak_stop_and_assert
-	Namespace: ai_tank
-	Checksum: 0xC1AD44E9
-	Offset: 0x3E18
-	Size: 0x5C
-	Parameters: 4
-	Flags: Linked
-*/
 function killstreak_stop_and_assert(hardpoint_name, team, killstreak_id, assert_msg) {
   killstreakrules::killstreakstop(hardpoint_name, team, killstreak_id);
-  /#
   assertmsg(assert_msg);
-  # /
 }
 
-/*
-	Name: tank_too_far_from_nav_mesh_abort_think
-	Namespace: ai_tank
-	Checksum: 0xE25A31CC
-	Offset: 0x3E80
-	Size: 0x7E
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_too_far_from_nav_mesh_abort_think() {
-  self endon(# "death");
+  self endon("death");
   not_on_nav_mesh_count = 0;
   for (;;) {
     wait(1);
     not_on_nav_mesh_count = (isdefined(getclosestpointonnavmesh(self.origin, 480)) ? 0 : not_on_nav_mesh_count + 1);
     if(not_on_nav_mesh_count >= 4) {
-      self notify(# "death");
+      self notify("death");
     }
   }
 }
 
-/*
-	Name: tank_has_radar
-	Namespace: ai_tank
-	Checksum: 0x496C51C2
-	Offset: 0x3F08
-	Size: 0x6A
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_has_radar() {
   if(level.teambased) {
     return uav::hasuav(self.team) || satellite::hassatellite(self.team);
@@ -988,15 +692,6 @@ function tank_has_radar() {
   return uav::hasuav(self.entnum) || satellite::hassatellite(self.entnum);
 }
 
-/*
-	Name: tank_get_player_enemies
-	Namespace: ai_tank
-	Checksum: 0x52917D3B
-	Offset: 0x3F80
-	Size: 0x1CE
-	Parameters: 1
-	Flags: Linked
-*/
 function tank_get_player_enemies(on_radar) {
   enemies = [];
   if(!isdefined(on_radar)) {
@@ -1024,15 +719,6 @@ function tank_get_player_enemies(on_radar) {
   return enemies;
 }
 
-/*
-	Name: tank_compute_enemy_position
-	Namespace: ai_tank
-	Checksum: 0x1770F54F
-	Offset: 0x4158
-	Size: 0x18C
-	Parameters: 0
-	Flags: None
-*/
 function tank_compute_enemy_position() {
   enemies = tank_get_player_enemies(0);
   position = undefined;
@@ -1053,15 +739,6 @@ function tank_compute_enemy_position() {
   return position;
 }
 
-/*
-	Name: valid_target
-	Namespace: ai_tank
-	Checksum: 0xF9D99E04
-	Offset: 0x42F0
-	Size: 0x250
-	Parameters: 3
-	Flags: Linked
-*/
 function valid_target(target, team, owner) {
   if(!isdefined(target)) {
     return false;
@@ -1082,11 +759,9 @@ function valid_target(target, team, owner) {
     if(target hasperk("specialty_nottargetedbyaitank")) {
       return false;
     }
-    /#
     if(target isinmovemode("", "")) {
       return false;
     }
-    # /
   }
   if(level.teambased) {
     if(isdefined(target.team) && team == target.team) {
@@ -1110,15 +785,6 @@ function valid_target(target, team, owner) {
   return true;
 }
 
-/*
-	Name: starttankremotecontrol
-	Namespace: ai_tank
-	Checksum: 0xEC7A2EC1
-	Offset: 0x4548
-	Size: 0x23C
-	Parameters: 1
-	Flags: Linked
-*/
 function starttankremotecontrol(drone) {
   drone makevehicleusable();
   drone clearvehgoalpos();
@@ -1142,15 +808,6 @@ function starttankremotecontrol(drone) {
   visionset_mgr::activate("visionset", "agr_visionset", self, 1, 90000, 1);
 }
 
-/*
-	Name: endtankremotecontrol
-	Namespace: ai_tank
-	Checksum: 0x5E9BF515
-	Offset: 0x4790
-	Size: 0x21C
-	Parameters: 2
-	Flags: Linked
-*/
 function endtankremotecontrol(drone, exitrequestedbyowner) {
   not_dead = !(isdefined(drone.dead) && drone.dead);
   if(isdefined(drone.owner)) {
@@ -1179,15 +836,6 @@ function endtankremotecontrol(drone, exitrequestedbyowner) {
   drone clientfield::set("vehicletransition", 0);
 }
 
-/*
-	Name: perform_recoil_missile_turret
-	Namespace: ai_tank
-	Checksum: 0x4F51DBD
-	Offset: 0x49B8
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function perform_recoil_missile_turret(player) {
   bundle = level.killstreakbundle["ai_tank_drop"];
   earthquake(0.4, 0.5, self.origin, 200);
@@ -1197,30 +845,12 @@ function perform_recoil_missile_turret(player) {
   }
 }
 
-/*
-	Name: perform_recoil
-	Namespace: ai_tank
-	Checksum: 0x29DE3F74
-	Offset: 0x4AA8
-	Size: 0x94
-	Parameters: 3
-	Flags: Linked
-*/
 function perform_recoil(recoil_tag, force_scale_factor, force_z_offset) {
   angles = self gettagangles(recoil_tag);
   dir = anglestoforward(angles);
   self launchvehicle(dir * force_scale_factor, self.origin + (0, 0, force_z_offset), 0);
 }
 
-/*
-	Name: update_client_ammo
-	Namespace: ai_tank
-	Checksum: 0xCA77C55B
-	Offset: 0x4B48
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function update_client_ammo(ammo_count, driver_only_update = 0) {
   if(!driver_only_update) {
     self clientfield::set("ai_tank_missile_fire", ammo_count);
@@ -1230,18 +860,9 @@ function update_client_ammo(ammo_count, driver_only_update = 0) {
   }
 }
 
-/*
-	Name: tank_rocket_watch
-	Namespace: ai_tank
-	Checksum: 0xBDBE79CB
-	Offset: 0x4BD0
-	Size: 0x110
-	Parameters: 1
-	Flags: Linked
-*/
 function tank_rocket_watch(player) {
-  self endon(# "death");
-  player endon(# "stopped_using_remote");
+  self endon("death");
+  player endon("stopped_using_remote");
   if(self.numberrockets <= 0) {
     self reload_rockets(player);
   }
@@ -1249,7 +870,7 @@ function tank_rocket_watch(player) {
     self disabledriverfiring(0);
   }
   while (true) {
-    player waittill(# "missile_fire", missile);
+    player waittill("missile_fire", missile);
     missile.ignore_team_kills = self.ignore_team_kills;
     self.numberrockets--;
     self update_client_ammo(self.numberrockets);
@@ -1260,33 +881,15 @@ function tank_rocket_watch(player) {
   }
 }
 
-/*
-	Name: tank_rocket_watch_ai
-	Namespace: ai_tank
-	Checksum: 0x8A74A70B
-	Offset: 0x4CE8
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_rocket_watch_ai() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "missile_fire", missile);
+    self waittill("missile_fire", missile);
     missile.ignore_team_kills = self.ignore_team_kills;
     missile.killcament = self;
   }
 }
 
-/*
-	Name: reload_rockets
-	Namespace: ai_tank
-	Checksum: 0x29A4A5B9
-	Offset: 0x4D48
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function reload_rockets(player) {
   bundle = level.killstreakbundle["ai_tank_drop"];
   self disabledriverfiring(1);
@@ -1302,17 +905,8 @@ function reload_rockets(player) {
   }
 }
 
-/*
-	Name: watchwater
-	Namespace: ai_tank
-	Checksum: 0x46A9F2E4
-	Offset: 0x4E68
-	Size: 0x1BE
-	Parameters: 0
-	Flags: Linked
-*/
 function watchwater() {
-  self endon(# "death");
+  self endon("death");
   inwater = 0;
   while (!inwater) {
     wait(0.3);
@@ -1327,20 +921,10 @@ function watchwater() {
   if(isdefined(self.owner)) {
     self.owner.dofutz = 1;
   }
-  self notify(# "death");
+  self notify("death");
 }
 
-/*
-	Name: tank_devgui_think
-	Namespace: ai_tank
-	Checksum: 0x8E0EBC57
-	Offset: 0x5030
-	Size: 0xA8
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_devgui_think() {
-  /#
   setdvar("", "");
   for (;;) {
     wait(0.25);
@@ -1350,44 +934,22 @@ function tank_devgui_think() {
       setdvar("", "");
     }
   }
-  # /
 }
 
-/*
-	Name: tank_debug_patrol
-	Namespace: ai_tank
-	Checksum: 0xFB2C6EE6
-	Offset: 0x50E0
-	Size: 0xA2
-	Parameters: 2
-	Flags: Linked
-*/
 function tank_debug_patrol(node1, node2) {
-  /#
-  self endon(# "death");
-  self endon(# "debug_patrol");
+  self endon("death");
+  self endon("debug_patrol");
   for (;;) {
     self setvehgoalpos(node1.origin, 1);
-    self waittill(# "reached_end_node");
+    self waittill("reached_end_node");
     wait(1);
     self setvehgoalpos(node2.origin, 1);
-    self waittill(# "reached_end_node");
+    self waittill("reached_end_node");
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: devgui_debug_route
-	Namespace: ai_tank
-	Checksum: 0x8F8FEDAE
-	Offset: 0x5190
-	Size: 0x152
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_debug_route() {
-  /#
   iprintln("");
   nodes = dev::dev_get_node_pair();
   if(!isdefined(nodes)) {
@@ -1397,23 +959,12 @@ function devgui_debug_route() {
   iprintln("");
   tanks = getentarray("", "");
   foreach(tank in tanks) {
-    tank notify(# "debug_patrol");
+    tank notify("debug_patrol");
     tank thread tank_debug_patrol(nodes[0], nodes[1]);
   }
-  # /
 }
 
-/*
-	Name: tank_debug_hud_init
-	Namespace: ai_tank
-	Checksum: 0xB9F02065
-	Offset: 0x52F0
-	Size: 0x268
-	Parameters: 0
-	Flags: None
-*/
 function tank_debug_hud_init() {
-  /#
   host = util::gethostplayer();
   while (!isdefined(host)) {
     wait(0.25);
@@ -1441,20 +992,9 @@ function tank_debug_hud_init() {
   level.ai_tank_text.alpha = 0;
   level.ai_tank_text.fontscale = 1;
   level.ai_tank_text.foreground = 1;
-  # /
 }
 
-/*
-	Name: tank_debug_health
-	Namespace: ai_tank
-	Checksum: 0x15B8A2AF
-	Offset: 0x5560
-	Size: 0x158
-	Parameters: 0
-	Flags: None
-*/
 function tank_debug_health() {
-  /#
   self.damage_debug = "";
   level.ai_tank_bar.alpha = 1;
   level.ai_tank_text.alpha = 1;
@@ -1471,5 +1011,4 @@ function tank_debug_health() {
     str = (self.health + "") + self.damage_debug;
     level.ai_tank_text settext(str);
   }
-  # /
 }

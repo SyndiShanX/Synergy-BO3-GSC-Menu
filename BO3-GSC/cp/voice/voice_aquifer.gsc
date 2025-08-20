@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_aquifer.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace voice_aquifer;
 
-/*
-	Name: init_voice
-	Namespace: voice_aquifer
-	Checksum: 0x99BA4462
-	Offset: 0x47D8
-	Size: 0x3164
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("khal_the_nrc_has_already_0", "vox_aqui_10_10_001_khal");
   dialog::add("kane_copy_that_khalil_w_0", "vox_aqui_10_10_002_kane");

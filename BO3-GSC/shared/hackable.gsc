@@ -1,49 +1,25 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\hackable.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace hackable;
 
-/*
-	Name: __init__sytem__
-	Namespace: hackable
-	Checksum: 0x2F8626F6
-	Offset: 0x198
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("hackable", & init, undefined, undefined);
 }
 
-/*
-	Name: init
-	Namespace: hackable
-	Checksum: 0xFE2998D1
-	Offset: 0x1D8
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function init() {
   if(!isdefined(level.hackable_items)) {
     level.hackable_items = [];
   }
 }
 
-/*
-	Name: add_hackable_object
-	Namespace: hackable
-	Checksum: 0xEA1455E7
-	Offset: 0x200
-	Size: 0x248
-	Parameters: 5
-	Flags: None
-*/
 function add_hackable_object(obj, test_callback, start_callback, fail_callback, complete_callback) {
   cleanup_hackable_objects();
   if(!isdefined(level.hackable_items)) {
@@ -76,55 +52,19 @@ function add_hackable_object(obj, test_callback, start_callback, fail_callback, 
   obj.hackable_hacked_callback = complete_callback;
 }
 
-/*
-	Name: remove_hackable_object
-	Namespace: hackable
-	Checksum: 0xCD7CA715
-	Offset: 0x450
-	Size: 0x3C
-	Parameters: 1
-	Flags: None
-*/
 function remove_hackable_object(obj) {
   arrayremovevalue(level.hackable_items, obj);
   cleanup_hackable_objects();
 }
 
-/*
-	Name: cleanup_hackable_objects
-	Namespace: hackable
-	Checksum: 0x26DBC2A6
-	Offset: 0x498
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function cleanup_hackable_objects() {
   level.hackable_items = array::filter(level.hackable_items, 0, & filter_deleted);
 }
 
-/*
-	Name: filter_deleted
-	Namespace: hackable
-	Checksum: 0x3FBBF7EF
-	Offset: 0x4D8
-	Size: 0x12
-	Parameters: 1
-	Flags: None
-*/
 function filter_deleted(val) {
   return isdefined(val);
 }
 
-/*
-	Name: find_hackable_object
-	Namespace: hackable
-	Checksum: 0x51AE796A
-	Offset: 0x4F8
-	Size: 0x17E
-	Parameters: 0
-	Flags: None
-*/
 function find_hackable_object() {
   cleanup_hackable_objects();
   candidates = [];
@@ -146,15 +86,6 @@ function find_hackable_object() {
   return undefined;
 }
 
-/*
-	Name: is_object_hackable
-	Namespace: hackable
-	Checksum: 0xCB7970C2
-	Offset: 0x680
-	Size: 0x128
-	Parameters: 3
-	Flags: None
-*/
 function is_object_hackable(obj, origin, forward) {
   if(distancesquared(origin, obj.origin) < obj.hackable_distance_sq) {
     to_obj = obj.origin - origin;
@@ -167,21 +98,10 @@ function is_object_hackable(obj, origin, forward) {
       }
       return 1;
     }
-    /#
-    # /
   }
   return 0;
 }
 
-/*
-	Name: start_hacking_object
-	Namespace: hackable
-	Checksum: 0xA913A150
-	Offset: 0x7B0
-	Size: 0x64
-	Parameters: 1
-	Flags: None
-*/
 function start_hacking_object(obj) {
   obj.hackable_being_hacked = 1;
   obj.hackable_hacked_amount = 0;
@@ -190,35 +110,17 @@ function start_hacking_object(obj) {
   }
 }
 
-/*
-	Name: fail_hacking_object
-	Namespace: hackable
-	Checksum: 0x52979D6
-	Offset: 0x820
-	Size: 0x70
-	Parameters: 1
-	Flags: None
-*/
 function fail_hacking_object(obj) {
   if(isdefined(obj.hackable_fail_callback)) {
     obj thread[[obj.hackable_fail_callback]](self);
   }
   obj.hackable_hacked_amount = 0;
   obj.hackable_being_hacked = 0;
-  obj notify(# "hackable_watch_timeout");
+  obj notify("hackable_watch_timeout");
 }
 
-/*
-	Name: complete_hacking_object
-	Namespace: hackable
-	Checksum: 0x6B41EED1
-	Offset: 0x898
-	Size: 0x70
-	Parameters: 1
-	Flags: None
-*/
 function complete_hacking_object(obj) {
-  obj notify(# "hackable_watch_timeout");
+  obj notify("hackable_watch_timeout");
   if(isdefined(obj.hackable_hacked_callback)) {
     obj thread[[obj.hackable_hacked_callback]](self);
   }
@@ -226,33 +128,15 @@ function complete_hacking_object(obj) {
   obj.hackable_being_hacked = 0;
 }
 
-/*
-	Name: watch_timeout
-	Namespace: hackable
-	Checksum: 0xA31C9368
-	Offset: 0x910
-	Size: 0x54
-	Parameters: 2
-	Flags: None
-*/
 function watch_timeout(obj, time) {
-  obj notify(# "hackable_watch_timeout");
-  obj endon(# "hackable_watch_timeout");
+  obj notify("hackable_watch_timeout");
+  obj endon("hackable_watch_timeout");
   wait(time);
   if(isdefined(obj)) {
     fail_hacking_object(obj);
   }
 }
 
-/*
-	Name: continue_hacking_object
-	Namespace: hackable
-	Checksum: 0xD5C346E6
-	Offset: 0x970
-	Size: 0x1DA
-	Parameters: 1
-	Flags: None
-*/
 function continue_hacking_object(obj) {
   origin = self.origin;
   forward = anglestoforward(self.angles);

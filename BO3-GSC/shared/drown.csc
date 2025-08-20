@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\drown.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -7,31 +11,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace drown;
 
-/*
-	Name: __init__sytem__
-	Namespace: drown
-	Checksum: 0xA963C19B
-	Offset: 0x220
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("drown", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: drown
-	Checksum: 0x840F6871
-	Offset: 0x260
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "drown_stage", 1, 3, "int", & drown_stage_callback, 0, 0);
   callback::on_localplayer_spawned( & player_spawned);
@@ -44,15 +29,6 @@ function __init__() {
   setup_radius_values();
 }
 
-/*
-	Name: setup_radius_values
-	Namespace: drown
-	Checksum: 0x78E0D25
-	Offset: 0x3E8
-	Size: 0x3C0
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_radius_values() {
   level.drown_radius["inner"]["begin"][1] = 0.8;
   level.drown_radius["inner"]["begin"][2] = 0.6;
@@ -80,15 +56,6 @@ function setup_radius_values() {
   level.opacity["end"][4] = 0.7;
 }
 
-/*
-	Name: player_spawned
-	Namespace: drown
-	Checksum: 0x526A1F7F
-	Offset: 0x7B0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function player_spawned(localclientnum) {
   if(self != getlocalplayer(localclientnum)) {
     return;
@@ -97,15 +64,6 @@ function player_spawned(localclientnum) {
   self thread player_watch_drown_shutdown(localclientnum);
 }
 
-/*
-	Name: player_init_drown_values
-	Namespace: drown
-	Checksum: 0x39402047
-	Offset: 0x810
-	Size: 0x40
-	Parameters: 0
-	Flags: Linked
-*/
 function player_init_drown_values() {
   if(!isdefined(self.drown_start_time)) {
     self.drown_start_time = 0;
@@ -115,29 +73,11 @@ function player_init_drown_values() {
   }
 }
 
-/*
-	Name: player_watch_drown_shutdown
-	Namespace: drown
-	Checksum: 0x87BE34C2
-	Offset: 0x858
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function player_watch_drown_shutdown(localclientnum) {
   self util::waittill_any("entityshutdown", "death");
   self disable_drown(localclientnum);
 }
 
-/*
-	Name: enable_drown
-	Namespace: drown
-	Checksum: 0xD41A63C
-	Offset: 0x8B0
-	Size: 0x9C
-	Parameters: 2
-	Flags: Linked
-*/
 function enable_drown(localclientnum, stage) {
   filter::init_filter_drowning_damage(localclientnum);
   filter::enable_filter_drowning_damage(localclientnum, 1);
@@ -147,34 +87,16 @@ function enable_drown(localclientnum, stage) {
   self.drown_opacity = 0;
 }
 
-/*
-	Name: disable_drown
-	Namespace: drown
-	Checksum: 0x577FE723
-	Offset: 0x958
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function disable_drown(localclientnum) {
   filter::disable_filter_drowning_damage(localclientnum, 1);
 }
 
-/*
-	Name: player_drown_fx
-	Namespace: drown
-	Checksum: 0xF743E8F6
-	Offset: 0x988
-	Size: 0x2C8
-	Parameters: 2
-	Flags: Linked
-*/
 function player_drown_fx(localclientnum, stage) {
-  self endon(# "death");
-  self endon(# "entityshutdown");
-  self endon(# "player_fade_out_drown_fx");
-  self notify(# "player_drown_fx");
-  self endon(# "player_drown_fx");
+  self endon("death");
+  self endon("entityshutdown");
+  self endon("player_fade_out_drown_fx");
+  self notify("player_drown_fx");
+  self endon("player_drown_fx");
   self player_init_drown_values();
   lastoutwatertimestage = self.drown_start_time + ((stage - 1) * level.player_swim_damage_interval);
   stageduration = level.player_swim_damage_interval;
@@ -195,21 +117,12 @@ function player_drown_fx(localclientnum, stage) {
   }
 }
 
-/*
-	Name: player_fade_out_drown_fx
-	Namespace: drown
-	Checksum: 0xEBA819F9
-	Offset: 0xC58
-	Size: 0x1F4
-	Parameters: 1
-	Flags: Linked
-*/
 function player_fade_out_drown_fx(localclientnum) {
-  self endon(# "death");
-  self endon(# "entityshutdown");
-  self endon(# "player_drown_fx");
-  self notify(# "player_fade_out_drown_fx");
-  self endon(# "player_fade_out_drown_fx");
+  self endon("death");
+  self endon("entityshutdown");
+  self endon("player_drown_fx");
+  self notify("player_fade_out_drown_fx");
+  self endon("player_fade_out_drown_fx");
   self player_init_drown_values();
   fadestarttime = getservertime(localclientnum);
   currenttime = getservertime(localclientnum);
@@ -227,15 +140,6 @@ function player_fade_out_drown_fx(localclientnum) {
   self disable_drown(localclientnum);
 }
 
-/*
-	Name: drown_stage_callback
-	Namespace: drown
-	Checksum: 0x51B7E3D
-	Offset: 0xE58
-	Size: 0xCC
-	Parameters: 7
-	Flags: Linked
-*/
 function drown_stage_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval > 0) {
     self enable_drown(localclientnum, newval);

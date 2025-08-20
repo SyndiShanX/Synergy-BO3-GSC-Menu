@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_prototype.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\behavior_zombie_dog;
 #using scripts\shared\ai\zombie;
@@ -60,33 +64,14 @@
 #using scripts\zm\zm_prototype_zombie;
 #using scripts\zm\zm_remaster_zombie;
 #using scripts\zm\zm_zmhd_cleanup_mgr;
-
 #namespace zm_prototype;
 
-/*
-	Name: function_d9af860b
-	Namespace: zm_prototype
-	Checksum: 0xC504B49D
-	Offset: 0xCB0
-	Size: 0x4C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec function_d9af860b() {
   level.aat_in_use = 1;
   level.bgb_in_use = 1;
   clientfield::register("clientuimodel", "player_lives", 1, 2, "int");
 }
 
-/*
-	Name: main
-	Namespace: zm_prototype
-	Checksum: 0xFECBA81B
-	Offset: 0xD08
-	Size: 0x394
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   zm_prototype_ffotd::main_start();
   level.default_game_mode = "zclassic";
@@ -127,37 +112,19 @@ function main() {
   level thread setupmusic();
   level thread function_9b3e5ee2();
   level flag::wait_till("start_zombie_round_logic");
-  level notify(# "hash_d51af150");
+  level notify("hash_d51af150");
   zm_power::turn_power_on_and_open_doors();
   level.var_9aaae7ae = & function_869d6f66;
   level thread zm_perks::spare_change();
   zm_prototype_ffotd::main_end();
 }
 
-/*
-	Name: fx_overrides
-	Namespace: zm_prototype
-	Checksum: 0x81526767
-	Offset: 0x10A8
-	Size: 0x56
-	Parameters: 0
-	Flags: Linked
-*/
 function fx_overrides() {
   level._effect["perk_machine_light_yellow"] = "dlc5/zmhd/fx_wonder_fizz_light_yellow";
   level._effect["perk_machine_light_red"] = "dlc5/zmhd/fx_wonder_fizz_light_red";
   level._effect["perk_machine_light_green"] = "dlc5/zmhd/fx_wonder_fizz_light_green";
 }
 
-/*
-	Name: function_869d6f66
-	Namespace: zm_prototype
-	Checksum: 0xD48D5AD
-	Offset: 0x1108
-	Size: 0x28
-	Parameters: 0
-	Flags: Linked
-*/
 function function_869d6f66() {
   if(!isdefined(self zm_bgb_anywhere_but_here::function_728dfe3())) {
     return false;
@@ -165,15 +132,6 @@ function function_869d6f66() {
   return true;
 }
 
-/*
-	Name: function_44c28e00
-	Namespace: zm_prototype
-	Checksum: 0x19D32DC7
-	Offset: 0x1138
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_44c28e00() {
   var_c7d6c8d8 = 0;
   while (!var_c7d6c8d8) {
@@ -196,39 +154,12 @@ function function_44c28e00() {
   }
 }
 
-/*
-	Name: precachecustomcharacters
-	Namespace: zm_prototype
-	Checksum: 0x99EC1590
-	Offset: 0x1230
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precachecustomcharacters() {}
 
-/*
-	Name: initcharacterstartindex
-	Namespace: zm_prototype
-	Checksum: 0x92B11844
-	Offset: 0x1240
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function initcharacterstartindex() {
   level.characterstartindex = randomint(4);
 }
 
-/*
-	Name: selectcharacterindextouse
-	Namespace: zm_prototype
-	Checksum: 0x74835FA3
-	Offset: 0x1270
-	Size: 0x3E
-	Parameters: 0
-	Flags: None
-*/
 function selectcharacterindextouse() {
   if(level.characterstartindex >= 4) {
     level.characterstartindex = 0;
@@ -238,15 +169,6 @@ function selectcharacterindextouse() {
   return self.characterindex;
 }
 
-/*
-	Name: givecustomcharacters
-	Namespace: zm_prototype
-	Checksum: 0x42EBBFEF
-	Offset: 0x12B8
-	Size: 0x2DC
-	Parameters: 0
-	Flags: Linked
-*/
 function givecustomcharacters() {
   if(isdefined(level.hotjoin_player_setup) && [
       [level.hotjoin_player_setup]
@@ -259,12 +181,10 @@ function givecustomcharacters() {
   }
   self.favorite_wall_weapons_list = [];
   self.talks_in_danger = 0;
-  /#
   if(getdvarstring("") != "") {
     self.characterindex = getdvarint("");
   }
-  # /
-    self setcharacterbodytype(self.characterindex);
+  self setcharacterbodytype(self.characterindex);
   self setcharacterbodystyle(0);
   self setcharacterhelmetstyle(0);
   switch (self.characterindex) {
@@ -295,15 +215,6 @@ function givecustomcharacters() {
   self setsprintcooldown(0);
 }
 
-/*
-	Name: assign_lowest_unused_character_index
-	Namespace: zm_prototype
-	Checksum: 0x18453AE0
-	Offset: 0x15A0
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function assign_lowest_unused_character_index() {
   charindexarray = [];
   charindexarray[0] = 0;
@@ -325,15 +236,6 @@ function assign_lowest_unused_character_index() {
   return 0;
 }
 
-/*
-	Name: offhand_weapon_overrride
-	Namespace: zm_prototype
-	Checksum: 0xFEC241E7
-	Offset: 0x1700
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function offhand_weapon_overrride() {
   zm_utility::register_lethal_grenade_for_level("frag_grenade");
   level.zombie_lethal_grenade_player_init = getweapon("frag_grenade");
@@ -344,28 +246,10 @@ function offhand_weapon_overrride() {
   level.zombie_equipment_player_init = undefined;
 }
 
-/*
-	Name: init_sounds
-	Namespace: zm_prototype
-	Checksum: 0x11C87A02
-	Offset: 0x17B0
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function init_sounds() {
   zm_utility::add_sound("zmb_heavy_door_open", "zmb_heavy_door_open");
 }
 
-/*
-	Name: setupmusic
-	Namespace: zm_prototype
-	Checksum: 0x4680AD57
-	Offset: 0x17E0
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function setupmusic() {
   zm_audio::musicstate_create("round_start", 3, "round_start_prototype_1");
   zm_audio::musicstate_create("round_start_short", 3, "round_start_prototype_1");
@@ -377,15 +261,6 @@ function setupmusic() {
   zm_audio::musicstate_create("sam", 4, "sam");
 }
 
-/*
-	Name: prototype_zone_init
-	Namespace: zm_prototype
-	Checksum: 0x262AB8F2
-	Offset: 0x1930
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function prototype_zone_init() {
   level flag::init("always_on");
   level flag::set("always_on");
@@ -394,30 +269,12 @@ function prototype_zone_init() {
   zm_zonemgr::add_adjacent_zone("box_zone", "upstairs_zone", "box_2_upstairs");
 }
 
-/*
-	Name: function_54bf648f
-	Namespace: zm_prototype
-	Checksum: 0x7CDB6F5
-	Offset: 0x19F8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_54bf648f() {
   level.use_multiple_spawns = 1;
   level.spawner_int = 1;
   level.fn_custom_zombie_spawner_selection = & function_54da140a;
 }
 
-/*
-	Name: function_54da140a
-	Namespace: zm_prototype
-	Checksum: 0x87F61916
-	Offset: 0x1A38
-	Size: 0x204
-	Parameters: 0
-	Flags: Linked
-*/
 function function_54da140a() {
   var_6af221a2 = [];
   a_s_spots = array::randomize(level.zm_loc_types["zombie_location"]);
@@ -443,33 +300,13 @@ function function_54da140a() {
       return sp_zombie;
     }
   }
-  /#
   assert(isdefined(sp_zombie), "" + var_343b1937);
-  # /
 }
 
-/*
-	Name: custom_add_weapons
-	Namespace: zm_prototype
-	Checksum: 0x30AD6755
-	Offset: 0x1C48
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function custom_add_weapons() {
   zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_prototype_weapons.csv", 1);
 }
 
-/*
-	Name: init_level_specific_audio
-	Namespace: zm_prototype
-	Checksum: 0x6217AA7D
-	Offset: 0x1C78
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_level_specific_audio() {
   level.vox zm_audio::zmbvoxadd("player", "general", "intro", "level_start", undefined);
   level.vox zm_audio::zmbvoxadd("player", "general", "door_deny", "nomoney", undefined);
@@ -478,15 +315,6 @@ function init_level_specific_audio() {
   level.vox zm_audio::zmbvoxadd("player", "eggs", "music_activate", "secret", undefined);
 }
 
-/*
-	Name: init_weapon_cabinet
-	Namespace: zm_prototype
-	Checksum: 0xE5284620
-	Offset: 0x1DA0
-	Size: 0x26A
-	Parameters: 0
-	Flags: Linked
-*/
 function init_weapon_cabinet() {
   level flag::wait_till("start_zombie_round_logic");
   var_68c121fd = undefined;
@@ -502,7 +330,7 @@ function init_weapon_cabinet() {
     var_68c121fd.trigger_stub.script_width = 38;
     var_4e1a2d78 = 0;
     while (!var_4e1a2d78) {
-      level waittill(# "weapon_bought");
+      level waittill("weapon_bought");
       if(isdefined(var_68c121fd.trigger_stub.first_time_triggered)) {
         if(isdefined(var_68c121fd.trigger_stub.first_time_triggered) && var_68c121fd.trigger_stub.first_time_triggered) {
           var_4e1a2d78 = 1;
@@ -517,15 +345,6 @@ function init_weapon_cabinet() {
   }
 }
 
-/*
-	Name: weapon_cabinet_door_open
-	Namespace: zm_prototype
-	Checksum: 0xBD8ED772
-	Offset: 0x2018
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function weapon_cabinet_door_open(var_4ed1d865) {
   if(var_4ed1d865 == "left") {
     self rotateyaw(120, 0.3, 0.2, 0.1);
@@ -534,15 +353,6 @@ function weapon_cabinet_door_open(var_4ed1d865) {
   }
 }
 
-/*
-	Name: include_perks_in_random_rotation
-	Namespace: zm_prototype
-	Checksum: 0x9895CB9
-	Offset: 0x20B8
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function include_perks_in_random_rotation() {
   zm_perk_random::include_perk_in_random_rotation("specialty_armorvest");
   zm_perk_random::include_perk_in_random_rotation("specialty_quickrevive");
@@ -554,15 +364,6 @@ function include_perks_in_random_rotation() {
   level.custom_random_perk_weights = & function_c027d01d;
 }
 
-/*
-	Name: function_c027d01d
-	Namespace: zm_prototype
-	Checksum: 0xADA43BBF
-	Offset: 0x2188
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c027d01d() {
   temp_array = [];
   temp_array = array::randomize(temp_array);
@@ -572,21 +373,12 @@ function function_c027d01d() {
   return keys;
 }
 
-/*
-	Name: function_9b3e5ee2
-	Namespace: zm_prototype
-	Checksum: 0xEF810BB6
-	Offset: 0x2238
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9b3e5ee2() {
   var_9f0c2e1d = 0;
   var_822cff7b = struct::get_array("zhdaudio_button", "targetname");
   array::thread_all(var_822cff7b, & function_ab3e14a3);
   while (true) {
-    level waittill(# "hash_672c1b1a");
+    level waittill("hash_672c1b1a");
     var_9f0c2e1d++;
     if(var_9f0c2e1d == var_822cff7b.size) {
       break;
@@ -595,45 +387,18 @@ function function_9b3e5ee2() {
   level flag::set("snd_zhdegg_activate");
 }
 
-/*
-	Name: function_ab3e14a3
-	Namespace: zm_prototype
-	Checksum: 0xF9DD62D5
-	Offset: 0x22F8
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ab3e14a3() {
   self zm_unitrigger::create_unitrigger();
-  self waittill(# "trigger_activated");
+  self waittill("trigger_activated");
   playsoundatposition("zmb_sam_egg_button", self.origin);
-  level notify(# "hash_672c1b1a");
+  level notify("hash_672c1b1a");
   zm_unitrigger::unregister_unitrigger(self.s_unitrigger);
 }
 
-/*
-	Name: function_c86e49f5
-	Namespace: zm_prototype
-	Checksum: 0x82C15099
-	Offset: 0x2378
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_c86e49f5() {
   self.cant_move_cb = & function_e6b1e0be;
 }
 
-/*
-	Name: function_e6b1e0be
-	Namespace: zm_prototype
-	Checksum: 0x4BB86ADA
-	Offset: 0x23A0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_e6b1e0be() {
   self pushactors(0);
   self.enablepushtime = gettime() + 1000;

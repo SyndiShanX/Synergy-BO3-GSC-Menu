@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\gametypes\_menus.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_util;
 #using scripts\cp\gametypes\_globallogic;
@@ -6,45 +10,17 @@
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\rank_shared;
 #using scripts\shared\system_shared;
-
 #namespace menus;
 
-/*
-	Name: __init__sytem__
-	Namespace: menus
-	Checksum: 0x37E3E4C4
-	Offset: 0x410
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("menus", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: menus
-	Checksum: 0x49684029
-	Offset: 0x450
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
   callback::on_connect( & on_player_connect);
 }
 
-/*
-	Name: init
-	Namespace: menus
-	Checksum: 0xBBB85017
-	Offset: 0x4A0
-	Size: 0x130
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   game["menu_team"] = "ChangeTeam";
   game["menu_start_menu"] = "StartMenu_Main";
@@ -59,35 +35,17 @@ function init() {
   game["menu_leavegame"] = "popup_leavegame";
 }
 
-/*
-	Name: on_player_connect
-	Namespace: menus
-	Checksum: 0xA40A712
-	Offset: 0x5D8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   self thread on_menu_response();
   self setdstat("completedFirstTimeFlow", 1);
 }
 
-/*
-	Name: function_521a4b1f
-	Namespace: menus
-	Checksum: 0xBE16EA21
-	Offset: 0x620
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_521a4b1f(player) {
   if(!isdefined(player)) {
     return;
   }
   player setcontrolleruimodelvalue("MusicPlayer.state", "stop");
-  player notify(# "music_stop");
+  player notify("music_stop");
   player.musicplaying = 0;
   if(isdefined(player.var_c6ff6155)) {
     alias = tablelookupcolumnforrow("gamedata/tables/common/music_player.csv", player.var_c6ff6155, 1);
@@ -95,19 +53,10 @@ function function_521a4b1f(player) {
   }
 }
 
-/*
-	Name: on_menu_response
-	Namespace: menus
-	Checksum: 0x52465265
-	Offset: 0x6F0
-	Size: 0x928
-	Parameters: 0
-	Flags: Linked
-*/
 function on_menu_response() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   for (;;) {
-    self waittill(# "menuresponse", menu, response);
+    self waittill("menuresponse", menu, response);
     if(response == "back") {
       self closeingamemenu();
       if(level.console) {
@@ -154,7 +103,7 @@ function on_menu_response() {
         }
       } else {
         self closeingamemenu();
-        self iprintln( & "MP_HOST_ENDGAME_RESPONSE");
+        self iprintln(&"MP_HOST_ENDGAME_RESPONSE");
       }
       foreach(player in getplayers()) {
         if(player.musicplaying === 1) {

@@ -1,46 +1,22 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_bb.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\bb_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
-
 #namespace bb;
 
-/*
-	Name: __init__sytem__
-	Namespace: bb
-	Checksum: 0xFB919CA
-	Offset: 0x918
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("bb", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: bb
-	Checksum: 0x67D59EAA
-	Offset: 0x958
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   init_shared();
 }
 
-/*
-	Name: function_edae084d
-	Namespace: bb
-	Checksum: 0x574EF48B
-	Offset: 0x978
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_edae084d(player) {
   var_24a24c3f = "";
   if(isdefined(player.var_b3dc8451)) {
@@ -56,15 +32,6 @@ function private function_edae084d(player) {
   return var_24a24c3f;
 }
 
-/*
-	Name: function_b918cb9
-	Namespace: bb
-	Checksum: 0x8691E15F
-	Offset: 0xA58
-	Size: 0xE0
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_b918cb9(player) {
   var_6a98da9a = "";
   foreach(var_3ca39bd6, var_ee404e07 in player.var_1c0132c) {
@@ -76,15 +43,6 @@ function private function_b918cb9(player) {
   return var_6a98da9a;
 }
 
-/*
-	Name: logmatchsummary
-	Namespace: bb
-	Checksum: 0x2784A880
-	Offset: 0xB40
-	Size: 0x91C
-	Parameters: 1
-	Flags: Linked
-*/
 function logmatchsummary(player) {
   if(!isplayer(player)) {
     return;
@@ -169,15 +127,6 @@ function logmatchsummary(player) {
   bbprint("cpplayermatchsummary", "gametime %d spawnid %d username %s kills %d deaths %d incaps %d kd %f shotshit %d totalshots %d accuracy %f assists %d score %d playertime %d meleekills %d headshots %d primaryloadoutweapon %s currentweapon %s grenadesused %d bestkillstreak %d dj_dist %d dj_count %d dj_time %d wallrun_dist %d wallrun_count %d wallrun_time %d sprint_dist %d sprint_count %d sprint_time %d cybercomsused %s dim0 %d dim1 %d rank %d rankxp %d collectibles %s", gettime(), playerid, playername, kills, deaths, incaps, kdratio, shotshit, totalshots, accuracy, assists, score, playertime, meleekills, headshots, var_7b9eb83b, currentweapon, grenadesused, bestkillstreak, doublejumpdistance, doublejumpcount, doublejumptime, wallrundistance, wallruncount, wallruntime, sprintdistance, sprintcount, sprinttime, var_6a98da9a, dimensions0, dimensions1, rank, rankxp, var_24a24c3f);
 }
 
-/*
-	Name: logobjectivestatuschange
-	Namespace: bb
-	Checksum: 0xDA90D10C
-	Offset: 0x1468
-	Size: 0x134
-	Parameters: 3
-	Flags: Linked
-*/
 function logobjectivestatuschange(objectivename, player, status) {
   playerid = -1;
   if(isplayer(player)) {
@@ -188,15 +137,6 @@ function logobjectivestatuschange(objectivename, player, status) {
   bbprint("cpcheckpoints", "gametime %d spawnid %d username %s checkpointname %s eventtype %s playerx %d playery %d playerz %d kills %d revives %d deathcount %d deaths %d headshots %d hits %d score %d shotshit %d shotsmissed %d suicides %d downs %d difficulty %s", gettime(), playerid, player.name, objectivename, status, player.origin, player.kills, player.revives, player.deathcount, player.deaths, player.headshots, player.hits, player.score, player.shotshit, player.shotsmissed, player.suicides, player.downs, level.currentdifficulty);
 }
 
-/*
-	Name: logdamage
-	Namespace: bb
-	Checksum: 0xFA4D0B8E
-	Offset: 0x15A8
-	Size: 0x5A4
-	Parameters: 8
-	Flags: Linked
-*/
 function logdamage(attacker, victim, weapon, damage, damagetype, hitlocation, victimkilled, victimdowned) {
   victimid = -1;
   victimname = "";
@@ -279,28 +219,10 @@ function logdamage(attacker, victim, weapon, damage, damagetype, hitlocation, vi
   bbprint("cpattacks", "gametime %d attackerid %d attackertype %s attackername %s attackerweapon %s attackerx %d attackery %d attackerz %d aiattckercombatmode %s attackerignoreme %d attackerignoreall %d attackerfovcos %d attackermaxsightdistsqrd %d attackeranimname %s attackerlaststand %d victimid %d victimtype %s victimname %s victimx %d victimy %d victimz %d aivictimcombatmode %s victimignoreme %d victimignoreall %d victimfovcos %d victimmaxsightdistsqrd %d victimanimname %s victimlaststand %d damage %d damagetype %s damagelocation %s death %d victimdowned %d downs %d", gettime(), attackerid, attackertype, attackername, weapon.name, attackerorigin, aiattackercombatmode, attackerignoreme, attackerignoreall, attackerfovcos, attackermaxsightdistsqrd, attackeranimname, attackerlaststand, victimid, victimtype, victimname, victimorigin, aivictimcombatmode, victimignoreme, victimignoreall, victimfovcos, victimmaxsightdistsqrd, victimanimname, victimlaststand, damage, damagetype, hitlocation, victimkilled, victimdowned, victimdowns);
 }
 
-/*
-	Name: logaispawn
-	Namespace: bb
-	Checksum: 0x9F3AD9B
-	Offset: 0x1B58
-	Size: 0xFC
-	Parameters: 2
-	Flags: Linked
-*/
 function logaispawn(aient, spawner) {
   bbprint("cpaispawn", "gametime %d actorid %d aitype %s archetype %s airank %s accuracy %d originx %d originy %d originz %d weapon %s team %s alertlevel %s grenadeawareness %d canflank %d engagemaxdist %d engagemaxfalloffdist %d engagemindist %d engageminfalloffdist %d health %d", gettime(), aient.actor_id, aient.aitype, aient.archetype, aient.airank, aient.accuracy, aient.origin, aient.primaryweapon.name, aient.team, aient.alertlevel, aient.grenadeawareness, aient.canflank, aient.engagemaxdist, aient.var_48ae01f2, aient.engagemindist, aient.engageminfalloffdist, aient.health);
 }
 
-/*
-	Name: logplayermapnotification
-	Namespace: bb
-	Checksum: 0xF63741AA
-	Offset: 0x1C60
-	Size: 0x154
-	Parameters: 2
-	Flags: Linked
-*/
 function logplayermapnotification(notificationtype, player) {
   playerid = -1;
   playertype = "";
@@ -319,15 +241,6 @@ function logplayermapnotification(notificationtype, player) {
   bbprint("cpnotifications", "gametime %d notificationtype %s spawnid %d username %s spawnidtype %s locationx %d locationy %d locationz %d", gettime(), notificationtype, playerid, playername, playertype, playerposition);
 }
 
-/*
-	Name: logcybercomevent
-	Namespace: bb
-	Checksum: 0x798E1E14
-	Offset: 0x1DC0
-	Size: 0x15C
-	Parameters: 3
-	Flags: Linked
-*/
 function logcybercomevent(player, event, gadget) {
   userid = -1;
   usertype = "";
@@ -346,15 +259,6 @@ function logcybercomevent(player, event, gadget) {
   bbprint("cpcybercomevents", "gametime %d userid %d username %s usertype %s eventtype %s gadget %s locationx %d locationy %d locationz %d", gettime(), userid, username, usertype, event, gadget, userposition);
 }
 
-/*
-	Name: logexplosionevent
-	Namespace: bb
-	Checksum: 0xAB716E51
-	Offset: 0x1F28
-	Size: 0x17C
-	Parameters: 4
-	Flags: Linked
-*/
 function logexplosionevent(destructible_ent, attacker, logexplosionevent, radius) {
   attackerid = -1;
   attackertype = "";

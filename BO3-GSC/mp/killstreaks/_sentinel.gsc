@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_sentinel.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_shellshock;
@@ -32,18 +36,8 @@
 #using scripts\shared\vehicles\_wasp;
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\shared\weapons\_heatseekingmissile;
-
 #namespace sentinel;
 
-/*
-	Name: init
-	Namespace: sentinel
-	Checksum: 0x6D54F382
-	Offset: 0x928
-	Size: 0x204
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   killstreaks::register("sentinel", "sentinel", "killstreak_" + "sentinel", "sentinel" + "_used", & activatesentinel, 1);
   killstreaks::register_strings("sentinel", & "KILLSTREAK_SENTINEL_EARNED", & "KILLSTREAK_SENTINEL_NOT_AVAILABLE", & "KILLSTREAK_SENTINEL_INBOUND", undefined, & "KILLSTREAK_SENTINEL_HACKED");
@@ -56,15 +50,6 @@ function init() {
   visionset_mgr::register_info("visionset", "sentinel_visionset", 1, 100, 16, 1, & visionset_mgr::ramp_in_out_thread_per_player_death_shutdown, 0);
 }
 
-/*
-	Name: initsentinel
-	Namespace: sentinel
-	Checksum: 0x1A8AC52B
-	Offset: 0xB38
-	Size: 0x42C
-	Parameters: 0
-	Flags: Linked
-*/
 function initsentinel() {
   self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
   target_set(self, (0, 0, 0));
@@ -104,30 +89,12 @@ function initsentinel() {
   self vehicle_ai::startinitialstate("combat");
 }
 
-/*
-	Name: driving_enter
-	Namespace: sentinel
-	Checksum: 0x3A58B10A
-	Offset: 0xF70
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function driving_enter(params) {
   vehicle_ai::defaultstate_driving_enter(params);
 }
 
-/*
-	Name: drone_pain_for_time
-	Namespace: sentinel
-	Checksum: 0xED3673F6
-	Offset: 0xFA0
-	Size: 0x228
-	Parameters: 4
-	Flags: Linked
-*/
 function drone_pain_for_time(time, stablizeparam, restorelookpoint, weapon) {
-  self endon(# "death");
+  self endon("death");
   self.painstarttime = gettime();
   if(!(isdefined(self.inpain) && self.inpain) && isdefined(self.health) && self.health > 0) {
     self.inpain = 1;
@@ -154,15 +121,6 @@ function drone_pain_for_time(time, stablizeparam, restorelookpoint, weapon) {
   }
 }
 
-/*
-	Name: drone_pain
-	Namespace: sentinel
-	Checksum: 0x805A21A5
-	Offset: 0x11D0
-	Size: 0x12C
-	Parameters: 7
-	Flags: Linked
-*/
 function drone_pain(eattacker, damagetype, hitpoint, hitdirection, hitlocationinfo, partname, weapon) {
   if(!(isdefined(self.inpain) && self.inpain)) {
     yaw_vel = math::randomsign() * randomfloatrange(280, 320);
@@ -173,15 +131,6 @@ function drone_pain(eattacker, damagetype, hitpoint, hitdirection, hitlocationin
   }
 }
 
-/*
-	Name: sentineldamageoverride
-	Namespace: sentinel
-	Checksum: 0xC6B944B6
-	Offset: 0x1308
-	Size: 0x1A4
-	Parameters: 15
-	Flags: Linked
-*/
 function sentineldamageoverride(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   if(smeansofdeath == "MOD_TRIGGER_HURT") {
     return 0;
@@ -195,30 +144,12 @@ function sentineldamageoverride(einflictor, eattacker, idamage, idflags, smeanso
   return idamage;
 }
 
-/*
-	Name: destroyed_cb
-	Namespace: sentinel
-	Checksum: 0x4CA3557E
-	Offset: 0x14B8
-	Size: 0x60
-	Parameters: 2
-	Flags: Linked
-*/
 function destroyed_cb(attacker, weapon) {
   if(isdefined(attacker) && isdefined(attacker.team) && attacker.team != self.team) {
     self.owner.dofutz = 1;
   }
 }
 
-/*
-	Name: low_health_cb
-	Namespace: sentinel
-	Checksum: 0x23C8BFF8
-	Offset: 0x1520
-	Size: 0x58
-	Parameters: 2
-	Flags: Linked
-*/
 function low_health_cb(attacker, weapon) {
   if(self.playeddamaged == 0) {
     self killstreaks::play_pilot_dialog_on_owner("damaged", "sentinel", self.killstreak_id);
@@ -226,15 +157,6 @@ function low_health_cb(attacker, weapon) {
   }
 }
 
-/*
-	Name: calcspawnorigin
-	Namespace: sentinel
-	Checksum: 0x7E776746
-	Offset: 0x1580
-	Size: 0x3A4
-	Parameters: 2
-	Flags: Linked
-*/
 function calcspawnorigin(origin, angles) {
   heightoffset = rcbomb::getplacementstartheight();
   mins = vectorscale((-1, -1, 0), 5);
@@ -281,34 +203,21 @@ function calcspawnorigin(origin, angles) {
   return undefined;
 }
 
-/*
-	Name: activatesentinel
-	Namespace: sentinel
-	Checksum: 0xA4F2C4B9
-	Offset: 0x1930
-	Size: 0x5A0
-	Parameters: 1
-	Flags: Linked
-*/
 function activatesentinel(killstreaktype) {
-  /#
   assert(isplayer(self));
-  # /
-    player = self;
+  player = self;
   if(!isnavvolumeloaded()) {
-    /#
     iprintlnbold("");
-    # /
-      self iprintlnbold( & "KILLSTREAK_SENTINEL_NOT_AVAILABLE");
+    self iprintlnbold(&"KILLSTREAK_SENTINEL_NOT_AVAILABLE");
     return false;
   }
   if(player isplayerswimming()) {
-    self iprintlnbold( & "KILLSTREAK_SENTINEL_NOT_PLACEABLE");
+    self iprintlnbold(&"KILLSTREAK_SENTINEL_NOT_PLACEABLE");
     return false;
   }
   spawnpos = calcspawnorigin(player.origin, player.angles);
   if(!isdefined(spawnpos)) {
-    self iprintlnbold( & "KILLSTREAK_SENTINEL_NOT_PLACEABLE");
+    self iprintlnbold(&"KILLSTREAK_SENTINEL_NOT_PLACEABLE");
     return false;
   }
   killstreak_id = player killstreakrules::killstreakstart("sentinel", player.team, 0, 1);
@@ -352,15 +261,6 @@ function activatesentinel(killstreaktype) {
   return true;
 }
 
-/*
-	Name: hackedcallbackpre
-	Namespace: sentinel
-	Checksum: 0x6432553D
-	Offset: 0x1ED8
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedcallbackpre(hacker) {
   sentinel = self;
   sentinel.owner unlink();
@@ -373,69 +273,31 @@ function hackedcallbackpre(hacker) {
   endsentinelremotecontrol(sentinel, 1);
 }
 
-/*
-	Name: hackedcallbackpost
-	Namespace: sentinel
-	Checksum: 0x98B7DE2D
-	Offset: 0x1FE0
-	Size: 0x70
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedcallbackpost(hacker) {
   sentinel = self;
   hacker remote_weapons::useremoteweapon(sentinel, "sentinel", 0);
-  sentinel notify(# "watchremotecontroldeactivate_remoteweapons");
+  sentinel notify("watchremotecontroldeactivate_remoteweapons");
   sentinel.killstreak_end_time = hacker killstreak_hacking::set_vehicle_drivable_time_starting_now(sentinel);
 }
 
-/*
-	Name: configureteampost
-	Namespace: sentinel
-	Checksum: 0xD5A772FF
-	Offset: 0x2058
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function configureteampost(owner, ishacked) {
   sentinel = self;
   sentinel thread watchteamchange();
 }
 
-/*
-	Name: watchgameended
-	Namespace: sentinel
-	Checksum: 0xD5E002CE
-	Offset: 0x20A0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function watchgameended() {
   sentinel = self;
-  sentinel endon(# "death");
-  level waittill(# "game_ended");
+  sentinel endon("death");
+  level waittill("game_ended");
   sentinel.abandoned = 1;
   sentinel.selfdestruct = 1;
-  sentinel notify(# "sentinel_shutdown");
+  sentinel notify("sentinel_shutdown");
 }
 
-/*
-	Name: startsentinelremotecontrol
-	Namespace: sentinel
-	Checksum: 0x5519BF89
-	Offset: 0x2110
-	Size: 0x21C
-	Parameters: 1
-	Flags: Linked
-*/
 function startsentinelremotecontrol(sentinel) {
   player = self;
-  /#
   assert(isplayer(player));
-  # /
-    sentinel usevehicle(player, 0);
+  sentinel usevehicle(player, 0);
   sentinel clientfield::set("vehicletransition", 1);
   sentinel thread audio::sndupdatevehiclecontext(1);
   sentinel thread vehicle::monitor_missiles_locked_on_to_me(player);
@@ -456,15 +318,6 @@ function startsentinelremotecontrol(sentinel) {
   }
 }
 
-/*
-	Name: endsentinelremotecontrol
-	Namespace: sentinel
-	Checksum: 0xD681704F
-	Offset: 0x2338
-	Size: 0x17C
-	Parameters: 2
-	Flags: Linked
-*/
 function endsentinelremotecontrol(sentinel, exitrequestedbyowner) {
   sentinel.treat_owner_damage_as_friendly_fire = 1;
   sentinel.ignore_team_kills = 1;
@@ -487,15 +340,6 @@ function endsentinelremotecontrol(sentinel, exitrequestedbyowner) {
   }
 }
 
-/*
-	Name: ontimeout
-	Namespace: sentinel
-	Checksum: 0xCA5CE99E
-	Offset: 0x24C0
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function ontimeout() {
   sentinel = self;
   sentinel killstreaks::play_pilot_dialog_on_owner("timeout", "sentinel");
@@ -506,20 +350,11 @@ function ontimeout() {
       sentinel.owner playrumbleonentity(params.ksexplosionrumble);
     }
   }
-  sentinel notify(# "sentinel_shutdown");
+  sentinel notify("sentinel_shutdown");
 }
 
-/*
-	Name: healthmonitor
-	Namespace: sentinel
-	Checksum: 0x6E4A38DE
-	Offset: 0x25F0
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function healthmonitor() {
-  self endon(# "death");
+  self endon("death");
   params = level.killstreakbundle["sentinel"];
   if(isdefined(params.fxlowhealth)) {
     while (true) {
@@ -532,33 +367,15 @@ function healthmonitor() {
   }
 }
 
-/*
-	Name: sentineldistancefailure
-	Namespace: sentinel
-	Checksum: 0x3DC76B9
-	Offset: 0x2690
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function sentineldistancefailure() {
   sentinel = self;
-  sentinel notify(# "sentinel_shutdown");
+  sentinel notify("sentinel_shutdown");
 }
 
-/*
-	Name: watchdeath
-	Namespace: sentinel
-	Checksum: 0x1748CC30
-	Offset: 0x26C0
-	Size: 0x23C
-	Parameters: 0
-	Flags: Linked
-*/
 function watchdeath() {
   sentinel = self;
-  sentinel waittill(# "death", attacker, damagefromunderneath, weapon, point, dir, modtype);
-  sentinel notify(# "sentinel_shutdown");
+  sentinel waittill("death", attacker, damagefromunderneath, weapon, point, dir, modtype);
+  sentinel notify("sentinel_shutdown");
   attacker = self[[level.figure_out_attacker]](attacker);
   if(isdefined(attacker) && (!isdefined(self.owner) || self.owner util::isenemyplayer(attacker))) {
     if(isplayer(attacker)) {
@@ -569,7 +386,7 @@ function watchdeath() {
       if(modtype == "MOD_RIFLE_BULLET" || modtype == "MOD_PISTOL_BULLET") {
         attacker addplayerstat("shoot_down_sentinel", 1);
       }
-      luinotifyevent( & "player_callout", 2, & "KILLSTREAK_DESTROYED_SENTINEL", attacker.entnum);
+      luinotifyevent(&"player_callout", 2, & "KILLSTREAK_DESTROYED_SENTINEL", attacker.entnum);
     }
     if(isdefined(sentinel) && isdefined(sentinel.owner)) {
       sentinel killstreaks::play_destroyed_dialog_on_owner("sentinel", sentinel.killstreak_id);
@@ -577,36 +394,18 @@ function watchdeath() {
   }
 }
 
-/*
-	Name: watchteamchange
-	Namespace: sentinel
-	Checksum: 0x1EDE6B09
-	Offset: 0x2908
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function watchteamchange() {
-  self notify(# "sentinel_watchteamchange_singleton");
-  self endon(# "sentinel_watchteamchange_singleton");
+  self notify("sentinel_watchteamchange_singleton");
+  self endon("sentinel_watchteamchange_singleton");
   sentinel = self;
-  sentinel endon(# "sentinel_shutdown");
+  sentinel endon("sentinel_shutdown");
   sentinel.owner util::waittill_any("joined_team", "disconnect", "joined_spectators");
-  sentinel notify(# "sentinel_shutdown");
+  sentinel notify("sentinel_shutdown");
 }
 
-/*
-	Name: watchwater
-	Namespace: sentinel
-	Checksum: 0x7855FBEE
-	Offset: 0x2998
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function watchwater() {
   sentinel = self;
-  sentinel endon(# "sentinel_shutdown");
+  sentinel endon("sentinel_shutdown");
   while (true) {
     wait(0.1);
     trace = physicstrace(self.origin + vectorscale((0, 0, 1), 10), self.origin + vectorscale((0, 0, 1), 6), vectorscale((-1, -1, -1), 2), vectorscale((1, 1, 1), 2), self, 4);
@@ -614,21 +413,12 @@ function watchwater() {
       break;
     }
   }
-  sentinel notify(# "sentinel_shutdown");
+  sentinel notify("sentinel_shutdown");
 }
 
-/*
-	Name: watchshutdown
-	Namespace: sentinel
-	Checksum: 0x261D5F6E
-	Offset: 0x2A68
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function watchshutdown() {
   sentinel = self;
-  sentinel waittill(# "sentinel_shutdown");
+  sentinel waittill("sentinel_shutdown");
   if(isdefined(sentinel.control_initiated) && sentinel.control_initiated || (isdefined(sentinel.controlled) && sentinel.controlled)) {
     sentinel remote_weapons::endremotecontrolweaponuse(0);
     while (isdefined(sentinel.control_initiated) && sentinel.control_initiated || (isdefined(sentinel.controlled) && sentinel.controlled)) {

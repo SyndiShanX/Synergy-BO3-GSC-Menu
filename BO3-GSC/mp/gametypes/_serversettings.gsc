@@ -1,45 +1,21 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_serversettings.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
-
 #namespace serversettings;
 
-/*
-	Name: __init__sytem__
-	Namespace: serversettings
-	Checksum: 0xA64615D8
-	Offset: 0x1A8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("serversettings", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: serversettings
-	Checksum: 0xDD2FC00B
-	Offset: 0x1E8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
 }
 
-/*
-	Name: init
-	Namespace: serversettings
-	Checksum: 0xE293D875
-	Offset: 0x218
-	Size: 0x40E
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.hostname = getdvarstring("sv_hostname");
   if(level.hostname == "") {
@@ -92,15 +68,6 @@ function init() {
   }
 }
 
-/*
-	Name: update
-	Namespace: serversettings
-	Checksum: 0x9A69E329
-	Offset: 0x630
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function update() {
   sv_hostname = getdvarstring("sv_hostname");
   if(level.hostname != sv_hostname) {
@@ -124,15 +91,6 @@ function update() {
   }
 }
 
-/*
-	Name: constrain_gametype
-	Namespace: serversettings
-	Checksum: 0xECB67BF
-	Offset: 0x7C0
-	Size: 0x276
-	Parameters: 1
-	Flags: Linked
-*/
 function constrain_gametype(gametype) {
   entities = getentarray();
   for (i = 0; i < entities.size; i++) {
@@ -175,15 +133,6 @@ function constrain_gametype(gametype) {
   }
 }
 
-/*
-	Name: constrain_map_size
-	Namespace: serversettings
-	Checksum: 0xA7AF71AA
-	Offset: 0xA40
-	Size: 0x206
-	Parameters: 1
-	Flags: Linked
-*/
 function constrain_map_size(mapsize) {
   entities = getentarray();
   for (i = 0; i < entities.size; i++) {

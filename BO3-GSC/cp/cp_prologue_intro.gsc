@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_prologue_intro.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_dialog;
 #using scripts\cp\_load;
@@ -23,43 +27,15 @@
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
-
 #namespace air_traffic_controller;
 
-/*
-	Name: air_traffic_controller_start
-	Namespace: air_traffic_controller
-	Checksum: 0x35FF4420
-	Offset: 0x718
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function air_traffic_controller_start() {
   air_traffic_controller_precache();
   air_traffic_controller_main();
 }
 
-/*
-	Name: air_traffic_controller_precache
-	Namespace: air_traffic_controller
-	Checksum: 0x99EC1590
-	Offset: 0x748
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function air_traffic_controller_precache() {}
 
-/*
-	Name: air_traffic_controller_main
-	Namespace: air_traffic_controller
-	Checksum: 0x32A87D8F
-	Offset: 0x758
-	Size: 0x3C4
-	Parameters: 0
-	Flags: Linked
-*/
 function air_traffic_controller_main() {
   load::function_73adcefc();
   battlechatter::function_d9f49fba(0);
@@ -95,18 +71,9 @@ function air_traffic_controller_main() {
   level clientfield::set("gameplay_started", 1);
 }
 
-/*
-	Name: function_13d078e2
-	Namespace: air_traffic_controller
-	Checksum: 0xAFAA763E
-	Offset: 0xB28
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_13d078e2() {
   level scene::init("p7_fxanim_cp_prologue_control_tower_plane_hit_bundle");
-  level waittill(# "hash_9ba3dcb6");
+  level waittill("hash_9ba3dcb6");
   exploder::exploder("fx_exploder_disable_fx_start");
   level scene::play("p7_fxanim_cp_prologue_control_tower_plane_hit_bundle");
   level scene::play("p7_fxanim_cp_prologue_control_tower_plane_fall_bundle");

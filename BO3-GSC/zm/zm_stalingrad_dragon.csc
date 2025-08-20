@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_dragon.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -8,31 +12,12 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_load;
 #using scripts\zm\_zm_utility;
-
 #namespace dragon;
 
-/*
-	Name: __init__sytem__
-	Namespace: dragon
-	Checksum: 0x988819F1
-	Offset: 0x950
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("stalingrad_dragon", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: dragon
-	Checksum: 0x28899976
-	Offset: 0x990
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.var_ef6a691 = 0;
   level.var_a4d6e1f1 = 1;
@@ -42,15 +27,6 @@ function __init__() {
   level.var_9d63af9a = [];
 }
 
-/*
-	Name: init_clientfields
-	Namespace: dragon
-	Checksum: 0x1DFF18E
-	Offset: 0xA50
-	Size: 0x3CC
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("scriptmover", "dragon_body_glow", 12000, 1, "int", & function_d28f5c87, 0, 0);
   clientfield::register("scriptmover", "dragon_notify_bullet_impact", 12000, 1, "int", & function_d6856592, 0, 0);
@@ -68,19 +44,10 @@ function init_clientfields() {
   clientfield::register("world", "dragon_boss_guts", 12000, 2, "int", & dragon_boss_guts, 0, 0);
 }
 
-/*
-	Name: function_d28f5c87
-	Namespace: dragon
-	Checksum: 0x60B3DDB5
-	Offset: 0xE28
-	Size: 0x172
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d28f5c87(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self notify(# "dragon_body_glow");
-  self endon(# "dragon_body_glow");
-  self endon(# "entityshutdown");
+  self notify("dragon_body_glow");
+  self endon("dragon_body_glow");
+  self endon("entityshutdown");
   self thread function_9b0f57cf(localclientnum, newval);
   if(newval) {
     i = 0;
@@ -105,18 +72,9 @@ function function_d28f5c87(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_9b0f57cf
-	Namespace: dragon
-	Checksum: 0x4F4A53ED
-	Offset: 0xFA8
-	Size: 0x12A
-	Parameters: 2
-	Flags: Linked
-*/
 function function_9b0f57cf(localclientnum, newval) {
-  self notify(# "hash_9b0f57cf");
-  self endon(# "hash_9b0f57cf");
+  self notify("hash_9b0f57cf");
+  self endon("hash_9b0f57cf");
   if(newval) {
     i = 0.25;
     while (i <= 1) {
@@ -140,15 +98,6 @@ function function_9b0f57cf(localclientnum, newval) {
   }
 }
 
-/*
-	Name: dragon_mouth_fx
-	Namespace: dragon
-	Checksum: 0x35236F2E
-	Offset: 0x10E0
-	Size: 0x156
-	Parameters: 7
-	Flags: Linked
-*/
 function dragon_mouth_fx(n_local_client, n_old, n_new, b_new_ent, b_initial_snap, str_field, b_was_time_jump) {
   if(n_new) {
     playfxontag(n_local_client, level._effect["dragon_tongue"], self, "tag_mouth_floor_fx");
@@ -162,39 +111,21 @@ function dragon_mouth_fx(n_local_client, n_old, n_new, b_new_ent, b_initial_snap
   }
 }
 
-/*
-	Name: function_d6856592
-	Namespace: dragon
-	Checksum: 0xAC1488B9
-	Offset: 0x1240
-	Size: 0xB2
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d6856592(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(oldval == 0 && newval == 1) {
     self.notifyonbulletimpact = 1;
     self thread function_2ce58010(localclientnum);
   } else if(oldval == 1 && newval == 0) {
     self.notifyonbulletimpact = 0;
-    level notify(# "hash_a35dee4e");
+    level notify("hash_a35dee4e");
   }
 }
 
-/*
-	Name: function_2ce58010
-	Namespace: dragon
-	Checksum: 0xCBD9C71C
-	Offset: 0x1300
-	Size: 0x19E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2ce58010(n_local_client) {
-  self endon(# "entityshutdown");
-  level endon(# "hash_a35dee4e");
+  self endon("entityshutdown");
+  level endon("hash_a35dee4e");
   while (true) {
-    self waittill(# "damage", e_attacker, v_impact_pos, var_778fe70f, var_77cbbb1b);
+    self waittill("damage", e_attacker, v_impact_pos, var_778fe70f, var_77cbbb1b);
     if(level.var_ef6a691 > 0) {
       foreach(var_61c194b7 in level.var_61699bd7[level.var_ef6a691]) {
         if(var_61c194b7 == var_77cbbb1b) {
@@ -219,15 +150,6 @@ function function_2ce58010(n_local_client) {
   }
 }
 
-/*
-	Name: function_cb9fb04a
-	Namespace: dragon
-	Checksum: 0x28A7F27B
-	Offset: 0x14A8
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_cb9fb04a(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(oldval != newval) {
     if(newval > 0) {
@@ -237,15 +159,6 @@ function function_cb9fb04a(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_bb6d58d0
-	Namespace: dragon
-	Checksum: 0xE5929D24
-	Offset: 0x1540
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_bb6d58d0(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(oldval != newval) {
     if(newval > 0) {
@@ -254,19 +167,10 @@ function function_bb6d58d0(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_bd038ea4
-	Namespace: dragon
-	Checksum: 0xF12EED22
-	Offset: 0x15C0
-	Size: 0x33C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_bd038ea4(n_local_client, var_2c17cb9d, var_116b515b) {
-  self notify(# "hash_bd038ea4");
-  self endon(# "hash_bd038ea4");
-  self endon(# "entityshutdown");
+  self notify("hash_bd038ea4");
+  self endon("hash_bd038ea4");
+  self endon("entityshutdown");
   var_4361a688 = undefined;
   switch (var_2c17cb9d) {
     case 1: {
@@ -334,15 +238,6 @@ function function_bd038ea4(n_local_client, var_2c17cb9d, var_116b515b) {
   }
 }
 
-/*
-	Name: function_47d133a9
-	Namespace: dragon
-	Checksum: 0x9673C58B
-	Offset: 0x1908
-	Size: 0x3EE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_47d133a9(n_local_client, n_old, n_new, b_new_ent, b_initial_snap, str_field, b_was_time_jump) {
   if(n_new) {
     switch (n_new) {
@@ -400,15 +295,6 @@ function function_47d133a9(n_local_client, n_old, n_new, b_new_ent, b_initial_sn
   }
 }
 
-/*
-	Name: function_2d57594b
-	Namespace: dragon
-	Checksum: 0x3AF728C8
-	Offset: 0x1D00
-	Size: 0x124
-	Parameters: 7
-	Flags: Linked
-*/
 function function_2d57594b(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     if(isdefined(level.var_9d63af9a[localclientnum])) {
@@ -424,15 +310,6 @@ function function_2d57594b(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_b4311e07
-	Namespace: dragon
-	Checksum: 0xC3EC6ED0
-	Offset: 0x1E30
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_b4311e07(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     var_c2e32e84 = getent(localclientnum, "dh_fountain_banner_01", "targetname");
@@ -442,15 +319,6 @@ function function_b4311e07(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_50d62870
-	Namespace: dragon
-	Checksum: 0x898DD5E1
-	Offset: 0x1F28
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_50d62870(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     level thread function_fa043827(localclientnum);
@@ -458,15 +326,6 @@ function function_50d62870(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_fa043827
-	Namespace: dragon
-	Checksum: 0xA9D71553
-	Offset: 0x1FA8
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fa043827(localclientnum) {
   var_c2e32e84 = getent(localclientnum, "dh_fountain_banner_01", "targetname");
   level scene::stop("p7_fxanim_zm_stal_dragon_hazard_fountain_banner_01_idle_bundle");
@@ -476,15 +335,6 @@ function function_fa043827(localclientnum) {
   level scene::init("p7_fxanim_zm_stal_dragon_hazard_fountain_banner_01_idle_bundle", var_c2e32e84);
 }
 
-/*
-	Name: function_87fcc8ec
-	Namespace: dragon
-	Checksum: 0xAB5DA6F2
-	Offset: 0x2078
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_87fcc8ec(localclientnum) {
   var_34ea9dbf = getent(localclientnum, "dh_fountain_banner_02", "targetname");
   level scene::stop("p7_fxanim_zm_stal_dragon_hazard_fountain_banner_02_idle_bundle");
@@ -494,15 +344,6 @@ function function_87fcc8ec(localclientnum) {
   level scene::init("p7_fxanim_zm_stal_dragon_hazard_fountain_banner_02_idle_bundle", var_34ea9dbf);
 }
 
-/*
-	Name: function_6865d0d5
-	Namespace: dragon
-	Checksum: 0xA9A3EA0C
-	Offset: 0x2148
-	Size: 0x15A
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6865d0d5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     if(isdefined(level.var_a4d6e1f1) && level.var_a4d6e1f1) {
@@ -516,29 +357,11 @@ function function_6865d0d5(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_ae0e995e
-	Namespace: dragon
-	Checksum: 0xD4A3669F
-	Offset: 0x22B0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ae0e995e(a_ents) {
   wait(8);
   a_ents["library_banner_01"] scene::init("p7_fxanim_zm_stal_dragon_hazard_library_banner_01_bundle", a_ents);
 }
 
-/*
-	Name: dragon_transportation_exploders
-	Namespace: dragon
-	Checksum: 0x2176542B
-	Offset: 0x22F8
-	Size: 0xC4
-	Parameters: 7
-	Flags: Linked
-*/
 function dragon_transportation_exploders(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playradiantexploder(localclientnum, "dragon_transportation");
@@ -549,15 +372,6 @@ function dragon_transportation_exploders(localclientnum, oldval, newval, bnewent
   }
 }
 
-/*
-	Name: function_9f54e892
-	Namespace: dragon
-	Checksum: 0xEF11D185
-	Offset: 0x23C8
-	Size: 0x154
-	Parameters: 7
-	Flags: Linked
-*/
 function function_9f54e892(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playfx(localclientnum, level._effect["transport_eject"], self.origin);
@@ -575,15 +389,6 @@ function function_9f54e892(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: dragon_boss_guts
-	Namespace: dragon
-	Checksum: 0x27EFFD77
-	Offset: 0x2528
-	Size: 0x10E
-	Parameters: 7
-	Flags: Linked
-*/
 function dragon_boss_guts(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 1: {

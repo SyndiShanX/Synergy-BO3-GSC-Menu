@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_powerup_genesis_random_weapon.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_death;
 #using scripts\shared\array_shared;
@@ -19,31 +23,12 @@
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_powerup_genesis_random_weapon;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_powerup_genesis_random_weapon
-	Checksum: 0xE565D991
-	Offset: 0x4E0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_powerup_genesis_random_weapon", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_powerup_genesis_random_weapon
-	Checksum: 0xE32E26B0
-	Offset: 0x520
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "random_weap_fx", 15000, 1, "int");
   zm_powerups::register_powerup("genesis_random_weapon", & function_984a38e);
@@ -52,33 +37,13 @@ function __init__() {
     zm_powerups::powerup_set_statless_powerup("genesis_random_weapon");
     zm_powerups::powerup_set_player_specific("genesis_random_weapon", 1);
   }
-  /#
   if(getdvarint("") > 0) {
     level thread function_15732f56();
   }
-  # /
 }
 
-/*
-	Name: function_f99a1ed4
-	Namespace: zm_powerup_genesis_random_weapon
-	Checksum: 0x99EC1590
-	Offset: 0x670
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function function_f99a1ed4() {}
 
-/*
-	Name: function_984a38e
-	Namespace: zm_powerup_genesis_random_weapon
-	Checksum: 0x77C9A73F
-	Offset: 0x680
-	Size: 0x674
-	Parameters: 1
-	Flags: Linked
-*/
 function function_984a38e(e_player) {
   var_9b752db1 = [];
   if(level.var_42e19a0b === 1) {
@@ -122,7 +87,7 @@ function function_984a38e(e_player) {
     level thread function_984a38e(e_player);
     return;
   }
-  e_player notify(# "hash_31471387");
+  e_player notify("hash_31471387");
   var_1d7eacf9 = e_player getcurrentweapon();
   if(var_1d7eacf9 != getweapon("knife") && var_1d7eacf9 != getweapon("bowie_knife") && var_1d7eacf9 != getweapon("knife_widows_wine")) {
     e_player takeweapon(var_1d7eacf9);
@@ -132,51 +97,21 @@ function function_984a38e(e_player) {
   e_player setweaponammostock(w_weapon, int(w_weapon.maxammo * 0.3));
 }
 
-/*
-	Name: function_89d232d2
-	Namespace: zm_powerup_genesis_random_weapon
-	Checksum: 0x8B5028CF
-	Offset: 0xD00
-	Size: 0x3C
-	Parameters: 0
-	Flags: None
-*/
 function function_89d232d2() {
-  self endon(# "powerup_grabbed");
-  self endon(# "death");
-  self endon(# "powerup_reset");
+  self endon("powerup_grabbed");
+  self endon("death");
+  self endon("powerup_reset");
   self zm_powerups::powerup_show(1);
 }
 
-/*
-	Name: function_15732f56
-	Namespace: zm_powerup_genesis_random_weapon
-	Checksum: 0x22D31693
-	Offset: 0xD48
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_15732f56() {
-  /#
   level flagsys::wait_till("");
   wait(1);
   zm_devgui::add_custom_devgui_callback( & function_9677023e);
   adddebugcommand("");
-  # /
 }
 
-/*
-	Name: function_9677023e
-	Namespace: zm_powerup_genesis_random_weapon
-	Checksum: 0x2A273BE5
-	Offset: 0xDB8
-	Size: 0xA2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9677023e(cmd) {
-  /#
   var_c533fd32 = 0;
   switch (cmd) {
     case "": {
@@ -185,5 +120,4 @@ function function_9677023e(cmd) {
     }
   }
   return var_c533fd32;
-  # /
 }

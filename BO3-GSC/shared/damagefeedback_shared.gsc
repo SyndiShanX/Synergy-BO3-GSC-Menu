@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\damagefeedback_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\abilities\gadgets\_gadget_armor;
 #using scripts\shared\callbacks_shared;
@@ -6,56 +10,19 @@
 #using scripts\shared\killstreaks_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\weapons_shared;
-
 #namespace damagefeedback;
 
-/*
-	Name: __init__sytem__
-	Namespace: damagefeedback
-	Checksum: 0xCC0BE710
-	Offset: 0x460
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("damagefeedback", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: damagefeedback
-	Checksum: 0x512F8A1A
-	Offset: 0x4A0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
   callback::on_connect( & on_player_connect);
 }
 
-/*
-	Name: init
-	Namespace: damagefeedback
-	Checksum: 0x99EC1590
-	Offset: 0x4F0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {}
 
-/*
-	Name: on_player_connect
-	Namespace: damagefeedback
-	Checksum: 0xAEE135B6
-	Offset: 0x500
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   if(!sessionmodeismultiplayergame()) {
     self.hud_damagefeedback = newdamageindicatorhudelem(self);
@@ -77,15 +44,6 @@ function on_player_connect() {
   }
 }
 
-/*
-	Name: should_play_sound
-	Namespace: damagefeedback
-	Checksum: 0x2C4EF333
-	Offset: 0x6B0
-	Size: 0x66
-	Parameters: 1
-	Flags: Linked
-*/
 function should_play_sound(mod) {
   if(!isdefined(mod)) {
     return false;
@@ -103,15 +61,6 @@ function should_play_sound(mod) {
   return true;
 }
 
-/*
-	Name: update
-	Namespace: damagefeedback
-	Checksum: 0xD46F59FF
-	Offset: 0x720
-	Size: 0x810
-	Parameters: 7
-	Flags: Linked
-*/
 function update(mod, inflictor, perkfeedback, weapon, victim, psoffsettime, shitloc) {
   if(!isplayer(self)) {
     return;
@@ -272,15 +221,6 @@ function update(mod, inflictor, perkfeedback, weapon, victim, psoffsettime, shit
   }
 }
 
-/*
-	Name: damage_feedback_get_stage
-	Namespace: damagefeedback
-	Checksum: 0x84FEB203
-	Offset: 0xF38
-	Size: 0xF0
-	Parameters: 1
-	Flags: Linked
-*/
 function damage_feedback_get_stage(victim) {
   if(isdefined(victim.laststand) && victim.laststand) {
     return 5;
@@ -300,28 +240,10 @@ function damage_feedback_get_stage(victim) {
   return 5;
 }
 
-/*
-	Name: damage_feedback_get_dead
-	Namespace: damagefeedback
-	Checksum: 0x9EF09F7C
-	Offset: 0x1038
-	Size: 0xEE
-	Parameters: 4
-	Flags: Linked
-*/
 function damage_feedback_get_dead(victim, mod, weapon, stage) {
   return stage == 5 && (mod == "MOD_BULLET" || mod == "MOD_RIFLE_BULLET" || mod == "MOD_PISTOL_BULLET" || mod == "MOD_HEAD_SHOT") && (isdefined(weapon.isheroweapon) && !weapon.isheroweapon) && !killstreaks::is_killstreak_weapon(weapon) && !weapon.name === "siegebot_gun_turret" && !weapon.name === "siegebot_launcher_turret";
 }
 
-/*
-	Name: damage_feedback_growth
-	Namespace: damagefeedback
-	Checksum: 0x124420A5
-	Offset: 0x1130
-	Size: 0x1B8
-	Parameters: 3
-	Flags: Linked
-*/
 function damage_feedback_growth(victim, mod, weapon) {
   if(isdefined(self.hud_damagefeedback)) {
     stage = damage_feedback_get_stage(victim);
@@ -342,34 +264,16 @@ function damage_feedback_growth(victim, mod, weapon) {
   }
 }
 
-/*
-	Name: kill_hitmarker_fade
-	Namespace: damagefeedback
-	Checksum: 0x9954625D
-	Offset: 0x12F0
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function kill_hitmarker_fade() {
-  self notify(# "kill_hitmarker_fade");
-  self endon(# "kill_hitmarker_fade");
-  self endon(# "disconnect");
+  self notify("kill_hitmarker_fade");
+  self endon("kill_hitmarker_fade");
+  self endon("disconnect");
   self.hud_damagefeedback.alpha = 1;
   wait(0.25);
   self.hud_damagefeedback fadeovertime(0.3);
   self.hud_damagefeedback.alpha = 0;
 }
 
-/*
-	Name: update_override
-	Namespace: damagefeedback
-	Checksum: 0x96FDE0
-	Offset: 0x1378
-	Size: 0x160
-	Parameters: 3
-	Flags: Linked
-*/
 function update_override(icon, sound, additional_icon) {
   if(!isplayer(self)) {
     return;
@@ -393,15 +297,6 @@ function update_override(icon, sound, additional_icon) {
   }
 }
 
-/*
-	Name: update_special
-	Namespace: damagefeedback
-	Checksum: 0x53EFD249
-	Offset: 0x14E0
-	Size: 0xEA
-	Parameters: 1
-	Flags: None
-*/
 function update_special(hitent) {
   if(!isplayer(self)) {
     return;
@@ -424,17 +319,8 @@ function update_special(hitent) {
   }
 }
 
-/*
-	Name: send_hit_special_event_at_frame_end
-	Namespace: damagefeedback
-	Checksum: 0xA662C161
-	Offset: 0x15D8
-	Size: 0x17E
-	Parameters: 1
-	Flags: Linked
-*/
 function send_hit_special_event_at_frame_end(hitent) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   waittillframeend();
   enemyshit = 0;
   value = 1;
@@ -462,15 +348,6 @@ function send_hit_special_event_at_frame_end(hitent) {
   entbitarray1 = 0;
 }
 
-/*
-	Name: dodamagefeedback
-	Namespace: damagefeedback
-	Checksum: 0x9AD3C964
-	Offset: 0x1760
-	Size: 0xBE
-	Parameters: 4
-	Flags: Linked
-*/
 function dodamagefeedback(weapon, einflictor, idamage, smeansofdeath) {
   if(!isdefined(weapon)) {
     return false;
@@ -491,15 +368,6 @@ function dodamagefeedback(weapon, einflictor, idamage, smeansofdeath) {
   return true;
 }
 
-/*
-	Name: istacticalhitmarker
-	Namespace: damagefeedback
-	Checksum: 0xFC86BB54
-	Offset: 0x1828
-	Size: 0x80
-	Parameters: 3
-	Flags: Linked
-*/
 function istacticalhitmarker(weapon, smeansofdeath, idamage) {
   if(weapons::is_grenade(weapon)) {
     if("Smoke Grenade" == weapon.offhandclass) {

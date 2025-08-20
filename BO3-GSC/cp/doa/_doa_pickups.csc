@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_pickups.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_util;
 #using scripts\cp\doa\_doa_camera;
@@ -10,18 +14,8 @@
 #using scripts\shared\exploder_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace doa_pickups;
 
-/*
-	Name: init
-	Namespace: doa_pickups
-	Checksum: 0x305CC5BF
-	Offset: 0x6D0
-	Size: 0x9AC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("scriptmover", "pickuptype", 1, 10, "int", & function_892b2a87, 0, 0);
   clientfield::register("scriptmover", "pickupwobble", 1, 1, "int", & function_77c1258e, 0, 0);
@@ -85,55 +79,28 @@ function init() {
   function_db1442f2("p7_zm_ctl_dg_coat_horn", 3, 37);
 }
 
-/*
-	Name: function_f7726690
-	Namespace: doa_pickups
-	Checksum: 0x5EAF18E6
-	Offset: 0x1088
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f7726690(parent) {
-  parent endon(# "entityshutdown");
-  parent endon(# "hash_4c187db8");
-  self endon(# "entityshutdown");
+  parent endon("entityshutdown");
+  parent endon("hash_4c187db8");
+  self endon("entityshutdown");
   while (true) {
     self.origin = parent.origin;
     wait(0.016);
   }
 }
 
-/*
-	Name: function_6cb8e053
-	Namespace: doa_pickups
-	Checksum: 0x9862C844
-	Offset: 0x10E8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6cb8e053() {
-  self endon(# "hash_cfadee1b");
-  self waittill(# "entityshutdown");
+  self endon("hash_cfadee1b");
+  self waittill("entityshutdown");
   if(isdefined(self.fakemodel)) {
     self.fakemodel delete();
   }
 }
 
-/*
-	Name: function_ee036ce4
-	Namespace: doa_pickups
-	Checksum: 0x204ED40F
-	Offset: 0x1138
-	Size: 0x158
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ee036ce4() {
-  self notify(# "hash_b14b3cac");
-  self endon(# "hash_b14b3cac");
-  self endon(# "entityshutdown");
+  self notify("hash_b14b3cac");
+  self endon("hash_b14b3cac");
+  self endon("entityshutdown");
   while (isdefined(self)) {
     waittime = randomfloatrange(2.5, 5);
     yaw = randomint(360);
@@ -148,15 +115,6 @@ function function_ee036ce4() {
   }
 }
 
-/*
-	Name: function_77c1258e
-	Namespace: doa_pickups
-	Checksum: 0x2DDEFC28
-	Offset: 0x1298
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_77c1258e(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.fakemodel)) {
     return;
@@ -164,24 +122,15 @@ function function_77c1258e(localclientnum, oldval, newval, bnewent, binitialsnap
   if(newval) {
     self.fakemodel thread function_ee036ce4();
   } else {
-    self.fakemodel notify(# "hash_b14b3cac");
+    self.fakemodel notify("hash_b14b3cac");
     self.fakemodel.angles = self.angles;
   }
 }
 
-/*
-	Name: function_6093755a
-	Namespace: doa_pickups
-	Checksum: 0x63C99D7B
-	Offset: 0x1340
-	Size: 0xCE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6093755a() {
-  self notify(# "hash_398ca74c");
-  self endon(# "hash_398ca74c");
-  self endon(# "entityshutdown");
+  self notify("hash_398ca74c");
+  self endon("hash_398ca74c");
+  self endon("entityshutdown");
   dir = 180;
   if(randomint(100) > 50) {
     dir = -180;
@@ -193,15 +142,6 @@ function function_6093755a() {
   }
 }
 
-/*
-	Name: pickuprotate
-	Namespace: doa_pickups
-	Checksum: 0x79653532
-	Offset: 0x1418
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function pickuprotate(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.fakemodel)) {
     return;
@@ -209,20 +149,11 @@ function pickuprotate(localclientnum, oldval, newval, bnewent, binitialsnap, fie
   if(newval) {
     self.fakemodel thread function_6093755a();
   } else {
-    self.fakemodel notify(# "hash_398ca74c");
+    self.fakemodel notify("hash_398ca74c");
     self.fakemodel.angles = self.angles;
   }
 }
 
-/*
-	Name: function_68ad0d79
-	Namespace: doa_pickups
-	Checksum: 0x6DFB3349
-	Offset: 0x14C0
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked
-*/
 function function_68ad0d79(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.fakemodel)) {
     return;
@@ -234,15 +165,6 @@ function function_68ad0d79(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_b3289e6d
-	Namespace: doa_pickups
-	Checksum: 0xFC6CFE4D
-	Offset: 0x1560
-	Size: 0xAC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_b3289e6d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.fakemodel)) {
     return;
@@ -254,17 +176,8 @@ function function_b3289e6d(localclientnum, oldval, newval, bnewent, binitialsnap
   self.fakemodel setscale(scale);
 }
 
-/*
-	Name: function_6b4a5f81
-	Namespace: doa_pickups
-	Checksum: 0xC9916FB5
-	Offset: 0x1618
-	Size: 0x1BC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6b4a5f81(player) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self show();
   if(isdefined(player)) {
     x = 2000;
@@ -296,23 +209,14 @@ function function_6b4a5f81(player) {
   self delete();
 }
 
-/*
-	Name: function_474724d7
-	Namespace: doa_pickups
-	Checksum: 0x510D64DF
-	Offset: 0x17E0
-	Size: 0x19C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_474724d7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.fakemodel)) {
     return;
   }
-  self notify(# "hash_4c187db8");
-  self notify(# "hash_cfadee1b");
-  self notify(# "hash_398ca74c");
-  self notify(# "hash_b14b3cac");
+  self notify("hash_4c187db8");
+  self notify("hash_cfadee1b");
+  self notify("hash_398ca74c");
+  self notify("hash_b14b3cac");
   player = undefined;
   newval = newval - 1;
   if(newval > 0) {
@@ -328,15 +232,6 @@ function function_474724d7(localclientnum, oldval, newval, bnewent, binitialsnap
   self.fakemodel thread function_6b4a5f81(player);
 }
 
-/*
-	Name: function_892b2a87
-	Namespace: doa_pickups
-	Checksum: 0x46A7359B
-	Offset: 0x1988
-	Size: 0x234
-	Parameters: 7
-	Flags: Linked
-*/
 function function_892b2a87(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(level.doa.arenas[level.doa.current_arena].var_869acbe6) && level.doa.arenas[level.doa.current_arena].var_869acbe6 && localclientnum > 0) {
     return;
@@ -345,9 +240,7 @@ function function_892b2a87(localclientnum, oldval, newval, bnewent, binitialsnap
   variant = undefined;
   if(newval > 38) {
     variant = newval >> 6;
-    /#
     assert(type == 1 || type == 16);
-    # /
   }
   def = function_bac08508(type, variant);
   if(!isdefined(def)) {
@@ -362,15 +255,6 @@ function function_892b2a87(localclientnum, oldval, newval, bnewent, binitialsnap
   self.fakemodel thread function_f7726690(self);
 }
 
-/*
-	Name: function_bac08508
-	Namespace: doa_pickups
-	Checksum: 0xD3712911
-	Offset: 0x1BC8
-	Size: 0xD0
-	Parameters: 2
-	Flags: Linked
-*/
 function function_bac08508(type, variant) {
   foreach(pickup in level.doa.pickups) {
     if(pickup.type == type) {
@@ -384,15 +268,6 @@ function function_bac08508(type, variant) {
   }
 }
 
-/*
-	Name: function_db1442f2
-	Namespace: doa_pickups
-	Checksum: 0x52FF6B45
-	Offset: 0x1CA0
-	Size: 0xB6
-	Parameters: 4
-	Flags: Linked
-*/
 function function_db1442f2(modelname, modelscale, type, variant) {
   pickup = spawnstruct();
   pickup.modelname = modelname;

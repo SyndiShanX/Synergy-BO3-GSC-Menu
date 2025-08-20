@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_enemy.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\doa\_doa_arena;
 #using scripts\cp\doa\_doa_dev;
@@ -28,46 +32,17 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("generic");
-
 #namespace doa_enemy;
 
-/*
-	Name: init
-	Namespace: doa_enemy
-	Checksum: 0x929EA01D
-	Offset: 0xA98
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level registerdefaultnotetrackhandlerfunctions();
   level registerbehaviorscriptfunctions();
   level.doa.var_25eb370 = [];
 }
 
-/*
-	Name: registerdefaultnotetrackhandlerfunctions
-	Namespace: doa_enemy
-	Checksum: 0x99EC1590
-	Offset: 0xAE8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function registerdefaultnotetrackhandlerfunctions() {}
 
-/*
-	Name: registerbehaviorscriptfunctions
-	Namespace: doa_enemy
-	Checksum: 0xACA98E45
-	Offset: 0xAF8
-	Size: 0x284
-	Parameters: 0
-	Flags: Linked
-*/
 function registerbehaviorscriptfunctions() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("doaUpdateToGoal", & function_a1761846);
   behaviortreenetworkutility::registerbehaviortreescriptapi("doaUpdateSilverbackGoal", & function_3209ead3);
@@ -86,15 +61,6 @@ function registerbehaviorscriptfunctions() {
   animationstatenetwork::registeranimationmocomp("mocomp_doa_special_traversal", & function_e57c0c7b, undefined, & function_c97089da);
 }
 
-/*
-	Name: function_f8d04082
-	Namespace: doa_enemy
-	Checksum: 0x973B01D4
-	Offset: 0xD88
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f8d04082(behaviortreeentity) {
   if(isdefined(behaviortreeentity.tesla_death) && behaviortreeentity.tesla_death) {
     return true;
@@ -102,15 +68,6 @@ function function_f8d04082(behaviortreeentity) {
   return false;
 }
 
-/*
-	Name: function_599c952d
-	Namespace: doa_enemy
-	Checksum: 0x520B75BE
-	Offset: 0xDD0
-	Size: 0xA2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_599c952d(entity) {
   if(entity.missinglegs === 1) {
     animationresults = entity astsearch(istring("traverse_legless@zombie"));
@@ -123,15 +80,6 @@ function private function_599c952d(entity) {
   return false;
 }
 
-/*
-	Name: function_34a5b8e4
-	Namespace: doa_enemy
-	Checksum: 0xB21ADD4E
-	Offset: 0xE80
-	Size: 0x60
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_34a5b8e4(entity, asmstatename) {
   animationstatenetworkutility::requeststate(entity, asmstatename);
   entity ghost();
@@ -139,30 +87,12 @@ function private function_34a5b8e4(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: function_f821465d
-	Namespace: doa_enemy
-	Checksum: 0xA285EA83
-	Offset: 0xEE8
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_f821465d(entity, asmstatename) {
   entity show();
   entity solid();
   return 4;
 }
 
-/*
-	Name: function_e57c0c7b
-	Namespace: doa_enemy
-	Checksum: 0x9753F87C
-	Offset: 0xF38
-	Size: 0x1D0
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private function_e57c0c7b(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity orientmode("face angle", entity.angles[1]);
   entity setrepairpaths(0);
@@ -180,23 +110,12 @@ function private function_e57c0c7b(entity, mocompanim, mocompanimblendouttime, m
   if(entity haspath()) {
     entity.var_51ea7126 = entity.pathgoalpos;
   }
-  /#
   assert(isdefined(entity.traverseendnode));
-  # /
-    entity forceteleport(entity.traverseendnode.origin, entity.angles);
+  entity forceteleport(entity.traverseendnode.origin, entity.angles);
   entity animmode("noclip", 0);
   entity.blockingpain = 1;
 }
 
-/*
-	Name: function_c97089da
-	Namespace: doa_enemy
-	Checksum: 0x1BABBAF1
-	Offset: 0x1110
-	Size: 0xBC
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private function_c97089da(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity.blockingpain = 0;
   entity setrepairpaths(1);
@@ -207,69 +126,24 @@ function private function_c97089da(entity, mocompanim, mocompanimblendouttime, m
   entity finishtraversal();
 }
 
-/*
-	Name: zombietraverseaction
-	Namespace: doa_enemy
-	Checksum: 0x8FF40EC5
-	Offset: 0x11D8
-	Size: 0x30
-	Parameters: 2
-	Flags: Linked
-*/
 function zombietraverseaction(behaviortreeentity, asmstatename) {
   aiutility::traverseactionstart(behaviortreeentity, asmstatename);
   return 5;
 }
 
-/*
-	Name: zombietraverseactionterminate
-	Namespace: doa_enemy
-	Checksum: 0xA23F4D61
-	Offset: 0x1210
-	Size: 0x18
-	Parameters: 2
-	Flags: Linked
-*/
 function zombietraverseactionterminate(behaviortreeentity, asmstatename) {
   return 4;
 }
 
-/*
-	Name: notetrackmeleefire
-	Namespace: doa_enemy
-	Checksum: 0xDED4B7F6
-	Offset: 0x1230
-	Size: 0x2C
-	Parameters: 2
-	Flags: None
-*/
 function notetrackmeleefire(animationentity, asmstatename) {
   animationentity melee();
 }
 
-/*
-	Name: function_98fb0380
-	Namespace: doa_enemy
-	Checksum: 0xA19186C8
-	Offset: 0x1268
-	Size: 0x30
-	Parameters: 2
-	Flags: Linked
-*/
 function function_98fb0380(behaviortreeentity, asmstatename) {
   animationstatenetworkutility::requeststate(behaviortreeentity, asmstatename);
   return 5;
 }
 
-/*
-	Name: function_d30fe558
-	Namespace: doa_enemy
-	Checksum: 0x92963F34
-	Offset: 0x12A0
-	Size: 0x1AC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d30fe558(origin, force = 0) {
   if(!isdefined(self) || !isdefined(origin)) {
     return;
@@ -298,15 +172,6 @@ function function_d30fe558(origin, force = 0) {
   }
 }
 
-/*
-	Name: function_b0edb6ef
-	Namespace: doa_enemy
-	Checksum: 0xF61E3088
-	Offset: 0x1458
-	Size: 0x5CC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b0edb6ef(var_12ebe63d) {
   aiprofile_beginentry("zombieUpdateZigZagGoal");
   shouldrepath = 0;
@@ -334,18 +199,15 @@ function function_b0edb6ef(var_12ebe63d) {
       self.keep_moving = 1;
       self.keep_moving_time = gettime() + 250;
       path = self calcapproximatepathtoposition(goalpos, 0);
-      /#
       if(getdvarint("")) {
         for (index = 1; index < path.size; index++) {
           recordline(path[index - 1], path[index], (1, 0.5, 0), "", self);
         }
       }
-      # /
-        if(isdefined(level._zombiezigzagdistancemin) && isdefined(level._zombiezigzagdistancemax)) {
-          min = level._zombiezigzagdistancemin;
-          max = level._zombiezigzagdistancemax;
-        }
-      else {
+      if(isdefined(level._zombiezigzagdistancemin) && isdefined(level._zombiezigzagdistancemax)) {
+        min = level._zombiezigzagdistancemin;
+        max = level._zombiezigzagdistancemax;
+      } else {
         min = 600;
         max = 900;
       }
@@ -356,10 +218,8 @@ function function_b0edb6ef(var_12ebe63d) {
         if((segmentlength + currentseglength) > deviationdistance) {
           remaininglength = deviationdistance - segmentlength;
           seedposition = (path[index - 1]) + ((vectornormalize(path[index] - (path[index - 1]))) * remaininglength);
-          /#
           recordcircle(seedposition, 2, (1, 0.5, 0), "", self);
-          # /
-            innerzigzagradius = 0;
+          innerzigzagradius = 0;
           outerzigzagradius = 200;
           queryresult = positionquery_source_navigation(seedposition, innerzigzagradius, outerzigzagradius, 0.5 * 72, 16, self, 16);
           positionquery_filter_inclaimedlocation(queryresult, self);
@@ -384,15 +244,6 @@ function function_b0edb6ef(var_12ebe63d) {
   aiprofile_endentry();
 }
 
-/*
-	Name: function_a1761846
-	Namespace: doa_enemy
-	Checksum: 0x8CC664EA
-	Offset: 0x1A30
-	Size: 0x7B4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a1761846(behaviortreeentity) {
   if(level flag::get("doa_game_is_over")) {
     behaviortreeentity function_d30fe558(behaviortreeentity.origin);
@@ -492,15 +343,6 @@ function function_a1761846(behaviortreeentity) {
   return false;
 }
 
-/*
-	Name: function_3209ead3
-	Namespace: doa_enemy
-	Checksum: 0x5CE536D7
-	Offset: 0x21F0
-	Size: 0x212
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3209ead3(behaviortreeentity) {
   if(isdefined(behaviortreeentity.var_88168473) && behaviortreeentity.var_88168473) {
     return false;
@@ -536,18 +378,9 @@ function function_3209ead3(behaviortreeentity) {
   return false;
 }
 
-/*
-	Name: function_f5ef629b
-	Namespace: doa_enemy
-	Checksum: 0x215A1A8E
-	Offset: 0x2410
-	Size: 0x100
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_f5ef629b() {
-  self endon(# "death");
-  self endon(# "hash_d96c599c");
+  self endon("death");
+  self endon("hash_d96c599c");
   while (level flag::get("doa_round_spawning")) {
     wait(1);
   }
@@ -571,15 +404,6 @@ function private function_f5ef629b() {
   }
 }
 
-/*
-	Name: updatespeed
-	Namespace: doa_enemy
-	Checksum: 0x343C22D6
-	Offset: 0x2518
-	Size: 0x138
-	Parameters: 0
-	Flags: Linked
-*/
 function updatespeed() {
   self thread function_f5ef629b();
   if(isdefined(self.crawlonly)) {
@@ -610,41 +434,14 @@ function updatespeed() {
   }
 }
 
-/*
-	Name: function_d597e3fc
-	Namespace: doa_enemy
-	Checksum: 0x40117BD1
-	Offset: 0x2658
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d597e3fc(behaviortreeentity) {
   return behaviortreeentity haspath();
 }
 
-/*
-	Name: function_323b0769
-	Namespace: doa_enemy
-	Checksum: 0xBD629D4C
-	Offset: 0x2688
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function function_323b0769(behaviortreeentity) {
   return behaviortreeentity haspath();
 }
 
-/*
-	Name: function_69b8254
-	Namespace: doa_enemy
-	Checksum: 0x443A07E
-	Offset: 0x26B8
-	Size: 0x122
-	Parameters: 0
-	Flags: Linked
-*/
 function function_69b8254() {
   if(isdefined(self.enemy)) {
     if(isdefined(self.enemy.doa) && isdefined(self.enemy.doa.vehicle)) {
@@ -662,15 +459,6 @@ function function_69b8254() {
   return self.origin;
 }
 
-/*
-	Name: function_f31da0d1
-	Namespace: doa_enemy
-	Checksum: 0xCD5E1ED0
-	Offset: 0x27E8
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f31da0d1(behaviortreeentity) {
   if(!isdefined(behaviortreeentity.enemy)) {
     return false;
@@ -689,24 +477,13 @@ function function_f31da0d1(behaviortreeentity) {
   return false;
 }
 
-/*
-	Name: function_2241fc21
-	Namespace: doa_enemy
-	Checksum: 0x19CEA63E
-	Offset: 0x28F0
-	Size: 0x63C
-	Parameters: 15
-	Flags: Linked
-*/
 function function_2241fc21(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, modelindex, surfacetype, surfacenormal) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(eattacker) && isdefined(eattacker.meleedamage)) {
     idamage = eattacker.meleedamage;
   }
   if(self.team == "allies") {
-    /#
     doa_utility::debugmsg((("" + self.archetype) + "") + idamage);
-    # /
   }
   if(isdefined(self.allowdeath) && self.allowdeath == 0 && idamage >= self.health) {
     idamage = self.health - 1;
@@ -726,9 +503,7 @@ function function_2241fc21(einflictor, eattacker, idamage, idflags, smeansofdeat
     self namespace_fba031c8::function_15a268a6(eattacker, idamage, smeansofdeath, weapon, shitloc, vdir);
   }
   if(smeansofdeath == "MOD_BURNED") {
-    /#
     doa_utility::debugmsg(((("" + idamage) + "") + self.health) + (idamage > self.health ? "" : ""));
-    # /
   }
   if(smeansofdeath == "MOD_CRUSH") {
     if(isdefined(self.boss) && self.boss) {
@@ -763,24 +538,13 @@ function function_2241fc21(einflictor, eattacker, idamage, idflags, smeansofdeat
   self finishactordamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, surfacetype, surfacenormal);
 }
 
-/*
-	Name: function_ff217d39
-	Namespace: doa_enemy
-	Checksum: 0x9BCA2599
-	Offset: 0x2F38
-	Size: 0x4FC
-	Parameters: 14
-	Flags: Linked
-*/
 function function_ff217d39(einflictor, eattacker, idamage, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   if(isdefined(einflictor)) {
     self.damageinflictor = einflictor;
   }
   self asmsetanimationrate(1);
   if(self.team == "allies") {
-    /#
     doa_utility::debugmsg("" + self.archetype);
-    # /
   }
   if(isdefined(self.fx)) {
     self thread namespace_eaa992c::turnofffx(self.fx);
@@ -822,12 +586,10 @@ function function_ff217d39(einflictor, eattacker, idamage, smeansofdeath, weapon
     }
   }
   if(smeansofdeath == "MOD_CRUSH") {
-    /#
     assert(!(isdefined(self.boss) && self.boss));
-    # /
-      self namespace_fba031c8::function_ddf685e8(undefined, eattacker);
+    self namespace_fba031c8::function_ddf685e8(undefined, eattacker);
     if(isdefined(eattacker)) {
-      eattacker notify(# "hash_108fd845");
+      eattacker notify("hash_108fd845");
     }
   }
   if(smeansofdeath == "MOD_ELECTROCUTED" && isdefined(einflictor)) {
@@ -836,15 +598,6 @@ function function_ff217d39(einflictor, eattacker, idamage, smeansofdeath, weapon
   }
 }
 
-/*
-	Name: function_c26b6656
-	Namespace: doa_enemy
-	Checksum: 0x1560AA28
-	Offset: 0x3440
-	Size: 0x254
-	Parameters: 15
-	Flags: Linked
-*/
 function function_c26b6656(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   if(isdefined(eattacker) && eattacker.team == self.team) {
     idamage = 0;
@@ -864,15 +617,6 @@ function function_c26b6656(einflictor, eattacker, idamage, idflags, smeansofdeat
   self finishvehicledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, damagefromunderneath, modelindex, partname, 0);
 }
 
-/*
-	Name: function_90772ac6
-	Namespace: doa_enemy
-	Checksum: 0x2F9EFBE4
-	Offset: 0x36A0
-	Size: 0x230
-	Parameters: 8
-	Flags: Linked
-*/
 function function_90772ac6(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   if(isdefined(einflictor)) {
     self.damageinflictor = einflictor;
@@ -891,42 +635,24 @@ function function_90772ac6(einflictor, eattacker, idamage, smeansofdeath, weapon
   params.vdir = vdir;
   params.shitloc = shitloc;
   params.psoffsettime = psoffsettime;
-  self callback::callback(# "hash_acb66515", params);
+  self callback::callback("hash_acb66515", params);
   if(isdefined(self.overridevehiclekilled)) {
     self[[self.overridevehiclekilled]](einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime);
   }
 }
 
-/*
-	Name: function_e77599c
-	Namespace: doa_enemy
-	Checksum: 0x3B856DC6
-	Offset: 0x38D8
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e77599c() {
   level.doa.var_b351e5fb++;
-  self waittill(# "death");
+  self waittill("death");
   level.doa.var_b351e5fb--;
   if(level.doa.var_b351e5fb < 0) {
     level.doa.var_b351e5fb = 0;
   }
 }
 
-/*
-	Name: function_7c435737
-	Namespace: doa_enemy
-	Checksum: 0xE272B44C
-	Offset: 0x3938
-	Size: 0xAE
-	Parameters: 0
-	Flags: None
-*/
 function function_7c435737() {
-  self endon(# "death");
-  self endon(# "hash_10fd80ee");
+  self endon("death");
+  self endon("hash_10fd80ee");
   while (isalive(self)) {
     target = namespace_831a4a7c::function_35f36dec(self.origin);
     if(isdefined(target) && (!(isdefined(self.ignoreall) && self.ignoreall))) {
@@ -938,21 +664,10 @@ function function_7c435737() {
   }
 }
 
-/*
-	Name: function_a4e16560
-	Namespace: doa_enemy
-	Checksum: 0x9D76CABC
-	Offset: 0x39F0
-	Size: 0x568
-	Parameters: 3
-	Flags: Linked
-*/
 function function_a4e16560(sp_enemy, s_spawn_loc, force = 0) {
-  /#
-  # /
-    if(!force && level.doa.var_b351e5fb >= level.doa.rules.max_enemy_count) {
-      return;
-    }
+  if(!force && level.doa.var_b351e5fb >= level.doa.rules.max_enemy_count) {
+    return;
+  }
   if(!mayspawnentity()) {
     return;
   }
@@ -1013,28 +728,10 @@ function function_a4e16560(sp_enemy, s_spawn_loc, force = 0) {
   return ai_spawned;
 }
 
-/*
-	Name: function_71a4f1d5
-	Namespace: doa_enemy
-	Checksum: 0x73A4E661
-	Offset: 0x3F60
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function function_71a4f1d5() {
-  self waittill(# "actor_corpse", corpse);
+  self waittill("actor_corpse", corpse);
 }
 
-/*
-	Name: zombie_eye_glow
-	Namespace: doa_enemy
-	Checksum: 0x8A45F0A1
-	Offset: 0x3F88
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_eye_glow() {
   if(!isdefined(self)) {
     return;
@@ -1044,17 +741,8 @@ function zombie_eye_glow() {
   }
 }
 
-/*
-	Name: function_462594a2
-	Namespace: doa_enemy
-	Checksum: 0xD3E64DC3
-	Offset: 0x3FE0
-	Size: 0x210
-	Parameters: 0
-	Flags: Linked
-*/
 function function_462594a2() {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self)) {
     return;
   }
@@ -1132,15 +820,6 @@ function function_462594a2() {
   }
 }
 
-/*
-	Name: zombie_eye_glow_stop
-	Namespace: doa_enemy
-	Checksum: 0xFF347DFD
-	Offset: 0x41F8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_eye_glow_stop() {
   if(!isdefined(self)) {
     return;
@@ -1150,36 +829,18 @@ function zombie_eye_glow_stop() {
   }
 }
 
-/*
-	Name: function_8abf3753
-	Namespace: doa_enemy
-	Checksum: 0xF0AEAD23
-	Offset: 0x4250
-	Size: 0x48
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_8abf3753(time = 1) {
-  self endon(# "death");
+  self endon("death");
   wait(time);
   self.doa.original_origin = self.origin;
 }
 
-/*
-	Name: function_8a4222de
-	Namespace: doa_enemy
-	Checksum: 0x120A4639
-	Offset: 0x42A0
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8a4222de(time) {
   if(!isactor(self)) {
     return;
   }
-  self endon(# "death");
-  self endon(# "hash_67a97d62");
+  self endon("death");
+  self endon("hash_67a97d62");
   self setavoidancemask("avoid none");
   var_e0bc9b4c = self pushactors(0);
   wait(time);
@@ -1189,18 +850,9 @@ function function_8a4222de(time) {
   }
 }
 
-/*
-	Name: function_155957e9
-	Namespace: doa_enemy
-	Checksum: 0xA5B23D9F
-	Offset: 0x4370
-	Size: 0x198
-	Parameters: 0
-	Flags: Linked
-*/
 function function_155957e9() {
-  self endon(# "death");
-  self endon(# "hash_67a97d62");
+  self endon("death");
+  self endon("hash_67a97d62");
   if(isdefined(self.boss)) {
     return;
   }
@@ -1214,35 +866,22 @@ function function_155957e9() {
       var_2f36e0eb = 0;
     }
     if(var_2f36e0eb == 5) {
-      /#
       doa_utility::debugmsg((("" + self.origin) + "") + self.spawner.targetname);
-      # /
-        self.var_802ce72 = 1;
+      self.var_802ce72 = 1;
       self.allowdeath = 1;
       self kill();
     }
     if(var_2f36e0eb == 6) {
-      /#
       doa_utility::debugmsg((("" + self.origin) + "") + self.spawner.targetname);
-      # /
-        self.var_802ce72 = 1;
+      self.var_802ce72 = 1;
       self delete();
     }
   }
 }
 
-/*
-	Name: function_755b8a2e
-	Namespace: doa_enemy
-	Checksum: 0xC0B8CA77
-	Offset: 0x4510
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_755b8a2e() {
-  self endon(# "death");
-  self endon(# "hash_6dcbb83e");
+  self endon("death");
+  self endon("hash_6dcbb83e");
   wait(1);
   while (level flag::get("doa_round_spawning")) {
     wait(0.05);
@@ -1253,18 +892,9 @@ function function_755b8a2e() {
   self thread doa_utility::function_ba30b321(60);
 }
 
-/*
-	Name: function_53055b45
-	Namespace: doa_enemy
-	Checksum: 0xA369CA9A
-	Offset: 0x45A0
-	Size: 0x3D8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_53055b45() {
-  self endon(# "death");
-  self endon(# "hash_6e8326fc");
+  self endon("death");
+  self endon("hash_6e8326fc");
   if(isdefined(self.boss)) {
     return;
   }
@@ -1298,10 +928,8 @@ function function_53055b45() {
         self thread function_8a4222de(3);
       }
       if(fails == 5) {
-        /#
         doa_utility::debugmsg((("" + self.origin) + "") + self.spawner.targetname);
-        # /
-          self dodamage(self.health + 666, self.origin);
+        self dodamage(self.health + 666, self.origin);
       }
     } else {
       fails = 0;
@@ -1315,20 +943,11 @@ function function_53055b45() {
   }
 }
 
-/*
-	Name: function_ab6f6263
-	Namespace: doa_enemy
-	Checksum: 0x534C6208
-	Offset: 0x4980
-	Size: 0x254
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ab6f6263() {
   var_2c143867 = array( % generic::ai_zombie_base_idle_ad_v1, % generic::ai_zombie_base_idle_au_v1, % generic::bo3_ai_zombie_attack_v1, % generic::bo3_ai_zombie_attack_v2, % generic::bo3_ai_zombie_attack_v3, % generic::bo3_ai_zombie_attack_v4, % generic::bo3_ai_zombie_attack_v6);
-  self endon(# "death");
-  self notify(# "hash_ab6f6263");
-  self endon(# "hash_ab6f6263");
+  self endon("death");
+  self notify("hash_ab6f6263");
+  self endon("hash_ab6f6263");
   self.var_58acb0e3 = undefined;
   while (!(isdefined(level.hostmigrationtimer) && level.hostmigrationtimer)) {
     wait(1);
@@ -1340,7 +959,7 @@ function function_ab6f6263() {
     if(isdefined(self.var_96437a17) && self.var_96437a17 && (!(isdefined(self.rising) && self.rising))) {
       idleanim = var_2c143867[randomint(var_2c143867.size)];
       self animscripted("zombieanim", self.origin, self.angles, idleanim, "normal", % generic::body, 1, 0.3, 0.3);
-      self waittillmatch(# "hash_24281fe0");
+      self waittillmatch("hash_24281fe0");
     } else {
       self setgoal(self.origin, 0);
       wait(1);

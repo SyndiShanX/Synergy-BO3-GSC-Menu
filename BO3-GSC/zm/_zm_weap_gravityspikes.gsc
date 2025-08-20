@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_gravityspikes.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\abilities\_ability_player;
 #using scripts\shared\ai\systems\gib;
@@ -29,43 +33,20 @@
 #using scripts\zm\_zm_unitrigger;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_weap_gravityspikes;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xFCE55695
-	Offset: 0x8A0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_gravityspikes", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x88ADDDED
-	Offset: 0x8E0
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.n_zombies_lifted_for_ragdoll = 0;
   level.spikes_chop_cone_range = 120;
   level.spikes_chop_cone_range_sq = level.spikes_chop_cone_range * level.spikes_chop_cone_range;
   level.ai_gravity_throttle = new throttle();
-  [
-    [level.ai_gravity_throttle]
-  ] - > initialize(2, 0.1);
+  [[level.ai_gravity_throttle]] - > initialize(2, 0.1);
   level.ai_spikes_chop_throttle = new throttle();
-  [
-    [level.ai_spikes_chop_throttle]
-  ] - > initialize(6, 0.1);
+  [[level.ai_spikes_chop_throttle]] - > initialize(6, 0.1);
   register_clientfields();
   callback::on_connect( & on_connect_func_for_gravityspikes);
   zm_hero_weapon::register_hero_weapon("hero_gravityspikes_melee");
@@ -73,20 +54,9 @@ function __init__() {
   zm_hero_weapon::register_hero_weapon_power_callbacks("hero_gravityspikes_melee", undefined, & gravityspikes_power_expired);
   zm::register_player_damage_callback( & player_invulnerable_during_gravityspike_slam);
   zm_hero_weapon::register_hero_recharge_event(getweapon("hero_gravityspikes_melee"), & gravityspikes_power_override);
-  /#
   level thread function_81889ac5();
-  # /
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xB1FE7F5A
-	Offset: 0xAA8
-	Size: 0x274
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("actor", "gravity_slam_down", 1, 1, "int");
   clientfield::register("scriptmover", "gravity_trap_fx", 1, 1, "int");
@@ -103,20 +73,11 @@ function register_clientfields() {
   clientfield::register("actor", "gravity_spike_zombie_explode_fx", 12000, 1, "counter");
 }
 
-/*
-	Name: on_connect_func_for_gravityspikes
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x9DBBBED
-	Offset: 0xD28
-	Size: 0x204
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private on_connect_func_for_gravityspikes() {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "death");
-  self endon(# "gravity_spike_expired");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("death");
+  self endon("gravity_spike_expired");
   w_gravityspike = getweapon("hero_gravityspikes_melee");
   self update_gravityspikes_state(0);
   self.b_gravity_trap_spikes_in_ground = 0;
@@ -124,7 +85,7 @@ function private on_connect_func_for_gravityspikes() {
   self.b_gravity_trap_fx_on = 0;
   self thread reset_after_bleeding_out();
   do {
-    self waittill(# "new_hero_weapon", weapon);
+    self waittill("new_hero_weapon", weapon);
   }
   while (weapon != w_gravityspike);
   if(isdefined(self.a_gravityspikes_prev_ammo_clip) && isdefined(self.a_gravityspikes_prev_ammo_clip["hero_gravityspikes_melee"])) {
@@ -144,24 +105,15 @@ function private on_connect_func_for_gravityspikes() {
   self thread weapon_change_watcher();
 }
 
-/*
-	Name: reset_after_bleeding_out
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xC8E5C485
-	Offset: 0xF38
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function reset_after_bleeding_out() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   w_gravityspike = getweapon("hero_gravityspikes_melee");
   if(isdefined(self.b_has_gravityspikes) && self.b_has_gravityspikes) {
     util::wait_network_frame();
     self zm_weapons::weapon_give(w_gravityspike, 0, 1);
     self update_gravityspikes_state(2);
   }
-  self waittill(# "bled_out");
+  self waittill("bled_out");
   if(self hasweapon(w_gravityspike)) {
     self.b_has_gravityspikes = 1;
     self.saved_spike_power = self gadgetpowerget(self gadgetgetslot(w_gravityspike));
@@ -174,19 +126,10 @@ function reset_after_bleeding_out() {
     zm_unitrigger::unregister_unitrigger(self.gravity_trap_unitrigger_stub);
     self.gravity_trap_unitrigger_stub = undefined;
   }
-  self waittill(# "spawned_player");
+  self waittill("spawned_player");
   self thread on_connect_func_for_gravityspikes();
 }
 
-/*
-	Name: gravityspikes_power_override
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xAE2952D0
-	Offset: 0x10D8
-	Size: 0x354
-	Parameters: 2
-	Flags: Linked
-*/
 function gravityspikes_power_override(e_player, ai_enemy) {
   if(e_player laststand::player_is_in_laststand()) {
     return;
@@ -221,15 +164,6 @@ function gravityspikes_power_override(e_player, ai_enemy) {
   }
 }
 
-/*
-	Name: wield_gravityspikes
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xBB8D4D8F
-	Offset: 0x1438
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function wield_gravityspikes(wpn_gravityspikes) {
   self zm_hero_weapon::default_wield(wpn_gravityspikes);
   if(!(isdefined(self.b_used_spikes) && self.b_used_spikes)) {
@@ -237,7 +171,7 @@ function wield_gravityspikes(wpn_gravityspikes) {
       self.hintelem settext("");
       self.hintelem destroy();
     }
-    self thread zm_equipment::show_hint_text( & "ZM_CASTLE_GRAVITYSPIKE_INSTRUCTIONS", 3);
+    self thread zm_equipment::show_hint_text(&"ZM_CASTLE_GRAVITYSPIKE_INSTRUCTIONS", 3);
     self.b_used_spikes = 1;
   }
   self update_gravityspikes_state(3);
@@ -247,18 +181,9 @@ function wield_gravityspikes(wpn_gravityspikes) {
   self thread gravityspikes_swipe_watcher(wpn_gravityspikes);
 }
 
-/*
-	Name: unwield_gravityspikes
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x915CE0E4
-	Offset: 0x1570
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function unwield_gravityspikes(wpn_gravityspikes) {
   self zm_hero_weapon::default_unwield(wpn_gravityspikes);
-  self notify(# "gravityspikes_attack_watchers_end");
+  self notify("gravityspikes_attack_watchers_end");
   if(isdefined(self.b_gravity_trap_spikes_in_ground) && self.b_gravity_trap_spikes_in_ground) {
     self.disable_hero_power_charging = 1;
     self thread zm_hero_weapon::continue_draining_hero_weapon(wpn_gravityspikes);
@@ -266,61 +191,34 @@ function unwield_gravityspikes(wpn_gravityspikes) {
   }
 }
 
-/*
-	Name: weapon_drop_watcher
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x2029D220
-	Offset: 0x1610
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function weapon_drop_watcher() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "weapon_switch_started", w_current);
+    self waittill("weapon_switch_started", w_current);
     if(zm_utility::is_hero_weapon(w_current)) {
       self setweaponammoclip(w_current, 0);
     }
   }
 }
 
-/*
-	Name: weapon_change_watcher
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xF7851EBF
-	Offset: 0x1680
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function weapon_change_watcher() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "weapon_change", w_current, w_previous);
+    self waittill("weapon_change", w_current, w_previous);
     if(isdefined(w_previous) && zm_utility::is_hero_weapon(w_current)) {
       self.w_gravityspikes_wpn_prev = w_previous;
     }
   }
 }
 
-/*
-	Name: gravityspikes_attack_watcher
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x35F3567B
-	Offset: 0x16F8
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function gravityspikes_attack_watcher(wpn_gravityspikes) {
-  self endon(# "gravityspikes_attack_watchers_end");
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "death");
-  self endon(# "gravity_spike_expired");
+  self endon("gravityspikes_attack_watchers_end");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("death");
+  self endon("gravity_spike_expired");
   while (true) {
-    self waittill(# "weapon_melee_power", weapon);
+    self waittill("weapon_melee_power", weapon);
     if(weapon == wpn_gravityspikes) {
       self playrumbleonentity("talon_spike");
       self thread knockdown_zombies_slam();
@@ -329,21 +227,12 @@ function gravityspikes_attack_watcher(wpn_gravityspikes) {
   }
 }
 
-/*
-	Name: gravityspikes_stuck_above_zombie_watcher
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x40AD9621
-	Offset: 0x17C8
-	Size: 0x4F0
-	Parameters: 1
-	Flags: Linked
-*/
 function gravityspikes_stuck_above_zombie_watcher(wpn_gravityspikes) {
-  self endon(# "gravityspikes_attack_watchers_end");
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "death");
-  self endon(# "gravity_spike_expired");
+  self endon("gravityspikes_attack_watchers_end");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("death");
+  self endon("gravity_spike_expired");
   first_half_traces = 1;
   while (zm_utility::is_player_valid(self)) {
     if(!self isslamming()) {
@@ -378,20 +267,18 @@ function gravityspikes_stuck_above_zombie_watcher(wpn_gravityspikes) {
       }
       for (i = 0; i < 3; i++) {
         trace = bullettrace(start_point, trace_end_points[i], 1, self);
-        /#
         if(getdvarint("", 0) > 0) {
           line(start_point, trace_end_points[i], (1, 1, 1), 1, 0, 60);
           recordline(start_point, trace_end_points[i], (1, 1, 1), "", self);
         }
-        # /
-          if(trace["fraction"] < 1) {
-            if(isactor(trace["entity"]) && trace["entity"].health > 0 && (trace["entity"].archetype == "zombie" || trace["entity"].archetype == "zombie_dog")) {
-              self thread knockdown_zombies_slam();
-              self thread no_damage_gravityspikes_slam();
-              wait(1);
-              break;
-            }
+        if(trace["fraction"] < 1) {
+          if(isactor(trace["entity"]) && trace["entity"].health > 0 && (trace["entity"].archetype == "zombie" || trace["entity"].archetype == "zombie_dog")) {
+            self thread knockdown_zombies_slam();
+            self thread no_damage_gravityspikes_slam();
+            wait(1);
+            break;
           }
+        }
       }
       wait(0.05);
     }
@@ -399,38 +286,20 @@ function gravityspikes_stuck_above_zombie_watcher(wpn_gravityspikes) {
   }
 }
 
-/*
-	Name: gravityspikes_altfire_watcher
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x6D9C2068
-	Offset: 0x1CC0
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function gravityspikes_altfire_watcher(wpn_gravityspikes) {
-  self endon(# "gravityspikes_attack_watchers_end");
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "death");
-  self endon(# "gravity_spike_expired");
+  self endon("gravityspikes_attack_watchers_end");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("death");
+  self endon("gravity_spike_expired");
   while (true) {
-    self waittill(# "weapon_melee_power_left", weapon);
+    self waittill("weapon_melee_power_left", weapon);
     if(weapon == wpn_gravityspikes && self gravity_spike_position_valid()) {
       self thread plant_gravity_trap(wpn_gravityspikes);
     }
   }
 }
 
-/*
-	Name: gravity_spike_position_valid
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xC64AD22D
-	Offset: 0x1D70
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function gravity_spike_position_valid() {
   if(isdefined(level.gravityspike_position_check)) {
     return self[[level.gravityspike_position_check]]();
@@ -440,39 +309,19 @@ function gravity_spike_position_valid() {
   }
 }
 
-/*
-	Name: chop_actor
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x3BD8F82A
-	Offset: 0x1DC0
-	Size: 0xFC
-	Parameters: 3
-	Flags: Linked
-*/
 function chop_actor(ai, leftswing, weapon = level.weaponnone) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isdefined(ai) || !isalive(ai)) {
     return;
   }
   if(3594 >= ai.health) {
     ai.ignoremelee = 1;
   }
-  [
-    [level.ai_spikes_chop_throttle]
-  ] - > waitinqueue(ai);
+  [[level.ai_spikes_chop_throttle]] - > waitinqueue(ai);
   ai dodamage(3594, self.origin, self, self, "none", "MOD_UNKNOWN", 0, weapon);
   util::wait_network_frame();
 }
 
-/*
-	Name: chop_zombies
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x2C30A235
-	Offset: 0x1EC8
-	Size: 0x2F2
-	Parameters: 3
-	Flags: Linked
-*/
 function chop_zombies(first_time, leftswing, weapon = level.weaponnone) {
   view_pos = self getweaponmuzzlepoint();
   forward_view_angles = self getweaponforwarddir();
@@ -509,15 +358,6 @@ function chop_zombies(first_time, leftswing, weapon = level.weaponnone) {
   }
 }
 
-/*
-	Name: spikesarc_swipe
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xFAFC149
-	Offset: 0x21C8
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function spikesarc_swipe(player) {
   player thread chop_zombies(1, 1, self);
   wait(0.3);
@@ -526,36 +366,18 @@ function spikesarc_swipe(player) {
   player thread chop_zombies(0, 0, self);
 }
 
-/*
-	Name: gravityspikes_swipe_watcher
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x579C0FC8
-	Offset: 0x2250
-	Size: 0x88
-	Parameters: 1
-	Flags: Linked
-*/
 function gravityspikes_swipe_watcher(wpn_gravityspikes) {
-  self endon(# "gravityspikes_attack_watchers_end");
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "death");
-  self endon(# "gravity_spike_expired");
+  self endon("gravityspikes_attack_watchers_end");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("death");
+  self endon("gravity_spike_expired");
   while (true) {
-    self waittill(# "weapon_melee", weapon);
+    self waittill("weapon_melee", weapon);
     weapon thread spikesarc_swipe(self);
   }
 }
 
-/*
-	Name: gravityspikes_power_update
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xEC742FBB
-	Offset: 0x22E0
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function gravityspikes_power_update(player) {
   if(!(isdefined(player.disable_hero_power_charging) && player.disable_hero_power_charging)) {
     player gadgetpowerset(0, 100);
@@ -563,30 +385,12 @@ function gravityspikes_power_update(player) {
   }
 }
 
-/*
-	Name: gravityspikes_power_expired
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x48C19739
-	Offset: 0x2350
-	Size: 0x3E
-	Parameters: 1
-	Flags: Linked
-*/
 function gravityspikes_power_expired(weapon) {
   self zm_hero_weapon::default_power_empty(weapon);
-  self notify(# "stop_draining_hero_weapon");
-  self notify(# "gravityspikes_timer_end");
+  self notify("stop_draining_hero_weapon");
+  self notify("gravityspikes_timer_end");
 }
 
-/*
-	Name: player_invulnerable_during_gravityspike_slam
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x4C1DBD
-	Offset: 0x2398
-	Size: 0xAA
-	Parameters: 11
-	Flags: Linked
-*/
 function player_invulnerable_during_gravityspike_slam(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex) {
   if(self.gravityspikes_state === 3 && (self isslamming() || (isdefined(self.gravityspikes_slam) && self.gravityspikes_slam))) {
     return 0;
@@ -594,34 +398,16 @@ function player_invulnerable_during_gravityspike_slam(einflictor, eattacker, ida
   return -1;
 }
 
-/*
-	Name: no_damage_gravityspikes_slam
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xD80F1E8
-	Offset: 0x2450
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function no_damage_gravityspikes_slam() {
   self.gravityspikes_slam = 1;
   wait(1.5);
   self.gravityspikes_slam = 0;
 }
 
-/*
-	Name: player_near_gravity_vortex
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x9C6DEC69
-	Offset: 0x2480
-	Size: 0x1A0
-	Parameters: 1
-	Flags: Linked
-*/
 function player_near_gravity_vortex(v_vortex_origin) {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("death");
   while (isdefined(self.b_gravity_trap_spikes_in_ground) && self.b_gravity_trap_spikes_in_ground && self.gravityspikes_state === 3) {
     foreach(e_player in level.activeplayers) {
       if(isdefined(e_player) && (!(isdefined(e_player.idgun_vision_on) && e_player.idgun_vision_on))) {
@@ -637,19 +423,10 @@ function player_near_gravity_vortex(v_vortex_origin) {
   }
 }
 
-/*
-	Name: player_vortex_rumble
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x5F02671F
-	Offset: 0x2628
-	Size: 0xF2
-	Parameters: 2
-	Flags: Linked
-*/
 function player_vortex_rumble(e_player, v_vortex_origin) {
-  e_player endon(# "disconnect");
-  e_player endon(# "bled_out");
-  e_player endon(# "death");
+  e_player endon("disconnect");
+  e_player endon("bled_out");
+  e_player endon("death");
   e_player.vortex_rumble = 1;
   e_player clientfield::set_to_player("gravity_trap_rumble", 1);
   while (distance(e_player.origin, v_vortex_origin) < float(64) && self.gravityspikes_state === 3) {
@@ -659,19 +436,10 @@ function player_vortex_rumble(e_player, v_vortex_origin) {
   e_player.vortex_rumble = undefined;
 }
 
-/*
-	Name: plant_gravity_trap
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x531865B6
-	Offset: 0x2728
-	Size: 0x3A2
-	Parameters: 1
-	Flags: Linked
-*/
 function plant_gravity_trap(wpn_gravityspikes) {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("death");
   v_forward = anglestoforward(self.angles);
   v_right = anglestoright(self.angles);
   v_spawn_pos_right = self.origin + vectorscale((0, 0, 1), 32);
@@ -694,31 +462,22 @@ function plant_gravity_trap(wpn_gravityspikes) {
   self setweaponammoclip(wpn_gravityspikes, 0);
   self.b_gravity_trap_spikes_in_ground = 1;
   self.v_gravity_trap_pos = v_gravity_trap_pos;
-  self notify(# "gravity_trap_planted");
+  self notify("gravity_trap_planted");
   self thread player_near_gravity_vortex(v_gravity_trap_pos);
   self thread destroy_gravity_trap_spikes_in_ground();
   self util::waittill_any("gravity_trap_spikes_retrieved", "disconnect", "bled_out");
   if(isdefined(self)) {
     self.b_gravity_trap_spikes_in_ground = 0;
     self.disable_hero_power_charging = 0;
-    self notify(# "destroy_ground_spikes");
+    self notify("destroy_ground_spikes");
   }
 }
 
-/*
-	Name: gravity_trap_loop
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x4BCA5C95
-	Offset: 0x2AD8
-	Size: 0x1AC
-	Parameters: 2
-	Flags: Linked
-*/
 function gravity_trap_loop(v_gravity_trap_pos, wpn_gravityspikes) {
-  self endon(# "gravity_trap_spikes_retrieved");
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "death");
+  self endon("gravity_trap_spikes_retrieved");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("death");
   is_gravity_trap_fx_on = 1;
   while (true) {
     if(self zm_hero_weapon::is_hero_weapon_in_use() && self.hero_power > 0) {
@@ -740,27 +499,14 @@ function gravity_trap_loop(v_gravity_trap_pos, wpn_gravityspikes) {
   }
 }
 
-/*
-	Name: gravity_trap_check
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x4C37855B
-	Offset: 0x2C90
-	Size: 0x1AC
-	Parameters: 1
-	Flags: Linked
-*/
 function gravity_trap_check(player) {
-  player endon(# "gravity_trap_spikes_retrieved");
-  player endon(# "disconnect");
-  player endon(# "bled_out");
-  player endon(# "death");
-  /#
+  player endon("gravity_trap_spikes_retrieved");
+  player endon("disconnect");
+  player endon("bled_out");
+  player endon("death");
   assert(isdefined(level.ai_gravity_throttle));
-  # /
-    /#
   assert(isdefined(player));
-  # /
-    n_gravity_trap_radius_sq = 16384;
+  n_gravity_trap_radius_sq = 16384;
   v_gravity_trap_origin = player.mdl_gravity_trap_fx_source.origin;
   if(!isdefined(self) || !isalive(self)) {
     return;
@@ -779,15 +525,6 @@ function gravity_trap_check(player) {
   }
 }
 
-/*
-	Name: create_gravity_trap_spikes_in_ground
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xB3FFF473
-	Offset: 0x2E48
-	Size: 0x176
-	Parameters: 1
-	Flags: Linked
-*/
 function create_gravity_trap_spikes_in_ground(a_v_spawn_pos) {
   if(!isdefined(self.mdl_gravity_trap_spikes)) {
     self.mdl_gravity_trap_spikes = [];
@@ -810,29 +547,11 @@ function create_gravity_trap_spikes_in_ground(a_v_spawn_pos) {
   }
 }
 
-/*
-	Name: gravity_spike_planted_play
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x67648C38
-	Offset: 0x2FC8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function gravity_spike_planted_play() {
   wait(2);
   self thread scene::play("cin_zm_dlc1_spike_plant_loop", self);
 }
 
-/*
-	Name: destroy_gravity_trap_spikes_in_ground
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xCCC94C93
-	Offset: 0x3008
-	Size: 0x186
-	Parameters: 0
-	Flags: Linked
-*/
 function destroy_gravity_trap_spikes_in_ground() {
   mdl_spike_source = self.mdl_gravity_trap_fx_source;
   mdl_gravity_trap_spikes = self.mdl_gravity_trap_spikes;
@@ -857,15 +576,6 @@ function destroy_gravity_trap_spikes_in_ground() {
   }
 }
 
-/*
-	Name: gravity_trap_fx_on
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xDB09CEDF
-	Offset: 0x3198
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function gravity_trap_fx_on(v_spawn_pos) {
   if(!isdefined(self.mdl_gravity_trap_fx_source)) {
     self.mdl_gravity_trap_fx_source = util::spawn_model("tag_origin", v_spawn_pos);
@@ -876,15 +586,6 @@ function gravity_trap_fx_on(v_spawn_pos) {
   self.mdl_gravity_trap_fx_source clientfield::set("gravity_trap_fx", 1);
 }
 
-/*
-	Name: gravity_trap_fx_off
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xAC3BB5FD
-	Offset: 0x3240
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function gravity_trap_fx_off() {
   if(!isdefined(self.mdl_gravity_trap_fx_source)) {
     return;
@@ -893,15 +594,6 @@ function gravity_trap_fx_off() {
   self.mdl_gravity_trap_fx_source clientfield::set("gravity_trap_location", 1);
 }
 
-/*
-	Name: create_gravity_trap_unitrigger
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x30348375
-	Offset: 0x32A8
-	Size: 0x12C
-	Parameters: 2
-	Flags: Linked
-*/
 function create_gravity_trap_unitrigger(v_origin, wpn_gravityspikes) {
   if(isdefined(self.gravity_trap_unitrigger_stub)) {
     return;
@@ -920,36 +612,18 @@ function create_gravity_trap_unitrigger(v_origin, wpn_gravityspikes) {
   zm_unitrigger::register_static_unitrigger(unitrigger_stub, & gravity_trap_trigger_think);
 }
 
-/*
-	Name: gravity_trap_trigger_visibility
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xDE5EC8B2
-	Offset: 0x33E0
-	Size: 0x66
-	Parameters: 1
-	Flags: Linked
-*/
 function gravity_trap_trigger_visibility(player) {
   if(player == self.stub.gravityspike_owner) {
-    self sethintstring( & "ZM_CASTLE_GRAVITYSPIKE_PICKUP");
+    self sethintstring(&"ZM_CASTLE_GRAVITYSPIKE_PICKUP");
     return true;
   }
   self setinvisibletoplayer(player);
   return false;
 }
 
-/*
-	Name: gravity_trap_trigger_think
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xB48D58C5
-	Offset: 0x3450
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function gravity_trap_trigger_think() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player zm_utility::in_revive_trigger()) {
       continue;
     }
@@ -964,18 +638,9 @@ function gravity_trap_trigger_think() {
   }
 }
 
-/*
-	Name: gravity_trap_trigger_activate
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xFC7CDF3A
-	Offset: 0x3500
-	Size: 0x15A
-	Parameters: 2
-	Flags: Linked
-*/
 function gravity_trap_trigger_activate(trig_stub, player) {
   if(player == trig_stub.gravityspike_owner) {
-    player notify(# "gravity_trap_spikes_retrieved");
+    player notify("gravity_trap_spikes_retrieved");
     player playsound("fly_talon_pickup");
     if(player.gravityspikes_state == 3) {
       player.w_gravityspikes_wpn_prev = player getcurrentweapon();
@@ -989,42 +654,15 @@ function gravity_trap_trigger_activate(trig_stub, player) {
   }
 }
 
-/*
-	Name: update_gravityspikes_state
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x6EF92CF8
-	Offset: 0x3668
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function update_gravityspikes_state(n_gravityspikes_state) {
   self.gravityspikes_state = n_gravityspikes_state;
 }
 
-/*
-	Name: update_gravityspikes_energy
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xACEB333D
-	Offset: 0x3688
-	Size: 0x3C
-	Parameters: 1
-	Flags: None
-*/
 function update_gravityspikes_energy(n_gravityspikes_power) {
   self.n_gravityspikes_power = n_gravityspikes_power;
   self clientfield::set_player_uimodel("zmhud.swordEnergy", self.n_gravityspikes_power);
 }
 
-/*
-	Name: check_for_range_and_los
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x1ECF38C1
-	Offset: 0x36D0
-	Size: 0xF6
-	Parameters: 3
-	Flags: Linked
-*/
 function check_for_range_and_los(v_attack_source, n_allowed_z_diff, n_radius_sq) {
   if(isalive(self)) {
     n_z_diff = self.origin[2] - v_attack_source[2];
@@ -1040,15 +678,6 @@ function check_for_range_and_los(v_attack_source, n_allowed_z_diff, n_radius_sq)
   return false;
 }
 
-/*
-	Name: gravityspikes_target_filtering
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xED2EB59
-	Offset: 0x37D0
-	Size: 0x48
-	Parameters: 1
-	Flags: Linked
-*/
 function gravityspikes_target_filtering(ai_enemy) {
   b_callback_result = 1;
   if(isdefined(level.gravityspikes_target_filter_callback)) {
@@ -1059,15 +688,6 @@ function gravityspikes_target_filtering(ai_enemy) {
   return b_callback_result;
 }
 
-/*
-	Name: zombie_lift
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x5A7BE68B
-	Offset: 0x3820
-	Size: 0x79C
-	Parameters: 6
-	Flags: Linked
-*/
 function zombie_lift(player, v_attack_source, n_push_away, n_lift_height, v_lift_offset, n_lift_speed) {
   wpn_gravityspikes = getweapon("hero_gravityspikes_melee");
   if(isdefined(self.zombie_lift_override)) {
@@ -1113,7 +733,7 @@ function zombie_lift(player, v_attack_source, n_push_away, n_lift_height, v_lift
         self.mdl_trap_mover moveto(self.origin + v_lift, n_lift_time, 0, n_lift_time * 0.4);
         self thread zombie_lift_wacky_rotate(n_lift_time, player);
         self thread gravity_trap_notify_watcher(player);
-        self waittill(# "gravity_trap_complete");
+        self waittill("gravity_trap_complete");
         if(isdefined(self)) {
           self unlink();
           self scene::stop();
@@ -1143,69 +763,33 @@ function zombie_lift(player, v_attack_source, n_push_away, n_lift_height, v_lift
   }
 }
 
-/*
-	Name: gravity_trap_notify_watcher
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x2BB1638C
-	Offset: 0x3FC8
-	Size: 0x8A
-	Parameters: 1
-	Flags: Linked
-*/
 function gravity_trap_notify_watcher(player) {
-  self endon(# "gravity_trap_complete");
+  self endon("gravity_trap_complete");
   self thread gravity_trap_timeout_watcher();
   util::waittill_any_ents(self, "death", player, "gravity_trap_spikes_retrieved", player, "gravityspikes_timer_end", player, "disconnect", player, "bled_out");
-  self notify(# "gravity_trap_complete");
+  self notify("gravity_trap_complete");
 }
 
-/*
-	Name: gravity_trap_timeout_watcher
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x7F565127
-	Offset: 0x4060
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function gravity_trap_timeout_watcher() {
-  self endon(# "gravity_trap_complete");
+  self endon("gravity_trap_complete");
   self.mdl_trap_mover util::waittill_any_timeout(4, "movedone", "gravity_trap_complete");
   if(isalive(self) && (!(isdefined(self.b_melee_kill) && self.b_melee_kill))) {
     wait(randomfloatrange(0.2, 1));
   }
-  self notify(# "gravity_trap_complete");
+  self notify("gravity_trap_complete");
 }
 
-/*
-	Name: zombie_lift_wacky_rotate
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x841913C5
-	Offset: 0x4110
-	Size: 0x152
-	Parameters: 2
-	Flags: Linked
-*/
 function zombie_lift_wacky_rotate(n_lift_time, player) {
-  player endon(# "gravityspikes_timer_end");
-  self endon(# "death");
+  player endon("gravityspikes_timer_end");
+  self endon("death");
   while (true) {
     negative_x = (randomintrange(0, 10) < 5 ? 1 : -1);
     negative_z = (randomintrange(0, 10) < 5 ? 1 : -1);
     self.mdl_trap_mover rotateto((randomintrange(90, 180) * negative_x, randomintrange(-90, 90), randomintrange(90, 180) * negative_z), (n_lift_time > 2 ? n_lift_time : 5), 0);
-    self.mdl_trap_mover waittill(# "rotatedone");
+    self.mdl_trap_mover waittill("rotatedone");
   }
 }
 
-/*
-	Name: zombie_kill_and_gib
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xF0322887
-	Offset: 0x4270
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_kill_and_gib(player) {
   wpn_gravityspikes = getweapon("hero_gravityspikes_melee");
   self.no_powerups = 1;
@@ -1218,47 +802,20 @@ function zombie_kill_and_gib(player) {
   }
 }
 
-/*
-	Name: track_lifted_for_ragdoll_count
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xA87E4AF
-	Offset: 0x4348
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function track_lifted_for_ragdoll_count() {
   level.n_zombies_lifted_for_ragdoll++;
-  self waittill(# "death");
+  self waittill("death");
   level.n_zombies_lifted_for_ragdoll--;
 }
 
-/*
-	Name: corpse_off_navmesh_watcher
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x55DAF6AE
-	Offset: 0x4370
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function corpse_off_navmesh_watcher() {
-  self waittill(# "actor_corpse", e_corpse);
+  self waittill("actor_corpse", e_corpse);
   v_pos = getclosestpointonnavmesh(e_corpse.origin, 256);
   if(!isdefined(v_pos) || e_corpse.origin[2] > (v_pos[2] + 64)) {
     e_corpse thread do_zombie_explode();
   }
 }
 
-/*
-	Name: do_zombie_explode
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x2E603FB8
-	Offset: 0x4410
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private do_zombie_explode() {
   util::wait_network_frame();
   if(isdefined(self)) {
@@ -1269,15 +826,6 @@ function private do_zombie_explode() {
   }
 }
 
-/*
-	Name: gravity_spike_melee_kill
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x53966D6E
-	Offset: 0x44B0
-	Size: 0xB4
-	Parameters: 2
-	Flags: Linked
-*/
 function gravity_spike_melee_kill(v_position, player) {
   self.b_melee_kill = 1;
   n_gravity_spike_melee_radius_sq = 40000;
@@ -1286,15 +834,6 @@ function gravity_spike_melee_kill(v_position, player) {
   }
 }
 
-/*
-	Name: knockdown_zombies_slam
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xDC353DD9
-	Offset: 0x4570
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function knockdown_zombies_slam() {
   v_forward = anglestoforward(self getplayerangles());
   v_pos = self.origin + vectorscale(v_forward, 24);
@@ -1307,15 +846,6 @@ function knockdown_zombies_slam() {
   self thread play_slam_fx(v_pos);
 }
 
-/*
-	Name: play_slam_fx
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xC288D700
-	Offset: 0x46F8
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function play_slam_fx(v_pos) {
   mdl_fx_pos = util::spawn_model("tag_origin", v_pos, vectorscale((-1, 0, 0), 90));
   wait(0.05);
@@ -1325,17 +855,8 @@ function play_slam_fx(v_pos) {
   mdl_fx_pos delete();
 }
 
-/*
-	Name: zombie_slam_direction
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0x9CDA29E
-	Offset: 0x47B0
-	Size: 0x28C
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_slam_direction(v_position) {
-  self endon(# "death");
+  self endon("death");
   if(!self.archetype === "zombie") {
     return;
   }
@@ -1373,19 +894,9 @@ function zombie_slam_direction(v_position) {
   self.knockdown = 0;
 }
 
-/*
-	Name: function_81889ac5
-	Namespace: zm_weap_gravityspikes
-	Checksum: 0xE226DAFF
-	Offset: 0x4A48
-	Size: 0x5D0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_81889ac5() {
-  /#
   wait(0.05);
-  level waittill(# "start_zombie_round_logic");
+  level waittill("start_zombie_round_logic");
   wait(0.05);
   wpn_gravityspikes = getweapon("");
   equipment_id = wpn_gravityspikes.name;
@@ -1403,11 +914,11 @@ function function_81889ac5() {
       foreach(player in getplayers()) {
         if(equipment_id == wpn_gravityspikes.name) {
           player zm_weapons::weapon_give(wpn_gravityspikes, 0, 1);
-          player thread zm_equipment::show_hint_text( & "", 3);
+          player thread zm_equipment::show_hint_text(&"", 3);
           player gadgetpowerset(0, 100);
           player update_gravityspikes_state(2);
           player.n_gravityspikes_power = 1;
-          level notify(# "hash_71de5140");
+          level notify("hash_71de5140");
         }
       }
       setdvar("", "");
@@ -1441,5 +952,4 @@ function function_81889ac5() {
     }
     wait(0.05);
   }
-  # /
 }

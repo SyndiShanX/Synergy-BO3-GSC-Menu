@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\sniperonly.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_deathicons;
 #using scripts\mp\gametypes\_dogtags;
@@ -18,18 +22,8 @@
 #using scripts\shared\loadout_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace sniperonly;
 
-/*
-	Name: main
-	Namespace: sniperonly
-	Checksum: 0x596E36F7
-	Offset: 0x508
-	Size: 0xCC
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   tdm::main();
   gameobjects::register_allowed_gameobject("tdm");
@@ -41,42 +35,15 @@ function main() {
   callback::on_connect( & on_player_connect);
 }
 
-/*
-	Name: onstartgametype
-	Namespace: sniperonly
-	Checksum: 0x6974D434
-	Offset: 0x5E0
-	Size: 0x2C
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   tdm::onstartgametype();
   level function_c12878ec();
 }
 
-/*
-	Name: on_player_connect
-	Namespace: sniperonly
-	Checksum: 0xAC5AE67B
-	Offset: 0x618
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function on_player_connect() {
   self thread function_ef6a5017();
 }
 
-/*
-	Name: givecustomloadout
-	Namespace: sniperonly
-	Checksum: 0x279C349E
-	Offset: 0x640
-	Size: 0x358
-	Parameters: 0
-	Flags: None
-*/
 function givecustomloadout() {
   loadout::giveloadout_init(1);
   loadout::setclassnum(self.curclass);
@@ -114,15 +81,6 @@ function givecustomloadout() {
   return primaryweapon;
 }
 
-/*
-	Name: function_e6707d5e
-	Namespace: sniperonly
-	Checksum: 0xFAF8DCEC
-	Offset: 0x9A0
-	Size: 0x2AC
-	Parameters: 0
-	Flags: None
-*/
 function function_e6707d5e() {
   self.grenadetypespecial = undefined;
   loadout::givespecialoffhand();
@@ -190,15 +148,6 @@ function function_e6707d5e() {
   }
 }
 
-/*
-	Name: function_b41dbb1d
-	Namespace: sniperonly
-	Checksum: 0x6C1FD34B
-	Offset: 0xC58
-	Size: 0x1D8
-	Parameters: 2
-	Flags: None
-*/
 function function_b41dbb1d(primaryweapon, var_d5801c8a) {
   if(var_d5801c8a) {
     primaryweaponoptions = self calcweaponoptions(self.class_num, 0);
@@ -224,15 +173,6 @@ function function_b41dbb1d(primaryweapon, var_d5801c8a) {
   self.alreadysetspawnweapononce = 1;
 }
 
-/*
-	Name: function_f0582641
-	Namespace: sniperonly
-	Checksum: 0x6EB5BF46
-	Offset: 0xE38
-	Size: 0x114
-	Parameters: 1
-	Flags: None
-*/
 function function_f0582641(sidearm) {
   secondaryweaponoptions = self calcweaponoptions(self.class_num, 1);
   acvi = self getattachmentcosmeticvariantforweapon(self.class_num, "secondary");
@@ -245,15 +185,6 @@ function function_f0582641(sidearm) {
   }
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: sniperonly
-	Checksum: 0x9AE37041
-	Offset: 0xF58
-	Size: 0x2AC
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   victim = self;
   if(isdefined(level.droppedtagrespawn) && level.droppedtagrespawn) {
@@ -282,38 +213,20 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: function_357ca474
-	Namespace: sniperonly
-	Checksum: 0xBF2F7274
-	Offset: 0x1210
-	Size: 0x88
-	Parameters: 0
-	Flags: None
-*/
 function function_357ca474() {
-  level endon(# "game_ended");
-  self endon(# "death");
-  self endon(# "disconnect");
-  self notify(# "hash_dce9eda4");
-  self endon(# "hash_dce9eda4");
+  level endon("game_ended");
+  self endon("death");
+  self endon("disconnect");
+  self notify("hash_dce9eda4");
+  self endon("hash_dce9eda4");
   self.var_ea382ca4.alpha = 1;
   self.var_ea382ca4 fadeovertime(3);
   self.var_ea382ca4.alpha = 0;
 }
 
-/*
-	Name: function_2d46be95
-	Namespace: sniperonly
-	Checksum: 0x5E951DB9
-	Offset: 0x12A0
-	Size: 0x254
-	Parameters: 1
-	Flags: None
-*/
 function function_2d46be95(var_13f5941c) {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  level endon("game_ended");
   var_e7d83b48 = var_13f5941c;
   if(var_13f5941c >= 150) {
     self.var_ea382ca4.color = (0, 1, 0);
@@ -345,35 +258,17 @@ function function_2d46be95(var_13f5941c) {
   self thread function_357ca474();
 }
 
-/*
-	Name: function_b5214454
-	Namespace: sniperonly
-	Checksum: 0xB1984705
-	Offset: 0x1500
-	Size: 0x50
-	Parameters: 0
-	Flags: None
-*/
 function function_b5214454() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    level waittill(# "game_ended");
+    level waittill("game_ended");
     self.var_ea382ca4.alpha = 0;
     self.var_f9eb945c.alpha = 0;
   }
 }
 
-/*
-	Name: function_ef6a5017
-	Namespace: sniperonly
-	Checksum: 0x8CBDC41D
-	Offset: 0x1558
-	Size: 0x284
-	Parameters: 0
-	Flags: None
-*/
 function function_ef6a5017() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.var_ea382ca4 = hud::createfontstring("objective", 1);
   self.var_ea382ca4.label = & "MP_RANGE_KILL_INDICATOR";
   self.var_ea382ca4 setvalue(0);
@@ -403,15 +298,6 @@ function function_ef6a5017() {
   self thread function_b5214454();
 }
 
-/*
-	Name: function_c12878ec
-	Namespace: sniperonly
-	Checksum: 0xF6930D8
-	Offset: 0x17E8
-	Size: 0x120
-	Parameters: 0
-	Flags: None
-*/
 function function_c12878ec() {
   level.var_a670a293 = hud::createserverfontstring("objective", 1);
   level.var_a670a293.x = -6;

@@ -1,34 +1,19 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\blood.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\filter_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace blood;
 
-/*
-	Name: __init__sytem__
-	Namespace: blood
-	Checksum: 0x78316BA3
-	Offset: 0x1B8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("blood", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: blood
-	Checksum: 0xA02BB25C
-	Offset: 0x1F8
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.bloodstage3 = getdvarfloat("cg_t7HealthOverlay_Threshold3", 0.5);
   level.bloodstage2 = getdvarfloat("cg_t7HealthOverlay_Threshold2", 0.8);
@@ -37,23 +22,12 @@ function __init__() {
   callback::on_localplayer_spawned( & localplayer_spawned);
 }
 
-/*
-	Name: localplayer_spawned
-	Namespace: blood
-	Checksum: 0x8B034714
-	Offset: 0x2C8
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function localplayer_spawned(localclientnum) {
   if(self != getlocalplayer(localclientnum)) {
     return;
   }
-  /#
   level.use_digital_blood_enabled = getdvarfloat("", level.use_digital_blood_enabled);
-  # /
-    self.use_digital_blood = 0;
+  self.use_digital_blood = 0;
   bodytype = self getcharacterbodytype();
   if(level.use_digital_blood_enabled && bodytype >= 0) {
     bodytypefields = getcharacterfields(bodytype, currentsessionmode());
@@ -63,29 +37,11 @@ function localplayer_spawned(localclientnum) {
   self thread player_watch_blood_shutdown(localclientnum);
 }
 
-/*
-	Name: player_watch_blood_shutdown
-	Namespace: blood
-	Checksum: 0x134C5B6B
-	Offset: 0x400
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function player_watch_blood_shutdown(localclientnum) {
   self util::waittill_any("entityshutdown", "death");
   self disable_blood(localclientnum);
 }
 
-/*
-	Name: enable_blood
-	Namespace: blood
-	Checksum: 0x70D371A3
-	Offset: 0x458
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function enable_blood(localclientnum) {
   self.blood_enabled = 1;
   filter::init_filter_feedback_blood(localclientnum, self.use_digital_blood);
@@ -96,15 +52,6 @@ function enable_blood(localclientnum) {
   filter::set_filter_sprite_blood_seed_offset(localclientnum, 2, 1, randomfloat(1));
 }
 
-/*
-	Name: disable_blood
-	Namespace: blood
-	Checksum: 0xD70EE0DA
-	Offset: 0x560
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function disable_blood(localclientnum) {
   if(isdefined(self)) {
     self.blood_enabled = 0;
@@ -116,15 +63,6 @@ function disable_blood(localclientnum) {
   }
 }
 
-/*
-	Name: blood_in
-	Namespace: blood
-	Checksum: 0xA59D1B
-	Offset: 0x5F8
-	Size: 0x1DC
-	Parameters: 2
-	Flags: Linked
-*/
 function blood_in(localclientnum, playerhealth) {
   if(playerhealth < level.bloodstage3) {
     self.stage3amount = (level.bloodstage3 - playerhealth) / level.bloodstage3;
@@ -140,10 +78,8 @@ function blood_in(localclientnum, playerhealth) {
   filter::set_filter_feedback_blood_opacity(localclientnum, 2, 2, self.stage2amount);
   if(playerhealth < level.bloodstage1) {
     minstage1health = 0.55;
-    /#
     assert(level.bloodstage1 > minstage1health);
-    # /
-      stagehealth = playerhealth - minstage1health;
+    stagehealth = playerhealth - minstage1health;
     if(stagehealth < 0) {
       stagehealth = 0;
     }
@@ -155,15 +91,6 @@ function blood_in(localclientnum, playerhealth) {
   filter::set_filter_sprite_blood_elapsed(localclientnum, 2, 1, getservertime(localclientnum));
 }
 
-/*
-	Name: blood_out
-	Namespace: blood
-	Checksum: 0x99281DA8
-	Offset: 0x7E0
-	Size: 0x1C4
-	Parameters: 1
-	Flags: Linked
-*/
 function blood_out(localclientnum) {
   currenttime = getservertime(localclientnum);
   elapsedtime = currenttime - self.lastbloodupdate;
@@ -193,20 +120,11 @@ function blood_out(localclientnum) {
   filter::set_filter_sprite_blood_elapsed(localclientnum, 2, 1, getservertime(localclientnum));
 }
 
-/*
-	Name: player_watch_blood
-	Namespace: blood
-	Checksum: 0xEA9EC669
-	Offset: 0x9B0
-	Size: 0x3D0
-	Parameters: 1
-	Flags: Linked
-*/
 function player_watch_blood(localclientnum) {
-  self endon(# "disconnect");
-  self endon(# "entityshutdown");
-  self endon(# "death");
-  self endon(# "killbloodoverlay");
+  self endon("disconnect");
+  self endon("entityshutdown");
+  self endon("death");
+  self endon("killbloodoverlay");
   self.stage2amount = 0;
   self.stage3amount = 0;
   self.lastbloodupdate = 0;
@@ -262,15 +180,6 @@ function player_watch_blood(localclientnum) {
   }
 }
 
-/*
-	Name: setcontrollerlightbarcolorpulsing
-	Namespace: blood
-	Checksum: 0xC2EA4D1F
-	Offset: 0xD88
-	Size: 0xC4
-	Parameters: 3
-	Flags: Linked
-*/
 function setcontrollerlightbarcolorpulsing(localclientnum, color, pulserate) {
   curcolor = color * 0.2;
   scale = (gettime() % pulserate) / (pulserate * 0.5);

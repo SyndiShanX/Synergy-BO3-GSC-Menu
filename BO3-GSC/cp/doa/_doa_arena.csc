@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_arena.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_util;
 #using scripts\cp\cp_doa_bo3_fx;
@@ -12,18 +16,8 @@
 #using scripts\shared\exploder_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_3ca3c537;
 
-/*
-	Name: function_a55a134f
-	Namespace: namespace_3ca3c537
-	Checksum: 0xA3EA456E
-	Offset: 0x3C0
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_a55a134f() {
   arenas = struct::get_array("arena_center");
   for (i = 0; i < arenas.size; i++) {
@@ -41,15 +35,6 @@ function private function_a55a134f() {
   return unsorted;
 }
 
-/*
-	Name: function_bd3519f2
-	Namespace: namespace_3ca3c537
-	Checksum: 0x48FA5778
-	Offset: 0x568
-	Size: 0x5E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bd3519f2(name) {
   switch (name) {
     case "safehouse": {
@@ -68,15 +53,6 @@ function function_bd3519f2(name) {
   }
 }
 
-/*
-	Name: function_61e2e743
-	Namespace: namespace_3ca3c537
-	Checksum: 0xAEB9EEDD
-	Offset: 0x5D0
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_61e2e743() {
   if(isdefined(level.doa.var_708cc739)) {
     switch (level.doa.var_708cc739) {
@@ -93,35 +69,15 @@ function function_61e2e743() {
         return 1800;
       }
     }
-    /#
     assert(0);
-    # /
   }
   return level.doa.arenas[level.doa.current_arena].var_5b6a567;
 }
 
-/*
-	Name: function_382c20a3
-	Namespace: namespace_3ca3c537
-	Checksum: 0x9C963EC
-	Offset: 0x688
-	Size: 0x2E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_382c20a3() {
   return level.doa.arenas[level.doa.current_arena].var_bfa5d6ae;
 }
 
-/*
-	Name: init
-	Namespace: namespace_3ca3c537
-	Checksum: 0x6DB052AC
-	Offset: 0x6C0
-	Size: 0xF84
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.doa.arenas = [];
   arenas = function_a55a134f();
@@ -152,19 +108,15 @@ function init() {
     var_5fabae4f = struct::get(arena.name + "_camera_fixed_point");
     if(isdefined(var_5fabae4f) && isdefined(var_5fabae4f.script_parameters)) {
       campos = strtok(var_5fabae4f.script_parameters, " ");
-      /#
       assert(isdefined(campos.size == 3), ("" + arena.name) + "");
-      # /
-        arena.var_2ac7f133 = (float(campos[0]), float(campos[1]), float(campos[2]));
+      arena.var_2ac7f133 = (float(campos[0]), float(campos[1]), float(campos[2]));
     } else {
       arena.var_2ac7f133 = (0, 0, 0);
     }
     if(isdefined(var_5fabae4f) && isdefined(var_5fabae4f.script_noteworthy)) {
       var_b5091c96 = strtok(var_5fabae4f.script_noteworthy, " ");
-      /#
       assert(isdefined(var_b5091c96.size == 3), ("" + arena.name) + "");
-      # /
-        arena.var_5fec1234 = (float(var_b5091c96[0]), float(var_b5091c96[1]), float(var_b5091c96[2]));
+      arena.var_5fec1234 = (float(var_b5091c96[0]), float(var_b5091c96[1]), float(var_b5091c96[2]));
     } else {
       arena.var_5fec1234 = vectorscale((1, 0, 0), 60);
     }
@@ -174,19 +126,15 @@ function init() {
     if(isdefined(var_5fabae4f)) {
       if(isdefined(var_5fabae4f.script_parameters)) {
         campos = strtok(var_5fabae4f.script_parameters, " ");
-        /#
         assert(isdefined(campos.size == 3), ("" + arena.name) + "");
-        # /
-          arena.var_5a97f5e9 = (float(campos[0]), float(campos[1]), float(campos[2]));
+        arena.var_5a97f5e9 = (float(campos[0]), float(campos[1]), float(campos[2]));
       } else {
         arena.var_5a97f5e9 = (0, 0, 0);
       }
       if(isdefined(var_5fabae4f.script_noteworthy)) {
         var_b5091c96 = strtok(var_5fabae4f.script_noteworthy, " ");
-        /#
         assert(isdefined(var_b5091c96.size == 3), ("" + arena.name) + "");
-        # /
-          arena.var_a8b67ea4 = (float(var_b5091c96[0]), float(var_b5091c96[1]), float(var_b5091c96[2]));
+        arena.var_a8b67ea4 = (float(var_b5091c96[0]), float(var_b5091c96[1]), float(var_b5091c96[2]));
       } else {
         arena.var_5fec1234 = (60, 180, 0);
       }
@@ -260,15 +208,6 @@ function init() {
   level function_d6bfcb75(keywords);
 }
 
-/*
-	Name: function_d6bfcb75
-	Namespace: namespace_3ca3c537
-	Checksum: 0xDA9815D
-	Offset: 0x1650
-	Size: 0x200
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d6bfcb75(keywords) {
   var_3c8074ad = getarraykeys(keywords);
   for (i = 0; i < level.struct.size; i++) {
@@ -294,15 +233,6 @@ function function_d6bfcb75(keywords) {
   }
 }
 
-/*
-	Name: function_a5b9b9b9
-	Namespace: namespace_3ca3c537
-	Checksum: 0xB627411B
-	Offset: 0x1858
-	Size: 0xFA
-	Parameters: 3
-	Flags: Linked
-*/
 function function_a5b9b9b9(var_92804e37, var_b092b293, struct) {
   for (i = 0; i < var_b092b293.size; i++) {
     key = var_b092b293[i];
@@ -317,15 +247,6 @@ function function_a5b9b9b9(var_92804e37, var_b092b293, struct) {
   return false;
 }
 
-/*
-	Name: restart
-	Namespace: namespace_3ca3c537
-	Checksum: 0xB4E26B98
-	Offset: 0x1960
-	Size: 0x202
-	Parameters: 0
-	Flags: Linked
-*/
 function restart() {
   level.doa.current_arena = 0;
   level.doa.var_95e3fdf9 = -1;
@@ -346,15 +267,6 @@ function restart() {
   }
 }
 
-/*
-	Name: function_a83dfb2c
-	Namespace: namespace_3ca3c537
-	Checksum: 0xE91CA488
-	Offset: 0x1B70
-	Size: 0x176
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a83dfb2c() {
   while (!clienthassnapshot(0)) {
     wait(0.016);
@@ -368,15 +280,6 @@ function function_a83dfb2c() {
   }
 }
 
-/*
-	Name: flipcamera
-	Namespace: namespace_3ca3c537
-	Checksum: 0x32AEE30D
-	Offset: 0x1CF0
-	Size: 0x384
-	Parameters: 7
-	Flags: Linked
-*/
 function flipcamera(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   level.doa.var_1a75d02b = newval;
   switch (level.doa.var_1a75d02b) {
@@ -408,15 +311,6 @@ function flipcamera(localclientnum, oldval, newval, bnewent, binitialsnap, field
   cleanupspawneddynents();
 }
 
-/*
-	Name: function_c530afc5
-	Namespace: namespace_3ca3c537
-	Checksum: 0x3ADAB3B6
-	Offset: 0x2080
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c530afc5(angles) {
   if(function_61e2e743() == 400 || function_382c20a3() == 1) {
     if(level.doa.var_1a75d02b != 2) {
@@ -427,15 +321,6 @@ function function_c530afc5(angles) {
   return angles;
 }
 
-/*
-	Name: function_be152c54
-	Namespace: namespace_3ca3c537
-	Checksum: 0x4FD50D38
-	Offset: 0x2100
-	Size: 0x4E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_be152c54() {
   if(function_61e2e743() == 400) {
     return 99;
@@ -443,15 +328,6 @@ function function_be152c54() {
   return level.doa.arenas[level.doa.current_arena].var_aad78940;
 }
 
-/*
-	Name: function_9f1a0b26
-	Namespace: namespace_3ca3c537
-	Checksum: 0x52345715
-	Offset: 0x2158
-	Size: 0x10A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9f1a0b26(var_c3479584) {
   localplayers = getlocalplayers();
   if(localplayers.size > 1) {
@@ -469,15 +345,6 @@ function function_9f1a0b26(var_c3479584) {
   return 0;
 }
 
-/*
-	Name: function_61d60e0b
-	Namespace: namespace_3ca3c537
-	Checksum: 0x87B50EE1
-	Offset: 0x2270
-	Size: 0x60
-	Parameters: 0
-	Flags: Linked
-*/
 function function_61d60e0b() {
   if(isdefined(level.doa.arenas) && level.doa.arenas.size > 0) {
     return level.doa.arenas[level.doa.current_arena].center;
@@ -485,28 +352,10 @@ function function_61d60e0b() {
   return (0, 0, 0);
 }
 
-/*
-	Name: function_d2d75f5d
-	Namespace: namespace_3ca3c537
-	Checksum: 0xA1309FCF
-	Offset: 0x22D8
-	Size: 0x2E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d2d75f5d() {
   return level.doa.arenas[level.doa.current_arena].name;
 }
 
-/*
-	Name: function_22f2039b
-	Namespace: namespace_3ca3c537
-	Checksum: 0x24E95917
-	Offset: 0x2310
-	Size: 0x8E
-	Parameters: 7
-	Flags: Linked
-*/
 function function_22f2039b(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(level.weatherfx) && isdefined(level.weatherfx[localclientnum])) {
     stopfx(localclientnum, level.weatherfx[localclientnum]);
@@ -514,28 +363,10 @@ function function_22f2039b(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_9977953
-	Namespace: namespace_3ca3c537
-	Checksum: 0xD86CD486
-	Offset: 0x23A8
-	Size: 0x54
-	Parameters: 7
-	Flags: Linked
-*/
 function function_9977953(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   setworldfogactivebank(localclientnum, 0);
 }
 
-/*
-	Name: function_836d1e22
-	Namespace: namespace_3ca3c537
-	Checksum: 0x146D6662
-	Offset: 0x2408
-	Size: 0x3A4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_836d1e22(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(level.doa.var_1a3f3152)) {
     stopradiantexploder(localclientnum, level.doa.var_1a3f3152);
@@ -573,22 +404,11 @@ function function_836d1e22(localclientnum, oldval, newval, bnewent, binitialsnap
     setworldfogactivebank(localclientnum, 0);
   }
   level.doa.var_1a3f3152 = (("fx_exploder_" + level.doa.arenas[level.doa.current_arena].name) + "_") + level.doa.var_d94564a5;
-  /#
   namespace_693feb87::debugmsg((("" + level.doa.var_1a3f3152) + "") + localclientnum);
-  # /
-    playradiantexploder(localclientnum, level.doa.var_1a3f3152);
+  playradiantexploder(localclientnum, level.doa.var_1a3f3152);
   level function_43141563(localclientnum);
 }
 
-/*
-	Name: function_43141563
-	Namespace: namespace_3ca3c537
-	Checksum: 0x402DF781
-	Offset: 0x27B8
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked
-*/
 function function_43141563(localclientnum) {
   if(isdefined(level.var_1f314fb9)) {
     [
@@ -597,25 +417,14 @@ function function_43141563(localclientnum) {
   }
 }
 
-/*
-	Name: setarena
-	Namespace: namespace_3ca3c537
-	Checksum: 0x69176B69
-	Offset: 0x2828
-	Size: 0x2EC
-	Parameters: 7
-	Flags: Linked
-*/
 function setarena(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(level.doa.current_arena == newval && level.doa.var_95e3fdf9 != -1) {
     return;
   }
   level.doa.var_708cc739 = undefined;
-  level notify(# "hash_ec7ca67b");
-  /#
+  level notify("hash_ec7ca67b");
   namespace_693feb87::debugmsg((("" + level.doa.arenas[level.doa.current_arena].name) + "") + level.doa.arenas[newval].name);
-  # /
-    level.doa.var_95e3fdf9 = level.doa.current_arena;
+  level.doa.var_95e3fdf9 = level.doa.current_arena;
   level.doa.current_arena = newval;
   if(level.doa.arenas[level.doa.current_arena].var_37d3a53b) {
     namespace_ad544aeb::function_d22ceb57(vectorscale((1, 0, 0), 75), function_61e2e743());
@@ -636,15 +445,6 @@ function setarena(localclientnum, oldval, newval, bnewent, binitialsnap, fieldna
   players[0] cameraforcedisablescriptcam(0);
 }
 
-/*
-	Name: function_986ae2b3
-	Namespace: namespace_3ca3c537
-	Checksum: 0xF75AA969
-	Offset: 0x2B20
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_986ae2b3(localclientnum) {
   var_46caea66 = (level.doa.var_1a75d02b == 1 ? vectorscale((1, 0, 0), 75) : (75, 180, 0));
   namespace_ad544aeb::function_d22ceb57(function_c530afc5(var_46caea66), function_61e2e743());

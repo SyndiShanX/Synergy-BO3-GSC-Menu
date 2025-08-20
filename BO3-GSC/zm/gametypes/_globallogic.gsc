@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\gametypes\_globallogic.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\bb_shared;
 #using scripts\shared\callbacks_shared;
@@ -34,18 +38,8 @@
 #using scripts\zm\gametypes\_weapon_utils;
 #using scripts\zm\gametypes\_weaponobjects;
 #using scripts\zm\gametypes\_weapons;
-
 #namespace globallogic;
 
-/*
-	Name: init
-	Namespace: globallogic
-	Checksum: 0x77414DF0
-	Offset: 0x1268
-	Size: 0x7E4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.language = getdvarstring("language");
   level.splitscreen = issplitscreen();
@@ -64,12 +58,10 @@ function init() {
   level.wagermatch = 0;
   level.contractsenabled = !getgametypesetting("disableContracts");
   level.contractsenabled = 0;
-  /#
   if(getdvarint("") == 1) {
     level.rankedmatch = 1;
   }
-  # /
-    level.script = tolower(getdvarstring("mapname"));
+  level.script = tolower(getdvarstring("mapname"));
   level.gametype = tolower(getdvarstring("g_gametype"));
   level.teambased = 0;
   level.teamcount = getgametypesetting("teamCount");
@@ -122,10 +114,8 @@ function init() {
   registerdvars();
   level.oldschool = getdvarint("scr_oldschool") == 1;
   if(level.oldschool) {
-    /#
     print("");
-    # /
-      setdvar("jump_height", 64);
+    setdvar("jump_height", 64);
     setdvar("jump_slowdownEnable", 0);
     setdvar("bg_fallDamageMinHeight", 256);
     setdvar("bg_fallDamageMaxHeight", 512);
@@ -144,15 +134,6 @@ function init() {
   level.get_base_weapon_param = & weapon_utils::getbaseweaponparam;
 }
 
-/*
-	Name: registerdvars
-	Namespace: globallogic
-	Checksum: 0x1122D582
-	Offset: 0x1A58
-	Size: 0x1AC
-	Parameters: 0
-	Flags: Linked
-*/
 function registerdvars() {
   if(getdvarstring("scr_oldschool") == "") {
     setdvar("scr_oldschool", "0");
@@ -173,26 +154,8 @@ function registerdvars() {
   level.fire_audio_random_max_duration = getdvarint("fire_audio_random_max_duration");
 }
 
-/*
-	Name: blank
-	Namespace: globallogic
-	Checksum: 0x46187FD1
-	Offset: 0x1C10
-	Size: 0x54
-	Parameters: 10
-	Flags: Linked
-*/
 function blank(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) {}
 
-/*
-	Name: setupcallbacks
-	Namespace: globallogic
-	Checksum: 0x5F32B867
-	Offset: 0x1C70
-	Size: 0x474
-	Parameters: 0
-	Flags: None
-*/
 function setupcallbacks() {
   level.spawnplayer = & globallogic_spawn::spawnplayer;
   level.spawnplayerprediction = & globallogic_spawn::spawnplayerprediction;
@@ -245,15 +208,6 @@ function setupcallbacks() {
   globallogic_ui::setupcallbacks();
 }
 
-/*
-	Name: precache_mp_leaderboards
-	Namespace: globallogic
-	Checksum: 0x1A3FE2AD
-	Offset: 0x20F0
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_mp_leaderboards() {
   if(sessionmodeiszombiesgame()) {
     return;
@@ -271,15 +225,6 @@ function precache_mp_leaderboards() {
   precacheleaderboards((globalleaderboards + gamemodeleaderboard) + mapleaderboard);
 }
 
-/*
-	Name: compareteambygamestat
-	Namespace: globallogic
-	Checksum: 0x3E523075
-	Offset: 0x2200
-	Size: 0xE6
-	Parameters: 4
-	Flags: Linked
-*/
 function compareteambygamestat(gamestat, teama, teamb, previous_winner_score) {
   winner = undefined;
   if(teama == "tie") {
@@ -301,15 +246,6 @@ function compareteambygamestat(gamestat, teama, teamb, previous_winner_score) {
   return winner;
 }
 
-/*
-	Name: determineteamwinnerbygamestat
-	Namespace: globallogic
-	Checksum: 0xF3CEF4BA
-	Offset: 0x22F0
-	Size: 0xE2
-	Parameters: 1
-	Flags: Linked
-*/
 function determineteamwinnerbygamestat(gamestat) {
   teamkeys = getarraykeys(level.teams);
   winner = teamkeys[0];
@@ -323,20 +259,9 @@ function determineteamwinnerbygamestat(gamestat) {
   return winner;
 }
 
-/*
-	Name: compareteambyteamscore
-	Namespace: globallogic
-	Checksum: 0x108CCFBA
-	Offset: 0x23E0
-	Size: 0xEE
-	Parameters: 3
-	Flags: Linked
-*/
 function compareteambyteamscore(teama, teamb, previous_winner_score) {
   winner = undefined;
-  teambscore = [
-    [level._getteamscore]
-  ](teamb);
+  teambscore = [[level._getteamscore]](teamb);
   if(teama == "tie") {
     winner = "tie";
     if(previous_winner_score < teambscore) {
@@ -344,9 +269,7 @@ function compareteambyteamscore(teama, teamb, previous_winner_score) {
     }
     return winner;
   }
-  teamascore = [
-    [level._getteamscore]
-  ](teama);
+  teamascore = [[level._getteamscore]](teama);
   if(teambscore == teamascore) {
     winner = "tie";
   } else {
@@ -359,21 +282,10 @@ function compareteambyteamscore(teama, teamb, previous_winner_score) {
   return winner;
 }
 
-/*
-	Name: determineteamwinnerbyteamscore
-	Namespace: globallogic
-	Checksum: 0xF50AE9D5
-	Offset: 0x24D8
-	Size: 0xDE
-	Parameters: 0
-	Flags: None
-*/
 function determineteamwinnerbyteamscore() {
   teamkeys = getarraykeys(level.teams);
   winner = teamkeys[0];
-  previous_winner_score = [
-    [level._getteamscore]
-  ](winner);
+  previous_winner_score = [[level._getteamscore]](winner);
   for (teamindex = 1; teamindex < teamkeys.size; teamindex++) {
     winner = compareteambyteamscore(winner, teamkeys[teamindex], previous_winner_score);
     if(winner != "tie") {
@@ -385,15 +297,6 @@ function determineteamwinnerbyteamscore() {
   return winner;
 }
 
-/*
-	Name: forceend
-	Namespace: globallogic
-	Checksum: 0x7C74E04D
-	Offset: 0x25C0
-	Size: 0x1B4
-	Parameters: 1
-	Flags: Linked
-*/
 function forceend(hostsucks = 0) {
   if(level.hostforcedend || level.forcedend) {
     return;
@@ -404,13 +307,11 @@ function forceend(hostsucks = 0) {
     globallogic_utils::logteamwinstring("host ended game", winner);
   } else {
     winner = globallogic_score::gethighestscoringplayer();
-    /#
     if(isdefined(winner)) {
       print("" + winner.name);
     } else {
       print("");
     }
-    # /
   }
   level.forcedend = 1;
   level.hostforcedend = 1;
@@ -428,15 +329,6 @@ function forceend(hostsucks = 0) {
   thread endgame(winner, endstring);
 }
 
-/*
-	Name: killserverpc
-	Namespace: globallogic
-	Checksum: 0xEF37A8AD
-	Offset: 0x2780
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function killserverpc() {
   if(level.hostforcedend || level.forcedend) {
     return;
@@ -447,33 +339,20 @@ function killserverpc() {
     globallogic_utils::logteamwinstring("host ended game", winner);
   } else {
     winner = globallogic_score::gethighestscoringplayer();
-    /#
     if(isdefined(winner)) {
       print("" + winner.name);
     } else {
       print("");
     }
-    # /
   }
   level.forcedend = 1;
   level.hostforcedend = 1;
   level.killserver = 1;
   endstring = & "MP_HOST_ENDED_GAME";
-  /#
   println("");
-  # /
-    thread endgame(winner, endstring);
+  thread endgame(winner, endstring);
 }
 
-/*
-	Name: someoneoneachteam
-	Namespace: globallogic
-	Checksum: 0x88491E33
-	Offset: 0x28D8
-	Size: 0x92
-	Parameters: 0
-	Flags: Linked
-*/
 function someoneoneachteam() {
   foreach(team in level.teams) {
     if(level.playercount[team] == 0) {
@@ -483,15 +362,6 @@ function someoneoneachteam() {
   return true;
 }
 
-/*
-	Name: checkifteamforfeits
-	Namespace: globallogic
-	Checksum: 0xF80F9DD
-	Offset: 0x2978
-	Size: 0x5A
-	Parameters: 1
-	Flags: Linked
-*/
 function checkifteamforfeits(team) {
   if(!level.everexisted[team]) {
     return false;
@@ -502,15 +372,6 @@ function checkifteamforfeits(team) {
   return false;
 }
 
-/*
-	Name: checkforanyteamforfeit
-	Namespace: globallogic
-	Checksum: 0x764F3F11
-	Offset: 0x29E0
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function checkforanyteamforfeit() {
   foreach(team in level.teams) {
     if(checkifteamforfeits(team)) {
@@ -521,15 +382,6 @@ function checkforanyteamforfeit() {
   return false;
 }
 
-/*
-	Name: dospawnqueueupdates
-	Namespace: globallogic
-	Checksum: 0x757A8050
-	Offset: 0x2A90
-	Size: 0x9A
-	Parameters: 0
-	Flags: Linked
-*/
 function dospawnqueueupdates() {
   foreach(team in level.teams) {
     if(level.spawnqueuemodified[team]) {
@@ -540,28 +392,10 @@ function dospawnqueueupdates() {
   }
 }
 
-/*
-	Name: isteamalldead
-	Namespace: globallogic
-	Checksum: 0xF3DECE44
-	Offset: 0x2B38
-	Size: 0x3E
-	Parameters: 1
-	Flags: Linked
-*/
 function isteamalldead(team) {
   return level.everexisted[team] && !level.alivecount[team] && !level.playerlives[team];
 }
 
-/*
-	Name: areallteamsdead
-	Namespace: globallogic
-	Checksum: 0x4A5686A4
-	Offset: 0x2B80
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function areallteamsdead() {
   foreach(team in level.teams) {
     if(!isteamalldead(team)) {
@@ -571,15 +405,6 @@ function areallteamsdead() {
   return true;
 }
 
-/*
-	Name: alldeadteamcount
-	Namespace: globallogic
-	Checksum: 0x14E870B1
-	Offset: 0x2C20
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function alldeadteamcount() {
   count = 0;
   foreach(team in level.teams) {
@@ -590,15 +415,6 @@ function alldeadteamcount() {
   return count;
 }
 
-/*
-	Name: dodeadeventupdates
-	Namespace: globallogic
-	Checksum: 0x9965D25E
-	Offset: 0x2CD0
-	Size: 0x224
-	Parameters: 0
-	Flags: Linked
-*/
 function dodeadeventupdates() {
   if(level.teambased) {
     if(areallteamsdead()) {
@@ -637,28 +453,10 @@ function dodeadeventupdates() {
   return false;
 }
 
-/*
-	Name: isonlyoneleftaliveonteam
-	Namespace: globallogic
-	Checksum: 0xFFF5424A
-	Offset: 0x2F00
-	Size: 0x4E
-	Parameters: 1
-	Flags: Linked
-*/
 function isonlyoneleftaliveonteam(team) {
   return level.lastalivecount[team] > 1 && level.alivecount[team] == 1 && level.playerlives[team] == 1;
 }
 
-/*
-	Name: doonelefteventupdates
-	Namespace: globallogic
-	Checksum: 0x771A1452
-	Offset: 0x2F58
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function doonelefteventupdates() {
   if(level.teambased) {
     foreach(team in level.teams) {
@@ -678,43 +476,32 @@ function doonelefteventupdates() {
   return false;
 }
 
-/*
-	Name: updategameevents
-	Namespace: globallogic
-	Checksum: 0x79B2DE8B
-	Offset: 0x3080
-	Size: 0x1E0
-	Parameters: 0
-	Flags: Linked
-*/
 function updategameevents() {
-  /#
   if(getdvarint("") == 1) {
     return;
   }
-  # /
-    if(level.rankedmatch || level.wagermatch || level.leaguematch && !level.ingraceperiod) {
-      if(level.teambased) {
-        if(!level.gameforfeited) {
-          if(game["state"] == "playing" && checkforanyteamforfeit()) {
-            return;
-          }
-        } else if(someoneoneachteam()) {
-          level.gameforfeited = 0;
-          level notify(# "hash_577494dc");
+  if(level.rankedmatch || level.wagermatch || level.leaguematch && !level.ingraceperiod) {
+    if(level.teambased) {
+      if(!level.gameforfeited) {
+        if(game["state"] == "playing" && checkforanyteamforfeit()) {
+          return;
         }
-      } else {
-        if(!level.gameforfeited) {
-          if(util::totalplayercount() == 1 && level.maxplayercount > 1) {
-            thread[[level.onforfeit]]();
-            return;
-          }
-        } else if(util::totalplayercount() > 1) {
-          level.gameforfeited = 0;
-          level notify(# "hash_577494dc");
+      } else if(someoneoneachteam()) {
+        level.gameforfeited = 0;
+        level notify("hash_577494dc");
+      }
+    } else {
+      if(!level.gameforfeited) {
+        if(util::totalplayercount() == 1 && level.maxplayercount > 1) {
+          thread[[level.onforfeit]]();
+          return;
         }
+      } else if(util::totalplayercount() > 1) {
+        level.gameforfeited = 0;
+        level notify("hash_577494dc");
       }
     }
+  }
   if(!level.playerqueuedrespawn && !level.numlives && !level.inovertime) {
     return;
   }
@@ -732,15 +519,6 @@ function updategameevents() {
   }
 }
 
-/*
-	Name: matchstarttimer
-	Namespace: globallogic
-	Checksum: 0x374702E7
-	Offset: 0x3268
-	Size: 0x2CC
-	Parameters: 0
-	Flags: Linked
-*/
 function matchstarttimer() {
   matchstarttext = hud::createserverfontstring("objective", 1.5);
   matchstarttext hud::setpoint("CENTER", "CENTER", 0, -40);
@@ -773,28 +551,10 @@ function matchstarttimer() {
   matchstarttext hud::destroyelem();
 }
 
-/*
-	Name: matchstarttimerskip
-	Namespace: globallogic
-	Checksum: 0x5B3D11AE
-	Offset: 0x3540
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function matchstarttimerskip() {
   visionsetnaked(getdvarstring("mapname"), 0);
 }
 
-/*
-	Name: notifyteamwavespawn
-	Namespace: globallogic
-	Checksum: 0x41B6E911
-	Offset: 0x3580
-	Size: 0x76
-	Parameters: 2
-	Flags: Linked
-*/
 function notifyteamwavespawn(team, time) {
   if((time - level.lastwave[team]) > (level.wavedelay[team] * 1000)) {
     level notify("wave_respawn_" + team);
@@ -803,17 +563,8 @@ function notifyteamwavespawn(team, time) {
   }
 }
 
-/*
-	Name: wavespawntimer
-	Namespace: globallogic
-	Checksum: 0xDAE4FACD
-	Offset: 0x3600
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function wavespawntimer() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   while (game["state"] == "playing") {
     time = gettime();
     foreach(team in level.teams) {
@@ -823,63 +574,25 @@ function wavespawntimer() {
   }
 }
 
-/*
-	Name: hostidledout
-	Namespace: globallogic
-	Checksum: 0xF83B0B9B
-	Offset: 0x36D8
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function hostidledout() {
   hostplayer = util::gethostplayer();
-  /#
   if(getdvarint("") == 1 || getdvarint("") == 1) {
     return false;
   }
-  # /
-    if(isdefined(hostplayer) && !hostplayer.hasspawned && !isdefined(hostplayer.selectedclass)) {
-      return true;
-    }
+  if(isdefined(hostplayer) && !hostplayer.hasspawned && !isdefined(hostplayer.selectedclass)) {
+    return true;
+  }
   return false;
 }
 
-/*
-	Name: incrementmatchcompletionstat
-	Namespace: globallogic
-	Checksum: 0x564E3F0E
-	Offset: 0x3788
-	Size: 0x54
-	Parameters: 3
-	Flags: Linked
-*/
 function incrementmatchcompletionstat(gamemode, playedorhosted, stat) {
   self adddstat("gameHistory", gamemode, "modeHistory", playedorhosted, stat, 1);
 }
 
-/*
-	Name: setmatchcompletionstat
-	Namespace: globallogic
-	Checksum: 0x7258B17E
-	Offset: 0x37E8
-	Size: 0x54
-	Parameters: 3
-	Flags: None
-*/
 function setmatchcompletionstat(gamemode, playedorhosted, stat) {
   self setdstat("gameHistory", gamemode, "modeHistory", playedorhosted, stat, 1);
 }
 
-/*
-	Name: displayroundend
-	Namespace: globallogic
-	Checksum: 0x207AE4AC
-	Offset: 0x3848
-	Size: 0x2F4
-	Parameters: 2
-	Flags: Linked
-*/
 function displayroundend(winner, endreasontext) {
   if(level.displayroundendtext) {
     if(winner == "tie") {
@@ -923,15 +636,6 @@ function displayroundend(winner, endreasontext) {
   }
 }
 
-/*
-	Name: displayroundswitch
-	Namespace: globallogic
-	Checksum: 0x1453A835
-	Offset: 0x3B48
-	Size: 0x2A4
-	Parameters: 2
-	Flags: Linked
-*/
 function displayroundswitch(winner, endreasontext) {
   switchtype = level.halftimetype;
   if(switchtype == "halftime") {
@@ -979,15 +683,6 @@ function displayroundswitch(winner, endreasontext) {
   roundendwait(level.halftimeroundenddelay, 0);
 }
 
-/*
-	Name: displaygameend
-	Namespace: globallogic
-	Checksum: 0xA7C46E30
-	Offset: 0x3DF8
-	Size: 0x484
-	Parameters: 2
-	Flags: Linked
-*/
 function displaygameend(winner, endreasontext) {
   setmatchtalkflag("EveryoneHearsEveryone", 1);
   setmatchflag("cg_drawSpectatorMessages", 0);
@@ -1058,15 +753,6 @@ function displaygameend(winner, endreasontext) {
   roundendwait(level.postroundtime, 1);
 }
 
-/*
-	Name: getendreasontext
-	Namespace: globallogic
-	Checksum: 0x3913C709
-	Offset: 0x4288
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function getendreasontext() {
   if(util::hitroundlimit() || util::hitroundwinlimit()) {
     return game["strings"]["round_limit_reached"];
@@ -1083,32 +769,14 @@ function getendreasontext() {
   return game["strings"]["time_limit_reached"];
 }
 
-/*
-	Name: resetoutcomeforallplayers
-	Namespace: globallogic
-	Checksum: 0xE3EDBFBF
-	Offset: 0x4348
-	Size: 0x6A
-	Parameters: 0
-	Flags: None
-*/
 function resetoutcomeforallplayers() {
   players = level.players;
   for (index = 0; index < players.size; index++) {
     player = players[index];
-    player notify(# "reset_outcome");
+    player notify("reset_outcome");
   }
 }
 
-/*
-	Name: startnextround
-	Namespace: globallogic
-	Checksum: 0x92AC3477
-	Offset: 0x43C0
-	Size: 0x25C
-	Parameters: 2
-	Flags: Linked
-*/
 function startnextround(winner, endreasontext) {
   if(!util::isoneround()) {
     displayroundend(winner, endreasontext);
@@ -1140,15 +808,6 @@ function startnextround(winner, endreasontext) {
   return false;
 }
 
-/*
-	Name: getgamelength
-	Namespace: globallogic
-	Checksum: 0x96D9CED
-	Offset: 0x4628
-	Size: 0x7A
-	Parameters: 0
-	Flags: Linked
-*/
 function getgamelength() {
   if(!level.timelimit || level.forcedend) {
     gamelength = globallogic_utils::gettimepassed() / 1000;
@@ -1159,15 +818,6 @@ function getgamelength() {
   return gamelength;
 }
 
-/*
-	Name: gamehistoryplayerquit
-	Namespace: globallogic
-	Checksum: 0x7FA76E0A
-	Offset: 0x46B0
-	Size: 0x132
-	Parameters: 0
-	Flags: Linked
-*/
 function gamehistoryplayerquit() {
   if(!gamemodeismode(0)) {
     return;
@@ -1187,15 +837,6 @@ function gamehistoryplayerquit() {
   wait(1);
 }
 
-/*
-	Name: recordzmendgamecomscoreevent
-	Namespace: globallogic
-	Checksum: 0x98A5A066
-	Offset: 0x47F0
-	Size: 0x6E
-	Parameters: 1
-	Flags: Linked
-*/
 function recordzmendgamecomscoreevent(winner) {
   players = level.players;
   for (index = 0; index < players.size; index++) {
@@ -1203,15 +844,6 @@ function recordzmendgamecomscoreevent(winner) {
   }
 }
 
-/*
-	Name: endgame
-	Namespace: globallogic
-	Checksum: 0x243B0053
-	Offset: 0x4868
-	Size: 0x834
-	Parameters: 2
-	Flags: Linked
-*/
 function endgame(winner, endreasontext) {
   if(game["state"] == "postgame" || level.gameended) {
     return;
@@ -1235,7 +867,7 @@ function endgame(winner, endreasontext) {
   level.gameended = 1;
   setdvar("g_gameEnded", 1);
   level.ingraceperiod = 0;
-  level notify(# "game_ended");
+  level notify("game_ended");
   level.allowbattlechatter["bc"] = 0;
   globallogic_audio::flushdialog();
   if(!isdefined(game["overtime_round"]) || util::waslastround()) {
@@ -1321,30 +953,19 @@ function endgame(winner, endreasontext) {
     player = players[index];
     recordplayerstats(player, "presentAtEnd", 1);
     player closeingamemenu();
-    player notify(# "reset_outcome");
+    player notify("reset_outcome");
     player thread[[level.spawnintermission]]();
     player setclientuivisibilityflag("hud_visible", 1);
     player setclientuivisibilityflag("weapon_hud_visible", 1);
   }
-  level notify(# "sfade");
-  /#
+  level notify("sfade");
   print("");
-  # /
-    if(!isdefined(level.skipgameend) || !level.skipgameend) {
-      wait(5);
-    }
+  if(!isdefined(level.skipgameend) || !level.skipgameend) {
+    wait(5);
+  }
   exitlevel(0);
 }
 
-/*
-	Name: bbplayermatchend
-	Namespace: globallogic
-	Checksum: 0xC05721F3
-	Offset: 0x50A8
-	Size: 0xC0
-	Parameters: 3
-	Flags: Linked
-*/
 function bbplayermatchend(gamelength, endreasonstring, gameover) {
   playerrank = getplacementforplayer(self);
   totaltimeplayed = 0;
@@ -1357,15 +978,6 @@ function bbplayermatchend(gamelength, endreasonstring, gameover) {
   xuid = self getxuid();
 }
 
-/*
-	Name: roundendwait
-	Namespace: globallogic
-	Checksum: 0x29A66835
-	Offset: 0x5170
-	Size: 0x1AE
-	Parameters: 2
-	Flags: Linked
-*/
 function roundendwait(defaultdelay, matchbonus) {
   notifiesdone = 0;
   while (!notifiesdone) {
@@ -1381,11 +993,11 @@ function roundendwait(defaultdelay, matchbonus) {
   }
   if(!matchbonus) {
     wait(defaultdelay);
-    level notify(# "round_end_done");
+    level notify("round_end_done");
     return;
   }
   wait(defaultdelay / 2);
-  level notify(# "give_match_bonus");
+  level notify("give_match_bonus");
   wait(defaultdelay / 2);
   notifiesdone = 0;
   while (!notifiesdone) {
@@ -1399,31 +1011,13 @@ function roundendwait(defaultdelay, matchbonus) {
     }
     wait(0.5);
   }
-  level notify(# "round_end_done");
+  level notify("round_end_done");
 }
 
-/*
-	Name: roundenddof
-	Namespace: globallogic
-	Checksum: 0xF84821DE
-	Offset: 0x5328
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function roundenddof(time) {
   self setdepthoffield(0, 128, 512, 4000, 6, 1.8);
 }
 
-/*
-	Name: checktimelimit
-	Namespace: globallogic
-	Checksum: 0xB875B600
-	Offset: 0x5370
-	Size: 0x130
-	Parameters: 0
-	Flags: Linked
-*/
 function checktimelimit() {
   if(isdefined(level.timelimitoverride) && level.timelimitoverride) {
     return;
@@ -1452,20 +1046,9 @@ function checktimelimit() {
   if(timeleft > 0) {
     return;
   }
-  [
-    [level.ontimelimit]
-  ]();
+  [[level.ontimelimit]]();
 }
 
-/*
-	Name: allteamsunderscorelimit
-	Namespace: globallogic
-	Checksum: 0x23C80FA6
-	Offset: 0x54A8
-	Size: 0x9A
-	Parameters: 0
-	Flags: Linked
-*/
 function allteamsunderscorelimit() {
   foreach(team in level.teams) {
     if(game["teamScores"][team] >= level.scorelimit) {
@@ -1475,15 +1058,6 @@ function allteamsunderscorelimit() {
   return true;
 }
 
-/*
-	Name: checkscorelimit
-	Namespace: globallogic
-	Checksum: 0x30C86BC2
-	Offset: 0x5550
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function checkscorelimit() {
   if(game["state"] != "playing") {
     return false;
@@ -1503,27 +1077,16 @@ function checkscorelimit() {
       return false;
     }
   }
-  [
-    [level.onscorelimit]
-  ]();
+  [[level.onscorelimit]]();
 }
 
-/*
-	Name: updategametypedvars
-	Namespace: globallogic
-	Checksum: 0x5D993022
-	Offset: 0x5600
-	Size: 0x1F2
-	Parameters: 0
-	Flags: Linked
-*/
 function updategametypedvars() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   while (game["state"] == "playing") {
     roundlimit = math::clamp(getgametypesetting("roundLimit"), level.roundlimitmin, level.roundlimitmax);
     if(roundlimit != level.roundlimit) {
       level.roundlimit = roundlimit;
-      level notify(# "update_roundlimit");
+      level notify("update_roundlimit");
     }
     timelimit = [
       [level.gettimelimit]
@@ -1531,14 +1094,14 @@ function updategametypedvars() {
     if(timelimit != level.timelimit) {
       level.timelimit = timelimit;
       setdvar("ui_timelimit", level.timelimit);
-      level notify(# "update_timelimit");
+      level notify("update_timelimit");
     }
     thread checktimelimit();
     scorelimit = math::clamp(getgametypesetting("scoreLimit"), level.scorelimitmin, level.scorelimitmax);
     if(scorelimit != level.scorelimit) {
       level.scorelimit = scorelimit;
       setdvar("ui_scorelimit", level.scorelimit);
-      level notify(# "update_scorelimit");
+      level notify("update_scorelimit");
     }
     thread checkscorelimit();
     if(isdefined(level.starttime)) {
@@ -1551,15 +1114,6 @@ function updategametypedvars() {
   }
 }
 
-/*
-	Name: removedisconnectedplayerfromplacement
-	Namespace: globallogic
-	Checksum: 0xF8834A38
-	Offset: 0x5800
-	Size: 0x1D6
-	Parameters: 0
-	Flags: Linked
-*/
 function removedisconnectedplayerfromplacement() {
   offset = 0;
   numplayers = level.placement["all"].size;
@@ -1576,32 +1130,19 @@ function removedisconnectedplayerfromplacement() {
     return;
   }
   level.placement["all"][numplayers - 1] = undefined;
-  /#
   assert(level.placement[""].size == (numplayers - 1));
-  # /
-    /#
   globallogic_utils::assertproperplacement();
-  # /
-    updateteamplacement();
+  updateteamplacement();
   if(level.teambased) {
     return;
   }
   numplayers = level.placement["all"].size;
   for (i = 0; i < numplayers; i++) {
     player = level.placement["all"][i];
-    player notify(# "update_outcome");
+    player notify("update_outcome");
   }
 }
 
-/*
-	Name: updateplacement
-	Namespace: globallogic
-	Checksum: 0xFD226142
-	Offset: 0x59E0
-	Size: 0x26C
-	Parameters: 0
-	Flags: Linked
-*/
 function updateplacement() {
   if(!level.players.size) {
     return;
@@ -1622,21 +1163,10 @@ function updateplacement() {
     placementall[j + 1] = player;
   }
   level.placement["all"] = placementall;
-  /#
   globallogic_utils::assertproperplacement();
-  # /
-    updateteamplacement();
+  updateteamplacement();
 }
 
-/*
-	Name: updateteamplacement
-	Namespace: globallogic
-	Checksum: 0x524A17D8
-	Offset: 0x5C58
-	Size: 0x1E0
-	Parameters: 0
-	Flags: Linked
-*/
 function updateteamplacement() {
   foreach(team in level.teams) {
     placement[team] = [];
@@ -1659,15 +1189,6 @@ function updateteamplacement() {
   }
 }
 
-/*
-	Name: getplacementforplayer
-	Namespace: globallogic
-	Checksum: 0xFF717C0D
-	Offset: 0x5E40
-	Size: 0xB2
-	Parameters: 1
-	Flags: Linked
-*/
 function getplacementforplayer(player) {
   updateplacement();
   playerrank = -1;
@@ -1681,15 +1202,6 @@ function getplacementforplayer(player) {
   return playerrank;
 }
 
-/*
-	Name: sortdeadplayers
-	Namespace: globallogic
-	Checksum: 0xA9C3C508
-	Offset: 0x5F00
-	Size: 0x19A
-	Parameters: 1
-	Flags: Linked
-*/
 function sortdeadplayers(team) {
   if(!level.playerqueuedrespawn) {
     return;
@@ -1709,15 +1221,6 @@ function sortdeadplayers(team) {
   }
 }
 
-/*
-	Name: totalalivecount
-	Namespace: globallogic
-	Checksum: 0x2DFC2AAD
-	Offset: 0x60A8
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function totalalivecount() {
   count = 0;
   foreach(team in level.teams) {
@@ -1726,15 +1229,6 @@ function totalalivecount() {
   return count;
 }
 
-/*
-	Name: totalplayerlives
-	Namespace: globallogic
-	Checksum: 0xEEC8A364
-	Offset: 0x6158
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function totalplayerlives() {
   count = 0;
   foreach(team in level.teams) {
@@ -1743,15 +1237,6 @@ function totalplayerlives() {
   return count;
 }
 
-/*
-	Name: initteamvariables
-	Namespace: globallogic
-	Checksum: 0xB4F4B9BE
-	Offset: 0x6208
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function initteamvariables(team) {
   if(!isdefined(level.alivecount)) {
     level.alivecount = [];
@@ -1765,15 +1250,6 @@ function initteamvariables(team) {
   resetteamvariables(team);
 }
 
-/*
-	Name: resetteamvariables
-	Namespace: globallogic
-	Checksum: 0x1DA42165
-	Offset: 0x62B0
-	Size: 0xAA
-	Parameters: 1
-	Flags: Linked
-*/
 function resetteamvariables(team) {
   level.playercount[team] = 0;
   level.botscount[team] = 0;
@@ -1786,19 +1262,10 @@ function resetteamvariables(team) {
   level.spawnqueuemodified[team] = 0;
 }
 
-/*
-	Name: updateteamstatus
-	Namespace: globallogic
-	Checksum: 0xEA1D9F5E
-	Offset: 0x6368
-	Size: 0x3C4
-	Parameters: 0
-	Flags: Linked
-*/
 function updateteamstatus() {
-  level notify(# "updating_team_status");
-  level endon(# "updating_team_status");
-  level endon(# "game_ended");
+  level notify("updating_team_status");
+  level endon("updating_team_status");
+  level endon("game_ended");
   waittillframeend();
   wait(0);
   if(game["state"] == "postgame") {
@@ -1852,22 +1319,11 @@ function updateteamstatus() {
   level updategameevents();
 }
 
-/*
-	Name: checkteamscorelimitsoon
-	Namespace: globallogic
-	Checksum: 0x82EFE007
-	Offset: 0x6738
-	Size: 0xB2
-	Parameters: 1
-	Flags: Linked
-*/
 function checkteamscorelimitsoon(team) {
-  /#
   assert(isdefined(team));
-  # /
-    if(level.scorelimit <= 0) {
-      return;
-    }
+  if(level.scorelimit <= 0) {
+    return;
+  }
   if(!level.teambased) {
     return;
   }
@@ -1876,26 +1332,15 @@ function checkteamscorelimitsoon(team) {
   }
   timeleft = globallogic_utils::getestimatedtimeuntilscorelimit(team);
   if(timeleft < 1) {
-    level notify(# "match_ending_soon", "score");
+    level notify("match_ending_soon", "score");
   }
 }
 
-/*
-	Name: checkplayerscorelimitsoon
-	Namespace: globallogic
-	Checksum: 0x4D2D5D52
-	Offset: 0x67F8
-	Size: 0xAA
-	Parameters: 0
-	Flags: None
-*/
 function checkplayerscorelimitsoon() {
-  /#
   assert(isplayer(self));
-  # /
-    if(level.scorelimit <= 0) {
-      return;
-    }
+  if(level.scorelimit <= 0) {
+    return;
+  }
   if(level.teambased) {
     return;
   }
@@ -1904,19 +1349,10 @@ function checkplayerscorelimitsoon() {
   }
   timeleft = globallogic_utils::getestimatedtimeuntilscorelimit(undefined);
   if(timeleft < 1) {
-    level notify(# "match_ending_soon", "score");
+    level notify("match_ending_soon", "score");
   }
 }
 
-/*
-	Name: startgame
-	Namespace: globallogic
-	Checksum: 0x402E68EC
-	Offset: 0x68B0
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function startgame() {
   thread globallogic_utils::gametimer();
   level.timerstopped = 0;
@@ -1928,7 +1364,7 @@ function startgame() {
   setmatchtalkflag("DeadHearKiller", level.voip.deadhearkiller);
   setmatchtalkflag("KillersHearVictim", level.voip.killershearvictim);
   prematchperiod();
-  level notify(# "prematch_over");
+  level notify("prematch_over");
   thread graceperiod();
   thread watchmatchendingsoon();
   thread globallogic_audio::musiccontroller();
@@ -1936,29 +1372,11 @@ function startgame() {
   recordmatchbegin();
 }
 
-/*
-	Name: waitforplayers
-	Namespace: globallogic
-	Checksum: 0x99EC1590
-	Offset: 0x6A70
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function waitforplayers() {}
 
-/*
-	Name: prematchperiod
-	Namespace: globallogic
-	Checksum: 0x4E687BBF
-	Offset: 0x6A80
-	Size: 0x122
-	Parameters: 0
-	Flags: Linked
-*/
 function prematchperiod() {
   setmatchflag("hud_hardcore", level.hardcoremode);
-  level endon(# "game_ended");
+  level endon("game_ended");
   if(level.prematchperiod > 0) {
     thread matchstarttimer();
     waitforplayers();
@@ -1977,17 +1395,8 @@ function prematchperiod() {
   }
 }
 
-/*
-	Name: graceperiod
-	Namespace: globallogic
-	Checksum: 0xDB3433F1
-	Offset: 0x6BB0
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function graceperiod() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   if(isdefined(level.graceperiodfunc)) {
     [
       [level.graceperiodfunc]
@@ -1995,7 +1404,7 @@ function graceperiod() {
   } else {
     wait(level.graceperiod);
   }
-  level notify(# "grace_period_ending");
+  level notify("grace_period_ending");
   wait(0.05);
   level.ingraceperiod = 0;
   if(game["state"] != "playing") {
@@ -2013,41 +1422,14 @@ function graceperiod() {
   level thread updateteamstatus();
 }
 
-/*
-	Name: watchmatchendingsoon
-	Namespace: globallogic
-	Checksum: 0xC1844E3
-	Offset: 0x6D08
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function watchmatchendingsoon() {
   setdvar("xblive_matchEndingSoon", 0);
-  level waittill(# "match_ending_soon", reason);
+  level waittill("match_ending_soon", reason);
   setdvar("xblive_matchEndingSoon", 1);
 }
 
-/*
-	Name: assertteamvariables
-	Namespace: globallogic
-	Checksum: 0x99EC1590
-	Offset: 0x6D68
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function assertteamvariables() {}
 
-/*
-	Name: anyteamhaswavedelay
-	Namespace: globallogic
-	Checksum: 0xD2E37D0C
-	Offset: 0x6D78
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function anyteamhaswavedelay() {
   foreach(team in level.teams) {
     if(level.wavedelay[team]) {
@@ -2057,15 +1439,6 @@ function anyteamhaswavedelay() {
   return false;
 }
 
-/*
-	Name: callback_startgametype
-	Namespace: globallogic
-	Checksum: 0x687CEBEB
-	Offset: 0x6E10
-	Size: 0x138C
-	Parameters: 0
-	Flags: Linked
-*/
 function callback_startgametype() {
   level.prematchperiod = 0;
   level.intermission = 0;
@@ -2084,14 +1457,12 @@ function callback_startgametype() {
     if(!isdefined(game["defenders"])) {
       game["defenders"] = "axis";
     }
-    /#
     assert(game[""] != game[""]);
-    # /
-      foreach(team in level.teams) {
-        if(!isdefined(game[team])) {
-          game[team] = "pmc";
-        }
+    foreach(team in level.teams) {
+      if(!isdefined(game[team])) {
+        game[team] = "pmc";
       }
+    }
     if(!isdefined(game["state"])) {
       game["state"] = "playing";
     }
@@ -2172,12 +1543,10 @@ function callback_startgametype() {
   level.hostforcedend = 0;
   level.hardcoremode = getgametypesetting("hardcoreMode");
   if(level.hardcoremode) {
-    /#
     print("");
-    # /
-      if(!isdefined(level.friendlyfiredelaytime)) {
-        level.friendlyfiredelaytime = 0;
-      }
+    if(!isdefined(level.friendlyfiredelaytime)) {
+      level.friendlyfiredelaytime = 0;
+    }
   }
   if(getdvarstring("scr_max_rank") == "") {
     setdvar("scr_max_rank", "0");
@@ -2221,7 +1590,7 @@ function callback_startgametype() {
   level.voip.everyonehearseveryone = getgametypesetting("voipEveryoneHearsEveryone");
   level.voip.deadhearkiller = getgametypesetting("voipDeadHearKiller");
   level.voip.killershearvictim = getgametypesetting("voipKillersHearVictim");
-  callback::callback(# "hash_cc62acca");
+  callback::callback("hash_cc62acca");
   level.prematchperiod = 0;
   level.persistentdatainfo = [];
   level.maxrecentstats = 10;
@@ -2280,16 +1649,13 @@ function callback_startgametype() {
     setdvar("scr_game_friendlyFireDelay", 1);
   }
   level.friendlyfiredelay = getdvarint("scr_game_friendlyFireDelay");
-  [
-    [level.onstartgametype]
-  ]();
+  [[level.onstartgametype]]();
   if(getdvarint("custom_killstreak_mode") == 1) {
     level.killstreaksenabled = 0;
   }
   thread startgame();
   level thread updategametypedvars();
   level thread simple_hostmigration::updatehostmigrationdata();
-  /#
   if(getdvarint("") == 1) {
     level.skipgameend = 1;
     level.roundlimit = 1;
@@ -2299,38 +1665,17 @@ function callback_startgametype() {
   if(getdvarint("") == 1) {
     thread forcedebughostmigration();
   }
-  # /
 }
 
-/*
-	Name: forcedebughostmigration
-	Namespace: globallogic
-	Checksum: 0x7E39C948
-	Offset: 0x81A8
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function forcedebughostmigration() {
-  /#
   while (true) {
     hostmigration::waittillhostmigrationdone();
     wait(60);
     starthostmigration();
     hostmigration::waittillhostmigrationdone();
   }
-  # /
 }
 
-/*
-	Name: registerfriendlyfiredelay
-	Namespace: globallogic
-	Checksum: 0x878B2EBE
-	Offset: 0x8200
-	Size: 0x10C
-	Parameters: 4
-	Flags: Linked
-*/
 function registerfriendlyfiredelay(dvarstring, defaultvalue, minvalue, maxvalue) {
   dvarstring = ("scr_" + dvarstring) + "_friendlyFireDelayTime";
   if(getdvarstring(dvarstring) == "") {
@@ -2344,15 +1689,6 @@ function registerfriendlyfiredelay(dvarstring, defaultvalue, minvalue, maxvalue)
   level.friendlyfiredelaytime = getdvarint(dvarstring);
 }
 
-/*
-	Name: checkroundswitch
-	Namespace: globallogic
-	Checksum: 0xA17D99BA
-	Offset: 0x8318
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function checkroundswitch() {
   if(!isdefined(level.roundswitch) || !level.roundswitch) {
     return false;
@@ -2360,44 +1696,24 @@ function checkroundswitch() {
   if(!isdefined(level.onroundswitch)) {
     return false;
   }
-  /#
   assert(game[""] > 0);
-  # /
-    if((game["roundsplayed"] % level.roundswitch) == 0) {
-      [
-        [level.onroundswitch]
-      ]();
-      return true;
-    }
+  if((game["roundsplayed"] % level.roundswitch) == 0) {
+    [
+      [level.onroundswitch]
+    ]();
+    return true;
+  }
   return false;
 }
 
-/*
-	Name: listenforgameend
-	Namespace: globallogic
-	Checksum: 0xB8DC60C8
-	Offset: 0x83B0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function listenforgameend() {
-  self waittill(# "host_sucks_end_game");
+  self waittill("host_sucks_end_game");
   level.skipvote = 1;
   if(!level.gameended) {
     level thread forceend(1);
   }
 }
 
-/*
-	Name: getkillstreaks
-	Namespace: globallogic
-	Checksum: 0xEE99FF5
-	Offset: 0x83F8
-	Size: 0x128
-	Parameters: 1
-	Flags: Linked
-*/
 function getkillstreaks(player) {
   for (killstreaknum = 0; killstreaknum < level.maxkillstreaks; killstreaknum++) {
     killstreak[killstreaknum] = "killstreak_null";
@@ -2414,23 +1730,12 @@ function getkillstreaks(player) {
   return killstreak;
 }
 
-/*
-	Name: updaterankedmatch
-	Namespace: globallogic
-	Checksum: 0xCBC8A627
-	Offset: 0x8528
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function updaterankedmatch(winner) {
   if(level.rankedmatch) {
     if(hostidledout()) {
       level.hostforcedend = 1;
-      /#
       print("");
-      # /
-        endlobby();
+      endlobby();
     }
   }
 }

@@ -1,49 +1,25 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\player_shared.gsc
+*************************************************/
+
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace player;
 
-/*
-	Name: __init__sytem__
-	Namespace: player
-	Checksum: 0x662C3511
-	Offset: 0x200
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("player", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: player
-	Checksum: 0x770BA8EB
-	Offset: 0x240
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_spawned( & on_player_spawned);
   clientfield::register("world", "gameplay_started", 4000, 1, "int");
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: player
-	Checksum: 0x36853D18
-	Offset: 0x2A0
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   mapname = getdvarstring("mapname");
   if(mapname === "core_frontend") {
@@ -61,19 +37,10 @@ function on_player_spawned() {
   }
 }
 
-/*
-	Name: last_valid_position
-	Namespace: player
-	Checksum: 0xE399B5E8
-	Offset: 0x3D8
-	Size: 0x22C
-	Parameters: 0
-	Flags: Linked
-*/
 function last_valid_position() {
-  self endon(# "disconnect");
-  self notify(# "stop_last_valid_position");
-  self endon(# "stop_last_valid_position");
+  self endon("disconnect");
+  self notify("stop_last_valid_position");
+  self endon("stop_last_valid_position");
   while (!isdefined(self.last_valid_position)) {
     self.last_valid_position = getclosestpointonnavmesh(self.origin, 2048, 0);
     wait(0.1);
@@ -105,15 +72,6 @@ function last_valid_position() {
   }
 }
 
-/*
-	Name: take_weapons
-	Namespace: player
-	Checksum: 0xBA0B2581
-	Offset: 0x610
-	Size: 0x212
-	Parameters: 0
-	Flags: Linked
-*/
 function take_weapons() {
   if(!(isdefined(self.gun_removed) && self.gun_removed)) {
     self.gun_removed = 1;
@@ -146,15 +104,6 @@ function take_weapons() {
   }
 }
 
-/*
-	Name: generate_weapon_data
-	Namespace: player
-	Checksum: 0xE3A5CC14
-	Offset: 0x830
-	Size: 0x234
-	Parameters: 0
-	Flags: None
-*/
 function generate_weapon_data() {
   self._generated_weapons = [];
   if(!isdefined(self._generated_current_weapon)) {
@@ -188,15 +137,6 @@ function generate_weapon_data() {
   }
 }
 
-/*
-	Name: give_back_weapons
-	Namespace: player
-	Checksum: 0x45CFC367
-	Offset: 0xA70
-	Size: 0x176
-	Parameters: 1
-	Flags: Linked
-*/
 function give_back_weapons(b_immediate = 0) {
   if(isdefined(self._weapons)) {
     foreach(weapondata in self._weapons) {
@@ -216,15 +156,6 @@ function give_back_weapons(b_immediate = 0) {
   self.gun_removed = undefined;
 }
 
-/*
-	Name: get_weapondata
-	Namespace: player
-	Checksum: 0xD3F45951
-	Offset: 0xBF0
-	Size: 0x30A
-	Parameters: 1
-	Flags: Linked
-*/
 function get_weapondata(weapon) {
   weapondata = [];
   if(!isdefined(weapon)) {
@@ -264,15 +195,6 @@ function get_weapondata(weapon) {
   return weapondata;
 }
 
-/*
-	Name: weapondata_give
-	Namespace: player
-	Checksum: 0x644277D1
-	Offset: 0xF08
-	Size: 0x264
-	Parameters: 1
-	Flags: Linked
-*/
 function weapondata_give(weapondata) {
   weapon = util::get_weapon_by_name(weapondata["weapon"]);
   self giveweapon(weapon, weapondata["renderOptions"], weapondata["acvi"]);
@@ -298,15 +220,6 @@ function weapondata_give(weapondata) {
   }
 }
 
-/*
-	Name: switch_to_primary_weapon
-	Namespace: player
-	Checksum: 0xD1E657B6
-	Offset: 0x1178
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function switch_to_primary_weapon(b_immediate = 0) {
   if(is_valid_weapon(self.primaryloadoutweapon)) {
     if(b_immediate) {
@@ -317,15 +230,6 @@ function switch_to_primary_weapon(b_immediate = 0) {
   }
 }
 
-/*
-	Name: fill_current_clip
-	Namespace: player
-	Checksum: 0x27CBE6A9
-	Offset: 0x1200
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function fill_current_clip() {
   w_current = self getcurrentweapon();
   if(w_current.isheroweapon) {
@@ -336,54 +240,18 @@ function fill_current_clip() {
   }
 }
 
-/*
-	Name: is_valid_weapon
-	Namespace: player
-	Checksum: 0xCAD2BE8B
-	Offset: 0x12A0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function is_valid_weapon(weaponobject) {
   return isdefined(weaponobject) && weaponobject != level.weaponnone;
 }
 
-/*
-	Name: is_spawn_protected
-	Namespace: player
-	Checksum: 0x52846471
-	Offset: 0x12D0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function is_spawn_protected() {
   return (gettime() - (isdefined(self.spawntime) ? self.spawntime : 0)) <= level.spawnprotectiontimems;
 }
 
-/*
-	Name: simple_respawn
-	Namespace: player
-	Checksum: 0x15A9F39B
-	Offset: 0x1308
-	Size: 0x18
-	Parameters: 0
-	Flags: None
-*/
 function simple_respawn() {
   self[[level.onspawnplayer]](0);
 }
 
-/*
-	Name: get_snapped_spot_origin
-	Namespace: player
-	Checksum: 0x940B8FC8
-	Offset: 0x1328
-	Size: 0x142
-	Parameters: 1
-	Flags: Linked
-*/
 function get_snapped_spot_origin(spot_position) {
   snap_max_height = 100;
   size = 15;
@@ -399,15 +267,6 @@ function get_snapped_spot_origin(spot_position) {
   return spot_position;
 }
 
-/*
-	Name: allow_stance_change
-	Namespace: player
-	Checksum: 0x41B17CBE
-	Offset: 0x1478
-	Size: 0x19E
-	Parameters: 1
-	Flags: None
-*/
 function allow_stance_change(b_allow = 1) {
   if(b_allow) {
     self allowprone(1);

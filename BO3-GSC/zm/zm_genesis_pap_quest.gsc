@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_pap_quest.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -21,31 +25,12 @@
 #using scripts\zm\zm_genesis_flingers;
 #using scripts\zm\zm_genesis_util;
 #using scripts\zm\zm_genesis_vo;
-
 #namespace namespace_3ddd867f;
 
-/*
-	Name: __init__sytem__
-	Namespace: namespace_3ddd867f
-	Checksum: 0x37FBBDD6
-	Offset: 0x5F8
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_pap_quest", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: namespace_3ddd867f
-	Checksum: 0x761E948E
-	Offset: 0x640
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.var_e1ee8457 = 0;
   level.pack_a_punch.custom_power_think = & function_23a5b653;
@@ -60,29 +45,11 @@ function __init__() {
   level thread scene::init("p7_fxanim_zm_gen_apoth_pap_sac_bundle");
 }
 
-/*
-	Name: __main__
-	Namespace: namespace_3ddd867f
-	Checksum: 0xD1F43254
-	Offset: 0x7C8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level flag::init("pap_power_on");
   level flag::init("apotho_pack_freed");
 }
 
-/*
-	Name: function_23a5b653
-	Namespace: namespace_3ddd867f
-	Checksum: 0x27896673
-	Offset: 0x818
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_23a5b653(powered_on) {
   if(!powered_on) {
     self.zbarrier set_pap_zbarrier_state("initial");
@@ -91,86 +58,39 @@ function function_23a5b653(powered_on) {
   }
   for (;;) {
     self.zbarrier set_pap_zbarrier_state("power_on");
-    level waittill(# "pack_a_punch_off");
+    level waittill("pack_a_punch_off");
     self.zbarrier set_pap_zbarrier_state("power_off");
-    level waittill(# "pack_a_punch_on");
+    level waittill("pack_a_punch_on");
   }
 }
 
-/*
-	Name: set_pap_zbarrier_state
-	Namespace: namespace_3ddd867f
-	Checksum: 0xC8327104
-	Offset: 0x910
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function set_pap_zbarrier_state(state) {
   for (i = 0; i < self getnumzbarrierpieces(); i++) {
     self hidezbarrierpiece(i);
   }
-  self notify(# "zbarrier_state_change");
+  self notify("zbarrier_state_change");
   self[[level.pap_zbarrier_state_func]](state);
 }
 
-/*
-	Name: function_8d5c3682
-	Namespace: namespace_3ddd867f
-	Checksum: 0x9B9675D9
-	Offset: 0x998
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8d5c3682() {
   var_d1f5ed14 = getvehiclenodearray("pap_travel_spline", "targetname");
   array::thread_all(var_d1f5ed14, & function_21d887cd);
 }
 
-/*
-	Name: function_21d887cd
-	Namespace: namespace_3ddd867f
-	Checksum: 0xF2DC44AA
-	Offset: 0x9F8
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_21d887cd() {
-  /#
   assert(ispointonnavmesh(self.origin), ("" + self.origin) + "");
-  # /
-    s_stub = level zm_genesis_util::spawn_trigger_radius(self.origin, 256, undefined, & function_f8c1234b);
+  s_stub = level zm_genesis_util::spawn_trigger_radius(self.origin, 256, undefined, & function_f8c1234b);
   while (true) {
-    s_stub waittill(# "trigger", e_player);
+    s_stub waittill("trigger", e_player);
     e_player thread function_4ab898f4(self);
     level.var_6fe80781 = gettime();
   }
 }
 
-/*
-	Name: function_f8c1234b
-	Namespace: namespace_3ddd867f
-	Checksum: 0x4C310D41
-	Offset: 0xAD8
-	Size: 0x12
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f8c1234b(e_player) {
   return "";
 }
 
-/*
-	Name: function_e8ef758e
-	Namespace: namespace_3ddd867f
-	Checksum: 0x853238E0
-	Offset: 0xAF8
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e8ef758e() {
   if(!isdefined(level.apothicon_grapple_source)) {
     level.apothicon_grapple_source = struct::get("apothicon_grapple_source");
@@ -192,17 +112,8 @@ function function_e8ef758e() {
   }
 }
 
-/*
-	Name: function_4ab898f4
-	Namespace: namespace_3ddd867f
-	Checksum: 0x6288F18E
-	Offset: 0xC50
-	Size: 0x5FC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4ab898f4(nd_start) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.is_flung) && self.is_flung) {
     return;
   }
@@ -264,15 +175,6 @@ function function_4ab898f4(nd_start) {
   self freezecontrols(0);
 }
 
-/*
-	Name: cleanup_vehicle
-	Namespace: namespace_3ddd867f
-	Checksum: 0xFB0D69CA
-	Offset: 0x1258
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function cleanup_vehicle(var_413ea50f) {
   while (true) {
     if(!isdefined(self) || (isdefined(self.var_3298b25f) && self.var_3298b25f)) {
@@ -283,31 +185,13 @@ function cleanup_vehicle(var_413ea50f) {
   var_413ea50f delete();
 }
 
-/*
-	Name: function_10171438
-	Namespace: namespace_3ddd867f
-	Checksum: 0x84510305
-	Offset: 0x12C8
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_10171438() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   wait(3);
   self.var_a393601c = 0;
 }
 
-/*
-	Name: function_fc804fdd
-	Namespace: namespace_3ddd867f
-	Checksum: 0x9A878F7E
-	Offset: 0x1300
-	Size: 0x104
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fc804fdd(var_16caea3d) {
   var_62a30970 = getvehiclenodearray(self.target, "targetname");
   foreach(nd_spline in var_62a30970) {
@@ -315,20 +199,9 @@ function function_fc804fdd(var_16caea3d) {
       return nd_spline;
     }
   }
-  /#
   assert(isdefined(nd_spline), ((("" + var_16caea3d) + "") + self.origin) + "");
-  # /
 }
 
-/*
-	Name: function_3298b25f
-	Namespace: namespace_3ddd867f
-	Checksum: 0x2C909673
-	Offset: 0x1410
-	Size: 0x168
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3298b25f() {
   self.var_3298b25f = 0;
   var_6b138e28 = groundtrace(self.origin, self.origin + (vectorscale((0, 0, -1), 10000)), 0, undefined)["position"];
@@ -344,23 +217,14 @@ function function_3298b25f() {
   self.var_3298b25f = 1;
 }
 
-/*
-	Name: function_e488a6a8
-	Namespace: namespace_3ddd867f
-	Checksum: 0x983122DC
-	Offset: 0x1580
-	Size: 0x1CC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e488a6a8() {
   level flag::set("pap_power_on");
-  level notify(# "pack_a_punch_on");
+  level notify("pack_a_punch_on");
   self.origin = self.origin + vectorscale((0, 0, 1), 500);
   self.clip.origin = self.clip.origin + vectorscale((0, 0, 1), 500);
   self.pap_machine.origin = self.pap_machine.origin - vectorscale((0, 0, 1), 500);
   for (var_9748d143 = 0; var_9748d143 < 3; var_9748d143++) {
-    level waittill(# "hash_80f97945");
+    level waittill("hash_80f97945");
   }
   level scene::play("p7_fxanim_zm_gen_apoth_pap_sac_bundle");
   playsoundatposition("evt_pap_freed", (873, 110, -3239));
@@ -370,21 +234,12 @@ function function_e488a6a8() {
   self.clip.origin = self.clip.origin - vectorscale((0, 0, 1), 500);
 }
 
-/*
-	Name: function_9278bc8a
-	Namespace: namespace_3ddd867f
-	Checksum: 0xB9810E04
-	Offset: 0x1758
-	Size: 0x1F4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9278bc8a(var_181e2689) {
   self setcandamage(1);
   self.health = 6000;
   self.n_damage = 0;
   while (true) {
-    self waittill(# "damage", damage, attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
+    self waittill("damage", damage, attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
     playfx(level._effect["pap_cord_impact"], point, (0, 0, -1));
     self.n_damage = self.n_damage - damage;
     self.health = self.health + damage;
@@ -394,7 +249,7 @@ function function_9278bc8a(var_181e2689) {
       break;
     }
   }
-  level notify(# "hash_80f97945");
+  level notify("hash_80f97945");
   if(isplayer(attacker)) {
     attacker thread zm_genesis_vo::function_57f3d77();
   }
@@ -402,15 +257,6 @@ function function_9278bc8a(var_181e2689) {
   level thread scene::play(self.current_scene);
 }
 
-/*
-	Name: function_d2b266ee
-	Namespace: namespace_3ddd867f
-	Checksum: 0x5352FBBB
-	Offset: 0x1958
-	Size: 0xE6
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d2b266ee(a_ents) {
   a_str_keys = getarraykeys(a_ents);
   str_key = a_str_keys[0];
@@ -431,18 +277,9 @@ function function_d2b266ee(a_ents) {
   }
 }
 
-/*
-	Name: function_dc681bed
-	Namespace: namespace_3ddd867f
-	Checksum: 0xB8151441
-	Offset: 0x1A48
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function function_dc681bed(a_ents) {
   var_de243c38 = a_ents["pap_sac_vending"];
-  level waittill(# "apotho_pack_freed");
+  level waittill("apotho_pack_freed");
   wait(0.2);
   var_de243c38 delete();
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_score.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_util;
 #using scripts\cp\cp_doa_bo3_fx;
@@ -13,18 +17,8 @@
 #using scripts\shared\math_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_64c6b720;
 
-/*
-	Name: init
-	Namespace: namespace_64c6b720
-	Checksum: 0xCD6B6813
-	Offset: 0x438
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("world", "set_scoreHidden", 1, 1, "int", & function_7fe5e3f4, 0, 0);
   for (i = 0; i < 4; i++) {
@@ -37,15 +31,6 @@ function init() {
   function_6fa6dee2();
 }
 
-/*
-	Name: function_6fa6dee2
-	Namespace: namespace_64c6b720
-	Checksum: 0x3BBC555D
-	Offset: 0x600
-	Size: 0x9EC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6fa6dee2() {
   globalmodel = getglobaluimodel();
   level.var_7e2a814c = createuimodel(globalmodel, "DeadOpsArcadeGlobal");
@@ -107,20 +92,10 @@ function function_6fa6dee2() {
   level thread function_2c9a6a47();
 }
 
-/*
-	Name: function_d3f117f9
-	Namespace: namespace_64c6b720
-	Checksum: 0x1413355F
-	Offset: 0xFF8
-	Size: 0x1F8
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d3f117f9(doa, idx) {
   if(!isdefined(doa)) {
     return;
   }
-  /#
   for (i = 0; i < level.var_29e6f519.size; i++) {
     if(level.var_29e6f519[i] == doa) {
       idx = i;
@@ -130,8 +105,7 @@ function function_d3f117f9(doa, idx) {
   loc_00001094:
     txt = (("" + (isdefined(idx) ? idx : "")) + "") + (isdefined(doa.player) ? doa.player getentitynumber() : "");
   namespace_693feb87::debugmsg(txt);
-  # /
-    doa.score = 0;
+  doa.score = 0;
   doa.var_db3637c0 = 0;
   doa.var_c4c3767e = 0;
   doa.lives = 3;
@@ -147,15 +121,6 @@ function function_d3f117f9(doa, idx) {
   doa.var_c86225b5 = 0;
 }
 
-/*
-	Name: function_e06716c7
-	Namespace: namespace_64c6b720
-	Checksum: 0x6A1B22D2
-	Offset: 0x11F8
-	Size: 0x4A4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_e06716c7(doa, idx) {
   function_d3f117f9(doa, idx);
   if(isdefined(doa.ui_model) && isdefined(getuimodel(doa.ui_model, "name"))) {
@@ -179,18 +144,9 @@ function function_e06716c7(doa, idx) {
   }
 }
 
-/*
-	Name: function_cdb6d911
-	Namespace: namespace_64c6b720
-	Checksum: 0x328408C6
-	Offset: 0x16A8
-	Size: 0x1EE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cdb6d911() {
-  self notify(# "hash_cdb6d911");
-  self endon(# "hash_cdb6d911");
+  self notify("hash_cdb6d911");
+  self endon("hash_cdb6d911");
   while (true) {
     foreach(model in level.var_b9d30140) {
       setuimodelvalue(getuimodel(model, "ribbon"), 0);
@@ -208,18 +164,9 @@ function function_cdb6d911() {
   }
 }
 
-/*
-	Name: function_4d819138
-	Namespace: namespace_64c6b720
-	Checksum: 0x11C2E5B8
-	Offset: 0x18A0
-	Size: 0x288
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4d819138() {
-  self notify(# "hash_4d819138");
-  self endon(# "hash_4d819138");
+  self notify("hash_4d819138");
+  self endon("hash_4d819138");
   while (true) {
     foreach(doa in level.var_29e6f519) {
       if(!isdefined(doa.player)) {
@@ -246,18 +193,9 @@ function function_4d819138() {
   }
 }
 
-/*
-	Name: function_2c9a6a47
-	Namespace: namespace_64c6b720
-	Checksum: 0x68482663
-	Offset: 0x1B30
-	Size: 0xA6E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2c9a6a47() {
-  self notify(# "hash_2c9a6a47");
-  self endon(# "hash_2c9a6a47");
+  self notify("hash_2c9a6a47");
+  self endon("hash_2c9a6a47");
   while (true) {
     wait(0.016);
     foreach(doa in level.var_29e6f519) {
@@ -290,7 +228,7 @@ function function_2c9a6a47() {
         doa.var_db3637c0 = doa.player.assists >> 2;
         doa.var_c88a6593 = doa.player.revives & 3;
         if(!isdefined(doa.player.var_8064cb04) || doa.player.var_8064cb04 != doa.var_c88a6593) {
-          level notify(# "hash_aae01d5a", doa.player.entnum, doa.var_c88a6593);
+          level notify("hash_aae01d5a", doa.player.entnum, doa.var_c88a6593);
         }
       }
       setuimodelvalue(getuimodel(doa.ui_model, "bombs"), doa.bombs);
@@ -329,123 +267,47 @@ function function_2c9a6a47() {
   }
 }
 
-/*
-	Name: on_shutdown
-	Namespace: namespace_64c6b720
-	Checksum: 0xAE7C7E1
-	Offset: 0x25A8
-	Size: 0x9C
-	Parameters: 2
-	Flags: Linked
-*/
 function on_shutdown(localclientnum, ent) {
   if(isdefined(ent) && self === ent) {
-    /#
     namespace_693feb87::debugmsg("" + (isdefined(self.name) ? self.name : self getentitynumber()));
-    # /
-      if(isdefined(self.doa)) {
-        function_e06716c7(self.doa);
-      }
+    if(isdefined(self.doa)) {
+      function_e06716c7(self.doa);
+    }
   }
 }
 
-/*
-	Name: on_player_spawn
-	Namespace: namespace_64c6b720
-	Checksum: 0x801C95EE
-	Offset: 0x2650
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_spawn(localclientnum) {
   self callback::on_shutdown( & on_shutdown, self);
 }
 
-/*
-	Name: function_7fe5e3f4
-	Namespace: namespace_64c6b720
-	Checksum: 0x82EEDF2C
-	Offset: 0x2688
-	Size: 0x48
-	Parameters: 7
-	Flags: Linked
-*/
 function function_7fe5e3f4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   level.var_c8a4d758 = newval;
 }
 
-/*
-	Name: function_e0f15ca4
-	Namespace: namespace_64c6b720
-	Checksum: 0xA3B1FA89
-	Offset: 0x26D8
-	Size: 0x134
-	Parameters: 7
-	Flags: Linked
-*/
 function function_e0f15ca4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   diff = newval - oldval;
   if(diff) {
-    level notify(# "hash_48152b36", fieldname, diff);
+    level notify("hash_48152b36", fieldname, diff);
   }
   idx = int(fieldname[fieldname.size - 1]);
-  /#
   assert(idx >= 0 && idx < level.gpr.size);
-  # /
-    level.gpr[idx] = newval;
+  level.gpr[idx] = newval;
   field = "gpr" + idx;
   setuimodelvalue(createuimodel(level.var_7e2a814c, field), newval);
 }
 
-/*
-	Name: function_2db8b053
-	Namespace: namespace_64c6b720
-	Checksum: 0x7436D51
-	Offset: 0x2818
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_2db8b053(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   playernum = int(fieldname[fieldname.size - 1]);
   level.var_29e6f519[playernum].gpr = newval;
 }
 
-/*
-	Name: function_b9397b2b
-	Namespace: namespace_64c6b720
-	Checksum: 0x809A7227
-	Offset: 0x28B0
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_b9397b2b(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   playernum = int(fieldname[fieldname.size - 1]);
   level.var_29e6f519[playernum].var_4b3052ec = newval;
 }
 
-/*
-	Name: function_6ccafee6
-	Namespace: namespace_64c6b720
-	Checksum: 0xF012797E
-	Offset: 0x2948
-	Size: 0x3C
-	Parameters: 7
-	Flags: None
-*/
 function function_6ccafee6(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
-/*
-	Name: function_75319a37
-	Namespace: namespace_64c6b720
-	Checksum: 0x2AC96C0B
-	Offset: 0x2990
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_75319a37(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 0) {
     return;
@@ -456,15 +318,6 @@ function function_75319a37(localclientnum, oldval, newval, bnewent, binitialsnap
   level thread function_56dd76b(newval);
 }
 
-/*
-	Name: function_a08fe7c3
-	Namespace: namespace_64c6b720
-	Checksum: 0xA0414CE1
-	Offset: 0x2A18
-	Size: 0x130
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a08fe7c3(totaltime) {
   totaltime = totaltime * 1000;
   curtime = gettime();
@@ -481,15 +334,6 @@ function function_a08fe7c3(totaltime) {
   }
 }
 
-/*
-	Name: function_56dd76b
-	Namespace: namespace_64c6b720
-	Checksum: 0xB31B4EEB
-	Offset: 0x2B50
-	Size: 0x1E0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_56dd76b(val) {
   level.var_b1ce5a88 = 1;
   startval = val;
@@ -501,9 +345,9 @@ function function_56dd76b(val) {
     setuimodelvalue(getuimodel(level.var_7e2a814c, "countdown"), "");
     wait(0.016);
     val = val - 1;
-    level notify(# "countdown", val);
+    level notify("countdown", val);
   }
-  level notify(# "countdown", 0);
+  level notify("countdown", 0);
   setuimodelvalue(getuimodel(level.var_7e2a814c, "countdown"), & "CP_DOA_BO3_GO");
   playsound(0, "evt_countdown_go", (0, 0, 0));
   wait(1.1);
@@ -511,15 +355,6 @@ function function_56dd76b(val) {
   level.var_b1ce5a88 = 0;
 }
 
-/*
-	Name: function_ecca2450
-	Namespace: namespace_64c6b720
-	Checksum: 0x9B1ECB2C
-	Offset: 0x2D38
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function function_ecca2450(text) {
   setuimodelvalue(getuimodel(level.var_7e2a814c, "countdown"), text);
 }

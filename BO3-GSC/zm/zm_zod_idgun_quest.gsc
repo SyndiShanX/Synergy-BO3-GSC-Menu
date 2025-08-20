@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_idgun_quest.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -27,31 +31,12 @@
 #using scripts\zm\zm_zod_sword_quest;
 #using scripts\zm\zm_zod_util;
 #using scripts\zm\zm_zod_vo;
-
 #namespace zm_zod_idgun_quest;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xC1DDEEC0
-	Offset: 0x600
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_zod_idgun_quest", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x5D65E931
-	Offset: 0x648
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_connect( & on_player_connect);
   callback::on_spawned( & on_player_spawned);
@@ -61,21 +46,10 @@ function __init__() {
   for (i = 0; i < 3; i++) {
     level flag::init(("idgun_cocoon_" + i) + "_found");
   }
-  /#
   level thread idgun_devgui();
   level thread idgun_quest_devgui();
-  # /
 }
 
-/*
-	Name: __main__
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xB38D215E
-	Offset: 0x798
-	Size: 0x1F0
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   a_str_idgun_wpnnames = array("idgun_0", "idgun_1", "idgun_2", "idgun_3");
   level construct_idgun_weapon_array();
@@ -97,15 +71,6 @@ function __main__() {
   wait(0.5);
 }
 
-/*
-	Name: function_e1efbc50
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x8B83F51F
-	Offset: 0x990
-	Size: 0x8A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e1efbc50(var_9727e47e) {
   if(var_9727e47e != level.weaponnone) {
     if(!isdefined(level.idgun_weapons)) {
@@ -117,15 +82,6 @@ function function_e1efbc50(var_9727e47e) {
   }
 }
 
-/*
-	Name: construct_idgun_weapon_array
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x283CFE5B
-	Offset: 0xA28
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function construct_idgun_weapon_array() {
   level.idgun_weapons = [];
   function_e1efbc50(getweapon("idgun_0"));
@@ -138,37 +94,10 @@ function construct_idgun_weapon_array() {
   function_e1efbc50(getweapon("idgun_upgraded_3"));
 }
 
-/*
-	Name: on_player_connect
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x99EC1590
-	Offset: 0xB88
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {}
 
-/*
-	Name: on_player_spawned
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x99EC1590
-	Offset: 0xB98
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {}
 
-/*
-	Name: function_14e2eca6
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xF6C8B2D9
-	Offset: 0xBA8
-	Size: 0x248
-	Parameters: 1
-	Flags: Linked
-*/
 function function_14e2eca6(params) {
   if(level.round_number < 12) {
     return;
@@ -205,15 +134,6 @@ function function_14e2eca6(params) {
   }
 }
 
-/*
-	Name: function_c3ffc175
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x885CFA7E
-	Offset: 0xDF8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c3ffc175() {
   if(level clientfield::get("bm_superbeast")) {
     function_6baaa92e();
@@ -222,15 +142,6 @@ function function_c3ffc175() {
   }
 }
 
-/*
-	Name: function_44e0f6b4
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xB1E0CC54
-	Offset: 0xE68
-	Size: 0x180
-	Parameters: 0
-	Flags: Linked
-*/
 function function_44e0f6b4() {
   if(getdvarint("splitscreen_playerCount") > 2 && (!(isdefined(level.var_5fadf2ff) && level.var_5fadf2ff))) {
     function_6893c200();
@@ -251,15 +162,6 @@ function function_44e0f6b4() {
   }
 }
 
-/*
-	Name: function_6893c200
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xAA00D251
-	Offset: 0xFF0
-	Size: 0x118
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6893c200() {
   level.var_5fadf2ff = 1;
   drop_point = self getorigin();
@@ -273,15 +175,6 @@ function function_6893c200() {
   }
 }
 
-/*
-	Name: function_6baaa92e
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xBDE7DF9
-	Offset: 0x1110
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6baaa92e() {
   drop_point = self getorigin();
   drop_point = drop_point + vectorscale((0, 0, 1), 30);
@@ -290,15 +183,6 @@ function function_6baaa92e() {
   function_a3712047(e_heart);
 }
 
-/*
-	Name: function_a3712047
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x84D2FF7F
-	Offset: 0x11B8
-	Size: 0x194
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a3712047(e_heart) {
   width = 128;
   height = 128;
@@ -317,34 +201,16 @@ function function_a3712047(e_heart) {
   e_heart delete();
 }
 
-/*
-	Name: function_12fffd19
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x48A555F6
-	Offset: 0x1358
-	Size: 0x62
-	Parameters: 1
-	Flags: Linked
-*/
 function function_12fffd19(player) {
   b_is_invis = isdefined(player.beastmode) && player.beastmode;
   self setinvisibletoplayer(player, b_is_invis);
   return !b_is_invis;
 }
 
-/*
-	Name: function_dd2f6fe3
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xE5974A5A
-	Offset: 0x13C8
-	Size: 0xBA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dd2f6fe3() {
   if(1) {
     for (;;) {
-      self waittill(# "trigger", player);
+      self waittill("trigger", player);
     }
     for (;;) {}
     for (;;) {}
@@ -357,15 +223,6 @@ function function_dd2f6fe3() {
   }
 }
 
-/*
-	Name: function_32d36516
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x5BA6E2F2
-	Offset: 0x1490
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_32d36516(e_heart) {
   foreach(player in level.activeplayers) {
     player reviveplayer();
@@ -373,17 +230,8 @@ function function_32d36516(e_heart) {
   e_heart delete();
 }
 
-/*
-	Name: special_craftable_spawn
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x32C4DBC8
-	Offset: 0x1548
-	Size: 0x1EA
-	Parameters: 4
-	Flags: Linked
-*/
 function special_craftable_spawn(v_origin, str_part, var_1907d45e = 1, var_6a2f1c3a = 0) {
-  level endon(# "idgun_part_found");
+  level endon("idgun_part_found");
   if(!var_6a2f1c3a) {
     mdl_part = level zm_craftables::get_craftable_piece_model("idgun", str_part);
   } else {
@@ -409,22 +257,13 @@ function special_craftable_spawn(v_origin, str_part, var_1907d45e = 1, var_6a2f1
   level thread idgun_part_blinks(mdl_part);
   wait(10);
   mdl_part setinvisibletoall();
-  level notify(# "idgun_part_blinks");
+  level notify("idgun_part_blinks");
 }
 
-/*
-	Name: idgun_part_blinks
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x349E75F1
-	Offset: 0x1740
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function idgun_part_blinks(mdl_part) {
-  level notify(# "idgun_part_blinks");
-  level endon(# "idgun_part_blinks");
-  level endon(# "idgun_part_found");
+  level notify("idgun_part_blinks");
+  level endon("idgun_part_blinks");
+  level endon("idgun_part_found");
   while (true) {
     mdl_part setinvisibletoall();
     wait(0.5);
@@ -433,30 +272,12 @@ function idgun_part_blinks(mdl_part) {
   }
 }
 
-/*
-	Name: idgun_vo
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x7EF2E29E
-	Offset: 0x17C8
-	Size: 0x34
-	Parameters: 1
-	Flags: None
-*/
 function idgun_vo(s_idgun) {
   if(isdefined(s_idgun.is_speaking) && s_idgun.is_speaking) {
     return;
   }
 }
 
-/*
-	Name: idgun_zombie_death_watch
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xE6DC09AA
-	Offset: 0x1808
-	Size: 0x12E
-	Parameters: 1
-	Flags: Linked
-*/
 function idgun_zombie_death_watch(attacker) {
   for (i = 0; i < level.idgun_weapons.size; i++) {
     wpn = level.idgun_weapons[i];
@@ -480,15 +301,6 @@ function idgun_zombie_death_watch(attacker) {
   }
 }
 
-/*
-	Name: get_idgun_from_owner
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x7114FF0D
-	Offset: 0x1940
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function get_idgun_from_owner(player) {
   for (i = 0; i < 2; i++) {
     if(level.idgun[i].owner === player) {
@@ -497,15 +309,6 @@ function get_idgun_from_owner(player) {
   }
 }
 
-/*
-	Name: setup_idgun_upgrade_quest
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x78A12DB5
-	Offset: 0x19B0
-	Size: 0x256
-	Parameters: 0
-	Flags: None
-*/
 function setup_idgun_upgrade_quest() {
   level flag::wait_till("second_idgun_time");
   var_ffcd34fb = struct::get_array("idgun_cocoon_point", "targetname");
@@ -542,15 +345,6 @@ function setup_idgun_upgrade_quest() {
   }
 }
 
-/*
-	Name: filter_areaname
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xC809A9E1
-	Offset: 0x1C10
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked
-*/
 function filter_areaname(e_entity, str_areaname) {
   if(!isdefined(e_entity.script_string) || e_entity.script_string != str_areaname) {
     return false;
@@ -558,18 +352,9 @@ function filter_areaname(e_entity, str_areaname) {
   return true;
 }
 
-/*
-	Name: function_47867b41
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x6FB988F5
-	Offset: 0x1C60
-	Size: 0x27A
-	Parameters: 2
-	Flags: Linked
-*/
 function function_47867b41(var_3fbc06aa, str_part) {
   if(1) {
-    self waittill(# "damage", amount, attacker, direction_vec, point, type, tagname, modelname, partname, weapon);
+    self waittill("damage", amount, attacker, direction_vec, point, type, tagname, modelname, partname, weapon);
     level flag::set(("idgun_cocoon_" + var_3fbc06aa) + "_found");
     if((isdefined(zm::is_idgun_damage(weapon)) && zm::is_idgun_damage(weapon)) === 0) {
       return;
@@ -591,19 +376,10 @@ function function_47867b41(var_3fbc06aa, str_part) {
   }
 }
 
-/*
-	Name: idgun_proximity_sensor
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xE68DD99B
-	Offset: 0x1EE8
-	Size: 0x3E4
-	Parameters: 1
-	Flags: Linked
-*/
 function idgun_proximity_sensor(var_3fbc06aa) {
-  self endon(# "bleed_out");
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("bleed_out");
+  self endon("death");
+  self endon("disconnect");
   var_e610614b = level.var_a26610f1[var_3fbc06aa].origin;
   n_proximity_max_2 = 262144;
   n_proximity_min_2 = 4096;
@@ -663,15 +439,6 @@ function idgun_proximity_sensor(var_3fbc06aa) {
   }
 }
 
-/*
-	Name: give_idgun
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xDB675B88
-	Offset: 0x22D8
-	Size: 0x17C
-	Parameters: 1
-	Flags: Linked
-*/
 function give_idgun(n_idgun_level) {
   if(n_idgun_level == 0) {
     wpn_idgun = getweapon(level.idgun[0].str_wpnname);
@@ -679,10 +446,8 @@ function give_idgun(n_idgun_level) {
     wpn_idgun = getweapon(level.idgun[0].str_wpnname);
     wpn_idgun = zm_weapons::get_upgrade_weapon(wpn_idgun, 0);
   }
-  /#
   assert(isdefined(wpn_idgun));
-  # /
-    self zm_weapons::weapon_give(wpn_idgun, 0, 0);
+  self zm_weapons::weapon_give(wpn_idgun, 0, 0);
   self switchtoweapon(wpn_idgun);
   if(!isdefined(level.idgun[0].owner)) {
     var_6aa62cd2 = 0;
@@ -697,86 +462,31 @@ function give_idgun(n_idgun_level) {
   self zm_zod_vo::function_aca1bc0c(0);
 }
 
-/*
-	Name: idgun_devgui
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xEA757C4E
-	Offset: 0x2460
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function idgun_devgui() {
-  /#
   level thread zm_zod_util::setup_devgui_func("", "", 0, & devgui_idgun_give);
   level thread zm_zod_util::setup_devgui_func("", "", 1, & devgui_idgun_give);
   level thread zm_zod_util::setup_devgui_func("", "", 1, & function_8c7ac1b9);
-  # /
 }
 
-/*
-	Name: idgun_quest_devgui
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x8AD5C04E
-	Offset: 0x2518
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function idgun_quest_devgui() {
-  /#
   level thread zm_zod_util::setup_devgui_func("", "", 0, & function_1f7b4ebf);
-  # /
 }
 
-/*
-	Name: devgui_idgun_give
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xF26F30E3
-	Offset: 0x2560
-	Size: 0xAA
-	Parameters: 1
-	Flags: Linked
-*/
 function devgui_idgun_give(n_value) {
-  /#
   foreach(e_player in level.players) {
     e_player give_idgun(n_value);
     util::wait_network_frame();
   }
-  # /
 }
 
-/*
-	Name: function_1f7b4ebf
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0xB3198B8E
-	Offset: 0x2618
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1f7b4ebf(n_val) {
-  /#
   level flag::set("");
-  # /
 }
 
-/*
-	Name: function_8c7ac1b9
-	Namespace: zm_zod_idgun_quest
-	Checksum: 0x3CCD0851
-	Offset: 0x2650
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8c7ac1b9(n_value) {
-  /#
   if(isdefined(level.idgun_draw_debug)) {
     level.idgun_draw_debug = !level.idgun_draw_debug;
   } else {
     level.idgun_draw_debug = 1;
   }
-  # /
 }

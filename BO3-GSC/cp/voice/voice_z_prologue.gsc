@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_z_prologue.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_babdccbe;
 
-/*
-	Name: init_voice
-	Namespace: namespace_babdccbe
-	Checksum: 0xE4DE514E
-	Offset: 0xD90
-	Size: 0x844
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("plyz_with_the_dead_crawli_0", "vox_zpro_1_01_000_plyz");
   dialog::add("plyz_we_weren_t_deadkille_0", "vox_zpro_1_01_001_plyz");

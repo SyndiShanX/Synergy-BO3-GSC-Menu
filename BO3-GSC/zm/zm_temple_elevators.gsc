@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_temple_elevators.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -12,34 +16,14 @@
 #using scripts\zm\_zm_blockers;
 #using scripts\zm\zm_temple;
 #using scripts\zm\zm_temple_pack_a_punch;
-
 #using_animtree("generic");
-
 #namespace zm_temple_elevators;
 
-/*
-	Name: init_elevator
-	Namespace: zm_temple_elevators
-	Checksum: 0x55A9ECBA
-	Offset: 0x438
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function init_elevator() {
   level flag::wait_till("initial_players_connected");
   init_temple_geyser();
 }
 
-/*
-	Name: init_temple_geyser
-	Namespace: zm_temple_elevators
-	Checksum: 0x9A7D2048
-	Offset: 0x478
-	Size: 0x4BE
-	Parameters: 0
-	Flags: Linked
-*/
 function init_temple_geyser() {
   level.geysers = getentarray("temple_geyser", "targetname");
   for (i = 0; i < level.geysers.size; i++) {
@@ -83,18 +67,9 @@ function init_temple_geyser() {
   }
 }
 
-/*
-	Name: alternate_geysers
-	Namespace: zm_temple_elevators
-	Checksum: 0x8CA64C25
-	Offset: 0x940
-	Size: 0x12C
-	Parameters: 0
-	Flags: None
-*/
 function alternate_geysers() {
   currentgeyser = undefined;
-  level waittill(# "geyser_enabled");
+  level waittill("geyser_enabled");
   while (true) {
     geysers = [];
     for (i = 0; i < level.geysers.size; i++) {
@@ -104,26 +79,17 @@ function alternate_geysers() {
       }
     }
     if(isdefined(currentgeyser)) {
-      currentgeyser notify(# "geyser_end");
+      currentgeyser notify("geyser_end");
       currentgeyser = undefined;
     }
     if(geysers.size > 0) {
       currentgeyser = array::random(geysers);
       currentgeyser thread geyser_start();
     }
-    level waittill(# "between_round_over");
+    level waittill("between_round_over");
   }
 }
 
-/*
-	Name: geyser_start
-	Namespace: zm_temple_elevators
-	Checksum: 0xC1AC263A
-	Offset: 0xA78
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function geyser_start() {
   self.geyser_active = 0;
   var_f3e27be7 = getnode(self.script_noteworthy + "_jump_up", "targetname");
@@ -137,19 +103,10 @@ function geyser_start() {
   self thread geyser_watch_for_player();
 }
 
-/*
-	Name: geyser_watch_for_zombies
-	Namespace: zm_temple_elevators
-	Checksum: 0x99FC5013
-	Offset: 0xB68
-	Size: 0x70
-	Parameters: 0
-	Flags: None
-*/
 function geyser_watch_for_zombies() {
-  self endon(# "geyser_end");
+  self endon("geyser_end");
   while (true) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     if(!self.geyser_active) {
       continue;
     }
@@ -159,21 +116,12 @@ function geyser_watch_for_zombies() {
   }
 }
 
-/*
-	Name: geyser_watch_for_player
-	Namespace: zm_temple_elevators
-	Checksum: 0xDCC63D98
-	Offset: 0xBE0
-	Size: 0x228
-	Parameters: 0
-	Flags: Linked
-*/
 function geyser_watch_for_player() {
-  self endon(# "geyser_end");
-  level endon(# "intermission");
-  level endon(# "fake_death");
+  self endon("geyser_end");
+  level endon("intermission");
+  level endon("fake_death");
   while (true) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     if(!isplayer(who)) {
       continue;
     }
@@ -212,29 +160,11 @@ function geyser_watch_for_player() {
   }
 }
 
-/*
-	Name: geyser_activate
-	Namespace: zm_temple_elevators
-	Checksum: 0x7A11DFC8
-	Offset: 0xE10
-	Size: 0x2A
-	Parameters: 1
-	Flags: Linked
-*/
 function geyser_activate(playerstouching) {
   self geyser_erupt(playerstouching);
   wait(5);
 }
 
-/*
-	Name: geyser_erupt
-	Namespace: zm_temple_elevators
-	Checksum: 0x39207FB6
-	Offset: 0xE48
-	Size: 0x1E0
-	Parameters: 1
-	Flags: Linked
-*/
 function geyser_erupt(playerstouching) {
   self.geyser_active = 1;
   if(isdefined(self.trigger_dust)) {
@@ -253,7 +183,7 @@ function geyser_erupt(playerstouching) {
   }
   level flag::set(self.script_noteworthy + "_active");
   wait(10);
-  self notify(# "stop_geyser_fx");
+  self notify("stop_geyser_fx");
   level flag::clear(self.script_noteworthy + "_active");
   if(isdefined(self.jump_down_start) && isdefined(self.jump_down_end)) {
     linknodes(self.jump_down_start, self.jump_down_end);
@@ -261,19 +191,10 @@ function geyser_erupt(playerstouching) {
   self.geyser_active = 0;
 }
 
-/*
-	Name: player_geyser_move
-	Namespace: zm_temple_elevators
-	Checksum: 0x6F61622B
-	Offset: 0x1030
-	Size: 0x428
-	Parameters: 1
-	Flags: Linked
-*/
 function player_geyser_move(geyser) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "spawned_spectator");
+  self endon("death");
+  self endon("disconnect");
+  self endon("spawned_spectator");
   if(isdefined(self.riding_geyser) && self.riding_geyser || (isdefined(self.intermission) && self.intermission)) {
     return;
   }
@@ -320,30 +241,12 @@ function player_geyser_move(geyser) {
   self.riding_geyser = 0;
 }
 
-/*
-	Name: player_geyser_move_wait
-	Namespace: zm_temple_elevators
-	Checksum: 0x5D188C1F
-	Offset: 0x1460
-	Size: 0x28
-	Parameters: 1
-	Flags: Linked
-*/
 function player_geyser_move_wait(waittime) {
-  self endon(# "death");
-  self endon(# "player_downed");
+  self endon("death");
+  self endon("player_downed");
   wait(waittime);
 }
 
-/*
-	Name: geyser_erupt_old
-	Namespace: zm_temple_elevators
-	Checksum: 0x4A973DD5
-	Offset: 0x1490
-	Size: 0x2D0
-	Parameters: 1
-	Flags: None
-*/
 function geyser_erupt_old(playerstouching) {
   self.geyser_active = 1;
   self thread geyser_fx();
@@ -375,54 +278,27 @@ function geyser_erupt_old(playerstouching) {
   wait(0.1);
   self.lift solid();
   wait(5);
-  self notify(# "stop_geyser_fx");
+  self notify("stop_geyser_fx");
   self.geyser_active = 0;
 }
 
-/*
-	Name: geyser_fx
-	Namespace: zm_temple_elevators
-	Checksum: 0xCD5D42AE
-	Offset: 0x1768
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function geyser_fx() {
   self thread geyser_earthquake();
   fxobj = spawnfx(level._effect["fx_ztem_geyser"], self.bottom.origin);
   triggerfx(fxobj);
-  self waittill(# "stop_geyser_fx");
+  self waittill("stop_geyser_fx");
   wait(5);
   fxobj delete();
 }
 
-/*
-	Name: geyser_earthquake
-	Namespace: zm_temple_elevators
-	Checksum: 0x9CA8988C
-	Offset: 0x1810
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function geyser_earthquake() {
-  self endon(# "stop_geyser_fx");
+  self endon("stop_geyser_fx");
   while (true) {
     earthquake(0.2, 0.1, self.origin, 100);
     wait(0.1);
   }
 }
 
-/*
-	Name: zombie_geyser_kill
-	Namespace: zm_temple_elevators
-	Checksum: 0x96B2C951
-	Offset: 0x1868
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_geyser_kill() {
   self startragdoll();
   self launchragdoll((0, 0, 1) * 300);
@@ -430,15 +306,6 @@ function zombie_geyser_kill() {
   self dodamage(self.health + 666, self.origin);
 }
 
-/*
-	Name: geyser_blocker_think
-	Namespace: zm_temple_elevators
-	Checksum: 0xCCF0FC9E
-	Offset: 0x18E8
-	Size: 0x1B6
-	Parameters: 1
-	Flags: Linked
-*/
 function geyser_blocker_think(blocker) {
   switch (self.script_noteworthy) {
     case "start_geyser": {
@@ -460,18 +327,9 @@ function geyser_blocker_think(blocker) {
   blocker thread geyser_blocker_remove();
   self thread geyser_start();
   self.enabled = 1;
-  level notify(# "geyser_enabled", self);
+  level notify("geyser_enabled", self);
 }
 
-/*
-	Name: geyser_sounds
-	Namespace: zm_temple_elevators
-	Checksum: 0xBDAB0B65
-	Offset: 0x1AA8
-	Size: 0x10C
-	Parameters: 4
-	Flags: Linked
-*/
 function geyser_sounds(struct_name, sfx_start, sfx_loop, sfx_loop_delay) {
   sound_struct = struct::get(struct_name, "targetname");
   if(isdefined(sound_struct)) {
@@ -487,15 +345,6 @@ function geyser_sounds(struct_name, sfx_start, sfx_loop, sfx_loop_delay) {
   }
 }
 
-/*
-	Name: geyser_blocker_remove
-	Namespace: zm_temple_elevators
-	Checksum: 0x2E58C912
-	Offset: 0x1BC0
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function geyser_blocker_remove() {
   clip = getent(self.target, "targetname");
   clip notsolid();
@@ -509,33 +358,15 @@ function geyser_blocker_remove() {
   self zm_blockers::debris_move(struct);
 }
 
-/*
-	Name: geyser_trigger_dust_activate
-	Namespace: zm_temple_elevators
-	Checksum: 0x8F9732DA
-	Offset: 0x1CD8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function geyser_trigger_dust_activate() {
   self triggerenable(1);
   wait(3);
   self triggerenable(0);
 }
 
-/*
-	Name: geyser_trigger_dust_think
-	Namespace: zm_temple_elevators
-	Checksum: 0xF16E40DA
-	Offset: 0x1D20
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function geyser_trigger_dust_think() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(isdefined(player) && isdefined(player.geyser_dust_time) && player.geyser_dust_time > gettime()) {
       playfx(level._effect["player_land_dust"], player.origin);
       player playsound("fly_bodyfall_large_dirt");
@@ -544,27 +375,9 @@ function geyser_trigger_dust_think() {
   }
 }
 
-/*
-	Name: init_geyser_anims
-	Namespace: zm_temple_elevators
-	Checksum: 0xC1EDE475
-	Offset: 0x1DE8
-	Size: 0x20
-	Parameters: 0
-	Flags: None
-*/
 function init_geyser_anims() {
   level.geyser_anims = [];
   level.geyser_animtree = $generic;
 }
 
-/*
-	Name: init_animtree
-	Namespace: zm_temple_elevators
-	Checksum: 0x99EC1590
-	Offset: 0x1E10
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function init_animtree() {}

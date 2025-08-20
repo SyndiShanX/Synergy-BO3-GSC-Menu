@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_decoy.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\entityheadicons_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace decoy;
 
-/*
-	Name: init_shared
-	Namespace: decoy
-	Checksum: 0xC7475156
-	Offset: 0x240
-	Size: 0xDC
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   level.decoyweapons = [];
   level.decoyweapons["fullauto"] = [];
@@ -26,15 +20,6 @@ function init_shared() {
   callback::add_weapon_watcher( & create_watcher);
 }
 
-/*
-	Name: create_watcher
-	Namespace: decoy
-	Checksum: 0x69CD926C
-	Offset: 0x328
-	Size: 0x88
-	Parameters: 0
-	Flags: None
-*/
 function create_watcher() {
   watcher = self weaponobjects::createuseweaponobjectwatcher("nightingale", self.team);
   watcher.onspawn = & on_spawn;
@@ -43,18 +28,9 @@ function create_watcher() {
   watcher.headicon = 0;
 }
 
-/*
-	Name: on_spawn
-	Namespace: decoy
-	Checksum: 0xBD5CE5C2
-	Offset: 0x3B8
-	Size: 0x12C
-	Parameters: 2
-	Flags: None
-*/
 function on_spawn(watcher, owner) {
-  owner endon(# "disconnect");
-  self endon(# "death");
+  owner endon("disconnect");
+  self endon("death");
   weaponobjects::onspawnuseweaponobject(watcher, owner);
   self.initial_velocity = self getvelocity();
   delay = 1;
@@ -72,18 +48,9 @@ function on_spawn(watcher, owner) {
   }
 }
 
-/*
-	Name: move
-	Namespace: decoy
-	Checksum: 0x8621B3E
-	Offset: 0x4F0
-	Size: 0x2D4
-	Parameters: 5
-	Flags: None
-*/
 function move(owner, count, fire_time, main_dir, max_offset_angle) {
-  self endon(# "death");
-  self endon(# "done");
+  self endon("death");
+  self endon("done");
   if(!self isonground()) {
     return;
   }
@@ -107,47 +74,20 @@ function move(owner, count, fire_time, main_dir, max_offset_angle) {
   }
 }
 
-/*
-	Name: destroy
-	Namespace: decoy
-	Checksum: 0xC401C86C
-	Offset: 0x7D0
-	Size: 0x3C
-	Parameters: 2
-	Flags: None
-*/
 function destroy(watcher, owner) {
-  self notify(# "done");
+  self notify("done");
   self entityheadicons::setentityheadicon("none");
 }
 
-/*
-	Name: detonate
-	Namespace: decoy
-	Checksum: 0xB9D2828E
-	Offset: 0x818
-	Size: 0x44
-	Parameters: 3
-	Flags: None
-*/
 function detonate(attacker, weapon, target) {
-  self notify(# "done");
+  self notify("done");
   self entityheadicons::setentityheadicon("none");
 }
 
-/*
-	Name: simulate_weapon_fire
-	Namespace: decoy
-	Checksum: 0x6C51E50D
-	Offset: 0x868
-	Size: 0x1A6
-	Parameters: 1
-	Flags: None
-*/
 function simulate_weapon_fire(owner) {
-  owner endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "done");
+  owner endon("disconnect");
+  self endon("death");
+  self endon("done");
   weapon = pick_random_weapon();
   self thread watch_for_explosion(owner, weapon);
   self thread track_main_direction();
@@ -181,15 +121,6 @@ function simulate_weapon_fire(owner) {
   }
 }
 
-/*
-	Name: simulate_weapon_fire_machine_gun
-	Namespace: decoy
-	Checksum: 0xFC2F3047
-	Offset: 0xA18
-	Size: 0x64
-	Parameters: 2
-	Flags: None
-*/
 function simulate_weapon_fire_machine_gun(owner, weapon) {
   if(weapon.issemiauto) {
     simulate_weapon_fire_machine_gun_semi_auto(owner, weapon);
@@ -198,15 +129,6 @@ function simulate_weapon_fire_machine_gun(owner, weapon) {
   }
 }
 
-/*
-	Name: simulate_weapon_fire_machine_gun_semi_auto
-	Namespace: decoy
-	Checksum: 0x9A06B8C9
-	Offset: 0xA88
-	Size: 0x158
-	Parameters: 2
-	Flags: None
-*/
 function simulate_weapon_fire_machine_gun_semi_auto(owner, weapon) {
   clipsize = weapon.clipsize;
   firetime = weapon.firetime;
@@ -225,15 +147,6 @@ function simulate_weapon_fire_machine_gun_semi_auto(owner, weapon) {
   }
 }
 
-/*
-	Name: simulate_weapon_fire_pistol
-	Namespace: decoy
-	Checksum: 0x4FED54E5
-	Offset: 0xBE8
-	Size: 0x140
-	Parameters: 2
-	Flags: None
-*/
 function simulate_weapon_fire_pistol(owner, weapon) {
   clipsize = weapon.clipsize;
   firetime = weapon.firetime;
@@ -248,15 +161,6 @@ function simulate_weapon_fire_pistol(owner, weapon) {
   }
 }
 
-/*
-	Name: simulate_weapon_fire_shotgun
-	Namespace: decoy
-	Checksum: 0xE711D714
-	Offset: 0xD30
-	Size: 0x158
-	Parameters: 2
-	Flags: None
-*/
 function simulate_weapon_fire_shotgun(owner, weapon) {
   clipsize = weapon.clipsize;
   firetime = weapon.firetime;
@@ -274,15 +178,6 @@ function simulate_weapon_fire_shotgun(owner, weapon) {
   }
 }
 
-/*
-	Name: simulate_weapon_fire_machine_gun_full_auto
-	Namespace: decoy
-	Checksum: 0x12CBB3C7
-	Offset: 0xE90
-	Size: 0x180
-	Parameters: 2
-	Flags: None
-*/
 function simulate_weapon_fire_machine_gun_full_auto(owner, weapon) {
   clipsize = weapon.clipsize;
   firetime = weapon.firetime;
@@ -301,15 +196,6 @@ function simulate_weapon_fire_machine_gun_full_auto(owner, weapon) {
   }
 }
 
-/*
-	Name: simulate_weapon_fire_sniper
-	Namespace: decoy
-	Checksum: 0xD88CBB05
-	Offset: 0x1018
-	Size: 0x150
-	Parameters: 2
-	Flags: None
-*/
 function simulate_weapon_fire_sniper(owner, weapon) {
   clipsize = weapon.clipsize;
   firetime = weapon.firetime;
@@ -327,15 +213,6 @@ function simulate_weapon_fire_sniper(owner, weapon) {
   }
 }
 
-/*
-	Name: fire_burst
-	Namespace: decoy
-	Checksum: 0x12B29E4F
-	Offset: 0x1170
-	Size: 0xFE
-	Parameters: 5
-	Flags: None
-*/
 function fire_burst(owner, weapon, firetime, count, interrupt) {
   interrupt_shot = count;
   if(interrupt) {
@@ -349,15 +226,6 @@ function fire_burst(owner, weapon, firetime, count, interrupt) {
   }
 }
 
-/*
-	Name: finish_while_loop
-	Namespace: decoy
-	Checksum: 0xC5B877E2
-	Offset: 0x1278
-	Size: 0x74
-	Parameters: 4
-	Flags: None
-*/
 function finish_while_loop(weapon, reloadtime, burst_spacing_min, burst_spacing_max) {
   if(should_play_reload_sound()) {
     play_reload_sounds(weapon, reloadtime);
@@ -366,15 +234,6 @@ function finish_while_loop(weapon, reloadtime, burst_spacing_min, burst_spacing_
   }
 }
 
-/*
-	Name: play_reload_sounds
-	Namespace: decoy
-	Checksum: 0x5D8DCEB4
-	Offset: 0x12F8
-	Size: 0x82
-	Parameters: 2
-	Flags: None
-*/
 function play_reload_sounds(weapon, reloadtime) {
   divy_it_up = (reloadtime - 0.1) / 2;
   wait(0.1);
@@ -384,49 +243,22 @@ function play_reload_sounds(weapon, reloadtime) {
   wait(divy_it_up);
 }
 
-/*
-	Name: watch_for_explosion
-	Namespace: decoy
-	Checksum: 0x8121E9E5
-	Offset: 0x1388
-	Size: 0x9C
-	Parameters: 2
-	Flags: None
-*/
 function watch_for_explosion(owner, weapon) {
   self thread watch_for_death_before_explosion();
-  owner endon(# "disconnect");
-  self endon(# "death_before_explode");
-  self waittill(# "explode", pos);
+  owner endon("disconnect");
+  self endon("death_before_explode");
+  self waittill("explode", pos);
   level thread do_explosion(owner, pos, weapon, randomintrange(5, 10));
 }
 
-/*
-	Name: watch_for_death_before_explosion
-	Namespace: decoy
-	Checksum: 0x27CBD27D
-	Offset: 0x1430
-	Size: 0x2E
-	Parameters: 0
-	Flags: None
-*/
 function watch_for_death_before_explosion() {
-  self waittill(# "death");
+  self waittill("death");
   wait(0.1);
   if(isdefined(self)) {
-    self notify(# "death_before_explode");
+    self notify("death_before_explode");
   }
 }
 
-/*
-	Name: do_explosion
-	Namespace: decoy
-	Checksum: 0xF18C82DF
-	Offset: 0x1468
-	Size: 0x14E
-	Parameters: 4
-	Flags: None
-*/
 function do_explosion(owner, pos, weapon, count) {
   min_offset = 100;
   max_offset = 500;
@@ -437,36 +269,16 @@ function do_explosion(owner, pos, weapon, count) {
   }
 }
 
-/*
-	Name: pick_random_weapon
-	Namespace: decoy
-	Checksum: 0xB1F6D0E4
-	Offset: 0x15C0
-	Size: 0xD6
-	Parameters: 0
-	Flags: None
-*/
 function pick_random_weapon() {
   type = "fullauto";
   if(randomintrange(0, 10) < 3) {
     type = "semiauto";
   }
   randomval = randomintrange(0, level.decoyweapons[type].size);
-  /#
   println((("" + type) + "") + level.decoyweapons[type][randomval].name);
-  # /
-    return level.decoyweapons[type][randomval];
+  return level.decoyweapons[type][randomval];
 }
 
-/*
-	Name: should_play_reload_sound
-	Namespace: decoy
-	Checksum: 0xAC62A783
-	Offset: 0x16A0
-	Size: 0x2C
-	Parameters: 0
-	Flags: None
-*/
 function should_play_reload_sound() {
   if(randomintrange(0, 5) == 1) {
     return true;
@@ -474,22 +286,13 @@ function should_play_reload_sound() {
   return false;
 }
 
-/*
-	Name: track_main_direction
-	Namespace: decoy
-	Checksum: 0x96BF3906
-	Offset: 0x16D8
-	Size: 0x130
-	Parameters: 0
-	Flags: None
-*/
 function track_main_direction() {
-  self endon(# "death");
-  self endon(# "done");
+  self endon("death");
+  self endon("done");
   self.main_dir = int(vectortoangles((self.initial_velocity[0], self.initial_velocity[1], 0))[1]);
   up = (0, 0, 1);
   while (true) {
-    self waittill(# "grenade_bounce", pos, normal);
+    self waittill("grenade_bounce", pos, normal);
     dot = vectordot(normal, up);
     if(dot < 0.5 && dot > -0.5) {
       self.main_dir = int(vectortoangles((normal[0], normal[1], 0))[1]);

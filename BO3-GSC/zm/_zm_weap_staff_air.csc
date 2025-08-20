@@ -1,33 +1,18 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_staff_air.csc
+*************************************************/
+
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weap_staff_common;
-
 #namespace zm_weap_staff_air;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_weap_staff_air
-	Checksum: 0xEFBEA1
-	Offset: 0x228
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_staff_air", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_weap_staff_air
-	Checksum: 0x53E9C14D
-	Offset: 0x268
-	Size: 0x13C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level._effect["whirlwind"] = "dlc5/zmb_weapon/fx_staff_air_impact_ug_miss";
   clientfield::register("scriptmover", "whirlwind_play_fx", 21000, 1, "int", & function_c6b66912, 0, 0);
@@ -38,30 +23,12 @@ function __init__() {
   zm_weap_staff::function_4be5e665(getweapon("staff_air_upgraded"), "dlc5/zmb_weapon/fx_staff_charge_air_lv1");
 }
 
-/*
-	Name: function_869adfb
-	Namespace: zm_weap_staff_air
-	Checksum: 0x2A8C6E2E
-	Offset: 0x3B0
-	Size: 0x4C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_869adfb(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   level.var_1e7d95e0 = self.origin;
 }
 
-/*
-	Name: ragdoll_impact_watch
-	Namespace: zm_weap_staff_air
-	Checksum: 0x472E06EE
-	Offset: 0x408
-	Size: 0x20E
-	Parameters: 1
-	Flags: Linked
-*/
 function ragdoll_impact_watch(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   wait(0.1);
   waittime = 0.016;
   gibspeed = 500;
@@ -93,15 +60,6 @@ function ragdoll_impact_watch(localclientnum) {
   }
 }
 
-/*
-	Name: air_staff_launch
-	Namespace: zm_weap_staff_air
-	Checksum: 0x5DD287AD
-	Offset: 0x620
-	Size: 0x204
-	Parameters: 7
-	Flags: Linked
-*/
 function air_staff_launch(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   v_source = level.var_1e7d95e0;
   var_8178243a = randomfloatrange(0.05, 0.35);
@@ -122,17 +80,8 @@ function air_staff_launch(localclientnum, oldval, newval, bnewent, binitialsnap,
   self thread ragdoll_impact_watch(localclientnum);
 }
 
-/*
-	Name: function_c6b66912
-	Namespace: zm_weap_staff_air
-	Checksum: 0xC2DE390E
-	Offset: 0x830
-	Size: 0x1EE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_c6b66912(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(newval) {
     self.is_active = 1;
     original_pos = self.origin;
@@ -157,17 +106,8 @@ function function_c6b66912(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_3a4d4e97
-	Namespace: zm_weap_staff_air
-	Checksum: 0x76CA7CFE
-	Offset: 0xA28
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3a4d4e97() {
-  self endon(# "entityshutdown");
-  level waittill(# "demo_jump");
+  self endon("entityshutdown");
+  level waittill("demo_jump");
   self delete();
 }

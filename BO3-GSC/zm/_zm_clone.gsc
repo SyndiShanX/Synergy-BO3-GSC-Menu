@@ -1,21 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_clone.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #using_animtree("zm_ally");
-
 #namespace zm_clone;
 
-/*
-	Name: spawn_player_clone
-	Namespace: zm_clone
-	Checksum: 0x46C1B98D
-	Offset: 0x1A8
-	Size: 0x2F4
-	Parameters: 4
-	Flags: None
-*/
 function spawn_player_clone(player, origin = player.origin, forceweapon, forcemodel) {
   primaryweapons = player getweaponslistprimaries();
   if(isdefined(forceweapon)) {
@@ -56,32 +49,14 @@ function spawn_player_clone(player, origin = player.origin, forceweapon, forcemo
   return clone;
 }
 
-/*
-	Name: clone_damage_func
-	Namespace: zm_clone
-	Checksum: 0x2B27C8A2
-	Offset: 0x4A8
-	Size: 0xA2
-	Parameters: 11
-	Flags: Linked
-*/
 function clone_damage_func(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex) {
   idamage = 0;
   if(weapon.isballisticknife && zm_weapons::is_weapon_upgraded(weapon)) {
-    self notify(# "player_revived", eattacker);
+    self notify("player_revived", eattacker);
   }
   return idamage;
 }
 
-/*
-	Name: clone_give_weapon
-	Namespace: zm_clone
-	Checksum: 0x81E12050
-	Offset: 0x558
-	Size: 0x6C
-	Parameters: 1
-	Flags: None
-*/
 function clone_give_weapon(weapon) {
   weaponmodel = weapon.worldmodel;
   if(weaponmodel != "" && weaponmodel != "none") {
@@ -89,15 +64,6 @@ function clone_give_weapon(weapon) {
   }
 }
 
-/*
-	Name: clone_animate
-	Namespace: zm_clone
-	Checksum: 0x4348116F
-	Offset: 0x5D0
-	Size: 0x4C
-	Parameters: 1
-	Flags: None
-*/
 function clone_animate(animtype) {
   if(self.isactor) {
     self thread clone_actor_animate(animtype);
@@ -106,15 +72,6 @@ function clone_animate(animtype) {
   }
 }
 
-/*
-	Name: clone_actor_animate
-	Namespace: zm_clone
-	Checksum: 0x47FBB9DC
-	Offset: 0x628
-	Size: 0x7E
-	Parameters: 1
-	Flags: Linked
-*/
 function clone_actor_animate(animtype) {
   wait(0.1);
   switch (animtype) {
@@ -130,15 +87,6 @@ function clone_actor_animate(animtype) {
   }
 }
 
-/*
-	Name: clone_mover_animate
-	Namespace: zm_clone
-	Checksum: 0x853F6AF0
-	Offset: 0x6B0
-	Size: 0x12E
-	Parameters: 1
-	Flags: Linked
-*/
 function clone_mover_animate(animtype) {
   self useanimtree($zm_ally);
   switch (animtype) {

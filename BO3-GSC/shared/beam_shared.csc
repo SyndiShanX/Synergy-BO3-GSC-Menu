@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\beam_shared.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace beam;
 
-/*
-	Name: launch
-	Namespace: beam
-	Checksum: 0xB7886A61
-	Offset: 0x110
-	Size: 0x1CC
-	Parameters: 5
-	Flags: Linked
-*/
 function launch(ent_1, str_tag1, ent_2, str_tag2, str_beam_type) {
   s_beam = _get_beam(ent_1, str_tag1, ent_2, str_tag2, str_beam_type);
   if(!isdefined(s_beam)) {
@@ -35,15 +29,6 @@ function launch(ent_1, str_tag1, ent_2, str_tag2, str_beam_type) {
   }
 }
 
-/*
-	Name: kill
-	Namespace: beam
-	Checksum: 0xF8CAF966
-	Offset: 0x2E8
-	Size: 0x184
-	Parameters: 5
-	Flags: Linked
-*/
 function kill(ent_1, str_tag1, ent_2, str_tag2, str_beam_type) {
   if(isdefined(self.active_beams)) {
     s_beam = _get_beam(ent_1, str_tag1, ent_2, str_tag2, str_beam_type);
@@ -58,20 +43,11 @@ function kill(ent_1, str_tag1, ent_2, str_tag2, str_beam_type) {
       }
     }
   } else if(isdefined(s_beam)) {
-    s_beam notify(# "kill");
+    s_beam notify("kill");
     beamkill(self.localclientnum, s_beam.beam_id);
   }
 }
 
-/*
-	Name: _new_beam
-	Namespace: beam
-	Checksum: 0x5E65883A
-	Offset: 0x478
-	Size: 0x136
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private _new_beam(ent_1, str_tag1, ent_2, str_tag2, str_beam_type) {
   if(!isdefined(self.active_beams)) {
     self.active_beams = [];
@@ -91,15 +67,6 @@ function private _new_beam(ent_1, str_tag1, ent_2, str_tag2, str_beam_type) {
   return s_beam;
 }
 
-/*
-	Name: _get_beam
-	Namespace: beam
-	Checksum: 0x589DB238
-	Offset: 0x5B8
-	Size: 0x124
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private _get_beam(ent_1, str_tag1, ent_2, str_tag2, str_beam_type) {
   if(isdefined(self.active_beams)) {
     foreach(s_beam in self.active_beams) {
@@ -110,18 +77,9 @@ function private _get_beam(ent_1, str_tag1, ent_2, str_tag2, str_beam_type) {
   }
 }
 
-/*
-	Name: _kill_on_ent_death
-	Namespace: beam
-	Checksum: 0xAF2AF332
-	Offset: 0x6E8
-	Size: 0xBC
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _kill_on_ent_death(s_beam, ent_1, ent_2) {
-  s_beam endon(# "kill");
-  self endon(# "death");
+  s_beam endon("kill");
+  self endon("death");
   util::waittill_any_ents(ent_1, "entityshutdown", ent_2, "entityshutdown", s_beam, "kill", self, "death");
   if(isdefined(self)) {
     arrayremovevalue(self.active_beams, s_beam, 0);

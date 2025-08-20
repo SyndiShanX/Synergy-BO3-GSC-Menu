@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_cairo_aquifer.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_collectibles;
 #using scripts\cp\_debug;
@@ -34,32 +38,13 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_shared;
-
 #namespace cp_mi_cairo_aquifer;
 
-/*
-	Name: setup_rex_starts
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x66B87904
-	Offset: 0xFC8
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function setup_rex_starts() {
   util::add_gametype("coop");
   util::add_gametype("cpzm");
 }
 
-/*
-	Name: main
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x397BD361
-	Offset: 0x1008
-	Size: 0x304
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   if(sessionmodeiscampaignzombiesgame() && 0) {
     setclearanceceiling(34);
@@ -99,15 +84,6 @@ function main() {
   load::function_73adcefc();
 }
 
-/*
-	Name: init_flags
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0xB6A296CA
-	Offset: 0x1318
-	Size: 0x364
-	Parameters: 0
-	Flags: Linked
-*/
 function init_flags() {
   level flag::init("sniper_boss_spawned");
   level flag::init("end_battle");
@@ -138,28 +114,10 @@ function init_flags() {
   level flag::init("sniper_boss_skipped");
 }
 
-/*
-	Name: function_4b0a421
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0xC075C1C6
-	Offset: 0x1688
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4b0a421() {
   clientfield::register("world", "water_room_exit_scenes", 1, 1, "int");
 }
 
-/*
-	Name: skipto_setup
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x4930CBC8
-	Offset: 0x16C8
-	Size: 0x5A8
-	Parameters: 0
-	Flags: Linked
-*/
 function skipto_setup() {
   skipto::add("level_long_fly_in", & aquifer_obj::skipto_level_long_fly_in_init, "Intro spawnvtol", & aquifer_obj::skipto_level_long_fly_in_done);
   skipto::function_d68e678e("intro_dogfight", & aquifer_obj::function_9239cf5c, "Destroy Bogey spawnvtol", & aquifer_obj::function_b3635282);
@@ -179,10 +137,8 @@ function skipto_setup() {
   skipto::function_d68e678e("hideout", & aquifer_obj::skipto_hideout_init, "Hyperion's hideout", & aquifer_obj::skipto_hideout_done);
   skipto::add("run_out", & aquifer_obj::function_95463da0, "Flee From Aquifer", & aquifer_obj::function_fb8ad8d6);
   skipto::add("exfil", & aquifer_obj::skipto_exfil_init, "Exfil", & aquifer_obj::skipto_exfil_done);
-  /#
   skipto::add_dev("", & aquifer_obj::function_3230f09a, "", & aquifer_obj::function_a02afda4);
-  # /
-    level.skipto_triggers = [];
+  level.skipto_triggers = [];
   a_trigs = getentarray("objective", "targetname");
   foreach(trig in a_trigs) {
     if(isdefined(trig.script_objective)) {
@@ -191,15 +147,6 @@ function skipto_setup() {
   }
 }
 
-/*
-	Name: billboard
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0xF9D51229
-	Offset: 0x1C78
-	Size: 0x304
-	Parameters: 0
-	Flags: None
-*/
 function billboard() {
   skipto::add_billboard("level_long_fly_in", "INTRO", "Pacing", "Small");
   skipto::add_billboard("intro_dogfight", "DOGFIGHT", "Aerial Combat", "Large");
@@ -219,15 +166,6 @@ function billboard() {
   skipto::add_billboard("exfil", "EXFIL", "Run", "High");
 }
 
-/*
-	Name: precache
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x8E1550A0
-	Offset: 0x1F88
-	Size: 0x47C
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {
   level flag::init("boss_finale_ready");
   level flag::init("minions_clear");
@@ -270,46 +208,19 @@ function precache() {
   thread vehicle_ai::register_custom_add_state_callback( & function_8f9628e0);
 }
 
-/*
-	Name: function_c2c4ea75
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x302122FB
-	Offset: 0x2410
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c2c4ea75() {
   while (true) {
-    level waittill(# "save_restore");
+    level waittill("save_restore");
     foreach(player in level.players) {
       player clearplayergravity();
     }
   }
 }
 
-/*
-	Name: on_finalize_initialization
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0xA7BC405C
-	Offset: 0x24C0
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function on_finalize_initialization() {
   aquifer_util::function_11a9191();
 }
 
-/*
-	Name: function_8f9628e0
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x3AF90646
-	Offset: 0x24E0
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8f9628e0() {
   if(isdefined(self.variant) && self.variant == "rocketpod") {
     self.allow_movement = 0;
@@ -317,17 +228,8 @@ function function_8f9628e0() {
   }
 }
 
-/*
-	Name: on_player_connected
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x2DF0040B
-	Offset: 0x2548
-	Size: 0x3D4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connected() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.player_num = self getentitynumber() + 1;
   level flag::wait_till("start_coop_logic");
   self flagsys::wait_till("loadout_given");
@@ -358,45 +260,18 @@ function on_player_connected() {
   }
 }
 
-/*
-	Name: function_47c53384
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x3FFCD030
-	Offset: 0x2928
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_47c53384() {
   self clientfield::set_to_player("player_dust_fx", 0);
   self clientfield::set_to_player("player_snow_fx", 0);
   self clientfield::set_to_player("water_motes", 0);
 }
 
-/*
-	Name: on_player_disconnected
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x3BD3A9F2
-	Offset: 0x2998
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_disconnected() {
   if(isdefined(self.pvtol)) {
     self.pvtol delete();
   }
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0xBF1DE6BD
-	Offset: 0x29D0
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self clearplayergravity();
   if(self aquifer_util::function_c43fe5d3()) {
@@ -412,75 +287,30 @@ function on_player_spawned() {
   self thread aquifer_util::function_3de8b7b4();
 }
 
-/*
-	Name: on_player_loadout
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x1A72048C
-	Offset: 0x2AF0
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_loadout() {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   self.my_heightmap = "none";
   level flag::set("player_active_in_level");
-  self notify(# "hash_a4d83d61");
+  self notify("hash_a4d83d61");
   if(level.activeplayers.size == level.players.size) {
     level flagsys::set("all_players_active");
   }
 }
 
-/*
-	Name: on_player_death
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0xCCE9D08B
-	Offset: 0x2B88
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_death() {
   function_47c53384();
   self undolaststand();
 }
 
-/*
-	Name: function_48694c4a
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x99EC1590
-	Offset: 0x2BC0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_48694c4a() {}
 
-/*
-	Name: function_f141f41c
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x49F5B632
-	Offset: 0x2BD0
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f141f41c() {
   if(isdefined(self.propername)) {
     self.propername = "";
   }
 }
 
-/*
-	Name: function_6d9a8286
-	Namespace: cp_mi_cairo_aquifer
-	Checksum: 0x6ABF9F10
-	Offset: 0x2BF8
-	Size: 0x14C
-	Parameters: 11
-	Flags: Linked
-*/
 function function_6d9a8286(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex) {
   if(isdefined(self.var_cb4b9447) && self.var_cb4b9447 > gettime()) {
     return;

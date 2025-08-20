@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_perks.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\abilities\_ability_util;
 #using scripts\shared\callbacks_shared;
@@ -6,31 +10,12 @@
 #using scripts\shared\filter_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace perks;
 
-/*
-	Name: __init__sytem__
-	Namespace: perks
-	Checksum: 0xF72163E9
-	Offset: 0x5C0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("perks", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: perks
-	Checksum: 0x23D7C22
-	Offset: 0x600
-	Size: 0x30C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("allplayers", "flying", 1, 1, "int", & flying_callback, 0, 1);
   callback::on_localclient_connect( & on_local_client_connect);
@@ -52,22 +37,11 @@ function __init__() {
   level.sitrepscan2_setradius = getdvarint("scr_sitrepscan2_setradius", 50000);
   level.sitrepscan2_setfalloff = getdvarfloat("scr_sitrepscan2_setfalloff", 0.01);
   level.sitrepscan2_setdesat = getdvarfloat("scr_sitrepscan2_setdesat", 0.4);
-  /#
   level thread updatedvars();
-  # /
 }
 
-/*
-	Name: updatesitrepscan
-	Namespace: perks
-	Checksum: 0x8DC075BA
-	Offset: 0x918
-	Size: 0x1E0
-	Parameters: 0
-	Flags: Linked
-*/
 function updatesitrepscan() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (true) {
     self oed_sitrepscan_enable(level.sitrepscan1_enable);
     self oed_sitrepscan_setoutline(level.sitrepscan1_setoutline);
@@ -87,17 +61,7 @@ function updatesitrepscan() {
   }
 }
 
-/*
-	Name: updatedvars
-	Namespace: perks
-	Checksum: 0x3D3B1DDE
-	Offset: 0xB00
-	Size: 0x278
-	Parameters: 0
-	Flags: Linked
-*/
 function updatedvars() {
-  /#
   while (true) {
     level.sitrepscan1_enable = getdvarint("", level.sitrepscan1_enable);
     level.sitrepscan1_setoutline = getdvarint("", level.sitrepscan1_setoutline);
@@ -116,31 +80,12 @@ function updatedvars() {
     level.friendlycontentoutlines = getdvarint("", level.friendlycontentoutlines);
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: flying_callback
-	Namespace: perks
-	Checksum: 0x36F7EEB6
-	Offset: 0xD80
-	Size: 0x48
-	Parameters: 7
-	Flags: Linked
-*/
 function flying_callback(local_client_num, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self.flying = newval;
 }
 
-/*
-	Name: on_local_client_connect
-	Namespace: perks
-	Checksum: 0xB2803202
-	Offset: 0xDD0
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function on_local_client_connect(local_client_num) {
   registerrewindfx(local_client_num, "player/fx_plyr_footstep_tracker_l");
   registerrewindfx(local_client_num, "player/fx_plyr_footstep_tracker_r");
@@ -152,15 +97,6 @@ function on_local_client_connect(local_client_num) {
   registerrewindfx(local_client_num, "player/fx_plyr_flying_tracker_rf");
 }
 
-/*
-	Name: on_localplayer_spawned
-	Namespace: perks
-	Checksum: 0xA3D2A307
-	Offset: 0xEE8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function on_localplayer_spawned(local_client_num) {
   if(self != getlocalplayer(local_client_num)) {
     return;
@@ -170,39 +106,16 @@ function on_localplayer_spawned(local_client_num) {
   self thread monitor_tracker_existing_players(local_client_num);
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: perks
-	Checksum: 0xDD80CFAB
-	Offset: 0xF68
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_spawned(local_client_num) {
-  /#
   self thread watch_perks_change(local_client_num);
-  # /
-    self notify(# "perks_changed");
+  self notify("perks_changed");
   self thread updatesitrepscan();
-  /#
   self thread updatesitrepscan();
-  # /
-    self thread killtrackerfx_on_death(local_client_num);
+  self thread killtrackerfx_on_death(local_client_num);
   self thread monitor_tracker_perk(local_client_num);
 }
 
-/*
-	Name: array_equal
-	Namespace: perks
-	Checksum: 0xDE82A7CA
-	Offset: 0x1008
-	Size: 0xC0
-	Parameters: 2
-	Flags: Linked
-*/
 function array_equal( & a, & b) {
-  /#
   if(isdefined(a) && isdefined(b) && isarray(a) && isarray(b) && a.size == b.size) {
     for (i = 0; i < a.size; i++) {
       if(!a[i] === b[i]) {
@@ -212,46 +125,25 @@ function array_equal( & a, & b) {
     return true;
   }
   return false;
-  # /
 }
 
-/*
-	Name: watch_perks_change
-	Namespace: perks
-	Checksum: 0x7EE43BF1
-	Offset: 0x10D8
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function watch_perks_change(local_client_num) {
-  /#
-  self notify(# "watch_perks_change");
-  self endon(# "entityshutdown");
-  self endon(# "watch_perks_change");
-  self endon(# "death");
-  self endon(# "disconnect");
+  self notify("watch_perks_change");
+  self endon("entityshutdown");
+  self endon("watch_perks_change");
+  self endon("death");
+  self endon("disconnect");
   self.last_perks = self getperks(local_client_num);
   while (isdefined(self)) {
     perks = self getperks(local_client_num);
     if(!array_equal(perks, self.last_perks)) {
       self.last_perks = perks;
-      self notify(# "perks_changed");
+      self notify("perks_changed");
     }
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: get_players
-	Namespace: perks
-	Checksum: 0x3F47F5C5
-	Offset: 0x11C0
-	Size: 0xEA
-	Parameters: 1
-	Flags: None
-*/
 function get_players(local_client_num) {
   players = [];
   entities = getentarray(local_client_num);
@@ -265,19 +157,10 @@ function get_players(local_client_num) {
   return players;
 }
 
-/*
-	Name: monitor_tracker_existing_players
-	Namespace: perks
-	Checksum: 0xAAB717CF
-	Offset: 0x12B8
-	Size: 0xFA
-	Parameters: 1
-	Flags: Linked
-*/
 function monitor_tracker_existing_players(local_client_num) {
-  self endon(# "death");
-  self endon(# "monitor_tracker_existing_players");
-  self notify(# "monitor_tracker_existing_players");
+  self endon("death");
+  self endon("monitor_tracker_existing_players");
+  self notify("monitor_tracker_existing_players");
   players = getplayers(local_client_num);
   foreach(player in players) {
     if(isdefined(player) && player != self) {
@@ -287,19 +170,10 @@ function monitor_tracker_existing_players(local_client_num) {
   }
 }
 
-/*
-	Name: monitor_tracker_perk_killcam
-	Namespace: perks
-	Checksum: 0x4E9C6A91
-	Offset: 0x13C0
-	Size: 0x28C
-	Parameters: 1
-	Flags: Linked
-*/
 function monitor_tracker_perk_killcam(local_client_num) {
   self notify("monitor_tracker_perk_killcam" + local_client_num);
   self endon("monitor_tracker_perk_killcam" + local_client_num);
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   predictedlocalplayer = getlocalplayer(local_client_num);
   if(!isdefined(level.trackerspecialtyself)) {
     level.trackerspecialtyself = [];
@@ -335,21 +209,12 @@ function monitor_tracker_perk_killcam(local_client_num) {
   }
 }
 
-/*
-	Name: monitor_tracker_perk
-	Namespace: perks
-	Checksum: 0x34E892DA
-	Offset: 0x1658
-	Size: 0x240
-	Parameters: 1
-	Flags: Linked
-*/
 function monitor_tracker_perk(local_client_num) {
-  self notify(# "monitor_tracker_perk");
-  self endon(# "monitor_tracker_perk");
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "entityshutdown");
+  self notify("monitor_tracker_perk");
+  self endon("monitor_tracker_perk");
+  self endon("death");
+  self endon("disconnect");
+  self endon("entityshutdown");
   self.flying = 0;
   self.tracker_flying = 0;
   self.tracker_last_pos = self.origin;
@@ -382,29 +247,11 @@ function monitor_tracker_perk(local_client_num) {
   }
 }
 
-/*
-	Name: tracker_playfx
-	Namespace: perks
-	Checksum: 0x6DFC260E
-	Offset: 0x18A0
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function tracker_playfx(local_client_num, positionandrotationstruct) {
   handle = playfx(local_client_num, positionandrotationstruct.fx, positionandrotationstruct.pos, positionandrotationstruct.fwd, positionandrotationstruct.up);
   self killtrackerfx_track(local_client_num, handle);
 }
 
-/*
-	Name: killtrackerfx_track
-	Namespace: perks
-	Checksum: 0x6BE4A25E
-	Offset: 0x1930
-	Size: 0xF8
-	Parameters: 2
-	Flags: Linked
-*/
 function killtrackerfx_track(local_client_num, handle) {
   if(handle && isdefined(self.killtrackerfx)) {
     servertime = getservertime(local_client_num);
@@ -420,17 +267,8 @@ function killtrackerfx_track(local_client_num, handle) {
   }
 }
 
-/*
-	Name: killtrackerfx_on_death
-	Namespace: perks
-	Checksum: 0x3CA09D2E
-	Offset: 0x1A30
-	Size: 0x204
-	Parameters: 1
-	Flags: Linked
-*/
 function killtrackerfx_on_death(local_client_num) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!(isdefined(level.killtrackerfxenable) && level.killtrackerfxenable)) {
     return;
   }
@@ -447,7 +285,7 @@ function killtrackerfx_on_death(local_client_num) {
   killtrackerfx.array = [];
   killtrackerfx.index = 0;
   self.killtrackerfx = killtrackerfx;
-  self waittill(# "entityshutdown");
+  self waittill("entityshutdown");
   servertime = getservertime(local_client_num);
   foreach(killfxstruct in killtrackerfx.array) {
     if(isdefined(killfxstruct) && (killfxstruct.time + 5000) > servertime) {
@@ -459,15 +297,6 @@ function killtrackerfx_on_death(local_client_num) {
   killtrackerfx = undefined;
 }
 
-/*
-	Name: gettrackerfxposition
-	Namespace: perks
-	Checksum: 0x12B9838
-	Offset: 0x1C40
-	Size: 0x48C
-	Parameters: 1
-	Flags: Linked
-*/
 function gettrackerfxposition(local_client_num) {
   positionandrotation = undefined;
   player = self;
@@ -546,17 +375,8 @@ function gettrackerfxposition(local_client_num) {
   return positionandrotation;
 }
 
-/*
-	Name: monitor_detectnearbyenemies
-	Namespace: perks
-	Checksum: 0x6458C445
-	Offset: 0x20D8
-	Size: 0x8CC
-	Parameters: 1
-	Flags: Linked
-*/
 function monitor_detectnearbyenemies(local_client_num) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   controllermodel = getuimodelforcontroller(local_client_num);
   sixthsensemodel = createuimodel(controllermodel, "hudItems.sixthsense");
   enemynearbytime = 0;

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_uav.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -21,18 +25,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_heatseekingmissile;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace uav;
 
-/*
-	Name: init
-	Namespace: uav
-	Checksum: 0x4E03FE8E
-	Offset: 0x678
-	Size: 0x264
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   if(level.teambased) {
     foreach(team in level.teams) {
@@ -56,29 +50,11 @@ function init() {
   setmatchflag("radar_axis", 0);
 }
 
-/*
-	Name: hackedprefunction
-	Namespace: uav
-	Checksum: 0x1A315810
-	Offset: 0x8E8
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedprefunction(hacker) {
   uav = self;
   uav resetactiveuav();
 }
 
-/*
-	Name: configureteampost
-	Namespace: uav
-	Checksum: 0xD0896157
-	Offset: 0x928
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function configureteampost(owner, ishacked) {
   uav = self;
   uav thread teams::waituntilteamchangesingleton(owner, "UAV_watch_team_change", & onteamchange, owner.entnum, "delete", "death", "leaving");
@@ -90,22 +66,11 @@ function configureteampost(owner, ishacked) {
   owner addactiveuav();
 }
 
-/*
-	Name: activateuav
-	Namespace: uav
-	Checksum: 0xACF15C3D
-	Offset: 0xA00
-	Size: 0x650
-	Parameters: 0
-	Flags: Linked
-*/
 function activateuav() {
-  /#
   assert(isdefined(level.players));
-  # /
-    if(self killstreakrules::iskillstreakallowed("uav", self.team) == 0) {
-      return false;
-    }
+  if(self killstreakrules::iskillstreakallowed("uav", self.team) == 0) {
+    return false;
+  }
   killstreak_id = self killstreakrules::killstreakstart("uav", self.team);
   if(killstreak_id == -1) {
     return false;
@@ -155,15 +120,6 @@ function activateuav() {
   return true;
 }
 
-/*
-	Name: onlowhealth
-	Namespace: uav
-	Checksum: 0x1044BE01
-	Offset: 0x1058
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function onlowhealth(attacker, weapon) {
   self.is_damaged = 1;
   params = level.killstreakbundle["uav"];
@@ -172,41 +128,23 @@ function onlowhealth(attacker, weapon) {
   }
 }
 
-/*
-	Name: onteamchange
-	Namespace: uav
-	Checksum: 0x665B3F24
-	Offset: 0x10E0
-	Size: 0x2C
-	Parameters: 2
-	Flags: Linked
-*/
 function onteamchange(entnum, event) {
   destroyuav(undefined, undefined);
 }
 
-/*
-	Name: destroyuav
-	Namespace: uav
-	Checksum: 0xFAB4ABAA
-	Offset: 0x1118
-	Size: 0x26C
-	Parameters: 2
-	Flags: Linked
-*/
 function destroyuav(attacker, weapon) {
   attacker = self[[level.figure_out_attacker]](attacker);
   if(isdefined(attacker) && (!isdefined(self.owner) || self.owner util::isenemyplayer(attacker))) {
     challenges::destroyedaircraft(attacker, weapon, 0);
     scoreevents::processscoreevent("destroyed_uav", attacker, self.owner, weapon);
-    luinotifyevent( & "player_callout", 2, & "KILLSTREAK_DESTROYED_UAV", attacker.entnum);
+    luinotifyevent(&"player_callout", 2, & "KILLSTREAK_DESTROYED_UAV", attacker.entnum);
     attacker challenges::addflyswatterstat(weapon, self);
   }
   if(!self.leaving) {
     self removeactiveuav();
     self killstreaks::play_destroyed_dialog_on_owner("uav", self.killstreak_id);
   }
-  self notify(# "crashing");
+  self notify("crashing");
   self playsound("evt_helicopter_midair_exp");
   params = level.killstreakbundle["uav"];
   if(isdefined(params.ksexplosionfx)) {
@@ -218,19 +156,10 @@ function destroyuav(attacker, weapon) {
   self unlink();
   wait(0.5);
   arrayremovevalue(level.spawneduavs, self);
-  self notify(# "delete");
+  self notify("delete");
   self delete();
 }
 
-/*
-	Name: onplayerconnect
-	Namespace: uav
-	Checksum: 0x788F2114
-	Offset: 0x1390
-	Size: 0x56
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerconnect() {
   self.entnum = self getentitynumber();
   if(!level.teambased) {
@@ -239,44 +168,17 @@ function onplayerconnect() {
   level.activeplayeruavs[self.entnum] = 0;
 }
 
-/*
-	Name: onplayerspawned
-	Namespace: uav
-	Checksum: 0x18B45ED6
-	Offset: 0x13F0
-	Size: 0x3E
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerspawned() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(level.teambased == 0 || level.multiteam == 1) {
-    level notify(# "uav_update");
+    level notify("uav_update");
   }
 }
 
-/*
-	Name: onplayerjoinedteam
-	Namespace: uav
-	Checksum: 0xBBB20CD2
-	Offset: 0x1438
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerjoinedteam() {
   hidealluavstosameteam();
 }
 
-/*
-	Name: ontimeout
-	Namespace: uav
-	Checksum: 0x2EAF1CCD
-	Offset: 0x1458
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function ontimeout() {
   playafterburnerfx();
   if(isdefined(self.is_damaged) && self.is_damaged) {
@@ -292,30 +194,12 @@ function ontimeout() {
   self delete();
 }
 
-/*
-	Name: ontimecheck
-	Namespace: uav
-	Checksum: 0x3C48E2AE
-	Offset: 0x1558
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function ontimecheck() {
   self killstreaks::play_pilot_dialog_on_owner("timecheck", "uav", self.killstreak_id);
 }
 
-/*
-	Name: startuavfx
-	Namespace: uav
-	Checksum: 0xE0319EA2
-	Offset: 0x1598
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function startuavfx() {
-  self endon(# "death");
+  self endon("death");
   wait(0.1);
   if(isdefined(self)) {
     playfxontag("killstreaks/fx_uav_lights", self, "tag_origin");
@@ -324,17 +208,8 @@ function startuavfx() {
   }
 }
 
-/*
-	Name: playafterburnerfx
-	Namespace: uav
-	Checksum: 0x86EE0BD0
-	Offset: 0x1628
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function playafterburnerfx() {
-  self endon(# "death");
+  self endon("death");
   wait(0.1);
   if(isdefined(self)) {
     playfxontag("killstreaks/fx_uav_bunner", self, "tag_origin");
@@ -344,117 +219,60 @@ function playafterburnerfx() {
   }
 }
 
-/*
-	Name: hasuav
-	Namespace: uav
-	Checksum: 0x1D78BD95
-	Offset: 0x16D8
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function hasuav(team_or_entnum) {
   return level.activeuavs[team_or_entnum] > 0;
 }
 
-/*
-	Name: addactiveuav
-	Namespace: uav
-	Checksum: 0xE2765B2A
-	Offset: 0x1700
-	Size: 0xBE
-	Parameters: 0
-	Flags: Linked
-*/
 function addactiveuav() {
   if(level.teambased) {
-    /#
     assert(isdefined(self.team));
-    # /
-      level.activeuavs[self.team]++;
+    level.activeuavs[self.team]++;
   } else {
-    /#
     assert(isdefined(self.entnum));
-    # /
-      if(!isdefined(self.entnum)) {
-        self.entnum = self getentitynumber();
-      }
+    if(!isdefined(self.entnum)) {
+      self.entnum = self getentitynumber();
+    }
     level.activeuavs[self.entnum]++;
   }
   level.activeplayeruavs[self.entnum]++;
-  level notify(# "uav_update");
+  level notify("uav_update");
 }
 
-/*
-	Name: removeactiveuav
-	Namespace: uav
-	Checksum: 0xCAE8EFF9
-	Offset: 0x17C8
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function removeactiveuav() {
   uav = self;
   uav resetactiveuav();
   uav killstreakrules::killstreakstop("uav", self.originalteam, self.killstreak_id);
 }
 
-/*
-	Name: resetactiveuav
-	Namespace: uav
-	Checksum: 0x27AC3FA9
-	Offset: 0x1830
-	Size: 0x1EA
-	Parameters: 0
-	Flags: Linked
-*/
 function resetactiveuav() {
   if(level.teambased) {
     level.activeuavs[self.team]--;
-    /#
     assert(level.activeuavs[self.team] >= 0);
-    # /
-      if(level.activeuavs[self.team] < 0) {
-        level.activeuavs[self.team] = 0;
-      }
+    if(level.activeuavs[self.team] < 0) {
+      level.activeuavs[self.team] = 0;
+    }
   } else if(isdefined(self.owner)) {
-    /#
     assert(isdefined(self.owner.entnum));
-    # /
-      if(!isdefined(self.owner.entnum)) {
-        self.owner.entnum = self.owner getentitynumber();
-      }
+    if(!isdefined(self.owner.entnum)) {
+      self.owner.entnum = self.owner getentitynumber();
+    }
     level.activeuavs[self.owner.entnum]--;
-    /#
     assert(level.activeuavs[self.owner.entnum] >= 0);
-    # /
-      if(level.activeuavs[self.owner.entnum] < 0) {
-        level.activeuavs[self.owner.entnum] = 0;
-      }
+    if(level.activeuavs[self.owner.entnum] < 0) {
+      level.activeuavs[self.owner.entnum] = 0;
+    }
   }
   if(isdefined(self.owner)) {
     level.activeplayeruavs[self.owner.entnum]--;
-    /#
     assert(level.activeplayeruavs[self.owner.entnum] >= 0);
-    # /
   }
-  level notify(# "uav_update");
+  level notify("uav_update");
 }
 
-/*
-	Name: uavtracker
-	Namespace: uav
-	Checksum: 0x8B0A7716
-	Offset: 0x1A28
-	Size: 0x2B6
-	Parameters: 0
-	Flags: Linked
-*/
 function uavtracker() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   while (true) {
-    level waittill(# "uav_update");
+    level waittill("uav_update");
     if(level.teambased) {
       foreach(team in level.teams) {
         activeuavs = level.activeuavs[team];
@@ -465,12 +283,10 @@ function uavtracker() {
     } else {
       for (i = 0; i < level.players.size; i++) {
         player = level.players[i];
-        /#
         assert(isdefined(player.entnum));
-        # /
-          if(!isdefined(player.entnum)) {
-            player.entnum = player getentitynumber();
-          }
+        if(!isdefined(player.entnum)) {
+          player.entnum = player getentitynumber();
+        }
         activeuavs = level.activeuavs[player.entnum];
         activeuavsandsatellites = activeuavs + (isdefined(level.activesatellites) ? level.activesatellites[player.entnum] : 0);
         player setclientuivisibilityflag("radar_client", activeuavsandsatellites > 0);
@@ -480,15 +296,6 @@ function uavtracker() {
   }
 }
 
-/*
-	Name: hidealluavstosameteam
-	Namespace: uav
-	Checksum: 0xBAE2FF1A
-	Offset: 0x1CE8
-	Size: 0x92
-	Parameters: 0
-	Flags: Linked
-*/
 function hidealluavstosameteam() {
   foreach(uav in level.spawneduavs) {
     if(isdefined(uav)) {

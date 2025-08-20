@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\end_game_taunts.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\abilities\gadgets\_gadget_camo_render;
 #using scripts\shared\abilities\gadgets\_gadget_clone_render;
@@ -11,33 +15,13 @@
 #using scripts\shared\scene_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("all_player");
-
 #namespace end_game_taunts;
 
-/*
-	Name: __init__sytem__
-	Namespace: end_game_taunts
-	Checksum: 0x807E8586
-	Offset: 0x20D0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("end_game_taunts", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: end_game_taunts
-	Checksum: 0x8780258C
-	Offset: 0x2110
-	Size: 0x3A4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   animation::add_notetrack_func("taunts::hide", & hidemodel);
   animation::add_notetrack_func("taunts::show", & showmodel);
@@ -61,17 +45,7 @@ function __init__() {
   stop_stream_epic_models();
 }
 
-/*
-	Name: check_force_taunt
-	Namespace: end_game_taunts
-	Checksum: 0x7542072F
-	Offset: 0x24C0
-	Size: 0x238
-	Parameters: 0
-	Flags: None
-*/
 function check_force_taunt() {
-  /#
   while (true) {
     setdvar("", "");
     wait(0.05);
@@ -98,20 +72,9 @@ function check_force_taunt() {
       model show();
     }
   }
-  # /
 }
 
-/*
-	Name: check_force_gesture
-	Namespace: end_game_taunts
-	Checksum: 0x3007C725
-	Offset: 0x2700
-	Size: 0x140
-	Parameters: 0
-	Flags: None
-*/
 function check_force_gesture() {
-  /#
   while (true) {
     setdvar("", "");
     wait(0.05);
@@ -126,20 +89,9 @@ function check_force_gesture() {
     idleanimname = getidleanimname(model.localclientnum, model, 0);
     playgesture(model.localclientnum, model, 0, idleanimname, gesture, 1);
   }
-  # /
 }
 
-/*
-	Name: draw_runner_up_bounds
-	Namespace: end_game_taunts
-	Checksum: 0x7143C398
-	Offset: 0x2848
-	Size: 0xDA
-	Parameters: 0
-	Flags: None
-*/
 function draw_runner_up_bounds() {
-  /#
   while (true) {
     wait(0.016);
     if(!getdvarint("", 0)) {
@@ -150,20 +102,9 @@ function draw_runner_up_bounds() {
       box(model.origin, vectorscale((-1, -1, 0), 15), (15, 15, 72), model.angles[1], (0, 0, 1), 0, 1);
     }
   }
-  # /
 }
 
-/*
-	Name: spawn_temp_specialist_model
-	Namespace: end_game_taunts
-	Checksum: 0x37198B44
-	Offset: 0x2930
-	Size: 0x210
-	Parameters: 5
-	Flags: Linked
-*/
 function spawn_temp_specialist_model(localclientnum, characterindex, origin, angles, showcaseweapon) {
-  /#
   tempmodel = spawn(localclientnum, origin, "");
   tempmodel.angles = angles;
   tempmodel.showcaseweapon = showcaseweapon;
@@ -176,61 +117,33 @@ function spawn_temp_specialist_model(localclientnum, characterindex, origin, ang
   tempmodel.helmetrenderoptions = getcharacterhelmetrenderoptions(characterindex, 0, 0, 0, 0);
   tempmodel setbodyrenderoptions(tempmodel.moderenderoptions, tempmodel.bodyrenderoptions, tempmodel.helmetrenderoptions, tempmodel.helmetrenderoptions);
   return tempmodel;
-  # /
 }
 
-/*
-	Name: playcurrenttaunt
-	Namespace: end_game_taunts
-	Checksum: 0x2984B9C6
-	Offset: 0x2B50
-	Size: 0x94
-	Parameters: 3
-	Flags: None
-*/
 function playcurrenttaunt(localclientnum, charactermodel, topplayerindex) {
   tauntanimname = gettopplayerstaunt(localclientnum, topplayerindex, 0);
   idleanimname = getidleanimname(localclientnum, charactermodel, topplayerindex);
   playtaunt(localclientnum, charactermodel, topplayerindex, idleanimname, tauntanimname);
 }
 
-/*
-	Name: previewtaunt
-	Namespace: end_game_taunts
-	Checksum: 0xF74C229
-	Offset: 0x2BF0
-	Size: 0x7C
-	Parameters: 4
-	Flags: Linked
-*/
 function previewtaunt(localclientnum, charactermodel, idleanimname, tauntanimname) {
   cancelgesture(charactermodel);
   deletecameraglass(undefined);
   playtaunt(localclientnum, charactermodel, 0, idleanimname, tauntanimname, 0, 0);
 }
 
-/*
-	Name: playtaunt
-	Namespace: end_game_taunts
-	Checksum: 0x2BF2E78C
-	Offset: 0x2C78
-	Size: 0x29C
-	Parameters: 7
-	Flags: Linked
-*/
 function playtaunt(localclientnum, charactermodel, topplayerindex, idleanimname, tauntanimname, totauntblendtime = 0, playtransitions = 1) {
   if(!isdefined(tauntanimname) || tauntanimname == "") {
     return;
   }
   canceltaunt(localclientnum, charactermodel);
   charactermodel stopsounds();
-  charactermodel endon(# "canceltaunt");
+  charactermodel endon("canceltaunt");
   charactermodel util::waittill_dobj(localclientnum);
   if(!charactermodel hasanimtree()) {
     charactermodel useanimtree($all_player);
   }
   charactermodel.playingtaunt = tauntanimname;
-  charactermodel notify(# "tauntstarted");
+  charactermodel notify("tauntstarted");
   charactermodel clearanim(idleanimname, totauntblendtime);
   idleinanimname = getidleinanimname(charactermodel, topplayerindex);
   hideweapon(charactermodel);
@@ -243,19 +156,10 @@ function playtaunt(localclientnum, charactermodel, topplayerindex, idleanimname,
   showweapon(charactermodel);
   charactermodel thread animation::play(idleanimname, undefined, undefined, 1, 0.4, 0);
   charactermodel.playingtaunt = undefined;
-  charactermodel notify(# "tauntfinished");
+  charactermodel notify("tauntfinished");
   charactermodel shutdownepictauntmodels();
 }
 
-/*
-	Name: canceltaunt
-	Namespace: end_game_taunts
-	Checksum: 0x2BFB978A
-	Offset: 0x2F20
-	Size: 0xBE
-	Parameters: 2
-	Flags: Linked
-*/
 function canceltaunt(localclientnum, charactermodel) {
   if(isdefined(charactermodel.playingtaunt)) {
     charactermodel cloneshaderoff();
@@ -263,62 +167,35 @@ function canceltaunt(localclientnum, charactermodel) {
     charactermodel stopepictauntscene(localclientnum, charactermodel.playingtaunt);
     charactermodel stopsounds();
   }
-  charactermodel notify(# "canceltaunt");
+  charactermodel notify("canceltaunt");
   charactermodel.playingtaunt = undefined;
   charactermodel.epictauntmodels = undefined;
 }
 
-/*
-	Name: playgesturetype
-	Namespace: end_game_taunts
-	Checksum: 0x2AD0302C
-	Offset: 0x2FE8
-	Size: 0x9C
-	Parameters: 4
-	Flags: None
-*/
 function playgesturetype(localclientnum, charactermodel, topplayerindex, gesturetype) {
   idleanimname = getidleanimname(localclientnum, charactermodel, topplayerindex);
   gestureanimname = gettopplayersgesture(localclientnum, topplayerindex, gesturetype);
   playgesture(localclientnum, charactermodel, topplayerindex, idleanimname, gestureanimname);
 }
 
-/*
-	Name: previewgesture
-	Namespace: end_game_taunts
-	Checksum: 0xF2F74FE6
-	Offset: 0x3090
-	Size: 0x7C
-	Parameters: 4
-	Flags: Linked
-*/
 function previewgesture(localclientnum, charactermodel, idleanimname, gestureanimname) {
   canceltaunt(localclientnum, charactermodel);
   deletecameraglass(undefined);
   playgesture(localclientnum, charactermodel, 0, idleanimname, gestureanimname, 0);
 }
 
-/*
-	Name: playgesture
-	Namespace: end_game_taunts
-	Checksum: 0x7E7752DC
-	Offset: 0x3118
-	Size: 0x2BC
-	Parameters: 6
-	Flags: Linked
-*/
 function playgesture(localclientnum, charactermodel, topplayerindex, idleanimname, gestureanimname, playtransitions = 1) {
   if(!isdefined(gestureanimname) || gestureanimname == "") {
     return;
   }
   cancelgesture(charactermodel);
-  charactermodel endon(# "cancelgesture");
+  charactermodel endon("cancelgesture");
   charactermodel util::waittill_dobj(localclientnum);
   if(!charactermodel hasanimtree()) {
     charactermodel useanimtree($all_player);
   }
   charactermodel.playinggesture = 1;
-  charactermodel notify(# "gesturestarted");
+  charactermodel notify("gesturestarted");
   charactermodel clearanim(idleanimname, 0.4);
   idleoutanimname = getidleoutanimname(charactermodel, topplayerindex);
   idleinanimname = getidleinanimname(charactermodel, topplayerindex);
@@ -335,53 +212,26 @@ function playgesture(localclientnum, charactermodel, topplayerindex, idleanimnam
   showweapon(charactermodel);
   charactermodel thread animation::play(idleanimname, undefined, undefined, 1, 0.4, 0);
   charactermodel.playinggesture = 0;
-  charactermodel notify(# "gesturefinished");
+  charactermodel notify("gesturefinished");
 }
 
-/*
-	Name: cancelgesture
-	Namespace: end_game_taunts
-	Checksum: 0x1FCD374E
-	Offset: 0x33E0
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function cancelgesture(charactermodel) {
-  charactermodel notify(# "cancelgesture");
+  charactermodel notify("cancelgesture");
   charactermodel.playinggesture = 0;
 }
 
-/*
-	Name: playtransitionanim
-	Namespace: end_game_taunts
-	Checksum: 0xBA3E102C
-	Offset: 0x3418
-	Size: 0x9C
-	Parameters: 4
-	Flags: Linked
-*/
 function playtransitionanim(charactermodel, transitionanimname, blendintime = 0, blendouttime = 0) {
-  charactermodel endon(# "canceltaunt");
+  charactermodel endon("canceltaunt");
   if(!isdefined(transitionanimname) || transitionanimname == "") {
     return;
   }
   charactermodel animation::play(transitionanimname, undefined, undefined, 1, blendintime, blendouttime);
 }
 
-/*
-	Name: waitremoveweapon
-	Namespace: end_game_taunts
-	Checksum: 0x2B49BBC0
-	Offset: 0x34C0
-	Size: 0x6A
-	Parameters: 1
-	Flags: Linked
-*/
 function waitremoveweapon(charactermodel) {
-  charactermodel endon(# "weaponhidden");
+  charactermodel endon("weaponhidden");
   while (true) {
-    charactermodel waittill(# "_anim_notify_", param1);
+    charactermodel waittill("_anim_notify_", param1);
     if(param1 == "remove_from_hand") {
       hideweapon(charactermodel);
       return;
@@ -389,19 +239,10 @@ function waitremoveweapon(charactermodel) {
   }
 }
 
-/*
-	Name: waitappearweapon
-	Namespace: end_game_taunts
-	Checksum: 0xDF6FA944
-	Offset: 0x3538
-	Size: 0x6A
-	Parameters: 1
-	Flags: Linked
-*/
 function waitappearweapon(charactermodel) {
-  charactermodel endon(# "weaponshown");
+  charactermodel endon("weaponshown");
   while (true) {
-    charactermodel waittill(# "_anim_notify_", param1);
+    charactermodel waittill("_anim_notify_", param1);
     if(param1 == "appear_in_hand") {
       showweapon(charactermodel);
       return;
@@ -409,15 +250,6 @@ function waitappearweapon(charactermodel) {
   }
 }
 
-/*
-	Name: hideweapon
-	Namespace: end_game_taunts
-	Checksum: 0x866CEE6A
-	Offset: 0x35B0
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function hideweapon(charactermodel) {
   if(charactermodel.weapon == level.weaponnone) {
     return;
@@ -425,18 +257,9 @@ function hideweapon(charactermodel) {
   markasdirty(charactermodel);
   charactermodel attachweapon(level.weaponnone);
   charactermodel useweaponhidetags(level.weaponnone);
-  charactermodel notify(# "weaponhidden");
+  charactermodel notify("weaponhidden");
 }
 
-/*
-	Name: showweapon
-	Namespace: end_game_taunts
-	Checksum: 0xE9F9F1EB
-	Offset: 0x3650
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function showweapon(charactermodel) {
   if(!isdefined(charactermodel.showcaseweapon) || charactermodel.weapon != level.weaponnone) {
     return;
@@ -448,18 +271,9 @@ function showweapon(charactermodel) {
   } else {
     charactermodel attachweapon(charactermodel.showcaseweapon);
   }
-  charactermodel notify(# "weaponshown");
+  charactermodel notify("weaponshown");
 }
 
-/*
-	Name: getidleanimname
-	Namespace: end_game_taunts
-	Checksum: 0xFAF2F370
-	Offset: 0x3758
-	Size: 0x10AE
-	Parameters: 3
-	Flags: Linked
-*/
 function getidleanimname(localclientnum, charactermodel, topplayerindex) {
   if(isdefined(charactermodel.weapon)) {
     weapon_group = getitemgroupforweaponname(charactermodel.weapon.rootweapon.name);
@@ -542,15 +356,6 @@ function getidleanimname(localclientnum, charactermodel, topplayerindex) {
   return anim_name;
 }
 
-/*
-	Name: getidleoutanimname
-	Namespace: end_game_taunts
-	Checksum: 0x2D91FAD9
-	Offset: 0x4810
-	Size: 0x4AE
-	Parameters: 2
-	Flags: Linked
-*/
 function getidleoutanimname(charactermodel, topplayerindex) {
   weapon_group = getweapongroup(charactermodel);
   switch (weapon_group) {
@@ -618,15 +423,6 @@ function getidleoutanimname(charactermodel, topplayerindex) {
   return "";
 }
 
-/*
-	Name: getidleinanimname
-	Namespace: end_game_taunts
-	Checksum: 0xC84431FE
-	Offset: 0x4CC8
-	Size: 0x4AE
-	Parameters: 2
-	Flags: Linked
-*/
 function getidleinanimname(charactermodel, topplayerindex) {
   weapon_group = getweapongroup(charactermodel);
   switch (weapon_group) {
@@ -694,15 +490,6 @@ function getidleinanimname(charactermodel, topplayerindex) {
   return "";
 }
 
-/*
-	Name: getweapongroup
-	Namespace: end_game_taunts
-	Checksum: 0x80F9ED8
-	Offset: 0x5180
-	Size: 0x69C
-	Parameters: 1
-	Flags: Linked
-*/
 function getweapongroup(charactermodel) {
   if(!isdefined(charactermodel.weapon)) {
     return "";
@@ -780,45 +567,18 @@ function getweapongroup(charactermodel) {
   return weapon_group;
 }
 
-/*
-	Name: stream_epic_models
-	Namespace: end_game_taunts
-	Checksum: 0xC0B1A3AB
-	Offset: 0x5828
-	Size: 0x8A
-	Parameters: 0
-	Flags: Linked
-*/
 function stream_epic_models() {
   foreach(model in level.epictauntxmodels) {
     forcestreamxmodel(model);
   }
 }
 
-/*
-	Name: stop_stream_epic_models
-	Namespace: end_game_taunts
-	Checksum: 0x3B56F213
-	Offset: 0x58C0
-	Size: 0x8A
-	Parameters: 0
-	Flags: Linked
-*/
 function stop_stream_epic_models() {
   foreach(model in level.epictauntxmodels) {
     stopforcestreamingxmodel(model);
   }
 }
 
-/*
-	Name: playepictauntscene
-	Namespace: end_game_taunts
-	Checksum: 0x756DBDD1
-	Offset: 0x5958
-	Size: 0x280
-	Parameters: 2
-	Flags: Linked
-*/
 function playepictauntscene(localclientnum, tauntanimname) {
   scenebundle = struct::get_script_bundle("scene", tauntanimname);
   if(!isdefined(scenebundle)) {
@@ -863,15 +623,6 @@ function playepictauntscene(localclientnum, tauntanimname) {
   return true;
 }
 
-/*
-	Name: stopepictauntscene
-	Namespace: end_game_taunts
-	Checksum: 0x46049441
-	Offset: 0x5BE0
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function stopepictauntscene(localclientnum, tauntanimname) {
   scenebundle = struct::get_script_bundle("scene", tauntanimname);
   if(!isdefined(scenebundle)) {
@@ -888,15 +639,6 @@ function stopepictauntscene(localclientnum, tauntanimname) {
   self thread scene::stop(tauntanimname);
 }
 
-/*
-	Name: addepicscenefunc
-	Namespace: end_game_taunts
-	Checksum: 0xAF4B0597
-	Offset: 0x5CA8
-	Size: 0x74
-	Parameters: 3
-	Flags: None
-*/
 function addepicscenefunc(tauntanimname, func, state) {
   scenebundle = struct::get_script_bundle("scene", tauntanimname);
   if(!isdefined(scenebundle)) {
@@ -905,15 +647,6 @@ function addepicscenefunc(tauntanimname, func, state) {
   scene::add_scene_func(tauntanimname, func, state);
 }
 
-/*
-	Name: shutdownepictauntmodels
-	Namespace: end_game_taunts
-	Checksum: 0x1E3C7E0
-	Offset: 0x5D28
-	Size: 0xC2
-	Parameters: 0
-	Flags: Linked
-*/
 function shutdownepictauntmodels() {
   if(isdefined(self.epictauntmodels)) {
     foreach(model in self.epictauntmodels) {
@@ -926,41 +659,14 @@ function shutdownepictauntmodels() {
   }
 }
 
-/*
-	Name: hidemodel
-	Namespace: end_game_taunts
-	Checksum: 0x326600BE
-	Offset: 0x5DF8
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function hidemodel(param) {
   self hide();
 }
 
-/*
-	Name: showmodel
-	Namespace: end_game_taunts
-	Checksum: 0x86B4A77F
-	Offset: 0x5E28
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function showmodel(param) {
   self show();
 }
 
-/*
-	Name: spawncameraglass
-	Namespace: end_game_taunts
-	Checksum: 0x2F187BE
-	Offset: 0x5E58
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function spawncameraglass(param) {
   if(isdefined(level.cameraglass)) {
     deletecameraglass(param);
@@ -971,17 +677,8 @@ function spawncameraglass(param) {
   level.cameraglass thread updateglassposition();
 }
 
-/*
-	Name: updateglassposition
-	Namespace: end_game_taunts
-	Checksum: 0x7FCD81E2
-	Offset: 0x5F18
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function updateglassposition() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (true) {
     camangles = getcamanglesbylocalclientnum(self.localclientnum);
     campos = getcamposbylocalclientnum(self.localclientnum);
@@ -992,15 +689,6 @@ function updateglassposition() {
   }
 }
 
-/*
-	Name: deletecameraglass
-	Namespace: end_game_taunts
-	Checksum: 0x77DB1C2D
-	Offset: 0x5FE0
-	Size: 0x3E
-	Parameters: 1
-	Flags: Linked
-*/
 function deletecameraglass(param) {
   if(!isdefined(level.cameraglass)) {
     return;
@@ -1009,15 +697,6 @@ function deletecameraglass(param) {
   level.cameraglass = undefined;
 }
 
-/*
-	Name: reaperbulletglass
-	Namespace: end_game_taunts
-	Checksum: 0x2086F689
-	Offset: 0x6028
-	Size: 0xE0
-	Parameters: 1
-	Flags: Linked
-*/
 function reaperbulletglass(param) {
   waittillframeend();
   minigun = getweapon("hero_minigun");
@@ -1033,15 +712,6 @@ function reaperbulletglass(param) {
   }
 }
 
-/*
-	Name: centerbulletglass
-	Namespace: end_game_taunts
-	Checksum: 0x52A7EB9D
-	Offset: 0x6110
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function centerbulletglass(weaponname) {
   waittillframeend();
   weapon = getweapon(weaponname);
@@ -1052,41 +722,14 @@ function centerbulletglass(weaponname) {
   self playsound(0, "pfx_magic_bullet_glass");
 }
 
-/*
-	Name: talonbulletglassleft
-	Namespace: end_game_taunts
-	Checksum: 0xB89878CB
-	Offset: 0x61A8
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function talonbulletglassleft(param) {
   self talonbulletglass(-28, -10);
 }
 
-/*
-	Name: talonbulletglassright
-	Namespace: end_game_taunts
-	Checksum: 0x2ABC79EE
-	Offset: 0x61E0
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function talonbulletglassright(param) {
   self talonbulletglass(10, 28);
 }
 
-/*
-	Name: talonbulletglass
-	Namespace: end_game_taunts
-	Checksum: 0x415873A1
-	Offset: 0x6218
-	Size: 0xEE
-	Parameters: 2
-	Flags: Linked
-*/
 function talonbulletglass(yawmin, yawmax) {
   waittillframeend();
   minigun = getweapon("hero_minigun");
@@ -1100,15 +743,6 @@ function talonbulletglass(yawmin, yawmax) {
   }
 }
 
-/*
-	Name: cloneshaderon
-	Namespace: end_game_taunts
-	Checksum: 0xBD49F12F
-	Offset: 0x6310
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked
-*/
 function cloneshaderon(param) {
   if(getdvarstring("mapname") == "core_frontend") {
     self sethighdetail(1, 0);
@@ -1124,29 +758,11 @@ function cloneshaderon(param) {
   self thread gadget_clone_render::transition_shader(self.localclientnum);
 }
 
-/*
-	Name: cloneshaderoff
-	Namespace: end_game_taunts
-	Checksum: 0x564291C7
-	Offset: 0x6450
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function cloneshaderoff(param) {
   self duplicate_render::update_dr_flag(self.localclientnum, "clone_ally_on", 0);
   self duplicate_render::update_dr_flag(self.localclientnum, "clone_enemy_on", 0);
 }
 
-/*
-	Name: handlecamochange
-	Namespace: end_game_taunts
-	Checksum: 0x36E8F8C2
-	Offset: 0x64B8
-	Size: 0x13C
-	Parameters: 2
-	Flags: Linked
-*/
 function handlecamochange(localclientnum, camo_on) {
   flags_changed = self duplicate_render::set_dr_flag("gadget_camo_friend", 0);
   flags_changed = flags_changed && self duplicate_render::set_dr_flag("gadget_camo_flicker", 0);
@@ -1163,15 +779,6 @@ function handlecamochange(localclientnum, camo_on) {
   }
 }
 
-/*
-	Name: camoshaderon
-	Namespace: end_game_taunts
-	Checksum: 0xEB61CCF2
-	Offset: 0x6600
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function camoshaderon(param) {
   if(getdvarstring("mapname") == "core_frontend") {
     self handlecamochange(self.localclientnum, 1);
@@ -1180,15 +787,6 @@ function camoshaderon(param) {
   }
 }
 
-/*
-	Name: camoshaderoff
-	Namespace: end_game_taunts
-	Checksum: 0x702FDFCE
-	Offset: 0x6688
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function camoshaderoff(param) {
   if(getdvarstring("mapname") == "core_frontend") {
     self handlecamochange(self.localclientnum, 0);
@@ -1197,20 +795,11 @@ function camoshaderoff(param) {
   }
 }
 
-/*
-	Name: fireweapon
-	Namespace: end_game_taunts
-	Checksum: 0x89D96E8
-	Offset: 0x6700
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked
-*/
 function fireweapon(weaponname) {
   if(!isdefined(weaponname)) {
     return;
   }
-  self endon(# "stopfireweapon");
+  self endon("stopfireweapon");
   weapon = getweapon(weaponname);
   waittillframeend();
   while (1 && isdefined(self)) {
@@ -1219,28 +808,10 @@ function fireweapon(weaponname) {
   }
 }
 
-/*
-	Name: stopfireweapon
-	Namespace: end_game_taunts
-	Checksum: 0x7E3B1268
-	Offset: 0x6798
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function stopfireweapon(param) {
-  self notify(# "stopfireweapon");
+  self notify("stopfireweapon");
 }
 
-/*
-	Name: firebeam
-	Namespace: end_game_taunts
-	Checksum: 0x4E6681C8
-	Offset: 0x67C0
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function firebeam(beam) {
   if(isdefined(self.beamfx)) {
     return;
@@ -1248,15 +819,6 @@ function firebeam(beam) {
   self.beamfx = beamlaunch(self.localclientnum, self, "tag_flash", undefined, "none", beam);
 }
 
-/*
-	Name: stopfirebeam
-	Namespace: end_game_taunts
-	Checksum: 0xB0A7AA00
-	Offset: 0x6818
-	Size: 0x46
-	Parameters: 1
-	Flags: Linked
-*/
 function stopfirebeam(param) {
   if(!isdefined(self.beamfx)) {
     return;
@@ -1265,15 +827,6 @@ function stopfirebeam(param) {
   self.beamfx = undefined;
 }
 
-/*
-	Name: playwinnerteamfx
-	Namespace: end_game_taunts
-	Checksum: 0xDD69D537
-	Offset: 0x6868
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function playwinnerteamfx(fxname) {
   waittillframeend();
   topplayerteam = gettopplayersteam(self.localclientnum, 0);
@@ -1286,15 +839,6 @@ function playwinnerteamfx(fxname) {
   }
 }
 
-/*
-	Name: playlocalteamfx
-	Namespace: end_game_taunts
-	Checksum: 0x98DD951A
-	Offset: 0x6930
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function playlocalteamfx(fxname) {
   waittillframeend();
   localplayerteam = getlocalplayerteam(self.localclientnum);
@@ -1304,15 +848,6 @@ function playlocalteamfx(fxname) {
   }
 }
 
-/*
-	Name: magicglassbullet
-	Namespace: end_game_taunts
-	Checksum: 0xBC5CD021
-	Offset: 0x69C8
-	Size: 0xAC
-	Parameters: 4
-	Flags: Linked
-*/
 function magicglassbullet(localclientnum, weapon, pitchangle, yawangle) {
   campos = getcamposbylocalclientnum(localclientnum);
   camangles = getcamanglesbylocalclientnum(localclientnum);
@@ -1320,15 +855,6 @@ function magicglassbullet(localclientnum, weapon, pitchangle, yawangle) {
   self magicbullet(weapon, campos, bulletangles);
 }
 
-/*
-	Name: launchprojectile
-	Namespace: end_game_taunts
-	Checksum: 0xE1888072
-	Offset: 0x6A80
-	Size: 0xF4
-	Parameters: 3
-	Flags: None
-*/
 function launchprojectile(localclientnum, projectilemodel, projectiletrail) {
   launchorigin = self gettagorigin("tag_flash");
   if(!isdefined(launchorigin)) {
@@ -1339,15 +865,6 @@ function launchprojectile(localclientnum, projectilemodel, projectiletrail) {
   createdynentandlaunch(localclientnum, projectilemodel, launchorigin, (0, 0, 0), launchorigin, launchdir * getdvarfloat("launchspeed", 3.5), projectiletrail);
 }
 
-/*
-	Name: setupreaperminigun
-	Namespace: end_game_taunts
-	Checksum: 0x3C938B09
-	Offset: 0x6B80
-	Size: 0x1B2
-	Parameters: 1
-	Flags: Linked
-*/
 function setupreaperminigun(localclientnum) {
   model = spawn(localclientnum, self.origin, "script_model");
   model.angles = self.angles;
@@ -1370,15 +887,6 @@ function setupreaperminigun(localclientnum) {
   self.epictauntmodels[self.epictauntmodels.size] = model;
 }
 
-/*
-	Name: spawnhiddenclone
-	Namespace: end_game_taunts
-	Checksum: 0x9774556B
-	Offset: 0x6D40
-	Size: 0x13A
-	Parameters: 2
-	Flags: Linked
-*/
 function spawnhiddenclone(localclientnum, targetname) {
   clone = self spawnplayermodel(localclientnum, targetname, self.origin, self.angles, self.bodymodel, self.helmetmodel, self.moderenderoptions, self.bodyrenderoptions, self.helmetrenderoptions);
   clone setscale(0);
@@ -1393,15 +901,6 @@ function spawnhiddenclone(localclientnum, targetname) {
   self.epictauntmodels[self.epictauntmodels.size] = clone;
 }
 
-/*
-	Name: spawntopplayermodel
-	Namespace: end_game_taunts
-	Checksum: 0xCB6CFAD
-	Offset: 0x6E88
-	Size: 0x12A
-	Parameters: 5
-	Flags: None
-*/
 function spawntopplayermodel(localclientnum, targetname, origin, angles, topplayerindex) {
   bodymodel = gettopplayersbodymodel(localclientnum, topplayerindex);
   helmetmodel = gettopplayershelmetmodel(localclientnum, topplayerindex);
@@ -1411,15 +910,6 @@ function spawntopplayermodel(localclientnum, targetname, origin, angles, topplay
   return spawnplayermodel(localclientnum, targetname, origin, angles, bodymodel, helmetmodel, moderenderoptions, bodyrenderoptions, helmetrenderoptions);
 }
 
-/*
-	Name: spawnplayermodel
-	Namespace: end_game_taunts
-	Checksum: 0x271FD9D1
-	Offset: 0x6FC0
-	Size: 0x158
-	Parameters: 9
-	Flags: Linked
-*/
 function spawnplayermodel(localclientnum, targetname, origin, angles, bodymodel, helmetmodel, moderenderoptions, bodyrenderoptions, helmetrenderoptions) {
   model = spawn(localclientnum, origin, "script_model");
   model.angles = angles;
@@ -1433,15 +923,6 @@ function spawnplayermodel(localclientnum, targetname, origin, angles, bodymodel,
   return model;
 }
 
-/*
-	Name: spawngiunit
-	Namespace: end_game_taunts
-	Checksum: 0xAEAFA648
-	Offset: 0x7120
-	Size: 0x142
-	Parameters: 2
-	Flags: Linked
-*/
 function spawngiunit(localclientnum, targetname) {
   model = spawn(localclientnum, self.origin, "script_model");
   model.angles = self.angles;
@@ -1457,15 +938,6 @@ function spawngiunit(localclientnum, targetname) {
   self.epictauntmodels[self.epictauntmodels.size] = model;
 }
 
-/*
-	Name: spawnrap
-	Namespace: end_game_taunts
-	Checksum: 0xBC048767
-	Offset: 0x7270
-	Size: 0x1BA
-	Parameters: 2
-	Flags: Linked
-*/
 function spawnrap(localclientnum, targetname) {
   model = spawn(localclientnum, self.origin, "script_model");
   model.angles = self.angles;
@@ -1488,15 +960,6 @@ function spawnrap(localclientnum, targetname) {
   self.epictauntmodels[self.epictauntmodels.size] = model;
 }
 
-/*
-	Name: spawntalon
-	Namespace: end_game_taunts
-	Checksum: 0x7664F7D
-	Offset: 0x7438
-	Size: 0x242
-	Parameters: 3
-	Flags: Linked
-*/
 function spawntalon(localclientnum, targetname, scale = 1) {
   model = spawn(localclientnum, self.origin, "script_model");
   model.angles = self.angles;

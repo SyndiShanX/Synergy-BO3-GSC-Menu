@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\codescripts\struct;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_eth_prologue_fx.gsc
+*************************************************/
 
+#using scripts\codescripts\struct;
 #namespace cp_mi_eth_prologue_fx;
 
-/*
-	Name: main
-	Namespace: cp_mi_eth_prologue_fx
-	Checksum: 0xBBBE6F0C
-	Offset: 0x2D0
-	Size: 0x136
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level._effect["gen_explosion"] = "explosions/fx_exp_generic_lg";
   level._effect["rock_explosion"] = "explosions/fx_exp_grenade_dirt";

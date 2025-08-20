@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_z_hypocenter.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_e15266b8;
 
-/*
-	Name: init_voice
-	Namespace: namespace_e15266b8
-	Checksum: 0x7AC7966
-	Offset: 0xB10
-	Size: 0x6A4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("plyz_it_started_at_coales_0", "vox_zhyp_1_01_000_plyz");
   dialog::add("plyz_we_d_lost_comms_with_0", "vox_zhyp_1_01_001_plyz");

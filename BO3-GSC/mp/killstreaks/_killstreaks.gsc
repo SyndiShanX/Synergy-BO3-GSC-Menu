@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_killstreaks.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_teamops;
 #using scripts\mp\_util;
@@ -55,31 +59,12 @@
 #using scripts\shared\weapons\_weaponobjects;
 #using scripts\shared\weapons\_weapons;
 #using scripts\shared\weapons_shared;
-
 #namespace killstreaks;
 
-/*
-	Name: __init__sytem__
-	Namespace: killstreaks
-	Checksum: 0x8D6E873C
-	Offset: 0xF58
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("killstreaks", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: killstreaks
-	Checksum: 0x5E4FB868
-	Offset: 0xF98
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.killstreaks = [];
   level.killstreakweapons = [];
@@ -89,23 +74,12 @@ function __init__() {
   callback::on_start_gametype( & init);
 }
 
-/*
-	Name: init
-	Namespace: killstreaks
-	Checksum: 0xEF482D96
-	Offset: 0x1028
-	Size: 0x3BC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
-  /#
   level.killstreak_init_start_time = getmillisecondsraw();
   thread debug_ricochet_protection();
-  # /
-    if(getdvarstring("scr_allow_killstreak_building") == "") {
-      setdvar("scr_allow_killstreak_building", "0");
-    }
+  if(getdvarstring("scr_allow_killstreak_building") == "") {
+    setdvar("scr_allow_killstreak_building", "0");
+  }
   level.menureferenceforkillstreak = [];
   level.numkillstreakreservedobjectives = 0;
   level.killstreakcounter = 0;
@@ -141,41 +115,22 @@ function init() {
   turret::init();
   uav::init();
   supplydrop::init();
-  /#
   level.killstreak_init_end_time = getmillisecondsraw();
   elapsed_time = level.killstreak_init_end_time - level.killstreak_init_start_time;
   println(("" + elapsed_time) + "");
-  # /
-    callback::on_spawned( & on_player_spawned);
+  callback::on_spawned( & on_player_spawned);
   callback::on_joined_team( & on_joined_team);
-  /#
   level thread killstreak_debug_think();
-  # /
-    if(getdvarint("teamOpsEnabled") == 1) {
-      level teamops::main();
-    }
+  if(getdvarint("teamOpsEnabled") == 1) {
+    level teamops::main();
+  }
 }
 
-/*
-	Name: register
-	Namespace: killstreaks
-	Checksum: 0x2F5D60F6
-	Offset: 0x13F0
-	Size: 0x584
-	Parameters: 10
-	Flags: Linked
-*/
 function register(killstreaktype, killstreakweaponname, killstreakmenuname, killstreakusagekey, killstreakusefunction, killstreakdelaystreak, weaponholdallowed = 0, killstreakstatsname = undefined, registerdvars = 1, registerinventory = 1) {
-  /#
   assert(isdefined(killstreaktype), "");
-  # /
-    /#
   assert(!isdefined(level.killstreaks[killstreaktype]), ("" + killstreaktype) + "");
-  # /
-    /#
   assert(isdefined(killstreakusefunction), "" + killstreaktype);
-  # /
-    level.killstreaks[killstreaktype] = spawnstruct();
+  level.killstreaks[killstreaktype] = spawnstruct();
   statstablename = util::getstatstablename();
   level.killstreaks[killstreaktype].killstreaklevel = int(tablelookup(statstablename, 4, killstreakmenuname, 5));
   level.killstreaks[killstreaktype].momentumcost = int(tablelookup(statstablename, 4, killstreakmenuname, 16));
@@ -188,23 +143,17 @@ function register(killstreaktype, killstreakweaponname, killstreakmenuname, kill
   level.killstreaks[killstreaktype].allowassists = 0;
   level.killstreaks[killstreaktype].overrideentitycameraindemo = 0;
   level.killstreaks[killstreaktype].teamkillpenaltyscale = 1;
-  /#
   level.killstreaks[killstreaktype].uiname = tablelookup(statstablename, 4, killstreakmenuname, 3);
   if(level.killstreaks[killstreaktype].uiname == "") {
     level.killstreaks[killstreaktype].uiname = killstreakmenuname;
   }
-  # /
-    if(isdefined(killstreakweaponname)) {
-      killstreakweapon = getweapon(killstreakweaponname);
-      /#
-      assert(killstreakweapon != level.weaponnone);
-      # /
-        /#
-      assert(!isdefined(level.killstreakweapons[killstreakweapon]), "");
-      # /
-        level.killstreaks[killstreaktype].weapon = killstreakweapon;
-      level.killstreakweapons[killstreakweapon] = killstreaktype;
-    }
+  if(isdefined(killstreakweaponname)) {
+    killstreakweapon = getweapon(killstreakweaponname);
+    assert(killstreakweapon != level.weaponnone);
+    assert(!isdefined(level.killstreakweapons[killstreakweapon]), "");
+    level.killstreaks[killstreaktype].weapon = killstreakweapon;
+    level.killstreakweapons[killstreakweapon] = killstreaktype;
+  }
   if(isdefined(killstreakstatsname)) {
     level.killstreaks[killstreaktype].killstreakstatsname = killstreakstatsname;
   }
@@ -221,36 +170,14 @@ function register(killstreaktype, killstreakweaponname, killstreakmenuname, kill
   }
 }
 
-/*
-	Name: is_registered
-	Namespace: killstreaks
-	Checksum: 0x2BD66A8F
-	Offset: 0x1980
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function is_registered(killstreaktype) {
   return isdefined(level.killstreaks[killstreaktype]);
 }
 
-/*
-	Name: register_strings
-	Namespace: killstreaks
-	Checksum: 0x6E45A90F
-	Offset: 0x19A8
-	Size: 0x1B4
-	Parameters: 8
-	Flags: Linked
-*/
 function register_strings(killstreaktype, receivedtext, notusabletext, inboundtext, inboundnearplayertext, hackedtext, utilizesairspace = 1, isinventory = 0) {
-  /#
   assert(isdefined(killstreaktype), "");
-  # /
-    /#
   assert(isdefined(level.killstreaks[killstreaktype]), "");
-  # /
-    level.killstreaks[killstreaktype].receivedtext = receivedtext;
+  level.killstreaks[killstreaktype].receivedtext = receivedtext;
   level.killstreaks[killstreaktype].notavailabletext = notusabletext;
   level.killstreaks[killstreaktype].inboundtext = inboundtext;
   level.killstreaks[killstreaktype].inboundnearplayertext = inboundnearplayertext;
@@ -261,23 +188,10 @@ function register_strings(killstreaktype, receivedtext, notusabletext, inboundte
   }
 }
 
-/*
-	Name: register_dialog
-	Namespace: killstreaks
-	Checksum: 0x9F62F508
-	Offset: 0x1B68
-	Size: 0x3A4
-	Parameters: 12
-	Flags: Linked
-*/
 function register_dialog(killstreaktype, informdialog, taacomdialogbundlekey, pilotdialogarraykey, startdialogkey, enemystartdialogkey, enemystartmultipledialogkey, hackeddialogkey, hackedstartdialogkey, requestdialogkey, threatdialogkey, isinventory) {
-  /#
   assert(isdefined(killstreaktype), "");
-  # /
-    /#
   assert(isdefined(level.killstreaks[killstreaktype]), "");
-  # /
-    level.killstreaks[killstreaktype].informdialog = informdialog;
+  level.killstreaks[killstreaktype].informdialog = informdialog;
   level.killstreaks[killstreaktype].taacomdialogbundlekey = taacomdialogbundlekey;
   level.killstreaks[killstreaktype].startdialogkey = startdialogkey;
   level.killstreaks[killstreaktype].enemystartdialogkey = enemystartdialogkey;
@@ -309,23 +223,10 @@ function register_dialog(killstreaktype, informdialog, taacomdialogbundlekey, pi
   }
 }
 
-/*
-	Name: register_alt_weapon
-	Namespace: killstreaks
-	Checksum: 0xD8B605CB
-	Offset: 0x1F18
-	Size: 0x1A4
-	Parameters: 3
-	Flags: Linked
-*/
 function register_alt_weapon(killstreaktype, weaponname, isinventory) {
-  /#
   assert(isdefined(killstreaktype), "");
-  # /
-    /#
   assert(isdefined(level.killstreaks[killstreaktype]), "");
-  # /
-    weapon = getweapon(weaponname);
+  weapon = getweapon(weaponname);
   if(weapon == level.weaponnone) {
     return;
   }
@@ -344,23 +245,10 @@ function register_alt_weapon(killstreaktype, weaponname, isinventory) {
   }
 }
 
-/*
-	Name: register_remote_override_weapon
-	Namespace: killstreaks
-	Checksum: 0x1EAF05A5
-	Offset: 0x20C8
-	Size: 0x18C
-	Parameters: 3
-	Flags: Linked
-*/
 function register_remote_override_weapon(killstreaktype, weaponname, isinventory) {
-  /#
   assert(isdefined(killstreaktype), "");
-  # /
-    /#
   assert(isdefined(level.killstreaks[killstreaktype]), "");
-  # /
-    weapon = getweapon(weaponname);
+  weapon = getweapon(weaponname);
   if(level.killstreaks[killstreaktype].weapon == weapon) {
     return;
   }
@@ -376,15 +264,6 @@ function register_remote_override_weapon(killstreaktype, weaponname, isinventory
   }
 }
 
-/*
-	Name: is_remote_override_weapon
-	Namespace: killstreaks
-	Checksum: 0x25D3E0FA
-	Offset: 0x2260
-	Size: 0x9C
-	Parameters: 2
-	Flags: Linked
-*/
 function is_remote_override_weapon(killstreaktype, weapon) {
   if(isdefined(level.killstreaks[killstreaktype].remoteoverrideweapons)) {
     for (i = 0; i < level.killstreaks[killstreaktype].remoteoverrideweapons.size; i++) {
@@ -396,65 +275,29 @@ function is_remote_override_weapon(killstreaktype, weapon) {
   return false;
 }
 
-/*
-	Name: register_dev_dvars
-	Namespace: killstreaks
-	Checksum: 0x19EF1B74
-	Offset: 0x2308
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function register_dev_dvars(killstreaktype) {
   /# /
   #
   assert(isdefined(killstreaktype), "");
-  # /
-    /#
   assert(isdefined(level.killstreaks[killstreaktype]), "");
-  # /
-    level.killstreaks[killstreaktype].devdvar = ("" + killstreaktype) + "";
+  level.killstreaks[killstreaktype].devdvar = ("" + killstreaktype) + "";
   level.killstreaks[killstreaktype].devenemydvar = ("" + killstreaktype) + "";
   level.killstreaks[killstreaktype].devtimeoutdvar = ("" + killstreaktype) + "";
   setdvar(level.killstreaks[killstreaktype].devtimeoutdvar, 0);
   level thread register_devgui(killstreaktype);
-  # /
 }
 
-/*
-	Name: register_dev_debug_dvar
-	Namespace: killstreaks
-	Checksum: 0xCAB22944
-	Offset: 0x2440
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function register_dev_debug_dvar(killstreaktype) {
   /# /
   #
   assert(isdefined(killstreaktype), "");
-  # /
-    /#
   assert(isdefined(level.killstreaks[killstreaktype]), "");
-  # /
-    level.killstreaks[killstreaktype].devdebugdvar = ("" + killstreaktype) + "";
+  level.killstreaks[killstreaktype].devdebugdvar = ("" + killstreaktype) + "";
   devgui_scorestreak_command_debugdvar(killstreaktype, level.killstreaks[killstreaktype].devdebugdvar);
-  # /
 }
 
-/*
-	Name: register_devgui
-	Namespace: killstreaks
-	Checksum: 0x1F315A84
-	Offset: 0x2508
-	Size: 0x14C
-	Parameters: 1
-	Flags: Linked
-*/
 function register_devgui(killstreaktype) {
-  /#
-  level endon(# "game_ended");
+  level endon("game_ended");
   wait(randomintrange(2, 20) * 0.05);
   give_type_all = "";
   give_type_enemy = "";
@@ -467,147 +310,53 @@ function register_devgui(killstreaktype) {
   if(isdefined(level.killstreaks[killstreaktype].devtimeoutdvar)) {
     devgui_scorestreak_command_timeoutdvar(killstreaktype, level.killstreaks[killstreaktype].devtimeoutdvar);
   }
-  # /
 }
 
-/*
-	Name: devgui_scorestreak_command_givedvar
-	Namespace: killstreaks
-	Checksum: 0x935C2FB0
-	Offset: 0x2660
-	Size: 0x54
-	Parameters: 3
-	Flags: Linked
-*/
 function devgui_scorestreak_command_givedvar(killstreaktype, give_type, dvar) {
-  /#
   devgui_scorestreak_command(killstreaktype, give_type, ("" + dvar) + "");
-  # /
 }
 
-/*
-	Name: devgui_scorestreak_command_timeoutdvar
-	Namespace: killstreaks
-	Checksum: 0x4F8C6196
-	Offset: 0x26C0
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function devgui_scorestreak_command_timeoutdvar(killstreaktype, dvar) {
-  /#
   devgui_scorestreak_dvar_toggle(killstreaktype, "", dvar);
-  # /
 }
 
-/*
-	Name: devgui_scorestreak_command_debugdvar
-	Namespace: killstreaks
-	Checksum: 0x4CEC49F9
-	Offset: 0x2708
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function devgui_scorestreak_command_debugdvar(killstreaktype, dvar) {
-  /#
   devgui_scorestreak_dvar_toggle(killstreaktype, "", dvar);
-  # /
 }
 
-/*
-	Name: devgui_scorestreak_dvar_toggle
-	Namespace: killstreaks
-	Checksum: 0xE8207EB3
-	Offset: 0x2750
-	Size: 0x6C
-	Parameters: 3
-	Flags: Linked
-*/
 function devgui_scorestreak_dvar_toggle(killstreaktype, title, dvar) {
   setdvar(dvar, 0);
   devgui_scorestreak_command(killstreaktype, "Toggle " + title, ("toggle " + dvar) + " 1 0");
 }
 
-/*
-	Name: devgui_scorestreak_command
-	Namespace: killstreaks
-	Checksum: 0x7CB4F82B
-	Offset: 0x27C8
-	Size: 0x114
-	Parameters: 3
-	Flags: Linked
-*/
 function devgui_scorestreak_command(killstreaktype, title, command) {
   /# /
   #
   assert(isdefined(killstreaktype), "");
-  # /
-    /#
   assert(isdefined(level.killstreaks[killstreaktype]), "");
-  # /
-    root = "";
+  root = "";
   user_name = makelocalizedstring(level.killstreaks[killstreaktype].uiname);
   adddebugcommand((((((((root + user_name) + "") + killstreaktype) + "") + title) + "") + command) + "");
-  # /
 }
 
-/*
-	Name: should_draw_debug
-	Namespace: killstreaks
-	Checksum: 0x73AC8EB6
-	Offset: 0x28E8
-	Size: 0x8E
-	Parameters: 1
-	Flags: Linked
-*/
 function should_draw_debug(killstreak) {
   /# /
   #
   assert(isdefined(killstreak), "");
-  # /
-    if(isdefined(level.killstreaks[killstreak]) && isdefined(level.killstreaks[killstreak].devdebugdvar)) {
-      return getdvarint(level.killstreaks[killstreak].devdebugdvar);
-    }
-  # /
-    return 0;
+  if(isdefined(level.killstreaks[killstreak]) && isdefined(level.killstreaks[killstreak].devdebugdvar)) {
+    return getdvarint(level.killstreaks[killstreak].devdebugdvar);
+  }
+  return 0;
 }
 
-/*
-	Name: register_tos_dvar
-	Namespace: killstreaks
-	Checksum: 0xBB80E33D
-	Offset: 0x2980
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function register_tos_dvar(dvar) {
   level.teamops_dvar = dvar;
 }
 
-/*
-	Name: allow_assists
-	Namespace: killstreaks
-	Checksum: 0x19D108A
-	Offset: 0x29A0
-	Size: 0x30
-	Parameters: 2
-	Flags: Linked
-*/
 function allow_assists(killstreaktype, allow) {
   level.killstreaks[killstreaktype].allowassists = allow;
 }
 
-/*
-	Name: set_team_kill_penalty_scale
-	Namespace: killstreaks
-	Checksum: 0xAA16B85B
-	Offset: 0x29D8
-	Size: 0x74
-	Parameters: 3
-	Flags: Linked
-*/
 function set_team_kill_penalty_scale(killstreaktype, scale, isinventory) {
   level.killstreaks[killstreaktype].teamkillpenaltyscale = scale;
   if(!(isdefined(isinventory) && isinventory)) {
@@ -615,15 +364,6 @@ function set_team_kill_penalty_scale(killstreaktype, scale, isinventory) {
   }
 }
 
-/*
-	Name: override_entity_camera_in_demo
-	Namespace: killstreaks
-	Checksum: 0x23C36906
-	Offset: 0x2A58
-	Size: 0x74
-	Parameters: 3
-	Flags: Linked
-*/
 function override_entity_camera_in_demo(killstreaktype, value, isinventory) {
   level.killstreaks[killstreaktype].overrideentitycameraindemo = value;
   if(!(isdefined(isinventory) && isinventory)) {
@@ -631,15 +371,6 @@ function override_entity_camera_in_demo(killstreaktype, value, isinventory) {
   }
 }
 
-/*
-	Name: is_available
-	Namespace: killstreaks
-	Checksum: 0x8ECACF0F
-	Offset: 0x2AD8
-	Size: 0x2A
-	Parameters: 1
-	Flags: Linked
-*/
 function is_available(killstreak) {
   if(isdefined(level.menureferenceforkillstreak[killstreak])) {
     return true;
@@ -647,44 +378,15 @@ function is_available(killstreak) {
   return false;
 }
 
-/*
-	Name: get_by_menu_name
-	Namespace: killstreaks
-	Checksum: 0xC2468ED5
-	Offset: 0x2B10
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function get_by_menu_name(killstreak) {
   return level.menureferenceforkillstreak[killstreak];
 }
 
-/*
-	Name: get_menu_name
-	Namespace: killstreaks
-	Checksum: 0x93816EBE
-	Offset: 0x2B30
-	Size: 0x4A
-	Parameters: 1
-	Flags: Linked
-*/
 function get_menu_name(killstreaktype) {
-  /#
   assert(isdefined(level.killstreaks[killstreaktype]));
-  # /
-    return level.killstreaks[killstreaktype].menuname;
+  return level.killstreaks[killstreaktype].menuname;
 }
 
-/*
-	Name: get_level
-	Namespace: killstreaks
-	Checksum: 0x3C35240B
-	Offset: 0x2B88
-	Size: 0x114
-	Parameters: 2
-	Flags: Linked
-*/
 function get_level(index, killstreak) {
   killstreaklevel = level.killstreaks[get_by_menu_name(killstreak)].killstreaklevel;
   if(getdvarint("custom_killstreak_mode") == 2) {
@@ -698,18 +400,8 @@ function get_level(index, killstreak) {
   return killstreaklevel;
 }
 
-/*
-	Name: give_if_streak_count_matches
-	Namespace: killstreaks
-	Checksum: 0xA060B7EC
-	Offset: 0x2CA8
-	Size: 0x24E
-	Parameters: 3
-	Flags: Linked
-*/
 function give_if_streak_count_matches(index, killstreak, streakcount) {
   pixbeginevent("giveKillstreakIfStreakCountMatches");
-  /#
   if(!isdefined(killstreak)) {
     println("");
   }
@@ -719,11 +411,9 @@ function give_if_streak_count_matches(index, killstreak, streakcount) {
   if(!is_available(killstreak)) {
     println("");
   }
-  # /
-    if(self.pers["killstreaksEarnedThisKillstreak"] > index && util::isroundbased()) {
-      hasalreadyearnedkillstreak = 1;
-    }
-  else {
+  if(self.pers["killstreaksEarnedThisKillstreak"] > index && util::isroundbased()) {
+    hasalreadyearnedkillstreak = 1;
+  } else {
     hasalreadyearnedkillstreak = 0;
   }
   if(isdefined(killstreak) && is_available(killstreak) && !hasalreadyearnedkillstreak) {
@@ -746,15 +436,6 @@ function give_if_streak_count_matches(index, killstreak, streakcount) {
   return false;
 }
 
-/*
-	Name: give_for_streak
-	Namespace: killstreaks
-	Checksum: 0x5DDA3A63
-	Offset: 0x2F00
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function give_for_streak() {
   if(!util::iskillstreaksenabled()) {
     return;
@@ -768,15 +449,6 @@ function give_for_streak() {
   }
 }
 
-/*
-	Name: is_an_a_killstreak
-	Namespace: killstreaks
-	Checksum: 0x5E47A72A
-	Offset: 0x2FC8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function is_an_a_killstreak() {
   onkillstreak = 0;
   if(!isdefined(self.pers["kill_streak_before_death"])) {
@@ -789,19 +461,10 @@ function is_an_a_killstreak() {
   return onkillstreak;
 }
 
-/*
-	Name: give
-	Namespace: killstreaks
-	Checksum: 0x9500233B
-	Offset: 0x3060
-	Size: 0x184
-	Parameters: 5
-	Flags: Linked
-*/
 function give(killstreaktype, streak, suppressnotification, noxp, tobottom) {
   pixbeginevent("giveKillstreak");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  level endon("game_ended");
   had_to_delay = 0;
   killstreakgiven = 0;
   if(isdefined(noxp)) {
@@ -820,17 +483,8 @@ function give(killstreaktype, streak, suppressnotification, noxp, tobottom) {
   pixendevent();
 }
 
-/*
-	Name: take
-	Namespace: killstreaks
-	Checksum: 0xA709918A
-	Offset: 0x31F0
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function take(killstreak) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   killstreak_weapon = get_killstreak_weapon(killstreak);
   remove_used_killstreak(killstreak);
   if(self getinventoryweapon() == killstreak_weapon) {
@@ -845,15 +499,6 @@ function take(killstreak) {
   activate_next();
 }
 
-/*
-	Name: remove_oldest
-	Namespace: killstreaks
-	Checksum: 0xD3F2364
-	Offset: 0x32F0
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function remove_oldest() {
   if(isdefined(self.pers["killstreaks"][0])) {
     currentweapon = self getcurrentweapon();
@@ -863,20 +508,11 @@ function remove_oldest() {
         self switchtoweapon(primaries[0]);
       }
     }
-    self notify(# "oldest_killstreak_removed", self.pers["killstreaks"][0], self.pers["killstreak_unique_id"][0]);
+    self notify("oldest_killstreak_removed", self.pers["killstreaks"][0], self.pers["killstreak_unique_id"][0]);
     self remove_used_killstreak(self.pers["killstreaks"][0], self.pers["killstreak_unique_id"][0], 0);
   }
 }
 
-/*
-	Name: give_internal
-	Namespace: killstreaks
-	Checksum: 0xE0EE803C
-	Offset: 0x3430
-	Size: 0x524
-	Parameters: 4
-	Flags: Linked
-*/
 function give_internal(killstreaktype, do_not_update_death_count, noxp, tobottom) {
   self.just_given_new_inventory_killstreak = undefined;
   if(level.gameended) {
@@ -947,15 +583,6 @@ function give_internal(killstreaktype, do_not_update_death_count, noxp, tobottom
   return true;
 }
 
-/*
-	Name: add_to_notification_queue
-	Namespace: killstreaks
-	Checksum: 0xF40AE4AB
-	Offset: 0x3960
-	Size: 0x14C
-	Parameters: 4
-	Flags: Linked
-*/
 function add_to_notification_queue(menuname, streakcount, hardpointtype, nonotify) {
   killstreaktablenumber = level.killstreakindices[menuname];
   if(!isdefined(killstreaktablenumber)) {
@@ -968,20 +595,11 @@ function add_to_notification_queue(menuname, streakcount, hardpointtype, nonotif
   if(getdvarint("teamOpsEnabled") == 0) {
     self thread play_killstreak_ready_dialog(hardpointtype, 2.4);
     self thread play_killstreak_ready_sfx(hardpointtype);
-    self luinotifyevent( & "killstreak_received", 2, killstreaktablenumber, istring(informdialog));
-    self luinotifyeventtospectators( & "killstreak_received", 2, killstreaktablenumber, istring(informdialog));
+    self luinotifyevent(&"killstreak_received", 2, killstreaktablenumber, istring(informdialog));
+    self luinotifyeventtospectators(&"killstreak_received", 2, killstreaktablenumber, istring(informdialog));
   }
 }
 
-/*
-	Name: has_equipped
-	Namespace: killstreaks
-	Checksum: 0xE75DC6B7
-	Offset: 0x3AB8
-	Size: 0xAA
-	Parameters: 0
-	Flags: None
-*/
 function has_equipped() {
   currentweapon = self getcurrentweapon();
   keys = getarraykeys(level.killstreaks);
@@ -993,15 +611,6 @@ function has_equipped() {
   return false;
 }
 
-/*
-	Name: _get_from_weapon
-	Namespace: killstreaks
-	Checksum: 0x57430B4C
-	Offset: 0x3B70
-	Size: 0x214
-	Parameters: 1
-	Flags: Linked
-*/
 function _get_from_weapon(weapon) {
   keys = getarraykeys(level.killstreaks);
   foreach(key in keys) {
@@ -1027,15 +636,6 @@ function _get_from_weapon(weapon) {
   return undefined;
 }
 
-/*
-	Name: get_from_weapon
-	Namespace: killstreaks
-	Checksum: 0x767E6BEC
-	Offset: 0x3D90
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function get_from_weapon(weapon) {
   if(weapon == level.weaponnone) {
     return undefined;
@@ -1047,15 +647,6 @@ function get_from_weapon(weapon) {
   return res;
 }
 
-/*
-	Name: give_weapon
-	Namespace: killstreaks
-	Checksum: 0xF8B6017
-	Offset: 0x3E10
-	Size: 0x5D0
-	Parameters: 3
-	Flags: Linked
-*/
 function give_weapon(weapon, isinventory, usestoredammo) {
   currentweapon = self getcurrentweapon();
   if(currentweapon != level.weaponnone && (!(isdefined(level.usingmomentum) && level.usingmomentum))) {
@@ -1148,15 +739,6 @@ function give_weapon(weapon, isinventory, usestoredammo) {
   return 1;
 }
 
-/*
-	Name: activate_next
-	Namespace: killstreaks
-	Checksum: 0xF5F7016D
-	Offset: 0x43F0
-	Size: 0x206
-	Parameters: 1
-	Flags: Linked
-*/
 function activate_next(do_not_update_death_count) {
   if(level.gameended) {
     return false;
@@ -1186,43 +768,16 @@ function activate_next(do_not_update_death_count) {
   return true;
 }
 
-/*
-	Name: give_owned
-	Namespace: killstreaks
-	Checksum: 0xF07B2DC
-	Offset: 0x4600
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function give_owned() {
   if(isdefined(self.pers["killstreaks"]) && self.pers["killstreaks"].size > 0) {
     self activate_next(0);
   }
 }
 
-/*
-	Name: get_killstreak_quantity
-	Namespace: killstreaks
-	Checksum: 0xB7A0A46B
-	Offset: 0x4658
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function get_killstreak_quantity(killstreakweapon) {
   return true;
 }
 
-/*
-	Name: change_killstreak_quantity
-	Namespace: killstreaks
-	Checksum: 0xBD740F36
-	Offset: 0x46A8
-	Size: 0x120
-	Parameters: 2
-	Flags: Linked
-*/
 function change_killstreak_quantity(killstreakweapon, delta) {
   quantity = get_killstreak_quantity(killstreakweapon);
   previousquantity = quantity;
@@ -1240,15 +795,6 @@ function change_killstreak_quantity(killstreakweapon, delta) {
   return quantity;
 }
 
-/*
-	Name: has_killstreak_in_class
-	Namespace: killstreaks
-	Checksum: 0x42D8718A
-	Offset: 0x47D0
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function has_killstreak_in_class(killstreakmenuname) {
   foreach(equippedkillstreak in self.killstreak) {
     if(equippedkillstreak == killstreakmenuname) {
@@ -1258,15 +804,6 @@ function has_killstreak_in_class(killstreakmenuname) {
   return false;
 }
 
-/*
-	Name: has_killstreak
-	Namespace: killstreaks
-	Checksum: 0xA6FD74A7
-	Offset: 0x4870
-	Size: 0xAA
-	Parameters: 1
-	Flags: Linked
-*/
 function has_killstreak(killstreak) {
   player = self;
   if(!isdefined(killstreak) || !isdefined(player.pers["killstreaks"])) {
@@ -1280,15 +817,6 @@ function has_killstreak(killstreak) {
   return false;
 }
 
-/*
-	Name: recordkillstreakbegindirect
-	Namespace: killstreaks
-	Checksum: 0x370B9450
-	Offset: 0x4928
-	Size: 0x13A
-	Parameters: 1
-	Flags: Linked
-*/
 function recordkillstreakbegindirect(recordstreakindex) {
   player = self;
   if(!isplayer(player) || !isdefined(recordstreakindex)) {
@@ -1308,29 +836,18 @@ function recordkillstreakbegindirect(recordstreakindex) {
   }
 }
 
-/*
-	Name: remove_when_done
-	Namespace: killstreaks
-	Checksum: 0x44DAA694
-	Offset: 0x4A70
-	Size: 0x4DC
-	Parameters: 3
-	Flags: Linked
-*/
 function remove_when_done(killstreak, haskillstreakbeenused, isfrominventory) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   continue_wait = 1;
   while (continue_wait) {
-    self waittill(# "killstreak_done", successful, killstreaktype);
+    self waittill("killstreak_done", successful, killstreaktype);
     if(killstreaktype == killstreak) {
       continue_wait = 0;
     }
   }
   if(successful) {
-    /#
     print("" + get_menu_name(killstreak));
-    # /
-      killstreak_weapon = get_killstreak_weapon(killstreak);
+    killstreak_weapon = get_killstreak_weapon(killstreak);
     recordstreakindex = undefined;
     if(isdefined(level.killstreaks[killstreak].menuname)) {
       recordstreakindex = level.killstreakindices[level.killstreaks[killstreak].menuname];
@@ -1392,15 +909,6 @@ function remove_when_done(killstreak, haskillstreakbeenused, isfrominventory) {
   }
 }
 
-/*
-	Name: usekillstreak
-	Namespace: killstreaks
-	Checksum: 0xAB1C133E
-	Offset: 0x4F58
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function usekillstreak(killstreak, isfrominventory) {
   haskillstreakbeenused = get_if_top_killstreak_has_been_used();
   if(isdefined(self.selectinglocation)) {
@@ -1410,15 +918,6 @@ function usekillstreak(killstreak, isfrominventory) {
   self thread trigger_killstreak(killstreak, isfrominventory);
 }
 
-/*
-	Name: remove_used_killstreak
-	Namespace: killstreaks
-	Checksum: 0xA6B5867F
-	Offset: 0x4FE0
-	Size: 0x316
-	Parameters: 3
-	Flags: Linked
-*/
 function remove_used_killstreak(killstreak, killstreakid, take_weapon_after_use = 1) {
   self.just_removed_used_killstreak = undefined;
   if(!isdefined(self.pers["killstreaks"])) {
@@ -1455,36 +954,18 @@ function remove_used_killstreak(killstreak, killstreakid, take_weapon_after_use 
   return true;
 }
 
-/*
-	Name: take_weapon_after_use
-	Namespace: killstreaks
-	Checksum: 0x2A8749F7
-	Offset: 0x5300
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function take_weapon_after_use(killstreakweapon) {
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "joined_team");
-  self endon(# "joined_spectators");
-  self waittill(# "weapon_change");
+  self endon("disconnect");
+  self endon("death");
+  self endon("joined_team");
+  self endon("joined_spectators");
+  self waittill("weapon_change");
   inventoryweapon = self getinventoryweapon();
   if(inventoryweapon != killstreakweapon) {
     self takeweapon(killstreakweapon);
   }
 }
 
-/*
-	Name: get_top_killstreak
-	Namespace: killstreaks
-	Checksum: 0xA3973C49
-	Offset: 0x5398
-	Size: 0x4E
-	Parameters: 0
-	Flags: Linked
-*/
 function get_top_killstreak() {
   if(self.pers["killstreaks"].size == 0) {
     return undefined;
@@ -1492,15 +973,6 @@ function get_top_killstreak() {
   return self.pers["killstreaks"][self.pers["killstreaks"].size - 1];
 }
 
-/*
-	Name: get_if_top_killstreak_has_been_used
-	Namespace: killstreaks
-	Checksum: 0x79EA1BF8
-	Offset: 0x53F0
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function get_if_top_killstreak_has_been_used() {
   if(!(isdefined(level.usingmomentum) && level.usingmomentum)) {
     if(self.pers["killstreak_has_been_used"].size == 0) {
@@ -1510,15 +982,6 @@ function get_if_top_killstreak_has_been_used() {
   }
 }
 
-/*
-	Name: get_top_killstreak_unique_id
-	Namespace: killstreaks
-	Checksum: 0x34383CA2
-	Offset: 0x5460
-	Size: 0x4E
-	Parameters: 0
-	Flags: Linked
-*/
 function get_top_killstreak_unique_id() {
   if(self.pers["killstreak_unique_id"].size == 0) {
     return undefined;
@@ -1526,15 +989,6 @@ function get_top_killstreak_unique_id() {
   return self.pers["killstreak_unique_id"][self.pers["killstreak_unique_id"].size - 1];
 }
 
-/*
-	Name: get_killstreak_index_by_id
-	Namespace: killstreaks
-	Checksum: 0xD20CD01A
-	Offset: 0x54B8
-	Size: 0x72
-	Parameters: 1
-	Flags: Linked
-*/
 function get_killstreak_index_by_id(killstreakid) {
   for (index = self.pers["killstreak_unique_id"].size - 1; index >= 0; index--) {
     if(self.pers["killstreak_unique_id"][index] == killstreakid) {
@@ -1544,15 +998,6 @@ function get_killstreak_index_by_id(killstreakid) {
   return undefined;
 }
 
-/*
-	Name: get_killstreak_momentum_cost
-	Namespace: killstreaks
-	Checksum: 0x7E9884E3
-	Offset: 0x5538
-	Size: 0x72
-	Parameters: 1
-	Flags: None
-*/
 function get_killstreak_momentum_cost(killstreak) {
   if(!(isdefined(level.usingmomentum) && level.usingmomentum)) {
     return 0;
@@ -1560,21 +1005,10 @@ function get_killstreak_momentum_cost(killstreak) {
   if(!isdefined(killstreak)) {
     return 0;
   }
-  /#
   assert(isdefined(level.killstreaks[killstreak]));
-  # /
-    return level.killstreaks[killstreak].momentumcost;
+  return level.killstreaks[killstreak].momentumcost;
 }
 
-/*
-	Name: get_killstreak_for_weapon
-	Namespace: killstreaks
-	Checksum: 0x8CDB8622
-	Offset: 0x55B8
-	Size: 0x48
-	Parameters: 1
-	Flags: Linked
-*/
 function get_killstreak_for_weapon(weapon) {
   if(isdefined(level.killstreakweapons[weapon])) {
     return level.killstreakweapons[weapon];
@@ -1582,15 +1016,6 @@ function get_killstreak_for_weapon(weapon) {
   return level.killstreakweapons[weapon.rootweapon];
 }
 
-/*
-	Name: get_killstreak_for_weapon_for_stats
-	Namespace: killstreaks
-	Checksum: 0x18F961D2
-	Offset: 0x5610
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function get_killstreak_for_weapon_for_stats(weapon) {
   prefix = "inventory_";
   killstreak = get_killstreak_for_weapon(weapon);
@@ -1602,15 +1027,6 @@ function get_killstreak_for_weapon_for_stats(weapon) {
   return killstreak;
 }
 
-/*
-	Name: is_killstreak_weapon_assist_allowed
-	Namespace: killstreaks
-	Checksum: 0x5E50A78
-	Offset: 0x56A8
-	Size: 0x62
-	Parameters: 1
-	Flags: Linked
-*/
 function is_killstreak_weapon_assist_allowed(weapon) {
   killstreak = get_killstreak_for_weapon(weapon);
   if(!isdefined(killstreak)) {
@@ -1622,15 +1038,6 @@ function is_killstreak_weapon_assist_allowed(weapon) {
   return false;
 }
 
-/*
-	Name: get_killstreak_team_kill_penalty_scale
-	Namespace: killstreaks
-	Checksum: 0x88DD4D24
-	Offset: 0x5718
-	Size: 0x5A
-	Parameters: 1
-	Flags: Linked
-*/
 function get_killstreak_team_kill_penalty_scale(weapon) {
   killstreak = get_killstreak_for_weapon(weapon);
   if(!isdefined(killstreak)) {
@@ -1639,15 +1046,6 @@ function get_killstreak_team_kill_penalty_scale(weapon) {
   return level.killstreaks[killstreak].teamkillpenaltyscale;
 }
 
-/*
-	Name: should_override_entity_camera_in_demo
-	Namespace: killstreaks
-	Checksum: 0x99AF13BC
-	Offset: 0x5780
-	Size: 0xBA
-	Parameters: 2
-	Flags: Linked
-*/
 function should_override_entity_camera_in_demo(player, weapon) {
   killstreak = get_killstreak_for_weapon(weapon);
   if(!isdefined(killstreak)) {
@@ -1662,19 +1060,10 @@ function should_override_entity_camera_in_demo(player, weapon) {
   return false;
 }
 
-/*
-	Name: wait_till_hero_weapon_is_fully_on
-	Namespace: killstreaks
-	Checksum: 0x566A431B
-	Offset: 0x5848
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_till_hero_weapon_is_fully_on(weapon) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "weapon_change");
+  self endon("death");
+  self endon("disconnect");
+  self endon("weapon_change");
   slot = self gadgetgetslot(weapon);
   while (true) {
     if(self ability_player::gadget_is_in_use(slot)) {
@@ -1685,18 +1074,9 @@ function wait_till_hero_weapon_is_fully_on(weapon) {
   }
 }
 
-/*
-	Name: track_weapon_usage
-	Namespace: killstreaks
-	Checksum: 0x83849C2
-	Offset: 0x58E8
-	Size: 0x2C8
-	Parameters: 0
-	Flags: Linked
-*/
 function track_weapon_usage() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.lastnonkillstreakweapon = self getcurrentweapon();
   lastvalidpimary = self getcurrentweapon();
   if(self.lastnonkillstreakweapon == level.weaponnone) {
@@ -1707,64 +1087,53 @@ function track_weapon_usage() {
       self.lastnonkillstreakweapon = level.weaponbasemelee;
     }
   }
-  /#
   assert(self.lastnonkillstreakweapon != level.weaponnone);
-  # /
-    for (;;) {
-      currentweapon = self getcurrentweapon();
-      self waittill(# "weapon_change", weapon);
-      if(weapons::is_primary_weapon(weapon)) {
-        lastvalidpimary = weapon;
-      }
-      if(weapon == self.lastnonkillstreakweapon || weapon == level.weaponnone || weapon == level.weaponbasemelee) {
-        continue;
-      }
-      if(weapon.isgameplayweapon) {
-        continue;
-      }
-      if(isdefined(self.resurrect_weapon) && weapon == self.resurrect_weapon) {
-        continue;
-      }
-      name = get_killstreak_for_weapon(weapon);
-      if(isdefined(name) && !weapon.iscarriedkillstreak) {
-        killstreak = level.killstreaks[name];
-        continue;
-      }
-      if(currentweapon.isequipment) {
-        if(self.lastnonkillstreakweapon.iscarriedkillstreak) {
-          self.lastnonkillstreakweapon = lastvalidpimary;
-        }
-        continue;
-      }
-      if(weapon.isheroweapon) {
-        if(weapon.gadget_heroversion_2_0) {
-          if(weapon.isgadget && self getammocount(weapon) > 0) {
-            self thread wait_till_hero_weapon_is_fully_on(weapon);
-            continue;
-          }
-        }
-      }
-      self.lastnonkillstreakweapon = weapon;
+  for (;;) {
+    currentweapon = self getcurrentweapon();
+    self waittill("weapon_change", weapon);
+    if(weapons::is_primary_weapon(weapon)) {
+      lastvalidpimary = weapon;
     }
+    if(weapon == self.lastnonkillstreakweapon || weapon == level.weaponnone || weapon == level.weaponbasemelee) {
+      continue;
+    }
+    if(weapon.isgameplayweapon) {
+      continue;
+    }
+    if(isdefined(self.resurrect_weapon) && weapon == self.resurrect_weapon) {
+      continue;
+    }
+    name = get_killstreak_for_weapon(weapon);
+    if(isdefined(name) && !weapon.iscarriedkillstreak) {
+      killstreak = level.killstreaks[name];
+      continue;
+    }
+    if(currentweapon.isequipment) {
+      if(self.lastnonkillstreakweapon.iscarriedkillstreak) {
+        self.lastnonkillstreakweapon = lastvalidpimary;
+      }
+      continue;
+    }
+    if(weapon.isheroweapon) {
+      if(weapon.gadget_heroversion_2_0) {
+        if(weapon.isgadget && self getammocount(weapon) > 0) {
+          self thread wait_till_hero_weapon_is_fully_on(weapon);
+          continue;
+        }
+      }
+    }
+    self.lastnonkillstreakweapon = weapon;
+  }
 }
 
-/*
-	Name: killstreak_waiter
-	Namespace: killstreaks
-	Checksum: 0x68FEBE29
-	Offset: 0x5BB8
-	Size: 0x310
-	Parameters: 0
-	Flags: Linked
-*/
 function killstreak_waiter() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   self thread track_weapon_usage();
   self give_owned();
   for (;;) {
-    self waittill(# "weapon_change", weapon);
+    self waittill("weapon_change", weapon);
     if(!is_killstreak_weapon(weapon)) {
       continue;
     }
@@ -1807,15 +1176,6 @@ function killstreak_waiter() {
   }
 }
 
-/*
-	Name: should_delay_killstreak
-	Namespace: killstreaks
-	Checksum: 0xE30B2B85
-	Offset: 0x5ED0
-	Size: 0xD6
-	Parameters: 1
-	Flags: Linked
-*/
 function should_delay_killstreak(killstreaktype) {
   if(!isdefined(level.starttime)) {
     return false;
@@ -1836,15 +1196,6 @@ function should_delay_killstreak(killstreaktype) {
   return true;
 }
 
-/*
-	Name: is_delayable_killstreak
-	Namespace: killstreaks
-	Checksum: 0xECFA8290
-	Offset: 0x5FB0
-	Size: 0x5E
-	Parameters: 1
-	Flags: Linked
-*/
 function is_delayable_killstreak(killstreaktype) {
   if(isdefined(level.killstreaks[killstreaktype]) && (isdefined(level.killstreaks[killstreaktype].delaystreak) && level.killstreaks[killstreaktype].delaystreak)) {
     return true;
@@ -1852,15 +1203,6 @@ function is_delayable_killstreak(killstreaktype) {
   return false;
 }
 
-/*
-	Name: get_xp_amount_for_killstreak
-	Namespace: killstreaks
-	Checksum: 0xEB0D4C72
-	Offset: 0x6018
-	Size: 0x11E
-	Parameters: 1
-	Flags: None
-*/
 function get_xp_amount_for_killstreak(killstreaktype) {
   xpamount = 0;
   switch (level.killstreaks[killstreaktype].killstreaklevel) {
@@ -1904,37 +1246,17 @@ function get_xp_amount_for_killstreak(killstreaktype) {
   return xpamount;
 }
 
-/*
-	Name: display_unavailable_time
-	Namespace: killstreaks
-	Checksum: 0x9A5C647D
-	Offset: 0x6140
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function display_unavailable_time() {
   timeleft = int(level.roundstartkillstreakdelay - (globallogic_utils::gettimepassed() / 1000));
   if(timeleft <= 0) {
     timeleft = 1;
   }
-  self iprintlnbold( & "MP_UNAVAILABLE_FOR_N", (" " + timeleft) + " ", & "EXE_SECONDS");
+  self iprintlnbold(&"MP_UNAVAILABLE_FOR_N", (" " + timeleft) + " ", & "EXE_SECONDS");
 }
 
-/*
-	Name: trigger_killstreak
-	Namespace: killstreaks
-	Checksum: 0x9E61EE2F
-	Offset: 0x61E0
-	Size: 0x198
-	Parameters: 2
-	Flags: Linked
-*/
 function trigger_killstreak(killstreaktype, isfrominventory) {
-  /#
   assert(isdefined(level.killstreaks[killstreaktype].usefunction), "" + killstreaktype);
-  # /
-    self.usingkillstreakfrominventory = isfrominventory;
+  self.usingkillstreakfrominventory = isfrominventory;
   if(level.infinalkillcam) {
     return false;
   }
@@ -1948,28 +1270,19 @@ function trigger_killstreak(killstreaktype, isfrominventory) {
         self.pers[level.killstreaks[killstreaktype].usagekey] = 0;
       }
       self.pers[level.killstreaks[killstreaktype].usagekey]++;
-      self notify(# "killstreak_used", killstreaktype);
-      self notify(# "killstreak_done", 1, killstreaktype);
+      self notify("killstreak_used", killstreaktype);
+      self notify("killstreak_done", 1, killstreaktype);
     }
     self.usingkillstreakfrominventory = undefined;
     return true;
   }
   self.usingkillstreakfrominventory = undefined;
   if(isdefined(self)) {
-    self notify(# "killstreak_done", 0, killstreaktype);
+    self notify("killstreak_done", 0, killstreaktype);
   }
   return false;
 }
 
-/*
-	Name: add_to_killstreak_count
-	Namespace: killstreaks
-	Checksum: 0x70E15EC8
-	Offset: 0x6380
-	Size: 0x4A
-	Parameters: 1
-	Flags: Linked
-*/
 function add_to_killstreak_count(weapon) {
   if(!isdefined(self.pers["totalKillstreakCount"])) {
     self.pers["totalKillstreakCount"] = 0;
@@ -1977,38 +1290,18 @@ function add_to_killstreak_count(weapon) {
   self.pers["totalKillstreakCount"]++;
 }
 
-/*
-	Name: get_first_valid_killstreak_alt_weapon
-	Namespace: killstreaks
-	Checksum: 0x17EAB85B
-	Offset: 0x63D8
-	Size: 0xDE
-	Parameters: 1
-	Flags: None
-*/
 function get_first_valid_killstreak_alt_weapon(killstreaktype) {
-  /#
   assert(isdefined(level.killstreaks[killstreaktype]), "");
-  # /
-    if(isdefined(level.killstreaks[killstreaktype].altweapons)) {
-      for (i = 0; i < level.killstreaks[killstreaktype].altweapons.size; i++) {
-        if(isdefined(level.killstreaks[killstreaktype].altweapons[i])) {
-          return level.killstreaks[killstreaktype].altweapons[i];
-        }
+  if(isdefined(level.killstreaks[killstreaktype].altweapons)) {
+    for (i = 0; i < level.killstreaks[killstreaktype].altweapons.size; i++) {
+      if(isdefined(level.killstreaks[killstreaktype].altweapons[i])) {
+        return level.killstreaks[killstreaktype].altweapons[i];
       }
     }
+  }
   return level.weaponnone;
 }
 
-/*
-	Name: should_give_killstreak
-	Namespace: killstreaks
-	Checksum: 0xB39E410B
-	Offset: 0x64C0
-	Size: 0x86
-	Parameters: 1
-	Flags: Linked
-*/
 function should_give_killstreak(weapon) {
   if(getdvarint("teamOpsEnabled") == 1) {
     return false;
@@ -2022,28 +1315,10 @@ function should_give_killstreak(weapon) {
   return true;
 }
 
-/*
-	Name: point_is_in_danger_area
-	Namespace: killstreaks
-	Checksum: 0x7916ADCA
-	Offset: 0x6550
-	Size: 0x42
-	Parameters: 3
-	Flags: Linked
-*/
 function point_is_in_danger_area(point, targetpos, radius) {
   return distance2d(point, targetpos) <= (radius * 1.25);
 }
 
-/*
-	Name: print_killstreak_start_text
-	Namespace: killstreaks
-	Checksum: 0x6B2944EA
-	Offset: 0x65A0
-	Size: 0x2C4
-	Parameters: 5
-	Flags: None
-*/
 function print_killstreak_start_text(killstreaktype, owner, team, targetpos, dangerradius) {
   if(!isdefined(level.killstreaks[killstreaktype])) {
     return;
@@ -2077,15 +1352,6 @@ function print_killstreak_start_text(killstreaktype, owner, team, targetpos, dan
   }
 }
 
-/*
-	Name: play_killstreak_firewall_being_hacked_dialog
-	Namespace: killstreaks
-	Checksum: 0x4B292018
-	Offset: 0x6870
-	Size: 0x64
-	Parameters: 2
-	Flags: Linked
-*/
 function play_killstreak_firewall_being_hacked_dialog(killstreaktype, killstreakid) {
   if(self globallogic_audio::killstreak_dialog_queued("firewallBeingHacked", killstreaktype, killstreakid)) {
     return;
@@ -2093,15 +1359,6 @@ function play_killstreak_firewall_being_hacked_dialog(killstreaktype, killstreak
   self globallogic_audio::play_taacom_dialog("firewallBeingHacked", killstreaktype, killstreakid);
 }
 
-/*
-	Name: play_killstreak_firewall_hacked_dialog
-	Namespace: killstreaks
-	Checksum: 0x1924B116
-	Offset: 0x68E0
-	Size: 0x64
-	Parameters: 2
-	Flags: Linked
-*/
 function play_killstreak_firewall_hacked_dialog(killstreaktype, killstreakid) {
   if(self globallogic_audio::killstreak_dialog_queued("firewallHacked", killstreaktype, killstreakid)) {
     return;
@@ -2109,15 +1366,6 @@ function play_killstreak_firewall_hacked_dialog(killstreaktype, killstreakid) {
   self globallogic_audio::play_taacom_dialog("firewallHacked", killstreaktype, killstreakid);
 }
 
-/*
-	Name: play_killstreak_being_hacked_dialog
-	Namespace: killstreaks
-	Checksum: 0x5A0ED5CC
-	Offset: 0x6950
-	Size: 0x64
-	Parameters: 2
-	Flags: Linked
-*/
 function play_killstreak_being_hacked_dialog(killstreaktype, killstreakid) {
   if(self globallogic_audio::killstreak_dialog_queued("beingHacked", killstreaktype, killstreakid)) {
     return;
@@ -2125,15 +1373,6 @@ function play_killstreak_being_hacked_dialog(killstreaktype, killstreakid) {
   self globallogic_audio::play_taacom_dialog("beingHacked", killstreaktype, killstreakid);
 }
 
-/*
-	Name: play_killstreak_hacked_dialog
-	Namespace: killstreaks
-	Checksum: 0x8B842931
-	Offset: 0x69C0
-	Size: 0x144
-	Parameters: 3
-	Flags: Linked
-*/
 function play_killstreak_hacked_dialog(killstreaktype, killstreakid, hacker) {
   self globallogic_audio::flush_killstreak_dialog_on_player(killstreakid);
   self globallogic_audio::play_taacom_dialog("hacked", killstreaktype);
@@ -2148,15 +1387,6 @@ function play_killstreak_hacked_dialog(killstreaktype, killstreakid, hacker) {
   }
 }
 
-/*
-	Name: play_killstreak_start_dialog
-	Namespace: killstreaks
-	Checksum: 0x796F2AC4
-	Offset: 0x6B10
-	Size: 0x17C
-	Parameters: 3
-	Flags: Linked
-*/
 function play_killstreak_start_dialog(killstreaktype, team, killstreakid) {
   if(!isdefined(killstreaktype) || !isdefined(killstreakid)) {
     return;
@@ -2177,15 +1407,6 @@ function play_killstreak_start_dialog(killstreaktype, team, killstreakid) {
   }
 }
 
-/*
-	Name: play_killstreak_ready_sfx
-	Namespace: killstreaks
-	Checksum: 0x2AA1DF36
-	Offset: 0x6C98
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function play_killstreak_ready_sfx(killstreaktype) {
   if(!isdefined(level.gameended) || !level.gameended) {
     ready_sfx_alias = "mpl_killstreak_" + killstreaktype;
@@ -2195,21 +1416,12 @@ function play_killstreak_ready_sfx(killstreaktype) {
   }
 }
 
-/*
-	Name: play_killstreak_ready_dialog
-	Namespace: killstreaks
-	Checksum: 0x3972A427
-	Offset: 0x6D08
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function play_killstreak_ready_dialog(killstreaktype, taacomwaittime) {
   self notify("killstreak_ready_" + killstreaktype);
-  self endon(# "death");
+  self endon("death");
   self endon("killstreak_start_" + killstreaktype);
   self endon("killstreak_ready_" + killstreaktype);
-  level endon(# "game_ended");
+  level endon("game_ended");
   if(isdefined(level.gameended) && level.gameended) {
     return;
   }
@@ -2222,15 +1434,6 @@ function play_killstreak_ready_dialog(killstreaktype, taacomwaittime) {
   self globallogic_audio::play_taacom_dialog("ready", killstreaktype);
 }
 
-/*
-	Name: play_destroyed_dialog_on_owner
-	Namespace: killstreaks
-	Checksum: 0xA5624E5D
-	Offset: 0x6DE0
-	Size: 0x94
-	Parameters: 2
-	Flags: Linked
-*/
 function play_destroyed_dialog_on_owner(killstreaktype, killstreakid) {
   if(!isdefined(self.owner) || !isdefined(self.team) || self.team != self.owner.team) {
     return;
@@ -2239,15 +1442,6 @@ function play_destroyed_dialog_on_owner(killstreaktype, killstreakid) {
   self.owner globallogic_audio::play_taacom_dialog("destroyed", killstreaktype);
 }
 
-/*
-	Name: play_taacom_dialog_on_owner
-	Namespace: killstreaks
-	Checksum: 0x1F4A9A55
-	Offset: 0x6E80
-	Size: 0x7C
-	Parameters: 3
-	Flags: None
-*/
 function play_taacom_dialog_on_owner(dialogkey, killstreaktype, killstreakid) {
   if(!isdefined(self.owner) || !isdefined(self.team) || self.team != self.owner.team) {
     return;
@@ -2255,15 +1449,6 @@ function play_taacom_dialog_on_owner(dialogkey, killstreaktype, killstreakid) {
   self.owner globallogic_audio::play_taacom_dialog(dialogkey, killstreaktype, killstreakid);
 }
 
-/*
-	Name: play_pilot_dialog_on_owner
-	Namespace: killstreaks
-	Checksum: 0x83204A5
-	Offset: 0x6F08
-	Size: 0x9C
-	Parameters: 3
-	Flags: Linked
-*/
 function play_pilot_dialog_on_owner(dialogkey, killstreaktype, killstreakid) {
   if(!isdefined(self.owner) || !isdefined(self.owner.team) || !isdefined(self.team) || self.team != self.owner.team) {
     return;
@@ -2271,15 +1456,6 @@ function play_pilot_dialog_on_owner(dialogkey, killstreaktype, killstreakid) {
   self.owner play_pilot_dialog(dialogkey, killstreaktype, killstreakid, self.pilotindex);
 }
 
-/*
-	Name: play_pilot_dialog
-	Namespace: killstreaks
-	Checksum: 0xF5978BCD
-	Offset: 0x6FB0
-	Size: 0x64
-	Parameters: 4
-	Flags: Linked
-*/
 function play_pilot_dialog(dialogkey, killstreaktype, killstreakid, pilotindex) {
   if(!isdefined(killstreaktype) || !isdefined(pilotindex)) {
     return;
@@ -2287,59 +1463,24 @@ function play_pilot_dialog(dialogkey, killstreaktype, killstreakid, pilotindex) 
   self globallogic_audio::killstreak_dialog_on_player(dialogkey, killstreaktype, killstreakid, pilotindex);
 }
 
-/*
-	Name: play_taacom_dialog_response_on_owner
-	Namespace: killstreaks
-	Checksum: 0xF454CAE6
-	Offset: 0x7020
-	Size: 0xC4
-	Parameters: 3
-	Flags: Linked
-*/
 function play_taacom_dialog_response_on_owner(dialogkey, killstreaktype, killstreakid) {
-  /#
   assert(isdefined(dialogkey));
-  # /
-    /#
   assert(isdefined(killstreaktype));
-  # /
-    if(!isdefined(self.owner) || !isdefined(self.team) || self.team != self.owner.team) {
-      return;
-    }
+  if(!isdefined(self.owner) || !isdefined(self.team) || self.team != self.owner.team) {
+    return;
+  }
   self.owner play_taacom_dialog_response(dialogkey, killstreaktype, killstreakid, self.pilotindex);
 }
 
-/*
-	Name: play_taacom_dialog_response
-	Namespace: killstreaks
-	Checksum: 0xEBD53F97
-	Offset: 0x70F0
-	Size: 0x94
-	Parameters: 4
-	Flags: Linked
-*/
 function play_taacom_dialog_response(dialogkey, killstreaktype, killstreakid, pilotindex) {
-  /#
   assert(isdefined(dialogkey));
-  # /
-    /#
   assert(isdefined(killstreaktype));
-  # /
-    if(!isdefined(pilotindex)) {
-      return;
-    }
+  if(!isdefined(pilotindex)) {
+    return;
+  }
   self globallogic_audio::play_taacom_dialog(dialogkey + pilotindex, killstreaktype, killstreakid);
 }
 
-/*
-	Name: get_random_pilot_index
-	Namespace: killstreaks
-	Checksum: 0x1BB84D2F
-	Offset: 0x7190
-	Size: 0xB2
-	Parameters: 1
-	Flags: Linked
-*/
 function get_random_pilot_index(killstreaktype) {
   if(!isdefined(killstreaktype)) {
     return undefined;
@@ -2355,23 +1496,12 @@ function get_random_pilot_index(killstreaktype) {
   return randomint(numpilots);
 }
 
-/*
-	Name: player_killstreak_threat_tracking
-	Namespace: killstreaks
-	Checksum: 0x17E5C6DD
-	Offset: 0x7250
-	Size: 0x310
-	Parameters: 1
-	Flags: Linked
-*/
 function player_killstreak_threat_tracking(killstreaktype) {
-  /#
   assert(isdefined(killstreaktype));
-  # /
-    self endon(# "death");
-  self endon(# "delete");
-  self endon(# "leaving");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("delete");
+  self endon("leaving");
+  level endon("game_ended");
   while (true) {
     if(!isdefined(self.owner)) {
       return;
@@ -2406,15 +1536,6 @@ function player_killstreak_threat_tracking(killstreaktype) {
   }
 }
 
-/*
-	Name: get_killstreak_inform_dialog
-	Namespace: killstreaks
-	Checksum: 0x82E7EF75
-	Offset: 0x7568
-	Size: 0x46
-	Parameters: 1
-	Flags: Linked
-*/
 function get_killstreak_inform_dialog(killstreaktype) {
   if(isdefined(level.killstreaks[killstreaktype].informdialog)) {
     return level.killstreaks[killstreaktype].informdialog;
@@ -2422,31 +1543,11 @@ function get_killstreak_inform_dialog(killstreaktype) {
   return "";
 }
 
-/*
-	Name: get_killstreak_usage_by_killstreak
-	Namespace: killstreaks
-	Checksum: 0x8A0B133E
-	Offset: 0x75B8
-	Size: 0x62
-	Parameters: 1
-	Flags: None
-*/
 function get_killstreak_usage_by_killstreak(killstreaktype) {
-  /#
   assert(isdefined(level.killstreaks[killstreaktype]), "");
-  # /
-    return get_killstreak_usage(level.killstreaks[killstreaktype].usagekey);
+  return get_killstreak_usage(level.killstreaks[killstreaktype].usagekey);
 }
 
-/*
-	Name: get_killstreak_usage
-	Namespace: killstreaks
-	Checksum: 0xD4E689EB
-	Offset: 0x7628
-	Size: 0x30
-	Parameters: 1
-	Flags: Linked
-*/
 function get_killstreak_usage(usagekey) {
   if(!isdefined(self.pers[usagekey])) {
     return 0;
@@ -2454,17 +1555,8 @@ function get_killstreak_usage(usagekey) {
   return self.pers[usagekey];
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: killstreaks
-	Checksum: 0xFE98AC25
-	Offset: 0x7660
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   pixbeginevent("_killstreaks.gsc/onPlayerSpawned");
   give_owned();
   if(!isdefined(self.pers["killstreaks"])) {
@@ -2487,17 +1579,8 @@ function on_player_spawned() {
   pixendevent();
 }
 
-/*
-	Name: on_joined_team
-	Namespace: killstreaks
-	Checksum: 0xAFBE19AC
-	Offset: 0x77D0
-	Size: 0x126
-	Parameters: 0
-	Flags: Linked
-*/
 function on_joined_team() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self setinventoryweapon(level.weaponnone);
   self.pers["cur_kill_streak"] = 0;
   self.pers["cur_total_kill_streak"] = 0;
@@ -2514,15 +1597,6 @@ function on_joined_team() {
   }
 }
 
-/*
-	Name: init_ride_killstreak
-	Namespace: killstreaks
-	Checksum: 0x6E196693
-	Offset: 0x7900
-	Size: 0x88
-	Parameters: 2
-	Flags: Linked
-*/
 function init_ride_killstreak(streak, always_allow = 0) {
   self disableusability();
   result = self init_ride_killstreak_internal(streak, always_allow);
@@ -2532,33 +1606,15 @@ function init_ride_killstreak(streak, always_allow = 0) {
   return result;
 }
 
-/*
-	Name: watch_for_remove_remote_weapon
-	Namespace: killstreaks
-	Checksum: 0x3F572BAE
-	Offset: 0x7990
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_for_remove_remote_weapon() {
-  self endon(# "endwatchforremoveremoteweapon");
+  self endon("endwatchforremoveremoteweapon");
   for (;;) {
-    self waittill(# "remove_remote_weapon");
+    self waittill("remove_remote_weapon");
     self switch_to_last_non_killstreak_weapon();
     self enableusability();
   }
 }
 
-/*
-	Name: init_ride_killstreak_internal
-	Namespace: killstreaks
-	Checksum: 0x84678850
-	Offset: 0x79E8
-	Size: 0x3DA
-	Parameters: 2
-	Flags: Linked
-*/
 function init_ride_killstreak_internal(streak, always_allow) {
   if(isdefined(streak) && (streak == "qrdrone" || streak == "dart" || streak == "killstreak_remote_turret" || streak == "killstreak_ai_tank" || streak == "qrdrone" || streak == "sentinel")) {
     laptopwait = "timeout";
@@ -2590,7 +1646,7 @@ function init_ride_killstreak_internal(streak, always_allow) {
   self thread hud::fade_to_black_for_x_sec(0, 0.2, 0.4, 0.25);
   self thread watch_for_remove_remote_weapon();
   blackoutwait = self util::waittill_any_timeout(0.6, "disconnect", "death");
-  self notify(# "endwatchforremoveremoteweapon");
+  self notify("endwatchforremoveremoteweapon");
   hostmigration::waittillhostmigrationdone();
   if(blackoutwait != "disconnect") {
     self thread clear_ride_intro(1);
@@ -2625,34 +1681,15 @@ function init_ride_killstreak_internal(streak, always_allow) {
   return "success";
 }
 
-/*
-	Name: clear_ride_intro
-	Namespace: killstreaks
-	Checksum: 0x81722D20
-	Offset: 0x7DD0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function clear_ride_intro(delay) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(isdefined(delay)) {
     wait(delay);
   }
   self thread hud::screen_fade_in(0);
 }
 
-/*
-	Name: killstreak_debug_think
-	Namespace: killstreaks
-	Checksum: 0xA5F95008
-	Offset: 0x7E18
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function killstreak_debug_think() {
-  /#
   setdvar("", "");
   for (;;) {
     cmd = getdvarstring("");
@@ -2667,20 +1704,9 @@ function killstreak_debug_think() {
     }
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: killstreak_data_dump
-	Namespace: killstreaks
-	Checksum: 0xAE66B3D5
-	Offset: 0x7EE0
-	Size: 0x36C
-	Parameters: 0
-	Flags: Linked
-*/
 function killstreak_data_dump() {
-  /#
   iprintln("");
   println("");
   println("");
@@ -2693,12 +1719,10 @@ function killstreak_data_dump() {
     print(data.weapon.name + "");
     alt = 0;
     if(isdefined(data.altweapons)) {
-      /#
       assert(data.altweapons.size <= 4);
-      # /
-        for (alt = 0; alt < data.altweapons.size; alt++) {
-          print(data.altweapons[alt].name + "");
-        }
+      for (alt = 0; alt < data.altweapons.size; alt++) {
+        print(data.altweapons[alt].name + "");
+      }
     }
     while (alt < 4) {
       print("");
@@ -2706,10 +1730,8 @@ function killstreak_data_dump() {
     }
     type = 0;
     if(isdefined(type_data)) {
-      /#
       assert(type_data.size < 4);
-      # /
-        type_keys = getarraykeys(type_data);
+      type_keys = getarraykeys(type_data);
       while (type < type_keys.size) {
         if(type_data[type_keys[type]] == 1) {
           print(type_keys[type] + "");
@@ -2724,18 +1746,8 @@ function killstreak_data_dump() {
     println("");
   }
   println("");
-  # /
 }
 
-/*
-	Name: is_interacting_with_object
-	Namespace: killstreaks
-	Checksum: 0x38A84DDA
-	Offset: 0x8258
-	Size: 0x5E
-	Parameters: 0
-	Flags: Linked
-*/
 function is_interacting_with_object() {
   if(self iscarryingturret()) {
     return true;
@@ -2749,15 +1761,6 @@ function is_interacting_with_object() {
   return false;
 }
 
-/*
-	Name: clear_using_remote
-	Namespace: killstreaks
-	Checksum: 0x7F6113B8
-	Offset: 0x82C0
-	Size: 0x164
-	Parameters: 2
-	Flags: Linked
-*/
 function clear_using_remote(immediate, skipnotify) {
   if(!isdefined(self)) {
     return;
@@ -2780,87 +1783,33 @@ function clear_using_remote(immediate, skipnotify) {
     self util::freeze_player_controls(0);
   }
   if(!(isdefined(skipnotify) && skipnotify)) {
-    self notify(# "stopped_using_remote");
+    self notify("stopped_using_remote");
   }
   thread hide_tablet();
 }
 
-/*
-	Name: hide_tablet
-	Namespace: killstreaks
-	Checksum: 0x11BF8F3D
-	Offset: 0x8430
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function hide_tablet() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(0.2);
   self clientfield::set_player_uimodel("hudItems.remoteKillstreakActivated", 0);
 }
 
-/*
-	Name: set_killstreak_delay_killcam
-	Namespace: killstreaks
-	Checksum: 0x3189987
-	Offset: 0x8470
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function set_killstreak_delay_killcam(killstreak_name) {
   self.killstreak_delay_killcam = killstreak_name;
 }
 
-/*
-	Name: reset_killstreak_delay_killcam
-	Namespace: killstreaks
-	Checksum: 0x26A8ACE2
-	Offset: 0x8490
-	Size: 0xE
-	Parameters: 0
-	Flags: Linked
-*/
 function reset_killstreak_delay_killcam() {
   self.killstreak_delay_killcam = undefined;
 }
 
-/*
-	Name: hide_compass
-	Namespace: killstreaks
-	Checksum: 0xB551CB6C
-	Offset: 0x84A8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function hide_compass() {
   self clientfield::set("killstreak_hides_compass", 1);
 }
 
-/*
-	Name: unhide_compass
-	Namespace: killstreaks
-	Checksum: 0x46F3AD39
-	Offset: 0x84D8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function unhide_compass() {
   self clientfield::set("killstreak_hides_compass", 0);
 }
 
-/*
-	Name: setup_health
-	Namespace: killstreaks
-	Checksum: 0x598DBFC0
-	Offset: 0x8508
-	Size: 0x10C
-	Parameters: 3
-	Flags: Linked
-*/
 function setup_health(killstreak_ref, max_health, low_health) {
   self.maxhealth = max_health;
   self.lowhealth = low_health;
@@ -2881,152 +1830,117 @@ function setup_health(killstreak_ref, max_health, low_health) {
   }
 }
 
-/*
-	Name: monitordamage
-	Namespace: killstreaks
-	Checksum: 0xB60E3AB7
-	Offset: 0x8620
-	Size: 0x6B0
-	Parameters: 8
-	Flags: Linked
-*/
 function monitordamage(killstreak_ref, max_health, destroyed_callback, low_health, low_health_callback, emp_damage, emp_callback, allow_bullet_damage) {
-  self endon(# "death");
-  self endon(# "delete");
+  self endon("death");
+  self endon("delete");
   self.health = 9999999;
   self.damagetaken = 0;
   self setup_health(killstreak_ref, max_health, low_health);
-  /#
   assert(!isvehicle(self) || !issentient(self), "");
-  # /
-    while (true) {
-      weapon_damage = undefined;
-      self waittill(# "damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon, flags, inflictor, chargelevel);
-      if(isdefined(self.invulnerable) && self.invulnerable) {
+  while (true) {
+    weapon_damage = undefined;
+    self waittill("damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon, flags, inflictor, chargelevel);
+    if(isdefined(self.invulnerable) && self.invulnerable) {
+      continue;
+    }
+    if(!isdefined(attacker) || !isplayer(attacker)) {
+      continue;
+    }
+    friendlyfire = weaponobjects::friendlyfirecheck(self.owner, attacker);
+    if(!friendlyfire) {
+      continue;
+    }
+    if(isdefined(self.owner) && attacker == self.owner) {
+      continue;
+    }
+    isvalidattacker = 1;
+    if(level.teambased) {
+      isvalidattacker = isdefined(attacker.team) && attacker.team != self.team;
+    }
+    if(!isvalidattacker) {
+      continue;
+    }
+    if(isdefined(self.killstreakdamagemodifier)) {
+      damage = [
+        [self.killstreakdamagemodifier]
+      ](damage, attacker, direction, point, type, tagname, modelname, partname, weapon, flags, inflictor, chargelevel);
+      if(damage <= 0) {
         continue;
-      }
-      if(!isdefined(attacker) || !isplayer(attacker)) {
-        continue;
-      }
-      friendlyfire = weaponobjects::friendlyfirecheck(self.owner, attacker);
-      if(!friendlyfire) {
-        continue;
-      }
-      if(isdefined(self.owner) && attacker == self.owner) {
-        continue;
-      }
-      isvalidattacker = 1;
-      if(level.teambased) {
-        isvalidattacker = isdefined(attacker.team) && attacker.team != self.team;
-      }
-      if(!isvalidattacker) {
-        continue;
-      }
-      if(isdefined(self.killstreakdamagemodifier)) {
-        damage = [
-          [self.killstreakdamagemodifier]
-        ](damage, attacker, direction, point, type, tagname, modelname, partname, weapon, flags, inflictor, chargelevel);
-        if(damage <= 0) {
-          continue;
-        }
-      }
-      if(weapon.isemp && type == "MOD_GRENADE_SPLASH") {
-        emp_damage_to_apply = killstreak_bundles::get_emp_grenade_damage(killstreak_ref, self.maxhealth);
-        if(!isdefined(emp_damage_to_apply)) {
-          emp_damage_to_apply = (isdefined(emp_damage) ? emp_damage : 1);
-        }
-        if(isdefined(emp_callback) && emp_damage_to_apply > 0) {
-          self[[emp_callback]](attacker);
-        }
-        weapon_damage = emp_damage_to_apply;
-      }
-      if(isdefined(self.selfdestruct) && self.selfdestruct) {
-        weapon_damage = self.maxhealth + 1;
-      }
-      if(!isdefined(weapon_damage)) {
-        weapon_damage = killstreak_bundles::get_weapon_damage(killstreak_ref, self.maxhealth, attacker, weapon, type, damage, flags, chargelevel);
-        if(!isdefined(weapon_damage)) {
-          weapon_damage = get_old_damage(attacker, weapon, type, damage, allow_bullet_damage);
-        }
-      }
-      if(weapon_damage > 0) {
-        if(damagefeedback::dodamagefeedback(weapon, attacker)) {
-          attacker thread damagefeedback::update(type);
-        }
-        self challenges::trackassists(attacker, weapon_damage, 0);
-      }
-      self.damagetaken = self.damagetaken + weapon_damage;
-      if(!issentient(self) && weapon_damage > 0) {
-        self.attacker = attacker;
-      }
-      if(self.damagetaken > self.maxhealth) {
-        weaponstatname = "destroyed";
-        switch (weapon.name) {
-          case "auto_tow":
-          case "tow_turret":
-          case "tow_turret_drop": {
-            weaponstatname = "kills";
-            break;
-          }
-        }
-        level.globalkillstreaksdestroyed++;
-        attacker addweaponstat(getweapon(killstreak_ref), "destroyed", 1);
-        if(isdefined(destroyed_callback)) {
-          self thread[[destroyed_callback]](attacker, weapon);
-        }
-        return;
-      }
-      remaining_health = max_health - self.damagetaken;
-      if(remaining_health < low_health && weapon_damage > 0) {
-        if(isdefined(low_health_callback) && (!isdefined(self.currentstate) || self.currentstate != "damaged")) {
-          self[[low_health_callback]](attacker, weapon);
-        }
-        self.currentstate = "damaged";
-      }
-      if(isdefined(self.extra_low_health) && remaining_health < self.extra_low_health && weapon_damage > 0) {
-        if(isdefined(self.extra_low_health_callback) && !isdefined(self.extra_low_damage_notified)) {
-          self[[self.extra_low_health_callback]](attacker, weapon);
-          self.extra_low_damage_notified = 1;
-        }
       }
     }
+    if(weapon.isemp && type == "MOD_GRENADE_SPLASH") {
+      emp_damage_to_apply = killstreak_bundles::get_emp_grenade_damage(killstreak_ref, self.maxhealth);
+      if(!isdefined(emp_damage_to_apply)) {
+        emp_damage_to_apply = (isdefined(emp_damage) ? emp_damage : 1);
+      }
+      if(isdefined(emp_callback) && emp_damage_to_apply > 0) {
+        self[[emp_callback]](attacker);
+      }
+      weapon_damage = emp_damage_to_apply;
+    }
+    if(isdefined(self.selfdestruct) && self.selfdestruct) {
+      weapon_damage = self.maxhealth + 1;
+    }
+    if(!isdefined(weapon_damage)) {
+      weapon_damage = killstreak_bundles::get_weapon_damage(killstreak_ref, self.maxhealth, attacker, weapon, type, damage, flags, chargelevel);
+      if(!isdefined(weapon_damage)) {
+        weapon_damage = get_old_damage(attacker, weapon, type, damage, allow_bullet_damage);
+      }
+    }
+    if(weapon_damage > 0) {
+      if(damagefeedback::dodamagefeedback(weapon, attacker)) {
+        attacker thread damagefeedback::update(type);
+      }
+      self challenges::trackassists(attacker, weapon_damage, 0);
+    }
+    self.damagetaken = self.damagetaken + weapon_damage;
+    if(!issentient(self) && weapon_damage > 0) {
+      self.attacker = attacker;
+    }
+    if(self.damagetaken > self.maxhealth) {
+      weaponstatname = "destroyed";
+      switch (weapon.name) {
+        case "auto_tow":
+        case "tow_turret":
+        case "tow_turret_drop": {
+          weaponstatname = "kills";
+          break;
+        }
+      }
+      level.globalkillstreaksdestroyed++;
+      attacker addweaponstat(getweapon(killstreak_ref), "destroyed", 1);
+      if(isdefined(destroyed_callback)) {
+        self thread[[destroyed_callback]](attacker, weapon);
+      }
+      return;
+    }
+    remaining_health = max_health - self.damagetaken;
+    if(remaining_health < low_health && weapon_damage > 0) {
+      if(isdefined(low_health_callback) && (!isdefined(self.currentstate) || self.currentstate != "damaged")) {
+        self[[low_health_callback]](attacker, weapon);
+      }
+      self.currentstate = "damaged";
+    }
+    if(isdefined(self.extra_low_health) && remaining_health < self.extra_low_health && weapon_damage > 0) {
+      if(isdefined(self.extra_low_health_callback) && !isdefined(self.extra_low_damage_notified)) {
+        self[[self.extra_low_health_callback]](attacker, weapon);
+        self.extra_low_damage_notified = 1;
+      }
+    }
+  }
 }
 
-/*
-	Name: defaulthackedhealthupdatecallback
-	Namespace: killstreaks
-	Checksum: 0x8F8E37F7
-	Offset: 0x8CD8
-	Size: 0xB8
-	Parameters: 1
-	Flags: Linked
-*/
 function defaulthackedhealthupdatecallback(hacker) {
   killstreak = self;
-  /#
   assert(isdefined(self.maxhealth));
-  # /
-    /#
   assert(isdefined(self.hackedhealth));
-  # /
-    /#
   assert(isdefined(self.damagetaken));
-  # /
-    damageafterhacking = self.maxhealth - self.hackedhealth;
+  damageafterhacking = self.maxhealth - self.hackedhealth;
   if(self.damagetaken < damageafterhacking) {
     self.damagetaken = damageafterhacking;
   }
 }
 
-/*
-	Name: ondamageperweapon
-	Namespace: killstreaks
-	Checksum: 0x11DB9086
-	Offset: 0x8D98
-	Size: 0x36C
-	Parameters: 14
-	Flags: Linked
-*/
 function ondamageperweapon(killstreak_ref, attacker, damage, flags, type, weapon, max_health, destroyed_callback, low_health, low_health_callback, emp_damage, emp_callback, allow_bullet_damage, chargelevel) {
   self.maxhealth = max_health;
   self.lowhealth = low_health;
@@ -3081,15 +1995,6 @@ function ondamageperweapon(killstreak_ref, attacker, damage, flags, type, weapon
   return idamage;
 }
 
-/*
-	Name: get_old_damage
-	Namespace: killstreaks
-	Checksum: 0xC954F177
-	Offset: 0x9110
-	Size: 0x1DE
-	Parameters: 5
-	Flags: Linked
-*/
 function get_old_damage(attacker, weapon, type, damage, allow_bullet_damage) {
   switch (type) {
     case "MOD_PISTOL_BULLET":
@@ -3126,15 +2031,6 @@ function get_old_damage(attacker, weapon, type, damage, allow_bullet_damage) {
   return damage;
 }
 
-/*
-	Name: configure_team
-	Namespace: killstreaks
-	Checksum: 0xFFDD86EA
-	Offset: 0x92F8
-	Size: 0xDC
-	Parameters: 7
-	Flags: Linked
-*/
 function configure_team(killstreaktype, killstreakid, owner, influencertype, configureteamprefunction, configureteampostfunction, ishacked = 0) {
   killstreak = self;
   killstreak.killstreaktype = killstreaktype;
@@ -3144,17 +2040,8 @@ function configure_team(killstreaktype, killstreakid, owner, influencertype, con
   owner thread trackactivekillstreak(killstreak);
 }
 
-/*
-	Name: trackactivekillstreak
-	Namespace: killstreaks
-	Checksum: 0x654684C5
-	Offset: 0x93E0
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function trackactivekillstreak(killstreak) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   killstreakindex = killstreak.killstreakid;
   if(isdefined(killstreakindex)) {
     self.pers["activeKillstreaks"][killstreakindex] = killstreak;
@@ -3163,40 +2050,18 @@ function trackactivekillstreak(killstreak) {
   }
 }
 
-/*
-	Name: getactivekillstreaks
-	Namespace: killstreaks
-	Checksum: 0xC47B1769
-	Offset: 0x9480
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function getactivekillstreaks() {
   return self.pers["activeKillstreaks"];
 }
 
-/*
-	Name: configure_team_internal
-	Namespace: killstreaks
-	Checksum: 0x6EA4A17
-	Offset: 0x94A0
-	Size: 0x258
-	Parameters: 2
-	Flags: Linked
-*/
 function configure_team_internal(owner, ishacked) {
   killstreak = self;
   if(ishacked == 0) {
     killstreak.originalowner = owner;
     killstreak.originalteam = owner.team;
-    /#
     killstreak thread killstreak_hacking::killstreak_switch_team(owner);
-    # /
   } else {
-    /#
     assert(killstreak.killstreakteamconfigured, "");
-    # /
   }
   if(isdefined(killstreak.killstreakconfigureteamprefunction)) {
     killstreak thread[[killstreak.killstreakconfigureteamprefunction]](owner, ishacked);
@@ -3220,15 +2085,6 @@ function configure_team_internal(owner, ishacked) {
   }
 }
 
-/*
-	Name: _setup_configure_team_callbacks
-	Namespace: killstreaks
-	Checksum: 0xE28D886D
-	Offset: 0x9700
-	Size: 0x7C
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _setup_configure_team_callbacks(influencertype, configureteamprefunction, configureteampostfunction) {
   killstreak = self;
   killstreak.killstreakteamconfigured = 1;
@@ -3237,65 +2093,32 @@ function private _setup_configure_team_callbacks(influencertype, configureteampr
   killstreak.killstreakconfigureteampostfunction = configureteampostfunction;
 }
 
-/*
-	Name: watchteamchange
-	Namespace: killstreaks
-	Checksum: 0xAAD9E906
-	Offset: 0x9788
-	Size: 0xA0
-	Parameters: 1
-	Flags: None
-*/
 function watchteamchange(teamchangenotify) {
   self notify(teamchangenotify + "_Singleton");
   self endon(teamchangenotify + "_Singleton");
   killstreak = self;
-  killstreak endon(# "death");
+  killstreak endon("death");
   killstreak endon(teamchangenotify);
   killstreak.owner util::waittill_any("joined_team", "disconnect", "joined_spectators", "emp_jammed");
   killstreak notify(teamchangenotify);
 }
 
-/*
-	Name: should_not_timeout
-	Namespace: killstreaks
-	Checksum: 0xEB71C06
-	Offset: 0x9830
-	Size: 0xAE
-	Parameters: 1
-	Flags: Linked
-*/
 function should_not_timeout(killstreak) {
   /# /
   #
   assert(isdefined(killstreak), "");
-  # /
-    /#
   assert(isdefined(level.killstreaks[killstreak]), "");
-  # /
-    if(isdefined(level.killstreaks[killstreak].devtimeoutdvar)) {
-      return getdvarint(level.killstreaks[killstreak].devtimeoutdvar);
-    }
-  # /
-    return 0;
+  if(isdefined(level.killstreaks[killstreak].devtimeoutdvar)) {
+    return getdvarint(level.killstreaks[killstreak].devtimeoutdvar);
+  }
+  return 0;
 }
 
-/*
-	Name: waitfortimeout
-	Namespace: killstreaks
-	Checksum: 0x721F77D4
-	Offset: 0x98E8
-	Size: 0x180
-	Parameters: 6
-	Flags: Linked
-*/
 function waitfortimeout(killstreak, duration, callback, endcondition1, endcondition2, endcondition3) {
-  /#
   if(should_not_timeout(killstreak)) {
     return;
   }
-  # /
-    self endon(# "killstreak_hacked");
+  self endon("killstreak_hacked");
   if(isdefined(endcondition1)) {
     self endon(endcondition1);
   }
@@ -3313,24 +2136,15 @@ function waitfortimeout(killstreak, duration, callback, endcondition1, endcondit
   } else {
     hostmigration::migrationawarewait(duration);
   }
-  self notify(# "kill_waitfortimeouthacked_thread");
+  self notify("kill_waitfortimeouthacked_thread");
   self.killstreaktimedout = 1;
   self.killstreakendtime = 0;
-  self notify(# "timed_out");
+  self notify("timed_out");
   self[[callback]]();
 }
 
-/*
-	Name: waitfortimeoutbeep
-	Namespace: killstreaks
-	Checksum: 0x1AF66C76
-	Offset: 0x9A70
-	Size: 0x194
-	Parameters: 2
-	Flags: Linked
-*/
 function waitfortimeoutbeep(killstreakbundle, duration) {
-  self endon(# "death");
+  self endon("death");
   beepduration = killstreakbundle.kstimeoutbeepduration * 1000;
   hostmigration::migrationawarewait(max(duration - beepduration, 0));
   if(isvehicle(self)) {
@@ -3349,17 +2163,8 @@ function waitfortimeoutbeep(killstreakbundle, duration) {
   }
 }
 
-/*
-	Name: waitfortimeouthacked
-	Namespace: killstreaks
-	Checksum: 0x8C697A4E
-	Offset: 0x9C10
-	Size: 0xE4
-	Parameters: 5
-	Flags: Linked
-*/
 function waitfortimeouthacked(killstreak, callback, endcondition1, endcondition2, endcondition3) {
-  self endon(# "kill_waitfortimeouthacked_thread");
+  self endon("kill_waitfortimeouthacked_thread");
   if(isdefined(endcondition1)) {
     self endon(endcondition1);
   }
@@ -3369,24 +2174,15 @@ function waitfortimeouthacked(killstreak, callback, endcondition1, endcondition2
   if(isdefined(endcondition3)) {
     self endon(endcondition3);
   }
-  self waittill(# "killstreak_hacked");
+  self waittill("killstreak_hacked");
   hackedduration = self killstreak_hacking::get_hacked_timeout_duration_ms();
   self.killstreakendtime = gettime() + hackedduration;
   hostmigration::migrationawarewait(hackedduration);
   self.killstreakendtime = 0;
-  self notify(# "timed_out");
+  self notify("timed_out");
   self[[callback]]();
 }
 
-/*
-	Name: update_player_threat
-	Namespace: killstreaks
-	Checksum: 0x558AE7D
-	Offset: 0x9D00
-	Size: 0x2C0
-	Parameters: 1
-	Flags: Linked
-*/
 function update_player_threat(player) {
   heli = self;
   player.threatlevel = 0;
@@ -3422,15 +2218,6 @@ function update_player_threat(player) {
   }
 }
 
-/*
-	Name: update_non_player_threat
-	Namespace: killstreaks
-	Checksum: 0x1F2DDF50
-	Offset: 0x9FC8
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function update_non_player_threat(non_player) {
   heli = self;
   non_player.threatlevel = 0;
@@ -3441,15 +2228,6 @@ function update_non_player_threat(non_player) {
   }
 }
 
-/*
-	Name: update_actor_threat
-	Namespace: killstreaks
-	Checksum: 0xF7B8DC25
-	Offset: 0xA098
-	Size: 0x214
-	Parameters: 1
-	Flags: Linked
-*/
 function update_actor_threat(actor) {
   heli = self;
   actor.threatlevel = 0;
@@ -3474,15 +2252,6 @@ function update_actor_threat(actor) {
   }
 }
 
-/*
-	Name: update_dog_threat
-	Namespace: killstreaks
-	Checksum: 0xEED185EA
-	Offset: 0xA2B8
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function update_dog_threat(dog) {
   heli = self;
   dog.threatlevel = 0;
@@ -3490,15 +2259,6 @@ function update_dog_threat(dog) {
   dog.threatlevel = dog.threatlevel + (((level.heli_visual_range - dist) / level.heli_visual_range) * 100);
 }
 
-/*
-	Name: missile_valid_target_check
-	Namespace: killstreaks
-	Checksum: 0x85CCC1F4
-	Offset: 0xA360
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function missile_valid_target_check(missiletarget) {
   heli2target_normal = vectornormalize(missiletarget.origin - self.origin);
   heli2forward = anglestoforward(self.angles);
@@ -3510,15 +2270,6 @@ function missile_valid_target_check(missiletarget) {
   return false;
 }
 
-/*
-	Name: update_missile_player_threat
-	Namespace: killstreaks
-	Checksum: 0x730574F0
-	Offset: 0xA430
-	Size: 0x198
-	Parameters: 1
-	Flags: Linked
-*/
 function update_missile_player_threat(player) {
   player.missilethreatlevel = 0;
   dist = distance(player.origin, self.origin);
@@ -3539,49 +2290,20 @@ function update_missile_player_threat(player) {
   }
 }
 
-/*
-	Name: update_missile_dog_threat
-	Namespace: killstreaks
-	Checksum: 0xAB39F369
-	Offset: 0xA5D0
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function update_missile_dog_threat(dog) {
   dog.missilethreatlevel = 1;
 }
 
-/*
-	Name: killstreak_assist
-	Namespace: killstreaks
-	Checksum: 0xDF987D37
-	Offset: 0xA5F8
-	Size: 0x3C
-	Parameters: 3
-	Flags: Linked
-*/
 function killstreak_assist(victim, assister, killstreak) {
   victim recordkillstreakassist(victim, assister, killstreak);
 }
 
-/*
-	Name: add_ricochet_protection
-	Namespace: killstreaks
-	Checksum: 0xB20A4538
-	Offset: 0xA640
-	Size: 0x120
-	Parameters: 4
-	Flags: Linked
-*/
 function add_ricochet_protection(killstreak_id, owner, origin, ricochet_distance) {
   testing = 0;
-  /#
   testing = getdvarint("", 0) == 2;
-  # /
-    if(!level.hardcoremode && !testing) {
-      return;
-    }
+  if(!level.hardcoremode && !testing) {
+    return;
+  }
   if(!isdefined(ricochet_distance) || ricochet_distance == 0) {
     return;
   }
@@ -3593,15 +2315,6 @@ function add_ricochet_protection(killstreak_id, owner, origin, ricochet_distance
   owner.ricochet_protection[killstreak_id].distancesq = ricochet_distance * ricochet_distance;
 }
 
-/*
-	Name: set_ricochet_protection_endtime
-	Namespace: killstreaks
-	Checksum: 0xE88739C6
-	Offset: 0xA768
-	Size: 0x8C
-	Parameters: 3
-	Flags: Linked
-*/
 function set_ricochet_protection_endtime(killstreak_id, owner, endtime) {
   if(!isdefined(owner) || !isdefined(owner.ricochet_protection) || !isdefined(killstreak_id)) {
     return;
@@ -3612,15 +2325,6 @@ function set_ricochet_protection_endtime(killstreak_id, owner, endtime) {
   owner.ricochet_protection[killstreak_id].endtime = endtime;
 }
 
-/*
-	Name: remove_ricochet_protection
-	Namespace: killstreaks
-	Checksum: 0xF445F071
-	Offset: 0xA800
-	Size: 0x58
-	Parameters: 2
-	Flags: Linked
-*/
 function remove_ricochet_protection(killstreak_id, owner) {
   if(!isdefined(owner) || !isdefined(owner.ricochet_protection) || !isdefined(killstreak_id)) {
     return;
@@ -3628,15 +2332,6 @@ function remove_ricochet_protection(killstreak_id, owner) {
   owner.ricochet_protection[killstreak_id] = undefined;
 }
 
-/*
-	Name: is_ricochet_protected
-	Namespace: killstreaks
-	Checksum: 0xEB5CF3F0
-	Offset: 0xA860
-	Size: 0x12A
-	Parameters: 1
-	Flags: Linked
-*/
 function is_ricochet_protected(player) {
   if(!isdefined(player) || !isdefined(player.ricochet_protection)) {
     return false;
@@ -3655,30 +2350,11 @@ function is_ricochet_protected(player) {
   return false;
 }
 
-/*
-	Name: is_killstreak_start_blocked
-	Namespace: killstreaks
-	Checksum: 0xD23085DF
-	Offset: 0xA998
-	Size: 0x22
-	Parameters: 0
-	Flags: Linked
-*/
 function is_killstreak_start_blocked() {
   return isdefined(self.dart_thrown_time) && (gettime() - self.dart_thrown_time) < 1500;
 }
 
-/*
-	Name: debug_ricochet_protection
-	Namespace: killstreaks
-	Checksum: 0x2E3CE457
-	Offset: 0xA9C8
-	Size: 0x2CC
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_ricochet_protection() {
-  /#
   debug_wait = 0.5;
   debug_frames = (int(debug_wait / 0.05)) + 1;
   while (true) {
@@ -3708,5 +2384,4 @@ function debug_ricochet_protection() {
       }
     }
   }
-  # /
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\gametypes\_killcam.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_challenges;
 #using scripts\cp\_tacticalinsertion;
@@ -12,64 +16,25 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_tacticalinsertion;
-
 #namespace killcam;
 
-/*
-	Name: __init__sytem__
-	Namespace: killcam
-	Checksum: 0x5861B4CD
-	Offset: 0x398
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("killcam", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: killcam
-	Checksum: 0xE6DEDF18
-	Offset: 0x3D8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
 }
 
-/*
-	Name: init
-	Namespace: killcam
-	Checksum: 0x87884FF4
-	Offset: 0x408
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   if(level.gametype === "coop") {
     level.killcam = getgametypesetting("allowKillcam");
     level.finalkillcam = getgametypesetting("allowFinalKillcam");
-    /#
     level.var_3a9f9a38 = 0;
-    # /
-      init_final_killcam();
+    init_final_killcam();
   }
 }
 
-/*
-	Name: init_final_killcam
-	Namespace: killcam
-	Checksum: 0xDA0F617E
-	Offset: 0x490
-	Size: 0xBA
-	Parameters: 0
-	Flags: Linked
-*/
 function init_final_killcam() {
   level.finalkillcamsettings = [];
   init_final_killcam_team("none");
@@ -79,29 +44,11 @@ function init_final_killcam() {
   level.finalkillcam_winner = undefined;
 }
 
-/*
-	Name: init_final_killcam_team
-	Namespace: killcam
-	Checksum: 0xDCA19327
-	Offset: 0x558
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function init_final_killcam_team(team) {
   level.finalkillcamsettings[team] = spawnstruct();
   clear_final_killcam_team(team);
 }
 
-/*
-	Name: clear_final_killcam_team
-	Namespace: killcam
-	Checksum: 0x9595BCF4
-	Offset: 0x5A8
-	Size: 0x112
-	Parameters: 1
-	Flags: Linked
-*/
 function clear_final_killcam_team(team) {
   level.finalkillcamsettings[team].spectatorclient = undefined;
   level.finalkillcamsettings[team].weapon = undefined;
@@ -116,15 +63,6 @@ function clear_final_killcam_team(team) {
   level.finalkillcamsettings[team].attacker = undefined;
 }
 
-/*
-	Name: record_settings
-	Namespace: killcam
-	Checksum: 0x717923BC
-	Offset: 0x6C8
-	Size: 0x344
-	Parameters: 11
-	Flags: None
-*/
 function record_settings(spectatorclient, targetentityindex, weapon, deathtime, deathtimeoffset, offsettime, entityindex, entitystarttime, perks, killstreaks, attacker) {
   if(level.teambased && isdefined(attacker.team) && isdefined(level.teams[attacker.team])) {
     team = attacker.team;
@@ -153,15 +91,6 @@ function record_settings(spectatorclient, targetentityindex, weapon, deathtime, 
   level.finalkillcamsettings["none"].attacker = attacker;
 }
 
-/*
-	Name: erase_final_killcam
-	Namespace: killcam
-	Checksum: 0x207F8B28
-	Offset: 0xA18
-	Size: 0xAA
-	Parameters: 0
-	Flags: None
-*/
 function erase_final_killcam() {
   clear_final_killcam_team("none");
   foreach(team in level.teams) {
@@ -170,52 +99,25 @@ function erase_final_killcam() {
   level.finalkillcam_winner = undefined;
 }
 
-/*
-	Name: final_killcam_waiter
-	Namespace: killcam
-	Checksum: 0xF08CC071
-	Offset: 0xAD0
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function final_killcam_waiter() {
   if(!isdefined(level.finalkillcam_winner)) {
     return false;
   }
-  level waittill(# "final_killcam_done");
+  level waittill("final_killcam_done");
   return true;
 }
 
-/*
-	Name: post_round_final_killcam
-	Namespace: killcam
-	Checksum: 0x7C8A4AAA
-	Offset: 0xB00
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function post_round_final_killcam() {
   if(isdefined(level.sidebet) && level.sidebet) {
     return;
   }
-  level notify(# "play_final_killcam");
+  level notify("play_final_killcam");
   globallogic::resetoutcomeforallplayers();
   final_killcam_waiter();
 }
 
-/*
-	Name: do_final_killcam
-	Namespace: killcam
-	Checksum: 0xE4D7315E
-	Offset: 0xB58
-	Size: 0x1BC
-	Parameters: 0
-	Flags: None
-*/
 function do_final_killcam() {
-  level waittill(# "play_final_killcam");
+  level waittill("play_final_killcam");
   level.infinalkillcam = 1;
   winner = "none";
   if(isdefined(level.finalkillcam_winner)) {
@@ -223,7 +125,7 @@ function do_final_killcam() {
   }
   if(!isdefined(level.finalkillcamsettings[winner].targetentityindex)) {
     level.infinalkillcam = 0;
-    level notify(# "final_killcam_done");
+    level notify("final_killcam_done");
     return;
   }
   if(isdefined(level.finalkillcamsettings[winner].attacker)) {
@@ -240,30 +142,12 @@ function do_final_killcam() {
   while (are_any_players_watching()) {
     wait(0.05);
   }
-  level notify(# "final_killcam_done");
+  level notify("final_killcam_done");
   level.infinalkillcam = 0;
 }
 
-/*
-	Name: startlastkillcam
-	Namespace: killcam
-	Checksum: 0x99EC1590
-	Offset: 0xD20
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function startlastkillcam() {}
 
-/*
-	Name: are_any_players_watching
-	Namespace: killcam
-	Checksum: 0xD45124DE
-	Offset: 0xD30
-	Size: 0x76
-	Parameters: 0
-	Flags: Linked
-*/
 function are_any_players_watching() {
   players = level.players;
   for (index = 0; index < players.size; index++) {
@@ -275,24 +159,15 @@ function are_any_players_watching() {
   return false;
 }
 
-/*
-	Name: killcam
-	Namespace: killcam
-	Checksum: 0x6CD1EF81
-	Offset: 0xDB0
-	Size: 0x5B4
-	Parameters: 15
-	Flags: Linked
-*/
 function killcam(attackernum, targetnum, killcamentity, killcamentityindex, killcamentitystarttime, weapon, deathtime, deathtimeoffset, offsettime, respawn, maxtime, perks, killstreaks, attacker, body) {
-  self endon(# "disconnect");
-  self endon(# "spawned");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  self endon("spawned");
+  level endon("game_ended");
   if(isdefined(body)) {
     codesetclientfield(body, "hide_body", 0);
   }
   if(killcamentityindex < 0 || killcamentityindex === targetnum) {
-    self notify(# "end_killcam");
+    self notify("end_killcam");
     return;
   }
   postdeathdelay = (gettime() - deathtime) / 1000;
@@ -313,7 +188,7 @@ function killcam(attackernum, targetnum, killcamentity, killcamentityindex, kill
     killcamlength = camtime + postdelay;
   }
   killcamoffset = camtime + predelay;
-  self notify(# "begin_killcam", gettime());
+  self notify("begin_killcam", gettime());
   killcamstarttime = gettime() - (killcamoffset * 1000);
   self.sessionstate = "spectator";
   self.spectatorclient = attackernum;
@@ -340,7 +215,7 @@ function killcam(attackernum, targetnum, killcamentity, killcamentityindex, kill
     self.killcamentity = -1;
     self.archivetime = 0;
     self.psoffsettime = 0;
-    self notify(# "end_killcam");
+    self notify("end_killcam");
     return;
   }
   self thread check_for_abrupt_end();
@@ -354,7 +229,7 @@ function killcam(attackernum, targetnum, killcamentity, killcamentityindex, kill
   self thread wait_killcam_time();
   self thread function_6cc9650b();
   self thread tacticalinsertion::cancel_button_think();
-  self waittill(# "end_killcam");
+  self waittill("end_killcam");
   self.var_acfedf1c = undefined;
   self.var_ebd83169 = undefined;
   self end(0);
@@ -365,69 +240,33 @@ function killcam(attackernum, targetnum, killcamentity, killcamentityindex, kill
   self.psoffsettime = 0;
 }
 
-/*
-	Name: set_entity
-	Namespace: killcam
-	Checksum: 0x44C6FBF1
-	Offset: 0x1370
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function set_entity(killcamentityindex, delayms) {
-  self endon(# "disconnect");
-  self endon(# "end_killcam");
-  self endon(# "spawned");
+  self endon("disconnect");
+  self endon("end_killcam");
+  self endon("spawned");
   if(delayms > 0) {
     wait(delayms / 1000);
   }
   self.killcamentity = killcamentityindex;
 }
 
-/*
-	Name: wait_killcam_time
-	Namespace: killcam
-	Checksum: 0x6509566A
-	Offset: 0x13D8
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_killcam_time() {
-  self endon(# "disconnect");
-  self endon(# "end_killcam");
+  self endon("disconnect");
+  self endon("end_killcam");
   wait(self.killcamlength - 0.05);
-  self notify(# "end_killcam");
+  self notify("end_killcam");
 }
 
-/*
-	Name: function_6cc9650b
-	Namespace: killcam
-	Checksum: 0x84E093AD
-	Offset: 0x1420
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6cc9650b() {
-  self endon(# "disconnect");
-  self endon(# "end_killcam");
+  self endon("disconnect");
+  self endon("end_killcam");
   wait(self.var_7b6b6cbb - 0.05);
-  self notify(# "hash_4cb3b8de");
+  self notify("hash_4cb3b8de");
 }
 
-/*
-	Name: wait_final_killcam_slowdown
-	Namespace: killcam
-	Checksum: 0xFADE027C
-	Offset: 0x1468
-	Size: 0x12C
-	Parameters: 2
-	Flags: Linked
-*/
 function wait_final_killcam_slowdown(deathtime, starttime) {
-  self endon(# "disconnect");
-  self endon(# "end_killcam");
+  self endon("disconnect");
+  self endon("end_killcam");
   secondsuntildeath = (deathtime - starttime) / 1000;
   deathtime = gettime() + (secondsuntildeath * 1000);
   waitbeforedeath = 2;
@@ -440,56 +279,29 @@ function wait_final_killcam_slowdown(deathtime, starttime) {
   util::setclientsysstate("levelNotify", "fkce");
 }
 
-/*
-	Name: wait_skip_killcam_button
-	Namespace: killcam
-	Checksum: 0xF9A717C3
-	Offset: 0x15A0
-	Size: 0x8C
-	Parameters: 0
-	Flags: None
-*/
 function wait_skip_killcam_button() {
-  self endon(# "disconnect");
-  self endon(# "end_killcam");
+  self endon("disconnect");
+  self endon("end_killcam");
   while (self usebuttonpressed()) {
     wait(0.05);
   }
   while (!self usebuttonpressed()) {
     wait(0.05);
   }
-  self notify(# "end_killcam");
+  self notify("end_killcam");
   self util::clientnotify("fkce");
 }
 
-/*
-	Name: wait_team_change_end_killcam
-	Namespace: killcam
-	Checksum: 0xAC2F6520
-	Offset: 0x1638
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_team_change_end_killcam() {
-  self endon(# "disconnect");
-  self endon(# "end_killcam");
-  self waittill(# "changed_class");
+  self endon("disconnect");
+  self endon("end_killcam");
+  self waittill("changed_class");
   end(0);
 }
 
-/*
-	Name: wait_skip_killcam_safe_spawn_button
-	Namespace: killcam
-	Checksum: 0xE595FF8A
-	Offset: 0x1680
-	Size: 0x7E
-	Parameters: 0
-	Flags: None
-*/
 function wait_skip_killcam_safe_spawn_button() {
-  self endon(# "disconnect");
-  self endon(# "end_killcam");
+  self endon("disconnect");
+  self endon("end_killcam");
   while (self fragbuttonpressed()) {
     wait(0.05);
   }
@@ -497,18 +309,9 @@ function wait_skip_killcam_safe_spawn_button() {
     wait(0.05);
   }
   self.wantsafespawn = 1;
-  self notify(# "end_killcam");
+  self notify("end_killcam");
 }
 
-/*
-	Name: end
-	Namespace: killcam
-	Checksum: 0xBFB906C7
-	Offset: 0x1708
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function end(final) {
   if(isdefined(self.kc_skiptext)) {
     self.kc_skiptext.alpha = 0;
@@ -520,173 +323,74 @@ function end(final) {
   self thread spectating::set_permissions();
 }
 
-/*
-	Name: check_for_abrupt_end
-	Namespace: killcam
-	Checksum: 0x8401C67E
-	Offset: 0x1780
-	Size: 0x52
-	Parameters: 0
-	Flags: Linked
-*/
 function check_for_abrupt_end() {
-  self endon(# "disconnect");
-  self endon(# "end_killcam");
+  self endon("disconnect");
+  self endon("end_killcam");
   while (true) {
     if(self.archivetime <= 0) {
       break;
     }
     wait(0.05);
   }
-  self notify(# "end_killcam");
+  self notify("end_killcam");
 }
 
-/*
-	Name: spawned_killcam_cleanup
-	Namespace: killcam
-	Checksum: 0x28F547EB
-	Offset: 0x17E0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function spawned_killcam_cleanup() {
-  self endon(# "end_killcam");
-  self endon(# "disconnect");
-  self waittill(# "spawned");
+  self endon("end_killcam");
+  self endon("disconnect");
+  self waittill("spawned");
   self end(0);
 }
 
-/*
-	Name: spectator_killcam_cleanup
-	Namespace: killcam
-	Checksum: 0x3878A62E
-	Offset: 0x1828
-	Size: 0x9C
-	Parameters: 1
-	Flags: None
-*/
 function spectator_killcam_cleanup(attacker) {
-  self endon(# "end_killcam");
-  self endon(# "disconnect");
-  attacker endon(# "disconnect");
-  attacker waittill(# "begin_killcam", attackerkcstarttime);
+  self endon("end_killcam");
+  self endon("disconnect");
+  attacker endon("disconnect");
+  attacker waittill("begin_killcam", attackerkcstarttime);
   waittime = max(0, (attackerkcstarttime - self.deathtime) - 50);
   wait(waittime);
   self end(0);
 }
 
-/*
-	Name: ended_killcam_cleanup
-	Namespace: killcam
-	Checksum: 0x39FD27FA
-	Offset: 0x18D0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function ended_killcam_cleanup() {
-  self endon(# "end_killcam");
-  self endon(# "disconnect");
-  level waittill(# "game_ended");
+  self endon("end_killcam");
+  self endon("disconnect");
+  level waittill("game_ended");
   self end(0);
 }
 
-/*
-	Name: ended_final_killcam_cleanup
-	Namespace: killcam
-	Checksum: 0x9BB20333
-	Offset: 0x1918
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function ended_final_killcam_cleanup() {
-  self endon(# "end_killcam");
-  self endon(# "disconnect");
-  level waittill(# "game_ended");
+  self endon("end_killcam");
+  self endon("disconnect");
+  level waittill("game_ended");
   self end(1);
 }
 
-/*
-	Name: cancel_use_button
-	Namespace: killcam
-	Checksum: 0x4BEF9F31
-	Offset: 0x1968
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function cancel_use_button() {
   return self usebuttonpressed();
 }
 
-/*
-	Name: cancel_safe_spawn_button
-	Namespace: killcam
-	Checksum: 0x7D460C2B
-	Offset: 0x1990
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function cancel_safe_spawn_button() {
   return self fragbuttonpressed();
 }
 
-/*
-	Name: cancel_callback
-	Namespace: killcam
-	Checksum: 0xCA3A7481
-	Offset: 0x19B8
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function cancel_callback() {
   self.cancelkillcam = 1;
 }
 
-/*
-	Name: cancel_safe_spawn_callback
-	Namespace: killcam
-	Checksum: 0xD5FF7F64
-	Offset: 0x19D0
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function cancel_safe_spawn_callback() {
   self.cancelkillcam = 1;
   self.wantsafespawn = 1;
 }
 
-/*
-	Name: cancel_on_use
-	Namespace: killcam
-	Checksum: 0xDB6D62C0
-	Offset: 0x19F8
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function cancel_on_use() {
   self thread cancel_on_use_specific_button( & cancel_use_button, & cancel_callback);
 }
 
-/*
-	Name: cancel_on_use_specific_button
-	Namespace: killcam
-	Checksum: 0x6E042F85
-	Offset: 0x1A38
-	Size: 0x11C
-	Parameters: 2
-	Flags: Linked
-*/
 function cancel_on_use_specific_button(pressingbuttonfunc, finishedfunc) {
-  self endon(# "death_delay_finished");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death_delay_finished");
+  self endon("disconnect");
+  level endon("game_ended");
   for (;;) {
     if(!self[[pressingbuttonfunc]]()) {
       wait(0.05);
@@ -713,18 +417,9 @@ function cancel_on_use_specific_button(pressingbuttonfunc, finishedfunc) {
   }
 }
 
-/*
-	Name: final_killcam
-	Namespace: killcam
-	Checksum: 0xB4DA148A
-	Offset: 0x1B60
-	Size: 0x57C
-	Parameters: 1
-	Flags: Linked
-*/
 function final_killcam(winner) {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  level endon("game_ended");
   if(util::waslastround()) {
     setmatchflag("final_killcam", 1);
     setmatchflag("round_end_killcam", 0);
@@ -732,15 +427,13 @@ function final_killcam(winner) {
     setmatchflag("final_killcam", 0);
     setmatchflag("round_end_killcam", 1);
   }
-  /#
   if(getdvarint("") == 1) {
     setmatchflag("", 1);
     setmatchflag("", 0);
   }
-  # /
-    if(level.console) {
-      self globallogic_spawn::setthirdperson(0);
-    }
+  if(level.console) {
+    self globallogic_spawn::setthirdperson(0);
+  }
   killcamsettings = level.finalkillcamsettings[winner];
   postdeathdelay = (gettime() - killcamsettings.deathtime) / 1000;
   predelay = postdeathdelay + killcamsettings.deathtimeoffset;
@@ -749,7 +442,7 @@ function final_killcam(winner) {
   killcamoffset = camtime + predelay;
   killcamlength = (camtime + postdelay) - 0.05;
   killcamstarttime = gettime() - (killcamoffset * 1000);
-  self notify(# "begin_killcam", gettime());
+  self notify("begin_killcam", gettime());
   self.sessionstate = "spectator";
   self.spectatorclient = killcamsettings.spectatorclient;
   self.killcamentity = -1;
@@ -773,7 +466,7 @@ function final_killcam(winner) {
     self.killcamentity = -1;
     self.archivetime = 0;
     self.psoffsettime = 0;
-    self notify(# "end_killcam");
+    self notify("end_killcam");
     return;
   }
   self thread check_for_abrupt_end();
@@ -783,38 +476,18 @@ function final_killcam(winner) {
   }
   self thread wait_killcam_time();
   self thread wait_final_killcam_slowdown(level.finalkillcamsettings[winner].deathtime, killcamstarttime);
-  self waittill(# "end_killcam");
+  self waittill("end_killcam");
   self end(1);
   setmatchflag("final_killcam", 0);
   setmatchflag("round_end_killcam", 0);
   self spawn_end_of_final_killcam();
 }
 
-/*
-	Name: spawn_end_of_final_killcam
-	Namespace: killcam
-	Checksum: 0x2072A195
-	Offset: 0x20E8
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_end_of_final_killcam() {
-  [
-    [level.spawnspectator]
-  ]();
+  [[level.spawnspectator]]();
   self freezecontrols(1);
 }
 
-/*
-	Name: is_entity_weapon
-	Namespace: killcam
-	Checksum: 0x5CBA60E3
-	Offset: 0x2120
-	Size: 0x30
-	Parameters: 1
-	Flags: Linked
-*/
 function is_entity_weapon(weapon) {
   if(weapon.name == "planemortar") {
     return true;
@@ -822,15 +495,6 @@ function is_entity_weapon(weapon) {
   return false;
 }
 
-/*
-	Name: calc_time
-	Namespace: killcam
-	Checksum: 0x738C0B1D
-	Offset: 0x2158
-	Size: 0x154
-	Parameters: 5
-	Flags: Linked
-*/
 function calc_time(weapon, entitystarttime, predelay, respawn, maxtime) {
   camtime = 0;
   if(getdvarstring("scr_killcam_time") == "") {
@@ -861,15 +525,6 @@ function calc_time(weapon, entitystarttime, predelay, respawn, maxtime) {
   return camtime;
 }
 
-/*
-	Name: calc_post_delay
-	Namespace: killcam
-	Checksum: 0x6121D203
-	Offset: 0x22B8
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function calc_post_delay() {
   postdelay = 0;
   if(getdvarstring("scr_killcam_posttime") == "") {
@@ -883,15 +538,6 @@ function calc_post_delay() {
   return postdelay;
 }
 
-/*
-	Name: add_skip_text
-	Namespace: killcam
-	Checksum: 0xC8F52E17
-	Offset: 0x2340
-	Size: 0x1C0
-	Parameters: 1
-	Flags: None
-*/
 function add_skip_text(respawn) {
   if(!isdefined(self.kc_skiptext)) {
     self.kc_skiptext = newclienthudelem(self);
@@ -912,33 +558,15 @@ function add_skip_text(respawn) {
     self.kc_skiptext.fontscale = 2;
   }
   if(respawn) {
-    self.kc_skiptext settext( & "PLATFORM_PRESS_TO_RESPAWN");
+    self.kc_skiptext settext(&"PLATFORM_PRESS_TO_RESPAWN");
   } else {
-    self.kc_skiptext settext( & "PLATFORM_PRESS_TO_SKIP");
+    self.kc_skiptext settext(&"PLATFORM_PRESS_TO_SKIP");
   }
   self.kc_skiptext.alpha = 1;
 }
 
-/*
-	Name: add_timer
-	Namespace: killcam
-	Checksum: 0x2D335697
-	Offset: 0x2508
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function add_timer(camtime) {}
 
-/*
-	Name: init_kc_elements
-	Namespace: killcam
-	Checksum: 0x3F5F4708
-	Offset: 0x2520
-	Size: 0x550
-	Parameters: 0
-	Flags: None
-*/
 function init_kc_elements() {
   if(!isdefined(self.kc_skiptext)) {
     self.kc_skiptext = newclienthudelem(self);

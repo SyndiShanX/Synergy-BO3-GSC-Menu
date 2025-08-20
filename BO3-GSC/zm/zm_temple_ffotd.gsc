@@ -1,18 +1,12 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_temple_ffotd.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\zm\_zm;
-
 #namespace zm_temple_ffotd;
 
-/*
-	Name: main_start
-	Namespace: zm_temple_ffotd
-	Checksum: 0xFF76F463
-	Offset: 0x248
-	Size: 0x13E
-	Parameters: 0
-	Flags: Linked
-*/
 function main_start() {
   a_wallbuys = struct::get_array("weapon_upgrade", "targetname");
   foreach(s_wallbuy in a_wallbuys) {
@@ -24,15 +18,6 @@ function main_start() {
   level._effect["powerup_on_red"] = "zombie/fx_powerup_on_red_zmb";
 }
 
-/*
-	Name: main_end
-	Namespace: zm_temple_ffotd
-	Checksum: 0x4134D4A9
-	Offset: 0x390
-	Size: 0x46C
-	Parameters: 0
-	Flags: Linked
-*/
 function main_end() {
   spawncollision("collision_clip_ramp_256x24", "collider", (-51.9, -1049.64, -253.5), (90, 10.25, 75.85));
   spawncollision("collision_clip_ramp_256x24", "collider", (-51.9, -1049.64, 2.5), (90, 10.25, 75.85));

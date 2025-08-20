@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_theater_zombie.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\animation_state_machine_mocomp;
 #using scripts\shared\ai\systems\animation_state_machine_notetracks;
@@ -20,18 +24,8 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_remaster_zombie;
-
 #namespace zm_theater_zombie;
 
-/*
-	Name: init
-	Namespace: zm_theater_zombie
-	Checksum: 0xE1AB5DA7
-	Offset: 0x3A8
-	Size: 0x64
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   setdvar("scr_zm_use_code_enemy_selection", 0);
   level.closest_player_override = & function_4fbc4348;
@@ -40,28 +34,10 @@ function autoexec init() {
   level.pathdist_type = 2;
 }
 
-/*
-	Name: function_ce2310c1
-	Namespace: zm_theater_zombie
-	Checksum: 0x6C37284F
-	Offset: 0x418
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_ce2310c1(player) {
   return !(isdefined(player.is_teleporting) && player.is_teleporting) && (!(isdefined(player.inteleportation) && player.inteleportation));
 }
 
-/*
-	Name: function_9b4b4134
-	Namespace: zm_theater_zombie
-	Checksum: 0x32B1B233
-	Offset: 0x478
-	Size: 0x12A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_9b4b4134(players) {
   if(isdefined(self.last_closest_player) && (isdefined(self.last_closest_player.am_i_valid) && self.last_closest_player.am_i_valid) && function_ce2310c1(self.last_closest_player)) {
     return;
@@ -76,15 +52,6 @@ function private function_9b4b4134(players) {
   self.last_closest_player = undefined;
 }
 
-/*
-	Name: function_4fbc4348
-	Namespace: zm_theater_zombie
-	Checksum: 0x933F06AA
-	Offset: 0x5B0
-	Size: 0x2DA
-	Parameters: 2
-	Flags: Linked
-*/
 function function_4fbc4348(origin, players) {
   if(players.size == 0) {
     return undefined;
@@ -147,17 +114,8 @@ function function_4fbc4348(origin, players) {
   return self.last_closest_player;
 }
 
-/*
-	Name: update_closest_player
-	Namespace: zm_theater_zombie
-	Checksum: 0xBC90C6A8
-	Offset: 0x898
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function update_closest_player() {
-  level waittill(# "start_of_round");
+  level waittill("start_of_round");
   while (true) {
     reset_closest_player = 1;
     zombies = zombie_utility::get_round_enemy_array();

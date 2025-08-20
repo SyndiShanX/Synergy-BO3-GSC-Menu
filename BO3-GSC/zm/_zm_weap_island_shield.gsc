@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_island_shield.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -21,46 +25,18 @@
 #using scripts\zm\_zm_weap_riotshield;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\craftables\_zm_craft_shield;
-
 #namespace namespace_b2c57c5e;
 
-/*
-	Name: __init__sytem__
-	Namespace: namespace_b2c57c5e
-	Checksum: 0x54BE60EC
-	Offset: 0x498
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_island_shield", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: namespace_b2c57c5e
-	Checksum: 0x7D158A1F
-	Offset: 0x4E0
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   zm_craft_shield::init("craft_shield_zm", "island_riotshield", "wpn_t7_zmb_dlc2_shield_world");
   level.weaponriotshield = getweapon("island_riotshield");
   zm_equipment::register("island_riotshield", & "ZOMBIE_EQUIP_RIOTSHIELD_PICKUP_HINT_STRING", & "ZOMBIE_EQUIP_RIOTSHIELD_HOWTO", undefined, "riotshield");
 }
 
-/*
-	Name: __main__
-	Namespace: namespace_b2c57c5e
-	Checksum: 0x69ED35A7
-	Offset: 0x568
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   zm_equipment::register_for_level("island_riotshield");
   zm_equipment::include("island_riotshield");

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_elemental_bow_wolf_howl.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -10,31 +14,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weap_elemental_bow;
-
 #namespace _zm_weap_elemental_bow_wolf_howl;
 
-/*
-	Name: __init__sytem__
-	Namespace: _zm_weap_elemental_bow_wolf_howl
-	Checksum: 0xE932100
-	Offset: 0x638
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("_zm_weap_elemental_bow_wolf_howl", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _zm_weap_elemental_bow_wolf_howl
-	Checksum: 0xB8820190
-	Offset: 0x678
-	Size: 0x47C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "elemental_bow_wolf_howl" + "_ambient_bow_fx", 5000, 1, "int", & function_cb5344d7, 0, 0);
   clientfield::register("missile", "elemental_bow_wolf_howl" + "_arrow_impact_fx", 5000, 1, "int", & function_6974030a, 0, 0);
@@ -60,73 +45,28 @@ function __init__() {
   duplicate_render::set_dr_filter_framebuffer("ghostly", 10, "ghostly_on", undefined, 0, "mc/mtl_c_zom_der_zombie_body1_ghost", 0);
 }
 
-/*
-	Name: function_cb5344d7
-	Namespace: _zm_weap_elemental_bow_wolf_howl
-	Checksum: 0xFC42EC1D
-	Offset: 0xB00
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_cb5344d7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self zm_weap_elemental_bow::function_3158b481(localclientnum, newval, "wolf_howl_ambient_bow");
 }
 
-/*
-	Name: function_6974030a
-	Namespace: _zm_weap_elemental_bow_wolf_howl
-	Checksum: 0x45CA7B3E
-	Offset: 0xB70
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6974030a(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playfx(localclientnum, level._effect["wolf_howl_arrow_impact"], self.origin);
   }
 }
 
-/*
-	Name: function_644da66f
-	Namespace: _zm_weap_elemental_bow_wolf_howl
-	Checksum: 0xAC6D83E5
-	Offset: 0xBF0
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_644da66f(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playfx(localclientnum, level._effect["wolf_howl_arrow_charged_impact"], self.origin);
   }
 }
 
-/*
-	Name: wolf_howl_muzzle_flash
-	Namespace: _zm_weap_elemental_bow_wolf_howl
-	Checksum: 0x62313211
-	Offset: 0xC70
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function wolf_howl_muzzle_flash(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playviewmodelfx(localclientnum, level._effect["wolf_howl_muzzle_flash"], "tag_flash");
   }
 }
 
-/*
-	Name: function_76bb77a6
-	Namespace: _zm_weap_elemental_bow_wolf_howl
-	Checksum: 0xA136F6BF
-	Offset: 0xCF0
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_76bb77a6(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self.var_e73f2a59 = playfxontag(localclientnum, level._effect["wolf_howl_charge_trail"], self, "tag_origin");
@@ -135,15 +75,6 @@ function function_76bb77a6(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_714aa0e1
-	Namespace: _zm_weap_elemental_bow_wolf_howl
-	Checksum: 0xB71196F6
-	Offset: 0xD98
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_714aa0e1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self.var_36615b6 = playfxontag(localclientnum, level._effect["wolf_howl_charge_spiral"], self, "tag_origin");
@@ -152,15 +83,6 @@ function function_714aa0e1(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: wolf_howl_slow_snow_fx
-	Namespace: _zm_weap_elemental_bow_wolf_howl
-	Checksum: 0xB01AFCDE
-	Offset: 0xE40
-	Size: 0xC6
-	Parameters: 7
-	Flags: Linked
-*/
 function wolf_howl_slow_snow_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     if(!isdefined(self.var_3e50c3b4)) {
@@ -172,17 +94,8 @@ function wolf_howl_slow_snow_fx(localclientnum, oldval, newval, bnewent, binitia
   }
 }
 
-/*
-	Name: zombie_hit_by_wolf_howl_charge
-	Namespace: _zm_weap_elemental_bow_wolf_howl
-	Checksum: 0x51D8BE91
-	Offset: 0xF10
-	Size: 0xB4
-	Parameters: 7
-	Flags: Linked
-*/
 function zombie_hit_by_wolf_howl_charge(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(newval) {
     playfxontag(localclientnum, level._effect["zombie_trail_wolf_howl_hit"], self, "j_spine4");
     self duplicate_render::set_dr_flag("ghostly_on", newval);
@@ -190,17 +103,8 @@ function zombie_hit_by_wolf_howl_charge(localclientnum, oldval, newval, bnewent,
   }
 }
 
-/*
-	Name: wolf_howl_zombie_explode_fx
-	Namespace: _zm_weap_elemental_bow_wolf_howl
-	Checksum: 0x292C7829
-	Offset: 0xFD0
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked
-*/
 function wolf_howl_zombie_explode_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self util::waittill_dobj(localclientnum);
   playfxontag(localclientnum, level._effect["zombie_wolf_howl_hit_explode"], self, "j_spine4");
 }

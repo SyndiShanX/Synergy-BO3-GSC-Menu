@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_sfx.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\doa\_doa_gibs;
 #using scripts\cp\doa\_doa_utility;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\fx_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_1a381543;
 
-/*
-	Name: init
-	Namespace: namespace_1a381543
-	Checksum: 0xE87EEA7B
-	Offset: 0xA18
-	Size: 0xE64
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   function_ce931b57("zmb_pickup_nurgle", 1);
   function_ce931b57("zmb_pickup_money", 2);
@@ -135,68 +129,33 @@ function init() {
   function_ce931b57("zmb_coat_of_arms", 115);
 }
 
-/*
-	Name: function_ce931b57
-	Namespace: namespace_1a381543
-	Checksum: 0x334835C5
-	Offset: 0x1888
-	Size: 0x7E
-	Parameters: 2
-	Flags: Linked
-*/
 function function_ce931b57(name, type) {
-  /#
   assert(type < 128, "");
-  # /
-    if(!isdefined(level.doa.var_4a6df8b3)) {
-      level.doa.var_4a6df8b3 = [];
-    }
+  if(!isdefined(level.doa.var_4a6df8b3)) {
+    level.doa.var_4a6df8b3 = [];
+  }
   level.doa.var_4a6df8b3[name] = type;
 }
 
-/*
-	Name: function_7ad8eb52
-	Namespace: namespace_1a381543
-	Checksum: 0x67DBBB33
-	Offset: 0x1910
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7ad8eb52(name) {
-  /#
   assert(isdefined(level.doa.var_4a6df8b3[name]), "");
-  # /
-    return level.doa.var_4a6df8b3[name];
+  return level.doa.var_4a6df8b3[name];
 }
 
-/*
-	Name: function_9ab759da
-	Namespace: namespace_1a381543
-	Checksum: 0xABEC4B68
-	Offset: 0x1970
-	Size: 0x1FC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_9ab759da( & queue, flag, var_a6cc22d4 = 0) {
-  self endon(# "death");
+  self endon("death");
   if(!var_a6cc22d4) {
     self notify("sfxProcessQueue_" + flag);
     self endon("sfxProcessQueue_" + flag);
   }
   if(queue.size >= 64) {
-    /#
     foreach(item in queue) {
       doa_utility::debugmsg("" + item);
     }
-    # /
-      /#
     assert(0, "" + queue[63]);
-    # /
   }
   if(queue.size == 0) {
-    self notify(# "hash_99963757");
+    self notify("hash_99963757");
     return;
   }
   var_1a41b083 = function_7ad8eb52(queue[0]);
@@ -207,46 +166,28 @@ function function_9ab759da( & queue, flag, var_a6cc22d4 = 0) {
   self function_9ab759da(queue, flag, 1);
 }
 
-/*
-	Name: function_4f06fb8
-	Namespace: namespace_1a381543
-	Checksum: 0xD5E62182
-	Offset: 0x1B78
-	Size: 0xAA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4f06fb8(name) {
   if(!isdefined(name) || !isdefined(self)) {
     return;
   }
-  self notify(# "hash_89ed98");
-  self endon(# "hash_89ed98");
-  self endon(# "death");
+  self notify("hash_89ed98");
+  self endon("hash_89ed98");
+  self endon("death");
   if(!isdefined(self.var_14f92b68)) {
     self.var_14f92b68 = [];
   }
   self.var_14f92b68[self.var_14f92b68.size] = name;
   self function_9ab759da(self.var_14f92b68, "off_sfx");
-  level notify(# "hash_f0851749");
+  level notify("hash_f0851749");
 }
 
-/*
-	Name: function_90118d8c
-	Namespace: namespace_1a381543
-	Checksum: 0x12D08646
-	Offset: 0x1C30
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_90118d8c(name) {
   if(!isdefined(name) || !isdefined(self)) {
     return;
   }
-  self notify(# "hash_42bd4d44");
-  self endon(# "hash_42bd4d44");
-  self endon(# "death");
+  self notify("hash_42bd4d44");
+  self endon("hash_42bd4d44");
+  self endon("death");
   if(!isdefined(self.var_60026b2)) {
     self.var_60026b2 = [];
   }

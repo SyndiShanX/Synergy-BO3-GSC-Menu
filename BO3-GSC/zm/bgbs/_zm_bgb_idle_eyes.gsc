@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\bgbs\_zm_bgb_idle_eyes.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
@@ -7,31 +11,12 @@
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\zm\_zm_bgb;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_bgb_idle_eyes;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_bgb_idle_eyes
-	Checksum: 0xF41D3D08
-	Offset: 0x228
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_bgb_idle_eyes", & __init__, undefined, "bgb");
 }
 
-/*
-	Name: __init__
-	Namespace: zm_bgb_idle_eyes
-	Checksum: 0x694762A0
-	Offset: 0x268
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -49,30 +34,12 @@ function __init__() {
   visionset_mgr::register_info("overlay", "zm_bgb_idle_eyes", 1, level.vsmgr_prio_overlay_zm_bgb_idle_eyes, 1, 1);
 }
 
-/*
-	Name: validation
-	Namespace: zm_bgb_idle_eyes
-	Checksum: 0x1689CC01
-	Offset: 0x3B8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function validation() {
   return !(isdefined(self bgb::get_active()) && self bgb::get_active());
 }
 
-/*
-	Name: activation
-	Namespace: zm_bgb_idle_eyes
-	Checksum: 0xD30DE441
-	Offset: 0x3F8
-	Size: 0x29C
-	Parameters: 0
-	Flags: Linked
-*/
 function activation() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   var_7092e170 = arraycopy(level.activeplayers);
   array::thread_all(var_7092e170, & zm_utility::increment_ignoreme);
   self.bgb_idle_eyes_active = 1;
@@ -100,34 +67,16 @@ function activation() {
   }
   visionset_mgr::deactivate("overlay", "zm_bgb_idle_eyes", self);
   self.bgb_idle_eyes_active = undefined;
-  self notify(# "hash_16ab3604");
+  self notify("hash_16ab3604");
   deactivate(var_7092e170);
 }
 
-/*
-	Name: function_1f57344e
-	Namespace: zm_bgb_idle_eyes
-	Checksum: 0xBFF2A7B7
-	Offset: 0x6A0
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function function_1f57344e(var_e04844d6, var_7092e170) {
-  var_e04844d6 endon(# "hash_16ab3604");
-  var_e04844d6 waittill(# "disconnect");
+  var_e04844d6 endon("hash_16ab3604");
+  var_e04844d6 waittill("disconnect");
   deactivate(var_7092e170);
 }
 
-/*
-	Name: deactivate
-	Namespace: zm_bgb_idle_eyes
-	Checksum: 0x709C25E3
-	Offset: 0x6F0
-	Size: 0x8E
-	Parameters: 1
-	Flags: Linked
-*/
 function deactivate(var_7092e170) {
   var_7092e170 = array::remove_undefined(var_7092e170);
   array::thread_all(var_7092e170, & zm_utility::decrement_ignoreme);

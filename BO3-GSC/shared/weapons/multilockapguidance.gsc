@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\multilockapguidance.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\abilities\_ability_util;
 #using scripts\shared\array_shared;
@@ -8,61 +12,24 @@
 #using scripts\shared\hud_util_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace multilockap_guidance;
 
-/*
-	Name: __init__sytem__
-	Namespace: multilockap_guidance
-	Checksum: 0xCA70156D
-	Offset: 0x230
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("multilockap_guidance", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: multilockap_guidance
-	Checksum: 0x2A44ABA0
-	Offset: 0x270
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function __init__() {
   callback::on_spawned( & on_player_spawned);
   setdvar("scr_max_simLocks", 3);
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: multilockap_guidance
-	Checksum: 0xAA6F7EBE
-	Offset: 0x2C0
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function on_player_spawned() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self clearaptarget();
   thread aptoggleloop();
   self thread apfirednotify();
 }
 
-/*
-	Name: clearaptarget
-	Namespace: multilockap_guidance
-	Checksum: 0xBAB8300C
-	Offset: 0x318
-	Size: 0x27C
-	Parameters: 2
-	Flags: None
-*/
 function clearaptarget(weapon, whom) {
   if(!isdefined(self.multilocklist)) {
     self.multilocklist = [];
@@ -71,7 +38,7 @@ function clearaptarget(weapon, whom) {
     for (i = 0; i < self.multilocklist.size; i++) {
       if(whom.aptarget == self.multilocklist[i].aptarget) {
         if(isdefined(self.multilocklist[i].aptarget)) {
-          self.multilocklist[i].aptarget notify(# "missile_unlocked");
+          self.multilocklist[i].aptarget notify("missile_unlocked");
         }
         self notify("stop_sound" + whom.apsoundid);
         self weaponlockremoveslot(i);
@@ -81,7 +48,7 @@ function clearaptarget(weapon, whom) {
     }
   } else {
     for (i = 0; i < self.multilocklist.size; i++) {
-      self.multilocklist[i].aptarget notify(# "missile_unlocked");
+      self.multilocklist[i].aptarget notify("missile_unlocked");
       self notify("stop_sound" + self.multilocklist[i].apsoundid);
     }
     self.multilocklist = [];
@@ -101,44 +68,26 @@ function clearaptarget(weapon, whom) {
   }
 }
 
-/*
-	Name: apfirednotify
-	Namespace: multilockap_guidance
-	Checksum: 0x5071D4FB
-	Offset: 0x5A0
-	Size: 0x11E
-	Parameters: 0
-	Flags: None
-*/
 function apfirednotify() {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   while (true) {
-    self waittill(# "missile_fire", missile, weapon);
+    self waittill("missile_fire", missile, weapon);
     if(weapon.lockontype == "AP Multi") {
       foreach(target in self.multilocklist) {
         if(isdefined(target.aptarget) && target.aplockfinalized) {
-          target.aptarget notify(# "stinger_fired_at_me", missile, weapon, self);
+          target.aptarget notify("stinger_fired_at_me", missile, weapon, self);
         }
       }
     }
   }
 }
 
-/*
-	Name: aptoggleloop
-	Namespace: multilockap_guidance
-	Checksum: 0xD5937D3
-	Offset: 0x6C8
-	Size: 0x178
-	Parameters: 0
-	Flags: None
-*/
 function aptoggleloop() {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   for (;;) {
-    self waittill(# "weapon_change", weapon);
+    self waittill("weapon_change", weapon);
     while (weapon.lockontype == "AP Multi") {
       abort = 0;
       while (!self playerads() == 1) {
@@ -156,26 +105,17 @@ function aptoggleloop() {
       while (self playerads() == 1) {
         wait(0.05);
       }
-      self notify(# "ap_off");
+      self notify("ap_off");
       self clearaptarget(weapon);
       weapon = self getcurrentweapon();
     }
   }
 }
 
-/*
-	Name: aplockloop
-	Namespace: multilockap_guidance
-	Checksum: 0x293136A1
-	Offset: 0x848
-	Size: 0x5B6
-	Parameters: 1
-	Flags: None
-*/
 function aplockloop(weapon) {
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "ap_off");
+  self endon("disconnect");
+  self endon("death");
+  self endon("ap_off");
   locklength = self getlockonspeed();
   self.multilocklist = [];
   for (;;) {
@@ -209,15 +149,13 @@ function aplockloop(weapon) {
           if(timepassed < locklength) {
             continue;
           }
-          /#
           assert(isdefined(target.aptarget));
-          # /
-            target.aplockfinalized = 1;
+          target.aplockfinalized = 1;
           target.aplocking = 0;
           target.aplockpending = 0;
           self weaponlockfinalize(target.aptarget, i);
           self thread seekersound(weapon.lockonseekerlockedsound, weapon.lockonseekerlockedsoundloops, target.apsoundid);
-          target.aptarget notify(# "missile_lock", self, weapon);
+          target.aptarget notify("missile_lock", self, weapon);
         }
       }
     }
@@ -260,30 +198,12 @@ function aplockloop(weapon) {
   }
 }
 
-/*
-	Name: destroylockoncanceledmessage
-	Namespace: multilockap_guidance
-	Checksum: 0x73D61FBC
-	Offset: 0xE08
-	Size: 0x2C
-	Parameters: 0
-	Flags: None
-*/
 function destroylockoncanceledmessage() {
   if(isdefined(self.lockoncanceledmessage)) {
     self.lockoncanceledmessage destroy();
   }
 }
 
-/*
-	Name: displaylockoncanceledmessage
-	Namespace: multilockap_guidance
-	Checksum: 0x61279067
-	Offset: 0xE40
-	Size: 0x154
-	Parameters: 0
-	Flags: None
-*/
 function displaylockoncanceledmessage() {
   if(isdefined(self.lockoncanceledmessage)) {
     return;
@@ -301,18 +221,9 @@ function displaylockoncanceledmessage() {
   self.lockoncanceledmessage.hidewheninmenu = 1;
   self.lockoncanceledmessage.archived = 0;
   self.lockoncanceledmessage.alpha = 1;
-  self.lockoncanceledmessage settext( & "MP_CANNOT_LOCKON_TO_TARGET");
+  self.lockoncanceledmessage settext(&"MP_CANNOT_LOCKON_TO_TARGET");
 }
 
-/*
-	Name: getbesttarget
-	Namespace: multilockap_guidance
-	Checksum: 0xAF268941
-	Offset: 0xFA0
-	Size: 0x53E
-	Parameters: 1
-	Flags: None
-*/
 function getbesttarget(weapon) {
   playertargets = getplayers();
   vehicletargets = target_getarray();
@@ -374,15 +285,6 @@ function getbesttarget(weapon) {
   return undefined;
 }
 
-/*
-	Name: targetinsertionsortcompare
-	Namespace: multilockap_guidance
-	Checksum: 0xE4A4B175
-	Offset: 0x14E8
-	Size: 0x60
-	Parameters: 2
-	Flags: None
-*/
 function targetinsertionsortcompare(a, b) {
   if(a.dot < b.dot) {
     return -1;
@@ -393,43 +295,16 @@ function targetinsertionsortcompare(a, b) {
   return 0;
 }
 
-/*
-	Name: insideapreticlenolock
-	Namespace: multilockap_guidance
-	Checksum: 0x5B2AD39B
-	Offset: 0x1550
-	Size: 0x52
-	Parameters: 1
-	Flags: None
-*/
 function insideapreticlenolock(target) {
   radius = self getlockonradius();
   return target_isincircle(target, self, 65, radius);
 }
 
-/*
-	Name: insideapreticlelocked
-	Namespace: multilockap_guidance
-	Checksum: 0xAEC77ABA
-	Offset: 0x15B0
-	Size: 0x52
-	Parameters: 1
-	Flags: None
-*/
 function insideapreticlelocked(target) {
   radius = self getlockonlossradius();
   return target_isincircle(target, self, 65, radius);
 }
 
-/*
-	Name: isstillvalidtarget
-	Namespace: multilockap_guidance
-	Checksum: 0xEC082C7B
-	Offset: 0x1610
-	Size: 0x86
-	Parameters: 2
-	Flags: None
-*/
 function isstillvalidtarget(weapon, ent) {
   if(!isdefined(ent)) {
     return false;
@@ -446,20 +321,11 @@ function isstillvalidtarget(weapon, ent) {
   return true;
 }
 
-/*
-	Name: seekersound
-	Namespace: multilockap_guidance
-	Checksum: 0x99F29F6B
-	Offset: 0x16A0
-	Size: 0xEC
-	Parameters: 3
-	Flags: None
-*/
 function seekersound(alias, looping, id) {
   self notify("stop_sound" + id);
   self endon("stop_sound" + id);
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   if(isdefined(alias)) {
     self playrumbleonentity("stinger_lock_rumble");
     time = soundgetplaybacktime(alias) * 0.001;
@@ -472,15 +338,6 @@ function seekersound(alias, looping, id) {
   }
 }
 
-/*
-	Name: locksighttest
-	Namespace: multilockap_guidance
-	Checksum: 0x853466A8
-	Offset: 0x1798
-	Size: 0x180
-	Parameters: 1
-	Flags: None
-*/
 function locksighttest(target) {
   eyepos = self geteye();
   if(!isdefined(target)) {

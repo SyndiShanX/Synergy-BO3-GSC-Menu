@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\shared\rank_shared;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_gamerep.gsc
+*************************************************/
 
+#using scripts\shared\rank_shared;
 #namespace gamerep;
 
-/*
-	Name: init
-	Namespace: gamerep
-	Checksum: 0x4B2B4D9B
-	Offset: 0x1D0
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   if(!isgamerepenabled()) {
     return;
@@ -27,15 +21,6 @@ function init() {
   gamerepinitializeparams();
 }
 
-/*
-	Name: isgamerepinitialized
-	Namespace: gamerep
-	Checksum: 0x4B1A9B20
-	Offset: 0x290
-	Size: 0x30
-	Parameters: 0
-	Flags: Linked
-*/
 function isgamerepinitialized() {
   if(!isdefined(game["gameRepInitialized"]) || !game["gameRepInitialized"]) {
     return false;
@@ -43,15 +28,6 @@ function isgamerepinitialized() {
   return true;
 }
 
-/*
-	Name: isgamerepenabled
-	Namespace: gamerep
-	Checksum: 0xA2229568
-	Offset: 0x2C8
-	Size: 0x2E
-	Parameters: 0
-	Flags: Linked
-*/
 function isgamerepenabled() {
   if(sessionmodeiszombiesgame()) {
     return false;
@@ -62,15 +38,6 @@ function isgamerepenabled() {
   return true;
 }
 
-/*
-	Name: gamerepinitializeparams
-	Namespace: gamerep
-	Checksum: 0x69D31229
-	Offset: 0x300
-	Size: 0xDDA
-	Parameters: 0
-	Flags: Linked
-*/
 function gamerepinitializeparams() {
   threshold_exceeded_score = 0;
   threshold_exceeded_score_per_min = 1;
@@ -165,51 +132,30 @@ function gamerepinitializeparams() {
   game["gameRep"]["gameLimit"]["default"]["splitscreen"] = 8;
 }
 
-/*
-	Name: gamerepplayerconnected
-	Namespace: gamerep
-	Checksum: 0x1A2329DB
-	Offset: 0x10E8
-	Size: 0x2C2
-	Parameters: 0
-	Flags: Linked
-*/
 function gamerepplayerconnected() {
   if(!isgamerepenabled()) {
     return;
   }
   name = self.name;
-  /#
-  # /
-    if(!isdefined(game["gameRep"]["players"][name])) {
-      game["gameRep"]["players"][name] = [];
-      for (j = 0; j < game["gameRep"]["params"].size; j++) {
-        paramname = game["gameRep"]["params"][j];
-        game["gameRep"]["players"][name][paramname] = 0;
-      }
-      game["gameRep"]["players"][name]["splitscreen"] = self issplitscreen();
-      game["gameRep"]["players"][name]["joinAttempts"] = 1;
-      game["gameRep"]["players"][name]["connected"] = 1;
-      game["gameRep"]["players"][name]["xpStart"] = self rank::getrankxpstat();
-      game["gameRep"]["playerNames"][game["gameRep"]["playerCount"]] = name;
-      game["gameRep"]["playerCount"]++;
+  if(!isdefined(game["gameRep"]["players"][name])) {
+    game["gameRep"]["players"][name] = [];
+    for (j = 0; j < game["gameRep"]["params"].size; j++) {
+      paramname = game["gameRep"]["params"][j];
+      game["gameRep"]["players"][name][paramname] = 0;
     }
-  else if(!game["gameRep"]["players"][name]["connected"]) {
+    game["gameRep"]["players"][name]["splitscreen"] = self issplitscreen();
+    game["gameRep"]["players"][name]["joinAttempts"] = 1;
+    game["gameRep"]["players"][name]["connected"] = 1;
+    game["gameRep"]["players"][name]["xpStart"] = self rank::getrankxpstat();
+    game["gameRep"]["playerNames"][game["gameRep"]["playerCount"]] = name;
+    game["gameRep"]["playerCount"]++;
+  } else if(!game["gameRep"]["players"][name]["connected"]) {
     game["gameRep"]["players"][name]["joinAttempts"]++;
     game["gameRep"]["players"][name]["connected"] = 1;
     game["gameRep"]["players"][name]["xpStart"] = self rank::getrankxpstat();
   }
 }
 
-/*
-	Name: gamerepplayerdisconnected
-	Namespace: gamerep
-	Checksum: 0x70A715F8
-	Offset: 0x13B8
-	Size: 0xC6
-	Parameters: 0
-	Flags: Linked
-*/
 function gamerepplayerdisconnected() {
   if(!isgamerepenabled()) {
     return;
@@ -218,22 +164,11 @@ function gamerepplayerdisconnected() {
   if(!isdefined(game["gameRep"]["players"][name]) || !isdefined(self.pers["summary"])) {
     return;
   }
-  /#
-  # /
-    self gamerepupdatenonpersistentplayerinformation();
+  self gamerepupdatenonpersistentplayerinformation();
   self gamerepupdatepersistentplayerinformation();
   game["gameRep"]["players"][name]["connected"] = 0;
 }
 
-/*
-	Name: gamerepupdatenonpersistentplayerinformation
-	Namespace: gamerep
-	Checksum: 0xDD5F139C
-	Offset: 0x1488
-	Size: 0xFA
-	Parameters: 0
-	Flags: Linked
-*/
 function gamerepupdatenonpersistentplayerinformation() {
   name = self.name;
   if(!isdefined(game["gameRep"]["players"][name])) {
@@ -245,15 +180,6 @@ function gamerepupdatenonpersistentplayerinformation() {
   }
 }
 
-/*
-	Name: gamerepupdatepersistentplayerinformation
-	Namespace: gamerep
-	Checksum: 0xDA523747
-	Offset: 0x1590
-	Size: 0x472
-	Parameters: 0
-	Flags: Linked
-*/
 function gamerepupdatepersistentplayerinformation() {
   name = self.name;
   if(!isdefined(game["gameRep"]["players"][name])) {
@@ -282,33 +208,13 @@ function gamerepupdatepersistentplayerinformation() {
   game["gameRep"]["players"][name]["xpStart"] = self rank::getrankxpstat();
 }
 
-/*
-	Name: getparamvalueforplayer
-	Namespace: gamerep
-	Checksum: 0x764F7141
-	Offset: 0x1A10
-	Size: 0x8C
-	Parameters: 2
-	Flags: Linked
-*/
 function getparamvalueforplayer(playername, paramname) {
   if(isdefined(game["gameRep"]["players"][playername][paramname])) {
     return game["gameRep"]["players"][playername][paramname];
   }
-  /#
   assertmsg(("" + paramname) + "");
-  # /
 }
 
-/*
-	Name: isgamerepparamvalid
-	Namespace: gamerep
-	Checksum: 0x44C6B45D
-	Offset: 0x1AA8
-	Size: 0x100
-	Parameters: 1
-	Flags: Linked
-*/
 function isgamerepparamvalid(paramname) {
   gametype = level.gametype;
   if(!isdefined(game["gameRep"])) {
@@ -329,15 +235,6 @@ function isgamerepparamvalid(paramname) {
   return true;
 }
 
-/*
-	Name: isgamerepparamignoredforreporting
-	Namespace: gamerep
-	Checksum: 0x63A8764
-	Offset: 0x1BB0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function isgamerepparamignoredforreporting(paramname) {
   if(isdefined(game["gameRep"]["ignoreParams"][paramname])) {
     return true;
@@ -345,15 +242,6 @@ function isgamerepparamignoredforreporting(paramname) {
   return false;
 }
 
-/*
-	Name: getgamerepparamlimit
-	Namespace: gamerep
-	Checksum: 0x20DC4892
-	Offset: 0x1BF0
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function getgamerepparamlimit(paramname) {
   gametype = level.gametype;
   if(isdefined(game["gameRep"]["gameLimit"][gametype])) {
@@ -364,20 +252,9 @@ function getgamerepparamlimit(paramname) {
   if(isdefined(game["gameRep"]["gameLimit"]["default"][paramname])) {
     return game["gameRep"]["gameLimit"]["default"][paramname];
   }
-  /#
   assertmsg(("" + paramname) + "");
-  # /
 }
 
-/*
-	Name: setmaximumparamvalueforcurrentgame
-	Namespace: gamerep
-	Checksum: 0xB8B2D30F
-	Offset: 0x1D08
-	Size: 0x9C
-	Parameters: 2
-	Flags: Linked
-*/
 function setmaximumparamvalueforcurrentgame(paramname, value) {
   if(!isdefined(game["gameRep"]["max"][paramname])) {
     game["gameRep"]["max"][paramname] = value;
@@ -388,15 +265,6 @@ function setmaximumparamvalueforcurrentgame(paramname, value) {
   }
 }
 
-/*
-	Name: gamerepupdateinformationforround
-	Namespace: gamerep
-	Checksum: 0x4D039CD7
-	Offset: 0x1DB0
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function gamerepupdateinformationforround() {
   if(!isgamerepenabled()) {
     return;
@@ -408,15 +276,6 @@ function gamerepupdateinformationforround() {
   }
 }
 
-/*
-	Name: gamerepanalyzeandreport
-	Namespace: gamerep
-	Checksum: 0xD9F5AF7A
-	Offset: 0x1E48
-	Size: 0x2FC
-	Parameters: 0
-	Flags: Linked
-*/
 function gamerepanalyzeandreport() {
   if(!isgamerepenabled()) {
     return;
@@ -451,15 +310,6 @@ function gamerepanalyzeandreport() {
   }
 }
 
-/*
-	Name: gamerepprepareandreport
-	Namespace: gamerep
-	Checksum: 0xBD950AC7
-	Offset: 0x2150
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function gamerepprepareandreport(paramname) {
   if(!isdefined(game["gameRep"]["gameLimit"]["id"][paramname])) {
     return;

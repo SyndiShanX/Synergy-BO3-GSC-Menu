@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_globallogic_actor.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_challenges;
 #using scripts\mp\gametypes\_globallogic;
@@ -14,42 +18,14 @@
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\spawner_shared;
 #using scripts\shared\weapons\_weapon_utils;
-
 #namespace globallogic_actor;
 
-/*
-	Name: init
-	Namespace: globallogic_actor
-	Checksum: 0x99EC1590
-	Offset: 0x390
-	Size: 0x4
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {}
 
-/*
-	Name: callback_actorspawned
-	Namespace: globallogic_actor
-	Checksum: 0xAF0BB128
-	Offset: 0x3A0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function callback_actorspawned(spawner) {
   self thread spawner::spawn_think(spawner);
 }
 
-/*
-	Name: callback_actordamage
-	Namespace: globallogic_actor
-	Checksum: 0xBB7D9B4C
-	Offset: 0x3D0
-	Size: 0xC44
-	Parameters: 15
-	Flags: Linked
-*/
 function callback_actordamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, boneindex, modelindex, surfacetype, vsurfacenormal) {
   if(game["state"] == "postgame") {
     return;
@@ -87,9 +63,7 @@ function callback_actordamage(einflictor, eattacker, idamage, idflags, smeansofd
   if(isdefined(self.overrideactordamage)) {
     idamage = self[[self.overrideactordamage]](einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex, modelindex);
   }
-  friendlyfire = [
-    [level.figure_out_friendly_fire]
-  ](self);
+  friendlyfire = [[level.figure_out_friendly_fire]](self);
   if(friendlyfire == 0 && self.archetype === "robot" && isdefined(eattacker) && eattacker.team === self.team) {
     return;
   }
@@ -175,41 +149,28 @@ function callback_actordamage(einflictor, eattacker, idamage, idflags, smeansofd
       }
     }
   }
-  /#
   if(getdvarint("")) {
     println(((((((((("" + self getentitynumber()) + "") + self.health) + "") + eattacker.clientid) + "") + isplayer(einflictor) + "") + idamage) + "") + shitloc);
   }
-  # /
-    if(1) {
-      lpselfnum = self getentitynumber();
-      lpselfteam = self.team;
-      lpattackerteam = "";
-      if(isplayer(eattacker)) {
-        lpattacknum = eattacker getentitynumber();
-        lpattackguid = eattacker getguid();
-        lpattackname = eattacker.name;
-        lpattackerteam = eattacker.pers["team"];
-      } else {
-        lpattacknum = -1;
-        lpattackguid = "";
-        lpattackname = "";
-        lpattackerteam = "world";
-      }
-      /#
-      logprint(((((((((((((((((((((("" + lpselfnum) + "") + lpselfteam) + "") + lpattackguid) + "") + lpattacknum) + "") + lpattackerteam) + "") + lpattackname) + "") + weapon.name) + "") + idamage) + "") + smeansofdeath) + "") + shitloc) + "") + boneindex) + "");
-      # /
+  if(1) {
+    lpselfnum = self getentitynumber();
+    lpselfteam = self.team;
+    lpattackerteam = "";
+    if(isplayer(eattacker)) {
+      lpattacknum = eattacker getentitynumber();
+      lpattackguid = eattacker getguid();
+      lpattackname = eattacker.name;
+      lpattackerteam = eattacker.pers["team"];
+    } else {
+      lpattacknum = -1;
+      lpattackguid = "";
+      lpattackname = "";
+      lpattackerteam = "world";
     }
+    logprint(((((((((((((((((((((("" + lpselfnum) + "") + lpselfteam) + "") + lpattackguid) + "") + lpattacknum) + "") + lpattackerteam) + "") + lpattackname) + "") + weapon.name) + "") + idamage) + "") + smeansofdeath) + "") + shitloc) + "") + boneindex) + "");
+  }
 }
 
-/*
-	Name: callback_actorkilled
-	Namespace: globallogic_actor
-	Checksum: 0x9C5BD188
-	Offset: 0x1020
-	Size: 0x18C
-	Parameters: 8
-	Flags: Linked
-*/
 function callback_actorkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   if(game["state"] == "postgame") {
     return;
@@ -227,15 +188,6 @@ function callback_actorkilled(einflictor, attacker, idamage, smeansofdeath, weap
   globallogic::doweaponspecificcorpseeffects(self, einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime);
 }
 
-/*
-	Name: callback_actorcloned
-	Namespace: globallogic_actor
-	Checksum: 0x506A1B49
-	Offset: 0x11B8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function callback_actorcloned(original) {
   destructserverutils::copydestructstate(original, self);
   gibserverutils::copygibstate(original, self);

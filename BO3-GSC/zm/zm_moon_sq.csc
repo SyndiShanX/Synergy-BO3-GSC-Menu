@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_sq.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -9,18 +13,8 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_moon_fx;
-
 #namespace zm_moon_sq;
 
-/*
-	Name: init_clientfields
-	Namespace: zm_moon_sq
-	Checksum: 0xB3AD3C70
-	Offset: 0x4B8
-	Size: 0x44C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   level._ctt_targets = [];
   zm_sidequests::register_sidequest_icon("vril", 21000);
@@ -44,57 +38,19 @@ function init_clientfields() {
   clientfield::register("world", "sam_end_rumble", 21000, 1, "int", & sam_end_rumble, 0, 0);
 }
 
-/*
-	Name: rocket_test
-	Namespace: zm_moon_sq
-	Checksum: 0x1787F7B3
-	Offset: 0x910
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function rocket_test() {}
 
-/*
-	Name: charge_tank_cleanup
-	Namespace: zm_moon_sq
-	Checksum: 0x930E7D30
-	Offset: 0x920
-	Size: 0x48
-	Parameters: 7
-	Flags: Linked
-*/
 function charge_tank_cleanup(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   level._ctt_targets = [];
 }
 
-/*
-	Name: dest_debug
-	Namespace: zm_moon_sq
-	Checksum: 0x3586D40A
-	Offset: 0x970
-	Size: 0x4E
-	Parameters: 1
-	Flags: None
-*/
 function dest_debug(dest) {
   while (true) {
-    /#
     print3d(dest, "", vectorscale((1, 0, 0), 255), 30);
-    # /
-      wait(1);
+    wait(1);
   }
 }
 
-/*
-	Name: vision_wobble
-	Namespace: zm_moon_sq
-	Checksum: 0x8BB418F4
-	Offset: 0x9C8
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked
-*/
 function vision_wobble() {
   setdvar("r_poisonFX_debug_amount", 0);
   setdvar("r_poisonFX_debug_enable", 1);
@@ -119,15 +75,6 @@ function vision_wobble() {
   setdvar("r_poisonFX_debug_enable", 0);
 }
 
-/*
-	Name: soul_swap
-	Namespace: zm_moon_sq
-	Checksum: 0x1FE40261
-	Offset: 0xBC0
-	Size: 0x25E
-	Parameters: 7
-	Flags: Linked
-*/
 function soul_swap(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(localclientnum != 0) {
     return;
@@ -157,32 +104,14 @@ function soul_swap(localclientnum, oldval, newval, bnewent, binitialsnap, fieldn
   }
 }
 
-/*
-	Name: ctt_trail_runner
-	Namespace: zm_moon_sq
-	Checksum: 0x558491B7
-	Offset: 0xE28
-	Size: 0xB4
-	Parameters: 3
-	Flags: Linked
-*/
 function ctt_trail_runner(localclientnum, fx_name, dest) {
   playfxontag(localclientnum, level._effect[fx_name], self, "tag_origin");
   self moveto(dest, 0.5);
-  self waittill(# "movedone");
+  self waittill("movedone");
   playsound(0, "zmb_squest_soul_impact", dest);
   self delete();
 }
 
-/*
-	Name: zombie_release_soul
-	Namespace: zm_moon_sq
-	Checksum: 0xB518D361
-	Offset: 0xEE8
-	Size: 0x264
-	Parameters: 7
-	Flags: Linked
-*/
 function zombie_release_soul(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(localclientnum != 0) {
     return;
@@ -197,45 +126,30 @@ function zombie_release_soul(localclientnum, oldval, newval, bnewent, binitialsn
     }
   }
   if(isdefined(closest)) {
-    /#
     println((("" + self.origin) + "") + closest.origin);
-    # /
-      for (i = 0; i < getlocalplayers().size; i++) {
-        e = spawn(i, self.origin + vectorscale((0, 0, 1), 24), "script_model");
-        e setmodel("tag_origin");
-        if(i == 0) {
-          e playsound(0, "zmb_squest_soul_leave");
-        }
-        e thread ctt_trail_runner(i, "fx_weak_sauce_trail", closest.origin - vectorscale((0, 0, 1), 12));
+    for (i = 0; i < getlocalplayers().size; i++) {
+      e = spawn(i, self.origin + vectorscale((0, 0, 1), 24), "script_model");
+      e setmodel("tag_origin");
+      if(i == 0) {
+        e playsound(0, "zmb_squest_soul_leave");
       }
+      e thread ctt_trail_runner(i, "fx_weak_sauce_trail", closest.origin - vectorscale((0, 0, 1), 12));
+    }
   } else {
-    /#
     println("");
-    # /
   }
 }
 
-/*
-	Name: build_ctt_targets
-	Namespace: zm_moon_sq
-	Checksum: 0xCEDDB7AB
-	Offset: 0x1158
-	Size: 0x1E8
-	Parameters: 2
-	Flags: Linked
-*/
 function build_ctt_targets(tank_names, second_names) {
   ret_array = [];
   tanks = struct::get_array(tank_names, "targetname");
-  /#
   println("");
-  # /
-    for (i = 0; i < tanks.size; i++) {
-      tank = tanks[i];
-      capacitor = struct::get(tank.target, "targetname");
-      s_target = struct::get(capacitor.target, "targetname");
-      ret_array[ret_array.size] = s_target;
-    }
+  for (i = 0; i < tanks.size; i++) {
+    tank = tanks[i];
+    capacitor = struct::get(tank.target, "targetname");
+    s_target = struct::get(capacitor.target, "targetname");
+    ret_array[ret_array.size] = s_target;
+  }
   if(isdefined(second_names)) {
     tanks = struct::get_array(second_names, "targetname");
     for (i = 0; i < tanks.size; i++) {
@@ -248,15 +162,6 @@ function build_ctt_targets(tank_names, second_names) {
   return ret_array;
 }
 
-/*
-	Name: charge_vril_init
-	Namespace: zm_moon_sq
-	Checksum: 0xE37A84EE
-	Offset: 0x1348
-	Size: 0x11E
-	Parameters: 7
-	Flags: Linked
-*/
 function charge_vril_init(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     targs = struct::get_array("sq_cp_final", "targetname");
@@ -268,15 +173,6 @@ function charge_vril_init(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: sq_wire_init
-	Namespace: zm_moon_sq
-	Checksum: 0x6F84C5F0
-	Offset: 0x1470
-	Size: 0xDC
-	Parameters: 7
-	Flags: Linked
-*/
 function sq_wire_init(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     targ = struct::get("sq_wire_final", "targetname");
@@ -285,19 +181,10 @@ function sq_wire_init(localclientnum, oldval, newval, bnewent, binitialsnap, fie
   }
 }
 
-/*
-	Name: sam_rise_and_bob
-	Namespace: zm_moon_sq
-	Checksum: 0xC97E5AFC
-	Offset: 0x1558
-	Size: 0x150
-	Parameters: 1
-	Flags: Linked
-*/
 function sam_rise_and_bob(struct) {
   endpos = struct::get(struct.target, "targetname");
   self moveto(endpos.origin, 3);
-  self waittill(# "movedone");
+  self waittill("movedone");
   start_z = self.origin;
   amplitude = 7;
   frequency = 75;
@@ -312,15 +199,6 @@ function sam_rise_and_bob(struct) {
   }
 }
 
-/*
-	Name: sam_init
-	Namespace: zm_moon_sq
-	Checksum: 0xEC7F178A
-	Offset: 0x16B0
-	Size: 0x124
-	Parameters: 7
-	Flags: Linked
-*/
 function sam_init(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     targ = struct::get("sq_sam", "targetname");
@@ -331,17 +209,8 @@ function sam_init(localclientnum, oldval, newval, bnewent, binitialsnap, fieldna
   }
 }
 
-/*
-	Name: bob_vg
-	Namespace: zm_moon_sq
-	Checksum: 0xCE9E6F97
-	Offset: 0x17E0
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function bob_vg() {
-  self endon(# "death");
+  self endon("death");
   start_z = self.origin;
   amplitude = 2;
   frequency = 100;
@@ -355,15 +224,6 @@ function bob_vg() {
   }
 }
 
-/*
-	Name: vril_generator
-	Namespace: zm_moon_sq
-	Checksum: 0xEE4A25CB
-	Offset: 0x18C8
-	Size: 0x2F2
-	Parameters: 7
-	Flags: Linked
-*/
 function vril_generator(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   targ = struct::get("sq_charge_vg_pos", "targetname");
   if(!isdefined(level.a_ents)) {
@@ -403,60 +263,24 @@ function vril_generator(localclientnum, oldval, newval, bnewent, binitialsnap, f
   }
 }
 
-/*
-	Name: charge_tank_1
-	Namespace: zm_moon_sq
-	Checksum: 0xCF01B906
-	Offset: 0x1BC8
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function charge_tank_1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   level._ctt_targets = build_ctt_targets("sq_first_tank");
 }
 
-/*
-	Name: charge_tank_2
-	Namespace: zm_moon_sq
-	Checksum: 0x9499ED76
-	Offset: 0x1C30
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function charge_tank_2(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   level._ctt_targets = build_ctt_targets("sq_second_tank", "sq_first_tank");
 }
 
-/*
-	Name: sam_end_rumble
-	Namespace: zm_moon_sq
-	Checksum: 0xD58008BB
-	Offset: 0x1CA0
-	Size: 0x76
-	Parameters: 7
-	Flags: Linked
-*/
 function sam_end_rumble(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval == 1) {
     level thread do_sr_rumble(localclientnum);
   } else {
-    level notify(# "hash_f9b2abc9");
+    level notify("hash_f9b2abc9");
   }
 }
 
-/*
-	Name: do_sr_rumble
-	Namespace: zm_moon_sq
-	Checksum: 0xC650302B
-	Offset: 0x1D20
-	Size: 0x138
-	Parameters: 1
-	Flags: Linked
-*/
 function do_sr_rumble(localclientnum) {
-  level endon(# "hash_f9b2abc9");
+  level endon("hash_f9b2abc9");
   var_845cd5d1 = struct::get("pyramid_walls_retract", "targetname");
   while (true) {
     a_players = getlocalplayers();
@@ -472,35 +296,17 @@ function do_sr_rumble(localclientnum) {
   }
 }
 
-/*
-	Name: sam_vo_rumble
-	Namespace: zm_moon_sq
-	Checksum: 0xAA1A7B90
-	Offset: 0x1E60
-	Size: 0x8E
-	Parameters: 7
-	Flags: Linked
-*/
 function sam_vo_rumble(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     array::thread_all(getlocalplayers(), & function_9b1295b1, localclientnum);
   } else {
-    level notify(# "hash_306cf2d4");
+    level notify("hash_306cf2d4");
   }
 }
 
-/*
-	Name: function_9b1295b1
-	Namespace: zm_moon_sq
-	Checksum: 0xD533178D
-	Offset: 0x1EF8
-	Size: 0xB0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9b1295b1(localclientnum) {
-  self endon(# "disconnect");
-  level endon(# "hash_306cf2d4");
+  self endon("disconnect");
+  level endon("hash_306cf2d4");
   while (true) {
     self earthquake(randomfloatrange(0.2, 0.25), 5, self.origin, 100);
     self playrumbleonentity(localclientnum, "slide_rumble");
@@ -508,32 +314,14 @@ function function_9b1295b1(localclientnum) {
   }
 }
 
-/*
-	Name: raise_rockets
-	Namespace: zm_moon_sq
-	Checksum: 0xBFDD5E48
-	Offset: 0x1FB0
-	Size: 0x6A
-	Parameters: 7
-	Flags: Linked
-*/
 function raise_rockets(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   level thread do_rr_rumble();
   wait(4.5);
-  level notify(# "_stop_rr");
+  level notify("_stop_rr");
 }
 
-/*
-	Name: do_rr_rumble
-	Namespace: zm_moon_sq
-	Checksum: 0xFECA1520
-	Offset: 0x2028
-	Size: 0x100
-	Parameters: 0
-	Flags: Linked
-*/
 function do_rr_rumble() {
-  level endon(# "_stop_rr");
+  level endon("_stop_rr");
   while (true) {
     for (i = 0; i < level.localplayers.size; i++) {
       player = getlocalplayers()[i];
@@ -547,32 +335,14 @@ function do_rr_rumble() {
   }
 }
 
-/*
-	Name: rocket_launch
-	Namespace: zm_moon_sq
-	Checksum: 0x921B9621
-	Offset: 0x2130
-	Size: 0x66
-	Parameters: 7
-	Flags: Linked
-*/
 function rocket_launch(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   level thread do_rl_rumble();
   wait(6);
-  level notify(# "_stop_rl");
+  level notify("_stop_rl");
 }
 
-/*
-	Name: do_rl_rumble
-	Namespace: zm_moon_sq
-	Checksum: 0xFB2814C2
-	Offset: 0x21A0
-	Size: 0x100
-	Parameters: 0
-	Flags: Linked
-*/
 function do_rl_rumble() {
-  level endon(# "_stop_rl");
+  level endon("_stop_rl");
   while (true) {
     for (i = 0; i < level.localplayers.size; i++) {
       player = getlocalplayers()[i];
@@ -586,34 +356,16 @@ function do_rl_rumble() {
   }
 }
 
-/*
-	Name: rocket_explode
-	Namespace: zm_moon_sq
-	Checksum: 0x91AFDD3B
-	Offset: 0x22A8
-	Size: 0x76
-	Parameters: 7
-	Flags: Linked
-*/
 function rocket_explode(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   level._dte_done = 1;
   wait(3.5);
   level thread do_de_rumble();
   wait(4);
-  level notify(# "_stop_de");
+  level notify("_stop_de");
 }
 
-/*
-	Name: do_de_rumble
-	Namespace: zm_moon_sq
-	Checksum: 0x793E2651
-	Offset: 0x2328
-	Size: 0x1C0
-	Parameters: 0
-	Flags: Linked
-*/
 function do_de_rumble() {
-  level endon(# "_stop_de");
+  level endon("_stop_de");
   for (i = 0; i < level.localplayers.size; i++) {
     player = getlocalplayers()[i];
     if(!isdefined(player)) {
@@ -636,15 +388,6 @@ function do_de_rumble() {
   }
 }
 
-/*
-	Name: function_38a2773c
-	Namespace: zm_moon_sq
-	Checksum: 0x74636DAE
-	Offset: 0x24F0
-	Size: 0x124
-	Parameters: 7
-	Flags: Linked
-*/
 function function_38a2773c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(localclientnum != 0) {
     return;

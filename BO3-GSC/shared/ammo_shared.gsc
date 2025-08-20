@@ -1,48 +1,29 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ammo_shared.gsc
+*************************************************/
+
 #using scripts\shared\ai\systems\shared;
 #using scripts\shared\array_shared;
 #using scripts\shared\throttle_shared;
 #using scripts\shared\weapons\_weaponobjects;
 #using scripts\shared\weapons\_weapons;
-
 #namespace ammo;
 
-/*
-	Name: main
-	Namespace: ammo
-	Checksum: 0xBCA363B3
-	Offset: 0x178
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   level.ai_ammo_throttle = new throttle();
-  [
-    [level.ai_ammo_throttle]
-  ] - > initialize(1, 0.1);
+  [[level.ai_ammo_throttle]] - > initialize(1, 0.1);
 }
 
-/*
-	Name: dropaiammo
-	Namespace: ammo
-	Checksum: 0x29CFCA2D
-	Offset: 0x1C0
-	Size: 0xF4
-	Parameters: 0
-	Flags: None
-*/
 function dropaiammo() {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self.ammopouch)) {
     return;
   }
   if(isdefined(self.disableammodrop) && self.disableammodrop) {
     return;
   }
-  [
-    [level.ai_ammo_throttle]
-  ] - > waitinqueue(self);
+  [[level.ai_ammo_throttle]] - > waitinqueue(self);
   droppedweapon = shared::throwweapon(self.ammopouch, "tag_stowed_back", 1);
   if(isdefined(droppedweapon)) {
     droppedweapon thread ammo_pouch_think();
@@ -50,18 +31,9 @@ function dropaiammo() {
   }
 }
 
-/*
-	Name: ammo_pouch_think
-	Namespace: ammo
-	Checksum: 0xE5FB5F96
-	Offset: 0x2C0
-	Size: 0x5F6
-	Parameters: 0
-	Flags: None
-*/
 function ammo_pouch_think() {
-  self endon(# "death");
-  self waittill(# "scavenger", player);
+  self endon("death");
+  self waittill("scavenger", player);
   primary_weapons = player getweaponslistprimaries();
   offhand_weapons_and_alts = array::exclude(player getweaponslist(1), primary_weapons);
   arrayremovevalue(offhand_weapons_and_alts, level.weaponbasemelee);
@@ -115,7 +87,7 @@ function ammo_pouch_think() {
       if(ammo > maxammo) {
         ammo = maxammo;
       } else if(weapon == player.grenadetypeprimary) {
-        player notify(# "scavenged_primary_grenade");
+        player notify("scavenged_primary_grenade");
       }
       player setweaponammostock(weapon, ammo);
       player.scavenged = 1;

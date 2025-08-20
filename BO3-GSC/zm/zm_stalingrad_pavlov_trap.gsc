@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_pavlov_trap.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -17,18 +21,8 @@
 #using scripts\zm\zm_stalingrad;
 #using scripts\zm\zm_stalingrad_util;
 #using scripts\zm\zm_stalingrad_vo;
-
 #namespace zm_stalingrad_pavlov_trap;
 
-/*
-	Name: main
-	Namespace: zm_stalingrad_pavlov_trap
-	Checksum: 0x41A27A2C
-	Offset: 0x430
-	Size: 0x17A
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   var_565a8d95 = struct::get_array("flinger_trigger", "targetname");
   foreach(var_a3ed6ea in var_565a8d95) {
@@ -41,15 +35,6 @@ function main() {
   }
 }
 
-/*
-	Name: function_41b278b3
-	Namespace: zm_stalingrad_pavlov_trap
-	Checksum: 0xF6D017F8
-	Offset: 0x5B8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_41b278b3() {
   self.script_unitrigger_type = "unitrigger_box_use";
   self.cursor_hint = "HINT_NOICON";
@@ -61,51 +46,33 @@ function function_41b278b3() {
   zm_unitrigger::register_static_unitrigger(self, & function_335dff5e);
 }
 
-/*
-	Name: function_fbea6a64
-	Namespace: zm_stalingrad_pavlov_trap
-	Checksum: 0x1E9E3AB3
-	Offset: 0x650
-	Size: 0x198
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fbea6a64(e_player) {
   if(e_player.is_drinking > 0) {
     self sethintstring("");
     return false;
   }
   if(level flag::get("lockdown_active") && self.stub.script_noteworthy !== "street_flinger") {
-    self sethintstring( & "ZM_STALINGRAD_FLINGER_DISABLED");
+    self sethintstring(&"ZM_STALINGRAD_FLINGER_DISABLED");
     return false;
   }
   if(isdefined(self.stub.var_66a9cd70) && self.stub.var_66a9cd70) {
-    self sethintstring( & "ZOMBIE_TRAP_ACTIVE");
+    self sethintstring(&"ZOMBIE_TRAP_ACTIVE");
     return false;
   }
   if(!level flag::get("power_on")) {
-    self sethintstring( & "ZOMBIE_NEED_POWER");
+    self sethintstring(&"ZOMBIE_NEED_POWER");
     return false;
   }
   if(self.stub.var_dd690f31 === 0) {
-    self sethintstring( & "ZM_STALINGRAD_TRAP_COOLDOWN");
+    self sethintstring(&"ZM_STALINGRAD_TRAP_COOLDOWN");
     return false;
   }
-  self sethintstring( & "ZM_STALINGRAD_FLINGER_TRAP_USE", 1000);
+  self sethintstring(&"ZM_STALINGRAD_FLINGER_TRAP_USE", 1000);
   return true;
 }
 
-/*
-	Name: function_335dff5e
-	Namespace: zm_stalingrad_pavlov_trap
-	Checksum: 0x94D734E2
-	Offset: 0x7F8
-	Size: 0x18E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_335dff5e() {
-  self waittill(# "trigger", e_player);
+  self waittill("trigger", e_player);
   if(self.stub.var_dd690f31 !== 0 && e_player zm_score::can_player_purchase(1000)) {
     e_player clientfield::increment_to_player("interact_rumble");
     e_player zm_score::minus_to_player_score(1000);
@@ -123,15 +90,6 @@ function function_335dff5e() {
   }
 }
 
-/*
-	Name: function_d9a07413
-	Namespace: zm_stalingrad_pavlov_trap
-	Checksum: 0x32350C07
-	Offset: 0x990
-	Size: 0x466
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d9a07413(e_player, var_a70a7d09) {
   self.var_66a9cd70 = 1;
   if(self.target === "flinger_pavlov_street") {
@@ -178,15 +136,6 @@ function function_d9a07413(e_player, var_a70a7d09) {
   }
 }
 
-/*
-	Name: function_54227761
-	Namespace: zm_stalingrad_pavlov_trap
-	Checksum: 0x1FF3382D
-	Offset: 0xE00
-	Size: 0x18C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_54227761(var_a70a7d09, v_fling, e_player) {
   a_zombies = getaiteamarray(level.zombie_team);
   n_count = 0;
@@ -206,19 +155,10 @@ function function_54227761(var_a70a7d09, v_fling, e_player) {
     }
   }
   if(isdefined(e_player)) {
-    e_player notify(# "hash_e442448", n_kill_count, self.script_noteworthy);
+    e_player notify("hash_e442448", n_kill_count, self.script_noteworthy);
   }
 }
 
-/*
-	Name: function_e0c7ad1e
-	Namespace: zm_stalingrad_pavlov_trap
-	Checksum: 0xEAFED0D3
-	Offset: 0xF98
-	Size: 0xB2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e0c7ad1e(var_a70a7d09) {
   foreach(e_player in level.players) {
     if(e_player istouching(var_a70a7d09)) {
@@ -227,17 +167,8 @@ function function_e0c7ad1e(var_a70a7d09) {
   }
 }
 
-/*
-	Name: function_fce6cca8
-	Namespace: zm_stalingrad_pavlov_trap
-	Checksum: 0xCEDAFE99
-	Offset: 0x1058
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fce6cca8() {
-  self endon(# "death");
+  self endon("death");
   var_8e692aea = [];
   var_8e692aea[0] = (-274, 3830, -12);
   var_8e692aea[1] = (270, 3865, -12);
@@ -255,17 +186,8 @@ function function_fce6cca8() {
   var_848f1155 delete();
 }
 
-/*
-	Name: function_d2f913f5
-	Namespace: zm_stalingrad_pavlov_trap
-	Checksum: 0xF78B0F2E
-	Offset: 0x1208
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d2f913f5(v_fling) {
-  self endon(# "death");
+  self endon("death");
   angle = v_fling * 300;
   self startragdoll();
   self launchragdoll(angle);

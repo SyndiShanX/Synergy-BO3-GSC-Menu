@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\bonuszm\_bonuszm_magicbox.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_objectives;
 #using scripts\cp\_oed;
@@ -27,39 +31,15 @@ class class_dafbfd8e {
   var var_3f29a509;
   var var_7c66997c;
 
-  /*
-  	Name: constructor
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0x199D3232
-  	Offset: 0xA30
-  	Size: 0x10
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {
     var_2bcbe272 = 0;
   }
 
-  /*
-  	Name: destructor
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0x99EC1590
-  	Offset: 0xA48
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: function_b449e467
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0xD4BDFC92
-  	Offset: 0x1888
-  	Size: 0xD8
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_b449e467() {
     var_b8eeb0fe.weapon_model clientfield::set("weapon_disappear_fx", 1);
     util::wait_network_frame();
@@ -69,18 +49,10 @@ class class_dafbfd8e {
     while (var_b8eeb0fe getzbarrierpiecestate(2) == "closing") {
       wait(0.1);
     }
-    var_b8eeb0fe notify(# "closed");
+    var_b8eeb0fe notify("closed");
   }
 
-  /*
-  	Name: function_cf5042c5
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0xE41281E5
-  	Offset: 0x1670
-  	Size: 0x20C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_cf5042c5() {
     var_b8eeb0fe setzbarrierpiecestate(2, "opening");
     while (var_b8eeb0fe getzbarrierpiecestate(2) != "open") {
@@ -102,29 +74,13 @@ class class_dafbfd8e {
     var_b8eeb0fe hidezbarrierpiece(4);
   }
 
-  /*
-  	Name: function_f555c05b
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0x502C7259
-  	Offset: 0x1638
-  	Size: 0x2C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_f555c05b() {
     weaponinfo = namespace_fdfaa57d::function_1e2e0936(1);
     return weaponinfo;
   }
 
-  /*
-  	Name: function_c3e9e1ab
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0x982E330E
-  	Offset: 0x1390
-  	Size: 0x2A0
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_c3e9e1ab(e_player) {
     weapon = level.weaponnone;
     modelname = undefined;
@@ -155,36 +111,18 @@ class class_dafbfd8e {
     var_b8eeb0fe.weapon_model.angles = (var_b8eeb0fe.angles[0] * -1, var_b8eeb0fe.angles[1] + 180, var_b8eeb0fe.angles[2] * -1);
     var_b8eeb0fe.weapon_model useweaponmodel(var_b8eeb0fe.weaponinfo[0], var_b8eeb0fe.weaponinfo[0].worldmodel);
     var_b8eeb0fe.weapon_model setweaponrenderoptions(var_b8eeb0fe.weaponinfo[2], 0, 0, 0, 0);
-    var_b8eeb0fe notify(# "randomization_done");
+    var_b8eeb0fe notify("randomization_done");
   }
 
-  /*
-  	Name: function_7429abd1
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0x75EDB728
-  	Offset: 0x1300
-  	Size: 0x84
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function function_7429abd1(var_7983c848, weaponinfo, e_player) {
-    /#
     assert(isdefined(weaponinfo));
-    # /
-      e_player namespace_fdfaa57d::function_43128d49(weaponinfo, 0);
-    var_7983c848 notify(# "hash_1285c563");
+    e_player namespace_fdfaa57d::function_43128d49(weaponinfo, 0);
+    var_7983c848 notify("hash_1285c563");
     e_player unlink();
   }
 
-  /*
-  	Name: function_83bb9b69
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0x37FBCE72
-  	Offset: 0xF80
-  	Size: 0x378
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_83bb9b69(e_player) {
     if(var_2bcbe272) {
       return;
@@ -200,7 +138,7 @@ class class_dafbfd8e {
     var_7983c848 usetriggerrequirelookat();
     var_7983c848 setteamfortrigger("none");
     var_7983c848 setcursorhint("HINT_INTERACTIVE_PROMPT");
-    var_7983c848 sethintstring( & "COOP_MAGICBOX_SWAP_WEAPON");
+    var_7983c848 sethintstring(&"COOP_MAGICBOX_SWAP_WEAPON");
     var_b8eeb0fe.var_7983c848 = var_7983c848;
     var_aafa484e = util::init_interactive_gameobject(var_7983c848, & "cp_magic_box", & "COOP_MAGICBOX_SWAP_WEAPON", & onuse);
     var_aafa484e.dontlinkplayertotrigger = 1;
@@ -209,37 +147,21 @@ class class_dafbfd8e {
     var_aafa484e linkto(var_7983c848);
     e_player unlink();
     var_7983c848 util::waittill_any_timeout(6, "player_took_weapon");
-    var_7983c848 notify(# "hash_49d64e9");
+    var_7983c848 notify("hash_49d64e9");
     var_aafa484e gameobjects::destroy_object(1, 1);
     self thread function_b449e467();
     var_aafa484e delete();
-    var_b8eeb0fe waittill(# "closed");
+    var_b8eeb0fe waittill("closed");
     var_b8eeb0fe clientfield::set("magicbox_closed_glow", 1);
     var_b8eeb0fe clientfield::set("magicbox_open_glow", 0);
     var_3f29a509.gameobject gameobjects::enable_object(1);
     var_2bcbe272 = 0;
   }
 
-  /*
-  	Name: onbeginuse
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0xA9DF236C
-  	Offset: 0xF68
-  	Size: 0xC
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function onbeginuse(e_player) {}
 
-  /*
-  	Name: onuse
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0xEED7F6D2
-  	Offset: 0xEF0
-  	Size: 0x6C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function onuse(e_player) {
     if(!var_2bcbe272) {
       self thread function_83bb9b69(e_player);
@@ -248,15 +170,7 @@ class class_dafbfd8e {
     }
   }
 
-  /*
-  	Name: function_b471f57b
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0xA68DEB28
-  	Offset: 0xE68
-  	Size: 0x7C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_b471f57b() {
     if(!var_2bcbe272) {
       var_3f29a509.gameobject gameobjects::destroy_object(1, 1);
@@ -266,15 +180,7 @@ class class_dafbfd8e {
     }
   }
 
-  /*
-  	Name: function_309dd42b
-  	Namespace: namespace_dafbfd8e
-  	Checksum: 0x8BC511E3
-  	Offset: 0xA58
-  	Size: 0x404
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_309dd42b(mdl_mobile_armory) {
     e_trigger = spawn("trigger_radius_use", mdl_mobile_armory.origin + vectorscale((0, 0, 1), 3), 0, 94, 64);
     e_trigger triggerignoreteam();
@@ -282,7 +188,7 @@ class class_dafbfd8e {
     e_trigger usetriggerrequirelookat();
     e_trigger setteamfortrigger("none");
     e_trigger setcursorhint("HINT_INTERACTIVE_PROMPT");
-    e_trigger sethintstring( & "COOP_MAGICBOX");
+    e_trigger sethintstring(&"COOP_MAGICBOX");
     var_9fd18135 = getentarray("bonuszm_magicbox", "script_noteworthy");
     var_b8eeb0fe = arraygetclosest(e_trigger.origin, var_9fd18135);
     var_b8eeb0fe.origin = mdl_mobile_armory.origin;
@@ -318,28 +224,10 @@ class class_dafbfd8e {
 
 #namespace bonuszm;
 
-/*
-	Name: __init__sytem__
-	Namespace: bonuszm
-	Checksum: 0xCA80034
-	Offset: 0x4C0
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("cp_mobile_magicbox", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: bonuszm
-	Checksum: 0xABA8E5C8
-	Offset: 0x508
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.var_40b3237f = & function_999eb742;
   if(!sessionmodeiscampaignzombiesgame()) {
@@ -352,15 +240,6 @@ function __init__() {
   clientfield::register("scriptmover", "weapon_disappear_fx", 1, 1, "int");
 }
 
-/*
-	Name: __main__
-	Namespace: bonuszm
-	Checksum: 0xE339B3E7
-	Offset: 0x600
-	Size: 0x302
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   if(!sessionmodeiscampaignzombiesgame()) {
     return;
@@ -391,32 +270,12 @@ function __main__() {
   }
 }
 
-/*
-	Name: function_2816573
-	Namespace: bonuszm
-	Checksum: 0xABF81680
-	Offset: 0x910
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2816573(mdl_mobile_armory) {
   var_6982c48a = new class_dafbfd8e();
-  [
-    [var_6982c48a]
-  ] - > function_309dd42b(mdl_mobile_armory);
+  [[var_6982c48a]] - > function_309dd42b(mdl_mobile_armory);
   mdl_mobile_armory.var_b10011b8 = var_6982c48a;
 }
 
-/*
-	Name: function_999eb742
-	Namespace: bonuszm
-	Checksum: 0x2B34B239
-	Offset: 0x970
-	Size: 0xB2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_999eb742() {
   var_40d9775d = getentarray("bonuszm_magicbox", "script_noteworthy");
   foreach(magicbox in var_40d9775d) {
@@ -424,15 +283,6 @@ function function_999eb742() {
   }
 }
 
-/*
-	Name: function_89a0f2a6
-	Namespace: bonuszm
-	Checksum: 0xAB63D8B8
-	Offset: 0x1BD8
-	Size: 0x122
-	Parameters: 0
-	Flags: Linked
-*/
 function function_89a0f2a6() {
   if(!sessionmodeiscampaignzombiesgame()) {
     return;
@@ -446,15 +296,6 @@ function function_89a0f2a6() {
   }
 }
 
-/*
-	Name: function_76eab3e
-	Namespace: bonuszm
-	Checksum: 0x26114334
-	Offset: 0x1D08
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_76eab3e(magicbox) {
   if(magicbox.script_noteworthy === "bonuszm_magicbox") {
     if(isdefined(magicbox.gameobject)) {
@@ -464,17 +305,8 @@ function function_76eab3e(magicbox) {
   }
 }
 
-/*
-	Name: function_73ea8d16
-	Namespace: bonuszm
-	Checksum: 0x301860B3
-	Offset: 0x1D90
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_73ea8d16(magicbox) {
-  magicbox endon(# "death");
+  magicbox endon("death");
   magicbox clientfield::set("magicbox_closed_glow", 0);
   util::wait_network_frame();
   magicbox delete();

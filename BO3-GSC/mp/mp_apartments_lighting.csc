@@ -1,18 +1,12 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_apartments_lighting.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\exploder_shared;
-
 #namespace namespace_e7a4a9df;
 
-/*
-	Name: function_c667ac79
-	Namespace: namespace_e7a4a9df
-	Checksum: 0xCA6617C4
-	Offset: 0x120
-	Size: 0x230
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c667ac79() {
   state = 0;
   image = 0;
@@ -55,15 +49,6 @@ function function_c667ac79() {
   }
 }
 
-/*
-	Name: main
-	Namespace: namespace_e7a4a9df
-	Checksum: 0x9473CAA5
-	Offset: 0x358
-	Size: 0x14
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   thread function_c667ac79();
 }

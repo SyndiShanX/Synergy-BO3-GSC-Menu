@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_robot.csc
+*************************************************/
+
 #using scripts\shared\ai\systems\fx_character;
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\ai_shared;
@@ -6,45 +10,17 @@
 #using scripts\shared\duplicaterender_mgr;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace archetype_robot;
 
-/*
-	Name: __init__sytem__
-	Namespace: archetype_robot
-	Checksum: 0xE5EDBCD0
-	Offset: 0x2B0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("robot", & __init__, undefined, undefined);
 }
 
-/*
-	Name: precache
-	Namespace: archetype_robot
-	Checksum: 0xBF78174C
-	Offset: 0x2F0
-	Size: 0x3A
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec precache() {
   level._effect["fx_ability_elec_surge_short_robot"] = "electric/fx_ability_elec_surge_short_robot";
   level._effect["fx_exp_robot_stage3_evb"] = "explosions/fx_exp_robot_stage3_evb";
 }
 
-/*
-	Name: __init__
-	Namespace: archetype_robot
-	Checksum: 0x5BA98427
-	Offset: 0x338
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(ai::shouldregisterclientfieldforarchetype("robot")) {
     clientfield::register("actor", "robot_mind_control", 1, 2, "int", & robotclientutils::robotmindcontrolhandler, 0, 1);
@@ -57,28 +33,10 @@ function __init__() {
 
 #namespace robotclientutils;
 
-/*
-	Name: robotsoldierspawnsetup
-	Namespace: robotclientutils
-	Checksum: 0x49E782E8
-	Offset: 0x4A8
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotsoldierspawnsetup(localclientnum) {
   entity = self;
 }
 
-/*
-	Name: robotlighting
-	Namespace: robotclientutils
-	Checksum: 0xCAD85F8B
-	Offset: 0x4D0
-	Size: 0x346
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private robotlighting(localclientnum, entity, flicker, mindcontrolstate) {
   switch (mindcontrolstate) {
     case 0: {
@@ -130,15 +88,6 @@ function private robotlighting(localclientnum, entity, flicker, mindcontrolstate
   }
 }
 
-/*
-	Name: robotlightshandler
-	Namespace: robotclientutils
-	Checksum: 0xE77A3CFE
-	Offset: 0x820
-	Size: 0x164
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private robotlightshandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   if(!isdefined(entity) || !entity isai() || (isdefined(entity.archetype) && entity.archetype != "robot")) {
@@ -153,15 +102,6 @@ function private robotlightshandler(localclientnum, oldvalue, newvalue, bnewent,
   }
 }
 
-/*
-	Name: robotemphandler
-	Namespace: robotclientutils
-	Checksum: 0xEBB2D757
-	Offset: 0x990
-	Size: 0x13A
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private robotemphandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   if(!isdefined(entity) || !entity isai() || (isdefined(entity.archetype) && entity.archetype != "robot")) {
@@ -181,15 +121,6 @@ function private robotemphandler(localclientnum, oldvalue, newvalue, bnewent, bi
   }
 }
 
-/*
-	Name: robotmindcontrolhandler
-	Namespace: robotclientutils
-	Checksum: 0xBBB3210F
-	Offset: 0xAD8
-	Size: 0x114
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private robotmindcontrolhandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   if(!isdefined(entity) || !entity isai() || (isdefined(entity.archetype) && entity.archetype != "robot")) {
@@ -202,15 +133,6 @@ function private robotmindcontrolhandler(localclientnum, oldvalue, newvalue, bne
   }
 }
 
-/*
-	Name: robotmindcontrolexplosionhandler
-	Namespace: robotclientutils
-	Checksum: 0x334D8647
-	Offset: 0xBF8
-	Size: 0x102
-	Parameters: 7
-	Flags: Linked
-*/
 function robotmindcontrolexplosionhandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   if(!isdefined(entity) || !entity isai() || (isdefined(entity.archetype) && entity.archetype != "robot")) {

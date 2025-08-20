@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_cairo_infection_patch.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_load;
 #using scripts\cp\_objectives;
@@ -12,18 +16,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\vehicles\_quadtank;
-
 #namespace namespace_bb56f921;
 
-/*
-	Name: function_7403e82b
-	Namespace: namespace_bb56f921
-	Checksum: 0x8F908A4C
-	Offset: 0x278
-	Size: 0x38C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7403e82b() {
   spawncollision("collision_player_wall_128x128x10", "collider", (-24656, 25652, -20092), vectorscale((0, 1, 0), 53.1976));
   spawncollision("collision_player_wall_256x256x10", "collider", (-24648, 25644, -19668), vectorscale((0, 1, 0), 53.1976));

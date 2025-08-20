@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_castle.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\mechz;
 #using scripts\shared\audio_shared;
@@ -62,18 +66,8 @@
 #using scripts\zm\zm_castle_tram;
 #using scripts\zm\zm_castle_weap_quest;
 #using scripts\zm\zm_castle_weap_quest_upgrade;
-
 #namespace zm_castle;
 
-/*
-	Name: opt_in
-	Namespace: zm_castle
-	Checksum: 0xF0F91C95
-	Offset: 0x1640
-	Size: 0xEA
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec opt_in() {
   level.aat_in_use = 1;
   level.bgb_in_use = 1;
@@ -87,15 +81,6 @@ function autoexec opt_in() {
   level._effect["zm_bgb_machine_bulb_time"] = "dlc1/castle/fx_bgb_machine_bulb_time_castle";
 }
 
-/*
-	Name: main
-	Namespace: zm_castle
-	Checksum: 0xE3ACF33F
-	Offset: 0x1738
-	Size: 0x27C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   zm_castle_ffotd::main_start();
   level.setupcustomcharacterexerts = & setup_personality_character_exerts;
@@ -131,15 +116,6 @@ function main() {
   zm_castle_ffotd::main_end();
 }
 
-/*
-	Name: function_a81bfac6
-	Namespace: zm_castle
-	Checksum: 0x25AB684F
-	Offset: 0x19C0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a81bfac6() {
   if(getdvarint("splitscreen_playerCount") > 2) {
     wait(0.5);
@@ -147,29 +123,11 @@ function function_a81bfac6() {
   }
 }
 
-/*
-	Name: include_weapons
-	Namespace: zm_castle
-	Checksum: 0x9D18D1D4
-	Offset: 0x1A20
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function include_weapons() {
   zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_castle_weapons.csv", 1);
   zm_weapons::autofill_wallbuys_init();
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_castle
-	Checksum: 0x6B4F313A
-	Offset: 0x1A60
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("toplayer", "player_snow_fx", 5000, 1, "counter", & callback_player_snow_fx_logic, 0, 0);
   clientfield::register("clientuimodel", "zmInventory.widget_shield_parts", 1, 1, "int", undefined, 0, 0);
@@ -179,15 +137,6 @@ function register_clientfields() {
   clientfield::register("world", "castle_fog_bank_switch", 1, 1, "int", & castle_fog_bank_switch, 0, 0);
 }
 
-/*
-	Name: function_893a7cdd
-	Namespace: zm_castle
-	Checksum: 0xAE742AD1
-	Offset: 0x1BF0
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_893a7cdd() {
   forcestreamxmodel("p7_fxanim_zm_castle_rocket_01_mod");
   forcestreamxmodel("p7_fxanim_zm_castle_tram_car_01_mod");
@@ -198,15 +147,6 @@ function function_893a7cdd() {
   forcestreamxmodel("p7_zm_vending_revive");
 }
 
-/*
-	Name: setup_personality_character_exerts
-	Namespace: zm_castle
-	Checksum: 0x985CDE5A
-	Offset: 0x1C98
-	Size: 0xE42
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_personality_character_exerts() {
   level.exert_sounds[1]["playerbreathinsound"][0] = "vox_plr_0_exert_inhale_0";
   level.exert_sounds[2]["playerbreathinsound"][0] = "vox_plr_1_exert_inhale_0";
@@ -304,15 +244,6 @@ function setup_personality_character_exerts() {
   level.exert_sounds[4]["dtplandsoundplayer"][3] = "vox_plr_3_exert_pain_3";
 }
 
-/*
-	Name: callback_player_snow_fx_logic
-	Namespace: zm_castle
-	Checksum: 0xF0E84355
-	Offset: 0x2AE8
-	Size: 0xE4
-	Parameters: 7
-	Flags: Linked
-*/
 function callback_player_snow_fx_logic(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(level.var_18402cb[localclientnum])) {
     deletefx(localclientnum, level.var_18402cb[localclientnum], 1);
@@ -322,15 +253,6 @@ function callback_player_snow_fx_logic(localclientnum, oldval, newval, bnewent, 
   setfxoutdoor(localclientnum, level.var_18402cb[localclientnum]);
 }
 
-/*
-	Name: snd_low_gravity_state
-	Namespace: zm_castle
-	Checksum: 0x72F91CDD
-	Offset: 0x2BD8
-	Size: 0x14C
-	Parameters: 7
-	Flags: Linked
-*/
 function snd_low_gravity_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     audio::playloopat("zmb_low_grav_room_loop", (-1188, 2255, 261));
@@ -345,15 +267,6 @@ function snd_low_gravity_state(localclientnum, oldval, newval, bnewent, binitial
   }
 }
 
-/*
-	Name: castle_fog_bank_switch
-	Namespace: zm_castle
-	Checksum: 0x47893CA4
-	Offset: 0x2D30
-	Size: 0x10E
-	Parameters: 7
-	Flags: Linked
-*/
 function castle_fog_bank_switch(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     for (localclientnum = 0; localclientnum < level.localplayers.size; localclientnum++) {

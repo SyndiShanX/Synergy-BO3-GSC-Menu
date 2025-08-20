@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_spores.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -7,18 +11,8 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_island_spores;
 
-/*
-	Name: init
-	Namespace: zm_island_spores
-	Checksum: 0xEBF3C173
-	Offset: 0x580
-	Size: 0x268
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   var_d1cfa380 = getminbitcountfornum(7);
   var_a15256dd = getminbitcountfornum(3);
@@ -33,15 +27,6 @@ function init() {
   level.b_thrasher_custom_spore_fx = 1;
 }
 
-/*
-	Name: spore_glow_fx
-	Namespace: zm_island_spores
-	Checksum: 0xAD508920
-	Offset: 0x7F0
-	Size: 0x17E
-	Parameters: 7
-	Flags: Linked
-*/
 function spore_glow_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.var_b5a2b77f)) {
     self.var_b5a2b77f = arraygetclosest(self.origin, struct::get_array("spore_fx_org", "script_noteworthy"));
@@ -57,15 +42,6 @@ function spore_glow_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fi
   }
 }
 
-/*
-	Name: spore_cloud_fx
-	Namespace: zm_island_spores
-	Checksum: 0x43A789FD
-	Offset: 0x978
-	Size: 0x85E
-	Parameters: 7
-	Flags: Linked
-*/
 function spore_cloud_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isspectating(localclientnum)) {
     return;
@@ -131,15 +107,6 @@ function spore_cloud_fx(localclientnum, oldval, newval, bnewent, binitialsnap, f
   }
 }
 
-/*
-	Name: function_d4effeda
-	Namespace: zm_island_spores
-	Checksum: 0x4B9ACF25
-	Offset: 0x11E0
-	Size: 0x11E
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d4effeda(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isspectating(localclientnum)) {
     return;
@@ -156,15 +123,6 @@ function function_d4effeda(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: spore_grows
-	Namespace: zm_island_spores
-	Checksum: 0xF8F0141B
-	Offset: 0x1308
-	Size: 0x60C
-	Parameters: 7
-	Flags: Linked
-*/
 function spore_grows(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.var_baeb5712)) {
     if(self.model == "p7_zm_isl_spore_flat") {
@@ -259,46 +217,19 @@ function spore_grows(localclientnum, oldval, newval, bnewent, binitialsnap, fiel
   }
 }
 
-/*
-	Name: scene_play
-	Namespace: zm_island_spores
-	Checksum: 0x584B5E1E
-	Offset: 0x1920
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function scene_play(scene) {
-  self notify(# "scene_play");
-  self endon(# "scene_play");
+  self notify("scene_play");
+  self endon("scene_play");
   self scene::stop();
   self function_6221b6b9(scene);
   self scene::stop();
 }
 
-/*
-	Name: function_6221b6b9
-	Namespace: zm_island_spores
-	Checksum: 0x10C21C44
-	Offset: 0x1998
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function function_6221b6b9(scene, var_165d49f6) {
-  level endon(# "demo_jump");
+  level endon("demo_jump");
   self scene::play(scene);
 }
 
-/*
-	Name: function_dd0015d
-	Namespace: zm_island_spores
-	Checksum: 0x2B6675A4
-	Offset: 0x19D8
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_dd0015d(a_ents) {
   if(!isdefined(self.var_4df7e11b)) {
     self.var_4df7e11b = [];
@@ -306,15 +237,6 @@ function function_dd0015d(a_ents) {
   self.var_4df7e11b = arraycombine(self.var_4df7e11b, a_ents, 0, 0);
 }
 
-/*
-	Name: function_6225657f
-	Namespace: zm_island_spores
-	Checksum: 0xB37AB55D
-	Offset: 0x1A30
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6225657f(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isspectating(localclientnum)) {
     return;
@@ -326,64 +248,28 @@ function function_6225657f(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_3ba5e2ae
-	Namespace: zm_island_spores
-	Checksum: 0x19ED3A56
-	Offset: 0x1AD8
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3ba5e2ae(localclientnum) {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self.var_ea3e4398)) {
     self.var_ea3e4398 = playfxoncamera(localclientnum, level._effect["SPORE_BUBBLES"], (0, 0, 0), (1, 0, 0), (0, 0, 1));
     self thread function_9067dab6(localclientnum);
   }
 }
 
-/*
-	Name: function_7be165af
-	Namespace: zm_island_spores
-	Checksum: 0x6582DA54
-	Offset: 0x1B60
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7be165af(localclientnum) {
   if(isdefined(self.var_ea3e4398)) {
     deletefx(localclientnum, self.var_ea3e4398, 1);
     self.var_ea3e4398 = undefined;
   }
-  self notify(# "hash_a48959b9");
+  self notify("hash_a48959b9");
 }
 
-/*
-	Name: function_9067dab6
-	Namespace: zm_island_spores
-	Checksum: 0xC9AD6A81
-	Offset: 0x1BC0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9067dab6(localclientnum) {
-  self endon(# "hash_a48959b9");
-  self waittill(# "death");
+  self endon("hash_a48959b9");
+  self waittill("death");
   self function_7be165af(localclientnum);
 }
 
-/*
-	Name: spore_camera_fx
-	Namespace: zm_island_spores
-	Checksum: 0x87175BB5
-	Offset: 0x1C08
-	Size: 0xD4
-	Parameters: 7
-	Flags: Linked
-*/
 function spore_camera_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isspectating(localclientnum)) {
     return;
@@ -399,17 +285,8 @@ function spore_camera_fx(localclientnum, oldval, newval, bnewent, binitialsnap, 
   }
 }
 
-/*
-	Name: function_4ff31749
-	Namespace: zm_island_spores
-	Checksum: 0xE27D639D
-	Offset: 0x1CE8
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_4ff31749(localclientnum, var_c55abf21) {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self.var_adac13ec)) {
     if(var_c55abf21) {
       self.var_adac13ec = playfxoncamera(localclientnum, level._effect["SPORE_TRAIL_GOOD_CAM"], (0, 0, 0), (1, 0, 0), (0, 0, 1));
@@ -420,34 +297,16 @@ function function_4ff31749(localclientnum, var_c55abf21) {
   }
 }
 
-/*
-	Name: function_b8071fc
-	Namespace: zm_island_spores
-	Checksum: 0xB6AABCA5
-	Offset: 0x1DC0
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b8071fc(localclientnum) {
   if(isdefined(self.var_adac13ec)) {
     deletefx(localclientnum, self.var_adac13ec, 1);
     self.var_adac13ec = undefined;
   }
-  self notify(# "hash_6cc118c6");
+  self notify("hash_6cc118c6");
 }
 
-/*
-	Name: function_c0e328f2
-	Namespace: zm_island_spores
-	Checksum: 0xE7BE9A04
-	Offset: 0x1E20
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c0e328f2(localclientnum) {
-  self endon(# "hash_6cc118c6");
-  self waittill(# "death");
+  self endon("hash_6cc118c6");
+  self waittill("death");
   self function_b8071fc(localclientnum);
 }

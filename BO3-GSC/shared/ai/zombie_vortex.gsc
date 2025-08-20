@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\zombie_vortex.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\audio_shared;
@@ -8,31 +12,12 @@
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_death_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace zombie_vortex;
 
-/*
-	Name: __init__sytem__
-	Namespace: zombie_vortex
-	Checksum: 0x340C9D46
-	Offset: 0x300
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("vortex_shared", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zombie_vortex
-	Checksum: 0x84DA8156
-	Offset: 0x348
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!isdefined(level.vsmgr_prio_visionset_zombie_vortex)) {
     level.vsmgr_prio_visionset_zombie_vortex = 23;
@@ -52,28 +37,10 @@ function __init__() {
   init_vortices();
 }
 
-/*
-	Name: __main__
-	Namespace: zombie_vortex
-	Checksum: 0xF525200F
-	Offset: 0x4F0
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level vehicle_ai::register_custom_add_state_callback( & idgun_add_vehicle_death_state);
 }
 
-/*
-	Name: init_vortices
-	Namespace: zombie_vortex
-	Checksum: 0x31931274
-	Offset: 0x520
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_vortices() {
   for (i = 0; i < 8; i++) {
     svortex = spawn("script_model", (0, 0, 0));
@@ -86,15 +53,6 @@ function init_vortices() {
   }
 }
 
-/*
-	Name: get_unused_vortex
-	Namespace: zombie_vortex
-	Checksum: 0x26D3D53C
-	Offset: 0x620
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function get_unused_vortex() {
   foreach(vortex in level.vortex_manager.a_vorticies) {
     if(!(isdefined(vortex.in_use) && vortex.in_use)) {
@@ -104,15 +62,6 @@ function get_unused_vortex() {
   return level.vortex_manager.a_vorticies[0];
 }
 
-/*
-	Name: get_active_vortex_count
-	Namespace: zombie_vortex
-	Checksum: 0x4BF66142
-	Offset: 0x6E0
-	Size: 0xBA
-	Parameters: 0
-	Flags: None
-*/
 function get_active_vortex_count() {
   count = 0;
   foreach(vortex in level.vortex_manager.a_vorticies) {
@@ -123,15 +72,6 @@ function get_active_vortex_count() {
   return count;
 }
 
-/*
-	Name: stop_vortex_fx_after_time
-	Namespace: zombie_vortex
-	Checksum: 0x2A68D85E
-	Offset: 0x7A8
-	Size: 0x72
-	Parameters: 4
-	Flags: Private
-*/
 function private stop_vortex_fx_after_time(vortex_fx_handle, vortex_position, vortex_explosion_fx, n_vortex_time) {
   n_starttime = gettime();
   n_curtime = gettime() - n_starttime;
@@ -141,28 +81,13 @@ function private stop_vortex_fx_after_time(vortex_fx_handle, vortex_position, vo
   }
 }
 
-/*
-	Name: start_timed_vortex
-	Namespace: zombie_vortex
-	Checksum: 0xD0BE775E
-	Offset: 0x828
-	Size: 0xA8C
-	Parameters: 13
-	Flags: Linked
-*/
 function start_timed_vortex(v_vortex_origin, n_vortex_radius, vortex_pull_duration, vortex_effect_duration, n_vortex_explosion_radius, eattacker, weapon, should_shellshock_player = 0, visionset_func = undefined, should_shield = 0, effect_version = 0, should_explode = 1, vortex_projectile = undefined) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  /#
+  self endon("death");
+  self endon("disconnect");
   assert(isdefined(v_vortex_origin), "");
-  # /
-    /#
   assert(isdefined(n_vortex_radius), "");
-  # /
-    /#
   assert(isdefined(vortex_pull_duration), "");
-  # /
-    n_starttime = gettime();
+  n_starttime = gettime();
   n_currtime = gettime() - n_starttime;
   a_e_players = getplayers();
   if(!isdefined(n_vortex_explosion_radius)) {
@@ -197,9 +122,7 @@ function start_timed_vortex(v_vortex_origin, n_vortex_radius, vortex_pull_durati
     a_ai_zombies = arraycombine(a_ai_zombies, vortex_z_extension(a_ai_zombies, v_vortex_origin, n_vortex_radius), 0, 0);
     svortex.zombies = a_ai_zombies;
     if(isdefined(level.idgun_draw_debug) && level.idgun_draw_debug) {
-      /#
       circle(v_vortex_origin, n_vortex_radius, (0, 0, 1), 0, 1, 1);
-      # /
     }
     foreach(ai_zombie in a_ai_zombies) {
       if(isvehicle(ai_zombie)) {
@@ -272,15 +195,6 @@ function start_timed_vortex(v_vortex_origin, n_vortex_radius, vortex_pull_durati
   }
 }
 
-/*
-	Name: vortex_z_extension
-	Namespace: zombie_vortex
-	Checksum: 0xE43425DB
-	Offset: 0x12C0
-	Size: 0x15C
-	Parameters: 3
-	Flags: Linked
-*/
 function vortex_z_extension(a_ai_zombies, v_vortex_origin, n_vortex_radius) {
   a_ai_zombies_extended = array::get_all_closest(v_vortex_origin, getaiteamarray("axis"), undefined, undefined, n_vortex_radius + 72);
   a_ai_zombies_extended_filtered = array::exclude(a_ai_zombies_extended, a_ai_zombies);
@@ -295,15 +209,6 @@ function vortex_z_extension(a_ai_zombies, v_vortex_origin, n_vortex_radius) {
   return a_ai_zombies_extended_filtered;
 }
 
-/*
-	Name: vortex_explosion
-	Namespace: zombie_vortex
-	Checksum: 0x5223B3CA
-	Offset: 0x1428
-	Size: 0x37A
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private vortex_explosion(v_vortex_explosion_origin, eattacker, n_vortex_radius) {
   team = "axis";
   if(isdefined(level.zombie_team)) {
@@ -311,9 +216,7 @@ function private vortex_explosion(v_vortex_explosion_origin, eattacker, n_vortex
   }
   a_ai_zombies = array::get_all_closest(v_vortex_explosion_origin, getaiteamarray(team), undefined, undefined, n_vortex_radius);
   if(isdefined(level.idgun_draw_debug) && level.idgun_draw_debug) {
-    /#
     circle(v_vortex_explosion_origin, n_vortex_radius, (1, 0, 0), 0, 1, 1000);
-    # /
   }
   foreach(ai_zombie in a_ai_zombies) {
     if(!ai_zombie.ignorevortices) {
@@ -343,15 +246,6 @@ function private vortex_explosion(v_vortex_explosion_origin, eattacker, n_vortex
   }
 }
 
-/*
-	Name: player_vortex_visionset
-	Namespace: zombie_vortex
-	Checksum: 0x4EAA98B4
-	Offset: 0x17B0
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function player_vortex_visionset(name) {
   thread visionset_mgr::activate("visionset", name + "_visionset", self, 0.25, 2, 0.25);
   thread visionset_mgr::activate("overlay", name + "_blur", self, 0.25, 2, 0.25);
@@ -360,15 +254,6 @@ function player_vortex_visionset(name) {
   self.idgun_vision_on = 0;
 }
 
-/*
-	Name: idgun_add_vehicle_death_state
-	Namespace: zombie_vortex
-	Checksum: 0x8A01977D
-	Offset: 0x1868
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function idgun_add_vehicle_death_state() {
   if(isairborne(self)) {
     self vehicle_ai::add_state("idgun_death", & state_idgun_flying_crush_enter, & state_idgun_flying_crush_update, undefined);
@@ -377,47 +262,20 @@ function idgun_add_vehicle_death_state() {
   }
 }
 
-/*
-	Name: state_idgun_crush_enter
-	Namespace: zombie_vortex
-	Checksum: 0x35B4564E
-	Offset: 0x1910
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function state_idgun_crush_enter(params) {
   self vehicle_ai::clearalllookingandtargeting();
   self vehicle_ai::clearallmovement();
   self cancelaimove();
 }
 
-/*
-	Name: flyentdelete
-	Namespace: zombie_vortex
-	Checksum: 0xD4C33632
-	Offset: 0x1970
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function flyentdelete(enttowatch) {
-  self endon(# "death");
-  enttowatch waittill(# "death");
+  self endon("death");
+  enttowatch waittill("death");
   self delete();
 }
 
-/*
-	Name: state_idgun_crush_update
-	Namespace: zombie_vortex
-	Checksum: 0xC9A2A5D2
-	Offset: 0x19B8
-	Size: 0x288
-	Parameters: 1
-	Flags: Linked
-*/
 function state_idgun_crush_update(params) {
-  self endon(# "death");
+  self endon("death");
   black_hole_center = params.vpoint;
   attacker = params.attacker;
   weapon = params.weapon;
@@ -446,15 +304,6 @@ function state_idgun_crush_update(params) {
   }
 }
 
-/*
-	Name: state_idgun_flying_crush_enter
-	Namespace: zombie_vortex
-	Checksum: 0x927C5C2A
-	Offset: 0x1C48
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked
-*/
 function state_idgun_flying_crush_enter(params) {
   self vehicle_ai::clearallmovement();
   self cancelaimove();
@@ -462,17 +311,8 @@ function state_idgun_flying_crush_enter(params) {
   self.vehaircraftcollisionenabled = 0;
 }
 
-/*
-	Name: state_idgun_flying_crush_update
-	Namespace: zombie_vortex
-	Checksum: 0x58610D9F
-	Offset: 0x1CB0
-	Size: 0x19C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_idgun_flying_crush_update(params) {
-  self endon(# "death");
+  self endon("death");
   black_hole_center = params.vpoint;
   attacker = params.attacker;
   weapon = params.weapon;
@@ -484,23 +324,14 @@ function state_idgun_flying_crush_update(params) {
   self asmrequestsubstate("idgun@movement");
   self thread switch_to_crush_asm(black_hole_center);
   self setvehgoalpos(black_hole_center, 0, 0);
-  self waittill(# "near_goal");
+  self waittill("near_goal");
   self vehicle_ai::get_state_callbacks("death").update_func = & state_idgun_flying_death_update;
   self.veh_idgun_allow_damage = 1;
   self dodamage(self.health + 666, self.origin, attacker, undefined, "none", "MOD_UNKNOWN", 0, weapon);
 }
 
-/*
-	Name: switch_to_crush_asm
-	Namespace: zombie_vortex
-	Checksum: 0xE6BEFF0A
-	Offset: 0x1E58
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function switch_to_crush_asm(black_hole_center) {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     if(distancesquared(self.origin, black_hole_center) < 900) {
       self asmrequestsubstate("idgun_crush@movement");
@@ -510,17 +341,8 @@ function switch_to_crush_asm(black_hole_center) {
   }
 }
 
-/*
-	Name: state_idgun_flying_death_update
-	Namespace: zombie_vortex
-	Checksum: 0xED4F3834
-	Offset: 0x1EE0
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function state_idgun_flying_death_update(params) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.parasiteenemy) && isdefined(self.parasiteenemy.hunted_by)) {
     self.parasiteenemy.hunted_by--;
   }

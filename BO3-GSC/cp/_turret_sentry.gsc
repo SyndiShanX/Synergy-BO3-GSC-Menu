@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_turret_sentry.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -12,31 +16,12 @@
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_death_shared;
 #using scripts\shared\vehicle_shared;
-
 #namespace sentry_turret;
 
-/*
-	Name: __init__sytem__
-	Namespace: sentry_turret
-	Checksum: 0x15C2C658
-	Offset: 0x4C0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("sentry_turret", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: sentry_turret
-	Checksum: 0xBAE3F097
-	Offset: 0x500
-	Size: 0x18E
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   vehicle::add_main_callback("veh_turret_sentry_machinegun", & function_b2e9d990);
   vehicle::add_main_callback("veh_turret_sentry_sniper", & function_8f042083);
@@ -52,65 +37,32 @@ function __init__() {
   level._effect["sentry_turret_stun"] = "_t6/electrical/fx_elec_sp_emp_stun_sentry_turret";
 }
 
-/*
-	Name: turret_debug_line
-	Namespace: sentry_turret
-	Checksum: 0xB647502C
-	Offset: 0x698
-	Size: 0x6C
-	Parameters: 3
-	Flags: Linked
-*/
 function turret_debug_line(start, end, color) {
-  /#
   if(getdvarint("") != 0) {
     line(start, end, color, 1, 0, 50);
   }
-  # /
 }
 
-/*
-	Name: function_ba2c6c94
-	Namespace: sentry_turret
-	Checksum: 0xAAA59E92
-	Offset: 0x710
-	Size: 0xD8
-	Parameters: 2
-	Flags: Linked
-*/
 function function_ba2c6c94(origin, sector) {
   forward = anglestoforward((0, sector, 0));
   end = origin + (forward * 50);
   passed = bullettracepassed(origin, end, 0, self);
-  /#
   if(passed) {
     turret_debug_line(origin, end, (0, 1, 0));
   } else {
     turret_debug_line(origin, end, (1, 0, 0));
   }
-  # /
-    return passed;
+  return passed;
 }
 
-/*
-	Name: function_e606dad7
-	Namespace: sentry_turret
-	Checksum: 0xDFCF41DA
-	Offset: 0x7F0
-	Size: 0x284
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e606dad7() {
   angles = self.angles;
   origin = self.origin;
   eye = self gettagorigin("tag_barrel");
-  /#
   if(function_ba2c6c94(eye, angles[1])) {
     iprintln("");
   }
-  # /
-    yaw = angleclamp180(angles[1]);
+  yaw = angleclamp180(angles[1]);
   max_angle = yaw;
   for (sector = 0;
     (sector * 10) <= 360; sector++) {
@@ -139,15 +91,6 @@ function function_e606dad7() {
   self.angles = (angles[0], var_2421690d, angles[2]);
 }
 
-/*
-	Name: function_5f695de4
-	Namespace: sentry_turret
-	Checksum: 0x1012D25
-	Offset: 0xA80
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_5f695de4(point, yaw) {
   targetpoint = spawnstruct();
   targetpoint.yaw = yaw;
@@ -155,29 +98,11 @@ function function_5f695de4(point, yaw) {
   return targetpoint;
 }
 
-/*
-	Name: get_target_point
-	Namespace: sentry_turret
-	Checksum: 0x667E4AA
-	Offset: 0xAE8
-	Size: 0x72
-	Parameters: 3
-	Flags: Linked
-*/
 function get_target_point(origin, angles, yaw_offset) {
   point = origin + ((anglestoforward(angles + (self.default_pitch, yaw_offset, 0))) * 1000);
   return function_5f695de4(point, yaw_offset);
 }
 
-/*
-	Name: function_1b820c4d
-	Namespace: sentry_turret
-	Checksum: 0x24853369
-	Offset: 0xB68
-	Size: 0x258
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1b820c4d() {
   self.targetpoints = [];
   self.var_23b6e300 = 0;
@@ -200,15 +125,6 @@ function function_1b820c4d() {
   }
 }
 
-/*
-	Name: function_4ac3c3a1
-	Namespace: sentry_turret
-	Checksum: 0x3CDE5E77
-	Offset: 0xDC8
-	Size: 0x60
-	Parameters: 3
-	Flags: Linked
-*/
 function function_4ac3c3a1(e1, e2, b_lowest_first) {
   if(b_lowest_first) {
     return e1.yaw < e2.yaw;
@@ -216,15 +132,6 @@ function function_4ac3c3a1(e1, e2, b_lowest_first) {
   return e1.yaw > e2.yaw;
 }
 
-/*
-	Name: function_c8f2c95d
-	Namespace: sentry_turret
-	Checksum: 0x9F769EA5
-	Offset: 0xE38
-	Size: 0x1CC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c8f2c95d(point) {
   direction = point - self.eyeorigin;
   angles = vectortoangles(direction);
@@ -247,41 +154,14 @@ function function_c8f2c95d(point) {
   array::merge_sort(self.targetpoints, & function_4ac3c3a1, 1);
 }
 
-/*
-	Name: function_b2e9d990
-	Namespace: sentry_turret
-	Checksum: 0xDFD32B02
-	Offset: 0x1010
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b2e9d990() {
   self thread function_8f042083();
 }
 
-/*
-	Name: function_c2d2b587
-	Namespace: sentry_turret
-	Checksum: 0xCD6DA779
-	Offset: 0x1038
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c2d2b587() {
   self thread function_8f042083();
 }
 
-/*
-	Name: function_e7857e05
-	Namespace: sentry_turret
-	Checksum: 0x34C14E5C
-	Offset: 0x1060
-	Size: 0x6E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e7857e05(e_enemy) {
   var_b9baf316 = 1;
   if(isdefined(e_enemy.archetype) && isdefined(self.var_c35cf4ed)) {
@@ -290,15 +170,6 @@ function function_e7857e05(e_enemy) {
   return var_b9baf316;
 }
 
-/*
-	Name: function_8f042083
-	Namespace: sentry_turret
-	Checksum: 0xAA593B6D
-	Offset: 0x10D8
-	Size: 0x2AC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8f042083() {
   if(!isdefined(self.var_c35cf4ed)) {
     self.var_c35cf4ed = [];
@@ -333,41 +204,14 @@ function function_8f042083() {
   self playsound("mpl_turret_startup");
 }
 
-/*
-	Name: function_d19a819d
-	Namespace: sentry_turret
-	Checksum: 0xF5F67161
-	Offset: 0x1390
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function function_d19a819d() {
   self.state_machine statemachine::set_state("scripted");
 }
 
-/*
-	Name: function_62182551
-	Namespace: sentry_turret
-	Checksum: 0x48F2204A
-	Offset: 0x13C0
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function function_62182551() {
   self.state_machine statemachine::set_state("main");
 }
 
-/*
-	Name: function_e59668cf
-	Namespace: sentry_turret
-	Checksum: 0x55EC47EB
-	Offset: 0x13F0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e59668cf(params) {
   if(isalive(self)) {
     self enableaimassist();
@@ -375,15 +219,6 @@ function function_e59668cf(params) {
   }
 }
 
-/*
-	Name: function_e6f10cc7
-	Namespace: sentry_turret
-	Checksum: 0x81EC0D48
-	Offset: 0x1450
-	Size: 0x15C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e6f10cc7(angles) {
   self.state_machine statemachine::set_state("scripted");
   self vehicle::lights_off();
@@ -402,15 +237,6 @@ function function_e6f10cc7(angles) {
   }
 }
 
-/*
-	Name: function_21af94b3
-	Namespace: sentry_turret
-	Checksum: 0x676F9D9
-	Offset: 0x15B8
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_21af94b3() {
   self playsound("mpl_turret_startup");
   self vehicle::lights_on();
@@ -423,15 +249,6 @@ function function_21af94b3() {
   function_62182551();
 }
 
-/*
-	Name: bootup
-	Namespace: sentry_turret
-	Checksum: 0x58805034
-	Offset: 0x1690
-	Size: 0x118
-	Parameters: 0
-	Flags: Linked
-*/
 function bootup() {
   for (i = 0; i < 6; i++) {
     wait(0.1);
@@ -449,18 +266,9 @@ function bootup() {
   }
 }
 
-/*
-	Name: function_2e229297
-	Namespace: sentry_turret
-	Checksum: 0xF0A88490
-	Offset: 0x17B0
-	Size: 0x518
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2e229297() {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   cant_see_enemy_count = 0;
   wait(0.2);
   origin = self gettagorigin("tag_barrel");
@@ -517,10 +325,8 @@ function function_2e229297() {
               }
             }
           }
-          /#
           turret_debug_line(origin, self.targetpoints[self.var_23b6e300].origin, (0, 1, 0));
-          # /
-            self setturrettargetvec(self.targetpoints[self.var_23b6e300].origin);
+          self setturrettargetvec(self.targetpoints[self.var_23b6e300].origin);
           wait(0.5);
         }
       } else {
@@ -531,15 +337,6 @@ function function_2e229297() {
   }
 }
 
-/*
-	Name: function_4642c69e
-	Namespace: sentry_turret
-	Checksum: 0x6D65D8D0
-	Offset: 0x1CD0
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4642c69e(params) {
   driver = self getseatoccupant(0);
   if(isdefined(driver)) {
@@ -553,15 +350,6 @@ function function_4642c69e(params) {
   self cleartargetentity();
 }
 
-/*
-	Name: function_e823c700
-	Namespace: sentry_turret
-	Checksum: 0xD2FCC119
-	Offset: 0x1DA0
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e823c700(health_pct) {
   if(issubstr(self.vehicletype, "turret_sentry")) {
     if(health_pct < 0.6) {
@@ -575,15 +363,6 @@ function function_e823c700(health_pct) {
   return level._effect["sentry_turret_damage01"];
 }
 
-/*
-	Name: function_b212223b
-	Namespace: sentry_turret
-	Checksum: 0x982CA49E
-	Offset: 0x1E58
-	Size: 0x190
-	Parameters: 2
-	Flags: Linked
-*/
 function function_b212223b(effect, tag) {
   if(isdefined(self.damage_fx_ent)) {
     if(self.damage_fx_ent.effect == effect) {
@@ -606,19 +385,10 @@ function function_b212223b(effect, tag) {
   self.damage_fx_ent = ent;
 }
 
-/*
-	Name: sentry_turret_damage
-	Namespace: sentry_turret
-	Checksum: 0xD30EA938
-	Offset: 0x1FF0
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function sentry_turret_damage() {
-  self endon(# "crash_done");
+  self endon("crash_done");
   while (isdefined(self)) {
-    self waittill(# "damage");
+    self waittill("damage");
     if(self.health > 0) {
       effect = self function_e823c700(self.health / self.healthdefault);
       tag = "tag_fx";
@@ -628,22 +398,13 @@ function sentry_turret_damage() {
   }
 }
 
-/*
-	Name: function_78a2820e
-	Namespace: sentry_turret
-	Checksum: 0xE1C5282B
-	Offset: 0x2090
-	Size: 0x254
-	Parameters: 0
-	Flags: Linked
-*/
 function function_78a2820e() {
   wait(0.1);
   if(!isdefined(self)) {
     return;
   }
-  self notify(# "nodeath_thread");
-  self waittill(# "death", attacker, damagefromunderneath, weapon, point, dir);
+  self notify("nodeath_thread");
+  self waittill("death", attacker, damagefromunderneath, weapon, point, dir);
   if(!isdefined(self)) {
     return;
   }
@@ -670,35 +431,17 @@ function function_78a2820e() {
     self.damage_fx_ent delete();
   }
   self.ignoreme = 1;
-  self waittill(# "crash_done");
+  self waittill("crash_done");
   self freevehicle();
 }
 
-/*
-	Name: death_fx
-	Namespace: sentry_turret
-	Checksum: 0xFE9315DD
-	Offset: 0x22F0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function death_fx() {
   self vehicle::do_death_fx();
 }
 
-/*
-	Name: function_e99c1c2
-	Namespace: sentry_turret
-	Checksum: 0x625CA4E1
-	Offset: 0x2318
-	Size: 0x106
-	Parameters: 2
-	Flags: Linked
-*/
 function function_e99c1c2(attacker, hitdir) {
-  self endon(# "crash_done");
-  self endon(# "death");
+  self endon("crash_done");
+  self endon("death");
   self playsound("veh_sentry_turret_dmg_hit");
   wait(0.1);
   self.turretrotscale = 0.5;
@@ -706,21 +449,12 @@ function function_e99c1c2(attacker, hitdir) {
   target_pos = (self.origin + (anglestoforward((0, tag_angles[1], 0)) * 1000)) + (vectorscale((0, 0, -1), 1800));
   self setturrettargetvec(target_pos);
   wait(4);
-  self notify(# "crash_done");
+  self notify("crash_done");
 }
 
-/*
-	Name: sentry_turret_fire_for_time
-	Namespace: sentry_turret
-	Checksum: 0x5D10919
-	Offset: 0x2428
-	Size: 0x184
-	Parameters: 2
-	Flags: Linked
-*/
 function sentry_turret_fire_for_time(totalfiretime, enemy) {
-  self endon(# "crash_done");
-  self endon(# "death");
+  self endon("crash_done");
+  self endon("death");
   sentry_turret_alert_sound();
   wait(0.1);
   weapon = self seatgetweapon(0);
@@ -746,28 +480,10 @@ function sentry_turret_fire_for_time(totalfiretime, enemy) {
   }
 }
 
-/*
-	Name: sentry_turret_alert_sound
-	Namespace: sentry_turret
-	Checksum: 0x2D134142
-	Offset: 0x25B8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function sentry_turret_alert_sound() {
   self playsound("veh_turret_alert");
 }
 
-/*
-	Name: function_ebdfd4e4
-	Namespace: sentry_turret
-	Checksum: 0xE1A81016
-	Offset: 0x25E8
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ebdfd4e4(team) {
   self.team = team;
   if(!isdefined(self.off)) {
@@ -775,35 +491,17 @@ function function_ebdfd4e4(team) {
   }
 }
 
-/*
-	Name: function_f08ad3e6
-	Namespace: sentry_turret
-	Checksum: 0xE6A5421A
-	Offset: 0x2628
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f08ad3e6() {
-  self endon(# "death");
+  self endon("death");
   self vehicle::lights_off();
   wait(0.1);
   self vehicle::lights_on();
 }
 
-/*
-	Name: function_791c1a61
-	Namespace: sentry_turret
-	Checksum: 0x1E57299E
-	Offset: 0x2678
-	Size: 0x1DC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_791c1a61() {
-  self endon(# "death");
-  self notify(# "emped");
-  self endon(# "emped");
+  self endon("death");
+  self notify("emped");
+  self endon("emped");
   self.emped = 1;
   playsoundatposition("veh_sentry_turret_emp_down", self.origin);
   self.turretrotscale = 0.2;
@@ -824,15 +522,6 @@ function function_791c1a61() {
   self function_21af94b3();
 }
 
-/*
-	Name: cicturretcallback_vehicledamage
-	Namespace: sentry_turret
-	Checksum: 0x3EA5EF4D
-	Offset: 0x2860
-	Size: 0xE0
-	Parameters: 15
-	Flags: Linked
-*/
 function cicturretcallback_vehicledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   if(weapon.isemp && smeansofdeath != "MOD_IMPACT") {
     driver = self getseatoccupant(0);
@@ -843,19 +532,10 @@ function cicturretcallback_vehicledamage(einflictor, eattacker, idamage, idflags
   return idamage;
 }
 
-/*
-	Name: cic_overheat_hud
-	Namespace: sentry_turret
-	Checksum: 0x907B0581
-	Offset: 0x2948
-	Size: 0x128
-	Parameters: 1
-	Flags: Linked
-*/
 function cic_overheat_hud(turret) {
-  self endon(# "exit_vehicle");
-  turret endon(# "turret_exited");
-  level endon(# "player_using_turret");
+  self endon("exit_vehicle");
+  turret endon("turret_exited");
+  level endon("player_using_turret");
   heat = 0;
   overheat = 0;
   while (true) {
@@ -865,35 +545,17 @@ function cic_overheat_hud(turret) {
       old_overheat = overheat;
       overheat = self.viewlockedentity isvehicleturretoverheating(0);
       if(old_heat != heat || old_overheat != overheat) {
-        luinotifyevent( & "hud_cic_weapon_heat", 2, int(heat), overheat);
+        luinotifyevent(&"hud_cic_weapon_heat", 2, int(heat), overheat);
       }
     }
     wait(0.05);
   }
 }
 
-/*
-	Name: function_aa320a88
-	Namespace: sentry_turret
-	Checksum: 0x85356397
-	Offset: 0x2A78
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_aa320a88(victim) {
   function_c8f2c95d(victim.origin);
 }
 
-/*
-	Name: turret_idle_sound
-	Namespace: sentry_turret
-	Checksum: 0x18C56841
-	Offset: 0x2AB0
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function turret_idle_sound() {
   sndloop_ent = spawn("script_origin", self.origin);
   sndloop_ent linkto(self);
@@ -901,17 +563,8 @@ function turret_idle_sound() {
   self thread turret_idle_sound_stop(sndloop_ent);
 }
 
-/*
-	Name: turret_idle_sound_stop
-	Namespace: sentry_turret
-	Checksum: 0xC9AFB3AC
-	Offset: 0x2B40
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function turret_idle_sound_stop(sndloop_ent) {
-  self waittill(# "death");
+  self waittill("death");
   sndloop_ent stoploopsound(0.5);
   wait(2);
   sndloop_ent delete();

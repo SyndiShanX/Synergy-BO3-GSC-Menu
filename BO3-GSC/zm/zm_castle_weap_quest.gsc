@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_castle_weap_quest.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_shared;
 #using scripts\shared\ai\zombie_utility;
@@ -20,38 +24,16 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_castle_vo;
-
 #using_animtree("zm_castle");
-
 #namespace zm_castle_weap_quest;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_castle_weap_quest
-	Checksum: 0xEDFFC252
-	Offset: 0x9C8
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_castle_weap_quest", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_castle_weap_quest
-	Checksum: 0xEE6081CF
-	Offset: 0xA10
-	Size: 0x2E8
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
-  /#
   level flag::init("");
-  # /
-    flag::init("soul_catchers_charged");
+  flag::init("soul_catchers_charged");
   level.soul_catchers = [];
   level.soul_catchers_vol = [];
   level.var_aa775655 = & function_1fba78c8;
@@ -75,28 +57,10 @@ function __init__() {
   level.n_soul_catchers_charged = 0;
 }
 
-/*
-	Name: __main__
-	Namespace: zm_castle_weap_quest
-	Checksum: 0xB51F8491
-	Offset: 0xD00
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   array::thread_all(level.zombie_spawners, & spawner::add_spawn_function, & zombie_spawn_func);
 }
 
-/*
-	Name: create_anim_references_on_server
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x49E64FEC
-	Offset: 0xD48
-	Size: 0x252
-	Parameters: 0
-	Flags: Linked
-*/
 function create_anim_references_on_server() {
   root = % zm_castle::root;
   var_dd277883 = % zm_castle::o_zm_dlc1_dragonhead_intro;
@@ -122,19 +86,10 @@ function create_anim_references_on_server() {
   var_d198ed8e["front"] = % zm_castle::rtrg_ai_zm_dlc1_dragonhead_consume_zombie_align_f;
 }
 
-/*
-	Name: soul_catcher_state_manager
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x33C0043
-	Offset: 0xFA8
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function soul_catcher_state_manager() {
   wait(1);
   level clientfield::set(self.script_parameters, 7);
-  self waittill(# "first_zombie_killed_in_zone", e_player);
+  self waittill("first_zombie_killed_in_zone", e_player);
   level clientfield::set(self.script_parameters, 1);
   anim_length = getanimlength( % zm_castle::rtrg_o_zm_dlc1_dragonhead_intro);
   e_player thread zm_castle_vo::function_ad27f488(anim_length);
@@ -146,28 +101,10 @@ function soul_catcher_state_manager() {
   level clientfield::set(self.script_parameters, 6);
 }
 
-/*
-	Name: zombie_spawn_func
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x76B43303
-	Offset: 0x10E0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_spawn_func() {
   self.actor_killed_override = & zombie_killed_override;
 }
 
-/*
-	Name: zombie_killed_override
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x6D14A0EB
-	Offset: 0x1108
-	Size: 0x1B4
-	Parameters: 8
-	Flags: Linked
-*/
 function zombie_killed_override(einflictor, attacker, idamage, smeansofdeath, sweapon, vdir, shitloc, psoffsettime) {
   if(self.archetype != "zombie") {
     return;
@@ -189,15 +126,6 @@ function zombie_killed_override(einflictor, attacker, idamage, smeansofdeath, sw
   }
 }
 
-/*
-	Name: function_1fba78c8
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x53A5424
-	Offset: 0x12C8
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1fba78c8() {
   if(self.archetype != "zombie") {
     return false;
@@ -212,15 +140,6 @@ function function_1fba78c8() {
   return false;
 }
 
-/*
-	Name: zombie_soul_catcher_death
-	Namespace: zm_castle_weap_quest
-	Checksum: 0xA8F1FEB1
-	Offset: 0x1380
-	Size: 0x3F0
-	Parameters: 8
-	Flags: Linked
-*/
 function zombie_soul_catcher_death(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   var_56269cbf = self.var_56269cbf;
   level zm_spawner::zombie_death_points(self.origin, self.damagemod, self.damagelocation, self.attacker, self);
@@ -233,7 +152,7 @@ function zombie_soul_catcher_death(einflictor, attacker, idamage, smeansofdeath,
   }
   if(var_56269cbf.var_98730ffa == 0) {
     var_56269cbf.var_98730ffa = var_56269cbf.var_98730ffa + 1;
-    var_56269cbf notify(# "first_zombie_killed_in_zone", self.attacker);
+    var_56269cbf notify("first_zombie_killed_in_zone", self.attacker);
     var_56269cbf.is_eating = 1;
     var_56269cbf thread function_edf4b761();
     return false;
@@ -263,7 +182,7 @@ function zombie_soul_catcher_death(einflictor, attacker, idamage, smeansofdeath,
   wait(var_a8b20b82 - 0.5);
   var_56269cbf.var_98730ffa++;
   wait(0.5);
-  var_56269cbf notify(# "finished_eating");
+  var_56269cbf notify("finished_eating");
   var_56269cbf.is_eating = 0;
   if(isdefined(self)) {
     self delete();
@@ -271,15 +190,6 @@ function zombie_soul_catcher_death(einflictor, attacker, idamage, smeansofdeath,
   return true;
 }
 
-/*
-	Name: get_correct_model_array
-	Namespace: zm_castle_weap_quest
-	Checksum: 0xEB26829E
-	Offset: 0x1778
-	Size: 0xD8
-	Parameters: 0
-	Flags: None
-*/
 function get_correct_model_array() {
   mod = 0;
   if(self.model == "c_zom_guard_body" && isdefined(self.hatmodel) && self.hatmodel == "c_zom_der_zombie_helmet1") {
@@ -300,31 +210,13 @@ function get_correct_model_array() {
   return 5;
 }
 
-/*
-	Name: function_edf4b761
-	Namespace: zm_castle_weap_quest
-	Checksum: 0xB5C066B4
-	Offset: 0x1858
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_edf4b761() {
   anim_length = getanimlength( % zm_castle::rtrg_o_zm_dlc1_dragonhead_intro);
   wait(anim_length);
-  self notify(# "hash_f77f4f21");
+  self notify("hash_f77f4f21");
   self.is_eating = 0;
 }
 
-/*
-	Name: which_eating_anim
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x510B4979
-	Offset: 0x18B0
-	Size: 0x102
-	Parameters: 0
-	Flags: Linked
-*/
 function which_eating_anim() {
   soul_catcher = self.var_56269cbf;
   forward_dot = vectordot(anglestoforward(soul_catcher.angles), vectornormalize(self.origin - soul_catcher.origin));
@@ -338,22 +230,13 @@ function which_eating_anim() {
   return 5;
 }
 
-/*
-	Name: soul_catcher_check
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x4C15307A
-	Offset: 0x19C0
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function soul_catcher_check() {
   self.is_charged = 0;
   while (true) {
     if(self.var_98730ffa >= 8) {
       level.n_soul_catchers_charged++;
       self.is_charged = 1;
-      self notify(# "fully_charged");
+      self notify("fully_charged");
       break;
     }
     wait(0.05);
@@ -368,17 +251,8 @@ function soul_catcher_check() {
   }
 }
 
-/*
-	Name: function_e775e6a4
-	Namespace: zm_castle_weap_quest
-	Checksum: 0xAAA7A358
-	Offset: 0x1AD0
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e775e6a4(var_63530679) {
-  self waittill(# "fully_charged");
+  self waittill("fully_charged");
   if(self.script_label == "dragonhead_1") {
     m_collision = getent("uc_dragoncollision", "targetname");
     m_collision delete();
@@ -388,56 +262,18 @@ function function_e775e6a4(var_63530679) {
   }
 }
 
-/*
-	Name: function_7b154c37
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x99EC1590
-	Offset: 0x1B98
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function function_7b154c37() {}
 
-/*
-	Name: function_54af3e05
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x99EC1590
-	Offset: 0x1BA8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_54af3e05() {}
 
-/*
-	Name: function_b7dd8bb3
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x99EC1590
-	Offset: 0x1BB8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b7dd8bb3() {}
 
-/*
-	Name: function_a01a53de
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x7450503B
-	Offset: 0x1BC8
-	Size: 0x294
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a01a53de() {
-  /#
   if(level flag::get("")) {
     return;
   }
   level flag::set("");
-  # /
-    var_14ea0734 = struct::get("base_bow_pickup_struct", "targetname");
+  var_14ea0734 = struct::get("base_bow_pickup_struct", "targetname");
   level thread scene::play("p7_fxanim_zm_castle_quest_base_bow_idle_bundle");
   wait(0.25);
   level.var_15acc392 = getent("base_bow_pickup", "targetname");
@@ -446,7 +282,7 @@ function function_a01a53de() {
   callback::on_connect( & function_c9cdf051);
   var_65a03676 = array("rune_prison_spawned", "demon_gate_spawned", "elemental_storm_spawned", "wolf_howl_spawned", "ee_start_done");
   flag::wait_till_all(var_65a03676);
-  level notify(# "hash_1deaef05");
+  level notify("hash_1deaef05");
   foreach(e_player in level.players) {
     e_player clientfield::set_to_player("bow_pickup_fx", 0);
   }
@@ -457,18 +293,9 @@ function function_a01a53de() {
   level thread struct::delete_script_bundle("scene", "p7_fxanim_zm_castle_quest_base_bow_idle_bundle");
 }
 
-/*
-	Name: function_9376cff9
-	Namespace: zm_castle_weap_quest
-	Checksum: 0xE7C7B2CD
-	Offset: 0x1E68
-	Size: 0x160
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9376cff9() {
-  self endon(# "death");
-  level endon(# "hash_1deaef05");
+  self endon("death");
+  level endon("hash_1deaef05");
   self clientfield::set_to_player("bow_pickup_fx", 1);
   var_14ea0734 = struct::get("base_bow_pickup_struct", "targetname");
   while (true) {
@@ -488,15 +315,6 @@ function function_9376cff9() {
   }
 }
 
-/*
-	Name: function_e464049a
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x4C46CE70
-	Offset: 0x1FD0
-	Size: 0xF6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e464049a() {
   if(self hasweapon(getweapon("elemental_bow")) || self hasweapon(getweapon("elemental_bow_wolf_howl")) || self hasweapon(getweapon("elemental_bow_storm")) || self hasweapon(getweapon("elemental_bow_rune_prison")) || self hasweapon(getweapon("elemental_bow_demongate"))) {
     return true;
@@ -504,20 +322,11 @@ function function_e464049a() {
   return false;
 }
 
-/*
-	Name: function_fb853e2c
-	Namespace: zm_castle_weap_quest
-	Checksum: 0xE54D7704
-	Offset: 0x20D0
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fb853e2c() {
-  self notify(# "hash_99ff6d52");
-  self endon(# "death");
-  self endon(# "hash_99ff6d52");
-  level endon(# "hash_1deaef05");
+  self notify("hash_99ff6d52");
+  self endon("death");
+  self endon("hash_99ff6d52");
+  level endon("hash_1deaef05");
   var_890bca07 = getweapon("elemental_bow");
   while (true) {
     self util::waittill_either("projectile_impact", "zmb_max_ammo");
@@ -528,51 +337,24 @@ function function_fb853e2c() {
   }
 }
 
-/*
-	Name: function_71d4f620
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x20B82F6F
-	Offset: 0x21B8
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_71d4f620() {
-  self notify(# "hash_a1f46392");
-  self endon(# "death");
-  self endon(# "hash_a1f46392");
-  level endon(# "hash_1deaef05");
+  self notify("hash_a1f46392");
+  self endon("death");
+  self endon("hash_a1f46392");
+  level endon("hash_1deaef05");
   var_890bca07 = getweapon("elemental_bow");
   var_d95a0cf3 = -1;
   while (var_d95a0cf3 != self.characterindex) {
-    level waittill(# "bleed_out", var_d95a0cf3);
+    level waittill("bleed_out", var_d95a0cf3);
   }
   self.var_e8e28d9e = var_890bca07.maxammo;
   self.var_8f97fa0b = var_890bca07.clipsize;
 }
 
-/*
-	Name: function_c9cdf051
-	Namespace: zm_castle_weap_quest
-	Checksum: 0xC80FA01C
-	Offset: 0x2280
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c9cdf051() {
   self thread function_9376cff9();
 }
 
-/*
-	Name: function_bb60c970
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x5D3F38E3
-	Offset: 0x22A8
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bb60c970() {
   s_unitrigger = spawnstruct();
   s_unitrigger.origin = self.origin;
@@ -587,39 +369,21 @@ function function_bb60c970() {
   zm_unitrigger::register_static_unitrigger(s_unitrigger, & function_26e22a99);
 }
 
-/*
-	Name: function_65fb1c47
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x90A21B12
-	Offset: 0x23B0
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function function_65fb1c47(e_player) {
   if(e_player function_e464049a() || e_player function_9dfa159b()) {
-    self sethintstring( & "");
+    self sethintstring(&"");
     return false;
   }
-  self sethintstring( & "ZM_CASTLE_PICK_UP_BASE_BOW");
+  self sethintstring(&"ZM_CASTLE_PICK_UP_BASE_BOW");
   return true;
 }
 
-/*
-	Name: function_26e22a99
-	Namespace: zm_castle_weap_quest
-	Checksum: 0x86251B11
-	Offset: 0x2438
-	Size: 0x2B8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_26e22a99() {
-  self endon(# "kill_trigger");
-  level endon(# "hash_1deaef05");
+  self endon("kill_trigger");
+  level endon("hash_1deaef05");
   self.stub thread zm_unitrigger::run_visibility_function_for_all_triggers();
   while (true) {
-    self waittill(# "trigger", e_who);
+    self waittill("trigger", e_who);
     if(e_who function_e464049a() || e_who function_9dfa159b()) {
       continue;
     }
@@ -649,15 +413,6 @@ function function_26e22a99() {
   }
 }
 
-/*
-	Name: function_9dfa159b
-	Namespace: zm_castle_weap_quest
-	Checksum: 0xD8753211
-	Offset: 0x26F8
-	Size: 0xC6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9dfa159b() {
   if(!self weaponcyclingenabled() || !self offhandweaponsenabled()) {
     return true;

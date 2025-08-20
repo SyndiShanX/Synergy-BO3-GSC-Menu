@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_bouncingbetty.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\challenges_shared;
@@ -7,20 +11,9 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #using_animtree("bouncing_betty");
-
 #namespace bouncingbetty;
 
-/*
-	Name: init_shared
-	Namespace: bouncingbetty
-	Checksum: 0xC22A486C
-	Offset: 0x468
-	Size: 0x2D4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_shared() {
   level.bettydestroyedfx = "weapon/fx_betty_exp_destroyed";
   level._effect["fx_betty_friendly_light"] = "weapon/fx_betty_light_blue";
@@ -44,37 +37,16 @@ function init_shared() {
   level.bettybombletspawndistance = 20;
   level.bettybombletcount = 4;
   level thread register();
-  /#
   level thread bouncingbettydvarupdate();
-  # /
-    callback::add_weapon_watcher( & createbouncingbettywatcher);
+  callback::add_weapon_watcher( & createbouncingbettywatcher);
 }
 
-/*
-	Name: register
-	Namespace: bouncingbetty
-	Checksum: 0x68C82C49
-	Offset: 0x748
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function register() {
   clientfield::register("missile", "bouncingbetty_state", 1, 2, "int");
   clientfield::register("scriptmover", "bouncingbetty_state", 1, 2, "int");
 }
 
-/*
-	Name: bouncingbettydvarupdate
-	Namespace: bouncingbetty
-	Checksum: 0x69A91686
-	Offset: 0x7B8
-	Size: 0x1EE
-	Parameters: 0
-	Flags: Linked
-*/
 function bouncingbettydvarupdate() {
-  /#
   for (;;) {
     level.bettyradius = getdvarint("", level.bettyradius);
     level.bettyactivationdelay = getdvarfloat("", level.bettyactivationdelay);
@@ -90,18 +62,8 @@ function bouncingbettydvarupdate() {
     level.bettyjumptime = getdvarfloat("", level.bettyjumptime);
     wait(3);
   }
-  # /
 }
 
-/*
-	Name: createbouncingbettywatcher
-	Namespace: bouncingbetty
-	Checksum: 0x21DBE58C
-	Offset: 0x9B0
-	Size: 0x1B8
-	Parameters: 0
-	Flags: Linked
-*/
 function createbouncingbettywatcher() {
   watcher = self weaponobjects::createproximityweaponobjectwatcher("bouncingbetty", self.team);
   watcher.onspawn = & onspawnbouncingbetty;
@@ -124,15 +86,6 @@ function createbouncingbettywatcher() {
   watcher.activationdelay = level.bettyactivationdelay;
 }
 
-/*
-	Name: onbouncingbettyfizzleout
-	Namespace: bouncingbetty
-	Checksum: 0xEE4E0A1C
-	Offset: 0xB70
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function onbouncingbettyfizzleout() {
   if(isdefined(self.minemover)) {
     if(isdefined(self.minemover.killcament)) {
@@ -143,15 +96,6 @@ function onbouncingbettyfizzleout() {
   self delete();
 }
 
-/*
-	Name: onspawnbouncingbetty
-	Namespace: bouncingbetty
-	Checksum: 0x956AE8B5
-	Offset: 0xBF0
-	Size: 0xAC
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawnbouncingbetty(watcher, owner) {
   weaponobjects::onspawnproximityweaponobject(watcher, owner);
   self.originalowner = owner;
@@ -162,81 +106,36 @@ function onspawnbouncingbetty(watcher, owner) {
   self thread trackusedonhack();
 }
 
-/*
-	Name: trackusedstatondeath
-	Namespace: bouncingbetty
-	Checksum: 0xAB87753B
-	Offset: 0xCA8
-	Size: 0x5E
-	Parameters: 0
-	Flags: Linked
-*/
 function trackusedstatondeath() {
-  self endon(# "do_not_track_used");
-  self waittill(# "death");
+  self endon("do_not_track_used");
+  self waittill("death");
   waittillframeend();
   if(isdefined(self.owner)) {
     self.owner trackbouncingbettyasused();
   }
-  self notify(# "end_donotrackusedonpickup");
-  self notify(# "end_donotrackusedonhacked");
+  self notify("end_donotrackusedonpickup");
+  self notify("end_donotrackusedonhacked");
 }
 
-/*
-	Name: donotrackusedstatonpickup
-	Namespace: bouncingbetty
-	Checksum: 0x57835688
-	Offset: 0xD10
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked
-*/
 function donotrackusedstatonpickup() {
-  self endon(# "end_donotrackusedonpickup");
-  self waittill(# "picked_up");
-  self notify(# "do_not_track_used");
+  self endon("end_donotrackusedonpickup");
+  self waittill("picked_up");
+  self notify("do_not_track_used");
 }
 
-/*
-	Name: trackusedonhack
-	Namespace: bouncingbetty
-	Checksum: 0x70BB5F68
-	Offset: 0xD48
-	Size: 0x42
-	Parameters: 0
-	Flags: Linked
-*/
 function trackusedonhack() {
-  self endon(# "end_donotrackusedonhacked");
-  self waittill(# "hacked");
+  self endon("end_donotrackusedonhacked");
+  self waittill("hacked");
   self.originalowner trackbouncingbettyasused();
-  self notify(# "do_not_track_used");
+  self notify("do_not_track_used");
 }
 
-/*
-	Name: trackbouncingbettyasused
-	Namespace: bouncingbetty
-	Checksum: 0xACE15D4B
-	Offset: 0xD98
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function trackbouncingbettyasused() {
   if(isplayer(self)) {
     self addweaponstat(getweapon("bouncingbetty"), "used", 1);
   }
 }
 
-/*
-	Name: trackonowner
-	Namespace: bouncingbetty
-	Checksum: 0xAF8469E2
-	Offset: 0xDF8
-	Size: 0x96
-	Parameters: 1
-	Flags: Linked
-*/
 function trackonowner(owner) {
   if(level.trackbouncingbettiesonowner === 1) {
     if(!isdefined(owner)) {
@@ -251,17 +150,8 @@ function trackonowner(owner) {
   }
 }
 
-/*
-	Name: spawnminemover
-	Namespace: bouncingbetty
-	Checksum: 0x95E6A23
-	Offset: 0xE98
-	Size: 0x2A4
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnminemover() {
-  self endon(# "death");
+  self endon("death");
   self util::waittillnotmoving();
   self clientfield::set("bouncingbetty_state", 2);
   self useanimtree($bouncing_betty);
@@ -286,30 +176,12 @@ function spawnminemover() {
   self thread killminemoveronpickup();
 }
 
-/*
-	Name: killminemoveronpickup
-	Namespace: bouncingbetty
-	Checksum: 0xE7F9B829
-	Offset: 0x1148
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function killminemoveronpickup() {
-  self.minemover endon(# "death");
+  self.minemover endon("death");
   self util::waittill_any("picked_up", "hacked");
   self killminemover();
 }
 
-/*
-	Name: killminemover
-	Namespace: bouncingbetty
-	Checksum: 0x6E34F188
-	Offset: 0x11A8
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function killminemover() {
   if(isdefined(self.minemover)) {
     if(isdefined(self.minemover.killcament)) {
@@ -319,15 +191,6 @@ function killminemover() {
   }
 }
 
-/*
-	Name: bouncingbettydetonate
-	Namespace: bouncingbetty
-	Checksum: 0xBB0528B2
-	Offset: 0x1210
-	Size: 0x15C
-	Parameters: 3
-	Flags: Linked
-*/
 function bouncingbettydetonate(attacker, weapon, target) {
   if(isdefined(weapon) && weapon.isvalid) {
     self.destroyedby = attacker;
@@ -350,15 +213,6 @@ function bouncingbettydetonate(attacker, weapon, target) {
   }
 }
 
-/*
-	Name: bouncingbettydestroyed
-	Namespace: bouncingbetty
-	Checksum: 0x518785ED
-	Offset: 0x1378
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function bouncingbettydestroyed() {
   playfx(level.bettydestroyedfx, self.origin);
   playsoundatposition("dst_equipment_destroy", self.origin);
@@ -370,15 +224,6 @@ function bouncingbettydestroyed() {
   self delete();
 }
 
-/*
-	Name: bouncingbettyjumpandexplode
-	Namespace: bouncingbetty
-	Checksum: 0x58DEC02A
-	Offset: 0x1460
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function bouncingbettyjumpandexplode() {
   jumpdir = vectornormalize(anglestoup(self.angles));
   if(jumpdir[2] > level.bettyjumpheightwallanglecos) {
@@ -393,15 +238,6 @@ function bouncingbettyjumpandexplode() {
   self thread mineexplode(jumpdir, explodepos);
 }
 
-/*
-	Name: mineexplode
-	Namespace: bouncingbetty
-	Checksum: 0x76EB6742
-	Offset: 0x1580
-	Size: 0x17C
-	Parameters: 2
-	Flags: Linked
-*/
 function mineexplode(explosiondir, explodepos) {
   if(!isdefined(self) || !isdefined(self.owner)) {
     return;

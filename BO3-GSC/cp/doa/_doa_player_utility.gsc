@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_player_utility.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_util;
 #using scripts\cp\doa\_doa_arena;
@@ -22,27 +26,15 @@
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_831a4a7c;
 
-/*
-	Name: function_138c35de
-	Namespace: namespace_831a4a7c
-	Checksum: 0xC5D8942
-	Offset: 0xB38
-	Size: 0x1E4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_138c35de() {
   self show();
   if(!isdefined(self.entnum)) {
     self.entnum = self getentitynumber();
   }
-  /#
   assert(!isdefined(self.doa), "");
-  # /
-    level flagsys::wait_till("doa_init_complete");
+  level flagsys::wait_till("doa_init_complete");
   self setthreatbiasgroup("players");
   self setcharacterbodytype(self.entnum, self.entnum);
   self setcharacterbodystyle(0);
@@ -59,17 +51,8 @@ function function_138c35de() {
   self thread function_70339630();
 }
 
-/*
-	Name: function_70339630
-	Namespace: namespace_831a4a7c
-	Checksum: 0xC4432F8E
-	Offset: 0xD28
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function function_70339630() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (array::contains(level.activeplayers, self) == 0) {
     self.ignoreme = 1;
     wait(0.05);
@@ -77,15 +60,6 @@ function function_70339630() {
   self.ignoreme = 0;
 }
 
-/*
-	Name: function_bbb1254c
-	Namespace: namespace_831a4a7c
-	Checksum: 0xF8203008
-	Offset: 0xD88
-	Size: 0x95C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bbb1254c(var_44eb97b0 = 0) {
   if(!isdefined(self)) {
     return;
@@ -150,7 +124,7 @@ function function_bbb1254c(var_44eb97b0 = 0) {
     self.doa.var_c5fe2763 = undefined;
     self.doa.var_80ffe475 = undefined;
     self.doa.var_af875fb7 = [];
-    self notify(# "hash_44eb97b0");
+    self notify("hash_44eb97b0");
     wait(0.05);
     if(isdefined(self.doa.var_3cdd8203)) {
       foreach(chicken in self.doa.var_3cdd8203) {
@@ -185,9 +159,7 @@ function function_bbb1254c(var_44eb97b0 = 0) {
   self thread function_e6b2517f();
   self thread function_a36ffe73();
   self thread function_2fee362e();
-  /#
-  # /
-    self setplayercollision(1);
+  self setplayercollision(1);
   self cleardamageindicator();
   self.health = self.maxhealth;
   self.ignoreme = 0;
@@ -198,19 +170,10 @@ function function_bbb1254c(var_44eb97b0 = 0) {
   self namespace_64c6b720::function_850bb47e();
 }
 
-/*
-	Name: function_e2a1a825
-	Namespace: namespace_831a4a7c
-	Checksum: 0x4C039E2C
-	Offset: 0x16F0
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e2a1a825() {
-  self notify(# "hash_e2a1a825");
-  self endon(# "hash_e2a1a825");
-  self endon(# "disconnect");
+  self notify("hash_e2a1a825");
+  self endon("hash_e2a1a825");
+  self endon("disconnect");
   self.doa.var_a483af0a = 0;
   self.doa.var_b55a8647 = 0;
   while (true) {
@@ -221,15 +184,6 @@ function function_e2a1a825() {
   }
 }
 
-/*
-	Name: function_eb67e3d2
-	Namespace: namespace_831a4a7c
-	Checksum: 0xF5B0DCB
-	Offset: 0x17D8
-	Size: 0x38C
-	Parameters: 0
-	Flags: None
-*/
 function function_eb67e3d2() {
   while (true) {
     if(self stancebuttonpressed()) {
@@ -302,17 +256,8 @@ function function_eb67e3d2() {
   }
 }
 
-/*
-	Name: function_7e372abd
-	Namespace: namespace_831a4a7c
-	Checksum: 0xAC509ADB
-	Offset: 0x1B70
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7e372abd() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (!isdefined(self.doa)) {
     wait(0.05);
   }
@@ -325,30 +270,12 @@ function function_7e372abd() {
   self function_ad1d5fcb(1);
 }
 
-/*
-	Name: function_4db260cb
-	Namespace: namespace_831a4a7c
-	Checksum: 0x490B4967
-	Offset: 0x1C40
-	Size: 0x92
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4db260cb() {
   foreach(player in getplayers()) {
     player thread function_7e372abd();
   }
 }
 
-/*
-	Name: function_895845f9
-	Namespace: namespace_831a4a7c
-	Checksum: 0x1E77CC42
-	Offset: 0x1CE0
-	Size: 0x136
-	Parameters: 2
-	Flags: None
-*/
 function function_895845f9(origin, ignore_player) {
   valid_player_found = 0;
   players = getplayers();
@@ -371,15 +298,6 @@ function function_895845f9(origin, ignore_player) {
   }
 }
 
-/*
-	Name: isplayervalid
-	Namespace: namespace_831a4a7c
-	Checksum: 0xFA70A96C
-	Offset: 0x1E20
-	Size: 0xA4
-	Parameters: 2
-	Flags: Linked
-*/
 function isplayervalid(player, checkignoremeflag) {
   if(!isdefined(player)) {
     return false;
@@ -399,21 +317,12 @@ function isplayervalid(player, checkignoremeflag) {
   return true;
 }
 
-/*
-	Name: function_5bcae97c
-	Namespace: namespace_831a4a7c
-	Checksum: 0x977768B5
-	Offset: 0x1ED0
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_5bcae97c(trigger) {
   trigger thread doa_utility::function_a625b5d3(self);
   trigger thread doa_utility::function_75e76155(self, "enter_vehicle");
   trigger thread doa_utility::function_75e76155(self, "turnPlayerShieldOn");
   trigger thread doa_utility::function_75e76155(self, "turnPlayerShieldOff");
-  trigger waittill(# "death");
+  trigger waittill("death");
   if(isdefined(self)) {
     self function_4519b17(0);
     self.doa.shield_is_on = undefined;
@@ -422,28 +331,19 @@ function function_5bcae97c(trigger) {
   }
 }
 
-/*
-	Name: turnplayershieldon
-	Namespace: namespace_831a4a7c
-	Checksum: 0x2330A284
-	Offset: 0x1FD8
-	Size: 0x2E2
-	Parameters: 1
-	Flags: Linked
-*/
 function turnplayershieldon(short_shield = 1) {
   if(!isplayer(self)) {
     return;
   }
-  self endon(# "disconnect");
-  self endon(# "enter_vehicle");
-  self notify(# "turnplayershieldon");
-  self endon(# "turnplayershieldon");
+  self endon("disconnect");
+  self endon("enter_vehicle");
+  self notify("turnplayershieldon");
+  self endon("turnplayershieldon");
   if(!isdefined(self.doa) || isdefined(self.doa.vehicle)) {
     return;
   }
   if(isdefined(self.doa.shield_is_on)) {
-    self notify(# "turnplayershieldoff");
+    self notify("turnplayershieldoff");
     waittillframeend();
   } else {
     if(short_shield) {
@@ -475,41 +375,23 @@ function turnplayershieldon(short_shield = 1) {
   self thread namespace_1a381543::function_90118d8c("zmb_player_shield_end");
   wait(0.5);
   self function_4519b17(0);
-  self notify(# "turnplayershieldoff");
+  self notify("turnplayershieldoff");
 }
 
-/*
-	Name: function_6b0da7ff
-	Namespace: namespace_831a4a7c
-	Checksum: 0x88F5327A
-	Offset: 0x22C8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_6b0da7ff() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     wait(0.05);
   }
 }
 
-/*
-	Name: shield_trigger_think
-	Namespace: namespace_831a4a7c
-	Checksum: 0xFF7D0680
-	Offset: 0x22F8
-	Size: 0x4AC
-	Parameters: 3
-	Flags: Linked
-*/
 function shield_trigger_think(player, var_c1ff53d9, thresh) {
-  self endon(# "death");
+  self endon("death");
   self thread function_6b0da7ff();
   self thread function_ab9cf24b(player);
   self.player = player;
   while (isdefined(player)) {
-    self waittill(# "trigger", guy);
+    self waittill("trigger", guy);
     if(!isdefined(guy)) {
       continue;
     }
@@ -535,9 +417,7 @@ function shield_trigger_think(player, var_c1ff53d9, thresh) {
     if(isdefined(var_c1ff53d9)) {
       v_velocity = var_c1ff53d9 getvelocity();
       speed = lengthsquared(v_velocity);
-      /#
-      # /
-        ok = speed < (thresh * thresh);
+      ok = speed < (thresh * thresh);
     }
     if(!ok) {
       continue;
@@ -553,10 +433,8 @@ function shield_trigger_think(player, var_c1ff53d9, thresh) {
             namespace_fba031c8::trygibbinglimb(guy, 5000);
             namespace_fba031c8::trygibbinglegs(guy, 5000, undefined, 1, player);
           }
-          /#
           assert(!(isdefined(guy.boss) && guy.boss));
-          # /
-            guy thread doa_utility::function_e3c30240(vectorscale((0, 0, 1), 220), 100, 0.3);
+          guy thread doa_utility::function_e3c30240(vectorscale((0, 0, 1), 220), 100, 0.3);
           guy thread doa_utility::function_ba30b321(0.2, player);
           guy thread namespace_1a381543::function_90118d8c("zmb_ragdoll_launched");
         } else {
@@ -572,30 +450,12 @@ function shield_trigger_think(player, var_c1ff53d9, thresh) {
   self delete();
 }
 
-/*
-	Name: function_93739933
-	Namespace: namespace_831a4a7c
-	Checksum: 0x601F5C8D
-	Offset: 0x27B0
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_93739933(vel) {
   return length(vel) * 0.05681818;
 }
 
-/*
-	Name: function_ab9cf24b
-	Namespace: namespace_831a4a7c
-	Checksum: 0xD1405DE7
-	Offset: 0x27E8
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_ab9cf24b(player) {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(level.doa) || !isdefined(level.doa.hazards)) {
     return;
   }
@@ -609,19 +469,10 @@ function private function_ab9cf24b(player) {
   }
 }
 
-/*
-	Name: infiniteammo
-	Namespace: namespace_831a4a7c
-	Checksum: 0xA95D81A0
-	Offset: 0x2910
-	Size: 0xB2
-	Parameters: 0
-	Flags: Linked
-*/
 function infiniteammo() {
-  self notify(# "hash_93c32bc6");
-  self endon(# "hash_93c32bc6");
-  self endon(# "disconnect");
+  self notify("hash_93c32bc6");
+  self endon("hash_93c32bc6");
+  self endon("disconnect");
   wait(1);
   while (true) {
     wait(2);
@@ -632,22 +483,11 @@ function infiniteammo() {
   }
 }
 
-/*
-	Name: function_1a86a494
-	Namespace: namespace_831a4a7c
-	Checksum: 0xF81F5B8
-	Offset: 0x29D0
-	Size: 0x1B0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1a86a494(var_d55fe723 = 0) {
-  /#
   assert(isdefined(self.doa));
-  # /
-    if(self.doa.boosters < 1) {
-      self.doa.boosters = 1;
-    }
+  if(self.doa.boosters < 1) {
+    self.doa.boosters = 1;
+  }
   if(self.doa.fate == 4) {
     if(self.doa.boosters < 2) {
       self.doa.boosters = 2;
@@ -673,15 +513,6 @@ function function_1a86a494(var_d55fe723 = 0) {
   self.ignoreme = 0;
 }
 
-/*
-	Name: function_82e3b1cb
-	Namespace: namespace_831a4a7c
-	Checksum: 0x331B40EB
-	Offset: 0x2B88
-	Size: 0x106
-	Parameters: 1
-	Flags: Linked
-*/
 function function_82e3b1cb(var_d55fe723 = 0) {
   players = function_5eb6e4d1();
   for (i = 0; i < players.size; i++) {
@@ -692,15 +523,6 @@ function function_82e3b1cb(var_d55fe723 = 0) {
   }
 }
 
-/*
-	Name: function_aea40863
-	Namespace: namespace_831a4a7c
-	Checksum: 0xEA03D196
-	Offset: 0x2C98
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_aea40863() {
   self function_d5f89a15(self.doa.default_weap.name);
   self disableweaponcycling();
@@ -715,77 +537,35 @@ function function_aea40863() {
   self setstance("stand");
 }
 
-/*
-	Name: function_6a52a347
-	Namespace: namespace_831a4a7c
-	Checksum: 0x41FBC092
-	Offset: 0x2E10
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6a52a347(count = 1) {
-  /#
   assert(isdefined(self.doa));
-  # /
-    max = level.doa.rules.max_lives;
+  max = level.doa.rules.max_lives;
   if(self.doa.fate == 11) {
     max++;
   }
   self.doa.lives = doa_utility::clamp(self.doa.lives + count, 0, max);
 }
 
-/*
-	Name: function_ba145a39
-	Namespace: namespace_831a4a7c
-	Checksum: 0xA6753372
-	Offset: 0x2EE0
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ba145a39(count = 1) {
-  /#
   assert(isdefined(self.doa));
-  # /
-    max = level.doa.rules.max_bombs;
+  max = level.doa.rules.max_bombs;
   if(self.doa.fate == 11) {
     max++;
   }
   self.doa.bombs = doa_utility::clamp(self.doa.bombs + count, 0, max);
 }
 
-/*
-	Name: function_f3748dcb
-	Namespace: namespace_831a4a7c
-	Checksum: 0x5B18C089
-	Offset: 0x2FB0
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f3748dcb(count = 1) {
-  /#
   assert(isdefined(self.doa));
-  # /
-    max = level.doa.rules.var_376b21db;
+  max = level.doa.rules.var_376b21db;
   if(self.doa.fate == 11) {
     max++;
   }
   self.doa.boosters = doa_utility::clamp(self.doa.boosters + count, 0, max);
 }
 
-/*
-	Name: function_3f041ff1
-	Namespace: namespace_831a4a7c
-	Checksum: 0xF619789B
-	Offset: 0x3080
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_3f041ff1() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self util::waittill_any("new_speed_pickup", "player_died", "speed_expired", "disconnect");
   self thread namespace_eaa992c::turnofffx("boots");
   self.doa.fast_feet = undefined;
@@ -794,19 +574,10 @@ function private function_3f041ff1() {
   self thread namespace_1a381543::function_90118d8c("zmb_pwup_speed_end");
 }
 
-/*
-	Name: function_832d21c2
-	Namespace: namespace_831a4a7c
-	Checksum: 0x135ECFFC
-	Offset: 0x3160
-	Size: 0x166
-	Parameters: 0
-	Flags: Linked
-*/
 function function_832d21c2() {
-  self notify(# "new_speed_pickup");
-  self endon(# "new_speed_pickup");
-  self endon(# "disconnect");
+  self notify("new_speed_pickup");
+  self endon("new_speed_pickup");
+  self endon("disconnect");
   self thread function_3f041ff1();
   wait(0.05);
   self thread namespace_1a381543::function_90118d8c("zmb_pwup_speed_loop");
@@ -818,20 +589,11 @@ function function_832d21c2() {
   while (isdefined(self.doa.fast_feet) && self.doa.fast_feet && gettime() < timeleft) {
     wait(0.05);
   }
-  self notify(# "hash_9284568c");
+  self notify("hash_9284568c");
 }
 
-/*
-	Name: function_af5211c2
-	Namespace: namespace_831a4a7c
-	Checksum: 0xC5606A64
-	Offset: 0x32D0
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_af5211c2() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self util::waittill_any("new_speed_pickup", "player_died", "speed_expired", "snare_broken", "disconnect");
   self thread namespace_eaa992c::turnofffx("slow_feet");
   self thread namespace_eaa992c::turnofffx("web_contact");
@@ -842,19 +604,10 @@ function private function_af5211c2() {
   self setmovespeedscale(self.doa.default_movespeed);
 }
 
-/*
-	Name: function_3840375a
-	Namespace: namespace_831a4a7c
-	Checksum: 0xC652E9FF
-	Offset: 0x33F0
-	Size: 0x1DE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3840375a(speed = level.doa.rules.var_ee067ec) {
-  self notify(# "hash_c70bfe29");
-  self endon(# "hash_c70bfe29");
-  self endon(# "disconnect");
+  self notify("hash_c70bfe29");
+  self endon("hash_c70bfe29");
+  self endon("disconnect");
   self thread function_af5211c2();
   wait(0.05);
   self thread namespace_1a381543::function_90118d8c("zmb_pwup_slow_speed_loop");
@@ -871,40 +624,22 @@ function function_3840375a(speed = level.doa.rules.var_ee067ec) {
   while (isdefined(self.doa.var_d5c84825) && self.doa.var_d5c84825 && gettime() < timeleft) {
     wait(0.05);
   }
-  self notify(# "hash_9284568c");
+  self notify("hash_9284568c");
 }
 
-/*
-	Name: function_1ba980a
-	Namespace: namespace_831a4a7c
-	Checksum: 0xBBEEEE01
-	Offset: 0x35D8
-	Size: 0x42
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1ba980a() {
-  self endon(# "disconnect");
-  self notify(# "hash_1ba980a");
-  self endon(# "hash_1ba980a");
-  level waittill(# "hash_8817f58");
-  self notify(# "hash_864ef970");
+  self endon("disconnect");
+  self notify("hash_1ba980a");
+  self endon("hash_1ba980a");
+  level waittill("hash_8817f58");
+  self notify("hash_864ef970");
 }
 
-/*
-	Name: function_6e1ed82
-	Namespace: namespace_831a4a7c
-	Checksum: 0xD1CAD194
-	Offset: 0x3628
-	Size: 0x2FE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6e1ed82() {
-  self notify(# "hash_6e1ed82");
-  self endon(# "hash_6e1ed82");
-  self endon(# "hash_9284568c");
-  self endon(# "disconnect");
+  self notify("hash_6e1ed82");
+  self endon("hash_6e1ed82");
+  self endon("hash_9284568c");
+  self endon("disconnect");
   var_2fa8cbbd = 0;
   samples = [];
   idx = 0;
@@ -951,91 +686,46 @@ function function_6e1ed82() {
     }
     wait(0.05);
   }
-  self notify(# "hash_864ef970");
+  self notify("hash_864ef970");
 }
 
-/*
-	Name: function_a36ffe73
-	Namespace: namespace_831a4a7c
-	Checksum: 0x96F72FE3
-	Offset: 0x3930
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a36ffe73() {
-  self notify(# "hash_a36ffe73");
-  self endon(# "hash_a36ffe73");
-  self waittill(# "hash_89b28ec", attacker);
+  self notify("hash_a36ffe73");
+  self endon("hash_a36ffe73");
+  self waittill("hash_89b28ec", attacker);
   self thread function_6e1ed82();
   self thread function_3840375a(0);
   self thread function_a36ffe73();
 }
 
-/*
-	Name: function_d7c57981
-	Namespace: namespace_831a4a7c
-	Checksum: 0xAC283DF2
-	Offset: 0x39B8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d7c57981() {
-  self notify(# "hash_d7c57981");
-  self endon(# "hash_d7c57981");
-  self waittill(# "hash_9132a424", attacker);
+  self notify("hash_d7c57981");
+  self endon("hash_d7c57981");
+  self waittill("hash_9132a424", attacker);
   self thread function_3840375a();
   self thread function_d7c57981();
 }
 
-/*
-	Name: function_e5fa8e6a
-	Namespace: namespace_831a4a7c
-	Checksum: 0xF98AD3E4
-	Offset: 0x3A28
-	Size: 0x8A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e5fa8e6a() {
   self thread namespace_1a381543::function_90118d8c("zmb_player_poisoned");
   self.doa.var_91c268dc = 0;
   self.doa.weaponlevel = 0;
   self function_d5f89a15(self.doa.default_weap.name);
-  self notify(# "hash_8820b45b");
+  self notify("hash_8820b45b");
 }
 
-/*
-	Name: function_e6b2517f
-	Namespace: namespace_831a4a7c
-	Checksum: 0xD03A2719
-	Offset: 0x3AC0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e6b2517f() {
-  self notify(# "hash_e6b2517f");
-  self endon(# "hash_e6b2517f");
-  self waittill(# "poisoned", attacker);
+  self notify("hash_e6b2517f");
+  self endon("hash_e6b2517f");
+  self waittill("poisoned", attacker);
   self thread function_e5fa8e6a();
   self thread function_e6b2517f();
 }
 
-/*
-	Name: function_ab0e2cf3
-	Namespace: namespace_831a4a7c
-	Checksum: 0x554E5CEA
-	Offset: 0x3B30
-	Size: 0x5C0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ab0e2cf3() {
-  self notify(# "hash_58a81b71");
-  self endon(# "hash_58a81b71");
-  self endon(# "disconnect");
+  self notify("hash_58a81b71");
+  self endon("hash_58a81b71");
+  self endon("disconnect");
   while (true) {
     wait(0.05);
     if(!isalive(self)) {
@@ -1107,15 +797,6 @@ function function_ab0e2cf3() {
   }
 }
 
-/*
-	Name: function_7d7a7fde
-	Namespace: namespace_831a4a7c
-	Checksum: 0x958F24D
-	Offset: 0x40F8
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7d7a7fde() {
   if(level.time == self.birthtime || !isdefined(self.doa)) {
     wait(0.05);
@@ -1127,44 +808,24 @@ function function_7d7a7fde() {
   }
 }
 
-/*
-	Name: function_9fc6e261
-	Namespace: namespace_831a4a7c
-	Checksum: 0xBB818606
-	Offset: 0x4198
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_9fc6e261() {
-  self waittill(# "actor_corpse", corpse);
+  self waittill("actor_corpse", corpse);
   wait(0.05);
   if(isdefined(corpse)) {
     corpse clientfield::increment("burnCorpse");
   }
 }
 
-/*
-	Name: function_d392db04
-	Namespace: namespace_831a4a7c
-	Checksum: 0xD237BD29
-	Offset: 0x41F0
-	Size: 0x344
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private function_d392db04(var_adc420e5, origin, player, var_307c0d3) {
-  self endon(# "death");
-  /#
+  self endon("death");
   assert(!(isdefined(self.boss) && self.boss));
-  # /
-    if(!isdefined(level.var_b3050900)) {
-      level.var_b3050900 = 160 * 160;
-      level.var_5e8840d3 = 512 * 512;
-      level.var_c4dbc378 = 75;
-      level.var_619a7a66 = 250;
-      level.var_38e68ca7 = 1;
-    }
+  if(!isdefined(level.var_b3050900)) {
+    level.var_b3050900 = 160 * 160;
+    level.var_5e8840d3 = 512 * 512;
+    level.var_c4dbc378 = 75;
+    level.var_619a7a66 = 250;
+    level.var_38e68ca7 = 1;
+  }
   distsq = distancesquared(self.origin, origin);
   var_b3458cba = doa_utility::clamp(distsq / level.var_5e8840d3, 0.1, 1);
   time = doa_utility::clamp(var_adc420e5 * var_b3458cba, 0.05, var_adc420e5);
@@ -1197,26 +858,17 @@ function private function_d392db04(var_adc420e5, origin, player, var_307c0d3) {
   self dodamage(self.health + 1, origin, (isdefined(player) ? player : undefined), undefined, "none", "MOD_EXPLOSIVE");
 }
 
-/*
-	Name: function_73d40751
-	Namespace: namespace_831a4a7c
-	Checksum: 0xB510F15D
-	Offset: 0x4540
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_73d40751() {
-  self notify(# "hash_73d40751");
-  self endon(# "hash_73d40751");
-  self endon(# "disconnect");
+  self notify("hash_73d40751");
+  self endon("hash_73d40751");
+  self endon("disconnect");
   while (true) {
     wait(0.05);
     if(self weaponswitchbuttonpressed()) {
       if(!(isdefined(self.doa.var_655cbff1) && self.doa.var_655cbff1)) {
         self clientfield::increment_to_player("changeCamera");
-        self notify(# "hash_348c5f29");
-        level notify(# "hash_348c5f29", self);
+        self notify("hash_348c5f29");
+        level notify("hash_348c5f29", self);
       }
       while (self weaponswitchbuttonpressed()) {
         wait(0.05);
@@ -1225,19 +877,10 @@ function function_73d40751() {
   }
 }
 
-/*
-	Name: function_f19e9b07
-	Namespace: namespace_831a4a7c
-	Checksum: 0x52D163D8
-	Offset: 0x4628
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f19e9b07() {
-  self notify(# "hash_f26fb3a4");
-  self endon(# "hash_f26fb3a4");
-  self endon(# "disconnect");
+  self notify("hash_f26fb3a4");
+  self endon("hash_f26fb3a4");
+  self endon("disconnect");
   while (true) {
     wait(0.05);
     if(!isalive(self)) {
@@ -1245,7 +888,7 @@ function function_f19e9b07() {
     }
     if(self stancebuttonpressed()) {
       if(isdefined(self.doa.vehicle)) {
-        self notify(# "hash_d28ba89d");
+        self notify("hash_d28ba89d");
       } else {
         self doa_pickups::function_9615d68f();
       }
@@ -1256,19 +899,10 @@ function function_f19e9b07() {
   }
 }
 
-/*
-	Name: function_4eabae51
-	Namespace: namespace_831a4a7c
-	Checksum: 0xB376BEB9
-	Offset: 0x4708
-	Size: 0x580
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4eabae51() {
-  self notify(# "hash_97fb783");
-  self endon(# "hash_97fb783");
-  self endon(# "disconnect");
+  self notify("hash_97fb783");
+  self endon("hash_97fb783");
+  self endon("disconnect");
   while (true) {
     wait(0.05);
     if(!isalive(self)) {
@@ -1310,7 +944,7 @@ function function_4eabae51() {
         wait(0.4);
         playrumbleonposition("artillery_rumble", self.origin);
         util::wait_network_frame();
-        level notify(# "hash_8817f58");
+        level notify("hash_8817f58");
         enemies = doa_utility::function_fb2ad2fb();
         camerapos = namespace_3ca3c537::function_5147636f();
         var_307c0d3 = vectornormalize(camerapos - player_org);
@@ -1340,21 +974,12 @@ function function_4eabae51() {
   }
 }
 
-/*
-	Name: function_350f42fa
-	Namespace: namespace_831a4a7c
-	Checksum: 0x46A91DC2
-	Offset: 0x4C90
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_350f42fa(var_e1eb317e) {
-  self endon(# "disconnect");
-  self notify(# "hash_42ae3dd7");
-  self endon(# "hash_42ae3dd7");
+  self endon("disconnect");
+  self notify("hash_42ae3dd7");
+  self endon("hash_42ae3dd7");
   while (true) {
-    self waittill(# "missile_fire", projectile, weapon);
+    self waittill("missile_fire", projectile, weapon);
     if(weapon == level.doa.var_e30c10ec) {
       projectile thread function_48b5439d(self);
       projectile thread function_62c5034a(self);
@@ -1364,21 +989,12 @@ function function_350f42fa(var_e1eb317e) {
   }
 }
 
-/*
-	Name: function_62c5034a
-	Namespace: namespace_831a4a7c
-	Checksum: 0x3E0E03FA
-	Offset: 0x4D70
-	Size: 0x168
-	Parameters: 1
-	Flags: Linked
-*/
 function function_62c5034a(owner) {
-  self endon(# "death");
-  owner endon(# "hash_42ae3dd7");
-  owner endon(# "disconnect");
+  self endon("death");
+  owner endon("hash_42ae3dd7");
+  owner endon("disconnect");
   while (true) {
-    self waittill(# "grenade_bounce", pos, normal, ent, surface);
+    self waittill("grenade_bounce", pos, normal, ent, surface);
     physicsexplosionsphere(pos, getdvarint("scr_doa_secondary_explo_rad", 64), getdvarint("scr_doa_secondary_explo_rad", 64), 3);
     radiusdamage(pos, getdvarint("scr_doa_secondary_explo_rad", 64), getdvarint("scr_doa_secondary_explo_dmg", 2000), getdvarint("scr_doa_secondary_explo_dmg", 2000), owner);
     playfx(level._effect["impact_raygun"], pos);
@@ -1386,22 +1002,13 @@ function function_62c5034a(owner) {
   }
 }
 
-/*
-	Name: function_48b5439d
-	Namespace: namespace_831a4a7c
-	Checksum: 0xA10A820E
-	Offset: 0x4EE0
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_48b5439d(owner) {
-  self endon(# "death");
-  owner endon(# "hash_42ae3dd7");
-  owner endon(# "disconnect");
+  self endon("death");
+  owner endon("hash_42ae3dd7");
+  owner endon("disconnect");
   owner.doa.var_cdd906a9 = 0;
   while (true) {
-    owner waittill(# "hash_21f7a743", victim);
+    owner waittill("hash_21f7a743", victim);
     time = gettime();
     if(owner.doa.var_cdd906a9 > time) {
       continue;
@@ -1411,31 +1018,13 @@ function function_48b5439d(owner) {
   }
 }
 
-/*
-	Name: missile_logic
-	Namespace: namespace_831a4a7c
-	Checksum: 0xE1658125
-	Offset: 0x4FC0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function missile_logic(target) {
-  self waittill(# "missile_fire", missile, weap);
+  self waittill("missile_fire", missile, weap);
   if(isdefined(target)) {
     missile missile_settarget(target);
   }
 }
 
-/*
-	Name: function_5e373fc6
-	Namespace: namespace_831a4a7c
-	Checksum: 0x639CE363
-	Offset: 0x5020
-	Size: 0x36C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5e373fc6() {
   if(!isdefined(self.doa.var_5af6f9a9)) {
     self.doa.var_5af6f9a9 = getweapon("zombietron_rpg_2_secondary");
@@ -1475,15 +1064,6 @@ function function_5e373fc6() {
   magicbullet(self.doa.var_5af6f9a9, v_spawn, v_spawn + (50 * v_dir), self);
 }
 
-/*
-	Name: function_baa7411e
-	Namespace: namespace_831a4a7c
-	Checksum: 0x6E6FB973
-	Offset: 0x5398
-	Size: 0x28C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_baa7411e(weapon) {
   self takeallweapons();
   self giveweapon(weapon);
@@ -1520,15 +1100,6 @@ function function_baa7411e(weapon) {
   }
 }
 
-/*
-	Name: function_71dab8e8
-	Namespace: namespace_831a4a7c
-	Checksum: 0x84304CBE
-	Offset: 0x5630
-	Size: 0x3AC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_71dab8e8(amount = 1) {
   if(!isdefined(self.doa.var_e1eb317e)) {
     return;
@@ -1553,9 +1124,7 @@ function function_71dab8e8(amount = 1) {
       if(mayspawnentity()) {
         self playsoundtoplayer("zmb_weapon_upgraded", self);
       }
-      /#
       doa_utility::debugmsg((((("" + self.name) + "") + self.doa.weaponlevel) + "") + self.doa.var_e1eb317e[self.doa.weaponlevel].name);
-      # /
     } else {
       self.doa.var_91c268dc = getdvarint("scr_doa_weapon_increment_range", 1024) - 1;
     }
@@ -1563,15 +1132,6 @@ function function_71dab8e8(amount = 1) {
   self.doa.var_91c268dc = math::clamp(self.doa.var_91c268dc, 0, getdvarint("scr_doa_weapon_increment_range", 1024) - 1);
 }
 
-/*
-	Name: updateweapon
-	Namespace: namespace_831a4a7c
-	Checksum: 0xEDA3E95C
-	Offset: 0x59E8
-	Size: 0x4BC
-	Parameters: 0
-	Flags: Linked
-*/
 function updateweapon() {
   if(!isdefined(self.doa) || !isdefined(self.doa.var_a2d31b4a)) {
     return;
@@ -1599,9 +1159,7 @@ function updateweapon() {
     self.doa.var_91c268dc = getdvarint("scr_doa_weapon_increment_range", 1024) - 1;
     self function_baa7411e(self.doa.var_e1eb317e[self.doa.weaponlevel]);
     self thread function_f2507519(level.doa.arena_round_number == 3);
-    /#
     doa_utility::debugmsg((((("" + self.name) + "") + self.doa.weaponlevel) + "") + self.doa.var_e1eb317e[self.doa.weaponlevel].name);
-    # /
   }
   if(self.doa.var_a2d31b4a == self.doa.default_weap.name && (isdefined(self.doa.var_1b58e8ba) && self.doa.weaponlevel <= self.doa.var_1b58e8ba)) {
     self.doa.weaponlevel = self.doa.var_1b58e8ba;
@@ -1615,15 +1173,6 @@ function updateweapon() {
   }
 }
 
-/*
-	Name: function_d5f89a15
-	Namespace: namespace_831a4a7c
-	Checksum: 0xCBE3CAC9
-	Offset: 0x5EB0
-	Size: 0x4C4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d5f89a15(name, weaponpickup = 0) {
   if(!isdefined(self.doa)) {
     return;
@@ -1648,10 +1197,8 @@ function function_d5f89a15(name, weaponpickup = 0) {
     self.doa.var_f303ab59 = 0;
     self takeallweapons();
     var_5f2870f1 = getweapon(name);
-    /#
     assert(isdefined(var_5f2870f1));
-    # /
-      var_3925f688 = getweapon(name + "_1");
+    var_3925f688 = getweapon(name + "_1");
     var_ab2d65c3 = getweapon(name + "_2");
     self.doa.var_e1eb317e[0] = var_5f2870f1;
     self.doa.var_e1eb317e[1] = (var_3925f688 != level.weaponnone ? var_3925f688 : var_5f2870f1);
@@ -1664,40 +1211,18 @@ function function_d5f89a15(name, weaponpickup = 0) {
   if(isdefined(fill) && fill) {
     self.doa.var_91c268dc = getdvarint("scr_doa_weapon_increment_range", 1024) - 1;
   }
-  /#
   doa_utility::debugmsg((((("" + self.name) + "") + self.doa.var_a2d31b4a) + "") + (isdefined(fill) && (fill ? "" : "")));
   self thread function_1318d1e4();
-  # /
 }
 
-/*
-	Name: function_1318d1e4
-	Namespace: namespace_831a4a7c
-	Checksum: 0x69591697
-	Offset: 0x6380
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1318d1e4() {
-  self notify(# "hash_1318d1e4");
-  self endon(# "hash_1318d1e4");
-  self endon(# "disconnect");
-  self waittill(# "weapon_fired", weapon);
-  /#
+  self notify("hash_1318d1e4");
+  self endon("hash_1318d1e4");
+  self endon("disconnect");
+  self waittill("weapon_fired", weapon);
   doa_utility::debugmsg("" + weapon.name);
-  # /
 }
 
-/*
-	Name: function_7f33210a
-	Namespace: namespace_831a4a7c
-	Checksum: 0xD908941E
-	Offset: 0x6400
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7f33210a() {
   if(!isdefined(self) || !isdefined(self.doa)) {
     return;
@@ -1705,17 +1230,8 @@ function function_7f33210a() {
   self.doa.var_9742391e = 0;
 }
 
-/*
-	Name: function_b5843d4f
-	Namespace: namespace_831a4a7c
-	Checksum: 0xF73FC282
-	Offset: 0x6440
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b5843d4f(var_6a15db21) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isdefined(self) || !isdefined(self.doa)) {
     return;
   }
@@ -1725,22 +1241,13 @@ function function_b5843d4f(var_6a15db21) {
   self.doa.var_9742391e = (var_6a15db21 ? 2 : 1);
 }
 
-/*
-	Name: function_f2507519
-	Namespace: namespace_831a4a7c
-	Checksum: 0x578398FD
-	Offset: 0x64B8
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f2507519(on = 1) {
   if(!isdefined(self)) {
     return;
   }
-  self notify(# "hash_f2507519");
-  self endon(# "hash_f2507519");
-  self endon(# "disconnect");
+  self notify("hash_f2507519");
+  self endon("hash_f2507519");
+  self endon("disconnect");
   if(!isdefined(self) || !isdefined(self.doa)) {
     return;
   }
@@ -1757,15 +1264,6 @@ function function_f2507519(on = 1) {
   }
 }
 
-/*
-	Name: function_7e85dbee
-	Namespace: namespace_831a4a7c
-	Checksum: 0x1262091E
-	Offset: 0x65D0
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7e85dbee() {
   var_b427d4ac = self.doa.multiplier;
   if(self.doa.fate == 2 || self.doa.fate == 11) {
@@ -1777,19 +1275,10 @@ function function_7e85dbee() {
   }
 }
 
-/*
-	Name: function_2fee362e
-	Namespace: namespace_831a4a7c
-	Checksum: 0x48FEA903
-	Offset: 0x66D0
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2fee362e() {
-  self endon(# "disconnect");
-  self notify(# "hash_2fee362e");
-  self endon(# "hash_2fee362e");
+  self endon("disconnect");
+  self notify("hash_2fee362e");
+  self endon("hash_2fee362e");
   while (!(isdefined(level.hostmigrationtimer) && level.hostmigrationtimer)) {
     wait(1);
   }
@@ -1799,19 +1288,10 @@ function function_2fee362e() {
   self thread turnplayershieldon(0);
 }
 
-/*
-	Name: function_3682cfe4
-	Namespace: namespace_831a4a7c
-	Checksum: 0x3CA46216
-	Offset: 0x6760
-	Size: 0x40C
-	Parameters: 9
-	Flags: Linked
-*/
 function function_3682cfe4(einflictor, attacker, idamage, smeansofdeath, sweapon, vdir, shitloc, psoffsettime, deathanimduration) {
   self globallogic_score::incpersstat("deaths", 1, 1, 1);
   self thread namespace_1a381543::function_90118d8c("zmb_player_death");
-  self notify(# "player_died");
+  self notify("player_died");
   self freezecontrols(1);
   self setplayercollision(0);
   self thread function_7e85dbee();
@@ -1822,7 +1302,6 @@ function function_3682cfe4(einflictor, attacker, idamage, smeansofdeath, sweapon
   self thread namespace_64c6b720::function_850bb47e();
   self.deaths = math::clamp(self.deaths + 1, 0, 1023);
   self.dead = 1;
-  /#
   doa_utility::debugmsg((("" + smeansofdeath) + "") + idamage);
   if(isdefined(einflictor)) {
     doa_utility::debugmsg(((("" + einflictor getentitynumber()) + "") + einflictor.classname) + (isdefined(einflictor.targetname) ? "" + einflictor.targetname : ""));
@@ -1830,53 +1309,33 @@ function function_3682cfe4(einflictor, attacker, idamage, smeansofdeath, sweapon
   if(isdefined(attacker)) {
     doa_utility::debugmsg(((("" + attacker getentitynumber()) + "") + attacker.classname) + (isdefined(attacker.targetname) ? "" + attacker.targetname : ""));
   }
-  # /
-    if(self.doa.lives == 0) {
-      players = function_5eb6e4d1();
-      count = 0;
-      for (i = 0; i < players.size; i++) {
-        if(!isalive(players[i]) && players[i].doa.lives == 0 || isdefined(players[i].var_744a3931)) {
-          count++;
-        }
-      }
-      if(count == players.size) {
-        level flag::set("doa_game_is_over");
-        level notify(# "hash_d1f5acf7");
-      } else {
-        self thread function_c7471371();
+  if(self.doa.lives == 0) {
+    players = function_5eb6e4d1();
+    count = 0;
+    for (i = 0; i < players.size; i++) {
+      if(!isalive(players[i]) && players[i].doa.lives == 0 || isdefined(players[i].var_744a3931)) {
+        count++;
       }
     }
-  else {
+    if(count == players.size) {
+      level flag::set("doa_game_is_over");
+      level notify("hash_d1f5acf7");
+    } else {
+      self thread function_c7471371();
+    }
+  } else {
     self thread function_161ce9cd();
   }
 }
 
-/*
-	Name: function_fdf74b3
-	Namespace: namespace_831a4a7c
-	Checksum: 0xFE014027
-	Offset: 0x6B78
-	Size: 0x4A
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_fdf74b3() {
-  self notify(# "new_ignore_attacker");
-  self endon(# "new_ignore_attacker");
-  self endon(# "disconnect");
+  self notify("new_ignore_attacker");
+  self endon("new_ignore_attacker");
+  self endon("disconnect");
   wait(level.rules.ignore_enemy_timer);
   self.doa.ignoreattacker = undefined;
 }
 
-/*
-	Name: function_bfbc53f4
-	Namespace: namespace_831a4a7c
-	Checksum: 0x6649D7B8
-	Offset: 0x6BD0
-	Size: 0x5FC
-	Parameters: 13
-	Flags: Linked
-*/
 function function_bfbc53f4(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, boneindex, vsurfacenormal) {
   if(isdefined(smeansofdeath) && smeansofdeath == "MOD_FALLING") {
     idamage = 0;
@@ -1940,7 +1399,7 @@ function function_bfbc53f4(einflictor, eattacker, idamage, idflags, smeansofdeat
         self thread function_fdf74b3();
       }
       if(isdefined(eattacker.var_f4795bf) && eattacker.var_f4795bf && smeansofdeath == "MOD_PROJECTILE") {
-        self notify(# "hash_89b28ec", eattacker);
+        self notify("hash_89b28ec", eattacker);
         idamage = 0;
       } else if(!(isdefined(eattacker.boss) && eattacker.boss) && (smeansofdeath == "MOD_PROJECTILE" || smeansofdeath == "MOD_RIFLE_BULLET" || smeansofdeath == "MOD_PROJECTILE_SPLASH" || smeansofdeath == "MOD_GRENADE" || smeansofdeath == "MOD_GRENADE_SPLASH" || smeansofdeath == "MOD_BURNED" || smeansofdeath == "MOD_EXPLOSIVE")) {
         self cleardamageindicator();
@@ -1953,82 +1412,35 @@ function function_bfbc53f4(einflictor, eattacker, idamage, idflags, smeansofdeat
         eattacker.damagedplayer = gettime();
       }
       if(isdefined(eattacker.var_65e0af26) && eattacker.var_65e0af26) {
-        self notify(# "hash_9132a424", eattacker);
+        self notify("hash_9132a424", eattacker);
       }
       if(isdefined(eattacker.var_dcdf7239) && eattacker.var_dcdf7239) {
-        self notify(# "poisoned", eattacker);
+        self notify("poisoned", eattacker);
       }
     }
   }
   self finishplayerdamagewrapper(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, boneindex, vsurfacenormal);
 }
 
-/*
-	Name: finishplayerdamagewrapper
-	Namespace: namespace_831a4a7c
-	Checksum: 0xE4DADBBF
-	Offset: 0x71D8
-	Size: 0xB4
-	Parameters: 13
-	Flags: Linked
-*/
 function finishplayerdamagewrapper(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, boneindex, vsurfacenormal) {
   self finishplayerdamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, boneindex, vsurfacenormal);
 }
 
-/*
-	Name: playerlaststand
-	Namespace: namespace_831a4a7c
-	Checksum: 0x80DDDFE7
-	Offset: 0x7298
-	Size: 0x4C
-	Parameters: 9
-	Flags: None
-*/
 function playerlaststand(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {}
 
-/*
-	Name: function_f847ee8c
-	Namespace: namespace_831a4a7c
-	Checksum: 0x823941B1
-	Offset: 0x72F0
-	Size: 0x4C
-	Parameters: 9
-	Flags: Linked
-*/
 function function_f847ee8c(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {}
 
-/*
-	Name: function_68ece679
-	Namespace: namespace_831a4a7c
-	Checksum: 0xEC9E208E
-	Offset: 0x7348
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_68ece679(entnum) {
   points = level.doa.arenas[level.doa.current_arena].player_spawn_points;
-  /#
   assert(points.size);
-  # /
-    if(isdefined(entnum) && isdefined(points[entnum])) {
-      return points[entnum];
-    }
+  if(isdefined(entnum) && isdefined(points[entnum])) {
+    return points[entnum];
+  }
   return points[randomint(points.size)];
 }
 
-/*
-	Name: function_161ce9cd
-	Namespace: namespace_831a4a7c
-	Checksum: 0x78BC9F28
-	Offset: 0x73F8
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_161ce9cd(delay = 2) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(delay);
   if(self.doa.lives < 1) {
     return;
@@ -2040,28 +1452,17 @@ function private function_161ce9cd(delay = 2) {
     wait(0.05);
   }
   self.doa.lives = doa_utility::clamp(self.doa.lives - 1, 0, level.doa.rules.max_lives);
-  self notify(# "hash_e15bcd80");
+  self notify("hash_e15bcd80");
   self function_ad1d5fcb();
 }
 
-/*
-	Name: function_ad1d5fcb
-	Namespace: namespace_831a4a7c
-	Checksum: 0x2EE44434
-	Offset: 0x74F8
-	Size: 0x382
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_ad1d5fcb(var_243f32c0 = 0) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isdefined(self)) {
     return;
   }
-  /#
   assert(isdefined(self.doa));
-  # /
-    self.doa.respawning = 0;
+  self.doa.respawning = 0;
   if(isdefined(self.var_1a898004)) {
     doa_utility::function_11f3f381(self.var_1a898004, 1);
     self.var_1a898004 = undefined;
@@ -2087,7 +1488,7 @@ function private function_ad1d5fcb(var_243f32c0 = 0) {
     }
     self.doa.var_bac6a79 = undefined;
   }
-  self notify(# "doa_respawn_player");
+  self notify("doa_respawn_player");
   self reviveplayer();
   if(!isdefined(spot)) {
     spot = self.origin;
@@ -2107,22 +1508,13 @@ function private function_ad1d5fcb(var_243f32c0 = 0) {
   self setplayercollision(1);
   self freezecontrols(0);
   self.dead = undefined;
-  self notify(# "player_respawned");
+  self notify("player_respawned");
 }
 
-/*
-	Name: function_bbdc9bc0
-	Namespace: namespace_831a4a7c
-	Checksum: 0xFCF66629
-	Offset: 0x7888
-	Size: 0xC2
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_bbdc9bc0() {
-  self endon(# "disconnect");
-  self endon(# "player_respawned");
-  level endon(# "doa_game_is_over");
+  self endon("disconnect");
+  self endon("player_respawned");
+  level endon("doa_game_is_over");
   while (!level flag::get("doa_game_is_over")) {
     if(self.doa.lives > 0) {
       self function_161ce9cd(isdefined(self.doa.var_ec2548a9) && (self.doa.var_ec2548a9 ? 0 : 2));
@@ -2133,15 +1525,6 @@ function private function_bbdc9bc0() {
   self.doa.respawning = undefined;
 }
 
-/*
-	Name: function_1c683070
-	Namespace: namespace_831a4a7c
-	Checksum: 0x88C87372
-	Offset: 0x7958
-	Size: 0xF4
-	Parameters: 1
-	Flags: None
-*/
 function function_1c683070(distsq = 1296) {
   count = 0;
   foreach(player in getplayers()) {
@@ -2155,23 +1538,14 @@ function function_1c683070(distsq = 1296) {
   return count;
 }
 
-/*
-	Name: function_2b1d321f
-	Namespace: namespace_831a4a7c
-	Checksum: 0x7EF1E5B1
-	Offset: 0x7A58
-	Size: 0x3AE
-	Parameters: 2
-	Flags: Linked
-*/
 function function_2b1d321f(player, downedplayer) {
   if(player == downedplayer) {
     return;
   }
-  downedplayer endon(# "disconnect");
-  player endon(# "disconnect");
-  level endon(# "doa_game_is_over");
-  downedplayer endon(# "player_respawned");
+  downedplayer endon("disconnect");
+  player endon("disconnect");
+  level endon("doa_game_is_over");
+  downedplayer endon("player_respawned");
   while (true) {
     wait(0.05);
     if(!isdefined(player.doa)) {
@@ -2220,19 +1594,10 @@ function function_2b1d321f(player, downedplayer) {
   }
 }
 
-/*
-	Name: function_b1958e58
-	Namespace: namespace_831a4a7c
-	Checksum: 0x474EB54
-	Offset: 0x7E10
-	Size: 0x3E8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b1958e58() {
-  self endon(# "disconnect");
-  level endon(# "doa_game_is_over");
-  self endon(# "player_respawned");
+  self endon("disconnect");
+  level endon("doa_game_is_over");
+  self endon("player_respawned");
   self thread function_285fe1ad();
   foreach(player in getplayers()) {
     if(player == self) {
@@ -2271,37 +1636,19 @@ function function_b1958e58() {
   }
 }
 
-/*
-	Name: function_285fe1ad
-	Namespace: namespace_831a4a7c
-	Checksum: 0xF03A41E1
-	Offset: 0x8200
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_285fe1ad() {
-  self endon(# "disconnect");
-  level endon(# "doa_game_is_over");
-  self waittill(# "player_respawned");
+  self endon("disconnect");
+  level endon("doa_game_is_over");
+  self waittill("player_respawned");
   if(mayspawnentity()) {
     self playsound("evt_revived_respawn");
   }
 }
 
-/*
-	Name: function_27202201
-	Namespace: namespace_831a4a7c
-	Checksum: 0x9148932
-	Offset: 0x8268
-	Size: 0x44C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_27202201() {
-  self endon(# "disconnect");
-  level endon(# "doa_game_is_over");
-  self endon(# "player_respawned");
+  self endon("disconnect");
+  level endon("doa_game_is_over");
+  self endon("player_respawned");
   self.doa.respawning = 1;
   self.var_9ea856f6 = level.doa.rules.var_575e919f;
   if(self.doa.fate == 2 || self.doa.fate == 11) {
@@ -2336,7 +1683,7 @@ function function_27202201() {
     }
     if(count == players.size) {
       level flag::set("doa_game_is_over");
-      level notify(# "hash_d1f5acf7");
+      level notify("hash_d1f5acf7");
       self.doa.respawning = 0;
       self.var_9ea856f6 = 0;
       return;
@@ -2347,18 +1694,9 @@ function function_27202201() {
   self function_ad1d5fcb();
 }
 
-/*
-	Name: function_c7471371
-	Namespace: namespace_831a4a7c
-	Checksum: 0xAA1DC807
-	Offset: 0x86C0
-	Size: 0x230
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c7471371() {
-  self endon(# "disconnect");
-  level endon(# "doa_game_is_over");
+  self endon("disconnect");
+  level endon("doa_game_is_over");
   self thread function_bbdc9bc0();
   self thread function_27202201();
   while (self.lives == 0 && !level flag::get("doa_game_is_over")) {
@@ -2388,38 +1726,20 @@ function function_c7471371() {
   }
 }
 
-/*
-	Name: function_79489c4c
-	Namespace: namespace_831a4a7c
-	Checksum: 0xAC6D5BDA
-	Offset: 0x88F8
-	Size: 0x66
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_79489c4c(time) {
-  self endon(# "disconnect");
-  level endon(# "doa_game_is_over");
-  self notify(# "hash_79489c4c");
-  self endon(# "hash_79489c4c");
+  self endon("disconnect");
+  level endon("doa_game_is_over");
+  self notify("hash_79489c4c");
+  self endon("hash_79489c4c");
   self.doa.var_c5fe2763 = 1;
   wait(time);
   self.doa.var_c5fe2763 = undefined;
 }
 
-/*
-	Name: function_c240f40e
-	Namespace: namespace_831a4a7c
-	Checksum: 0x8FA9E227
-	Offset: 0x8968
-	Size: 0x210
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private function_c240f40e(source, dest, orb) {
-  self endon(# "disconnect");
-  dest endon(# "disconnect");
-  level endon(# "doa_game_is_over");
+  self endon("disconnect");
+  dest endon("disconnect");
+  level endon("doa_game_is_over");
   if(!isdefined(orb)) {
     orb = spawn("script_model", self.origin + vectorscale((0, 0, 1), 50));
     orb.targetname = "_lifeLink";
@@ -2442,18 +1762,9 @@ function private function_c240f40e(source, dest, orb) {
   }
 }
 
-/*
-	Name: function_2f150493
-	Namespace: namespace_831a4a7c
-	Checksum: 0x9668880E
-	Offset: 0x8B80
-	Size: 0xA9C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_2f150493(source, dest) {
-  self endon(# "disconnect");
-  level endon(# "doa_game_is_over");
+  self endon("disconnect");
+  level endon("doa_game_is_over");
   if(dest.doa.lives > 0) {
     return;
   }
@@ -2484,7 +1795,7 @@ function private function_2f150493(source, dest) {
   pickup thread namespace_1a381543::function_90118d8c("zmb_pickup_life_shimmer");
   pickup thread doa_utility::function_1bd67aef(3);
   pickup util::waittill_any_timeout(2, "movedone");
-  source notify(# "end_life_link");
+  source notify("end_life_link");
   pickup delete();
   if(!(isdefined(dest.doa.respawning) && dest.doa.respawning) || dest.doa.lives > 0) {
     return;
@@ -2499,15 +1810,11 @@ function private function_2f150493(source, dest) {
   }
   if(isdefined(source.doa.vehicle)) {
     if(math::cointoss()) {
-      /#
       doa_utility::debugmsg("" + source.name);
-      # /
-        level thread doa_pickups::directeditemawardto(source, level.doa.booster_model, 4);
+      level thread doa_pickups::directeditemawardto(source, level.doa.booster_model, 4);
     } else {
-      /#
       doa_utility::debugmsg("" + source.name);
-      # /
-        level thread doa_pickups::directeditemawardto(source, level.doa.var_501f85b4, 3);
+      level thread doa_pickups::directeditemawardto(source, level.doa.var_501f85b4, 3);
     }
     return;
   }
@@ -2515,20 +1822,16 @@ function private function_2f150493(source, dest) {
   if(roll < 30 && gettime() > level.doa.var_d2b5415f) {
     level.doa.var_d2b5415f = gettime() + 60000;
     if(math::cointoss()) {
-      /#
       doa_utility::debugmsg("" + source.name);
-      # /
-        source thread namespace_1a381543::function_90118d8c("zmb_army_skeleton");
+      source thread namespace_1a381543::function_90118d8c("zmb_army_skeleton");
       for (i = 0; i < 10; i++) {
         spot = doa_utility::function_14a10231(source.origin);
         level thread doa_pickups::function_411355c0(30, source, spot);
         wait(0.5);
       }
     } else {
-      /#
       doa_utility::debugmsg("" + source.name);
-      # /
-        source thread namespace_1a381543::function_90118d8c("zmb_army_robot");
+      source thread namespace_1a381543::function_90118d8c("zmb_army_robot");
       for (i = 0; i < 4; i++) {
         spot = doa_utility::function_14a10231(source.origin);
         level thread doa_pickups::function_411355c0(31, source, spot);
@@ -2548,39 +1851,27 @@ function private function_2f150493(source, dest) {
       level thread doa_pickups::directeditemawardto(source, level.doa.gloves);
     } else {
       if(roll < 40) {
-        /#
         doa_utility::debugmsg("" + source.name);
-        # /
-          level thread doa_pickups::directeditemawardto(source, level.doa.var_501f85b4, 2);
+        level thread doa_pickups::directeditemawardto(source, level.doa.var_501f85b4, 2);
       } else {
         if(roll < 50) {
-          /#
           doa_utility::debugmsg("" + source.name);
-          # /
-            level thread doa_pickups::directeditemawardto(source, level.doa.booster_model, 3);
+          level thread doa_pickups::directeditemawardto(source, level.doa.booster_model, 3);
         } else {
           if(roll < 60) {
-            /#
             doa_utility::debugmsg("" + source.name);
-            # /
-              level thread doa_pickups::directeditemawardto(source, level.doa.var_3b704a85);
+            level thread doa_pickups::directeditemawardto(source, level.doa.var_3b704a85);
           } else {
             if(roll < 70) {
-              /#
               doa_utility::debugmsg("" + source.name);
-              # /
-                level thread doa_pickups::directeditemawardto(source, level.doa.var_f21ae3af);
+              level thread doa_pickups::directeditemawardto(source, level.doa.var_f21ae3af);
             } else {
               if(roll < 80) {
-                /#
                 doa_utility::debugmsg("" + source.name);
-                # /
-                  level thread doa_pickups::directeditemawardto(source, level.doa.var_d6256e83);
+                level thread doa_pickups::directeditemawardto(source, level.doa.var_d6256e83);
               } else {
-                /#
                 doa_utility::debugmsg("" + source.name);
-                # /
-                  level thread doa_pickups::directeditemawardto(source, level.doa.var_8d63e734, 2);
+                level thread doa_pickups::directeditemawardto(source, level.doa.var_8d63e734, 2);
               }
             }
           }
@@ -2590,63 +1881,45 @@ function private function_2f150493(source, dest) {
   }
 }
 
-/*
-	Name: function_60123d1c
-	Namespace: namespace_831a4a7c
-	Checksum: 0x74C826D1
-	Offset: 0x9628
-	Size: 0x1B6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_60123d1c() {
-  self notify(# "hash_cca1b1b9");
-  self notify(# "kill_watch_player_in_combat");
-  self notify(# "removehealthregen");
-  self notify(# "nohealthoverlay");
-  self notify(# "killspawnmonitor");
-  self notify(# "killmonitorreloads");
-  self notify(# "killrank");
-  self notify(# "killspawnmonitor");
-  self notify(# "killgrenademonitor");
-  self notify(# "killhurtcheck");
-  self notify(# "killteamchangemonitor");
-  self notify(# "killhackermonitor");
-  self notify(# "killreplaygunmonitor");
-  self notify(# "track_riot_shield");
-  self notify(# "killdtpmonitor");
-  self notify(# "killgameendmonitor");
-  self notify(# "killflashmonitor");
-  self notify(# "killplayedtimemonitor");
-  self notify(# "killplayersprintmonitor");
-  self notify(# "killempmonitor");
-  self notify(# "riotshieldtrackingstart");
-  self notify(# "watch_remove_influencer");
-  self notify(# "killoedmonitor");
-  self notify(# "killmantlemonitor");
-  self notify(# "new_cover_on_death_thread");
-  self notify(# "bolttrackingstart");
-  self notify(# "smoketrackingstart");
-  self notify(# "emptrackingstart");
-  self notify(# "proximitytrackingstart");
-  self notify(# "insertiontrackingstart");
-  self notify(# "grenadetrackingstart");
-  self notify(# "hash_5c6cd2a");
-  self notify(# "killonpainmonitor");
-  self notify(# "killondeathmonitor");
-  self notify(# "end_healthregen");
-  level notify(# "stop_spawn_weight_debug");
+  self notify("hash_cca1b1b9");
+  self notify("kill_watch_player_in_combat");
+  self notify("removehealthregen");
+  self notify("nohealthoverlay");
+  self notify("killspawnmonitor");
+  self notify("killmonitorreloads");
+  self notify("killrank");
+  self notify("killspawnmonitor");
+  self notify("killgrenademonitor");
+  self notify("killhurtcheck");
+  self notify("killteamchangemonitor");
+  self notify("killhackermonitor");
+  self notify("killreplaygunmonitor");
+  self notify("track_riot_shield");
+  self notify("killdtpmonitor");
+  self notify("killgameendmonitor");
+  self notify("killflashmonitor");
+  self notify("killplayedtimemonitor");
+  self notify("killplayersprintmonitor");
+  self notify("killempmonitor");
+  self notify("riotshieldtrackingstart");
+  self notify("watch_remove_influencer");
+  self notify("killoedmonitor");
+  self notify("killmantlemonitor");
+  self notify("new_cover_on_death_thread");
+  self notify("bolttrackingstart");
+  self notify("smoketrackingstart");
+  self notify("emptrackingstart");
+  self notify("proximitytrackingstart");
+  self notify("insertiontrackingstart");
+  self notify("grenadetrackingstart");
+  self notify("hash_5c6cd2a");
+  self notify("killonpainmonitor");
+  self notify("killondeathmonitor");
+  self notify("end_healthregen");
+  level notify("stop_spawn_weight_debug");
 }
 
-/*
-	Name: function_fea7ed75
-	Namespace: namespace_831a4a7c
-	Checksum: 0xD1EAD2AC
-	Offset: 0x97E8
-	Size: 0x82
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fea7ed75(num) {
   if(!isdefined(num)) {
     return (1, 1, 1);
@@ -2665,35 +1938,15 @@ function function_fea7ed75(num) {
       return (1, 1, 0);
     }
     default: {
-      /#
       assert(0);
-      # /
     }
   }
 }
 
-/*
-	Name: function_e7e0aa7f
-	Namespace: namespace_831a4a7c
-	Checksum: 0x94FA2217
-	Offset: 0x9878
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e7e0aa7f(num) {
   return "glow_" + function_ee495f41(num);
 }
 
-/*
-	Name: function_ee495f41
-	Namespace: namespace_831a4a7c
-	Checksum: 0x81255FD2
-	Offset: 0x98B0
-	Size: 0x82
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ee495f41(num) {
   switch (num) {
     case 0: {
@@ -2709,22 +1962,11 @@ function function_ee495f41(num) {
       return "yellow";
     }
     default: {
-      /#
       assert(0);
-      # /
     }
   }
 }
 
-/*
-	Name: function_5eb6e4d1
-	Namespace: namespace_831a4a7c
-	Checksum: 0x7F81A97A
-	Offset: 0x9940
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5eb6e4d1() {
   players = [];
   foreach(player in getplayers()) {
@@ -2738,15 +1980,6 @@ function function_5eb6e4d1() {
   return players;
 }
 
-/*
-	Name: function_35f36dec
-	Namespace: namespace_831a4a7c
-	Checksum: 0x4D239E81
-	Offset: 0x9A10
-	Size: 0x19C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_35f36dec(origin) {
   players = function_5eb6e4d1();
   if(players.size == 0) {
@@ -2773,19 +2006,10 @@ function function_35f36dec(origin) {
   return bestent;
 }
 
-/*
-	Name: function_f300c612
-	Namespace: namespace_831a4a7c
-	Checksum: 0x21B585B3
-	Offset: 0x9BB8
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f300c612() {
-  self endon(# "disconnect");
-  self notify(# "hash_f300c612");
-  self endon(# "hash_f300c612");
+  self endon("disconnect");
+  self notify("hash_f300c612");
+  self endon("hash_f300c612");
   while (true) {
     wait(0.05);
     if(isdefined(self.doa.var_f4a883ed) && self.doa.var_f4a883ed) {
@@ -2794,15 +2018,6 @@ function function_f300c612() {
   }
 }
 
-/*
-	Name: function_4519b17
-	Namespace: namespace_831a4a7c
-	Checksum: 0xDA029DD7
-	Offset: 0x9C48
-	Size: 0x1C8
-	Parameters: 2
-	Flags: Linked
-*/
 function function_4519b17(on, clear = 0) {
   if(!isdefined(self) || !isdefined(self.doa)) {
     return;
@@ -2821,10 +2036,8 @@ function function_4519b17(on, clear = 0) {
       self enableinvulnerability();
       self.takedamage = 0;
     } else {
-      /#
       assert(self.doa.var_f4a883ed > 0);
-      # /
-        self.doa.var_f4a883ed++;
+      self.doa.var_f4a883ed++;
     }
   } else {
     if(isdefined(self.doa.var_f4a883ed)) {
@@ -2838,15 +2051,6 @@ function function_4519b17(on, clear = 0) {
   }
 }
 
-/*
-	Name: function_139199e1
-	Namespace: namespace_831a4a7c
-	Checksum: 0x8B35897F
-	Offset: 0x9E18
-	Size: 0x452
-	Parameters: 1
-	Flags: Linked
-*/
 function function_139199e1(type) {
   while (!level flag::get("doa_round_active")) {
     wait(0.05);
@@ -2864,12 +2068,12 @@ function function_139199e1(type) {
   if(self.doa.fate == 13 && type == "force") {
     type = "fury";
   }
-  level thread doa_utility::function_c5f3ece8( & "DOA_CHALLENGE_VICTOR");
+  level thread doa_utility::function_c5f3ece8(&"DOA_CHALLENGE_VICTOR");
   wait(3);
   level.doa.var_9b77ca48 = 1;
   switch (type) {
     case "fury": {
-      level thread doa_utility::function_37fb5c23( & "DOA_REWARD_FURY");
+      level thread doa_utility::function_37fb5c23(&"DOA_REWARD_FURY");
       var_213a57a7 = self.doa.default_weap;
       wait(2);
       level thread doa_fate::function_17fb777b(self, "zombietron_statue_fury", 0.5, & donothing);
@@ -2883,7 +2087,7 @@ function function_139199e1(type) {
       break;
     }
     case "force": {
-      level thread doa_utility::function_37fb5c23( & "DOA_REWARD_FORCE");
+      level thread doa_utility::function_37fb5c23(&"DOA_REWARD_FORCE");
       wait(1);
       level thread doa_pickups::directeditemawardto(self, level.doa.booster_model, 6);
       wait(1);
@@ -2901,21 +2105,12 @@ function function_139199e1(type) {
       break;
     }
   }
-  level thread doa_utility::function_c5f3ece8( & "DOA_REWARD_EXPIRE");
+  level thread doa_utility::function_c5f3ece8(&"DOA_REWARD_EXPIRE");
   wait(2);
-  level thread doa_utility::function_37fb5c23( & "DOA_REWARD_EXPIRE2");
+  level thread doa_utility::function_37fb5c23(&"DOA_REWARD_EXPIRE2");
   wait(7);
   level.doa.var_9b77ca48 = undefined;
   level.doa.var_c03fe5f1 = undefined;
 }
 
-/*
-	Name: donothing
-	Namespace: namespace_831a4a7c
-	Checksum: 0x99EC1590
-	Offset: 0xA278
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function donothing() {}

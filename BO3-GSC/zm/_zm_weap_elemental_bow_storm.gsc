@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_elemental_bow_storm.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\ai\zombie_shared;
@@ -21,31 +25,12 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weap_elemental_bow;
 #using scripts\zm\_zm_weapons;
-
 #namespace _zm_weap_elemental_bow_storm;
 
-/*
-	Name: __init__sytem__
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0xE73F7AF1
-	Offset: 0x558
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("_zm_weap_elemental_bow_storm", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x76FDFD5E
-	Offset: 0x5A0
-	Size: 0x1FC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.var_16e90d5f = getweapon("elemental_bow_storm");
   level.var_5d4538da = getweapon("elemental_bow_storm4");
@@ -60,41 +45,14 @@ function __init__() {
   callback::on_connect( & function_ff153c1a);
 }
 
-/*
-	Name: __main__
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x99EC1590
-	Offset: 0x7A8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {}
 
-/*
-	Name: function_ff153c1a
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0xB17C36E8
-	Offset: 0x7B8
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ff153c1a() {
   self thread zm_weap_elemental_bow::function_982419bb("elemental_bow_storm");
   self thread zm_weap_elemental_bow::function_ececa597("elemental_bow_storm", "elemental_bow_storm4");
   self thread zm_weap_elemental_bow::function_7bc6b9d("elemental_bow_storm", "elemental_bow_storm4", & function_e2bef70c);
 }
 
-/*
-	Name: function_e2bef70c
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0xBF07875E
-	Offset: 0x840
-	Size: 0x184
-	Parameters: 5
-	Flags: Linked
-*/
 function function_e2bef70c(weapon, v_position, radius, attacker, normal) {
   self.var_a51c6ff2 = & function_3c763f48;
   if(issubstr(weapon.name, "elemental_bow_storm4")) {
@@ -108,15 +66,6 @@ function function_e2bef70c(weapon, v_position, radius, attacker, normal) {
   }
 }
 
-/*
-	Name: function_578bf1ca
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x59ABF387
-	Offset: 0x9D0
-	Size: 0x5DA
-	Parameters: 4
-	Flags: Linked
-*/
 function function_578bf1ca(v_hit_pos, var_31d6c509, var_337b3336, var_94d13bd0) {
   zombie_utility::set_zombie_var("tesla_head_gib_chance", 75);
   var_ccda8d5b = (var_94d13bd0 ? 4 : 1);
@@ -182,15 +131,6 @@ function function_578bf1ca(v_hit_pos, var_31d6c509, var_337b3336, var_94d13bd0) 
   }
 }
 
-/*
-	Name: function_8f86e6d5
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x63E89598
-	Offset: 0xFB8
-	Size: 0x10C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_8f86e6d5(var_7b58139b, e_player) {
   a_ai_enemies = getaiteamarray(level.zombie_team);
   var_1c7748 = array::get_all_closest(self.origin, a_ai_enemies, undefined, undefined, var_7b58139b);
@@ -202,28 +142,10 @@ function function_8f86e6d5(var_7b58139b, e_player) {
   return var_1c7748;
 }
 
-/*
-	Name: function_172d425
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x1CEBD033
-	Offset: 0x10D0
-	Size: 0x30
-	Parameters: 1
-	Flags: Linked
-*/
 function function_172d425(ai_enemy) {
   return !(isdefined(ai_enemy.var_789ebfb2) && ai_enemy.var_789ebfb2);
 }
 
-/*
-	Name: function_2624b852
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x2E2B5929
-	Offset: 0x1108
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2624b852() {
   foreach(var_6e7a59eb in self.var_5d0ae7cb) {
     if(isdefined(var_6e7a59eb) && isdefined(var_6e7a59eb.var_83cc6f07) && !var_6e7a59eb.var_83cc6f07) {
@@ -233,15 +155,6 @@ function function_2624b852() {
   return undefined;
 }
 
-/*
-	Name: function_2d3e3c1b
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x49EE32D3
-	Offset: 0x11C0
-	Size: 0x4B4
-	Parameters: 4
-	Flags: Linked
-*/
 function function_2d3e3c1b(e_player, var_337b3336, var_6e7a59eb, var_94d13bd0) {
   if(var_94d13bd0) {
     var_9b78d768 = var_337b3336.origin + (0, 0, randomintrange(0, 96));
@@ -305,17 +218,8 @@ function function_2d3e3c1b(e_player, var_337b3336, var_6e7a59eb, var_94d13bd0) {
   var_6e7a59eb unlink();
 }
 
-/*
-	Name: function_b6e08804
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0xC47E4446
-	Offset: 0x1680
-	Size: 0x29C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_b6e08804(e_player, var_94d13bd0) {
-  self endon(# "death");
+  self endon("death");
   n_damage = self.health;
   str_damage_mod = "MOD_UNKNOWN";
   if(var_94d13bd0) {
@@ -340,7 +244,7 @@ function function_b6e08804(e_player, var_94d13bd0) {
   }
   if(zm_utility::is_player_valid(e_player) && isdefined(e_player.zapped_zombies) && self.archetype === "zombie") {
     e_player.zapped_zombies++;
-    e_player notify(# "zombie_zapped");
+    e_player notify("zombie_zapped");
   }
   var_2f7fd5db = (var_94d13bd0 ? level.var_5d4538da : level.var_16e90d5f);
   self dodamage(n_damage, self.origin, e_player, e_player, undefined, str_damage_mod, 0, var_2f7fd5db);
@@ -348,17 +252,8 @@ function function_b6e08804(e_player, var_94d13bd0) {
   self setplayercollision(1);
 }
 
-/*
-	Name: function_8a5627f3
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x4F824583
-	Offset: 0x1928
-	Size: 0xB4
-	Parameters: 3
-	Flags: Linked
-*/
 function function_8a5627f3(e_player, var_126c274b, var_337b3336) {
-  self endon(# "death");
+  self endon("death");
   var_8fd6fdde = 2.166;
   if(var_337b3336.n_lifetime < 2.166) {
     var_8fd6fdde = var_337b3336.n_lifetime;
@@ -369,17 +264,8 @@ function function_8a5627f3(e_player, var_126c274b, var_337b3336) {
   self function_b6e08804(e_player, 1);
 }
 
-/*
-	Name: function_70319d26
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x563572BD
-	Offset: 0x19E8
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_70319d26(n_time) {
-  self endon(# "death");
+  self endon("death");
   n_counter = 0;
   self clientfield::set("elem_storm_shock_fx", 1);
   while (n_counter < n_time) {
@@ -388,21 +274,12 @@ function function_70319d26(n_time) {
     n_counter = n_counter + 0.2;
   }
   self.zombie_tesla_hit = 0;
-  self notify(# "hash_6b758a38");
+  self notify("hash_6b758a38");
   self clientfield::set("elem_storm_shock_fx", 0);
 }
 
-/*
-	Name: function_23c30f35
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0xDADFC946
-	Offset: 0x1AA8
-	Size: 0x194
-	Parameters: 3
-	Flags: Linked
-*/
 function function_23c30f35(e_player, var_126c274b, var_337b3336) {
-  self endon(# "death");
+  self endon("death");
   if(!(isdefined(self.var_38fc90ba) && self.var_38fc90ba) && var_337b3336.n_lifetime > 2.5) {
     self.var_98056717 = 1;
     self.var_38fc90ba = 1;
@@ -425,44 +302,26 @@ function function_23c30f35(e_player, var_126c274b, var_337b3336) {
   }
 }
 
-/*
-	Name: function_ef25be5
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0xF745B202
-	Offset: 0x1C48
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ef25be5(var_337b3336) {
-  self endon(# "death");
-  var_337b3336 endon(# "death");
-  var_337b3336 endon(# "elem_storm_whirlwind_done");
+  self endon("death");
+  var_337b3336 endon("death");
+  var_337b3336 endon("elem_storm_whirlwind_done");
   var_afc016d4 = distance(self.origin, var_337b3336.origin) + 200;
   var_2341c130 = (var_afc016d4 > 320 ? 320 : var_afc016d4);
   var_f33cfd13 = var_2341c130 * var_2341c130;
   while (true) {
     if(distancesquared(self.origin, var_337b3336.origin) > var_f33cfd13) {
-      self notify(# "mechz_zap_lift_end");
+      self notify("mechz_zap_lift_end");
       break;
     }
     wait(0.2);
   }
 }
 
-/*
-	Name: function_bffbed67
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x22E7234D
-	Offset: 0x1D50
-	Size: 0xB8
-	Parameters: 2
-	Flags: Linked
-*/
 function function_bffbed67(e_player, var_337b3336) {
-  self endon(# "death");
-  self endon(# "mechz_zap_lift_end");
-  var_337b3336 endon(# "elem_storm_whirlwind_done");
+  self endon("death");
+  self endon("mechz_zap_lift_end");
+  var_337b3336 endon("elem_storm_whirlwind_done");
   if(!isdefined(var_337b3336.var_627f5ce9)) {
     var_337b3336.var_627f5ce9 = util::spawn_model("tag_origin", self.origin);
   }
@@ -472,15 +331,6 @@ function function_bffbed67(e_player, var_337b3336) {
   }
 }
 
-/*
-	Name: function_35612a9e
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x89973CDD
-	Offset: 0x1E10
-	Size: 0x28C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_35612a9e(v_hit_pos) {
   if(!isdefined(self.var_3b7b1ee)) {
     self.var_3b7b1ee = [];
@@ -509,34 +359,16 @@ function function_35612a9e(v_hit_pos) {
       var_34137522 thread function_8a0ca69(self);
       str_return = var_34137522 util::waittill_any_timeout(7.8, "elem_storm_whirlwind_force_off");
       var_34137522 clientfield::set("elem_storm_fx", 0);
-      var_34137522 notify(# "elem_storm_whirlwind_done");
+      var_34137522 notify("elem_storm_whirlwind_done");
       var_34137522.b_in_use = 0;
     }
   }
 }
 
-/*
-	Name: function_8a0ca69
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0xE68EEC2E
-	Offset: 0x20A8
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8a0ca69(e_player) {
   e_player function_578bf1ca((0, 0, 0), 7.8, self, 1);
 }
 
-/*
-	Name: function_3f099cfa
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x9B32B2B0
-	Offset: 0x20E8
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3f099cfa() {
   for (i = 0; i < self.var_3b7b1ee.size; i++) {
     if(!(isdefined(self.var_3b7b1ee[i].b_in_use) && self.var_3b7b1ee[i].b_in_use)) {
@@ -544,22 +376,13 @@ function function_3f099cfa() {
     }
   }
   var_3b7b1ee = array::sort_by_script_int(self.var_3b7b1ee, 1);
-  var_3b7b1ee[0] notify(# "elem_storm_whirlwind_force_off");
+  var_3b7b1ee[0] notify("elem_storm_whirlwind_force_off");
   wait(0.1);
   return var_3b7b1ee[0];
 }
 
-/*
-	Name: function_50d5f4ab
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0xB7009CBA
-	Offset: 0x21B8
-	Size: 0x4A6
-	Parameters: 1
-	Flags: Linked
-*/
 function function_50d5f4ab(e_player) {
-  self endon(# "elem_storm_whirlwind_done");
+  self endon("elem_storm_whirlwind_done");
   while (true) {
     v_ground_pos = util::ground_position(self.origin + (0, 0, 1), 1000, vectorscale((0, 0, 1), 16)[2]);
     n_z_diff = abs(self.origin[2] - v_ground_pos[2]);
@@ -608,17 +431,8 @@ function function_50d5f4ab(e_player) {
   }
 }
 
-/*
-	Name: function_2f036bd6
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x91737CE7
-	Offset: 0x2668
-	Size: 0x110
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2f036bd6() {
-  self endon(# "elem_storm_whirlwind_done");
+  self endon("elem_storm_whirlwind_done");
   while (true) {
     foreach(e_player in level.activeplayers) {
       if(isdefined(e_player) && (!(isdefined(e_player.var_a70814ea) && e_player.var_a70814ea))) {
@@ -631,18 +445,9 @@ function function_2f036bd6() {
   }
 }
 
-/*
-	Name: function_c9b501b8
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0xC2B6ACC9
-	Offset: 0x2780
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c9b501b8(var_34137522) {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
+  self endon("disconnect");
+  self endon("bled_out");
   self.var_a70814ea = 1;
   self clientfield::set_to_player("elem_storm_whirlwind_rumble", 1);
   while (distancesquared(self.origin, var_34137522.origin) < 16384 && (isdefined(var_34137522.b_in_use) && var_34137522.b_in_use)) {
@@ -652,15 +457,6 @@ function function_c9b501b8(var_34137522) {
   self clientfield::set_to_player("elem_storm_whirlwind_rumble", 0);
 }
 
-/*
-	Name: function_88b53a11
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0xD566DC8E
-	Offset: 0x2870
-	Size: 0x92
-	Parameters: 3
-	Flags: None
-*/
 function function_88b53a11(var_80242169, v_hit_origin, var_3fee16b8) {
   var_bba6e664 = anglestoforward(var_3fee16b8.angles);
   var_3e878400 = vectornormalize(var_bba6e664 * -1);
@@ -668,15 +464,6 @@ function function_88b53a11(var_80242169, v_hit_origin, var_3fee16b8) {
   return var_75181c09;
 }
 
-/*
-	Name: function_3c763f48
-	Namespace: _zm_weap_elemental_bow_storm
-	Checksum: 0x43CF860F
-	Offset: 0x2910
-	Size: 0x7C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_3c763f48(str_weapon_name, v_source, v_destination) {
   wait(0.1);
   str_weapon_name = (str_weapon_name == "elemental_bow_storm4" ? "elemental_bow_storm4_ricochet" : "elemental_bow_storm_ricochet");

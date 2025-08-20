@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_apartments.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -8,18 +12,8 @@
 #using scripts\mp\mp_apartments_amb;
 #using scripts\mp\mp_apartments_fx;
 #using scripts\shared\compass;
-
 #namespace mp_apartments;
 
-/*
-	Name: main
-	Namespace: mp_apartments
-	Checksum: 0x515000AD
-	Offset: 0x258
-	Size: 0x63C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   mp_apartments_fx::main();
   level.add_raps_drop_locations = & add_raps_drop_locations;
@@ -61,15 +55,6 @@ function main() {
   level.cleandepositpoints = array((-2348.08, -639.428, 1215.81), (-186.08, -415.428, 1344.81), (70.9199, -1853.93, 1344.81), (-1352.58, -913.428, 1226.81), (-434.08, 660.072, 1346.81));
 }
 
-/*
-	Name: add_raps_drop_locations
-	Namespace: mp_apartments
-	Checksum: 0xD7140F66
-	Offset: 0x8A0
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function add_raps_drop_locations( & drop_candidate_array) {
   if(!isdefined(drop_candidate_array)) {
     drop_candidate_array = [];

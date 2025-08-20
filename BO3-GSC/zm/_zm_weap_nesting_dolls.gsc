@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_nesting_dolls.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -7,33 +11,13 @@
 #using scripts\shared\system_shared;
 #using scripts\zm\_util;
 #using scripts\zm\_zm_utility;
-
 #using_animtree("zombie_cymbal_monkey");
-
 #namespace _zm_weap_nesting_dolls;
 
-/*
-	Name: __init__sytem__
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x96BDBFE8
-	Offset: 0x380
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_nesting_dolls", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x93BC3F30
-	Offset: 0x3C0
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.w_nesting_dolls = getweapon("nesting_dolls");
   level.var_3a1d655b = getweapon("nesting_dolls_single");
@@ -46,21 +30,10 @@ function __init__() {
   gravity = getdvarfloat("bg_gravity");
   level.nesting_dolls_launch_peak_time = (level.nesting_dolls_launch_speed * sin(level.nesting_dolls_launch_angle)) / abs(gravity) * 0.5;
   level.nesting_dolls_max_ids = 10;
-  /#
   level.zombiemode_devgui_nesting_dolls_give = & player_give_nesting_dolls;
-  # /
-    setup_nesting_dolls_data();
+  setup_nesting_dolls_data();
 }
 
-/*
-	Name: setup_nesting_dolls_data
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0xABC3154B
-	Offset: 0x518
-	Size: 0x2B0
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_nesting_dolls_data() {
   if(isdefined(level.nesting_dolls_override_setup)) {
     [
@@ -91,28 +64,10 @@ function setup_nesting_dolls_data() {
   level.nesting_dolls_data[3].trailfx = level._effect["nesting_doll_trail_yellow"];
 }
 
-/*
-	Name: nesting_dolls_exists
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x14483B93
-	Offset: 0x7D0
-	Size: 0x16
-	Parameters: 0
-	Flags: None
-*/
 function nesting_dolls_exists() {
   return isdefined(level.zombie_weapons["nesting_dolls"]);
 }
 
-/*
-	Name: player_give_nesting_dolls
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x22DA1DCA
-	Offset: 0x7F0
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function player_give_nesting_dolls() {
   self nesting_dolls_create_randomized_indices(0);
   var_1c3c9c82 = level.nesting_dolls_data[self.nesting_dolls_randomized_indices[0][0]].id;
@@ -126,19 +81,10 @@ function player_give_nesting_dolls() {
   self thread player_handle_nesting_dolls();
 }
 
-/*
-	Name: player_handle_nesting_dolls
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x2AC1D21
-	Offset: 0x910
-	Size: 0xB0
-	Parameters: 0
-	Flags: Linked
-*/
 function player_handle_nesting_dolls() {
-  self notify(# "starting_nesting_dolls");
-  self endon(# "disconnect");
-  self endon(# "starting_nesting_dolls");
+  self notify("starting_nesting_dolls");
+  self endon("disconnect");
+  self endon("starting_nesting_dolls");
   while (true) {
     grenade = get_thrown_nesting_dolls();
     if(isdefined(grenade)) {
@@ -152,18 +98,9 @@ function player_handle_nesting_dolls() {
   }
 }
 
-/*
-	Name: doll_spawner
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x10DCD8A3
-	Offset: 0x9C8
-	Size: 0x1CE
-	Parameters: 1
-	Flags: None
-*/
 function doll_spawner(start_grenade) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   num_dolls = 1;
   max_dolls = 4;
   self nesting_dolls_set_id();
@@ -173,7 +110,7 @@ function doll_spawner(start_grenade) {
     start_grenade thread doll_behavior_explode_when_stopped(self, self.doll_id, 0);
   }
   while (num_dolls < max_dolls) {
-    self waittill(# "spawn_doll", origin, angles);
+    self waittill("spawn_doll", origin, angles);
     grenade_vel = self get_launch_velocity(origin, 2000);
     if(grenade_vel == (0, 0, 0)) {
       grenade_vel = self get_random_launch_velocity(origin, angles);
@@ -185,18 +122,9 @@ function doll_spawner(start_grenade) {
   }
 }
 
-/*
-	Name: doll_spawner_cluster
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0xB452BE0A
-	Offset: 0xBA0
-	Size: 0x208
-	Parameters: 1
-	Flags: Linked
-*/
 function doll_spawner_cluster(start_grenade) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   num_dolls = 1;
   max_dolls = 4;
   self nesting_dolls_set_id();
@@ -207,7 +135,7 @@ function doll_spawner_cluster(start_grenade) {
     start_grenade spawn_doll_model(self.doll_id, 0, self);
     start_grenade thread doll_behavior_explode_when_stopped(self, self.doll_id, 0);
   }
-  self waittill(# "spawn_doll", origin, angles);
+  self waittill("spawn_doll", origin, angles);
   while (num_dolls < max_dolls) {
     grenade_vel = self get_cluster_launch_velocity(angles, num_dolls);
     grenade = self magicgrenadetype(level.var_3a1d655b, origin, grenade_vel);
@@ -219,17 +147,8 @@ function doll_spawner_cluster(start_grenade) {
   }
 }
 
-/*
-	Name: doll_do_damage
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x3DF22E63
-	Offset: 0xDB0
-	Size: 0x184
-	Parameters: 4
-	Flags: Linked
-*/
 function doll_do_damage(origin, owner, id, index) {
-  self waittill(# "explode");
+  self waittill("explode");
   zombies = zombie_utility::get_round_enemy_array();
   if(zombies.size == 0) {
     return;
@@ -245,15 +164,6 @@ function doll_do_damage(origin, owner, id, index) {
   radiusdamage(origin, level.nesting_dolls_damage_radius, 95000, 95000, owner, "MOD_GRENADE_SPLASH", level.var_3a1d655b);
 }
 
-/*
-	Name: randomize_angles
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x2D9219B1
-	Offset: 0xF40
-	Size: 0x8E
-	Parameters: 1
-	Flags: Linked
-*/
 function randomize_angles(angles) {
   random_yaw = randomintrange(-45, 45);
   random_pitch = randomintrange(-45, -35);
@@ -262,15 +172,6 @@ function randomize_angles(angles) {
   return return_angles;
 }
 
-/*
-	Name: get_random_launch_velocity
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x6993EAE4
-	Offset: 0xFD8
-	Size: 0x114
-	Parameters: 2
-	Flags: Linked
-*/
 function get_random_launch_velocity(doll_origin, angles) {
   angles = randomize_angles(angles);
   trace_dist = level.nesting_dolls_launch_speed * level.nesting_dolls_launch_peak_time;
@@ -285,15 +186,6 @@ function get_random_launch_velocity(doll_origin, angles) {
   return (0, 0, level.nesting_dolls_launch_speed);
 }
 
-/*
-	Name: get_cluster_launch_velocity
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x84F2CDEA
-	Offset: 0x10F8
-	Size: 0xC6
-	Parameters: 2
-	Flags: Linked
-*/
 function get_cluster_launch_velocity(angles, index) {
   random_pitch = randomintrange(-45, -35);
   offsets = array(45, 0, -45);
@@ -303,15 +195,6 @@ function get_cluster_launch_velocity(angles, index) {
   return grenade_vel;
 }
 
-/*
-	Name: get_launch_velocity
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x4F696A79
-	Offset: 0x11C8
-	Size: 0x106
-	Parameters: 2
-	Flags: Linked
-*/
 function get_launch_velocity(doll_origin, range) {
   velocity = (0, 0, 0);
   target = get_doll_best_doll_target(doll_origin, range);
@@ -325,29 +208,11 @@ function get_launch_velocity(doll_origin, range) {
   return velocity;
 }
 
-/*
-	Name: get_target_leading_pos
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x470943D5
-	Offset: 0x12D8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function get_target_leading_pos() {
   position = self.origin;
   return position;
 }
 
-/*
-	Name: spawn_doll_model
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x82D293DF
-	Offset: 0x1300
-	Size: 0x1B4
-	Parameters: 3
-	Flags: Linked
-*/
 function spawn_doll_model(id, index, parent) {
   self hide();
   self.doll_model = spawn("script_model", self.origin);
@@ -364,15 +229,6 @@ function spawn_doll_model(id, index, parent) {
   playfxontag(level.nesting_dolls_data[data_index].trailfx, self.doll_model, "tag_origin");
 }
 
-/*
-	Name: doll_behavior_explode_when_stopped
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0xDEE34D19
-	Offset: 0x14C0
-	Size: 0x184
-	Parameters: 3
-	Flags: Linked
-*/
 function doll_behavior_explode_when_stopped(parent, doll_id, index) {
   velocitysq = 100000000;
   oldpos = self.origin;
@@ -388,7 +244,7 @@ function doll_behavior_explode_when_stopped(parent, doll_id, index) {
     self.doll_model unlink();
     self.doll_model.origin = self.origin;
     self.doll_model.angles = self.angles;
-    parent notify(# "spawn_doll", self.origin, self.angles);
+    parent notify("spawn_doll", self.origin, self.angles);
     self thread doll_do_damage(self.origin, parent, doll_id, index);
     self resetmissiledetonationtime(level.nesting_dolls_det_time);
     if(isdefined(index) && index == 3) {
@@ -397,29 +253,11 @@ function doll_behavior_explode_when_stopped(parent, doll_id, index) {
   }
 }
 
-/*
-	Name: nesting_dolls_end_achievement_tracking
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x836615AA
-	Offset: 0x1650
-	Size: 0x30
-	Parameters: 1
-	Flags: Linked
-*/
 function nesting_dolls_end_achievement_tracking(doll_id) {
   wait(level.nesting_dolls_det_time + 0.1);
   self notify("end_achievement_tracker" + doll_id);
 }
 
-/*
-	Name: get_player_aim_best_doll_target
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x72DCC9C7
-	Offset: 0x1688
-	Size: 0x296
-	Parameters: 1
-	Flags: None
-*/
 function get_player_aim_best_doll_target(range) {
   view_pos = self getweaponmuzzlepoint();
   zombies = util::get_array_of_closest(view_pos, zombie_utility::get_round_enemy_array(), undefined, undefined, range * 1.1);
@@ -456,20 +294,9 @@ function get_player_aim_best_doll_target(range) {
       best_target = zombies[i];
     }
   }
-  /#
-  # /
-    return best_target;
+  return best_target;
 }
 
-/*
-	Name: get_doll_best_doll_target
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x8E42A65
-	Offset: 0x1928
-	Size: 0x126
-	Parameters: 2
-	Flags: Linked
-*/
 function get_doll_best_doll_target(origin, range) {
   zombies = getaiarray(level.zombie_team);
   if(zombies.size > 0) {
@@ -486,15 +313,6 @@ function get_doll_best_doll_target(origin, range) {
   return undefined;
 }
 
-/*
-	Name: nesting_dolls_cleanup
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x1AD87A5C
-	Offset: 0x1A58
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function nesting_dolls_cleanup(parent) {
   while (true) {
     if(!isdefined(parent)) {
@@ -505,38 +323,20 @@ function nesting_dolls_cleanup(parent) {
   }
 }
 
-/*
-	Name: do_nesting_dolls_sound
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x74312B56
-	Offset: 0x1AA8
-	Size: 0x7E
-	Parameters: 2
-	Flags: None
-*/
 function do_nesting_dolls_sound(model, info) {
   monk_scream_vox = 0;
   if(level.music_override == 0) {
     monk_scream_vox = 0;
     self playsound("zmb_monkey_song");
   }
-  self waittill(# "explode", position);
+  self waittill("explode", position);
 }
 
-/*
-	Name: get_thrown_nesting_dolls
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x1772A031
-	Offset: 0x1B30
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function get_thrown_nesting_dolls() {
-  self endon(# "disconnect");
-  self endon(# "starting_nesting_dolls");
+  self endon("disconnect");
+  self endon("starting_nesting_dolls");
   while (true) {
-    self waittill(# "grenade_fire", grenade, weapon);
+    self waittill("grenade_fire", grenade, weapon);
     if(weapon == level.w_nesting_dolls) {
       return grenade;
     }
@@ -544,33 +344,13 @@ function get_thrown_nesting_dolls() {
   }
 }
 
-/*
-	Name: nesting_dolls_debug_print
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0xAC58E4B0
-	Offset: 0x1BA8
-	Size: 0x6C
-	Parameters: 2
-	Flags: None
-*/
 function nesting_dolls_debug_print(msg, color) {
-  /#
   if(!isdefined(color)) {
     color = (1, 1, 1);
   }
   print3d(self.origin + vectorscale((0, 0, 1), 60), msg, color, 1, 1, 40);
-  # /
 }
 
-/*
-	Name: nesting_dolls_set_id
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x2CCBA0BD
-	Offset: 0x1C20
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function nesting_dolls_set_id() {
   if(!isdefined(self.doll_id)) {
     self.doll_id = 0;
@@ -582,15 +362,6 @@ function nesting_dolls_set_id() {
   }
 }
 
-/*
-	Name: nesting_dolls_track_achievement
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x85970470
-	Offset: 0x1C80
-	Size: 0xA6
-	Parameters: 1
-	Flags: Linked
-*/
 function nesting_dolls_track_achievement(doll_id) {
   self endon("end_achievement_tracker" + doll_id);
   if(!isdefined(self.nesting_dolls_tracker)) {
@@ -604,15 +375,6 @@ function nesting_dolls_track_achievement(doll_id) {
   }
 }
 
-/*
-	Name: nesting_dolls_check_achievement
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x145525F6
-	Offset: 0x1D30
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function nesting_dolls_check_achievement(doll_id) {
   self waittill("end_achievement_tracker" + doll_id);
   min_kills_per_doll = 1;
@@ -623,15 +385,6 @@ function nesting_dolls_check_achievement(doll_id) {
   }
 }
 
-/*
-	Name: nesting_dolls_create_randomized_indices
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0x1396AB39
-	Offset: 0x1DB0
-	Size: 0x72
-	Parameters: 1
-	Flags: Linked
-*/
 function nesting_dolls_create_randomized_indices(id) {
   if(!isdefined(self.nesting_dolls_randomized_indices)) {
     self.nesting_dolls_randomized_indices = [];
@@ -640,18 +393,9 @@ function nesting_dolls_create_randomized_indices(id) {
   self.nesting_dolls_randomized_indices[id] = array::randomize(base_indices);
 }
 
-/*
-	Name: nesting_dolls_setup_next_doll_throw
-	Namespace: _zm_weap_nesting_dolls
-	Checksum: 0xC0252611
-	Offset: 0x1E30
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function nesting_dolls_setup_next_doll_throw() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   wait(0.5);
   next_id = self.doll_id + 1;
   if(next_id >= level.nesting_dolls_max_ids) {

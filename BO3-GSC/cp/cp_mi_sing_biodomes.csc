@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_biodomes.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_load;
 #using scripts\cp\_squad_control;
@@ -10,18 +14,8 @@
 #using scripts\shared\postfx_shared;
 #using scripts\shared\scene_shared;
 #using scripts\shared\util_shared;
-
 #namespace cp_mi_sing_biodomes;
 
-/*
-	Name: main
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0xF6711B1D
-	Offset: 0x768
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   clientfields_init();
   util::set_streamer_hint_function( & force_streamer, 2);
@@ -32,15 +26,6 @@ function main() {
   namespace_8d32191f::function_7403e82b();
 }
 
-/*
-	Name: clientfields_init
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x7ADA69B5
-	Offset: 0x808
-	Size: 0x4CC
-	Parameters: 0
-	Flags: Linked
-*/
 function clientfields_init() {
   clientfield::register("toplayer", "player_dust_fx", 1, 1, "int", & function_b33fd8cd, 0, 0);
   clientfield::register("toplayer", "player_waterfall_pstfx", 1, 1, "int", & player_waterfall_callback, 0, 0);
@@ -61,15 +46,6 @@ function clientfields_init() {
   clientfield::register("world", "fighttothedome_exfil_rope_sim_player", 1, 1, "int", & function_d550bd06, 0, 0);
 }
 
-/*
-	Name: player_bullet_transition
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x34D4C0EB
-	Offset: 0xCE0
-	Size: 0x126
-	Parameters: 7
-	Flags: None
-*/
 function player_bullet_transition(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 2: {
@@ -93,39 +69,12 @@ function player_bullet_transition(localclientnum, oldval, newval, bnewent, binit
   }
 }
 
-/*
-	Name: function_51e4599a
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0xAE8C06D8
-	Offset: 0xE10
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_51e4599a(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   umbra_settometriggeronce(localclientnum, "markets2");
 }
 
-/*
-	Name: player_waterfall_callback
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0xFD450113
-	Offset: 0xE78
-	Size: 0x3C
-	Parameters: 7
-	Flags: Linked
-*/
 function player_waterfall_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
-/*
-	Name: bullet_disconnect_callback
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0xD6509BA8
-	Offset: 0xF00
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function bullet_disconnect_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self thread postfx::playpostfxbundle("pstfx_dni_screen_futz");
@@ -134,15 +83,6 @@ function bullet_disconnect_callback(localclientnum, oldval, newval, bnewent, bin
   }
 }
 
-/*
-	Name: function_424e31ac
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x31B689D6
-	Offset: 0xF88
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked
-*/
 function function_424e31ac(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     enablespeedblur(localclientnum, 0.07, 0.55, 0.9, 0, 100, 100);
@@ -151,17 +91,8 @@ function function_424e31ac(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_81199318
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x897E0AE2
-	Offset: 0x1028
-	Size: 0x130
-	Parameters: 7
-	Flags: Linked
-*/
 function function_81199318(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   n_start_time = gettime();
   b_is_updating = 1;
   while (b_is_updating) {
@@ -177,30 +108,12 @@ function function_81199318(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_e49f0db0
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x92CED728
-	Offset: 0x1160
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_e49f0db0(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     level thread scene::play("p7_fxanim_cp_biodomes_roll_up_door_bundle");
   }
 }
 
-/*
-	Name: function_f3caffbf
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x6B4CD45D
-	Offset: 0x11D0
-	Size: 0xA4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_f3caffbf(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     level thread scene::play("p7_fxanim_cp_biodomes_party_house_bundle");
@@ -209,60 +122,24 @@ function function_f3caffbf(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_f386de49
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x2712E5C7
-	Offset: 0x1280
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_f386de49(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     level thread scene::play("p7_fxanim_cp_biodomes_rpg_dome_glass_bundle");
   }
 }
 
-/*
-	Name: warehouse_window_break
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0xEEBF8EFC
-	Offset: 0x12F0
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function warehouse_window_break(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     level thread scene::play("p7_fxanim_cp_biodomes_warehouse_glass_break_bundle");
   }
 }
 
-/*
-	Name: control_room_window_break
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x7739D6B1
-	Offset: 0x1360
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function control_room_window_break(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     level thread scene::play("p7_fxanim_cp_biodomes_server_room_window_break_02_bundle");
   }
 }
 
-/*
-	Name: function_76ca6777
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x4E953B70
-	Offset: 0x13D0
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked
-*/
 function function_76ca6777(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     level thread scene::init("p7_fxanim_cp_biodomes_crow_takeoff_bundle");
@@ -271,15 +148,6 @@ function function_76ca6777(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_32baa33e
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x280C0ABC
-	Offset: 0x1470
-	Size: 0x134
-	Parameters: 7
-	Flags: Linked
-*/
 function function_32baa33e(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     scene::add_scene_func("p7_fxanim_cp_biodomes_rope_sim_player_bundle", & function_1f0ba50, "init");
@@ -293,28 +161,10 @@ function function_32baa33e(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_1f0ba50
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0xBFB6788
-	Offset: 0x15B0
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1f0ba50(a_ents) {
   a_ents["rope_sim_player"] hide();
 }
 
-/*
-	Name: function_d550bd06
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0xE7747C11
-	Offset: 0x15E8
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d550bd06(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     scene::add_scene_func("p7_fxanim_cp_biodomes_rope_sim_player_bundle", & function_be7ae167, "play");
@@ -322,28 +172,10 @@ function function_d550bd06(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_be7ae167
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x64192F3F
-	Offset: 0x1688
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_be7ae167(a_ents) {
   a_ents["rope_sim_player"] show();
 }
 
-/*
-	Name: server_extra_cam
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0xA745FE02
-	Offset: 0x16C0
-	Size: 0x21E
-	Parameters: 7
-	Flags: Linked
-*/
 function server_extra_cam(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   e_xcam1 = getent(localclientnum, "server_camera1", "targetname");
   e_xcam2 = getent(localclientnum, "server_camera2", "targetname");
@@ -378,26 +210,8 @@ function server_extra_cam(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: server_interact_cam
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0xF3470E3B
-	Offset: 0x18E8
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function server_interact_cam(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
-/*
-	Name: force_streamer
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0xF3D3DA9E
-	Offset: 0x1AC0
-	Size: 0xDE
-	Parameters: 1
-	Flags: Linked
-*/
 function force_streamer(n_zone) {
   switch (n_zone) {
     case 1: {
@@ -416,15 +230,6 @@ function force_streamer(n_zone) {
   }
 }
 
-/*
-	Name: function_1e832062
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0x36424DFC
-	Offset: 0x1BA8
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_1e832062(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     setexposureactivebank(localclientnum, 4);
@@ -433,15 +238,6 @@ function function_1e832062(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_b33fd8cd
-	Namespace: cp_mi_sing_biodomes
-	Checksum: 0xC1357463
-	Offset: 0x1C30
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_b33fd8cd(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     if(isdefined(self.n_fx_id)) {

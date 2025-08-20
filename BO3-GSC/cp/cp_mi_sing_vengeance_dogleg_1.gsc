@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_vengeance_dogleg_1.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_debug;
 #using scripts\cp\_dialog;
@@ -30,18 +34,8 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
-
 #namespace vengeance_dogleg_1;
 
-/*
-	Name: skipto_dogleg_1_init
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xA9C2F9A2
-	Offset: 0x1308
-	Size: 0x24C
-	Parameters: 2
-	Flags: Linked
-*/
 function skipto_dogleg_1_init(str_objective, b_starting) {
   level thread cafe_burning_setup();
   if(b_starting) {
@@ -68,15 +62,6 @@ function skipto_dogleg_1_init(str_objective, b_starting) {
   dogleg_1_main(str_objective, b_starting);
 }
 
-/*
-	Name: dogleg_1_main
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xFBD9BF4B
-	Offset: 0x1560
-	Size: 0x35A
-	Parameters: 2
-	Flags: Linked
-*/
 function dogleg_1_main(str_objective, b_starting) {
   level flag::set("dogleg_1_begin");
   level thread function_254de1e5();
@@ -110,15 +95,6 @@ function dogleg_1_main(str_objective, b_starting) {
   }
 }
 
-/*
-	Name: function_254de1e5
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xDFD89CF4
-	Offset: 0x18C8
-	Size: 0xC2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_254de1e5() {
   a_allies = getaiteamarray("allies");
   foreach(ally in a_allies) {
@@ -128,15 +104,6 @@ function function_254de1e5() {
   }
 }
 
-/*
-	Name: function_e17e849c
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xCA4D83D7
-	Offset: 0x1998
-	Size: 0x1FC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e17e849c() {
   level.var_5abaf57 = struct::get("dogleg_1_intro_org");
   vengeance_util::co_op_teleport_on_igc_end("cin_ven_04_10_cafedoor_1st_sh100", "cafe_igc_teleport");
@@ -147,10 +114,10 @@ function function_e17e849c() {
   }
   level.var_5abaf57 thread scene::play("cin_ven_04_10_cafedoor_1st_sh010", level.var_4c62d05f);
   level.ai_hendricks thread setup_dogleg_1_hendricks();
-  level waittill(# "hash_a60d391c");
+  level waittill("hash_a60d391c");
   level thread cafe_execution_setup();
   level thread function_e9e34547();
-  level waittill(# "hash_2b965a47");
+  level waittill("hash_2b965a47");
   if(isdefined(level.bzm_vengeancedialogue5callback)) {
     level thread[[level.bzm_vengeancedialogue5callback]]();
   }
@@ -162,18 +129,9 @@ function function_e17e849c() {
   savegame::checkpoint_save();
 }
 
-/*
-	Name: function_fd7fd40d
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x7A9F8156
-	Offset: 0x1BA0
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fd7fd40d() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self thread function_8e0d7da8();
   weap = getweapon("ar_marksman_veng_hero_weap");
   if(!self hasweapon(weap)) {
@@ -183,40 +141,22 @@ function function_fd7fd40d() {
   self thread vengeance_util::function_12a1b6a0();
 }
 
-/*
-	Name: function_8e0d7da8
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x8431ECAA
-	Offset: 0x1C60
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8e0d7da8() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self hideviewmodel();
   weap = getweapon("ar_marksman_veng_hero_weap");
   wait(0.15);
   self showviewmodel();
 }
 
-/*
-	Name: function_798b0fec
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x10C77771
-	Offset: 0x1CD8
-	Size: 0x274
-	Parameters: 0
-	Flags: Linked
-*/
 function function_798b0fec() {
-  level endon(# "hash_2b965a47");
+  level endon("hash_2b965a47");
   level dialog::remote("tayr_you_don_t_understand_1", 0, "no_dni");
   level thread namespace_9fd035::function_862430bd();
   util::clientnotify("sndLRstop");
-  level notify(# "hash_15e32f84");
-  level.ai_hendricks waittill(# "hash_a89f76ac");
+  level notify("hash_15e32f84");
+  level.ai_hendricks waittill("hash_a89f76ac");
   level.ai_hendricks vengeance_util::function_5fbec645("hend_you_sold_us_out_you_0");
   level dialog::remote("tayr_i_told_the_truth_0", 0, "no_dni");
   level dialog::remote("tayr_behind_a_slick_corpo_0", 0, "no_dni");
@@ -232,17 +172,8 @@ function function_798b0fec() {
   dialog::player_say("plyr_kane_how_the_hell_0");
 }
 
-/*
-	Name: function_d45f757d
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xB1BC4303
-	Offset: 0x1F58
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d45f757d() {
-  level waittill(# "hash_73c7894d");
+  level waittill("hash_73c7894d");
   var_58cff577 = getent("molotov_civilian", "targetname");
   if(isdefined(var_58cff577)) {
     var_58cff577 thread vengeance_util::set_civilian_on_fire();
@@ -257,15 +188,6 @@ function function_d45f757d() {
   }
 }
 
-/*
-	Name: function_842de716
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x8DA5B2D8
-	Offset: 0x2068
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_842de716() {
   var_a47f76cc = getent("dogleg_1_entrance_door_clip", "targetname");
   if(isdefined(var_a47f76cc)) {
@@ -276,15 +198,6 @@ function function_842de716() {
   }
 }
 
-/*
-	Name: function_7272ed9d
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x74E85E1A
-	Offset: 0x2100
-	Size: 0xEA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7272ed9d() {
   var_e6aec0a = getentarray("killing_streets_lineup_kill_ai_blockers", "targetname");
   foreach(ent in var_e6aec0a) {
@@ -295,51 +208,24 @@ function function_7272ed9d() {
   }
 }
 
-/*
-	Name: setup_dogleg_1_hendricks
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x83524E3C
-	Offset: 0x21F8
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_dogleg_1_hendricks() {
-  self endon(# "death");
+  self endon("death");
   self ai::set_ignoreall(1);
   self ai::set_ignoreme(1);
   self colors::disable();
   self ai::set_behavior_attribute("cqb", 1);
   self.goalradius = 32;
   self setgoal(self.origin);
-  self waittill(# "hash_8e639ede");
+  self waittill("hash_8e639ede");
   self delete();
 }
 
-/*
-	Name: function_4326839a
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x422D82A4
-	Offset: 0x22C0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4326839a() {
   level.var_4326839a = spawner::simple_spawn("dogleg_1_wasps", & function_b5dfff73);
   level.var_4843e321 = level.var_4326839a.size;
   namespace_523da15d::function_cae14a51();
 }
 
-/*
-	Name: function_b5dfff73
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x1DD5D0B8
-	Offset: 0x2320
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b5dfff73() {
   var_a896d541 = getent("dogleg_1_wasp_gv", "targetname");
   if(isdefined(var_a896d541)) {
@@ -349,15 +235,6 @@ function function_b5dfff73() {
   }
 }
 
-/*
-	Name: cafe_execution_setup
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x14F242F5
-	Offset: 0x23A8
-	Size: 0x1DC
-	Parameters: 0
-	Flags: Linked
-*/
 function cafe_execution_setup() {
   level.cafe_execution_org = struct::get("cafe_execution_org");
   spawner::add_spawn_function_group("cafe_execution_civ_spawners", "script_noteworthy", & cafe_execution_civ_spawn_func);
@@ -374,17 +251,8 @@ function cafe_execution_setup() {
   level thread function_dbe2f523();
 }
 
-/*
-	Name: cafe_execution_civ_spawn_func
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x5EDD5EE4
-	Offset: 0x2590
-	Size: 0x20C
-	Parameters: 0
-	Flags: Linked
-*/
 function cafe_execution_civ_spawn_func() {
-  self endon(# "death");
+  self endon("death");
   self.team = "allies";
   self ai::set_ignoreme(1);
   self ai::set_ignoreall(1);
@@ -410,59 +278,32 @@ function cafe_execution_civ_spawn_func() {
   }
 }
 
-/*
-	Name: cafe_exeuction_thug_spawn_func
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xD48AF6CE
-	Offset: 0x27A8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function cafe_exeuction_thug_spawn_func() {
-  self endon(# "death");
-  self waittill(# "alert");
+  self endon("death");
+  self waittill("alert");
   level.cafe_execution_org scene::play("cin_ven_04_20_cafeexecution_vign_intro");
 }
 
-/*
-	Name: cafe_exeuction_thug_death_watcher_spawn_func
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x6FF80127
-	Offset: 0x27F0
-	Size: 0xC6
-	Parameters: 0
-	Flags: Linked
-*/
 function cafe_exeuction_thug_death_watcher_spawn_func() {
-  self waittill(# "death");
+  self waittill("death");
   level flag::set("cafe_execution_thug_dead");
   for (i = 1; i < 6; i++) {
     guy = getent(("cafe_execution_civ_0" + i) + "_ai", "targetname");
     if(isdefined(guy) && isalive(guy)) {
-      guy notify(# "try_to_escape");
+      guy notify("try_to_escape");
     }
   }
 }
 
-/*
-	Name: function_dbe2f523
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xDA523C9D
-	Offset: 0x28C0
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dbe2f523() {
-  level.var_f7d1a350 endon(# "death");
-  level.var_3848e5e1 endon(# "death");
-  level.var_1836a85c endon(# "death");
-  level.var_f6f4fc0b endon(# "death");
-  level.var_f7d1a350 endon(# "alert");
-  level.var_f7d1a350 endon(# "hash_da6a4775");
+  level.var_f7d1a350 endon("death");
+  level.var_3848e5e1 endon("death");
+  level.var_1836a85c endon("death");
+  level.var_f6f4fc0b endon("death");
+  level.var_f7d1a350 endon("alert");
+  level.var_f7d1a350 endon("hash_da6a4775");
   trigger = getent("cafeexecution_vign_vo_trigger", "targetname");
-  trigger waittill(# "trigger");
+  trigger waittill("trigger");
   level.var_f7d1a350 vengeance_util::function_5fbec645("ffim1_all_your_money_won_t_1");
   wait(0.5);
   level.var_f7d1a350 vengeance_util::function_5fbec645("ffim2_laughter_2");
@@ -474,15 +315,6 @@ function function_dbe2f523() {
   level.var_f7d1a350 vengeance_util::function_5fbec645("ffim3_laughter_3");
 }
 
-/*
-	Name: cafe_burning_setup
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x864D161F
-	Offset: 0x2A28
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function cafe_burning_setup() {
   level.cafe_burning_org = struct::get("cafe_burning_org");
   spawner::add_spawn_function_group("cafe_burning_54i_thug_a", "targetname", & function_8b8b9516);
@@ -494,15 +326,6 @@ function cafe_burning_setup() {
   level.cafe_burning_org scene::init("cin_ven_04_20_cafeburning_vign_loop");
 }
 
-/*
-	Name: function_e9e34547
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x8B9160FB
-	Offset: 0x2BA0
-	Size: 0x27C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e9e34547() {
   scene::add_scene_func("cin_ven_04_20_cafeburning_vign_loop", & function_924af258, "play");
   level.cafe_burning_org thread scene::play("cin_ven_04_20_cafeburning_vign_loop");
@@ -524,27 +347,18 @@ function function_e9e34547() {
   level.var_4e5d9a0c thread function_dc4e86b5(enemy_array);
 }
 
-/*
-	Name: function_558e4ac8
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x87FD3BC4
-	Offset: 0x2E28
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_558e4ac8() {
-  level.var_b6fadac7 endon(# "death");
-  level.var_2e6fdc0e endon(# "death");
-  level.var_3a5715c2 endon(# "death");
-  level.var_4e5d9a0c endon(# "death");
-  level.var_96a3037b endon(# "death");
-  level.var_b6fadac7 endon(# "alert");
-  level.var_2e6fdc0e endon(# "alert");
-  level.var_b6fadac7 endon(# "hash_da6a4775");
-  level.var_2e6fdc0e endon(# "hash_da6a4775");
+  level.var_b6fadac7 endon("death");
+  level.var_2e6fdc0e endon("death");
+  level.var_3a5715c2 endon("death");
+  level.var_4e5d9a0c endon("death");
+  level.var_96a3037b endon("death");
+  level.var_b6fadac7 endon("alert");
+  level.var_2e6fdc0e endon("alert");
+  level.var_b6fadac7 endon("hash_da6a4775");
+  level.var_2e6fdc0e endon("hash_da6a4775");
   trigger = getent("cafeburning_vign_vo_trigger", "targetname");
-  trigger waittill(# "trigger");
+  trigger waittill("trigger");
   level.var_b6fadac7 vengeance_util::function_5fbec645("ffim1_now_we_re_the_ones_w_1");
   wait(1);
   level.var_2e6fdc0e vengeance_util::function_5fbec645("ffim2_laughter_3");
@@ -558,15 +372,6 @@ function function_558e4ac8() {
   level.var_2e6fdc0e vengeance_util::function_5fbec645("ffim3_laughter_3");
 }
 
-/*
-	Name: function_924af258
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xFC07D4DA
-	Offset: 0x2FE8
-	Size: 0x122
-	Parameters: 2
-	Flags: Linked
-*/
 function function_924af258(a_ents, hide_me) {
   if(isdefined(hide_me)) {
     foreach(ent in a_ents) {
@@ -579,119 +384,74 @@ function function_924af258(a_ents, hide_me) {
   }
 }
 
-/*
-	Name: function_8b8b9516
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x1234DC46
-	Offset: 0x3118
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8b8b9516() {
-  self endon(# "death");
+  self endon("death");
   self ai::set_behavior_attribute("can_melee", 0);
   var_ccf9b73f = util::spawn_anim_model("p7_ven_gascan_static");
   var_ccf9b73f linkto(self, "tag_weapon_chest", (0, 0, 0), (0, 0, 0));
   self thread function_78c388c0(var_ccf9b73f);
   self thread vengeance_util::function_57b69bd6(var_ccf9b73f);
-  self waittill(# "hash_da6a4775");
+  self waittill("hash_da6a4775");
   if(isdefined(self.silenced) && self.silenced) {
     return;
   }
   self stopanimscripted();
 }
 
-/*
-	Name: function_78c388c0
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xBBE243B
-	Offset: 0x3208
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function function_78c388c0(var_ccf9b73f) {
   function_3f42ba98(var_ccf9b73f);
 }
 
-/*
-	Name: function_3f42ba98
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xF0057C6F
-	Offset: 0x3238
-	Size: 0x338
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3f42ba98(var_ccf9b73f) {
-  self endon(# "death");
-  self endon(# "hash_da6a4775");
-  self endon(# "alert");
+  self endon("death");
+  self endon("hash_da6a4775");
+  self endon("alert");
   while (true) {
-    level waittill(# "hash_e239447e");
+    level waittill("hash_e239447e");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
-    level waittill(# "hash_bc36ca15");
+    level waittill("hash_bc36ca15");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
-    level waittill(# "hash_96344fac");
+    level waittill("hash_96344fac");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
-    level waittill(# "hash_7031d543");
+    level waittill("hash_7031d543");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
-    level waittill(# "hash_4a2f5ada");
+    level waittill("hash_4a2f5ada");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
-    level waittill(# "hash_242ce071");
+    level waittill("hash_242ce071");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
-    level waittill(# "hash_fe2a6608");
+    level waittill("hash_fe2a6608");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
-    level waittill(# "hash_d827eb9f");
+    level waittill("hash_d827eb9f");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
-    level waittill(# "hash_b2257136");
+    level waittill("hash_b2257136");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
-    level waittill(# "hash_be9dc60a");
+    level waittill("hash_be9dc60a");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
-    level waittill(# "hash_e4a04073");
+    level waittill("hash_e4a04073");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
-    level waittill(# "hash_7298d138");
+    level waittill("hash_7298d138");
     playfxontag(level._effect["fx_fuel_pour_far_ven"], var_ccf9b73f, "tag_fx");
   }
 }
 
-/*
-	Name: function_97ac3293
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x8A90379F
-	Offset: 0x3578
-	Size: 0xE8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_97ac3293() {
-  self endon(# "death");
+  self endon("death");
   self thread watch_for_death();
   wait(0.2);
   self thread function_a44271e3();
   self util::waittill_any("alert", "fake_alert");
-  level notify(# "hash_f4512440");
+  level notify("hash_f4512440");
   if(isdefined(self.silenced) && self.silenced) {
     return;
   }
   level.cafe_burning_org thread scene::play("cin_ven_04_20_cafeburning_vign_main");
-  self waittill(# "cafe_burning_match_thrown");
+  self waittill("cafe_burning_match_thrown");
   level flag::set("cafe_burning_match_thrown");
   self.allowdeath = 1;
 }
 
-/*
-	Name: function_a44271e3
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xB6696FC3
-	Offset: 0x3668
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a44271e3() {
-  level endon(# "hash_e9ff59d5");
+  level endon("hash_e9ff59d5");
   while (isalive(self)) {
     var_dd18437 = getent("cafe_burning_flare", "targetname", 1);
     if(isdefined(var_dd18437)) {
@@ -706,31 +466,13 @@ function function_a44271e3() {
   }
 }
 
-/*
-	Name: watch_for_death
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xB258248A
-	Offset: 0x3760
-	Size: 0x1E
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_for_death() {
-  self waittill(# "death");
-  level notify(# "hash_22b8c948");
+  self waittill("death");
+  level notify("hash_22b8c948");
 }
 
-/*
-	Name: cafe_burning_civ_spawn_func
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x215B0036
-	Offset: 0x3788
-	Size: 0x23C
-	Parameters: 0
-	Flags: Linked
-*/
 function cafe_burning_civ_spawn_func() {
-  self endon(# "death");
+  self endon("death");
   self.team = "allies";
   self ai::set_ignoreme(1);
   self ai::set_ignoreall(1);
@@ -750,7 +492,7 @@ function cafe_burning_civ_spawn_func() {
     }
     self ai::set_behavior_attribute("panic", 1);
   } else {
-    self waittill(# "cafe_burning_check_for_escape");
+    self waittill("cafe_burning_check_for_escape");
     playsoundatposition("evt_civ_group_burn", (21564, -86, 136));
     self vengeance_util::set_civilian_on_fire(0);
     self vengeance_util::set_civilian_on_fire(0);
@@ -758,19 +500,10 @@ function cafe_burning_civ_spawn_func() {
   }
 }
 
-/*
-	Name: function_dc4e86b5
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x34BEDEE1
-	Offset: 0x39D0
-	Size: 0xEA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_dc4e86b5(enemy_array) {
-  level endon(# "hash_e9ff59d5");
-  level endon(# "hash_8a3b89d3");
-  self waittill(# "damage", damage, attacker);
+  level endon("hash_e9ff59d5");
+  level endon("hash_8a3b89d3");
+  self waittill("damage", damage, attacker);
   if(isplayer(attacker)) {
     foreach(enemy in enemy_array) {
       if(isdefined(enemy)) {
@@ -780,17 +513,8 @@ function function_dc4e86b5(enemy_array) {
   }
 }
 
-/*
-	Name: cafe_molotov_setup
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xEF5E150B
-	Offset: 0x3AC8
-	Size: 0x5F4
-	Parameters: 0
-	Flags: Linked
-*/
 function cafe_molotov_setup() {
-  level endon(# "hash_e9ff59d5");
+  level endon("hash_e9ff59d5");
   level.cafe_molotov_org = struct::get("cafe_molotov_org");
   spawner::add_spawn_function_group("cafe_molotov_civ_spawners", "script_noteworthy", & function_147bbbbf);
   var_932d1fc6 = [];
@@ -861,17 +585,8 @@ function cafe_molotov_setup() {
   }
 }
 
-/*
-	Name: function_147bbbbf
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xB9E4998C
-	Offset: 0x40C8
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function function_147bbbbf() {
-  self endon(# "death");
+  self endon("death");
   self.team = "allies";
   self ai::set_ignoreme(1);
   self ai::set_ignoreall(1);
@@ -879,15 +594,6 @@ function function_147bbbbf() {
   self.health = 1;
 }
 
-/*
-	Name: function_6236563e
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x1C5807D
-	Offset: 0x4150
-	Size: 0x294
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6236563e() {
   wait(3);
   var_4d665055 = struct::get("goto_quadtank_alley_obj_org", "targetname");
@@ -913,46 +619,19 @@ function function_6236563e() {
   objectives::hide("cp_level_vengeance_open_quadtank_alley_menu");
 }
 
-/*
-	Name: function_9c72eea2
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xC64C4987
-	Offset: 0x43F0
-	Size: 0x28
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9c72eea2(e_player) {
-  level notify(# "hash_93d1a6c2");
+  level notify("hash_93d1a6c2");
   level.var_4c62d05f = e_player;
 }
 
-/*
-	Name: function_1909c582
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x50280DF1
-	Offset: 0x4420
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1909c582() {
-  level endon(# "hash_e9ff59d5");
+  level endon("hash_e9ff59d5");
   level flag::wait_till("stealth_combat");
   level.var_508337f6 = 1;
 }
 
-/*
-	Name: function_6fdd2184
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x12D6626A
-	Offset: 0x4460
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6fdd2184() {
-  level endon(# "hash_e9ff59d5");
+  level endon("hash_e9ff59d5");
   level flag::wait_till("stealth_discovered");
   stealth::function_26f24c93(0);
   level thread vengeance_util::function_80840124();
@@ -970,34 +649,16 @@ function function_6fdd2184() {
   level flag::clear("stealth_discovered");
 }
 
-/*
-	Name: function_24a63cea
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xCA38F392
-	Offset: 0x45A0
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function function_24a63cea() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.script_stealth_dontseek) && self.script_stealth_dontseek) {
     self ai::set_behavior_attribute("sprint", 1);
   }
 }
 
-/*
-	Name: skipto_dogleg_1_done
-	Namespace: vengeance_dogleg_1
-	Checksum: 0xFEB8E2B6
-	Offset: 0x45F0
-	Size: 0x3DC
-	Parameters: 4
-	Flags: Linked
-*/
 function skipto_dogleg_1_done(str_objective, b_starting, b_direct, player) {
   level flag::set("dogleg_1_end");
-  level notify(# "hash_bab8795");
+  level notify("hash_bab8795");
   level flag::clear("combat_enemies_retreating");
   level cleanup_dogleg_1();
   namespace_523da15d::function_a4b67c57();
@@ -1014,7 +675,7 @@ function skipto_dogleg_1_done(str_objective, b_starting, b_direct, player) {
       level thread[[level.bzm_vengeancedialogue6callback]]();
     }
     level.var_831ab6b2 thread scene::play("cin_ven_04_30_quadalleydoor_1st", level.var_4c62d05f);
-    level waittill(# "hash_57cf6a02");
+    level waittill("hash_57cf6a02");
     var_7d044b82 = struct::get("quad_alley_door_physics", "targetname");
     physicsexplosionsphere(var_7d044b82.origin, 64, 48, 1);
   }
@@ -1030,15 +691,6 @@ function skipto_dogleg_1_done(str_objective, b_starting, b_direct, player) {
   level struct::delete_script_bundle("scene", "cin_ven_04_10_cafedoor_1st_sh100");
 }
 
-/*
-	Name: cleanup_dogleg_1
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x70AE359F
-	Offset: 0x49D8
-	Size: 0x10A
-	Parameters: 0
-	Flags: Linked
-*/
 function cleanup_dogleg_1() {
   array::thread_all(getaiteamarray("axis"), & util::self_delete);
   array::run_all(getcorpsearray(), & delete);
@@ -1051,17 +703,8 @@ function cleanup_dogleg_1() {
   }
 }
 
-/*
-	Name: function_adb6f63
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x9A688757
-	Offset: 0x4AF0
-	Size: 0x290
-	Parameters: 1
-	Flags: Linked
-*/
 function function_adb6f63(var_f02766b0) {
-  level endon(# "hash_e9ff59d5");
+  level endon("hash_e9ff59d5");
   if(!isdefined(var_f02766b0)) {
     var_f02766b0 = 3;
   }
@@ -1095,17 +738,8 @@ function function_adb6f63(var_f02766b0) {
   }
 }
 
-/*
-	Name: dogleg_1_vo
-	Namespace: vengeance_dogleg_1
-	Checksum: 0x866D64F8
-	Offset: 0x4D88
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function dogleg_1_vo(b_starting) {
-  level endon(# "hash_8a3b89d3");
+  level endon("hash_8a3b89d3");
   stealth::function_26f24c93(1);
   flag::wait_till("dogleg_1_stealth_motivator_01");
   flag::wait_till("dogleg_1_stealth_motivator_02");

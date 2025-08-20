@@ -1,33 +1,18 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_asylum_fx.gsc
+*************************************************/
+
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_asylum_fx;
 
-/*
-	Name: main
-	Namespace: zm_asylum_fx
-	Checksum: 0x56C7900A
-	Offset: 0x10C8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_scripted_fx();
   precache_createfx_fx();
   level thread fx_overrides();
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_asylum_fx
-	Checksum: 0x686713E2
-	Offset: 0x1110
-	Size: 0x622
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {
   level._effect["god_rays_small"] = "env/light/fx_light_god_ray_sm_single";
   level._effect["god_rays_dust_motes"] = "env/light/fx_light_god_rays_dust_motes";
@@ -87,15 +72,6 @@ function precache_createfx_fx() {
   level._effect["fx_zm_asylum_water_leak"] = "maps/zombie/fx_zm_asylum_water_leak";
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_asylum_fx
-	Checksum: 0xDAC18E90
-	Offset: 0x1740
-	Size: 0x1DE
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["zombie_grain"] = "misc/fx_zombie_grain_cloud";
   level._effect["large_ceiling_dust"] = "maps/zombie/fx_dust_ceiling_impact_lg_mdbrown";
@@ -116,15 +92,6 @@ function precache_scripted_fx() {
   level._effect["elec_trail_one_shot"] = "maps/zombie/fx_zombie_elec_trail_oneshot";
 }
 
-/*
-	Name: fx_overrides
-	Namespace: zm_asylum_fx
-	Checksum: 0xE545C443
-	Offset: 0x1928
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function fx_overrides() {
   level flagsys::wait_till("load_main_complete");
   level._effect["jugger_light"] = "dlc5/zmhd/fx_perk_juggernaut";

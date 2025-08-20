@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_ee_main.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_shared;
 #using scripts\shared\ai\zombie_utility;
@@ -27,18 +31,8 @@
 #using scripts\zm\zm_tomb_ee_main_step_8;
 #using scripts\zm\zm_tomb_utility;
 #using scripts\zm\zm_tomb_vo;
-
 #namespace zm_tomb_ee_main;
 
-/*
-	Name: init
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xAFEA48FF
-	Offset: 0x8D0
-	Size: 0x374
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("actor", "ee_zombie_fist_fx", 21000, 1, "int");
   clientfield::register("actor", "ee_zombie_soul_portal", 21000, 1, "int");
@@ -59,10 +53,8 @@ function init() {
   if(!zm_sidequests::is_sidequest_allowed("zclassic")) {
     return;
   }
-  /#
   level thread setup_ee_main_devgui();
-  # /
-    zm_sidequests::declare_sidequest("little_girl_lost", & init_sidequest, & sidequest_logic, & complete_sidequest, & generic_stage_start, & generic_stage_end);
+  zm_sidequests::declare_sidequest("little_girl_lost", & init_sidequest, & sidequest_logic, & complete_sidequest, & generic_stage_start, & generic_stage_end);
   zm_tomb_ee_main_step_1::init();
   zm_tomb_ee_main_step_2::init();
   zm_tomb_ee_main_step_3::init();
@@ -73,43 +65,16 @@ function init() {
   zm_tomb_ee_main_step_8::init();
 }
 
-/*
-	Name: main
-	Namespace: zm_tomb_ee_main
-	Checksum: 0x4BDEA872
-	Offset: 0xC50
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level flag::wait_till("start_zombie_round_logic");
   zm_sidequests::sidequest_start("little_girl_lost");
 }
 
-/*
-	Name: init_sidequest
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xA387EE0F
-	Offset: 0xC98
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_sidequest() {
   level.n_ee_step = 0;
   level.n_ee_robot_staffs_planted = 0;
 }
 
-/*
-	Name: sidequest_logic
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xA87C316
-	Offset: 0xCC0
-	Size: 0x280
-	Parameters: 0
-	Flags: Linked
-*/
 function sidequest_logic() {
   level._cur_stage_name = "step_0";
   level flag::wait_till("ee_all_staffs_crafted");
@@ -117,38 +82,29 @@ function sidequest_logic() {
   level.n_ee_step++;
   level thread zombie_blood_hint_watch();
   zm_sidequests::stage_start("little_girl_lost", "step_1");
-  level waittill(# "little_girl_lost_step_1_over");
+  level waittill("little_girl_lost_step_1_over");
   zm_sidequests::stage_start("little_girl_lost", "step_2");
-  level waittill(# "little_girl_lost_step_2_over");
+  level waittill("little_girl_lost_step_2_over");
   level thread zm_tomb_amb::sndplaystingerwithoverride("ee_main_1");
   zm_sidequests::stage_start("little_girl_lost", "step_3");
-  level waittill(# "little_girl_lost_step_3_over");
+  level waittill("little_girl_lost_step_3_over");
   level thread zm_tomb_amb::sndplaystingerwithoverride("ee_main_2");
   zm_sidequests::stage_start("little_girl_lost", "step_4");
-  level waittill(# "little_girl_lost_step_4_over");
+  level waittill("little_girl_lost_step_4_over");
   level thread zm_tomb_amb::sndplaystingerwithoverride("ee_main_3");
   zm_sidequests::stage_start("little_girl_lost", "step_5");
-  level waittill(# "little_girl_lost_step_5_over");
+  level waittill("little_girl_lost_step_5_over");
   level thread zm_tomb_amb::sndplaystingerwithoverride("ee_main_4");
   zm_sidequests::stage_start("little_girl_lost", "step_6");
-  level waittill(# "little_girl_lost_step_6_over");
+  level waittill("little_girl_lost_step_6_over");
   level thread zm_tomb_amb::sndplaystingerwithoverride("ee_main_5");
   zm_sidequests::stage_start("little_girl_lost", "step_7");
-  level waittill(# "little_girl_lost_step_7_over");
+  level waittill("little_girl_lost_step_7_over");
   level thread zm_tomb_amb::sndplaystingerwithoverride("ee_main_6");
   zm_sidequests::stage_start("little_girl_lost", "step_8");
-  level waittill(# "little_girl_lost_step_8_over");
+  level waittill("little_girl_lost_step_8_over");
 }
 
-/*
-	Name: zombie_blood_hint_watch
-	Namespace: zm_tomb_ee_main
-	Checksum: 0x9543F944
-	Offset: 0xF48
-	Size: 0x3E0
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_blood_hint_watch() {
   n_curr_step = level.n_ee_step;
   a_player_hint[0] = 0;
@@ -156,7 +112,7 @@ function zombie_blood_hint_watch() {
   a_player_hint[2] = 0;
   a_player_hint[3] = 0;
   while (!level flag::get("ee_samantha_released")) {
-    level waittill(# "player_zombie_blood", e_player);
+    level waittill("player_zombie_blood", e_player);
     if(n_curr_step != level.n_ee_step) {
       n_curr_step = level.n_ee_step;
       for (i = 0; i < a_player_hint.size; i++) {
@@ -206,15 +162,6 @@ function zombie_blood_hint_watch() {
   }
 }
 
-/*
-	Name: get_step_announce_vox
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xA1C5980F
-	Offset: 0x1330
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function get_step_announce_vox() {
   switch (level.n_ee_step) {
     case 1: {
@@ -244,15 +191,6 @@ function get_step_announce_vox() {
   }
 }
 
-/*
-	Name: get_zombie_blood_hint_vox
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xD702FB28
-	Offset: 0x13D0
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function get_zombie_blood_hint_vox() {
   if(level flag::get("all_zones_captured")) {
     return ("vox_sam_upgrade_staff_clue_" + level.n_ee_step) + "_0";
@@ -260,15 +198,6 @@ function get_zombie_blood_hint_vox() {
   return ("vox_sam_upgrade_staff_clue_" + level.n_ee_step) + "_grbld_0";
 }
 
-/*
-	Name: get_zombie_blood_hint_generic_vox
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xCDEBAAA4
-	Offset: 0x1438
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function get_zombie_blood_hint_generic_vox() {
   if(!isdefined(level.generic_clue_index)) {
     level.generic_clue_index = 0;
@@ -287,15 +216,6 @@ function get_zombie_blood_hint_generic_vox() {
   return str_vo;
 }
 
-/*
-	Name: complete_sidequest
-	Namespace: zm_tomb_ee_main
-	Checksum: 0x32D747DD
-	Offset: 0x1518
-	Size: 0x2EA
-	Parameters: 0
-	Flags: Linked
-*/
 function complete_sidequest() {
   level lui::prime_movie("zm_outro_tomb", 0, "");
   level.sndgameovermusicoverride = "game_over_ee";
@@ -311,9 +231,9 @@ function complete_sidequest() {
   util::delay(0.5, undefined, & remove_portal_beam);
   level thread lui::play_movie("zm_outro_tomb", "fullscreen", 0, 0, "");
   level lui::screen_fade_out(0, "black", "starting_ee_screen");
-  level waittill(# "movie_done");
+  level waittill("movie_done");
   level.custom_intermission = & player_intermission_ee;
-  level notify(# "end_game");
+  level notify("end_game");
   level thread lui::screen_fade_in(2, "black", "starting_ee_screen");
   wait(1.5);
   foreach(player in a_players) {
@@ -322,44 +242,17 @@ function complete_sidequest() {
   }
 }
 
-/*
-	Name: function_202bf99e
-	Namespace: zm_tomb_ee_main
-	Checksum: 0x1FBCA3D
-	Offset: 0x1810
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function function_202bf99e(var_87423d00) {
-  self endon(# "end_game");
+  self endon("end_game");
   self lui::screen_fade_in(var_87423d00);
 }
 
-/*
-	Name: remove_portal_beam
-	Namespace: zm_tomb_ee_main
-	Checksum: 0x18A1CB50
-	Offset: 0x1848
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function remove_portal_beam() {
   if(isdefined(level.ee_ending_beam_fx)) {
     level.ee_ending_beam_fx delete();
   }
 }
 
-/*
-	Name: generic_stage_start
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xDD48341
-	Offset: 0x1880
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function generic_stage_start() {
   str_vox = get_step_announce_vox();
   if(isdefined(str_vox)) {
@@ -367,15 +260,6 @@ function generic_stage_start() {
   }
 }
 
-/*
-	Name: generic_stage_end
-	Namespace: zm_tomb_ee_main
-	Checksum: 0x2BE560B1
-	Offset: 0x18D0
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function generic_stage_end() {
   level.n_ee_step++;
   if(level.n_ee_step <= 6) {
@@ -385,15 +269,6 @@ function generic_stage_end() {
   util::wait_network_frame();
 }
 
-/*
-	Name: all_staffs_inserted_in_puzzle_room
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xE989E181
-	Offset: 0x1938
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function all_staffs_inserted_in_puzzle_room() {
   n_staffs_inserted = 0;
   foreach(staff in level.a_elemental_staffs) {
@@ -407,15 +282,6 @@ function all_staffs_inserted_in_puzzle_room() {
   return false;
 }
 
-/*
-	Name: ee_samantha_say
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xC5CB19D3
-	Offset: 0x1A08
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function ee_samantha_say(str_vox) {
   level flag::wait_till_clear("story_vo_playing");
   level flag::set("story_vo_playing");
@@ -425,21 +291,12 @@ function ee_samantha_say(str_vox) {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: player_intermission_ee
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xDE1D59B2
-	Offset: 0x1AE0
-	Size: 0x622
-	Parameters: 0
-	Flags: Linked
-*/
 function player_intermission_ee() {
   self closeingamemenu();
-  level endon(# "stop_intermission");
-  self endon(# "disconnect");
-  self endon(# "death");
-  self notify(# "_zombie_game_over");
+  level endon("stop_intermission");
+  self endon("disconnect");
+  self endon("death");
+  self notify("_zombie_game_over");
   self.score = self.score_total;
   self.sessionstate = "intermission";
   self.spectatorclient = -1;
@@ -451,10 +308,8 @@ function player_intermission_ee() {
   if(!isdefined(points) || points.size == 0) {
     points = getentarray("info_intermission", "classname");
     if(points.size < 1) {
-      /#
       println("");
-      # /
-        return;
+      return;
     }
   }
   self.game_over_bg = newclienthudelem(self);
@@ -513,17 +368,7 @@ function player_intermission_ee() {
   }
 }
 
-/*
-	Name: setup_ee_main_devgui
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xF901B9C4
-	Offset: 0x2110
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_ee_main_devgui() {
-  /#
   wait(5);
   b_activated = 0;
   while (!b_activated) {
@@ -544,20 +389,9 @@ function setup_ee_main_devgui() {
   adddebugcommand("");
   adddebugcommand("");
   level thread watch_devgui_ee_main();
-  # /
 }
 
-/*
-	Name: watch_devgui_ee_main
-	Namespace: zm_tomb_ee_main
-	Checksum: 0x19A833D3
-	Offset: 0x2308
-	Size: 0x478
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_devgui_ee_main() {
-  /#
   while (true) {
     if(getdvarstring("") == "") {
       setdvar("", "");
@@ -571,12 +405,12 @@ function watch_devgui_ee_main() {
         }
         case "": {
           level flag::set("");
-          level waittill(# "little_girl_lost_step_1_over");
+          level waittill("little_girl_lost_step_1_over");
           break;
         }
         case "": {
           level flag::set("");
-          level waittill(# "little_girl_lost_step_2_over");
+          level waittill("little_girl_lost_step_2_over");
           break;
         }
         case "": {
@@ -585,34 +419,34 @@ function watch_devgui_ee_main() {
           if(isdefined(m_floor)) {
             m_floor delete();
           }
-          level waittill(# "little_girl_lost_step_3_over");
+          level waittill("little_girl_lost_step_3_over");
           break;
         }
         case "": {
           level flag::set("");
           level flag::set("");
-          level waittill(# "little_girl_lost_step_4_over");
+          level waittill("little_girl_lost_step_4_over");
           break;
         }
         case "": {
           level flag::set("");
           level flag::clear("");
-          level waittill(# "little_girl_lost_step_5_over");
+          level waittill("little_girl_lost_step_5_over");
           break;
         }
         case "": {
           level flag::set("");
-          level waittill(# "little_girl_lost_step_6_over");
+          level waittill("little_girl_lost_step_6_over");
           break;
         }
         case "": {
           level flag::set("");
-          level waittill(# "little_girl_lost_step_7_over");
+          level waittill("little_girl_lost_step_7_over");
           break;
         }
         case "": {
           level flag::set("");
-          level waittill(# "little_girl_lost_step_8_over");
+          level waittill("little_girl_lost_step_8_over");
           break;
         }
         default: {
@@ -633,18 +467,8 @@ function watch_devgui_ee_main() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: function_ab51bfd
-	Namespace: zm_tomb_ee_main
-	Checksum: 0xF95EA982
-	Offset: 0x2788
-	Size: 0x1A2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ab51bfd() {
   a_ai_enemies = getaiteamarray("axis");
   foreach(ai in a_ai_enemies) {

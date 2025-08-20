@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_ee_main_step_5.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -14,79 +18,31 @@
 #using scripts\zm\zm_tomb_ee_main;
 #using scripts\zm\zm_tomb_utility;
 #using scripts\zm\zm_tomb_vo;
-
 #namespace zm_tomb_ee_main_step_5;
 
-/*
-	Name: init
-	Namespace: zm_tomb_ee_main_step_5
-	Checksum: 0x7394AB09
-	Offset: 0x470
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   zm_sidequests::declare_sidequest_stage("little_girl_lost", "step_5", & init_stage, & stage_logic, & exit_stage);
 }
 
-/*
-	Name: init_stage
-	Namespace: zm_tomb_ee_main_step_5
-	Checksum: 0x119A68A1
-	Offset: 0x4D0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function init_stage() {
   level._cur_stage_name = "step_5";
   level.callbackvehicledamage = & ee_plane_vehicledamage;
   level.zombie_ai_limit--;
 }
 
-/*
-	Name: stage_logic
-	Namespace: zm_tomb_ee_main_step_5
-	Checksum: 0xB43EBF60
-	Offset: 0x510
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function stage_logic() {
-  /#
   iprintln(level._cur_stage_name + "");
-  # /
-    level thread spawn_zombie_blood_plane();
+  level thread spawn_zombie_blood_plane();
   level flag::wait_till("ee_maxis_drone_retrieved");
   util::wait_network_frame();
   zm_sidequests::stage_completed("little_girl_lost", level._cur_stage_name);
 }
 
-/*
-	Name: exit_stage
-	Namespace: zm_tomb_ee_main_step_5
-	Checksum: 0xAE415BA0
-	Offset: 0x5B0
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function exit_stage(success) {
   level.zombie_ai_limit++;
-  level notify(# "hash_8b0d379e");
+  level notify("hash_8b0d379e");
 }
 
-/*
-	Name: spawn_zombie_blood_plane
-	Namespace: zm_tomb_ee_main_step_5
-	Checksum: 0xBE347344
-	Offset: 0x5E0
-	Size: 0x514
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_zombie_blood_plane() {
   s_biplane_pos = struct::get("air_crystal_biplane_pos", "targetname");
   vh_biplane = spawnvehicle("biplane_zm", (0, 0, 0), (0, 0, 0), "zombie_blood_biplane");
@@ -120,7 +76,7 @@ function spawn_zombie_blood_plane() {
   linker setmodel("tag_origin");
   ai_pilot linkto(linker);
   linker moveto(a_start_pos[0].origin, 3);
-  linker waittill(# "movedone");
+  linker waittill("movedone");
   linker delete();
   ai_pilot util::stop_magic_bullet_shield();
   level thread zombie_pilot_sound(ai_pilot);
@@ -129,19 +85,10 @@ function spawn_zombie_blood_plane() {
   ai_pilot zombie_utility::set_zombie_run_cycle("sprint");
   ai_pilot.zombie_think_done = 1;
   ai_pilot thread pilot_loop_logic(a_start_pos[0]);
-  ai_pilot waittill(# "death");
+  ai_pilot waittill("death");
   level thread spawn_quadrotor_pickup(ai_pilot.origin, ai_pilot.angles);
 }
 
-/*
-	Name: zombie_pilot_sound
-	Namespace: zm_tomb_ee_main_step_5
-	Checksum: 0xD6241B94
-	Offset: 0xB00
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_pilot_sound(ai_pilot) {
   sndent = spawn("script_origin", ai_pilot.origin);
   sndent playloopsound("zmb_zombieblood_3rd_loop_other");
@@ -152,34 +99,16 @@ function zombie_pilot_sound(ai_pilot) {
   sndent delete();
 }
 
-/*
-	Name: pilot_loop_logic
-	Namespace: zm_tomb_ee_main_step_5
-	Checksum: 0x77B8383
-	Offset: 0xBC8
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function pilot_loop_logic(s_start) {
-  self endon(# "death");
+  self endon("death");
   s_goal = s_start;
   while (isalive(self)) {
     self setgoalpos(s_goal.origin);
-    self waittill(# "goal");
+    self waittill("goal");
     s_goal = struct::get(s_goal.target, "targetname");
   }
 }
 
-/*
-	Name: ee_plane_vehicledamage
-	Namespace: zm_tomb_ee_main_step_5
-	Checksum: 0x6A7B560E
-	Offset: 0xC70
-	Size: 0x104
-	Parameters: 15
-	Flags: Linked
-*/
 function ee_plane_vehicledamage(e_inflictor, e_attacker, n_damage, n_dflags, str_means_of_death, var_740c2c73, v_point, v_dir, str_hit_loc, v_origin, psoffsettime, b_damage_from_underneath, n_model_index, str_part_name, v_normal) {
   if(self.vehicletype == "biplane_zm" && !self flag::get("biplane_down")) {
     if(isplayer(e_attacker) && e_attacker.zombie_vars["zombie_powerup_zombie_blood_on"]) {
@@ -190,15 +119,6 @@ function ee_plane_vehicledamage(e_inflictor, e_attacker, n_damage, n_dflags, str
   return n_damage;
 }
 
-/*
-	Name: spawn_quadrotor_pickup
-	Namespace: zm_tomb_ee_main_step_5
-	Checksum: 0x7CF6ECA9
-	Offset: 0xD80
-	Size: 0x19C
-	Parameters: 2
-	Flags: Linked
-*/
 function spawn_quadrotor_pickup(v_origin, v_angles) {
   m_quadrotor = spawn("script_model", v_origin + vectorscale((0, 0, 1), 30));
   m_quadrotor.angles = v_angles;
@@ -217,20 +137,11 @@ function spawn_quadrotor_pickup(v_origin, v_angles) {
   zm_unitrigger::unregister_unitrigger(unitrigger_stub);
 }
 
-/*
-	Name: quadrotor_pickup_think
-	Namespace: zm_tomb_ee_main_step_5
-	Checksum: 0x4AF01401
-	Offset: 0xF28
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function quadrotor_pickup_think() {
-  self endon(# "kill_trigger");
+  self endon("kill_trigger");
   m_quadrotor = getent("quadrotor_pickup", "targetname");
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     player playsound("vox_maxi_drone_upgraded_0");
     level flag::clear("ee_quadrotor_disabled");
     level flag::set("ee_maxis_drone_retrieved");

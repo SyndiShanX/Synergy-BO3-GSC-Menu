@@ -1,33 +1,18 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicles\_raps.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\vehicle_shared;
-
 #namespace raps;
 
-/*
-	Name: main
-	Namespace: raps
-	Checksum: 0x95687222
-	Offset: 0x140
-	Size: 0x4C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   clientfield::register("vehicle", "raps_side_deathfx", 1, 1, "int", & do_side_death_fx, 0, 0);
 }
 
-/*
-	Name: adjust_side_death_dir_if_trace_fail
-	Namespace: raps
-	Checksum: 0x3E063D2E
-	Offset: 0x198
-	Size: 0x124
-	Parameters: 4
-	Flags: Linked
-*/
 function adjust_side_death_dir_if_trace_fail(origin, side_dir, fxlength, up_dir) {
   end = origin + (side_dir * fxlength);
   trace = bullettrace(origin, end, 0, self, 1);
@@ -42,17 +27,8 @@ function adjust_side_death_dir_if_trace_fail(origin, side_dir, fxlength, up_dir)
   return side_dir;
 }
 
-/*
-	Name: do_side_death_fx
-	Namespace: raps
-	Checksum: 0x60F476ED
-	Offset: 0x2C8
-	Size: 0x37C
-	Parameters: 7
-	Flags: Linked
-*/
 function do_side_death_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   vehicle::wait_for_dobj(localclientnum);
   radius = 1;
   fxlength = 40;

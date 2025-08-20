@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\bonuszm\_bonuszm_zmsng.gsc
+*************************************************/
+
 #using scripts\cp\_challenges;
 #using scripts\cp\_objectives;
 #using scripts\cp\_util;
@@ -10,31 +14,12 @@
 #using scripts\shared\gameobjects_shared;
 #using scripts\shared\music_shared;
 #using scripts\shared\system_shared;
-
 #namespace collectibles;
 
-/*
-	Name: __init__sytem__
-	Namespace: collectibles
-	Checksum: 0xF37EF3F8
-	Offset: 0x5F8
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("bzm_collectibles", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: collectibles
-	Checksum: 0x484EBC81
-	Offset: 0x640
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!sessionmodeiscampaignzombiesgame()) {
     return;
@@ -46,15 +31,6 @@ function __init__() {
   level thread function_7c315d3a();
 }
 
-/*
-	Name: __main__
-	Namespace: collectibles
-	Checksum: 0x63F57881
-	Offset: 0x6E8
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   if(!sessionmodeiscampaignzombiesgame()) {
     return;
@@ -62,15 +38,6 @@ function __main__() {
   thread function_ab60ef67();
 }
 
-/*
-	Name: function_ab60ef67
-	Namespace: collectibles
-	Checksum: 0xAD974EDE
-	Offset: 0x720
-	Size: 0x20C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ab60ef67() {
   wait(2);
   level.var_8a9d11b = 0;
@@ -99,15 +66,6 @@ function function_ab60ef67() {
   callback::on_spawned( & on_player_spawned);
 }
 
-/*
-	Name: function_b963f25
-	Namespace: collectibles
-	Checksum: 0xE2C8EC89
-	Offset: 0x938
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_b963f25(mdl_collectible) {
   mdl_collectible.radius = 60;
   mdl_collectible.offset = vectorscale((0, 0, 1), 5);
@@ -120,26 +78,8 @@ function private function_b963f25(mdl_collectible) {
   return mdl_collectible;
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: collectibles
-	Checksum: 0x99EC1590
-	Offset: 0xA28
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {}
 
-/*
-	Name: function_8765a33c
-	Namespace: collectibles
-	Checksum: 0xEFD0FCB2
-	Offset: 0xA38
-	Size: 0x3A8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8765a33c(mdl_collectible) {
   mdl_collectible show();
   mdl_collectible = function_b963f25(mdl_collectible);
@@ -149,7 +89,7 @@ function function_8765a33c(mdl_collectible) {
   trigger_use usetriggerrequirelookat();
   trigger_use setteamfortrigger("none");
   trigger_use setcursorhint("HINT_INTERACTIVE_PROMPT");
-  trigger_use sethintstring( & "COLLECTIBLE_PICK_UP");
+  trigger_use sethintstring(&"COLLECTIBLE_PICK_UP");
   var_837a6185 = gameobjects::create_use_object("any", trigger_use, array(mdl_collectible), (0, 0, 0), & "cp_magic_song");
   var_837a6185 gameobjects::allow_use("any");
   var_837a6185 gameobjects::set_use_time(0.35);
@@ -169,21 +109,10 @@ function function_8765a33c(mdl_collectible) {
   mdl_collectible setmodel("p7_zm_teddybear_sitting");
   mdl_collectible clientfield::set("powerup_on_fx", 2);
   mdl_collectible setscale(0.7);
-  /#
   level thread debug_draw_line(var_837a6185.origin);
-  # /
-    return var_837a6185;
+  return var_837a6185;
 }
 
-/*
-	Name: function_9b46b73e
-	Namespace: collectibles
-	Checksum: 0xC218DE9A
-	Offset: 0xDE8
-	Size: 0x1A0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9b46b73e() {
   mapname = getrootmapname();
   foreach(collectible in level.collectibles) {
@@ -197,15 +126,6 @@ function function_9b46b73e() {
   }
 }
 
-/*
-	Name: onuse
-	Namespace: collectibles
-	Checksum: 0xB72548EA
-	Offset: 0xF90
-	Size: 0x4E2
-	Parameters: 1
-	Flags: Linked
-*/
 function onuse(e_player) {
   mapname = getrootmapname();
   foreach(player in level.players) {
@@ -290,10 +210,8 @@ function onuse(e_player) {
       }
     }
     if(isdefined(state)) {
-      /#
       iprintln("" + unlockname);
-      # /
-        music::setmusicstate(state);
+      music::setmusicstate(state);
       level.bonuszm_musicoverride = 1;
       level thread function_d789d2e(state);
     }
@@ -305,15 +223,6 @@ function onuse(e_player) {
   }
 }
 
-/*
-	Name: function_d789d2e
-	Namespace: collectibles
-	Checksum: 0x5B565DEB
-	Offset: 0x1480
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d789d2e(state) {
   aliasname = ("mus_" + state) + "_intro";
   playbacktime = soundgetplaybacktime(aliasname);
@@ -326,51 +235,22 @@ function function_d789d2e(state) {
   level.bonuszm_musicoverride = 0;
 }
 
-/*
-	Name: onbeginuse
-	Namespace: collectibles
-	Checksum: 0x2BED3B14
-	Offset: 0x1530
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function onbeginuse(e_player) {}
 
-/*
-	Name: debug_draw_line
-	Namespace: collectibles
-	Checksum: 0xDD46CDE6
-	Offset: 0x1548
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function debug_draw_line(origin1) {
-  /#
   while (true) {
     recordline(origin1, origin1 + vectorscale((0, 0, 1), 2000), (1, 1, 1), "");
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: function_7c315d3a
-	Namespace: collectibles
-	Checksum: 0xF6B94855
-	Offset: 0x15A8
-	Size: 0x78
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7c315d3a() {
   while (true) {
-    level waittill(# "scene_sequence_started");
+    level waittill("scene_sequence_started");
     if(isdefined(level.bonuszm_musicoverride) && level.bonuszm_musicoverride) {
       level clientfield::set("cpzm_song_suppression", 1);
     }
-    level waittill(# "scene_sequence_ended");
+    level waittill("scene_sequence_ended");
     level clientfield::set("cpzm_song_suppression", 0);
   }
 }

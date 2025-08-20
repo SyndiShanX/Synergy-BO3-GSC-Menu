@@ -1,35 +1,20 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_theater_teleporter.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\scene_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace zm_theater_teleporter;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_theater_teleporter
-	Checksum: 0xBB6D6FBD
-	Offset: 0x380
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_theater_teleporter", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_theater_teleporter
-	Checksum: 0xCEECF62E
-	Offset: 0x3C0
-	Size: 0x1DC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   visionset_mgr::register_overlay_info_style_postfx_bundle("zm_theater_teleport", 21000, 1, "pstfx_zm_kino_teleport");
   clientfield::register("scriptmover", "extra_screen", 21000, 1, "int", & function_667aa0b4, 0, 0);
@@ -40,47 +25,20 @@ function __init__() {
   clientfield::register("scriptmover", "teleporter_link_cable_mtl", 21000, 1, "int", & teleporter_link_cable_mtl, 0, 0);
 }
 
-/*
-	Name: main
-	Namespace: zm_theater_teleporter
-	Checksum: 0x5F4CCEEC
-	Offset: 0x5A8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level thread setup_teleporter_screen();
   level thread pack_clock_init();
 }
 
-/*
-	Name: setup_teleporter_screen
-	Namespace: zm_theater_teleporter
-	Checksum: 0x463B6E93
-	Offset: 0x5E8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_teleporter_screen() {
-  level waittill(# "power_on");
+  level waittill("power_on");
   for (i = 0; i < level.localplayers.size; i++) {
     level.extracamactive[i] = 0;
   }
 }
 
-/*
-	Name: pack_clock_init
-	Namespace: zm_theater_teleporter
-	Checksum: 0x56EF38D0
-	Offset: 0x640
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked
-*/
 function pack_clock_init() {
-  level waittill(# "pack_clock_start", clientnum);
+  level waittill("pack_clock_start", clientnum);
   curr_time = getsystemtime();
   hours = curr_time[0];
   if(hours > 12) {
@@ -111,22 +69,13 @@ function pack_clock_init() {
   }
 }
 
-/*
-	Name: pack_clock_run
-	Namespace: zm_theater_teleporter
-	Checksum: 0x9ECD1A5B
-	Offset: 0x898
-	Size: 0x14C
-	Parameters: 1
-	Flags: Linked
-*/
 function pack_clock_run(time_values) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self rotatepitch((time_values["hand_time"] * time_values["rotate"]) * -1, 0.05);
-  self waittill(# "rotatedone");
+  self waittill("rotatedone");
   if(isdefined(time_values["first_rotate"])) {
     self rotatepitch(time_values["first_rotate"] * -1, 0.05);
-    self waittill(# "rotatedone");
+    self waittill("rotatedone");
   }
   prev_time = getsystemtime();
   while (true) {
@@ -139,15 +88,6 @@ function pack_clock_run(time_values) {
   }
 }
 
-/*
-	Name: function_667aa0b4
-	Namespace: zm_theater_teleporter
-	Checksum: 0x24325F55
-	Offset: 0x9F0
-	Size: 0x2E2
-	Parameters: 7
-	Flags: Linked
-*/
 function function_667aa0b4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     level.cameraent = getent(localclientnum, "theater_extracam_eye", "targetname");
@@ -176,17 +116,8 @@ function function_667aa0b4(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_a8255fab
-	Namespace: zm_theater_teleporter
-	Checksum: 0x385109B8
-	Offset: 0xCE0
-	Size: 0xFC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_a8255fab(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(newval) {
     n_fx_id = playfxontag(localclientnum, level._effect["teleport_player_kino"], self, "tag_fx_wormhole");
     setfxignorepause(localclientnum, n_fx_id, 1);
@@ -195,15 +126,6 @@ function function_a8255fab(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_2b23adc9
-	Namespace: zm_theater_teleporter
-	Checksum: 0x503EDEEF
-	Offset: 0xDE8
-	Size: 0x13A
-	Parameters: 7
-	Flags: Linked
-*/
 function function_2b23adc9(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   a_e_players = getlocalplayers();
   foreach(e_player in a_e_players) {
@@ -212,15 +134,6 @@ function function_2b23adc9(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_6776dea9
-	Namespace: zm_theater_teleporter
-	Checksum: 0x98CFCE89
-	Offset: 0xF30
-	Size: 0x27A
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6776dea9(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   var_33e4acb6 = (-306.684, 1116.25, 117.056);
   var_a1844610 = (0, 0, 0);
@@ -235,15 +148,6 @@ function function_6776dea9(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: play_fly_me_to_the_moon_fx
-	Namespace: zm_theater_teleporter
-	Checksum: 0x3FD1E314
-	Offset: 0x11B8
-	Size: 0x174
-	Parameters: 7
-	Flags: Linked
-*/
 function play_fly_me_to_the_moon_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self.fx_spot = util::spawn_model(localclientnum, "tag_origin", self.origin + (vectorscale((0, 0, -1), 19)), vectorscale((1, 0, 0), 90));
@@ -257,15 +161,6 @@ function play_fly_me_to_the_moon_fx(localclientnum, oldval, newval, bnewent, bin
   }
 }
 
-/*
-	Name: teleporter_link_cable_mtl
-	Namespace: zm_theater_teleporter
-	Checksum: 0x70A23F31
-	Offset: 0x1338
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function teleporter_link_cable_mtl(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self mapshaderconstant(localclientnum, 0, "scriptVector2", 1, 0, 0, 0);

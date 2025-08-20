@@ -1,34 +1,19 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_microwavegun.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_weap_microwavegun;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_weap_microwavegun
-	Checksum: 0xE4DC6790
-	Offset: 0x2E8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_microwavegun", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_weap_microwavegun
-	Checksum: 0xB583057F
-	Offset: 0x328
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("actor", "toggle_microwavegun_hit_response", 21000, 1, "int", & microwavegun_zombie_initial_hit_response, 0, 0);
   clientfield::register("actor", "toggle_microwavegun_expand_response", 21000, 1, "int", & microwavegun_zombie_expand_response, 0, 0);
@@ -40,15 +25,6 @@ function __init__() {
   level thread player_init();
 }
 
-/*
-	Name: player_init
-	Namespace: zm_weap_microwavegun
-	Checksum: 0x852BA97
-	Offset: 0x4A0
-	Size: 0x7A
-	Parameters: 0
-	Flags: Linked
-*/
 function player_init() {
   util::waitforclient(0);
   players = getlocalplayers();
@@ -57,30 +33,12 @@ function player_init() {
   }
 }
 
-/*
-	Name: microwavegun_create_hit_response_fx
-	Namespace: zm_weap_microwavegun
-	Checksum: 0xDCAF4BA2
-	Offset: 0x528
-	Size: 0x68
-	Parameters: 3
-	Flags: Linked
-*/
 function microwavegun_create_hit_response_fx(localclientnum, tag, effect) {
   if(!isdefined(self._microwavegun_hit_response_fx[localclientnum][tag])) {
     self._microwavegun_hit_response_fx[localclientnum][tag] = playfxontag(localclientnum, effect, self, tag);
   }
 }
 
-/*
-	Name: microwavegun_delete_hit_response_fx
-	Namespace: zm_weap_microwavegun
-	Checksum: 0x30D3C6F4
-	Offset: 0x598
-	Size: 0x66
-	Parameters: 2
-	Flags: Linked
-*/
 function microwavegun_delete_hit_response_fx(localclientnum, tag) {
   if(isdefined(self._microwavegun_hit_response_fx[localclientnum][tag])) {
     deletefx(localclientnum, self._microwavegun_hit_response_fx[localclientnum][tag], 0);
@@ -88,17 +46,8 @@ function microwavegun_delete_hit_response_fx(localclientnum, tag) {
   }
 }
 
-/*
-	Name: microwavegun_bloat
-	Namespace: zm_weap_microwavegun
-	Checksum: 0xBF90A093
-	Offset: 0x608
-	Size: 0x17C
-	Parameters: 1
-	Flags: Linked
-*/
 function microwavegun_bloat(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   durationmsec = 2500;
   tag_pos = self gettagorigin("J_SpineLower");
   bloat_max_fraction = 1;
@@ -124,15 +73,6 @@ function microwavegun_bloat(localclientnum) {
   }
 }
 
-/*
-	Name: microwavegun_zombie_initial_hit_response
-	Namespace: zm_weap_microwavegun
-	Checksum: 0x1EFA0C2
-	Offset: 0x790
-	Size: 0x166
-	Parameters: 7
-	Flags: Linked
-*/
 function microwavegun_zombie_initial_hit_response(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(isdefined(self.microwavegun_zombie_hit_response)) {
     self[[self.microwavegun_zombie_hit_response]](localclientnum, newval, bnewent);
@@ -157,15 +97,6 @@ function microwavegun_zombie_initial_hit_response(localclientnum, oldval, newval
   }
 }
 
-/*
-	Name: microwavegun_zombie_expand_response
-	Namespace: zm_weap_microwavegun
-	Checksum: 0xFC4397FE
-	Offset: 0x900
-	Size: 0x30E
-	Parameters: 7
-	Flags: Linked
-*/
 function microwavegun_zombie_expand_response(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(isdefined(self.microwavegun_zombie_hit_response)) {
     self[[self.microwavegun_zombie_hit_response]](localclientnum, newval, bnewent);

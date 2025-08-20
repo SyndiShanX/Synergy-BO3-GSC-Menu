@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/******************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\abilities\gadgets\_gadget_thief.gsc
+******************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\_burnplayer;
 #using scripts\shared\abilities\_ability_gadgets;
@@ -16,31 +20,12 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace thief;
 
-/*
-	Name: __init__sytem__
-	Namespace: thief
-	Checksum: 0x645AFB8D
-	Offset: 0x868
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("gadget_thief", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: thief
-	Checksum: 0x6C13FA14
-	Offset: 0x8A8
-	Size: 0x26C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "thief_state", 11000, 2, "int");
   clientfield::register("toplayer", "thief_weapon_option", 11000, 4, "int");
@@ -58,38 +43,16 @@ function __init__() {
   setup_gadget_thief_array();
   level.gadgetthieftimecharge = 0;
   level.gadgetthiefshutdownfullcharge = getdvarint("gadgetThiefShutdownFullCharge", 1);
-  /#
   level thread updatedvars();
-  # /
 }
 
-/*
-	Name: updatedvars
-	Namespace: thief
-	Checksum: 0xF51BB4D
-	Offset: 0xB20
-	Size: 0x40
-	Parameters: 0
-	Flags: Linked
-*/
 function updatedvars() {
-  /#
   while (true) {
     level.gadgetthieftimecharge = getdvarint("", 0);
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: setup_gadget_thief_array
-	Namespace: thief
-	Checksum: 0xB755B5E2
-	Offset: 0xB68
-	Size: 0x1D6
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_gadget_thief_array() {
   weapons = enumerateweapons("weapon");
   level.gadgetthiefarray = [];
@@ -102,54 +65,18 @@ function setup_gadget_thief_array() {
   }
 }
 
-/*
-	Name: gadget_thief_is_inuse
-	Namespace: thief
-	Checksum: 0x86FDE913
-	Offset: 0xD48
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function gadget_thief_is_inuse(slot) {
   return self gadgetisactive(slot);
 }
 
-/*
-	Name: gadget_thief_is_flickering
-	Namespace: thief
-	Checksum: 0x32161E00
-	Offset: 0xD78
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function gadget_thief_is_flickering(slot) {
   return self gadgetflickering(slot);
 }
 
-/*
-	Name: gadget_thief_on_flicker
-	Namespace: thief
-	Checksum: 0xB1063DE9
-	Offset: 0xDA8
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_thief_on_flicker(slot, weapon) {
   self thread gadget_thief_flicker(slot, weapon);
 }
 
-/*
-	Name: gadget_thief_on_give
-	Namespace: thief
-	Checksum: 0x32653016
-	Offset: 0xDE8
-	Size: 0x1A4
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_thief_on_give(slot, weapon) {
   self.gadget_thief_kill_callback = & gadget_thief_kill_callback;
   self.gadget_thief_slot = slot;
@@ -169,67 +96,25 @@ function gadget_thief_on_give(slot, weapon) {
   }
 }
 
-/*
-	Name: gadget_thief_kill_callback
-	Namespace: thief
-	Checksum: 0x56A2A451
-	Offset: 0xF98
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_thief_kill_callback(victim, weapon) {
-  /#
   assert(isdefined(self.gadget_thief_slot));
-  # /
-    self thread handlethiefkill(self.gadget_thief_slot, weapon, victim);
+  self thread handlethiefkill(self.gadget_thief_slot, weapon, victim);
 }
 
-/*
-	Name: gadget_thief_on_take
-	Namespace: thief
-	Checksum: 0xA7A1FFAA
-	Offset: 0x1000
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_thief_on_take(slot, weapon) {
-  /#
   if(level.devgui_giving_abilities === 1) {
     self.isthief = 0;
   }
-  # /
 }
 
-/*
-	Name: gadget_thief_on_connect
-	Namespace: thief
-	Checksum: 0xE4040F63
-	Offset: 0x1040
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function gadget_thief_on_connect() {
   self.pers[# "hash_c5c4a13f"] = 1;
-  /#
   level.gadgetthieftforcebeam = getdvarint("", 0);
   if(level.gadgetthieftforcebeam) {
     self thread watchforallkillsdebug();
   }
-  # /
 }
 
-/*
-	Name: gadget_thief_on_player_spawn
-	Namespace: thief
-	Checksum: 0x3DF4EBFF
-	Offset: 0x10B0
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function gadget_thief_on_player_spawn() {
   if(self.isthief === 1) {
     self thread watchheroweaponchanged();
@@ -242,48 +127,12 @@ function gadget_thief_on_player_spawn() {
   }
 }
 
-/*
-	Name: watch_entity_shutdown
-	Namespace: thief
-	Checksum: 0x99EC1590
-	Offset: 0x1148
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function watch_entity_shutdown() {}
 
-/*
-	Name: gadget_thief_on_activate
-	Namespace: thief
-	Checksum: 0xE299EC34
-	Offset: 0x1158
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_thief_on_activate(slot, weapon) {}
 
-/*
-	Name: gadget_thief_is_ready
-	Namespace: thief
-	Checksum: 0x21A9851
-	Offset: 0x1178
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_thief_is_ready(slot, weapon) {}
 
-/*
-	Name: gadget_thief_active
-	Namespace: thief
-	Checksum: 0xE407A7C
-	Offset: 0x1198
-	Size: 0x8C
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_thief_active(slot, weapon) {
   waittillframeend();
   if(isdefined(self.pers[# "hash_c35f137f"]) && weapon.name != "gadget_thief") {
@@ -292,15 +141,6 @@ function gadget_thief_active(slot, weapon) {
   self thread watchforherokill(slot);
 }
 
-/*
-	Name: getstolenheroweapon
-	Namespace: thief
-	Checksum: 0x5B807518
-	Offset: 0x1230
-	Size: 0x172
-	Parameters: 1
-	Flags: Linked
-*/
 function getstolenheroweapon(gadget) {
   if(gadget.isheroweapon == 0) {
     heroweaponequivalent = "";
@@ -351,32 +191,14 @@ function getstolenheroweapon(gadget) {
   return heroweapon;
 }
 
-/*
-	Name: resetflashstartandendafterdelay
-	Namespace: thief
-	Checksum: 0xD99D4A12
-	Offset: 0x13B0
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function resetflashstartandendafterdelay(delay) {
-  self notify(# "resetflashstartandend");
-  self endon(# "resetflashstartandend");
+  self notify("resetflashstartandend");
+  self endon("resetflashstartandend");
   wait(delay);
   self clientfield::set_player_uimodel("playerAbilities.playerGadget3.flashStart", 0);
   self clientfield::set_player_uimodel("playerAbilities.playerGadget3.flashEnd", 0);
 }
 
-/*
-	Name: getthiefpowergain
-	Namespace: thief
-	Checksum: 0xCE642199
-	Offset: 0x1428
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function getthiefpowergain() {
   gadgetthiefkillpowergain = getdvarfloat("gadgetThiefKillPowerGain", 12.5);
   thiefgametypefactor = (isdefined(getgametypesetting("scoreThiefPowerGainFactor")) ? getgametypesetting("scoreThiefPowerGainFactor") : 1);
@@ -384,15 +206,6 @@ function getthiefpowergain() {
   return gadgetthiefkillpowergain;
 }
 
-/*
-	Name: handlethiefkill
-	Namespace: thief
-	Checksum: 0xDF54EDC8
-	Offset: 0x14C8
-	Size: 0x384
-	Parameters: 3
-	Flags: Linked
-*/
 function handlethiefkill(slot, weapon, victim) {
   if(isdefined(weapon) && !killstreaks::is_killstreak_weapon(weapon) && !weapon.isheroweapon && isalive(self)) {
     if(self gadgetisactive(slot) == 0) {
@@ -428,15 +241,6 @@ function handlethiefkill(slot, weapon, victim) {
   }
 }
 
-/*
-	Name: earnedspecialistweapon
-	Namespace: thief
-	Checksum: 0x9BB3AF16
-	Offset: 0x1858
-	Size: 0x304
-	Parameters: 4
-	Flags: Linked
-*/
 function earnedspecialistweapon(victim, slot, wasfullycharged, stolenheroweapon) {
   if(!isdefined(victim)) {
     return;
@@ -471,25 +275,16 @@ function earnedspecialistweapon(victim, slot, wasfullycharged, stolenheroweapon)
   }
 }
 
-/*
-	Name: giveflipweapon
-	Namespace: thief
-	Checksum: 0xA8AAD111
-	Offset: 0x1B68
-	Size: 0x1BC
-	Parameters: 3
-	Flags: Linked
-*/
 function giveflipweapon(slot, victim, heroweapon) {
-  self notify(# "give_flip_weapon_singleton");
-  self endon(# "give_flip_weapon_singleton");
+  self notify("give_flip_weapon_singleton");
+  self endon("give_flip_weapon_singleton");
   previousgivefliptime = (isdefined(self.last_thief_give_flip_time) ? self.last_thief_give_flip_time : 0);
   self.last_thief_give_flip_time = gettime();
   alreadygivenflipthisframe = previousgivefliptime == self.last_thief_give_flip_time;
   self.pers[# "hash_5c5e3658"] = heroweapon;
   victimbodyindex = getvictimbodyindex(victim, heroweapon);
   self handlestolenscoreevent(heroweapon);
-  self notify(# "thief_flip_activated");
+  self notify("thief_flip_activated");
   if((self.last_thief_give_flip_time - previousgivefliptime) > 99) {
     self playsoundtoplayer("mpl_bm_specialist_coin_place", self);
   }
@@ -501,15 +296,6 @@ function giveflipweapon(slot, victim, heroweapon) {
   self thread watchforoptionuse(slot, victimbodyindex, 0);
 }
 
-/*
-	Name: givepreviouslyearnedspecialistweapon
-	Namespace: thief
-	Checksum: 0x25FE5033
-	Offset: 0x1D30
-	Size: 0xA4
-	Parameters: 2
-	Flags: Linked
-*/
 function givepreviouslyearnedspecialistweapon(slot, justspawned) {
   if(isdefined(self.pers[# "hash_c35f137f"])) {
     self thread gadget_give_random_gadget(slot, self.pers[# "hash_c35f137f"], self.pers[# "hash_476984c8"], justspawned);
@@ -519,50 +305,23 @@ function givepreviouslyearnedspecialistweapon(slot, justspawned) {
   }
 }
 
-/*
-	Name: disable_hero_gadget_activation
-	Namespace: thief
-	Checksum: 0xA1081A37
-	Offset: 0x1DE0
-	Size: 0x5C
-	Parameters: 1
-	Flags: None
-*/
 function disable_hero_gadget_activation(duration) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "thief_flip_activated");
+  self endon("death");
+  self endon("disconnect");
+  self endon("thief_flip_activated");
   self disableoffhandspecial();
   wait(duration);
   self enableoffhandspecial();
 }
 
-/*
-	Name: failsafe_reenable_offhand_special
-	Namespace: thief
-	Checksum: 0x39F462E5
-	Offset: 0x1E48
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function failsafe_reenable_offhand_special() {
-  self endon(# "end_failsafe_reenable_offhand_special");
+  self endon("end_failsafe_reenable_offhand_special");
   wait(3);
   if(isdefined(self)) {
     self enableoffhandspecial();
   }
 }
 
-/*
-	Name: handlestolenscoreevent
-	Namespace: thief
-	Checksum: 0x27CFB19F
-	Offset: 0x1E88
-	Size: 0x204
-	Parameters: 1
-	Flags: Linked
-*/
 function handlestolenscoreevent(heroweapon) {
   switch (heroweapon.name) {
     case "hero_minigun":
@@ -621,24 +380,15 @@ function handlestolenscoreevent(heroweapon) {
       return;
     }
   }
-  self luinotifyevent( & "score_event", 5, istring(label), 0, 0, 0, 1);
+  self luinotifyevent(&"score_event", 5, istring(label), 0, 0, 0, 1);
 }
 
-/*
-	Name: watchforherokill
-	Namespace: thief
-	Checksum: 0x9603C5FB
-	Offset: 0x2098
-	Size: 0x208
-	Parameters: 1
-	Flags: Linked
-*/
 function watchforherokill(slot) {
-  self notify(# "watchforthiefkill_singleton");
-  self endon(# "watchforthiefkill_singleton");
+  self notify("watchforthiefkill_singleton");
+  self endon("watchforthiefkill_singleton");
   self.gadgetthiefactive = 1;
   while (true) {
-    self waittill(# "hero_shutdown_gadget", herogadget, victim);
+    self waittill("hero_shutdown_gadget", herogadget, victim);
     stolenheroweapon = getstolenheroweapon(herogadget);
     performclientsideeffect = 0;
     if(performclientsideeffect) {
@@ -659,65 +409,27 @@ function watchforherokill(slot) {
   }
 }
 
-/*
-	Name: spawnthiefbeameffect
-	Namespace: thief
-	Checksum: 0xB9CBEDA
-	Offset: 0x22A8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function spawnthiefbeameffect(origin) {
   clientsideeffect = spawn("script_model", origin);
   clientsideeffect clientfield::set("gadget_thief_fx", 1);
   clientsideeffect thread waitthendelete(5);
 }
 
-/*
-	Name: watchforallkillsdebug
-	Namespace: thief
-	Checksum: 0x76089856
-	Offset: 0x2328
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function watchforallkillsdebug() {
-  /#
   while (true) {
-    self waittill(# "killed_enemy_player", victim);
+    self waittill("killed_enemy_player", victim);
     self spawnthiefbeameffect(victim.origin);
     clientsideeffect = spawn("", victim.origin);
     clientsideeffect clientfield::set("", 1);
     clientsideeffect thread waitthendelete(5);
   }
-  # /
 }
 
-/*
-	Name: waitthendelete
-	Namespace: thief
-	Checksum: 0x5D3F197C
-	Offset: 0x23F0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function waitthendelete(time) {
   wait(time);
   self delete();
 }
 
-/*
-	Name: gadget_give_random_gadget
-	Namespace: thief
-	Checksum: 0x7274BF44
-	Offset: 0x2420
-	Size: 0x20C
-	Parameters: 4
-	Flags: Linked
-*/
 function gadget_give_random_gadget(slot, weapon, weaponstolenfromentnum, justspawned = 0) {
   previousgadget = undefined;
   for (i = 0; i < 3; i++) {
@@ -732,36 +444,25 @@ function gadget_give_random_gadget(slot, weapon, weaponstolenfromentnum, justspa
     weapon = array::random(level.gadgetthiefarray);
   }
   selectedweapon = weapon;
-  /#
   if((getdvarint("", -1)) != -1) {
     selectedweapon = level.gadgetthiefarray[getdvarint("", -1)];
   }
-  # /
-    self giveweapon(selectedweapon);
+  self giveweapon(selectedweapon);
   self gadgetcharging(slot, level.gadgetthieftimecharge);
   self.gadgetthiefchargingslot = slot;
   self.pers[# "hash_c35f137f"] = selectedweapon;
   self.pers[# "hash_476984c8"] = weaponstolenfromentnum;
   if(!isdefined(previousgadget) || previousgadget != selectedweapon) {
-    self notify(# "thief_hero_weapon_changed", justspawned, selectedweapon);
+    self notify("thief_hero_weapon_changed", justspawned, selectedweapon);
   }
   self thread watchgadgetactivated(slot);
 }
 
-/*
-	Name: watchforoptionuse
-	Namespace: thief
-	Checksum: 0xBFCC443B
-	Offset: 0x2638
-	Size: 0x1F8
-	Parameters: 3
-	Flags: Linked
-*/
 function watchforoptionuse(slot, victimbodyindex, justspawned) {
-  self endon(# "death");
-  self endon(# "hero_gadget_activated");
-  self notify(# "watchforoptionuse_thief_singleton");
-  self endon(# "watchforoptionuse_thief_singleton");
+  self endon("death");
+  self endon("hero_gadget_activated");
+  self notify("watchforoptionuse_thief_singleton");
+  self endon("watchforoptionuse_thief_singleton");
   if(self.pers[# "hash_c5c4a13f"] == 0) {
     return;
   }
@@ -770,7 +471,7 @@ function watchforoptionuse(slot, victimbodyindex, justspawned) {
   if(!justspawned) {
     wait(0.85);
     self enableoffhandspecial();
-    self notify(# "end_failsafe_reenable_offhand_special");
+    self notify("end_failsafe_reenable_offhand_special");
   }
   while (true) {
     if(self dpad_left_pressed()) {
@@ -789,35 +490,17 @@ function watchforoptionuse(slot, victimbodyindex, justspawned) {
   }
 }
 
-/*
-	Name: dpad_left_pressed
-	Namespace: thief
-	Checksum: 0x4596C014
-	Offset: 0x2838
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function dpad_left_pressed() {
   return self actionslotthreebuttonpressed();
 }
 
-/*
-	Name: watchheroweaponchanged
-	Namespace: thief
-	Checksum: 0x9C74B7FC
-	Offset: 0x2860
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function watchheroweaponchanged() {
-  self notify(# "watchheroweaponchanged_singleton");
-  self endon(# "watchheroweaponchanged_singleton");
-  self endon(# "death");
-  self endon(# "disconnect");
+  self notify("watchheroweaponchanged_singleton");
+  self endon("watchheroweaponchanged_singleton");
+  self endon("death");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "thief_hero_weapon_changed", justspawned, newweapon);
+    self waittill("thief_hero_weapon_changed", justspawned, newweapon);
     if(justspawned) {
       if(isdefined(newweapon) && isdefined(newweapon.gadgetreadysoundplayer)) {
         self playsoundtoplayer(newweapon.gadgetreadysoundplayer, self);
@@ -828,24 +511,15 @@ function watchheroweaponchanged() {
   }
 }
 
-/*
-	Name: watchgadgetactivated
-	Namespace: thief
-	Checksum: 0x13B99CCD
-	Offset: 0x2938
-	Size: 0x1C4
-	Parameters: 1
-	Flags: Linked
-*/
 function watchgadgetactivated(slot) {
-  self notify(# "watchgadgetactivated_singleton");
-  self endon(# "watchgadgetactivated_singleton");
-  self waittill(# "hero_gadget_activated");
+  self notify("watchgadgetactivated_singleton");
+  self endon("watchgadgetactivated_singleton");
+  self waittill("hero_gadget_activated");
   self clientfield::set_to_player("thief_weapon_option", 0);
   self.pers[# "hash_c35f137f"] = undefined;
   self.pers[# "hash_5c5e3658"] = undefined;
   self.pers[# "hash_c5c4a13f"] = 1;
-  self waittill(# "heroability_off");
+  self waittill("heroability_off");
   power = self gadgetpowerget(slot);
   power = (int(power / getthiefpowergain())) * getthiefpowergain();
   self gadgetpowerset(slot, power);
@@ -858,17 +532,8 @@ function watchgadgetactivated(slot) {
   self clientfield::set_to_player("thief_state", 0);
 }
 
-/*
-	Name: gadget_thief_on_deactivate
-	Namespace: thief
-	Checksum: 0x8CC4CF03
-	Offset: 0x2B08
-	Size: 0xC0
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_thief_on_deactivate(slot, weapon) {
-  self waittill(# "heroability_off");
+  self waittill("heroability_off");
   for (i = 0; i < 3; i++) {
     if(isdefined(self._gadgets_player[i])) {
       self takeweapon(self._gadgets_player[i]);
@@ -879,26 +544,8 @@ function gadget_thief_on_deactivate(slot, weapon) {
   self.gadgetthiefchargingslot = slot;
 }
 
-/*
-	Name: gadget_thief_flicker
-	Namespace: thief
-	Checksum: 0x2DFC9126
-	Offset: 0x2BD0
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_thief_flicker(slot, weapon) {}
 
-/*
-	Name: set_gadget_status
-	Namespace: thief
-	Checksum: 0x10A85E9A
-	Offset: 0x2BF0
-	Size: 0x9C
-	Parameters: 2
-	Flags: None
-*/
 function set_gadget_status(status, time) {
   timestr = "";
   if(isdefined(time)) {
@@ -909,15 +556,6 @@ function set_gadget_status(status, time) {
   }
 }
 
-/*
-	Name: getvictimbodyindex
-	Namespace: thief
-	Checksum: 0x88CA1205
-	Offset: 0x2C98
-	Size: 0x152
-	Parameters: 2
-	Flags: Linked
-*/
 function getvictimbodyindex(victim, heroweapon) {
   bodyindex = victim getcharacterbodytype();
   if(bodyindex == 9) {

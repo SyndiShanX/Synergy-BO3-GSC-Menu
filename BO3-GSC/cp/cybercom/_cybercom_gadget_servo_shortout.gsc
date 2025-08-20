@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/***********************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_gadget_servo_shortout.gsc
+***********************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_challenges;
 #using scripts\cp\cybercom\_cybercom;
@@ -21,31 +25,11 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicles\_amws;
-
 #using_animtree("generic");
-
 #namespace cybercom_gadget_servo_shortout;
 
-/*
-	Name: init
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0x99EC1590
-	Offset: 0x570
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {}
 
-/*
-	Name: main
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0x9F4B1A34
-	Offset: 0x580
-	Size: 0x198
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   cybercom_gadget::registerability(0, 2);
   level.cybercom.servo_shortout = spawnstruct();
@@ -60,37 +44,10 @@ function main() {
   level.cybercom.servo_shortout.gibcounter = 0;
 }
 
-/*
-	Name: _is_flickering
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0xCE370C6E
-	Offset: 0x720
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function _is_flickering(slot) {}
 
-/*
-	Name: _on_flicker
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0x10C8C282
-	Offset: 0x738
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_flicker(slot, weapon) {}
 
-/*
-	Name: _on_give
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0x976B2FE4
-	Offset: 0x758
-	Size: 0xF4
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_give(slot, weapon) {
   self.cybercom.var_110c156a = getdvarint("scr_servo_shortout_count", 2);
   if(self hascybercomability("cybercom_servoshortout") == 2) {
@@ -101,88 +58,32 @@ function _on_give(slot, weapon) {
   self thread cybercom::function_b5f4e597(weapon);
 }
 
-/*
-	Name: _on_take
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0xADF1C12
-	Offset: 0x858
-	Size: 0x52
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_take(slot, weapon) {
   self _off(slot, weapon);
   self.cybercom.targetlockcb = undefined;
   self.cybercom.targetlockrequirementcb = undefined;
 }
 
-/*
-	Name: _on_connect
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0x99EC1590
-	Offset: 0x8B8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function _on_connect() {}
 
-/*
-	Name: _on
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0xB9FDDF5
-	Offset: 0x8C8
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function _on(slot, weapon) {
   self thread _activate_servo_shortout(slot, weapon);
   self _off(slot, weapon);
 }
 
-/*
-	Name: _off
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0xFC70E955
-	Offset: 0x928
-	Size: 0x3A
-	Parameters: 2
-	Flags: Linked
-*/
 function _off(slot, weapon) {
   self thread cybercom::weaponendlockwatcher(weapon);
   self.cybercom.is_primed = undefined;
 }
 
-/*
-	Name: _is_primed
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0xC44C6A97
-	Offset: 0x970
-	Size: 0xA8
-	Parameters: 2
-	Flags: Linked
-*/
 function _is_primed(slot, weapon) {
   if(!(isdefined(self.cybercom.is_primed) && self.cybercom.is_primed)) {
-    /#
     assert(self.cybercom.activecybercomweapon == weapon);
-    # /
-      self thread cybercom::weaponlockwatcher(slot, weapon, self.cybercom.var_110c156a);
+    self thread cybercom::weaponlockwatcher(slot, weapon, self.cybercom.var_110c156a);
     self.cybercom.is_primed = 1;
   }
 }
 
-/*
-	Name: _lock_requirement
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0xDDB3E14D
-	Offset: 0xA20
-	Size: 0x268
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _lock_requirement(target) {
   if(target cybercom::cybercom_aicheckoptout("cybercom_servoshortout")) {
     self cybercom::function_29bf9dee(target, 2);
@@ -217,28 +118,10 @@ function private _lock_requirement(target) {
   return true;
 }
 
-/*
-	Name: _get_valid_targets
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0xF135BFAD
-	Offset: 0xC90
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _get_valid_targets(weapon) {
   return arraycombine(getaiteamarray("axis"), getaiteamarray("team3"), 0, 0);
 }
 
-/*
-	Name: _activate_servo_shortout
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0xBE0267F1
-	Offset: 0xCF0
-	Size: 0x394
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _activate_servo_shortout(slot, weapon) {
   var_98c55a0e = 0;
   upgraded = self hascybercomability("cybercom_servoshortout") == 2;
@@ -279,31 +162,13 @@ function private _activate_servo_shortout(slot, weapon) {
   }
 }
 
-/*
-	Name: _update_gib_position
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0xB1EE8C00
-	Offset: 0x1090
-	Size: 0x38
-	Parameters: 0
-	Flags: Private
-*/
 function private _update_gib_position() {
   level.cybercom.servo_shortout.gibcounter++;
   return level.cybercom.servo_shortout.gibcounter % 3;
 }
 
-/*
-	Name: servo_shortoutvehicle
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0xA3567179
-	Offset: 0x10D0
-	Size: 0x274
-	Parameters: 3
-	Flags: Linked
-*/
 function servo_shortoutvehicle(attacker, upgraded, weapon) {
-  self endon(# "death");
+  self endon("death");
   self clientfield::set("cybercom_shortout", (upgraded ? 2 : 1));
   util::wait_network_frame();
   wait(0.5);
@@ -330,39 +195,19 @@ function servo_shortoutvehicle(attacker, upgraded, weapon) {
   }
 }
 
-/*
-	Name: function_a61788ff
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0x9ECF3DF
-	Offset: 0x1350
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a61788ff() {
   self stopsounds();
 }
 
-/*
-	Name: servo_shortout
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0x34E94970
-	Offset: 0x1378
-	Size: 0x368
-	Parameters: 5
-	Flags: Linked
-*/
 function servo_shortout(attacker, weapon = getweapon("gadget_servo_shortout"), upgraded, var_66a2f0cf, damage = 2) {
-  self endon(# "death");
-  self notify(# "hash_f8c5dd60", weapon, attacker);
+  self endon("death");
+  self notify("hash_f8c5dd60", weapon, attacker);
   if(isvehicle(self)) {
     self thread servo_shortoutvehicle(attacker, upgraded, weapon);
     return;
   }
-  /#
   assert(self.archetype == "");
-  # /
-    self clientfield::set("cybercom_shortout", 1);
+  self clientfield::set("cybercom_shortout", 1);
   if(!cybercom::function_76e3026d(self)) {
     self kill(self.origin, (isdefined(attacker) ? attacker : undefined), undefined, weapon);
     return;
@@ -390,15 +235,6 @@ function servo_shortout(attacker, weapon = getweapon("gadget_servo_shortout"), u
   }
 }
 
-/*
-	Name: ai_activateservoshortout
-	Namespace: cybercom_gadget_servo_shortout
-	Checksum: 0xF5EF8E7A
-	Offset: 0x16E8
-	Size: 0x2BA
-	Parameters: 2
-	Flags: Linked
-*/
 function ai_activateservoshortout(target, var_9bc2efcb = 1) {
   if(!isdefined(target)) {
     return;
@@ -424,7 +260,7 @@ function ai_activateservoshortout(target, var_9bc2efcb = 1) {
     type = self cybercom::function_5e3d3aa();
     self orientmode("face default");
     self animscripted("ai_cybercom_anim", self.origin, self.angles, ("ai_base_rifle_" + type) + "_exposed_cybercom_activate");
-    self waittillmatch(# "ai_cybercom_anim");
+    self waittillmatch("ai_cybercom_anim");
   }
   weapon = getweapon("gadget_servo_shortout");
   foreach(guy in validtargets) {

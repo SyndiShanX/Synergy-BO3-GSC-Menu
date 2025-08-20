@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_killstreak_bundles.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\killstreaks\_killstreaks;
@@ -7,36 +11,15 @@
 #using scripts\shared\popups_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace killstreak_bundles;
 
-/*
-	Name: register_killstreak_bundle
-	Namespace: killstreak_bundles
-	Checksum: 0xE77FA818
-	Offset: 0x3C8
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function register_killstreak_bundle(killstreaktype) {
   level.killstreakbundle[killstreaktype] = struct::get_script_bundle("killstreak", "killstreak_" + killstreaktype);
   level.killstreakbundle["inventory_" + killstreaktype] = level.killstreakbundle[killstreaktype];
   level.killstreakmaxhealthfunction = & get_max_health;
-  /#
   assert(isdefined(level.killstreakbundle[killstreaktype]));
-  # /
 }
 
-/*
-	Name: get_bundle
-	Namespace: killstreak_bundles
-	Checksum: 0x31A63280
-	Offset: 0x478
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function get_bundle(killstreak) {
   if(killstreak.archetype === "raps") {
     return level.killstreakbundle["raps_drone"];
@@ -44,30 +27,12 @@ function get_bundle(killstreak) {
   return level.killstreakbundle[killstreak.killstreaktype];
 }
 
-/*
-	Name: get_hack_timeout
-	Namespace: killstreak_bundles
-	Checksum: 0x92799069
-	Offset: 0x4D8
-	Size: 0x46
-	Parameters: 0
-	Flags: Linked
-*/
 function get_hack_timeout() {
   killstreak = self;
   bundle = get_bundle(killstreak);
   return bundle.kshacktimeout;
 }
 
-/*
-	Name: get_hack_protection
-	Namespace: killstreak_bundles
-	Checksum: 0x64038185
-	Offset: 0x528
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function get_hack_protection() {
   killstreak = self;
   hackedprotection = 0;
@@ -78,15 +43,6 @@ function get_hack_protection() {
   return hackedprotection;
 }
 
-/*
-	Name: get_hack_tool_inner_time
-	Namespace: killstreak_bundles
-	Checksum: 0xCED87196
-	Offset: 0x5A8
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function get_hack_tool_inner_time() {
   killstreak = self;
   hacktoolinnertime = 10000;
@@ -97,15 +53,6 @@ function get_hack_tool_inner_time() {
   return hacktoolinnertime;
 }
 
-/*
-	Name: get_hack_tool_outer_time
-	Namespace: killstreak_bundles
-	Checksum: 0xD0A46E66
-	Offset: 0x628
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function get_hack_tool_outer_time() {
   killstreak = self;
   hacktooloutertime = 10000;
@@ -116,15 +63,6 @@ function get_hack_tool_outer_time() {
   return hacktooloutertime;
 }
 
-/*
-	Name: get_hack_tool_inner_radius
-	Namespace: killstreak_bundles
-	Checksum: 0xF60136AD
-	Offset: 0x6A8
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function get_hack_tool_inner_radius() {
   killstreak = self;
   hackedtoolinnerradius = 10000;
@@ -135,15 +73,6 @@ function get_hack_tool_inner_radius() {
   return hackedtoolinnerradius;
 }
 
-/*
-	Name: get_hack_tool_outer_radius
-	Namespace: killstreak_bundles
-	Checksum: 0x9A296C2C
-	Offset: 0x728
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function get_hack_tool_outer_radius() {
   killstreak = self;
   hackedtoolouterradius = 10000;
@@ -154,15 +83,6 @@ function get_hack_tool_outer_radius() {
   return hackedtoolouterradius;
 }
 
-/*
-	Name: get_lost_line_of_sight_limit_msec
-	Namespace: killstreak_bundles
-	Checksum: 0xC1E267E9
-	Offset: 0x7A8
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function get_lost_line_of_sight_limit_msec() {
   killstreak = self;
   hackedtoollostlineofsightlimitms = 1000;
@@ -173,15 +93,6 @@ function get_lost_line_of_sight_limit_msec() {
   return hackedtoollostlineofsightlimitms;
 }
 
-/*
-	Name: get_hack_tool_no_line_of_sight_time
-	Namespace: killstreak_bundles
-	Checksum: 0x59D2A89E
-	Offset: 0x828
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function get_hack_tool_no_line_of_sight_time() {
   killstreak = self;
   hacktoolnolineofsighttime = 1000;
@@ -192,15 +103,6 @@ function get_hack_tool_no_line_of_sight_time() {
   return hacktoolnolineofsighttime;
 }
 
-/*
-	Name: get_hack_scoreevent
-	Namespace: killstreak_bundles
-	Checksum: 0x4B1E05BB
-	Offset: 0x8A8
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function get_hack_scoreevent() {
   killstreak = self;
   hackedscoreevent = undefined;
@@ -211,15 +113,6 @@ function get_hack_scoreevent() {
   return hackedscoreevent;
 }
 
-/*
-	Name: get_hack_fx
-	Namespace: killstreak_bundles
-	Checksum: 0x1CD81413
-	Offset: 0x928
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function get_hack_fx() {
   killstreak = self;
   hackfx = "";
@@ -230,15 +123,6 @@ function get_hack_fx() {
   return hackfx;
 }
 
-/*
-	Name: get_hack_loop_fx
-	Namespace: killstreak_bundles
-	Checksum: 0xB6392611
-	Offset: 0x9A8
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function get_hack_loop_fx() {
   killstreak = self;
   hackloopfx = "";
@@ -249,57 +133,21 @@ function get_hack_loop_fx() {
   return hackloopfx;
 }
 
-/*
-	Name: get_max_health
-	Namespace: killstreak_bundles
-	Checksum: 0x7F2B1FC4
-	Offset: 0xA28
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function get_max_health(killstreaktype) {
   bundle = level.killstreakbundle[killstreaktype];
   return bundle.kshealth;
 }
 
-/*
-	Name: get_low_health
-	Namespace: killstreak_bundles
-	Checksum: 0x5E9C3CF5
-	Offset: 0xA68
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function get_low_health(killstreaktype) {
   bundle = level.killstreakbundle[killstreaktype];
   return bundle.kslowhealth;
 }
 
-/*
-	Name: get_hacked_health
-	Namespace: killstreak_bundles
-	Checksum: 0xF15071D7
-	Offset: 0xAA8
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function get_hacked_health(killstreaktype) {
   bundle = level.killstreakbundle[killstreaktype];
   return bundle.kshackedhealth;
 }
 
-/*
-	Name: get_shots_to_kill
-	Namespace: killstreak_bundles
-	Checksum: 0xD349528A
-	Offset: 0xAE8
-	Size: 0x236
-	Parameters: 3
-	Flags: Linked
-*/
 function get_shots_to_kill(weapon, meansofdeath, bundle) {
   shotstokill = undefined;
   switch (weapon.rootweapon.name) {
@@ -360,15 +208,6 @@ function get_shots_to_kill(weapon, meansofdeath, bundle) {
   return true;
 }
 
-/*
-	Name: get_emp_grenade_damage
-	Namespace: killstreak_bundles
-	Checksum: 0xE69A35E2
-	Offset: 0xD28
-	Size: 0xC8
-	Parameters: 2
-	Flags: Linked
-*/
 function get_emp_grenade_damage(killstreaktype, maxhealth) {
   emp_weapon_damage = undefined;
   if(isdefined(level.killstreakbundle[killstreaktype])) {
@@ -385,15 +224,6 @@ function get_emp_grenade_damage(killstreaktype, maxhealth) {
   return emp_weapon_damage;
 }
 
-/*
-	Name: get_weapon_damage
-	Namespace: killstreak_bundles
-	Checksum: 0x6098FAA7
-	Offset: 0xDF8
-	Size: 0x6CA
-	Parameters: 8
-	Flags: Linked
-*/
 function get_weapon_damage(killstreaktype, maxhealth, attacker, weapon, type, damage, flags, chargeshotlevel) {
   weapon_damage = undefined;
   if(isdefined(level.killstreakbundle[killstreaktype])) {

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicles\_spider.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\blackboard_vehicle;
 #using scripts\shared\ai\systems\blackboard;
@@ -12,62 +16,22 @@
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_death_shared;
 #using scripts\shared\vehicle_shared;
-
 #using_animtree("generic");
-
 #namespace spider;
 
-/*
-	Name: __init__sytem__
-	Namespace: spider
-	Checksum: 0xFB465612
-	Offset: 0x350
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("spider", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: spider
-	Checksum: 0xAA565A33
-	Offset: 0x390
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   vehicle::add_main_callback("spider", & spider_initialize);
-  /#
   setdvar("", 0);
-  # /
 }
 
-/*
-	Name: no_switch_on
-	Namespace: spider
-	Checksum: 0x32AB2CBD
-	Offset: 0x3E8
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function no_switch_on() {
   return getdvarint("debug_spider_noswitch", 0) === 1;
 }
 
-/*
-	Name: spider_initialize
-	Namespace: spider
-	Checksum: 0x1952E919
-	Offset: 0x410
-	Size: 0x20C
-	Parameters: 0
-	Flags: Linked
-*/
 function spider_initialize() {
   self.fovcosine = 0;
   self.fovcosinebusy = 0;
@@ -75,10 +39,8 @@ function spider_initialize() {
   self.health = self.healthdefault;
   self useanimtree($generic);
   self vehicle::friendly_fire_shield();
-  /#
   assert(isdefined(self.scriptbundlesettings));
-  # /
-    self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
+  self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
   self enableaimassist();
   self setdrawinfrared(1);
   blackboard::createblackboardforentity(self);
@@ -99,15 +61,6 @@ function spider_initialize() {
   defaultrole();
 }
 
-/*
-	Name: defaultrole
-	Namespace: spider
-	Checksum: 0x9B5F24ED
-	Offset: 0x628
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function defaultrole() {
   self vehicle_ai::init_state_machine_for_role("default");
   self vehicle_ai::get_state_callbacks("combat").update_func = & state_range_combat_update;
@@ -120,47 +73,20 @@ function defaultrole() {
   vehicle_ai::startinitialstate("combat");
 }
 
-/*
-	Name: state_death_update
-	Namespace: spider
-	Checksum: 0x61AFD353
-	Offset: 0x7A0
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function state_death_update(params) {
-  self endon(# "death");
+  self endon("death");
   self asmrequestsubstate("death@stationary");
   vehicle_ai::waittill_asm_complete("death@stationary", 2);
   self vehicle_death::death_fx();
   vehicle_death::deletewhensafe(10);
 }
 
-/*
-	Name: state_driving_update
-	Namespace: spider
-	Checksum: 0xDC28D17D
-	Offset: 0x830
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_driving_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   self asmrequestsubstate("locomotion@aggressive");
 }
 
-/*
-	Name: getnextmoveposition_ranged
-	Namespace: spider
-	Checksum: 0x69692A0
-	Offset: 0x878
-	Size: 0x652
-	Parameters: 1
-	Flags: Linked
-*/
 function getnextmoveposition_ranged(enemy) {
   if(self.goalforced) {
     return self.goalpos;
@@ -184,69 +110,48 @@ function getnextmoveposition_ranged(enemy) {
   best_point = undefined;
   best_score = -999999;
   foreach(point in queryresult.data) {
-    /#
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = mapfloat(0, prefereddistawayfromorigin, 0, 300, point.disttoorigin2d);
-    # /
-      point.score = point.score + mapfloat(0, prefereddistawayfromorigin, 0, 300, point.disttoorigin2d);
+    point.score = point.score + mapfloat(0, prefereddistawayfromorigin, 0, 300, point.disttoorigin2d);
     if(point.inclaimedlocation) {
-      /#
       if(!isdefined(point._scoredebug)) {
         point._scoredebug = [];
       }
       point._scoredebug[""] = -500;
-      # /
-        point.score = point.score + -500;
+      point.score = point.score + -500;
     }
-    /#
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = randomfloatrange(0, randomness);
-    # /
-      point.score = point.score + randomfloatrange(0, randomness);
-    /#
+    point.score = point.score + randomfloatrange(0, randomness);
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = point.distawayfromengagementarea * -1;
-    # /
-      point.score = point.score + (point.distawayfromengagementarea * -1);
+    point.score = point.score + (point.distawayfromengagementarea * -1);
     if(point.score > best_score) {
       best_score = point.score;
       best_point = point;
     }
   }
   self vehicle_ai::positionquery_debugscores(queryresult);
-  /#
   self.debug_ai_move_to_points_considered = queryresult.data;
-  # /
-    if(!isdefined(best_point)) {
-      return undefined;
-    }
-  /#
+  if(!isdefined(best_point)) {
+    return undefined;
+  }
   if(isdefined(getdvarint("")) && getdvarint("")) {
     recordline(self.origin, best_point.origin, (0.3, 1, 0));
     recordline(self.origin, enemy.origin, (1, 0, 0.4));
   }
-  # /
-    return best_point.origin;
+  return best_point.origin;
 }
 
-/*
-	Name: state_range_combat_update
-	Namespace: spider
-	Checksum: 0xE0FACE9A
-	Offset: 0xED8
-	Size: 0x2A8
-	Parameters: 1
-	Flags: Linked
-*/
 function state_range_combat_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   self.pathfailcount = 0;
   self.foundpath = 1;
   if(params.playtransition === 1) {
@@ -290,18 +195,9 @@ function state_range_combat_update(params) {
   }
 }
 
-/*
-	Name: state_range_combat_attack
-	Namespace: spider
-	Checksum: 0xD6EFBA40
-	Offset: 0x1188
-	Size: 0x2C8
-	Parameters: 0
-	Flags: Linked
-*/
 function state_range_combat_attack() {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   for (;;) {
     if(!isdefined(self.enemy)) {
       wait(0.1);
@@ -333,17 +229,8 @@ function state_range_combat_attack() {
   }
 }
 
-/*
-	Name: do_ranged_attack
-	Namespace: spider
-	Checksum: 0x35ACDA79
-	Offset: 0x1458
-	Size: 0x2CE
-	Parameters: 1
-	Flags: Linked
-*/
 function do_ranged_attack(enemy) {
-  self notify(# "near_goal");
+  self notify("near_goal");
   self vehicle_ai::clearallmovement(1);
   self.dont_move = 1;
   self setlookatent(enemy);
@@ -372,37 +259,17 @@ function do_ranged_attack(enemy) {
   self.dont_move = undefined;
 }
 
-/*
-	Name: switch_to_melee
-	Namespace: spider
-	Checksum: 0xD491A878
-	Offset: 0x1730
-	Size: 0x10
-	Parameters: 0
-	Flags: None
-*/
 function switch_to_melee() {
   self.switch_to_melee = 1;
 }
 
-/*
-	Name: should_switch_to_melee
-	Namespace: spider
-	Checksum: 0xEEF46B8B
-	Offset: 0x1748
-	Size: 0x118
-	Parameters: 3
-	Flags: Linked
-*/
 function should_switch_to_melee(from_state, to_state, connection) {
-  /#
   if(no_switch_on()) {
     return false;
   }
-  # /
-    if(!vehicle_ai::iscooldownready("state_change")) {
-      return false;
-    }
+  if(!vehicle_ai::iscooldownready("state_change")) {
+    return false;
+  }
   if(!isdefined(self.enemy)) {
     return false;
   }
@@ -412,18 +279,9 @@ function should_switch_to_melee(from_state, to_state, connection) {
   return false;
 }
 
-/*
-	Name: state_melee_combat_update
-	Namespace: spider
-	Checksum: 0x3983F88B
-	Offset: 0x1868
-	Size: 0x8FC
-	Parameters: 1
-	Flags: Linked
-*/
 function state_melee_combat_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   if(params.playtransition === 1) {
     self vehicle_ai::clearallmovement(1);
     self asmrequestsubstate("enter@aggressive");
@@ -469,28 +327,22 @@ function state_melee_combat_update(params) {
         best_point = undefined;
         best_score = -999999;
         foreach(point in queryresult.data) {
-          /#
           if(!isdefined(point._scoredebug)) {
             point._scoredebug = [];
           }
           point._scoredebug[""] = mapfloat(0, 200, 0, -200, distance(point.origin, queryresult.origin));
-          # /
-            point.score = point.score + (mapfloat(0, 200, 0, -200, distance(point.origin, queryresult.origin)));
-          /#
+          point.score = point.score + (mapfloat(0, 200, 0, -200, distance(point.origin, queryresult.origin)));
           if(!isdefined(point._scoredebug)) {
             point._scoredebug = [];
           }
           point._scoredebug[""] = mapfloat(50, 200, 0, -200, abs(point.origin[2] - queryresult.origin[2]));
-          # /
-            point.score = point.score + (mapfloat(50, 200, 0, -200, abs(point.origin[2] - queryresult.origin[2])));
+          point.score = point.score + (mapfloat(50, 200, 0, -200, abs(point.origin[2] - queryresult.origin[2])));
           if(point.inclaimedlocation === 1) {
-            /#
             if(!isdefined(point._scoredebug)) {
               point._scoredebug = [];
             }
             point._scoredebug[""] = -500;
-            # /
-              point.score = point.score + -500;
+            point.score = point.score + -500;
           }
           if(point.score > best_score) {
             best_score = point.score;
@@ -526,25 +378,16 @@ function state_melee_combat_update(params) {
         self.current_pathto_pos = undefined;
         self thread path_update_interrupt_melee();
         wait(2);
-        self notify(# "near_goal");
+        self notify("near_goal");
       }
     }
     wait(0.2);
   }
 }
 
-/*
-	Name: state_melee_combat_attack
-	Namespace: spider
-	Checksum: 0xADCEEDE5
-	Offset: 0x2170
-	Size: 0x1F8
-	Parameters: 0
-	Flags: Linked
-*/
 function state_melee_combat_attack() {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   for (;;) {
     state_params = spawnstruct();
     state_params.playtransition = 1;
@@ -568,17 +411,8 @@ function state_melee_combat_attack() {
   }
 }
 
-/*
-	Name: do_melee_attack
-	Namespace: spider
-	Checksum: 0xEC940C78
-	Offset: 0x2370
-	Size: 0x186
-	Parameters: 1
-	Flags: Linked
-*/
 function do_melee_attack(enemy) {
-  self notify(# "near_goal");
+  self notify("near_goal");
   self vehicle_ai::clearallmovement(1);
   self.dont_move = 1;
   self asmrequestsubstate("melee@stationary");
@@ -593,24 +427,13 @@ function do_melee_attack(enemy) {
   self.dont_move = undefined;
 }
 
-/*
-	Name: should_switch_to_range
-	Namespace: spider
-	Checksum: 0x923EA3B9
-	Offset: 0x2500
-	Size: 0x100
-	Parameters: 3
-	Flags: Linked
-*/
 function should_switch_to_range(from_state, to_state, connection) {
-  /#
   if(no_switch_on()) {
     return false;
   }
-  # /
-    if(self.pathfailcount > 4) {
-      return true;
-    }
+  if(self.pathfailcount > 4) {
+    return true;
+  }
   if(!vehicle_ai::iscooldownready("state_change")) {
     return false;
   }
@@ -623,20 +446,11 @@ function should_switch_to_range(from_state, to_state, connection) {
   return false;
 }
 
-/*
-	Name: prevent_stuck
-	Namespace: spider
-	Checksum: 0xCFA6C105
-	Offset: 0x2608
-	Size: 0xFA
-	Parameters: 0
-	Flags: Linked
-*/
 function prevent_stuck() {
-  self endon(# "change_state");
-  self endon(# "death");
-  self notify(# "end_prevent_stuck");
-  self endon(# "end_prevent_stuck");
+  self endon("change_state");
+  self endon("death");
+  self notify("end_prevent_stuck");
+  self endon("end_prevent_stuck");
   wait(2);
   count = 0;
   previous_origin = undefined;
@@ -654,15 +468,6 @@ function prevent_stuck() {
   }
 }
 
-/*
-	Name: spider_get_target_position
-	Namespace: spider
-	Checksum: 0xB8164971
-	Offset: 0x2710
-	Size: 0x376
-	Parameters: 0
-	Flags: Linked
-*/
 function spider_get_target_position() {
   if(self.goalforced) {
     return self.goalpos;
@@ -713,28 +518,19 @@ function spider_get_target_position() {
   return target_pos;
 }
 
-/*
-	Name: path_update_interrupt_melee
-	Namespace: spider
-	Checksum: 0x18AF3342
-	Offset: 0x2A90
-	Size: 0x2E4
-	Parameters: 0
-	Flags: Linked
-*/
 function path_update_interrupt_melee() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self endon(# "near_goal");
-  self endon(# "reached_end_node");
-  self notify(# "clear_interrupt_threads");
-  self endon(# "clear_interrupt_threads");
+  self endon("death");
+  self endon("change_state");
+  self endon("near_goal");
+  self endon("reached_end_node");
+  self notify("clear_interrupt_threads");
+  self endon("clear_interrupt_threads");
   wait(0.1);
   while (true) {
     if(isdefined(self.current_pathto_pos)) {
       if(distance2dsquared(self.current_pathto_pos, self.goalpos) > (self.goalradius * self.goalradius)) {
         wait(0.5);
-        self notify(# "near_goal");
+        self notify("near_goal");
       }
       targetpos = spider_get_target_position();
       if(isdefined(targetpos)) {
@@ -745,7 +541,7 @@ function path_update_interrupt_melee() {
           repath_range = self.settings.repath_range;
         }
         if(distance2dsquared(self.current_pathto_pos, targetpos) > (repath_range * repath_range)) {
-          self notify(# "near_goal");
+          self notify("near_goal");
         }
       }
       if(isdefined(self.enemy) && isplayer(self.enemy)) {
@@ -768,22 +564,13 @@ function path_update_interrupt_melee() {
   }
 }
 
-/*
-	Name: nudge_collision
-	Namespace: spider
-	Checksum: 0xB9B69B7C
-	Offset: 0x2D80
-	Size: 0x118
-	Parameters: 0
-	Flags: Linked
-*/
 function nudge_collision() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self notify(# "end_nudge_collision");
-  self endon(# "end_nudge_collision");
+  self endon("death");
+  self endon("change_state");
+  self notify("end_nudge_collision");
+  self endon("end_nudge_collision");
   while (true) {
-    self waittill(# "veh_collision", velocity, normal);
+    self waittill("veh_collision", velocity, normal);
     ang_vel = self getangularvelocity() * 0.8;
     self setangularvelocity(ang_vel);
     if(isalive(self) && vectordot(normal, (0, 0, 1)) < 0.5) {
@@ -792,15 +579,6 @@ function nudge_collision() {
   }
 }
 
-/*
-	Name: force_get_enemies
-	Namespace: spider
-	Checksum: 0xB66F8F33
-	Offset: 0x2EA0
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function force_get_enemies() {
   foreach(player in level.players) {
     if(self util::isenemyplayer(player) && !player.ignoreme) {
@@ -810,15 +588,6 @@ function force_get_enemies() {
   }
 }
 
-/*
-	Name: spider_callback_damage
-	Namespace: spider
-	Checksum: 0xCA469211
-	Offset: 0x2F68
-	Size: 0xB8
-	Parameters: 15
-	Flags: Linked
-*/
 function spider_callback_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   if(isalive(eattacker) && eattacker.team === self.team) {
     return 0;

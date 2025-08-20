@@ -1,21 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_scrambler.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\fx_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace scrambler;
 
-/*
-	Name: init_shared
-	Namespace: scrambler
-	Checksum: 0x94FEA33
-	Offset: 0x238
-	Size: 0x16C
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   level._effect["scrambler_enemy_light"] = "_t6/misc/fx_equip_light_red";
   level._effect["scrambler_friendly_light"] = "_t6/misc/fx_equip_light_green";
@@ -36,15 +30,6 @@ function init_shared() {
   level thread checkforplayerswitch();
 }
 
-/*
-	Name: spawnedscrambler
-	Namespace: scrambler
-	Checksum: 0x42665048
-	Offset: 0x3B0
-	Size: 0x4C
-	Parameters: 2
-	Flags: None
-*/
 function spawnedscrambler(localclientnum, set) {
   if(!set) {
     return;
@@ -55,15 +40,6 @@ function spawnedscrambler(localclientnum, set) {
   self spawned(localclientnum, set, 1);
 }
 
-/*
-	Name: spawnedglobalscramber
-	Namespace: scrambler
-	Checksum: 0x9C94BEB0
-	Offset: 0x408
-	Size: 0x74
-	Parameters: 7
-	Flags: None
-*/
 function spawnedglobalscramber(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!newval) {
     return;
@@ -74,15 +50,6 @@ function spawnedglobalscramber(localclientnum, oldval, newval, bnewent, binitial
   self spawned(localclientnum, newval, 0);
 }
 
-/*
-	Name: spawned
-	Namespace: scrambler
-	Checksum: 0xBA4BA597
-	Offset: 0x488
-	Size: 0x234
-	Parameters: 3
-	Flags: None
-*/
 function spawned(localclientnum, set, islocalized) {
   if(!set) {
     return;
@@ -108,15 +75,6 @@ function spawned(localclientnum, set, islocalized) {
   level thread cleanupscramblerondelete(self, scramblerhandle, islocalized, localclientnum);
 }
 
-/*
-	Name: spawnedperclient
-	Namespace: scrambler
-	Checksum: 0xF713B19F
-	Offset: 0x6C8
-	Size: 0x354
-	Parameters: 3
-	Flags: None
-*/
 function spawnedperclient(localclientnum, islocalized, scramblerhandle) {
   player = getlocalplayer(localclientnum);
   isenemy = self isenemyscrambler(localclientnum);
@@ -156,15 +114,6 @@ function spawnedperclient(localclientnum, islocalized, scramblerhandle) {
   self thread fx::blinky_light(localclientnum, "tag_light", level._effect["scrambler_friendly_light"], level._effect["scrambler_enemy_light"]);
 }
 
-/*
-	Name: scramblerupdate
-	Namespace: scrambler
-	Checksum: 0xF5BA1137
-	Offset: 0xA28
-	Size: 0x8B0
-	Parameters: 1
-	Flags: None
-*/
 function scramblerupdate(localclientnum) {
   nearestenemy = level.scramblervoouterradius;
   nearestfriendly = level.scramblervoouterradius;
@@ -276,17 +225,8 @@ function scramblerupdate(localclientnum) {
   }
 }
 
-/*
-	Name: cleanupscramblerondelete
-	Namespace: scrambler
-	Checksum: 0x151400E3
-	Offset: 0x12E0
-	Size: 0x2F6
-	Parameters: 4
-	Flags: None
-*/
 function cleanupscramblerondelete(scramblerent, scramblerhandle, islocalized, localclientnum) {
-  scramblerent waittill(# "entityshutdown");
+  scramblerent waittill("entityshutdown");
   players = level.localplayers;
   for (j = 0; j < level.scramblers.size; j++) {
     size = level.scramblers.size;
@@ -311,37 +251,17 @@ function cleanupscramblerondelete(scramblerent, scramblerhandle, islocalized, lo
   }
 }
 
-/*
-	Name: isenemyscrambler
-	Namespace: scrambler
-	Checksum: 0x636F277E
-	Offset: 0x15E0
-	Size: 0x5E
-	Parameters: 1
-	Flags: None
-*/
 function isenemyscrambler(localclientnum) {
-  /#
   if(getdvarint("", 0)) {
     return 1;
   }
-  # /
-    enemy = !util::friend_not_foe(localclientnum);
+  enemy = !util::friend_not_foe(localclientnum);
   return enemy;
 }
 
-/*
-	Name: checkforplayerswitch
-	Namespace: scrambler
-	Checksum: 0xB0DF6B07
-	Offset: 0x1648
-	Size: 0x154
-	Parameters: 0
-	Flags: None
-*/
 function checkforplayerswitch() {
   while (true) {
-    level waittill(# "player_switch");
+    level waittill("player_switch");
     waittillframeend();
     players = level.localplayers;
     for (localclientnum = 0; localclientnum < players.size; localclientnum++) {
@@ -356,15 +276,6 @@ function checkforplayerswitch() {
   }
 }
 
-/*
-	Name: restartsound
-	Namespace: scrambler
-	Checksum: 0xA7C804A0
-	Offset: 0x17A8
-	Size: 0xEC
-	Parameters: 1
-	Flags: None
-*/
 function restartsound(isenemy) {
   if(self.sndid != -1) {
     self.sndent stopallloopsounds(0.1);

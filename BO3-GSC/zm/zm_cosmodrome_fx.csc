@@ -1,18 +1,12 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_cosmodrome_fx.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\util_shared;
-
 #namespace zm_cosmodrome_fx;
 
-/*
-	Name: main
-	Namespace: zm_cosmodrome_fx
-	Checksum: 0x7328ABBA
-	Offset: 0x11D8
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_scripted_fx();
   level thread trap_fx_monitor("fire_trap_group1", "f1", "fire");
@@ -25,15 +19,6 @@ function main() {
   }
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_cosmodrome_fx
-	Checksum: 0xB7CF7CFD
-	Offset: 0x1308
-	Size: 0x416
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["zombie_power_switch"] = "dlc5/cosmo/fx_zombie_power_switch";
   level._effect["zapper_light_ready"] = "dlc5/zmhd/fx_zombie_zapper_light_green";
@@ -74,15 +59,6 @@ function precache_scripted_fx() {
   level._effect["perk_machine_light_green"] = "dlc5/zmhd/fx_wonder_fizz_light_green";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_cosmodrome_fx
-	Checksum: 0xF369A7E
-	Offset: 0x1728
-	Size: 0x40E
-	Parameters: 0
-	Flags: None
-*/
 function precache_createfx_fx() {
   level._effect["fx_tower_light_glow"] = "maps/zombie/fx_tower_light_glow";
   level._effect["fx_zombie_rocket_trap_heat_glow"] = "dlc5/cosmo/fx_zombie_rocket_trap_heat_glow";
@@ -123,15 +99,6 @@ function precache_createfx_fx() {
   level._effect["fx_zmb_russian_rocket_smk"] = "dlc5/cosmo/fx_zmb_russian_rocket_smk";
 }
 
-/*
-	Name: trap_fx_monitor
-	Namespace: zm_cosmodrome_fx
-	Checksum: 0x3095B104
-	Offset: 0x1B40
-	Size: 0x11A
-	Parameters: 3
-	Flags: Linked
-*/
 function trap_fx_monitor(name, loc, trap_type) {
   structs = struct::get_array(name, "targetname");
   points = [];
@@ -148,15 +115,6 @@ function trap_fx_monitor(name, loc, trap_type) {
   }
 }
 
-/*
-	Name: trap_play_fx
-	Namespace: zm_cosmodrome_fx
-	Checksum: 0x56BDE681
-	Offset: 0x1C68
-	Size: 0x260
-	Parameters: 2
-	Flags: Linked
-*/
 function trap_play_fx(loc, trap_type) {
   ang = self.angles;
   forward = anglestoforward(ang);
@@ -198,15 +156,6 @@ function trap_play_fx(loc, trap_type) {
   self.loopfx = [];
 }
 
-/*
-	Name: toggle_lander_lights
-	Namespace: zm_cosmodrome_fx
-	Checksum: 0x8EFBAF42
-	Offset: 0x1ED0
-	Size: 0x37A
-	Parameters: 2
-	Flags: Linked
-*/
 function toggle_lander_lights(color, localclientnum) {
   right_fx = level._effect["lander_green_right"];
   left_fx = level._effect["lander_green_left"];

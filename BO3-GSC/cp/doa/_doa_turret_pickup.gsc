@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_turret_pickup.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_turret_sentry;
 #using scripts\cp\doa\_doa_dev;
@@ -15,18 +19,8 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\spawner_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_aa4730ec;
 
-/*
-	Name: init
-	Namespace: namespace_aa4730ec
-	Checksum: 0x1A615FC7
-	Offset: 0x520
-	Size: 0x3C6
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.doa.mini_turrets = getentarray("doa_turret", "targetname");
   for (i = 0; i < level.doa.mini_turrets.size; i++) {
@@ -70,18 +64,9 @@ function init() {
   }
 }
 
-/*
-	Name: missile_logic
-	Namespace: namespace_aa4730ec
-	Checksum: 0x61B91ED1
-	Offset: 0x8F0
-	Size: 0x3A4
-	Parameters: 1
-	Flags: Linked
-*/
 function missile_logic(fake) {
-  self waittill(# "missile_fire", missile, weap);
-  missile endon(# "death");
+  self waittill("missile_fire", missile, weap);
+  missile endon("death");
   fake thread doa_utility::function_981c685d(missile);
   missile missile_settarget(fake);
   uptime = gettime() + (getdvarfloat("scr_doa_missile_upwardMax", 2) * 1000);
@@ -124,15 +109,6 @@ function missile_logic(fake) {
   }
 }
 
-/*
-	Name: function_3bf11cb5
-	Namespace: namespace_aa4730ec
-	Checksum: 0x569738A1
-	Offset: 0xCA0
-	Size: 0x12C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_3bf11cb5(index, enemy) {
   if(!isdefined(enemy)) {
     return;
@@ -146,15 +122,6 @@ function function_3bf11cb5(index, enemy) {
   self fireweapon(index, fake, undefined, self.owner);
 }
 
-/*
-	Name: function_d8189eaf
-	Namespace: namespace_aa4730ec
-	Checksum: 0x1166A2FB
-	Offset: 0xDD8
-	Size: 0x18C
-	Parameters: 2
-	Flags: None
-*/
 function function_d8189eaf(weapon, enemy) {
   if(!isdefined(enemy)) {
     return;
@@ -173,15 +140,6 @@ function function_d8189eaf(weapon, enemy) {
   magicbullet(weapon, v_spawn, v_spawn + (50 * v_dir), self);
 }
 
-/*
-	Name: turret_fire
-	Namespace: namespace_aa4730ec
-	Checksum: 0xD0948813
-	Offset: 0xF70
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function turret_fire(index, enemy) {
   if(isdefined(self.grenade) && self.grenade) {
     self thread function_3bf11cb5(index, enemy);
@@ -190,40 +148,22 @@ function turret_fire(index, enemy) {
   }
 }
 
-/*
-	Name: turretthink
-	Namespace: namespace_aa4730ec
-	Checksum: 0x3F1B1AF1
-	Offset: 0xFE8
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function turretthink() {
   while (true) {
-    self waittill(# "hash_f843176e");
+    self waittill("hash_f843176e");
     self sentry_turret::function_21af94b3();
     self thread turret_target();
     self thread function_2c414dda();
-    self notify(# "start_scan");
-    self waittill(# "hash_d3ef93e9");
+    self notify("start_scan");
+    self waittill("hash_d3ef93e9");
     self sentry_turret::function_e6f10cc7();
   }
 }
 
-/*
-	Name: turret_target
-	Namespace: namespace_aa4730ec
-	Checksum: 0xA19B572C
-	Offset: 0x1080
-	Size: 0x158
-	Parameters: 0
-	Flags: Linked
-*/
 function turret_target() {
-  self endon(# "death");
-  self endon(# "hash_d3ef93e9");
-  self waittill(# "start_scan");
+  self endon("death");
+  self endon("hash_d3ef93e9");
+  self waittill("start_scan");
   while (true) {
     if(!isdefined(self.e_target)) {
       a_enemy = self doa_utility::getclosesttome(getaiteamarray("axis"));
@@ -238,27 +178,18 @@ function turret_target() {
     if(!self.is_attacking) {
       self thread function_2c414dda();
     }
-    self notify(# "hash_dc8a04ab");
+    self notify("hash_dc8a04ab");
     while (isalive(self.e_target)) {
       wait(0.5);
     }
-    self notify(# "lost_target");
+    self notify("lost_target");
     self.is_attacking = 0;
     wait(0.5);
   }
 }
 
-/*
-	Name: function_4deaa5de
-	Namespace: namespace_aa4730ec
-	Checksum: 0x934AE733
-	Offset: 0x11E0
-	Size: 0x124
-	Parameters: 2
-	Flags: Linked
-*/
 function function_4deaa5de(totalfiretime, enemy) {
-  self endon(# "death");
+  self endon("death");
   weapon = self seatgetweapon(0);
   firetime = weapon.firetime;
   time = 0;
@@ -277,22 +208,13 @@ function function_4deaa5de(totalfiretime, enemy) {
   }
 }
 
-/*
-	Name: function_2c414dda
-	Namespace: namespace_aa4730ec
-	Checksum: 0x90BF6E20
-	Offset: 0x1310
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2c414dda() {
-  self notify(# "hash_2c414dda");
-  self endon(# "hash_2c414dda");
-  self endon(# "death");
-  self endon(# "lost_target");
-  self endon(# "hash_d3ef93e9");
-  self waittill(# "hash_dc8a04ab");
+  self notify("hash_2c414dda");
+  self endon("hash_2c414dda");
+  self endon("death");
+  self endon("lost_target");
+  self endon("hash_d3ef93e9");
+  self waittill("hash_dc8a04ab");
   self.turretrotscale = 6;
   self sentry_turret::sentry_turret_alert_sound();
   self.is_attacking = 1;
@@ -307,15 +229,6 @@ function function_2c414dda() {
   }
 }
 
-/*
-	Name: canspawnturret
-	Namespace: namespace_aa4730ec
-	Checksum: 0x22A70D8E
-	Offset: 0x1440
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked
-*/
 function canspawnturret(var_a6f28f3b = 0) {
   if(isdefined(level.doa.magical_exit_taken) && level.doa.magical_exit_taken) {
     return false;
@@ -332,15 +245,6 @@ function canspawnturret(var_a6f28f3b = 0) {
   return false;
 }
 
-/*
-	Name: function_eabe8c0
-	Namespace: namespace_aa4730ec
-	Checksum: 0xE02BC7E4
-	Offset: 0x1520
-	Size: 0x56E
-	Parameters: 2
-	Flags: Linked
-*/
 function function_eabe8c0(player, var_a6f28f3b = 0) {
   mini_turret = undefined;
   turretarray = level.doa.mini_turrets;
@@ -375,7 +279,7 @@ function function_eabe8c0(player, var_a6f28f3b = 0) {
   physicsexplosionsphere(mini_turret.origin, 200, 128, 2);
   mini_turret radiusdamage(mini_turret.origin, 72, 10000, 10000);
   playrumbleonposition("explosion_generic", mini_turret.origin);
-  mini_turret notify(# "hash_f843176e");
+  mini_turret notify("hash_f843176e");
   mini_turret laseroff();
   if(isdefined(player)) {
     time_left = gettime() + (player doa_utility::function_1ded48e6(level.doa.rules.var_7daebb69 * 1000));
@@ -385,7 +289,7 @@ function function_eabe8c0(player, var_a6f28f3b = 0) {
     time_left = gettime() + (level.doa.rules.var_7daebb69 * 1000);
   }
   mini_turret thread function_dfe832b7(time_left, "turret_expired");
-  mini_turret waittill(# "hash_d3ef93e9");
+  mini_turret waittill("hash_d3ef93e9");
   mini_turret thread namespace_1a381543::function_90118d8c("evt_turret_takeoff");
   mini_turret thread namespace_eaa992c::function_285a2999("veh_takeoff");
   mini_turret thread namespace_eaa992c::function_285a2999("crater_dust");
@@ -400,18 +304,9 @@ function function_eabe8c0(player, var_a6f28f3b = 0) {
   mini_turret.autonomous = undefined;
 }
 
-/*
-	Name: function_a0d09d25
-	Namespace: namespace_aa4730ec
-	Checksum: 0x652CA5F8
-	Offset: 0x1A98
-	Size: 0x140
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a0d09d25(player) {
-  self endon(# "death");
-  self endon(# "hash_7a0ce382");
+  self endon("death");
+  self endon("hash_7a0ce382");
   weapon = getweapon("zombietron_sprinkler_launcher");
   top = self.origin + vectorscale((0, 0, 1), 32);
   while (true) {
@@ -422,15 +317,6 @@ function function_a0d09d25(player) {
   }
 }
 
-/*
-	Name: function_3ce8bf1c
-	Namespace: namespace_aa4730ec
-	Checksum: 0xFADCC137
-	Offset: 0x1BE0
-	Size: 0x4CC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_3ce8bf1c(player, origin) {
   dropspot = origin + vectorscale((0, 0, 1), 800);
   sprinkler = spawn("script_model", dropspot);
@@ -475,15 +361,6 @@ function function_3ce8bf1c(player, origin) {
   sprinkler delete();
 }
 
-/*
-	Name: function_dfe832b7
-	Namespace: namespace_aa4730ec
-	Checksum: 0xFA1FD0AB
-	Offset: 0x20B8
-	Size: 0xA6
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_dfe832b7(timeleft, note) {
   while (gettime() < timeleft) {
     if(level flag::get("doa_round_active")) {
@@ -502,15 +379,6 @@ function private function_dfe832b7(timeleft, note) {
   }
 }
 
-/*
-	Name: function_62c5a5a
-	Namespace: namespace_aa4730ec
-	Checksum: 0x7A2CB0FC
-	Offset: 0x2168
-	Size: 0x6EC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_62c5a5a(player, origin) {
   team = player.team;
   time_left = gettime() + (player doa_utility::function_1ded48e6(level.doa.rules.var_3c441789 * 1000));
@@ -579,15 +447,6 @@ function function_62c5a5a(player, origin) {
   }
 }
 
-/*
-	Name: function_f3ee1c57
-	Namespace: namespace_aa4730ec
-	Checksum: 0xF675EFCC
-	Offset: 0x2860
-	Size: 0xA0
-	Parameters: 15
-	Flags: Linked
-*/
 function function_f3ee1c57(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   if(isdefined(smeansofdeath) && smeansofdeath == "MOD_MELEE") {
     return idamage;
@@ -595,17 +454,8 @@ function function_f3ee1c57(einflictor, eattacker, idamage, idflags, smeansofdeat
   return 0;
 }
 
-/*
-	Name: function_43d18fa4
-	Namespace: namespace_aa4730ec
-	Checksum: 0xD5F59049
-	Offset: 0x2908
-	Size: 0x66
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_43d18fa4(player, note) {
-  self endon(# "death");
+  self endon("death");
   level endon(note);
   while (isdefined(player)) {
     self setgoalpos(player.origin, 0, 300);

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_one_inch_punch.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_shared;
 #using scripts\shared\ai\zombie_utility;
@@ -11,18 +15,8 @@
 #using scripts\zm\_zm_score;
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
-
 #namespace _zm_weap_one_inch_punch;
 
-/*
-	Name: init
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x9C253E4A
-	Offset: 0x528
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("allplayers", "oneinchpunch_impact", 21000, 1, "int");
   clientfield::register("actor", "oneinchpunch_physics_launchragdoll", 21000, 1, "int");
@@ -39,15 +33,6 @@ function init() {
   callback::on_connect( & one_inch_punch_take_think);
 }
 
-/*
-	Name: widows_wine_knife_override
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0xCF722742
-	Offset: 0x6F0
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function widows_wine_knife_override() {
   if(!issubstr(self.w_widows_wine_prev_knife.name, "one_inch_punch")) {
     self takeweapon(self.w_widows_wine_prev_knife);
@@ -61,18 +46,9 @@ function widows_wine_knife_override() {
   }
 }
 
-/*
-	Name: one_inch_punch_melee_attack
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x47F9AF6A
-	Offset: 0x7E0
-	Size: 0x4BC
-	Parameters: 0
-	Flags: Linked
-*/
 function one_inch_punch_melee_attack() {
-  self endon(# "disconnect");
-  self endon(# "stop_one_inch_punch_attack");
+  self endon("disconnect");
+  self endon("stop_one_inch_punch_attack");
   if(!(isdefined(self.one_inch_punch_flag_has_been_init) && self.one_inch_punch_flag_has_been_init)) {
     self flag::init("melee_punch_cooldown");
   }
@@ -127,20 +103,11 @@ function one_inch_punch_melee_attack() {
   self thread monitor_melee_swipe();
 }
 
-/*
-	Name: monitor_melee_swipe
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x91B2A17D
-	Offset: 0xCA8
-	Size: 0x358
-	Parameters: 0
-	Flags: Linked
-*/
 function monitor_melee_swipe() {
-  self endon(# "disconnect");
-  self notify(# "stop_monitor_melee_swipe");
-  self endon(# "stop_monitor_melee_swipe");
-  self endon(# "bled_out");
+  self endon("disconnect");
+  self notify("stop_monitor_melee_swipe");
+  self endon("stop_monitor_melee_swipe");
+  self endon("bled_out");
   var_ac486a40 = getweapon("tomb_shield");
   while (true) {
     while (!self ismeleeing()) {
@@ -177,15 +144,6 @@ function monitor_melee_swipe() {
   }
 }
 
-/*
-	Name: is_player_facing
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x51023EF5
-	Offset: 0x1008
-	Size: 0x96
-	Parameters: 2
-	Flags: Linked
-*/
 function is_player_facing(zombie, v_punch_yaw) {
   v_player_to_zombie_yaw = get_2d_yaw(self.origin, zombie.origin);
   yaw_diff = v_player_to_zombie_yaw - v_punch_yaw;
@@ -198,58 +156,22 @@ function is_player_facing(zombie, v_punch_yaw) {
   return false;
 }
 
-/*
-	Name: is_oneinch_punch_damage
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x441D9C5D
-	Offset: 0x10A8
-	Size: 0x20
-	Parameters: 0
-	Flags: None
-*/
 function is_oneinch_punch_damage() {
   return isdefined(self.damageweapon) && self.damageweapon == level.var_653c9585;
 }
 
-/*
-	Name: gib_zombies_head
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0xCFA0A756
-	Offset: 0x10D0
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function gib_zombies_head(player) {
-  player endon(# "disconnect");
+  player endon("disconnect");
   self zombie_utility::zombie_head_gib();
 }
 
-/*
-	Name: punch_cooldown
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x669DBF5E
-	Offset: 0x1108
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function punch_cooldown() {
   wait(1);
   self flag::set("melee_punch_cooldown");
 }
 
-/*
-	Name: zombie_punch_damage
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x8EFC4D39
-	Offset: 0x1138
-	Size: 0x38C
-	Parameters: 2
-	Flags: Linked
-*/
 function zombie_punch_damage(ai_zombie, n_mod) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   ai_zombie.punch_handle_pain_notetracks = & handle_punch_pain_notetracks;
   if(isdefined(n_mod)) {
     if(self hasperk("specialty_widowswine")) {
@@ -312,15 +234,6 @@ function zombie_punch_damage(ai_zombie, n_mod) {
   }
 }
 
-/*
-	Name: zombie_punch_death
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x5A636C7D
-	Offset: 0x14D0
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_punch_death(ai_zombie) {
   ai_zombie thread gib_zombies_head(self);
   if(isdefined(level.ragdoll_limit_check) && ![
@@ -335,34 +248,16 @@ function zombie_punch_death(ai_zombie) {
   }
 }
 
-/*
-	Name: handle_punch_pain_notetracks
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x7AFB0FE6
-	Offset: 0x15C8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function handle_punch_pain_notetracks(note) {
   if(note == "zombie_knockdown_ground_impact") {
     playfx(level._effect["punch_knockdown_ground"], self.origin, anglestoforward(self.angles), anglestoup(self.angles));
   }
 }
 
-/*
-	Name: one_inch_punch_take_think
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x88FDED42
-	Offset: 0x1648
-	Size: 0x78
-	Parameters: 0
-	Flags: Linked
-*/
 function one_inch_punch_take_think() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "bled_out");
+    self waittill("bled_out");
     self.one_inch_punch_flag_has_been_init = 0;
     self.widows_wine_knife_override = undefined;
     if(self flag::exists("melee_punch_cooldown")) {
@@ -371,20 +266,11 @@ function one_inch_punch_take_think() {
   }
 }
 
-/*
-	Name: knockdown_zombie_animate
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x15D1CB11
-	Offset: 0x16C8
-	Size: 0x43E
-	Parameters: 0
-	Flags: Linked
-*/
 function knockdown_zombie_animate() {
-  self notify(# "end_play_punch_pain_anim");
-  self endon(# "killanimscript");
-  self endon(# "death");
-  self endon(# "end_play_punch_pain_anim");
+  self notify("end_play_punch_pain_anim");
+  self endon("killanimscript");
+  self endon("death");
+  self endon("end_play_punch_pain_anim");
   if(isdefined(self.marked_for_death) && self.marked_for_death) {
     return;
   }
@@ -435,34 +321,16 @@ function knockdown_zombie_animate() {
   }
   self zombie_shared::donotetracks("punch_getup_anim");
   self.allowpain = 1;
-  self notify(# "back_up");
+  self notify("back_up");
 }
 
-/*
-	Name: knockdown_zombie_animate_state
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x3E41776A
-	Offset: 0x1B10
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function knockdown_zombie_animate_state() {
-  self endon(# "death");
+  self endon("death");
   self.is_knocked_down = 1;
   self util::waittill_any("damage", "back_up");
   self.is_knocked_down = 0;
 }
 
-/*
-	Name: get_2d_yaw
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x6483D1D1
-	Offset: 0x1B68
-	Size: 0x5A
-	Parameters: 2
-	Flags: Linked
-*/
 function get_2d_yaw(v_origin, v_target) {
   v_forward = v_target - v_origin;
   v_angles = vectortoangles(v_forward);

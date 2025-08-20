@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_fx.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\exploder_shared;
 #using scripts\shared\sound_shared;

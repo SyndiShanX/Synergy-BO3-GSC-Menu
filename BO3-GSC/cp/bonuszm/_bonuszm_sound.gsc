@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\bonuszm\_bonuszm_sound.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_load;
 #using scripts\cp\_oed;
@@ -43,18 +47,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\weapons_shared;
-
 #namespace namespace_36e5bc12;
 
-/*
-	Name: init
-	Namespace: namespace_36e5bc12
-	Checksum: 0x1E88E82A
-	Offset: 0x738
-	Size: 0x13C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   if(!sessionmodeiscampaignzombiesgame()) {
     return;
@@ -71,47 +65,29 @@ function autoexec init() {
   level.bzm_sceneseqendedcallback = & bzm_sceneseqended;
 }
 
-/*
-	Name: bzm_sceneseqended
-	Namespace: namespace_36e5bc12
-	Checksum: 0x3F8657D0
-	Offset: 0x880
-	Size: 0x160
-	Parameters: 1
-	Flags: Linked
-*/
 function bzm_sceneseqended(scenename) {
-  level notify(# "bzm_sceneseqended");
+  level notify("bzm_sceneseqended");
   if(isdefined(level.var_5de673a6.var_478c7e3e)) {
     level.var_5de673a6 stopsound(level.var_5de673a6.var_478c7e3e);
   }
-  level.var_5de673a6 notify(# "hash_2d8828d0");
+  level.var_5de673a6 notify("hash_2d8828d0");
   if(isdefined(level.var_af2fbbad.var_478c7e3e)) {
     level.var_af2fbbad stopsound(level.var_af2fbbad.var_478c7e3e);
   }
-  level.var_af2fbbad notify(# "hash_2d8828d0");
+  level.var_af2fbbad notify("hash_2d8828d0");
   if(isdefined(level.var_e96fb1cb.var_478c7e3e)) {
     level.var_e96fb1cb stopsound(level.var_e96fb1cb.var_478c7e3e);
   }
-  level.var_e96fb1cb notify(# "hash_2d8828d0");
+  level.var_e96fb1cb notify("hash_2d8828d0");
   if(isdefined(level.var_971e6055.var_478c7e3e)) {
     level.var_971e6055 stopsound(level.var_971e6055.var_478c7e3e);
   }
-  level.var_971e6055 notify(# "hash_2d8828d0");
+  level.var_971e6055 notify("hash_2d8828d0");
 }
 
-/*
-	Name: say
-	Namespace: namespace_36e5bc12
-	Checksum: 0x577A3A3F
-	Offset: 0x9E8
-	Size: 0x144
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private say(alias) {
-  self notify(# "hash_2d8828d0");
-  self endon(# "hash_2d8828d0");
+  self notify("hash_2d8828d0");
+  self endon("hash_2d8828d0");
   if(isdefined(self.var_478c7e3e)) {
     self stopsound(self.var_478c7e3e);
   }
@@ -131,123 +107,55 @@ function private say(alias) {
   self util::waittill_any("death", "bzm_cancel_speaking", uniquenotify);
 }
 
-/*
-	Name: function_cf21d35c
-	Namespace: namespace_36e5bc12
-	Checksum: 0x3A691CDD
-	Offset: 0xB38
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_cf21d35c(alias, blocking = 1) {
-  /#
   assert(sessionmodeiscampaignzombiesgame());
-  # /
-    /#
   assert(isdefined(level.var_5de673a6));
-  # /
-    if(blocking) {
-      level.var_5de673a6 say(alias);
-    }
-  else {
+  if(blocking) {
+    level.var_5de673a6 say(alias);
+  } else {
     level.var_5de673a6 thread say(alias);
   }
 }
 
-/*
-	Name: function_ef0ce9fb
-	Namespace: namespace_36e5bc12
-	Checksum: 0x189B26F4
-	Offset: 0xC00
-	Size: 0x9C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_ef0ce9fb(alias, blocking = 1) {
-  /#
   assert(sessionmodeiscampaignzombiesgame());
-  # /
-    if(blocking) {
-      level.var_971e6055 say(alias);
-    }
-  else {
+  if(blocking) {
+    level.var_971e6055 say(alias);
+  } else {
     level.var_971e6055 thread say(alias);
   }
 }
 
-/*
-	Name: function_b4a3e925
-	Namespace: namespace_36e5bc12
-	Checksum: 0x26E4BD51
-	Offset: 0xCA8
-	Size: 0x9C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_b4a3e925(alias, blocking = 1) {
-  /#
   assert(sessionmodeiscampaignzombiesgame());
-  # /
-    if(blocking) {
-      level.var_af2fbbad say(alias);
-    }
-  else {
+  if(blocking) {
+    level.var_af2fbbad say(alias);
+  } else {
     level.var_af2fbbad thread say(alias);
   }
 }
 
-/*
-	Name: function_45809471
-	Namespace: namespace_36e5bc12
-	Checksum: 0x200232C6
-	Offset: 0xD50
-	Size: 0x9C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_45809471(alias, blocking = 1) {
-  /#
   assert(sessionmodeiscampaignzombiesgame());
-  # /
-    if(blocking) {
-      level.var_e96fb1cb say(alias);
-    }
-  else {
+  if(blocking) {
+    level.var_e96fb1cb say(alias);
+  } else {
     level.var_e96fb1cb thread say(alias);
   }
 }
 
-/*
-	Name: function_f46e57be
-	Namespace: namespace_36e5bc12
-	Checksum: 0xF1A64FB4
-	Offset: 0xDF8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f46e57be() {
-  self endon(# "death");
+  self endon("death");
   self.zmb_vocals_attack = "zmb_vocals_zombie_attack";
   self thread function_f93398c4();
   self thread function_b7efd00a();
   self thread function_acd6c6f8();
 }
 
-/*
-	Name: function_b7efd00a
-	Namespace: namespace_36e5bc12
-	Checksum: 0xA8609CA9
-	Offset: 0xE68
-	Size: 0x152
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b7efd00a() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "bhtn_action_notify", notify_string);
+    self waittill("bhtn_action_notify", notify_string);
     if(isdefined(level.bzm_worldpaused) && level.bzm_worldpaused) {
       continue;
     }
@@ -283,17 +191,8 @@ function function_b7efd00a() {
   }
 }
 
-/*
-	Name: function_dc28c71b
-	Namespace: namespace_36e5bc12
-	Checksum: 0x6D15B00F
-	Offset: 0xFC8
-	Size: 0x17C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_dc28c71b(zombie, type, override) {
-  zombie endon(# "death");
+  zombie endon("death");
   if(!isdefined(zombie)) {
     return;
   }
@@ -311,23 +210,14 @@ function function_dc28c71b(zombie, type, override) {
     } else if(!(isdefined(zombie.talking) && zombie.talking)) {
       zombie.talking = 1;
       zombie playsoundwithnotify(alias, "sounddone", "j_neck");
-      zombie waittill(# "sounddone");
+      zombie waittill("sounddone");
       zombie.talking = 0;
     }
   }
 }
 
-/*
-	Name: function_f93398c4
-	Namespace: namespace_36e5bc12
-	Checksum: 0x3C6935D4
-	Offset: 0x1150
-	Size: 0x118
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f93398c4() {
-  self endon(# "death");
+  self endon("death");
   wait(randomfloatrange(1, 3));
   while (true) {
     type = "ambient";
@@ -352,37 +242,19 @@ function function_f93398c4() {
     if(isdefined(self.missinglegs) && self.missinglegs) {
       type = "crawler";
     }
-    self notify(# "bhtn_action_notify", type);
+    self notify("bhtn_action_notify", type);
     wait(randomfloatrange(1, 4));
   }
 }
 
-/*
-	Name: function_acd6c6f8
-	Namespace: namespace_36e5bc12
-	Checksum: 0x15684D5D
-	Offset: 0x1270
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_acd6c6f8() {
-  self endon(# "disconnect");
-  self waittill(# "death", attacker, meansofdeath);
+  self endon("disconnect");
+  self waittill("death", attacker, meansofdeath);
   if(isdefined(self)) {
     level thread function_dc28c71b(self, "death", 1);
   }
 }
 
-/*
-	Name: networksafereset
-	Namespace: namespace_36e5bc12
-	Checksum: 0x33A22EE5
-	Offset: 0x12D8
-	Size: 0x30
-	Parameters: 0
-	Flags: Linked
-*/
 function networksafereset() {
   while (true) {
     level.var_384c508a = 0;
@@ -390,15 +262,6 @@ function networksafereset() {
   }
 }
 
-/*
-	Name: sndisnetworksafe
-	Namespace: namespace_36e5bc12
-	Checksum: 0xED567E0F
-	Offset: 0x1310
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function sndisnetworksafe() {
   if(!isdefined(level.var_384c508a)) {
     level thread networksafereset();
@@ -410,18 +273,9 @@ function sndisnetworksafe() {
   return true;
 }
 
-/*
-	Name: function_b80a73a4
-	Namespace: namespace_36e5bc12
-	Checksum: 0x60CBF68B
-	Offset: 0x1360
-	Size: 0x2F4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b80a73a4() {
-  level endon(# "unloaded");
-  self endon(# "death_or_disconnect");
+  level endon("unloaded");
+  self endon("death_or_disconnect");
   if(!isdefined(level._zbv_vox_last_update_time)) {
     level._zbv_vox_last_update_time = 0;
     level._audio_zbv_shared_ent_list = getaiteamarray("axis");
@@ -451,7 +305,7 @@ function function_b80a73a4() {
         yaw = angleclamp180(yaw);
         z_diff = self.origin[2] - zombs[i].origin[2];
         if(yaw < -95 || yaw > 95 && abs(z_diff) < 50) {
-          zombs[i] notify(# "bhtn_action_notify", "behind");
+          zombs[i] notify("bhtn_action_notify", "behind");
           played_sound = 1;
           break;
         }

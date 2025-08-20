@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_qrdrone.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\_vehicle;
@@ -6,31 +10,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
-
 #namespace qrdrone;
 
-/*
-	Name: __init__sytem__
-	Namespace: qrdrone
-	Checksum: 0x51E371A1
-	Offset: 0x390
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("qrdrone", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: qrdrone
-	Checksum: 0x7A198956
-	Offset: 0x3D0
-	Size: 0x284
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   type = "qrdrone_mp";
   clientfield::register("helicopter", "qrdrone_state", 1, 3, "int", & statechange, 0, 0);
@@ -46,15 +31,6 @@ function __init__() {
   vehicle::add_vehicletype_callback("qrdrone_mp", & spawned);
 }
 
-/*
-	Name: spawned
-	Namespace: qrdrone
-	Checksum: 0xFB2023B2
-	Offset: 0x660
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function spawned(localclientnum) {
   self util::waittill_dobj(localclientnum);
   self thread restartfx(localclientnum, 0);
@@ -63,83 +39,45 @@ function spawned(localclientnum) {
   self thread qrdrone_watch_distance();
 }
 
-/*
-	Name: statechange
-	Namespace: qrdrone
-	Checksum: 0xC64AF6F3
-	Offset: 0x6F0
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function statechange(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self util::waittill_dobj(localclientnum);
   self restartfx(localclientnum, newval);
 }
 
-/*
-	Name: restartfx
-	Namespace: qrdrone
-	Checksum: 0xC5F2AB6C
-	Offset: 0x778
-	Size: 0x124
-	Parameters: 2
-	Flags: Linked
-*/
 function restartfx(localclientnum, blinkstage) {
-  self notify(# "restart_fx");
-  /#
+  self notify("restart_fx");
   println("" + blinkstage);
-  # /
-    switch (blinkstage) {
-      case 0: {
-        self spawn_solid_fx(localclientnum);
-        break;
-      }
-      case 1: {
-        self.fx_interval = 1;
-        self spawn_blinking_fx(localclientnum);
-        break;
-      }
-      case 2: {
-        self.fx_interval = 0.133;
-        self spawn_blinking_fx(localclientnum);
-        break;
-      }
-      case 3: {
-        self notify(# "stopfx");
-        self notify(# "fx_death");
-        return;
-      }
+  switch (blinkstage) {
+    case 0: {
+      self spawn_solid_fx(localclientnum);
+      break;
     }
+    case 1: {
+      self.fx_interval = 1;
+      self spawn_blinking_fx(localclientnum);
+      break;
+    }
+    case 2: {
+      self.fx_interval = 0.133;
+      self spawn_blinking_fx(localclientnum);
+      break;
+    }
+    case 3: {
+      self notify("stopfx");
+      self notify("fx_death");
+      return;
+    }
+  }
   self thread watchrestartfx(localclientnum);
 }
 
-/*
-	Name: watchrestartfx
-	Namespace: qrdrone
-	Checksum: 0x26E2652
-	Offset: 0x8A8
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function watchrestartfx(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   level util::waittill_any("demo_jump", "player_switch", "killcam_begin", "killcam_end");
   self restartfx(localclientnum, clientfield::get("qrdrone_state"));
 }
 
-/*
-	Name: spawn_solid_fx
-	Namespace: qrdrone
-	Checksum: 0x25424073
-	Offset: 0x930
-	Size: 0x104
-	Parameters: 1
-	Flags: Linked
-*/
 function spawn_solid_fx(localclientnum) {
   if(self islocalclientdriver(localclientnum)) {
     fx_handle = playfxontag(localclientnum, level._effect["qrdrone_viewmodel_light"], self, "tag_body");
@@ -153,32 +91,14 @@ function spawn_solid_fx(localclientnum) {
   self thread cleanupfx(localclientnum, fx_handle);
 }
 
-/*
-	Name: spawn_blinking_fx
-	Namespace: qrdrone
-	Checksum: 0xC2B54E8F
-	Offset: 0xA40
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function spawn_blinking_fx(localclientnum) {
   self thread blink_fx_and_sound(localclientnum, "wpn_qr_alert");
 }
 
-/*
-	Name: blink_fx_and_sound
-	Namespace: qrdrone
-	Checksum: 0x7E25AFA6
-	Offset: 0xA78
-	Size: 0x12C
-	Parameters: 2
-	Flags: Linked
-*/
 function blink_fx_and_sound(localclientnum, soundalias) {
-  self endon(# "entityshutdown");
-  self endon(# "restart_fx");
-  self endon(# "fx_death");
+  self endon("entityshutdown");
+  self endon("restart_fx");
+  self endon("fx_death");
   if(!isdefined(self.interval)) {
     self.interval = 1;
   }
@@ -186,7 +106,7 @@ function blink_fx_and_sound(localclientnum, soundalias) {
     self playsound(localclientnum, soundalias);
     self spawn_solid_fx(localclientnum);
     util::server_wait(localclientnum, self.interval / 2);
-    self notify(# "stopfx");
+    self notify("stopfx");
     util::server_wait(localclientnum, self.interval / 2);
     self.interval = self.interval / 1.17;
     if(self.interval < 0.1) {
@@ -195,45 +115,18 @@ function blink_fx_and_sound(localclientnum, soundalias) {
   }
 }
 
-/*
-	Name: cleanupfx
-	Namespace: qrdrone
-	Checksum: 0x101C5E13
-	Offset: 0xBB0
-	Size: 0x64
-	Parameters: 2
-	Flags: Linked
-*/
 function cleanupfx(localclientnum, handle) {
   self util::waittill_any("entityshutdown", "blink", "stopfx", "restart_fx");
   stopfx(localclientnum, handle);
 }
 
-/*
-	Name: start_blink
-	Namespace: qrdrone
-	Checksum: 0x85C5BC61
-	Offset: 0xC20
-	Size: 0x52
-	Parameters: 7
-	Flags: Linked
-*/
 function start_blink(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!newval) {
     return;
   }
-  self notify(# "blink");
+  self notify("blink");
 }
 
-/*
-	Name: final_blink
-	Namespace: qrdrone
-	Checksum: 0x7AD3DBF6
-	Offset: 0xC80
-	Size: 0x58
-	Parameters: 7
-	Flags: Linked
-*/
 function final_blink(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!newval) {
     return;
@@ -241,15 +134,6 @@ function final_blink(localclientnum, oldval, newval, bnewent, binitialsnap, fiel
   self.interval = 0.133;
 }
 
-/*
-	Name: out_of_range_update
-	Namespace: qrdrone
-	Checksum: 0xB067C9C9
-	Offset: 0xCE0
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function out_of_range_update(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   model = getuimodel(getuimodelforcontroller(localclientnum), "vehicle.outOfRange");
   if(isdefined(model)) {
@@ -257,20 +141,11 @@ function out_of_range_update(localclientnum, oldval, newval, bnewent, binitialsn
   }
 }
 
-/*
-	Name: loop_local_sound
-	Namespace: qrdrone
-	Checksum: 0xE7160056
-	Offset: 0xD88
-	Size: 0x144
-	Parameters: 4
-	Flags: Linked
-*/
 function loop_local_sound(localclientnum, alias, interval, fx) {
-  self endon(# "entityshutdown");
-  self endon(# "stopfx");
-  level endon(# "demo_jump");
-  level endon(# "player_switch");
+  self endon("entityshutdown");
+  self endon("stopfx");
+  level endon("demo_jump");
+  level endon("player_switch");
   if(!isdefined(self.interval)) {
     self.interval = interval;
   }
@@ -278,7 +153,7 @@ function loop_local_sound(localclientnum, alias, interval, fx) {
     self playsound(localclientnum, alias);
     self spawn_solid_fx(localclientnum);
     util::server_wait(localclientnum, self.interval / 2);
-    self notify(# "stopfx");
+    self notify("stopfx");
     util::server_wait(localclientnum, self.interval / 2);
     self.interval = self.interval / 1.17;
     if(self.interval < 0.1) {
@@ -287,19 +162,10 @@ function loop_local_sound(localclientnum, alias, interval, fx) {
   }
 }
 
-/*
-	Name: check_for_player_switch_or_time_jump
-	Namespace: qrdrone
-	Checksum: 0xA3B6EEB2
-	Offset: 0xED8
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function check_for_player_switch_or_time_jump(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   level util::waittill_any("demo_jump", "player_switch", "killcam_begin");
-  self notify(# "stopfx");
+  self notify("stopfx");
   waittillframeend();
   self thread blink_light(localclientnum);
   if(isdefined(self.blinkstarttime) && self.blinkstarttime <= level.servertime) {
@@ -311,21 +177,12 @@ function check_for_player_switch_or_time_jump(localclientnum) {
   self thread check_for_player_switch_or_time_jump(localclientnum);
 }
 
-/*
-	Name: blink_light
-	Namespace: qrdrone
-	Checksum: 0xE6E462C8
-	Offset: 0xFD0
-	Size: 0x144
-	Parameters: 1
-	Flags: Linked
-*/
 function blink_light(localclientnum) {
-  self endon(# "entityshutdown");
-  level endon(# "demo_jump");
-  level endon(# "player_switch");
-  level endon(# "killcam_begin");
-  self waittill(# "blink");
+  self endon("entityshutdown");
+  level endon("demo_jump");
+  level endon("player_switch");
+  level endon("killcam_begin");
+  self waittill("blink");
   if(!isdefined(self.blinkstarttime)) {
     self.blinkstarttime = level.servertime;
   }
@@ -340,19 +197,10 @@ function blink_light(localclientnum) {
   }
 }
 
-/*
-	Name: collisionhandler
-	Namespace: qrdrone
-	Checksum: 0xF0FEAC6E
-	Offset: 0x1120
-	Size: 0x108
-	Parameters: 1
-	Flags: Linked
-*/
 function collisionhandler(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (true) {
-    self waittill(# "veh_collision", hip, hitn, hit_intensity);
+    self waittill("veh_collision", hip, hitn, hit_intensity);
     driver_local_client = self getlocalclientdriver();
     if(isdefined(driver_local_client)) {
       player = getlocalplayer(driver_local_client);
@@ -367,19 +215,10 @@ function collisionhandler(localclientnum) {
   }
 }
 
-/*
-	Name: enginestutterhandler
-	Namespace: qrdrone
-	Checksum: 0x4AD9BFE8
-	Offset: 0x1230
-	Size: 0x98
-	Parameters: 1
-	Flags: Linked
-*/
 function enginestutterhandler(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (true) {
-    self waittill(# "veh_engine_stutter");
+    self waittill("veh_engine_stutter");
     if(self islocalclientdriver(localclientnum)) {
       player = getlocalplayer(localclientnum);
       if(isdefined(player)) {
@@ -389,15 +228,6 @@ function enginestutterhandler(localclientnum) {
   }
 }
 
-/*
-	Name: getminimumflyheight
-	Namespace: qrdrone
-	Checksum: 0x6B7A9D62
-	Offset: 0x12D0
-	Size: 0x126
-	Parameters: 0
-	Flags: Linked
-*/
 function getminimumflyheight() {
   if(!isdefined(level.airsupportheightscale)) {
     level.airsupportheightscale = 1;
@@ -406,10 +236,8 @@ function getminimumflyheight() {
   if(isdefined(airsupport_height)) {
     planeflyheight = airsupport_height.origin[2];
   } else {
-    /#
     println("");
-    # /
-      planeflyheight = 850;
+    planeflyheight = 850;
     if(isdefined(level.airsupportheightscale)) {
       level.airsupportheightscale = getdvarint("scr_airsupportHeightScale", level.airsupportheightscale);
       planeflyheight = planeflyheight * getdvarint("scr_airsupportHeightScale", level.airsupportheightscale);
@@ -421,17 +249,8 @@ function getminimumflyheight() {
   return planeflyheight;
 }
 
-/*
-	Name: qrdrone_watch_distance
-	Namespace: qrdrone
-	Checksum: 0x6E6CE98
-	Offset: 0x1400
-	Size: 0x2D4
-	Parameters: 0
-	Flags: Linked
-*/
 function qrdrone_watch_distance() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   qrdrone_height = struct::get("qrdrone_height", "targetname");
   if(isdefined(qrdrone_height)) {
     self.maxheight = qrdrone_height.origin[2];
@@ -467,15 +286,6 @@ function qrdrone_watch_distance() {
   }
 }
 
-/*
-	Name: qrdrone_in_range
-	Namespace: qrdrone
-	Checksum: 0x5856028A
-	Offset: 0x16E0
-	Size: 0x56
-	Parameters: 0
-	Flags: Linked
-*/
 function qrdrone_in_range() {
   if(self.origin[2] < self.maxheight && self.origin[2] > self.minheight) {
     if(self isinsideheightlock()) {
@@ -485,17 +295,8 @@ function qrdrone_in_range() {
   return false;
 }
 
-/*
-	Name: qrdrone_staticfade
-	Namespace: qrdrone
-	Checksum: 0xB2DEBDE
-	Offset: 0x1740
-	Size: 0xF8
-	Parameters: 3
-	Flags: Linked
-*/
 function qrdrone_staticfade(staticalpha, sndent, sid) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (self qrdrone_in_range()) {
     staticalpha = staticalpha - 0.05;
     if(staticalpha <= 0) {
@@ -510,17 +311,8 @@ function qrdrone_staticfade(staticalpha, sndent, sid) {
   }
 }
 
-/*
-	Name: qrdrone_staticstopondeath
-	Namespace: qrdrone
-	Checksum: 0x37CAA1C4
-	Offset: 0x1840
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function qrdrone_staticstopondeath(sndent) {
-  self waittill(# "entityshutdown");
+  self waittill("entityshutdown");
   sndent stopallloopsounds(0.1);
   sndent delete();
 }

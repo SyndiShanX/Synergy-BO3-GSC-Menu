@@ -1,47 +1,23 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_ambient.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\sound_shared;
 #using scripts\shared\system_shared;
-
 #namespace ambient;
 
-/*
-	Name: __init__sytem__
-	Namespace: ambient
-	Checksum: 0xA0C5D201
-	Offset: 0x3E0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("ambient", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: ambient
-	Checksum: 0x2BE0287E
-	Offset: 0x420
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_localclient_connect( & on_player_connect);
 }
 
-/*
-	Name: on_player_connect
-	Namespace: ambient
-	Checksum: 0xDA61513
-	Offset: 0x450
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_connect(localclientnum) {
   thread ceiling_fans_init(localclientnum);
   thread clocks_init(localclientnum);
@@ -51,15 +27,6 @@ function on_player_connect(localclientnum) {
   }
 }
 
-/*
-	Name: setup_point_fx
-	Namespace: ambient
-	Checksum: 0xBE42AC42
-	Offset: 0x4D0
-	Size: 0x164
-	Parameters: 2
-	Flags: None
-*/
 function setup_point_fx(point, fx_id) {
   if(isdefined(point.script_fxid)) {
     fx_id = point.script_fxid;
@@ -81,15 +48,6 @@ function setup_point_fx(point, fx_id) {
   }
 }
 
-/*
-	Name: ambient_flak_think
-	Namespace: ambient
-	Checksum: 0xA87A8E6
-	Offset: 0x640
-	Size: 0x1D8
-	Parameters: 1
-	Flags: Linked
-*/
 function ambient_flak_think(point) {
   amount = undefined;
   speed = undefined;
@@ -115,15 +73,6 @@ function ambient_flak_think(point) {
   }
 }
 
-/*
-	Name: ambient_flak_rotate
-	Namespace: ambient
-	Checksum: 0x21921C11
-	Offset: 0x820
-	Size: 0x228
-	Parameters: 1
-	Flags: Linked
-*/
 function ambient_flak_rotate(point) {
   min_pitch = 30;
   max_pitch = 80;
@@ -150,15 +99,6 @@ function ambient_flak_rotate(point) {
   }
 }
 
-/*
-	Name: ambient_flak_flash
-	Namespace: ambient
-	Checksum: 0x915CB75C
-	Offset: 0xA50
-	Size: 0x1C0
-	Parameters: 3
-	Flags: Linked
-*/
 function ambient_flak_flash(point, min_burst_time, max_burst_time) {
   min_dist = 5000;
   max_dist = 6500;
@@ -185,15 +125,6 @@ function ambient_flak_flash(point, min_burst_time, max_burst_time) {
   }
 }
 
-/*
-	Name: ambient_fakefire_think
-	Namespace: ambient
-	Checksum: 0xCB84B40D
-	Offset: 0xC18
-	Size: 0x7C0
-	Parameters: 1
-	Flags: Linked
-*/
 function ambient_fakefire_think(point) {
   firesound = undefined;
   weaptype = undefined;
@@ -337,9 +268,7 @@ function ambient_fakefire_think(point) {
       break;
     }
     default: {
-      /#
       assertmsg(("" + point.weaponinfo) + "");
-      # /
     }
   }
   while (true) {
@@ -357,36 +286,16 @@ function ambient_fakefire_think(point) {
   }
 }
 
-/*
-	Name: ceiling_fans_init
-	Namespace: ambient
-	Checksum: 0xF777BC7F
-	Offset: 0x13E0
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function ceiling_fans_init(clientnum) {
   fan_array = getentarray(clientnum, "ceiling_fan", "targetname");
   if(isdefined(fan_array)) {
-    /#
     println("" + fan_array.size);
-    # /
-      array::thread_all(fan_array, & spin_fan);
+    array::thread_all(fan_array, & spin_fan);
   }
 }
 
-/*
-	Name: spin_fan
-	Namespace: ambient
-	Checksum: 0xF94142B4
-	Offset: 0x1478
-	Size: 0x1AC
-	Parameters: 0
-	Flags: Linked
-*/
 function spin_fan() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(!isdefined(self.speed)) {
     self.speed = randomintrange(1, 100);
     self.speed = (self.speed % 10) + 1;
@@ -406,25 +315,16 @@ function spin_fan() {
   while (true) {
     if(!do_wobble) {
       self rotateyaw(180, self.speed);
-      self waittill(# "rotatedone");
+      self waittill("rotatedone");
     } else {
       self rotateyaw(340, self.speed);
-      self waittill(# "rotatedone");
+      self waittill("rotatedone");
       self rotateyaw(20, self.wobble_speed);
-      self waittill(# "rotatedone");
+      self waittill("rotatedone");
     }
   }
 }
 
-/*
-	Name: clocks_init
-	Namespace: ambient
-	Checksum: 0x5F99965F
-	Offset: 0x1630
-	Size: 0x3FC
-	Parameters: 1
-	Flags: Linked
-*/
 function clocks_init(clientnum) {
   curr_time = getsystemtime();
   hours = curr_time[0];
@@ -455,38 +355,23 @@ function clocks_init(clientnum) {
   second_values["rotate_bit"] = 6;
   hour_hand_array = getentarray(clientnum, "hour_hand", "targetname");
   if(isdefined(hour_hand_array)) {
-    /#
     println("" + hour_hand_array.size);
-    # /
-      array::thread_all(hour_hand_array, & clock_run, hour_values);
+    array::thread_all(hour_hand_array, & clock_run, hour_values);
   }
   minute_hand_array = getentarray(clientnum, "minute_hand", "targetname");
   if(isdefined(minute_hand_array)) {
-    /#
     println("" + minute_hand_array.size);
-    # /
-      array::thread_all(minute_hand_array, & clock_run, minute_values);
+    array::thread_all(minute_hand_array, & clock_run, minute_values);
   }
   second_hand_array = getentarray(clientnum, "second_hand", "targetname");
   if(isdefined(second_hand_array)) {
-    /#
     println("" + second_hand_array.size);
-    # /
-      array::thread_all(second_hand_array, & clock_run, second_values);
+    array::thread_all(second_hand_array, & clock_run, second_values);
   }
 }
 
-/*
-	Name: clock_run
-	Namespace: ambient
-	Checksum: 0xDA8A5A03
-	Offset: 0x1A38
-	Size: 0x3AC
-	Parameters: 1
-	Flags: Linked
-*/
 function clock_run(time_values) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(isdefined(self.script_noteworthy)) {
     hour = time_values["hand_time"];
     curr_time = getsystemtime(1);
@@ -557,10 +442,10 @@ function clock_run(time_values) {
     time_values["hand_time"] = hour;
   }
   self rotatepitch(time_values["hand_time"] * time_values["rotate"], 0.05);
-  self waittill(# "rotatedone");
+  self waittill("rotatedone");
   if(isdefined(time_values["first_rotate"])) {
     self rotatepitch(time_values["first_rotate"], 0.05);
-    self waittill(# "rotatedone");
+    self waittill("rotatedone");
   }
   prev_time = getsystemtime();
   while (true) {
@@ -573,43 +458,21 @@ function clock_run(time_values) {
   }
 }
 
-/*
-	Name: spin_anemometers
-	Namespace: ambient
-	Checksum: 0xC01C641D
-	Offset: 0x1DF0
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function spin_anemometers(clientnum) {
   spoon_spinners = getentarray(clientnum, "spinner1", "targetname");
   flat_spinners = getentarray(clientnum, "spinner2", "targetname");
   if(isdefined(spoon_spinners)) {
-    /#
     println("" + spoon_spinners.size);
-    # /
-      array::thread_all(spoon_spinners, & spoon_spin_func);
+    array::thread_all(spoon_spinners, & spoon_spin_func);
   }
   if(isdefined(flat_spinners)) {
-    /#
     println("" + flat_spinners.size);
-    # /
-      array::thread_all(flat_spinners, & arrow_spin_func);
+    array::thread_all(flat_spinners, & arrow_spin_func);
   }
 }
 
-/*
-	Name: spoon_spin_func
-	Namespace: ambient
-	Checksum: 0xB5684BDE
-	Offset: 0x1F08
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function spoon_spin_func() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(isdefined(self.script_float)) {
     model_speed = self.script_float;
   } else {
@@ -618,21 +481,12 @@ function spoon_spin_func() {
   while (true) {
     speed = randomfloatrange(model_speed * 0.6, model_speed);
     self rotateyaw(1200, speed);
-    self waittill(# "rotatedone");
+    self waittill("rotatedone");
   }
 }
 
-/*
-	Name: arrow_spin_func
-	Namespace: ambient
-	Checksum: 0x841511E3
-	Offset: 0x1FB8
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function arrow_spin_func() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(isdefined(self.script_int)) {
     model_direction_change = self.script_int;
   } else {
@@ -647,8 +501,8 @@ function arrow_spin_func() {
     direction_change = model_direction_change + (randomintrange(-11, 11));
     speed_change = randomfloatrange(model_speed * 0.3, model_speed);
     self rotateyaw(direction_change, speed_change);
-    self waittill(# "rotatedone");
+    self waittill("rotatedone");
     self rotateyaw(direction_change * -1, speed_change);
-    self waittill(# "rotatedone");
+    self waittill("rotatedone");
   }
 }

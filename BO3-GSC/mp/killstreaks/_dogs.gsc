@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_dogs.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_battlechatter;
@@ -15,53 +19,28 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapon_utils;
 #using scripts\shared\weapons\_weapons;
-
 #namespace dogs;
 
-/*
-	Name: init
-	Namespace: dogs
-	Checksum: 0x2A653E0
-	Offset: 0x438
-	Size: 0x9C
-	Parameters: 0
-	Flags: None
-*/
 function init() {
   level.dog_targets = [];
   level.dog_targets[level.dog_targets.size] = "trigger_radius";
   level.dog_targets[level.dog_targets.size] = "trigger_multiple";
   level.dog_targets[level.dog_targets.size] = "trigger_use_touch";
   level.dog_spawns = [];
-  /#
   level thread devgui_dog_think();
-  # /
-    level.dogsonflashdogs = & flash_dogs;
+  level.dogsonflashdogs = & flash_dogs;
 }
 
-/*
-	Name: init_spawns
-	Namespace: dogs
-	Checksum: 0x22939CD3
-	Offset: 0x4E0
-	Size: 0x254
-	Parameters: 0
-	Flags: None
-*/
 function init_spawns() {
   spawns = getnodearray("spawn", "script_noteworthy");
   if(!isdefined(spawns) || !spawns.size) {
-    /#
     println("");
-    # /
-      return;
+    return;
   }
   dog_spawner = getent("dog_spawner", "targetname");
   if(!isdefined(dog_spawner)) {
-    /#
     println("");
-    # /
-      return;
+    return;
   }
   valid = spawnlogic::get_spawnpoint_array("mp_tdm_spawn");
   dog = dog_spawner spawnfromspawner();
@@ -74,34 +53,14 @@ function init_spawns() {
       }
     }
   }
-  /#
   if(!level.dog_spawns.size) {
     println("");
   }
-  # /
-    dog delete();
+  dog delete();
 }
 
-/*
-	Name: initkillstreak
-	Namespace: dogs
-	Checksum: 0x324C5507
-	Offset: 0x740
-	Size: 0x26
-	Parameters: 0
-	Flags: None
-*/
 function initkillstreak() {}
 
-/*
-	Name: usekillstreakdogs
-	Namespace: dogs
-	Checksum: 0x8B806B4E
-	Offset: 0x770
-	Size: 0x1D6
-	Parameters: 1
-	Flags: None
-*/
 function usekillstreakdogs(hardpointtype) {
   if(!dog_killstreak_init()) {
     return false;
@@ -125,21 +84,12 @@ function usekillstreakdogs(hardpointtype) {
   self addweaponstat(getweapon("dogs"), "used", 1);
   ownerdeathcount = self.deathcount;
   level thread dog_manager_spawn_dogs(self, ownerdeathcount, killstreak_id);
-  level notify(# "called_in_the_dogs");
+  level notify("called_in_the_dogs");
   return true;
 }
 
-/*
-	Name: ownerhadactivedogs
-	Namespace: dogs
-	Checksum: 0x56A80CD6
-	Offset: 0x950
-	Size: 0x6A
-	Parameters: 0
-	Flags: Linked
-*/
 function ownerhadactivedogs() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.dogsactive = 1;
   self.dogsactivekillstreak = 0;
   self util::waittill_any("death", "game_over", "dogs_complete");
@@ -147,68 +97,33 @@ function ownerhadactivedogs() {
   self.dogsactive = undefined;
 }
 
-/*
-	Name: dog_killstreak_init
-	Namespace: dogs
-	Checksum: 0x7FD773A3
-	Offset: 0x9C8
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_killstreak_init() {
   dog_spawner = getent("dog_spawner", "targetname");
   if(!isdefined(dog_spawner)) {
-    /#
     println("");
-    # /
-      return false;
+    return false;
   }
   spawns = getnodearray("spawn", "script_noteworthy");
   if(level.dog_spawns.size <= 0) {
-    /#
     println("");
-    # /
-      return false;
+    return false;
   }
   exits = getnodearray("exit", "script_noteworthy");
   if(exits.size <= 0) {
-    /#
     println("");
-    # /
-      return false;
+    return false;
   }
   return true;
 }
 
-/*
-	Name: dog_set_model
-	Namespace: dogs
-	Checksum: 0x5352915E
-	Offset: 0xAF0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_set_model() {
   self setmodel("german_shepherd_vest");
   self setenemymodel("german_shepherd_vest_black");
 }
 
-/*
-	Name: init_dog
-	Namespace: dogs
-	Checksum: 0xB94F430D
-	Offset: 0xB40
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function init_dog() {
-  /#
   assert(isai(self));
-  # /
-    self.targetname = "attack_dog";
+  self.targetname = "attack_dog";
   self.animtree = "dog.atr";
   self.type = "dog";
   self.accuracy = 0.2;
@@ -228,31 +143,11 @@ function init_dog() {
   self thread selfdefensechallenge();
 }
 
-/*
-	Name: get_spawn_node
-	Namespace: dogs
-	Checksum: 0x738F80F7
-	Offset: 0xC80
-	Size: 0x52
-	Parameters: 2
-	Flags: Linked
-*/
 function get_spawn_node(owner, team) {
-  /#
   assert(level.dog_spawns.size > 0);
-  # /
-    return array::random(level.dog_spawns);
+  return array::random(level.dog_spawns);
 }
 
-/*
-	Name: get_score_for_spawn
-	Namespace: dogs
-	Checksum: 0x7A0CB52
-	Offset: 0xCE0
-	Size: 0x156
-	Parameters: 2
-	Flags: None
-*/
 function get_score_for_spawn(origin, team) {
   players = getplayers();
   score = 0;
@@ -278,43 +173,16 @@ function get_score_for_spawn(origin, team) {
   return score;
 }
 
-/*
-	Name: dog_set_owner
-	Namespace: dogs
-	Checksum: 0xA569E7EA
-	Offset: 0xE40
-	Size: 0x4C
-	Parameters: 3
-	Flags: Linked
-*/
 function dog_set_owner(owner, team, requireddeathcount) {
   self setentityowner(owner);
   self.team = team;
   self.requireddeathcount = requireddeathcount;
 }
 
-/*
-	Name: dog_create_spawn_influencer
-	Namespace: dogs
-	Checksum: 0xB238D42C
-	Offset: 0xE98
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function dog_create_spawn_influencer(team) {
   self spawning::create_entity_enemy_influencer("dog", team);
 }
 
-/*
-	Name: dog_manager_spawn_dog
-	Namespace: dogs
-	Checksum: 0x9C07771E
-	Offset: 0xED0
-	Size: 0x168
-	Parameters: 4
-	Flags: Linked
-*/
 function dog_manager_spawn_dog(owner, team, spawn_node, requireddeathcount) {
   dog_spawner = getent("dog_spawner", "targetname");
   dog = dog_spawner spawnfromspawner();
@@ -330,19 +198,10 @@ function dog_manager_spawn_dog(owner, team, spawn_node, requireddeathcount) {
   return dog;
 }
 
-/*
-	Name: monitor_dog_special_grenades
-	Namespace: dogs
-	Checksum: 0x539189A1
-	Offset: 0x1040
-	Size: 0x130
-	Parameters: 0
-	Flags: Linked
-*/
 function monitor_dog_special_grenades() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "damage", damage, attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
+    self waittill("damage", damage, attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
     if(weapon_utils::isflashorstunweapon(weapon)) {
       damage_area = spawn("trigger_radius", self.origin, 0, 128, 128);
       attacker thread flash_dogs(damage_area);
@@ -352,15 +211,6 @@ function monitor_dog_special_grenades() {
   }
 }
 
-/*
-	Name: dog_manager_spawn_dogs
-	Namespace: dogs
-	Checksum: 0x72B8C546
-	Offset: 0x1178
-	Size: 0x1F8
-	Parameters: 3
-	Flags: Linked
-*/
 function dog_manager_spawn_dogs(owner, deathcount, killstreak_id) {
   requireddeathcount = deathcount;
   team = owner.team;
@@ -380,92 +230,47 @@ function dog_manager_spawn_dogs(owner, deathcount, killstreak_id) {
       wait(randomfloatrange(2, 5));
       dogs = dog_manager_get_dogs();
     }
-    level waittill(# "dog_died");
+    level waittill("dog_died");
   }
   for (;;) {
     dogs = dog_manager_get_dogs();
     if(dogs.size <= 0) {
       killstreakrules::killstreakstop("dogs", team, killstreak_id);
       if(isdefined(owner)) {
-        owner notify(# "dogs_complete");
+        owner notify("dogs_complete");
       }
       return;
     }
-    level waittill(# "dog_died");
+    level waittill("dog_died");
   }
 }
 
-/*
-	Name: dog_abort
-	Namespace: dogs
-	Checksum: 0x838E86BC
-	Offset: 0x1378
-	Size: 0xBA
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_abort() {
   level.dog_abort = 1;
   dogs = dog_manager_get_dogs();
   foreach(dog in dogs) {
-    dog notify(# "abort");
+    dog notify("abort");
   }
-  level notify(# "dog_abort");
+  level notify("dog_abort");
 }
 
-/*
-	Name: dog_manager_abort
-	Namespace: dogs
-	Checksum: 0x6DA8C16E
-	Offset: 0x1440
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_manager_abort() {
-  level endon(# "dog_abort");
+  level endon("dog_abort");
   self util::wait_endon(45, "disconnect", "joined_team", "joined_spectators");
   dog_abort();
 }
 
-/*
-	Name: dog_manager_game_ended
-	Namespace: dogs
-	Checksum: 0x8AE54B2B
-	Offset: 0x1498
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_manager_game_ended() {
-  level endon(# "dog_abort");
-  level waittill(# "game_ended");
+  level endon("dog_abort");
+  level waittill("game_ended");
   dog_abort();
 }
 
-/*
-	Name: dog_notify_level_on_death
-	Namespace: dogs
-	Checksum: 0x1F289264
-	Offset: 0x14D0
-	Size: 0x1E
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_notify_level_on_death() {
-  self waittill(# "death");
-  level notify(# "dog_died");
+  self waittill("death");
+  level notify("dog_died");
 }
 
-/*
-	Name: dog_leave
-	Namespace: dogs
-	Checksum: 0x5949C951
-	Offset: 0x14F8
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_leave() {
   self clearentitytarget();
   self.ignoreall = 1;
@@ -475,85 +280,65 @@ function dog_leave() {
   self delete();
 }
 
-/*
-	Name: dog_patrol
-	Namespace: dogs
-	Checksum: 0x312D15BC
-	Offset: 0x15A0
-	Size: 0x428
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_patrol() {
-  self endon(# "death");
-  /#
-  self endon(# "debug_patrol");
-  # /
-    for (;;) {
-      if(level.dog_abort) {
-        self dog_leave();
-        return;
-      }
-      if(isdefined(self.enemy)) {
-        wait(randomintrange(3, 5));
-        continue;
-      }
-      nodes = [];
-      objectives = dog_patrol_near_objective();
-      for (i = 0; i < objectives.size; i++) {
-        objective = array::random(objectives);
-        nodes = getnodesinradius(objective.origin, 256, 64, 512, "Path", 16);
-        if(nodes.size) {
-          break;
-        }
-      }
-      if(!nodes.size) {
-        player = self dog_patrol_near_enemy();
-        if(isdefined(player)) {
-          nodes = getnodesinradius(player.origin, 1024, 0, 128, "Path", 8);
-        }
-      }
-      if(!nodes.size && isdefined(self.script_owner)) {
-        if(isalive(self.script_owner) && self.script_owner.sessionstate == "playing") {
-          nodes = getnodesinradius(self.script_owner.origin, 512, 256, 512, "Path", 16);
-        }
-      }
-      if(!nodes.size) {
-        nodes = getnodesinradius(self.origin, 1024, 512, 512, "Path");
-      }
-      if(nodes.size) {
-        nodes = array::randomize(nodes);
-        foreach(node in nodes) {
-          if(isdefined(node.script_noteworthy)) {
-            continue;
-          }
-          if(isdefined(node.dog_claimed) && isalive(node.dog_claimed)) {
-            continue;
-          }
-          self setgoal(node);
-          node.dog_claimed = self;
-          nodes = [];
-          event = self util::waittill_any_return("goal", "bad_path", "enemy", "abort");
-          if(event == "goal") {
-            util::wait_endon(randomintrange(3, 5), "damage", "enemy", "abort");
-          }
-          node.dog_claimed = undefined;
-          break;
-        }
-      }
-      wait(0.5);
+  self endon("death");
+  self endon("debug_patrol");
+  for (;;) {
+    if(level.dog_abort) {
+      self dog_leave();
+      return;
     }
+    if(isdefined(self.enemy)) {
+      wait(randomintrange(3, 5));
+      continue;
+    }
+    nodes = [];
+    objectives = dog_patrol_near_objective();
+    for (i = 0; i < objectives.size; i++) {
+      objective = array::random(objectives);
+      nodes = getnodesinradius(objective.origin, 256, 64, 512, "Path", 16);
+      if(nodes.size) {
+        break;
+      }
+    }
+    if(!nodes.size) {
+      player = self dog_patrol_near_enemy();
+      if(isdefined(player)) {
+        nodes = getnodesinradius(player.origin, 1024, 0, 128, "Path", 8);
+      }
+    }
+    if(!nodes.size && isdefined(self.script_owner)) {
+      if(isalive(self.script_owner) && self.script_owner.sessionstate == "playing") {
+        nodes = getnodesinradius(self.script_owner.origin, 512, 256, 512, "Path", 16);
+      }
+    }
+    if(!nodes.size) {
+      nodes = getnodesinradius(self.origin, 1024, 512, 512, "Path");
+    }
+    if(nodes.size) {
+      nodes = array::randomize(nodes);
+      foreach(node in nodes) {
+        if(isdefined(node.script_noteworthy)) {
+          continue;
+        }
+        if(isdefined(node.dog_claimed) && isalive(node.dog_claimed)) {
+          continue;
+        }
+        self setgoal(node);
+        node.dog_claimed = self;
+        nodes = [];
+        event = self util::waittill_any_return("goal", "bad_path", "enemy", "abort");
+        if(event == "goal") {
+          util::wait_endon(randomintrange(3, 5), "damage", "enemy", "abort");
+        }
+        node.dog_claimed = undefined;
+        break;
+      }
+    }
+    wait(0.5);
+  }
 }
 
-/*
-	Name: dog_patrol_near_objective
-	Namespace: dogs
-	Checksum: 0xEFC2129D
-	Offset: 0x19D0
-	Size: 0x2C2
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_patrol_near_objective() {
   if(!isdefined(level.dog_objectives)) {
     level.dog_objectives = [];
@@ -593,15 +378,6 @@ function dog_patrol_near_objective() {
   return level.dog_objectives;
 }
 
-/*
-	Name: dog_patrol_near_enemy
-	Namespace: dogs
-	Checksum: 0x39D191E7
-	Offset: 0x1CA0
-	Size: 0x204
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_patrol_near_enemy() {
   players = getplayers();
   closest = undefined;
@@ -641,72 +417,36 @@ function dog_patrol_near_enemy() {
   return closest;
 }
 
-/*
-	Name: dog_manager_get_dogs
-	Namespace: dogs
-	Checksum: 0xD7AE0F62
-	Offset: 0x1EB0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_manager_get_dogs() {
   dogs = getentarray("attack_dog", "targetname");
   return dogs;
 }
 
-/*
-	Name: dog_owner_kills
-	Namespace: dogs
-	Checksum: 0x22772305
-	Offset: 0x1EF0
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_owner_kills() {
   if(!isdefined(self.script_owner)) {
     return;
   }
-  self endon(# "clear_owner");
-  self endon(# "death");
-  self.script_owner endon(# "disconnect");
+  self endon("clear_owner");
+  self endon("death");
+  self.script_owner endon("disconnect");
   while (true) {
-    self waittill(# "killed", player);
-    self.script_owner notify(# "dog_handler");
+    self waittill("killed", player);
+    self.script_owner notify("dog_handler");
   }
 }
 
-/*
-	Name: dog_health_regen
-	Namespace: dogs
-	Checksum: 0xD5909501
-	Offset: 0x1F70
-	Size: 0x130
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_health_regen() {
-  self endon(# "death");
+  self endon("death");
   interval = 0.5;
   regen_interval = int((self.health / 5) * interval);
   regen_start = 2;
   for (;;) {
-    self waittill(# "damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon, idflags);
+    self waittill("damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon, idflags);
     self trackattackerdamage(attacker);
     self thread dog_health_regen_think(regen_start, interval, regen_interval);
   }
 }
 
-/*
-	Name: trackattackerdamage
-	Namespace: dogs
-	Checksum: 0x6C0B8740
-	Offset: 0x20A8
-	Size: 0x112
-	Parameters: 1
-	Flags: Linked
-*/
 function trackattackerdamage(attacker) {
   if(!isdefined(attacker) || !isplayer(attacker) || !isdefined(self.script_owner)) {
     return;
@@ -724,32 +464,14 @@ function trackattackerdamage(attacker) {
   }
 }
 
-/*
-	Name: resetattackerdamage
-	Namespace: dogs
-	Checksum: 0x134BC54B
-	Offset: 0x21C8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function resetattackerdamage() {
   self.attackerdata = [];
   self.attackers = [];
 }
 
-/*
-	Name: dog_health_regen_think
-	Namespace: dogs
-	Checksum: 0x933D17CA
-	Offset: 0x21F0
-	Size: 0xB8
-	Parameters: 3
-	Flags: Linked
-*/
 function dog_health_regen_think(delay, interval, regen_interval) {
-  self endon(# "death");
-  self endon(# "damage");
+  self endon("death");
+  self endon("damage");
   wait(delay);
   step = 0;
   while (step <= 5) {
@@ -764,17 +486,8 @@ function dog_health_regen_think(delay, interval, regen_interval) {
   self.health = 100;
 }
 
-/*
-	Name: selfdefensechallenge
-	Namespace: dogs
-	Checksum: 0x7E8E896
-	Offset: 0x22B0
-	Size: 0x150
-	Parameters: 0
-	Flags: Linked
-*/
 function selfdefensechallenge() {
-  self waittill(# "death", attacker);
+  self waittill("death", attacker);
   if(isdefined(attacker) && isplayer(attacker)) {
     if(isdefined(self.script_owner) && self.script_owner == attacker) {
       return;
@@ -789,35 +502,17 @@ function selfdefensechallenge() {
         }
       }
     }
-    attacker notify(# "selfdefense_dog");
+    attacker notify("selfdefense_dog");
   }
 }
 
-/*
-	Name: dog_get_exit_node
-	Namespace: dogs
-	Checksum: 0x87377071
-	Offset: 0x2408
-	Size: 0x4A
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_get_exit_node() {
   exits = getnodearray("exit", "script_noteworthy");
   return arraygetclosest(self.origin, exits);
 }
 
-/*
-	Name: flash_dogs
-	Namespace: dogs
-	Checksum: 0x390C18FE
-	Offset: 0x2460
-	Size: 0x1E2
-	Parameters: 1
-	Flags: Linked
-*/
 function flash_dogs(area) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   dogs = dog_manager_get_dogs();
   foreach(dog in dogs) {
     if(!isalive(dog)) {
@@ -843,17 +538,7 @@ function flash_dogs(area) {
   }
 }
 
-/*
-	Name: devgui_dog_think
-	Namespace: dogs
-	Checksum: 0x9ECBEB6B
-	Offset: 0x2650
-	Size: 0x2A0
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_dog_think() {
-  /#
   setdvar("", "");
   debug_patrol = 0;
   for (;;) {
@@ -908,20 +593,9 @@ function devgui_dog_think() {
     }
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: devgui_dog_spawn
-	Namespace: dogs
-	Checksum: 0x31F8AD6E
-	Offset: 0x28F8
-	Size: 0x2A4
-	Parameters: 1
-	Flags: Linked
-*/
 function devgui_dog_spawn(team) {
-  /#
   player = util::gethostplayer();
   dog_spawner = getent("", "");
   level.dog_abort = 0;
@@ -946,22 +620,11 @@ function devgui_dog_spawn(team) {
   if(team != player.team) {
     dog.team = team;
     dog clearentityowner();
-    dog notify(# "clear_owner");
+    dog notify("clear_owner");
   }
-  # /
 }
 
-/*
-	Name: devgui_dog_camera
-	Namespace: dogs
-	Checksum: 0x62EF81D8
-	Offset: 0x2BA8
-	Size: 0x2B4
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_dog_camera() {
-  /#
   player = util::gethostplayer();
   if(!isdefined(level.devgui_dog_camera)) {
     level.devgui_dog_camera = 0;
@@ -1000,20 +663,9 @@ function devgui_dog_camera() {
     level.devgui_dog_camera = undefined;
     player cameraactivate(0);
   }
-  # /
 }
 
-/*
-	Name: devgui_crate_spawn
-	Namespace: dogs
-	Checksum: 0x41E2F501
-	Offset: 0x2E68
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_crate_spawn() {
-  /#
   player = util::gethostplayer();
   direction = player getplayerangles();
   direction_vec = anglestoforward(direction);
@@ -1023,20 +675,9 @@ function devgui_crate_spawn() {
   trace = bullettrace(eye, eye + direction_vec, 0, undefined);
   killcament = spawn("", player.origin);
   level thread supplydrop::dropcrate(trace[""] + vectorscale((0, 0, 1), 25), direction, "", player, player.team, killcament);
-  # /
 }
 
-/*
-	Name: devgui_crate_delete
-	Namespace: dogs
-	Checksum: 0x6F94CA20
-	Offset: 0x2FF8
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_crate_delete() {
-  /#
   if(!isdefined(level.devgui_crates)) {
     return;
   }
@@ -1044,27 +685,16 @@ function devgui_crate_delete() {
     level.devgui_crates[i] delete();
   }
   level.devgui_crates = [];
-  # /
 }
 
-/*
-	Name: devgui_spawn_show
-	Namespace: dogs
-	Checksum: 0x9F172E2F
-	Offset: 0x3070
-	Size: 0xCE
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_spawn_show() {
-  /#
   if(!isdefined(level.dog_spawn_show)) {
     level.dog_spawn_show = 1;
   } else {
     level.dog_spawn_show = !level.dog_spawn_show;
   }
   if(!level.dog_spawn_show) {
-    level notify(# "hide_dog_spawns");
+    level notify("hide_dog_spawns");
     return;
   }
   spawns = level.dog_spawns;
@@ -1072,27 +702,16 @@ function devgui_spawn_show() {
   for (i = 0; i < spawns.size; i++) {
     dev::showonespawnpoint(spawns[i], color, "", 32, "");
   }
-  # /
 }
 
-/*
-	Name: devgui_exit_show
-	Namespace: dogs
-	Checksum: 0x998CE2A5
-	Offset: 0x3148
-	Size: 0xE6
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_exit_show() {
-  /#
   if(!isdefined(level.dog_exit_show)) {
     level.dog_exit_show = 1;
   } else {
     level.dog_exit_show = !level.dog_exit_show;
   }
   if(!level.dog_exit_show) {
-    level notify(# "hide_dog_exits");
+    level notify("hide_dog_exits");
     return;
   }
   exits = getnodearray("", "");
@@ -1100,22 +719,11 @@ function devgui_exit_show() {
   for (i = 0; i < exits.size; i++) {
     dev::showonespawnpoint(exits[i], color, "", 32, "");
   }
-  # /
 }
 
-/*
-	Name: dog_debug_patrol
-	Namespace: dogs
-	Checksum: 0x482F3A8D
-	Offset: 0x3238
-	Size: 0xBE
-	Parameters: 2
-	Flags: Linked
-*/
 function dog_debug_patrol(node1, node2) {
-  /#
-  self endon(# "death");
-  self endon(# "debug_patrol");
+  self endon("death");
+  self endon("debug_patrol");
   for (;;) {
     self setgoal(node1);
     self util::waittill_any("", "");
@@ -1124,20 +732,9 @@ function dog_debug_patrol(node1, node2) {
     self util::waittill_any("", "");
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: devgui_debug_route
-	Namespace: dogs
-	Checksum: 0xF8413AAF
-	Offset: 0x3300
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_debug_route() {
-  /#
   iprintln("");
   nodes = dev::dev_get_node_pair();
   if(!isdefined(nodes)) {
@@ -1147,8 +744,7 @@ function devgui_debug_route() {
   iprintln("");
   dogs = dog_manager_get_dogs();
   if(isdefined(dogs[0])) {
-    dogs[0] notify(# "debug_patrol");
+    dogs[0] notify("debug_patrol");
     dogs[0] thread dog_debug_patrol(nodes[0], nodes[1]);
   }
-  # /
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_metro_train.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_events;
 #using scripts\mp\_util;
@@ -9,18 +13,8 @@
 #using scripts\shared\gameobjects_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace mp_metro_train;
 
-/*
-	Name: init
-	Namespace: mp_metro_train
-	Checksum: 0x835624A
-	Offset: 0x738
-	Size: 0x624
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.train_positions = [];
   level.train_angles = [];
@@ -70,15 +64,6 @@ function init() {
   level thread train_think(cars2, var_4d45e997, "train_start_2", start2, var_7ce6af9e, var_5159825b, var_e1604af1, var_c318a1b9, var_d1439c1d, var_fe600fa3, var_1ec2db3f, "left");
 }
 
-/*
-	Name: setup_gate
-	Namespace: mp_metro_train
-	Checksum: 0x5858F9E7
-	Offset: 0xD68
-	Size: 0x7C
-	Parameters: 2
-	Flags: None
-*/
 function setup_gate(gate, gate_kill) {
   gate setmovingplatformenabled(1);
   gate.gate_kill = gate_kill;
@@ -86,15 +71,6 @@ function setup_gate(gate, gate_kill) {
   gate.gate_kill linkto(gate);
 }
 
-/*
-	Name: spawn_start_train
-	Namespace: mp_metro_train
-	Checksum: 0x5CC4DBAC
-	Offset: 0xDF0
-	Size: 0x276
-	Parameters: 4
-	Flags: Linked
-*/
 function spawn_start_train( & cars, & dividers, start, name) {
   cars[0] = spawnvehicle("train_test_mp", (0, -2000, -200), (0, 0, 0), name);
   cars[0] setteam("neutral");
@@ -117,29 +93,11 @@ function spawn_start_train( & cars, & dividers, start, name) {
   }
 }
 
-/*
-	Name: showaftertime
-	Namespace: mp_metro_train
-	Checksum: 0x7DDB3BBC
-	Offset: 0x1070
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function showaftertime(time) {
   wait(time);
   self show();
 }
 
-/*
-	Name: function_1b3e50b5
-	Namespace: mp_metro_train
-	Checksum: 0x5F7AF435
-	Offset: 0x10A0
-	Size: 0x1A4
-	Parameters: 5
-	Flags: Linked
-*/
 function function_1b3e50b5(var_50a9e5d9, waittime, rotatetime, rotateangles, var_8efac8e4) {
   skip = var_8efac8e4;
   foreach(var_4a3ded66 in var_50a9e5d9) {
@@ -158,17 +116,8 @@ function function_1b3e50b5(var_50a9e5d9, waittime, rotatetime, rotateangles, var
   }
 }
 
-/*
-	Name: train_think
-	Namespace: mp_metro_train
-	Checksum: 0x7F8D3134
-	Offset: 0x1250
-	Size: 0xC70
-	Parameters: 12
-	Flags: Linked
-*/
 function train_think(cars, dividers, notifier, start, gate_a, gate_b, var_9071646e, var_fbb2796a, var_4eb99366, var_5f47c084, var_c4ecec2, trackside) {
-  level endon(# "game_ended");
+  level endon("game_ended");
   foreach(gate in gate_a) {
     gate.originalangles = gate.angles;
   }
@@ -248,31 +197,22 @@ function train_think(cars, dividers, notifier, start, gate_a, gate_b, var_907164
     }
     gate_a[0] stoploopsound(2);
     gate_b[0] stoploopsound(2);
-    cars[0] waittill(# "reached_end_node");
+    cars[0] waittill("reached_end_node");
     cars[0] stoploopsound(2);
     for (i = 1; i < max_cars; i++) {
       cars[i] ghost();
-      cars[i] notify(# "stop_kill");
+      cars[i] notify("stop_kill");
       dividers[i] ghost();
-      dividers[i] notify(# "stop_kill");
+      dividers[i] notify("stop_kill");
       cars[i] stoploopsound(2);
     }
-    cars[0] notify(# "stop_kill");
+    cars[0] notify("stop_kill");
     cars[0] ghost();
   }
 }
 
-/*
-	Name: record_positions
-	Namespace: mp_metro_train
-	Checksum: 0x24112229
-	Offset: 0x1EC8
-	Size: 0x2C8
-	Parameters: 1
-	Flags: Linked
-*/
 function record_positions(tracknum) {
-  self endon(# "reached_end_node");
+  self endon("reached_end_node");
   level.train_positions[tracknum] = [];
   level.train_angles[tracknum] = [];
   if(tracknum == "left") {
@@ -309,15 +249,6 @@ function record_positions(tracknum) {
   }
 }
 
-/*
-	Name: function_d196b0a5
-	Namespace: mp_metro_train
-	Checksum: 0x428D0496
-	Offset: 0x2198
-	Size: 0x74
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d196b0a5(index, trackside) {
   explodername = (("Train_dust_kickup_" + index) + "_") + trackside;
   exploder::exploder(explodername);
@@ -325,17 +256,8 @@ function function_d196b0a5(index, trackside) {
   exploder::stop_exploder(explodername);
 }
 
-/*
-	Name: car_move
-	Namespace: mp_metro_train
-	Checksum: 0x29FC7808
-	Offset: 0x2218
-	Size: 0x186
-	Parameters: 1
-	Flags: Linked
-*/
 function car_move(tracknum) {
-  self endon(# "stop_kill");
+  self endon("stop_kill");
   if(tracknum == "left") {
     var_d5a44988 = getdvarint("train_position_start_water_left", 205);
   } else {
@@ -357,38 +279,20 @@ function car_move(tracknum) {
   }
 }
 
-/*
-	Name: watch_player_touch
-	Namespace: mp_metro_train
-	Checksum: 0x92CB1CA2
-	Offset: 0x23A8
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_player_touch() {
-  self endon(# "end_of_track");
-  self endon(# "stop_kill");
-  self endon(# "delete");
-  self endon(# "death");
+  self endon("end_of_track");
+  self endon("stop_kill");
+  self endon("delete");
+  self endon("death");
   self.disablefinalkillcam = 1;
   for (;;) {
-    self waittill(# "touch", entity);
+    self waittill("touch", entity);
     if(isplayer(entity)) {
       entity dodamage(entity.health * 2, self.origin + (0, 0, 1), self, self, 0, "MOD_CRUSH");
     }
   }
 }
 
-/*
-	Name: train_setup_clock
-	Namespace: mp_metro_train
-	Checksum: 0xC1D2A140
-	Offset: 0x2468
-	Size: 0x140
-	Parameters: 0
-	Flags: None
-*/
 function train_setup_clock() {
   metro_clock_1 = getent("MP_Metro_clock_1", "targetname");
   metro_clock_2 = getent("MP_Metro_clock_2", "targetname");
@@ -402,17 +306,8 @@ function train_setup_clock() {
   return true;
 }
 
-/*
-	Name: function_a202446a
-	Namespace: mp_metro_train
-	Checksum: 0x964A41
-	Offset: 0x25B0
-	Size: 0x660
-	Parameters: 3
-	Flags: Linked
-*/
 function function_a202446a(killplayers, waittime, var_24d445fd) {
-  self endon(# "hash_e0b163fa");
+  self endon("hash_e0b163fa");
   self.disablefinalkillcam = 1;
   door = self;
   corpse_delay = 0;
@@ -433,7 +328,7 @@ function function_a202446a(killplayers, waittime, var_24d445fd) {
       }
       if(isdefined(entity.targetname)) {
         if(entity.targetname == "talon") {
-          entity notify(# "death");
+          entity notify("death");
           continue;
         }
       }
@@ -500,15 +395,6 @@ function function_a202446a(killplayers, waittime, var_24d445fd) {
   }
 }
 
-/*
-	Name: destroy_supply_crates
-	Namespace: mp_metro_train
-	Checksum: 0x6544780F
-	Offset: 0x2C18
-	Size: 0x15A
-	Parameters: 0
-	Flags: Linked
-*/
 function destroy_supply_crates() {
   crates = getentarray("care_package", "script_noteworthy");
   foreach(crate in crates) {
@@ -523,15 +409,6 @@ function destroy_supply_crates() {
   }
 }
 
-/*
-	Name: destroy_corpses
-	Namespace: mp_metro_train
-	Checksum: 0xADD7FBC9
-	Offset: 0x2D80
-	Size: 0x9E
-	Parameters: 0
-	Flags: Linked
-*/
 function destroy_corpses() {
   corpses = getcorpsearray();
   for (i = 0; i < corpses.size; i++) {
@@ -541,15 +418,6 @@ function destroy_corpses() {
   }
 }
 
-/*
-	Name: get_closest
-	Namespace: mp_metro_train
-	Checksum: 0x42BB6CB9
-	Offset: 0x2E28
-	Size: 0xF2
-	Parameters: 2
-	Flags: None
-*/
 function get_closest(org, array) {
   dist = 9999999;
   distsq = dist * dist;

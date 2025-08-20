@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_lotus2.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace voice_lotus2;
 
-/*
-	Name: init_voice
-	Namespace: voice_lotus2
-	Checksum: 0xC6876C67
-	Offset: 0x1A18
-	Size: 0x1244
-	Parameters: 0
-	Flags: None
-*/
 function init_voice() {
   dialog::add("hend_breach_0", "vox_lot2_6_01_005_hend");
   dialog::add("plrf_kane_i_hope_you_r_0", "vox_lot2_6_01_006_plyr");

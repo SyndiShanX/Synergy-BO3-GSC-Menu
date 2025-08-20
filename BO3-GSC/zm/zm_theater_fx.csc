@@ -1,21 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_theater_fx.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_perks;
-
 #namespace zm_theater_fx;
 
-/*
-	Name: main
-	Namespace: zm_theater_fx
-	Checksum: 0xD7417BC
-	Offset: 0x15D0
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_createfx_fx();
   precache_scripted_fx();
@@ -27,19 +21,10 @@ function main() {
   level thread light_model_swap("smodel_light_electric", "lights_indlight_on");
   level thread dog_start_monitor();
   level thread dog_stop_monitor();
-  level notify(# "dog_stop");
+  level notify("dog_stop");
   level thread projector_screen_fx();
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_theater_fx
-	Checksum: 0x779924EF
-	Offset: 0x1768
-	Size: 0x286
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["eye_glow"] = "zombie/fx_glow_eye_orange";
   level._effect["boxlight_light_ready"] = "maps/zombie/fx_zombie_theater_lightboard_green";
@@ -66,15 +51,6 @@ function precache_scripted_fx() {
   level._effect["perk_machine_light_green"] = "dlc5/zmhd/fx_wonder_fizz_light_green";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_theater_fx
-	Checksum: 0xD2504200
-	Offset: 0x19F8
-	Size: 0x6E6
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {
   level._effect["fx_mp_smoke_thick_indoor"] = "maps/zombie/fx_mp_smoke_thick_indoor";
   level._effect["fx_mp_smoke_amb_indoor_misty"] = "maps/zombie/fx_zombie_theater_smoke_amb_indoor";
@@ -141,15 +117,6 @@ function precache_createfx_fx() {
   level._effect["fx_quad_dust_roof"] = "maps/zombie/fx_zombie_crawler_dust_roof";
 }
 
-/*
-	Name: trap_fx_monitor
-	Namespace: zm_theater_fx
-	Checksum: 0x7F2C747A
-	Offset: 0x20E8
-	Size: 0x11A
-	Parameters: 3
-	Flags: Linked
-*/
 function trap_fx_monitor(name, loc, trap_type) {
   structs = struct::get_array(name, "targetname");
   points = [];
@@ -166,15 +133,6 @@ function trap_fx_monitor(name, loc, trap_type) {
   }
 }
 
-/*
-	Name: trap_play_fx
-	Namespace: zm_theater_fx
-	Checksum: 0xDC301033
-	Offset: 0x2210
-	Size: 0x260
-	Parameters: 2
-	Flags: Linked
-*/
 function trap_play_fx(loc, trap_type) {
   ang = self.angles;
   forward = anglestoforward(ang);
@@ -216,17 +174,8 @@ function trap_play_fx(loc, trap_type) {
   self.loopfx = [];
 }
 
-/*
-	Name: light_model_swap
-	Namespace: zm_theater_fx
-	Checksum: 0x11BB608B
-	Offset: 0x2478
-	Size: 0xE8
-	Parameters: 2
-	Flags: Linked
-*/
 function light_model_swap(name, model) {
-  level waittill(# "pl1");
+  level waittill("pl1");
   players = getlocalplayers();
   for (p = 0; p < players.size; p++) {
     lamps = getentarray(p, name, "targetname");
@@ -236,15 +185,6 @@ function light_model_swap(name, model) {
   }
 }
 
-/*
-	Name: projector_screen_fx
-	Namespace: zm_theater_fx
-	Checksum: 0x2051BED1
-	Offset: 0x2568
-	Size: 0x374
-	Parameters: 0
-	Flags: Linked
-*/
 function projector_screen_fx() {
   projector_struct = struct::get("struct_theater_projector_beam", "targetname");
   projector_ang = projector_struct.angles;
@@ -261,7 +201,7 @@ function projector_screen_fx() {
   }
   wait(0.016);
   if(!level clientfield::get("zm_theater_screen_in_place")) {
-    level waittill(# "sip");
+    level waittill("sip");
   }
   players = getlocalplayers();
   for (i = 0; i < players.size; i++) {
@@ -279,30 +219,12 @@ function projector_screen_fx() {
   projector_reel_change_init(projector_struct);
 }
 
-/*
-	Name: projector_reel_change_init
-	Namespace: zm_theater_fx
-	Checksum: 0x4FEF4CAA
-	Offset: 0x28E8
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function projector_reel_change_init(struct_projector) {
   level thread projector_reel_swap(struct_projector, "ps1");
   level thread projector_reel_swap(struct_projector, "ps2");
   level thread projector_reel_swap(struct_projector, "ps3");
 }
 
-/*
-	Name: projector_reel_swap
-	Namespace: zm_theater_fx
-	Checksum: 0x9BE687E2
-	Offset: 0x2960
-	Size: 0x118
-	Parameters: 2
-	Flags: Linked
-*/
 function projector_reel_swap(struct_screen, str_clientnotify) {
   level waittill(str_clientnotify);
   players = getlocalplayers();
@@ -317,44 +239,26 @@ function projector_reel_swap(struct_screen, str_clientnotify) {
   }
 }
 
-/*
-	Name: function_e4b3e1ca
-	Namespace: zm_theater_fx
-	Checksum: 0x57412156
-	Offset: 0x2A80
-	Size: 0x96
-	Parameters: 7
-	Flags: Linked
-*/
 function function_e4b3e1ca(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   switch (newval) {
     case 1: {
-      level notify(# "ps1");
+      level notify("ps1");
       break;
     }
     case 2: {
-      level notify(# "ps2");
+      level notify("ps2");
       break;
     }
     case 3: {
-      level notify(# "ps3");
+      level notify("ps3");
       break;
     }
   }
 }
 
-/*
-	Name: dog_start_monitor
-	Namespace: zm_theater_fx
-	Checksum: 0xE4D4A6D6
-	Offset: 0x2B20
-	Size: 0x82
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_start_monitor() {
   while (true) {
-    level waittill(# "dog_start");
+    level waittill("dog_start");
     players = getlocalplayers();
     for (i = 0; i < players.size; i++) {
       setworldfogactivebank(i, 2);
@@ -362,18 +266,9 @@ function dog_start_monitor() {
   }
 }
 
-/*
-	Name: dog_stop_monitor
-	Namespace: zm_theater_fx
-	Checksum: 0x78281AB3
-	Offset: 0x2BB0
-	Size: 0x82
-	Parameters: 0
-	Flags: Linked
-*/
 function dog_stop_monitor() {
   while (true) {
-    level waittill(# "dog_stop");
+    level waittill("dog_stop");
     players = getlocalplayers();
     for (i = 0; i < players.size; i++) {
       setworldfogactivebank(i, 1);

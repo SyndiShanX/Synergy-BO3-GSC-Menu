@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_ffotd.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -9,18 +13,8 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_audio;
-
 #namespace zm_tomb_ffotd;
 
-/*
-	Name: main_start
-	Namespace: zm_tomb_ffotd
-	Checksum: 0xC534AC31
-	Offset: 0x288
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function main_start() {
   level.added_initial_streamer_blackscreen = 2;
   level thread spawned_collision_ffotd();
@@ -28,15 +22,6 @@ function main_start() {
   level.var_361ee139 = & function_acf1c4da;
 }
 
-/*
-	Name: main_end
-	Namespace: zm_tomb_ffotd
-	Checksum: 0xB037E1
-	Offset: 0x2F0
-	Size: 0x2C8
-	Parameters: 0
-	Flags: Linked
-*/
 function main_end() {
   spawncollision("collision_player_256x256x256", "collider", (11200, -6722, -132), (0, 0, 0));
   spawncollision("collision_player_wall_256x256x10", "collider", (-339.75, 83, 448), (0, 0, 0));
@@ -54,15 +39,6 @@ function main_end() {
   t_killbrush_2.script_noteworthy = "kill_brush";
 }
 
-/*
-	Name: function_3fd88dcb
-	Namespace: zm_tomb_ffotd
-	Checksum: 0xE185E6D1
-	Offset: 0x5C0
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3fd88dcb() {
   level flagsys::wait_till("start_zombie_round_logic");
   level flag::wait_till("activate_zone_farm");
@@ -71,28 +47,10 @@ function function_3fd88dcb() {
   }
 }
 
-/*
-	Name: spawned_collision_ffotd
-	Namespace: zm_tomb_ffotd
-	Checksum: 0xEC082254
-	Offset: 0x638
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function spawned_collision_ffotd() {
   level flagsys::wait_till("start_zombie_round_logic");
 }
 
-/*
-	Name: function_acf1c4da
-	Namespace: zm_tomb_ffotd
-	Checksum: 0xA526D938
-	Offset: 0x680
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_acf1c4da(machine) {
   if(isdefined(level.bgb[machine.selected_bgb]) && level.bgb[machine.selected_bgb].limit_type == "activated") {
     if(self.characterindex == 0) {
@@ -105,15 +63,6 @@ function function_acf1c4da(machine) {
   }
 }
 
-/*
-	Name: function_af29034
-	Namespace: zm_tomb_ffotd
-	Checksum: 0xA658742C
-	Offset: 0x778
-	Size: 0xB0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_af29034() {
   if(!isdefined(self.var_52b965ea) || self.var_52b965ea.size <= 0) {
     self.var_52b965ea = array(0, 1, 2, 3);

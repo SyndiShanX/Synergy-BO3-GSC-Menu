@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\stealth_aware.gsc
+*************************************************/
+
 #using scripts\shared\ai_shared;
 #using scripts\shared\ai_sniper_shared;
 #using scripts\shared\stealth;
@@ -10,59 +14,25 @@
 #using scripts\shared\stealth_vo;
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
-
 #namespace stealth_aware;
 
-/*
-	Name: init
-	Namespace: stealth_aware
-	Checksum: 0x6F2FE7F1
-	Offset: 0x318
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
-  /#
   assert(isdefined(self.stealth));
-  # /
-    self.stealth.aware_combat = [];
+  self.stealth.aware_combat = [];
   self.stealth.aware_alerted = [];
   self.stealth.aware_sighted = [];
-  /#
   self.stealth.debug_ignore = [];
-  # /
-    self set_awareness("unaware");
+  self set_awareness("unaware");
   self thread function_a85b6c52();
 }
 
-/*
-	Name: enabled
-	Namespace: stealth_aware
-	Checksum: 0x98439DB6
-	Offset: 0x3D0
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function enabled() {
   return isdefined(self.stealth) && isdefined(self.stealth.aware_combat);
 }
 
-/*
-	Name: set_awareness
-	Namespace: stealth_aware
-	Checksum: 0x6FC52195
-	Offset: 0x3F8
-	Size: 0x48C
-	Parameters: 1
-	Flags: Linked
-*/
 function set_awareness(str_awareness) {
-  /#
   assert(self enabled());
-  # /
-    prevawareness = self.awarenesslevelcurrent;
+  prevawareness = self.awarenesslevelcurrent;
   if(!isdefined(prevawareness)) {
     prevawareness = "unaware";
   }
@@ -119,53 +89,24 @@ function set_awareness(str_awareness) {
     self stealth_vo::set_stealth_mode(bstealthmode);
   }
   if(prevawareness != str_awareness) {
-    self notify(# "awareness", str_awareness);
+    self notify("awareness", str_awareness);
   }
   if(bstealthmode) {
     self.stealth.aware_combat = [];
   }
 }
 
-/*
-	Name: get_awareness
-	Namespace: stealth_aware
-	Checksum: 0xA0B90120
-	Offset: 0x890
-	Size: 0xA
-	Parameters: 0
-	Flags: Linked
-*/
 function get_awareness() {
   return self.awarenesslevelcurrent;
 }
 
-/*
-	Name: was_alerted
-	Namespace: stealth_aware
-	Checksum: 0xA8F6D3FE
-	Offset: 0x8A8
-	Size: 0x36
-	Parameters: 1
-	Flags: None
-*/
 function was_alerted(entity) {
   return isdefined(self.stealth.aware_alerted[entity getentitynumber()]);
 }
 
-/*
-	Name: change_awareness
-	Namespace: stealth_aware
-	Checksum: 0xD97730BA
-	Offset: 0x8E8
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked
-*/
 function change_awareness(delta) {
-  /#
   assert(self enabled());
-  # /
-    prevaware = self.awarenesslevelcurrent;
+  prevaware = self.awarenesslevelcurrent;
   abs_offset = abs(delta);
   if(abs_offset > 1) {
     for (i = 0; i < abs_offset; i++) {
@@ -205,80 +146,38 @@ function change_awareness(delta) {
   return prevaware != self.awarenesslevelcurrent;
 }
 
-/*
-	Name: set_ignore_sentient_all
-	Namespace: stealth_aware
-	Checksum: 0xF71AC81A
-	Offset: 0xAD0
-	Size: 0xE2
-	Parameters: 1
-	Flags: Linked
-*/
 function set_ignore_sentient_all(ignore) {
-  /#
   assert(self enabled());
-  # /
-    foreach(enemy in level.stealth.enemies[self.team]) {
-      if(!isdefined(enemy)) {
-        continue;
-      }
-      self set_ignore_sentient(enemy, ignore);
+  foreach(enemy in level.stealth.enemies[self.team]) {
+    if(!isdefined(enemy)) {
+      continue;
     }
+    self set_ignore_sentient(enemy, ignore);
+  }
 }
 
-/*
-	Name: set_ignore_sentient
-	Namespace: stealth_aware
-	Checksum: 0xE2AED551
-	Offset: 0xBC0
-	Size: 0xF4
-	Parameters: 2
-	Flags: Linked
-*/
 function set_ignore_sentient(sentient, ignore) {
-  /#
   assert(self enabled());
-  # /
-    if(issentient(self) && issentient(sentient)) {
-      self setignoreent(sentient, ignore);
-    }
-  /#
+  if(issentient(self) && issentient(sentient)) {
+    self setignoreent(sentient, ignore);
+  }
   if(ignore) {
     self.stealth.debug_ignore[sentient getentitynumber()] = sentient;
   } else {
     self.stealth.debug_ignore[sentient getentitynumber()] = undefined;
   }
-  # /
 }
 
-/*
-	Name: function_ca6a0809
-	Namespace: stealth_aware
-	Checksum: 0x2B0B1D2E
-	Offset: 0xCC0
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ca6a0809(eventpackage) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   e_originator = eventpackage.parms[0];
-  self notify(# "stealth_vo", "alert");
+  self notify("stealth_vo", "alert");
   if(isplayer(e_originator)) {
     e_originator stealth_player::function_ca6a0809(self);
   }
 }
 
-/*
-	Name: on_sighted
-	Namespace: stealth_aware
-	Checksum: 0xD5F98E8A
-	Offset: 0xD50
-	Size: 0x2CE
-	Parameters: 1
-	Flags: Linked
-*/
 function on_sighted(eventpackage) {
   e_originator = eventpackage.parms[0];
   if(!isdefined(e_originator)) {
@@ -290,14 +189,10 @@ function on_sighted(eventpackage) {
   var_f51f605d = e_originator getentitynumber();
   if(self stealth::is_enemy(e_originator) && isalive(e_originator)) {
     maxsightawareness = "combat";
-    /#
     debugreason = "";
-    # /
   } else if(e_originator enabled() && e_originator get_awareness() == "combat") {
     maxsightawareness = "high_alert";
-    /#
     debugreason = "";
-    # /
   }
   var_edfa68f2 = 0;
   if(stealth::awareness_delta(curawareness, maxsightawareness) < 0) {
@@ -305,7 +200,7 @@ function on_sighted(eventpackage) {
   }
   if(var_edfa68f2 || !isdefined(self.stealth.aware_alerted[var_f51f605d]) || !isdefined(self.stealth.aware_sighted[var_f51f605d])) {
     curawareness = self get_awareness();
-    self notify(# "alert", curawareness, e_originator.origin + vectorscale((0, 0, 1), 20), e_originator, debugreason);
+    self notify("alert", curawareness, e_originator.origin + vectorscale((0, 0, 1), 20), e_originator, debugreason);
     if(var_edfa68f2 && curawareness != "combat" && issentient(e_originator)) {
       self setstealthsightvalue(e_originator, 0);
     }
@@ -316,18 +211,9 @@ function on_sighted(eventpackage) {
   }
 }
 
-/*
-	Name: on_sight_end
-	Namespace: stealth_aware
-	Checksum: 0xEA238E8B
-	Offset: 0x1028
-	Size: 0x2FE
-	Parameters: 1
-	Flags: Linked
-*/
 function on_sight_end(eventpackage) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(getdvarint("stealth_no_return") && self get_awareness() == "combat") {
     return;
   }
@@ -340,7 +226,7 @@ function on_sight_end(eventpackage) {
   self endon(sightname);
   var_5400af02 = stealth::awareness_delta(self get_awareness(), "unaware");
   if(isdefined(self.stealth.investigating) && (self.stealth.investigating != "infinite" || var_5400af02 == 1)) {
-    self waittill(# "investigate_stop");
+    self waittill("investigate_stop");
   }
   maxsightvalue = 0;
   foreach(enemy in self.stealth.aware_alerted) {
@@ -359,21 +245,12 @@ function on_sight_end(eventpackage) {
           self setstealthsightvalue(e_originator, 1);
         }
       } else {
-        self notify(# "investigate", self.origin, undefined, "quick");
+        self notify("investigate", self.origin, undefined, "quick");
       }
     }
   }
 }
 
-/*
-	Name: on_alert_changed
-	Namespace: stealth_aware
-	Checksum: 0x43368798
-	Offset: 0x1330
-	Size: 0x634
-	Parameters: 1
-	Flags: Linked
-*/
 function on_alert_changed(eventpackage) {
   eventinterestpos = self geteventpointofinterest();
   v_origin = eventinterestpos;
@@ -408,7 +285,6 @@ function on_alert_changed(eventpackage) {
         }
       }
     }
-    /#
     debugreason = self getcurrenteventtypename() + self getcurrenteventname();
     if(!isdefined(debugreason) || debugreason == "") {
       debugreason = "";
@@ -422,18 +298,16 @@ function on_alert_changed(eventpackage) {
     if(isdefined(debugreason) && isstring(debugreason)) {
       self.stealth.debug_reason = debugreason;
     }
-    # /
-      if(str_typename == "explosion") {
-        self notify(# "stealth_vo", "explosion");
-      }
-    else if(isdefined(e_originator) && iscorpse(e_originator)) {
-      self notify(# "stealth_vo", "corpse");
+    if(str_typename == "explosion") {
+      self notify("stealth_vo", "explosion");
+    } else if(isdefined(e_originator) && iscorpse(e_originator)) {
+      self notify("stealth_vo", "corpse");
     }
     self set_awareness(str_newalert);
     switch (str_newalert) {
       case "high_alert":
       case "low_alert": {
-        self notify(# "investigate", v_origin, e_originator);
+        self notify("investigate", v_origin, e_originator);
         break;
       }
     }
@@ -460,34 +334,16 @@ function on_alert_changed(eventpackage) {
   }
 }
 
-/*
-	Name: function_101ac5
-	Namespace: stealth_aware
-	Checksum: 0xD0A7D45E
-	Offset: 0x1970
-	Size: 0x9E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_101ac5(eventpackage) {
   e_originator = eventpackage.parms[0];
   if(!isentity(e_originator)) {
     return;
   }
   if(stealth::awareness_delta(self.awarenesslevelcurrent, self.awarenesslevelprevious) > 0) {
-    self notify(# "alert", "combat", e_originator.origin, e_originator, "close_combat");
+    self notify("alert", "combat", e_originator.origin, e_originator, "close_combat");
   }
 }
 
-/*
-	Name: function_933965f6
-	Namespace: stealth_aware
-	Checksum: 0x4F3F1EC8
-	Offset: 0x1A18
-	Size: 0x244
-	Parameters: 1
-	Flags: Linked
-*/
 function function_933965f6(eventpackage) {
   e_originator = eventpackage.parms[0];
   var_62bc230d = eventpackage.parms[1];
@@ -511,21 +367,12 @@ function function_933965f6(eventpackage) {
       deltaorigin = var_62bc230d.origin - self.origin;
       deltaangles = vectortoangles(deltaorigin);
       self.react_yaw = absangleclamp360(self.angles[1] - deltaangles[1]);
-      self notify(# "investigate", var_fbbdb5f6, e_originator, "quick");
+      self notify("investigate", var_fbbdb5f6, e_originator, "quick");
       self.stealth.var_c9b747e1 = gettime();
     }
   }
 }
 
-/*
-	Name: alert_group
-	Namespace: stealth_aware
-	Checksum: 0xA69F4BFB
-	Offset: 0x1C68
-	Size: 0x1C2
-	Parameters: 4
-	Flags: None
-*/
 function alert_group(group, str_newalert, v_origin, e_originator) {
   group = getaiarray(group, "script_aigroup");
   maxdistsq = getdvarint("stealth_group_radius", 1000);
@@ -547,18 +394,9 @@ function alert_group(group, str_newalert, v_origin, e_originator) {
   }
 }
 
-/*
-	Name: react_head_look
-	Namespace: stealth_aware
-	Checksum: 0xB0E20E5E
-	Offset: 0x1E38
-	Size: 0x25E
-	Parameters: 2
-	Flags: Linked
-*/
 function react_head_look(lookat, delay) {
-  self notify(# "react_head_look");
-  self endon(# "react_head_look");
+  self notify("react_head_look");
+  self endon("react_head_look");
   ent = lookat;
   if(!isentity(lookat)) {
     if(!isdefined(self.stealth_head_look_ent)) {
@@ -575,12 +413,10 @@ function react_head_look(lookat, delay) {
   while (isalive(self) && (isdefined(self.stealth_reacting) && self.stealth_reacting)) {
     if((gettime() - starttime) >= delayms) {
       self lookatentity(ent);
-      /#
       if(stealth_debug::enabled()) {
         line(self geteye(), ent.origin + vectorscale((0, 0, 1), 20), (0, 0, 1), 1, 1, 1);
         debugstar(ent.origin + vectorscale((0, 0, 1), 20), 1, (0, 0, 1));
       }
-      # /
     }
     wait(0.05);
   }
@@ -593,67 +429,31 @@ function react_head_look(lookat, delay) {
   }
 }
 
-/*
-	Name: delayed_service_event
-	Namespace: stealth_aware
-	Checksum: 0xA0E34AB3
-	Offset: 0x20A0
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function delayed_service_event(delay, id) {
-  self endon(# "death");
+  self endon("death");
   wait(delay);
   self serviceevent(id);
 }
 
-/*
-	Name: on_witness_combat
-	Namespace: stealth_aware
-	Checksum: 0xB38445BA
-	Offset: 0x20E8
-	Size: 0xBE
-	Parameters: 1
-	Flags: Linked
-*/
 function on_witness_combat(eventpackage) {
-  self endon(# "death");
+  self endon("death");
   e_attacker = eventpackage.parms[0];
   debugreason = eventpackage.parms[1];
   if(isdefined(e_attacker)) {
     if(stealth::awareness_delta(self get_awareness(), "high_alert") < 0) {
-      self notify(# "alert", "high_alert", e_attacker.origin, e_attacker, debugreason);
+      self notify("alert", "high_alert", e_attacker.origin, e_attacker, debugreason);
     }
   }
 }
 
-/*
-	Name: combat_alert_event
-	Namespace: stealth_aware
-	Checksum: 0x67F34230
-	Offset: 0x21B0
-	Size: 0x6C
-	Parameters: 1
-	Flags: None
-*/
 function combat_alert_event(e_attacker) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(e_attacker) && self enabled()) {
     wait(randomfloatrange(0.25, 0.75));
     self enter_combat_with(e_attacker);
   }
 }
 
-/*
-	Name: enter_combat_with
-	Namespace: stealth_aware
-	Checksum: 0xBA707156
-	Offset: 0x2228
-	Size: 0x2B2
-	Parameters: 1
-	Flags: Linked
-*/
 function enter_combat_with(enemy) {
   if(!self enabled()) {
     return;
@@ -670,7 +470,7 @@ function enter_combat_with(enemy) {
     self.stealth.aware_combat[enemyentnum] = enemy;
     self.stealth.aware_alerted[enemyentnum] = enemy;
     self thread combat_spread_thread(enemy);
-    self notify(# "stealth_vo", "enemy");
+    self notify("stealth_vo", "enemy");
   }
   if(issentient(enemy)) {
     self setstealthsightvalue(enemy, 1);
@@ -689,19 +489,10 @@ function enter_combat_with(enemy) {
   }
 }
 
-/*
-	Name: combat_spread_thread
-	Namespace: stealth_aware
-	Checksum: 0x6B612CEF
-	Offset: 0x24E8
-	Size: 0x1F4
-	Parameters: 1
-	Flags: Linked
-*/
 function combat_spread_thread(enemy) {
   self notify("combat_spread_thread_" + enemy getentitynumber());
   self endon("combat_spread_thread_" + enemy getentitynumber());
-  self endon(# "death");
+  self endon("death");
   idletime = 0;
   while (true) {
     wait(0.5);
@@ -719,19 +510,10 @@ function combat_spread_thread(enemy) {
   self setstealthsightawareness(self.awarenesslevelcurrent, 1);
 }
 
-/*
-	Name: function_a85b6c52
-	Namespace: stealth_aware
-	Checksum: 0xD0FC0BCD
-	Offset: 0x26E8
-	Size: 0x11A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a85b6c52() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "enemy");
+    self waittill("enemy");
     while (isdefined(self.enemy) && isalive(self.enemy)) {
       if(isdefined(self.enemy.civilian) && self.enemy.civilian || (isdefined(self.enemy.lase_override) && (isdefined(self.enemy.lase_override.civilian) && self.enemy.lase_override.civilian))) {
         self.avoid_cover = 1;
@@ -742,6 +524,6 @@ function function_a85b6c52() {
       }
       wait(0.05);
     }
-    self notify(# "stealth_sight_end", self.enemy);
+    self notify("stealth_sight_end", self.enemy);
   }
 }

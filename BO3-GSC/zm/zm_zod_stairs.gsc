@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_stairs.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\animation_shared;
 #using scripts\shared\array_shared;
@@ -14,7 +18,6 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_zod_poweronswitch;
-
 #using_animtree("generic");
 
 class cstair {
@@ -30,64 +33,24 @@ class cstair {
   var m_n_power_index;
   var m_b_discovered;
 
-  /*
-  	Name: constructor
-  	Namespace: cstair
-  	Checksum: 0x99EC1590
-  	Offset: 0xF00
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cstair
-  	Checksum: 0x99EC1590
-  	Offset: 0xF10
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: move_blocker
-  	Namespace: cstair
-  	Checksum: 0x51E71B8A
-  	Offset: 0xEB0
-  	Size: 0x44
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function move_blocker() {
     self moveto(origin - vectorscale((0, 0, 1), 10000), 0.05);
     wait(0.05);
   }
 
-  /*
-  	Name: function_15ee241e
-  	Namespace: cstair
-  	Checksum: 0xDF28C6E0
-  	Offset: 0xE58
-  	Size: 0x4C
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function function_15ee241e(e_mover, v_angles, n_rotate, n_duration) {
     e_mover rotateto(v_angles + (0, n_rotate, 0), n_duration);
   }
 
-  /*
-  	Name: element_move
-  	Namespace: cstair
-  	Checksum: 0x1D4685A5
-  	Offset: 0xDB8
-  	Size: 0x94
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function element_move(e_mover, b_is_extending, n_step_rise_distance, n_duration) {
     if(!b_is_extending) {
       n_step_rise_distance = n_step_rise_distance * -1;
@@ -96,15 +59,7 @@ class cstair {
     e_mover moveto(e_mover.origin + v_offset, n_duration);
   }
 
-  /*
-  	Name: stair_move
-  	Namespace: cstair
-  	Checksum: 0xF80D374F
-  	Offset: 0x870
-  	Size: 0x53C
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function stair_move(b_is_extending, b_is_instant) {
     if(m_str_areaname != "underground" && m_str_areaname != "club" && b_is_extending && !b_is_instant) {
       var_f2f66550[0] scene::play("p7_fxanim_zm_zod_mechanical_stairs_bundle");
@@ -165,55 +120,23 @@ class cstair {
     }
   }
 
-  /*
-  	Name: stair_wait
-  	Namespace: cstair
-  	Checksum: 0x73F11971
-  	Offset: 0x838
-  	Size: 0x2C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function stair_wait() {
     level flag::wait_till("power_on" + m_n_power_index);
   }
 
-  /*
-  	Name: stair_think
-  	Namespace: cstair
-  	Checksum: 0x4CC52059
-  	Offset: 0x800
-  	Size: 0x2C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function stair_think() {
     stair_wait();
     stair_move(1, 0);
   }
 
-  /*
-  	Name: get_blocker
-  	Namespace: cstair
-  	Checksum: 0xC0DFD74F
-  	Offset: 0x7E8
-  	Size: 0x10
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_blocker() {
     return m_a_e_blockers[0];
   }
 
-  /*
-  	Name: filter_areaname
-  	Namespace: cstair
-  	Checksum: 0xDFC8A256
-  	Offset: 0x798
-  	Size: 0x48
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function filter_areaname(e_entity, str_areaname) {
     if(!isdefined(e_entity.script_string) || e_entity.script_string != str_areaname) {
       return false;
@@ -221,29 +144,13 @@ class cstair {
     return true;
   }
 
-  /*
-  	Name: start_stair
-  	Namespace: cstair
-  	Checksum: 0xE69F1BAA
-  	Offset: 0x758
-  	Size: 0x34
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function start_stair() {
     stair_move(0, 1);
     self thread stair_think();
   }
 
-  /*
-  	Name: init_stair
-  	Namespace: cstair
-  	Checksum: 0x9CEBAFAF
-  	Offset: 0x518
-  	Size: 0x234
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function init_stair(str_areaname, n_power_index) {
     m_n_state = 0;
     m_n_pause_between_steps = 0.1;
@@ -266,41 +173,14 @@ class cstair {
 
 #namespace zm_zod_stairs;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_zod_stairs
-	Checksum: 0x40BB9F1F
-	Offset: 0x340
-	Size: 0x2C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_zod_stairs", undefined, & __main__, undefined);
 }
 
-/*
-	Name: __main__
-	Namespace: zm_zod_stairs
-	Checksum: 0x6057B528
-	Offset: 0x378
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level thread init_stairs();
 }
 
-/*
-	Name: init_stairs
-	Namespace: zm_zod_stairs
-	Checksum: 0xC9FA6B54
-	Offset: 0x3A0
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function init_stairs() {
   if(!isdefined(level.a_o_stair)) {
     level.a_o_stair = [];
@@ -313,15 +193,6 @@ function init_stairs() {
   }
 }
 
-/*
-	Name: init_stair
-	Namespace: zm_zod_stairs
-	Checksum: 0xEF2AA094
-	Offset: 0x488
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function init_stair(str_areaname, n_power_index) {
   if(!isdefined(level.a_o_stair[n_power_index])) {
     level.a_o_stair[n_power_index] = new cstair();

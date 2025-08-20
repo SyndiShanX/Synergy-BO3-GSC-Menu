@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_pods.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -11,31 +15,12 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_zod_quest;
-
 #namespace zm_zod_pods;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_zod_pods
-	Checksum: 0x2B3FB5EC
-	Offset: 0x5F0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_zod_pods", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_zod_pods
-	Checksum: 0xEB501313
-	Offset: 0x630
-	Size: 0x2D4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "ZM_ZOD_UI_POD_SPRAYER_PICKUP", 1, 1, "int", & zm_utility::zm_ui_infotext, 0, 1);
   clientfield::register("scriptmover", "update_fungus_pod_level", 1, 3, "int", & update_fungus_pod_level, 0, 0);
@@ -53,15 +38,6 @@ function __init__() {
   scene::init("p7_fxanim_zm_zod_fungus_pod_stage3_death_bundle");
 }
 
-/*
-	Name: update_fungus_pod_level
-	Namespace: zm_zod_pods
-	Checksum: 0xB537FEC5
-	Offset: 0x910
-	Size: 0x382
-	Parameters: 7
-	Flags: Linked
-*/
 function update_fungus_pod_level(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.ambient_fx)) {
     stopfx(localclientnum, self.ambient_fx);
@@ -115,46 +91,19 @@ function update_fungus_pod_level(localclientnum, oldval, newval, bnewent, biniti
   }
 }
 
-/*
-	Name: scene_play
-	Namespace: zm_zod_pods
-	Checksum: 0x9C398AC2
-	Offset: 0xCA0
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function scene_play(scene, var_165d49f6) {
-  self notify(# "scene_play");
-  self endon(# "scene_play");
+  self notify("scene_play");
+  self endon("scene_play");
   self scene::stop();
   self function_6221b6b9(scene, var_165d49f6);
   self scene::stop();
 }
 
-/*
-	Name: function_6221b6b9
-	Namespace: zm_zod_pods
-	Checksum: 0x601D8249
-	Offset: 0xD28
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_6221b6b9(scene, var_165d49f6) {
-  level endon(# "demo_jump");
+  level endon("demo_jump");
   self scene::play(scene, var_165d49f6);
 }
 
-/*
-	Name: play_harvested_fx
-	Namespace: zm_zod_pods
-	Checksum: 0x4C45E64C
-	Offset: 0xD70
-	Size: 0x1B4
-	Parameters: 7
-	Flags: Linked
-*/
 function play_harvested_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval === 0) {
     return;
@@ -187,15 +136,6 @@ function play_harvested_fx(localclientnum, oldval, newval, bnewent, binitialsnap
   level thread function_b77a78c9(localclientnum, var_ae4d7909, v_origin, 8, v_angles);
 }
 
-/*
-	Name: function_b77a78c9
-	Namespace: zm_zod_pods
-	Checksum: 0xEC6C8210
-	Offset: 0xF30
-	Size: 0xB4
-	Parameters: 5
-	Flags: Linked
-*/
 function function_b77a78c9(localclientnum, str_fx, v_origin, n_duration, v_angles) {
   if(isdefined(v_angles)) {
     fx = playfx(localclientnum, str_fx, v_origin, v_angles);
@@ -206,45 +146,18 @@ function function_b77a78c9(localclientnum, str_fx, v_origin, n_duration, v_angle
   stopfx(localclientnum, fx);
 }
 
-/*
-	Name: function_59408649
-	Namespace: zm_zod_pods
-	Checksum: 0xD6C42EB8
-	Offset: 0xFF0
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_59408649(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     level thread function_b77a78c9(localclientnum, "zombie/fx_fungus_pod_miasma_zod_zmb", self.origin, 5);
   }
 }
 
-/*
-	Name: pod_self_destruct
-	Namespace: zm_zod_pods
-	Checksum: 0x4B3B710A
-	Offset: 0x1070
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function pod_self_destruct(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     level thread function_b77a78c9(localclientnum, "zombie/fx_fungus_pod_explo_maxevo_zod_zmb", self.origin, 5, vectorscale((0, 1, 0), 90));
   }
 }
 
-/*
-	Name: pod_sprayer_glint
-	Namespace: zm_zod_pods
-	Checksum: 0xE245609F
-	Offset: 0x10F8
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function pod_sprayer_glint(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.var_eb0a02e9)) {
     stopfx(localclientnum, self.var_eb0a02e9);

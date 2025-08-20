@@ -1,43 +1,19 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_fx.gsc
+*************************************************/
+
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_island_fx;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_island_fx
-	Checksum: 0x249A992E
-	Offset: 0x860
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_island_fx", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_island_fx
-	Checksum: 0x99EC1590
-	Offset: 0x8A0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}
 
-/*
-	Name: main
-	Namespace: zm_island_fx
-	Checksum: 0xD51BDD39
-	Offset: 0x8B0
-	Size: 0x3AE
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache();
   level._effect["eye_glow"] = "zombie/fx_glow_eye_orange";
@@ -75,13 +51,4 @@ function main() {
   level._effect["doorbuy_web_ww_dissolve_ug"] = "dlc2/island/fx_vinegate_open_mirg_ug";
 }
 
-/*
-	Name: precache
-	Namespace: zm_island_fx
-	Checksum: 0x99EC1590
-	Offset: 0xC68
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {}

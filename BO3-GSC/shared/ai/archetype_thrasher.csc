@@ -1,37 +1,21 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_thrasher.csc
+*************************************************/
+
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\ai_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\postfx_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #using_animtree("generic");
-
 #namespace archetype_thrasher;
 
-/*
-	Name: __init__sytem__
-	Namespace: archetype_thrasher
-	Checksum: 0xB33A4207
-	Offset: 0x608
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("thrasher", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: archetype_thrasher
-	Checksum: 0x383E2169
-	Offset: 0x648
-	Size: 0x27C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   visionset_mgr::register_visionset_info("zm_isl_thrasher_stomach_visionset", 9000, 16, undefined, "zm_isl_thrasher_stomach");
   if(ai::shouldregisterclientfieldforarchetype("thrasher")) {
@@ -48,15 +32,6 @@ function __init__() {
   level thread thrasherclientutils::thrasherfxcleanup();
 }
 
-/*
-	Name: precache
-	Namespace: archetype_thrasher
-	Checksum: 0x19BF02CF
-	Offset: 0x8D0
-	Size: 0x18A
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec precache() {
   level._effect["fx_mech_foot_step"] = "dlc1/castle/fx_mech_foot_step";
   level._effect["fx_thrash_pustule_burst"] = "dlc2/island/fx_thrash_pustule_burst";
@@ -76,15 +51,6 @@ function autoexec precache() {
 
 #namespace thrasherclientutils;
 
-/*
-	Name: thrasherspawn
-	Namespace: thrasherclientutils
-	Checksum: 0x7CEA4E7F
-	Offset: 0xA68
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherspawn(localclientnum) {
   entity = self;
   entity.ignoreragdoll = 1;
@@ -92,15 +58,6 @@ function private thrasherspawn(localclientnum) {
   gibclientutils::addgibcallback(localclientnum, entity, 4, & thrasherdisableeyeglow);
 }
 
-/*
-	Name: thrasherfxcleanup
-	Namespace: thrasherclientutils
-	Checksum: 0xE3631728
-	Offset: 0xAF0
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private thrasherfxcleanup() {
   while (true) {
     pustules = level.thrasherpustules;
@@ -119,15 +76,6 @@ function private thrasherfxcleanup() {
   }
 }
 
-/*
-	Name: thrasherprocessfootstep
-	Namespace: thrasherclientutils
-	Checksum: 0x15B8197D
-	Offset: 0xC20
-	Size: 0x24C
-	Parameters: 5
-	Flags: Linked
-*/
 function thrasherprocessfootstep(localclientnum, pos, surface, notetrack, bone) {
   e_player = getlocalplayer(localclientnum);
   n_dist = distancesquared(pos, e_player.origin);
@@ -155,30 +103,12 @@ function thrasherprocessfootstep(localclientnum, pos, surface, notetrack, bone) 
   e_player.thrasherlastfootstep = gettime();
 }
 
-/*
-	Name: _stopfx
-	Namespace: thrasherclientutils
-	Checksum: 0x83A90997
-	Offset: 0xE78
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _stopfx(localclientnum, effect) {
   if(isdefined(effect)) {
     stopfx(localclientnum, effect);
   }
 }
 
-/*
-	Name: thrasherhidefromplayer
-	Namespace: thrasherclientutils
-	Checksum: 0xF7490221
-	Offset: 0xEC0
-	Size: 0x12C
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private thrasherhidefromplayer(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   if(!isdefined(entity) || entity.archetype !== "thrasher" || !entity hasdobj(localclientnum)) {
@@ -194,15 +124,6 @@ function private thrasherhidefromplayer(localclientnum, oldvalue, newvalue, bnew
   }
 }
 
-/*
-	Name: thrasherberserkmode
-	Namespace: thrasherclientutils
-	Checksum: 0x13DE531F
-	Offset: 0xFF8
-	Size: 0x302
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private thrasherberserkmode(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   if(!isdefined(entity) || entity.archetype !== "thrasher" || !entity hasdobj(localclientnum)) {
@@ -236,15 +157,6 @@ function private thrasherberserkmode(localclientnum, oldvalue, newvalue, bnewent
   }
 }
 
-/*
-	Name: thrashersporeexplode
-	Namespace: thrasherclientutils
-	Checksum: 0xD3BB5BB1
-	Offset: 0x1308
-	Size: 0x370
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private thrashersporeexplode(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   sporeclientfields = array(1, 2, 4);
@@ -278,42 +190,22 @@ function private thrashersporeexplode(localclientnum, oldvalue, newvalue, bnewen
   }
 }
 
-/*
-	Name: thrashersporeimpact
-	Namespace: thrasherclientutils
-	Checksum: 0x6754384
-	Offset: 0x1680
-	Size: 0x184
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private thrashersporeimpact(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   sporetag = undefined;
   sporeclientfields = array(1, 2, 4);
-  /#
   assert(sporeclientfields.size == array("", "", "").size);
-  # /
-    for (index = 0; index < sporeclientfields.size; index++) {
-      if(fieldname == ("thrasher_spore_impact" + sporeclientfields[index])) {
-        sporetag = array("tag_spore_chest", "tag_spore_back", "tag_spore_leg")[index];
-        break;
-      }
+  for (index = 0; index < sporeclientfields.size; index++) {
+    if(fieldname == ("thrasher_spore_impact" + sporeclientfields[index])) {
+      sporetag = array("tag_spore_chest", "tag_spore_back", "tag_spore_leg")[index];
+      break;
     }
+  }
   if(isdefined(sporetag)) {
     playfxontag(localclientnum, level._effect["fx_thrash_pustule_impact"], entity, sporetag);
   }
 }
 
-/*
-	Name: thrasherdisableeyeglow
-	Namespace: thrasherclientutils
-	Checksum: 0xD48CD263
-	Offset: 0x1810
-	Size: 0x92
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private thrasherdisableeyeglow(localclientnum, entity, gibflag) {
   if(!isdefined(entity) || entity.archetype !== "thrasher" || !entity hasdobj(localclientnum)) {
     return;
@@ -322,15 +214,6 @@ function private thrasherdisableeyeglow(localclientnum, entity, gibflag) {
   entity.thrashereyeglow = undefined;
 }
 
-/*
-	Name: sndplayerconsumed
-	Namespace: thrasherclientutils
-	Checksum: 0x10D145C6
-	Offset: 0x18B0
-	Size: 0x1DC
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private sndplayerconsumed(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     if(!isdefined(self.sndplayerconsumedid)) {

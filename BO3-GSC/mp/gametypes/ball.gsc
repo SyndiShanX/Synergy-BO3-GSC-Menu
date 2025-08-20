@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\ball.gsc
+*************************************************/
+
 #using scripts\mp\_armor;
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
@@ -31,31 +35,12 @@
 #using scripts\shared\sound_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace ball;
 
-/*
-	Name: __init__sytem__
-	Namespace: ball
-	Checksum: 0x59390AF2
-	Offset: 0xDF0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("ball", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: ball
-	Checksum: 0x313E53D9
-	Offset: 0xE30
-	Size: 0xF4
-	Parameters: 0
-	Flags: None
-*/
 function __init__() {
   clientfield::register("allplayers", "ballcarrier", 1, 1, "int");
   clientfield::register("allplayers", "passoption", 1, 1, "int");
@@ -64,15 +49,6 @@ function __init__() {
   clientfield::register("world", "ball_score_axis", 1, 1, "int");
 }
 
-/*
-	Name: main
-	Namespace: ball
-	Checksum: 0xB5BB28F0
-	Offset: 0xF30
-	Size: 0x51C
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   util::registertimelimit(0, 1440);
@@ -124,28 +100,10 @@ function main() {
   }
 }
 
-/*
-	Name: onprecachegametype
-	Namespace: ball
-	Checksum: 0x4F9896F7
-	Offset: 0x1458
-	Size: 0x22
-	Parameters: 0
-	Flags: None
-*/
 function onprecachegametype() {
   game["strings"]["score_limit_reached"] = & "MP_CAP_LIMIT_REACHED";
 }
 
-/*
-	Name: onstartgametype
-	Namespace: ball
-	Checksum: 0xEAB60EF9
-	Offset: 0x1488
-	Size: 0x76C
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   level.usestartspawns = 1;
   level.ballworldweapon = getweapon("ball_world");
@@ -236,15 +194,6 @@ function onstartgametype() {
   level thread setup_objectives();
 }
 
-/*
-	Name: anyballsintheair
-	Namespace: ball
-	Checksum: 0xE9BB7B1A
-	Offset: 0x1C00
-	Size: 0xC2
-	Parameters: 0
-	Flags: None
-*/
 function anyballsintheair() {
   foreach(ball in level.balls) {
     if(isdefined(ball.carrier)) {
@@ -258,60 +207,33 @@ function anyballsintheair() {
   }
 }
 
-/*
-	Name: waitforballtocometorest
-	Namespace: ball
-	Checksum: 0x453FCB10
-	Offset: 0x1CD0
-	Size: 0x8A
-	Parameters: 0
-	Flags: None
-*/
 function waitforballtocometorest() {
-  self endon(# "reset");
-  self endon(# "pickup_object");
+  self endon("reset");
+  self endon("pickup_object");
   if(isdefined(self.projectile)) {
     if(self.projectile isonground()) {
       return;
     }
-    self.projectile endon(# "death");
-    self.projectile endon(# "stationary");
-    self.projectile endon(# "grenade_bounce");
+    self.projectile endon("death");
+    self.projectile endon("stationary");
+    self.projectile endon("grenade_bounce");
     while (true) {
       wait(1);
     }
   }
 }
 
-/*
-	Name: freezeplayersforroundend
-	Namespace: ball
-	Checksum: 0xF1BA8231
-	Offset: 0x1D68
-	Size: 0x9C
-	Parameters: 0
-	Flags: None
-*/
 function freezeplayersforroundend() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self globallogic_player::freezeplayerforroundend();
   self thread globallogic::roundenddof(4);
-  self waittill(# "spawned");
+  self waittill("spawned");
   if(self.sessionstate == "playing") {
     self globallogic_player::freezeplayerforroundend();
     self thread globallogic::roundenddof(4);
   }
 }
 
-/*
-	Name: waitforallballstocometorest
-	Namespace: ball
-	Checksum: 0xFB2E7CA2
-	Offset: 0x1E10
-	Size: 0x5C
-	Parameters: 0
-	Flags: None
-*/
 function waitforallballstocometorest() {
   ball = anyballsintheair();
   if(isdefined(ball)) {
@@ -320,40 +242,13 @@ function waitforallballstocometorest() {
   }
 }
 
-/*
-	Name: ball_ontimelimit
-	Namespace: ball
-	Checksum: 0x3AEA020B
-	Offset: 0x1E78
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function ball_ontimelimit() {
   waitforallballstocometorest();
   globallogic_defaults::default_ontimelimit();
 }
 
-/*
-	Name: ball_ontimelimit_donothing
-	Namespace: ball
-	Checksum: 0x99EC1590
-	Offset: 0x1EA8
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function ball_ontimelimit_donothing() {}
 
-/*
-	Name: ballovertimeround2_ontimelimit
-	Namespace: ball
-	Checksum: 0xF60CA9E7
-	Offset: 0x1EB8
-	Size: 0x1D4
-	Parameters: 0
-	Flags: None
-*/
 function ballovertimeround2_ontimelimit() {
   waitforallballstocometorest();
   winner = undefined;
@@ -370,27 +265,16 @@ function ballovertimeround2_ontimelimit() {
     globallogic_utils::logteamwinstring("time limit", winner);
   } else {
     winner = globallogic_score::gethighestscoringplayer();
-    /#
     if(isdefined(winner)) {
       print("" + winner.name);
     } else {
       print("");
     }
-    # /
   }
   setdvar("ui_text_endreason", game["strings"]["time_limit_reached"]);
   thread globallogic::endgame(winner, game["strings"]["time_limit_reached"]);
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: ball
-	Checksum: 0xAFACD58D
-	Offset: 0x2098
-	Size: 0x74
-	Parameters: 1
-	Flags: None
-*/
 function onspawnplayer(predictedspawn) {
   self.isballcarrier = 0;
   self.ballcarried = undefined;
@@ -399,18 +283,9 @@ function onspawnplayer(predictedspawn) {
   spawning::onspawnplayer(predictedspawn);
 }
 
-/*
-	Name: ballconsistencyswitchthread
-	Namespace: ball
-	Checksum: 0x42EEE9AD
-	Offset: 0x2118
-	Size: 0x1A8
-	Parameters: 0
-	Flags: None
-*/
 function ballconsistencyswitchthread() {
-  self endon(# "death");
-  self endon(# "delete");
+  self endon("death");
+  self endon("delete");
   player = self;
   ball = getweapon("ball");
   while (true) {
@@ -424,10 +299,8 @@ function ballconsistencyswitchthread() {
             continue;
           }
         }
-        /#
         println("");
-        # /
-          player switchtoweapon(ball);
+        player switchtoweapon(ball);
         player disableweaponcycling();
         player disableoffhandweapons();
       }
@@ -436,15 +309,6 @@ function ballconsistencyswitchthread() {
   }
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: ball
-	Checksum: 0xC619453
-	Offset: 0x22C8
-	Size: 0x5F2
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(isdefined(self.carryobject)) {
     otherteam = util::getotherteam(self.team);
@@ -459,8 +323,8 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
       globallogic_audio::leader_dialog("uplTheyDrop", otherteam, undefined, "uplink_ball");
       globallogic_audio::play_2d_on_team("mpl_balldrop_sting_friend", self.team);
       globallogic_audio::play_2d_on_team("mpl_balldrop_sting_enemy", otherteam);
-      level thread popups::displayteammessagetoteam( & "MP_BALL_DROPPED", self, self.team);
-      level thread popups::displayteammessagetoteam( & "MP_BALL_DROPPED", self, otherteam);
+      level thread popups::displayteammessagetoteam(&"MP_BALL_DROPPED", self, self.team);
+      level thread popups::displayteammessagetoteam(&"MP_BALL_DROPPED", self, otherteam);
     }
   } else if(isdefined(attacker.carryobject) && attacker.team != self.team) {
     scoreevents::processscoreevent("kill_enemy_while_carrying_ball", attacker, undefined, weapon);
@@ -500,15 +364,6 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: onroundswitch
-	Namespace: ball
-	Checksum: 0x4A11970D
-	Offset: 0x28C8
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function onroundswitch() {
   if(!isdefined(game["switchedsides"])) {
     game["switchedsides"] = 0;
@@ -517,15 +372,6 @@ function onroundswitch() {
   game["switchedsides"] = !game["switchedsides"];
 }
 
-/*
-	Name: onroundscorelimit
-	Namespace: ball
-	Checksum: 0x1E0AFFC1
-	Offset: 0x2920
-	Size: 0x9A
-	Parameters: 0
-	Flags: None
-*/
 function onroundscorelimit() {
   if(!isdefined(game["overtime_round"])) {
     timelimit = getgametypesetting("timeLimit") * 60000;
@@ -537,15 +383,6 @@ function onroundscorelimit() {
   return globallogic_defaults::default_onroundscorelimit();
 }
 
-/*
-	Name: onendgame
-	Namespace: ball
-	Checksum: 0x39DEC839
-	Offset: 0x29C8
-	Size: 0xF8
-	Parameters: 1
-	Flags: None
-*/
 function onendgame(winningteam) {
   if(!isdefined(winningteam) || winningteam == "tie") {
     return;
@@ -563,15 +400,6 @@ function onendgame(winningteam) {
   }
 }
 
-/*
-	Name: updateteamscorebyroundswon
-	Namespace: ball
-	Checksum: 0xC68A2ABD
-	Offset: 0x2AC8
-	Size: 0xA2
-	Parameters: 0
-	Flags: None
-*/
 function updateteamscorebyroundswon() {
   if(level.scoreroundwinbased) {
     foreach(team in level.teams) {
@@ -582,15 +410,6 @@ function updateteamscorebyroundswon() {
   }
 }
 
-/*
-	Name: onroundendgame
-	Namespace: ball
-	Checksum: 0x27B6687B
-	Offset: 0x2B78
-	Size: 0x33C
-	Parameters: 1
-	Flags: None
-*/
 function onroundendgame(winningteam) {
   if(isdefined(game["overtime_round"])) {
     if(isdefined(game["ball_overtime_first_winner"])) {
@@ -646,28 +465,10 @@ function onroundendgame(winningteam) {
   return winner;
 }
 
-/*
-	Name: setmatchscorehudelemforteam
-	Namespace: ball
-	Checksum: 0xABC3D2A0
-	Offset: 0x2EC0
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function setmatchscorehudelemforteam() {
-  self settext( & "");
+  self settext(&"");
 }
 
-/*
-	Name: shouldplayovertimeround
-	Namespace: ball
-	Checksum: 0x62044837
-	Offset: 0x2EF0
-	Size: 0x17C
-	Parameters: 0
-	Flags: None
-*/
 function shouldplayovertimeround() {
   if(isdefined(game["overtime_round"])) {
     if(game["overtime_round"] == 1 || !level.gameended) {
@@ -692,15 +493,6 @@ function shouldplayovertimeround() {
   return false;
 }
 
-/*
-	Name: ball_getteamkillpenalty
-	Namespace: ball
-	Checksum: 0x2B6946BE
-	Offset: 0x3078
-	Size: 0x7E
-	Parameters: 4
-	Flags: None
-*/
 function ball_getteamkillpenalty(einflictor, attacker, smeansofdeath, weapon) {
   teamkill_penalty = globallogic_defaults::default_getteamkillpenalty(einflictor, attacker, smeansofdeath, weapon);
   if(isdefined(self.isballcarrier) && self.isballcarrier) {
@@ -709,15 +501,6 @@ function ball_getteamkillpenalty(einflictor, attacker, smeansofdeath, weapon) {
   return teamkill_penalty;
 }
 
-/*
-	Name: ball_getteamkillscore
-	Namespace: ball
-	Checksum: 0xF82F3834
-	Offset: 0x3100
-	Size: 0x8A
-	Parameters: 4
-	Flags: None
-*/
 function ball_getteamkillscore(einflictor, attacker, smeansofdeath, weapon) {
   teamkill_score = rank::getscoreinfovalue("kill");
   if(isdefined(self.isballcarrier) && self.isballcarrier) {
@@ -726,15 +509,6 @@ function ball_getteamkillscore(einflictor, attacker, smeansofdeath, weapon) {
   return int(teamkill_score);
 }
 
-/*
-	Name: get_real_ball_location
-	Namespace: ball
-	Checksum: 0xCA56900F
-	Offset: 0x3198
-	Size: 0x154
-	Parameters: 6
-	Flags: None
-*/
 function get_real_ball_location(startpos, startangles, index, count, defaultdistance, rotation) {
   currentangle = startangles[1] + ((360 / count) * 0.5) + ((360 / count) * index);
   coscurrent = cos(currentangle + rotation);
@@ -745,15 +519,6 @@ function get_real_ball_location(startpos, startangles, index, count, defaultdist
   return trace["position"];
 }
 
-/*
-	Name: setup_objectives
-	Namespace: ball
-	Checksum: 0xE17E5C79
-	Offset: 0x32F8
-	Size: 0x348
-	Parameters: 0
-	Flags: None
-*/
 function setup_objectives() {
   level.ball_goals = [];
   level.ball_starts = [];
@@ -783,15 +548,6 @@ function setup_objectives() {
   }
 }
 
-/*
-	Name: setup_goal
-	Namespace: ball
-	Checksum: 0x6A75C76A
-	Offset: 0x3648
-	Size: 0x224
-	Parameters: 2
-	Flags: None
-*/
 function setup_goal(trigger, team) {
   useobj = gameobjects::create_use_object(team, trigger, [], (0, 0, trigger.height * 0.5), istring("ball_goal_" + team));
   useobj gameobjects::set_visible_team("any");
@@ -809,28 +565,10 @@ function setup_goal(trigger, team) {
   return useobj;
 }
 
-/*
-	Name: can_use_goal
-	Namespace: ball
-	Checksum: 0xBAA9B3F3
-	Offset: 0x3878
-	Size: 0x14
-	Parameters: 1
-	Flags: None
-*/
 function can_use_goal(player) {
   return !self.ball_in_goal;
 }
 
-/*
-	Name: on_use_goal
-	Namespace: ball
-	Checksum: 0xE5418B89
-	Offset: 0x3898
-	Size: 0x3FC
-	Parameters: 1
-	Flags: None
-*/
 function on_use_goal(player) {
   if(!isdefined(player) || !isdefined(player.carryobject)) {
     return;
@@ -848,8 +586,8 @@ function on_use_goal(player) {
   globallogic_audio::leader_dialog("uplTheyUplink", team);
   globallogic_audio::play_2d_on_team("mpl_ballcapture_sting_friend", otherteam);
   globallogic_audio::play_2d_on_team("mpl_ballcapture_sting_enemy", team);
-  level thread popups::displayteammessagetoteam( & "MP_BALL_CAPTURE", player, team);
-  level thread popups::displayteammessagetoteam( & "MP_BALL_CAPTURE", player, otherteam);
+  level thread popups::displayteammessagetoteam(&"MP_BALL_CAPTURE", player, team);
+  level thread popups::displayteammessagetoteam(&"MP_BALL_CAPTURE", player, otherteam);
   if(isdefined(player.shoot_charge_bar)) {
     player.shoot_charge_bar.inuse = 0;
   }
@@ -871,15 +609,6 @@ function on_use_goal(player) {
   ball_give_score(otherteam, level.carryscore);
 }
 
-/*
-	Name: spawn_ball
-	Namespace: ball
-	Checksum: 0x391D964D
-	Offset: 0x3CA0
-	Size: 0x378
-	Parameters: 1
-	Flags: None
-*/
 function spawn_ball(trigger) {
   visuals = [];
   visuals[0] = spawn("script_model", trigger.origin);
@@ -921,15 +650,6 @@ function spawn_ball(trigger) {
   return ballobj;
 }
 
-/*
-	Name: can_use_ball
-	Namespace: ball
-	Checksum: 0xA881EC7A
-	Offset: 0x4020
-	Size: 0x3DE
-	Parameters: 1
-	Flags: None
-*/
 function can_use_ball(player) {
   if(!isdefined(player)) {
     return false;
@@ -992,18 +712,9 @@ function can_use_ball(player) {
   return true;
 }
 
-/*
-	Name: chief_mammal_reset
-	Namespace: ball
-	Checksum: 0x5FFC5B0A
-	Offset: 0x4408
-	Size: 0x1A8
-	Parameters: 0
-	Flags: None
-*/
 function chief_mammal_reset() {
   self.isresetting = 1;
-  self notify(# "reset");
+  self notify("reset");
   origin = self.curorigin;
   if(isdefined(self.projectile)) {
     origin = self.projectile.origin;
@@ -1025,15 +736,6 @@ function chief_mammal_reset() {
   self.isresetting = 0;
 }
 
-/*
-	Name: on_pickup_ball
-	Namespace: ball
-	Checksum: 0xFED7917
-	Offset: 0x45B8
-	Size: 0x514
-	Parameters: 1
-	Flags: None
-*/
 function on_pickup_ball(player) {
   self gameobjects::set_flags(0);
   if(!isalive(player)) {
@@ -1075,8 +777,8 @@ function on_pickup_ball(player) {
   }
   globallogic_audio::play_2d_on_team("mpl_ballget_sting_friend", player.team);
   globallogic_audio::play_2d_on_team("mpl_ballget_sting_enemy", otherteam);
-  level thread popups::displayteammessagetoteam( & "MP_BALL_PICKED_UP", player, player.team);
-  level thread popups::displayteammessagetoteam( & "MP_BALL_PICKED_UP", player, otherteam);
+  level thread popups::displayteammessagetoteam(&"MP_BALL_PICKED_UP", player, player.team);
+  level thread popups::displayteammessagetoteam(&"MP_BALL_PICKED_UP", player, otherteam);
   self.lastcarrierscored = 0;
   self.lastcarrier = player;
   self.lastcarrierteam = player.team;
@@ -1095,15 +797,6 @@ function on_pickup_ball(player) {
   player recordgameevent("pickup");
 }
 
-/*
-	Name: ball_carrier_cleanup
-	Namespace: ball
-	Checksum: 0x42005CDE
-	Offset: 0x4AD8
-	Size: 0x150
-	Parameters: 0
-	Flags: None
-*/
 function ball_carrier_cleanup() {
   self gameobjects::set_owner_team("neutral");
   if(isdefined(self.carrier)) {
@@ -1111,7 +804,7 @@ function ball_carrier_cleanup() {
     self.carrier.balldropdelay = undefined;
     self.carrier.nopickuptime = gettime() + 500;
     self.carrier player_clear_pass_target();
-    self.carrier notify(# "cancel_update_pass_target");
+    self.carrier notify("cancel_update_pass_target");
     self.carrier thread armor::unsetlightarmor();
     if(!self.carrier.hasperksprintfire) {
       self.carrier unsetperk("specialty_sprintfire");
@@ -1123,19 +816,10 @@ function ball_carrier_cleanup() {
   }
 }
 
-/*
-	Name: ball_set_dropped
-	Namespace: ball
-	Checksum: 0x9B860A47
-	Offset: 0x4C30
-	Size: 0x250
-	Parameters: 1
-	Flags: None
-*/
 function ball_set_dropped(skip_physics = 0) {
   self.isresetting = 1;
   self.droptime = gettime();
-  self notify(# "dropped");
+  self notify("dropped");
   dropangles = (0, 0, 0);
   carrier = self.carrier;
   if(isdefined(carrier) && carrier.team != "spectator") {
@@ -1166,15 +850,6 @@ function ball_set_dropped(skip_physics = 0) {
   return true;
 }
 
-/*
-	Name: on_reset_ball
-	Namespace: ball
-	Checksum: 0xDA30032
-	Offset: 0x4E88
-	Size: 0x16C
-	Parameters: 1
-	Flags: None
-*/
 function on_reset_ball(prev_origin) {
   if(isdefined(level.gameended) && level.gameended) {
     return;
@@ -1198,30 +873,12 @@ function on_reset_ball(prev_origin) {
   }
 }
 
-/*
-	Name: reset_ball
-	Namespace: ball
-	Checksum: 0x860B615
-	Offset: 0x5000
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function reset_ball() {
   self thread gameobjects::return_home();
 }
 
-/*
-	Name: upload_ball
-	Namespace: ball
-	Checksum: 0xD26F3717
-	Offset: 0x5028
-	Size: 0x24C
-	Parameters: 1
-	Flags: None
-*/
 function upload_ball(goal) {
-  self notify(# "score_event");
+  self notify("score_event");
   self.in_goal = 1;
   goal.ball_in_goal = 1;
   if(isdefined(self.projectile)) {
@@ -1248,17 +905,8 @@ function upload_ball(goal) {
   self thread gameobjects::return_home();
 }
 
-/*
-	Name: download_ball
-	Namespace: ball
-	Checksum: 0x39FCCAC0
-	Offset: 0x5280
-	Size: 0x228
-	Parameters: 0
-	Flags: None
-*/
 function download_ball() {
-  self endon(# "pickup_object");
+  self endon("pickup_object");
   self gameobjects::allow_carry("any");
   self gameobjects::set_owner_team("neutral");
   self gameobjects::set_flags(2);
@@ -1280,38 +928,20 @@ function download_ball() {
   self.in_goal = 0;
 }
 
-/*
-	Name: carry_think_ball
-	Namespace: ball
-	Checksum: 0xAEDBF88F
-	Offset: 0x54B0
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function carry_think_ball() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self thread ball_pass_watch();
   self thread ball_shoot_watch();
   self thread ball_weapon_change_watch();
 }
 
-/*
-	Name: ball_pass_watch
-	Namespace: ball
-	Checksum: 0x80849EBE
-	Offset: 0x5510
-	Size: 0x254
-	Parameters: 0
-	Flags: None
-*/
 function ball_pass_watch() {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "drop_object");
+  level endon("game_ended");
+  self endon("disconnect");
+  self endon("death");
+  self endon("drop_object");
   while (true) {
-    self waittill(# "ball_pass", weapon);
+    self waittill("ball_pass", weapon);
     if(!isdefined(self.pass_target)) {
       playerangles = self getplayerangles();
       playerangles = (math::clamp(playerangles[0], -85, 85), playerangles[1], playerangles[2]);
@@ -1340,24 +970,15 @@ function ball_pass_watch() {
   }
 }
 
-/*
-	Name: ball_shoot_watch
-	Namespace: ball
-	Checksum: 0x851718C5
-	Offset: 0x5770
-	Size: 0x1E4
-	Parameters: 0
-	Flags: None
-*/
 function ball_shoot_watch() {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "drop_object");
+  level endon("game_ended");
+  self endon("disconnect");
+  self endon("death");
+  self endon("drop_object");
   extra_pitch = getdvarfloat("scr_ball_shoot_extra_pitch", 0);
   force = getdvarfloat("scr_ball_shoot_force", 900);
   while (true) {
-    self waittill(# "weapon_fired", weapon);
+    self waittill("weapon_fired", weapon);
     if(weapon != getweapon("ball")) {
       continue;
     }
@@ -1375,29 +996,20 @@ function ball_shoot_watch() {
   }
 }
 
-/*
-	Name: ball_weapon_change_watch
-	Namespace: ball
-	Checksum: 0xC63C2CA6
-	Offset: 0x5960
-	Size: 0x1D4
-	Parameters: 0
-	Flags: None
-*/
 function ball_weapon_change_watch() {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "drop_object");
+  level endon("game_ended");
+  self endon("disconnect");
+  self endon("death");
+  self endon("drop_object");
   ballweapon = getweapon("ball");
   while (true) {
     if(ballweapon == self getcurrentweapon()) {
       break;
     }
-    self waittill(# "weapon_change");
+    self waittill("weapon_change");
   }
   while (true) {
-    self waittill(# "weapon_change", weapon, lastweapon);
+    self waittill("weapon_change", weapon, lastweapon);
     if(isdefined(weapon) && weapon.gadget_type == 14) {
       break;
     }
@@ -1412,15 +1024,6 @@ function ball_weapon_change_watch() {
   self.carryobject thread ball_physics_launch_drop(dir * force, self);
 }
 
-/*
-	Name: valid_ball_pickup_weapon
-	Namespace: ball
-	Checksum: 0xBB5E9B2
-	Offset: 0x5B40
-	Size: 0x66
-	Parameters: 1
-	Flags: None
-*/
 function valid_ball_pickup_weapon(weapon) {
   if(weapon == level.weaponnone) {
     return false;
@@ -1434,31 +1037,13 @@ function valid_ball_pickup_weapon(weapon) {
   return true;
 }
 
-/*
-	Name: player_no_pickup_time
-	Namespace: ball
-	Checksum: 0xC91D27AE
-	Offset: 0x5BB0
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function player_no_pickup_time() {
   return isdefined(self.nopickuptime) && self.nopickuptime > gettime();
 }
 
-/*
-	Name: watchunderwater
-	Namespace: ball
-	Checksum: 0xB206613
-	Offset: 0x5BD8
-	Size: 0x10C
-	Parameters: 1
-	Flags: None
-*/
 function watchunderwater(trigger) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   while (true) {
     if(self isplayerunderwater()) {
       foreach(ball in level.balls) {
@@ -1473,15 +1058,6 @@ function watchunderwater(trigger) {
   }
 }
 
-/*
-	Name: ball_physics_launch_drop
-	Namespace: ball
-	Checksum: 0xC839A79A
-	Offset: 0x5CF0
-	Size: 0x7C
-	Parameters: 3
-	Flags: None
-*/
 function ball_physics_launch_drop(force, droppingplayer, switchweapon) {
   ball_set_dropped(1);
   ball_physics_launch(force, droppingplayer);
@@ -1490,79 +1066,43 @@ function ball_physics_launch_drop(force, droppingplayer, switchweapon) {
   }
 }
 
-/*
-	Name: ball_check_pass_kill_pickup
-	Namespace: ball
-	Checksum: 0x6CBBBB7D
-	Offset: 0x5D78
-	Size: 0x1A4
-	Parameters: 1
-	Flags: None
-*/
 function ball_check_pass_kill_pickup(carryobj) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  carryobj endon(# "reset");
+  self endon("death");
+  self endon("disconnect");
+  carryobj endon("reset");
   timer = spawnstruct();
-  timer endon(# "timer_done");
+  timer endon("timer_done");
   timer thread timer_run(1.5);
-  carryobj waittill(# "pickup_object");
+  carryobj waittill("pickup_object");
   timer timer_cancel();
   if(!isdefined(carryobj.carrier) || carryobj.carrier.team == self.team) {
     return;
   }
-  carryobj.carrier endon(# "disconnect");
+  carryobj.carrier endon("disconnect");
   timer thread timer_run(5);
-  carryobj.carrier waittill(# "death", attacker);
+  carryobj.carrier waittill("death", attacker);
   timer timer_cancel();
   if(!isdefined(attacker) || attacker != self) {
     return;
   }
   timer thread timer_run(2);
-  carryobj waittill(# "pickup_object");
+  carryobj waittill("pickup_object");
   timer timer_cancel();
 }
 
-/*
-	Name: timer_run
-	Namespace: ball
-	Checksum: 0x62F7FF82
-	Offset: 0x5F28
-	Size: 0x2A
-	Parameters: 1
-	Flags: None
-*/
 function timer_run(time) {
-  self endon(# "cancel_timer");
+  self endon("cancel_timer");
   wait(time);
-  self notify(# "timer_done");
+  self notify("timer_done");
 }
 
-/*
-	Name: timer_cancel
-	Namespace: ball
-	Checksum: 0xC6369A75
-	Offset: 0x5F60
-	Size: 0x12
-	Parameters: 0
-	Flags: None
-*/
 function timer_cancel() {
-  self notify(# "cancel_timer");
+  self notify("cancel_timer");
 }
 
-/*
-	Name: adjust_for_stance
-	Namespace: ball
-	Checksum: 0x3969AB1
-	Offset: 0x5F80
-	Size: 0xFC
-	Parameters: 1
-	Flags: None
-*/
 function adjust_for_stance(ball) {
   target = self;
-  target endon(# "pass_end");
+  target endon("pass_end");
   offs = 0;
   while (isdefined(target) && isdefined(ball)) {
     newoffs = 50;
@@ -1584,15 +1124,6 @@ function adjust_for_stance(ball) {
   }
 }
 
-/*
-	Name: ball_pass_projectile
-	Namespace: ball
-	Checksum: 0x513675C6
-	Offset: 0x6088
-	Size: 0x454
-	Parameters: 3
-	Flags: None
-*/
 function ball_pass_projectile(passer, target, last_target_origin) {
   ball_set_dropped(1);
   if(isdefined(target)) {
@@ -1632,17 +1163,8 @@ function ball_pass_projectile(passer, target, last_target_origin) {
   passer killstreaks::switch_to_last_non_killstreak_weapon(undefined, 1);
 }
 
-/*
-	Name: ball_on_projectile_death
-	Namespace: ball
-	Checksum: 0x29DF13E8
-	Offset: 0x64E8
-	Size: 0xC4
-	Parameters: 0
-	Flags: None
-*/
 function ball_on_projectile_death() {
-  self.projectile waittill(# "death");
+  self.projectile waittill("death");
   ball = self.visuals[0];
   if(!isdefined(self.carrier) && !self.in_goal) {
     if(ball.origin != (ball.baseorigin + vectorscale((0, 0, 1), 4000))) {
@@ -1650,18 +1172,9 @@ function ball_on_projectile_death() {
     }
   }
   self ball_restore_contents();
-  ball notify(# "pass_end");
+  ball notify("pass_end");
 }
 
-/*
-	Name: ball_restore_contents
-	Namespace: ball
-	Checksum: 0xD0F27E4
-	Offset: 0x65B8
-	Size: 0x6A
-	Parameters: 0
-	Flags: None
-*/
 function ball_restore_contents() {
   if(isdefined(self.visuals[0].old_contents)) {
     self.visuals[0] setcontents(self.visuals[0].old_contents);
@@ -1669,47 +1182,20 @@ function ball_restore_contents() {
   }
 }
 
-/*
-	Name: ball_on_projectile_hit_client
-	Namespace: ball
-	Checksum: 0x2A7D6C3E
-	Offset: 0x6630
-	Size: 0x84
-	Parameters: 1
-	Flags: None
-*/
 function ball_on_projectile_hit_client(passer) {
-  self endon(# "pass_end");
-  self.projectile waittill(# "projectile_impact_player", player);
-  self.trigger notify(# "trigger", player);
-  self.projectile notify(# "kill_ball_on_projectile_death");
+  self endon("pass_end");
+  self.projectile waittill("projectile_impact_player", player);
+  self.trigger notify("trigger", player);
+  self.projectile notify("kill_ball_on_projectile_death");
   if(isdefined(passer)) {
     passer recordgameevent("pass");
   }
 }
 
-/*
-	Name: ball_clear_contents
-	Namespace: ball
-	Checksum: 0x9A14F112
-	Offset: 0x66C0
-	Size: 0x38
-	Parameters: 0
-	Flags: None
-*/
 function ball_clear_contents() {
   self.visuals[0].old_contents = self.visuals[0] setcontents(0);
 }
 
-/*
-	Name: ball_create_killcam_ent
-	Namespace: ball
-	Checksum: 0x8E4DA7C0
-	Offset: 0x6700
-	Size: 0x9C
-	Parameters: 0
-	Flags: None
-*/
 function ball_create_killcam_ent() {
   if(isdefined(self.killcament)) {
     self.killcament delete();
@@ -1719,18 +1205,9 @@ function ball_create_killcam_ent() {
   self.killcament setcontents(0);
 }
 
-/*
-	Name: ball_pass_or_throw_active
-	Namespace: ball
-	Checksum: 0x91FCBD90
-	Offset: 0x67A8
-	Size: 0x98
-	Parameters: 0
-	Flags: None
-*/
 function ball_pass_or_throw_active() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.pass_or_throw_active = 1;
   self allowmelee(0);
   while (getweapon("ball") == self getcurrentweapon()) {
@@ -1740,28 +1217,10 @@ function ball_pass_or_throw_active() {
   self.pass_or_throw_active = 0;
 }
 
-/*
-	Name: ball_download_fx
-	Namespace: ball
-	Checksum: 0x7765C9C6
-	Offset: 0x6848
-	Size: 0x20
-	Parameters: 2
-	Flags: None
-*/
 function ball_download_fx(ball_model, waittime) {
   self.scorefrozenuntil = 0;
 }
 
-/*
-	Name: ball_assign_random_start
-	Namespace: ball
-	Checksum: 0x9805E33A
-	Offset: 0x6870
-	Size: 0xEC
-	Parameters: 0
-	Flags: None
-*/
 function ball_assign_random_start() {
   new_start = undefined;
   rand_starts = array::randomize(level.ball_starts);
@@ -1778,15 +1237,6 @@ function ball_assign_random_start() {
   ball_assign_start(new_start);
 }
 
-/*
-	Name: ball_assign_start
-	Namespace: ball
-	Checksum: 0xFCFFE9C2
-	Offset: 0x6968
-	Size: 0xD4
-	Parameters: 1
-	Flags: None
-*/
 function ball_assign_start(start) {
   foreach(vis in self.visuals) {
     vis.baseorigin = start.origin;
@@ -1796,15 +1246,6 @@ function ball_assign_start(start) {
   start.in_use = 1;
 }
 
-/*
-	Name: ball_physics_launch
-	Namespace: ball
-	Checksum: 0x15335C42
-	Offset: 0x6A48
-	Size: 0x32C
-	Parameters: 2
-	Flags: None
-*/
 function ball_physics_launch(force, droppingplayer) {
   visuals = self.visuals[0];
   visuals.origin_prev = undefined;
@@ -1838,18 +1279,9 @@ function ball_physics_launch(force, droppingplayer) {
   self thread ball_check_oob();
 }
 
-/*
-	Name: ball_check_oob
-	Namespace: ball
-	Checksum: 0x2F4A12A9
-	Offset: 0x6D80
-	Size: 0x11C
-	Parameters: 0
-	Flags: None
-*/
 function ball_check_oob() {
-  self endon(# "reset");
-  self endon(# "pickup_object");
+  self endon("reset");
+  self endon("pickup_object");
   visual = self.visuals[0];
   while (true) {
     skip_oob_check = isdefined(self.in_goal) && self.in_goal || (isdefined(self.isresetting) && self.isresetting);
@@ -1863,22 +1295,13 @@ function ball_check_oob() {
   }
 }
 
-/*
-	Name: ball_physics_touch_cant_pickup_player
-	Namespace: ball
-	Checksum: 0x68F19B88
-	Offset: 0x6EA8
-	Size: 0xF4
-	Parameters: 1
-	Flags: None
-*/
 function ball_physics_touch_cant_pickup_player(droppingplayer) {
-  self endon(# "reset");
-  self endon(# "pickup_object");
+  self endon("reset");
+  self endon("pickup_object");
   ball = self.visuals[0];
   trigger = self.trigger;
   while (true) {
-    trigger waittill(# "trigger", player);
+    trigger waittill("trigger", player);
     if(isdefined(droppingplayer) && droppingplayer == player && player player_no_pickup_time()) {
       continue;
     }
@@ -1891,15 +1314,6 @@ function ball_physics_touch_cant_pickup_player(droppingplayer) {
   }
 }
 
-/*
-	Name: ball_physics_fake_bounce
-	Namespace: ball
-	Checksum: 0xFAFBCF8A
-	Offset: 0x6FA8
-	Size: 0x92
-	Parameters: 0
-	Flags: None
-*/
 function ball_physics_fake_bounce() {
   ball = self.visuals[0];
   vel = ball getvelocity();
@@ -1907,18 +1321,9 @@ function ball_physics_fake_bounce() {
   bouncedir = -1 * vectornormalize(vel);
 }
 
-/*
-	Name: ball_watch_touch_enemy_goal
-	Namespace: ball
-	Checksum: 0xEF61C6A5
-	Offset: 0x7048
-	Size: 0x1A4
-	Parameters: 0
-	Flags: None
-*/
 function ball_watch_touch_enemy_goal() {
-  self endon(# "reset");
-  self endon(# "pickup_object");
+  self endon("reset");
+  self endon("pickup_object");
   enemygoal = level.ball_goals[util::getotherteam(self.lastcarrierteam)];
   while (true) {
     if(!enemygoal can_use_goal()) {
@@ -1942,15 +1347,6 @@ function ball_watch_touch_enemy_goal() {
   }
 }
 
-/*
-	Name: line_intersect_sphere
-	Namespace: ball
-	Checksum: 0x5D076EB5
-	Offset: 0x71F8
-	Size: 0xE4
-	Parameters: 4
-	Flags: None
-*/
 function line_intersect_sphere(line_start, line_end, sphere_center, sphere_radius) {
   dir = vectornormalize(line_end - line_start);
   a = vectordot(dir, line_start - sphere_center);
@@ -1961,15 +1357,6 @@ function line_intersect_sphere(line_start, line_end, sphere_center, sphere_radiu
   return ((a - b) + c) >= 0;
 }
 
-/*
-	Name: ball_touched_goal
-	Namespace: ball
-	Checksum: 0x9C7FA449
-	Offset: 0x72E8
-	Size: 0x3B4
-	Parameters: 1
-	Flags: None
-*/
 function ball_touched_goal(goal) {
   if(isdefined(self.claimplayer)) {
     return;
@@ -1988,8 +1375,8 @@ function ball_touched_goal(goal) {
   globallogic_audio::play_2d_on_team("mpl_ballcapture_sting_friend", otherteam);
   globallogic_audio::play_2d_on_team("mpl_ballcapture_sting_enemy", team);
   if(isdefined(self.lastcarrier)) {
-    level thread popups::displayteammessagetoteam( & "MP_BALL_CAPTURE", self.lastcarrier, team);
-    level thread popups::displayteammessagetoteam( & "MP_BALL_CAPTURE", self.lastcarrier, otherteam);
+    level thread popups::displayteammessagetoteam(&"MP_BALL_CAPTURE", self.lastcarrier, team);
+    level thread popups::displayteammessagetoteam(&"MP_BALL_CAPTURE", self.lastcarrier, otherteam);
     if(isdefined(self.lastcarrier.pers["throws"])) {
       self.lastcarrier.pers["throws"]++;
       self.lastcarrier.throws = self.lastcarrier.pers["throws"];
@@ -2010,15 +1397,6 @@ function ball_touched_goal(goal) {
   ball_give_score(otherteam, level.throwscore);
 }
 
-/*
-	Name: ball_give_score
-	Namespace: ball
-	Checksum: 0x594041C8
-	Offset: 0x76A8
-	Size: 0xEC
-	Parameters: 2
-	Flags: None
-*/
 function ball_give_score(team, score) {
   level globallogic_score::giveteamscoreforobjective(team, score);
   if(isdefined(game["overtime_round"])) {
@@ -2036,34 +1414,12 @@ function ball_give_score(team, score) {
   }
 }
 
-/*
-	Name: should_record_final_score_cam
-	Namespace: ball
-	Checksum: 0xE50000C7
-	Offset: 0x77A0
-	Size: 0x74
-	Parameters: 2
-	Flags: None
-*/
 function should_record_final_score_cam(team, score_to_add) {
-  team_score = [
-    [level._getteamscore]
-  ](team);
-  other_team_score = [
-    [level._getteamscore]
-  ](util::getotherteam(team));
+  team_score = [[level._getteamscore]](team);
+  other_team_score = [[level._getteamscore]](util::getotherteam(team));
   return (team_score + score_to_add) >= other_team_score;
 }
 
-/*
-	Name: ball_check_assist
-	Namespace: ball
-	Checksum: 0x428F0AFA
-	Offset: 0x7820
-	Size: 0x84
-	Parameters: 2
-	Flags: None
-*/
 function ball_check_assist(player, wasdunk) {
   if(!isdefined(player.passtime) || !isdefined(player.passplayer)) {
     return;
@@ -2074,43 +1430,25 @@ function ball_check_assist(player, wasdunk) {
   scoreevents::processscoreevent("ball_capture_assist", player.passplayer);
 }
 
-/*
-	Name: function_6746e980
-	Namespace: ball
-	Checksum: 0x81A5299A
-	Offset: 0x78B0
-	Size: 0x88
-	Parameters: 2
-	Flags: None
-*/
 function function_6746e980(projectile, timeout) {
-  projectile endon(# "stationary");
+  projectile endon("stationary");
   ret = self util::waittill_any_timeout(timeout, "reset", "pickup_object", "score_event");
   if(ret != "timeout" && isdefined(projectile)) {
-    projectile notify(# "abort_ball_physics");
+    projectile notify("abort_ball_physics");
   }
 }
 
-/*
-	Name: ball_physics_timeout
-	Namespace: ball
-	Checksum: 0x9A8517C7
-	Offset: 0x7940
-	Size: 0x124
-	Parameters: 0
-	Flags: None
-*/
 function ball_physics_timeout() {
-  self endon(# "reset");
-  self endon(# "pickup_object");
-  self endon(# "score_event");
+  self endon("reset");
+  self endon("pickup_object");
+  self endon("score_event");
   if(isdefined(self.autoresettime) && self.autoresettime > 15) {
     physicstime = self.autoresettime;
   } else {
     physicstime = 15;
   }
   if(isdefined(self.projectile)) {
-    self.projectile endon(# "abort_ball_physics");
+    self.projectile endon("abort_ball_physics");
     self thread function_6746e980(self.projectile, physicstime);
     timeoutreason = self.projectile util::waittill_any_timeout(physicstime, "stationary", "abort_ball_physics");
     if(!isdefined(timeoutreason)) {
@@ -2125,37 +1463,19 @@ function ball_physics_timeout() {
   self reset_ball();
 }
 
-/*
-	Name: ball_physics_out_of_level
-	Namespace: ball
-	Checksum: 0xC5F7222F
-	Offset: 0x7A70
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function ball_physics_out_of_level() {
-  self endon(# "reset");
-  self endon(# "pickup_object");
+  self endon("reset");
+  self endon("pickup_object");
   ball = self.visuals[0];
-  self waittill(# "entity_oob");
+  self waittill("entity_oob");
   self reset_ball();
 }
 
-/*
-	Name: player_update_pass_target
-	Namespace: ball
-	Checksum: 0x4306D814
-	Offset: 0x7AD0
-	Size: 0x3A8
-	Parameters: 1
-	Flags: None
-*/
 function player_update_pass_target(ballobj) {
-  self notify(# "update_pass_target");
-  self endon(# "update_pass_target");
-  self endon(# "disconnect");
-  self endon(# "cancel_update_pass_target");
+  self notify("update_pass_target");
+  self endon("update_pass_target");
+  self endon("disconnect");
+  self endon("cancel_update_pass_target");
   test_dot = 0.8;
   while (true) {
     new_target = undefined;
@@ -2202,15 +1522,6 @@ function player_update_pass_target(ballobj) {
   }
 }
 
-/*
-	Name: play_return_vo
-	Namespace: ball
-	Checksum: 0x99B405F9
-	Offset: 0x7E80
-	Size: 0xBA
-	Parameters: 0
-	Flags: None
-*/
 function play_return_vo() {
   foreach(team in level.teams) {
     globallogic_audio::play_2d_on_team("mpl_ballreturn_sting", team);
@@ -2218,28 +1529,10 @@ function play_return_vo() {
   }
 }
 
-/*
-	Name: compare_player_pass_dot
-	Namespace: ball
-	Checksum: 0x2B0ECF81
-	Offset: 0x7F48
-	Size: 0x30
-	Parameters: 2
-	Flags: None
-*/
 function compare_player_pass_dot(left, right) {
   return left.pass_dot >= right.pass_dot;
 }
 
-/*
-	Name: player_set_pass_target
-	Namespace: ball
-	Checksum: 0xC5BD22EC
-	Offset: 0x7F80
-	Size: 0x19C
-	Parameters: 1
-	Flags: None
-*/
 function player_set_pass_target(new_target) {
   if(isdefined(self.pass_target) && isdefined(new_target) && self.pass_target == new_target) {
     return;
@@ -2262,15 +1555,6 @@ function player_set_pass_target(new_target) {
   }
 }
 
-/*
-	Name: player_clear_pass_target
-	Namespace: ball
-	Checksum: 0x90C69813
-	Offset: 0x8128
-	Size: 0x134
-	Parameters: 0
-	Flags: None
-*/
 function player_clear_pass_target() {
   if(isdefined(self.pass_icon)) {
     self.pass_icon destroy();
@@ -2288,15 +1572,6 @@ function player_clear_pass_target() {
   self setballpassallowed(0);
 }
 
-/*
-	Name: ball_create_start
-	Namespace: ball
-	Checksum: 0xC5DC5EDB
-	Offset: 0x8268
-	Size: 0x22E
-	Parameters: 1
-	Flags: None
-*/
 function ball_create_start(minstartingballs) {
   ball_starts = getentarray("ball_start", "targetname");
   ball_starts = array::randomize(ball_starts);
@@ -2323,15 +1598,6 @@ function ball_create_start(minstartingballs) {
   }
 }
 
-/*
-	Name: balladdstart
-	Namespace: ball
-	Checksum: 0xE82EFC29
-	Offset: 0x84A0
-	Size: 0xBA
-	Parameters: 1
-	Flags: None
-*/
 function balladdstart(origin) {
   ball_spawn_height = 30;
   new_start = spawnstruct();
@@ -2342,15 +1608,6 @@ function balladdstart(origin) {
   level.ball_starts[level.ball_starts.size] = new_start;
 }
 
-/*
-	Name: ballfindground
-	Namespace: ball
-	Checksum: 0x5637D785
-	Offset: 0x8568
-	Size: 0xBA
-	Parameters: 1
-	Flags: None
-*/
 function ballfindground(z_offset) {
   tracestart = self.origin + vectorscale((0, 0, 1), 32);
   traceend = self.origin + (vectorscale((0, 0, -1), 1000));
@@ -2359,29 +1616,11 @@ function ballfindground(z_offset) {
   return trace["fraction"] != 0 && trace["fraction"] != 1;
 }
 
-/*
-	Name: play_goal_score_fx
-	Namespace: ball
-	Checksum: 0x5747626B
-	Offset: 0x8630
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function play_goal_score_fx() {
   key = "ball_score_" + self.team;
   level clientfield::set(key, !level clientfield::get(key));
 }
 
-/*
-	Name: is_touching_any_ball_return_trigger
-	Namespace: ball
-	Checksum: 0x4543A745
-	Offset: 0x8690
-	Size: 0x1E6
-	Parameters: 0
-	Flags: None
-*/
 function is_touching_any_ball_return_trigger() {
   if(!isdefined(level.ball_return_trigger)) {
     return 0;

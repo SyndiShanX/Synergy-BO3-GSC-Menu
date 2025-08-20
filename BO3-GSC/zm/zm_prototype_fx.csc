@@ -1,15 +1,10 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_prototype_fx.csc
+*************************************************/
+
 #namespace zm_prototype_fx;
 
-/*
-	Name: main
-	Namespace: zm_prototype_fx
-	Checksum: 0x6922E1CB
-	Offset: 0x398
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   disablefx = getdvarint("disable_fx");
   if(!isdefined(disablefx) || disablefx <= 0) {
@@ -17,15 +12,6 @@ function main() {
   }
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_prototype_fx
-	Checksum: 0x2DE1DD6
-	Offset: 0x3F8
-	Size: 0x17E
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["eye_glow"] = "zombie/fx_glow_eye_orange";
   level._effect["zombie_grain"] = "misc/fx_zombie_grain_cloud";
@@ -42,15 +28,6 @@ function precache_scripted_fx() {
   level._effect["perk_machine_location"] = "dlc5/prototype/fx_wonder_fizz_lightning_all_interior";
 }
 
-/*
-	Name: scriptedfx
-	Namespace: zm_prototype_fx
-	Checksum: 0xD52B60D1
-	Offset: 0x580
-	Size: 0x56
-	Parameters: 0
-	Flags: None
-*/
 function scriptedfx() {
   level._effect["large_ceiling_dust"] = "dlc5/zmhd/fx_dust_ceiling_impact_lg_mdbrown";
   level._effect["poltergeist"] = "dlc5/zmhd/fx_zombie_couch_effect";

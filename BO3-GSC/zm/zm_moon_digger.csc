@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_digger.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -6,31 +10,12 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\scene_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_moon_digger;
 
-/*
-	Name: main
-	Namespace: zm_moon_digger
-	Checksum: 0x4F4EED3C
-	Offset: 0x268
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level thread init_excavator_consoles();
 }
 
-/*
-	Name: digger_moving_earthquake_rumble
-	Namespace: zm_moon_digger
-	Checksum: 0xE01F350F
-	Offset: 0x290
-	Size: 0x1AA
-	Parameters: 7
-	Flags: Linked
-*/
 function digger_moving_earthquake_rumble(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(localclientnum != 0) {
     return;
@@ -54,34 +39,16 @@ function digger_moving_earthquake_rumble(localclientnum, oldval, newval, bnewent
         }
       }
     }
-    self notify(# "stop_moving_rumble");
+    self notify("stop_moving_rumble");
   }
 }
 
-/*
-	Name: function_a0cf54a0
-	Namespace: zm_moon_digger
-	Checksum: 0x11B4843C
-	Offset: 0x448
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_a0cf54a0(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     level thread function_1e254f15();
   }
 }
 
-/*
-	Name: function_1e254f15
-	Namespace: zm_moon_digger
-	Checksum: 0xB3DABE75
-	Offset: 0x4B0
-	Size: 0x148
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1e254f15() {
   for (i = 0; i < level.localplayers.size; i++) {
     player = getlocalplayers()[i];
@@ -94,37 +61,19 @@ function function_1e254f15() {
       player thread bio_breach_rumble(i);
     }
     scene::play("p7_fxanim_zmhd_moon_biodome_glass_bundle");
-    level notify(# "sl9");
-    level notify(# "sl10");
+    level notify("sl9");
+    level notify("sl10");
   }
 }
 
-/*
-	Name: bio_breach_rumble
-	Namespace: zm_moon_digger
-	Checksum: 0xDBFFF6D0
-	Offset: 0x600
-	Size: 0x7E
-	Parameters: 1
-	Flags: Linked
-*/
 function bio_breach_rumble(localclientnum) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   for (i = 0; i < 10; i++) {
     self playrumbleonentity(localclientnum, "damage_heavy");
     wait(randomfloatrange(0.1, 0.2));
   }
 }
 
-/*
-	Name: digger_digging_earthquake_rumble
-	Namespace: zm_moon_digger
-	Checksum: 0xC8BAE123
-	Offset: 0x688
-	Size: 0xAE
-	Parameters: 7
-	Flags: Linked
-*/
 function digger_digging_earthquake_rumble(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(localclientnum != 0) {
     return;
@@ -134,23 +83,14 @@ function digger_digging_earthquake_rumble(localclientnum, oldval, newval, bnewen
       level thread do_digger_digging_earthquake_rumble(i, self);
     }
   } else {
-    self notify(# "stop_digging_rumble");
+    self notify("stop_digging_rumble");
   }
 }
 
-/*
-	Name: do_digger_moving_earthquake_rumble
-	Namespace: zm_moon_digger
-	Checksum: 0xA0B22697
-	Offset: 0x740
-	Size: 0x1D8
-	Parameters: 2
-	Flags: Linked
-*/
 function do_digger_moving_earthquake_rumble(localclientnum, quake_ent) {
   quake_ent util::waittill_dobj(localclientnum);
-  quake_ent endon(# "entityshutdown");
-  quake_ent endon(# "stop_moving_rumble");
+  quake_ent endon("entityshutdown");
+  quake_ent endon("stop_moving_rumble");
   dist_sqd = 6250000;
   quake_ent.tread_fx = playfxontag(localclientnum, level._effect["digger_treadfx_fwd"], quake_ent, "tag_origin");
   quake_ent.var_deef11e2 = playfxontag(localclientnum, level._effect["exca_body_all"], quake_ent, "tag_origin");
@@ -170,18 +110,9 @@ function do_digger_moving_earthquake_rumble(localclientnum, quake_ent) {
   }
 }
 
-/*
-	Name: do_digger_digging_earthquake_rumble
-	Namespace: zm_moon_digger
-	Checksum: 0x39B1720F
-	Offset: 0x920
-	Size: 0x198
-	Parameters: 2
-	Flags: Linked
-*/
 function do_digger_digging_earthquake_rumble(localclientnum, quake_ent) {
-  quake_ent endon(# "entityshutdown");
-  quake_ent endon(# "stop_digging_rumble");
+  quake_ent endon("entityshutdown");
+  quake_ent endon("stop_digging_rumble");
   player = getlocalplayers()[localclientnum];
   if(!isdefined(player)) {
     return;
@@ -200,15 +131,6 @@ function do_digger_digging_earthquake_rumble(localclientnum, quake_ent) {
   }
 }
 
-/*
-	Name: digger_arm_fx
-	Namespace: zm_moon_digger
-	Checksum: 0xA4D7B11B
-	Offset: 0xAC0
-	Size: 0x15E
-	Parameters: 7
-	Flags: Linked
-*/
 function digger_arm_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(localclientnum != 0) {
     return;
@@ -232,17 +154,8 @@ function digger_arm_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fi
   }
 }
 
-/*
-	Name: do_digger_arm_fx
-	Namespace: zm_moon_digger
-	Checksum: 0x405BEC01
-	Offset: 0xC28
-	Size: 0x90
-	Parameters: 2
-	Flags: Linked
-*/
 function do_digger_arm_fx(localclientnum, ent) {
-  ent endon(# "entityshutdown");
+  ent endon("entityshutdown");
   player = getlocalplayers()[localclientnum];
   if(!isdefined(player)) {
     return;
@@ -250,15 +163,6 @@ function do_digger_arm_fx(localclientnum, ent) {
   ent.var_5f9ccb3a = playfxontag(localclientnum, level._effect["exca_arm_all"], ent, "tag_origin");
 }
 
-/*
-	Name: function_245b13ce
-	Namespace: zm_moon_digger
-	Checksum: 0xA1753AB6
-	Offset: 0xCC0
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_245b13ce(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     level thread digger_visibility_toggle(localclientnum, "hide");
@@ -267,15 +171,6 @@ function function_245b13ce(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: digger_visibility_toggle
-	Namespace: zm_moon_digger
-	Checksum: 0x2F718ED7
-	Offset: 0xD58
-	Size: 0x33A
-	Parameters: 2
-	Flags: Linked
-*/
 function digger_visibility_toggle(localclient, visible) {
   diggers = getentarray(localclient, "digger_body", "targetname");
   tracks = getentarray(localclient, "tracks", "targetname");
@@ -311,15 +206,6 @@ function digger_visibility_toggle(localclient, visible) {
   }
 }
 
-/*
-	Name: init_excavator_consoles
-	Namespace: zm_moon_digger
-	Checksum: 0x31B1CC67
-	Offset: 0x10A0
-	Size: 0x176
-	Parameters: 0
-	Flags: Linked
-*/
 function init_excavator_consoles() {
   wait(15);
   for (index = 0; index < level.localplayers.size; index++) {
@@ -338,15 +224,6 @@ function init_excavator_consoles() {
   }
 }
 
-/*
-	Name: function_774edb15
-	Namespace: zm_moon_digger
-	Checksum: 0x77DA2126
-	Offset: 0x1220
-	Size: 0x10C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_774edb15(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   switch (fieldname) {
     case "TCA": {
@@ -370,15 +247,6 @@ function function_774edb15(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_9b3daafa
-	Namespace: zm_moon_digger
-	Checksum: 0x7278C0DE
-	Offset: 0x1338
-	Size: 0xE8
-	Parameters: 3
-	Flags: Linked
-*/
 function function_9b3daafa(localclientnum, var_cc373138, var_a61a4e58) {
   if(isdefined(var_cc373138.n_fx_id)) {
     stopfx(localclientnum, var_cc373138.n_fx_id);

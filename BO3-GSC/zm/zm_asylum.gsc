@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_asylum.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\behavior_zombie_dog;
 #using scripts\shared\ai\zombie;
@@ -59,18 +63,8 @@
 #using scripts\zm\zm_asylum_fx;
 #using scripts\zm\zm_asylum_zombie;
 #using scripts\zm\zm_zmhd_cleanup_mgr;
-
 #namespace zm_asylum;
 
-/*
-	Name: function_d9af860b
-	Namespace: zm_asylum
-	Checksum: 0xBBFD8A28
-	Offset: 0x11F8
-	Size: 0x4C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec function_d9af860b() {
   level.aat_in_use = 1;
   level.bgb_in_use = 1;
@@ -78,15 +72,6 @@ function autoexec function_d9af860b() {
   level.zbarrier_override_tear_in = & function_ee422b5c;
 }
 
-/*
-	Name: main
-	Namespace: zm_asylum
-	Checksum: 0xBCE1E742
-	Offset: 0x1250
-	Size: 0x49C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   zm_asylum_ffotd::main_start();
   setclearanceceiling(17);
@@ -143,15 +128,6 @@ function main() {
   zm_asylum_ffotd::main_end();
 }
 
-/*
-	Name: init_clientfields
-	Namespace: zm_asylum
-	Checksum: 0xC797FF15
-	Offset: 0x16F8
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("world", "asylum_trap_fx_north", 21000, 1, "int");
   clientfield::register("world", "asylum_trap_fx_south", 21000, 1, "int");
@@ -159,31 +135,13 @@ function init_clientfields() {
   clientfield::register("clientuimodel", "player_lives", 21000, 2, "int");
 }
 
-/*
-	Name: customhudreveal
-	Namespace: zm_asylum
-	Checksum: 0x4BA1968C
-	Offset: 0x17C8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function customhudreveal() {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   level flag::wait_till("intro_finished");
   self zm::showhudandplaypromo();
 }
 
-/*
-	Name: function_869d6f66
-	Namespace: zm_asylum
-	Checksum: 0x7A94062F
-	Offset: 0x1820
-	Size: 0x28
-	Parameters: 0
-	Flags: Linked
-*/
 function function_869d6f66() {
   if(!isdefined(self zm_bgb_anywhere_but_here::function_728dfe3())) {
     return false;
@@ -191,15 +149,6 @@ function function_869d6f66() {
   return true;
 }
 
-/*
-	Name: init_sounds
-	Namespace: zm_asylum
-	Checksum: 0xFC335EE3
-	Offset: 0x1850
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_sounds() {
   zm_utility::add_sound("break_stone", "break_stone");
   zm_utility::add_sound("zmb_couch_slam", "couch_slam");
@@ -208,15 +157,6 @@ function init_sounds() {
   level thread custom_add_vox();
 }
 
-/*
-	Name: setupmusic
-	Namespace: zm_asylum
-	Checksum: 0x3961B4B3
-	Offset: 0x18F8
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function setupmusic() {
   zm_audio::musicstate_create("round_start", 3, "round_start_asylum_1");
   zm_audio::musicstate_create("round_start_short", 3, "round_start_asylum_1");
@@ -228,28 +168,10 @@ function setupmusic() {
   zm_audio::musicstate_create("sam", 4, "sam");
 }
 
-/*
-	Name: initcharacterstartindex
-	Namespace: zm_asylum
-	Checksum: 0x5AD987DA
-	Offset: 0x1A48
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function initcharacterstartindex() {
   level.characterstartindex = randomint(4);
 }
 
-/*
-	Name: selectcharacterindextouse
-	Namespace: zm_asylum
-	Checksum: 0x7CF18148
-	Offset: 0x1A78
-	Size: 0x3E
-	Parameters: 0
-	Flags: None
-*/
 function selectcharacterindextouse() {
   if(level.characterstartindex >= 4) {
     level.characterstartindex = 0;
@@ -259,15 +181,6 @@ function selectcharacterindextouse() {
   return self.characterindex;
 }
 
-/*
-	Name: givecustomcharacters
-	Namespace: zm_asylum
-	Checksum: 0x74D702EB
-	Offset: 0x1AC0
-	Size: 0x2DC
-	Parameters: 0
-	Flags: Linked
-*/
 function givecustomcharacters() {
   if(isdefined(level.hotjoin_player_setup) && [
       [level.hotjoin_player_setup]
@@ -280,12 +193,10 @@ function givecustomcharacters() {
   }
   self.favorite_wall_weapons_list = [];
   self.talks_in_danger = 0;
-  /#
   if(getdvarstring("") != "") {
     self.characterindex = getdvarint("");
   }
-  # /
-    self setcharacterbodytype(self.characterindex);
+  self setcharacterbodytype(self.characterindex);
   self setcharacterbodystyle(0);
   self setcharacterhelmetstyle(0);
   switch (self.characterindex) {
@@ -316,15 +227,6 @@ function givecustomcharacters() {
   self setsprintcooldown(0);
 }
 
-/*
-	Name: assign_lowest_unused_character_index
-	Namespace: zm_asylum
-	Checksum: 0x71B70FC3
-	Offset: 0x1DA8
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function assign_lowest_unused_character_index() {
   charindexarray = [];
   charindexarray[0] = 0;
@@ -346,15 +248,6 @@ function assign_lowest_unused_character_index() {
   return 0;
 }
 
-/*
-	Name: offhand_weapon_overrride
-	Namespace: zm_asylum
-	Checksum: 0x7046BBC1
-	Offset: 0x1F08
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function offhand_weapon_overrride() {
   zm_utility::register_lethal_grenade_for_level("frag_grenade");
   level.zombie_lethal_grenade_player_init = getweapon("frag_grenade");
@@ -365,15 +258,6 @@ function offhand_weapon_overrride() {
   level.zombie_equipment_player_init = undefined;
 }
 
-/*
-	Name: asylum_zone_init
-	Namespace: zm_asylum
-	Checksum: 0x1F2AB23F
-	Offset: 0x1FB8
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function asylum_zone_init() {
   zm_zonemgr::add_adjacent_zone("west_downstairs_zone", "west2_downstairs_zone", "power_on");
   zm_zonemgr::add_adjacent_zone("west2_downstairs_zone", "north_downstairs_zone", "north_door1");
@@ -386,30 +270,12 @@ function asylum_zone_init() {
   zm_zonemgr::add_adjacent_zone("south2_upstairs_zone", "power_upstairs_zone", "magic_box_south");
 }
 
-/*
-	Name: function_54bf648f
-	Namespace: zm_asylum
-	Checksum: 0x7A914011
-	Offset: 0x2130
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_54bf648f() {
   level.use_multiple_spawns = 1;
   level.spawner_int = 1;
   level.fn_custom_zombie_spawner_selection = & function_54da140a;
 }
 
-/*
-	Name: function_54da140a
-	Namespace: zm_asylum
-	Checksum: 0xCFF5D468
-	Offset: 0x2170
-	Size: 0x204
-	Parameters: 0
-	Flags: Linked
-*/
 function function_54da140a() {
   var_6af221a2 = [];
   a_s_spots = array::randomize(level.zm_loc_types["zombie_location"]);
@@ -435,46 +301,17 @@ function function_54da140a() {
       return sp_zombie;
     }
   }
-  /#
   assert(isdefined(sp_zombie), "" + var_343b1937);
-  # /
 }
 
-/*
-	Name: custom_add_weapons
-	Namespace: zm_asylum
-	Checksum: 0x146AA2A4
-	Offset: 0x2380
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function custom_add_weapons() {
   zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_asylum_weapons.csv", 1);
 }
 
-/*
-	Name: custom_add_vox
-	Namespace: zm_asylum
-	Checksum: 0x9C0EC3FF
-	Offset: 0x23B0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function custom_add_vox() {
   zm_audio::loadplayervoicecategories("gamedata/audio/zm/zm_theater_vox.csv");
 }
 
-/*
-	Name: intro_screen
-	Namespace: zm_asylum
-	Checksum: 0x2B818FC9
-	Offset: 0x23D8
-	Size: 0x42C
-	Parameters: 0
-	Flags: Linked
-*/
 function intro_screen() {
   level flag::wait_till("start_zombie_round_logic");
   wait(2);
@@ -500,9 +337,9 @@ function intro_screen() {
   level.intro_hud[0].y = -110;
   level.intro_hud[1].y = -90;
   level.intro_hud[2].y = -70;
-  level.intro_hud[0] settext( & "ZM_ASYLUM_INTRO_ASYLUM_LEVEL_BERLIN");
-  level.intro_hud[1] settext( & "ZM_ASYLUM_INTRO_ASYLUM_LEVEL_HIMMLER");
-  level.intro_hud[2] settext( & "ZM_ASYLUM_INTRO_ASYLUM_LEVEL_SEPTEMBER");
+  level.intro_hud[0] settext(&"ZM_ASYLUM_INTRO_ASYLUM_LEVEL_BERLIN");
+  level.intro_hud[1] settext(&"ZM_ASYLUM_INTRO_ASYLUM_LEVEL_HIMMLER");
+  level.intro_hud[2] settext(&"ZM_ASYLUM_INTRO_ASYLUM_LEVEL_SEPTEMBER");
   for (i = 0; i < 3; i++) {
     level.intro_hud[i] fadeovertime(1.5);
     level.intro_hud[i].alpha = 1;
@@ -521,15 +358,6 @@ function intro_screen() {
   level thread magic_box_limit_location_init();
 }
 
-/*
-	Name: init_zombie_asylum
-	Namespace: zm_asylum
-	Checksum: 0xF6505950
-	Offset: 0x2810
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function init_zombie_asylum() {
   level flag::init("electric_switch_used");
   level flag::set("spawn_point_override");
@@ -538,15 +366,6 @@ function init_zombie_asylum() {
   array::thread_all(water_trigs, & watersheet_on_trigger);
 }
 
-/*
-	Name: chair_useage
-	Namespace: zm_asylum
-	Checksum: 0x7D26DABF
-	Offset: 0x28C8
-	Size: 0xDE
-	Parameters: 0
-	Flags: Linked
-*/
 function chair_useage() {
   wait(2);
   chair_trig = getent("dentist_chair", "targetname");
@@ -555,22 +374,13 @@ function chair_useage() {
     chair_trig usetriggerrequirelookat();
     players = getplayers();
     while (true) {
-      chair_trig waittill(# "trigger", players);
+      chair_trig waittill("trigger", players);
       playsoundatposition("evt_chair", chair_trig.origin);
       wait(3);
     }
   }
 }
 
-/*
-	Name: function_a67a7819
-	Namespace: zm_asylum
-	Checksum: 0x7AC9FE6B
-	Offset: 0x29B0
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a67a7819() {
   var_769dd606 = struct::get("snd_flusher", "targetname");
   if(!isdefined(var_769dd606)) {
@@ -579,7 +389,7 @@ function function_a67a7819() {
   var_769dd606 zm_unitrigger::create_unitrigger(undefined, undefined, & function_f8772aa4);
   var_7d2efc67 = 0;
   while (var_7d2efc67 < 3) {
-    var_769dd606 waittill(# "trigger_activated");
+    var_769dd606 waittill("trigger_activated");
     if(isdefined(level.musicsystem.currentplaytype) && level.musicsystem.currentplaytype >= 4 || (isdefined(level.musicsystemoverride) && level.musicsystemoverride)) {
       continue;
     } else {
@@ -593,15 +403,6 @@ function function_a67a7819() {
   level thread zm_audio::sndmusicsystem_playstate("lullaby_for_a_dead_man");
 }
 
-/*
-	Name: function_f8772aa4
-	Namespace: zm_asylum
-	Checksum: 0x5D5DC03F
-	Offset: 0x2B38
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f8772aa4(player) {
   if(!isdefined(level.var_a3dcfd4f)) {
     return true;
@@ -612,15 +413,6 @@ function function_f8772aa4(player) {
   return true;
 }
 
-/*
-	Name: init_lights
-	Namespace: zm_asylum
-	Checksum: 0x2B3C29F5
-	Offset: 0x2B78
-	Size: 0x29E
-	Parameters: 0
-	Flags: Linked
-*/
 function init_lights() {
   tinhats = [];
   arms = [];
@@ -652,36 +444,16 @@ function init_lights() {
   }
 }
 
-/*
-	Name: function_91b06047
-	Namespace: zm_asylum
-	Checksum: 0x957076A6
-	Offset: 0x2E20
-	Size: 0xB8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_91b06047(predictedspawn) {
   if(!isdefined(level.var_df35cb81)) {
     level.var_df35cb81 = function_da4025bc();
   }
-  /#
   assert(isdefined(level.var_df35cb81), "");
-  # /
-    spawnpoint = function_290134d5(level.var_df35cb81, self);
+  spawnpoint = function_290134d5(level.var_df35cb81, self);
   self spawn(spawnpoint.origin, spawnpoint.angles, "zsurvival");
   return spawnpoint;
 }
 
-/*
-	Name: function_290134d5
-	Namespace: zm_asylum
-	Checksum: 0x8261BC38
-	Offset: 0x2EE0
-	Size: 0x12A
-	Parameters: 2
-	Flags: Linked
-*/
 function function_290134d5(spawnpoints, player) {
   if(!isdefined(self.playernum)) {
     if(self.team == "allies") {
@@ -700,15 +472,6 @@ function function_290134d5(spawnpoints, player) {
   return spawnpoints[0];
 }
 
-/*
-	Name: function_da4025bc
-	Namespace: zm_asylum
-	Checksum: 0xA845A7A5
-	Offset: 0x3018
-	Size: 0x24E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_da4025bc() {
   var_7eacef00 = [];
   var_95bba386 = [];
@@ -743,15 +506,6 @@ function function_da4025bc() {
   return spawnpoints;
 }
 
-/*
-	Name: disable_bump_trigger
-	Namespace: zm_asylum
-	Checksum: 0xDB21ED77
-	Offset: 0x3270
-	Size: 0xBA
-	Parameters: 1
-	Flags: Linked
-*/
 function disable_bump_trigger(triggername) {
   triggers = getentarray("audio_bump_trigger", "targetname");
   if(isdefined(triggers)) {
@@ -763,37 +517,26 @@ function disable_bump_trigger(triggername) {
   }
 }
 
-/*
-	Name: master_electric_switch
-	Namespace: zm_asylum
-	Checksum: 0x39712EC
-	Offset: 0x3338
-	Size: 0x4C4
-	Parameters: 0
-	Flags: Linked
-*/
 function master_electric_switch() {
   trig = getent("use_master_switch", "targetname");
   var_cf413835 = struct::get("power_switch", "targetname");
-  trig sethintstring( & "ZOMBIE_ELECTRIC_SWITCH");
+  trig sethintstring(&"ZOMBIE_ELECTRIC_SWITCH");
   trig setcursorhint("HINT_NOICON");
   fx_org = spawn("script_model", (-674.922, -300.473, 284.125));
   fx_org setmodel("tag_origin");
   fx_org.angles = vectorscale((0, 1, 0), 90);
   cheat = 0;
-  /#
   if(getdvarint("") >= 3) {
     wait(5);
     cheat = 1;
   }
-  # /
-    level clientfield::set("asylum_generator_state", 1);
+  level clientfield::set("asylum_generator_state", 1);
   if(cheat != 1) {
-    trig waittill(# "trigger", user);
+    trig waittill("trigger", user);
   }
   playsoundatposition("zmb_switch_flip", var_cf413835.origin);
   zm_power::turn_power_on_and_open_doors();
-  level notify(# "switch_flipped");
+  level notify("switch_flipped");
   disable_bump_trigger("switch_door_trig");
   level thread function_463cb1c6();
   util::setclientsysstate("levelNotify", "start_lights");
@@ -801,38 +544,29 @@ function master_electric_switch() {
   trig delete();
   traps = getentarray("gas_access", "targetname");
   for (i = 0; i < traps.size; i++) {
-    traps[i] sethintstring( & "ZOMBIE_ELECTRIC_SWITCH");
+    traps[i] sethintstring(&"ZOMBIE_ELECTRIC_SWITCH");
     traps[i] setcursorhint("HINT_NOICON");
     traps[i].is_available = 1;
   }
   var_cf413835 scene::play("p7_fxanim_zmhd_power_switch_bundle");
   playfx(level._effect["switch_sparks"], struct::get("switch_fx", "targetname").origin);
-  level notify(# "master_switch_activated");
+  level notify("master_switch_activated");
   fx_org delete();
   fx_org = spawn("script_model", (-675.021, -300.906, 283.724));
   fx_org setmodel("tag_origin");
   fx_org.angles = vectorscale((0, 1, 0), 90);
   wait(6);
   fx_org stoploopsound();
-  level notify(# "sleight_on");
+  level notify("sleight_on");
   util::wait_network_frame();
-  level notify(# "revive_on");
+  level notify("revive_on");
   util::wait_network_frame();
-  level notify(# "doubletap_on");
+  level notify("doubletap_on");
   util::wait_network_frame();
-  level notify(# "juggernog_on");
+  level notify("juggernog_on");
   exploder::exploder("lgt_exploder_power_on");
 }
 
-/*
-	Name: function_463cb1c6
-	Namespace: zm_asylum
-	Checksum: 0x5398772
-	Offset: 0x3808
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_463cb1c6() {
   power_on = getent("audio_swtch_left", "targetname");
   var_5c141942 = struct::get("evt_circuit_1", "targetname");
@@ -859,17 +593,8 @@ function function_463cb1c6() {
   level thread play_pa_system();
 }
 
-/*
-	Name: electric_trap_wire_sparks
-	Namespace: zm_asylum
-	Checksum: 0x40523BC9
-	Offset: 0x3A00
-	Size: 0x238
-	Parameters: 1
-	Flags: None
-*/
 function electric_trap_wire_sparks(side) {
-  self endon(# "elec_done");
+  self endon("elec_done");
   while (true) {
     sparks = struct::get("trap_wire_sparks_" + side, "targetname");
     self.fx_org = util::spawn_model("tag_origin", sparks.origin, sparks.angles);
@@ -878,7 +603,7 @@ function electric_trap_wire_sparks(side) {
     while (isdefined(targ)) {
       self.fx_org moveto(targ.origin, 0.15);
       self.fx_org playloopsound("zmb_elec_current_loop", 0.1);
-      self.fx_org waittill(# "movedone");
+      self.fx_org waittill("movedone");
       self.fx_org stoploopsound(0.1);
       if(isdefined(targ.target)) {
         targ = struct::get(targ.target, "targetname");
@@ -892,15 +617,6 @@ function electric_trap_wire_sparks(side) {
   }
 }
 
-/*
-	Name: electric_current_open_middle_door
-	Namespace: zm_asylum
-	Checksum: 0x57CB27B1
-	Offset: 0x3C40
-	Size: 0x294
-	Parameters: 0
-	Flags: None
-*/
 function electric_current_open_middle_door() {
   sparks = struct::get("electric_middle_door", "targetname");
   fx_org = util::spawn_model("script_model", sparks.origin, sparks.angles);
@@ -912,7 +628,7 @@ function electric_current_open_middle_door() {
       playfxontag(level._effect["electric_short_oneshot"], fx_org, "tag_origin");
     }
     fx_org playloopsound("zmb_elec_current_loop", 0.1);
-    fx_org waittill(# "movedone");
+    fx_org waittill("movedone");
     fx_org stoploopsound(0.1);
     if(isdefined(targ.target)) {
       targ = struct::get(targ.target, "targetname");
@@ -920,21 +636,12 @@ function electric_current_open_middle_door() {
       targ = undefined;
     }
   }
-  level notify(# "electric_on_middle_door");
+  level notify("electric_on_middle_door");
   playfxontag(level._effect["electric_short_oneshot"], fx_org, "tag_origin");
   wait(randomintrange(3, 9));
   fx_org delete();
 }
 
-/*
-	Name: play_the_numbers
-	Namespace: zm_asylum
-	Checksum: 0x4E206EFA
-	Offset: 0x3EE0
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function play_the_numbers() {
   level thread function_9a0695b3();
   while (true) {
@@ -944,15 +651,6 @@ function play_the_numbers() {
   }
 }
 
-/*
-	Name: function_9a0695b3
-	Namespace: zm_asylum
-	Checksum: 0x9FB08932
-	Offset: 0x3F68
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9a0695b3() {
   while (true) {
     wait(randomintrange(3, 8));
@@ -960,15 +658,6 @@ function function_9a0695b3() {
   }
 }
 
-/*
-	Name: magic_box_limit_location_init
-	Namespace: zm_asylum
-	Checksum: 0xB1344714
-	Offset: 0x3FC0
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_limit_location_init() {
   level.open_chest_location = [];
   level.open_chest_location[0] = undefined;
@@ -983,15 +672,6 @@ function magic_box_limit_location_init() {
   level thread waitfor_flag_open_chest_location("south_upstairs_blocker");
 }
 
-/*
-	Name: waitfor_flag_open_chest_location
-	Namespace: zm_asylum
-	Checksum: 0xC2AAEA90
-	Offset: 0x40C8
-	Size: 0x176
-	Parameters: 1
-	Flags: Linked
-*/
 function waitfor_flag_open_chest_location(which) {
   wait(3);
   switch (which) {
@@ -1027,18 +707,9 @@ function waitfor_flag_open_chest_location(which) {
   }
 }
 
-/*
-	Name: watersheet_on_trigger
-	Namespace: zm_asylum
-	Checksum: 0x64271CF7
-	Offset: 0x4248
-	Size: 0x106
-	Parameters: 0
-	Flags: Linked
-*/
 function watersheet_on_trigger() {
   while (true) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     if(isdefined(who) && isplayer(who) && isalive(who) && who.sessionstate != "spectator") {
       if(!who laststand::player_is_in_laststand()) {
         if(isdefined(who.var_1e4200d5)) {
@@ -1055,15 +726,6 @@ function watersheet_on_trigger() {
   }
 }
 
-/*
-	Name: function_4c24944a
-	Namespace: zm_asylum
-	Checksum: 0xF3303C02
-	Offset: 0x4358
-	Size: 0x1D0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4c24944a(t_water) {
   self.var_1e4200d5 = 1;
   if(isdefined(t_water.script_int) && t_water.script_int) {
@@ -1086,28 +748,10 @@ function function_4c24944a(t_water) {
   }
 }
 
-/*
-	Name: setup_custom_vox
-	Namespace: zm_asylum
-	Checksum: 0x3FC7BB0F
-	Offset: 0x4530
-	Size: 0x28
-	Parameters: 0
-	Flags: None
-*/
 function setup_custom_vox() {
   level.plr_vox["level"]["power"] = "power";
 }
 
-/*
-	Name: exit_level_func
-	Namespace: zm_asylum
-	Checksum: 0x3E29D03A
-	Offset: 0x4560
-	Size: 0x12A
-	Parameters: 0
-	Flags: None
-*/
 function exit_level_func() {
   zombies = getaiarray();
   foreach(zombie in zombies) {
@@ -1126,15 +770,6 @@ function exit_level_func() {
   }
 }
 
-/*
-	Name: play_pa_system
-	Namespace: zm_asylum
-	Checksum: 0xFEF23131
-	Offset: 0x4698
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function play_pa_system() {
   level clientfield::set("asylum_generator_state", 0);
   speakera = struct::get("loudspeaker", "targetname");
@@ -1144,15 +779,6 @@ function play_pa_system() {
   playsoundatposition("amb_pa_system", speakera.origin);
 }
 
-/*
-	Name: play_comp_sounds
-	Namespace: zm_asylum
-	Checksum: 0x498869CA
-	Offset: 0x4760
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function play_comp_sounds() {
   computer = getent("comp", "targetname");
   computer playsound("amb_comp_start");
@@ -1160,15 +786,6 @@ function play_comp_sounds() {
   computer playloopsound("amb_comp_loop");
 }
 
-/*
-	Name: init_level_specific_audio
-	Namespace: zm_asylum
-	Checksum: 0xFDA7A9B8
-	Offset: 0x47D8
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_level_specific_audio() {
   level.vox zm_audio::zmbvoxadd("player", "general", "intro", "level_start", undefined);
   level.vox zm_audio::zmbvoxadd("player", "general", "door_deny", "nomoney", undefined);
@@ -1176,15 +793,6 @@ function init_level_specific_audio() {
   level.vox zm_audio::zmbvoxadd("player", "general", "no_money_weapon", "nomoney", undefined);
 }
 
-/*
-	Name: function_a552cd4a
-	Namespace: zm_asylum
-	Checksum: 0x547C0750
-	Offset: 0x48C8
-	Size: 0xEA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a552cd4a() {
   perk_machines = getentarray("zombie_vending", "targetname");
   foreach(perk_machine in perk_machines) {
@@ -1194,15 +802,6 @@ function function_a552cd4a() {
   }
 }
 
-/*
-	Name: function_aeabaa98
-	Namespace: zm_asylum
-	Checksum: 0x69891438
-	Offset: 0x49C0
-	Size: 0x1EE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_aeabaa98(zbarrier) {
   self.zbarrier = zbarrier;
   m_collision = (isdefined(self.zbarrier.script_string) ? self.zbarrier.script_string : "p6_anim_zm_barricade_board_collision");
@@ -1222,23 +821,14 @@ function function_aeabaa98(zbarrier) {
   }
 }
 
-/*
-	Name: function_ee8a2035
-	Namespace: zm_asylum
-	Checksum: 0xFE0F4D9C
-	Offset: 0x4BB8
-	Size: 0x144
-	Parameters: 2
-	Flags: Linked
-*/
 function function_ee8a2035(piece_index, zbarrier) {
-  self endon(# "damage");
+  self endon("damage");
   var_31410ef7 = "closed";
   while (var_31410ef7 != "open" && var_31410ef7 != "opening") {
     wait(0.05);
     var_31410ef7 = zbarrier getzbarrierpiecestate(piece_index);
   }
-  self notify(# "torn_down");
+  self notify("torn_down");
   e_piece = zbarrier.dynents[piece_index];
   if(isdefined(e_piece)) {
     self ghost();
@@ -1249,24 +839,13 @@ function function_ee8a2035(piece_index, zbarrier) {
   self delete();
 }
 
-/*
-	Name: function_ee422b5c
-	Namespace: zm_asylum
-	Checksum: 0x3973CBB7
-	Offset: 0x4D08
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ee422b5c(chunk) {
   if(isdefined(self.first_node.zbarrier.dynents) && isdefined(self.first_node.zbarrier.dynents[chunk])) {
     if(isdefined(self.first_node.zbarrier.dynents[chunk].script_noteworthy)) {
       animstatebase = self.first_node.zbarrier.dynents[chunk].script_noteworthy;
       self.first_node.zbarrier.var_48c7593a = 1;
     } else {
-      /#
       assertmsg(("" + chunk) + "");
-      # /
     }
   } else {
     animstatebase = self.first_node.zbarrier getzbarrierpieceanimstate(chunk);
@@ -1274,15 +853,6 @@ function function_ee422b5c(chunk) {
   return animstatebase;
 }
 
-/*
-	Name: function_659c2324
-	Namespace: zm_asylum
-	Checksum: 0x88056698
-	Offset: 0x4E40
-	Size: 0x16C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_659c2324(a_keys) {
   if(a_keys[0] === level.weaponzmteslagun) {
     level.var_12d3a848 = 0;
@@ -1310,21 +880,12 @@ function function_659c2324(a_keys) {
   return a_keys;
 }
 
-/*
-	Name: function_bb75f24a
-	Namespace: zm_asylum
-	Checksum: 0x8414E85C
-	Offset: 0x4FB8
-	Size: 0x13A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bb75f24a() {
   level.var_a3dcfd4f = 0;
   var_f0a0f84f = struct::get_array("s_toilet_zhd", "targetname");
   array::thread_all(var_f0a0f84f, & function_db379af2);
   level thread function_fa408417();
-  level waittill(# "hash_137fb152");
+  level waittill("hash_137fb152");
   level.var_a3dcfd4f = undefined;
   level flag::set("snd_zhdegg_activate");
   foreach(struct in var_f0a0f84f) {
@@ -1332,17 +893,8 @@ function function_bb75f24a() {
   }
 }
 
-/*
-	Name: function_db379af2
-	Namespace: zm_asylum
-	Checksum: 0x4DED5F24
-	Offset: 0x5100
-	Size: 0x19A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_db379af2() {
-  level endon(# "hash_137fb152");
+  level endon("hash_137fb152");
   self.var_46907f23 = 0;
   self.activated = 0;
   if(isdefined(self.script_noteworthy) && self.script_noteworthy == "toilet3") {
@@ -1351,7 +903,7 @@ function function_db379af2() {
     self zm_unitrigger::create_unitrigger();
   }
   while (true) {
-    self waittill(# "trigger_activated");
+    self waittill("trigger_activated");
     self.var_46907f23++;
     if(self.var_46907f23 > 9) {
       playsoundatposition("zmb_zhd_toilet_flusheroo", self.origin);
@@ -1362,27 +914,18 @@ function function_db379af2() {
     if(self.var_46907f23 == self.script_int) {
       self.activated = 1;
       level.var_a3dcfd4f++;
-      level notify(# "hash_b280e2e");
+      level notify("hash_b280e2e");
     } else if(isdefined(self.activated) && self.activated) {
       self.activated = 0;
       level.var_a3dcfd4f--;
-      level notify(# "hash_b280e2e");
+      level notify("hash_b280e2e");
     }
     if(level.var_a3dcfd4f >= 3) {
-      level notify(# "hash_137fb152");
+      level notify("hash_137fb152");
     }
   }
 }
 
-/*
-	Name: function_dffe609d
-	Namespace: zm_asylum
-	Checksum: 0xB98C4CE4
-	Offset: 0x52A8
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function function_dffe609d(player) {
   if(!isdefined(level.var_a3dcfd4f)) {
     return true;
@@ -1393,20 +936,11 @@ function function_dffe609d(player) {
   return true;
 }
 
-/*
-	Name: function_fa408417
-	Namespace: zm_asylum
-	Checksum: 0x9994FC83
-	Offset: 0x52E8
-	Size: 0x19E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fa408417() {
-  level endon(# "hash_137fb152");
+  level endon("hash_137fb152");
   var_f0a0f84f = struct::get_array("s_toilet_zhd", "targetname");
   while (true) {
-    level waittill(# "hash_b280e2e");
+    level waittill("hash_b280e2e");
     foreach(struct in var_f0a0f84f) {
       if(isdefined(struct.script_noteworthy) && struct.script_noteworthy == "toilet3") {
         if(struct.var_46907f23 > 0 && level.var_a3dcfd4f <= 1) {
@@ -1422,15 +956,6 @@ function function_fa408417() {
   }
 }
 
-/*
-	Name: include_perks_in_random_rotation
-	Namespace: zm_asylum
-	Checksum: 0xD92760DE
-	Offset: 0x5490
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function include_perks_in_random_rotation() {
   zm_perk_random::include_perk_in_random_rotation("specialty_staminup");
   zm_perk_random::include_perk_in_random_rotation("specialty_deadshot");
@@ -1438,15 +963,6 @@ function include_perks_in_random_rotation() {
   level.custom_random_perk_weights = & function_c027d01d;
 }
 
-/*
-	Name: function_c027d01d
-	Namespace: zm_asylum
-	Checksum: 0x5C318AE1
-	Offset: 0x5500
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c027d01d() {
   temp_array = [];
   temp_array = array::randomize(temp_array);

@@ -1,20 +1,13 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\name_shared.gsc
+*************************************************/
+
 #namespace name;
 
-/*
-	Name: setup
-	Namespace: name
-	Checksum: 0xE2D80747
-	Offset: 0x968
-	Size: 0x94
-	Parameters: 0
-	Flags: None
-*/
 function setup() {
-  /#
   assert(!isdefined(level.names));
-  # /
-    level.names = [];
+  level.names = [];
   level.namesindex = [];
   if(!isdefined(level.script)) {
     level.script = tolower(getdvarstring("mapname"));
@@ -22,15 +15,6 @@ function setup() {
   initialize_nationality("american");
 }
 
-/*
-	Name: initialize_nationality
-	Namespace: name
-	Checksum: 0xCEB216E4
-	Offset: 0xA08
-	Size: 0x7E
-	Parameters: 1
-	Flags: Linked
-*/
 function initialize_nationality(str_nationality) {
   if(!isdefined(level.names[str_nationality])) {
     level.names[str_nationality] = [];
@@ -42,15 +26,6 @@ function initialize_nationality(str_nationality) {
   }
 }
 
-/*
-	Name: add_nationality_names
-	Namespace: name
-	Checksum: 0xE7494A12
-	Offset: 0xA90
-	Size: 0x18E
-	Parameters: 1
-	Flags: Linked
-*/
 function add_nationality_names(str_nationality) {
   switch (str_nationality) {
     case "american": {
@@ -94,23 +69,12 @@ function add_nationality_names(str_nationality) {
       break;
     }
     default: {
-      /#
       assertmsg("" + str_nationality);
-      # /
-        break;
+      break;
     }
   }
 }
 
-/*
-	Name: american_names
-	Namespace: name
-	Checksum: 0xF0D1768D
-	Offset: 0xC28
-	Size: 0xC84
-	Parameters: 0
-	Flags: Linked
-*/
 function american_names() {
   add_name("american", "Adams");
   add_name("american", "Alexander");
@@ -214,15 +178,6 @@ function american_names() {
   add_name("american", "Young");
 }
 
-/*
-	Name: egyptian_names
-	Namespace: name
-	Checksum: 0xBBA18C97
-	Offset: 0x18B8
-	Size: 0xAC4
-	Parameters: 0
-	Flags: Linked
-*/
 function egyptian_names() {
   add_name("egyptian", "Ababneh");
   add_name("egyptian", "Abba");
@@ -312,15 +267,6 @@ function egyptian_names() {
   add_name("egyptian", "Yousif");
 }
 
-/*
-	Name: sing_police_names
-	Namespace: name
-	Checksum: 0x89223C52
-	Offset: 0x2388
-	Size: 0x504
-	Parameters: 0
-	Flags: Linked
-*/
 function sing_police_names() {
   add_name("singapore_police", "Ang");
   add_name("singapore_police", "Chan");
@@ -364,15 +310,6 @@ function sing_police_names() {
   add_name("singapore_police", "Zhu");
 }
 
-/*
-	Name: russian_names
-	Namespace: name
-	Checksum: 0x5D31FAE2
-	Offset: 0x2898
-	Size: 0x3C4
-	Parameters: 0
-	Flags: Linked
-*/
 function russian_names() {
   add_name("russian", "Avtamonov");
   add_name("russian", "Barzilovich");
@@ -406,15 +343,6 @@ function russian_names() {
   add_name("russian", "Zubarev");
 }
 
-/*
-	Name: agent_names
-	Namespace: name
-	Checksum: 0xB24D179D
-	Offset: 0x2C68
-	Size: 0x284
-	Parameters: 0
-	Flags: Linked
-*/
 function agent_names() {
   add_name("agent", "Bailey");
   add_name("agent", "Campbell");
@@ -438,15 +366,6 @@ function agent_names() {
   add_name("agent", "Ward");
 }
 
-/*
-	Name: chinese_names
-	Namespace: name
-	Checksum: 0x16AFD882
-	Offset: 0x2EF8
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function chinese_names() {
   add_name("chinese", "Chan");
   add_name("chinese", "Cheng");
@@ -460,15 +379,6 @@ function chinese_names() {
   add_name("chinese", "Zheng");
 }
 
-/*
-	Name: navy_names
-	Namespace: name
-	Checksum: 0x1EED7813
-	Offset: 0x3048
-	Size: 0x264
-	Parameters: 0
-	Flags: Linked
-*/
 function navy_names() {
   add_name("navy", "Buckner");
   add_name("navy", "Coffey");
@@ -491,15 +401,6 @@ function navy_names() {
   add_name("navy", "York");
 }
 
-/*
-	Name: police_names
-	Namespace: name
-	Checksum: 0x1923C5C0
-	Offset: 0x32B8
-	Size: 0x284
-	Parameters: 0
-	Flags: Linked
-*/
 function police_names() {
   add_name("police", "Anderson");
   add_name("police", "Brown");
@@ -523,15 +424,6 @@ function police_names() {
   add_name("police", "Wilson");
 }
 
-/*
-	Name: security_names
-	Namespace: name
-	Checksum: 0xEC0784FF
-	Offset: 0x3548
-	Size: 0x284
-	Parameters: 0
-	Flags: Linked
-*/
 function security_names() {
   add_name("security", "Anderson");
   add_name("security", "Brown");
@@ -555,15 +447,6 @@ function security_names() {
   add_name("security", "Wilson");
 }
 
-/*
-	Name: seal_names
-	Namespace: name
-	Checksum: 0xCA84922B
-	Offset: 0x37D8
-	Size: 0x284
-	Parameters: 0
-	Flags: Linked
-*/
 function seal_names() {
   add_name("seal", "Adams");
   add_name("seal", "Carter");
@@ -587,28 +470,10 @@ function seal_names() {
   add_name("seal", "Young");
 }
 
-/*
-	Name: add_name
-	Namespace: name
-	Checksum: 0x69BF28A4
-	Offset: 0x3A68
-	Size: 0x38
-	Parameters: 2
-	Flags: Linked
-*/
 function add_name(nationality, thename) {
   level.names[nationality][level.names[nationality].size] = thename;
 }
 
-/*
-	Name: randomize_name_list
-	Namespace: name
-	Checksum: 0x9F423341
-	Offset: 0x3AA8
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked
-*/
 function randomize_name_list(nationality) {
   size = level.names[nationality].size;
   for (i = 0; i < size; i++) {
@@ -619,19 +484,10 @@ function randomize_name_list(nationality) {
   }
 }
 
-/*
-	Name: get
-	Namespace: name
-	Checksum: 0x70E58162
-	Offset: 0x3B88
-	Size: 0x362
-	Parameters: 1
-	Flags: Linked
-*/
 function get(override) {
   if(!isdefined(override) && level.script == "credits") {
     self.airank = "private";
-    self notify(# "hash_47341e47");
+    self notify("hash_47341e47");
     return;
   }
   if(isdefined(self.script_friendname)) {
@@ -641,13 +497,11 @@ function get(override) {
       self.propername = self.script_friendname;
       getrankfromname(self.propername);
     }
-    self notify(# "hash_47341e47");
+    self notify("hash_47341e47");
     return;
   }
-  /#
   assert(isdefined(level.names));
-  # /
-    str_classname = self get_ai_classname();
+  str_classname = self get_ai_classname();
   str_nationality = "american";
   if(issubstr(str_classname, "_civilian_")) {
     self.airank = "none";
@@ -691,18 +545,9 @@ function get(override) {
   }
   initialize_nationality(str_nationality);
   get_name_for_nationality(str_nationality);
-  self notify(# "hash_47341e47");
+  self notify("hash_47341e47");
 }
 
-/*
-	Name: get_ai_classname
-	Namespace: name
-	Checksum: 0x87EB8E50
-	Offset: 0x3EF8
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function get_ai_classname() {
   if(isdefined(self.dr_ai_classname)) {
     str_classname = tolower(self.dr_ai_classname);
@@ -712,45 +557,23 @@ function get_ai_classname() {
   return str_classname;
 }
 
-/*
-	Name: add_override_name_func
-	Namespace: name
-	Checksum: 0x21AAC143
-	Offset: 0x3F60
-	Size: 0x6E
-	Parameters: 2
-	Flags: None
-*/
 function add_override_name_func(nationality, func) {
   if(!isdefined(level._override_name_funcs)) {
     level._override_name_funcs = [];
   }
-  /#
   assert(!isdefined(level._override_name_funcs[nationality]), "");
-  # /
-    level._override_name_funcs[nationality] = func;
+  level._override_name_funcs[nationality] = func;
 }
 
-/*
-	Name: get_name_for_nationality
-	Namespace: name
-	Checksum: 0x87CDB0D9
-	Offset: 0x3FD8
-	Size: 0x458
-	Parameters: 1
-	Flags: Linked
-*/
 function get_name_for_nationality(nationality) {
-  /#
   assert(isdefined(level.nameindex[nationality]), nationality);
-  # /
-    if(isdefined(level._override_name_funcs) && isdefined(level._override_name_funcs[nationality])) {
-      self.propername = [
-        [level._override_name_funcs[nationality]]
-      ]();
-      self.airank = "";
-      return;
-    }
+  if(isdefined(level._override_name_funcs) && isdefined(level._override_name_funcs[nationality])) {
+    self.propername = [
+      [level._override_name_funcs[nationality]]
+    ]();
+    self.airank = "";
+    return;
+  }
   if(nationality == "civilian") {
     self.propername = "";
     return;
@@ -833,15 +656,6 @@ function get_name_for_nationality(nationality) {
   }
 }
 
-/*
-	Name: is_seal_member
-	Namespace: name
-	Checksum: 0x60767386
-	Offset: 0x4438
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function is_seal_member(str_classname) {
   if(issubstr(str_classname, "_seal_")) {
     return true;
@@ -849,15 +663,6 @@ function is_seal_member(str_classname) {
   return false;
 }
 
-/*
-	Name: is_navy_member
-	Namespace: name
-	Checksum: 0x679CBBB5
-	Offset: 0x4480
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function is_navy_member(str_classname) {
   if(issubstr(str_classname, "_navy_")) {
     return true;
@@ -865,15 +670,6 @@ function is_navy_member(str_classname) {
   return false;
 }
 
-/*
-	Name: is_police_member
-	Namespace: name
-	Checksum: 0x373B55B4
-	Offset: 0x44C8
-	Size: 0x5A
-	Parameters: 1
-	Flags: Linked
-*/
 function is_police_member(str_classname) {
   if(issubstr(str_classname, "_lapd_") || issubstr(str_classname, "_swat_")) {
     return true;
@@ -881,15 +677,6 @@ function is_police_member(str_classname) {
   return false;
 }
 
-/*
-	Name: is_security_member
-	Namespace: name
-	Checksum: 0xBF058CA
-	Offset: 0x4530
-	Size: 0x36
-	Parameters: 1
-	Flags: Linked
-*/
 function is_security_member(str_classname) {
   if(issubstr(str_classname, "_security_")) {
     return true;
@@ -897,15 +684,6 @@ function is_security_member(str_classname) {
   return false;
 }
 
-/*
-	Name: is_special_agent_member
-	Namespace: name
-	Checksum: 0x670E11E2
-	Offset: 0x4570
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function is_special_agent_member(str_classname) {
   if(issubstr(str_classname, "_sstactical_")) {
     return true;
@@ -913,24 +691,13 @@ function is_special_agent_member(str_classname) {
   return false;
 }
 
-/*
-	Name: getrankfromname
-	Namespace: name
-	Checksum: 0x91AE2455
-	Offset: 0x45B8
-	Size: 0x186
-	Parameters: 1
-	Flags: Linked
-*/
 function getrankfromname(name) {
   if(!isdefined(name)) {
     self.airank = "private";
   }
   tokens = strtok(name, " ");
-  /#
   assert(tokens.size);
-  # /
-    shortrank = tokens[0];
+  shortrank = tokens[0];
   switch (shortrank) {
     case "Pvt.": {
       self.airank = "private";
@@ -957,32 +724,19 @@ function getrankfromname(name) {
       break;
     }
     default: {
-      /#
       println(("" + shortrank) + "");
-      # /
-        self.airank = "private";
+      self.airank = "private";
       break;
     }
   }
 }
 
-/*
-	Name: issubstr_match_any
-	Namespace: name
-	Checksum: 0x1522352F
-	Offset: 0x4748
-	Size: 0xCC
-	Parameters: 2
-	Flags: None
-*/
 function issubstr_match_any(str_match, str_search_array) {
-  /#
   assert(str_search_array.size, "");
-  # /
-    foreach(str_search in str_search_array) {
-      if(issubstr(str_match, str_search)) {
-        return true;
-      }
+  foreach(str_search in str_search_array) {
+    if(issubstr(str_match, str_search)) {
+      return true;
     }
+  }
   return false;
 }

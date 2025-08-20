@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_cosmodrome_magic_box.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_cosmodrome_magic_box;
 
-/*
-	Name: magic_box_init
-	Namespace: zm_cosmodrome_magic_box
-	Checksum: 0xB4E22BC9
-	Offset: 0x220
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_init() {
   util::registerclientsys("box_indicator");
   level._cosmodrome_no_power = "n";
@@ -25,15 +19,6 @@ function magic_box_init() {
   setdvar("zombiemode_path_minz_bias", 28);
 }
 
-/*
-	Name: get_location_from_chest_index
-	Namespace: zm_cosmodrome_magic_box
-	Checksum: 0xA18D0F9A
-	Offset: 0x310
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function get_location_from_chest_index(chest_index) {
   if(isdefined(level.chests[chest_index])) {
     chest_loc = level.chests[chest_index].script_noteworthy;
@@ -46,19 +31,8 @@ function get_location_from_chest_index(chest_index) {
   /# /
   #
   assertmsg("" + chest_index);
-  # /
-    # /
 }
 
-/*
-	Name: magic_box_update
-	Namespace: zm_cosmodrome_magic_box
-	Checksum: 0x26EE666
-	Offset: 0x3D0
-	Size: 0x2C4
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_update() {
   wait(2);
   util::setclientsysstate("box_indicator", level._cosmodrome_no_power);
@@ -104,15 +78,6 @@ function magic_box_update() {
   }
 }
 
-/*
-	Name: cosmodrome_maintenance_respawn_fix
-	Namespace: zm_cosmodrome_magic_box
-	Checksum: 0x5D5A895C
-	Offset: 0x6A0
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function cosmodrome_maintenance_respawn_fix() {
   respawn_points = struct::get_array("player_respawn_point", "targetname");
   for (i = 0; i < respawn_points.size; i++) {

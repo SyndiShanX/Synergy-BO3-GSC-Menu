@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\shrp.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
 #using scripts\mp\gametypes\_globallogic_score;
@@ -14,18 +18,8 @@
 #using scripts\shared\persistence_shared;
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\weapons\_weapon_utils;
-
 #namespace shrp;
 
-/*
-	Name: main
-	Namespace: shrp
-	Checksum: 0x4AF9D642
-	Offset: 0x7D8
-	Size: 0x364
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   level.pointsperweaponkill = getgametypesetting("pointsPerWeaponKill");
@@ -57,15 +51,6 @@ function main() {
   globallogic::setvisiblescoreboardcolumns("pointstowin", "kills", "deaths", "stabs", "x2score");
 }
 
-/*
-	Name: onstartgametype
-	Namespace: shrp
-	Checksum: 0xD3DCE8C4
-	Offset: 0xB48
-	Size: 0x544
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   setdvar("scr_disable_weapondrop", 1);
   setdvar("scr_xpscalemp", 0);
@@ -121,15 +106,6 @@ function onstartgametype() {
   level thread clearpowerupsongameend();
 }
 
-/*
-	Name: attach_compatibility_init
-	Namespace: shrp
-	Checksum: 0xF1A8A97
-	Offset: 0x1098
-	Size: 0x11C
-	Parameters: 0
-	Flags: None
-*/
 function attach_compatibility_init() {
   level.attach_compatible = [];
   set_attachtable_id();
@@ -144,30 +120,12 @@ function attach_compatibility_init() {
   }
 }
 
-/*
-	Name: set_attachtable_id
-	Namespace: shrp
-	Checksum: 0x760CE2D3
-	Offset: 0x11C0
-	Size: 0x20
-	Parameters: 0
-	Flags: None
-*/
 function set_attachtable_id() {
   if(!isdefined(level.attachtableid)) {
     level.attachtableid = "gamedata/weapons/common/attachmentTable.csv";
   }
 }
 
-/*
-	Name: getrandomweaponnamefromprogression
-	Namespace: shrp
-	Checksum: 0xA8F29246
-	Offset: 0x11E8
-	Size: 0x4D0
-	Parameters: 0
-	Flags: None
-*/
 function getrandomweaponnamefromprogression() {
   weaponidkeys = getarraykeys(level.tbl_weaponids);
   numweaponidkeys = weaponidkeys.size;
@@ -175,10 +133,8 @@ function getrandomweaponnamefromprogression() {
   if(isdefined(level.gunprogression)) {
     size = level.gunprogression.size;
   }
-  /#
   debug_weapon = getdvarstring("");
-  # /
-    allowproneblock = 1;
+  allowproneblock = 1;
   players = getplayers();
   foreach(player in players) {
     if(player getstance() == "prone") {
@@ -227,24 +183,13 @@ function getrandomweaponnamefromprogression() {
     }
     if(skipweapon) {}
     level.usedbaseweapons[level.usedbaseweapons.size] = baseweaponname;
-    /#
     if(debug_weapon != "") {
       weaponname = debug_weapon;
     }
-    # /
-      return weaponname;
+    return weaponname;
   }
 }
 
-/*
-	Name: addrandomattachmenttoweaponname
-	Namespace: shrp
-	Checksum: 0x7110333C
-	Offset: 0x16C0
-	Size: 0x236
-	Parameters: 2
-	Flags: None
-*/
 function addrandomattachmenttoweaponname(baseweaponname, attachmentlist) {
   if(!isdefined(attachmentlist)) {
     return baseweaponname;
@@ -281,15 +226,6 @@ function addrandomattachmenttoweaponname(baseweaponname, attachmentlist) {
   return baseweaponname + attachment;
 }
 
-/*
-	Name: waitlongdurationwithhostmigrationpause
-	Namespace: shrp
-	Checksum: 0x80682FCF
-	Offset: 0x1900
-	Size: 0x178
-	Parameters: 2
-	Flags: None
-*/
 function waitlongdurationwithhostmigrationpause(nextguncycletime, duration) {
   endtime = gettime() + (duration * 1000);
   totaltimepassed = 0;
@@ -300,27 +236,16 @@ function waitlongdurationwithhostmigrationpause(nextguncycletime, duration) {
       timepassed = hostmigration::waittillhostmigrationdone();
       totaltimepassed = totaltimepassed + timepassed;
       endtime = endtime + timepassed;
-      /#
       println("" + timepassed);
       println("" + totaltimepassed);
       println("" + level.discardtime);
-      # /
-        setdvar("ui_guncycle", nextguncycletime + totaltimepassed);
+      setdvar("ui_guncycle", nextguncycletime + totaltimepassed);
     }
   }
   hostmigration::waittillhostmigrationdone();
   return totaltimepassed;
 }
 
-/*
-	Name: guncyclewaiter
-	Namespace: shrp
-	Checksum: 0x75B5BB3E
-	Offset: 0x1A80
-	Size: 0x282
-	Parameters: 2
-	Flags: None
-*/
 function guncyclewaiter(nextguncycletime, waittime) {
   continuecycling = 1;
   setdvar("ui_guncycle", nextguncycletime);
@@ -343,29 +268,20 @@ function guncyclewaiter(nextguncycletime, waittime) {
   }
   level.shrprandomweapon = getweapon(getrandomweaponnamefromprogression());
   for (i = 0; i < level.players.size; i++) {
-    level.players[i] notify(# "remove_planted_weapons");
+    level.players[i] notify("remove_planted_weapons");
     level.players[i] givecustomloadout(0, 1);
   }
   return continuecycling;
 }
 
-/*
-	Name: chooserandomguns
-	Namespace: shrp
-	Checksum: 0x7930D3F9
-	Offset: 0x1D10
-	Size: 0x39E
-	Parameters: 0
-	Flags: None
-*/
 function chooserandomguns() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   level thread awardmostpointsmedalgameend();
   waittime = level.shrpweapontimer;
   lightningwaittime = 15;
   level.shrprandomweapon = getweapon(getrandomweaponnamefromprogression());
   if(level.inprematchperiod) {
-    level waittill(# "prematch_over");
+    level waittill("prematch_over");
   }
   guncycle = 1;
   numguncycles = int(((level.timelimit * 60) / waittime) + 0.5);
@@ -390,7 +306,7 @@ function chooserandomguns() {
     if(ispenultimateround) {
       level.sharpshootermultiplier = 2;
       for (i = 0; i < level.players.size; i++) {
-        level.players[i] thread wager::queue_popup( & "MP_SHRP_PENULTIMATE_RND", 0, & "MP_SHRP_PENULTIMATE_MULTIPLIER", "wm_bonus_rnd");
+        level.players[i] thread wager::queue_popup(&"MP_SHRP_PENULTIMATE_RND", 0, & "MP_SHRP_PENULTIMATE_MULTIPLIER", "wm_bonus_rnd");
       }
     } else {
       if(issharpshooterround) {
@@ -402,7 +318,7 @@ function chooserandomguns() {
         setdvar("ui_guncycle", 0);
         level.guncycletimer.alpha = 0;
         for (i = 0; i < level.players.size; i++) {
-          level.players[i] thread wager::queue_popup( & "MP_SHRP_RND", 0, & "MP_SHRP_FINAL_MULTIPLIER", "wm_shrp_rnd");
+          level.players[i] thread wager::queue_popup(&"MP_SHRP_RND", 0, & "MP_SHRP_FINAL_MULTIPLIER", "wm_shrp_rnd");
         }
         break;
       } else {
@@ -413,15 +329,6 @@ function chooserandomguns() {
   }
 }
 
-/*
-	Name: checkawardmostpointsthiscycle
-	Namespace: shrp
-	Checksum: 0xF6C8D979
-	Offset: 0x20B8
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function checkawardmostpointsthiscycle() {
   if(isdefined(self.currentguncyclepoints) && self.currentguncyclepoints > 0) {
     if(self.currentguncyclepoints == level.currentguncyclemaxpoints) {
@@ -430,31 +337,13 @@ function checkawardmostpointsthiscycle() {
   }
 }
 
-/*
-	Name: awardmostpointsmedalgameend
-	Namespace: shrp
-	Checksum: 0x95555E9
-	Offset: 0x2110
-	Size: 0x5E
-	Parameters: 0
-	Flags: None
-*/
 function awardmostpointsmedalgameend() {
-  level waittill(# "game_end");
+  level waittill("game_end");
   for (i = 0; i < level.players.size; i++) {
     level.players[i] checkawardmostpointsthiscycle();
   }
 }
 
-/*
-	Name: givecustomloadout
-	Namespace: shrp
-	Checksum: 0x481540E9
-	Offset: 0x2178
-	Size: 0x15A
-	Parameters: 2
-	Flags: None
-*/
 function givecustomloadout(takeallweapons, alreadyspawned) {
   chooserandombody = 0;
   if(!isdefined(alreadyspawned) || !alreadyspawned) {
@@ -476,20 +365,11 @@ function givecustomloadout(takeallweapons, alreadyspawned) {
   return level.shrprandomweapon;
 }
 
-/*
-	Name: takeoldweapons
-	Namespace: shrp
-	Checksum: 0x3115F02A
-	Offset: 0x22E0
-	Size: 0xFC
-	Parameters: 0
-	Flags: None
-*/
 function takeoldweapons() {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   for (;;) {
-    self waittill(# "weapon_change", newweapon);
+    self waittill("weapon_change", newweapon);
     if(newweapon != level.weaponnone) {
       break;
     }
@@ -503,15 +383,6 @@ function takeoldweapons() {
   self enableweaponcycling();
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: shrp
-	Checksum: 0xE0E8EF74
-	Offset: 0x23E8
-	Size: 0x664
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(isdefined(attacker) && isplayer(attacker) && attacker != self) {
     if(isdefined(level.sharpshootermultiplier) && level.sharpshootermultiplier == 2) {
@@ -591,32 +462,14 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   self wager::clear_powerups();
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: shrp
-	Checksum: 0xA091F3C7
-	Offset: 0x2A58
-	Size: 0x3C
-	Parameters: 1
-	Flags: None
-*/
 function onspawnplayer(predictedspawn) {
   spawning::onspawnplayer(predictedspawn);
   self thread infiniteammo();
 }
 
-/*
-	Name: infiniteammo
-	Namespace: shrp
-	Checksum: 0xDD0A90E9
-	Offset: 0x2AA0
-	Size: 0x68
-	Parameters: 0
-	Flags: None
-*/
 function infiniteammo() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   for (;;) {
     wait(0.1);
     weapon = self getcurrentweapon();
@@ -624,15 +477,6 @@ function infiniteammo() {
   }
 }
 
-/*
-	Name: onwagerawards
-	Namespace: shrp
-	Checksum: 0x3300C120
-	Offset: 0x2B10
-	Size: 0x124
-	Parameters: 0
-	Flags: None
-*/
 function onwagerawards() {
   x2kills = self globallogic_score::getpersstat("x2kills");
   if(!isdefined(x2kills)) {
@@ -651,17 +495,8 @@ function onwagerawards() {
   self persistence::set_after_action_report_stat("wagerAwards", bestkillstreak, 2);
 }
 
-/*
-	Name: clearpowerupsongameend
-	Namespace: shrp
-	Checksum: 0x50307E0A
-	Offset: 0x2C40
-	Size: 0x6E
-	Parameters: 0
-	Flags: None
-*/
 function clearpowerupsongameend() {
-  level waittill(# "game_ended");
+  level waittill("game_ended");
   for (i = 0; i < level.players.size; i++) {
     player = level.players[i];
     player wager::clear_powerups();

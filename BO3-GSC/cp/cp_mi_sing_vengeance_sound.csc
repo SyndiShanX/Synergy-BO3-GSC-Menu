@@ -1,19 +1,13 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_vengeance_sound.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\audio_shared;
 #using scripts\shared\clientfield_shared;
-
 #namespace cp_mi_sing_vengeance_sound;
 
-/*
-	Name: main
-	Namespace: cp_mi_sing_vengeance_sound
-	Checksum: 0x8020F836
-	Offset: 0x238
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   clientfield::register("toplayer", "slowmo_duck_active", 1, 2, "int", & function_41d671f5, 0, 0);
   level thread function_dcd7454a();
@@ -22,15 +16,6 @@ function main() {
   level thread sndmusicrampers();
 }
 
-/*
-	Name: function_41d671f5
-	Namespace: cp_mi_sing_vengeance_sound
-	Checksum: 0xA7484CA6
-	Offset: 0x2F0
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function function_41d671f5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval > 0) {
     audio::snd_set_snapshot("cp_mi_sing_vengeance_slowmo");
@@ -39,47 +24,20 @@ function function_41d671f5(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_dcd7454a
-	Namespace: cp_mi_sing_vengeance_sound
-	Checksum: 0x49F64289
-	Offset: 0x380
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dcd7454a() {
-  level waittill(# "hash_52a22e61");
-  level endon(# "hash_c2155d7e");
+  level waittill("hash_52a22e61");
+  level endon("hash_c2155d7e");
   level thread function_cc438941();
   audio::snd_set_snapshot("cp_vengeance_cafe");
-  level waittill(# "hash_d240c7d8");
+  level waittill("hash_d240c7d8");
   audio::snd_set_snapshot("default");
 }
 
-/*
-	Name: function_cc438941
-	Namespace: cp_mi_sing_vengeance_sound
-	Checksum: 0x2A501537
-	Offset: 0x3F8
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cc438941() {
-  level waittill(# "hash_c2155d7e");
+  level waittill("hash_c2155d7e");
   audio::snd_set_snapshot("default");
 }
 
-/*
-	Name: function_38ba2136
-	Namespace: cp_mi_sing_vengeance_sound
-	Checksum: 0x6DC3A808
-	Offset: 0x430
-	Size: 0x20C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_38ba2136() {
   audio::playloopat("mus_stereo_apartment", (19235, -5438, 328));
   audio::playloopat("amb_tv_static", (19770, -5345, 476));
@@ -96,22 +54,13 @@ function function_38ba2136() {
   audio::playloopat("amb_tv_static", (21856, 8521, 209));
 }
 
-/*
-	Name: function_4035bef1
-	Namespace: cp_mi_sing_vengeance_sound
-	Checksum: 0xEF3D189C
-	Offset: 0x648
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4035bef1() {
   trigger = getent(0, "siren", "targetname");
   if(!isdefined(trigger)) {
     return;
   }
   while (true) {
-    trigger waittill(# "trigger", who);
+    trigger waittill("trigger", who);
     if(who isplayer()) {
       playsound(0, "amb_police_siren", (23974, 2768, 631));
       break;
@@ -119,30 +68,12 @@ function function_4035bef1() {
   }
 }
 
-/*
-	Name: sndmusicrampers
-	Namespace: cp_mi_sing_vengeance_sound
-	Checksum: 0xA5DCFA6F
-	Offset: 0x708
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function sndmusicrampers() {
   level thread function_759e7aaa();
 }
 
-/*
-	Name: function_759e7aaa
-	Namespace: cp_mi_sing_vengeance_sound
-	Checksum: 0x7B37EF78
-	Offset: 0x730
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_759e7aaa() {
-  level waittill(# "hash_51e4b2c0");
+  level waittill("hash_51e4b2c0");
   level thread function_60df3271();
   target_origin = (21636, -1368, 228);
   player = getlocalplayer(0);
@@ -150,36 +81,18 @@ function function_759e7aaa() {
   level sndramperthink(player, target_origin, "mus_assassination_layer_1", 0, 1, 250, 600, "mus_assassination_layer_2", 0, 1, 50, 400, "mus_assassination_stinger");
 }
 
-/*
-	Name: function_60df3271
-	Namespace: cp_mi_sing_vengeance_sound
-	Checksum: 0x1CD929C0
-	Offset: 0x7F8
-	Size: 0x2E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_60df3271() {
-  level waittill(# "hash_8409b4c");
+  level waittill("hash_8409b4c");
   wait(3);
   level.tensionactive = 0;
-  level notify(# "hash_1842ee53");
+  level notify("hash_1842ee53");
 }
 
-/*
-	Name: sndramperthink
-	Namespace: cp_mi_sing_vengeance_sound
-	Checksum: 0xE69AE2B5
-	Offset: 0x830
-	Size: 0x3EC
-	Parameters: 13
-	Flags: Linked
-*/
 function sndramperthink(player, target_origin, alias1, min_vol1, max_vol1, min_dist1, max_dist1, alias2, min_vol2, max_vol2, min_dist2, max_dist2, end_alias) {
-  level endon(# "save_restore");
-  level endon(# "disconnect");
-  player endon(# "death");
-  player endon(# "disconnect");
+  level endon("save_restore");
+  level endon("disconnect");
+  player endon("death");
+  player endon("disconnect");
   if(!isdefined(player)) {
     return;
   }
@@ -221,7 +134,7 @@ function sndramperthink(player, target_origin, alias1, min_vol1, max_vol1, min_d
     }
     wait(0.1);
   }
-  level notify(# "hash_61477803");
+  level notify("hash_61477803");
   if(isdefined(sndloop1_ent)) {
     sndloop1_ent delete();
   }
@@ -230,18 +143,9 @@ function sndramperthink(player, target_origin, alias1, min_vol1, max_vol1, min_d
   }
 }
 
-/*
-	Name: function_860d167b
-	Namespace: cp_mi_sing_vengeance_sound
-	Checksum: 0x19620907
-	Offset: 0xC28
-	Size: 0x114
-	Parameters: 4
-	Flags: Linked
-*/
 function function_860d167b(ent1, ent2, var_105ef70b, id2) {
-  level endon(# "hash_61477803");
-  level waittill(# "save_restore");
+  level endon("hash_61477803");
+  level waittill("save_restore");
   ent1 delete();
   ent2 delete();
   var_105ef70b = undefined;

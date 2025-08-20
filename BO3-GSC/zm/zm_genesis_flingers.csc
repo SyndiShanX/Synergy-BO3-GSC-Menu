@@ -1,34 +1,19 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_flingers.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\exploder_shared;
 #using scripts\shared\postfx_shared;
-
 #namespace zm_genesis_flingers;
 
-/*
-	Name: main
-	Namespace: zm_genesis_flingers
-	Checksum: 0xC6C2070C
-	Offset: 0x3D8
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   register_clientfields();
   level thread function_4208db02();
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_genesis_flingers
-	Checksum: 0x66D4FC8B
-	Offset: 0x410
-	Size: 0x1FC
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("toplayer", "flinger_flying_postfx", 15000, 1, "int", & flinger_flying_postfx, 0, 0);
   clientfield::register("toplayer", "flinger_land_smash", 15000, 1, "counter", & flinger_land_smash, 0, 0);
@@ -39,15 +24,6 @@ function register_clientfields() {
   clientfield::register("scriptmover", "flinger_pad_active_fx", 15000, 4, "int", & flinger_pad_active_fx, 0, 0);
 }
 
-/*
-	Name: flinger_flying_postfx
-	Namespace: zm_genesis_flingers
-	Checksum: 0x4C265362
-	Offset: 0x618
-	Size: 0x15C
-	Parameters: 7
-	Flags: Linked
-*/
 function flinger_flying_postfx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     self.var_6f6f69f0 = playfxontag(localclientnum, level._effect["flinger_trail"], self, "tag_origin");
@@ -66,15 +42,6 @@ function flinger_flying_postfx(localclientnum, oldval, newval, bnewent, binitial
   }
 }
 
-/*
-	Name: function_ddcc2bf9
-	Namespace: zm_genesis_flingers
-	Checksum: 0x9624BF55
-	Offset: 0x780
-	Size: 0xC4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_ddcc2bf9(localclientnum, var_bfcf4a2a) {
   if(!self hasdobj(localclientnum)) {
     return;
@@ -88,15 +55,6 @@ function function_ddcc2bf9(localclientnum, var_bfcf4a2a) {
   }
 }
 
-/*
-	Name: flinger_pad_active_fx
-	Namespace: zm_genesis_flingers
-	Checksum: 0x2CFEB18C
-	Offset: 0x850
-	Size: 0xF4
-	Parameters: 7
-	Flags: Linked
-*/
 function flinger_pad_active_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval > 0) {
     var_1143aa58 = getent(localclientnum, level.var_5646965[newval]["pad"], "targetname");
@@ -106,29 +64,11 @@ function flinger_pad_active_fx(localclientnum, oldval, newval, bnewent, binitial
   }
 }
 
-/*
-	Name: flinger_land_smash
-	Namespace: zm_genesis_flingers
-	Checksum: 0x6D03CAB9
-	Offset: 0x950
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function flinger_land_smash(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  level notify(# "hash_92663c14");
+  level notify("hash_92663c14");
   playfxontag(localclientnum, level._effect["flinger_land"], self, "tag_origin");
 }
 
-/*
-	Name: flinger_cooldown_start
-	Namespace: zm_genesis_flingers
-	Checksum: 0xE0045620
-	Offset: 0x9D8
-	Size: 0x1C4
-	Parameters: 7
-	Flags: Linked
-*/
 function flinger_cooldown_start(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval > 0) {
     var_1143aa58 = getent(localclientnum, level.var_5646965[newval]["pad"], "targetname");
@@ -143,15 +83,6 @@ function flinger_cooldown_start(localclientnum, oldval, newval, bnewent, binitia
   }
 }
 
-/*
-	Name: flinger_cooldown_end
-	Namespace: zm_genesis_flingers
-	Checksum: 0x1087EBD4
-	Offset: 0xBA8
-	Size: 0x1C4
-	Parameters: 7
-	Flags: Linked
-*/
 function flinger_cooldown_end(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval > 0) {
     var_1143aa58 = getent(localclientnum, level.var_5646965[newval]["pad"], "targetname");
@@ -166,28 +97,10 @@ function flinger_cooldown_end(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: function_3762396c
-	Namespace: zm_genesis_flingers
-	Checksum: 0x42417813
-	Offset: 0xD78
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_3762396c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   playfxontag(localclientnum, level._effect["flinger_launch"], self, "tag_origin");
 }
 
-/*
-	Name: function_4208db02
-	Namespace: zm_genesis_flingers
-	Checksum: 0x49841DCD
-	Offset: 0xDF0
-	Size: 0x474
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4208db02() {
   level.var_5646965 = [];
   level.var_5646965[1] = [];
@@ -232,15 +145,6 @@ function function_4208db02() {
   level.var_5646965[8]["landpad"] = 1;
 }
 
-/*
-	Name: function_a0a5829
-	Namespace: zm_genesis_flingers
-	Checksum: 0x7FDD1481
-	Offset: 0x1270
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function function_a0a5829(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     if(self.owner == getlocalplayer(localclientnum)) {
@@ -249,15 +153,6 @@ function function_a0a5829(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: function_7bd5b92f
-	Namespace: zm_genesis_flingers
-	Checksum: 0x887ED4AC
-	Offset: 0x1300
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7bd5b92f(localclientnum) {
   player = getlocalplayer(localclientnum);
   if(isdefined(player)) {

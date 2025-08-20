@@ -1,35 +1,20 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_challenges.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\audio_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_stalingrad_challenges;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_stalingrad_challenges
-	Checksum: 0x3B5AD3F9
-	Offset: 0x3B0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_stalingrad_challenges", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_stalingrad_challenges
-	Checksum: 0x8A3D9FC6
-	Offset: 0x3F0
-	Size: 0x3E4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   var_a42274ee = struct::get_array("challenge_fire_struct", "targetname");
   foreach(var_d2c81bd9 in var_a42274ee) {
@@ -51,15 +36,6 @@ function __init__() {
   clientfield::register("toplayer", "challenge3state", 14000, 2, "int", & function_4ff59189, 0, 0);
 }
 
-/*
-	Name: function_5d17d17c
-	Namespace: zm_stalingrad_challenges
-	Checksum: 0xE83B2096
-	Offset: 0x7E0
-	Size: 0x166
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5d17d17c() {
   var_77797571 = struct::get_array("pr_b_spawn", "targetname");
   foreach(var_4af818ae in var_77797571) {
@@ -72,15 +48,6 @@ function function_5d17d17c() {
   }
 }
 
-/*
-	Name: function_6f749a23
-	Namespace: zm_stalingrad_challenges
-	Checksum: 0x8774C0A6
-	Offset: 0x950
-	Size: 0x1F6
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6f749a23(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   var_a42274ee = struct::get_array("challenge_fire_struct", "targetname");
   foreach(var_d2c81bd9 in var_a42274ee) {
@@ -98,15 +65,6 @@ function function_6f749a23(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_87a462eb
-	Namespace: zm_stalingrad_challenges
-	Checksum: 0x2AF06309
-	Offset: 0xB50
-	Size: 0xA4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_87a462eb(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playrumbleonposition(localclientnum, "zm_stalingrad_challenge_arm_rumble", self.origin);
@@ -114,15 +72,6 @@ function function_87a462eb(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_93efc4ef
-	Namespace: zm_stalingrad_challenges
-	Checksum: 0x8EB9F25B
-	Offset: 0xC00
-	Size: 0x25A
-	Parameters: 7
-	Flags: Linked
-*/
 function function_93efc4ef(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   var_77797571 = struct::get_array("pr_b_spawn", "targetname");
   if(newval == 4) {
@@ -146,15 +95,6 @@ function function_93efc4ef(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_553225f
-	Namespace: zm_stalingrad_challenges
-	Checksum: 0x3F4A4969
-	Offset: 0xE68
-	Size: 0x37A
-	Parameters: 7
-	Flags: Linked
-*/
 function function_553225f(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   var_977659a7 = struct::get_array("pr_c_spawn", "targetname");
   if(newval == 4) {
@@ -190,15 +130,6 @@ function function_553225f(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: function_20880e24
-	Namespace: zm_stalingrad_challenges
-	Checksum: 0x568E291A
-	Offset: 0x11F0
-	Size: 0x1FC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_20880e24(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     var_977659a7 = struct::get_array("pr_c_spawn", "targetname");
@@ -215,15 +146,6 @@ function function_20880e24(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_e28f1c4a
-	Namespace: zm_stalingrad_challenges
-	Checksum: 0xC5947C59
-	Offset: 0x13F8
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_e28f1c4a(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playfx(localclientnum, level._effect["generic_explosion"], self.origin);
@@ -232,15 +154,6 @@ function function_e28f1c4a(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_d4db02b2
-	Namespace: zm_stalingrad_challenges
-	Checksum: 0x7D99140A
-	Offset: 0x14C0
-	Size: 0xAC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d4db02b2(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self.n_fx_id = playfx(localclientnum, level._effect["pr_c_fx"], self.origin + (-1.25, 0, 5));
@@ -249,15 +162,6 @@ function function_d4db02b2(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_4ff59189
-	Namespace: zm_stalingrad_challenges
-	Checksum: 0x5C5B9777
-	Offset: 0x1578
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_4ff59189(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isspectating(localclientnum)) {
     return;

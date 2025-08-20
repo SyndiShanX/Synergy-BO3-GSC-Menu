@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_mobile_armory.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_bb;
 #using scripts\cp\_objectives;
@@ -27,39 +31,15 @@ class cmobilearmory {
   var var_ab455203;
   var var_3df2554f;
 
-  /*
-  	Name: constructor
-  	Namespace: cmobilearmory
-  	Checksum: 0x99EC1590
-  	Offset: 0x748
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cmobilearmory
-  	Checksum: 0x99EC1590
-  	Offset: 0x758
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: function_71f6269a
-  	Namespace: cmobilearmory
-  	Checksum: 0x41601D6A
-  	Offset: 0x1C48
-  	Size: 0xCC
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_71f6269a(var_bd13c94b) {
-    self waittill(# "death");
+    self waittill("death");
     gameobject gameobjects::destroy_object(1);
     gameobject delete();
     if(isdefined(target)) {
@@ -73,15 +53,7 @@ class cmobilearmory {
     }
   }
 
-  /*
-  	Name: function_69cca2a0
-  	Namespace: cmobilearmory
-  	Checksum: 0x6F2CD033
-  	Offset: 0x19B8
-  	Size: 0x284
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_69cca2a0(var_ab455203) {
     if(var_ab455203.var_ce22f999) {
       return;
@@ -112,20 +84,12 @@ class cmobilearmory {
     var_ab455203.var_ce22f999 = 0;
   }
 
-  /*
-  	Name: function_e76edd0b
-  	Namespace: cmobilearmory
-  	Checksum: 0x958274B8
-  	Offset: 0x1928
-  	Size: 0x88
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_e76edd0b(var_ab455203) {
-    self endon(# "death");
-    var_ab455203 endon(# "death");
+    self endon("death");
+    var_ab455203 endon("death");
     while (true) {
-      self waittill(# "trigger", entity);
+      self waittill("trigger", entity);
       if(!isdefined(var_ab455203)) {
         break;
       }
@@ -135,15 +99,7 @@ class cmobilearmory {
     }
   }
 
-  /*
-  	Name: function_6b1fa4df
-  	Namespace: cmobilearmory
-  	Checksum: 0xA5AC5582
-  	Offset: 0x17A8
-  	Size: 0x174
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_6b1fa4df(weapon) {
     clipammo = self getweaponammoclip(weapon);
     stockammo = self getweaponammostock(weapon);
@@ -153,10 +109,8 @@ class cmobilearmory {
     }
     item = self dropitem(weapon, "tag_origin");
     if(!isdefined(item)) {
-      /#
       iprintlnbold(("" + weapon.name) + "");
-      # /
-        return;
+      return;
     }
     level weapons::drop_limited_weapon(weapon, self, item);
     item itemweaponsetammo(clipammo, stockammo);
@@ -165,15 +119,7 @@ class cmobilearmory {
     item thread weapons::delete_pickup_after_awhile();
   }
 
-  /*
-  	Name: function_afd39ac7
-  	Namespace: cmobilearmory
-  	Checksum: 0x90B7FA8A
-  	Offset: 0x1730
-  	Size: 0x6E
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_afd39ac7(e_player) {
     var_ab455203.gameobject.caninteractwithplayer = & function_66708329;
     var_ab455203.gameobject.var_3df2554f = e_player;
@@ -181,15 +127,7 @@ class cmobilearmory {
     var_ab455203.gameobject.caninteractwithplayer = undefined;
   }
 
-  /*
-  	Name: function_66708329
-  	Namespace: cmobilearmory
-  	Checksum: 0x9ADEB507
-  	Offset: 0x1700
-  	Size: 0x24
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_66708329(e_player) {
     if(var_3df2554f === e_player) {
       return false;
@@ -197,18 +135,10 @@ class cmobilearmory {
     return true;
   }
 
-  /*
-  	Name: function_ecdbdfeb
-  	Namespace: cmobilearmory
-  	Checksum: 0x2B3EAF8D
-  	Offset: 0xD60
-  	Size: 0x994
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_ecdbdfeb(e_player) {
-    e_player endon(# "death");
-    e_player endon(# "entering_last_stand");
+    e_player endon("death");
+    e_player endon("entering_last_stand");
     e_player flagsys::clear("mobile_armory_begin_use");
     var_9cba4a73 = 1;
     if(isdefined(var_ab455203.script_int)) {
@@ -218,7 +148,7 @@ class cmobilearmory {
     e_player clientfield::set_to_player("mobile_armory_cac", var_9cba4a73);
     e_player flagsys::set("mobile_armory_in_use");
     var_eb5bcea7 = e_player getloadoutitemref(0, "cybercore");
-    e_player waittill(# "menuresponse", str_menu, response);
+    e_player waittill("menuresponse", str_menu, response);
     a_weaponlist = e_player getweaponslist();
     var_5b2a650 = e_player getloadoutweapon(e_player.class_num, "primary");
     var_95cf88cc = e_player getloadoutweapon(e_player.class_num, "secondary");
@@ -234,12 +164,10 @@ class cmobilearmory {
         continue;
       }
       if(e_player hascybercomrig("cybercom_copycat") && (weapon.inventorytype == "primary" || weapon.inventorytype == "secondary") && (weapon != var_5b2a650 && weapon != var_95cf88cc)) {
-        /#
         iprintln("");
-        # /
-          if(response != "cancel") {
-            e_player function_6b1fa4df(weapon);
-          }
+        if(response != "cancel") {
+          e_player function_6b1fa4df(weapon);
+        }
       }
     }
     if(str_menu == "ChooseClass_InGame") {
@@ -303,58 +231,26 @@ class cmobilearmory {
     e_player flagsys::clear("mobile_armory_in_use");
   }
 
-  /*
-  	Name: onuse
-  	Namespace: cmobilearmory
-  	Checksum: 0xD34DBD72
-  	Offset: 0xD30
-  	Size: 0x24
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function onuse(e_player) {
     self thread function_ecdbdfeb(e_player);
   }
 
-  /*
-  	Name: onenduse
-  	Namespace: cmobilearmory
-  	Checksum: 0x5C5F10D9
-  	Offset: 0xCE8
-  	Size: 0x3C
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function onenduse(team, e_player, b_result) {
     if(!b_result) {
       e_player util::_enableweapon();
     }
   }
 
-  /*
-  	Name: onbeginuse
-  	Namespace: cmobilearmory
-  	Checksum: 0x7389B2E6
-  	Offset: 0xC78
-  	Size: 0x64
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function onbeginuse(e_player) {
     e_player playsound("fly_ammo_crate_refill");
     e_player util::_disableweapon();
     e_player flagsys::set("mobile_armory_begin_use");
   }
 
-  /*
-  	Name: init_mobile_armory
-  	Namespace: cmobilearmory
-  	Checksum: 0x50923CCC
-  	Offset: 0x768
-  	Size: 0x504
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function init_mobile_armory(mdl_mobile_armory) {
     t_use = spawn("trigger_radius_use", mdl_mobile_armory.origin + vectorscale((0, 0, 1), 24), 0, 94, 64);
     t_use triggerignoreteam();
@@ -362,7 +258,7 @@ class cmobilearmory {
     t_use usetriggerrequirelookat();
     t_use setteamfortrigger("none");
     t_use setcursorhint("HINT_INTERACTIVE_PROMPT");
-    t_use sethintstring( & "COOP_SELECT_LOADOUT");
+    t_use sethintstring(&"COOP_SELECT_LOADOUT");
     if(isdefined(mdl_mobile_armory.script_linkto)) {
       moving_platform = getent(mdl_mobile_armory.script_linkto, "targetname");
       mdl_mobile_armory linkto(moving_platform);
@@ -377,7 +273,7 @@ class cmobilearmory {
     s_mobile_armory_object = gameobjects::create_use_object("any", t_use, array(mdl_mobile_armory), vectorscale((0, 0, 1), 68), & "cp_mobile_armory");
     s_mobile_armory_object gameobjects::allow_use("any");
     s_mobile_armory_object gameobjects::set_use_time(0.35);
-    s_mobile_armory_object gameobjects::set_use_text( & "COOP_SELECT_LOADOUT");
+    s_mobile_armory_object gameobjects::set_use_text(&"COOP_SELECT_LOADOUT");
     s_mobile_armory_object gameobjects::set_owner_team("allies");
     s_mobile_armory_object gameobjects::set_visible_team("any");
     s_mobile_armory_object.onuse = & onuse;
@@ -407,41 +303,14 @@ class cmobilearmory {
 
 #namespace mobile_armory;
 
-/*
-	Name: __init__sytem__
-	Namespace: mobile_armory
-	Checksum: 0x6A74FB30
-	Offset: 0x5A0
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("cp_mobile_armory", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: mobile_armory
-	Checksum: 0x811C6AA6
-	Offset: 0x5E8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "mobile_armory_cac", 1, 4, "int");
 }
 
-/*
-	Name: __main__
-	Namespace: mobile_armory
-	Checksum: 0x97DB59A0
-	Offset: 0x628
-	Size: 0x112
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   if(sessionmodeiscampaignzombiesgame()) {
     return;

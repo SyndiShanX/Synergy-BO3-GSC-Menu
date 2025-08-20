@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_core.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_util;
 #using scripts\cp\cp_doa_bo3_fx;
@@ -20,18 +24,8 @@
 #using scripts\shared\player_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_693feb87;
 
-/*
-	Name: main
-	Namespace: namespace_693feb87
-	Checksum: 0x2A62E304
-	Offset: 0xA28
-	Size: 0x144C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level.doa = spawnstruct();
   callback::on_spawned( & on_player_spawned);
@@ -116,15 +110,13 @@ function main() {
   callback::on_spawned( & on_player_spawn);
   callback::on_shutdown( & on_player_shutdown);
   callback::on_localclient_connect( & player_on_connect);
-  /#
   clientfield::register("", "", 1, 1, "", & function_bbb7743c, 0, 0);
   clientfield::register("", "", 1, 2, "", & function_cee29ae7, 0, 0);
   clientfield::register("", "", 1, 30, "", & function_cd844947, 0, 0);
   level.var_83a34f19 = 0;
   level.var_e9c73e06 = 0;
   level.var_7a6087fd = 0;
-  # /
-    setdvar("dynEnt_spawnedLimit", 400);
+  setdvar("dynEnt_spawnedLimit", 400);
   setdvar("cg_disableearthquake", 1);
   setdvar("scr_use_digital_blood_enabled", 0);
   setdvar("ik_enable_ai_terrain", 0);
@@ -133,38 +125,20 @@ function main() {
   level thread function_d5eb029a();
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: namespace_693feb87
-	Checksum: 0x7DE001F4
-	Offset: 0x1E80
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_spawned(localclientnum) {
   recacheleaderboards(localclientnum);
   if(self islocalplayer() && localclientnum > 0) {
     allowscoreboard(localclientnum, 0);
   }
-  level notify(# "hash_a2a24535");
+  level notify("hash_a2a24535");
   level thread function_5c2a88d5();
 }
 
-/*
-	Name: function_d5eb029a
-	Namespace: namespace_693feb87
-	Checksum: 0x6BE79366
-	Offset: 0x1F10
-	Size: 0x3A4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d5eb029a() {
-  level notify(# "hash_d5eb029a");
-  level endon(# "hash_d5eb029a");
+  level notify("hash_d5eb029a");
+  level endon("hash_d5eb029a");
   while (true) {
-    level waittill(# "hash_aae01d5a", playernum, newstate);
+    level waittill("hash_aae01d5a", playernum, newstate);
     players = getplayers(0);
     foreach(player in players) {
       if(!isdefined(player.entnum)) {
@@ -209,27 +183,16 @@ function function_d5eb029a() {
           break;
         }
         default: {
-          /#
           assert(0);
-          # /
         }
       }
     }
   }
 }
 
-/*
-	Name: function_ae0a4fc5
-	Namespace: namespace_693feb87
-	Checksum: 0xB479B90E
-	Offset: 0x22C0
-	Size: 0x260
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ae0a4fc5() {
-  self notify(# "hash_ae0a4fc5");
-  self endon(# "hash_ae0a4fc5");
+  self notify("hash_ae0a4fc5");
+  self endon("hash_ae0a4fc5");
   while (true) {
     players = getplayers(0);
     foreach(player in players) {
@@ -250,10 +213,8 @@ function function_ae0a4fc5() {
         continue;
       }
       if(isdefined(doa.player) && doa.player != player) {
-        /#
         debugmsg(((((("" + player.name) + "") + doa.player.name) + "") + player getentitynumber() + "") + doa.player getentitynumber());
-        # /
-          continue;
+        continue;
       }
       player function_12c2fbcb();
     }
@@ -261,43 +222,16 @@ function function_ae0a4fc5() {
   }
 }
 
-/*
-	Name: player_on_connect
-	Namespace: namespace_693feb87
-	Checksum: 0x1058E50D
-	Offset: 0x2528
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function player_on_connect(localclientnum) {
   disablespeedblur(localclientnum);
   self blood::disable_blood(localclientnum);
 }
 
-/*
-	Name: on_player_spawn
-	Namespace: namespace_693feb87
-	Checksum: 0x80CD2BE9
-	Offset: 0x2570
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_spawn(localclientnum) {
   self.entnum = self getentitynumber();
   self.nobloodlightbarchange = 1;
 }
 
-/*
-	Name: on_player_shutdown
-	Namespace: namespace_693feb87
-	Checksum: 0xAB473D9F
-	Offset: 0x25B0
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_shutdown(localclientnum) {
   for (localclientnum = 0; localclientnum < 2; localclientnum++) {
     if(localclientnum >= getlocalplayers().size) {
@@ -313,133 +247,56 @@ function on_player_shutdown(localclientnum) {
   }
 }
 
-/*
-	Name: function_fc05827f
-	Namespace: namespace_693feb87
-	Checksum: 0x69337CF5
-	Offset: 0x2698
-	Size: 0x4C
-	Parameters: 1
-	Flags: None
-*/
 function function_fc05827f(localclientnum) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(0.5);
   disablespeedblur(localclientnum);
   self blood::disable_blood(localclientnum);
 }
 
-/*
-	Name: function_2eaf8a3f
-	Namespace: namespace_693feb87
-	Checksum: 0x70AAF276
-	Offset: 0x26F0
-	Size: 0xFC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_2eaf8a3f(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  /#
   debugmsg((("" + newval) + "") + level.doa.roundnumber);
-  # /
-    if(newval) {
-      setuimodelvalue(getuimodel(level.var_7e2a814c, "round"), level.doa.roundnumber);
-    }
-  else {
+  if(newval) {
+    setuimodelvalue(getuimodel(level.var_7e2a814c, "round"), level.doa.roundnumber);
+  } else {
     setuimodelvalue(getuimodel(level.var_7e2a814c, "round"), 0);
   }
 }
 
-/*
-	Name: function_c97b97ae
-	Namespace: namespace_693feb87
-	Checksum: 0x20F3127
-	Offset: 0x27F8
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_c97b97ae(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   setuimodelvalue(getuimodel(level.var_7e2a814c, "teleporter"), newval);
 }
 
-/*
-	Name: function_e3bb35e
-	Namespace: namespace_693feb87
-	Checksum: 0x7762234
-	Offset: 0x2878
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function function_e3bb35e(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   level.doa.roundnumber = newval;
-  /#
   debugmsg("" + level.doa.roundnumber);
-  # /
 }
 
-/*
-	Name: function_c86d63f6
-	Namespace: namespace_693feb87
-	Checksum: 0x4BBD897D
-	Offset: 0x2908
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_c86d63f6(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   setuimodelvalue(getuimodel(level.var_7e2a814c, "numexits"), newval);
-  /#
   debugmsg("" + newval);
-  # /
 }
 
-/*
-	Name: function_91976e37
-	Namespace: namespace_693feb87
-	Checksum: 0x35373392
-	Offset: 0x29B0
-	Size: 0xC4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_91976e37(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   setuimodelvalue(getuimodel(level.var_7e2a814c, "gameover"), (newval > 0 ? level.doa.roundnumber : 0));
-  /#
   debugmsg("" + level.doa.roundnumber);
-  # /
 }
 
-/*
-	Name: function_e63081e8
-	Namespace: namespace_693feb87
-	Checksum: 0x5E03639E
-	Offset: 0x2A80
-	Size: 0x258
-	Parameters: 7
-	Flags: Linked
-*/
 function function_e63081e8(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   setuimodelvalue(getuimodel(level.var_7e2a814c, "doafps"), newval);
-  /#
   debugmsg("" + newval);
-  # /
-    if(newval) {
-      if(newval && getlocalplayers().size > 1) {
-        setdvar("r_splitScreenExpandFull", 0);
-      }
-      if(isdefined(level.doa.var_6e0195ea)) {
-        stopradiantexploder(localclientnum, level.doa.var_6e0195ea);
-        level.doa.var_6e0195ea = undefined;
-      }
-      level.doa.var_6e0195ea = ("fx_exploder_" + level.doa.arenas[level.doa.current_arena].name) + "_FPS";
-      /#
-      debugmsg((("" + level.doa.var_6e0195ea) + "") + localclientnum);
-      # /
-        playradiantexploder(localclientnum, level.doa.var_6e0195ea);
+  if(newval) {
+    if(newval && getlocalplayers().size > 1) {
+      setdvar("r_splitScreenExpandFull", 0);
     }
-  else {
+    if(isdefined(level.doa.var_6e0195ea)) {
+      stopradiantexploder(localclientnum, level.doa.var_6e0195ea);
+      level.doa.var_6e0195ea = undefined;
+    }
+    level.doa.var_6e0195ea = ("fx_exploder_" + level.doa.arenas[level.doa.current_arena].name) + "_FPS";
+    debugmsg((("" + level.doa.var_6e0195ea) + "") + localclientnum);
+    playradiantexploder(localclientnum, level.doa.var_6e0195ea);
+  } else {
     setdvar("r_splitScreenExpandFull", 1);
     if(isdefined(level.doa.var_6e0195ea)) {
       stopradiantexploder(localclientnum, level.doa.var_6e0195ea);
@@ -449,15 +306,6 @@ function function_e63081e8(localclientnum, oldval, newval, bnewent, binitialsnap
   level.doa.var_2836c8ee = newval;
 }
 
-/*
-	Name: function_9e1eca0b
-	Namespace: namespace_693feb87
-	Checksum: 0xF1E317C5
-	Offset: 0x2CE0
-	Size: 0xFE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_9e1eca0b(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.var_4f118af8)) {
     self.var_44509e49 = self.var_4f118af8;
@@ -474,15 +322,6 @@ function function_9e1eca0b(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_ca593121
-	Namespace: namespace_693feb87
-	Checksum: 0xE7681C29
-	Offset: 0x2DE8
-	Size: 0x2EC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_ca593121(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!(isdefined(self.var_bf81deea) && self.var_bf81deea) && !isdefined(level.doa.var_db180da)) {
     if(!isdefined(level.var_6383030e)) {
@@ -513,29 +352,11 @@ function function_ca593121(localclientnum, oldval, newval, bnewent, binitialsnap
   self thread function_f7c0d598("zombietron_fps");
 }
 
-/*
-	Name: function_22de3f7
-	Namespace: namespace_693feb87
-	Checksum: 0xF8B32BC9
-	Offset: 0x30E0
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked
-*/
 function function_22de3f7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   level.doa.var_160ae6c6 = newval;
   setuimodelvalue(getuimodel(level.var_7e2a814c, "level"), level.doa.var_160ae6c6);
 }
 
-/*
-	Name: function_d3b4c89d
-	Namespace: namespace_693feb87
-	Checksum: 0xA8EE6E15
-	Offset: 0x3180
-	Size: 0xC4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d3b4c89d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(localclientnum != 0) {
     return;
@@ -547,15 +368,6 @@ function function_d3b4c89d(localclientnum, oldval, newval, bnewent, binitialsnap
   setuimodelvalue(createuimodel(getuimodelforcontroller(localclientnum), "forceScoreboard"), newval);
 }
 
-/*
-	Name: function_a6c926fc
-	Namespace: namespace_693feb87
-	Checksum: 0x119072E1
-	Offset: 0x3250
-	Size: 0x1DA
-	Parameters: 7
-	Flags: Linked
-*/
 function function_a6c926fc(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(localclientnum != 0) {
     return;
@@ -578,15 +390,6 @@ function function_a6c926fc(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_10093dd7
-	Namespace: namespace_693feb87
-	Checksum: 0xDA31140A
-	Offset: 0x3438
-	Size: 0x1FE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_10093dd7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(level.weatherfx) && isdefined(level.weatherfx[localclientnum])) {
     stopfx(localclientnum, level.weatherfx[localclientnum]);
@@ -617,15 +420,6 @@ function function_10093dd7(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_354ec425
-	Namespace: namespace_693feb87
-	Checksum: 0x7604C9E1
-	Offset: 0x3640
-	Size: 0x114
-	Parameters: 7
-	Flags: Linked
-*/
 function function_354ec425(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     if(!(isdefined(self.var_354ec425) && self.var_354ec425)) {
@@ -643,28 +437,10 @@ function function_354ec425(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_23f655ed
-	Namespace: namespace_693feb87
-	Checksum: 0x2F02471D
-	Offset: 0x3760
-	Size: 0x4C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_23f655ed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   cleanupspawneddynents();
 }
 
-/*
-	Name: function_ee495f41
-	Namespace: namespace_693feb87
-	Checksum: 0x83ECB617
-	Offset: 0x37B8
-	Size: 0x82
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ee495f41(num) {
   switch (num) {
     case 0: {
@@ -680,22 +456,11 @@ function function_ee495f41(num) {
       return "yellow";
     }
     default: {
-      /#
       assert(0);
-      # /
     }
   }
 }
 
-/*
-	Name: function_351aa01c
-	Namespace: namespace_693feb87
-	Checksum: 0xDB931C25
-	Offset: 0x3848
-	Size: 0xF4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_351aa01c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval != 0) {
     name = namespace_eaa992c::function_9e6fe7c3(newval);
@@ -706,30 +471,12 @@ function function_351aa01c(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_33760903
-	Namespace: namespace_693feb87
-	Checksum: 0x3911602B
-	Offset: 0x3948
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_33760903(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval != 0) {
     self thread namespace_eaa992c::function_e68e3c0d(localclientnum, namespace_eaa992c::function_9e6fe7c3(newval), 1);
   }
 }
 
-/*
-	Name: function_68503cb7
-	Namespace: namespace_693feb87
-	Checksum: 0xD357C448
-	Offset: 0x39D0
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_68503cb7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(localclientnum != 0) {
     return;
@@ -739,15 +486,6 @@ function function_68503cb7(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_9bf26aa6
-	Namespace: namespace_693feb87
-	Checksum: 0x566CC620
-	Offset: 0x3A50
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_9bf26aa6(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(localclientnum != 0) {
     return;
@@ -757,15 +495,6 @@ function function_9bf26aa6(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: onground
-	Namespace: namespace_693feb87
-	Checksum: 0xC9D87E0E
-	Offset: 0x3AD0
-	Size: 0x9E
-	Parameters: 0
-	Flags: Linked
-*/
 function onground() {
   a_trace = bullettrace(self.origin, self.origin + (vectorscale((0, 0, -1), 5000)), 0, self, 1);
   v_ground = a_trace["position"];
@@ -776,20 +505,11 @@ function onground() {
   return true;
 }
 
-/*
-	Name: function_10477d98
-	Namespace: namespace_693feb87
-	Checksum: 0xADF4C6C5
-	Offset: 0x3B78
-	Size: 0x29C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_10477d98(localclientnum) {
-  self notify(# "hash_f33fde4b");
-  self endon(# "disconnect");
-  self endon(# "hash_7f60c43e");
-  self endon(# "entityshutdown");
+  self notify("hash_f33fde4b");
+  self endon("disconnect");
+  self endon("hash_7f60c43e");
+  self endon("entityshutdown");
   endtime = gettime() + 600;
   self playsound(0, "zmb_fated_boost_activate");
   lastposition = self.origin;
@@ -819,15 +539,6 @@ function function_10477d98(localclientnum) {
   }
 }
 
-/*
-	Name: function_b868b40f
-	Namespace: namespace_693feb87
-	Checksum: 0x56D308F3
-	Offset: 0x3E20
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function function_b868b40f(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 0) {
     level.doa.var_708cc739 = undefined;
@@ -837,38 +548,17 @@ function function_b868b40f(localclientnum, oldval, newval, bnewent, binitialsnap
   namespace_3ca3c537::function_986ae2b3(localclientnum);
 }
 
-/*
-	Name: function_409fa9ce
-	Namespace: namespace_693feb87
-	Checksum: 0xFB65DA9E
-	Offset: 0x3EB0
-	Size: 0xCE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_409fa9ce(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  /#
   debugmsg((((("" + (isdefined(self.name) ? self.name : "")) + "") + newval) + "") + localclientnum);
-  # /
-    if(newval) {
-      self thread function_10477d98(localclientnum);
-    }
-  else {
-    self notify(# "hash_f33fde4b");
+  if(newval) {
+    self thread function_10477d98(localclientnum);
+  } else {
+    self notify("hash_f33fde4b");
   }
 }
 
-/*
-	Name: function_cb806a9b
-	Namespace: namespace_693feb87
-	Checksum: 0x9CA31BB8
-	Offset: 0x3F88
-	Size: 0x166
-	Parameters: 7
-	Flags: Linked
-*/
 function function_cb806a9b(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(!oldval && newval) {
     localplayers = level.localplayers;
     sound = "zmb_zombie_spawn";
@@ -883,17 +573,8 @@ function function_cb806a9b(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: handle_zombie_risers
-	Namespace: namespace_693feb87
-	Checksum: 0xE96738FF
-	Offset: 0x40F8
-	Size: 0x166
-	Parameters: 7
-	Flags: Linked
-*/
 function handle_zombie_risers(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(!oldval && newval) {
     localplayers = level.localplayers;
     sound = "zmb_zombie_spawn";
@@ -908,18 +589,9 @@ function handle_zombie_risers(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: rise_dust_fx
-	Namespace: namespace_693feb87
-	Checksum: 0x2C9C2D23
-	Offset: 0x4268
-	Size: 0x1D6
-	Parameters: 5
-	Flags: Linked
-*/
 function rise_dust_fx(localclientnum, type, billow_fx, burst_fx, var_cf929ddb) {
   dust_tag = "J_SpineUpper";
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(isdefined(burst_fx)) {
     playfx(localclientnum, burst_fx, self.origin + (0, 0, randomintrange(5, 10)));
   }
@@ -941,15 +613,6 @@ function rise_dust_fx(localclientnum, type, billow_fx, burst_fx, var_cf929ddb) {
   }
 }
 
-/*
-	Name: function_20671f0
-	Namespace: namespace_693feb87
-	Checksum: 0x25787F13
-	Offset: 0x4448
-	Size: 0xAC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_20671f0(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   level.doa.hazards[level.doa.hazards.size] = self;
   arrayremovevalue(level.doa.hazards, undefined);
@@ -957,15 +620,6 @@ function function_20671f0(localclientnum, oldval, newval, bnewent, binitialsnap,
   self thread function_38452435(localclientnum);
 }
 
-/*
-	Name: function_ec2caec3
-	Namespace: namespace_693feb87
-	Checksum: 0xC1EFDA95
-	Offset: 0x4500
-	Size: 0xDE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_ec2caec3(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.var_d05d7e08)) {
     self.var_d05d7e08 = 0;
@@ -985,19 +639,10 @@ function function_ec2caec3(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_38452435
-	Namespace: namespace_693feb87
-	Checksum: 0x129CF718
-	Offset: 0x45E8
-	Size: 0x9E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_38452435(localclientnum) {
-  self notify(# "hash_38452435");
-  self endon(# "hash_38452435");
-  self waittill(# "entityshutdown");
+  self notify("hash_38452435");
+  self endon("hash_38452435");
+  self waittill("entityshutdown");
   if(isdefined(self.fx)) {
     deletefx(localclientnum, self.fx);
     self.fx = undefined;
@@ -1008,15 +653,6 @@ function private function_38452435(localclientnum) {
   }
 }
 
-/*
-	Name: function_b54615b2
-	Namespace: namespace_693feb87
-	Checksum: 0x2559169C
-	Offset: 0x4690
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b54615b2() {
   arrayremovevalue(level.doa.hazards, undefined);
   foreach(hazard in level.doa.hazards) {
@@ -1040,15 +676,6 @@ function function_b54615b2() {
   return level._effect["electric_trap"];
 }
 
-/*
-	Name: function_e41e6611
-	Namespace: namespace_693feb87
-	Checksum: 0x593BC8A
-	Offset: 0x4828
-	Size: 0x386
-	Parameters: 2
-	Flags: Linked
-*/
 function function_e41e6611(localclientnum, value) {
   switch (value) {
     case 0: {
@@ -1090,12 +717,10 @@ function function_e41e6611(localclientnum, value) {
       if(!isdefined(self.activefx)) {
         self.activefx = self function_b54615b2();
       }
-      /#
       if(isdefined(self.var_5ad223cf) && self.var_5ad223cf) {
         level thread drawcylinder(self.origin, 40, 20, 180, (0, 0, 1));
       }
-      # /
-        self.fx = playfx(localclientnum, self.activefx, self.origin + vectorscale((0, 0, 1), 100));
+      self.fx = playfx(localclientnum, self.activefx, self.origin + vectorscale((0, 0, 1), 100));
       self.fx2 = playfx(localclientnum, level._effect["hazard_electric"], self.origin + vectorscale((0, 0, 1), 124));
       break;
     }
@@ -1111,15 +736,6 @@ function function_e41e6611(localclientnum, value) {
   }
 }
 
-/*
-	Name: function_d8d20160
-	Namespace: namespace_693feb87
-	Checksum: 0x249C1FD5
-	Offset: 0x4BB8
-	Size: 0x156
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d8d20160(localclientnum, value) {
   self util::waittill_dobj(localclientnum);
   switch (value) {
@@ -1143,15 +759,6 @@ function function_d8d20160(localclientnum, value) {
   }
 }
 
-/*
-	Name: function_4ac9a8ba
-	Namespace: namespace_693feb87
-	Checksum: 0xAA61F8F5
-	Offset: 0x4D18
-	Size: 0x1FC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_4ac9a8ba(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   namespace_3ca3c537::restart();
   namespace_64c6b720::function_6fa6dee2();
@@ -1168,60 +775,26 @@ function function_4ac9a8ba(localclientnum, oldval, newval, bnewent, binitialsnap
   setuimodelvalue(createuimodel(getuimodelforcontroller(localclientnum), "forceScoreboard"), 0);
 }
 
-/*
-	Name: function_f7c0d598
-	Namespace: namespace_693feb87
-	Checksum: 0xBECB4713
-	Offset: 0x4F20
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f7c0d598(mapping = "zombietron") {
-  self notify(# "hash_f7c0d598");
-  self endon(# "hash_f7c0d598");
-  self endon(# "entityshutdown");
-  self endon(# "disconnect");
-  /#
+  self notify("hash_f7c0d598");
+  self endon("hash_f7c0d598");
+  self endon("entityshutdown");
+  self endon("disconnect");
   loc_00004FA8:
     debugmsg((((("" + (isdefined(self.name) ? self.name : "")) + "") + mapping) + "") + (self islocalplayer() ? "" : ""));
-  # /
-    if(self islocalplayer()) {
-      clientnum = self getlocalclientnumber();
-      /#
-      debugmsg("" + clientnum);
-      # /
-        forcegamemodemappings(clientnum, mapping);
-    }
-  else {
-    /#
+  if(self islocalplayer()) {
+    clientnum = self getlocalclientnumber();
+    debugmsg("" + clientnum);
+    forcegamemodemappings(clientnum, mapping);
+  } else {
     debugmsg("");
-    # /
   }
 }
 
-/*
-	Name: function_f8c69ca4
-	Namespace: namespace_693feb87
-	Checksum: 0xB1004401
-	Offset: 0x50A0
-	Size: 0x54
-	Parameters: 7
-	Flags: Linked
-*/
 function function_f8c69ca4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self thread function_f7c0d598();
 }
 
-/*
-	Name: function_f87ff72d
-	Namespace: namespace_693feb87
-	Checksum: 0xFD8B0B9E
-	Offset: 0x5100
-	Size: 0x2F4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_f87ff72d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 0) {
     return;
@@ -1238,7 +811,7 @@ function function_f87ff72d(localclientnum, oldval, newval, bnewent, binitialsnap
   bomb.angles = vectorscale((1, 0, 0), 90);
   bomb moveto(var_ec8a4984, 0.3, 0, 0);
   playsound(0, "zmb_nuke_incoming", self.origin);
-  bomb waittill(# "movedone");
+  bomb waittill("movedone");
   playsound(localclientnum, "zmb_nuke_impact", var_ec8a4984);
   playfx(localclientnum, level._effect["bomb"], var_ec8a4984);
   foreach(player in getlocalplayers()) {
@@ -1249,15 +822,6 @@ function function_f87ff72d(localclientnum, oldval, newval, bnewent, binitialsnap
   playfx(localclientnum, level._effect["nuke_dust"], var_ec8a4984);
 }
 
-/*
-	Name: randomize_array
-	Namespace: namespace_693feb87
-	Checksum: 0x46FB018
-	Offset: 0x5400
-	Size: 0x9C
-	Parameters: 1
-	Flags: None
-*/
 function randomize_array(array) {
   for (i = 0; i < array.size; i++) {
     j = randomint(array.size);
@@ -1268,15 +832,6 @@ function randomize_array(array) {
   return array;
 }
 
-/*
-	Name: function_ef1ad359
-	Namespace: namespace_693feb87
-	Checksum: 0xD360E022
-	Offset: 0x54A8
-	Size: 0x1CE
-	Parameters: 3
-	Flags: Linked
-*/
 function function_ef1ad359(origin, count = 3, dir) {
   while (count) {
     if(!isdefined(dir)) {
@@ -1289,15 +844,6 @@ function function_ef1ad359(origin, count = 3, dir) {
   }
 }
 
-/*
-	Name: function_3a1ccea7
-	Namespace: namespace_693feb87
-	Checksum: 0xBB14733C
-	Offset: 0x5680
-	Size: 0xF4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_3a1ccea7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(level._effect["zombie_guts_explosion"]) && util::is_mature()) {
     where = self gettagorigin("J_SpineLower");
@@ -1309,15 +855,6 @@ function function_3a1ccea7(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: zombie_gut_explosion_cb
-	Namespace: namespace_693feb87
-	Checksum: 0x59D91203
-	Offset: 0x5780
-	Size: 0xFC
-	Parameters: 7
-	Flags: Linked
-*/
 function zombie_gut_explosion_cb(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     if(isdefined(level._effect["zombie_guts_explosion"]) && util::is_mature()) {
@@ -1331,15 +868,6 @@ function zombie_gut_explosion_cb(localclientnum, oldval, newval, bnewent, biniti
   }
 }
 
-/*
-	Name: function_15b503eb
-	Namespace: namespace_693feb87
-	Checksum: 0xD72082AA
-	Offset: 0x5888
-	Size: 0xFC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_15b503eb(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!newval) {
     return;
@@ -1354,15 +882,6 @@ function function_15b503eb(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_8b8f5cb4
-	Namespace: namespace_693feb87
-	Checksum: 0x86D49E12
-	Offset: 0x5990
-	Size: 0x104
-	Parameters: 7
-	Flags: Linked
-*/
 function function_8b8f5cb4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!newval) {
     return;
@@ -1377,30 +896,12 @@ function function_8b8f5cb4(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: zombie_ragdoll_explode_cb
-	Namespace: namespace_693feb87
-	Checksum: 0xC077EE8F
-	Offset: 0x5AA0
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function zombie_ragdoll_explode_cb(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self zombie_wait_explode(localclientnum);
   }
 }
 
-/*
-	Name: zombie_wait_explode
-	Namespace: namespace_693feb87
-	Checksum: 0xA607AE7A
-	Offset: 0x5B08
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_wait_explode(localclientnum) {
   where = self gettagorigin("J_SpineLower");
   if(!isdefined(where)) {
@@ -1421,17 +922,8 @@ function zombie_wait_explode(localclientnum) {
   }
 }
 
-/*
-	Name: function_36c61ba6
-	Namespace: namespace_693feb87
-	Checksum: 0x4197386
-	Offset: 0x5C28
-	Size: 0x288
-	Parameters: 3
-	Flags: Linked
-*/
 function function_36c61ba6(localclientnum, var_4faf5231 = 1, var_ad5de66e = 1) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   currentscale = var_ad5de66e;
   var_c316c8b8 = var_ad5de66e * 1.25;
   var_711842d8 = 0.002;
@@ -1473,30 +965,12 @@ function function_36c61ba6(localclientnum, var_4faf5231 = 1, var_ad5de66e = 1) {
   }
 }
 
-/*
-	Name: function_455fa2fe
-	Namespace: namespace_693feb87
-	Checksum: 0x2D8F58C6
-	Offset: 0x5EB8
-	Size: 0x6C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_455fa2fe(localclientnum, owner, fx) {
-  owner waittill(# "entityshutdown");
+  owner waittill("entityshutdown");
   playfx(localclientnum, level._effect[fx], self.origin);
   self delete();
 }
 
-/*
-	Name: function_d277a961
-	Namespace: namespace_693feb87
-	Checksum: 0xA9DE01DF
-	Offset: 0x5F30
-	Size: 0x246
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d277a961(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 1: {
@@ -1534,15 +1008,6 @@ function function_d277a961(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: delay_for_clients_then_execute
-	Namespace: namespace_693feb87
-	Checksum: 0xA71F10D3
-	Offset: 0x6180
-	Size: 0x52
-	Parameters: 1
-	Flags: None
-*/
 function delay_for_clients_then_execute(func) {
   wait(0.1);
   while (!clienthassnapshot(self.localclientnum)) {
@@ -1552,15 +1017,6 @@ function delay_for_clients_then_execute(func) {
   self thread[[func]]();
 }
 
-/*
-	Name: function_ddbc17b4
-	Namespace: namespace_693feb87
-	Checksum: 0xF6D85C9D
-	Offset: 0x61E0
-	Size: 0x152
-	Parameters: 3
-	Flags: Linked
-*/
 function function_ddbc17b4(localclientnum, var_bac17ccf, var_2ca34dda) {
   if(var_bac17ccf == 1 && getplayers(localclientnum).size == level.localplayers.size) {
     var_bac17ccf++;
@@ -1583,15 +1039,6 @@ function function_ddbc17b4(localclientnum, var_bac17ccf, var_2ca34dda) {
   return function_ddbc17b4(localclientnum, var_bac17ccf + 1, var_2ca34dda);
 }
 
-/*
-	Name: changecamera
-	Namespace: namespace_693feb87
-	Checksum: 0x58366A3D
-	Offset: 0x6340
-	Size: 0x294
-	Parameters: 7
-	Flags: Linked
-*/
 function changecamera(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(localclientnum != 0) {
     return;
@@ -1625,20 +1072,9 @@ function changecamera(localclientnum, oldval, newval, bnewent, binitialsnap, fie
       namespace_3ca3c537::function_986ae2b3(localclientnum);
     }
   }
-  /#
   debugmsg((("" + self getentitynumber()) + "") + self.var_44509e49);
-  # /
 }
 
-/*
-	Name: function_bbb7743c
-	Namespace: namespace_693feb87
-	Checksum: 0xBEFB77A3
-	Offset: 0x65E0
-	Size: 0xB8
-	Parameters: 7
-	Flags: Linked
-*/
 function function_bbb7743c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   player = getlocalplayers()[0];
   if(newval) {
@@ -1650,15 +1086,6 @@ function function_bbb7743c(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_cee29ae7
-	Namespace: namespace_693feb87
-	Checksum: 0xBE0E84AE
-	Offset: 0x66A0
-	Size: 0xB4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_cee29ae7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   level.var_7a6087fd = newval;
   player = getlocalplayers()[0];
@@ -1669,15 +1096,6 @@ function function_cee29ae7(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_cd844947
-	Namespace: namespace_693feb87
-	Checksum: 0x5B01A10E
-	Offset: 0x6760
-	Size: 0x414
-	Parameters: 7
-	Flags: Linked
-*/
 function function_cd844947(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   low = newval & 65535;
   high = newval >> 16;
@@ -1716,43 +1134,14 @@ function function_cd844947(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_efeeaa92
-	Namespace: namespace_693feb87
-	Checksum: 0xC530B83A
-	Offset: 0x6B80
-	Size: 0x4C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_efeeaa92(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   cleanupspawneddynents();
 }
 
-/*
-	Name: debugmsg
-	Namespace: namespace_693feb87
-	Checksum: 0x9913422E
-	Offset: 0x6BD8
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function debugmsg(txt) {
-  /#
   println("" + txt);
-  # /
 }
 
-/*
-	Name: function_12c2fbcb
-	Namespace: namespace_693feb87
-	Checksum: 0xF7124A0C
-	Offset: 0x6C18
-	Size: 0x41C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_12c2fbcb() {
   if(!isdefined(self.var_ec1cda64)) {
     self.var_ec1cda64 = [];
@@ -1761,29 +1150,21 @@ function function_12c2fbcb() {
     self.entnum = self getentitynumber();
     self.doa = level.var_29e6f519[self.entnum];
     if(isdefined(self.doa.player)) {
-      /#
-      loc_00006CBC:
-        loc_00006CFC:
-        debugmsg((((("" + (isdefined(self.name) ? self.name : "")) + "") + (isdefined(self.doa.player) ? self.doa.player.name : "") + "") + self getentitynumber() + "") + (isdefined(self.doa.player) ? self.doa.player getentitynumber() : -1));
-      # /
-        /#
+      loc_00006CBC: loc_00006CFC: debugmsg((((("" + (isdefined(self.name) ? self.name : "")) + "") + (isdefined(self.doa.player) ? self.doa.player.name : "") + "") + self getentitynumber() + "") + (isdefined(self.doa.player) ? self.doa.player getentitynumber() : -1));
       assert(self.doa.player == self);
-      # /
     }
     namespace_64c6b720::function_e06716c7(self.doa);
     self.doa.player = self;
-    /#
     loc_00006DF4:
       debugmsg((((("" + (isdefined(self.name) ? self.name : "")) + "") + self.entnum) + "") + (isdefined(self.doa.player) ? self.doa.player getentitynumber() : -1));
-    # /
-      self cameraforcedisablescriptcam(0);
+    self cameraforcedisablescriptcam(0);
     self camerasetupdatecallback( & namespace_ad544aeb::function_d207ecc1);
     setdvar("vr_playerScale", 30);
     setfriendlynamedraw(0);
     if(self islocalplayer()) {
       self.var_44509e49 = namespace_3ca3c537::function_9f1a0b26(0);
     }
-    level notify(# "hash_aae01d5a", self.doa.player.entnum, self.doa.var_c88a6593);
+    level notify("hash_aae01d5a", self.doa.player.entnum, self.doa.var_c88a6593);
     if(self islocalplayer()) {
       localclientnum = self getlocalclientnumber();
       switch (self.entnum) {
@@ -1809,111 +1190,67 @@ function function_12c2fbcb() {
   self thread function_f7c0d598();
 }
 
-/*
-	Name: function_c33d3992
-	Namespace: namespace_693feb87
-	Checksum: 0xC0A82063
-	Offset: 0x7040
-	Size: 0x42C
-	Parameters: 1
-	Flags: None
-*/
 function function_c33d3992(localclientnum) {
   if(!clienthassnapshot(localclientnum)) {
-    /#
     debugmsg(("" + (isdefined(self.name) ? self.name : "")) + "");
-    # /
-      return false;
+    return false;
   }
   if(!self isplayer()) {
-    /#
     debugmsg(("" + (isdefined(self.name) ? self.name : "")) + "");
-    # /
-      return false;
+    return false;
   }
   if(!self hasdobj(localclientnum)) {
-    /#
     debugmsg(("" + (isdefined(self.name) ? self.name : "")) + "");
-    # /
-      return false;
+    return false;
   }
   if(self islocalplayer() && !isdefined(self getlocalclientnumber())) {
-    /#
     debugmsg(("" + (isdefined(self.name) ? self.name : "")) + "");
-    # /
-      return false;
+    return false;
   }
   if(isspectating(localclientnum)) {
-    /#
     debugmsg(("" + (isdefined(self.name) ? self.name : "")) + "");
-    # /
-      return false;
+    return false;
   }
   if(isdemoplaying()) {
-    /#
     debugmsg(("" + (isdefined(self.name) ? self.name : "")) + "");
-    # /
-      return false;
+    return false;
   }
   if(self islocalplayer() && isdefined(self getlocalclientnumber())) {
     spectated = playerbeingspectated(self getlocalclientnumber());
     if(self != spectated) {
-      /#
       debugmsg(("" + (isdefined(self.name) ? self.name : "")) + "");
-      # /
-        return false;
+      return false;
     }
   }
   doa = level.var_29e6f519[self getentitynumber()];
   if(isdefined(doa.player) && doa.player != self) {
-    /#
     debugmsg(((((("" + (isdefined(self.name) ? self.name : "")) + "") + doa.player.name) + "") + self getentitynumber() + "") + doa.player getentitynumber());
-    # /
-      return false;
+    return false;
   }
   return true;
 }
 
-/*
-	Name: function_5c2a88d5
-	Namespace: namespace_693feb87
-	Checksum: 0x9D648174
-	Offset: 0x7478
-	Size: 0x1E0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5c2a88d5() {
-  level endon(# "hash_a2a24535");
+  level endon("hash_a2a24535");
   while (true) {
     setsoundcontext("water", "over");
     foreach(player in getlocalplayers()) {
       player setsoundentcontext("water", "over");
     }
-    level waittill(# "hash_c4c783f9");
+    level waittill("hash_c4c783f9");
     forceambientroom("cp_doa_fps_mode");
     setsoundcontext("water", "under");
     foreach(player in getlocalplayers()) {
       player setsoundentcontext("water", "under");
     }
-    level waittill(# "hash_fca9c70d");
+    level waittill("hash_fca9c70d");
     forceambientroom("");
   }
 }
 
-/*
-	Name: drawcylinder
-	Namespace: namespace_693feb87
-	Checksum: 0xB8CBF264
-	Offset: 0x7660
-	Size: 0x2FA
-	Parameters: 5
-	Flags: Linked
-*/
 function drawcylinder(pos, rad, height, frames = 60, color = (0, 0, 0)) {
-  /#
-  self endon(# "stop_cylinder");
-  self endon(# "entityshutdown");
+  self endon("stop_cylinder");
+  self endon("entityshutdown");
   currad = rad;
   curheight = height;
   for (frames = int(frames); frames; frames--) {
@@ -1926,5 +1263,4 @@ function drawcylinder(pos, rad, height, frames = 60, color = (0, 0, 0)) {
     }
     wait(0.016);
   }
-  # /
 }

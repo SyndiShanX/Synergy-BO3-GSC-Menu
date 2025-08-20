@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_blackjack_challenges.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
@@ -10,44 +14,16 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapon_utils;
-
 #namespace blackjack_challenges;
 
-/*
-	Name: __init__sytem__
-	Namespace: blackjack_challenges
-	Checksum: 0xC2D5BB97
-	Offset: 0x4D8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("blackjack_challenges", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: blackjack_challenges
-	Checksum: 0xF1116ABE
-	Offset: 0x518
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & start_gametype);
 }
 
-/*
-	Name: start_gametype
-	Namespace: blackjack_challenges
-	Checksum: 0xF65C330A
-	Offset: 0x548
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function start_gametype() {
   if(!isdefined(level.challengescallbacks)) {
     level.challengescallbacks = [];
@@ -62,15 +38,6 @@ function start_gametype() {
   callback::on_connect( & on_player_connect);
 }
 
-/*
-	Name: on_player_connect
-	Namespace: blackjack_challenges
-	Checksum: 0x5AF21772
-	Offset: 0x640
-	Size: 0x19A
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   player = self;
   if(challenges::canprocesschallenges()) {
@@ -95,28 +62,10 @@ function on_player_connect() {
   }
 }
 
-/*
-	Name: is_challenge_active
-	Namespace: blackjack_challenges
-	Checksum: 0x2BCD7258
-	Offset: 0x7E8
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function is_challenge_active() {
   return self.pers["blackjack_challenge_active"] === 1;
 }
 
-/*
-	Name: on_hero_ability_kill
-	Namespace: blackjack_challenges
-	Checksum: 0xA91FBDB2
-	Offset: 0x810
-	Size: 0x164
-	Parameters: 2
-	Flags: Linked
-*/
 function on_hero_ability_kill(ability, victimability) {
   player = self;
   if(!isdefined(player) || !isplayer(player)) {
@@ -138,100 +87,43 @@ function on_hero_ability_kill(ability, victimability) {
   }
 }
 
-/*
-	Name: debug_print_already_earned
-	Namespace: blackjack_challenges
-	Checksum: 0xD8E576B2
-	Offset: 0x980
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_print_already_earned() {
-  /#
   if(getdvarint("", 0) == 0) {
     return;
   }
   iprintln("");
-  # /
 }
 
-/*
-	Name: debug_print_kill_info
-	Namespace: blackjack_challenges
-	Checksum: 0x24C67F26
-	Offset: 0x9D0
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_print_kill_info() {
-  /#
   if(getdvarint("", 0) == 0) {
     return;
   }
   player = self;
   iprintln((("" + player.pers[""]) + "") + player.pers[""]);
-  # /
 }
 
-/*
-	Name: debug_print_earned
-	Namespace: blackjack_challenges
-	Checksum: 0x16F15520
-	Offset: 0xA68
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_print_earned() {
-  /#
   if(getdvarint("", 0) == 0) {
     return;
   }
   iprintln("");
-  # /
 }
 
-/*
-	Name: check_blackjack_challenge
-	Namespace: blackjack_challenges
-	Checksum: 0x21829FF7
-	Offset: 0xAB8
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function check_blackjack_challenge() {
   player = self;
-  /#
   debug_print_kill_info();
-  # /
-    special_card_earned = player get_challenge_stat("special_card_earned");
+  special_card_earned = player get_challenge_stat("special_card_earned");
   if(special_card_earned) {
-    /#
     debug_print_already_earned();
-    # /
-      return;
+    return;
   }
   if(player.pers["blackjack_specialist_kills"] >= 4 && player.pers["blackjack_unique_specialist_kills"] >= 2) {
     player set_challenge_stat("special_card_earned", 1);
     player addplayerstat("blackjack_challenge", 1);
-    /#
     debug_print_earned();
-    # /
   }
 }
 
-/*
-	Name: challenge_kills
-	Namespace: blackjack_challenges
-	Checksum: 0x9AE37CB
-	Offset: 0xBD0
-	Size: 0x234
-	Parameters: 1
-	Flags: Linked
-*/
 function challenge_kills(data) {
   attackeristhief = data.attackeristhief;
   attackerisroulette = data.attackerisroulette;
@@ -266,41 +158,14 @@ function challenge_kills(data) {
   }
 }
 
-/*
-	Name: get_challenge_stat
-	Namespace: blackjack_challenges
-	Checksum: 0x850211DD
-	Offset: 0xE10
-	Size: 0x2A
-	Parameters: 1
-	Flags: Linked
-*/
 function get_challenge_stat(stat_name) {
   return self getdstat("tenthspecialistcontract", stat_name);
 }
 
-/*
-	Name: set_challenge_stat
-	Namespace: blackjack_challenges
-	Checksum: 0xB8464184
-	Offset: 0xE48
-	Size: 0x3A
-	Parameters: 2
-	Flags: Linked
-*/
 function set_challenge_stat(stat_name, stat_value) {
   return self setdstat("tenthspecialistcontract", stat_name, stat_value);
 }
 
-/*
-	Name: get_hero_weapon_mask
-	Namespace: blackjack_challenges
-	Checksum: 0xD6A558F2
-	Offset: 0xE90
-	Size: 0x14E
-	Parameters: 2
-	Flags: Linked
-*/
 function get_hero_weapon_mask(attacker, weapon) {
   if(!isdefined(weapon)) {
     return 0;
@@ -358,15 +223,6 @@ function get_hero_weapon_mask(attacker, weapon) {
   }
 }
 
-/*
-	Name: get_hero_ability_mask
-	Namespace: blackjack_challenges
-	Checksum: 0x22012578
-	Offset: 0xFE8
-	Size: 0xE2
-	Parameters: 1
-	Flags: Linked
-*/
 function get_hero_ability_mask(ability) {
   if(!isdefined(ability)) {
     return 0;
@@ -414,15 +270,6 @@ function get_hero_ability_mask(ability) {
   }
 }
 
-/*
-	Name: challenge_game_ended
-	Namespace: blackjack_challenges
-	Checksum: 0xDD4CA033
-	Offset: 0x10D8
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function challenge_game_ended(data) {
   if(!isdefined(data)) {
     return;
@@ -443,15 +290,6 @@ function challenge_game_ended(data) {
   player report_consumable();
 }
 
-/*
-	Name: challenge_round_ended
-	Namespace: blackjack_challenges
-	Checksum: 0xD4C7E9BD
-	Offset: 0x1180
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function challenge_round_ended(data) {
   if(!isdefined(data)) {
     return;
@@ -472,20 +310,11 @@ function challenge_round_ended(data) {
   player report_consumable();
 }
 
-/*
-	Name: track_blackjack_consumable
-	Namespace: blackjack_challenges
-	Checksum: 0x872BF806
-	Offset: 0x1228
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function track_blackjack_consumable() {
-  level endon(# "game_ended");
-  self notify(# "track_blackjack_consumable_singleton");
-  self endon(# "track_blackjack_consumable_singleton");
-  self endon(# "disconnect");
+  level endon("game_ended");
+  self notify("track_blackjack_consumable_singleton");
+  self endon("track_blackjack_consumable_singleton");
+  self endon("disconnect");
   player = self;
   if(!isdefined(player.last_blackjack_consumable_time)) {
     player.last_blackjack_consumable_time = 0;
@@ -497,15 +326,6 @@ function track_blackjack_consumable() {
   }
 }
 
-/*
-	Name: report_consumable
-	Namespace: blackjack_challenges
-	Checksum: 0xAECF943D
-	Offset: 0x1308
-	Size: 0x178
-	Parameters: 0
-	Flags: Linked
-*/
 function report_consumable() {
   player = self;
   if(!isdefined(player)) {

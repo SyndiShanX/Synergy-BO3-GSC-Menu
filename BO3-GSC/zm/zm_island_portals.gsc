@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_portals.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_death;
 #using scripts\shared\array_shared;
@@ -17,33 +21,13 @@
 #using scripts\zm\_zm_unitrigger;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #using_animtree("generic");
-
 #namespace zm_island_portals;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_island_portals
-	Checksum: 0xACDF62F
-	Offset: 0x508
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_portals", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_island_portals
-	Checksum: 0x28888A75
-	Offset: 0x548
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   n_bits = getminbitcountfornum(3);
   clientfield::register("toplayer", "player_stargate_fx", 9000, 1, "int");
@@ -56,40 +40,13 @@ function __init__() {
   visionset_mgr::register_info("overlay", "zm_zod_transported", 9000, 20, 15, 1, & visionset_mgr::duration_lerp_thread_per_player, 0);
 }
 
-/*
-	Name: function_16616103
-	Namespace: zm_island_portals
-	Checksum: 0x99EC1590
-	Offset: 0x710
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_16616103() {}
 
-/*
-	Name: function_e4ff383e
-	Namespace: zm_island_portals
-	Checksum: 0xAF8B6022
-	Offset: 0x720
-	Size: 0x44
-	Parameters: 2
-	Flags: None
-*/
 function function_e4ff383e(var_49e3dd2e, var_d16ec704) {
   level flag::wait_till(var_49e3dd2e);
   level flag::set(var_d16ec704);
 }
 
-/*
-	Name: create_portal
-	Namespace: zm_island_portals
-	Checksum: 0xF618D29D
-	Offset: 0x770
-	Size: 0x334
-	Parameters: 3
-	Flags: None
-*/
 function create_portal(str_id, var_fc699b20, var_776628b2) {
   width = 192;
   height = 128;
@@ -123,20 +80,11 @@ function create_portal(str_id, var_fc699b20, var_776628b2) {
   }
 }
 
-/*
-	Name: function_16fca6d
-	Namespace: zm_island_portals
-	Checksum: 0xFC02FCA
-	Offset: 0xAB0
-	Size: 0xEA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_16fca6d(player) {
   str_areaname = self.stub.str_areaname;
   var_8f5050e8 = level clientfield::get("portal_state_" + str_areaname);
   if(var_8f5050e8 !== 1 && (!(isdefined(player.beastmode) && player.beastmode))) {
-    self sethintstring( & "ZM_GENESIS_PORTAL_OPEN");
+    self sethintstring(&"ZM_GENESIS_PORTAL_OPEN");
     b_is_invis = 0;
   } else {
     b_is_invis = 1;
@@ -145,18 +93,9 @@ function function_16fca6d(player) {
   return !b_is_invis;
 }
 
-/*
-	Name: function_a90ab0d7
-	Namespace: zm_island_portals
-	Checksum: 0x6CBB6E6E
-	Offset: 0xBA8
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a90ab0d7() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player zm_utility::in_revive_trigger()) {
       continue;
     }
@@ -171,29 +110,11 @@ function function_a90ab0d7() {
   }
 }
 
-/*
-	Name: function_e0c93f92
-	Namespace: zm_island_portals
-	Checksum: 0xDC85590A
-	Offset: 0xC58
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e0c93f92(str_areaname) {
   level clientfield::set("portal_state_" + str_areaname, 1);
   portal_open(str_areaname);
 }
 
-/*
-	Name: portal_open
-	Namespace: zm_island_portals
-	Checksum: 0x3DF17376
-	Offset: 0xCB0
-	Size: 0x36C
-	Parameters: 2
-	Flags: Linked
-*/
 function portal_open(str_areaname, var_14429fc9 = 0) {
   if(var_14429fc9) {
     level clientfield::set("portal_state_" + str_areaname, 2);
@@ -222,22 +143,13 @@ function portal_open(str_areaname, var_14429fc9 = 0) {
   var_50fc4fb[0] thread portal_think();
 }
 
-/*
-	Name: portal_think
-	Namespace: zm_island_portals
-	Checksum: 0x42817D02
-	Offset: 0x1028
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function portal_think() {
   if(!isdefined(self.target)) {
     return;
   }
   self.a_s_port_locs = struct::get_array(self.target, "targetname");
   while (true) {
-    self waittill(# "trigger", e_portee);
+    self waittill("trigger", e_portee);
     level clientfield::increment("pulse_" + self.script_noteworthy);
     if(isdefined(e_portee.teleporting) && e_portee.teleporting) {
       continue;
@@ -253,17 +165,8 @@ function portal_think() {
   }
 }
 
-/*
-	Name: portal_teleport_player
-	Namespace: zm_island_portals
-	Checksum: 0x8D197902
-	Offset: 0x11B8
-	Size: 0x8CC
-	Parameters: 2
-	Flags: Linked
-*/
 function portal_teleport_player(player, show_fx = 1) {
-  player endon(# "disconnect");
+  player endon("disconnect");
   level.var_6fe80781 = gettime();
   player.teleporting = 1;
   player.teleport_location = player.origin;
@@ -353,37 +256,19 @@ function portal_teleport_player(player, show_fx = 1) {
   player thread zm_audio::create_and_play_dialog("portal", "travel");
 }
 
-/*
-	Name: ai_delay_cleanup
-	Namespace: zm_island_portals
-	Checksum: 0xAE037F09
-	Offset: 0x1A90
-	Size: 0x5E
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_delay_cleanup() {
   if(!(isdefined(self.b_ignore_cleanup) && self.b_ignore_cleanup)) {
-    self notify(# "delay_cleanup");
-    self endon(# "death");
-    self endon(# "delay_cleanup");
+    self notify("delay_cleanup");
+    self endon("death");
+    self endon("delay_cleanup");
     self.b_ignore_cleanup = 1;
     wait(10);
     self.b_ignore_cleanup = undefined;
   }
 }
 
-/*
-	Name: portal_teleport_ai
-	Namespace: zm_island_portals
-	Checksum: 0x514F9DA6
-	Offset: 0x1AF8
-	Size: 0x2C4
-	Parameters: 1
-	Flags: None
-*/
 function portal_teleport_ai(e_portee) {
-  e_portee endon(# "death");
+  e_portee endon("death");
   e_portee.teleporting = 1;
   e_portee pathmode("dont move");
   playfx(level._effect["portal_3p"], e_portee.origin);

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_ethiopia.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -9,18 +13,8 @@
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\water_surface;
-
 #namespace mp_ethiopia;
 
-/*
-	Name: main
-	Namespace: mp_ethiopia
-	Checksum: 0x43CA76AC
-	Offset: 0x220
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   mp_ethiopia_fx::main();
   mp_ethiopia_sound::main();
@@ -36,15 +30,6 @@ function main() {
   setdvar("phys_ragdoll_buoyancy", 1);
 }
 
-/*
-	Name: dom_flag_base_fx_override
-	Namespace: mp_ethiopia
-	Checksum: 0x12F4B7C6
-	Offset: 0x358
-	Size: 0x7A
-	Parameters: 2
-	Flags: Linked
-*/
 function dom_flag_base_fx_override(flag, team) {
   switch (flag.name) {
     case "a": {
@@ -64,15 +49,6 @@ function dom_flag_base_fx_override(flag, team) {
   }
 }
 
-/*
-	Name: dom_flag_cap_fx_override
-	Namespace: mp_ethiopia
-	Checksum: 0x746F6024
-	Offset: 0x3E0
-	Size: 0x7A
-	Parameters: 2
-	Flags: Linked
-*/
 function dom_flag_cap_fx_override(flag, team) {
   switch (flag.name) {
     case "a": {

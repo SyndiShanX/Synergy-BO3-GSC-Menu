@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*****************************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_gadget_electrostatic_strike.gsc
+*****************************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_challenges;
 #using scripts\cp\_util;
@@ -19,29 +23,10 @@
 #using scripts\shared\statemachine_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace cybercom_gadget_electrostatic_strike;
 
-/*
-	Name: init
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x99EC1590
-	Offset: 0x6E0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {}
 
-/*
-	Name: main
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x2A49E
-	Offset: 0x6F0
-	Size: 0x35C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   cybercom_gadget::registerability(2, 2);
   level._effect["es_effect_human"] = "electric/fx_ability_elec_strike_short_human";
@@ -68,114 +53,33 @@ function main() {
   callback::on_spawned( & on_player_spawned);
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x99EC1590
-	Offset: 0xA58
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {}
 
-/*
-	Name: _is_flickering
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0xE301FC70
-	Offset: 0xA68
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function _is_flickering(slot) {}
 
-/*
-	Name: _on_flicker
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0xEF6EE24D
-	Offset: 0xA80
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_flicker(slot, weapon) {}
 
-/*
-	Name: _on_give
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x85DCDED
-	Offset: 0xAA0
-	Size: 0x2C
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_give(slot, weapon) {
   self thread function_677ed44f(weapon);
 }
 
-/*
-	Name: _on_take
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x2CE4A3B1
-	Offset: 0xAD8
-	Size: 0x22
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_take(slot, weapon) {
-  self notify(# "hash_343d4580");
+  self notify("hash_343d4580");
 }
 
-/*
-	Name: _on_connect
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x99EC1590
-	Offset: 0xB08
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function _on_connect() {}
 
-/*
-	Name: _on
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0xD2A48EE4
-	Offset: 0xB18
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _on(slot, weapon) {}
 
-/*
-	Name: _off
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x5329DF05
-	Offset: 0xB38
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _off(slot, weapon) {}
 
-/*
-	Name: function_677ed44f
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0xDAFF114A
-	Offset: 0xB58
-	Size: 0x2C0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_677ed44f(weapon) {
-  self notify(# "hash_677ed44f");
-  self endon(# "hash_677ed44f");
-  self endon(# "hash_343d4580");
-  self endon(# "disconnect");
+  self notify("hash_677ed44f");
+  self endon("hash_677ed44f");
+  self endon("hash_343d4580");
+  self endon("disconnect");
   while (true) {
-    level waittill(# "hash_63acb616", target, attacker, damage, weapon, hitorigin);
+    level waittill("hash_63acb616", target, attacker, damage, weapon, hitorigin);
     wait(0.05);
     if(isdefined(target)) {
       if(target cybercom::cybercom_aicheckoptout("cybercom_es_strike")) {
@@ -189,7 +93,7 @@ function function_677ed44f(weapon) {
       self thread challenges::function_96ed590f("cybercom_uses_control");
       status = self hascybercomability("cybercom_es_strike", 1);
       upgraded = status == 2;
-      target notify(# "hash_f8c5dd60", weapon, attacker);
+      target notify("hash_f8c5dd60", weapon, attacker);
       target thread electrostaticcontact(attacker, attacker, upgraded, hitorigin);
       target thread electrostaticarc(attacker, upgraded);
       if(isdefined(target.archetype) && target.archetype == "human") {
@@ -206,55 +110,28 @@ function function_677ed44f(weapon) {
   }
 }
 
-/*
-	Name: function_71a4f1d5
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x643EC996
-	Offset: 0xE20
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_71a4f1d5() {
-  self waittill(# "actor_corpse", corpse);
+  self waittill("actor_corpse", corpse);
   corpse clientfield::set("arch_actor_fire_fx", 3);
 }
 
-/*
-	Name: ai_activateelectrostaticstrike
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x6C7724CB
-	Offset: 0xE68
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function ai_activateelectrostaticstrike(upgraded = 0) {
   self thread aielectrostatickillmonitor((upgraded ? 2 : 1));
 }
 
-/*
-	Name: aielectrostatickillmonitor
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x771BF0AB
-	Offset: 0xEB8
-	Size: 0x138
-	Parameters: 1
-	Flags: Linked
-*/
 function aielectrostatickillmonitor(statusoverride) {
   if(isplayer(self)) {
-    self endon(# "disconnect");
+    self endon("disconnect");
   } else {
-    self endon(# "death");
+    self endon("death");
   }
-  self notify(# "electro_static_monitor_kill");
-  self endon(# "electro_static_monitor_kill");
+  self notify("electro_static_monitor_kill");
+  self endon("electro_static_monitor_kill");
   while (true) {
-    level waittill(# "hash_63acb616", target, attacker, damage, weapon, hitorigin);
+    level waittill("hash_63acb616", target, attacker, damage, weapon, hitorigin);
     wait(0.05);
     if(isdefined(target)) {
-      target notify(# "hash_f8c5dd60", weapon, attacker);
+      target notify("hash_f8c5dd60", weapon, attacker);
       upgraded = statusoverride == 2;
       target thread electrostaticcontact(attacker, attacker, upgraded, hitorigin);
       target thread electrostaticarc(attacker, upgraded);
@@ -262,15 +139,6 @@ function aielectrostatickillmonitor(statusoverride) {
   }
 }
 
-/*
-	Name: function_4830484e
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x7B5A26A4
-	Offset: 0xFF8
-	Size: 0xC0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4830484e(attacker) {
   if(!isdefined(self)) {
     return false;
@@ -299,15 +167,6 @@ function function_4830484e(attacker) {
   return true;
 }
 
-/*
-	Name: electrostaticcontact
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x22A6A6EA
-	Offset: 0x10C0
-	Size: 0x794
-	Parameters: 5
-	Flags: Linked
-*/
 function electrostaticcontact(attacker, source, upgraded = 0, contactpoint, secondary = 0) {
   if(!self function_4830484e(attacker)) {
     return;
@@ -402,17 +261,8 @@ function electrostaticcontact(attacker, source, upgraded = 0, contactpoint, seco
   }
 }
 
-/*
-	Name: electrostaticarc
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x118FFFA7
-	Offset: 0x1860
-	Size: 0x3B2
-	Parameters: 2
-	Flags: Linked
-*/
 function electrostaticarc(player, upgraded) {
-  self endon(# "death");
+  self endon("death");
   if(!upgraded) {
     return;
   }
@@ -460,15 +310,6 @@ function electrostaticarc(player, upgraded) {
   }
 }
 
-/*
-	Name: _electrodischargearcdmg
-	Namespace: cybercom_gadget_electrostatic_strike
-	Checksum: 0x4C4B954B
-	Offset: 0x1C20
-	Size: 0x1A4
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _electrodischargearcdmg(target, player, upgraded) {
   if(!isdefined(self) || !isdefined(target)) {
     return;

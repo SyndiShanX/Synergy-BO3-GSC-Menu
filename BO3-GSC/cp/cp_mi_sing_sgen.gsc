@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_sgen.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_ammo_cache;
 #using scripts\cp\_collectibles;
@@ -42,32 +46,13 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicles\_quadtank;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace sgen;
 
-/*
-	Name: setup_rex_starts
-	Namespace: sgen
-	Checksum: 0x7BC19DAA
-	Offset: 0x1A30
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function setup_rex_starts() {
   util::add_gametype("coop");
   util::add_gametype("cpzm");
 }
 
-/*
-	Name: main
-	Namespace: sgen
-	Checksum: 0x9EDCC896
-	Offset: 0x1A70
-	Size: 0x2A4
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   if(sessionmodeiscampaignzombiesgame() && 0) {
     setclearanceceiling(34);
@@ -104,49 +89,22 @@ function main() {
   level thread namespace_99202726::function_66df416f();
 }
 
-/*
-	Name: function_1f7e5210
-	Namespace: sgen
-	Checksum: 0xFB27E6CC
-	Offset: 0x1D20
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1f7e5210() {
   var_d227736c = spawn("trigger_box", (280, -600, -3610), 0, 3000, 3000, 3000);
   var_d227736c thread function_4fef5e4();
 }
 
-/*
-	Name: function_4fef5e4
-	Namespace: sgen
-	Checksum: 0xAF1193C2
-	Offset: 0x1D88
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4fef5e4() {
-  self endon(# "death");
-  level endon(# "chem_door_open");
+  self endon("death");
+  level endon("chem_door_open");
   while (true) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     if(isplayer(who)) {
       who kill();
     }
   }
 }
 
-/*
-	Name: function_b29072ff
-	Namespace: sgen
-	Checksum: 0xB8772033
-	Offset: 0x1E00
-	Size: 0x66
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b29072ff() {
   var_76099c5f = spawnstruct();
   var_76099c5f.radius = 60;
@@ -154,15 +112,6 @@ function function_b29072ff() {
   level.var_3efe1e22["p7_nc_sin_coa_04"] = var_76099c5f;
 }
 
-/*
-	Name: setup_skiptos
-	Namespace: sgen
-	Checksum: 0x9F7944A8
-	Offset: 0x1E70
-	Size: 0x644
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_skiptos() {
   skipto::add("intro", & cp_mi_sing_sgen_exterior::skipto_intro_init, "Intro", & cp_mi_sing_sgen_exterior::skipto_intro_done);
   skipto::add("exterior", & cp_mi_sing_sgen_exterior::function_d43e5685, "Exterior", & cp_mi_sing_sgen_exterior::function_91e8545f);
@@ -191,15 +140,6 @@ function setup_skiptos() {
   skipto::add_dev("dev_flood_combat", & cp_mi_sing_sgen_flood::skipto_flood_init, "Flood Combat", & cp_mi_sing_sgen_flood::skipto_flood_done);
 }
 
-/*
-	Name: precache
-	Namespace: sgen
-	Checksum: 0x4682D5EF
-	Offset: 0x24C0
-	Size: 0x1DE
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {
   level._effect["current_effect"] = "debris/fx_debris_underwater_current_sgen_os";
   level._effect["decon_mist"] = "steam/fx_steam_decon_fill_elevator_sgen";
@@ -220,15 +160,6 @@ function precache() {
   level._effect["weakspot_impact"] = "impacts/fx_bul_impact_metal_tower_core_sgen";
 }
 
-/*
-	Name: init_clientfields
-	Namespace: sgen
-	Checksum: 0x262B52E8
-	Offset: 0x26A8
-	Size: 0x8F4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("world", "w_fxa_truck_flip", 1, 1, "int");
   clientfield::register("world", "w_robot_window_break", 1, 2, "int");
@@ -279,15 +210,6 @@ function init_clientfields() {
   visionset_mgr::register_info("overlay", "earthquake_blur", 1, 50, 1, 1, & visionset_mgr::timeout_lerp_thread_per_player, 0);
 }
 
-/*
-	Name: init_flags
-	Namespace: sgen
-	Checksum: 0x9B2C5E53
-	Offset: 0x2FA8
-	Size: 0xBAC
-	Parameters: 0
-	Flags: Linked
-*/
 function init_flags() {
   util::set_level_start_flag("start_level");
   load::function_73adcefc();
@@ -385,15 +307,6 @@ function init_flags() {
   level flag::init("sgen_end_igc");
 }
 
-/*
-	Name: level_threads
-	Namespace: sgen
-	Checksum: 0x412E7781
-	Offset: 0x3B60
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function level_threads() {
   a_t_mover = getentarray("t_mover", "targetname");
   array::thread_all(a_t_mover, & sgen_util::trig_mover);
@@ -409,15 +322,6 @@ function level_threads() {
   level thread robot_oed_toggles();
 }
 
-/*
-	Name: init_hendricks
-	Namespace: sgen
-	Checksum: 0x822476B7
-	Offset: 0x3D10
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function init_hendricks(str_objective) {
   if(str_objective == "intro" || str_objective == "exterior" || str_objective == "enter_lobby" || str_objective == "discover_data") {
     level.ai_hendricks = util::get_hero("hendricks_backpack");
@@ -429,15 +333,6 @@ function init_hendricks(str_objective) {
   }
 }
 
-/*
-	Name: robot_oed_toggles
-	Namespace: sgen
-	Checksum: 0x77BCA04B
-	Offset: 0x3DE8
-	Size: 0x304
-	Parameters: 0
-	Flags: Linked
-*/
 function robot_oed_toggles() {
   for (x = 2; x < 4; x++) {
     scene::add_scene_func("cin_sgen_15_04_robot_ambush_aie_arise_robot0" + x, & enhanced_vision_entity_off, "init");
@@ -461,15 +356,6 @@ function robot_oed_toggles() {
   scene::add_scene_func("cin_sgen_16_01_charging_station_aie_awaken_robot05_jumpdown", & enhanced_vision_entity_on, "play");
 }
 
-/*
-	Name: lift_pillar_cover_pallas
-	Namespace: sgen
-	Checksum: 0x9AB3B3
-	Offset: 0x40F8
-	Size: 0xC2
-	Parameters: 0
-	Flags: None
-*/
 function lift_pillar_cover_pallas() {
   e_pillars = getentarray("diaz_tower_1", "targetname");
   foreach(pillar in e_pillars) {
@@ -477,30 +363,12 @@ function lift_pillar_cover_pallas() {
   }
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: sgen
-	Checksum: 0x2886601A
-	Offset: 0x41C8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   if(level flag::get("optics_out")) {
     level thread function_5dd1ccff(0, 0, self);
   }
 }
 
-/*
-	Name: silo_grate
-	Namespace: sgen
-	Checksum: 0x2920AF6D
-	Offset: 0x4218
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function silo_grate() {
   level flag::wait_till("silo_grate_open");
   a_blockers = getentarray("silo_floor_clip", "targetname");
@@ -510,15 +378,6 @@ function silo_grate() {
   array::run_all(a_blockers, & delete);
 }
 
-/*
-	Name: pull_out_last_weapon
-	Namespace: sgen
-	Checksum: 0xFC5AF39D
-	Offset: 0x4300
-	Size: 0xBC
-	Parameters: 0
-	Flags: None
-*/
 function pull_out_last_weapon() {
   if(isdefined(self.lastactiveweapon) && self.lastactiveweapon != level.weaponnone && self hasweapon(self.lastactiveweapon)) {
     self switchtoweapon(self.lastactiveweapon);
@@ -530,20 +389,11 @@ function pull_out_last_weapon() {
   }
 }
 
-/*
-	Name: function_5dd1ccff
-	Namespace: sgen
-	Checksum: 0xD2A2027
-	Offset: 0x43C8
-	Size: 0x2AA
-	Parameters: 3
-	Flags: Linked
-*/
 function function_5dd1ccff(b_enable, b_use_trig = 1, e_player) {
-  level endon(# "descent");
+  level endon("descent");
   while (true) {
     if(b_use_trig) {
-      self waittill(# "trigger", e_player);
+      self waittill("trigger", e_player);
     }
     if(!isdefined(e_player.b_tactical_mode_enabled)) {
       e_player.b_tactical_mode_enabled = level.b_tactical_mode_enabled;
@@ -579,15 +429,6 @@ function function_5dd1ccff(b_enable, b_use_trig = 1, e_player) {
   }
 }
 
-/*
-	Name: enhanced_vision_entity_off
-	Namespace: sgen
-	Checksum: 0xA3BCD7FB
-	Offset: 0x4680
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function enhanced_vision_entity_off(a_ents) {
   if(isai(self)) {
     self.ignoreme = 1;
@@ -599,15 +440,6 @@ function enhanced_vision_entity_off(a_ents) {
   }
 }
 
-/*
-	Name: enhanced_vision_entity_on
-	Namespace: sgen
-	Checksum: 0x480EDDA1
-	Offset: 0x4718
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function enhanced_vision_entity_on(a_ents) {
   if(isai(self)) {
     self.ignoreme = 0;
@@ -619,36 +451,18 @@ function enhanced_vision_entity_on(a_ents) {
   }
 }
 
-/*
-	Name: water_movement
-	Namespace: sgen
-	Checksum: 0x31AEBA40
-	Offset: 0x47A8
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function water_movement() {
   while (true) {
-    self waittill(# "trigger", e_player);
+    self waittill("trigger", e_player);
     if(!(isdefined(e_player.is_in_water) && e_player.is_in_water)) {
       self thread water_movement_player(e_player);
     }
   }
 }
 
-/*
-	Name: water_movement_player
-	Namespace: sgen
-	Checksum: 0xFDEE393C
-	Offset: 0x4818
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked
-*/
 function water_movement_player(e_player) {
-  e_player endon(# "death");
-  self endon(# "death");
+  e_player endon("death");
+  self endon("death");
   e_player.is_in_water = 1;
   e_player setmovespeedscale(0.7);
   e_player allowprone(0);
@@ -660,29 +474,11 @@ function water_movement_player(e_player) {
   e_player.is_in_water = 0;
 }
 
-/*
-	Name: scale_rock_slide
-	Namespace: sgen
-	Checksum: 0xDA651CEB
-	Offset: 0x48F8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function scale_rock_slide() {
   m_rocks = getentarray("silo_rock_slide", "targetname");
   array::run_all(m_rocks, & setscale, 2);
 }
 
-/*
-	Name: script_tag_align_create
-	Namespace: sgen
-	Checksum: 0xA4343CD0
-	Offset: 0x4958
-	Size: 0x104
-	Parameters: 2
-	Flags: None
-*/
 function script_tag_align_create(str_name, n_index = 0) {
   a_s_align = struct::get_array(str_name, "targetname");
   s_align = spawnstruct();
@@ -692,15 +488,6 @@ function script_tag_align_create(str_name, n_index = 0) {
   level.struct_class_names["targetname"][str_name + "_script"] = array(s_align);
 }
 
-/*
-	Name: hide_show_fxanim_door_flood
-	Namespace: sgen
-	Checksum: 0x4FECCB5F
-	Offset: 0x4A68
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function hide_show_fxanim_door_flood() {
   e_door_clip = getent("flood_door_player_clip", "targetname");
   e_door_clip movez(128, 0.05);

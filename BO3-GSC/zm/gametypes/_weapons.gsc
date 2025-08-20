@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\gametypes\_weapons.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\bb_shared;
@@ -15,18 +19,8 @@
 #using scripts\zm\gametypes\_shellshock;
 #using scripts\zm\gametypes\_weapon_utils;
 #using scripts\zm\gametypes\_weaponobjects;
-
 #namespace weapons;
 
-/*
-	Name: init
-	Namespace: weapons
-	Checksum: 0xD96E02AF
-	Offset: 0x678
-	Size: 0x84
-	Parameters: 0
-	Flags: None
-*/
 function init() {
   level.missileentities = [];
   level.hackertooltargets = [];
@@ -42,18 +36,9 @@ function init() {
   }
 }
 
-/*
-	Name: onplayerconnect
-	Namespace: weapons
-	Checksum: 0x7961BAA
-	Offset: 0x708
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerconnect() {
   for (;;) {
-    level waittill(# "connecting", player);
+    level waittill("connecting", player);
     player.usedweapons = 0;
     player.lastfiretime = 0;
     player.hits = 0;
@@ -62,19 +47,10 @@ function onplayerconnect() {
   }
 }
 
-/*
-	Name: onplayerspawned
-	Namespace: weapons
-	Checksum: 0xFB4E9F26
-	Offset: 0x790
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerspawned() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   for (;;) {
-    self waittill(# "spawned_player");
+    self waittill("spawned_player");
     self.concussionendtime = 0;
     self.hasdonecombat = 0;
     self.shielddamageblocked = 0;
@@ -91,48 +67,21 @@ function onplayerspawned() {
   }
 }
 
-/*
-	Name: watchweaponchange
-	Namespace: weapons
-	Checksum: 0x19A8905E
-	Offset: 0x8A0
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function watchweaponchange() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.lastdroppableweapon = self getcurrentweapon();
   while (true) {
     previous_weapon = self getcurrentweapon();
-    self waittill(# "weapon_change", newweapon);
+    self waittill("weapon_change", newweapon);
     if(maydropweapon(newweapon)) {
       self.lastdroppableweapon = newweapon;
     }
   }
 }
 
-/*
-	Name: watchriotshielduse
-	Namespace: weapons
-	Checksum: 0x99EC1590
-	Offset: 0x948
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function watchriotshielduse() {}
 
-/*
-	Name: updatelastheldweapontimings
-	Namespace: weapons
-	Checksum: 0xD45EAD11
-	Offset: 0x958
-	Size: 0x98
-	Parameters: 1
-	Flags: Linked
-*/
 function updatelastheldweapontimings(newtime) {
   if(isdefined(self.currentweapon) && isdefined(self.currentweaponstarttime)) {
     totaltime = int((newtime - self.currentweaponstarttime) / 1000);
@@ -143,15 +92,6 @@ function updatelastheldweapontimings(newtime) {
   }
 }
 
-/*
-	Name: updateweapontimings
-	Namespace: weapons
-	Checksum: 0xEB5CAB41
-	Offset: 0x9F8
-	Size: 0x366
-	Parameters: 1
-	Flags: Linked
-*/
 function updateweapontimings(newtime) {
   if(self util::is_bot()) {
     return;
@@ -209,15 +149,6 @@ function updateweapontimings(newtime) {
   }
 }
 
-/*
-	Name: trackweapon
-	Namespace: weapons
-	Checksum: 0xA71B6BA8
-	Offset: 0xD68
-	Size: 0x19A
-	Parameters: 0
-	Flags: Linked
-*/
 function trackweapon() {
   currentweapon = self getcurrentweapon();
   currenttime = gettime();
@@ -243,15 +174,6 @@ function trackweapon() {
   }
 }
 
-/*
-	Name: maydropweapon
-	Namespace: weapons
-	Checksum: 0xC01DE2F7
-	Offset: 0xF10
-	Size: 0x4E
-	Parameters: 1
-	Flags: Linked
-*/
 function maydropweapon(weapon) {
   if(level.disableweapondrop == 1) {
     return false;
@@ -265,15 +187,6 @@ function maydropweapon(weapon) {
   return true;
 }
 
-/*
-	Name: dropweaponfordeath
-	Namespace: weapons
-	Checksum: 0x173D27EB
-	Offset: 0xF68
-	Size: 0x414
-	Parameters: 1
-	Flags: Linked
-*/
 function dropweaponfordeath(attacker) {
   if(level.disableweapondrop == 1) {
     return;
@@ -283,36 +196,28 @@ function dropweaponfordeath(attacker) {
     return;
   }
   if(!isdefined(weapon)) {
-    /#
     if(getdvarstring("") == "") {
       println("");
     }
-    # /
-      return;
+    return;
   }
   if(weapon == level.weaponnone) {
-    /#
     if(getdvarstring("") == "") {
       println("");
     }
-    # /
-      return;
+    return;
   }
   if(!self hasweapon(weapon)) {
-    /#
     if(getdvarstring("") == "") {
       println(("" + weapon.name) + "");
     }
-    # /
-      return;
+    return;
   }
   if(!self anyammoforweaponmodes(weapon)) {
-    /#
     if(getdvarstring("") == "") {
       println("");
     }
-    # /
-      return;
+    return;
   }
   if(!shoulddroplimitedweapon(weapon, self)) {
     return;
@@ -321,12 +226,10 @@ function dropweaponfordeath(attacker) {
   stockammo = self getweaponammostock(weapon);
   clip_and_stock_ammo = clipammo + stockammo;
   if(!clip_and_stock_ammo) {
-    /#
     if(getdvarstring("") == "") {
       println("");
     }
-    # /
-      return;
+    return;
   }
   stockmax = weapon.maxammo;
   if(stockammo > stockmax) {
@@ -334,17 +237,13 @@ function dropweaponfordeath(attacker) {
   }
   item = self dropitem(weapon);
   if(!isdefined(item)) {
-    /#
     iprintlnbold("" + weapon.name);
-    # /
-      return;
+    return;
   }
-  /#
   if(getdvarstring("") == "") {
     println("" + weapon.name);
   }
-  # /
-    droplimitedweapon(weapon, self, item);
+  droplimitedweapon(weapon, self, item);
   self.droppeddeathweapon = 1;
   item itemweaponsetammo(clipammo, stockammo);
   item.owner = self;
@@ -353,17 +252,8 @@ function dropweaponfordeath(attacker) {
   item thread deletepickupafterawhile();
 }
 
-/*
-	Name: deletepickupafterawhile
-	Namespace: weapons
-	Checksum: 0x1A924208
-	Offset: 0x1388
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function deletepickupafterawhile() {
-  self endon(# "death");
+  self endon("death");
   wait(60);
   if(!isdefined(self)) {
     return;
@@ -371,49 +261,34 @@ function deletepickupafterawhile() {
   self delete();
 }
 
-/*
-	Name: watchpickup
-	Namespace: weapons
-	Checksum: 0xB39150D
-	Offset: 0x13C8
-	Size: 0x280
-	Parameters: 0
-	Flags: Linked
-*/
 function watchpickup() {
-  self endon(# "death");
+  self endon("death");
   weapon = self.item;
   while (true) {
-    self waittill(# "trigger", player, droppeditem);
+    self waittill("trigger", player, droppeditem);
     if(isdefined(droppeditem)) {
       break;
     }
   }
-  /#
   if(getdvarstring("") == "") {
     println((("" + weapon.name) + "") + isdefined(self.ownersattacker));
   }
-  # /
-    /#
   assert(isdefined(player.tookweaponfrom));
-  # /
-    /#
   assert(isdefined(player.pickedupweaponkills));
-  # /
-    if(isdefined(droppeditem)) {
-      for (i = 0; i < droppeditem.size; i++) {
-        if(!isdefined(droppeditem[i])) {
-          continue;
-        }
-        droppedweapon = droppeditem[i].item;
-        if(isdefined(player.tookweaponfrom[droppedweapon])) {
-          droppeditem[i].owner = player.tookweaponfrom[droppedweapon];
-          droppeditem[i].ownersattacker = player;
-          player.tookweaponfrom[droppedweapon] = undefined;
-        }
-        droppeditem[i] thread watchpickup();
+  if(isdefined(droppeditem)) {
+    for (i = 0; i < droppeditem.size; i++) {
+      if(!isdefined(droppeditem[i])) {
+        continue;
       }
+      droppedweapon = droppeditem[i].item;
+      if(isdefined(player.tookweaponfrom[droppedweapon])) {
+        droppeditem[i].owner = player.tookweaponfrom[droppedweapon];
+        droppeditem[i].ownersattacker = player;
+        player.tookweaponfrom[droppedweapon] = undefined;
+      }
+      droppeditem[i] thread watchpickup();
     }
+  }
   if(isdefined(self.ownersattacker) && self.ownersattacker == player) {
     player.tookweaponfrom[weapon] = self.owner;
     player.pickedupweaponkills[weapon] = 0;
@@ -423,19 +298,10 @@ function watchpickup() {
   }
 }
 
-/*
-	Name: watchweaponusage
-	Namespace: weapons
-	Checksum: 0xAD16D980
-	Offset: 0x1650
-	Size: 0x20E
-	Parameters: 0
-	Flags: Linked
-*/
 function watchweaponusage() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   self.usedkillstreakweapon = [];
   self.usedkillstreakweapon["minigun"] = 0;
   self.usedkillstreakweapon["m32"] = 0;
@@ -449,7 +315,7 @@ function watchweaponusage() {
   self.killstreaktype["m220_tow"] = "m220_tow";
   self.killstreaktype["mp40_blinged"] = "mp40_blinged_drop";
   for (;;) {
-    self waittill(# "weapon_fired", curweapon);
+    self waittill("weapon_fired", curweapon);
     self.lastfiretime = gettime();
     self.hasdonecombat = 1;
     switch (curweapon.weapclass) {
@@ -474,15 +340,6 @@ function watchweaponusage() {
   }
 }
 
-/*
-	Name: trackweaponfire
-	Namespace: weapons
-	Checksum: 0xBC14F341
-	Offset: 0x1868
-	Size: 0x2D4
-	Parameters: 1
-	Flags: Linked
-*/
 function trackweaponfire(curweapon) {
   shotsfired = 1;
   if(isdefined(self.laststandparams) && self.laststandparams.laststandstarttime == gettime()) {
@@ -513,18 +370,9 @@ function trackweaponfire(curweapon) {
   pixendevent();
 }
 
-/*
-	Name: watchgrenadeusage
-	Namespace: weapons
-	Checksum: 0x93EA0A08
-	Offset: 0x1B48
-	Size: 0x150
-	Parameters: 0
-	Flags: Linked
-*/
 function watchgrenadeusage() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.throwinggrenade = 0;
   self.gotpullbacknotify = 0;
   self thread beginothergrenadetracking();
@@ -532,7 +380,7 @@ function watchgrenadeusage() {
   self thread watchforgrenadeduds();
   self thread watchforgrenadelauncherduds();
   for (;;) {
-    self waittill(# "grenade_pullback", weapon);
+    self waittill("grenade_pullback", weapon);
     self addweaponstat(weapon, "shots", 1);
     self.hasdonecombat = 1;
     self.throwinggrenade = 1;
@@ -545,56 +393,27 @@ function watchgrenadeusage() {
   }
 }
 
-/*
-	Name: watchmissileusage
-	Namespace: weapons
-	Checksum: 0x6A6353D5
-	Offset: 0x1CA0
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function watchmissileusage() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   for (;;) {
-    self waittill(# "missile_fire", missile, weapon);
+    self waittill("missile_fire", missile, weapon);
     self.hasdonecombat = 1;
     /# /
     #
     assert(isdefined(missile));
-    # /
-      # /
-      level.missileentities[level.missileentities.size] = missile;
+    level.missileentities[level.missileentities.size] = missile;
     missile.weapon = weapon;
     missile thread watchmissiledeath();
   }
 }
 
-/*
-	Name: watchmissiledeath
-	Namespace: weapons
-	Checksum: 0xC25B5985
-	Offset: 0x1D68
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function watchmissiledeath() {
-  self waittill(# "death");
+  self waittill("death");
   arrayremovevalue(level.missileentities, self);
 }
 
-/*
-	Name: dropweaponstoground
-	Namespace: weapons
-	Checksum: 0x763D29B0
-	Offset: 0x1DA0
-	Size: 0x112
-	Parameters: 2
-	Flags: None
-*/
 function dropweaponstoground(origin, radius) {
   weapons = getdroppedweapons();
   for (i = 0; i < weapons.size; i++) {
@@ -605,15 +424,6 @@ function dropweaponstoground(origin, radius) {
   }
 }
 
-/*
-	Name: dropgrenadestoground
-	Namespace: weapons
-	Checksum: 0x3E415C7F
-	Offset: 0x1EC0
-	Size: 0xCE
-	Parameters: 2
-	Flags: None
-*/
 function dropgrenadestoground(origin, radius) {
   grenades = getentarray("grenade", "classname");
   for (i = 0; i < grenades.size; i++) {
@@ -623,40 +433,22 @@ function dropgrenadestoground(origin, radius) {
   }
 }
 
-/*
-	Name: watchgrenadecancel
-	Namespace: weapons
-	Checksum: 0xAB70A74B
-	Offset: 0x1F98
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function watchgrenadecancel() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "grenade_fire");
+  self endon("death");
+  self endon("disconnect");
+  self endon("grenade_fire");
   waittillframeend();
   weapon = level.weaponnone;
   while (self isthrowinggrenade() && weapon == level.weaponnone) {
-    self waittill(# "weapon_change", weapon);
+    self waittill("weapon_change", weapon);
   }
   self.throwinggrenade = 0;
   self.gotpullbacknotify = 0;
 }
 
-/*
-	Name: watch_offhand_end
-	Namespace: weapons
-	Checksum: 0x31529B14
-	Offset: 0x2038
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_offhand_end() {
-  self notify(# "watchoffhandend");
-  self endon(# "watchoffhandend");
+  self notify("watchoffhandend");
+  self endon("watchoffhandend");
   while (self is_using_offhand_equipment()) {
     msg = self util::waittill_any_return("death", "disconnect", "grenade_fire", "weapon_change", "watchOffhandEnd");
     if(msg == "death" || msg == "disconnect") {
@@ -666,15 +458,6 @@ function watch_offhand_end() {
   self setoffhandvisible(0);
 }
 
-/*
-	Name: is_using_offhand_equipment
-	Namespace: weapons
-	Checksum: 0x7B54B542
-	Offset: 0x2100
-	Size: 0x5A
-	Parameters: 0
-	Flags: Linked
-*/
 function is_using_offhand_equipment() {
   if(self isusingoffhand()) {
     weapon = self getcurrentoffhand();
@@ -685,21 +468,12 @@ function is_using_offhand_equipment() {
   return false;
 }
 
-/*
-	Name: begingrenadetracking
-	Namespace: weapons
-	Checksum: 0x656BA655
-	Offset: 0x2168
-	Size: 0x160
-	Parameters: 0
-	Flags: Linked
-*/
 function begingrenadetracking() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   starttime = gettime();
   self thread watchgrenadecancel();
-  self waittill(# "grenade_fire", grenade, weapon);
+  self waittill("grenade_fire", grenade, weapon);
   if(!isdefined(grenade)) {
     return;
   }
@@ -725,29 +499,11 @@ function begingrenadetracking() {
   self.throwinggrenade = 0;
 }
 
-/*
-	Name: beginothergrenadetracking
-	Namespace: weapons
-	Checksum: 0x99EC1590
-	Offset: 0x22D0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function beginothergrenadetracking() {}
 
-/*
-	Name: checkstucktoplayer
-	Namespace: weapons
-	Checksum: 0xD2E200B8
-	Offset: 0x22E0
-	Size: 0xAC
-	Parameters: 3
-	Flags: None
-*/
 function checkstucktoplayer(deleteonteamchange, awardscoreevent, weapon) {
-  self endon(# "death");
-  self waittill(# "stuck_to_player", player);
+  self endon("death");
+  self waittill("stuck_to_player", player);
   if(isdefined(player)) {
     if(deleteonteamchange) {
       self thread stucktoplayerteamchange(player);
@@ -757,37 +513,19 @@ function checkstucktoplayer(deleteonteamchange, awardscoreevent, weapon) {
   }
 }
 
-/*
-	Name: checkhatchetbounce
-	Namespace: weapons
-	Checksum: 0x1F721B2E
-	Offset: 0x2398
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function checkhatchetbounce() {
-  self endon(# "stuck_to_player");
-  self endon(# "death");
-  self waittill(# "grenade_bounce");
+  self endon("stuck_to_player");
+  self endon("death");
+  self waittill("grenade_bounce");
   self.bounced = 1;
 }
 
-/*
-	Name: stucktoplayerteamchange
-	Namespace: weapons
-	Checksum: 0xD6A97969
-	Offset: 0x23D8
-	Size: 0x9A
-	Parameters: 1
-	Flags: Linked
-*/
 function stucktoplayerteamchange(player) {
-  self endon(# "death");
-  player endon(# "disconnect");
+  self endon("death");
+  player endon("disconnect");
   originalteam = player.pers["team"];
   while (true) {
-    player waittill(# "joined_team");
+    player waittill("joined_team");
     if(player.pers["team"] != originalteam) {
       self detonate();
       return;
@@ -795,20 +533,11 @@ function stucktoplayerteamchange(player) {
   }
 }
 
-/*
-	Name: watchforthrowbacks
-	Namespace: weapons
-	Checksum: 0xCE5F43D4
-	Offset: 0x2480
-	Size: 0xA8
-	Parameters: 0
-	Flags: Linked
-*/
 function watchforthrowbacks() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   for (;;) {
-    self waittill(# "grenade_fire", grenade, weapon);
+    self waittill("grenade_fire", grenade, weapon);
     if(self.gotpullbacknotify) {
       self.gotpullbacknotify = 0;
       continue;
@@ -821,15 +550,6 @@ function watchforthrowbacks() {
   }
 }
 
-/*
-	Name: registergrenadelauncherduddvar
-	Namespace: weapons
-	Checksum: 0xDB3C89C
-	Offset: 0x2530
-	Size: 0x134
-	Parameters: 4
-	Flags: Linked
-*/
 function registergrenadelauncherduddvar(dvarstring, defaultvalue, minvalue, maxvalue) {
   dvarstring = ("scr_" + dvarstring) + "_grenadeLauncherDudTime";
   if(getdvarstring(dvarstring) == "") {
@@ -846,15 +566,6 @@ function registergrenadelauncherduddvar(dvarstring, defaultvalue, minvalue, maxv
   level.grenadelauncherdudtime = getdvarint(level.grenadelauncherdudtimedvar);
 }
 
-/*
-	Name: registerthrowngrenadeduddvar
-	Namespace: weapons
-	Checksum: 0xC6DF581E
-	Offset: 0x2670
-	Size: 0x134
-	Parameters: 4
-	Flags: Linked
-*/
 function registerthrowngrenadeduddvar(dvarstring, defaultvalue, minvalue, maxvalue) {
   dvarstring = ("scr_" + dvarstring) + "_thrownGrenadeDudTime";
   if(getdvarstring(dvarstring) == "") {
@@ -871,15 +582,6 @@ function registerthrowngrenadeduddvar(dvarstring, defaultvalue, minvalue, maxval
   level.throwngrenadedudtime = getdvarint(level.throwngrenadedudtimedvar);
 }
 
-/*
-	Name: registerkillstreakdelay
-	Namespace: weapons
-	Checksum: 0x3DF6DE2
-	Offset: 0x27B0
-	Size: 0x10C
-	Parameters: 4
-	Flags: Linked
-*/
 function registerkillstreakdelay(dvarstring, defaultvalue, minvalue, maxvalue) {
   dvarstring = ("scr_" + dvarstring) + "_killstreakDelayTime";
   if(getdvarstring(dvarstring) == "") {
@@ -893,15 +595,6 @@ function registerkillstreakdelay(dvarstring, defaultvalue, minvalue, maxvalue) {
   level.killstreakrounddelay = getdvarint(dvarstring);
 }
 
-/*
-	Name: turngrenadeintoadud
-	Namespace: weapons
-	Checksum: 0xD6353515
-	Offset: 0x28C8
-	Size: 0x15C
-	Parameters: 3
-	Flags: Linked
-*/
 function turngrenadeintoadud(weapon, isthrowngrenade, player) {
   if(level.roundstartexplosivedelay >= (globallogic_utils::gettimepassed() / 1000)) {
     if(weapon.disallowatmatchstart || weaponhasattachment(weapon, "gl")) {
@@ -910,68 +603,39 @@ function turngrenadeintoadud(weapon, isthrowngrenade, player) {
         timeleft = 1;
       }
       if(isthrowngrenade) {
-        player iprintlnbold( & "MP_GRENADE_UNAVAILABLE_FOR_N", (" " + timeleft) + " ", & "EXE_SECONDS");
+        player iprintlnbold(&"MP_GRENADE_UNAVAILABLE_FOR_N", (" " + timeleft) + " ", & "EXE_SECONDS");
       } else {
-        player iprintlnbold( & "MP_LAUNCHER_UNAVAILABLE_FOR_N", (" " + timeleft) + " ", & "EXE_SECONDS");
+        player iprintlnbold(&"MP_LAUNCHER_UNAVAILABLE_FOR_N", (" " + timeleft) + " ", & "EXE_SECONDS");
       }
       self makegrenadedud();
     }
   }
 }
 
-/*
-	Name: watchforgrenadeduds
-	Namespace: weapons
-	Checksum: 0x26D9D892
-	Offset: 0x2A30
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function watchforgrenadeduds() {
-  self endon(# "spawned_player");
-  self endon(# "disconnect");
+  self endon("spawned_player");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "grenade_fire", grenade, weapon);
+    self waittill("grenade_fire", grenade, weapon);
     grenade turngrenadeintoadud(weapon, 1, self);
   }
 }
 
-/*
-	Name: watchforgrenadelauncherduds
-	Namespace: weapons
-	Checksum: 0xFAB2D8D0
-	Offset: 0x2AA8
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function watchforgrenadelauncherduds() {
-  self endon(# "spawned_player");
-  self endon(# "disconnect");
+  self endon("spawned_player");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "grenade_launcher_fire", grenade, weapon);
+    self waittill("grenade_launcher_fire", grenade, weapon);
     grenade turngrenadeintoadud(weapon, 0, self);
     /# /
     #
     assert(isdefined(grenade));
-    # /
-      # /
-      level.missileentities[level.missileentities.size] = grenade;
+    level.missileentities[level.missileentities.size] = grenade;
     grenade.weapon = weapon;
     grenade thread watchmissiledeath();
   }
 }
 
-/*
-	Name: getdamageableents
-	Namespace: weapons
-	Checksum: 0xFE62F375
-	Offset: 0x2B78
-	Size: 0x658
-	Parameters: 4
-	Flags: None
-*/
 function getdamageableents(pos, radius, dolos, startradius) {
   ents = [];
   if(!isdefined(dolos)) {
@@ -1046,15 +710,6 @@ function getdamageableents(pos, radius, dolos, startradius) {
   return ents;
 }
 
-/*
-	Name: damageent
-	Namespace: weapons
-	Checksum: 0x6780BC4E
-	Offset: 0x31D8
-	Size: 0x19C
-	Parameters: 7
-	Flags: None
-*/
 function damageent(einflictor, eattacker, idamage, smeansofdeath, weapon, damagepos, damagedir) {
   if(self.isplayer) {
     self.damageorigin = damagepos;
@@ -1074,36 +729,16 @@ function damageent(einflictor, eattacker, idamage, smeansofdeath, weapon, damage
   }
 }
 
-/*
-	Name: debugline
-	Namespace: weapons
-	Checksum: 0x74EA9136
-	Offset: 0x3380
-	Size: 0x6E
-	Parameters: 3
-	Flags: None
-*/
 function debugline(a, b, color) {
-  /#
   for (i = 0; i < 600; i++) {
     line(a, b, color);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: onweapondamage
-	Namespace: weapons
-	Checksum: 0xEB3D34EC
-	Offset: 0x33F8
-	Size: 0x1F2
-	Parameters: 5
-	Flags: Linked
-*/
 function onweapondamage(eattacker, einflictor, weapon, meansofdeath, damage) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   switch (weapon.name) {
     case "concussion_grenade": {
       radius = 512;
@@ -1137,18 +772,9 @@ function onweapondamage(eattacker, einflictor, weapon, meansofdeath, damage) {
   }
 }
 
-/*
-	Name: playconcussionsound
-	Namespace: weapons
-	Checksum: 0xE6198BD8
-	Offset: 0x35F8
-	Size: 0x154
-	Parameters: 1
-	Flags: Linked
-*/
 function playconcussionsound(duration) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   concussionsound = spawn("script_origin", (0, 0, 1));
   concussionsound.origin = self.origin;
   concussionsound linkto(self);
@@ -1161,44 +787,26 @@ function playconcussionsound(duration) {
   concussionsound playsound("");
   concussionsound stoploopsound(0.5);
   wait(0.5);
-  concussionsound notify(# "delete");
+  concussionsound notify("delete");
   concussionsound delete();
 }
 
-/*
-	Name: deleteentonownerdeath
-	Namespace: weapons
-	Checksum: 0x49A36EA3
-	Offset: 0x3758
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function deleteentonownerdeath(owner) {
-  self endon(# "delete");
-  owner waittill(# "death");
+  self endon("delete");
+  owner waittill("death");
   self delete();
 }
 
-/*
-	Name: updatestowedweapon
-	Namespace: weapons
-	Checksum: 0xF56D828C
-	Offset: 0x37A0
-	Size: 0x2D0
-	Parameters: 0
-	Flags: Linked
-*/
 function updatestowedweapon() {
-  self endon(# "spawned");
-  self endon(# "killed_player");
-  self endon(# "disconnect");
+  self endon("spawned");
+  self endon("killed_player");
+  self endon("disconnect");
   self.tag_stowed_back = undefined;
   self.tag_stowed_hip = undefined;
   team = self.pers["team"];
   curclass = self.pers["class"];
   while (true) {
-    self waittill(# "weapon_change", newweapon);
+    self waittill("weapon_change", newweapon);
     self.weapon_array_primary = [];
     self.weapon_array_sidearm = [];
     self.weapon_array_grenade = [];
@@ -1244,25 +852,12 @@ function updatestowedweapon() {
   }
 }
 
-/*
-	Name: loadout_get_class_num
-	Namespace: weapons
-	Checksum: 0x60A4E475
-	Offset: 0x3A78
-	Size: 0xD2
-	Parameters: 0
-	Flags: Linked
-*/
 function loadout_get_class_num() {
-  /#
   assert(isplayer(self));
-  # /
-    /#
   assert(isdefined(self.curclass));
-  # /
-    if(isdefined(level.classtoclassnum[self.curclass])) {
-      return level.classtoclassnum[self.curclass];
-    }
+  if(isdefined(level.classtoclassnum[self.curclass])) {
+    return level.classtoclassnum[self.curclass];
+  }
   class_num = (int(self.curclass[self.curclass.size - 1])) - 1;
   if(-1 == class_num) {
     class_num = 9;
@@ -1270,15 +865,6 @@ function loadout_get_class_num() {
   return class_num;
 }
 
-/*
-	Name: loadout_get_offhand_weapon
-	Namespace: weapons
-	Checksum: 0xBA56357C
-	Offset: 0x3B58
-	Size: 0xB2
-	Parameters: 1
-	Flags: Linked
-*/
 function loadout_get_offhand_weapon(stat) {
   if(isdefined(level.givecustomloadout)) {
     return level.weaponnone;
@@ -1291,15 +877,6 @@ function loadout_get_offhand_weapon(stat) {
   return level.weaponnone;
 }
 
-/*
-	Name: loadout_get_offhand_count
-	Namespace: weapons
-	Checksum: 0x6403B9B7
-	Offset: 0x3C18
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function loadout_get_offhand_count(stat) {
   if(isdefined(level.givecustomloadout)) {
     return 0;
@@ -1309,18 +886,9 @@ function loadout_get_offhand_count(stat) {
   return count;
 }
 
-/*
-	Name: scavenger_think
-	Namespace: weapons
-	Checksum: 0x152F223C
-	Offset: 0x3C78
-	Size: 0x81E
-	Parameters: 0
-	Flags: Linked
-*/
 function scavenger_think() {
-  self endon(# "death");
-  self waittill(# "scavenger", player);
+  self endon("death");
+  self waittill("scavenger", player);
   primary_weapons = player getweaponslistprimaries();
   offhand_weapons_and_alts = array::exclude(player getweaponslist(1), primary_weapons);
   arrayremovevalue(offhand_weapons_and_alts, level.weaponbasemelee);
@@ -1444,15 +1012,6 @@ function scavenger_think() {
   }
 }
 
-/*
-	Name: scavenger_hud_create
-	Namespace: weapons
-	Checksum: 0xDCE600BA
-	Offset: 0x44A0
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function scavenger_hud_create() {
   if(level.wagermatch) {
     return;
@@ -1473,15 +1032,6 @@ function scavenger_hud_create() {
   self.scavenger_icon setshader("hud_scavenger_pickup", width, height);
 }
 
-/*
-	Name: dropscavengerfordeath
-	Namespace: weapons
-	Checksum: 0x9D59FCF1
-	Offset: 0x4608
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked
-*/
 function dropscavengerfordeath(attacker) {
   if(sessionmodeiszombiesgame()) {
     return;
@@ -1503,15 +1053,6 @@ function dropscavengerfordeath(attacker) {
   item thread scavenger_think();
 }
 
-/*
-	Name: addlimitedweapon
-	Namespace: weapons
-	Checksum: 0x81442634
-	Offset: 0x46E8
-	Size: 0x74
-	Parameters: 3
-	Flags: None
-*/
 function addlimitedweapon(weapon, owner, num_drops) {
   limited_info = spawnstruct();
   limited_info.weapon = weapon;
@@ -1519,15 +1060,6 @@ function addlimitedweapon(weapon, owner, num_drops) {
   owner.limited_info = limited_info;
 }
 
-/*
-	Name: shoulddroplimitedweapon
-	Namespace: weapons
-	Checksum: 0x4F665679
-	Offset: 0x4768
-	Size: 0x7A
-	Parameters: 2
-	Flags: Linked
-*/
 function shoulddroplimitedweapon(weapon, owner) {
   limited_info = owner.limited_info;
   if(!isdefined(limited_info)) {
@@ -1542,15 +1074,6 @@ function shoulddroplimitedweapon(weapon, owner) {
   return true;
 }
 
-/*
-	Name: droplimitedweapon
-	Namespace: weapons
-	Checksum: 0x35C86A04
-	Offset: 0x47F0
-	Size: 0xAC
-	Parameters: 3
-	Flags: Linked
-*/
 function droplimitedweapon(weapon, owner, item) {
   limited_info = owner.limited_info;
   if(!isdefined(limited_info)) {
@@ -1564,18 +1087,9 @@ function droplimitedweapon(weapon, owner, item) {
   item thread limitedpickup(limited_info);
 }
 
-/*
-	Name: limitedpickup
-	Namespace: weapons
-	Checksum: 0xE3AB0BBA
-	Offset: 0x48A8
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function limitedpickup(limited_info) {
-  self endon(# "death");
-  self waittill(# "trigger", player, item);
+  self endon("death");
+  self waittill("trigger", player, item);
   if(!isdefined(item)) {
     return;
   }

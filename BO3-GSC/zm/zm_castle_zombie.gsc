@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_castle_zombie.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\animation_state_machine_mocomp;
 #using scripts\shared\ai\systems\animation_state_machine_notetracks;
@@ -18,18 +22,8 @@
 #using scripts\zm\_zm_laststand;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_castle_zombie;
 
-/*
-	Name: init
-	Namespace: zm_castle_zombie
-	Checksum: 0x1DCA0DF4
-	Offset: 0x470
-	Size: 0x114
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   initzmcastlebehaviorsandasm();
   level.var_4fb25bb9 = [];
@@ -41,59 +35,28 @@ function autoexec init() {
   setdvar("scr_zm_use_code_enemy_selection", 0);
   level.closest_player_override = & castle_closest_player;
   level thread update_closest_player();
-  /#
   thread castle_zombie_devgui();
-  # /
-    level.move_valid_poi_to_navmesh = 1;
+  level.move_valid_poi_to_navmesh = 1;
   level.pathdist_type = 2;
 }
 
-/*
-	Name: initzmcastlebehaviorsandasm
-	Namespace: zm_castle_zombie
-	Checksum: 0xE1C68A03
-	Offset: 0x590
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initzmcastlebehaviorsandasm() {
   animationstatenetwork::registeranimationmocomp("mocomp_teleport_traversal@zombie", & teleporttraversalmocompstart, undefined, undefined);
   behaviortreenetworkutility::registerbehaviortreescriptapi("shouldMoveLowg", & shouldmovelowg);
   behaviortreenetworkutility::registerbehaviortreescriptapi("zodShouldMove", & zodshouldmove);
 }
 
-/*
-	Name: teleporttraversalmocompstart
-	Namespace: zm_castle_zombie
-	Checksum: 0xD127E1E7
-	Offset: 0x620
-	Size: 0x19C
-	Parameters: 5
-	Flags: Linked
-*/
 function teleporttraversalmocompstart(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity orientmode("face angle", entity.angles[1]);
   entity animmode("normal");
   if(isdefined(entity.traverseendnode)) {
-    /#
     print3d(entity.traversestartnode.origin, "", (1, 0, 0), 1, 1, 60);
     print3d(entity.traverseendnode.origin, "", (0, 1, 0), 1, 1, 60);
     line(entity.traversestartnode.origin, entity.traverseendnode.origin, (0, 1, 0), 1, 0, 60);
-    # /
-      entity forceteleport(entity.traverseendnode.origin, entity.traverseendnode.angles, 0);
+    entity forceteleport(entity.traverseendnode.origin, entity.traverseendnode.angles, 0);
   }
 }
 
-/*
-	Name: zodshouldmove
-	Namespace: zm_castle_zombie
-	Checksum: 0x957D1784
-	Offset: 0x7C8
-	Size: 0x18A
-	Parameters: 1
-	Flags: Linked
-*/
 function zodshouldmove(entity) {
   if(isdefined(entity.zombie_tesla_hit) && entity.zombie_tesla_hit && (!(isdefined(entity.tesla_death) && entity.tesla_death))) {
     return false;
@@ -127,28 +90,10 @@ function zodshouldmove(entity) {
   return false;
 }
 
-/*
-	Name: shouldmovelowg
-	Namespace: zm_castle_zombie
-	Checksum: 0xCAFBEAE0
-	Offset: 0x960
-	Size: 0x2E
-	Parameters: 1
-	Flags: Linked
-*/
 function shouldmovelowg(entity) {
   return isdefined(entity.low_gravity) && entity.low_gravity;
 }
 
-/*
-	Name: set_gravity
-	Namespace: zm_castle_zombie
-	Checksum: 0xF4992EBB
-	Offset: 0x998
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function set_gravity(gravity) {
   if(gravity == "low") {
     self.low_gravity = 1;
@@ -162,15 +107,6 @@ function set_gravity(gravity) {
   }
 }
 
-/*
-	Name: function_7b63bf24
-	Namespace: zm_castle_zombie
-	Checksum: 0xB39CF8A6
-	Offset: 0xA60
-	Size: 0x350
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7b63bf24(player) {
   var_b9ec9b33 = 0;
   var_ef36a2fe = 0;
@@ -215,15 +151,6 @@ function function_7b63bf24(player) {
   return false;
 }
 
-/*
-	Name: castle_validate_last_closest_player
-	Namespace: zm_castle_zombie
-	Checksum: 0x2520D9A7
-	Offset: 0xDB8
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private castle_validate_last_closest_player(players) {
   if(isdefined(self.last_closest_player) && (isdefined(self.last_closest_player.am_i_valid) && self.last_closest_player.am_i_valid)) {
     return;
@@ -238,15 +165,6 @@ function private castle_validate_last_closest_player(players) {
   self.last_closest_player = undefined;
 }
 
-/*
-	Name: function_ca4f6cd2
-	Namespace: zm_castle_zombie
-	Checksum: 0x840BE87B
-	Offset: 0xEB0
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_ca4f6cd2(player) {
   if(isdefined(player.zone_name)) {
     if(player.zone_name == "zone_v10_pad") {
@@ -258,15 +176,6 @@ function private function_ca4f6cd2(player) {
   return dist;
 }
 
-/*
-	Name: castle_closest_player
-	Namespace: zm_castle_zombie
-	Checksum: 0xA64767D2
-	Offset: 0xF50
-	Size: 0x38A
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private castle_closest_player(origin, var_6c55ba74) {
   aiprofile_beginentry("castle_closest_player");
   players = array::filter(var_6c55ba74, 0, & function_4fee0339);
@@ -336,15 +245,6 @@ function private castle_closest_player(origin, var_6c55ba74) {
   return self.last_closest_player;
 }
 
-/*
-	Name: function_4fee0339
-	Namespace: zm_castle_zombie
-	Checksum: 0x1B27598E
-	Offset: 0x12E8
-	Size: 0xAE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_4fee0339(player) {
   if(!isdefined(player) || !isalive(player) || !isplayer(player) || player.sessionstate == "spectator" || player.sessionstate == "intermission" || player laststand::player_is_in_laststand() || player.ignoreme) {
     return false;
@@ -352,17 +252,8 @@ function private function_4fee0339(player) {
   return true;
 }
 
-/*
-	Name: update_closest_player
-	Namespace: zm_castle_zombie
-	Checksum: 0x7BFE8DB3
-	Offset: 0x13A0
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private update_closest_player() {
-  level waittill(# "start_of_round");
+  level waittill("start_of_round");
   while (true) {
     reset_closest_player = 1;
     zombies = zombie_utility::get_round_enemy_array();
@@ -387,34 +278,13 @@ function private update_closest_player() {
   }
 }
 
-/*
-	Name: castle_zombie_devgui
-	Namespace: zm_castle_zombie
-	Checksum: 0xF9CF446A
-	Offset: 0x1598
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private castle_zombie_devgui() {
-  /#
   level flagsys::wait_till("");
   zm_devgui::add_custom_devgui_callback( & castle_zombie_devgui_callback);
   adddebugcommand("");
-  # /
 }
 
-/*
-	Name: castle_zombie_devgui_callback
-	Namespace: zm_castle_zombie
-	Checksum: 0xB791EA9D
-	Offset: 0x1600
-	Size: 0x1DE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private castle_zombie_devgui_callback(cmd) {
-  /#
   switch (cmd) {
     case "": {
       if(!isdefined(level.var_c43a1504)) {
@@ -439,5 +309,4 @@ function private castle_zombie_devgui_callback(cmd) {
       break;
     }
   }
-  # /
 }

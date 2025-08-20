@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\gametypes\_globallogic_audio.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\music_shared;
@@ -6,44 +10,16 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_util;
 #using scripts\zm\gametypes\_globallogic_utils;
-
 #namespace globallogic_audio;
 
-/*
-	Name: __init__sytem__
-	Namespace: globallogic_audio
-	Checksum: 0x57B19B2F
-	Offset: 0xC48
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("globallogic_audio", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: globallogic_audio
-	Checksum: 0xA157E38E
-	Offset: 0xC88
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
 }
 
-/*
-	Name: init
-	Namespace: globallogic_audio
-	Checksum: 0x27620DBC
-	Offset: 0xCB8
-	Size: 0x10C4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   game["music"]["defeat"] = "mus_defeat";
   game["music"]["victory_spectator"] = "mus_defeat";
@@ -180,15 +156,6 @@ function init() {
   level thread post_match_snapshot_watcher();
 }
 
-/*
-	Name: registerdialoggroup
-	Namespace: globallogic_audio
-	Checksum: 0xAB839279
-	Offset: 0x1D88
-	Size: 0xE8
-	Parameters: 2
-	Flags: Linked
-*/
 function registerdialoggroup(group, skipifcurrentlyplayinggroup) {
   if(!isdefined(level.dialoggroups)) {
     level.dialoggroups = [];
@@ -202,110 +169,62 @@ function registerdialoggroup(group, skipifcurrentlyplayinggroup) {
   level.dialoggroup[group].currentcount = 0;
 }
 
-/*
-	Name: sndstartmusicsystem
-	Namespace: globallogic_audio
-	Checksum: 0x51859829
-	Offset: 0x1E78
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function sndstartmusicsystem() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(game["state"] == "postgame") {
     return;
   }
   if(!isdefined(level.nextmusicstate)) {
-    /#
     if(getdvarint("") > 0) {
       println("");
     }
-    # /
-      self.pers["music"].currentstate = "UNDERSCORE";
+    self.pers["music"].currentstate = "UNDERSCORE";
     self thread suspensemusic();
   }
 }
 
-/*
-	Name: suspensemusicforplayer
-	Namespace: globallogic_audio
-	Checksum: 0x31B64C40
-	Offset: 0x1F30
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function suspensemusicforplayer() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self thread set_music_on_player("UNDERSCORE", 0);
-  /#
   if(getdvarint("") > 0) {
     println((("" + self.pers[""].returnstate) + "") + self getentitynumber());
   }
-  # /
 }
 
-/*
-	Name: suspensemusic
-	Namespace: globallogic_audio
-	Checksum: 0x7E5392BB
-	Offset: 0x1FE0
-	Size: 0x288
-	Parameters: 1
-	Flags: Linked
-*/
 function suspensemusic(random) {
-  level endon(# "game_ended");
-  level endon(# "match_ending_soon");
-  self endon(# "disconnect");
-  /#
+  level endon("game_ended");
+  level endon("match_ending_soon");
+  self endon("disconnect");
   if(getdvarint("") > 0) {
     println("");
   }
-  # /
-    while (true) {
-      wait(randomintrange(25, 60));
-      /#
+  while (true) {
+    wait(randomintrange(25, 60));
+    if(getdvarint("") > 0) {
+      println("");
+    }
+    if(!isdefined(self.pers["music"].inque)) {
+      self.pers["music"].inque = 0;
+    }
+    if(self.pers["music"].inque) {
       if(getdvarint("") > 0) {
         println("");
       }
-      # /
-        if(!isdefined(self.pers["music"].inque)) {
-          self.pers["music"].inque = 0;
-        }
-      if(self.pers["music"].inque) {
-        /#
-        if(getdvarint("") > 0) {
-          println("");
-        }
-        # /
-          continue;
-      }
-      if(!isdefined(self.pers["music"].currentstate)) {
-        self.pers["music"].currentstate = "SILENT";
-      }
-      if(randomint(100) < self.underscorechance && self.pers["music"].currentstate != "ACTION" && self.pers["music"].currentstate != "TIME_OUT") {
-        self thread suspensemusicforplayer();
-        self.underscorechance = self.underscorechance - 20;
-        /#
-        if(getdvarint("") > 0) {
-          println("");
-        }
-        # /
+      continue;
+    }
+    if(!isdefined(self.pers["music"].currentstate)) {
+      self.pers["music"].currentstate = "SILENT";
+    }
+    if(randomint(100) < self.underscorechance && self.pers["music"].currentstate != "ACTION" && self.pers["music"].currentstate != "TIME_OUT") {
+      self thread suspensemusicforplayer();
+      self.underscorechance = self.underscorechance - 20;
+      if(getdvarint("") > 0) {
+        println("");
       }
     }
+  }
 }
 
-/*
-	Name: leaderdialogforotherteams
-	Namespace: globallogic_audio
-	Checksum: 0xCE9A39A1
-	Offset: 0x2270
-	Size: 0xBA
-	Parameters: 3
-	Flags: Linked
-*/
 function leaderdialogforotherteams(dialog, skip_team, squad_dialog) {
   foreach(team in level.teams) {
     if(team != skip_team) {
@@ -314,15 +233,6 @@ function leaderdialogforotherteams(dialog, skip_team, squad_dialog) {
   }
 }
 
-/*
-	Name: announceroundwinner
-	Namespace: globallogic_audio
-	Checksum: 0xAF97CD59
-	Offset: 0x2338
-	Size: 0x15C
-	Parameters: 2
-	Flags: Linked
-*/
 function announceroundwinner(winner, delay) {
   if(delay > 0) {
     wait(delay);
@@ -341,15 +251,6 @@ function announceroundwinner(winner, delay) {
   }
 }
 
-/*
-	Name: announcegamewinner
-	Namespace: globallogic_audio
-	Checksum: 0xE131F084
-	Offset: 0x24A0
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function announcegamewinner(winner, delay) {
   if(delay > 0) {
     wait(delay);
@@ -365,17 +266,8 @@ function announcegamewinner(winner, delay) {
   }
 }
 
-/*
-	Name: doflameaudio
-	Namespace: globallogic_audio
-	Checksum: 0x52569C2C
-	Offset: 0x2568
-	Size: 0x98
-	Parameters: 0
-	Flags: None
-*/
 function doflameaudio() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   waittillframeend();
   if(!isdefined(self.lastflamehurtaudio)) {
     self.lastflamehurtaudio = 0;
@@ -387,22 +279,11 @@ function doflameaudio() {
   }
 }
 
-/*
-	Name: leaderdialog
-	Namespace: globallogic_audio
-	Checksum: 0x4236B373
-	Offset: 0x2608
-	Size: 0x2B6
-	Parameters: 5
-	Flags: Linked
-*/
 function leaderdialog(dialog, team, group, excludelist, squaddialog) {
-  /#
   assert(isdefined(level.players));
-  # /
-    if(level.splitscreen) {
-      return;
-    }
+  if(level.splitscreen) {
+    return;
+  }
   if(level.wagermatch) {
     return;
   }
@@ -437,22 +318,11 @@ function leaderdialog(dialog, team, group, excludelist, squaddialog) {
   }
 }
 
-/*
-	Name: leaderdialogallteams
-	Namespace: globallogic_audio
-	Checksum: 0xA770B8FE
-	Offset: 0x28C8
-	Size: 0x17E
-	Parameters: 3
-	Flags: Linked
-*/
 function leaderdialogallteams(dialogs, group, excludelist) {
-  /#
   assert(isdefined(level.players));
-  # /
-    if(level.splitscreen) {
-      return;
-    }
+  if(level.splitscreen) {
+    return;
+  }
   if(level.splitscreen) {
     if(level.players.size) {
       level.players[0] leaderdialogonplayer(dialogs[level.players[0].team], group);
@@ -475,30 +345,12 @@ function leaderdialogallteams(dialogs, group, excludelist) {
   }
 }
 
-/*
-	Name: flushdialog
-	Namespace: globallogic_audio
-	Checksum: 0x49B0557C
-	Offset: 0x2A50
-	Size: 0x8A
-	Parameters: 0
-	Flags: Linked
-*/
 function flushdialog() {
   foreach(player in level.players) {
     player flushdialogonplayer();
   }
 }
 
-/*
-	Name: flushdialogonplayer
-	Namespace: globallogic_audio
-	Checksum: 0x8766FCCC
-	Offset: 0x2AE8
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function flushdialogonplayer() {
   self.leaderdialoggroups = [];
   self.leaderdialogqueue = [];
@@ -506,30 +358,12 @@ function flushdialogonplayer() {
   self.currentleaderdialoggroup = "";
 }
 
-/*
-	Name: flushgroupdialog
-	Namespace: globallogic_audio
-	Checksum: 0x2C8C089D
-	Offset: 0x2B28
-	Size: 0x9A
-	Parameters: 1
-	Flags: None
-*/
 function flushgroupdialog(group) {
   foreach(player in level.players) {
     player flushgroupdialogonplayer(group);
   }
 }
 
-/*
-	Name: flushgroupdialogonplayer
-	Namespace: globallogic_audio
-	Checksum: 0xFCCF40A5
-	Offset: 0x2BD0
-	Size: 0xA2
-	Parameters: 1
-	Flags: Linked
-*/
 function flushgroupdialogonplayer(group) {
   self.leaderdialoggroups[group] = undefined;
   foreach(key, dialog in self.leaderdialogqueue) {
@@ -539,15 +373,6 @@ function flushgroupdialogonplayer(group) {
   }
 }
 
-/*
-	Name: addgroupdialogtoplayer
-	Namespace: globallogic_audio
-	Checksum: 0x2537C82B
-	Offset: 0x2C80
-	Size: 0x1EA
-	Parameters: 2
-	Flags: Linked
-*/
 function addgroupdialogtoplayer(dialog, group) {
   if(!isdefined(level.dialoggroup[group])) {
     util::error(("leaderDialogOnPlayer:Dialog group " + group) + " is not registered");
@@ -578,17 +403,7 @@ function addgroupdialogtoplayer(dialog, group) {
   return addtoqueue;
 }
 
-/*
-	Name: testdialogqueue
-	Namespace: globallogic_audio
-	Checksum: 0x7EB2B86E
-	Offset: 0x2E78
-	Size: 0xC2
-	Parameters: 1
-	Flags: Linked
-*/
 function testdialogqueue(group) {
-  /#
   count = 0;
   foreach(temp in self.leaderdialogqueue) {
     if(temp == group) {
@@ -598,18 +413,8 @@ function testdialogqueue(group) {
   if(count > 1) {
     shit = 0;
   }
-  # /
 }
 
-/*
-	Name: leaderdialogonplayer
-	Namespace: globallogic_audio
-	Checksum: 0xD8651EEB
-	Offset: 0x2F48
-	Size: 0xE6
-	Parameters: 2
-	Flags: Linked
-*/
 function leaderdialogonplayer(dialog, group) {
   team = self.pers["team"];
   if(level.splitscreen) {
@@ -635,15 +440,6 @@ function leaderdialogonplayer(dialog, group) {
   }
 }
 
-/*
-	Name: waitforsound
-	Namespace: globallogic_audio
-	Checksum: 0xEEDF1044
-	Offset: 0x3038
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function waitforsound(sound, extratime = 0.1) {
   time = soundgetplaybacktime(sound);
   if(time < 0) {
@@ -653,21 +449,12 @@ function waitforsound(sound, extratime = 0.1) {
   }
 }
 
-/*
-	Name: playleaderdialogonplayer
-	Namespace: globallogic_audio
-	Checksum: 0xD23669E6
-	Offset: 0x30C8
-	Size: 0x294
-	Parameters: 1
-	Flags: Linked
-*/
 function playleaderdialogonplayer(dialog) {
   if(isdefined(level.allowannouncer) && !level.allowannouncer) {
     return;
   }
   team = self.pers["team"];
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.leaderdialogactive = 1;
   if(isdefined(self.leaderdialoggroups[dialog])) {
     group = dialog;
@@ -704,15 +491,6 @@ function playleaderdialogonplayer(dialog) {
   }
 }
 
-/*
-	Name: isteamwinning
-	Namespace: globallogic_audio
-	Checksum: 0x5E34189F
-	Offset: 0x3368
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function isteamwinning(checkteam) {
   score = game["teamScores"][checkteam];
   foreach(team in level.teams) {
@@ -725,15 +503,6 @@ function isteamwinning(checkteam) {
   return true;
 }
 
-/*
-	Name: announceteamiswinning
-	Namespace: globallogic_audio
-	Checksum: 0xCF1FA321
-	Offset: 0x3440
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function announceteamiswinning() {
   foreach(team in level.teams) {
     if(isteamwinning(team)) {
@@ -745,19 +514,10 @@ function announceteamiswinning() {
   return false;
 }
 
-/*
-	Name: musiccontroller
-	Namespace: globallogic_audio
-	Checksum: 0xD17F15DF
-	Offset: 0x3530
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function musiccontroller() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   level thread musictimesout();
-  level waittill(# "match_ending_soon");
+  level waittill("match_ending_soon");
   if(util::islastround() || util::isoneround()) {
     if(!level.splitscreen) {
       if(level.teambased) {
@@ -765,116 +525,68 @@ function musiccontroller() {
           leaderdialog("min_draw");
         }
       }
-      level waittill(# "match_ending_very_soon");
+      level waittill("match_ending_very_soon");
       foreach(team in level.teams) {
         leaderdialog("timesup", team, undefined, undefined, "squad_30sec");
       }
     }
   } else {
-    level waittill(# "match_ending_vox");
+    level waittill("match_ending_vox");
     leaderdialog("timesup");
   }
 }
 
-/*
-	Name: musictimesout
-	Namespace: globallogic_audio
-	Checksum: 0xEEF964E9
-	Offset: 0x36B0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function musictimesout() {
-  level endon(# "game_ended");
-  level waittill(# "match_ending_very_soon");
+  level endon("game_ended");
+  level waittill("match_ending_very_soon");
   thread set_music_on_team("TIME_OUT", "both", 1, 0);
 }
 
-/*
-	Name: actionmusicset
-	Namespace: globallogic_audio
-	Checksum: 0xF48B64E4
-	Offset: 0x3700
-	Size: 0x2C
-	Parameters: 0
-	Flags: None
-*/
 function actionmusicset() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   level.playingactionmusic = 1;
   wait(45);
   level.playingactionmusic = 0;
 }
 
-/*
-	Name: play_2d_on_team
-	Namespace: globallogic_audio
-	Checksum: 0xF0F66B03
-	Offset: 0x3738
-	Size: 0xD6
-	Parameters: 2
-	Flags: None
-*/
 function play_2d_on_team(alias, team) {
-  /#
   assert(isdefined(level.players));
-  # /
-    for (i = 0; i < level.players.size; i++) {
-      player = level.players[i];
-      if(isdefined(player.pers["team"]) && player.pers["team"] == team) {
-        player playlocalsound(alias);
-      }
+  for (i = 0; i < level.players.size; i++) {
+    player = level.players[i];
+    if(isdefined(player.pers["team"]) && player.pers["team"] == team) {
+      player playlocalsound(alias);
     }
+  }
 }
 
-/*
-	Name: set_music_on_team
-	Namespace: globallogic_audio
-	Checksum: 0x9E3D3CFD
-	Offset: 0x3818
-	Size: 0x2FE
-	Parameters: 5
-	Flags: Linked
-*/
 function set_music_on_team(state, team, save_state, return_state, wait_time) {
   if(sessionmodeiszombiesgame()) {
     return;
   }
-  /#
   assert(isdefined(level.players));
-  # /
-    if(!isdefined(team)) {
-      team = "both";
-      /#
-      if(getdvarint("") > 0) {
-        println("");
-      }
-      # /
-    }
-  if(!isdefined(save_state)) {
-    save_sate = 0;
-    /#
+  if(!isdefined(team)) {
+    team = "both";
     if(getdvarint("") > 0) {
       println("");
     }
-    # /
+  }
+  if(!isdefined(save_state)) {
+    save_sate = 0;
+    if(getdvarint("") > 0) {
+      println("");
+    }
   }
   if(!isdefined(return_state)) {
     return_state = 0;
-    /#
     if(getdvarint("") > 0) {
       println("");
     }
-    # /
   }
   if(!isdefined(wait_time)) {
     wait_time = 0;
-    /#
     if(getdvarint("") > 0) {
       println("");
     }
-    # /
   }
   for (i = 0; i < level.players.size; i++) {
     player = level.players[i];
@@ -884,128 +596,79 @@ function set_music_on_team(state, team, save_state, return_state, wait_time) {
     }
     if(isdefined(player.pers["team"]) && player.pers["team"] == team) {
       player thread set_music_on_player(state, save_state, return_state, wait_time);
-      /#
       if(getdvarint("") > 0) {
         println((("" + state) + "") + player getentitynumber());
       }
-      # /
     }
   }
 }
 
-/*
-	Name: set_music_on_player
-	Namespace: globallogic_audio
-	Checksum: 0x51F55112
-	Offset: 0x3B20
-	Size: 0x424
-	Parameters: 4
-	Flags: Linked
-*/
 function set_music_on_player(state, save_state, return_state, wait_time) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(sessionmodeiszombiesgame()) {
     return;
   }
-  /#
   assert(isplayer(self));
-  # /
-    if(!isdefined(save_state)) {
-      save_state = 0;
-      /#
-      if(getdvarint("") > 0) {
-        println("");
-      }
-      # /
-    }
-  if(!isdefined(return_state)) {
-    return_state = 0;
-    /#
+  if(!isdefined(save_state)) {
+    save_state = 0;
     if(getdvarint("") > 0) {
       println("");
     }
-    # /
+  }
+  if(!isdefined(return_state)) {
+    return_state = 0;
+    if(getdvarint("") > 0) {
+      println("");
+    }
   }
   if(!isdefined(wait_time)) {
     wait_time = 0;
-    /#
     if(getdvarint("") > 0) {
       println("");
     }
-    # /
   }
   if(!isdefined(state)) {
     state = "UNDERSCORE";
-    /#
     if(getdvarint("") > 0) {
       println("");
     }
-    # /
   }
   music::setmusicstate(state, self);
   if(isdefined(self.pers["music"].currentstate) && save_state) {
     self.pers["music"].returnstate = state;
-    /#
     if(getdvarint("") > 0) {
       println((("" + self.pers[""].returnstate) + "") + self getentitynumber());
     }
-    # /
   }
   self.pers["music"].previousstate = self.pers["music"].currentstate;
   self.pers["music"].currentstate = state;
-  /#
   if(getdvarint("") > 0) {
     println((("" + state) + "") + self getentitynumber());
   }
-  # /
-    if(isdefined(self.pers["music"].returnstate) && return_state) {
-      /#
-      if(getdvarint("") > 0) {
-        println((("" + self.pers[""].returnstate) + "") + self getentitynumber());
-      }
-      # /
-        self set_next_music_state(self.pers["music"].returnstate, wait_time);
+  if(isdefined(self.pers["music"].returnstate) && return_state) {
+    if(getdvarint("") > 0) {
+      println((("" + self.pers[""].returnstate) + "") + self getentitynumber());
     }
+    self set_next_music_state(self.pers["music"].returnstate, wait_time);
+  }
 }
 
-/*
-	Name: return_music_state_player
-	Namespace: globallogic_audio
-	Checksum: 0x8CED2F82
-	Offset: 0x3F50
-	Size: 0x94
-	Parameters: 1
-	Flags: None
-*/
 function return_music_state_player(wait_time) {
   if(!isdefined(wait_time)) {
     wait_time = 0;
-    /#
     if(getdvarint("") > 0) {
       println("");
     }
-    # /
   }
   self set_next_music_state(self.pers["music"].returnstate, wait_time);
 }
 
-/*
-	Name: return_music_state_team
-	Namespace: globallogic_audio
-	Checksum: 0xAA3E54F5
-	Offset: 0x3FF0
-	Size: 0x1DE
-	Parameters: 2
-	Flags: None
-*/
 function return_music_state_team(team, wait_time) {
   if(!isdefined(wait_time)) {
     wait_time = 0;
-    /#
     if(getdvarint("") > 0) {
       println("");
     }
-    # /
   }
   for (i = 0; i < level.players.size; i++) {
     player = level.players[i];
@@ -1015,35 +678,22 @@ function return_music_state_team(team, wait_time) {
     }
     if(isdefined(player.pers["team"]) && player.pers["team"] == team) {
       player thread set_next_music_state(self.pers["music"].returnstate, wait_time);
-      /#
       if(getdvarint("") > 0) {
         println((("" + self.pers[""].returnstate) + "") + player getentitynumber());
       }
-      # /
     }
   }
 }
 
-/*
-	Name: set_next_music_state
-	Namespace: globallogic_audio
-	Checksum: 0xEC443CF2
-	Offset: 0x41D8
-	Size: 0x1BC
-	Parameters: 2
-	Flags: Linked
-*/
 function set_next_music_state(nextstate, wait_time) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.pers["music"].nextstate = nextstate;
-  /#
   if(getdvarint("") > 0) {
     println((("" + self.pers[""].nextstate) + "") + self getentitynumber());
   }
-  # /
-    if(!isdefined(self.pers["music"].inque)) {
-      self.pers["music"].inque = 0;
-    }
+  if(!isdefined(self.pers["music"].inque)) {
+    self.pers["music"].inque = 0;
+  }
   if(self.pers["music"].inque) {
     return;
   }
@@ -1055,15 +705,6 @@ function set_next_music_state(nextstate, wait_time) {
   self.pers["music"].inque = 0;
 }
 
-/*
-	Name: getroundswitchdialog
-	Namespace: globallogic_audio
-	Checksum: 0xC7C47AAF
-	Offset: 0x43A0
-	Size: 0x4E
-	Parameters: 1
-	Flags: Linked
-*/
 function getroundswitchdialog(switchtype) {
   switch (switchtype) {
     case "halftime": {
@@ -1078,18 +719,9 @@ function getroundswitchdialog(switchtype) {
   }
 }
 
-/*
-	Name: post_match_snapshot_watcher
-	Namespace: globallogic_audio
-	Checksum: 0x4BEEF10F
-	Offset: 0x43F8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function post_match_snapshot_watcher() {
-  level waittill(# "game_ended");
+  level waittill("game_ended");
   level util::clientnotify("pm");
-  level waittill(# "sfade");
+  level waittill("sfade");
   level util::clientnotify("pmf");
 }

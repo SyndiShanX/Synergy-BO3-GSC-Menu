@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\gametypes\_globallogic_actor.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_bb;
 #using scripts\cp\_challenges;
@@ -22,35 +26,16 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\weapons\_weapon_utils;
 #using scripts\shared\weapons_shared;
-
 #namespace globallogic_actor;
 
-/*
-	Name: callback_actorspawned
-	Namespace: globallogic_actor
-	Checksum: 0x438FFA1B
-	Offset: 0x4C0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function callback_actorspawned(spawner) {
   self thread spawner::spawn_think(spawner);
   self globallogic_player::resetattackerlist();
   bb::logaispawn(self, spawner);
 }
 
-/*
-	Name: callback_actordamage
-	Namespace: globallogic_actor
-	Checksum: 0xD82BB613
-	Offset: 0x520
-	Size: 0xB24
-	Parameters: 15
-	Flags: Linked
-*/
 function callback_actordamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, boneindex, modelindex, surfacetype, surfacenormal) {
-  self endon(# "death");
+  self endon("death");
   params = spawnstruct();
   params.einflictor = einflictor;
   params.eattacker = eattacker;
@@ -95,12 +80,10 @@ function callback_actordamage(einflictor, eattacker, idamage, idflags, smeansofd
       idamage = self[[damagecallback]](einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex, modelindex);
     }
   }
-  /#
   assert(isdefined(idamage), "");
-  # /
-    if(!isdefined(vdir)) {
-      idflags = idflags | 4;
-    }
+  if(!isdefined(vdir)) {
+    idflags = idflags | 4;
+  }
   if(isdefined(eattacker)) {
     if(isplayer(eattacker)) {
       level thread friendlyfire::friendly_fire_callback(self, idamage, eattacker, smeansofdeath);
@@ -117,8 +100,8 @@ function callback_actordamage(einflictor, eattacker, idamage, idflags, smeansofd
       }
     }
   }
-  self callback::callback(# "hash_eb4a4369", params);
-  self callback::callback(# "hash_7b543e98", params);
+  self callback::callback("hash_eb4a4369", params);
+  self callback::callback("hash_7b543e98", params);
   actorkilled = 0;
   self thread globallogic_player::trackattackerdamage(eattacker, idamage, smeansofdeath, weapon);
   if(self.health > 0 && (self.health - idamage) <= 0) {
@@ -126,14 +109,12 @@ function callback_actordamage(einflictor, eattacker, idamage, idflags, smeansofd
       eattacker = eattacker.driver;
     }
     if(isplayer(eattacker)) {
-      /#
       println((("" + weapon.name) + "") + smeansofdeath);
-      # /
-        if(self.team != eattacker.team) {
-          if(smeansofdeath == "MOD_MELEE") {
-            eattacker notify(# "melee_kill");
-          }
+      if(self.team != eattacker.team) {
+        if(smeansofdeath == "MOD_MELEE") {
+          eattacker notify("melee_kill");
         }
+      }
     }
     actorkilled = 1;
   }
@@ -191,15 +172,6 @@ function callback_actordamage(einflictor, eattacker, idamage, idflags, smeansofd
   self finishactordamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, boneindex, surfacetype, surfacenormal);
 }
 
-/*
-	Name: callback_actorkilled
-	Namespace: globallogic_actor
-	Checksum: 0x6E40B69D
-	Offset: 0x1050
-	Size: 0x5DC
-	Parameters: 8
-	Flags: Linked
-*/
 function callback_actorkilled(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   params = spawnstruct();
   params.einflictor = einflictor;
@@ -218,7 +190,7 @@ function callback_actorkilled(einflictor, eattacker, idamage, smeansofdeath, wea
     smeansofdeath = "MOD_HEAD_SHOT";
   }
   if(isdefined(eattacker) && isplayer(eattacker)) {
-    eattacker notify(# "killed_ai", self, smeansofdeath, weapon);
+    eattacker notify("killed_ai", self, smeansofdeath, weapon);
     globallogic_score::inctotalkills(eattacker.team);
     eattacker thread globallogic_score::givekillstats(smeansofdeath, weapon, self);
     if(smeansofdeath == "MOD_MELEE" || smeansofdeath == "MOD_MELEE_ASSASSINATE" || smeansofdeath == "MOD_MELEE_WEAPON_BUTT") {
@@ -236,8 +208,8 @@ function callback_actorkilled(einflictor, eattacker, idamage, smeansofdeath, wea
   if(isdefined(einflictor)) {
     self.damageinflictor = einflictor;
   }
-  self callback::callback(# "hash_fc2ec5ff", params);
-  self callback::callback(# "hash_8c38c12e", params);
+  self callback::callback("hash_fc2ec5ff", params);
+  self callback::callback("hash_8c38c12e", params);
   if(isdefined(self.aioverridekilled)) {
     for (index = 0; index < self.aioverridekilled.size; index++) {
       killedcallback = self.aioverridekilled[index];
@@ -264,29 +236,11 @@ function callback_actorkilled(einflictor, eattacker, idamage, smeansofdeath, wea
   }
 }
 
-/*
-	Name: callback_actorcloned
-	Namespace: globallogic_actor
-	Checksum: 0x3000D06E
-	Offset: 0x1638
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function callback_actorcloned(original) {
   destructserverutils::copydestructstate(original, self);
   gibserverutils::copygibstate(original, self);
 }
 
-/*
-	Name: actorkilled_awardassists
-	Namespace: globallogic_actor
-	Checksum: 0xAFC071F5
-	Offset: 0x1680
-	Size: 0x164
-	Parameters: 4
-	Flags: Linked
-*/
 function actorkilled_awardassists(einflictor, eattacker, weapon, lpattackteam) {
   pixbeginevent("ActorKilled assists");
   if(isdefined(self.attackers)) {

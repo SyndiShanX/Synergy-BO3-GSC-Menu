@@ -1,35 +1,20 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_friendlyfire.gsc
+*************************************************/
+
 #using scripts\cp\_util;
 #using scripts\shared\ai\archetype_utility;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\load_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace friendlyfire;
 
-/*
-	Name: __init__sytem__
-	Namespace: friendlyfire
-	Checksum: 0x8F431EA0
-	Offset: 0x308
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("friendlyfire", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: friendlyfire
-	Checksum: 0x5BCD9DAE
-	Offset: 0x348
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.friendlyfirepoints["min_participation"] = -1600;
   level.friendlyfirepoints["max_participation"] = 1000;
@@ -47,57 +32,25 @@ function __init__() {
   callback::on_connect( & init_player);
 }
 
-/*
-	Name: init_player
-	Namespace: friendlyfire
-	Checksum: 0xB679EA8B
-	Offset: 0x460
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_player() {
-  /#
   assert(isdefined(self), "");
-  # /
-    self.participation = 0;
+  self.participation = 0;
   self thread debug_friendlyfire();
   self thread participation_point_flattenovertime();
 }
 
-/*
-	Name: debug_log
-	Namespace: friendlyfire
-	Checksum: 0x87F3E56
-	Offset: 0x4C8
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function debug_log(msg) {
-  /#
   if(getdvarstring("") == "") {
     iprintlnbold(msg);
   }
   if(getdvarstring("") == "") {
     println("" + msg);
   }
-  # /
 }
 
-/*
-	Name: debug_friendlyfire
-	Namespace: friendlyfire
-	Checksum: 0xE91B0691
-	Offset: 0x568
-	Size: 0xCE8
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_friendlyfire() {
-  self endon(# "hash_cca1b1b9");
-  /#
-  self endon(# "disconnect");
+  self endon("hash_cca1b1b9");
+  self endon("disconnect");
   if(getdvarstring("") == "") {
     setdvar("", "");
   }
@@ -216,18 +169,8 @@ function debug_friendlyfire() {
     friendly_fire.x = (rbound - (bar_width * (level.friendlyfirepoints[""] / fullpts))) + ((((ceil(max(log(abs(self.participation)) / log(10), 0))) + 1) + (self.participation < 0) * friendly_fire.fontscale) * 2);
     wait(0.25);
   }
-  # /
 }
 
-/*
-	Name: check_warlord_killed
-	Namespace: friendlyfire
-	Checksum: 0x6A1C25F3
-	Offset: 0x1258
-	Size: 0x3E
-	Parameters: 1
-	Flags: Linked
-*/
 function check_warlord_killed(entity) {
   if(entity.archetype == "warlord_soldier") {
     return entity.shieldhealth <= 0;
@@ -235,15 +178,6 @@ function check_warlord_killed(entity) {
   return 0;
 }
 
-/*
-	Name: friendly_fire_callback
-	Namespace: friendlyfire
-	Checksum: 0x3DD72D5A
-	Offset: 0x12A0
-	Size: 0x5A4
-	Parameters: 4
-	Flags: Linked
-*/
 function friendly_fire_callback(entity, damage, attacker, method) {
   if(!isdefined(entity)) {
     return;
@@ -312,7 +246,7 @@ function friendly_fire_callback(entity, damage, attacker, method) {
   }
   if(killed) {
     if(entity.team == "neutral") {
-      level notify(# "player_killed_civ");
+      level notify("player_killed_civ");
       attacker.participation = attacker.participation + level.friendlyfirepoints["civ_kill_points"];
       debug_log(("Civilian killed: -") + (0 - level.friendlyfirepoints["civ_kill_points"]));
     } else {
@@ -335,18 +269,9 @@ function friendly_fire_callback(entity, damage, attacker, method) {
   attacker friendly_fire_checkpoints();
 }
 
-/*
-	Name: friendly_fire_think
-	Namespace: friendlyfire
-	Checksum: 0x30087AFE
-	Offset: 0x1850
-	Size: 0x610
-	Parameters: 1
-	Flags: None
-*/
 function friendly_fire_think(entity) {
-  level endon(# "hash_77e184");
-  entity endon(# "no_friendly_fire");
+  level endon("hash_77e184");
+  entity endon("no_friendly_fire");
   if(!isdefined(entity)) {
     return;
   }
@@ -357,7 +282,7 @@ function friendly_fire_think(entity) {
     if(!isdefined(entity)) {
       return;
     }
-    entity waittill(# "damage", damage, attacker, $_, $_, method);
+    entity waittill("damage", damage, attacker, $_, $_, method);
     if(level.friendlyfiredisabled) {
       continue;
     }
@@ -410,7 +335,7 @@ function friendly_fire_think(entity) {
     }
     if(killed) {
       if(entity.team == "neutral") {
-        level notify(# "player_killed_civ");
+        level notify("player_killed_civ");
         if(attacker.participation <= 0) {
           attacker.participation = attacker.participation + level.friendlyfirepoints["min_participation"];
           debug_log("Civilian killed with negative score, autofail!");
@@ -442,30 +367,12 @@ function friendly_fire_think(entity) {
   }
 }
 
-/*
-	Name: friendly_fire_checkpoints
-	Namespace: friendlyfire
-	Checksum: 0x3FCA0FB4
-	Offset: 0x1E68
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function friendly_fire_checkpoints() {
   if(self.participation <= level.friendlyfirepoints["min_participation"]) {
     self thread missionfail();
   }
 }
 
-/*
-	Name: check_grenade
-	Namespace: friendlyfire
-	Checksum: 0xCF582966
-	Offset: 0x1EA8
-	Size: 0x9A
-	Parameters: 2
-	Flags: Linked
-*/
 function check_grenade(entity, method) {
   if(!isdefined(entity)) {
     return 0;
@@ -480,41 +387,19 @@ function check_grenade(entity, method) {
   return wasgrenade;
 }
 
-/*
-	Name: savecommit_aftergrenade
-	Namespace: friendlyfire
-	Checksum: 0x707086BB
-	Offset: 0x1F50
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function savecommit_aftergrenade() {
   currenttime = gettime();
   if(currenttime < 4500) {
-    /#
     println("");
-    # /
-      return true;
+    return true;
   }
   return false;
 }
 
-/*
-	Name: participation_point_cap
-	Namespace: friendlyfire
-	Checksum: 0x84E6F7E5
-	Offset: 0x1FA0
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function participation_point_cap() {
   if(!isdefined(self.participation)) {
-    /#
     assertmsg("");
-    # /
-      return;
+    return;
   }
   if(self.participation > level.friendlyfirepoints["max_participation"]) {
     self.participation = level.friendlyfirepoints["max_participation"];
@@ -524,18 +409,9 @@ function participation_point_cap() {
   }
 }
 
-/*
-	Name: participation_point_flattenovertime
-	Namespace: friendlyfire
-	Checksum: 0xBF157873
-	Offset: 0x2048
-	Size: 0x66
-	Parameters: 0
-	Flags: Linked
-*/
 function participation_point_flattenovertime() {
-  level endon(# "friendly_fire_terminate");
-  self endon(# "disconnect");
+  level endon("friendly_fire_terminate");
+  self endon("disconnect");
   for (;;) {
     if(self.participation > 0) {
       self.participation--;
@@ -546,97 +422,43 @@ function participation_point_flattenovertime() {
   }
 }
 
-/*
-	Name: turnbackon
-	Namespace: friendlyfire
-	Checksum: 0x51D81F6D
-	Offset: 0x20B8
-	Size: 0x10
-	Parameters: 0
-	Flags: None
-*/
 function turnbackon() {
   level.friendlyfiredisabled = 0;
 }
 
-/*
-	Name: turnoff
-	Namespace: friendlyfire
-	Checksum: 0x1265AA88
-	Offset: 0x20D0
-	Size: 0x10
-	Parameters: 0
-	Flags: None
-*/
 function turnoff() {
   level.friendlyfiredisabled = 1;
 }
 
-/*
-	Name: missionfail
-	Namespace: friendlyfire
-	Checksum: 0xC7FD51FF
-	Offset: 0x20E8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function missionfail() {
-  self endon(# "death");
-  level endon(# "hash_1078e68a");
+  self endon("death");
+  level endon("hash_1078e68a");
   self.participation = 0;
   self.lives = 0;
   if(self.last_hit_team === "neutral") {
-    util::missionfailedwrapper_nodeath( & "SCRIPT_MISSIONFAIL_KILLTEAM_NEUTRAL", & "SCRIPT_MISSIONFAIL_WATCH_FIRE");
+    util::missionfailedwrapper_nodeath(&"SCRIPT_MISSIONFAIL_KILLTEAM_NEUTRAL", & "SCRIPT_MISSIONFAIL_WATCH_FIRE");
   } else {
-    util::missionfailedwrapper_nodeath( & "SCRIPT_MISSIONFAIL_KILLTEAM_AMERICAN", & "SCRIPT_MISSIONFAIL_WATCH_FIRE");
+    util::missionfailedwrapper_nodeath(&"SCRIPT_MISSIONFAIL_KILLTEAM_AMERICAN", & "SCRIPT_MISSIONFAIL_WATCH_FIRE");
   }
 }
 
-/*
-	Name: notifydamage
-	Namespace: friendlyfire
-	Checksum: 0x58AD3D55
-	Offset: 0x2180
-	Size: 0x7C
-	Parameters: 1
-	Flags: None
-*/
 function notifydamage(entity) {
-  level endon(# "hash_77e184");
-  entity endon(# "death");
+  level endon("hash_77e184");
+  entity endon("death");
   for (;;) {
-    entity waittill(# "damage", damage, attacker, $_, $_, method);
-    entity notify(# "friendlyfire_notify", damage, attacker, undefined, undefined, method);
+    entity waittill("damage", damage, attacker, $_, $_, method);
+    entity notify("friendlyfire_notify", damage, attacker, undefined, undefined, method);
   }
 }
 
-/*
-	Name: notifydamagenotdone
-	Namespace: friendlyfire
-	Checksum: 0xD2F3D1C0
-	Offset: 0x2208
-	Size: 0x6C
-	Parameters: 1
-	Flags: None
-*/
 function notifydamagenotdone(entity) {
-  level endon(# "hash_77e184");
-  entity waittill(# "damage_notdone", damage, attacker, $_, $_, method);
-  entity notify(# "friendlyfire_notify", -1, attacker, undefined, undefined, method);
+  level endon("hash_77e184");
+  entity waittill("damage_notdone", damage, attacker, $_, $_, method);
+  entity notify("friendlyfire_notify", -1, attacker, undefined, undefined, method);
 }
 
-/*
-	Name: notifydeath
-	Namespace: friendlyfire
-	Checksum: 0x37A32E72
-	Offset: 0x2280
-	Size: 0x5C
-	Parameters: 1
-	Flags: None
-*/
 function notifydeath(entity) {
-  level endon(# "hash_77e184");
-  entity waittill(# "death", attacker, method);
-  entity notify(# "friendlyfire_notify", -1, attacker, undefined, undefined, method);
+  level endon("hash_77e184");
+  entity waittill("death", attacker, method);
+  entity notify("friendlyfire_notify", -1, attacker, undefined, undefined, method);
 }

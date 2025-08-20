@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_vengeance.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_ammo_cache;
 #using scripts\cp\_collectibles;
@@ -39,32 +43,13 @@
 #using scripts\shared\vehicles\_hunter;
 #using scripts\shared\vehicles\_quadtank;
 #using scripts\shared\vehicles\_wasp;
-
 #namespace cp_mi_sing_vengeance;
 
-/*
-	Name: setup_rex_starts
-	Namespace: cp_mi_sing_vengeance
-	Checksum: 0x4B0E731A
-	Offset: 0x14A8
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function setup_rex_starts() {
   util::add_gametype("coop");
   util::add_gametype("cpzm");
 }
 
-/*
-	Name: main
-	Namespace: cp_mi_sing_vengeance
-	Checksum: 0xE8BE100D
-	Offset: 0x14E8
-	Size: 0x4BC
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   if(sessionmodeiscampaignzombiesgame() && 0) {
     setclearanceceiling(34);
@@ -89,7 +74,7 @@ function main() {
   spawners = getentarray();
   foreach(spawner in spawners) {
     if(isspawner(spawner)) {
-      spawner notify(# "aigroup_spawner_death");
+      spawner notify("aigroup_spawner_death");
     }
   }
   var_6a07eb6c = [];
@@ -110,15 +95,6 @@ function main() {
   collectibles::function_37aecd21();
 }
 
-/*
-	Name: precache
-	Namespace: cp_mi_sing_vengeance
-	Checksum: 0x245CAA5E
-	Offset: 0x19B0
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {
   level._effect["fx_exp_grenade_emp"] = "explosions/fx_exp_grenade_emp";
   level._effect["fx_elec_enemy_juiced_shotgun"] = "electric/fx_elec_enemy_juiced_shotgun";
@@ -128,15 +104,6 @@ function precache() {
   level._effect["fx_fuel_pour_far_ven"] = "water/fx_fuel_pour_far_ven";
 }
 
-/*
-	Name: init_clientfields
-	Namespace: cp_mi_sing_vengeance
-	Checksum: 0xEA4D93BC
-	Offset: 0x1A68
-	Size: 0x2A4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("toplayer", "play_client_igc", 1, 4, "int");
   clientfield::register("scriptmover", "normal_hide", 1, 1, "int");
@@ -154,15 +121,6 @@ function init_clientfields() {
   clientfield::register("world", "fxanims_safehouse_explodes", 1, 1, "int");
 }
 
-/*
-	Name: init_flags
-	Namespace: cp_mi_sing_vengeance
-	Checksum: 0x69E89B61
-	Offset: 0x1D18
-	Size: 0xBC4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_flags() {
   level flag::init("intro_wall_done");
   level flag::init("apartment_entrance_door_open");
@@ -260,15 +218,6 @@ function init_flags() {
   level flag::init("starting_igc_12");
 }
 
-/*
-	Name: setup_skiptos
-	Namespace: cp_mi_sing_vengeance
-	Checksum: 0x41F345B7
-	Offset: 0x28E8
-	Size: 0x538
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_skiptos() {
   skipto::add("intro", & vengeance_intro::skipto_intro_init, "Intro", & vengeance_intro::skipto_intro_done);
   skipto::add_dev("dev_apartment", & vengeance_intro::function_5cb54255, "Apartment", & vengeance_intro::function_4762cf8f);
@@ -285,12 +234,10 @@ function setup_skiptos() {
   skipto::function_d68e678e("safehouse_explodes", & vengeance_safehouse::function_26524bc8, "Safehouse Explodes", & vengeance_safehouse::function_683ab16e);
   skipto::add_dev("dev_safehouse_interior", & vengeance_safehouse::function_29dad6e8, "Safehouse Interior", & vengeance_safehouse::function_6bc33c8e);
   skipto::function_d68e678e("panic_room", & vengeance_safehouse::skipto_panic_init, "Panic Room Scene", & vengeance_safehouse::skipto_panic_done);
-  /#
   skipto::add_dev("", & vengeance_intro::function_616e9ab6, "");
   skipto::add_dev("", & vengeance_intro::function_8771151f, "");
   skipto::add_dev("", & vengeance_intro::function_7d5fbc40, "");
-  # /
-    level.skipto_triggers = [];
+  level.skipto_triggers = [];
   a_trigs = getentarray("objective", "targetname");
   foreach(trig in a_trigs) {
     if(isdefined(trig.script_objective)) {
@@ -299,15 +246,6 @@ function setup_skiptos() {
   }
 }
 
-/*
-	Name: on_player_loadout
-	Namespace: cp_mi_sing_vengeance
-	Checksum: 0xE1251636
-	Offset: 0x2E28
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function on_player_loadout() {
   if(level.skipto_point === "dogleg_1") {
     self vengeance_util::give_hero_weapon(1);

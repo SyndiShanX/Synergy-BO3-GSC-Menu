@@ -1,33 +1,18 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_staff_lightning.csc
+*************************************************/
+
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weap_staff_common;
-
 #namespace zm_weap_staff_lightning;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_weap_staff_lightning
-	Checksum: 0x82BD8C9C
-	Offset: 0x2E0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_staff_lightning", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_weap_staff_lightning
-	Checksum: 0xEA4DCBA1
-	Offset: 0x320
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level._effect["lightning_miss"] = "dlc5/zmb_weapon/fx_staff_elec_impact_ug_miss";
   level._effect["lightning_arc"] = "dlc5/zmb_weapon/fx_staff_elec_trail_bolt_cheap";
@@ -40,15 +25,6 @@ function __init__() {
   zm_weap_staff::function_4be5e665(getweapon("staff_lightning_upgraded"), "dlc5/zmb_weapon/fx_staff_charge_elec_lv1");
 }
 
-/*
-	Name: function_41819534
-	Namespace: zm_weap_staff_lightning
-	Checksum: 0x9FCEE703
-	Offset: 0x4B0
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked
-*/
 function function_41819534(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     playfxontag(localclientnum, level._effect["lightning_impact"], self, "J_SpineUpper");
@@ -56,15 +32,6 @@ function function_41819534(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_6a2c832a
-	Namespace: zm_weap_staff_lightning
-	Checksum: 0xB771C5C6
-	Offset: 0x550
-	Size: 0x102
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6a2c832a(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     playfxontag(localclientnum, level._effect["lightning_miss"], self, "tag_origin");
@@ -72,42 +39,24 @@ function function_6a2c832a(localclientnum, oldval, newval, bnewent, binitialsnap
     ent = spawn(0, self.origin, "script_origin");
     ent linkto(self);
     self thread function_80209369(localclientnum, ent);
-    level notify(# "lightning_ball_created");
+    level notify("lightning_ball_created");
   }
 }
 
-/*
-	Name: function_80209369
-	Namespace: zm_weap_staff_lightning
-	Checksum: 0xCCFE6267
-	Offset: 0x660
-	Size: 0x40
-	Parameters: 2
-	Flags: Linked
-*/
 function function_80209369(localclientnum, ent) {
-  self waittill(# "entityshutdown");
+  self waittill("entityshutdown");
   ent delete();
   level.var_1d5f245c[localclientnum] = undefined;
 }
 
-/*
-	Name: function_749acb79
-	Namespace: zm_weap_staff_lightning
-	Checksum: 0x55347330
-	Offset: 0x6A8
-	Size: 0x1F8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_749acb79(localclientnum) {
-  self endon(# "entityshutdown");
-  self endon(# "hash_7a8f9f49");
+  self endon("entityshutdown");
+  self endon("hash_7a8f9f49");
   if(!isdefined(level.var_1d5f245c[localclientnum])) {
-    level waittill(# "lightning_ball_created");
+    level waittill("lightning_ball_created");
   }
   var_46352a82 = level.var_1d5f245c[localclientnum];
-  var_46352a82 endon(# "entityshutdown");
+  var_46352a82 endon("entityshutdown");
   util::server_wait(localclientnum, randomfloatrange(0.1, 0.5));
   self.e_fx = spawn(localclientnum, var_46352a82.origin, "script_model");
   self.e_fx setmodel("tag_origin");
@@ -121,20 +70,11 @@ function function_749acb79(localclientnum) {
   }
 }
 
-/*
-	Name: function_fb3ed342
-	Namespace: zm_weap_staff_lightning
-	Checksum: 0xB75706CA
-	Offset: 0x8A8
-	Size: 0xD6
-	Parameters: 7
-	Flags: Linked
-*/
 function function_fb3ed342(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     self thread function_749acb79(localclientnum);
   } else {
-    self notify(# "hash_7a8f9f49");
+    self notify("hash_7a8f9f49");
     if(isdefined(self.fx_arc)) {
       stopfx(localclientnum, self.fx_arc);
       self.fx_arc = undefined;

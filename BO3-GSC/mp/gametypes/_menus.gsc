@@ -1,49 +1,25 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_menus.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\rank_shared;
 #using scripts\shared\system_shared;
-
 #namespace menus;
 
-/*
-	Name: __init__sytem__
-	Namespace: menus
-	Checksum: 0xFF147CA8
-	Offset: 0x2A8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("menus", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: menus
-	Checksum: 0xDC954A3
-	Offset: 0x2E8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
   callback::on_connect( & on_player_connect);
 }
 
-/*
-	Name: init
-	Namespace: menus
-	Checksum: 0x7ACF8462
-	Offset: 0x338
-	Size: 0x130
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   game["menu_start_menu"] = "StartMenu_Main";
   game["menu_team"] = "ChangeTeam";
@@ -58,32 +34,14 @@ function init() {
   game["menu_leavegame"] = "popup_leavegame";
 }
 
-/*
-	Name: on_player_connect
-	Namespace: menus
-	Checksum: 0xA44618E0
-	Offset: 0x470
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   self thread on_menu_response();
 }
 
-/*
-	Name: on_menu_response
-	Namespace: menus
-	Checksum: 0xEB0582B3
-	Offset: 0x498
-	Size: 0x448
-	Parameters: 0
-	Flags: Linked
-*/
 function on_menu_response() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   for (;;) {
-    self waittill(# "menuresponse", menu, response);
+    self waittill("menuresponse", menu, response);
     if(response == "back") {
       self closeingamemenu();
       if(level.console) {
@@ -118,7 +76,7 @@ function on_menu_response() {
         level thread globallogic::forceend();
       } else {
         self closeingamemenu();
-        self iprintln( & "MP_HOST_ENDGAME_RESPONSE");
+        self iprintln(&"MP_HOST_ENDGAME_RESPONSE");
       }
       continue;
     }

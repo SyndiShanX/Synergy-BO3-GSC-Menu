@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_human_cover.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_cover_utility;
 #using scripts\shared\ai\archetype_utility;
 #using scripts\shared\ai\systems\ai_blackboard;
@@ -9,18 +13,8 @@
 #using scripts\shared\ai_shared;
 #using scripts\shared\array_shared;
 #using scripts\shared\laststand_shared;
-
 #namespace archetype_human_cover;
 
-/*
-	Name: registerbehaviorscriptfunctions
-	Namespace: archetype_human_cover
-	Checksum: 0x11FD381E
-	Offset: 0x568
-	Size: 0x2D4
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec registerbehaviorscriptfunctions() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("shouldReturnToCoverCondition", & shouldreturntocovercondition);
   behaviortreenetworkutility::registerbehaviortreescriptapi("shouldReturnToSuppressedCover", & shouldreturntosuppressedcover);
@@ -42,15 +36,6 @@ function autoexec registerbehaviorscriptfunctions() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("senseNearbyPlayers", & sensenearbyplayers);
 }
 
-/*
-	Name: shouldthrowgrenadeatcovercondition
-	Namespace: archetype_human_cover
-	Checksum: 0x43557135
-	Offset: 0x848
-	Size: 0x882
-	Parameters: 2
-	Flags: Linked
-*/
 function shouldthrowgrenadeatcovercondition(behaviortreeentity, throwifpossible = 0) {
   if(isdefined(level.aidisablegrenadethrows) && level.aidisablegrenadethrows) {
     return false;
@@ -124,15 +109,6 @@ function shouldthrowgrenadeatcovercondition(behaviortreeentity, throwifpossible 
   return true;
 }
 
-/*
-	Name: sensenearbyplayers
-	Namespace: archetype_human_cover
-	Checksum: 0x3A98B8D7
-	Offset: 0x10D8
-	Size: 0x15A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private sensenearbyplayers(entity) {
   players = getplayers();
   foreach(player in players) {
@@ -147,15 +123,6 @@ function private sensenearbyplayers(entity) {
   }
 }
 
-/*
-	Name: coverpreparetothrowgrenade
-	Namespace: archetype_human_cover
-	Checksum: 0x6FD0DB0C
-	Offset: 0x1240
-	Size: 0x190
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coverpreparetothrowgrenade(behaviortreeentity) {
   aiutility::keepclaimednodeandchoosecoverdirection(behaviortreeentity);
   if(isdefined(behaviortreeentity.enemy)) {
@@ -172,15 +139,6 @@ function private coverpreparetothrowgrenade(behaviortreeentity) {
   behaviortreeentity.preparegrenadeammo = behaviortreeentity.grenadeammo;
 }
 
-/*
-	Name: covercleanuptothrowgrenade
-	Namespace: archetype_human_cover
-	Checksum: 0x8D8A6813
-	Offset: 0x13D8
-	Size: 0x21C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private covercleanuptothrowgrenade(behaviortreeentity) {
   aiutility::resetcoverparameters(behaviortreeentity);
   if(behaviortreeentity.preparegrenadeammo == behaviortreeentity.grenadeammo) {
@@ -200,15 +158,6 @@ function private covercleanuptothrowgrenade(behaviortreeentity) {
   }
 }
 
-/*
-	Name: canchangestanceatcovercondition
-	Namespace: archetype_human_cover
-	Checksum: 0xB37ED1EB
-	Offset: 0x1600
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private canchangestanceatcovercondition(behaviortreeentity) {
   switch (blackboard::getblackboardattribute(behaviortreeentity, "_stance")) {
     case "stand": {
@@ -221,15 +170,6 @@ function private canchangestanceatcovercondition(behaviortreeentity) {
   return 0;
 }
 
-/*
-	Name: shouldreturntosuppressedcover
-	Namespace: archetype_human_cover
-	Checksum: 0x4847EDE1
-	Offset: 0x16A8
-	Size: 0x2E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private shouldreturntosuppressedcover(entity) {
   if(!entity isatgoal()) {
     return true;
@@ -237,15 +177,6 @@ function private shouldreturntosuppressedcover(entity) {
   return false;
 }
 
-/*
-	Name: shouldreturntocovercondition
-	Namespace: archetype_human_cover
-	Checksum: 0x584B1F1
-	Offset: 0x16E0
-	Size: 0x1A6
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private shouldreturntocovercondition(behaviortreeentity) {
   if(behaviortreeentity asmistransitionrunning()) {
     return 0;
@@ -276,15 +207,6 @@ function private shouldreturntocovercondition(behaviortreeentity) {
   return 0;
 }
 
-/*
-	Name: shouldadjusttocover
-	Namespace: archetype_human_cover
-	Checksum: 0x858E187C
-	Offset: 0x1890
-	Size: 0x156
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private shouldadjusttocover(behaviortreeentity) {
   if(!isdefined(behaviortreeentity.node)) {
     return false;
@@ -305,15 +227,6 @@ function private shouldadjusttocover(behaviortreeentity) {
   return false;
 }
 
-/*
-	Name: shouldvantageatcovercondition
-	Namespace: archetype_human_cover
-	Checksum: 0xFF83653A
-	Offset: 0x19F0
-	Size: 0x1C2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private shouldvantageatcovercondition(behaviortreeentity) {
   if(!isdefined(behaviortreeentity.node) || !isdefined(behaviortreeentity.node.type) || !isdefined(behaviortreeentity.enemy) || !isdefined(behaviortreeentity.enemy.origin)) {
     return 0;
@@ -328,128 +241,47 @@ function private shouldvantageatcovercondition(behaviortreeentity) {
   return legalaim;
 }
 
-/*
-	Name: supportsvantagecovercondition
-	Namespace: archetype_human_cover
-	Checksum: 0x7623DBA2
-	Offset: 0x1BC0
-	Size: 0xE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private supportsvantagecovercondition(behaviortreeentity) {
   return false;
 }
 
-/*
-	Name: covervantageinitialize
-	Namespace: archetype_human_cover
-	Checksum: 0x1AF350A3
-	Offset: 0x1BD8
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private covervantageinitialize(behaviortreeentity, asmstatename) {
   aiutility::keepclaimnode(behaviortreeentity);
   blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_vantage");
 }
 
-/*
-	Name: coverblindfireshootactionstart
-	Namespace: archetype_human_cover
-	Checksum: 0xA4C580A3
-	Offset: 0x1C38
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private coverblindfireshootactionstart(behaviortreeentity, asmstatename) {
   aiutility::keepclaimnode(behaviortreeentity);
   blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_blind");
   aiutility::choosecoverdirection(behaviortreeentity);
 }
 
-/*
-	Name: preparetochangestancetostand
-	Namespace: archetype_human_cover
-	Checksum: 0x7E67CCB5
-	Offset: 0x1CB0
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private preparetochangestancetostand(behaviortreeentity, asmstatename) {
   aiutility::cleanupcovermode(behaviortreeentity);
   blackboard::setblackboardattribute(behaviortreeentity, "_desired_stance", "stand");
 }
 
-/*
-	Name: cleanupchangestancetostand
-	Namespace: archetype_human_cover
-	Checksum: 0xB664F0D0
-	Offset: 0x1D10
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private cleanupchangestancetostand(behaviortreeentity, asmstatename) {
   aiutility::releaseclaimnode(behaviortreeentity);
   behaviortreeentity.newenemyreaction = 0;
 }
 
-/*
-	Name: preparetochangestancetocrouch
-	Namespace: archetype_human_cover
-	Checksum: 0x1B2F02DA
-	Offset: 0x1D58
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private preparetochangestancetocrouch(behaviortreeentity, asmstatename) {
   aiutility::cleanupcovermode(behaviortreeentity);
   blackboard::setblackboardattribute(behaviortreeentity, "_desired_stance", "crouch");
 }
 
-/*
-	Name: cleanupchangestancetocrouch
-	Namespace: archetype_human_cover
-	Checksum: 0x41C91CEE
-	Offset: 0x1DB8
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private cleanupchangestancetocrouch(behaviortreeentity, asmstatename) {
   aiutility::releaseclaimnode(behaviortreeentity);
   behaviortreeentity.newenemyreaction = 0;
 }
 
-/*
-	Name: prepareforadjusttocover
-	Namespace: archetype_human_cover
-	Checksum: 0x67C54587
-	Offset: 0x1E00
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private prepareforadjusttocover(behaviortreeentity, asmstatename) {
   aiutility::keepclaimnode(behaviortreeentity);
   highestsupportedstance = aiutility::gethighestnodestance(behaviortreeentity.node);
   blackboard::setblackboardattribute(behaviortreeentity, "_desired_stance", highestsupportedstance);
 }
 
-/*
-	Name: coverchangestanceactionstart
-	Namespace: archetype_human_cover
-	Checksum: 0x396022EA
-	Offset: 0x1E88
-	Size: 0xDE
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private coverchangestanceactionstart(behaviortreeentity, asmstatename) {
   blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_alert");
   aiutility::keepclaimnode(behaviortreeentity);
@@ -465,15 +297,6 @@ function private coverchangestanceactionstart(behaviortreeentity, asmstatename) 
   }
 }
 
-/*
-	Name: temp_get_arm_offset
-	Namespace: archetype_human_cover
-	Checksum: 0xFB9EBCB6
-	Offset: 0x1F70
-	Size: 0x48E
-	Parameters: 2
-	Flags: Linked
-*/
 function temp_get_arm_offset(behaviortreeentity, throwposition) {
   stance = blackboard::getblackboardattribute(behaviortreeentity, "_stance");
   arm_offset = undefined;

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/**********************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\abilities\gadgets\_gadget_overdrive.csc
+**********************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\abilities\_ability_player;
 #using scripts\shared\abilities\_ability_power;
@@ -11,31 +15,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace _gadget_overdrive;
 
-/*
-	Name: __init__sytem__
-	Namespace: _gadget_overdrive
-	Checksum: 0xA4D5624
-	Offset: 0x3F8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("gadget_overdrive", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _gadget_overdrive
-	Checksum: 0x6C8159D9
-	Offset: 0x438
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_localclient_connect( & on_player_connect);
   callback::on_localplayer_spawned( & on_localplayer_spawned);
@@ -44,28 +29,10 @@ function __init__() {
   visionset_mgr::register_visionset_info("overdrive", 1, 15, undefined, "overdrive_initialize");
 }
 
-/*
-	Name: on_localplayer_shutdown
-	Namespace: _gadget_overdrive
-	Checksum: 0x987D8DE2
-	Offset: 0x518
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function on_localplayer_shutdown(localclientnum) {
   self overdrive_shutdown(localclientnum);
 }
 
-/*
-	Name: on_localplayer_spawned
-	Namespace: _gadget_overdrive
-	Checksum: 0x1F8814C4
-	Offset: 0x548
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function on_localplayer_spawned(localclientnum) {
   if(self != getlocalplayer(localclientnum)) {
     return;
@@ -75,26 +42,8 @@ function on_localplayer_spawned(localclientnum) {
   disablespeedblur(localclientnum);
 }
 
-/*
-	Name: on_player_connect
-	Namespace: _gadget_overdrive
-	Checksum: 0x47F48451
-	Offset: 0x5C0
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_connect(local_client_num) {}
 
-/*
-	Name: player_overdrive_handler
-	Namespace: _gadget_overdrive
-	Checksum: 0x3A5806B7
-	Offset: 0x5D8
-	Size: 0x20C
-	Parameters: 7
-	Flags: Linked
-*/
 function player_overdrive_handler(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!self islocalplayer() || isspectating(localclientnum, 0) || (isdefined(level.localplayers[localclientnum]) && self getentitynumber() != level.localplayers[localclientnum] getentitynumber())) {
     return;
@@ -110,22 +59,13 @@ function player_overdrive_handler(localclientnum, oldval, newval, bnewent, binit
   }
 }
 
-/*
-	Name: activation_flash
-	Namespace: _gadget_overdrive
-	Checksum: 0xD920F6E5
-	Offset: 0x7F0
-	Size: 0x146
-	Parameters: 1
-	Flags: Linked
-*/
 function activation_flash(localclientnum) {
-  self notify(# "activation_flash");
-  self endon(# "activation_flash");
-  self endon(# "death");
-  self endon(# "entityshutdown");
-  self endon(# "stop_player_fx");
-  self endon(# "disable_cybercom");
+  self notify("activation_flash");
+  self endon("activation_flash");
+  self endon("death");
+  self endon("entityshutdown");
+  self endon("stop_player_fx");
+  self endon("disable_cybercom");
   self.whiteflashfade = 1;
   lui::screen_fade(getdvarfloat("scr_overdrive_flash_fade_in_time", 0.075), getdvarfloat("scr_overdrive_flash_alpha", 0.7), 0, "white");
   wait(getdvarfloat("scr_overdrive_flash_fade_in_time", 0.075));
@@ -133,15 +73,6 @@ function activation_flash(localclientnum) {
   self.whiteflashfade = undefined;
 }
 
-/*
-	Name: enable_boost_camera_fx
-	Namespace: _gadget_overdrive
-	Checksum: 0xD6D4C26B
-	Offset: 0x940
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function enable_boost_camera_fx(localclientnum) {
   if(isdefined(self.firstperson_fx_overdrive)) {
     stopfx(localclientnum, self.firstperson_fx_overdrive);
@@ -151,19 +82,10 @@ function enable_boost_camera_fx(localclientnum) {
   self thread watch_stop_player_fx(localclientnum, self.firstperson_fx_overdrive);
 }
 
-/*
-	Name: watch_stop_player_fx
-	Namespace: _gadget_overdrive
-	Checksum: 0xEEF4F843
-	Offset: 0x9D8
-	Size: 0x96
-	Parameters: 2
-	Flags: Linked
-*/
 function watch_stop_player_fx(localclientnum, fx) {
-  self notify(# "watch_stop_player_fx");
-  self endon(# "watch_stop_player_fx");
-  self endon(# "entityshutdown");
+  self notify("watch_stop_player_fx");
+  self endon("watch_stop_player_fx");
+  self endon("entityshutdown");
   self util::waittill_any("stop_player_fx", "death", "disable_cybercom");
   if(isdefined(fx)) {
     stopfx(localclientnum, fx);
@@ -171,72 +93,36 @@ function watch_stop_player_fx(localclientnum, fx) {
   }
 }
 
-/*
-	Name: stop_boost_camera_fx
-	Namespace: _gadget_overdrive
-	Checksum: 0x48452796
-	Offset: 0xA78
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function stop_boost_camera_fx(localclientnum) {
-  self notify(# "stop_player_fx");
+  self notify("stop_player_fx");
   if(isdefined(self.whiteflashfade) && self.whiteflashfade) {
     lui::screen_fade(getdvarfloat("scr_overdrive_flash_fade_out_time", 0.45), 0, getdvarfloat("scr_overdrive_flash_alpha", 0.7), "white");
   }
 }
 
-/*
-	Name: overdrive_boost_fx_interrupt_handler
-	Namespace: _gadget_overdrive
-	Checksum: 0xA37AFB7D
-	Offset: 0xB10
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function overdrive_boost_fx_interrupt_handler(localclientnum) {
-  self endon(# "overdrive_boost_fx_interrupt_handler");
-  self endon(# "end_overdrive_boost_fx");
-  self endon(# "entityshutdown");
+  self endon("overdrive_boost_fx_interrupt_handler");
+  self endon("end_overdrive_boost_fx");
+  self endon("entityshutdown");
   self util::waittill_any("death", "disable_cybercom");
   self overdrive_shutdown(localclientnum);
 }
 
-/*
-	Name: overdrive_shutdown
-	Namespace: _gadget_overdrive
-	Checksum: 0xC8707E66
-	Offset: 0xB88
-	Size: 0x82
-	Parameters: 1
-	Flags: Linked
-*/
 function overdrive_shutdown(localclientnum) {
   if(isdefined(localclientnum)) {
     self stop_boost_camera_fx(localclientnum);
     self clearalternateaimparams();
     filter::disable_filter_overdrive(self, 3);
     disablespeedblur(localclientnum);
-    self notify(# "end_overdrive_boost_fx");
+    self notify("end_overdrive_boost_fx");
   }
 }
 
-/*
-	Name: boost_fx_on_velocity
-	Namespace: _gadget_overdrive
-	Checksum: 0x924A16FF
-	Offset: 0xC18
-	Size: 0x1C8
-	Parameters: 1
-	Flags: Linked
-*/
 function boost_fx_on_velocity(localclientnum) {
-  self endon(# "disable_cybercom");
-  self endon(# "death");
-  self endon(# "end_overdrive_boost_fx");
-  self endon(# "disconnect");
+  self endon("disable_cybercom");
+  self endon("death");
+  self endon("end_overdrive_boost_fx");
+  self endon("disconnect");
   self enable_boost_camera_fx(localclientnum);
   self thread overdrive_boost_fx_interrupt_handler(localclientnum);
   wait(getdvarfloat("scr_overdrive_boost_fx_time", 0.75));

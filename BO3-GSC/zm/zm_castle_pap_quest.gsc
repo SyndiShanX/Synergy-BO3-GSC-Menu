@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_castle_pap_quest.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -16,31 +20,12 @@
 #using scripts\zm\_zm_unitrigger;
 #using scripts\zm\zm_castle_flingers;
 #using scripts\zm\zm_castle_vo;
-
 #namespace zm_castle_pap_quest;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_castle_pap_quest
-	Checksum: 0x663618B
-	Offset: 0x540
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_castle_pap_quest", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_castle_pap_quest
-	Checksum: 0x5C1626B3
-	Offset: 0x588
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "pap_tp_fx", 5000, 1, "counter");
   level.var_e1ee8457 = 0;
@@ -51,30 +36,10 @@ function __init__() {
   zm_pap_util::set_interaction_trigger_radius(128);
 }
 
-/*
-	Name: __main__
-	Namespace: zm_castle_pap_quest
-	Checksum: 0x1AB23914
-	Offset: 0x650
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
-  /#
   level thread function_42a3de0d();
-  # /
 }
 
-/*
-	Name: function_c4641d12
-	Namespace: zm_castle_pap_quest
-	Checksum: 0xED75B347
-	Offset: 0x678
-	Size: 0x8E0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c4641d12(is_powered) {
   level.var_1c602ba8 = struct::get_array("s_pap_tp");
   level.pap_machine = self;
@@ -101,12 +66,12 @@ function function_c4641d12(is_powered) {
   pap_machine = getent("pap_prefab", "prefabname");
   self.zbarrier _zm_pack_a_punch::set_state_initial();
   self.zbarrier _zm_pack_a_punch::set_state_power_on();
-  level waittill(# "pack_machine_in_use");
+  level waittill("pack_machine_in_use");
   level.var_9b1767c1 = level.round_number + randomintrange(2, 4);
   var_94e7d6ca = undefined;
   var_3c7c9ebd = undefined;
   while (true) {
-    level waittill(# "end_of_round");
+    level waittill("end_of_round");
     if(isdefined(var_94e7d6ca)) {
       var_94e7d6ca delete();
     }
@@ -138,7 +103,7 @@ function function_c4641d12(is_powered) {
       var_94e7d6ca = spawn("script_model", var_528227ee);
       var_94e7d6ca setmodel("tag_origin");
       var_94e7d6ca.angles = var_39796348;
-      self.zbarrier waittill(# "leave_anim_done");
+      self.zbarrier waittill("leave_anim_done");
       var_4a6273cc = getent("pap_debris_" + level.var_94c82bf8[level.var_2eccab0d].script_noteworthy, "targetname");
       var_4a6273cc hide();
       e_clip = getent(("pap_" + level.var_94c82bf8[level.var_2eccab0d].script_noteworthy) + "_clip", "targetname");
@@ -168,30 +133,12 @@ function function_c4641d12(is_powered) {
   }
 }
 
-/*
-	Name: function_88c193db
-	Namespace: zm_castle_pap_quest
-	Checksum: 0x8001BCB9
-	Offset: 0xF60
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_88c193db() {
   if(level.var_94c82bf8[level.var_2eccab0d].script_noteworthy === "under") {
     self.origin = (-256, 2500, 310);
   }
 }
 
-/*
-	Name: function_2209afdf
-	Namespace: zm_castle_pap_quest
-	Checksum: 0xC540C5CA
-	Offset: 0xFB0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2209afdf() {
   b_touching = util::any_player_is_touching(self, "allies");
   while (b_touching) {
@@ -200,15 +147,6 @@ function function_2209afdf() {
   }
 }
 
-/*
-	Name: function_5f17a55c
-	Namespace: zm_castle_pap_quest
-	Checksum: 0x328E18C0
-	Offset: 0x1020
-	Size: 0x22A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5f17a55c() {
   a_players = array::get_all_closest(self.origin, level.players, undefined, 4, 95);
   foreach(e_player in a_players) {
@@ -227,15 +165,6 @@ function function_5f17a55c() {
   }
 }
 
-/*
-	Name: function_53bc4f86
-	Namespace: zm_castle_pap_quest
-	Checksum: 0xE9B286BB
-	Offset: 0x1258
-	Size: 0x4BC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_53bc4f86(pap_machine) {
   e_clip = getent(self.script_string, "targetname");
   e_clip.targetname = ("pap_" + self.script_noteworthy) + "_clip";
@@ -250,7 +179,7 @@ function function_53bc4f86(pap_machine) {
   s_unitrigger_stub.parent_struct = self;
   s_unitrigger_stub.parent_struct.activated = 0;
   zm_unitrigger::register_static_unitrigger(s_unitrigger_stub, & zm_castle_flingers::function_4029cf56);
-  s_unitrigger_stub waittill(# "trigger", e_who);
+  s_unitrigger_stub waittill("trigger", e_who);
   while (level.var_e1ee8457 > 0) {
     wait(0.05);
   }
@@ -296,15 +225,6 @@ function function_53bc4f86(pap_machine) {
   exploder::exploder_stop(var_22ce1993[self.script_noteworthy]);
 }
 
-/*
-	Name: function_23193d81
-	Namespace: zm_castle_pap_quest
-	Checksum: 0x94D69835
-	Offset: 0x1720
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function function_23193d81(str_location) {
   v_origin = undefined;
   v_angles = undefined;
@@ -334,19 +254,10 @@ function function_23193d81(str_location) {
   return var_4a6273cc;
 }
 
-/*
-	Name: function_b9cca08f
-	Namespace: zm_castle_pap_quest
-	Checksum: 0xD9CA6569
-	Offset: 0x18A0
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b9cca08f() {
-  level endon(# "pap_reformed");
-  self endon(# "death");
-  self endon(# "disconnect");
+  level endon("pap_reformed");
+  self endon("death");
+  self endon("disconnect");
   level flag::wait_till("pap_reform_available");
   s_pap_location = level.var_54cd8d06;
   while (true) {
@@ -359,15 +270,6 @@ function function_b9cca08f() {
   }
 }
 
-/*
-	Name: function_eb56512
-	Namespace: zm_castle_pap_quest
-	Checksum: 0xCE6CDD43
-	Offset: 0x19B0
-	Size: 0x5D4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_eb56512() {
   s_pap_location = level.var_54cd8d06;
   var_22ce1993 = [];
@@ -414,15 +316,6 @@ function function_eb56512() {
   exploder::exploder(var_6eb9e3e5[s_pap_location.script_noteworthy]);
 }
 
-/*
-	Name: function_566e5eb4
-	Namespace: zm_castle_pap_quest
-	Checksum: 0x8FB752EA
-	Offset: 0x1F90
-	Size: 0x102
-	Parameters: 0
-	Flags: Linked
-*/
 function function_566e5eb4() {
   var_cd9abb80 = getentarray(self.target, "targetname");
   n_loc_index = 0;
@@ -436,15 +329,6 @@ function function_566e5eb4() {
   }
 }
 
-/*
-	Name: function_335f66d5
-	Namespace: zm_castle_pap_quest
-	Checksum: 0xE982F39B
-	Offset: 0x20A0
-	Size: 0x92
-	Parameters: 0
-	Flags: Linked
-*/
 function function_335f66d5() {
   wait(0.25);
   foreach(var_c790d258 in level.var_c9f5f61) {
@@ -452,15 +336,6 @@ function function_335f66d5() {
   }
 }
 
-/*
-	Name: function_6591f9c7
-	Namespace: zm_castle_pap_quest
-	Checksum: 0xE1245B86
-	Offset: 0x2140
-	Size: 0x1BC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6591f9c7(var_b9d22a4b) {
   level.var_e1ee8457++;
   str_scenedef = ("p7_fxanim_zm_castle_pap_part" + self.script_int) + "_depart_bundle";
@@ -479,15 +354,6 @@ function function_6591f9c7(var_b9d22a4b) {
   level.var_e1ee8457--;
 }
 
-/*
-	Name: function_a8c41b9
-	Namespace: zm_castle_pap_quest
-	Checksum: 0xADD30E0E
-	Offset: 0x2308
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a8c41b9() {
   var_40cae301 = [];
   var_40cae301[0] = "fxexp_801";
@@ -505,20 +371,11 @@ function function_a8c41b9() {
   }
 }
 
-/*
-	Name: function_99664e8
-	Namespace: zm_castle_pap_quest
-	Checksum: 0xE508B05D
-	Offset: 0x2418
-	Size: 0x190
-	Parameters: 0
-	Flags: Linked
-*/
 function function_99664e8() {
   str_msg = & "";
   str_msg = self.stub.hint_string;
   if(level.var_e1ee8457 > 0) {
-    self sethintstring( & "ZM_CASTLE_PAP_TP_UNAVAILABLE");
+    self sethintstring(&"ZM_CASTLE_PAP_TP_UNAVAILABLE");
     return false;
   }
   if(self.stub.parent_struct.activated === 1) {
@@ -532,26 +389,16 @@ function function_99664e8() {
       if(!isdefined(level.var_2eccab0d)) {
         self sethintstring("");
       } else {
-        self sethintstring( & "ZM_CASTLE_PAP_TP_AWAY");
+        self sethintstring(&"ZM_CASTLE_PAP_TP_AWAY");
       }
     }
     return false;
   }
-  self sethintstring( & "ZM_CASTLE_PAP_TP_ACTIVATE");
+  self sethintstring(&"ZM_CASTLE_PAP_TP_ACTIVATE");
   return true;
 }
 
-/*
-	Name: detect_reentry
-	Namespace: zm_castle_pap_quest
-	Checksum: 0x9FF21716
-	Offset: 0x25B8
-	Size: 0x36
-	Parameters: 0
-	Flags: Linked
-*/
 function detect_reentry() {
-  /#
   if(isdefined(self.var_8665ab89)) {
     if(self.var_8665ab89 == gettime()) {
       return true;
@@ -559,38 +406,16 @@ function detect_reentry() {
   }
   self.var_8665ab89 = gettime();
   return false;
-  # /
 }
 
-/*
-	Name: function_42a3de0d
-	Namespace: zm_castle_pap_quest
-	Checksum: 0xBEF82CE1
-	Offset: 0x25F8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_42a3de0d() {
-  /#
   level flagsys::wait_till("");
   wait(1);
   zm_devgui::add_custom_devgui_callback( & function_f04119b5);
   adddebugcommand("");
-  # /
 }
 
-/*
-	Name: function_f04119b5
-	Namespace: zm_castle_pap_quest
-	Checksum: 0x239F4B1C
-	Offset: 0x2668
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f04119b5(cmd) {
-  /#
   switch (cmd) {
     case "": {
       if(level detect_reentry()) {
@@ -605,5 +430,4 @@ function function_f04119b5(cmd) {
     }
   }
   return false;
-  # /
 }

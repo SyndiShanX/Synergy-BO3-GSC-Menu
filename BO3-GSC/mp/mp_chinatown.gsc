@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_chinatown.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -6,18 +10,8 @@
 #using scripts\mp\mp_chinatown_sound;
 #using scripts\shared\compass;
 #using scripts\shared\util_shared;
-
 #namespace mp_chinatown;
 
-/*
-	Name: main
-	Namespace: mp_chinatown
-	Checksum: 0xD3FE3B56
-	Offset: 0x368
-	Size: 0x514
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache();
   mp_chinatown_fx::main();
@@ -52,13 +46,4 @@ function main() {
   level.cleandepositpoints = array((-97.928, -7.61413, 0.125), (1384.68, 1934.86, 8.125), (438.717, 1, 144.125), (857.493, -1991.98, 24.125));
 }
 
-/*
-	Name: precache
-	Namespace: mp_chinatown
-	Checksum: 0x99EC1590
-	Offset: 0x888
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {}

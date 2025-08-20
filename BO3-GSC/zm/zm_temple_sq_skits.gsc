@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_temple_sq_skits.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
@@ -6,18 +10,8 @@
 #using scripts\zm\_zm_sidequests;
 #using scripts\zm\zm_temple_sq;
 #using scripts\zm\zm_temple_sq_brock;
-
 #namespace zm_temple_sq_skits;
 
-/*
-	Name: build_skit_entry
-	Namespace: zm_temple_sq_skits
-	Checksum: 0xF6D2B9A2
-	Offset: 0x9C8
-	Size: 0xD4
-	Parameters: 2
-	Flags: Linked
-*/
 function build_skit_entry(character, vo) {
   entry = spawnstruct();
   switch (character) {
@@ -42,15 +36,6 @@ function build_skit_entry(character, vo) {
   return entry;
 }
 
-/*
-	Name: init_skits
-	Namespace: zm_temple_sq_skits
-	Checksum: 0x74B0A6C1
-	Offset: 0xAA8
-	Size: 0xDB6
-	Parameters: 0
-	Flags: Linked
-*/
 function init_skits() {
   if(!isdefined(level._skit_data)) {
     level._skit_data = [];
@@ -73,17 +58,8 @@ function init_skits() {
   }
 }
 
-/*
-	Name: skit_interupt
-	Namespace: zm_temple_sq_skits
-	Checksum: 0xA983F838
-	Offset: 0x1868
-	Size: 0x444
-	Parameters: 2
-	Flags: Linked
-*/
 function skit_interupt(fail_pos, group) {
-  level endon(# "start_skit_done");
+  level endon("start_skit_done");
   if(!isdefined(level._start_skit_pos)) {
     buttons = getentarray("sq_sundial_button", "targetname");
     pos = (0, 0, 0);
@@ -130,7 +106,7 @@ function skit_interupt(fail_pos, group) {
     }
     wait(0.1);
   }
-  level notify(# "skit_interupt");
+  level notify("skit_interupt");
   speaker = getplayers()[0];
   if(isdefined(level._last_skit_line_speaker)) {
     speaker = level._last_skit_line_speaker;
@@ -152,23 +128,12 @@ function skit_interupt(fail_pos, group) {
   if(!isdefined(speaker)) {
     return;
   }
-  /#
   iprintln((character + "") + snd);
-  # /
-    speaker playsoundwithnotify(snd, "line_done");
-  speaker waittill(# "line_done");
+  speaker playsoundwithnotify(snd, "line_done");
+  speaker waittill("line_done");
   level.skit_vox_override = 0;
 }
 
-/*
-	Name: do_skit_line
-	Namespace: zm_temple_sq_skits
-	Checksum: 0x9173FF5D
-	Offset: 0x1CB8
-	Size: 0x1BA
-	Parameters: 1
-	Flags: Linked
-*/
 function do_skit_line(script_line) {
   players = getplayers();
   speaking_player = players[0];
@@ -190,48 +155,28 @@ function do_skit_line(script_line) {
   if(!isdefined(speaking_player)) {
     return;
   }
-  /#
   iprintln((speaking_player getentitynumber() + "") + script_line.vo);
-  # /
-    speaking_player playsoundwithnotify(script_line.vo, "line_done");
-  speaking_player waittill(# "line_done");
+  speaking_player playsoundwithnotify(script_line.vo, "line_done");
+  speaking_player waittill("line_done");
   speaking_player.speaking_line = 0;
-  level notify(# "line_spoken");
+  level notify("line_spoken");
 }
 
-/*
-	Name: start_skit
-	Namespace: zm_temple_sq_skits
-	Checksum: 0x740CC220
-	Offset: 0x1E80
-	Size: 0xE4
-	Parameters: 2
-	Flags: Linked
-*/
 function start_skit(skit_name, group) {
-  level endon(# "skit_interupt");
+  level endon("skit_interupt");
   script = level._skit_data[skit_name];
   level.skit_vox_override = 1;
   level thread skit_interupt(undefined, group);
   for (i = 0; i < script.size; i++) {
     if(i == (script.size - 1)) {
-      level notify(# "start_skit_done");
+      level notify("start_skit_done");
     }
     level thread do_skit_line(script[i]);
-    level waittill(# "line_spoken");
+    level waittill("line_spoken");
   }
   level.skit_vox_override = 0;
 }
 
-/*
-	Name: fail_skit
-	Namespace: zm_temple_sq_skits
-	Checksum: 0x430FDB2C
-	Offset: 0x1F70
-	Size: 0x35C
-	Parameters: 1
-	Flags: Linked
-*/
 function fail_skit(first_time) {
   fail_skits = undefined;
   if(isdefined(first_time) && first_time) {
@@ -265,16 +210,16 @@ function fail_skit(first_time) {
       pos = pos + proposed_group[i].origin;
     }
     pos = pos / proposed_group.size;
-    level endon(# "skit_interupt");
+    level endon("skit_interupt");
     level thread skit_interupt(pos, proposed_group);
     for (i = 0; i < proposed_group.size; i++) {
       level thread do_skit_line(skit[proposed_group[i].characterindex]);
-      level waittill(# "line_spoken");
+      level waittill("line_spoken");
     }
   } else {
     player = players[randomintrange(0, players.size)];
     level thread do_skit_line(skit[player.characterindex]);
-    level waittill(# "line_spoken");
+    level waittill("line_spoken");
   }
   level.skit_vox_override = 0;
 }

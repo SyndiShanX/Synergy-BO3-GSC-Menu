@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\scene_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai_shared;
 #using scripts\shared\animation_shared;
@@ -17,7 +21,6 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("all_player");
 #using_animtree("generic");
 
@@ -43,41 +46,17 @@ class csceneobject: cscriptbundleobjectbase {
   var _str_state;
   var _b_spawnonce_used;
 
-  /*
-  	Name: constructor
-  	Namespace: csceneobject
-  	Checksum: 0xBD185AF2
-  	Offset: 0xC60
-  	Size: 0x38
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {
     _is_valid = 1;
     _b_spawnonce_used = 0;
     _b_set_goal = 1;
   }
 
-  /*
-  	Name: destructor
-  	Namespace: csceneobject
-  	Checksum: 0xFA65860E
-  	Offset: 0xCA0
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: skip_scene
-  	Namespace: csceneobject
-  	Checksum: 0x74AB899
-  	Offset: 0x71E8
-  	Size: 0x54
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function skip_scene(b_wait_one_frame) {
     if(isdefined(b_wait_one_frame)) {
       wait(0.05);
@@ -88,55 +67,33 @@ class csceneobject: cscriptbundleobjectbase {
     skip_scene_on_server();
   }
 
-  /*
-  	Name: skip_scene_on_server
-  	Namespace: csceneobject
-  	Checksum: 0x3D743F93
-  	Offset: 0x7090
-  	Size: 0x14C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function skip_scene_on_server() {
     if(isdefined(current_playing_anim)) {
-      /#
       if(getdvarint("") > 0) {
         printtoprightln((("" + _s.mainanim) + "") + gettime(), (1, 1, 1));
       }
-      # /
-        if(is_shared_player()) {
-          foreach(player in level.players) {
-            skip_anim_on_server(player, current_playing_anim[player getentitynumber()]);
-          }
+      if(is_shared_player()) {
+        foreach(player in level.players) {
+          skip_anim_on_server(player, current_playing_anim[player getentitynumber()]);
         }
-      else {
+      } else {
         skip_anim_on_server(_e, current_playing_anim);
       }
     }
   }
 
-  /*
-  	Name: skip_scene_on_client
-  	Namespace: csceneobject
-  	Checksum: 0xC8D00C1C
-  	Offset: 0x6F28
-  	Size: 0x15C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function skip_scene_on_client() {
     if(isdefined(current_playing_anim)) {
-      /#
       if(getdvarint("") > 0) {
         printtoprightln((("" + _s.mainanim) + "") + gettime(), vectorscale((1, 1, 1), 0.8));
       }
-      # /
-        if(is_shared_player()) {
-          foreach(player in level.players) {
-            skip_anim_on_client(player, current_playing_anim[player getentitynumber()]);
-          }
+      if(is_shared_player()) {
+        foreach(player in level.players) {
+          skip_anim_on_client(player, current_playing_anim[player getentitynumber()]);
         }
-      else {
+      } else {
         skip_anim_on_client(_e, current_playing_anim);
       }
       return true;
@@ -144,15 +101,7 @@ class csceneobject: cscriptbundleobjectbase {
     return false;
   }
 
-  /*
-  	Name: skip_anim_on_server
-  	Namespace: csceneobject
-  	Checksum: 0xA770363A
-  	Offset: 0x6E60
-  	Size: 0xBC
-  	Parameters: 2
-  	Flags: Linked, Private
-  */
+
   function private skip_anim_on_server(entity, anim_name) {
     if(!isdefined(anim_name)) {
       return;
@@ -172,15 +121,7 @@ class csceneobject: cscriptbundleobjectbase {
     entity stopsounds();
   }
 
-  /*
-  	Name: skip_anim_on_client
-  	Namespace: csceneobject
-  	Checksum: 0x507B2946
-  	Offset: 0x6DC8
-  	Size: 0x8C
-  	Parameters: 2
-  	Flags: Linked, Private
-  */
+
   function private skip_anim_on_client(entity, anim_name) {
     if(!isdefined(anim_name)) {
       return;
@@ -198,15 +139,7 @@ class csceneobject: cscriptbundleobjectbase {
     entity clientfield::increment("player_scene_animation_skip");
   }
 
-  /*
-  	Name: _should_skip_entity
-  	Namespace: csceneobject
-  	Checksum: 0xB07EB728
-  	Offset: 0x6BA8
-  	Size: 0x216
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _should_skip_entity() {
     if(!(isdefined(_s.player) && _s.player) && (!(isdefined(_s.sharedigc) && _s.sharedigc)) && (!(isdefined(_s.keepwhileskipping) && _s.keepwhileskipping)) && (isdefined([
         [_o_bundle]
@@ -236,15 +169,7 @@ class csceneobject: cscriptbundleobjectbase {
     return false;
   }
 
-  /*
-  	Name: _should_skip_anim
-  	Namespace: csceneobject
-  	Checksum: 0x857799C5
-  	Offset: 0x6A28
-  	Size: 0x176
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function _should_skip_anim(animation) {
     if(!(isdefined(_s.player) && _s.player) && (!(isdefined(_s.sharedigc) && _s.sharedigc)) && (!(isdefined(_s.keepwhileskipping) && _s.keepwhileskipping)) && (isdefined([
         [_o_bundle]
@@ -267,93 +192,37 @@ class csceneobject: cscriptbundleobjectbase {
     return false;
   }
 
-  /*
-  	Name: in_a_different_scene
-  	Namespace: csceneobject
-  	Checksum: 0x16D8F436
-  	Offset: 0x69D8
-  	Size: 0x44
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function in_a_different_scene() {
     return isdefined(_e) && isdefined(_e.current_scene) && _e.current_scene != _o_bundle._str_name;
   }
 
-  /*
-  	Name: is_shared_player
-  	Namespace: csceneobject
-  	Checksum: 0x5B09655E
-  	Offset: 0x6990
-  	Size: 0x3A
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_shared_player() {
     return isdefined(_s.player) && (isdefined(_s.sharedigc) && _s.sharedigc);
   }
 
-  /*
-  	Name: is_player_model
-  	Namespace: csceneobject
-  	Checksum: 0x732F0216
-  	Offset: 0x6968
-  	Size: 0x1C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_player_model() {
     return _s.type === "player model";
   }
 
-  /*
-  	Name: is_player
-  	Namespace: csceneobject
-  	Checksum: 0xC429227B
-  	Offset: 0x6948
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_player() {
     return isdefined(_s.player);
   }
 
-  /*
-  	Name: is_alive
-  	Namespace: csceneobject
-  	Checksum: 0x4EFABA94
-  	Offset: 0x6900
-  	Size: 0x3C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_alive() {
     return isdefined(_e) && (_e.health > 0 || _s.ignorealivecheck === 1);
   }
 
-  /*
-  	Name: has_init_state
-  	Namespace: csceneobject
-  	Checksum: 0xB1BD7DB9
-  	Offset: 0x68D8
-  	Size: 0x1A
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function has_init_state() {
     return _s scene::_has_init_state();
   }
 
-  /*
-  	Name: reset_player
-  	Namespace: csceneobject
-  	Checksum: 0xEB7E7615
-  	Offset: 0x6838
-  	Size: 0x94
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function reset_player() {
     level flag::wait_till("all_players_spawned");
     player = _player;
@@ -363,17 +232,9 @@ class csceneobject: cscriptbundleobjectbase {
     player show();
   }
 
-  /*
-  	Name: link_player
-  	Namespace: csceneobject
-  	Checksum: 0x81F5C579
-  	Offset: 0x6490
-  	Size: 0x39C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function link_player() {
-    self endon(# "done");
+    self endon("done");
     level flag::wait_till("all_players_spawned");
     player = _player;
     player hide();
@@ -390,7 +251,7 @@ class csceneobject: cscriptbundleobjectbase {
     player disableoffhandweapons();
     player disableweapons();
     util::wait_network_frame();
-    player notify(# "scene_link", _s.cameratween > 0);
+    player notify("scene_link", _s.cameratween > 0);
     waittillframeend();
     if(isdefined(_s.lockview) && _s.lockview) {
       player playerlinktoabsolute(_e, "tag_player");
@@ -401,41 +262,17 @@ class csceneobject: cscriptbundleobjectbase {
     _e show();
   }
 
-  /*
-  	Name: get_camera_tween_out
-  	Namespace: csceneobject
-  	Checksum: 0xDF496D71
-  	Offset: 0x6458
-  	Size: 0x2C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_camera_tween_out() {
     return true;
   }
 
-  /*
-  	Name: get_camera_tween
-  	Namespace: csceneobject
-  	Checksum: 0x2B82B344
-  	Offset: 0x6420
-  	Size: 0x2C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_camera_tween() {
     return true;
   }
 
-  /*
-  	Name: get_lerp_time
-  	Namespace: csceneobject
-  	Checksum: 0x162E8AB9
-  	Offset: 0x6398
-  	Size: 0x78
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_lerp_time() {
     if(isplayer(_e)) {
       return true;
@@ -443,17 +280,9 @@ class csceneobject: cscriptbundleobjectbase {
     return true;
   }
 
-  /*
-  	Name: regroup_invulnerability
-  	Namespace: csceneobject
-  	Checksum: 0xEAB1AA8D
-  	Offset: 0x6310
-  	Size: 0x7A
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function regroup_invulnerability(e_player) {
-    e_player endon(# "disconnect");
+    e_player endon("disconnect");
     e_player.ignoreme = 1;
     e_player.b_teleport_invulnerability = 1;
     e_player util::streamer_wait(undefined, 0, 7);
@@ -461,15 +290,7 @@ class csceneobject: cscriptbundleobjectbase {
     e_player.b_teleport_invulnerability = undefined;
   }
 
-  /*
-  	Name: play_regroup_fx_for_scene
-  	Namespace: csceneobject
-  	Checksum: 0x79BF1223
-  	Offset: 0x6118
-  	Size: 0x1EC
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function play_regroup_fx_for_scene(e_player) {
     align = get_align_ent();
     v_origin = align.origin;
@@ -490,27 +311,15 @@ class csceneobject: cscriptbundleobjectbase {
     util::wait_network_frame();
   }
 
-  /*
-  	Name: _play_shared_player_anim_for_player
-  	Namespace: csceneobject
-  	Checksum: 0x6DD40827
-  	Offset: 0x5980
-  	Size: 0x78C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function _play_shared_player_anim_for_player(player) {
-    player endon(# "death");
-    /#
-    # /
-      /#
+    player endon("death");
     if(getdvarint("") > 0) {
       printtoprightln("" + player_animation);
     }
-    # /
-      if(!isdefined(_o_bundle)) {
-        return;
-      }
+    if(!isdefined(_o_bundle)) {
+      return;
+    }
     player flagsys::set("shared_igc");
     if(player flagsys::get(player_animation_notify)) {
       player flagsys::set(player_animation_notify + "_skip_init_clear");
@@ -550,15 +359,13 @@ class csceneobject: cscriptbundleobjectbase {
       }
     }
     if(n_time_frac < 1) {
-      /#
       if(getdvarint("") > 0) {
         player hide();
       }
       if(getdvarint("") > 0) {
         printtoprightln((("" + _s.name) + "") + player_animation);
       }
-      # /
-        str_animation = player_animation;
+      str_animation = player_animation;
       if(player util::is_female()) {
         if(isdefined(_o_bundle._s.s_female_bundle)) {
           s_bundle = _o_bundle._s.s_female_bundle;
@@ -595,30 +402,18 @@ class csceneobject: cscriptbundleobjectbase {
       if(!player isplayinganimscripted()) {
         current_playing_anim[player_num] = undefined;
       }
-      /#
       if(getdvarint("") > 0) {
         printtoprightln((("" + _s.name) + "") + player_animation);
       }
-      # /
     }
   }
 
-  /*
-  	Name: _play_shared_player_anim
-  	Namespace: csceneobject
-  	Checksum: 0x1CA0BC2D
-  	Offset: 0x5628
-  	Size: 0x350
-  	Parameters: 5
-  	Flags: Linked
-  */
+
   function _play_shared_player_anim(animation, align, tag, n_rate, n_time) {
-    /#
     if(getdvarint("") > 0) {
       printtoprightln("" + animation);
     }
-    # /
-      player_animation = animation;
+    player_animation = animation;
     player_animation_notify = animation + "_notify";
     player_animation_length = getanimlength(animation);
     player_align = align;
@@ -653,15 +448,7 @@ class csceneobject: cscriptbundleobjectbase {
     thread[[_o_bundle]] - > _call_state_funcs("players_done");
   }
 
-  /*
-  	Name: spawn_ent
-  	Namespace: csceneobject
-  	Checksum: 0x2799129B
-  	Offset: 0x5390
-  	Size: 0x28E
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function spawn_ent(e) {
     b_disable_throttle = _o_bundle._s scene::is_igc() || (isdefined(_o_bundle._s.dontthrottle) && _o_bundle._s.dontthrottle);
     if(is_player() && (!(isdefined(_s.newplayermethod) && _s.newplayermethod))) {
@@ -671,14 +458,12 @@ class csceneobject: cscriptbundleobjectbase {
     }
     if(isdefined(e)) {
       if(isspawner(e)) {
-        /#
         if(_o_bundle._testing) {
           e.count++;
         }
-        # /
-          if(!cscriptbundleobjectbase::error(e.count < 1, "Trying to spawn AI for scene with spawner count < 1")) {
-            return e spawner::spawn(1, undefined, undefined, undefined, b_disable_throttle);
-          }
+        if(!cscriptbundleobjectbase::error(e.count < 1, "Trying to spawn AI for scene with spawner count < 1")) {
+          return e spawner::spawn(1, undefined, undefined, undefined, b_disable_throttle);
+        }
       }
     } else if(isdefined(_s.model)) {
       new_model = undefined;
@@ -691,17 +476,8 @@ class csceneobject: cscriptbundleobjectbase {
     }
   }
 
-  /*
-  	Name: _play_anim
-  	Namespace: csceneobject
-  	Checksum: 0x78721EE
-  	Offset: 0x4818
-  	Size: 0xB6C
-  	Parameters: 6
-  	Flags: Linked
-  */
+
   function _play_anim(animation, n_delay_min = 0, n_delay_max = 0, n_rate = 1, n_blend = 0.2, n_time = 0) {
-    /#
     if(getdvarint("") > 0) {
       if(isdefined(_s.name)) {
         printtoprightln("" + _s.name);
@@ -709,10 +485,9 @@ class csceneobject: cscriptbundleobjectbase {
         printtoprightln("" + _s.model);
       }
     }
-    # /
-      if(_should_skip_anim(animation)) {
-        return;
-      }
+    if(_should_skip_anim(animation)) {
+      return;
+    }
     if(n_time != 0) {
       n_time = [
         [_o_bundle]
@@ -790,12 +565,9 @@ class csceneobject: cscriptbundleobjectbase {
         if(isdefined(_s.diewhenfinished) && _s.diewhenfinished) {
           n_blend_out = 0;
         }
-        /#
         if(getdvarint("") > 0) {
           printtoprightln((("" + (isdefined(_s.name) ? _s.name : _s.model)) + "") + animation);
         }
-        # /
-          /#
         if(getdvarint("") > 0) {
           if(!isdefined(level.animation_played)) {
             level.animation_played = [];
@@ -808,8 +580,7 @@ class csceneobject: cscriptbundleobjectbase {
             level.animation_played[level.animation_played.size] = animation_played_name;
           }
         }
-        # /
-          current_playing_anim = animation;
+        current_playing_anim = animation;
         if(isdefined([
             [_o_bundle]
           ] - > is_skipping_scene()) && [
@@ -821,7 +592,6 @@ class csceneobject: cscriptbundleobjectbase {
         if(!isdefined(_e) || !_e isplayinganimscripted()) {
           self.current_playing_anim = undefined;
         }
-        /#
         if(getdvarint("") > 0) {
           if(isdefined(level.animation_played)) {
             for (i = 0; i < level.animation_played.size; i++) {
@@ -834,46 +604,25 @@ class csceneobject: cscriptbundleobjectbase {
             }
           }
         }
-        # /
-          /#
         if(getdvarint("") > 0) {
           printtoprightln((("" + (isdefined(_s.name) ? _s.name : _s.model)) + "") + animation);
         }
-        # /
       }
     } else {
-      /#
       cscriptbundleobjectbase::log(("" + animation) + "");
-      # /
     }
     _is_valid = is_alive() && !in_a_different_scene();
   }
 
-  /*
-  	Name: _track_goal
-  	Namespace: csceneobject
-  	Checksum: 0x8940E196
-  	Offset: 0x47D0
-  	Size: 0x3C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _track_goal() {
-    self endon(# "cleanup");
-    _e endon(# "death");
-    _e waittill(# "goal_changed");
+    self endon("cleanup");
+    _e endon("death");
+    _e waittill("goal_changed");
     _b_set_goal = 0;
   }
 
-  /*
-  	Name: _set_goal
-  	Namespace: csceneobject
-  	Checksum: 0x543F0381
-  	Offset: 0x46C0
-  	Size: 0x104
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _set_goal() {
     if(!(_e.scene_spawned === _o_bundle._s.name && isdefined(_e.target))) {
       if(!isdefined(_e.script_forcecolor)) {
@@ -889,15 +638,7 @@ class csceneobject: cscriptbundleobjectbase {
     }
   }
 
-  /*
-  	Name: _cleanup
-  	Namespace: csceneobject
-  	Checksum: 0xA1FC53C2
-  	Offset: 0x44E0
-  	Size: 0x1D8
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _cleanup() {
     if(isdefined(_e) && isdefined(_e.current_scene)) {
       _e flagsys::clear(_o_bundle._str_name);
@@ -915,10 +656,10 @@ class csceneobject: cscriptbundleobjectbase {
         }
       }
     }
-    self notify(# "death");
-    self endon(# "new_state");
+    self notify("death");
+    self endon("new_state");
     waittillframeend();
-    self notify(# "cleanup");
+    self notify("cleanup");
     if(isai(_e)) {
       _set_goal();
     }
@@ -927,15 +668,7 @@ class csceneobject: cscriptbundleobjectbase {
     }
   }
 
-  /*
-  	Name: do_death_anims
-  	Namespace: csceneobject
-  	Checksum: 0xC132012F
-  	Offset: 0x43A8
-  	Size: 0x12C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function do_death_anims() {
     ent = _e;
     if(isai(ent) && !isdefined(_str_death_anim) && !isdefined(_str_death_anim_loop)) {
@@ -954,32 +687,16 @@ class csceneobject: cscriptbundleobjectbase {
     }
   }
 
-  /*
-  	Name: _on_death
-  	Namespace: csceneobject
-  	Checksum: 0xA654074C
-  	Offset: 0x4330
-  	Size: 0x6C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _on_death() {
-    self endon(# "cleanup");
-    _e waittill(# "death");
+    self endon("cleanup");
+    _e waittill("death");
     if(isdefined(_e) && (!(isdefined(_e.skipscenedeath) && _e.skipscenedeath))) {
       self thread do_death_anims();
     }
   }
 
-  /*
-  	Name: set_objective
-  	Namespace: csceneobject
-  	Checksum: 0x75BED9A1
-  	Offset: 0x4280
-  	Size: 0xA4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function set_objective() {
     if(!isdefined(_e.script_objective)) {
       if(isdefined(_o_bundle._e_root.script_objective)) {
@@ -990,22 +707,12 @@ class csceneobject: cscriptbundleobjectbase {
     }
   }
 
-  /*
-  	Name: _finish_player
-  	Namespace: csceneobject
-  	Checksum: 0xEB413B55
-  	Offset: 0x3F98
-  	Size: 0x2DC
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function _finish_player(player) {
-    /#
     if(getdvarint("") > 0) {
       printtoprightln("");
     }
-    # /
-      player.scene_set_visible_time = level.time;
+    player.scene_set_visible_time = level.time;
     player setvisibletoall();
     player flagsys::clear("shared_igc");
     if(!(isdefined(player.magic_bullet_shield) && player.magic_bullet_shield)) {
@@ -1048,109 +755,87 @@ class csceneobject: cscriptbundleobjectbase {
     player sethighdetail(0);
   }
 
-  /*
-  	Name: finish
-  	Namespace: csceneobject
-  	Checksum: 0xF9181D76
-  	Offset: 0x3888
-  	Size: 0x704
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function finish(b_clear = 0, b_canceled = 0) {
-    /#
     if(getdvarint("") > 0) {
       printtoprightln("" + (isdefined(_s.name) ? _s.name : _s.model));
     }
-    # /
-      if(isdefined(_str_state)) {
-        _str_state = undefined;
-        self notify(# "new_state");
-        if(!is_shared_player() && !is_alive()) {
-          _cleanup();
-          _e = undefined;
-          _is_valid = 0;
-        } else {
-          if(!is_player()) {
-            if(isdefined(_e._scene_old_takedamage)) {
-              _e.takedamage = _e._scene_old_takedamage;
-            }
-            if(!(isdefined(_e.magic_bullet_shield) && _e.magic_bullet_shield)) {
-              _e.allowdeath = 1;
-            }
-            _e._scene_old_takedamage = undefined;
-            _e._scene_old_gun_removed = undefined;
-          } else {
-            if(is_shared_player()) {
-              foreach(player in level.players) {
-                if(player flagsys::get("shared_igc")) {
-                  _finish_player(player);
-                }
-              }
-            } else {
-              player = (isplayer(_player) ? _player : _e);
-              _finish_player(player);
-            }
-          }
-          if(isdefined(_s.removeweapon) && _s.removeweapon && (!(isdefined(_e._scene_old_gun_removed) && _e._scene_old_gun_removed))) {
-            if(isplayer(_e)) {
-              /#
-              if(getdvarint("") > 0) {
-                printtoprightln("" + (isdefined(_s.name) ? _s.name : _s.model));
-              }
-              # /
-                _e player::give_back_weapons();
-            } else {
-              /#
-              printtoprightln("" + (isdefined(_s.name) ? _s.name : _s.model));
-              # /
-                if(getdvarint("") > 0) {}
-              _e animation::attach_weapon();
-            }
-          }
-          if(!isplayer(_e)) {
-            if(isdefined(_e)) {
-              _e sethighdetail(0);
-            }
-          }
-        }
-        flagsys::set("ready");
-        flagsys::set("done");
-        if(isdefined(_e)) {
-          if(!is_player()) {
-            if(is_alive() && (isdefined(_s.deletewhenfinished) && _s.deletewhenfinished || b_clear)) {
-              _e thread scene::synced_delete();
-            } else if(is_alive() && (isdefined(_s.diewhenfinished) && _s.diewhenfinished) && !b_canceled) {
-              _e.skipdeath = 1;
-              _e.allowdeath = 1;
-              _e.skipscenedeath = 1;
-              _e kill();
-            }
-          }
-          if(isactor(_e) && isalive(_e)) {
-            if(isdefined(_s.delaymovementatend) && _s.delaymovementatend) {
-              _e pathmode("move delayed", 1, randomfloatrange(2, 3));
-            } else {
-              _e pathmode("move allowed");
-            }
-            if(isdefined(_s.lookatplayer) && _s.lookatplayer) {
-              _e lookatentity();
-            }
-          }
-        }
+    if(isdefined(_str_state)) {
+      _str_state = undefined;
+      self notify("new_state");
+      if(!is_shared_player() && !is_alive()) {
         _cleanup();
+        _e = undefined;
+        _is_valid = 0;
+      } else {
+        if(!is_player()) {
+          if(isdefined(_e._scene_old_takedamage)) {
+            _e.takedamage = _e._scene_old_takedamage;
+          }
+          if(!(isdefined(_e.magic_bullet_shield) && _e.magic_bullet_shield)) {
+            _e.allowdeath = 1;
+          }
+          _e._scene_old_takedamage = undefined;
+          _e._scene_old_gun_removed = undefined;
+        } else {
+          if(is_shared_player()) {
+            foreach(player in level.players) {
+              if(player flagsys::get("shared_igc")) {
+                _finish_player(player);
+              }
+            }
+          } else {
+            player = (isplayer(_player) ? _player : _e);
+            _finish_player(player);
+          }
+        }
+        if(isdefined(_s.removeweapon) && _s.removeweapon && (!(isdefined(_e._scene_old_gun_removed) && _e._scene_old_gun_removed))) {
+          if(isplayer(_e)) {
+            if(getdvarint("") > 0) {
+              printtoprightln("" + (isdefined(_s.name) ? _s.name : _s.model));
+            }
+            _e player::give_back_weapons();
+          } else {
+            printtoprightln("" + (isdefined(_s.name) ? _s.name : _s.model));
+            if(getdvarint("") > 0) {}
+            _e animation::attach_weapon();
+          }
+        }
+        if(!isplayer(_e)) {
+          if(isdefined(_e)) {
+            _e sethighdetail(0);
+          }
+        }
       }
+      flagsys::set("ready");
+      flagsys::set("done");
+      if(isdefined(_e)) {
+        if(!is_player()) {
+          if(is_alive() && (isdefined(_s.deletewhenfinished) && _s.deletewhenfinished || b_clear)) {
+            _e thread scene::synced_delete();
+          } else if(is_alive() && (isdefined(_s.diewhenfinished) && _s.diewhenfinished) && !b_canceled) {
+            _e.skipdeath = 1;
+            _e.allowdeath = 1;
+            _e.skipscenedeath = 1;
+            _e kill();
+          }
+        }
+        if(isactor(_e) && isalive(_e)) {
+          if(isdefined(_s.delaymovementatend) && _s.delaymovementatend) {
+            _e pathmode("move delayed", 1, randomfloatrange(2, 3));
+          } else {
+            _e pathmode("move allowed");
+          }
+          if(isdefined(_s.lookatplayer) && _s.lookatplayer) {
+            _e lookatentity();
+          }
+        }
+      }
+      _cleanup();
+    }
   }
 
-  /*
-  	Name: set_player_stance
-  	Namespace: csceneobject
-  	Checksum: 0xDECCD62E
-  	Offset: 0x3750
-  	Size: 0x12C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function set_player_stance(player) {
     if(_s.playerstance === "crouch") {
       player allowstand(0);
@@ -1169,42 +854,24 @@ class csceneobject: cscriptbundleobjectbase {
     }
   }
 
-  /*
-  	Name: revive_player
-  	Namespace: csceneobject
-  	Checksum: 0xE0CE13F3
-  	Offset: 0x36E0
-  	Size: 0x64
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function revive_player(player) {
     if(player.sessionstate === "spectator") {
       player thread[[level.spawnplayer]]();
     } else if(player laststand::player_is_in_laststand()) {
-      player notify(# "auto_revive");
+      player notify("auto_revive");
     }
   }
 
-  /*
-  	Name: _prepare_player
-  	Namespace: csceneobject
-  	Checksum: 0x8E965A82
-  	Offset: 0x3140
-  	Size: 0x594
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function _prepare_player(player) {
-    /#
     if(getdvarint("") > 0) {
       printtoprightln("");
     }
-    # /
-      if(isdefined(player.play_scene_transition_effect) && player.play_scene_transition_effect) {
-        player.play_scene_transition_effect = undefined;
-        play_regroup_fx_for_scene(player);
-      }
+    if(isdefined(player.play_scene_transition_effect) && player.play_scene_transition_effect) {
+      player.play_scene_transition_effect = undefined;
+      play_regroup_fx_for_scene(player);
+    }
     if(player.current_player_scene === _o_bundle._str_name) {
       [
         [_o_bundle]
@@ -1215,7 +882,7 @@ class csceneobject: cscriptbundleobjectbase {
     if(player flagsys::get("mobile_armory_in_use")) {
       player flagsys::set("cancel_mobile_armory");
       player closemenu("ChooseClass_InGame");
-      player notify(# "menuresponse", "ChooseClass_InGame", "cancel");
+      player notify("menuresponse", "ChooseClass_InGame", "cancel");
     }
     if(player flagsys::get("mobile_armory_begin_use")) {
       player util::_enableweapon();
@@ -1249,15 +916,7 @@ class csceneobject: cscriptbundleobjectbase {
     set_player_stance(player);
   }
 
-  /*
-  	Name: _prepare
-  	Namespace: csceneobject
-  	Checksum: 0xDF620025
-  	Offset: 0x2810
-  	Size: 0x928
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _prepare() {
     if(isdefined(_s.dynamicpaths) && _s.dynamicpaths && _str_state == "play") {
       _e.scene_orig_origin = _e.origin;
@@ -1269,7 +928,7 @@ class csceneobject: cscriptbundleobjectbase {
       ] - > trigger_scene_sequence_started(self, _e);
       return false;
     }
-    _e endon(# "death");
+    _e endon("death");
     if(!(isdefined(_s.ignorealivecheck) && _s.ignorealivecheck) && (cscriptbundleobjectbase::error(isai(_e) && !isalive(_e), "Trying to play a scene on a dead AI."))) {
       return;
     }
@@ -1365,15 +1024,7 @@ class csceneobject: cscriptbundleobjectbase {
     return true;
   }
 
-  /*
-  	Name: _spawn
-  	Namespace: csceneobject
-  	Checksum: 0x8F747061
-  	Offset: 0x20B0
-  	Size: 0x754
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function _spawn(e_spawner, b_hide = 1, b_set_ready_when_spawned = 1) {
     if(isdefined(e_spawner)) {
       _e = e_spawner;
@@ -1464,41 +1115,17 @@ class csceneobject: cscriptbundleobjectbase {
     }
   }
 
-  /*
-  	Name: get_orig_name
-  	Namespace: csceneobject
-  	Checksum: 0x2068C712
-  	Offset: 0x2090
-  	Size: 0x12
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_orig_name() {
     return _s.name;
   }
 
-  /*
-  	Name: get_name
-  	Namespace: csceneobject
-  	Checksum: 0xE03FA585
-  	Offset: 0x2078
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_name() {
     return _str_name;
   }
 
-  /*
-  	Name: _assign_unique_name
-  	Namespace: csceneobject
-  	Checksum: 0xD934056B
-  	Offset: 0x1F10
-  	Size: 0x15C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _assign_unique_name() {
     if(is_player()) {
       _str_name = "player " + _s.player;
@@ -1528,18 +1155,10 @@ class csceneobject: cscriptbundleobjectbase {
     }
   }
 
-  /*
-  	Name: _on_damage_run_scene_thread
-  	Namespace: csceneobject
-  	Checksum: 0x823860C5
-  	Offset: 0x1B70
-  	Size: 0x394
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _on_damage_run_scene_thread() {
-    self endon(# "play");
-    self endon(# "done");
+    self endon("play");
+    self endon("done");
     loc_00001C10:
       loc_00001C60:
       loc_00001CB0:
@@ -1548,7 +1167,7 @@ class csceneobject: cscriptbundleobjectbase {
     if(str_damage_types != "") {
       b_run_scene = 0;
       while (!b_run_scene) {
-        _e waittill(# "damage", n_amount, e_attacker, v_org, v_dir, str_mod);
+        _e waittill("damage", n_amount, e_attacker, v_org, v_dir, str_mod);
         switch (str_mod) {
           case "MOD_PISTOL_BULLET":
           case "MOD_RIFLE_BULLET": {
@@ -1589,28 +1208,12 @@ class csceneobject: cscriptbundleobjectbase {
     }
   }
 
-  /*
-  	Name: scene
-  	Namespace: csceneobject
-  	Checksum: 0x707FF5E8
-  	Offset: 0x1B58
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function scene() {
     return _o_bundle;
   }
 
-  /*
-  	Name: get_align_tag
-  	Namespace: csceneobject
-  	Checksum: 0x96E156CE
-  	Offset: 0x1AE0
-  	Size: 0x6A
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_align_tag() {
     if(isdefined(_s.aligntargettag)) {
       return _s.aligntargettag;
@@ -1621,15 +1224,7 @@ class csceneobject: cscriptbundleobjectbase {
     return _o_bundle._s.aligntargettag;
   }
 
-  /*
-  	Name: get_align_ent
-  	Namespace: csceneobject
-  	Checksum: 0x589E4BDD
-  	Offset: 0x1910
-  	Size: 0x1C4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_align_ent() {
     e_align = undefined;
     if(isdefined(_s.aligntarget) && !_s.aligntarget === _o_bundle._s.aligntarget) {
@@ -1656,46 +1251,27 @@ class csceneobject: cscriptbundleobjectbase {
     return e_align;
   }
 
-  /*
-  	Name: stop
-  	Namespace: csceneobject
-  	Checksum: 0x12FF2A84
-  	Offset: 0x16E8
-  	Size: 0x21C
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function stop(b_clear = 0, b_dont_clear_anim = 0, b_finished = 0) {
-    /#
     if(getdvarint("") > 0) {
       printtoprightln("" + (isdefined(_s.name) ? _s.name : _s.model));
     }
-    # /
-      if(isalive(_e)) {
-        if(is_shared_player()) {
-          foreach(player in level.players) {
-            player stopanimscripted(0.2);
-          }
-        } else if(!(isdefined(_s.diewhenfinished) && _s.diewhenfinished) || !b_finished) {
-          if(!b_dont_clear_anim || isplayer(_e)) {
-            _e stopanimscripted(0.2);
-          }
+    if(isalive(_e)) {
+      if(is_shared_player()) {
+        foreach(player in level.players) {
+          player stopanimscripted(0.2);
+        }
+      } else if(!(isdefined(_s.diewhenfinished) && _s.diewhenfinished) || !b_finished) {
+        if(!b_dont_clear_anim || isplayer(_e)) {
+          _e stopanimscripted(0.2);
         }
       }
+    }
     finish(b_clear, !b_finished);
   }
 
-  /*
-  	Name: play
-  	Namespace: csceneobject
-  	Checksum: 0xF71B55E7
-  	Offset: 0x1168
-  	Size: 0x574
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function play() {
-    /#
     if(getdvarint("") > 0) {
       if(isdefined(_s.name)) {
         printtoprightln("" + _s.name);
@@ -1703,14 +1279,13 @@ class csceneobject: cscriptbundleobjectbase {
         printtoprightln("" + _s.model);
       }
     }
-    # /
-      flagsys::clear("ready");
+    flagsys::clear("ready");
     flagsys::clear("done");
     flagsys::clear("main_done");
     _str_state = "play";
-    self notify(# "new_state");
-    self endon(# "new_state");
-    self notify(# "play");
+    self notify("new_state");
+    self endon("new_state");
+    self notify("play");
     cscriptbundleobjectbase::log("play");
     waittillframeend();
     if(isdefined(_s.hide) && _s.hide && _is_valid) {
@@ -1758,24 +1333,16 @@ class csceneobject: cscriptbundleobjectbase {
     thread finish();
   }
 
-  /*
-  	Name: initialize
-  	Namespace: csceneobject
-  	Checksum: 0x49D97A04
-  	Offset: 0xD18
-  	Size: 0x444
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function initialize(b_force_first_frame = 0) {
     if(has_init_state() || b_force_first_frame) {
       flagsys::clear("ready");
       flagsys::clear("done");
       flagsys::clear("main_done");
       _str_state = "init";
-      self notify(# "new_state");
-      self endon(# "new_state");
-      self notify(# "init");
+      self notify("new_state");
+      self endon("new_state");
+      self notify("init");
       cscriptbundleobjectbase::log("init");
       waittillframeend();
       if(!(isdefined(_s.sharedigc) && _s.sharedigc) && (!(isdefined(_s.player) && _s.player)) && (isdefined(_s.spawnoninit) && _s.spawnoninit) || b_force_first_frame) {
@@ -1813,15 +1380,7 @@ class csceneobject: cscriptbundleobjectbase {
     }
   }
 
-  /*
-  	Name: first_init
-  	Namespace: csceneobject
-  	Checksum: 0x67F8A621
-  	Offset: 0xCC0
-  	Size: 0x4E
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function first_init(s_objdef, o_scene, e_ent) {
     cscriptbundleobjectbase::init(s_objdef, o_scene, e_ent);
     _assign_unique_name();
@@ -1854,41 +1413,17 @@ class cscene: cscriptbundlebase {
   var longest_anim_length;
   var _n_object_id;
 
-  /*
-  	Name: constructor
-  	Namespace: cscene
-  	Checksum: 0xDF0F1158
-  	Offset: 0x7D28
-  	Size: 0x3C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {
     _n_object_id = 0;
     _str_mode = "";
     _n_streamer_req = -1;
   }
 
-  /*
-  	Name: destructor
-  	Namespace: cscene
-  	Checksum: 0x8367A4AD
-  	Offset: 0x7D70
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: has_player
-  	Namespace: cscene
-  	Checksum: 0x7A740448
-  	Offset: 0xD728
-  	Size: 0x9E
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function has_player() {
     foreach(obj in _a_objects) {
       if(obj._s.type === "player") {
@@ -1898,15 +1433,7 @@ class cscene: cscriptbundlebase {
     return false;
   }
 
-  /*
-  	Name: trigger_scene_sequence_started
-  	Namespace: cscene
-  	Checksum: 0x3873C558
-  	Offset: 0xD5E0
-  	Size: 0x13C
-  	Parameters: 2
-  	Flags: Linked, Private
-  */
+
   function private trigger_scene_sequence_started(scene_object, entity) {
     if(self === scene_object) {
       if(!is_skipping_scene()) {
@@ -1927,15 +1454,7 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: init_scene_sequence_started
-  	Namespace: cscene
-  	Checksum: 0x662B861F
-  	Offset: 0xD3B0
-  	Size: 0x222
-  	Parameters: 1
-  	Flags: Linked, Private
-  */
+
   function private init_scene_sequence_started(b_started) {
     if(isdefined(b_started) && b_started) {
       scene::waittill_skip_sequence_completed();
@@ -1962,7 +1481,7 @@ class cscene: cscriptbundlebase {
       }
       level.shared_scene_sequence_started = 1;
       update_scene_sequence();
-      level notify(# "scene_sequence_started");
+      level notify("scene_sequence_started");
     } else {
       if(!isdefined(level.shared_scene_sequence_started)) {
         return;
@@ -1970,20 +1489,12 @@ class cscene: cscriptbundlebase {
       if(isdefined(_s.shared_scene_sequence)) {
         level.shared_scene_sequence_started = undefined;
         update_scene_sequence();
-        level notify(# "scene_sequence_ended", _s.name);
+        level notify("scene_sequence_ended", _s.name);
       }
     }
   }
 
-  /*
-  	Name: update_scene_sequence
-  	Namespace: cscene
-  	Checksum: 0x53FF8296
-  	Offset: 0xD358
-  	Size: 0x4A
-  	Parameters: 0
-  	Flags: Linked, Private
-  */
+
   function private update_scene_sequence() {
     if(isdefined(_s.shared_scene_sequence)) {
       if(isdefined(level.shared_scene_sequence_started)) {
@@ -1994,28 +1505,12 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: is_scene_shared_sequence
-  	Namespace: cscene
-  	Checksum: 0x96435E5A
-  	Offset: 0xD330
-  	Size: 0x20
-  	Parameters: 0
-  	Flags: Linked, Private
-  */
+
   function private is_scene_shared_sequence() {
     return isdefined(level.shared_scene_sequence_started) && isdefined(_s.shared_scene_sequence);
   }
 
-  /*
-  	Name: should_skip_linked_to_players_scene
-  	Namespace: cscene
-  	Checksum: 0xBCCC6F8D
-  	Offset: 0xD2B8
-  	Size: 0x6E
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function should_skip_linked_to_players_scene() {
     if(isdefined(level.player_skipping_scene) && (!(isdefined(_s.disablesceneskipping) && _s.disablesceneskipping)) && array::contains(level.linked_scenes, _s.name)) {
       return true;
@@ -2023,17 +1518,9 @@ class cscene: cscriptbundlebase {
     return false;
   }
 
-  /*
-  	Name: _skip_scene
-  	Namespace: cscene
-  	Checksum: 0x69921A04
-  	Offset: 0xD160
-  	Size: 0x14A
-  	Parameters: 0
-  	Flags: Linked, Private
-  */
+
   function private _skip_scene() {
-    self endon(# "stopped");
+    self endon("stopped");
     wait(0.05);
     foreach(o_scene_object in _a_objects) {
       if(o_scene_object._is_valid) {
@@ -2050,117 +1537,87 @@ class cscene: cscriptbundlebase {
         ] - > skip_scene_on_server();
       }
     }
-    self notify(# "skip_camera_anims");
+    self notify("skip_camera_anims");
   }
 
-  /*
-  	Name: finish_skip_scene
-  	Namespace: cscene
-  	Checksum: 0xAB0FF12
-  	Offset: 0xCF00
-  	Size: 0x254
-  	Parameters: 0
-  	Flags: Linked, Private
-  */
+
   function private finish_skip_scene() {
-    /#
     if(getdvarint("") > 0) {
       printtoprightln("" + gettime(), (1, 0, 0));
     }
-    # /
-      if(isdefined(level.player_skipping_scene)) {
-        foreach(player in level.players) {
-          player clientfield::increment_to_player("player_scene_skip_completed");
-          player freezecontrols(0);
-          player stopsounds();
+    if(isdefined(level.player_skipping_scene)) {
+      foreach(player in level.players) {
+        player clientfield::increment_to_player("player_scene_skip_completed");
+        player freezecontrols(0);
+        player stopsounds();
+      }
+      self.b_player_scene = undefined;
+      self.skipping_scene = undefined;
+      level.player_skipping_scene = undefined;
+      level.linked_scenes = undefined;
+      init_scene_sequence_started(0);
+      level notify("scene_skip_sequence_ended");
+      if(isdefined(level.bzm_sceneseqendedcallback)) {
+        level thread[[level.bzm_sceneseqendedcallback]](_s.name);
+      }
+      if(getdvarint("") > 0) {
+        printtoprightln("" + gettime());
+      }
+      if(getdvarint("") == 0) {
+        b_skip_fading = 0;
+      } else {
+        b_skip_fading = 1;
+      }
+      if(!(isdefined(b_skip_fading) && b_skip_fading)) {
+        if(!(isdefined(level.level_ending) && level.level_ending)) {
+          level thread lui::screen_fade(1, 0, 1, "black", 0, "scene_system");
         }
-        self.b_player_scene = undefined;
-        self.skipping_scene = undefined;
-        level.player_skipping_scene = undefined;
-        level.linked_scenes = undefined;
-        init_scene_sequence_started(0);
-        level notify(# "scene_skip_sequence_ended");
-        if(isdefined(level.bzm_sceneseqendedcallback)) {
-          level thread[[level.bzm_sceneseqendedcallback]](_s.name);
+      }
+    }
+  }
+
+
+  function skip_scene(b_sequence) {
+    if(isdefined(b_sequence) && b_sequence && (isdefined(_s.disablesceneskipping) && _s.disablesceneskipping)) {
+      if(getdvarint("") > 0) {
+        printtoprightln((("" + _s.name) + "") + gettime(), (1, 0, 0));
+      }
+      finish_skip_scene();
+      return;
+    }
+    if(getdvarint("") > 0) {
+      printtoprightln((("" + _s.name) + "") + gettime(), (0, 1, 0));
+    }
+    if(!(isdefined(b_sequence) && b_sequence)) {
+      if(_str_state == "init") {
+        while (_str_state == "init") {
+          wait(0.05);
         }
-        /#
+      }
+      if(is_skipping_player_scene()) {
         if(getdvarint("") > 0) {
           printtoprightln("" + gettime());
         }
-        # /
-          /#
         if(getdvarint("") == 0) {
           b_skip_fading = 0;
         } else {
           b_skip_fading = 1;
         }
-        # /
-          if(!(isdefined(b_skip_fading) && b_skip_fading)) {
-            if(!(isdefined(level.level_ending) && level.level_ending)) {
-              level thread lui::screen_fade(1, 0, 1, "black", 0, "scene_system");
-            }
+        if(!(isdefined(b_skip_fading) && b_skip_fading)) {
+          foreach(player in level.players) {
+            player freezecontrols(1);
           }
+          level.suspend_scene_skip_until_fade = 1;
+          level thread lui::screen_fade(1, 1, 0, "black", 0, "scene_system");
+          wait(1);
+          level.suspend_scene_skip_until_fade = undefined;
+        }
+        setpauseworld(0);
       }
-  }
-
-  /*
-  	Name: skip_scene
-  	Namespace: cscene
-  	Checksum: 0xFA5EC6BC
-  	Offset: 0xC7D0
-  	Size: 0x722
-  	Parameters: 1
-  	Flags: Linked
-  */
-  function skip_scene(b_sequence) {
-    if(isdefined(b_sequence) && b_sequence && (isdefined(_s.disablesceneskipping) && _s.disablesceneskipping)) {
-      /#
-      if(getdvarint("") > 0) {
-        printtoprightln((("" + _s.name) + "") + gettime(), (1, 0, 0));
+      while (isdefined(level.suspend_scene_skip_until_fade) && level.suspend_scene_skip_until_fade) {
+        wait(0.05);
       }
-      # /
-        finish_skip_scene();
-      return;
     }
-    /#
-    if(getdvarint("") > 0) {
-      printtoprightln((("" + _s.name) + "") + gettime(), (0, 1, 0));
-    }
-    # /
-      if(!(isdefined(b_sequence) && b_sequence)) {
-        if(_str_state == "init") {
-          while (_str_state == "init") {
-            wait(0.05);
-          }
-        }
-        if(is_skipping_player_scene()) {
-          /#
-          if(getdvarint("") > 0) {
-            printtoprightln("" + gettime());
-          }
-          # /
-            /#
-          if(getdvarint("") == 0) {
-            b_skip_fading = 0;
-          } else {
-            b_skip_fading = 1;
-          }
-          # /
-            if(!(isdefined(b_skip_fading) && b_skip_fading)) {
-              foreach(player in level.players) {
-                player freezecontrols(1);
-              }
-              level.suspend_scene_skip_until_fade = 1;
-              level thread lui::screen_fade(1, 1, 0, "black", 0, "scene_system");
-              wait(1);
-              level.suspend_scene_skip_until_fade = undefined;
-            }
-          setpauseworld(0);
-        }
-        while (isdefined(level.suspend_scene_skip_until_fade) && level.suspend_scene_skip_until_fade) {
-          wait(0.05);
-        }
-      }
     if(isdefined(_s.nextscenebundle)) {
       bnextsceneexist = 1;
     } else {
@@ -2168,19 +1625,14 @@ class cscene: cscriptbundlebase {
     }
     wait_till_scene_ready();
     wait(0.05);
-    /#
     if(getdvarint("") > 0) {
       printtoprightln((("" + _s.name) + "") + gettime(), (0, 0, 1));
     }
-    # /
-      _call_state_funcs("skip_started");
+    _call_state_funcs("skip_started");
     thread _skip_scene();
-    /#
     if(getdvarint("") > 0) {
       printtoprightln("" + gettime(), (0, 1, 0));
     }
-    # /
-      /#
     if(getdvarint("") > 0) {
       if(isdefined(level.animation_played)) {
         for (i = 0; i < level.animation_played.size; i++) {
@@ -2188,18 +1640,15 @@ class cscene: cscriptbundlebase {
         }
       }
     }
-    # /
-      scene_skip_timeout = gettime() + 4000;
+    scene_skip_timeout = gettime() + 4000;
     while (!(isdefined(scene_stopped) && scene_stopped) && gettime() < scene_skip_timeout) {
       wait(0.05);
     }
-    /#
     if(getdvarint("") > 0) {
       printtoprightln((("" + _s.name) + "") + gettime(), (1, 0.5, 0));
     }
-    # /
-      _call_state_funcs("skip_completed");
-    self notify(# "scene_skip_completed");
+    _call_state_funcs("skip_completed");
+    self notify("scene_skip_completed");
     if(!bnextsceneexist) {
       if(is_skipping_player_scene()) {
         if(isdefined(level.linked_scenes)) {
@@ -2224,15 +1673,7 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: is_scene_shared
-  	Namespace: cscene
-  	Checksum: 0xD10977B7
-  	Offset: 0xC670
-  	Size: 0x152
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_scene_shared() {
     if(!(isdefined(_s.skip_scene) && _s.skip_scene) && !_s scene::is_igc()) {
       foreach(o_scene_object in _a_objects) {
@@ -2243,53 +1684,27 @@ class cscene: cscriptbundlebase {
         }
       }
       if(!isdefined(b_shared_player)) {
-        /#
         if(getdvarint("") > 0) {
           printtoprightln("" + gettime(), (1, 0, 0));
         }
-        # /
-          self notify(# "scene_skip_completed");
+        self notify("scene_skip_completed");
         return false;
       }
     }
     return true;
   }
 
-  /*
-  	Name: get_state
-  	Namespace: cscene
-  	Checksum: 0xBBEAFEB1
-  	Offset: 0xC658
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_state() {
     return _str_state;
   }
 
-  /*
-  	Name: on_error
-  	Namespace: cscene
-  	Checksum: 0xF8F81798
-  	Offset: 0xC638
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function on_error() {
     stop();
   }
 
-  /*
-  	Name: get_valid_objects
-  	Namespace: cscene
-  	Checksum: 0x7A0BC075
-  	Offset: 0xC538
-  	Size: 0xF4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_valid_objects() {
     a_obj = [];
     foreach(obj in _a_objects) {
@@ -2305,30 +1720,14 @@ class cscene: cscriptbundlebase {
     return a_obj;
   }
 
-  /*
-  	Name: sync_with_other_scenes
-  	Namespace: cscene
-  	Checksum: 0x35D433C4
-  	Offset: 0xC4A8
-  	Size: 0x84
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function sync_with_other_scenes() {
     if(!(isdefined(_s.dontsync) && _s.dontsync) && isdefined(level.scene_sync_list) && isarray(level.scene_sync_list[_n_request_time])) {
       wait_till_objects_ready(level.scene_sync_list[_n_request_time]);
     }
   }
 
-  /*
-  	Name: wait_till_objects_ready
-  	Namespace: cscene
-  	Checksum: 0xF09A4FE0
-  	Offset: 0xC3B0
-  	Size: 0xF0
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function wait_till_objects_ready( & array) {
     do {
       recheck = 0;
@@ -2343,15 +1742,7 @@ class cscene: cscriptbundlebase {
     while (recheck);
   }
 
-  /*
-  	Name: wait_till_scene_ready
-  	Namespace: cscene
-  	Checksum: 0x5F04BA51
-  	Offset: 0xC268
-  	Size: 0x13C
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function wait_till_scene_ready(o_exclude, b_ignore_streamer = 0) {
     a_objects = [];
     if(isdefined(o_exclude)) {
@@ -2375,41 +1766,17 @@ class cscene: cscriptbundlebase {
     sync_with_other_scenes();
   }
 
-  /*
-  	Name: is_looping
-  	Namespace: cscene
-  	Checksum: 0x22F3E629
-  	Offset: 0xC238
-  	Size: 0x26
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_looping() {
     return isdefined(_s.looping) && _s.looping;
   }
 
-  /*
-  	Name: allows_multiple
-  	Namespace: cscene
-  	Checksum: 0x41A897EC
-  	Offset: 0xC208
-  	Size: 0x26
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function allows_multiple() {
     return isdefined(_s.allowmultiple) && _s.allowmultiple;
   }
 
-  /*
-  	Name: get_align_ent
-  	Namespace: cscene
-  	Checksum: 0x4A167F39
-  	Offset: 0xC0A0
-  	Size: 0x15C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_align_ent() {
     e_align = _e_root;
     if(isdefined(_s.aligntarget)) {
@@ -2429,28 +1796,12 @@ class cscene: cscriptbundlebase {
     return e_align;
   }
 
-  /*
-  	Name: get_root
-  	Namespace: cscene
-  	Checksum: 0x15C68FCF
-  	Offset: 0xC088
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_root() {
     return _e_root;
   }
 
-  /*
-  	Name: get_ents
-  	Namespace: cscene
-  	Checksum: 0x6F1AB8A6
-  	Offset: 0xBF38
-  	Size: 0x144
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_ents() {
     a_ents = [];
     foreach(o_obj in _a_objects) {
@@ -2471,17 +1822,9 @@ class cscene: cscriptbundlebase {
     return a_ents;
   }
 
-  /*
-  	Name: _call_state_funcs
-  	Namespace: cscene
-  	Checksum: 0x448415B4
-  	Offset: 0xBBD0
-  	Size: 0x360
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function _call_state_funcs(str_state) {
-    self endon(# "stopped");
+    self endon("stopped");
     wait_till_scene_ready(undefined, 1);
     if(str_state == "play") {
       waittillframeend();
@@ -2522,24 +1865,14 @@ class cscene: cscriptbundlebase {
             break;
           }
           default: {
-            /#
             assertmsg("");
-            # /
           }
         }
       }
     }
   }
 
-  /*
-  	Name: has_init_state
-  	Namespace: cscene
-  	Checksum: 0xE2F8F6D5
-  	Offset: 0xBB18
-  	Size: 0xAA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function has_init_state() {
     b_has_init_state = 0;
     foreach(o_scene_object in _a_objects) {
@@ -2553,15 +1886,7 @@ class cscene: cscriptbundlebase {
     return b_has_init_state;
   }
 
-  /*
-  	Name: _release_object
-  	Namespace: cscene
-  	Checksum: 0x78E38572
-  	Offset: 0xBA88
-  	Size: 0x88
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _release_object() {
     wait(0.05);
     foreach(o_obj in _a_objects) {
@@ -2569,99 +1894,73 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: stop
-  	Namespace: cscene
-  	Checksum: 0xB9DFBA90
-  	Offset: 0xB588
-  	Size: 0x4F4
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function stop(b_clear = 0, b_finished = 0) {
-    /#
     if(getdvarint("") > 0) {
       printtoprightln("" + _s.name);
     }
-    # /
-      if(isdefined(_str_state)) {
-        /#
-        if(getdvarint("") > 0) {
-          printtoprightln((("" + _s.name) + "") + _str_state);
-        }
-        # /
-          /#
-        if(strstartswith(_str_mode, "")) {
-          adddebugcommand("");
-        }
-        # /
-          if(!b_finished) {
-            streamer_request_completed();
-          }
-        if(!is_skipping_scene()) {
-          if(!isdefined(_s.nextscenebundle) && is_scene_shared_sequence()) {
-            init_scene_sequence_started(0);
-          }
-        }
-        self thread sync_with_client_scene("stop", b_clear);
-        _str_state = undefined;
-        self notify(# "new_state");
-        self notify(# "death");
-        level flagsys::clear(_str_name + "_playing");
-        level flagsys::clear(_str_name + "_initialized");
-        thread _call_state_funcs("stop");
-        scene_stopping = 1;
-        if(isdefined(_a_objects) && !b_finished) {
-          foreach(o_obj in _a_objects) {
-            if(isdefined(o_obj) && !([
-                [o_obj]
-              ] - > in_a_different_scene())) {
-              thread[[o_obj]] - > stop(b_clear);
-            }
-          }
-        }
-        self thread _stop_camera_anims();
-        /#
-        if(!isdefined(_s.nextscenebundle) || !b_finished) {
-          destroy_dev_info();
-        }
-        # /
-          /#
-        if(getdvarint("") > 0) {
-          printtoprightln("" + _s.name);
-        }
-        # /
-          scene_stopped = 1;
-        self notify(# "stopped", b_finished);
-        remove_from_sync_list();
-        arrayremovevalue(level.active_scenes[_str_name], _e_root);
-        if(level.active_scenes[_str_name].size == 0) {
-          level.active_scenes[_str_name] = undefined;
-        }
-        if(isdefined(_e_root)) {
-          arrayremovevalue(_e_root.scenes, self);
-          if(_e_root.scenes.size == 0) {
-            _e_root.scenes = undefined;
-          }
-          _e_root notify(# "scene_done", _str_notify_name);
-          _e_root.scene_played = 1;
+    if(isdefined(_str_state)) {
+      if(getdvarint("") > 0) {
+        printtoprightln((("" + _s.name) + "") + _str_state);
+      }
+      if(strstartswith(_str_mode, "")) {
+        adddebugcommand("");
+      }
+      if(!b_finished) {
+        streamer_request_completed();
+      }
+      if(!is_skipping_scene()) {
+        if(!isdefined(_s.nextscenebundle) && is_scene_shared_sequence()) {
+          init_scene_sequence_started(0);
         }
       }
+      self thread sync_with_client_scene("stop", b_clear);
+      _str_state = undefined;
+      self notify("new_state");
+      self notify("death");
+      level flagsys::clear(_str_name + "_playing");
+      level flagsys::clear(_str_name + "_initialized");
+      thread _call_state_funcs("stop");
+      scene_stopping = 1;
+      if(isdefined(_a_objects) && !b_finished) {
+        foreach(o_obj in _a_objects) {
+          if(isdefined(o_obj) && !([
+              [o_obj]
+            ] - > in_a_different_scene())) {
+            thread[[o_obj]] - > stop(b_clear);
+          }
+        }
+      }
+      self thread _stop_camera_anims();
+      if(!isdefined(_s.nextscenebundle) || !b_finished) {
+        destroy_dev_info();
+      }
+      if(getdvarint("") > 0) {
+        printtoprightln("" + _s.name);
+      }
+      scene_stopped = 1;
+      self notify("stopped", b_finished);
+      remove_from_sync_list();
+      arrayremovevalue(level.active_scenes[_str_name], _e_root);
+      if(level.active_scenes[_str_name].size == 0) {
+        level.active_scenes[_str_name] = undefined;
+      }
+      if(isdefined(_e_root)) {
+        arrayremovevalue(_e_root.scenes, self);
+        if(_e_root.scenes.size == 0) {
+          _e_root.scenes = undefined;
+        }
+        _e_root notify("scene_done", _str_notify_name);
+        _e_root.scene_played = 1;
+      }
+    }
     if(isdefined(_s.spectateonjoin) && _s.spectateonjoin) {
       level.scene_should_spectate_on_hot_join = undefined;
     }
     self thread _release_object();
   }
 
-  /*
-  	Name: streamer_request_completed
-  	Namespace: cscene
-  	Checksum: 0x398810E3
-  	Offset: 0xB488
-  	Size: 0xF4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function streamer_request_completed() {
     if(isstring(_s._endstreamerhint)) {
       if(getdvarint("scene_hide_player") > 0) {
@@ -2673,49 +1972,34 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: run_next
-  	Namespace: cscene
-  	Checksum: 0x4110A62
-  	Offset: 0xB050
-  	Size: 0x42C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function run_next() {
-    /#
     if(getdvarint("") > 0) {
       printtoprightln("" + gettime());
     }
-    # /
-      b_run_next_scene = 0;
+    b_run_next_scene = 0;
     if(isdefined(_s.nextscenebundle)) {
-      self waittill(# "stopped", b_finished);
+      self waittill("stopped", b_finished);
       if(b_finished) {
         b_skip_scene = is_skipping_scene();
         if(b_skip_scene) {
           self util::waittill_any_timeout(5, "scene_skip_completed");
-          /#
           if(getdvarint("") > 0) {
             printtoprightln((("" + _s.nextscenebundle) + "") + gettime(), (1, 1, 0));
           }
-          # /
         }
-        /#
         if(getdvarint("") > 0) {
           printtoprightln((("" + _s.nextscenebundle) + "") + gettime(), (1, 0, 0));
         }
-        # /
-          if(_s.scenetype == "fxanim" && _s.nextscenemode === "init") {
-            if(!cscriptbundlebase::error(!has_init_state(), ("Scene can't init next scene '" + _s.nextscenebundle) + "' because it doesn't have an init state.")) {
-              if(allows_multiple()) {
-                _e_root thread scene::init(_s.nextscenebundle, get_ents());
-              } else {
-                _e_root thread scene::init(_s.nextscenebundle);
-              }
+        if(_s.scenetype == "fxanim" && _s.nextscenemode === "init") {
+          if(!cscriptbundlebase::error(!has_init_state(), ("Scene can't init next scene '" + _s.nextscenebundle) + "' because it doesn't have an init state.")) {
+            if(allows_multiple()) {
+              _e_root thread scene::init(_s.nextscenebundle, get_ents());
+            } else {
+              _e_root thread scene::init(_s.nextscenebundle);
             }
           }
-        else {
+        } else {
           if(b_skip_scene) {
             if(is_skipping_player_scene()) {
               _str_mode = "skip_scene_player";
@@ -2745,41 +2029,17 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: has_next_scene
-  	Namespace: cscene
-  	Checksum: 0x24D7AC82
-  	Offset: 0xB030
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function has_next_scene() {
     return isdefined(_s.nextscenebundle);
   }
 
-  /*
-  	Name: is_skipping_player_scene
-  	Namespace: cscene
-  	Checksum: 0x6F2E75AE
-  	Offset: 0xAFC8
-  	Size: 0x5C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_skipping_player_scene() {
     return isdefined(b_player_scene) && b_player_scene || _str_mode == "skip_scene_player" && !array::contains(level.linked_scenes, _s.name);
   }
 
-  /*
-  	Name: is_skipping_scene
-  	Namespace: cscene
-  	Checksum: 0x5CF91DB8
-  	Offset: 0xAF60
-  	Size: 0x60
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_skipping_scene() {
     if(_s.name == "cin_ram_02_04_interview_part04") {
       return 0;
@@ -2787,15 +2047,7 @@ class cscene: cscriptbundlebase {
     return isdefined(skipping_scene) && skipping_scene || _str_mode == "skip_scene" || _str_mode == "skip_scene_player";
   }
 
-  /*
-  	Name: destroy_dev_info
-  	Namespace: cscene
-  	Checksum: 0x5BB01553
-  	Offset: 0xAED8
-  	Size: 0x7C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function destroy_dev_info() {
     if(isdefined(level.hud_scene_dev_info1)) {
       level.hud_scene_dev_info1 destroy();
@@ -2808,15 +2060,7 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: display_dev_info
-  	Namespace: cscene
-  	Checksum: 0x19F69593
-  	Offset: 0xAB58
-  	Size: 0x374
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function display_dev_info() {
     if(isstring(_s.devstate) && getdvarint("scr_show_shot_info_for_igcs", 0)) {
       if(!isdefined(level.hud_scene_dev_info1)) {
@@ -2854,19 +2098,11 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: _stop_camera_anim_on_player
-  	Namespace: cscene
-  	Checksum: 0xFC66B766
-  	Offset: 0xA978
-  	Size: 0x1D4
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function _stop_camera_anim_on_player(player) {
-    player endon(# "disconnect");
+    player endon("disconnect");
     if(isstring(_s.cameraswitcher)) {
-      player endon(# "new_camera_switcher");
+      player endon("new_camera_switcher");
       player dontinterpolate();
       endcamanimscripted(player);
       player thread scene::scene_enable_player_stuff();
@@ -2888,20 +2124,12 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: _stop_camera_anims
-  	Namespace: cscene
-  	Checksum: 0x1D1A0185
-  	Offset: 0xA868
-  	Size: 0x102
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _stop_camera_anims() {
     if(!(isdefined(played_camera_anims) && played_camera_anims)) {
       return;
     }
-    level notify(# "stop_camera_anims");
+    level notify("stop_camera_anims");
     xcam_players = [];
     if(isdefined(a_xcam_players)) {
       xcam_players = a_xcam_players;
@@ -2915,48 +2143,24 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: _play_extracam_on_player
-  	Namespace: cscene
-  	Checksum: 0xCC122E63
-  	Offset: 0xA7F8
-  	Size: 0x64
-  	Parameters: 5
-  	Flags: Linked
-  */
+
   function _play_extracam_on_player(player, n_index, str_camera_anim, v_origin, v_angles) {
     played_camera_anims = 1;
     extracamanimscripted(player, n_index, str_camera_anim, gettime(), v_origin, v_angles);
   }
 
-  /*
-  	Name: loop_camera_anim_to_set_up_for_capture
-  	Namespace: cscene
-  	Checksum: 0xDAA6866E
-  	Offset: 0xA7A0
-  	Size: 0x50
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function loop_camera_anim_to_set_up_for_capture() {
-    level endon(# "stop_camera_anims");
+    level endon("stop_camera_anims");
     while (true) {
       _play_camera_anims();
       _wait_for_camera_animation(_s.cameraswitcher);
     }
   }
 
-  /*
-  	Name: _play_camera_anim_on_player
-  	Namespace: cscene
-  	Checksum: 0x86172340
-  	Offset: 0xA678
-  	Size: 0x11C
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function _play_camera_anim_on_player(player, v_origin, v_angles, ignore_initial_notetracks) {
-    player notify(# "new_camera_switcher");
+    player notify("new_camera_switcher");
     player dontinterpolate();
     player thread scene::scene_disable_player_stuff();
     played_camera_anims = 1;
@@ -2968,30 +2172,14 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: _play_camera_anim_on_player_callback
-  	Namespace: cscene
-  	Checksum: 0x6350BAAE
-  	Offset: 0xA630
-  	Size: 0x3C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function _play_camera_anim_on_player_callback(player) {
     self thread _play_camera_anim_on_player(player, camera_v_origin, camera_v_angles, 1);
   }
 
-  /*
-  	Name: _play_camera_anims
-  	Namespace: cscene
-  	Checksum: 0x8B1484DB
-  	Offset: 0xA1B8
-  	Size: 0x46C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _play_camera_anims() {
-    level endon(# "stop_camera_anims");
+    level endon("stop_camera_anims");
     waittillframeend();
     e_align = get_align_ent();
     v_origin = (isdefined(e_align.origin) ? e_align.origin : (0, 0, 0));
@@ -3028,9 +2216,7 @@ class cscene: cscriptbundlebase {
       camera_v_angles = v_angles;
       camera_start_time = gettime();
       array::thread_all_ents(xcam_players, & _play_camera_anim_on_player, v_origin, v_angles, 0);
-      /#
       display_dev_info();
-      # /
     }
     if(isstring(_s.extracamswitcher1)) {
       array::thread_all_ents(xcam_players, & _play_extracam_on_player, 0, _s.extracamswitcher1, v_origin, v_angles);
@@ -3046,33 +2232,17 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: _wait_for_camera_animation
-  	Namespace: cscene
-  	Checksum: 0x7A2FE463
-  	Offset: 0xA130
-  	Size: 0x7C
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function _wait_for_camera_animation(str_cam, n_start_time) {
-    self endon(# "skip_camera_anims");
+    self endon("skip_camera_anims");
     if(iscamanimlooping(str_cam)) {
-      level waittill(# "forever");
+      level waittill("forever");
     } else {
       _wait_server_time(getcamanimtime(str_cam) / 1000, n_start_time);
     }
   }
 
-  /*
-  	Name: _wait_server_time
-  	Namespace: cscene
-  	Checksum: 0xF9DDB393
-  	Offset: 0xA068
-  	Size: 0xC0
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function _wait_server_time(n_time, n_start_time = 0) {
     n_len = n_time - (n_time * n_start_time);
     n_len = n_len / 0.05;
@@ -3084,23 +2254,13 @@ class cscene: cscriptbundlebase {
     wait(n_server_length);
   }
 
-  /*
-  	Name: play
-  	Namespace: cscene
-  	Checksum: 0x7B93E10E
-  	Offset: 0x92D8
-  	Size: 0xD84
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function play(str_state = "play", a_ents, b_testing = 0, str_mode = "") {
-    /#
     if(getdvarint("") > 0) {
       printtoprightln("" + _s.name);
     }
-    # /
-      self notify(# "new_state");
-    self endon(# "new_state");
+    self notify("new_state");
+    self endon("new_state");
     if(str_mode == "skip_scene") {
       thread skip_scene(1);
     } else {
@@ -3165,21 +2325,17 @@ class cscene: cscriptbundlebase {
       wait_till_scene_ready();
       level flagsys::set(_str_notify_name + "_ready");
       if(strstartswith(_str_mode, "capture")) {
-        /#
         adddebugcommand((("" + _str_name) + "") + _str_name);
-        # /
       }
       if(n_start_time == 0) {
         self thread _play_camera_anims();
       }
-      /#
       if(is_scene_shared()) {
         display_dev_info();
       }
-      # /
-        if(_n_streamer_req != -1 && !is_skipping_scene()) {
-          streamerrequest("play", _s.streamerhint);
-        }
+      if(_n_streamer_req != -1 && !is_skipping_scene()) {
+        streamerrequest("play", _s.streamerhint);
+      }
       thread _call_state_funcs("play");
       if(_s scene::is_igc()) {
         if(!(isdefined(_s.disablesceneskipping) && _s.disablesceneskipping) && _str_state != "init") {
@@ -3205,7 +2361,7 @@ class cscene: cscriptbundlebase {
         foreach(o_obj in _a_objects) {
           thread[[o_obj]] - > stop(0, isdefined(o_obj._s.dontclamp) && o_obj._s.dontclamp, 1);
         }
-        _e_root notify(# "scene_done", _str_notify_name);
+        _e_root notify("scene_done", _str_notify_name);
         thread _call_state_funcs("done");
         if(isdefined(_s.spectateonjoin) && _s.spectateonjoin) {
           level.scene_should_spectate_on_hot_join = undefined;
@@ -3213,7 +2369,7 @@ class cscene: cscriptbundlebase {
       } else {
         array::flagsys_wait_any_flag(_a_objects, "done", "main_done");
         if(isdefined(_e_root)) {
-          _e_root notify(# "scene_done", _str_notify_name);
+          _e_root notify("scene_done", _str_notify_name);
         }
         thread _call_state_funcs("done");
         if(isdefined(_s.spectateonjoin) && _s.spectateonjoin) {
@@ -3251,15 +2407,7 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: is_player_anim_ending_early
-  	Namespace: cscene
-  	Checksum: 0x580C2457
-  	Offset: 0x9198
-  	Size: 0x136
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_player_anim_ending_early() {
     max_anim_length = -1;
     player_anim_length = -1;
@@ -3277,15 +2425,7 @@ class cscene: cscriptbundlebase {
     return player_anim_length < max_anim_length;
   }
 
-  /*
-  	Name: get_anim_relative_start_time
-  	Namespace: cscene
-  	Checksum: 0x196EDE29
-  	Offset: 0x9098
-  	Size: 0xF8
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function get_anim_relative_start_time(animation, n_time) {
     if(!isdefined(n_start_time) || n_start_time == 0 || !isdefined(longest_anim_length) || longest_anim_length == 0) {
       return n_time;
@@ -3303,15 +2443,7 @@ class cscene: cscriptbundlebase {
     return n_time;
   }
 
-  /*
-  	Name: get_objects
-  	Namespace: cscene
-  	Checksum: 0x45DDEAEB
-  	Offset: 0x8F80
-  	Size: 0x10C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function get_objects(str_type) {
     a_ret = [];
     foreach(obj in _a_objects) {
@@ -3327,54 +2459,22 @@ class cscene: cscriptbundlebase {
     return a_ret;
   }
 
-  /*
-  	Name: _is_ent_vehicle
-  	Namespace: cscene
-  	Checksum: 0x6D65A597
-  	Offset: 0x8F38
-  	Size: 0x3A
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function _is_ent_vehicle(ent) {
     return isvehicle(ent) || isvehiclespawner(ent);
   }
 
-  /*
-  	Name: _is_ent_actor
-  	Namespace: cscene
-  	Checksum: 0x643EA8A6
-  	Offset: 0x8EF0
-  	Size: 0x3A
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function _is_ent_actor(ent) {
     return isactor(ent) || isactorspawner(ent);
   }
 
-  /*
-  	Name: _is_ent_player
-  	Namespace: cscene
-  	Checksum: 0x741AF0F0
-  	Offset: 0x8EC0
-  	Size: 0x22
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function _is_ent_player(ent) {
     return isplayer(ent);
   }
 
-  /*
-  	Name: _assign_ents_by_type
-  	Namespace: cscene
-  	Checksum: 0x2B723095
-  	Offset: 0x8D38
-  	Size: 0x180
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function _assign_ents_by_type( & a_objects, & a_ents, str_type, func_test) {
     if(a_ents.size) {
       a_objects_of_type = get_objects(str_type);
@@ -3398,15 +2498,7 @@ class cscene: cscriptbundlebase {
     return a_ents.size;
   }
 
-  /*
-  	Name: _assign_ents_by_name
-  	Namespace: cscene
-  	Checksum: 0x6AB56B48
-  	Offset: 0x8A90
-  	Size: 0x2A0
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function _assign_ents_by_name( & a_objects, & a_ents) {
     if(a_ents.size) {
       foreach(str_name, e_ent in arraycopy(a_ents)) {
@@ -3419,24 +2511,14 @@ class cscene: cscriptbundlebase {
           }
         }
       }
-      /#
       foreach(i, ent in a_ents) {
         cscriptbundlebase::error(isstring(i), ("" + i) + "");
       }
-      # /
     }
     return a_ents.size;
   }
 
-  /*
-  	Name: assign_ents
-  	Namespace: cscene
-  	Checksum: 0x1FA40692
-  	Offset: 0x8870
-  	Size: 0x216
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function assign_ents(a_ents) {
     if(!isdefined(a_ents)) {
       a_ents = [];
@@ -3462,18 +2544,10 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: sync_with_client_scene
-  	Namespace: cscene
-  	Checksum: 0x5DE58E10
-  	Offset: 0x8700
-  	Size: 0x164
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function sync_with_client_scene(str_state, b_test_run = 0) {
     if(_s.vmtype == "both" && !_s scene::is_igc()) {
-      self endon(# "new_state");
+      self endon("new_state");
       wait_till_scene_ready();
       n_val = undefined;
       if(b_test_run) {
@@ -3511,32 +2585,16 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: get_object_id
-  	Namespace: cscene
-  	Checksum: 0xF449872A
-  	Offset: 0x86E0
-  	Size: 0x12
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_object_id() {
     _n_object_id++;
     return _n_object_id;
   }
 
-  /*
-  	Name: initialize
-  	Namespace: cscene
-  	Checksum: 0x920C9A5B
-  	Offset: 0x8500
-  	Size: 0x1D4
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function initialize(a_ents, b_playing = 0) {
-    self notify(# "new_state");
-    self endon(# "new_state");
+    self notify("new_state");
+    self endon("new_state");
     self thread sync_with_client_scene("init", _testing);
     assign_ents(a_ents);
     if(get_valid_objects().size > 0) {
@@ -3555,15 +2613,7 @@ class cscene: cscriptbundlebase {
     thread stop();
   }
 
-  /*
-  	Name: get_valid_object_defs
-  	Namespace: cscene
-  	Checksum: 0xF324064D
-  	Offset: 0x8358
-  	Size: 0x19C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_valid_object_defs() {
     a_obj_defs = [];
     foreach(s_obj in _s.objects) {
@@ -3583,28 +2633,12 @@ class cscene: cscriptbundlebase {
     return a_obj_defs;
   }
 
-  /*
-  	Name: new_object
-  	Namespace: cscene
-  	Checksum: 0xB65273D4
-  	Offset: 0x8338
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function new_object() {
     return new csceneobject();
   }
 
-  /*
-  	Name: remove_from_sync_list
-  	Namespace: cscene
-  	Checksum: 0x4F49CE4F
-  	Offset: 0x82B8
-  	Size: 0x74
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function remove_from_sync_list() {
     if(isdefined(level.scene_sync_list) && isdefined(level.scene_sync_list[_n_request_time])) {
       arrayremovevalue(level.scene_sync_list[_n_request_time], self);
@@ -3614,15 +2648,7 @@ class cscene: cscriptbundlebase {
     }
   }
 
-  /*
-  	Name: add_to_sync_list
-  	Namespace: cscene
-  	Checksum: 0xF34FE90
-  	Offset: 0x8240
-  	Size: 0x6C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function add_to_sync_list() {
     if(!isdefined(level.scene_sync_list)) {
       level.scene_sync_list = [];
@@ -3633,25 +2659,15 @@ class cscene: cscriptbundlebase {
     array::add(level.scene_sync_list[_n_request_time], self, 0);
   }
 
-  /*
-  	Name: init
-  	Namespace: cscene
-  	Checksum: 0x563FCB33
-  	Offset: 0x7D90
-  	Size: 0x4A4
-  	Parameters: 5
-  	Flags: Linked
-  */
+
   function init(str_scenedef, s_scenedef, e_align, a_ents, b_test_run) {
-    /#
     if(getdvarint("") > 0) {
       printtoprightln("" + str_scenedef);
     }
     if(isdefined(level.scriptbundles[""][s_scenedef.name])) {
       level.scriptbundles[""][s_scenedef.name].used = 1;
     }
-    # /
-      cscriptbundlebase::init(str_scenedef, s_scenedef, b_test_run);
+    cscriptbundlebase::init(str_scenedef, s_scenedef, b_test_run);
     if(isdefined(s_scenedef.streamerhint) && s_scenedef.streamerhint != "" && !is_skipping_scene()) {
       _n_streamer_req = streamerrequest("set", s_scenedef.streamerhint);
     }
@@ -3702,58 +2718,24 @@ class cawarenesssceneobject: cscriptbundleobjectbase, csceneobject {
   var _str_death_anim;
   var _str_death_anim_loop;
 
-  /*
-  	Name: constructor
-  	Namespace: cawarenesssceneobject
-  	Checksum: 0x7C31CD6D
-  	Offset: 0xE9D0
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cawarenesssceneobject
-  	Checksum: 0xC732E42C
-  	Offset: 0xE9F0
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: _on_alert_run_scene_thread
-  	Namespace: cawarenesssceneobject
-  	Checksum: 0xF822E1FB
-  	Offset: 0xE908
-  	Size: 0xBC
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _on_alert_run_scene_thread() {
-    self endon(# "play");
-    self endon(# "done");
-    _e waittill(# "alert", str_alert_state);
-    /#
+    self endon("play");
+    self endon("done");
+    _e waittill("alert", str_alert_state);
     if(getdvarint("", 0)) {
       print3d(_e.origin, "", (1, 0, 0), 1, 0.5, 20);
     }
-    # /
-      thread[[csceneobject::scene()]] - > play(str_alert_state);
+    thread[[csceneobject::scene()]] - > play(str_alert_state);
   }
 
-  /*
-  	Name: _prepare
-  	Namespace: cawarenesssceneobject
-  	Checksum: 0x8E41C8C0
-  	Offset: 0xE8B8
-  	Size: 0x44
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function _prepare() {
     if(csceneobject::_prepare()) {
       if(isai(_e)) {
@@ -3762,23 +2744,15 @@ class cawarenesssceneobject: cscriptbundleobjectbase, csceneobject {
     }
   }
 
-  /*
-  	Name: play
-  	Namespace: cawarenesssceneobject
-  	Checksum: 0xB31AC001
-  	Offset: 0xE610
-  	Size: 0x29C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function play(str_alert_state) {
     flagsys::clear("ready");
     flagsys::clear("done");
     flagsys::clear("main_done");
     _str_state = "play";
-    self notify(# "new_state");
-    self endon(# "new_state");
-    self notify(# "play");
+    self notify("new_state");
+    self endon("new_state");
+    self notify("play");
     cscriptbundleobjectbase::log("play");
     waittillframeend();
     switch (str_alert_state) {
@@ -3823,40 +2797,16 @@ class cawarenessscene: cscriptbundlebase, cscene {
   var _str_name;
   var _str_state;
 
-  /*
-  	Name: constructor
-  	Namespace: cawarenessscene
-  	Checksum: 0x8B7BB795
-  	Offset: 0xF830
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cawarenessscene
-  	Checksum: 0xC404B084
-  	Offset: 0xF850
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: play
-  	Namespace: cawarenessscene
-  	Checksum: 0x9881489A
-  	Offset: 0xF660
-  	Size: 0x1C4
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function play(str_awareness_state = "low_alert") {
-    self notify(# "new_state");
-    self endon(# "new_state");
+    self notify("new_state");
+    self endon("new_state");
     if(cscene::get_valid_objects().size > 0) {
       foreach(o_obj in _a_objects) {
         thread[[o_obj]] - > play(str_awareness_state);
@@ -3874,28 +2824,12 @@ class cawarenessscene: cscriptbundlebase, cscene {
     }
   }
 
-  /*
-  	Name: init
-  	Namespace: cawarenessscene
-  	Checksum: 0x919E126F
-  	Offset: 0xF600
-  	Size: 0x54
-  	Parameters: 5
-  	Flags: Linked
-  */
+
   function init(str_scenedef, s_scenedef, e_align, a_ents, b_test_run) {
     cscene::init(str_scenedef, s_scenedef, e_align, a_ents, b_test_run);
   }
 
-  /*
-  	Name: new_object
-  	Namespace: cawarenessscene
-  	Checksum: 0x327F8B3E
-  	Offset: 0xF5E0
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function new_object() {
     return new cawarenesssceneobject();
   }
@@ -3904,15 +2838,6 @@ class cawarenessscene: cscriptbundlebase, cscene {
 
 #namespace scene;
 
-/*
-	Name: prepare_player_model_anim
-	Namespace: scene
-	Checksum: 0xCC50C126
-	Offset: 0xBA0
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private prepare_player_model_anim(ent) {
   if(!ent.animtree === "all_player") {
     ent useanimtree($all_player);
@@ -3920,15 +2845,6 @@ function private prepare_player_model_anim(ent) {
   }
 }
 
-/*
-	Name: prepare_generic_model_anim
-	Namespace: scene
-	Checksum: 0x60E80E8A
-	Offset: 0xC00
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private prepare_generic_model_anim(ent) {
   if(!ent.animtree === "generic") {
     ent useanimtree($generic);
@@ -3936,15 +2852,6 @@ function private prepare_generic_model_anim(ent) {
   }
 }
 
-/*
-	Name: get_existing_ent
-	Namespace: scene
-	Checksum: 0x3478FC9D
-	Offset: 0x107A0
-	Size: 0x362
-	Parameters: 3
-	Flags: Linked
-*/
 function get_existing_ent(str_name, b_spawner_only = 0, b_nodes_and_structs = 0) {
   e = undefined;
   if(b_spawner_only) {
@@ -3952,15 +2859,13 @@ function get_existing_ent(str_name, b_spawner_only = 0, b_nodes_and_structs = 0)
     if(e_array.size == 0) {
       e_array = getspawnerarray(str_name, "targetname");
     }
-    /#
     assert(e_array.size <= 1, "");
-    # /
-      foreach(ent in e_array) {
-        if(!isdefined(ent.isdying)) {
-          e = ent;
-          break;
-        }
+    foreach(ent in e_array) {
+      if(!isdefined(ent.isdying)) {
+        e = ent;
+        break;
       }
+    }
   } else {
     e = getent(str_name, "animname", 0);
     if(!is_valid_ent(e)) {
@@ -3991,30 +2896,12 @@ function get_existing_ent(str_name, b_spawner_only = 0, b_nodes_and_structs = 0)
   return e;
 }
 
-/*
-	Name: is_valid_ent
-	Namespace: scene
-	Checksum: 0x27C29796
-	Offset: 0x10B10
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function is_valid_ent(ent) {
   return isdefined(ent) && (!isdefined(ent.isdying) && !ent ai::is_dead_sentient() || self._s.ignorealivecheck === 1);
 }
 
-/*
-	Name: synced_delete
-	Namespace: scene
-	Checksum: 0x1B69815
-	Offset: 0x10B78
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function synced_delete() {
-  self endon(# "death");
+  self endon("death");
   self.isdying = 1;
   if(isdefined(self.targetname)) {
     self.targetname = self.targetname + "_sync_deleting";
@@ -4045,28 +2932,10 @@ function synced_delete() {
   self delete();
 }
 
-/*
-	Name: __init__sytem__
-	Namespace: scene
-	Checksum: 0xEFFEEE90
-	Offset: 0x10D18
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("scene", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: scene
-	Checksum: 0x2D9EBB0A
-	Offset: 0x10D60
-	Size: 0x83C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.scene_object_id = 0;
   level.active_scenes = [];
@@ -4138,10 +3007,8 @@ function __init__() {
     }
     if(s_scenedef.vmtype == "both" && !s_scenedef is_igc()) {
       n_clientbits = getminbitcountfornum(3);
-      /#
       n_clientbits = getminbitcountfornum(6);
-      # /
-        clientfield::register("world", s_scenedef.name, 1, n_clientbits, "int");
+      clientfield::register("world", s_scenedef.name, 1, n_clientbits, "int");
     }
   }
   clientfield::register("toplayer", "postfx_igc", 1, 2, "counter");
@@ -4155,15 +3022,6 @@ function __init__() {
   callback::on_disconnect( & on_player_disconnect);
 }
 
-/*
-	Name: remove_invalid_scene_objects
-	Namespace: scene
-	Checksum: 0xE695983F
-	Offset: 0x115A8
-	Size: 0x182
-	Parameters: 1
-	Flags: Linked
-*/
 function remove_invalid_scene_objects(s_scenedef) {
   a_invalid_object_indexes = [];
   foreach(i, s_object in s_scenedef.objects) {
@@ -4182,15 +3040,6 @@ function remove_invalid_scene_objects(s_scenedef) {
   return s_scenedef;
 }
 
-/*
-	Name: __main__
-	Namespace: scene
-	Checksum: 0x9E97626D
-	Offset: 0x11738
-	Size: 0x394
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   a_instances = arraycombine(struct::get_array("scriptbundle_scene", "classname"), struct::get_array("scriptbundle_fxanim", "classname"), 0, 0);
   foreach(s_instance in a_instances) {
@@ -4220,15 +3069,6 @@ function __main__() {
   level thread run_instances();
 }
 
-/*
-	Name: _scene_link
-	Namespace: scene
-	Checksum: 0x6284FFD
-	Offset: 0x11AD8
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private _scene_link() {
   self.e_scene_link = util::spawn_model("tag_origin", self.origin, self.angles);
   e_linkto = getent(self.linkto, "linkname");
@@ -4237,30 +3077,12 @@ function private _scene_link() {
   self.e_scene_link delete();
 }
 
-/*
-	Name: on_load_wait
-	Namespace: scene
-	Checksum: 0x28242682
-	Offset: 0x11BA0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function on_load_wait() {
   util::wait_network_frame();
   util::wait_network_frame();
   level flagsys::set("scene_on_load_wait");
 }
 
-/*
-	Name: run_instances
-	Namespace: scene
-	Checksum: 0x6ED72079
-	Offset: 0x11BF0
-	Size: 0x11A
-	Parameters: 0
-	Flags: Linked
-*/
 function run_instances() {
   foreach(s_instance in struct::get_script_bundle_instances("scene")) {
     if(isdefined(s_instance.spawnflags) && (s_instance.spawnflags & 2) == 2) {
@@ -4273,17 +3095,8 @@ function run_instances() {
   }
 }
 
-/*
-	Name: _trigger_init
-	Namespace: scene
-	Checksum: 0x1C41B7FE
-	Offset: 0x11D18
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function _trigger_init(trig) {
-  trig endon(# "death");
+  trig endon("death");
   trig trigger::wait_till();
   a_ents = [];
   if(get_player_count(self.scriptbundlename) > 0) {
@@ -4294,17 +3107,8 @@ function _trigger_init(trig) {
   self thread _init_instance(undefined, a_ents);
 }
 
-/*
-	Name: _trigger_play
-	Namespace: scene
-	Checksum: 0xC091BC64
-	Offset: 0x11DD0
-	Size: 0xF6
-	Parameters: 1
-	Flags: Linked
-*/
 function _trigger_play(trig) {
-  trig endon(# "death");
+  trig endon("death");
   do {
     trig trigger::wait_till();
     a_ents = [];
@@ -4318,39 +3122,19 @@ function _trigger_play(trig) {
   while (isdefined(get_scenedef(self.scriptbundlename).looping) && get_scenedef(self.scriptbundlename).looping);
 }
 
-/*
-	Name: _trigger_stop
-	Namespace: scene
-	Checksum: 0xBF9F1DC
-	Offset: 0x11ED0
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function _trigger_stop(trig) {
-  trig endon(# "death");
+  trig endon("death");
   trig trigger::wait_till();
   self thread stop();
 }
 
-/*
-	Name: add_scene_func
-	Namespace: scene
-	Checksum: 0x9FAB0840
-	Offset: 0x11F20
-	Size: 0x12C
-	Parameters: 4
-	Flags: Linked, Variadic
-*/
 function add_scene_func(str_scenedef, func, str_state = "play", ...) {
   /# /
   #
   assert(isdefined(get_scenedef(str_scenedef)), ("" + str_scenedef) + "");
-  # /
-    # /
-    if(!isdefined(level.scene_funcs)) {
-      level.scene_funcs = [];
-    }
+  if(!isdefined(level.scene_funcs)) {
+    level.scene_funcs = [];
+  }
   if(!isdefined(level.scene_funcs[str_scenedef])) {
     level.scene_funcs[str_scenedef] = [];
   }
@@ -4360,24 +3144,13 @@ function add_scene_func(str_scenedef, func, str_state = "play", ...) {
   array::add(level.scene_funcs[str_scenedef][str_state], array(func, vararg), 0);
 }
 
-/*
-	Name: remove_scene_func
-	Namespace: scene
-	Checksum: 0xA5C585E7
-	Offset: 0x12058
-	Size: 0x14E
-	Parameters: 3
-	Flags: None
-*/
 function remove_scene_func(str_scenedef, func, str_state = "play") {
   /# /
   #
   assert(isdefined(get_scenedef(str_scenedef)), ("" + str_scenedef) + "");
-  # /
-    # /
-    if(!isdefined(level.scene_funcs)) {
-      level.scene_funcs = [];
-    }
+  if(!isdefined(level.scene_funcs)) {
+    level.scene_funcs = [];
+  }
   if(isdefined(level.scene_funcs[str_scenedef]) && isdefined(level.scene_funcs[str_scenedef][str_state])) {
     for (i = level.scene_funcs[str_scenedef][str_state].size - 1; i >= 0; i--) {
       if(level.scene_funcs[str_scenedef][str_state][i][0] == func) {
@@ -4387,28 +3160,10 @@ function remove_scene_func(str_scenedef, func, str_state = "play") {
   }
 }
 
-/*
-	Name: get_scenedef
-	Namespace: scene
-	Checksum: 0xAC6AF666
-	Offset: 0x121B0
-	Size: 0x2A
-	Parameters: 1
-	Flags: Linked
-*/
 function get_scenedef(str_scenedef) {
   return struct::get_script_bundle("scene", str_scenedef);
 }
 
-/*
-	Name: get_scenedefs
-	Namespace: scene
-	Checksum: 0x66474AC7
-	Offset: 0x121E8
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function get_scenedefs(str_type = "scene") {
   a_scenedefs = [];
   foreach(s_scenedef in struct::get_script_bundles("scene")) {
@@ -4424,26 +3179,14 @@ function get_scenedefs(str_type = "scene") {
   return a_scenedefs;
 }
 
-/*
-	Name: spawn
-	Namespace: scene
-	Checksum: 0x8221B8E4
-	Offset: 0x12320
-	Size: 0x1A8
-	Parameters: 5
-	Flags: None
-*/
 function spawn(arg1, arg2, arg3, arg4, b_test_run) {
   str_scenedef = arg1;
-  /#
   assert(isdefined(str_scenedef), "");
-  # /
-    if(isvec(arg2)) {
-      v_origin = arg2;
-      v_angles = arg3;
-      a_ents = arg4;
-    }
-  else {
+  if(isvec(arg2)) {
+    v_origin = arg2;
+    v_angles = arg3;
+    a_ents = arg4;
+  } else {
     a_ents = arg2;
     v_origin = arg3;
     v_angles = arg4;
@@ -4458,15 +3201,6 @@ function spawn(arg1, arg2, arg3, arg4, b_test_run) {
   return s_instance;
 }
 
-/*
-	Name: init
-	Namespace: scene
-	Checksum: 0x21414476
-	Offset: 0x124D0
-	Size: 0x298
-	Parameters: 4
-	Flags: Linked
-*/
 function init(arg1, arg2, arg3, b_test_run) {
   if(self == level) {
     if(isstring(arg1)) {
@@ -4483,8 +3217,6 @@ function init(arg1, arg2, arg3, b_test_run) {
         /# /
         #
         assert(a_instances.size, ((("" + str_key) + "") + str_value) + "");
-        # /
-          # /
       } else {
         a_instances = struct::get_array(str_value, "targetname");
         if(!a_instances.size) {
@@ -4511,32 +3243,17 @@ function init(arg1, arg2, arg3, b_test_run) {
   }
 }
 
-/*
-	Name: _init_instance
-	Namespace: scene
-	Checksum: 0xE4B34C7C
-	Offset: 0x12770
-	Size: 0x274
-	Parameters: 3
-	Flags: Linked
-*/
 function _init_instance(str_scenedef = self.scriptbundlename, a_ents, b_test_run = 0) {
   level flagsys::wait_till("scene_on_load_wait");
-  /#
   if(array().size && !isinarray(array(), str_scenedef)) {
     return;
   }
-  # /
-    s_bundle = get_scenedef(str_scenedef);
+  s_bundle = get_scenedef(str_scenedef);
   /# /
   #
   assert(isdefined(str_scenedef), ("" + (isdefined(self.origin) ? self.origin : "")) + "");
-  # /
-    /#
   assert(isdefined(s_bundle), ((("" + (isdefined(self.origin) ? self.origin : "")) + "") + str_scenedef) + "");
-  # /
-    # /
-    o_scene = get_active_scene(str_scenedef);
+  o_scene = get_active_scene(str_scenedef);
   if(!isdefined(o_scene)) {
     if(s_bundle.scenetype == "awareness") {
       o_scene = new cawarenessscene();
@@ -4553,15 +3270,6 @@ function _init_instance(str_scenedef = self.scriptbundlename, a_ents, b_test_run
   return o_scene;
 }
 
-/*
-	Name: _load_female_scene
-	Namespace: scene
-	Checksum: 0xCAE68714
-	Offset: 0x129F0
-	Size: 0x264
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _load_female_scene(s_bundle, a_ents) {
   b_has_player = 0;
   foreach(s_object in s_bundle.objects) {
@@ -4600,17 +3308,7 @@ function private _load_female_scene(s_bundle, a_ents) {
   return s_bundle;
 }
 
-/*
-	Name: play
-	Namespace: scene
-	Checksum: 0x88DFD8F8
-	Offset: 0x12C60
-	Size: 0x4BC
-	Parameters: 6
-	Flags: Linked
-*/
 function play(arg1, arg2, arg3, b_test_run = 0, str_state, str_mode = "") {
-  /#
   if(getdvarint("") > 0) {
     if(isdefined(arg1) && isstring(arg1)) {
       printtoprightln("" + arg1);
@@ -4618,10 +3316,9 @@ function play(arg1, arg2, arg3, b_test_run = 0, str_state, str_mode = "") {
       printtoprightln("");
     }
   }
-  # /
-    if(isdefined(arg1) && isstring(arg1) && arg1 == "p7_fxanim_zm_castle_rocket_bell_tower_bundle") {
-      arg1 = arg1;
-    }
+  if(isdefined(arg1) && isstring(arg1) && arg1 == "p7_fxanim_zm_castle_rocket_bell_tower_bundle") {
+    arg1 = arg1;
+  }
   s_tracker = spawnstruct();
   s_tracker.n_scene_count = 1;
   if(self == level) {
@@ -4641,8 +3338,6 @@ function play(arg1, arg2, arg3, b_test_run = 0, str_state, str_mode = "") {
         /# /
         #
         assert(a_instances.size, ((("" + str_key) + "") + str_value) + "");
-        # /
-          # /
       } else {
         a_instances = struct::get_array(str_value, "targetname");
         if(!a_instances.size) {
@@ -4674,28 +3369,17 @@ function play(arg1, arg2, arg3, b_test_run = 0, str_state, str_mode = "") {
     }
   }
   for (i = 0; i < s_tracker.n_scene_count; i++) {
-    s_tracker waittill(# "scene_done");
+    s_tracker waittill("scene_done");
   }
 }
 
-/*
-	Name: _play_instance
-	Namespace: scene
-	Checksum: 0x3269B728
-	Offset: 0x13128
-	Size: 0x2AC
-	Parameters: 6
-	Flags: Linked
-*/
 function _play_instance(s_tracker, str_scenedef, a_ents, b_test_run = 0, str_state, str_mode) {
-  /#
   if(array().size && !isinarray(array(), str_scenedef)) {
     return;
   }
-  # /
-    if(!isdefined(str_scenedef)) {
-      str_scenedef = self.scriptbundlename;
-    }
+  if(!isdefined(str_scenedef)) {
+    str_scenedef = self.scriptbundlename;
+  }
   if(self.scriptbundlename === str_scenedef) {
     if(!(isdefined(self.script_play_multiple) && self.script_play_multiple)) {
       if(isdefined(self.scene_played) && self.scene_played && !b_test_run) {
@@ -4703,7 +3387,7 @@ function _play_instance(s_tracker, str_scenedef, a_ents, b_test_run = 0, str_sta
         while (is_playing(str_scenedef)) {
           wait(0.05);
         }
-        s_tracker notify(# "scene_done");
+        s_tracker notify("scene_done");
         return;
       }
     }
@@ -4718,7 +3402,7 @@ function _play_instance(s_tracker, str_scenedef, a_ents, b_test_run = 0, str_sta
     }
     thread[[o_scene]] - > play(str_state, a_ents, b_test_run, str_mode);
   }
-  self waittillmatch(# "scene_done");
+  self waittillmatch("scene_done");
   if(isdefined(self)) {
     if(isdefined(self.scriptbundlename) && (isdefined(get_scenedef(self.scriptbundlename).looping) && get_scenedef(self.scriptbundlename).looping)) {
       self.scene_played = 0;
@@ -4727,18 +3411,9 @@ function _play_instance(s_tracker, str_scenedef, a_ents, b_test_run = 0, str_sta
       level flag::set(self.script_flag_set);
     }
   }
-  s_tracker notify(# "scene_done", str_scenedef);
+  s_tracker notify("scene_done", str_scenedef);
 }
 
-/*
-	Name: skipto_end
-	Namespace: scene
-	Checksum: 0xE570DDD0
-	Offset: 0x133E0
-	Size: 0xB4
-	Parameters: 5
-	Flags: None
-*/
 function skipto_end(arg1, arg2, arg3, n_time, b_include_players = 0) {
   str_mode = "skipto";
   if(!b_include_players) {
@@ -4750,15 +3425,6 @@ function skipto_end(arg1, arg2, arg3, n_time, b_include_players = 0) {
   play(arg1, arg2, arg3, 0, undefined, str_mode);
 }
 
-/*
-	Name: skipto_end_noai
-	Namespace: scene
-	Checksum: 0xE2DD1DB6
-	Offset: 0x134A0
-	Size: 0x84
-	Parameters: 4
-	Flags: None
-*/
 function skipto_end_noai(arg1, arg2, arg3, n_time) {
   str_mode = "skipto_noai_noplayers";
   if(isdefined(n_time)) {
@@ -4767,15 +3433,6 @@ function skipto_end_noai(arg1, arg2, arg3, n_time) {
   play(arg1, arg2, arg3, 0, undefined, str_mode);
 }
 
-/*
-	Name: stop
-	Namespace: scene
-	Checksum: 0xF46B53FD
-	Offset: 0x13530
-	Size: 0x274
-	Parameters: 3
-	Flags: Linked
-*/
 function stop(arg1, arg2, arg3) {
   if(self == level) {
     if(isstring(arg1)) {
@@ -4792,9 +3449,7 @@ function stop(arg1, arg2, arg3) {
         /# /
         #
         assert(a_instances.size, ((("" + str_key) + "") + str_value) + "");
-        # /
-          # /
-          str_value = undefined;
+        str_value = undefined;
       } else {
         a_instances = struct::get_array(str_value, "targetname");
         if(!a_instances.size) {
@@ -4818,15 +3473,6 @@ function stop(arg1, arg2, arg3) {
   }
 }
 
-/*
-	Name: _stop_instance
-	Namespace: scene
-	Checksum: 0xF0BB6473
-	Offset: 0x137B0
-	Size: 0x102
-	Parameters: 2
-	Flags: Linked
-*/
 function _stop_instance(b_clear = 0, str_scenedef) {
   if(isdefined(self.scenes)) {
     foreach(o_scene in arraycopy(self.scenes)) {
@@ -4840,15 +3486,6 @@ function _stop_instance(b_clear = 0, str_scenedef) {
   }
 }
 
-/*
-	Name: has_init_state
-	Namespace: scene
-	Checksum: 0x1ECAC53A
-	Offset: 0x138C0
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function has_init_state(str_scenedef) {
   s_scenedef = get_scenedef(str_scenedef);
   foreach(s_obj in s_scenedef.objects) {
@@ -4859,80 +3496,26 @@ function has_init_state(str_scenedef) {
   return false;
 }
 
-/*
-	Name: _has_init_state
-	Namespace: scene
-	Checksum: 0xE8D56C37
-	Offset: 0x139B8
-	Size: 0x46
-	Parameters: 0
-	Flags: Linked
-*/
 function _has_init_state() {
   return isdefined(self.spawnoninit) && self.spawnoninit || isdefined(self.initanim) || isdefined(self.initanimloop) || (isdefined(self.firstframe) && self.firstframe);
 }
 
-/*
-	Name: get_prop_count
-	Namespace: scene
-	Checksum: 0xF4950FBF
-	Offset: 0x13A08
-	Size: 0x2A
-	Parameters: 1
-	Flags: None
-*/
 function get_prop_count(str_scenedef) {
   return _get_type_count("prop", str_scenedef);
 }
 
-/*
-	Name: get_vehicle_count
-	Namespace: scene
-	Checksum: 0xD92C0E78
-	Offset: 0x13A40
-	Size: 0x2A
-	Parameters: 1
-	Flags: None
-*/
 function get_vehicle_count(str_scenedef) {
   return _get_type_count("vehicle", str_scenedef);
 }
 
-/*
-	Name: get_actor_count
-	Namespace: scene
-	Checksum: 0x17AAA7B0
-	Offset: 0x13A78
-	Size: 0x2A
-	Parameters: 1
-	Flags: None
-*/
 function get_actor_count(str_scenedef) {
   return _get_type_count("actor", str_scenedef);
 }
 
-/*
-	Name: get_player_count
-	Namespace: scene
-	Checksum: 0x96A17CCA
-	Offset: 0x13AB0
-	Size: 0x2A
-	Parameters: 1
-	Flags: Linked
-*/
 function get_player_count(str_scenedef) {
   return _get_type_count("player", str_scenedef);
 }
 
-/*
-	Name: _get_type_count
-	Namespace: scene
-	Checksum: 0xCDEBBA46
-	Offset: 0x13AE8
-	Size: 0x138
-	Parameters: 2
-	Flags: Linked
-*/
 function _get_type_count(str_type, str_scenedef) {
   s_scenedef = (isdefined(str_scenedef) ? get_scenedef(str_scenedef) : get_scenedef(self.scriptbundlename));
   n_count = 0;
@@ -4946,15 +3529,6 @@ function _get_type_count(str_type, str_scenedef) {
   return n_count;
 }
 
-/*
-	Name: is_active
-	Namespace: scene
-	Checksum: 0xFD4D73A3
-	Offset: 0x13C28
-	Size: 0x4C
-	Parameters: 1
-	Flags: None
-*/
 function is_active(str_scenedef) {
   if(self == level) {
     return get_active_scenes(str_scenedef).size > 0;
@@ -4962,15 +3536,6 @@ function is_active(str_scenedef) {
   return isdefined(get_active_scene(str_scenedef));
 }
 
-/*
-	Name: is_playing
-	Namespace: scene
-	Checksum: 0x1463E1B6
-	Offset: 0x13C80
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function is_playing(str_scenedef) {
   if(self == level) {
     return level flagsys::get(str_scenedef + "_playing");
@@ -4985,15 +3550,6 @@ function is_playing(str_scenedef) {
   return 0;
 }
 
-/*
-	Name: is_ready
-	Namespace: scene
-	Checksum: 0xD5333108
-	Offset: 0x13D20
-	Size: 0x96
-	Parameters: 1
-	Flags: None
-*/
 function is_ready(str_scenedef) {
   if(self == level) {
     return level flagsys::get(str_scenedef + "_ready");
@@ -5008,15 +3564,6 @@ function is_ready(str_scenedef) {
   return 0;
 }
 
-/*
-	Name: get_active_scenes
-	Namespace: scene
-	Checksum: 0x2F9BC371
-	Offset: 0x13DC0
-	Size: 0x102
-	Parameters: 1
-	Flags: Linked
-*/
 function get_active_scenes(str_scenedef) {
   if(!isdefined(level.active_scenes)) {
     level.active_scenes = [];
@@ -5031,15 +3578,6 @@ function get_active_scenes(str_scenedef) {
   return a_active_scenes;
 }
 
-/*
-	Name: get_active_scene
-	Namespace: scene
-	Checksum: 0x9C0EB389
-	Offset: 0x13ED0
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function get_active_scene(str_scenedef) {
   if(isdefined(str_scenedef) && isdefined(self.scenes)) {
     foreach(o_scene in self.scenes) {
@@ -5052,97 +3590,48 @@ function get_active_scene(str_scenedef) {
   }
 }
 
-/*
-	Name: delete_scene_data
-	Namespace: scene
-	Checksum: 0xDA0F40B2
-	Offset: 0x13F90
-	Size: 0x3E
-	Parameters: 1
-	Flags: None
-*/
 function delete_scene_data(str_scenename) {
   if(isdefined(level.scriptbundles["scene"][str_scenename])) {
     level.scriptbundles["scene"][str_scenename] = undefined;
   }
 }
 
-/*
-	Name: is_igc
-	Namespace: scene
-	Checksum: 0x66834A82
-	Offset: 0x13FD8
-	Size: 0x7A
-	Parameters: 0
-	Flags: Linked
-*/
 function is_igc() {
   return isstring(self.cameraswitcher) || isstring(self.extracamswitcher1) || isstring(self.extracamswitcher2) || isstring(self.extracamswitcher3) || isstring(self.extracamswitcher4);
 }
 
-/*
-	Name: scene_disable_player_stuff
-	Namespace: scene
-	Checksum: 0xF05CE6B5
-	Offset: 0x14060
-	Size: 0xF2
-	Parameters: 1
-	Flags: Linked
-*/
 function scene_disable_player_stuff(b_hide_hud = 1) {
-  /#
   if(getdvarint("") > 0) {
     printtoprightln("");
   }
-  # /
-    self notify(# "scene_disable_player_stuff");
-  self notify(# "kill_hint_text");
+  self notify("scene_disable_player_stuff");
+  self notify("kill_hint_text");
   self disableoffhandweapons();
   if(b_hide_hud) {
     set_igc_active(1);
-    level notify(# "disable_cybercom", self, 1);
+    level notify("disable_cybercom", self, 1);
     self util::show_hud(0);
     util::wait_network_frame();
-    self notify(# "delete_weapon_objects");
+    self notify("delete_weapon_objects");
   }
 }
 
-/*
-	Name: scene_enable_player_stuff
-	Namespace: scene
-	Checksum: 0xC1B4962F
-	Offset: 0x14160
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function scene_enable_player_stuff(b_hide_hud = 1) {
-  /#
   if(getdvarint("") > 0) {
     printtoprightln("");
   }
-  # /
-    self endon(# "scene_disable_player_stuff");
-  self endon(# "disconnect");
+  self endon("scene_disable_player_stuff");
+  self endon("disconnect");
   wait(0.5);
   self enableoffhandweapons();
   if(b_hide_hud) {
     set_igc_active(0);
-    level notify(# "enable_cybercom", self);
-    self notify(# "scene_enable_cybercom");
+    level notify("enable_cybercom", self);
+    self notify("scene_enable_cybercom");
     self util::show_hud(1);
   }
 }
 
-/*
-	Name: updateigcviewtime
-	Namespace: scene
-	Checksum: 0xC9FFC8F8
-	Offset: 0x14250
-	Size: 0x13A
-	Parameters: 1
-	Flags: Linked
-*/
 function updateigcviewtime(b_in_igc) {
   if(b_in_igc && !isdefined(level.igcstarttime)) {
     level.igcstarttime = gettime();
@@ -5158,15 +3647,6 @@ function updateigcviewtime(b_in_igc) {
   }
 }
 
-/*
-	Name: set_igc_active
-	Namespace: scene
-	Checksum: 0x384B066F
-	Offset: 0x14398
-	Size: 0xD0
-	Parameters: 1
-	Flags: Linked
-*/
 function set_igc_active(b_in_igc) {
   n_ent_num = self getentitynumber();
   n_players_in_igc_field = level clientfield::get("in_igc");
@@ -5177,34 +3657,14 @@ function set_igc_active(b_in_igc) {
   }
   updateigcviewtime(b_in_igc);
   level clientfield::set("in_igc", n_players_in_igc_field);
-  /#
-  # /
 }
 
-/*
-	Name: is_igc_active
-	Namespace: scene
-	Checksum: 0x7493D96F
-	Offset: 0x14470
-	Size: 0x60
-	Parameters: 0
-	Flags: Linked
-*/
 function is_igc_active() {
   n_players_in_igc = level clientfield::get("in_igc");
   n_entnum = self getentitynumber();
   return n_players_in_igc & (1 << n_entnum);
 }
 
-/*
-	Name: is_capture_mode
-	Namespace: scene
-	Checksum: 0x1DDC7420
-	Offset: 0x144D8
-	Size: 0x5A
-	Parameters: 0
-	Flags: None
-*/
 function is_capture_mode() {
   str_mode = getdvarstring("scene_menu_mode", "default");
   if(issubstr(str_mode, "capture")) {
@@ -5213,43 +3673,16 @@ function is_capture_mode() {
   return false;
 }
 
-/*
-	Name: should_spectate_on_join
-	Namespace: scene
-	Checksum: 0xC92EBEF5
-	Offset: 0x14540
-	Size: 0x16
-	Parameters: 0
-	Flags: None
-*/
 function should_spectate_on_join() {
   return isdefined(level.scene_should_spectate_on_hot_join) && level.scene_should_spectate_on_hot_join;
 }
 
-/*
-	Name: wait_until_spectate_on_join_completes
-	Namespace: scene
-	Checksum: 0x8EDB56A3
-	Offset: 0x14560
-	Size: 0x28
-	Parameters: 0
-	Flags: None
-*/
 function wait_until_spectate_on_join_completes() {
   while (isdefined(level.scene_should_spectate_on_hot_join) && level.scene_should_spectate_on_hot_join) {
     wait(0.05);
   }
 }
 
-/*
-	Name: skip_scene
-	Namespace: scene
-	Checksum: 0xAF9E4FFA
-	Offset: 0x14590
-	Size: 0x5A2
-	Parameters: 4
-	Flags: Linked
-*/
 function skip_scene(scene_name, b_sequence, b_player_scene, b_check_linked_scene) {
   if(!isdefined(scene_name)) {
     if(isdefined(level.shared_scene_sequence_name)) {
@@ -5269,7 +3702,6 @@ function skip_scene(scene_name, b_sequence, b_player_scene, b_check_linked_scene
       }
     }
   }
-  /#
   if(getdvarint("") > 0) {
     if(isdefined(scene_name)) {
       printtoprightln((("" + scene_name) + "") + gettime(), (1, 0.5, 0));
@@ -5277,15 +3709,14 @@ function skip_scene(scene_name, b_sequence, b_player_scene, b_check_linked_scene
       printtoprightln("" + gettime(), (1, 0.5, 0));
     }
   }
-  # /
-    if(!(isdefined(b_sequence) && b_sequence) && !isdefined(b_player_scene)) {
-      foreach(player in level.players) {
-        if(isdefined(player.current_scene) && player.current_scene == scene_name) {
-          b_player_scene = 1;
-          break;
-        }
+  if(!(isdefined(b_sequence) && b_sequence) && !isdefined(b_player_scene)) {
+    foreach(player in level.players) {
+      if(isdefined(player.current_scene) && player.current_scene == scene_name) {
+        b_player_scene = 1;
+        break;
       }
     }
+  }
   if(!(isdefined(b_sequence) && b_sequence) && (isdefined(b_player_scene) && b_player_scene)) {
     a_instances = get_active_scenes(scene_name);
     b_can_skip_player_scene = 0;
@@ -5325,15 +3756,6 @@ function skip_scene(scene_name, b_sequence, b_player_scene, b_check_linked_scene
   }
 }
 
-/*
-	Name: _skip_scene
-	Namespace: scene
-	Checksum: 0xE6C62634
-	Offset: 0x14B40
-	Size: 0x456
-	Parameters: 4
-	Flags: Linked
-*/
 function _skip_scene(skipped_scene_name, b_sequence, b_player_scene, b_check_linked_scene) {
   b_shared_scene = 0;
   if(isdefined(self.scenes)) {
@@ -5400,15 +3822,6 @@ function _skip_scene(skipped_scene_name, b_sequence, b_player_scene, b_check_lin
   return b_shared_scene;
 }
 
-/*
-	Name: add_player_linked_scene
-	Namespace: scene
-	Checksum: 0xF5887147
-	Offset: 0x14FA0
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function add_player_linked_scene(linked_scene_str) {
   if(!isdefined(level.linked_scenes)) {
     level.linked_scenes = [];
@@ -5416,80 +3829,35 @@ function add_player_linked_scene(linked_scene_str) {
   array::add(level.linked_scenes, linked_scene_str);
 }
 
-/*
-	Name: remove_player_linked_scene
-	Namespace: scene
-	Checksum: 0x41DF380F
-	Offset: 0x14FF0
-	Size: 0x34
-	Parameters: 1
-	Flags: None
-*/
 function remove_player_linked_scene(linked_scene_str) {
   if(isdefined(level.linked_scenes)) {
     arrayremovevalue(level.linked_scenes, linked_scene_str);
   }
 }
 
-/*
-	Name: waittill_skip_sequence_completed
-	Namespace: scene
-	Checksum: 0xFDB78DD2
-	Offset: 0x15030
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function waittill_skip_sequence_completed() {
   while (isdefined(level.player_skipping_scene)) {
     wait(0.05);
   }
 }
 
-/*
-	Name: is_skipping_in_progress
-	Namespace: scene
-	Checksum: 0xC457CE2F
-	Offset: 0x15058
-	Size: 0xC
-	Parameters: 0
-	Flags: None
-*/
 function is_skipping_in_progress() {
   return isdefined(level.player_skipping_scene);
 }
 
-/*
-	Name: watch_scene_skip_requests
-	Namespace: scene
-	Checksum: 0xA473C31A
-	Offset: 0x15070
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_scene_skip_requests() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    level waittill(# "scene_sequence_started");
+    level waittill("scene_sequence_started");
     self thread should_skip_scene_loop();
     self thread watch_scene_ending();
     self thread watch_scene_skipping();
-    level waittill(# "scene_sequence_ended");
+    level waittill("scene_sequence_ended");
   }
 }
 
-/*
-	Name: clear_scene_skipping_ui
-	Namespace: scene
-	Checksum: 0xC8ED6D1D
-	Offset: 0x150F8
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked
-*/
 function clear_scene_skipping_ui() {
-  level endon(# "scene_sequence_started");
+  level endon("scene_sequence_started");
   if(isdefined(self.scene_skip_timer)) {
     self.scene_skip_timer = undefined;
   }
@@ -5504,51 +3872,24 @@ function clear_scene_skipping_ui() {
   }
 }
 
-/*
-	Name: watch_scene_ending
-	Namespace: scene
-	Checksum: 0x7C82604B
-	Offset: 0x151F0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_scene_ending() {
-  self endon(# "disconnect");
-  self endon(# "scene_being_skipped");
-  level waittill(# "scene_sequence_ended");
+  self endon("disconnect");
+  self endon("scene_being_skipped");
+  level waittill("scene_sequence_ended");
   clear_scene_skipping_ui();
 }
 
-/*
-	Name: watch_scene_skipping
-	Namespace: scene
-	Checksum: 0x7C3F72A8
-	Offset: 0x15238
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_scene_skipping() {
-  self endon(# "disconnect");
-  level endon(# "scene_sequence_ended");
-  self waittill(# "scene_being_skipped");
+  self endon("disconnect");
+  level endon("scene_sequence_ended");
+  self waittill("scene_being_skipped");
   level.sceneskippedcount++;
   clear_scene_skipping_ui();
 }
 
-/*
-	Name: should_skip_scene_loop
-	Namespace: scene
-	Checksum: 0xB09721B6
-	Offset: 0x15288
-	Size: 0x58C
-	Parameters: 0
-	Flags: Linked
-*/
 function should_skip_scene_loop() {
-  self endon(# "disconnect");
-  level endon(# "scene_sequence_ended");
+  self endon("disconnect");
+  level endon("scene_sequence_ended");
   b_skip_scene = 0;
   clear_scene_skipping_ui();
   wait(0.05);
@@ -5612,21 +3953,12 @@ function should_skip_scene_loop() {
   }
   if(b_skip_scene) {
     self playsound("uin_igc_skip");
-    self notify(# "scene_being_skipped");
-    level notify(# "scene_skip_sequence_started");
+    self notify("scene_being_skipped");
+    level notify("scene_skip_sequence_started");
     skip_scene(level.shared_scene_sequence_name, 0, 1);
   }
 }
 
-/*
-	Name: any_button_pressed
-	Namespace: scene
-	Checksum: 0x57E68DB3
-	Offset: 0x15820
-	Size: 0x1A6
-	Parameters: 0
-	Flags: Linked
-*/
 function any_button_pressed() {
   if(self actionslotonebuttonpressed()) {
     return true;
@@ -5670,43 +4002,16 @@ function any_button_pressed() {
   return false;
 }
 
-/*
-	Name: on_player_connect
-	Namespace: scene
-	Checksum: 0x4D0E085F
-	Offset: 0x159D0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   if(self ishost()) {
     self thread watch_scene_skip_requests();
   }
 }
 
-/*
-	Name: on_player_disconnect
-	Namespace: scene
-	Checksum: 0x5A791FE8
-	Offset: 0x15A10
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_disconnect() {
   self set_igc_active(0);
 }
 
-/*
-	Name: add_scene_ordered_notetrack
-	Namespace: scene
-	Checksum: 0xA3A9CB6B
-	Offset: 0x15A38
-	Size: 0xDC
-	Parameters: 2
-	Flags: None
-*/
 function add_scene_ordered_notetrack(group_name, str_note) {
   if(!isdefined(level.scene_ordered_notetracks)) {
     level.scene_ordered_notetracks = [];
@@ -5722,15 +4027,6 @@ function add_scene_ordered_notetrack(group_name, str_note) {
   self thread _wait_for_ordered_notify(group_obj.count - 1, group_obj, group_name, str_note);
 }
 
-/*
-	Name: _wait_for_ordered_notify
-	Namespace: scene
-	Checksum: 0xF9E3E899
-	Offset: 0x15B20
-	Size: 0x254
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private _wait_for_ordered_notify(id, group_obj, group_name, str_note) {
   self waittill(str_note);
   if(group_obj.current_count == id) {
@@ -5758,15 +4054,6 @@ function private _wait_for_ordered_notify(id, group_obj, group_name, str_note) {
   }
 }
 
-/*
-	Name: _fire_ordered_notitifes
-	Namespace: scene
-	Checksum: 0xEFF68B87
-	Offset: 0x15D80
-	Size: 0xB4
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _fire_ordered_notitifes(group_obj, group_name) {
   if(isdefined(group_obj.pending_notifies)) {
     while (group_obj.pending_notifies.size > 0) {
@@ -5779,15 +4066,6 @@ function private _fire_ordered_notitifes(group_obj, group_name) {
   level.scene_ordered_notetracks[group_name] = undefined;
 }
 
-/*
-	Name: add_wait_for_streamer_hint_scene
-	Namespace: scene
-	Checksum: 0x6E33476F
-	Offset: 0x15E40
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function add_wait_for_streamer_hint_scene(str_scene_name) {
   if(!isdefined(level.wait_for_streamer_hint_scenes)) {
     level.wait_for_streamer_hint_scenes = [];

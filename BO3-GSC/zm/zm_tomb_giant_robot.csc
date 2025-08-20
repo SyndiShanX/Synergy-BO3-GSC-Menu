@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_giant_robot.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\audio_shared;
@@ -10,18 +14,8 @@
 #using scripts\zm\_zm_audio;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\zm_tomb_amb;
-
 #namespace zm_tomb_giant_robot;
 
-/*
-	Name: init
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xE6E67F5A
-	Offset: 0x688
-	Size: 0x55C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("scriptmover", "register_giant_robot", 21000, 1, "int", & register_giant_robot, 0, 0);
   clientfield::register("world", "start_anim_robot_0", 21000, 1, "int", & function_7e19465b, 0, 0);
@@ -44,15 +38,6 @@ function init() {
   clientfield::register("world", "church_ceiling_fxanim", 21000, 1, "int", & church_ceiling_fxanim, 0, 0);
 }
 
-/*
-	Name: register_giant_robot
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xA40440CC
-	Offset: 0xBF0
-	Size: 0xF0
-	Parameters: 7
-	Flags: Linked
-*/
 function register_giant_robot(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(!isdefined(level.a_giant_robots)) {
     level.a_giant_robots = [];
@@ -69,15 +54,6 @@ function register_giant_robot(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: function_36b7480d
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x8BA9D4D7
-	Offset: 0xCE8
-	Size: 0x1F4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_36b7480d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   ai_robot = function_9f95c19e(localclientnum, fieldname);
   if(!isdefined(ai_robot)) {
@@ -96,15 +72,6 @@ function function_36b7480d(localclientnum, oldval, newval, bnewent, binitialsnap
   setfxignorepause(localclientnum, ai_robot.var_16a8765e, 1);
 }
 
-/*
-	Name: function_98a05ad2
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x283316E3
-	Offset: 0xEE8
-	Size: 0x13C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_98a05ad2(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval == 1) {
     self.var_e655463b = playfxontag(localclientnum, level._effect["giant_robot_foot_light"], self, "tag_foot_bottom_left");
@@ -119,15 +86,6 @@ function function_98a05ad2(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_6e99bd62
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x3B274852
-	Offset: 0x1030
-	Size: 0x394
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6e99bd62(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   ai_robot = function_9f95c19e(localclientnum, fieldname);
   if(!isdefined(ai_robot)) {
@@ -159,15 +117,6 @@ function function_6e99bd62(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_aa136ff9
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xBE012B68
-	Offset: 0x13D0
-	Size: 0x1A4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_aa136ff9(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval == 1) {
     s_origin = struct::get(fieldname, "targetname");
@@ -181,38 +130,20 @@ function function_aa136ff9(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_d4c69cd
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x5A64DD06
-	Offset: 0x1580
-	Size: 0xA4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d4c69cd(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval == 1) {
     self thread function_691b8375(localclientnum);
   } else {
-    self notify(# "stop_eject_steam_fx");
+    self notify("stop_eject_steam_fx");
     if(isdefined(self.fieldname)) {
       stopfx(localclientnum, self.fieldname);
     }
   }
 }
 
-/*
-	Name: function_691b8375
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x43D184B6
-	Offset: 0x1630
-	Size: 0x150
-	Parameters: 1
-	Flags: Linked
-*/
 function function_691b8375(localclientnum) {
-  self endon(# "stop_eject_steam_fx");
-  self endon(# "player_intermission");
+  self endon("stop_eject_steam_fx");
+  self endon("player_intermission");
   var_bd5df270 = struct::get_array("giant_robot_eject_tube", "script_noteworthy");
   s_tube = arraygetclosest(self.origin, var_bd5df270);
   self thread function_caeb1b02("stop_eject_steam_fx", s_tube.origin);
@@ -223,15 +154,6 @@ function function_691b8375(localclientnum) {
   }
 }
 
-/*
-	Name: all_tubes_play_eject_steam_fx
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x58EB7369
-	Offset: 0x1788
-	Size: 0x23E
-	Parameters: 7
-	Flags: Linked
-*/
 function all_tubes_play_eject_steam_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval == 1) {
     var_66a1e889 = struct::get_array("giant_robot_eject_tube", "script_noteworthy");
@@ -249,22 +171,13 @@ function all_tubes_play_eject_steam_fx(localclientnum, oldval, newval, bnewent, 
     }
   } else if(isdefined(level.var_bd5df270[localclientnum])) {
     foreach(struct in level.var_bd5df270[localclientnum]) {
-      struct notify(# "stop_all_tubes_eject_steam");
+      struct notify("stop_all_tubes_eject_steam");
     }
   }
 }
 
-/*
-	Name: function_3ae72e85
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xD3492BFD
-	Offset: 0x19D0
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3ae72e85(localclientnum) {
-  self endon(# "stop_all_tubes_eject_steam");
+  self endon("stop_all_tubes_eject_steam");
   self thread function_caeb1b02("stop_all_tubes_eject_steam", self.origin);
   while (true) {
     self.var_d1c8c63f = playfx(localclientnum, level._effect["eject_steam"], self.origin, anglestoforward(self.angles), anglestoup(self.angles));
@@ -273,30 +186,12 @@ function function_3ae72e85(localclientnum) {
   }
 }
 
-/*
-	Name: function_caeb1b02
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x21E2AB7A
-	Offset: 0x1AB0
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_caeb1b02(var_365d1fde, origin) {
   audio::playloopat("zmb_bot_timeout_steam", origin);
   self waittill(var_365d1fde);
   audio::stoploopat("zmb_bot_timeout_steam", origin);
 }
 
-/*
-	Name: gr_eject_player_impact_fx
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x158A1F04
-	Offset: 0x1B18
-	Size: 0xD4
-	Parameters: 7
-	Flags: Linked
-*/
 function gr_eject_player_impact_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval == 1) {
     self.fieldname = playfx(localclientnum, level._effect["beacon_shell_explosion"], self.origin);
@@ -306,15 +201,6 @@ function gr_eject_player_impact_fx(localclientnum, oldval, newval, bnewent, bini
   }
 }
 
-/*
-	Name: function_9f95c19e
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x2B020F8B
-	Offset: 0x1BF8
-	Size: 0x128
-	Parameters: 2
-	Flags: Linked
-*/
 function function_9f95c19e(localclientnum, fieldname) {
   if(!isdefined(level.a_giant_robots) || !isdefined(level.a_giant_robots[localclientnum])) {
     return undefined;
@@ -341,38 +227,23 @@ function function_9f95c19e(localclientnum, fieldname) {
   return ai_robot;
 }
 
-/*
-	Name: function_7e19465b
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x1AD288B8
-	Offset: 0x1D28
-	Size: 0x436
-	Parameters: 7
-	Flags: Linked
-*/
 function function_7e19465b(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(!isdefined(level.var_58b72d2f)) {
     level.var_58b72d2f = [];
     level.var_58b72d2f[0] = spawnstruct();
     level.var_58b72d2f[0].struct_name = "nml_warn_light_fp_ref";
     level.var_58b72d2f[0].var_11927f3d = struct::get_array("nml_foot_warn_light", "targetname");
-    /#
     assert(level.var_58b72d2f[0].var_11927f3d.size > 0, "");
-    # /
-      level.var_58b72d2f[1] = spawnstruct();
+    level.var_58b72d2f[1] = spawnstruct();
     level.var_58b72d2f[1].struct_name = "trench_warn_light_fp_ref";
     level.var_58b72d2f[1].var_11927f3d = [];
     level.var_58b72d2f[1].var_11927f3d = struct::get_array("trench_foot_warn_light", "targetname");
-    /#
     assert(level.var_58b72d2f[1].var_11927f3d.size > 0, "");
-    # /
-      level.var_58b72d2f[2] = spawnstruct();
+    level.var_58b72d2f[2] = spawnstruct();
     level.var_58b72d2f[2].struct_name = "church_warn_light_fp_ref";
     level.var_58b72d2f[2].var_11927f3d = [];
     level.var_58b72d2f[2].var_11927f3d = struct::get_array("church_foot_warn_light", "targetname");
-    /#
     assert(level.var_58b72d2f[2].var_11927f3d.size > 0, "");
-    # /
   }
   ai_robot = function_9f95c19e(localclientnum, fieldname);
   if(!isdefined(ai_robot) || !isdefined(level.var_58b72d2f[ai_robot.var_90d8d560])) {
@@ -390,15 +261,6 @@ function function_7e19465b(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_bbae1203
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xFCB0A1A7
-	Offset: 0x2168
-	Size: 0x182
-	Parameters: 2
-	Flags: Linked
-*/
 function function_bbae1203(localclientnum, var_75158c9e) {
   a_lights = function_d31a2386(var_75158c9e);
   foreach(light in a_lights) {
@@ -412,15 +274,6 @@ function function_bbae1203(localclientnum, var_75158c9e) {
   }
 }
 
-/*
-	Name: function_d91e5529
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x131D5F0F
-	Offset: 0x22F8
-	Size: 0xE8
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d91e5529(localclientnum, var_75158c9e) {
   a_lights = function_d31a2386(var_75158c9e);
   foreach(light in a_lights) {
@@ -431,15 +284,6 @@ function function_d91e5529(localclientnum, var_75158c9e) {
   }
 }
 
-/*
-	Name: function_aacf48b5
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x8C670ED3
-	Offset: 0x23E8
-	Size: 0xD0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_aacf48b5(localclientnum) {
   foreach(light in level.var_58b72d2f[self.var_90d8d560].var_11927f3d) {
     if(isdefined(light.var_1398bc94)) {
@@ -449,15 +293,6 @@ function function_aacf48b5(localclientnum) {
   }
 }
 
-/*
-	Name: function_d31a2386
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x6998DA17
-	Offset: 0x24C0
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d31a2386(var_75158c9e) {
   var_fa1ca319 = [];
   foreach(light in level.var_58b72d2f[self.var_90d8d560].var_11927f3d) {
@@ -473,15 +308,6 @@ function function_d31a2386(var_75158c9e) {
   return var_fa1ca319;
 }
 
-/*
-	Name: function_d46dfa88
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xD7CD3697
-	Offset: 0x2600
-	Size: 0x262
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d46dfa88(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   wait(1);
   if(newval == 1) {
@@ -515,17 +341,8 @@ function function_d46dfa88(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: giant_robot_rumble_and_shake
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x72816DDB
-	Offset: 0x2870
-	Size: 0x1D6
-	Parameters: 7
-	Flags: Linked
-*/
 function giant_robot_rumble_and_shake(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(newval == 3) {
     self earthquake(0.6, 1.5, self.origin, 100);
     self playrumbleonentity(localclientnum, "artillery_rumble");
@@ -541,21 +358,12 @@ function giant_robot_rumble_and_shake(localclientnum, oldval, newval, bnewent, b
         self playrumbleonentity(localclientnum, "damage_heavy");
         soundrattle(self.origin, 10, 350);
       } else {
-        self notify(# "hash_ee5c27b3");
+        self notify("hash_ee5c27b3");
       }
     }
   }
 }
 
-/*
-	Name: church_ceiling_fxanim
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x95EB4014
-	Offset: 0x2A50
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function church_ceiling_fxanim(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval == 1) {
     var_61cbe98c = getent(localclientnum, "church_ceiling", "targetname");

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_callbacks.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\gametypes\_globallogic;
 #using scripts\mp\gametypes\_globallogic_actor;
@@ -10,44 +14,16 @@
 #using scripts\shared\bots\bot_traversals;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
-
 #namespace callback;
 
-/*
-	Name: __init__sytem__
-	Namespace: callback
-	Checksum: 0x148C227
-	Offset: 0x220
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("callback", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: callback
-	Checksum: 0x6C6C52E4
-	Offset: 0x260
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   set_default_callbacks();
 }
 
-/*
-	Name: set_default_callbacks
-	Namespace: callback
-	Checksum: 0x8D74AD43
-	Offset: 0x280
-	Size: 0x20C
-	Parameters: 0
-	Flags: Linked
-*/
 function set_default_callbacks() {
   level.callbackstartgametype = & globallogic::callback_startgametype;
   level.callbackplayerconnect = & globallogic_player::callback_playerconnect;

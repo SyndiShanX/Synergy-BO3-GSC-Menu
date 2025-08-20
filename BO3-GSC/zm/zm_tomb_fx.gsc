@@ -1,35 +1,20 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_fx.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_tomb_fx;
 
-/*
-	Name: main
-	Namespace: zm_tomb_fx
-	Checksum: 0xE6EE5416
-	Offset: 0x10E0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_createfx_fx();
   precache_scripted_fx();
   level thread fx_overrides();
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_tomb_fx
-	Checksum: 0xC1A06D3D
-	Offset: 0x1128
-	Size: 0x382
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["switch_sparks"] = "env/electrical/fx_elec_wire_spark_burst";
   level._effect["poltergeist"] = "misc/fx_zombie_couch_effect";
@@ -65,15 +50,6 @@ function precache_scripted_fx() {
   level._effect["poltergeist"] = "tools/fx_null";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_tomb_fx
-	Checksum: 0x390A24E2
-	Offset: 0x14B8
-	Size: 0x40E
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {
   level._effect["fx_sky_dist_aa_tracers"] = "maps/zombie_tomb/fx_tomb_sky_dist_aa_tracers";
   level._effect["fx_tomb_vortex_glow"] = "maps/zombie_tomb/fx_tomb_vortex_glow";
@@ -114,15 +90,6 @@ function precache_createfx_fx() {
   level._effect["fx_tomb_skybox_vortex"] = "maps/zombie_tomb/fx_tomb_skybox_vortex";
 }
 
-/*
-	Name: fx_overrides
-	Namespace: zm_tomb_fx
-	Checksum: 0xE2E65D39
-	Offset: 0x18D0
-	Size: 0x102
-	Parameters: 0
-	Flags: Linked
-*/
 function fx_overrides() {
   level flagsys::wait_till("load_main_complete");
   level._effect["jugger_light"] = "dlc5/zmhd/fx_perk_juggernaut";

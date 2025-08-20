@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_gadget.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_bb;
 #using scripts\cp\cybercom\_cybercom;
@@ -31,18 +35,8 @@
 #using scripts\shared\hud_util_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace cybercom_gadget;
 
-/*
-	Name: init
-	Namespace: cybercom_gadget
-	Checksum: 0xAF966D7D
-	Offset: 0x750
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   cybercom_gadget_iff_override::init();
   cybercom_gadget_security_breach::init();
@@ -67,15 +61,6 @@ function init() {
   namespace_e44205a2::init();
 }
 
-/*
-	Name: main
-	Namespace: cybercom_gadget
-	Checksum: 0x7591850A
-	Offset: 0x8B0
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   callback::on_connect( & on_player_connect);
   callback::on_spawned( & on_player_spawned);
@@ -102,45 +87,18 @@ function main() {
   cybercom_gadget_electrostatic_strike::main();
 }
 
-/*
-	Name: on_player_connect
-	Namespace: cybercom_gadget
-	Checksum: 0x78F4B70C
-	Offset: 0xA50
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   self thread function_48868896();
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: cybercom_gadget
-	Checksum: 0x2C271FD7
-	Offset: 0xA78
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self thread function_12bffd86();
 }
 
-/*
-	Name: function_12bffd86
-	Namespace: cybercom_gadget
-	Checksum: 0xB6388276
-	Offset: 0xAA0
-	Size: 0x190
-	Parameters: 0
-	Flags: Linked
-*/
 function function_12bffd86() {
-  self notify(# "hash_12bffd86");
-  self endon(# "hash_12bffd86");
-  self endon(# "disconnect");
+  self notify("hash_12bffd86");
+  self endon("hash_12bffd86");
+  self endon("disconnect");
   while (true) {
     ret = self util::waittill_any_return("cybercom_activation_failed", "cybercom_activation_succeeded");
     if(!isdefined(ret)) {
@@ -162,15 +120,6 @@ function function_12bffd86() {
   }
 }
 
-/*
-	Name: registerability
-	Namespace: cybercom_gadget
-	Checksum: 0x3998C94E
-	Offset: 0xC38
-	Size: 0x15E
-	Parameters: 3
-	Flags: Linked
-*/
 function registerability(type, flag, passive = 0) {
   if(!isdefined(level.cybercom)) {
     cybercom::initialize();
@@ -187,15 +136,6 @@ function registerability(type, flag, passive = 0) {
   }
 }
 
-/*
-	Name: ismeleeability
-	Namespace: cybercom_gadget
-	Checksum: 0x11E6971
-	Offset: 0xDA0
-	Size: 0xB0
-	Parameters: 1
-	Flags: Linked
-*/
 function ismeleeability(ability) {
   if(isdefined(ability)) {
     if(ability.type == 1 && ability.flag == 64) {
@@ -211,15 +151,6 @@ function ismeleeability(ability) {
   return false;
 }
 
-/*
-	Name: meleeabilitygiven
-	Namespace: cybercom_gadget
-	Checksum: 0x15EE666F
-	Offset: 0xE58
-	Size: 0x1D8
-	Parameters: 2
-	Flags: Linked
-*/
 function meleeabilitygiven(ability, upgrade) {
   if(!isdefined(ability)) {
     return;
@@ -241,35 +172,26 @@ function meleeabilitygiven(ability, upgrade) {
   }
   if(isdefined(self.cybercom.activecybercommeleeweapon) && self.cybercom.activecybercommeleeweapon != weapon) {
     self takeweapon(self.cybercom.activecybercommeleeweapon);
-    self notify(# "weapon_taken", self.cybercom.activecybercommeleeweapon);
-    level notify(# "weapon_taken", self.cybercom.activecybercommeleeweapon, self);
+    self notify("weapon_taken", self.cybercom.activecybercommeleeweapon);
+    level notify("weapon_taken", self.cybercom.activecybercommeleeweapon, self);
     self.cybercom.activecybercommeleeweapon = undefined;
   }
   if(!self hasweapon(weapon)) {
     self giveweapon(weapon);
-    self notify(# "weapon_given", weapon);
-    level notify(# "weapon_given", weapon, self);
+    self notify("weapon_given", weapon);
+    level notify("weapon_given", weapon, self);
   }
   self.cybercom.activecybercommeleeweapon = weapon;
 }
 
-/*
-	Name: abilitytaken
-	Namespace: cybercom_gadget
-	Checksum: 0xE590A98C
-	Offset: 0x1038
-	Size: 0x22A
-	Parameters: 1
-	Flags: Linked
-*/
 function abilitytaken(ability) {
   if(!isdefined(ability)) {
     return;
   }
   if(self hasweapon(ability.weapon)) {
     self takeweapon(ability.weapon);
-    self notify(# "weapon_taken", ability.weapon);
-    level notify(# "weapon_taken", ability.weapon, self);
+    self notify("weapon_taken", ability.weapon);
+    level notify("weapon_taken", ability.weapon, self);
   }
   if(isdefined(self.cybercom.activecybercommeleeweapon) && self.cybercom.activecybercommeleeweapon == ability.weapon) {
     self.cybercom.activecybercommeleeweapon = undefined;
@@ -279,8 +201,8 @@ function abilitytaken(ability) {
   }
   if(self hasweapon(ability.weaponupgraded)) {
     self takeweapon(ability.weaponupgraded);
-    self notify(# "weapon_taken", ability.weaponupgraded);
-    level notify(# "weapon_taken", ability.weaponupgraded, self);
+    self notify("weapon_taken", ability.weaponupgraded);
+    level notify("weapon_taken", ability.weaponupgraded, self);
   }
   if(isdefined(self.cybercom.activecybercommeleeweapon) && self.cybercom.activecybercommeleeweapon == ability.weaponupgraded) {
     self.cybercom.activecybercommeleeweapon = undefined;
@@ -290,20 +212,9 @@ function abilitytaken(ability) {
   }
 }
 
-/*
-	Name: giveability
-	Namespace: cybercom_gadget
-	Checksum: 0xC5CFE761
-	Offset: 0x1270
-	Size: 0xD4
-	Parameters: 2
-	Flags: Linked
-*/
 function giveability(name, upgrade) {
-  /#
   assert(getdvarint(""), "");
-  # /
-    ability = getabilitybyname(name);
+  ability = getabilitybyname(name);
   if(!isdefined(ability)) {
     return;
   }
@@ -312,35 +223,15 @@ function giveability(name, upgrade) {
   self meleeabilitygiven(ability, upgrade);
 }
 
-/*
-	Name: function_edff667f
-	Namespace: cybercom_gadget
-	Checksum: 0xE4CD7446
-	Offset: 0x1350
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_edff667f() {
   foreach(ability in level.cybercom.abilities) {
     self giveability(ability.name, 1);
   }
 }
 
-/*
-	Name: equipability
-	Namespace: cybercom_gadget
-	Checksum: 0x9A5868F6
-	Offset: 0x1400
-	Size: 0x598
-	Parameters: 2
-	Flags: Linked
-*/
 function equipability(name, var_a67a6c08 = 0) {
-  /#
   assert(getdvarint(""), "");
-  # /
-    abilitystatus = self hascybercomability(name);
+  abilitystatus = self hascybercomability(name);
   if(abilitystatus == 0) {
     return;
   }
@@ -364,13 +255,13 @@ function equipability(name, var_a67a6c08 = 0) {
     }
     if(isdefined(self.cybercom.activecybercomweapon) && weapon != self.cybercom.activecybercomweapon) {
       self takeweapon(self.cybercom.activecybercomweapon);
-      self notify(# "weapon_taken", self.cybercom.activecybercomweapon);
-      level notify(# "weapon_taken", self.cybercom.activecybercomweapon, self);
+      self notify("weapon_taken", self.cybercom.activecybercomweapon);
+      level notify("weapon_taken", self.cybercom.activecybercomweapon, self);
     }
     if(!self hasweapon(weapon)) {
       self giveweapon(weapon);
-      self notify(# "weapon_given", weapon);
-      level notify(# "weapon_given", weapon, self);
+      self notify("weapon_given", weapon);
+      level notify("weapon_given", weapon, self);
     }
     self.cybercom.activecybercomweapon = weapon;
     if(!(isdefined(self.cybercom.given_first_ability) && self.cybercom.given_first_ability)) {
@@ -405,15 +296,6 @@ function equipability(name, var_a67a6c08 = 0) {
   return ability;
 }
 
-/*
-	Name: function_cae3643b
-	Namespace: cybercom_gadget
-	Checksum: 0xFFA8B90B
-	Offset: 0x19A0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_cae3643b() {
   waittillframeend();
   self gadgetpowerset(0, 100);
@@ -421,15 +303,6 @@ function private function_cae3643b() {
   self gadgetpowerset(2, 100);
 }
 
-/*
-	Name: takeallabilities
-	Namespace: cybercom_gadget
-	Checksum: 0x63DB31CA
-	Offset: 0x1A10
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function takeallabilities() {
   abilities = self getavailableabilities();
   foreach(ability in abilities) {
@@ -447,15 +320,6 @@ function takeallabilities() {
   self cybercom::updatecybercomflags();
 }
 
-/*
-	Name: getabilitybyname
-	Namespace: cybercom_gadget
-	Checksum: 0xF0637D4D
-	Offset: 0x1BD0
-	Size: 0xB0
-	Parameters: 1
-	Flags: Linked
-*/
 function getabilitybyname(name) {
   foreach(ability in level.cybercom.abilities) {
     if(!isdefined(ability)) {
@@ -467,15 +331,6 @@ function getabilitybyname(name) {
   }
 }
 
-/*
-	Name: getabilitybyweaponname
-	Namespace: cybercom_gadget
-	Checksum: 0x37742727
-	Offset: 0x1C88
-	Size: 0xE8
-	Parameters: 1
-	Flags: None
-*/
 function getabilitybyweaponname(name) {
   weapon = getweapon(name);
   foreach(ability in level.cybercom.abilities) {
@@ -485,15 +340,6 @@ function getabilitybyweaponname(name) {
   }
 }
 
-/*
-	Name: function_1a6a2760
-	Namespace: cybercom_gadget
-	Checksum: 0x71D7DB1C
-	Offset: 0x1D78
-	Size: 0xF0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1a6a2760(weapon) {
   if(!isdefined(weapon)) {
     return;
@@ -508,15 +354,6 @@ function function_1a6a2760(weapon) {
   }
 }
 
-/*
-	Name: getabilitybyflag
-	Namespace: cybercom_gadget
-	Checksum: 0x1251879E
-	Offset: 0x1E70
-	Size: 0xC2
-	Parameters: 2
-	Flags: Linked
-*/
 function getabilitybyflag(type, flag) {
   foreach(ability in level.cybercom.abilities) {
     if(ability.type == type && ability.flag == flag) {
@@ -526,15 +363,6 @@ function getabilitybyflag(type, flag) {
   return undefined;
 }
 
-/*
-	Name: getavailableabilities
-	Namespace: cybercom_gadget
-	Checksum: 0x640646C9
-	Offset: 0x1F40
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function getavailableabilities() {
   abilities = [];
   if(!isdefined(self.cybercom) || !isdefined(self.cybercom.flags) || !isdefined(self.cybercom.flags.type)) {
@@ -549,15 +377,6 @@ function getavailableabilities() {
   return abilities;
 }
 
-/*
-	Name: getabilitiesfortype
-	Namespace: cybercom_gadget
-	Checksum: 0x4EFF8B57
-	Offset: 0x2070
-	Size: 0xC0
-	Parameters: 1
-	Flags: Linked
-*/
 function getabilitiesfortype(type) {
   abilities = [];
   foreach(ability in level.cybercom.abilities) {
@@ -568,19 +387,10 @@ function getabilitiesfortype(type) {
   return abilities;
 }
 
-/*
-	Name: function_48868896
-	Namespace: cybercom_gadget
-	Checksum: 0x722B1FB5
-	Offset: 0x2138
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function function_48868896() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "setcybercomability", var_4ccb808f);
+    self waittill("setcybercomability", var_4ccb808f);
     self equipability(var_4ccb808f);
   }
 }

@@ -1,34 +1,19 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_healthoverlay.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\gametypes\_globallogic_player;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace healthoverlay;
 
-/*
-	Name: __init__sytem__
-	Namespace: healthoverlay
-	Checksum: 0x7FDA6DE4
-	Offset: 0x180
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("healthoverlay", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: healthoverlay
-	Checksum: 0xA5BCC2EE
-	Offset: 0x1C0
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
   callback::on_joined_team( & end_health_regen);
@@ -39,15 +24,6 @@ function __init__() {
   level.start_player_health_regen = & player_health_regen;
 }
 
-/*
-	Name: init
-	Namespace: healthoverlay
-	Checksum: 0x753D1A33
-	Offset: 0x2A8
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.healthoverlaycutoff = 0.55;
   regentime = level.playerhealthregentime;
@@ -55,35 +31,15 @@ function init() {
   level.healthregendisabled = level.playerhealth_regularregendelay <= 0;
 }
 
-/*
-	Name: end_health_regen
-	Namespace: healthoverlay
-	Checksum: 0x23849C3
-	Offset: 0x300
-	Size: 0x12
-	Parameters: 0
-	Flags: Linked
-*/
 function end_health_regen() {
-  self notify(# "end_healthregen");
+  self notify("end_healthregen");
 }
 
-/*
-	Name: player_health_regen
-	Namespace: healthoverlay
-	Checksum: 0xE47586D5
-	Offset: 0x320
-	Size: 0x554
-	Parameters: 0
-	Flags: Linked
-*/
 function player_health_regen() {
-  self endon(# "end_healthregen");
+  self endon("end_healthregen");
   if(self.health <= 0) {
-    /#
     assert(!isalive(self));
-    # /
-      return;
+    return;
   }
   maxhealth = self.health;
   oldhealth = maxhealth;
@@ -110,7 +66,7 @@ function player_health_regen() {
     if(player.health == maxhealth) {
       veryhurt = 0;
       if(isdefined(self.atbrinkofdeath) && self.atbrinkofdeath == 1) {
-        self notify(# "challenge_survived_from_death");
+        self notify("challenge_survived_from_death");
       }
       self.atbrinkofdeath = 0;
       continue;
@@ -146,7 +102,7 @@ function player_health_regen() {
       }
       if((gettime() - lastsoundtime_recover) > regentime) {
         lastsoundtime_recover = gettime();
-        self notify(# "snd_breathing_better");
+        self notify("snd_breathing_better");
       }
       if(veryhurt) {
         newhealth = ratio;
@@ -186,15 +142,6 @@ function player_health_regen() {
   }
 }
 
-/*
-	Name: decay_player_damages
-	Namespace: healthoverlay
-	Checksum: 0xCCA4F381
-	Offset: 0x880
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked
-*/
 function decay_player_damages(decay) {
   if(!isdefined(self.attackerdamage)) {
     return;
@@ -210,17 +157,8 @@ function decay_player_damages(decay) {
   }
 }
 
-/*
-	Name: player_breathing_sound
-	Namespace: healthoverlay
-	Checksum: 0xF1256A44
-	Offset: 0x978
-	Size: 0xE2
-	Parameters: 1
-	Flags: Linked
-*/
 function player_breathing_sound(healthcap) {
-  self endon(# "end_healthregen");
+  self endon("end_healthregen");
   wait(2);
   player = self;
   for (;;) {
@@ -237,23 +175,14 @@ function player_breathing_sound(healthcap) {
     if(level.healthregendisabled && gettime() > player.breathingstoptime) {
       continue;
     }
-    player notify(# "snd_breathing_hurt");
+    player notify("snd_breathing_hurt");
     wait(0.784);
     wait(0.1 + randomfloat(0.8));
   }
 }
 
-/*
-	Name: player_heartbeat_sound
-	Namespace: healthoverlay
-	Checksum: 0x51DACD77
-	Offset: 0xA68
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function player_heartbeat_sound(healthcap) {
-  self endon(# "end_healthregen");
+  self endon("end_healthregen");
   self.hearbeatwait = 0.2;
   wait(2);
   player = self;

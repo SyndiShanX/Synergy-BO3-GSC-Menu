@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_ai_mechz.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\_burnplayer;
 #using scripts\shared\aat_shared;
@@ -27,31 +31,12 @@
 #using scripts\zm\_zm_score;
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_ai_mechz;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_ai_mechz
-	Checksum: 0x1E8D2BF0
-	Offset: 0x6B0
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_ai_mechz", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_ai_mechz
-	Checksum: 0x9349CB6
-	Offset: 0x6F8
-	Size: 0x2BC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   function_f20c04a4();
   level.mechz_base_health = 1200;
@@ -80,21 +65,10 @@ function __init__() {
   level thread aat::register_immunity("zm_aat_fire_works", "mechz", 1, 1, 1);
   level thread aat::register_immunity("zm_aat_thunder_wall", "mechz", 0, 1, 1);
   level thread aat::register_immunity("zm_aat_turned", "mechz", 1, 1, 1);
-  /#
   execdevgui("");
   thread function_fbad70fd();
-  # /
 }
 
-/*
-	Name: __main__
-	Namespace: zm_ai_mechz
-	Checksum: 0xA6C7358E
-	Offset: 0x9C0
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private __main__() {
   if(!isdefined(level.var_98b48f9c)) {
     level.var_98b48f9c = 80;
@@ -103,28 +77,10 @@ function private __main__() {
   level.var_e7b9aac8 = 1;
 }
 
-/*
-	Name: function_f20c04a4
-	Namespace: zm_ai_mechz
-	Checksum: 0xAA053713
-	Offset: 0xA30
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_f20c04a4() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("zmMechzTargetService", & function_c28caf48);
 }
 
-/*
-	Name: function_c28caf48
-	Namespace: zm_ai_mechz
-	Checksum: 0x747E6C8
-	Offset: 0xA68
-	Size: 0x29E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_c28caf48(entity) {
   if(isdefined(entity.ignoreall) && entity.ignoreall) {
     return false;
@@ -143,18 +99,15 @@ function private function_c28caf48(entity) {
       }
       entity.ignore_player = [];
     }
-    /#
     if(isdefined(level.b_mechz_true_ignore) && level.b_mechz_true_ignore) {
       entity setgoal(entity.origin);
       return false;
     }
-    # /
-      if(isdefined(level.no_target_override)) {
-        [
-          [level.no_target_override]
-        ](entity);
-      }
-    else {
+    if(isdefined(level.no_target_override)) {
+      [
+        [level.no_target_override]
+      ](entity);
+    } else {
       entity setgoal(entity.origin);
     }
     return false;
@@ -181,15 +134,6 @@ function private function_c28caf48(entity) {
   return false;
 }
 
-/*
-	Name: function_48cabef5
-	Namespace: zm_ai_mechz
-	Checksum: 0x3F4D2C84
-	Offset: 0xD10
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_48cabef5() {
   if(isdefined(self.customtraverseendnode) && isdefined(self.customtraversestartnode)) {
     return self.customtraverseendnode.script_noteworthy === "custom_traversal" && self.customtraversestartnode.script_noteworthy === "custom_traversal";
@@ -197,15 +141,6 @@ function function_48cabef5() {
   return 0;
 }
 
-/*
-	Name: function_3d5df242
-	Namespace: zm_ai_mechz
-	Checksum: 0xC8A7FC5D
-	Offset: 0xD70
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_3d5df242() {
   self.b_ignore_cleanup = 1;
   self.is_mechz = 1;
@@ -220,15 +155,6 @@ function private function_3d5df242() {
   level thread zm_spawner::zombie_death_event(self);
 }
 
-/*
-	Name: function_ed70c868
-	Namespace: zm_ai_mechz
-	Checksum: 0x138FD51F
-	Offset: 0xE60
-	Size: 0x92
-	Parameters: 10
-	Flags: Linked, Private
-*/
 function private function_ed70c868(einflictor, eattacker, idamage, idflags, smeansofdeath, sweapon, vpoint, vdir, shitloc, psoffsettime) {
   if(isdefined(eattacker) && eattacker.archetype === "mechz" && smeansofdeath === "MOD_MELEE") {
     return 150;
@@ -236,15 +162,6 @@ function private function_ed70c868(einflictor, eattacker, idamage, idflags, smea
   return -1;
 }
 
-/*
-	Name: function_58655f2a
-	Namespace: zm_ai_mechz
-	Checksum: 0x1CBB4EE6
-	Offset: 0xF00
-	Size: 0x32
-	Parameters: 0
-	Flags: None
-*/
 function function_58655f2a() {
   if(!(isdefined(self.stun) && self.stun) && self.stumble_stun_cooldown_time < gettime()) {
     return true;
@@ -252,49 +169,22 @@ function function_58655f2a() {
   return false;
 }
 
-/*
-	Name: function_9bac2f00
-	Namespace: zm_ai_mechz
-	Checksum: 0x7F52E823
-	Offset: 0xF40
-	Size: 0x68
-	Parameters: 2
-	Flags: Linked
-*/
 function function_9bac2f00(e_player, gib) {
-  self endon(# "death");
+  self endon("death");
   self function_b8e0ce15(e_player);
   if(!(isdefined(self.stun) && self.stun) && self.stumble_stun_cooldown_time < gettime()) {
     self.stun = 1;
   }
 }
 
-/*
-	Name: function_19b9b682
-	Namespace: zm_ai_mechz
-	Checksum: 0xF8494751
-	Offset: 0xFB0
-	Size: 0x68
-	Parameters: 2
-	Flags: Linked
-*/
 function function_19b9b682(e_player, gib) {
-  self endon(# "death");
+  self endon("death");
   self function_b8e0ce15(e_player);
   if(!(isdefined(self.stun) && self.stun) && self.stumble_stun_cooldown_time < gettime()) {
     self.stun = 1;
   }
 }
 
-/*
-	Name: function_b8e0ce15
-	Namespace: zm_ai_mechz
-	Checksum: 0x17BF523A
-	Offset: 0x1020
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b8e0ce15(e_player) {
   var_3bb42832 = level.mechz_health;
   if(isdefined(level.var_f4dc2834)) {
@@ -304,15 +194,6 @@ function function_b8e0ce15(e_player) {
   self dodamage(n_damage, self getcentroid(), e_player, e_player, undefined, "MOD_PROJECTILE_SPLASH", 0, getweapon("thundergun"));
 }
 
-/*
-	Name: spawn_mechz
-	Namespace: zm_ai_mechz
-	Checksum: 0x9A47B505
-	Offset: 0x10F8
-	Size: 0x510
-	Parameters: 2
-	Flags: Linked
-*/
 function spawn_mechz(s_location, flyin = 0) {
   if(isdefined(level.mechz_spawners[0])) {
     if(isdefined(level.var_7f2a926d)) {
@@ -326,10 +207,8 @@ function spawn_mechz(s_location, flyin = 0) {
       ai disableaimassist();
       ai thread function_ef1ba7e5();
       ai thread function_949a3fdf();
-      /#
       ai thread function_75a79bb5();
-      # /
-        ai.actor_damage_func = & mechzserverutils::mechzdamagecallback;
+      ai.actor_damage_func = & mechzserverutils::mechzdamagecallback;
       ai.damage_scoring_function = & function_b03abc02;
       ai.mechz_melee_knockdown_function = & function_55483494;
       ai.health = level.mechz_health;
@@ -373,26 +252,15 @@ function spawn_mechz(s_location, flyin = 0) {
       }
       ai thread function_bb048b27();
       ai.ignore_round_robbin_death = 1;
-      /#
       ai.ignore_devgui_death = 1;
-      # /
-        return ai;
+      return ai;
     }
   }
   return undefined;
 }
 
-/*
-	Name: function_d07fd448
-	Namespace: zm_ai_mechz
-	Checksum: 0xD4416EA0
-	Offset: 0x1610
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d07fd448() {
-  self endon(# "death");
+  self endon("death");
   self.b_flyin_done = 0;
   self.bgbignorefearinheadlights = 1;
   self util::waittill_any("mechz_flyin_done", "scene_done");
@@ -400,21 +268,12 @@ function function_d07fd448() {
   self.bgbignorefearinheadlights = 0;
 }
 
-/*
-	Name: function_c441eaba
-	Namespace: zm_ai_mechz
-	Checksum: 0x7E37640
-	Offset: 0x1680
-	Size: 0x34C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c441eaba(var_678a2319) {
-  self endon(# "death");
+  self endon("death");
   var_b54110bd = 2304;
   var_f0dad551 = 9216;
   var_44615973 = 2250000;
-  self waittill(# "hash_f93797a6");
+  self waittill("hash_f93797a6");
   a_zombies = getaiarchetypearray("zombie");
   foreach(e_zombie in a_zombies) {
     dist_sq = distancesquared(e_zombie.origin, var_678a2319);
@@ -449,19 +308,10 @@ function function_c441eaba(var_678a2319) {
   }
 }
 
-/*
-	Name: function_bbdc1f34
-	Namespace: zm_ai_mechz
-	Checksum: 0xE3ED89A7
-	Offset: 0x19D8
-	Size: 0x280
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bbdc1f34(var_678a2319) {
-  self endon(# "death");
-  self endon(# "hash_f93797a6");
-  self waittill(# "hash_3d18ed4f");
+  self endon("death");
+  self endon("hash_f93797a6");
+  self waittill("hash_3d18ed4f");
   var_f0dad551 = 9216;
   while (true) {
     a_players = getplayers();
@@ -485,15 +335,6 @@ function function_bbdc1f34(var_678a2319) {
   }
 }
 
-/*
-	Name: function_3389e2f3
-	Namespace: zm_ai_mechz
-	Checksum: 0xE270D828
-	Offset: 0x1C60
-	Size: 0xE0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3389e2f3(mechz) {
   if(!(isdefined(self.is_burning) && self.is_burning) && zombie_utility::is_player_valid(self, 1)) {
     self.is_burning = 1;
@@ -507,17 +348,8 @@ function function_3389e2f3(mechz) {
   }
 }
 
-/*
-	Name: function_817c85eb
-	Namespace: zm_ai_mechz
-	Checksum: 0xDAA3C3AB
-	Offset: 0x1D48
-	Size: 0x2C8
-	Parameters: 6
-	Flags: Linked
-*/
 function function_817c85eb(e_player, v_attack_source, n_push_away, n_lift_height, v_lift_offset, n_lift_speed) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.in_gravity_trap) && self.in_gravity_trap && e_player.gravityspikes_state === 3) {
     if(isdefined(self.var_1f5fe943) && self.var_1f5fe943) {
       return;
@@ -554,26 +386,15 @@ function function_817c85eb(e_player, v_attack_source, n_push_away, n_lift_height
   }
 }
 
-/*
-	Name: function_bb84a54
-	Namespace: zm_ai_mechz
-	Checksum: 0x6CFD4C09
-	Offset: 0x2018
-	Size: 0x1A4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bb84a54(mechz) {
-  mechz endon(# "death");
+  mechz endon("death");
   if(isdefined(mechz)) {
     mechz scene::play("cin_zm_dlc1_mechz_dth_deathray_02", mechz);
   }
   if(isdefined(mechz) && isalive(mechz) && isdefined(mechz.var_ab0efcf6)) {
     v_eye_pos = mechz gettagorigin("tag_eye");
-    /#
     recordline(mechz.origin, v_eye_pos, vectorscale((0, 1, 0), 255), "", mechz);
-    # /
-      trace = bullettrace(v_eye_pos, mechz.origin, 0, mechz);
+    trace = bullettrace(v_eye_pos, mechz.origin, 0, mechz);
     if(trace["position"] !== mechz.origin) {
       point = getclosestpointonnavmesh(trace["position"], 64, 30);
       if(!isdefined(point)) {
@@ -584,15 +405,6 @@ function function_bb84a54(mechz) {
   }
 }
 
-/*
-	Name: function_1add8026
-	Namespace: zm_ai_mechz
-	Checksum: 0x42984563
-	Offset: 0x21C8
-	Size: 0x102
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1add8026(mechz) {
   flametrigger = mechz.flametrigger;
   a_zombies = zm_elemental_zombie::function_d41418b8();
@@ -603,17 +415,8 @@ function function_1add8026(mechz) {
   }
 }
 
-/*
-	Name: function_ef1ba7e5
-	Namespace: zm_ai_mechz
-	Checksum: 0x6ECF0982
-	Offset: 0x22D8
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ef1ba7e5() {
-  self waittill(# "death");
+  self waittill("death");
   if(isplayer(self.attacker)) {
     event = "death_mechz";
     if(!(isdefined(self.deathpoints_already_given) && self.deathpoints_already_given)) {
@@ -627,17 +430,8 @@ function function_ef1ba7e5() {
   }
 }
 
-/*
-	Name: function_949a3fdf
-	Namespace: zm_ai_mechz
-	Checksum: 0xC9753F16
-	Offset: 0x2380
-	Size: 0x172
-	Parameters: 0
-	Flags: Linked
-*/
 function function_949a3fdf() {
-  self waittill(# "hash_46c1e51d");
+  self waittill("hash_46c1e51d");
   v_origin = self.origin;
   a_ai = getaispeciesarray(level.zombie_team);
   a_ai_kill_zombies = arraysortclosest(a_ai, v_origin, 18, 0, 200);
@@ -653,15 +447,6 @@ function function_949a3fdf() {
   }
 }
 
-/*
-	Name: function_b03abc02
-	Namespace: zm_ai_mechz
-	Checksum: 0xD98EAD1A
-	Offset: 0x2500
-	Size: 0x10C
-	Parameters: 12
-	Flags: Linked
-*/
 function function_b03abc02(inflictor, attacker, damage, dflags, mod, weapon, point, dir, hitloc, offsettime, boneindex, modelindex) {
   if(isdefined(attacker) && isplayer(attacker)) {
     if(zm_spawner::player_using_hi_score_weapon(attacker)) {
@@ -675,15 +460,6 @@ function function_b03abc02(inflictor, attacker, damage, dflags, mod, weapon, poi
   }
 }
 
-/*
-	Name: function_3efae612
-	Namespace: zm_ai_mechz
-	Checksum: 0x6D1727E3
-	Offset: 0x2618
-	Size: 0x2A4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3efae612(zombie) {
   zombie.knockdown = 1;
   zombie.knockdown_type = "knockdown_shoved";
@@ -718,15 +494,6 @@ function function_3efae612(zombie) {
   }
 }
 
-/*
-	Name: function_55483494
-	Namespace: zm_ai_mechz
-	Checksum: 0x8DDC6FC8
-	Offset: 0x28C8
-	Size: 0x10A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_55483494() {
   a_zombies = getaiarchetypearray("zombie");
   foreach(zombie in a_zombies) {
@@ -737,15 +504,6 @@ function function_55483494() {
   }
 }
 
-/*
-	Name: function_10d36217
-	Namespace: zm_ai_mechz
-	Checksum: 0x97014B61
-	Offset: 0x29E0
-	Size: 0x184
-	Parameters: 1
-	Flags: Linked
-*/
 function function_10d36217(mechz) {
   origin = self.origin;
   facing_vec = anglestoforward(mechz.angles);
@@ -765,35 +523,16 @@ function function_10d36217(mechz) {
   return true;
 }
 
-/*
-	Name: function_bb048b27
-	Namespace: zm_ai_mechz
-	Checksum: 0x433026DB
-	Offset: 0x2B70
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bb048b27() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     wait(randomintrange(9, 14));
     self playsound("zmb_ai_mechz_vox_ambient");
   }
 }
 
-/*
-	Name: function_75a79bb5
-	Namespace: zm_ai_mechz
-	Checksum: 0xEEE038CF
-	Offset: 0x2BD0
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function function_75a79bb5() {
-  self endon(# "death");
-  /#
+  self endon("death");
   while (true) {
     if(isdefined(level.var_70068a8) && level.var_70068a8) {
       if(self.health > 0) {
@@ -802,36 +541,14 @@ function function_75a79bb5() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: function_fbad70fd
-	Namespace: zm_ai_mechz
-	Checksum: 0xF8F6CEC
-	Offset: 0x2C70
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_fbad70fd() {
-  /#
   level flagsys::wait_till("");
   zm_devgui::add_custom_devgui_callback( & function_94a24a91);
-  # /
 }
 
-/*
-	Name: function_94a24a91
-	Namespace: zm_ai_mechz
-	Checksum: 0xA825197A
-	Offset: 0x2CC0
-	Size: 0x40E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_94a24a91(cmd) {
-  /#
   players = getplayers();
   var_6aad1b23 = getentarray("", "");
   mechz = arraygetclosest(getplayers()[0].origin, var_6aad1b23);
@@ -907,5 +624,4 @@ function private function_94a24a91(cmd) {
       break;
     }
   }
-  # /
 }

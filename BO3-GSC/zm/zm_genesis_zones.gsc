@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_zones.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\ai_shared;
@@ -18,45 +22,17 @@
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_genesis_ffotd;
 #using scripts\zm\zm_genesis_util;
-
 #namespace zm_island_zones;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_island_zones
-	Checksum: 0x9D789247
-	Offset: 0xBC8
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_zones", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_island_zones
-	Checksum: 0x8EDD9D66
-	Offset: 0xC10
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level flag::init("activate_lower_asylum");
   level flag::init("activate_upper_asylum");
 }
 
-/*
-	Name: __main__
-	Namespace: zm_island_zones
-	Checksum: 0xD4886B20
-	Offset: 0xC60
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level.zones = [];
   level.zone_manager_init_func = & function_19a0be33;
@@ -67,15 +43,6 @@ function __main__() {
   level thread function_6b91d71();
 }
 
-/*
-	Name: player_out_of_playable_area_override
-	Namespace: zm_island_zones
-	Checksum: 0x578AE467
-	Offset: 0xD08
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function player_out_of_playable_area_override() {
   if(isdefined(self.b_teleporting) && self.b_teleporting || (isdefined(self.b_teleported) && self.b_teleported) || (isdefined(self.var_5aef0317) && self.var_5aef0317) || (isdefined(self.is_flung) && self.is_flung)) {
     return false;
@@ -87,15 +54,6 @@ function player_out_of_playable_area_override() {
   return true;
 }
 
-/*
-	Name: function_19a0be33
-	Namespace: zm_island_zones
-	Checksum: 0x23DCAB82
-	Offset: 0xDA8
-	Size: 0xF1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_19a0be33() {
   level flag::init("always_on", 1);
   zm_zonemgr::zone_init("apothicon_interior_zone", 0);
@@ -169,10 +127,8 @@ function function_19a0be33() {
   zm_zonemgr::add_zone_flags("connect_undercroft_to_temple", "activate_temple_interior");
   zm_zonemgr::add_zone_flags("connect_temple_to_temple_stairs", "activate_temple_interior");
   zm_zonemgr::add_zone_flags("connect_undercroft_to_foyer", "activate_temple_interior");
-  /#
   level thread zm_genesis_util::function_d8db939b("");
-  # /
-    zm_zonemgr::add_adjacent_zone("zm_asylum_kitchen_landing_zone", "zm_asylum_kitchen_zone", "activate_asylum_kitchen");
+  zm_zonemgr::add_adjacent_zone("zm_asylum_kitchen_landing_zone", "zm_asylum_kitchen_zone", "activate_asylum_kitchen");
   zm_zonemgr::add_adjacent_zone("zm_asylum_downstairs_zone", "zm_asylum_downstairs_landing_zone", "activate_lower_asylum");
   zm_zonemgr::add_adjacent_zone("zm_asylum_downstairs_zone", "zm_asylum_courtyard_zone", "connect_asylum_downstairs_to_upstairs");
   zm_zonemgr::add_adjacent_zone("zm_asylum_power_room_zone", "zm_asylum_courtyard_stairs_zone", "activate_asylum");
@@ -199,42 +155,20 @@ function function_19a0be33() {
   zm_zonemgr::add_adjacent_zone("zm_prototype_start_zone", "zm_prototype_upstairs_zone", "connect_prototype_start_to_upstairs");
   level thread zm_genesis_util::function_42108922("apothicon_interior_zone", "connect_prototype_upstairs_to_outside");
   zm_zonemgr::add_adjacent_zone("dark_arena_zone", "dark_arena2_zone", "test_activate_arena");
-  /#
   level thread zm_genesis_util::function_d8db939b("");
-  # /
-    level thread function_fb8b5806();
+  level thread function_fb8b5806();
 }
 
-/*
-	Name: function_6b91d71
-	Namespace: zm_island_zones
-	Checksum: 0x4B0F402
-	Offset: 0x1CD0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6b91d71() {
   var_25778c2d = getnodearray("blocker_traversal", "script_noteworthy");
   array::thread_all(var_25778c2d, & function_9ce5da3b);
 }
 
-/*
-	Name: function_9ce5da3b
-	Namespace: zm_island_zones
-	Checksum: 0x29EF9FBB
-	Offset: 0x1D30
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9ce5da3b() {
-  /#
   assert(isdefined(self.script_flag), ("" + self.origin) + "");
-  # /
-    if(self.script_string === "start_disabled") {
-      unlinktraversal(self);
-    }
+  if(self.script_string === "start_disabled") {
+    unlinktraversal(self);
+  }
   level flag::wait_till(self.script_flag);
   if(self.script_string === "start_disabled") {
     linktraversal(self);
@@ -243,15 +177,6 @@ function function_9ce5da3b() {
   unlinktraversal(self);
 }
 
-/*
-	Name: function_fb8b5806
-	Namespace: zm_island_zones
-	Checksum: 0xA3C85703
-	Offset: 0x1E00
-	Size: 0xB0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fb8b5806() {
   while (true) {
     level flag::wait_till("test_activate_arena");

@@ -1,21 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_spawn_manager_debug.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_spawn_manager;
 #using scripts\shared\util_shared;
-
 #namespace spawn_manager;
 
-/*
-	Name: spawn_manager_debug
-	Namespace: spawn_manager
-	Checksum: 0x446E2B77
-	Offset: 0xD0
-	Size: 0x220
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_manager_debug() {
-  /#
   for (;;) {
     if(getdvarstring("") != "") {
       wait(0.1);
@@ -41,20 +34,9 @@ function spawn_manager_debug() {
     spawn_manager_debug_hud_update(level.spawn_manager_active_ai, level.spawn_manager_total_count, level.spawn_manager_max_ai, manageractivecount, managerpotentialspawncount);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: spawn_manager_debug_hud_update
-	Namespace: spawn_manager
-	Checksum: 0xF3C375E1
-	Offset: 0x2F8
-	Size: 0x636
-	Parameters: 5
-	Flags: Linked
-*/
 function spawn_manager_debug_hud_update(active_ai, spawn_ai, max_ai, active_managers, potential_ai) {
-  /#
   if(getdvarstring("") == "") {
     if(!isdefined(level.spawn_manager_debug_hud_title)) {
       level.spawn_manager_debug_hud_title = newhudelem();
@@ -119,37 +101,15 @@ function spawn_manager_debug_hud_update(active_ai, spawn_ai, max_ai, active_mana
       level.spawn_manager_debug_hud = undefined;
     }
   }
-  # /
 }
 
-/*
-	Name: on_player_connect
-	Namespace: spawn_manager
-	Checksum: 0xDF8555B3
-	Offset: 0x938
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
-  /#
   level thread spawn_manager_debug_spawn_manager();
-  # /
 }
 
-/*
-	Name: spawn_manager_debug_spawn_manager
-	Namespace: spawn_manager
-	Checksum: 0xFBF28BC6
-	Offset: 0x960
-	Size: 0x328
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_manager_debug_spawn_manager() {
-  /#
-  level notify(# "spawn_manager_debug_spawn_manager");
-  level endon(# "spawn_manager_debug_spawn_manager");
+  level notify("spawn_manager_debug_spawn_manager");
+  level endon("spawn_manager_debug_spawn_manager");
   level.current_debug_spawn_manager = undefined;
   level.current_debug_spawn_manager_targetname = undefined;
   level.test_player = getplayers()[0];
@@ -207,20 +167,9 @@ function spawn_manager_debug_spawn_manager() {
     }
     wait(0.25);
   }
-  # /
 }
 
-/*
-	Name: spawn_manager_debug_spawner_values
-	Namespace: spawn_manager
-	Checksum: 0x348BC46B
-	Offset: 0xC90
-	Size: 0x20C
-	Parameters: 0
-	Flags: None
-*/
 function spawn_manager_debug_spawner_values() {
-  /#
   while (true) {
     if(getdvarstring("") != "") {
       wait(0.1);
@@ -242,39 +191,17 @@ function spawn_manager_debug_spawner_values() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: ent_print
-	Namespace: spawn_manager
-	Checksum: 0xA51CA00
-	Offset: 0xEA8
-	Size: 0x78
-	Parameters: 1
-	Flags: None
-*/
 function ent_print(text) {
-  /#
-  self endon(# "death");
+  self endon("death");
   while (true) {
     print3d(self.origin + vectorscale((0, 0, 1), 65), text, (0.48, 9.4, 0.76), 1, 1);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: spawn_manager_debug_spawn_manager_values_dpad
-	Namespace: spawn_manager
-	Checksum: 0xF35DEB89
-	Offset: 0xF28
-	Size: 0xBCC
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_manager_debug_spawn_manager_values_dpad() {
-  /#
   if(!isdefined(level.current_debug_index)) {
     level.current_debug_index = 0;
   }
@@ -487,20 +414,9 @@ function spawn_manager_debug_spawn_manager_values_dpad() {
       level.sm_spawner_count_max_hud settext("" + self.sm_spawner_count_max);
     }
   }
-  # /
 }
 
-/*
-	Name: set_debug_hud_colors
-	Namespace: spawn_manager
-	Checksum: 0x4C007A0D
-	Offset: 0x1B00
-	Size: 0x57E
-	Parameters: 0
-	Flags: Linked
-*/
 function set_debug_hud_colors() {
-  /#
   switch (level.current_debug_index) {
     case 0: {
       level.sm_active_count_title.color = (0, 1, 0);
@@ -591,20 +507,9 @@ function set_debug_hud_colors() {
       break;
     }
   }
-  # /
 }
 
-/*
-	Name: spawn_manager_debug_setup
-	Namespace: spawn_manager
-	Checksum: 0x6ADE33D8
-	Offset: 0x2088
-	Size: 0x1AC
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_manager_debug_setup() {
-  /#
   if(isdefined(level.current_debug_index) && level.current_debug_index != 5) {
     self.sm_spawner_count = randomintrange(self.sm_spawner_count_min, self.sm_spawner_count_max + 1);
   }
@@ -612,73 +517,28 @@ function spawn_manager_debug_setup() {
     self.sm_active_count = randomintrange(self.sm_active_count_min, self.sm_active_count_max + 1);
   }
   self.spawners = self spawn_manager_get_spawners();
-  /#
   assert(self.count >= self.count_min);
-  # /
-    /#
   assert(self.count <= self.count_max);
-  # /
-    /#
   assert(self.sm_active_count >= self.sm_active_count_min);
-  # /
-    /#
   assert(self.sm_active_count <= self.sm_active_count_max);
-  # /
-    /#
   assert(self.sm_group_size_max <= self.sm_active_count);
-  # /
-    /#
   assert(self.sm_group_size_min <= self.sm_active_count);
-  # /
-    # /
 }
 
-/*
-	Name: modify_debug_hud2
-	Namespace: spawn_manager
-	Checksum: 0x35A09932
-	Offset: 0x2240
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function modify_debug_hud2(text) {
-  /#
-  self notify(# "modified");
+  self notify("modified");
   wait(0.05);
   level.spawn_manager_debug_hud2 settext(text);
   level.spawn_manager_debug_hud2 thread moniter_debug_hud2();
-  # /
 }
 
-/*
-	Name: moniter_debug_hud2
-	Namespace: spawn_manager
-	Checksum: 0xCE440999
-	Offset: 0x22A8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function moniter_debug_hud2() {
-  /#
-  self endon(# "modified");
+  self endon("modified");
   wait(10);
   level.spawn_manager_debug_hud2 settext("");
-  # /
 }
 
-/*
-	Name: destroy_tweak_hud_elements
-	Namespace: spawn_manager
-	Checksum: 0x8E345548
-	Offset: 0x22F0
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function destroy_tweak_hud_elements() {
-  /#
   if(isdefined(level.sm_active_count_title)) {
     level.sm_active_count_title destroy();
   }
@@ -703,5 +563,4 @@ function destroy_tweak_hud_elements() {
   if(isdefined(level.sm_spawner_count_max_hud)) {
     level.sm_spawner_count_max_hud destroy();
   }
-  # /
 }

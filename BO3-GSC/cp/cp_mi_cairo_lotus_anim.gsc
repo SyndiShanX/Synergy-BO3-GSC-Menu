@@ -19,18 +19,8 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_90072e58;
 
-/*
-	Name: main
-	Namespace: namespace_90072e58
-	Checksum: 0xE9C07CD6
-	Offset: 0x2F8
-	Size: 0x0
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   // Unsupported VM revision (1B).
 }

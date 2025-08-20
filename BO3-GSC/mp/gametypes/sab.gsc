@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\sab.gsc
+*************************************************/
+
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_battlechatter;
@@ -20,18 +24,8 @@
 #using scripts\shared\popups_shared;
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\sound_shared;
-
 #namespace sab;
 
-/*
-	Name: main
-	Namespace: sab
-	Checksum: 0x587C85A1
-	Offset: 0xBA0
-	Size: 0x48C
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   level.teambased = 1;
@@ -84,29 +78,11 @@ function main() {
   globallogic::setvisiblescoreboardcolumns("score", "kills", "deaths", "plants", "defuses");
 }
 
-/*
-	Name: onprecachegametype
-	Namespace: sab
-	Checksum: 0x875D226
-	Offset: 0x1038
-	Size: 0x2C
-	Parameters: 0
-	Flags: None
-*/
 function onprecachegametype() {
   game["bomb_dropped_sound"] = "mp_war_objective_lost";
   game["bomb_recovered_sound"] = "mp_war_objective_taken";
 }
 
-/*
-	Name: onroundswitch
-	Namespace: sab
-	Checksum: 0x524FFA1A
-	Offset: 0x1070
-	Size: 0xD0
-	Parameters: 0
-	Flags: None
-*/
 function onroundswitch() {
   if(!isdefined(game["switchedsides"])) {
     game["switchedsides"] = 0;
@@ -121,15 +97,6 @@ function onroundswitch() {
   }
 }
 
-/*
-	Name: onstartgametype
-	Namespace: sab
-	Checksum: 0x6290521B
-	Offset: 0x1148
-	Size: 0x4DC
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   if(!isdefined(game["switchedsides"])) {
     game["switchedsides"] = 0;
@@ -183,15 +150,6 @@ function onstartgametype() {
   thread sabotage();
 }
 
-/*
-	Name: ontimelimit
-	Namespace: sab
-	Checksum: 0x65990BC4
-	Offset: 0x1630
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function ontimelimit() {
   if(level.inovertime) {
     return;
@@ -199,24 +157,15 @@ function ontimelimit() {
   thread onovertime();
 }
 
-/*
-	Name: onovertime
-	Namespace: sab
-	Checksum: 0x68937BBC
-	Offset: 0x1660
-	Size: 0x224
-	Parameters: 0
-	Flags: None
-*/
 function onovertime() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   level.timelimitoverride = 1;
   level.inovertime = 1;
   globallogic_audio::leader_dialog("sudden_death");
   globallogic_audio::leader_dialog("sudden_death_boost");
   for (index = 0; index < level.players.size; index++) {
-    level.players[index] notify(# "force_spawn");
-    level.players[index] thread hud_message::oldnotifymessage( & "MP_SUDDEN_DEATH", & "MP_NO_RESPAWN", undefined, (1, 0, 0), "mp_last_stand");
+    level.players[index] notify("force_spawn");
+    level.players[index] thread hud_message::oldnotifymessage(&"MP_SUDDEN_DEATH", & "MP_NO_RESPAWN", undefined, (1, 0, 0), "mp_last_stand");
     level.players[index] setclientuivisibilityflag("g_compassShowEnemies", 1);
   }
   setmatchtalkflag("DeadChatWithDead", 1);
@@ -235,15 +184,6 @@ function onovertime() {
   thread globallogic::endgame("tie", game["strings"]["tie"]);
 }
 
-/*
-	Name: ondeadevent
-	Namespace: sab
-	Checksum: 0xFBDDCC73
-	Offset: 0x1890
-	Size: 0x1BC
-	Parameters: 1
-	Flags: None
-*/
 function ondeadevent(team) {
   if(level.bombexploded) {
     return;
@@ -272,21 +212,12 @@ function ondeadevent(team) {
   }
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: sab
-	Checksum: 0xAB405A65
-	Offset: 0x1A58
-	Size: 0x124
-	Parameters: 1
-	Flags: None
-*/
 function onspawnplayer(predictedspawn) {
   self.isplanting = 0;
   self.isdefusing = 0;
   self.isbombcarrier = 0;
   if(game["tiebreaker"]) {
-    self thread hud_message::oldnotifymessage( & "MP_TIE_BREAKER", & "MP_NO_RESPAWN", undefined, (1, 0, 0), "mp_last_stand");
+    self thread hud_message::oldnotifymessage(&"MP_TIE_BREAKER", & "MP_NO_RESPAWN", undefined, (1, 0, 0), "mp_last_stand");
     self setclientuivisibilityflag("g_compassShowEnemies", 1);
     setmatchtalkflag("DeadChatWithDead", 1);
     setmatchtalkflag("DeadChatWithTeam", 0);
@@ -297,15 +228,6 @@ function onspawnplayer(predictedspawn) {
   spawning::onspawnplayer(predictedspawn);
 }
 
-/*
-	Name: updategametypedvars
-	Namespace: sab
-	Checksum: 0x279DAA23
-	Offset: 0x1B88
-	Size: 0x84
-	Parameters: 0
-	Flags: None
-*/
 function updategametypedvars() {
   level.planttime = getgametypesetting("plantTime");
   level.defusetime = getgametypesetting("defuseTime");
@@ -313,15 +235,6 @@ function updategametypedvars() {
   level.hotpotato = getgametypesetting("hotPotato");
 }
 
-/*
-	Name: sabotage
-	Namespace: sab
-	Checksum: 0x1079BFF0
-	Offset: 0x1C18
-	Size: 0x4B6
-	Parameters: 0
-	Flags: None
-*/
 function sabotage() {
   level.bombplanted = 0;
   level.bombexploded = 0;
@@ -352,16 +265,12 @@ function sabotage() {
   level.sabbomb.objpoints["axis"].archived = 1;
   level.sabbomb.autoresettime = 60;
   if(!isdefined(getent("sab_bomb_axis", "targetname"))) {
-    /#
     util::error("");
-    # /
-      return;
+    return;
   }
   if(!isdefined(getent("sab_bomb_allies", "targetname"))) {
-    /#
     util::error("");
-    # /
-      return;
+    return;
   }
   if(game["switchedsides"]) {
     level.bombzones["allies"] = createbombzone("allies", getent("sab_bomb_axis", "targetname"));
@@ -372,15 +281,6 @@ function sabotage() {
   }
 }
 
-/*
-	Name: createbombzone
-	Namespace: sab
-	Checksum: 0xF05E3A92
-	Offset: 0x20D8
-	Size: 0x1EA
-	Parameters: 2
-	Flags: None
-*/
 function createbombzone(team, trigger) {
   visuals = getentarray(trigger.target, "targetname");
   bombzone = gameobjects::create_use_object(team, trigger, visuals, vectorscale((0, 0, 1), 64));
@@ -400,15 +300,6 @@ function createbombzone(team, trigger) {
   return bombzone;
 }
 
-/*
-	Name: onbeginuse
-	Namespace: sab
-	Checksum: 0x58D0200B
-	Offset: 0x22D0
-	Size: 0xE4
-	Parameters: 1
-	Flags: None
-*/
 function onbeginuse(player) {
   if(!self gameobjects::is_friendly_team(player.pers["team"])) {
     player.isplanting = 1;
@@ -420,35 +311,17 @@ function onbeginuse(player) {
   player playsound("fly_bomb_raise_plr");
 }
 
-/*
-	Name: onenduse
-	Namespace: sab
-	Checksum: 0x1E96BDC3
-	Offset: 0x23C0
-	Size: 0x68
-	Parameters: 3
-	Flags: None
-*/
 function onenduse(team, player, result) {
   if(!isalive(player)) {
     return;
   }
   player.isplanting = 0;
   player.isdefusing = 0;
-  player notify(# "event_ended");
+  player notify("event_ended");
 }
 
-/*
-	Name: onpickup
-	Namespace: sab
-	Checksum: 0xD55959EE
-	Offset: 0x2430
-	Size: 0x404
-	Parameters: 1
-	Flags: None
-*/
 function onpickup(player) {
-  level notify(# "bomb_picked_up");
+  level notify("bomb_picked_up");
   player recordgameevent("pickup");
   self.autoresettime = 60;
   level.usestartspawns = 0;
@@ -459,10 +332,8 @@ function onpickup(player) {
     otherteam = "allies";
   }
   player playlocalsound("mp_suitcase_pickup");
-  /#
   print("");
-  # /
-    excludelist[0] = player;
+  excludelist[0] = player;
   if((gettime() - level.lastdialogtime) > 10000) {
     globallogic_audio::leader_dialog("bomb_acquired", team);
     player globallogic_audio::leader_dialog_on_player("obj_destroy", "bomb");
@@ -475,10 +346,10 @@ function onpickup(player) {
   player.isbombcarrier = 1;
   player addplayerstatwithgametype("PICKUPS", 1);
   if(team == self gameobjects::get_owner_team()) {
-    util::printonteamarg( & "MP_EXPLOSIVES_RECOVERED_BY", team, player);
+    util::printonteamarg(&"MP_EXPLOSIVES_RECOVERED_BY", team, player);
     sound::play_on_players(game["bomb_recovered_sound"], team);
   } else {
-    util::printonteamarg( & "MP_EXPLOSIVES_RECOVERED_BY", team, player);
+    util::printonteamarg(&"MP_EXPLOSIVES_RECOVERED_BY", team, player);
     sound::play_on_players(game["bomb_recovered_sound"]);
   }
   self gameobjects::set_owner_team(team);
@@ -493,47 +364,27 @@ function onpickup(player) {
   level.bombzones[otherteam].trigger setvisibletoplayer(player);
 }
 
-/*
-	Name: ondrop
-	Namespace: sab
-	Checksum: 0xBBCD7960
-	Offset: 0x2840
-	Size: 0x184
-	Parameters: 1
-	Flags: None
-*/
 function ondrop(player) {
   if(level.bombplanted) {} else {
     if(isdefined(player)) {
-      util::printonteamarg( & "MP_EXPLOSIVES_DROPPED_BY", self gameobjects::get_owner_team(), player);
+      util::printonteamarg(&"MP_EXPLOSIVES_DROPPED_BY", self gameobjects::get_owner_team(), player);
     }
     sound::play_on_players(game["bomb_dropped_sound"], self gameobjects::get_owner_team());
-    /#
     if(isdefined(player)) {
       print("");
     } else {
       print("");
     }
-    # /
-      globallogic_audio::leader_dialog("bomb_lost", self gameobjects::get_owner_team());
-    player notify(# "event_ended");
+    globallogic_audio::leader_dialog("bomb_lost", self gameobjects::get_owner_team());
+    player notify("event_ended");
     level.bombzones["axis"].trigger setinvisibletoall();
     level.bombzones["allies"].trigger setinvisibletoall();
     thread abandonmentthink(0);
   }
 }
 
-/*
-	Name: abandonmentthink
-	Namespace: sab
-	Checksum: 0xF1F0067F
-	Offset: 0x29D0
-	Size: 0x1CC
-	Parameters: 1
-	Flags: None
-*/
 function abandonmentthink(delay) {
-  level endon(# "bomb_picked_up");
+  level endon("bomb_picked_up");
   wait(delay);
   if(isdefined(self.carrier)) {
     return;
@@ -554,30 +405,19 @@ function abandonmentthink(delay) {
   level.bombzones["axis"] gameobjects::set_visible_team("none");
 }
 
-/*
-	Name: onuse
-	Namespace: sab
-	Checksum: 0xF2333DBF
-	Offset: 0x2BA8
-	Size: 0x504
-	Parameters: 1
-	Flags: None
-*/
 function onuse(player) {
   team = player.pers["team"];
   otherteam = util::getotherteam(team);
   if(!self gameobjects::is_friendly_team(player.pers["team"])) {
-    player notify(# "bomb_planted");
-    /#
+    player notify("bomb_planted");
     print("");
-    # /
-      if(isdefined(player.pers["plants"])) {
-        player.pers["plants"]++;
-        player.plants = player.pers["plants"];
-      }
+    if(isdefined(player.pers["plants"])) {
+      player.pers["plants"]++;
+      player.plants = player.pers["plants"];
+    }
     demo::bookmark("event", gettime(), player);
     player addplayerstatwithgametype("PLANTS", 1);
-    level thread popups::displayteammessagetoall( & "MP_EXPLOSIVES_PLANTED_BY", player);
+    level thread popups::displayteammessagetoall(&"MP_EXPLOSIVES_PLANTED_BY", player);
     globallogic_audio::set_music_on_team("ACTION", "both", 1);
     globallogic_audio::leader_dialog("bomb_planted", team);
     globallogic_audio::leader_dialog("bomb_planted", otherteam);
@@ -593,17 +433,15 @@ function onuse(player) {
     self.useweapon = getweapon("briefcase_bomb_defuse");
     self setupfordefusing();
   } else {
-    player notify(# "bomb_defused");
-    /#
+    player notify("bomb_defused");
     print("");
-    # /
-      if(isdefined(player.pers["defuses"])) {
-        player.pers["defuses"]++;
-        player.defuses = player.pers["defuses"];
-      }
+    if(isdefined(player.pers["defuses"])) {
+      player.pers["defuses"]++;
+      player.defuses = player.pers["defuses"];
+    }
     demo::bookmark("event", gettime(), player);
     player addplayerstatwithgametype("DEFUSES", 1);
-    level thread popups::displayteammessagetoall( & "MP_EXPLOSIVES_DEFUSED_BY", player);
+    level thread popups::displayteammessagetoall(&"MP_EXPLOSIVES_DEFUSED_BY", player);
     globallogic_audio::leader_dialog("bomb_defused");
     scoreevents::processscoreevent("defused_bomb", player);
     player recordgameevent("defuse");
@@ -618,28 +456,10 @@ function onuse(player) {
   }
 }
 
-/*
-	Name: oncantuse
-	Namespace: sab
-	Checksum: 0x22264E29
-	Offset: 0x30B8
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function oncantuse(player) {
-  player iprintlnbold( & "MP_CANT_PLANT_WITHOUT_BOMB");
+  player iprintlnbold(&"MP_CANT_PLANT_WITHOUT_BOMB");
 }
 
-/*
-	Name: bombplanted
-	Namespace: sab
-	Checksum: 0x72B78C22
-	Offset: 0x30F0
-	Size: 0x4DC
-	Parameters: 2
-	Flags: None
-*/
 function bombplanted(destroyedobj, team) {
   game["challenge"][team]["plantedBomb"] = 1;
   globallogic_utils::pausetimer();
@@ -664,7 +484,7 @@ function bombplanted(destroyedobj, team) {
   level.bombexploded = 1;
   if(isdefined(level.bombowner)) {
     destroyedobj.visuals[0] radiusdamage(explosionorigin, 512, 200, 20, level.bombowner, "MOD_EXPLOSIVE", getweapon("briefcase_bomb"));
-    level thread popups::displayteammessagetoall( & "MP_EXPLOSIVES_BLOWUP_BY", level.bombowner);
+    level thread popups::displayteammessagetoall(&"MP_EXPLOSIVES_BLOWUP_BY", level.bombowner);
     level.bombowner addplayerstatwithgametype("DESTRUCTIONS", 1);
     scoreevents::processscoreevent("bomb_detonated", level.bombowner);
   } else {
@@ -677,11 +497,7 @@ function bombplanted(destroyedobj, team) {
   if(isdefined(destroyedobj.exploderindex)) {
     exploder::exploder(destroyedobj.exploderindex);
   }
-  [
-    [level._setteamscore]
-  ](team, [
-    [level._getteamscore]
-  ](team) + 1);
+  [[level._setteamscore]](team, [[level._getteamscore]](team) + 1);
   setgameendtime(0);
   level.bombzones["allies"] gameobjects::set_visible_team("none");
   level.bombzones["axis"] gameobjects::set_visible_team("none");
@@ -689,34 +505,16 @@ function bombplanted(destroyedobj, team) {
   thread globallogic::endgame(team, game["strings"]["target_destroyed"]);
 }
 
-/*
-	Name: bombtimerwait
-	Namespace: sab
-	Checksum: 0xE35FB9CE
-	Offset: 0x35D8
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function bombtimerwait() {
-  level endon(# "bomb_defused");
+  level endon("bomb_defused");
   hostmigration::waitlongdurationwithgameendtimeupdate(level.bombtimer);
 }
 
-/*
-	Name: resetbombsite
-	Namespace: sab
-	Checksum: 0x24F39F4B
-	Offset: 0x3608
-	Size: 0x19C
-	Parameters: 0
-	Flags: None
-*/
 function resetbombsite() {
   self gameobjects::allow_use("enemy");
   self gameobjects::set_use_time(level.planttime);
-  self gameobjects::set_use_text( & "MP_PLANTING_EXPLOSIVE");
-  self gameobjects::set_use_hint_text( & "PLATFORM_HOLD_TO_PLANT_EXPLOSIVES");
+  self gameobjects::set_use_text(&"MP_PLANTING_EXPLOSIVE");
+  self gameobjects::set_use_hint_text(&"PLATFORM_HOLD_TO_PLANT_EXPLOSIVES");
   self gameobjects::set_key_object(level.sabbomb);
   self gameobjects::set_2d_icon("friendly", "compass_waypoint_defend");
   self gameobjects::set_3d_icon("friendly", "waypoint_defend");
@@ -727,20 +525,11 @@ function resetbombsite() {
   self.useweapon = getweapon("briefcase_bomb");
 }
 
-/*
-	Name: setupfordefusing
-	Namespace: sab
-	Checksum: 0xE0B3A417
-	Offset: 0x37B0
-	Size: 0x174
-	Parameters: 0
-	Flags: None
-*/
 function setupfordefusing() {
   self gameobjects::allow_use("friendly");
   self gameobjects::set_use_time(level.defusetime);
-  self gameobjects::set_use_text( & "MP_DEFUSING_EXPLOSIVE");
-  self gameobjects::set_use_hint_text( & "PLATFORM_HOLD_TO_DEFUSE_EXPLOSIVES");
+  self gameobjects::set_use_text(&"MP_DEFUSING_EXPLOSIVE");
+  self gameobjects::set_use_hint_text(&"PLATFORM_HOLD_TO_DEFUSE_EXPLOSIVES");
   self gameobjects::set_key_object(undefined);
   self gameobjects::set_2d_icon("friendly", "compass_waypoint_defuse");
   self gameobjects::set_3d_icon("friendly", "waypoint_defuse");
@@ -750,15 +539,6 @@ function setupfordefusing() {
   self.trigger setvisibletoall();
 }
 
-/*
-	Name: bombdefused
-	Namespace: sab
-	Checksum: 0x32872E04
-	Offset: 0x3930
-	Size: 0x62
-	Parameters: 1
-	Flags: None
-*/
 function bombdefused(object) {
   setmatchflag("bomb_timer", 0);
   globallogic_utils::resumetimer();
@@ -766,18 +546,9 @@ function bombdefused(object) {
   if(!level.inovertime) {
     level.timelimitoverride = 0;
   }
-  level notify(# "bomb_defused");
+  level notify("bomb_defused");
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: sab
-	Checksum: 0x5E2C4C9A
-	Offset: 0x39A0
-	Size: 0x3AC
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   inbombzone = 0;
   inbombzoneteam = "none";
@@ -820,30 +591,12 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: onendgame
-	Namespace: sab
-	Checksum: 0x1EDB1D67
-	Offset: 0x3D58
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function onendgame(winningteam) {
   if(isdefined(winningteam) && (winningteam == "allies" || winningteam == "axis")) {
     globallogic_score::giveteamscoreforobjective(winningteam, 1);
   }
 }
 
-/*
-	Name: onroundendgame
-	Namespace: sab
-	Checksum: 0xD82A7B7F
-	Offset: 0x3DB8
-	Size: 0x34
-	Parameters: 1
-	Flags: None
-*/
 function onroundendgame(roundwinner) {
   winner = globallogic::determineteamwinnerbygamestat("roundswon");
   return winner;

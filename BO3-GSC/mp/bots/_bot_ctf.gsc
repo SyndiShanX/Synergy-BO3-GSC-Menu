@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\bots\_bot_ctf.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\bots\_bot;
 #using scripts\mp\bots\_bot_combat;
@@ -9,32 +13,13 @@
 #using scripts\shared\gameobjects_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace bot_ctf;
 
-/*
-	Name: init
-	Namespace: bot_ctf
-	Checksum: 0xA3AED79E
-	Offset: 0x1A0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.onbotconnect = & on_bot_connect;
   level.botidle = & bot_idle;
 }
 
-/*
-	Name: on_bot_connect
-	Namespace: bot_ctf
-	Checksum: 0x20AAD701
-	Offset: 0x1E0
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_bot_connect() {
   foreach(flag in level.flags) {
     if(flag gameobjects::get_owner_team() == self.team) {
@@ -46,15 +31,6 @@ function on_bot_connect() {
   self bot::on_bot_connect();
 }
 
-/*
-	Name: bot_idle
-	Namespace: bot_ctf
-	Checksum: 0x1A6DBF0B
-	Offset: 0x2C0
-	Size: 0x32C
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_idle() {
   carrier = self.bot.enemyflag gameobjects::get_carrier();
   if(isdefined(carrier) && carrier == self) {

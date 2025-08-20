@@ -1,18 +1,12 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\zombie_death.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\util_shared;
-
 #namespace zombie_death;
 
-/*
-	Name: init_fire_fx
-	Namespace: zombie_death
-	Checksum: 0x70598E7A
-	Offset: 0x180
-	Size: 0x5A
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init_fire_fx() {
   wait(0.016);
   if(!isdefined(level._effect)) {
@@ -22,37 +16,19 @@ function autoexec init_fire_fx() {
   level._effect["character_fire_death_torso"] = "zombie/fx_fire_torso_zmb";
 }
 
-/*
-	Name: on_fire_timeout
-	Namespace: zombie_death
-	Checksum: 0xEB2011AA
-	Offset: 0x1E8
-	Size: 0x5E
-	Parameters: 1
-	Flags: Linked
-*/
 function on_fire_timeout(localclientnum) {
-  self endon(# "death");
-  self endon(# "entityshutdown");
+  self endon("death");
+  self endon("entityshutdown");
   wait(12);
   if(isdefined(self) && isalive(self)) {
     self.is_on_fire = 0;
-    self notify(# "stop_flame_damage");
+    self notify("stop_flame_damage");
   }
 }
 
-/*
-	Name: flame_death_fx
-	Namespace: zombie_death
-	Checksum: 0xDADB1011
-	Offset: 0x250
-	Size: 0x334
-	Parameters: 1
-	Flags: Linked
-*/
 function flame_death_fx(localclientnum) {
-  self endon(# "death");
-  self endon(# "entityshutdown");
+  self endon("death");
+  self endon("entityshutdown");
   if(isdefined(self.is_on_fire) && self.is_on_fire) {
     return;
   }
@@ -67,9 +43,7 @@ function flame_death_fx(localclientnum) {
       playfxontag(localclientnum, level._effect["character_fire_death_torso"], self, fire_tag);
     }
   } else {
-    /#
     println("");
-    # /
   }
   if(isdefined(level._effect) && isdefined(level._effect["character_fire_death_sm"])) {
     if(self.archetype !== "parasite" && self.archetype !== "raps") {
@@ -93,21 +67,10 @@ function flame_death_fx(localclientnum) {
       playfxontag(localclientnum, level._effect["character_fire_death_sm"], self, tagarray[1]);
     }
   } else {
-    /#
     println("");
-    # /
   }
 }
 
-/*
-	Name: randomize_array
-	Namespace: zombie_death
-	Checksum: 0x9FDF39C8
-	Offset: 0x590
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function randomize_array(array) {
   for (i = 0; i < array.size; i++) {
     j = randomint(array.size);

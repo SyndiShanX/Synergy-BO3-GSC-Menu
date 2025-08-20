@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_utility.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -30,18 +34,8 @@
 #using scripts\zm\zm_moon_gravity;
 #using scripts\zm\zm_moon_utility;
 #using scripts\zm\zm_moon_wasteland;
-
 #namespace zm_moon_utility;
 
-/*
-	Name: init_zombie_airlocks
-	Namespace: zm_moon_utility
-	Checksum: 0x7C10D916
-	Offset: 0x920
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_zombie_airlocks() {
   airlock_buys = getentarray("zombie_airlock_buy", "targetname");
   for (i = 0; i < airlock_buys.size; i++) {
@@ -61,30 +55,12 @@ function init_zombie_airlocks() {
   level thread moon_glass_breach_init();
 }
 
-/*
-	Name: init_door_sounds
-	Namespace: zm_moon_utility
-	Checksum: 0x92E6D846
-	Offset: 0xAE0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function init_door_sounds() {
   zm_utility::add_sound("lab_door", "zmb_lab_door_slide");
   zm_utility::add_sound("electric_metal_big", "zmb_heavy_door_open");
   zm_utility::add_sound("zmb_heavy_door_open", "zmb_heavy_door_open");
 }
 
-/*
-	Name: airlock_hack_init
-	Namespace: zm_moon_utility
-	Checksum: 0x5AE8CC9E
-	Offset: 0xB50
-	Size: 0x22C
-	Parameters: 0
-	Flags: Linked
-*/
 function airlock_hack_init() {
   self.type = undefined;
   if(isdefined(self.script_flag) && !isdefined(level.flag[self.script_flag])) {
@@ -110,18 +86,9 @@ function airlock_hack_init() {
   }
   self setcursorhint("HINT_NOICON");
   self.script_noteworthy = "default";
-  self sethintstring( & "ZOMBIE_EQUIP_HACKER");
+  self sethintstring(&"ZOMBIE_EQUIP_HACKER");
 }
 
-/*
-	Name: airlock_buy_init
-	Namespace: zm_moon_utility
-	Checksum: 0x78669D54
-	Offset: 0xD88
-	Size: 0x274
-	Parameters: 0
-	Flags: Linked
-*/
 function airlock_buy_init() {
   self.type = undefined;
   if(isdefined(self.script_flag) && !isdefined(level.flag[self.script_flag])) {
@@ -147,24 +114,15 @@ function airlock_buy_init() {
   }
   self setcursorhint("HINT_NOICON");
   if(isdefined(self.script_noteworthy) && (self.script_noteworthy == "electric_door" || self.script_noteworthy == "electric_buyable_door")) {
-    self sethintstring( & "ZOMBIE_NEED_POWER");
+    self sethintstring(&"ZOMBIE_NEED_POWER");
   } else {
     self.script_noteworthy = "default";
   }
   self thread airlock_buy_think();
 }
 
-/*
-	Name: airlock_buy_think
-	Namespace: zm_moon_utility
-	Checksum: 0xF910271E
-	Offset: 0x1008
-	Size: 0x142
-	Parameters: 0
-	Flags: Linked
-*/
 function airlock_buy_think() {
-  self endon(# "kill_door_think");
+  self endon("kill_door_think");
   cost = 1000;
   if(isdefined(self.zombie_cost)) {
     cost = self.zombie_cost;
@@ -195,17 +153,8 @@ function airlock_buy_think() {
   }
 }
 
-/*
-	Name: moon_door_opened
-	Namespace: zm_moon_utility
-	Checksum: 0xFE82F300
-	Offset: 0x1158
-	Size: 0x186
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_door_opened() {
-  self notify(# "door_opened");
+  self notify("door_opened");
   if(isdefined(self.script_flag)) {
     tokens = strtok(self.script_flag, ",");
     for (i = 0; i < tokens.size; i++) {
@@ -223,15 +172,6 @@ function moon_door_opened() {
   }
 }
 
-/*
-	Name: change_door_models
-	Namespace: zm_moon_utility
-	Checksum: 0x43773241
-	Offset: 0x12E8
-	Size: 0x196
-	Parameters: 0
-	Flags: Linked
-*/
 function change_door_models() {
   doors = getentarray(self.target, "targetname");
   for (i = 0; i < doors.size; i++) {
@@ -248,15 +188,6 @@ function change_door_models() {
   }
 }
 
-/*
-	Name: airlock_connect_paths
-	Namespace: zm_moon_utility
-	Checksum: 0x1814FAE9
-	Offset: 0x1488
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function airlock_connect_paths() {
   if(self.classname == "script_brushmodel") {
     self notsolid();
@@ -267,17 +198,8 @@ function airlock_connect_paths() {
   }
 }
 
-/*
-	Name: airlock_buy
-	Namespace: zm_moon_utility
-	Checksum: 0xFCA9C346
-	Offset: 0x1508
-	Size: 0x314
-	Parameters: 0
-	Flags: Linked
-*/
 function airlock_buy() {
-  self waittill(# "trigger", who, force);
+  self waittill("trigger", who, force);
   if(getdvarint("zombie_unlock_all") > 0 || (isdefined(force) && force)) {
     return true;
   }
@@ -318,15 +240,6 @@ function airlock_buy() {
   return true;
 }
 
-/*
-	Name: airlock_init
-	Namespace: zm_moon_utility
-	Checksum: 0xBABA4416
-	Offset: 0x1828
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function airlock_init() {
   self.type = undefined;
   self._door_open = 0;
@@ -339,18 +252,9 @@ function airlock_init() {
   self thread airlock_think();
 }
 
-/*
-	Name: airlock_think
-	Namespace: zm_moon_utility
-	Checksum: 0xAA2589CD
-	Offset: 0x1910
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function airlock_think() {
   while (true) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     if(isdefined(self.doors[0].startpos) && self.doors[0].startpos != self.doors[0].origin) {
       continue;
     }
@@ -369,15 +273,6 @@ function airlock_think() {
   }
 }
 
-/*
-	Name: airlock_activate
-	Namespace: zm_moon_utility
-	Checksum: 0x88133BB9
-	Offset: 0x1AD0
-	Size: 0x246
-	Parameters: 2
-	Flags: Linked
-*/
 function airlock_activate(time = 1, open = 1) {
   if(isdefined(self.door_moving)) {
     return;
@@ -426,15 +321,6 @@ function airlock_activate(time = 1, open = 1) {
   }
 }
 
-/*
-	Name: moon_airlock_occupied
-	Namespace: zm_moon_utility
-	Checksum: 0xF256E1B4
-	Offset: 0x1D20
-	Size: 0x1A8
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_airlock_occupied() {
   is_occupied = 0;
   zombies = getaiarray();
@@ -461,15 +347,6 @@ function moon_airlock_occupied() {
   return false;
 }
 
-/*
-	Name: door_clean_up_corpses
-	Namespace: zm_moon_utility
-	Checksum: 0xB50ED079
-	Offset: 0x1ED8
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function door_clean_up_corpses() {
   corpses = getcorpsearray();
   if(isdefined(corpses)) {
@@ -481,15 +358,6 @@ function door_clean_up_corpses() {
   }
 }
 
-/*
-	Name: door_remove_corpses
-	Namespace: zm_moon_utility
-	Checksum: 0x27F33632
-	Offset: 0x1F78
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function door_remove_corpses() {
   if(isdefined(level._effect["dog_gib"])) {
     playfx(level._effect["dog_gib"], self.origin);
@@ -497,15 +365,6 @@ function door_remove_corpses() {
   self delete();
 }
 
-/*
-	Name: zapper_light_green
-	Namespace: zm_moon_utility
-	Checksum: 0xCB016828
-	Offset: 0x1FE0
-	Size: 0xE2
-	Parameters: 2
-	Flags: Linked
-*/
 function zapper_light_green(light_name, key_name) {
   var_e9947991 = getentarray(light_name, key_name);
   foreach(light in var_e9947991) {
@@ -514,15 +373,6 @@ function zapper_light_green(light_name, key_name) {
   }
 }
 
-/*
-	Name: zapper_light_red
-	Namespace: zm_moon_utility
-	Checksum: 0x1911EAAB
-	Offset: 0x20D0
-	Size: 0xE2
-	Parameters: 2
-	Flags: Linked
-*/
 function zapper_light_red(light_name, key_name) {
   var_e9947991 = getentarray(light_name, key_name);
   foreach(light in var_e9947991) {
@@ -531,21 +381,12 @@ function zapper_light_red(light_name, key_name) {
   }
 }
 
-/*
-	Name: moon_intermission
-	Namespace: zm_moon_utility
-	Checksum: 0x6DE3F645
-	Offset: 0x21C0
-	Size: 0x6CA
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_intermission() {
   self closeingamemenu();
-  level endon(# "stop_intermission");
-  self endon(# "disconnect");
-  self endon(# "death");
-  self notify(# "_zombie_game_over");
+  level endon("stop_intermission");
+  self endon("disconnect");
+  self endon("death");
+  self notify("_zombie_game_over");
   self.score = self.score_total;
   self.sessionstate = "intermission";
   self.spectatorclient = -1;
@@ -568,10 +409,8 @@ function moon_intermission() {
   if(!isdefined(points) || points.size == 0) {
     points = getentarray("info_intermission", "classname");
     if(points.size < 1) {
-      /#
       println("");
-      # /
-        return;
+      return;
     }
   }
   self.game_over_bg = newclienthudelem(self);
@@ -629,15 +468,6 @@ function moon_intermission() {
   }
 }
 
-/*
-	Name: hacker_location_random_init
-	Namespace: zm_moon_utility
-	Checksum: 0x9A079162
-	Offset: 0x2898
-	Size: 0x26C
-	Parameters: 0
-	Flags: Linked
-*/
 function hacker_location_random_init() {
   hacker_tool_array = [];
   hacker_pos = undefined;
@@ -665,15 +495,6 @@ function hacker_location_random_init() {
   }
 }
 
-/*
-	Name: hacker_position_cleanup
-	Namespace: zm_moon_utility
-	Checksum: 0x557E3BCB
-	Offset: 0x2B10
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function hacker_position_cleanup() {
   model = getent(self.target, "targetname");
   if(isdefined(model)) {
@@ -684,15 +505,6 @@ function hacker_position_cleanup() {
   }
 }
 
-/*
-	Name: moon_glass_breach_init
-	Namespace: zm_moon_utility
-	Checksum: 0x8687D808
-	Offset: 0x2B90
-	Size: 0x126
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_glass_breach_init() {
   level.glass = getentarray("moon_breach_glass", "targetname");
   array::thread_all(level.glass, & glass_breach_think);
@@ -707,15 +519,6 @@ function moon_glass_breach_init() {
   }
 }
 
-/*
-	Name: glass_gets_destroyed
-	Namespace: zm_moon_utility
-	Checksum: 0x2397843
-	Offset: 0x2CC0
-	Size: 0x264
-	Parameters: 0
-	Flags: Linked
-*/
 function glass_gets_destroyed() {
   if(isdefined(self.fxpos_array)) {
     for (i = 0; i < self.fxpos_array.size; i++) {
@@ -748,45 +551,18 @@ function glass_gets_destroyed() {
   self delete();
 }
 
-/*
-	Name: wait_for_grenade_explode
-	Namespace: zm_moon_utility
-	Checksum: 0xA8C3FA92
-	Offset: 0x2F30
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_for_grenade_explode(player) {
-  player endon(# "projectile_impact");
-  self waittill(# "explode", grenade_origin);
+  player endon("projectile_impact");
+  self waittill("explode", grenade_origin);
   self thread check_for_grenade_damage_on_window(grenade_origin);
 }
 
-/*
-	Name: wait_for_projectile_impact
-	Namespace: zm_moon_utility
-	Checksum: 0xFF2FD341
-	Offset: 0x2F88
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_for_projectile_impact(grenade) {
-  grenade endon(# "explode");
-  self waittill(# "projectile_impact", weapon_name, position);
+  grenade endon("explode");
+  self waittill("projectile_impact", weapon_name, position);
   self thread check_for_grenade_damage_on_window(position);
 }
 
-/*
-	Name: check_for_grenade_damage_on_window
-	Namespace: zm_moon_utility
-	Checksum: 0xD345C8AB
-	Offset: 0x2FE8
-	Size: 0x162
-	Parameters: 1
-	Flags: Linked
-*/
 function check_for_grenade_damage_on_window(grenade_origin) {
   radiussqtocheck = 44096;
   for (i = 0; i < level.glass.size; i++) {
@@ -807,34 +583,16 @@ function check_for_grenade_damage_on_window(grenade_origin) {
   }
 }
 
-/*
-	Name: check_for_grenade_throw
-	Namespace: zm_moon_utility
-	Checksum: 0x817C7087
-	Offset: 0x3158
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function check_for_grenade_throw() {
   while (true) {
-    self waittill(# "grenade_fire", grenade, weapname);
+    self waittill("grenade_fire", grenade, weapname);
     grenade thread wait_for_grenade_explode(self);
     self thread wait_for_projectile_impact(grenade);
   }
 }
 
-/*
-	Name: glass_breach_think
-	Namespace: zm_moon_utility
-	Checksum: 0x9384537C
-	Offset: 0x31C8
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function glass_breach_think() {
-  level endon(# "intermission");
+  level endon("intermission");
   self.fxpos_array = [];
   if(isdefined(self.target)) {
     self.fxpos_array = struct::get_array(self.target, "targetname");
@@ -842,7 +600,7 @@ function glass_breach_think() {
   self.health = 99999;
   self.damage_state = 0;
   while (true) {
-    self waittill(# "damage", amount, attacker, direction, point, dmg_type);
+    self waittill("damage", amount, attacker, direction, point, dmg_type);
     if(isplayer(attacker) && (dmg_type == "MOD_PROJECTILE" || dmg_type == "MOD_PROJECTILE_SPLASH")) {
       if(self.damage_state == 0) {
         self glass_gets_destroyed();
@@ -852,15 +610,6 @@ function glass_breach_think() {
   }
 }
 
-/*
-	Name: send_client_notify_for_breach
-	Namespace: zm_moon_utility
-	Checksum: 0x66AE79F3
-	Offset: 0x32F8
-	Size: 0x216
-	Parameters: 1
-	Flags: Linked
-*/
 function send_client_notify_for_breach(zone) {
   switch (zone) {
     case "bridge_zone": {
@@ -896,15 +645,6 @@ function send_client_notify_for_breach(zone) {
   }
 }
 
-/*
-	Name: function_f1daf14e
-	Namespace: zm_moon_utility
-	Checksum: 0x1F7DDF7B
-	Offset: 0x3518
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f1daf14e(str_area) {
   var_af1a2667 = undefined;
   switch (str_area) {
@@ -926,30 +666,12 @@ function function_f1daf14e(str_area) {
   }
 }
 
-/*
-	Name: zombie_moon_receiving_hatch_init
-	Namespace: zm_moon_utility
-	Checksum: 0xFA6B88DC
-	Offset: 0x35B8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_moon_receiving_hatch_init() {
   hatches = getentarray("recieving_hatch", "targetname");
   array::thread_all(hatches, & zombie_moon_hatch);
   level thread function_8ceda02();
 }
 
-/*
-	Name: zombie_moon_hatch
-	Namespace: zm_moon_utility
-	Checksum: 0x9482E28A
-	Offset: 0x3630
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_moon_hatch() {
   scale = 1;
   level flag::wait_till("power_on");
@@ -968,15 +690,6 @@ function zombie_moon_hatch() {
   }
 }
 
-/*
-	Name: function_8ceda02
-	Namespace: zm_moon_utility
-	Checksum: 0xD3C4B6E
-	Offset: 0x3768
-	Size: 0x152
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8ceda02() {
   a_nd_traversal = getnodearray("hatch_node", "targetname");
   foreach(node in a_nd_traversal) {
@@ -989,15 +702,6 @@ function function_8ceda02() {
   }
 }
 
-/*
-	Name: sky_transition_fog_settings
-	Namespace: zm_moon_utility
-	Checksum: 0x13AD6A4C
-	Offset: 0x38C8
-	Size: 0xDE
-	Parameters: 0
-	Flags: Linked
-*/
 function sky_transition_fog_settings() {
   players = getplayers();
   if(level flag::get("enter_nml")) {

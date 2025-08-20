@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\bots\_bot_hq.gsc
+*************************************************/
+
 #using scripts\mp\bots\_bot;
 #using scripts\mp\bots\_bot_combat;
 #using scripts\shared\array_shared;
 #using scripts\shared\util_shared;
-
 #namespace bot_hq;
 
-/*
-	Name: hq_think
-	Namespace: bot_hq
-	Checksum: 0xB2405AE5
-	Offset: 0x140
-	Size: 0x1E4
-	Parameters: 0
-	Flags: None
-*/
 function hq_think() {
   time = gettime();
   if(time < self.bot.update_objective) {
@@ -40,15 +34,6 @@ function hq_think() {
   }
 }
 
-/*
-	Name: has_hq_goal
-	Namespace: bot_hq
-	Checksum: 0x1F7B0318
-	Offset: 0x330
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function has_hq_goal() {
   origin = self getgoal("hq_radio");
   if(isdefined(origin)) {
@@ -61,28 +46,10 @@ function has_hq_goal() {
   return false;
 }
 
-/*
-	Name: is_capturing_hq
-	Namespace: bot_hq
-	Checksum: 0x1F469E7E
-	Offset: 0x420
-	Size: 0x22
-	Parameters: 0
-	Flags: Linked
-*/
 function is_capturing_hq() {
   return self atgoal("hq_radio");
 }
 
-/*
-	Name: should_patrol_hq
-	Namespace: bot_hq
-	Checksum: 0x36F66449
-	Offset: 0x450
-	Size: 0x6E
-	Parameters: 0
-	Flags: Linked
-*/
 function should_patrol_hq() {
   if(level.radio.gameobject.ownerteam == "neutral") {
     return false;
@@ -96,15 +63,6 @@ function should_patrol_hq() {
   return true;
 }
 
-/*
-	Name: patrol_hq
-	Namespace: bot_hq
-	Checksum: 0x738A72E7
-	Offset: 0x4C8
-	Size: 0x638
-	Parameters: 0
-	Flags: Linked
-*/
 function patrol_hq() {
   self cancelgoal("hq_radio");
   if(self atgoal("hq_patrol")) {
@@ -161,28 +119,17 @@ function patrol_hq() {
   }
   points = util::positionquery_pointarray(nearest, 0, 512, 70, 64);
   points = navpointsightfilter(points, nearest);
-  /#
   assert(points.size);
-  # /
-    for (i = randomint(points.size); i < points.size; i++) {
-      if(self bot::friend_goal_in_radius("hq_radio", points[i], 128) == 0) {
-        if(self bot::friend_goal_in_radius("hq_patrol", points[i], 256) == 0) {
-          self addgoal(points[i], 24, 3, "hq_patrol");
-          return;
-        }
+  for (i = randomint(points.size); i < points.size; i++) {
+    if(self bot::friend_goal_in_radius("hq_radio", points[i], 128) == 0) {
+      if(self bot::friend_goal_in_radius("hq_patrol", points[i], 256) == 0) {
+        self addgoal(points[i], 24, 3, "hq_patrol");
+        return;
       }
     }
+  }
 }
 
-/*
-	Name: move_to_hq
-	Namespace: bot_hq
-	Checksum: 0x47C2E6CB
-	Offset: 0xB08
-	Size: 0x214
-	Parameters: 0
-	Flags: Linked
-*/
 function move_to_hq() {
   self clearlookat();
   self cancelgoal("hq_radio");
@@ -205,15 +152,6 @@ function move_to_hq() {
   self addgoal(array::random(points), 24, 3, "hq_radio");
 }
 
-/*
-	Name: get_look_at
-	Namespace: bot_hq
-	Checksum: 0x33777D41
-	Offset: 0xD28
-	Size: 0x232
-	Parameters: 0
-	Flags: Linked
-*/
 function get_look_at() {
   enemy = self bot::get_closest_enemy(self.origin, 1);
   if(isdefined(enemy)) {
@@ -240,15 +178,6 @@ function get_look_at() {
   return level.radio.baseorigin;
 }
 
-/*
-	Name: capture_hq
-	Namespace: bot_hq
-	Checksum: 0xC77FAD24
-	Offset: 0xF68
-	Size: 0x1D4
-	Parameters: 0
-	Flags: Linked
-*/
 function capture_hq() {
   self addgoal(self.origin, 24, 3, "hq_radio");
   self setstance("crouch");
@@ -269,15 +198,6 @@ function capture_hq() {
   }
 }
 
-/*
-	Name: any_other_team_touching
-	Namespace: bot_hq
-	Checksum: 0xE0E45D34
-	Offset: 0x1148
-	Size: 0xB6
-	Parameters: 1
-	Flags: Linked
-*/
 function any_other_team_touching(skip_team) {
   foreach(team in level.teams) {
     if(team == skip_team) {
@@ -290,15 +210,6 @@ function any_other_team_touching(skip_team) {
   return false;
 }
 
-/*
-	Name: is_hq_contested
-	Namespace: bot_hq
-	Checksum: 0x1546A980
-	Offset: 0x1208
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function is_hq_contested(skip_team) {
   if(any_other_team_touching(skip_team)) {
     return true;
@@ -310,15 +221,6 @@ function is_hq_contested(skip_team) {
   return false;
 }
 
-/*
-	Name: hq_grenade
-	Namespace: bot_hq
-	Checksum: 0x7389C65C
-	Offset: 0x12B8
-	Size: 0x214
-	Parameters: 0
-	Flags: Linked
-*/
 function hq_grenade() {
   enemies = bot::get_enemies();
   if(!enemies.size) {
@@ -350,15 +252,6 @@ function hq_grenade() {
   }
 }
 
-/*
-	Name: hq_tactical_insertion
-	Namespace: bot_hq
-	Checksum: 0x686161E
-	Offset: 0x14D8
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function hq_tactical_insertion() {
   if(!self hasweapon(getweapon("tactical_insertion"))) {
     return;
@@ -379,28 +272,10 @@ function hq_tactical_insertion() {
   }
 }
 
-/*
-	Name: hq_nearest_point
-	Namespace: bot_hq
-	Checksum: 0xE24F241
-	Offset: 0x1668
-	Size: 0x22
-	Parameters: 0
-	Flags: Linked
-*/
 function hq_nearest_point() {
   return array::random(level.radio.points);
 }
 
-/*
-	Name: hq_is_contested
-	Namespace: bot_hq
-	Checksum: 0xA3C46D17
-	Offset: 0x1698
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function hq_is_contested() {
   enemy = self bot::get_closest_enemy(level.radio.baseorigin, 0);
   return isdefined(enemy) && distancesquared(enemy.origin, level.radio.baseorigin) < (level.radio.node_radius * level.radio.node_radius);

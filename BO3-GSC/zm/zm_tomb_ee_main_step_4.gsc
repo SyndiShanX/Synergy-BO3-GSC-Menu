@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_ee_main_step_4.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_shared;
 #using scripts\shared\ai\zombie_utility;
@@ -16,31 +20,12 @@
 #using scripts\zm\zm_tomb_ee_main;
 #using scripts\zm\zm_tomb_utility;
 #using scripts\zm\zm_tomb_vo;
-
 #namespace zm_tomb_ee_main_step_4;
 
-/*
-	Name: init
-	Namespace: zm_tomb_ee_main_step_4
-	Checksum: 0x25E1D4A0
-	Offset: 0x478
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   zm_sidequests::declare_sidequest_stage("little_girl_lost", "step_4", & init_stage, & stage_logic, & exit_stage);
 }
 
-/*
-	Name: init_stage
-	Namespace: zm_tomb_ee_main_step_4
-	Checksum: 0x76365C99
-	Offset: 0x4D8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_stage() {
   level._cur_stage_name = "step_4";
   level.ee_mech_zombies_killed = 0;
@@ -49,20 +34,9 @@ function init_stage() {
   level.quadrotor_custom_behavior = & mech_zombie_hole_search;
 }
 
-/*
-	Name: stage_logic
-	Namespace: zm_tomb_ee_main_step_4
-	Checksum: 0x4915408F
-	Offset: 0x530
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function stage_logic() {
-  /#
   iprintln(level._cur_stage_name + "");
-  # /
-    level flag::wait_till("ee_quadrotor_disabled");
+  level flag::wait_till("ee_quadrotor_disabled");
   level thread sndee4music();
   if(!level flag::get("ee_mech_zombie_fight_completed")) {
     while (level.ee_mech_zombies_spawned < 8) {
@@ -80,29 +54,11 @@ function stage_logic() {
   zm_sidequests::stage_completed("little_girl_lost", level._cur_stage_name);
 }
 
-/*
-	Name: exit_stage
-	Namespace: zm_tomb_ee_main_step_4
-	Checksum: 0xB08B2F8D
-	Offset: 0x6B0
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function exit_stage(success) {
   level.quadrotor_custom_behavior = undefined;
-  level notify(# "hash_4f3f0441");
+  level notify("hash_4f3f0441");
 }
 
-/*
-	Name: mech_zombie_hole_search
-	Namespace: zm_tomb_ee_main_step_4
-	Checksum: 0x2691BEB0
-	Offset: 0x6E0
-	Size: 0x266
-	Parameters: 0
-	Flags: Linked
-*/
 function mech_zombie_hole_search() {
   s_goal = struct::get("ee_mech_hole_goal_0", "targetname");
   if(distance2dsquared(self.origin, s_goal.origin) < 250000) {
@@ -124,18 +80,9 @@ function mech_zombie_hole_search() {
   }
 }
 
-/*
-	Name: ee_mechz_spawn
-	Namespace: zm_tomb_ee_main_step_4
-	Checksum: 0xA9EFA350
-	Offset: 0x950
-	Size: 0x2EC
-	Parameters: 1
-	Flags: Linked
-*/
 function ee_mechz_spawn(n_spawn_pos) {
-  self endon(# "death");
-  level endon(# "intermission");
+  self endon("death");
+  level endon("intermission");
   self.animname = "mechz_zombie";
   self.missinglegs = 0;
   self.no_gib = 1;
@@ -147,13 +94,13 @@ function ee_mechz_spawn(n_spawn_pos) {
   zm_utility::recalc_zombie_array();
   self setphysparams(20, 0, 80);
   self.zombie_init_done = 1;
-  self notify(# "zombie_init_done");
+  self notify("zombie_init_done");
   self.allowpain = 0;
   self animmode("normal");
   self orientmode("face enemy");
   self zm_spawner::zombie_setup_attack_properties();
   self.completed_emerging_into_playable_area = 1;
-  self notify(# "completed_emerging_into_playable_area");
+  self notify("completed_emerging_into_playable_area");
   self.no_powerups = 0;
   self setfreecameralockonallowed(0);
   self thread zombie_utility::zombie_eye_glow();
@@ -176,17 +123,8 @@ function ee_mechz_spawn(n_spawn_pos) {
   self ee_mechz_do_jump(spawn_pos);
 }
 
-/*
-	Name: mechz_death_ee
-	Namespace: zm_tomb_ee_main_step_4
-	Checksum: 0x6AA3FD5C
-	Offset: 0xC48
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function mechz_death_ee() {
-  self waittill(# "death");
+  self waittill("death");
   self clientfield::set("tomb_mech_eye", 0);
   level.ee_mech_zombies_killed++;
   level.ee_mech_zombies_alive--;
@@ -201,29 +139,16 @@ function mechz_death_ee() {
   }
 }
 
-/*
-	Name: ee_mechz_do_jump
-	Namespace: zm_tomb_ee_main_step_4
-	Checksum: 0xDE5F350E
-	Offset: 0xD40
-	Size: 0x358
-	Parameters: 1
-	Flags: Linked
-*/
 function ee_mechz_do_jump(s_spawn_pos) {
-  self endon(# "death");
-  self endon(# "kill_jump");
-  /#
+  self endon("death");
+  self endon("kill_jump");
   if(getdvarint("") > 0) {
     println("");
   }
-  # /
-    /#
   if(getdvarint("") > 1) {
     println("");
   }
-  # /
-    self.not_interruptable = 1;
+  self.not_interruptable = 1;
   self setfreecameralockonallowed(0);
   self animscripted("zm_fly_out", self.origin, self.angles, "ai_zombie_mech_exit");
   self zombie_shared::donotetracks("zm_fly_out");
@@ -249,23 +174,12 @@ function ee_mechz_do_jump(s_spawn_pos) {
   self zombie_shared::donotetracks("zm_fly_in");
   self.not_interruptable = 0;
   self setfreecameralockonallowed(1);
-  /#
   if(getdvarint("") > 1) {
     println("");
   }
-  # /
-    self.closest_jump_point = s_landing_point;
+  self.closest_jump_point = s_landing_point;
 }
 
-/*
-	Name: sndee4music
-	Namespace: zm_tomb_ee_main_step_4
-	Checksum: 0xBF2B1CF
-	Offset: 0x10A0
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function sndee4music() {
   shouldplay = sndwait();
   if(!shouldplay) {
@@ -282,15 +196,6 @@ function sndee4music() {
   ent delete();
 }
 
-/*
-	Name: sndwait
-	Namespace: zm_tomb_ee_main_step_4
-	Checksum: 0x25E7485
-	Offset: 0x11B8
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function sndwait() {
   counter = 0;
   while (isdefined(level.music_override) && level.music_override) {

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_spiders.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\aat_shared;
 #using scripts\shared\ai\zombie_utility;
@@ -21,33 +25,14 @@
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_island_spiders;
 
-/*
-	Name: function_8e89793a
-	Namespace: zm_island_spiders
-	Checksum: 0xF7CCA825
-	Offset: 0x3E0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8e89793a() {
   level.var_ab7eb3d4 = 0;
   level.var_c102a998 = & function_c102a998;
   level thread function_419bf2ad();
 }
 
-/*
-	Name: function_c102a998
-	Namespace: zm_island_spiders
-	Checksum: 0x89BDFC37
-	Offset: 0x428
-	Size: 0x17A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c102a998() {
   wait(6);
   level flag::clear("spider_round_in_progress");
@@ -67,15 +52,6 @@ function function_c102a998() {
   }
 }
 
-/*
-	Name: function_33aa4940
-	Namespace: zm_island_spiders
-	Checksum: 0x89677D46
-	Offset: 0x5B0
-	Size: 0x398
-	Parameters: 0
-	Flags: Linked
-*/
 function function_33aa4940() {
   var_7ac5425b = 0;
   var_622d2c20 = 0;
@@ -132,19 +108,10 @@ function function_33aa4940() {
   return var_7ac5425b;
 }
 
-/*
-	Name: function_419bf2ad
-	Namespace: zm_island_spiders
-	Checksum: 0xBC786D21
-	Offset: 0x950
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_419bf2ad() {
-  level endon(# "end_game");
+  level endon("end_game");
   while (true) {
-    level waittill(# "between_round_over");
+    level waittill("between_round_over");
     level.var_ab7eb3d4 = 0;
   }
 }

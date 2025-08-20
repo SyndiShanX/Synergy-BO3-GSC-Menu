@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_zurich_newworld_util.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_dialog;
 #using scripts\cp\_hacking;
@@ -28,57 +32,20 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\weapons_shared;
-
 #namespace newworld_util;
 
-/*
-	Name: __init__sytem__
-	Namespace: newworld_util
-	Checksum: 0xF2400B91
-	Offset: 0xCC8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("newworld_util", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: newworld_util
-	Checksum: 0x967C3F5D
-	Offset: 0xD08
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   init_client_field_callback_funcs();
 }
 
-/*
-	Name: init_client_field_callback_funcs
-	Namespace: newworld_util
-	Checksum: 0xC65434E7
-	Offset: 0xD28
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function init_client_field_callback_funcs() {
   clientfield::register("toplayer", "postfx_futz", 1, 1, "counter");
 }
 
-/*
-	Name: replace_weapons
-	Namespace: newworld_util
-	Checksum: 0xB882E933
-	Offset: 0xD68
-	Size: 0x56C
-	Parameters: 0
-	Flags: Linked
-*/
 function replace_weapons() {
   if(!isdefined(level.var_ba7d14b0)) {
     level.var_ba7d14b0 = [];
@@ -162,32 +129,14 @@ function replace_weapons() {
   }
 }
 
-/*
-	Name: function_3a7ee040
-	Namespace: newworld_util
-	Checksum: 0x5DD80E4A
-	Offset: 0x12E0
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3a7ee040() {
   if(!isdefined(level.var_ba7d14b0[self getentitynumber()])) {
     level.var_ba7d14b0[self getentitynumber()] = 1;
-    self waittill(# "disconnect");
+    self waittill("disconnect");
     level.var_ba7d14b0[self getentitynumber()] = undefined;
   }
 }
 
-/*
-	Name: on_player_loadout
-	Namespace: newworld_util
-	Checksum: 0x70B9796D
-	Offset: 0x1368
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_loadout() {
   if(sessionmodeiscampaignzombiesgame()) {
     return;
@@ -201,15 +150,6 @@ function on_player_loadout() {
   self cybercom_tacrig::giverigability("cybercom_playermovement", 0);
 }
 
-/*
-	Name: take_weapons
-	Namespace: newworld_util
-	Checksum: 0x8FB8F55D
-	Offset: 0x1418
-	Size: 0xE0
-	Parameters: 1
-	Flags: Linked
-*/
 function take_weapons(b_save = 1) {
   a_w_old_weapons = self getweaponslist();
   foreach(w_weapon in a_w_old_weapons) {
@@ -220,15 +160,6 @@ function take_weapons(b_save = 1) {
   }
 }
 
-/*
-	Name: replace_cyber_abilities
-	Namespace: newworld_util
-	Checksum: 0x845CF2B2
-	Offset: 0x1500
-	Size: 0x2D2
-	Parameters: 0
-	Flags: Linked
-*/
 function replace_cyber_abilities() {
   wait(0.05);
   self cybercom_gadget::takeallabilities();
@@ -293,15 +224,6 @@ function replace_cyber_abilities() {
   }
 }
 
-/*
-	Name: function_7ee91bc9
-	Namespace: newworld_util
-	Checksum: 0x90F9530B
-	Offset: 0x17E0
-	Size: 0xAC
-	Parameters: 0
-	Flags: None
-*/
 function function_7ee91bc9() {
   foreach(player in level.players) {
     if(player != self) {
@@ -313,15 +235,6 @@ function function_7ee91bc9() {
   return false;
 }
 
-/*
-	Name: function_1cf75ffb
-	Namespace: newworld_util
-	Checksum: 0xA9AF1390
-	Offset: 0x1898
-	Size: 0xAC
-	Parameters: 0
-	Flags: None
-*/
 function function_1cf75ffb() {
   foreach(player in level.players) {
     if(player != self) {
@@ -333,15 +246,6 @@ function function_1cf75ffb() {
   return false;
 }
 
-/*
-	Name: function_1943bf79
-	Namespace: newworld_util
-	Checksum: 0xEEBEE6AF
-	Offset: 0x1950
-	Size: 0x214
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1943bf79() {
   var_33dcf6cf = 0;
   var_1dedaef1 = 0;
@@ -396,22 +300,11 @@ function function_1943bf79() {
       break;
     }
   }
-  /#
   println(((("" + var_1dedaef1) + "") + var_33dcf6cf) + "");
-  # /
-    self function_a7cfc593(var_1dedaef1);
+  self function_a7cfc593(var_1dedaef1);
   self function_ba1a260f(var_33dcf6cf);
 }
 
-/*
-	Name: player_snow_fx
-	Namespace: newworld_util
-	Checksum: 0x9232FB4A
-	Offset: 0x1B70
-	Size: 0x1E2
-	Parameters: 0
-	Flags: Linked
-*/
 function player_snow_fx() {
   switch (level.skipto_current_objective[0]) {
     case "white_infinite_igc": {
@@ -465,28 +358,10 @@ function player_snow_fx() {
   }
 }
 
-/*
-	Name: function_85d8906c
-	Namespace: newworld_util
-	Checksum: 0x67FB644B
-	Offset: 0x1D60
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function function_85d8906c() {
   level clientfield::set("player_snow_fx", 0);
 }
 
-/*
-	Name: ai_death_derez
-	Namespace: newworld_util
-	Checksum: 0x821DD1EC
-	Offset: 0x1D90
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_death_derez() {
   if(self should_derez_on_death()) {
     self thread derez_when_actor_becomes_corpse();
@@ -494,31 +369,13 @@ function ai_death_derez() {
   }
 }
 
-/*
-	Name: should_derez_on_death
-	Namespace: newworld_util
-	Checksum: 0xA5416E50
-	Offset: 0x1DE8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function should_derez_on_death() {
   return !isvehicle(self);
 }
 
-/*
-	Name: derez_when_actor_becomes_corpse
-	Namespace: newworld_util
-	Checksum: 0x52807017
-	Offset: 0x1E10
-	Size: 0xC2
-	Parameters: 0
-	Flags: Linked
-*/
 function derez_when_actor_becomes_corpse() {
-  self endon(# "ai_derez_death");
-  self waittill(# "actor_corpse", e_corpse);
+  self endon("ai_derez_death");
+  self waittill("actor_corpse", e_corpse);
   if(isdefined(level.player_on_top_of_train) && level.player_on_top_of_train) {
     wait(10);
   }
@@ -531,22 +388,13 @@ function derez_when_actor_becomes_corpse() {
     e_corpse delete();
   }
   if(isdefined(self)) {
-    self notify(# "ai_derez_death");
+    self notify("ai_derez_death");
   }
 }
 
-/*
-	Name: derez_on_ragdoll_start
-	Namespace: newworld_util
-	Checksum: 0x628F9E34
-	Offset: 0x1EE0
-	Size: 0xCA
-	Parameters: 0
-	Flags: Linked
-*/
 function derez_on_ragdoll_start() {
-  self endon(# "ai_derez_death");
-  self waittill(# "start_ragdoll");
+  self endon("ai_derez_death");
+  self waittill("start_ragdoll");
   if(isdefined(level.player_on_top_of_train) && level.player_on_top_of_train) {
     wait(10);
   } else if(self.b_balcony_death === 1) {
@@ -559,22 +407,13 @@ function derez_on_ragdoll_start() {
   wait(0.1);
   if(isdefined(self)) {
     self delete();
-    self notify(# "ai_derez_death");
+    self notify("ai_derez_death");
   }
 }
 
-/*
-	Name: function_523cdc93
-	Namespace: newworld_util
-	Checksum: 0x365097C2
-	Offset: 0x1FB8
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function function_523cdc93(var_9e5eb4d9 = 1) {
   if(isdefined(var_9e5eb4d9) && var_9e5eb4d9) {
-    self waittill(# "damage", damage, attacker);
+    self waittill("damage", damage, attacker);
     self thread function_91b16538();
     self thread function_4ccc51b5();
   }
@@ -587,60 +426,33 @@ function function_523cdc93(var_9e5eb4d9 = 1) {
     attacker thread newworld_rooftops::function_8e9219f();
   }
   if(isdefined(self)) {
-    self notify(# "hash_ed74b5db");
+    self notify("hash_ed74b5db");
     self delete();
   }
 }
 
-/*
-	Name: function_91b16538
-	Namespace: newworld_util
-	Checksum: 0x5322A8D2
-	Offset: 0x20E8
-	Size: 0x52
-	Parameters: 0
-	Flags: Linked
-*/
 function function_91b16538() {
-  self endon(# "hash_ed74b5db");
-  self waittill(# "start_ragdoll");
+  self endon("hash_ed74b5db");
+  self waittill("start_ragdoll");
   wait(0.25);
   if(isdefined(self)) {
     self delete();
-    self notify(# "hash_ed74b5db");
+    self notify("hash_ed74b5db");
   }
 }
 
-/*
-	Name: function_4ccc51b5
-	Namespace: newworld_util
-	Checksum: 0xE54560C9
-	Offset: 0x2148
-	Size: 0x6A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4ccc51b5() {
-  self endon(# "hash_ed74b5db");
-  self waittill(# "actor_corpse", e_corpse);
+  self endon("hash_ed74b5db");
+  self waittill("actor_corpse", e_corpse);
   wait(0.25);
   if(isdefined(e_corpse)) {
     e_corpse delete();
   }
   if(isdefined(self)) {
-    self notify(# "hash_ed74b5db");
+    self notify("hash_ed74b5db");
   }
 }
 
-/*
-	Name: wait_till_flag_or_ai_group_ai_count
-	Namespace: newworld_util
-	Checksum: 0x85128044
-	Offset: 0x21C0
-	Size: 0x6C
-	Parameters: 3
-	Flags: Linked
-*/
 function wait_till_flag_or_ai_group_ai_count(str_flag, str_aigroup, n_count) {
   if(flag::get(str_flag)) {
     return;
@@ -649,21 +461,12 @@ function wait_till_flag_or_ai_group_ai_count(str_flag, str_aigroup, n_count) {
   spawner::waittill_ai_group_ai_count(str_aigroup, int(n_count));
 }
 
-/*
-	Name: function_948d4091
-	Namespace: newworld_util
-	Checksum: 0x643B60D5
-	Offset: 0x2238
-	Size: 0x3DC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_948d4091(var_81a32895, var_2380d5c = 0, str_endon, b_looping = 1, var_6e6341cf, var_8cb8bcef, var_9e68f294) {
-  self endon(# "death");
+  self endon("death");
   level endon(str_endon);
   if(isdefined(30)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(30, "timeout");
   }
   self flag::init(var_81a32895 + "_WW_opened");
@@ -697,30 +500,21 @@ function function_948d4091(var_81a32895, var_2380d5c = 0, str_endon, b_looping =
   self thread function_6062e90(var_81a32895, var_2380d5c, str_endon, b_looping, var_6e6341cf, undefined, var_8cb8bcef);
 }
 
-/*
-	Name: function_c585d78f
-	Namespace: newworld_util
-	Checksum: 0x24BA08B5
-	Offset: 0x2620
-	Size: 0x1B0
-	Parameters: 2
-	Flags: Linked
-*/
 function function_c585d78f(var_81a32895, str_endon) {
-  self endon(# "death");
+  self endon("death");
   level endon(str_endon);
   self endon(var_81a32895 + "_WW_opened");
   if(isdefined(30)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(30, "timeout");
   }
   self util::hide_hint_text(1);
   while (!self flag::get(var_81a32895 + "_WW_opened")) {
     if(!level.console && !self gamepadusedlast()) {
-      self thread util::show_hint_text( & "CP_MI_ZURICH_NEWWORLD_OPEN_CYBERCORE_ABILITY_WHEEL_KB", 0, undefined, 4);
+      self thread util::show_hint_text(&"CP_MI_ZURICH_NEWWORLD_OPEN_CYBERCORE_ABILITY_WHEEL_KB", 0, undefined, 4);
     } else {
-      self thread util::show_hint_text( & "CP_MI_ZURICH_NEWWORLD_OPEN_CYBERCORE_ABILITY_WHEEL", 0, undefined, 4);
+      self thread util::show_hint_text(&"CP_MI_ZURICH_NEWWORLD_OPEN_CYBERCORE_ABILITY_WHEEL", 0, undefined, 4);
     }
     self flag::wait_till_timeout(4, var_81a32895 + "_WW_opened");
     if(!self flag::get(var_81a32895 + "_WW_opened")) {
@@ -729,17 +523,8 @@ function function_c585d78f(var_81a32895, str_endon) {
   }
 }
 
-/*
-	Name: function_e5122074
-	Namespace: newworld_util
-	Checksum: 0x371E7580
-	Offset: 0x27D8
-	Size: 0xDC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_e5122074(var_bcb7a46f, str_endon) {
-  self endon(# "death");
+  self endon("death");
   self endon(str_endon);
   self.var_bb5e2d77 = self openluimenu("CyberComTutorial");
   self setluimenudata(self.var_bb5e2d77, "tutorial_line_1", var_bcb7a46f);
@@ -750,17 +535,8 @@ function function_e5122074(var_bcb7a46f, str_endon) {
   self thread function_d81a8f6f();
 }
 
-/*
-	Name: function_d81a8f6f
-	Namespace: newworld_util
-	Checksum: 0xA54835D3
-	Offset: 0x28C0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d81a8f6f() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.var_bb5e2d77)) {
     lui::play_animation(self.var_bb5e2d77, "fadeout");
     wait(0.1);
@@ -768,25 +544,16 @@ function function_d81a8f6f() {
   }
 }
 
-/*
-	Name: function_8531ac12
-	Namespace: newworld_util
-	Checksum: 0xA03AF4B9
-	Offset: 0x2930
-	Size: 0x148
-	Parameters: 2
-	Flags: Linked
-*/
 function function_8531ac12(var_81a32895, str_endon) {
-  self endon(# "death");
+  self endon("death");
   level endon(str_endon);
   if(isdefined(30)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(30, "timeout");
   }
   while (!self flag::get(var_81a32895 + "_WW_tutorial")) {
-    self waittill(# "menuresponse", menu, response);
+    self waittill("menuresponse", menu, response);
     var_66700f08 = strtok(response, ",");
     if(var_66700f08[0] == "opened") {
       self flag::set(var_81a32895 + "_WW_opened");
@@ -795,25 +562,16 @@ function function_8531ac12(var_81a32895, str_endon) {
   }
 }
 
-/*
-	Name: function_b95b168e
-	Namespace: newworld_util
-	Checksum: 0x72E6C595
-	Offset: 0x2A80
-	Size: 0x168
-	Parameters: 2
-	Flags: Linked
-*/
 function function_b95b168e(var_81a32895, str_endon) {
-  self endon(# "death");
+  self endon("death");
   level endon(str_endon);
   if(isdefined(30)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(30, "timeout");
   }
   while (true) {
-    self waittill(# "menuresponse", menu, response);
+    self waittill("menuresponse", menu, response);
     var_66700f08 = strtok(response, ",");
     if(var_66700f08[0] == "opened") {
       continue;
@@ -828,17 +586,8 @@ function function_b95b168e(var_81a32895, str_endon) {
   }
 }
 
-/*
-	Name: function_6062e90
-	Namespace: newworld_util
-	Checksum: 0x415CA440
-	Offset: 0x2BF0
-	Size: 0x3D0
-	Parameters: 8
-	Flags: Linked
-*/
 function function_6062e90(var_81a32895, var_2380d5c = 0, str_endon, b_looping = 1, var_6e6341cf, var_e8551372, var_9e68f294, var_3945b2c8) {
-  self endon(# "death");
+  self endon("death");
   if(isarray(str_endon)) {
     foreach(str_condition in str_endon) {
       level endon(str_condition);
@@ -860,7 +609,7 @@ function function_6062e90(var_81a32895, var_2380d5c = 0, str_endon, b_looping = 
   }
   if(isdefined(30)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(30, "timeout");
   }
   if(!self flag::exists(var_81a32895 + "_use_ability_tutorial")) {
@@ -889,17 +638,8 @@ function function_6062e90(var_81a32895, var_2380d5c = 0, str_endon, b_looping = 
   }
 }
 
-/*
-	Name: function_c60fae50
-	Namespace: newworld_util
-	Checksum: 0x26838167
-	Offset: 0x2FC8
-	Size: 0x208
-	Parameters: 4
-	Flags: Linked
-*/
 function function_c60fae50(var_81a32895, str_endon, b_looping, var_f069395f) {
-  self endon(# "death");
+  self endon("death");
   if(isarray(str_endon)) {
     foreach(str_condition in str_endon) {
       level endon(str_condition);
@@ -910,14 +650,14 @@ function function_c60fae50(var_81a32895, str_endon, b_looping, var_f069395f) {
   self endon(var_81a32895 + "_primed");
   if(isdefined(30)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(30, "timeout");
   }
   while (!self flag::get(var_81a32895 + "_use_ability_tutorial")) {
     if(isdefined(var_f069395f)) {
       self thread util::show_hint_text(var_f069395f, 0, undefined, 4);
     } else {
-      self thread util::show_hint_text( & "CP_MI_ZURICH_NEWWORLD_USE_CYBERCORE", 0, undefined, 4);
+      self thread util::show_hint_text(&"CP_MI_ZURICH_NEWWORLD_USE_CYBERCORE", 0, undefined, 4);
     }
     if(b_looping === 1) {
       if(!self flag::get(var_81a32895 + "_use_ability_tutorial")) {
@@ -929,17 +669,8 @@ function function_c60fae50(var_81a32895, str_endon, b_looping, var_f069395f) {
   }
 }
 
-/*
-	Name: function_5dca74fc
-	Namespace: newworld_util
-	Checksum: 0x6F019B5C
-	Offset: 0x31D8
-	Size: 0x1B8
-	Parameters: 3
-	Flags: Linked
-*/
 function function_5dca74fc(var_81a32895, str_endon, var_e8551372) {
-  self endon(# "death");
+  self endon("death");
   if(isarray(str_endon)) {
     foreach(str_condition in str_endon) {
       level endon(str_condition);
@@ -950,29 +681,20 @@ function function_5dca74fc(var_81a32895, str_endon, var_e8551372) {
   self endon(var_81a32895 + "_off");
   if(isdefined(30)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(30, "timeout");
   }
   self util::hide_hint_text(1);
   while (!self flag::get(var_81a32895 + "_use_ability_tutorial")) {
-    level waittill(# "ccom_locked_on", ent, e_player);
+    level waittill("ccom_locked_on", ent, e_player);
     if(e_player == self) {
       self function_e52b73c0(var_81a32895, str_endon, var_e8551372);
     }
   }
 }
 
-/*
-	Name: function_e52b73c0
-	Namespace: newworld_util
-	Checksum: 0x29C326C3
-	Offset: 0x3398
-	Size: 0x1BC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_e52b73c0(var_81a32895, str_endon, var_f069395f) {
-  self endon(# "death");
+  self endon("death");
   if(isarray(str_endon)) {
     foreach(str_condition in str_endon) {
       level endon(str_condition);
@@ -983,10 +705,10 @@ function function_e52b73c0(var_81a32895, str_endon, var_f069395f) {
   self endon(var_81a32895 + "_off");
   if(isdefined(30)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(30, "timeout");
   }
-  self endon(# "hash_5e2557e1");
+  self endon("hash_5e2557e1");
   self thread function_e84823a9(var_81a32895, str_endon);
   wait(0.8);
   self util::show_hint_text(var_f069395f, 0, undefined, 4);
@@ -995,17 +717,8 @@ function function_e52b73c0(var_81a32895, str_endon, var_f069395f) {
   }
 }
 
-/*
-	Name: function_e84823a9
-	Namespace: newworld_util
-	Checksum: 0x985C5D6B
-	Offset: 0x3560
-	Size: 0x1A2
-	Parameters: 2
-	Flags: Linked
-*/
 function function_e84823a9(var_81a32895, str_endon) {
-  self endon(# "death");
+  self endon("death");
   if(isarray(str_endon)) {
     foreach(str_condition in str_endon) {
       level endon(str_condition);
@@ -1016,14 +729,14 @@ function function_e84823a9(var_81a32895, str_endon) {
   self endon(var_81a32895 + "_off");
   if(isdefined(30)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(30, "timeout");
   }
   while (true) {
-    level waittill(# "ccom_lost_lock", ent, e_player);
+    level waittill("ccom_lost_lock", ent, e_player);
     if(e_player == self) {
       if(isdefined(self.cybercom) && self.cybercom.lock_targets.size < 1) {
-        self notify(# "hash_5e2557e1");
+        self notify("hash_5e2557e1");
         self util::hide_hint_text(1);
         return;
       }
@@ -1031,17 +744,8 @@ function function_e84823a9(var_81a32895, str_endon) {
   }
 }
 
-/*
-	Name: function_a7a2da7e
-	Namespace: newworld_util
-	Checksum: 0xAA59DC84
-	Offset: 0x3710
-	Size: 0x1BC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_a7a2da7e(var_81a32895, var_2380d5c = 0, str_endon) {
-  self endon(# "death");
+  self endon("death");
   if(isarray(str_endon)) {
     foreach(str_condition in str_endon) {
       level endon(str_condition);
@@ -1051,7 +755,7 @@ function function_a7a2da7e(var_81a32895, var_2380d5c = 0, str_endon) {
   }
   if(isdefined(30)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(30, "timeout");
   }
   weapon = function_71840183(var_81a32895, var_2380d5c);
@@ -1061,15 +765,6 @@ function function_a7a2da7e(var_81a32895, var_2380d5c = 0, str_endon) {
   self util::hide_hint_text(1);
 }
 
-/*
-	Name: function_71840183
-	Namespace: newworld_util
-	Checksum: 0x9559DA0C
-	Offset: 0x38D8
-	Size: 0x94
-	Parameters: 2
-	Flags: Linked
-*/
 function function_71840183(var_81a32895, var_2380d5c = 0) {
   weapon = undefined;
   ability = cybercom_gadget::getabilitybyname(var_81a32895);
@@ -1081,18 +776,9 @@ function function_71840183(var_81a32895, var_2380d5c = 0) {
   return weapon;
 }
 
-/*
-	Name: function_2e7b4007
-	Namespace: newworld_util
-	Checksum: 0xD6F9C10D
-	Offset: 0x3978
-	Size: 0x120
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2e7b4007() {
-  self endon(# "death");
-  level endon(# "hash_982eac9f");
+  self endon("death");
+  level endon("hash_982eac9f");
   self.var_8a320fc6 = 0;
   var_6d5d984c = function_71840183("cybercom_immolation");
   var_bb989cf4 = var_6d5d984c.name + "_fired";
@@ -1101,27 +787,18 @@ function function_2e7b4007() {
   self thread function_6851db33(var_6d5d984c, var_239727aa);
   while (true) {
     self util::waittill_any(var_bb989cf4, var_aa2f1c54);
-    self notify(# "hash_33cbd3b4");
+    self notify("hash_33cbd3b4");
     self.var_8a320fc6++;
   }
 }
 
-/*
-	Name: function_6851db33
-	Namespace: newworld_util
-	Checksum: 0xE5FDD5F6
-	Offset: 0x3AA0
-	Size: 0x136
-	Parameters: 2
-	Flags: Linked
-*/
 function function_6851db33(var_3283f77e, var_239727aa) {
-  self endon(# "death");
-  level endon(# "hash_982eac9f");
+  self endon("death");
+  level endon("hash_982eac9f");
   while (true) {
     wait(90);
     if(self.var_8a320fc6 < 1) {
-      self notify(# "hash_6851db33");
+      self notify("hash_6851db33");
       if(self._gadgets_player[0] === var_3283f77e) {
         self thread function_6062e90("cybercom_immolation", 0, "underground_combat_complete", 1, "CP_MI_ZURICH_NEWWORLD_IMMOLATION_TARGET", "CP_MI_ZURICH_NEWWORLD_IMMOLATION_RELEASE");
       } else if(self._gadgets_player[0] === var_239727aa) {
@@ -1135,17 +812,8 @@ function function_6851db33(var_3283f77e, var_239727aa) {
   }
 }
 
-/*
-	Name: function_70176ad6
-	Namespace: newworld_util
-	Checksum: 0x3E57CAE6
-	Offset: 0x3BE0
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_70176ad6() {
-  self endon(# "death");
+  self endon("death");
   if(self function_c633d8fe()) {
     return;
   }
@@ -1153,25 +821,16 @@ function function_70176ad6() {
     self.var_98bf72c3 = 0;
   }
   while (self.var_98bf72c3 < 3) {
-    self waittill(# "gadget_denied_activation", n_slot, var_2de327e8);
+    self waittill("gadget_denied_activation", n_slot, var_2de327e8);
     if(var_2de327e8 == 1) {
       self.var_98bf72c3++;
-      self util::show_hint_text( & "CP_MI_ZURICH_NEWWORLD_CYBERCOM_RECHARGE", 0, undefined, 4);
-      level notify(# "hash_76cbcc2f");
+      self util::show_hint_text(&"CP_MI_ZURICH_NEWWORLD_CYBERCOM_RECHARGE", 0, undefined, 4);
+      level notify("hash_76cbcc2f");
       wait(30);
     }
   }
 }
 
-/*
-	Name: function_520255e3
-	Namespace: newworld_util
-	Checksum: 0xEDACD404
-	Offset: 0x3CB8
-	Size: 0x76
-	Parameters: 2
-	Flags: Linked
-*/
 function function_520255e3(str_trigger, time) {
   str_notify = "mufc_" + str_trigger;
   level thread function_901793d(str_trigger, str_notify);
@@ -1179,48 +838,21 @@ function function_520255e3(str_trigger, time) {
   level waittill(str_notify);
 }
 
-/*
-	Name: function_901793d
-	Namespace: newworld_util
-	Checksum: 0xF33D2309
-	Offset: 0x3D38
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_901793d(str_trigger, str_notify) {
   level endon(str_notify);
   e_trigger = getent(str_trigger, "targetname");
   if(isdefined(e_trigger)) {
-    e_trigger waittill(# "trigger");
+    e_trigger waittill("trigger");
   }
   level notify(str_notify);
 }
 
-/*
-	Name: function_2ffbaa00
-	Namespace: newworld_util
-	Checksum: 0xD3A8D407
-	Offset: 0x3DB0
-	Size: 0x2C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_2ffbaa00(time, str_notify) {
   level endon(str_notify);
   wait(time);
   level notify(str_notify);
 }
 
-/*
-	Name: function_f29e6c6d
-	Namespace: newworld_util
-	Checksum: 0xBC66FCB4
-	Offset: 0x3DE8
-	Size: 0x7E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f29e6c6d(var_7daa2a51) {
   a_spawners = getentarray(var_7daa2a51, "targetname");
   for (i = 0; i < a_spawners.size; i++) {
@@ -1228,27 +860,18 @@ function function_f29e6c6d(var_7daa2a51) {
   }
 }
 
-/*
-	Name: function_9a829e81
-	Namespace: newworld_util
-	Checksum: 0xC4C8F875
-	Offset: 0x3E70
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9a829e81() {
   if(isdefined(self.script_delay)) {
     wait(self.script_delay);
   }
   e_ent = self spawner::spawn();
-  e_ent endon(# "death");
+  e_ent endon("death");
   if(isdefined(e_ent.script_noteworthy) && e_ent.script_noteworthy == "rusher_on_spawn") {
     e_ent ai::set_behavior_attribute("move_mode", "rusher");
     e_ent ai::set_behavior_attribute("sprint", 1);
   }
   if(isdefined(e_ent.target)) {
-    e_ent waittill(# "goal");
+    e_ent waittill("goal");
   }
   if(isdefined(e_ent.script_noteworthy) && e_ent.script_noteworthy == "rusher_at_goal") {
     e_ent ai::set_behavior_attribute("move_mode", "rusher");
@@ -1256,15 +879,6 @@ function function_9a829e81() {
   }
 }
 
-/*
-	Name: function_68b8f4af
-	Namespace: newworld_util
-	Checksum: 0x2B79F0E9
-	Offset: 0x3FD0
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_68b8f4af(e_volume) {
   a_ai = getaiteamarray("axis");
   a_touching = [];
@@ -1276,19 +890,10 @@ function function_68b8f4af(e_volume) {
   return a_touching;
 }
 
-/*
-	Name: function_c478189b
-	Namespace: newworld_util
-	Checksum: 0xCABB0886
-	Offset: 0x4088
-	Size: 0x18E
-	Parameters: 4
-	Flags: Linked
-*/
 function function_c478189b(str_trigger, var_390543cc, var_9d774f5d, var_43a68d40) {
   if(isdefined(str_trigger)) {
     e_trigger = getent(str_trigger, "targetname");
-    e_trigger waittill(# "trigger");
+    e_trigger waittill("trigger");
   }
   var_441bd962 = getent(var_390543cc, "targetname");
   var_ee2fd889 = getent(var_9d774f5d, "targetname");
@@ -1307,15 +912,6 @@ function function_c478189b(str_trigger, var_390543cc, var_9d774f5d, var_43a68d40
   }
 }
 
-/*
-	Name: function_f5363f47
-	Namespace: newworld_util
-	Checksum: 0xF3587FE3
-	Offset: 0x4220
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f5363f47(str_trigger) {
   a_triggers = getentarray(str_trigger, "targetname");
   str_notify = str_trigger + "_waiting";
@@ -1325,30 +921,12 @@ function function_f5363f47(str_trigger) {
   level waittill(str_notify);
 }
 
-/*
-	Name: function_7eb8a7ab
-	Namespace: newworld_util
-	Checksum: 0x75F0BFD
-	Offset: 0x42D0
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function function_7eb8a7ab(e_trigger, str_notify) {
   level endon(str_notify);
-  e_trigger waittill(# "trigger");
+  e_trigger waittill("trigger");
   level notify(str_notify);
 }
 
-/*
-	Name: num_players_touching_volume
-	Namespace: newworld_util
-	Checksum: 0xB91F47A2
-	Offset: 0x4310
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function num_players_touching_volume(e_volume) {
   a_players = getplayers();
   num_touching = 0;
@@ -1360,15 +938,6 @@ function num_players_touching_volume(e_volume) {
   return num_touching;
 }
 
-/*
-	Name: function_e0fb6da9
-	Namespace: newworld_util
-	Checksum: 0x1883B361
-	Offset: 0x43B0
-	Size: 0x464
-	Parameters: 9
-	Flags: Linked
-*/
 function function_e0fb6da9(str_struct, close_dist, wait_time_min, wait_time_max, var_d1b83750, max_ai, var_a70db4af, var_1813646e, var_98e9bc46) {
   a_players = getplayers();
   if(a_players.size > 1) {
@@ -1430,19 +999,10 @@ function function_e0fb6da9(str_struct, close_dist, wait_time_min, wait_time_max,
   }
 }
 
-/*
-	Name: function_8f7b1e06
-	Namespace: newworld_util
-	Checksum: 0xB773A099
-	Offset: 0x4820
-	Size: 0x156
-	Parameters: 3
-	Flags: Linked
-*/
 function function_8f7b1e06(str_trigger, var_390543cc, var_9d774f5d) {
   if(isdefined(str_trigger)) {
     e_trigger = getent(str_trigger, "targetname");
-    e_trigger waittill(# "trigger");
+    e_trigger waittill("trigger");
   }
   var_441bd962 = getent(var_390543cc, "targetname");
   var_ee2fd889 = getent(var_9d774f5d, "targetname");
@@ -1455,15 +1015,6 @@ function function_8f7b1e06(str_trigger, var_390543cc, var_9d774f5d) {
   }
 }
 
-/*
-	Name: function_bccc2e65
-	Namespace: newworld_util
-	Checksum: 0x92A22C39
-	Offset: 0x4980
-	Size: 0x126
-	Parameters: 4
-	Flags: Linked
-*/
 function function_bccc2e65(str_aigroup, var_6ec47843, str_node, goal_radius) {
   spawner::waittill_ai_group_ai_count("aig_water_treatment", var_6ec47843);
   nd_node = getnode(str_node, "targetname");
@@ -1477,28 +1028,10 @@ function function_bccc2e65(str_aigroup, var_6ec47843, str_node, goal_radius) {
   }
 }
 
-/*
-	Name: movie_transition
-	Namespace: newworld_util
-	Checksum: 0x9A6107DE
-	Offset: 0x4AB0
-	Size: 0x7C
-	Parameters: 3
-	Flags: Linked
-*/
 function movie_transition(str_movie_name, var_e0017db3 = "fullscreen", var_43656dbb = 0) {
   level post_fx_transitions(str_movie_name, var_e0017db3, var_43656dbb);
 }
 
-/*
-	Name: post_fx_transitions
-	Namespace: newworld_util
-	Checksum: 0x379929B6
-	Offset: 0x4B38
-	Size: 0x172
-	Parameters: 3
-	Flags: Linked
-*/
 function post_fx_transitions(str_movie_name, var_e0017db3 = "fullscreen", var_43656dbb) {
   if(var_43656dbb) {
     foreach(player in level.players) {
@@ -1513,15 +1046,6 @@ function post_fx_transitions(str_movie_name, var_e0017db3 = "fullscreen", var_43
   }
 }
 
-/*
-	Name: function_30ec5bf7
-	Namespace: newworld_util
-	Checksum: 0xDEEAC896
-	Offset: 0x4CB8
-	Size: 0x23C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_30ec5bf7(b_starting = 0) {
   if(b_starting) {
     level flag::set("infinite_white_transition");
@@ -1536,37 +1060,19 @@ function function_30ec5bf7(b_starting = 0) {
   }
   level flag::wait_till_clear("infinite_white_transition");
   foreach(e_player in level.activeplayers) {
-    e_player notify(# "menuresponse", "FullscreenMovie", "finished_movie_playback");
+    e_player notify("menuresponse", "FullscreenMovie", "finished_movie_playback");
   }
   util::screen_fade_in(0.5, "white", "infinite_white");
   lock_player_controls(0);
   videostop("cp_newworld_fs_whiteinfinite");
 }
 
-/*
-	Name: function_43dfaf16
-	Namespace: newworld_util
-	Checksum: 0x1657243C
-	Offset: 0x4F00
-	Size: 0x9A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_43dfaf16(a_ents) {
   foreach(player in level.activeplayers) {
-    player notify(# "menuresponse", "FullscreenMovie", "finished_movie_playback");
+    player notify("menuresponse", "FullscreenMovie", "finished_movie_playback");
   }
 }
 
-/*
-	Name: lock_player_controls
-	Namespace: newworld_util
-	Checksum: 0x33D31110
-	Offset: 0x4FA8
-	Size: 0xE2
-	Parameters: 1
-	Flags: Linked
-*/
 function lock_player_controls(var_a5efd39d = 1) {
   foreach(player in level.activeplayers) {
     if(var_a5efd39d) {
@@ -1578,15 +1084,6 @@ function lock_player_controls(var_a5efd39d = 1) {
   }
 }
 
-/*
-	Name: function_16dd8c5f
-	Namespace: newworld_util
-	Checksum: 0x5EA8882D
-	Offset: 0x5098
-	Size: 0x1D8
-	Parameters: 6
-	Flags: Linked
-*/
 function function_16dd8c5f(str_triggername, str_type = & "cp_level_newworld_access_door", str_hint = & "CP_MI_ZURICH_NEWWORLD_HACK", var_8baec92b, var_2df3d133, var_d78830f5 = 0) {
   t_interact = getent(str_triggername, "targetname");
   t_interact triggerenable(1);
@@ -1611,29 +1108,11 @@ function function_16dd8c5f(str_triggername, str_type = & "cp_level_newworld_acce
   }
 }
 
-/*
-	Name: function_e27a8082
-	Namespace: newworld_util
-	Checksum: 0x37AA6EF0
-	Offset: 0x5278
-	Size: 0x36
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e27a8082(e_player) {
   self gameobjects::disable_object();
   level notify(self.var_2df3d133, e_player);
 }
 
-/*
-	Name: function_39c9b63e
-	Namespace: newworld_util
-	Checksum: 0x7FA9BC14
-	Offset: 0x52B8
-	Size: 0x1A2
-	Parameters: 2
-	Flags: Linked
-*/
 function function_39c9b63e(b_enable = 1, var_98011344) {
   a_caches = getentarray("ammo_cache", "script_noteworthy");
   foreach(e_ammo_cache in a_caches) {
@@ -1651,17 +1130,8 @@ function function_39c9b63e(b_enable = 1, var_98011344) {
   }
 }
 
-/*
-	Name: function_95132241
-	Namespace: newworld_util
-	Checksum: 0xD27DCF03
-	Offset: 0x5468
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function function_95132241() {
-  self endon(# "death");
+  self endon("death");
   b_can_delete = 0;
   while (b_can_delete == 0) {
     wait(1);
@@ -1677,38 +1147,18 @@ function function_95132241() {
   self kill();
 }
 
-/*
-	Name: function_c1c980d8
-	Namespace: newworld_util
-	Checksum: 0x5F8741CE
-	Offset: 0x5578
-	Size: 0x154
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c1c980d8(str_trigger) {
   a_enemies = getaiteamarray("axis");
   t_trigger = getent(str_trigger, "targetname");
-  /#
   assert(isdefined(t_trigger), "");
-  # /
-    foreach(enemy in a_enemies) {
-      if(isalive(enemy) && enemy istouching(t_trigger)) {
-        enemy thread function_95132241();
-      }
+  foreach(enemy in a_enemies) {
+    if(isalive(enemy) && enemy istouching(t_trigger)) {
+      enemy thread function_95132241();
     }
+  }
   t_trigger delete();
 }
 
-/*
-	Name: function_c949a8ed
-	Namespace: newworld_util
-	Checksum: 0x9E0DD75C
-	Offset: 0x56D8
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c949a8ed(var_b06baa1b = 0) {
   self thread function_e44cc74b(var_b06baa1b);
   self playsound("evt_ai_derez");
@@ -1719,17 +1169,8 @@ function function_c949a8ed(var_b06baa1b = 0) {
   }
 }
 
-/*
-	Name: function_e44cc74b
-	Namespace: newworld_util
-	Checksum: 0x8FE77997
-	Offset: 0x5788
-	Size: 0x16C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e44cc74b(var_b06baa1b) {
-  self endon(# "death");
+  self endon("death");
   if(var_b06baa1b) {
     if(self.animname == "hall") {
       self setmodel("c_hro_sarah_salvation_reveal");
@@ -1750,15 +1191,6 @@ function function_e44cc74b(var_b06baa1b) {
   }
 }
 
-/*
-	Name: function_4943984c
-	Namespace: newworld_util
-	Checksum: 0xCEF727B3
-	Offset: 0x5900
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4943984c(var_b06baa1b = 0) {
   self thread function_9ab5a5ab(var_b06baa1b);
   self playsound("evt_ai_derez");
@@ -1769,17 +1201,8 @@ function function_4943984c(var_b06baa1b = 0) {
   }
 }
 
-/*
-	Name: function_9ab5a5ab
-	Namespace: newworld_util
-	Checksum: 0xB35190FD
-	Offset: 0x59B0
-	Size: 0x15C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9ab5a5ab(var_b06baa1b) {
-  self endon(# "death");
+  self endon("death");
   if(var_b06baa1b) {
     if(self.animname == "hall") {
       self setmodel("c_hro_sarah_salvation_reveal");
@@ -1799,36 +1222,18 @@ function function_9ab5a5ab(var_b06baa1b) {
   }
 }
 
-/*
-	Name: function_d0aa2f4f
-	Namespace: newworld_util
-	Checksum: 0x76F5CDC7
-	Offset: 0x5B18
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d0aa2f4f(n_delay = 0.25) {
-  self endon(# "death");
+  self endon("death");
   self function_4943984c();
   wait(0.4);
   self util::delay(n_delay, undefined, & function_c949a8ed);
 }
 
-/*
-	Name: function_737d2864
-	Namespace: newworld_util
-	Checksum: 0x51E91437
-	Offset: 0x5BA0
-	Size: 0x114
-	Parameters: 2
-	Flags: Linked
-*/
 function function_737d2864(str_location, str_time) {
   if(sessionmodeiscampaignzombiesgame()) {
     return;
   }
-  self endon(# "death");
+  self endon("death");
   wait(3);
   self.var_55167309 = self openluimenu("LocationAndTime");
   self setluimenudata(self.var_55167309, "loctime_location", str_location);
@@ -1839,34 +1244,14 @@ function function_737d2864(str_location, str_time) {
   self closeluimenu(self.var_55167309);
 }
 
-/*
-	Name: function_c633d8fe
-	Namespace: newworld_util
-	Checksum: 0x82785A1D
-	Offset: 0x5CC0
-	Size: 0x72
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c633d8fe() {
   if(sessionmodeiscampaignzombiesgame()) {
     return 1;
   }
-  /#
   assert(isplayer(self));
-  # /
-    return self getdstat("PlayerStatsByMap", "cp_mi_zurich_newworld", "hasBeenCompleted");
+  return self getdstat("PlayerStatsByMap", "cp_mi_zurich_newworld", "hasBeenCompleted");
 }
 
-/*
-	Name: function_81acf083
-	Namespace: newworld_util
-	Checksum: 0x32B93383
-	Offset: 0x5D40
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_81acf083() {
   var_ed60aa22 = 1;
   foreach(player in level.activeplayers) {
@@ -1878,15 +1263,6 @@ function function_81acf083() {
   return var_ed60aa22;
 }
 
-/*
-	Name: function_70aba08e
-	Namespace: newworld_util
-	Checksum: 0x9B81C9BA
-	Offset: 0x5E00
-	Size: 0xB6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_70aba08e() {
   var_6a25d5b0 = 0;
   foreach(player in level.players) {
@@ -1898,15 +1274,6 @@ function function_70aba08e() {
   return var_6a25d5b0;
 }
 
-/*
-	Name: function_3e37f48b
-	Namespace: newworld_util
-	Checksum: 0xDEF0B53A
-	Offset: 0x5EC0
-	Size: 0x1C4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3e37f48b(b_enabled) {
   if(sessionmodeiscampaignzombiesgame()) {
     return;
@@ -1917,7 +1284,7 @@ function function_3e37f48b(b_enabled) {
       if(e_player function_c633d8fe()) {
         continue;
       }
-      level notify(# "enable_cybercom", e_player);
+      level notify("enable_cybercom", e_player);
     }
     callback::remove_on_spawned( & function_d17cfcf8);
   } else {
@@ -1925,67 +1292,31 @@ function function_3e37f48b(b_enabled) {
       if(e_player function_c633d8fe()) {
         continue;
       }
-      level notify(# "disable_cybercom", e_player, 1);
+      level notify("disable_cybercom", e_player, 1);
     }
     callback::on_spawned( & function_d17cfcf8);
   }
 }
 
-/*
-	Name: function_d17cfcf8
-	Namespace: newworld_util
-	Checksum: 0xBA9A745E
-	Offset: 0x6090
-	Size: 0x32
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d17cfcf8() {
   if(self function_c633d8fe()) {
     return;
   }
-  level notify(# "disable_cybercom", self, 1);
+  level notify("disable_cybercom", self, 1);
 }
 
-/*
-	Name: function_3196eaee
-	Namespace: newworld_util
-	Checksum: 0x1042BEDC
-	Offset: 0x60D0
-	Size: 0xAA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3196eaee(b_enabled = 1) {
   foreach(e_player in level.players) {
     e_player function_a7cfc593(b_enabled);
   }
 }
 
-/*
-	Name: function_63c3869a
-	Namespace: newworld_util
-	Checksum: 0xF524048D
-	Offset: 0x6188
-	Size: 0xAA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_63c3869a(b_enabled = 1) {
   foreach(e_player in level.players) {
     e_player function_ba1a260f(b_enabled);
   }
 }
 
-/*
-	Name: function_a7cfc593
-	Namespace: newworld_util
-	Checksum: 0xBE80E3DF
-	Offset: 0x6240
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a7cfc593(b_enabled = 1) {
   if(self function_c633d8fe()) {
     return;
@@ -1996,37 +1327,17 @@ function function_a7cfc593(b_enabled = 1) {
   }
 }
 
-/*
-	Name: function_ba1a260f
-	Namespace: newworld_util
-	Checksum: 0xD8691F24
-	Offset: 0x62B0
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ba1a260f(b_enabled = 1) {
   if(self function_c633d8fe()) {
     return;
   }
-  /#
   println((("" + b_enabled) + "") + level.b_enhanced_vision_enabled);
-  # /
-    self.b_enhanced_vision_enabled = b_enabled;
+  self.b_enhanced_vision_enabled = b_enabled;
   if(!b_enabled) {
     self oed::set_player_ev(0);
   }
 }
 
-/*
-	Name: function_2eded728
-	Namespace: newworld_util
-	Checksum: 0xF4E6BE0F
-	Offset: 0x6350
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2eded728(b_enabled = 1) {
   if(b_enabled) {
     foreach(e_player in level.activeplayers) {
@@ -2036,15 +1347,6 @@ function function_2eded728(b_enabled = 1) {
   }
 }
 
-/*
-	Name: scene_cleanup
-	Namespace: newworld_util
-	Checksum: 0x3267EA58
-	Offset: 0x6430
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function scene_cleanup(str_scene_name) {
   if(scene::is_active(str_scene_name)) {
     scene::stop(str_scene_name, 1);
@@ -2053,19 +1355,10 @@ function scene_cleanup(str_scene_name) {
   struct::delete_script_bundle("scene", str_scene_name);
 }
 
-/*
-	Name: function_921d7387
-	Namespace: newworld_util
-	Checksum: 0x6B9BF419
-	Offset: 0x64B0
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_921d7387() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    level waittill(# "hash_921d7387");
+    level waittill("hash_921d7387");
     if(isdefined(self.var_30a16593) && self.var_30a16593) {
       continue;
     }
@@ -2073,54 +1366,27 @@ function function_921d7387() {
     if(isdefined(self.is_talking) && self.is_talking) {
       continue;
     }
-    self notify(# "scriptedbc", "generic_encourage");
+    self notify("scriptedbc", "generic_encourage");
     self.var_30a16593 = 1;
     self thread function_9464547d();
   }
 }
 
-/*
-	Name: function_9464547d
-	Namespace: newworld_util
-	Checksum: 0xF8AD31E4
-	Offset: 0x6558
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9464547d() {
-  self endon(# "death");
+  self endon("death");
   wait(30);
   self.var_30a16593 = 0;
 }
 
-/*
-	Name: function_606dbca2
-	Namespace: newworld_util
-	Checksum: 0xE361BEE1
-	Offset: 0x6580
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function function_606dbca2(params) {
   if(self.team !== "axis") {
     return;
   }
   if(isplayer(params.eattacker)) {
-    level notify(# "hash_921d7387");
+    level notify("hash_921d7387");
   }
 }
 
-/*
-	Name: function_83a7d040
-	Namespace: newworld_util
-	Checksum: 0x81192586
-	Offset: 0x65E0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_83a7d040() {
   util::wait_network_frame();
   util::wait_network_frame();

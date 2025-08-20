@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicles\_parasite.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\blackboard_vehicle;
 #using scripts\shared\ai\systems\ai_interface;
@@ -15,33 +19,13 @@
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_death_shared;
 #using scripts\shared\vehicle_shared;
-
 #using_animtree("generic");
-
 #namespace parasite;
 
-/*
-	Name: __init__sytem__
-	Namespace: parasite
-	Checksum: 0x5E487077
-	Offset: 0x480
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("parasite", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: parasite
-	Checksum: 0x68CC67BE
-	Offset: 0x4C0
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   vehicle::add_main_callback("parasite", & parasite_initialize);
   clientfield::register("vehicle", "parasite_tell_fx", 1, 1, "int");
@@ -51,36 +35,18 @@ function __init__() {
   ai::registermatchedinterface("parasite", "firing_rate", "slow", array("slow", "medium", "fast"));
 }
 
-/*
-	Name: parasite_damage
-	Namespace: parasite
-	Checksum: 0x9B4FF9FC
-	Offset: 0x5F8
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function parasite_damage() {
-  self notify(# "parasite_damage_thread");
-  self endon(# "parasite_damage_thread");
-  self endon(# "death");
+  self notify("parasite_damage_thread");
+  self endon("parasite_damage_thread");
+  self endon("death");
   while (true) {
-    self waittill(# "damage", n_ammount, e_attacker);
+    self waittill("damage", n_ammount, e_attacker);
     if(isdefined(e_attacker) && (isdefined(e_attacker.is_parasite) && e_attacker.is_parasite) && (!(isdefined(e_attacker.squelch_damage_overlay) && e_attacker.squelch_damage_overlay))) {
       self clientfield::increment_to_player("parasite_damage");
     }
   }
 }
 
-/*
-	Name: is_target_valid
-	Namespace: parasite
-	Checksum: 0xA9E4AAC1
-	Offset: 0x6D0
-	Size: 0x118
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private is_target_valid(target) {
   if(!isdefined(target)) {
     return 0;
@@ -106,15 +72,6 @@ function private is_target_valid(target) {
   return 1;
 }
 
-/*
-	Name: get_parasite_enemy
-	Namespace: parasite
-	Checksum: 0xE03E2B16
-	Offset: 0x7F0
-	Size: 0x13A
-	Parameters: 0
-	Flags: Linked
-*/
 function get_parasite_enemy() {
   parasite_targets = getplayers();
   least_hunted = parasite_targets[0];
@@ -138,15 +95,6 @@ function get_parasite_enemy() {
   return least_hunted;
 }
 
-/*
-	Name: set_parasite_enemy
-	Namespace: parasite
-	Checksum: 0x65ED600E
-	Offset: 0x938
-	Size: 0x104
-	Parameters: 1
-	Flags: Linked
-*/
 function set_parasite_enemy(enemy) {
   if(!is_target_valid(enemy)) {
     return;
@@ -168,18 +116,9 @@ function set_parasite_enemy(enemy) {
   self setturrettargetent(self.parasiteenemy);
 }
 
-/*
-	Name: parasite_target_selection
-	Namespace: parasite
-	Checksum: 0x30175CB4
-	Offset: 0xA48
-	Size: 0x118
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private parasite_target_selection() {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   for (;;) {
     if(isdefined(self.ignoreall) && self.ignoreall) {
       wait(0.5);
@@ -202,15 +141,6 @@ function private parasite_target_selection() {
   }
 }
 
-/*
-	Name: parasite_initialize
-	Namespace: parasite
-	Checksum: 0x7AA832E2
-	Offset: 0xB68
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked
-*/
 function parasite_initialize() {
   self useanimtree($generic);
   blackboard::createblackboardforentity(self);
@@ -218,9 +148,7 @@ function parasite_initialize() {
   ai::createinterfaceforentity(self);
   blackboard::registerblackboardattribute(self, "_parasite_firing_rate", "slow", & getparasitefiringrate);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   self.health = self.healthdefault;
   self vehicle::friendly_fire_shield();
@@ -230,10 +158,8 @@ function parasite_initialize() {
   self.fovcosine = 0;
   self.fovcosinebusy = 0;
   self.vehaircraftcollisionenabled = 1;
-  /#
   assert(isdefined(self.scriptbundlesettings));
-  # /
-    self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
+  self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
   self.goalradius = 999999;
   self.goalheight = 4000;
   self setgoal(self.origin, 0, self.goalradius, self.goalheight);
@@ -247,15 +173,6 @@ function parasite_initialize() {
   defaultrole();
 }
 
-/*
-	Name: defaultrole
-	Namespace: parasite
-	Checksum: 0x62C42A9D
-	Offset: 0xDC0
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function defaultrole() {
   self vehicle_ai::init_state_machine_for_role("default");
   self vehicle_ai::get_state_callbacks("combat").enter_func = & state_combat_enter;
@@ -265,30 +182,12 @@ function defaultrole() {
   vehicle_ai::startinitialstate("combat");
 }
 
-/*
-	Name: getparasitefiringrate
-	Namespace: parasite
-	Checksum: 0xBD541FA4
-	Offset: 0xEB0
-	Size: 0x22
-	Parameters: 0
-	Flags: Linked
-*/
 function getparasitefiringrate() {
   return self ai::get_behavior_attribute("firing_rate");
 }
 
-/*
-	Name: state_death_update
-	Namespace: parasite
-	Checksum: 0x6284F85C
-	Offset: 0xEE0
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_death_update(params) {
-  self endon(# "death");
+  self endon("death");
   self asmrequestsubstate("death@stationary");
   if(isdefined(self.parasiteenemy) && isdefined(self.parasiteenemy.hunted_by)) {
     self.parasiteenemy.hunted_by--;
@@ -303,15 +202,6 @@ function state_death_update(params) {
   self delete();
 }
 
-/*
-	Name: state_combat_enter
-	Namespace: parasite
-	Checksum: 0x5DD13A44
-	Offset: 0x1018
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_combat_enter(params) {
   if(isdefined(self.owner) && isdefined(self.owner.enemy)) {
     self.parasiteenemy = self.owner.enemy;
@@ -319,18 +209,9 @@ function state_combat_enter(params) {
   self thread parasite_target_selection();
 }
 
-/*
-	Name: state_combat_update
-	Namespace: parasite
-	Checksum: 0x3E2505C
-	Offset: 0x1080
-	Size: 0x480
-	Parameters: 1
-	Flags: Linked
-*/
 function state_combat_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   lasttimechangeposition = 0;
   self.shouldgotonewposition = 0;
   self.lasttimetargetinsight = 0;
@@ -398,21 +279,12 @@ function state_combat_update(params) {
   }
 }
 
-/*
-	Name: fire_pod_logic
-	Namespace: parasite
-	Checksum: 0x6D287E87
-	Offset: 0x1508
-	Size: 0x2CC
-	Parameters: 1
-	Flags: Linked
-*/
 function fire_pod_logic(chosetojuke) {
   if(isdefined(self.parasiteenemy) && self vehcansee(self.parasiteenemy) && distance2dsquared(self.parasiteenemy.origin, self.origin) < ((0.5 * (self.settings.engagementdistmin + self.settings.engagementdistmax)) * 3) * ((0.5 * (self.settings.engagementdistmin + self.settings.engagementdistmax)) * 3)) {
     self asmrequestsubstate("fire@stationary");
     self playsound("zmb_vocals_parasite_preattack");
     self clientfield::set("parasite_tell_fx", 1);
-    self waittill(# "pre_fire");
+    self waittill("pre_fire");
     if(isdefined(self.parasiteenemy) && self vehcansee(self.parasiteenemy) && distance2dsquared(self.parasiteenemy.origin, self.origin) < ((0.5 * (self.settings.engagementdistmin + self.settings.engagementdistmax)) * 3) * ((0.5 * (self.settings.engagementdistmin + self.settings.engagementdistmax)) * 3)) {
       self setturrettargetent(self.parasiteenemy, self.parasiteenemy getvelocity() * 0.3);
     }
@@ -427,18 +299,9 @@ function fire_pod_logic(chosetojuke) {
   }
 }
 
-/*
-	Name: getnextmoveposition_tactical
-	Namespace: parasite
-	Checksum: 0x943DFA33
-	Offset: 0x17E0
-	Size: 0x72E
-	Parameters: 0
-	Flags: Linked
-*/
 function getnextmoveposition_tactical() {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   selfdisttotarget = distance2d(self.origin, self.parasiteenemy.origin);
   gooddist = 0.5 * (self.settings.engagementdistmin + self.settings.engagementdistmax);
   closedist = 1.2 * gooddist;
@@ -474,30 +337,24 @@ function getnextmoveposition_tactical() {
         continue;
       }
     }
-    /#
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = randomfloatrange(0, randomness);
-    # /
-      point.score = point.score + randomfloatrange(0, randomness);
-    /#
+    point.score = point.score + randomfloatrange(0, randomness);
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = point.distawayfromengagementarea * -1;
-    # /
-      point.score = point.score + (point.distawayfromengagementarea * -1);
+    point.score = point.score + (point.distawayfromengagementarea * -1);
     distfrompreferredheight = abs(point.origin[2] - goalheight);
     if(distfrompreferredheight > preferedheightrange) {
       heightscore = mapfloat(0, 500, 0, 2000, distfrompreferredheight);
-      /#
       if(!isdefined(point._scoredebug)) {
         point._scoredebug = [];
       }
       point._scoredebug[""] = heightscore * -1;
-      # /
-        point.score = point.score + (heightscore * -1);
+      point.score = point.score + (heightscore * -1);
     }
     if(point.score > best_score) {
       best_score = point.score;
@@ -505,30 +362,19 @@ function getnextmoveposition_tactical() {
     }
   }
   self vehicle_ai::positionquery_debugscores(queryresult);
-  /#
   if(isdefined(getdvarint("")) && getdvarint("")) {
     recordline(self.origin, best_point.origin, (0.3, 1, 0));
     recordline(self.origin, self.parasiteenemy.origin, (1, 0, 0.4));
   }
-  # /
-    returndata = [];
+  returndata = [];
   returndata["origin"] = (isdefined(best_point) ? best_point.origin : undefined);
   returndata["centerOnNav"] = queryresult.centeronnav;
   return returndata;
 }
 
-/*
-	Name: getnextmoveposition_forwardjuke
-	Namespace: parasite
-	Checksum: 0x6E44752
-	Offset: 0x1F18
-	Size: 0x72E
-	Parameters: 0
-	Flags: Linked
-*/
 function getnextmoveposition_forwardjuke() {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   selfdisttotarget = distance2d(self.origin, self.parasiteenemy.origin);
   gooddist = 0.5 * (self.settings.forwardjukeengagementdistmin + self.settings.forwardjukeengagementdistmax);
   closedist = 1.2 * gooddist;
@@ -564,30 +410,24 @@ function getnextmoveposition_forwardjuke() {
         continue;
       }
     }
-    /#
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = randomfloatrange(0, randomness);
-    # /
-      point.score = point.score + randomfloatrange(0, randomness);
-    /#
+    point.score = point.score + randomfloatrange(0, randomness);
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = point.distawayfromengagementarea * -1;
-    # /
-      point.score = point.score + (point.distawayfromengagementarea * -1);
+    point.score = point.score + (point.distawayfromengagementarea * -1);
     distfrompreferredheight = abs(point.origin[2] - goalheight);
     if(distfrompreferredheight > preferedheightrange) {
       heightscore = mapfloat(0, 500, 0, 2000, distfrompreferredheight);
-      /#
       if(!isdefined(point._scoredebug)) {
         point._scoredebug = [];
       }
       point._scoredebug[""] = heightscore * -1;
-      # /
-        point.score = point.score + (heightscore * -1);
+      point.score = point.score + (heightscore * -1);
     }
     if(point.score > best_score) {
       best_score = point.score;
@@ -595,56 +435,36 @@ function getnextmoveposition_forwardjuke() {
     }
   }
   self vehicle_ai::positionquery_debugscores(queryresult);
-  /#
   if(isdefined(getdvarint("")) && getdvarint("")) {
     recordline(self.origin, best_point.origin, (0.3, 1, 0));
     recordline(self.origin, self.parasiteenemy.origin, (1, 0, 0.4));
   }
-  # /
-    returndata = [];
+  returndata = [];
   returndata["origin"] = (isdefined(best_point) ? best_point.origin : undefined);
   returndata["centerOnNav"] = queryresult.centeronnav;
   return returndata;
 }
 
-/*
-	Name: path_update_interrupt
-	Namespace: parasite
-	Checksum: 0xFA8D0FA8
-	Offset: 0x2650
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function path_update_interrupt() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self endon(# "near_goal");
-  self endon(# "reached_end_node");
+  self endon("death");
+  self endon("change_state");
+  self endon("near_goal");
+  self endon("reached_end_node");
   wait(1);
   while (true) {
     if(isdefined(self.current_pathto_pos)) {
       if(distance2dsquared(self.current_pathto_pos, self.goalpos) > (self.goalradius * self.goalradius)) {
         wait(0.2);
         self._override_juke = 1;
-        self notify(# "near_goal");
+        self notify("near_goal");
       }
     }
     wait(0.2);
   }
 }
 
-/*
-	Name: drone_pain_for_time
-	Namespace: parasite
-	Checksum: 0xD13122F6
-	Offset: 0x2710
-	Size: 0x1E0
-	Parameters: 3
-	Flags: Linked
-*/
 function drone_pain_for_time(time, stablizeparam, restorelookpoint) {
-  self endon(# "death");
+  self endon("death");
   self.painstarttime = gettime();
   if(!(isdefined(self.inpain) && self.inpain)) {
     self.inpain = 1;
@@ -669,15 +489,6 @@ function drone_pain_for_time(time, stablizeparam, restorelookpoint) {
   }
 }
 
-/*
-	Name: drone_pain
-	Namespace: parasite
-	Checksum: 0x3B977153
-	Offset: 0x28F8
-	Size: 0x124
-	Parameters: 6
-	Flags: None
-*/
 function drone_pain(eattacker, damagetype, hitpoint, hitdirection, hitlocationinfo, partname) {
   if(!(isdefined(self.inpain) && self.inpain)) {
     yaw_vel = math::randomsign() * randomfloatrange(280, 320);

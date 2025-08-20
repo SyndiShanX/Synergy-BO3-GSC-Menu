@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\bots\_bot_loadout.gsc
+*************************************************/
+
 #using scripts\mp\bots\_bot;
 #using scripts\mp\killstreaks\_killstreaks;
 #using scripts\shared\array_shared;
 #using scripts\shared\rank_shared;
-
 #namespace bot_loadout;
 
-/*
-	Name: in_whitelist
-	Namespace: bot_loadout
-	Checksum: 0x4F6F1C28
-	Offset: 0x770
-	Size: 0x1A4
-	Parameters: 1
-	Flags: Linked
-*/
 function in_whitelist(itemname) {
   if(!isdefined(itemname)) {
     return false;
@@ -72,15 +66,6 @@ function in_whitelist(itemname) {
   return false;
 }
 
-/*
-	Name: build_classes
-	Namespace: bot_loadout
-	Checksum: 0x60ECC715
-	Offset: 0x920
-	Size: 0x34C
-	Parameters: 0
-	Flags: Linked
-*/
 function build_classes() {
   primaryweapons = self get_available_items(undefined, "primary");
   secondaryweapons = self get_available_items(undefined, "secondary");
@@ -112,15 +97,6 @@ function build_classes() {
   }
 }
 
-/*
-	Name: pick_item
-	Namespace: bot_loadout
-	Checksum: 0xC548C3A2
-	Offset: 0xC78
-	Size: 0x50
-	Parameters: 2
-	Flags: Linked
-*/
 function pick_item( & pickeditems, items) {
   if(!isdefined(items) || items.size <= 0) {
     return;
@@ -128,15 +104,6 @@ function pick_item( & pickeditems, items) {
   pickeditems[pickeditems.size] = array::random(items);
 }
 
-/*
-	Name: pick_classes
-	Namespace: bot_loadout
-	Checksum: 0x5E87039B
-	Offset: 0xCD0
-	Size: 0x21C
-	Parameters: 0
-	Flags: Linked
-*/
 function pick_classes() {
   self.loadoutclasses = [];
   self.launcherclasscount = 0;
@@ -164,15 +131,6 @@ function pick_classes() {
   }
 }
 
-/*
-	Name: get_current_class
-	Namespace: bot_loadout
-	Checksum: 0xA67509B0
-	Offset: 0xEF8
-	Size: 0xBE
-	Parameters: 0
-	Flags: Linked
-*/
 function get_current_class() {
   currvalue = self.pers["class"];
   if(!isdefined(currvalue)) {
@@ -186,30 +144,12 @@ function get_current_class() {
   return undefined;
 }
 
-/*
-	Name: pick_hero_gadget
-	Namespace: bot_loadout
-	Checksum: 0x3FE36144
-	Offset: 0xFC0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function pick_hero_gadget() {
   if(randomint(2) < 1 || !self pick_hero_ability()) {
     self pick_hero_weapon();
   }
 }
 
-/*
-	Name: pick_hero_weapon
-	Namespace: bot_loadout
-	Checksum: 0xFB3F3453
-	Offset: 0x1020
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function pick_hero_weapon() {
   heroweaponref = self getheroweaponname();
   if(isitemrestricted(heroweaponref)) {
@@ -220,15 +160,6 @@ function pick_hero_weapon() {
   return true;
 }
 
-/*
-	Name: pick_hero_ability
-	Namespace: bot_loadout
-	Checksum: 0x717F0A5F
-	Offset: 0x10B0
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function pick_hero_ability() {
   heroabilityref = self getheroabilityname();
   if(isitemrestricted(heroabilityref)) {
@@ -239,15 +170,6 @@ function pick_hero_ability() {
   return true;
 }
 
-/*
-	Name: pick_killstreaks
-	Namespace: bot_loadout
-	Checksum: 0x45716EA
-	Offset: 0x1140
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function pick_killstreaks() {
   killstreaks = array::randomize(self get_available_items("killstreak"));
   for (i = 0; i < 3 && i < killstreaks.size; i++) {
@@ -255,15 +177,6 @@ function pick_killstreaks() {
   }
 }
 
-/*
-	Name: get_available_items
-	Namespace: bot_loadout
-	Checksum: 0x340BA847
-	Offset: 0x11E0
-	Size: 0x29A
-	Parameters: 2
-	Flags: Linked
-*/
 function get_available_items(filtergroup, filterslot) {
   items = [];
   for (i = 0; i < 256; i++) {
@@ -304,15 +217,6 @@ function get_available_items(filtergroup, filterslot) {
   return items;
 }
 
-/*
-	Name: get_item_name
-	Namespace: bot_loadout
-	Checksum: 0xCB15DCC1
-	Offset: 0x1488
-	Size: 0xEA
-	Parameters: 1
-	Flags: Linked
-*/
 function get_item_name(itemreference) {
   for (i = 0; i < 256; i++) {
     row = tablelookuprownum(level.statstableid, 0, i);
@@ -329,20 +233,11 @@ function get_item_name(itemreference) {
   return undefined;
 }
 
-/*
-	Name: init
-	Namespace: bot_loadout
-	Checksum: 0x4156CB7D
-	Offset: 0x1580
-	Size: 0xA0
-	Parameters: 0
-	Flags: None
-*/
 function init() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   level.bot_banned_killstreaks = array("KILLSTREAK_RCBOMB", "KILLSTREAK_QRDRONE", "KILLSTREAK_REMOTE_MISSILE", "KILLSTREAK_REMOTE_MORTAR", "KILLSTREAK_HELICOPTER_GUNNER");
   for (;;) {
-    level waittill(# "connected", player);
+    level waittill("connected", player);
     if(!player istestclient()) {
       continue;
     }
@@ -350,17 +245,8 @@ function init() {
   }
 }
 
-/*
-	Name: on_bot_connect
-	Namespace: bot_loadout
-	Checksum: 0xC44BC5DC
-	Offset: 0x1628
-	Size: 0x2B2
-	Parameters: 0
-	Flags: Linked
-*/
 function on_bot_connect() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(isdefined(self.pers["bot_loadout"])) {
     return;
   }
@@ -395,15 +281,6 @@ function on_bot_connect() {
   self.pers["bot_loadout"] = 1;
 }
 
-/*
-	Name: construct_loadout
-	Namespace: bot_loadout
-	Checksum: 0xFC2ED9C4
-	Offset: 0x18E8
-	Size: 0x23C
-	Parameters: 1
-	Flags: Linked
-*/
 function construct_loadout(allocation_max) {
   if(!sessionmodeisprivate() && self isitemlocked(rank::getitemindex("feature_cac"))) {
     return;
@@ -431,15 +308,6 @@ function construct_loadout(allocation_max) {
   pixendevent();
 }
 
-/*
-	Name: construct_class
-	Namespace: bot_loadout
-	Checksum: 0x5D7D2BB3
-	Offset: 0x1B30
-	Size: 0xF4
-	Parameters: 3
-	Flags: Linked
-*/
 function construct_class(constructclass, items, allocation_max) {
   allocation = 0;
   claimed_count = build_claimed_list(items);
@@ -451,28 +319,10 @@ function construct_class(constructclass, items, allocation_max) {
   choose_weapon_option(constructclass, "camo", 1);
 }
 
-/*
-	Name: make_choice
-	Namespace: bot_loadout
-	Checksum: 0xA4402C5
-	Offset: 0x1C30
-	Size: 0x48
-	Parameters: 3
-	Flags: None
-*/
 function make_choice(chance, claimed, max_claim) {
   return claimed < max_claim && randomint(100) < chance;
 }
 
-/*
-	Name: chose_action
-	Namespace: bot_loadout
-	Checksum: 0xFD0B675E
-	Offset: 0x1C80
-	Size: 0x1BA
-	Parameters: 8
-	Flags: Linked
-*/
 function chose_action(action1, chance1, action2, chance2, action3, chance3, action4, chance4) {
   chance1 = int(chance1 / 10);
   chance2 = int(chance2 / 10);
@@ -494,15 +344,6 @@ function chose_action(action1, chance1, action2, chance2, action3, chance3, acti
   return array::random(actions);
 }
 
-/*
-	Name: item_is_claimed
-	Namespace: bot_loadout
-	Checksum: 0x71641025
-	Offset: 0x1E48
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function item_is_claimed(item) {
   foreach(claim in self.claimed_items) {
     if(claim == item) {
@@ -512,15 +353,6 @@ function item_is_claimed(item) {
   return false;
 }
 
-/*
-	Name: choose_weapon
-	Namespace: bot_loadout
-	Checksum: 0x6B3A7BB0
-	Offset: 0x1EE8
-	Size: 0x100
-	Parameters: 2
-	Flags: Linked
-*/
 function choose_weapon(weaponclass, items) {
   if(!isdefined(items) || !items.size) {
     return undefined;
@@ -538,15 +370,6 @@ function choose_weapon(weaponclass, items) {
   return weapon;
 }
 
-/*
-	Name: build_weapon_options_list
-	Namespace: bot_loadout
-	Checksum: 0x6CE69247
-	Offset: 0x1FF0
-	Size: 0x156
-	Parameters: 1
-	Flags: Linked
-*/
 function build_weapon_options_list(optiontype) {
   level.botweaponoptionsid[optiontype] = [];
   level.botweaponoptionsprob[optiontype] = [];
@@ -562,15 +385,6 @@ function build_weapon_options_list(optiontype) {
   }
 }
 
-/*
-	Name: choose_weapon_option
-	Namespace: bot_loadout
-	Checksum: 0x5EAE2958
-	Offset: 0x2150
-	Size: 0x1E2
-	Parameters: 3
-	Flags: Linked
-*/
 function choose_weapon_option(weaponclass, optiontype, primary) {
   if(!isdefined(level.botweaponoptionsid)) {
     level.botweaponoptionsid = [];
@@ -595,15 +409,6 @@ function choose_weapon_option(weaponclass, optiontype, primary) {
   }
 }
 
-/*
-	Name: choose_primary_attachments
-	Namespace: bot_loadout
-	Checksum: 0x3A6DBFDA
-	Offset: 0x2340
-	Size: 0x3D4
-	Parameters: 4
-	Flags: None
-*/
 function choose_primary_attachments(weaponclass, weapon, allocation, allocation_max) {
   attachments = weapon.supportedattachments;
   remaining = allocation_max - allocation;
@@ -649,15 +454,6 @@ function choose_primary_attachments(weaponclass, weapon, allocation, allocation_
   return 0;
 }
 
-/*
-	Name: choose_secondary_attachments
-	Namespace: bot_loadout
-	Checksum: 0xF3B6655B
-	Offset: 0x2720
-	Size: 0x24C
-	Parameters: 4
-	Flags: None
-*/
 function choose_secondary_attachments(weaponclass, weapon, allocation, allocation_max) {
   attachments = weapon.supportedattachments;
   remaining = allocation_max - allocation;
@@ -685,15 +481,6 @@ function choose_secondary_attachments(weaponclass, weapon, allocation, allocatio
   return 0;
 }
 
-/*
-	Name: build_item_list
-	Namespace: bot_loadout
-	Checksum: 0x88FD08C2
-	Offset: 0x2978
-	Size: 0x1EA
-	Parameters: 0
-	Flags: Linked
-*/
 function build_item_list() {
   items = [];
   for (i = 0; i < 256; i++) {
@@ -721,15 +508,6 @@ function build_item_list() {
   return items;
 }
 
-/*
-	Name: item_is_banned
-	Namespace: bot_loadout
-	Checksum: 0xADE4D8EE
-	Offset: 0x2B70
-	Size: 0x11E
-	Parameters: 2
-	Flags: None
-*/
 function item_is_banned(slot, item) {
   if(item == "WEAPON_KNIFE_BALLISTIC") {
     return true;
@@ -748,15 +526,6 @@ function item_is_banned(slot, item) {
   return false;
 }
 
-/*
-	Name: build_claimed_list
-	Namespace: bot_loadout
-	Checksum: 0xBF7B3171
-	Offset: 0x2C98
-	Size: 0xC0
-	Parameters: 1
-	Flags: Linked
-*/
 function build_claimed_list(items) {
   claimed = [];
   keys = getarraykeys(items);

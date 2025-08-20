@@ -1,22 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\margwa.csc
+*************************************************/
+
 #using scripts\shared\ai_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\postfx_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("generic");
-
 #namespace margwa;
 
-/*
-	Name: main
-	Namespace: margwa
-	Checksum: 0xCF7B9303
-	Offset: 0x760
-	Size: 0x69E
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   clientfield::register("actor", "margwa_head_left", 1, 2, "int", & margwaclientutils::margwaheadleftcallback, 0, 0);
   clientfield::register("actor", "margwa_head_mid", 1, 2, "int", & margwaclientutils::margwaheadmidcallback, 0, 0);
@@ -59,15 +52,6 @@ function autoexec main() {
   level._jaw[25] = "trv_jump_up_96";
 }
 
-/*
-	Name: precache
-	Namespace: margwa
-	Checksum: 0x5B5921E6
-	Offset: 0xE08
-	Size: 0xC6
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec precache() {
   level._effect["fx_margwa_teleport_zod_zmb"] = "zombie/fx_margwa_teleport_zod_zmb";
   level._effect["fx_margwa_teleport_travel_zod_zmb"] = "zombie/fx_margwa_teleport_travel_zod_zmb";
@@ -80,15 +64,6 @@ function autoexec precache() {
 
 #namespace margwaclientutils;
 
-/*
-	Name: margwaspawn
-	Namespace: margwaclientutils
-	Checksum: 0x879A66C0
-	Offset: 0xED8
-	Size: 0x340
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwaspawn(localclientnum) {
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self)) {
@@ -119,15 +94,6 @@ function private margwaspawn(localclientnum) {
   self.heads[3].jawbase = "ai_margwa_jaw_r_";
 }
 
-/*
-	Name: margwaheadleftcallback
-	Namespace: margwaclientutils
-	Checksum: 0x39899429
-	Offset: 0x1220
-	Size: 0x40E
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwaheadleftcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(isdefined(self.leftglowfx)) {
     stopfx(localclientnum, self.leftglowfx);
@@ -179,15 +145,6 @@ function private margwaheadleftcallback(localclientnum, oldvalue, newvalue, bnew
   }
 }
 
-/*
-	Name: margwaheadmidcallback
-	Namespace: margwaclientutils
-	Checksum: 0xE539DFDD
-	Offset: 0x1638
-	Size: 0x3A6
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwaheadmidcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(isdefined(self.midglowfx)) {
     stopfx(localclientnum, self.midglowfx);
@@ -236,15 +193,6 @@ function private margwaheadmidcallback(localclientnum, oldvalue, newvalue, bnewe
   }
 }
 
-/*
-	Name: margwaheadrightcallback
-	Namespace: margwaclientutils
-	Checksum: 0xC6C44191
-	Offset: 0x19E8
-	Size: 0x3A6
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwaheadrightcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(isdefined(self.rightglowfx)) {
     stopfx(localclientnum, self.rightglowfx);
@@ -293,17 +241,8 @@ function private margwaheadrightcallback(localclientnum, oldvalue, newvalue, bne
   }
 }
 
-/*
-	Name: margwastopsmashfx
-	Namespace: margwaclientutils
-	Checksum: 0xEDFE9ECD
-	Offset: 0x1D98
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwastopsmashfx(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   wait(0.6);
   if(isdefined(self.leftglowfx)) {
     stopfx(localclientnum, self.leftglowfx);
@@ -316,30 +255,12 @@ function private margwastopsmashfx(localclientnum) {
   }
 }
 
-/*
-	Name: margwafxincallback
-	Namespace: margwaclientutils
-	Checksum: 0x915558A6
-	Offset: 0x1E40
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwafxincallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     self.teleportfxin = playfx(localclientnum, level._effect["fx_margwa_teleport_zod_zmb"], self gettagorigin("j_spine_1"));
   }
 }
 
-/*
-	Name: margwafxoutcallback
-	Namespace: margwaclientutils
-	Checksum: 0xD40F1B8B
-	Offset: 0x1EE0
-	Size: 0xA4
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwafxoutcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     tagpos = self gettagorigin("j_spine_1");
@@ -347,15 +268,6 @@ function private margwafxoutcallback(localclientnum, oldvalue, newvalue, bnewent
   }
 }
 
-/*
-	Name: margwafxtravelcallback
-	Namespace: margwaclientutils
-	Checksum: 0x90B68D05
-	Offset: 0x1F90
-	Size: 0xBE
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwafxtravelcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   switch (newvalue) {
     case 0: {
@@ -369,20 +281,11 @@ function private margwafxtravelcallback(localclientnum, oldvalue, newvalue, bnew
   }
 }
 
-/*
-	Name: margwafxtraveltellcallback
-	Namespace: margwaclientutils
-	Checksum: 0x819F763B
-	Offset: 0x2058
-	Size: 0xDE
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwafxtraveltellcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   switch (newvalue) {
     case 0: {
       deletefx(localclientnum, self.travelertellfx);
-      self notify(# "stop_margwatraveltell");
+      self notify("stop_margwatraveltell");
       break;
     }
     case 1: {
@@ -393,19 +296,10 @@ function private margwafxtraveltellcallback(localclientnum, oldvalue, newvalue, 
   }
 }
 
-/*
-	Name: margwatraveltellupdate
-	Namespace: margwaclientutils
-	Checksum: 0xAB59EBAC
-	Offset: 0x2140
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwatraveltellupdate(localclientnum) {
-  self notify(# "stop_margwatraveltell");
-  self endon(# "stop_margwatraveltell");
-  self endon(# "entityshutdown");
+  self notify("stop_margwatraveltell");
+  self endon("stop_margwatraveltell");
+  self endon("entityshutdown");
   player = getlocalplayer(localclientnum);
   while (true) {
     if(isdefined(player)) {
@@ -418,15 +312,6 @@ function private margwatraveltellupdate(localclientnum) {
   }
 }
 
-/*
-	Name: margwafxspawncallback
-	Namespace: margwaclientutils
-	Checksum: 0x477C632A
-	Offset: 0x2220
-	Size: 0x114
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwafxspawncallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     spawnfx = level._effect["fx_margwa_teleport_intro_zod_zmb"];
@@ -442,30 +327,12 @@ function private margwafxspawncallback(localclientnum, oldvalue, newvalue, bnewe
   }
 }
 
-/*
-	Name: margwaheadexplosion
-	Namespace: margwaclientutils
-	Checksum: 0x54ECFD4E
-	Offset: 0x2340
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwaheadexplosion(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     self postfx::playpostfxbundle("pstfx_parasite_dmg");
   }
 }
 
-/*
-	Name: margwaprocessfootstep
-	Namespace: margwaclientutils
-	Checksum: 0xC39DCBF6
-	Offset: 0x23B0
-	Size: 0x20C
-	Parameters: 5
-	Flags: Linked
-*/
 function margwaprocessfootstep(localclientnum, pos, surface, notetrack, bone) {
   e_player = getlocalplayer(localclientnum);
   n_dist = distancesquared(pos, e_player.origin);
@@ -494,15 +361,6 @@ function margwaprocessfootstep(localclientnum, pos, surface, notetrack, bone) {
   }
 }
 
-/*
-	Name: margwasmashcallback
-	Namespace: margwaclientutils
-	Checksum: 0x61E8731C
-	Offset: 0x25C8
-	Size: 0x194
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwasmashcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     e_player = getlocalplayer(localclientnum);
@@ -518,15 +376,6 @@ function private margwasmashcallback(localclientnum, oldvalue, newvalue, bnewent
   }
 }
 
-/*
-	Name: margwalefthitcallback
-	Namespace: margwaclientutils
-	Checksum: 0xF2B2D95
-	Offset: 0x2768
-	Size: 0xAC
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwalefthitcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     effect = level._effect["fx_margwa_head_shot_zod_zmb"];
@@ -537,15 +386,6 @@ function private margwalefthitcallback(localclientnum, oldvalue, newvalue, bnewe
   }
 }
 
-/*
-	Name: margwamidhitcallback
-	Namespace: margwaclientutils
-	Checksum: 0x42A9F94F
-	Offset: 0x2820
-	Size: 0xAC
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwamidhitcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     effect = level._effect["fx_margwa_head_shot_zod_zmb"];
@@ -556,15 +396,6 @@ function private margwamidhitcallback(localclientnum, oldvalue, newvalue, bnewen
   }
 }
 
-/*
-	Name: margwarighthitcallback
-	Namespace: margwaclientutils
-	Checksum: 0xE19FCFAF
-	Offset: 0x28D8
-	Size: 0xAC
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwarighthitcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     effect = level._effect["fx_margwa_head_shot_zod_zmb"];
@@ -575,30 +406,12 @@ function private margwarighthitcallback(localclientnum, oldvalue, newvalue, bnew
   }
 }
 
-/*
-	Name: margwaheadkilledcallback
-	Namespace: margwaclientutils
-	Checksum: 0x3C4188
-	Offset: 0x2990
-	Size: 0x60
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwaheadkilledcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     self.heads[newvalue].killed = 1;
   }
 }
 
-/*
-	Name: margwajawcallback
-	Namespace: margwaclientutils
-	Checksum: 0x94DDD068
-	Offset: 0x29F8
-	Size: 0x1C2
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private margwajawcallback(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue) {
     foreach(head in self.heads) {

@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_stronghold.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
 #using scripts\mp\mp_stronghold_fx;
 #using scripts\mp\mp_stronghold_sound;
 #using scripts\shared\util_shared;
-
 #namespace mp_stronghold;
 
-/*
-	Name: main
-	Namespace: mp_stronghold
-	Checksum: 0x64C7B03C
-	Offset: 0x1C8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   mp_stronghold_fx::main();
   mp_stronghold_sound::main();
@@ -27,15 +21,6 @@ function main() {
   level.endgamexcamname = "ui_cam_endgame_mp_stronghold";
 }
 
-/*
-	Name: dom_flag_base_fx_override
-	Namespace: mp_stronghold
-	Checksum: 0xFCEC84A3
-	Offset: 0x260
-	Size: 0x9E
-	Parameters: 2
-	Flags: Linked
-*/
 function dom_flag_base_fx_override(flag, team) {
   switch (flag.name) {
     case "a": {
@@ -60,15 +45,6 @@ function dom_flag_base_fx_override(flag, team) {
   }
 }
 
-/*
-	Name: dom_flag_cap_fx_override
-	Namespace: mp_stronghold
-	Checksum: 0x143A4E82
-	Offset: 0x308
-	Size: 0x9E
-	Parameters: 2
-	Flags: Linked
-*/
 function dom_flag_cap_fx_override(flag, team) {
   switch (flag.name) {
     case "a": {

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*****************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\bgbs\_zm_bgb_ephemeral_enhancement.gsc
+*****************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\aat_shared;
 #using scripts\shared\flag_shared;
@@ -10,31 +14,12 @@
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_bgb_ephemeral_enhancement;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_bgb_ephemeral_enhancement
-	Checksum: 0x7FE34B79
-	Offset: 0x278
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_bgb_ephemeral_enhancement", & __init__, undefined, "bgb");
 }
 
-/*
-	Name: __init__
-	Namespace: zm_bgb_ephemeral_enhancement
-	Checksum: 0xFECB091C
-	Offset: 0x2B8
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -44,15 +29,6 @@ function __init__() {
   bgb::function_336ffc4e("zm_bgb_ephemeral_enhancement");
 }
 
-/*
-	Name: validation
-	Namespace: zm_bgb_ephemeral_enhancement
-	Checksum: 0xA6C5F10A
-	Offset: 0x358
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function validation() {
   if(isdefined(self bgb::get_active()) && self bgb::get_active()) {
     return 0;
@@ -64,20 +40,11 @@ function validation() {
   return zm_weapons::can_upgrade_weapon(weap);
 }
 
-/*
-	Name: activation
-	Namespace: zm_bgb_ephemeral_enhancement
-	Checksum: 0xFE4205DF
-	Offset: 0x408
-	Size: 0x484
-	Parameters: 0
-	Flags: Linked
-*/
 function activation() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "replaced_upgraded_weapon");
+  self endon("death");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("replaced_upgraded_weapon");
   self util::waittill_any_timeout(1, "weapon_change_complete", "death", "disconnect", "bled_out", "replaced_upgraded_weapon");
   if(self laststand::player_is_in_laststand()) {
     return;
@@ -100,9 +67,9 @@ function activation() {
   self takeweapon(var_1d94ca2b, 1);
   self thread function_79585675(var_19dc14f6);
   self bgb::run_timer(60);
-  self notify(# "hash_5cefcc84");
+  self notify("hash_5cefcc84");
   if(self laststand::player_is_in_laststand()) {
-    self waittill(# "player_revived");
+    self waittill("player_revived");
   }
   if(isdefined(level.var_b6d13a4e)) {
     [
@@ -135,24 +102,15 @@ function activation() {
   self takeweapon(var_19dc14f6, 1);
 }
 
-/*
-	Name: function_79585675
-	Namespace: zm_bgb_ephemeral_enhancement
-	Checksum: 0x81199122
-	Offset: 0x898
-	Size: 0x88
-	Parameters: 1
-	Flags: Linked
-*/
 function function_79585675(var_19dc14f6) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "bgb_update");
-  self endon(# "hash_5cefcc84");
+  self endon("death");
+  self endon("disconnect");
+  self endon("bgb_update");
+  self endon("hash_5cefcc84");
   while (true) {
-    self waittill(# "weapon_change_complete");
+    self waittill("weapon_change_complete");
     if(!self zm_weapons::has_weapon_or_attachments(var_19dc14f6)) {
-      self notify(# "replaced_upgraded_weapon");
+      self notify("replaced_upgraded_weapon");
       self.var_fb11234e = undefined;
       return;
     }

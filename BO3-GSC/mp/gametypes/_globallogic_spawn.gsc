@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_globallogic_spawn.gsc
+*************************************************/
+
 #using scripts\mp\_teamops;
 #using scripts\mp\_util;
 #using scripts\mp\_vehicle;
@@ -25,18 +29,8 @@
 #using scripts\shared\hud_message_shared;
 #using scripts\shared\hud_util_shared;
 #using scripts\shared\util_shared;
-
 #namespace globallogic_spawn;
 
-/*
-	Name: timeuntilspawn
-	Namespace: globallogic_spawn
-	Checksum: 0x4BE705E5
-	Offset: 0x760
-	Size: 0x1C2
-	Parameters: 1
-	Flags: Linked
-*/
 function timeuntilspawn(includeteamkilldelay) {
   if(level.ingraceperiod && !self.hasspawned) {
     return 0;
@@ -72,15 +66,6 @@ function timeuntilspawn(includeteamkilldelay) {
   return respawndelay;
 }
 
-/*
-	Name: allteamshaveexisted
-	Namespace: globallogic_spawn
-	Checksum: 0x133ED8D
-	Offset: 0x930
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function allteamshaveexisted() {
   foreach(team in level.teams) {
     if(!level.everexisted[team]) {
@@ -90,15 +75,6 @@ function allteamshaveexisted() {
   return true;
 }
 
-/*
-	Name: mayspawn
-	Namespace: globallogic_spawn
-	Checksum: 0xD1637EA9
-	Offset: 0x9C8
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function mayspawn() {
   if(isdefined(level.mayspawn) && !self[[level.mayspawn]]()) {
     return 0;
@@ -130,15 +106,6 @@ function mayspawn() {
   return 1;
 }
 
-/*
-	Name: timeuntilwavespawn
-	Namespace: globallogic_spawn
-	Checksum: 0x3FC3C25B
-	Offset: 0xB70
-	Size: 0x122
-	Parameters: 1
-	Flags: Linked
-*/
 function timeuntilwavespawn(minimumwait) {
   earliestspawntime = gettime() + (minimumwait * 1000);
   lastwavetime = level.lastwave[self.pers["team"]];
@@ -155,38 +122,20 @@ function timeuntilwavespawn(minimumwait) {
   return (timeofspawn - gettime()) / 1000;
 }
 
-/*
-	Name: stoppoisoningandflareonspawn
-	Namespace: globallogic_spawn
-	Checksum: 0x8602131F
-	Offset: 0xCA0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function stoppoisoningandflareonspawn() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.inpoisonarea = 0;
   self.inburnarea = 0;
   self.inflarevisionarea = 0;
   self.ingroundnapalm = 0;
 }
 
-/*
-	Name: spawnplayerprediction
-	Namespace: globallogic_spawn
-	Checksum: 0x5C62ABE8
-	Offset: 0xCE8
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnplayerprediction() {
-  self endon(# "disconnect");
-  self endon(# "end_respawn");
-  self endon(# "game_ended");
-  self endon(# "joined_spectators");
-  self endon(# "spawned");
+  self endon("disconnect");
+  self endon("end_respawn");
+  self endon("game_ended");
+  self endon("joined_spectators");
+  self endon("spawned");
   livesleft = !(level.numlives && !self.pers["lives"]) && (!(level.numteamlives && !game[self.team + "_lives"]));
   if(!livesleft) {
     return;
@@ -197,17 +146,8 @@ function spawnplayerprediction() {
   }
 }
 
-/*
-	Name: doinitialspawnmessaging
-	Namespace: globallogic_spawn
-	Checksum: 0x5BE20E89
-	Offset: 0xDB8
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function doinitialspawnmessaging() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.playleaderdialog = 1;
   if(isdefined(level.disableprematchmessages) && level.disableprematchmessages) {
     return;
@@ -219,7 +159,7 @@ function doinitialspawnmessaging() {
   }
   hintmessage = util::getobjectivehinttext(team);
   if(isdefined(hintmessage)) {
-    self luinotifyevent( & "show_gametype_objective_hint", 1, hintmessage);
+    self luinotifyevent(&"show_gametype_objective_hint", 1, hintmessage);
   }
   if(isdefined(level.leaderdialog)) {
     if(self.pers["playedGameMode"] !== 1) {
@@ -237,26 +177,17 @@ function doinitialspawnmessaging() {
   }
 }
 
-/*
-	Name: spawnplayer
-	Namespace: globallogic_spawn
-	Checksum: 0x4A7C6038
-	Offset: 0xF78
-	Size: 0xE4C
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnplayer() {
   pixbeginevent("spawnPlayer_preUTS");
-  self endon(# "disconnect");
-  self endon(# "joined_spectators");
-  self notify(# "spawned");
-  level notify(# "player_spawned");
-  self notify(# "end_respawn");
-  self notify(# "started_spawnplayer");
+  self endon("disconnect");
+  self endon("joined_spectators");
+  self notify("spawned");
+  level notify("player_spawned");
+  self notify("end_respawn");
+  self notify("started_spawnplayer");
   self setspawnvariables();
-  self luinotifyevent( & "player_spawned", 0);
-  self luinotifyeventtospectators( & "player_spawned", 0);
+  self luinotifyevent(&"player_spawned", 0);
+  self luinotifyeventtospectators(&"player_spawned", 0);
   if(!isdefined(self.pers["resetMomentumOnSpawn"]) || self.pers["resetMomentumOnSpawn"]) {
     self globallogic_score::resetplayermomentumonspawn();
     self.pers["resetMomentumOnSpawn"] = 0;
@@ -288,15 +219,15 @@ function spawnplayer() {
   if(self.pers["lives"] && (!isdefined(level.takelivesondeath) || level.takelivesondeath == 0)) {
     self.pers["lives"]--;
     if(self.pers["lives"] == 0) {
-      level notify(# "player_eliminated");
-      self notify(# "player_eliminated");
+      level notify("player_eliminated");
+      self notify("player_eliminated");
     }
   }
   if(game[self.team + "_lives"] && (!isdefined(level.takelivesondeath) || level.takelivesondeath == 0)) {
     game[self.team + "_lives"]--;
     if((game[self.team + "_lives"]) == 0) {
-      level notify(# "player_eliminated");
-      self notify(# "player_eliminated");
+      level notify("player_eliminated");
+      self notify("player_eliminated");
     }
   }
   self.laststand = undefined;
@@ -334,10 +265,8 @@ function spawnplayer() {
   pixbeginevent("spawnPlayer_postUTS");
   self thread stoppoisoningandflareonspawn();
   self.sensorgrenadedata = undefined;
-  /#
   assert(globallogic_utils::isvalidclass(self.curclass));
-  # /
-    self.pers["momentum_at_spawn_or_game_end"] = (isdefined(self.pers["momentum"]) ? self.pers["momentum"] : 0);
+  self.pers["momentum_at_spawn_or_game_end"] = (isdefined(self.pers["momentum"]) ? self.pers["momentum"] : 0);
   if(sessionmodeiszombiesgame()) {
     self loadout::giveloadoutlevelspecific(self.team, self.curclass);
   } else {
@@ -426,67 +355,43 @@ function spawnplayer() {
   self thread notemomentumongameended();
   pixendevent();
   waittillframeend();
-  self notify(# "spawned_player");
-  callback::callback(# "hash_bc12b61f");
+  self notify("spawned_player");
+  callback::callback("hash_bc12b61f");
   self thread globallogic_player::player_monitor_travel_dist();
   self thread globallogic_player::player_monitor_wall_run();
   self thread globallogic_player::player_monitor_swimming();
   self thread globallogic_player::player_monitor_slide();
   self thread globallogic_player::player_monitor_doublejump();
   self thread globallogic_player::player_monitor_inactivity();
-  /#
   print(((((("" + self.origin[0]) + "") + self.origin[1]) + "") + self.origin[2]) + "");
-  # /
-    setdvar("scr_selecting_location", "");
+  setdvar("scr_selecting_location", "");
   if(!sessionmodeiszombiesgame()) {
     self thread killstreaks::killstreak_waiter();
   }
-  /#
   if(getdvarint("") > 0) {
     self thread globallogic_score::xpratethread();
   }
-  # /
-    if(game["state"] == "postgame") {
-      /#
-      assert(!level.intermission);
-      # /
-        self globallogic_player::freezeplayerforroundend();
-    }
+  if(game["state"] == "postgame") {
+    assert(!level.intermission);
+    self globallogic_player::freezeplayerforroundend();
+  }
   self util::set_lighting_state();
 }
 
-/*
-	Name: notemomentumongameended
-	Namespace: globallogic_spawn
-	Checksum: 0x74F41757
-	Offset: 0x1DD0
-	Size: 0x9A
-	Parameters: 0
-	Flags: Linked
-*/
 function notemomentumongameended() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "joined_spectators");
-  self endon(# "joined_team");
-  self notify(# "notemomentumongameended");
-  self endon(# "notemomentumongameended");
-  level waittill(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  self endon("joined_spectators");
+  self endon("joined_team");
+  self notify("notemomentumongameended");
+  self endon("notemomentumongameended");
+  level waittill("game_ended");
   self.pers["momentum_at_spawn_or_game_end"] = (isdefined(self.pers["momentum"]) ? self.pers["momentum"] : 0);
 }
 
-/*
-	Name: snddelayedmusicstart
-	Namespace: globallogic_spawn
-	Checksum: 0x7CCEFF6
-	Offset: 0x1E78
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function snddelayedmusicstart(music) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   while (level.inprematchperiod) {
     wait(0.05);
   }
@@ -495,43 +400,16 @@ function snddelayedmusicstart(music) {
   }
 }
 
-/*
-	Name: spawnspectator
-	Namespace: globallogic_spawn
-	Checksum: 0x2265AF7F
-	Offset: 0x1EF0
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function spawnspectator(origin, angles) {
-  self notify(# "spawned");
-  self notify(# "end_respawn");
+  self notify("spawned");
+  self notify("end_respawn");
   in_spawnspectator(origin, angles);
 }
 
-/*
-	Name: respawn_asspectator
-	Namespace: globallogic_spawn
-	Checksum: 0x8C7D2B0B
-	Offset: 0x1F48
-	Size: 0x2C
-	Parameters: 2
-	Flags: Linked
-*/
 function respawn_asspectator(origin, angles) {
   in_spawnspectator(origin, angles);
 }
 
-/*
-	Name: in_spawnspectator
-	Namespace: globallogic_spawn
-	Checksum: 0x7E69E83D
-	Offset: 0x1F80
-	Size: 0x194
-	Parameters: 2
-	Flags: Linked
-*/
 function in_spawnspectator(origin, angles) {
   pixmarker("BEGIN: in_spawnSpectator");
   self setspawnvariables();
@@ -551,9 +429,7 @@ function in_spawnspectator(origin, angles) {
     self.statusicon = "hud_status_dead";
   }
   spectating::set_permissions_for_machine();
-  [
-    [level.onspawnspectator]
-  ](origin, angles);
+  [[level.onspawnspectator]](origin, angles);
   if(level.teambased && !level.splitscreen) {
     self thread spectatorthirdpersonness();
   }
@@ -561,36 +437,18 @@ function in_spawnspectator(origin, angles) {
   pixmarker("END: in_spawnSpectator");
 }
 
-/*
-	Name: spectatorthirdpersonness
-	Namespace: globallogic_spawn
-	Checksum: 0x7016011A
-	Offset: 0x2120
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function spectatorthirdpersonness() {
-  self endon(# "disconnect");
-  self endon(# "spawned");
-  self notify(# "spectator_thirdperson_thread");
-  self endon(# "spectator_thirdperson_thread");
+  self endon("disconnect");
+  self endon("spawned");
+  self notify("spectator_thirdperson_thread");
+  self endon("spectator_thirdperson_thread");
   self.spectatingthirdperson = 0;
 }
 
-/*
-	Name: forcespawn
-	Namespace: globallogic_spawn
-	Checksum: 0xC1058D4B
-	Offset: 0x2168
-	Size: 0xF4
-	Parameters: 1
-	Flags: None
-*/
 function forcespawn(time) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "spawned");
+  self endon("death");
+  self endon("disconnect");
+  self endon("spawned");
   if(!isdefined(time)) {
     time = 60;
   }
@@ -609,40 +467,20 @@ function forcespawn(time) {
   self thread[[level.spawnclient]]();
 }
 
-/*
-	Name: kickifdontspawn
-	Namespace: globallogic_spawn
-	Checksum: 0x15E21384
-	Offset: 0x2268
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function kickifdontspawn() {
-  /#
   if(getdvarint("") == 1) {
     return;
   }
-  # /
-    if(self ishost()) {
-      return;
-    }
+  if(self ishost()) {
+    return;
+  }
   self kickifidontspawninternal();
 }
 
-/*
-	Name: kickifidontspawninternal
-	Namespace: globallogic_spawn
-	Checksum: 0xD15B2892
-	Offset: 0x22D0
-	Size: 0x20C
-	Parameters: 0
-	Flags: Linked
-*/
 function kickifidontspawninternal() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "spawned");
+  self endon("death");
+  self endon("disconnect");
+  self endon("spawned");
   waittime = 90;
   if(getdvarstring("scr_kick_time") != "") {
     waittime = getdvarfloat("scr_kick_time");
@@ -673,32 +511,14 @@ function kickifidontspawninternal() {
   kick(self getentitynumber(), "EXE_PLAYERKICKED_NOTSPAWNED");
 }
 
-/*
-	Name: kickwait
-	Namespace: globallogic_spawn
-	Checksum: 0xC3EAEFD6
-	Offset: 0x24E8
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function kickwait(waittime) {
-  level endon(# "game_ended");
+  level endon("game_ended");
   hostmigration::waitlongdurationwithhostmigrationpause(waittime);
 }
 
-/*
-	Name: spawninterroundintermission
-	Namespace: globallogic_spawn
-	Checksum: 0x56104739
-	Offset: 0x2520
-	Size: 0x13C
-	Parameters: 0
-	Flags: None
-*/
 function spawninterroundintermission() {
-  self notify(# "spawned");
-  self notify(# "end_respawn");
+  self notify("spawned");
+  self notify("end_respawn");
   self setspawnvariables();
   self util::clearlowermessage();
   self util::freeze_player_controls(0);
@@ -715,19 +535,10 @@ function spawninterroundintermission() {
   self setdepthoffield(0, 128, 512, 4000, 6, 1.8);
 }
 
-/*
-	Name: spawnintermission
-	Namespace: globallogic_spawn
-	Checksum: 0x464BCFD6
-	Offset: 0x2668
-	Size: 0x13C
-	Parameters: 2
-	Flags: Linked
-*/
 function spawnintermission(usedefaultcallback, endgame) {
-  self notify(# "spawned");
-  self notify(# "end_respawn");
-  self endon(# "disconnect");
+  self notify("spawned");
+  self notify("end_respawn");
+  self endon("disconnect");
   self setspawnvariables();
   self util::clearlowermessage();
   self util::freeze_player_controls(0);
@@ -748,15 +559,6 @@ function spawnintermission(usedefaultcallback, endgame) {
   self setdepthoffield(0, 128, 512, 4000, 6, 1.8);
 }
 
-/*
-	Name: spawnqueuedclientonteam
-	Namespace: globallogic_spawn
-	Checksum: 0x75AF9F0D
-	Offset: 0x27B0
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked
-*/
 function spawnqueuedclientonteam(team) {
   player_to_spawn = undefined;
   for (i = 0; i < level.deadplayers[team].size; i++) {
@@ -774,15 +576,6 @@ function spawnqueuedclientonteam(team) {
   }
 }
 
-/*
-	Name: spawnqueuedclient
-	Namespace: globallogic_spawn
-	Checksum: 0x554A5A3
-	Offset: 0x2890
-	Size: 0x152
-	Parameters: 2
-	Flags: Linked
-*/
 function spawnqueuedclient(dead_player_team, killer) {
   if(!level.playerqueuedrespawn) {
     return;
@@ -804,15 +597,6 @@ function spawnqueuedclient(dead_player_team, killer) {
   }
 }
 
-/*
-	Name: allteamsnearscorelimit
-	Namespace: globallogic_spawn
-	Checksum: 0xFCCD6A23
-	Offset: 0x29F0
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function allteamsnearscorelimit() {
   if(!level.teambased) {
     return false;
@@ -828,15 +612,6 @@ function allteamsnearscorelimit() {
   return true;
 }
 
-/*
-	Name: shouldshowrespawnmessage
-	Namespace: globallogic_spawn
-	Checksum: 0xA8575C1A
-	Offset: 0x2AC0
-	Size: 0x6E
-	Parameters: 0
-	Flags: Linked
-*/
 function shouldshowrespawnmessage() {
   if(util::waslastround()) {
     return false;
@@ -853,60 +628,29 @@ function shouldshowrespawnmessage() {
   return true;
 }
 
-/*
-	Name: default_spawnmessage
-	Namespace: globallogic_spawn
-	Checksum: 0xDBF8CF33
-	Offset: 0x2B38
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function default_spawnmessage() {
   util::setlowermessage(game["strings"]["spawn_next_round"]);
   self thread globallogic_ui::removespawnmessageshortly(3);
 }
 
-/*
-	Name: showspawnmessage
-	Namespace: globallogic_spawn
-	Checksum: 0x529475C1
-	Offset: 0x2B88
-	Size: 0x28
-	Parameters: 0
-	Flags: Linked
-*/
 function showspawnmessage() {
   if(shouldshowrespawnmessage()) {
     self thread[[level.spawnmessage]]();
   }
 }
 
-/*
-	Name: spawnclient
-	Namespace: globallogic_spawn
-	Checksum: 0xCAC8ABF5
-	Offset: 0x2BB8
-	Size: 0x194
-	Parameters: 1
-	Flags: Linked
-*/
 function spawnclient(timealreadypassed) {
   pixbeginevent("spawnClient");
-  /#
   assert(isdefined(self.team));
-  # /
-    /#
   assert(globallogic_utils::isvalidclass(self.curclass));
-  # /
-    if(!self mayspawn() && (!(isdefined(self.usedresurrect) && self.usedresurrect))) {
-      currentorigin = self.origin;
-      currentangles = self.angles;
-      self showspawnmessage();
-      self thread[[level.spawnspectator]](currentorigin + vectorscale((0, 0, 1), 60), currentangles);
-      pixendevent();
-      return;
-    }
+  if(!self mayspawn() && (!(isdefined(self.usedresurrect) && self.usedresurrect))) {
+    currentorigin = self.origin;
+    currentangles = self.angles;
+    self showspawnmessage();
+    self thread[[level.spawnspectator]](currentorigin + vectorscale((0, 0, 1), 60), currentangles);
+    pixendevent();
+    return;
+  }
   if(self.waitingtospawn) {
     pixendevent();
     return;
@@ -920,19 +664,10 @@ function spawnclient(timealreadypassed) {
   pixendevent();
 }
 
-/*
-	Name: waitandspawnclient
-	Namespace: globallogic_spawn
-	Checksum: 0x680AC454
-	Offset: 0x2D58
-	Size: 0x5CC
-	Parameters: 1
-	Flags: Linked
-*/
 function waitandspawnclient(timealreadypassed) {
-  self endon(# "disconnect");
-  self endon(# "end_respawn");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  self endon("end_respawn");
+  level endon("game_ended");
   if(!isdefined(timealreadypassed)) {
     timealreadypassed = 0;
   }
@@ -947,7 +682,7 @@ function waitandspawnclient(timealreadypassed) {
       teamkilldelay = 0;
     }
     if(teamkilldelay > 0) {
-      util::setlowermessage( & "MP_FRIENDLY_FIRE_WILL_NOT", teamkilldelay);
+      util::setlowermessage(&"MP_FRIENDLY_FIRE_WILL_NOT", teamkilldelay);
       self thread respawn_asspectator(self.origin + vectorscale((0, 0, 1), 60), self.angles);
       spawnedasspectator = 1;
       wait(teamkilldelay);
@@ -992,7 +727,7 @@ function waitandspawnclient(timealreadypassed) {
     }
     spawnedasspectator = 1;
     self globallogic_utils::waitfortimeornotify(timeuntilspawn, "force_spawn");
-    self notify(# "stop_wait_safe_spawn_button");
+    self notify("stop_wait_safe_spawn_button");
   }
   if(isdefined(level.gametypespawnwaiter)) {
     if(!spawnedasspectator) {
@@ -1030,18 +765,9 @@ function waitandspawnclient(timealreadypassed) {
   self thread[[level.spawnplayer]]();
 }
 
-/*
-	Name: waitrespawnorsafespawnbutton
-	Namespace: globallogic_spawn
-	Checksum: 0x4DF04495
-	Offset: 0x3330
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function waitrespawnorsafespawnbutton() {
-  self endon(# "disconnect");
-  self endon(# "end_respawn");
+  self endon("disconnect");
+  self endon("end_respawn");
   while (true) {
     if(self usebuttonpressed()) {
       break;
@@ -1050,35 +776,17 @@ function waitrespawnorsafespawnbutton() {
   }
 }
 
-/*
-	Name: waitinspawnqueue
-	Namespace: globallogic_spawn
-	Checksum: 0xD8019057
-	Offset: 0x3380
-	Size: 0x90
-	Parameters: 0
-	Flags: None
-*/
 function waitinspawnqueue() {
-  self endon(# "disconnect");
-  self endon(# "end_respawn");
+  self endon("disconnect");
+  self endon("end_respawn");
   if(!level.ingraceperiod && !level.usestartspawns) {
     currentorigin = self.origin;
     currentangles = self.angles;
     self thread[[level.spawnspectator]](currentorigin + vectorscale((0, 0, 1), 60), currentangles);
-    self waittill(# "queue_respawn");
+    self waittill("queue_respawn");
   }
 }
 
-/*
-	Name: setthirdperson
-	Namespace: globallogic_spawn
-	Checksum: 0x8D3D9EF6
-	Offset: 0x3418
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function setthirdperson(value) {
   if(!level.console) {
     return;
@@ -1096,15 +804,6 @@ function setthirdperson(value) {
   }
 }
 
-/*
-	Name: setspawnvariables
-	Namespace: globallogic_spawn
-	Checksum: 0xD9D7A8F8
-	Offset: 0x3510
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function setspawnvariables() {
   resettimeout();
   self stopshellshock();

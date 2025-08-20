@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_tank.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_shared;
 #using scripts\shared\ai\zombie_utility;
@@ -23,20 +27,9 @@
 #using scripts\zm\zm_tomb_amb;
 #using scripts\zm\zm_tomb_utility;
 #using scripts\zm\zm_tomb_vo;
-
 #using_animtree("generic");
-
 #namespace zm_tomb_tank;
 
-/*
-	Name: init
-	Namespace: zm_tomb_tank
-	Checksum: 0x42435215
-	Offset: 0xA50
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("vehicle", "tank_tread_fx", 21000, 1, "int");
   clientfield::register("vehicle", "tank_flamethrower_fx", 21000, 2, "int");
@@ -46,15 +39,6 @@ function init() {
   level.zm_mantle_over_40_move_speed_override = & zm_mantle_over_40_move_speed_override;
 }
 
-/*
-	Name: main
-	Namespace: zm_tomb_tank
-	Checksum: 0xED70B033
-	Offset: 0xB40
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level.vh_tank = getent("tank", "targetname");
   level.vh_tank tank_setup();
@@ -64,29 +48,11 @@ function main() {
   level thread zm_tomb_vo::watch_occasional_line("tank", "tank_cooling", "vo_tank_cooling");
 }
 
-/*
-	Name: onplayerspawned
-	Namespace: zm_tomb_tank
-	Checksum: 0x4DB0ABFB
-	Offset: 0xC38
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerspawned() {
   self.b_already_on_tank = 0;
   self.var_32857832 = 0;
 }
 
-/*
-	Name: tank_discovery_vo
-	Namespace: zm_tomb_tank
-	Checksum: 0x5ACA20D2
-	Offset: 0xC60
-	Size: 0x1C8
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_discovery_vo() {
   max_dist_sq = 640000;
   level flag::wait_till("activate_zone_village_0");
@@ -104,15 +70,6 @@ function tank_discovery_vo() {
   }
 }
 
-/*
-	Name: tank_drop_powerups
-	Namespace: zm_tomb_tank
-	Checksum: 0x40D9FEEC
-	Offset: 0xE30
-	Size: 0x340
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_drop_powerups() {
   level flag::wait_till("start_zombie_round_logic");
   a_drop_nodes = [];
@@ -137,7 +94,7 @@ function tank_drop_powerups() {
             node.next_drop_round = level.round_number + randomintrange(8, 12);
             continue;
           }
-          level notify(# "sam_clue_tank", self);
+          level notify("sam_clue_tank", self);
         }
       }
     }
@@ -145,15 +102,6 @@ function tank_drop_powerups() {
   }
 }
 
-/*
-	Name: zm_mantle_over_40_move_speed_override
-	Namespace: zm_tomb_tank
-	Checksum: 0x6498439C
-	Offset: 0x1178
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function zm_mantle_over_40_move_speed_override() {
   traversealias = "barrier_walk";
   switch (self.zombie_move_speed) {
@@ -162,56 +110,24 @@ function zm_mantle_over_40_move_speed_override() {
       break;
     }
     default: {
-      /#
       assertmsg(("" + self.zombie_move_speed) + "");
-      # /
     }
   }
   return traversealias;
 }
 
-/*
-	Name: tankuseanimtree
-	Namespace: zm_tomb_tank
-	Checksum: 0xAF6D91FA
-	Offset: 0x1208
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tankuseanimtree() {
   self useanimtree($generic);
 }
 
-/*
-	Name: drawtag
-	Namespace: zm_tomb_tank
-	Checksum: 0xB0FA175C
-	Offset: 0x1238
-	Size: 0xB4
-	Parameters: 2
-	Flags: Linked
-*/
 function drawtag(tag, opcolor) {
-  /#
   org = self gettagorigin(tag);
   ang = self gettagangles(tag);
   box(org, vectorscale((-1, -1, 0), 8), vectorscale((1, 1, 1), 8), ang[1], opcolor, 1, 0, 1);
-  # /
 }
 
-/*
-	Name: draw_tank_tag
-	Namespace: zm_tomb_tank
-	Checksum: 0xA4D79DFC
-	Offset: 0x12F8
-	Size: 0xA8
-	Parameters: 2
-	Flags: Linked
-*/
 function draw_tank_tag(tag, opcolor) {
-  /#
-  self endon(# "death");
+  self endon("death");
   for (;;) {
     if(self tank_tag_is_valid(tag)) {
       drawtag(tag.str_tag, vectorscale((0, 1, 0), 255));
@@ -220,20 +136,9 @@ function draw_tank_tag(tag, opcolor) {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: tank_debug_tags
-	Namespace: zm_tomb_tank
-	Checksum: 0x895752B9
-	Offset: 0x13A8
-	Size: 0x368
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_debug_tags() {
-  /#
   setdvar("", "");
   adddebugcommand("");
   level flag::wait_till("");
@@ -260,18 +165,8 @@ function tank_debug_tags() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: tank_jump_down_store_offset
-	Namespace: zm_tomb_tank
-	Checksum: 0xE418D3F8
-	Offset: 0x1718
-	Size: 0x104
-	Parameters: 1
-	Flags: Linked
-*/
 function tank_jump_down_store_offset(s_pos) {
   v_up = anglestoup(self.angles);
   v_right = anglestoright(self.angles);
@@ -280,15 +175,6 @@ function tank_jump_down_store_offset(s_pos) {
   s_pos.tank_offset = (vectordot(v_fwd, offset), vectordot(v_right, offset), vectordot(v_up, offset));
 }
 
-/*
-	Name: tank_get_jump_down_offset
-	Namespace: zm_tomb_tank
-	Checksum: 0x73325F26
-	Offset: 0x1828
-	Size: 0xD6
-	Parameters: 1
-	Flags: Linked
-*/
 function tank_get_jump_down_offset(s_pos) {
   v_up = anglestoup(self.angles);
   v_right = anglestoright(self.angles);
@@ -297,15 +183,6 @@ function tank_get_jump_down_offset(s_pos) {
   return (self.origin + (v_offset[0] * v_fwd)) + (v_offset[1] * v_right) + (v_offset[2] * v_up);
 }
 
-/*
-	Name: tank_setup
-	Namespace: zm_tomb_tank
-	Checksum: 0x31A4D091
-	Offset: 0x1908
-	Size: 0x714
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_setup() {
   self flag::init("tank_moving");
   self flag::init("tank_activated");
@@ -326,7 +203,7 @@ function tank_setup() {
   self.t_use = getent("trig_use_tank", "targetname");
   self.t_use enablelinkto();
   self.t_use linkto(self);
-  self.t_use sethintstring( & "ZM_TOMB_X2AT", 500);
+  self.t_use sethintstring(&"ZM_TOMB_X2AT", 500);
   self.t_use setcursorhint("HINT_NOICON");
   self.var_5c499e37 = getent("tank_navmesh_cutter", "targetname");
   self.var_5c499e37 enablelinkto();
@@ -363,23 +240,12 @@ function tank_setup() {
   self thread do_cooldown_fx();
   self thread function_118e38b5();
   self thread tank_drop_powerups();
-  /#
   self thread tank_debug_tags();
-  # /
-    self playloopsound("zmb_tank_idle", 0.5);
+  self playloopsound("zmb_tank_idle", 0.5);
 }
 
-/*
-	Name: function_c9714eb4
-	Namespace: zm_tomb_tank
-	Checksum: 0x44384F02
-	Offset: 0x2028
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c9714eb4() {
-  self endon(# "death");
+  self endon("death");
   level flag::wait_till("start_zombie_round_logic");
   do {
     for (var_6b1535d6 = 0; var_6b1535d6 < self.a_tank_tags.size; var_6b1535d6++) {
@@ -396,17 +262,8 @@ function function_c9714eb4() {
   while (1);
 }
 
-/*
-	Name: function_617c74cb
-	Namespace: zm_tomb_tank
-	Checksum: 0x5999E775
-	Offset: 0x2178
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_617c74cb() {
-  self endon(# "death");
+  self endon("death");
   level flag::wait_till("start_zombie_round_logic");
   do {
     for (var_6b1535d6 = 0; var_6b1535d6 < self.a_mechz_tags.size; var_6b1535d6++) {
@@ -423,15 +280,6 @@ function function_617c74cb() {
   while (1);
 }
 
-/*
-	Name: function_1db98f69
-	Namespace: zm_tomb_tank
-	Checksum: 0x9CA331F6
-	Offset: 0x22E0
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1db98f69(tag_name) {
   foreach(tag_struct in self.a_tank_tags) {
     if(tag_struct.str_tag == tag_name) {
@@ -441,15 +289,6 @@ function function_1db98f69(tag_name) {
   return undefined;
 }
 
-/*
-	Name: function_21d81b2c
-	Namespace: zm_tomb_tank
-	Checksum: 0xC045D631
-	Offset: 0x2390
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_21d81b2c(tag_name) {
   foreach(tag_struct in self.a_mechz_tags) {
     if(tag_struct.str_tag == tag_name) {
@@ -459,17 +298,8 @@ function function_21d81b2c(tag_name) {
   return undefined;
 }
 
-/*
-	Name: do_cooldown_fx
-	Namespace: zm_tomb_tank
-	Checksum: 0x7434DAE9
-	Offset: 0x2440
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function do_cooldown_fx() {
-  self endon(# "death");
+  self endon("death");
   level flag::wait_till("start_zombie_round_logic");
   while (true) {
     self clientfield::set("tank_cooldown_fx", 2);
@@ -481,17 +311,8 @@ function do_cooldown_fx() {
   }
 }
 
-/*
-	Name: do_treadfx
-	Namespace: zm_tomb_tank
-	Checksum: 0x8F1A1CED
-	Offset: 0x2540
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function do_treadfx() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     self flag::wait_till("tank_moving");
     self clientfield::set("tank_tread_fx", 1);
@@ -500,17 +321,8 @@ function do_treadfx() {
   }
 }
 
-/*
-	Name: function_118e38b5
-	Namespace: zm_tomb_tank
-	Checksum: 0x977EE6F4
-	Offset: 0x25E0
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_118e38b5() {
-  self endon(# "death");
+  self endon("death");
   self vehicle::lights_off();
   while (true) {
     self flag::wait_till("tank_moving");
@@ -520,17 +332,8 @@ function function_118e38b5() {
   }
 }
 
-/*
-	Name: disconnect_reconnect_paths
-	Namespace: zm_tomb_tank
-	Checksum: 0xADA032F4
-	Offset: 0x2688
-	Size: 0x88
-	Parameters: 1
-	Flags: None
-*/
 function disconnect_reconnect_paths(vh_tank) {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     self disconnectpaths();
     wait(1);
@@ -542,15 +345,6 @@ function disconnect_reconnect_paths(vh_tank) {
   }
 }
 
-/*
-	Name: tank_rumble_update
-	Namespace: zm_tomb_tank
-	Checksum: 0x649F6B6D
-	Offset: 0x2718
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_rumble_update() {
   while (self.b_already_on_tank) {
     if(level.vh_tank flag::get("tank_moving")) {
@@ -563,15 +357,6 @@ function tank_rumble_update() {
   self clientfield::set_to_player("player_rumble_and_shake", 0);
 }
 
-/*
-	Name: players_on_tank_update
-	Namespace: zm_tomb_tank
-	Checksum: 0x996D8F02
-	Offset: 0x27B8
-	Size: 0x330
-	Parameters: 0
-	Flags: Linked
-*/
 function players_on_tank_update() {
   level flag::wait_till("start_zombie_round_logic");
   self thread tank_disconnect_paths();
@@ -583,7 +368,7 @@ function players_on_tank_update() {
           e_player.b_already_on_tank = 1;
           self.n_players_on++;
           if(self flag::get("tank_cooldown")) {
-            level notify(# "vo_tank_cooling", e_player);
+            level notify("vo_tank_cooling", e_player);
           }
           e_player thread tank_rumble_update();
           e_player thread tank_rides_around_map_achievement_watcher();
@@ -598,8 +383,8 @@ function players_on_tank_update() {
         if(isdefined(e_player.b_already_on_tank) && e_player.b_already_on_tank && !e_player entity_on_tank()) {
           e_player.b_already_on_tank = 0;
           self.n_players_on--;
-          level notify(# "vo_tank_leave", e_player);
-          e_player notify(# "player_jumped_off_tank");
+          level notify("vo_tank_leave", e_player);
+          e_player notify("player_jumped_off_tank");
           e_player clientfield::set_to_player("player_rumble_and_shake", 0);
           e_player allowprone(1);
         }
@@ -609,37 +394,19 @@ function players_on_tank_update() {
   }
 }
 
-/*
-	Name: tank_force_crouch_from_prone_after_on_tank
-	Namespace: zm_tomb_tank
-	Checksum: 0x72AD89CD
-	Offset: 0x2AF0
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_force_crouch_from_prone_after_on_tank() {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
+  self endon("disconnect");
+  self endon("bled_out");
   wait(1);
   if("prone" == self getstance()) {
     self setstance("crouch");
   }
 }
 
-/*
-	Name: function_de2a4a6e
-	Namespace: zm_tomb_tank
-	Checksum: 0x3B4FDC7B
-	Offset: 0x2B58
-	Size: 0xB0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_de2a4a6e(trig) {
-  self endon(# "player_jumped_off_tank");
+  self endon("player_jumped_off_tank");
   while (self.b_already_on_tank) {
-    trig waittill(# "trigger", player);
+    trig waittill("trigger", player);
     if(player == self && self isonground()) {
       v_push = anglestoforward(trig.angles) * 150;
       self setvelocity(v_push);
@@ -648,18 +415,9 @@ function function_de2a4a6e(trig) {
   }
 }
 
-/*
-	Name: tank_rides_around_map_achievement_watcher
-	Namespace: zm_tomb_tank
-	Checksum: 0xC68F00DA
-	Offset: 0x2C10
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_rides_around_map_achievement_watcher() {
-  self endon(# "death_or_disconnect");
-  self endon(# "player_jumped_off_tank");
+  self endon("death_or_disconnect");
+  self endon("player_jumped_off_tank");
   if(level.vh_tank flag::get("tank_moving")) {
     level.vh_tank flag::wait_till_clear("tank_moving");
   }
@@ -669,18 +427,9 @@ function tank_rides_around_map_achievement_watcher() {
     level.vh_tank flag::wait_till_clear("tank_moving");
   }
   while (str_starting_location != level.vh_tank.str_location_current);
-  self notify(# "rode_tank_around_map");
+  self notify("rode_tank_around_map");
 }
 
-/*
-	Name: entity_on_tank
-	Namespace: zm_tomb_tank
-	Checksum: 0x8FCF0E4B
-	Offset: 0x2D00
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function entity_on_tank() {
   if(!self isonground() && (self istouching(level.vh_tank.e_roof) || self istouching(level.vh_tank.var_4da798ac))) {
     return true;
@@ -691,15 +440,6 @@ function entity_on_tank() {
   return false;
 }
 
-/*
-	Name: tank_station
-	Namespace: zm_tomb_tank
-	Checksum: 0x22A3643F
-	Offset: 0x2DA8
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_station() {
   self thread tank_watch_use();
   self thread tank_movement();
@@ -707,19 +447,10 @@ function tank_station() {
   foreach(t_call_box in a_call_boxes) {
     t_call_box thread tank_call_box();
   }
-  self.t_use waittill(# "trigger");
+  self.t_use waittill("trigger");
   level.tank_boxes_enabled = 1;
 }
 
-/*
-	Name: tank_left_behind
-	Namespace: zm_tomb_tank
-	Checksum: 0x390023B2
-	Offset: 0x2EB8
-	Size: 0x2A4
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_left_behind() {
   wait(4);
   n_valid_dist_sq = 1000000;
@@ -756,18 +487,9 @@ function tank_left_behind() {
   zm_tomb_vo::tank_left_behind_vo(e_victim, e_rider);
 }
 
-/*
-	Name: tank_watch_use
-	Namespace: zm_tomb_tank
-	Checksum: 0x4ADA75E
-	Offset: 0x3168
-	Size: 0x1A0
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_watch_use() {
   while (true) {
-    self.t_use waittill(# "trigger", e_player);
+    self.t_use waittill("trigger", e_player);
     cooling_down = self flag::get("tank_cooldown");
     if(zombie_utility::is_player_valid(e_player) && e_player.score >= 500 && !cooling_down) {
       self flag::set("tank_activated");
@@ -775,7 +497,7 @@ function tank_watch_use() {
       e_player thread zm_audio::create_and_play_dialog("tank", "tank_buy");
       self thread tank_left_behind();
       e_player zm_score::minus_to_player_score(500);
-      self waittill(# "tank_stop");
+      self waittill("tank_stop");
       self playsound("zmb_tank_stop");
       self stoploopsound(1.5);
       if(isdefined(self.b_call_box_used) && self.b_call_box_used) {
@@ -786,63 +508,36 @@ function tank_watch_use() {
   }
 }
 
-/*
-	Name: activate_tank_wait_with_no_cost
-	Namespace: zm_tomb_tank
-	Checksum: 0xB057CEB3
-	Offset: 0x3310
-	Size: 0xA8
-	Parameters: 0
-	Flags: Linked
-*/
 function activate_tank_wait_with_no_cost() {
-  self endon(# "call_box_used");
+  self endon("call_box_used");
   self.b_no_cost = 1;
   wait(0.05);
   self flag::wait_till_clear("tank_cooldown");
-  self.t_use waittill(# "trigger", e_player);
+  self.t_use waittill("trigger", e_player);
   self flag::set("tank_activated");
   self flag::set("tank_moving");
   self.b_no_cost = 0;
 }
 
-/*
-	Name: tank_call_box
-	Namespace: zm_tomb_tank
-	Checksum: 0x22E77461
-	Offset: 0x33C0
-	Size: 0x19A
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_call_box() {
   while (true) {
-    self waittill(# "trigger", e_player);
+    self waittill("trigger", e_player);
     cooling_down = level.vh_tank flag::get("tank_cooldown");
     if(!level.vh_tank flag::get("tank_activated") && e_player.score >= 500 && !cooling_down) {
-      level.vh_tank notify(# "call_box_used");
+      level.vh_tank notify("call_box_used");
       level.vh_tank.b_call_box_used = 1;
       e_switch = getent(self.target, "targetname");
       self setinvisibletoall();
       wait(0.05);
       e_switch rotatepitch(-180, 0.5);
-      e_switch waittill(# "rotatedone");
+      e_switch waittill("rotatedone");
       e_switch rotatepitch(180, 0.5);
       level.vh_tank.t_use useby(e_player);
-      level.vh_tank waittill(# "tank_stop");
+      level.vh_tank waittill("tank_stop");
     }
   }
 }
 
-/*
-	Name: tank_call_boxes_update
-	Namespace: zm_tomb_tank
-	Checksum: 0x31BEA109
-	Offset: 0x3568
-	Size: 0x252
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_call_boxes_update() {
   str_loc = level.vh_tank.str_location_current;
   a_trigs = getentarray("trig_tank_station_call", "targetname");
@@ -853,7 +548,7 @@ function tank_call_boxes_update() {
     trig setcursorhint("HINT_NOICON");
     if(moving) {
       trig setvisibletoall();
-      trig sethintstring( & "ZM_TOMB_TNKM");
+      trig sethintstring(&"ZM_TOMB_TNKM");
       continue;
     }
     if(!level.tank_boxes_enabled || at_this_station) {
@@ -862,23 +557,14 @@ function tank_call_boxes_update() {
     }
     if(cooling) {
       trig setvisibletoall();
-      trig sethintstring( & "ZM_TOMB_TNKC");
+      trig sethintstring(&"ZM_TOMB_TNKC");
       continue;
     }
     trig setvisibletoall();
-    trig sethintstring( & "ZM_TOMB_X2CT", 500);
+    trig sethintstring(&"ZM_TOMB_X2CT", 500);
   }
 }
 
-/*
-	Name: tank_movement
-	Namespace: zm_tomb_tank
-	Checksum: 0xCE6A130E
-	Offset: 0x37C8
-	Size: 0x420
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_movement() {
   n_path_start = getvehiclenode("tank_start", "targetname");
   self.origin = n_path_start.origin;
@@ -897,20 +583,18 @@ function tank_movement() {
       self thread follow_path(n_path_start);
       self setspeedimmediate(0);
     }
-    /#
     iprintln("");
-    # /
-      self thread tank_connect_paths();
+    self thread tank_connect_paths();
     self playsound("evt_tank_call");
     self setspeedimmediate(8);
     self.t_use setinvisibletoall();
     tank_call_boxes_update();
     self thread tank_kill_players();
     self thread tank_cooldown_timer();
-    self waittill(# "tank_stop");
+    self waittill("tank_stop");
     self flag::set("tank_cooldown");
     self.t_use setvisibletoall();
-    self.t_use sethintstring( & "ZM_TOMB_TNKC");
+    self.t_use sethintstring(&"ZM_TOMB_TNKC");
     self flag::clear("tank_moving");
     self thread tank_disconnect_paths();
     self setspeedimmediate(0);
@@ -923,9 +607,9 @@ function tank_movement() {
     self wait_for_tank_cooldown();
     self flag::clear("tank_cooldown");
     if(isdefined(self.b_no_cost) && self.b_no_cost) {
-      self.t_use sethintstring( & "ZM_TOMB_X2ATF");
+      self.t_use sethintstring(&"ZM_TOMB_X2ATF");
     } else {
-      self.t_use sethintstring( & "ZM_TOMB_X2AT", 500);
+      self.t_use sethintstring(&"ZM_TOMB_X2AT", 500);
     }
     self.t_use setcursorhint("HINT_NOICON");
     self flag::clear("tank_activated");
@@ -933,53 +617,26 @@ function tank_movement() {
   }
 }
 
-/*
-	Name: tank_disconnect_paths
-	Namespace: zm_tomb_tank
-	Checksum: 0x96D977EB
-	Offset: 0x3BF0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_disconnect_paths() {
-  self endon(# "death");
+  self endon("death");
   while (self getspeedmph() > 0) {
     wait(0.05);
   }
   self.var_5c499e37 disconnectpaths();
 }
 
-/*
-	Name: tank_connect_paths
-	Namespace: zm_tomb_tank
-	Checksum: 0x2A167201
-	Offset: 0x3C50
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_connect_paths() {
-  self endon(# "death");
+  self endon("death");
   self.var_5c499e37 connectpaths();
 }
 
-/*
-	Name: tank_kill_players
-	Namespace: zm_tomb_tank
-	Checksum: 0x1693591A
-	Offset: 0x3C80
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_kill_players() {
-  self endon(# "tank_cooldown");
+  self endon("tank_cooldown");
   foreach(player in level.players) {
     player.var_32857832 = 0;
   }
   while (true) {
-    self.t_kill waittill(# "trigger", player);
+    self.t_kill waittill("trigger", player);
     if(!(isdefined(player.b_already_on_tank) && player.b_already_on_tank) && (!(isdefined(player.var_d0cd73ec) && player.var_d0cd73ec))) {
       player thread tank_ran_me_over();
       wait(0.05);
@@ -989,15 +646,6 @@ function tank_kill_players() {
   }
 }
 
-/*
-	Name: tank_ran_me_over
-	Namespace: zm_tomb_tank
-	Checksum: 0x4129078
-	Offset: 0x3DC0
-	Size: 0x2FE
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_ran_me_over() {
   self.var_32857832++;
   if(self.var_32857832 < 20) {
@@ -1033,30 +681,12 @@ function tank_ran_me_over() {
   self.var_d0cd73ec = undefined;
 }
 
-/*
-	Name: wait_to_unlink
-	Namespace: zm_tomb_tank
-	Checksum: 0x859F9844
-	Offset: 0x40C8
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_to_unlink(player) {
-  player endon(# "disconnect");
+  player endon("disconnect");
   wait(4);
   self unlink();
 }
 
-/*
-	Name: tank_cooldown_timer
-	Namespace: zm_tomb_tank
-	Checksum: 0x8E40FCF7
-	Offset: 0x4108
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_cooldown_timer() {
   self.n_cooldown_timer = 0;
   str_location_original = self.str_location_current;
@@ -1070,15 +700,6 @@ function tank_cooldown_timer() {
   }
 }
 
-/*
-	Name: wait_for_tank_cooldown
-	Namespace: zm_tomb_tank
-	Checksum: 0x66FB1FE3
-	Offset: 0x41E0
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_for_tank_cooldown() {
   self thread snd_fuel();
   if(self.n_cooldown_timer < 2) {
@@ -1087,20 +708,11 @@ function wait_for_tank_cooldown() {
     self.n_cooldown_timer = 120;
   }
   wait(self.n_cooldown_timer);
-  level notify(# "stp_cd");
+  level notify("stp_cd");
   self playsound("zmb_tank_ready");
   self playloopsound("zmb_tank_idle");
 }
 
-/*
-	Name: snd_fuel
-	Namespace: zm_tomb_tank
-	Checksum: 0x99D2CF5E
-	Offset: 0x42A8
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function snd_fuel() {
   snd_cd_ent = spawn("script_origin", self.origin);
   snd_cd_ent linkto(self);
@@ -1108,55 +720,35 @@ function snd_fuel() {
   snd_cd_ent playsound("zmb_tank_fuel_start");
   wait(0.5);
   snd_cd_ent playloopsound("zmb_tank_fuel_loop");
-  level waittill(# "stp_cd");
+  level waittill("stp_cd");
   snd_cd_ent stoploopsound(0.5);
   snd_cd_ent playsound("zmb_tank_fuel_end");
   wait(2);
   snd_cd_ent delete();
 }
 
-/*
-	Name: follow_path
-	Namespace: zm_tomb_tank
-	Checksum: 0x6A064331
-	Offset: 0x43B0
-	Size: 0x16C
-	Parameters: 1
-	Flags: Linked
-*/
 function follow_path(n_path_start) {
-  self endon(# "death");
-  /#
+  self endon("death");
   assert(isdefined(n_path_start), "");
-  # /
-    self notify(# "newpath");
-  self endon(# "newpath");
+  self notify("newpath");
+  self endon("newpath");
   n_next_point = n_path_start;
   while (isdefined(n_next_point)) {
     self.n_next_node = getvehiclenode(n_next_point.target, "targetname");
-    self waittill(# "reached_node", n_next_point);
+    self waittill("reached_node", n_next_point);
     if(isdefined(n_next_point.script_noteworthy) && issubstr(n_next_point.script_noteworthy, "fxexp")) {
       exploder::exploder(n_next_point.script_noteworthy);
     }
     self.n_current = n_next_point;
-    n_next_point notify(# "trigger", self);
+    n_next_point notify("trigger", self);
     if(isdefined(n_next_point.script_noteworthy)) {
       self notify(n_next_point.script_noteworthy);
-      self notify(# "noteworthy", n_next_point.script_noteworthy, n_next_point);
+      self notify("noteworthy", n_next_point.script_noteworthy, n_next_point);
     }
     waittillframeend();
   }
 }
 
-/*
-	Name: tank_tag_array_setup
-	Namespace: zm_tomb_tank
-	Checksum: 0x18A250B9
-	Offset: 0x4528
-	Size: 0x448
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_tag_array_setup() {
   a_tank_tags = [];
   a_tank_tags[0] = spawnstruct();
@@ -1202,15 +794,6 @@ function tank_tag_array_setup() {
   return a_tank_tags;
 }
 
-/*
-	Name: get_players_on_tank
-	Namespace: zm_tomb_tank
-	Checksum: 0xDDF7FC78
-	Offset: 0x4978
-	Size: 0x1A4
-	Parameters: 1
-	Flags: Linked
-*/
 function get_players_on_tank(valid_targets_only = 0) {
   a_players_on_tank = [];
   a_players = getplayers();
@@ -1229,15 +812,6 @@ function get_players_on_tank(valid_targets_only = 0) {
   return a_players_on_tank;
 }
 
-/*
-	Name: mechz_tag_array_setup
-	Namespace: zm_tomb_tank
-	Checksum: 0x20AD0F7D
-	Offset: 0x4B28
-	Size: 0x1A2
-	Parameters: 0
-	Flags: Linked
-*/
 function mechz_tag_array_setup() {
   a_mechz_tags = [];
   a_mechz_tags[0] = spawnstruct();
@@ -1259,31 +833,13 @@ function mechz_tag_array_setup() {
   return a_mechz_tags;
 }
 
-/*
-	Name: mechz_tag_in_use_cleanup
-	Namespace: zm_tomb_tank
-	Checksum: 0xF421959
-	Offset: 0x4CD8
-	Size: 0x8E
-	Parameters: 2
-	Flags: Linked
-*/
 function mechz_tag_in_use_cleanup(mechz, tag_struct_index) {
-  mechz notify(# "kill_mechz_tag_in_use_cleanup");
+  mechz notify("kill_mechz_tag_in_use_cleanup");
   mechz util::waittill_any_timeout(30, "death", "kill_ft", "tank_flamethrower_attack_complete", "kill_mechz_tag_in_use_cleanup");
   self.a_mechz_tags[tag_struct_index].in_use = 0;
   self.a_mechz_tags[tag_struct_index].in_use_by = undefined;
 }
 
-/*
-	Name: get_closest_mechz_tag_on_tank
-	Namespace: zm_tomb_tank
-	Checksum: 0xBBA25D5F
-	Offset: 0x4D70
-	Size: 0x256
-	Parameters: 2
-	Flags: Linked
-*/
 function get_closest_mechz_tag_on_tank(mechz, target_org) {
   best_dist = -1;
   best_tag_index = undefined;
@@ -1314,15 +870,6 @@ function get_closest_mechz_tag_on_tank(mechz, target_org) {
   return undefined;
 }
 
-/*
-	Name: tank_tag_is_valid
-	Namespace: zm_tomb_tank
-	Checksum: 0x4539BD2
-	Offset: 0x4FD0
-	Size: 0x1B2
-	Parameters: 2
-	Flags: Linked
-*/
 function tank_tag_is_valid(s_tag, disable_sides = 0) {
   if(disable_sides) {
     if(s_tag.side == "right" || s_tag.side == "left") {
@@ -1355,15 +902,6 @@ function tank_tag_is_valid(s_tag, disable_sides = 0) {
   return 1;
 }
 
-/*
-	Name: zombies_watch_tank
-	Namespace: zm_tomb_tank
-	Checksum: 0xE6E8D67D
-	Offset: 0x5190
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function zombies_watch_tank() {
   a_tank_tags = tank_tag_array_setup();
   self.a_tank_tags = a_tank_tags;
@@ -1380,28 +918,10 @@ function zombies_watch_tank() {
   }
 }
 
-/*
-	Name: start_chasing_tank
-	Namespace: zm_tomb_tank
-	Checksum: 0x84933793
-	Offset: 0x52C0
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function start_chasing_tank() {
   self.tank_state = "tank_chase";
 }
 
-/*
-	Name: stop_chasing_tank
-	Namespace: zm_tomb_tank
-	Checksum: 0xA3FFB19A
-	Offset: 0x52E0
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function stop_chasing_tank() {
   self.tank_state = "none";
   self.str_tank_tag = undefined;
@@ -1409,21 +929,12 @@ function stop_chasing_tank() {
   self.tank_tag = undefined;
   self.b_on_tank = 0;
   self.tank_re_eval_time = undefined;
-  self notify(# "change_goal");
+  self notify("change_goal");
   if(isdefined(self.zombie_move_speed_original)) {
     self zombie_utility::set_zombie_run_cycle(self.zombie_move_speed_original);
   }
 }
 
-/*
-	Name: choose_tag_and_chase
-	Namespace: zm_tomb_tank
-	Checksum: 0x9836CA53
-	Offset: 0x5368
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function choose_tag_and_chase() {
   s_tag = self get_closest_valid_tank_tag();
   if(isdefined(s_tag)) {
@@ -1436,15 +947,6 @@ function choose_tag_and_chase() {
   }
 }
 
-/*
-	Name: choose_tag_and_jump_down
-	Namespace: zm_tomb_tank
-	Checksum: 0xCCC98FD7
-	Offset: 0x53F8
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function choose_tag_and_jump_down() {
   s_tag = self get_closest_valid_tank_tag(1);
   if(isdefined(s_tag)) {
@@ -1453,25 +955,14 @@ function choose_tag_and_jump_down() {
     self.tank_tag = struct::get(s_tag.str_tag + "_down_start", "targetname");
     self.tank_state = "exit_tank";
     self zombie_utility::set_zombie_run_cycle("walk");
-    /#
     assert(isdefined(self.tank_tag));
-    # /
   } else {
     wait(1);
   }
 }
 
-/*
-	Name: climb_tag
-	Namespace: zm_tomb_tank
-	Checksum: 0xA91D041D
-	Offset: 0x54F8
-	Size: 0x204
-	Parameters: 0
-	Flags: Linked
-*/
 function climb_tag() {
-  self endon(# "death");
+  self endon("death");
   self.tank_state = "climbing";
   self.b_on_tank = 1;
   str_tag = self.str_tank_tag;
@@ -1495,31 +986,13 @@ function climb_tag() {
   self set_zombie_on_tank();
 }
 
-/*
-	Name: set_zombie_on_tank
-	Namespace: zm_tomb_tank
-	Checksum: 0x735FBCBC
-	Offset: 0x5708
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function set_zombie_on_tank() {
   self setgoalpos(self.origin);
   self.tank_state = "on_tank";
 }
 
-/*
-	Name: jump_down_tag
-	Namespace: zm_tomb_tank
-	Checksum: 0x156F5F48
-	Offset: 0x5748
-	Size: 0x1DC
-	Parameters: 0
-	Flags: Linked
-*/
 function jump_down_tag() {
-  self endon(# "death");
+  self endon("death");
   self.tank_state = "jumping_down";
   str_tag = self.str_tank_tag;
   str_anim_base = self.var_69140779;
@@ -1541,17 +1014,8 @@ function jump_down_tag() {
   stop_chasing_tank();
 }
 
-/*
-	Name: watch_zombie_fall_off_tank
-	Namespace: zm_tomb_tank
-	Checksum: 0xB22019AB
-	Offset: 0x5930
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_zombie_fall_off_tank() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     if(self.tank_state == "on_tank" || self.tank_state == "exit_tank") {
       if(!self entity_on_tank()) {
@@ -1568,15 +1032,6 @@ function watch_zombie_fall_off_tank() {
   }
 }
 
-/*
-	Name: in_range_2d
-	Namespace: zm_tomb_tank
-	Checksum: 0x193BAC97
-	Offset: 0x5A10
-	Size: 0x7E
-	Parameters: 4
-	Flags: Linked
-*/
 function in_range_2d(v1, v2, range, vert_allowance) {
   if((abs(v1[2] - v2[2])) > vert_allowance) {
     return 0;
@@ -1584,17 +1039,8 @@ function in_range_2d(v1, v2, range, vert_allowance) {
   return distance2dsquared(v1, v2) < (range * range);
 }
 
-/*
-	Name: tank_zombie_think
-	Namespace: zm_tomb_tank
-	Checksum: 0x3CD77FCD
-	Offset: 0x5A98
-	Size: 0x7F0
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_zombie_think() {
-  self endon(# "death");
+  self endon("death");
   self.tank_state = "none";
   self thread watch_zombie_fall_off_tank();
   think_time = 0.5;
@@ -1666,7 +1112,7 @@ function tank_zombie_think() {
           }
           break;
         }
-        self notify(# "stop_path_to_tag");
+        self notify("stop_path_to_tag");
         if(a_players_on_tank.size == 0) {
           self stop_chasing_tank();
           break;
@@ -1702,7 +1148,7 @@ function tank_zombie_think() {
         break;
       }
       case "exit_tank": {
-        self notify(# "stop_exit_tank");
+        self notify("stop_exit_tank");
         if(a_players_on_tank.size > 0) {
           self set_zombie_on_tank();
           break;
@@ -1726,21 +1172,12 @@ function tank_zombie_think() {
   }
 }
 
-/*
-	Name: update_zombie_goal_pos
-	Namespace: zm_tomb_tank
-	Checksum: 0xAD068010
-	Offset: 0x6290
-	Size: 0x178
-	Parameters: 2
-	Flags: None
-*/
 function update_zombie_goal_pos(str_position, stop_notify) {
-  self notify(# "change_goal");
-  self endon(# "death");
-  self endon(# "goal");
-  self endon(# "near_goal");
-  self endon(# "change_goal");
+  self notify("change_goal");
+  self endon("death");
+  self endon("goal");
+  self endon("near_goal");
+  self endon("change_goal");
   if(isdefined(stop_notify)) {
     self endon(stop_notify);
   }
@@ -1748,11 +1185,9 @@ function update_zombie_goal_pos(str_position, stop_notify) {
   while (self.tank_state != "none") {
     if(isdefined(s_script_origin)) {
       v_origin = level.vh_tank tank_get_jump_down_offset(s_script_origin);
-      /#
       if(getdvarstring("") == "") {
         line(self.origin + vectorscale((0, 0, 1), 30), v_origin);
       }
-      # /
     } else {
       v_origin = level.vh_tank gettagorigin(str_position);
     }
@@ -1761,34 +1196,16 @@ function update_zombie_goal_pos(str_position, stop_notify) {
   }
 }
 
-/*
-	Name: zombie_chasing_tank_turn_crawler
-	Namespace: zm_tomb_tank
-	Checksum: 0x1BB8D74F
-	Offset: 0x6410
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_chasing_tank_turn_crawler() {
-  self notify(# "tank_watch_turn_crawler");
-  self endon(# "tank_watch_turn_crawler");
-  self endon(# "death");
+  self notify("tank_watch_turn_crawler");
+  self endon("tank_watch_turn_crawler");
+  self endon("death");
   while (!self.missinglegs) {
     wait(0.05);
   }
   self zombie_utility::set_zombie_run_cycle(self.zombie_move_speed_original);
 }
 
-/*
-	Name: tank_mark_tag_occupied
-	Namespace: zm_tomb_tank
-	Checksum: 0xA97DB503
-	Offset: 0x6480
-	Size: 0x14C
-	Parameters: 3
-	Flags: Linked
-*/
 function tank_mark_tag_occupied(str_tag, ai_occupier, set_occupied) {
   current_occupier = self.tag_occupied[str_tag];
   min_dist_sq_to_tag = 1024;
@@ -1816,15 +1233,6 @@ function tank_mark_tag_occupied(str_tag, ai_occupier, set_occupied) {
   return true;
 }
 
-/*
-	Name: is_tag_crowded
-	Namespace: zm_tomb_tank
-	Checksum: 0x464D48D9
-	Offset: 0x65D8
-	Size: 0x1AA
-	Parameters: 1
-	Flags: Linked
-*/
 function is_tag_crowded(str_tag) {
   v_tag = self gettagorigin(str_tag);
   a_zombies = getaiteamarray(level.zombie_team);
@@ -1846,15 +1254,6 @@ function is_tag_crowded(str_tag) {
   return false;
 }
 
-/*
-	Name: get_closest_valid_tank_tag
-	Namespace: zm_tomb_tank
-	Checksum: 0x2A115E7B
-	Offset: 0x6790
-	Size: 0x1CC
-	Parameters: 1
-	Flags: Linked
-*/
 function get_closest_valid_tank_tag(jumping_down = 0) {
   closest_dist_sq = 100000000;
   closest_tag = undefined;
@@ -1877,17 +1276,8 @@ function get_closest_valid_tank_tag(jumping_down = 0) {
   return closest_tag;
 }
 
-/*
-	Name: zombieanimnotetrackthink
-	Namespace: zm_tomb_tank
-	Checksum: 0x7D639831
-	Offset: 0x6968
-	Size: 0x5A
-	Parameters: 3
-	Flags: None
-*/
 function zombieanimnotetrackthink(str_anim_notetrack_notify, chunk, node) {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     self waittill(str_anim_notetrack_notify, str_notetrack);
     if(str_notetrack == "end") {
@@ -1896,15 +1286,6 @@ function zombieanimnotetrackthink(str_anim_notetrack_notify, chunk, node) {
   }
 }
 
-/*
-	Name: tank_run_flamethrowers
-	Namespace: zm_tomb_tank
-	Checksum: 0xE87FBD97
-	Offset: 0x69D0
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_run_flamethrowers() {
   self thread tank_flamethrower("tag_flash", 1);
   wait(0.25);
@@ -1913,15 +1294,6 @@ function tank_run_flamethrowers() {
   self thread tank_flamethrower("tag_flash_gunner2", 3);
 }
 
-/*
-	Name: tank_flamethrower_get_targets
-	Namespace: zm_tomb_tank
-	Checksum: 0xC49077D4
-	Offset: 0x6A50
-	Size: 0x2CC
-	Parameters: 2
-	Flags: Linked
-*/
 function tank_flamethrower_get_targets(str_tag, n_flamethrower_id) {
   a_zombies = getaiteamarray(level.zombie_team);
   a_targets = [];
@@ -1954,15 +1326,6 @@ function tank_flamethrower_get_targets(str_tag, n_flamethrower_id) {
   return a_targets;
 }
 
-/*
-	Name: tank_flamethrower_cycle_targets
-	Namespace: zm_tomb_tank
-	Checksum: 0x6932A37D
-	Offset: 0x6D28
-	Size: 0x100
-	Parameters: 2
-	Flags: Linked
-*/
 function tank_flamethrower_cycle_targets(str_tag, n_flamethrower_id) {
   self endon("flamethrower_stop_" + n_flamethrower_id);
   while (true) {
@@ -1977,15 +1340,6 @@ function tank_flamethrower_cycle_targets(str_tag, n_flamethrower_id) {
   }
 }
 
-/*
-	Name: tank_flamethrower
-	Namespace: zm_tomb_tank
-	Checksum: 0x50742B8D
-	Offset: 0x6E30
-	Size: 0x20E
-	Parameters: 2
-	Flags: Linked
-*/
 function tank_flamethrower(str_tag, n_flamethrower_id) {
   zombieless_waits = 0;
   time_between_flames = randomfloatrange(3, 6);
@@ -2017,15 +1371,6 @@ function tank_flamethrower(str_tag, n_flamethrower_id) {
   }
 }
 
-/*
-	Name: flamethrower_damage_zombies
-	Namespace: zm_tomb_tank
-	Checksum: 0xD3A6D7EF
-	Offset: 0x7048
-	Size: 0x1C0
-	Parameters: 2
-	Flags: Linked
-*/
 function flamethrower_damage_zombies(n_flamethrower_id, str_tag) {
   self endon("flamethrower_stop_" + n_flamethrower_id);
   while (true) {
@@ -2034,7 +1379,7 @@ function flamethrower_damage_zombies(n_flamethrower_id, str_tag) {
       if(isalive(ai_zombie)) {
         a_players = get_players_on_tank(1);
         if(a_players.size > 0) {
-          level notify(# "vo_tank_flame_zombie", array::random(a_players));
+          level notify("vo_tank_flame_zombie", array::random(a_players));
         }
         if(str_tag == "tag_flash") {
           ai_zombie zm_tomb_utility::do_damage_network_safe(self, ai_zombie.health, self.var_8f5473ed, "MOD_BURNED");
@@ -2049,15 +1394,6 @@ function flamethrower_damage_zombies(n_flamethrower_id, str_tag) {
   }
 }
 
-/*
-	Name: enemy_location_override
-	Namespace: zm_tomb_tank
-	Checksum: 0x8F92B7C0
-	Offset: 0x7210
-	Size: 0x690
-	Parameters: 0
-	Flags: Linked
-*/
 function enemy_location_override() {
   enemy = self.favoriteenemy;
   location = enemy.origin;
@@ -2151,15 +1487,6 @@ function enemy_location_override() {
   return location;
 }
 
-/*
-	Name: closest_player_tank
-	Namespace: zm_tomb_tank
-	Checksum: 0x69B93968
-	Offset: 0x78A8
-	Size: 0xA8
-	Parameters: 2
-	Flags: None
-*/
 function closest_player_tank(origin, players) {
   if(isdefined(level.vh_tank) && level.vh_tank.n_players_on > 0 || (!(isdefined(level.calc_closest_player_using_paths) && level.calc_closest_player_using_paths))) {
     player = arraygetclosest(origin, players);
@@ -2171,39 +1498,21 @@ function closest_player_tank(origin, players) {
   }
 }
 
-/*
-	Name: zombie_on_tank_death_animscript_callback
-	Namespace: zm_tomb_tank
-	Checksum: 0x270AC629
-	Offset: 0x7958
-	Size: 0x114
-	Parameters: 15
-	Flags: Linked
-*/
 function zombie_on_tank_death_animscript_callback(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, modelindex, surfacetype, surfacenormal) {
   if(isdefined(self.exploding) && self.exploding) {
-    self notify(# "killanimscript");
+    self notify("killanimscript");
     self zombie_utility::reset_attack_spot();
     return true;
   }
   if(isdefined(self)) {
     level zm_spawner::zombie_death_points(self.origin, smeansofdeath, shitloc, eattacker, self);
-    self notify(# "killanimscript");
+    self notify("killanimscript");
     self zombie_utility::reset_attack_spot();
     return true;
   }
   return false;
 }
 
-/*
-	Name: tomb_get_path_length_to_tank
-	Namespace: zm_tomb_tank
-	Checksum: 0xD5F7B2E1
-	Offset: 0x7A78
-	Size: 0x148
-	Parameters: 0
-	Flags: Linked
-*/
 function tomb_get_path_length_to_tank() {
   tank_front = level.vh_tank function_1db98f69("window_right_front_jmp_jnt");
   tank_back = level.vh_tank function_1db98f69("window_left_rear_jmp_jnt");

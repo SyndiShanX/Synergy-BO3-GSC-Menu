@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\bonuszm\_bonuszm_zurich.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_dialog;
 #using scripts\cp\_util;
@@ -8,18 +12,8 @@
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_cc6db628;
 
-/*
-	Name: init
-	Namespace: namespace_cc6db628
-	Checksum: 0x8ACE922B
-	Offset: 0xF50
-	Size: 0x34C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   if(!sessionmodeiscampaignzombiesgame()) {
     return;
@@ -62,41 +56,14 @@ function autoexec init() {
   function_6ff1594f();
 }
 
-/*
-	Name: function_6ff1594f
-	Namespace: namespace_cc6db628
-	Checksum: 0xC7A9ACAA
-	Offset: 0x12A8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_6ff1594f() {
   callback::on_spawned( & function_cee0476);
 }
 
-/*
-	Name: function_cee0476
-	Namespace: namespace_cc6db628
-	Checksum: 0x99EC1590
-	Offset: 0x12D8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cee0476() {}
 
-/*
-	Name: function_8924576f
-	Namespace: namespace_cc6db628
-	Checksum: 0x8EF8E17
-	Offset: 0x12E8
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8924576f() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(1);
   namespace_36e5bc12::function_45809471("deim_with_hendricks_as_my_0");
   wait(3);
@@ -106,78 +73,33 @@ function function_8924576f() {
   namespace_36e5bc12::function_45809471("deim_but_before_that_you_1");
 }
 
-/*
-	Name: function_465e0207
-	Namespace: namespace_cc6db628
-	Checksum: 0xA346DDA7
-	Offset: 0x1378
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_465e0207() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(4);
   namespace_36e5bc12::function_ef0ce9fb("plyz_the_city_systems_had_0");
 }
 
-/*
-	Name: function_d45692cc
-	Namespace: namespace_cc6db628
-	Checksum: 0xD3DD10BD
-	Offset: 0x13B0
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d45692cc() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   namespace_36e5bc12::function_ef0ce9fb("plyz_you_used_hendricks_d_0");
 }
 
-/*
-	Name: function_fa590d35
-	Namespace: namespace_cc6db628
-	Checksum: 0x3D64C6E
-	Offset: 0x13E0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fa590d35() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(5);
   namespace_36e5bc12::function_ef0ce9fb("plyz_and_you_built_yourse_0");
 }
 
-/*
-	Name: function_88519dfa
-	Namespace: namespace_cc6db628
-	Checksum: 0x8DBA09A2
-	Offset: 0x1418
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_88519dfa() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(1);
   namespace_36e5bc12::function_ef0ce9fb("plyz_by_the_time_we_made_0");
   wait(1);
   namespace_36e5bc12::function_45809471("deim_and_soon_that_too_w_0");
 }
 
-/*
-	Name: function_171ce834
-	Namespace: namespace_cc6db628
-	Checksum: 0x818801D
-	Offset: 0x1470
-	Size: 0x1AC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_171ce834() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(12);
   namespace_36e5bc12::function_ef0ce9fb("plyz_you_trapped_us_in_a_0");
   namespace_36e5bc12::function_45809471("deim_61_15_the_virus_tha_0");
@@ -203,17 +125,8 @@ function function_171ce834() {
   namespace_36e5bc12::function_45809471("deim_keep_moving_you_re_0");
 }
 
-/*
-	Name: function_3d1f629d
-	Namespace: namespace_cc6db628
-	Checksum: 0xF1A37188
-	Offset: 0x1628
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3d1f629d() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(2);
   namespace_36e5bc12::function_45809471("deim_do_you_remember_this_0");
   wait(1);
@@ -229,17 +142,8 @@ function function_3d1f629d() {
   namespace_36e5bc12::function_b4a3e925("dolo_offer_yourself_to_hi_0");
 }
 
-/*
-	Name: function_cb17f362
-	Namespace: namespace_cc6db628
-	Checksum: 0xF1860B34
-	Offset: 0x1758
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cb17f362() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(2);
   namespace_36e5bc12::function_ef0ce9fb("plyz_wait_what_where_0");
   wait(1);
@@ -261,17 +165,8 @@ function function_cb17f362() {
   namespace_36e5bc12::function_45809471("deim_like_you_don_t_know_1");
 }
 
-/*
-	Name: function_b80578aa
-	Namespace: namespace_cc6db628
-	Checksum: 0xAFA7F434
-	Offset: 0x18B8
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b80578aa() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(2);
   namespace_36e5bc12::function_45809471("deim_you_you_did_this_y_0");
   wait(1);
@@ -282,28 +177,10 @@ function function_b80578aa() {
   namespace_36e5bc12::function_45809471("deim_enough_in_time_i_m_0");
 }
 
-/*
-	Name: function_f11a6dcb
-	Namespace: namespace_cc6db628
-	Checksum: 0x99EC1590
-	Offset: 0x1970
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f11a6dcb() {}
 
-/*
-	Name: function_7f12fe90
-	Namespace: namespace_cc6db628
-	Checksum: 0x2838440
-	Offset: 0x1980
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7f12fe90() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   namespace_36e5bc12::function_ef0ce9fb("plyz_hello_who_s_there_0");
   namespace_36e5bc12::function_b4a3e925("dolo_this_is_your_new_hom_0");
   wait(1);
@@ -314,17 +191,8 @@ function function_7f12fe90() {
   namespace_36e5bc12::function_b4a3e925("dolo_i_am_dolos_demigodd_1");
 }
 
-/*
-	Name: function_a51578f9
-	Namespace: namespace_cc6db628
-	Checksum: 0x9E3D864F
-	Offset: 0x1A38
-	Size: 0x23C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a51578f9() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   if(isdefined(level.var_a51578f9) && level.var_a51578f9) {
     return;
   }
@@ -356,17 +224,8 @@ function function_a51578f9() {
   namespace_36e5bc12::function_b4a3e925("dolo_to_one_of_deimos_he_0");
 }
 
-/*
-	Name: function_b9382ab7
-	Namespace: namespace_cc6db628
-	Checksum: 0x210407C4
-	Offset: 0x1C80
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b9382ab7() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(4);
   namespace_36e5bc12::function_b4a3e925("dolo_this_cold_world_is_d_1");
   wait(1);
@@ -376,30 +235,12 @@ function function_b9382ab7() {
   namespace_36e5bc12::function_45809471("deim_petty_you_dare_ca_0");
 }
 
-/*
-	Name: function_32beb00d
-	Namespace: namespace_cc6db628
-	Checksum: 0x67E291AF
-	Offset: 0x1D20
-	Size: 0xE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_32beb00d() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
 }
 
-/*
-	Name: function_cbc35a4
-	Namespace: namespace_cc6db628
-	Checksum: 0x35D336AE
-	Offset: 0x1D38
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cbc35a4() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(2);
   namespace_36e5bc12::function_ef0ce9fb("plyz_deimos_dolos_0");
   wait(1);
@@ -410,17 +251,8 @@ function function_cbc35a4() {
   namespace_36e5bc12::function_b4a3e925("dolo_malum_is_a_realm_bey_0");
 }
 
-/*
-	Name: function_7ec3a4df
-	Namespace: namespace_cc6db628
-	Checksum: 0x3CF6E8EC
-	Offset: 0x1DD0
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7ec3a4df() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(3);
   namespace_36e5bc12::function_b4a3e925("dolo_i_arrived_on_earth_w_0");
   wait(1);
@@ -431,17 +263,8 @@ function function_7ec3a4df() {
   namespace_36e5bc12::function_b4a3e925("dolo_so_i_sat_back_while_0");
 }
 
-/*
-	Name: function_58c12a76
-	Namespace: namespace_cc6db628
-	Checksum: 0xEE2B8383
-	Offset: 0x1E78
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_58c12a76() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(4);
   namespace_36e5bc12::function_ef0ce9fb("plyz_you_you_were_kane_0");
   wait(2);
@@ -451,30 +274,12 @@ function function_58c12a76() {
   namespace_36e5bc12::function_45809471("deim_i_will_break_you_ri_0");
 }
 
-/*
-	Name: function_9ab4c669
-	Namespace: namespace_cc6db628
-	Checksum: 0x91A6B05B
-	Offset: 0x1F08
-	Size: 0xE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9ab4c669() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
 }
 
-/*
-	Name: function_74b24c00
-	Namespace: namespace_cc6db628
-	Checksum: 0xF7D9C46E
-	Offset: 0x1F20
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_74b24c00() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(5);
   namespace_36e5bc12::function_45809471("deim_you_must_realize_the_0");
   namespace_36e5bc12::function_b4a3e925("dolo_ah_but_brother_she_0");
@@ -483,17 +288,8 @@ function function_74b24c00() {
   namespace_36e5bc12::function_45809471("deim_it_s_a_pity_she_won_0");
 }
 
-/*
-	Name: function_e6b9bb3b
-	Namespace: namespace_cc6db628
-	Checksum: 0x99226D53
-	Offset: 0x1FB8
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e6b9bb3b() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(2);
   namespace_36e5bc12::function_b4a3e925("dolo_taylor_found_us_easi_0");
   wait(3);
@@ -506,47 +302,20 @@ function function_e6b9bb3b() {
   namespace_36e5bc12::function_b4a3e925("dolo_it_ll_turn_back_hum_0");
 }
 
-/*
-	Name: function_c0b740d2
-	Namespace: namespace_cc6db628
-	Checksum: 0xC091890C
-	Offset: 0x2070
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c0b740d2() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(3);
   namespace_36e5bc12::function_45809471("deim_and_then_what_after_0");
   wait(1);
   namespace_36e5bc12::function_45809471("dolo_no_humanity_is_insa_0");
 }
 
-/*
-	Name: function_62d28355
-	Namespace: namespace_cc6db628
-	Checksum: 0xF27D47D4
-	Offset: 0x20C8
-	Size: 0xE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_62d28355() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
 }
 
-/*
-	Name: function_3cd008ec
-	Namespace: namespace_cc6db628
-	Checksum: 0x2FE2C4C8
-	Offset: 0x20E0
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3cd008ec() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(2);
   namespace_36e5bc12::function_b4a3e925("dolo_you_know_if_you_def_0");
   wait(1);
@@ -555,17 +324,8 @@ function function_3cd008ec() {
   namespace_36e5bc12::function_b4a3e925("dolo_girl_after_my_own_he_0");
 }
 
-/*
-	Name: function_760a962c
-	Namespace: namespace_cc6db628
-	Checksum: 0x1EB54B96
-	Offset: 0x2158
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_760a962c() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(2);
   namespace_36e5bc12::function_b4a3e925("dolo_deimos_did_exactly_a_0");
   wait(3);
@@ -578,17 +338,8 @@ function function_760a962c() {
   namespace_36e5bc12::function_b4a3e925("dolo_which_is_what_humani_0");
 }
 
-/*
-	Name: function_9c0d1095
-	Namespace: namespace_cc6db628
-	Checksum: 0x199A4B94
-	Offset: 0x2210
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9c0d1095() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(16);
   namespace_36e5bc12::function_45809471("deim_i_won_t_let_you_do_t_0");
   namespace_36e5bc12::function_b4a3e925("dolo_she_s_burned_your_he_0");
@@ -596,17 +347,8 @@ function function_9c0d1095() {
   namespace_36e5bc12::function_45809471("deim_i_ll_kill_you_i_can_0");
 }
 
-/*
-	Name: function_c20f8afe
-	Namespace: namespace_cc6db628
-	Checksum: 0x991F404D
-	Offset: 0x2290
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c20f8afe() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   namespace_36e5bc12::function_45809471("deim_why_do_you_fight_0");
   namespace_36e5bc12::function_b4a3e925("dolo_i_ll_hold_him_this_0");
   namespace_36e5bc12::function_b4a3e925("dolo_do_it_kill_him_0");
@@ -614,17 +356,8 @@ function function_c20f8afe() {
   namespace_36e5bc12::function_ef0ce9fb("plyz_oh_yeah_how_s_this_0");
 }
 
-/*
-	Name: function_e8120567
-	Namespace: namespace_cc6db628
-	Checksum: 0x2235B4B4
-	Offset: 0x2320
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e8120567() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(5);
   namespace_36e5bc12::function_ef0ce9fb("plyz_wait_this_is_eart_0");
   namespace_36e5bc12::function_b4a3e925("dolo_they_re_coming_for_y_0");
@@ -635,32 +368,14 @@ function function_e8120567() {
   level flag::set("BZM_ZURICHDialogue23");
 }
 
-/*
-	Name: function_de00ac88
-	Namespace: namespace_cc6db628
-	Checksum: 0x9518B892
-	Offset: 0x23F0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_de00ac88() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(2);
   namespace_36e5bc12::function_ef0ce9fb("plyz_we_kill_every_last_o_0");
 }
 
-/*
-	Name: function_40326f1
-	Namespace: namespace_cc6db628
-	Checksum: 0xE95FAA2C
-	Offset: 0x2428
-	Size: 0x26
-	Parameters: 0
-	Flags: Linked
-*/
 function function_40326f1() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   time = 8;
   wait(time);
 }

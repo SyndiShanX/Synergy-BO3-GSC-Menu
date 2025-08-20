@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\gametypes\_globallogic_vehicle.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_challenges;
 #using scripts\cp\_scoreevents;
@@ -14,18 +18,8 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
-
 #namespace globallogic_vehicle;
 
-/*
-	Name: callback_vehiclespawned
-	Namespace: globallogic_vehicle
-	Checksum: 0x85850157
-	Offset: 0x428
-	Size: 0x2F4
-	Parameters: 1
-	Flags: Linked
-*/
 function callback_vehiclespawned(spawner) {
   self.health = self.healthdefault;
   if(isdefined(level.vehicle_main_callback)) {
@@ -61,30 +55,12 @@ function callback_vehiclespawned(spawner) {
   }
 }
 
-/*
-	Name: disabledamagefx
-	Namespace: globallogic_vehicle
-	Checksum: 0x3C102CB4
-	Offset: 0x728
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function disabledamagefx() {
-  self endon(# "death");
+  self endon("death");
   wait(0.05);
   self clientfield::set_to_player("toggle_dnidamagefx", 0);
 }
 
-/*
-	Name: callback_vehicledamage
-	Namespace: globallogic_vehicle
-	Checksum: 0x64499D27
-	Offset: 0x768
-	Size: 0xFAC
-	Parameters: 15
-	Flags: Linked
-*/
 function callback_vehicledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   params = spawnstruct();
   params.einflictor = einflictor;
@@ -113,12 +89,10 @@ function callback_vehicledamage(einflictor, eattacker, idamage, idflags, smeanso
   }
   self.idflags = idflags;
   self.idflagstime = gettime();
-  /#
   assert(isdefined(idamage), "");
-  # /
-    if(idamage == 0) {
-      return;
-    }
+  if(idamage == 0) {
+    return;
+  }
   if(!isdefined(vdir)) {
     idflags = idflags | 4;
   }
@@ -135,10 +109,10 @@ function callback_vehicledamage(einflictor, eattacker, idamage, idflags, smeanso
     }
   }
   if(issentient(self)) {
-    self callback::callback(# "hash_eb4a4369", params);
+    self callback::callback("hash_eb4a4369", params);
     self thread globallogic_player::trackattackerdamage(eattacker, idamage, smeansofdeath, weapon);
   }
-  self callback::callback(# "hash_9bd1e27f", params);
+  self callback::callback("hash_9bd1e27f", params);
   if(!idflags & 2048) {
     if(smeansofdeath == "MOD_PROJECTILE" || smeansofdeath == "MOD_GRENADE") {
       idamage = idamage * weapon.vehicleprojectiledamagescalar;
@@ -242,40 +216,29 @@ function callback_vehicledamage(einflictor, eattacker, idamage, idflags, smeanso
       }
     }
   }
-  /#
   if(getdvarint("")) {
     println(((((((((("" + self getentitynumber()) + "") + self.health) + "") + eattacker.clientid) + "") + isplayer(einflictor) + "") + idamage) + "") + shitloc);
   }
-  # /
-    if(1) {
-      lpselfnum = self getentitynumber();
-      lpselfteam = "";
-      lpattackerteam = "";
-      if(isplayer(eattacker)) {
-        lpattacknum = eattacker getentitynumber();
-        lpattackguid = eattacker getguid();
-        lpattackname = eattacker.name;
-        lpattackerteam = eattacker.pers["team"];
-        self thread challenges::vehicledamaged(eattacker, eattacker, idamage, weapon, shitloc);
-      } else {
-        lpattacknum = -1;
-        lpattackguid = "";
-        lpattackname = "";
-        lpattackerteam = "world";
-      }
-      logprint(((((((((((((((((((("VD;" + lpselfnum) + ";") + lpselfteam) + ";") + lpattackguid) + ";") + lpattacknum) + ";") + lpattackerteam) + ";") + lpattackname) + ";") + weapon.name) + ";") + idamage) + ";") + smeansofdeath) + ";") + shitloc) + "\n");
+  if(1) {
+    lpselfnum = self getentitynumber();
+    lpselfteam = "";
+    lpattackerteam = "";
+    if(isplayer(eattacker)) {
+      lpattacknum = eattacker getentitynumber();
+      lpattackguid = eattacker getguid();
+      lpattackname = eattacker.name;
+      lpattackerteam = eattacker.pers["team"];
+      self thread challenges::vehicledamaged(eattacker, eattacker, idamage, weapon, shitloc);
+    } else {
+      lpattacknum = -1;
+      lpattackguid = "";
+      lpattackname = "";
+      lpattackerteam = "world";
     }
+    logprint(((((((((((((((((((("VD;" + lpselfnum) + ";") + lpselfteam) + ";") + lpattackguid) + ";") + lpattacknum) + ";") + lpattackerteam) + ";") + lpattackname) + ";") + weapon.name) + ";") + idamage) + ";") + smeansofdeath) + ";") + shitloc) + "\n");
+  }
 }
 
-/*
-	Name: callback_vehicleradiusdamage
-	Namespace: globallogic_vehicle
-	Checksum: 0xA11B5469
-	Offset: 0x1720
-	Size: 0x4A4
-	Parameters: 13
-	Flags: Linked
-*/
 function callback_vehicleradiusdamage(einflictor, eattacker, idamage, finnerdamage, fouterdamage, idflags, smeansofdeath, weapon, vpoint, fradius, fconeanglecos, vconedir, psoffsettime) {
   idamage = loadout::cac_modified_vehicle_damage(self, eattacker, idamage, smeansofdeath, weapon, einflictor);
   finnerdamage = loadout::cac_modified_vehicle_damage(self, eattacker, finnerdamage, smeansofdeath, weapon, einflictor);
@@ -339,15 +302,6 @@ function callback_vehicleradiusdamage(einflictor, eattacker, idamage, finnerdama
   }
 }
 
-/*
-	Name: callback_vehiclekilled
-	Namespace: globallogic_vehicle
-	Checksum: 0xAD045EF
-	Offset: 0x1BD0
-	Size: 0x47C
-	Parameters: 8
-	Flags: Linked
-*/
 function callback_vehiclekilled(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   params = spawnstruct();
   params.einflictor = einflictor;
@@ -378,9 +332,9 @@ function callback_vehiclekilled(einflictor, eattacker, idamage, smeansofdeath, w
     self.damageinflictor = einflictor;
   }
   if(issentient(self)) {
-    self callback::callback(# "hash_fc2ec5ff", params);
+    self callback::callback("hash_fc2ec5ff", params);
   }
-  self callback::callback(# "hash_acb66515", params);
+  self callback::callback("hash_acb66515", params);
   if(isdefined(self.overridevehiclekilled)) {
     self[[self.overridevehiclekilled]](einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime);
   }
@@ -401,32 +355,14 @@ function callback_vehiclekilled(einflictor, eattacker, idamage, smeansofdeath, w
   }
 }
 
-/*
-	Name: vehiclecrush
-	Namespace: globallogic_vehicle
-	Checksum: 0xF0523CD7
-	Offset: 0x2058
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function vehiclecrush() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(isdefined(level._effect) && isdefined(level._effect["tanksquish"])) {
     playfx(level._effect["tanksquish"], self.origin + vectorscale((0, 0, 1), 30));
   }
   self playsound("chr_crunch");
 }
 
-/*
-	Name: getvehicleunderneathsplashscalar
-	Namespace: globallogic_vehicle
-	Checksum: 0xA247001F
-	Offset: 0x20F0
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function getvehicleunderneathsplashscalar(weapon) {
   if(weapon.name == "satchel_charge") {
     scale = 10;
@@ -437,15 +373,6 @@ function getvehicleunderneathsplashscalar(weapon) {
   return scale;
 }
 
-/*
-	Name: allowfriendlyfiredamage
-	Namespace: globallogic_vehicle
-	Checksum: 0x10F08E10
-	Offset: 0x2160
-	Size: 0x6E
-	Parameters: 4
-	Flags: Linked
-*/
 function allowfriendlyfiredamage(einflictor, eattacker, smeansofdeath, weapon) {
   if(isdefined(self.skipfriendlyfirecheck) && self.skipfriendlyfirecheck) {
     return 1;
@@ -458,15 +385,6 @@ function allowfriendlyfiredamage(einflictor, eattacker, smeansofdeath, weapon) {
   return 0;
 }
 
-/*
-	Name: vehiclekilled_awardassists
-	Namespace: globallogic_vehicle
-	Checksum: 0x850DE047
-	Offset: 0x21D8
-	Size: 0x164
-	Parameters: 4
-	Flags: Linked
-*/
 function vehiclekilled_awardassists(einflictor, eattacker, weapon, lpattackteam) {
   pixbeginevent("VehicleKilled assists");
   if(isdefined(self.attackers)) {

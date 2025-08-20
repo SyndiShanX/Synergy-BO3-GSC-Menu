@@ -1,23 +1,17 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\zombie_death.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\ai\zombie_shared;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\util_shared;
-
 #namespace zombie_death;
 
-/*
-	Name: on_fire_timeout
-	Namespace: zombie_death
-	Checksum: 0xEEE21498
-	Offset: 0x2C8
-	Size: 0x66
-	Parameters: 0
-	Flags: Linked
-*/
 function on_fire_timeout() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.flame_fx_timeout)) {
     wait(self.flame_fx_timeout);
   } else {
@@ -25,21 +19,12 @@ function on_fire_timeout() {
   }
   if(isdefined(self) && isalive(self)) {
     self.is_on_fire = 0;
-    self notify(# "stop_flame_damage");
+    self notify("stop_flame_damage");
   }
 }
 
-/*
-	Name: flame_death_fx
-	Namespace: zombie_death
-	Checksum: 0xD59F9598
-	Offset: 0x338
-	Size: 0x3BC
-	Parameters: 0
-	Flags: Linked
-*/
 function flame_death_fx() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.is_on_fire) && self.is_on_fire) {
     return;
   }
@@ -62,9 +47,7 @@ function flame_death_fx() {
     }
     self.weapon_specific_fire_death_torso_fx = undefined;
   } else {
-    /#
     println("");
-    # /
   }
   if(isdefined(level._effect) && isdefined(level._effect["character_fire_death_sm"])) {
     if(self.archetype !== "parasite" && self.archetype !== "raps" && self.archetype !== "spider") {
@@ -96,21 +79,10 @@ function flame_death_fx() {
       self.weapon_specific_fire_death_sm_fx = undefined;
     }
   } else {
-    /#
     println("");
-    # /
   }
 }
 
-/*
-	Name: randomize_array
-	Namespace: zombie_death
-	Checksum: 0xCDED09F5
-	Offset: 0x700
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function randomize_array(array) {
   for (i = 0; i < array.size; i++) {
     j = randomint(array.size);
@@ -121,32 +93,14 @@ function randomize_array(array) {
   return array;
 }
 
-/*
-	Name: set_last_gib_time
-	Namespace: zombie_death
-	Checksum: 0xC9BFCCF2
-	Offset: 0x7A8
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function set_last_gib_time() {
-  anim notify(# "stop_last_gib_time");
-  anim endon(# "stop_last_gib_time");
+  anim notify("stop_last_gib_time");
+  anim endon("stop_last_gib_time");
   wait(0.05);
   anim.lastgibtime = gettime();
   anim.totalgibs = randomintrange(anim.mingibs, anim.maxgibs);
 }
 
-/*
-	Name: get_gib_ref
-	Namespace: zombie_death
-	Checksum: 0xB5E34966
-	Offset: 0x810
-	Size: 0x33A
-	Parameters: 1
-	Flags: None
-*/
 function get_gib_ref(direction) {
   if(isdefined(self.a.gib_ref)) {
     return;
@@ -207,28 +161,10 @@ function get_gib_ref(direction) {
   }
 }
 
-/*
-	Name: get_random
-	Namespace: zombie_death
-	Checksum: 0xBEEB3530
-	Offset: 0xB58
-	Size: 0x28
-	Parameters: 1
-	Flags: Linked
-*/
 function get_random(array) {
   return array[randomint(array.size)];
 }
 
-/*
-	Name: do_gib
-	Namespace: zombie_death
-	Checksum: 0x52D49D55
-	Offset: 0xB88
-	Size: 0x15E
-	Parameters: 0
-	Flags: Linked
-*/
 function do_gib() {
   if(!isdefined(self.a.gib_ref)) {
     return;
@@ -265,23 +201,12 @@ function do_gib() {
       break;
     }
     default: {
-      /#
       assertmsg(("" + self.a.gib_ref) + "");
-      # /
-        break;
+      break;
     }
   }
 }
 
-/*
-	Name: precache_gib_fx
-	Namespace: zombie_death
-	Checksum: 0xEC25BF32
-	Offset: 0xCF0
-	Size: 0x56
-	Parameters: 0
-	Flags: None
-*/
 function precache_gib_fx() {
   anim._effect["animscript_gib_fx"] = "zombie/fx_blood_torso_explo_zmb";
   anim._effect["animscript_gibtrail_fx"] = "_t6/trail/fx_trail_blood_streak";

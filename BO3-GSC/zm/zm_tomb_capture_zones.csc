@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_capture_zones.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\audio_shared;
@@ -9,20 +13,9 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_utility;
-
 #using_animtree("generic");
-
 #namespace zm_tomb_capture_zones;
 
-/*
-	Name: init_structs
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x8E09BC50
-	Offset: 0xE18
-	Size: 0x59C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_structs() {
   level.zombie_custom_riser_fx_handler = & function_5f50cf29;
   level.var_d7512031 = 0;
@@ -53,43 +46,16 @@ function init_structs() {
   function_a4e6d2a7();
 }
 
-/*
-	Name: function_a6f34d1c
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x153E6F17
-	Offset: 0x13C0
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function function_a6f34d1c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   m_generator = function_f424a041(fieldname, localclientnum);
   m_generator function_c516c0e9(localclientnum, oldval, newval);
 }
 
-/*
-	Name: function_c1a782c1
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x1EBA8555
-	Offset: 0x1450
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function function_c1a782c1() {
   self clearanim("p7_fxanim_zm_ori_generator_fluid_up_anim", 0);
   self clearanim("p7_fxanim_zm_ori_generator_fluid_down_anim", 0);
 }
 
-/*
-	Name: function_9c5303ba
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x1E0C8CC9
-	Offset: 0x14A0
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9c5303ba(var_ce864151 = 0) {
   n_blend_time = 0.2;
   if(var_ce864151) {
@@ -101,15 +67,6 @@ function function_9c5303ba(var_ce864151 = 0) {
   self clearanim("p7_fxanim_zm_ori_generator_end_anim", n_blend_time);
 }
 
-/*
-	Name: function_c516c0e9
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x26FA4447
-	Offset: 0x1570
-	Size: 0x14C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_c516c0e9(localclientnumber, oldval, newval) {
   if(newval == 1) {
     self clearanim("p7_fxanim_zm_ori_generator_fluid_rotate_down_anim", 0.2);
@@ -123,15 +80,6 @@ function function_c516c0e9(localclientnumber, oldval, newval) {
   self function_f937236c(newval);
 }
 
-/*
-	Name: function_f937236c
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x87093BA
-	Offset: 0x16C8
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_f937236c(newval, var_ce864151 = 0) {
   n_blend_time = 0.2;
   if(var_ce864151) {
@@ -142,15 +90,6 @@ function function_f937236c(newval, var_ce864151 = 0) {
   self function_7c4c8c42(newval);
 }
 
-/*
-	Name: function_f424a041
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x1D22ECC4
-	Offset: 0x1790
-	Size: 0x176
-	Parameters: 2
-	Flags: Linked
-*/
 function function_f424a041(str_name, localclientnumber) {
   if(!isdefined(level.var_92a1717d)) {
     level.var_92a1717d = [];
@@ -161,25 +100,14 @@ function function_f424a041(str_name, localclientnumber) {
   if(!isdefined(level.var_92a1717d[localclientnumber][str_name])) {
     level.var_92a1717d[localclientnumber][str_name] = getent(localclientnumber, str_name, "targetname");
   }
-  /#
   assert(isdefined(level.var_92a1717d[localclientnumber][str_name]), ("" + str_name) + "");
-  # /
-    level.var_92a1717d[localclientnumber][str_name] util::waittill_dobj(localclientnumber);
+  level.var_92a1717d[localclientnumber][str_name] util::waittill_dobj(localclientnumber);
   if(!level.var_92a1717d[localclientnumber][str_name] hasanimtree()) {
     level.var_92a1717d[localclientnumber][str_name] useanimtree($generic);
   }
   return level.var_92a1717d[localclientnumber][str_name];
 }
 
-/*
-	Name: function_d56a2c4b
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x7EE2409A
-	Offset: 0x1910
-	Size: 0x23A
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d56a2c4b(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   m_generator = function_f424a041(getsubstr(fieldname, 6), localclientnum);
   if(newval == 6) {
@@ -191,7 +119,7 @@ function function_d56a2c4b(localclientnum, oldval, newval, bnewent, binitialsnap
     n_blend_time = 0;
   }
   m_generator function_9c5303ba();
-  m_generator notify(# "hash_a7f9aff7");
+  m_generator notify("hash_a7f9aff7");
   if(newval != 0) {
     m_generator thread function_d66ac605(localclientnum);
   }
@@ -226,17 +154,8 @@ function function_d56a2c4b(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_d66ac605
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x1789777E
-	Offset: 0x1B58
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d66ac605(localclientnumber) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self.var_c4cb7bc3 = 1;
   while (isdefined(self.var_c4cb7bc3) && self.var_c4cb7bc3) {
     playrumbleonposition(localclientnumber, "generator_active", self.origin);
@@ -244,15 +163,6 @@ function function_d66ac605(localclientnumber) {
   }
 }
 
-/*
-	Name: generator_state_off
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x59BF9A1E
-	Offset: 0x1BC8
-	Size: 0x8C
-	Parameters: 2
-	Flags: Linked
-*/
 function generator_state_off(localclientnumber, n_blend_time) {
   self.var_c4cb7bc3 = 0;
   self function_71e86201();
@@ -261,15 +171,6 @@ function generator_state_off(localclientnumber, n_blend_time) {
   self thread function_7be891d1(localclientnumber);
 }
 
-/*
-	Name: generator_state_turn_on
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xF064B92D
-	Offset: 0x1C60
-	Size: 0x94
-	Parameters: 2
-	Flags: Linked
-*/
 function generator_state_turn_on(localclientnumber, n_blend_time) {
   self setanim("p7_fxanim_zm_ori_generator_start_anim", 1, n_blend_time, 1);
   self mapshaderconstant(localclientnumber, 0, "ScriptVector2", 0, 1, 0, 0);
@@ -277,15 +178,6 @@ function generator_state_turn_on(localclientnumber, n_blend_time) {
   self function_3f53e168(localclientnumber);
 }
 
-/*
-	Name: generator_state_power_up
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xB82CE97D
-	Offset: 0x1D00
-	Size: 0x94
-	Parameters: 2
-	Flags: Linked
-*/
 function generator_state_power_up(localclientnumber, n_blend_time) {
   self setanim("p7_fxanim_zm_ori_generator_up_idle_anim", 1, n_blend_time, 1);
   self mapshaderconstant(localclientnumber, 0, "ScriptVector2", 0, 1, 0, 0);
@@ -293,61 +185,25 @@ function generator_state_power_up(localclientnumber, n_blend_time) {
   self function_3f53e168(localclientnumber);
 }
 
-/*
-	Name: generator_state_power_down
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x4782384C
-	Offset: 0x1DA0
-	Size: 0x64
-	Parameters: 2
-	Flags: Linked
-*/
 function generator_state_power_down(localclientnumber, n_blend_time) {
   self setanim("p7_fxanim_zm_ori_generator_down_idle_anim", 1, n_blend_time, 1);
   self mapshaderconstant(localclientnumber, 0, "ScriptVector2", 0, 1, 0, 0);
 }
 
-/*
-	Name: function_3414585a
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x37BCA49E
-	Offset: 0x1E10
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_3414585a(localclientnumber, n_blend_time) {
   self generator_state_power_down(localclientnumber, n_blend_time);
   self function_c1810bcc(localclientnumber);
 }
 
-/*
-	Name: function_c1810bcc
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x2B919D00
-	Offset: 0x1E68
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c1810bcc(localclientnumber) {
   self thread function_8daa207b(localclientnumber);
   self thread function_afe4ef7e(localclientnumber);
 }
 
-/*
-	Name: function_8daa207b
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xA562114A
-	Offset: 0x1EB0
-	Size: 0x108
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8daa207b(localclientnumber) {
-  self notify(# "hash_74845d8b");
-  self endon(# "hash_74845d8b");
-  self endon(# "hash_a0c3abea");
+  self notify("hash_74845d8b");
+  self endon("hash_74845d8b");
+  self endon("hash_a0c3abea");
   if(!isdefined(self.var_25ac834)) {
     self.var_25ac834 = [];
   }
@@ -358,19 +214,10 @@ function function_8daa207b(localclientnumber) {
   }
 }
 
-/*
-	Name: function_afe4ef7e
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x93591B35
-	Offset: 0x1FC0
-	Size: 0x108
-	Parameters: 1
-	Flags: Linked
-*/
 function function_afe4ef7e(localclientnumber) {
-  self notify(# "hash_e3f7fe2e");
-  self endon(# "hash_e3f7fe2e");
-  self endon(# "hash_a0c3abea");
+  self notify("hash_e3f7fe2e");
+  self endon("hash_e3f7fe2e");
+  self endon("hash_a0c3abea");
   if(!isdefined(self.var_9fe4037d)) {
     self.var_9fe4037d = [];
   }
@@ -381,17 +228,8 @@ function function_afe4ef7e(localclientnumber) {
   }
 }
 
-/*
-	Name: function_501771e3
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x8905683F
-	Offset: 0x20D0
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_501771e3(localclientnumber) {
-  self notify(# "hash_a0c3abea");
+  self notify("hash_a0c3abea");
   if(isdefined(self.var_25ac834) && isdefined(self.var_25ac834[localclientnumber])) {
     deletefx(localclientnumber, self.var_25ac834[localclientnumber], 1);
   }
@@ -400,15 +238,6 @@ function function_501771e3(localclientnumber) {
   }
 }
 
-/*
-	Name: function_bbdb6db3
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x8CCA09C
-	Offset: 0x2188
-	Size: 0x1A2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bbdb6db3(localclientnumber) {
   if(!isdefined(self.var_244ac37)) {
     self.var_244ac37 = [];
@@ -450,15 +279,6 @@ function function_bbdb6db3(localclientnumber) {
   self.var_244ac37[localclientnumber] = playfxontag(localclientnumber, var_2a0fd09, self, "j_generator_pole");
 }
 
-/*
-	Name: generator_state_turn_off
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x469960C6
-	Offset: 0x2338
-	Size: 0x94
-	Parameters: 2
-	Flags: Linked
-*/
 function generator_state_turn_off(localclientnumber, n_blend_time) {
   self setanim("p7_fxanim_zm_ori_generator_end_anim", 1, n_blend_time, 1);
   self mapshaderconstant(localclientnumber, 0, "ScriptVector2", 0, 0, 0, 0);
@@ -466,15 +286,6 @@ function generator_state_turn_off(localclientnumber, n_blend_time) {
   self thread function_7be891d1(localclientnumber);
 }
 
-/*
-	Name: function_7c4c8c42
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x3BCD1A58
-	Offset: 0x23D8
-	Size: 0x16C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7c4c8c42(newval) {
   if(!isdefined(self.var_be886049)) {
     sndorigin = self gettagorigin("j_generator_pole");
@@ -489,15 +300,6 @@ function function_7c4c8c42(newval) {
   self function_738a49be(1);
 }
 
-/*
-	Name: function_71e86201
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xAB9939AD
-	Offset: 0x2550
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_71e86201() {
   if(isdefined(self.var_ffb79f2)) {
     playsound(0, "zmb_capturezone_donut_stop", self.origin);
@@ -507,15 +309,6 @@ function function_71e86201() {
   self function_738a49be(0);
 }
 
-/*
-	Name: function_f6af797d
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x894DF69C
-	Offset: 0x25C8
-	Size: 0x26A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f6af797d(localclientnumber) {
   self function_312726e4(localclientnumber);
   var_a1c15b1a = self.targetname;
@@ -556,15 +349,6 @@ function function_f6af797d(localclientnumber) {
   self.var_c59635cd[localclientnumber] = playfxontag(localclientnumber, level._effect["capture_exhaust_side"], self, "fx_vat_exhaust02");
 }
 
-/*
-	Name: function_312726e4
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xE39F3E97
-	Offset: 0x2840
-	Size: 0x1B4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_312726e4(localclientnumber) {
   if(!isdefined(self.var_244ac37)) {
     self.var_244ac37 = [];
@@ -599,15 +383,6 @@ function function_312726e4(localclientnumber) {
   self function_501771e3(localclientnumber);
 }
 
-/*
-	Name: function_3f53e168
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x107883D0
-	Offset: 0x2A00
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3f53e168(localclientnumber) {
   if(!isdefined(self.var_88677912)) {
     self.var_88677912 = [];
@@ -617,30 +392,12 @@ function function_3f53e168(localclientnumber) {
   }
 }
 
-/*
-	Name: function_7be891d1
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xB177ADB6
-	Offset: 0x2A68
-	Size: 0x6A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7be891d1(localclientnumber) {
-  self endon(# "hash_a7f9aff7");
+  self endon("hash_a7f9aff7");
   self function_3f53e168(localclientnumber);
   self.var_88677912[localclientnumber] = playfxontag(localclientnumber, level._effect["zapper_light_notready"], self, "tag_pole_top");
 }
 
-/*
-	Name: scale_speed
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x95DD005A
-	Offset: 0x2AE0
-	Size: 0xCC
-	Parameters: 5
-	Flags: None
-*/
 function scale_speed(x1, x2, y1, y2, z) {
   if(z < x1) {
     z = x1;
@@ -655,15 +412,6 @@ function scale_speed(x1, x2, y1, y2, z) {
   return w;
 }
 
-/*
-	Name: function_738a49be
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x20CB5BB0
-	Offset: 0x2BB8
-	Size: 0x120
-	Parameters: 1
-	Flags: Linked
-*/
 function function_738a49be(start) {
   if(!isdefined(self.var_f2b9c979)) {
     self.var_f2b9c979 = 0;
@@ -683,15 +431,6 @@ function function_738a49be(start) {
   }
 }
 
-/*
-	Name: function_54aa6e5c
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x20AEBA8
-	Offset: 0x2CE0
-	Size: 0x1D4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_54aa6e5c(localclientnumber, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   var_a0a565ad = function_24fcf23b(fieldname, localclientnumber);
   str_exploder = "fxexp_" + level.var_6aec00d3[fieldname];
@@ -708,29 +447,11 @@ function function_54aa6e5c(localclientnumber, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: function_31e3b463
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xABEA51AF
-	Offset: 0x2EC0
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function function_31e3b463(play, num) {}
 
-/*
-	Name: function_59c8afc0
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xDD0CB07C
-	Offset: 0x2EE0
-	Size: 0x1B0
-	Parameters: 7
-	Flags: Linked
-*/
 function function_59c8afc0(localclientnumber, var_98ce6736, var_4333264, var_e2ad4e8e, var_22a5887c, var_48d50352, var_d056f9f8) {
-  self notify(# "hash_c0d7e9d");
-  self endon(# "hash_c0d7e9d");
+  self notify("hash_c0d7e9d");
+  self endon("hash_c0d7e9d");
   if(!isdefined(self.var_40a6544d)) {
     self.var_40a6544d = var_98ce6736;
   }
@@ -748,18 +469,9 @@ function function_59c8afc0(localclientnumber, var_98ce6736, var_4333264, var_e2a
   }
 }
 
-/*
-	Name: function_217d24cd
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xC3E22AF7
-	Offset: 0x3098
-	Size: 0x116
-	Parameters: 3
-	Flags: Linked
-*/
 function function_217d24cd(localclientnumber, var_68feedab, n_transition_time) {
-  self notify(# "hash_c0d7e9d");
-  self endon(# "hash_c0d7e9d");
+  self notify("hash_c0d7e9d");
+  self endon("hash_c0d7e9d");
   if(!isdefined(self.var_40a6544d)) {
     self.var_40a6544d = 1;
   }
@@ -772,15 +484,6 @@ function function_217d24cd(localclientnumber, var_68feedab, n_transition_time) {
   }
 }
 
-/*
-	Name: function_24fcf23b
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xFDD0C945
-	Offset: 0x31B8
-	Size: 0x1DE
-	Parameters: 2
-	Flags: Linked
-*/
 function function_24fcf23b(str_targetname, localclientnum) {
   if(!isdefined(level.var_4cb39fae)) {
     level.var_4cb39fae = [];
@@ -798,21 +501,10 @@ function function_24fcf23b(str_targetname, localclientnum) {
     level.var_4cb39fae[localclientnum][str_targetname] mapshaderconstant(localclientnum, 2, "scriptVector2", 0);
     level.var_4cb39fae[localclientnum][str_targetname].var_8d2380bb[localclientnum] = 1;
   }
-  /#
   assert(isdefined(level.var_4cb39fae[localclientnum][str_targetname]), ("" + str_targetname) + "");
-  # /
-    return level.var_4cb39fae[localclientnum][str_targetname];
+  return level.var_4cb39fae[localclientnum][str_targetname];
 }
 
-/*
-	Name: function_ac197e52
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x64B4D5BA
-	Offset: 0x33A0
-	Size: 0x194
-	Parameters: 7
-	Flags: Linked
-*/
 function function_ac197e52(localclientnumber, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   var_eb1b4657 = function_12a07195(localclientnumber);
   if(isdefined(var_eb1b4657)) {
@@ -835,15 +527,6 @@ function function_ac197e52(localclientnumber, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: function_9164d089
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x97DE2781
-	Offset: 0x3540
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9164d089(localclientnumber) {
   var_82347477 = function_cd49ce76(localclientnumber);
   if(isdefined(var_82347477)) {
@@ -851,18 +534,9 @@ function function_9164d089(localclientnumber) {
   }
 }
 
-/*
-	Name: function_f35264ff
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x342547DA
-	Offset: 0x35A0
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f35264ff() {
-  self notify(# "hash_3b22402e");
-  self endon(# "hash_765cfe11");
+  self notify("hash_3b22402e");
+  self endon("hash_765cfe11");
   self function_4f226940();
   self setanim( % generic::p7_fxanim_zm_ori_monolith_inductor_pull_anim, 1, 0.2);
   waitrealtime((getanimlength( % generic::p7_fxanim_zm_ori_monolith_inductor_pull_anim)) - 0.2);
@@ -871,18 +545,9 @@ function function_f35264ff() {
   level.var_d7512031 = 1;
 }
 
-/*
-	Name: function_3f73ddc3
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xF52F364B
-	Offset: 0x3698
-	Size: 0xF0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3f73ddc3(oldval) {
-  self notify(# "hash_765cfe11");
-  self endon(# "hash_3b22402e");
+  self notify("hash_765cfe11");
+  self endon("hash_3b22402e");
   self function_4f226940();
   if(oldval) {
     self setanim( % generic::p7_fxanim_zm_ori_monolith_inductor_release_anim, 1, 0.2);
@@ -893,18 +558,9 @@ function function_3f73ddc3(oldval) {
   level.var_d7512031 = 0;
 }
 
-/*
-	Name: pap_monolith_ring_shake
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x4A0E125A
-	Offset: 0x3790
-	Size: 0x1EC
-	Parameters: 7
-	Flags: Linked
-*/
 function pap_monolith_ring_shake(localclientnumber, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   var_eb1b4657 = function_12a07195(localclientnumber);
-  var_eb1b4657 endon(# "hash_3b22402e");
+  var_eb1b4657 endon("hash_3b22402e");
   if(newval == 1) {
     var_eb1b4657 function_4f226940();
     var_eb1b4657 setanim( % generic::p7_fxanim_zm_ori_monolith_inductor_shake_anim, 1, 0.2);
@@ -921,15 +577,6 @@ function pap_monolith_ring_shake(localclientnumber, oldval, newval, bnewent, bin
   }
 }
 
-/*
-	Name: function_4f226940
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x34E4441D
-	Offset: 0x3988
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4f226940() {
   self clearanim( % generic::p7_fxanim_zm_ori_monolith_inductor_pull_anim, 0.2);
   self clearanim( % generic::p7_fxanim_zm_ori_monolith_inductor_pull_idle_anim, 0.2);
@@ -938,18 +585,9 @@ function function_4f226940() {
   self clearanim( % generic::p7_fxanim_zm_ori_monolith_inductor_idle_anim, 0.2);
 }
 
-/*
-	Name: function_aab40f28
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x8F5AA8DA
-	Offset: 0x3A60
-	Size: 0x148
-	Parameters: 2
-	Flags: Linked
-*/
 function function_aab40f28(localclientnumber, n_value) {
-  self notify(# "hash_c6efbac2");
-  self endon(# "hash_c6efbac2");
+  self notify("hash_c6efbac2");
+  self endon("hash_c6efbac2");
   if(!isdefined(self.var_40a6544d)) {
     self.var_40a6544d = [];
   }
@@ -965,15 +603,6 @@ function function_aab40f28(localclientnumber, n_value) {
   }
 }
 
-/*
-	Name: function_12a07195
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xB0DBEBB0
-	Offset: 0x3BB0
-	Size: 0x118
-	Parameters: 1
-	Flags: Linked
-*/
 function function_12a07195(localclientnumber) {
   if(!isdefined(level.var_9920ede0)) {
     level.var_9920ede0 = [];
@@ -989,15 +618,6 @@ function function_12a07195(localclientnumber) {
   return level.var_9920ede0[localclientnumber];
 }
 
-/*
-	Name: function_be0738b1
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x358B24E6
-	Offset: 0x3CD0
-	Size: 0xC4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_be0738b1(localclientnumber, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(!isdefined(self)) {
     return;
@@ -1010,15 +630,6 @@ function function_be0738b1(localclientnumber, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: emergence_hole_spawn
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xD511D2D2
-	Offset: 0x3DA0
-	Size: 0x144
-	Parameters: 1
-	Flags: Linked
-*/
 function emergence_hole_spawn(localclientnumber) {
   self function_345cde91(localclientnumber);
   self.var_a326f0e[localclientnumber] = playfxontag(localclientnumber, level._effect["tesla_elec_kill"], self, "tag_origin");
@@ -1031,30 +642,12 @@ function emergence_hole_spawn(localclientnumber) {
   playsound(localclientnumber, "zmb_capturezone_portal_start", self.origin);
 }
 
-/*
-	Name: function_3a4d4e97
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xC88CA6A6
-	Offset: 0x3EF0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3a4d4e97() {
-  self endon(# "entityshutdown");
-  level waittill(# "demo_jump");
+  self endon("entityshutdown");
+  level waittill("demo_jump");
   self delete();
 }
 
-/*
-	Name: function_45d7dc5a
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x3109B476
-	Offset: 0x3F30
-	Size: 0x82
-	Parameters: 2
-	Flags: Linked
-*/
 function function_45d7dc5a(localclientnumber, var_4f49ffe0) {
   if(var_4f49ffe0) {
     var_4478dceb = 0;
@@ -1064,15 +657,6 @@ function function_45d7dc5a(localclientnumber, var_4f49ffe0) {
   return !var_4f49ffe0;
 }
 
-/*
-	Name: function_345cde91
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xEB2A52F0
-	Offset: 0x3FC0
-	Size: 0x174
-	Parameters: 2
-	Flags: Linked
-*/
 function function_345cde91(localclientnumber, var_4478dceb = 1) {
   if(!isdefined(self.var_a326f0e)) {
     self.var_a326f0e = [];
@@ -1102,15 +686,6 @@ function function_345cde91(localclientnumber, var_4478dceb = 1) {
   }
 }
 
-/*
-	Name: function_5f50cf29
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xE0E1518A
-	Offset: 0x4140
-	Size: 0x92
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5f50cf29() {
   if(self._aitype === "zm_tomb_basic_zone_capture") {
     s_info = spawnstruct();
@@ -1121,15 +696,6 @@ function function_5f50cf29() {
   }
 }
 
-/*
-	Name: function_7cc68e33
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xCB24D87C
-	Offset: 0x41E0
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7cc68e33() {
   function_6784d594(0, undefined, % generic::p7_fxanim_zm_ori_pack_return_pc1_anim);
   function_6784d594(1, % generic::p7_fxanim_zm_ori_pack_pc1_anim, % generic::p7_fxanim_zm_ori_pack_return_pc2_anim);
@@ -1140,15 +706,6 @@ function function_7cc68e33() {
   function_6784d594(6, % generic::p7_fxanim_zm_ori_pack_pc6_anim, undefined);
 }
 
-/*
-	Name: play_pap_anim
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x8402969F
-	Offset: 0x4320
-	Size: 0x326
-	Parameters: 7
-	Flags: Linked
-*/
 function play_pap_anim(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   var_29003520 = function_cd49ce76(localclientnum);
   var_c0fc4c20 = bnewent || binitialsnap || bwasdemojump;
@@ -1187,15 +744,6 @@ function play_pap_anim(localclientnum, oldval, newval, bnewent, binitialsnap, fi
   }
 }
 
-/*
-	Name: function_6784d594
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x24018A81
-	Offset: 0x4650
-	Size: 0xC4
-	Parameters: 3
-	Flags: Linked
-*/
 function function_6784d594(n_index, var_c930c99, var_653a11db) {
   if(!isdefined(level.var_f983511b)) {
     level.var_f983511b = [];
@@ -1210,15 +758,6 @@ function function_6784d594(n_index, var_c930c99, var_653a11db) {
   level.var_f983511b["disassemble"][n_index] = var_653a11db;
 }
 
-/*
-	Name: function_cd49ce76
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x1DFAF84A
-	Offset: 0x4720
-	Size: 0x118
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cd49ce76(localclientnumber) {
   if(!isdefined(level.var_6a68eb65)) {
     level.var_6a68eb65 = [];
@@ -1234,15 +773,6 @@ function function_cd49ce76(localclientnumber) {
   return level.var_6a68eb65[localclientnumber];
 }
 
-/*
-	Name: function_902e1a6d
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xE7ADA483
-	Offset: 0x4840
-	Size: 0x7A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_902e1a6d() {
   util::waitforallclients();
   a_players = getlocalplayers();
@@ -1251,15 +781,6 @@ function function_902e1a6d() {
   }
 }
 
-/*
-	Name: function_a412a80d
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xB60DD6ED
-	Offset: 0x48C8
-	Size: 0xE4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_a412a80d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     self._aitype = "zm_tomb_basic_zone_capture";
@@ -1271,15 +792,6 @@ function function_a412a80d(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_82ce76c3
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xE240295D
-	Offset: 0x49B8
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_82ce76c3(localclientnumber) {
   self function_b031f5ce(localclientnumber);
   self.var_3199f723[localclientnumber] = playfxontag(localclientnumber, level._effect["zone_capture_zombie_torso_fx"], self, "J_Spine4");
@@ -1291,15 +803,6 @@ function function_82ce76c3(localclientnumber) {
   self.sndent playloopsound("zmb_capturezone_zombie_loop", 1);
 }
 
-/*
-	Name: snddeleteent
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x501E2868
-	Offset: 0x4AC0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function snddeleteent(ent) {
   self util::waittill_any("death", "entityshutdown");
   if(isdefined(ent)) {
@@ -1307,15 +810,6 @@ function snddeleteent(ent) {
   }
 }
 
-/*
-	Name: function_b031f5ce
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xBC20094F
-	Offset: 0x4B20
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b031f5ce(localclientnumber) {
   if(!isdefined(self.var_3199f723)) {
     self.var_3199f723 = [];
@@ -1325,15 +819,6 @@ function function_b031f5ce(localclientnumber) {
   }
 }
 
-/*
-	Name: function_a4e6d2a7
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xCF826BC5
-	Offset: 0x4B88
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a4e6d2a7() {
   function_eebeeca5("zone_capture_monolith_crystal_1", 5001);
   function_eebeeca5("zone_capture_monolith_crystal_2", 5002);
@@ -1343,15 +828,6 @@ function function_a4e6d2a7() {
   function_eebeeca5("zone_capture_monolith_crystal_6", 5006);
 }
 
-/*
-	Name: function_eebeeca5
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x9E9E38D3
-	Offset: 0x4C58
-	Size: 0x52
-	Parameters: 2
-	Flags: Linked
-*/
 function function_eebeeca5(str_field_name, n_exploder_id) {
   if(!isdefined(level.var_6aec00d3)) {
     level.var_6aec00d3 = [];
@@ -1361,15 +837,6 @@ function function_eebeeca5(str_field_name, n_exploder_id) {
   }
 }
 
-/*
-	Name: function_3ec54bc4
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xFA41AC88
-	Offset: 0x4CB8
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3ec54bc4() {
   function_b27ab5bf("zone_capture_perk_machine_smoke_fx_1", "revive_pipes");
   function_b27ab5bf("zone_capture_perk_machine_smoke_fx_3", "speedcola_pipes");
@@ -1377,15 +844,6 @@ function function_3ec54bc4() {
   function_b27ab5bf("zone_capture_perk_machine_smoke_fx_5", "staminup_pipes");
 }
 
-/*
-	Name: function_b27ab5bf
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xC18DD335
-	Offset: 0x4D48
-	Size: 0x52
-	Parameters: 2
-	Flags: Linked
-*/
 function function_b27ab5bf(str_field_name, var_4560e0ce) {
   if(!isdefined(level.var_2707a8c)) {
     level.var_2707a8c = [];
@@ -1395,15 +853,6 @@ function function_b27ab5bf(str_field_name, var_4560e0ce) {
   }
 }
 
-/*
-	Name: pap_emissive_fx
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xA2A1FC6F
-	Offset: 0x4DA8
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function pap_emissive_fx(localclientnumber, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval == 1) {
     self mapshaderconstant(localclientnumber, 0, "scriptVector2", 0, 1, 0, 0);
@@ -1413,15 +862,6 @@ function pap_emissive_fx(localclientnumber, oldval, newval, bnewent, binitialsna
   }
 }
 
-/*
-	Name: function_daf4318
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x6C1BDC3A
-	Offset: 0x4EA0
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_daf4318(localclientnumber, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     var_3aed1533 = struct::get("mulekick_pipes", "targetname");
@@ -1429,15 +869,6 @@ function function_daf4318(localclientnumber, oldval, newval, bnewent, binitialsn
   }
 }
 
-/*
-	Name: function_6543186c
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x3DBA3EC9
-	Offset: 0x4F38
-	Size: 0xB4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6543186c(localclientnumber, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   var_d26305ae = function_23d70c75(fieldname);
   if(isdefined(var_d26305ae)) {
@@ -1449,15 +880,6 @@ function function_6543186c(localclientnumber, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: function_23d70c75
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0xF6A439C7
-	Offset: 0x4FF8
-	Size: 0xC2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_23d70c75(str_field_name) {
   s_fx = undefined;
   if(isdefined(level.var_2707a8c[str_field_name])) {
@@ -1472,15 +894,6 @@ function function_23d70c75(str_field_name) {
   return s_fx;
 }
 
-/*
-	Name: function_176e302e
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x8EF1C42E
-	Offset: 0x50C8
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_176e302e(localclientnumber) {
   if(!isdefined(self.a_fx)) {
     self.a_fx = [];
@@ -1490,15 +903,6 @@ function function_176e302e(localclientnumber) {
   }
 }
 
-/*
-	Name: function_b64620a3
-	Namespace: zm_tomb_capture_zones
-	Checksum: 0x628AA4F
-	Offset: 0x5130
-	Size: 0x7A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b64620a3(localclientnumber) {
   self function_176e302e(localclientnumber);
   self.a_fx[localclientnumber] = playfx(localclientnumber, level._effect["perk_pipe_smoke"], self.origin, anglestoforward(self.angles));

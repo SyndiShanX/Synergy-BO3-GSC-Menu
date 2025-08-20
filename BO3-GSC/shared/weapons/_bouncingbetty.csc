@@ -1,24 +1,17 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_bouncingbetty.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #using_animtree("bouncing_betty");
-
 #namespace bouncingbetty;
 
-/*
-	Name: init_shared
-	Namespace: bouncingbetty
-	Checksum: 0xE3073727
-	Offset: 0x2E0
-	Size: 0x144
-	Parameters: 1
-	Flags: Linked
-*/
 function init_shared(localclientnum) {
   level.explode_1st_offset = 55;
   level.explode_2nd_offset = 95;
@@ -32,17 +25,8 @@ function init_shared(localclientnum) {
   clientfield::register("scriptmover", "bouncingbetty_state", 1, 2, "int", & bouncingbetty_state_change, 0, 0);
 }
 
-/*
-	Name: bouncingbetty_state_change
-	Namespace: bouncingbetty
-	Checksum: 0x4670DA60
-	Offset: 0x430
-	Size: 0xC6
-	Parameters: 7
-	Flags: Linked
-*/
 function bouncingbetty_state_change(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self)) {
     return;
@@ -59,32 +43,14 @@ function bouncingbetty_state_change(localclientnum, oldval, newval, bnewent, bin
   }
 }
 
-/*
-	Name: bouncingbetty_deploying
-	Namespace: bouncingbetty
-	Checksum: 0x98D16B11
-	Offset: 0x500
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function bouncingbetty_deploying(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self useanimtree($bouncing_betty);
   self setanim( % bouncing_betty::o_spider_mine_deploy, 1, 0, 1);
 }
 
-/*
-	Name: bouncingbetty_detonating
-	Namespace: bouncingbetty
-	Checksum: 0x72050A31
-	Offset: 0x578
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked
-*/
 function bouncingbetty_detonating(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   up = anglestoup(self.angles);
   forward = anglestoforward(self.angles);
   playfx(localclientnum, level._effect["fx_betty_launch_dust"], self.origin, up, forward);
@@ -94,17 +60,8 @@ function bouncingbetty_detonating(localclientnum) {
   self thread watchforexplosionnotetracks(localclientnum, up, forward);
 }
 
-/*
-	Name: watchforexplosionnotetracks
-	Namespace: bouncingbetty
-	Checksum: 0x9A05C0DD
-	Offset: 0x6B8
-	Size: 0x1CE
-	Parameters: 3
-	Flags: Linked
-*/
 function watchforexplosionnotetracks(localclientnum, up, forward) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (true) {
     notetrack = self util::waittill_any_return("explode_1st", "explode_2nd", "explode_main", "entityshutdown");
     switch (notetrack) {

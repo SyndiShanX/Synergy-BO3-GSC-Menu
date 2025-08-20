@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_radios.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\ai\zombie_utility;
@@ -24,72 +28,24 @@
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_genesis_util;
 #using scripts\zm\zm_genesis_vo;
-
 #namespace zm_genesis_radios;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_genesis_radios
-	Checksum: 0x5850A557
-	Offset: 0x5C0
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_radios", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_genesis_radios
-	Checksum: 0x6950C7EB
-	Offset: 0x608
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_disconnect( & on_player_disconnect);
 }
 
-/*
-	Name: __main__
-	Namespace: zm_genesis_radios
-	Checksum: 0x2EE61A66
-	Offset: 0x638
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
-  /#
   level thread function_9ef4291();
-  # /
-    level waittill(# "start_zombie_round_logic");
+  level waittill("start_zombie_round_logic");
   level thread function_a999a42a();
 }
 
-/*
-	Name: on_player_disconnect
-	Namespace: zm_genesis_radios
-	Checksum: 0x99EC1590
-	Offset: 0x680
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_disconnect() {}
 
-/*
-	Name: function_a999a42a
-	Namespace: zm_genesis_radios
-	Checksum: 0xC4040217
-	Offset: 0x690
-	Size: 0x3B6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a999a42a() {
   level.var_66b7ed7e = [];
   level.var_22e09be4 = [];
@@ -108,7 +64,7 @@ function function_a999a42a() {
   var_ff34523e = array(5, 8, 10, 11, 12, 13);
   for (i = 0; i < level.a_s_radios.size; i++) {
     level.a_s_radios[i].clip = arraygetclosest(level.a_s_radios[i].origin, var_64dfb3ba);
-    s_unitrigger = level.a_s_radios[i] zm_unitrigger::create_unitrigger( & "", 64, & function_2c776a2a);
+    s_unitrigger = level.a_s_radios[i] zm_unitrigger::create_unitrigger(&"", 64, & function_2c776a2a);
     s_unitrigger.require_look_at = 1;
     s_unitrigger.b_on = 1;
     level.a_s_radios[i] thread function_795f4e6();
@@ -119,41 +75,19 @@ function function_a999a42a() {
   }
 }
 
-/*
-	Name: function_2c776a2a
-	Namespace: zm_genesis_radios
-	Checksum: 0x1F2A9CDC
-	Offset: 0xA50
-	Size: 0x7E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2c776a2a(e_player) {
   if(isdefined(self.stub.b_on) && self.stub.b_on) {
-    /#
     self sethintstring("");
-    # /
-      return true;
+    return true;
   }
-  /#
   self sethintstring("");
-  # /
-    return false;
+  return false;
 }
 
-/*
-	Name: function_795f4e6
-	Namespace: zm_genesis_radios
-	Checksum: 0xE6879E94
-	Offset: 0xAD8
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_795f4e6() {
-  self endon(# "hash_e37d497d");
+  self endon("hash_e37d497d");
   while (true) {
-    self waittill(# "trigger_activated", e_user);
+    self waittill("trigger_activated", e_user);
     if(isplayer(e_user) && !level flag::get("abcd_speaking") && !level flag::get("sophia_speaking") && !level flag::get("shadowman_speaking") && !self function_94b3b616()) {
       self thread function_66d50897("trigger");
       return;
@@ -161,22 +95,13 @@ function function_795f4e6() {
   }
 }
 
-/*
-	Name: function_35f4f25f
-	Namespace: zm_genesis_radios
-	Checksum: 0x259A6FE9
-	Offset: 0xBC8
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function function_35f4f25f() {
-  self endon(# "hash_e37d497d");
-  self endon(# "hash_27f23694");
+  self endon("hash_e37d497d");
+  self endon("hash_27f23694");
   self.clip setcandamage(1);
   var_b1c8a081 = 0;
   while (!var_b1c8a081) {
-    self.clip waittill(# "damage", n_amount, e_attacker, v_org, v_dir, str_mod);
+    self.clip waittill("damage", n_amount, e_attacker, v_org, v_dir, str_mod);
     if(isplayer(e_attacker) && !level flag::get("abcd_speaking") && !level flag::get("sophia_speaking") && !level flag::get("shadowman_speaking") && !self function_94b3b616()) {
       var_b1c8a081 = 1;
       self thread function_66d50897("damage");
@@ -186,18 +111,9 @@ function function_35f4f25f() {
   }
 }
 
-/*
-	Name: function_66d50897
-	Namespace: zm_genesis_radios
-	Checksum: 0x81BE40BC
-	Offset: 0xD48
-	Size: 0x1B4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_66d50897(var_ffc8395e) {
   if(self.s_unitrigger.b_on) {
-    self notify(# "hash_e37d497d");
+    self notify("hash_e37d497d");
     self.clip setcandamage(0);
     self.s_unitrigger.b_on = 0;
     zm_unitrigger::unregister_unitrigger(self);
@@ -224,15 +140,6 @@ function function_66d50897(var_ffc8395e) {
   }
 }
 
-/*
-	Name: function_94b3b616
-	Namespace: zm_genesis_radios
-	Checksum: 0xCC885A81
-	Offset: 0xF08
-	Size: 0xB2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_94b3b616(n_range = 800) {
   if(level.var_66b7ed7e.size == 0) {
     return 0;
@@ -245,17 +152,7 @@ function function_94b3b616(n_range = 800) {
   return 0;
 }
 
-/*
-	Name: function_9ef4291
-	Namespace: zm_genesis_radios
-	Checksum: 0x2495D42F
-	Offset: 0xFC8
-	Size: 0x5BC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9ef4291() {
-  /#
   level thread zm_genesis_util::setup_devgui_func("", "", 1, & function_418d5e87);
   level thread zm_genesis_util::setup_devgui_func("", "", 1, & function_dda18b8e);
   level thread zm_genesis_util::setup_devgui_func("", "", 2, & function_418d5e87);
@@ -282,35 +179,13 @@ function function_9ef4291() {
   level thread zm_genesis_util::setup_devgui_func("", "", 12, & function_dda18b8e);
   level thread zm_genesis_util::setup_devgui_func("", "", 13, & function_418d5e87);
   level thread zm_genesis_util::setup_devgui_func("", "", 13, & function_dda18b8e);
-  # /
 }
 
-/*
-	Name: function_dda18b8e
-	Namespace: zm_genesis_radios
-	Checksum: 0x76A068AE
-	Offset: 0x1590
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function function_dda18b8e(n_val) {
-  /#
   level.a_s_radios[n_val - 1] thread function_66d50897();
-  # /
 }
 
-/*
-	Name: function_418d5e87
-	Namespace: zm_genesis_radios
-	Checksum: 0xE19EA38B
-	Offset: 0x15D0
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_418d5e87(n_val) {
-  /#
   str_dest = "" + n_val;
   s_dest = struct::get(str_dest);
   if(isdefined(s_dest)) {
@@ -322,5 +197,4 @@ function function_418d5e87(n_val) {
     player unlink();
     var_5d8a4d6d delete();
   }
-  # /
 }

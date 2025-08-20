@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_z_lotus.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_c8dba3e6;
 
-/*
-	Name: init_voice
-	Namespace: namespace_c8dba3e6
-	Checksum: 0x2355BC8E
-	Offset: 0xE10
-	Size: 0x8A4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("plyz_lotus_tower_was_one_0", "vox_zlot_1_01_000_plyz");
   dialog::add("plyz_we_took_out_hakim_s_0", "vox_zlot_1_01_001_plyz");

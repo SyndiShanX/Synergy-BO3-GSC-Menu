@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_debug_menu.gsc
+*************************************************/
+
 #namespace debug_menu;
 
-/*
-	Name: add_menu
-	Namespace: debug_menu
-	Checksum: 0x4DA4D193
-	Offset: 0x70
-	Size: 0xB8
-	Parameters: 2
-	Flags: Linked
-*/
 function add_menu(menu_name, title) {
-  /#
   if(isdefined(level.menu_sys[menu_name])) {
     println(("" + menu_name) + "");
     return;
@@ -19,20 +13,9 @@ function add_menu(menu_name, title) {
   level.menu_sys[menu_name] = spawnstruct();
   level.menu_sys[menu_name].title = "";
   level.menu_sys[menu_name].title = title;
-  # /
 }
 
-/*
-	Name: add_menuoptions
-	Namespace: debug_menu
-	Checksum: 0x9C1B5CFB
-	Offset: 0x130
-	Size: 0x132
-	Parameters: 4
-	Flags: None
-*/
 function add_menuoptions(menu_name, option_text, func, key) {
-  /#
   if(!isdefined(level.menu_sys[menu_name].options)) {
     level.menu_sys[menu_name].options = [];
   }
@@ -45,20 +28,9 @@ function add_menuoptions(menu_name, option_text, func, key) {
     }
     level.menu_sys[menu_name].func_key[num] = key;
   }
-  # /
 }
 
-/*
-	Name: add_menu_child
-	Namespace: debug_menu
-	Checksum: 0xAB49B5D0
-	Offset: 0x270
-	Size: 0x176
-	Parameters: 5
-	Flags: None
-*/
 function add_menu_child(parent_menu, child_menu, child_title, child_number_override, func) {
-  /#
   if(!isdefined(level.menu_sys[child_menu])) {
     add_menu(child_menu, child_title);
   }
@@ -78,35 +50,13 @@ function add_menu_child(parent_menu, child_menu, child_title, child_number_overr
     }
     level.menu_sys[parent_menu].children_func[size] = func;
   }
-  # /
 }
 
-/*
-	Name: set_no_back_menu
-	Namespace: debug_menu
-	Checksum: 0xA8AEB386
-	Offset: 0x3F0
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function set_no_back_menu(menu_name) {
-  /#
   level.menu_sys[menu_name].no_back = 1;
-  # /
 }
 
-/*
-	Name: enable_menu
-	Namespace: debug_menu
-	Checksum: 0xDC9FD09D
-	Offset: 0x428
-	Size: 0x276
-	Parameters: 1
-	Flags: Linked
-*/
 function enable_menu(menu_name) {
-  /#
   disable_menu("");
   if(isdefined(level.menu_cursor)) {
     level.menu_cursor.y = 130;
@@ -128,20 +78,9 @@ function enable_menu(menu_name) {
     text = ((back_option_num + 1) + "") + "";
     level.menu_sys[""].options[back_option_num] = set_menu_hudelem(text, "", 20 * back_option_num);
   }
-  # /
 }
 
-/*
-	Name: disable_menu
-	Namespace: debug_menu
-	Checksum: 0xB94BF3F
-	Offset: 0x6A8
-	Size: 0x128
-	Parameters: 1
-	Flags: Linked
-*/
 function disable_menu(menu_name) {
-  /#
   if(isdefined(level.menu_sys[menu_name])) {
     if(isdefined(level.menu_sys[menu_name].title)) {
       level.menu_sys[menu_name].title destroy();
@@ -155,20 +94,9 @@ function disable_menu(menu_name) {
   }
   level.menu_sys[menu_name].title = undefined;
   level.menu_sys[menu_name].options = [];
-  # /
 }
 
-/*
-	Name: set_menu_hudelem
-	Namespace: debug_menu
-	Checksum: 0x8AB091B4
-	Offset: 0x7D8
-	Size: 0xCA
-	Parameters: 3
-	Flags: Linked
-*/
 function set_menu_hudelem(text, type, y_offset) {
-  /#
   y = 100;
   if(isdefined(type) && type == "") {
     scale = 2;
@@ -181,20 +109,9 @@ function set_menu_hudelem(text, type, y_offset) {
   }
   y = y + y_offset;
   return set_hudelem(text, 10, y, scale);
-  # /
 }
 
-/*
-	Name: set_hudelem
-	Namespace: debug_menu
-	Checksum: 0xEC09D14
-	Offset: 0x8B0
-	Size: 0x1D0
-	Parameters: 7
-	Flags: Linked
-*/
 function set_hudelem(text, x, y, scale, alpha, sort, debug_hudelem) {
-  /#
   if(!isdefined(alpha)) {
     alpha = 1;
   }
@@ -224,22 +141,11 @@ function set_hudelem(text, x, y, scale, alpha, sort, debug_hudelem) {
     hud settext(text);
   }
   return hud;
-  # /
 }
 
-/*
-	Name: menu_input
-	Namespace: debug_menu
-	Checksum: 0x19B1B57A
-	Offset: 0xA90
-	Size: 0x820
-	Parameters: 0
-	Flags: None
-*/
 function menu_input() {
-  /#
   while (true) {
-    level waittill(# "menu_button_pressed", keystring);
+    level waittill("menu_button_pressed", keystring);
     menu_name = level.menu_sys[""].menu_name;
     if(keystring == "" || keystring == "") {
       if(level.menu_cursor.current_pos > 0) {
@@ -314,20 +220,9 @@ function menu_input() {
     level enable_menu(level.menu_sys[menu_name].children_menu[key]);
     wait(0.1);
   }
-  # /
 }
 
-/*
-	Name: force_menu_back
-	Namespace: debug_menu
-	Checksum: 0x6A25ED7
-	Offset: 0x12B8
-	Size: 0x1AE
-	Parameters: 1
-	Flags: None
-*/
 function force_menu_back(waittill_msg) {
-  /#
   if(isdefined(waittill_msg)) {
     level waittill(waittill_msg);
   }
@@ -368,21 +263,10 @@ function force_menu_back(waittill_msg) {
       }
     }
   }
-  level notify(# "menu_button_pressed", key);
-  # /
+  level notify("menu_button_pressed", key);
 }
 
-/*
-	Name: list_menu
-	Namespace: debug_menu
-	Checksum: 0xA83F6979
-	Offset: 0x1470
-	Size: 0x46C
-	Parameters: 7
-	Flags: None
-*/
 function list_menu(list, x, y, scale, func, sort, start_num) {
-  /#
   if(!isdefined(list) || list.size == 0) {
     return -1;
   }
@@ -426,7 +310,7 @@ function list_menu(list, x, y, scale, func, sort, start_num) {
     ](list[current_num]);
   }
   while (true) {
-    level waittill(# "menu_button_pressed", key);
+    level waittill("menu_button_pressed", key);
     level.menu_list_selected = 1;
     if(any_button_hit(key, "")) {
       break;
@@ -455,7 +339,7 @@ function list_menu(list, x, y, scale, func, sort, start_num) {
         }
       }
     }
-    level notify(# "scroll_list");
+    level notify("scroll_list");
     if(current_num != old_num) {
       old_num = current_num;
       if(isdefined(func)) {
@@ -472,20 +356,9 @@ function list_menu(list, x, y, scale, func, sort, start_num) {
   if(selected) {
     return current_num;
   }
-  # /
 }
 
-/*
-	Name: new_move_list_menu
-	Namespace: debug_menu
-	Checksum: 0xC724FF64
-	Offset: 0x18E8
-	Size: 0xBE
-	Parameters: 3
-	Flags: Linked
-*/
 function new_move_list_menu(hud_array, list, num) {
-  /#
   for (i = 0; i < hud_array.size; i++) {
     if(isdefined(list[i + (num - 2)])) {
       text = list[i + (num - 2)];
@@ -494,20 +367,9 @@ function new_move_list_menu(hud_array, list, num) {
     }
     hud_array[i] settext(text);
   }
-  # /
 }
 
-/*
-	Name: move_list_menu
-	Namespace: debug_menu
-	Checksum: 0x6B6DA306
-	Offset: 0x19B0
-	Size: 0x27E
-	Parameters: 6
-	Flags: None
-*/
 function move_list_menu(hud_array, dir, space, num, min_alpha, num_of_fades) {
-  /#
   if(!isdefined(min_alpha)) {
     min_alpha = 0;
   }
@@ -550,20 +412,9 @@ function move_list_menu(hud_array, dir, space, num, min_alpha, num_of_fades) {
     }
     hud_array[i].alpha = alpha;
   }
-  # /
 }
 
-/*
-	Name: hud_selector
-	Namespace: debug_menu
-	Checksum: 0xC8E901A6
-	Offset: 0x1C38
-	Size: 0xF0
-	Parameters: 2
-	Flags: Linked
-*/
 function hud_selector(x, y) {
-  /#
   if(isdefined(level.hud_selector)) {
     level thread hud_selector_fade_out();
   }
@@ -573,20 +424,9 @@ function hud_selector(x, y) {
   level.hud_selector.color = (1, 1, 0.5);
   level.hud_selector.alpha = 0.5;
   level.hud_selector.sort = 10;
-  # /
 }
 
-/*
-	Name: hud_selector_fade_out
-	Namespace: debug_menu
-	Checksum: 0xE3862B1A
-	Offset: 0x1D30
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function hud_selector_fade_out(time) {
-  /#
   if(!isdefined(time)) {
     time = 0.25;
   }
@@ -599,20 +439,9 @@ function hud_selector_fade_out(time) {
   hud.alpha = 0;
   wait(time + 0.1);
   hud destroy();
-  # /
 }
 
-/*
-	Name: selection_error
-	Namespace: debug_menu
-	Checksum: 0x45385F29
-	Offset: 0x1E00
-	Size: 0x1A4
-	Parameters: 3
-	Flags: Linked
-*/
 function selection_error(msg, x, y) {
-  /#
   hud = set_hudelem(undefined, x - 10, y, 1);
   hud setshader("", 125, 20);
   hud.color = vectorscale((1, 0, 0), 0.5);
@@ -630,23 +459,12 @@ function selection_error(msg, x, y) {
   wait(3.1);
   hud destroy();
   error_hud destroy();
-  # /
 }
 
-/*
-	Name: hud_font_scaler
-	Namespace: debug_menu
-	Checksum: 0xCEED86E0
-	Offset: 0x1FB0
-	Size: 0xFA
-	Parameters: 1
-	Flags: None
-*/
 function hud_font_scaler(mult) {
-  /#
-  self notify(# "stop_fontscaler");
-  self endon(# "death");
-  self endon(# "stop_fontscaler");
+  self notify("stop_fontscaler");
+  self endon("death");
+  self endon("stop_fontscaler");
   og_scale = self.og_scale;
   if(!isdefined(mult)) {
     mult = 1.5;
@@ -658,40 +476,18 @@ function hud_font_scaler(mult) {
     self.fontscale = self.fontscale + dif;
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: menu_cursor
-	Namespace: debug_menu
-	Checksum: 0x7296D8F
-	Offset: 0x20B8
-	Size: 0xBC
-	Parameters: 0
-	Flags: None
-*/
 function menu_cursor() {
-  /#
   level.menu_cursor = set_hudelem(undefined, 0, 130, 1.3);
   level.menu_cursor setshader("", 125, 20);
   level.menu_cursor.color = (1, 0.5, 0);
   level.menu_cursor.alpha = 0.5;
   level.menu_cursor.sort = 1;
   level.menu_cursor.current_pos = 0;
-  # /
 }
 
-/*
-	Name: new_hud
-	Namespace: debug_menu
-	Checksum: 0xE43FBAEA
-	Offset: 0x2180
-	Size: 0xC0
-	Parameters: 5
-	Flags: Linked
-*/
 function new_hud(hud_name, msg, x, y, scale) {
-  /#
   if(!isdefined(level.hud_array)) {
     level.hud_array = [];
   }
@@ -701,20 +497,9 @@ function new_hud(hud_name, msg, x, y, scale) {
   hud = set_hudelem(msg, x, y, scale);
   level.hud_array[hud_name][level.hud_array[hud_name].size] = hud;
   return hud;
-  # /
 }
 
-/*
-	Name: remove_hud
-	Namespace: debug_menu
-	Checksum: 0xDB331F61
-	Offset: 0x2250
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function remove_hud(hud_name) {
-  /#
   if(!isdefined(level.hud_array[hud_name])) {
     return;
   }
@@ -723,37 +508,15 @@ function remove_hud(hud_name) {
     destroy_hud(huds[i]);
   }
   level.hud_array[hud_name] = undefined;
-  # /
 }
 
-/*
-	Name: destroy_hud
-	Namespace: debug_menu
-	Checksum: 0x9F867DCA
-	Offset: 0x22F0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function destroy_hud(hud) {
-  /#
   if(isdefined(hud)) {
     hud destroy();
   }
-  # /
 }
 
-/*
-	Name: set_menus_pos_by_num
-	Namespace: debug_menu
-	Checksum: 0x729D6A77
-	Offset: 0x2330
-	Size: 0x142
-	Parameters: 7
-	Flags: None
-*/
 function set_menus_pos_by_num(hud_array, num, x, y, space, min_alpha, num_of_fades) {
-  /#
   if(!isdefined(min_alpha)) {
     min_alpha = 0.1;
   }
@@ -772,20 +535,9 @@ function set_menus_pos_by_num(hud_array, num, x, y, space, min_alpha, num_of_fad
     }
     hud_array[i].alpha = alpha;
   }
-  # /
 }
 
-/*
-	Name: popup_box
-	Namespace: debug_menu
-	Checksum: 0x57CD8107
-	Offset: 0x2480
-	Size: 0x35E
-	Parameters: 7
-	Flags: None
-*/
 function popup_box(x, y, width, height, time, color, alpha) {
-  /#
   if(!isdefined(alpha)) {
     alpha = 0.5;
   }
@@ -826,20 +578,9 @@ function popup_box(x, y, width, height, time, color, alpha) {
   hud.background scaleovertime(time, width, height);
   wait(time);
   return hud;
-  # /
 }
 
-/*
-	Name: destroy_popup
-	Namespace: debug_menu
-	Checksum: 0x74C070B4
-	Offset: 0x27E8
-	Size: 0x9C
-	Parameters: 0
-	Flags: None
-*/
 function destroy_popup() {
-  /#
   self.background scaleovertime(0.25, 0, 0);
   self scaleovertime(0.25, 0, 0);
   wait(0.1);
@@ -849,20 +590,9 @@ function destroy_popup() {
   if(isdefined(self)) {
     self destroy();
   }
-  # /
 }
 
-/*
-	Name: dialog_text_box
-	Namespace: debug_menu
-	Checksum: 0xD25C54B0
-	Offset: 0x2890
-	Size: 0x4E0
-	Parameters: 3
-	Flags: None
-*/
 function dialog_text_box(dialog_msg, dialog_msg2, word_length) {
-  /#
   y = 100;
   hud = new_hud("", undefined, 320 - (300 * 0.5), y, 1);
   hud setshader("", 300, 100);
@@ -904,20 +634,9 @@ function dialog_text_box(dialog_msg, dialog_msg2, word_length) {
   result = dialog_text_box_input(cursor_x, cursor_y, word_length);
   remove_hud("");
   return result;
-  # /
 }
 
-/*
-	Name: dialog_text_box_input
-	Namespace: debug_menu
-	Checksum: 0x60843BD4
-	Offset: 0x2D80
-	Size: 0x2EA
-	Parameters: 3
-	Flags: Linked
-*/
 function dialog_text_box_input(cursor_x, cursor_y, word_length) {
-  /#
   level.dialog_box_cursor = new_hud("", "", cursor_x, cursor_y, 1.25);
   level.dialog_box_cursor.sort = 75;
   level thread dialog_text_box_cursor();
@@ -927,7 +646,7 @@ function dialog_text_box_input(cursor_x, cursor_y, word_length) {
   hud_letters = [];
   word = "";
   while (true) {
-    level waittill(# "dialog_box_button_pressed", button);
+    level waittill("dialog_box_button_pressed", button);
     if(button == "" || button == "") {
       word = "";
       break;
@@ -954,23 +673,12 @@ function dialog_text_box_input(cursor_x, cursor_y, word_length) {
     level.dialog_box_cursor.x = x;
     wait(0.05);
   }
-  level notify(# "stop_dialog_text_box_cursor");
-  level notify(# "stop_dialog_text_input");
+  level notify("stop_dialog_text_box_cursor");
+  level notify("stop_dialog_text_input");
   return word;
-  # /
 }
 
-/*
-	Name: dialog_text_box_buttons
-	Namespace: debug_menu
-	Checksum: 0xF5A974D8
-	Offset: 0x3078
-	Size: 0x5D4
-	Parameters: 0
-	Flags: Linked
-*/
 function dialog_text_box_buttons() {
-  /#
   clear_universal_buttons("");
   add_universal_button("", "");
   add_universal_button("", "");
@@ -1019,41 +727,19 @@ function dialog_text_box_buttons() {
     add_universal_button("", "");
   }
   level thread universal_input_loop("", "", undefined, undefined);
-  # /
 }
 
-/*
-	Name: dialog_text_box_cursor
-	Namespace: debug_menu
-	Checksum: 0x8BDCA92C
-	Offset: 0x3658
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function dialog_text_box_cursor() {
-  /#
-  level endon(# "stop_dialog_text_box_cursor");
+  level endon("stop_dialog_text_box_cursor");
   while (true) {
     level.dialog_box_cursor.alpha = 0;
     wait(0.5);
     level.dialog_box_cursor.alpha = 1;
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: get_letter_space
-	Namespace: debug_menu
-	Checksum: 0x3D9A7869
-	Offset: 0x36B8
-	Size: 0x164
-	Parameters: 1
-	Flags: Linked
-*/
 function get_letter_space(letter) {
-  /#
   if(letter == "" || letter == "" || letter == "") {
     space = 10;
   } else {
@@ -1076,55 +762,22 @@ function get_letter_space(letter) {
     }
   }
   return space;
-  # /
 }
 
-/*
-	Name: add_universal_button
-	Namespace: debug_menu
-	Checksum: 0xA0346B7C
-	Offset: 0x3828
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function add_universal_button(button_group, name) {
-  /#
   if(!isdefined(level.u_buttons[button_group])) {
     level.u_buttons[button_group] = [];
   }
   if(!isinarray(level.u_buttons[button_group], name)) {
     level.u_buttons[button_group][level.u_buttons[button_group].size] = name;
   }
-  # /
 }
 
-/*
-	Name: clear_universal_buttons
-	Namespace: debug_menu
-	Checksum: 0xC9C28309
-	Offset: 0x38B8
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function clear_universal_buttons(button_group) {
-  /#
   level.u_buttons[button_group] = [];
-  # /
 }
 
-/*
-	Name: universal_input_loop
-	Namespace: debug_menu
-	Checksum: 0x22EC86C5
-	Offset: 0x38E8
-	Size: 0x1E0
-	Parameters: 5
-	Flags: Linked
-*/
 function universal_input_loop(button_group, end_on, use_attackbutton, mod_button, no_mod_button) {
-  /#
   level endon(end_on);
   if(!isdefined(use_attackbutton)) {
     use_attackbutton = 0;
@@ -1158,51 +811,18 @@ function universal_input_loop(button_group, end_on, use_attackbutton, mod_button
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: disable_buttons
-	Namespace: debug_menu
-	Checksum: 0x4EC99FC1
-	Offset: 0x3AD0
-	Size: 0x22
-	Parameters: 1
-	Flags: None
-*/
 function disable_buttons(button_group) {
-  /#
   level.u_buttons_disable[button_group] = 1;
-  # /
 }
 
-/*
-	Name: enable_buttons
-	Namespace: debug_menu
-	Checksum: 0xD9C67699
-	Offset: 0x3B00
-	Size: 0x26
-	Parameters: 1
-	Flags: None
-*/
 function enable_buttons(button_group) {
-  /#
   wait(1);
   level.u_buttons_disable[button_group] = 0;
-  # /
 }
 
-/*
-	Name: any_button_hit
-	Namespace: debug_menu
-	Checksum: 0x11D4C4C4
-	Offset: 0x3B30
-	Size: 0x152
-	Parameters: 2
-	Flags: Linked
-*/
 function any_button_hit(button_hit, type) {
-  /#
   buttons = [];
   if(type == "") {
     buttons[0] = "";
@@ -1224,5 +844,4 @@ function any_button_hit(button_hit, type) {
     }
   }
   return false;
-  # /
 }

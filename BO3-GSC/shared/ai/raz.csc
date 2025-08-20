@@ -1,21 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\raz.csc
+*************************************************/
+
 #using scripts\shared\ai_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\postfx_shared;
-
 #using_animtree("generic");
-
 #namespace raz;
 
-/*
-	Name: main
-	Namespace: raz
-	Checksum: 0xB023007A
-	Offset: 0x828
-	Size: 0x2FC
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   clientfield::register("scriptmover", "raz_detonate_ground_torpedo", 12000, 1, "int", & razclientutils::razdetonategroundtorpedo, 0, 0);
   clientfield::register("scriptmover", "raz_torpedo_play_fx_on_self", 12000, 1, "int", & razclientutils::razplayselffx, 0, 0);
@@ -30,15 +23,6 @@ function autoexec main() {
   ai::add_archetype_spawn_function("raz", & razclientutils::razspawn);
 }
 
-/*
-	Name: precache
-	Namespace: raz
-	Checksum: 0xBF086AB2
-	Offset: 0xB30
-	Size: 0x70E
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec precache() {
   level._effect["fx_mech_foot_step"] = "dlc1/castle/fx_mech_foot_step";
   level._effect["fx_raz_mc_shockwave_projectile_impact"] = "dlc3/stalingrad/fx_raz_mc_shockwave_projectile_impact";
@@ -137,15 +121,6 @@ function autoexec precache() {
 
 #namespace razclientutils;
 
-/*
-	Name: razspawn
-	Namespace: razclientutils
-	Checksum: 0xEC8806FA
-	Offset: 0x1248
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razspawn(localclientnum) {
   level._footstepcbfuncs[self.archetype] = & razprocessfootstep;
   self thread razplayfireemissiveshader(localclientnum);
@@ -153,53 +128,26 @@ function private razspawn(localclientnum) {
   self thread razplaytaunts(localclientnum);
 }
 
-/*
-	Name: razplayfireemissiveshader
-	Namespace: razclientutils
-	Checksum: 0xE6F629E5
-	Offset: 0x12C8
-	Size: 0x88
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razplayfireemissiveshader(localclientnum) {
-  self endon(# "death");
+  self endon("death");
   while (isdefined(self)) {
-    self waittill(# "lights_on");
+    self waittill("lights_on");
     self mapshaderconstant(localclientnum, 0, "scriptVector3", 0, 1, 1);
-    self waittill(# "lights_off");
+    self waittill("lights_off");
     self mapshaderconstant(localclientnum, 0, "scriptVector3", 0, 0, 0);
   }
 }
 
-/*
-	Name: razplayroarsound
-	Namespace: razclientutils
-	Checksum: 0x51F41F28
-	Offset: 0x1358
-	Size: 0x70
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razplayroarsound(localclientnum) {
-  self endon(# "death");
+  self endon("death");
   while (isdefined(self)) {
-    self waittill(# "roar");
+    self waittill("roar");
     self playsound(localclientnum, "vox_raz_exert_enrage", self gettagorigin("tag_eye"));
   }
 }
 
-/*
-	Name: razplaytaunts
-	Namespace: razclientutils
-	Checksum: 0x3D2059A8
-	Offset: 0x13D0
-	Size: 0x100
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razplaytaunts(localclientnum) {
-  self endon(# "death_start");
+  self endon("death_start");
   self thread razstoptauntsondeath(localclientnum);
   while (isdefined(self)) {
     taunt_wait = randomintrange(5, 12);
@@ -213,31 +161,13 @@ function private razplaytaunts(localclientnum) {
   }
 }
 
-/*
-	Name: razstoptauntsondeath
-	Namespace: razclientutils
-	Checksum: 0x48BC00B8
-	Offset: 0x14D8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razstoptauntsondeath(localclientnum) {
-  self waittill(# "death_start");
+  self waittill("death_start");
   if(isdefined(self.taunt_id)) {
     stopsound(self.taunt_id);
   }
 }
 
-/*
-	Name: razprocessfootstep
-	Namespace: razclientutils
-	Checksum: 0xCCDE52C4
-	Offset: 0x1520
-	Size: 0x238
-	Parameters: 5
-	Flags: Linked
-*/
 function razprocessfootstep(localclientnum, pos, surface, notetrack, bone) {
   e_player = getlocalplayer(localclientnum);
   n_dist = distancesquared(pos, e_player.origin);
@@ -269,41 +199,14 @@ function razprocessfootstep(localclientnum, pos, surface, notetrack, bone) {
   fx = playfxontag(localclientnum, level._effect["fx_mech_foot_step"], self, bone);
 }
 
-/*
-	Name: razdetonategroundtorpedo
-	Namespace: razclientutils
-	Checksum: 0xD1B3CBBA
-	Offset: 0x1760
-	Size: 0x78
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private razdetonategroundtorpedo(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   fx = playfx(localclientnum, level._effect["fx_raz_mc_shockwave_projectile_impact"], self.origin);
 }
 
-/*
-	Name: raztorpedoplaytrailfx
-	Namespace: razclientutils
-	Checksum: 0xD9DC20DE
-	Offset: 0x17E0
-	Size: 0x78
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private raztorpedoplaytrailfx(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   fx = playfx(localclientnum, level._effect["fx_bul_impact_concrete_xtreme"], self.origin);
 }
 
-/*
-	Name: razplayselffx
-	Namespace: razclientutils
-	Checksum: 0xC04015EA
-	Offset: 0x1860
-	Size: 0xD4
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private razplayselffx(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   if(newvalue == 0 && isdefined(self.raz_torpedo_self_fx)) {
     stopfx(localclientnum, self.raz_torpedo_self_fx);
@@ -314,15 +217,6 @@ function private razplayselffx(localclientnum, oldvalue, newvalue, bnewent, bini
   }
 }
 
-/*
-	Name: razcreatedynentandlaunch
-	Namespace: razclientutils
-	Checksum: 0x830464FB
-	Offset: 0x1940
-	Size: 0x1BC
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private razcreatedynentandlaunch(localclientnum, model, pos, angles, hitpos, vel_factor = 1, direction) {
   if(!isdefined(pos) || !isdefined(angles)) {
     return;
@@ -344,15 +238,6 @@ function private razcreatedynentandlaunch(localclientnum, model, pos, angles, hi
   createdynentandlaunch(localclientnum, model, pos, angles, self.origin, launch_dir * vel_factor);
 }
 
-/*
-	Name: razdetachgunfx
-	Namespace: razclientutils
-	Checksum: 0x443BE85E
-	Offset: 0x1B08
-	Size: 0x1DC
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private razdetachgunfx(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   fx = playfxontag(localclientnum, level._effect["fx_raz_dest_weak_point_exp"], self, "TAG_FX_Shoulder_RI_GIB");
   gun_pos = self gettagorigin("j_elbow_ri");
@@ -364,28 +249,10 @@ function private razdetachgunfx(localclientnum, oldvalue, newvalue, bnewent, bin
   self playsound(localclientnum, "zmb_raz_gun_explo", self gettagorigin("tag_eye"));
 }
 
-/*
-	Name: razgunweakpointhitfx
-	Namespace: razclientutils
-	Checksum: 0xD6BCC010
-	Offset: 0x1CF0
-	Size: 0x78
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private razgunweakpointhitfx(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   fx = playfxontag(localclientnum, level._effect["fx_raz_dmg_weak_point"], self, "j_shoulder_ri");
 }
 
-/*
-	Name: razhelmetdetach
-	Namespace: razclientutils
-	Checksum: 0xEEEFB1B4
-	Offset: 0x1D70
-	Size: 0x174
-	Parameters: 7
-	Flags: Linked
-*/
 function razhelmetdetach(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   pos = self gettagorigin("j_elbow_ri");
   ang = self gettagangles("j_elbow_ri");
@@ -395,15 +262,6 @@ function razhelmetdetach(localclientnum, oldvalue, newvalue, bnewent, binitialsn
   self playsound(localclientnum, "zmb_raz_armor_explo", self gettagorigin("tag_eye"));
 }
 
-/*
-	Name: razchestarmordetach
-	Namespace: razclientutils
-	Checksum: 0x10A865A
-	Offset: 0x1EF0
-	Size: 0x144
-	Parameters: 7
-	Flags: Linked
-*/
 function razchestarmordetach(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   pos = self gettagorigin("j_spine4_attach");
   ang = self gettagangles("j_spine4_attach");
@@ -412,15 +270,6 @@ function razchestarmordetach(localclientnum, oldvalue, newvalue, bnewent, biniti
   self playsound(localclientnum, "zmb_raz_armor_explo", self gettagorigin("tag_eye"));
 }
 
-/*
-	Name: razleftshoulderarmordetach
-	Namespace: razclientutils
-	Checksum: 0xC652729E
-	Offset: 0x2040
-	Size: 0x144
-	Parameters: 7
-	Flags: Linked
-*/
 function razleftshoulderarmordetach(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   pos = self gettagorigin("j_shouldertwist_le_attach");
   ang = self gettagangles("j_shouldertwist_le_attach");
@@ -429,15 +278,6 @@ function razleftshoulderarmordetach(localclientnum, oldvalue, newvalue, bnewent,
   self playsound(localclientnum, "zmb_raz_armor_explo", self gettagorigin("tag_eye"));
 }
 
-/*
-	Name: razleftthigharmordetach
-	Namespace: razclientutils
-	Checksum: 0x178E3010
-	Offset: 0x2190
-	Size: 0x144
-	Parameters: 7
-	Flags: Linked
-*/
 function razleftthigharmordetach(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   pos = self gettagorigin("j_hiptwist_le_attach");
   ang = self gettagangles("j_hiptwist_le_attach");
@@ -446,15 +286,6 @@ function razleftthigharmordetach(localclientnum, oldvalue, newvalue, bnewent, bi
   self playsound(localclientnum, "zmb_raz_armor_explo", self gettagorigin("tag_eye"));
 }
 
-/*
-	Name: razrightthigharmordetach
-	Namespace: razclientutils
-	Checksum: 0xBC4D8806
-	Offset: 0x22E0
-	Size: 0x144
-	Parameters: 7
-	Flags: Linked
-*/
 function razrightthigharmordetach(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   pos = self gettagorigin("j_hiptwist_ri_attach");
   ang = self gettagangles("j_hiptwist_ri_attach");
@@ -463,37 +294,19 @@ function razrightthigharmordetach(localclientnum, oldvalue, newvalue, bnewent, b
   self playsound(localclientnum, "zmb_raz_armor_explo", self gettagorigin("tag_eye"));
 }
 
-/*
-	Name: applynewfaceanim
-	Namespace: razclientutils
-	Checksum: 0x7B9DBEF9
-	Offset: 0x2430
-	Size: 0xD4
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private applynewfaceanim(localclientnum, animation) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   clearcurrentfacialanim(localclientnum);
   if(isdefined(animation)) {
     self._currentfaceanim = animation;
     if(self hasdobj(localclientnum) && self hasanimtree()) {
       self setflaggedanimknob("ai_secondary_facial_anim", animation, 1, 0.1, 1);
-      self waittill(# "death_start");
+      self waittill("death_start");
       clearcurrentfacialanim(localclientnum);
     }
   }
 }
 
-/*
-	Name: clearcurrentfacialanim
-	Namespace: razclientutils
-	Checksum: 0x6E1F871B
-	Offset: 0x2510
-	Size: 0x7E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private clearcurrentfacialanim(localclientnum) {
   if(isdefined(self._currentfaceanim) && self hasdobj(localclientnum) && self hasanimtree()) {
     self clearanim(self._currentfaceanim, 0.2);

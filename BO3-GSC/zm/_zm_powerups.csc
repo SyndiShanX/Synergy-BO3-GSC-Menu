@@ -1,19 +1,13 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_powerups.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_powerups;
 
-/*
-	Name: init
-	Namespace: zm_powerups
-	Checksum: 0xD9E08D5A
-	Offset: 0x1E0
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   add_zombie_powerup("insta_kill_ug", "powerup_instant_kill_ug", 1);
   level thread set_clientfield_code_callbacks();
@@ -26,15 +20,6 @@ function init() {
   clientfield::register("scriptmover", "powerup_fx", 1, 3, "int", & powerup_fx_callback, 0, 0);
 }
 
-/*
-	Name: add_zombie_powerup
-	Namespace: zm_powerups
-	Checksum: 0x625B084
-	Offset: 0x2F8
-	Size: 0x108
-	Parameters: 3
-	Flags: Linked
-*/
 function add_zombie_powerup(powerup_name, client_field_name, clientfield_version = 1) {
   if(isdefined(level.zombie_include_powerups) && !isdefined(level.zombie_include_powerups[powerup_name])) {
     return;
@@ -51,15 +36,6 @@ function add_zombie_powerup(powerup_name, client_field_name, clientfield_version
   }
 }
 
-/*
-	Name: set_clientfield_code_callbacks
-	Namespace: zm_powerups
-	Checksum: 0xA55F1E7A
-	Offset: 0x408
-	Size: 0xB6
-	Parameters: 0
-	Flags: Linked
-*/
 function set_clientfield_code_callbacks() {
   wait(0.1);
   powerup_keys = getarraykeys(level.zombie_powerups);
@@ -72,15 +48,6 @@ function set_clientfield_code_callbacks() {
   }
 }
 
-/*
-	Name: include_zombie_powerup
-	Namespace: zm_powerups
-	Checksum: 0x97187979
-	Offset: 0x4C8
-	Size: 0x36
-	Parameters: 1
-	Flags: Linked
-*/
 function include_zombie_powerup(powerup_name) {
   if(!isdefined(level.zombie_include_powerups)) {
     level.zombie_include_powerups = [];
@@ -88,28 +55,10 @@ function include_zombie_powerup(powerup_name) {
   level.zombie_include_powerups[powerup_name] = 1;
 }
 
-/*
-	Name: powerup_state_callback
-	Namespace: zm_powerups
-	Checksum: 0x3CB1864E
-	Offset: 0x508
-	Size: 0x52
-	Parameters: 7
-	Flags: Linked
-*/
 function powerup_state_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self notify(# "powerup", fieldname, newval);
+  self notify("powerup", fieldname, newval);
 }
 
-/*
-	Name: powerup_fx_callback
-	Namespace: zm_powerups
-	Checksum: 0x262AEF0E
-	Offset: 0x568
-	Size: 0x17C
-	Parameters: 7
-	Flags: Linked
-*/
 function powerup_fx_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 1: {

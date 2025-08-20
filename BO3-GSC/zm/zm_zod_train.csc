@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_train.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -8,31 +12,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_filter;
-
 #namespace zm_train;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_train
-	Checksum: 0xBF8AA55D
-	Offset: 0x4A8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_train", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_train
-	Checksum: 0xA426B2D4
-	Offset: 0x4E8
-	Size: 0x2EC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!isdefined(level._additional_wallbuy_weapons)) {
     level._additional_wallbuy_weapons = [];
@@ -59,15 +44,6 @@ function __init__() {
   level thread function_1093db4e();
 }
 
-/*
-	Name: train_rain_fx_occluder
-	Namespace: zm_train
-	Checksum: 0x6776114F
-	Offset: 0x7E0
-	Size: 0x15C
-	Parameters: 7
-	Flags: Linked
-*/
 function train_rain_fx_occluder(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdemoplaying() && getnumfreeentities(localclientnum) < 100) {
     var_2a6bebf9 = getnumfreeentities(localclientnum);
@@ -82,15 +58,6 @@ function train_rain_fx_occluder(localclientnum, oldval, newval, bnewent, binitia
   }
 }
 
-/*
-	Name: train_switch_light
-	Namespace: zm_train
-	Checksum: 0x44B67039
-	Offset: 0x948
-	Size: 0x39E
-	Parameters: 7
-	Flags: Linked
-*/
 function train_switch_light(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 0: {
@@ -135,30 +102,12 @@ function train_switch_light(localclientnum, oldval, newval, bnewent, binitialsna
   }
 }
 
-/*
-	Name: function_3e0f1f7e
-	Namespace: zm_train
-	Checksum: 0xE2E60EFB
-	Offset: 0xCF0
-	Size: 0x64
-	Parameters: 3
-	Flags: Linked
-*/
 function function_3e0f1f7e(alias, origin1, origin2) {
   playsound(0, alias, origin1);
   wait(0.05);
   playsound(0, alias, origin2);
 }
 
-/*
-	Name: train_callbox_light
-	Namespace: zm_train
-	Checksum: 0xFC9DC8EF
-	Offset: 0xD60
-	Size: 0x19E
-	Parameters: 7
-	Flags: Linked
-*/
 function train_callbox_light(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 0: {
@@ -185,15 +134,6 @@ function train_callbox_light(localclientnum, oldval, newval, bnewent, binitialsn
   }
 }
 
-/*
-	Name: train_map_light
-	Namespace: zm_train
-	Checksum: 0x6D2BCE3E
-	Offset: 0xF08
-	Size: 0x1E6
-	Parameters: 7
-	Flags: Linked
-*/
 function train_map_light(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.var_66058d50) && newval != 1) {
     stopfx(localclientnum, self.var_66058d50);
@@ -223,29 +163,11 @@ function train_map_light(localclientnum, oldval, newval, bnewent, binitialsnap, 
   }
 }
 
-/*
-	Name: function_1093db4e
-	Namespace: zm_train
-	Checksum: 0xDA311D1E
-	Offset: 0x10F8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1093db4e() {
   level.var_98f27ad = array("vox_tanc_board_canal_", "vox_tanc_board_slums_", "vox_tanc_board_theater_", "vox_tanc_depart_canal_", "vox_tanc_depart_slums_", "vox_tanc_depart_theater_", "vox_tanc_divert_canal_", "vox_tanc_divert_slums_", "vox_tanc_divert_theater_");
   level.var_71738ea0 = struct::get_array("sndTrainVox", "targetname");
 }
 
-/*
-	Name: sndtrainvox
-	Namespace: zm_train
-	Checksum: 0x4C2504B0
-	Offset: 0x1190
-	Size: 0x16C
-	Parameters: 7
-	Flags: Linked
-*/
 function sndtrainvox(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(level.var_71738ea0)) {
     return;

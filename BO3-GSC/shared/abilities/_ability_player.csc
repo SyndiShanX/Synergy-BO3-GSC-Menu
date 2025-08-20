@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\abilities\_ability_player.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\abilities\_ability_gadgets;
 #using scripts\shared\abilities\_ability_power;
@@ -44,29 +48,10 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\shared\weapons\replay_gun;
-
 #namespace ability_player;
 
-/*
-	Name: __init__sytem__
-	Namespace: ability_player
-	Checksum: 0x94EFCF07
-	Offset: 0x9C8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("ability_player", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: ability_player
-	Checksum: 0x99EC1590
-	Offset: 0xA08
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}

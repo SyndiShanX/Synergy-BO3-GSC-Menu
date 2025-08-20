@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicles\_hunter.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\ai_interface;
 #using scripts\shared\ai_shared;
@@ -15,62 +19,24 @@
 #using scripts\shared\vehicle_death_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\vehicles\_attack_drone;
-
 #using_animtree("generic");
-
 #namespace hunter;
 
-/*
-	Name: __init__sytem__
-	Namespace: hunter
-	Checksum: 0xE96A82B8
-	Offset: 0x598
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("hunter", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: hunter
-	Checksum: 0x6D1E5FA9
-	Offset: 0x5D8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   registerinterfaceattributes("hunter");
   vehicle::add_main_callback("hunter", & hunter_initialize);
 }
 
-/*
-	Name: registerinterfaceattributes
-	Namespace: hunter
-	Checksum: 0x254F2268
-	Offset: 0x628
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function registerinterfaceattributes(archetype) {
   vehicle_ai::registersharedinterfaceattributes(archetype);
   ai::registernumericinterface(archetype, "strafe_speed", 0, 0, 100);
   ai::registernumericinterface(archetype, "strafe_distance", 0, 0, 10000);
 }
 
-/*
-	Name: hunter_inittagarrays
-	Namespace: hunter
-	Checksum: 0x882ABC09
-	Offset: 0x6A8
-	Size: 0x3BE
-	Parameters: 0
-	Flags: Linked
-*/
 function hunter_inittagarrays() {
   self.weakspottags = [];
   if(0) {
@@ -132,15 +98,6 @@ function hunter_inittagarrays() {
   }
 }
 
-/*
-	Name: hunter_spawndrones
-	Namespace: hunter
-	Checksum: 0x2CE814D
-	Offset: 0xA70
-	Size: 0x1A8
-	Parameters: 0
-	Flags: None
-*/
 function hunter_spawndrones() {
   self.dronesowned = [];
   if(0) {
@@ -161,17 +118,8 @@ function hunter_spawndrones() {
   }
 }
 
-/*
-	Name: hunter_initialize
-	Namespace: hunter
-	Checksum: 0xCCB19683
-	Offset: 0xC20
-	Size: 0x384
-	Parameters: 0
-	Flags: Linked
-*/
 function hunter_initialize() {
-  self endon(# "death");
+  self endon("death");
   self useanimtree($generic);
   target_set(self, vectorscale((0, 0, 1), 90));
   ai::createinterfaceforentity(self);
@@ -212,15 +160,6 @@ function hunter_initialize() {
   defaultrole();
 }
 
-/*
-	Name: defaultrole
-	Namespace: hunter
-	Checksum: 0x36B16C4B
-	Offset: 0xFB0
-	Size: 0x41C
-	Parameters: 0
-	Flags: Linked
-*/
 function defaultrole() {
   self vehicle_ai::init_state_machine_for_role();
   self vehicle_ai::get_state_callbacks("combat").enter_func = & state_combat_enter;
@@ -249,35 +188,17 @@ function defaultrole() {
   vehicle_ai::startinitialstate();
 }
 
-/*
-	Name: shut_off_fx
-	Namespace: hunter
-	Checksum: 0x79798C
-	Offset: 0x13D8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function shut_off_fx() {
-  self endon(# "death");
-  self notify(# "death_shut_off");
+  self endon("death");
+  self notify("death_shut_off");
   if(isdefined(self.frontscanner)) {
     self.frontscanner.sndscanningent delete();
     self.frontscanner delete();
   }
 }
 
-/*
-	Name: kill_drones
-	Namespace: hunter
-	Checksum: 0x96B642AC
-	Offset: 0x1448
-	Size: 0x152
-	Parameters: 0
-	Flags: None
-*/
 function kill_drones() {
-  self endon(# "death");
+  self endon("death");
   foreach(drone in self.dronesowned) {
     if(isalive(drone) && distance2dsquared(self.origin, drone.origin) < (80 * 80)) {
       damageorigin = self.origin + (0, 0, 1);
@@ -286,17 +207,8 @@ function kill_drones() {
   }
 }
 
-/*
-	Name: state_death_enter
-	Namespace: hunter
-	Checksum: 0x3D61D9D4
-	Offset: 0x15A8
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_death_enter(params) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.faketargetent)) {
     self.faketargetent delete();
   }
@@ -305,17 +217,8 @@ function state_death_enter(params) {
   self thread shut_off_fx();
 }
 
-/*
-	Name: state_death_update
-	Namespace: hunter
-	Checksum: 0x9C03E0DD
-	Offset: 0x1620
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_death_update(params) {
-  self endon(# "death");
+  self endon("death");
   death_type = vehicle_ai::get_death_type(params);
   if(!isdefined(death_type)) {
     params.death_type = "gibbed";
@@ -331,33 +234,15 @@ function state_death_update(params) {
   self vehicle_ai::defaultstate_death_update(params);
 }
 
-/*
-	Name: state_unaware_enter
-	Namespace: hunter
-	Checksum: 0xC1DE2D5E
-	Offset: 0x1758
-	Size: 0x7C
-	Parameters: 1
-	Flags: None
-*/
 function state_unaware_enter(params) {
   ratio = 0.5;
   accel = self getdefaultacceleration();
   self setspeed(ratio * self.settings.defaultmovespeed, ratio * accel, ratio * accel);
 }
 
-/*
-	Name: state_unaware_update
-	Namespace: hunter
-	Checksum: 0x6B20D791
-	Offset: 0x17E0
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function state_unaware_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   if(isdefined(self.enemy)) {
     self vehicle_ai::set_state("combat");
   }
@@ -365,37 +250,19 @@ function state_unaware_update(params) {
   self disable_turrets();
   self thread movement_thread_wander();
   while (true) {
-    self waittill(# "enemy");
+    self waittill("enemy");
     self vehicle_ai::set_state("combat");
   }
 }
 
-/*
-	Name: state_unaware_exit
-	Namespace: hunter
-	Checksum: 0x5828622E
-	Offset: 0x18B0
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function state_unaware_exit(params) {
-  self notify(# "end_movement_thread");
+  self notify("end_movement_thread");
 }
 
-/*
-	Name: movement_thread_wander
-	Namespace: hunter
-	Checksum: 0x47831FAF
-	Offset: 0x18D8
-	Size: 0x30A
-	Parameters: 0
-	Flags: Linked
-*/
 function movement_thread_wander() {
-  self endon(# "death");
-  self notify(# "end_movement_thread");
-  self endon(# "end_movement_thread");
+  self endon("death");
+  self notify("end_movement_thread");
+  self endon("end_movement_thread");
   constminsearchradius = 120;
   constmaxsearchradius = 800;
   minsearchradius = math::clamp(constminsearchradius, 0, self.goalradius);
@@ -428,58 +295,22 @@ function movement_thread_wander() {
   }
 }
 
-/*
-	Name: enable_turrets
-	Namespace: hunter
-	Checksum: 0xBC2692DC
-	Offset: 0x1BF0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function enable_turrets() {
   self turret::enable(1, 0);
   self turret::enable(2, 0);
 }
 
-/*
-	Name: disable_turrets
-	Namespace: hunter
-	Checksum: 0x70A988A6
-	Offset: 0x1C30
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function disable_turrets() {
   self turret::disable(1);
   self turret::disable(2);
   self side_turrets_forward();
 }
 
-/*
-	Name: side_turrets_forward
-	Namespace: hunter
-	Checksum: 0x1B974C69
-	Offset: 0x1C88
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function side_turrets_forward() {
   self setturrettargetrelativeangles((10, -90, 0), 1);
   self setturrettargetrelativeangles((10, 90, 0), 2);
 }
 
-/*
-	Name: state_combat_enter
-	Namespace: hunter
-	Checksum: 0x3C3C6000
-	Offset: 0x1CE8
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function state_combat_enter(params) {
   ratio = 1;
   accel = self getdefaultacceleration();
@@ -488,18 +319,9 @@ function state_combat_enter(params) {
   self enable_turrets();
 }
 
-/*
-	Name: state_combat_update
-	Namespace: hunter
-	Checksum: 0xB1CAB2D2
-	Offset: 0x1DA0
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function state_combat_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   if(!isdefined(self.enemy)) {
     self vehicle_ai::set_state("unaware");
   }
@@ -507,35 +329,17 @@ function state_combat_update(params) {
   self thread attack_thread_mainturret();
   self thread attack_thread_rocket();
   while (true) {
-    self waittill(# "no_enemy");
+    self waittill("no_enemy");
     self vehicle_ai::set_state("unaware");
   }
 }
 
-/*
-	Name: state_combat_exit
-	Namespace: hunter
-	Checksum: 0x30B50306
-	Offset: 0x1E70
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_combat_exit(params) {
-  self notify(# "end_attack_thread");
-  self notify(# "end_movement_thread");
+  self notify("end_attack_thread");
+  self notify("end_movement_thread");
   self clearturrettarget();
 }
 
-/*
-	Name: state_strafe_enter
-	Namespace: hunter
-	Checksum: 0x2C2C8A7
-	Offset: 0x1EB8
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function state_strafe_enter(params) {
   ratio = 2;
   accel = ratio * self getdefaultacceleration();
@@ -547,18 +351,9 @@ function state_strafe_enter(params) {
   self setspeed(speed, accel, accel);
 }
 
-/*
-	Name: state_strafe_update
-	Namespace: hunter
-	Checksum: 0xE06314F3
-	Offset: 0x1F88
-	Size: 0x7EC
-	Parameters: 1
-	Flags: Linked
-*/
 function state_strafe_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   self clearvehgoalpos();
   distancetotarget = 0.5 * (self.settings.engagementdistmin + self.settings.engagementdistmax);
   target = self.origin + (anglestoforward(self.angles) * distancetotarget);
@@ -582,56 +377,44 @@ function state_strafe_update(params) {
   foreach(point in queryresult.data) {
     distancetopointsqr = distancesquared(point.origin, self.origin);
     if(distancetopointsqr < (distancethreshold * 0.5)) {
-      /#
       if(!isdefined(point._scoredebug)) {
         point._scoredebug = [];
       }
       point._scoredebug[""] = distancethreshold * -1;
-      # /
-        point.score = point.score + (distancethreshold * -1);
+      point.score = point.score + (distancethreshold * -1);
     }
-    /#
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = sqrt(distancetopointsqr);
-    # /
-      point.score = point.score + sqrt(distancetopointsqr);
+    point.score = point.score + sqrt(distancetopointsqr);
     difftoprefereddirectness = abs(point.directness - 0);
     directnessscore = mapfloat(0, 1, 1000, 0, difftoprefereddirectness);
     if(difftoprefereddirectness > 0.1) {
       directnessscore = directnessscore - 500;
     }
-    /#
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = point.directness;
-    # /
-      point.score = point.score + point.directness;
-    /#
+    point.score = point.score + point.directness;
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = directnessscore;
-    # /
-      point.score = point.score + directnessscore;
+    point.score = point.score + directnessscore;
     if(point.directionchange < 0.6) {
-      /#
       if(!isdefined(point._scoredebug)) {
         point._scoredebug = [];
       }
       point._scoredebug[""] = -2000;
-      # /
-        point.score = point.score + -2000;
+      point.score = point.score + -2000;
     }
-    /#
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = point.directionchange;
-    # /
-      point.score = point.score + point.directionchange;
+    point.score = point.score + point.directionchange;
   }
   vehicle_ai::positionquery_postprocess_sortscore(queryresult);
   self vehicle_ai::positionquery_debugscores(queryresult);
@@ -650,28 +433,10 @@ function state_strafe_update(params) {
   self vehicle_ai::set_state(previous_state);
 }
 
-/*
-	Name: state_strafe_exit
-	Namespace: hunter
-	Checksum: 0x371A2020
-	Offset: 0x2780
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_strafe_exit(params) {
   vehicle_ai::cooldown("strafe_again", 2);
 }
 
-/*
-	Name: getnextmoveposition_tactical
-	Namespace: hunter
-	Checksum: 0x448EE6B6
-	Offset: 0x27B8
-	Size: 0x6DA
-	Parameters: 1
-	Flags: Linked
-*/
 function getnextmoveposition_tactical(enemy) {
   if(self.goalforced) {
     return self.goalpos;
@@ -697,48 +462,38 @@ function getnextmoveposition_tactical(enemy) {
   goalheight = enemy.origin[2] + (0.5 * (self.settings.engagementheightmin + self.settings.engagementheightmax));
   foreach(point in queryresult.data) {
     if(!point.visibility) {
-      /#
       if(!isdefined(point._scoredebug)) {
         point._scoredebug = [];
       }
       point._scoredebug[""] = -600;
-      # /
-        point.score = point.score + -600;
+      point.score = point.score + -600;
     }
-    /#
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = point.distawayfromengagementarea * -1;
-    # /
-      point.score = point.score + (point.distawayfromengagementarea * -1);
-    /#
+    point.score = point.score + (point.distawayfromengagementarea * -1);
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = mapfloat(0, prefereddistawayfromorigin, 0, 600, point.disttoorigin2d);
-    # /
-      point.score = point.score + mapfloat(0, prefereddistawayfromorigin, 0, 600, point.disttoorigin2d);
+    point.score = point.score + mapfloat(0, prefereddistawayfromorigin, 0, 600, point.disttoorigin2d);
     if(point.inclaimedlocation) {
-      /#
       if(!isdefined(point._scoredebug)) {
         point._scoredebug = [];
       }
       point._scoredebug[""] = -500;
-      # /
-        point.score = point.score + -500;
+      point.score = point.score + -500;
     }
     preferedheightrange = 75;
     distfrompreferredheight = abs(point.origin[2] - goalheight);
     if(distfrompreferredheight > preferedheightrange) {
       heightscore = mapfloat(preferedheightrange, 5000, 0, 9000, distfrompreferredheight) * -1;
-      /#
       if(!isdefined(point._scoredebug)) {
         point._scoredebug = [];
       }
       point._scoredebug[""] = heightscore;
-      # /
-        point.score = point.score + heightscore;
+      point.score = point.score + heightscore;
     }
   }
   self vehicle_ai::positionquery_debugscores(queryresult);
@@ -749,19 +504,10 @@ function getnextmoveposition_tactical(enemy) {
   return self.origin;
 }
 
-/*
-	Name: movement_thread_stayindistance
-	Namespace: hunter
-	Checksum: 0x7232B6B0
-	Offset: 0x2EA0
-	Size: 0x88C
-	Parameters: 0
-	Flags: Linked
-*/
 function movement_thread_stayindistance() {
-  self endon(# "death");
-  self notify(# "end_movement_thread");
-  self endon(# "end_movement_thread");
+  self endon("death");
+  self notify("end_movement_thread");
+  self endon("end_movement_thread");
   maxgoaltimeout = 10;
   stuckcount = 0;
   while (true) {
@@ -802,15 +548,13 @@ function movement_thread_stayindistance() {
           /# /
           #
           assert(0, "" + self.origin);
-          # /
-            v_box_min = (self.radius * -1, self.radius * -1, self.radius * -1);
+          v_box_min = (self.radius * -1, self.radius * -1, self.radius * -1);
           v_box_max = (self.radius, self.radius, self.radius);
           box(self.origin, v_box_min, v_box_max, self.angles[1], (1, 0, 0), 1, 0, 1000000);
           if(isdefined(stucklocation)) {
             line(stucklocation, self.origin, (1, 0, 0), 1, 1, 1000000);
           }
-          # /
-            self kill();
+          self kill();
         }
       }
     } else {
@@ -842,13 +586,11 @@ function movement_thread_stayindistance() {
     self setlookatent(enemy);
     foundpath = self setvehgoalpos(self.current_pathto_pos, 1, usepathfinding);
     if(foundpath) {
-      /#
       if(isdefined(getdvarint("")) && getdvarint("")) {
         recordline(self.origin, self.current_pathto_pos, (0.3, 1, 0));
         recordline(self.origin, enemy.origin, (1, 0, 0.4));
       }
-      # /
-        msg = self util::waittill_any_timeout(maxgoaltimeout, "near_goal", "force_goal", "goal");
+      msg = self util::waittill_any_timeout(maxgoaltimeout, "near_goal", "force_goal", "goal");
     } else {
       wait(0.5);
     }
@@ -874,28 +616,19 @@ function movement_thread_stayindistance() {
   }
 }
 
-/*
-	Name: delay_target_toenemy_thread
-	Namespace: hunter
-	Checksum: 0x6B660E09
-	Offset: 0x3738
-	Size: 0x204
-	Parameters: 3
-	Flags: Linked
-*/
 function delay_target_toenemy_thread(point, enemy, timetohit) {
-  self endon(# "death");
-  self endon(# "change_state");
-  self endon(# "end_attack_thread");
-  self endon(# "faketarget_stop_moving");
-  enemy endon(# "death");
+  self endon("death");
+  self endon("change_state");
+  self endon("end_attack_thread");
+  self endon("faketarget_stop_moving");
+  enemy endon("death");
   if(!isdefined(self.faketargetent)) {
     self.faketargetent = spawn("script_origin", point);
   }
   self.faketargetent unlink();
   self.faketargetent.origin = point;
   self setturrettargetent(self.faketargetent);
-  self waittill(# "turret_on_target");
+  self waittill("turret_on_target");
   timestart = gettime();
   offset = (0, 0, 0);
   if(issentient(enemy)) {
@@ -910,19 +643,10 @@ function delay_target_toenemy_thread(point, enemy, timetohit) {
   self.faketargetent linkto(enemy);
 }
 
-/*
-	Name: attack_thread_mainturret
-	Namespace: hunter
-	Checksum: 0x2EA057ED
-	Offset: 0x3948
-	Size: 0x238
-	Parameters: 0
-	Flags: Linked
-*/
 function attack_thread_mainturret() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self endon(# "end_attack_thread");
+  self endon("death");
+  self endon("change_state");
+  self endon("end_attack_thread");
   while (true) {
     enemy = self.enemy;
     if(isdefined(enemy)) {
@@ -930,7 +654,7 @@ function attack_thread_mainturret() {
       if(self vehcansee(enemy)) {
         vectorfromenemy = vectornormalize((self.origin - enemy.origin[0], self.origin - enemy.origin[1], 0));
         self thread delay_target_toenemy_thread(enemy.origin + (vectorfromenemy * 300), enemy, 1.5);
-        self waittill(# "turret_on_target");
+        self waittill("turret_on_target");
         self vehicle_ai::fire_for_time(2 + randomfloat(0.8));
         self clearturrettarget();
         self setturrettargetrelativeangles(vectorscale((1, 0, 0), 15), 0);
@@ -950,19 +674,10 @@ function attack_thread_mainturret() {
   }
 }
 
-/*
-	Name: attack_thread_rocket
-	Namespace: hunter
-	Checksum: 0xF4557ED0
-	Offset: 0x3B88
-	Size: 0x4B8
-	Parameters: 0
-	Flags: Linked
-*/
 function attack_thread_rocket() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self endon(# "end_attack_thread");
+  self endon("death");
+  self endon("change_state");
+  self endon("end_attack_thread");
   while (true) {
     enemy = self.enemy;
     if(!isdefined(enemy)) {
@@ -971,7 +686,7 @@ function attack_thread_rocket() {
     }
     if(isdefined(enemy) && self vehcansee(enemy) && vehicle_ai::iscooldownready("rocket_launcher")) {
       vehicle_ai::cooldown("rocket_launcher", 8);
-      self notify(# "end_movement_thread");
+      self notify("end_movement_thread");
       self clearvehgoalpos();
       self setvehgoalpos(self.origin, 1, 0);
       target = enemy.origin;
@@ -1012,15 +727,6 @@ function attack_thread_rocket() {
   }
 }
 
-/*
-	Name: side_turret_get_best_target
-	Namespace: hunter
-	Checksum: 0xB9CE47C9
-	Offset: 0x4048
-	Size: 0x16C
-	Parameters: 2
-	Flags: Linked
-*/
 function side_turret_get_best_target(a_potential_targets, n_index) {
   if(self.ignoreall === 1) {
     return undefined;
@@ -1046,17 +752,8 @@ function side_turret_get_best_target(a_potential_targets, n_index) {
   return e_best_target;
 }
 
-/*
-	Name: hunter_fire_one_missile
-	Namespace: hunter
-	Checksum: 0xE2B50B79
-	Offset: 0x41C0
-	Size: 0x248
-	Parameters: 5
-	Flags: Linked
-*/
 function hunter_fire_one_missile(launcher_index, target, offset, blinklights, waittimeafterblinklights) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(blinklights) && blinklights) {
     self vehicle_ai::blink_lights_for_time(1);
     if(isdefined(waittimeafterblinklights) && waittimeafterblinklights > 0) {
@@ -1085,46 +782,19 @@ function hunter_fire_one_missile(launcher_index, target, offset, blinklights, wa
   }
 }
 
-/*
-	Name: remote_missile_life
-	Namespace: hunter
-	Checksum: 0xCAD06E6B
-	Offset: 0x4410
-	Size: 0x8C
-	Parameters: 0
-	Flags: None
-*/
 function remote_missile_life() {
-  self endon(# "death");
+  self endon("death");
   hostmigration::waitlongdurationwithhostmigrationpause(10);
   playfx(level.remote_mortar_fx["missileExplode"], self.origin);
   self playlocalsound("mpl_ks_reaper_explosion");
   self delete();
 }
 
-/*
-	Name: hunter_lockon_fx
-	Namespace: hunter
-	Checksum: 0x1A4BB596
-	Offset: 0x44A8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function hunter_lockon_fx() {
   self thread vehicle_ai::blink_lights_for_time(1.5);
   self playsound("veh_hunter_alarm_target");
 }
 
-/*
-	Name: getenemyarray
-	Namespace: hunter
-	Checksum: 0xD1E5E1D6
-	Offset: 0x44F8
-	Size: 0xEC
-	Parameters: 2
-	Flags: Linked
-*/
 function getenemyarray(include_ai, include_player) {
   enemyarray = [];
   enemy_team = "allies";
@@ -1139,15 +809,6 @@ function getenemyarray(include_ai, include_player) {
   return enemyarray;
 }
 
-/*
-	Name: is_point_in_view
-	Namespace: hunter
-	Checksum: 0xC9A47357
-	Offset: 0x45F0
-	Size: 0x134
-	Parameters: 2
-	Flags: Linked
-*/
 function is_point_in_view(point, do_trace) {
   if(!isdefined(point)) {
     return 0;
@@ -1164,15 +825,6 @@ function is_point_in_view(point, do_trace) {
   return in_view;
 }
 
-/*
-	Name: is_valid_target
-	Namespace: hunter
-	Checksum: 0xA11F8B2
-	Offset: 0x4730
-	Size: 0x104
-	Parameters: 2
-	Flags: Linked
-*/
 function is_valid_target(target, do_trace) {
   target_is_valid = 1;
   if(isdefined(target.ignoreme) && target.ignoreme || target.health <= 0) {
@@ -1187,15 +839,6 @@ function is_valid_target(target, do_trace) {
   return target_is_valid;
 }
 
-/*
-	Name: get_enemies_in_view
-	Namespace: hunter
-	Checksum: 0x28C2DAC3
-	Offset: 0x4840
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function get_enemies_in_view(do_trace) {
   validenemyarray = [];
   enemyarray = getenemyarray(1, 1);
@@ -1212,15 +855,6 @@ function get_enemies_in_view(do_trace) {
   return validenemyarray;
 }
 
-/*
-	Name: hunter_scanner_init
-	Namespace: hunter
-	Checksum: 0xCB503EA2
-	Offset: 0x4978
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function hunter_scanner_init() {
   self.frontscanner = spawn("script_model", self gettagorigin("tag_gunner_flash3"));
   self.frontscanner setmodel("tag_origin");
@@ -1236,15 +870,6 @@ function hunter_scanner_init() {
   }
 }
 
-/*
-	Name: hunter_scanner_settargetentity
-	Namespace: hunter
-	Checksum: 0x108D492F
-	Offset: 0x4B20
-	Size: 0x8C
-	Parameters: 2
-	Flags: None
-*/
 function hunter_scanner_settargetentity(targetent, offset = (0, 0, 0)) {
   if(isdefined(targetent)) {
     self.frontscanner.targetent = targetent;
@@ -1253,29 +878,11 @@ function hunter_scanner_settargetentity(targetent, offset = (0, 0, 0)) {
   }
 }
 
-/*
-	Name: hunter_scanner_clearlooktarget
-	Namespace: hunter
-	Checksum: 0x1590370B
-	Offset: 0x4BB8
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function hunter_scanner_clearlooktarget() {
   self.frontscanner.hastargetent = 0;
   self cleargunnertarget(2);
 }
 
-/*
-	Name: hunter_scanner_settargetposition
-	Namespace: hunter
-	Checksum: 0xFF2AE343
-	Offset: 0x4BF8
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function hunter_scanner_settargetposition(targetpos) {
   if(isdefined(targetpos)) {
     self.frontscanner.targetpos = targetpos;
@@ -1283,19 +890,10 @@ function hunter_scanner_settargetposition(targetpos) {
   }
 }
 
-/*
-	Name: hunter_frontscanning
-	Namespace: hunter
-	Checksum: 0xA20ECEA
-	Offset: 0x4C58
-	Size: 0x430
-	Parameters: 0
-	Flags: None
-*/
 function hunter_frontscanning() {
-  self endon(# "death_shut_off");
-  self endon(# "crash_done");
-  self endon(# "death");
+  self endon("death_shut_off");
+  self endon("crash_done");
+  self endon("death");
   hunter_scanner_init();
   offsetfactorpitch = 0;
   offsetfactoryaw = 0;
@@ -1323,15 +921,13 @@ function hunter_frontscanning() {
         if(enemies.size > 0) {
           closest_enemy = arraygetclosest(self.origin, enemies);
           self.favoriteenemy = closest_enemy;
-          /#
           line(scannerorigin, closest_enemy.origin, (0, 1, 0), 1, 3);
-          # /
         }
       } else {
         if(self is_point_in_view(self.enemy.origin, 1)) {
-          self notify(# "hunter_lockontargetinsight");
+          self notify("hunter_lockontargetinsight");
         } else {
-          self notify(# "hunter_lockontargetoutsight");
+          self notify("hunter_lockontargetoutsight");
         }
         scannerdirection = vectornormalize(self.enemy.origin - scannerorigin);
         if(0) {
@@ -1341,24 +937,13 @@ function hunter_frontscanning() {
     }
     targetlocation = scannerorigin + (scannerdirection * 1000);
     self hunter_scanner_settargetposition(targetlocation);
-    /#
     line(scannerorigin, self.frontscanner.targetpos, (0, 1, 0), 1, 1000);
-    # /
-      wait(0.1);
+    wait(0.1);
   }
 }
 
-/*
-	Name: hunter_exit_vehicle
-	Namespace: hunter
-	Checksum: 0x31EF45A4
-	Offset: 0x5090
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function hunter_exit_vehicle() {
-  self waittill(# "exit_vehicle", player);
+  self waittill("exit_vehicle", player);
   player.ignoreme = 0;
   player disableinvulnerability();
   self setheliheightlock(0);
@@ -1368,15 +953,6 @@ function hunter_exit_vehicle() {
   self setgoal(self.origin, 0, 4096, 512);
 }
 
-/*
-	Name: hunter_scripted
-	Namespace: hunter
-	Checksum: 0x28342E1A
-	Offset: 0x5160
-	Size: 0x20C
-	Parameters: 1
-	Flags: Linked
-*/
 function hunter_scripted(params) {
   params.driver = self getseatoccupant(0);
   if(isdefined(params.driver)) {
@@ -1404,18 +980,9 @@ function hunter_scripted(params) {
   self resumespeed();
 }
 
-/*
-	Name: player_fire_update_side_turret_1
-	Namespace: hunter
-	Checksum: 0x9C2A8D07
-	Offset: 0x5378
-	Size: 0xC6
-	Parameters: 0
-	Flags: Linked
-*/
 function player_fire_update_side_turret_1() {
-  self endon(# "death");
-  self endon(# "exit_vehicle");
+  self endon("death");
+  self endon("exit_vehicle");
   weapon = self seatgetweapon(1);
   firetime = weapon.firetime;
   while (true) {
@@ -1427,18 +994,9 @@ function player_fire_update_side_turret_1() {
   }
 }
 
-/*
-	Name: player_fire_update_side_turret_2
-	Namespace: hunter
-	Checksum: 0x91BF6139
-	Offset: 0x5448
-	Size: 0xCE
-	Parameters: 0
-	Flags: Linked
-*/
 function player_fire_update_side_turret_2() {
-  self endon(# "death");
-  self endon(# "exit_vehicle");
+  self endon("death");
+  self endon("exit_vehicle");
   weapon = self seatgetweapon(2);
   firetime = weapon.firetime;
   while (true) {
@@ -1450,18 +1008,9 @@ function player_fire_update_side_turret_2() {
   }
 }
 
-/*
-	Name: player_fire_update_rocket
-	Namespace: hunter
-	Checksum: 0x63AF35C
-	Offset: 0x5520
-	Size: 0x198
-	Parameters: 0
-	Flags: Linked
-*/
 function player_fire_update_rocket() {
-  self endon(# "death");
-  self endon(# "exit_vehicle");
+  self endon("death");
+  self endon("exit_vehicle");
   weapon = getweapon("hunter_rocket_turret_player");
   firetime = weapon.firetime;
   driver = self getseatoccupant(0);
@@ -1480,21 +1029,12 @@ function player_fire_update_rocket() {
   }
 }
 
-/*
-	Name: hunter_collision_player
-	Namespace: hunter
-	Checksum: 0xAF53D3C4
-	Offset: 0x56C0
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function hunter_collision_player() {
-  self endon(# "change_state");
-  self endon(# "crash_done");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("crash_done");
+  self endon("death");
   while (true) {
-    self waittill(# "veh_collision", velocity, normal);
+    self waittill("veh_collision", velocity, normal);
     driver = self getseatoccupant(0);
     if(isdefined(driver) && lengthsquared(velocity) > 4900) {
       earthquake(0.25, 0.25, driver.origin, 50);
@@ -1503,18 +1043,9 @@ function hunter_collision_player() {
   }
 }
 
-/*
-	Name: hunter_update_rumble
-	Namespace: hunter
-	Checksum: 0xF342B0FF
-	Offset: 0x57C0
-	Size: 0x146
-	Parameters: 0
-	Flags: None
-*/
 function hunter_update_rumble() {
-  self endon(# "death");
-  self endon(# "exit_vehicle");
+  self endon("death");
+  self endon("exit_vehicle");
   while (true) {
     vr = abs(self getspeed() / self getmaxspeed());
     if(vr < 0.1) {
@@ -1529,18 +1060,9 @@ function hunter_update_rumble() {
   }
 }
 
-/*
-	Name: hunter_self_destruct
-	Namespace: hunter
-	Checksum: 0x10F5C715
-	Offset: 0x5910
-	Size: 0x1A4
-	Parameters: 0
-	Flags: None
-*/
 function hunter_self_destruct() {
-  self endon(# "death");
-  self endon(# "exit_vehicle");
+  self endon("death");
+  self endon("exit_vehicle");
   self_destruct = 0;
   self_destruct_time = 0;
   while (true) {
@@ -1569,19 +1091,10 @@ function hunter_self_destruct() {
   }
 }
 
-/*
-	Name: hunter_level_out_for_landing
-	Namespace: hunter
-	Checksum: 0x12A28AA9
-	Offset: 0x5AC0
-	Size: 0xF0
-	Parameters: 0
-	Flags: None
-*/
 function hunter_level_out_for_landing() {
-  self endon(# "death");
-  self endon(# "emped");
-  self endon(# "landed");
+  self endon("death");
+  self endon("emped");
+  self endon("landed");
   while (isdefined(self.emped)) {
     velocity = self.velocity;
     self.angles = (self.angles[0] * 0.85, self.angles[1], self.angles[2] * 0.85);
@@ -1592,34 +1105,16 @@ function hunter_level_out_for_landing() {
   }
 }
 
-/*
-	Name: hunter_emped
-	Namespace: hunter
-	Checksum: 0xB78645A1
-	Offset: 0x5BB8
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function hunter_emped(params) {
-  self endon(# "death");
-  self endon(# "emped");
+  self endon("death");
+  self endon("emped");
   self.emped = 1;
   wait(randomfloatrange(4, 7));
   self vehicle_ai::evaluate_connections();
 }
 
-/*
-	Name: hunter_pain_for_time
-	Namespace: hunter
-	Checksum: 0x885364E1
-	Offset: 0x5C28
-	Size: 0x1C8
-	Parameters: 4
-	Flags: Linked
-*/
 function hunter_pain_for_time(time, velocitystablizeparam, rotationstablizeparam, restorelookpoint) {
-  self endon(# "death");
+  self endon("death");
   self.painstarttime = gettime();
   if(!(isdefined(self.inpain) && self.inpain)) {
     self.inpain = 1;
@@ -1643,15 +1138,6 @@ function hunter_pain_for_time(time, velocitystablizeparam, rotationstablizeparam
   }
 }
 
-/*
-	Name: hunter_pain_small
-	Namespace: hunter
-	Checksum: 0x5972B480
-	Offset: 0x5DF8
-	Size: 0x1EC
-	Parameters: 6
-	Flags: Linked
-*/
 function hunter_pain_small(eattacker, damagetype, hitpoint, hitdirection, hitlocationinfo, partname) {
   if(!isdefined(hitpoint) || !isdefined(hitdirection)) {
     return;
@@ -1669,15 +1155,6 @@ function hunter_pain_small(eattacker, damagetype, hitpoint, hitdirection, hitloc
   self vehicle_ai::set_state("strafe");
 }
 
-/*
-	Name: huntercallback_vehicledamage
-	Namespace: hunter
-	Checksum: 0x28A9F65A
-	Offset: 0x5FF0
-	Size: 0x290
-	Parameters: 15
-	Flags: Linked
-*/
 function huntercallback_vehicledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   driver = self getseatoccupant(0);
   if(isdefined(eattacker) && eattacker.team == self.team) {

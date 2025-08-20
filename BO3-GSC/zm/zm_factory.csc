@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_factory.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\audio_shared;
 #using scripts\shared\callbacks_shared;
@@ -35,18 +39,8 @@
 #using scripts\zm\zm_factory_ffotd;
 #using scripts\zm\zm_factory_fx;
 #using scripts\zm\zm_factory_teleporter;
-
 #namespace zm_factory;
 
-/*
-	Name: opt_in
-	Namespace: zm_factory
-	Checksum: 0xEBEAC76E
-	Offset: 0x1060
-	Size: 0x27C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec opt_in() {
   level.aat_in_use = 1;
   level.bgb_in_use = 1;
@@ -66,15 +60,6 @@ function autoexec opt_in() {
   clientfield::register("toplayer", "lightning_strike", 1, 1, "counter", & lightning_strike, 0, 0);
 }
 
-/*
-	Name: main
-	Namespace: zm_factory
-	Checksum: 0xFA7111D3
-	Offset: 0x12E8
-	Size: 0x254
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   zm_factory_ffotd::main_start();
   zm_factory_fx::main();
@@ -102,20 +87,9 @@ function main() {
   level thread function_e0500062();
   zm_factory_ffotd::main_end();
   util::waitforclient(0);
-  /#
   println("");
-  # /
 }
 
-/*
-	Name: on_player_connected
-	Namespace: zm_factory
-	Checksum: 0xD0255DA8
-	Offset: 0x1548
-	Size: 0xD6
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_connected(localclientnum) {
   if(1 != getdvarint("movie_intro")) {
     return;
@@ -128,55 +102,19 @@ function on_player_connected(localclientnum) {
   }
 }
 
-/*
-	Name: include_weapons
-	Namespace: zm_factory
-	Checksum: 0xA66EFAD
-	Offset: 0x1628
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function include_weapons() {
   zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_factory_weapons.csv", 1);
 }
 
-/*
-	Name: include_perks
-	Namespace: zm_factory
-	Checksum: 0x99EC1590
-	Offset: 0x1658
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function include_perks() {}
 
-/*
-	Name: on_player_spawned
-	Namespace: zm_factory
-	Checksum: 0x8474B4C7
-	Offset: 0x1668
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_spawned(localclientnum) {
   self thread player_snow_thread(localclientnum);
 }
 
-/*
-	Name: player_snow_thread
-	Namespace: zm_factory
-	Checksum: 0xE38EFA3C
-	Offset: 0x1698
-	Size: 0x108
-	Parameters: 1
-	Flags: Linked
-*/
 function player_snow_thread(localclientnum) {
-  self endon(# "disconnect");
-  self endon(# "entityshutdown");
+  self endon("disconnect");
+  self endon("entityshutdown");
   if(1 == getdvarint("movie_intro")) {
     return;
   }
@@ -193,29 +131,11 @@ function player_snow_thread(localclientnum) {
   }
 }
 
-/*
-	Name: power_on_fxanims
-	Namespace: zm_factory
-	Checksum: 0x69A14FF
-	Offset: 0x17A8
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function power_on_fxanims() {
-  level waittill(# "power_on");
+  level waittill("power_on");
   level thread scene::play("p7_fxanim_gp_wire_sparking_ground_01_bundle");
 }
 
-/*
-	Name: setup_personality_character_exerts
-	Namespace: zm_factory
-	Checksum: 0x52D9862F
-	Offset: 0x17E0
-	Size: 0x622
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_personality_character_exerts() {
   level.exert_sounds[1]["falldamage"][0] = "vox_plr_0_exert_pain_0";
   level.exert_sounds[1]["falldamage"][1] = "vox_plr_0_exert_pain_1";
@@ -259,15 +179,6 @@ function setup_personality_character_exerts() {
   level.exert_sounds[4]["meleeswipesoundplayer"][4] = "vox_plr_3_exert_melee_4";
 }
 
-/*
-	Name: fx_overrides
-	Namespace: zm_factory
-	Checksum: 0x1C2BE500
-	Offset: 0x1E10
-	Size: 0xC6
-	Parameters: 0
-	Flags: None
-*/
 function fx_overrides() {
   level._effect["jugger_light"] = "zombie/fx_perk_juggernaut_factory_zmb";
   level._effect["revive_light"] = "zombie/fx_perk_quick_revive_factory_zmb";
@@ -278,30 +189,12 @@ function fx_overrides() {
   level._effect["additionalprimaryweapon_light"] = "zombie/fx_perk_mule_kick_factory_zmb";
 }
 
-/*
-	Name: function_e0500062
-	Namespace: zm_factory
-	Checksum: 0x24030F8F
-	Offset: 0x1EE0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e0500062() {
-  level waittill(# "sndsb");
+  level waittill("sndsb");
   playsound(0, "zmb_robothead_laser", (-434, 706, 439));
   playsound(0, "zmb_robothead_reflection_laser", (-451, -397, 294));
 }
 
-/*
-	Name: console_blue
-	Namespace: zm_factory
-	Checksum: 0x757639E8
-	Offset: 0x1F50
-	Size: 0x104
-	Parameters: 7
-	Flags: Linked
-*/
 function console_blue(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   s_scene = struct::get("top_dial");
   if(newval) {
@@ -315,15 +208,6 @@ function console_blue(localclientnum, oldval, newval, bnewent, binitialsnap, fie
   }
 }
 
-/*
-	Name: console_green
-	Namespace: zm_factory
-	Checksum: 0x2D090EC0
-	Offset: 0x2060
-	Size: 0x104
-	Parameters: 7
-	Flags: Linked
-*/
 function console_green(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   s_scene = struct::get("middle_dial");
   if(newval) {
@@ -337,15 +221,6 @@ function console_green(localclientnum, oldval, newval, bnewent, binitialsnap, fi
   }
 }
 
-/*
-	Name: console_red
-	Namespace: zm_factory
-	Checksum: 0xCFB23F84
-	Offset: 0x2170
-	Size: 0x104
-	Parameters: 7
-	Flags: Linked
-*/
 function console_red(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   s_scene = struct::get("bottom_dial");
   if(newval) {
@@ -359,15 +234,6 @@ function console_red(localclientnum, oldval, newval, bnewent, binitialsnap, fiel
   }
 }
 
-/*
-	Name: console_start
-	Namespace: zm_factory
-	Checksum: 0xD687F83D
-	Offset: 0x2280
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked
-*/
 function console_start(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     exploder::exploder("teleporter_controller_red_light_1");
@@ -376,15 +242,6 @@ function console_start(localclientnum, oldval, newval, bnewent, binitialsnap, fi
   }
 }
 
-/*
-	Name: lightning_strike
-	Namespace: zm_factory
-	Checksum: 0x1B21D663
-	Offset: 0x2318
-	Size: 0x194
-	Parameters: 7
-	Flags: Linked
-*/
 function lightning_strike(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   setukkoscriptindex(localclientnum, 1, 1);
   playsound(0, "amb_lightning_dist_low", (0, 0, 0));

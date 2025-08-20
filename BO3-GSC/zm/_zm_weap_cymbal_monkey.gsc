@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_cymbal_monkey.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\laststand_shared;
 #using scripts\shared\math_shared;
@@ -7,20 +11,9 @@
 #using scripts\zm\_zm_laststand;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #using_animtree("zombie_cymbal_monkey");
-
 #namespace _zm_weap_cymbal_monkey;
 
-/*
-	Name: init
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0xA04671B8
-	Offset: 0x3F0
-	Size: 0x1F8
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.weaponzmcymbalmonkey = getweapon("cymbal_monkey");
   zm_weapons::register_zombie_weapon_callback(level.weaponzmcymbalmonkey, & player_give_cymbal_monkey);
@@ -32,13 +25,10 @@ function init() {
     zm_weapons::register_zombie_weapon_callback(level.w_cymbal_monkey_upgraded, & player_give_cymbal_monkey_upgraded);
     level._effect["monkey_bass"] = "dlc3/stalingrad/fx_cymbal_monkey_radial_pulse";
   }
-  /#
   level.zombiemode_devgui_cymbal_monkey_give = & player_give_cymbal_monkey;
-  # /
-    if(isdefined(level.legacy_cymbal_monkey) && level.legacy_cymbal_monkey) {
-      level.cymbal_monkey_model = "weapon_zombie_monkey_bomb";
-    }
-  else {
+  if(isdefined(level.legacy_cymbal_monkey) && level.legacy_cymbal_monkey) {
+    level.cymbal_monkey_model = "weapon_zombie_monkey_bomb";
+  } else {
     level.cymbal_monkey_model = "wpn_t7_zmb_monkey_bomb_world";
   }
   level._effect["monkey_glow"] = "zombie/fx_cymbal_monkey_light_zmb";
@@ -61,55 +51,26 @@ function init() {
   }
 }
 
-/*
-	Name: player_give_cymbal_monkey
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x2B6DAA80
-	Offset: 0x5F0
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function player_give_cymbal_monkey() {
   self giveweapon(level.weaponzmcymbalmonkey);
   self zm_utility::set_player_tactical_grenade(level.weaponzmcymbalmonkey);
   self thread player_handle_cymbal_monkey();
 }
 
-/*
-	Name: player_give_cymbal_monkey_upgraded
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0xCC9217F
-	Offset: 0x658
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function player_give_cymbal_monkey_upgraded() {
-  /#
-  self notify(# "give_tactical_grenade_thread");
-  # /
-    if(isdefined(self zm_utility::get_player_tactical_grenade())) {
-      self takeweapon(self zm_utility::get_player_tactical_grenade());
-    }
+  self notify("give_tactical_grenade_thread");
+  if(isdefined(self zm_utility::get_player_tactical_grenade())) {
+    self takeweapon(self zm_utility::get_player_tactical_grenade());
+  }
   self giveweapon(level.w_cymbal_monkey_upgraded);
   self zm_utility::set_player_tactical_grenade(level.w_cymbal_monkey_upgraded);
   self thread player_handle_cymbal_monkey();
 }
 
-/*
-	Name: player_handle_cymbal_monkey
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0xE04922A6
-	Offset: 0x710
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function player_handle_cymbal_monkey() {
-  self notify(# "starting_monkey_watch");
-  self endon(# "disconnect");
-  self endon(# "starting_monkey_watch");
+  self notify("starting_monkey_watch");
+  self endon("disconnect");
+  self endon("starting_monkey_watch");
   attract_dist_diff = level.monkey_attract_dist_diff;
   if(!isdefined(attract_dist_diff)) {
     attract_dist_diff = 45;
@@ -129,18 +90,9 @@ function player_handle_cymbal_monkey() {
   }
 }
 
-/*
-	Name: watch_for_dud
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x48382B60
-	Offset: 0x810
-	Size: 0xF4
-	Parameters: 2
-	Flags: Linked
-*/
 function watch_for_dud(model, actor) {
-  self endon(# "death");
-  self waittill(# "grenade_dud");
+  self endon("death");
+  self waittill("grenade_dud");
   model.dud = 1;
   self playsound("zmb_vox_monkey_scream");
   self.monk_scream_vox = 1;
@@ -159,22 +111,13 @@ function watch_for_dud(model, actor) {
   }
 }
 
-/*
-	Name: watch_for_emp
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x11127FA9
-	Offset: 0x910
-	Size: 0x1EC
-	Parameters: 2
-	Flags: Linked
-*/
 function watch_for_emp(model, actor) {
-  self endon(# "death");
+  self endon("death");
   if(!zm_utility::should_watch_for_emp()) {
     return;
   }
   while (true) {
-    level waittill(# "emp_detonate", origin, radius);
+    level waittill("emp_detonate", origin, radius);
     if(distancesquared(origin, self.origin) < (radius * radius)) {
       break;
     }
@@ -204,35 +147,17 @@ function watch_for_emp(model, actor) {
   }
 }
 
-/*
-	Name: clone_player_angles
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0xDAA8E282
-	Offset: 0xB08
-	Size: 0x50
-	Parameters: 1
-	Flags: Linked
-*/
 function clone_player_angles(owner) {
-  self endon(# "death");
-  owner endon(# "death");
+  self endon("death");
+  owner endon("death");
   while (isdefined(self)) {
     self.angles = owner.angles;
     wait(0.05);
   }
 }
 
-/*
-	Name: show_briefly
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x3F8EA1F9
-	Offset: 0xB60
-	Size: 0xAE
-	Parameters: 1
-	Flags: Linked
-*/
 function show_briefly(showtime) {
-  self endon(# "show_owner");
+  self endon("show_owner");
   if(isdefined(self.show_for_time)) {
     self.show_for_time = showtime;
     return;
@@ -247,43 +172,25 @@ function show_briefly(showtime) {
   self.show_for_time = undefined;
 }
 
-/*
-	Name: show_owner_on_attack
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x11A5CDEE
-	Offset: 0xC18
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function show_owner_on_attack(owner) {
-  owner endon(# "hide_owner");
-  owner endon(# "show_owner");
-  self endon(# "explode");
-  self endon(# "death");
-  self endon(# "grenade_dud");
+  owner endon("hide_owner");
+  owner endon("show_owner");
+  self endon("explode");
+  self endon("death");
+  self endon("grenade_dud");
   owner.show_for_time = undefined;
   for (;;) {
-    owner waittill(# "weapon_fired");
+    owner waittill("weapon_fired");
     owner thread show_briefly(0.5);
   }
 }
 
-/*
-	Name: hide_owner
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x3ABB5DF
-	Offset: 0xCA0
-	Size: 0x22C
-	Parameters: 1
-	Flags: Linked
-*/
 function hide_owner(owner) {
-  owner notify(# "hide_owner");
-  owner endon(# "hide_owner");
+  owner notify("hide_owner");
+  owner endon("hide_owner");
   owner setperk("specialty_immunemms");
   owner.no_burning_sfx = 1;
-  owner notify(# "stop_flame_sounds");
+  owner notify("stop_flame_sounds");
   owner setvisibletoallexceptteam(level.zombie_team);
   owner.hide_owner = 1;
   if(isdefined(level._effect["human_disappears"])) {
@@ -291,10 +198,8 @@ function hide_owner(owner) {
   }
   self thread show_owner_on_attack(owner);
   evt = self util::waittill_any_ex("explode", "death", "grenade_dud", owner, "hide_owner");
-  /#
   println("" + evt);
-  # /
-    owner notify(# "show_owner");
+  owner notify("show_owner");
   owner unsetperk("specialty_immunemms");
   if(isdefined(level._effect["human_disappears"])) {
     playfx(level._effect["human_disappears"], owner.origin);
@@ -305,15 +210,6 @@ function hide_owner(owner) {
   owner show();
 }
 
-/*
-	Name: proximity_detonate
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x6BC163AA
-	Offset: 0xED8
-	Size: 0x26C
-	Parameters: 1
-	Flags: Linked
-*/
 function proximity_detonate(owner) {
   wait(1.5);
   if(!isdefined(self)) {
@@ -327,7 +223,7 @@ function proximity_detonate(owner) {
   damagearea linkto(self);
   self.damagearea = damagearea;
   while (isdefined(self)) {
-    damagearea waittill(# "trigger", ent);
+    damagearea waittill("trigger", ent);
     if(isdefined(owner) && ent == owner) {
       continue;
     }
@@ -349,18 +245,9 @@ function proximity_detonate(owner) {
   }
 }
 
-/*
-	Name: fakelinkto
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x28FDDDF7
-	Offset: 0x1150
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function fakelinkto(linkee) {
-  self notify(# "fakelinkto");
-  self endon(# "fakelinkto");
+  self notify("fakelinkto");
+  self endon("fakelinkto");
   self.backlinked = 1;
   while (isdefined(self) && isdefined(linkee)) {
     self.origin = linkee.origin;
@@ -369,20 +256,11 @@ function fakelinkto(linkee) {
   }
 }
 
-/*
-	Name: player_throw_cymbal_monkey
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0xF094E945
-	Offset: 0x11D8
-	Size: 0x75C
-	Parameters: 4
-	Flags: Linked
-*/
 function player_throw_cymbal_monkey(grenade, num_attractors, max_attract_dist, attract_dist_diff) {
-  self endon(# "disconnect");
-  self endon(# "starting_monkey_watch");
+  self endon("disconnect");
+  self endon("starting_monkey_watch");
   if(isdefined(grenade)) {
-    grenade endon(# "death");
+    grenade endon("death");
     if(self laststand::player_is_in_laststand()) {
       if(isdefined(grenade.damagearea)) {
         grenade.damagearea delete();
@@ -411,7 +289,7 @@ function player_throw_cymbal_monkey(grenade, num_attractors, max_attract_dist, a
     grenade thread watch_for_emp(model, clone);
     info = spawnstruct();
     info.sound_attractors = [];
-    grenade waittill(# "stationary");
+    grenade waittill("stationary");
     if(isdefined(level.grenade_planted)) {
       self thread[[level.grenade_planted]](grenade, model);
     }
@@ -468,15 +346,6 @@ function player_throw_cymbal_monkey(grenade, num_attractors, max_attract_dist, a
   }
 }
 
-/*
-	Name: move_valid_poi_to_navmesh
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x36433E86
-	Offset: 0x1940
-	Size: 0x1EA
-	Parameters: 1
-	Flags: Linked
-*/
 function move_valid_poi_to_navmesh(valid_poi) {
   if(!(isdefined(valid_poi) && valid_poi)) {
     return false;
@@ -501,15 +370,6 @@ function move_valid_poi_to_navmesh(valid_poi) {
   return false;
 }
 
-/*
-	Name: grenade_stolen_by_sam
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x14380CE7
-	Offset: 0x1B38
-	Size: 0x2DC
-	Parameters: 3
-	Flags: Linked
-*/
 function grenade_stolen_by_sam(ent_grenade, ent_model, ent_actor) {
   if(!isdefined(ent_model)) {
     return;
@@ -531,7 +391,7 @@ function grenade_stolen_by_sam(ent_grenade, ent_model, ent_actor) {
   ent_model stopanimscripted();
   ent_model movez(60, 1, 0.25, 0.25);
   ent_model vibrate(direction, 1.5, 2.5, 1);
-  ent_model waittill(# "movedone");
+  ent_model waittill("movedone");
   if(isdefined(self.damagearea)) {
     self.damagearea delete();
   }
@@ -547,15 +407,6 @@ function grenade_stolen_by_sam(ent_grenade, ent_model, ent_actor) {
   }
 }
 
-/*
-	Name: monkey_cleanup
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x6D180FE7
-	Offset: 0x1E20
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_cleanup(parent) {
   while (true) {
     if(!isdefined(parent)) {
@@ -572,17 +423,8 @@ function monkey_cleanup(parent) {
   }
 }
 
-/*
-	Name: pulse_damage
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x6C2ACEDB
-	Offset: 0x1EB8
-	Size: 0x1F0
-	Parameters: 2
-	Flags: Linked
-*/
 function pulse_damage(e_owner, model) {
-  self endon(# "explode");
+  self endon("explode");
   util::wait_network_frame();
   playfxontag(level._effect["monkey_bass"], model, "tag_origin_animate");
   n_damage_origin = self.origin + vectorscale((0, 0, 1), 12);
@@ -602,15 +444,6 @@ function pulse_damage(e_owner, model) {
   }
 }
 
-/*
-	Name: do_monkey_sound
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0xC2ACA60B
-	Offset: 0x20B0
-	Size: 0x2FC
-	Parameters: 2
-	Flags: Linked
-*/
 function do_monkey_sound(model, info) {
   self.monk_scream_vox = 0;
   if(isdefined(level.grenade_safe_to_bounce)) {
@@ -643,8 +476,8 @@ function do_monkey_sound(model, info) {
   if(!self.monk_scream_vox) {
     self thread play_delayed_explode_vox();
   }
-  self waittill(# "explode", position);
-  level notify(# "grenade_exploded", position, 100, 5000, 450);
+  self waittill("explode", position);
+  level notify("grenade_exploded", position, 100, 5000, 450);
   monkey_index = -1;
   for (i = 0; i < level.cymbal_monkeys.size; i++) {
     if(!isdefined(level.cymbal_monkeys[i])) {
@@ -660,20 +493,11 @@ function do_monkey_sound(model, info) {
   }
   for (i = 0; i < info.sound_attractors.size; i++) {
     if(isdefined(info.sound_attractors[i])) {
-      info.sound_attractors[i] notify(# "monkey_blown_up");
+      info.sound_attractors[i] notify("monkey_blown_up");
     }
   }
 }
 
-/*
-	Name: play_delayed_explode_vox
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x6A72ED62
-	Offset: 0x23B8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function play_delayed_explode_vox() {
   wait(6.5);
   if(isdefined(self)) {
@@ -685,20 +509,11 @@ function play_delayed_explode_vox() {
   }
 }
 
-/*
-	Name: get_thrown_monkey
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0xED998CD2
-	Offset: 0x2430
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function get_thrown_monkey() {
-  self endon(# "disconnect");
-  self endon(# "starting_monkey_watch");
+  self endon("disconnect");
+  self endon("starting_monkey_watch");
   while (true) {
-    self waittill(# "grenade_fire", grenade, weapon);
+    self waittill("grenade_fire", grenade, weapon);
     if(weapon == level.weaponzmcymbalmonkey || weapon == level.w_cymbal_monkey_upgraded) {
       grenade.use_grenade_special_long_bookmark = 1;
       grenade.grenade_multiattack_bookmark_count = 1;
@@ -709,17 +524,8 @@ function get_thrown_monkey() {
   }
 }
 
-/*
-	Name: monitor_zombie_groans
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x3A823786
-	Offset: 0x24F0
-	Size: 0x1CC
-	Parameters: 1
-	Flags: None
-*/
 function monitor_zombie_groans(info) {
-  self endon(# "explode");
+  self endon("explode");
   while (true) {
     if(!isdefined(self)) {
       return;
@@ -747,18 +553,9 @@ function monitor_zombie_groans(info) {
   }
 }
 
-/*
-	Name: play_zombie_groans
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0x301A4DBF
-	Offset: 0x26C8
-	Size: 0x66
-	Parameters: 0
-	Flags: Linked
-*/
 function play_zombie_groans() {
-  self endon(# "death");
-  self endon(# "monkey_blown_up");
+  self endon("death");
+  self endon("monkey_blown_up");
   while (true) {
     if(isdefined(self)) {
       self playsound("zmb_vox_zombie_groan");
@@ -769,15 +566,6 @@ function play_zombie_groans() {
   }
 }
 
-/*
-	Name: cymbal_monkey_exists
-	Namespace: _zm_weap_cymbal_monkey
-	Checksum: 0xBC6E85E5
-	Offset: 0x2738
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function cymbal_monkey_exists(w_weapon) {
   return zm_weapons::is_weapon_included(w_weapon);
 }

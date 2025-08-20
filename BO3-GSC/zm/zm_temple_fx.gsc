@@ -1,18 +1,12 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_temple_fx.gsc
+*************************************************/
+
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_temple_fx;
 
-/*
-	Name: main
-	Namespace: zm_temple_fx
-	Checksum: 0xE67DD354
-	Offset: 0x1D48
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_util_fx();
   precache_scripted_fx();
@@ -22,15 +16,6 @@ function main() {
   level thread fx_overrides();
 }
 
-/*
-	Name: precache_util_fx
-	Namespace: zm_temple_fx
-	Checksum: 0xDE8E0824
-	Offset: 0x1DC8
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_util_fx() {
   level._effect["animscript_gib_fx"] = "dlc5/zmhd/fx_flesh_gib_fatal_01";
   level._effect["fx_trail_blood_streak"] = "trail/fx_trail_blood_streak";
@@ -40,15 +25,6 @@ function precache_util_fx() {
   level._effect["large_ceiling_dust"] = "dlc5/zmhd/fx_dust_ceiling_impact_lg_mdbrown";
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_temple_fx
-	Checksum: 0xBA506AEF
-	Offset: 0x1E80
-	Size: 0x26A
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["switch_sparks"] = "dlc5/zmhd/fx_elec_wire_spark_burst";
   level._effect["trap_light_ready"] = "misc/fx_zombie_zapper_light_green";
@@ -74,30 +50,12 @@ function precache_scripted_fx() {
   level._effect["corpse_gib"] = "dlc5/zmhd/fx_zombie_dog_explosion";
 }
 
-/*
-	Name: reset_water_burst_fx
-	Namespace: zm_temple_fx
-	Checksum: 0x542D3BF
-	Offset: 0x20F8
-	Size: 0x42
-	Parameters: 0
-	Flags: Linked
-*/
 function reset_water_burst_fx() {
   wait(2);
   level._effect["rise_burst_water"] = "maps/zombie/fx_mp_zombie_hand_water_burst";
   level._effect["rise_billow_water"] = "maps/zombie/fx_mp_zombie_body_water_billowing";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_temple_fx
-	Checksum: 0x867CD091
-	Offset: 0x2148
-	Size: 0x94E
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {
   level._effect["fx_water_temple_geyser_ready"] = "env/water/fx_water_temple_geyser_ready";
   level._effect["fx_fire_md"] = "env/fire/fx_fire_md";
@@ -186,29 +144,11 @@ function precache_createfx_fx() {
   level._effect["rise_dust_water"] = "maps/zombie/fx_zombie_body_wtr_falling";
 }
 
-/*
-	Name: precache_creek_fx
-	Namespace: zm_temple_fx
-	Checksum: 0xDC6B7C6C
-	Offset: 0x2AA0
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_creek_fx() {
   level._effect["fx_insect_swarm_lg"] = "maps/creek/fx_insect_swarm_lg";
   level._effect["fx_ztem_smoke_thick_indoor"] = "maps/zombie_temple/fx_ztem_smoke_thick_indoor";
 }
 
-/*
-	Name: fx_overrides
-	Namespace: zm_temple_fx
-	Checksum: 0x75D86964
-	Offset: 0x2AE8
-	Size: 0x102
-	Parameters: 0
-	Flags: Linked
-*/
 function fx_overrides() {
   level flagsys::wait_till("load_main_complete");
   level._effect["jugger_light"] = "dlc5/zmhd/fx_perk_juggernaut";

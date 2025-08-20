@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_teamops.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -8,39 +12,18 @@
 #using scripts\shared\sound_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace teamops;
 
-/*
-	Name: getteamopstableid
-	Namespace: teamops
-	Checksum: 0x8D9382D6
-	Offset: 0x290
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function getteamopstableid() {
   teamopsinfotableloaded = 0;
   teamopsinfotableid = tablelookupfindcoreasset("gamedata/tables/mp/teamops.csv");
   if(isdefined(teamopsinfotableid)) {
     teamopsinfotableloaded = 1;
   }
-  /#
   assert(teamopsinfotableloaded, "" + "");
-  # /
-    return teamopsinfotableid;
+  return teamopsinfotableid;
 }
 
-/*
-	Name: init
-	Namespace: teamops
-	Checksum: 0x3A383364
-	Offset: 0x318
-	Size: 0x47C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   game["teamops"] = spawnstruct();
   game["teamops"].data = [];
@@ -51,13 +34,11 @@ function init() {
   }
   level.teamopsonprocessplayerevent = & processplayerevent;
   tableid = getteamopstableid();
-  /#
   assert(isdefined(tableid));
-  # /
-    if(!isdefined(tableid)) {
-      game["teamops"].teamopsinitialed = 0;
-      return;
-    }
+  if(!isdefined(tableid)) {
+    game["teamops"].teamopsinitialed = 0;
+    return;
+  }
   for (row = 1; row < 256; row++) {
     name = tablelookupcolumnforrow(tableid, row, 0);
     if(name != "") {
@@ -75,15 +56,6 @@ function init() {
   game["teamops"].teamopsinitialized = 1;
 }
 
-/*
-	Name: getid
-	Namespace: teamops
-	Checksum: 0x3EA0880F
-	Offset: 0x7A0
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked
-*/
 function getid(name) {
   tableid = getteamopstableid();
   for (row = 1; row < 256; row++) {
@@ -95,15 +67,6 @@ function getid(name) {
   return 0;
 }
 
-/*
-	Name: teamopsallowed
-	Namespace: teamops
-	Checksum: 0xFEEFF9D9
-	Offset: 0x838
-	Size: 0xA6
-	Parameters: 1
-	Flags: Linked
-*/
 function teamopsallowed(name) {
   teamops = game["teamops"].data[name];
   if(teamops.modes.size == 0) {
@@ -117,17 +80,8 @@ function teamopsallowed(name) {
   return false;
 }
 
-/*
-	Name: startteamops
-	Namespace: teamops
-	Checksum: 0xE7E88403
-	Offset: 0x8E8
-	Size: 0x3BC
-	Parameters: 1
-	Flags: Linked
-*/
 function startteamops(name) {
-  level notify(# "teamops_starting");
+  level notify("teamops_starting");
   level.teamopsonplayerkilled = undefined;
   if(!teamopsallowed(name)) {
     return;
@@ -162,15 +116,6 @@ function startteamops(name) {
   level thread teamopswatcher();
 }
 
-/*
-	Name: teamopswatcher
-	Namespace: teamops
-	Checksum: 0x7076C147
-	Offset: 0xCB0
-	Size: 0x158
-	Parameters: 0
-	Flags: Linked
-*/
 function teamopswatcher() {
   while (isdefined(game["teamops"].teamopsname)) {
     time = game["teamops"].data[game["teamops"].teamopsname].time;
@@ -187,15 +132,6 @@ function teamopswatcher() {
   }
 }
 
-/*
-	Name: stopteamops
-	Namespace: teamops
-	Checksum: 0x5A380DC
-	Offset: 0xE10
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function stopteamops() {
   teamopsshowhud(0);
   game["teamops"].teamopsname = undefined;
@@ -206,15 +142,6 @@ function stopteamops() {
   }
 }
 
-/*
-	Name: processplayerevent
-	Namespace: teamops
-	Checksum: 0x4E480130
-	Offset: 0xF00
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function processplayerevent(event, player) {
   teamopsname = game["teamops"].teamopsname;
   if(isplayer(player) && isdefined(teamopsname)) {
@@ -222,15 +149,6 @@ function processplayerevent(event, player) {
   }
 }
 
-/*
-	Name: processteamevent
-	Namespace: teamops
-	Checksum: 0x42BB0005
-	Offset: 0xF90
-	Size: 0x214
-	Parameters: 3
-	Flags: Linked
-*/
 function processteamevent(event, player, team) {
   teamopsname = game["teamops"].teamopsname;
   teamops = game["teamops"].data[teamopsname];
@@ -251,15 +169,6 @@ function processteamevent(event, player, team) {
   }
 }
 
-/*
-	Name: updateteamops
-	Namespace: teamops
-	Checksum: 0x48CD8F19
-	Offset: 0x11B0
-	Size: 0x12C
-	Parameters: 3
-	Flags: Linked
-*/
 function updateteamops(event, player, team) {
   teamopsname = game["teamops"].teamopsname;
   teamops = game["teamops"].data[teamopsname];
@@ -273,15 +182,6 @@ function updateteamops(event, player, team) {
   }
 }
 
-/*
-	Name: teamopsacheived
-	Namespace: teamops
-	Checksum: 0x387FC9F5
-	Offset: 0x12E8
-	Size: 0xE4
-	Parameters: 2
-	Flags: Linked
-*/
 function teamopsacheived(player, team) {
   game["teamops"].teamopsname = undefined;
   wait(0.5);
@@ -294,15 +194,6 @@ function teamopsacheived(player, team) {
   player killstreaks::usekillstreak(game["teamops"].teamopsreward, 1);
 }
 
-/*
-	Name: main
-	Namespace: teamops
-	Checksum: 0x70B72ADE
-	Offset: 0x13D8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   thread watchteamopstime();
   level.teamopstargetkills = getdvarint("teamOpsKillsCountTrigger_" + level.gametype, 37);
@@ -311,15 +202,6 @@ function main() {
   }
 }
 
-/*
-	Name: getcompatibleoperation
-	Namespace: teamops
-	Checksum: 0x8EBD6507
-	Offset: 0x1450
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function getcompatibleoperation() {
   operations = strtok(getdvarstring("teamOpsName"), ",");
   for (i = 0; i < 20; i++) {
@@ -337,19 +219,10 @@ function getcompatibleoperation() {
   return undefined;
 }
 
-/*
-	Name: watchteamopstime
-	Namespace: teamops
-	Checksum: 0x577855D9
-	Offset: 0x1560
-	Size: 0x162
-	Parameters: 0
-	Flags: Linked
-*/
 function watchteamopstime() {
-  level endon(# "teamops_starting");
+  level endon("teamops_starting");
   if(isdefined(level.inprematchperiod) && level.inprematchperiod) {
-    level waittill(# "prematch_over");
+    level waittill("prematch_over");
   }
   activeteamops = getcompatibleoperation();
   if(!isdefined(activeteamops)) {
@@ -373,17 +246,8 @@ function watchteamopstime() {
   }
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: teamops
-	Checksum: 0xB32ABD91
-	Offset: 0x16D0
-	Size: 0x15C
-	Parameters: 9
-	Flags: Linked
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
-  level endon(# "teamops_starting");
+  level endon("teamops_starting");
   if(isplayer(attacker) == 0 || attacker.team == self.team) {
     return;
   }

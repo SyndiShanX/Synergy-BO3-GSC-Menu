@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_challenges.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_loadout;
@@ -13,31 +17,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapon_utils;
-
 #namespace challenges;
 
-/*
-	Name: __init__sytem__
-	Namespace: challenges
-	Checksum: 0xB294ABC0
-	Offset: 0x1580
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("challenges", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: challenges
-	Checksum: 0x6ECF4F5A
-	Offset: 0x15C0
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & start_gametype);
   callback::on_spawned( & on_player_spawn);
@@ -46,15 +31,6 @@ function __init__() {
   level.capturedobjectivefunction = & capturedobjectivefunction;
 }
 
-/*
-	Name: start_gametype
-	Namespace: challenges
-	Checksum: 0x46577074
-	Offset: 0x1658
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function start_gametype() {
   if(!isdefined(level.challengescallbacks)) {
     level.challengescallbacks = [];
@@ -70,15 +46,6 @@ function start_gametype() {
   callback::on_connect( & on_player_connect);
 }
 
-/*
-	Name: on_player_connect
-	Namespace: challenges
-	Checksum: 0x455C871F
-	Offset: 0x1730
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   initchallengedata();
   self addspecialistusedstatonconnect();
@@ -87,15 +54,6 @@ function on_player_connect() {
   self thread monitorgrenadefire();
 }
 
-/*
-	Name: initchallengedata
-	Namespace: challenges
-	Checksum: 0x63A30897
-	Offset: 0x17B0
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function initchallengedata() {
   self.pers["bulletStreak"] = 0;
   self.pers["lastBulletKillTime"] = 0;
@@ -109,15 +67,6 @@ function initchallengedata() {
   self.pers["activeKillstreaks"] = [];
 }
 
-/*
-	Name: addspecialistusedstatonconnect
-	Namespace: challenges
-	Checksum: 0xD62A0C08
-	Offset: 0x18A0
-	Size: 0xF2
-	Parameters: 0
-	Flags: Linked
-*/
 function addspecialistusedstatonconnect() {
   if(!isdefined(self.pers["challenge_heroweaponkills"])) {
     heroweaponname = self getloadoutitemref(0, "heroWeapon");
@@ -133,17 +82,8 @@ function addspecialistusedstatonconnect() {
   }
 }
 
-/*
-	Name: spawnwatcher
-	Namespace: challenges
-	Checksum: 0xF1CDDD98
-	Offset: 0x19A0
-	Size: 0x218
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnwatcher() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.pers["killNemesis"] = 0;
   self.pers["killsFastMagExt"] = 0;
   self.pers["longshotsPerLife"] = 0;
@@ -162,7 +102,7 @@ function spawnwatcher() {
   self.challenge_lastsurvivewithflakfrom = undefined;
   self.explosiveinfo = [];
   for (;;) {
-    self waittill(# "spawned_player");
+    self waittill("spawned_player");
     self.weaponkillsthisspawn = [];
     self.attachmentkillsthisspawn = [];
     self.challenge_hatchettosscount = 0;
@@ -181,37 +121,19 @@ function spawnwatcher() {
   }
 }
 
-/*
-	Name: watchscavengelethal
-	Namespace: challenges
-	Checksum: 0xC01921DE
-	Offset: 0x1BC0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function watchscavengelethal() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.challenge_scavengedcount = 0;
   for (;;) {
-    self waittill(# "scavenged_primary_grenade");
+    self waittill("scavenged_primary_grenade");
     self.challenge_scavengedcount++;
   }
 }
 
-/*
-	Name: watchdoublejump
-	Namespace: challenges
-	Checksum: 0x70D6DE95
-	Offset: 0x1C08
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function watchdoublejump() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.challenge_doublejump_begin = 0;
   self.challenge_doublejump_end = 0;
   for (;;) {
@@ -229,18 +151,9 @@ function watchdoublejump() {
   }
 }
 
-/*
-	Name: watchjump
-	Namespace: challenges
-	Checksum: 0x9FE93FD1
-	Offset: 0x1CC0
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function watchjump() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.challenge_jump_begin = 0;
   self.challenge_jump_end = 0;
   for (;;) {
@@ -258,18 +171,9 @@ function watchjump() {
   }
 }
 
-/*
-	Name: watchswimming
-	Namespace: challenges
-	Checksum: 0xF7C06195
-	Offset: 0x1D78
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function watchswimming() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.challenge_swimming_begin = 0;
   self.challenge_swimming_end = 0;
   for (;;) {
@@ -287,18 +191,9 @@ function watchswimming() {
   }
 }
 
-/*
-	Name: watchwallrun
-	Namespace: challenges
-	Checksum: 0xB31CC6C
-	Offset: 0x1E30
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function watchwallrun() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.challenge_wallrun_begin = 0;
   self.challenge_wallrun_end = 0;
   for (;;) {
@@ -316,18 +211,9 @@ function watchwallrun() {
   }
 }
 
-/*
-	Name: watchslide
-	Namespace: challenges
-	Checksum: 0x9BEBDE7B
-	Offset: 0x1EE8
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function watchslide() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.challenge_slide_begin = 0;
   self.challenge_slide_end = 0;
   for (;;) {
@@ -345,18 +231,9 @@ function watchslide() {
   }
 }
 
-/*
-	Name: watchsprint
-	Namespace: challenges
-	Checksum: 0x3F95195B
-	Offset: 0x1FA0
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function watchsprint() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.challenge_sprint_begin = 0;
   self.challenge_sprint_end = 0;
   for (;;) {
@@ -374,15 +251,6 @@ function watchsprint() {
   }
 }
 
-/*
-	Name: challengekills
-	Namespace: challenges
-	Checksum: 0x352C9D1B
-	Offset: 0x2058
-	Size: 0x37AC
-	Parameters: 1
-	Flags: Linked
-*/
 function challengekills(data) {
   victim = data.victim;
   attacker = data.attacker;
@@ -1060,70 +928,25 @@ function challengekills(data) {
   }
 }
 
-/*
-	Name: on_player_spawn
-	Namespace: challenges
-	Checksum: 0x7DACB297
-	Offset: 0x5810
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawn() {
   if(canprocesschallenges()) {
     self fix_challenge_stats_on_spawn();
   }
 }
 
-/*
-	Name: get_challenge_stat
-	Namespace: challenges
-	Checksum: 0x2D265EE8
-	Offset: 0x5848
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function get_challenge_stat(stat_name) {
   return self getdstat("playerstatslist", stat_name, "challengevalue");
 }
 
-/*
-	Name: force_challenge_stat
-	Namespace: challenges
-	Checksum: 0x7381D41D
-	Offset: 0x5888
-	Size: 0x74
-	Parameters: 2
-	Flags: Linked
-*/
 function force_challenge_stat(stat_name, stat_value) {
   self setdstat("playerstatslist", stat_name, "statvalue", stat_value);
   self setdstat("playerstatslist", stat_name, "challengevalue", stat_value);
 }
 
-/*
-	Name: get_challenge_group_stat
-	Namespace: challenges
-	Checksum: 0x121F5208
-	Offset: 0x5908
-	Size: 0x4A
-	Parameters: 2
-	Flags: Linked
-*/
 function get_challenge_group_stat(group_name, stat_name) {
   return self getdstat("groupstats", group_name, "stats", stat_name, "challengevalue");
 }
 
-/*
-	Name: fix_challenge_stats_on_spawn
-	Namespace: challenges
-	Checksum: 0x19B34AB9
-	Offset: 0x5960
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked
-*/
 function fix_challenge_stats_on_spawn() {
   player = self;
   if(!isdefined(player)) {
@@ -1141,15 +964,6 @@ function fix_challenge_stats_on_spawn() {
   player.fix_challenge_stats_performed = 1;
 }
 
-/*
-	Name: fix_tu6_weapon_for_diamond
-	Namespace: challenges
-	Checksum: 0xF48BEBA3
-	Offset: 0x5A58
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function fix_tu6_weapon_for_diamond(stat_name) {
   player = self;
   wepaon_for_diamond = player get_challenge_stat(stat_name);
@@ -1163,15 +977,6 @@ function fix_tu6_weapon_for_diamond(stat_name) {
   }
 }
 
-/*
-	Name: fix_tu6_ar_garand
-	Namespace: challenges
-	Checksum: 0x3C661325
-	Offset: 0x5B28
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function fix_tu6_ar_garand() {
   player = self;
   group_weapon_assault = player get_challenge_group_stat("weapon_assault", "challenges");
@@ -1182,15 +987,6 @@ function fix_tu6_ar_garand() {
   }
 }
 
-/*
-	Name: fix_tu6_pistol_shotgun
-	Namespace: challenges
-	Checksum: 0x9F93F500
-	Offset: 0x5C00
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function fix_tu6_pistol_shotgun() {
   player = self;
   group_weapon_pistol = player get_challenge_group_stat("weapon_pistol", "challenges");
@@ -1201,55 +997,19 @@ function fix_tu6_pistol_shotgun() {
   }
 }
 
-/*
-	Name: completed_specific_challenge
-	Namespace: challenges
-	Checksum: 0xB118AB6B
-	Offset: 0x5CD8
-	Size: 0x42
-	Parameters: 2
-	Flags: Linked
-*/
 function completed_specific_challenge(target_value, challenge_name) {
   challenge_count = self get_challenge_stat(challenge_name);
   return challenge_count >= target_value;
 }
 
-/*
-	Name: tally_completed_challenge
-	Namespace: challenges
-	Checksum: 0x6F3A227B
-	Offset: 0x5D28
-	Size: 0x40
-	Parameters: 2
-	Flags: Linked
-*/
 function tally_completed_challenge(target_value, challenge_name) {
   return true;
 }
 
-/*
-	Name: tu7_fix_100_percenter
-	Namespace: challenges
-	Checksum: 0xA7DA23A8
-	Offset: 0x5D70
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function tu7_fix_100_percenter() {
   self tu7_fix_mastery_perk_2();
 }
 
-/*
-	Name: tu7_fix_mastery_perk_2
-	Namespace: challenges
-	Checksum: 0x6FE9208F
-	Offset: 0x5D98
-	Size: 0x27C
-	Parameters: 0
-	Flags: Linked
-*/
 function tu7_fix_mastery_perk_2() {
   player = self;
   mastery_perk_2 = player get_challenge_stat("mastery_perk_2");
@@ -1276,33 +1036,13 @@ function tu7_fix_mastery_perk_2() {
   }
 }
 
-/*
-	Name: getbaseweapon
-	Namespace: challenges
-	Checksum: 0x18F0A014
-	Offset: 0x6020
-	Size: 0xBA
-	Parameters: 1
-	Flags: Linked
-*/
 function getbaseweapon(weapon) {
-  base_weapon_param = [
-    [level.get_base_weapon_param]
-  ](weapon);
+  base_weapon_param = [[level.get_base_weapon_param]](weapon);
   base_weapon_param_name = str_strip_lh_or_dw(base_weapon_param.name);
   base_weapon_param_name = str_strip_lh_from_crossbow(base_weapon_param_name);
   return getweapon(getreffromitemindex(getbaseweaponitemindex(getweapon(base_weapon_param_name))));
 }
 
-/*
-	Name: str_strip_lh_from_crossbow
-	Namespace: challenges
-	Checksum: 0xBED5F390
-	Offset: 0x60E8
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function str_strip_lh_from_crossbow(str) {
   if(strendswith(str, "crossbowlh")) {
     return getsubstr(str, 0, str.size - 2);
@@ -1310,15 +1050,6 @@ function str_strip_lh_from_crossbow(str) {
   return str;
 }
 
-/*
-	Name: str_strip_lh_or_dw
-	Namespace: challenges
-	Checksum: 0xE54BB5DC
-	Offset: 0x6148
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function str_strip_lh_or_dw(str) {
   if(strendswith(str, "_lh") || strendswith(str, "_dw")) {
     return getsubstr(str, 0, str.size - 3);
@@ -1326,15 +1057,6 @@ function str_strip_lh_or_dw(str) {
   return str;
 }
 
-/*
-	Name: checkkillstreak5
-	Namespace: challenges
-	Checksum: 0x71C83174
-	Offset: 0x61C8
-	Size: 0xA2
-	Parameters: 2
-	Flags: Linked
-*/
 function checkkillstreak5(baseweapon, player) {
   if(isdefined(player.weaponkillsthisspawn[baseweapon])) {
     player.weaponkillsthisspawn[baseweapon]++;
@@ -1346,15 +1068,6 @@ function checkkillstreak5(baseweapon, player) {
   }
 }
 
-/*
-	Name: checkdualwield
-	Namespace: challenges
-	Checksum: 0x6FCD8DA6
-	Offset: 0x6278
-	Size: 0x84
-	Parameters: 6
-	Flags: Linked
-*/
 function checkdualwield(baseweapon, player, attacker, time, attackerwassprinting, attacker_sprint_end) {
   if(attackerwassprinting || (attacker_sprint_end + 1000) > time) {
     if(attacker util::has_gung_ho_perk_purchased_and_equipped()) {
@@ -1363,15 +1076,6 @@ function checkdualwield(baseweapon, player, attacker, time, attackerwassprinting
   }
 }
 
-/*
-	Name: challengegameendmp
-	Namespace: challenges
-	Checksum: 0x25A3929D
-	Offset: 0x6308
-	Size: 0x264
-	Parameters: 1
-	Flags: Linked
-*/
 function challengegameendmp(data) {
   player = data.player;
   winner = data.winner;
@@ -1406,17 +1110,8 @@ function challengegameendmp(data) {
   }
 }
 
-/*
-	Name: killedbaseoffender
-	Namespace: challenges
-	Checksum: 0x99901F21
-	Offset: 0x6578
-	Size: 0x300
-	Parameters: 2
-	Flags: Linked
-*/
 function killedbaseoffender(objective, weapon) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self addplayerstatwithgametype("defends", 1);
   self.challenge_offenderkillcount++;
   if(!isdefined(self.challenge_objectiveoffensive) || self.challenge_objectiveoffensive != objective) {
@@ -1477,17 +1172,8 @@ function killedbaseoffender(objective, weapon) {
   self.challenge_offenderprojectilemultikillcount = 0;
 }
 
-/*
-	Name: killedbasedefender
-	Namespace: challenges
-	Checksum: 0x758C450E
-	Offset: 0x6880
-	Size: 0xF8
-	Parameters: 1
-	Flags: Linked
-*/
 function killedbasedefender(objective) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self addplayerstatwithgametype("offends", 1);
   if(!isdefined(self.challenge_objectivedefensive) || self.challenge_objectivedefensive != objective) {
     self.challenge_objectivedefensivekillcount = 0;
@@ -1503,44 +1189,17 @@ function killedbasedefender(objective) {
   self.challenge_defenderkillcount = 0;
 }
 
-/*
-	Name: waittilltimeoutordeath
-	Namespace: challenges
-	Checksum: 0xEE2CA000
-	Offset: 0x6980
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function waittilltimeoutordeath(timeout) {
-  self endon(# "death");
+  self endon("death");
   wait(timeout);
 }
 
-/*
-	Name: killstreak_30_noscorestreaks
-	Namespace: challenges
-	Checksum: 0x3BB76455
-	Offset: 0x69A8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function killstreak_30_noscorestreaks() {
   if(level.gametype == "dm") {
     self addplayerstat("killstreak_30_no_scorestreaks", 1);
   }
 }
 
-/*
-	Name: heroabilityactivateneardeath
-	Namespace: challenges
-	Checksum: 0xCEEE2665
-	Offset: 0x69F0
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function heroabilityactivateneardeath() {
   if(isdefined(self.heroability) && self.pers["canSetSpecialistStat"]) {
     switch (self.heroability.name) {
@@ -1558,31 +1217,13 @@ function heroabilityactivateneardeath() {
   }
 }
 
-/*
-	Name: checkforherosurvival
-	Namespace: challenges
-	Checksum: 0x4832B424
-	Offset: 0x6A88
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function checkforherosurvival() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self util::waittill_any_timeout(8, "challenge_survived_from_death", "disconnect");
   self addplayerstat("death_dodger", 1);
 }
 
-/*
-	Name: callbackendherospecialistemp
-	Namespace: challenges
-	Checksum: 0x5DB3264
-	Offset: 0x6AF8
-	Size: 0xDE
-	Parameters: 0
-	Flags: Linked
-*/
 function callbackendherospecialistemp() {
   empowner = self emp::enemyempowner();
   if(isdefined(empowner) && isplayer(empowner)) {
@@ -1597,43 +1238,16 @@ function callbackendherospecialistemp() {
   }
 }
 
-/*
-	Name: calledincomlinkchopper
-	Namespace: challenges
-	Checksum: 0xC5F696BF
-	Offset: 0x6BE0
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function calledincomlinkchopper() {
   self.challenge_offendercomlinkkillcount = 0;
 }
 
-/*
-	Name: combat_robot_damage
-	Namespace: challenges
-	Checksum: 0xE0C1A882
-	Offset: 0x6BF8
-	Size: 0x66
-	Parameters: 2
-	Flags: Linked
-*/
 function combat_robot_damage(eattacker, combatrobotowner) {
   if(!isdefined(eattacker.challenge_combatrobotattackclientid[combatrobotowner.clientid])) {
     eattacker.challenge_combatrobotattackclientid[combatrobotowner.clientid] = spawnstruct();
   }
 }
 
-/*
-	Name: trackkillstreaksupportkills
-	Namespace: challenges
-	Checksum: 0xA4E41562
-	Offset: 0x6C68
-	Size: 0x1C4
-	Parameters: 1
-	Flags: Linked
-*/
 function trackkillstreaksupportkills(victim) {
   if(level.activeplayeremps[self.entnum] > 0) {
     self addweaponstat(getweapon("emp"), "kills_while_active", 1);
@@ -1652,20 +1266,11 @@ function trackkillstreaksupportkills(victim) {
   }
 }
 
-/*
-	Name: monitorreloads
-	Namespace: challenges
-	Checksum: 0xF92E150
-	Offset: 0x6E38
-	Size: 0xB0
-	Parameters: 0
-	Flags: Linked
-*/
 function monitorreloads() {
-  self endon(# "disconnect");
-  self endon(# "killmonitorreloads");
+  self endon("disconnect");
+  self endon("killmonitorreloads");
   while (true) {
-    self waittill(# "reload");
+    self waittill("reload");
     currentweapon = self getcurrentweapon();
     if(currentweapon == level.weaponnone) {
       continue;
@@ -1678,21 +1283,12 @@ function monitorreloads() {
   }
 }
 
-/*
-	Name: monitorgrenadefire
-	Namespace: challenges
-	Checksum: 0x7D4DCC56
-	Offset: 0x6EF0
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function monitorgrenadefire() {
-  self notify(# "grenadetrackingstart");
-  self endon(# "grenadetrackingstart");
-  self endon(# "disconnect");
+  self notify("grenadetrackingstart");
+  self endon("grenadetrackingstart");
+  self endon("disconnect");
   for (;;) {
-    self waittill(# "grenade_fire", grenade, weapon);
+    self waittill("grenade_fire", grenade, weapon);
     if(!isdefined(grenade)) {
       continue;
     }
@@ -1706,35 +1302,17 @@ function monitorgrenadefire() {
   }
 }
 
-/*
-	Name: watchweaponchangecomplete
-	Namespace: challenges
-	Checksum: 0xA3BD7DD6
-	Offset: 0x6FC8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function watchweaponchangecomplete() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "joined_team");
-  self endon(# "joined_spectators");
+  self endon("death");
+  self endon("disconnect");
+  self endon("joined_team");
+  self endon("joined_spectators");
   while (true) {
     self.heroweaponkillsthisactivation = 0;
-    self waittill(# "weapon_change_complete");
+    self waittill("weapon_change_complete");
   }
 }
 
-/*
-	Name: longdistancekillmp
-	Namespace: challenges
-	Checksum: 0x22C41A53
-	Offset: 0x7028
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function longdistancekillmp(weapon) {
   self addweaponstat(weapon, "longshot_kill", 1);
   if(self weaponhasattachmentandunlocked(weapon, "extbarrel", "suppressed")) {
@@ -1744,48 +1322,30 @@ function longdistancekillmp(weapon) {
   }
 }
 
-/*
-	Name: capturedobjectivefunction
-	Namespace: challenges
-	Checksum: 0x66C97C71
-	Offset: 0x70D8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function capturedobjectivefunction() {
   if(self isbonuscardactive(9, self.class_num) && self util::is_item_purchased("bonuscard_two_tacticals")) {
     self addplayerstat("capture_objective_tactician", 1);
   }
 }
 
-/*
-	Name: watchwallruntwooppositewallsnoground
-	Namespace: challenges
-	Checksum: 0x57EEE850
-	Offset: 0x7148
-	Size: 0x250
-	Parameters: 0
-	Flags: Linked
-*/
 function watchwallruntwooppositewallsnoground() {
   player = self;
-  player endon(# "death");
-  player endon(# "disconnect");
-  player endon(# "joined_team");
-  player endon(# "joined_spectators");
+  player endon("death");
+  player endon("disconnect");
+  player endon("joined_team");
+  player endon("joined_spectators");
   self.wallrantwooppositewallsnoground = 0;
   while (true) {
     if(!player iswallrunning()) {
       self.wallrantwooppositewallsnoground = 0;
-      player waittill(# "wallrun_begin");
+      player waittill("wallrun_begin");
     }
     ret = player util::waittill_any_return("jump_begin", "wallrun_end", "disconnect", "joined_team", "joined_spectators");
     if(ret == "wallrun_end") {
       continue;
     }
     wall_normal = player getwallrunwallnormal();
-    player waittill(# "jump_end");
+    player waittill("jump_end");
     if(!player iswallrunning()) {
       continue;
     }
@@ -1809,30 +1369,12 @@ function watchwallruntwooppositewallsnoground() {
   }
 }
 
-/*
-	Name: processspecialistchallenge
-	Namespace: challenges
-	Checksum: 0x3860B749
-	Offset: 0x73A0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function processspecialistchallenge(statname) {
   if(self.pers["canSetSpecialistStat"]) {
     self addspecialiststat(statname, 1);
   }
 }
 
-/*
-	Name: flakjacketprotectedmp
-	Namespace: challenges
-	Checksum: 0xED3DA4E0
-	Offset: 0x73E8
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function flakjacketprotectedmp(weapon, attacker) {
   if(weapon.name == "claymore") {
     self.flakjacketclaymore[attacker.clientid] = 1;

@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\koth.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_shoutcaster;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\util_shared;
-
 #namespace koth;
 
-/*
-	Name: main
-	Namespace: koth
-	Checksum: 0x334AB77D
-	Offset: 0x2F0
-	Size: 0x2AC
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   level.current_zone = [];
   level.current_state = [];
@@ -42,15 +36,6 @@ function main() {
   level._effect["zoneEdgeMarkerWndw"][3] = "ui/fx_koth_marker_contested_window";
 }
 
-/*
-	Name: get_shoutcaster_fx
-	Namespace: koth
-	Checksum: 0xAB465E27
-	Offset: 0x5A8
-	Size: 0x288
-	Parameters: 1
-	Flags: None
-*/
 function get_shoutcaster_fx(local_client_num) {
   effects = [];
   effects["zoneEdgeMarker"][0] = level._effect["zoneEdgeMarker"][0];
@@ -74,15 +59,6 @@ function get_shoutcaster_fx(local_client_num) {
   return effects;
 }
 
-/*
-	Name: get_fx_state
-	Namespace: koth
-	Checksum: 0xF2B196B7
-	Offset: 0x838
-	Size: 0xAA
-	Parameters: 3
-	Flags: None
-*/
 function get_fx_state(local_client_num, state, is_shoutcaster) {
   if(is_shoutcaster) {
     return state;
@@ -102,28 +78,10 @@ function get_fx_state(local_client_num, state, is_shoutcaster) {
   return state;
 }
 
-/*
-	Name: get_fx
-	Namespace: koth
-	Checksum: 0xF87151C9
-	Offset: 0x8F0
-	Size: 0x2C
-	Parameters: 3
-	Flags: None
-*/
 function get_fx(fx_name, fx_state, effects) {
   return effects[fx_name][fx_state];
 }
 
-/*
-	Name: setup_hardpoint_fx
-	Namespace: koth
-	Checksum: 0x2AA1351
-	Offset: 0x928
-	Size: 0x3C4
-	Parameters: 3
-	Flags: None
-*/
 function setup_hardpoint_fx(local_client_num, zone_index, state) {
   effects = [];
   if(shoutcaster::is_shoutcaster_using_team_identity(local_client_num)) {
@@ -170,15 +128,6 @@ function setup_hardpoint_fx(local_client_num, zone_index, state) {
   thread watch_for_team_change(local_client_num);
 }
 
-/*
-	Name: hardpoint
-	Namespace: koth
-	Checksum: 0xC67818F0
-	Offset: 0xCF8
-	Size: 0x1FC
-	Parameters: 7
-	Flags: None
-*/
 function hardpoint(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(level.hardpoints.size == 0) {
     hardpoints = struct::get_array("koth_zone_center", "targetname");
@@ -194,15 +143,6 @@ function hardpoint(localclientnum, oldval, newval, bnewent, binitialsnap, fieldn
   setup_hardpoint_fx(localclientnum, level.current_zone[localclientnum], level.current_state[localclientnum]);
 }
 
-/*
-	Name: hardpoint_state
-	Namespace: koth
-	Checksum: 0xE3518DFB
-	Offset: 0xF00
-	Size: 0x94
-	Parameters: 7
-	Flags: None
-*/
 function hardpoint_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval != level.current_state[localclientnum]) {
     level.current_state[localclientnum] = newval;
@@ -210,19 +150,10 @@ function hardpoint_state(localclientnum, oldval, newval, bnewent, binitialsnap, 
   }
 }
 
-/*
-	Name: watch_for_team_change
-	Namespace: koth
-	Checksum: 0x7B9C241
-	Offset: 0xFA0
-	Size: 0x6C
-	Parameters: 1
-	Flags: None
-*/
 function watch_for_team_change(localclientnum) {
-  level notify(# "end_team_change_watch");
-  level endon(# "end_team_change_watch");
-  level waittill(# "team_changed");
+  level notify("end_team_change_watch");
+  level endon("end_team_change_watch");
+  level waittill("team_changed");
   wait(0.05);
   thread setup_hardpoint_fx(localclientnum, level.current_zone[localclientnum], level.current_state[localclientnum]);
 }

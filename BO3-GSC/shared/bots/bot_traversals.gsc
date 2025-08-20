@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\bots\bot_traversals.gsc
+*************************************************/
+
 #using scripts\shared\array_shared;
 #using scripts\shared\bots\_bot;
 #using scripts\shared\bots\bot_buttons;
@@ -8,18 +12,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapons;
 #using scripts\shared\weapons_shared;
-
 #namespace bot;
 
-/*
-	Name: callback_botentereduseredge
-	Namespace: bot
-	Checksum: 0xC0FA4637
-	Offset: 0x1E8
-	Size: 0x2E4
-	Parameters: 2
-	Flags: Linked
-*/
 function callback_botentereduseredge(startnode, endnode) {
   zdelta = endnode.origin[2] - startnode.origin[2];
   xydist = distance2d(startnode.origin, endnode.origin);
@@ -45,9 +39,7 @@ function callback_botentereduseredge(startnode, endnode) {
             self thread jump_down_traversal(startnode, endnode);
           } else {
             self botreleasemanualcontrol();
-            /#
             println("", self.name, "");
-            # /
           }
         }
       }
@@ -55,32 +47,14 @@ function callback_botentereduseredge(startnode, endnode) {
   }
 }
 
-/*
-	Name: traversing
-	Namespace: bot
-	Checksum: 0x68A36FC9
-	Offset: 0x4D8
-	Size: 0x7A
-	Parameters: 0
-	Flags: None
-*/
 function traversing() {
   return !self isonground() || self iswallrunning() || self isdoublejumping() || self ismantling() || self issliding();
 }
 
-/*
-	Name: leave_water_traversal
-	Namespace: bot
-	Checksum: 0x78D7D076
-	Offset: 0x560
-	Size: 0xD0
-	Parameters: 2
-	Flags: Linked
-*/
 function leave_water_traversal(startnode, endnode) {
-  self endon(# "death");
-  self endon(# "traversal_end");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("traversal_end");
+  level endon("game_ended");
   self thread watch_traversal_end();
   self botsetmoveanglefrompoint(endnode.origin);
   while (self isplayerunderwater()) {
@@ -93,37 +67,19 @@ function leave_water_traversal(startnode, endnode) {
   }
 }
 
-/*
-	Name: swim_traversal
-	Namespace: bot
-	Checksum: 0x402F9FDF
-	Offset: 0x638
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function swim_traversal(startnode, endnode) {
-  self endon(# "death");
-  level endon(# "game_ended");
-  self endon(# "traversal_end");
+  self endon("death");
+  level endon("game_ended");
+  self endon("traversal_end");
   self botsetmoveanglefrompoint(endnode.origin);
   wait(0.5);
   self traversal_end();
 }
 
-/*
-	Name: jump_up_traversal
-	Namespace: bot
-	Checksum: 0x9934ED08
-	Offset: 0x6C0
-	Size: 0x2F4
-	Parameters: 2
-	Flags: Linked
-*/
 function jump_up_traversal(startnode, endnode) {
-  self endon(# "death");
-  level endon(# "game_ended");
-  self endon(# "traversal_end");
+  self endon("death");
+  level endon("game_ended");
+  self endon("traversal_end");
   self thread watch_traversal_end();
   ledgetop = checknavmeshdirection(endnode.origin, self.origin - endnode.origin, 128, 1);
   height = ledgetop[2] - self.origin[2];
@@ -131,9 +87,7 @@ function jump_up_traversal(startnode, endnode) {
     self thread jump_to(ledgetop);
     return;
   }
-  /#
-  # /
-    dist = distance2d(self.origin, ledgetop);
+  dist = distance2d(self.origin, ledgetop);
   ledgebottom = checknavmeshdirection(self.origin, ledgetop - self.origin, dist + 15, 1);
   bottomdist = distance2d(self.origin, ledgebottom);
   if(bottomdist <= dist) {
@@ -160,19 +114,10 @@ function jump_up_traversal(startnode, endnode) {
   self botsetmovemagnitude(1);
 }
 
-/*
-	Name: jump_down_traversal
-	Namespace: bot
-	Checksum: 0x83C67B84
-	Offset: 0x9C0
-	Size: 0x3F4
-	Parameters: 2
-	Flags: Linked
-*/
 function jump_down_traversal(startnode, endnode) {
-  self endon(# "death");
-  self endon(# "traversal_end");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("traversal_end");
+  level endon("game_ended");
   self thread watch_traversal_end();
   fwd = (endnode.origin[0] - startnode.origin[0], endnode.origin[1] - startnode.origin[1], 0);
   fwd = vectornormalize(fwd) * 128;
@@ -203,19 +148,10 @@ function jump_down_traversal(startnode, endnode) {
   self botsetmoveanglefrompoint(endnode.origin);
 }
 
-/*
-	Name: wallrun_traversal
-	Namespace: bot
-	Checksum: 0xD9F82B86
-	Offset: 0xDC0
-	Size: 0x1CC
-	Parameters: 3
-	Flags: Linked
-*/
 function wallrun_traversal(startnode, endnode, vector) {
-  self endon(# "death");
-  self endon(# "traversal_end");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("traversal_end");
+  level endon("game_ended");
   self thread watch_traversal_end();
   wallnormal = getnavmeshfacenormal(endnode.origin, 30);
   wallnormal = vectornormalize((wallnormal[0], wallnormal[1], 0));
@@ -227,20 +163,11 @@ function wallrun_traversal(startnode, endnode, vector) {
   self thread wait_wallrun_begin(startnode, endnode, wallnormal, rundir);
 }
 
-/*
-	Name: wait_wallrun_begin
-	Namespace: bot
-	Checksum: 0x6FB6C82C
-	Offset: 0xF98
-	Size: 0x174
-	Parameters: 4
-	Flags: Linked
-*/
 function wait_wallrun_begin(startnode, endnode, wallnormal, rundir) {
-  self endon(# "death");
-  self endon(# "traversal_end");
-  level endon(# "game_ended");
-  self waittill(# "wallrun_begin");
+  self endon("death");
+  self endon("traversal_end");
+  level endon("game_ended");
+  self waittill("wallrun_begin");
   self thread watch_traversal_end();
   self botlooknone();
   self botsetmoveangle(rundir);
@@ -256,19 +183,10 @@ function wait_wallrun_begin(startnode, endnode, wallnormal, rundir) {
   }
 }
 
-/*
-	Name: exit_wallrun
-	Namespace: bot
-	Checksum: 0xCE6E2CBD
-	Offset: 0x1118
-	Size: 0x3B2
-	Parameters: 4
-	Flags: Linked
-*/
 function exit_wallrun(startnode, endnode, wallnormal, runnormal) {
-  self endon(# "death");
-  self endon(# "traversal_end");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("traversal_end");
+  level endon("game_ended");
   self thread watch_traversal_end();
   gravity = self getplayergravity();
   vup = sqrt(80 * gravity);
@@ -309,19 +227,10 @@ function exit_wallrun(startnode, endnode, wallnormal, runnormal) {
   }
 }
 
-/*
-	Name: jump_to
-	Namespace: bot
-	Checksum: 0x803D52F2
-	Offset: 0x14D8
-	Size: 0x254
-	Parameters: 2
-	Flags: Linked
-*/
 function jump_to(target, vector) {
-  self endon(# "death");
-  self endon(# "traversal_end");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("traversal_end");
+  level endon("game_ended");
   if(isdefined(vector)) {
     self botsetmoveangle(vector);
     movedir = vectornormalize((vector[0], vector[1], 0));
@@ -347,34 +256,16 @@ function jump_to(target, vector) {
   release_doublejump_button();
 }
 
-/*
-	Name: bot_update_move_angle
-	Namespace: bot
-	Checksum: 0x90AEB63A
-	Offset: 0x1738
-	Size: 0x68
-	Parameters: 1
-	Flags: None
-*/
 function bot_update_move_angle(target) {
-  self endon(# "death");
-  self endon(# "traversal_end");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("traversal_end");
+  level endon("game_ended");
   while (!self ismantling()) {
     self botsetmoveanglefrompoint(target);
     wait(0.05);
   }
 }
 
-/*
-	Name: bot_hit_target
-	Namespace: bot
-	Checksum: 0x9DC7C993
-	Offset: 0x17A8
-	Size: 0x192
-	Parameters: 1
-	Flags: Linked
-*/
 function bot_hit_target(target) {
   velocity = self getvelocity();
   targetdir = target - self.origin;
@@ -390,61 +281,32 @@ function bot_hit_target(target) {
   t = targetdist / targetspeed;
   gravity = self getplayergravity();
   height = (self.origin[2] + (velocity[2] * t)) - (((gravity * t) * t) * 0.5);
-  /#
-  # /
-    return height >= (target[2] + 32);
+  return height >= (target[2] + 32);
 }
 
-/*
-	Name: bot_speed2d
-	Namespace: bot
-	Checksum: 0x6D967E2D
-	Offset: 0x1948
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_speed2d() {
   velocity = self getvelocity();
   speed2d = distance2d(velocity, (0, 0, 0));
   return speed2d;
 }
 
-/*
-	Name: watch_traversal_end
-	Namespace: bot
-	Checksum: 0x177DD094
-	Offset: 0x19A8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_traversal_end() {
-  self notify(# "watch_travesal_end");
-  self endon(# "death");
-  self endon(# "traversal_end");
-  self endon(# "watch_travesal_end");
-  level endon(# "game_ended");
+  self notify("watch_travesal_end");
+  self endon("death");
+  self endon("traversal_end");
+  self endon("watch_travesal_end");
+  level endon("game_ended");
   self thread wait_traversal_timeout();
   self thread watch_start_swimming();
-  self waittill(# "acrobatics_end");
+  self waittill("acrobatics_end");
   self thread traversal_end();
 }
 
-/*
-	Name: watch_start_swimming
-	Namespace: bot
-	Checksum: 0x4B194B02
-	Offset: 0x1A40
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_start_swimming() {
-  self endon(# "death");
-  self endon(# "traversal_end");
-  self endon(# "watch_travesal_end");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("traversal_end");
+  self endon("watch_travesal_end");
+  level endon("game_ended");
   while (self isplayerswimming()) {
     wait(0.05);
   }
@@ -455,36 +317,18 @@ function watch_start_swimming() {
   self thread traversal_end();
 }
 
-/*
-	Name: wait_traversal_timeout
-	Namespace: bot
-	Checksum: 0xE44B6D65
-	Offset: 0x1AE8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_traversal_timeout() {
-  self endon(# "death");
-  self endon(# "traversal_end");
-  self endon(# "watch_travesal_end");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("traversal_end");
+  self endon("watch_travesal_end");
+  level endon("game_ended");
   wait(8);
   self thread traversal_end();
   self botrequestpath();
 }
 
-/*
-	Name: traversal_end
-	Namespace: bot
-	Checksum: 0x2CD6AEF7
-	Offset: 0x1B58
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function traversal_end() {
-  self notify(# "traversal_end");
+  self notify("traversal_end");
   self release_doublejump_button();
   self botlookforward();
   self botsetmovemagnitude(1);

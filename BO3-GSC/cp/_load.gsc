@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_load.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_ammo_cache;
 #using scripts\cp\_art;
@@ -65,27 +69,15 @@
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\weapons\antipersonnelguidance;
 #using scripts\shared\weapons\multilockapguidance;
-
 #namespace load;
 
-/*
-	Name: main
-	Namespace: load
-	Checksum: 0x6C5E9934
-	Offset: 0xBD8
-	Size: 0x2D4
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   /# /
   #
   assert(isdefined(level.first_frame), "");
-  # /
-    # /
-    if(isdefined(level._loadstarted) && level._loadstarted) {
-      return;
-    }
+  if(isdefined(level._loadstarted) && level._loadstarted) {
+    return;
+  }
   function_13c5b077();
   level thread function_f063419c();
   level flag::init("bsp_swap_ready");
@@ -117,41 +109,14 @@ function main() {
   level thread function_4dd1a4b();
 }
 
-/*
-	Name: function_13c5b077
-	Namespace: load
-	Checksum: 0x27453EFE
-	Offset: 0xEB8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_13c5b077() {
   setdvar("ui_allowDisplayContinue", 0);
 }
 
-/*
-	Name: function_73adcefc
-	Namespace: load
-	Checksum: 0x6543B33B
-	Offset: 0xEE0
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function function_73adcefc() {
   util::set_level_start_flag("level_is_go");
 }
 
-/*
-	Name: function_c32ba481
-	Namespace: load
-	Checksum: 0x8419D32C
-	Offset: 0xF08
-	Size: 0x1A4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_c32ba481(var_87423d00 = 0.5, v_color = (0, 0, 0)) {
   level util::streamer_wait(undefined, undefined, undefined, 0);
   setdvar("ui_allowDisplayContinue", 1);
@@ -168,38 +133,20 @@ function function_c32ba481(var_87423d00 = 0.5, v_color = (0, 0, 0)) {
   }
   level flag::wait_till("all_players_spawned");
   level util::streamer_wait(undefined, 0, 10);
-  level notify(# "level_is_go");
+  level notify("level_is_go");
   level thread function_dbd0026c(var_87423d00, v_color);
 }
 
-/*
-	Name: function_a2995f22
-	Namespace: load
-	Checksum: 0xA29B4711
-	Offset: 0x10B8
-	Size: 0x7C
-	Parameters: 2
-	Flags: None
-*/
 function function_a2995f22(var_87423d00 = 0.5, v_color = (0, 0, 0)) {
   level clientfield::set("gameplay_started", 1);
   function_c32ba481(var_87423d00, v_color);
 }
 
-/*
-	Name: function_84454eb5
-	Namespace: load
-	Checksum: 0x92C113A3
-	Offset: 0x1140
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_84454eb5() {
   if(sessionmodeiscampaignzombiesgame()) {
     return;
   }
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(self flag::exists("loadout_given") && self flag::get("loadout_given")) {
     self openmenu("SpinnerFullscreenBlack");
     level flag::wait_till("all_players_spawned");
@@ -207,15 +154,6 @@ function function_84454eb5() {
   }
 }
 
-/*
-	Name: function_dbd0026c
-	Namespace: load
-	Checksum: 0x32BC5D62
-	Offset: 0x1208
-	Size: 0x104
-	Parameters: 2
-	Flags: Linked
-*/
 function function_dbd0026c(var_87423d00, v_color) {
   level lui::screen_fade_out(0, "black", "go_fade");
   waittillframeend();
@@ -231,33 +169,15 @@ function function_dbd0026c(var_87423d00, v_color) {
   level util::delay(0.3, undefined, & lui::screen_fade_in, var_87423d00, v_color, "go_fade");
 }
 
-/*
-	Name: function_f063419c
-	Namespace: load
-	Checksum: 0x3928F756
-	Offset: 0x1318
-	Size: 0x4A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f063419c() {
   if(isloadingcinematicplaying()) {
     while (isloadingcinematicplaying()) {
       wait(0.05);
     }
-    level notify(# "loading_movie_done");
+    level notify("loading_movie_done");
   }
 }
 
-/*
-	Name: function_4dd1a4b
-	Namespace: load
-	Checksum: 0x14FD15A2
-	Offset: 0x1370
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4dd1a4b() {
   checkpointcreate();
   checkpointcommit();
@@ -267,28 +187,10 @@ function function_4dd1a4b() {
   checkpointcommit();
 }
 
-/*
-	Name: function_13aa782f
-	Namespace: load
-	Checksum: 0xC4C82D0
-	Offset: 0x13E0
-	Size: 0x34
-	Parameters: 3
-	Flags: Linked
-*/
 function function_13aa782f(player, target, weapon) {
   return !player oob::isoutofbounds();
 }
 
-/*
-	Name: player_damage_override
-	Namespace: load
-	Checksum: 0x94ADE954
-	Offset: 0x1420
-	Size: 0x392
-	Parameters: 10
-	Flags: None
-*/
 function player_damage_override(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime) {
   finaldamage = idamage;
   if(isdefined(self.player_damage_override)) {
@@ -315,12 +217,12 @@ function player_damage_override(einflictor, eattacker, idamage, idflags, smeanso
   solo_death = players.size == 1 && self.lives == 0;
   non_solo_death = players.size > 1 && count == players.size;
   if(solo_death || non_solo_death) {
-    level notify(# "stop_suicide_trigger");
+    level notify("stop_suicide_trigger");
     self thread laststand::playerlaststand(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime);
     if(!isdefined(vdir)) {
       vdir = (1, 0, 0);
     }
-    level notify(# "last_player_died");
+    level notify("last_player_died");
     self fakedamagefrom(vdir);
     self thread player_fake_death();
   }
@@ -328,34 +230,25 @@ function player_damage_override(einflictor, eattacker, idamage, idflags, smeanso
     if(players.size == 1) {
       if(self.lives == 0) {
         self.lives = 0;
-        level notify(# "pre_end_game");
+        level notify("pre_end_game");
         util::wait_network_frame();
-        level notify(# "end_game");
+        level notify("end_game");
       } else {
         return finaldamage;
       }
     } else {
-      level notify(# "pre_end_game");
+      level notify("pre_end_game");
       util::wait_network_frame();
-      level notify(# "end_game");
+      level notify("end_game");
     }
     return 0;
   }
   return finaldamage;
 }
 
-/*
-	Name: player_fake_death
-	Namespace: load
-	Checksum: 0xAC0ADEDE
-	Offset: 0x17C0
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function player_fake_death() {
-  level notify(# "fake_death");
-  self notify(# "fake_death");
+  level notify("fake_death");
+  self notify("fake_death");
   self takeallweapons();
   self allowstand(0);
   self allowcrouch(0);
@@ -366,38 +259,16 @@ function player_fake_death() {
   self freezecontrols(1);
 }
 
-/*
-	Name: setfootstepeffect
-	Namespace: load
-	Checksum: 0xC26C13A0
-	Offset: 0x1888
-	Size: 0xBA
-	Parameters: 2
-	Flags: Linked
-*/
 function setfootstepeffect(name, fx) {
-  /#
   assert(isdefined(name), "");
-  # /
-    /#
   assert(isdefined(fx), "");
-  # /
-    if(!isdefined(anim.optionalstepeffects)) {
-      anim.optionalstepeffects = [];
-    }
+  if(!isdefined(anim.optionalstepeffects)) {
+    anim.optionalstepeffects = [];
+  }
   anim.optionalstepeffects[anim.optionalstepeffects.size] = name;
   level._effect["step_" + name] = fx;
 }
 
-/*
-	Name: footsteps
-	Namespace: load
-	Checksum: 0x5D264170
-	Offset: 0x1950
-	Size: 0x224
-	Parameters: 0
-	Flags: Linked
-*/
 function footsteps() {
   setfootstepeffect("asphalt", "_t6/bio/player/fx_footstep_dust");
   setfootstepeffect("brick", "_t6/bio/player/fx_footstep_dust");
@@ -418,15 +289,6 @@ function footsteps() {
   setfootstepeffect("wood", "_t6/bio/player/fx_footstep_dust");
 }
 
-/*
-	Name: init_traverse
-	Namespace: load
-	Checksum: 0x11CE9B8E
-	Offset: 0x1B80
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function init_traverse() {
   point = getent(self.target, "targetname");
   if(isdefined(point)) {
@@ -440,15 +302,6 @@ function init_traverse() {
   }
 }
 
-/*
-	Name: setup_traversals
-	Namespace: load
-	Checksum: 0xE6534E7F
-	Offset: 0x1C48
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_traversals() {
   potential_traverse_nodes = getallnodes();
   for (i = 0; i < potential_traverse_nodes.size; i++) {
@@ -459,51 +312,20 @@ function setup_traversals() {
   }
 }
 
-/*
-	Name: preload_next_mission
-	Namespace: load
-	Checksum: 0xC8D2BDED
-	Offset: 0x1CE8
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function preload_next_mission() {
-  /#
   assert(0, "");
-  # /
 }
 
-/*
-	Name: load_next_mission
-	Namespace: load
-	Checksum: 0x76675287
-	Offset: 0x1D18
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function load_next_mission() {
   level flag::wait_till("bsp_swap_ready");
   switchmap_switch();
 }
 
-/*
-	Name: end_game
-	Namespace: load
-	Checksum: 0xD23B6388
-	Offset: 0x1D58
-	Size: 0x71A
-	Parameters: 0
-	Flags: Linked
-*/
 function end_game() {
-  level waittill(# "end_game");
+  level waittill("end_game");
   check_end_game_intermission_delay();
-  /#
   println("");
-  # /
-    util::clientnotify("zesn");
+  util::clientnotify("zesn");
   players = getplayers();
   for (i = 0; i < players.size; i++) {
     util::setclientsysstate("lsm", "0", players[i]);
@@ -536,7 +358,7 @@ function end_game() {
       game_over[i].alpha = 0;
       game_over[i].color = (1, 1, 1);
       game_over[i].hidewheninmenu = 1;
-      game_over[i] settext( & "COOP_GAME_OVER");
+      game_over[i] settext(&"COOP_GAME_OVER");
       game_over[i] fadeovertime(1);
       game_over[i].alpha = 1;
       if(players[i] issplitscreen()) {
@@ -560,7 +382,7 @@ function end_game() {
   foreach(icon in game_over) {
     icon destroy();
   }
-  level notify(# "round_end_done");
+  level notify("round_end_done");
   if(isdefined(level.intermission_override_func)) {
     [
       [level.intermission_override_func]
@@ -569,7 +391,7 @@ function end_game() {
   } else {
     intermission();
     wait(15);
-    level notify(# "stop_intermission");
+    level notify("stop_intermission");
   }
   array::thread_all(getplayers(), & player_exit_level);
   wait(1.5);
@@ -581,18 +403,9 @@ function end_game() {
   wait(666);
 }
 
-/*
-	Name: intermission
-	Namespace: load
-	Checksum: 0x2C880E48
-	Offset: 0x2480
-	Size: 0x19E
-	Parameters: 0
-	Flags: Linked
-*/
 function intermission() {
   level.intermission = 1;
-  level notify(# "intermission");
+  level notify("intermission");
   players = getplayers();
   for (i = 0; i < players.size; i++) {
     util::setclientsysstate("levelNotify", "zi", players[i]);
@@ -609,21 +422,12 @@ function intermission() {
   }
 }
 
-/*
-	Name: player_intermission
-	Namespace: load
-	Checksum: 0x6A205449
-	Offset: 0x2628
-	Size: 0x5E2
-	Parameters: 0
-	Flags: Linked
-*/
 function player_intermission() {
   self closeingamemenu();
-  level endon(# "stop_intermission");
-  self endon(# "disconnect");
-  self endon(# "death");
-  self notify(# "_zombie_game_over");
+  level endon("stop_intermission");
+  self endon("disconnect");
+  self endon("death");
+  self notify("_zombie_game_over");
   self.sessionstate = "intermission";
   self.spectatorclient = -1;
   self.archivetime = 0;
@@ -633,10 +437,8 @@ function player_intermission() {
   if(!isdefined(points) || points.size == 0) {
     points = getentarray("info_intermission", "classname");
     if(points.size < 1) {
-      /#
       println("");
-      # /
-        return;
+      return;
     }
   }
   self.game_over_bg = newclienthudelem(self);
@@ -694,29 +496,11 @@ function player_intermission() {
   }
 }
 
-/*
-	Name: fade_up_over_time
-	Namespace: load
-	Checksum: 0x1B94A42E
-	Offset: 0x2C18
-	Size: 0x30
-	Parameters: 1
-	Flags: Linked
-*/
 function fade_up_over_time(t) {
   self fadeovertime(t);
   self.alpha = 1;
 }
 
-/*
-	Name: player_exit_level
-	Namespace: load
-	Checksum: 0x9B173F37
-	Offset: 0x2C50
-	Size: 0xB0
-	Parameters: 0
-	Flags: Linked
-*/
 function player_exit_level() {
   self allowstand(1);
   self allowcrouch(0);
@@ -729,30 +513,12 @@ function player_exit_level() {
   }
 }
 
-/*
-	Name: disable_end_game_intermission
-	Namespace: load
-	Checksum: 0xB4D8856F
-	Offset: 0x2D08
-	Size: 0x26
-	Parameters: 1
-	Flags: None
-*/
 function disable_end_game_intermission(delay) {
   level.disable_intermission = 1;
   wait(delay);
   level.disable_intermission = undefined;
 }
 
-/*
-	Name: check_end_game_intermission_delay
-	Namespace: load
-	Checksum: 0x2648B2BB
-	Offset: 0x2D38
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function check_end_game_intermission_delay() {
   if(isdefined(level.disable_intermission)) {
     while (true) {
@@ -764,56 +530,32 @@ function check_end_game_intermission_delay() {
   }
 }
 
-/*
-	Name: onallplayersready
-	Namespace: load
-	Checksum: 0xAC310B54
-	Offset: 0x2D78
-	Size: 0x26C
-	Parameters: 0
-	Flags: Linked
-*/
 function onallplayersready() {
   level flag::init("start_coop_logic");
   level thread end_game();
-  /#
   println("" + getnumexpectedplayers());
-  # /
-    do {
-      wait(0.05);
-      var_f862b7b1 = getnumconnectedplayers(0);
-      var_91f98264 = getnumexpectedplayers();
-      player_count_actual = 0;
-      for (i = 0; i < level.players.size; i++) {
-        if(level.players[i].sessionstate == "playing" || level.players[i].sessionstate == "spectator") {
-          player_count_actual++;
-        }
+  do {
+    wait(0.05);
+    var_f862b7b1 = getnumconnectedplayers(0);
+    var_91f98264 = getnumexpectedplayers();
+    player_count_actual = 0;
+    for (i = 0; i < level.players.size; i++) {
+      if(level.players[i].sessionstate == "playing" || level.players[i].sessionstate == "spectator") {
+        player_count_actual++;
       }
-      /#
-      println((("" + getnumconnectedplayers()) + "") + getnumexpectedplayers());
-      # /
     }
-    while (var_f862b7b1 < var_91f98264 || player_count_actual < var_91f98264);
+    println((("" + getnumconnectedplayers()) + "") + getnumexpectedplayers());
+  }
+  while (var_f862b7b1 < var_91f98264 || player_count_actual < var_91f98264);
   setinitialplayersconnected();
   setdvar("all_players_are_connected", "1");
-  /#
   printtoprightln("", (1, 1, 1));
-  # /
-    disablegrenadesuicide();
+  disablegrenadesuicide();
   level flag::set("all_players_connected");
   level flag::set("initial_streamer_ready");
   level flag::set("start_coop_logic");
 }
 
-/*
-	Name: register_clientfields
-	Namespace: load
-	Checksum: 0xA8492A77
-	Offset: 0x2FF0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("toplayer", "sndHealth", 1, 2, "int");
 }

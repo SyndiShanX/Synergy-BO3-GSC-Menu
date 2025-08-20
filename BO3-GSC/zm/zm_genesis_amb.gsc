@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_amb.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -6,34 +10,15 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\weapons\_bouncingbetty;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace zm_genesis_amb;
 
-/*
-	Name: main
-	Namespace: zm_genesis_amb
-	Checksum: 0x25FAD8DD
-	Offset: 0x1D0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level flag::init("ambient_solar_flares_on");
   level thread function_25b0085d();
 }
 
-/*
-	Name: function_25b0085d
-	Namespace: zm_genesis_amb
-	Checksum: 0xDBA4D479
-	Offset: 0x218
-	Size: 0x238
-	Parameters: 0
-	Flags: Linked
-*/
 function function_25b0085d() {
-  level waittill(# "start_zombie_round_logic");
+  level waittill("start_zombie_round_logic");
   if(getdvarint("splitscreen_playerCount") >= 2) {
     return;
   }

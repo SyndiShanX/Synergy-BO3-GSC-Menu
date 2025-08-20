@@ -1,36 +1,21 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_mocomps_utility.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_utility;
 #using scripts\shared\ai\systems\animation_state_machine_mocomp;
 #using scripts\shared\ai\systems\animation_state_machine_utility;
 #using scripts\shared\ai\systems\behavior_tree_utility;
 #using scripts\shared\ai\systems\blackboard;
-
 #namespace archetype_mocomps_utility;
 
-/*
-	Name: registerdefaultanimationmocomps
-	Namespace: archetype_mocomps_utility
-	Checksum: 0x36894620
-	Offset: 0x290
-	Size: 0xAC
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec registerdefaultanimationmocomps() {
   animationstatenetwork::registeranimationmocomp("adjust_to_cover", & mocompadjusttocoverinit, & mocompadjusttocoverupdate, & mocompadjusttocoverterminate);
   animationstatenetwork::registeranimationmocomp("locomotion_explosion_death", & mocomplocoexplosioninit, undefined, undefined);
   animationstatenetwork::registeranimationmocomp("mocomp_flank_stand", & mocompflankstandinit, undefined, undefined);
 }
 
-/*
-	Name: initadjusttocoverparams
-	Namespace: archetype_mocomps_utility
-	Checksum: 0x60266A62
-	Offset: 0x348
-	Size: 0x694
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec initadjusttocoverparams() {
   _addadjusttocover("human", "cover_any", "stance_any", 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.9, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8);
   _addadjusttocover("human", "cover_stand", "stance_any", 0.4, 0.8, 0.6, 0.4, 0.6, 0.3, 0.3, 0.6, 0.9, 0.6, 0.3, 0.4, 0.7, 0.6, 0.6, 0.6);
@@ -44,15 +29,6 @@ function autoexec initadjusttocoverparams() {
   _addadjusttocover("robot", "cover_exposed", "stance_any", 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.9, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8);
 }
 
-/*
-	Name: _addadjusttocover
-	Namespace: archetype_mocomps_utility
-	Checksum: 0x57FED533
-	Offset: 0x9E8
-	Size: 0x236
-	Parameters: 19
-	Flags: Linked, Private
-*/
 function private _addadjusttocover(archetype, node, stance, rot2, rot32, rot3, rot36, rot6, rot69, rot9, rot98, rot8, rot87, rot7, rot47, rot4, rot14, rot1, rot21) {
   if(!isdefined(level.adjusttocover)) {
     level.adjusttocover = [];
@@ -83,35 +59,18 @@ function private _addadjusttocover(archetype, node, stance, rot2, rot32, rot3, r
   level.adjusttocover[archetype][node][stance] = directions;
 }
 
-/*
-	Name: _getadjusttocoverrotation
-	Namespace: archetype_mocomps_utility
-	Checksum: 0xF2DA7E91
-	Offset: 0xC28
-	Size: 0x3EE
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private _getadjusttocoverrotation(archetype, node, stance, angletonode) {
-  /#
   assert(isarray(level.adjusttocover[archetype]));
-  # /
-    if(!isdefined(level.adjusttocover[archetype][node])) {
-      node = "cover_any";
-    }
-  /#
+  if(!isdefined(level.adjusttocover[archetype][node])) {
+    node = "cover_any";
+  }
   assert(isarray(level.adjusttocover[archetype][node]));
-  # /
-    if(!isdefined(level.adjusttocover[archetype][node][stance])) {
-      stance = "stance_any";
-    }
-  /#
+  if(!isdefined(level.adjusttocover[archetype][node][stance])) {
+    stance = "stance_any";
+  }
   assert(isarray(level.adjusttocover[archetype][node][stance]));
-  # /
-    /#
   assert(angletonode >= 0 && angletonode < 360);
-  # /
-    direction = undefined;
+  direction = undefined;
   if(angletonode < 11.25) {
     direction = 2;
   } else {
@@ -177,28 +136,16 @@ function private _getadjusttocoverrotation(archetype, node, stance, angletonode)
       }
     }
   }
-  /#
   assert(isdefined(level.adjusttocover[archetype][node][stance][direction]));
-  # /
-    adjusttime = level.adjusttocover[archetype][node][stance][direction];
+  adjusttime = level.adjusttocover[archetype][node][stance][direction];
   if(isdefined(adjusttime)) {
     return adjusttime;
   }
   return 0.8;
 }
 
-/*
-	Name: debuglocoexplosion
-	Namespace: archetype_mocomps_utility
-	Checksum: 0xD8DB1BE4
-	Offset: 0x1020
-	Size: 0x180
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private debuglocoexplosion(entity) {
-  entity endon(# "death");
-  /#
+  entity endon("death");
   startorigin = entity.origin;
   startyawforward = anglestoforward((0, entity.angles[1], 0));
   damageyawforward = anglestoforward((0, entity.damageyaw - entity.angles[1], 0));
@@ -209,18 +156,8 @@ function private debuglocoexplosion(entity) {
     recordline(startorigin, startorigin + (damageyawforward * 100), (1, 0, 0), "", entity);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: mocompflankstandinit
-	Namespace: archetype_mocomps_utility
-	Checksum: 0x5D486610
-	Offset: 0x11A8
-	Size: 0xFC
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompflankstandinit(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity animmode("nogravity", 0);
   entity orientmode("face angle", entity.angles[1]);
@@ -231,34 +168,14 @@ function private mocompflankstandinit(entity, mocompanim, mocompanimblendouttime
   }
 }
 
-/*
-	Name: mocomplocoexplosioninit
-	Namespace: archetype_mocomps_utility
-	Checksum: 0xDD0D7F58
-	Offset: 0x12B0
-	Size: 0xBC
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocomplocoexplosioninit(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity animmode("nogravity", 0);
   entity orientmode("face angle", entity.angles[1]);
-  /#
   if(getdvarint("")) {
     entity thread debuglocoexplosion(entity);
   }
-  # /
 }
 
-/*
-	Name: mocompadjusttocoverinit
-	Namespace: archetype_mocomps_utility
-	Checksum: 0x87174EC9
-	Offset: 0x1378
-	Size: 0x2A8
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompadjusttocoverinit(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity orientmode("face angle", entity.angles[1]);
   entity animmode("angle deltas", 0);
@@ -279,15 +196,6 @@ function private mocompadjusttocoverinit(entity, mocompanim, mocompanimblendoutt
   }
 }
 
-/*
-	Name: mocompadjusttocoverupdate
-	Namespace: archetype_mocomps_utility
-	Checksum: 0xEAACED7D
-	Offset: 0x1628
-	Size: 0x38C
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompadjusttocoverupdate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   if(!isdefined(entity.adjustnode)) {
     return;
@@ -302,7 +210,6 @@ function private mocompadjusttocoverupdate(entity, mocompanim, mocompanimblendou
     entity orientmode("face angle", entity.nodeoffsetangles);
     entity animmode("normal", 0);
   }
-  /#
   if(getdvarint("")) {
     record3dtext(entity.mocompanglestarttime, entity.origin + vectorscale((0, 0, 1), 5), (0, 1, 0), "");
     hiptagorigin = entity gettagorigin("");
@@ -311,18 +218,8 @@ function private mocompadjusttocoverupdate(entity, mocompanim, mocompanimblendou
     recordline(entity.origin, entity.origin + (anglestoforward(entity.angles) * 10), (1, 0, 0), "", entity);
     recordline(hiptagorigin, (hiptagorigin[0], hiptagorigin[1], entity.origin[2]), (0, 0, 1), "", entity);
   }
-  # /
 }
 
-/*
-	Name: mocompadjusttocoverterminate
-	Namespace: archetype_mocomps_utility
-	Checksum: 0xC5349406
-	Offset: 0x19C0
-	Size: 0x11A
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompadjusttocoverterminate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity.blockingpain = 0;
   entity.mocompanglestarttime = undefined;

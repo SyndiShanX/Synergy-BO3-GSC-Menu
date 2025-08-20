@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_cleanup_mgr.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\ai_shared;
@@ -11,57 +15,20 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_island;
-
 #namespace zm_island_cleanup;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_island_cleanup
-	Checksum: 0xACC26B74
-	Offset: 0x240
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_island_cleanup", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_island_cleanup
-	Checksum: 0x4D917DA7
-	Offset: 0x288
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.n_cleanups_processed_this_frame = 0;
 }
 
-/*
-	Name: __main__
-	Namespace: zm_island_cleanup
-	Checksum: 0x2D0EDF1F
-	Offset: 0x2A0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level thread cleanup_main();
 }
 
-/*
-	Name: cleanup_main
-	Namespace: zm_island_cleanup
-	Checksum: 0x13DB4DCD
-	Offset: 0x2C8
-	Size: 0x29E
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private cleanup_main() {
   n_next_eval = 0;
   while (true) {
@@ -107,15 +74,6 @@ function private cleanup_main() {
   }
 }
 
-/*
-	Name: do_cleanup_check
-	Namespace: zm_island_cleanup
-	Checksum: 0x755C15A5
-	Offset: 0x570
-	Size: 0x2E4
-	Parameters: 1
-	Flags: Linked
-*/
 function do_cleanup_check(n_override_cleanup_dist) {
   if(!isalive(self)) {
     return;
@@ -168,15 +126,6 @@ function do_cleanup_check(n_override_cleanup_dist) {
   }
 }
 
-/*
-	Name: delete_zombie_noone_looking
-	Namespace: zm_island_cleanup
-	Checksum: 0x531FF317
-	Offset: 0x860
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private delete_zombie_noone_looking() {
   if(isdefined(self.in_the_ground) && self.in_the_ground) {
     return;
@@ -192,29 +141,11 @@ function private delete_zombie_noone_looking() {
   self function_e89cc6dd();
 }
 
-/*
-	Name: function_cc0c7e36
-	Namespace: zm_island_cleanup
-	Checksum: 0xBCCC6D01
-	Offset: 0x948
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_cc0c7e36() {
-  self endon(# "death");
+  self endon("death");
   self thread delete_zombie_noone_looking();
 }
 
-/*
-	Name: function_e89cc6dd
-	Namespace: zm_island_cleanup
-	Checksum: 0x6F52D7F2
-	Offset: 0x978
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_e89cc6dd() {
   if(!(isdefined(self.exclude_cleanup_adding_to_total) && self.exclude_cleanup_adding_to_total)) {
     level.zombie_total++;
@@ -231,28 +162,17 @@ function private function_e89cc6dd() {
       level.a_zombie_respawn_health[self.archetype][level.a_zombie_respawn_health[self.archetype].size] = self.health;
     }
   }
-  self notify(# "enemy_cleaned_up");
+  self notify("enemy_cleaned_up");
   util::wait_network_frame();
   if(isalive(self)) {
-    /#
     debugstar(self.origin, 1000, (1, 1, 1));
-    # /
-      self zombie_utility::reset_attack_spot();
+    self zombie_utility::reset_attack_spot();
     self util::stop_magic_bullet_shield();
     self kill();
     self delete();
   }
 }
 
-/*
-	Name: player_can_see_me
-	Namespace: zm_island_cleanup
-	Checksum: 0xA6D8DCAA
-	Offset: 0xB70
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private player_can_see_me(player) {
   v_player_angles = player getplayerangles();
   v_player_forward = anglestoforward(v_player_angles);
@@ -265,15 +185,6 @@ function private player_can_see_me(player) {
   return true;
 }
 
-/*
-	Name: player_ahead_of_me
-	Namespace: zm_island_cleanup
-	Checksum: 0x2689EE81
-	Offset: 0xC50
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private player_ahead_of_me(player) {
   v_player_angles = player getplayerangles();
   v_player_forward = anglestoforward(v_player_angles);
@@ -285,17 +196,8 @@ function private player_ahead_of_me(player) {
   return true;
 }
 
-/*
-	Name: get_escape_position
-	Namespace: zm_island_cleanup
-	Checksum: 0x1A2F9B8B
-	Offset: 0xD10
-	Size: 0xCC
-	Parameters: 0
-	Flags: None
-*/
 function get_escape_position() {
-  self endon(# "death");
+  self endon("death");
   str_zone = zm_zonemgr::get_zone_from_position(self.origin, 1);
   if(!isdefined(str_zone)) {
     str_zone = self.zone_name;
@@ -308,15 +210,6 @@ function get_escape_position() {
   return s_farthest;
 }
 
-/*
-	Name: get_adjacencies_to_zone
-	Namespace: zm_island_cleanup
-	Checksum: 0xFC31EA47
-	Offset: 0xDE8
-	Size: 0x11E
-	Parameters: 1
-	Flags: Linked
-*/
 function get_adjacencies_to_zone(str_zone) {
   a_adjacencies = [];
   a_adjacencies[0] = str_zone;
@@ -334,15 +227,6 @@ function get_adjacencies_to_zone(str_zone) {
   return a_adjacencies;
 }
 
-/*
-	Name: get_wait_locations_in_zones
-	Namespace: zm_island_cleanup
-	Checksum: 0x1C186094
-	Offset: 0xF10
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private get_wait_locations_in_zones(a_zones) {
   a_wait_locations = [];
   foreach(zone in a_zones) {
@@ -351,15 +235,6 @@ function private get_wait_locations_in_zones(a_zones) {
   return a_wait_locations;
 }
 
-/*
-	Name: get_farthest_wait_location
-	Namespace: zm_island_cleanup
-	Checksum: 0x45B9F0EC
-	Offset: 0xFF0
-	Size: 0xD6
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private get_farthest_wait_location(a_wait_locations) {
   if(!isdefined(a_wait_locations) || a_wait_locations.size == 0) {
     return undefined;
@@ -376,15 +251,6 @@ function private get_farthest_wait_location(a_wait_locations) {
   return a_wait_locations[n_farthest_index];
 }
 
-/*
-	Name: get_wait_locations_in_zone
-	Namespace: zm_island_cleanup
-	Checksum: 0x4CB39629
-	Offset: 0x10D0
-	Size: 0x88
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private get_wait_locations_in_zone(zone) {
   if(isdefined(level.zones[zone].a_loc_types["wait_location"])) {
     a_wait_locations = [];
@@ -394,17 +260,8 @@ function private get_wait_locations_in_zone(zone) {
   return undefined;
 }
 
-/*
-	Name: get_escape_position_in_current_zone
-	Namespace: zm_island_cleanup
-	Checksum: 0xF32084AC
-	Offset: 0x1160
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function get_escape_position_in_current_zone() {
-  self endon(# "death");
+  self endon("death");
   str_zone = zm_zonemgr::get_zone_from_position(self.origin, 1);
   if(!isdefined(str_zone)) {
     str_zone = self.zone_name;

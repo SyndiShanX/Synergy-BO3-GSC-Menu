@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\dm.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -9,18 +13,8 @@
 #using scripts\shared\gameobjects_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace dm;
 
-/*
-	Name: main
-	Namespace: dm
-	Checksum: 0xE488BCE6
-	Offset: 0x300
-	Size: 0x224
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   util::registertimelimit(0, 1440);
@@ -42,15 +36,6 @@ function main() {
   globallogic::setvisiblescoreboardcolumns("pointstowin", "kills", "deaths", "kdratio", "score");
 }
 
-/*
-	Name: setupteam
-	Namespace: dm
-	Checksum: 0x3C3C8F71
-	Offset: 0x530
-	Size: 0xEC
-	Parameters: 1
-	Flags: None
-*/
 function setupteam(team) {
   util::setobjectivetext(team, & "OBJECTIVES_DM");
   if(level.splitscreen) {
@@ -64,15 +49,6 @@ function setupteam(team) {
   level.spawn_start = spawnlogic::get_spawnpoint_array("mp_dm_spawn_start");
 }
 
-/*
-	Name: onstartgametype
-	Namespace: dm
-	Checksum: 0xA536D248
-	Offset: 0x628
-	Size: 0x1A4
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   setclientnamemode("auto_change");
   spawning::create_map_placed_influencers();
@@ -93,15 +69,6 @@ function onstartgametype() {
   }
 }
 
-/*
-	Name: onendgame
-	Namespace: dm
-	Checksum: 0x9579E933
-	Offset: 0x7D8
-	Size: 0x58
-	Parameters: 1
-	Flags: None
-*/
 function onendgame(winningplayer) {
   if(isdefined(winningplayer) && isplayer(winningplayer)) {
     [
@@ -110,15 +77,6 @@ function onendgame(winningplayer) {
   }
 }
 
-/*
-	Name: onscoreclosemusic
-	Namespace: dm
-	Checksum: 0xB41A34E5
-	Offset: 0x838
-	Size: 0xB0
-	Parameters: 0
-	Flags: None
-*/
 function onscoreclosemusic() {
   while (!level.gameended) {
     scorelimit = level.scorelimit;
@@ -135,15 +93,6 @@ function onscoreclosemusic() {
   }
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: dm
-	Checksum: 0xCD63BA78
-	Offset: 0x8F0
-	Size: 0x34
-	Parameters: 1
-	Flags: None
-*/
 function onspawnplayer(predictedspawn) {
   if(!level.inprematchperiod) {
     level.usestartspawns = 0;
@@ -151,15 +100,6 @@ function onspawnplayer(predictedspawn) {
   spawning::onspawnplayer(predictedspawn);
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: dm
-	Checksum: 0x5E5EEA6D
-	Offset: 0x930
-	Size: 0x114
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(!isplayer(attacker) || self == attacker) {
     return;

@@ -1,33 +1,18 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_sumpf_fx.gsc
+*************************************************/
+
 #using scripts\shared\array_shared;
 #using scripts\shared\flagsys_shared;
-
 #namespace zm_sumpf_fx;
 
-/*
-	Name: main
-	Namespace: zm_sumpf_fx
-	Checksum: 0x7D23E14
-	Offset: 0x1038
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   scriptedfx();
   precachefx();
   level thread fx_overrides();
 }
 
-/*
-	Name: fx_overrides
-	Namespace: zm_sumpf_fx
-	Checksum: 0x546D57AB
-	Offset: 0x1080
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function fx_overrides() {
   level flagsys::wait_till("load_main_complete");
   level._effect["jugger_light"] = "dlc5/zmhd/fx_perk_juggernaut";
@@ -37,15 +22,6 @@ function fx_overrides() {
   level._effect["additionalprimaryweapon_light"] = "dlc5/zmhd/fx_perk_mule_kick";
 }
 
-/*
-	Name: scriptedfx
-	Namespace: zm_sumpf_fx
-	Checksum: 0xEB668EBA
-	Offset: 0x1138
-	Size: 0x24E
-	Parameters: 0
-	Flags: Linked
-*/
 function scriptedfx() {
   level._effect["hanging_light_fx"] = "env/light/fx_zmb_shino_glow_lantern";
   level._effect["switch_sparks"] = "env/electrical/fx_elec_wire_spark_burst";
@@ -70,15 +46,6 @@ function scriptedfx() {
   level._effect["chopper_blur"] = "maps/zombie/fx_zombie_chopper_trp_blur";
 }
 
-/*
-	Name: precachefx
-	Namespace: zm_sumpf_fx
-	Checksum: 0x98044540
-	Offset: 0x1390
-	Size: 0x542
-	Parameters: 0
-	Flags: Linked
-*/
 function precachefx() {
   level._effect["mp_fire_medium"] = "fire/fx_fire_fuel_sm";
   level._effect["mp_fire_large"] = "maps/zombie/fx_zmb_tranzit_fire_lrg";

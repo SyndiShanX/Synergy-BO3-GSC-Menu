@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_zurich_coalescence_outro.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_dialog;
 #using scripts\cp\_load;
@@ -24,18 +28,8 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
-
 #namespace zurich_outro;
 
-/*
-	Name: function_8c381165
-	Namespace: zurich_outro
-	Checksum: 0xF0DCF114
-	Offset: 0xDE0
-	Size: 0x8C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_8c381165(str_objective, b_starting) {
   load::function_73adcefc();
   load::function_a2995f22();
@@ -46,26 +40,8 @@ function function_8c381165(str_objective, b_starting) {
   skipto::objective_completed(str_objective);
 }
 
-/*
-	Name: function_7c294f88
-	Namespace: zurich_outro
-	Checksum: 0x3135CC99
-	Offset: 0xE78
-	Size: 0x24
-	Parameters: 4
-	Flags: Linked
-*/
 function function_7c294f88(str_objective, b_starting, b_direct, player) {}
 
-/*
-	Name: function_4fa5eed
-	Namespace: zurich_outro
-	Checksum: 0xF7C02A42
-	Offset: 0xEA8
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4fa5eed() {
   util::screen_fade_out(0);
   array::thread_all(level.players, & function_73b35f7b, 1);
@@ -79,17 +55,8 @@ function function_4fa5eed() {
   array::thread_all(level.players, & function_ba91aecf);
 }
 
-/*
-	Name: function_4163ce88
-	Namespace: zurich_outro
-	Checksum: 0xA32C9E52
-	Offset: 0xF98
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4163ce88() {
-  level endon(# "movie_done");
+  level endon("movie_done");
   wait(0.2);
   level dialog::remote("tcor_it_s_all_wrong_0", 1, "NO_DNI");
   level dialog::remote("tcor_it_was_supposed_to_m_0", 1, "NO_DNI");
@@ -98,15 +65,6 @@ function function_4163ce88() {
   level dialog::remote("tcor_who_are_you_0", 1, "NO_DNI");
 }
 
-/*
-	Name: function_618d5a98
-	Namespace: zurich_outro
-	Checksum: 0xECE0228
-	Offset: 0x10A8
-	Size: 0x1DC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_618d5a98(str_objective, b_starting) {
   level flag::wait_till("all_players_spawned");
   util::set_streamer_hint(9);
@@ -124,26 +82,8 @@ function function_618d5a98(str_objective, b_starting) {
   skipto::objective_completed(str_objective);
 }
 
-/*
-	Name: function_d9ccb9e3
-	Namespace: zurich_outro
-	Checksum: 0xE408C32E
-	Offset: 0x1290
-	Size: 0x24
-	Parameters: 4
-	Flags: Linked
-*/
 function function_d9ccb9e3(str_objective, b_starting, b_direct, player) {}
 
-/*
-	Name: function_313f113
-	Namespace: zurich_outro
-	Checksum: 0x92AF599C
-	Offset: 0x12C0
-	Size: 0x2DC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_313f113(str_objective, b_starting) {
   level flag::wait_till("all_players_spawned");
   level flag::init("atrium_hack_objective_start");
@@ -179,26 +119,8 @@ function function_313f113(str_objective, b_starting) {
   level thread zurich_util::function_df1fc23b(0);
 }
 
-/*
-	Name: function_f2f0f1ec
-	Namespace: zurich_outro
-	Checksum: 0xF5C3EE31
-	Offset: 0x15A8
-	Size: 0x24
-	Parameters: 4
-	Flags: Linked
-*/
 function function_f2f0f1ec(str_objective, b_starting, b_direct, player) {}
 
-/*
-	Name: function_51e389ee
-	Namespace: zurich_outro
-	Checksum: 0xB46CE9D7
-	Offset: 0x15D8
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_51e389ee() {
   s_start = struct::get("outro_stairs_door_breadcrumb");
   objectives::set("cp_waypoint_breadcrumb", s_start);
@@ -212,17 +134,8 @@ function function_51e389ee() {
   level flag::set("atrium_hack_objective_start");
 }
 
-/*
-	Name: function_5cd9d899
-	Namespace: zurich_outro
-	Checksum: 0xA1A1BA08
-	Offset: 0x1700
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5cd9d899() {
-  level endon(# "hash_72be7304");
+  level endon("hash_72be7304");
   level thread function_c0ced31c();
   level flag::wait_till("flag_taylor_outro_vo_01");
   level dialog::remote("tayr_listen_only_to_the_s_0", 1, "NO_DNI");
@@ -235,52 +148,25 @@ function function_5cd9d899() {
   level dialog::remote("tayr_you_are_in_control_0", 1, "NO_DNI");
 }
 
-/*
-	Name: function_c0ced31c
-	Namespace: zurich_outro
-	Checksum: 0xA5D5588D
-	Offset: 0x18B0
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c0ced31c() {
-  level endon(# "hash_72be7304");
+  level endon("hash_72be7304");
   zurich_util::function_1b3dfa61("hq_outro_vo_03_struct_trig", undefined, 256);
   level flag::set("flag_taylor_outro_vo_03");
 }
 
-/*
-	Name: function_354b619b
-	Namespace: zurich_outro
-	Checksum: 0x9EAD3384
-	Offset: 0x1908
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_354b619b(var_495fe8ae) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   w_pistol = getweapon("pistol_standard");
   self takeallweapons();
   self giveweapon(w_pistol);
   self switchtoweaponimmediate(w_pistol);
   if(var_495fe8ae) {
-    level waittill(# "hash_d0254e87");
+    level waittill("hash_d0254e87");
   }
   self setweaponammoclip(w_pistol, 5);
   self setweaponammostock(w_pistol, 0);
 }
 
-/*
-	Name: function_2e5f51e9
-	Namespace: zurich_outro
-	Checksum: 0x739AA0DC
-	Offset: 0x19D8
-	Size: 0x2AC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2e5f51e9() {
   scene::add_scene_func("cin_zur_20_01_plaza_1st_fight_it", & zurich_util::function_f3e247d6, "play");
   scene::add_scene_func("cin_zur_20_01_plaza_1st_fight_it_player_start", & function_8cd36a50, "play");
@@ -306,37 +192,19 @@ function function_2e5f51e9() {
     var_a3612ddd++;
     player thread function_4f4dfd03(var_a3612ddd);
   }
-  level waittill(# "hash_ce40edcd");
+  level waittill("hash_ce40edcd");
   level scene::play("cin_zur_20_01_plaza_1st_fight_it_player_end");
   level util::teleport_players_igc("server_interior");
   util::clear_streamer_hint();
 }
 
-/*
-	Name: function_6b79134a
-	Namespace: zurich_outro
-	Checksum: 0xE56ED5E2
-	Offset: 0x1C90
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6b79134a() {
-  level waittill(# "hash_e160de52");
+  level waittill("hash_e160de52");
   exploder::exploder("serverrm_corvuscorelight");
-  level waittill(# "hash_3d45f38a");
+  level waittill("hash_3d45f38a");
   exploder::stop_exploder("serverrm_corvuscorelight");
 }
 
-/*
-	Name: function_feb59ad0
-	Namespace: zurich_outro
-	Checksum: 0x704E90A2
-	Offset: 0x1CF0
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_feb59ad0(a_ents) {
   e_light = getent("corvusGut", "targetname");
   var_f4a14f07 = a_ents["corvus"];
@@ -348,15 +216,6 @@ function function_feb59ad0(a_ents) {
   }
 }
 
-/*
-	Name: function_8cd36a50
-	Namespace: zurich_outro
-	Checksum: 0x89A40350
-	Offset: 0x1DD8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8cd36a50(a_ents) {
   e_player = a_ents["player 1"];
   wait(1);
@@ -366,99 +225,45 @@ function function_8cd36a50(a_ents) {
   }
 }
 
-/*
-	Name: function_c5c8c18b
-	Namespace: zurich_outro
-	Checksum: 0x7D8AFFC6
-	Offset: 0x1E58
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c5c8c18b(a_ents) {
   e_player = a_ents["player 1"];
-  level waittill(# "hash_e3f86dc");
+  level waittill("hash_e3f86dc");
   if(isdefined(e_player)) {
     e_player cybercom::cybercom_armpulse(1);
     e_player playrumbleonentity("cp_infection_hideout_stretch");
   }
 }
 
-/*
-	Name: function_a3652dec
-	Namespace: zurich_outro
-	Checksum: 0xD0266281
-	Offset: 0x1EE0
-	Size: 0x12
-	Parameters: 0
-	Flags: None
-*/
 function function_a3652dec() {
-  level notify(# "hash_e69e5818");
+  level notify("hash_e69e5818");
 }
 
-/*
-	Name: function_e2a2e56e
-	Namespace: zurich_outro
-	Checksum: 0x1B743F28
-	Offset: 0x1F00
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e2a2e56e() {
   level scene::init("p7_fxanim_cp_zurich_server_room_debris_bundle");
-  level waittill(# "hash_2a9df746");
+  level waittill("hash_2a9df746");
   level scene::play("p7_fxanim_cp_zurich_server_room_debris_bundle");
 }
 
-/*
-	Name: function_f0e5d1d
-	Namespace: zurich_outro
-	Checksum: 0xB05657DB
-	Offset: 0x1F58
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f0e5d1d() {
   hidemiscmodels("server_interior_dead_bodies");
-  level waittill(# "dead_bodies");
+  level waittill("dead_bodies");
   showmiscmodels("server_interior_dead_bodies");
 }
 
-/*
-	Name: function_cbc763a7
-	Namespace: zurich_outro
-	Checksum: 0xF2C66AF3
-	Offset: 0x1FA8
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cbc763a7() {
   var_ddc9cb80 = getent("server_interior_igc_wiping_screen", "targetname");
   var_cb8cc4ef = getent("server_interior_igc_wiped_screen", "targetname");
   var_cb8cc4ef hide();
-  level waittill(# "hash_fefb8213");
+  level waittill("hash_fefb8213");
   var_cb8cc4ef show();
   var_ddc9cb80 hide();
   level thread function_81b8760e();
 }
 
-/*
-	Name: function_4f4dfd03
-	Namespace: zurich_outro
-	Checksum: 0xC31BC267
-	Offset: 0x2078
-	Size: 0x1BA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4f4dfd03(var_a3612ddd) {
   self setinvisibletoall();
-  level notify(# "hash_2a9df746");
-  level notify(# "hash_d0254e87");
+  level notify("hash_2a9df746");
+  level notify("hash_d0254e87");
   self freezecontrols(1);
   wait(0.15);
   str_origin = struct::get("outro_server_scene_struct_0" + var_a3612ddd);
@@ -467,23 +272,14 @@ function function_4f4dfd03(var_a3612ddd) {
   self util::magic_bullet_shield();
   self freezecontrols(0);
   self thread function_e611368a();
-  level waittill(# "hash_e0529ad4");
+  level waittill("hash_e0529ad4");
   self util::stop_magic_bullet_shield();
   self unlink();
   var_ad470f8c delete();
   self setvisibletoall();
-  level notify(# "hash_ce40edcd");
+  level notify("hash_ce40edcd");
 }
 
-/*
-	Name: function_b56fbb21
-	Namespace: zurich_outro
-	Checksum: 0xB7EA1415
-	Offset: 0x2240
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b56fbb21() {
   level flag::wait_till("flag_open_atrium_exit_door");
   a_door = getentarray("hq_lobby_exit_clip", "targetname");
@@ -492,15 +288,6 @@ function function_b56fbb21() {
   level thread function_36745581();
 }
 
-/*
-	Name: function_36745581
-	Namespace: zurich_outro
-	Checksum: 0x1CACA02A
-	Offset: 0x2308
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_36745581() {
   var_2c578566 = spawn("script_origin", (-7389, 36096, 138));
   if(sessionmodeiscampaignzombiesgame()) {
@@ -508,19 +295,10 @@ function function_36745581() {
   } else {
     var_2c578566 playloopsound("evt_outro_vtol_dist", 1);
   }
-  level waittill(# "hash_8271ee50");
+  level waittill("hash_8271ee50");
   var_2c578566 stoploopsound(7);
 }
 
-/*
-	Name: function_81b8760e
-	Namespace: zurich_outro
-	Checksum: 0xA487A530
-	Offset: 0x23D0
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_81b8760e() {
   array::run_all(level.players, & setclientuivisibilityflag, "weapon_hud_visible", 0);
   if(sessionmodeiscampaignzombiesgame()) {
@@ -531,21 +309,12 @@ function function_81b8760e() {
   level thread connection_interrupted(1);
 }
 
-/*
-	Name: function_e611368a
-	Namespace: zurich_outro
-	Checksum: 0xC9E5D8F5
-	Offset: 0x2480
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e611368a() {
   if(sessionmodeiscampaignzombiesgame()) {
     return;
   }
-  self endon(# "disconnect");
-  level endon(# "hash_e0529ad4");
+  self endon("disconnect");
+  level endon("hash_e0529ad4");
   while (true) {
     self playrumbleonentity("damage_light");
     earthquake(0.3, 0.5, self.origin, 128);
@@ -553,17 +322,8 @@ function function_e611368a() {
   }
 }
 
-/*
-	Name: function_51e85b80
-	Namespace: zurich_outro
-	Checksum: 0x1478D488
-	Offset: 0x2518
-	Size: 0x424
-	Parameters: 0
-	Flags: Linked
-*/
 function function_51e85b80() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(sessionmodeiscampaignzombiesgame()) {
     return;
   }
@@ -593,7 +353,7 @@ function function_51e85b80() {
   self setluimenudata(self.var_322cc58c, "frac", 0.8);
   self thread function_865309a9(80);
   wait(10);
-  level waittill(# "hash_2e3e5b0a");
+  level waittill("hash_2e3e5b0a");
   self setluimenudata(self.var_322cc58c, "frac", 1);
   self thread function_865309a9(100);
   wait(10);
@@ -605,15 +365,6 @@ function function_51e85b80() {
   self closeluimenu(self.var_322cc58c);
 }
 
-/*
-	Name: function_865309a9
-	Namespace: zurich_outro
-	Checksum: 0xA78E2AB4
-	Offset: 0x2948
-	Size: 0x76
-	Parameters: 1
-	Flags: Linked
-*/
 function function_865309a9(var_ea6d6bd2) {
   for (i = var_ea6d6bd2 - 20; i < (var_ea6d6bd2 + 1); i++) {
     self setluimenudata(self.var_322cc58c, "percentage", i / 100);
@@ -621,15 +372,6 @@ function function_865309a9(var_ea6d6bd2) {
   }
 }
 
-/*
-	Name: function_d06b32b2
-	Namespace: zurich_outro
-	Checksum: 0x5D877B92
-	Offset: 0x29C8
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d06b32b2() {
   trigger::wait_till("trig_hud_update_01", "targetname", self);
   level flag::set("flag_taylor_outro_vo_01");
@@ -641,15 +383,6 @@ function function_d06b32b2() {
   level flag::set("flag_fill_purging_bar_80");
 }
 
-/*
-	Name: connection_interrupted
-	Namespace: zurich_outro
-	Checksum: 0x8316291
-	Offset: 0x2AD8
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function connection_interrupted(is_on) {
   if(sessionmodeiscampaignzombiesgame()) {
     return;
@@ -661,15 +394,6 @@ function connection_interrupted(is_on) {
   }
 }
 
-/*
-	Name: function_1cc6775d
-	Namespace: zurich_outro
-	Checksum: 0x9CE0372A
-	Offset: 0x2B48
-	Size: 0x29C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1cc6775d() {
   scene::add_scene_func("cin_zur_20_01_plaza_1st_commander", & function_95ed5d29, "play");
   scene::add_scene_func("cin_zur_20_01_plaza_1st_commander", & function_a947c3b3, "done");
@@ -680,10 +404,10 @@ function function_1cc6775d() {
   var_5cca3f31 = getent("trig_enable_zuirch_ending", "targetname");
   e_who = var_5cca3f31 zurich_util::function_d1996775();
   level thread zurich_util::function_df1fc23b(1);
-  level notify(# "hash_21ddc441");
+  level notify("hash_21ddc441");
   level zurich_util::function_b0f0dd1f(1, "reverse_snow");
   level flag::set("flag_start_zurich_outro");
-  level notify(# "hash_8271ee50");
+  level notify("hash_8271ee50");
   music::setmusicstate("none");
   level util::clientnotify("sndPA");
   level thread audio::unlockfrontendmusic("mus_coalescence_theme_intro");
@@ -694,18 +418,9 @@ function function_1cc6775d() {
   level thread scene::play("cin_zur_20_01_plaza_1st_commander", e_who);
 }
 
-/*
-	Name: function_95ed5d29
-	Namespace: zurich_outro
-	Checksum: 0x11B5D634
-	Offset: 0x2DF0
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_95ed5d29(a_ents) {
-  level endon(# "hash_d71a6b5a");
-  level notify(# "hash_2e3e5b0a");
+  level endon("hash_d71a6b5a");
+  level notify("hash_2e3e5b0a");
   level thread connection_interrupted(0);
   level thread zurich_util::function_d0e3bb4(1);
   var_ccbdc630 = getent("coalescence_gate", "targetname");
@@ -714,15 +429,6 @@ function function_95ed5d29(a_ents) {
   umbragate_set("hq_atrium_umbra_gate", 1);
 }
 
-/*
-	Name: function_a947c3b3
-	Namespace: zurich_outro
-	Checksum: 0x9D11DA39
-	Offset: 0x2ED0
-	Size: 0x13C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a947c3b3(a_ents) {
   scene::waittill_skip_sequence_completed();
   level util::screen_message_delete();
@@ -740,30 +446,12 @@ function function_a947c3b3(a_ents) {
   skipto::objective_completed("zurich_outro");
 }
 
-/*
-	Name: function_2381bb7
-	Namespace: zurich_outro
-	Checksum: 0x5F1D7B49
-	Offset: 0x3018
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2381bb7() {
   level clientfield::set("set_post_color_grade_bank", 1);
   array::thread_all(level.players, & zurich_util::set_world_fog, 1);
   exploder::exploder("plaza_lights");
 }
 
-/*
-	Name: function_4590fc90
-	Namespace: zurich_outro
-	Checksum: 0x793E4F94
-	Offset: 0x3090
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4590fc90() {
   if(sessionmodeiscampaignzombiesgame()) {
     return;
@@ -771,7 +459,7 @@ function function_4590fc90() {
   level zurich_util::function_33ec653f("zurich_outro_dead_robot_node_spawn_manager", undefined, 0.25, & function_710df260);
   level zurich_util::function_33ec653f("zurich_outro_solider_idle_struct_spawn_manager", undefined, 0.25, & function_29d8cf02);
   spawner::simple_spawn_single("plaza_battle_boss", & function_536749f9);
-  level waittill(# "hash_21ddc441");
+  level waittill("hash_21ddc441");
   level thread scene::play("outro_ambient_execution", "targetname");
   for (i = 1; i < 5; i++) {
     level thread zurich_util::function_33ec653f("zurich_outro_solider_patrol_struct_spawn_manager_0" + i, undefined, 0.15, & function_83b161ee, "zurich_outro_solider_patrol_struct_spawner_0" + i);
@@ -779,15 +467,6 @@ function function_4590fc90() {
   level thread zurich_util::function_33ec653f("zurich_outro_solider_patrol", undefined, undefined, & function_9f8eef7b);
 }
 
-/*
-	Name: function_536749f9
-	Namespace: zurich_outro
-	Checksum: 0xC3DD1E84
-	Offset: 0x3210
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_536749f9() {
   var_dbb2d033 = getnode("zurich_outro_quadtank_death", "targetname");
   self.origin = var_dbb2d033.origin;
@@ -795,73 +474,28 @@ function function_536749f9() {
   self dodamage(self.health, self.origin);
 }
 
-/*
-	Name: function_710df260
-	Namespace: zurich_outro
-	Checksum: 0x3A359F93
-	Offset: 0x32A0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_710df260() {
   self dodamage(self.health, self.origin);
 }
 
-/*
-	Name: function_29d8cf02
-	Namespace: zurich_outro
-	Checksum: 0x6ACDCC28
-	Offset: 0x32D8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_29d8cf02() {
   util::wait_network_frame();
   self scene::play("sb_t7_c_nrc_assault_idle", self);
 }
 
-/*
-	Name: function_83b161ee
-	Namespace: zurich_outro
-	Checksum: 0xF768FC38
-	Offset: 0x3318
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_83b161ee(nd_goal) {
   self ai::set_ignoreall(1);
   wait(randomfloatrange(0.15, 0.5));
   self clearforcedgoal();
   self ai::patrol(getnode(nd_goal, "targetname"));
-  self waittill(# "goal");
+  self waittill("goal");
   self scene::play("sb_t7_c_nrc_assault_idle", self);
 }
 
-/*
-	Name: function_9f8eef7b
-	Namespace: zurich_outro
-	Checksum: 0x4D6F5B86
-	Offset: 0x33D8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9f8eef7b() {
   self ai::set_behavior_attribute("patrol", 1);
 }
 
-/*
-	Name: function_80c5347c
-	Namespace: zurich_outro
-	Checksum: 0xB12AEB21
-	Offset: 0x3408
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_80c5347c() {
   var_f201bfb1 = struct::get_array("outro_ambients", "targetname");
   if(!var_f201bfb1.size) {
@@ -870,15 +504,6 @@ function function_80c5347c() {
   level thread scene::play("outro_ambients", "targetname");
 }
 
-/*
-	Name: function_f568befc
-	Namespace: zurich_outro
-	Checksum: 0x19EB8DBD
-	Offset: 0x3478
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f568befc() {
   level scene::init("p7_fxanim_cp_zurich_vtol_landing_end_bundle");
   var_c5ac3179 = struct::get_array("s_outro_air_vtol", "targetname");
@@ -887,15 +512,6 @@ function function_f568befc() {
   level scene::play("p7_fxanim_cp_zurich_vtol_landing_end_bundle");
 }
 
-/*
-	Name: function_e26a2c57
-	Namespace: zurich_outro
-	Checksum: 0x15645FA9
-	Offset: 0x3538
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e26a2c57() {
   level._effect["vtol_exhaust"] = "vehicle/fx_vtol_mil_egypt_thruster_side";
   var_2ec6deda = util::spawn_model("veh_t7_mil_vtol_egypt", self.origin, self.angles);
@@ -907,15 +523,6 @@ function function_e26a2c57() {
   var_2ec6deda thread function_ffeb5fe9();
 }
 
-/*
-	Name: function_ffeb5fe9
-	Namespace: zurich_outro
-	Checksum: 0x2243EDA3
-	Offset: 0x3640
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ffeb5fe9() {
   s_start = self.var_fdcf75a9;
   s_next = struct::get(s_start.target, "targetname");
@@ -924,25 +531,16 @@ function function_ffeb5fe9() {
   n_time = n_distance / self.n_speed;
   self moveto(s_next.origin, n_time);
   self rotateto(s_next.angles, n_time);
-  self waittill(# "movedone");
+  self waittill("movedone");
   if(self.model === "veh_t7_mil_vtol_egypt") {
     self thread function_61438a39();
-    level waittill(# "hash_d71a6b5a");
+    level waittill("hash_d71a6b5a");
   }
   self delete();
 }
 
-/*
-	Name: function_61438a39
-	Namespace: zurich_outro
-	Checksum: 0xAA75216B
-	Offset: 0x37A8
-	Size: 0x146
-	Parameters: 0
-	Flags: Linked
-*/
 function function_61438a39() {
-  level endon(# "hash_d71a6b5a");
+  level endon("hash_d71a6b5a");
   var_8d7eab33 = self.angles;
   n_start_pos = self.origin;
   while (true) {
@@ -958,15 +556,6 @@ function function_61438a39() {
   }
 }
 
-/*
-	Name: function_73b35f7b
-	Namespace: zurich_outro
-	Checksum: 0x3DBA23F1
-	Offset: 0x38F8
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_73b35f7b(b_locked) {
   self util::freeze_player_controls(1);
   self disableweapons();
@@ -979,15 +568,6 @@ function function_73b35f7b(b_locked) {
   }
 }
 
-/*
-	Name: function_ba91aecf
-	Namespace: zurich_outro
-	Checksum: 0xF5667C9B
-	Offset: 0x39F0
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ba91aecf() {
   self util::freeze_player_controls(0);
   self enableweapons();
@@ -1000,21 +580,12 @@ function function_ba91aecf() {
   }
 }
 
-/*
-	Name: larry_the_limper
-	Namespace: zurich_outro
-	Checksum: 0x1C9FB087
-	Offset: 0x3AB8
-	Size: 0x2FC
-	Parameters: 0
-	Flags: Linked
-*/
 function larry_the_limper() {
   if(sessionmodeiscampaignzombiesgame()) {
     return;
   }
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   self.var_ea4a62a = util::spawn_model("tag_origin");
   self playersetgroundreferenceent(self.var_ea4a62a);
   self setmovespeedscale(0.85);
@@ -1061,19 +632,10 @@ function larry_the_limper() {
   }
 }
 
-/*
-	Name: limp_loop
-	Namespace: zurich_outro
-	Checksum: 0x646D4621
-	Offset: 0x3DC0
-	Size: 0x26C
-	Parameters: 0
-	Flags: Linked
-*/
 function limp_loop() {
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "player_not_moving");
+  self endon("disconnect");
+  self endon("death");
+  self endon("player_not_moving");
   self setblur(0.5, 0.5);
   var_f7fdecc8 = (level.var_a8cde67a, level.var_ced060e3, level.var_5cc8f1a8);
   v_angles = self adjust_angles_to_player(var_f7fdecc8);
@@ -1093,24 +655,15 @@ function limp_loop() {
   wait(level.var_ca92fecf);
 }
 
-/*
-	Name: player_velocity_tracker
-	Namespace: zurich_outro
-	Checksum: 0x6D6EDF56
-	Offset: 0x4038
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function player_velocity_tracker() {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   var_7ba6849c = 0;
   while (true) {
     v_player_velocity = self getvelocity();
     self.player_speed = abs(v_player_velocity[0]) + abs(v_player_velocity[1]);
     if(self.player_speed < 1 && var_7ba6849c > 1) {
-      self notify(# "player_not_moving");
+      self notify("player_not_moving");
       self.var_ea4a62a rotateto((0, 0, 0), 1);
       wait(0.5);
     }
@@ -1122,15 +675,6 @@ function player_velocity_tracker() {
   }
 }
 
-/*
-	Name: larry_the_limper_tweaktech
-	Namespace: zurich_outro
-	Checksum: 0x15FEE990
-	Offset: 0x4168
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function larry_the_limper_tweaktech() {
   level.var_a8cde67a = level.var_8f8774d5;
   level.var_ced060e3 = level.var_6984fa6c;
@@ -1161,15 +705,6 @@ function larry_the_limper_tweaktech() {
   level.var_2bd8595 = level.var_6dcb06fa;
 }
 
-/*
-	Name: larry_the_limper_tweaktech_fast
-	Namespace: zurich_outro
-	Checksum: 0x84339780
-	Offset: 0x4328
-	Size: 0x1B4
-	Parameters: 0
-	Flags: None
-*/
 function larry_the_limper_tweaktech_fast() {
   level.var_a8cde67a = level.var_8f8774d5;
   level.var_ced060e3 = level.var_6984fa6c;
@@ -1200,15 +735,6 @@ function larry_the_limper_tweaktech_fast() {
   level.var_2bd8595 = level.var_6dcb06fa;
 }
 
-/*
-	Name: larry_the_limper_tweaktech_halved
-	Namespace: zurich_outro
-	Checksum: 0xA56751F9
-	Offset: 0x44E8
-	Size: 0x28C
-	Parameters: 0
-	Flags: Linked
-*/
 function larry_the_limper_tweaktech_halved() {
   level.var_a8cde67a = 0.8 * level.var_8f8774d5;
   level.var_ced060e3 = 0.8 * level.var_6984fa6c;
@@ -1239,15 +765,6 @@ function larry_the_limper_tweaktech_halved() {
   level.var_2bd8595 = 0.8 * level.var_6dcb06fa;
 }
 
-/*
-	Name: decent_straight_limp
-	Namespace: zurich_outro
-	Checksum: 0xDB641C9D
-	Offset: 0x4780
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function decent_straight_limp() {
   level.var_8f8774d5 = 0;
   level.var_6984fa6c = 0;
@@ -1278,15 +795,6 @@ function decent_straight_limp() {
   level.var_6dcb06fa = 0.5;
 }
 
-/*
-	Name: decent_leftlimp
-	Namespace: zurich_outro
-	Checksum: 0x91ECB5B6
-	Offset: 0x4910
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function decent_leftlimp() {
   level.var_8f8774d5 = 0;
   level.var_6984fa6c = 5;
@@ -1317,15 +825,6 @@ function decent_leftlimp() {
   level.var_6dcb06fa = 0.5;
 }
 
-/*
-	Name: decent_rightlimp
-	Namespace: zurich_outro
-	Checksum: 0x21D2A417
-	Offset: 0x4AA0
-	Size: 0x188
-	Parameters: 0
-	Flags: Linked
-*/
 function decent_rightlimp() {
   level.var_8f8774d5 = -2;
   level.var_6984fa6c = -5;
@@ -1356,18 +855,9 @@ function decent_rightlimp() {
   level.var_6dcb06fa = 0.2;
 }
 
-/*
-	Name: adjust_angles_to_player
-	Namespace: zurich_outro
-	Checksum: 0x6DD167A3
-	Offset: 0x4C30
-	Size: 0x138
-	Parameters: 1
-	Flags: Linked
-*/
 function adjust_angles_to_player(var_cb29ad00) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   var_ba8b2edd = var_cb29ad00[0];
   v_ra = var_cb29ad00[2];
   var_7d94cf0c = anglestoright(self.angles);
@@ -1379,18 +869,9 @@ function adjust_angles_to_player(var_cb29ad00) {
   return v_angles + (0, var_cb29ad00[1], 0);
 }
 
-/*
-	Name: player_speed_set
-	Namespace: zurich_outro
-	Checksum: 0xEA8FCBB1
-	Offset: 0x4D70
-	Size: 0x1A4
-	Parameters: 2
-	Flags: Linked
-*/
 function player_speed_set(n_speed, n_time) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   var_6d63a9b5 = getdvarint("g_speed");
   var_f44c8c7e = n_speed;
   if(isdefined(self._player_speed_modifier)) {
@@ -1411,15 +892,6 @@ function player_speed_set(n_speed, n_time) {
   setdvar("g_speed", var_f44c8c7e);
 }
 
-/*
-	Name: function_3ec4c691
-	Namespace: zurich_outro
-	Checksum: 0x677DE91A
-	Offset: 0x4F20
-	Size: 0x4AC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3ec4c691() {
   var_5cca3f31 = getent("trig_enable_zuirch_ending", "targetname");
   var_5cca3f31.origin = var_5cca3f31.origin + vectorscale((0, 0, 1), 1000);
@@ -1436,7 +908,7 @@ function function_3ec4c691() {
   var_5cca3f31.origin = var_5cca3f31.origin + (vectorscale((0, 0, -1), 1000));
   wait(0.2);
   var_5cca3f31 zurich_util::function_d1996775();
-  level notify(# "hash_21ddc441");
+  level notify("hash_21ddc441");
   level clientfield::set("set_post_color_grade_bank", 1);
   array::thread_all(level.players, & zurich_util::set_world_fog, 1);
   exploder::exploder("plaza_lights");
@@ -1460,17 +932,8 @@ function function_3ec4c691() {
   level thread scene::play("cin_zmcp_20_01_plaza_1st_outro");
 }
 
-/*
-	Name: function_7e39583d
-	Namespace: zurich_outro
-	Checksum: 0x4F39D3F8
-	Offset: 0x53D8
-	Size: 0x2A2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7e39583d(players) {
-  self endon(# "death");
+  self endon("death");
   foreach(player in level.players) {
     foreach(var_e6ef2725 in level.players) {
       player setinvisibletoplayer(var_e6ef2725, 1);
@@ -1489,15 +952,6 @@ function function_7e39583d(players) {
   }
 }
 
-/*
-	Name: function_93ffcbdf
-	Namespace: zurich_outro
-	Checksum: 0xCAC08B1D
-	Offset: 0x5688
-	Size: 0x30C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_93ffcbdf(a_ents) {
   if(isdefined(level.bzm_zurichdialogue25callback)) {
     [
@@ -1529,15 +983,6 @@ function function_93ffcbdf(a_ents) {
   skipto::objective_completed("zurich_outro");
 }
 
-/*
-	Name: function_72f4ee18
-	Namespace: zurich_outro
-	Checksum: 0x6487CC74
-	Offset: 0x59A0
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function function_72f4ee18(a_ents) {
   foreach(ent in a_ents) {
     ent sethighdetail(1);

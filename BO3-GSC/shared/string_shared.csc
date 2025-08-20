@@ -1,2 +1,6 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\string_shared.csc
+*************************************************/
+
 #using scripts\shared\array_shared;

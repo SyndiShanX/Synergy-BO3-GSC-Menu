@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicle_death_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\flag_shared;
 #using scripts\shared\math_shared;
@@ -7,50 +11,21 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_shared;
-
 #using_animtree("generic");
-
 #namespace vehicle_death;
 
-/*
-	Name: __init__sytem__
-	Namespace: vehicle_death
-	Checksum: 0xA2D3384B
-	Offset: 0x450
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("vehicle_death", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: vehicle_death
-	Checksum: 0x4CD01A4B
-	Offset: 0x490
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   setdvar("debug_crash_type", -1);
 }
 
-/*
-	Name: main
-	Namespace: vehicle_death
-	Checksum: 0xF31DF8C6
-	Offset: 0x4C0
-	Size: 0x630
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
-  self endon(# "nodeath_thread");
+  self endon("nodeath_thread");
   while (isdefined(self)) {
-    self waittill(# "death", attacker, damagefromunderneath, weapon, point, dir);
+    self waittill("death", attacker, damagefromunderneath, weapon, point, dir);
     if(isdefined(self.death_enter_cb)) {
       [
         [self.death_enter_cb]
@@ -70,7 +45,7 @@ function main() {
       if(!(isdefined(self.dont_kill_riders) && self.dont_kill_riders)) {
         self death_cleanup_riders();
       }
-      self notify(# "delete_destructible");
+      self notify("delete_destructible");
       return;
     }
     self vehicle::lights_off();
@@ -98,7 +73,7 @@ function main() {
           self.isacorpse = 1;
           wait(0.05);
           if(isdefined(self)) {
-            self notify(# "death_finished");
+            self notify("death_finished");
             self delete();
           }
         }
@@ -126,8 +101,8 @@ function main() {
       while (isdefined(self) && isdefined(self.dontfreeme)) {
         wait(0.05);
       }
-      self notify(# "stop_looping_death_fx");
-      self notify(# "death_finished");
+      self notify("stop_looping_death_fx");
+      self notify("death_finished");
       wait(0.05);
       if(isdefined(self)) {
         if(vehicle::is_corpse(self)) {
@@ -154,28 +129,10 @@ function main() {
   }
 }
 
-/*
-	Name: do_scripted_crash
-	Namespace: vehicle_death
-	Checksum: 0x3E34D393
-	Offset: 0xAF8
-	Size: 0x26
-	Parameters: 0
-	Flags: Linked
-*/
 function do_scripted_crash() {
   return !isdefined(self.do_scripted_crash) || (isdefined(self.do_scripted_crash) && self.do_scripted_crash);
 }
 
-/*
-	Name: play_death_audio
-	Namespace: vehicle_death
-	Checksum: 0x41E563D8
-	Offset: 0xB28
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function play_death_audio() {
   if(isdefined(self) && (isdefined(self.vehicleclass) && self.vehicleclass == "helicopter")) {
     if(!isdefined(self.death_counter)) {
@@ -188,30 +145,12 @@ function play_death_audio() {
   }
 }
 
-/*
-	Name: play_spinning_plane_sound
-	Namespace: vehicle_death
-	Checksum: 0x60D9FA49
-	Offset: 0xBB0
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function play_spinning_plane_sound() {
   self playloopsound("veh_drone_spin", 0.05);
   level util::waittill_any("crash_move_done", "death");
   self stoploopsound(0.02);
 }
 
-/*
-	Name: set_death_model
-	Namespace: vehicle_death
-	Checksum: 0xDCA0F9B2
-	Offset: 0xC30
-	Size: 0x10C
-	Parameters: 2
-	Flags: Linked
-*/
 function set_death_model(smodel, fdelay) {
   if(!isdefined(smodel)) {
     return;
@@ -238,15 +177,6 @@ function set_death_model(smodel, fdelay) {
   }
 }
 
-/*
-	Name: aircraft_crash
-	Namespace: vehicle_death
-	Checksum: 0x1CFBC55
-	Offset: 0xD48
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function aircraft_crash(point, dir) {
   self.crashing = 1;
   if(isdefined(self.unloading)) {
@@ -261,15 +191,6 @@ function aircraft_crash(point, dir) {
   self thread play_spinning_plane_sound();
 }
 
-/*
-	Name: helicopter_crash
-	Namespace: vehicle_death
-	Checksum: 0xBE09BF78
-	Offset: 0xDD8
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function helicopter_crash(point, dir) {
   self.crashing = 1;
   self thread play_crashing_loop();
@@ -284,17 +205,8 @@ function helicopter_crash(point, dir) {
   self thread helicopter_crash_movement(point, dir);
 }
 
-/*
-	Name: helicopter_crash_movement
-	Namespace: vehicle_death
-	Checksum: 0x93541DD2
-	Offset: 0xE60
-	Size: 0x4B6
-	Parameters: 2
-	Flags: Linked
-*/
 function helicopter_crash_movement(point, dir) {
-  self endon(# "crash_done");
+  self endon("crash_done");
   self cancelaimove();
   self clearvehgoalpos();
   if(isdefined(level.heli_crash_smoke_trail_fx)) {
@@ -354,23 +266,14 @@ function helicopter_crash_movement(point, dir) {
   self thread crash_collision_test();
   wait(15);
   if(isdefined(self)) {
-    self notify(# "crash_done");
+    self notify("crash_done");
   }
 }
 
-/*
-	Name: helicopter_crash_accel
-	Namespace: vehicle_death
-	Checksum: 0xE91642B0
-	Offset: 0x1320
-	Size: 0xA8
-	Parameters: 0
-	Flags: Linked
-*/
 function helicopter_crash_accel() {
-  self endon(# "crash_done");
-  self endon(# "crash_move_done");
-  self endon(# "death");
+  self endon("crash_done");
+  self endon("crash_move_done");
+  self endon("death");
   if(!isdefined(self.crash_accel)) {
     self.crash_accel = randomfloatrange(50, 80);
   }
@@ -380,19 +283,10 @@ function helicopter_crash_accel() {
   }
 }
 
-/*
-	Name: helicopter_crash_rotation
-	Namespace: vehicle_death
-	Checksum: 0x40006202
-	Offset: 0x13D0
-	Size: 0x388
-	Parameters: 2
-	Flags: Linked
-*/
 function helicopter_crash_rotation(point, dir) {
-  self endon(# "crash_done");
-  self endon(# "crash_move_done");
-  self endon(# "death");
+  self endon("crash_done");
+  self endon("crash_move_done");
+  self endon("death");
   start_angles = self.angles;
   start_angles = (start_angles[0] + 10, start_angles[1], start_angles[2]);
   start_angles = (start_angles[0], start_angles[1], start_angles[2] + 10);
@@ -428,49 +322,32 @@ function helicopter_crash_rotation(point, dir) {
   }
 }
 
-/*
-	Name: helicopter_crash_zone_accel
-	Namespace: vehicle_death
-	Checksum: 0x31B6E14B
-	Offset: 0x1760
-	Size: 0x640
-	Parameters: 1
-	Flags: Linked
-*/
 function helicopter_crash_zone_accel(dir) {
-  self endon(# "crash_done");
-  self endon(# "crash_move_done");
+  self endon("crash_done");
+  self endon("crash_move_done");
   torque = (0, randomintrange(90, 150), 0);
   ang_vel = self getangularvelocity();
   torque = torque * math::sign(ang_vel[1]);
-  /#
   if(isdefined(self.crash_zone.height)) {
     self.crash_zone.height = 0;
   }
-  # /
-    if(abs(self.angles[2]) < 3) {
-      self.angles = (self.angles[0], self.angles[1], randomintrange(3, 6) * math::sign(self.angles[2]));
-    }
+  if(abs(self.angles[2]) < 3) {
+    self.angles = (self.angles[0], self.angles[1], randomintrange(3, 6) * math::sign(self.angles[2]));
+  }
   is_vtol = issubstr(self.vehicletype, "v78");
   if(is_vtol) {
     torque = torque * 0.3;
   }
   while (isdefined(self)) {
-    /#
     assert(isdefined(self.crash_zone));
-    # /
-      dist = distance2d(self.origin, self.crash_zone.origin);
+    dist = distance2d(self.origin, self.crash_zone.origin);
     if(dist < self.crash_zone.radius) {
       self setphysacceleration(vectorscale((0, 0, -1), 400));
-      /#
       circle(self.crash_zone.origin + (0, 0, self.crash_zone.height), self.crash_zone.radius, (0, 1, 0), 0, 2000);
-      # /
-        self.crash_accel = 0;
+      self.crash_accel = 0;
     } else {
       self setphysacceleration(vectorscale((0, 0, -1), 50));
-      /#
       circle(self.crash_zone.origin + (0, 0, self.crash_zone.height), self.crash_zone.radius, (1, 0, 0), 0, 2);
-      # /
     }
     self.crash_vel = self.crash_zone.origin - self.origin;
     self.crash_vel = (self.crash_vel[0], self.crash_vel[1], 0);
@@ -503,38 +380,20 @@ function helicopter_crash_zone_accel(dir) {
   }
 }
 
-/*
-	Name: helicopter_collision
-	Namespace: vehicle_death
-	Checksum: 0x4790C3D
-	Offset: 0x1DA8
-	Size: 0xDA
-	Parameters: 0
-	Flags: None
-*/
 function helicopter_collision() {
-  self endon(# "crash_done");
+  self endon("crash_done");
   while (true) {
-    self waittill(# "veh_collision", velocity, normal);
+    self waittill("veh_collision", velocity, normal);
     ang_vel = self getangularvelocity() * 0.5;
     self setangularvelocity(ang_vel);
     if(normal[2] < 0.7) {
       self setvehvelocity(self.velocity + (normal * 70));
     } else {
-      self notify(# "crash_done");
+      self notify("crash_done");
     }
   }
 }
 
-/*
-	Name: play_crashing_loop
-	Namespace: vehicle_death
-	Checksum: 0x34BD476F
-	Offset: 0x1E90
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function play_crashing_loop() {
   ent = spawn("script_origin", self.origin);
   ent linkto(self);
@@ -543,17 +402,8 @@ function play_crashing_loop() {
   ent delete();
 }
 
-/*
-	Name: helicopter_explode
-	Namespace: vehicle_death
-	Checksum: 0x360CAF15
-	Offset: 0x1F48
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function helicopter_explode(delete_me) {
-  self endon(# "death");
+  self endon("death");
   self vehicle::do_death_fx();
   if(isdefined(delete_me) && delete_me == 1) {
     self delete();
@@ -561,18 +411,9 @@ function helicopter_explode(delete_me) {
   self thread set_death_model(self.deathmodel, self.modelswapdelay);
 }
 
-/*
-	Name: aircraft_crash_move
-	Namespace: vehicle_death
-	Checksum: 0xA1CBE6CD
-	Offset: 0x1FD8
-	Size: 0x5A8
-	Parameters: 2
-	Flags: Linked
-*/
 function aircraft_crash_move(point, dir) {
-  self endon(# "crash_move_done");
-  self endon(# "death");
+  self endon("crash_move_done");
+  self endon("death");
   self thread crash_collision_test();
   self clearvehgoalpos();
   self cancelaimove();
@@ -638,34 +479,16 @@ function aircraft_crash_move(point, dir) {
   }
 }
 
-/*
-	Name: delay_set_gravity
-	Namespace: vehicle_death
-	Checksum: 0x5CEA5205
-	Offset: 0x2588
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function delay_set_gravity(delay) {
-  self endon(# "crash_move_done");
-  self endon(# "death");
+  self endon("crash_move_done");
+  self endon("death");
   wait(delay);
   self setphysacceleration((randomintrange(-1600, 1600), randomintrange(-1600, 1600), -1600));
 }
 
-/*
-	Name: helicopter_crash_move
-	Namespace: vehicle_death
-	Checksum: 0x56026486
-	Offset: 0x2608
-	Size: 0x378
-	Parameters: 2
-	Flags: None
-*/
 function helicopter_crash_move(point, dir) {
-  self endon(# "crash_move_done");
-  self endon(# "death");
+  self endon("crash_move_done");
+  self endon("death");
   self thread crash_collision_test();
   self cancelaimove();
   self clearvehgoalpos();
@@ -702,15 +525,6 @@ function helicopter_crash_move(point, dir) {
   }
 }
 
-/*
-	Name: boat_crash
-	Namespace: vehicle_death
-	Checksum: 0xFBE3AB51
-	Offset: 0x2988
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function boat_crash(point, dir) {
   self.crashing = 1;
   if(isdefined(self.unloading)) {
@@ -724,18 +538,9 @@ function boat_crash(point, dir) {
   self thread boat_crash_movement(point, dir);
 }
 
-/*
-	Name: boat_crash_movement
-	Namespace: vehicle_death
-	Checksum: 0xD69D1E48
-	Offset: 0x2A00
-	Size: 0x2C0
-	Parameters: 2
-	Flags: Linked
-*/
 function boat_crash_movement(point, dir) {
-  self endon(# "crash_move_done");
-  self endon(# "death");
+  self endon("crash_move_done");
+  self endon("death");
   self cancelaimove();
   self clearvehgoalpos();
   self setphysacceleration(vectorscale((0, 0, -1), 50));
@@ -763,34 +568,16 @@ function boat_crash_movement(point, dir) {
   }
 }
 
-/*
-	Name: boat_crash_monitor
-	Namespace: vehicle_death
-	Checksum: 0xAD262DEA
-	Offset: 0x2CC8
-	Size: 0x5A
-	Parameters: 3
-	Flags: Linked
-*/
 function boat_crash_monitor(point, dir, crash_time) {
-  self endon(# "death");
+  self endon("death");
   wait(crash_time);
-  self notify(# "crash_move_done");
+  self notify("crash_move_done");
   self crash_stop();
-  self notify(# "crash_done");
+  self notify("crash_done");
 }
 
-/*
-	Name: crash_stop
-	Namespace: vehicle_death
-	Checksum: 0x5D209FC5
-	Offset: 0x2D30
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function crash_stop() {
-  self endon(# "death");
+  self endon("death");
   self setphysacceleration((0, 0, 0));
   self setrotorspeed(0);
   speed = self getspeedmph();
@@ -811,42 +598,24 @@ function crash_stop() {
   self vehicle::toggle_sounds(0);
 }
 
-/*
-	Name: crash_collision_test
-	Namespace: vehicle_death
-	Checksum: 0x77E5CBFE
-	Offset: 0x2ED8
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function crash_collision_test() {
-  self endon(# "death");
-  self waittill(# "veh_collision", velocity, normal);
+  self endon("death");
+  self waittill("veh_collision", velocity, normal);
   self helicopter_explode();
-  self notify(# "crash_move_done");
+  self notify("crash_move_done");
   if(normal[2] > 0.7) {
     forward = anglestoforward(self.angles);
     right = vectorcross(normal, forward);
     desired_forward = vectorcross(right, normal);
     self setphysangles(vectortoangles(desired_forward));
     self crash_stop();
-    self notify(# "crash_done");
+    self notify("crash_done");
   } else {
     wait(0.05);
     self delete();
   }
 }
 
-/*
-	Name: crash_path_check
-	Namespace: vehicle_death
-	Checksum: 0x97B039A5
-	Offset: 0x3040
-	Size: 0x1B2
-	Parameters: 1
-	Flags: Linked
-*/
 function crash_path_check(node) {
   targ = node;
   for (search_depth = 5; isdefined(targ) && search_depth >= 0; search_depth--) {
@@ -872,15 +641,6 @@ function crash_path_check(node) {
   return false;
 }
 
-/*
-	Name: death_firesound
-	Namespace: vehicle_death
-	Checksum: 0x37DD2DAB
-	Offset: 0x3200
-	Size: 0x70
-	Parameters: 1
-	Flags: None
-*/
 function death_firesound(sound) {
   self thread sound::loop_on_tag(sound, undefined, 0);
   self util::waittill_any("fire_extinguish", "stop_crash_loop_sound");
@@ -890,15 +650,6 @@ function death_firesound(sound) {
   self notify("stop sound" + sound);
 }
 
-/*
-	Name: death_fx
-	Namespace: vehicle_death
-	Checksum: 0x99A681CF
-	Offset: 0x3278
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function death_fx() {
   if(self vehicle::is_destructible()) {
     return;
@@ -911,15 +662,6 @@ function death_fx() {
   }
 }
 
-/*
-	Name: death_make_badplace
-	Namespace: vehicle_death
-	Checksum: 0x8674DF3E
-	Offset: 0x32F0
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function death_make_badplace(type) {
   if(!isdefined(level.vehicle_death_badplace[type])) {
     return;
@@ -934,24 +676,15 @@ function death_make_badplace(type) {
   badplace_box("vehicle_kill_badplace", struct.duration, self.origin, struct.radius, "all");
 }
 
-/*
-	Name: death_jolt
-	Namespace: vehicle_death
-	Checksum: 0x9B380FA3
-	Offset: 0x33A0
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function death_jolt(type) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.ignore_death_jolt) && self.ignore_death_jolt) {
     return;
   }
   self joltbody(self.origin + (23, 33, 64), 3);
   if(isdefined(self.death_anim)) {
     self animscripted("death_anim", self.origin, self.angles, self.death_anim, "normal", % generic::root, 1, 0);
-    self waittillmatch(# "death_anim");
+    self waittillmatch("death_anim");
   } else if(self.isphysicsvehicle) {
     num_launch_multiplier = 1;
     if(isdefined(self.physicslaunchdeathscale)) {
@@ -961,70 +694,28 @@ function death_jolt(type) {
   }
 }
 
-/*
-	Name: deathrollon
-	Namespace: vehicle_death
-	Checksum: 0x5449791F
-	Offset: 0x3520
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function deathrollon() {
   if(self.health > 0) {
     self.rollingdeath = 1;
   }
 }
 
-/*
-	Name: deathrolloff
-	Namespace: vehicle_death
-	Checksum: 0x1B628B79
-	Offset: 0x3548
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function deathrolloff() {
   self.rollingdeath = undefined;
-  self notify(# "deathrolloff");
+  self notify("deathrolloff");
 }
 
-/*
-	Name: loop_fx_on_vehicle_tag
-	Namespace: vehicle_death
-	Checksum: 0x1043DC4E
-	Offset: 0x3570
-	Size: 0xBE
-	Parameters: 3
-	Flags: None
-*/
 function loop_fx_on_vehicle_tag(effect, looptime, tag) {
-  /#
   assert(isdefined(effect));
-  # /
-    /#
   assert(isdefined(tag));
-  # /
-    /#
   assert(isdefined(looptime));
-  # /
-    self endon(# "stop_looping_death_fx");
+  self endon("stop_looping_death_fx");
   while (isdefined(self)) {
     playfxontag(effect, deathfx_ent(), tag);
     wait(looptime);
   }
 }
 
-/*
-	Name: deathfx_ent
-	Namespace: vehicle_death
-	Checksum: 0xE7A1D4C
-	Offset: 0x3638
-	Size: 0x12A
-	Parameters: 0
-	Flags: Linked
-*/
 function deathfx_ent() {
   if(!isdefined(self.deathfx_ent)) {
     ent = spawn("script_model", (0, 0, 0));
@@ -1042,15 +733,6 @@ function deathfx_ent() {
   return self.deathfx_ent;
 }
 
-/*
-	Name: death_cleanup_level_variables
-	Namespace: vehicle_death
-	Checksum: 0x274BA33D
-	Offset: 0x3770
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function death_cleanup_level_variables() {
   script_linkname = self.script_linkname;
   targetname = self.targetname;
@@ -1071,15 +753,6 @@ function death_cleanup_level_variables() {
   }
 }
 
-/*
-	Name: death_cleanup_riders
-	Namespace: vehicle_death
-	Checksum: 0xD35C1ACA
-	Offset: 0x38A8
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function death_cleanup_riders() {
   if(isdefined(self.riders)) {
     for (j = 0; j < self.riders.size; j++) {
@@ -1093,17 +766,8 @@ function death_cleanup_riders() {
   }
 }
 
-/*
-	Name: death_radius_damage
-	Namespace: vehicle_death
-	Checksum: 0x65E7FA1D
-	Offset: 0x3940
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function death_radius_damage(meansofdamage = "MOD_EXPLOSIVE") {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self) || self.abandoned === 1 || self.damage_on_death === 0 || self.radiusdamageradius <= 0) {
     return;
   }
@@ -1118,15 +782,6 @@ function death_radius_damage(meansofdamage = "MOD_EXPLOSIVE") {
   }
 }
 
-/*
-	Name: death_update_crash
-	Namespace: vehicle_death
-	Checksum: 0xC1A92822
-	Offset: 0x3A60
-	Size: 0x2F4
-	Parameters: 2
-	Flags: Linked
-*/
 function death_update_crash(point, dir) {
   if(!isdefined(self.destructibledef)) {
     if(isdefined(self.script_crashtypeoverride)) {
@@ -1166,18 +821,18 @@ function death_update_crash(point, dir) {
           if(!isdefined(self.rollingdeath)) {
             self vehicle::set_speed(0, 25, "Dead");
           } else {
-            self waittill(# "deathrolloff");
+            self waittill("deathrolloff");
             self vehicle::set_speed(0, 25, "Dead, finished path intersection");
           }
           wait(0.4);
           if(isdefined(self) && !vehicle::is_corpse(self)) {
             self vehicle::set_speed(0, 10000, "deadstop");
-            self notify(# "deadstop");
+            self notify("deadstop");
             if(self.disconnectpathonstop === 1) {
               self vehicle::disconnect_paths();
             }
             if(isdefined(self.tankgetout) && self.tankgetout > 0) {
-              self waittill(# "animsdone");
+              self waittill("animsdone");
             }
           }
         }
@@ -1186,20 +841,11 @@ function death_update_crash(point, dir) {
   }
 }
 
-/*
-	Name: waittill_crash_done_or_stopped
-	Namespace: vehicle_death
-	Checksum: 0xE1B657A3
-	Offset: 0x3D60
-	Size: 0x180
-	Parameters: 0
-	Flags: Linked
-*/
 function waittill_crash_done_or_stopped() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self) && (isdefined(self.vehicleclass) && self.vehicleclass == "plane" || (isdefined(self.vehicleclass) && self.vehicleclass == "boat"))) {
     if(isdefined(self.crashing) && self.crashing == 1) {
-      self waittill(# "crash_done");
+      self waittill("crash_done");
     }
   } else {
     wait(0.2);
@@ -1224,24 +870,15 @@ function waittill_crash_done_or_stopped() {
   }
 }
 
-/*
-	Name: vehicle_damage_filter_damage_watcher
-	Namespace: vehicle_death
-	Checksum: 0xB9C422E9
-	Offset: 0x3EE8
-	Size: 0x1AC
-	Parameters: 2
-	Flags: Linked
-*/
 function vehicle_damage_filter_damage_watcher(driver, heavy_damage_threshold) {
-  self endon(# "death");
-  self endon(# "exit_vehicle");
-  self endon(# "end_damage_filter");
+  self endon("death");
+  self endon("exit_vehicle");
+  self endon("end_damage_filter");
   if(!isdefined(heavy_damage_threshold)) {
     heavy_damage_threshold = 100;
   }
   while (true) {
-    self waittill(# "damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon);
+    self waittill("damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon);
     earthquake(0.25, 0.15, self.origin, 512, self);
     driver playrumbleonentity("damage_light");
     time = gettime();
@@ -1257,32 +894,14 @@ function vehicle_damage_filter_damage_watcher(driver, heavy_damage_threshold) {
   }
 }
 
-/*
-	Name: vehicle_damage_filter_exit_watcher
-	Namespace: vehicle_death
-	Checksum: 0x87BD53C7
-	Offset: 0x40A0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function vehicle_damage_filter_exit_watcher(driver) {
   self util::waittill_any("exit_vehicle", "death", "end_damage_filter");
 }
 
-/*
-	Name: vehicle_damage_filter
-	Namespace: vehicle_death
-	Checksum: 0x7743D4CB
-	Offset: 0x40E8
-	Size: 0x188
-	Parameters: 4
-	Flags: Linked
-*/
 function vehicle_damage_filter(vision_set, heavy_damage_threshold, filterid = 0, b_use_player_damage = 0) {
-  self endon(# "death");
-  self endon(# "exit_vehicle");
-  self endon(# "end_damage_filter");
+  self endon("death");
+  self endon("exit_vehicle");
+  self endon("end_damage_filter");
   driver = self getseatoccupant(0);
   if(!isdefined(self.damage_filter_init)) {
     self.damage_filter_init = 1;
@@ -1303,15 +922,6 @@ function vehicle_damage_filter(vision_set, heavy_damage_threshold, filterid = 0,
   }
 }
 
-/*
-	Name: flipping_shooting_death
-	Namespace: vehicle_death
-	Checksum: 0x5430D41C
-	Offset: 0x4278
-	Size: 0x19C
-	Parameters: 2
-	Flags: None
-*/
 function flipping_shooting_death(attacker, hitdir) {
   if(isdefined(self.delete_on_death)) {
     if(isdefined(self)) {
@@ -1322,7 +932,7 @@ function flipping_shooting_death(attacker, hitdir) {
   if(!isdefined(self)) {
     return;
   }
-  self endon(# "death");
+  self endon("death");
   self death_cleanup_level_variables();
   self disableaimassist();
   self death_fx();
@@ -1333,24 +943,15 @@ function flipping_shooting_death(attacker, hitdir) {
   self vehicle::toggle_sounds(0);
   self vehicle::lights_off();
   self thread flipping_shooting_crash_movement(attacker, hitdir);
-  self waittill(# "crash_done");
+  self waittill("crash_done");
   while (isdefined(self.controlled) && self.controlled) {
     wait(0.05);
   }
   self delete();
 }
 
-/*
-	Name: plane_crash
-	Namespace: vehicle_death
-	Checksum: 0x41E158CD
-	Offset: 0x4420
-	Size: 0x28C
-	Parameters: 0
-	Flags: Linked
-*/
 function plane_crash() {
-  self endon(# "death");
+  self endon("death");
   self setphysacceleration(vectorscale((0, 0, -1), 1000));
   self.vehcheckforpredictedcrash = 1;
   forward = anglestoforward(self.angles);
@@ -1373,17 +974,8 @@ function plane_crash() {
   set_movement_and_accel(new_vel, ang_vel);
 }
 
-/*
-	Name: barrel_rolling_crash
-	Namespace: vehicle_death
-	Checksum: 0xD0997231
-	Offset: 0x46B8
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked
-*/
 function barrel_rolling_crash() {
-  self endon(# "death");
+  self endon("death");
   self setphysacceleration(vectorscale((0, 0, -1), 1000));
   self.vehcheckforpredictedcrash = 1;
   forward = anglestoforward(self.angles);
@@ -1403,17 +995,8 @@ function barrel_rolling_crash() {
   set_movement_and_accel(new_vel, ang_vel);
 }
 
-/*
-	Name: random_crash
-	Namespace: vehicle_death
-	Checksum: 0x7325C797
-	Offset: 0x4910
-	Size: 0x31C
-	Parameters: 1
-	Flags: Linked
-*/
 function random_crash(hitdir) {
-  self endon(# "death");
+  self endon("death");
   self setphysacceleration(vectorscale((0, 0, -1), 1000));
   self.vehcheckforpredictedcrash = 1;
   if(!isdefined(hitdir)) {
@@ -1439,15 +1022,6 @@ function random_crash(hitdir) {
   set_movement_and_accel(new_vel, ang_vel);
 }
 
-/*
-	Name: set_movement_and_accel
-	Namespace: vehicle_death
-	Checksum: 0x4B3E7008
-	Offset: 0x4C38
-	Size: 0x20E
-	Parameters: 2
-	Flags: Linked
-*/
 function set_movement_and_accel(new_vel, ang_vel) {
   self death_fx();
   self thread death_radius_damage();
@@ -1471,22 +1045,13 @@ function set_movement_and_accel(new_vel, ang_vel) {
     self vehicle::do_death_dynents();
     self set_death_model(self.deathmodel, self.modelswapdelay);
   } else {
-    self notify(# "crash_done");
+    self notify("crash_done");
   }
 }
 
-/*
-	Name: flipping_shooting_crash_movement
-	Namespace: vehicle_death
-	Checksum: 0xAAD4F63D
-	Offset: 0x4E50
-	Size: 0x19A
-	Parameters: 2
-	Flags: Linked
-*/
 function flipping_shooting_crash_movement(attacker, hitdir) {
-  self endon(# "crash_done");
-  self endon(# "death");
+  self endon("crash_done");
+  self endon("death");
   self cancelaimove();
   self clearvehgoalpos();
   self clearlookatent();
@@ -1516,15 +1081,6 @@ function flipping_shooting_crash_movement(attacker, hitdir) {
   }
 }
 
-/*
-	Name: flipping_shooting_dmg_snd
-	Namespace: vehicle_death
-	Checksum: 0x3CBAE300
-	Offset: 0x4FF8
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function flipping_shooting_dmg_snd() {
   dmg_ent = spawn("script_origin", self.origin);
   dmg_ent linkto(self);
@@ -1535,18 +1091,9 @@ function flipping_shooting_dmg_snd() {
   dmg_ent delete();
 }
 
-/*
-	Name: flipping_shooting_crash_accel
-	Namespace: vehicle_death
-	Checksum: 0x41466A4E
-	Offset: 0x50D0
-	Size: 0x300
-	Parameters: 0
-	Flags: Linked
-*/
 function flipping_shooting_crash_accel() {
-  self endon(# "crash_done");
-  self endon(# "death");
+  self endon("crash_done");
+  self endon("death");
   count = 0;
   prev_forward = anglestoforward(self.angles);
   prev_forward_vel = vectordot(self.velocity, prev_forward) * self.velocity_rotation_frac;
@@ -1583,15 +1130,6 @@ function flipping_shooting_crash_accel() {
   }
 }
 
-/*
-	Name: death_fire_loop_audio
-	Namespace: vehicle_death
-	Checksum: 0xEC5F4FE7
-	Offset: 0x53D8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function death_fire_loop_audio() {
   sound_ent = spawn("script_origin", self.origin);
   sound_ent playloopsound("veh_qrdrone_death_fire_loop", 0.1);
@@ -1600,47 +1138,20 @@ function death_fire_loop_audio() {
   sound_ent delete();
 }
 
-/*
-	Name: freewhensafe
-	Namespace: vehicle_death
-	Checksum: 0x4091733C
-	Offset: 0x5470
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function freewhensafe(time = 4) {
   self thread delayedremove_thread(time, 0);
 }
 
-/*
-	Name: deletewhensafe
-	Namespace: vehicle_death
-	Checksum: 0x884277C2
-	Offset: 0x54B8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function deletewhensafe(time = 4) {
   self thread delayedremove_thread(time, 1);
 }
 
-/*
-	Name: delayedremove_thread
-	Namespace: vehicle_death
-	Checksum: 0xC9DAEF3B
-	Offset: 0x5500
-	Size: 0xDC
-	Parameters: 2
-	Flags: Linked
-*/
 function delayedremove_thread(time, shoulddelete) {
   if(!isdefined(self)) {
     return;
   }
-  self endon(# "death");
-  self endon(# "free_vehicle");
+  self endon("death");
+  self endon("free_vehicle");
   if(shoulddelete === 1) {
     self setvehvelocity((0, 0, 0));
     self ghost();
@@ -1654,15 +1165,6 @@ function delayedremove_thread(time, shoulddelete) {
   }
 }
 
-/*
-	Name: cleanup
-	Namespace: vehicle_death
-	Checksum: 0x6DA5E86A
-	Offset: 0x55E8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function cleanup() {
   if(isdefined(self.cleanup_after_time)) {
     wait(self.cleanup_after_time);

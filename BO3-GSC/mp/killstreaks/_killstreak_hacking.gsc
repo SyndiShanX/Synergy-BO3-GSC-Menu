@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_killstreak_hacking.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\killstreaks\_killstreak_bundles;
@@ -10,18 +14,8 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
-
 #namespace killstreak_hacking;
 
-/*
-	Name: enable_hacking
-	Namespace: killstreak_hacking
-	Checksum: 0x9A316672
-	Offset: 0x218
-	Size: 0x1F0
-	Parameters: 3
-	Flags: Linked
-*/
 function enable_hacking(killstreakname, prehackfunction, posthackfunction) {
   killstreak = self;
   level.challenge_scorestreaksenabled = 1;
@@ -42,29 +36,11 @@ function enable_hacking(killstreakname, prehackfunction, posthackfunction) {
   killstreak.killstreak_hackedprotection = killstreak killstreak_bundles::get_hack_protection();
 }
 
-/*
-	Name: disable_hacking
-	Namespace: killstreak_hacking
-	Checksum: 0x80672ED6
-	Offset: 0x410
-	Size: 0x22
-	Parameters: 0
-	Flags: None
-*/
 function disable_hacking() {
   killstreak = self;
   killstreak.killstreak_hackedcallback = undefined;
 }
 
-/*
-	Name: hackerfx
-	Namespace: killstreak_hacking
-	Checksum: 0x9F1CC764
-	Offset: 0x440
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function hackerfx() {
   killstreak = self;
   if(isdefined(killstreak.killstreakhackfx) && killstreak.killstreakhackfx != "") {
@@ -72,15 +48,6 @@ function hackerfx() {
   }
 }
 
-/*
-	Name: hackerloopfx
-	Namespace: killstreak_hacking
-	Checksum: 0x9EA8BC02
-	Offset: 0x4B8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function hackerloopfx() {
   killstreak = self;
   if(isdefined(killstreak.killstreakloophackfx) && killstreak.killstreakloophackfx != "") {
@@ -88,15 +55,6 @@ function hackerloopfx() {
   }
 }
 
-/*
-	Name: _hacked_callback
-	Namespace: killstreak_hacking
-	Checksum: 0x287BDD31
-	Offset: 0x530
-	Size: 0x1E4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _hacked_callback(hacker) {
   killstreak = self;
   originalowner = killstreak.owner;
@@ -125,29 +83,11 @@ function private _hacked_callback(hacker) {
   killstreak _update_health(hacker);
 }
 
-/*
-	Name: override_hacked_killstreak_reference
-	Namespace: killstreak_hacking
-	Checksum: 0x98E3CB3C
-	Offset: 0x720
-	Size: 0x30
-	Parameters: 1
-	Flags: None
-*/
 function override_hacked_killstreak_reference(killstreakref) {
   killstreak = self;
   killstreak.hackedkillstreakref = killstreakref;
 }
 
-/*
-	Name: get_hacked_timeout_duration_ms
-	Namespace: killstreak_hacking
-	Checksum: 0x19ECF789
-	Offset: 0x758
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function get_hacked_timeout_duration_ms() {
   killstreak = self;
   timeout = killstreak killstreak_bundles::get_hack_timeout();
@@ -155,22 +95,11 @@ function get_hacked_timeout_duration_ms() {
     /# /
     #
     assertmsg(("" + killstreak.killstreaktype) + "");
-    # /
-      # /
-      return;
+    return;
   }
   return timeout * 1000;
 }
 
-/*
-	Name: set_vehicle_drivable_time_starting_now
-	Namespace: killstreak_hacking
-	Checksum: 0x74AD9713
-	Offset: 0x7F8
-	Size: 0x6A
-	Parameters: 2
-	Flags: Linked
-*/
 function set_vehicle_drivable_time_starting_now(killstreak, duration_ms = -1) {
   if(duration_ms == -1) {
     duration_ms = killstreak get_hacked_timeout_duration_ms();
@@ -178,15 +107,6 @@ function set_vehicle_drivable_time_starting_now(killstreak, duration_ms = -1) {
   return self vehicle::set_vehicle_drivable_time_starting_now(duration_ms);
 }
 
-/*
-	Name: _update_health
-	Namespace: killstreak_hacking
-	Checksum: 0x11725507
-	Offset: 0x870
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function _update_health(hacker) {
   killstreak = self;
   if(isdefined(killstreak.hackedhealthupdatecallback)) {
@@ -194,51 +114,26 @@ function _update_health(hacker) {
   } else {
     if(issentient(killstreak)) {
       hackedhealth = killstreak_bundles::get_hacked_health(killstreak.killstreaktype);
-      /#
       assert(isdefined(hackedhealth));
-      # /
-        if(self.health > hackedhealth) {
-          self.health = hackedhealth;
-        }
+      if(self.health > hackedhealth) {
+        self.health = hackedhealth;
+      }
     } else {
-      /#
       hacker iprintlnbold("");
-      # /
     }
   }
 }
 
-/*
-	Name: killstreak_switch_team_end
-	Namespace: killstreak_hacking
-	Checksum: 0x620FB7D2
-	Offset: 0x968
-	Size: 0x28
-	Parameters: 0
-	Flags: Linked
-*/
 function killstreak_switch_team_end() {
-  /#
   killstreakentity = self;
-  killstreakentity notify(# "killstreak_switch_team_end");
-  # /
+  killstreakentity notify("killstreak_switch_team_end");
 }
 
-/*
-	Name: killstreak_switch_team
-	Namespace: killstreak_hacking
-	Checksum: 0xE90C2A8D
-	Offset: 0x998
-	Size: 0x202
-	Parameters: 1
-	Flags: Linked
-*/
 function killstreak_switch_team(owner) {
-  /#
   killstreakentity = self;
-  killstreakentity notify(# "killstreak_switch_team_singleton");
-  killstreakentity endon(# "killstreak_switch_team_singleton");
-  killstreakentity endon(# "death");
+  killstreakentity notify("killstreak_switch_team_singleton");
+  killstreakentity endon("killstreak_switch_team_singleton");
+  killstreakentity endon("death");
   setdvar("", "");
   while (true) {
     wait(0.5);
@@ -261,12 +156,10 @@ function killstreak_switch_team(owner) {
         continue;
       }
       if(!isdefined(killstreakentity.killstreak_hackedcallback)) {
-        /#
         iprintlnbold("");
-        # /
-          return;
+        return;
       }
-      killstreakentity notify(# "killstreak_hacked", player);
+      killstreakentity notify("killstreak_hacked", player);
       killstreakentity.previouslyhacked = 1;
       killstreakentity[[killstreakentity.killstreak_hackedcallback]](player);
       wait(0.5);
@@ -274,5 +167,4 @@ function killstreak_switch_team(owner) {
       return;
     }
   }
-  # /
 }

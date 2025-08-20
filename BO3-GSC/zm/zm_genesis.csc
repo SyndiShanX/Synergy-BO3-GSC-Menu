@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\margwa;
 #using scripts\shared\ai\mechz;
@@ -77,33 +81,14 @@
 #using scripts\zm\zm_genesis_wasp;
 #using scripts\zm\zm_genesis_wearables;
 #using scripts\zm\zm_genesis_wisps;
-
 #namespace zm_genesis;
 
-/*
-	Name: opt_in
-	Namespace: zm_genesis
-	Checksum: 0x672DAB30
-	Offset: 0x1788
-	Size: 0x28
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec opt_in() {
   level.aat_in_use = 1;
   level.bgb_in_use = 1;
   level.clientfieldaicheck = 1;
 }
 
-/*
-	Name: main
-	Namespace: zm_genesis
-	Checksum: 0x321AA31D
-	Offset: 0x17B8
-	Size: 0x21C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   callback::on_localclient_connect( & on_player_connected);
   zm_genesis_ffotd::main_start();
@@ -129,32 +114,14 @@ function main() {
   zm_genesis_ffotd::main_end();
 }
 
-/*
-	Name: on_player_connected
-	Namespace: zm_genesis
-	Checksum: 0x281D24C9
-	Offset: 0x19E0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_connected(n_local_client) {
   self thread sun_flame(n_local_client);
 }
 
-/*
-	Name: sun_flame
-	Namespace: zm_genesis
-	Checksum: 0x374AD294
-	Offset: 0x1A10
-	Size: 0x198
-	Parameters: 1
-	Flags: Linked
-*/
 function sun_flame(n_local_client) {
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "entityshutdown");
+  self endon("disconnect");
+  self endon("death");
+  self endon("entityshutdown");
   var_c2a0c80a = getent(n_local_client, "sun_flame", "targetname");
   var_c2a0c80a setscale(6);
   player = getlocalplayer(n_local_client);
@@ -174,29 +141,11 @@ function sun_flame(n_local_client) {
   }
 }
 
-/*
-	Name: include_weapons
-	Namespace: zm_genesis
-	Checksum: 0xF4CA3379
-	Offset: 0x1BB0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function include_weapons() {
   zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_genesis_weapons.csv", 1);
   zm_weapons::autofill_wallbuys_init();
 }
 
-/*
-	Name: setup_personality_character_exerts
-	Namespace: zm_genesis
-	Checksum: 0x6DB0A5E6
-	Offset: 0x1BF0
-	Size: 0x1072
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_personality_character_exerts() {
   level.exert_sounds[1]["playerbreathinsound"][0] = "vox_plr_0_exert_inhale_0";
   level.exert_sounds[2]["playerbreathinsound"][0] = "vox_plr_1_exert_inhale_0";

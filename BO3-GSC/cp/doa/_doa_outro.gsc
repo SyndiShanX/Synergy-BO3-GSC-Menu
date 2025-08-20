@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_outro.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\cp_doa_bo3_enemy;
 #using scripts\cp\cp_doa_bo3_silverback_battle;
@@ -30,20 +34,9 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_ai_shared;
-
 #using_animtree("generic");
-
 #namespace namespace_917e49b3;
 
-/*
-	Name: function_d4766377
-	Namespace: namespace_917e49b3
-	Checksum: 0x6BD79DB7
-	Offset: 0xD98
-	Size: 0x574
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d4766377() {
   if(!isdefined(level.doa.var_27f5178d)) {
     level.doa.var_27f5178d = struct::get_array("podium_zombie_spectate", "targetname");
@@ -96,29 +89,18 @@ function function_d4766377() {
   level clientfield::set("podiumEvent", 0);
 }
 
-/*
-	Name: function_ef727812
-	Namespace: namespace_917e49b3
-	Checksum: 0xBA963CF9
-	Offset: 0x1318
-	Size: 0x2CC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ef727812(num) {
-  /#
   assert(isdefined(level.doa.var_92721db3));
-  # /
-    foreach(podium in level.doa.var_92721db3) {
-      podium.var_53538eb0 = spawn("script_model", podium.origin);
-      podium.var_53538eb0 thread doa_utility::function_783519c1("podiumAllDone", 1);
-      podium.var_53538eb0 setmodel(podium.model);
-      podium.var_53538eb0.angles = podium.angles;
-      num--;
-      if(num == 0) {
-        break;
-      }
+  foreach(podium in level.doa.var_92721db3) {
+    podium.var_53538eb0 = spawn("script_model", podium.origin);
+    podium.var_53538eb0 thread doa_utility::function_783519c1("podiumAllDone", 1);
+    podium.var_53538eb0 setmodel(podium.model);
+    podium.var_53538eb0.angles = podium.angles;
+    num--;
+    if(num == 0) {
+      break;
     }
+  }
   level.doa.var_799853ee triggerenable(1);
   foreach(spot in level.doa.var_27f5178d) {
     spot.spectator = spawn("script_model", spot.origin);
@@ -129,17 +111,8 @@ function function_ef727812(num) {
   level clientfield::set("podiumEvent", 1);
 }
 
-/*
-	Name: function_a85eaca4
-	Namespace: namespace_917e49b3
-	Checksum: 0x46DC5F3
-	Offset: 0x15F0
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a85eaca4() {
-  level endon(# "hash_448ca7a6");
+  level endon("hash_448ca7a6");
   players = function_4d8b6e1e();
   winner = players[0];
   while (true) {
@@ -151,21 +124,12 @@ function function_a85eaca4() {
       return;
     }
     if(winner throwbuttonpressed()) {
-      level notify(# "hash_115c344c");
+      level notify("hash_115c344c");
     }
     wait(0.05);
   }
 }
 
-/*
-	Name: function_e2d6beb9
-	Namespace: namespace_917e49b3
-	Checksum: 0x3399359
-	Offset: 0x16B8
-	Size: 0x3CC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e2d6beb9() {
   level clientfield::set("roundMenu", 0);
   level clientfield::set("teleportMenu", 0);
@@ -187,39 +151,30 @@ function function_e2d6beb9() {
   }
   level thread function_a85eaca4();
   level thread function_5e04bf78();
-  level notify(# "hash_b96c96ac");
-  level notify(# "hash_97276c43");
+  level notify("hash_b96c96ac");
+  level notify("hash_97276c43");
   wait(1);
   var_1a87bae6 = level.lighting_state;
   level thread doa_utility::set_lighting_state(1);
   level thread doa_utility::function_390adefe(0);
-  level notify(# "hash_314666df");
+  level notify("hash_314666df");
   level thread function_d834fdd0();
   msg = level util::waittill_any_timeout(30, "silverbackAllDone");
   if(msg == "timeout") {
-    level notify(# "hash_a099b4d6");
-    level waittill(# "hash_115c344c");
+    level notify("hash_a099b4d6");
+    level waittill("hash_115c344c");
   }
   level.var_3997f9e8 delete();
   doa_utility::function_44eb090b();
-  level notify(# "hash_448ca7a6");
+  level notify("hash_448ca7a6");
   function_d4766377();
   level thread doa_utility::function_13fbad22();
   level thread doa_utility::set_lighting_state(var_1a87bae6);
 }
 
-/*
-	Name: function_5e04bf78
-	Namespace: namespace_917e49b3
-	Checksum: 0x525A5501
-	Offset: 0x1A90
-	Size: 0x12DE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5e04bf78() {
-  level endon(# "hash_115c344c");
-  level waittill(# "hash_a099b4d6");
+  level endon("hash_115c344c");
+  level waittill("hash_a099b4d6");
   point1 = level.doa.var_b7f5f6c8[0];
   point2 = level.doa.var_b7f5f6c8[1];
   point3 = level.doa.var_b7f5f6c8[2];
@@ -257,9 +212,9 @@ function function_5e04bf78() {
   org2 delete();
   silverback playsound("zmb_simianaut_roar");
   silverback animscripted("pissedoff", silverback.origin, silverback.angles, "ai_zombie_doa_simianaut_ground_pound");
-  silverback waittillmatch(# "pissedoff");
+  silverback waittillmatch("pissedoff");
   playfx(level._effect["ground_pound"], silverback.origin);
-  silverback waittillmatch(# "pissedoff");
+  silverback waittillmatch("pissedoff");
   silverback playsound("zmb_simianaut_roar");
   silverback playsound("evt_turret_takeoff");
   silverback thread namespace_eaa992c::function_285a2999("boss_takeoff");
@@ -274,16 +229,16 @@ function function_5e04bf78() {
   silverback thread namespace_eaa992c::function_285a2999("turret_impact");
   silverback playsound("zmb_simianaut_roar");
   level.doa.var_63e2b87e = silverback;
-  level notify(# "hash_5c2d4fa4", "end", "zombie_melee");
-  level notify(# "hash_a284788a");
+  level notify("hash_5c2d4fa4", "end", "zombie_melee");
+  level notify("hash_a284788a");
   wait(2);
-  level thread function_46882430( & "DOA_ME_BACK", silverback.origin + vectorscale((0, 0, 1), 95), 2);
+  level thread function_46882430(&"DOA_ME_BACK", silverback.origin + vectorscale((0, 0, 1), 95), 2);
   wait(3);
   silverback playsound("zmb_simianaut_roar");
   wait(2);
-  level thread function_46882430( & "DOA_MY_TREASURE", silverback.origin + vectorscale((0, 0, 1), 95), 2);
+  level thread function_46882430(&"DOA_MY_TREASURE", silverback.origin + vectorscale((0, 0, 1), 95), 2);
   wait(1.8);
-  level notify(# "zombie_outro_mood_angry");
+  level notify("zombie_outro_mood_angry");
   level.doa.var_63e2b87e = level.doa.var_e102b46;
   silverback playsound("evt_turret_takeoff");
   silverback thread namespace_eaa992c::function_285a2999("boss_takeoff");
@@ -291,7 +246,7 @@ function function_5e04bf78() {
   playrumbleonposition("explosion_generic", silverback.origin);
   org.angles = silverback.angles;
   org.origin = silverback.origin;
-  level notify(# "hash_ff1ecf6");
+  level notify("hash_ff1ecf6");
   org moveto(org.origin + vectorscale((0, 0, 1), 2000), 1.3);
   org util::waittill_any_timeout(1.5, "movedone");
   org.origin = point3.origin + vectorscale((0, 0, 1), 2000);
@@ -326,10 +281,10 @@ function function_5e04bf78() {
   mech setturrettargetent(level.doa.var_c12009c9);
   mech setgunnertargetent(level.doa.var_c12009c9, (0, 0, 0), 1);
   mech unlink();
-  level notify(# "hash_e4be85d1");
+  level notify("hash_e4be85d1");
   wait(10);
-  level thread function_46882430( & "DOA_TRY_THIS", mech.driver.origin + vectorscale((0, 0, 1), 145), 2);
-  level notify(# "hash_5e4b910f");
+  level thread function_46882430(&"DOA_TRY_THIS", mech.driver.origin + vectorscale((0, 0, 1), 145), 2);
+  level notify("hash_5e4b910f");
   level.doa.var_799853ee thread function_4036d4c6();
   msg = self util::waittill_any_timeout(1, "turret_on_target");
   rounds = 40;
@@ -339,8 +294,8 @@ function function_5e04bf78() {
     wait(0.15);
     rounds--;
     if(rounds == 28) {
-      level notify(# "hash_de8df0f3");
-      level thread function_46882430( & "DOA_HAHAHA", mech.driver.origin + vectorscale((0, 0, 1), 145), 2);
+      level notify("hash_de8df0f3");
+      level thread function_46882430(&"DOA_HAHAHA", mech.driver.origin + vectorscale((0, 0, 1), 145), 2);
     }
     if((rounds % 10) == 0) {
       if(isdefined(faketarget)) {
@@ -364,12 +319,12 @@ function function_5e04bf78() {
   mech.driver.taunt = 1;
   mech.driver stopanimscripted();
   wait(1);
-  level thread function_46882430( & "DOA_HAHAHA", mech.driver.origin + vectorscale((0, 0, 1), 145), 2);
+  level thread function_46882430(&"DOA_HAHAHA", mech.driver.origin + vectorscale((0, 0, 1), 145), 2);
   wait(2);
-  level thread function_46882430( & "DOA_ME_WINNER", mech.driver.origin + vectorscale((0, 0, 1), 145), 2);
+  level thread function_46882430(&"DOA_ME_WINNER", mech.driver.origin + vectorscale((0, 0, 1), 145), 2);
   mech.driver.taunt = undefined;
   wait(3);
-  level thread function_46882430( & "DOA_BYE", mech.driver.origin + vectorscale((0, 0, 1), 145), 2);
+  level thread function_46882430(&"DOA_BYE", mech.driver.origin + vectorscale((0, 0, 1), 145), 2);
   wait(2);
   mech linkto(org);
   mech playsound("evt_doa_monkeymech_takeoff");
@@ -386,23 +341,14 @@ function function_5e04bf78() {
     org delete();
   }
   wait(4);
-  level notify(# "hash_115c344c");
+  level notify("hash_115c344c");
 }
 
-/*
-	Name: function_f7e6e4b1
-	Namespace: namespace_917e49b3
-	Checksum: 0x8C0ECD04
-	Offset: 0x2D78
-	Size: 0xEC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_f7e6e4b1(scale = 1, var_fb37ad89 = 9999) {
-  level endon(# "hash_448ca7a6");
-  self endon(# "death");
+  level endon("hash_448ca7a6");
+  self endon("death");
   while (true) {
-    level waittill(# "hash_71c0bde9");
+    level waittill("hash_71c0bde9");
     vector = (randomint(20), randomint(20), 30) * scale;
     self physicslaunch(self.origin, vector);
     var_fb37ad89--;
@@ -412,18 +358,9 @@ function function_f7e6e4b1(scale = 1, var_fb37ad89 = 9999) {
   }
 }
 
-/*
-	Name: function_d834fdd0
-	Namespace: namespace_917e49b3
-	Checksum: 0x96CF2D5F
-	Offset: 0x2E70
-	Size: 0x2DA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d834fdd0() {
-  level endon(# "hash_448ca7a6");
-  level waittill(# "hash_71c0bde9");
+  level endon("hash_448ca7a6");
+  level waittill("hash_71c0bde9");
   level.doa.var_e102b46 thread namespace_eaa992c::function_285a2999("bomb");
   foreach(podium in level.doa.var_92721db3) {
     if(isdefined(podium.var_53538eb0)) {
@@ -434,7 +371,7 @@ function function_d834fdd0() {
       podium.playermodel stopanimscripted();
       podium.playermodel notsolid();
       podium.playermodel startragdoll(1);
-      podium.playermodel notify(# "hash_cc763d5f");
+      podium.playermodel notify("hash_cc763d5f");
       var_4671be4e = vectorscale((0, 0, 1), 130);
       podium.playermodel launchragdoll(var_4671be4e);
     }
@@ -446,17 +383,8 @@ function function_d834fdd0() {
   }
 }
 
-/*
-	Name: function_566de51a
-	Namespace: namespace_917e49b3
-	Checksum: 0x6EC5CCCD
-	Offset: 0x3158
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_566de51a() {
-  self endon(# "death");
+  self endon("death");
   self thread namespace_eaa992c::function_285a2999("bomb");
   self stopanimscripted();
   self startragdoll(1);
@@ -465,17 +393,8 @@ function function_566de51a() {
   self launchragdoll(var_4671be4e);
 }
 
-/*
-	Name: function_2b20420b
-	Namespace: namespace_917e49b3
-	Checksum: 0xEE8B64F9
-	Offset: 0x3200
-	Size: 0x24E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2b20420b(podium) {
-  level endon(# "hash_448ca7a6");
+  level endon("hash_448ca7a6");
   podium.playermodel = function_5ec4f559(podium.player);
   spot = struct::get(podium.target, "targetname");
   podium.playermodel.origin = spot.origin;
@@ -487,13 +406,13 @@ function function_2b20420b(podium) {
       level thread function_d040f4a6(podium);
       wait(8);
       level thread fireworks();
-      level notify(# "hash_86792d54");
+      level notify("hash_86792d54");
       dropspot = level.doa.var_e102b46.origin + vectorscale((0, 0, 1), 600);
       level thread function_1aaa038(dropspot);
       wait(4);
       level thread function_1aaa038(dropspot);
       wait(6);
-      level notify(# "hash_80a84385");
+      level notify("hash_80a84385");
       break;
     }
     case 1: {
@@ -511,15 +430,6 @@ function function_2b20420b(podium) {
   }
 }
 
-/*
-	Name: function_1aaa038
-	Namespace: namespace_917e49b3
-	Checksum: 0x9A2E7A9A
-	Offset: 0x3458
-	Size: 0x26E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1aaa038(droporigin) {
   var_9f9a4e58 = array("zombietron_ruby", "zombietron_diamond", "zombietron_sapphire");
   qty = 30;
@@ -545,18 +455,9 @@ function function_1aaa038(droporigin) {
   }
 }
 
-/*
-	Name: fireworks
-	Namespace: namespace_917e49b3
-	Checksum: 0x2088AB7E
-	Offset: 0x36D0
-	Size: 0x76
-	Parameters: 0
-	Flags: Linked
-*/
 function fireworks() {
-  level endon(# "hash_448ca7a6");
-  level endon(# "hash_80a84385");
+  level endon("hash_448ca7a6");
+  level endon("hash_80a84385");
   while (true) {
     level clientfield::set("redinsExploder", 2);
     wait(4);
@@ -565,15 +466,6 @@ function fireworks() {
   }
 }
 
-/*
-	Name: function_5ec4f559
-	Namespace: namespace_917e49b3
-	Checksum: 0x37B8C29F
-	Offset: 0x3750
-	Size: 0xE8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_5ec4f559(player) {
   model = spawn("script_model", player.origin);
   switch (player.entnum) {
@@ -598,17 +490,8 @@ function function_5ec4f559(player) {
   return model;
 }
 
-/*
-	Name: function_5e06cff2
-	Namespace: namespace_917e49b3
-	Checksum: 0x95BFA4DC
-	Offset: 0x3840
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5e06cff2() {
-  level endon(# "hash_448ca7a6");
+  level endon("hash_448ca7a6");
   self useanimtree($generic);
   self setmodel(level.doa.var_260a85f3[randomint(level.doa.var_260a85f3.size)]);
   if(!isdefined(self.script_noteworthy)) {
@@ -627,62 +510,35 @@ function function_5e06cff2() {
   self thread function_fccfcf0c();
 }
 
-/*
-	Name: function_7206982b
-	Namespace: namespace_917e49b3
-	Checksum: 0xFF511C7A
-	Offset: 0x3A08
-	Size: 0xDE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7206982b() {
-  level endon(# "hash_448ca7a6");
-  self endon(# "death");
-  self notify(# "hash_7206982b");
-  self endon(# "hash_7206982b");
+  level endon("hash_448ca7a6");
+  self endon("death");
+  self notify("hash_7206982b");
+  self endon("hash_7206982b");
   while (true) {
     idleanim = self.animarray[randomint(self.animarray.size)];
     self animscripted("zombieanim", self.origin, self.angles, idleanim, "normal", % generic::body, 1, 0.3, 0.3);
-    self waittillmatch(# "hash_24281fe0");
+    self waittillmatch("hash_24281fe0");
   }
 }
 
-/*
-	Name: function_78713841
-	Namespace: namespace_917e49b3
-	Checksum: 0x7893005
-	Offset: 0x3AF0
-	Size: 0xF2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_78713841() {
-  level endon(# "hash_448ca7a6");
-  self endon(# "death");
+  level endon("hash_448ca7a6");
+  self endon("death");
   while (true) {
     if(!isdefined(level.doa.var_63e2b87e)) {
       wait(randomfloatrange(0.1, 2));
     } else {
       anim_ang = vectortoangles(level.doa.var_63e2b87e.origin - self.origin);
       self.org rotateto((0, anim_ang[1], 0), randomfloatrange(0.5, 2));
-      self.org waittill(# "rotatedone");
+      self.org waittill("rotatedone");
     }
   }
 }
 
-/*
-	Name: function_b8de7628
-	Namespace: namespace_917e49b3
-	Checksum: 0xE925C19E
-	Offset: 0x3BF0
-	Size: 0x1A8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b8de7628() {
-  level endon(# "hash_448ca7a6");
-  self endon(# "death");
+  level endon("hash_448ca7a6");
+  self endon("death");
   var_2c143867 = array( % generic::ai_zombie_base_idle_ad_v1, % generic::ai_zombie_base_idle_au_v1, % generic::bo3_ai_zombie_attack_v1, % generic::bo3_ai_zombie_attack_v2, % generic::bo3_ai_zombie_attack_v3, % generic::bo3_ai_zombie_attack_v4, % generic::bo3_ai_zombie_attack_v6);
   var_6ac65424 = array( % generic::ai_zombie_doa_cheer_v1, % generic::ai_zombie_doa_cheer_v2, % generic::ai_zombie_doa_cheer_v3);
   self.animarray = var_2c143867;
@@ -699,33 +555,24 @@ function function_b8de7628() {
   }
 }
 
-/*
-	Name: function_fccfcf0c
-	Namespace: namespace_917e49b3
-	Checksum: 0x4F1B6A74
-	Offset: 0x3DA0
-	Size: 0x140
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fccfcf0c() {
-  level endon(# "hash_448ca7a6");
-  self endon(# "death");
+  level endon("hash_448ca7a6");
+  self endon("death");
   wait(randomfloatrange(0, 2));
   location = self.origin + vectorscale((0, 0, 1), 90);
   while (true) {
     if(randomint(getdvarint("scr_doa_zombie_talk_chance", 50)) == 0) {
       switch (self.var_b2f6b3b7) {
         case "zombie_outro_mood_angry": {
-          function_46882430( & "DOA_GARRRR", location, 2);
+          function_46882430(&"DOA_GARRRR", location, 2);
           break;
         }
         case "zombie_outro_mood_happy": {
-          function_46882430( & "DOA_GAR", location, 2);
+          function_46882430(&"DOA_GAR", location, 2);
           break;
         }
         case "zombie_outro_mood_lol": {
-          function_46882430( & "DOA_GARHARHAR", location, 2);
+          function_46882430(&"DOA_GARHARHAR", location, 2);
           break;
         }
       }
@@ -734,82 +581,46 @@ function function_fccfcf0c() {
   }
 }
 
-/*
-	Name: function_fb3b78fe
-	Namespace: namespace_917e49b3
-	Checksum: 0x6DD936F7
-	Offset: 0x3EE8
-	Size: 0xEE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fb3b78fe() {
-  level endon(# "hash_448ca7a6");
-  self endon(# "death");
+  level endon("hash_448ca7a6");
+  self endon("death");
   self useanimtree($generic);
   while (true) {
     if(isdefined(self.taunt) && self.taunt) {
       self animscripted("mech_taunt", self.origin, self.angles, "ai_zombie_doa_simianaut_mech_idle_taunt");
-      self waittillmatch(# "hash_3b8ce577");
+      self waittillmatch("hash_3b8ce577");
     } else {
       self animscripted("mech_idle", self.origin, self.angles, "ai_zombie_doa_simianaut_mech_idle");
-      self waittillmatch(# "hash_4b135fff");
+      self waittillmatch("hash_4b135fff");
     }
   }
 }
 
-/*
-	Name: function_4036d4c6
-	Namespace: namespace_917e49b3
-	Checksum: 0xDC186FCF
-	Offset: 0x3FE0
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4036d4c6() {
-  level endon(# "hash_448ca7a6");
-  self notify(# "hash_4036d4c6");
-  self endon(# "hash_4036d4c6");
-  self endon(# "death");
+  level endon("hash_448ca7a6");
+  self notify("hash_4036d4c6");
+  self endon("hash_4036d4c6");
+  self endon("death");
   while (true) {
-    self waittill(# "damage");
+    self waittill("damage");
     playrumbleonposition("explosion_generic", self.origin);
     physicsexplosionsphere(self.origin, 512, 512, 5);
-    level notify(# "hash_71c0bde9");
+    level notify("hash_71c0bde9");
   }
 }
 
-/*
-	Name: function_e4d4b80
-	Namespace: namespace_917e49b3
-	Checksum: 0x41A3BBD2
-	Offset: 0x4090
-	Size: 0xDE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e4d4b80(animation) {
-  level endon(# "hash_448ca7a6");
-  self notify(# "hash_e4d4b80");
-  self endon(# "hash_e4d4b80");
+  level endon("hash_448ca7a6");
+  self notify("hash_e4d4b80");
+  self endon("hash_e4d4b80");
   self useanimtree($generic);
   while (true) {
     self animscripted("podium", self.origin, self.angles, animation, "normal", % generic::body, 1, 0.5, 0.5);
-    self waittillmatch(# "podium");
-    self notify(# "animation_loop", animation, "end");
+    self waittillmatch("podium");
+    self notify("animation_loop", animation, "end");
   }
 }
 
-/*
-	Name: function_46882430
-	Namespace: namespace_917e49b3
-	Checksum: 0x931BCC37
-	Offset: 0x4178
-	Size: 0xD4
-	Parameters: 4
-	Flags: Linked
-*/
 function function_46882430(string, location, hold = 3, fade = 1) {
   id = doa_utility::function_c9fb43e9(string, location);
   level util::waittill_any_timeout(hold, "podiumAllDone", "killBubble");
@@ -817,18 +628,9 @@ function function_46882430(string, location, hold = 3, fade = 1) {
   level util::waittill_any_timeout(fade, "podiumAllDone");
 }
 
-/*
-	Name: function_d040f4a6
-	Namespace: namespace_917e49b3
-	Checksum: 0x7EAECF4
-	Offset: 0x4258
-	Size: 0x334
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d040f4a6(podium) {
-  level endon(# "hash_448ca7a6");
-  level waittill(# "hash_314666df");
+  level endon("hash_448ca7a6");
+  level waittill("hash_314666df");
   playermodel = podium.playermodel;
   playermodel.team = "axis";
   playermodel useanimtree($generic);
@@ -839,155 +641,119 @@ function function_d040f4a6(podium) {
   playermodel thread function_e4d4b80( % generic::ch_ram_05_02_block_nrc_vign_cheering_d_loop);
   wait(3);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_1stplace_1");
-  function_46882430( & "DOA_FIRST_PLACE", offset);
-  function_46882430( & "DOA_OH_YEAH", offset, 2);
-  function_46882430( & "DOA_RICH", offset, 4);
+  function_46882430(&"DOA_FIRST_PLACE", offset);
+  function_46882430(&"DOA_OH_YEAH", offset, 2);
+  function_46882430(&"DOA_RICH", offset, 4);
   wait(1);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_1stplace_2");
-  function_46882430( & "DOA_WOOO", offset);
-  function_46882430( & "DOA_WELL_HELLO", offset, 2);
+  function_46882430(&"DOA_WOOO", offset);
+  function_46882430(&"DOA_WELL_HELLO", offset, 2);
   wait(1);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_1stplace_3");
-  function_46882430( & "DOA_WANT_SOME", offset);
-  function_46882430( & "DOA_WOOO", offset, 2);
-  function_46882430( & "DOA_CANT_TOUCH", offset);
-  level waittill(# "hash_ff1ecf6");
+  function_46882430(&"DOA_WANT_SOME", offset);
+  function_46882430(&"DOA_WOOO", offset, 2);
+  function_46882430(&"DOA_CANT_TOUCH", offset);
+  level waittill("hash_ff1ecf6");
   wait(1);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_1stplace_4");
-  function_46882430( & "DOA_WHATWASTHAT", offset);
-  level waittill(# "hash_5e4b910f");
+  function_46882430(&"DOA_WHATWASTHAT", offset);
+  level waittill("hash_5e4b910f");
   if(level.doa.var_44d58db8.size == 4) {
     wait(1);
-    function_46882430( & "DOA_II", offset, 3.5);
+    function_46882430(&"DOA_II", offset, 3.5);
   } else {
     wait(1);
-    function_46882430( & "DOA_NOOOO", offset, 2);
+    function_46882430(&"DOA_NOOOO", offset, 2);
   }
 }
 
-/*
-	Name: function_1b6034b2
-	Namespace: namespace_917e49b3
-	Checksum: 0x41831433
-	Offset: 0x4598
-	Size: 0x23C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1b6034b2(podium) {
-  level endon(# "hash_448ca7a6");
-  level waittill(# "hash_314666df");
+  level endon("hash_448ca7a6");
+  level waittill("hash_314666df");
   playermodel = podium.playermodel;
   playermodel thread function_e4d4b80( % generic::ai_civ_base_cover_stn_pointidle);
   offset = playermodel.origin + vectorscale((0, 0, 1), 90);
   wait(4);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_2ndplace_1");
-  function_46882430( & "DOA_SECOND_PLACE", offset);
+  function_46882430(&"DOA_SECOND_PLACE", offset);
   wait(1);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_2ndplace_2");
-  function_46882430( & "DOA_FUN", offset);
+  function_46882430(&"DOA_FUN", offset);
   wait(1);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_2ndplace_3");
-  function_46882430( & "DOA_AGAIN", offset);
-  level waittill(# "hash_a284788a");
+  function_46882430(&"DOA_AGAIN", offset);
+  level waittill("hash_a284788a");
   wait(randomfloatrange(0, 2));
-  function_46882430( & "DOA_UMM", offset);
-  level waittill(# "hash_e4be85d1");
-  function_46882430( & "DOA_NOTGOOD", offset);
+  function_46882430(&"DOA_UMM", offset);
+  level waittill("hash_e4be85d1");
+  function_46882430(&"DOA_NOTGOOD", offset);
   if(level.doa.var_44d58db8.size == 4) {
-    level waittill(# "hash_5e4b910f");
+    level waittill("hash_5e4b910f");
     wait(1.5);
-    function_46882430( & "DOA_T", offset);
+    function_46882430(&"DOA_T", offset);
   } else {
     wait(1);
-    function_46882430( & "DOA_RUN", offset, 2);
+    function_46882430(&"DOA_RUN", offset, 2);
   }
 }
 
-/*
-	Name: function_87082601
-	Namespace: namespace_917e49b3
-	Checksum: 0x8900DDA7
-	Offset: 0x47E0
-	Size: 0x23C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_87082601(podium) {
-  level endon(# "hash_448ca7a6");
-  level waittill(# "hash_314666df");
+  level endon("hash_448ca7a6");
+  level waittill("hash_314666df");
   playermodel = podium.playermodel;
   offset = playermodel.origin + vectorscale((0, 0, 1), 90);
   playermodel thread function_e4d4b80( % generic::ai_civ_base_standidle_officer);
   wait(5);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_3rdplace_1");
-  function_46882430( & "DOA_THIRD_PLACE", offset);
+  function_46882430(&"DOA_THIRD_PLACE", offset);
   wait(3);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_3rdplace_2");
-  function_46882430( & "DOA_NEXTTIME", offset);
+  function_46882430(&"DOA_NEXTTIME", offset);
   wait(6);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_3rdplace_3");
-  function_46882430( & "DOA_WHOISTHATGUY", offset);
-  level waittill(# "hash_a284788a");
+  function_46882430(&"DOA_WHOISTHATGUY", offset);
+  level waittill("hash_a284788a");
   wait(randomfloatrange(0, 2));
-  function_46882430( & "DOA_UMM", offset);
-  level waittill(# "hash_e4be85d1");
+  function_46882430(&"DOA_UMM", offset);
+  level waittill("hash_e4be85d1");
   wait(1);
-  function_46882430( & "DOA_YOUTHINK", offset);
+  function_46882430(&"DOA_YOUTHINK", offset);
   if(level.doa.var_44d58db8.size == 4) {
-    level waittill(# "hash_5e4b910f");
+    level waittill("hash_5e4b910f");
     wait(0.5);
-    function_46882430( & "DOA_SH", offset, 4);
+    function_46882430(&"DOA_SH", offset, 4);
   } else {
     wait(1);
-    function_46882430( & "DOA_BOOGIE", offset, 2);
+    function_46882430(&"DOA_BOOGIE", offset, 2);
   }
 }
 
-/*
-	Name: function_b7bde10a
-	Namespace: namespace_917e49b3
-	Checksum: 0xC0079DB0
-	Offset: 0x4A28
-	Size: 0x22C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b7bde10a(podium) {
-  level endon(# "hash_448ca7a6");
-  level waittill(# "hash_314666df");
+  level endon("hash_448ca7a6");
+  level waittill("hash_314666df");
   playermodel = podium.playermodel;
   right = anglestoright(playermodel.angles);
   offset = (playermodel.origin + vectorscale((0, 0, 1), 80)) + (30 * right);
   playermodel thread function_e4d4b80( % generic::ch_new_06_01_chase_vign_sitting_civs_right_civ01_loop);
   wait(6);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_4thplace_1");
-  function_46882430( & "DOA_LAST_PLACE", offset);
+  function_46882430(&"DOA_LAST_PLACE", offset);
   wait(3);
   playermodel thread namespace_1a381543::function_90118d8c("zmb_end_4thplace_2");
-  function_46882430( & "DOA_CANTBETRUE", offset);
-  function_46882430( & "DOA_CHICKENS", offset);
-  level waittill(# "hash_a284788a");
+  function_46882430(&"DOA_CANTBETRUE", offset);
+  function_46882430(&"DOA_CHICKENS", offset);
+  level waittill("hash_a284788a");
   wait(randomfloatrange(0, 2));
-  function_46882430( & "DOA_UMM", offset);
-  level waittill(# "hash_e4be85d1");
+  function_46882430(&"DOA_UMM", offset);
+  level waittill("hash_e4be85d1");
   wait(2);
-  function_46882430( & "DOA_SITTING", offset);
+  function_46882430(&"DOA_SITTING", offset);
   if(level.doa.var_44d58db8.size == 4) {
-    level waittill(# "hash_5e4b910f");
-    function_46882430( & "DOA_OH", offset, 4.5);
+    level waittill("hash_5e4b910f");
+    function_46882430(&"DOA_OH", offset, 4.5);
   }
 }
 
-/*
-	Name: function_4d8b6e1e
-	Namespace: namespace_917e49b3
-	Checksum: 0xB1BCD44E
-	Offset: 0x4C60
-	Size: 0x1AC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4d8b6e1e() {
   var_5198fae9 = getplayers();
   players = [];

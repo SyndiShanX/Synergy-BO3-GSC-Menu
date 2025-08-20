@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_dogtags.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -13,36 +17,17 @@
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace dogtags;
 
-/*
-	Name: init
-	Namespace: dogtags
-	Checksum: 0xBB7D614
-	Offset: 0x3D0
-	Size: 0x30
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.antiboostdistance = getgametypesetting("antiBoostDistance");
   level.dogtags = [];
 }
 
-/*
-	Name: spawn_dog_tag
-	Namespace: dogtags
-	Checksum: 0x47172174
-	Offset: 0x408
-	Size: 0xA42
-	Parameters: 4
-	Flags: Linked
-*/
 function spawn_dog_tag(victim, attacker, on_use_function, objectives_for_attacker_and_victim_only) {
   if(isdefined(level.dogtags[victim.entnum])) {
     playfx("ui/fx_kill_confirmed_vanish", level.dogtags[victim.entnum].curorigin);
-    level.dogtags[victim.entnum] notify(# "reset");
+    level.dogtags[victim.entnum] notify("reset");
   } else {
     visuals[0] = spawn("script_model", (0, 0, 0));
     visuals[0] setmodel(victim getenemydogtagmodel());
@@ -99,18 +84,9 @@ function spawn_dog_tag(victim, attacker, on_use_function, objectives_for_attacke
     }
   }
   level.dogtags[victim.entnum] thread bounce();
-  level notify(# "dogtag_spawned");
+  level notify("dogtag_spawned");
 }
 
-/*
-	Name: show_to_team
-	Namespace: dogtags
-	Checksum: 0x8317DFCD
-	Offset: 0xE58
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function show_to_team(gameobject, show_team) {
   self show();
   foreach(team in level.teams) {
@@ -119,15 +95,6 @@ function show_to_team(gameobject, show_team) {
   self showtoteam(show_team);
 }
 
-/*
-	Name: show_to_enemy_teams
-	Namespace: dogtags
-	Checksum: 0x4DAB9581
-	Offset: 0xF30
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function show_to_enemy_teams(gameobject, friend_team) {
   self show();
   foreach(team in level.teams) {
@@ -136,15 +103,6 @@ function show_to_enemy_teams(gameobject, friend_team) {
   self hidefromteam(friend_team);
 }
 
-/*
-	Name: onuse
-	Namespace: dogtags
-	Checksum: 0x51914709
-	Offset: 0x1008
-	Size: 0x224
-	Parameters: 1
-	Flags: Linked
-*/
 function onuse(player) {
   self.visuals[0] playsound("mpl_killconfirm_tags_pickup");
   tacinsertboost = 0;
@@ -175,25 +133,14 @@ function onuse(player) {
   if(!tacinsertboost && isdefined(player)) {
     player onpickup(event);
   }
-  [
-    [self.custom_onuse]
-  ](player);
+  [[self.custom_onuse]](player);
   self reset_tags();
 }
 
-/*
-	Name: reset_tags
-	Namespace: dogtags
-	Checksum: 0xDE9EF2C0
-	Offset: 0x1238
-	Size: 0x19A
-	Parameters: 0
-	Flags: Linked
-*/
 function reset_tags() {
   self.attacker = undefined;
   self.unreachable = undefined;
-  self notify(# "reset");
+  self notify("reset");
   self.visuals[0] hide();
   self.visuals[1] hide();
   self.curorigin = vectorscale((0, 0, 1), 1000);
@@ -207,36 +154,18 @@ function reset_tags() {
   }
 }
 
-/*
-	Name: onpickup
-	Namespace: dogtags
-	Checksum: 0x951D25CB
-	Offset: 0x13E0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function onpickup(event) {
   scoreevents::processscoreevent(event, self);
 }
 
-/*
-	Name: clear_on_victim_disconnect
-	Namespace: dogtags
-	Checksum: 0x10B97ABE
-	Offset: 0x1410
-	Size: 0x23C
-	Parameters: 1
-	Flags: Linked
-*/
 function clear_on_victim_disconnect(victim) {
-  level endon(# "game_ended");
+  level endon("game_ended");
   guid = victim.entnum;
-  victim waittill(# "disconnect");
+  victim waittill("disconnect");
   if(isdefined(level.dogtags[guid])) {
     level.dogtags[guid] gameobjects::allow_use("none");
     playfx("ui/fx_kill_confirmed_vanish", level.dogtags[guid].curorigin);
-    level.dogtags[guid] notify(# "reset");
+    level.dogtags[guid] notify("reset");
     wait(0.05);
     if(isdefined(level.dogtags[guid])) {
       foreach(team in level.teams) {
@@ -246,21 +175,12 @@ function clear_on_victim_disconnect(victim) {
       for (i = 0; i < level.dogtags[guid].visuals.size; i++) {
         level.dogtags[guid].visuals[i] delete();
       }
-      level.dogtags[guid] notify(# "deleted");
+      level.dogtags[guid] notify("deleted");
       level.dogtags[guid] = undefined;
     }
   }
 }
 
-/*
-	Name: on_spawn_player
-	Namespace: dogtags
-	Checksum: 0xA88F5EC8
-	Offset: 0x1658
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function on_spawn_player() {
   if(level.rankedmatch || level.leaguematch) {
     if(isdefined(self.tacticalinsertiontime) && (self.tacticalinsertiontime + 100) > gettime()) {
@@ -274,39 +194,21 @@ function on_spawn_player() {
   }
 }
 
-/*
-	Name: team_updater
-	Namespace: dogtags
-	Checksum: 0x3C0599AF
-	Offset: 0x1738
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked
-*/
 function team_updater(tags) {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
+  level endon("game_ended");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "joined_team");
+    self waittill("joined_team");
     tags.victimteam = self.team;
     tags reset_tags();
   }
 }
 
-/*
-	Name: time_out
-	Namespace: dogtags
-	Checksum: 0x93320338
-	Offset: 0x17A8
-	Size: 0x13C
-	Parameters: 1
-	Flags: None
-*/
 function time_out(victim) {
-  level endon(# "game_ended");
-  victim endon(# "disconnect");
-  self notify(# "timeout");
-  self endon(# "timeout");
+  level endon("game_ended");
+  victim endon("disconnect");
+  self notify("timeout");
+  self endon("timeout");
   level hostmigration::waitlongdurationwithhostmigrationpause(30);
   self.visuals[0] hide();
   self.visuals[1] hide();
@@ -318,18 +220,9 @@ function time_out(victim) {
   self gameobjects::allow_use("none");
 }
 
-/*
-	Name: bounce
-	Namespace: dogtags
-	Checksum: 0x5507278D
-	Offset: 0x18F0
-	Size: 0x210
-	Parameters: 0
-	Flags: Linked
-*/
 function bounce() {
-  level endon(# "game_ended");
-  self endon(# "reset");
+  level endon("game_ended");
+  self endon("reset");
   bottompos = self.curorigin;
   toppos = self.curorigin + vectorscale((0, 0, 1), 12);
   while (true) {
@@ -346,30 +239,12 @@ function bounce() {
   }
 }
 
-/*
-	Name: checkallowspectating
-	Namespace: dogtags
-	Checksum: 0x2C8D1E11
-	Offset: 0x1B08
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function checkallowspectating() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(0.05);
   spectating::update_settings();
 }
 
-/*
-	Name: should_spawn_tags
-	Namespace: dogtags
-	Checksum: 0x4D66E993
-	Offset: 0x1B40
-	Size: 0x158
-	Parameters: 9
-	Flags: Linked
-*/
 function should_spawn_tags(einflictor, attacker, idamage, smeansofdeath, sweapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(isalive(self)) {
     return false;
@@ -389,15 +264,6 @@ function should_spawn_tags(einflictor, attacker, idamage, smeansofdeath, sweapon
   return true;
 }
 
-/*
-	Name: onusedogtag
-	Namespace: dogtags
-	Checksum: 0xA7000A0E
-	Offset: 0x1CA0
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function onusedogtag(player) {
   if(player.pers["team"] == self.victimteam) {
     player.pers["rescues"]++;
@@ -410,28 +276,10 @@ function onusedogtag(player) {
   }
 }
 
-/*
-	Name: dt_respawn
-	Namespace: dogtags
-	Checksum: 0xC6782A6F
-	Offset: 0x1D40
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function dt_respawn() {
   self thread waittillcanspawnclient();
 }
 
-/*
-	Name: waittillcanspawnclient
-	Namespace: dogtags
-	Checksum: 0x81ED23B3
-	Offset: 0x1D68
-	Size: 0x72
-	Parameters: 0
-	Flags: Linked
-*/
 function waittillcanspawnclient() {
   for (;;) {
     wait(0.05);

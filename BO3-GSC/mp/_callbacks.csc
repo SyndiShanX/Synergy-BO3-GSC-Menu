@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_callbacks.csc
+*************************************************/
+
 #using scripts\mp\_callbacks;
 #using scripts\mp\_util;
 #using scripts\mp\_vehicle;
@@ -21,44 +25,16 @@
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\vehicles\_driving_fx;
 #using scripts\shared\weapons\_sticky_grenade;
-
 #namespace callback;
 
-/*
-	Name: __init__sytem__
-	Namespace: callback
-	Checksum: 0x1ECB121
-	Offset: 0x448
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("callback", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: callback
-	Checksum: 0xE1AA8E55
-	Offset: 0x488
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level thread set_default_callbacks();
 }
 
-/*
-	Name: set_default_callbacks
-	Namespace: callback
-	Checksum: 0x6823806A
-	Offset: 0x4B0
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function set_default_callbacks() {
   level.callbackplayerspawned = & playerspawned;
   level.callbacklocalclientconnect = & localclientconnect;
@@ -71,40 +47,20 @@ function set_default_callbacks() {
   level.gadgetvisionpulse_reveal_func = & gadget_vision_pulse::gadget_visionpulse_reveal;
 }
 
-/*
-	Name: localclientconnect
-	Namespace: callback
-	Checksum: 0x810D3B7
-	Offset: 0x598
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function localclientconnect(localclientnum) {
-  /#
   println("" + localclientnum);
-  # /
-    if(isdefined(level.charactercustomizationsetup)) {
-      [
-        [level.charactercustomizationsetup]
-      ](localclientnum);
-    }
-  callback(# "hash_da8d7d74", localclientnum);
+  if(isdefined(level.charactercustomizationsetup)) {
+    [
+      [level.charactercustomizationsetup]
+    ](localclientnum);
+  }
+  callback("hash_da8d7d74", localclientnum);
 }
 
-/*
-	Name: playerspawned
-	Namespace: callback
-	Checksum: 0xC5E991D4
-	Offset: 0x618
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function playerspawned(localclientnum) {
-  self endon(# "entityshutdown");
-  self notify(# "playerspawned_callback");
-  self endon(# "playerspawned_callback");
+  self endon("entityshutdown");
+  self notify("playerspawned_callback");
+  self endon("playerspawned_callback");
   player = getlocalplayer(localclientnum);
   if(isdefined(level.infraredvisionset)) {
     player setinfraredvisionset(level.infraredvisionset);
@@ -113,26 +69,15 @@ function playerspawned(localclientnum) {
     self thread[[level._playerspawned_override]](localclientnum);
     return;
   }
-  /#
   println("");
-  # /
-    if(self islocalplayer()) {
-      callback(# "hash_842e788a", localclientnum);
-    }
-  callback(# "hash_bc12b61f", localclientnum);
+  if(self islocalplayer()) {
+    callback("hash_842e788a", localclientnum);
+  }
+  callback("hash_bc12b61f", localclientnum);
 }
 
-/*
-	Name: entityspawned
-	Namespace: callback
-	Checksum: 0xC1DEDB53
-	Offset: 0x738
-	Size: 0x250
-	Parameters: 1
-	Flags: Linked
-*/
 function entityspawned(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(self isplayer()) {
     if(isdefined(level._clientfaceanimonplayerspawned)) {
       self thread[[level._clientfaceanimonplayerspawned]](localclientnum);
@@ -143,10 +88,8 @@ function entityspawned(localclientnum) {
     return;
   }
   if(!isdefined(self.type)) {
-    /#
     println("");
-    # /
-      return;
+    return;
   }
   if(self.type == "missile") {
     if(isdefined(level._custom_weapon_cb_func)) {
@@ -175,15 +118,6 @@ function entityspawned(localclientnum) {
   }
 }
 
-/*
-	Name: airsupport
-	Namespace: callback
-	Checksum: 0x447DE7D3
-	Offset: 0x990
-	Size: 0x5EE
-	Parameters: 12
-	Flags: Linked
-*/
 function airsupport(localclientnum, x, y, z, type, yaw, team, teamfaction, owner, exittype, time, height) {
   pos = (x, y, z);
   switch (teamfaction) {
@@ -213,13 +147,9 @@ function airsupport(localclientnum, x, y, z, type, yaw, team, teamfaction, owner
       break;
     }
     default: {
-      /#
       println("");
-      # /
-        /#
       println(("" + teamfaction) + "");
-      # /
-        teamfaction = "marines";
+      teamfaction = "marines";
       break;
     }
   }
@@ -237,10 +167,8 @@ function airsupport(localclientnum, x, y, z, type, yaw, team, teamfaction, owner
       break;
     }
     default: {
-      /#
       println(("" + team) + "");
-      # /
-        team = "allies";
+      team = "allies";
       break;
     }
   }
@@ -280,81 +208,37 @@ function airsupport(localclientnum, x, y, z, type, yaw, team, teamfaction, owner
       data.flytime = (planehalfdistance * 2) / data.flyspeed;
       planetype = "napalm";
     } else {
-      /#
       println("");
       println("");
       println(type);
       println("");
-      # /
-        return;
+      return;
     }
   }
 }
 
-/*
-	Name: creating_corpse
-	Namespace: callback
-	Checksum: 0xA1AC763C
-	Offset: 0xF88
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function creating_corpse(localclientnum, player) {}
 
-/*
-	Name: callback_stunned
-	Namespace: callback
-	Checksum: 0x77D93AAE
-	Offset: 0xFA8
-	Size: 0x8A
-	Parameters: 7
-	Flags: Linked
-*/
 function callback_stunned(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self.stunned = newval;
-  /#
   println("");
-  # /
-    if(newval) {
-      self notify(# "stunned");
-    }
-  else {
-    self notify(# "not_stunned");
+  if(newval) {
+    self notify("stunned");
+  } else {
+    self notify("not_stunned");
   }
 }
 
-/*
-	Name: callback_emp
-	Namespace: callback
-	Checksum: 0x10EBF4E6
-	Offset: 0x1040
-	Size: 0x8A
-	Parameters: 7
-	Flags: Linked
-*/
 function callback_emp(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self.emp = newval;
-  /#
   println("");
-  # /
-    if(newval) {
-      self notify(# "emp");
-    }
-  else {
-    self notify(# "not_emp");
+  if(newval) {
+    self notify("emp");
+  } else {
+    self notify("not_emp");
   }
 }
 
-/*
-	Name: callback_proximity
-	Namespace: callback
-	Checksum: 0x64CEC4C8
-	Offset: 0x10D8
-	Size: 0x48
-	Parameters: 7
-	Flags: Linked
-*/
 function callback_proximity(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self.enemyinproximity = newval;
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_dart.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_shellshock;
@@ -25,18 +29,8 @@
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\shared\weapons\_hacker_tool;
 #using scripts\shared\weapons\_heatseekingmissile;
-
 #namespace dart;
 
-/*
-	Name: init
-	Namespace: dart
-	Checksum: 0x5E2B748D
-	Offset: 0x7F8
-	Size: 0x254
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   killstreaks::register("dart", "dart", "killstreak_dart", "dart_used", & activatedart, 1);
   killstreaks::register_strings("dart", & "KILLSTREAK_DART_EARNED", & "KILLSTREAK_DART_NOT_AVAILABLE", & "KILLSTREAK_DART_INBOUND", undefined, & "KILLSTREAK_DART_HACKED");
@@ -51,33 +45,15 @@ function init() {
   visionset_mgr::register_info("visionset", "dart_visionset", 1, 90, 16, 1, & visionset_mgr::ramp_in_out_thread_per_player_death_shutdown, 0);
 }
 
-/*
-	Name: wait_dart_timed_out
-	Namespace: dart
-	Checksum: 0xB767C07D
-	Offset: 0xA58
-	Size: 0x4E
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_dart_timed_out(time) {
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "dart_throw_failed");
-  self endon(# "dart_entered");
+  self endon("disconnect");
+  self endon("death");
+  self endon("dart_throw_failed");
+  self endon("dart_entered");
   wait(time);
-  self notify(# "dart_throw_timed_out");
+  self notify("dart_throw_timed_out");
 }
 
-/*
-	Name: wait_for_throw_status
-	Namespace: dart
-	Checksum: 0x907E2727
-	Offset: 0xAB0
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_for_throw_status() {
   thread wait_dart_timed_out(5);
   notifystring = self util::waittill_any_return("death", "disconnect", "dart_entered", "dart_throw_timed_out", "dart_throw_failed");
@@ -87,23 +63,12 @@ function wait_for_throw_status() {
   return false;
 }
 
-/*
-	Name: activatedart
-	Namespace: dart
-	Checksum: 0x8BD11924
-	Offset: 0xB48
-	Size: 0x24C
-	Parameters: 1
-	Flags: Linked
-*/
 function activatedart(killstreaktype) {
   player = self;
-  /#
   assert(isplayer(player));
-  # /
-    if(!player killstreakrules::iskillstreakallowed("dart", player.team)) {
-      return 0;
-    }
+  if(!player killstreakrules::iskillstreakallowed("dart", player.team)) {
+    return 0;
+  }
   player disableoffhandweapons();
   missileweapon = player getcurrentweapon();
   if(!(isdefined(missileweapon) && (missileweapon.name == "dart" || missileweapon.name == "inventory_dart"))) {
@@ -113,7 +78,7 @@ function activatedart(killstreaktype) {
   notifystring = player util::waittill_any_return("weapon_change", "grenade_fire", "death", "disconnect", "joined_team", "emp_jammed", "emp_grenaded");
   if(notifystring == "death" || notifystring == "emp_jammed" || notifystring == "emp_grenaded") {
     if(player.waitingondartthrow) {
-      player notify(# "dart_putaway");
+      player notify("dart_putaway");
     }
     player enableoffhandweapons();
     return 0;
@@ -123,7 +88,7 @@ function activatedart(killstreaktype) {
   }
   if(notifystring == "weapon_change") {
     if(player.waitingondartthrow) {
-      player notify(# "dart_putaway");
+      player notify("dart_putaway");
     }
     player enableoffhandweapons();
     return 0;
@@ -131,57 +96,37 @@ function activatedart(killstreaktype) {
   return 1;
 }
 
-/*
-	Name: cleanup_grenade
-	Namespace: dart
-	Checksum: 0x6A6F17D0
-	Offset: 0xDA0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function cleanup_grenade() {
   self thread waitthendelete(0.05);
   self.origin = self.origin + vectorscale((0, 0, 1), 1000);
 }
 
-/*
-	Name: watchthrow
-	Namespace: dart
-	Checksum: 0x14FAFC2A
-	Offset: 0xDF0
-	Size: 0x314
-	Parameters: 1
-	Flags: Linked
-*/
 function watchthrow(missileweapon) {
-  /#
   assert(isplayer(self));
-  # /
-    player = self;
+  player = self;
   playerentnum = player.entnum;
-  player endon(# "disconnect");
-  player endon(# "joined_team");
-  player endon(# "dart_putaway");
-  level endon(# "game_ended");
+  player endon("disconnect");
+  player endon("joined_team");
+  player endon("dart_putaway");
+  level endon("game_ended");
   player.waitingondartthrow = 1;
-  player waittill(# "grenade_fire", grenade, weapon);
+  player waittill("grenade_fire", grenade, weapon);
   player.waitingondartthrow = 0;
   if(weapon != missileweapon) {
-    self notify(# "dart_throw_failed");
+    self notify("dart_throw_failed");
     return;
   }
   trace = player check_launch_space(grenade.origin);
   if(trace["fraction"] < 1) {
-    self iprintlnbold( & "KILLSTREAK_DART_NOT_AVAILABLE");
+    self iprintlnbold(&"KILLSTREAK_DART_NOT_AVAILABLE");
     grenade cleanup_grenade();
-    self notify(# "dart_throw_failed");
+    self notify("dart_throw_failed");
     return;
   }
   killstreak_id = player killstreakrules::killstreakstart("dart", player.team, undefined, 0);
   if(killstreak_id == -1) {
     grenade cleanup_grenade();
-    self notify(# "dart_throw_failed");
+    self notify("dart_throw_failed");
     return;
   }
   player.dart_thrown_time = gettime();
@@ -196,15 +141,6 @@ function watchthrow(missileweapon) {
   }
 }
 
-/*
-	Name: hackedprefunction
-	Namespace: dart
-	Checksum: 0xD451B56
-	Offset: 0x1110
-	Size: 0x16C
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedprefunction(hacker) {
   dart = self;
   dart.owner util::freeze_player_controls(0);
@@ -219,15 +155,6 @@ function hackedprefunction(hacker) {
   dart disabledartmissilelocking();
 }
 
-/*
-	Name: hackedpostfunction
-	Namespace: dart
-	Checksum: 0x4528778A
-	Offset: 0x1288
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedpostfunction(hacker) {
   dart = self;
   hacker startdartremotecontrol(dart);
@@ -236,15 +163,6 @@ function hackedpostfunction(hacker) {
   hacker killstreaks::set_killstreak_delay_killcam("dart");
 }
 
-/*
-	Name: dart_hacked_health_update
-	Namespace: dart
-	Checksum: 0x924639EC
-	Offset: 0x1320
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function dart_hacked_health_update(hacker) {
   dart = self;
   if(dart.health > dart.hackedhealth) {
@@ -252,15 +170,6 @@ function dart_hacked_health_update(hacker) {
   }
 }
 
-/*
-	Name: check_launch_space
-	Namespace: dart
-	Checksum: 0xB7E1234F
-	Offset: 0x1380
-	Size: 0xCA
-	Parameters: 1
-	Flags: Linked
-*/
 function check_launch_space(origin) {
   player_angles = self getplayerangles();
   forward = anglestoforward(player_angles);
@@ -269,21 +178,10 @@ function check_launch_space(origin) {
   return physicstrace(origin, spawn_origin, (radius * -1, radius * -1, 0), (radius, radius, 2 * radius), self, 1);
 }
 
-/*
-	Name: spawndart
-	Namespace: dart
-	Checksum: 0x4193EDAC
-	Offset: 0x1458
-	Size: 0x538
-	Parameters: 3
-	Flags: Linked
-*/
 function spawndart(grenade, killstreak_id, spawn_origin) {
   player = self;
-  /#
   assert(isplayer(player));
-  # /
-    playerentnum = player.entnum;
+  playerentnum = player.entnum;
   player_angles = player getplayerangles();
   grenade cleanup_grenade();
   params = level.killstreakbundle["dart"];
@@ -330,38 +228,18 @@ function spawndart(grenade, killstreak_id, spawn_origin) {
   dart.forcewaitremotecontrol = 1;
   player util::waittill_any("weapon_change", "death");
   player remote_weapons::useremoteweapon(dart, "dart", 1, 1, 1);
-  player notify(# "dart_entered");
+  player notify("dart_entered");
   return dart;
 }
 
-/*
-	Name: debug_origin
-	Namespace: dart
-	Checksum: 0x245A88D6
-	Offset: 0x1998
-	Size: 0x58
-	Parameters: 0
-	Flags: None
-*/
 function debug_origin() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    /#
     sphere(self.origin, 5, (1, 0, 0), 1, 1, 2, 120);
-    # /
-      wait(0.05);
+    wait(0.05);
   }
 }
 
-/*
-	Name: waitremotecontrol
-	Namespace: dart
-	Checksum: 0x34A4F797
-	Offset: 0x19F8
-	Size: 0xF2
-	Parameters: 0
-	Flags: Linked
-*/
 function waitremotecontrol() {
   dart = self;
   remote_controlled = isdefined(dart.control_initiated) && dart.control_initiated || (isdefined(dart.controlled) && dart.controlled);
@@ -369,89 +247,51 @@ function waitremotecontrol() {
     notifystring = dart util::waittill_any_return("remote_weapon_end", "dart_left");
     if(isdefined(notifystring)) {
       if(notifystring == "remote_weapon_end") {
-        dart waittill(# "dart_left");
+        dart waittill("dart_left");
       } else {
-        dart waittill(# "remote_weapon_end");
+        dart waittill("remote_weapon_end");
       }
     }
   } else {
-    dart waittill(# "dart_left");
+    dart waittill("dart_left");
   }
 }
 
-/*
-	Name: startdartremotecontrol
-	Namespace: dart
-	Checksum: 0xF99DDC1D
-	Offset: 0x1AF8
-	Size: 0x23C
-	Parameters: 1
-	Flags: Linked
-*/
 function startdartremotecontrol(dart) {
   player = self;
-  /#
   assert(isplayer(player));
-  # /
-    if(!dart.is_shutting_down) {
-      player.dart_thrown_time = undefined;
-      dart usevehicle(player, 0);
-      player.resurrect_not_allowed_by = undefined;
-      dart clientfield::set("vehicletransition", 1);
-      dart thread watchammo();
-      dart thread vehicle::monitor_missiles_locked_on_to_me(player);
-      dart thread vehicle::monitor_damage_as_occupant(player);
-      player vehicle::set_vehicle_drivable_time_starting_now(30000);
-      player.no_fade2black = 1;
-      dart.inheliproximity = 0;
-      minheightoverride = undefined;
-      minz_struct = struct::get("vehicle_oob_minz", "targetname");
-      if(isdefined(minz_struct)) {
-        minheightoverride = minz_struct.origin[2];
-      }
-      dart thread qrdrone::qrdrone_watch_distance(2000, minheightoverride);
-      dart.distance_shutdown_override = & dartdistancefailure;
-      dart enabledartmissilelocking();
-      visionset_mgr::activate("visionset", "dart_visionset", self, 1, 90000, 1);
-      player clientfield::set_to_player("fog_bank_3", 1);
+  if(!dart.is_shutting_down) {
+    player.dart_thrown_time = undefined;
+    dart usevehicle(player, 0);
+    player.resurrect_not_allowed_by = undefined;
+    dart clientfield::set("vehicletransition", 1);
+    dart thread watchammo();
+    dart thread vehicle::monitor_missiles_locked_on_to_me(player);
+    dart thread vehicle::monitor_damage_as_occupant(player);
+    player vehicle::set_vehicle_drivable_time_starting_now(30000);
+    player.no_fade2black = 1;
+    dart.inheliproximity = 0;
+    minheightoverride = undefined;
+    minz_struct = struct::get("vehicle_oob_minz", "targetname");
+    if(isdefined(minz_struct)) {
+      minheightoverride = minz_struct.origin[2];
     }
+    dart thread qrdrone::qrdrone_watch_distance(2000, minheightoverride);
+    dart.distance_shutdown_override = & dartdistancefailure;
+    dart enabledartmissilelocking();
+    visionset_mgr::activate("visionset", "dart_visionset", self, 1, 90000, 1);
+    player clientfield::set_to_player("fog_bank_3", 1);
+  }
 }
 
-/*
-	Name: enddartremotecontrol
-	Namespace: dart
-	Checksum: 0x1F530DEC
-	Offset: 0x1D40
-	Size: 0x2C
-	Parameters: 2
-	Flags: Linked
-*/
 function enddartremotecontrol(dart, exitrequestedbyowner) {
   dart thread leave_dart();
 }
 
-/*
-	Name: dartdistancefailure
-	Namespace: dart
-	Checksum: 0x9FB65301
-	Offset: 0x1D78
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function dartdistancefailure() {
   thread stop_remote_weapon();
 }
 
-/*
-	Name: stop_remote_weapon
-	Namespace: dart
-	Checksum: 0x9C5C942
-	Offset: 0x1D98
-	Size: 0x18C
-	Parameters: 2
-	Flags: Linked
-*/
 function stop_remote_weapon(attacker, weapon) {
   dart = self;
   dart.detonateviaemp = undefined;
@@ -460,7 +300,7 @@ function stop_remote_weapon(attacker, weapon) {
     challenges::destroyedaircraft(attacker, weapon, 1);
     attacker challenges::addflyswatterstat(weapon, self);
     scoreevents::processscoreevent("destroyed_dart", attacker, dart.owner, weapon);
-    luinotifyevent( & "player_callout", 2, & "KILLSTREAK_DESTROYED_DART", attacker.entnum);
+    luinotifyevent(&"player_callout", 2, & "KILLSTREAK_DESTROYED_DART", attacker.entnum);
   }
   if(isdefined(attacker) && attacker != dart.owner) {
     dart killstreaks::play_destroyed_dialog_on_owner("dart", dart.killstreak_id);
@@ -468,15 +308,6 @@ function stop_remote_weapon(attacker, weapon) {
   dart thread remote_weapons::endremotecontrolweaponuse(0);
 }
 
-/*
-	Name: dartdamageoverride
-	Namespace: dart
-	Checksum: 0x8FE941B1
-	Offset: 0x1F30
-	Size: 0x154
-	Parameters: 15
-	Flags: Linked
-*/
 function dartdamageoverride(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   dart = self;
   if(smeansofdeath == "MOD_TRIGGER_HURT" || (isdefined(dart.is_shutting_down) && dart.is_shutting_down)) {
@@ -487,34 +318,16 @@ function dartdamageoverride(einflictor, eattacker, idamage, idflags, smeansofdea
   return idamage;
 }
 
-/*
-	Name: emp_damage_cb
-	Namespace: dart
-	Checksum: 0xFC09F7E3
-	Offset: 0x2090
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function emp_damage_cb(attacker, weapon) {
   dart = self;
   dart stop_remote_weapon(attacker, weapon);
 }
 
-/*
-	Name: darpredictedcollision
-	Namespace: dart
-	Checksum: 0x3264F7CA
-	Offset: 0x20E0
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function darpredictedcollision() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "veh_predictedcollision", velocity, normal, ent, stype);
-    self notify(# "veh_collision", velocity, normal, ent, stype);
+    self waittill("veh_predictedcollision", velocity, normal, ent, stype);
+    self notify("veh_collision", velocity, normal, ent, stype);
     if(stype == "glass") {
       continue;
     } else {
@@ -523,22 +336,13 @@ function darpredictedcollision() {
   }
 }
 
-/*
-	Name: watchcollision
-	Namespace: dart
-	Checksum: 0x55C3DE3A
-	Offset: 0x2180
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function watchcollision() {
   dart = self;
-  dart endon(# "death");
-  dart.owner endon(# "disconnect");
+  dart endon("death");
+  dart.owner endon("disconnect");
   dart thread darpredictedcollision();
   while (true) {
-    dart waittill(# "veh_collision", velocity, normal, ent, stype);
+    dart waittill("veh_collision", velocity, normal, ent, stype);
     if(stype === "glass") {
       continue;
     }
@@ -549,73 +353,37 @@ function watchcollision() {
   }
 }
 
-/*
-	Name: watchdeath
-	Namespace: dart
-	Checksum: 0x1898584B
-	Offset: 0x2288
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function watchdeath() {
   dart = self;
   player = dart.owner;
-  player endon(# "dart_entered");
-  dart endon(# "delete");
-  dart waittill(# "death");
+  player endon("dart_entered");
+  dart endon("delete");
+  dart waittill("death");
   dart thread leave_dart();
 }
 
-/*
-	Name: watchownernondeathevents
-	Namespace: dart
-	Checksum: 0x9DF30AF7
-	Offset: 0x2300
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function watchownernondeathevents(endcondition1, endcondition2) {
   dart = self;
   player = dart.owner;
-  player endon(# "dart_entered");
-  dart endon(# "death");
+  player endon("dart_entered");
+  dart endon("death");
   dart thread watchforgameend();
   player util::waittill_any("joined_team", "disconnect", "joined_spectators", "emp_jammed");
   dart thread leave_dart();
 }
 
-/*
-	Name: watchforgameend
-	Namespace: dart
-	Checksum: 0x7D1B2F4F
-	Offset: 0x23C8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function watchforgameend() {
   dart = self;
-  dart endon(# "death");
-  level waittill(# "game_ended");
+  dart endon("death");
+  level waittill("game_ended");
   dart thread leave_dart();
 }
 
-/*
-	Name: watchammo
-	Namespace: dart
-	Checksum: 0xE6005F80
-	Offset: 0x2418
-	Size: 0x258
-	Parameters: 0
-	Flags: Linked
-*/
 function watchammo() {
   dart = self;
-  dart endon(# "death");
+  dart endon("death");
   player = dart.owner;
-  player endon(# "disconnect");
+  player endon("disconnect");
   shotcount = 0;
   params = level.killstreakbundle["dart"];
   if(!isdefined(params.ksdartshotcount)) {
@@ -641,7 +409,7 @@ function watchammo() {
   }
   player clientfield::set_to_player("dart_update_ammo", params.ksdartshotcount);
   while (true) {
-    dart waittill(# "weapon_fired");
+    dart waittill("weapon_fired");
     shotcount++;
     player clientfield::set_to_player("dart_update_ammo", params.ksdartshotcount - shotcount);
     if(shotcount >= params.ksdartshotcount) {
@@ -652,15 +420,6 @@ function watchammo() {
   }
 }
 
-/*
-	Name: leave_dart
-	Namespace: dart
-	Checksum: 0xB95B2A16
-	Offset: 0x2678
-	Size: 0x7D4
-	Parameters: 0
-	Flags: Linked
-*/
 function leave_dart() {
   dart = self;
   owner = dart.owner;
@@ -683,7 +442,7 @@ function leave_dart() {
     target_remove(dart);
   }
   if(isalive(dart)) {
-    dart notify(# "death");
+    dart notify("death");
   }
   params = level.killstreakbundle["dart"];
   if(!isdefined(params.ksdartexplosionouterradius)) {
@@ -752,56 +511,29 @@ function leave_dart() {
   }
   killstreakrules::killstreakstop("dart", dart_original_team, dart_killstreak_id);
   if(isdefined(dart)) {
-    dart notify(# "dart_left");
+    dart notify("dart_left");
   }
 }
 
-/*
-	Name: deleteonconditions
-	Namespace: dart
-	Checksum: 0x8638DC99
-	Offset: 0x2E58
-	Size: 0x64
-	Parameters: 1
-	Flags: None
-*/
 function deleteonconditions(condition) {
   dart = self;
-  dart endon(# "delete");
+  dart endon("delete");
   if(isdefined(condition)) {
     dart waittill(condition);
   }
-  dart notify(# "delete");
+  dart notify("delete");
   dart delete();
 }
 
-/*
-	Name: waitthendelete
-	Namespace: dart
-	Checksum: 0xEA573B45
-	Offset: 0x2EC8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function waitthendelete(waittime) {
-  self endon(# "delete");
-  self endon(# "death");
+  self endon("delete");
+  self endon("death");
   wait(waittime);
   self delete();
 }
 
-/*
-	Name: play_bda_dialog
-	Namespace: dart
-	Checksum: 0x7E736BC7
-	Offset: 0x2F10
-	Size: 0x106
-	Parameters: 1
-	Flags: Linked
-*/
 function play_bda_dialog(pilotindex) {
-  self endon(# "game_ended");
+  self endon("game_ended");
   wait(0.5);
   if(!isdefined(self.dartbda) || self.dartbda == 0) {
     bdadialog = "killNone";
@@ -824,15 +556,6 @@ function play_bda_dialog(pilotindex) {
   self.dartbda = undefined;
 }
 
-/*
-	Name: enabledartmissilelocking
-	Namespace: dart
-	Checksum: 0x70E743F4
-	Offset: 0x3020
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function enabledartmissilelocking() {
   dart = self;
   player = dart.owner;
@@ -844,49 +567,22 @@ function enabledartmissilelocking() {
   player thread heatseekingmissile::stingerirtloop(weapon);
 }
 
-/*
-	Name: disabledartmissilelocking
-	Namespace: dart
-	Checksum: 0x574DAA6B
-	Offset: 0x30F8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function disabledartmissilelocking() {
   player = self.owner;
   player.get_stinger_target_override = undefined;
   player.is_still_valid_target_for_stinger_override = undefined;
   player.is_valid_target_for_stinger_override = undefined;
   player.dart_killstreak_weapon = undefined;
-  player notify(# "stinger_irt_off");
+  player notify("stinger_irt_off");
   player heatseekingmissile::clearirtarget();
 }
 
-/*
-	Name: getdartmissiletargets
-	Namespace: dart
-	Checksum: 0xAD709D95
-	Offset: 0x3170
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function getdartmissiletargets() {
   targets = arraycombine(target_getarray(), level.missileentities, 0, 0);
   targets = arraycombine(targets, level.players, 0, 0);
   return targets;
 }
 
-/*
-	Name: isvaliddartmissiletarget
-	Namespace: dart
-	Checksum: 0xA869999B
-	Offset: 0x31E8
-	Size: 0x14E
-	Parameters: 1
-	Flags: Linked
-*/
 function isvaliddartmissiletarget(ent) {
   player = self;
   if(!isdefined(ent)) {
@@ -912,15 +608,6 @@ function isvaliddartmissiletarget(ent) {
   return true;
 }
 
-/*
-	Name: isstillvaliddartmissiletarget
-	Namespace: dart
-	Checksum: 0x6D667B69
-	Offset: 0x3340
-	Size: 0x1C6
-	Parameters: 2
-	Flags: Linked
-*/
 function isstillvaliddartmissiletarget(ent, weapon) {
   player = self;
   if(!(target_istarget(ent) || isplayer(ent)) && (!(isdefined(ent.allowcontinuedlockonafterinvis) && ent.allowcontinuedlockonafterinvis))) {

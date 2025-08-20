@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_flingers.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -20,18 +24,8 @@
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_genesis_portals;
 #using scripts\zm\zm_genesis_util;
-
 #namespace zm_genesis_flingers;
 
-/*
-	Name: function_976c9217
-	Namespace: zm_genesis_flingers
-	Checksum: 0xE649E65F
-	Offset: 0x828
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_976c9217() {
   register_clientfields();
   zm::register_player_damage_callback( & function_4b3d145d);
@@ -41,15 +35,6 @@ function function_976c9217() {
   level thread function_4208db02();
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_genesis_flingers
-	Checksum: 0xBEA5C760
-	Offset: 0x8E8
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("toplayer", "flinger_flying_postfx", 15000, 1, "int");
   clientfield::register("toplayer", "flinger_land_smash", 15000, 1, "counter");
@@ -60,17 +45,8 @@ function register_clientfields() {
   clientfield::register("scriptmover", "flinger_pad_active_fx", 15000, 4, "int");
 }
 
-/*
-	Name: function_5ecbd7cb
-	Namespace: zm_genesis_flingers
-	Checksum: 0x5EA007BB
-	Offset: 0xA48
-	Size: 0x460
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5ecbd7cb() {
-  level waittill(# "start_zombie_round_logic");
+  level waittill("start_zombie_round_logic");
   var_845e036a = getent(self.target, "targetname");
   vol_fling = getent(var_845e036a.target, "targetname");
   var_cec95fd7 = struct::get(self.target, "targetname");
@@ -85,7 +61,7 @@ function function_5ecbd7cb() {
   var_3432399a = var_845e036a.target + "_spline";
   nd_start = getvehiclenode(var_3432399a, "targetname");
   while (true) {
-    s_unitrigger_stub waittill(# "trigger", e_who);
+    s_unitrigger_stub waittill("trigger", e_who);
     if(isdefined(e_who.var_8dbb72b1) && e_who.var_8dbb72b1[vol_fling.script_string] === 1) {
       e_who zm_audio::create_and_play_dialog("general", "transport_deny");
       continue;
@@ -112,72 +88,27 @@ function function_5ecbd7cb() {
   }
 }
 
-/*
-	Name: unitrigger_think
-	Namespace: zm_genesis_flingers
-	Checksum: 0xFB4DB389
-	Offset: 0xEB0
-	Size: 0x60
-	Parameters: 0
-	Flags: None
-*/
 function unitrigger_think() {
-  self endon(# "kill_trigger");
+  self endon("kill_trigger");
   self.stub thread unitrigger_refresh_message();
   while (true) {
-    self waittill(# "trigger", var_4161ad80);
-    self.stub notify(# "trigger", var_4161ad80);
+    self waittill("trigger", var_4161ad80);
+    self.stub notify("trigger", var_4161ad80);
   }
 }
 
-/*
-	Name: unitrigger_refresh_message
-	Namespace: zm_genesis_flingers
-	Checksum: 0x4DD59B9B
-	Offset: 0xF18
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function unitrigger_refresh_message() {
   self zm_unitrigger::run_visibility_function_for_all_triggers();
 }
 
-/*
-	Name: function_3dcd0982
-	Namespace: zm_genesis_flingers
-	Checksum: 0x45B8F97
-	Offset: 0xF40
-	Size: 0x42
-	Parameters: 2
-	Flags: Linked
-*/
 function function_3dcd0982( & array, var_8d88ae81) {
   return array::filter(array, 0, & function_a78c631a, var_8d88ae81);
 }
 
-/*
-	Name: function_a78c631a
-	Namespace: zm_genesis_flingers
-	Checksum: 0x584785F3
-	Offset: 0xF90
-	Size: 0x6A
-	Parameters: 2
-	Flags: Linked
-*/
 function function_a78c631a(val, var_8d88ae81) {
   return isalive(val) && (!(isdefined(val.is_flung) && val.is_flung)) && val istouching(var_8d88ae81);
 }
 
-/*
-	Name: function_86ef1da5
-	Namespace: zm_genesis_flingers
-	Checksum: 0x8804116
-	Offset: 0x1008
-	Size: 0x120
-	Parameters: 0
-	Flags: Linked
-*/
 function function_86ef1da5() {
   while (true) {
     foreach(e_player in level.activeplayers) {
@@ -190,32 +121,14 @@ function function_86ef1da5() {
   }
 }
 
-/*
-	Name: function_149a5187
-	Namespace: zm_genesis_flingers
-	Checksum: 0x2BC9BFBF
-	Offset: 0x1130
-	Size: 0x28
-	Parameters: 0
-	Flags: Linked
-*/
 function function_149a5187() {
-  self endon(# "hash_13bf4db7");
-  level waittill(# "end_game");
+  self endon("hash_13bf4db7");
+  level waittill("end_game");
   self.var_3048ac6d = 1;
 }
 
-/*
-	Name: function_e9d3c391
-	Namespace: zm_genesis_flingers
-	Checksum: 0x878E428
-	Offset: 0x1160
-	Size: 0xB56
-	Parameters: 4
-	Flags: Linked
-*/
 function function_e9d3c391(var_a89f74ed, v_fling, nd_start, var_173065cc) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.is_flung) && self.is_flung || (isdefined(self.var_8dbb72b1) && self.var_8dbb72b1[var_a89f74ed.script_string] === 1)) {
     return;
   }
@@ -287,7 +200,7 @@ function function_e9d3c391(var_a89f74ed, v_fling, nd_start, var_173065cc) {
     var_413ea50f setignorepauseworld(1);
     var_413ea50f attachpath(nd_start);
     var_413ea50f startpath();
-    var_413ea50f waittill(# "reached_end_node");
+    var_413ea50f waittill("reached_end_node");
     self thread function_3298b25f(var_a89f74ed);
     self thread function_29c06608();
     self playrumbleonentity("zm_castle_flinger_land");
@@ -312,7 +225,7 @@ function function_e9d3c391(var_a89f74ed, v_fling, nd_start, var_173065cc) {
     util::wait_network_frame();
     var_6a7beeb2 delete();
     self enableoffhandweapons();
-    self notify(# "hash_13bf4db7");
+    self notify("hash_13bf4db7");
     self thread function_e905a9df(var_a89f74ed, var_173065cc);
     self thread cleanup_vehicle(var_413ea50f);
   } else {
@@ -328,7 +241,7 @@ function function_e9d3c391(var_a89f74ed, v_fling, nd_start, var_173065cc) {
       n_distance = distance(nd_start.origin, nd_next.origin);
       n_time = n_distance / 600;
       self.mdl_anchor moveto(nd_next.origin, n_time);
-      self.mdl_anchor waittill(# "movedone");
+      self.mdl_anchor waittill("movedone");
       self unlink();
       self pathmode("dont move");
       self startragdoll();
@@ -344,15 +257,6 @@ function function_e9d3c391(var_a89f74ed, v_fling, nd_start, var_173065cc) {
   }
 }
 
-/*
-	Name: cleanup_vehicle
-	Namespace: zm_genesis_flingers
-	Checksum: 0x36A07229
-	Offset: 0x1CC0
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function cleanup_vehicle(var_413ea50f) {
   while (true) {
     if(!isdefined(self) || (isdefined(self.var_3298b25f) && self.var_3298b25f)) {
@@ -363,15 +267,6 @@ function cleanup_vehicle(var_413ea50f) {
   var_413ea50f delete();
 }
 
-/*
-	Name: function_9f131b98
-	Namespace: zm_genesis_flingers
-	Checksum: 0xE1DC38A1
-	Offset: 0x1D30
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9f131b98() {
   if(isdefined(self.b_invulnerable) && self.b_invulnerable) {
     self.b_invulnerable = undefined;
@@ -381,20 +276,11 @@ function function_9f131b98() {
   self disableinvulnerability();
 }
 
-/*
-	Name: ai_delay_cleanup
-	Namespace: zm_genesis_flingers
-	Checksum: 0xC453F49
-	Offset: 0x1D88
-	Size: 0x72
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_delay_cleanup() {
   if(!(isdefined(self.b_ignore_cleanup) && self.b_ignore_cleanup)) {
-    self notify(# "delay_cleanup");
-    self endon(# "death");
-    self endon(# "delay_cleanup");
+    self notify("delay_cleanup");
+    self endon("death");
+    self endon("delay_cleanup");
     self.b_ignore_cleanup = 1;
     self.var_b6b1080c = 1;
     wait(10);
@@ -403,17 +289,8 @@ function ai_delay_cleanup() {
   }
 }
 
-/*
-	Name: function_e905a9df
-	Namespace: zm_genesis_flingers
-	Checksum: 0x47F923E8
-	Offset: 0x1E08
-	Size: 0xCE
-	Parameters: 2
-	Flags: Linked
-*/
 function function_e905a9df(var_a89f74ed, var_173065cc) {
-  self endon(# "death");
+  self endon("death");
   self.var_8dbb72b1[var_a89f74ed.script_string] = 1;
   self clientfield::set_to_player("flinger_cooldown_start", level.var_6ad55648[var_173065cc.targetname]["ready"]);
   wait(15);
@@ -421,15 +298,6 @@ function function_e905a9df(var_a89f74ed, var_173065cc) {
   self.var_8dbb72b1[var_a89f74ed.script_string] = 0;
 }
 
-/*
-	Name: function_cbac68fe
-	Namespace: zm_genesis_flingers
-	Checksum: 0x8D01A657
-	Offset: 0x1EE0
-	Size: 0x1E0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cbac68fe(e_player) {
   var_629f4b8 = spawn("script_model", e_player.origin);
   var_629f4b8.angles = e_player.angles;
@@ -449,15 +317,6 @@ function function_cbac68fe(e_player) {
   return var_629f4b8;
 }
 
-/*
-	Name: function_c1f1756a
-	Namespace: zm_genesis_flingers
-	Checksum: 0x4A9887AD
-	Offset: 0x20C8
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c1f1756a() {
   while (isdefined(self.is_flung) && self.is_flung) {
     self playrumbleonentity("zod_beast_grapple_reel");
@@ -465,17 +324,8 @@ function function_c1f1756a() {
   }
 }
 
-/*
-	Name: function_3298b25f
-	Namespace: zm_genesis_flingers
-	Checksum: 0xAA9797F7
-	Offset: 0x2118
-	Size: 0x1E0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3298b25f(var_a89f74ed) {
-  self endon(# "death");
+  self endon("death");
   self.var_3298b25f = 0;
   var_a7d28374 = 0;
   var_a05a47c7 = var_a89f74ed function_fbd80603();
@@ -502,21 +352,10 @@ function function_3298b25f(var_a89f74ed) {
   self.var_3298b25f = 1;
 }
 
-/*
-	Name: function_fbd80603
-	Namespace: zm_genesis_flingers
-	Checksum: 0xF39B2E93
-	Offset: 0x2300
-	Size: 0x21E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fbd80603(b_random = 0) {
   var_2b58409e = struct::get(self.script_noteworthy, "targetname");
-  /#
   assert(isdefined(var_2b58409e), "" + self.script_noteworthy);
-  # /
-    a_s_spots = struct::get_array(var_2b58409e.target, "targetname");
+  a_s_spots = struct::get_array(var_2b58409e.target, "targetname");
   array::add(a_s_spots, var_2b58409e, 0);
   for (i = 0; i < a_s_spots.size; i++) {
     for (j = i; j < a_s_spots.size; j++) {
@@ -538,15 +377,6 @@ function function_fbd80603(b_random = 0) {
   }
 }
 
-/*
-	Name: function_b19e2d45
-	Namespace: zm_genesis_flingers
-	Checksum: 0xBA2B35B
-	Offset: 0x2528
-	Size: 0xC0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b19e2d45(var_a89f74ed) {
   var_2b58409e = struct::get(var_a89f74ed.script_noteworthy, "targetname");
   str_zone = zm_zonemgr::get_zone_from_position(var_2b58409e.origin + vectorscale((0, 0, 1), 32), 1);
@@ -556,32 +386,14 @@ function function_b19e2d45(var_a89f74ed) {
   }
 }
 
-/*
-	Name: function_44659337
-	Namespace: zm_genesis_flingers
-	Checksum: 0xFC010E23
-	Offset: 0x25F0
-	Size: 0xA4
-	Parameters: 3
-	Flags: Linked
-*/
 function function_44659337(nd_target, var_a89f74ed, v_fling) {
   a_ai = getaiteamarray(level.zombie_team);
   a_sorted_ai = arraysortclosest(a_ai, nd_target.origin, a_ai.size, 0, 512);
   array::thread_all(a_sorted_ai, & function_1a4837ab, nd_target, self, var_a89f74ed, v_fling);
 }
 
-/*
-	Name: function_1a4837ab
-	Namespace: zm_genesis_flingers
-	Checksum: 0x35BC5EBA
-	Offset: 0x26A0
-	Size: 0x23C
-	Parameters: 4
-	Flags: Linked
-*/
 function function_1a4837ab(nd_target, e_target, var_a89f74ed, v_fling) {
-  self endon(# "death");
+  self endon("death");
   if(!(isdefined(self.completed_emerging_into_playable_area) && self.completed_emerging_into_playable_area)) {
     return;
   }
@@ -612,15 +424,6 @@ function function_1a4837ab(nd_target, e_target, var_a89f74ed, v_fling) {
   }
 }
 
-/*
-	Name: function_29c06608
-	Namespace: zm_genesis_flingers
-	Checksum: 0x2894A173
-	Offset: 0x28E8
-	Size: 0x2C2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_29c06608() {
   a_ai = getaiteamarray(level.zombie_team);
   var_5e3331b2 = arraysortclosest(a_ai, self.origin, a_ai.size, 0, 128);
@@ -644,15 +447,6 @@ function function_29c06608() {
   }
 }
 
-/*
-	Name: zombie_slam_direction
-	Namespace: zm_genesis_flingers
-	Checksum: 0x54D70C0E
-	Offset: 0x2BB8
-	Size: 0x2AC
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_slam_direction(ai_zombie) {
   ai_zombie.knockdown = 1;
   v_zombie_to_player = self.origin - ai_zombie.origin;
@@ -688,15 +482,6 @@ function zombie_slam_direction(ai_zombie) {
   ai_zombie.knockdown = 0;
 }
 
-/*
-	Name: function_4b3d145d
-	Namespace: zm_genesis_flingers
-	Checksum: 0x380C8D5C
-	Offset: 0x2E70
-	Size: 0x7E
-	Parameters: 11
-	Flags: Linked
-*/
 function function_4b3d145d(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex) {
   if(isdefined(self.is_flung) && self.is_flung) {
     return 0;
@@ -704,50 +489,23 @@ function function_4b3d145d(einflictor, eattacker, idamage, idflags, smeansofdeat
   return -1;
 }
 
-/*
-	Name: function_485001bf
-	Namespace: zm_genesis_flingers
-	Checksum: 0x28D8A014
-	Offset: 0x2EF8
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_485001bf(e_player) {
   if(isdefined(e_player.var_8dbb72b1) && e_player.var_8dbb72b1[self.stub.script_string] === 1) {
-    self sethintstring( & "ZM_GENESIS_JUMP_PAD_COOLDOWN");
+    self sethintstring(&"ZM_GENESIS_JUMP_PAD_COOLDOWN");
     return false;
   }
   return true;
 }
 
-/*
-	Name: function_4029cf56
-	Namespace: zm_genesis_flingers
-	Checksum: 0x41C236E5
-	Offset: 0x2F70
-	Size: 0x60
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4029cf56() {
-  self endon(# "kill_trigger");
+  self endon("kill_trigger");
   self.stub thread zm_unitrigger::run_visibility_function_for_all_triggers();
   while (true) {
-    self waittill(# "trigger", var_4161ad80);
-    self.stub notify(# "trigger", var_4161ad80);
+    self waittill("trigger", var_4161ad80);
+    self.stub notify("trigger", var_4161ad80);
   }
 }
 
-/*
-	Name: function_4208db02
-	Namespace: zm_genesis_flingers
-	Checksum: 0xD0F69322
-	Offset: 0x2FD8
-	Size: 0x2D4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4208db02() {
   level.var_6ad55648 = [];
   level.var_6ad55648["upper_courtyard_flinger_base3"] = [];

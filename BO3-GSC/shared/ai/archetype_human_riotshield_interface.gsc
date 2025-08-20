@@ -1,18 +1,12 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/**************************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_human_riotshield_interface.gsc
+**************************************************************/
+
 #using scripts\shared\ai\archetype_human_riotshield;
 #using scripts\shared\ai\systems\ai_interface;
-
 #namespace humanriotshieldinterface;
 
-/*
-	Name: registerhumanriotshieldinterfaceattributes
-	Namespace: humanriotshieldinterface
-	Checksum: 0xB3ADAABA
-	Offset: 0x188
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked
-*/
 function registerhumanriotshieldinterfaceattributes() {
   ai::registermatchedinterface("human_riotshield", "can_be_meleed", 1, array(1, 0));
   ai::registermatchedinterface("human_riotshield", "can_melee", 1, array(1, 0));

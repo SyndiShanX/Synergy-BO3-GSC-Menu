@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\escort.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -33,46 +37,18 @@
 #using scripts\shared\vehicleriders_shared;
 #using scripts\shared\weapons\_heatseekingmissile;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace escort;
 
-/*
-	Name: __init__sytem__
-	Namespace: escort
-	Checksum: 0xCE8953D
-	Offset: 0x1118
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("escort", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: escort
-	Checksum: 0x1F108EED
-	Offset: 0x1158
-	Size: 0x84
-	Parameters: 0
-	Flags: None
-*/
 function __init__() {
   clientfield::register("actor", "robot_state", 1, 2, "int");
   clientfield::register("actor", "escort_robot_burn", 1, 1, "int");
   callback::on_spawned( & on_player_spawned);
 }
 
-/*
-	Name: main
-	Namespace: escort
-	Checksum: 0x37DAA4A
-	Offset: 0x11E8
-	Size: 0x4EC
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   util::registertimelimit(0, 1440);
@@ -109,7 +85,6 @@ function main() {
     killstreak_bundles::register_killstreak_bundle(level.escortrobotkillstreakbundle);
     level.shutdowndamage = killstreak_bundles::get_max_health(level.escortrobotkillstreakbundle);
   }
-  /#
   switch (getdvarint("", 1)) {
     case 1: {
       level.robotspeed = "";
@@ -124,8 +99,7 @@ function main() {
       level.robotspeed = "";
     }
   }
-  # /
-    globallogic_audio::set_leader_gametype_dialog("startSafeguard", "hcStartSafeguard", "sfgStartAttack", "sfgStartDefend");
+  globallogic_audio::set_leader_gametype_dialog("startSafeguard", "hcStartSafeguard", "sfgStartAttack", "sfgStartDefend");
   if(!sessionmodeissystemlink() && !sessionmodeisonlinegame() && issplitscreen()) {
     globallogic::setvisiblescoreboardcolumns("score", "kills", "escorts", "disables", "deaths");
   } else {
@@ -148,26 +122,8 @@ function main() {
   killstreak_bundles::register_killstreak_bundle("escort_robot");
 }
 
-/*
-	Name: onprecachegametype
-	Namespace: escort
-	Checksum: 0x99EC1590
-	Offset: 0x16E0
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function onprecachegametype() {}
 
-/*
-	Name: onstartgametype
-	Namespace: escort
-	Checksum: 0x1E691252
-	Offset: 0x16F0
-	Size: 0x51C
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   level.usestartspawns = 1;
   if(!isdefined(game["switchedsides"])) {
@@ -228,28 +184,10 @@ function onstartgametype() {
   level thread drop_robot();
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: escort
-	Checksum: 0xDB3224D6
-	Offset: 0x1C18
-	Size: 0x24
-	Parameters: 1
-	Flags: None
-*/
 function onspawnplayer(predictedspawn) {
   spawning::onspawnplayer(predictedspawn);
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: escort
-	Checksum: 0xD4CF71D7
-	Offset: 0x1C48
-	Size: 0x18C
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(!isdefined(attacker) || attacker == self || !isplayer(attacker) || attacker.team == self.team) {
     return;
@@ -263,44 +201,17 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: ontimelimit
-	Namespace: escort
-	Checksum: 0x1A76FBF2
-	Offset: 0x1DE0
-	Size: 0x64
-	Parameters: 0
-	Flags: None
-*/
 function ontimelimit() {
   winner = game["defenders"];
   globallogic_score::giveteamscoreforobjective_delaypostprocessing(winner, 1);
   level thread globallogic::endgame(winner, game["strings"]["time_limit_reached"]);
 }
 
-/*
-	Name: ontimelimit_overtime1
-	Namespace: escort
-	Checksum: 0x946806BB
-	Offset: 0x1E50
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function ontimelimit_overtime1() {
   winner = game["defenders"];
   level thread globallogic::endgame(winner, game["strings"]["time_limit_reached"]);
 }
 
-/*
-	Name: ontimelimit_overtime2
-	Namespace: escort
-	Checksum: 0x8EDB11D8
-	Offset: 0x1EA8
-	Size: 0xA4
-	Parameters: 0
-	Flags: None
-*/
 function ontimelimit_overtime2() {
   winner = game["defenders"];
   prevwinner = game["escort_overtime_first_winner"];
@@ -311,28 +222,10 @@ function ontimelimit_overtime2() {
   }
 }
 
-/*
-	Name: onroundswitch
-	Namespace: escort
-	Checksum: 0x5E3D93BB
-	Offset: 0x1F58
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function onroundswitch() {
   game["switchedsides"] = !game["switchedsides"];
 }
 
-/*
-	Name: onendgame
-	Namespace: escort
-	Checksum: 0xC0C770B9
-	Offset: 0x1F80
-	Size: 0xEC
-	Parameters: 1
-	Flags: None
-*/
 function onendgame(winningteam) {
   if(isdefined(game["overtime_round"])) {
     if(game["overtime_round"] == 1) {
@@ -352,15 +245,6 @@ function onendgame(winningteam) {
   level.robot thread delete_on_endgame_sequence();
 }
 
-/*
-	Name: shouldplayovertimeround
-	Namespace: escort
-	Checksum: 0xE2D0874
-	Offset: 0x2078
-	Size: 0xB4
-	Parameters: 0
-	Flags: None
-*/
 function shouldplayovertimeround() {
   if(isdefined(game["overtime_round"])) {
     if(game["overtime_round"] == 1 || !level.gameended) {
@@ -376,15 +260,6 @@ function shouldplayovertimeround() {
   return false;
 }
 
-/*
-	Name: onroundendgame
-	Namespace: escort
-	Checksum: 0x769BEB89
-	Offset: 0x2138
-	Size: 0xDA
-	Parameters: 1
-	Flags: None
-*/
 function onroundendgame(winningteam) {
   if(isdefined(game["overtime_round"])) {
     foreach(team in level.teams) {
@@ -398,28 +273,10 @@ function onroundendgame(winningteam) {
   return globallogic::determineteamwinnerbyteamscore();
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: escort
-	Checksum: 0x9CB50D48
-	Offset: 0x2220
-	Size: 0xE
-	Parameters: 0
-	Flags: None
-*/
 function on_player_spawned() {
   self.escortingrobot = undefined;
 }
 
-/*
-	Name: drop_robot
-	Namespace: escort
-	Checksum: 0xBD2BD05
-	Offset: 0x2238
-	Size: 0x84C
-	Parameters: 0
-	Flags: None
-*/
 function drop_robot() {
   globallogic::waitforplayers();
   movetrigger = getent("escort_robot_move_trig", "targetname");
@@ -470,11 +327,9 @@ function drop_robot() {
   level.robot thread wait_robot_moving();
   level.robot thread wait_robot_stopped();
   level.robot.spawn_influencer_friendly = level.robot spawning::create_entity_friendly_influencer("escort_robot_attackers", game["attackers"]);
-  /#
   debug_draw_robot_path();
   level thread debug_reset_robot_to_start();
-  # /
-    level.moveobject = setup_move_object(level.robot, "escort_robot_move_trig");
+  level.moveobject = setup_move_object(level.robot, "escort_robot_move_trig");
   level.goalobject = setup_goal_object(level.robot, "escort_robot_goal_trig");
   setup_reboot_object(level.robot, "escort_robot_reboot_trig");
   if(level.boottime) {
@@ -500,15 +355,6 @@ function drop_robot() {
   }
 }
 
-/*
-	Name: drop_heli_leave
-	Namespace: escort
-	Checksum: 0x97DBC220
-	Offset: 0x2A90
-	Size: 0xEC
-	Parameters: 0
-	Flags: None
-*/
 function drop_heli_leave() {
   chopper = self;
   wait(1);
@@ -520,17 +366,7 @@ function drop_heli_leave() {
   chopper delete();
 }
 
-/*
-	Name: debug_draw_robot_path
-	Namespace: escort
-	Checksum: 0xF7E3375B
-	Offset: 0x2B88
-	Size: 0x1C2
-	Parameters: 0
-	Flags: None
-*/
 function debug_draw_robot_path() {
-  /#
   if((isdefined(getdvarint("")) ? getdvarint("") : 0) == 0) {
     return;
   }
@@ -544,20 +380,9 @@ function debug_draw_robot_path() {
   foreach(path in pathnodes) {
     util::debug_sphere(path, 6, vectorscale((0, 0, 1), 0.9), 0.9, debug_duration);
   }
-  # /
 }
 
-/*
-	Name: debug_draw_approximate_robot_path_to_goal
-	Namespace: escort
-	Checksum: 0xE9FA509B
-	Offset: 0x2D58
-	Size: 0x1C2
-	Parameters: 1
-	Flags: None
-*/
 function debug_draw_approximate_robot_path_to_goal( & goalpatharray) {
-  /#
   if((isdefined(getdvarint("")) ? getdvarint("") : 0) == 0) {
     return;
   }
@@ -571,20 +396,9 @@ function debug_draw_approximate_robot_path_to_goal( & goalpatharray) {
   foreach(path in pathnodes) {
     util::debug_sphere(path, 3, (0, 0.5, 0.5), 0.9, debug_duration);
   }
-  # /
 }
 
-/*
-	Name: debug_draw_current_robot_goal
-	Namespace: escort
-	Checksum: 0xD3F651AD
-	Offset: 0x2F28
-	Size: 0xAC
-	Parameters: 1
-	Flags: None
-*/
 function debug_draw_current_robot_goal(goal) {
-  /#
   if((isdefined(getdvarint("")) ? getdvarint("") : 0) == 0) {
     return;
   }
@@ -592,20 +406,9 @@ function debug_draw_current_robot_goal(goal) {
     debug_duration = 60;
     util::debug_sphere(goal, 8, vectorscale((0, 1, 0), 0.9), 0.9, debug_duration);
   }
-  # /
 }
 
-/*
-	Name: debug_draw_find_immediate_goal
-	Namespace: escort
-	Checksum: 0xCF6F3DD5
-	Offset: 0x2FE0
-	Size: 0xB4
-	Parameters: 1
-	Flags: None
-*/
 function debug_draw_find_immediate_goal(pathgoal) {
-  /#
   if((isdefined(getdvarint("")) ? getdvarint("") : 0) == 0) {
     return;
   }
@@ -613,20 +416,9 @@ function debug_draw_find_immediate_goal(pathgoal) {
     debug_duration = 60;
     util::debug_sphere(pathgoal + vectorscale((0, 0, 1), 18), 6, vectorscale((1, 0, 0), 0.9), 0.9, debug_duration);
   }
-  # /
 }
 
-/*
-	Name: debug_draw_find_immediate_goal_override
-	Namespace: escort
-	Checksum: 0xCE0E0465
-	Offset: 0x30A0
-	Size: 0xB4
-	Parameters: 1
-	Flags: None
-*/
 function debug_draw_find_immediate_goal_override(immediategoal) {
-  /#
   if((isdefined(getdvarint("")) ? getdvarint("") : 0) == 0) {
     return;
   }
@@ -634,20 +426,9 @@ function debug_draw_find_immediate_goal_override(immediategoal) {
     debug_duration = 60;
     util::debug_sphere(immediategoal + vectorscale((0, 0, 1), 18), 6, vectorscale((1, 0, 1), 0.9), 0.9, debug_duration);
   }
-  # /
 }
 
-/*
-	Name: debug_draw_blocked_path_kill_radius
-	Namespace: escort
-	Checksum: 0x4F7059AC
-	Offset: 0x3160
-	Size: 0xFC
-	Parameters: 2
-	Flags: None
-*/
 function debug_draw_blocked_path_kill_radius(center, radius) {
-  /#
   if((isdefined(getdvarint("")) ? getdvarint("") : 0) == 0) {
     return;
   }
@@ -656,41 +437,22 @@ function debug_draw_blocked_path_kill_radius(center, radius) {
     circle(center + vectorscale((0, 0, 1), 2), radius, vectorscale((1, 0, 0), 0.9), 1, 1, debug_duration);
     circle(center + vectorscale((0, 0, 1), 4), radius, vectorscale((1, 0, 0), 0.9), 1, 1, debug_duration);
   }
-  # /
 }
 
-/*
-	Name: wait_robot_moving
-	Namespace: escort
-	Checksum: 0x5244C443
-	Offset: 0x3268
-	Size: 0x88
-	Parameters: 0
-	Flags: None
-*/
 function wait_robot_moving() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "robot_moving");
+    self waittill("robot_moving");
     self recordgameeventnonplayer("robot_start");
     self clientfield::set("robot_state", 1);
     level.moveobject gameobjects::set_flags(1);
   }
 }
 
-/*
-	Name: wait_robot_stopped
-	Namespace: escort
-	Checksum: 0xC2CC4904
-	Offset: 0x32F8
-	Size: 0x88
-	Parameters: 0
-	Flags: None
-*/
 function wait_robot_stopped() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "robot_stopped");
+    self waittill("robot_stopped");
     if(self.active) {
       self recordgameeventnonplayer("robot_stop");
       self clientfield::set("robot_state", 0);
@@ -699,19 +461,10 @@ function wait_robot_stopped() {
   }
 }
 
-/*
-	Name: wait_robot_shutdown
-	Namespace: escort
-	Checksum: 0x6A32BEA3
-	Offset: 0x3388
-	Size: 0x188
-	Parameters: 0
-	Flags: None
-*/
 function wait_robot_shutdown() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "robot_shutdown");
+    self waittill("robot_shutdown");
     level.moveobject gameobjects::allow_use("none");
     objective_setprogress(level.moveobject.objectiveid, -0.05);
     self clientfield::set("robot_state", 2);
@@ -725,19 +478,10 @@ function wait_robot_shutdown() {
   }
 }
 
-/*
-	Name: wait_robot_reboot
-	Namespace: escort
-	Checksum: 0x8E00CBD0
-	Offset: 0x3518
-	Size: 0x1C8
-	Parameters: 0
-	Flags: None
-*/
 function wait_robot_reboot() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "robot_reboot");
+    self waittill("robot_reboot");
     self recordgameeventnonplayer("robot_repair_complete");
     level.moveobject gameobjects::allow_use("friendly");
     otherteam = util::getotherteam(self.team);
@@ -755,18 +499,9 @@ function wait_robot_reboot() {
   }
 }
 
-/*
-	Name: auto_reboot_robot
-	Namespace: escort
-	Checksum: 0xDE68919D
-	Offset: 0x36E8
-	Size: 0x23C
-	Parameters: 1
-	Flags: None
-*/
 function auto_reboot_robot(time) {
-  self endon(# "robot_reboot");
-  self endon(# "game_ended");
+  self endon("robot_reboot");
+  self endon("game_ended");
   shutdowntime = 0;
   while (shutdowntime < time) {
     rate = 0;
@@ -795,19 +530,10 @@ function auto_reboot_robot(time) {
   self thread reboot_robot();
 }
 
-/*
-	Name: watch_robot_damaged
-	Namespace: escort
-	Checksum: 0x1BBEDE3D
-	Offset: 0x3930
-	Size: 0x140
-	Parameters: 0
-	Flags: None
-*/
 function watch_robot_damaged() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "robot_damaged");
+    self waittill("robot_damaged");
     percent = min(1, self.shutdowndamage / level.shutdowndamage);
     objective_setprogress(level.moveobject.objectiveid, 1 - percent);
     health = level.shutdowndamage - self.shutdowndamage;
@@ -821,41 +547,19 @@ function watch_robot_damaged() {
   }
 }
 
-/*
-	Name: delete_on_endgame_sequence
-	Namespace: escort
-	Checksum: 0x5A2CE6AA
-	Offset: 0x3A78
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function delete_on_endgame_sequence() {
-  self endon(# "death");
-  level waittill(# "endgame_sequence");
+  self endon("death");
+  level waittill("endgame_sequence");
   self delete();
 }
 
-/*
-	Name: get_robot_path_array
-	Namespace: escort
-	Checksum: 0x6282E26B
-	Offset: 0x3AB8
-	Size: 0x12C
-	Parameters: 0
-	Flags: None
-*/
 function get_robot_path_array() {
   if(isdefined(level.escortrobotpath)) {
-    /#
     println("");
-    # /
-      return level.escortrobotpath;
+    return level.escortrobotpath;
   }
-  /#
   println("");
-  # /
-    patharray = [];
+  patharray = [];
   currnode = getnode("escort_robot_path_start", "targetname");
   patharray[patharray.size] = currnode.origin;
   while (isdefined(currnode.target)) {
@@ -870,17 +574,7 @@ function get_robot_path_array() {
   return patharray;
 }
 
-/*
-	Name: calc_robot_path_length
-	Namespace: escort
-	Checksum: 0x749EE614
-	Offset: 0x3BF0
-	Size: 0xBC
-	Parameters: 2
-	Flags: None
-*/
 function calc_robot_path_length(robotorigin, patharray) {
-  /#
   distance = 0;
   lastpoint = robotorigin;
   for (i = 0; i < patharray.size; i++) {
@@ -888,18 +582,8 @@ function calc_robot_path_length(robotorigin, patharray) {
     lastpoint = patharray[i];
   }
   println("" + distance);
-  # /
 }
 
-/*
-	Name: spawn_robot
-	Namespace: escort
-	Checksum: 0xB60990D8
-	Offset: 0x3CB8
-	Size: 0x418
-	Parameters: 2
-	Flags: None
-*/
 function spawn_robot(position, angles) {
   robot = spawnactor("spawner_bo3_robot_grunt_assault_mp_escort", position, angles, "", 1);
   robot ai::set_behavior_attribute("rogue_allow_pregib", 0);
@@ -943,15 +627,6 @@ function spawn_robot(position, angles) {
   return robot;
 }
 
-/*
-	Name: robot_damage
-	Namespace: escort
-	Checksum: 0xE48D3175
-	Offset: 0x40D8
-	Size: 0x6D4
-	Parameters: 12
-	Flags: None
-*/
 function robot_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex, modelindex) {
   if(!(isdefined(self.onground) && self.onground)) {
     return false;
@@ -968,7 +643,7 @@ function robot_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, we
     return false;
   }
   self.shutdowndamage = self.shutdowndamage + weapon_damage;
-  self notify(# "robot_damaged");
+  self notify("robot_damaged");
   if(!isdefined(eattacker.damagerobot)) {
     eattacker.damagerobot = 0;
   }
@@ -976,7 +651,7 @@ function robot_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, we
   if(self.shutdowndamage >= level.shutdowndamage) {
     origin = (0, 0, 0);
     if(isplayer(eattacker)) {
-      level thread popups::displayteammessagetoall( & "MP_ESCORT_ROBOT_DISABLED", eattacker);
+      level thread popups::displayteammessagetoall(&"MP_ESCORT_ROBOT_DISABLED", eattacker);
       level.robot recordgameeventnonplayer("robot_disabled");
       if(distance2dsquared(self.origin, level.goalobject.trigger.origin) < (level.goalobject.trigger.radius + 50) * (level.goalobject.trigger.radius + 50)) {
         scoreevents::processscoreevent("escort_robot_disable_near_goal", eattacker);
@@ -1036,34 +711,16 @@ function robot_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, we
   return true;
 }
 
-/*
-	Name: robot_damage_none
-	Namespace: escort
-	Checksum: 0x80A5502C
-	Offset: 0x47B8
-	Size: 0x66
-	Parameters: 12
-	Flags: None
-*/
 function robot_damage_none(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex, modelindex) {
   return false;
 }
 
-/*
-	Name: shutdown_robot
-	Namespace: escort
-	Checksum: 0x7B862EC7
-	Offset: 0x4828
-	Size: 0x13C
-	Parameters: 0
-	Flags: None
-*/
 function shutdown_robot() {
   self.active = 0;
   self ai::set_ignoreme(1);
   self.canwalk = 0;
   self stop_robot();
-  self notify(# "robot_shutdown");
+  self notify("robot_shutdown");
   if(target_istarget(self)) {
     target_remove(self);
   }
@@ -1075,22 +732,13 @@ function shutdown_robot() {
   self ai::set_behavior_attribute("shutdown", 1);
 }
 
-/*
-	Name: reboot_robot
-	Namespace: escort
-	Checksum: 0xADCCF7F7
-	Offset: 0x4970
-	Size: 0x168
-	Parameters: 0
-	Flags: None
-*/
 function reboot_robot() {
-  self endon(# "robot_shutdown");
-  level endon(# "game_ended");
+  self endon("robot_shutdown");
+  level endon("game_ended");
   self.active = 1;
   self.shutdowndamage = 0;
   self ai::set_ignoreme(0);
-  self notify(# "robot_reboot");
+  self notify("robot_reboot");
   if(isdefined(level.shutdowndamage) && level.shutdowndamage) {
     target_set(self, vectorscale((0, 0, 1), 50));
   }
@@ -1104,15 +752,6 @@ function reboot_robot() {
   self.canwalk = 1;
 }
 
-/*
-	Name: move_robot
-	Namespace: escort
-	Checksum: 0x2578A37
-	Offset: 0x4AE0
-	Size: 0xB4
-	Parameters: 0
-	Flags: None
-*/
 function move_robot() {
   if(self.active == 0 || self.moving || !isdefined(self.pathindex)) {
     return;
@@ -1123,34 +762,16 @@ function move_robot() {
   if(gettime() < (isdefined(self.blocked_wait_end_time) ? self.blocked_wait_end_time : 0)) {
     return;
   }
-  self notify(# "robot_moving");
+  self notify("robot_moving");
   self.moving = 1;
   self set_goal_to_point_on_path();
   self thread robot_wait_next_point();
 }
 
-/*
-	Name: get_current_goal
-	Namespace: escort
-	Checksum: 0x57E705B5
-	Offset: 0x4BA0
-	Size: 0x2C
-	Parameters: 0
-	Flags: None
-*/
 function get_current_goal() {
   return (isdefined(self.immediategoaloverride) ? self.immediategoaloverride : self.patharray[self.pathindex]);
 }
 
-/*
-	Name: reached_closest_nav_mesh_goal_but_still_too_far_and_blocked
-	Namespace: escort
-	Checksum: 0xF523A828
-	Offset: 0x4BD8
-	Size: 0x108
-	Parameters: 1
-	Flags: None
-*/
 function reached_closest_nav_mesh_goal_but_still_too_far_and_blocked(goalonnavmesh) {
   if(isdefined(self.immediategoaloverride)) {
     return false;
@@ -1169,15 +790,6 @@ function reached_closest_nav_mesh_goal_but_still_too_far_and_blocked(goalonnavme
   return false;
 }
 
-/*
-	Name: check_blocked_goal_and_kill
-	Namespace: escort
-	Checksum: 0xB7847049
-	Offset: 0x4CE8
-	Size: 0x1AC
-	Parameters: 0
-	Flags: None
-*/
 function check_blocked_goal_and_kill() {
   if(!self.canwalk) {
     return 0;
@@ -1205,40 +817,18 @@ function check_blocked_goal_and_kill() {
   return 0;
 }
 
-/*
-	Name: find_immediate_goal
-	Namespace: escort
-	Checksum: 0xF1C0A4E7
-	Offset: 0x4EA0
-	Size: 0x114
-	Parameters: 0
-	Flags: None
-*/
 function find_immediate_goal() {
   pathgoal = self.patharray[self.pathindex];
   currpos = self.origin;
-  /#
   debug_draw_find_immediate_goal(pathgoal);
-  # /
-    immediategoal = get_closest_point_on_nav_mesh(vectorlerp(currpos, pathgoal, 0.5));
+  immediategoal = get_closest_point_on_nav_mesh(vectorlerp(currpos, pathgoal, 0.5));
   while (self check_if_goal_is_blocked(currpos, immediategoal)) {
     immediategoal = get_closest_point_on_nav_mesh(vectorlerp(currpos, immediategoal, 0.5));
   }
   self.immediategoaloverride = immediategoal;
-  /#
   debug_draw_find_immediate_goal_override(self.immediategoaloverride);
-  # /
 }
 
-/*
-	Name: check_if_goal_is_blocked
-	Namespace: escort
-	Checksum: 0xDEA4EA1F
-	Offset: 0x4FC0
-	Size: 0xBC
-	Parameters: 2
-	Flags: None
-*/
 function check_if_goal_is_blocked(previousgoal, goal) {
   approxpatharray = self calcapproximatepathtoposition(goal);
   distancetonextgoal = min(distance(self.origin, goal), distance(previousgoal, goal));
@@ -1246,26 +836,17 @@ function check_if_goal_is_blocked(previousgoal, goal) {
   return approxpathtoolong;
 }
 
-/*
-	Name: watch_goal_becoming_blocked
-	Namespace: escort
-	Checksum: 0x97D403BF
-	Offset: 0x5088
-	Size: 0x11A
-	Parameters: 1
-	Flags: None
-*/
 function watch_goal_becoming_blocked(goal) {
-  self notify(# "end_watch_goal_becoming_blocked_singleton");
-  self endon(# "end_watch_goal_becoming_blocked_singleton");
-  self endon(# "robot_stopped");
-  self endon(# "goal");
-  level endon(# "game_ended");
+  self notify("end_watch_goal_becoming_blocked_singleton");
+  self endon("end_watch_goal_becoming_blocked_singleton");
+  self endon("robot_stopped");
+  self endon("goal");
+  level endon("game_ended");
   disttogoalsqr = 1E+09;
   while (true) {
     wait(0.1);
     if(isdefined(self.traversestartnode)) {
-      self waittill(# "traverse_end");
+      self waittill("traverse_end");
       continue;
     }
     if(self asmistransdecrunning()) {
@@ -1279,27 +860,18 @@ function watch_goal_becoming_blocked(goal) {
       disttogoalsqr = newdisttogoalsqr;
     } else {
       self.goaljustblocked = 1;
-      self notify(# "goal_blocked");
+      self notify("goal_blocked");
     }
   }
 }
 
-/*
-	Name: watch_becoming_blocked_at_goal
-	Namespace: escort
-	Checksum: 0xC1310766
-	Offset: 0x51B0
-	Size: 0x124
-	Parameters: 0
-	Flags: None
-*/
 function watch_becoming_blocked_at_goal() {
-  self notify(# "end_watch_becoming_blocked_at_goal");
-  self endon(# "end_watch_becoming_blocked_at_goal");
-  self endon(# "robot_stop");
-  level endon(# "game_ended");
+  self notify("end_watch_becoming_blocked_at_goal");
+  self endon("end_watch_becoming_blocked_at_goal");
+  self endon("robot_stop");
+  level endon("game_ended");
   while (isdefined(self.traversestartnode)) {
-    self waittill(# "traverse_end");
+    self waittill("traverse_end");
   }
   self.watch_becoming_blocked_at_goal_established = 1;
   startpos = self.origin;
@@ -1312,7 +884,7 @@ function watch_becoming_blocked_at_goal() {
     }
     if(atsameposcount >= 2) {
       self.goaljustblocked = 1;
-      self notify(# "goal_blocked");
+      self notify("goal_blocked");
     }
     iterationcount++;
     if(iterationcount >= 3) {
@@ -1322,15 +894,6 @@ function watch_becoming_blocked_at_goal() {
   self.watch_becoming_blocked_at_goal_established = 0;
 }
 
-/*
-	Name: stop_robot
-	Namespace: escort
-	Checksum: 0x67839410
-	Offset: 0x52E0
-	Size: 0x12A
-	Parameters: 0
-	Flags: None
-*/
 function stop_robot() {
   if(!self.moving) {
     return;
@@ -1346,23 +909,14 @@ function stop_robot() {
   deltapos = velocity * 0.05;
   stopgoal = (isdefined(getclosestpointonnavmesh(self.origin + deltapos, 48, 15)) ? getclosestpointonnavmesh(self.origin + deltapos, 48, 15) : self.origin);
   self setgoal(stopgoal, 0);
-  self notify(# "robot_stopped");
+  self notify("robot_stopped");
 }
 
-/*
-	Name: check_robot_on_travesal_end
-	Namespace: escort
-	Checksum: 0x24E34995
-	Offset: 0x5418
-	Size: 0xD4
-	Parameters: 0
-	Flags: None
-*/
 function check_robot_on_travesal_end() {
-  self notify(# "check_robot_on_travesal_end_singleton");
-  self endon(# "check_robot_on_travesal_end_singleton");
-  self endon(# "death");
-  self waittill(# "traverse_end");
+  self notify("check_robot_on_travesal_end_singleton");
+  self endon("check_robot_on_travesal_end_singleton");
+  self endon("death");
+  self waittill("traverse_end");
   numowners = (isdefined(level.moveobject.numtouching[level.moveobject.ownerteam]) ? level.moveobject.numtouching[level.moveobject.ownerteam] : 0);
   if(numowners < level.moveplayers) {
     self stop_robot();
@@ -1371,39 +925,21 @@ function check_robot_on_travesal_end() {
   }
 }
 
-/*
-	Name: update_stop_position
-	Namespace: escort
-	Checksum: 0x6A4C3DD3
-	Offset: 0x54F8
-	Size: 0x60
-	Parameters: 0
-	Flags: None
-*/
 function update_stop_position() {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "traverse_end");
+    self waittill("traverse_end");
     if(!self.moving) {
       self setgoal(self.origin, 1);
     }
   }
 }
 
-/*
-	Name: robot_wait_next_point
-	Namespace: escort
-	Checksum: 0x7BFFDDC5
-	Offset: 0x5560
-	Size: 0x268
-	Parameters: 0
-	Flags: None
-*/
 function robot_wait_next_point() {
-  self endon(# "robot_stopped");
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("robot_stopped");
+  self endon("death");
+  level endon("game_ended");
   while (true) {
     self util::waittill_any("goal", "goal_blocked");
     if(!isdefined(self.watch_becoming_blocked_at_goal_established) || self.watch_becoming_blocked_at_goal_established == 0) {
@@ -1433,15 +969,6 @@ function robot_wait_next_point() {
   }
 }
 
-/*
-	Name: get_closest_point_on_nav_mesh_for_current_goal
-	Namespace: escort
-	Checksum: 0x5BDA82DD
-	Offset: 0x57D0
-	Size: 0x8E
-	Parameters: 0
-	Flags: None
-*/
 function get_closest_point_on_nav_mesh_for_current_goal() {
   immediategoal = get_current_goal();
   closestpathpoint = getclosestpointonnavmesh(immediategoal, 48, 15);
@@ -1451,15 +978,6 @@ function get_closest_point_on_nav_mesh_for_current_goal() {
   return (isdefined(closestpathpoint) ? closestpathpoint : immediategoal);
 }
 
-/*
-	Name: get_closest_point_on_nav_mesh
-	Namespace: escort
-	Checksum: 0xCF6512D0
-	Offset: 0x5868
-	Size: 0x118
-	Parameters: 1
-	Flags: None
-*/
 function get_closest_point_on_nav_mesh(point) {
   closestpathpoint = getclosestpointonnavmesh(point, 48, 15);
   if(!isdefined(closestpathpoint)) {
@@ -1477,15 +995,6 @@ function get_closest_point_on_nav_mesh(point) {
   return (isdefined(closestpathpoint) ? closestpathpoint : point);
 }
 
-/*
-	Name: set_goal_to_point_on_path
-	Namespace: escort
-	Checksum: 0x3B314C49
-	Offset: 0x5988
-	Size: 0x13C
-	Parameters: 1
-	Flags: None
-*/
 function set_goal_to_point_on_path(recursioncount = 0) {
   self.goaljustblocked = 0;
   closestpathpoint = self get_closest_point_on_nav_mesh_for_current_goal();
@@ -1503,27 +1012,14 @@ function set_goal_to_point_on_path(recursioncount = 0) {
       self stop_robot();
     }
   }
-  /#
   debug_draw_current_robot_goal(closestpathpoint);
-  # /
 }
 
-/*
-	Name: is_path_distance_to_goal_too_long
-	Namespace: escort
-	Checksum: 0xAE84E96A
-	Offset: 0x5AD0
-	Size: 0xEA
-	Parameters: 2
-	Flags: None
-*/
 function is_path_distance_to_goal_too_long( & patharray, toolongthreshold) {
-  /#
   debug_draw_approximate_robot_path_to_goal(patharray);
-  # /
-    if(toolongthreshold < 20) {
-      toolongthreshold = 20;
-    }
+  if(toolongthreshold < 20) {
+    toolongthreshold = 20;
+  }
   goaldistance = 0;
   lastindextocheck = patharray.size - 1;
   for (i = 0; i < lastindextocheck; i++) {
@@ -1535,18 +1031,8 @@ function is_path_distance_to_goal_too_long( & patharray, toolongthreshold) {
   return false;
 }
 
-/*
-	Name: debug_reset_robot_to_start
-	Namespace: escort
-	Checksum: 0xA21650
-	Offset: 0x5BC8
-	Size: 0x220
-	Parameters: 0
-	Flags: None
-*/
 function debug_reset_robot_to_start() {
-  /#
-  level endon(# "game_ended");
+  level endon("game_ended");
   while (true) {
     if((isdefined(getdvarint("")) ? getdvarint("") : 0) > 0) {
       if(isdefined(level.robot)) {
@@ -1570,18 +1056,8 @@ function debug_reset_robot_to_start() {
     }
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: explode_robot
-	Namespace: escort
-	Checksum: 0xF3C4FFA3
-	Offset: 0x5DF0
-	Size: 0x26C
-	Parameters: 0
-	Flags: None
-*/
 function explode_robot() {
   self clientfield::set("escort_robot_burn", 1);
   clientfield::set("robot_mind_control_explosion", 1);
@@ -1605,32 +1081,14 @@ function explode_robot() {
   playrumbleonposition("grenade_rumble", self.origin);
 }
 
-/*
-	Name: wait_robot_corpse
-	Namespace: escort
-	Checksum: 0x2527D2C9
-	Offset: 0x6068
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function wait_robot_corpse() {
   archetype = self.archetype;
-  self waittill(# "actor_corpse", corpse);
+  self waittill("actor_corpse", corpse);
   corpse clientfield::set("escort_robot_burn", 1);
 }
 
-/*
-	Name: robot_move_chatter
-	Namespace: escort
-	Checksum: 0xFCECE1F5
-	Offset: 0x60C8
-	Size: 0x68
-	Parameters: 0
-	Flags: None
-*/
 function robot_move_chatter() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   while (true) {
     if(self.moving) {
       self playsoundontag("vox_robot_chatter", "J_Head");
@@ -1639,15 +1097,6 @@ function robot_move_chatter() {
   }
 }
 
-/*
-	Name: setup_move_object
-	Namespace: escort
-	Checksum: 0x850B0157
-	Offset: 0x6138
-	Size: 0x224
-	Parameters: 2
-	Flags: None
-*/
 function setup_move_object(robot, triggername) {
   trigger = getent(triggername, "targetname");
   useobj = gameobjects::create_use_object(game["attackers"], trigger, [], (0, 0, 0), & "escort_robot");
@@ -1671,15 +1120,6 @@ function setup_move_object(robot, triggername) {
   return useobj;
 }
 
-/*
-	Name: on_use_robot_move
-	Namespace: escort
-	Checksum: 0x97E4915E
-	Offset: 0x6368
-	Size: 0x8C
-	Parameters: 1
-	Flags: None
-*/
 function on_use_robot_move(player) {
   level.usestartspawns = 0;
   if(self.robot.moving || !self.robot.active || self.numtouching[self.ownerteam] < level.moveplayers) {
@@ -1689,15 +1129,6 @@ function on_use_robot_move(player) {
   self.robot move_robot();
 }
 
-/*
-	Name: on_update_use_rate_robot_move
-	Namespace: escort
-	Checksum: 0x49E4A6BF
-	Offset: 0x6400
-	Size: 0x64
-	Parameters: 3
-	Flags: None
-*/
 function on_update_use_rate_robot_move(team, progress, change) {
   numowners = self.numtouching[self.ownerteam];
   if(numowners < level.moveplayers) {
@@ -1705,18 +1136,9 @@ function on_update_use_rate_robot_move(team, progress, change) {
   }
 }
 
-/*
-	Name: track_escorting_players
-	Namespace: escort
-	Checksum: 0xDD655D0D
-	Offset: 0x6470
-	Size: 0x108
-	Parameters: 0
-	Flags: None
-*/
 function track_escorting_players() {
-  level endon(# "game_ended");
-  self.robot endon(# "robot_stopped");
+  level endon("game_ended");
+  self.robot endon("robot_stopped");
   while (true) {
     foreach(touch in self.touchlist[self.team]) {
       if(!(isdefined(touch.player.escortingrobot) && touch.player.escortingrobot)) {
@@ -1727,20 +1149,11 @@ function track_escorting_players() {
   }
 }
 
-/*
-	Name: track_escort_time
-	Namespace: escort
-	Checksum: 0x73413E75
-	Offset: 0x6580
-	Size: 0x24C
-	Parameters: 1
-	Flags: None
-*/
 function track_escort_time(player) {
-  level endon(# "game_ended");
-  player endon(# "death");
-  player endon(# "disconnect");
-  self.robot endon(# "robot_shutdown");
+  level endon("game_ended");
+  player endon("death");
+  player endon("disconnect");
+  self.robot endon("robot_shutdown");
   player.escortingrobot = 1;
   player recordgameevent("player_escort_start");
   self thread wait_escort_death(player);
@@ -1771,67 +1184,31 @@ function track_escort_time(player) {
   player player_stop_escort();
 }
 
-/*
-	Name: player_stop_escort
-	Namespace: escort
-	Checksum: 0x44D4F3C0
-	Offset: 0x67D8
-	Size: 0x42
-	Parameters: 0
-	Flags: None
-*/
 function player_stop_escort() {
   if(!isdefined(self)) {
     return;
   }
   self.escortingrobot = 0;
   self recordgameevent("player_escort_stop");
-  self notify(# "escorting_stopped");
+  self notify("escorting_stopped");
 }
 
-/*
-	Name: wait_escort_death
-	Namespace: escort
-	Checksum: 0x1087EA2
-	Offset: 0x6828
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function wait_escort_death(player) {
-  level endon(# "game_ended");
-  player endon(# "escorting_stopped");
-  player endon(# "disconnect");
-  player waittill(# "death");
+  level endon("game_ended");
+  player endon("escorting_stopped");
+  player endon("disconnect");
+  player waittill("death");
   player thread player_stop_escort();
 }
 
-/*
-	Name: wait_escort_shutdown
-	Namespace: escort
-	Checksum: 0x105FD719
-	Offset: 0x6888
-	Size: 0x5C
-	Parameters: 1
-	Flags: None
-*/
 function wait_escort_shutdown(player) {
-  level endon(# "game_ended");
-  player endon(# "escorting_stopped");
-  player endon(# "disconnect");
-  self.robot waittill(# "robot_shutdown");
+  level endon("game_ended");
+  player endon("escorting_stopped");
+  player endon("disconnect");
+  self.robot waittill("robot_shutdown");
   player thread player_stop_escort();
 }
 
-/*
-	Name: setup_reboot_object
-	Namespace: escort
-	Checksum: 0x1B4DCB6A
-	Offset: 0x68F0
-	Size: 0x64
-	Parameters: 2
-	Flags: None
-*/
 function setup_reboot_object(robot, triggername) {
   trigger = getent(triggername, "targetname");
   if(isdefined(trigger)) {
@@ -1839,15 +1216,6 @@ function setup_reboot_object(robot, triggername) {
   }
 }
 
-/*
-	Name: setup_goal_object
-	Namespace: escort
-	Checksum: 0x8AA671FB
-	Offset: 0x6960
-	Size: 0x188
-	Parameters: 2
-	Flags: None
-*/
 function setup_goal_object(robot, triggername) {
   trigger = getent(triggername, "targetname");
   useobj = gameobjects::create_use_object(game["defenders"], trigger, [], (0, 0, 0), & "escort_goal");
@@ -1863,18 +1231,9 @@ function setup_goal_object(robot, triggername) {
   return useobj;
 }
 
-/*
-	Name: watch_robot_enter
-	Namespace: escort
-	Checksum: 0x7C121E2A
-	Offset: 0x6AF0
-	Size: 0x2A4
-	Parameters: 1
-	Flags: None
-*/
 function watch_robot_enter(robot) {
-  robot endon(# "death");
-  level endon(# "game_ended");
+  robot endon("death");
+  level endon("game_ended");
   radiussq = self.trigger.radius * self.trigger.radius;
   while (true) {
     if(robot.moving === 1 && distance2dsquared(self.trigger.origin, robot.origin) < radiussq) {
@@ -1902,15 +1261,6 @@ function watch_robot_enter(robot) {
   }
 }
 
-/*
-	Name: explode_robot_after_wait
-	Namespace: escort
-	Checksum: 0x30FEA889
-	Offset: 0x6DA0
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function explode_robot_after_wait(wait_time) {
   robot = self;
   wait(wait_time);
@@ -1919,26 +1269,15 @@ function explode_robot_after_wait(wait_time) {
   }
 }
 
-/*
-	Name: kill_anything_blocking_goal
-	Namespace: escort
-	Checksum: 0x38EF8E59
-	Offset: 0x6DF0
-	Size: 0x434
-	Parameters: 1
-	Flags: None
-*/
 function kill_anything_blocking_goal(goal) {
-  self endon(# "end_kill_anything");
+  self endon("end_kill_anything");
   self.disablefinalkillcam = 1;
   dirtogoal = vectornormalize(goal - self.origin);
   atleastonedestroyed = 0;
   bestcandidate = undefined;
   bestcandidatedot = -1E+09;
-  /#
   debug_draw_blocked_path_kill_radius(self.origin, 108);
-  # /
-    entities = getdamageableentarray(self.origin, 108);
+  entities = getdamageableentarray(self.origin, 108);
   foreach(entity in entities) {
     if(isplayer(entity)) {
       continue;
@@ -1962,7 +1301,7 @@ function kill_anything_blocking_goal(goal) {
     entity = bestcandidate;
     if(isdefined(entity.targetname)) {
       if(entity.targetname == "talon") {
-        entity notify(# "death");
+        entity notify("death");
         return 1;
       }
     }
@@ -1988,15 +1327,6 @@ function kill_anything_blocking_goal(goal) {
   return atleastonedestroyed;
 }
 
-/*
-	Name: destroy_supply_crate_blocking_goal
-	Namespace: escort
-	Checksum: 0x67808E6
-	Offset: 0x7230
-	Size: 0x1E4
-	Parameters: 1
-	Flags: None
-*/
 function destroy_supply_crate_blocking_goal(dirtogoal) {
   crates = getentarray("care_package", "script_noteworthy");
   bestcrate = undefined;

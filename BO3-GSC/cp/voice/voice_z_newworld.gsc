@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_z_newworld.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_70ee1527;
 
-/*
-	Name: init_voice
-	Namespace: namespace_70ee1527
-	Checksum: 0x6136470A
-	Offset: 0x1430
-	Size: 0xCA4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("salm_think_back_to_2065_0", "vox_znew_1_01_000_salm");
   dialog::add("plyz_the_raid_there_wa_0", "vox_znew_2_01_000_plyz");

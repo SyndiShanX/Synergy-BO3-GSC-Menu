@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_smokegrenade.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\challenges_shared;
@@ -11,18 +15,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_tacticalinsertion;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace smokegrenade;
 
-/*
-	Name: init_shared
-	Namespace: smokegrenade
-	Checksum: 0xA4898F3B
-	Offset: 0x270
-	Size: 0x8C
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   level.willypetedamageradius = 300;
   level.willypetedamageheight = 128;
@@ -34,19 +28,10 @@ function init_shared() {
   callback::on_spawned( & on_player_spawned);
 }
 
-/*
-	Name: watchsmokegrenadedetonation
-	Namespace: smokegrenade
-	Checksum: 0xF9D8A67C
-	Offset: 0x308
-	Size: 0x134
-	Parameters: 5
-	Flags: Linked
-*/
 function watchsmokegrenadedetonation(owner, statweapon, grenadeweaponname, duration, totaltime) {
-  self endon(# "trophy_destroyed");
+  self endon("trophy_destroyed");
   owner addweaponstat(statweapon, "used", 1);
-  self waittill(# "explode", position, surface);
+  self waittill("explode", position, surface);
   onefoot = vectorscale((0, 0, 1), 12);
   startpos = position + onefoot;
   smokeweapon = getweapon(grenadeweaponname);
@@ -54,15 +39,6 @@ function watchsmokegrenadedetonation(owner, statweapon, grenadeweaponname, durat
   damageeffectarea(owner, startpos, smokeweapon.explosionradius, level.willypetedamageheight, undefined);
 }
 
-/*
-	Name: smokedetonate
-	Namespace: smokegrenade
-	Checksum: 0x9273D07C
-	Offset: 0x448
-	Size: 0x160
-	Parameters: 7
-	Flags: Linked
-*/
 function smokedetonate(owner, statweapon, smokeweapon, position, radius, effectlifetime, smokeblockduration) {
   dir_up = (0, 0, 1);
   ent = spawntimedfx(smokeweapon, position, dir_up, effectlifetime);
@@ -78,15 +54,6 @@ function smokedetonate(owner, statweapon, smokeweapon, position, radius, effectl
   return ent;
 }
 
-/*
-	Name: damageeffectarea
-	Namespace: smokegrenade
-	Checksum: 0xD0AEF74C
-	Offset: 0x5B0
-	Size: 0x9C
-	Parameters: 5
-	Flags: Linked
-*/
 function damageeffectarea(owner, position, radius, height, killcament) {
   effectarea = spawn("trigger_radius", position, 0, radius, height);
   if(isdefined(level.dogsonflashdogs)) {
@@ -95,37 +62,17 @@ function damageeffectarea(owner, position, radius, height, killcament) {
   effectarea delete();
 }
 
-/*
-	Name: smokeblocksight
-	Namespace: smokegrenade
-	Checksum: 0xF846A3DC
-	Offset: 0x658
-	Size: 0x98
-	Parameters: 1
-	Flags: Linked
-*/
 function smokeblocksight(radius) {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     fxblocksight(self, radius);
-    /#
     if(getdvarint("", 0)) {
       sphere(self.origin, 128, (1, 0, 0), 0.25, 0, 10, 15);
     }
-    # /
-      wait(0.75);
+    wait(0.75);
   }
 }
 
-/*
-	Name: spawnsmokegrenadetrigger
-	Namespace: smokegrenade
-	Checksum: 0xDF98B74C
-	Offset: 0x6F8
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function spawnsmokegrenadetrigger(duration) {
   team = self.team;
   trigger = spawn("trigger_radius", self.origin, 0, 128, 128);
@@ -140,15 +87,6 @@ function spawnsmokegrenadetrigger(duration) {
   trigger delete();
 }
 
-/*
-	Name: isinsmokegrenade
-	Namespace: smokegrenade
-	Checksum: 0xAB5B5D76
-	Offset: 0x820
-	Size: 0x94
-	Parameters: 0
-	Flags: None
-*/
 function isinsmokegrenade() {
   foreach(trigger in level.smoke_grenade_triggers) {
     if(self istouching(trigger)) {
@@ -158,37 +96,19 @@ function isinsmokegrenade() {
   return false;
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: smokegrenade
-	Checksum: 0x32980ACC
-	Offset: 0x8C0
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self thread begin_other_grenade_tracking();
 }
 
-/*
-	Name: begin_other_grenade_tracking
-	Namespace: smokegrenade
-	Checksum: 0x5B9A858F
-	Offset: 0x8F0
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked
-*/
 function begin_other_grenade_tracking() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self notify(# "smoketrackingstart");
-  self endon(# "smoketrackingstart");
+  self endon("death");
+  self endon("disconnect");
+  self notify("smoketrackingstart");
+  self endon("smoketrackingstart");
   weapon_smoke = getweapon("willy_pete");
   for (;;) {
-    self waittill(# "grenade_fire", grenade, weapon, cooktime);
+    self waittill("grenade_fire", grenade, weapon, cooktime);
     if(grenade util::ishacked()) {
       continue;
     }
@@ -198,15 +118,6 @@ function begin_other_grenade_tracking() {
   }
 }
 
-/*
-	Name: playsmokesound
-	Namespace: smokegrenade
-	Checksum: 0x175271AF
-	Offset: 0x9E8
-	Size: 0x13C
-	Parameters: 5
-	Flags: Linked
-*/
 function playsmokesound(position, duration, startsound, stopsound, loopsound) {
   smokesound = spawn("script_origin", (0, 0, 1));
   smokesound.origin = position;

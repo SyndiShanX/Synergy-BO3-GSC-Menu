@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_bgb_machine.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -18,31 +22,12 @@
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_unitrigger;
 #using scripts\zm\_zm_utility;
-
 #namespace bgb_machine;
 
-/*
-	Name: __init__sytem__
-	Namespace: bgb_machine
-	Checksum: 0x88E3F9C8
-	Offset: 0x540
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("bgb_machine", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: bgb_machine
-	Checksum: 0xCF3111BF
-	Offset: 0x588
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -60,15 +45,6 @@ function private __init__() {
   }
 }
 
-/*
-	Name: __main__
-	Namespace: bgb_machine
-	Checksum: 0x8A8D9F59
-	Offset: 0x710
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private __main__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -100,21 +76,10 @@ function private __main__() {
   if(!isdefined(level.bgb_machine_state_func)) {
     level.bgb_machine_state_func = & process_bgb_machine_state;
   }
-  /#
   level thread setup_devgui();
-  # /
-    level thread setup_bgb_machines();
+  level thread setup_bgb_machines();
 }
 
-/*
-	Name: on_player_connect
-	Namespace: bgb_machine
-	Checksum: 0xAD8B048A
-	Offset: 0x848
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private on_player_connect() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -122,15 +87,6 @@ function private on_player_connect() {
   level thread bgb_machine_movement_frequency();
 }
 
-/*
-	Name: on_player_disconnect
-	Namespace: bgb_machine
-	Checksum: 0x6935E52B
-	Offset: 0x888
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private on_player_disconnect() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -138,17 +94,7 @@ function private on_player_disconnect() {
   level thread bgb_machine_movement_frequency();
 }
 
-/*
-	Name: setup_devgui
-	Namespace: bgb_machine
-	Checksum: 0xCC01B82C
-	Offset: 0x8C8
-	Size: 0x254
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private setup_devgui() {
-  /#
   waittillframeend();
   setdvar("", 0);
   setdvar("", 0);
@@ -166,20 +112,9 @@ function private setup_devgui() {
   adddebugcommand(((bgb_devgui_base + "") + "") + "");
   adddebugcommand(((bgb_devgui_base + "") + "") + "");
   level thread bgb_machine_devgui_think();
-  # /
 }
 
-/*
-	Name: bgb_machine_devgui_think
-	Namespace: bgb_machine
-	Checksum: 0x71FB99E9
-	Offset: 0xB28
-	Size: 0x3A8
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private bgb_machine_devgui_think() {
-  /#
   for (;;) {
     arrive = getdvarint("");
     move = getdvarint("");
@@ -227,33 +162,14 @@ function private bgb_machine_devgui_think() {
     }
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: setup_bgb_machines
-	Namespace: bgb_machine
-	Checksum: 0xA7B45725
-	Offset: 0xED8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private setup_bgb_machines() {
   waittillframeend();
   level.bgb_machines = getentarray("bgb_machine_use", "targetname");
   bgb_machine_init();
 }
 
-/*
-	Name: bgb_machine_init
-	Namespace: bgb_machine
-	Checksum: 0xE939DD37
-	Offset: 0xF20
-	Size: 0x1F4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private bgb_machine_init() {
   if(!level.bgb_machines.size) {
     return;
@@ -278,15 +194,6 @@ function private bgb_machine_init() {
   array::thread_all(level.bgb_machines, & bgb_machine_think);
 }
 
-/*
-	Name: init_starting_bgb_machine_location
-	Namespace: bgb_machine
-	Checksum: 0xC5B5EBC5
-	Offset: 0x1120
-	Size: 0x214
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private init_starting_bgb_machine_location() {
   start_bgb_machine_found = 0;
   bgb_machines_to_hide = [];
@@ -313,15 +220,6 @@ function private init_starting_bgb_machine_location() {
   }
 }
 
-/*
-	Name: create_bgb_machine_unitrigger_stub
-	Namespace: bgb_machine
-	Checksum: 0xD9B7226F
-	Offset: 0x1340
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function create_bgb_machine_unitrigger_stub() {
   self.unitrigger_stub = spawnstruct();
   self.unitrigger_stub.script_width = 30;
@@ -335,15 +233,6 @@ function create_bgb_machine_unitrigger_stub() {
   self.unitrigger_stub.prompt_and_visibility_func = & bgb_machine_trigger_update_prompt;
 }
 
-/*
-	Name: bgb_machine_trigger_update_prompt
-	Namespace: bgb_machine
-	Checksum: 0x664AA04F
-	Offset: 0x1490
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked
-*/
 function bgb_machine_trigger_update_prompt(player) {
   can_use = self bgb_machine_stub_update_prompt(player);
   if(isdefined(self.hint_string)) {
@@ -356,15 +245,6 @@ function bgb_machine_trigger_update_prompt(player) {
   return can_use;
 }
 
-/*
-	Name: function_6c7a96b4
-	Namespace: bgb_machine
-	Checksum: 0xC25EA1F0
-	Offset: 0x1528
-	Size: 0x1C8
-	Parameters: 2
-	Flags: Linked
-*/
 function function_6c7a96b4(player, base_cost) {
   if(player.bgb_machine_uses_this_round < 1 && getdvarint("scr_firstGumFree") === 1) {
     return 0;
@@ -395,15 +275,6 @@ function function_6c7a96b4(player, base_cost) {
   return cost;
 }
 
-/*
-	Name: bgb_machine_stub_update_prompt
-	Namespace: bgb_machine
-	Checksum: 0xBC9C007E
-	Offset: 0x16F8
-	Size: 0x248
-	Parameters: 1
-	Flags: Linked
-*/
 function bgb_machine_stub_update_prompt(player) {
   b_result = 0;
   if(!self trigger_visible_to_player(player)) {
@@ -440,15 +311,6 @@ function bgb_machine_stub_update_prompt(player) {
   return b_result;
 }
 
-/*
-	Name: trigger_visible_to_player
-	Namespace: bgb_machine
-	Checksum: 0x189F1957
-	Offset: 0x1948
-	Size: 0xC0
-	Parameters: 1
-	Flags: Linked
-*/
 function trigger_visible_to_player(player) {
   self setinvisibletoplayer(player);
   visible = 1;
@@ -465,47 +327,20 @@ function trigger_visible_to_player(player) {
   return true;
 }
 
-/*
-	Name: bgb_machine_unitrigger_think
-	Namespace: bgb_machine
-	Checksum: 0x346BA220
-	Offset: 0x1A10
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function bgb_machine_unitrigger_think() {
-  self endon(# "kill_trigger");
+  self endon("kill_trigger");
   while (true) {
-    self waittill(# "trigger", player);
-    self.stub.trigger_target notify(# "trigger", player);
+    self waittill("trigger", player);
+    self.stub.trigger_target notify("trigger", player);
   }
 }
 
-/*
-	Name: show_bgb_machine
-	Namespace: bgb_machine
-	Checksum: 0xA993BA4C
-	Offset: 0x1A70
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function show_bgb_machine() {
   self set_bgb_machine_state("arriving");
-  self waittill(# "arrived");
+  self waittill("arrived");
   self.hidden = 0;
 }
 
-/*
-	Name: hide_bgb_machine
-	Namespace: bgb_machine
-	Checksum: 0xA81C74FE
-	Offset: 0x1AB8
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function hide_bgb_machine(do_bgb_machine_leave) {
   self thread zm_unitrigger::unregister_unitrigger(self.unitrigger_stub);
   self.hidden = 1;
@@ -518,21 +353,11 @@ function hide_bgb_machine(do_bgb_machine_leave) {
   }
 }
 
-/*
-	Name: bgb_machine_select_bgb
-	Namespace: bgb_machine
-	Checksum: 0xBCCB4055
-	Offset: 0x1B60
-	Size: 0x1CA
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private bgb_machine_select_bgb(player) {
   if(!player.bgb_pack_randomized.size) {
     player.bgb_pack_randomized = array::randomize(player.bgb_pack);
   }
   self.selected_bgb = array::pop_front(player.bgb_pack_randomized);
-  /#
   if(isdefined(level.bgb_machine_force_give)) {
     self.selected_bgb = level.bgb_machine_force_give;
     level.bgb_machine_force_give = undefined;
@@ -548,25 +373,15 @@ function private bgb_machine_select_bgb(player) {
       return 0;
     }
   }
-  # /
-    clientfield::set("zm_bgb_machine_selection", level.bgb[self.selected_bgb].item_index);
+  clientfield::set("zm_bgb_machine_selection", level.bgb[self.selected_bgb].item_index);
   return player bgb::get_bgb_available(self.selected_bgb);
 }
 
-/*
-	Name: bgb_machine_think
-	Namespace: bgb_machine
-	Checksum: 0x29F0CC66
-	Offset: 0x1D38
-	Size: 0xA1C
-	Parameters: 0
-	Flags: Linked
-*/
 function bgb_machine_think() {
   var_9bbdff4d = -1;
   while (true) {
     var_5e7af4df = undefined;
-    self waittill(# "trigger", user);
+    self waittill("trigger", user);
     var_9bbdff4d = -1;
     if(isdefined(user.bgb) && isdefined(level.bgb[user.bgb])) {
       var_9bbdff4d = level.bgb[user.bgb].item_index;
@@ -624,7 +439,7 @@ function bgb_machine_think() {
   self.b_bgb_is_available = self thread bgb_machine_select_bgb(user);
   self thread zm_unitrigger::unregister_unitrigger(self.unitrigger_stub);
   self set_bgb_machine_state("open");
-  self waittill(# "gumball_available");
+  self waittill("gumball_available");
   self.grab_bgb_hint = 1;
   self thread zm_unitrigger::register_static_unitrigger(self.unitrigger_stub, & bgb_machine_unitrigger_think);
   gumballtaken = 0;
@@ -636,7 +451,7 @@ function bgb_machine_think() {
       gumballoffered = level.bgb[self.selected_bgb].item_index;
     }
     while (true) {
-      self waittill(# "trigger", grabber);
+      self waittill("trigger", grabber);
       if(isdefined(grabber.is_drinking) && grabber.is_drinking > 0) {
         wait(0.1);
         continue;
@@ -651,8 +466,8 @@ function bgb_machine_think() {
           current_weapon = user getcurrentweapon();
         }
         if(grabber == user && zm_utility::is_player_valid(user) && !(user.is_drinking > 0) && !zm_utility::is_placeable_mine(current_weapon) && !zm_equipment::is_equipment(current_weapon) && !user zm_utility::is_player_revive_tool(current_weapon) && !current_weapon.isheroweapon && !current_weapon.isgadget) {
-          self notify(# "user_grabbed_bgb");
-          user notify(# "user_grabbed_bgb");
+          self notify("user_grabbed_bgb");
+          user notify("user_grabbed_bgb");
           bb::logpurchaseevent(user, self, self.current_cost, self.selected_bgb, 0, "_bgb", "_grabbed");
           user recordmapevent(3, gettime(), user.origin, level.round_number, var_9bbdff4d, gumballoffered);
           user __protected__notelootconsume(self.selected_bgb, 1);
@@ -677,10 +492,10 @@ function bgb_machine_think() {
     }
     if(grabber == user) {
       self set_bgb_machine_state("close");
-      self waittill(# "closed");
+      self waittill("closed");
     }
   } else {
-    self waittill(# "trigger");
+    self waittill("trigger");
     bb::logpurchaseevent(user, self, self.current_cost, self.selected_bgb, 0, "_bgb", "_ghostball");
     if(!var_625e97d1) {
       user zm_score::add_to_player_score(self.current_cost, 0, "bgb_machine_ghost_ball");
@@ -699,28 +514,17 @@ function bgb_machine_think() {
   self.bgb_machine_open = 0;
   self.bgb_machine_opened_by_fire_sale = 0;
   self.bgb_machine_user = undefined;
-  self notify(# "bgb_machine_accessed");
+  self notify("bgb_machine_accessed");
   self thread bgb_machine_think();
 }
 
-/*
-	Name: bgb_machine_should_move
-	Namespace: bgb_machine
-	Checksum: 0x1913383E
-	Offset: 0x2760
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private bgb_machine_should_move() {
-  /#
   if(getdvarint("")) {
     return false;
   }
-  # /
-    if(isdefined(level.bgb_machine_never_move) && level.bgb_machine_never_move) {
-      return false;
-    }
+  if(isdefined(level.bgb_machine_never_move) && level.bgb_machine_never_move) {
+    return false;
+  }
   if(self.uses_at_current_location >= level.bgb_machine_max_uses_before_move) {
     return true;
   }
@@ -733,15 +537,6 @@ function private bgb_machine_should_move() {
   return false;
 }
 
-/*
-	Name: bgb_machine_movement_frequency
-	Namespace: bgb_machine
-	Checksum: 0x7584FCB8
-	Offset: 0x2810
-	Size: 0xCA
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private bgb_machine_movement_frequency() {
   if(isdefined(level.bgb_machine_movement_frequency_override_func)) {
     [
@@ -773,15 +568,6 @@ function private bgb_machine_movement_frequency() {
   }
 }
 
-/*
-	Name: turn_on_fire_sale
-	Namespace: bgb_machine
-	Checksum: 0x2E12BC0B
-	Offset: 0x28E8
-	Size: 0xD6
-	Parameters: 0
-	Flags: Linked
-*/
 function turn_on_fire_sale() {
   for (i = 0; i < level.bgb_machines.size; i++) {
     level.bgb_machines[i].old_cost = level.bgb_machines[i].base_cost;
@@ -793,15 +579,6 @@ function turn_on_fire_sale() {
   }
 }
 
-/*
-	Name: turn_off_fire_sale
-	Namespace: bgb_machine
-	Checksum: 0xDD5B9175
-	Offset: 0x29C8
-	Size: 0xEE
-	Parameters: 0
-	Flags: Linked
-*/
 function turn_off_fire_sale() {
   for (i = 0; i < level.bgb_machines.size; i++) {
     level.bgb_machines[i].base_cost = level.bgb_machines[i].old_cost;
@@ -812,15 +589,6 @@ function turn_off_fire_sale() {
   }
 }
 
-/*
-	Name: remove_temp_machine
-	Namespace: bgb_machine
-	Checksum: 0xF0DCDE0F
-	Offset: 0x2AC0
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private remove_temp_machine() {
   while (isdefined(self.bgb_machine_user) || (isdefined(self.bgb_machine_open) && self.bgb_machine_open)) {
     util::wait_network_frame();
@@ -833,15 +601,6 @@ function private remove_temp_machine() {
   self thread hide_bgb_machine(1);
 }
 
-/*
-	Name: bgb_machine_move
-	Namespace: bgb_machine
-	Checksum: 0xAEED0965
-	Offset: 0x2B50
-	Size: 0x1F2
-	Parameters: 0
-	Flags: Linked
-*/
 function bgb_machine_move() {
   self hide_bgb_machine(1);
   wait(0.1);
@@ -870,15 +629,6 @@ function bgb_machine_move() {
   }
 }
 
-/*
-	Name: fire_sale_fix
-	Namespace: bgb_machine
-	Checksum: 0x47B2B5CE
-	Offset: 0x2D50
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function fire_sale_fix() {
   if(!isdefined(level.zombie_vars["zombie_powerup_fire_sale_on"])) {
     return;
@@ -887,7 +637,7 @@ function fire_sale_fix() {
   self thread show_bgb_machine();
   self.base_cost = 10;
   util::wait_network_frame();
-  level waittill(# "fire_sale_off");
+  level waittill("fire_sale_off");
   while (isdefined(self.bgb_machine_open) && self.bgb_machine_open) {
     wait(0.1);
   }
@@ -895,17 +645,8 @@ function fire_sale_fix() {
   self.base_cost = self.old_cost;
 }
 
-/*
-	Name: bgb_machine_lion_twitches
-	Namespace: bgb_machine
-	Checksum: 0xDEC16793
-	Offset: 0x2E18
-	Size: 0xE8
-	Parameters: 0
-	Flags: Linked
-*/
 function bgb_machine_lion_twitches() {
-  self endon(# "zbarrier_state_change");
+  self endon("zbarrier_state_change");
   clientfield::set("zm_bgb_machine_fx_state", 1);
   self setzbarrierpiecestate(0, "closed");
   self setzbarrierpiecestate(5, "closed");
@@ -917,15 +658,6 @@ function bgb_machine_lion_twitches() {
   }
 }
 
-/*
-	Name: bgb_machine_initial
-	Namespace: bgb_machine
-	Checksum: 0x34A4D46A
-	Offset: 0x2F08
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function bgb_machine_initial() {
   clientfield::set("zm_bgb_machine_fx_state", 4);
   self setzbarrierpiecestate(2, "open");
@@ -933,17 +665,8 @@ function bgb_machine_initial() {
   self setzbarrierpiecestate(5, "closed");
 }
 
-/*
-	Name: bgb_machine_arrives
-	Namespace: bgb_machine
-	Checksum: 0xFF4549D8
-	Offset: 0x2F98
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function bgb_machine_arrives() {
-  self endon(# "zbarrier_state_change");
+  self endon("zbarrier_state_change");
   self setzbarrierpiecestate(3, "closed");
   clientfield::set("zm_bgb_machine_fx_state", 2);
   self setzbarrierpiecestate(1, "opening");
@@ -955,21 +678,12 @@ function bgb_machine_arrives() {
   while (self getzbarrierpiecestate(1) == "closing") {
     wait(0.05);
   }
-  self notify(# "arrived");
+  self notify("arrived");
   self thread set_bgb_machine_state("initial");
 }
 
-/*
-	Name: bgb_machine_leaves
-	Namespace: bgb_machine
-	Checksum: 0x66B60AEB
-	Offset: 0x30D8
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function bgb_machine_leaves() {
-  self endon(# "zbarrier_state_change");
+  self endon("zbarrier_state_change");
   self setzbarrierpiecestate(3, "open");
   clientfield::set("zm_bgb_machine_fx_state", 2);
   self setzbarrierpiecestate(1, "opening");
@@ -981,21 +695,12 @@ function bgb_machine_leaves() {
   while (self getzbarrierpiecestate(1) == "closing") {
     wait(0.05);
   }
-  self notify(# "left");
+  self notify("left");
   self thread set_bgb_machine_state("away");
 }
 
-/*
-	Name: bgb_machine_opens
-	Namespace: bgb_machine
-	Checksum: 0x5D71BA03
-	Offset: 0x3218
-	Size: 0x1CA
-	Parameters: 0
-	Flags: Linked
-*/
 function bgb_machine_opens() {
-  self endon(# "zbarrier_state_change");
+  self endon("zbarrier_state_change");
   self setzbarrierpiecestate(3, "open");
   self setzbarrierpiecestate(5, "closed");
   clientfield::set("zm_bgb_machine_ghost_ball", !self.b_bgb_is_available);
@@ -1010,27 +715,18 @@ function bgb_machine_opens() {
   self setzbarrierpiecestate(2, "opening");
   wait(1);
   clientfield::set("zm_bgb_machine_fx_state", 3);
-  self notify(# "gumball_available");
+  self notify("gumball_available");
   wait(5.5);
   clientfield::set("zm_bgb_machine_fx_state", 4);
   self thread zm_unitrigger::unregister_unitrigger(self.unitrigger_stub);
   while (self getzbarrierpiecestate(2) == "opening") {
     wait(0.05);
   }
-  self notify(# "trigger", level);
+  self notify("trigger", level);
 }
 
-/*
-	Name: bgb_machine_closes
-	Namespace: bgb_machine
-	Checksum: 0xA3177C7
-	Offset: 0x33F0
-	Size: 0xCA
-	Parameters: 0
-	Flags: Linked
-*/
 function bgb_machine_closes() {
-  self endon(# "zbarrier_state_change");
+  self endon("zbarrier_state_change");
   self setzbarrierpiecestate(3, "open");
   self setzbarrierpiecestate(5, "closed");
   clientfield::set("zm_bgb_machine_fx_state", 4);
@@ -1038,18 +734,9 @@ function bgb_machine_closes() {
   while (self getzbarrierpiecestate(2) == "closing") {
     wait(0.05);
   }
-  self notify(# "closed");
+  self notify("closed");
 }
 
-/*
-	Name: is_bgb_machine_active
-	Namespace: bgb_machine
-	Checksum: 0x33CC9153
-	Offset: 0x34C8
-	Size: 0x50
-	Parameters: 0
-	Flags: None
-*/
 function is_bgb_machine_active() {
   curr_state = self get_bgb_machine_state();
   if(curr_state == "open" || curr_state == "close") {
@@ -1058,45 +745,18 @@ function is_bgb_machine_active() {
   return false;
 }
 
-/*
-	Name: get_bgb_machine_state
-	Namespace: bgb_machine
-	Checksum: 0x87E5FA36
-	Offset: 0x3520
-	Size: 0xA
-	Parameters: 0
-	Flags: Linked
-*/
 function get_bgb_machine_state() {
   return self.state;
 }
 
-/*
-	Name: set_bgb_machine_state
-	Namespace: bgb_machine
-	Checksum: 0xA4F5D29A
-	Offset: 0x3538
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function set_bgb_machine_state(state) {
   for (i = 0; i < self getnumzbarrierpieces(); i++) {
     self hidezbarrierpiece(i);
   }
-  self notify(# "zbarrier_state_change");
+  self notify("zbarrier_state_change");
   self[[level.bgb_machine_state_func]](state);
 }
 
-/*
-	Name: process_bgb_machine_state
-	Namespace: bgb_machine
-	Checksum: 0x73DAF883
-	Offset: 0x35C0
-	Size: 0x33A
-	Parameters: 1
-	Flags: Linked
-*/
 function process_bgb_machine_state(state) {
   switch (state) {
     case "away": {
@@ -1155,21 +815,12 @@ function process_bgb_machine_state(state) {
   }
 }
 
-/*
-	Name: bgb_machine_host_migration
-	Namespace: bgb_machine
-	Checksum: 0xB0454634
-	Offset: 0x3908
-	Size: 0xF6
-	Parameters: 0
-	Flags: Linked
-*/
 function bgb_machine_host_migration() {
-  level endon(# "end_game");
-  level notify(# "bgb_machine_host_migration");
-  level endon(# "bgb_machine_host_migration");
+  level endon("end_game");
+  level notify("bgb_machine_host_migration");
+  level endon("bgb_machine_host_migration");
   while (true) {
-    level waittill(# "host_migration_end");
+    level waittill("host_migration_end");
     if(!isdefined(level.bgb_machines)) {
       continue;
     }
@@ -1179,15 +830,6 @@ function bgb_machine_host_migration() {
   }
 }
 
-/*
-	Name: function_acf1c4da
-	Namespace: bgb_machine
-	Checksum: 0xBE0ED8CB
-	Offset: 0x3A08
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_acf1c4da(machine) {
   if(isdefined(level.bgb[machine.selected_bgb]) && level.bgb[machine.selected_bgb].limit_type == "activated") {
     self zm_audio::create_and_play_dialog("bgb", "buy");

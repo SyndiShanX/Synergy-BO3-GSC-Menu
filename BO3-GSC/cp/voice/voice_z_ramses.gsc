@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_z_ramses.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_c1b94c1e;
 
-/*
-	Name: init_voice
-	Namespace: namespace_c1b94c1e
-	Checksum: 0x1815A6A5
-	Offset: 0x1328
-	Size: 0xC04
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("plyz_the_pieces_were_comi_0", "vox_zram_1_01_000_plyz");
   dialog::add("plyz_hendricks_was_unhing_0", "vox_zram_1_01_001_plyz");

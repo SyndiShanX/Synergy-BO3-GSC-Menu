@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\tdm.gsc
+*************************************************/
+
 #using scripts\mp\_teamops;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_dogtags;
@@ -12,18 +16,8 @@
 #using scripts\shared\gameobjects_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace tdm;
 
-/*
-	Name: main
-	Namespace: tdm
-	Checksum: 0xD4F84CAD
-	Offset: 0x388
-	Size: 0x284
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   globallogic::init();
   util::registerroundswitch(0, 9);
@@ -50,15 +44,6 @@ function main() {
   globallogic::setvisiblescoreboardcolumns("score", "kills", "deaths", "kdratio", "assists");
 }
 
-/*
-	Name: onstartgametype
-	Namespace: tdm
-	Checksum: 0x8187EB7D
-	Offset: 0x618
-	Size: 0x3D8
-	Parameters: 0
-	Flags: Linked
-*/
 function onstartgametype() {
   setclientnamemode("auto_change");
   if(!isdefined(game["switchedsides"])) {
@@ -106,15 +91,6 @@ function onstartgametype() {
   }
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: tdm
-	Checksum: 0x16A7F1B4
-	Offset: 0x9F8
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function onspawnplayer(predictedspawn) {
   self.usingobj = undefined;
   if(level.usestartspawns && !level.ingraceperiod && !level.playerqueuedrespawn) {
@@ -123,30 +99,12 @@ function onspawnplayer(predictedspawn) {
   spawning::onspawnplayer(predictedspawn);
 }
 
-/*
-	Name: onendgame
-	Namespace: tdm
-	Checksum: 0x54D68A9B
-	Offset: 0xA60
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function onendgame(winningteam) {
   if(isdefined(winningteam) && isdefined(level.teams[winningteam])) {
     globallogic_score::giveteamscoreforobjective(winningteam, 1);
   }
 }
 
-/*
-	Name: onroundswitch
-	Namespace: tdm
-	Checksum: 0xE911D08
-	Offset: 0xAB0
-	Size: 0xBA
-	Parameters: 0
-	Flags: Linked
-*/
 function onroundswitch() {
   game["switchedsides"] = !game["switchedsides"];
   if(level.scoreroundwinbased) {
@@ -158,15 +116,6 @@ function onroundswitch() {
   }
 }
 
-/*
-	Name: onroundendgame
-	Namespace: tdm
-	Checksum: 0xC8F6E546
-	Offset: 0xB78
-	Size: 0xB6
-	Parameters: 1
-	Flags: Linked
-*/
 function onroundendgame(roundwinner) {
   if(level.scoreroundwinbased) {
     foreach(team in level.teams) {
@@ -175,20 +124,9 @@ function onroundendgame(roundwinner) {
       ](team, game["roundswon"][team]);
     }
   }
-  return [
-    [level.determinewinner]
-  ]();
+  return [[level.determinewinner]]();
 }
 
-/*
-	Name: onscoreclosemusic
-	Namespace: tdm
-	Checksum: 0x320D4B1D
-	Offset: 0xC38
-	Size: 0x1C2
-	Parameters: 0
-	Flags: Linked
-*/
 function onscoreclosemusic() {
   teamscores = [];
   while (!level.gameended) {
@@ -213,22 +151,13 @@ function onscoreclosemusic() {
     }
     scoredif = topscore - runnerupscore;
     if(topscore >= (scorelimit * 0.5)) {
-      level notify(# "sndmusichalfway");
+      level notify("sndmusichalfway");
       return;
     }
     wait(1);
   }
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: tdm
-	Checksum: 0x6EA1CD2A
-	Offset: 0xE08
-	Size: 0x204
-	Parameters: 9
-	Flags: Linked
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(isdefined(level.droppedtagrespawn) && level.droppedtagrespawn) {
     thread dogtags::checkallowspectating();

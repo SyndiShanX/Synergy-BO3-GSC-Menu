@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_powerups.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\ai\zombie_utility;
@@ -28,18 +32,8 @@
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_powerups;
 
-/*
-	Name: init
-	Namespace: zm_powerups
-	Checksum: 0xE95276C1
-	Offset: 0xB38
-	Size: 0x34C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   zombie_utility::set_zombie_var("zombie_insta_kill", 0, undefined, undefined, 1);
   zombie_utility::set_zombie_var("zombie_point_scalar", 1, undefined, undefined, 1);
@@ -75,15 +69,6 @@ function init() {
   thread watch_for_drop();
 }
 
-/*
-	Name: init_powerups
-	Namespace: zm_powerups
-	Checksum: 0x27F3F38B
-	Offset: 0xE90
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_powerups() {
   level flag::init("zombie_drop_powerups");
   if(isdefined(level.enable_magic) && level.enable_magic) {
@@ -107,29 +92,11 @@ function init_powerups() {
   clientfield::register("scriptmover", "powerup_fx", 1, 3, "int");
 }
 
-/*
-	Name: init_player_zombie_vars
-	Namespace: zm_powerups
-	Checksum: 0x466058E4
-	Offset: 0x1018
-	Size: 0x32
-	Parameters: 0
-	Flags: Linked
-*/
 function init_player_zombie_vars() {
   self.zombie_vars["zombie_powerup_insta_kill_ug_on"] = 0;
   self.zombie_vars["zombie_powerup_insta_kill_ug_time"] = 18;
 }
 
-/*
-	Name: set_weapon_ignore_max_ammo
-	Namespace: zm_powerups
-	Checksum: 0x3F149CDA
-	Offset: 0x1058
-	Size: 0x36
-	Parameters: 1
-	Flags: Linked
-*/
 function set_weapon_ignore_max_ammo(weapon) {
   if(!isdefined(level.zombie_weapons_no_max_ammo)) {
     level.zombie_weapons_no_max_ammo = [];
@@ -137,15 +104,6 @@ function set_weapon_ignore_max_ammo(weapon) {
   level.zombie_weapons_no_max_ammo[weapon] = 1;
 }
 
-/*
-	Name: powerup_hud_monitor
-	Namespace: zm_powerups
-	Checksum: 0xE6601C3E
-	Offset: 0x1098
-	Size: 0x614
-	Parameters: 0
-	Flags: Linked
-*/
 function powerup_hud_monitor() {
   level flag::wait_till("start_zombie_round_logic");
   if(isdefined(level.current_game_module) && level.current_game_module == 2) {
@@ -195,18 +153,16 @@ function powerup_hud_monitor() {
     for (playerindex = 0; playerindex < players.size; playerindex++) {
       for (client_field_key_index = 0; client_field_key_index < client_field_keys.size; client_field_key_index++) {
         player = players[playerindex];
-        /#
         if(isdefined(player.pers[""]) && player.pers[""]) {
           continue;
         }
-        # /
-          if(isdefined(level.powerup_player_valid)) {
-            if(![
-                [level.powerup_player_valid]
-              ](player)) {
-              continue;
-            }
+        if(isdefined(level.powerup_player_valid)) {
+          if(![
+              [level.powerup_player_valid]
+            ](player)) {
+            continue;
           }
+        }
         client_field_name = client_fields[client_field_keys[client_field_key_index]].client_field_name;
         time_name = client_fields[client_field_keys[client_field_key_index]].time_name;
         on_name = client_fields[client_field_keys[client_field_key_index]].on_name;
@@ -236,15 +192,6 @@ function powerup_hud_monitor() {
   }
 }
 
-/*
-	Name: set_clientfield_powerups
-	Namespace: zm_powerups
-	Checksum: 0x262DD9C2
-	Offset: 0x16B8
-	Size: 0x10C
-	Parameters: 5
-	Flags: Linked
-*/
 function set_clientfield_powerups(clientfield_name, powerup_timer, powerup_on, flashing_timers, flashing_values) {
   if(powerup_on) {
     if(powerup_timer < 10) {
@@ -264,15 +211,6 @@ function set_clientfield_powerups(clientfield_name, powerup_timer, powerup_on, f
   }
 }
 
-/*
-	Name: randomize_powerups
-	Namespace: zm_powerups
-	Checksum: 0xCB031C17
-	Offset: 0x17D0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function randomize_powerups() {
   if(!isdefined(level.zombie_powerup_array)) {
     level.zombie_powerup_array = [];
@@ -281,15 +219,6 @@ function randomize_powerups() {
   }
 }
 
-/*
-	Name: get_next_powerup
-	Namespace: zm_powerups
-	Checksum: 0x2738967F
-	Offset: 0x1820
-	Size: 0x60
-	Parameters: 0
-	Flags: Linked
-*/
 function get_next_powerup() {
   powerup = level.zombie_powerup_array[level.zombie_powerup_index];
   level.zombie_powerup_index++;
@@ -300,27 +229,16 @@ function get_next_powerup() {
   return powerup;
 }
 
-/*
-	Name: get_valid_powerup
-	Namespace: zm_powerups
-	Checksum: 0xBF627853
-	Offset: 0x1888
-	Size: 0x116
-	Parameters: 0
-	Flags: Linked
-*/
 function get_valid_powerup() {
-  /#
   if(isdefined(level.zombie_devgui_power) && level.zombie_devgui_power == 1) {
     level.zombie_devgui_power = 0;
     return level.zombie_powerup_array[level.zombie_powerup_index];
   }
-  # /
-    if(isdefined(level.zombie_powerup_boss)) {
-      i = level.zombie_powerup_boss;
-      level.zombie_powerup_boss = undefined;
-      return level.zombie_powerup_array[i];
-    }
+  if(isdefined(level.zombie_powerup_boss)) {
+    i = level.zombie_powerup_boss;
+    level.zombie_powerup_boss = undefined;
+    return level.zombie_powerup_array[i];
+  }
   if(isdefined(level.zombie_powerup_ape)) {
     powerup = level.zombie_powerup_ape;
     level.zombie_powerup_ape = undefined;
@@ -336,15 +254,6 @@ function get_valid_powerup() {
   return powerup;
 }
 
-/*
-	Name: minigun_no_drop
-	Namespace: zm_powerups
-	Checksum: 0xAB726123
-	Offset: 0x19A8
-	Size: 0xE8
-	Parameters: 0
-	Flags: Linked
-*/
 function minigun_no_drop() {
   players = getplayers();
   for (i = 0; i < players.size; i++) {
@@ -364,17 +273,8 @@ function minigun_no_drop() {
   return false;
 }
 
-/*
-	Name: watch_for_drop
-	Namespace: zm_powerups
-	Checksum: 0xEDF60270
-	Offset: 0x1A98
-	Size: 0x1E4
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_for_drop() {
-  level endon(# "unloaded");
+  level endon("unloaded");
   level flag::wait_till("start_zombie_round_logic");
   level flag::wait_till("begin_spawning");
   wait(0.05);
@@ -398,30 +298,12 @@ function watch_for_drop() {
   }
 }
 
-/*
-	Name: get_random_powerup_name
-	Namespace: zm_powerups
-	Checksum: 0xBE408545
-	Offset: 0x1C88
-	Size: 0x48
-	Parameters: 0
-	Flags: None
-*/
 function get_random_powerup_name() {
   powerup_keys = getarraykeys(level.zombie_powerups);
   powerup_keys = array::randomize(powerup_keys);
   return powerup_keys[0];
 }
 
-/*
-	Name: get_regular_random_powerup_name
-	Namespace: zm_powerups
-	Checksum: 0xAC0E4479
-	Offset: 0x1CD8
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function get_regular_random_powerup_name() {
   powerup_keys = getarraykeys(level.zombie_powerups);
   powerup_keys = array::randomize(powerup_keys);
@@ -435,15 +317,6 @@ function get_regular_random_powerup_name() {
   return powerup_keys[0];
 }
 
-/*
-	Name: add_zombie_powerup
-	Namespace: zm_powerups
-	Checksum: 0xCD84FF98
-	Offset: 0x1D88
-	Size: 0x2D0
-	Parameters: 13
-	Flags: Linked
-*/
 function add_zombie_powerup(powerup_name, model_name, hint, func_should_drop_with_regular_powerups, only_affects_grabber, any_team, zombie_grabbable, fx, client_field_name, time_name, on_name, clientfield_version = 1, player_specific = 0) {
   if(isdefined(level.zombie_include_powerups) && (!(isdefined(level.zombie_include_powerups[powerup_name]) && level.zombie_include_powerups[powerup_name]))) {
     return;
@@ -480,54 +353,18 @@ function add_zombie_powerup(powerup_name, model_name, hint, func_should_drop_wit
   }
 }
 
-/*
-	Name: powerup_set_can_pick_up_in_last_stand
-	Namespace: zm_powerups
-	Checksum: 0x8DDE0C35
-	Offset: 0x2060
-	Size: 0x30
-	Parameters: 2
-	Flags: None
-*/
 function powerup_set_can_pick_up_in_last_stand(powerup_name, b_can_pick_up) {
   level.zombie_powerups[powerup_name].can_pick_up_in_last_stand = b_can_pick_up;
 }
 
-/*
-	Name: powerup_set_prevent_pick_up_if_drinking
-	Namespace: zm_powerups
-	Checksum: 0xF76DDEF7
-	Offset: 0x2098
-	Size: 0x30
-	Parameters: 2
-	Flags: Linked
-*/
 function powerup_set_prevent_pick_up_if_drinking(powerup_name, b_prevent_pick_up) {
   level._custom_powerups[powerup_name].prevent_pick_up_if_drinking = b_prevent_pick_up;
 }
 
-/*
-	Name: powerup_set_player_specific
-	Namespace: zm_powerups
-	Checksum: 0x57E3B873
-	Offset: 0x20D0
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function powerup_set_player_specific(powerup_name, b_player_specific = 1) {
   level.zombie_powerups[powerup_name].player_specific = b_player_specific;
 }
 
-/*
-	Name: powerup_set_statless_powerup
-	Namespace: zm_powerups
-	Checksum: 0x70C994CD
-	Offset: 0x2120
-	Size: 0x36
-	Parameters: 1
-	Flags: Linked
-*/
 function powerup_set_statless_powerup(powerup_name) {
   if(!isdefined(level.zombie_statless_powerups)) {
     level.zombie_statless_powerups = [];
@@ -535,15 +372,6 @@ function powerup_set_statless_powerup(powerup_name) {
   level.zombie_statless_powerups[powerup_name] = 1;
 }
 
-/*
-	Name: add_zombie_special_drop
-	Namespace: zm_powerups
-	Checksum: 0xE91527EC
-	Offset: 0x2160
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function add_zombie_special_drop(powerup_name) {
   if(!isdefined(level.zombie_special_drop_array)) {
     level.zombie_special_drop_array = [];
@@ -551,15 +379,6 @@ function add_zombie_special_drop(powerup_name) {
   level.zombie_special_drop_array[level.zombie_special_drop_array.size] = powerup_name;
 }
 
-/*
-	Name: include_zombie_powerup
-	Namespace: zm_powerups
-	Checksum: 0xF6D1D1D2
-	Offset: 0x21A8
-	Size: 0x36
-	Parameters: 1
-	Flags: Linked
-*/
 function include_zombie_powerup(powerup_name) {
   if(!isdefined(level.zombie_include_powerups)) {
     level.zombie_include_powerups = [];
@@ -567,47 +386,16 @@ function include_zombie_powerup(powerup_name) {
   level.zombie_include_powerups[powerup_name] = 1;
 }
 
-/*
-	Name: powerup_remove_from_regular_drops
-	Namespace: zm_powerups
-	Checksum: 0x5E2B4916
-	Offset: 0x21E8
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function powerup_remove_from_regular_drops(powerup_name) {
-  /#
   assert(isdefined(level.zombie_powerups));
-  # /
-    /#
   assert(isdefined(level.zombie_powerups[powerup_name]));
-  # /
-    level.zombie_powerups[powerup_name].func_should_drop_with_regular_powerups = & func_should_never_drop;
+  level.zombie_powerups[powerup_name].func_should_drop_with_regular_powerups = & func_should_never_drop;
 }
 
-/*
-	Name: powerup_round_start
-	Namespace: zm_powerups
-	Checksum: 0xF123E19A
-	Offset: 0x2270
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function powerup_round_start() {
   level.powerup_drop_count = 0;
 }
 
-/*
-	Name: powerup_drop
-	Namespace: zm_powerups
-	Checksum: 0x1D2470BA
-	Offset: 0x2288
-	Size: 0x3E2
-	Parameters: 1
-	Flags: Linked
-*/
 function powerup_drop(drop_point) {
   if(isdefined(level.custom_zombie_powerup_drop)) {
     b_outcome = [
@@ -618,10 +406,8 @@ function powerup_drop(drop_point) {
     }
   }
   if(level.powerup_drop_count >= level.zombie_vars["zombie_powerup_drop_max_per_round"]) {
-    /#
     println("");
-    # /
-      return;
+    return;
   }
   if(!isdefined(level.zombie_include_powerups) || level.zombie_include_powerups.size == 0) {
     return;
@@ -670,21 +456,12 @@ function powerup_drop(drop_point) {
   powerup thread powerup_move();
   powerup thread powerup_emp();
   level.zombie_vars["zombie_drop_item"] = 0;
-  level notify(# "powerup_dropped", powerup);
+  level notify("powerup_dropped", powerup);
 }
 
-/*
-	Name: specific_powerup_drop
-	Namespace: zm_powerups
-	Checksum: 0x3374877A
-	Offset: 0x2678
-	Size: 0x1A2
-	Parameters: 7
-	Flags: Linked
-*/
 function specific_powerup_drop(powerup_name, drop_spot, powerup_team, powerup_location, pickup_delay, powerup_player, b_stay_forever) {
   powerup = zm_net::network_safe_spawn("powerup", 1, "script_model", drop_spot + vectorscale((0, 0, 1), 40));
-  level notify(# "powerup_dropped", powerup);
+  level notify("powerup_dropped", powerup);
   if(isdefined(powerup)) {
     powerup powerup_setup(powerup_name, powerup_team, powerup_location, powerup_player);
     if(!(isdefined(b_stay_forever) && b_stay_forever)) {
@@ -702,15 +479,6 @@ function specific_powerup_drop(powerup_name, drop_spot, powerup_team, powerup_lo
   }
 }
 
-/*
-	Name: special_powerup_drop
-	Namespace: zm_powerups
-	Checksum: 0x7D4F50B9
-	Offset: 0x2828
-	Size: 0x13C
-	Parameters: 1
-	Flags: None
-*/
 function special_powerup_drop(drop_point) {
   if(!isdefined(level.zombie_include_powerups) || level.zombie_include_powerups.size == 0) {
     return;
@@ -731,15 +499,6 @@ function special_powerup_drop(drop_point) {
   powerup special_drop_setup();
 }
 
-/*
-	Name: powerup_setup
-	Namespace: zm_powerups
-	Checksum: 0x2419E844
-	Offset: 0x2970
-	Size: 0x352
-	Parameters: 5
-	Flags: Linked
-*/
 function powerup_setup(powerup_override, powerup_team, powerup_location, powerup_player, shouldplaysound = 1) {
   powerup = undefined;
   if(!isdefined(powerup_override)) {
@@ -769,9 +528,7 @@ function powerup_setup(powerup_override, powerup_team, powerup_location, powerup
   if(isdefined(powerup_player)) {
     self.powerup_player = powerup_player;
   } else {
-    /#
     assert(!(isdefined(struct.player_specific) && struct.player_specific), "");
-    # /
   }
   self.powerup_name = struct.powerup_name;
   self.hint = struct.hint;
@@ -789,15 +546,6 @@ function powerup_setup(powerup_override, powerup_team, powerup_location, powerup
   level.active_powerups[level.active_powerups.size] = self;
 }
 
-/*
-	Name: special_drop_setup
-	Namespace: zm_powerups
-	Checksum: 0xFCC05D26
-	Offset: 0x2CD0
-	Size: 0x1AC
-	Parameters: 0
-	Flags: Linked
-*/
 function special_drop_setup() {
   powerup = undefined;
   if(isdefined(level.powerup_special_drop_override)) {
@@ -823,33 +571,15 @@ function special_drop_setup() {
   }
 }
 
-/*
-	Name: powerup_zombie_grab_trigger_cleanup
-	Namespace: zm_powerups
-	Checksum: 0x52A07459
-	Offset: 0x2E88
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function powerup_zombie_grab_trigger_cleanup(trigger) {
   self util::waittill_any("powerup_timedout", "powerup_grabbed", "hacked");
   trigger delete();
 }
 
-/*
-	Name: powerup_zombie_grab
-	Namespace: zm_powerups
-	Checksum: 0x312253DB
-	Offset: 0x2EE8
-	Size: 0x35E
-	Parameters: 1
-	Flags: Linked
-*/
 function powerup_zombie_grab(powerup_team) {
-  self endon(# "powerup_timedout");
-  self endon(# "powerup_grabbed");
-  self endon(# "hacked");
+  self endon("powerup_timedout");
+  self endon("powerup_grabbed");
+  self endon("hacked");
   zombie_grab_trigger = spawn("trigger_radius", self.origin - vectorscale((0, 0, 1), 40), 9, 32, 72);
   zombie_grab_trigger enablelinkto();
   zombie_grab_trigger linkto(self);
@@ -861,7 +591,7 @@ function powerup_zombie_grab(powerup_team) {
   }
   zombie_grab_trigger zm_utility::create_zombie_point_of_interest(poi_dist, 2, 0, 1, undefined, undefined, powerup_team);
   while (isdefined(self)) {
-    zombie_grab_trigger waittill(# "trigger", who);
+    zombie_grab_trigger waittill("trigger", who);
     if(isdefined(level._powerup_grab_check)) {
       if(!self[[level._powerup_grab_check]](who)) {
         continue;
@@ -882,9 +612,7 @@ function powerup_zombie_grab(powerup_team) {
       if(isdefined(level._game_mode_powerup_zombie_grab)) {
         level thread[[level._game_mode_powerup_zombie_grab]](self, who);
       } else {
-        /#
         println("");
-        # /
       }
     }
     level thread zm_audio::sndannouncerplayvox(self.powerup_name);
@@ -892,26 +620,17 @@ function powerup_zombie_grab(powerup_team) {
     playsoundatposition("zmb_powerup_grabbed", self.origin);
     self stoploopsound();
     self thread powerup_delete_delayed();
-    self notify(# "powerup_grabbed");
+    self notify("powerup_grabbed");
   }
 }
 
-/*
-	Name: powerup_grab
-	Namespace: zm_powerups
-	Checksum: 0x8DC7FF86
-	Offset: 0x3250
-	Size: 0x8E8
-	Parameters: 1
-	Flags: Linked
-*/
 function powerup_grab(powerup_team) {
   if(isdefined(self) && self.zombie_grabbable) {
     self thread powerup_zombie_grab(powerup_team);
     return;
   }
-  self endon(# "powerup_timedout");
-  self endon(# "powerup_grabbed");
+  self endon("powerup_timedout");
+  self endon("powerup_grabbed");
   range_squared = 4096;
   while (isdefined(self)) {
     if(isdefined(self.powerup_player)) {
@@ -971,9 +690,7 @@ function powerup_grab(powerup_team) {
               if(isdefined(level._zombiemode_powerup_grab)) {
                 level thread[[level._zombiemode_powerup_grab]](self, player);
               } else {
-                /#
                 println("");
-                # /
               }
               break;
             }
@@ -1001,7 +718,7 @@ function powerup_grab(powerup_team) {
           }
         }
         if(isdefined(self.stolen) && self.stolen) {
-          level notify(# "monkey_see_monkey_dont_achieved");
+          level notify("monkey_see_monkey_dont_achieved");
         }
         if(isdefined(self.grabbed_level_notify)) {
           level notify(self.grabbed_level_notify);
@@ -1024,7 +741,7 @@ function powerup_grab(powerup_team) {
               ]();
               if(!can_say_vo) {
                 self thread powerup_delete_delayed();
-                self notify(# "powerup_grabbed");
+                self notify("powerup_grabbed");
                 return;
               }
             }
@@ -1036,22 +753,13 @@ function powerup_grab(powerup_team) {
           level thread zm_audio::sndannouncerplayvox(self.powerup_name);
         }
         self thread powerup_delete_delayed();
-        self notify(# "powerup_grabbed");
+        self notify("powerup_grabbed");
       }
     }
     wait(0.1);
   }
 }
 
-/*
-	Name: get_closest_window_repair
-	Namespace: zm_powerups
-	Checksum: 0xE1182DCB
-	Offset: 0x3B40
-	Size: 0x13E
-	Parameters: 2
-	Flags: None
-*/
 function get_closest_window_repair(windows, origin) {
   current_window = undefined;
   shortest_distance = undefined;
@@ -1072,18 +780,9 @@ function get_closest_window_repair(windows, origin) {
   return current_window;
 }
 
-/*
-	Name: powerup_vo
-	Namespace: zm_powerups
-	Checksum: 0x9D79AA47
-	Offset: 0x3C88
-	Size: 0xF0
-	Parameters: 1
-	Flags: Linked
-*/
 function powerup_vo(type) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(!isplayer(self)) {
     return;
   }
@@ -1105,17 +804,8 @@ function powerup_vo(type) {
   }
 }
 
-/*
-	Name: powerup_wobble_fx
-	Namespace: zm_powerups
-	Checksum: 0x7A049D1B
-	Offset: 0x3D80
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function powerup_wobble_fx() {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self)) {
     return;
   }
@@ -1138,18 +828,9 @@ function powerup_wobble_fx() {
   }
 }
 
-/*
-	Name: powerup_wobble
-	Namespace: zm_powerups
-	Checksum: 0xAF5E929F
-	Offset: 0x3E78
-	Size: 0x1B8
-	Parameters: 0
-	Flags: Linked
-*/
 function powerup_wobble() {
-  self endon(# "powerup_grabbed");
-  self endon(# "powerup_timedout");
+  self endon("powerup_grabbed");
+  self endon("powerup_timedout");
   self thread powerup_wobble_fx();
   while (isdefined(self)) {
     waittime = randomfloatrange(2.5, 5);
@@ -1169,15 +850,6 @@ function powerup_wobble() {
   }
 }
 
-/*
-	Name: powerup_show
-	Namespace: zm_powerups
-	Checksum: 0x889FD64A
-	Offset: 0x4038
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function powerup_show(visible) {
   if(!visible) {
     self ghost();
@@ -1200,23 +872,14 @@ function powerup_show(visible) {
   }
 }
 
-/*
-	Name: powerup_timeout
-	Namespace: zm_powerups
-	Checksum: 0x1E6DD338
-	Offset: 0x4160
-	Size: 0x1DC
-	Parameters: 0
-	Flags: Linked
-*/
 function powerup_timeout() {
   if(isdefined(level._powerup_timeout_override) && !isdefined(self.powerup_team)) {
     self thread[[level._powerup_timeout_override]]();
     return;
   }
-  self endon(# "powerup_grabbed");
-  self endon(# "death");
-  self endon(# "powerup_reset");
+  self endon("powerup_grabbed");
+  self endon("death");
+  self endon("powerup_reset");
   self powerup_show(1);
   wait_time = 15;
   if(isdefined(level._powerup_timeout_custom_time)) {
@@ -1248,20 +911,11 @@ function powerup_timeout() {
     }
     wait(0.1);
   }
-  self notify(# "powerup_timedout");
+  self notify("powerup_timedout");
   bb::logpowerupevent(self, undefined, "_timedout");
   self powerup_delete();
 }
 
-/*
-	Name: powerup_delete
-	Namespace: zm_powerups
-	Checksum: 0xCEE46366
-	Offset: 0x4348
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function powerup_delete() {
   arrayremovevalue(level.active_powerups, self, 0);
   if(isdefined(self.worldgundw)) {
@@ -1270,15 +924,6 @@ function powerup_delete() {
   self delete();
 }
 
-/*
-	Name: powerup_delete_delayed
-	Namespace: zm_powerups
-	Checksum: 0x1F7DFF30
-	Offset: 0x43B8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function powerup_delete_delayed(time) {
   if(isdefined(time)) {
     wait(time);
@@ -1288,28 +933,10 @@ function powerup_delete_delayed(time) {
   self powerup_delete();
 }
 
-/*
-	Name: is_insta_kill_active
-	Namespace: zm_powerups
-	Checksum: 0x2E0DC7EE
-	Offset: 0x4400
-	Size: 0x1E
-	Parameters: 0
-	Flags: Linked
-*/
 function is_insta_kill_active() {
   return level.zombie_vars[self.team]["zombie_insta_kill"];
 }
 
-/*
-	Name: check_for_instakill
-	Namespace: zm_powerups
-	Checksum: 0x88E21F7B
-	Offset: 0x4428
-	Size: 0x314
-	Parameters: 3
-	Flags: Linked
-*/
 function check_for_instakill(player, mod, hit_location) {
   if(isdefined(player) && isalive(player) && isdefined(level.check_for_instakill_override)) {
     if(!self[[level.check_for_instakill_override]](player)) {
@@ -1326,7 +953,7 @@ function check_for_instakill(player, mod, hit_location) {
     }
     self.health = 1;
     self dodamage(self.health + 666, self.origin, player, self, hit_location, modname);
-    player notify(# "zombie_killed");
+    player notify("zombie_killed");
   }
   if(isdefined(player) && isalive(player) && (level.zombie_vars[player.team]["zombie_insta_kill"] || (isdefined(player.personal_instakill) && player.personal_instakill))) {
     if(zm_utility::is_magic_bullet_shield_enabled(self)) {
@@ -1349,21 +976,12 @@ function check_for_instakill(player, mod, hit_location) {
     }
     self.health = 1;
     self dodamage(self.health + 666, self.origin, player, self, hit_location, modname);
-    player notify(# "zombie_killed");
+    player notify("zombie_killed");
   }
 }
 
-/*
-	Name: point_doubler_on_hud
-	Namespace: zm_powerups
-	Checksum: 0xFE8A6AAB
-	Offset: 0x4748
-	Size: 0x94
-	Parameters: 2
-	Flags: None
-*/
 function point_doubler_on_hud(drop_item, player_team) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(level.zombie_vars[player_team]["zombie_powerup_double_points_on"]) {
     level.zombie_vars[player_team]["zombie_powerup_double_points_time"] = 30;
     return;
@@ -1372,15 +990,6 @@ function point_doubler_on_hud(drop_item, player_team) {
   level thread time_remaining_on_point_doubler_powerup(player_team);
 }
 
-/*
-	Name: time_remaining_on_point_doubler_powerup
-	Namespace: zm_powerups
-	Checksum: 0xB7D9C438
-	Offset: 0x47E8
-	Size: 0x194
-	Parameters: 1
-	Flags: Linked
-*/
 function time_remaining_on_point_doubler_powerup(player_team) {
   temp_ent = spawn("script_origin", (0, 0, 0));
   temp_ent playloopsound("zmb_double_point_loop");
@@ -1398,28 +1007,10 @@ function time_remaining_on_point_doubler_powerup(player_team) {
   temp_ent delete();
 }
 
-/*
-	Name: devil_dialog_delay
-	Namespace: zm_powerups
-	Checksum: 0xF4BA4D9C
-	Offset: 0x4988
-	Size: 0xC
-	Parameters: 0
-	Flags: None
-*/
 function devil_dialog_delay() {
   wait(1);
 }
 
-/*
-	Name: check_for_rare_drop_override
-	Namespace: zm_powerups
-	Checksum: 0xB24D15F
-	Offset: 0x49A0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function check_for_rare_drop_override(pos) {
   if(level flagsys::get("ape_round")) {
     return false;
@@ -1427,15 +1018,6 @@ function check_for_rare_drop_override(pos) {
   return false;
 }
 
-/*
-	Name: tesla_powerup_active
-	Namespace: zm_powerups
-	Checksum: 0x7D67E808
-	Offset: 0x49E0
-	Size: 0x72
-	Parameters: 0
-	Flags: Linked
-*/
 function tesla_powerup_active() {
   players = getplayers();
   for (i = 0; i < players.size; i++) {
@@ -1446,17 +1028,7 @@ function tesla_powerup_active() {
   return false;
 }
 
-/*
-	Name: print_powerup_drop
-	Namespace: zm_powerups
-	Checksum: 0xDDAA27C9
-	Offset: 0x4A60
-	Size: 0x194
-	Parameters: 2
-	Flags: Linked
-*/
 function print_powerup_drop(powerup, type) {
-  /#
   if(!isdefined(level.powerup_drop_time)) {
     level.powerup_drop_time = 0;
     level.powerup_random_count = 0;
@@ -1477,18 +1049,8 @@ function print_powerup_drop(powerup, type) {
   println("" + level.powerup_random_count);
   println("" + level.powerup_score_count);
   println("");
-  # /
 }
 
-/*
-	Name: register_carpenter_node
-	Namespace: zm_powerups
-	Checksum: 0x28906C0E
-	Offset: 0x4C00
-	Size: 0x56
-	Parameters: 2
-	Flags: None
-*/
 function register_carpenter_node(node, callback) {
   if(!isdefined(level._additional_carpenter_nodes)) {
     level._additional_carpenter_nodes = [];
@@ -1497,15 +1059,6 @@ function register_carpenter_node(node, callback) {
   level._additional_carpenter_nodes[level._additional_carpenter_nodes.size] = node;
 }
 
-/*
-	Name: is_carpenter_boards_upgraded
-	Namespace: zm_powerups
-	Checksum: 0xF66D6D14
-	Offset: 0x4C60
-	Size: 0x28
-	Parameters: 0
-	Flags: Linked
-*/
 function is_carpenter_boards_upgraded() {
   if(isdefined(level.pers_carpenter_boards_active) && level.pers_carpenter_boards_active == 1) {
     return true;
@@ -1513,47 +1066,20 @@ function is_carpenter_boards_upgraded() {
   return false;
 }
 
-/*
-	Name: func_should_never_drop
-	Namespace: zm_powerups
-	Checksum: 0x15F81D72
-	Offset: 0x4C90
-	Size: 0x6
-	Parameters: 0
-	Flags: Linked
-*/
 function func_should_never_drop() {
   return false;
 }
 
-/*
-	Name: func_should_always_drop
-	Namespace: zm_powerups
-	Checksum: 0xC0452AD2
-	Offset: 0x4CA0
-	Size: 0x8
-	Parameters: 0
-	Flags: Linked
-*/
 function func_should_always_drop() {
   return true;
 }
 
-/*
-	Name: powerup_move
-	Namespace: zm_powerups
-	Checksum: 0x2B2D02F3
-	Offset: 0x4CB0
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function powerup_move() {
-  self endon(# "powerup_timedout");
-  self endon(# "powerup_grabbed");
+  self endon("powerup_timedout");
+  self endon("powerup_grabbed");
   drag_speed = 75;
   while (true) {
-    self waittill(# "move_powerup", moveto, distance);
+    self waittill("move_powerup", moveto, distance);
     drag_vector = moveto - self.origin;
     range_squared = lengthsquared(drag_vector);
     if(range_squared > (distance * distance)) {
@@ -1565,40 +1091,22 @@ function powerup_move() {
   }
 }
 
-/*
-	Name: powerup_emp
-	Namespace: zm_powerups
-	Checksum: 0x49B78D73
-	Offset: 0x4DB8
-	Size: 0xDE
-	Parameters: 0
-	Flags: Linked
-*/
 function powerup_emp() {
-  self endon(# "powerup_timedout");
-  self endon(# "powerup_grabbed");
+  self endon("powerup_timedout");
+  self endon("powerup_grabbed");
   if(!zm_utility::should_watch_for_emp()) {
     return;
   }
   while (true) {
-    level waittill(# "emp_detonate", origin, radius);
+    level waittill("emp_detonate", origin, radius);
     if(distancesquared(origin, self.origin) < (radius * radius)) {
       playfx(level._effect["powerup_off"], self.origin);
       self thread powerup_delete_delayed();
-      self notify(# "powerup_timedout");
+      self notify("powerup_timedout");
     }
   }
 }
 
-/*
-	Name: get_powerups
-	Namespace: zm_powerups
-	Checksum: 0xC359D26B
-	Offset: 0x4EA0
-	Size: 0xF6
-	Parameters: 2
-	Flags: None
-*/
 function get_powerups(origin, radius) {
   if(isdefined(origin) && isdefined(radius)) {
     powerups = [];
@@ -1612,15 +1120,6 @@ function get_powerups(origin, radius) {
   return level.active_powerups;
 }
 
-/*
-	Name: should_award_stat
-	Namespace: zm_powerups
-	Checksum: 0x1F8A0FC2
-	Offset: 0x4FA0
-	Size: 0x88
-	Parameters: 1
-	Flags: Linked
-*/
 function should_award_stat(powerup_name) {
   if(powerup_name == "teller_withdrawl" || powerup_name == "blue_monkey" || powerup_name == "free_perk" || powerup_name == "bonus_points_player") {
     return false;
@@ -1631,30 +1130,12 @@ function should_award_stat(powerup_name) {
   return true;
 }
 
-/*
-	Name: teller_withdrawl
-	Namespace: zm_powerups
-	Checksum: 0x8252D25B
-	Offset: 0x5030
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function teller_withdrawl(powerup, player) {
   player zm_score::add_to_player_score(powerup.value);
 }
 
-/*
-	Name: show_on_hud
-	Namespace: zm_powerups
-	Checksum: 0x38FD37C9
-	Offset: 0x5070
-	Size: 0x11C
-	Parameters: 2
-	Flags: Linked
-*/
 function show_on_hud(player_team, str_powerup) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   str_index_on = ("zombie_powerup_" + str_powerup) + "_on";
   str_index_time = ("zombie_powerup_" + str_powerup) + "_time";
   if(level.zombie_vars[player_team][str_index_on]) {
@@ -1668,15 +1149,6 @@ function show_on_hud(player_team, str_powerup) {
   level thread time_remaining_on_powerup(player_team, str_powerup);
 }
 
-/*
-	Name: time_remaining_on_powerup
-	Namespace: zm_powerups
-	Checksum: 0x2D7C744A
-	Offset: 0x5198
-	Size: 0x214
-	Parameters: 2
-	Flags: Linked
-*/
 function time_remaining_on_powerup(player_team, str_powerup) {
   str_index_on = ("zombie_powerup_" + str_powerup) + "_on";
   str_index_time = ("zombie_powerup_" + str_powerup) + "_time";
@@ -1698,19 +1170,10 @@ function time_remaining_on_powerup(player_team, str_powerup) {
   temp_ent delete();
 }
 
-/*
-	Name: weapon_powerup
-	Namespace: zm_powerups
-	Checksum: 0x9DA563EB
-	Offset: 0x53B8
-	Size: 0x1F4
-	Parameters: 4
-	Flags: Linked
-*/
 function weapon_powerup(ent_player, time, str_weapon, allow_cycling = 0) {
   str_weapon_on = ("zombie_powerup_" + str_weapon) + "_on";
   str_weapon_time_over = str_weapon + "_time_over";
-  ent_player notify(# "replace_weapon_powerup");
+  ent_player notify("replace_weapon_powerup");
   ent_player._show_solo_hud = 1;
   ent_player.has_specific_powerup_weapon[str_weapon] = 1;
   ent_player.has_powerup_weapon = 1;
@@ -1727,23 +1190,14 @@ function weapon_powerup(ent_player, time, str_weapon, allow_cycling = 0) {
   level thread weapon_powerup_change(ent_player, str_weapon_time_over, str_weapon);
 }
 
-/*
-	Name: weapon_powerup_change
-	Namespace: zm_powerups
-	Checksum: 0x813C5681
-	Offset: 0x55B8
-	Size: 0xDC
-	Parameters: 3
-	Flags: Linked
-*/
 function weapon_powerup_change(ent_player, str_gun_return_notify, str_weapon) {
-  ent_player endon(# "death");
-  ent_player endon(# "disconnect");
-  ent_player endon(# "player_downed");
+  ent_player endon("death");
+  ent_player endon("disconnect");
+  ent_player endon("player_downed");
   ent_player endon(str_gun_return_notify);
-  ent_player endon(# "replace_weapon_powerup");
+  ent_player endon("replace_weapon_powerup");
   while (true) {
-    ent_player waittill(# "weapon_change", newweapon, oldweapon);
+    ent_player waittill("weapon_change", newweapon, oldweapon);
     if(newweapon != level.weaponnone && newweapon != level.zombie_powerup_weapon[str_weapon]) {
       break;
     }
@@ -1751,48 +1205,28 @@ function weapon_powerup_change(ent_player, str_gun_return_notify, str_weapon) {
   level thread weapon_powerup_remove(ent_player, str_gun_return_notify, str_weapon, 0);
 }
 
-/*
-	Name: weapon_powerup_countdown
-	Namespace: zm_powerups
-	Checksum: 0xFF19999E
-	Offset: 0x56A0
-	Size: 0x12C
-	Parameters: 4
-	Flags: Linked
-*/
 function weapon_powerup_countdown(ent_player, str_gun_return_notify, time, str_weapon) {
-  ent_player endon(# "death");
-  ent_player endon(# "disconnect");
-  ent_player endon(# "player_downed");
+  ent_player endon("death");
+  ent_player endon("disconnect");
+  ent_player endon("player_downed");
   ent_player endon(str_gun_return_notify);
-  ent_player endon(# "replace_weapon_powerup");
+  ent_player endon("replace_weapon_powerup");
   str_weapon_time = ("zombie_powerup_" + str_weapon) + "_time";
   ent_player.zombie_vars[str_weapon_time] = time;
   if(bgb::is_team_enabled("zm_bgb_temporal_gift")) {
     ent_player.zombie_vars[str_weapon_time] = ent_player.zombie_vars[str_weapon_time] + 30;
   }
-  [
-    [level._custom_powerups[str_weapon].weapon_countdown]
-  ](ent_player, str_weapon_time);
+  [[level._custom_powerups[str_weapon].weapon_countdown]](ent_player, str_weapon_time);
   level thread weapon_powerup_remove(ent_player, str_gun_return_notify, str_weapon, 1);
 }
 
-/*
-	Name: weapon_powerup_replace
-	Namespace: zm_powerups
-	Checksum: 0xE29192FC
-	Offset: 0x57D8
-	Size: 0xFC
-	Parameters: 3
-	Flags: Linked
-*/
 function weapon_powerup_replace(ent_player, str_gun_return_notify, str_weapon) {
-  ent_player endon(# "death");
-  ent_player endon(# "disconnect");
-  ent_player endon(# "player_downed");
+  ent_player endon("death");
+  ent_player endon("disconnect");
+  ent_player endon("player_downed");
   ent_player endon(str_gun_return_notify);
   str_weapon_on = ("zombie_powerup_" + str_weapon) + "_on";
-  ent_player waittill(# "replace_weapon_powerup");
+  ent_player waittill("replace_weapon_powerup");
   ent_player takeweapon(level.zombie_powerup_weapon[str_weapon]);
   ent_player.zombie_vars[str_weapon_on] = 0;
   ent_player.has_specific_powerup_weapon[str_weapon] = 0;
@@ -1800,18 +1234,9 @@ function weapon_powerup_replace(ent_player, str_gun_return_notify, str_weapon) {
   ent_player zm_utility::decrement_is_drinking();
 }
 
-/*
-	Name: weapon_powerup_remove
-	Namespace: zm_powerups
-	Checksum: 0xB0D08DE0
-	Offset: 0x58E0
-	Size: 0x134
-	Parameters: 4
-	Flags: Linked
-*/
 function weapon_powerup_remove(ent_player, str_gun_return_notify, str_weapon, b_switch_back_weapon = 1) {
-  ent_player endon(# "death");
-  ent_player endon(# "player_downed");
+  ent_player endon("death");
+  ent_player endon("player_downed");
   str_weapon_on = ("zombie_powerup_" + str_weapon) + "_on";
   ent_player takeweapon(level.zombie_powerup_weapon[str_weapon]);
   ent_player.zombie_vars[str_weapon_on] = 0;
@@ -1825,15 +1250,6 @@ function weapon_powerup_remove(ent_player, str_gun_return_notify, str_weapon, b_
   }
 }
 
-/*
-	Name: weapon_watch_gunner_downed
-	Namespace: zm_powerups
-	Checksum: 0xBA5B8D43
-	Offset: 0x5A20
-	Size: 0x158
-	Parameters: 1
-	Flags: Linked
-*/
 function weapon_watch_gunner_downed(str_weapon) {
   str_notify = str_weapon + "_time_over";
   str_weapon_on = ("zombie_powerup_" + str_weapon) + "_on";
@@ -1854,20 +1270,9 @@ function weapon_watch_gunner_downed(str_weapon) {
   self.has_powerup_weapon = 0;
 }
 
-/*
-	Name: register_powerup
-	Namespace: zm_powerups
-	Checksum: 0x1DAB04FD
-	Offset: 0x5B80
-	Size: 0xE4
-	Parameters: 3
-	Flags: Linked
-*/
 function register_powerup(str_powerup, func_grab_powerup, func_setup) {
-  /#
   assert(isdefined(str_powerup), "");
-  # /
-    _register_undefined_powerup(str_powerup);
+  _register_undefined_powerup(str_powerup);
   if(isdefined(func_grab_powerup)) {
     if(!isdefined(level._custom_powerups[str_powerup].grab_powerup)) {
       level._custom_powerups[str_powerup].grab_powerup = func_grab_powerup;
@@ -1880,15 +1285,6 @@ function register_powerup(str_powerup, func_grab_powerup, func_setup) {
   }
 }
 
-/*
-	Name: _register_undefined_powerup
-	Namespace: zm_powerups
-	Checksum: 0x82B72D1B
-	Offset: 0x5C70
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function _register_undefined_powerup(str_powerup) {
   if(!isdefined(level._custom_powerups)) {
     level._custom_powerups = [];
@@ -1899,20 +1295,9 @@ function _register_undefined_powerup(str_powerup) {
   }
 }
 
-/*
-	Name: register_powerup_weapon
-	Namespace: zm_powerups
-	Checksum: 0x8F8E6611
-	Offset: 0x5CF0
-	Size: 0x98
-	Parameters: 2
-	Flags: Linked
-*/
 function register_powerup_weapon(str_powerup, func_countdown) {
-  /#
   assert(isdefined(str_powerup), "");
-  # /
-    _register_undefined_powerup(str_powerup);
+  _register_undefined_powerup(str_powerup);
   if(isdefined(func_countdown)) {
     if(!isdefined(level._custom_powerups[str_powerup].weapon_countdown)) {
       level._custom_powerups[str_powerup].weapon_countdown = func_countdown;

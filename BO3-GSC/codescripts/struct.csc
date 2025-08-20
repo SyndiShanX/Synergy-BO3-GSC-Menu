@@ -1,32 +1,17 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\shared\scene_shared;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: codescripts\struct.csc
+*************************************************/
 
+#using scripts\shared\scene_shared;
 #namespace struct;
 
-/*
-	Name: __init__
-	Namespace: struct
-	Checksum: 0xA3ED084
-	Offset: 0x168
-	Size: 0x24
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__() {
   if(!isdefined(level.struct)) {
     init_structs();
   }
 }
 
-/*
-	Name: init_structs
-	Namespace: struct
-	Checksum: 0xA9C54487
-	Offset: 0x198
-	Size: 0xD6
-	Parameters: 0
-	Flags: Linked
-*/
 function init_structs() {
   level.struct = [];
   level.scriptbundles = [];
@@ -42,36 +27,14 @@ function init_structs() {
   level.struct_class_names["scriptbundlename"] = [];
 }
 
-/*
-	Name: remove_unneeded_kvps
-	Namespace: struct
-	Checksum: 0x81604F94
-	Offset: 0x278
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked
-*/
 function remove_unneeded_kvps(struct) {
   struct.igdtseqnum = undefined;
   struct.configstringfiletype = undefined;
-  /#
   devstate = struct.devstate;
-  # /
-    struct.devstate = undefined;
-  /#
+  struct.devstate = undefined;
   struct.devstate = devstate;
-  # /
 }
 
-/*
-	Name: createstruct
-	Namespace: struct
-	Checksum: 0x28D0AD9A
-	Offset: 0x2E8
-	Size: 0x1FC
-	Parameters: 3
-	Flags: Linked
-*/
 function createstruct(struct, type, name) {
   if(!isdefined(level.struct)) {
     init_structs();
@@ -101,15 +64,6 @@ function createstruct(struct, type, name) {
   }
 }
 
-/*
-	Name: createscriptbundlelist
-	Namespace: struct
-	Checksum: 0x4AB77E1E
-	Offset: 0x4F0
-	Size: 0x54
-	Parameters: 3
-	Flags: Linked
-*/
 function createscriptbundlelist(items, type, name) {
   if(!isdefined(level.struct)) {
     init_structs();
@@ -117,15 +71,6 @@ function createscriptbundlelist(items, type, name) {
   level.scriptbundlelists[type][name] = items;
 }
 
-/*
-	Name: init
-	Namespace: struct
-	Checksum: 0xE33582D4
-	Offset: 0x550
-	Size: 0x836
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   if(!isdefined(level.struct)) {
     level.struct = [];
@@ -161,10 +106,8 @@ function init() {
     level.struct_class_names["script_noteworthy"][self.script_noteworthy][level.struct_class_names["script_noteworthy"][self.script_noteworthy].size] = self;
   }
   if(isdefined(self.script_linkname)) {
-    /#
     assert(!isdefined(level.struct_class_names[""][self.script_linkname]), "");
-    # /
-      level.struct_class_names["script_linkname"][self.script_linkname][0] = self;
+    level.struct_class_names["script_linkname"][self.script_linkname][0] = self;
   }
   if(isdefined(self.script_label)) {
     if(!isdefined(level.struct_class_names["script_label"][self.script_label])) {
@@ -200,41 +143,19 @@ function init() {
   }
 }
 
-/*
-	Name: get
-	Namespace: struct
-	Checksum: 0x486B83BF
-	Offset: 0xD90
-	Size: 0xD2
-	Parameters: 2
-	Flags: Linked
-*/
 function get(kvp_value, kvp_key = "targetname") {
   if(!isdefined(kvp_value)) {
     return undefined;
   }
   if(isdefined(level.struct_class_names[kvp_key][kvp_value])) {
-    /#
     if(level.struct_class_names[kvp_key][kvp_value].size > 1) {
-      /#
       assertmsg(((("" + kvp_key) + "") + kvp_value) + "");
-      # /
-        return undefined;
+      return undefined;
     }
-    # /
-      return level.struct_class_names[kvp_key][kvp_value][0];
+    return level.struct_class_names[kvp_key][kvp_value][0];
   }
 }
 
-/*
-	Name: spawn
-	Namespace: struct
-	Checksum: 0xD8BE9110
-	Offset: 0xE70
-	Size: 0x84
-	Parameters: 2
-	Flags: None
-*/
 function spawn(v_origin = (0, 0, 0), v_angles = (0, 0, 0)) {
   s = spawnstruct();
   s.origin = v_origin;
@@ -242,15 +163,6 @@ function spawn(v_origin = (0, 0, 0), v_angles = (0, 0, 0)) {
   return s;
 }
 
-/*
-	Name: get_array
-	Namespace: struct
-	Checksum: 0x52BECA9F
-	Offset: 0xF00
-	Size: 0x6E
-	Parameters: 2
-	Flags: Linked
-*/
 function get_array(kvp_value, kvp_key = "targetname") {
   if(isdefined(level.struct_class_names[kvp_key][kvp_value])) {
     return arraycopy(level.struct_class_names[kvp_key][kvp_value]);
@@ -258,15 +170,6 @@ function get_array(kvp_value, kvp_key = "targetname") {
   return [];
 }
 
-/*
-	Name: delete
-	Namespace: struct
-	Checksum: 0x8F8E1478
-	Offset: 0xF78
-	Size: 0x1C4
-	Parameters: 0
-	Flags: Linked
-*/
 function delete() {
   if(isdefined(self.target)) {
     arrayremovevalue(level.struct_class_names["target"][self.target], self);
@@ -294,60 +197,24 @@ function delete() {
   }
 }
 
-/*
-	Name: get_script_bundle
-	Namespace: struct
-	Checksum: 0x579F1CB1
-	Offset: 0x1148
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function get_script_bundle(str_type, str_name) {
   if(isdefined(level.scriptbundles[str_type]) && isdefined(level.scriptbundles[str_type][str_name])) {
     return level.scriptbundles[str_type][str_name];
   }
 }
 
-/*
-	Name: delete_script_bundle
-	Namespace: struct
-	Checksum: 0x21A23AC7
-	Offset: 0x11A8
-	Size: 0x52
-	Parameters: 2
-	Flags: None
-*/
 function delete_script_bundle(str_type, str_name) {
   if(isdefined(level.scriptbundles[str_type]) && isdefined(level.scriptbundles[str_type][str_name])) {
     level.scriptbundles[str_type][str_name] = undefined;
   }
 }
 
-/*
-	Name: get_script_bundles_of_type
-	Namespace: struct
-	Checksum: 0x9809255C
-	Offset: 0x1208
-	Size: 0x3C
-	Parameters: 1
-	Flags: None
-*/
 function get_script_bundles_of_type(str_type) {
   if(isdefined(level.scriptbundles[str_type])) {
     return arraycopy(level.scriptbundles[str_type]);
   }
 }
 
-/*
-	Name: get_script_bundles
-	Namespace: struct
-	Checksum: 0x7C2C8DDC
-	Offset: 0x1250
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function get_script_bundles(str_type) {
   if(isdefined(level.scriptbundles) && isdefined(level.scriptbundles[str_type])) {
     return level.scriptbundles[str_type];
@@ -355,30 +222,12 @@ function get_script_bundles(str_type) {
   return [];
 }
 
-/*
-	Name: get_script_bundle_list
-	Namespace: struct
-	Checksum: 0x9A4C7A6D
-	Offset: 0x1298
-	Size: 0x54
-	Parameters: 2
-	Flags: None
-*/
 function get_script_bundle_list(str_type, str_name) {
   if(isdefined(level.scriptbundlelists[str_type]) && isdefined(level.scriptbundlelists[str_type][str_name])) {
     return level.scriptbundlelists[str_type][str_name];
   }
 }
 
-/*
-	Name: get_script_bundle_instances
-	Namespace: struct
-	Checksum: 0xC8B04F65
-	Offset: 0x12F8
-	Size: 0x116
-	Parameters: 2
-	Flags: None
-*/
 function get_script_bundle_instances(str_type, str_name = "") {
   a_instances = get_array("scriptbundle_" + str_type, "classname");
   if(str_name != "") {
@@ -391,15 +240,6 @@ function get_script_bundle_instances(str_type, str_name = "") {
   return a_instances;
 }
 
-/*
-	Name: findstruct
-	Namespace: struct
-	Checksum: 0x25760073
-	Offset: 0x1418
-	Size: 0x23A
-	Parameters: 1
-	Flags: Linked
-*/
 function findstruct(position) {
   foreach(key, _ in level.struct_class_names) {
     foreach(s_array in level.struct_class_names[key]) {

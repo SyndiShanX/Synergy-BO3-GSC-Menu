@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\craftables\_zm_craft_shield.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -16,42 +20,14 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weap_riotshield;
 #using scripts\zm\craftables\_zm_craftables;
-
 #namespace zm_craft_shield;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_craft_shield
-	Checksum: 0x1FD66332
-	Offset: 0x438
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_craft_shield", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_craft_shield
-	Checksum: 0x99EC1590
-	Offset: 0x480
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}
 
-/*
-	Name: init
-	Namespace: zm_craft_shield
-	Checksum: 0xA0A13710
-	Offset: 0x490
-	Size: 0x47C
-	Parameters: 6
-	Flags: Linked
-*/
 function init(shield_equipment, shield_weapon, shield_model, str_to_craft = & "ZOMBIE_CRAFT_RIOT", str_taken = & "ZOMBIE_BOUGHT_RIOT", str_grab = & "ZOMBIE_GRAB_RIOTSHIELD") {
   level.craftable_shield_equipment = shield_equipment;
   level.craftable_shield_weapon = shield_weapon;
@@ -80,63 +56,23 @@ function init(shield_equipment, shield_weapon, shield_model, str_to_craft = & "Z
   zm_craftables::make_zombie_craftable_open(level.craftable_shield_equipment, level.craftable_shield_model, vectorscale((0, -1, 0), 90), vectorscale((0, 0, 1), 26));
 }
 
-/*
-	Name: __main__
-	Namespace: zm_craft_shield
-	Checksum: 0x4D304F75
-	Offset: 0x918
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
-  /#
   function_f3127c4f();
-  # /
 }
 
-/*
-	Name: riotshield_craftable
-	Namespace: zm_craft_shield
-	Checksum: 0xD2C90327
-	Offset: 0x940
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function riotshield_craftable() {
   zm_craftables::craftable_trigger_think("riotshield_zm_craftable_trigger", level.craftable_shield_equipment, level.craftable_shield_weapon, level.craftable_shield_grab, 1, 1);
 }
 
-/*
-	Name: show_infotext_for_duration
-	Namespace: zm_craft_shield
-	Checksum: 0xBA70474A
-	Offset: 0x988
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function show_infotext_for_duration(str_infotext, n_duration) {
   self clientfield::set_to_player(str_infotext, 1);
   wait(n_duration);
   self clientfield::set_to_player(str_infotext, 0);
 }
 
-/*
-	Name: on_pickup_common
-	Namespace: zm_craft_shield
-	Checksum: 0x84261DE7
-	Offset: 0x9E8
-	Size: 0x148
-	Parameters: 1
-	Flags: Linked
-*/
 function on_pickup_common(player) {
-  /#
   println("");
-  # /
-    player playsound("zmb_craftable_pickup");
+  player playsound("zmb_craftable_pickup");
   if(isdefined(level.craft_shield_piece_pickup_vo_override)) {
     player thread[[level.craft_shield_piece_pickup_vo_override]]();
   }
@@ -148,32 +84,12 @@ function on_pickup_common(player) {
   self.piece_owner = player;
 }
 
-/*
-	Name: on_drop_common
-	Namespace: zm_craft_shield
-	Checksum: 0xCD5B9B4D
-	Offset: 0xB38
-	Size: 0x4E
-	Parameters: 1
-	Flags: Linked
-*/
 function on_drop_common(player) {
-  /#
   println("");
-  # /
-    self drop_on_mover(player);
+  self drop_on_mover(player);
   self.piece_owner = undefined;
 }
 
-/*
-	Name: pickup_from_mover
-	Namespace: zm_craft_shield
-	Checksum: 0xF1366177
-	Offset: 0xB90
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function pickup_from_mover() {
   if(isdefined(level.craft_shield_pickup_override)) {
     [
@@ -182,15 +98,6 @@ function pickup_from_mover() {
   }
 }
 
-/*
-	Name: on_fully_crafted
-	Namespace: zm_craft_shield
-	Checksum: 0x2EE760D8
-	Offset: 0xBB8
-	Size: 0xEE
-	Parameters: 0
-	Flags: Linked
-*/
 function on_fully_crafted() {
   players = level.players;
   foreach(e_player in players) {
@@ -202,15 +109,6 @@ function on_fully_crafted() {
   return true;
 }
 
-/*
-	Name: drop_on_mover
-	Namespace: zm_craft_shield
-	Checksum: 0xB4F35B68
-	Offset: 0xCB0
-	Size: 0x28
-	Parameters: 1
-	Flags: Linked
-*/
 function drop_on_mover(player) {
   if(isdefined(level.craft_shield_drop_override)) {
     [
@@ -219,15 +117,6 @@ function drop_on_mover(player) {
   }
 }
 
-/*
-	Name: on_buy_weapon_riotshield
-	Namespace: zm_craft_shield
-	Checksum: 0xF23923D0
-	Offset: 0xCE0
-	Size: 0x96
-	Parameters: 1
-	Flags: Linked
-*/
 function on_buy_weapon_riotshield(player) {
   if(isdefined(player.player_shield_reset_health)) {
     player[[player.player_shield_reset_health]]();
@@ -236,20 +125,10 @@ function on_buy_weapon_riotshield(player) {
     player[[player.player_shield_reset_location]]();
   }
   player playsound("zmb_craftable_buy_shield");
-  level notify(# "shield_built", player);
+  level notify("shield_built", player);
 }
 
-/*
-	Name: function_f3127c4f
-	Namespace: zm_craft_shield
-	Checksum: 0xC5BA1F70
-	Offset: 0xD80
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f3127c4f() {
-  /#
   level flagsys::wait_till("");
   wait(1);
   zm_devgui::add_custom_devgui_callback( & function_b6937313);
@@ -257,20 +136,9 @@ function function_f3127c4f() {
   adddebugcommand(("" + level.craftable_shield_equipment) + "");
   adddebugcommand(("" + level.craftable_shield_equipment) + "");
   adddebugcommand(("" + level.craftable_shield_equipment) + "");
-  # /
 }
 
-/*
-	Name: function_b6937313
-	Namespace: zm_craft_shield
-	Checksum: 0x73F015CF
-	Offset: 0xE80
-	Size: 0x1CE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b6937313(cmd) {
-  /#
   players = getplayers();
   retval = 0;
   switch (cmd) {
@@ -314,20 +182,9 @@ function function_b6937313(cmd) {
     }
   }
   return retval;
-  # /
 }
 
-/*
-	Name: detect_reentry
-	Namespace: zm_craft_shield
-	Checksum: 0xECEFADE4
-	Offset: 0x1058
-	Size: 0x36
-	Parameters: 0
-	Flags: Linked
-*/
 function detect_reentry() {
-  /#
   if(isdefined(self.devgui_preserve_time)) {
     if(self.devgui_preserve_time == gettime()) {
       return true;
@@ -335,25 +192,14 @@ function detect_reentry() {
   }
   self.devgui_preserve_time = gettime();
   return false;
-  # /
 }
 
-/*
-	Name: function_2b0b208f
-	Namespace: zm_craft_shield
-	Checksum: 0x8B036884
-	Offset: 0x1098
-	Size: 0x198
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2b0b208f() {
-  /#
   if(self detect_reentry()) {
     return;
   }
-  self notify(# "hash_2b0b208f");
-  self endon(# "hash_2b0b208f");
+  self notify("hash_2b0b208f");
+  self endon("hash_2b0b208f");
   self.var_74469a7a = !(isdefined(self.var_74469a7a) && self.var_74469a7a);
   println((("" + self.name) + "") + (self.var_74469a7a ? "" : ""));
   iprintlnbold((("" + self.name) + "") + (self.var_74469a7a ? "" : ""));
@@ -369,25 +215,13 @@ function function_2b0b208f() {
       wait(0.05);
     }
   }
-  # /
 }
 
-/*
-	Name: function_70d7908d
-	Namespace: zm_craft_shield
-	Checksum: 0x975B5366
-	Offset: 0x1238
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_70d7908d() {
-  /#
   if(self detect_reentry()) {
     return;
   }
   if(isdefined(self.hasriotshield) && self.hasriotshield) {
     self zm_equipment::change_ammo(self.weaponriotshield, 1);
   }
-  # /
 }

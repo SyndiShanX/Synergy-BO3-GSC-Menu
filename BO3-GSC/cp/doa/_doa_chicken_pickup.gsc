@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_chicken_pickup.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\doa\_doa_dev;
 #using scripts\cp\doa\_doa_fx;
@@ -12,24 +16,13 @@
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("critter");
-
 #namespace namespace_5e6c5d1f;
 
-/*
-	Name: function_cdfa9ce8
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x7F90AFB1
-	Offset: 0x588
-	Size: 0x31E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cdfa9ce8(bird) {
-  bird notify(# "hash_cf62504");
-  bird endon(# "hash_cf62504");
-  bird endon(# "death");
+  bird notify("hash_cf62504");
+  bird endon("hash_cf62504");
+  bird endon("death");
   bird useanimtree($critter);
   curanim = % critter::a_chicken_react_up_down;
   lastanim = % critter::a_chicken_idle_peck;
@@ -80,15 +73,6 @@ function function_cdfa9ce8(bird) {
   }
 }
 
-/*
-	Name: add_a_chicken
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xB1F54B69
-	Offset: 0x8B0
-	Size: 0x5D4
-	Parameters: 4
-	Flags: Linked
-*/
 function add_a_chicken(model, scale, fated, var_5c667593) {
   if(!isdefined(self.doa)) {
     return;
@@ -132,7 +116,7 @@ function add_a_chicken(model, scale, fated, var_5c667593) {
   if(self.doa.var_3cdd8203.size > getdvarint("scr_doa_max_chickens", 5)) {
     foreach(chicken in self.doa.var_3cdd8203) {
       if(!(isdefined(chicken.special) && chicken.special)) {
-        chicken notify(# "spin_out");
+        chicken notify("spin_out");
         break;
       }
     }
@@ -150,15 +134,6 @@ function add_a_chicken(model, scale, fated, var_5c667593) {
   }
 }
 
-/*
-	Name: function_8397461e
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xAB98E37B
-	Offset: 0xE90
-	Size: 0xCE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8397461e() {
   if(!isdefined(self.doa.var_3cdd8203)) {
     return;
@@ -167,51 +142,33 @@ function function_8397461e() {
     if(isdefined(bird.special) && bird.special) {
       continue;
     }
-    bird notify(# "spin_out", 1);
+    bird notify("spin_out", 1);
   }
 }
 
-/*
-	Name: function_d7142cd
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x23D9ACD0
-	Offset: 0xF68
-	Size: 0x8E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d7142cd(player) {
-  self endon(# "death");
-  player waittill(# "disconnect");
+  self endon("death");
+  player waittill("disconnect");
   if(isdefined(self.special) && self.special) {
     if(isdefined(self.bird)) {
       self.bird delete();
     }
     self delete();
   } else {
-    self notify(# "spin_out");
+    self notify("spin_out");
   }
 }
 
-/*
-	Name: function_3118ca4d
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xCF7FCB2B
-	Offset: 0x1000
-	Size: 0x30C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3118ca4d(player) {
   if(isdefined(self.special) && self.special) {
     return;
   }
-  self notify(# "hash_3118ca4d");
-  self endon(# "hash_3118ca4d");
-  self endon(# "death");
-  self waittill(# "spin_out", immediate);
+  self notify("hash_3118ca4d");
+  self endon("hash_3118ca4d");
+  self endon("death");
+  self waittill("spin_out", immediate);
   waittillframeend();
-  self notify(# "spinning_out");
+  self notify("spinning_out");
   arrayremovevalue(player.doa.var_3cdd8203, self);
   if(!(isdefined(immediate) && immediate)) {
     self.var_3424aae1 = 1;
@@ -244,35 +201,17 @@ function function_3118ca4d(player) {
   self delete();
 }
 
-/*
-	Name: function_4dd46e10
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x4CE03344
-	Offset: 0x1318
-	Size: 0x50
-	Parameters: 2
-	Flags: Linked
-*/
 function function_4dd46e10( & follow_points, num_follow_points) {
   for (i = 0; i < num_follow_points; i++) {
     follow_points[i] = self.origin;
   }
 }
 
-/*
-	Name: function_e636d9c5
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x318C58CA
-	Offset: 0x1370
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e636d9c5(player) {
-  self endon(# "death");
-  player endon(# "disconnect");
+  self endon("death");
+  player endon("disconnect");
   while (true) {
-    level waittill(# "hash_31680c6");
+    level waittill("hash_31680c6");
     if(!isdefined(player)) {
       return;
     }
@@ -287,18 +226,9 @@ function function_e636d9c5(player) {
   }
 }
 
-/*
-	Name: function_44ff9baa
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x13AF23A5
-	Offset: 0x1488
-	Size: 0x398
-	Parameters: 1
-	Flags: Linked
-*/
 function function_44ff9baa(player) {
-  self endon(# "death");
-  self endon(# "spinning_out");
+  self endon("death");
+  self endon("spinning_out");
   follow_index = 0;
   next_index = follow_index + 1;
   num_follow_points = getdvarint("scr_doa_max_chicken_points", 5);
@@ -349,18 +279,9 @@ function function_44ff9baa(player) {
   }
 }
 
-/*
-	Name: function_8b81d592
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x44F069A7
-	Offset: 0x1828
-	Size: 0x17E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8b81d592(player) {
-  self endon(# "spinning_out");
-  self endon(# "death");
+  self endon("spinning_out");
+  self endon("death");
   time = level.doa.rules.var_da7e08a6 * 1000;
   if(player.doa.fate == 3 || player.doa.fate == 12) {
     time = time * level.doa.rules.var_ef3d9a29;
@@ -369,28 +290,19 @@ function function_8b81d592(player) {
   timeout = gettime() + time;
   while (gettime() < timeout) {
     if(!isdefined(player)) {
-      self notify(# "spin_out");
+      self notify("spin_out");
     }
     if(level flag::get("doa_game_is_over")) {
-      self notify(# "spin_out");
+      self notify("spin_out");
     }
     wait(0.05);
   }
   while (isdefined(self.var_a732885d) && self.var_a732885d || (isdefined(self.var_efa2b784) && self.var_efa2b784)) {
     wait(1);
   }
-  self notify(# "spin_out");
+  self notify("spin_out");
 }
 
-/*
-	Name: function_4d01b327
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xF41141B5
-	Offset: 0x19B0
-	Size: 0x202
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4d01b327(player) {
   weapon = level.doa.var_362a104d;
   if(isdefined(self.special) && self.special) {
@@ -437,15 +349,6 @@ function function_4d01b327(player) {
   return weapon;
 }
 
-/*
-	Name: function_be58e20c
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xCFDED672
-	Offset: 0x1BC0
-	Size: 0xFE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_be58e20c(player) {
   while (isdefined(self) && (!(isdefined(self.var_3424aae1) && self.var_3424aae1))) {
     if(isdefined(player.doa.vehicle)) {
@@ -454,26 +357,17 @@ function function_be58e20c(player) {
       msg = player util::waittill_any_timeout(0.1, "weapon_fired", "gunner_weapon_fired", "disconnect");
     }
     if(isdefined(msg) && msg != "timeout") {
-      self notify(# "hash_4148f7d1");
+      self notify("hash_4148f7d1");
     }
   }
 }
 
-/*
-	Name: function_8fb467a7
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x20935FBE
-	Offset: 0x1CC8
-	Size: 0xE8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8fb467a7(player) {
-  self endon(# "death");
-  self endon(# "spinning_out");
+  self endon("death");
+  self endon("spinning_out");
   self thread function_be58e20c(player);
   while (true) {
-    self waittill(# "hash_4148f7d1");
+    self waittill("hash_4148f7d1");
     if(isdefined(self.var_18845184) && self.var_18845184) {
       continue;
     }
@@ -486,15 +380,6 @@ function function_8fb467a7(player) {
   }
 }
 
-/*
-	Name: function_cea0c915
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xF4D0D72F
-	Offset: 0x1DB8
-	Size: 0x184
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_cea0c915(player, weapon) {
   if(isdefined(player)) {
     forward = anglestoforward(self.angles + (player.doa.var_7a1de0da, 0, 0));
@@ -510,18 +395,9 @@ function private function_cea0c915(player, weapon) {
   magicbullet(weapon, start, start + (forward * 1000), (isdefined(player) ? player : self.bird));
 }
 
-/*
-	Name: function_da8e9c9b
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x7FE37564
-	Offset: 0x1F48
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_da8e9c9b() {
-  self endon(# "spinning_out");
-  self endon(# "death");
+  self endon("spinning_out");
+  self endon("death");
   while (isdefined(self)) {
     rand = randomintrange(0, 100);
     if(rand > 30) {
@@ -534,18 +410,9 @@ function function_da8e9c9b() {
   }
 }
 
-/*
-	Name: function_4ef3ec52
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x6CEE218C
-	Offset: 0x2008
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4ef3ec52() {
-  self endon(# "death");
-  self waittill(# "spinning_out");
+  self endon("death");
+  self waittill("spinning_out");
   while (isdefined(self)) {
     self thread namespace_1a381543::function_90118d8c("zmb_dblshot_wingflap");
     self thread namespace_1a381543::function_90118d8c("zmb_dblshot_death");
@@ -553,35 +420,17 @@ function function_4ef3ec52() {
   }
 }
 
-/*
-	Name: function_9d2031fa
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xBDCCF3A
-	Offset: 0x2098
-	Size: 0x11A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9d2031fa() {
-  self notify(# "hash_599dc0d7");
-  self endon(# "hash_599dc0d7");
+  self notify("hash_599dc0d7");
+  self endon("hash_599dc0d7");
   msg = self util::waittill_any_return("death", "disconnect", "chicken_disconnect_watch");
   foreach(chicken in self.doa.var_3cdd8203) {
     if(msg == "disconnect" || (!(isdefined(chicken.special) && chicken.special))) {
-      chicken notify(# "spin_out");
+      chicken notify("spin_out");
     }
   }
 }
 
-/*
-	Name: function_d35a405a
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xBE85E597
-	Offset: 0x21C0
-	Size: 0x104
-	Parameters: 3
-	Flags: Linked
-*/
 function function_d35a405a(model, fated = 0, var_c29d1327 = 1) {
   if(!isdefined(self.doa.var_3cdd8203)) {
     self.doa.var_3cdd8203 = [];
@@ -594,15 +443,6 @@ function function_d35a405a(model, fated = 0, var_c29d1327 = 1) {
   self add_a_chicken(model, def.scale * var_c29d1327, fated != 0, fated == 2);
 }
 
-/*
-	Name: function_83df0c19
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x5BB47626
-	Offset: 0x22D0
-	Size: 0xBA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_83df0c19() {
   number = 0;
   foreach(chicken in self.doa.var_3cdd8203) {
@@ -613,15 +453,6 @@ function function_83df0c19() {
   return number;
 }
 
-/*
-	Name: function_bd97e9ba
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xF24F50F8
-	Offset: 0x2398
-	Size: 0xB6
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bd97e9ba(player) {
   number = 0;
   foreach(chicken in player.doa.var_3cdd8203) {
@@ -633,53 +464,29 @@ function function_bd97e9ba(player) {
   return number;
 }
 
-/*
-	Name: function_c397fab3
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x8EF2AAC6
-	Offset: 0x2458
-	Size: 0x1B2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c397fab3(player) {
-  self endon(# "death");
-  self endon(# "spinning_out");
+  self endon("death");
+  self endon("spinning_out");
   while (true) {
-    player waittill(# "player_died");
-    /#
+    player waittill("player_died");
     doa_utility::debugmsg("");
-    # /
-      var_141b6128 = self.var_fe6ede28 * 0.98;
+    var_141b6128 = self.var_fe6ede28 * 0.98;
     self.var_1f6fdc8f = 1;
     while (self.var_fe6ede28 > var_141b6128) {
       self.var_fe6ede28 = self.var_fe6ede28 - 0.05;
       self.bird setscale(self.var_6e0abf98 + self.var_fe6ede28);
-      /#
       doa_utility::debugmsg((("" + self getentitynumber()) + "") + self.var_fe6ede28);
-      # /
-        wait(0.05);
+      wait(0.05);
     }
-    /#
     doa_utility::debugmsg((("" + self getentitynumber()) + "") + self.var_fe6ede28);
-    # /
-      self.var_fe6ede28 = math::clamp(var_141b6128, 0, getdvarfloat("scr_doa_chicken_max_plump", 3));
+    self.var_fe6ede28 = math::clamp(var_141b6128, 0, getdvarfloat("scr_doa_chicken_max_plump", 3));
     self.var_1f6fdc8f = undefined;
   }
 }
 
-/*
-	Name: function_cff32183
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x8469E485
-	Offset: 0x2618
-	Size: 0x3A0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cff32183(player) {
-  self endon(# "death");
-  self endon(# "spinning_out");
+  self endon("death");
+  self endon("spinning_out");
   self.var_fe6ede28 = 0;
   self.var_5c667593 = 1;
   self thread function_c397fab3(player);
@@ -690,9 +497,7 @@ function function_cff32183(player) {
       increment = getdvarfloat("scr_doa_chicken_inc_plump", 0.035) * numchickens;
       if(!(isdefined(self.var_1f6fdc8f) && self.var_1f6fdc8f)) {
         self.var_fe6ede28 = math::clamp(self.var_fe6ede28 + increment, 0, getdvarfloat("scr_doa_chicken_max_plump", 3));
-        /#
         doa_utility::debugmsg((("" + self getentitynumber()) + "") + self.var_fe6ede28);
-        # /
       }
       self.bird setscale(self.var_6e0abf98 + self.var_fe6ede28);
       var_cdf31c46 = 0;
@@ -734,22 +539,11 @@ function function_cff32183(player) {
   }
 }
 
-/*
-	Name: function_2d0f96ef
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x727AD8B2
-	Offset: 0x29C0
-	Size: 0x4B2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2d0f96ef(player) {
-  self endon(# "death");
-  self endon(# "spinning_out");
-  /#
+  self endon("death");
+  self endon("spinning_out");
   doa_utility::debugmsg("" + self getentitynumber());
-  # /
-    self.var_a732885d = 1;
+  self.var_a732885d = 1;
   self.var_18845184 = 1;
   var_ff37339 = 32;
   pos = 0;
@@ -795,22 +589,13 @@ function function_2d0f96ef(player) {
     chicken.var_a732885d = undefined;
     chicken.var_efa2b784 = undefined;
     chicken.var_18845184 = undefined;
-    chicken notify(# "hash_e6885d7c");
+    chicken notify("hash_e6885d7c");
   }
 }
 
-/*
-	Name: function_5af02c44
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x8B2E20BF
-	Offset: 0x2E80
-	Size: 0x254
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private function_5af02c44(target, num, offset) {
-  self endon(# "death");
-  self endon(# "spinning_out");
+  self endon("death");
+  self endon("spinning_out");
   self.var_efa2b784 = 1;
   self.var_18845184 = 1;
   anim_ang = vectortoangles(target.origin - self.origin);
@@ -837,19 +622,10 @@ function private function_5af02c44(target, num, offset) {
   self moveto(target.origin, 1);
   self util::waittill_any_timeout(2, "movedone");
   self linkto(target, "tag_origin", spot);
-  self waittill(# "hash_e6885d7c");
+  self waittill("hash_e6885d7c");
   self unlink();
 }
 
-/*
-	Name: function_e4f21fa9
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xE027BD9C
-	Offset: 0x30E0
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_e4f21fa9() {
   roll = randomint(100);
   prize = "none";
@@ -873,15 +649,6 @@ function private function_e4f21fa9() {
   return prize;
 }
 
-/*
-	Name: function_d63bdb9
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xFAA79F58
-	Offset: 0x31D8
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d63bdb9(hop) {
   if(hop) {
     self physicslaunch(self.origin, (randomintrange(-10, 10), randomintrange(-10, 10), 30));
@@ -889,17 +656,8 @@ function function_d63bdb9(hop) {
   }
 }
 
-/*
-	Name: function_4c41e6af
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0xCE2AFB5A
-	Offset: 0x3268
-	Size: 0x278
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4c41e6af() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     var_9c9d6a5c = doa_utility::getarrayitemswithin(self.origin, getaiteamarray("axis"), 2304);
     for (i = 0; i < var_9c9d6a5c.size; i++) {
@@ -917,7 +675,7 @@ function function_4c41e6af() {
         physicsexplosionsphere(self.origin, 200, 128, 2);
         self radiusdamage(self.origin, 72, 2000, 1000);
         playrumbleonposition("explosion_generic", self.origin);
-        self waittill(# "hash_6a404ade");
+        self waittill("hash_6a404ade");
         self delete();
       }
     }
@@ -926,17 +684,8 @@ function function_4c41e6af() {
   }
 }
 
-/*
-	Name: function_7b8c015c
-	Namespace: namespace_5e6c5d1f
-	Checksum: 0x6D2FAA82
-	Offset: 0x34E8
-	Size: 0x274
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7b8c015c() {
-  self endon(# "death");
+  self endon("death");
   if(self.def.type == 36) {
     self.prize = level.doa.extra_life_model;
   }
@@ -952,7 +701,7 @@ function function_7b8c015c() {
   self.threatbias = 0;
   doa_utility::function_5fd5c3ea(self);
   self.var_b2290d2d = 1;
-  self waittill(# "pickup_timeout");
+  self waittill("pickup_timeout");
   wait(1);
   self thread namespace_1a381543::function_90118d8c("zmb_egg_hatch");
   self thread namespace_eaa992c::function_285a2999("egg_hatch");
@@ -967,6 +716,6 @@ function function_7b8c015c() {
   } else {
     level thread doa_pickups::spawnubertreasure(origin, 1 + randomintrange(2, 6), 0, 1);
   }
-  self waittill(# "hash_6a404ade");
+  self waittill("hash_6a404ade");
   self delete();
 }

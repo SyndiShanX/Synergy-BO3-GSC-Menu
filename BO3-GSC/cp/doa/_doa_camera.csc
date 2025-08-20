@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_camera.csc
+*************************************************/
+
 #using scripts\cp\doa\_doa_arena;
 #using scripts\shared\array_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_ad544aeb;
 
-/*
-	Name: function_d22ceb57
-	Namespace: namespace_ad544aeb
-	Checksum: 0xA988DA5D
-	Offset: 0x118
-	Size: 0xFC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_d22ceb57(angles, min_dist, max_dist = 0) {
   if(isdefined(angles)) {
     vectornormalize(angles);
@@ -32,15 +26,6 @@ function function_d22ceb57(angles, min_dist, max_dist = 0) {
   }
 }
 
-/*
-	Name: function_44a2ae85
-	Namespace: namespace_ad544aeb
-	Checksum: 0xE78FD80
-	Offset: 0x220
-	Size: 0xCE
-	Parameters: 2
-	Flags: Linked
-*/
 function function_44a2ae85(vec, mins) {
   if(vec[0] < mins[0]) {
     mins = (vec[0], mins[1], mins[2]);
@@ -54,15 +39,6 @@ function function_44a2ae85(vec, mins) {
   return mins;
 }
 
-/*
-	Name: function_b72ba417
-	Namespace: namespace_ad544aeb
-	Checksum: 0x86F9A1C4
-	Offset: 0x2F8
-	Size: 0xCE
-	Parameters: 2
-	Flags: Linked
-*/
 function function_b72ba417(vec, maxs) {
   if(vec[0] > maxs[0]) {
     maxs = (vec[0], maxs[1], maxs[2]);
@@ -76,15 +52,6 @@ function function_b72ba417(vec, maxs) {
   return maxs;
 }
 
-/*
-	Name: function_d207ecc1
-	Namespace: namespace_ad544aeb
-	Checksum: 0x142BCAA0
-	Offset: 0x3D0
-	Size: 0x12DC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d207ecc1(localclientnum, delta_time) {
   mins = vectorscale((1, 1, 1), 1000000);
   maxs = vectorscale((-1, -1, -1), 1000000);
@@ -157,18 +124,16 @@ function function_d207ecc1(localclientnum, delta_time) {
       player camerasetposition(var_2fda52e5);
     }
     if(isdefined(level.doa.arenas[level.doa.current_arena].var_790aac0e)) {
-      /#
       var_cf220b7b = level.doa.arenas[level.doa.current_arena].var_790aac0e[0] + level.var_83a34f19;
       var_a91f9112 = level.doa.arenas[level.doa.current_arena].var_790aac0e[1] + level.var_e9c73e06;
       var_831d16a9 = level.doa.arenas[level.doa.current_arena].var_790aac0e[2];
       level.doa.arenas[level.doa.current_arena].var_790aac0e = (var_cf220b7b, var_a91f9112, var_831d16a9);
-      # /
-        foreach(player in level.localplayers) {
-          if(!isdefined(player)) {
-            continue;
-          }
-          player camerasetlookat(level.doa.arenas[level.doa.current_arena].var_790aac0e);
+      foreach(player in level.localplayers) {
+        if(!isdefined(player)) {
+          continue;
         }
+        player camerasetlookat(level.doa.arenas[level.doa.current_arena].var_790aac0e);
+      }
       level.var_a32fbbc0 = level.doa.arenas[level.doa.current_arena].var_790aac0e;
     } else {
       foreach(player in level.localplayers) {
@@ -179,15 +144,13 @@ function function_d207ecc1(localclientnum, delta_time) {
       }
     }
     level.var_6383030e = var_2fda52e5;
-    /#
     if(getdvarint("", 0)) {
       println(((("" + int(level.doa.arenas[level.doa.current_arena].var_7526f3f5[0])) + "") + int(level.doa.arenas[level.doa.current_arena].var_7526f3f5[1]) + "") + int(level.doa.arenas[level.doa.current_arena].var_7526f3f5[2]) + "");
       println(((((("" + level.var_a32fbbc0[0]) + "") + level.var_a32fbbc0[1]) + "") + level.var_a32fbbc0[2]) + "");
     }
     level.var_83a34f19 = 0;
     level.var_e9c73e06 = 0;
-    # /
-      return;
+    return;
   }
   var_f51225df = level.var_eb70931a;
   var_aa43a214 = level.var_7a2e3b7d;

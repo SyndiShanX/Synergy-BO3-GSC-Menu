@@ -1,44 +1,24 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicles\_driving_fx.csc
+*************************************************/
+
 #using scripts\shared\audio_shared;
 
 class groundfx {
   var handle;
   var id;
 
-  /*
-  	Name: constructor
-  	Namespace: groundfx
-  	Checksum: 0xA01B94AE
-  	Offset: 0x230
-  	Size: 0x1C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {
     id = undefined;
     handle = -1;
   }
 
-  /*
-  	Name: destructor
-  	Namespace: groundfx
-  	Checksum: 0x99EC1590
-  	Offset: 0x258
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: stop
-  	Namespace: groundfx
-  	Checksum: 0xC63CA503
-  	Offset: 0x3B8
-  	Size: 0x4C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function stop(localclientnum) {
     if(handle > 0) {
       stopfx(localclientnum, handle);
@@ -47,15 +27,7 @@ class groundfx {
     handle = -1;
   }
 
-  /*
-  	Name: play
-  	Namespace: groundfx
-  	Checksum: 0x905DFBEF
-  	Offset: 0x268
-  	Size: 0x144
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function play(localclientnum, vehicle, fx_id, fx_tag) {
     if(!isdefined(fx_id)) {
       if(handle > 0) {
@@ -84,40 +56,16 @@ class vehiclewheelfx {
   var name;
   var tag_name;
 
-  /*
-  	Name: constructor
-  	Namespace: vehiclewheelfx
-  	Checksum: 0xF9540FA9
-  	Offset: 0x500
-  	Size: 0x24
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {
     name = "";
     tag_name = "";
   }
 
-  /*
-  	Name: destructor
-  	Namespace: vehiclewheelfx
-  	Checksum: 0x99EC1590
-  	Offset: 0x530
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: update
-  	Namespace: vehiclewheelfx
-  	Checksum: 0x643322EF
-  	Offset: 0x610
-  	Size: 0x4CC
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function update(localclientnum, vehicle, speed_fraction) {
     if(vehicle.vehicleclass === "boat") {
       peelingout = 0;
@@ -190,15 +138,7 @@ class vehiclewheelfx {
     }
   }
 
-  /*
-  	Name: init
-  	Namespace: vehiclewheelfx
-  	Checksum: 0x90CD92F7
-  	Offset: 0x540
-  	Size: 0xC4
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function init(_name, _tag_name) {
     name = _name;
     tag_name = _tag_name;
@@ -218,15 +158,7 @@ class vehicle_camera_fx {
   var quake_time_min;
   var rumble_name;
 
-  /*
-  	Name: constructor
-  	Namespace: vehicle_camera_fx
-  	Checksum: 0xFC47A4E4
-  	Offset: 0xBD8
-  	Size: 0x54
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {
     quake_time_min = 0.5;
     quake_time_max = 1;
@@ -235,26 +167,10 @@ class vehicle_camera_fx {
     rumble_name = "";
   }
 
-  /*
-  	Name: destructor
-  	Namespace: vehicle_camera_fx
-  	Checksum: 0x99EC1590
-  	Offset: 0xC38
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: update
-  	Namespace: vehicle_camera_fx
-  	Checksum: 0x4DA12EC7
-  	Offset: 0xCF0
-  	Size: 0x14C
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function update(localclientnum, vehicle, speed_fraction) {
     if(vehicle islocalclientdriver(localclientnum)) {
       player = getlocalplayer(localclientnum);
@@ -271,15 +187,7 @@ class vehicle_camera_fx {
     }
   }
 
-  /*
-  	Name: init
-  	Namespace: vehicle_camera_fx
-  	Checksum: 0xC5554CEC
-  	Offset: 0xC48
-  	Size: 0x9C
-  	Parameters: 5
-  	Flags: Linked
-  */
+
   function init(t_min, t_max, s_min, s_max, rumble = "") {
     quake_time_min = t_min;
     quake_time_max = t_max;
@@ -292,19 +200,10 @@ class vehicle_camera_fx {
 
 #namespace driving_fx;
 
-/*
-	Name: vehicle_enter
-	Namespace: driving_fx
-	Checksum: 0xC478FBF5
-	Offset: 0xF38
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked
-*/
 function vehicle_enter(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (true) {
-    self waittill(# "enter_vehicle", user);
+    self waittill("enter_vehicle", user);
     if(isdefined(user) && user isplayer()) {
       self thread collision_thread(localclientnum);
       self thread jump_landing_thread(localclientnum);
@@ -312,18 +211,9 @@ function vehicle_enter(localclientnum) {
   }
 }
 
-/*
-	Name: speed_fx
-	Namespace: driving_fx
-	Checksum: 0xF1B6C61A
-	Offset: 0xFD0
-	Size: 0x100
-	Parameters: 1
-	Flags: None
-*/
 function speed_fx(localclientnum) {
-  self endon(# "entityshutdown");
-  self endon(# "exit_vehicle");
+  self endon("entityshutdown");
+  self endon("exit_vehicle");
   while (true) {
     curspeed = self getspeed();
     curspeed = 0.0005 * curspeed;
@@ -338,17 +228,8 @@ function speed_fx(localclientnum) {
   }
 }
 
-/*
-	Name: play_driving_fx
-	Namespace: driving_fx
-	Checksum: 0x5089F7A7
-	Offset: 0x10D8
-	Size: 0x420
-	Parameters: 1
-	Flags: Linked
-*/
 function play_driving_fx(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self thread vehicle_enter(localclientnum);
   if(self.surfacefxdeftype == "") {
     return;
@@ -397,15 +278,6 @@ function play_driving_fx(localclientnum) {
   }
 }
 
-/*
-	Name: get_wheel_fx
-	Namespace: driving_fx
-	Checksum: 0x2887D680
-	Offset: 0x1500
-	Size: 0x98
-	Parameters: 2
-	Flags: Linked
-*/
 function get_wheel_fx(type, surface) {
   fxarray = undefined;
   if(type == "tread") {
@@ -423,15 +295,6 @@ function get_wheel_fx(type, surface) {
   return undefined;
 }
 
-/*
-	Name: play_driving_fx_firstperson
-	Namespace: driving_fx
-	Checksum: 0x9ED9B95B
-	Offset: 0x15A0
-	Size: 0x1BC
-	Parameters: 3
-	Flags: None
-*/
 function play_driving_fx_firstperson(localclientnum, speed, speed_fraction) {
   if(speed > 0 && speed_fraction >= 0.25) {
     viewangles = getlocalclientangles(localclientnum);
@@ -455,20 +318,11 @@ function play_driving_fx_firstperson(localclientnum, speed, speed_fraction) {
   }
 }
 
-/*
-	Name: collision_thread
-	Namespace: driving_fx
-	Checksum: 0x589A0041
-	Offset: 0x1768
-	Size: 0x268
-	Parameters: 1
-	Flags: Linked
-*/
 function collision_thread(localclientnum) {
-  self endon(# "entityshutdown");
-  self endon(# "exit_vehicle");
+  self endon("entityshutdown");
+  self endon("exit_vehicle");
   while (true) {
-    self waittill(# "veh_collision", hip, hitn, hit_intensity);
+    self waittill("veh_collision", hip, hitn, hit_intensity);
     if(self islocalclientdriver(localclientnum)) {
       player = getlocalplayer(localclientnum);
       if(isdefined(self.driving_fx_collision_override)) {
@@ -502,20 +356,11 @@ function collision_thread(localclientnum) {
   }
 }
 
-/*
-	Name: jump_landing_thread
-	Namespace: driving_fx
-	Checksum: 0xEBD6AE0A
-	Offset: 0x19D8
-	Size: 0x168
-	Parameters: 1
-	Flags: Linked
-*/
 function jump_landing_thread(localclientnum) {
-  self endon(# "entityshutdown");
-  self endon(# "exit_vehicle");
+  self endon("entityshutdown");
+  self endon("exit_vehicle");
   while (true) {
-    self waittill(# "veh_landed");
+    self waittill("veh_landed");
     if(self islocalclientdriver(localclientnum)) {
       player = getlocalplayer(localclientnum);
       if(isdefined(player)) {
@@ -538,20 +383,11 @@ function jump_landing_thread(localclientnum) {
   }
 }
 
-/*
-	Name: suspension_thread
-	Namespace: driving_fx
-	Checksum: 0xA0CEDF44
-	Offset: 0x1B48
-	Size: 0x138
-	Parameters: 1
-	Flags: None
-*/
 function suspension_thread(localclientnum) {
-  self endon(# "entityshutdown");
-  self endon(# "exit_vehicle");
+  self endon("entityshutdown");
+  self endon("exit_vehicle");
   while (true) {
-    self waittill(# "veh_suspension_limit_activated");
+    self waittill("veh_suspension_limit_activated");
     if(self islocalclientdriver(localclientnum)) {
       player = getlocalplayer(localclientnum);
       if(isdefined(player)) {
@@ -568,15 +404,6 @@ function suspension_thread(localclientnum) {
   }
 }
 
-/*
-	Name: get_impact_vol_from_speed
-	Namespace: driving_fx
-	Checksum: 0xF01DBE94
-	Offset: 0x1C88
-	Size: 0x92
-	Parameters: 0
-	Flags: Linked
-*/
 function get_impact_vol_from_speed() {
   curspeed = self getspeed();
   maxspeed = self getmaxspeed();
@@ -585,28 +412,10 @@ function get_impact_vol_from_speed() {
   return volume;
 }
 
-/*
-	Name: any_wheel_colliding
-	Namespace: driving_fx
-	Checksum: 0x7586DCC2
-	Offset: 0x1D28
-	Size: 0x82
-	Parameters: 0
-	Flags: None
-*/
 function any_wheel_colliding() {
   return self iswheelcolliding("front_left") || self iswheelcolliding("front_right") || self iswheelcolliding("back_left") || self iswheelcolliding("back_right");
 }
 
-/*
-	Name: dirt_surface_type
-	Namespace: driving_fx
-	Checksum: 0x3828985E
-	Offset: 0x1DB8
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function dirt_surface_type(surface_type) {
   switch (surface_type) {
     case "dirt":
@@ -623,15 +432,6 @@ function dirt_surface_type(surface_type) {
   return false;
 }
 
-/*
-	Name: correct_surface_type_for_screen_fx
-	Namespace: driving_fx
-	Checksum: 0x83E32467
-	Offset: 0x1E28
-	Size: 0x9E
-	Parameters: 0
-	Flags: Linked
-*/
 function correct_surface_type_for_screen_fx() {
   right_rear = self getwheelsurface("back_right");
   left_rear = self getwheelsurface("back_left");
@@ -644,24 +444,6 @@ function correct_surface_type_for_screen_fx() {
   return "dust";
 }
 
-/*
-	Name: play_screen_fx_dirt
-	Namespace: driving_fx
-	Checksum: 0xC2E449D9
-	Offset: 0x1ED0
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function play_screen_fx_dirt(localclientnum) {}
 
-/*
-	Name: play_screen_fx_dust
-	Namespace: driving_fx
-	Checksum: 0x6D06D3AA
-	Offset: 0x1EE8
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function play_screen_fx_dust(localclientnum) {}

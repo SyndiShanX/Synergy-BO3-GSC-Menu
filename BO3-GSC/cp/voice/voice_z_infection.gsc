@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_z_infection.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_6ff07a70;
 
-/*
-	Name: init_voice
-	Namespace: namespace_6ff07a70
-	Checksum: 0xBF865770
-	Offset: 0x11D0
-	Size: 0xB04
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("plyz_deimos_was_going_to_0", "vox_zinf_1_01_000_plyz");
   dialog::add("salm_it_wasn_t_odd_that_h_0", "vox_zinf_1_01_001_salm");

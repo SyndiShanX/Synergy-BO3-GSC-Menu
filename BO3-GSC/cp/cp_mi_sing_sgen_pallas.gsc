@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_sgen_pallas.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_dialog;
 #using scripts\cp\_load;
@@ -31,18 +35,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_shared;
-
 #namespace cp_mi_sing_sgen_pallas;
 
-/*
-	Name: skipto_descent_init
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x6747035E
-	Offset: 0x17E0
-	Size: 0x154
-	Parameters: 2
-	Flags: Linked
-*/
 function skipto_descent_init(str_objective, b_starting) {
   if(b_starting) {
     objectives::complete("cp_level_sgen_enter_sgen_no_pointer");
@@ -61,28 +55,10 @@ function skipto_descent_init(str_objective, b_starting) {
   objectives::set("cp_level_sgen_confront_pallas", level.ai_pallas);
 }
 
-/*
-	Name: skipto_descent_done
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x6CE56024
-	Offset: 0x1940
-	Size: 0x3C
-	Parameters: 4
-	Flags: Linked
-*/
 function skipto_descent_done(str_objective, b_starting, b_direct, player) {
   struct::delete_script_bundle("cin_sgen_14_humanlab_3rd_sh005");
 }
 
-/*
-	Name: skipto_pallas_start_init
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x2CC80ADA
-	Offset: 0x1988
-	Size: 0x552
-	Parameters: 2
-	Flags: Linked
-*/
 function skipto_pallas_start_init(str_objective, b_starting) {
   objectives::complete("cp_level_sgen_goto_server_room");
   spawner::add_spawn_function_group("pallas_bot", "script_noteworthy", & robot_mindcontrol);
@@ -125,33 +101,15 @@ function skipto_pallas_start_init(str_objective, b_starting) {
   level flag::wait_till("core_two_destroyed");
   level thread do_attack_on_hendricks();
   level flag::wait_till("pallas_death");
-  level notify(# "deleting_corpse");
+  level notify("deleting_corpse");
   a_pallas_bot = getaiteamarray("team3");
   foreach(bot in a_pallas_bot) {
     bot delete();
   }
 }
 
-/*
-	Name: skipto_pallas_start_done
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xEA5CF40B
-	Offset: 0x1EE8
-	Size: 0x24
-	Parameters: 4
-	Flags: Linked
-*/
 function skipto_pallas_start_done(str_objective, b_starting, b_direct, player) {}
 
-/*
-	Name: skipto_pallas_end_init
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x34C54305
-	Offset: 0x1F18
-	Size: 0x440
-	Parameters: 2
-	Flags: Linked
-*/
 function skipto_pallas_end_init(str_objective, b_starting) {
   e_lift = getent("boss_fight_lift", "targetname");
   level thread hide_cracked_glass();
@@ -198,55 +156,19 @@ function skipto_pallas_end_init(str_objective, b_starting) {
   }
 }
 
-/*
-	Name: function_509b3c70
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x7176DD74
-	Offset: 0x2360
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function function_509b3c70(a_ents) {
-  level waittill(# "hash_74753696");
+  level waittill("hash_74753696");
   level util::screen_fade_out(0.45, "black", "twin_cover");
 }
 
-/*
-	Name: function_6610aebe
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xD0FC3A01
-	Offset: 0x23B0
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6610aebe(a_ents) {
   a_ents["pallas_ai_tower"] ghost();
 }
 
-/*
-	Name: function_c5372adb
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xC8D3AD1B
-	Offset: 0x23E8
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c5372adb(a_ents) {
   a_ents["pallas_ai_tower"] show();
 }
 
-/*
-	Name: function_48b24f3d
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xDA7067EB
-	Offset: 0x2420
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function function_48b24f3d(a_ents) {
   if(isdefined(level.ai_pallas)) {
     level.ai_pallas ghost();
@@ -257,44 +179,17 @@ function function_48b24f3d(a_ents) {
   util::screen_fade_in(0, "black", "ghost_fade");
 }
 
-/*
-	Name: function_ac1384da
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x9AE2C908
-	Offset: 0x24C0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ac1384da(a_ents) {
   if(isdefined(level.ai_pallas)) {
     level.ai_pallas show();
   }
 }
 
-/*
-	Name: function_7d1791ba
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xA97FF07E
-	Offset: 0x2500
-	Size: 0x50
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7d1791ba(a_ents) {
   level.ai_pallas setgoal(level.ai_pallas.origin, 1);
   level.ai_pallas.goalradius = 8;
 }
 
-/*
-	Name: ghost_3rd_sh110
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xD17421B9
-	Offset: 0x2558
-	Size: 0xA2
-	Parameters: 1
-	Flags: Linked
-*/
 function ghost_3rd_sh110(a_ents) {
   foreach(e_in_scene in a_ents) {
     if(e_in_scene == level.ai_hendricks) {
@@ -303,15 +198,6 @@ function ghost_3rd_sh110(a_ents) {
   }
 }
 
-/*
-	Name: delete_geo_tower
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xAFB47465
-	Offset: 0x2608
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function delete_geo_tower() {
   wait(0.05);
   a_e_core = getentarray("pallas_core_destruct", "targetname");
@@ -320,15 +206,6 @@ function delete_geo_tower() {
   array::run_all(a_e_rail, & delete);
 }
 
-/*
-	Name: skipto_pallas_end_done
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xDC13DE59
-	Offset: 0x26C0
-	Size: 0xCA
-	Parameters: 4
-	Flags: Linked
-*/
 function skipto_pallas_end_done(str_objective, b_starting, b_direct, player) {
   objectives::complete("cp_level_sgen_confront_pallas");
   if(!b_starting) {
@@ -338,31 +215,13 @@ function skipto_pallas_end_done(str_objective, b_starting, b_direct, player) {
   }
 }
 
-/*
-	Name: pallas_end_igc_complete
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x46C6EEC3
-	Offset: 0x2798
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function pallas_end_igc_complete(a_ents) {
   util::clear_streamer_hint();
   skipto::objective_completed("pallas_end");
 }
 
-/*
-	Name: descent_vo
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x3AF9C904
-	Offset: 0x27D8
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function descent_vo() {
-  level waittill(# "elevator_vo");
+  level waittill("elevator_vo");
   if(isdefined(level.bzm_sgendialogue7callback)) {
     level thread[[level.bzm_sgendialogue7callback]]();
   }
@@ -377,15 +236,6 @@ function descent_vo() {
   level dialog::remote("kane_right_now_he_s_uploa_0", 1);
 }
 
-/*
-	Name: link_elevator_light_probe
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xDEA1BF08
-	Offset: 0x2950
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function link_elevator_light_probe() {
   a_probes = getentarray("pallas_elevator_probe", "targetname");
   a_lights = getentarray("pallas_elevator_light", "script_noteworthy");
@@ -394,15 +244,6 @@ function link_elevator_light_probe() {
   array::run_all(a_probes, & linkto, e_lift);
 }
 
-/*
-	Name: handle_pallas_animation
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x1C0C2718
-	Offset: 0x2A38
-	Size: 0x214
-	Parameters: 0
-	Flags: Linked
-*/
 function handle_pallas_animation() {
   scene::add_scene_func("cin_sgen_18_01_pallasfight_vign_crucifix_pallas_loop", & scene_callback_pallas_loop, "play");
   e_pallas_spawner = getent("pallas", "targetname");
@@ -411,40 +252,22 @@ function handle_pallas_animation() {
   e_pallas_spawner2 spawner::add_spawn_function( & pallas_init, 1);
   level thread scene::play("cin_sgen_18_01_pallasfight_vign_crucifix_pallas_loop");
   videostart("cp_sgen_env_diazserver", 1);
-  level waittill(# "pallas_attacked");
+  level waittill("pallas_attacked");
   videostop("cp_sgen_env_diazserver");
   videostart("cp_sgen_env_diazserver", 1);
   level thread scene::play("cin_sgen_18_01_pallasfight_vign_crucifix_pallas_stage2");
-  level waittill(# "pallas_attacked");
+  level waittill("pallas_attacked");
   videostop("cp_sgen_env_diazserver");
   videostart("cp_sgen_env_diazserver", 1);
   level thread scene::play("cin_sgen_18_01_pallasfight_vign_crucifix_pallas_stage3");
-  level waittill(# "pallas_death");
+  level waittill("pallas_death");
   videostop("cp_sgen_env_diazserver");
 }
 
-/*
-	Name: scene_callback_pallas_loop
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xEDE493D
-	Offset: 0x2C58
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function scene_callback_pallas_loop(a_ents) {
   level.ai_pallas = a_ents["pallas_model"];
 }
 
-/*
-	Name: pallas_init
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x32506DD6
-	Offset: 0x2C80
-	Size: 0xB8
-	Parameters: 1
-	Flags: Linked
-*/
 function pallas_init(b_doppelganger = 0) {
   self ai::set_ignoreme(1);
   self ai::set_ignoreall(1);
@@ -459,44 +282,17 @@ function pallas_init(b_doppelganger = 0) {
   }
 }
 
-/*
-	Name: do_hendricks_hacking
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x40A63F23
-	Offset: 0x2D40
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function do_hendricks_hacking() {
   level cp_mi_sing_sgen_dark_battle::function_a8cfe9ae();
   level.ai_hendricks.ignoreme = 1;
   st_align = struct::get("hendrick_console_hack", "targetname");
   level thread scene::play("cin_sgen_18_01_pallasfight_vign_controls_hendricks_active", level.ai_hendricks);
-  level waittill(# "pallas_start_terminate");
+  level waittill("pallas_start_terminate");
   st_align thread scene::stop("cin_sgen_18_01_pallasfight_vign_controls_hendricks_active");
 }
 
-/*
-	Name: main
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x99EC1590
-	Offset: 0x2DF8
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function main() {}
 
-/*
-	Name: function_8470b8c
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x17C1CB7D
-	Offset: 0x2E08
-	Size: 0x19A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8470b8c(b_starting) {
   level.pallas_center_guards = [];
   level.pallas_tier_two_guards = [];
@@ -517,17 +313,8 @@ function function_8470b8c(b_starting) {
   }
 }
 
-/*
-	Name: cleanup_area_arrays
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x48201DAA
-	Offset: 0x2FB0
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function cleanup_area_arrays() {
-  level endon(# "pallas_death");
+  level endon("pallas_death");
   while (!level flag::get("pallas_death")) {
     level.pallas_center_guards = array::remove_dead(level.pallas_center_guards);
     level.pallas_tier_two_guards = array::remove_dead(level.pallas_tier_two_guards);
@@ -539,33 +326,15 @@ function cleanup_area_arrays() {
   level.pallas_bottom_tier_guards = undefined;
 }
 
-/*
-	Name: function_a7dc2319
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x8FD68560
-	Offset: 0x3068
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a7dc2319() {
-  self endon(# "death");
+  self endon("death");
   self ai::set_ignoreall(1);
   level flag::wait_till("pallas_ambush_over");
   self ai::set_ignoreall(0);
 }
 
-/*
-	Name: robot_mindcontrol
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x27E5CE90
-	Offset: 0x30D0
-	Size: 0x1E4
-	Parameters: 0
-	Flags: Linked
-*/
 function robot_mindcontrol() {
-  self endon(# "death");
+  self endon("death");
   self.accuracy = 0.25;
   self ai::set_behavior_attribute("rogue_control_speed", "sprint");
   switch (level.var_e16e585d) {
@@ -598,17 +367,8 @@ function robot_mindcontrol() {
   self setgoal(v_goal_volume);
 }
 
-/*
-	Name: robot_mindcontrol_center_guard
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xC8D02C2F
-	Offset: 0x32C0
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked
-*/
 function robot_mindcontrol_center_guard() {
-  self endon(# "death");
+  self endon("death");
   self.accuracy = 0.25;
   self ai::set_behavior_attribute("rogue_control", "forced_level_1");
   self ai::set_behavior_attribute("can_become_rusher", 0);
@@ -634,17 +394,8 @@ function robot_mindcontrol_center_guard() {
   self thread function_39072821();
 }
 
-/*
-	Name: robot_mindcontrol_core_guard
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xC49617DD
-	Offset: 0x34B8
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function robot_mindcontrol_core_guard() {
-  self endon(# "death");
+  self endon("death");
   self.accuracy = 0.25;
   self ai::set_behavior_attribute("rogue_control", "forced_level_1");
   self ai::set_behavior_attribute("force_cover", 1);
@@ -661,15 +412,6 @@ function robot_mindcontrol_core_guard() {
   self thread function_39072821();
 }
 
-/*
-	Name: function_969fe47
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xFF06363A
-	Offset: 0x3660
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_969fe47() {
   self flag::init("in_playable_space");
   var_85919dec = array::random(level.var_844375bd);
@@ -677,17 +419,8 @@ function function_969fe47() {
   self flag::set("in_playable_space");
 }
 
-/*
-	Name: function_39072821
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x1138FDF8
-	Offset: 0x36F0
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_39072821() {
-  self endon(# "death");
+  self endon("death");
   level flag::wait_till("tower_three_destroyed");
   self ai::set_behavior_attribute("rogue_control", "forced_level_3");
   if(gettime() < level.var_94d58561) {
@@ -697,15 +430,6 @@ function function_39072821() {
   }
 }
 
-/*
-	Name: elevator_setup
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x22E22857
-	Offset: 0x37B0
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function elevator_setup() {
   e_lift = getent("boss_fight_lift", "targetname");
   e_lift setmovingplatformenabled(1);
@@ -719,15 +443,6 @@ function elevator_setup() {
   e_lift.a_e_doors["back"] clientfield::set("sm_elevator_door_state", 2);
 }
 
-/*
-	Name: elevator_set_door_state
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xB7E55B32
-	Offset: 0x3978
-	Size: 0x25C
-	Parameters: 2
-	Flags: Linked
-*/
 function elevator_set_door_state(str_side, str_state) {
   e_lift = getent("boss_fight_lift", "targetname");
   if(!e_lift.a_e_doors[str_side].str_state === str_state) {
@@ -743,7 +458,7 @@ function elevator_set_door_state(str_side, str_state) {
     } else {
       e_lift.a_e_doors[str_side] playsound("veh_lift_doors_close");
     }
-    e_lift.a_e_doors[str_side] waittill(# "movedone");
+    e_lift.a_e_doors[str_side] waittill("movedone");
     e_lift.a_e_doors[str_side] linkto(e_lift);
     if(str_state == "open") {
       level flag::set(("pallas_lift_" + str_side) + "_open");
@@ -753,15 +468,6 @@ function elevator_set_door_state(str_side, str_state) {
   }
 }
 
-/*
-	Name: elevator_set_shaft_state
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xFE38FC73
-	Offset: 0x3BE0
-	Size: 0x17A
-	Parameters: 1
-	Flags: None
-*/
 function elevator_set_shaft_state(str_state) {
   e_lift = getent("boss_fight_lift", "targetname");
   if(!e_lift.a_e_shaft_doors["left"].str_state === str_state) {
@@ -776,15 +482,6 @@ function elevator_set_shaft_state(str_state) {
   }
 }
 
-/*
-	Name: elevator_set_move_direction
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xC993075
-	Offset: 0x3D68
-	Size: 0x2AC
-	Parameters: 1
-	Flags: Linked
-*/
 function elevator_set_move_direction(str_direction) {
   array::run_all(level.players, & util::set_low_ready, 1);
   e_lift = getent("boss_fight_lift", "targetname");
@@ -802,36 +499,18 @@ function elevator_set_move_direction(str_direction) {
   loop_snd_ent = spawn("script_origin", e_lift.origin);
   loop_snd_ent linkto(e_lift);
   loop_snd_ent playloopsound("veh_lift_loop", 0.5);
-  e_lift waittill(# "movedone");
+  e_lift waittill("movedone");
   loop_snd_ent stoploopsound(0.5);
   e_lift playsound("veh_lift_stop");
   loop_snd_ent delete();
   array::run_all(level.players, & util::set_low_ready, 0);
 }
 
-/*
-	Name: elevator_set_opaque
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xA9804318
-	Offset: 0x4020
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function elevator_set_opaque(n_state) {
   e_lift = getent("boss_fight_lift", "targetname");
   e_lift clientfield::set("sm_elevator_shader", n_state);
 }
 
-/*
-	Name: elevator_lift_intro
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xEF1F723
-	Offset: 0x4088
-	Size: 0x412
-	Parameters: 0
-	Flags: Linked
-*/
 function elevator_lift_intro() {
   elevator_set_door_state("front", "open");
   level flag::wait_till("weapons_research_vo_done");
@@ -843,8 +522,8 @@ function elevator_lift_intro() {
   elevator_set_door_state("front", "close");
   elevator_set_opaque(3);
   level thread namespace_d40478f6::function_874f01d();
-  level notify(# "elevator_vo");
-  level notify(# "pallas_elevator_starting");
+  level notify("elevator_vo");
+  level notify("pallas_elevator_starting");
   a_ai = getaiteamarray("team3");
   foreach(ai in a_ai) {
     if(isalive(ai)) {
@@ -857,22 +536,13 @@ function elevator_lift_intro() {
   array::thread_all(level.players, & clientfield::set_to_player, "pallas_monitors_state", 2);
   elevator_set_move_direction("down");
   elevator_set_door_state("back", "open");
-  level notify(# "enter_server");
+  level notify("enter_server");
   a_nd_traverse = getnodearray("pallas_elevator_start", "script_noteworthy");
   foreach(node in a_nd_traverse) {
     linktraversal(node);
   }
 }
 
-/*
-	Name: elevator_lift_outro
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x364588DE
-	Offset: 0x44A8
-	Size: 0xAC
-	Parameters: 1
-	Flags: None
-*/
 function elevator_lift_outro(b_starting) {
   elevator_set_door_state("back", "close");
   if(!b_starting) {
@@ -882,50 +552,23 @@ function elevator_lift_outro(b_starting) {
   elevator_set_door_state("front", "open");
 }
 
-/*
-	Name: watch_for_damage
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xCA0739F0
-	Offset: 0x4560
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function watch_for_damage() {
-  level endon(# "pallas_ambush_over");
+  level endon("pallas_ambush_over");
   self util::waittill_either("damage", "death");
   level flag::set("pallas_ambush_over");
 }
 
-/*
-	Name: function_87d6b629
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xB021DD22
-	Offset: 0x45C0
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_87d6b629() {
-  level endon(# "pallas_ambush_over");
+  level endon("pallas_ambush_over");
   array::wait_any(level.players, "weapon_fired");
   level flag::set("pallas_ambush_over");
 }
 
-/*
-	Name: pallas_greeting_event
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x291AB547
-	Offset: 0x4618
-	Size: 0x25C
-	Parameters: 1
-	Flags: Linked
-*/
 function pallas_greeting_event(b_starting) {
   if(!b_starting) {
     var_34a8e0f = getent("pallas_turret_enable_trigger", "targetname");
     var_34a8e0f.origin = var_34a8e0f.origin + (vectorscale((0, -1, 0), 38));
-    level waittill(# "enter_server");
+    level waittill("enter_server");
     trigger::wait_or_timeout(30, "pallas_turret_enable_trigger");
   }
   level thread namespace_d40478f6::function_973b77f9();
@@ -940,47 +583,29 @@ function pallas_greeting_event(b_starting) {
   level dialog::remote("hend_kane_i_m_currently_0");
   level dialog::remote("kane_access_the_primary_s_0");
   level dialog::remote("hend_you_re_the_boss_lad_0");
-  level notify(# "pallas_objective_start");
+  level notify("pallas_objective_start");
   wait(2);
   level dialog::remote("kane_got_it_focus_fire_o_0", 2);
   level flag::set("pallas_intro_completed");
 }
 
-/*
-	Name: function_ab0e4cbe
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x223686A8
-	Offset: 0x4880
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ab0e4cbe() {
-  level endon(# "pallas_end");
+  level endon("pallas_end");
   while (true) {
-    level waittill(# "save_restore");
+    level waittill("save_restore");
     for (i = 1; i <= 3; i++) {
       mdl_ball = getent("diaz_ball_" + i, "targetname");
-      mdl_ball globallogic_ui::destroyweakpointwidget( & "tag_weakpoint");
+      mdl_ball globallogic_ui::destroyweakpointwidget(&"tag_weakpoint");
     }
   }
 }
 
-/*
-	Name: handle_pallas_pillar_weakspot
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xF56A4D27
-	Offset: 0x4930
-	Size: 0xF28
-	Parameters: 0
-	Flags: Linked
-*/
 function handle_pallas_pillar_weakspot() {
-  level endon(# "pallas_start");
-  level waittill(# "pallas_objective_start");
+  level endon("pallas_start");
+  level waittill("pallas_objective_start");
   a_t_coolants = getentarray("pallas_coolant_control", "targetname");
   foreach(trigger in a_t_coolants) {
-    trigger sethintstring( & "CP_MI_SING_SGEN_DESTROY_PILLAR");
+    trigger sethintstring(&"CP_MI_SING_SGEN_DESTROY_PILLAR");
     trigger triggerenable(0);
   }
   level flag::wait_till("pallas_intro_completed");
@@ -1008,13 +633,13 @@ function handle_pallas_pillar_weakspot() {
       }
     }
     level thread cooling_tower_nag();
-    e_pallas_pillar waittill(# "movedone");
+    e_pallas_pillar waittill("movedone");
     level thread weakspot_damage(e_pallas_pillar.script_float);
     a_t_coolant = getentarray("pallas_coolant_control", "targetname");
     a_t_coolant = arraysortclosest(a_t_coolant, e_pallas_pillar.origin);
     t_coolant = a_t_coolant[0];
     level thread activate_flood_spawn();
-    level waittill(# "pillar_destroyed");
+    level waittill("pillar_destroyed");
     array::thread_all(level.players, & clientfield::set_to_player, "pallas_monitors_state", 2);
     objectives::complete("cp_level_sgen_destroy_tower");
     level.var_e16e585d++;
@@ -1034,13 +659,13 @@ function handle_pallas_pillar_weakspot() {
     }
     b_player_valid = 0;
     while (!b_player_valid) {
-      t_coolant waittill(# "trigger", e_player);
+      t_coolant waittill("trigger", e_player);
       if(!e_player laststand::player_is_in_laststand()) {
         b_player_valid = 1;
         e_player enableinvulnerability();
       }
     }
-    level notify(# "stage_completed");
+    level notify("stage_completed");
     switch (level.var_e16e585d) {
       case 1: {
         spawn_manager::kill("sm_stage1_flood", 0);
@@ -1084,7 +709,7 @@ function handle_pallas_pillar_weakspot() {
       }
     }
     t_coolant delete();
-    level waittill(# "boom");
+    level waittill("boom");
     level thread detonate_robots();
     fx_model = util::spawn_model("tag_origin", fx_struct.origin, fx_struct.angles);
     level sgen_util::quake(0.5, 1, fx_model.origin, 5000, 4, 7);
@@ -1096,7 +721,7 @@ function handle_pallas_pillar_weakspot() {
     fx_model delete();
     switch (level.var_e16e585d) {
       case 1: {
-        level notify(# "pallas_attacked");
+        level notify("pallas_attacked");
         level dialog::player_say("plyr_grenade_detonated_0");
         level dialog::remote("kane_it_worked_central_0");
         if(isdefined(level.bzm_overridelocomotion)) {
@@ -1111,7 +736,7 @@ function handle_pallas_pillar_weakspot() {
         break;
       }
       case 2: {
-        level notify(# "pallas_attacked");
+        level notify("pallas_attacked");
         level dialog::player_say("plyr_successful_detonatio_0");
         level dialog::remote("kane_central_core_down_to_0");
         exploder::exploder("light_sgen_palas_em");
@@ -1172,7 +797,7 @@ function handle_pallas_pillar_weakspot() {
         }
       }
       function_864a9c57("sm_stage3", n_spawn_count, 30);
-      level notify(# "hash_265b1313");
+      level notify("hash_265b1313");
       level thread function_e8ee435e();
       util::waittill_notify_or_timeout("all_suicide_bots_killed", 15);
       level flag::set("hendricks_attacked_done");
@@ -1183,15 +808,6 @@ function handle_pallas_pillar_weakspot() {
   }
 }
 
-/*
-	Name: function_47bd64a2
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x70E513B2
-	Offset: 0x5860
-	Size: 0x116
-	Parameters: 0
-	Flags: Linked
-*/
 function function_47bd64a2() {
   switch (level.var_e16e585d) {
     case 1: {
@@ -1214,53 +830,26 @@ function function_47bd64a2() {
   }
 }
 
-/*
-	Name: function_75946123
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xC9457A23
-	Offset: 0x5980
-	Size: 0x8C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_75946123(str_sm_name, n_ai_count, n_timeout) {
   if(isdefined(n_timeout)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(n_timeout, "timeout");
   }
   spawn_manager::wait_till_ai_remaining(str_sm_name, n_ai_count);
 }
 
-/*
-	Name: function_864a9c57
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xBD4EA210
-	Offset: 0x5A18
-	Size: 0x8C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_864a9c57(str_sm_name, n_spawn_count, n_timeout) {
   if(isdefined(n_timeout)) {
     __s = spawnstruct();
-    __s endon(# "timeout");
+    __s endon("timeout");
     __s util::delay_notify(n_timeout, "timeout");
   }
   spawn_manager::wait_till_spawned_count(str_sm_name, n_spawn_count);
 }
 
-/*
-	Name: activate_flood_spawn
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x585CCF2C
-	Offset: 0x5AB0
-	Size: 0xEE
-	Parameters: 0
-	Flags: Linked
-*/
 function activate_flood_spawn() {
-  level endon(# "stage_completed");
+  level endon("stage_completed");
   switch (level.var_e16e585d) {
     case 0: {
       spawn_manager::wait_till_ai_remaining("sm_stage1", 3);
@@ -1273,7 +862,7 @@ function activate_flood_spawn() {
       break;
     }
     case 2: {
-      level waittill(# "pillar_destroyed");
+      level waittill("pillar_destroyed");
       spawn_manager::kill("sm_stage3");
       spawn_manager::enable("sm_stage3_flood");
       break;
@@ -1281,34 +870,25 @@ function activate_flood_spawn() {
   }
 }
 
-/*
-	Name: weakspot_damage
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xAFEE5EE2
-	Offset: 0x5BA8
-	Size: 0x3F4
-	Parameters: 1
-	Flags: Linked
-*/
 function weakspot_damage(n_tower) {
   n_tower = int(n_tower);
   e_core = getent("diaz_ball_" + n_tower, "targetname");
-  e_core globallogic_ui::createweakpointwidget( & "tag_weakpoint");
+  e_core globallogic_ui::createweakpointwidget(&"tag_weakpoint");
   n_total_health = 300 * level.players.size;
   e_core.health = n_total_health;
   e_core thread do_damage_react();
   exploder::exploder("pallas_fight_coolant_tower_" + n_tower);
   while (e_core.health >= (n_total_health / 2)) {
-    e_core waittill(# "damage");
+    e_core waittill("damage");
   }
   exploder::exploder("pallas_fight_dmg_1_tower_" + n_tower);
   mdl_fx = util::spawn_model("tag_origin", e_core.origin, e_core.angles);
   playfxontag(level._effect["coolant_tower_damage_minor"], mdl_fx, "tag_origin");
   if(e_core.health > 0) {
-    e_core waittill(# "death");
+    e_core waittill("death");
   }
   e_core disableaimassist();
-  e_core globallogic_ui::destroyweakpointwidget( & "tag_weakpoint");
+  e_core globallogic_ui::destroyweakpointwidget(&"tag_weakpoint");
   switch (n_tower) {
     case 1: {
       level thread scene::play("coolant_hose_03", "targetname");
@@ -1329,20 +909,11 @@ function weakspot_damage(n_tower) {
   level sgen_util::quake(0.5, 1, e_core.origin, 5000, 4, 7);
   exploder::exploder("pallas_fight_exp_tower_" + n_tower);
   mdl_fx delete();
-  level notify(# "pillar_destroyed");
+  level notify("pillar_destroyed");
   mdl_fx = util::spawn_model("tag_origin", e_core.origin, e_core.angles);
   playfxontag(level._effect["coolant_tower_damage_major"], mdl_fx, "tag_origin");
 }
 
-/*
-	Name: do_damage_react
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x3A0340C7
-	Offset: 0x5FA8
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function do_damage_react() {
   self setcontents(8192);
   self setcandamage(1);
@@ -1351,7 +922,7 @@ function do_damage_react() {
   self clientfield::set("cooling_tower_damage", 1);
   objectives::set("cp_level_sgen_destroy_tower", self.origin + vectorscale((0, 0, 1), 18));
   while (self.health > 0) {
-    self waittill(# "damage", damage, attacker, direction, point);
+    self waittill("damage", damage, attacker, direction, point);
     playfx(level._effect["weakspot_impact"], point, direction * -1);
     attacker damagefeedback::update();
   }
@@ -1362,18 +933,9 @@ function do_damage_react() {
   self.team = "none";
 }
 
-/*
-	Name: do_attack_on_hendricks
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xB85E6183
-	Offset: 0x6170
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function do_attack_on_hendricks() {
-  level endon(# "pallas_death");
-  level endon(# "hash_265b1313");
+  level endon("pallas_death");
+  level endon("hash_265b1313");
   level.a_assault_bot = [];
   level.var_2d3af18b = 0;
   level.var_e15d967a = 8 + (level.players.size * 2);
@@ -1396,36 +958,18 @@ function do_attack_on_hendricks() {
   }
 }
 
-/*
-	Name: function_e8ee435e
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xB2BC20FB
-	Offset: 0x6310
-	Size: 0xB2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e8ee435e() {
   foreach(ai_bot in level.a_assault_bot) {
     if(isalive(ai_bot)) {
-      ai_bot waittill(# "death");
+      ai_bot waittill("death");
     }
   }
   wait(0.1);
-  level notify(# "hash_e33ac8c");
+  level notify("hash_e33ac8c");
 }
 
-/*
-	Name: explode_robot
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xFFBC0E93
-	Offset: 0x63D0
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function explode_robot(n_scene) {
-  self endon(# "death");
+  self endon("death");
   if(sessionmodeiscampaignzombiesgame()) {
     return;
   }
@@ -1433,7 +977,7 @@ function explode_robot(n_scene) {
   self ai::set_ignoreall(1);
   self flag::wait_till("in_playable_space");
   level thread scene::play("cin_sgen_18_01_pallasfight_vign_takedown_explode0" + n_scene, self);
-  self waittill(# "start_timer");
+  self waittill("start_timer");
   level thread check_wall_climb_vo();
   switch (level.players.size) {
     case 2: {
@@ -1455,15 +999,6 @@ function explode_robot(n_scene) {
   level thread hendricks_attacked();
 }
 
-/*
-	Name: hendricks_attacked
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xBEBCCB52
-	Offset: 0x6550
-	Size: 0x11E
-	Parameters: 0
-	Flags: Linked
-*/
 function hendricks_attacked() {
   level.var_2d3af18b++;
   switch (level.var_2d3af18b) {
@@ -1492,15 +1027,6 @@ function hendricks_attacked() {
   }
 }
 
-/*
-	Name: function_c79b403e
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x2C8BBF3F
-	Offset: 0x6678
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c79b403e() {
   level clientfield::increment("observation_deck_destroy", 1);
   st_align = struct::get("hendrick_console_hack", "targetname");
@@ -1509,37 +1035,19 @@ function function_c79b403e() {
   level.ai_hendricks util::stop_magic_bullet_shield();
   level.ai_hendricks dodamage(level.ai_hendricks.health, level.ai_hendricks.origin);
   wait(3.5);
-  util::missionfailedwrapper_nodeath( & "CP_MI_SING_SGEN_HENDRICKS_KILLED");
+  util::missionfailedwrapper_nodeath(&"CP_MI_SING_SGEN_HENDRICKS_KILLED");
 }
 
-/*
-	Name: track_intro_death
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x3D55CA4E
-	Offset: 0x6768
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function track_intro_death() {
-  self waittill(# "death");
+  self waittill("death");
   level.var_9945a95d++;
   if(level.var_9945a95d == 8) {
     spawn_manager::enable("sm_stage1");
   }
 }
 
-/*
-	Name: cooling_tower_nag
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xF9CA57CE
-	Offset: 0x67B8
-	Size: 0xEE
-	Parameters: 0
-	Flags: Linked
-*/
 function cooling_tower_nag() {
-  level endon(# "pillar_destroyed");
+  level endon("pillar_destroyed");
   wait(randomfloatrange(10, 15));
   switch (level.var_e16e585d) {
     case 0: {
@@ -1559,17 +1067,8 @@ function cooling_tower_nag() {
   }
 }
 
-/*
-	Name: core_nag
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x6D350E45
-	Offset: 0x68B0
-	Size: 0x206
-	Parameters: 0
-	Flags: Linked
-*/
 function core_nag() {
-  level endon(# "stage_completed");
+  level endon("stage_completed");
   wait(randomfloatrange(7, 10));
   switch (level.var_e16e585d) {
     case 1: {
@@ -1599,17 +1098,8 @@ function core_nag() {
   }
 }
 
-/*
-	Name: function_6030416
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x30A9C4FC
-	Offset: 0x6AC0
-	Size: 0x40E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6030416() {
-  level endon(# "stage_completed");
+  level endon("stage_completed");
   wait(randomfloatrange(3, 5));
   switch (level.var_e16e585d) {
     case 0: {
@@ -1655,15 +1145,6 @@ function function_6030416() {
   }
 }
 
-/*
-	Name: check_wall_climb_vo
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xEC0D4BFA
-	Offset: 0x6ED8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function check_wall_climb_vo() {
   if(!isdefined(level.b_wall_climb_vo_played)) {
     level.b_wall_climb_vo_played = 0;
@@ -1674,15 +1155,6 @@ function check_wall_climb_vo() {
   }
 }
 
-/*
-	Name: detonate_robots
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xBAA5781
-	Offset: 0x6F38
-	Size: 0x112
-	Parameters: 1
-	Flags: Linked
-*/
 function detonate_robots(b_immediate = 0) {
   a_e_enemies = getaiteamarray("team3");
   foreach(e_enemy in a_e_enemies) {
@@ -1695,15 +1167,6 @@ function detonate_robots(b_immediate = 0) {
   }
 }
 
-/*
-	Name: init_fxanim_hoses
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x1A0FA461
-	Offset: 0x7058
-	Size: 0x6E
-	Parameters: 0
-	Flags: Linked
-*/
 function init_fxanim_hoses() {
   level thread hide_cracked_glass();
   for (x = 1; x <= 8; x++) {
@@ -1711,17 +1174,8 @@ function init_fxanim_hoses() {
   }
 }
 
-/*
-	Name: all_hoses_break
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xC5287B7D
-	Offset: 0x70D0
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function all_hoses_break() {
-  level waittill(# "all_hoses_break");
+  level waittill("all_hoses_break");
   level thread scene::play("coolant_hose_02", "targetname");
   level thread scene::play("coolant_hose_04", "targetname");
   level thread scene::play("coolant_hose_06", "targetname");
@@ -1729,29 +1183,11 @@ function all_hoses_break() {
   level thread scene::play("coolant_hose_08", "targetname");
 }
 
-/*
-	Name: hide_cracked_glass
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x9EE197D2
-	Offset: 0x71B0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function hide_cracked_glass() {
   a_e_glass = getentarray("pallas_glass_break_whole", "script_noteworthy");
   array::run_all(a_e_glass, & hide);
 }
 
-/*
-	Name: show_cracked_glass
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x18D08F05
-	Offset: 0x7210
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function show_cracked_glass(n_crack) {
   n_crack = int(n_crack);
   switch (n_crack) {
@@ -1771,52 +1207,25 @@ function show_cracked_glass(n_crack) {
   e_glass show();
 }
 
-/*
-	Name: delete_model_on_death
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x22B1F341
-	Offset: 0x7308
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function delete_model_on_death(robot) {
-  robot waittill(# "death");
+  robot waittill("death");
   self delete();
 }
 
-/*
-	Name: check_for_nearby_players
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0x4EF627FF
-	Offset: 0x7340
-	Size: 0xD8
-	Parameters: 0
-	Flags: None
-*/
 function check_for_nearby_players() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     foreach(player in level.players) {
       if(distancesquared(self.origin, player.origin) < 250000) {
-        self notify(# "nearby_enemy");
+        self notify("nearby_enemy");
       }
     }
     wait(0.1);
   }
 }
 
-/*
-	Name: handle_robot_sm
-	Namespace: cp_mi_sing_sgen_pallas
-	Checksum: 0xAEBB954D
-	Offset: 0x7420
-	Size: 0x158
-	Parameters: 2
-	Flags: None
-*/
 function handle_robot_sm(str_triggername, str_sm) {
-  level endon(# "pallas_death");
+  level endon("pallas_death");
   trigger = getent(str_triggername, "targetname");
   while (true) {
     n_player = 0;

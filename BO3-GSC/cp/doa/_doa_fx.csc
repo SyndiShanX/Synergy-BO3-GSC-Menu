@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_fx.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\doa\_doa_core;
 #using scripts\shared\fx_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_eaa992c;
 
-/*
-	Name: init
-	Namespace: namespace_eaa992c
-	Checksum: 0xD06E0D8B
-	Offset: 0x1C40
-	Size: 0x23CC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level._effect["spawnZombie"] = "zombie/fx_spawn_body_cp_zmb";
   level._effect["down_marker_green"] = "zombie/fx_marker_player_down_green_doa";
@@ -306,22 +300,11 @@ function init() {
   }
 }
 
-/*
-	Name: function_6dcb1bbc
-	Namespace: namespace_eaa992c
-	Checksum: 0xFB591FBE
-	Offset: 0x4018
-	Size: 0xFE
-	Parameters: 4
-	Flags: Linked
-*/
 function function_6dcb1bbc(name, type, tag = "tag_origin", unique = 1) {
-  /#
   assert(type < 128, "");
-  # /
-    if(!isdefined(level.var_1142e0a2)) {
-      level.var_1142e0a2 = [];
-    }
+  if(!isdefined(level.var_1142e0a2)) {
+    level.var_1142e0a2 = [];
+  }
   fx = spawnstruct();
   fx.name = name;
   fx.tag = tag;
@@ -329,65 +312,23 @@ function function_6dcb1bbc(name, type, tag = "tag_origin", unique = 1) {
   level.var_1142e0a2[type] = fx;
 }
 
-/*
-	Name: function_9e6fe7c3
-	Namespace: namespace_eaa992c
-	Checksum: 0xA2328501
-	Offset: 0x4120
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9e6fe7c3(type) {
-  /#
   assert(isdefined(level.var_1142e0a2[type]), "");
-  # /
-    return level.var_1142e0a2[type].name;
+  return level.var_1142e0a2[type].name;
 }
 
-/*
-	Name: function_28a90644
-	Namespace: namespace_eaa992c
-	Checksum: 0x5278AF6A
-	Offset: 0x4180
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function function_28a90644(type) {
-  /#
   assert(isdefined(level.var_1142e0a2[type]), "");
-  # /
-    return level.var_1142e0a2[type].tag;
+  return level.var_1142e0a2[type].tag;
 }
 
-/*
-	Name: function_7664cc94
-	Namespace: namespace_eaa992c
-	Checksum: 0x68B41003
-	Offset: 0x41E0
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7664cc94(type) {
-  /#
   assert(isdefined(level.var_1142e0a2[type]), "");
-  # /
-    return level.var_1142e0a2[type].unique;
+  return level.var_1142e0a2[type].unique;
 }
 
-/*
-	Name: function_e68e3c0d
-	Namespace: namespace_eaa992c
-	Checksum: 0x7DBBB921
-	Offset: 0x4240
-	Size: 0x512
-	Parameters: 5
-	Flags: Linked
-*/
 function function_e68e3c0d(localclientnum, name, off, tag, kill = 0) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (!clienthassnapshot(localclientnum)) {
     wait(0.016);
   }
@@ -398,19 +339,11 @@ function function_e68e3c0d(localclientnum, name, off, tag, kill = 0) {
   if(!isdefined(self.var_ca61d2d6)) {
     self.var_ca61d2d6 = [];
   }
-  /#
   assert(!(self isplayer() && name == ""));
-  # /
-    /#
   assert(!(self isplayer() && name == ""));
-  # /
-    if(self isplayer()) {
-      /#
-      loc_000043C8:
-        loc_000043FC:
-        namespace_693feb87::debugmsg((((((("" + (isdefined(self.name) ? self.name : "")) + "") + name) + "") + (isdefined(tag) ? tag : "") + "") + (off ? "" : "") + "") + localclientnum);
-      # /
-    }
+  if(self isplayer()) {
+    loc_000043C8: loc_000043FC: namespace_693feb87::debugmsg((((((("" + (isdefined(self.name) ? self.name : "")) + "") + name) + "") + (isdefined(tag) ? tag : "") + "") + (off ? "" : "") + "") + localclientnum);
+  }
   if(off) {
     if(isdefined(self.var_ec1cda64[name])) {
       stopfx(localclientnum, self.var_ec1cda64[name]);
@@ -456,17 +389,8 @@ function function_e68e3c0d(localclientnum, name, off, tag, kill = 0) {
   }
 }
 
-/*
-	Name: function_b71a778a
-	Namespace: namespace_eaa992c
-	Checksum: 0x232371C0
-	Offset: 0x4760
-	Size: 0x406
-	Parameters: 4
-	Flags: Linked
-*/
 function function_b71a778a(localclientnum, name, off, tag) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(!isdefined(self.var_6f5948cb)) {
     self.var_6f5948cb = [];
   }
@@ -503,17 +427,8 @@ function function_b71a778a(localclientnum, name, off, tag) {
   }
 }
 
-/*
-	Name: createzombieeyesinternal
-	Namespace: namespace_eaa992c
-	Checksum: 0x36E45C0E
-	Offset: 0x4B70
-	Size: 0x13A
-	Parameters: 1
-	Flags: Linked
-*/
 function createzombieeyesinternal(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self._eyearray)) {
     self._eyearray = [];
@@ -538,17 +453,8 @@ function createzombieeyesinternal(localclientnum) {
   }
 }
 
-/*
-	Name: function_1c0d0290
-	Namespace: namespace_eaa992c
-	Checksum: 0x617D5854
-	Offset: 0x4CB8
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1c0d0290(parent) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (isdefined(parent)) {
     self.origin = parent.origin;
     wait(0.016);
@@ -556,28 +462,10 @@ function function_1c0d0290(parent) {
   self delete();
 }
 
-/*
-	Name: createzombieeyes
-	Namespace: namespace_eaa992c
-	Checksum: 0x1FD2B71
-	Offset: 0x4D20
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function createzombieeyes(localclientnum) {
   self thread createzombieeyesinternal(localclientnum);
 }
 
-/*
-	Name: deletezombieeyes
-	Namespace: namespace_eaa992c
-	Checksum: 0x4D094679
-	Offset: 0x4D50
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked
-*/
 function deletezombieeyes(localclientnum) {
   if(isdefined(self._eyearray)) {
     if(isdefined(self._eyearray[localclientnum])) {
@@ -587,15 +475,6 @@ function deletezombieeyes(localclientnum) {
   }
 }
 
-/*
-	Name: get_eyeball_on_luminance
-	Namespace: namespace_eaa992c
-	Checksum: 0x3C898CFE
-	Offset: 0x4DB8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function get_eyeball_on_luminance() {
   if(isdefined(level.eyeball_on_luminance_override)) {
     return level.eyeball_on_luminance_override;
@@ -603,15 +482,6 @@ function get_eyeball_on_luminance() {
   return 1;
 }
 
-/*
-	Name: get_eyeball_off_luminance
-	Namespace: namespace_eaa992c
-	Checksum: 0x30B165C8
-	Offset: 0x4DE0
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function get_eyeball_off_luminance() {
   if(isdefined(level.eyeball_off_luminance_override)) {
     return level.eyeball_off_luminance_override;
@@ -619,15 +489,6 @@ function get_eyeball_off_luminance() {
   return 0;
 }
 
-/*
-	Name: get_eyeball_color
-	Namespace: namespace_eaa992c
-	Checksum: 0x2ECDCA3F
-	Offset: 0x4E08
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function get_eyeball_color() {
   val = 0;
   if(isdefined(level.zombie_eyeball_color_override)) {
@@ -639,15 +500,6 @@ function get_eyeball_color() {
   return val;
 }
 
-/*
-	Name: zombie_eyes_clientfield_cb
-	Namespace: namespace_eaa992c
-	Checksum: 0x1F942C9C
-	Offset: 0x4E58
-	Size: 0x154
-	Parameters: 7
-	Flags: Linked
-*/
 function zombie_eyes_clientfield_cb(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(newval)) {
     return;
@@ -664,15 +516,6 @@ function zombie_eyes_clientfield_cb(localclientnum, oldval, newval, bnewent, bin
   }
 }
 
-/*
-	Name: function_7829d7af
-	Namespace: namespace_eaa992c
-	Checksum: 0x44C18180
-	Offset: 0x4FB8
-	Size: 0xD6
-	Parameters: 2
-	Flags: Linked
-*/
 function function_7829d7af(localclientnum, mask = randomint(1 << level.var_de2ea8e7.size)) {
   idx = 0;
   while (mask > 0) {
@@ -684,15 +527,6 @@ function function_7829d7af(localclientnum, mask = randomint(1 << level.var_de2ea
   }
 }
 
-/*
-	Name: function_7aac5112
-	Namespace: namespace_eaa992c
-	Checksum: 0x55C75EDB
-	Offset: 0x5098
-	Size: 0xE2
-	Parameters: 7
-	Flags: Linked
-*/
 function function_7aac5112(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!self hasdobj(localclientnum)) {
     return;
@@ -718,15 +552,6 @@ function function_7aac5112(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_f6008bb4
-	Namespace: namespace_eaa992c
-	Checksum: 0x7466241E
-	Offset: 0x5188
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_f6008bb4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!self hasdobj(localclientnum)) {
     return;
@@ -741,15 +566,6 @@ function function_f6008bb4(localclientnum, oldval, newval, bnewent, binitialsnap
   self function_7829d7af(localclientnum, (newval == 666 ? (1 << level.var_de2ea8e7.size) - 1 : undefined));
 }
 
-/*
-	Name: burncorpse
-	Namespace: namespace_eaa992c
-	Checksum: 0x5F843D8A
-	Offset: 0x5280
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked
-*/
 function burncorpse(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   function_f6008bb4(localclientnum, oldval, 666, bnewent, binitialsnap, fieldname, bwastimejump);
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_enemy_boss.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\cp_doa_bo3_enemy;
 #using scripts\cp\doa\_doa_arena;
@@ -16,20 +20,9 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("generic");
-
 #namespace namespace_4973e019;
 
-/*
-	Name: init
-	Namespace: namespace_4973e019
-	Checksum: 0x6E375A1D
-	Offset: 0x488
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.doa.var_55dddb3a = getent("doa_silverback_spawner", "targetname");
   if(isdefined(level.doa.var_55dddb3a)) {
@@ -37,20 +30,11 @@ function init() {
   }
 }
 
-/*
-	Name: function_d95d34bd
-	Namespace: namespace_4973e019
-	Checksum: 0x889A2704
-	Offset: 0x500
-	Size: 0x4A4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_d95d34bd(spawner) {
-  level notify(# "hash_d95d34bd");
-  level endon(# "hash_d95d34bd");
+  level notify("hash_d95d34bd");
+  level endon("hash_d95d34bd");
   while (true) {
-    level waittill(# "hash_31b5dd0d");
+    level waittill("hash_31b5dd0d");
     if(!getdvarint("scr_boss_force_spawn", 0)) {
       if(level.doa.round_number < level.doa.rules.var_cd6c242e) {
         continue;
@@ -95,24 +79,15 @@ function private function_d95d34bd(spawner) {
       level.doa.boss thread function_2ca4656();
       level.doa.boss thread function_66efd1eb();
     }
-    level waittill(# "exit_taken");
+    level waittill("exit_taken");
   }
 }
 
-/*
-	Name: function_555608c7
-	Namespace: namespace_4973e019
-	Checksum: 0xF576030C
-	Offset: 0x9B0
-	Size: 0x452
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_555608c7() {
-  self endon(# "death");
+  self endon("death");
   self.takedamage = 1;
   while (true) {
-    self waittill(# "damage", amount, attacker);
+    self waittill("damage", amount, attacker);
     if(isdefined(attacker) && isplayer(attacker)) {
       break;
     }
@@ -137,15 +112,15 @@ function private function_555608c7() {
   self linkto(self.anchor);
   anim_ang = vectortoangles(attacker.origin - self.origin);
   self.anchor rotateto((0, anim_ang[1], 0), 0.5);
-  self.anchor waittill(# "rotatedone");
+  self.anchor waittill("rotatedone");
   self thread namespace_1a381543::function_90118d8c("zmb_simianaut_roar");
   self forceteleport(self.origin, (0, anim_ang[1], 0));
   self unlink();
   self orientmode("face enemy");
   self animscripted("pissedoff", self.origin, self.angles, "ai_zombie_doa_simianaut_ground_pound");
-  self waittillmatch(# "pissedoff");
+  self waittillmatch("pissedoff");
   playfx(level._effect["ground_pound"], self.origin);
-  self waittillmatch(# "pissedoff");
+  self waittillmatch("pissedoff");
   self.anchor delete();
   self.var_faa677d7 = gettime() + 10000;
   self thread namespace_1a381543::function_90118d8c("zmb_simianaut_roar");
@@ -154,38 +129,20 @@ function private function_555608c7() {
     self setgoal(attacker.origin, 1);
     self.ignoreall = 0;
     self.favoriteenemy = attacker;
-    self waittill(# "goal");
+    self waittill("goal");
   }
   self.var_88168473 = undefined;
 }
 
-/*
-	Name: function_4e81959
-	Namespace: namespace_4973e019
-	Checksum: 0x3E01CD2C
-	Offset: 0xE10
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_4e81959(waittime) {
-  self endon(# "death");
+  self endon("death");
   wait(waittime);
   self.zombie_move_speed = "sprint";
 }
 
-/*
-	Name: function_a2756e92
-	Namespace: namespace_4973e019
-	Checksum: 0x126AD4FB
-	Offset: 0xE48
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_a2756e92() {
-  self endon(# "death");
-  self notify(# "hash_d96c599c");
+  self endon("death");
+  self notify("hash_d96c599c");
   self thread namespace_1a381543::function_90118d8c("zmb_simianaut_roar");
   self.var_88168473 = 1;
   self.zombie_move_speed = "walk";
@@ -202,26 +159,17 @@ function private function_a2756e92() {
   self thread function_4e81959(20);
 }
 
-/*
-	Name: function_ce73145c
-	Namespace: namespace_4973e019
-	Checksum: 0xEE2FCF87
-	Offset: 0xFA8
-	Size: 0x316
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ce73145c() {
   trigger = spawn("trigger_radius", self.origin, 2, 32, 50);
   trigger.targetname = "_doaBossDamageShield";
   trigger enablelinkto();
   trigger linkto(self, "tag_origin");
-  trigger endon(# "death");
+  trigger endon("death");
   trigger thread doa_utility::function_783519c1("exit_taken", 1);
   trigger thread doa_utility::function_981c685d(self);
   trigger.silverback = 1;
   while (isdefined(self)) {
-    trigger waittill(# "trigger", guy);
+    trigger waittill("trigger", guy);
     if(!isdefined(guy)) {
       continue;
     }
@@ -231,7 +179,7 @@ function function_ce73145c() {
     if(isdefined(self)) {
       if(!isplayer(guy)) {
         self animscripted("pissedoff", self.origin, self.angles, "ai_zombie_doa_simianaut_attack_v1");
-        self waittillmatch(# "pissedoff");
+        self waittillmatch("pissedoff");
         if(isdefined(guy)) {
           playfx(level._effect["ground_pound"], guy.origin);
           if(isdefined(guy)) {
@@ -250,24 +198,15 @@ function function_ce73145c() {
       if(isdefined(guy.doa)) {
         guy.doa.var_1db1e638 = gettime() + 10000;
         self animscripted("pissedoff", self.origin, self.angles, "ai_zombie_doa_simianaut_chestbeat");
-        self waittillmatch(# "pissedoff");
+        self waittillmatch("pissedoff");
       }
     }
   }
 }
 
-/*
-	Name: function_66efd1eb
-	Namespace: namespace_4973e019
-	Checksum: 0x7B38AD91
-	Offset: 0x12C8
-	Size: 0x330
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_66efd1eb() {
-  self endon(# "death");
-  self endon(# "hash_19503b17");
+  self endon("death");
+  self endon("hash_19503b17");
   while (isdefined(self)) {
     wait(0.05);
     if(isdefined(self.var_faa677d7)) {
@@ -313,35 +252,17 @@ function private function_66efd1eb() {
   }
 }
 
-/*
-	Name: function_5bd24aae
-	Namespace: namespace_4973e019
-	Checksum: 0x44BC310E
-	Offset: 0x1600
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_5bd24aae() {
-  self endon(# "death");
-  level waittill(# "exit_taken");
-  level notify(# "hash_48b870e4");
+  self endon("death");
+  level waittill("exit_taken");
+  level notify("hash_48b870e4");
   level.doa.boss = undefined;
   level doa_utility::function_d0e32ad0(1);
   self delete();
 }
 
-/*
-	Name: function_2ca4656
-	Namespace: namespace_4973e019
-	Checksum: 0x96F403E1
-	Offset: 0x1678
-	Size: 0x69C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_2ca4656() {
-  self endon(# "death");
+  self endon("death");
   wait(0.1);
   timeout = gettime() + 10000;
   while (isdefined(self.var_88168473) && self.var_88168473 && gettime() < timeout) {
@@ -396,7 +317,7 @@ function private function_2ca4656() {
       failed = 1;
     }
   }
-  self notify(# "hash_19503b17");
+  self notify("hash_19503b17");
   self.var_88168473 = 1;
   self.zombie_move_speed = "sprint";
   self.ignoreall = 1;
@@ -408,7 +329,7 @@ function private function_2ca4656() {
     distsq = distancesquared(self.origin, self.var_f1eeb152);
     if(distsq > 64 || tries > 9) {
       self setgoal(self.var_f4a5c4fe, 1);
-      self waittill(# "goal");
+      self waittill("goal");
       self.var_f4a5c4fe = self.var_f1eeb152;
       tries++;
     } else {
@@ -437,17 +358,8 @@ function private function_2ca4656() {
   self delete();
 }
 
-/*
-	Name: function_e5e28b1b
-	Namespace: namespace_4973e019
-	Checksum: 0x924BAB
-	Offset: 0x1D20
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_e5e28b1b() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     pickupsitems = getentarray("a_pickup_item", "script_noteworthy");
     for (i = 0; i < pickupsitems.size; i++) {
@@ -463,20 +375,11 @@ function private function_e5e28b1b() {
   }
 }
 
-/*
-	Name: function_76b30cc1
-	Namespace: namespace_4973e019
-	Checksum: 0x83FCDDB2
-	Offset: 0x1E28
-	Size: 0x6A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_76b30cc1() {
-  self endon(# "death");
+  self endon("death");
   amount = int(self.health * 0.15);
   while (self.health > 0) {
     wait(3);
-    self notify(# "damage", amount);
+    self notify("damage", amount);
   }
 }

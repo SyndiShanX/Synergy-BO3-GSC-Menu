@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/************************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_gadget_security_breach.csc
+************************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_oed;
 #using scripts\shared\audio_shared;
@@ -11,33 +15,14 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace cybercom_security_breach;
 
-/*
-	Name: init
-	Namespace: cybercom_security_breach
-	Checksum: 0x63FC07CC
-	Offset: 0x420
-	Size: 0x40
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   init_clientfields();
   callback::on_spawned( & on_player_spawned);
   level.vehicle_transition_on = [];
 }
 
-/*
-	Name: init_clientfields
-	Namespace: cybercom_security_breach
-	Checksum: 0xB660D2BA
-	Offset: 0x468
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("toplayer", "hijack_vehicle_transition", 1, 2, "int", & player_vehicletransition, 0, 0);
   clientfield::register("toplayer", "hijack_static_effect", 1, 7, "float", & player_static_cb, 0, 0);
@@ -50,15 +35,6 @@ function init_clientfields() {
   visionset_mgr::register_visionset_info("hijack_vehicle_blur", 1, 7, undefined, "vehicle_hijack_blur");
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: cybercom_security_breach
-	Checksum: 0x8632C858
-	Offset: 0x6C0
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_spawned(localclientnum) {
   player = getlocalplayer(localclientnum);
   if(player getentitynumber() == self getentitynumber()) {
@@ -66,15 +42,6 @@ function on_player_spawned(localclientnum) {
   }
 }
 
-/*
-	Name: spectate
-	Namespace: cybercom_security_breach
-	Checksum: 0x5D916AB1
-	Offset: 0x738
-	Size: 0x18C
-	Parameters: 2
-	Flags: Linked
-*/
 function spectate(localclientnum, delta_time) {
   player = getlocalplayer(localclientnum);
   if(!isdefined(player)) {
@@ -107,15 +74,6 @@ function spectate(localclientnum, delta_time) {
   }
 }
 
-/*
-	Name: player_static_rampup_cb
-	Namespace: cybercom_security_breach
-	Checksum: 0xB623BAFE
-	Offset: 0x8D0
-	Size: 0x19E
-	Parameters: 7
-	Flags: Linked
-*/
 function player_static_rampup_cb(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     startstatic = (isdefined(self.last_hijack_oor_value) ? self.last_hijack_oor_value : 0);
@@ -139,17 +97,8 @@ function player_static_rampup_cb(localclientnum, oldval, newval, bnewent, biniti
   }
 }
 
-/*
-	Name: player_spectate_cb
-	Namespace: cybercom_security_breach
-	Checksum: 0x11321535
-	Offset: 0xA78
-	Size: 0x9E
-	Parameters: 7
-	Flags: Linked
-*/
 function player_spectate_cb(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self notify(# "player_spectate");
+  self notify("player_spectate");
   if(newval) {
     self camerasetupdatecallback( & spectate);
   } else {
@@ -159,21 +108,12 @@ function player_spectate_cb(localclientnum, oldval, newval, bnewent, binitialsna
   }
 }
 
-/*
-	Name: player_update_angles
-	Namespace: cybercom_security_breach
-	Checksum: 0xD54C9E55
-	Offset: 0xB20
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function player_update_angles(vehicle) {
-  self endon(# "player_spectate");
-  self endon(# "disconnect");
-  self endon(# "spawn");
-  self endon(# "entityshutdown");
-  vehicle endon(# "entityshutdown");
+  self endon("player_spectate");
+  self endon("disconnect");
+  self endon("spawn");
+  self endon("entityshutdown");
+  vehicle endon("entityshutdown");
   while (isalive(vehicle)) {
     self.vehicle_camera_pos = self getcampos();
     self.vehicle_camera_ang = self getcamangles();
@@ -181,15 +121,6 @@ function player_update_angles(vehicle) {
   }
 }
 
-/*
-	Name: player_hijacked_vehicle
-	Namespace: cybercom_security_breach
-	Checksum: 0x4B3B418E
-	Offset: 0xBD0
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function player_hijacked_vehicle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self tmodeenable(0);
@@ -200,15 +131,6 @@ function player_hijacked_vehicle(localclientnum, oldval, newval, bnewent, biniti
   }
 }
 
-/*
-	Name: player_hijacked_this_vehicle
-	Namespace: cybercom_security_breach
-	Checksum: 0x2D1ABCD6
-	Offset: 0xC98
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked
-*/
 function player_hijacked_this_vehicle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(self islocalclientdriver(localclientnum)) {
     player = getlocalplayer(localclientnum);
@@ -216,15 +138,6 @@ function player_hijacked_this_vehicle(localclientnum, oldval, newval, bnewent, b
   }
 }
 
-/*
-	Name: player_static_cb
-	Namespace: cybercom_security_breach
-	Checksum: 0x1EC02487
-	Offset: 0xD38
-	Size: 0x104
-	Parameters: 7
-	Flags: Linked
-*/
 function player_static_cb(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval != 0) {
     self.last_hijack_oor_value = newval;
@@ -241,15 +154,6 @@ function player_static_cb(localclientnum, oldval, newval, bnewent, binitialsnap,
   self thread static_sound(newval);
 }
 
-/*
-	Name: static_sound
-	Namespace: cybercom_security_breach
-	Checksum: 0x810CC1D
-	Offset: 0xE48
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function static_sound(val) {
   if(!isdefined(level.static_soundent)) {
     level.static_soundent = spawn(0, self.origin, "script_origin");
@@ -267,15 +171,6 @@ function static_sound(val) {
   }
 }
 
-/*
-	Name: sndindrivablevehicle
-	Namespace: cybercom_security_breach
-	Checksum: 0x9F8E75B9
-	Offset: 0xF50
-	Size: 0xE6
-	Parameters: 7
-	Flags: Linked
-*/
 function sndindrivablevehicle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     if(!isdefined(level.plr_dist_soundent)) {
@@ -289,15 +184,6 @@ function sndindrivablevehicle(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: player_vehicletransition
-	Namespace: cybercom_security_breach
-	Checksum: 0x76A1676D
-	Offset: 0x1040
-	Size: 0x126
-	Parameters: 7
-	Flags: Linked
-*/
 function player_vehicletransition(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 2: {

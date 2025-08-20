@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_ai_astro.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -6,18 +10,8 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_audio;
 #using scripts\zm\zm_zmhd_cleanup_mgr;
-
 #namespace zm_moon_ai_astro;
 
-/*
-	Name: init
-	Namespace: zm_moon_ai_astro
-	Checksum: 0xEEEA9004
-	Offset: 0x240
-	Size: 0xE8
-	Parameters: 0
-	Flags: None
-*/
 function init() {
   level.astro_zombie_enter_level = & moon_astro_enter_level;
   level.aat["zm_aat_blast_furnace"].validation_func = & function_82c2a8f1;
@@ -27,28 +21,10 @@ function init() {
   level.aat["zm_aat_turned"].validation_func = & function_82c2a8f1;
 }
 
-/*
-	Name: zombie_set_fake_playername
-	Namespace: zm_moon_ai_astro
-	Checksum: 0x755CDD
-	Offset: 0x330
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function zombie_set_fake_playername() {
   self setzombiename("SpaceZom");
 }
 
-/*
-	Name: function_82c2a8f1
-	Namespace: zm_moon_ai_astro
-	Checksum: 0xC1061C52
-	Offset: 0x360
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function function_82c2a8f1() {
   if(isdefined(self) && isdefined(self.animname) && self.animname == "astro_zombie") {
     return false;
@@ -56,17 +32,8 @@ function function_82c2a8f1() {
   return true;
 }
 
-/*
-	Name: moon_astro_enter_level
-	Namespace: zm_moon_ai_astro
-	Checksum: 0x9697D9BB
-	Offset: 0x3A0
-	Size: 0x1B4
-	Parameters: 0
-	Flags: None
-*/
 function moon_astro_enter_level() {
-  self endon(# "death");
+  self endon("death");
   self hide();
   self.entered_level = 1;
   self.no_widows_wine = 1;
@@ -86,15 +53,6 @@ function moon_astro_enter_level() {
   self show();
 }
 
-/*
-	Name: play_line_if_player_can_see
-	Namespace: zm_moon_ai_astro
-	Checksum: 0x7C143243
-	Offset: 0x560
-	Size: 0xE0
-	Parameters: 0
-	Flags: None
-*/
 function play_line_if_player_can_see() {
   players = getplayers();
   for (i = 0; i < players.size; i++) {
@@ -108,15 +66,6 @@ function play_line_if_player_can_see() {
   }
 }
 
-/*
-	Name: moon_astro_get_spawn_struct
-	Namespace: zm_moon_ai_astro
-	Checksum: 0x98B44FEB
-	Offset: 0x648
-	Size: 0x216
-	Parameters: 0
-	Flags: None
-*/
 function moon_astro_get_spawn_struct() {
   keys = getarraykeys(level.zones);
   for (i = 0; i < level.zones.size; i++) {

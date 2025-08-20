@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\tdef.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
@@ -15,18 +19,8 @@
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\sound_shared;
 #using scripts\shared\util_shared;
-
 #namespace tdef;
 
-/*
-	Name: main
-	Namespace: tdef
-	Checksum: 0x2BA6227C
-	Offset: 0x650
-	Size: 0x2B6
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   util::registerroundswitch(0, 9);
@@ -59,26 +53,8 @@ function main() {
   game["strings"]["overtime_hint"] = & "MP_FIRST_BLOOD";
 }
 
-/*
-	Name: onprecachegametype
-	Namespace: tdef
-	Checksum: 0x99EC1590
-	Offset: 0x910
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function onprecachegametype() {}
 
-/*
-	Name: onstartgametype
-	Namespace: tdef
-	Checksum: 0x4C2141DD
-	Offset: 0x920
-	Size: 0x31C
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   setclientnamemode("auto_change");
   if(!isdefined(game["switchedsides"])) {
@@ -121,15 +97,6 @@ function onstartgametype() {
   tdef();
 }
 
-/*
-	Name: tdef
-	Namespace: tdef
-	Checksum: 0x5AE1A7E1
-	Offset: 0xC48
-	Size: 0x86
-	Parameters: 0
-	Flags: None
-*/
 function tdef() {
   level.carryflag["allies"] = teams::get_flag_carry_model("allies");
   level.carryflag["axis"] = teams::get_flag_carry_model("axis");
@@ -137,41 +104,29 @@ function tdef() {
   level.gameflag = undefined;
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: tdef
-	Checksum: 0xDA79E75B
-	Offset: 0xCD8
-	Size: 0x39C
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(!isplayer(attacker) || attacker.team == self.team) {
     return;
   }
   victim = self;
   score = rank::getscoreinfovalue("kill");
-  /#
   assert(isdefined(score));
-  # /
-    if(isdefined(level.gameflag) && level.gameflag gameobjects::get_owner_team() == attacker.team) {
-      if(isdefined(attacker.carryflag)) {
-        attacker addplayerstat("KILLSASFLAGCARRIER", 1);
-      }
-      score = score * 2;
+  if(isdefined(level.gameflag) && level.gameflag gameobjects::get_owner_team() == attacker.team) {
+    if(isdefined(attacker.carryflag)) {
+      attacker addplayerstat("KILLSASFLAGCARRIER", 1);
     }
-  else {
+    score = score * 2;
+  } else {
     if(!isdefined(level.gameflag) && cancreateflagatvictimorigin(victim)) {
       level.gameflag = createflag(victim);
       score = score + rank::getscoreinfovalue("MEDAL_FIRST_BLOOD");
     } else if(isdefined(victim.carryflag)) {
       killcarrierbonus = rank::getscoreinfovalue("kill_carrier");
-      level thread popups::displayteammessagetoall( & "MP_KILLED_FLAG_CARRIER", attacker);
+      level thread popups::displayteammessagetoall(&"MP_KILLED_FLAG_CARRIER", attacker);
       scoreevents::processscoreevent("kill_flag_carrier", attacker);
       attacker recordgameevent("kill_carrier");
       attacker addplayerstat("FLAGCARRIERKILLS", 1);
-      attacker notify(# "objective", "kill_carrier");
+      attacker notify("objective", "kill_carrier");
       score = score + killcarrierbonus;
     }
   }
@@ -184,15 +139,6 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: ondrop
-	Namespace: tdef
-	Checksum: 0xA9387293
-	Offset: 0x1080
-	Size: 0x344
-	Parameters: 1
-	Flags: None
-*/
 function ondrop(player) {
   if(isdefined(player) && isdefined(player.tdef_flagtime)) {
     flagtime = int(gettime() - player.tdef_flagtime);
@@ -204,7 +150,7 @@ function ondrop(player) {
     }
     player addplayerstatwithgametype("DESTRUCTIONS", flagminutes);
     player.tdef_flagtime = undefined;
-    player notify(# "dropped_flag");
+    player notify("dropped_flag");
   }
   team = self gameobjects::get_owner_team();
   otherteam = util::getotherteam(team);
@@ -229,24 +175,13 @@ function ondrop(player) {
   globallogic_audio::leader_dialog("enemy_dropped_flag", otherteam);
 }
 
-/*
-	Name: onpickup
-	Namespace: tdef
-	Checksum: 0x34A4199A
-	Offset: 0x13D0
-	Size: 0x3BC
-	Parameters: 1
-	Flags: None
-*/
 function onpickup(player) {
-  self notify(# "picked_up");
+  self notify("picked_up");
   player.tdef_flagtime = gettime();
   player thread watchforendgame();
   score = rank::getscoreinfovalue("capture");
-  /#
   assert(isdefined(score));
-  # /
-    team = player.team;
+  team = player.team;
   otherteam = util::getotherteam(team);
   if(isdefined(level.tdef_loadouts) && isdefined(level.tdef_loadouts[team])) {
     player thread applyflagcarrierclass();
@@ -263,11 +198,11 @@ function onpickup(player) {
   self gameobjects::set_3d_icon("enemy", level.iconkill3d);
   globallogic_audio::leader_dialog("got_flag", team);
   globallogic_audio::leader_dialog("enemy_got_flag", otherteam);
-  level thread popups::displayteammessagetoall( & "MP_CAPTURED_THE_FLAG", player);
+  level thread popups::displayteammessagetoall(&"MP_CAPTURED_THE_FLAG", player);
   scoreevents::processscoreevent("flag_capture", player);
   player recordgameevent("pickup");
   player addplayerstatwithgametype("CAPTURES", 1);
-  player notify(# "objective", "captured");
+  player notify("objective", "captured");
   util::printandsoundoneveryone(team, undefined, & "MP_NEUTRAL_FLAG_CAPTURED_BY", & "MP_NEUTRAL_FLAG_CAPTURED_BY", "mp_obj_captured", "mp_enemy_obj_captured", player);
   if(self.currentteam == otherteam) {
     player globallogic_score::giveteamscoreforobjective(team, score);
@@ -278,21 +213,12 @@ function onpickup(player) {
   }
 }
 
-/*
-	Name: applyflagcarrierclass
-	Namespace: tdef
-	Checksum: 0x31CA16F
-	Offset: 0x1798
-	Size: 0x16C
-	Parameters: 0
-	Flags: None
-*/
 function applyflagcarrierclass() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   if(isdefined(self.iscarrying) && self.iscarrying == 1) {
-    self notify(# "force_cancel_placement");
+    self notify("force_cancel_placement");
     wait(0.05);
   }
   self.pers["gamemodeLoadout"] = level.tdef_loadouts[self.team];
@@ -309,36 +235,18 @@ function applyflagcarrierclass() {
   self thread waitattachflag();
 }
 
-/*
-	Name: waitattachflag
-	Namespace: tdef
-	Checksum: 0x7017572A
-	Offset: 0x1910
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function waitattachflag() {
-  level endon(# "game_ende");
-  self endon(# "disconnect");
-  self endon(# "death");
-  self waittill(# "spawned_player");
+  level endon("game_ende");
+  self endon("disconnect");
+  self endon("death");
+  self waittill("spawned_player");
   self attachflag();
 }
 
-/*
-	Name: watchforendgame
-	Namespace: tdef
-	Checksum: 0xFA032E3E
-	Offset: 0x1968
-	Size: 0x104
-	Parameters: 0
-	Flags: None
-*/
 function watchforendgame() {
-  self endon(# "dropped_flag");
-  self endon(# "disconnect");
-  level waittill(# "game_ended");
+  self endon("dropped_flag");
+  self endon("disconnect");
+  level waittill("game_ended");
   if(isdefined(self)) {
     if(isdefined(self.tdef_flagtime)) {
       flagtime = int(gettime() - self.tdef_flagtime);
@@ -353,15 +261,6 @@ function watchforendgame() {
   }
 }
 
-/*
-	Name: cancreateflagatvictimorigin
-	Namespace: tdef
-	Checksum: 0x815FE153
-	Offset: 0x1A78
-	Size: 0x180
-	Parameters: 1
-	Flags: None
-*/
 function cancreateflagatvictimorigin(victim) {
   minetriggers = getentarray("minefield", "targetname");
   hurttriggers = getentarray("trigger_hurt", "classname");
@@ -384,15 +283,6 @@ function cancreateflagatvictimorigin(victim) {
   return true;
 }
 
-/*
-	Name: createflag
-	Namespace: tdef
-	Checksum: 0x21F1D6F6
-	Offset: 0x1C00
-	Size: 0x2C0
-	Parameters: 1
-	Flags: None
-*/
 function createflag(victim) {
   visuals[0] = spawn("script_model", victim.origin);
   visuals[0] setmodel(level.carryflag["neutral"]);
@@ -418,17 +308,8 @@ function createflag(victim) {
   return gameflag;
 }
 
-/*
-	Name: updatebaseposition
-	Namespace: tdef
-	Checksum: 0xC6A090AB
-	Offset: 0x1EC8
-	Size: 0x74
-	Parameters: 0
-	Flags: None
-*/
 function updatebaseposition() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   while (true) {
     if(isdefined(self.safeorigin)) {
       self.baseorigin = self.safeorigin;
@@ -439,62 +320,26 @@ function updatebaseposition() {
   }
 }
 
-/*
-	Name: attachflag
-	Namespace: tdef
-	Checksum: 0xF9539497
-	Offset: 0x1F48
-	Size: 0x58
-	Parameters: 0
-	Flags: None
-*/
 function attachflag() {
   self attach(level.carryflag[self.team], "J_spine4", 1);
   self.carryflag = level.carryflag[self.team];
   level.favorclosespawnent = self;
 }
 
-/*
-	Name: detachflag
-	Namespace: tdef
-	Checksum: 0x7C14D5F1
-	Offset: 0x1FA8
-	Size: 0x50
-	Parameters: 0
-	Flags: None
-*/
 function detachflag() {
   self detach(self.carryflag, "J_spine4");
   self.carryflag = undefined;
   level.favorclosespawnent = level.gameflag.trigger;
 }
 
-/*
-	Name: flagattachradar
-	Namespace: tdef
-	Checksum: 0x3F6EB463
-	Offset: 0x2000
-	Size: 0x22
-	Parameters: 1
-	Flags: None
-*/
 function flagattachradar(team) {
-  level endon(# "game_ended");
-  self endon(# "dropped");
+  level endon("game_ended");
+  self endon("dropped");
 }
 
-/*
-	Name: getflagradarowner
-	Namespace: tdef
-	Checksum: 0x2759AE18
-	Offset: 0x2030
-	Size: 0xDC
-	Parameters: 1
-	Flags: None
-*/
 function getflagradarowner(team) {
-  level endon(# "game_ended");
-  self endon(# "dropped");
+  level endon("game_ended");
+  self endon("dropped");
   while (true) {
     foreach(player in level.players) {
       if(isalive(player) && player.team == team) {
@@ -505,65 +350,29 @@ function getflagradarowner(team) {
   }
 }
 
-/*
-	Name: flagradarmover
-	Namespace: tdef
-	Checksum: 0x2E118DC
-	Offset: 0x2118
-	Size: 0x68
-	Parameters: 0
-	Flags: None
-*/
 function flagradarmover() {
-  level endon(# "game_ended");
-  self endon(# "dropped");
-  self.portable_radar endon(# "death");
+  level endon("game_ended");
+  self endon("dropped");
+  self.portable_radar endon("death");
   for (;;) {
     self.portable_radar moveto(self.currentcarrier.origin, 0.05);
     wait(0.05);
   }
 }
 
-/*
-	Name: flagwatchradarownerlost
-	Namespace: tdef
-	Checksum: 0xD9E40943
-	Offset: 0x2188
-	Size: 0x8C
-	Parameters: 0
-	Flags: None
-*/
 function flagwatchradarownerlost() {
-  level endon(# "game_ended");
-  self endon(# "dropped");
+  level endon("game_ended");
+  self endon("dropped");
   radarteam = self.portable_radar.team;
   self.portable_radar.owner util::waittill_any("disconnect", "joined_team", "joined_spectators");
   flagattachradar(radarteam);
 }
 
-/*
-	Name: onroundendgame
-	Namespace: tdef
-	Checksum: 0xBB0BE249
-	Offset: 0x2220
-	Size: 0x34
-	Parameters: 1
-	Flags: None
-*/
 function onroundendgame(roundwinner) {
   winner = globallogic::determineteamwinnerbygamestat("roundswon");
   return winner;
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: tdef
-	Checksum: 0x273A74F2
-	Offset: 0x2260
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function onspawnplayer(predictedspawn) {
   self.usingobj = undefined;
   if(level.usestartspawns && !level.ingraceperiod) {
@@ -572,37 +381,10 @@ function onspawnplayer(predictedspawn) {
   spawning::onspawnplayer(predictedspawn);
 }
 
-/*
-	Name: onroundswitch
-	Namespace: tdef
-	Checksum: 0x3A26DD0
-	Offset: 0x22C0
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function onroundswitch() {
   game["switchedsides"] = !game["switchedsides"];
 }
 
-/*
-	Name: initgametypeawards
-	Namespace: tdef
-	Checksum: 0x99EC1590
-	Offset: 0x22E8
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function initgametypeawards() {}
 
-/*
-	Name: setspecialloadouts
-	Namespace: tdef
-	Checksum: 0x99EC1590
-	Offset: 0x22F8
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function setspecialloadouts() {}

@@ -1,19 +1,13 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_sfx.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\fx_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_1a381543;
 
-/*
-	Name: init
-	Namespace: namespace_1a381543
-	Checksum: 0x9AC20445
-	Offset: 0x998
-	Size: 0xE6C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   function_ce931b57("zmb_pickup_nurgle", 1);
   function_ce931b57("zmb_pickup_money", 2);
@@ -132,22 +126,11 @@ function init() {
   function_ce931b57("zmb_coat_of_arms", 115);
 }
 
-/*
-	Name: function_ce931b57
-	Namespace: namespace_1a381543
-	Checksum: 0x7EDE1AD5
-	Offset: 0x1810
-	Size: 0xF6
-	Parameters: 4
-	Flags: Linked
-*/
 function function_ce931b57(name, type, looping = 0, fadeout = 0.5) {
-  /#
   assert(type < 128, "");
-  # /
-    if(!isdefined(level.var_4a6df8b3)) {
-      level.var_4a6df8b3 = [];
-    }
+  if(!isdefined(level.var_4a6df8b3)) {
+    level.var_4a6df8b3 = [];
+  }
   sfx = spawnstruct();
   sfx.name = name;
   sfx.looping = looping;
@@ -155,68 +138,26 @@ function function_ce931b57(name, type, looping = 0, fadeout = 0.5) {
   level.var_4a6df8b3[type] = sfx;
 }
 
-/*
-	Name: function_736ce6da
-	Namespace: namespace_1a381543
-	Checksum: 0x6B6E0717
-	Offset: 0x1910
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function function_736ce6da(type) {
-  /#
   assert(isdefined(level.var_4a6df8b3[type]), "");
-  # /
-    return level.var_4a6df8b3[type].name;
+  return level.var_4a6df8b3[type].name;
 }
 
-/*
-	Name: function_72f9305c
-	Namespace: namespace_1a381543
-	Checksum: 0xA66AF5E6
-	Offset: 0x1970
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function function_72f9305c(type) {
-  /#
   assert(isdefined(level.var_4a6df8b3[type]), "");
-  # /
-    return level.var_4a6df8b3[type].looping;
+  return level.var_4a6df8b3[type].looping;
 }
 
-/*
-	Name: function_229b9d9e
-	Namespace: namespace_1a381543
-	Checksum: 0x854DAEA2
-	Offset: 0x19D0
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function function_229b9d9e(type) {
-  /#
   assert(isdefined(level.var_4a6df8b3[type]), "");
-  # /
-    return level.var_4a6df8b3[type].fadeout;
+  return level.var_4a6df8b3[type].fadeout;
 }
 
-/*
-	Name: function_1f085aea
-	Namespace: namespace_1a381543
-	Checksum: 0xB5693108
-	Offset: 0x1A30
-	Size: 0x16E
-	Parameters: 3
-	Flags: Linked
-*/
 function function_1f085aea(localclientnum, type, off) {
   if(localclientnum != 0) {
     return;
   }
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (!clienthassnapshot(localclientnum)) {
     wait(0.016);
   }

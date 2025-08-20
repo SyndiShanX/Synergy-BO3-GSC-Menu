@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_amb.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\audio_shared;
@@ -15,18 +19,8 @@
 #using scripts\zm\_zm_unitrigger;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\zm_moon_amb;
-
 #namespace zm_moon_amb;
 
-/*
-	Name: main
-	Namespace: zm_moon_amb
-	Checksum: 0xE2B6C551
-	Offset: 0x998
-	Size: 0x27C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level._audio_custom_weapon_check = & weapon_type_check_custom;
   level._custom_intro_vox = & no_intro_vox;
@@ -57,15 +51,6 @@ function main() {
   clientfield::register("world", "teleporter_audio_sfx", 21000, 1, "counter");
 }
 
-/*
-	Name: function_10ffc7d7
-	Namespace: zm_moon_amb
-	Checksum: 0xB85EA26A
-	Offset: 0xC20
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_10ffc7d7() {
   if(!isdefined(self.var_626b83bf)) {
     self.var_626b83bf = 1;
@@ -73,61 +58,30 @@ function function_10ffc7d7() {
   }
 }
 
-/*
-	Name: radio_setup
-	Namespace: zm_moon_amb
-	Checksum: 0xF1F1129
-	Offset: 0xC68
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function radio_setup() {
   var_1a5f0b42 = struct::get_array("egg_radios", "targetname");
   array::thread_all(var_1a5f0b42, & play_radio_eastereggs);
 }
 
-/*
-	Name: play_radio_eastereggs
-	Namespace: zm_moon_amb
-	Checksum: 0x425BDB55
-	Offset: 0xCC8
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function play_radio_eastereggs() {
   self zm_unitrigger::create_unitrigger();
-  /#
   self thread zm_utility::print3d_ent("", (0, 1, 0), 3, vectorscale((0, 0, 1), 24));
-  # /
-    while (true) {
-      self waittill(# "trigger_activated");
-      if(isdefined(self.script_noteworthy)) {
-        breakout = self checkfor_radio_override();
-        if(breakout) {
-          break;
-        }
-        continue;
+  while (true) {
+    self waittill("trigger_activated");
+    if(isdefined(self.script_noteworthy)) {
+      breakout = self checkfor_radio_override();
+      if(breakout) {
+        break;
       }
-      break;
+      continue;
     }
-  /#
-  self notify(# "end_print3d");
-  # /
-    zm_unitrigger::unregister_unitrigger(self.s_unitrigger);
+    break;
+  }
+  self notify("end_print3d");
+  zm_unitrigger::unregister_unitrigger(self.s_unitrigger);
   playsoundatposition("vox_story_1_log_" + self.script_int, self.origin);
 }
 
-/*
-	Name: checkfor_radio_override
-	Namespace: zm_moon_amb
-	Checksum: 0xF112B1E4
-	Offset: 0xDE0
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function checkfor_radio_override() {
   if(!isdefined(level.glass)) {
     return true;
@@ -145,38 +99,18 @@ function checkfor_radio_override() {
   return false;
 }
 
-/*
-	Name: eight_bit_easteregg
-	Namespace: zm_moon_amb
-	Checksum: 0xF8D7F869
-	Offset: 0xEF0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function eight_bit_easteregg() {
   structs = struct::get_array("8bitsongs", "targetname");
   array::thread_all(structs, & waitfor_eightbit_use);
 }
 
-/*
-	Name: waitfor_eightbit_use
-	Namespace: zm_moon_amb
-	Checksum: 0x7B6F35CF
-	Offset: 0xF50
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function waitfor_eightbit_use() {
   level flag::wait_till("power_on");
   self zm_unitrigger::create_unitrigger();
-  /#
   self thread zm_utility::print3d_ent("", (1, 0, 1), 3, vectorscale((0, 0, 1), 24));
-  # /
-    n_count = 0;
+  n_count = 0;
   while (true) {
-    self waittill(# "trigger_activated");
+    self waittill("trigger_activated");
     if(!zm_audio_zhd::function_8090042c()) {
       continue;
     }
@@ -187,32 +121,12 @@ function waitfor_eightbit_use() {
     }
     wait(1);
   }
-  /#
-  self notify(# "end_print3d");
-  # /
-    level thread zm_audio::sndmusicsystem_playstate(self.script_string);
+  self notify("end_print3d");
+  level thread zm_audio::sndmusicsystem_playstate(self.script_string);
 }
 
-/*
-	Name: no_intro_vox
-	Namespace: zm_moon_amb
-	Checksum: 0x99EC1590
-	Offset: 0x1088
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function no_intro_vox() {}
 
-/*
-	Name: intro_vox_or_skit
-	Namespace: zm_moon_amb
-	Checksum: 0xDBB42047
-	Offset: 0x1098
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function intro_vox_or_skit() {
   wait(1);
   level flag::wait_till("start_zombie_round_logic");
@@ -222,15 +136,6 @@ function intro_vox_or_skit() {
   players[randomintrange(0, players.size)] thread zm_audio::create_and_play_dialog("general", "start");
 }
 
-/*
-	Name: poweron_vox
-	Namespace: zm_moon_amb
-	Checksum: 0xD390EFF7
-	Offset: 0x1150
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function poweron_vox() {
   wait(3);
   level flag::wait_till("power_on");
@@ -238,15 +143,6 @@ function poweron_vox() {
   level thread play_mooncomp_vox("vox_mcomp_power");
 }
 
-/*
-	Name: audio_alias_override
-	Namespace: zm_moon_amb
-	Checksum: 0x68FE41C
-	Offset: 0x11A0
-	Size: 0x696
-	Parameters: 0
-	Flags: None
-*/
 function audio_alias_override() {
   level.plr_vox["kill"]["explosive"] = "kill_explosive";
   level.plr_vox["kill"]["explosive_response"] = undefined;
@@ -303,29 +199,11 @@ function audio_alias_override() {
   level.plr_vox["weapon_pickup"]["grenade_response"] = undefined;
 }
 
-/*
-	Name: force_player4_override
-	Namespace: zm_moon_amb
-	Checksum: 0x8D26C952
-	Offset: 0x1840
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function force_player4_override() {
   wait(60);
   level thread player_4_override();
 }
 
-/*
-	Name: player_4_override
-	Namespace: zm_moon_amb
-	Checksum: 0xAB8BE9FB
-	Offset: 0x1868
-	Size: 0xCE
-	Parameters: 0
-	Flags: Linked
-*/
 function player_4_override() {
   level.player_4_vox_override = 1;
   level.zmannouncerprefix = "vox_zmbar_";
@@ -336,15 +214,6 @@ function player_4_override() {
   }
 }
 
-/*
-	Name: do_player_playvox_custom
-	Namespace: zm_moon_amb
-	Checksum: 0x606965EC
-	Offset: 0x1940
-	Size: 0x100
-	Parameters: 5
-	Flags: Linked
-*/
 function do_player_playvox_custom(sound_to_play, waittime, category, type, override) {
   players = getplayers();
   if(!isdefined(level.player_is_speaking)) {
@@ -363,15 +232,6 @@ function do_player_playvox_custom(sound_to_play, waittime, category, type, overr
   }
 }
 
-/*
-	Name: play_futz_or_not_moonvox
-	Namespace: zm_moon_amb
-	Checksum: 0x6B871264
-	Offset: 0x1A48
-	Size: 0x112
-	Parameters: 1
-	Flags: Linked
-*/
 function play_futz_or_not_moonvox(sound_to_play) {
   players = getplayers();
   if(self.sessionstate == "spectator") {
@@ -391,15 +251,6 @@ function play_futz_or_not_moonvox(sound_to_play) {
   self waittill("sound_done" + sound_to_play);
 }
 
-/*
-	Name: weapon_type_check_custom
-	Namespace: zm_moon_amb
-	Checksum: 0xDE432CF0
-	Offset: 0x1B68
-	Size: 0x2AE
-	Parameters: 2
-	Flags: Linked
-*/
 function weapon_type_check_custom(weapon, magic_box) {
   if(!isdefined(self.entity_num)) {
     return "crappy";
@@ -453,30 +304,12 @@ function weapon_type_check_custom(weapon, magic_box) {
   return level.zombie_weapons[w_root].vox;
 }
 
-/*
-	Name: setup_music_egg
-	Namespace: zm_moon_amb
-	Checksum: 0x97332FDA
-	Offset: 0x1E20
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_music_egg() {
   level thread zm_audio_zhd::function_e753d4f();
   level flag::wait_till("snd_song_completed");
   level thread zm_audio::sndmusicsystem_playstate("cominghome");
 }
 
-/*
-	Name: waitfor_override
-	Namespace: zm_moon_amb
-	Checksum: 0x12DDC9DC
-	Offset: 0x1E88
-	Size: 0x22
-	Parameters: 0
-	Flags: None
-*/
 function waitfor_override() {
   if(isdefined(level.music_override) && level.music_override) {
     return false;
@@ -484,15 +317,6 @@ function waitfor_override() {
   return true;
 }
 
-/*
-	Name: play_mooncomp_vox
-	Namespace: zm_moon_amb
-	Checksum: 0x7801A022
-	Offset: 0x1EB8
-	Size: 0x108
-	Parameters: 2
-	Flags: Linked
-*/
 function play_mooncomp_vox(alias, digger) {
   if(!isdefined(alias)) {
     return;
@@ -529,15 +353,6 @@ function play_mooncomp_vox(alias, digger) {
   }
 }
 
-/*
-	Name: do_mooncomp_vox
-	Namespace: zm_moon_amb
-	Checksum: 0xF4AD5DD9
-	Offset: 0x1FC8
-	Size: 0x15A
-	Parameters: 1
-	Flags: Linked
-*/
 function do_mooncomp_vox(alias) {
   players = getplayers();
   for (i = 0; i < players.size; i++) {
@@ -554,15 +369,6 @@ function do_mooncomp_vox(alias) {
   }
 }
 
-/*
-	Name: function_c844cebe
-	Namespace: zm_moon_amb
-	Checksum: 0xE7910B5B
-	Offset: 0x2130
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c844cebe() {
   level.var_2ff0efb3 = struct::get_array("sndMoonPa", "targetname");
   if(!isdefined(level.var_2ff0efb3)) {
@@ -570,17 +376,8 @@ function function_c844cebe() {
   }
 }
 
-/*
-	Name: waitfor_forest_zone_entry
-	Namespace: zm_moon_amb
-	Checksum: 0xA8DF5067
-	Offset: 0x2178
-	Size: 0x148
-	Parameters: 0
-	Flags: Linked
-*/
 function waitfor_forest_zone_entry() {
-  level waittill(# "forest_zone");
+  level waittill("forest_zone");
   while (true) {
     zone = level.zones["forest_zone"];
     players = getplayers();
@@ -596,15 +393,6 @@ function waitfor_forest_zone_entry() {
   }
 }
 
-/*
-	Name: setup_moon_visit_vox
-	Namespace: zm_moon_amb
-	Checksum: 0x1878A234
-	Offset: 0x22C8
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_moon_visit_vox() {
   wait(5);
   level flag::wait_till("start_zombie_round_logic");
@@ -615,76 +403,40 @@ function setup_moon_visit_vox() {
   level thread waitfor_first_player();
 }
 
-/*
-	Name: play_delayed_first_time_vox
-	Namespace: zm_moon_amb
-	Checksum: 0x856EE953
-	Offset: 0x2370
-	Size: 0xBA
-	Parameters: 0
-	Flags: Linked
-*/
 function play_delayed_first_time_vox() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self waittill(# "equip_gasmask_activate");
-  self waittill(# "weapon_change_complete");
+  self endon("death");
+  self endon("disconnect");
+  self waittill("equip_gasmask_activate");
+  self waittill("weapon_change_complete");
   self playsoundtoplayer("vox_mcomp_suit_on", self);
   wait(1.5);
   self playsoundtoplayer("vox_mcomp_start", self);
   wait(7);
   self thread play_maskon_vox();
   self thread play_warning_vox();
-  level notify(# "first_player_vox", self);
+  level notify("first_player_vox", self);
 }
 
-/*
-	Name: waitfor_first_player
-	Namespace: zm_moon_amb
-	Checksum: 0x6B268D8B
-	Offset: 0x2438
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function waitfor_first_player() {
-  level waittill(# "first_player_vox", who);
+  level waittill("first_player_vox", who);
   who thread zm_audio::create_and_play_dialog("general", "moonbase");
 }
 
-/*
-	Name: play_maskon_vox
-	Namespace: zm_moon_amb
-	Checksum: 0xADEE84E2
-	Offset: 0x2488
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function play_maskon_vox() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "equip_gasmask_activate");
-    self waittill(# "weapon_change_complete");
+    self waittill("equip_gasmask_activate");
+    self waittill("weapon_change_complete");
     self stopsounds();
     wait(0.05);
     self playsoundtoplayer("vox_mcomp_suit_on", self);
   }
 }
 
-/*
-	Name: play_warning_vox
-	Namespace: zm_moon_amb
-	Checksum: 0x5269F62
-	Offset: 0x2510
-	Size: 0x142
-	Parameters: 0
-	Flags: Linked
-*/
 function play_warning_vox() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   while (true) {
     while (!self.in_low_gravity) {
       wait(0.1);
@@ -704,15 +456,6 @@ function play_warning_vox() {
   }
 }
 
-/*
-	Name: function_45b4acf2
-	Namespace: zm_moon_amb
-	Checksum: 0x4FCE8307
-	Offset: 0x2660
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function function_45b4acf2() {
   var_757351da = struct::get_array("zhdbuttons", "targetname");
   array::thread_all(var_757351da, & function_1d6f553d);
@@ -720,7 +463,7 @@ function function_45b4acf2() {
   var_22ee0088 = array(1, 2, 2, 3, 3, 2, 3, 4, 3, 4, 3, 2, 2, 4, 1);
   var_c957db9f = 0;
   while (var_c957db9f < var_22ee0088.size) {
-    level waittill(# "hash_351576b1", var_333c1c87);
+    level waittill("hash_351576b1", var_333c1c87);
     if(var_333c1c87 == var_22ee0088[var_c957db9f]) {
       var_c957db9f++;
     } else {
@@ -730,54 +473,27 @@ function function_45b4acf2() {
   level flag::set("snd_zhdegg_activate");
 }
 
-/*
-	Name: function_1d6f553d
-	Namespace: zm_moon_amb
-	Checksum: 0x7ED629E2
-	Offset: 0x27B0
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1d6f553d() {
-  level endon(# "snd_zhdegg_activate");
+  level endon("snd_zhdegg_activate");
   self zm_unitrigger::create_unitrigger();
   while (true) {
-    self waittill(# "trigger_activated");
+    self waittill("trigger_activated");
     playsoundatposition("zmb_zhdmoon_button_" + self.script_int, self.origin);
-    level notify(# "hash_351576b1", self.script_int);
+    level notify("hash_351576b1", self.script_int);
     wait(0.5);
   }
 }
 
-/*
-	Name: function_e091daa4
-	Namespace: zm_moon_amb
-	Checksum: 0xE9231E7D
-	Offset: 0x2840
-	Size: 0x9E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e091daa4() {
-  level endon(# "snd_zhdegg_activate");
+  level endon("snd_zhdegg_activate");
   var_924a65e5 = spawn("script_origin", (919, -303, -171));
   while (true) {
     wait(randomfloatrange(60, 120));
     var_924a65e5 playsoundwithnotify("zmb_zhdmoon_voices", "sounddone");
-    var_924a65e5 waittill(# "sounddone");
+    var_924a65e5 waittill("sounddone");
   }
 }
 
-/*
-	Name: function_3630300b
-	Namespace: zm_moon_amb
-	Checksum: 0xB144CB80
-	Offset: 0x28E8
-	Size: 0x11A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3630300b() {
   var_d1f154fd = struct::get_array("s_ballerina_timed", "targetname");
   var_d1f154fd = array::sort_by_script_int(var_d1f154fd, 1);
@@ -794,15 +510,6 @@ function function_3630300b() {
   return true;
 }
 
-/*
-	Name: function_b8227f87
-	Namespace: zm_moon_amb
-	Checksum: 0xC5C5E242
-	Offset: 0x2A10
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b8227f87() {
   self.var_ac086ffb = util::spawn_model(self.model, self.origin, self.angles);
   self.var_ac086ffb clientfield::set("snd_zhdegg", 1);

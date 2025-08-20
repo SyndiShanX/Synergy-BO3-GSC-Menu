@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_takeo_fight.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\archetype_thrasher;
 #using scripts\shared\ai\systems\gib;
@@ -30,45 +34,17 @@
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_island_skullweapon_quest;
-
 #namespace zm_island_takeo_fight;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x16288CAF
-	Offset: 0xF38
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_island_takeo_fight", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xEE9C04E9
-	Offset: 0xF78
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "takeofight_teleport_fx", 9000, 1, "int");
   clientfield::register("scriptmover", "takeo_arm_hit_fx", 1, 3, "int");
 }
 
-/*
-	Name: function_a85ea965
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x142E3372
-	Offset: 0xFE8
-	Size: 0x724
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a85ea965() {
   level flag::wait_till("flag_init_takeo_fight");
   level scene::init("cin_isl_outro_3rd_sh010");
@@ -121,37 +97,17 @@ function function_a85ea965() {
   level scene::init("p7_fxanim_zm_island_takeo_vines_bundle");
 }
 
-/*
-	Name: main
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xDF51967A
-	Offset: 0x1718
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
-  /#
   level thread function_c2fee078();
-  # /
-    level thread function_a85ea965();
+  level thread function_a85ea965();
 }
 
-/*
-	Name: function_9c58350b
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xEE7DA9E
-	Offset: 0x1758
-	Size: 0x246
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9c58350b() {
-  self endon(# "hash_c8e5500f");
-  self endon(# "hash_9dad47cd");
+  self endon("hash_c8e5500f");
+  self endon("hash_9dad47cd");
   self.var_2340346c = 0;
   while (!level flag::get("takeo_freed") && (!(isdefined(self.var_2340346c) && self.var_2340346c))) {
-    self waittill(# "damage", n_damage, e_attacker, v_vector, v_point, str_means_of_death, str_string_1, str_string_2, str_string_3, w_weapon);
+    self waittill("damage", n_damage, e_attacker, v_vector, v_point, str_means_of_death, str_string_1, str_string_2, str_string_3, w_weapon);
     if(!self.takedamage) {
       continue;
     }
@@ -179,15 +135,6 @@ function function_9c58350b() {
   }
 }
 
-/*
-	Name: function_269cf850
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x8AEFDFAC
-	Offset: 0x19A8
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_269cf850(var_6c555b6c = 1) {
   if(isdefined(var_6c555b6c) && var_6c555b6c) {
     self setcandamage(1);
@@ -196,15 +143,6 @@ function function_269cf850(var_6c555b6c = 1) {
   }
 }
 
-/*
-	Name: function_bf38b3c9
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xF1812173
-	Offset: 0x1A18
-	Size: 0x1BA
-	Parameters: 2
-	Flags: Linked
-*/
 function function_bf38b3c9(var_6c555b6c = 1, b_force = 0) {
   if(b_force == 1 || (self.var_6c555b6c !== var_6c555b6c && (!(isdefined(self.b_dead) && self.b_dead)))) {
     var_3a0318fc = self.script_int;
@@ -222,15 +160,6 @@ function function_bf38b3c9(var_6c555b6c = 1, b_force = 0) {
   }
 }
 
-/*
-	Name: function_4c7498f7
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xBBAF2144
-	Offset: 0x1BE0
-	Size: 0x224
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4c7498f7() {
   var_ac9b7de4 = level.var_bbdc1f95.var_69943735[3];
   if(!(isdefined(var_ac9b7de4.b_dead) && var_ac9b7de4.b_dead) && (!(isdefined(var_ac9b7de4.var_722e43d8) && var_ac9b7de4.var_722e43d8))) {
@@ -242,7 +171,7 @@ function function_4c7498f7() {
     } else {
       var_ac9b7de4 thread scene::play("p7_fxanim_zm_island_takeo_arm3_close_slam_bundle");
     }
-    level waittill(# "hash_4c7498f7");
+    level waittill("hash_4c7498f7");
     level thread scene::play("p7_fxanim_zm_island_takeo_vines_bundle");
     var_d034d3c3 = struct::get("s_vine_slam_impact_pos", "targetname");
     radiusdamage(var_d034d3c3.origin, 100, 480, 240, undefined, "MOD_GRENADE");
@@ -253,17 +182,8 @@ function function_4c7498f7() {
   }
 }
 
-/*
-	Name: function_279705f
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xCC3D905D
-	Offset: 0x1E10
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function function_279705f() {
-  level endon(# "hash_d1f7df7e");
+  level endon("hash_d1f7df7e");
   var_ac9b7de4 = level.var_bbdc1f95.var_69943735[3];
   while (!(isdefined(var_ac9b7de4.b_dead) && var_ac9b7de4.b_dead)) {
     level thread function_4c7498f7();
@@ -271,35 +191,17 @@ function function_279705f() {
   }
 }
 
-/*
-	Name: function_c8dfb7e1
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x59507538
-	Offset: 0x1EA0
-	Size: 0x32
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c8dfb7e1() {
   level.var_bbdc1f95.var_62473c4b function_54d91dfb();
   level.var_bbdc1f95.var_62473c4b = undefined;
 }
 
-/*
-	Name: function_54d91dfb
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x43610736
-	Offset: 0x1EE0
-	Size: 0x2DC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_54d91dfb() {
-  self notify(# "hash_c8e5500f");
+  self notify("hash_c8e5500f");
   self.b_dead = 1;
   foreach(var_fb97f73d in self.var_7168c71c) {
     var_fb97f73d function_269cf850(0);
-    var_fb97f73d notify(# "hash_c8e5500f");
+    var_fb97f73d notify("hash_c8e5500f");
   }
   var_9f49d930 = "takeo_arm" + self.script_int;
   var_90f16638 = getent(var_9f49d930, "targetname");
@@ -323,15 +225,6 @@ function function_54d91dfb() {
   }
 }
 
-/*
-	Name: function_6bc98691
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x72F13975
-	Offset: 0x21C8
-	Size: 0x12A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6bc98691() {
   if(isdefined(self.b_dead) && self.b_dead) {
     self show();
@@ -346,15 +239,6 @@ function function_6bc98691() {
   }
 }
 
-/*
-	Name: function_b64005e8
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x7A8B5F03
-	Offset: 0x2300
-	Size: 0x122
-	Parameters: 2
-	Flags: Linked
-*/
 function function_b64005e8(var_3a0318fc, str_state) {
   switch (str_state) {
     case "close": {
@@ -385,52 +269,25 @@ function function_b64005e8(var_3a0318fc, str_state) {
   return str_anim;
 }
 
-/*
-	Name: function_75174ee
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xA8C2955E
-	Offset: 0x2430
-	Size: 0x116
-	Parameters: 0
-	Flags: Linked
-*/
 function function_75174ee() {
-  level endon(# "flag_play_outro_cutscene");
+  level endon("flag_play_outro_cutscene");
   var_a175a10b = util::spawn_model("tag_origin", self.origin, self.angles);
   var_a175a10b thread function_5c1adaf1();
   self linkto(var_a175a10b);
   var_a175a10b rotateroll(1, 2.5);
   while (!level flag::get("flag_play_outro_cutscene")) {
     var_a175a10b rotateroll(-2, 5);
-    var_a175a10b waittill(# "rotatedone");
+    var_a175a10b waittill("rotatedone");
     var_a175a10b rotateroll(2, 5);
-    var_a175a10b waittill(# "rotatedone");
+    var_a175a10b waittill("rotatedone");
   }
 }
 
-/*
-	Name: function_5c1adaf1
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x43748F2A
-	Offset: 0x2550
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5c1adaf1() {
   level flag::wait_till("flag_play_outro_cutscene");
   self delete();
 }
 
-/*
-	Name: function_6addaa9e
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xB4A94A5D
-	Offset: 0x2598
-	Size: 0x274
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6addaa9e(str_state) {
   if(isdefined(level.mdl_alttakeo)) {
     switch (str_state) {
@@ -487,15 +344,6 @@ function function_6addaa9e(str_state) {
   }
 }
 
-/*
-	Name: function_ed01b73c
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x3C6E5F9E
-	Offset: 0x2818
-	Size: 0x5F4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_ed01b73c(str_state, var_3fd94cb9) {
   if(str_state !== level.var_bbdc1f95.str_state) {
     switch (str_state) {
@@ -583,15 +431,6 @@ function function_ed01b73c(str_state, var_3fd94cb9) {
   }
 }
 
-/*
-	Name: function_2ea7cbca
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x17DD371C
-	Offset: 0x2E18
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2ea7cbca() {
   level thread function_6addaa9e("sleep");
   var_1f146770 = 0;
@@ -610,17 +449,8 @@ function function_2ea7cbca() {
   }
 }
 
-/*
-	Name: function_a49f3a92
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xD09F3A76
-	Offset: 0x2F50
-	Size: 0x1D4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a49f3a92() {
-  level waittill(# "hash_add73e69");
+  level waittill("hash_add73e69");
   level flag::clear("spawn_zombies");
   var_fe3fa728 = 400 * 400;
   mdl_door = level.var_bbdc1f95.var_c093c394;
@@ -640,15 +470,6 @@ function function_a49f3a92() {
   level thread scene::play("p7_fxanim_zm_island_takeo_vines_bundle");
 }
 
-/*
-	Name: function_bc851c3a
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xDF549F53
-	Offset: 0x3130
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bc851c3a(b_on) {
   if(isdefined(b_on) && b_on) {
     level.var_bbdc1f95.var_c093c394 moveto(level.var_bbdc1f95.var_c093c394.var_9c93e17, 0.5);
@@ -659,38 +480,20 @@ function function_bc851c3a(b_on) {
   }
 }
 
-/*
-	Name: function_9f1fd468
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xD7A64945
-	Offset: 0x3248
-	Size: 0x12
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9f1fd468() {
   return level.var_bbdc1f95.str_state;
 }
 
-/*
-	Name: function_87949ac6
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xEEF7F43C
-	Offset: 0x3268
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_87949ac6() {
-  level endon(# "hash_ec7f92f6");
+  level endon("hash_ec7f92f6");
   foreach(var_9c458cf5 in level.var_bbdc1f95.var_69943735) {
     var_9c458cf5 thread function_bf38b3c9(0);
   }
   if(self.var_fbe5299e <= 1) {
-    level notify(# "hash_d1f7df7e");
+    level notify("hash_d1f7df7e");
     wait(1.5);
     level thread function_279705f();
-    level waittill(# "hash_4c7498f7");
+    level waittill("hash_4c7498f7");
   }
   self function_2e25785c();
   self.var_fbe5299e++;
@@ -709,15 +512,6 @@ function function_87949ac6() {
   }
 }
 
-/*
-	Name: function_2e25785c
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x527A09B0
-	Offset: 0x3410
-	Size: 0x2CC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2e25785c() {
   if(level.var_4d97351 > 0) {
     var_36e3085a = level.var_4d97351;
@@ -759,15 +553,6 @@ function function_2e25785c() {
   self thread function_b96762d3();
 }
 
-/*
-	Name: function_b96762d3
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x7528E8D0
-	Offset: 0x36E8
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b96762d3() {
   self.var_44da5f74 = self.var_6033a1e7[level.activeplayers.size];
   self.var_1fcf1bc4 = self.var_ce1421d3[level.activeplayers.size];
@@ -779,23 +564,14 @@ function function_b96762d3() {
   level.zombie_ai_limit = level.zombie_ai_limit - self.var_eca4fee1;
 }
 
-/*
-	Name: function_628b98fd
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x8B20F5BD
-	Offset: 0x37A8
-	Size: 0x1BC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_628b98fd(var_db18d39e = 1) {
-  level endon(# "hash_ec7f92f6");
+  level endon("hash_ec7f92f6");
   foreach(var_9c458cf5 in level.var_bbdc1f95.var_69943735) {
     var_9c458cf5 thread function_bf38b3c9(0);
   }
   wait(1.5);
   level thread function_279705f();
-  level waittill(# "hash_4c7498f7");
+  level waittill("hash_4c7498f7");
   level.var_bbdc1f95 thread function_4ea8a87a();
   if(isdefined(var_db18d39e) && var_db18d39e) {
     level.var_bbdc1f95.var_fbe5299e++;
@@ -814,15 +590,6 @@ function function_628b98fd(var_db18d39e = 1) {
   }
 }
 
-/*
-	Name: function_4ea8a87a
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x231FF481
-	Offset: 0x3970
-	Size: 0x71C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4ea8a87a() {
   if(!level flag::get("takeofight_wave_spawning")) {
     level.disable_nuke_delay_spawning = 1;
@@ -932,19 +699,10 @@ function function_4ea8a87a() {
   }
 }
 
-/*
-	Name: function_612749c9
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x24937D19
-	Offset: 0x4098
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_612749c9() {
   level.zombie_ai_limit = level.var_5c9015c4;
   self.var_eca4fee1 = 0;
-  level notify(# "hash_ec7f92f6");
+  level notify("hash_ec7f92f6");
   function_9bbf4262();
   if(self.a_ai_attackers.size == 0) {
     self thread function_c3386633();
@@ -953,15 +711,6 @@ function function_612749c9() {
   }
 }
 
-/*
-	Name: function_c3386633
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xB1795AC6
-	Offset: 0x4128
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c3386633(b_debug = 0) {
   if(isdefined(b_debug) && b_debug) {
     function_c8dfb7e1();
@@ -969,15 +718,6 @@ function function_c3386633(b_debug = 0) {
   level thread function_ed01b73c("completed");
 }
 
-/*
-	Name: function_b316383a
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xF347EF03
-	Offset: 0x4198
-	Size: 0x384
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b316383a() {
   struct::delete_script_bundle("scene", "p7_fxanim_zm_island_takeo_arm1_close_bundle");
   struct::delete_script_bundle("scene", "p7_fxanim_zm_island_takeo_arm1_open_bundle");
@@ -1009,19 +749,10 @@ function function_b316383a() {
   struct::delete_script_bundle("scene", "cin_isl_outro_1st_monsterhead_big_pain_scream");
 }
 
-/*
-	Name: function_18044002
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xAB6F57D4
-	Offset: 0x4528
-	Size: 0x100
-	Parameters: 0
-	Flags: Linked
-*/
 function function_18044002() {
   var_c5d0d808 = level.var_bbdc1f95.var_e7eb4096.var_7168c71c[0];
   var_c5d0d808 function_269cf850(0);
-  level notify(# "hash_24bebb15");
+  level notify("hash_24bebb15");
   if(isdefined(level.var_bbdc1f95.var_62473c4b)) {
     level.var_bbdc1f95.var_62473c4b thread function_6bc98691();
   }
@@ -1033,21 +764,12 @@ function function_18044002() {
   level.disable_nuke_delay_spawning = 0;
 }
 
-/*
-	Name: function_4814eea9
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x604A6BE3
-	Offset: 0x4630
-	Size: 0x23C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4814eea9() {
   var_c5d0d808 = level.var_bbdc1f95.var_e7eb4096.var_7168c71c[0];
   var_c5d0d808 function_269cf850(1);
   level.var_bbdc1f95.var_e7eb4096 thread function_bf38b3c9(1, 1);
   while (!level flag::get("takeo_freed")) {
-    var_c5d0d808 waittill(# "damage", n_damage, e_attacker, v_vector, v_point, str_means_of_death, str_string_1, str_string_2, str_string_3, w_weapon);
+    var_c5d0d808 waittill("damage", n_damage, e_attacker, v_vector, v_point, str_means_of_death, str_string_1, str_string_2, str_string_3, w_weapon);
     if(zombie_utility::is_player_valid(e_attacker) && w_weapon.name === "hero_mirg2000_upgraded" && function_9f1fd468() == "fight_end_ready") {
       level flag::set("takeo_freed");
     }
@@ -1060,15 +782,6 @@ function function_4814eea9() {
   level util::clientnotify("sndTakeoEnd");
 }
 
-/*
-	Name: function_9bbf4262
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xE37996E1
-	Offset: 0x4878
-	Size: 0x11A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9bbf4262() {
   a_enemies = getaiteamarray("axis");
   foreach(enemy in a_enemies) {
@@ -1080,28 +793,10 @@ function function_9bbf4262() {
   }
 }
 
-/*
-	Name: function_a3420702
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x1F7942F6
-	Offset: 0x49A0
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a3420702(params) {
   self thread function_3127ccbd(params.eattacker);
 }
 
-/*
-	Name: function_3127ccbd
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xE021ECE8
-	Offset: 0x49D8
-	Size: 0x154
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3127ccbd(e_attacker) {
   if(isdefined(self) && (isdefined(self.var_bf5bc647) && self.var_bf5bc647)) {
     level.var_bbdc1f95.var_8a71c4c5--;
@@ -1126,15 +821,6 @@ function function_3127ccbd(e_attacker) {
   }
 }
 
-/*
-	Name: function_55079785
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xF5DE547E
-	Offset: 0x4B38
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked
-*/
 function function_55079785(v_pos) {
   level.var_2ddef893++;
   if(level flag::get("takeofight_wave_spawning")) {
@@ -1145,15 +831,6 @@ function function_55079785(v_pos) {
   }
 }
 
-/*
-	Name: function_6ccb6373
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xE58911B5
-	Offset: 0x4BD0
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6ccb6373() {
   if(!level flag::exists("thrasher_death_mourn_rumble_lock")) {
     level flag::init("thrasher_death_mourn_rumble_lock");
@@ -1166,17 +843,8 @@ function function_6ccb6373() {
   }
 }
 
-/*
-	Name: function_fe7b0c13
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x3ACECB4
-	Offset: 0x4CA0
-	Size: 0x33A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fe7b0c13() {
-  level endon(# "hash_ec7f92f6");
+  level endon("hash_ec7f92f6");
   var_d3111274 = "zone_bunker_prison";
   level.var_f0fe245e = 0;
   while (isdefined(level.var_5258ba34) && level.var_5258ba34 && (!(isdefined(level.var_f0fe245e) && level.var_f0fe245e))) {
@@ -1215,15 +883,6 @@ function function_fe7b0c13() {
   }
 }
 
-/*
-	Name: function_75275516
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x2D1F76FD
-	Offset: 0x4FE8
-	Size: 0x50C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_75275516() {
   zm_utility::increment_ignoreme();
   playsoundatposition("zmb_bgb_abh_teleport_out", self.origin);
@@ -1275,17 +934,7 @@ function function_75275516() {
   zm_utility::decrement_ignoreme();
 }
 
-/*
-	Name: function_c2fee078
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x3F472479
-	Offset: 0x5500
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c2fee078() {
-  /#
   zm_devgui::add_custom_devgui_callback( & function_9eaf14a2);
   adddebugcommand("");
   adddebugcommand("");
@@ -1293,20 +942,9 @@ function function_c2fee078() {
   adddebugcommand("");
   adddebugcommand("");
   adddebugcommand("");
-  # /
 }
 
-/*
-	Name: function_9eaf14a2
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xCD4C4206
-	Offset: 0x55C8
-	Size: 0x184
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9eaf14a2(cmd) {
-  /#
   switch (cmd) {
     case "": {
       level thread function_c8af550a();
@@ -1349,55 +987,22 @@ function function_9eaf14a2(cmd) {
     }
   }
   return false;
-  # /
 }
 
-/*
-	Name: function_39a206a1
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x293E685B
-	Offset: 0x5758
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function function_39a206a1() {
-  /#
   level flag::set("");
-  # /
 }
 
-/*
-	Name: function_eff03897
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x914D1BF9
-	Offset: 0x5788
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_eff03897(var_3a0318fc) {
-  /#
   if(level flag::get("")) {
     level.var_bbdc1f95.var_62473c4b = level.var_bbdc1f95.var_69943735[var_3a0318fc];
     if(isdefined(level.var_bbdc1f95.var_62473c4b) && (!(isdefined(level.var_bbdc1f95.var_62473c4b.b_dead) && level.var_bbdc1f95.var_62473c4b.b_dead))) {
       level.var_bbdc1f95 thread function_c3386633(1);
     }
   }
-  # /
 }
 
-/*
-	Name: function_c8af550a
-	Namespace: zm_island_takeo_fight
-	Checksum: 0x8F347B3E
-	Offset: 0x5850
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c8af550a() {
-  /#
   if(!level flag::get("")) {
     level flag::set("");
     wait(1);
@@ -1408,20 +1013,9 @@ function function_c8af550a() {
   }
   level.var_bbdc1f95.var_e7eb4096 function_54d91dfb();
   level.var_bbdc1f95.var_e7eb4096 hide();
-  # /
 }
 
-/*
-	Name: function_5ff8dc0c
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xF2BECDAD
-	Offset: 0x5990
-	Size: 0x334
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5ff8dc0c() {
-  /#
   if(level flag::get("")) {
     if(!isdefined(level.var_bbdc1f95.var_9326c958)) {
       level.var_bbdc1f95.var_9326c958 = 1;
@@ -1445,20 +1039,9 @@ function function_5ff8dc0c() {
       getent("", "") hide();
     }
   }
-  # /
 }
 
-/*
-	Name: function_f59a935a
-	Namespace: zm_island_takeo_fight
-	Checksum: 0xF28D37C7
-	Offset: 0x5CD0
-	Size: 0x2B2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f59a935a() {
-  /#
   foreach(player in level.activeplayers) {
     player.var_df4182b1 = 1;
     player giveweapon(level.weaponriotshield);
@@ -1481,5 +1064,4 @@ function function_f59a935a() {
       player zm_perks::give_perk(str_perk, 0);
     }
   }
-  # /
 }

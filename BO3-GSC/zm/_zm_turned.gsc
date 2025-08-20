@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_turned.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -12,18 +16,8 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\gametypes\_spawnlogic;
 #using scripts\zm\gametypes\_zm_gametype;
-
 #namespace zm_turned;
 
-/*
-	Name: init
-	Namespace: zm_turned
-	Checksum: 0x332C7349
-	Offset: 0x3D8
-	Size: 0x16C
-	Parameters: 0
-	Flags: None
-*/
 function init() {
   dvar = getdvarstring("ui_gametype");
   if(dvar == "zcleansed") {
@@ -40,15 +34,6 @@ function init() {
   }
 }
 
-/*
-	Name: setup_zombie_exerts
-	Namespace: zm_turned
-	Checksum: 0x8E533754
-	Offset: 0x550
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_zombie_exerts() {
   wait(0.05);
   level.exert_sounds[1]["burp"] = "null";
@@ -56,32 +41,14 @@ function setup_zombie_exerts() {
   level.exert_sounds[1]["hitlrg"] = "null";
 }
 
-/*
-	Name: delay_turning_on_eyes
-	Namespace: zm_turned
-	Checksum: 0x220671CE
-	Offset: 0x5C8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function delay_turning_on_eyes() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   util::wait_network_frame();
   wait(0.1);
   self clientfield::set("player_has_eyes", 1);
 }
 
-/*
-	Name: turn_to_zombie
-	Namespace: zm_turned
-	Checksum: 0x2E9A3AD5
-	Offset: 0x628
-	Size: 0x6C8
-	Parameters: 0
-	Flags: Linked
-*/
 function turn_to_zombie() {
   if(self.sessionstate == "playing" && (isdefined(self.is_zombie) && self.is_zombie) && (!(isdefined(self.laststand) && self.laststand))) {
     return;
@@ -103,8 +70,8 @@ function turn_to_zombie() {
   self clientfield::set("player_has_eyes", 0);
   self ghost();
   self turned_disable_player_weapons();
-  self notify(# "clear_red_flashing_overlay");
-  self notify(# "zombify");
+  self notify("clear_red_flashing_overlay");
+  self notify("zombify");
   self.is_in_process_of_zombify = 1;
   self.team = level.zombie_team;
   self.pers["team"] = level.zombie_team;
@@ -175,15 +142,6 @@ function turn_to_zombie() {
   self.is_in_process_of_zombify = 0;
 }
 
-/*
-	Name: turn_to_human
-	Namespace: zm_turned
-	Checksum: 0x7F7E6FC2
-	Offset: 0xCF8
-	Size: 0x548
-	Parameters: 0
-	Flags: Linked
-*/
 function turn_to_human() {
   if(self.sessionstate == "playing" && (!(isdefined(self.is_zombie) && self.is_zombie)) && (!(isdefined(self.laststand) && self.laststand))) {
     return;
@@ -198,10 +156,10 @@ function turn_to_human() {
   playsoundatposition("evt_disappear_3d", self.origin);
   self clientfield::set("player_has_eyes", 0);
   self ghost();
-  self notify(# "humanify");
+  self notify("humanify");
   self.is_in_process_of_humanify = 1;
   self.is_zombie = 0;
-  self notify(# "clear_red_flashing_overlay");
+  self notify("clear_red_flashing_overlay");
   self.team = self.prevteam;
   self.pers["team"] = self.prevteam;
   self.sessionteam = self.prevteam;
@@ -256,15 +214,6 @@ function turn_to_human() {
   self.is_in_process_of_humanify = 0;
 }
 
-/*
-	Name: deletezombiesinradius
-	Namespace: zm_turned
-	Checksum: 0x74FDE542
-	Offset: 0x1248
-	Size: 0x172
-	Parameters: 1
-	Flags: None
-*/
 function deletezombiesinradius(origin) {
   zombies = zombie_utility::get_round_enemy_array();
   maxradius = 128;
@@ -279,23 +228,10 @@ function deletezombiesinradius(origin) {
   }
 }
 
-/*
-	Name: turned_give_melee_weapon
-	Namespace: zm_turned
-	Checksum: 0x23B29F0F
-	Offset: 0x13C8
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked
-*/
 function turned_give_melee_weapon() {
-  /#
   assert(isdefined(self.weaponzmturnedmelee));
-  # /
-    /#
   assert(self.weaponzmturnedmelee != level.weaponnone);
-  # /
-    self.turned_had_knife = self hasweapon(level.weaponbasemelee);
+  self.turned_had_knife = self hasweapon(level.weaponbasemelee);
   if(isdefined(self.turned_had_knife) && self.turned_had_knife) {
     self takeweapon(level.weaponbasemelee);
   }
@@ -307,37 +243,28 @@ function turned_give_melee_weapon() {
   self switchtoweapon(self.weaponzmturnedmelee);
 }
 
-/*
-	Name: turned_player_buttons
-	Namespace: zm_turned
-	Checksum: 0x16CAAFE3
-	Offset: 0x1538
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function turned_player_buttons() {
-  self endon(# "disconnect");
-  self endon(# "humanify");
-  level endon(# "end_game");
+  self endon("disconnect");
+  self endon("humanify");
+  level endon("end_game");
   while (isdefined(self.is_zombie) && self.is_zombie) {
     if(self attackbuttonpressed() || self adsbuttonpressed() || self meleebuttonpressed()) {
       if(math::cointoss()) {
-        self notify(# "bhtn_action_notify", "attack");
+        self notify("bhtn_action_notify", "attack");
       }
       while (self attackbuttonpressed() || self adsbuttonpressed() || self meleebuttonpressed()) {
         wait(0.05);
       }
     }
     if(self usebuttonpressed()) {
-      self notify(# "bhtn_action_notify", "taunt");
+      self notify("bhtn_action_notify", "taunt");
       while (self usebuttonpressed()) {
         wait(0.05);
       }
     }
     if(self issprinting()) {
       while (self issprinting()) {
-        self notify(# "bhtn_action_notify", "sprint");
+        self notify("bhtn_action_notify", "sprint");
         wait(0.05);
       }
     }
@@ -345,15 +272,6 @@ function turned_player_buttons() {
   }
 }
 
-/*
-	Name: turned_disable_player_weapons
-	Namespace: zm_turned
-	Checksum: 0xC8E68765
-	Offset: 0x16F8
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function turned_disable_player_weapons() {
   if(isdefined(self.is_zombie) && self.is_zombie) {
     return;
@@ -373,15 +291,6 @@ function turned_disable_player_weapons() {
   self disableweaponcycling();
 }
 
-/*
-	Name: turned_enable_player_weapons
-	Namespace: zm_turned
-	Checksum: 0xFAA999E1
-	Offset: 0x17F8
-	Size: 0x2A4
-	Parameters: 0
-	Flags: Linked
-*/
 function turned_enable_player_weapons() {
   self takeallweapons();
   self enableweaponcycling();
@@ -417,15 +326,6 @@ function turned_enable_player_weapons() {
   self setweaponammoclip(self zm_utility::get_player_lethal_grenade(), 2);
 }
 
-/*
-	Name: get_farthest_available_zombie
-	Namespace: zm_turned
-	Checksum: 0x91450807
-	Offset: 0x1AA8
-	Size: 0x194
-	Parameters: 1
-	Flags: None
-*/
 function get_farthest_available_zombie(player) {
   while (true) {
     zombies = array::get_all_closest(player.origin, getaiteamarray(level.zombie_team));
@@ -440,15 +340,6 @@ function get_farthest_available_zombie(player) {
   }
 }
 
-/*
-	Name: get_available_human
-	Namespace: zm_turned
-	Checksum: 0x71B511D6
-	Offset: 0x1C48
-	Size: 0xBA
-	Parameters: 0
-	Flags: None
-*/
 function get_available_human() {
   players = getplayers();
   foreach(player in players) {
@@ -458,15 +349,6 @@ function get_available_human() {
   }
 }
 
-/*
-	Name: silentlyremovezombie
-	Namespace: zm_turned
-	Checksum: 0xE30F7BF3
-	Offset: 0x1D10
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function silentlyremovezombie() {
   self.skip_death_notetracks = 1;
   self.nodeathragdoll = 1;
@@ -474,15 +356,6 @@ function silentlyremovezombie() {
   self zm_utility::self_delete();
 }
 
-/*
-	Name: getspawnpoint
-	Namespace: zm_turned
-	Checksum: 0xF427A550
-	Offset: 0x1D90
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function getspawnpoint() {
   spawnpoint = self spawnlogic::getspawnpoint_dm(level._turned_zombie_respawnpoints);
   return spawnpoint;

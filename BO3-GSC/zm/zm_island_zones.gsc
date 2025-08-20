@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_zones.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\ai_shared;
@@ -21,45 +25,17 @@
 #using scripts\zm\zm_island_skullweapon_quest;
 #using scripts\zm\zm_island_transport;
 #using scripts\zm\zm_island_vo;
-
 #namespace zm_island_zones;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_island_zones
-	Checksum: 0x961B648D
-	Offset: 0xB58
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_island_zones", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_island_zones
-	Checksum: 0x9507A86D
-	Offset: 0xB98
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "vine_door_play_fx", 9000, 1, "int");
   scene::add_scene_func("p7_fxanim_zm_island_vine_gate_bundle", & function_6ed87461, "init");
 }
 
-/*
-	Name: main
-	Namespace: zm_island_zones
-	Checksum: 0xCF21DBB6
-	Offset: 0xC08
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level.zones = [];
   level.zone_manager_init_func = & function_45a8888c;
@@ -67,15 +43,6 @@ function main() {
   level thread zm_zonemgr::manage_zones(init_zones);
 }
 
-/*
-	Name: function_45a8888c
-	Namespace: zm_island_zones
-	Checksum: 0xE91A074
-	Offset: 0xC68
-	Size: 0x8EC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_45a8888c() {
   level flag::init("always_on");
   level flag::set("always_on");
@@ -136,51 +103,21 @@ function function_45a8888c() {
   }
   var_7be3ca60 = getentarray("delete_door_model_when_finished", "script_noteworthy");
   array::thread_all(var_7be3ca60, & function_afc937e7);
-  /#
   level thread function_8b7501aa();
-  # /
 }
 
-/*
-	Name: function_2043d032
-	Namespace: zm_island_zones
-	Checksum: 0x84971E72
-	Offset: 0x1560
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2043d032() {
   zm_zonemgr::add_adjacent_zone("zone_bunker_prison", "zone_bunker_prison_entrance", "enable_zone_bunker_prison");
 }
 
-/*
-	Name: function_87fe8382
-	Namespace: zm_island_zones
-	Checksum: 0x8470047D
-	Offset: 0x1598
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function function_87fe8382() {
   zm_zonemgr::add_adjacent_zone("zone_flooded_bunker_right", "zone_flooded_bunker_tunnel", "connect_flooded_bunker_right_to_flooded_tunnel");
-  level waittill(# "zone_flooded_bunker_tunnel");
+  level waittill("zone_flooded_bunker_tunnel");
   level.zones["zone_flooded_bunker_tunnel"].is_spawning_allowed = 0;
 }
 
-/*
-	Name: function_8b7501aa
-	Namespace: zm_island_zones
-	Checksum: 0x8AA96F3C
-	Offset: 0x15F8
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8b7501aa() {
-  /#
-  level waittill(# "open_sesame");
+  level waittill("open_sesame");
   level flag::set("");
   level flag::set("");
   level flag::set("");
@@ -189,33 +126,14 @@ function function_8b7501aa() {
   level flag::set("");
   level flag::set("");
   level flag::set("");
-  # /
 }
 
-/*
-	Name: function_6ed87461
-	Namespace: zm_island_zones
-	Checksum: 0xFE59C314
-	Offset: 0x1718
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6ed87461(a_ents) {
   self.var_4165e349 = a_ents["fxanim_vine_gate"];
 }
 
-/*
-	Name: function_feb4ddde
-	Namespace: zm_island_zones
-	Checksum: 0xAC275B0F
-	Offset: 0x1740
-	Size: 0x25A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_feb4ddde() {
-  self endon(# "death");
+  self endon("death");
   level flag::wait_till(self.script_flag);
   var_4c616d31 = self.target + "_vine";
   var_593fa92c = struct::get_array(var_4c616d31 + "_fx", "targetname");
@@ -233,31 +151,13 @@ function function_feb4ddde() {
   }
 }
 
-/*
-	Name: function_cd881f16
-	Namespace: zm_island_zones
-	Checksum: 0xBAE01F88
-	Offset: 0x19A8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cd881f16() {
   level flag::wait_till("connect_jungle_to_jungle_lab");
   exploder::exploder("fxexp_410");
 }
 
-/*
-	Name: function_afc937e7
-	Namespace: zm_island_zones
-	Checksum: 0xB694A54F
-	Offset: 0x19F0
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_afc937e7() {
-  self endon(# "death");
+  self endon("death");
   self util::waittill_either("rotatedone", "movedone");
   wait(2);
   self delete();

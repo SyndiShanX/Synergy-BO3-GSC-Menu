@@ -1,54 +1,22 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: codescripts\character.gsc
+*************************************************/
+
 #namespace character;
 
-/*
-	Name: setmodelfromarray
-	Namespace: character
-	Checksum: 0xB8CDA92D
-	Offset: 0xD0
-	Size: 0x3C
-	Parameters: 1
-	Flags: None
-*/
 function setmodelfromarray(a) {
   self setmodel(a[randomint(a.size)]);
 }
 
-/*
-	Name: randomelement
-	Namespace: character
-	Checksum: 0x5D8097C3
-	Offset: 0x118
-	Size: 0x28
-	Parameters: 1
-	Flags: None
-*/
 function randomelement(a) {
   return a[randomint(a.size)];
 }
 
-/*
-	Name: attachfromarray
-	Namespace: character
-	Checksum: 0xDC69E339
-	Offset: 0x148
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function attachfromarray(a) {
   self attach(randomelement(a), "", 1);
 }
 
-/*
-	Name: newcharacter
-	Namespace: character
-	Checksum: 0xA087E372
-	Offset: 0x198
-	Size: 0x64
-	Parameters: 0
-	Flags: None
-*/
 function newcharacter() {
   self detachall();
   oldgunhand = self.anim_gunhand;
@@ -59,15 +27,6 @@ function newcharacter() {
   self[[anim.putguninhand]](oldgunhand);
 }
 
-/*
-	Name: save
-	Namespace: character
-	Checksum: 0xC734A501
-	Offset: 0x208
-	Size: 0x1A8
-	Parameters: 0
-	Flags: None
-*/
 function save() {
   info["gunHand"] = self.anim_gunhand;
   info["gunInHand"] = self.anim_guninhand;
@@ -76,13 +35,9 @@ function save() {
   info["gearModel"] = self.gearmodel;
   if(isdefined(self.name)) {
     info["name"] = self.name;
-    /#
     println("", self.name);
-    # /
   } else {
-    /#
     println("");
-    # /
   }
   attachsize = self getattachsize();
   for (i = 0; i < attachsize; i++) {
@@ -92,15 +47,6 @@ function save() {
   return info;
 }
 
-/*
-	Name: load
-	Namespace: character
-	Checksum: 0x7B4ECA7
-	Offset: 0x3B8
-	Size: 0x196
-	Parameters: 1
-	Flags: None
-*/
 function load(info) {
   self detachall();
   self.anim_gunhand = info["gunHand"];
@@ -110,13 +56,9 @@ function load(info) {
   self.gearmodel = info["gearModel"];
   if(isdefined(info["name"])) {
     self.name = info["name"];
-    /#
     println("", self.name);
-    # /
   } else {
-    /#
     println("");
-    # /
   }
   attachinfo = info["attach"];
   attachsize = attachinfo.size;
@@ -125,15 +67,6 @@ function load(info) {
   }
 }
 
-/*
-	Name: get_random_character
-	Namespace: character
-	Checksum: 0xFFCA34A7
-	Offset: 0x558
-	Size: 0x1F2
-	Parameters: 1
-	Flags: None
-*/
 function get_random_character(amount) {
   self_info = strtok(self.classname, "_");
   if(self_info.size <= 2) {
@@ -171,15 +104,6 @@ function get_random_character(amount) {
   return index;
 }
 
-/*
-	Name: get_least_used_index
-	Namespace: character
-	Checksum: 0xD768CA27
-	Offset: 0x758
-	Size: 0x152
-	Parameters: 2
-	Flags: None
-*/
 function get_least_used_index(prefix, group) {
   lowest_indices = [];
   lowest_use = level.character_index_cache[prefix][group][0];
@@ -194,36 +118,16 @@ function get_least_used_index(prefix, group) {
     }
     lowest_indices[lowest_indices.size] = i;
   }
-  /#
   assert(lowest_indices.size, "");
-  # /
-    return random(lowest_indices);
+  return random(lowest_indices);
 }
 
-/*
-	Name: initialize_character_group
-	Namespace: character
-	Checksum: 0xD3155A34
-	Offset: 0x8B8
-	Size: 0x60
-	Parameters: 3
-	Flags: None
-*/
 function initialize_character_group(prefix, group, amount) {
   for (i = 0; i < amount; i++) {
     level.character_index_cache[prefix][group][i] = 0;
   }
 }
 
-/*
-	Name: random
-	Namespace: character
-	Checksum: 0x4B076887
-	Offset: 0x920
-	Size: 0x56
-	Parameters: 1
-	Flags: None
-*/
 function random(array) {
   keys = getarraykeys(array);
   return array[keys[randomint(keys.size)]];

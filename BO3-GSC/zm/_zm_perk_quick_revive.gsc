@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_perk_quick_revive.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -15,45 +19,17 @@
 #using scripts\zm\_zm_pers_upgrades_system;
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_perk_quick_revive;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x31C9F1AD
-	Offset: 0x490
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_perk_quick_revive", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x1C5D3CCA
-	Offset: 0x4D0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   enable_quick_revive_perk_for_level();
   level.check_quickrevive_hotjoin = & check_quickrevive_for_hotjoin;
 }
 
-/*
-	Name: enable_quick_revive_perk_for_level
-	Namespace: zm_perk_quick_revive
-	Checksum: 0xA23D8CA9
-	Offset: 0x508
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function enable_quick_revive_perk_for_level() {
   zm_perks::register_perk_basic_info("specialty_quickrevive", "revive", & revive_cost_override, & "ZOMBIE_PERK_QUICKREVIVE", getweapon("zombie_perk_bottle_revive"));
   zm_perks::register_perk_precache_func("specialty_quickrevive", & quick_revive_precache);
@@ -65,15 +41,6 @@ function enable_quick_revive_perk_for_level() {
   level flag::init("solo_revive");
 }
 
-/*
-	Name: quick_revive_precache
-	Namespace: zm_perk_quick_revive
-	Checksum: 0xEB17D126
-	Offset: 0x698
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function quick_revive_precache() {
   if(isdefined(level.quick_revive_precache_override_func)) {
     [
@@ -88,41 +55,14 @@ function quick_revive_precache() {
   level.machine_assets["specialty_quickrevive"].on_model = "p7_zm_vending_revive";
 }
 
-/*
-	Name: quick_revive_register_clientfield
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x39E90C5E
-	Offset: 0x780
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function quick_revive_register_clientfield() {
   clientfield::register("clientuimodel", "hudItems.perks.quick_revive", 1, 2, "int");
 }
 
-/*
-	Name: quick_revive_set_clientfield
-	Namespace: zm_perk_quick_revive
-	Checksum: 0xCF185E40
-	Offset: 0x7C0
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function quick_revive_set_clientfield(state) {
   self clientfield::set_player_uimodel("hudItems.perks.quick_revive", state);
 }
 
-/*
-	Name: quick_revive_perk_machine_setup
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x2BD8AA54
-	Offset: 0x7F8
-	Size: 0xBC
-	Parameters: 4
-	Flags: Linked
-*/
 function quick_revive_perk_machine_setup(use_trigger, perk_machine, bump_trigger, collision) {
   use_trigger.script_sound = "mus_perks_revive_jingle";
   use_trigger.script_string = "revive_perk";
@@ -135,15 +75,6 @@ function quick_revive_perk_machine_setup(use_trigger, perk_machine, bump_trigger
   }
 }
 
-/*
-	Name: revive_cost_override
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x8615B9BB
-	Offset: 0x8C0
-	Size: 0x36
-	Parameters: 0
-	Flags: Linked
-*/
 function revive_cost_override() {
   solo = zm_perks::use_solo_revive();
   if(solo) {
@@ -152,17 +83,8 @@ function revive_cost_override() {
   return 1500;
 }
 
-/*
-	Name: turn_revive_on
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x30A1DC3B
-	Offset: 0x900
-	Size: 0x74A
-	Parameters: 0
-	Flags: Linked
-*/
 function turn_revive_on() {
-  level endon(# "stop_quickrevive_logic");
+  level endon("stop_quickrevive_logic");
   level flag::wait_till("start_zombie_round_logic");
   solo_mode = 0;
   if(zm_perks::use_solo_revive()) {
@@ -191,9 +113,9 @@ function turn_revive_on() {
     }
     array::thread_all(machine_triggers, & zm_perks::set_power_on, 0);
     if(isdefined(level.initial_quick_revive_power_off) && level.initial_quick_revive_power_off) {
-      level waittill(# "revive_on");
+      level waittill("revive_on");
     } else if(!solo_mode) {
-      level waittill(# "revive_on");
+      level waittill("revive_on");
     }
     for (i = 0; i < machine.size; i++) {
       if(isdefined(machine[i].classname) && machine[i].classname == "script_model") {
@@ -207,7 +129,7 @@ function turn_revive_on() {
         machine_model = machine[i];
         machine[i] thread zm_perks::perk_fx("revive_light");
         exploder::exploder("quick_revive_lgts");
-        machine[i] notify(# "stop_loopsound");
+        machine[i] notify("stop_loopsound");
         machine[i] thread zm_perks::play_loop_on_machine();
         if(isdefined(machine_triggers[i])) {
           machine_clip = machine_triggers[i].clip;
@@ -225,7 +147,7 @@ function turn_revive_on() {
     if(isdefined(level.machine_assets["specialty_quickrevive"].power_on_callback)) {
       array::thread_all(machine, level.machine_assets["specialty_quickrevive"].power_on_callback);
     }
-    level notify(# "specialty_quickrevive_power_on");
+    level notify("specialty_quickrevive_power_on");
     if(isdefined(machine_model)) {
       machine_model.ishidden = 0;
     }
@@ -245,15 +167,6 @@ function turn_revive_on() {
   }
 }
 
-/*
-	Name: reenable_quickrevive
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x3697883B
-	Offset: 0x1058
-	Size: 0x664
-	Parameters: 2
-	Flags: Linked
-*/
 function reenable_quickrevive(machine_clip, solo_mode) {
   if(isdefined(level.revive_machine_spawned) && (!(isdefined(level.revive_machine_spawned) && level.revive_machine_spawned))) {
     return;
@@ -285,17 +198,17 @@ function reenable_quickrevive(machine_clip, solo_mode) {
     update_quickrevive_power_state(1);
     unhide_quickrevive();
     restart_quickrevive();
-    level notify(# "revive_off");
+    level notify("revive_off");
     wait(0.1);
-    level notify(# "stop_quickrevive_logic");
+    level notify("stop_quickrevive_logic");
   } else {
     if(!(isdefined(level._dont_unhide_quickervive_on_hotjoin) && level._dont_unhide_quickervive_on_hotjoin)) {
       unhide_quickrevive();
-      level notify(# "revive_off");
+      level notify("revive_off");
       wait(0.1);
     }
-    level notify(# "revive_hide");
-    level notify(# "stop_quickrevive_logic");
+    level notify("revive_hide");
+    level notify("stop_quickrevive_logic");
     restart_quickrevive();
     triggers = getentarray("zombie_vending", "targetname");
     foreach(trigger in triggers) {
@@ -319,9 +232,9 @@ function reenable_quickrevive(machine_clip, solo_mode) {
   level thread turn_revive_on();
   if(power_state) {
     zm_perks::perk_unpause("specialty_quickrevive");
-    level notify(# "revive_on");
+    level notify("revive_on");
     wait(0.1);
-    level notify(# "specialty_quickrevive_power_on");
+    level notify("specialty_quickrevive_power_on");
   } else {
     zm_perks::perk_pause("specialty_quickrevive");
   }
@@ -357,15 +270,6 @@ function reenable_quickrevive(machine_clip, solo_mode) {
   }
 }
 
-/*
-	Name: update_quick_revive
-	Namespace: zm_perk_quick_revive
-	Checksum: 0xB05C4C94
-	Offset: 0x16C8
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function update_quick_revive(solo_mode = 0) {
   clip = undefined;
   if(isdefined(level.quick_revive_machine_clip)) {
@@ -375,18 +279,9 @@ function update_quick_revive(solo_mode = 0) {
   level.quick_revive_machine thread reenable_quickrevive(clip, solo_mode);
 }
 
-/*
-	Name: check_quickrevive_for_hotjoin
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x8BD469B0
-	Offset: 0x1770
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function check_quickrevive_for_hotjoin() {
-  level notify(# "notify_check_quickrevive_for_hotjoin");
-  level endon(# "notify_check_quickrevive_for_hotjoin");
+  level notify("notify_check_quickrevive_for_hotjoin");
+  level endon("notify_check_quickrevive_for_hotjoin");
   solo_mode = 0;
   should_update = 0;
   wait(0.05);
@@ -411,15 +306,6 @@ function check_quickrevive_for_hotjoin() {
   }
 }
 
-/*
-	Name: revive_solo_fx
-	Namespace: zm_perk_quick_revive
-	Checksum: 0xC577438B
-	Offset: 0x18F8
-	Size: 0x38A
-	Parameters: 2
-	Flags: Linked
-*/
 function revive_solo_fx(machine_clip, blocker_model) {
   if(level flag::exists("solo_revive") && level flag::get("solo_revive") && !level flag::get("solo_game")) {
     return;
@@ -427,9 +313,9 @@ function revive_solo_fx(machine_clip, blocker_model) {
   if(isdefined(machine_clip)) {
     level.quick_revive_machine_clip = machine_clip;
   }
-  level notify(# "revive_solo_fx");
-  level endon(# "revive_solo_fx");
-  self endon(# "death");
+  level notify("revive_solo_fx");
+  level endon("revive_solo_fx");
+  self endon("death");
   level flag::wait_till("solo_revive");
   if(isdefined(level.revive_solo_fx_func)) {
     level thread[[level.revive_solo_fx_func]]();
@@ -455,7 +341,7 @@ function revive_solo_fx(machine_clip, blocker_model) {
     }
     self vibrate(direction, 10, 0.5, 5);
   }
-  self waittill(# "movedone");
+  self waittill("movedone");
   playfx(level._effect["poltergeist"], self.origin);
   playsoundatposition("zmb_box_poof", self.origin);
   if(isdefined(self.fx)) {
@@ -469,18 +355,9 @@ function revive_solo_fx(machine_clip, blocker_model) {
   if(isdefined(blocker_model)) {
     blocker_model show();
   }
-  level notify(# "revive_hide");
+  level notify("revive_hide");
 }
 
-/*
-	Name: disable_quickrevive
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x378484D4
-	Offset: 0x1C90
-	Size: 0x4EA
-	Parameters: 1
-	Flags: Linked
-*/
 function disable_quickrevive(machine_clip) {
   if(isdefined(level.solo_revive_init) && level.solo_revive_init && level flag::get("solo_revive") && isdefined(level.quick_revive_machine)) {
     triggers = getentarray("zombie_vending", "targetname");
@@ -519,7 +396,7 @@ function disable_quickrevive(machine_clip) {
       direction = (direction[0] * -1, direction[1], 0);
     }
     level.quick_revive_machine vibrate(direction, 10, 0.5, 4);
-    level.quick_revive_machine waittill(# "movedone");
+    level.quick_revive_machine waittill("movedone");
     level.quick_revive_machine hide();
     level.quick_revive_machine.ishidden = 1;
     if(isdefined(level.quick_revive_machine_clip)) {
@@ -530,19 +407,10 @@ function disable_quickrevive(machine_clip) {
     if(isdefined(level.quick_revive_trigger) && isdefined(level.quick_revive_trigger.blocker_model)) {
       level.quick_revive_trigger.blocker_model show();
     }
-    level notify(# "revive_hide");
+    level notify("revive_hide");
   }
 }
 
-/*
-	Name: unhide_quickrevive
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x8FDEE220
-	Offset: 0x2188
-	Size: 0x418
-	Parameters: 0
-	Flags: Linked
-*/
 function unhide_quickrevive() {
   while (zm_perks::players_are_in_perk_area(level.quick_revive_machine)) {
     wait(0.1);
@@ -581,7 +449,7 @@ function unhide_quickrevive() {
   if(!(isdefined(level.quick_revive_linked_ent_moves) && level.quick_revive_linked_ent_moves) && level.quick_revive_machine.origin != org) {
     level.quick_revive_machine moveto(org, 3);
     level.quick_revive_machine vibrate(direction, 10, 0.5, 2.9);
-    level.quick_revive_machine waittill(# "movedone");
+    level.quick_revive_machine waittill("movedone");
     level.quick_revive_machine.angles = level.quick_revive_default_angles;
   } else {
     if(isdefined(level.quick_revive_linked_ent)) {
@@ -599,15 +467,6 @@ function unhide_quickrevive() {
   level.quick_revive_machine.ishidden = 0;
 }
 
-/*
-	Name: restart_quickrevive
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x868E024B
-	Offset: 0x25A8
-	Size: 0x112
-	Parameters: 0
-	Flags: Linked
-*/
 function restart_quickrevive() {
   triggers = getentarray("zombie_vending", "targetname");
   foreach(trigger in triggers) {
@@ -615,22 +474,13 @@ function restart_quickrevive() {
       continue;
     }
     if(trigger.script_noteworthy == "specialty_quickrevive") {
-      trigger notify(# "stop_quickrevive_logic");
+      trigger notify("stop_quickrevive_logic");
       trigger thread zm_perks::vending_trigger_think();
       trigger triggerenable(1);
     }
   }
 }
 
-/*
-	Name: update_quickrevive_power_state
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x7C7073A6
-	Offset: 0x26C8
-	Size: 0x1C2
-	Parameters: 1
-	Flags: Linked
-*/
 function update_quickrevive_power_state(poweron) {
   foreach(item in level.powered_items) {
     if(isdefined(item.target) && isdefined(item.target.script_noteworthy) && item.target.script_noteworthy == "specialty_quickrevive") {
@@ -654,34 +504,16 @@ function update_quickrevive_power_state(poweron) {
   }
 }
 
-/*
-	Name: solo_revive_buy_trigger_move
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x38F6842E
-	Offset: 0x2898
-	Size: 0xCA
-	Parameters: 1
-	Flags: Linked
-*/
 function solo_revive_buy_trigger_move(revive_trigger_noteworthy) {
-  self endon(# "death");
+  self endon("death");
   revive_perk_triggers = getentarray(revive_trigger_noteworthy, "script_noteworthy");
   foreach(revive_perk_trigger in revive_perk_triggers) {
     self thread solo_revive_buy_trigger_move_trigger(revive_perk_trigger);
   }
 }
 
-/*
-	Name: solo_revive_buy_trigger_move_trigger
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x481C96CA
-	Offset: 0x2970
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function solo_revive_buy_trigger_move_trigger(revive_perk_trigger) {
-  self endon(# "death");
+  self endon("death");
   revive_perk_trigger setinvisibletoplayer(self);
   if(level.solo_lives_given >= 3) {
     revive_perk_trigger triggerenable(0);
@@ -697,15 +529,6 @@ function solo_revive_buy_trigger_move_trigger(revive_perk_trigger) {
   revive_perk_trigger setvisibletoplayer(self);
 }
 
-/*
-	Name: give_quick_revive_perk
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x52A802C0
-	Offset: 0x2A40
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function give_quick_revive_perk() {
   if(zm_perks::use_solo_revive()) {
     self.lives = 1;
@@ -724,13 +547,4 @@ function give_quick_revive_perk() {
   }
 }
 
-/*
-	Name: take_quick_revive_perk
-	Namespace: zm_perk_quick_revive
-	Checksum: 0x72F8F4F4
-	Offset: 0x2AF8
-	Size: 0x1C
-	Parameters: 3
-	Flags: Linked
-*/
 function take_quick_revive_perk(b_pause, str_perk, str_result) {}

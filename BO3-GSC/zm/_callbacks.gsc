@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_callbacks.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\blackboard;
 #using scripts\shared\bots\bot_traversals;
@@ -8,44 +12,16 @@
 #using scripts\zm\gametypes\_globallogic_player;
 #using scripts\zm\gametypes\_globallogic_vehicle;
 #using scripts\zm\gametypes\_hostmigration;
-
 #namespace callback;
 
-/*
-	Name: __init__sytem__
-	Namespace: callback
-	Checksum: 0x8A9E0809
-	Offset: 0x1E8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("callback", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: callback
-	Checksum: 0x9E4FDC6A
-	Offset: 0x228
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level thread setup_callbacks();
 }
 
-/*
-	Name: setup_callbacks
-	Namespace: callback
-	Checksum: 0xEECC2927
-	Offset: 0x250
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_callbacks() {
   setdefaultcallbacks();
   level.idflags_noflag = 0;
@@ -64,15 +40,6 @@ function setup_callbacks() {
   level.idflags_passthru = 4096;
 }
 
-/*
-	Name: setdefaultcallbacks
-	Namespace: callback
-	Checksum: 0x879E00A8
-	Offset: 0x318
-	Size: 0x1DC
-	Parameters: 0
-	Flags: Linked
-*/
 function setdefaultcallbacks() {
   level.callbackstartgametype = & globallogic::callback_startgametype;
   level.callbackplayerconnect = & globallogic_player::callback_playerconnect;

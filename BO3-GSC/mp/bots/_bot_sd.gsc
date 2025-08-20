@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\bots\_bot_sd.gsc
+*************************************************/
+
 #using scripts\mp\bots\_bot;
 #using scripts\mp\bots\_bot_combat;
 #using scripts\mp\gametypes\_globallogic_utils;
@@ -9,31 +13,12 @@
 #using scripts\shared\gameobjects_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace bot_sd;
 
-/*
-	Name: init
-	Namespace: bot_sd
-	Checksum: 0xFE20F631
-	Offset: 0x1C8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.botidle = & bot_idle;
 }
 
-/*
-	Name: bot_idle
-	Namespace: bot_sd
-	Checksum: 0x4C5C965D
-	Offset: 0x1F0
-	Size: 0x544
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_idle() {
   if(!level.bombplanted && !level.multibomb && self.team == game["attackers"]) {
     carrier = level.sdbomb gameobjects::get_carrier();
@@ -88,15 +73,6 @@ function bot_idle() {
   self bot::bot_idle();
 }
 
-/*
-	Name: get_zone_trigger
-	Namespace: bot_sd
-	Checksum: 0xA5C6B1D4
-	Offset: 0x740
-	Size: 0x4E
-	Parameters: 1
-	Flags: Linked
-*/
 function get_zone_trigger(zone) {
   if(self.team == zone gameobjects::get_owner_team()) {
     return zone.bombdefusetrig;
@@ -104,15 +80,6 @@ function get_zone_trigger(zone) {
   return zone.trigger;
 }
 
-/*
-	Name: can_plant
-	Namespace: bot_sd
-	Checksum: 0x9B949B38
-	Offset: 0x798
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function can_plant(zone) {
   if(level.multibomb) {
     return !(isdefined(zone.isplanted) && zone.isplanted) && self.team != zone gameobjects::get_owner_team();
@@ -121,15 +88,6 @@ function can_plant(zone) {
   return isdefined(carrier) && self == carrier;
 }
 
-/*
-	Name: can_defuse
-	Namespace: bot_sd
-	Checksum: 0x5D98DE95
-	Offset: 0x838
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function can_defuse(zone) {
   return isdefined(zone.isplanted) && zone.isplanted && self.team == zone gameobjects::get_owner_team();
 }

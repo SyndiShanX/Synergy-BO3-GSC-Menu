@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_temple_amb.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\audio_shared;
@@ -7,18 +11,8 @@
 #using scripts\zm\_zm_audio;
 #using scripts\zm\_zm_audio_zhd;
 #using scripts\zm\zm_temple_sq_skits;
-
 #namespace zm_temple_amb;
 
-/*
-	Name: main
-	Namespace: zm_temple_amb
-	Checksum: 0x85C85B1
-	Offset: 0x2B0
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level._audio_custom_weapon_check = & weapon_type_check_custom;
   level._custom_intro_vox = & intro_vox_or_skit;
@@ -31,44 +25,17 @@ function main() {
   level thread function_45b4acf2();
 }
 
-/*
-	Name: audio_alias_override
-	Namespace: zm_temple_amb
-	Checksum: 0x23E3B70B
-	Offset: 0x3B0
-	Size: 0x42
-	Parameters: 0
-	Flags: Linked
-*/
 function audio_alias_override() {
   level.plr_vox["kill"]["explosive"] = "kill_explosive";
   level.plr_vox["kill"]["explosive_response"] = undefined;
 }
 
-/*
-	Name: function_d4b7774a
-	Namespace: zm_temple_amb
-	Checksum: 0xE2033C6B
-	Offset: 0x400
-	Size: 0xA
-	Parameters: 0
-	Flags: None
-*/
 function function_d4b7774a() {
   wait(10);
 }
 
-/*
-	Name: endgame_vox
-	Namespace: zm_temple_amb
-	Checksum: 0xF513140A
-	Offset: 0x418
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function endgame_vox() {
-  level waittill(# "end_game");
+  level waittill("end_game");
   wait(2);
   winner = undefined;
   players = getplayers();
@@ -91,15 +58,6 @@ function endgame_vox() {
   }
 }
 
-/*
-	Name: weapon_type_check_custom
-	Namespace: zm_temple_amb
-	Checksum: 0xFDA8ABDF
-	Offset: 0x578
-	Size: 0x7E
-	Parameters: 2
-	Flags: Linked
-*/
 function weapon_type_check_custom(weapon, magic_box) {
   if(issubstr(weapon.name, "upgraded")) {
     return "upgrade";
@@ -108,30 +66,12 @@ function weapon_type_check_custom(weapon, magic_box) {
   return level.zombie_weapons[w_root].vox;
 }
 
-/*
-	Name: setup_music_egg
-	Namespace: zm_temple_amb
-	Checksum: 0x713EA969
-	Offset: 0x600
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_music_egg() {
   level thread zm_audio_zhd::function_e753d4f();
   level flag::wait_till("snd_song_completed");
   level thread zm_audio::sndmusicsystem_playstate("pareidolia");
 }
 
-/*
-	Name: intro_vox_or_skit
-	Namespace: zm_temple_amb
-	Checksum: 0x5BC3831B
-	Offset: 0x668
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function intro_vox_or_skit() {
   playsoundatposition("evt_warp_in", (0, 0, 0));
   wait(3);
@@ -148,15 +88,6 @@ function intro_vox_or_skit() {
   }
 }
 
-/*
-	Name: visual_trigger_vox
-	Namespace: zm_temple_amb
-	Checksum: 0x268A0BED
-	Offset: 0x7F0
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked
-*/
 function visual_trigger_vox(place) {
   wait(3);
   struct = struct::get("vox_" + place, "targetname");
@@ -165,7 +96,7 @@ function visual_trigger_vox(place) {
   }
   vox_trig = spawn("trigger_radius", struct.origin - vectorscale((0, 0, 1), 100), 0, 250, 200);
   while (true) {
-    vox_trig waittill(# "trigger", who);
+    vox_trig waittill("trigger", who);
     if(isplayer(who)) {
       who thread zm_audio::create_and_play_dialog("general", place);
       if(place == "location_maze") {
@@ -178,15 +109,6 @@ function visual_trigger_vox(place) {
   vox_trig delete();
 }
 
-/*
-	Name: function_45b4acf2
-	Namespace: zm_temple_amb
-	Checksum: 0x8A3B85B4
-	Offset: 0x930
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_45b4acf2() {
   var_18d6690a = getentarray("zhdsnd_pans", "targetname");
   array::thread_all(var_18d6690a, & function_19277046);
@@ -196,7 +118,7 @@ function function_45b4acf2() {
     return;
   }
   while (true) {
-    level waittill(# "hash_ab740a84", num);
+    level waittill("hash_ab740a84", num);
     if(num == var_6932cc13[n_count]) {
       n_count++;
       if(n_count >= 3) {
@@ -209,19 +131,10 @@ function function_45b4acf2() {
   level flag::set("snd_zhdegg_activate");
 }
 
-/*
-	Name: function_19277046
-	Namespace: zm_temple_amb
-	Checksum: 0x3644B6C2
-	Offset: 0xA58
-	Size: 0x148
-	Parameters: 0
-	Flags: Linked
-*/
 function function_19277046() {
-  level endon(# "snd_zhdegg_activate");
+  level endon("snd_zhdegg_activate");
   while (true) {
-    self waittill(# "damage", damage, attacker, dir, loc, str_type, model, tag, part, weapon, flags);
+    self waittill("damage", damage, attacker, dir, loc, str_type, model, tag, part, weapon, flags);
     if(!level flag::get("gongs_resonating")) {
       continue;
     }
@@ -234,7 +147,7 @@ function function_19277046() {
     if(str_type != "MOD_PISTOL_BULLET") {
       continue;
     }
-    level notify(# "hash_ab740a84", self.script_int);
+    level notify("hash_ab740a84", self.script_int);
     playsoundatposition("zmb_zhd_plate_hit", self.origin);
   }
 }

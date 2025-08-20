@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_zurich_coalescence.gsc
+*************************************************/
+
 #using scripts\cp\_collectibles;
 #using scripts\cp\_load;
 #using scripts\cp\_skipto;
@@ -26,32 +30,13 @@
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\vehicles\_quadtank;
-
 #namespace cp_mi_zurich_coalescence;
 
-/*
-	Name: setup_rex_starts
-	Namespace: cp_mi_zurich_coalescence
-	Checksum: 0xBA3F0C8E
-	Offset: 0xC30
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function setup_rex_starts() {
   util::add_gametype("coop");
   util::add_gametype("cpzm");
 }
 
-/*
-	Name: main
-	Namespace: cp_mi_zurich_coalescence
-	Checksum: 0xBD4BD025
-	Offset: 0xC70
-	Size: 0x234
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   init_clientfields();
   setup_skiptos();
@@ -82,15 +67,6 @@ function main() {
   level.oob_timelimit_ms = getdvarint("oob_timelimit_ms", 3000);
 }
 
-/*
-	Name: init_clientfields
-	Namespace: cp_mi_zurich_coalescence
-	Checksum: 0xD2C8647F
-	Offset: 0xEB0
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("world", "intro_ambience", 1, 1, "int");
   clientfield::register("world", "plaza_battle_amb_wasps", 1, 1, "int");
@@ -100,15 +76,6 @@ function init_clientfields() {
   clientfield::register("world", "clearing_hide_ferris_wheel", 1, 1, "int");
 }
 
-/*
-	Name: setup_skiptos
-	Namespace: cp_mi_zurich_coalescence
-	Checksum: 0x9B586F68
-	Offset: 0xFE0
-	Size: 0x614
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_skiptos() {
   skipto::add("zurich", & zurich_city::skipto_main, "Zurich", & zurich_city::skipto_done);
   skipto::add("intro_igc", & zurich_city::function_9940e82f, "Intro IGC", & zurich_city::function_40b9b738);
@@ -137,28 +104,10 @@ function setup_skiptos() {
   skipto::add("zurich_outro", & zurich_outro::function_313f113, "Outro", & zurich_outro::function_f2f0f1ec);
 }
 
-/*
-	Name: init_level_vars
-	Namespace: cp_mi_zurich_coalescence
-	Checksum: 0x536589F2
-	Offset: 0x1600
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function init_level_vars() {
   setdvar("player_swimTime", 5000);
 }
 
-/*
-	Name: flag_init
-	Namespace: cp_mi_zurich_coalescence
-	Checksum: 0xCE7F4080
-	Offset: 0x1630
-	Size: 0x404
-	Parameters: 0
-	Flags: Linked
-*/
 function flag_init() {
   level flag::init("intro_squad_ready_move");
   level flag::init("flag_enable_zurich_ending");

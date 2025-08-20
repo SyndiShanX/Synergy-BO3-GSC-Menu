@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: core\gametypes\frontend.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\core\_multi_extracam;
 #using scripts\mp\_devgui;
@@ -21,7 +25,6 @@
 #using scripts\shared\postfx_shared;
 #using scripts\shared\scene_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("generic");
 
 class cmegachewfactory {
@@ -49,37 +52,13 @@ class cmegachewfactory {
   var m_uimodel_instructions;
   var m_n_tokens_remaining;
 
-  /*
-  	Name: constructor
-  	Namespace: cmegachewfactory
-  	Checksum: 0x99EC1590
-  	Offset: 0x9AE8
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cmegachewfactory
-  	Checksum: 0x99EC1590
-  	Offset: 0x9AF8
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: get_megachew_factory_results
-  	Namespace: cmegachewfactory
-  	Checksum: 0x65B8514D
-  	Offset: 0x99E8
-  	Size: 0xF6
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_megachew_factory_results() {
     m_b_power_boost = 0;
     m_n_doubler_count = 0;
@@ -99,15 +78,7 @@ class cmegachewfactory {
     }
   }
 
-  /*
-  	Name: set_megachew_result_anim_state
-  	Namespace: cmegachewfactory
-  	Checksum: 0x2E55EB3B
-  	Offset: 0x96F0
-  	Size: 0x2EC
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function set_megachew_result_anim_state(localclientnum, n_ball_index, n_anim_state) {
     level flag::clear(("megachew_factory_result_" + n_ball_index) + "_anim_done");
     str_ball_drop_anim = ("p7_fxanim_zm_bgb_tube_ball_" + n_ball_index) + "_drop_anim";
@@ -142,15 +113,7 @@ class cmegachewfactory {
     level flag::set(("megachew_factory_result_" + n_ball_index) + "_anim_done");
   }
 
-  /*
-  	Name: set_megachew_results_anim_state
-  	Namespace: cmegachewfactory
-  	Checksum: 0x3C41A873
-  	Offset: 0x9668
-  	Size: 0x7C
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_megachew_results_anim_state(localclientnum, n_anim_state) {
     for (i = 0; i < 6; i++) {
       self thread set_megachew_result_anim_state(localclientnum, i, n_anim_state);
@@ -158,15 +121,7 @@ class cmegachewfactory {
     level flag::wait_till_all(m_a_str_megachew_factory_result_flags);
   }
 
-  /*
-  	Name: set_megachew_factory_door_anim_state
-  	Namespace: cmegachewfactory
-  	Checksum: 0x2D0FA8A
-  	Offset: 0x94D8
-  	Size: 0x184
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_megachew_factory_door_anim_state(localclientnum, n_door_index) {
     level flag::clear(("megachew_factory_door_" + n_door_index) + "_anim_done");
     mdl_door = m_a_mdl_doors[n_door_index - 1];
@@ -183,15 +138,7 @@ class cmegachewfactory {
     level flag::set(("megachew_factory_door_" + n_door_index) + "_anim_done");
   }
 
-  /*
-  	Name: set_megachew_factory_doors_anim_state
-  	Namespace: cmegachewfactory
-  	Checksum: 0x6545928B
-  	Offset: 0x9418
-  	Size: 0xB2
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_megachew_factory_doors_anim_state(localclientnum, b_open) {
     if(m_b_doors_open === b_open) {
       return;
@@ -202,19 +149,11 @@ class cmegachewfactory {
     }
     level flag::wait_till_all(m_a_str_megachew_factory_door_flags);
     if(!m_b_doors_open) {
-      level notify(# "megachew_factory_doors_closed");
+      level notify("megachew_factory_doors_closed");
     }
   }
 
-  /*
-  	Name: set_megachew_factory_label_light_state
-  	Namespace: cmegachewfactory
-  	Checksum: 0x450BB8D4
-  	Offset: 0x9338
-  	Size: 0xD6
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function set_megachew_factory_label_light_state(localclientnum, n_vat_index, n_label_light_state) {
     switch (n_label_light_state) {
       case 0: {
@@ -233,15 +172,7 @@ class cmegachewfactory {
     }
   }
 
-  /*
-  	Name: set_megachew_factory_dome_anim_state
-  	Namespace: cmegachewfactory
-  	Checksum: 0x9DB0D006
-  	Offset: 0x8DF8
-  	Size: 0x536
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function set_megachew_factory_dome_anim_state(localclientnum, n_dome_index, n_anim_state) {
     str_dome_ambient_anim = ("p7_fxanim_zm_bgb_dome_0" + n_dome_index) + "_idle_anim";
     if(vat_is_powered(n_dome_index - 1)) {
@@ -298,25 +229,17 @@ class cmegachewfactory {
       }
       case 5: {
         mdl_dome animation::play(str_dome_reverse_anim, undefined, undefined, 1);
-        level notify(# "megachew_dome_finished_reverse_anim");
+        level notify("megachew_dome_finished_reverse_anim");
         break;
       }
     }
   }
 
-  /*
-  	Name: swap_spinning_carousel_gumball_on_notify
-  	Namespace: cmegachewfactory
-  	Checksum: 0xEEF439EC
-  	Offset: 0x8C88
-  	Size: 0x164
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function swap_spinning_carousel_gumball_on_notify(localclientnum, n_vat_index, n_ball_index) {
     self notify((("swap_spinning_carousel_gumball_on_notify_" + n_vat_index) + "_") + n_ball_index);
     self endon((("swap_spinning_carousel_gumball_on_notify_" + n_vat_index) + "_") + n_ball_index);
-    self endon(# "megachew_factory_doors_closed");
+    self endon("megachew_factory_doors_closed");
     mdl_carousel = getent(localclientnum, "gumball_carousel_0" + (n_vat_index + 1), "targetname");
     while (true) {
       if(level flag::get("megachew_carousel_show_result") && n_ball_index == 0) {
@@ -327,49 +250,25 @@ class cmegachewfactory {
       [
         [m_a_o_megachewcarousels[n_vat_index]]
       ] - > update_model_on_carousel_tag(n_ball_index, str_model);
-      mdl_carousel waittillmatch(# "_anim_notify_");
+      mdl_carousel waittillmatch("_anim_notify_");
     }
   }
 
-  /*
-  	Name: show_random_starting_gumballs_on_carousel
-  	Namespace: cmegachewfactory
-  	Checksum: 0xA73E5586
-  	Offset: 0x8C20
-  	Size: 0x5E
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function show_random_starting_gumballs_on_carousel(localclientnum, n_vat_index) {
     for (n_ball_index = 0; n_ball_index < 4; n_ball_index++) {
       self thread swap_spinning_carousel_gumball_on_notify(localclientnum, n_vat_index, n_ball_index);
     }
   }
 
-  /*
-  	Name: show_random_starting_gumballs_on_carousels
-  	Namespace: cmegachewfactory
-  	Checksum: 0xDEC6D0EA
-  	Offset: 0x8BC8
-  	Size: 0x4E
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function show_random_starting_gumballs_on_carousels(localclientnum) {
     for (n_vat_index = 0; n_vat_index < 3; n_vat_index++) {
       self thread show_random_starting_gumballs_on_carousel(localclientnum, n_vat_index);
     }
   }
 
-  /*
-  	Name: set_megachew_factory_carousel_anim_state
-  	Namespace: cmegachewfactory
-  	Checksum: 0x1D2D4BE6
-  	Offset: 0x8B48
-  	Size: 0x74
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function set_megachew_factory_carousel_anim_state(localclientnum, n_carousel_index, n_anim_state) {
     b_vat_is_powered = vat_is_powered(n_carousel_index - 1);
     [
@@ -377,15 +276,7 @@ class cmegachewfactory {
     ] - > set_carousel_anim_state(localclientnum, n_anim_state, b_vat_is_powered);
   }
 
-  /*
-  	Name: play_powerup_activation_fx
-  	Namespace: cmegachewfactory
-  	Checksum: 0x9617A011
-  	Offset: 0x89D0
-  	Size: 0x170
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function play_powerup_activation_fx(localclientnum) {
     for (i = 0; i < 3; i++) {
       if(!vat_is_powered(i)) {
@@ -406,15 +297,7 @@ class cmegachewfactory {
     wait(0.5);
   }
 
-  /*
-  	Name: play_gumball_light_exploder
-  	Namespace: cmegachewfactory
-  	Checksum: 0xEB941250
-  	Offset: 0x88F0
-  	Size: 0xD4
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function play_gumball_light_exploder(n_vat_index, str_bgb_limit_type) {
     switch (str_bgb_limit_type) {
       case "activated": {
@@ -435,19 +318,11 @@ class cmegachewfactory {
       }
     }
     exploder::exploder(str_exploder_name + n_vat_index);
-    level waittill(# "megachew_factory_doors_closed");
+    level waittill("megachew_factory_doors_closed");
     exploder::stop_exploder(str_exploder_name + n_vat_index);
   }
 
-  /*
-  	Name: play_gumball_vanishing_fx
-  	Namespace: cmegachewfactory
-  	Checksum: 0x5210CD90
-  	Offset: 0x8560
-  	Size: 0x386
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function play_gumball_vanishing_fx(localclientnum) {
     for (i = 0; i < 3; i++) {
       b_vat_should_launch_result = vat_should_launch_result(i);
@@ -497,30 +372,14 @@ class cmegachewfactory {
     }
   }
 
-  /*
-  	Name: wind_down_gear_to_idle
-  	Namespace: cmegachewfactory
-  	Checksum: 0x8AD2A53E
-  	Offset: 0x84B0
-  	Size: 0xA4
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function wind_down_gear_to_idle(mdl_model, str_prev_anim, str_end_anim, str_idle_anim) {
     mdl_model clearanim(str_prev_anim, 0.1);
     mdl_model animation::play(str_end_anim, undefined, undefined, 1, 0.1);
     mdl_model thread animation::play(str_idle_anim, undefined, undefined, 1, 0.1);
   }
 
-  /*
-  	Name: set_megachew_factory_gears_anim_state
-  	Namespace: cmegachewfactory
-  	Checksum: 0xA24CA18F
-  	Offset: 0x80E8
-  	Size: 0x3BA
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_megachew_factory_gears_anim_state(localclientnum, n_gears_state) {
     switch (n_gears_state) {
       case 0: {
@@ -564,15 +423,7 @@ class cmegachewfactory {
     }
   }
 
-  /*
-  	Name: set_megachew_factory_anim_state
-  	Namespace: cmegachewfactory
-  	Checksum: 0xA3470965
-  	Offset: 0x7860
-  	Size: 0x87E
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_megachew_factory_anim_state(localclientnum, n_anim_state) {
     switch (n_anim_state) {
       case 0: {
@@ -697,7 +548,7 @@ class cmegachewfactory {
         break;
       }
       case 3: {
-        level notify(# "megachew_factory_doors_closed");
+        level notify("megachew_factory_doors_closed");
         self thread set_megachew_factory_gears_anim_state(localclientnum, 2);
         set_megachew_factory_doors_anim_state(localclientnum, 0);
         for (i = 1; i <= 3; i++) {
@@ -714,15 +565,7 @@ class cmegachewfactory {
     }
   }
 
-  /*
-  	Name: attach_model_to_tag_until_notify
-  	Namespace: cmegachewfactory
-  	Checksum: 0xCDB28AA6
-  	Offset: 0x7750
-  	Size: 0x108
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function attach_model_to_tag_until_notify(mdl_base, str_mdl_to_attach, str_tag, str_notify) {
     if(!isdefined(mdl_base.str_mdl_attached)) {
       mdl_base.str_mdl_attached = [];
@@ -737,15 +580,7 @@ class cmegachewfactory {
     mdl_base.str_mdl_attached[str_tag] = undefined;
   }
 
-  /*
-  	Name: hide_show_results
-  	Namespace: cmegachewfactory
-  	Checksum: 0x5313AD3
-  	Offset: 0x7540
-  	Size: 0x204
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function hide_show_results(localclientnum) {
     m_n_result_ball_count = 0;
     for (n_vat_index = 1; n_vat_index <= 3; n_vat_index++) {
@@ -772,26 +607,10 @@ class cmegachewfactory {
     }
   }
 
-  /*
-  	Name: get_effect_color_of_vat_contents
-  	Namespace: cmegachewfactory
-  	Checksum: 0x6BBE4440
-  	Offset: 0x7528
-  	Size: 0xC
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function get_effect_color_of_vat_contents(n_vat_index) {}
 
-  /*
-  	Name: vat_is_powered
-  	Namespace: cmegachewfactory
-  	Checksum: 0x5A507618
-  	Offset: 0x74D0
-  	Size: 0x4A
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function vat_is_powered(n_vat_index) {
     if(!isdefined(m_n_tokens_spent)) {
       return false;
@@ -802,15 +621,7 @@ class cmegachewfactory {
     return false;
   }
 
-  /*
-  	Name: vat_contains_result_item
-  	Namespace: cmegachewfactory
-  	Checksum: 0x2B4221E5
-  	Offset: 0x7480
-  	Size: 0x48
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function vat_contains_result_item(n_vat_index) {
     if(m_a_vat_contents[n_vat_index] === "POWER_BOOST") {
       return false;
@@ -821,15 +632,7 @@ class cmegachewfactory {
     return true;
   }
 
-  /*
-  	Name: vat_should_launch_result
-  	Namespace: cmegachewfactory
-  	Checksum: 0x90A24367
-  	Offset: 0x7430
-  	Size: 0x46
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function vat_should_launch_result(n_vat_index) {
     if(vat_contains_result_item(n_vat_index) && vat_is_powered(n_vat_index)) {
       return true;
@@ -837,15 +640,7 @@ class cmegachewfactory {
     return false;
   }
 
-  /*
-  	Name: get_random_model_name_to_attach_to_carousel
-  	Namespace: cmegachewfactory
-  	Checksum: 0xA2688EB5
-  	Offset: 0x7320
-  	Size: 0x102
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_random_model_name_to_attach_to_carousel() {
     n_roll = randomint(100);
     if(n_roll < 85) {
@@ -865,30 +660,14 @@ class cmegachewfactory {
     return str_gumball;
   }
 
-  /*
-  	Name: get_random_bgb_consumable_item_index
-  	Namespace: cmegachewfactory
-  	Checksum: 0xAE75A60A
-  	Offset: 0x72C8
-  	Size: 0x4A
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_random_bgb_consumable_item_index() {
     first_bgb_consumable_item_index = 216;
     last_bgb_consumable_item_index = 233;
     return randomintrange(first_bgb_consumable_item_index, last_bgb_consumable_item_index + 1);
   }
 
-  /*
-  	Name: get_result_model_name_for_vat_contents
-  	Namespace: cmegachewfactory
-  	Checksum: 0x88D09C64
-  	Offset: 0x7188
-  	Size: 0x132
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function get_result_model_name_for_vat_contents(n_vat_index, b_is_large_version) {
     switch (m_a_vat_contents[n_vat_index]) {
       case "POWER_BOOST": {
@@ -919,15 +698,7 @@ class cmegachewfactory {
     return str_gumball;
   }
 
-  /*
-  	Name: clear_vat_labels
-  	Namespace: cmegachewfactory
-  	Checksum: 0x8A9995A4
-  	Offset: 0x7100
-  	Size: 0x7E
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function clear_vat_labels(localclientnum) {
     for (i = 0; i < 3; i++) {
       setuimodelvalue(m_a_uimodel_megachew[i], "");
@@ -935,15 +706,7 @@ class cmegachewfactory {
     }
   }
 
-  /*
-  	Name: rumble_loop
-  	Namespace: cmegachewfactory
-  	Checksum: 0x4F661FC9
-  	Offset: 0x70B0
-  	Size: 0x48
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function rumble_loop(localclientnum) {
     while (true) {
       playrumbleonposition(localclientnum, "damage_light", (-3243, 2521, 101));
@@ -951,17 +714,9 @@ class cmegachewfactory {
     }
   }
 
-  /*
-  	Name: reset_megachew_factory
-  	Namespace: cmegachewfactory
-  	Checksum: 0x70923E08
-  	Offset: 0x6E88
-  	Size: 0x21A
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function reset_megachew_factory(localclientnum) {
-    level notify(# "megachew_factory_doors_closed");
+    level notify("megachew_factory_doors_closed");
     [
       [m_o_megachewcounter]
     ] - > set_blinking(localclientnum, 0);
@@ -973,7 +728,7 @@ class cmegachewfactory {
     for (n_button_index = 1; n_button_index <= 3; n_button_index++) {
       exploder::stop_exploder("zm_gumball_" + n_button_index);
     }
-    level notify(# "megachew_factory_cycle_complete");
+    level notify("megachew_factory_cycle_complete");
     level flag::clear("megachew_sequence_active");
     for (i = 1; i <= 3; i++) {
       mdl_body = m_a_mdl_bodies[i - 1];
@@ -992,15 +747,7 @@ class cmegachewfactory {
     }
   }
 
-  /*
-  	Name: activate
-  	Namespace: cmegachewfactory
-  	Checksum: 0x43C27268
-  	Offset: 0x6980
-  	Size: 0x4FC
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function activate(localclientnum, n_button_index) {
     level flag::set("megachew_sequence_active");
     m_n_tokens_spent = n_button_index;
@@ -1014,7 +761,7 @@ class cmegachewfactory {
     [
       [m_o_megachewbuttons]
     ] - > set_button_glow(localclientnum, 1);
-    level waittill(# "mega_chew_results", success, vat_0, vat_1, vat_2);
+    level waittill("mega_chew_results", success, vat_0, vat_1, vat_2);
     m_a_vat_contents[0] = vat_0;
     m_a_vat_contents[1] = vat_1;
     m_a_vat_contents[2] = vat_2;
@@ -1070,19 +817,11 @@ class cmegachewfactory {
       [m_o_megachewbuttons]
     ] - > set_button_glow(localclientnum, 0);
     exploder::stop_exploder("zm_gumball_" + n_button_index);
-    level notify(# "megachew_factory_cycle_complete");
+    level notify("megachew_factory_cycle_complete");
     level flag::clear("megachew_sequence_active");
   }
 
-  /*
-  	Name: change_button_selected
-  	Namespace: cmegachewfactory
-  	Checksum: 0x7E096D6F
-  	Offset: 0x6910
-  	Size: 0x64
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function change_button_selected(localclientnum, n_button_index) {
     [
       [m_o_megachewbuttons]
@@ -1090,15 +829,7 @@ class cmegachewfactory {
     setuimodelvalue(m_uimodel_instructions, ("ZMUI_MEGACHEW_" + (n_button_index + 1)) + "_TOKEN");
   }
 
-  /*
-  	Name: update_token_display_counter
-  	Namespace: cmegachewfactory
-  	Checksum: 0xA42532DA
-  	Offset: 0x68A0
-  	Size: 0x64
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function update_token_display_counter(localclientnum, b_update_visual_counter = 0) {
     [
       [m_o_megachewcounter]
@@ -1110,28 +841,12 @@ class cmegachewfactory {
     }
   }
 
-  /*
-  	Name: update_token_count
-  	Namespace: cmegachewfactory
-  	Checksum: 0xA15FEFD4
-  	Offset: 0x6880
-  	Size: 0x18
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function update_token_count(n_tokens) {
     m_n_tokens_remaining = n_tokens;
   }
 
-  /*
-  	Name: init
-  	Namespace: cmegachewfactory
-  	Checksum: 0xE335D596
-  	Offset: 0x5A70
-  	Size: 0xE04
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function init(localclientnum) {
     m_a_str_megachew_factory_door_flags = [];
     m_a_str_megachew_factory_result_flags = [];
@@ -1303,37 +1018,13 @@ class cmegachewcounter {
   var m_n_count;
   var m_mdl_device;
 
-  /*
-  	Name: constructor
-  	Namespace: cmegachewcounter
-  	Checksum: 0x99EC1590
-  	Offset: 0xA780
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cmegachewcounter
-  	Checksum: 0x99EC1590
-  	Offset: 0xA790
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: turn_off_number_place
-  	Namespace: cmegachewcounter
-  	Checksum: 0x1C4EF3F
-  	Offset: 0xA6F0
-  	Size: 0x86
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function turn_off_number_place(localclientnum, n_place) {
     mdl_number = m_a_mdl_numbers[n_place - 1];
     for (i = 0; i < 10; i++) {
@@ -1341,15 +1032,7 @@ class cmegachewcounter {
     }
   }
 
-  /*
-  	Name: set_number_place
-  	Namespace: cmegachewcounter
-  	Checksum: 0x817AF470
-  	Offset: 0xA618
-  	Size: 0xCE
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function set_number_place(localclientnum, n_place, n_digit) {
     mdl_number = m_a_mdl_numbers[n_place - 1];
     for (i = 0; i < 10; i++) {
@@ -1361,15 +1044,7 @@ class cmegachewcounter {
     }
   }
 
-  /*
-  	Name: get_nth_place_of_counter
-  	Namespace: cmegachewcounter
-  	Checksum: 0xCBC36598
-  	Offset: 0xA530
-  	Size: 0xE0
-  	Parameters: 2
-  	Flags: Linked, Private
-  */
+
   function private get_nth_place_of_counter(n_place, n_count) {
     n_mod_1 = int(pow(10, n_place));
     n_mod_2 = int(pow(10, n_place - 1));
@@ -1381,15 +1056,7 @@ class cmegachewcounter {
     return n_temp;
   }
 
-  /*
-  	Name: update_number_display
-  	Namespace: cmegachewcounter
-  	Checksum: 0x5B56225F
-  	Offset: 0xA4A8
-  	Size: 0x7E
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function update_number_display(localclientnum) {
     for (i = 1; i <= 3; i++) {
       n_digit = get_nth_place_of_counter(i, m_n_count);
@@ -1397,18 +1064,10 @@ class cmegachewcounter {
     }
   }
 
-  /*
-  	Name: set_blinking
-  	Namespace: cmegachewcounter
-  	Checksum: 0xA11CF0D9
-  	Offset: 0xA3F0
-  	Size: 0xB0
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_blinking(localclientnum, b_on) {
-    self notify(# "stop_blinking_counter");
-    self endon(# "stop_blinking_counter");
+    self notify("stop_blinking_counter");
+    self endon("stop_blinking_counter");
     if(b_on) {
       while (true) {
         for (i = 1; i <= 3; i++) {
@@ -1421,28 +1080,12 @@ class cmegachewcounter {
     }
   }
 
-  /*
-  	Name: set_number
-  	Namespace: cmegachewcounter
-  	Checksum: 0x7908FF1A
-  	Offset: 0xA3C8
-  	Size: 0x20
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_number(localclientnum, n_count) {
     m_n_count = n_count;
   }
 
-  /*
-  	Name: init
-  	Namespace: cmegachewcounter
-  	Checksum: 0x57AD98AA
-  	Offset: 0xA1F8
-  	Size: 0x1C4
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function init(localclientnum, start_count) {
     m_mdl_device = getent(localclientnum, "vial_counter", "targetname");
     m_a_mdl_numbers = [];
@@ -1474,52 +1117,20 @@ class cmegachewvat {
   var m_b_vat_is_spinning;
   var m_b_vat_is_powered;
 
-  /*
-  	Name: constructor
-  	Namespace: cmegachewvat
-  	Checksum: 0x99EC1590
-  	Offset: 0xB8F0
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cmegachewvat
-  	Checksum: 0x99EC1590
-  	Offset: 0xB900
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: play_effect_on_tag_and_stop_after_pause
-  	Namespace: cmegachewvat
-  	Checksum: 0xD705A08D
-  	Offset: 0xB850
-  	Size: 0x94
-  	Parameters: 4
-  	Flags: Linked, Private
-  */
+
   function private play_effect_on_tag_and_stop_after_pause(localclientnum, str_fx, str_tag, n_pause = 2) {
     fx_id = playfxontag(localclientnum, str_fx, m_mdl_dome, str_tag);
     wait(n_pause);
     stopfx(localclientnum, fx_id);
   }
 
-  /*
-  	Name: play_electrode_surge
-  	Namespace: cmegachewvat
-  	Checksum: 0xC444A32F
-  	Offset: 0xB650
-  	Size: 0x1F6
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function play_electrode_surge(localclientnum) {
     switch (m_n_vat_index) {
       case 1: {
@@ -1543,15 +1154,7 @@ class cmegachewvat {
     }
   }
 
-  /*
-  	Name: play_effect_on_tag_and_add_to_array
-  	Namespace: cmegachewvat
-  	Checksum: 0x827522E1
-  	Offset: 0xB470
-  	Size: 0x1D6
-  	Parameters: 4
-  	Flags: Linked, Private
-  */
+
   function private play_effect_on_tag_and_add_to_array(localclientnum, str_fx, str_tag, n_type_index) {
     fx_id = playfxontag(localclientnum, str_fx, m_mdl_dome, str_tag);
     switch (n_type_index) {
@@ -1585,15 +1188,7 @@ class cmegachewvat {
     }
   }
 
-  /*
-  	Name: set_steam_fx
-  	Namespace: cmegachewvat
-  	Checksum: 0xD2D251FB
-  	Offset: 0xB300
-  	Size: 0x164
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_steam_fx(localclientnum, n_steam_level) {
     if(n_steam_level == 0) {
       foreach(fx_id in m_a_fx_id_steam) {
@@ -1609,15 +1204,7 @@ class cmegachewvat {
     }
   }
 
-  /*
-  	Name: set_light_fx
-  	Namespace: cmegachewvat
-  	Checksum: 0x19E4EB38
-  	Offset: 0xAE58
-  	Size: 0x49E
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_light_fx(localclientnum, b_on) {
     if(!b_on) {
       foreach(fx_id in m_a_fx_id_light) {
@@ -1655,15 +1242,7 @@ class cmegachewvat {
     }
   }
 
-  /*
-  	Name: set_electrode_fx
-  	Namespace: cmegachewvat
-  	Checksum: 0xC097F528
-  	Offset: 0xAB70
-  	Size: 0x2DE
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_electrode_fx(localclientnum, b_on) {
     if(!b_on) {
       foreach(fx_id in m_a_fx_id_electrode) {
@@ -1694,15 +1273,7 @@ class cmegachewvat {
     }
   }
 
-  /*
-  	Name: update_vat_effects
-  	Namespace: cmegachewvat
-  	Checksum: 0xB9EB8BE1
-  	Offset: 0xAAA0
-  	Size: 0xC4
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function update_vat_effects(localclientnum) {
     if(m_b_vat_is_spinning) {
       if(m_b_vat_is_powered) {
@@ -1718,15 +1289,7 @@ class cmegachewvat {
     set_light_fx(localclientnum, m_b_vat_is_powered);
   }
 
-  /*
-  	Name: set_vat_state
-  	Namespace: cmegachewvat
-  	Checksum: 0xA0CAF16E
-  	Offset: 0xAA28
-  	Size: 0x6C
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function set_vat_state(localclientnum, b_is_spinning, b_is_powered) {
     if(b_is_spinning != m_b_vat_is_spinning) {
       m_b_vat_is_spinning = b_is_spinning;
@@ -1737,15 +1300,7 @@ class cmegachewvat {
     update_vat_effects(localclientnum);
   }
 
-  /*
-  	Name: init
-  	Namespace: cmegachewvat
-  	Checksum: 0xDEFBD11E
-  	Offset: 0xA980
-  	Size: 0x9C
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function init(localclientnum, n_vat_index) {
     m_a_fx_id_electrode = [];
     m_a_fx_id_light = [];
@@ -1763,37 +1318,13 @@ class cmegachewcarousel {
   var m_a_str_vat_contents;
   var m_str_anim;
 
-  /*
-  	Name: constructor
-  	Namespace: cmegachewcarousel
-  	Checksum: 0x99EC1590
-  	Offset: 0xBFA8
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cmegachewcarousel
-  	Checksum: 0x99EC1590
-  	Offset: 0xBFB8
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: play_carousel_effect
-  	Namespace: cmegachewcarousel
-  	Checksum: 0x9BCC782B
-  	Offset: 0xBEE8
-  	Size: 0xB4
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function play_carousel_effect(localclientnum, fx_id, str_tag = "tag_ball_0", n_kill_after_seconds) {
     m_mdl_carousel util::waittill_dobj(localclientnum);
     fx_id = playfxontag(localclientnum, fx_id, m_mdl_carousel, str_tag);
@@ -1803,15 +1334,7 @@ class cmegachewcarousel {
     }
   }
 
-  /*
-  	Name: detach_model_from_carousel_tag
-  	Namespace: cmegachewcarousel
-  	Checksum: 0x4CA323BD
-  	Offset: 0xBE48
-  	Size: 0x98
-  	Parameters: 1
-  	Flags: Linked, Private
-  */
+
   function private detach_model_from_carousel_tag(n_tag_index) {
     if(!isdefined(m_a_str_vat_contents[n_tag_index])) {
       return;
@@ -1823,58 +1346,26 @@ class cmegachewcarousel {
     m_a_str_vat_contents[n_tag_index] = undefined;
   }
 
-  /*
-  	Name: attach_model_to_carousel_tag
-  	Namespace: cmegachewcarousel
-  	Checksum: 0x21186DF
-  	Offset: 0xBDF0
-  	Size: 0x4E
-  	Parameters: 2
-  	Flags: Linked, Private
-  */
+
   function private attach_model_to_carousel_tag(n_tag_index, str_model) {
     m_mdl_carousel attach(str_model, "tag_ball_" + n_tag_index);
     m_a_str_vat_contents[n_tag_index] = str_model;
   }
 
-  /*
-  	Name: update_model_on_carousel_tag
-  	Namespace: cmegachewcarousel
-  	Checksum: 0xB7C06E11
-  	Offset: 0xBDA0
-  	Size: 0x44
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function update_model_on_carousel_tag(n_tag_index, str_model) {
     detach_model_from_carousel_tag(n_tag_index);
     attach_model_to_carousel_tag(n_tag_index, str_model);
   }
 
-  /*
-  	Name: detach_all_models_from_carousel
-  	Namespace: cmegachewcarousel
-  	Checksum: 0x246E66DC
-  	Offset: 0xBD50
-  	Size: 0x46
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function detach_all_models_from_carousel() {
     for (i = 0; i < 4; i++) {
       detach_model_from_carousel_tag(i);
     }
   }
 
-  /*
-  	Name: set_carousel_anim_state
-  	Namespace: cmegachewcarousel
-  	Checksum: 0x55ABBCED
-  	Offset: 0xBC00
-  	Size: 0x144
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function set_carousel_anim_state(localclientnum, n_anim_state, b_vat_is_powered) {
     if(b_vat_is_powered) {
       str_anim_active = "p7_fxanim_zm_bgb_carousel_active_powered_anim";
@@ -1907,15 +1398,7 @@ class cmegachewcarousel {
     m_mdl_carousel animation::play(m_str_anim, undefined, undefined, 1);
   }
 
-  /*
-  	Name: init
-  	Namespace: cmegachewcarousel
-  	Checksum: 0x4CF779B6
-  	Offset: 0xBB50
-  	Size: 0xA4
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function init(localclientnum, n_carousel_index) {
     if(!isdefined(m_mdl_carousel)) {
       m_mdl_carousel = getent(localclientnum, "gumball_carousel_0" + n_carousel_index, "targetname");
@@ -1935,37 +1418,13 @@ class cmegachewvatdialset {
   var m_a_dials_small;
   var m_a_dials_large;
 
-  /*
-  	Name: constructor
-  	Namespace: cmegachewvatdialset
-  	Checksum: 0x99EC1590
-  	Offset: 0xCB40
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cmegachewvatdialset
-  	Checksum: 0x99EC1590
-  	Offset: 0xCB50
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: set_visibility_of_dials_attached_to_dome
-  	Namespace: cmegachewvatdialset
-  	Checksum: 0xD1BA7B23
-  	Offset: 0xCA80
-  	Size: 0xB2
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function set_visibility_of_dials_attached_to_dome(b_on) {
     foreach(mdl_dial in m_a_dials_small_that_turn) {
       if(b_on) {
@@ -1976,15 +1435,7 @@ class cmegachewvatdialset {
     }
   }
 
-  /*
-  	Name: set_power
-  	Namespace: cmegachewvatdialset
-  	Checksum: 0xF8AA3FF2
-  	Offset: 0xC878
-  	Size: 0x1FE
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function set_power(b_on) {
     for (i = 0; i < m_a_dials_small.size; i++) {
       mdl_dial = m_a_dials_small[i];
@@ -2008,15 +1459,7 @@ class cmegachewvatdialset {
     }
   }
 
-  /*
-  	Name: init
-  	Namespace: cmegachewvatdialset
-  	Checksum: 0x14ADBE43
-  	Offset: 0xC1A8
-  	Size: 0x6C4
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function init(localclientnum, n_vat_index) {
     m_a_dials_large = [];
     m_a_dials_small = [];
@@ -2102,37 +1545,13 @@ class cmegachewbuttons {
   var m_a_fx_id_sidebulbs;
   var m_n_button_selected;
 
-  /*
-  	Name: constructor
-  	Namespace: cmegachewbuttons
-  	Checksum: 0x99EC1590
-  	Offset: 0xD3C8
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cmegachewbuttons
-  	Checksum: 0x99EC1590
-  	Offset: 0xD3D8
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: play_effect_on_tag_and_add_to_array
-  	Namespace: cmegachewbuttons
-  	Checksum: 0x2A8B145A
-  	Offset: 0xD2F8
-  	Size: 0xC2
-  	Parameters: 3
-  	Flags: Linked, Private
-  */
+
   function private play_effect_on_tag_and_add_to_array(localclientnum, str_fx, str_tag) {
     fx_id = playfxontag(localclientnum, str_fx, m_a_mdl_buttons[2], str_tag);
     if(!isdefined(m_a_fx_id_light)) {
@@ -2143,15 +1562,7 @@ class cmegachewbuttons {
     m_a_fx_id_light[m_a_fx_id_light.size] = fx_id;
   }
 
-  /*
-  	Name: set_side_bulb_glow
-  	Namespace: cmegachewbuttons
-  	Checksum: 0x8FA88E4F
-  	Offset: 0xD0E0
-  	Size: 0x20E
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_side_bulb_glow(localclientnum, b_on) {
     if(b_on) {
       fx_id = playfxontag(localclientnum, level._effect["megachew_vat_light_lg"], m_a_mdl_buttons[2], "tag_button3_light1");
@@ -2177,15 +1588,7 @@ class cmegachewbuttons {
     }
   }
 
-  /*
-  	Name: set_button_glow
-  	Namespace: cmegachewbuttons
-  	Checksum: 0x32CC9E74
-  	Offset: 0xCFC0
-  	Size: 0x116
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_button_glow(localclientnum, b_on) {
     if(!b_on) {
       set_side_bulb_glow(localclientnum, 0);
@@ -2202,15 +1605,7 @@ class cmegachewbuttons {
     }
   }
 
-  /*
-  	Name: update_filaments
-  	Namespace: cmegachewbuttons
-  	Checksum: 0xC871D58
-  	Offset: 0xCEC8
-  	Size: 0xEE
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function update_filaments(localclientnum) {
     for (i = 0; i < 3; i++) {
       mdl_button = m_a_mdl_buttons[i];
@@ -2224,15 +1619,7 @@ class cmegachewbuttons {
     }
   }
 
-  /*
-  	Name: press_button
-  	Namespace: cmegachewbuttons
-  	Checksum: 0x17FBD45A
-  	Offset: 0xCE20
-  	Size: 0x9C
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function press_button(localclientnum, n_button_index) {
     mdl_button = m_a_mdl_buttons[n_button_index - 1];
     mdl_button util::waittill_dobj(localclientnum);
@@ -2240,29 +1627,13 @@ class cmegachewbuttons {
     mdl_button animation::play("p7_fxanim_zm_bgb_button_push_anim", undefined, undefined, 1);
   }
 
-  /*
-  	Name: change_button_selected
-  	Namespace: cmegachewbuttons
-  	Checksum: 0xAF793F60
-  	Offset: 0xCDD8
-  	Size: 0x3C
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function change_button_selected(localclientnum, n_button_index) {
     m_n_button_selected = n_button_index + 1;
     update_filaments(localclientnum);
   }
 
-  /*
-  	Name: init
-  	Namespace: cmegachewbuttons
-  	Checksum: 0x327EBE93
-  	Offset: 0xCC80
-  	Size: 0x14C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function init(localclientnum) {
     m_a_mdl_buttons = [];
     m_a_fx_id_light = [];
@@ -2286,15 +1657,6 @@ class cmegachewbuttons {
 
 #namespace frontend;
 
-/*
-	Name: main
-	Namespace: frontend
-	Checksum: 0xD739B58B
-	Offset: 0x21E8
-	Size: 0x314
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level.callbackentityspawned = & entityspawned;
   level.callbacklocalclientconnect = & localclientconnect;
@@ -2322,37 +1684,10 @@ function main() {
   setstreamerrequest(1, "core_frontend");
 }
 
-/*
-	Name: first_time_flow
-	Namespace: frontend
-	Checksum: 0x19F30812
-	Offset: 0x2508
-	Size: 0x3C
-	Parameters: 7
-	Flags: Linked
-*/
 function first_time_flow(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
-/*
-	Name: cp_bunk_anim_type
-	Namespace: frontend
-	Checksum: 0x6B523BB5
-	Offset: 0x2550
-	Size: 0x3C
-	Parameters: 7
-	Flags: Linked
-*/
 function cp_bunk_anim_type(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
-/*
-	Name: setupclientmenus
-	Namespace: frontend
-	Checksum: 0x22A39EE
-	Offset: 0x2598
-	Size: 0x127C
-	Parameters: 1
-	Flags: Linked
-*/
 function setupclientmenus(localclientnum) {
   lui::initmenudata(localclientnum);
   lui::createcustomcameramenu("Main", localclientnum, & lobby_main, 1);
@@ -2441,15 +1776,6 @@ function setupclientmenus(localclientnum) {
   lui::linktocustomcharacter("CombatRecordSpecialists", localclientnum, "character_customization");
 }
 
-/*
-	Name: zombie_eyes_clientfield_cb
-	Namespace: frontend
-	Checksum: 0x24C5041A
-	Offset: 0x3820
-	Size: 0x154
-	Parameters: 7
-	Flags: Linked
-*/
 function zombie_eyes_clientfield_cb(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(newval)) {
     return;
@@ -2466,15 +1792,6 @@ function zombie_eyes_clientfield_cb(localclientnum, oldval, newval, bnewent, bin
   }
 }
 
-/*
-	Name: get_eyeball_on_luminance
-	Namespace: frontend
-	Checksum: 0x2BC97A79
-	Offset: 0x3980
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function get_eyeball_on_luminance() {
   if(isdefined(level.eyeball_on_luminance_override)) {
     return level.eyeball_on_luminance_override;
@@ -2482,15 +1799,6 @@ function get_eyeball_on_luminance() {
   return 1;
 }
 
-/*
-	Name: get_eyeball_off_luminance
-	Namespace: frontend
-	Checksum: 0x40E8B53
-	Offset: 0x39A8
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function get_eyeball_off_luminance() {
   if(isdefined(level.eyeball_off_luminance_override)) {
     return level.eyeball_off_luminance_override;
@@ -2498,15 +1806,6 @@ function get_eyeball_off_luminance() {
   return 0;
 }
 
-/*
-	Name: get_eyeball_color
-	Namespace: frontend
-	Checksum: 0xD46C8CE0
-	Offset: 0x39D0
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function get_eyeball_color() {
   val = 0;
   if(isdefined(level.zombie_eyeball_color_override)) {
@@ -2518,28 +1817,10 @@ function get_eyeball_color() {
   return val;
 }
 
-/*
-	Name: createzombieeyes
-	Namespace: frontend
-	Checksum: 0x9B2D9986
-	Offset: 0x3A20
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function createzombieeyes(localclientnum) {
   self thread createzombieeyesinternal(localclientnum);
 }
 
-/*
-	Name: deletezombieeyes
-	Namespace: frontend
-	Checksum: 0x94B0992B
-	Offset: 0x3A50
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked
-*/
 function deletezombieeyes(localclientnum) {
   if(isdefined(self._eyearray)) {
     if(isdefined(self._eyearray[localclientnum])) {
@@ -2549,17 +1830,8 @@ function deletezombieeyes(localclientnum) {
   }
 }
 
-/*
-	Name: createzombieeyesinternal
-	Namespace: frontend
-	Checksum: 0x2CC84229
-	Offset: 0x3AB8
-	Size: 0x102
-	Parameters: 1
-	Flags: Linked
-*/
 function createzombieeyesinternal(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self._eyearray)) {
     self._eyearray = [];
@@ -2580,34 +1852,16 @@ function createzombieeyesinternal(localclientnum) {
   }
 }
 
-/*
-	Name: dni_eyes
-	Namespace: frontend
-	Checksum: 0x42851BED
-	Offset: 0x3BC8
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function dni_eyes(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self util::waittill_dobj(localclientnum);
   self mapshaderconstant(localclientnum, 0, "scriptVector0", 0, newval, 0, 0);
 }
 
-/*
-	Name: blackscreen_watcher
-	Namespace: frontend
-	Checksum: 0xEDF1D3D6
-	Offset: 0x3C50
-	Size: 0x140
-	Parameters: 0
-	Flags: Linked
-*/
 function blackscreen_watcher() {
   blackscreenuimodel = createuimodel(getglobaluimodel(), "hideWorldForStreamer");
   setuimodelvalue(blackscreenuimodel, 1);
   while (true) {
-    level waittill(# "streamer_change", data_struct);
+    level waittill("streamer_change", data_struct);
     setuimodelvalue(blackscreenuimodel, 1);
     wait(0.1);
     while (true) {
@@ -2625,33 +1879,15 @@ function blackscreen_watcher() {
   }
 }
 
-/*
-	Name: streamer_change
-	Namespace: frontend
-	Checksum: 0x72781E51
-	Offset: 0x3D98
-	Size: 0x5E
-	Parameters: 2
-	Flags: Linked
-*/
 function streamer_change(hint, data_struct) {
   if(isdefined(hint)) {
     setstreamerrequest(0, hint);
   } else {
     clearstreamerrequest(0);
   }
-  level notify(# "streamer_change", data_struct);
+  level notify("streamer_change", data_struct);
 }
 
-/*
-	Name: plaympherovignettecam
-	Namespace: frontend
-	Checksum: 0x8E560517
-	Offset: 0x3E00
-	Size: 0x124
-	Parameters: 3
-	Flags: Linked
-*/
 function plaympherovignettecam(localclientnum, data_struct, changed) {
   fields = getcharacterfields(data_struct.characterindex, 1);
   if(isdefined(fields) && isdefined(fields.frontendvignettestruct) && isdefined(fields.frontendvignettexcam)) {
@@ -2663,38 +1899,18 @@ function plaympherovignettecam(localclientnum, data_struct, changed) {
   }
 }
 
-/*
-	Name: handle_inspect_player
-	Namespace: frontend
-	Checksum: 0x1F5F2BDD
-	Offset: 0x3F30
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function handle_inspect_player(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   while (true) {
-    level waittill(# "inspect_player", xuid);
-    /#
+    level waittill("inspect_player", xuid);
     assert(isdefined(xuid));
-    # /
-      level thread update_inspection_character(localclientnum, xuid);
+    level thread update_inspection_character(localclientnum, xuid);
   }
 }
 
-/*
-	Name: update_inspection_character
-	Namespace: frontend
-	Checksum: 0x3BC5A391
-	Offset: 0x3FB0
-	Size: 0x4D4
-	Parameters: 2
-	Flags: Linked
-*/
 function update_inspection_character(localclientnum, xuid) {
-  level endon(# "disconnect");
-  level endon(# "inspect_player");
+  level endon("disconnect");
+  level endon("inspect_player");
   customization = getcharactercustomizationforxuid(localclientnum, xuid);
   while (!isdefined(customization)) {
     customization = getcharactercustomizationforxuid(localclientnum, xuid);
@@ -2733,31 +1949,11 @@ function update_inspection_character(localclientnum, xuid) {
   }
 }
 
-/*
-	Name: entityspawned
-	Namespace: frontend
-	Checksum: 0xB3EADC6B
-	Offset: 0x4490
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function entityspawned(localclientnum) {}
 
-/*
-	Name: localclientconnect
-	Namespace: frontend
-	Checksum: 0xD891A47A
-	Offset: 0x44A8
-	Size: 0x2C8
-	Parameters: 1
-	Flags: Linked
-*/
 function localclientconnect(localclientnum) {
-  /#
   println("" + localclientnum);
-  # /
-    setupclientmenus(localclientnum);
+  setupclientmenus(localclientnum);
   if(isdefined(level.charactercustomizationsetup)) {
     [
       [level.charactercustomizationsetup]
@@ -2776,7 +1972,7 @@ function localclientconnect(localclientnum) {
   lobbymodel = util::spawn_model(localclientnum, "tag_origin", (0, 0, 0));
   lobbymodel.targetname = "zm_lobby_player_model";
   level.zm_lobby_data_struct = character_customization::create_character_data_struct(lobbymodel, localclientnum);
-  callback::callback(# "hash_da8d7d74", localclientnum);
+  callback::callback("hash_da8d7d74", localclientnum);
   customclass::localclientconnect(localclientnum);
   level thread handle_inspect_player(localclientnum);
   customclass::hide_paintshop_bg(localclientnum);
@@ -2788,91 +1984,28 @@ function localclientconnect(localclientnum) {
   level notify("menu_change" + localclientnum, "Main", "opened", room);
 }
 
-/*
-	Name: onprecachegametype
-	Namespace: frontend
-	Checksum: 0x99EC1590
-	Offset: 0x4778
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function onprecachegametype() {}
 
-/*
-	Name: onstartgametype
-	Namespace: frontend
-	Checksum: 0x99EC1590
-	Offset: 0x4788
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {}
 
-/*
-	Name: open_choose_class
-	Namespace: frontend
-	Checksum: 0x2D0BC83D
-	Offset: 0x4798
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function open_choose_class(localclientnum, menu_data) {
   level thread character_customization::rotation_thread_spawner(localclientnum, menu_data.custom_character, "choose_class_closed" + localclientnum);
 }
 
-/*
-	Name: close_choose_class
-	Namespace: frontend
-	Checksum: 0x808CAFE9
-	Offset: 0x47F0
-	Size: 0x58
-	Parameters: 2
-	Flags: Linked
-*/
 function close_choose_class(localclientnum, menu_data) {
   enablefrontendlockedweaponoverlay(localclientnum, 0);
   enablefrontendtokenlockedweaponoverlay(localclientnum, 0);
   level notify("choose_class_closed" + localclientnum);
 }
 
-/*
-	Name: open_zm_buildkits
-	Namespace: frontend
-	Checksum: 0xFDBFF992
-	Offset: 0x4850
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function open_zm_buildkits(localclientnum, menu_data) {
   level.weapon_position = struct::get("zm_loadout_gumball");
 }
 
-/*
-	Name: close_zm_buildkits
-	Namespace: frontend
-	Checksum: 0xC4F33B46
-	Offset: 0x4890
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function close_zm_buildkits(localclientnum, menu_data) {
   level.weapon_position = struct::get("paintshop_weapon_position");
 }
 
-/*
-	Name: open_zm_bgb
-	Namespace: frontend
-	Checksum: 0xD5C9B0CD
-	Offset: 0x48D0
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function open_zm_bgb(localclientnum, menu_data) {
   level.n_old_spotshadow = getdvarint("r_maxSpotShadowUpdates");
   setdvar("r_maxSpotShadowUpdates", 24);
@@ -2881,15 +2014,6 @@ function open_zm_bgb(localclientnum, menu_data) {
   playradiantexploder(localclientnum, "zm_gum_kick");
 }
 
-/*
-	Name: close_zm_bgb
-	Namespace: frontend
-	Checksum: 0xE54FFAEC
-	Offset: 0x4998
-	Size: 0xC4
-	Parameters: 2
-	Flags: Linked
-*/
 function close_zm_bgb(localclientnum, menu_data) {
   level.weapon_position = struct::get("paintshop_weapon_position");
   killradiantexploder(localclientnum, "zm_gum_room");
@@ -2899,15 +2023,6 @@ function close_zm_bgb(localclientnum, menu_data) {
   enablefrontendtokenlockedweaponoverlay(localclientnum, 0);
 }
 
-/*
-	Name: open_zm_bgb_factory
-	Namespace: frontend
-	Checksum: 0xE1167765
-	Offset: 0x4A68
-	Size: 0x114
-	Parameters: 2
-	Flags: Linked
-*/
 function open_zm_bgb_factory(localclientnum, menu_data) {
   level.n_old_spotshadow = getdvarint("r_maxSpotShadowUpdates");
   setdvar("r_maxSpotShadowUpdates", 24);
@@ -2923,15 +2038,6 @@ function open_zm_bgb_factory(localclientnum, menu_data) {
   level thread wait_for_mega_chew_notifies(localclientnum, menu_data);
 }
 
-/*
-	Name: close_zm_bgb_factory
-	Namespace: frontend
-	Checksum: 0xCF5B18D4
-	Offset: 0x4B88
-	Size: 0xC4
-	Parameters: 2
-	Flags: Linked
-*/
 function close_zm_bgb_factory(localclientnum, menu_data) {
   level.weapon_position = struct::get("paintshop_weapon_position");
   killradiantexploder(localclientnum, "zm_gum_room");
@@ -2941,20 +2047,11 @@ function close_zm_bgb_factory(localclientnum, menu_data) {
   enablefrontendtokenlockedweaponoverlay(localclientnum, 0);
 }
 
-/*
-	Name: play_crate_anims
-	Namespace: frontend
-	Checksum: 0x81A80B0D
-	Offset: 0x4C58
-	Size: 0x26C
-	Parameters: 2
-	Flags: Linked
-*/
 function play_crate_anims(localclientnum, type) {
-  level endon(# "blackmarket_crate_reset");
-  level endon(# "wait_for_black_market_notifies");
-  level endon(# "disconnect");
-  level endon(# "blackmarket_closed");
+  level endon("blackmarket_crate_reset");
+  level endon("wait_for_black_market_notifies");
+  level endon("disconnect");
+  level endon("blackmarket_closed");
   delay_before_crate_open = 0.5;
   delay_before_lights_on = 0.01;
   if(level.blackmarket_exploder != "") {
@@ -2990,20 +2087,11 @@ function play_crate_anims(localclientnum, type) {
   self animation::play("o_loot_crate_idle", undefined, undefined, 1, 0, 0, 0, 0);
 }
 
-/*
-	Name: wait_for_black_market_notifies
-	Namespace: frontend
-	Checksum: 0xE7D8D5FE
-	Offset: 0x4ED0
-	Size: 0x35A
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_for_black_market_notifies(localclientnum) {
-  level notify(# "wait_for_black_market_notifies");
-  level endon(# "wait_for_black_market_notifies");
-  level endon(# "disconnect");
-  level endon(# "blackmarket_closed");
+  level notify("wait_for_black_market_notifies");
+  level endon("wait_for_black_market_notifies");
+  level endon("disconnect");
+  level endon("blackmarket_closed");
   camera_ent = struct::get("mp_frontend_blackmarket");
   crate = getent(localclientnum, "mp_frontend_blackmarket_crate", "targetname");
   crate useanimtree($generic);
@@ -3014,13 +2102,13 @@ function wait_for_black_market_notifies(localclientnum) {
     level.blackmarket_exploder = "";
   }
   while (true) {
-    level waittill(# "blackmarket", param1, param2);
+    level waittill("blackmarket", param1, param2);
     if(param1 == "crate_camera") {
       playmaincamxcam(localclientnum, "ui_cam_frontend_crate_in", 0, "cam_crate_in", "", camera_ent.origin, camera_ent.angles);
       crate thread play_crate_anims(localclientnum, param2);
     } else {
       if(param1 == "normal_camera") {
-        level notify(# "blackmarket_crate_reset");
+        level notify("blackmarket_crate_reset");
         crate clearanim("o_loot_crate_idle", 0);
         crate mapshaderconstant(localclientnum, 0, "scriptVector2", 0, 0, 0, 0);
         if(level.blackmarket_exploder != "") {
@@ -3040,15 +2128,6 @@ function wait_for_black_market_notifies(localclientnum) {
   }
 }
 
-/*
-	Name: open_blackmarket
-	Namespace: frontend
-	Checksum: 0x313E76F3
-	Offset: 0x5238
-	Size: 0x11C
-	Parameters: 2
-	Flags: Linked
-*/
 function open_blackmarket(localclientnum, menu_data) {
   level.blackmarket_exploder = "";
   streamer_change("core_frontend_blackmarket");
@@ -3063,15 +2142,6 @@ function open_blackmarket(localclientnum, menu_data) {
   level thread wait_for_black_market_notifies(localclientnum);
 }
 
-/*
-	Name: close_blackmarket
-	Namespace: frontend
-	Checksum: 0x6EDAD874
-	Offset: 0x5360
-	Size: 0x152
-	Parameters: 2
-	Flags: Linked
-*/
 function close_blackmarket(localclientnum, menu_data) {
   setdvar("r_volumetric_lighting_upsample_depth_threshold", 0.01);
   setdvar("r_volumetric_lighting_blur_depth_threshold", 2000);
@@ -3086,71 +2156,35 @@ function close_blackmarket(localclientnum, menu_data) {
     crate stoploopsound(level.cyclehandle);
     level.cyclehandle = undefined;
   }
-  level notify(# "blackmarket_closed");
+  level notify("blackmarket_closed");
 }
 
-/*
-	Name: disablemegachewfactoryinput
-	Namespace: frontend
-	Checksum: 0xFA90CC73
-	Offset: 0x54C0
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function disablemegachewfactoryinput(localclientnum) {
   disableinputmodel = getuimodel(getuimodelforcontroller(localclientnum), "MegaChewFactory.disableInput");
   setuimodelvalue(disableinputmodel, 1);
 }
 
-/*
-	Name: enablemegachewfactoryinput
-	Namespace: frontend
-	Checksum: 0xB35DA9E3
-	Offset: 0x5530
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function enablemegachewfactoryinput(localclientnum) {
   level util::waittill_any_timeout(17, "megachew_factory_cycle_complete");
   disableinputmodel = getuimodel(getuimodelforcontroller(localclientnum), "MegaChewFactory.disableInput");
   setuimodelvalue(disableinputmodel, 0);
 }
 
-/*
-	Name: wait_for_reset_megachew_factory
-	Namespace: frontend
-	Checksum: 0x9ED363CA
-	Offset: 0x55C0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_for_reset_megachew_factory(localclientnum) {
-  level endon(# "wait_for_mega_chew_notifies");
-  level endon(# "disconnect");
+  level endon("wait_for_mega_chew_notifies");
+  level endon("disconnect");
   while (true) {
-    level waittill(# "resetmegachewfactory");
+    level waittill("resetmegachewfactory");
     [
       [level.o_megachewfactory]
     ] - > reset_megachew_factory(localclientnum);
   }
 }
 
-/*
-	Name: wait_for_remaining_token_notifies
-	Namespace: frontend
-	Checksum: 0xBB9E08D3
-	Offset: 0x5620
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_for_remaining_token_notifies(localclientnum) {
-  level endon(# "wait_for_mega_chew_notifies");
-  level endon(# "disconnect");
-  level endon(# "megachewfactory_closed");
+  level endon("wait_for_mega_chew_notifies");
+  level endon("disconnect");
+  level endon("megachewfactory_closed");
   n_vials = getuimodelvalue(createuimodel(getglobaluimodel(), "MegaChewFactoryVialDisplay"));
   if(isdefined(n_vials)) {
     [
@@ -3161,7 +2195,7 @@ function wait_for_remaining_token_notifies(localclientnum) {
     ] - > update_token_display_counter(localclientnum, 1);
   }
   while (true) {
-    level waittill(# "mega_chew_remaining_tokens", n_tokens);
+    level waittill("mega_chew_remaining_tokens", n_tokens);
     if(n_tokens > 999) {
       n_tokens = 999;
     }
@@ -3174,15 +2208,6 @@ function wait_for_remaining_token_notifies(localclientnum) {
   }
 }
 
-/*
-	Name: dolootquery
-	Namespace: frontend
-	Checksum: 0x44504C94
-	Offset: 0x5750
-	Size: 0x136
-	Parameters: 2
-	Flags: Linked
-*/
 function dolootquery(controllerindex, n_tokens) {
   controllermodel = getuimodelforcontroller(controllerindex);
   megachewfactorymodel = getuimodel(controllermodel, "MegaChewFactory");
@@ -3195,27 +2220,16 @@ function dolootquery(controllerindex, n_tokens) {
   return isdefined(result) && result;
 }
 
-/*
-	Name: wait_for_mega_chew_notifies
-	Namespace: frontend
-	Checksum: 0x14766B
-	Offset: 0x5890
-	Size: 0x1D6
-	Parameters: 2
-	Flags: Linked
-*/
 function wait_for_mega_chew_notifies(localclientnum, menu_data) {
-  level notify(# "wait_for_mega_chew_notifies");
-  level endon(# "wait_for_mega_chew_notifies");
-  level endon(# "disconnect");
-  level endon(# "megachewfactory_closed");
-  [
-    [level.o_megachewfactory]
-  ] - > set_megachew_factory_anim_state(localclientnum, 0);
+  level notify("wait_for_mega_chew_notifies");
+  level endon("wait_for_mega_chew_notifies");
+  level endon("disconnect");
+  level endon("megachewfactory_closed");
+  [[level.o_megachewfactory]] - > set_megachew_factory_anim_state(localclientnum, 0);
   level thread wait_for_remaining_token_notifies(localclientnum);
   level thread wait_for_reset_megachew_factory(localclientnum);
   while (true) {
-    level waittill(# "mega_chew_update", event, index, controllerindex);
+    level waittill("mega_chew_update", event, index, controllerindex);
     switch (event) {
       case "focus_changed": {
         [
@@ -3224,11 +2238,9 @@ function wait_for_mega_chew_notifies(localclientnum, menu_data) {
         break;
       }
       case "selected": {
-        /#
         iprintlnbold("" + index);
         println("" + index);
-        # /
-          break;
+        break;
       }
       case "purchased": {
         if(!dolootquery(controllerindex, index)) {
@@ -3245,15 +2257,6 @@ function wait_for_mega_chew_notifies(localclientnum, menu_data) {
   }
 }
 
-/*
-	Name: open_character_menu
-	Namespace: frontend
-	Checksum: 0x63AFFC39
-	Offset: 0xD5C8
-	Size: 0x6C
-	Parameters: 2
-	Flags: None
-*/
 function open_character_menu(localclientnum, menu_data) {
   character_ent = getent(localclientnum, menu_data.target_name, "targetname");
   if(isdefined(character_ent)) {
@@ -3261,15 +2264,6 @@ function open_character_menu(localclientnum, menu_data) {
   }
 }
 
-/*
-	Name: close_character_menu
-	Namespace: frontend
-	Checksum: 0xAB4F9133
-	Offset: 0xD640
-	Size: 0x6C
-	Parameters: 2
-	Flags: None
-*/
 function close_character_menu(localclientnum, menu_data) {
   character_ent = getent(localclientnum, menu_data.target_name, "targetname");
   if(isdefined(character_ent)) {
@@ -3277,15 +2271,6 @@ function close_character_menu(localclientnum, menu_data) {
   }
 }
 
-/*
-	Name: choose_loadout_extracam_watch
-	Namespace: frontend
-	Checksum: 0x51242BEE
-	Offset: 0xD6B8
-	Size: 0x182
-	Parameters: 3
-	Flags: Linked
-*/
 function choose_loadout_extracam_watch(localclientnum, menu_name, extracam_data) {
   level endon(menu_name + "_closed");
   while (true) {
@@ -3305,42 +2290,15 @@ function choose_loadout_extracam_watch(localclientnum, menu_name, extracam_data)
   }
 }
 
-/*
-	Name: open_choose_loadout_menu
-	Namespace: frontend
-	Checksum: 0x8813172F
-	Offset: 0xD848
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function open_choose_loadout_menu(localclientnum, menu_data) {
   menu_data.custom_character.charactermode = 1;
   character_customization::update_use_frozen_moments(localclientnum, menu_data.custom_character, 1);
 }
 
-/*
-	Name: close_choose_loadout_menu
-	Namespace: frontend
-	Checksum: 0x7B799334
-	Offset: 0xD8A8
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function close_choose_loadout_menu(localclientnum, menu_data) {
   character_customization::update_use_frozen_moments(localclientnum, menu_data.custom_character, 0);
 }
 
-/*
-	Name: start_character_rotating_any
-	Namespace: frontend
-	Checksum: 0x2F557B9E
-	Offset: 0xD8F0
-	Size: 0x66
-	Parameters: 2
-	Flags: Linked
-*/
 function start_character_rotating_any(localclientnum, menu_data) {
   maxlocalclient = getmaxlocalclients();
   while (localclientnum < maxlocalclient) {
@@ -3349,15 +2307,6 @@ function start_character_rotating_any(localclientnum, menu_data) {
   }
 }
 
-/*
-	Name: end_character_rotating_any
-	Namespace: frontend
-	Checksum: 0x1FB08E79
-	Offset: 0xD960
-	Size: 0x66
-	Parameters: 2
-	Flags: Linked
-*/
 function end_character_rotating_any(localclientnum, menu_data) {
   maxlocalclient = getmaxlocalclients();
   while (localclientnum < maxlocalclient) {
@@ -3366,103 +2315,38 @@ function end_character_rotating_any(localclientnum, menu_data) {
   }
 }
 
-/*
-	Name: start_character_rotating
-	Namespace: frontend
-	Checksum: 0x544BABCF
-	Offset: 0xD9D0
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function start_character_rotating(localclientnum, menu_data) {
   level thread character_customization::rotation_thread_spawner(localclientnum, menu_data.custom_character, "end_character_rotating" + localclientnum);
 }
 
-/*
-	Name: end_character_rotating
-	Namespace: frontend
-	Checksum: 0x524D3E7C
-	Offset: 0xDA28
-	Size: 0x28
-	Parameters: 2
-	Flags: Linked
-*/
 function end_character_rotating(localclientnum, menu_data) {
   level notify("end_character_rotating" + localclientnum);
 }
 
-/*
-	Name: move_mp_character_to_inspect_room
-	Namespace: frontend
-	Checksum: 0x5E3DC3B6
-	Offset: 0xDA58
-	Size: 0x3C
-	Parameters: 2
-	Flags: None
-*/
 function move_mp_character_to_inspect_room(localclientnum, menu_data) {
   character_customization::set_character_align(localclientnum, menu_data.custom_character, "spawn_char_lobbyslide");
 }
 
-/*
-	Name: move_mp_character_from_inspect_room
-	Namespace: frontend
-	Checksum: 0xF02C30FF
-	Offset: 0xDAA0
-	Size: 0x3C
-	Parameters: 2
-	Flags: None
-*/
 function move_mp_character_from_inspect_room(localclientnum, menu_data) {
   character_customization::set_character_align(localclientnum, menu_data.custom_character, undefined);
 }
 
-/*
-	Name: open_choose_head_menu
-	Namespace: frontend
-	Checksum: 0x4F965C33
-	Offset: 0xDAE8
-	Size: 0x4A
-	Parameters: 2
-	Flags: Linked
-*/
 function open_choose_head_menu(localclientnum, menu_data) {
   character_customization::update_show_helmets(localclientnum, menu_data.custom_character, 0);
-  level notify(# "begin_personalizing_hero");
+  level notify("begin_personalizing_hero");
 }
 
-/*
-	Name: close_choose_head_menu
-	Namespace: frontend
-	Checksum: 0xDA209402
-	Offset: 0xDB40
-	Size: 0x4A
-	Parameters: 2
-	Flags: Linked
-*/
 function close_choose_head_menu(localclientnum, menu_data) {
   character_customization::update_show_helmets(localclientnum, menu_data.custom_character, 1);
-  level notify(# "done_personalizing_hero");
+  level notify("done_personalizing_hero");
 }
 
-/*
-	Name: personalize_characters_watch
-	Namespace: frontend
-	Checksum: 0x5B7E11B
-	Offset: 0xDB98
-	Size: 0x1DA
-	Parameters: 2
-	Flags: Linked
-*/
 function personalize_characters_watch(localclientnum, menu_name) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   level endon(menu_name + "_closed");
   s_cam = struct::get("personalizeHero_camera", "targetname");
-  /#
   assert(isdefined(s_cam));
-  # /
-    animtime = 0;
+  animtime = 0;
   while (true) {
     level waittill("camera_change" + localclientnum, pose);
     if(pose === "exploring") {
@@ -3478,21 +2362,10 @@ function personalize_characters_watch(localclientnum, menu_name) {
   }
 }
 
-/*
-	Name: choose_taunts_camera_watch
-	Namespace: frontend
-	Checksum: 0xCF67AD87
-	Offset: 0xDD80
-	Size: 0x258
-	Parameters: 2
-	Flags: Linked
-*/
 function choose_taunts_camera_watch(localclientnum, menu_name) {
   s_cam = struct::get("personalizeHero_camera", "targetname");
-  /#
   assert(isdefined(s_cam));
-  # /
-    playmaincamxcam(localclientnum, "ui_cam_character_customization", 300, "cam_topscorers", "", s_cam.origin, s_cam.angles);
+  playmaincamxcam(localclientnum, "ui_cam_character_customization", 300, "cam_topscorers", "", s_cam.origin, s_cam.angles);
   data_struct = lui::getcharacterdataformenu(menu_name, localclientnum);
   data_struct.charactermodel.anglesoverride = 1;
   data_struct.charactermodel.angles = vectorscale((0, 1, 0), 112);
@@ -3510,17 +2383,8 @@ function choose_taunts_camera_watch(localclientnum, menu_name) {
   data_struct.charactermodel.anglesoverride = 0;
 }
 
-/*
-	Name: cp_lobby_room
-	Namespace: frontend
-	Checksum: 0xA6F7B984
-	Offset: 0xDFE0
-	Size: 0xBB2
-	Parameters: 1
-	Flags: Linked
-*/
 function cp_lobby_room(localclientnum) {
-  level endon(# "new_lobby");
+  level endon("new_lobby");
   while (true) {
     str_queued_level = getdvarstring("ui_mapname");
     if(util::is_safehouse(str_queued_level)) {
@@ -3529,14 +2393,12 @@ function cp_lobby_room(localclientnum) {
       str_safehouse = util::get_next_safehouse(str_queued_level);
     }
     str_safehouse = getsubstr(str_safehouse, "cp_sh_".size);
-    /#
     printtoprightln("" + str_queued_level, (1, 1, 1));
     str_debug_safehouse = getdvarstring("", "");
     if(str_debug_safehouse != "") {
       str_safehouse = str_debug_safehouse;
     }
-    # /
-      level.a_str_bunk_scenes = [];
+    level.a_str_bunk_scenes = [];
     if(!isdefined(level.a_str_bunk_scenes)) {
       level.a_str_bunk_scenes = [];
     } else if(!isarray(level.a_str_bunk_scenes)) {
@@ -3619,24 +2481,17 @@ function cp_lobby_room(localclientnum) {
     if(!isdefined(level.n_cp_index)) {
       if(level clientfield::get("first_time_flow")) {
         level.n_cp_index = 0;
-        /#
         printtoprightln("", (1, 1, 1));
-        # /
       } else {
         if(level clientfield::get("cp_bunk_anim_type") == 0) {
           level.n_cp_index = randomintrange(0, 2);
-          /#
           printtoprightln("", (1, 1, 1));
-          # /
         } else if(level clientfield::get("cp_bunk_anim_type") == 1) {
           level.n_cp_index = randomintrange(2, 4);
-          /#
           printtoprightln("", (1, 1, 1));
-          # /
         }
       }
     }
-    /#
     if(getdvarint("", 0)) {
       if(!isdefined(level.cp_debug_index)) {
         level.cp_debug_index = level.n_cp_index;
@@ -3647,16 +2502,13 @@ function cp_lobby_room(localclientnum) {
       }
       level.n_cp_index = level.cp_debug_index;
     }
-    # /
-      s_scene = struct::get_script_bundle("scene", level.a_str_bunk_scenes[level.n_cp_index]);
+    s_scene = struct::get_script_bundle("scene", level.a_str_bunk_scenes[level.n_cp_index]);
     str_gender = getherogender(getequippedheroindex(localclientnum, 2), "cp");
     if(str_gender === "female" && isdefined(s_scene.femalebundle)) {
       s_scene = struct::get_script_bundle("scene", s_scene.femalebundle);
     }
-    /#
     printtoprightln(s_scene.name, (1, 1, 1));
-    # /
-      s_align = struct::get(s_scene.aligntarget, "targetname");
+    s_align = struct::get(s_scene.aligntarget, "targetname");
     playmaincamxcam(localclientnum, s_scene.cameraswitcher, 0, "", "", s_align.origin, s_align.angles);
     for (i = 0; i < level.a_str_bunk_scenes.size; i++) {
       if(i == level.n_cp_index) {
@@ -3671,37 +2523,24 @@ function cp_lobby_room(localclientnum) {
     character_customization::loadequippedcharacteronmodel(localclientnum, level.cp_lobby_data_struct, undefined, s_params);
     streamer_change(level.a_str_bunk_scene_hints[level.n_cp_index], level.cp_lobby_data_struct);
     setpbgactivebank(localclientnum, 1);
-    /#
     if(getdvarint("", 0)) {
       level.n_cp_index = undefined;
     }
-    # /
-      do {
-        wait(0.016);
-        str_queued_level_new = getdvarstring("ui_mapname");
-      }
-      while (str_queued_level_new == str_queued_level);
+    do {
+      wait(0.016);
+      str_queued_level_new = getdvarstring("ui_mapname");
+    }
+    while (str_queued_level_new == str_queued_level);
   }
 }
 
-/*
-	Name: cpzm_lobby_room
-	Namespace: frontend
-	Checksum: 0xEC7A07DD
-	Offset: 0xEBA0
-	Size: 0xC5E
-	Parameters: 1
-	Flags: Linked
-*/
 function cpzm_lobby_room(localclientnum) {
   str_safehouse = level.str_current_safehouse;
-  /#
   str_debug_safehouse = getdvarstring("", "");
   if(str_debug_safehouse != "") {
     str_safehouse = str_debug_safehouse;
   }
-  # /
-    level.a_str_bunk_scenes = [];
+  level.a_str_bunk_scenes = [];
   level.active_str_cpzm_scene = ("zm_cp_" + str_safehouse) + "_lobby_idle";
   if(!isdefined(level.a_str_bunk_scenes)) {
     level.a_str_bunk_scenes = [];
@@ -3825,10 +2664,8 @@ function cpzm_lobby_room(localclientnum) {
   if(str_gender === "female" && isdefined(s_scene.femalebundle)) {
     s_scene = struct::get_script_bundle("scene", s_scene.femalebundle);
   }
-  /#
   printtoprightln(s_scene.name, (1, 1, 1));
-  # /
-    s_align = struct::get(s_scene.aligntarget, "targetname");
+  s_align = struct::get(s_scene.aligntarget, "targetname");
   playmaincamxcam(localclientnum, s_scene.cameraswitcher, 0, "", "", s_align.origin, s_align.angles);
   for (i = 0; i < level.a_str_bunk_scenes.size; i++) {
     if(i == level.n_cp_index) {
@@ -3861,22 +2698,11 @@ function cpzm_lobby_room(localclientnum) {
   female = 1;
   loadcpzmcharacteronmodel(localclientnum, level.cp_lobby_data_struct, female, s_params);
   streamer_change(level.a_str_bunk_scene_hints[level.n_cp_index], level.cp_lobby_data_struct);
-  /#
   if(getdvarint("", 0)) {
     level.n_cp_index = undefined;
   }
-  # /
 }
 
-/*
-	Name: doa_lobby_room_effects_cigar_inhale
-	Namespace: frontend
-	Checksum: 0x7F37E4F6
-	Offset: 0xF808
-	Size: 0x60
-	Parameters: 2
-	Flags: Linked
-*/
 function doa_lobby_room_effects_cigar_inhale(localclientnum, cigar) {
   if(self != cigar) {
     return;
@@ -3884,15 +2710,6 @@ function doa_lobby_room_effects_cigar_inhale(localclientnum, cigar) {
   cigar.fx_inhale_id = playfxontag(localclientnum, level._effect["doa_frontend_cigar_lit"], self, "tag_fx_smoke");
 }
 
-/*
-	Name: doa_lobby_room_effects_cigar_puff
-	Namespace: frontend
-	Checksum: 0x1304AA
-	Offset: 0xF870
-	Size: 0x60
-	Parameters: 2
-	Flags: Linked
-*/
 function doa_lobby_room_effects_cigar_puff(localclientnum, cigar) {
   if(self != cigar) {
     return;
@@ -3900,15 +2717,6 @@ function doa_lobby_room_effects_cigar_puff(localclientnum, cigar) {
   cigar.fx__puff_id = playfxontag(localclientnum, level._effect["doa_frontend_cigar_puff"], self, "tag_fx_smoke");
 }
 
-/*
-	Name: doa_lobby_room_effects_cigar_flick
-	Namespace: frontend
-	Checksum: 0x8F73DC49
-	Offset: 0xF8D8
-	Size: 0x60
-	Parameters: 2
-	Flags: Linked
-*/
 function doa_lobby_room_effects_cigar_flick(localclientnum, cigar) {
   if(self != cigar) {
     return;
@@ -3916,15 +2724,6 @@ function doa_lobby_room_effects_cigar_flick(localclientnum, cigar) {
   cigar.fx__flick_id = playfxontag(localclientnum, level._effect["doa_frontend_cigar_ash"], self, "tag_fx_smoke");
 }
 
-/*
-	Name: doa_lobby_room_effects_ape_exhale
-	Namespace: frontend
-	Checksum: 0xC5A2765D
-	Offset: 0xF940
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function doa_lobby_room_effects_ape_exhale(localclientnum, ape) {
   if(self != ape) {
     return;
@@ -3932,15 +2731,6 @@ function doa_lobby_room_effects_ape_exhale(localclientnum, ape) {
   playfxontag(localclientnum, level._effect["doa_frontend_cigar_exhale"], self, "tag_inhand");
 }
 
-/*
-	Name: doa_lobby_room_effects
-	Namespace: frontend
-	Checksum: 0x23F3067C
-	Offset: 0xF9A0
-	Size: 0x1C4
-	Parameters: 2
-	Flags: Linked
-*/
 function doa_lobby_room_effects(a_ents, localclientnum) {
   level._animnotetrackhandlers["inhale"] = undefined;
   level._animnotetrackhandlers["puff"] = undefined;
@@ -3958,15 +2748,6 @@ function doa_lobby_room_effects(a_ents, localclientnum) {
   animation::add_global_notetrack_handler("exhale", & doa_lobby_room_effects_ape_exhale, localclientnum, ape);
 }
 
-/*
-	Name: doa_lobby_room
-	Namespace: frontend
-	Checksum: 0x2382A458
-	Offset: 0xFB70
-	Size: 0x764
-	Parameters: 1
-	Flags: Linked
-*/
 function doa_lobby_room(localclientnum) {
   str_safehouse = "mobile";
   level.a_str_bunk_scenes = [];
@@ -4021,10 +2802,8 @@ function doa_lobby_room(localclientnum) {
   if(str_gender === "female" && isdefined(s_scene.femalebundle)) {
     s_scene = struct::get_script_bundle("scene", s_scene.femalebundle);
   }
-  /#
   printtoprightln(s_scene.name, (1, 1, 1));
-  # /
-    s_align = struct::get(s_scene.aligntarget, "targetname");
+  s_align = struct::get(s_scene.aligntarget, "targetname");
   playmaincamxcam(localclientnum, s_scene.cameraswitcher, 0, "", "", s_align.origin, s_align.angles);
   for (i = 0; i < level.a_str_bunk_scenes.size; i++) {
     if(i == level.n_cp_index) {
@@ -4058,28 +2837,15 @@ function doa_lobby_room(localclientnum) {
   female = 1;
   loadcpzmcharacteronmodel(localclientnum, level.cp_lobby_data_struct, female, s_params);
   streamer_change(level.a_str_bunk_scene_hints[level.n_cp_index], level.cp_lobby_data_struct);
-  /#
   if(getdvarint("", 0)) {
     level.n_cp_index = undefined;
   }
-  # /
-    level.cp_lobby_data_struct.charactermodel hide();
+  level.cp_lobby_data_struct.charactermodel hide();
 }
 
-/*
-	Name: loadcpzmcharacteronmodel
-	Namespace: frontend
-	Checksum: 0x15416774
-	Offset: 0x102E0
-	Size: 0x20A
-	Parameters: 4
-	Flags: Linked
-*/
 function loadcpzmcharacteronmodel(localclientnum, data_struct, characterindex, params) {
-  /#
   assert(isdefined(data_struct));
-  # /
-    defaultindex = undefined;
+  defaultindex = undefined;
   if(isdefined(params.isdefaulthero) && params.isdefaulthero) {
     defaultindex = 0;
   }
@@ -4097,45 +2863,23 @@ function loadcpzmcharacteronmodel(localclientnum, data_struct, characterindex, p
   return character_customization::update(localclientnum, data_struct, params);
 }
 
-/*
-	Name: zm_lobby_room
-	Namespace: frontend
-	Checksum: 0x3E45522A
-	Offset: 0x104F8
-	Size: 0x138
-	Parameters: 1
-	Flags: Linked
-*/
 function zm_lobby_room(localclientnum) {
-  /#
   n_zm_max_char_index = 8;
   if(getdvarint("", 0)) {
     if(!isdefined(level.zm_debug_index) || level.zm_debug_index > n_zm_max_char_index) {
       level.zm_debug_index = 0;
     }
   }
-  # /
-    s_scene = struct::get_script_bundle("scene", "cin_fe_zm_forest_vign_sitting");
+  s_scene = struct::get_script_bundle("scene", "cin_fe_zm_forest_vign_sitting");
   s_params = spawnstruct();
   s_params.scene = s_scene.name;
   s_params.sessionmode = 0;
   character_customization::loadequippedcharacteronmodel(localclientnum, level.zm_lobby_data_struct, level.zm_debug_index, s_params);
-  /#
   if(getdvarint("", 0)) {
     level.zm_debug_index++;
   }
-  # /
 }
 
-/*
-	Name: mp_lobby_room
-	Namespace: frontend
-	Checksum: 0xBC5AB80B
-	Offset: 0x10638
-	Size: 0x4F4
-	Parameters: 2
-	Flags: Linked
-*/
 function mp_lobby_room(localclientnum, state) {
   character_index = getequippedheroindex(localclientnum, 1);
   fields = getcharacterfields(character_index, 1);
@@ -4188,22 +2932,11 @@ function mp_lobby_room(localclientnum, state) {
     }
   }
   plaympherovignettecam(localclientnum, level.mp_lobby_data_struct, changed);
-  /#
   update_mp_lobby_room_devgui(localclientnum, state);
-  # /
 }
 
-/*
-	Name: lobby_main
-	Namespace: frontend
-	Checksum: 0xCAC2CC63
-	Offset: 0x10B38
-	Size: 0x59A
-	Parameters: 3
-	Flags: Linked
-*/
 function lobby_main(localclientnum, menu_name, state) {
-  level notify(# "new_lobby");
+  level notify("new_lobby");
   setpbgactivebank(localclientnum, 1);
   if(isdefined(state) && !strstartswith(state, "cpzm") && !strstartswith(state, "doa")) {
     if(isdefined(level.frontendspecialfx)) {
@@ -4216,9 +2949,7 @@ function lobby_main(localclientnum, menu_name, state) {
     if(isdefined(camera_ent)) {
       playmaincamxcam(localclientnum, "startmenu_camera_01", 0, "cam1", "", camera_ent.origin, camera_ent.angles);
     }
-    /#
     update_room2_devgui(localclientnum);
-    # /
   } else {
     if(state == "room1") {
       streamer_change("core_frontend_sitting_bull");
@@ -4275,55 +3006,24 @@ function lobby_main(localclientnum, menu_name, state) {
   }
   if(!isdefined(state) || state != "room1") {
     setallcontrollerslightbarcolor();
-    level notify(# "end_controller_pulse");
+    level notify("end_controller_pulse");
   }
 }
 
-/*
-	Name: update_room2_devgui
-	Namespace: frontend
-	Checksum: 0x4CB300CC
-	Offset: 0x110E0
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function update_room2_devgui(localclientnum) {
-  /#
   level thread mp_devgui::remove_mp_contracts_devgui(localclientnum);
-  # /
 }
 
-/*
-	Name: update_mp_lobby_room_devgui
-	Namespace: frontend
-	Checksum: 0x1A887A93
-	Offset: 0x11118
-	Size: 0x74
-	Parameters: 2
-	Flags: Linked
-*/
 function update_mp_lobby_room_devgui(localclientnum, state) {
-  /#
   if(state == "" || state == "") {
     level thread mp_devgui::create_mp_contracts_devgui(localclientnum);
   } else {
     level mp_devgui::remove_mp_contracts_devgui(localclientnum);
   }
-  # /
 }
 
-/*
-	Name: pulse_controller_color
-	Namespace: frontend
-	Checksum: 0xC5B34F65
-	Offset: 0x11198
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function pulse_controller_color() {
-  level endon(# "end_controller_pulse");
+  level endon("end_controller_pulse");
   delta_t = -0.01;
   t = 1;
   while (true) {

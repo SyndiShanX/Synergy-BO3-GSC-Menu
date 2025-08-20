@@ -1,38 +1,23 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\enemy_highlight.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_util;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_68dfcbbe;
 
-/*
-	Name: enemy_highlight_display
-	Namespace: namespace_68dfcbbe
-	Checksum: 0xAF4B7203
-	Offset: 0x160
-	Size: 0xAC
-	Parameters: 7
-	Flags: Linked
-*/
 function enemy_highlight_display(localclientnum, materialname, size, fovpercent, tracetimecheck, actorsonly, allymaterialname) {
-  self notify(# "enemy_highlight_display");
+  self notify("enemy_highlight_display");
   self.enemy_highlight_display = 1;
   self thread enemy_highlight_display_pulse(localclientnum, actorsonly, allymaterialname);
   self thread enemy_highlight_display_frame(localclientnum, materialname, size, fovpercent, tracetimecheck, allymaterialname);
 }
 
-/*
-	Name: enemy_highlight_display_pulse
-	Namespace: namespace_68dfcbbe
-	Checksum: 0x4DB856FE
-	Offset: 0x218
-	Size: 0x304
-	Parameters: 3
-	Flags: Linked
-*/
 function enemy_highlight_display_pulse(localclientnum, actorsonly, allymaterialname) {
-  self endon(# "enemy_highlight_display");
+  self endon("enemy_highlight_display");
   if(!isdefined(actorsonly)) {
     actorsonly = 0;
   }
@@ -72,17 +57,8 @@ function enemy_highlight_display_pulse(localclientnum, actorsonly, allymaterialn
   }
 }
 
-/*
-	Name: enemy_highlight_display_frame
-	Namespace: namespace_68dfcbbe
-	Checksum: 0xBD893A80
-	Offset: 0x528
-	Size: 0x964
-	Parameters: 6
-	Flags: Linked
-*/
 function enemy_highlight_display_frame(localclientnum, materialname, size, fovpercent, tracetimecheck, allymaterialname) {
-  self endon(# "enemy_highlight_display");
+  self endon("enemy_highlight_display");
   if(!isdefined(self.enemy_highlight_elems)) {
     self.enemy_highlight_elems = [];
   }
@@ -122,13 +98,9 @@ function enemy_highlight_display_frame(localclientnum, materialname, size, fovpe
         if(!isdefined(entpos)) {
           entpos = entity.origin + vectorscale((0, 0, 1), 40);
         }
-        /#
         assert(isdefined(entpos));
-        # /
-          /#
         assert(isdefined(eye));
-        # /
-          deltadir = vectornormalize(entpos - eye);
+        deltadir = vectornormalize(entpos - eye);
         dot = vectordot(deltadir, viewdir);
         if(dot < dotlimit) {
           showit = 0;
@@ -182,18 +154,9 @@ function enemy_highlight_display_frame(localclientnum, materialname, size, fovpe
   }
 }
 
-/*
-	Name: enemy_highlight_display_stop
-	Namespace: namespace_68dfcbbe
-	Checksum: 0x5CA34DA9
-	Offset: 0xE98
-	Size: 0xDA
-	Parameters: 1
-	Flags: Linked
-*/
 function enemy_highlight_display_stop(localclientnum) {
-  self notify(# "enemy_highlight_display");
-  self endon(# "enemy_highlight_display");
+  self notify("enemy_highlight_display");
+  self endon("enemy_highlight_display");
   wait(0.016);
   if(isdefined(self.enemy_highlight_elems)) {
     foreach(hudelem in self.enemy_highlight_elems) {
@@ -204,15 +167,6 @@ function enemy_highlight_display_stop(localclientnum) {
   self.enemy_highlight_display = undefined;
 }
 
-/*
-	Name: create_target_indicator
-	Namespace: namespace_68dfcbbe
-	Checksum: 0x24D1136B
-	Offset: 0xF80
-	Size: 0x1F8
-	Parameters: 4
-	Flags: Linked
-*/
 function create_target_indicator(localclientnum, entity, materialname, size) {
   hudelem = createluimenu(localclientnum, "HudElementImage");
   if(isdefined(hudelem)) {

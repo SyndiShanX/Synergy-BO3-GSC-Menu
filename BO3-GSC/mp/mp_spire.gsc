@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_spire.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -8,18 +12,8 @@
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\compass;
 #using scripts\shared\exploder_shared;
-
 #namespace mp_spire;
 
-/*
-	Name: main
-	Namespace: mp_spire
-	Checksum: 0x6FF256DB
-	Offset: 0x3B0
-	Size: 0xC2C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   clientfield::register("world", "mpSpireExteriorBillboard", 1, 2, "int");
   mp_spire_fx::main();
@@ -81,15 +75,6 @@ function main() {
   level spawnkilltrigger();
 }
 
-/*
-	Name: exterior_billboard_exploders
-	Namespace: mp_spire
-	Checksum: 0x5F225608
-	Offset: 0xFE8
-	Size: 0x7A
-	Parameters: 0
-	Flags: Linked
-*/
 function exterior_billboard_exploders() {
   currentexploder = randomint(4);
   while (true) {
@@ -102,15 +87,6 @@ function exterior_billboard_exploders() {
   }
 }
 
-/*
-	Name: add_raps_omit_locations
-	Namespace: mp_spire
-	Checksum: 0xDB01E8AE
-	Offset: 0x1070
-	Size: 0x214
-	Parameters: 1
-	Flags: Linked
-*/
 function add_raps_omit_locations( & omit_locations) {
   if(!isdefined(omit_locations)) {
     omit_locations = [];
@@ -144,15 +120,6 @@ function add_raps_omit_locations( & omit_locations) {
   omit_locations[omit_locations.size] = (2434, 1093, 67);
 }
 
-/*
-	Name: spawnkilltrigger
-	Namespace: mp_spire
-	Checksum: 0x434201CD
-	Offset: 0x1290
-	Size: 0x324
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnkilltrigger() {
   trigger = spawn("trigger_radius", (4303, 1421, 88), 0, 8, 72);
   trigger thread watchkilltrigger();
@@ -178,20 +145,11 @@ function spawnkilltrigger() {
   trigger thread watchkilltrigger();
 }
 
-/*
-	Name: watchkilltrigger
-	Namespace: mp_spire
-	Checksum: 0x28F59F8B
-	Offset: 0x15C0
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function watchkilltrigger() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   trigger = self;
   while (true) {
-    trigger waittill(# "trigger", player);
+    trigger waittill("trigger", player);
     player dodamage(1000, trigger.origin + (0, 0, 0), trigger, trigger, "none", "MOD_SUICIDE", 0);
   }
 }

@@ -1,48 +1,24 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_remotemissile.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace remotemissile;
 
-/*
-	Name: __init__sytem__
-	Namespace: remotemissile
-	Checksum: 0xEB9702C9
-	Offset: 0x1F8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("remotemissile", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: remotemissile
-	Checksum: 0xD3DE3808
-	Offset: 0x238
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("missile", "remote_missile_bomblet_fired", 1, 1, "int", & bomblets_deployed, 0, 0);
   clientfield::register("missile", "remote_missile_fired", 1, 2, "int", & missile_fired, 0, 0);
 }
 
-/*
-	Name: missile_fired
-	Namespace: remotemissile
-	Checksum: 0x64FBBDF3
-	Offset: 0x2D8
-	Size: 0x2CC
-	Parameters: 7
-	Flags: Linked
-*/
 function missile_fired(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     player = getlocalplayer(localclientnum);
@@ -61,12 +37,12 @@ function missile_fired(localclientnum, oldval, newval, bnewent, binitialsnap, fi
   } else {
     if(newval == 2) {
       if(isdefined(self.hellfireobjid)) {
-        self notify(# "hellfire_detonated");
+        self notify("hellfire_detonated");
         objective_delete(localclientnum, self.hellfireobjid);
         util::releaseobjid(localclientnum, self.hellfireobjid);
       }
     } else {
-      self notify(# "cleanup_objectives");
+      self notify("cleanup_objectives");
     }
   }
   ammo_ui_data_model = getuimodel(getuimodelforcontroller(localclientnum), "vehicle.ammo");
@@ -75,15 +51,6 @@ function missile_fired(localclientnum, oldval, newval, bnewent, binitialsnap, fi
   }
 }
 
-/*
-	Name: bomblets_deployed
-	Namespace: remotemissile
-	Checksum: 0x7D3DAD90
-	Offset: 0x5B0
-	Size: 0x23C
-	Parameters: 7
-	Flags: Linked
-*/
 function bomblets_deployed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(bnewent && oldval == newval) {
     return;
@@ -100,7 +67,7 @@ function bomblets_deployed(localclientnum, oldval, newval, bnewent, binitialsnap
       objective_seticon(localclientnum, clientobjid, "remotemissile_target");
     }
   } else {
-    self notify(# "cleanup_objectives");
+    self notify("cleanup_objectives");
   }
   ammo_ui_data_model = getuimodel(getuimodelforcontroller(localclientnum), "vehicle.ammo");
   if(isdefined(ammo_ui_data_model)) {
@@ -108,15 +75,6 @@ function bomblets_deployed(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: destruction_watcher
-	Namespace: remotemissile
-	Checksum: 0x53FC81A
-	Offset: 0x7F8
-	Size: 0x8C
-	Parameters: 2
-	Flags: Linked
-*/
 function destruction_watcher(localclientnum, clientobjid) {
   self util::waittill_any("death", "entityshutdown", "cleanup_objectives");
   wait(0.1);
@@ -126,19 +84,10 @@ function destruction_watcher(localclientnum, clientobjid) {
   }
 }
 
-/*
-	Name: hud_update
-	Namespace: remotemissile
-	Checksum: 0x418B2CD5
-	Offset: 0x890
-	Size: 0x1D0
-	Parameters: 1
-	Flags: Linked
-*/
 function hud_update(localclientnum) {
-  self endon(# "entityshutdown");
-  self notify(# "remote_missile_singeton");
-  self endon(# "remote_missile_singeton");
+  self endon("entityshutdown");
+  self notify("remote_missile_singeton");
+  self endon("remote_missile_singeton");
   missile = self;
   altitude_ui_data_model = getuimodel(getuimodelforcontroller(localclientnum), "vehicle.altitude");
   speed_ui_data_model = getuimodel(getuimodelforcontroller(localclientnum), "vehicle.speed");

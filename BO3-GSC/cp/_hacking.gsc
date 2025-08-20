@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_hacking.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_objectives;
 #using scripts\cp\_oed;
@@ -17,60 +21,23 @@
 #using scripts\shared\scene_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace hacking;
 
-/*
-	Name: __init__sytem__
-	Namespace: hacking
-	Checksum: 0xA04A14DF
-	Offset: 0x340
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("hacking", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: hacking
-	Checksum: 0xCA384341
-	Offset: 0x380
-	Size: 0x3C
-	Parameters: 0
-	Flags: None
-*/
 function __init__() {
   level.hacking = spawnstruct();
   level.hacking flag::init("in_progress");
 }
 
-/*
-	Name: hack
-	Namespace: hacking
-	Checksum: 0x67B3E7C1
-	Offset: 0x3C8
-	Size: 0x4C
-	Parameters: 2
-	Flags: None
-*/
 function hack(n_hacking_time, e_hacking_player) {
   onbeginuse(e_hacking_player);
   wait(n_hacking_time);
   onenduse(undefined, e_hacking_player, 1);
 }
 
-/*
-	Name: init_hack_trigger
-	Namespace: hacking
-	Checksum: 0x791D6C21
-	Offset: 0x420
-	Size: 0x2D8
-	Parameters: 6
-	Flags: None
-*/
 function init_hack_trigger(n_hacking_time = 0.5, str_objective = & "cp_hacking", str_hint_text, var_84221fce, a_keyline_objects, var_27d1693f) {
   if(isdefined(str_hint_text)) {
     self sethintstring(str_hint_text);
@@ -103,51 +70,15 @@ function init_hack_trigger(n_hacking_time = 0.5, str_objective = & "cp_hacking",
   return game_object;
 }
 
-/*
-	Name: trigger_wait
-	Namespace: hacking
-	Checksum: 0xFCBD28CB
-	Offset: 0x700
-	Size: 0x20
-	Parameters: 0
-	Flags: None
-*/
 function trigger_wait() {
-  self waittill(# "trigger_hack", e_who);
+  self waittill("trigger_hack", e_who);
   return e_who;
 }
 
-/*
-	Name: onbeginuse
-	Namespace: hacking
-	Checksum: 0xEF3157B8
-	Offset: 0x728
-	Size: 0xC
-	Parameters: 1
-	Flags: None
-*/
 function onbeginuse(player) {}
 
-/*
-	Name: onenduse
-	Namespace: hacking
-	Checksum: 0x2DF3C2E7
-	Offset: 0x740
-	Size: 0x1C
-	Parameters: 3
-	Flags: None
-*/
 function onenduse(team, player, result) {}
 
-/*
-	Name: onuse
-	Namespace: hacking
-	Checksum: 0x827BCF4C
-	Offset: 0x768
-	Size: 0x2C4
-	Parameters: 1
-	Flags: None
-*/
 function onuse(player) {
   self gameobjects::disable_object();
   if(isdefined(player)) {
@@ -168,8 +99,8 @@ function onuse(player) {
       }
       s_align scene::play("cin_gen_player_hack_start", player);
     }
-    level notify(# "hacking_complete", 1, player);
-    self.trigger notify(# "trigger_hack", player);
+    level notify("hacking_complete", 1, player);
+    self.trigger notify("trigger_hack", player);
     if(isdefined(player)) {
       player clientfield::set_to_player("sndCCHacking", 0);
     }

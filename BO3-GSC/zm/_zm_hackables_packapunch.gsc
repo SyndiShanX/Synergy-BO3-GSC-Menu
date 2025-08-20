@@ -1,21 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_hackables_packapunch.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_equip_hacker;
-
 #namespace zm_hackables_packapunch;
 
-/*
-	Name: hack_packapunch
-	Namespace: zm_hackables_packapunch
-	Checksum: 0x6A95005A
-	Offset: 0x150
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function hack_packapunch() {
   vending_weapon_upgrade_trigger = getentarray("pack_a_punch", "script_noteworthy");
   perk = getent(vending_weapon_upgrade_trigger[0].target, "targetname");
@@ -32,15 +26,6 @@ function hack_packapunch() {
   }
 }
 
-/*
-	Name: pack_trigger_think
-	Namespace: zm_hackables_packapunch
-	Checksum: 0x3EA69EAD
-	Offset: 0x2D8
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function pack_trigger_think() {
   if(!level flag::exists("enter_nml")) {
     return;
@@ -54,17 +39,8 @@ function pack_trigger_think() {
   }
 }
 
-/*
-	Name: packapunch_hack
-	Namespace: zm_hackables_packapunch
-	Checksum: 0x73D40910
-	Offset: 0x368
-	Size: 0x46
-	Parameters: 1
-	Flags: Linked
-*/
 function packapunch_hack(hacker) {
   zm_equip_hacker::deregister_hackable_struct(level._pack_hack_struct);
   level._pack_hack_struct.script_int = 0;
-  level notify(# "packapunch_hacked");
+  level notify("packapunch_hacked");
 }

@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\gfx_shared.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\filter_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace gfx;
 
-/*
-	Name: setstage
-	Namespace: gfx
-	Checksum: 0x2D77B00C
-	Offset: 0x260
-	Size: 0x5EC
-	Parameters: 8
-	Flags: Linked
-*/
 function setstage(localclientnum, bundle, filterid, stageprefix, stagelength, accumtime, totalaccumtime, setconstants) {
   num_consts = getstructfieldorzero(bundle, stageprefix + "num_consts");
   for (constidx = 0; constidx < num_consts; constidx++) {
@@ -104,20 +98,9 @@ function setstage(localclientnum, bundle, filterid, stageprefix, stagelength, ac
   stageconstants[1] = accumtime;
   stageconstants[2] = stagelength;
   stageconstants[3] = 0;
-  [
-    [setconstants]
-  ](localclientnum, "scriptvector7", filterid, stageconstants);
+  [[setconstants]](localclientnum, "scriptvector7", filterid, stageconstants);
 }
 
-/*
-	Name: getshaderconstantvalue
-	Namespace: gfx
-	Checksum: 0x99E635A9
-	Offset: 0x858
-	Size: 0x4AE
-	Parameters: 4
-	Flags: Linked
-*/
 function getshaderconstantvalue(bundle, constprefix, constname, delay) {
   channels = getstructfield(bundle, constprefix + "channels");
   if(delay && isstring(channels) && (channels == "color" || channels == ("color+alpha"))) {
@@ -168,15 +151,6 @@ function getshaderconstantvalue(bundle, constprefix, constname, delay) {
   return vals;
 }
 
-/*
-	Name: getstructfieldorzero
-	Namespace: gfx
-	Checksum: 0xA0C3E150
-	Offset: 0xD10
-	Size: 0x4E
-	Parameters: 2
-	Flags: Linked
-*/
 function getstructfieldorzero(bundle, field) {
   ret = getstructfield(bundle, field);
   if(!isdefined(ret)) {
@@ -185,15 +159,6 @@ function getstructfieldorzero(bundle, field) {
   return ret;
 }
 
-/*
-	Name: getshaderconstantindex
-	Namespace: gfx
-	Checksum: 0x8933ADED
-	Offset: 0xD68
-	Size: 0x8E
-	Parameters: 1
-	Flags: Linked
-*/
 function getshaderconstantindex(codeconstname) {
   switch (codeconstname) {
     case "scriptvector0": {

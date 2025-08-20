@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_doa_bo3.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_load;
 #using scripts\cp\_util;
@@ -12,21 +16,10 @@
 #using scripts\shared\exploder_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicles\_quadtank;
-
 #using_animtree("critter");
 #using_animtree("chicken_mech");
-
 #namespace namespace_bb5d050c;
 
-/*
-	Name: main
-	Namespace: namespace_bb5d050c
-	Checksum: 0x30EFFFB5
-	Offset: 0x620
-	Size: 0x29C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   setdvar("doa_redins_rally", 0);
   level.var_2eda2d85 = & function_62423327;
@@ -45,15 +38,6 @@ function main() {
   load::main();
 }
 
-/*
-	Name: function_4eb73a5
-	Namespace: namespace_bb5d050c
-	Checksum: 0x37DA1161
-	Offset: 0x8C8
-	Size: 0x616
-	Parameters: 3
-	Flags: Linked
-*/
 function function_4eb73a5(localclientnum, mapname, var_5fb1dd3e) {
   if(isdefined(level.weatherfx) && isdefined(level.weatherfx[localclientnum])) {
     stopfx(localclientnum, level.weatherfx[localclientnum]);
@@ -146,15 +130,6 @@ function function_4eb73a5(localclientnum, mapname, var_5fb1dd3e) {
   }
 }
 
-/*
-	Name: function_62423327
-	Namespace: namespace_bb5d050c
-	Checksum: 0x8F58643F
-	Offset: 0xEE8
-	Size: 0x252
-	Parameters: 1
-	Flags: Linked
-*/
 function function_62423327(arena) {
   switch (arena.name) {
     case "redins": {
@@ -206,28 +181,10 @@ function function_62423327(arena) {
   }
 }
 
-/*
-	Name: function_98982de8
-	Namespace: namespace_bb5d050c
-	Checksum: 0xF010A2CC
-	Offset: 0x1148
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_98982de8(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   setuimodelvalue(getuimodel(level.var_7e2a814c, "gpr0"), newval);
 }
 
-/*
-	Name: function_99e9c8d
-	Namespace: namespace_bb5d050c
-	Checksum: 0xF77E8105
-	Offset: 0x11C8
-	Size: 0x7EE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_99e9c8d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   setuimodelvalue(createuimodel(level.var_7e2a814c, "gbanner"), "");
   switch (newval) {
@@ -287,47 +244,20 @@ function function_99e9c8d(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: function_b5e8546d
-	Namespace: namespace_bb5d050c
-	Checksum: 0xAC1D1A5
-	Offset: 0x19C0
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b5e8546d(localclientnum) {
   level.var_81528e19 = 2;
   setuimodelvalue(createuimodel(level.var_7e2a814c, "driving"), 1);
   level thread function_caffcc1d(localclientnum);
 }
 
-/*
-	Name: function_caffcc1d
-	Namespace: namespace_bb5d050c
-	Checksum: 0xC95040B3
-	Offset: 0x1A30
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function function_caffcc1d(localclientnum) {
-  level waittill(# "hash_ec7ca67b");
+  level waittill("hash_ec7ca67b");
   level.var_81528e19 = undefined;
   setuimodelvalue(createuimodel(level.var_7e2a814c, "driving"), 0);
 }
 
-/*
-	Name: function_c8020bd9
-	Namespace: namespace_bb5d050c
-	Checksum: 0xF0EFE55C
-	Offset: 0x1A90
-	Size: 0x294
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c8020bd9(localclientnum) {
-  level waittill(# "hash_ec7ca67b");
+  level waittill("hash_ec7ca67b");
   level.var_81528e19 = undefined;
   setuimodelvalue(createuimodel(level.var_7e2a814c, "redins"), "");
   setuimodelvalue(createuimodel(level.var_7e2a814c, "gtxt0"), "");
@@ -342,51 +272,24 @@ function function_c8020bd9(localclientnum) {
   setuimodelvalue(createuimodel(level.var_7e2a814c, "driving"), 0);
 }
 
-/*
-	Name: function_7183a31d
-	Namespace: namespace_bb5d050c
-	Checksum: 0x6F9026B6
-	Offset: 0x1D30
-	Size: 0xAC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_7183a31d(fieldname, diff) {
-  level notify(# "hash_7183a31d");
-  level endon(# "hash_7183a31d");
+  level notify("hash_7183a31d");
+  level endon("hash_7183a31d");
   setuimodelvalue(createuimodel(level.var_7e2a814c, "gtxt0"), ("+") + diff);
   wait(2);
   setuimodelvalue(createuimodel(level.var_7e2a814c, "gtxt0"), "");
 }
 
-/*
-	Name: function_ec984567
-	Namespace: namespace_bb5d050c
-	Checksum: 0x8D746E19
-	Offset: 0x1DE8
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ec984567() {
-  level endon(# "hash_ec7ca67b");
+  level endon("hash_ec7ca67b");
   while (true) {
-    level waittill(# "hash_48152b36", fieldname, diff);
+    level waittill("hash_48152b36", fieldname, diff);
     if(diff > 0) {
       level thread function_7183a31d(fieldname, diff);
     }
   }
 }
 
-/*
-	Name: function_1dd0a889
-	Namespace: namespace_bb5d050c
-	Checksum: 0x338D40BD
-	Offset: 0x1E58
-	Size: 0xD6
-	Parameters: 7
-	Flags: Linked
-*/
 function function_1dd0a889(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 0: {
@@ -405,35 +308,17 @@ function function_1dd0a889(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_9cbb849c
-	Namespace: namespace_bb5d050c
-	Checksum: 0x75B9F59E
-	Offset: 0x1F38
-	Size: 0x114
-	Parameters: 7
-	Flags: Linked
-*/
 function function_9cbb849c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     var_a923fad3 = newval & 15;
     seconds = newval >> 4;
-    text = sprintf( & "CP_DOA_BO3_REDINS_INSTRUCTION", var_a923fad3, seconds);
+    text = sprintf(&"CP_DOA_BO3_REDINS_INSTRUCTION", var_a923fad3, seconds);
     setuimodelvalue(createuimodel(level.var_7e2a814c, "instruct"), text);
   } else {
     setuimodelvalue(createuimodel(level.var_7e2a814c, "instruct"), "");
   }
 }
 
-/*
-	Name: function_c7163a08
-	Namespace: namespace_bb5d050c
-	Checksum: 0x70DAEACF
-	Offset: 0x2058
-	Size: 0x19E
-	Parameters: 7
-	Flags: Linked
-*/
 function function_c7163a08(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1 && (!(isdefined(level.var_f64ff200) && level.var_f64ff200))) {
     if(!isdefined(level.var_8c2ba713)) {
@@ -445,7 +330,7 @@ function function_c7163a08(localclientnum, oldval, newval, bnewent, binitialsnap
       string = "CP_DOA_BO3_REDINS_HINT" + randomint(8);
       setuimodelvalue(createuimodel(level.var_7e2a814c, "hint"), istring(string));
       while (true) {
-        level waittill(# "countdown", val);
+        level waittill("countdown", val);
         if(val <= 1) {
           break;
         }
@@ -457,31 +342,13 @@ function function_c7163a08(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_96abee17
-	Namespace: namespace_bb5d050c
-	Checksum: 0x40BB40BA
-	Offset: 0x2200
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function function_96abee17(localclientnum) {
-  level waittill(# "hash_ec7ca67b");
+  level waittill("hash_ec7ca67b");
   level.var_81528e19 = undefined;
 }
 
-/*
-	Name: function_52612667
-	Namespace: namespace_bb5d050c
-	Checksum: 0x105D0475
-	Offset: 0x2230
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function function_52612667(localclientnum) {
-  level endon(# "hash_ec7ca67b");
+  level endon("hash_ec7ca67b");
   if(isdefined(level.weatherfx) && isdefined(level.weatherfx[localclientnum])) {
     stopfx(localclientnum, level.weatherfx[localclientnum]);
     level.weatherfx[localclientnum] = 0;
@@ -490,17 +357,8 @@ function function_52612667(localclientnum) {
   level thread function_96abee17(localclientnum);
 }
 
-/*
-	Name: function_787f2b69
-	Namespace: namespace_bb5d050c
-	Checksum: 0xB426FE52
-	Offset: 0x22D0
-	Size: 0x420
-	Parameters: 1
-	Flags: Linked
-*/
 function function_787f2b69(localclientnum) {
-  level endon(# "hash_ec7ca67b");
+  level endon("hash_ec7ca67b");
   if(isdefined(level.weatherfx) && isdefined(level.weatherfx[localclientnum])) {
     stopfx(localclientnum, level.weatherfx[localclientnum]);
     level.weatherfx[localclientnum] = 0;
@@ -543,50 +401,23 @@ function function_787f2b69(localclientnum) {
   }
 }
 
-/*
-	Name: function_a8eb710
-	Namespace: namespace_bb5d050c
-	Checksum: 0xBD477641
-	Offset: 0x26F8
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a8eb710() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self useanimtree($critter);
   self.animation = (randomint(2) ? % critter::a_water_buffalo_run_a : % critter::a_water_buffalo_run_b);
   self setanim(self.animation, 1, 0, 1);
 }
 
-/*
-	Name: function_caf96f2d
-	Namespace: namespace_bb5d050c
-	Checksum: 0x4FA3529E
-	Offset: 0x27A8
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_caf96f2d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self thread function_a8eb710();
   }
 }
 
-/*
-	Name: function_27542390
-	Namespace: namespace_bb5d050c
-	Checksum: 0xCB822D64
-	Offset: 0x2810
-	Size: 0x1C8
-	Parameters: 2
-	Flags: Linked
-*/
 function function_27542390(localclientnum, state) {
-  self endon(# "entityshutdown");
-  self notify(# "animstate");
-  self endon(# "animstate");
+  self endon("entityshutdown");
+  self notify("animstate");
+  self endon("animstate");
   self.animstate = state;
   self useanimtree($chicken_mech);
   while (true) {
@@ -621,15 +452,6 @@ function function_27542390(localclientnum, state) {
   }
 }
 
-/*
-	Name: function_f9064aec
-	Namespace: namespace_bb5d050c
-	Checksum: 0xF0BE704A
-	Offset: 0x29E0
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_f9064aec(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self thread function_27542390(localclientnum, newval);
 }

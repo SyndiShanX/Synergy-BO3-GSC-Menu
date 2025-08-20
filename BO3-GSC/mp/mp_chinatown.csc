@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_chinatown.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
 #using scripts\mp\mp_chinatown_fx;
 #using scripts\mp\mp_chinatown_sound;
 #using scripts\shared\util_shared;
-
 #namespace mp_chinatown;
 
-/*
-	Name: main
-	Namespace: mp_chinatown
-	Checksum: 0xE7CE9C23
-	Offset: 0x1E8
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   mp_chinatown_fx::main();
   mp_chinatown_sound::main();
@@ -29,15 +23,6 @@ function main() {
   level.var_283122e6 = & function_ea38265c;
 }
 
-/*
-	Name: function_ea38265c
-	Namespace: mp_chinatown
-	Checksum: 0xFE5BA942
-	Offset: 0x2A8
-	Size: 0x7E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ea38265c(scriptbundlename) {
   if(isdefined(level.localplayers) && level.localplayers.size < 2) {
     return false;
@@ -51,15 +36,6 @@ function function_ea38265c(scriptbundlename) {
   return false;
 }
 
-/*
-	Name: dom_flag_base_fx_override
-	Namespace: mp_chinatown
-	Checksum: 0xC644D124
-	Offset: 0x330
-	Size: 0xC2
-	Parameters: 2
-	Flags: Linked
-*/
 function dom_flag_base_fx_override(flag, team) {
   switch (flag.name) {
     case "a": {
@@ -89,15 +65,6 @@ function dom_flag_base_fx_override(flag, team) {
   }
 }
 
-/*
-	Name: dom_flag_cap_fx_override
-	Namespace: mp_chinatown
-	Checksum: 0xA1F19B6A
-	Offset: 0x400
-	Size: 0xC2
-	Parameters: 2
-	Flags: Linked
-*/
 function dom_flag_cap_fx_override(flag, team) {
   switch (flag.name) {
     case "a": {

@@ -1,36 +1,21 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_fx.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\exploder_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_genesis_fx;
 
-/*
-	Name: main
-	Namespace: zm_genesis_fx
-	Checksum: 0xC28A92BD
-	Offset: 0x12D8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_scripted_fx();
   precache_createfx_fx();
   callback::on_localclient_connect( & function_129a815f);
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_genesis_fx
-	Checksum: 0xB2FAECFA
-	Offset: 0x1328
-	Size: 0x8DE
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["eye_glow"] = "dlc1/castle/fx_glow_eye_orange_castle";
   level._effect["headshot"] = "impacts/fx_flesh_hit";
@@ -115,50 +100,14 @@ function precache_scripted_fx() {
   level._effect["mechz_ground_spawn"] = "dlc4/genesis/fx_mech_spawn";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_genesis_fx
-	Checksum: 0x99EC1590
-	Offset: 0x1C10
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {}
 
-/*
-	Name: function_129a815f
-	Namespace: zm_genesis_fx
-	Checksum: 0xD2E15CAD
-	Offset: 0x1C20
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_129a815f(localclientnum) {}
 
-/*
-	Name: function_2c301fae
-	Namespace: zm_genesis_fx
-	Checksum: 0x37FBB8BC
-	Offset: 0x1C38
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2c301fae() {
   level thread function_7eea24df();
 }
 
-/*
-	Name: function_7eea24df
-	Namespace: zm_genesis_fx
-	Checksum: 0x483FF606
-	Offset: 0x1C60
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7eea24df() {
   level._effect["chest_light_closed"] = "dlc4/genesis/fx_weapon_box_closed_glow_genesis";
   level._effect["chest_light"] = "dlc4/genesis/fx_weapon_box_open_glow_genesis";

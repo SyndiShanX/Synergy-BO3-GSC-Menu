@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_hacker_tool.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -8,18 +12,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\shared\weapons\_flashgrenades;
-
 #namespace hacker_tool;
 
-/*
-	Name: init_shared
-	Namespace: hacker_tool
-	Checksum: 0xE79BEDD1
-	Offset: 0x280
-	Size: 0x94
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   clientfield::register("toplayer", "hacker_tool", 1, 2, "int", & player_hacking, 0, 0);
   level.hackingsoundid = [];
@@ -28,15 +22,6 @@ function init_shared() {
   callback::on_localplayer_spawned( & on_localplayer_spawned);
 }
 
-/*
-	Name: on_localplayer_spawned
-	Namespace: hacker_tool
-	Checksum: 0x990620EE
-	Offset: 0x320
-	Size: 0x100
-	Parameters: 1
-	Flags: None
-*/
 function on_localplayer_spawned(localclientnum) {
   if(self != getlocalplayer(localclientnum)) {
     return;
@@ -56,17 +41,8 @@ function on_localplayer_spawned(localclientnum) {
   }
 }
 
-/*
-	Name: player_hacking
-	Namespace: hacker_tool
-	Checksum: 0x31D4F09C
-	Offset: 0x428
-	Size: 0x48C
-	Parameters: 7
-	Flags: None
-*/
 function player_hacking(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self notify(# "player_hacking_callback");
+  self notify("player_hacking_callback");
   player = self;
   if(isdefined(level.hackingsoundid[localclientnum])) {
     player stoploopsound(level.hackingsoundid[localclientnum]);
@@ -108,18 +84,9 @@ function player_hacking(localclientnum, oldval, newval, bnewent, binitialsnap, f
   }
 }
 
-/*
-	Name: watchhackspeed
-	Namespace: hacker_tool
-	Checksum: 0x1DFBB7D3
-	Offset: 0x8C0
-	Size: 0xAC
-	Parameters: 2
-	Flags: None
-*/
 function watchhackspeed(localclientnum, isbreachingfirewall) {
-  self endon(# "entityshutdown");
-  self endon(# "player_hacking_callback");
+  self endon("entityshutdown");
+  self endon("player_hacking_callback");
   player = self;
   for (;;) {
     targetentarray = self gettargetlockentityarray();
@@ -132,19 +99,10 @@ function watchhackspeed(localclientnum, isbreachingfirewall) {
   targetent watchtargethack(localclientnum, player, isbreachingfirewall);
 }
 
-/*
-	Name: watchtargethack
-	Namespace: hacker_tool
-	Checksum: 0xCC654700
-	Offset: 0x978
-	Size: 0x42C
-	Parameters: 3
-	Flags: None
-*/
 function watchtargethack(localclientnum, player, isbreachingfirewall) {
-  self endon(# "entityshutdown");
-  player endon(# "entityshutdown");
-  self endon(# "player_hacking_callback");
+  self endon("entityshutdown");
+  player endon("entityshutdown");
+  self endon("player_hacking_callback");
   targetent = self;
   player.targetent = targetent;
   if(isbreachingfirewall) {
@@ -195,20 +153,11 @@ function watchtargethack(localclientnum, player, isbreachingfirewall) {
   }
 }
 
-/*
-	Name: watchhackerplayershutdown
-	Namespace: hacker_tool
-	Checksum: 0xEF93BB3E
-	Offset: 0xDB0
-	Size: 0xAC
-	Parameters: 3
-	Flags: None
-*/
 function watchhackerplayershutdown(localclientnum, hackerplayer, targetent) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   killstreakentity = self;
-  hackerplayer endon(# "player_hacking_callback");
-  hackerplayer waittill(# "entityshutdown");
+  hackerplayer endon("player_hacking_callback");
+  hackerplayer waittill("entityshutdown");
   if(isdefined(targetent)) {
     targetent.isbreachingfirewall = 1;
   }
@@ -216,18 +165,9 @@ function watchhackerplayershutdown(localclientnum, hackerplayer, targetent) {
   killstreakentity duplicate_render::set_hacker_tool_breaching(localclientnum, 0);
 }
 
-/*
-	Name: watchforemp
-	Namespace: hacker_tool
-	Checksum: 0x79EDE318
-	Offset: 0xE68
-	Size: 0xD8
-	Parameters: 1
-	Flags: None
-*/
 function watchforemp(localclientnum) {
-  self endon(# "entityshutdown");
-  self endon(# "player_hacking_callback");
+  self endon("entityshutdown");
+  self endon("player_hacking_callback");
   while (true) {
     if(self isempjammed()) {
       setuimodelvalue(createuimodel(getuimodelforcontroller(localclientnum), "hudItems.blackhat.status"), 3);

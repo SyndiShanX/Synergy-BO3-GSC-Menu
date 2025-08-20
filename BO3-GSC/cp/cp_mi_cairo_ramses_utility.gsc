@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_cairo_ramses_utility.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_debug;
 #using scripts\cp\_load;
@@ -27,59 +31,22 @@
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
-
 #namespace ramses_util;
 
-/*
-	Name: __init__sytem__
-	Namespace: ramses_util
-	Checksum: 0xED9A1D98
-	Offset: 0xB70
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("ramses_util", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: ramses_util
-	Checksum: 0xEC03D904
-	Offset: 0xBB0
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "ramses_sun_color", 1, 1, "int");
   clientfield::register("toplayer", "dni_eye", 1, 1, "int");
   clientfield::register("scriptmover", "hide_graphic_content", 1, 1, "counter");
 }
 
-/*
-	Name: is_demo
-	Namespace: ramses_util
-	Checksum: 0xD95B3AC0
-	Offset: 0xC50
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function is_demo() {
   return getdvarint("is_demo_build", 0);
 }
 
-/*
-	Name: function_22e1a261
-	Namespace: ramses_util
-	Checksum: 0x37C0993C
-	Offset: 0xC78
-	Size: 0x84
-	Parameters: 0
-	Flags: None
-*/
 function function_22e1a261() {
   exploder::exploder("transition");
   level set_lighting_state_time_shift_2();
@@ -87,15 +54,6 @@ function function_22e1a261() {
   level clientfield::set("alley_fog_banks", 1);
 }
 
-/*
-	Name: prepare_players_for_demo_warp
-	Namespace: ramses_util
-	Checksum: 0xC40079DC
-	Offset: 0xD08
-	Size: 0xF2
-	Parameters: 0
-	Flags: None
-*/
 function prepare_players_for_demo_warp() {
   foreach(player in level.players) {
     if(player isinvehicle()) {
@@ -106,15 +64,6 @@ function prepare_players_for_demo_warp() {
   }
 }
 
-/*
-	Name: set_low_ready_movement
-	Namespace: ramses_util
-	Checksum: 0x6041F593
-	Offset: 0xE08
-	Size: 0xEA
-	Parameters: 1
-	Flags: Linked
-*/
 function set_low_ready_movement(b_enable = 1) {
   if(!isarray(self)) {
     a_e_players = array(self);
@@ -126,15 +75,6 @@ function set_low_ready_movement(b_enable = 1) {
   }
 }
 
-/*
-	Name: function_1903e7dc
-	Namespace: ramses_util
-	Checksum: 0xCE77B58D
-	Offset: 0xF00
-	Size: 0xBC
-	Parameters: 0
-	Flags: None
-*/
 function function_1903e7dc() {
   hidemiscmodels("arena_billboard_static2");
   hidemiscmodels("arena_billboard_02_static2");
@@ -146,15 +86,6 @@ function function_1903e7dc() {
   function_2f9e262a();
 }
 
-/*
-	Name: function_2f9e262a
-	Namespace: ramses_util
-	Checksum: 0x34222945
-	Offset: 0xFC8
-	Size: 0x314
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2f9e262a() {
   scene::add_scene_func("p7_fxanim_cp_ramses_arena_billboard_bundle", & function_1c347e72, "init", "arena_billboard_static1");
   scene::add_scene_func("p7_fxanim_cp_ramses_arena_billboard_bundle", & function_a72c2dda, "done", "arena_billboard_static2");
@@ -172,28 +103,10 @@ function function_2f9e262a() {
   scene::add_scene_func("p7_fxanim_cp_ramses_qt_plaza_palace_wall_collapse_bundle", & function_a72c2dda, "done", "wall_collapse_static2");
 }
 
-/*
-	Name: function_1c347e72
-	Namespace: ramses_util
-	Checksum: 0xEAF84DA5
-	Offset: 0x12E8
-	Size: 0x2C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_1c347e72(a_ents, str_targetname) {
   hidemiscmodels(str_targetname);
 }
 
-/*
-	Name: function_a72c2dda
-	Namespace: ramses_util
-	Checksum: 0x81D0B3A2
-	Offset: 0x1320
-	Size: 0xD2
-	Parameters: 2
-	Flags: Linked
-*/
 function function_a72c2dda(a_ents, str_targetname) {
   showmiscmodels(str_targetname);
   foreach(ent in a_ents) {
@@ -203,15 +116,6 @@ function function_a72c2dda(a_ents, str_targetname) {
   }
 }
 
-/*
-	Name: function_a0a9f927
-	Namespace: ramses_util
-	Checksum: 0x25AF9C5A
-	Offset: 0x1400
-	Size: 0xFA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a0a9f927() {
   var_3ecc15f7 = getentarray("recovery_fan", "targetname");
   foreach(var_76185ee4 in var_3ecc15f7) {
@@ -221,73 +125,28 @@ function function_a0a9f927() {
   }
 }
 
-/*
-	Name: rotate_fan
-	Namespace: ramses_util
-	Checksum: 0xE60A0CFD
-	Offset: 0x1508
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function rotate_fan(var_5dbde88f) {
-  self endon(# "hash_fb28e86c");
+  self endon("hash_fb28e86c");
   while (true) {
     self rotateyaw(180, var_5dbde88f / 2);
     wait(var_5dbde88f / 2);
   }
 }
 
-/*
-	Name: function_f81a38c8
-	Namespace: ramses_util
-	Checksum: 0x7DFC973E
-	Offset: 0x1568
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f81a38c8() {
   t_damage = getent(self.target, "targetname");
-  t_damage waittill(# "trigger");
-  self notify(# "hash_fb28e86c");
-  self waittill(# "rotatedone");
+  t_damage waittill("trigger");
+  self notify("hash_fb28e86c");
+  self waittill("rotatedone");
   self rotateto(self.angles + vectorscale((0, 1, 0), 15), 1.25, 0.05, 0.75);
 }
 
-/*
-	Name: function_e7ebe596
-	Namespace: ramses_util
-	Checksum: 0xD326292F
-	Offset: 0x1610
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e7ebe596(b_on = 1) {}
 
-/*
-	Name: delete_ent_array
-	Namespace: ramses_util
-	Checksum: 0x1325D10E
-	Offset: 0x1638
-	Size: 0x4C
-	Parameters: 2
-	Flags: None
-*/
 function delete_ent_array(str_value, str_key = "targetname") {
   level thread _delete_ent_array(str_value, str_key);
 }
 
-/*
-	Name: _delete_ent_array
-	Namespace: ramses_util
-	Checksum: 0x45F00088
-	Offset: 0x1690
-	Size: 0xEA
-	Parameters: 2
-	Flags: Linked
-*/
 function _delete_ent_array(str_value, str_key) {
   a_ents = getentarray(str_value, str_key);
   foreach(i, ent in a_ents) {
@@ -300,15 +159,6 @@ function _delete_ent_array(str_value, str_key) {
   }
 }
 
-/*
-	Name: init_dead_turrets
-	Namespace: ramses_util
-	Checksum: 0x29E25696
-	Offset: 0x1788
-	Size: 0x38C
-	Parameters: 1
-	Flags: Linked
-*/
 function init_dead_turrets(b_fake_rs_turrets = 0) {
   level.a_e_dead_turrets_non_controllable = [];
   a_sp_turret_non_controllable = getentarray("dead_turrets_non_controllable", "targetname");
@@ -333,27 +183,16 @@ function init_dead_turrets(b_fake_rs_turrets = 0) {
     e_dead_turret.dead_turret_owned = 0;
     e_dead_turret.takedamage = 0;
     if(isdefined(sp_turret.script_int)) {
-      /#
       assert(isdefined(e_dead_turret.script_int), "");
-      # /
-        e_dead_turret.script_int = sp_turret.script_int;
+      e_dead_turret.script_int = sp_turret.script_int;
     }
   }
   level.a_e_all_dead_turrets = arraycombine(level.a_e_dead_turrets, level.a_e_dead_turrets_non_controllable, 1, 0);
   level flag::set("dead_turrets_initialized");
 }
 
-/*
-	Name: delete_all_dead_turrets
-	Namespace: ramses_util
-	Checksum: 0xC1A3A6E3
-	Offset: 0x1B20
-	Size: 0xC2
-	Parameters: 0
-	Flags: None
-*/
 function delete_all_dead_turrets() {
-  level notify(# "stop_rs_dead_turret_vignettes");
+  level notify("stop_rs_dead_turret_vignettes");
   if(isdefined(level.a_e_all_dead_turrets)) {
     foreach(e_turret in level.a_e_all_dead_turrets) {
       e_turret delete();
@@ -364,15 +203,6 @@ function delete_all_dead_turrets() {
   level.a_e_all_dead_turrets = undefined;
 }
 
-/*
-	Name: hide_ents
-	Namespace: ramses_util
-	Checksum: 0x7DC2A132
-	Offset: 0x1BF0
-	Size: 0x12A
-	Parameters: 1
-	Flags: Linked
-*/
 function hide_ents(b_connect = 0) {
   foreach(e in self) {
     e hide();
@@ -385,15 +215,6 @@ function hide_ents(b_connect = 0) {
   }
 }
 
-/*
-	Name: show_ents
-	Namespace: ramses_util
-	Checksum: 0x575335DA
-	Offset: 0x1D28
-	Size: 0x222
-	Parameters: 1
-	Flags: Linked
-*/
 function show_ents(b_disconnect = 0) {
   foreach(e in self) {
     e show();
@@ -412,15 +233,6 @@ function show_ents(b_disconnect = 0) {
   }
 }
 
-/*
-	Name: spawn_from_structs
-	Namespace: ramses_util
-	Checksum: 0x390580A9
-	Offset: 0x1F58
-	Size: 0x132
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_from_structs() {
   n_count = 0;
   foreach(struct in self) {
@@ -436,15 +248,6 @@ function spawn_from_structs() {
   }
 }
 
-/*
-	Name: make_not_solid
-	Namespace: ramses_util
-	Checksum: 0xB7C915D2
-	Offset: 0x2098
-	Size: 0x15A
-	Parameters: 1
-	Flags: Linked
-*/
 function make_not_solid(b_moving) {
   if(isarray(self)) {
     a_e = self;
@@ -461,15 +264,6 @@ function make_not_solid(b_moving) {
   }
 }
 
-/*
-	Name: make_solid
-	Namespace: ramses_util
-	Checksum: 0xC3990C74
-	Offset: 0x2200
-	Size: 0x15A
-	Parameters: 1
-	Flags: Linked
-*/
 function make_solid(b_moving) {
   if(isarray(self)) {
     a_e = self;
@@ -486,15 +280,6 @@ function make_solid(b_moving) {
   }
 }
 
-/*
-	Name: set_visible
-	Namespace: ramses_util
-	Checksum: 0xC73E9390
-	Offset: 0x2368
-	Size: 0x278
-	Parameters: 2
-	Flags: None
-*/
 function set_visible(str_ent, b_visible = 1) {
   a_e_invis = getentarray(str_ent, "targetname");
   a_e_players = self;
@@ -516,15 +301,6 @@ function set_visible(str_ent, b_visible = 1) {
   }
 }
 
-/*
-	Name: give_spike_launcher
-	Namespace: ramses_util
-	Checksum: 0xFF793A60
-	Offset: 0x25E8
-	Size: 0x1CA
-	Parameters: 2
-	Flags: None
-*/
 function give_spike_launcher(b_force_switch = 1, b_hint = 1) {
   if(flagsys::get("mobile_armory_in_use")) {
     return;
@@ -547,41 +323,23 @@ function give_spike_launcher(b_force_switch = 1, b_hint = 1) {
   }
 }
 
-/*
-	Name: spike_launcher_tutorial_hint
-	Namespace: ramses_util
-	Checksum: 0xBEC7A644
-	Offset: 0x27C0
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function spike_launcher_tutorial_hint(w_spike_launcher) {
-  self endon(# "death");
+  self endon("death");
   w_current = self getcurrentweapon();
   while (!self flag::get("spike_launcher_tutorial_complete")) {
     if(w_current == w_spike_launcher) {
       self _wait_till_tutorial_complete(w_spike_launcher);
     } else {
-      self waittill(# "weapon_change_complete", w_current);
+      self waittill("weapon_change_complete", w_current);
     }
   }
 }
 
-/*
-	Name: _wait_till_tutorial_complete
-	Namespace: ramses_util
-	Checksum: 0x6832DFEE
-	Offset: 0x2860
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function _wait_till_tutorial_complete(w_spike_launcher) {
-  self endon(# "death");
-  self endon(# "detonate");
-  self endon(# "hash_f4dfb01b");
-  self waittill(# "weapon_fired", w_current);
+  self endon("death");
+  self endon("detonate");
+  self endon("hash_f4dfb01b");
+  self waittill("weapon_fired", w_current);
   if(w_current == w_spike_launcher) {
     wait(2);
     self thread wait_till_detonate_button_pressed();
@@ -589,66 +347,39 @@ function _wait_till_tutorial_complete(w_spike_launcher) {
   }
 }
 
-/*
-	Name: wait_till_detonate_button_pressed
-	Namespace: ramses_util
-	Checksum: 0xDC5E12C0
-	Offset: 0x2908
-	Size: 0x106
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_till_detonate_button_pressed() {
-  self endon(# "death");
-  self notify(# "wait_till_detonate_button_pressed");
-  self endon(# "wait_till_detonate_button_pressed");
+  self endon("death");
+  self notify("wait_till_detonate_button_pressed");
+  self endon("wait_till_detonate_button_pressed");
   if(isdefined(self.var_f30613a1)) {
     self util::hide_hint_text();
     wait(0.05);
   }
   w_spike_launcher = getweapon("spike_launcher");
-  self util::show_hint_text( & "CP_MI_CAIRO_RAMSES_SPIKE_LAUNCHER_DETONATE", 1, "spike_launcher_tutorial_complete", 20);
+  self util::show_hint_text(&"CP_MI_CAIRO_RAMSES_SPIKE_LAUNCHER_DETONATE", 1, "spike_launcher_tutorial_complete", 20);
   self.var_99c7680e = 1;
   self util::waittill_any_timeout(20, "detonate", "last_stand_detonate");
   self flag::set("spike_launcher_tutorial_complete");
   self.var_f30613a1 = undefined;
 }
 
-/*
-	Name: function_780e57a1
-	Namespace: ramses_util
-	Checksum: 0xDEDC8BC0
-	Offset: 0x2A18
-	Size: 0x100
-	Parameters: 0
-	Flags: None
-*/
 function function_780e57a1() {
-  level endon(# "all_weak_points_destroyed");
-  self endon(# "detonate");
-  self endon(# "hash_f4dfb01b");
-  self endon(# "death");
+  level endon("all_weak_points_destroyed");
+  self endon("detonate");
+  self endon("hash_f4dfb01b");
+  self endon("death");
   w_current = self getcurrentweapon();
   w_spike_launcher = getweapon("spike_launcher");
   while (!self flag::get("spike_launcher_tutorial_complete")) {
-    self waittill(# "weapon_change_complete", w_current);
+    self waittill("weapon_change_complete", w_current);
     if(w_current != w_spike_launcher) {
       self util::hide_hint_text();
     } else {
-      self util::show_hint_text( & "CP_MI_CAIRO_RAMSES_SPIKE_LAUNCHER_DETONATE", 1, "spike_launcher_tutorial_complete", 20);
+      self util::show_hint_text(&"CP_MI_CAIRO_RAMSES_SPIKE_LAUNCHER_DETONATE", 1, "spike_launcher_tutorial_complete", 20);
     }
   }
 }
 
-/*
-	Name: take_spike_launcher
-	Namespace: ramses_util
-	Checksum: 0x97A22154
-	Offset: 0x2B20
-	Size: 0x11A
-	Parameters: 0
-	Flags: None
-*/
 function take_spike_launcher() {
   a_e_players = self;
   if(!isarray(a_e_players)) {
@@ -662,23 +393,12 @@ function take_spike_launcher() {
   }
 }
 
-/*
-	Name: scale_spawn_manager_by_player_count
-	Namespace: ramses_util
-	Checksum: 0x85205FBA
-	Offset: 0x2C48
-	Size: 0x11C
-	Parameters: 3
-	Flags: Linked
-*/
 function scale_spawn_manager_by_player_count(n_count_per_player, n_active_max_per_player, n_active_min_per_player) {
   b_something_to_scale = isdefined(n_count_per_player) || isdefined(n_active_max_per_player) || isdefined(n_active_min_per_player);
-  /#
   assert(isdefined(b_something_to_scale) && b_something_to_scale, (("" + self.targetname) + "") + self.origin);
-  # /
-    if(isdefined(n_count_per_player)) {
-      self.count = get_num_scaled_by_player_count(self.count, n_count_per_player);
-    }
+  if(isdefined(n_count_per_player)) {
+    self.count = get_num_scaled_by_player_count(self.count, n_count_per_player);
+  }
   if(isdefined(n_active_max_per_player)) {
     self.sm_active_count_max = get_num_scaled_by_player_count(self.sm_active_count_max, n_active_max_per_player);
   }
@@ -687,15 +407,6 @@ function scale_spawn_manager_by_player_count(n_count_per_player, n_active_max_pe
   }
 }
 
-/*
-	Name: get_num_scaled_by_player_count
-	Namespace: ramses_util
-	Checksum: 0x65B98840
-	Offset: 0x2D70
-	Size: 0xB0
-	Parameters: 2
-	Flags: Linked
-*/
 function get_num_scaled_by_player_count(n_base, n_add_per_player) {
   n_num = n_base - n_add_per_player;
   foreach(e_player in level.players) {
@@ -704,15 +415,6 @@ function get_num_scaled_by_player_count(n_base, n_add_per_player) {
   return n_num;
 }
 
-/*
-	Name: get_random_player
-	Namespace: ramses_util
-	Checksum: 0xE0ADFA5E
-	Offset: 0x2E28
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function get_random_player() {
   e_player = self[0];
   if(self.size > 1) {
@@ -721,15 +423,6 @@ function get_random_player() {
   return e_player;
 }
 
-/*
-	Name: get_not_in_laststand
-	Namespace: ramses_util
-	Checksum: 0xD562CF5A
-	Offset: 0x2E78
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function get_not_in_laststand() {
   a_e_players_up = [];
   for (i = 0; i < level.players.size; i++) {
@@ -745,19 +438,10 @@ function get_not_in_laststand() {
   return a_e_players_up;
 }
 
-/*
-	Name: kill_players
-	Namespace: ramses_util
-	Checksum: 0x5C4A090F
-	Offset: 0x2F48
-	Size: 0xD0
-	Parameters: 1
-	Flags: None
-*/
 function kill_players(str_notify) {
   level endon(str_notify);
   while (true) {
-    self waittill(# "trigger", e_toucher);
+    self waittill("trigger", e_toucher);
     for (i = 0; i < level.players.size; i++) {
       if(e_toucher == level.players[i] && !e_toucher laststand::player_is_in_laststand()) {
         e_toucher dodamage(e_toucher.health + 100, e_toucher.origin);
@@ -767,15 +451,6 @@ function kill_players(str_notify) {
   }
 }
 
-/*
-	Name: wait_till_no_players_looking_at
-	Namespace: ramses_util
-	Checksum: 0x97E25242
-	Offset: 0x3020
-	Size: 0x90
-	Parameters: 0
-	Flags: None
-*/
 function wait_till_no_players_looking_at() {
   while (true) {
     n_look_count = 0;
@@ -791,17 +466,8 @@ function wait_till_no_players_looking_at() {
   }
 }
 
-/*
-	Name: track_player
-	Namespace: ramses_util
-	Checksum: 0x6193B31B
-	Offset: 0x30B8
-	Size: 0x114
-	Parameters: 2
-	Flags: None
-*/
 function track_player(str_endon, n_radius = 256) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(str_endon)) {
     level endon(str_endon);
   }
@@ -817,15 +483,6 @@ function track_player(str_endon, n_radius = 256) {
   }
 }
 
-/*
-	Name: ambient_spawns
-	Namespace: ramses_util
-	Checksum: 0x66F80AF5
-	Offset: 0x31D8
-	Size: 0x280
-	Parameters: 6
-	Flags: None
-*/
 function ambient_spawns(str_spawners, str_key = "targetname", n_spawners = a_spawners.size, t_cleanup, str_endon, n_next_wave_timeout) {
   level endon(str_endon);
   a_e_ambients = [];
@@ -858,25 +515,16 @@ function ambient_spawns(str_spawners, str_key = "targetname", n_spawners = a_spa
   }
 }
 
-/*
-	Name: ambient_spawns_cleanup
-	Namespace: ramses_util
-	Checksum: 0xE60676
-	Offset: 0x3460
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function ambient_spawns_cleanup(str_endon) {
   level endon(str_endon);
   while (true) {
-    self waittill(# "trigger", e_ambient);
+    self waittill("trigger", e_ambient);
     if(isdefined(e_ambient)) {
       if(isai(e_ambient)) {
         e_ambient delete();
       } else {
         e_ambient.delete_on_death = 1;
-        e_ambient notify(# "death");
+        e_ambient notify("death");
         if(!isalive(e_ambient)) {
           e_ambient delete();
         }
@@ -885,22 +533,11 @@ function ambient_spawns_cleanup(str_endon) {
   }
 }
 
-/*
-	Name: spawn_phalanx
-	Namespace: ramses_util
-	Checksum: 0x1D8F9AB
-	Offset: 0x3530
-	Size: 0x1F4
-	Parameters: 10
-	Flags: None
-*/
 function spawn_phalanx(str_phalanx, str_formation, n_remaining_to_disperse, b_scatter = 0, n_timeout_scatter = 0, str_notify_scatter, b_rush_on_scatter = 0, str_rusher_key, str_rusher_value, var_42e6f5b4) {
   v_start = struct::get(str_phalanx + "_start").origin;
   v_end = struct::get(str_phalanx + "_end").origin;
   o_phalanx = new robotphalanx();
-  [
-    [o_phalanx]
-  ] - > initialize(str_formation, v_start, v_end, n_remaining_to_disperse, var_42e6f5b4);
+  [[o_phalanx]] - > initialize(str_formation, v_start, v_end, n_remaining_to_disperse, var_42e6f5b4);
   if(isdefined(str_notify_scatter)) {
     level waittill(str_notify_scatter);
   }
@@ -916,15 +553,6 @@ function spawn_phalanx(str_phalanx, str_formation, n_remaining_to_disperse, b_sc
   }
 }
 
-/*
-	Name: make_rushers
-	Namespace: ramses_util
-	Checksum: 0x372B5FD1
-	Offset: 0x3730
-	Size: 0x146
-	Parameters: 4
-	Flags: Linked
-*/
 function make_rushers(str_key, str_value = "targetname", n_max, n_min) {
   a_ai_robots = getentarray(str_key, str_value);
   a_ai_robots = array::randomize(a_ai_robots);
@@ -942,29 +570,11 @@ function make_rushers(str_key, str_value = "targetname", n_max, n_min) {
   }
 }
 
-/*
-	Name: flag_then_func
-	Namespace: ramses_util
-	Checksum: 0xFA6AC15C
-	Offset: 0x3880
-	Size: 0x3A
-	Parameters: 2
-	Flags: None
-*/
 function flag_then_func(str_flag, func) {
   self flag::wait_till(str_flag);
   self thread[[func]]();
 }
 
-/*
-	Name: delete_all_non_hero_ai
-	Namespace: ramses_util
-	Checksum: 0x4BC423EC
-	Offset: 0x38C8
-	Size: 0x16A
-	Parameters: 0
-	Flags: None
-*/
 function delete_all_non_hero_ai() {
   a_friendly = getaiteamarray("allies");
   foreach(ai in a_friendly) {
@@ -978,15 +588,6 @@ function delete_all_non_hero_ai() {
   }
 }
 
-/*
-	Name: wait_till_flag_then_play
-	Namespace: ramses_util
-	Checksum: 0x5855606D
-	Offset: 0x3A40
-	Size: 0x10C
-	Parameters: 6
-	Flags: None
-*/
 function wait_till_flag_then_play(str_flag, str_scene, n_delay = 0, n_wait = 0, str_flag_cleanup, str_endon) {
   if(isdefined(str_endon)) {
     level endon(str_endon);
@@ -1003,53 +604,20 @@ function wait_till_flag_then_play(str_flag, str_scene, n_delay = 0, n_wait = 0, 
   }
 }
 
-/*
-	Name: play_scene_on_notify
-	Namespace: ramses_util
-	Checksum: 0x38455E69
-	Offset: 0x3B58
-	Size: 0x84
-	Parameters: 2
-	Flags: None
-*/
 function play_scene_on_notify(str_scene, str_notify) {
-  /#
   assert(isdefined(str_scene), "");
-  # /
-    /#
   assert(isdefined(str_notify), "");
-  # /
-    self waittill(str_notify);
+  self waittill(str_notify);
   self scene::play(str_scene);
 }
 
-/*
-	Name: skipto_notetrack_time_in_animation
-	Namespace: ramses_util
-	Checksum: 0xBE44BCF0
-	Offset: 0x3BE8
-	Size: 0xBC
-	Parameters: 3
-	Flags: None
-*/
 function skipto_notetrack_time_in_animation(anim_name, str_scene, str_notetrack) {
   a_notetracks = getnotetracktimes(anim_name, str_notetrack);
-  /#
   assert(a_notetracks.size, ((("" + str_scene) + "") + str_notetrack) + "");
-  # /
-    n_time = a_notetracks[0];
+  n_time = a_notetracks[0];
   self thread scene::skipto_end(str_scene, undefined, undefined, n_time);
 }
 
-/*
-	Name: function_3bc57aa8
-	Namespace: ramses_util
-	Checksum: 0xC186BCBB
-	Offset: 0x3CB0
-	Size: 0xA4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_3bc57aa8(a_ents, b_enable = 1) {
   if(isdefined(level.ai_khalil)) {
     level.ai_khalil sethighdetail(b_enable);
@@ -1062,15 +630,6 @@ function function_3bc57aa8(a_ents, b_enable = 1) {
   }
 }
 
-/*
-	Name: enable_nodes
-	Namespace: ramses_util
-	Checksum: 0xFFFE3D26
-	Offset: 0x3D60
-	Size: 0xFA
-	Parameters: 3
-	Flags: None
-*/
 function enable_nodes(str_key, str_val = "targetname", b_enable = 1) {
   a_nodes = getnodearray(str_key, str_val);
   foreach(nd_node in a_nodes) {
@@ -1078,15 +637,6 @@ function enable_nodes(str_key, str_val = "targetname", b_enable = 1) {
   }
 }
 
-/*
-	Name: link_traversals
-	Namespace: ramses_util
-	Checksum: 0xFD193792
-	Offset: 0x3E68
-	Size: 0x162
-	Parameters: 3
-	Flags: None
-*/
 function link_traversals(str_key, str_val, b_link = 1) {
   a_nd = getnodearray(str_key, str_val);
   if(b_link) {
@@ -1100,25 +650,16 @@ function link_traversals(str_key, str_val, b_link = 1) {
   }
 }
 
-/*
-	Name: function_508a129e
-	Namespace: ramses_util
-	Checksum: 0x6A422D75
-	Offset: 0x3FD8
-	Size: 0x17C
-	Parameters: 3
-	Flags: None
-*/
 function function_508a129e(str_notify, n_time, var_45778f27 = 1) {
-  self notify(# "hash_5a334c0f");
-  self endon(# "death");
-  self endon(# "hash_5a334c0f");
+  self notify("hash_5a334c0f");
+  self endon("death");
+  self endon("hash_5a334c0f");
   level flag::wait_till("intro_igc_done");
   w_spike_launcher = getweapon("spike_launcher");
   while (self getcurrentweapon() == w_spike_launcher) {
     wait(0.2);
   }
-  self util::show_hint_text( & "COOP_EQUIP_SPIKE_LAUNCHER", 0, str_notify, n_time);
+  self util::show_hint_text(&"COOP_EQUIP_SPIKE_LAUNCHER", 0, str_notify, n_time);
   while (var_45778f27 == 0) {
     self util::waittill_any("wp_01_destroyed", "weapon_change_complete");
     if(self getcurrentweapon() == w_spike_launcher || level flag::get("wp_01_destroyed")) {
@@ -1130,15 +671,6 @@ function function_508a129e(str_notify, n_time, var_45778f27 = 1) {
   }
 }
 
-/*
-	Name: has_weapon
-	Namespace: ramses_util
-	Checksum: 0xA4C1DDE2
-	Offset: 0x4160
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function has_weapon(w_has) {
   a_w_weapons = self getweaponslist();
   foreach(w in a_w_weapons) {
@@ -1149,53 +681,23 @@ function has_weapon(w_has) {
   return false;
 }
 
-/*
-	Name: is_using_weapon
-	Namespace: ramses_util
-	Checksum: 0x39028CC9
-	Offset: 0x4220
-	Size: 0x3C
-	Parameters: 1
-	Flags: None
-*/
 function is_using_weapon(str_weapon) {
   return self getcurrentweapon() == getweapon(str_weapon);
 }
 
-/*
-	Name: debug_linked
-	Namespace: ramses_util
-	Checksum: 0xF276BC02
-	Offset: 0x4268
-	Size: 0x90
-	Parameters: 1
-	Flags: None
-*/
 function debug_linked(e) {
-  /#
-  self endon(# "death");
-  e endon(# "death");
+  self endon("death");
+  e endon("death");
   while (true) {
     line(e.origin, self.origin, (1, 0, 0), 0.1);
     debug::drawarrow(self.origin, self.angles);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: draw_line_to_target
-	Namespace: ramses_util
-	Checksum: 0xCFE4CF02
-	Offset: 0x4300
-	Size: 0xF0
-	Parameters: 3
-	Flags: None
-*/
 function draw_line_to_target(target, n_timer, str_start_tag) {
-  /#
-  self endon(# "death");
-  target endon(# "death");
+  self endon("death");
+  target endon("death");
   n_timer = gettime() + (n_timer * 1000);
   while (gettime() < n_timer) {
     v_start_point = self.origin;
@@ -1206,20 +708,9 @@ function draw_line_to_target(target, n_timer, str_start_tag) {
     debug::drawarrow(target.origin, target.angles);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: debug_link_probe
-	Namespace: ramses_util
-	Checksum: 0x9C0F5E65
-	Offset: 0x43F8
-	Size: 0xD8
-	Parameters: 1
-	Flags: None
-*/
 function debug_link_probe(e_probe) {
-  /#
   while (isdefined(e_probe) && isdefined(self)) {
     line(e_probe.origin, self.origin, (1, 0, 0), 0.1);
     debug::debug_sphere(e_probe.origin, 16, (1, 0, 0), 0.5, 1);
@@ -1227,48 +718,20 @@ function debug_link_probe(e_probe) {
     debug::drawarrow(e_probe.origin, e_probe.angles);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: arena_defend_flak_exploders
-	Namespace: ramses_util
-	Checksum: 0xF46E46C0
-	Offset: 0x44D8
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function arena_defend_flak_exploders() {
   exploder::exploder("exploder_flak_arena_defend");
   level flag::wait_till("flak_arena_defend_stop");
   exploder::exploder_stop("exploder_flak_arena_defend");
 }
 
-/*
-	Name: alley_flak_exploder
-	Namespace: ramses_util
-	Checksum: 0xFD1E5A03
-	Offset: 0x4538
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function alley_flak_exploder() {
   exploder::exploder("exploder_flak_alley");
   level flag::wait_till("flak_alley_stop");
   exploder::exploder_stop("exploder_flak_alley");
 }
 
-/*
-	Name: ambient_walk_fx_exploder
-	Namespace: ramses_util
-	Checksum: 0x60E4E3BC
-	Offset: 0x4598
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function ambient_walk_fx_exploder(b_on = 1) {
   if(b_on) {
     exploder::exploder("fx_exploder_station_ambient_pre_collapse");
@@ -1277,15 +740,6 @@ function ambient_walk_fx_exploder(b_on = 1) {
   }
 }
 
-/*
-	Name: arena_defend_sinkhole_exploders
-	Namespace: ramses_util
-	Checksum: 0xF6B63C8C
-	Offset: 0x4608
-	Size: 0x5C
-	Parameters: 0
-	Flags: None
-*/
 function arena_defend_sinkhole_exploders() {
   exploder::exploder("fx_exploder_turn_off_collapse");
   level flag::wait_till("sinkhole_charges_detonated");
@@ -1293,15 +747,6 @@ function arena_defend_sinkhole_exploders() {
   exploder::exploder_stop("fx_exploder_turn_off_collapse");
 }
 
-/*
-	Name: set_lighting_state_on_spawn
-	Namespace: ramses_util
-	Checksum: 0xD217B054
-	Offset: 0x4670
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function set_lighting_state_on_spawn() {
   util::wait_network_frame();
   if(isdefined(level.lighting_state_ramses)) {
@@ -1322,60 +767,24 @@ function set_lighting_state_on_spawn() {
   }
 }
 
-/*
-	Name: set_lighting_state_time_shift_1
-	Namespace: ramses_util
-	Checksum: 0xEC0EED03
-	Offset: 0x4710
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function set_lighting_state_time_shift_1() {
   level.lighting_state_ramses = 1;
   self util::set_lighting_state(0);
   self set_sun_color(1);
 }
 
-/*
-	Name: set_lighting_state_time_shift_2
-	Namespace: ramses_util
-	Checksum: 0xF36B53EF
-	Offset: 0x4758
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function set_lighting_state_time_shift_2() {
   level.lighting_state_ramses = 2;
   self util::set_lighting_state(2);
   self set_sun_color(0);
 }
 
-/*
-	Name: set_lighting_state_start
-	Namespace: ramses_util
-	Checksum: 0xBD67918E
-	Offset: 0x47A8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function set_lighting_state_start() {
   level.lighting_state_ramses = 3;
   self util::set_lighting_state(3);
   self set_sun_color(0);
 }
 
-/*
-	Name: set_sun_color
-	Namespace: ramses_util
-	Checksum: 0xCE5BB1D7
-	Offset: 0x47F8
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function set_sun_color(n_value) {
   if(self == level) {
     foreach(player in level.players) {
@@ -1385,54 +794,26 @@ function set_sun_color(n_value) {
     if(isplayer(self)) {
       self clientfield::set_to_player("ramses_sun_color", n_value);
     } else {
-      /#
       assertmsg("");
-      # /
     }
   }
 }
 
-/*
-	Name: light_shift_think
-	Namespace: ramses_util
-	Checksum: 0x8E4A6203
-	Offset: 0x4900
-	Size: 0x152
-	Parameters: 3
-	Flags: None
-*/
 function light_shift_think(str_trigger_targetname, str_level_endon, func_on_trigger) {
-  /#
   assert(isdefined(str_trigger_targetname), "");
-  # /
-    /#
   assert(isdefined(str_level_endon), "");
-  # /
-    /#
   assert(isdefined(func_on_trigger), "");
-  # /
-    level endon(str_level_endon);
+  level endon(str_level_endon);
   t_light_shift = getent(str_trigger_targetname, "targetname");
-  /#
   assert(isdefined(t_light_shift), ("" + str_trigger_targetname) + "");
-  # /
-    while (true) {
-      t_light_shift waittill(# "trigger", e_player);
-      if(isdefined(e_player) && isplayer(e_player)) {
-        e_player[[func_on_trigger]]();
-      }
+  while (true) {
+    t_light_shift waittill("trigger", e_player);
+    if(isdefined(e_player) && isplayer(e_player)) {
+      e_player[[func_on_trigger]]();
     }
+  }
 }
 
-/*
-	Name: function_eabc6e2f
-	Namespace: ramses_util
-	Checksum: 0x43220242
-	Offset: 0x4A60
-	Size: 0x13A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_eabc6e2f() {
   level clientfield::set("turn_on_rotating_fxanim_lights", 1);
   exploder::exploder("lgt_emergency");
@@ -1446,17 +827,8 @@ function function_eabc6e2f() {
   }
 }
 
-/*
-	Name: turret_pickup_think
-	Namespace: ramses_util
-	Checksum: 0x53747206
-	Offset: 0x4BA8
-	Size: 0x264
-	Parameters: 1
-	Flags: Linked
-*/
 function turret_pickup_think(s_obj) {
-  self endon(# "death");
+  self endon("death");
   waittillframeend();
   w_hero = getweapon("lmg_light");
   t_pickup = spawn("trigger_radius", self.origin + vectorscale((0, 0, 1), 24), 0, s_obj.radius, 128);
@@ -1465,7 +837,7 @@ function turret_pickup_think(s_obj) {
   t_pickup triggerignoreteam();
   self thread turret_pickup_hint(t_pickup, w_hero);
   while (true) {
-    t_pickup waittill(# "trigger", e_player);
+    t_pickup waittill("trigger", e_player);
     if(isalive(e_player)) {
       if(e_player turret_pickup_button_pressed() && !e_player has_weapon(w_hero)) {
         var_73a38d53 = self getseatoccupant(0);
@@ -1478,32 +850,23 @@ function turret_pickup_think(s_obj) {
         }
         e_player giveweapon(w_hero);
         e_player switchtoweapon(w_hero);
-        level notify(# "turret_picked_up");
+        level notify("turret_picked_up");
         break;
       }
     }
   }
   self.delete_on_death = 1;
-  self notify(# "death");
+  self notify("death");
   if(!isalive(self)) {
     self delete();
   }
   t_pickup delete();
 }
 
-/*
-	Name: turret_pickup_hint
-	Namespace: ramses_util
-	Checksum: 0x83820EE8
-	Offset: 0x4E18
-	Size: 0x178
-	Parameters: 2
-	Flags: Linked
-*/
 function turret_pickup_hint(t_pickup, w_hero) {
-  t_pickup endon(# "death");
+  t_pickup endon("death");
   while (true) {
-    t_pickup waittill(# "trigger", e_player);
+    t_pickup waittill("trigger", e_player);
     if(!isalive(self)) {
       return;
     }
@@ -1521,41 +884,14 @@ function turret_pickup_hint(t_pickup, w_hero) {
   }
 }
 
-/*
-	Name: turret_pickup_button_pressed
-	Namespace: ramses_util
-	Checksum: 0x4DD89839
-	Offset: 0x4F98
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function turret_pickup_button_pressed() {
   return self meleebuttonpressed();
 }
 
-/*
-	Name: turret_exit_button_pressed
-	Namespace: ramses_util
-	Checksum: 0x53B5FC46
-	Offset: 0x4FC0
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function turret_exit_button_pressed() {
   return self usebuttonpressed();
 }
 
-/*
-	Name: remove_inventory_turret
-	Namespace: ramses_util
-	Checksum: 0xD60E5180
-	Offset: 0x4FE8
-	Size: 0x5C
-	Parameters: 0
-	Flags: None
-*/
 function remove_inventory_turret() {
   w_hero = getweapon("lmg_light");
   if(self hasweapon(w_hero)) {
@@ -1563,17 +899,8 @@ function remove_inventory_turret() {
   }
 }
 
-/*
-	Name: magic_bullet_shield_till_notify
-	Namespace: ramses_util
-	Checksum: 0x77652D9B
-	Offset: 0x5050
-	Size: 0xCE
-	Parameters: 3
-	Flags: Linked
-*/
 function magic_bullet_shield_till_notify(str_kill_mbs, b_disable_w_player_shot, str_phalanx_scatter_notify) {
-  self endon(# "death");
+  self endon("death");
   self.cybercomtargetstatusoverride = 1;
   util::magic_bullet_shield(self);
   if(b_disable_w_player_shot) {
@@ -1584,21 +911,12 @@ function magic_bullet_shield_till_notify(str_kill_mbs, b_disable_w_player_shot, 
   self.cybercomtargetstatusoverride = undefined;
 }
 
-/*
-	Name: stop_magic_bullet_shield_on_player_damage
-	Namespace: ramses_util
-	Checksum: 0xE434EB02
-	Offset: 0x5128
-	Size: 0xAC
-	Parameters: 2
-	Flags: Linked
-*/
 function stop_magic_bullet_shield_on_player_damage(str_kill_mbs, str_phalanx_scatter_notify) {
-  self endon(# "ram_kill_mb");
+  self endon("ram_kill_mb");
   self endon(str_kill_mbs);
   level endon(str_kill_mbs);
   while (true) {
-    self waittill(# "damage", amount, attacker);
+    self waittill("damage", amount, attacker);
     if(isplayer(attacker)) {
       if(isdefined(str_phalanx_scatter_notify)) {
         level notify(str_phalanx_scatter_notify);
@@ -1610,39 +928,21 @@ function stop_magic_bullet_shield_on_player_damage(str_kill_mbs, str_phalanx_sca
   }
 }
 
-/*
-	Name: function_f08afb37
-	Namespace: ramses_util
-	Checksum: 0xE23C262
-	Offset: 0x51E0
-	Size: 0xDA
-	Parameters: 2
-	Flags: Linked
-*/
 function function_f08afb37(b_on = 1, var_eebad467 = 0.1) {
-  self endon(# "death");
+  self endon("death");
   if(isalive(self) && issentient(self)) {
     if(b_on) {
       self.attackeraccuracy = var_eebad467;
       self.overrideactordamage = & function_74e97bfe;
-      self notify(# "hash_4ef4ba2d");
+      self notify("hash_4ef4ba2d");
     } else {
       self.attackeraccuracy = var_eebad467;
       self.overrideactordamage = undefined;
-      self notify(# "hash_cb188399");
+      self notify("hash_cb188399");
     }
   }
 }
 
-/*
-	Name: function_74e97bfe
-	Namespace: ramses_util
-	Checksum: 0x65252B9B
-	Offset: 0x52C8
-	Size: 0x10C
-	Parameters: 12
-	Flags: Linked
-*/
 function function_74e97bfe(e_inflictor, e_attacker, n_damage, n_dflags, str_means_of_death, str_weapon, v_point, v_dir, str_hit_loc, n_model_index, psoffsettime, str_bone_name) {
   if(isplayer(e_attacker)) {
     function_f08afb37(0);
@@ -1656,29 +956,11 @@ function function_74e97bfe(e_inflictor, e_attacker, n_damage, n_dflags, str_mean
   return n_damage;
 }
 
-/*
-	Name: staged_battle_outcomes
-	Namespace: ramses_util
-	Checksum: 0xAFDC88E1
-	Offset: 0x53E0
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function staged_battle_outcomes(str_robot_sm, str_human_sm) {
   level thread complete_staged_fight_become_rusher(str_robot_sm, str_human_sm);
   level thread complete_staged_fight_enlarge_goal_radius(str_robot_sm, str_human_sm);
 }
 
-/*
-	Name: complete_staged_fight_become_rusher
-	Namespace: ramses_util
-	Checksum: 0xE59E34B0
-	Offset: 0x5440
-	Size: 0x132
-	Parameters: 2
-	Flags: Linked
-*/
 function complete_staged_fight_become_rusher(str_robot_sm, str_human_sm) {
   do {
     wait(0.5);
@@ -1692,15 +974,6 @@ function complete_staged_fight_become_rusher(str_robot_sm, str_human_sm) {
   }
 }
 
-/*
-	Name: complete_staged_fight_enlarge_goal_radius
-	Namespace: ramses_util
-	Checksum: 0x962D8E82
-	Offset: 0x5580
-	Size: 0x10A
-	Parameters: 2
-	Flags: Linked
-*/
 function complete_staged_fight_enlarge_goal_radius(str_robot_sm, str_human_sm) {
   do {
     wait(0.5);
@@ -1713,31 +986,14 @@ function complete_staged_fight_enlarge_goal_radius(str_robot_sm, str_human_sm) {
   }
 }
 
-/*
-	Name: player_walk_speed_adjustment
-	Namespace: ramses_util
-	Checksum: 0x89516ABB
-	Offset: 0x5698
-	Size: 0x9DC
-	Parameters: 7
-	Flags: Linked
-*/
 function player_walk_speed_adjustment(e_rubber_band_to, str_endon, n_dist_min, n_dist_max, n_speed_scale_min = 0, n_speed_scale_max = 1, var_d04843e1 = 20) {
-  /#
   assert(isplayer(self), "");
-  # /
-    /#
   assert(isdefined(e_rubber_band_to), "");
-  # /
-    /#
   assert(isdefined(n_dist_min), "");
-  # /
-    /#
   assert(isdefined(n_dist_max), "");
-  # /
-    self endon(str_endon);
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon(str_endon);
+  self endon("death");
+  self endon("disconnect");
   self thread _player_walk_speed_reset(str_endon);
   if(!isarray(e_rubber_band_to)) {
     var_2328c0bb = array(e_rubber_band_to);
@@ -1858,15 +1114,6 @@ function player_walk_speed_adjustment(e_rubber_band_to, str_endon, n_dist_min, n
   }
 }
 
-/*
-	Name: function_36bdd3e9
-	Namespace: ramses_util
-	Checksum: 0x966B2D30
-	Offset: 0x6080
-	Size: 0xB0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_36bdd3e9(a_ents) {
   var_4ce0e4b7 = (0, 0, 0);
   foreach(ent in a_ents) {
@@ -1875,15 +1122,6 @@ function function_36bdd3e9(a_ents) {
   return var_4ce0e4b7 / a_ents.size;
 }
 
-/*
-	Name: _player_walk_speed_reset
-	Namespace: ramses_util
-	Checksum: 0xB48B0500
-	Offset: 0x6138
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function _player_walk_speed_reset(str_endon) {
   level waittill(str_endon, b_reset);
   if(!isdefined(b_reset)) {
@@ -1895,15 +1133,6 @@ function _player_walk_speed_reset(str_endon) {
   }
 }
 
-/*
-	Name: scene_model_streamer_hint
-	Namespace: ramses_util
-	Checksum: 0x129CA8AE
-	Offset: 0x61B8
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function scene_model_streamer_hint(a_ents) {
   n_hint_time = 5;
   foreach(ent in a_ents) {
@@ -1916,48 +1145,17 @@ function scene_model_streamer_hint(a_ents) {
   }
 }
 
-/*
-	Name: force_stream_1stpersonplayer
-	Namespace: ramses_util
-	Checksum: 0xD5B98472
-	Offset: 0x62E8
-	Size: 0x3C
-	Parameters: 1
-	Flags: None
-*/
 function force_stream_1stpersonplayer(n_hint_time = 5) {
   streamermodelhint("c_hro_player_male_egypt_viewbody", n_hint_time);
 }
 
-/*
-	Name: co_op_teleport_on_igc_end
-	Namespace: ramses_util
-	Checksum: 0xD5983588
-	Offset: 0x6330
-	Size: 0xAC
-	Parameters: 2
-	Flags: Linked
-*/
 function co_op_teleport_on_igc_end(str_scene, str_teleport_name) {
-  /#
   assert(isdefined(str_scene), "");
-  # /
-    /#
   assert(isdefined(str_teleport_name), "");
-  # /
-    scene::add_scene_func(str_scene, & teleport_co_op_players_on_scene_done, "players_done");
+  scene::add_scene_func(str_scene, & teleport_co_op_players_on_scene_done, "players_done");
   level thread wait_for_scene_done(str_scene, str_teleport_name);
 }
 
-/*
-	Name: teleport_co_op_players_on_scene_done
-	Namespace: ramses_util
-	Checksum: 0x7FB7914D
-	Offset: 0x63E8
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function teleport_co_op_players_on_scene_done(a_ents) {
   if(isdefined(self.scenes[0]) && isdefined(self.scenes[0]._str_notify_name)) {
     level notify(self.scenes[0]._str_notify_name + "_level_done");
@@ -1966,15 +1164,6 @@ function teleport_co_op_players_on_scene_done(a_ents) {
   }
 }
 
-/*
-	Name: wait_for_scene_done
-	Namespace: ramses_util
-	Checksum: 0x44823B0C
-	Offset: 0x6468
-	Size: 0x152
-	Parameters: 2
-	Flags: Linked
-*/
 function wait_for_scene_done(str_scene, str_teleport_name) {
   level waittill(str_scene + "_level_done");
   foreach(player in level.players) {
@@ -1987,15 +1176,6 @@ function wait_for_scene_done(str_scene, str_teleport_name) {
   }
 }
 
-/*
-	Name: function_7255e66
-	Namespace: ramses_util
-	Checksum: 0x6C62373E
-	Offset: 0x65C8
-	Size: 0x1A2
-	Parameters: 2
-	Flags: Linked
-*/
 function function_7255e66(b_enable = 1, str_script_string) {
   var_335c4513 = getentarray("mobile_armory", "script_noteworthy");
   foreach(var_a9960583 in var_335c4513) {
@@ -2013,15 +1193,6 @@ function function_7255e66(b_enable = 1, str_script_string) {
   }
 }
 
-/*
-	Name: function_f2f98cfc
-	Namespace: ramses_util
-	Checksum: 0x525FC699
-	Offset: 0x6778
-	Size: 0x7C
-	Parameters: 0
-	Flags: None
-*/
 function function_f2f98cfc() {
   var_3354e659 = getent("hotel_gate", "targetname");
   var_3354e659 ghost();
@@ -2029,29 +1200,11 @@ function function_f2f98cfc() {
   umbragate_set("hotel", 1);
 }
 
-/*
-	Name: function_1aeb2873
-	Namespace: ramses_util
-	Checksum: 0xD032CB28
-	Offset: 0x6800
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function function_1aeb2873() {
   getent("defend_street_gate", "targetname") delete();
   umbragate_set("defend_street", 1);
 }
 
-/*
-	Name: function_fb967724
-	Namespace: ramses_util
-	Checksum: 0xB9AC6DBB
-	Offset: 0x6860
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function function_fb967724() {
   getent("hotel_gate", "targetname") show();
   umbragate_set("hotel", 0);

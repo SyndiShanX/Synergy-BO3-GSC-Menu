@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\_character_customization.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\core\_multi_extracam;
 #using scripts\shared\abilities\gadgets\_gadget_camo_render;
@@ -10,34 +14,14 @@
 #using scripts\shared\scene_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("all_player");
 #using_animtree("generic");
-
 #namespace character_customization;
 
-/*
-	Name: __init__sytem__
-	Namespace: character_customization
-	Checksum: 0xF8D150B6
-	Offset: 0xAB0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("character_customization", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: character_customization
-	Checksum: 0x8EC07DC2
-	Offset: 0xAF0
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.extra_cam_render_hero_func_callback = & process_character_extracam_request;
   level.extra_cam_render_lobby_client_hero_func_callback = & process_lobby_client_character_extracam_request;
@@ -68,15 +52,6 @@ function __init__() {
   level.charactercustomizationsetup = & localclientconnect;
 }
 
-/*
-	Name: localclientconnect
-	Namespace: character_customization
-	Checksum: 0xD8EC5C0D
-	Offset: 0xC88
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function localclientconnect(localclientnum) {
   level.liveccdata[localclientnum] = setup_live_character_customization_target(localclientnum);
   if(isdefined(level.liveccdata[localclientnum])) {
@@ -85,15 +60,6 @@ function localclientconnect(localclientnum) {
   level.staticccdata = setup_static_character_customization_target(localclientnum);
 }
 
-/*
-	Name: create_character_data_struct
-	Namespace: character_customization
-	Checksum: 0xBEF7C521
-	Offset: 0xD18
-	Size: 0x418
-	Parameters: 3
-	Flags: Linked
-*/
 function create_character_data_struct(charactermodel, localclientnum, alt_render_mode = 1) {
   if(!isdefined(charactermodel)) {
     return undefined;
@@ -141,31 +107,11 @@ function create_character_data_struct(charactermodel, localclientnum, alt_render
   return data_struct;
 }
 
-/*
-	Name: handle_forced_streaming
-	Namespace: character_customization
-	Checksum: 0x38C1B610
-	Offset: 0x1138
-	Size: 0xAC
-	Parameters: 1
-	Flags: None
-*/
 function handle_forced_streaming(game_mode) {}
 
-/*
-	Name: loadequippedcharacteronmodel
-	Namespace: character_customization
-	Checksum: 0xD7FF6F8
-	Offset: 0x13F8
-	Size: 0x38A
-	Parameters: 4
-	Flags: Linked
-*/
 function loadequippedcharacteronmodel(localclientnum, data_struct, characterindex, params) {
-  /#
   assert(isdefined(data_struct));
-  # /
-    data_lcn = (isdefined(data_struct.splitscreenclient) ? data_struct.splitscreenclient : localclientnum);
+  data_lcn = (isdefined(data_struct.splitscreenclient) ? data_struct.splitscreenclient : localclientnum);
   if(!isdefined(characterindex)) {
     characterindex = getequippedheroindex(data_lcn, params.sessionmode);
   }
@@ -191,118 +137,68 @@ function loadequippedcharacteronmodel(localclientnum, data_struct, characterinde
   return update(localclientnum, data_struct, params);
 }
 
-/*
-	Name: update_model_attachment
-	Namespace: character_customization
-	Checksum: 0xC01E0981
-	Offset: 0x1790
-	Size: 0x514
-	Parameters: 7
-	Flags: Linked
-*/
 function update_model_attachment(localclientnum, data_struct, attached_model, slot, model_anim, model_intro_anim, force_update) {
-  /#
   assert(isdefined(data_struct.attached_models));
-  # /
-    /#
   assert(isdefined(data_struct.attached_model_anims));
-  # /
-    /#
   assert(isdefined(level.intercom_dialog));
-  # /
-    if(force_update || attached_model !== data_struct.attached_models[slot] || model_anim !== data_struct.attached_model_anims[slot]) {
-      bone = slot;
-      if(isdefined(level.intercom_dialog[slot])) {
-        bone = level.intercom_dialog[slot];
-      }
-      /#
-      assert(isdefined(bone));
-      # /
-        if(isdefined(data_struct.attached_models[slot])) {
-          if(isdefined(data_struct.attached_entities[slot])) {
-            data_struct.attached_entities[slot] unlink();
-            data_struct.attached_entities[slot] delete();
-            data_struct.attached_entities[slot] = undefined;
-          } else if(data_struct.charactermodel isattached(data_struct.attached_models[slot], bone)) {
-            data_struct.charactermodel detach(data_struct.attached_models[slot], bone);
-          }
-          data_struct.attached_models[slot] = undefined;
-        }
-      data_struct.attached_models[slot] = attached_model;
-      if(isdefined(data_struct.attached_models[slot])) {
-        if(isdefined(model_anim)) {
-          ent = spawn(localclientnum, data_struct.charactermodel.origin, "script_model");
-          ent sethighdetail(1, data_struct.alt_render_mode);
-          data_struct.attached_entities[slot] = ent;
-          ent setmodel(data_struct.attached_models[slot]);
-          if(!ent hasanimtree()) {
-            ent useanimtree($generic);
-          }
-          ent.origin = data_struct.charactermodel.origin;
-          ent.angles = data_struct.charactermodel.angles;
-          ent.chosenorigin = ent.origin;
-          ent.chosenangles = ent.angles;
-          ent thread play_intro_and_animation(model_intro_anim, model_anim, 1);
-        } else if(!data_struct.charactermodel isattached(data_struct.attached_models[slot], bone)) {
-          data_struct.charactermodel attach(data_struct.attached_models[slot], bone);
-        }
-        data_struct.attached_model_anims[slot] = model_anim;
-      }
+  if(force_update || attached_model !== data_struct.attached_models[slot] || model_anim !== data_struct.attached_model_anims[slot]) {
+    bone = slot;
+    if(isdefined(level.intercom_dialog[slot])) {
+      bone = level.intercom_dialog[slot];
     }
+    assert(isdefined(bone));
+    if(isdefined(data_struct.attached_models[slot])) {
+      if(isdefined(data_struct.attached_entities[slot])) {
+        data_struct.attached_entities[slot] unlink();
+        data_struct.attached_entities[slot] delete();
+        data_struct.attached_entities[slot] = undefined;
+      } else if(data_struct.charactermodel isattached(data_struct.attached_models[slot], bone)) {
+        data_struct.charactermodel detach(data_struct.attached_models[slot], bone);
+      }
+      data_struct.attached_models[slot] = undefined;
+    }
+    data_struct.attached_models[slot] = attached_model;
+    if(isdefined(data_struct.attached_models[slot])) {
+      if(isdefined(model_anim)) {
+        ent = spawn(localclientnum, data_struct.charactermodel.origin, "script_model");
+        ent sethighdetail(1, data_struct.alt_render_mode);
+        data_struct.attached_entities[slot] = ent;
+        ent setmodel(data_struct.attached_models[slot]);
+        if(!ent hasanimtree()) {
+          ent useanimtree($generic);
+        }
+        ent.origin = data_struct.charactermodel.origin;
+        ent.angles = data_struct.charactermodel.angles;
+        ent.chosenorigin = ent.origin;
+        ent.chosenangles = ent.angles;
+        ent thread play_intro_and_animation(model_intro_anim, model_anim, 1);
+      } else if(!data_struct.charactermodel isattached(data_struct.attached_models[slot], bone)) {
+        data_struct.charactermodel attach(data_struct.attached_models[slot], bone);
+      }
+      data_struct.attached_model_anims[slot] = model_anim;
+    }
+  }
   if(isdefined(data_struct.attached_entities[slot])) {
     data_struct.attached_entities[slot] setbodyrenderoptions(data_struct.mode_render_options, data_struct.body_render_options, data_struct.helmet_render_options, data_struct.head_render_options);
   }
 }
 
-/*
-	Name: set_character
-	Namespace: character_customization
-	Checksum: 0x27B5D188
-	Offset: 0x1CB0
-	Size: 0x28
-	Parameters: 2
-	Flags: Linked
-*/
 function set_character(data_struct, characterindex) {
   data_struct.characterindex = characterindex;
 }
 
-/*
-	Name: set_character_mode
-	Namespace: character_customization
-	Checksum: 0xEC73505A
-	Offset: 0x1CE0
-	Size: 0x68
-	Parameters: 2
-	Flags: Linked
-*/
 function set_character_mode(data_struct, charactermode) {
-  /#
   assert(isdefined(charactermode));
-  # /
-    data_struct.charactermode = charactermode;
+  data_struct.charactermode = charactermode;
   data_struct.mode_render_options = getcharactermoderenderoptions(charactermode);
 }
 
-/*
-	Name: set_body
-	Namespace: character_customization
-	Checksum: 0xB3943CA1
-	Offset: 0x1D50
-	Size: 0x1CC
-	Parameters: 5
-	Flags: Linked
-*/
 function set_body(data_struct, mode, characterindex, bodyindex, bodycolors) {
-  /#
   assert(isdefined(mode));
-  # /
-    /#
   assert(mode != 3);
-  # /
-    if(mode == 2 && (isdefined(data_struct.force_prologue_body) && data_struct.force_prologue_body)) {
-      bodyindex = 1;
-    }
+  if(mode == 2 && (isdefined(data_struct.force_prologue_body) && data_struct.force_prologue_body)) {
+    bodyindex = 1;
+  }
   data_struct.bodyindex = bodyindex;
   data_struct.bodymodel = getcharacterbodymodel(characterindex, bodyindex, mode);
   if(isdefined(data_struct.bodymodel)) {
@@ -315,45 +211,18 @@ function set_body(data_struct, mode, characterindex, bodyindex, bodycolors) {
   data_struct.body_render_options = render_options;
 }
 
-/*
-	Name: set_body_colors
-	Namespace: character_customization
-	Checksum: 0x36DA94C7
-	Offset: 0x1F28
-	Size: 0x7E
-	Parameters: 3
-	Flags: Linked
-*/
 function set_body_colors(data_struct, mode, bodycolors) {
   for (i = 0; i < bodycolors.size && i < bodycolors.size; i++) {
     set_body_color(data_struct, i, bodycolors[i]);
   }
 }
 
-/*
-	Name: set_body_color
-	Namespace: character_customization
-	Checksum: 0xF3F5D371
-	Offset: 0x1FB0
-	Size: 0xBC
-	Parameters: 3
-	Flags: Linked
-*/
 function set_body_color(data_struct, colorslot, colorindex) {
   data_struct.bodycolors[colorslot] = colorindex;
   render_options = getcharacterbodyrenderoptions(data_struct.characterindex, data_struct.bodyindex, data_struct.bodycolors[0], data_struct.bodycolors[1], data_struct.bodycolors[2]);
   data_struct.body_render_options = render_options;
 }
 
-/*
-	Name: set_head
-	Namespace: character_customization
-	Checksum: 0x28A683A9
-	Offset: 0x2078
-	Size: 0x8C
-	Parameters: 3
-	Flags: Linked
-*/
 function set_head(data_struct, mode, headindex) {
   data_struct.headindex = headindex;
   data_struct.headmodel = getcharacterheadmodel(headindex, mode);
@@ -361,30 +230,12 @@ function set_head(data_struct, mode, headindex) {
   data_struct.head_render_options = render_options;
 }
 
-/*
-	Name: set_helmet
-	Namespace: character_customization
-	Checksum: 0x26B32404
-	Offset: 0x2110
-	Size: 0x84
-	Parameters: 5
-	Flags: Linked
-*/
 function set_helmet(data_struct, mode, characterindex, helmetindex, helmetcolors) {
   data_struct.helmetindex = helmetindex;
   data_struct.helmetmodel = getcharacterhelmetmodel(characterindex, helmetindex, mode);
   set_helmet_colors(data_struct, helmetcolors);
 }
 
-/*
-	Name: set_showcase_weapon
-	Namespace: character_customization
-	Checksum: 0x88493AF2
-	Offset: 0x21A0
-	Size: 0xBCC
-	Parameters: 10
-	Flags: Linked
-*/
 function set_showcase_weapon(data_struct, mode, localclientnum, xuid, characterindex, showcaseweaponname, showcaseweaponattachmentinfo, weaponrenderoptions, useshowcasepaintjob, uselocalpaintshop) {
   if(isdefined(xuid)) {
     setshowcaseweaponpaintshopxuid(localclientnum, xuid);
@@ -518,15 +369,6 @@ function set_showcase_weapon(data_struct, mode, localclientnum, xuid, characteri
   }
 }
 
-/*
-	Name: set_helmet_colors
-	Namespace: character_customization
-	Checksum: 0xDA774788
-	Offset: 0x2D78
-	Size: 0x104
-	Parameters: 2
-	Flags: Linked
-*/
 function set_helmet_colors(data_struct, colors) {
   for (i = 0; i < colors.size && i < data_struct.helmetcolors.size; i++) {
     set_helmet_color(data_struct, i, colors[i]);
@@ -535,30 +377,12 @@ function set_helmet_colors(data_struct, colors) {
   data_struct.helmet_render_options = render_options;
 }
 
-/*
-	Name: set_helmet_color
-	Namespace: character_customization
-	Checksum: 0x91B57759
-	Offset: 0x2E88
-	Size: 0xBC
-	Parameters: 3
-	Flags: Linked
-*/
 function set_helmet_color(data_struct, colorslot, colorindex) {
   data_struct.helmetcolors[colorslot] = colorindex;
   render_options = getcharacterhelmetrenderoptions(data_struct.characterindex, data_struct.helmetindex, data_struct.helmetcolors[0], data_struct.helmetcolors[1], data_struct.helmetcolors[2]);
   data_struct.helmet_render_options = render_options;
 }
 
-/*
-	Name: update
-	Namespace: character_customization
-	Checksum: 0xA763D5BC
-	Offset: 0x2F50
-	Size: 0x304
-	Parameters: 3
-	Flags: Linked
-*/
 function update(localclientnum, data_struct, params) {
   data_struct.charactermodel setbodyrenderoptions(data_struct.mode_render_options, data_struct.body_render_options, data_struct.helmet_render_options, data_struct.head_render_options);
   helmet_model = "tag_origin";
@@ -569,10 +393,8 @@ function update(localclientnum, data_struct, params) {
   update_model_attachment(localclientnum, data_struct, helmet_model, "helmet", undefined, undefined, 1);
   head_model = data_struct.headmodel;
   if(show_helmet && isdefined(params) && getcharacterhelmethideshead(data_struct.characterindex, data_struct.helmetindex, (isdefined(params.sessionmode) ? params.sessionmode : data_struct.charactermode))) {
-    /#
     assert(helmet_model != "");
-    # /
-      head_model = "tag_origin";
+    head_model = "tag_origin";
   }
   update_model_attachment(localclientnum, data_struct, head_model, "head", undefined, undefined, 1);
   changed = update_character_animation_and_attachments(localclientnum, data_struct, params);
@@ -585,15 +407,6 @@ function update(localclientnum, data_struct, params) {
   return changed;
 }
 
-/*
-	Name: is_character_streamed
-	Namespace: character_customization
-	Checksum: 0x329C6342
-	Offset: 0x3260
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function is_character_streamed(data_struct) {
   if(isdefined(data_struct.charactermodel)) {
     if(!data_struct.charactermodel isstreamed()) {
@@ -610,15 +423,6 @@ function is_character_streamed(data_struct) {
   return true;
 }
 
-/*
-	Name: setup_character_streaming
-	Namespace: character_customization
-	Checksum: 0x6F785B67
-	Offset: 0x3350
-	Size: 0xF2
-	Parameters: 1
-	Flags: Linked
-*/
 function setup_character_streaming(data_struct) {
   if(isdefined(data_struct.charactermodel)) {
     data_struct.charactermodel sethighdetail(1, data_struct.alt_render_mode);
@@ -630,40 +434,20 @@ function setup_character_streaming(data_struct) {
   }
 }
 
-/*
-	Name: get_character_mode
-	Namespace: character_customization
-	Checksum: 0xFEB99280
-	Offset: 0x3450
-	Size: 0x22
-	Parameters: 1
-	Flags: None
-*/
 function get_character_mode(localclientnum) {
   return getequippedheromode(localclientnum);
 }
 
-/*
-	Name: get_character_body
-	Namespace: character_customization
-	Checksum: 0x2385B98A
-	Offset: 0x3480
-	Size: 0x24A
-	Parameters: 4
-	Flags: Linked
-*/
 function get_character_body(localclientnum, charactermode, characterindex, extracamdata) {
-  /#
   assert(isdefined(characterindex));
-  # /
-    if(charactermode === 2 && sessionmodeiscampaigngame() && getdvarstring("mapname") == "core_frontend") {
-      mapindex = getdstat(localclientnum, "highestMapReached");
-      if(isdefined(mapindex) && mapindex < 1) {
-        str_gender = getherogender(getequippedheroindex(localclientnum, 2), "cp");
-        n_body_id = getcharacterbodystyleindex(str_gender == "female", "CPUI_OUTFIT_PROLOGUE");
-        return n_body_id;
-      }
+  if(charactermode === 2 && sessionmodeiscampaigngame() && getdvarstring("mapname") == "core_frontend") {
+    mapindex = getdstat(localclientnum, "highestMapReached");
+    if(isdefined(mapindex) && mapindex < 1) {
+      str_gender = getherogender(getequippedheroindex(localclientnum, 2), "cp");
+      n_body_id = getcharacterbodystyleindex(str_gender == "female", "CPUI_OUTFIT_PROLOGUE");
+      return n_body_id;
     }
+  }
   if(isdefined(extracamdata) && (isdefined(extracamdata.isdefaulthero) && extracamdata.isdefaulthero)) {
     return 0;
   }
@@ -679,15 +463,6 @@ function get_character_body(localclientnum, charactermode, characterindex, extra
   return getequippedbodyindexforhero(localclientnum, charactermode, characterindex);
 }
 
-/*
-	Name: get_character_body_color
-	Namespace: character_customization
-	Checksum: 0xEFB6BF0E
-	Offset: 0x36D8
-	Size: 0x11A
-	Parameters: 6
-	Flags: Linked
-*/
 function get_character_body_color(localclientnum, charactermode, characterindex, bodyindex, colorslot, extracamdata) {
   if(isdefined(extracamdata) && (isdefined(extracamdata.isdefaulthero) && extracamdata.isdefaulthero)) {
     return 0;
@@ -701,15 +476,6 @@ function get_character_body_color(localclientnum, charactermode, characterindex,
   return getequippedbodyaccentcolorforhero(localclientnum, charactermode, characterindex, bodyindex, colorslot);
 }
 
-/*
-	Name: get_character_body_colors
-	Namespace: character_customization
-	Checksum: 0xC6081C42
-	Offset: 0x3800
-	Size: 0xF4
-	Parameters: 5
-	Flags: Linked
-*/
 function get_character_body_colors(localclientnum, charactermode, characterindex, bodyindex, extracamdata) {
   bodyaccentcolorcount = getbodyaccentcolorcountforhero(localclientnum, charactermode, characterindex, bodyindex);
   colors = [];
@@ -722,15 +488,6 @@ function get_character_body_colors(localclientnum, charactermode, characterindex
   return colors;
 }
 
-/*
-	Name: get_character_head
-	Namespace: character_customization
-	Checksum: 0xC705F92E
-	Offset: 0x3900
-	Size: 0x11A
-	Parameters: 3
-	Flags: Linked
-*/
 function get_character_head(localclientnum, charactermode, extracamdata) {
   if(isdefined(extracamdata) && (isdefined(extracamdata.isdefaulthero) && extracamdata.isdefaulthero)) {
     return 0;
@@ -747,15 +504,6 @@ function get_character_head(localclientnum, charactermode, extracamdata) {
   return getequippedheadindexforhero(localclientnum, charactermode);
 }
 
-/*
-	Name: get_character_helmet
-	Namespace: character_customization
-	Checksum: 0xC2B5987F
-	Offset: 0x3A28
-	Size: 0x12A
-	Parameters: 4
-	Flags: Linked
-*/
 function get_character_helmet(localclientnum, charactermode, characterindex, extracamdata) {
   if(isdefined(extracamdata) && (isdefined(extracamdata.isdefaulthero) && extracamdata.isdefaulthero)) {
     return 0;
@@ -772,15 +520,6 @@ function get_character_helmet(localclientnum, charactermode, characterindex, ext
   return getequippedhelmetindexforhero(localclientnum, charactermode, characterindex);
 }
 
-/*
-	Name: get_character_showcase_weapon
-	Namespace: character_customization
-	Checksum: 0x70BCE869
-	Offset: 0x3B60
-	Size: 0xF2
-	Parameters: 4
-	Flags: Linked
-*/
 function get_character_showcase_weapon(localclientnum, charactermode, characterindex, extracamdata) {
   if(isdefined(extracamdata) && (isdefined(extracamdata.isdefaulthero) && extracamdata.isdefaulthero)) {
     return undefined;
@@ -794,15 +533,6 @@ function get_character_showcase_weapon(localclientnum, charactermode, characteri
   return getequippedshowcaseweaponforhero(localclientnum, charactermode, characterindex);
 }
 
-/*
-	Name: get_character_helmet_color
-	Namespace: character_customization
-	Checksum: 0x7F254641
-	Offset: 0x3C60
-	Size: 0x11A
-	Parameters: 6
-	Flags: Linked
-*/
 function get_character_helmet_color(localclientnum, charactermode, characterindex, helmetindex, colorslot, extracamdata) {
   if(isdefined(extracamdata) && (isdefined(extracamdata.isdefaulthero) && extracamdata.isdefaulthero)) {
     return 0;
@@ -816,15 +546,6 @@ function get_character_helmet_color(localclientnum, charactermode, characterinde
   return getequippedhelmetaccentcolorforhero(localclientnum, charactermode, characterindex, helmetindex, colorslot);
 }
 
-/*
-	Name: get_character_helmet_colors
-	Namespace: character_customization
-	Checksum: 0xBA60C942
-	Offset: 0x3D88
-	Size: 0xF4
-	Parameters: 5
-	Flags: Linked
-*/
 function get_character_helmet_colors(localclientnum, charactermode, characterindex, helmetindex, extracamdata) {
   helmetcolorcount = gethelmetaccentcolorcountforhero(localclientnum, charactermode, characterindex, helmetindex);
   colors = [];
@@ -837,30 +558,12 @@ function get_character_helmet_colors(localclientnum, charactermode, characterind
   return colors;
 }
 
-/*
-	Name: update_character_animation_tree_for_scene
-	Namespace: character_customization
-	Checksum: 0xFF379647
-	Offset: 0x3E88
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function update_character_animation_tree_for_scene(charactermodel) {
   if(!charactermodel hasanimtree()) {
     charactermodel useanimtree($all_player);
   }
 }
 
-/*
-	Name: reaper_body3_hack
-	Namespace: character_customization
-	Checksum: 0x225EAFF0
-	Offset: 0x3ED8
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function reaper_body3_hack(params) {
   if(isdefined(params.weapon_right) && params.weapon_right == "wpn_t7_hero_reaper_minigun_prop" && isdefined(level.mp_lobby_data_struct.charactermodel) && issubstr(level.mp_lobby_data_struct.charactermodel.model, "body3")) {
     params.weapon_right = "wpn_t7_loot_hero_reaper3_minigun_prop";
@@ -870,15 +573,6 @@ function reaper_body3_hack(params) {
   return false;
 }
 
-/*
-	Name: get_current_frozen_moment_params
-	Namespace: character_customization
-	Checksum: 0x796D2F6F
-	Offset: 0x3FA8
-	Size: 0x4D4
-	Parameters: 3
-	Flags: Linked
-*/
 function get_current_frozen_moment_params(localclientnum, data_struct, params) {
   fields = getcharacterfields(data_struct.characterindex, data_struct.charactermode);
   if(data_struct.frozenmomentstyle == "weapon") {
@@ -952,33 +646,15 @@ function get_current_frozen_moment_params(localclientnum, data_struct, params) {
   }
 }
 
-/*
-	Name: play_intro_and_animation
-	Namespace: character_customization
-	Checksum: 0xBBA413B5
-	Offset: 0x4488
-	Size: 0xAC
-	Parameters: 3
-	Flags: Linked
-*/
 function play_intro_and_animation(intro_anim_name, anim_name, b_keep_link) {
-  self notify(# "stop_vignette_animation");
-  self endon(# "stop_vignette_animation");
+  self notify("stop_vignette_animation");
+  self endon("stop_vignette_animation");
   if(isdefined(intro_anim_name)) {
     self animation::play(intro_anim_name, self.chosenorigin, self.chosenangles, 1, 0, 0, 0, b_keep_link);
   }
   self animation::play(anim_name, self.chosenorigin, self.chosenangles, 1, 0, 0, 0, b_keep_link);
 }
 
-/*
-	Name: update_character_animation_based_on_showcase_weapon
-	Namespace: character_customization
-	Checksum: 0x198F8B20
-	Offset: 0x4540
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function update_character_animation_based_on_showcase_weapon(data_struct, params) {
   if(!isdefined(params.weapon_right) && !isdefined(params.weapon_left)) {
     if(isdefined(data_struct.anim_name)) {
@@ -987,15 +663,6 @@ function update_character_animation_based_on_showcase_weapon(data_struct, params
   }
 }
 
-/*
-	Name: update_character_animation_and_attachments
-	Namespace: character_customization
-	Checksum: 0xFC2DFAEE
-	Offset: 0x45B8
-	Size: 0x88C
-	Parameters: 3
-	Flags: Linked
-*/
 function update_character_animation_and_attachments(localclientnum, data_struct, params) {
   changed = 0;
   if(!isdefined(params)) {
@@ -1076,15 +743,6 @@ function update_character_animation_and_attachments(localclientnum, data_struct,
   return changed;
 }
 
-/*
-	Name: update_use_frozen_moments
-	Namespace: character_customization
-	Checksum: 0x14272D55
-	Offset: 0x4E50
-	Size: 0x118
-	Parameters: 3
-	Flags: Linked
-*/
 function update_use_frozen_moments(localclientnum, data_struct, usefrozenmoments) {
   if(data_struct.usefrozenmomentanim != usefrozenmoments) {
     data_struct.usefrozenmomentanim = usefrozenmoments;
@@ -1101,15 +759,6 @@ function update_use_frozen_moments(localclientnum, data_struct, usefrozenmoments
   }
 }
 
-/*
-	Name: update_show_helmets
-	Namespace: character_customization
-	Checksum: 0x8A740EAF
-	Offset: 0x4F70
-	Size: 0xCC
-	Parameters: 3
-	Flags: Linked
-*/
 function update_show_helmets(localclientnum, data_struct, show_helmets) {
   if(data_struct.show_helmets != show_helmets) {
     data_struct.show_helmets = show_helmets;
@@ -1120,15 +769,6 @@ function update_show_helmets(localclientnum, data_struct, show_helmets) {
   }
 }
 
-/*
-	Name: set_character_align
-	Namespace: character_customization
-	Checksum: 0x6C7E1BAC
-	Offset: 0x5048
-	Size: 0xCC
-	Parameters: 3
-	Flags: Linked
-*/
 function set_character_align(localclientnum, data_struct, align_target) {
   if(data_struct.align_target !== align_target) {
     data_struct.align_target = align_target;
@@ -1139,15 +779,6 @@ function set_character_align(localclientnum, data_struct, align_target) {
   }
 }
 
-/*
-	Name: setup_live_character_customization_target
-	Namespace: character_customization
-	Checksum: 0x9153773A
-	Offset: 0x5120
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function setup_live_character_customization_target(localclientnum) {
   characterent = getent(localclientnum, "character_customization", "targetname");
   if(isdefined(characterent)) {
@@ -1160,15 +791,6 @@ function setup_live_character_customization_target(localclientnum) {
   return undefined;
 }
 
-/*
-	Name: update_locked_shader
-	Namespace: character_customization
-	Checksum: 0xC732CB99
-	Offset: 0x51F0
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function update_locked_shader(localclientnum, params) {
   if(isdefined(params.isitemunlocked) && params.isitemunlocked != 1) {
     enablefrontendlockedweaponoverlay(localclientnum, 1);
@@ -1177,15 +799,6 @@ function update_locked_shader(localclientnum, params) {
   }
 }
 
-/*
-	Name: updateeventthread
-	Namespace: character_customization
-	Checksum: 0x9DCC7968
-	Offset: 0x5278
-	Size: 0x6BA
-	Parameters: 2
-	Flags: Linked
-*/
 function updateeventthread(localclientnum, data_struct) {
   while (true) {
     level waittill("updateHero" + localclientnum, eventtype, param1, param2, param3, param4);
@@ -1283,23 +896,12 @@ function updateeventthread(localclientnum, data_struct) {
   }
 }
 
-/*
-	Name: rotation_thread_spawner
-	Namespace: character_customization
-	Checksum: 0xADDD4AEC
-	Offset: 0x5940
-	Size: 0xF4
-	Parameters: 3
-	Flags: Linked
-*/
 function rotation_thread_spawner(localclientnum, data_struct, endonevent) {
   if(!isdefined(endonevent)) {
     return;
   }
-  /#
   assert(isdefined(data_struct.charactermodel));
-  # /
-    model = data_struct.charactermodel;
+  model = data_struct.charactermodel;
   baseangles = model.angles;
   level thread update_model_rotation_for_right_stick(localclientnum, data_struct, endonevent);
   level waittill(endonevent);
@@ -1308,21 +910,10 @@ function rotation_thread_spawner(localclientnum, data_struct, endonevent) {
   }
 }
 
-/*
-	Name: update_model_rotation_for_right_stick
-	Namespace: character_customization
-	Checksum: 0xDB18EA1A
-	Offset: 0x5A40
-	Size: 0x2B8
-	Parameters: 3
-	Flags: Linked
-*/
 function update_model_rotation_for_right_stick(localclientnum, data_struct, endonevent) {
   level endon(endonevent);
-  /#
   assert(isdefined(data_struct.charactermodel));
-  # /
-    model = data_struct.charactermodel;
+  model = data_struct.charactermodel;
   while (true) {
     data_lcn = (isdefined(data_struct.splitscreenclient) ? data_struct.splitscreenclient : localclientnum);
     if(localclientactive(data_lcn) && (!(isdefined(data_struct.charactermodel.anglesoverride) && data_struct.charactermodel.anglesoverride))) {
@@ -1341,15 +932,6 @@ function update_model_rotation_for_right_stick(localclientnum, data_struct, endo
   }
 }
 
-/*
-	Name: setup_static_character_customization_target
-	Namespace: character_customization
-	Checksum: 0x953566BD
-	Offset: 0x5D00
-	Size: 0x17C
-	Parameters: 1
-	Flags: Linked
-*/
 function setup_static_character_customization_target(localclientnum) {
   characterent = getent(localclientnum, "character_customization_staging", "targetname");
   level.extra_cam_hero_data[localclientnum] = setup_character_extracam_struct("ui_cam_character_customization", "cam_menu_unfocus", "pb_cac_main_lobby_idle", 0);
@@ -1364,15 +946,6 @@ function setup_static_character_customization_target(localclientnum) {
   return undefined;
 }
 
-/*
-	Name: setup_character_extracam_struct
-	Namespace: character_customization
-	Checksum: 0x47133DE6
-	Offset: 0x5E88
-	Size: 0x94
-	Parameters: 4
-	Flags: Linked
-*/
 function setup_character_extracam_struct(xcam, subxcam, model_animation, uselobbyplayers) {
   newstruct = spawnstruct();
   newstruct.xcam = xcam;
@@ -1382,36 +955,16 @@ function setup_character_extracam_struct(xcam, subxcam, model_animation, uselobb
   return newstruct;
 }
 
-/*
-	Name: wait_for_extracam_close
-	Namespace: character_customization
-	Checksum: 0x5F015678
-	Offset: 0x5F28
-	Size: 0x54
-	Parameters: 3
-	Flags: Linked
-*/
 function wait_for_extracam_close(localclientnum, camera_ent, extracamindex) {
   level waittill((("render_complete_" + localclientnum) + "_") + extracamindex);
   multi_extracam::extracam_reset_index(localclientnum, extracamindex);
 }
 
-/*
-	Name: setup_character_extracam_settings
-	Namespace: character_customization
-	Checksum: 0x3C73414
-	Offset: 0x5F88
-	Size: 0x324
-	Parameters: 3
-	Flags: Linked
-*/
 function setup_character_extracam_settings(localclientnum, data_struct, extracam_data_struct) {
-  /#
   assert(isdefined(extracam_data_struct.jobindex));
-  # /
-    if(!isdefined(level.camera_ents)) {
-      level.camera_ents = [];
-    }
+  if(!isdefined(level.camera_ents)) {
+    level.camera_ents = [];
+  }
   initializedextracam = 0;
   camera_ent = (isdefined(level.camera_ents[localclientnum]) ? level.camera_ents[localclientnum][extracam_data_struct.extracamindex] : undefined);
   if(!isdefined(camera_ent)) {
@@ -1419,10 +972,8 @@ function setup_character_extracam_settings(localclientnum, data_struct, extracam
     multi_extracam::extracam_init_index(localclientnum, "character_staging_extracam" + (extracam_data_struct.extracamindex + 1), extracam_data_struct.extracamindex);
     camera_ent = level.camera_ents[localclientnum][extracam_data_struct.extracamindex];
   }
-  /#
   assert(isdefined(camera_ent));
-  # /
-    camera_ent playextracamxcam(extracam_data_struct.xcam, 0, extracam_data_struct.subxcam);
+  camera_ent playextracamxcam(extracam_data_struct.xcam, 0, extracam_data_struct.subxcam);
   params = spawnstruct();
   params.anim_name = extracam_data_struct.anim_name;
   params.extracam_data = extracam_data_struct;
@@ -1446,32 +997,14 @@ function setup_character_extracam_settings(localclientnum, data_struct, extracam
   }
 }
 
-/*
-	Name: update_character_extracam
-	Namespace: character_customization
-	Checksum: 0x3A1A1507
-	Offset: 0x62B8
-	Size: 0x68
-	Parameters: 2
-	Flags: Linked
-*/
 function update_character_extracam(localclientnum, data_struct) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   while (true) {
     level waittill("process_character_extracam" + localclientnum, extracam_data_struct);
     setup_character_extracam_settings(localclientnum, data_struct, extracam_data_struct);
   }
 }
 
-/*
-	Name: process_character_extracam_request
-	Namespace: character_customization
-	Checksum: 0x43A318D
-	Offset: 0x6328
-	Size: 0xBC
-	Parameters: 5
-	Flags: Linked
-*/
 function process_character_extracam_request(localclientnum, jobindex, extracamindex, sessionmode, characterindex) {
   level.extra_cam_hero_data[localclientnum].jobindex = jobindex;
   level.extra_cam_hero_data[localclientnum].extracamindex = extracamindex;
@@ -1480,15 +1013,6 @@ function process_character_extracam_request(localclientnum, jobindex, extracamin
   level notify("process_character_extracam" + localclientnum, level.extra_cam_hero_data[localclientnum]);
 }
 
-/*
-	Name: process_lobby_client_character_extracam_request
-	Namespace: character_customization
-	Checksum: 0x58265A59
-	Offset: 0x63F0
-	Size: 0xC8
-	Parameters: 4
-	Flags: Linked
-*/
 function process_lobby_client_character_extracam_request(localclientnum, jobindex, extracamindex, sessionmode) {
   level.extra_cam_lobby_client_hero_data[localclientnum].jobindex = jobindex;
   level.extra_cam_lobby_client_hero_data[localclientnum].extracamindex = extracamindex;
@@ -1497,15 +1021,6 @@ function process_lobby_client_character_extracam_request(localclientnum, jobinde
   level notify("process_character_extracam" + localclientnum, level.extra_cam_lobby_client_hero_data[localclientnum]);
 }
 
-/*
-	Name: process_current_hero_headshot_extracam_request
-	Namespace: character_customization
-	Checksum: 0x8EB5CE75
-	Offset: 0x64C0
-	Size: 0xE0
-	Parameters: 6
-	Flags: Linked
-*/
 function process_current_hero_headshot_extracam_request(localclientnum, jobindex, extracamindex, sessionmode, characterindex, isdefaulthero) {
   level.extra_cam_headshot_hero_data[localclientnum].jobindex = jobindex;
   level.extra_cam_headshot_hero_data[localclientnum].extracamindex = extracamindex;
@@ -1515,15 +1030,6 @@ function process_current_hero_headshot_extracam_request(localclientnum, jobindex
   level notify("process_character_extracam" + localclientnum, level.extra_cam_headshot_hero_data[localclientnum]);
 }
 
-/*
-	Name: process_outfit_preview_extracam_request
-	Namespace: character_customization
-	Checksum: 0xA20BAE34
-	Offset: 0x65A8
-	Size: 0xBC
-	Parameters: 5
-	Flags: Linked
-*/
 function process_outfit_preview_extracam_request(localclientnum, jobindex, extracamindex, sessionmode, outfitindex) {
   level.extra_cam_outfit_preview_data[localclientnum].jobindex = jobindex;
   level.extra_cam_outfit_preview_data[localclientnum].extracamindex = extracamindex;
@@ -1532,15 +1038,6 @@ function process_outfit_preview_extracam_request(localclientnum, jobindex, extra
   level notify("process_character_extracam" + localclientnum, level.extra_cam_outfit_preview_data[localclientnum]);
 }
 
-/*
-	Name: process_character_body_item_extracam_request
-	Namespace: character_customization
-	Checksum: 0xB812158C
-	Offset: 0x6670
-	Size: 0x180
-	Parameters: 7
-	Flags: Linked
-*/
 function process_character_body_item_extracam_request(localclientnum, jobindex, extracamindex, sessionmode, characterindex, itemindex, defaultimagerender) {
   extracam_data = undefined;
   if(defaultimagerender) {
@@ -1558,15 +1055,6 @@ function process_character_body_item_extracam_request(localclientnum, jobindex, 
   level notify("process_character_extracam" + localclientnum, extracam_data);
 }
 
-/*
-	Name: process_character_helmet_item_extracam_request
-	Namespace: character_customization
-	Checksum: 0xF26E4081
-	Offset: 0x67F8
-	Size: 0x180
-	Parameters: 7
-	Flags: Linked
-*/
 function process_character_helmet_item_extracam_request(localclientnum, jobindex, extracamindex, sessionmode, characterindex, itemindex, defaultimagerender) {
   extracam_data = undefined;
   if(defaultimagerender) {
@@ -1584,15 +1072,6 @@ function process_character_helmet_item_extracam_request(localclientnum, jobindex
   level notify("process_character_extracam" + localclientnum, extracam_data);
 }
 
-/*
-	Name: process_character_head_item_extracam_request
-	Namespace: character_customization
-	Checksum: 0xF3653415
-	Offset: 0x6980
-	Size: 0x178
-	Parameters: 6
-	Flags: Linked
-*/
 function process_character_head_item_extracam_request(localclientnum, jobindex, extracamindex, sessionmode, headindex, defaultimagerender) {
   extracam_data = undefined;
   if(defaultimagerender) {

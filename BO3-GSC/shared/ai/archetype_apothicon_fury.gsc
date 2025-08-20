@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_apothicon_fury.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\archetype_apothicon_fury_interface;
 #using scripts\shared\ai\archetype_locomotion_utility;
@@ -32,29 +36,13 @@ class animationadjustmentinfoz {
   var adjustmentstarted;
   var readjustmentstarted;
 
-  /*
-  	Name: constructor
-  	Namespace: animationadjustmentinfoz
-  	Checksum: 0xBC354E48
-  	Offset: 0x18D8
-  	Size: 0x1C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {
     adjustmentstarted = 0;
     readjustmentstarted = 0;
   }
 
-  /*
-  	Name: destructor
-  	Namespace: animationadjustmentinfoz
-  	Checksum: 0x99EC1590
-  	Offset: 0x1900
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
 }
@@ -62,69 +50,28 @@ class animationadjustmentinfoz {
 class animationadjustmentinfoxy {
   var adjustmentstarted;
 
-  /*
-  	Name: constructor
-  	Namespace: animationadjustmentinfoxy
-  	Checksum: 0xAF212837
-  	Offset: 0x19A0
-  	Size: 0x10
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {
     adjustmentstarted = 0;
   }
 
-  /*
-  	Name: destructor
-  	Namespace: animationadjustmentinfoxy
-  	Checksum: 0x99EC1590
-  	Offset: 0x19B8
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
 }
 
 class jukeinfo {
 
-  /*
-  	Name: constructor
-  	Namespace: jukeinfo
-  	Checksum: 0x99EC1590
-  	Offset: 0x54E0
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: jukeinfo
-  	Checksum: 0x99EC1590
-  	Offset: 0x54F0
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
 }
 
 #namespace apothiconfurybehavior;
 
-/*
-	Name: init
-	Namespace: apothiconfurybehavior
-	Checksum: 0xEAE8CB7B
-	Offset: 0xB08
-	Size: 0x1B4
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   initapothiconfurybehaviorsandasm();
   apothiconfuryinterface::registerapothiconfuryinterfaceattributes();
@@ -140,15 +87,6 @@ function autoexec init() {
   }
 }
 
-/*
-	Name: initapothiconfurybehaviorsandasm
-	Namespace: apothiconfurybehavior
-	Checksum: 0xD5FDB009
-	Offset: 0xCC8
-	Size: 0x464
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initapothiconfurybehaviorsandasm() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("apothiconCanJuke", & apothiconcanjuke);
   behaviortreenetworkutility::registerbehaviortreescriptapi("apothiconJukeInit", & apothiconjukeinit);
@@ -178,58 +116,30 @@ function private initapothiconfurybehaviorsandasm() {
   animationstatenetwork::registernotetrackhandlerfunction("dissolved", & apothicondeathdissolved);
 }
 
-/*
-	Name: apothiconfuryblackboardinit
-	Namespace: apothiconfurybehavior
-	Checksum: 0xBA9F0669
-	Offset: 0x1138
-	Size: 0x1FC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private apothiconfuryblackboardinit() {
   blackboard::createblackboardforentity(self);
   blackboard::registerblackboardattribute(self, "_locomotion_speed", "locomotion_speed_run", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_apothicon_bamf_distance", undefined, & getbamfmeleedistance);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_idgun_damage_direction", "back", & bb_idgungetdamagedirection);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_variant_type", 0, undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   self aiutility::registerutilityblackboardattributes();
   ai::createinterfaceforentity(self);
   self.___archetypeonanimscriptedcallback = & apothiconfuryonanimscriptedcallback;
-  /#
   self finalizetrackedblackboardattributes();
-  # /
 }
 
-/*
-	Name: apothiconfuryspawnsetup
-	Namespace: apothiconfurybehavior
-	Checksum: 0x3C5AFC7B
-	Offset: 0x1340
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private apothiconfuryspawnsetup() {
   self.entityradius = 30;
   self.jukemaxdistance = 1500;
@@ -250,29 +160,11 @@ function private apothiconfuryspawnsetup() {
   blackboard::setblackboardattribute(self, "_variant_type", randomintrange(0, 3));
 }
 
-/*
-	Name: apothiconfuryonanimscriptedcallback
-	Namespace: apothiconfurybehavior
-	Checksum: 0x989FEC2E
-	Offset: 0x14B0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private apothiconfuryonanimscriptedcallback(entity) {
   entity.__blackboard = undefined;
   entity apothiconfuryblackboardinit();
 }
 
-/*
-	Name: apothicondeathdissolve
-	Namespace: apothiconfurybehavior
-	Checksum: 0x64760EC8
-	Offset: 0x14F0
-	Size: 0x132
-	Parameters: 1
-	Flags: Linked
-*/
 function apothicondeathdissolve(entity) {
   if(entity.archetype != "apothicon_fury") {
     return;
@@ -286,26 +178,8 @@ function apothicondeathdissolve(entity) {
   }
 }
 
-/*
-	Name: apothicondeathdissolved
-	Namespace: apothiconfurybehavior
-	Checksum: 0xE4AAA393
-	Offset: 0x1630
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function apothicondeathdissolved(entity) {}
 
-/*
-	Name: mocompapothiconfuryteleportinit
-	Namespace: apothiconfurybehavior
-	Checksum: 0xE9349E80
-	Offset: 0x1648
-	Size: 0x188
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompapothiconfuryteleportinit(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity orientmode("face angle", entity.angles[1]);
   entity setrepairpaths(0);
@@ -316,25 +190,14 @@ function private mocompapothiconfuryteleportinit(entity, mocompanim, mocompanimb
     rate = 2;
   }
   entity asmsetanimationrate(rate);
-  /#
   assert(isdefined(entity.traverseendnode));
-  # /
-    entity animmode("noclip", 0);
+  entity animmode("noclip", 0);
   entity notsolid();
   entity.blockingpain = 1;
   entity.usegoalanimweight = 1;
   entity.bgbignorefearinheadlights = 1;
 }
 
-/*
-	Name: mocompapothiconfuryteleportterminate
-	Namespace: apothiconfurybehavior
-	Checksum: 0x13A9B20A
-	Offset: 0x17D8
-	Size: 0xF4
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompapothiconfuryteleportterminate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   if(!isdefined(entity.traverseendnode)) {
     return;
@@ -348,15 +211,6 @@ function private mocompapothiconfuryteleportterminate(entity, mocompanim, mocomp
   entity.bgbignorefearinheadlights = 0;
 }
 
-/*
-	Name: mocompapothiconfuryjukeinit
-	Namespace: apothiconfurybehavior
-	Checksum: 0x9589D02B
-	Offset: 0x1A58
-	Size: 0x824
-	Parameters: 5
-	Flags: Linked
-*/
 function mocompapothiconfuryjukeinit(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity.isjuking = 1;
   if(isdefined(entity.jukeinfo)) {
@@ -373,42 +227,30 @@ function mocompapothiconfuryjukeinit(entity, mocompanim, mocompanimblendouttime,
   landpos = entity localtoworldcoords(movedeltavector);
   velocity = entity getvelocity();
   predictedpos = entity.origin + (velocity * 0.1);
-  /#
   recordcircle(landpos, 8, (0, 0, 1), "", entity);
   record3dtext("" + distance(predictedpos, landpos), landpos, (0, 0, 1), "");
-  # /
-    landposonground = entity.jukeinfo.landposonground;
+  landposonground = entity.jukeinfo.landposonground;
   heightdiff = landposonground[2] - landpos[2];
-  /#
   recordcircle(landposonground, 8, (0, 1, 0), "", entity);
   recordline(landpos, landposonground, (0, 1, 0), "", entity);
-  # /
-    /#
   assert(animhasnotetrack(mocompanim, ""));
-  # /
-    starttime = getnotetracktimes(mocompanim, "start_effect")[0];
+  starttime = getnotetracktimes(mocompanim, "start_effect")[0];
   vectortostarttime = getmovedelta(mocompanim, 0, starttime, entity);
   startpos = entity localtoworldcoords(vectortostarttime);
-  /#
   assert(animhasnotetrack(mocompanim, ""));
-  # /
-    stoptime = getnotetracktimes(mocompanim, "end_effect")[0];
+  stoptime = getnotetracktimes(mocompanim, "end_effect")[0];
   vectortostoptime = getmovedelta(mocompanim, 0, stoptime, entity);
   stoppos = entity localtoworldcoords(vectortostoptime);
-  /#
   recordsphere(startpos, 3, (0, 0, 1), "", entity);
   recordsphere(stoppos, 3, (0, 0, 1), "", entity);
   recordline(predictedpos, startpos, (0, 0, 1), "", entity);
   recordline(startpos, stoppos, (0, 0, 1), "", entity);
   recordline(stoppos, landpos, (0, 0, 1), "", entity);
-  # /
-    newstoppos = stoppos + (0, 0, heightdiff);
-  /#
+  newstoppos = stoppos + (0, 0, heightdiff);
   recordline(startpos, newstoppos, (1, 1, 0), "", entity);
   recordline(newstoppos, landposonground, (1, 1, 0), "", entity);
   recordsphere(newstoppos, 3, (1, 1, 0), "", entity);
-  # /
-    entity.animationadjustmentinfoz = undefined;
+  entity.animationadjustmentinfoz = undefined;
   entity.animationadjustmentinfoz = new animationadjustmentinfoz();
   entity.animationadjustmentinfoz.starttime = starttime;
   entity.animationadjustmentinfoz.stoptime = stoptime;
@@ -421,24 +263,13 @@ function mocompapothiconfuryjukeinit(entity, mocompanim, mocompanimblendouttime,
   adjustduration = stoptime - starttime;
   entity.animationadjustmentinfoz.stepsize = heightdiff / adjustduration;
   entity.animationadjustmentinfoz.landposonground = landposonground;
-  /#
   if(heightdiff < 0) {
     record3dtext((((("" + distance(landpos, landposonground)) + "") + entity.animationadjustmentinfoz.stepsize) + "") + adjustduration, landposonground, (1, 0.5, 0), "");
   } else {
     record3dtext((((("" + distance(landpos, landposonground)) + "") + entity.animationadjustmentinfoz.stepsize) + "") + adjustduration, landposonground, (1, 0.5, 0), "");
   }
-  # /
 }
 
-/*
-	Name: mocompapothiconfuryjukeupdate
-	Namespace: apothiconfurybehavior
-	Checksum: 0x867838A
-	Offset: 0x2288
-	Size: 0x224
-	Parameters: 5
-	Flags: Linked
-*/
 function mocompapothiconfuryjukeupdate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   times = getnotetracktimes(mocompanim, "end_effect");
   if(times.size) {
@@ -456,20 +287,9 @@ function mocompapothiconfuryjukeupdate(entity, mocompanim, mocompanimblendouttim
   } else if(isdefined(entity.enemy)) {
     entity orientmode("face direction", entity.enemy.origin - entity.origin);
   }
-  /#
   recordcircle(entity.animationadjustmentinfoz.landposonground, 8, (0, 1, 0), "", entity);
-  # /
 }
 
-/*
-	Name: mocompapothiconfuryjuketerminate
-	Namespace: apothiconfurybehavior
-	Checksum: 0xA17E420B
-	Offset: 0x24B8
-	Size: 0x13C
-	Parameters: 5
-	Flags: Linked
-*/
 function mocompapothiconfuryjuketerminate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity.blockingpain = 0;
   entity solid();
@@ -478,30 +298,17 @@ function mocompapothiconfuryjuketerminate(entity, mocompanim, mocompanimblendout
   entity.usegoalanimweight = 0;
   entity.pushable = 1;
   entity.jukeinfo = undefined;
-  /#
   recordcircle(entity.animationadjustmentinfoz.landposonground, 8, (0, 1, 0), "", entity);
-  # /
-    if(isdefined(entity.enemy)) {
-      entity orientmode("face direction", entity.enemy.origin - entity.origin);
-    }
+  if(isdefined(entity.enemy)) {
+    entity orientmode("face direction", entity.enemy.origin - entity.origin);
+  }
 }
 
-/*
-	Name: runbamfreadjustmentanalysis
-	Namespace: apothiconfurybehavior
-	Checksum: 0x7CD58A24
-	Offset: 0x2600
-	Size: 0x9C0
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private runbamfreadjustmentanalysis(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
-  /#
   assert(isdefined(entity.animationadjustmentinfoz.adjustmentstarted) && entity.animationadjustmentinfoz.adjustmentstarted);
-  # /
-    if(isdefined(entity.animationadjustmentinfoz.readjustmentstarted) && entity.animationadjustmentinfoz.readjustmentstarted) {
-      return;
-    }
+  if(isdefined(entity.animationadjustmentinfoz.readjustmentstarted) && entity.animationadjustmentinfoz.readjustmentstarted) {
+    return;
+  }
   readjustmentanimtime = 0.45;
   animtime = entity getanimtime(mocompanim);
   if(animtime >= readjustmentanimtime && entity.enemy === entity.animationadjustmentinfoz.enemy) {
@@ -539,11 +346,9 @@ function private runbamfreadjustmentanalysis(entity, mocompanim, mocompanimblend
       return;
     }
     landpos = entity.animationadjustmentinfoz.landposonground;
-    /#
     recordcircle(meleeendposition, 8, (0, 1, 1), "", entity);
     recordcircle(landpos, 8, (0, 0, 1), "", entity);
-    # /
-      zdiff = landpos[2] - meleeendposition[2];
+    zdiff = landpos[2] - meleeendposition[2];
     tracestart = undefined;
     traceend = undefined;
     if(zdiff < 0) {
@@ -561,14 +366,10 @@ function private runbamfreadjustmentanalysis(entity, mocompanim, mocompanimblend
     if(!isdefined(landposonground)) {
       return;
     }
-    /#
     recordcircle(landposonground, 8, (0, 1, 0), "", entity);
     recordline(landpos, landposonground, (0, 1, 0), "", entity);
-    # /
-      /#
     assert(isdefined(entity.animationadjustmentinfoz));
-    # /
-      starttime = readjustmentanimtime;
+    starttime = readjustmentanimtime;
     stoptime = entity.animationadjustmentinfoz.stoptime;
     entity.animationadjustmentinfoz2 = new animationadjustmentinfoz();
     entity.animationadjustmentinfoz2.starttime = readjustmentanimtime;
@@ -582,14 +383,12 @@ function private runbamfreadjustmentanalysis(entity, mocompanim, mocompanimblend
     adjustduration = stoptime - starttime;
     heightdiff = landposonground[2] - landpos[2];
     entity.animationadjustmentinfoz2.stepsize = heightdiff / adjustduration;
-    /#
     if(heightdiff < 0) {
       record3dtext((("" + entity.animationadjustmentinfoz2.stepsize) + "") + adjustduration, landposonground, (1, 0.5, 0), "");
     } else {
       record3dtext((("" + entity.animationadjustmentinfoz2.stepsize) + "") + adjustduration, landposonground, (1, 0.5, 0), "");
     }
-    # /
-      meleeendposition = (meleeendposition[0], meleeendposition[1], landpos[2]);
+    meleeendposition = (meleeendposition[0], meleeendposition[1], landpos[2]);
     xydirection = vectornormalize(meleeendposition - landpos);
     xydistance = distance(meleeendposition, landpos);
     entity.animationadjustmentinfoxy = new animationadjustmentinfoxy();
@@ -598,27 +397,14 @@ function private runbamfreadjustmentanalysis(entity, mocompanim, mocompanimblend
     entity.animationadjustmentinfoxy.stepsize = xydistance / adjustduration;
     entity.animationadjustmentinfoxy.xydirection = xydirection;
     entity.animationadjustmentinfoxy.adjustmentstarted = 1;
-    /#
     record3dtext(((("" + xydistance) + "") + entity.animationadjustmentinfoxy.stepsize) + "", meleeendposition, (0, 0, 1), "");
-    # /
-      entity.animationadjustmentinfoz.readjustmentstarted = 1;
+    entity.animationadjustmentinfoz.readjustmentstarted = 1;
   }
 }
 
-/*
-	Name: mocompapothiconfurybamfinit
-	Namespace: apothiconfurybehavior
-	Checksum: 0x52BD3B23
-	Offset: 0x2FC8
-	Size: 0xA84
-	Parameters: 5
-	Flags: Linked
-*/
 function mocompapothiconfurybamfinit(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
-  /#
   assert(isdefined(entity.enemy));
-  # /
-    entity.animationadjustmentinfoz = undefined;
+  entity.animationadjustmentinfoz = undefined;
   entity.animationadjustmentinfoz2 = undefined;
   entity.animationadjustmentinfoxy = undefined;
   entity clearpath();
@@ -634,13 +420,11 @@ function mocompapothiconfurybamfinit(entity, mocompanim, mocompanimblendouttime,
   entity animmode("noclip", 1);
   movedeltavector = getmovedelta(mocompanim, 0, 1, entity);
   landpos = entity localtoworldcoords(movedeltavector);
-  /#
   recordcircle(entity.enemy.origin, 8, (0, 1, 1), "", entity);
   recordline(landpos, entity.enemy.origin, (0, 1, 1), "", entity);
   recordcircle(landpos, 8, (0, 0, 1), "", entity);
   record3dtext("" + distance(entity.origin, landpos), landpos, (0, 0, 1), "");
-  # /
-    zdiff = entity.origin[2] - entity.enemy.origin[2];
+  zdiff = entity.origin[2] - entity.enemy.origin[2];
   tracestart = undefined;
   traceend = undefined;
   if(zdiff < 0) {
@@ -658,37 +442,27 @@ function mocompapothiconfurybamfinit(entity, mocompanim, mocompanimblendouttime,
   if(!isdefined(landposonground)) {
     landposonground = entity.enemy.origin;
   }
-  /#
   recordcircle(landposonground, 8, (0, 1, 0), "", entity);
   recordline(landpos, landposonground, (0, 1, 0), "", entity);
-  # /
-    heightdiff = landposonground[2] - landpos[2];
-  /#
+  heightdiff = landposonground[2] - landpos[2];
   assert(animhasnotetrack(mocompanim, ""));
-  # /
-    starttime = getnotetracktimes(mocompanim, "start_effect")[0];
+  starttime = getnotetracktimes(mocompanim, "start_effect")[0];
   vectortostarttime = getmovedelta(mocompanim, 0, starttime, entity);
   startpos = entity localtoworldcoords(vectortostarttime);
-  /#
   assert(animhasnotetrack(mocompanim, ""));
-  # /
-    stoptime = getnotetracktimes(mocompanim, "end_effect")[0];
+  stoptime = getnotetracktimes(mocompanim, "end_effect")[0];
   vectortostoptime = getmovedelta(mocompanim, 0, stoptime, entity);
   stoppos = entity localtoworldcoords(vectortostoptime);
-  /#
   recordsphere(startpos, 3, (0, 0, 1), "", entity);
   recordsphere(stoppos, 3, (0, 0, 1), "", entity);
   recordline(entity.origin, startpos, (0, 0, 1), "", entity);
   recordline(startpos, stoppos, (0, 0, 1), "", entity);
   recordline(stoppos, landpos, (0, 0, 1), "", entity);
-  # /
-    newstoppos = stoppos + (0, 0, heightdiff);
-  /#
+  newstoppos = stoppos + (0, 0, heightdiff);
   recordline(startpos, newstoppos, (0, 1, 0), "", entity);
   recordline(newstoppos, landposonground, (0, 1, 0), "", entity);
   recordsphere(newstoppos, 3, (0, 1, 0), "", entity);
-  # /
-    entity.animationadjustmentinfoz = new animationadjustmentinfoz();
+  entity.animationadjustmentinfoz = new animationadjustmentinfoz();
   entity.animationadjustmentinfoz.starttime = starttime;
   entity.animationadjustmentinfoz.stoptime = stoptime;
   entity.animationadjustmentinfoz.enemy = entity.enemy;
@@ -700,31 +474,18 @@ function mocompapothiconfurybamfinit(entity, mocompanim, mocompanimblendouttime,
   adjustduration = stoptime - starttime;
   entity.animationadjustmentinfoz.stepsize = heightdiff / adjustduration;
   entity.animationadjustmentinfoz.landposonground = landposonground;
-  /#
   if(heightdiff < 0) {
     record3dtext((((("" + distance(landpos, landposonground)) + "") + entity.animationadjustmentinfoz.stepsize) + "") + adjustduration, landposonground, (1, 0.5, 0), "");
   } else {
     record3dtext((((("" + distance(landpos, landposonground)) + "") + entity.animationadjustmentinfoz.stepsize) + "") + adjustduration, landposonground, (1, 0.5, 0), "");
   }
-  # /
 }
 
-/*
-	Name: mocompapothiconfurybamfupdate
-	Namespace: apothiconfurybehavior
-	Checksum: 0x40A8A313
-	Offset: 0x3A58
-	Size: 0x2B4
-	Parameters: 5
-	Flags: Linked
-*/
 function mocompapothiconfurybamfupdate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
-  /#
   assert(isdefined(entity.animationadjustmentinfoz));
-  # /
-    if(!isdefined(entity.enemy)) {
-      return;
-    }
+  if(!isdefined(entity.enemy)) {
+    return;
+  }
   animtime = entity getanimtime(mocompanim);
   if(!entity.animationadjustmentinfoz.adjustmentstarted) {
     if(animtime >= entity.animationadjustmentinfoz.starttime) {
@@ -748,15 +509,6 @@ function mocompapothiconfurybamfupdate(entity, mocompanim, mocompanimblendouttim
   }
 }
 
-/*
-	Name: mocompapothiconfurybamfterminate
-	Namespace: apothiconfurybehavior
-	Checksum: 0x2B9201A7
-	Offset: 0x3D18
-	Size: 0x1B4
-	Parameters: 5
-	Flags: Linked
-*/
 function mocompapothiconfurybamfterminate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity pathmode("move allowed");
   entity solid();
@@ -777,28 +529,10 @@ function mocompapothiconfurybamfterminate(entity, mocompanim, mocompanimblendout
   }
 }
 
-/*
-	Name: apothiconcanmeleeattack
-	Namespace: apothiconfurybehavior
-	Checksum: 0x2BB21308
-	Offset: 0x3ED8
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconcanmeleeattack(entity) {
   return apothiconcanbamf(entity) || apothiconshouldmeleecondition(entity);
 }
 
-/*
-	Name: apothiconshouldmeleecondition
-	Namespace: apothiconfurybehavior
-	Checksum: 0xA2BBA148
-	Offset: 0x3F20
-	Size: 0x164
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconshouldmeleecondition(behaviortreeentity) {
   if(isdefined(behaviortreeentity.enemyoverride) && isdefined(behaviortreeentity.enemyoverride[1])) {
     return false;
@@ -822,41 +556,14 @@ function apothiconshouldmeleecondition(behaviortreeentity) {
   return true;
 }
 
-/*
-	Name: apothiconcanbamfafterjuke
-	Namespace: apothiconfurybehavior
-	Checksum: 0xAD513294
-	Offset: 0x4090
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconcanbamfafterjuke(entity) {
   return apothiconcanbamfinternal(entity);
 }
 
-/*
-	Name: apothiconcanbamf
-	Namespace: apothiconfurybehavior
-	Checksum: 0x1FEA1B65
-	Offset: 0x40C0
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconcanbamf(entity) {
   return apothiconcanbamfinternal(entity);
 }
 
-/*
-	Name: apothiconcanbamfinternal
-	Namespace: apothiconfurybehavior
-	Checksum: 0x4EEF90DF
-	Offset: 0x40F0
-	Size: 0x4DA
-	Parameters: 2
-	Flags: Linked
-*/
 function apothiconcanbamfinternal(entity, bamfafterjuke = 0) {
   if(!ai::getaiattribute(entity, "can_bamf")) {
     return false;
@@ -885,10 +592,8 @@ function apothiconcanbamfinternal(entity, bamfafterjuke = 0) {
       }
     }
   }
-  /#
   assert(isdefined(entity.enemy));
-  # /
-    enemyorigin = entity.enemy.origin;
+  enemyorigin = entity.enemy.origin;
   apothiconfurys = getaiarchetypearray("apothicon_fury");
   furiesnearplayer = 0;
   foreach(apothiconfury in apothiconfurys) {
@@ -930,29 +635,11 @@ function apothiconcanbamfinternal(entity, bamfafterjuke = 0) {
   return false;
 }
 
-/*
-	Name: getbamfmeleedistance
-	Namespace: apothiconfurybehavior
-	Checksum: 0xC0E1F14E
-	Offset: 0x45D8
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function getbamfmeleedistance(entity) {
   distancetoenemy = distance(self.enemy.origin, self.origin);
   return distancetoenemy;
 }
 
-/*
-	Name: apothiconbamfinit
-	Namespace: apothiconfurybehavior
-	Checksum: 0x95FA6968
-	Offset: 0x4628
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconbamfinit(entity) {
   jukeinfo = spawnstruct();
   jukeinfo.origin = entity.origin;
@@ -965,15 +652,6 @@ function apothiconbamfinit(entity) {
   }
 }
 
-/*
-	Name: apothiconshouldtauntatplayer
-	Namespace: apothiconfurybehavior
-	Checksum: 0x37F2EEAD
-	Offset: 0x4728
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconshouldtauntatplayer(entity) {
   tauntevents = blackboard::getblackboardevents("apothicon_fury_taunt");
   if(isdefined(tauntevents) && tauntevents.size) {
@@ -982,15 +660,6 @@ function apothiconshouldtauntatplayer(entity) {
   return true;
 }
 
-/*
-	Name: apothicontauntatplayerevent
-	Namespace: apothiconfurybehavior
-	Checksum: 0xE69994ED
-	Offset: 0x4780
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function apothicontauntatplayerevent(entity) {
   jukeinfo = spawnstruct();
   jukeinfo.origin = entity.origin;
@@ -998,15 +667,6 @@ function apothicontauntatplayerevent(entity) {
   blackboard::addblackboardevent("apothicon_fury_taunt", jukeinfo, 9500);
 }
 
-/*
-	Name: bb_idgungetdamagedirection
-	Namespace: apothiconfurybehavior
-	Checksum: 0x5D2BE2CC
-	Offset: 0x4808
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked
-*/
 function bb_idgungetdamagedirection() {
   if(isdefined(self.damage_direction)) {
     return self.damage_direction;
@@ -1014,15 +674,6 @@ function bb_idgungetdamagedirection() {
   return self aiutility::bb_getdamagedirection();
 }
 
-/*
-	Name: apothiconbamfland
-	Namespace: apothiconfurybehavior
-	Checksum: 0xC391199C
-	Offset: 0x4840
-	Size: 0x17C
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconbamfland(entity) {
   if(entity.archetype != "apothicon_fury") {
     return;
@@ -1037,29 +688,11 @@ function apothiconbamfland(entity) {
   physicsexplosionsphere(entity.origin, 100, 15, 10);
 }
 
-/*
-	Name: apothiconmovestart
-	Namespace: apothiconfurybehavior
-	Checksum: 0x15902495
-	Offset: 0x49C8
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconmovestart(entity) {
   entity.movetime = gettime();
   entity.moveorigin = entity.origin;
 }
 
-/*
-	Name: apothiconmoveupdate
-	Namespace: apothiconfurybehavior
-	Checksum: 0xDCF170D
-	Offset: 0x4A08
-	Size: 0x138
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconmoveupdate(entity) {
   if(isdefined(entity.move_anim_end_time) && gettime() >= entity.move_anim_end_time) {
     entity.move_anim_end_time = undefined;
@@ -1079,15 +712,6 @@ function apothiconmoveupdate(entity) {
   }
 }
 
-/*
-	Name: apothiconknockdownservice
-	Namespace: apothiconfurybehavior
-	Checksum: 0xE5457C01
-	Offset: 0x4B48
-	Size: 0x20A
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconknockdownservice(entity) {
   if(isdefined(entity.isjuking) && entity.isjuking) {
     return;
@@ -1111,15 +735,6 @@ function apothiconknockdownservice(entity) {
   }
 }
 
-/*
-	Name: apothiconzombieeligibleforknockdown
-	Namespace: apothiconfurybehavior
-	Checksum: 0x529E817E
-	Offset: 0x4D60
-	Size: 0x1D4
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private apothiconzombieeligibleforknockdown(zombie, thrasher, predicted_pos) {
   if(zombie.knockdown === 1) {
     return false;
@@ -1146,15 +761,6 @@ function private apothiconzombieeligibleforknockdown(zombie, thrasher, predicted
   return true;
 }
 
-/*
-	Name: apothiconknockdownzombie
-	Namespace: apothiconfurybehavior
-	Checksum: 0x9A05AA64
-	Offset: 0x4F40
-	Size: 0x2B4
-	Parameters: 2
-	Flags: Linked
-*/
 function apothiconknockdownzombie(entity, zombie) {
   zombie.knockdown = 1;
   zombie.knockdown_type = "knockdown_shoved";
@@ -1189,15 +795,6 @@ function apothiconknockdownzombie(entity, zombie) {
   }
 }
 
-/*
-	Name: apothiconshouldswitchtofuriousmode
-	Namespace: apothiconfurybehavior
-	Checksum: 0x2F7A1DA2
-	Offset: 0x5200
-	Size: 0x18C
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconshouldswitchtofuriousmode(entity) {
   if(!ai::getaiattribute(entity, "can_be_furious")) {
     return false;
@@ -1222,15 +819,6 @@ function apothiconshouldswitchtofuriousmode(entity) {
   return false;
 }
 
-/*
-	Name: apothiconfuriousmodeinit
-	Namespace: apothiconfurybehavior
-	Checksum: 0xA45E8CB6
-	Offset: 0x5398
-	Size: 0x140
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconfuriousmodeinit(entity) {
   if(!apothiconshouldswitchtofuriousmode(entity)) {
     return;
@@ -1246,15 +834,6 @@ function apothiconfuriousmodeinit(entity) {
   entity.health = entity.health * 2;
 }
 
-/*
-	Name: apothiconpreemptivejukeservice
-	Namespace: apothiconfurybehavior
-	Checksum: 0x7B68C4DF
-	Offset: 0x5590
-	Size: 0xF8
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconpreemptivejukeservice(entity) {
   if(!(isdefined(entity.isfurious) && entity.isfurious)) {
     return false;
@@ -1275,41 +854,14 @@ function apothiconpreemptivejukeservice(entity) {
   }
 }
 
-/*
-	Name: apothiconpreemptivejukepending
-	Namespace: apothiconfurybehavior
-	Checksum: 0xAF69401
-	Offset: 0x5690
-	Size: 0x2E
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconpreemptivejukepending(entity) {
   return isdefined(entity.apothiconpreemptivejuke) && entity.apothiconpreemptivejuke;
 }
 
-/*
-	Name: apothiconpreemptivejukedone
-	Namespace: apothiconfurybehavior
-	Checksum: 0x4DCF272B
-	Offset: 0x56C8
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconpreemptivejukedone(entity) {
   entity.apothiconpreemptivejuke = 0;
 }
 
-/*
-	Name: apothiconcanjuke
-	Namespace: apothiconfurybehavior
-	Checksum: 0x2052786D
-	Offset: 0x56F0
-	Size: 0x37A
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconcanjuke(entity) {
   if(!ai::getaiattribute(entity, "can_juke")) {
     return false;
@@ -1355,24 +907,13 @@ function apothiconcanjuke(entity) {
   return false;
 }
 
-/*
-	Name: apothiconjukeinit
-	Namespace: apothiconfurybehavior
-	Checksum: 0x49F6C65E
-	Offset: 0x5A78
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconjukeinit(entity) {
   jukeinfo = calculatejukeinfo(entity);
-  /#
   assert(isdefined(jukeinfo));
-  # /
-    blackboard::setblackboardattribute(entity, "_juke_distance", jukeinfo.jukedistance);
+  blackboard::setblackboardattribute(entity, "_juke_distance", jukeinfo.jukedistance);
   blackboard::setblackboardattribute(entity, "_juke_direction", jukeinfo.jukedirection);
   entity clearpath();
-  entity notify(# "bhtn_action_notify", "apothicon_fury_juke");
+  entity notify("bhtn_action_notify", "apothicon_fury_juke");
   jukeinfo = spawnstruct();
   jukeinfo.origin = entity.origin;
   jukeinfo.entity = entity;
@@ -1385,15 +926,6 @@ function apothiconjukeinit(entity) {
   }
 }
 
-/*
-	Name: validatejuke
-	Namespace: apothiconfurybehavior
-	Checksum: 0x263B8263
-	Offset: 0x5C60
-	Size: 0x2E4
-	Parameters: 3
-	Flags: Linked
-*/
 function validatejuke(entity, entityradius, jukevector) {
   velocity = entity getvelocity();
   predictedpos = entity.origin + (velocity * 0.1);
@@ -1411,38 +943,19 @@ function validatejuke(entity, entityradius, jukevector) {
   if(!ispointonnavmesh(landposonground)) {
     return undefined;
   }
-  /#
   recordline(entity.origin, predictedpos, (0, 1, 0), "", entity);
-  # /
-    /#
   recordsphere(jukelandpos, 2, (1, 0, 0), "", entity);
-  # /
-    /#
   recordline(predictedpos, jukelandpos, (1, 0, 0), "", entity);
-  # /
-    if(ispointonnavmesh(landposonground, entity.entityradius * 2.5) && tracepassedonnavmesh(predictedpos, landposonground, entity.entityradius)) {
-      if(!entity isposinclaimedlocation(landposonground) && entity maymovefrompointtopoint(predictedpos, landposonground, 0, 0)) {
-        /#
-        recordsphere(landposonground, 2, (0, 1, 0), "", entity);
-        # /
-          /#
-        recordline(predictedpos, landposonground, (0, 1, 0), "", entity);
-        # /
-          return landposonground;
-      }
+  if(ispointonnavmesh(landposonground, entity.entityradius * 2.5) && tracepassedonnavmesh(predictedpos, landposonground, entity.entityradius)) {
+    if(!entity isposinclaimedlocation(landposonground) && entity maymovefrompointtopoint(predictedpos, landposonground, 0, 0)) {
+      recordsphere(landposonground, 2, (0, 1, 0), "", entity);
+      recordline(predictedpos, landposonground, (0, 1, 0), "", entity);
+      return landposonground;
     }
+  }
   return undefined;
 }
 
-/*
-	Name: getjukevector
-	Namespace: apothiconfurybehavior
-	Checksum: 0x5C33436
-	Offset: 0x5F50
-	Size: 0xB4
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private getjukevector(entity, jukeanimalias) {
   jukeanim = entity animmappingsearch(istring(jukeanimalias));
   localdeltavector = getmovedelta(jukeanim, 0, 1, entity);
@@ -1450,15 +963,6 @@ function private getjukevector(entity, jukeanimalias) {
   return endpoint - entity.origin;
 }
 
-/*
-	Name: calculatejukeinfo
-	Namespace: apothiconfurybehavior
-	Checksum: 0x26F833FA
-	Offset: 0x6010
-	Size: 0x540
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private calculatejukeinfo(entity) {
   if(isdefined(entity.jukeinfo)) {
     return entity.jukeinfo;
@@ -1534,15 +1038,6 @@ function private calculatejukeinfo(entity) {
   return undefined;
 }
 
-/*
-	Name: apothiconbamfout
-	Namespace: apothiconfurybehavior
-	Checksum: 0xA0A94412
-	Offset: 0x6558
-	Size: 0x182
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconbamfout(entity) {
   if(entity.archetype != "apothicon_fury") {
     return;
@@ -1559,15 +1054,6 @@ function apothiconbamfout(entity) {
   }
 }
 
-/*
-	Name: apothiconbamfin
-	Namespace: apothiconfurybehavior
-	Checksum: 0xFE1494FB
-	Offset: 0x66E8
-	Size: 0x29A
-	Parameters: 1
-	Flags: Linked
-*/
 function apothiconbamfin(entity) {
   if(entity.archetype != "apothicon_fury") {
     return;
@@ -1576,7 +1062,7 @@ function apothiconbamfin(entity) {
     entity forceteleport(entity.traverseendnode.origin, entity.angles);
     entity unlink();
     entity.istraveling = 0;
-    entity notify(# "travel_complete");
+    entity notify("travel_complete");
     entity setrepairpaths(1);
     entity.blockingpain = 0;
     entity.usegoalanimweight = 0;
@@ -1597,41 +1083,14 @@ function apothiconbamfin(entity) {
   }
 }
 
-/*
-	Name: apothicondeathstart
-	Namespace: apothiconfurybehavior
-	Checksum: 0xA5C82BB0
-	Offset: 0x6990
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function apothicondeathstart(entity) {
   entity setmodel("c_zom_dlc4_apothicon_fury_dissolve");
   entity clientfield::set("apothicon_fury_death", 2);
   entity notsolid();
 }
 
-/*
-	Name: apothicondeathterminate
-	Namespace: apothiconfurybehavior
-	Checksum: 0xF2A9C16
-	Offset: 0x6A00
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function apothicondeathterminate(entity) {}
 
-/*
-	Name: apothicondamageclientfieldupdate
-	Namespace: apothiconfurybehavior
-	Checksum: 0x9C467609
-	Offset: 0x6A18
-	Size: 0x21C
-	Parameters: 2
-	Flags: Linked
-*/
 function apothicondamageclientfieldupdate(entity, shitloc) {
   increment = 0;
   if(isinarray(array("helmet", "head", "neck"), shitloc)) {
@@ -1662,15 +1121,6 @@ function apothicondamageclientfieldupdate(entity, shitloc) {
   entity clientfield::increment("fury_fire_damage", increment);
 }
 
-/*
-	Name: apothicondamagecallback
-	Namespace: apothiconfurybehavior
-	Checksum: 0xC3C3E5FA
-	Offset: 0x6C40
-	Size: 0x120
-	Parameters: 13
-	Flags: Linked
-*/
 function apothicondamagecallback(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, damagefromunderneath, modelindex, partname) {
   if(!(isdefined(self.zombie_think_done) && self.zombie_think_done)) {
     return 0;
@@ -1687,15 +1137,6 @@ function apothicondamagecallback(einflictor, eattacker, idamage, idflags, smeans
   return idamage;
 }
 
-/*
-	Name: apothiconondeath
-	Namespace: apothiconfurybehavior
-	Checksum: 0xC2EE274F
-	Offset: 0x6D68
-	Size: 0x80
-	Parameters: 8
-	Flags: Linked
-*/
 function apothiconondeath(inflictor, attacker, damage, meansofdeath, weapon, dir, hitloc, offsettimes) {
   self clientfield::set("apothicon_fury_death", 1);
   self notsolid();
@@ -1704,15 +1145,6 @@ function apothiconondeath(inflictor, attacker, damage, meansofdeath, weapon, dir
 
 #namespace apothiconfurybehaviorinterface;
 
-/*
-	Name: movespeedattributecallback
-	Namespace: apothiconfurybehaviorinterface
-	Checksum: 0xA8A8F42D
-	Offset: 0x6DF0
-	Size: 0x12A
-	Parameters: 4
-	Flags: Linked
-*/
 function movespeedattributecallback(entity, attribute, oldvalue, value) {
   if(isdefined(entity.isfurious) && entity.isfurious) {
     return;

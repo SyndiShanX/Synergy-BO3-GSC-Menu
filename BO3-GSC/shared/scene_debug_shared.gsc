@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\scene_debug_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -8,35 +12,13 @@
 #using scripts\shared\scriptbundle_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace scene;
 
-/*
-	Name: __init__sytem__
-	Namespace: scene
-	Checksum: 0x90CC8E04
-	Offset: 0x1A8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
-  /#
   system::register("", & __init__, undefined, undefined);
-  # /
 }
 
-/*
-	Name: __init__
-	Namespace: scene
-	Checksum: 0x945419C1
-	Offset: 0x1E8
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
-  /#
   if(getdvarstring("", "") == "") {
     setdvar("", "");
   }
@@ -47,20 +29,9 @@ function __init__() {
   level thread toggle_scene_menu();
   level thread toggle_postfx_igc_loop();
   level thread function_f69ab75e();
-  # /
 }
 
-/*
-	Name: function_f69ab75e
-	Namespace: scene
-	Checksum: 0xF81A5076
-	Offset: 0x310
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f69ab75e() {
-  /#
   while (true) {
     level flagsys::wait_till("");
     foreach(var_4d881e03 in function_c4a37ed9()) {
@@ -68,40 +39,18 @@ function function_f69ab75e() {
     }
     level flagsys::wait_till_clear("");
   }
-  # /
 }
 
-/*
-	Name: function_c4a37ed9
-	Namespace: scene
-	Checksum: 0xB19F2FFC
-	Offset: 0x3F0
-	Size: 0x102
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c4a37ed9() {
-  /#
   a_scenes = arraycombine(struct::get_array("", ""), struct::get_array("", ""), 0, 0);
   foreach(a_active_scenes in level.active_scenes) {
     a_scenes = arraycombine(a_scenes, a_active_scenes, 0, 0);
   }
   return a_scenes;
-  # /
 }
 
-/*
-	Name: run_scene_tests
-	Namespace: scene
-	Checksum: 0x8208F8CA
-	Offset: 0x500
-	Size: 0x698
-	Parameters: 0
-	Flags: Linked
-*/
 function run_scene_tests() {
-  /#
-  level endon(# "run_scene_tests");
+  level endon("run_scene_tests");
   level.scene_test_struct = spawnstruct();
   level.scene_test_struct.origin = (0, 0, 0);
   level.scene_test_struct.angles = (0, 0, 0);
@@ -182,55 +131,22 @@ function run_scene_tests() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: capture_scene
-	Namespace: scene
-	Checksum: 0xCDC90501
-	Offset: 0xBA0
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function capture_scene(str_scene, str_mode) {
-  /#
   setdvar("", 0);
   level play(str_scene, undefined, undefined, 1, undefined, str_mode);
-  # /
 }
 
-/*
-	Name: clear_old_ents
-	Namespace: scene
-	Checksum: 0xB17ABB79
-	Offset: 0xC08
-	Size: 0xC2
-	Parameters: 1
-	Flags: Linked
-*/
 function clear_old_ents(str_scene) {
-  /#
   foreach(ent in getentarray(str_scene, "")) {
     if(ent.scene_spawned === str_scene) {
       ent delete();
     }
   }
-  # /
 }
 
-/*
-	Name: toggle_scene_menu
-	Namespace: scene
-	Checksum: 0xCCF595B1
-	Offset: 0xCD8
-	Size: 0x178
-	Parameters: 0
-	Flags: Linked
-*/
 function toggle_scene_menu() {
-  /#
   setdvar("", 0);
   n_scene_menu_last = -1;
   while (true) {
@@ -249,7 +165,7 @@ function toggle_scene_menu() {
           }
           default: {
             level flagsys::clear("");
-            level notify(# "scene_menu_cleanup");
+            level notify("scene_menu_cleanup");
             setdvar("", 0);
             setdvar("", 1);
           }
@@ -259,20 +175,9 @@ function toggle_scene_menu() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: create_scene_hud
-	Namespace: scene
-	Checksum: 0x4B1C36ED
-	Offset: 0xE58
-	Size: 0x190
-	Parameters: 2
-	Flags: Linked
-*/
 function create_scene_hud(scene_name, index) {
-  /#
   player = level.host;
   alpha = 1;
   color = vectorscale((1, 1, 1), 0.9);
@@ -290,25 +195,14 @@ function create_scene_hud(scene_name, index) {
   player setluimenudata(hudelem, "", 80 + (index * 18));
   player setluimenudata(hudelem, "", 1000);
   return hudelem;
-  # /
 }
 
-/*
-	Name: display_scene_menu
-	Namespace: scene
-	Checksum: 0x8EC5F1B4
-	Offset: 0xFF8
-	Size: 0x948
-	Parameters: 1
-	Flags: Linked
-*/
 function display_scene_menu(str_type) {
-  /#
   if(!isdefined(str_type)) {
     str_type = "";
   }
-  level notify(# "scene_menu_cleanup");
-  level endon(# "scene_menu_cleanup");
+  level notify("scene_menu_cleanup");
+  level endon("scene_menu_cleanup");
   waittillframeend();
   level flagsys::set("");
   setdvar("", 1);
@@ -423,20 +317,9 @@ function display_scene_menu(str_type) {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: display_mode
-	Namespace: scene
-	Checksum: 0x1B325CC0
-	Offset: 0x1948
-	Size: 0x234
-	Parameters: 0
-	Flags: Linked
-*/
 function display_mode() {
-  /#
   hudelem = level.host openluimenu("");
   level.host setluimenudata(hudelem, "", 100);
   level.host setluimenudata(hudelem, "", 490);
@@ -464,40 +347,18 @@ function display_mode() {
     wait(0.05);
   }
   level.host closeluimenu(hudelem);
-  # /
 }
 
-/*
-	Name: scene_list_menu
-	Namespace: scene
-	Checksum: 0x8C620AE4
-	Offset: 0x1B88
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function scene_list_menu() {
-  /#
   hud_array = [];
   for (i = 0; i < 22; i++) {
     hud = create_scene_hud("", i);
     hud_array[hud_array.size] = hud;
   }
   return hud_array;
-  # /
 }
 
-/*
-	Name: scene_list_settext
-	Namespace: scene
-	Checksum: 0x6704776F
-	Offset: 0x1C18
-	Size: 0x20E
-	Parameters: 3
-	Flags: Linked
-*/
 function scene_list_settext(hud_array, strings, num) {
-  /#
   for (i = 0; i < hud_array.size; i++) {
     index = i + (num - 5);
     if(isdefined(strings[index])) {
@@ -522,114 +383,48 @@ function scene_list_settext(hud_array, strings, num) {
     }
     level.host setluimenudata(hud_array[i], "", text);
   }
-  # /
 }
 
-/*
-	Name: is_scene_playing
-	Namespace: scene
-	Checksum: 0x6A7FE4C7
-	Offset: 0x1E30
-	Size: 0x5E
-	Parameters: 1
-	Flags: Linked
-*/
 function is_scene_playing(str_scene) {
-  /#
   if(str_scene != "" && str_scene != "") {
     if(level flagsys::get(str_scene + "")) {
       return true;
     }
   }
   return false;
-  # /
 }
 
-/*
-	Name: is_scene_initialized
-	Namespace: scene
-	Checksum: 0x2672DE33
-	Offset: 0x1E98
-	Size: 0x5E
-	Parameters: 1
-	Flags: Linked
-*/
 function is_scene_initialized(str_scene) {
-  /#
   if(str_scene != "" && str_scene != "") {
     if(level flagsys::get(str_scene + "")) {
       return true;
     }
   }
   return false;
-  # /
 }
 
-/*
-	Name: scene_menu_cleanup
-	Namespace: scene
-	Checksum: 0x3FD7833B
-	Offset: 0x1F00
-	Size: 0xB4
-	Parameters: 3
-	Flags: Linked
-*/
 function scene_menu_cleanup(elems, title, hudelem) {
-  /#
-  level waittill(# "scene_menu_cleanup");
+  level waittill("scene_menu_cleanup");
   level.host closeluimenu(title);
   for (i = 0; i < elems.size; i++) {
     level.host closeluimenu(elems[i]);
   }
   level.host closeluimenu(hudelem);
-  # /
 }
 
-/*
-	Name: test_init
-	Namespace: scene
-	Checksum: 0xF08F4948
-	Offset: 0x1FC0
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function test_init(arg1) {
-  /#
   init(arg1, undefined, undefined, 1);
-  # /
 }
 
-/*
-	Name: test_play
-	Namespace: scene
-	Checksum: 0x712082F7
-	Offset: 0x1FF8
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function test_play(arg1, str_mode) {
-  /#
   play(arg1, undefined, undefined, 1, undefined, str_mode);
-  # /
 }
 
-/*
-	Name: debug_display
-	Namespace: scene
-	Checksum: 0xFAAE9549
-	Offset: 0x2040
-	Size: 0x2DE
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_display() {
-  /#
-  self endon(# "death");
-  self notify(# "hash_87671d41");
-  self endon(# "hash_87671d41");
-  level endon(# "kill_anim_debug");
+  self endon("death");
+  self notify("hash_87671d41");
+  self endon("hash_87671d41");
+  level endon("kill_anim_debug");
   while (true) {
     debug_frames = randomintrange(5, 15);
     debug_time = debug_frames / 20;
@@ -656,20 +451,9 @@ function debug_display() {
     }
     wait(debug_time);
   }
-  # /
 }
 
-/*
-	Name: move_to_scene
-	Namespace: scene
-	Checksum: 0x2546C035
-	Offset: 0x2328
-	Size: 0x224
-	Parameters: 2
-	Flags: Linked
-*/
 function move_to_scene(str_scene, b_reverse_dir) {
-  /#
   if(!isdefined(b_reverse_dir)) {
     b_reverse_dir = 0;
   }
@@ -706,38 +490,16 @@ function move_to_scene(str_scene, b_reverse_dir) {
     s_scene = level.debug_current_scene_instances[level.debug_current_scene_index];
     level.host set_origin(s_scene.origin);
   }
-  # /
 }
 
-/*
-	Name: set_origin
-	Namespace: scene
-	Checksum: 0x6126F971
-	Offset: 0x2558
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function set_origin(v_origin) {
-  /#
   if(!self isinmovemode("", "")) {
     adddebugcommand("");
   }
   self setorigin(v_origin);
-  # /
 }
 
-/*
-	Name: toggle_postfx_igc_loop
-	Namespace: scene
-	Checksum: 0xF20F5BAF
-	Offset: 0x25C8
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function toggle_postfx_igc_loop() {
-  /#
   while (true) {
     if(getdvarint("", 0)) {
       array::run_all(level.activeplayers, & clientfield::increment_to_player, "", 1);
@@ -745,5 +507,4 @@ function toggle_postfx_igc_loop() {
     }
     wait(1);
   }
-  # /
 }

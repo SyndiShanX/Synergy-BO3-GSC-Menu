@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_castle_cleanup_mgr.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -8,70 +12,24 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_castle;
-
 #namespace castle_cleanup;
 
-/*
-	Name: __init__sytem__
-	Namespace: castle_cleanup
-	Checksum: 0x59C529C0
-	Offset: 0x200
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("castle_cleanup", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: castle_cleanup
-	Checksum: 0xD105A493
-	Offset: 0x248
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.n_cleanups_processed_this_frame = 0;
 }
 
-/*
-	Name: __main__
-	Namespace: castle_cleanup
-	Checksum: 0x9181AF12
-	Offset: 0x260
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level thread cleanup_main();
 }
 
-/*
-	Name: force_check_now
-	Namespace: castle_cleanup
-	Checksum: 0x46DEDDD3
-	Offset: 0x288
-	Size: 0x12
-	Parameters: 0
-	Flags: None
-*/
 function force_check_now() {
-  level notify(# "pump_distance_check");
+  level notify("pump_distance_check");
 }
 
-/*
-	Name: cleanup_main
-	Namespace: castle_cleanup
-	Checksum: 0x80062234
-	Offset: 0x2A8
-	Size: 0x246
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private cleanup_main() {
   n_next_eval = 0;
   while (true) {
@@ -110,15 +68,6 @@ function private cleanup_main() {
   }
 }
 
-/*
-	Name: do_cleanup_check
-	Namespace: castle_cleanup
-	Checksum: 0x18D0973E
-	Offset: 0x4F8
-	Size: 0x466
-	Parameters: 1
-	Flags: Linked
-*/
 function do_cleanup_check(n_override_cleanup_dist) {
   if(!isalive(self)) {
     return;
@@ -187,15 +136,6 @@ function do_cleanup_check(n_override_cleanup_dist) {
   }
 }
 
-/*
-	Name: delete_zombie_noone_looking
-	Namespace: castle_cleanup
-	Checksum: 0x70956E0C
-	Offset: 0x968
-	Size: 0x27C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private delete_zombie_noone_looking() {
   if(isdefined(self.in_the_ground) && self.in_the_ground) {
     return;
@@ -229,22 +169,11 @@ function private delete_zombie_noone_looking() {
   }
   wait(0.05);
   if(isdefined(self)) {
-    /#
     debugstar(self.origin, 1000, (1, 1, 1));
-    # /
-      self delete();
+    self delete();
   }
 }
 
-/*
-	Name: player_can_see_me
-	Namespace: castle_cleanup
-	Checksum: 0x976D3A0A
-	Offset: 0xBF0
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private player_can_see_me(player) {
   v_player_angles = player getplayerangles();
   v_player_forward = anglestoforward(v_player_angles);
@@ -257,15 +186,6 @@ function private player_can_see_me(player) {
   return true;
 }
 
-/*
-	Name: player_ahead_of_me
-	Namespace: castle_cleanup
-	Checksum: 0x3005962D
-	Offset: 0xCD0
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private player_ahead_of_me(player) {
   v_player_angles = player getplayerangles();
   v_player_forward = anglestoforward(v_player_angles);
@@ -277,17 +197,8 @@ function private player_ahead_of_me(player) {
   return true;
 }
 
-/*
-	Name: get_escape_position
-	Namespace: castle_cleanup
-	Checksum: 0x31D8B278
-	Offset: 0xD90
-	Size: 0xCC
-	Parameters: 0
-	Flags: None
-*/
 function get_escape_position() {
-  self endon(# "death");
+  self endon("death");
   str_zone = zm_zonemgr::get_zone_from_position(self.origin, 1);
   if(!isdefined(str_zone)) {
     str_zone = self.zone_name;
@@ -300,15 +211,6 @@ function get_escape_position() {
   return s_farthest;
 }
 
-/*
-	Name: get_adjacencies_to_zone
-	Namespace: castle_cleanup
-	Checksum: 0xB56D72DC
-	Offset: 0xE68
-	Size: 0x11E
-	Parameters: 1
-	Flags: Linked
-*/
 function get_adjacencies_to_zone(str_zone) {
   a_adjacencies = [];
   a_adjacencies[0] = str_zone;
@@ -326,15 +228,6 @@ function get_adjacencies_to_zone(str_zone) {
   return a_adjacencies;
 }
 
-/*
-	Name: get_wait_locations_in_zones
-	Namespace: castle_cleanup
-	Checksum: 0xC71F7F1
-	Offset: 0xF90
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private get_wait_locations_in_zones(a_zones) {
   a_wait_locations = [];
   foreach(zone in a_zones) {
@@ -343,15 +236,6 @@ function private get_wait_locations_in_zones(a_zones) {
   return a_wait_locations;
 }
 
-/*
-	Name: get_farthest_wait_location
-	Namespace: castle_cleanup
-	Checksum: 0x20AADEA4
-	Offset: 0x1070
-	Size: 0xD6
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private get_farthest_wait_location(a_wait_locations) {
   if(!isdefined(a_wait_locations) || a_wait_locations.size == 0) {
     return undefined;
@@ -368,15 +252,6 @@ function private get_farthest_wait_location(a_wait_locations) {
   return a_wait_locations[n_farthest_index];
 }
 
-/*
-	Name: get_wait_locations_in_zone
-	Namespace: castle_cleanup
-	Checksum: 0x8F4960D2
-	Offset: 0x1150
-	Size: 0x88
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private get_wait_locations_in_zone(zone) {
   if(isdefined(level.zones[zone].a_loc_types["wait_location"])) {
     a_wait_locations = [];
@@ -386,17 +261,8 @@ function private get_wait_locations_in_zone(zone) {
   return undefined;
 }
 
-/*
-	Name: get_escape_position_in_current_zone
-	Namespace: castle_cleanup
-	Checksum: 0x143ECF8C
-	Offset: 0x11E0
-	Size: 0xB4
-	Parameters: 0
-	Flags: None
-*/
 function get_escape_position_in_current_zone() {
-  self endon(# "death");
+  self endon("death");
   str_zone = zm_zonemgr::get_zone_from_position(self.origin, 1);
   if(!isdefined(str_zone)) {
     str_zone = self.zone_name;

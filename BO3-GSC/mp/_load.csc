@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_load.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_ambient;
 #using scripts\mp\_bouncingbetty;
@@ -75,40 +79,19 @@
 #using scripts\shared\weapons\_weaponobjects;
 #using scripts\shared\weapons\multilockapguidance;
 #using scripts\shared\weapons\spike_charge;
-
 #namespace load;
 
-/*
-	Name: levelnotifyhandler
-	Namespace: load
-	Checksum: 0x4A965A5C
-	Offset: 0xAF0
-	Size: 0x3A
-	Parameters: 3
-	Flags: Linked
-*/
 function levelnotifyhandler(clientnum, state, oldstate) {
   if(state != "") {
     level notify(state, clientnum);
   }
 }
 
-/*
-	Name: main
-	Namespace: load
-	Checksum: 0x57CA48C3
-	Offset: 0xB38
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   /# /
   #
   assert(isdefined(level.first_frame), "");
-  # /
-    # /
-    level thread util::servertime();
+  level thread util::servertime();
   level thread util::init_utility();
   util::registersystem("levelNotify", & levelnotifyhandler);
   register_clientfields();
@@ -117,15 +100,6 @@ function main() {
   level flagsys::set("load_main_complete");
 }
 
-/*
-	Name: register_clientfields
-	Namespace: load
-	Checksum: 0x896F8A44
-	Offset: 0xC40
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("missile", "cf_m_proximity", 1, 1, "int", & callback::callback_proximity, 0, 0);
   clientfield::register("missile", "cf_m_emp", 1, 1, "int", & callback::callback_emp, 0, 0);

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_gadget_sensory_overload.gsc
+*************************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_challenges;
 #using scripts\cp\cybercom\_cybercom;
@@ -14,33 +18,13 @@
 #using scripts\shared\statemachine_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("generic");
-
 #namespace cybercom_gadget_sensory_overload;
 
-/*
-	Name: init
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0x84CFFECB
-	Offset: 0x690
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("actor", "sensory_overload", 1, 2, "int");
 }
 
-/*
-	Name: main
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0x95193C8B
-	Offset: 0x6D0
-	Size: 0x1D4
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   cybercom_gadget::registerability(2, 1);
   level._effect["sensory_disable_human"] = "electric/fx_ability_elec_sensory_ol_human";
@@ -57,37 +41,10 @@ function main() {
   level.cybercom.sensory_overload._is_primed = & _is_primed;
 }
 
-/*
-	Name: _is_flickering
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0x86062341
-	Offset: 0x8B0
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function _is_flickering(slot) {}
 
-/*
-	Name: _on_flicker
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0xB2B85BC4
-	Offset: 0x8C8
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_flicker(slot, weapon) {}
 
-/*
-	Name: _on_give
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0x105ACE88
-	Offset: 0x8E8
-	Size: 0x1D4
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_give(slot, weapon) {
   self.cybercom.var_110c156a = getdvarint("scr_sensory_overload_count", 3);
   self.cybercom.var_bf39536d = getdvarint("scr_sensory_overload_loops", 2);
@@ -104,88 +61,32 @@ function _on_give(slot, weapon) {
   self cybercom::function_8257bcb3("fem_rifle_crc", 2);
 }
 
-/*
-	Name: _on_take
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0xD078BFF6
-	Offset: 0xAC8
-	Size: 0x52
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_take(slot, weapon) {
   self _off(slot, weapon);
   self.cybercom.targetlockcb = undefined;
   self.cybercom.targetlockrequirementcb = undefined;
 }
 
-/*
-	Name: _on_connect
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0x99EC1590
-	Offset: 0xB28
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function _on_connect() {}
 
-/*
-	Name: _on
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0xF637F1FA
-	Offset: 0xB38
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function _on(slot, weapon) {
   self thread _activate_sensory_overload(slot, weapon);
   self _off(slot, weapon);
 }
 
-/*
-	Name: _off
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0xE0338895
-	Offset: 0xB98
-	Size: 0x3A
-	Parameters: 2
-	Flags: Linked
-*/
 function _off(slot, weapon) {
   self thread cybercom::weaponendlockwatcher(weapon);
   self.cybercom.is_primed = undefined;
 }
 
-/*
-	Name: _is_primed
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0x8B67A3BD
-	Offset: 0xBE0
-	Size: 0xA8
-	Parameters: 2
-	Flags: Linked
-*/
 function _is_primed(slot, weapon) {
   if(!(isdefined(self.cybercom.is_primed) && self.cybercom.is_primed)) {
-    /#
     assert(self.cybercom.activecybercomweapon == weapon);
-    # /
-      self thread cybercom::weaponlockwatcher(slot, weapon, self.cybercom.var_110c156a);
+    self thread cybercom::weaponlockwatcher(slot, weapon, self.cybercom.var_110c156a);
     self.cybercom.is_primed = 1;
   }
 }
 
-/*
-	Name: _lock_requirement
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0x35E46BCC
-	Offset: 0xC90
-	Size: 0x208
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _lock_requirement(target) {
   if(target cybercom::cybercom_aicheckoptout("cybercom_sensoryoverload")) {
     self cybercom::function_29bf9dee(target, 2);
@@ -212,28 +113,10 @@ function private _lock_requirement(target) {
   return true;
 }
 
-/*
-	Name: _get_valid_targets
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0x7053633B
-	Offset: 0xEA0
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _get_valid_targets(weapon) {
   return arraycombine(getaiteamarray("axis"), getaiteamarray("team3"), 0, 0);
 }
 
-/*
-	Name: _activate_sensory_overload
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0x3FE204F4
-	Offset: 0xF00
-	Size: 0x2A4
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _activate_sensory_overload(slot, weapon) {
   aborted = 0;
   fired = 0;
@@ -267,15 +150,6 @@ function private _activate_sensory_overload(slot, weapon) {
   }
 }
 
-/*
-	Name: ai_activatesensoryoverload
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0xAD4D11E5
-	Offset: 0x11B0
-	Size: 0x2E2
-	Parameters: 2
-	Flags: Linked
-*/
 function ai_activatesensoryoverload(target, var_9bc2efcb = 1) {
   if(!isdefined(target)) {
     return;
@@ -301,7 +175,7 @@ function ai_activatesensoryoverload(target, var_9bc2efcb = 1) {
     type = self cybercom::function_5e3d3aa();
     self orientmode("face default");
     self animscripted("ai_cybercom_anim", self.origin, self.angles, ("ai_base_rifle_" + type) + "_exposed_cybercom_activate", "normal", % generic::root, 1, 0.3);
-    self waittillmatch(# "ai_cybercom_anim");
+    self waittillmatch("ai_cybercom_anim");
   }
   weapon = getweapon("gadget_sensory_overload");
   foreach(guy in validtargets) {
@@ -313,19 +187,10 @@ function ai_activatesensoryoverload(target, var_9bc2efcb = 1) {
   }
 }
 
-/*
-	Name: sensory_overload
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0x2FCE7356
-	Offset: 0x14A0
-	Size: 0x7B8
-	Parameters: 2
-	Flags: Linked
-*/
 function sensory_overload(attacker, var_7d4fd98c) {
-  self endon(# "death");
+  self endon("death");
   weapon = getweapon("gadget_sensory_overload");
-  self notify(# "hash_f8c5dd60", weapon, attacker);
+  self notify("hash_f8c5dd60", weapon, attacker);
   if(isdefined(attacker.cybercom) && isdefined(attacker.cybercom.var_bf39536d)) {
     loops = attacker.cybercom.var_bf39536d;
   } else {
@@ -356,24 +221,22 @@ function sensory_overload(attacker, var_7d4fd98c) {
     self playloopsound("gdt_sensory_feedback_lp", 0.5);
     self clientfield::set("sensory_overload", 1);
   }
-  self notify(# "bhtn_action_notify", "reactSensory");
+  self notify("bhtn_action_notify", "reactSensory");
   if(self.archetype == "warlord") {
     self dodamage(2, self.origin, (isdefined(attacker) ? attacker : undefined), undefined, "none", "MOD_UNKNOWN", 0, weapon, -1, 1);
-    self waittillmatch(# "bhtn_action_terminate");
+    self waittillmatch("bhtn_action_terminate");
     self clientfield::set("sensory_overload", 0);
   } else {
     if(self.archetype == "human_riotshield") {
       while (loops) {
         self dodamage(2, self.origin, (isdefined(attacker) ? attacker : undefined), undefined, "none", "MOD_UNKNOWN", 0, weapon, -1, 1);
-        self waittillmatch(# "bhtn_action_terminate");
+        self waittillmatch("bhtn_action_terminate");
         loops--;
       }
       self clientfield::set("sensory_overload", 0);
     } else {
-      /#
       assert(self.archetype == "");
-      # /
-        base = "base_rifle";
+      base = "base_rifle";
       if(isdefined(self.voiceprefix) && getsubstr(self.voiceprefix, 7) == "f") {
         base = "fem_rifle";
       }
@@ -382,14 +245,14 @@ function sensory_overload(attacker, var_7d4fd98c) {
       self animscripted("intro_anim", self.origin, self.angles, (((("ai_" + base) + "_") + type) + "_exposed_sens_overload_react_intro") + variant, "normal", % generic::root, 1, 0.3);
       self thread cybercom::stopanimscriptedonnotify("damage_pain", "intro_anim", 1, attacker, weapon);
       self thread cybercom::stopanimscriptedonnotify("notify_melee_damage", "intro_anim", 1, attacker, weapon);
-      self waittillmatch(# "intro_anim");
+      self waittillmatch("intro_anim");
       function_58831b5a(loops, attacker, weapon, variant, base, type);
       if(isalive(self) && !self isragdoll()) {
         self clientfield::set("sensory_overload", 0);
         self animscripted("restart_anim", self.origin, self.angles, (((("ai_" + base) + "_") + type) + "_exposed_sens_overload_react_outro") + variant, "normal", % generic::root, 1, 0.3);
         self thread cybercom::stopanimscriptedonnotify("damage_pain", "restart_anim", 1, attacker, weapon);
         self thread cybercom::stopanimscriptedonnotify("notify_melee_damage", "restart_anim", 1, attacker, weapon);
-        self waittillmatch(# "restart_anim");
+        self waittillmatch("restart_anim");
       }
     }
   }
@@ -403,17 +266,8 @@ function sensory_overload(attacker, var_7d4fd98c) {
   }
 }
 
-/*
-	Name: function_58831b5a
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0xBE413C76
-	Offset: 0x1C60
-	Size: 0x8E
-	Parameters: 6
-	Flags: Linked
-*/
 function function_58831b5a(loops, attacker, weapon, variant, base, type) {
-  self endon(# "hash_8817762c");
+  self endon("hash_8817762c");
   self thread function_53cfe88a();
   while (loops) {
     self function_e01b8059(attacker, weapon, variant, base, type);
@@ -421,35 +275,17 @@ function function_58831b5a(loops, attacker, weapon, variant, base, type) {
   }
 }
 
-/*
-	Name: function_e01b8059
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0xF79030D3
-	Offset: 0x1CF8
-	Size: 0x15A
-	Parameters: 5
-	Flags: Linked
-*/
 function function_e01b8059(attacker, weapon, variant, base, type) {
-  self endon(# "death");
+  self endon("death");
   self animscripted("sens_loop_anim", self.origin, self.angles, (((("ai_" + base) + "_") + type) + "_exposed_sens_overload_react_loop") + variant, "normal", % generic::body, 1, 0.2);
   self thread cybercom::stopanimscriptedonnotify("damage_pain", "sens_loop_anim", 1, attacker, weapon);
   self thread cybercom::stopanimscriptedonnotify("breakout_overload_loop", "sens_loop_anim", 0, attacker, weapon);
   self thread cybercom::stopanimscriptedonnotify("notify_melee_damage", "sens_loop_anim", 1, attacker, weapon);
-  self waittillmatch(# "hash_3b87dc07");
+  self waittillmatch("hash_3b87dc07");
 }
 
-/*
-	Name: function_53cfe88a
-	Namespace: cybercom_gadget_sensory_overload
-	Checksum: 0x6F8DE54
-	Offset: 0x1E60
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_53cfe88a() {
-  self endon(# "death");
+  self endon("death");
   wait(getdvarfloat("scr_sensory_overload_loop_time", 4.7));
-  self notify(# "hash_8817762c");
+  self notify("hash_8817762c");
 }

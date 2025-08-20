@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_biodome.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -7,18 +11,8 @@
 #using scripts\shared\_oob;
 #using scripts\shared\compass;
 #using scripts\shared\util_shared;
-
 #namespace namespace_86fa17e8;
 
-/*
-	Name: main
-	Namespace: namespace_86fa17e8
-	Checksum: 0xBA58C87E
-	Offset: 0x390
-	Size: 0x6FC
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache();
   setdvar("phys_buoyancy", 1);
@@ -65,26 +59,8 @@ function main() {
   level.cleandepositpoints = array((-52.4927, 1252.1, 104.125), (330.408, 2402.64, 232.204), (-139.434, -303.555, 138.836), (-362.325, 325.108, 104.125));
 }
 
-/*
-	Name: precache
-	Namespace: namespace_86fa17e8
-	Checksum: 0x99EC1590
-	Offset: 0xA98
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {}
 
-/*
-	Name: spawnkilltrigger
-	Namespace: namespace_86fa17e8
-	Checksum: 0x9E942F27
-	Offset: 0xAA8
-	Size: 0x13C
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnkilltrigger() {
   trigger = spawn("trigger_radius", (4147.22, 1095.25, -33.0108), 0, 500, 500);
   trigger thread watchkilltrigger();
@@ -96,20 +72,11 @@ function spawnkilltrigger() {
   trigger thread watchkilltrigger();
 }
 
-/*
-	Name: watchkilltrigger
-	Namespace: namespace_86fa17e8
-	Checksum: 0x8C913160
-	Offset: 0xBF0
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function watchkilltrigger() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   trigger = self;
   while (true) {
-    trigger waittill(# "trigger", player);
+    trigger waittill("trigger", player);
     player dodamage(1000, trigger.origin + (0, 0, 0), trigger, trigger, "none", "MOD_SUICIDE", 0);
   }
 }

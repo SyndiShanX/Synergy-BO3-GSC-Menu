@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\gametypes\_player_cam.gsc
+*************************************************/
+
 #using scripts\cp\_util;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -6,35 +10,16 @@
 #using scripts\shared\lui_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_5f11fb0b;
 
-/*
-	Name: main
-	Namespace: namespace_5f11fb0b
-	Checksum: 0x42E2F60A
-	Offset: 0x568
-	Size: 0x94
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   clientfield::register("toplayer", "player_cam_blur", 1, 1, "int");
   clientfield::register("toplayer", "player_cam_bubbles", 1, 1, "int");
   clientfield::register("toplayer", "player_cam_fire", 1, 1, "int");
 }
 
-/*
-	Name: function_8e835895
-	Namespace: namespace_5f11fb0b
-	Checksum: 0xF50DF5CB
-	Offset: 0x608
-	Size: 0x3BC
-	Parameters: 9
-	Flags: Linked
-*/
 function function_8e835895(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(getdvarint("test_cam") > 0) {
     value = getdvarint("test_cam");
     if(value == 1) {
@@ -83,31 +68,13 @@ function function_8e835895(einflictor, attacker, idamage, smeansofdeath, weapon,
   }
 }
 
-/*
-	Name: function_812435e3
-	Namespace: namespace_5f11fb0b
-	Checksum: 0xF6CDC568
-	Offset: 0x9D0
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function function_812435e3() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self thread util::screen_message_create_client("Press USE button to watch KillCam", undefined, undefined, 200, 10000);
   wait(3);
   self thread util::screen_message_delete_client();
 }
 
-/*
-	Name: function_6eb06d8d
-	Namespace: namespace_5f11fb0b
-	Checksum: 0x4BDE5EC
-	Offset: 0xA28
-	Size: 0xB4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_6eb06d8d(old_position, new_position) {
   size = 10;
   height = size * 2;
@@ -117,29 +84,11 @@ function function_6eb06d8d(old_position, new_position) {
   return trace;
 }
 
-/*
-	Name: function_b1d0850f
-	Namespace: namespace_5f11fb0b
-	Checksum: 0xE46B84A8
-	Offset: 0xAE8
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function function_b1d0850f(old_position, new_position) {
   trace = function_6eb06d8d(old_position, new_position);
   return trace["position"];
 }
 
-/*
-	Name: function_e2d94882
-	Namespace: namespace_5f11fb0b
-	Checksum: 0xB35B7462
-	Offset: 0xB38
-	Size: 0x56
-	Parameters: 2
-	Flags: Linked
-*/
 function function_e2d94882(old_position, new_position) {
   trace = function_6eb06d8d(old_position, new_position);
   if(trace["fraction"] < 1) {
@@ -148,31 +97,13 @@ function function_e2d94882(old_position, new_position) {
   return true;
 }
 
-/*
-	Name: is_falling
-	Namespace: namespace_5f11fb0b
-	Checksum: 0xC800EAD1
-	Offset: 0xB98
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function is_falling(position) {
   return function_e2d94882(position, position + (vectorscale((0, 0, -1), 500)));
 }
 
-/*
-	Name: function_c003e53f
-	Namespace: namespace_5f11fb0b
-	Checksum: 0x7D4A3F96
-	Offset: 0xBD8
-	Size: 0x97C
-	Parameters: 11
-	Flags: Linked
-*/
 function function_c003e53f(vdir, var_f120d111, var_f40ed68d, var_9aadeff9, var_933bfc9b, var_67ca400f, var_f06dc6a2, var_b633f381, lookdir, var_213955be, var_956c7382) {
-  self endon(# "disconnect");
-  self endon(# "hash_d3468831");
+  self endon("disconnect");
+  self endon("hash_d3468831");
   epsilon = getdvarint("movecamera_epsilon", 2);
   original_position = self getplayercamerapos();
   position = original_position;
@@ -283,15 +214,6 @@ function function_c003e53f(vdir, var_f120d111, var_f40ed68d, var_9aadeff9, var_9
   }
 }
 
-/*
-	Name: function_956c7382
-	Namespace: namespace_5f11fb0b
-	Checksum: 0x2C93FDAB
-	Offset: 0x1560
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_956c7382(position) {
   var_ceb19c17 = getdvarfloat("dc_quake_scale", 0.4);
   var_1b0dac7b = getdvarfloat("dc_quake_duration", 0.1);
@@ -299,17 +221,8 @@ function function_956c7382(position) {
   earthquake(var_ceb19c17, var_1b0dac7b, position, var_450561c5);
 }
 
-/*
-	Name: function_a0c37dda
-	Namespace: namespace_5f11fb0b
-	Checksum: 0x9E2CF7A3
-	Offset: 0x1620
-	Size: 0x12C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_a0c37dda(position, angles, var_956c7382) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   var_12327db5 = getdvarfloat("dc_drop_length", 10);
   var_43c0c3c7 = position + (0, 0, var_12327db5);
   self camerasetposition(var_43c0c3c7, angles);
@@ -323,15 +236,6 @@ function function_a0c37dda(position, angles, var_956c7382) {
   }
 }
 
-/*
-	Name: function_22196132
-	Namespace: namespace_5f11fb0b
-	Checksum: 0x951206BC
-	Offset: 0x1758
-	Size: 0x5E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_22196132() {
   dot = vectordot(self getvelocity(), anglestoright(self.angles));
   if(dot > 0) {
@@ -340,17 +244,8 @@ function function_22196132() {
   return -1;
 }
 
-/*
-	Name: function_f05a5931
-	Namespace: namespace_5f11fb0b
-	Checksum: 0xC88EB523
-	Offset: 0x17C0
-	Size: 0x1BE
-	Parameters: 6
-	Flags: Linked
-*/
 function function_f05a5931(einflictor, attacker, idamage, weapon, vdir, shitloc) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self clientfield::set_to_player("player_cam_blur", 1);
   var_67ca400f = getdvarfloat("cam_bullet_position_z_speed", 20);
   var_933bfc9b = getdvarfloat("cam_bullet_position_f_speed", 20);
@@ -361,20 +256,11 @@ function function_f05a5931(einflictor, attacker, idamage, weapon, vdir, shitloc)
   thread function_c003e53f(vdir, 0, var_f40ed68d, var_9aadeff9, var_933bfc9b, var_67ca400f, undefined, 60 * sign, undefined, undefined, 1);
   self playrumbleonentity("damage_heavy");
   wait(end_wait);
-  self notify(# "hash_d3468831");
+  self notify("hash_d3468831");
 }
 
-/*
-	Name: function_6e880b57
-	Namespace: namespace_5f11fb0b
-	Checksum: 0xEF110DB8
-	Offset: 0x1988
-	Size: 0x1B6
-	Parameters: 6
-	Flags: Linked
-*/
 function function_6e880b57(einflictor, attacker, idamage, weapon, vdir, shitloc) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self clientfield::set_to_player("player_cam_blur", 1);
   var_67ca400f = getdvarfloat("cam_bullet_position_z_speed", 20);
   var_933bfc9b = getdvarfloat("cam_bullet_position_f_speed", 20);
@@ -385,20 +271,11 @@ function function_6e880b57(einflictor, attacker, idamage, weapon, vdir, shitloc)
   self playrumbleonentity("damage_heavy");
   thread function_c003e53f(vdir, 0, var_f40ed68d, var_9aadeff9, var_933bfc9b, var_67ca400f, undefined, 60 * sign);
   wait(end_wait);
-  self notify(# "hash_d3468831");
+  self notify("hash_d3468831");
 }
 
-/*
-	Name: function_1e43c03b
-	Namespace: namespace_5f11fb0b
-	Checksum: 0x52EE63A5
-	Offset: 0x1B48
-	Size: 0x1BE
-	Parameters: 6
-	Flags: Linked
-*/
 function function_1e43c03b(einflictor, attacker, idamage, weapon, vdir, shitloc) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self clientfield::set_to_player("player_cam_blur", 1);
   sign = self function_22196132();
   var_67ca400f = getdvarfloat("cam_bullet_position_z_speed", 8);
@@ -409,20 +286,11 @@ function function_1e43c03b(einflictor, attacker, idamage, weapon, vdir, shitloc)
   thread function_c003e53f(undefined, 0, var_f40ed68d, var_9aadeff9, var_933bfc9b, var_67ca400f, undefined, 60 * sign, undefined, undefined, 1);
   self playrumbleonentity("damage_heavy");
   wait(end_wait);
-  self notify(# "hash_d3468831");
+  self notify("hash_d3468831");
 }
 
-/*
-	Name: function_7a3707a6
-	Namespace: namespace_5f11fb0b
-	Checksum: 0x8C81E933
-	Offset: 0x1D10
-	Size: 0x32E
-	Parameters: 6
-	Flags: Linked
-*/
 function function_7a3707a6(einflictor, attacker, idamage, weapon, vdir, shitloc) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self clientfield::set_to_player("player_cam_blur", 1);
   var_67ca400f = getdvarfloat("cam_explosion_position_z_speed", 8);
   var_933bfc9b = getdvarfloat("cam_explosion_position_f_speed", 10);
@@ -444,20 +312,11 @@ function function_7a3707a6(einflictor, attacker, idamage, weapon, vdir, shitloc)
   thread function_c003e53f(vdir, 0, var_f40ed68d, var_9aadeff9, var_933bfc9b, var_67ca400f, undefined, 60 * sign, lookdir, undefined, 1);
   self playrumbleonentity("damage_heavy");
   wait(var_30ffabcb);
-  self notify(# "hash_d3468831");
+  self notify("hash_d3468831");
 }
 
-/*
-	Name: function_1c006469
-	Namespace: namespace_5f11fb0b
-	Checksum: 0xE8175737
-	Offset: 0x2048
-	Size: 0x196
-	Parameters: 6
-	Flags: Linked
-*/
 function function_1c006469(einflictor, attacker, idamage, weapon, vdir, shitloc) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self clientfield::set_to_player("player_cam_fire", 1);
   angles = self getplayerangles();
   forwarddir = anglestoforward(angles);
@@ -469,20 +328,11 @@ function function_1c006469(einflictor, attacker, idamage, weapon, vdir, shitloc)
   self.var_3c94a047 = 1;
   self thread lui::screen_fade(1, 1, 0, "white", 0);
   wait(1);
-  self notify(# "hash_d3468831");
+  self notify("hash_d3468831");
 }
 
-/*
-	Name: function_514913aa
-	Namespace: namespace_5f11fb0b
-	Checksum: 0x40A51DEB
-	Offset: 0x21E8
-	Size: 0x17A
-	Parameters: 6
-	Flags: Linked
-*/
 function function_514913aa(einflictor, attacker, idamage, weapon, vdir, shitloc) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self clientfield::set_to_player("player_cam_bubbles", 1);
   angles = self getplayerangles();
   forwarddir = anglestoforward(angles);
@@ -492,20 +342,11 @@ function function_514913aa(einflictor, attacker, idamage, weapon, vdir, shitloc)
   var_253910ca = getdvarfloat("cam_bubbles_wait", 3);
   wait(var_253910ca);
   self clientfield::set_to_player("player_cam_bubbles", 0);
-  self notify(# "hash_d3468831");
+  self notify("hash_d3468831");
 }
 
-/*
-	Name: function_fd6ad16
-	Namespace: namespace_5f11fb0b
-	Checksum: 0xA01DCA14
-	Offset: 0x2370
-	Size: 0x14E
-	Parameters: 6
-	Flags: Linked
-*/
 function function_fd6ad16(einflictor, attacker, idamage, weapon, vdir, shitloc) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   var_67ca400f = getdvarfloat("cam_fall_position_z_speed", 500);
   var_933bfc9b = getdvarfloat("cam_fall_position_f_speed", 0);
   var_9aadeff9 = getdvarfloat("cam_fall_max_z_length", 500);
@@ -513,5 +354,5 @@ function function_fd6ad16(einflictor, attacker, idamage, weapon, vdir, shitloc) 
   end_wait = getdvarfloat("cam_fall_end_wait", 2);
   thread function_c003e53f(undefined, 1, undefined, var_9aadeff9, 0, var_67ca400f, -88, 1, undefined, 1, 1);
   wait(end_wait);
-  self notify(# "hash_d3468831");
+  self notify("hash_d3468831");
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_gravity.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -17,18 +21,8 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_moon_gravity;
-
 #namespace zm_moon_gravity;
 
-/*
-	Name: init
-	Namespace: zm_moon_gravity
-	Checksum: 0xD58CF54C
-	Offset: 0x4B0
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.zombie_init_done = & zombie_moon_init_done;
   level thread init_low_gravity_fx();
@@ -40,15 +34,6 @@ function init() {
   callback::on_spawned( & player_throw_grenade);
 }
 
-/*
-	Name: init_low_gravity_fx
-	Namespace: zm_moon_gravity
-	Checksum: 0xDE6C0869
-	Offset: 0x598
-	Size: 0xB2
-	Parameters: 0
-	Flags: Linked
-*/
 function init_low_gravity_fx() {
   keys = getarraykeys(level.zones);
   for (i = 0; i < level.zones.size; i++) {
@@ -61,18 +46,9 @@ function init_low_gravity_fx() {
   level._effect["low_gravity_blood"] = "dlc5/moon/fx_bul_impact_blood_lowgrav";
 }
 
-/*
-	Name: gravity_trigger
-	Namespace: zm_moon_gravity
-	Checksum: 0x8814F522
-	Offset: 0x658
-	Size: 0xB8
-	Parameters: 0
-	Flags: None
-*/
 function gravity_trigger() {
   while (true) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     if(!isplayer(who)) {
       self thread trigger::function_d1278be0(who, & gravity_zombie_in, & gravity_zombie_out);
     } else {
@@ -81,15 +57,6 @@ function gravity_trigger() {
   }
 }
 
-/*
-	Name: gravity_zombie_in
-	Namespace: zm_moon_gravity
-	Checksum: 0x613A507B
-	Offset: 0x718
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function gravity_zombie_in(ent, endon_condition) {
   if(!isdefined(ent.in_low_gravity)) {
     ent.in_low_gravity = 0;
@@ -98,15 +65,6 @@ function gravity_zombie_in(ent, endon_condition) {
   ent clientfield::set("low_gravity", 1);
 }
 
-/*
-	Name: gravity_zombie_out
-	Namespace: zm_moon_gravity
-	Checksum: 0x1F123193
-	Offset: 0x790
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function gravity_zombie_out(ent) {
   if(ent.in_low_gravity > 0) {
     ent.in_low_gravity--;
@@ -116,41 +74,14 @@ function gravity_zombie_out(ent) {
   }
 }
 
-/*
-	Name: gravity_player_in
-	Namespace: zm_moon_gravity
-	Checksum: 0x55170B94
-	Offset: 0x800
-	Size: 0x2C
-	Parameters: 2
-	Flags: Linked
-*/
 function gravity_player_in(ent, endon_condition) {
   ent setplayergravity(136);
 }
 
-/*
-	Name: gravity_player_out
-	Namespace: zm_moon_gravity
-	Checksum: 0xCBFD8C6E
-	Offset: 0x838
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function gravity_player_out(ent) {
   ent clearplayergravity();
 }
 
-/*
-	Name: gravity_zombie_update
-	Namespace: zm_moon_gravity
-	Checksum: 0xC14CFCB6
-	Offset: 0x868
-	Size: 0x154
-	Parameters: 2
-	Flags: Linked
-*/
 function gravity_zombie_update(low_gravity, force_update) {
   if(!isdefined(self.animname)) {
     return;
@@ -181,35 +112,15 @@ function gravity_zombie_update(low_gravity, force_update) {
   }
 }
 
-/*
-	Name: function_7a7cde90
-	Namespace: zm_moon_gravity
-	Checksum: 0x11AD4B86
-	Offset: 0x9C8
-	Size: 0xE8
-	Parameters: 5
-	Flags: Linked
-*/
 function function_7a7cde90(mod, hit_location, hit_origin, player, direction_vec) {
   if(mod === "MOD_PISTOL_BULLET" || mod === "MOD_RIFLE_BULLET") {
     forward = anglestoforward(direction_vec);
     up = anglestoup(direction_vec);
     right = anglestoright(direction_vec);
     playfx(level._effect["low_gravity_blood"], hit_origin, forward, up);
-    /#
-    # /
   }
 }
 
-/*
-	Name: gravity_zombie_death_response
-	Namespace: zm_moon_gravity
-	Checksum: 0x835D80AE
-	Offset: 0xAB8
-	Size: 0x216
-	Parameters: 0
-	Flags: Linked
-*/
 function gravity_zombie_death_response() {
   if(!isdefined(self.in_low_gravity) || self.in_low_gravity == 0 || (isdefined(self._black_hole_bomb_collapse_death) && self._black_hole_bomb_collapse_death)) {
     return false;
@@ -242,15 +153,6 @@ function gravity_zombie_death_response() {
   return false;
 }
 
-/*
-	Name: zombie_moon_is_low_gravity_zone
-	Namespace: zm_moon_gravity
-	Checksum: 0xFCBA135D
-	Offset: 0xCD8
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_moon_is_low_gravity_zone(zone_name) {
   zone = getentarray(zone_name, "targetname");
   if(isdefined(zone[0].script_string) && zone[0].script_string == "lowgravity") {
@@ -259,17 +161,8 @@ function zombie_moon_is_low_gravity_zone(zone_name) {
   return false;
 }
 
-/*
-	Name: zombie_moon_check_zone
-	Namespace: zm_moon_gravity
-	Checksum: 0x49096B13
-	Offset: 0xD58
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_moon_check_zone() {
-  self endon(# "death");
+  self endon("death");
   util::wait_network_frame();
   if(!isdefined(self)) {
     return;
@@ -281,7 +174,7 @@ function zombie_moon_check_zone() {
     return;
   }
   if(!(isdefined(self.completed_emerging_into_playable_area) && self.completed_emerging_into_playable_area)) {
-    self waittill(# "completed_emerging_into_playable_area");
+    self waittill("completed_emerging_into_playable_area");
   }
   if(isdefined(level.on_the_moon) && level.on_the_moon && (!level flag::get("power_on") || zombie_moon_is_low_gravity_zone(self.zone_name))) {
     self gravity_zombie_update(1);
@@ -290,15 +183,6 @@ function zombie_moon_check_zone() {
   }
 }
 
-/*
-	Name: zombie_moon_init_done
-	Namespace: zm_moon_gravity
-	Checksum: 0x6276442B
-	Offset: 0xE90
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_moon_init_done() {
   self.crawl_anim_override = & zombie_moon_crawl_anim_override;
   self thread zombie_moon_check_zone();
@@ -306,17 +190,8 @@ function zombie_moon_init_done() {
   self thread zombie_watch_run_notetracks();
 }
 
-/*
-	Name: zombie_low_gravity_locomotion
-	Namespace: zm_moon_gravity
-	Checksum: 0xCE0C1610
-	Offset: 0xF00
-	Size: 0xC4
-	Parameters: 0
-	Flags: None
-*/
 function zombie_low_gravity_locomotion() {
-  self endon(# "death");
+  self endon("death");
   gravity_str = undefined;
   if(self.zombie_move_speed == "walk" || self.zombie_move_speed == "run" || self.zombie_move_speed == "sprint") {
     gravity_str = "low_gravity_" + self.zombie_move_speed;
@@ -328,17 +203,8 @@ function zombie_low_gravity_locomotion() {
   }
 }
 
-/*
-	Name: zombie_watch_nogravity
-	Namespace: zm_moon_gravity
-	Checksum: 0x6160E821
-	Offset: 0xFD0
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_watch_nogravity() {
-  self endon(# "death");
+  self endon("death");
   _off_ground_max = 32;
   while (true) {
     if(isdefined(self.nogravity) && self.nogravity) {
@@ -353,19 +219,10 @@ function zombie_watch_nogravity() {
   }
 }
 
-/*
-	Name: zombie_watch_run_notetracks
-	Namespace: zm_moon_gravity
-	Checksum: 0x78B762F3
-	Offset: 0x10A0
-	Size: 0xB2
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_watch_run_notetracks() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "runanim", note);
+    self waittill("runanim", note);
     if(!isdefined(self.script_noteworthy) || self.script_noteworthy != "moon_gravity") {
       continue;
     }
@@ -378,28 +235,10 @@ function zombie_watch_run_notetracks() {
   }
 }
 
-/*
-	Name: reset_zombie_anim
-	Namespace: zm_moon_gravity
-	Checksum: 0x2D855160
-	Offset: 0x1160
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function reset_zombie_anim() {
   zombie_utility::set_zombie_run_cycle();
 }
 
-/*
-	Name: zombie_moon_update_player_gravity
-	Namespace: zm_moon_gravity
-	Checksum: 0x9979FD54
-	Offset: 0x1180
-	Size: 0x3B0
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_moon_update_player_gravity() {
   level flag::wait_till("start_zombie_round_logic");
   low_g = 136;
@@ -445,15 +284,6 @@ function zombie_moon_update_player_gravity() {
   }
 }
 
-/*
-	Name: zombie_moon_update_player_float
-	Namespace: zm_moon_gravity
-	Checksum: 0xF370E94B
-	Offset: 0x1538
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_moon_update_player_float() {
   level flag::wait_till("start_zombie_round_logic");
   players = getplayers();
@@ -462,18 +292,9 @@ function zombie_moon_update_player_float() {
   }
 }
 
-/*
-	Name: zombie_moon_player_float
-	Namespace: zm_moon_gravity
-	Checksum: 0xBE1524A6
-	Offset: 0x15C8
-	Size: 0x248
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_moon_player_float() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   boost_chance = 40;
   while (true) {
     if(zombie_utility::is_player_valid(self) && (isdefined(self.in_low_gravity) && self.in_low_gravity) && self isonground() && self issprinting()) {
@@ -503,15 +324,6 @@ function zombie_moon_player_float() {
   }
 }
 
-/*
-	Name: check_player_gravity
-	Namespace: zm_moon_gravity
-	Checksum: 0x2E414EF5
-	Offset: 0x1818
-	Size: 0x86
-	Parameters: 0
-	Flags: None
-*/
 function check_player_gravity() {
   level flag::wait_till("start_zombie_round_logic");
   players = getplayers();
@@ -520,20 +332,11 @@ function check_player_gravity() {
   }
 }
 
-/*
-	Name: low_gravity_watch
-	Namespace: zm_moon_gravity
-	Checksum: 0x60DBA2FC
-	Offset: 0x18A8
-	Size: 0x5D0
-	Parameters: 0
-	Flags: Linked
-*/
 function low_gravity_watch() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self notify(# "low_gravity_watch_start");
-  self endon(# "low_gravity_watch_start");
+  self endon("death");
+  self endon("disconnect");
+  self notify("low_gravity_watch_start");
+  self endon("low_gravity_watch_start");
   level flag::wait_till("start_zombie_round_logic");
   self.airless_vox_in_progess = 0;
   time_in_low_gravity = 0;
@@ -624,34 +427,16 @@ function low_gravity_watch() {
   }
 }
 
-/*
-	Name: remove_blur
-	Namespace: zm_moon_gravity
-	Checksum: 0x61586D6C
-	Offset: 0x1E80
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function remove_blur(time) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(time);
   self setblur(0, 0.1);
   self clientfield::set_to_player("gasp_rumble", 0);
 }
 
-/*
-	Name: airless_vox_without_repeat
-	Namespace: zm_moon_gravity
-	Checksum: 0x90AFBC2C
-	Offset: 0x1EE8
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function airless_vox_without_repeat() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   entity_num = self.characterindex;
   if(isdefined(self.zm_random_char)) {
     entity_num = self.zm_random_char;
@@ -673,15 +458,6 @@ function airless_vox_without_repeat() {
   }
 }
 
-/*
-	Name: update_zombie_locomotion
-	Namespace: zm_moon_gravity
-	Checksum: 0xAA28113
-	Offset: 0x2018
-	Size: 0x1D0
-	Parameters: 0
-	Flags: Linked
-*/
 function update_zombie_locomotion() {
   level flag::wait_till("power_on");
   player_zones = getentarray("player_volume", "script_noteworthy");
@@ -705,15 +481,6 @@ function update_zombie_locomotion() {
   }
 }
 
-/*
-	Name: update_low_gravity_fx
-	Namespace: zm_moon_gravity
-	Checksum: 0x3414CFC9
-	Offset: 0x21F0
-	Size: 0x106
-	Parameters: 0
-	Flags: Linked
-*/
 function update_low_gravity_fx() {
   level flag::wait_till("power_on");
   keys = getarraykeys(level.zones);
@@ -728,15 +495,6 @@ function update_low_gravity_fx() {
   }
 }
 
-/*
-	Name: watch_player_grenades
-	Namespace: zm_moon_gravity
-	Checksum: 0x24780E5D
-	Offset: 0x2300
-	Size: 0x86
-	Parameters: 0
-	Flags: None
-*/
 function watch_player_grenades() {
   level flag::wait_till("start_zombie_round_logic");
   players = getplayers();
@@ -745,38 +503,20 @@ function watch_player_grenades() {
   }
 }
 
-/*
-	Name: player_throw_grenade
-	Namespace: zm_moon_gravity
-	Checksum: 0x85B2D7B1
-	Offset: 0x2390
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function player_throw_grenade() {
-  self notify(# "player_throw_grenade");
-  self endon(# "player_throw_grenade");
-  self endon(# "disconnect");
+  self notify("player_throw_grenade");
+  self endon("player_throw_grenade");
+  self endon("disconnect");
   level flag::wait_till("start_zombie_round_logic");
   while (true) {
-    self waittill(# "grenade_fire", grenade, weapname);
+    self waittill("grenade_fire", grenade, weapname);
     grenade thread watch_grenade_gravity();
   }
 }
 
-/*
-	Name: watch_grenade_gravity
-	Namespace: zm_moon_gravity
-	Checksum: 0x3A035171
-	Offset: 0x2420
-	Size: 0x28C
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_grenade_gravity() {
-  self endon(# "death");
-  self endon(# "explode");
+  self endon("death");
+  self endon("explode");
   player_zones = getentarray("player_volume", "script_noteworthy");
   while (true) {
     if(isdefined(level.on_the_moon) && level.on_the_moon && !level flag::get("power_on")) {
@@ -813,15 +553,6 @@ function watch_grenade_gravity() {
   }
 }
 
-/*
-	Name: update_zombie_gravity_transition
-	Namespace: zm_moon_gravity
-	Checksum: 0x8C767D47
-	Offset: 0x26B8
-	Size: 0x76
-	Parameters: 0
-	Flags: Linked
-*/
 function update_zombie_gravity_transition() {
   airlock_doors = getentarray("zombie_door_airlock", "script_noteworthy");
   for (i = 0; i < airlock_doors.size; i++) {
@@ -829,18 +560,9 @@ function update_zombie_gravity_transition() {
   }
 }
 
-/*
-	Name: zombie_airlock_think
-	Namespace: zm_moon_gravity
-	Checksum: 0x1BA9DFB4
-	Offset: 0x2738
-	Size: 0x248
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_airlock_think() {
   while (true) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     if(isplayer(who)) {
       continue;
     }
@@ -879,15 +601,6 @@ function zombie_airlock_think() {
   }
 }
 
-/*
-	Name: zone_breached
-	Namespace: zm_moon_gravity
-	Checksum: 0x613879BE
-	Offset: 0x2988
-	Size: 0x1AC
-	Parameters: 1
-	Flags: Linked
-*/
 function zone_breached(zone_name) {
   zones = getentarray(zone_name, "targetname");
   zombies = getaiarray();
@@ -913,15 +626,6 @@ function zone_breached(zone_name) {
   }
 }
 
-/*
-	Name: zombie_moon_crawl_anim_override
-	Namespace: zm_moon_gravity
-	Checksum: 0x15CA9642
-	Offset: 0x2B40
-	Size: 0x1A6
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_moon_crawl_anim_override() {
   player_volumes = getentarray("player_volume", "script_noteworthy");
   if(!(isdefined(level.on_the_moon) && level.on_the_moon)) {

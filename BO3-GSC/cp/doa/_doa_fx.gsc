@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_fx.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\doa\_doa_gibs;
 #using scripts\cp\doa\_doa_utility;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\fx_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_eaa992c;
 
-/*
-	Name: init
-	Namespace: namespace_eaa992c
-	Checksum: 0xD3E9E999
-	Offset: 0x9C0
-	Size: 0xFE4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level._effect["def_explode"] = "explosions/fx_exp_grenade_default";
   level._effect["impact_raygun"] = "zombie/fx_raygun_impact_zmb";
@@ -148,55 +142,24 @@ function init() {
   function_6dcb1bbc("web_contact", 121);
 }
 
-/*
-	Name: function_6dcb1bbc
-	Namespace: namespace_eaa992c
-	Checksum: 0x6BD2E76C
-	Offset: 0x19B0
-	Size: 0x7E
-	Parameters: 2
-	Flags: Linked
-*/
 function function_6dcb1bbc(name, type) {
-  /#
   assert(type < 128, "");
-  # /
-    if(!isdefined(level.doa.var_1142e0a2)) {
-      level.doa.var_1142e0a2 = [];
-    }
+  if(!isdefined(level.doa.var_1142e0a2)) {
+    level.doa.var_1142e0a2 = [];
+  }
   level.doa.var_1142e0a2[name] = type;
 }
 
-/*
-	Name: function_39dbe45b
-	Namespace: namespace_eaa992c
-	Checksum: 0xA81030E4
-	Offset: 0x1A38
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked
-*/
 function function_39dbe45b(name) {
   if(!isdefined(name)) {
     return;
   }
-  /#
   assert(isdefined(level.doa.var_1142e0a2[name]), "");
-  # /
-    return level.doa.var_1142e0a2[name];
+  return level.doa.var_1142e0a2[name];
 }
 
-/*
-	Name: function_81e169ac
-	Namespace: namespace_eaa992c
-	Checksum: 0x25708DAE
-	Offset: 0x1AA0
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function function_81e169ac() {
-  self endon(# "death");
+  self endon("death");
   while (isdefined(self) && gettime() < self.var_b2ce38d9) {
     wait(0.05);
   }
@@ -205,17 +168,8 @@ function function_81e169ac() {
   }
 }
 
-/*
-	Name: function_1f8cb1fa
-	Namespace: namespace_eaa992c
-	Checksum: 0x1661D03D
-	Offset: 0x1AF0
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1f8cb1fa() {
-  self endon(# "death");
+  self endon("death");
   while (isdefined(self) && gettime() < self.var_78c14ec2) {
     wait(0.05);
   }
@@ -224,35 +178,22 @@ function function_1f8cb1fa() {
   }
 }
 
-/*
-	Name: function_64bc2503
-	Namespace: namespace_eaa992c
-	Checksum: 0x19B2A583
-	Offset: 0x1B40
-	Size: 0x224
-	Parameters: 4
-	Flags: Linked
-*/
 function function_64bc2503( & queue, flag, waitfunc, var_a6cc22d4 = 0) {
-  self endon(# "death");
+  self endon("death");
   if(!var_a6cc22d4) {
     self notify("fxProcessQueue_" + flag);
     self endon("fxProcessQueue_" + flag);
   }
   if(queue.size >= 16) {
-    /#
     foreach(item in queue) {
       doa_utility::debugmsg("" + item);
     }
-    # /
-      /#
     assert(0, "" + queue[15]);
-    # /
   }
   self[[waitfunc]]();
   if(queue.size == 0 && isdefined(self)) {
     self clientfield::set(flag, 0);
-    self notify(# "hash_6a404ade");
+    self notify("hash_6a404ade");
     return;
   }
   var_1b0298c0 = function_39dbe45b(queue[0]);
@@ -263,32 +204,19 @@ function function_64bc2503( & queue, flag, waitfunc, var_a6cc22d4 = 0) {
   }
 }
 
-/*
-	Name: turnofffx
-	Namespace: namespace_eaa992c
-	Checksum: 0x6B28502E
-	Offset: 0x1D70
-	Size: 0x182
-	Parameters: 1
-	Flags: Linked
-*/
 function turnofffx(name) {
   if(!isdefined(name) || !isdefined(self)) {
     return;
   }
-  self notify(# "turnofffx");
-  self endon(# "turnofffx");
-  self endon(# "death");
-  /#
+  self notify("turnofffx");
+  self endon("turnofffx");
+  self endon("death");
   assert(!(isplayer(self) && name == ""));
-  # /
-    /#
   assert(!(isplayer(self) && name == ""));
-  # /
-    if(!isdefined(self.var_350c7e91)) {
-      self.var_350c7e91 = [];
-      self.var_78c14ec2 = 0;
-    }
+  if(!isdefined(self.var_350c7e91)) {
+    self.var_350c7e91 = [];
+    self.var_78c14ec2 = 0;
+  }
   if(isdefined(self.var_3930cdff)) {
     arrayremovevalue(self.var_3930cdff, name);
   }
@@ -296,35 +224,22 @@ function turnofffx(name) {
     self.var_350c7e91[self.var_350c7e91.size] = name;
   }
   self function_64bc2503(self.var_350c7e91, "off_fx", & function_1f8cb1fa);
-  level notify(# "hash_67a1310c");
+  level notify("hash_67a1310c");
 }
 
-/*
-	Name: function_285a2999
-	Namespace: namespace_eaa992c
-	Checksum: 0x392B681B
-	Offset: 0x1F00
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function function_285a2999(name) {
   if(!isdefined(name) || !isdefined(self)) {
     return;
   }
-  self notify(# "hash_285a2999");
-  self endon(# "hash_285a2999");
-  self endon(# "death");
-  /#
+  self notify("hash_285a2999");
+  self endon("hash_285a2999");
+  self endon("death");
   assert(!(isplayer(self) && name == ""));
-  # /
-    /#
   assert(!(isplayer(self) && name == ""));
-  # /
-    if(!isdefined(self.var_3930cdff)) {
-      self.var_3930cdff = [];
-      self.var_b2ce38d9 = 0;
-    }
+  if(!isdefined(self.var_3930cdff)) {
+    self.var_3930cdff = [];
+    self.var_b2ce38d9 = 0;
+  }
   if(isinarray(self.var_3930cdff, name)) {
     return;
   }
@@ -335,15 +250,6 @@ function function_285a2999(name) {
   self function_64bc2503(self.var_3930cdff, "play_fx", & function_81e169ac);
 }
 
-/*
-	Name: function_2fc7e62f
-	Namespace: namespace_eaa992c
-	Checksum: 0xFC64485A
-	Offset: 0x2080
-	Size: 0x14C
-	Parameters: 6
-	Flags: Linked
-*/
 function function_2fc7e62f(victim, damage, attacker, dir, smeansofdeath, weapon) {
   if(weapon == level.doa.var_f5fcdb51) {
     playfx(level._effect["impact_raygun1"], victim.origin + vectorscale((0, 0, 1), 40));
@@ -351,7 +257,7 @@ function function_2fc7e62f(victim, damage, attacker, dir, smeansofdeath, weapon)
     if(weapon == level.doa.var_e30c10ec) {
       playfx(level._effect["impact_raygun2"], victim.origin + vectorscale((0, 0, 1), 40));
       if(isdefined(attacker)) {
-        attacker notify(# "hash_21f7a743", victim);
+        attacker notify("hash_21f7a743", victim);
       }
     } else {
       playfx(level._effect["impact_raygun"], victim.origin + vectorscale((0, 0, 1), 40));
@@ -359,28 +265,10 @@ function function_2fc7e62f(victim, damage, attacker, dir, smeansofdeath, weapon)
   }
 }
 
-/*
-	Name: function_2c0f7946
-	Namespace: namespace_eaa992c
-	Checksum: 0x6FDBC64A
-	Offset: 0x21D8
-	Size: 0x74
-	Parameters: 6
-	Flags: Linked
-*/
 function function_2c0f7946(victim, damage, attacker, dir, smeansofdeath, weapon) {
   playfx(level._effect["impact_rpg"], victim.origin + vectorscale((0, 0, 1), 40));
 }
 
-/*
-	Name: function_f51d2b7e
-	Namespace: namespace_eaa992c
-	Checksum: 0xDAF20933
-	Offset: 0x2258
-	Size: 0x114
-	Parameters: 6
-	Flags: Linked
-*/
 function function_f51d2b7e(victim, damage, attacker, dir, smeansofdeath, weapon) {
   if(!isdefined(level.doa.var_f6ac2080)) {
     level.doa.var_f6ac2080 = 6;
@@ -395,28 +283,10 @@ function function_f51d2b7e(victim, damage, attacker, dir, smeansofdeath, weapon)
   }
 }
 
-/*
-	Name: function_4f66d2fb
-	Namespace: namespace_eaa992c
-	Checksum: 0x84CC112A
-	Offset: 0x2378
-	Size: 0x5C
-	Parameters: 6
-	Flags: Linked
-*/
 function function_4f66d2fb(victim, damage, attacker, dir, smeansofdeath, weapon) {
   function_2aa1c0b3(victim, damage, attacker, dir, smeansofdeath, weapon);
 }
 
-/*
-	Name: function_2aa1c0b3
-	Namespace: namespace_eaa992c
-	Checksum: 0x857BD290
-	Offset: 0x23E0
-	Size: 0x274
-	Parameters: 6
-	Flags: Linked
-*/
 function function_2aa1c0b3(victim, damage, attacker, dir, smeansofdeath, weapon) {
   if(isdefined(victim.boss) && victim.boss) {
     return;
@@ -451,19 +321,10 @@ function function_2aa1c0b3(victim, damage, attacker, dir, smeansofdeath, weapon)
   }
 }
 
-/*
-	Name: function_32bcda58
-	Namespace: namespace_eaa992c
-	Checksum: 0x993D9B9C
-	Offset: 0x2660
-	Size: 0x150
-	Parameters: 2
-	Flags: Linked
-*/
 function function_32bcda58(var_7aac5112, attacker) {
-  self notify(# "hash_e32770a3");
-  self endon(# "hash_e32770a3");
-  self endon(# "death");
+  self notify("hash_e32770a3");
+  self endon("hash_e32770a3");
+  self endon("death");
   dmg = getdvarint("scr_doa_dot_burn_dmg", 120) * var_7aac5112;
   if(!isdefined(self.var_a27665f9)) {
     self.var_a27665f9 = 0;
@@ -480,17 +341,8 @@ function function_32bcda58(var_7aac5112, attacker) {
   }
 }
 
-/*
-	Name: function_9fc6e261
-	Namespace: namespace_eaa992c
-	Checksum: 0xEB847D5D
-	Offset: 0x27B8
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_9fc6e261(type) {
-  self waittill(# "actor_corpse", corpse);
+  self waittill("actor_corpse", corpse);
   wait(0.05);
   if(isdefined(corpse)) {
     corpse clientfield::set("burnType", type);

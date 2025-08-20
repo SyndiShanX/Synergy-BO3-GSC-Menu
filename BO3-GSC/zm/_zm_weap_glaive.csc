@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_glaive.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -6,31 +10,12 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_weap_glaive;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_weap_glaive
-	Checksum: 0xB0BF3911
-	Offset: 0x3D8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_glaive", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_weap_glaive
-	Checksum: 0xD86598C6
-	Offset: 0x418
-	Size: 0x2AE
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("allplayers", "slam_fx", 1, 1, "counter", & do_slam_fx, 0, 0);
   clientfield::register("toplayer", "throw_fx", 1, 1, "counter", & function_6b6e650c, 0, 0);
@@ -49,15 +34,6 @@ function __init__() {
   level._effect["sword_lvl2_throw"] = "zombie/fx_sword_lvl2_throw_1p_zod_zmb";
 }
 
-/*
-	Name: do_swipe_fx
-	Namespace: zm_weap_glaive
-	Checksum: 0x14C14BCE
-	Offset: 0x6D0
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function do_swipe_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   owner = self getowner(localclientnum);
   if(isdefined(owner) && owner == getlocalplayer(localclientnum)) {
@@ -67,15 +43,6 @@ function do_swipe_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fiel
   }
 }
 
-/*
-	Name: function_647dc27d
-	Namespace: zm_weap_glaive
-	Checksum: 0x84B7450A
-	Offset: 0x7C8
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_647dc27d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   owner = self getowner(localclientnum);
   if(isdefined(owner) && owner == getlocalplayer(localclientnum)) {
@@ -85,15 +52,6 @@ function function_647dc27d(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_bbeb4c2c
-	Namespace: zm_weap_glaive
-	Checksum: 0xE4CC7B1C
-	Offset: 0x8C0
-	Size: 0x104
-	Parameters: 7
-	Flags: Linked
-*/
 function function_bbeb4c2c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(util::is_mature() && !util::is_gib_restricted_build()) {
     if(newval == 1) {
@@ -105,15 +63,6 @@ function function_bbeb4c2c(localclientnum, oldval, newval, bnewent, binitialsnap
   self playsound(0, "zmb_sword_zombie_explode");
 }
 
-/*
-	Name: function_38924d95
-	Namespace: zm_weap_glaive
-	Checksum: 0x69290AD2
-	Offset: 0x9D0
-	Size: 0x104
-	Parameters: 7
-	Flags: Linked
-*/
 function function_38924d95(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(util::is_mature() && !util::is_gib_restricted_build()) {
     if(newval == 1) {
@@ -125,28 +74,10 @@ function function_38924d95(localclientnum, oldval, newval, bnewent, binitialsnap
   self playsound(0, "zmb_sword_zombie_explode");
 }
 
-/*
-	Name: do_slam_fx
-	Namespace: zm_weap_glaive
-	Checksum: 0x639F2132
-	Offset: 0xAE0
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function do_slam_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   thread do_gravity_spike_fx(localclientnum, self, self.origin);
 }
 
-/*
-	Name: function_6b6e650c
-	Namespace: zm_weap_glaive
-	Checksum: 0x3A70CC4D
-	Offset: 0xB48
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6b6e650c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   owner = self getowner(localclientnum);
   if(isdefined(owner) && owner == getlocalplayer(localclientnum)) {
@@ -156,15 +87,6 @@ function function_6b6e650c(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: do_gravity_spike_fx
-	Namespace: zm_weap_glaive
-	Checksum: 0x1E70591A
-	Offset: 0xC40
-	Size: 0x19C
-	Parameters: 3
-	Flags: Linked
-*/
 function do_gravity_spike_fx(localclientnum, owner, position) {
   var_f31c9d4c = 0;
   if(self isplayer() && self islocalplayer() && !isdemoplaying()) {
@@ -183,15 +105,6 @@ function do_gravity_spike_fx(localclientnum, owner, position) {
   }
 }
 
-/*
-	Name: getideallocationforfx
-	Namespace: zm_weap_glaive
-	Checksum: 0x5E85FB25
-	Offset: 0xDE8
-	Size: 0xB6
-	Parameters: 5
-	Flags: None
-*/
 function getideallocationforfx(startpos, fxindex, fxcount, defaultdistance, rotation) {
   currentangle = (360 / fxcount) * fxindex;
   coscurrent = cos(currentangle + rotation);
@@ -199,15 +112,6 @@ function getideallocationforfx(startpos, fxindex, fxcount, defaultdistance, rota
   return startpos + (defaultdistance * coscurrent, defaultdistance * sincurrent, 0);
 }
 
-/*
-	Name: randomizelocation
-	Namespace: zm_weap_glaive
-	Checksum: 0x75A51745
-	Offset: 0xEA8
-	Size: 0xE2
-	Parameters: 3
-	Flags: None
-*/
 function randomizelocation(startpos, max_x_offset, max_y_offset) {
   half_x = int(max_x_offset / 2);
   half_y = int(max_y_offset / 2);
@@ -216,15 +120,6 @@ function randomizelocation(startpos, max_x_offset, max_y_offset) {
   return startpos + (rand_x, rand_y, 0);
 }
 
-/*
-	Name: ground_trace
-	Namespace: zm_weap_glaive
-	Checksum: 0x4FD5A9D4
-	Offset: 0xF98
-	Size: 0x72
-	Parameters: 2
-	Flags: None
-*/
 function ground_trace(startpos, owner) {
   trace_height = 50;
   trace_depth = 100;

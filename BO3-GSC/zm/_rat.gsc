@@ -1,55 +1,26 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_rat.gsc
+*************************************************/
+
 #using scripts\shared\array_shared;
 #using scripts\shared\rat_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_devgui;
-
 #namespace rat;
 
-/*
-	Name: __init__sytem__
-	Namespace: rat
-	Checksum: 0x1F2990B3
-	Offset: 0x100
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
-  /#
   system::register("", & __init__, undefined, undefined);
-  # /
 }
 
-/*
-	Name: __init__
-	Namespace: rat
-	Checksum: 0x7B1372C7
-	Offset: 0x140
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
-  /#
   rat_shared::init();
   level.rat.common.gethostplayer = & util::gethostplayer;
   rat_shared::addratscriptcmd("", & derriesezombiespawnnavmeshtest);
-  # /
 }
 
-/*
-	Name: derriesezombiespawnnavmeshtest
-	Namespace: rat
-	Checksum: 0x4E9D15A5
-	Offset: 0x1B8
-	Size: 0x514
-	Parameters: 2
-	Flags: Linked
-*/
 function derriesezombiespawnnavmeshtest(params, inrat) {
-  /#
   if(!isdefined(inrat)) {
     inrat = 1;
   }
@@ -110,5 +81,4 @@ function derriesezombiespawnnavmeshtest(params, inrat) {
       ratreportcommandresult(params._id, 1);
     }
   }
-  # /
 }

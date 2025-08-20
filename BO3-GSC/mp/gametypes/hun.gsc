@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\hun.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -8,18 +12,8 @@
 #using scripts\shared\gameobjects_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace hun;
 
-/*
-	Name: main
-	Namespace: hun
-	Checksum: 0x1F06CBE9
-	Offset: 0x378
-	Size: 0x1EC
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   util::registertimelimit(0, 1440);
@@ -41,15 +35,6 @@ function main() {
   globallogic::setvisiblescoreboardcolumns("score", "kills", "deaths", "kdratio", "headshots");
 }
 
-/*
-	Name: onstartgametype
-	Namespace: hun
-	Checksum: 0xDFB1D3F4
-	Offset: 0x570
-	Size: 0x2D4
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   setclientnamemode("auto_change");
   util::setobjectivetext("allies", & "OBJECTIVES_DM");
@@ -85,15 +70,6 @@ function onstartgametype() {
   thread cratedropper();
 }
 
-/*
-	Name: onendgame
-	Namespace: hun
-	Checksum: 0xE39E3D58
-	Offset: 0x850
-	Size: 0x58
-	Parameters: 1
-	Flags: None
-*/
 function onendgame(winningplayer) {
   if(isdefined(winningplayer) && isplayer(winningplayer)) {
     [
@@ -102,15 +78,6 @@ function onendgame(winningplayer) {
   }
 }
 
-/*
-	Name: givecustomloadout
-	Namespace: hun
-	Checksum: 0x754DA67C
-	Offset: 0x8B0
-	Size: 0x170
-	Parameters: 0
-	Flags: None
-*/
 function givecustomloadout() {
   self takeallweapons();
   self clearperks();
@@ -129,15 +96,6 @@ function givecustomloadout() {
   return weapon;
 }
 
-/*
-	Name: onscoreclosemusic
-	Namespace: hun
-	Checksum: 0xDCA4E648
-	Offset: 0xA28
-	Size: 0xC4
-	Parameters: 0
-	Flags: None
-*/
 function onscoreclosemusic() {
   while (!level.gameended) {
     scorelimit = level.scorelimit;
@@ -155,15 +113,6 @@ function onscoreclosemusic() {
   }
 }
 
-/*
-	Name: inside_bounds
-	Namespace: hun
-	Checksum: 0xE9A4746B
-	Offset: 0xAF8
-	Size: 0xBE
-	Parameters: 2
-	Flags: None
-*/
 function inside_bounds(node_origin, bounds) {
   mins = level.mapcenter - bounds;
   maxs = level.mapcenter + bounds;
@@ -182,15 +131,6 @@ function inside_bounds(node_origin, bounds) {
   return true;
 }
 
-/*
-	Name: initdroplocations
-	Namespace: hun
-	Checksum: 0x20ACFCDE
-	Offset: 0xBC0
-	Size: 0x130
-	Parameters: 0
-	Flags: None
-*/
 function initdroplocations() {
   scalar = 0.8;
   bound = (level.spawnmaxs - level.mapcenter) * scalar;
@@ -206,15 +146,6 @@ function initdroplocations() {
   level.dropnodes = nodes;
 }
 
-/*
-	Name: registercrates
-	Namespace: hun
-	Checksum: 0x4D6A14E1
-	Offset: 0xCF8
-	Size: 0x1FC
-	Parameters: 0
-	Flags: None
-*/
 function registercrates() {
   supplydrop::registercratetype("hunted", "weapon", "smg_standard", 1, & "WEAPON_SMG_STANDARD", undefined, & givehuntedweapon, & huntedcratelandoverride);
   supplydrop::registercratetype("hunted", "weapon", "ar_standard", 1, & "WEAPON_AR_STANDARD", undefined, & givehuntedweapon, & huntedcratelandoverride);
@@ -226,15 +157,6 @@ function registercrates() {
   supplydrop::advancedfinalizecratecategory("hunted");
 }
 
-/*
-	Name: givehuntedweapon
-	Namespace: hun
-	Checksum: 0x3A7A4894
-	Offset: 0xF00
-	Size: 0x8C
-	Parameters: 1
-	Flags: None
-*/
 function givehuntedweapon(weapon) {
   if(isdefined(self.primaryweapon)) {
     self takeweapon(self.primaryweapon);
@@ -245,15 +167,6 @@ function givehuntedweapon(weapon) {
   self setweaponammostock(weapon, 0);
 }
 
-/*
-	Name: givehuntedlethalgrenade
-	Namespace: hun
-	Checksum: 0x183CCDEE
-	Offset: 0xF98
-	Size: 0xD4
-	Parameters: 1
-	Flags: None
-*/
 function givehuntedlethalgrenade(weapon) {
   if(self.lethalgrenade == weapon) {
     currstock = self getammocount(weapon);
@@ -268,15 +181,6 @@ function givehuntedlethalgrenade(weapon) {
   self setoffhandprimaryclass(weapon);
 }
 
-/*
-	Name: givehuntedtacticalgrenade
-	Namespace: hun
-	Checksum: 0xB047CB45
-	Offset: 0x1078
-	Size: 0xD4
-	Parameters: 1
-	Flags: None
-*/
 function givehuntedtacticalgrenade(weapon) {
   if(self.tacticalgrenade == weapon) {
     currstock = self getammocount(weapon);
@@ -291,15 +195,6 @@ function givehuntedtacticalgrenade(weapon) {
   self setoffhandsecondaryclass(weapon);
 }
 
-/*
-	Name: huntedcratelandoverride
-	Namespace: hun
-	Checksum: 0x47EF7FAB
-	Offset: 0x1158
-	Size: 0x9C
-	Parameters: 4
-	Flags: None
-*/
 function huntedcratelandoverride(crate, category, owner, team) {
   crate.visibletoall = 1;
   crate supplydrop::crateactivate();
@@ -308,15 +203,6 @@ function huntedcratelandoverride(crate, category, owner, team) {
   supplydrop::default_land_function(crate, category, owner, team);
 }
 
-/*
-	Name: getcratedroporigin
-	Namespace: hun
-	Checksum: 0xF96B2F9C
-	Offset: 0x1200
-	Size: 0xFE
-	Parameters: 0
-	Flags: None
-*/
 function getcratedroporigin() {
   node = undefined;
   time = 10000;
@@ -336,15 +222,6 @@ function getcratedroporigin() {
   return node.origin;
 }
 
-/*
-	Name: cratedropper
-	Namespace: hun
-	Checksum: 0x34F5FAE9
-	Offset: 0x1308
-	Size: 0x90
-	Parameters: 0
-	Flags: None
-*/
 function cratedropper() {
   wait_time = level.helitime;
   time = 10000;

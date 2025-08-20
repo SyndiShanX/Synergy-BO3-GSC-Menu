@@ -1,50 +1,26 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_timer.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\system_shared;
-
 #namespace zm_timer;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_timer
-	Checksum: 0xC8EB4DFA
-	Offset: 0xE8
-	Size: 0x2C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_timer", undefined, & __main__, undefined);
 }
 
-/*
-	Name: __main__
-	Namespace: zm_timer
-	Checksum: 0x4BC015A4
-	Offset: 0x120
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   if(!isdefined(level.stopwatch_length_width)) {
     level.stopwatch_length_width = 96;
   }
 }
 
-/*
-	Name: start_timer
-	Namespace: zm_timer
-	Checksum: 0xA25CAB14
-	Offset: 0x148
-	Size: 0x2DC
-	Parameters: 2
-	Flags: None
-*/
 function start_timer(time, stop_notify) {
-  self notify(# "stop_prev_timer");
-  self endon(# "stop_prev_timer");
-  self endon(# "disconnect");
+  self notify("stop_prev_timer");
+  self endon("stop_prev_timer");
+  self endon("disconnect");
   if(!isdefined(self.stopwatch_elem)) {
     self.stopwatch_elem = newclienthudelem(self);
     self.stopwatch_elem.horzalign = "left";
@@ -75,42 +51,24 @@ function start_timer(time, stop_notify) {
   self.stopwatch_elem.alpha = 1;
   self.stopwatch_elem_glass.alpha = 1;
   wait(time);
-  self notify(# "countdown_finished");
+  self notify("countdown_finished");
   wait(1);
   self.stopwatch_elem.alpha = 0;
   self.stopwatch_elem_glass.alpha = 0;
 }
 
-/*
-	Name: wait_for_stop_notify
-	Namespace: zm_timer
-	Checksum: 0x1E248D30
-	Offset: 0x430
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_for_stop_notify(stop_notify) {
-  self endon(# "stop_prev_timer");
-  self endon(# "countdown_finished");
+  self endon("stop_prev_timer");
+  self endon("countdown_finished");
   self waittill(stop_notify);
   self.stopwatch_elem.alpha = 0;
   self.stopwatch_elem_glass.alpha = 0;
 }
 
-/*
-	Name: update_hud_position
-	Namespace: zm_timer
-	Checksum: 0x3A6775EA
-	Offset: 0x490
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function update_hud_position() {
-  self endon(# "disconnect");
-  self endon(# "stop_prev_timer");
-  self endon(# "countdown_finished");
+  self endon("disconnect");
+  self endon("stop_prev_timer");
+  self endon("countdown_finished");
   while (true) {
     self.stopwatch_elem.y = 20;
     self.stopwatch_elem_glass.y = 20;

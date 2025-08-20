@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_vengeance_intro.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_debug;
 #using scripts\cp\_dialog;
@@ -31,18 +35,8 @@
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\vehicleriders_shared;
-
 #namespace vengeance_intro;
 
-/*
-	Name: skipto_intro_init
-	Namespace: vengeance_intro
-	Checksum: 0xAAF5D82D
-	Offset: 0x1ED8
-	Size: 0x114
-	Parameters: 2
-	Flags: Linked
-*/
 function skipto_intro_init(str_objective, b_starting) {
   vengeance_util::skipto_baseline(str_objective, b_starting);
   load::function_73adcefc();
@@ -56,15 +50,6 @@ function skipto_intro_init(str_objective, b_starting) {
   intro_main(str_objective);
 }
 
-/*
-	Name: intro_main
-	Namespace: vengeance_intro
-	Checksum: 0xF21CCF63
-	Offset: 0x1FF8
-	Size: 0x194
-	Parameters: 1
-	Flags: Linked
-*/
 function intro_main(str_objective) {
   foreach(e_player in level.players) {
     e_player thread function_773ef6a0();
@@ -82,22 +67,13 @@ function intro_main(str_objective) {
   savegame::checkpoint_save();
 }
 
-/*
-	Name: function_773ef6a0
-	Namespace: vengeance_intro
-	Checksum: 0x60F3BC07
-	Offset: 0x2198
-	Size: 0x130
-	Parameters: 0
-	Flags: Linked
-*/
 function function_773ef6a0() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "hash_ec8fe31d");
+  self endon("death");
+  self endon("disconnect");
+  level endon("hash_ec8fe31d");
   trigger = getent("apartment_light_fire_trigger", "targetname");
   while (true) {
-    trigger waittill(# "trigger", e_other);
+    trigger waittill("trigger", e_other);
     if(e_other == self && isplayer(self)) {
       while (isdefined(self) && self istouching(trigger)) {
         if(!isdefined(self.var_a6b29bdf)) {
@@ -112,15 +88,6 @@ function function_773ef6a0() {
   }
 }
 
-/*
-	Name: intro_street_vignette_setup
-	Namespace: vengeance_intro
-	Checksum: 0x802F7883
-	Offset: 0x22D0
-	Size: 0x334
-	Parameters: 0
-	Flags: Linked
-*/
 function intro_street_vignette_setup() {
   level thread vengeance_util::function_e3420328("intro_ambient_anims", "start_takedown_igc");
   var_6a07eb6c = [];
@@ -156,15 +123,6 @@ function intro_street_vignette_setup() {
   vengeance_util::function_4e8207e9("intro", 0);
 }
 
-/*
-	Name: intro_screen
-	Namespace: vengeance_intro
-	Checksum: 0x34300EED
-	Offset: 0x2610
-	Size: 0x1A4
-	Parameters: 1
-	Flags: Linked
-*/
 function intro_screen(str_objective) {
   intro_anim_struct = struct::get("tag_align_intro", "targetname");
   vengeance_util::co_op_teleport_on_igc_end("cin_ven_01_intro_3rd_sh070", "intro_igc_teleport");
@@ -173,26 +131,17 @@ function intro_screen(str_objective) {
   level thread intro_street_vignette_setup();
   level thread intro_street_ambient_vehicles();
   load::function_c32ba481();
-  util::do_chyron_text( & "CP_MI_SING_VENGEANCE_INTRO_LINE_1_FULL", & "CP_MI_SING_VENGEANCE_INTRO_LINE_1_SHORT", & "CP_MI_SING_VENGEANCE_INTRO_LINE_2_FULL", & "CP_MI_SING_VENGEANCE_INTRO_LINE_2_SHORT", & "CP_MI_SING_VENGEANCE_INTRO_LINE_3_FULL", & "CP_MI_SING_VENGEANCE_INTRO_LINE_3_SHORT", & "CP_MI_SING_VENGEANCE_INTRO_LINE_4_FULL", & "CP_MI_SING_VENGEANCE_INTRO_LINE_4_SHORT");
+  util::do_chyron_text(&"CP_MI_SING_VENGEANCE_INTRO_LINE_1_FULL", & "CP_MI_SING_VENGEANCE_INTRO_LINE_1_SHORT", & "CP_MI_SING_VENGEANCE_INTRO_LINE_2_FULL", & "CP_MI_SING_VENGEANCE_INTRO_LINE_2_SHORT", & "CP_MI_SING_VENGEANCE_INTRO_LINE_3_FULL", & "CP_MI_SING_VENGEANCE_INTRO_LINE_3_SHORT", & "CP_MI_SING_VENGEANCE_INTRO_LINE_4_FULL", & "CP_MI_SING_VENGEANCE_INTRO_LINE_4_SHORT");
   thread cp_mi_sing_vengeance_sound::function_4368969a();
   if(isdefined(level.bzm_vengeancedialogue1callback)) {
     level thread[[level.bzm_vengeancedialogue1callback]]();
   }
   level thread namespace_9fd035::function_7dc66faa();
   intro_anim_struct scene::play("cin_ven_01_intro_3rd_sh010");
-  level waittill(# "intro_igc_done");
+  level waittill("intro_igc_done");
   util::clear_streamer_hint();
 }
 
-/*
-	Name: function_21e6e30e
-	Namespace: vengeance_intro
-	Checksum: 0xCEBFE949
-	Offset: 0x27C0
-	Size: 0x1F4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_21e6e30e() {
   objectives::set("cp_level_vengeance_rescue_kane");
   objectives::set("cp_level_vengeance_go_to_safehouse");
@@ -203,25 +152,16 @@ function function_21e6e30e() {
   level thread function_a1d4e729("breadcrumb_apartment1_triggered", "set_breadcrumb_apartment1", "breadcrumb_apartment1");
   level flag::wait_till("breadcrumb_apartment1_triggered");
   if(!level flag::get("breadcrumb_apartment1")) {
-    level notify(# "hash_9f640c4a");
+    level notify("hash_9f640c4a");
   }
   level thread function_a1d4e729("breadcrumb_apartment2_triggered", "set_breadcrumb_apartment2", "breadcrumb_apartment2");
   level flag::wait_till("breadcrumb_apartment2_triggered");
   if(!level flag::get("breadcrumb_apartment2")) {
-    level notify(# "hash_9f640c4a");
+    level notify("hash_9f640c4a");
   }
   level thread function_a1d4e729("breadcrumb_apartment3_triggered", "set_breadcrumb_apartment3", "breadcrumb_apartment3");
 }
 
-/*
-	Name: function_a1d4e729
-	Namespace: vengeance_intro
-	Checksum: 0x73A80B5D
-	Offset: 0x29C0
-	Size: 0x6C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_a1d4e729(endon_flag, wait_flag, breadcrumb) {
   level endon(endon_flag);
   level flag::wait_till(wait_flag);
@@ -229,17 +169,8 @@ function function_a1d4e729(endon_flag, wait_flag, breadcrumb) {
   level flag::set(breadcrumb);
 }
 
-/*
-	Name: intro_street_ambient_vehicles
-	Namespace: vengeance_intro
-	Checksum: 0xF07227A4
-	Offset: 0x2A38
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function intro_street_ambient_vehicles() {
-  level endon(# "takedown_begin");
+  level endon("takedown_begin");
   vehicle::add_spawn_function("intro_street_technical", & give_riders);
   vehicle::add_spawn_function("intro_street_technical2", & give_riders);
   level flag::wait_till("send_hendricks_to_apartment_entrance");
@@ -252,17 +183,8 @@ function intro_street_ambient_vehicles() {
   var_7d36720d thread function_b36ddcbc();
 }
 
-/*
-	Name: function_3b2e29a
-	Namespace: vengeance_intro
-	Checksum: 0xA61F03E5
-	Offset: 0x2B60
-	Size: 0x158
-	Parameters: 0
-	Flags: None
-*/
 function function_3b2e29a() {
-  level endon(# "takedown_begin");
+  level endon("takedown_begin");
   count = 0;
   vehicle::add_spawn_function("intro_street_technical", & give_riders);
   vehicle::add_spawn_function("intro_street_technical2", & give_riders);
@@ -283,15 +205,6 @@ function function_3b2e29a() {
   }
 }
 
-/*
-	Name: give_riders
-	Namespace: vengeance_intro
-	Checksum: 0x34D3A75D
-	Offset: 0x2CC0
-	Size: 0xEE
-	Parameters: 0
-	Flags: Linked
-*/
 function give_riders() {
   var_ae407c5 = [];
   var_5ee71f72 = array("driver", "gunner1");
@@ -304,18 +217,9 @@ function give_riders() {
   }
 }
 
-/*
-	Name: function_b36ddcbc
-	Namespace: vengeance_intro
-	Checksum: 0xCA8A7F88
-	Offset: 0x2DB8
-	Size: 0x1F6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b36ddcbc() {
-  self endon(# "death");
-  level endon(# "takedown_begin");
+  self endon("death");
+  level endon("takedown_begin");
   self turret::set_burst_parameters(1, 2, 0.25, 0.75, 1);
   ai_gunner = self vehicle::get_rider("gunner1");
   if(isdefined(ai_gunner)) {
@@ -328,20 +232,11 @@ function function_b36ddcbc() {
       fake_target.ent thread function_352b4f2e();
     }
     self thread turret::shoot_at_target(fake_target.ent, -1, undefined, 1, 0);
-    ai_gunner waittill(# "death");
-    self notify(# "_stop_turret1");
+    ai_gunner waittill("death");
+    self notify("_stop_turret1");
   }
 }
 
-/*
-	Name: function_352b4f2e
-	Namespace: vengeance_intro
-	Checksum: 0x85972CD4
-	Offset: 0x2FB8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_352b4f2e() {
   level flag::wait_till("takedown_begin");
   wait(1);
@@ -350,15 +245,6 @@ function function_352b4f2e() {
   }
 }
 
-/*
-	Name: intro_hendricks
-	Namespace: vengeance_intro
-	Checksum: 0xD6446FB8
-	Offset: 0x3008
-	Size: 0x27C
-	Parameters: 0
-	Flags: Linked
-*/
 function intro_hendricks() {
   var_cb5f6358 = getent("apt_door_l", "targetname");
   var_7af28d51 = getent("apt_door_l_clip", "targetname");
@@ -383,19 +269,10 @@ function intro_hendricks() {
   level flag::set("apartment_entrance_door_open");
 }
 
-/*
-	Name: function_8fc34056
-	Namespace: vengeance_intro
-	Checksum: 0xF45167C4
-	Offset: 0x3290
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8fc34056() {
-  level endon(# "hash_1d07a130");
-  level endon(# "hash_2d132925");
-  level endon(# "hash_fca941a1");
+  level endon("hash_1d07a130");
+  level endon("hash_2d132925");
+  level endon("hash_fca941a1");
   level thread function_d5df9cca("breadcrumb_apartment1_triggered", "set_breadcrumb_apartment1");
   level thread function_d5df9cca("breadcrumb_apartment2_triggered", "set_breadcrumb_apartment2");
   level thread function_d5df9cca("breadcrumb_apartment3_triggered", "set_breadcrumb_apartment3");
@@ -416,30 +293,12 @@ function function_8fc34056() {
   level.var_469a8d0d scene::play("cin_ven_02_10_apthorror_secondfloorapt_vign");
 }
 
-/*
-	Name: function_d5df9cca
-	Namespace: vengeance_intro
-	Checksum: 0x37A8B740
-	Offset: 0x3488
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d5df9cca(endon_flag, var_1e583720) {
   level endon(endon_flag);
   level.ai_hendricks waittill(var_1e583720);
   level flag::set(var_1e583720);
 }
 
-/*
-	Name: function_858195d5
-	Namespace: vengeance_intro
-	Checksum: 0x5427F7C6
-	Offset: 0x34D8
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked
-*/
 function function_858195d5() {
   wait(2);
   level thread function_d259704f();
@@ -451,7 +310,7 @@ function function_858195d5() {
   level.ai_hendricks vengeance_util::function_5fbec645("hend_agreed_we_ll_cut_th_1");
   level flag::wait_till("hendricks_apartment_vo");
   level thread function_c55b72a5();
-  level endon(# "hash_1d07a130");
+  level endon("hash_1d07a130");
   level.ai_hendricks util::waittill_either("noise_upstairs", "player_near_apartment_stairs");
   thread cp_mi_sing_vengeance_sound::function_afc6fda4();
   wait(1);
@@ -459,17 +318,8 @@ function function_858195d5() {
   level dialog::player_say("plyr_i_hear_it_0");
 }
 
-/*
-	Name: function_d259704f
-	Namespace: vengeance_intro
-	Checksum: 0xD959B048
-	Offset: 0x3648
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d259704f() {
-  level endon(# "hash_996095e7");
+  level endon("hash_996095e7");
   wait(1);
   level.ai_hendricks vengeance_util::function_5fbec645("hend_it_s_a_god_damn_warz_0");
   wait(1);
@@ -477,15 +327,6 @@ function function_d259704f() {
   wait(0.5);
 }
 
-/*
-	Name: skipto_intro_done
-	Namespace: vengeance_intro
-	Checksum: 0xF2121BF8
-	Offset: 0x36B8
-	Size: 0x164
-	Parameters: 4
-	Flags: Linked
-*/
 function skipto_intro_done(str_objective, b_starting, b_direct, player) {
   level struct::delete_script_bundle("scene", "cin_ven_01_intro_3rd_sh010");
   level struct::delete_script_bundle("scene", "cin_ven_01_intro_3rd_sh020");
@@ -497,15 +338,6 @@ function skipto_intro_done(str_objective, b_starting, b_direct, player) {
   level struct::delete_script_bundle("scene", "cin_ven_01_15_introstreet_walk_vign");
 }
 
-/*
-	Name: function_5cb54255
-	Namespace: vengeance_intro
-	Checksum: 0xE4ADEA73
-	Offset: 0x3828
-	Size: 0x2BC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_5cb54255(str_objective, b_starting) {
   if(b_starting) {
     util::set_level_start_flag("start_level");
@@ -532,15 +364,6 @@ function function_5cb54255(str_objective, b_starting) {
   apartment_main();
 }
 
-/*
-	Name: apartment_main
-	Namespace: vengeance_intro
-	Checksum: 0xE04058E5
-	Offset: 0x3AF0
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function apartment_main() {
   level.var_5bc00cbb = struct::get("bedroom_anim_struct", "targetname");
   level thread function_5ef7fdc2();
@@ -555,33 +378,15 @@ function apartment_main() {
   skipto::objective_completed("intro");
 }
 
-/*
-	Name: function_99eb6152
-	Namespace: vengeance_intro
-	Checksum: 0x27944162
-	Offset: 0x3C28
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function function_99eb6152() {
   level flag::wait_till("breadcrumb_apartment3_triggered");
   if(!level flag::get("breadcrumb_apartment3")) {
-    level notify(# "hash_9f640c4a");
+    level notify("hash_9f640c4a");
   }
-  level waittill(# "hash_cf441b58");
+  level waittill("hash_cf441b58");
   objectives::set("cp_waypoint_breadcrumb", struct::get("waypoint_intro5"));
 }
 
-/*
-	Name: function_5274de79
-	Namespace: vengeance_intro
-	Checksum: 0x71E55A5
-	Offset: 0x3CC8
-	Size: 0x694
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5274de79() {
   level.ai_hendricks ai::set_ignoreme(1);
   level flag::wait_till_any(array("apartment_enemies_alerted", "synckill_scene_complete", "apartment_enemies_dead"));
@@ -623,7 +428,7 @@ function function_5274de79() {
   level thread function_dcf3d41b();
   node = getnode("hendricks_bedroom_door_node", "targetname");
   level.ai_hendricks setgoal(node);
-  level.ai_hendricks waittill(# "goal");
+  level.ai_hendricks waittill("goal");
   level thread util::set_streamer_hint(2);
   level thread takedown_scene_setup();
   level.var_5bc00cbb thread scene::play("cin_ven_02_30_masterbedroom_vign");
@@ -632,7 +437,7 @@ function function_5274de79() {
   wait(0.05);
   level thread vengeance_util::function_ab876b5a("cp_vengeance_env_sign_dancer01", "strip_video_start", "strip_video_end");
   wait(0.05);
-  level notify(# "hash_96cd3d20");
+  level notify("hash_96cd3d20");
   node = getnode("hendricks_takedown_rooftop_node", "targetname");
   level.ai_hendricks setgoal(node);
   level.ai_hendricks ai::set_behavior_attribute("cqb", 1);
@@ -642,8 +447,8 @@ function function_5274de79() {
   }
   wait(2);
   level thread function_caf96976();
-  level.var_5bc00cbb waittill(# "scene_done");
-  level notify(# "hash_cf441b58");
+  level.var_5bc00cbb waittill("scene_done");
+  level notify("hash_cf441b58");
   level flag::set("bedroom_scene_complete");
   level flag::wait_till("player_on_takedown_rooftop");
   var_9c1589f3 = getentarray("gunfire_behind_window", "targetname");
@@ -653,15 +458,6 @@ function function_5274de79() {
   level flag::set("apartment_complete");
 }
 
-/*
-	Name: function_dcf3d41b
-	Namespace: vengeance_intro
-	Checksum: 0x5015D38D
-	Offset: 0x4368
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dcf3d41b() {
   if(!level flag::get("hendricks_on_second_floor_apartment")) {
     level flag::wait_till("hendricks_on_second_floor_apartment");
@@ -669,15 +465,6 @@ function function_dcf3d41b() {
   level.ai_hendricks ai::set_behavior_attribute("cqb", 1);
 }
 
-/*
-	Name: function_5ef7fdc2
-	Namespace: vengeance_intro
-	Checksum: 0xB7C13CEB
-	Offset: 0x43E0
-	Size: 0x414
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5ef7fdc2() {
   trigger::wait_till("apartment_light_fire_trigger");
   level.var_1dca7888 = [];
@@ -703,24 +490,15 @@ function function_5ef7fdc2() {
     player thread function_4e050c10(trigger, "syncshot_lookat_failsafe");
   }
   level flag::wait_till_any(array("player_looking", "syncshot_lookat_failsafe"));
-  level notify(# "hash_5262905a");
+  level notify("hash_5262905a");
   level thread function_7f6de599();
   level flag::wait_till_any(array("apartment_enemies_alerted", "synckill_scene_complete", "apartment_enemies_dead"));
 }
 
-/*
-	Name: function_4e050c10
-	Namespace: vengeance_intro
-	Checksum: 0xC2C09636
-	Offset: 0x4800
-	Size: 0xF4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_4e050c10(trigger, endon_flag) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "player_looking");
+  self endon("death");
+  self endon("disconnect");
+  level endon("player_looking");
   if(isdefined(endon_flag)) {
     level endon(endon_flag);
   }
@@ -736,35 +514,17 @@ function function_4e050c10(trigger, endon_flag) {
   }
 }
 
-/*
-	Name: function_7f6de599
-	Namespace: vengeance_intro
-	Checksum: 0x345A3E69
-	Offset: 0x4900
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7f6de599() {
-  level endon(# "hash_1d07a130");
+  level endon("hash_1d07a130");
   level.var_5bc00cbb thread scene::play("cin_ven_02_20_synckill_vign");
   thread cp_mi_sing_vengeance_sound::function_57ec1ad7();
   wait(0.25);
-  level.var_5bc00cbb waittill(# "scene_done");
+  level.var_5bc00cbb waittill("scene_done");
   level flag::set("synckill_scene_complete");
 }
 
-/*
-	Name: function_1f707d1e
-	Namespace: vengeance_intro
-	Checksum: 0xBABA3730
-	Offset: 0x4980
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1f707d1e() {
-  self endon(# "death");
+  self endon("death");
   array::add(level.var_1dca7888, self);
   self.goalradius = 32;
   if(isdefined(self.targetname)) {
@@ -782,55 +542,28 @@ function function_1f707d1e() {
   self thread function_fb5e09cf();
   if(self.targetname == "synckill_enemy2_ai") {
     self thread function_3a005b50();
-    self waittill(# "hash_940c80ec");
+    self waittill("hash_940c80ec");
     self.allowdeath = 1;
   }
   self thread function_1d07a130();
   self thread function_5a4b0113();
 }
 
-/*
-	Name: function_3a005b50
-	Namespace: vengeance_intro
-	Checksum: 0x19E1892
-	Offset: 0x4AE8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3a005b50() {
-  self endon(# "death");
+  self endon("death");
   self ai::set_ignoreme(1);
   self util::waittill_any("damage", "alert", "killable_now");
   self ai::set_ignoreme(0);
 }
 
-/*
-	Name: function_a645cfd9
-	Namespace: vengeance_intro
-	Checksum: 0xD4A82F5
-	Offset: 0x4B60
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a645cfd9() {
   self.ignoreme = 1;
   self.team = "allies";
   self disableaimassist();
 }
 
-/*
-	Name: function_fb5e09cf
-	Namespace: vengeance_intro
-	Checksum: 0xE5FDDFB6
-	Offset: 0x4BA0
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fb5e09cf() {
-  self waittill(# "death");
+  self waittill("death");
   if(!level flag::get("apartment_enemy_dead")) {
     level flag::set("apartment_enemy_dead");
   }
@@ -840,40 +573,22 @@ function function_fb5e09cf() {
   }
 }
 
-/*
-	Name: function_5a4b0113
-	Namespace: vengeance_intro
-	Checksum: 0xE68B44A1
-	Offset: 0x4C48
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5a4b0113() {
-  self endon(# "death");
-  level endon(# "hash_fca941a1");
-  self waittill(# "alert", state);
+  self endon("death");
+  level endon("hash_fca941a1");
+  self waittill("alert", state);
   if(!level flag::get("apartment_enemies_alerted")) {
     level flag::set("apartment_enemies_alerted");
   }
 }
 
-/*
-	Name: function_1d07a130
-	Namespace: vengeance_intro
-	Checksum: 0x7DD73E86
-	Offset: 0x4CC8
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1d07a130() {
-  self endon(# "death");
+  self endon("death");
   level flag::wait_till_any(array("apartment_enemies_alerted", "synckill_scene_complete", "syncshot_lookat_failsafe"));
   if(level flag::get("syncshot_lookat_failsafe")) {
     wait(0.25);
   }
-  self notify(# "alert");
+  self notify("alert");
   if(level flag::get("apartment_enemies_alerted") || level flag::get("syncshot_lookat_failsafe")) {
     self stopanimscripted();
     wait(0.05);
@@ -882,36 +597,18 @@ function function_1d07a130() {
   self setgoal(node, 1, 8);
 }
 
-/*
-	Name: function_b3c6efd1
-	Namespace: vengeance_intro
-	Checksum: 0xCC38F619
-	Offset: 0x4E08
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b3c6efd1() {
   level flag::wait_till("player_near_apartment_stairs");
   wait(0.5);
-  level.ai_hendricks notify(# "hash_7d304e15");
+  level.ai_hendricks notify("hash_7d304e15");
   level thread function_cce1e811();
-  level.ai_hendricks waittill(# "hash_d05bd175");
+  level.ai_hendricks waittill("hash_d05bd175");
   level dialog::player_say("plyr_once_we_find_her_n_0");
 }
 
-/*
-	Name: function_cce1e811
-	Namespace: vengeance_intro
-	Checksum: 0xE7D888D4
-	Offset: 0x4E98
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cce1e811() {
-  level endon(# "hash_1d07a130");
-  level endon(# "hash_2d132925");
+  level endon("hash_1d07a130");
+  level endon("hash_2d132925");
   if(!level flag::get("hendricks_on_second_floor_apartment")) {
     level flag::wait_till("hendricks_on_second_floor_apartment");
   }
@@ -922,36 +619,18 @@ function function_cce1e811() {
   level.ai_hendricks vengeance_util::function_5fbec645("hend_take_them_out_1");
 }
 
-/*
-	Name: function_c55b72a5
-	Namespace: vengeance_intro
-	Checksum: 0x1A0EA4F0
-	Offset: 0x4F60
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c55b72a5() {
-  level endon(# "hash_a2cf5f81");
+  level endon("hash_a2cf5f81");
   var_ba1e1975 = getent("bedroom_audio_origin", "targetname");
   level thread function_a5bf9c17(var_ba1e1975);
   level flag::wait_till_any(array("apartment_enemies_alerted", "syncshot_lookat_failsafe"));
-  level notify(# "kill_pending_dialog");
-  var_ba1e1975 notify(# "kill_pending_dialog");
+  level notify("kill_pending_dialog");
+  var_ba1e1975 notify("kill_pending_dialog");
 }
 
-/*
-	Name: function_a5bf9c17
-	Namespace: vengeance_intro
-	Checksum: 0x9785F1B2
-	Offset: 0x5008
-	Size: 0x244
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a5bf9c17(var_ba1e1975) {
-  level endon(# "hash_1d07a130");
-  level endon(# "hash_1047ee39");
+  level endon("hash_1d07a130");
+  level endon("hash_1047ee39");
   var_ba1e1975 = getent("bedroom_audio_origin", "targetname");
   var_ba1e1975 vengeance_util::function_5fbec645("ffim1_what_are_you_going_t_0");
   var_ba1e1975 vengeance_util::function_5fbec645("mciv_leave_us_alone_0");
@@ -972,17 +651,8 @@ function function_a5bf9c17(var_ba1e1975) {
   var_ba1e1975 vengeance_util::function_5fbec645("ffim2_i_bet_she_s_soft_0");
 }
 
-/*
-	Name: function_4bd6211
-	Namespace: vengeance_intro
-	Checksum: 0x918C1E5
-	Offset: 0x5258
-	Size: 0x108
-	Parameters: 1
-	Flags: None
-*/
 function function_4bd6211(var_ba1e1975) {
-  level endon(# "hash_5262905a");
+  level endon("hash_5262905a");
   var_2ab10bee = [];
   var_2ab10bee[0] = "fciv_crying_hysterically_0";
   var_2ab10bee[1] = "fciv_crying_hysterically_1";
@@ -997,15 +667,6 @@ function function_4bd6211(var_ba1e1975) {
   }
 }
 
-/*
-	Name: function_7acb5fc4
-	Namespace: vengeance_intro
-	Checksum: 0xA046B335
-	Offset: 0x5368
-	Size: 0x3EA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7acb5fc4() {
   level.var_5bc00cbb scene::init("cin_ven_02_30_masterbedroom_vign");
   wait(0.5);
@@ -1041,26 +702,8 @@ function function_7acb5fc4() {
   }
 }
 
-/*
-	Name: function_4762cf8f
-	Namespace: vengeance_intro
-	Checksum: 0x568DB185
-	Offset: 0x5760
-	Size: 0x24
-	Parameters: 4
-	Flags: Linked
-*/
 function function_4762cf8f(str_objective, b_starting, b_direct, player) {}
 
-/*
-	Name: skipto_takedown_init
-	Namespace: vengeance_intro
-	Checksum: 0x5573830A
-	Offset: 0x5790
-	Size: 0x374
-	Parameters: 2
-	Flags: Linked
-*/
 function skipto_takedown_init(str_objective, b_starting) {
   if(b_starting) {
     load::function_73adcefc();
@@ -1084,7 +727,7 @@ function skipto_takedown_init(str_objective, b_starting) {
     wait(0.05);
     level thread vengeance_util::function_ab876b5a("cp_vengeance_env_sign_dancer01", "strip_video_start", "strip_video_end");
     wait(0.05);
-    level notify(# "hash_96cd3d20");
+    level notify("hash_96cd3d20");
     objectives::set("cp_waypoint_breadcrumb", struct::get("waypoint_intro5"));
     level thread function_caf96976();
     var_9c1589f3 = getentarray("gunfire_behind_window", "targetname");
@@ -1101,15 +744,6 @@ function skipto_takedown_init(str_objective, b_starting) {
   takedown_main(b_starting);
 }
 
-/*
-	Name: takedown_main
-	Namespace: vengeance_intro
-	Checksum: 0x651C62F8
-	Offset: 0x5B10
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function takedown_main(b_starting) {
   level thread function_e522974a(b_starting);
   level thread function_e670b187();
@@ -1120,15 +754,6 @@ function takedown_main(b_starting) {
   skipto::objective_completed("takedown");
 }
 
-/*
-	Name: function_e522974a
-	Namespace: vengeance_intro
-	Checksum: 0xE439A75E
-	Offset: 0x5BD8
-	Size: 0x152
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e522974a(b_starting) {
   var_9c1589f3 = getentarray("gunfire_behind_window", "targetname");
   foreach(card in var_9c1589f3) {
@@ -1140,17 +765,8 @@ function function_e522974a(b_starting) {
   }
 }
 
-/*
-	Name: function_fb3f26d6
-	Namespace: vengeance_intro
-	Checksum: 0x8DEE110F
-	Offset: 0x5D38
-	Size: 0x602
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fb3f26d6(b_starting) {
-  level endon(# "hash_ec8fe31d");
+  level endon("hash_ec8fe31d");
   if(isdefined(b_starting) && b_starting) {
     wait(1);
   }
@@ -1195,88 +811,43 @@ function function_fb3f26d6(b_starting) {
   }
 }
 
-/*
-	Name: function_627987c5
-	Namespace: vengeance_intro
-	Checksum: 0x4AC4740A
-	Offset: 0x6348
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_627987c5() {
   level flag::wait_till("start_killing_streets_ambient_anims");
   level thread vengeance_util::function_e3420328("killing_streets_ambient_anims", "dogleg_1_begin");
 }
 
-/*
-	Name: function_e670b187
-	Namespace: vengeance_intro
-	Checksum: 0x17950EBF
-	Offset: 0x63A0
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e670b187() {
   level flag::wait_till("start_takedown_igc");
   objectives::complete("cp_waypoint_breadcrumb", struct::get("waypoint_intro5"));
-  level waittill(# "hash_3d3af5a5");
+  level waittill("hash_3d3af5a5");
   objectives::set("cp_waypoint_breadcrumb", struct::get("waypoint_intro6"));
-  level waittill(# "hash_bfaac156");
+  level waittill("hash_bfaac156");
   objectives::complete("cp_waypoint_breadcrumb", struct::get("waypoint_intro6"));
 }
 
-/*
-	Name: hendricks_takedown_vo
-	Namespace: vengeance_intro
-	Checksum: 0x416780AF
-	Offset: 0x6480
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function hendricks_takedown_vo() {
   level flag::wait_till("start_takedown_igc");
   wait(1.5);
   level thread function_d07dfdc1();
-  level waittill(# "hash_d1668ed6");
+  level waittill("hash_d1668ed6");
   level thread namespace_9fd035::function_e18f629a();
-  level.ai_hendricks waittill(# "hash_6ed80778");
+  level.ai_hendricks waittill("hash_6ed80778");
   level dialog::player_say("plyr_this_is_what_happens_0");
   level dialog::player_say("plyr_we_get_kane_then_w_0");
   level dialog::player_say("plyr_we_don_t_leave_one_o_0");
-  level notify(# "hash_c791440b");
+  level notify("hash_c791440b");
 }
 
-/*
-	Name: function_d07dfdc1
-	Namespace: vengeance_intro
-	Checksum: 0xE2611967
-	Offset: 0x6570
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d07dfdc1() {
-  level endon(# "hash_3d3af5a5");
-  level waittill(# "hash_9c3eb25d");
+  level endon("hash_3d3af5a5");
+  level waittill("hash_9c3eb25d");
   wait(2);
   level.ai_hendricks vengeance_util::function_5fbec645("hend_more_enemies_inboun_0");
-  level waittill(# "hash_c1a33016");
+  level waittill("hash_c1a33016");
 }
 
-/*
-	Name: function_caf96976
-	Namespace: vengeance_intro
-	Checksum: 0xCC5AB5BA
-	Offset: 0x65C8
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function function_caf96976() {
-  level endon(# "hash_ec8fe31d");
+  level endon("hash_ec8fe31d");
   var_abd40945 = getent("takedown_enemy_leader_audio_origin", "targetname");
   var_abd40945 vengeance_util::function_5fbec645("ffim1_today_we_rise_agains_0");
   var_abd40945 vengeance_util::function_5fbec645("ffim1_these_things_do_not_0");
@@ -1290,31 +861,13 @@ function function_caf96976() {
   var_abd40945 thread vengeance_util::function_5fbec645("ffim2_immorrrtaalllls_0");
 }
 
-/*
-	Name: function_c6be5e1d
-	Namespace: vengeance_intro
-	Checksum: 0xAC809B95
-	Offset: 0x6748
-	Size: 0x62
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c6be5e1d() {
   var_e022aef3 = getent("takedown_igc_trigger", "targetname");
-  var_e022aef3 endon(# "death");
+  var_e022aef3 endon("death");
   var_e022aef3 trigger::wait_till();
   return var_e022aef3.who;
 }
 
-/*
-	Name: takedown_scene
-	Namespace: vengeance_intro
-	Checksum: 0xA9066735
-	Offset: 0x67B8
-	Size: 0x9C4
-	Parameters: 0
-	Flags: Linked
-*/
 function takedown_scene() {
   level.var_3d63f698 thread scene::init("cin_ven_03_11_gate_convo_vign");
   var_642e55f9 = getent("takedown_gate_right", "targetname");
@@ -1341,7 +894,7 @@ function takedown_scene() {
     level.var_3d63f698 thread scene::play("cin_ven_03_10_takedown_intro_1st_props");
     level.var_3d63f698 thread scene::play("cin_ven_01_02_rooftop_1st_overlook");
     level thread function_ca15fd13();
-    level.ai_hendricks waittill(# "takedown_start");
+    level.ai_hendricks waittill("takedown_start");
     level.ai_hendricks cybercom::cybercom_armpulse(1);
   }
   util::clear_streamer_hint();
@@ -1356,14 +909,14 @@ function takedown_scene() {
       enemy ai::set_ignoreme(0);
     }
   }
-  level.ai_hendricks waittill(# "start_slowmo");
+  level.ai_hendricks waittill("start_slowmo");
   level.var_6e0b32d8 = level.var_d9f6d6.size;
   namespace_523da15d::function_b510823b();
   setslowmotion(1, 0.3, 0.3);
   foreach(player in level.activeplayers) {
     player setmovespeedscale(0.3);
   }
-  level.ai_hendricks waittill(# "stop_slowmo");
+  level.ai_hendricks waittill("stop_slowmo");
   thread cp_mi_sing_vengeance_sound::function_69fc18eb();
   setslowmotion(0.3, 1);
   foreach(player in level.activeplayers) {
@@ -1380,7 +933,7 @@ function takedown_scene() {
       if(isalive(enemy)) {
         magicbullet(level.ai_hendricks.weapon, level.ai_hendricks gettagorigin("tag_flash"), enemy gettagorigin("j_head"), level.ai_hendricks, enemy);
         level.ai_hendricks thread ai::shoot_at_target("kill_within_time", enemy, "j_head", 0.1);
-        enemy waittill(# "death");
+        enemy waittill("death");
       }
     }
   }
@@ -1394,12 +947,12 @@ function takedown_scene() {
       wait(1);
     }
     level.ai_hendricks ai::enable_pain();
-    level notify(# "hash_3d3af5a5");
+    level notify("hash_3d3af5a5");
   }
   level thread vengeance_killing_streets::function_9736d8c9();
   level thread vengeance_killing_streets::setup_killing_streets_intro_patroller_spawners();
   level.var_3d63f698 thread scene::play("cin_ven_03_11_gate_convo_vign");
-  level notify(# "hash_d1668ed6");
+  level notify("hash_d1668ed6");
   if(isdefined(level.bzm_vengeancedialogue3callback)) {
     level thread[[level.bzm_vengeancedialogue3callback]]();
   }
@@ -1407,20 +960,11 @@ function takedown_scene() {
   node = getnode("killing_streets_hendricks_node_03", "targetname");
   level.ai_hendricks setgoal(node, 1, 16);
   wait(15);
-  level notify(# "hash_bfaac156");
-  level.var_3d63f698 waittill(# "scene_done");
+  level notify("hash_bfaac156");
+  level.var_3d63f698 waittill("scene_done");
   level flag::set("takedown_complete");
 }
 
-/*
-	Name: function_a2b65bd2
-	Namespace: vengeance_intro
-	Checksum: 0x24C76B74
-	Offset: 0x7188
-	Size: 0x11A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a2b65bd2(var_fde961b5) {
   n_scene = 2;
   foreach(player in level.activeplayers) {
@@ -1436,45 +980,18 @@ function function_a2b65bd2(var_fde961b5) {
   }
 }
 
-/*
-	Name: function_ca15fd13
-	Namespace: vengeance_intro
-	Checksum: 0x525DBC0E
-	Offset: 0x72B0
-	Size: 0x8A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ca15fd13() {
   foreach(player in level.activeplayers) {
     player thread function_b5ab443b();
   }
 }
 
-/*
-	Name: function_b5ab443b
-	Namespace: vengeance_intro
-	Checksum: 0x78FCC2EC
-	Offset: 0x7348
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b5ab443b() {
-  self endon(# "death");
+  self endon("death");
   level.var_3d63f698 scene::play(self.var_efe0572d, self);
   level.var_3d63f698 scene::play(self.var_ac3f2f23, self);
 }
 
-/*
-	Name: function_497db06c
-	Namespace: vengeance_intro
-	Checksum: 0x90028EAA
-	Offset: 0x73A8
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_497db06c() {
   level.var_3d63f698 thread scene::play("cin_ven_01_02_rooftop_1st_overlook", level.var_48158b2b);
   level.var_3d63f698 thread scene::play("cin_ven_03_10_takedown_intro_1st_props");
@@ -1483,29 +1000,11 @@ function function_497db06c() {
   level.var_3d63f698 thread scene::play("cin_ven_03_10_takedown_1st", level.var_fc109659);
 }
 
-/*
-	Name: function_94b3c083
-	Namespace: vengeance_intro
-	Checksum: 0x1ED2B540
-	Offset: 0x7478
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_94b3c083() {
-  level.ai_hendricks waittill(# "stop_slowmo");
+  level.ai_hendricks waittill("stop_slowmo");
   level vengeance_util::function_a084a58f();
 }
 
-/*
-	Name: function_44b7b533
-	Namespace: vengeance_intro
-	Checksum: 0xE8B2FE42
-	Offset: 0x74B0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_44b7b533() {
   self.var_df53bc6 = self.script_accuracy;
   self.script_accuracy = 0.2;
@@ -1513,15 +1012,6 @@ function function_44b7b533() {
   self.script_accuracy = self.var_df53bc6;
 }
 
-/*
-	Name: function_9c3eb25d
-	Namespace: vengeance_intro
-	Checksum: 0x8AA7BD4A
-	Offset: 0x7510
-	Size: 0x4DA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9c3eb25d() {
   vehicle::add_spawn_function("takedown_backup_truck", & function_296cfddf);
   var_235588b9 = vehicle::simple_spawn_single_and_drive("takedown_backup_truck");
@@ -1533,7 +1023,7 @@ function function_9c3eb25d() {
     spawner.script_noteworthy = "takedown_backup_right_" + i;
     spawner thread function_4d5e399c();
   }
-  level notify(# "hash_9c3eb25d");
+  level notify("hash_9c3eb25d");
   wait(0.25);
   level.var_e7c1ffa = array::remove_dead(level.var_e7c1ffa);
   ai::waittill_dead(level.var_e7c1ffa, 3);
@@ -1566,7 +1056,7 @@ function function_9c3eb25d() {
   wait(0.25);
   level.var_e7c1ffa = array::remove_dead(level.var_e7c1ffa);
   ai::waittill_dead(level.var_e7c1ffa, 3);
-  level notify(# "hash_c1a33016");
+  level notify("hash_c1a33016");
   while (level.var_e7c1ffa.size > 3) {
     level.var_e7c1ffa = array::remove_dead(level.var_e7c1ffa);
     wait(0.05);
@@ -1580,32 +1070,14 @@ function function_9c3eb25d() {
   }
 }
 
-/*
-	Name: function_52c5929b
-	Namespace: vengeance_intro
-	Checksum: 0xAD4B7105
-	Offset: 0x79F8
-	Size: 0x3C
-	Parameters: 0
-	Flags: None
-*/
 function function_52c5929b() {
-  self waittill(# "goal");
+  self waittill("goal");
   self ai::set_ignoreall(0);
   self ai::set_ignoreme(0);
 }
 
-/*
-	Name: function_296cfddf
-	Namespace: vengeance_intro
-	Checksum: 0xDFA57CE1
-	Offset: 0x7A40
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_296cfddf() {
-  self endon(# "death");
+  self endon("death");
   self thread takedown_cleanup();
   var_ae407c5 = [];
   var_5ee71f72 = array("driver", "passenger1", "gunner1");
@@ -1618,45 +1090,27 @@ function function_296cfddf() {
     }
   }
   self thread function_8fb2d768();
-  level waittill(# "hash_ea1f086f");
+  level waittill("hash_ea1f086f");
   level flag::set("takedown_backup_truck_stopped_flag");
   self disconnectpaths();
 }
 
-/*
-	Name: function_8fb2d768
-	Namespace: vengeance_intro
-	Checksum: 0x2060CA76
-	Offset: 0x7BD8
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8fb2d768() {
-  self endon(# "death");
+  self endon("death");
   self flag::init("gunner_position_occupied");
   self turret::set_burst_parameters(1, 2, 0.25, 0.75, 1);
   ai_gunner = self vehicle::get_rider("gunner1");
   if(isdefined(ai_gunner)) {
     self turret::enable(1, 1);
     self flag::set("gunner_position_occupied");
-    ai_gunner waittill(# "death");
+    ai_gunner waittill("death");
   }
   self turret::disable(1);
   self flag::clear("gunner_position_occupied");
 }
 
-/*
-	Name: function_4d5e399c
-	Namespace: vengeance_intro
-	Checksum: 0xEE174947
-	Offset: 0x7D30
-	Size: 0x574
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4d5e399c() {
-  self endon(# "death");
+  self endon("death");
   array::add(level.var_e7c1ffa, self);
   if(isdefined(self.targetname) && self.targetname == "takedown_backup_right_ai_ai") {
     self setgoalpos(self.origin, 1);
@@ -1673,7 +1127,7 @@ function function_4d5e399c() {
       wait(randomfloatrange(0.3, 0.75));
     }
     self setgoalvolume(volume);
-    self waittill(# "goal");
+    self waittill("goal");
     self ai::set_ignoreall(0);
     self ai::set_ignoreme(0);
   }
@@ -1689,7 +1143,7 @@ function function_4d5e399c() {
       wait(randomfloatrange(0.3, 0.5));
     }
     self setgoalvolume(volume);
-    self waittill(# "goal");
+    self waittill("goal");
     self ai::set_ignoreall(0);
     self ai::set_ignoreme(0);
     if(level.var_e7c1ffa.size > 3) {
@@ -1723,17 +1177,8 @@ function function_4d5e399c() {
   }
 }
 
-/*
-	Name: function_64be6dbe
-	Namespace: vengeance_intro
-	Checksum: 0x8175B606
-	Offset: 0x82B0
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_64be6dbe() {
-  level.ai_hendricks waittill(# "hash_ca6b3f19");
+  level.ai_hendricks waittill("hash_ca6b3f19");
   playfxontag(level._effect["fx_exp_emp_siegebot_veng"], level.takedown_siegebot, "tag_eye");
   wait(0.5);
   if(isalive(level.takedown_rbot1)) {
@@ -1751,15 +1196,6 @@ function function_64be6dbe() {
   }
 }
 
-/*
-	Name: function_a339da70
-	Namespace: vengeance_intro
-	Checksum: 0xD67DAB05
-	Offset: 0x8458
-	Size: 0x9C
-	Parameters: 0
-	Flags: None
-*/
 function function_a339da70() {
   setslowmotion(1, 0.3, 0.3);
   level thread function_8b1bdf0e();
@@ -1768,32 +1204,14 @@ function function_a339da70() {
   setslowmotion(0.3, 1);
 }
 
-/*
-	Name: function_8b1bdf0e
-	Namespace: vengeance_intro
-	Checksum: 0x20F5B5A9
-	Offset: 0x8500
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8b1bdf0e() {
   while (level.takedown_enemies.size > 0) {
     level.takedown_enemies = array::remove_dead(level.takedown_enemies);
     wait(0.05);
   }
-  level.ai_hendricks notify(# "hash_d6da3c26");
+  level.ai_hendricks notify("hash_d6da3c26");
 }
 
-/*
-	Name: takedown_scene_setup
-	Namespace: vengeance_intro
-	Checksum: 0x6F91F986
-	Offset: 0x8560
-	Size: 0x5CC
-	Parameters: 0
-	Flags: Linked
-*/
 function takedown_scene_setup() {
   level.var_3d63f698 = struct::get("tag_align_takedown", "targetname");
   level.takedown_truck_54i = spawner::simple_spawn_single("truck_54i");
@@ -1841,9 +1259,9 @@ function takedown_scene_setup() {
     spawner spawner::add_spawn_function( & takedown_ai_setup);
     spawner spawner::spawn();
   }
-  level notify(# "takedown_scene_setup");
+  level notify("takedown_scene_setup");
   if(isdefined(level.var_b7e68311)) {
-    level waittill(# "hash_63d9e6f4");
+    level waittill("hash_63d9e6f4");
   }
   if(isdefined(level.var_48158b2b)) {} else {
     level.var_3d63f698 thread scene::init("cin_ven_03_10_takedown_intro_1st");
@@ -1852,45 +1270,18 @@ function takedown_scene_setup() {
   }
 }
 
-/*
-	Name: function_9d478f6a
-	Namespace: vengeance_intro
-	Checksum: 0xFDCA913D
-	Offset: 0x8B38
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9d478f6a() {
-  self endon(# "death");
+  self endon("death");
   thread cp_mi_sing_vengeance_sound::takedown_siegebot(self);
-  self waittill(# "hash_77e3a76");
+  self waittill("hash_77e3a76");
   var_26993771 = getent("takedown_siegebot_death_clip", "targetname");
   var_26993771 delete();
   self.allowdeath = 1;
   self kill();
 }
 
-/*
-	Name: function_b584dbf0
-	Namespace: vengeance_intro
-	Checksum: 0xF1BEAD21
-	Offset: 0x8BD8
-	Size: 0xC
-	Parameters: 1
-	Flags: None
-*/
 function function_b584dbf0(params) {}
 
-/*
-	Name: takedown_ai_setup
-	Namespace: vengeance_intro
-	Checksum: 0xB67D64A3
-	Offset: 0x8BF0
-	Size: 0x74C
-	Parameters: 0
-	Flags: Linked
-*/
 function takedown_ai_setup() {
   self ai::set_ignoreall(1);
   self ai::set_ignoreme(1);
@@ -2004,15 +1395,6 @@ function takedown_ai_setup() {
   }
 }
 
-/*
-	Name: takedown_cleanup
-	Namespace: vengeance_intro
-	Checksum: 0x55A00065
-	Offset: 0x9348
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function takedown_cleanup() {
   level flag::wait_till("start_dogleg_1_intro");
   wait(1);
@@ -2021,15 +1403,6 @@ function takedown_cleanup() {
   }
 }
 
-/*
-	Name: skipto_takedown_done
-	Namespace: vengeance_intro
-	Checksum: 0xDA6F81DE
-	Offset: 0x9398
-	Size: 0x1B4
-	Parameters: 4
-	Flags: Linked
-*/
 function skipto_takedown_done(str_objective, b_starting, b_direct, player) {
   level struct::delete_script_bundle("scene", "cin_ven_hanging_body_loop_vign_civ02");
   level struct::delete_script_bundle("scene", "cin_ven_hanging_body_loop_vign_civ05");
@@ -2043,17 +1416,7 @@ function skipto_takedown_done(str_objective, b_starting, b_direct, player) {
   level struct::delete_script_bundle("scene", "cin_ven_02_10_apthorror_secondfloorapt_vign");
 }
 
-/*
-	Name: function_81f84c9c
-	Namespace: vengeance_intro
-	Checksum: 0x579BB98E
-	Offset: 0x9558
-	Size: 0x182
-	Parameters: 2
-	Flags: None
-*/
 function function_81f84c9c(str_objective, b_starting) {
-  /#
   level.var_b7e68311 = 1;
   vengeance_util::skipto_baseline(str_objective, b_starting);
   vengeance_util::init_hero("", str_objective);
@@ -2065,23 +1428,12 @@ function function_81f84c9c(str_objective, b_starting) {
   objectives::set("", struct::get(""));
   level flag::set("");
   level thread takedown_main();
-  level waittill(# "takedown_scene_setup");
+  level waittill("takedown_scene_setup");
   level function_6fa5f384();
-  level notify(# "hash_63d9e6f4");
-  # /
+  level notify("hash_63d9e6f4");
 }
 
-/*
-	Name: function_616e9ab6
-	Namespace: vengeance_intro
-	Checksum: 0x4304DF1F
-	Offset: 0x96E8
-	Size: 0x1EA
-	Parameters: 2
-	Flags: Linked
-*/
 function function_616e9ab6(str_objective, b_starting) {
-  /#
   level.var_b7e68311 = 1;
   vengeance_util::skipto_baseline(str_objective, b_starting);
   vengeance_util::init_hero("", str_objective);
@@ -2099,25 +1451,14 @@ function function_616e9ab6(str_objective, b_starting) {
   }
   wait(1);
   level thread takedown_main();
-  level waittill(# "takedown_scene_setup");
+  level waittill("takedown_scene_setup");
   if(level.activeplayers.size == 2) {
     level function_6fa5f384();
   }
-  level notify(# "hash_63d9e6f4");
-  # /
+  level notify("hash_63d9e6f4");
 }
 
-/*
-	Name: function_8771151f
-	Namespace: vengeance_intro
-	Checksum: 0xFCCA8C4
-	Offset: 0x98E0
-	Size: 0x1F2
-	Parameters: 2
-	Flags: Linked
-*/
 function function_8771151f(str_objective, b_starting) {
-  /#
   level.var_b7e68311 = 1;
   vengeance_util::skipto_baseline(str_objective, b_starting);
   vengeance_util::init_hero("", str_objective);
@@ -2135,25 +1476,14 @@ function function_8771151f(str_objective, b_starting) {
     wait(1);
   }
   level thread takedown_main();
-  level waittill(# "takedown_scene_setup");
+  level waittill("takedown_scene_setup");
   if(level.activeplayers.size == 3) {
     level function_6fa5f384();
   }
-  level notify(# "hash_63d9e6f4");
-  # /
+  level notify("hash_63d9e6f4");
 }
 
-/*
-	Name: function_7d5fbc40
-	Namespace: vengeance_intro
-	Checksum: 0x6D86FA83
-	Offset: 0x9AE0
-	Size: 0x1F2
-	Parameters: 2
-	Flags: Linked
-*/
 function function_7d5fbc40(str_objective, b_starting) {
-  /#
   level.var_b7e68311 = 1;
   vengeance_util::skipto_baseline(str_objective, b_starting);
   vengeance_util::init_hero("", str_objective);
@@ -2171,25 +1501,14 @@ function function_7d5fbc40(str_objective, b_starting) {
     wait(1);
   }
   level thread takedown_main();
-  level waittill(# "takedown_scene_setup");
+  level waittill("takedown_scene_setup");
   if(level.activeplayers.size == 4) {
     level function_6fa5f384();
   }
-  level notify(# "hash_63d9e6f4");
-  # /
+  level notify("hash_63d9e6f4");
 }
 
-/*
-	Name: function_6fa5f384
-	Namespace: vengeance_intro
-	Checksum: 0xCE4E2CAA
-	Offset: 0x9CE0
-	Size: 0x1356
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6fa5f384() {
-  /#
   level.var_48158b2b = [];
   level.var_7cd6979b = [];
   level.var_7cd6979b = arraycombine(level.var_7cd6979b, level.activeplayers, 0, 0);
@@ -2376,5 +1695,4 @@ function function_6fa5f384() {
     level.var_fc109659[27] = level.var_a096b0e3;
     level.var_fc109659[28] = level.var_2e8f41a8;
   }
-  # /
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/********************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\archetype_shared\archetype_shared.csc
+********************************************************/
+
 #using scripts\shared\ai\archetype_damage_effects;
 #using scripts\shared\ai\archetype_direwolf;
 #using scripts\shared\ai\archetype_human;

@@ -1,58 +1,30 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_gameadvertisement.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_dev;
 #using scripts\mp\gametypes\_globallogic_utils;
 #using scripts\shared\util_shared;
-
 #namespace gameadvertisement;
 
-/*
-	Name: init
-	Namespace: gameadvertisement
-	Checksum: 0x133C82
-	Offset: 0x1C0
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
-  /#
   level.sessionadvertstatus = 1;
   thread sessionadvertismentupdatedebughud();
-  # /
-    level.gameadvertisementrulescorepercent = getgametypesetting("gameAdvertisementRuleScorePercent");
+  level.gameadvertisementrulescorepercent = getgametypesetting("gameAdvertisementRuleScorePercent");
   level.gameadvertisementruletimeleft = 60000 * getgametypesetting("gameAdvertisementRuleTimeLeft");
   level.gameadvertisementruleround = getgametypesetting("gameAdvertisementRuleRound");
   level.gameadvertisementruleroundswon = getgametypesetting("gameAdvertisementRuleRoundsWon");
   thread sessionadvertisementcheck();
 }
 
-/*
-	Name: setadvertisedstatus
-	Namespace: gameadvertisement
-	Checksum: 0x7EB5C38D
-	Offset: 0x288
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function setadvertisedstatus(onoff) {
-  /#
   level.sessionadvertstatus = onoff;
-  # /
-    changeadvertisedstatus(onoff);
+  changeadvertisedstatus(onoff);
 }
 
-/*
-	Name: sessionadvertisementcheck
-	Namespace: gameadvertisement
-	Checksum: 0x6EEB7DD5
-	Offset: 0x2C8
-	Size: 0x10A
-	Parameters: 0
-	Flags: Linked
-*/
 function sessionadvertisementcheck() {
   if(sessionmodeisprivate()) {
     return;
@@ -61,8 +33,8 @@ function sessionadvertisementcheck() {
   if(!isdefined(runrules)) {
     return;
   }
-  level endon(# "game_end");
-  level waittill(# "prematch_over");
+  level endon("game_end");
+  level waittill("prematch_over");
   currentadvertisedstatus = undefined;
   while (true) {
     sessionadvertcheckwait = getdvarint("sessionAdvertCheckwait", 1);
@@ -77,15 +49,6 @@ function sessionadvertisementcheck() {
   }
 }
 
-/*
-	Name: getgametyperules
-	Namespace: gameadvertisement
-	Checksum: 0xCA41A4E3
-	Offset: 0x3E0
-	Size: 0x5A
-	Parameters: 0
-	Flags: Linked
-*/
 function getgametyperules() {
   gametype = level.gametype;
   switch (gametype) {
@@ -98,15 +61,6 @@ function getgametyperules() {
   }
 }
 
-/*
-	Name: teamscorelimitcheck
-	Namespace: gameadvertisement
-	Checksum: 0xB4BC0D5F
-	Offset: 0x448
-	Size: 0x1BC
-	Parameters: 2
-	Flags: Linked
-*/
 function teamscorelimitcheck(rulescorepercent, debug_count) {
   scorelimit = 0;
   if(level.roundscorelimit) {
@@ -122,28 +76,15 @@ function teamscorelimitcheck(rulescorepercent, debug_count) {
         minscorepercentageleft = scorepercentageleft;
       }
       if(rulescorepercent >= scorepercentageleft) {
-        /#
         debug_count = updatedebughud(debug_count, "", int(scorepercentageleft));
-        # /
-          return false;
+        return false;
       }
     }
-    /#
     debug_count = updatedebughud(debug_count, "", int(minscorepercentageleft));
-    # /
   }
   return true;
 }
 
-/*
-	Name: timelimitcheck
-	Namespace: gameadvertisement
-	Checksum: 0x320B7BCD
-	Offset: 0x610
-	Size: 0x5E
-	Parameters: 1
-	Flags: Linked
-*/
 function timelimitcheck(ruletimeleft) {
   maxtime = level.timelimit;
   if(maxtime != 0) {
@@ -155,33 +96,19 @@ function timelimitcheck(ruletimeleft) {
   return true;
 }
 
-/*
-	Name: default_rules
-	Namespace: gameadvertisement
-	Checksum: 0x3B5CB881
-	Offset: 0x678
-	Size: 0x414
-	Parameters: 0
-	Flags: Linked
-*/
 function default_rules() {
   currentround = game["roundsplayed"] + 1;
   debug_count = 1;
   if(level.gameadvertisementrulescorepercent) {
-    /#
     debug_count = updatedebughud(debug_count, "", level.gameadvertisementrulescorepercent);
-    # /
-      if(level.teambased) {
-        if(currentround >= (level.gameadvertisementruleround - 1)) {
-          if(teamscorelimitcheck(level.gameadvertisementrulescorepercent, debug_count) == 0) {
-            return false;
-          }
-          /#
-          debug_count++;
-          # /
+    if(level.teambased) {
+      if(currentround >= (level.gameadvertisementruleround - 1)) {
+        if(teamscorelimitcheck(level.gameadvertisementrulescorepercent, debug_count) == 0) {
+          return false;
         }
+        debug_count++;
       }
-    else if(level.scorelimit) {
+    } else if(level.scorelimit) {
       highestscore = 0;
       players = getplayers();
       for (i = 0; i < players.size; i++) {
@@ -190,70 +117,47 @@ function default_rules() {
         }
       }
       scorepercentageleft = 100 - ((highestscore / level.scorelimit) * 100);
-      /#
       debug_count = updatedebughud(debug_count, "", int(scorepercentageleft));
-      # /
-        if(level.gameadvertisementrulescorepercent >= scorepercentageleft) {
-          return false;
-        }
+      if(level.gameadvertisementrulescorepercent >= scorepercentageleft) {
+        return false;
+      }
     }
   }
   if(level.gameadvertisementruletimeleft && currentround >= (level.gameadvertisementruleround - 1)) {
-    /#
     debug_count = updatedebughud(debug_count, "", level.gameadvertisementruletimeleft / 60000);
-    # /
-      if(timelimitcheck(level.gameadvertisementruletimeleft) == 0) {
-        return false;
-      }
+    if(timelimitcheck(level.gameadvertisementruletimeleft) == 0) {
+      return false;
+    }
   }
   if(level.gameadvertisementruleround) {
-    /#
     debug_count = updatedebughud(debug_count, "", level.gameadvertisementruleround);
     debug_count = updatedebughud(debug_count, "", currentround);
-    # /
-      if(level.gameadvertisementruleround <= currentround) {
-        return false;
-      }
+    if(level.gameadvertisementruleround <= currentround) {
+      return false;
+    }
   }
   if(level.gameadvertisementruleroundswon) {
-    /#
     debug_count = updatedebughud(debug_count, "", level.gameadvertisementruleroundswon);
-    # /
-      maxroundswon = 0;
+    maxroundswon = 0;
     foreach(team in level.teams) {
       roundswon = game["teamScores"][team];
       if(maxroundswon < roundswon) {
         maxroundswon = roundswon;
       }
       if(level.gameadvertisementruleroundswon <= roundswon) {
-        /#
         debug_count = updatedebughud(debug_count, "", maxroundswon);
-        # /
-          return false;
+        return false;
       }
     }
-    /#
     debug_count = updatedebughud(debug_count, "", maxroundswon);
-    # /
   }
   return true;
 }
 
-/*
-	Name: gun_rules
-	Namespace: gameadvertisement
-	Checksum: 0x5DF7879
-	Offset: 0xA98
-	Size: 0x188
-	Parameters: 0
-	Flags: Linked
-*/
 function gun_rules() {
   ruleweaponsleft = 3;
-  /#
   updatedebughud(1, "", ruleweaponsleft);
-  # /
-    minweaponsleft = level.gunprogression.size;
+  minweaponsleft = level.gunprogression.size;
   foreach(player in level.activeplayers) {
     if(!isdefined(player)) {
       continue;
@@ -266,29 +170,15 @@ function gun_rules() {
       minweaponsleft = weaponsleft;
     }
     if(ruleweaponsleft >= minweaponsleft) {
-      /#
       updatedebughud(3, "", minweaponsleft);
-      # /
-        return false;
+      return false;
     }
   }
-  /#
   updatedebughud(3, "", minweaponsleft);
-  # /
-    return true;
+  return true;
 }
 
-/*
-	Name: sessionadvertismentcreatedebughud
-	Namespace: gameadvertisement
-	Checksum: 0x6675CC85
-	Offset: 0xC28
-	Size: 0x170
-	Parameters: 2
-	Flags: Linked
-*/
 function sessionadvertismentcreatedebughud(linenum, alignx) {
-  /#
   debug_hud = dev::new_hud("", "", 0, 0, 1);
   debug_hud.hidewheninmenu = 1;
   debug_hud.horzalign = "";
@@ -304,20 +194,9 @@ function sessionadvertismentcreatedebughud(linenum, alignx) {
   debug_hud.alpha = 1;
   debug_hud settext("");
   return debug_hud;
-  # /
 }
 
-/*
-	Name: updatedebughud
-	Namespace: gameadvertisement
-	Checksum: 0x63A72A81
-	Offset: 0xDA8
-	Size: 0xCC
-	Parameters: 3
-	Flags: Linked
-*/
 function updatedebughud(hudindex, text, value) {
-  /#
   switch (hudindex) {
     case 1: {
       level.sessionadverthud_1a_text = text;
@@ -341,21 +220,10 @@ function updatedebughud(hudindex, text, value) {
     }
   }
   return hudindex + 1;
-  # /
 }
 
-/*
-	Name: sessionadvertismentupdatedebughud
-	Namespace: gameadvertisement
-	Checksum: 0xBEBB20E3
-	Offset: 0xE80
-	Size: 0x650
-	Parameters: 0
-	Flags: Linked
-*/
 function sessionadvertismentupdatedebughud() {
-  /#
-  level endon(# "game_end");
+  level endon("game_end");
   sessionadverthud_0 = undefined;
   sessionadverthud_1a = undefined;
   sessionadverthud_1b = undefined;
@@ -446,5 +314,4 @@ function sessionadvertismentupdatedebughud() {
       }
     }
   }
-  # /
 }

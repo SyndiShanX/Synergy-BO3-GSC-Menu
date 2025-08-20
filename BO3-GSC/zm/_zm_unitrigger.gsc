@@ -1,33 +1,18 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_unitrigger.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\system_shared;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_unitrigger;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_unitrigger
-	Checksum: 0x6140A4A0
-	Offset: 0x1D0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_unitrigger", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_unitrigger
-	Checksum: 0x65117478
-	Offset: 0x210
-	Size: 0x186
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level._unitriggers = spawnstruct();
   level._unitriggers._deferredinitlist = [];
@@ -46,41 +31,14 @@ function __init__() {
   }
 }
 
-/*
-	Name: register_unitrigger_system_func
-	Namespace: zm_unitrigger
-	Checksum: 0x53E903A9
-	Offset: 0x3A0
-	Size: 0x2E
-	Parameters: 2
-	Flags: None
-*/
 function register_unitrigger_system_func(system, trigger_func) {
   level._unitriggers.system_trigger_funcs[system] = trigger_func;
 }
 
-/*
-	Name: unitrigger_force_per_player_triggers
-	Namespace: zm_unitrigger
-	Checksum: 0xE95D81DE
-	Offset: 0x3D8
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function unitrigger_force_per_player_triggers(unitrigger_stub, opt_on_off = 1) {
   unitrigger_stub.trigger_per_player = opt_on_off;
 }
 
-/*
-	Name: unitrigger_trigger
-	Namespace: zm_unitrigger
-	Checksum: 0xCF3A0DEA
-	Offset: 0x420
-	Size: 0x42
-	Parameters: 1
-	Flags: Linked
-*/
 function unitrigger_trigger(player) {
   if(self.trigger_per_player) {
     return self.playertrigger[player getentitynumber()];
@@ -88,15 +46,6 @@ function unitrigger_trigger(player) {
   return self.trigger;
 }
 
-/*
-	Name: unitrigger_origin
-	Namespace: zm_unitrigger
-	Checksum: 0x86403248
-	Offset: 0x470
-	Size: 0x40
-	Parameters: 0
-	Flags: Linked
-*/
 function unitrigger_origin() {
   if(isdefined(self.originfunc)) {
     origin = self[[self.originfunc]]();
@@ -106,21 +55,10 @@ function unitrigger_origin() {
   return origin;
 }
 
-/*
-	Name: register_unitrigger_internal
-	Namespace: zm_unitrigger
-	Checksum: 0xE6F19965
-	Offset: 0x4B8
-	Size: 0x454
-	Parameters: 2
-	Flags: Linked
-*/
 function register_unitrigger_internal(unitrigger_stub, trigger_func) {
   if(!isdefined(unitrigger_stub.script_unitrigger_type)) {
-    /#
     println("");
-    # /
-      return;
+    return;
   }
   if(isdefined(trigger_func)) {
     unitrigger_stub.trigger_func = trigger_func;
@@ -158,10 +96,8 @@ function register_unitrigger_internal(unitrigger_stub, trigger_func) {
       break;
     }
     default: {
-      /#
       println(("" + unitrigger_stub.targetname) + "");
-      # /
-        return;
+      return;
     }
   }
   if(unitrigger_stub.radius > level._unitriggers.largest_radius) {
@@ -178,42 +114,15 @@ function register_unitrigger_internal(unitrigger_stub, trigger_func) {
   unitrigger_stub.registered = 1;
 }
 
-/*
-	Name: register_unitrigger
-	Namespace: zm_unitrigger
-	Checksum: 0x135963CC
-	Offset: 0x918
-	Size: 0x52
-	Parameters: 2
-	Flags: Linked
-*/
 function register_unitrigger(unitrigger_stub, trigger_func) {
   register_unitrigger_internal(unitrigger_stub, trigger_func);
   level._unitriggers.dynamic_stubs[level._unitriggers.dynamic_stubs.size] = unitrigger_stub;
 }
 
-/*
-	Name: unregister_unitrigger
-	Namespace: zm_unitrigger
-	Checksum: 0xEEA88A3D
-	Offset: 0x978
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function unregister_unitrigger(unitrigger_stub) {
   thread unregister_unitrigger_internal(unitrigger_stub);
 }
 
-/*
-	Name: unregister_unitrigger_internal
-	Namespace: zm_unitrigger
-	Checksum: 0xD5F889D8
-	Offset: 0x9A8
-	Size: 0x27C
-	Parameters: 1
-	Flags: Linked
-*/
 function unregister_unitrigger_internal(unitrigger_stub) {
   if(!isdefined(unitrigger_stub)) {
     return;
@@ -224,7 +133,7 @@ function unregister_unitrigger_internal(unitrigger_stub) {
       keys = getarraykeys(unitrigger_stub.playertrigger);
       foreach(key in keys) {
         trigger = unitrigger_stub.playertrigger[key];
-        trigger notify(# "kill_trigger");
+        trigger notify("kill_trigger");
         if(isdefined(trigger)) {
           trigger delete();
         }
@@ -233,7 +142,7 @@ function unregister_unitrigger_internal(unitrigger_stub) {
     }
   } else if(isdefined(unitrigger_stub.trigger)) {
     trigger = unitrigger_stub.trigger;
-    trigger notify(# "kill_trigger");
+    trigger notify("kill_trigger");
     trigger.stub.trigger = undefined;
     trigger delete();
   }
@@ -245,15 +154,6 @@ function unregister_unitrigger_internal(unitrigger_stub) {
   arrayremovevalue(level._unitriggers.dynamic_stubs, unitrigger_stub);
 }
 
-/*
-	Name: delay_delete_contact_ent
-	Namespace: zm_unitrigger
-	Checksum: 0x90D1F616
-	Offset: 0xC30
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function delay_delete_contact_ent() {
   self.last_used_time = 0;
   while (true) {
@@ -266,15 +166,6 @@ function delay_delete_contact_ent() {
   }
 }
 
-/*
-	Name: register_static_unitrigger
-	Namespace: zm_unitrigger
-	Checksum: 0xD510E196
-	Offset: 0xC90
-	Size: 0x2FC
-	Parameters: 3
-	Flags: Linked
-*/
 function register_static_unitrigger(unitrigger_stub, trigger_func, recalculate_zone) {
   if(level.zones.size == 0) {
     unitrigger_stub.trigger_func = trigger_func;
@@ -309,15 +200,6 @@ function register_static_unitrigger(unitrigger_stub, trigger_func, recalculate_z
   unitrigger_stub.registered = 1;
 }
 
-/*
-	Name: register_dyn_unitrigger
-	Namespace: zm_unitrigger
-	Checksum: 0x5B53C926
-	Offset: 0xF98
-	Size: 0x11C
-	Parameters: 3
-	Flags: Linked
-*/
 function register_dyn_unitrigger(unitrigger_stub, trigger_func, recalculate_zone) {
   if(level.zones.size == 0) {
     unitrigger_stub.trigger_func = trigger_func;
@@ -333,31 +215,12 @@ function register_dyn_unitrigger(unitrigger_stub, trigger_func, recalculate_zone
   unitrigger_stub.registered = 1;
 }
 
-/*
-	Name: reregister_unitrigger_as_dynamic
-	Namespace: zm_unitrigger
-	Checksum: 0xEAAE30A3
-	Offset: 0x10C0
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function reregister_unitrigger_as_dynamic(unitrigger_stub) {
   unregister_unitrigger_internal(unitrigger_stub);
   register_unitrigger(unitrigger_stub, unitrigger_stub.trigger_func);
 }
 
-/*
-	Name: debug_unitriggers
-	Namespace: zm_unitrigger
-	Checksum: 0xB652E09D
-	Offset: 0x1110
-	Size: 0x33C
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_unitriggers() {
-  /#
   while (true) {
     if(getdvarint("") > 0) {
       for (i = 0; i < level._unitriggers.trigger_stubs.size; i++) {
@@ -397,20 +260,10 @@ function debug_unitriggers() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: cleanup_trigger
-	Namespace: zm_unitrigger
-	Checksum: 0xD7AB0599
-	Offset: 0x1458
-	Size: 0xE4
-	Parameters: 2
-	Flags: Linked
-*/
 function cleanup_trigger(trigger, player) {
-  trigger notify(# "kill_trigger");
+  trigger notify("kill_trigger");
   if(isdefined(trigger.stub.trigger_per_player) && trigger.stub.trigger_per_player) {
     trigger.stub.playertrigger[player getentitynumber()] = undefined;
   } else {
@@ -420,15 +273,6 @@ function cleanup_trigger(trigger, player) {
   level._unitriggers.trigger_pool[player getentitynumber()] = undefined;
 }
 
-/*
-	Name: assess_and_apply_visibility
-	Namespace: zm_unitrigger
-	Checksum: 0x1B7BE5E9
-	Offset: 0x1548
-	Size: 0x1C4
-	Parameters: 4
-	Flags: Linked
-*/
 function assess_and_apply_visibility(trigger, stub, player, default_keep) {
   if(!isdefined(trigger) || !isdefined(stub)) {
     return 0;
@@ -457,15 +301,6 @@ function assess_and_apply_visibility(trigger, stub, player, default_keep) {
   return keep_thread;
 }
 
-/*
-	Name: main
-	Namespace: zm_unitrigger
-	Checksum: 0x7723F0F5
-	Offset: 0x1718
-	Size: 0x9B4
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level thread debug_unitriggers();
   if(level._unitriggers._deferredinitlist.size) {
@@ -616,15 +451,6 @@ function main() {
   }
 }
 
-/*
-	Name: run_visibility_function_for_all_triggers
-	Namespace: zm_unitrigger
-	Checksum: 0x4BA63B8
-	Offset: 0x20D8
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function run_visibility_function_for_all_triggers() {
   if(!isdefined(self.prompt_and_visibility_func)) {
     return;
@@ -646,28 +472,10 @@ function run_visibility_function_for_all_triggers() {
   }
 }
 
-/*
-	Name: is_same_trigger
-	Namespace: zm_unitrigger
-	Checksum: 0x8A578FBD
-	Offset: 0x2208
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked
-*/
 function is_same_trigger(old_trigger, trigger) {
   return isdefined(old_trigger) && old_trigger == trigger && trigger.parent_player == old_trigger.parent_player;
 }
 
-/*
-	Name: check_and_build_trigger_from_unitrigger_stub
-	Namespace: zm_unitrigger
-	Checksum: 0x7CEAC4A9
-	Offset: 0x2258
-	Size: 0x190
-	Parameters: 2
-	Flags: Linked
-*/
 function check_and_build_trigger_from_unitrigger_stub(stub, player) {
   if(!isdefined(stub)) {
     return undefined;
@@ -693,15 +501,6 @@ function check_and_build_trigger_from_unitrigger_stub(stub, player) {
   return trigger;
 }
 
-/*
-	Name: build_trigger_from_unitrigger_stub
-	Namespace: zm_unitrigger
-	Checksum: 0x39B46354
-	Offset: 0x23F0
-	Size: 0x5FC
-	Parameters: 2
-	Flags: Linked
-*/
 function build_trigger_from_unitrigger_stub(stub, player) {
   if(isdefined(level._zm_build_trigger_from_unitrigger_stub_override)) {
     if(stub[[level._zm_build_trigger_from_unitrigger_stub_override]](player)) {
@@ -799,15 +598,6 @@ function build_trigger_from_unitrigger_stub(stub, player) {
   return trigger;
 }
 
-/*
-	Name: copy_zombie_keys_onto_trigger
-	Namespace: zm_unitrigger
-	Checksum: 0x531403D8
-	Offset: 0x29F8
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function copy_zombie_keys_onto_trigger(trig, stub) {
   trig.script_noteworthy = stub.script_noteworthy;
   trig.targetname = stub.targetname;
@@ -817,31 +607,13 @@ function copy_zombie_keys_onto_trigger(trig, stub) {
   trig.usetime = stub.usetime;
 }
 
-/*
-	Name: trigger_thread
-	Namespace: zm_unitrigger
-	Checksum: 0xA5A9A85
-	Offset: 0x2AC0
-	Size: 0x2E
-	Parameters: 1
-	Flags: Linked
-*/
 function trigger_thread(trigger_func) {
-  self endon(# "kill_trigger");
+  self endon("kill_trigger");
   if(isdefined(trigger_func)) {
     self[[trigger_func]]();
   }
 }
 
-/*
-	Name: get_closest_unitriggers
-	Namespace: zm_unitrigger
-	Checksum: 0xF11F5A46
-	Offset: 0x2AF8
-	Size: 0x1F2
-	Parameters: 3
-	Flags: Linked
-*/
 function get_closest_unitriggers(org, array, dist = 9999999) {
   triggers = [];
   if(array.size < 1) {
@@ -868,15 +640,6 @@ function get_closest_unitriggers(org, array, dist = 9999999) {
   return triggers;
 }
 
-/*
-	Name: create_unitrigger
-	Namespace: zm_unitrigger
-	Checksum: 0x6CD670B
-	Offset: 0x2CF8
-	Size: 0x180
-	Parameters: 5
-	Flags: None
-*/
 function create_unitrigger(str_hint, n_radius = 64, func_prompt_and_visibility = & unitrigger_prompt_and_visibility, func_unitrigger_logic = & unitrigger_logic, s_trigger_type = "unitrigger_radius_use") {
   s_unitrigger = spawnstruct();
   s_unitrigger.origin = self.origin;
@@ -892,15 +655,6 @@ function create_unitrigger(str_hint, n_radius = 64, func_prompt_and_visibility =
   return s_unitrigger;
 }
 
-/*
-	Name: create_dyn_unitrigger
-	Namespace: zm_unitrigger
-	Checksum: 0x9532399F
-	Offset: 0x2E80
-	Size: 0x180
-	Parameters: 5
-	Flags: None
-*/
 function create_dyn_unitrigger(str_hint, n_radius = 64, func_prompt_and_visibility = & unitrigger_prompt_and_visibility, func_unitrigger_logic = & unitrigger_logic, s_trigger_type = "unitrigger_radius_use") {
   s_unitrigger = spawnstruct();
   s_unitrigger.origin = self.origin;
@@ -916,33 +670,15 @@ function create_dyn_unitrigger(str_hint, n_radius = 64, func_prompt_and_visibili
   return s_unitrigger;
 }
 
-/*
-	Name: unitrigger_prompt_and_visibility
-	Namespace: zm_unitrigger
-	Checksum: 0xA74ECF5
-	Offset: 0x3008
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function unitrigger_prompt_and_visibility(player) {
   b_visible = 1;
   return b_visible;
 }
 
-/*
-	Name: unitrigger_logic
-	Namespace: zm_unitrigger
-	Checksum: 0x27310E56
-	Offset: 0x3038
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function unitrigger_logic() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player zm_utility::in_revive_trigger()) {
       continue;
     }
@@ -952,6 +688,6 @@ function unitrigger_logic() {
     if(!zm_utility::is_player_valid(player)) {
       continue;
     }
-    self.stub.related_parent notify(# "trigger_activated", player);
+    self.stub.related_parent notify("trigger_activated", player);
   }
 }

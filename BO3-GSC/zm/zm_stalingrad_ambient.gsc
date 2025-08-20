@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_ambient.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -7,31 +11,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_stalingrad_ambient;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_stalingrad_ambient
-	Checksum: 0x5D309F37
-	Offset: 0x298
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_stalingrad_ambient", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_stalingrad_ambient
-	Checksum: 0xD151ED8E
-	Offset: 0x2E0
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level flag::init("ambient_mortar_fire_on");
   clientfield::register("scriptmover", "ambient_mortar_strike", 12000, 2, "int");
@@ -40,28 +25,10 @@ function __init__() {
   level thread function_8c898920();
 }
 
-/*
-	Name: __main__
-	Namespace: zm_stalingrad_ambient
-	Checksum: 0x45CE0EF6
-	Offset: 0x3B8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level thread wait_for_power();
 }
 
-/*
-	Name: function_46a16b31
-	Namespace: zm_stalingrad_ambient
-	Checksum: 0xB4CB2B8F
-	Offset: 0x3E0
-	Size: 0x1FE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_46a16b31() {
   level.var_10752e7a = [];
   var_10752e7a = struct::get_array("ambient_mortar", "targetname");
@@ -84,15 +51,6 @@ function function_46a16b31() {
   }
 }
 
-/*
-	Name: function_8c898920
-	Namespace: zm_stalingrad_ambient
-	Checksum: 0xD6ED29EC
-	Offset: 0x5E8
-	Size: 0x348
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8c898920() {
   level flag::wait_till("all_players_spawned");
   if(getdvarint("splitscreen_playerCount") >= 2) {
@@ -142,31 +100,13 @@ function function_8c898920() {
   }
 }
 
-/*
-	Name: function_20bdb71
-	Namespace: zm_stalingrad_ambient
-	Checksum: 0xB1812FCE
-	Offset: 0x938
-	Size: 0x42
-	Parameters: 0
-	Flags: Linked
-*/
 function function_20bdb71() {
-  level endon(# "nikolai_start");
+  level endon("nikolai_start");
   for (i = 0; i < 2; i++) {
-    level waittill(# "start_of_round");
+    level waittill("start_of_round");
   }
 }
 
-/*
-	Name: function_7af373ba
-	Namespace: zm_stalingrad_ambient
-	Checksum: 0xE2D1A99F
-	Offset: 0x988
-	Size: 0x16C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7af373ba(str_zone) {
   var_b8f2d177 = [];
   var_d8f8470c = arraycopy(level.var_10752e7a[str_zone]);
@@ -189,15 +129,6 @@ function function_7af373ba(str_zone) {
   return var_b058183b;
 }
 
-/*
-	Name: function_8affee60
-	Namespace: zm_stalingrad_ambient
-	Checksum: 0x3B6A51C1
-	Offset: 0xB00
-	Size: 0x160
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8affee60(var_e3975fbf) {
   i = 0;
   while (level.var_2b8ea588[i].b_in_use == 1) {
@@ -221,15 +152,6 @@ function function_8affee60(var_e3975fbf) {
   level.var_2b8ea588[i].b_in_use = 0;
 }
 
-/*
-	Name: wait_for_power
-	Namespace: zm_stalingrad_ambient
-	Checksum: 0x57B82CD3
-	Offset: 0xC68
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_for_power() {
   level flag::wait_till("power_on");
   level clientfield::set("power_on_level", 1);

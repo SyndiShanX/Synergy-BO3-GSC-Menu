@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_doa_bo3.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_util;
 #using scripts\cp\cp_doa_bo3_enemy;
@@ -29,49 +33,19 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicles\_quadtank;
 #using scripts\shared\vehicles\_spider;
-
 #namespace namespace_bb5d050c;
 
-/*
-	Name: setup_rex_starts
-	Namespace: namespace_bb5d050c
-	Checksum: 0x2E28129
-	Offset: 0xB78
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function setup_rex_starts() {
   util::add_gametype("doa");
 }
 
-/*
-	Name: function_30fd2139
-	Namespace: namespace_bb5d050c
-	Checksum: 0x62F115D8
-	Offset: 0xBA0
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_30fd2139() {
   if(sessionmodeisonlinegame()) {
-    /#
     doa_utility::debugmsg("");
-    # /
-      precacheleaderboards("LB_CP_DOA_BO3_ROUND LB_CP_DOA_BO3_SCORE LB_CP_DOA_BO3_SILVERBACKS LB_CP_DOA_BO3_GEMS LB_CP_DOA_BO3_SKULLS LB_CP_DOA_BO3_SCORE_1PLAYER LB_CP_DOA_BO3_SCORE_2PLAYER LB_CP_DOA_BO3_SCORE_3PLAYER LB_CP_DOA_BO3_SCORE_4PLAYER LB_CP_DOA_BO3_ROUND_1PLAYER LB_CP_DOA_BO3_ROUND_2PLAYER LB_CP_DOA_BO3_ROUND_3PLAYER LB_CP_DOA_BO3_ROUND_4PLAYER");
+    precacheleaderboards("LB_CP_DOA_BO3_ROUND LB_CP_DOA_BO3_SCORE LB_CP_DOA_BO3_SILVERBACKS LB_CP_DOA_BO3_GEMS LB_CP_DOA_BO3_SKULLS LB_CP_DOA_BO3_SCORE_1PLAYER LB_CP_DOA_BO3_SCORE_2PLAYER LB_CP_DOA_BO3_SCORE_3PLAYER LB_CP_DOA_BO3_SCORE_4PLAYER LB_CP_DOA_BO3_ROUND_1PLAYER LB_CP_DOA_BO3_ROUND_2PLAYER LB_CP_DOA_BO3_ROUND_3PLAYER LB_CP_DOA_BO3_ROUND_4PLAYER");
   }
 }
 
-/*
-	Name: main
-	Namespace: namespace_bb5d050c
-	Checksum: 0x28026E3F
-	Offset: 0xBF8
-	Size: 0x23C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   setdvar("ui_allowDisplayContinue", 0);
   clientfield::register("world", "redinsExploder", 1, 2, "int");
@@ -92,15 +66,6 @@ function main() {
   level thread namespace_4fca3ee8::main();
 }
 
-/*
-	Name: init
-	Namespace: namespace_bb5d050c
-	Checksum: 0x3C0C3CDF
-	Offset: 0xE40
-	Size: 0x522
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.doa.var_d18af0d = & function_957373c6;
   level.doa.var_fdc1fa6b = & function_dbb56674;
@@ -114,10 +79,8 @@ function init() {
   namespace_a3646565::init();
   function_d1c7245c();
   level.doa.enemyspawners = [];
-  /#
   level.doa.var_e6fd0e17 = & namespace_51bd792::function_65762352;
-  # /
-    rootmenu = "devgui_cmd \"Zombietron/Spawn/Enemy/";
+  rootmenu = "devgui_cmd \"Zombietron/Spawn/Enemy/";
   spawners = getspawnerarray();
   setdvar("scr_spawn_name", "");
   type = undefined;
@@ -137,10 +100,8 @@ function init() {
       }
       cmd = (((rootmenu + name) + "\" \"zombie_devgui aispawn; scr_spawn_name ") + name) + "\" \n";
       level.doa.enemyspawners[name] = spawner;
-      /#
       adddebugcommand(cmd);
-      # /
-        continue;
+      continue;
     }
     if(!issubstr(spawner.classname, "_zombietron_")) {
       continue;
@@ -156,22 +117,11 @@ function init() {
       }
       cmd = (((rootmenu + name) + "\" \"zombie_devgui aispawn; scr_spawn_name ") + classname) + "\" \n";
       level.doa.enemyspawners[name] = spawner;
-      /#
       adddebugcommand(cmd);
-      # /
     }
   }
 }
 
-/*
-	Name: function_dbb56674
-	Namespace: namespace_bb5d050c
-	Checksum: 0xE5C83BD6
-	Offset: 0x1370
-	Size: 0x72
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dbb56674() {
   if(getplayers().size > 1) {
     mapname = namespace_3ca3c537::function_d2d75f5d();
@@ -185,38 +135,18 @@ function function_dbb56674() {
   return -1;
 }
 
-/*
-	Name: function_5ee7262b
-	Namespace: namespace_bb5d050c
-	Checksum: 0xB36CB384
-	Offset: 0x13F0
-	Size: 0x56
-	Parameters: 1
-	Flags: Linked
-*/
 function function_5ee7262b(def) {
   switch (def.type) {
     case "type_electric_mine": {
       break;
     }
     default: {
-      /#
       assert(0);
-      # /
-        break;
+      break;
     }
   }
 }
 
-/*
-	Name: function_d1c7245c
-	Namespace: namespace_bb5d050c
-	Checksum: 0x347F17A3
-	Offset: 0x1450
-	Size: 0x18E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d1c7245c() {
   level.doa.var_af875fb7 = [];
   level.doa.var_1332e37a = [];
@@ -234,17 +164,8 @@ function function_d1c7245c() {
   level.doa.var_af875fb7[level.doa.var_af875fb7.size] = guardian;
 }
 
-/*
-	Name: function_75772673
-	Namespace: namespace_bb5d050c
-	Checksum: 0x447350F3
-	Offset: 0x15E8
-	Size: 0x390
-	Parameters: 1
-	Flags: Linked
-*/
 function function_75772673(player) {
-  self endon(# "death");
+  self endon("death");
   self ai::set_behavior_attribute("rogue_control", "forced_level_1");
   self.health = 15000;
   self.team = player.team;
@@ -281,19 +202,10 @@ function function_75772673(player) {
   }
 }
 
-/*
-	Name: function_e1cd643e
-	Namespace: namespace_bb5d050c
-	Checksum: 0xFE5A1155
-	Offset: 0x1980
-	Size: 0xFC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_e1cd643e(projectile, weapon, player) {
-  self endon(# "death");
+  self endon("death");
   while (isdefined(projectile)) {
-    self waittill(# "trigger", guy);
+    self waittill("trigger", guy);
     if(!isdefined(guy.boss) && isalive(guy)) {
       guy dodamage(guy.health, self.origin, (isdefined(player) ? player : undefined), (isdefined(player) ? player : undefined), "torso_lower", "MOD_EXPLOSIVE", 0, weapon, -1, 1);
     }
@@ -301,19 +213,10 @@ function function_e1cd643e(projectile, weapon, player) {
   self delete();
 }
 
-/*
-	Name: function_8e619e60
-	Namespace: namespace_bb5d050c
-	Checksum: 0xA4B45D19
-	Offset: 0x1A88
-	Size: 0x120
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8e619e60(player) {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "missile_fire", projectile, weapon);
+    self waittill("missile_fire", projectile, weapon);
     trigger = spawn("trigger_radius", projectile.origin, 9, 16, 24);
     trigger.targetname = "sawBladeProjectile";
     trigger enablelinkto();
@@ -324,15 +227,6 @@ function function_8e619e60(player) {
   }
 }
 
-/*
-	Name: function_89a2ffc4
-	Namespace: namespace_bb5d050c
-	Checksum: 0x6954A683
-	Offset: 0x1BB0
-	Size: 0x25C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_89a2ffc4(player) {
   self.zombie_move_speed = "super_sprint";
   self.health = 15000;
@@ -346,7 +240,7 @@ function function_89a2ffc4(player) {
   self.updatesight = 1;
   self setthreatbiasgroup("players");
   self setplayercollision(0);
-  self notify(# "hash_6e8326fc");
+  self notify("hash_6e8326fc");
   self cleartargetentity();
   if(!isdefined(player.doa)) {
     self kill();
@@ -364,15 +258,6 @@ function function_89a2ffc4(player) {
   self thread function_5633d485();
 }
 
-/*
-	Name: function_f45d4afc
-	Namespace: namespace_bb5d050c
-	Checksum: 0xC22A792B
-	Offset: 0x1E18
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f45d4afc(target) {
   if(self.team == target.team) {
     return;
@@ -385,17 +270,8 @@ function function_f45d4afc(target) {
   }
 }
 
-/*
-	Name: function_cd6da677
-	Namespace: namespace_bb5d050c
-	Checksum: 0x263E7F4C
-	Offset: 0x1EF0
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cd6da677(owner) {
-  self waittill(# "death");
+  self waittill("death");
   if(isdefined(owner)) {
     if(isdefined(self)) {
       arrayremovevalue(owner.doa.var_af875fb7, self, 0);
@@ -405,17 +281,8 @@ function function_cd6da677(owner) {
   }
 }
 
-/*
-	Name: function_5633d485
-	Namespace: namespace_bb5d050c
-	Checksum: 0x6450786
-	Offset: 0x1F80
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5633d485() {
-  self endon(# "death");
+  self endon("death");
   lifetime = self.owner doa_utility::function_1ded48e6(level.doa.rules.var_109b458d);
   self thread doa_utility::function_783519c1("doa_game_is_over", 1);
   self thread doa_utility::function_783519c1("doa_game_restart", 1);
@@ -424,17 +291,8 @@ function function_5633d485() {
   self kill();
 }
 
-/*
-	Name: function_cef7f9fd
-	Namespace: namespace_bb5d050c
-	Checksum: 0xE48330A4
-	Offset: 0x2050
-	Size: 0x264
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cef7f9fd() {
-  self endon(# "death");
+  self endon("death");
   lifetime = self.owner doa_utility::function_1ded48e6(level.doa.rules.var_109b458d);
   self thread doa_utility::function_783519c1("doa_game_is_over", 1);
   self thread doa_utility::function_783519c1("doa_game_restart", 1);
@@ -446,7 +304,7 @@ function function_cef7f9fd() {
   var_989e36b3 = 2000 + gettime();
   while (gettime() < var_989e36b3) {
     self dodamage(5, self.origin, undefined, undefined, "none", "MOD_RIFLE_BULLET", 0, getweapon("gadget_immolation"), -1, 1);
-    self waittillmatch(# "bhtn_action_terminate");
+    self waittillmatch("bhtn_action_terminate");
   }
   self namespace_1a381543::function_90118d8c("wpn_incendiary_explode");
   playfxontag("explosions/fx_ability_exp_immolation", self, "j_spinelower");
@@ -459,15 +317,6 @@ function function_cef7f9fd() {
   }
 }
 
-/*
-	Name: function_165c9bd0
-	Namespace: namespace_bb5d050c
-	Checksum: 0x8F53391B
-	Offset: 0x22C0
-	Size: 0x242
-	Parameters: 0
-	Flags: Linked
-*/
 function function_165c9bd0() {
   var_e6171788 = namespace_3ca3c537::function_d2d75f5d();
   if(var_e6171788 == "boss" && level.doa.arena_round_number == 3 || (isdefined(level.doa.var_602737ab) && level.doa.var_602737ab)) {
@@ -496,45 +345,27 @@ function function_165c9bd0() {
   return false;
 }
 
-/*
-	Name: function_1de9db1b
-	Namespace: namespace_bb5d050c
-	Checksum: 0x2E0B43E3
-	Offset: 0x2510
-	Size: 0x186
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1de9db1b(name) {
   switch (name) {
     case "margwa": {
       namespace_51bd792::function_4ce6d0ea();
-      level notify(# "hash_593b80cb");
+      level notify("hash_593b80cb");
       foreach(player in getplayers()) {
-        player notify(# "hash_593b80cb");
+        player notify("hash_593b80cb");
       }
       break;
     }
     case "silverback": {
       namespace_a3646565::function_fc48f9f3();
-      level notify(# "hash_593b80cb");
+      level notify("hash_593b80cb");
       foreach(player in getplayers()) {
-        player notify(# "hash_593b80cb");
+        player notify("hash_593b80cb");
       }
       break;
     }
   }
 }
 
-/*
-	Name: function_87092704
-	Namespace: namespace_bb5d050c
-	Checksum: 0xFD2F38F0
-	Offset: 0x26A0
-	Size: 0x472
-	Parameters: 1
-	Flags: Linked
-*/
 function function_87092704(room) {
   switch (room.name) {
     case "tankmaze": {
@@ -601,15 +432,6 @@ function function_87092704(room) {
   }
 }
 
-/*
-	Name: arenainit
-	Namespace: namespace_bb5d050c
-	Checksum: 0x679A7877
-	Offset: 0x2B20
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function arenainit(arena) {
   if(arena.name == "blood") {
     arena.var_f06f27e8 = & function_9d32f5d;
@@ -619,15 +441,6 @@ function arenainit(arena) {
   }
 }
 
-/*
-	Name: function_957373c6
-	Namespace: namespace_bb5d050c
-	Checksum: 0xB8D66199
-	Offset: 0x2BA0
-	Size: 0xB7E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_957373c6(def) {
   switch (def.number) {
     case 5: {
@@ -784,7 +597,7 @@ function function_957373c6(def) {
     case 14: {
       def.round = 37;
       def.title = & "CP_DOA_BO3_CHALLENGE_SPIDER0";
-      def.var_7f46fadf = array( & "CP_DOA_BO3_CHALLENGE_SPIDER0", & "CP_DOA_BO3_CHALLENGE_SPIDER2", & "CP_DOA_BO3_CHALLENGE_SPIDER3", & "CP_DOA_BO3_CHALLENGE_SPIDER1");
+      def.var_7f46fadf = array(&"CP_DOA_BO3_CHALLENGE_SPIDER0", & "CP_DOA_BO3_CHALLENGE_SPIDER2", & "CP_DOA_BO3_CHALLENGE_SPIDER3", & "CP_DOA_BO3_CHALLENGE_SPIDER1");
       def.var_84aef63e = 10;
       def.var_83bae1f8 = 1000;
       def.maxhitpoints = 1000;
@@ -802,23 +615,12 @@ function function_957373c6(def) {
       break;
     }
     default: {
-      /#
       assert(0);
-      # /
-        break;
+      break;
     }
   }
 }
 
-/*
-	Name: function_7ea6d638
-	Namespace: namespace_bb5d050c
-	Checksum: 0xF3BEC92
-	Offset: 0x3728
-	Size: 0xF0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7ea6d638(def) {
   def.round = def.round + 64;
   def.var_474e643b = def.var_474e643b + 4;
@@ -830,80 +632,26 @@ function function_7ea6d638(def) {
   def.title = def.var_7f46fadf[def.var_9cf005d1 % def.var_7f46fadf.size];
 }
 
-/*
-	Name: function_45c28296
-	Namespace: namespace_bb5d050c
-	Checksum: 0x95EE55EB
-	Offset: 0x3820
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function function_45c28296(def) {
   level.doa.var_9a1cbf58 = 0;
 }
 
-/*
-	Name: function_f8fa5dcf
-	Namespace: namespace_bb5d050c
-	Checksum: 0x28719132
-	Offset: 0x3848
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f8fa5dcf(def) {
   level.doa.var_9a1cbf58 = 1;
 }
 
-/*
-	Name: function_dd708257
-	Namespace: namespace_bb5d050c
-	Checksum: 0xD18C0989
-	Offset: 0x3870
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function function_dd708257(def) {
   level.doa.var_2f019708 = 0;
 }
 
-/*
-	Name: function_aab05139
-	Namespace: namespace_bb5d050c
-	Checksum: 0x31060C1A
-	Offset: 0x3898
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_aab05139() {
   videostart("cp_doa_bo3_endgame");
 }
 
-/*
-	Name: function_ceb822db
-	Namespace: namespace_bb5d050c
-	Checksum: 0x43C2AF38
-	Offset: 0x38C0
-	Size: 0x10
-	Parameters: 1
-	Flags: None
-*/
 function function_ceb822db(var_fed4dbb3) {
   return var_fed4dbb3;
 }
 
-/*
-	Name: function_9d32f5d
-	Namespace: namespace_bb5d050c
-	Checksum: 0x3411383E
-	Offset: 0x38D8
-	Size: 0x6A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9d32f5d() {
   if(!isdefined(level.doa.var_43e34d24)) {
     level.doa.var_43e34d24 = getent("blood_riser_spawner", "targetname");
@@ -911,15 +659,6 @@ function function_9d32f5d() {
   return namespace_51bd792::function_17de14f1(level.doa.var_43e34d24);
 }
 
-/*
-	Name: function_b8aa2b56
-	Namespace: namespace_bb5d050c
-	Checksum: 0xB8FD3C3
-	Offset: 0x3950
-	Size: 0x6A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b8aa2b56() {
   if(!isdefined(level.doa.var_8fb5dd7d)) {
     level.doa.var_8fb5dd7d = getent("zombie_riser", "targetname");
@@ -927,18 +666,9 @@ function function_b8aa2b56() {
   return namespace_51bd792::function_45849d81(level.doa.var_8fb5dd7d);
 }
 
-/*
-	Name: function_56600114
-	Namespace: namespace_bb5d050c
-	Checksum: 0xE164F14D
-	Offset: 0x39C8
-	Size: 0x56
-	Parameters: 1
-	Flags: Linked
-*/
 function function_56600114(name) {
-  level notify(# "hash_56600114");
-  level endon(# "hash_56600114");
+  level notify("hash_56600114");
+  level endon("hash_56600114");
   switch (name) {
     case "boss": {
       level thread function_2fb9e83f();
@@ -947,19 +677,10 @@ function function_56600114(name) {
   }
 }
 
-/*
-	Name: function_2fb9e83f
-	Namespace: namespace_bb5d050c
-	Checksum: 0x1170786D
-	Offset: 0x3A28
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2fb9e83f() {
-  level notify(# "hash_2fb9e83f");
-  level endon(# "hash_2fb9e83f");
-  level endon(# "hash_ec7ca67b");
+  level notify("hash_2fb9e83f");
+  level endon("hash_2fb9e83f");
+  level endon("hash_ec7ca67b");
   wait(60);
   var_2c8bf5cd = math::clamp(level.doa.var_da96f13c + 1, 0, 3);
   level.doa.var_2c8bf5cd = [];

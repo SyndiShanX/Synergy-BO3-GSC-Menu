@@ -1,36 +1,21 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_fx.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\exploder_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_zod_fx;
 
-/*
-	Name: main
-	Namespace: zm_zod_fx
-	Checksum: 0x7B618D5D
-	Offset: 0x648
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_createfx_fx();
   precache_scripted_fx();
   callback::on_localclient_connect( & function_129a815f);
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_zod_fx
-	Checksum: 0xB2C8E393
-	Offset: 0x698
-	Size: 0x26A
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["ritual_altar"] = "zombie/fx_ritual_altar_zod_zmb";
   level._effect["ritual_trail"] = "zombie/fx_ritual_key_trail_zod_zmb";
@@ -56,39 +41,12 @@ function precache_scripted_fx() {
   level._effect["gateworm_basin_quest_complete"] = "zombie/fx_ritual_pap_basin_fire_lg_zod_zmb";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_zod_fx
-	Checksum: 0x99EC1590
-	Offset: 0x910
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {}
 
-/*
-	Name: function_129a815f
-	Namespace: zm_zod_fx
-	Checksum: 0x3AD0A71D
-	Offset: 0x920
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function function_129a815f(localclientnum) {
   thread function_47ecaed4(localclientnum);
 }
 
-/*
-	Name: function_47ecaed4
-	Namespace: zm_zod_fx
-	Checksum: 0x4099864B
-	Offset: 0x950
-	Size: 0x1E8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_47ecaed4(localclientnum) {
   level.var_ff4acd38 = [];
   i = 0;
@@ -119,15 +77,6 @@ function function_47ecaed4(localclientnum) {
   }
 }
 
-/*
-	Name: function_e9849e59
-	Namespace: zm_zod_fx
-	Checksum: 0x5CE81E5D
-	Offset: 0xB40
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e9849e59(localclientnum) {
   for (i = 0; i < level.var_ff4acd38.size; i++) {
     level.var_ff4acd38[i] hide();
@@ -136,15 +85,6 @@ function function_e9849e59(localclientnum) {
   exploder::stop_exploder("lighthouse_light_spotlight");
 }
 
-/*
-	Name: function_fe8322ed
-	Namespace: zm_zod_fx
-	Checksum: 0xF3D3B111
-	Offset: 0xBE0
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fe8322ed(localclientnum) {
   for (i = 0; i < level.var_ff4acd38.size; i++) {
     level.var_ff4acd38[i] show();

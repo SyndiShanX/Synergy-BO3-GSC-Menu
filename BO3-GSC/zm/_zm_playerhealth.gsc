@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_playerhealth.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -8,31 +12,12 @@
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\zm\_util;
 #using scripts\zm\_zm_perks;
-
 #namespace zm_playerhealth;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_playerhealth
-	Checksum: 0x31E42B91
-	Offset: 0x2E8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_playerhealth", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_playerhealth
-	Checksum: 0x1E9DB964
-	Offset: 0x328
-	Size: 0x33C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "sndZombieHealth", 21000, 1, "int");
   level.global_damage_func_ads = & empty_kill_func;
@@ -45,10 +30,8 @@ function __init__() {
   level.difficultystring["normal"] = & "GAMESKILL_NORMAL";
   level.difficultystring["hardened"] = & "GAMESKILL_HARDENED";
   level.difficultystring["veteran"] = & "GAMESKILL_VETERAN";
-  /#
   thread playerhealthdebug();
-  # /
-    level.gameskill = 1;
+  level.gameskill = 1;
   switch (level.gameskill) {
     case 0: {
       setdvar("currentDifficulty", "easy");
@@ -67,10 +50,8 @@ function __init__() {
       break;
     }
   }
-  /#
   print("" + level.gameskill);
-  # /
-    level.player_deathinvulnerabletime = 1700;
+  level.player_deathinvulnerabletime = 1700;
   level.longregentime = 5000;
   level.healthoverlaycutoff = 0.2;
   level.invultime_preshield = 0.35;
@@ -85,49 +66,22 @@ function __init__() {
   visionset_mgr::register_info("overlay", "zm_health_blur", 1, level.vsmgr_prio_overlay_zm_player_health_blur, 1, 1, & visionset_mgr::ramp_in_out_thread_per_player, 1);
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: zm_playerhealth
-	Checksum: 0xC7762652
-	Offset: 0x670
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self zm_perks::perk_set_max_health_if_jugg("health_reboot", 1, 0);
-  self notify(# "nohealthoverlay");
+  self notify("nohealthoverlay");
   self thread playerhealthregen();
 }
 
-/*
-	Name: player_health_visionset
-	Namespace: zm_playerhealth
-	Checksum: 0xB14FA474
-	Offset: 0x6C0
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function player_health_visionset() {
   visionset_mgr::deactivate("overlay", "zm_health_blur", self);
   visionset_mgr::activate("overlay", "zm_health_blur", self, 0, 1, 1);
 }
 
-/*
-	Name: playerhurtcheck
-	Namespace: zm_playerhealth
-	Checksum: 0x8AF64608
-	Offset: 0x720
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function playerhurtcheck() {
-  self endon(# "nohealthoverlay");
+  self endon("nohealthoverlay");
   self.hurtagain = 0;
   for (;;) {
-    self waittill(# "damage", amount, attacker, dir, point, mod);
+    self waittill("damage", amount, attacker, dir, point, mod);
     if(isdefined(attacker) && isplayer(attacker) && attacker.team == self.team) {
       continue;
     }
@@ -137,20 +91,11 @@ function playerhurtcheck() {
   }
 }
 
-/*
-	Name: playerhealthregen
-	Namespace: zm_playerhealth
-	Checksum: 0x8D589359
-	Offset: 0x7F8
-	Size: 0x730
-	Parameters: 0
-	Flags: Linked
-*/
 function playerhealthregen() {
-  self notify(# "playerhealthregen");
-  self endon(# "playerhealthregen");
-  self endon(# "death");
-  self endon(# "disconnect");
+  self notify("playerhealthregen");
+  self endon("playerhealthregen");
+  self endon("death");
+  self endon("disconnect");
   if(!isdefined(self.flag)) {
     self.flag = [];
     self.flags_lock = [];
@@ -194,10 +139,8 @@ function playerhealthregen() {
       continue;
     }
     if(self.health <= 0) {
-      /#
       showhitlog();
-      # /
-        return;
+      return;
     }
     wasveryhurt = veryhurt;
     health_ratio = self.health / self.maxhealth;
@@ -235,12 +178,10 @@ function playerhealthregen() {
       if(newhealth <= 0) {
         return;
       }
-      /#
       if(newhealth > health_ratio) {
         logregen(newhealth);
       }
-      # /
-        self setnormalhealth(newhealth);
+      self setnormalhealth(newhealth);
       oldratio = self.health / self.maxhealth;
       continue;
     }
@@ -248,31 +189,27 @@ function playerhealthregen() {
     if(self.health <= 1) {
       self setnormalhealth(2 / self.maxhealth);
       invulworthyhealthdrop = 1;
-      /#
       if(!isdefined(level.player_deathinvulnerabletimeout)) {
         level.player_deathinvulnerabletimeout = 0;
       }
       if(level.player_deathinvulnerabletimeout < gettime()) {
         level.player_deathinvulnerabletimeout = gettime() + getdvarint("");
       }
-      # /
     }
     oldratio = self.health / self.maxhealth;
-    level notify(# "hit_again");
+    level notify("hit_again");
     health_add = 0;
     hurttime = gettime();
     self startfadingblur(3, 0.8);
     if(!invulworthyhealthdrop || playerinvultimescale <= 0) {
-      /#
       loghit(self.health, 0);
-      # /
-        continue;
+      continue;
     }
     if(self flag::get("player_is_invulnerable")) {
       continue;
     }
     self flag::set("player_is_invulnerable");
-    level notify(# "player_becoming_invulnerable");
+    level notify("player_becoming_invulnerable");
     if(playerjustgotredflashing) {
       invultime = level.invultime_onshield;
       playerjustgotredflashing = 0;
@@ -284,47 +221,25 @@ function playerhealthregen() {
       }
     }
     invultime = invultime * playerinvultimescale;
-    /#
     loghit(self.health, invultime);
-    # /
-      lastinvulratio = self.health / self.maxhealth;
+    lastinvulratio = self.health / self.maxhealth;
     self thread playerinvul(invultime);
   }
 }
 
-/*
-	Name: playerinvul
-	Namespace: zm_playerhealth
-	Checksum: 0x7C3C6426
-	Offset: 0xF30
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function playerinvul(timer) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(timer > 0) {
-    /#
     level.playerinvultimeend = gettime() + (timer * 1000);
-    # /
-      wait(timer);
+    wait(timer);
   }
   self flag::clear("player_is_invulnerable");
 }
 
-/*
-	Name: healthoverlay
-	Namespace: zm_playerhealth
-	Checksum: 0x5BB3085F
-	Offset: 0xFA8
-	Size: 0x1E0
-	Parameters: 0
-	Flags: Linked
-*/
 function healthoverlay() {
-  self endon(# "disconnect");
-  self endon(# "nohealthoverlay");
+  self endon("disconnect");
+  self endon("nohealthoverlay");
   if(!isdefined(self._health_overlay)) {
     self._health_overlay = newclienthudelem(self);
     self._health_overlay.x = 0;
@@ -350,15 +265,6 @@ function healthoverlay() {
   }
 }
 
-/*
-	Name: fadefunc
-	Namespace: zm_playerhealth
-	Checksum: 0x7E454E0B
-	Offset: 0x1190
-	Size: 0x240
-	Parameters: 4
-	Flags: Linked
-*/
 function fadefunc(overlay, severity, mult, hud_scaleonly) {
   pulsetime = 0.8;
   scalemin = 0.5;
@@ -367,12 +273,10 @@ function fadefunc(overlay, severity, mult, hud_scaleonly) {
   fadeouthalftime = pulsetime * (0.1 + (severity * 0.1));
   fadeoutfulltime = pulsetime * 0.3;
   remainingtime = (((pulsetime - fadeintime) - stayfulltime) - fadeouthalftime) - fadeoutfulltime;
-  /#
   assert(remainingtime >= -0.001);
-  # /
-    if(remainingtime < 0) {
-      remainingtime = 0;
-    }
+  if(remainingtime < 0) {
+    remainingtime = 0;
+  }
   halfalpha = 0.8 + (severity * 0.1);
   leastalpha = 0.5 + (severity * 0.3);
   overlay fadeovertime(fadeintime);
@@ -387,42 +291,24 @@ function fadefunc(overlay, severity, mult, hud_scaleonly) {
   wait(remainingtime);
 }
 
-/*
-	Name: watchhideredflashingoverlay
-	Namespace: zm_playerhealth
-	Checksum: 0x58CBCEC4
-	Offset: 0x13D8
-	Size: 0xAE
-	Parameters: 1
-	Flags: Linked
-*/
 function watchhideredflashingoverlay(overlay) {
-  self endon(# "death_or_disconnect");
+  self endon("death_or_disconnect");
   while (isdefined(overlay)) {
-    self waittill(# "clear_red_flashing_overlay");
+    self waittill("clear_red_flashing_overlay");
     self clientfield::set_to_player("sndZombieHealth", 0);
     self flag::clear("player_has_red_flashing_overlay");
     overlay fadeovertime(0.05);
     overlay.alpha = 0;
-    self notify(# "hit_again");
+    self notify("hit_again");
   }
 }
 
-/*
-	Name: redflashingoverlay
-	Namespace: zm_playerhealth
-	Checksum: 0xAA59A084
-	Offset: 0x1490
-	Size: 0x24A
-	Parameters: 1
-	Flags: Linked
-*/
 function redflashingoverlay(overlay) {
-  self endon(# "hit_again");
-  self endon(# "damage");
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "clear_red_flashing_overlay");
+  self endon("hit_again");
+  self endon("damage");
+  self endon("death");
+  self endon("disconnect");
+  self endon("clear_red_flashing_overlay");
   self.stopflashingbadlytime = gettime() + level.longregentime;
   if(!(isdefined(self.is_in_process_of_zombify) && self.is_in_process_of_zombify) && (!(isdefined(self.is_zombie) && self.is_zombie))) {
     fadefunc(overlay, 1, 1, 0);
@@ -441,89 +327,25 @@ function redflashingoverlay(overlay) {
   self flag::clear("player_has_red_flashing_overlay");
   self clientfield::set_to_player("sndZombieHealth", 0);
   wait(0.5);
-  self notify(# "hit_again");
+  self notify("hit_again");
 }
 
-/*
-	Name: healthoverlay_remove
-	Namespace: zm_playerhealth
-	Checksum: 0x15591E96
-	Offset: 0x16E8
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function healthoverlay_remove(overlay) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self util::waittill_any("noHealthOverlay", "death");
   overlay fadeovertime(3.5);
   overlay.alpha = 0;
 }
 
-/*
-	Name: empty_kill_func
-	Namespace: zm_playerhealth
-	Checksum: 0xB17F6BCB
-	Offset: 0x1760
-	Size: 0x2C
-	Parameters: 5
-	Flags: Linked
-*/
 function empty_kill_func(type, loc, point, attacker, amount) {}
 
-/*
-	Name: loghit
-	Namespace: zm_playerhealth
-	Checksum: 0x59F3E9D
-	Offset: 0x1798
-	Size: 0x18
-	Parameters: 2
-	Flags: Linked
-*/
-function loghit(newhealth, invultime) {
-  /#
-  # /
-}
+function loghit(newhealth, invultime) {}
 
-/*
-	Name: logregen
-	Namespace: zm_playerhealth
-	Checksum: 0x1ACF3C81
-	Offset: 0x17B8
-	Size: 0x10
-	Parameters: 1
-	Flags: Linked
-*/
-function logregen(newhealth) {
-  /#
-  # /
-}
+function logregen(newhealth) {}
 
-/*
-	Name: showhitlog
-	Namespace: zm_playerhealth
-	Checksum: 0x1C49D3A3
-	Offset: 0x17D0
-	Size: 0x8
-	Parameters: 0
-	Flags: Linked
-*/
-function showhitlog() {
-  /#
-  # /
-}
+function showhitlog() {}
 
-/*
-	Name: playerhealthdebug
-	Namespace: zm_playerhealth
-	Checksum: 0x13442FEB
-	Offset: 0x17E0
-	Size: 0x110
-	Parameters: 0
-	Flags: Linked
-*/
 function playerhealthdebug() {
-  /#
   if(getdvarstring("") == "") {
     setdvar("", "");
   }
@@ -542,25 +364,14 @@ function playerhealthdebug() {
       }
       wait(0.5);
     }
-    level notify(# "stop_printing_grenade_timers");
+    level notify("stop_printing_grenade_timers");
     destroyhealthdebug();
   }
-  # /
 }
 
-/*
-	Name: printhealthdebug
-	Namespace: zm_playerhealth
-	Checksum: 0x28E276B8
-	Offset: 0x18F8
-	Size: 0x66E
-	Parameters: 0
-	Flags: Linked
-*/
 function printhealthdebug() {
-  /#
-  level notify(# "stop_printing_health_bars");
-  level endon(# "stop_printing_health_bars");
+  level notify("stop_printing_health_bars");
+  level endon("stop_printing_health_bars");
   x = 40;
   y = 40;
   level.healthbarhudelems = [];
@@ -636,20 +447,9 @@ function printhealthdebug() {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: destroyhealthdebug
-	Namespace: zm_playerhealth
-	Checksum: 0x96689F7B
-	Offset: 0x1F70
-	Size: 0xCE
-	Parameters: 0
-	Flags: Linked
-*/
 function destroyhealthdebug() {
-  /#
   if(!isdefined(level.healthbarhudelems)) {
     return;
   }
@@ -658,5 +458,4 @@ function destroyhealthdebug() {
     level.healthbarhudelems[level.healthbarkeys[i]].bar destroy();
     level.healthbarhudelems[level.healthbarkeys[i]] destroy();
   }
-  # /
 }

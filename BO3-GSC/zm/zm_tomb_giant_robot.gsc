@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_giant_robot.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -25,20 +29,9 @@
 #using scripts\zm\zm_tomb_mech;
 #using scripts\zm\zm_tomb_teleporter;
 #using scripts\zm\zm_tomb_vo;
-
 #using_animtree("generic");
-
 #namespace zm_tomb_giant_robot;
 
-/*
-	Name: init_giant_robot_glows
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x91CC9DCE
-	Offset: 0xFE8
-	Size: 0x21C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_giant_robot_glows() {
   level flag::init("foot_shot");
   level flag::init("three_robot_round");
@@ -60,15 +53,6 @@ function init_giant_robot_glows() {
   level thread handle_tank_bunker_collision();
 }
 
-/*
-	Name: init_giant_robot
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xAD6D319B
-	Offset: 0x1210
-	Size: 0x3D4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_giant_robot() {
   clientfield::register("scriptmover", "register_giant_robot", 21000, 1, "int");
   clientfield::register("world", "start_anim_robot_0", 21000, 1, "int");
@@ -94,29 +78,11 @@ function init_giant_robot() {
   init_footstep_safe_spots();
 }
 
-/*
-	Name: init_footstep_safe_spots
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x1902F931
-	Offset: 0x15F0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function init_footstep_safe_spots() {
   level.giant_robot_footstep_safe_spots = [];
   make_safe_spot_trigger_box_at_point((-493, -198, 389), (0, 0, 0), 80, 64, 150);
 }
 
-/*
-	Name: make_safe_spot_trigger_box_at_point
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x59DC2252
-	Offset: 0x1640
-	Size: 0xE2
-	Parameters: 5
-	Flags: Linked
-*/
 function make_safe_spot_trigger_box_at_point(v_origin, v_angles, n_length, n_width, n_height) {
   trig = spawn("trigger_box", v_origin, 0, n_length, n_width, n_height);
   trig.angles = v_angles;
@@ -128,15 +94,6 @@ function make_safe_spot_trigger_box_at_point(v_origin, v_angles, n_length, n_wid
   level.giant_robot_footstep_safe_spots[level.giant_robot_footstep_safe_spots.size] = trig;
 }
 
-/*
-	Name: tomb_can_revive_override
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x70430052
-	Offset: 0x1730
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function tomb_can_revive_override(player_down) {
   if(isdefined(player_down.is_stomped) && player_down.is_stomped) {
     return false;
@@ -144,15 +101,6 @@ function tomb_can_revive_override(player_down) {
   return true;
 }
 
-/*
-	Name: giant_robot_initial_spawns
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xEBBA9832
-	Offset: 0x1778
-	Size: 0x6BC
-	Parameters: 0
-	Flags: Linked
-*/
 function giant_robot_initial_spawns() {
   while (!level flag::exists("start_zombie_round_logic")) {
     wait(0.5);
@@ -222,20 +170,11 @@ function giant_robot_initial_spawns() {
   level thread robot_cycling();
 }
 
-/*
-	Name: robot_cycling
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x488B0EBA
-	Offset: 0x1E40
-	Size: 0x3DA
-	Parameters: 0
-	Flags: Linked
-*/
 function robot_cycling() {
   three_robot_round = 0;
   last_robot = -1;
   level thread giant_robot_intro_walk(1);
-  level waittill(# "giant_robot_intro_complete");
+  level waittill("giant_robot_intro_complete");
   while (true) {
     if(!level.round_number % 4 && three_robot_round != level.round_number) {
       level flag::set("three_robot_round");
@@ -243,67 +182,53 @@ function robot_cycling() {
     if(level flag::get("ee_all_staffs_placed") && !level flag::get("ee_mech_zombie_hole_opened")) {
       level flag::set("three_robot_round");
     }
-    /#
     if(isdefined(level.devgui_force_three_robot_round) && level.devgui_force_three_robot_round) {
       level flag::set("");
     }
-    # /
-      if(level flag::get("three_robot_round")) {
-        level.zombie_ai_limit = 22;
-        random_number = randomint(3);
-        if(random_number == 2 || level flag::get("all_robot_hatch")) {
-          level thread giant_robot_start_walk(2);
-        } else {
-          level thread giant_robot_start_walk(2, 0);
-        }
-        wait(5);
-        if(random_number == 0 || level flag::get("all_robot_hatch")) {
-          level thread giant_robot_start_walk(0);
-        } else {
-          level thread giant_robot_start_walk(0, 0);
-        }
-        wait(5);
-        if(random_number == 1 || level flag::get("all_robot_hatch")) {
-          level thread giant_robot_start_walk(1);
-        } else {
-          level thread giant_robot_start_walk(1, 0);
-        }
-        level waittill(# "giant_robot_walk_cycle_complete");
-        level waittill(# "giant_robot_walk_cycle_complete");
-        level waittill(# "giant_robot_walk_cycle_complete");
-        wait(5);
-        level.zombie_ai_limit = 24;
-        three_robot_round = level.round_number;
-        last_robot = -1;
-        level flag::clear("three_robot_round");
+    if(level flag::get("three_robot_round")) {
+      level.zombie_ai_limit = 22;
+      random_number = randomint(3);
+      if(random_number == 2 || level flag::get("all_robot_hatch")) {
+        level thread giant_robot_start_walk(2);
+      } else {
+        level thread giant_robot_start_walk(2, 0);
       }
-    else {
+      wait(5);
+      if(random_number == 0 || level flag::get("all_robot_hatch")) {
+        level thread giant_robot_start_walk(0);
+      } else {
+        level thread giant_robot_start_walk(0, 0);
+      }
+      wait(5);
+      if(random_number == 1 || level flag::get("all_robot_hatch")) {
+        level thread giant_robot_start_walk(1);
+      } else {
+        level thread giant_robot_start_walk(1, 0);
+      }
+      level waittill("giant_robot_walk_cycle_complete");
+      level waittill("giant_robot_walk_cycle_complete");
+      level waittill("giant_robot_walk_cycle_complete");
+      wait(5);
+      level.zombie_ai_limit = 24;
+      three_robot_round = level.round_number;
+      last_robot = -1;
+      level flag::clear("three_robot_round");
+    } else {
       if(!level flag::get("activate_zone_nml")) {
         random_number = randomint(2);
       }
       random_number = randomint(3);
-      /#
       if(isdefined(level.devgui_force_giant_robot)) {
         random_number = level.devgui_force_giant_robot;
       }
-      # /
-        last_robot = random_number;
+      last_robot = random_number;
       level thread giant_robot_start_walk(random_number);
-      level waittill(# "giant_robot_walk_cycle_complete");
+      level waittill("giant_robot_walk_cycle_complete");
       wait(5);
     }
   }
 }
 
-/*
-	Name: giant_robot_intro_walk
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x501DD246
-	Offset: 0x2228
-	Size: 0x1FE
-	Parameters: 1
-	Flags: Linked
-*/
 function giant_robot_intro_walk(n_robot_id) {
   ai = getent("giant_robot_" + n_robot_id, "targetname");
   ai attach("veh_t7_zhd_robot_foot_hatch", "TAG_ATTACH_HATCH_LE");
@@ -317,19 +242,10 @@ function giant_robot_intro_walk(n_robot_id) {
     player clientfield::set_to_player("giant_robot_rumble_and_shake", 3);
     player thread turn_clientside_rumble_off();
   }
-  level waittill(# "giant_robot_walk_cycle_complete");
-  level notify(# "giant_robot_intro_complete");
+  level waittill("giant_robot_walk_cycle_complete");
+  level notify("giant_robot_intro_complete");
 }
 
-/*
-	Name: giant_robot_start_walk
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xDC703171
-	Offset: 0x2430
-	Size: 0x4E4
-	Parameters: 2
-	Flags: Linked
-*/
 function giant_robot_start_walk(n_robot_id, b_has_hatch = 1) {
   ai = getent("giant_robot_" + n_robot_id, "targetname");
   level.gr_foot_hatch_closed[n_robot_id] = 1;
@@ -352,19 +268,16 @@ function giant_robot_start_walk(n_robot_id, b_has_hatch = 1) {
     } else {
       ai.hatch_foot = "right";
     }
-    /#
     if(isdefined(level.devgui_force_giant_robot_foot) && (isdefined(ai.b_has_hatch) && ai.b_has_hatch)) {
       ai.hatch_foot = level.devgui_force_giant_robot_foot;
     }
-    # /
-      if(ai.hatch_foot == "left") {
-        n_sole_origin = ai gettagorigin("TAG_ATTACH_HATCH_LE");
-        v_sole_angles = ai gettagangles("TAG_ATTACH_HATCH_LE");
-        ai.hatch_foot = "left";
-        str_sole_tag = "tag_attach_hatch_le";
-        ai attach("veh_t7_zhd_robot_foot_hatch", "TAG_ATTACH_HATCH_RI");
-      }
-    else if(ai.hatch_foot == "right") {
+    if(ai.hatch_foot == "left") {
+      n_sole_origin = ai gettagorigin("TAG_ATTACH_HATCH_LE");
+      v_sole_angles = ai gettagangles("TAG_ATTACH_HATCH_LE");
+      ai.hatch_foot = "left";
+      str_sole_tag = "tag_attach_hatch_le";
+      ai attach("veh_t7_zhd_robot_foot_hatch", "TAG_ATTACH_HATCH_RI");
+    } else if(ai.hatch_foot == "right") {
       n_sole_origin = ai gettagorigin("TAG_ATTACH_HATCH_RI");
       v_sole_angles = ai gettagangles("TAG_ATTACH_HATCH_RI");
       ai.hatch_foot = "right";
@@ -385,15 +298,6 @@ function giant_robot_start_walk(n_robot_id, b_has_hatch = 1) {
   ai thread giant_robot_think(ai.trig_stomp_kill_right, ai.trig_stomp_kill_left, ai.clip_foot_right, ai.clip_foot_left, m_sole, n_robot_id);
 }
 
-/*
-	Name: giant_robot_think
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xB63F876
-	Offset: 0x2920
-	Size: 0x5BA
-	Parameters: 6
-	Flags: Linked
-*/
 function giant_robot_think(trig_stomp_kill_right, trig_stomp_kill_left, clip_foot_right, clip_foot_left, m_sole, n_robot_id) {
   self thread robot_walk_animation(n_robot_id);
   if(isdefined(self.hatch_foot) && (isdefined(self.b_has_hatch) && self.b_has_hatch)) {
@@ -445,7 +349,7 @@ function giant_robot_think(trig_stomp_kill_right, trig_stomp_kill_left, clip_foo
       player thread shoot_at_giant_robot_vo(self);
     }
   }
-  self waittill(# "giant_robot_stop");
+  self waittill("giant_robot_stop");
   self.is_walking = 0;
   self stopanimscripted();
   self.origin = self.v_start_origin;
@@ -453,39 +357,21 @@ function giant_robot_think(trig_stomp_kill_right, trig_stomp_kill_left, clip_foo
   self clientfield::set("light_foot_fx_robot", 0);
   self ghost();
   self detachall();
-  level notify(# "giant_robot_walk_cycle_complete");
+  level notify("giant_robot_walk_cycle_complete");
 }
 
-/*
-	Name: sole_cleanup
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xEE1632A3
-	Offset: 0x2EE8
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function sole_cleanup(m_sole) {
-  self endon(# "death");
-  self endon(# "giant_robot_stop");
+  self endon("death");
+  self endon("giant_robot_stop");
   util::wait_network_frame();
   m_sole clearanim( % generic::root, 0);
   util::wait_network_frame();
   m_sole animscripted("hatch_anim", m_sole.origin, m_sole.angles, "ai_zm_dlc5_zombie_giant_robot_hatch_close");
 }
 
-/*
-	Name: giant_robot_foot_waittill_sole_shot
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xC907A567
-	Offset: 0x2FA0
-	Size: 0x244
-	Parameters: 1
-	Flags: Linked
-*/
 function giant_robot_foot_waittill_sole_shot(m_sole) {
-  self endon(# "death");
-  self endon(# "giant_robot_stop");
+  self endon("death");
+  self endon("giant_robot_stop");
   if(isdefined(self.hatch_foot) && self.hatch_foot == "left") {
     str_tag = "TAG_ATTACH_HATCH_LE";
     n_foot = 2;
@@ -493,9 +379,9 @@ function giant_robot_foot_waittill_sole_shot(m_sole) {
     str_tag = "TAG_ATTACH_HATCH_RI";
     n_foot = 1;
   }
-  self waittill(# "kill_zombies_leftfoot_1");
+  self waittill("kill_zombies_leftfoot_1");
   wait(1);
-  m_sole waittill(# "damage", amount, inflictor, direction, point, type, tagname, modelname, partname, weaponname, idflags);
+  m_sole waittill("damage", amount, inflictor, direction, point, type, tagname, modelname, partname, weaponname, idflags);
   m_sole.health = 99999;
   level.gr_foot_hatch_closed[self.giant_robot_id] = 0;
   level clientfield::set("play_foot_open_fx_robot_" + self.giant_robot_id, n_foot);
@@ -505,17 +391,8 @@ function giant_robot_foot_waittill_sole_shot(m_sole) {
   m_sole animscripted("hatch_anim", m_sole.origin, m_sole.angles, "ai_zm_dlc5_zombie_giant_robot_hatch_open_idle");
 }
 
-/*
-	Name: giant_robot_close_head_entrance
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x7A48F540
-	Offset: 0x31F0
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function giant_robot_close_head_entrance(foot_side) {
-  level endon(# "intermission");
+  level endon("intermission");
   wait(5);
   level.gr_foot_hatch_closed[self.giant_robot_id] = 1;
   level clientfield::set("play_foot_open_fx_robot_" + self.giant_robot_id, 0);
@@ -526,15 +403,6 @@ function giant_robot_close_head_entrance(foot_side) {
   }
 }
 
-/*
-	Name: robot_walk_animation
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x5B9BF4CF
-	Offset: 0x32F8
-	Size: 0x23C
-	Parameters: 1
-	Flags: Linked
-*/
 function robot_walk_animation(n_robot_id) {
   if(n_robot_id != 3) {
     level clientfield::set("start_anim_robot_" + n_robot_id, 1);
@@ -544,22 +412,22 @@ function robot_walk_animation(n_robot_id) {
     level scene::play("cin_tomb_giant_robot_walk_nml_intro", self);
     level scene::play("cin_tomb_giant_robot_walk_nml", self);
     level scene::play("cin_tomb_giant_robot_walk_nml_outtro", self);
-    self notify(# "giant_robot_stop");
+    self notify("giant_robot_stop");
   } else {
     if(n_robot_id == 1) {
       level scene::play("cin_tomb_giant_robot_walk_trenches_intro", self);
       level scene::play("cin_tomb_giant_robot_walk_trenches", self);
       level scene::play("cin_tomb_giant_robot_walk_trenches_outtro", self);
-      self notify(# "giant_robot_stop");
+      self notify("giant_robot_stop");
     } else {
       if(n_robot_id == 2) {
         level scene::play("cin_tomb_giant_robot_walk_village_intro", self);
         level scene::play("cin_tomb_giant_robot_walk_village", self);
         level scene::play("cin_tomb_giant_robot_walk_village_outtro", self);
-        self notify(# "giant_robot_stop");
+        self notify("giant_robot_stop");
       } else if(n_robot_id == 3) {
         level scene::play("cin_tomb_giant_robot_bunker_intro", self);
-        self notify(# "giant_robot_stop");
+        self notify("giant_robot_stop");
       }
     }
   }
@@ -568,31 +436,13 @@ function robot_walk_animation(n_robot_id) {
   }
 }
 
-/*
-	Name: sndgrthreads
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xCB27E9ED
-	Offset: 0x3540
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function sndgrthreads(side) {
   self thread sndrobot("soundfootstart_" + side, "zmb_robot_leg_move_" + side, side);
   self thread sndrobot("soundfootwarning_" + side, "zmb_robot_foot_alarm", side);
 }
 
-/*
-	Name: sndrobot
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xE7A7F379
-	Offset: 0x35B8
-	Size: 0x110
-	Parameters: 3
-	Flags: Linked
-*/
 function sndrobot(notetrack, alias, side) {
-  self endon(# "giant_robot_stop");
+  self endon("giant_robot_stop");
   if(side == "right") {
     str_tag = "TAG_ATTACH_HATCH_RI";
   } else if(side == "left") {
@@ -609,15 +459,6 @@ function sndrobot(notetrack, alias, side) {
   }
 }
 
-/*
-	Name: function_2124e9c6
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x3945A973
-	Offset: 0x36D0
-	Size: 0x13C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_2124e9c6(startmove, str_tag, side) {
   if(startmove) {
     self playsoundontag("zmb_robot_leg_move_" + side, str_tag);
@@ -636,18 +477,9 @@ function function_2124e9c6(startmove, str_tag, side) {
   }
 }
 
-/*
-	Name: monitor_footsteps
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x3E5FD460
-	Offset: 0x3818
-	Size: 0x148
-	Parameters: 2
-	Flags: Linked
-*/
 function monitor_footsteps(trig_stomp_kill, foot_side) {
-  self endon(# "death");
-  self endon(# "giant_robot_stop");
+  self endon("death");
+  self endon("giant_robot_stop");
   str_start_stomp = ("kill_zombies_" + foot_side) + "foot_1";
   str_end_stomp = ("footstep_" + foot_side) + "_large";
   while (true) {
@@ -664,18 +496,9 @@ function monitor_footsteps(trig_stomp_kill, foot_side) {
   }
 }
 
-/*
-	Name: monitor_footsteps_fx
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x6073E67B
-	Offset: 0x3968
-	Size: 0x170
-	Parameters: 2
-	Flags: Linked
-*/
 function monitor_footsteps_fx(trig_stomp_kill, foot_side) {
-  self endon(# "death");
-  self endon(# "giant_robot_stop");
+  self endon("death");
+  self endon("giant_robot_stop");
   str_end_stomp = ("footstep_" + foot_side) + "_large";
   while (true) {
     level clientfield::set("play_foot_stomp_fx_robot_" + self.giant_robot_id, 0);
@@ -695,33 +518,15 @@ function monitor_footsteps_fx(trig_stomp_kill, foot_side) {
   }
 }
 
-/*
-	Name: monitor_shadow_notetracks
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xAF63C2CC
-	Offset: 0x3AE0
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function monitor_shadow_notetracks(foot_side) {
-  self endon(# "death");
-  self endon(# "giant_robot_stop");
+  self endon("death");
+  self endon("giant_robot_stop");
   while (true) {
     self waittillmatch("shadow_" + foot_side);
     start_robot_stomp_warning_vo(foot_side);
   }
 }
 
-/*
-	Name: rumble_and_shake
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xAAC74F11
-	Offset: 0x3B40
-	Size: 0x232
-	Parameters: 1
-	Flags: Linked
-*/
 function rumble_and_shake(robot) {
   a_players = getplayers();
   wait(0.2);
@@ -740,7 +545,7 @@ function rumble_and_shake(robot) {
         dist = distance(player.origin, self.origin);
         if(dist < 1500) {
           player clientfield::set_to_player("giant_robot_rumble_and_shake", 3);
-          level notify(# "sam_clue_giant", player);
+          level notify("sam_clue_giant", player);
         } else {
           if(dist < 3000) {
             player clientfield::set_to_player("giant_robot_rumble_and_shake", 2);
@@ -758,22 +563,13 @@ function rumble_and_shake(robot) {
   }
 }
 
-/*
-	Name: toggle_kill_trigger_flag
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x7F03D9DD
-	Offset: 0x3D80
-	Size: 0x114
-	Parameters: 3
-	Flags: Linked
-*/
 function toggle_kill_trigger_flag(trig_stomp, b_flag, foot_side = undefined) {
   if(b_flag) {
     self flag::set("kill_trigger_active");
     trig_stomp thread activate_kill_trigger(self, foot_side);
   } else {
     self flag::clear("kill_trigger_active");
-    level notify(# "stop_kill_trig_think");
+    level notify("stop_kill_trig_think");
     if(self flag::get("robot_head_entered")) {
       self flag::clear("robot_head_entered");
       self thread giant_robot_close_head_entrance(foot_side);
@@ -782,17 +578,8 @@ function toggle_kill_trigger_flag(trig_stomp, b_flag, foot_side = undefined) {
   }
 }
 
-/*
-	Name: activate_kill_trigger
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x2B6E121B
-	Offset: 0x3EA0
-	Size: 0xAEC
-	Parameters: 2
-	Flags: Linked
-*/
 function activate_kill_trigger(robot, foot_side) {
-  level endon(# "stop_kill_trig_think");
+  level endon("stop_kill_trig_think");
   if(foot_side == "left") {
     str_foot_tag = "TAG_ATTACH_HATCH_LE";
   } else if(foot_side == "right") {
@@ -846,7 +633,7 @@ function activate_kill_trigger(robot, foot_side) {
     a_boxes = getentarray("foot_box", "script_noteworthy");
     foreach(m_box in a_boxes) {
       if(m_box istouching(self)) {
-        m_box notify(# "robot_foot_stomp");
+        m_box notify("robot_foot_stomp");
       }
     }
     players = getplayers();
@@ -914,15 +701,6 @@ function activate_kill_trigger(robot, foot_side) {
   }
 }
 
-/*
-	Name: is_in_giant_robot_footstep_safe_spot
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x89480CAB
-	Offset: 0x4998
-	Size: 0xBE
-	Parameters: 0
-	Flags: Linked
-*/
 function is_in_giant_robot_footstep_safe_spot() {
   b_is_in_safe_spot = 0;
   if(isdefined(level.giant_robot_footstep_safe_spots)) {
@@ -936,18 +714,9 @@ function is_in_giant_robot_footstep_safe_spot() {
   return b_is_in_safe_spot;
 }
 
-/*
-	Name: player_stomp_death
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xEB9CF74
-	Offset: 0x4A60
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function player_stomp_death(robot) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.is_stomped = 1;
   self playsound("zmb_zombie_arc");
   self freezecontrols(1);
@@ -964,20 +733,11 @@ function player_stomp_death(robot) {
   self thread play_robot_crush_player_vo();
 }
 
-/*
-	Name: player_stomp_fake_death
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x599F6C07
-	Offset: 0x4B90
-	Size: 0x164
-	Parameters: 1
-	Flags: Linked
-*/
 function player_stomp_fake_death(robot) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.is_stomped = 1;
-  self notify(# "hash_e2be4752");
+  self notify("hash_e2be4752");
   self playsound("zmb_zombie_arc");
   self freezecontrols(1);
   self zm_utility::increment_ignoreme();
@@ -995,15 +755,6 @@ function player_stomp_fake_death(robot) {
   self zm_utility::decrement_ignoreme();
 }
 
-/*
-	Name: zombie_stomp_death
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x8A3C586E
-	Offset: 0x4D00
-	Size: 0x27E
-	Parameters: 2
-	Flags: Linked
-*/
 function zombie_stomp_death(robot, a_zombies_to_kill) {
   n_interval = 0;
   for (i = 0; i < a_zombies_to_kill.size; i++) {
@@ -1036,115 +787,61 @@ function zombie_stomp_death(robot, a_zombies_to_kill) {
   }
 }
 
-/*
-	Name: quadrotor_stomp_death
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xFBB8D933
-	Offset: 0x4F88
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function quadrotor_stomp_death() {
-  self endon(# "death");
+  self endon("death");
   self delete();
 }
 
-/*
-	Name: toggle_wind_bunker_collision
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x9C1CA3CD
-	Offset: 0x4FB8
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function toggle_wind_bunker_collision() {
   s_org = struct::get("wind_tunnel_bunker", "script_noteworthy");
   v_foot = self gettagorigin("TAG_ATTACH_HATCH_LE");
   if(distance2dsquared(s_org.origin, v_foot) < 57600) {
-    level notify(# "wind_bunker_collision_on");
+    level notify("wind_bunker_collision_on");
     wait(5);
-    level notify(# "wind_bunker_collision_off");
+    level notify("wind_bunker_collision_off");
   }
 }
 
-/*
-	Name: toggle_tank_bunker_collision
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x616FD7FE
-	Offset: 0x5070
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function toggle_tank_bunker_collision() {
   s_org = struct::get("tank_bunker", "script_noteworthy");
   v_foot = self gettagorigin("TAG_ATTACH_HATCH_LE");
   if(distance2dsquared(s_org.origin, v_foot) < 57600) {
-    level notify(# "tank_bunker_collision_on");
+    level notify("tank_bunker_collision_on");
     wait(5);
-    level notify(# "tank_bunker_collision_off");
+    level notify("tank_bunker_collision_off");
   }
 }
 
-/*
-	Name: handle_wind_tunnel_bunker_collision
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x1FE04774
-	Offset: 0x5128
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function handle_wind_tunnel_bunker_collision() {
   e_collision = getent("clip_foot_bottom_wind", "targetname");
   e_collision notsolid();
   e_collision connectpaths();
   while (true) {
-    level waittill(# "wind_bunker_collision_on");
+    level waittill("wind_bunker_collision_on");
     wait(0.1);
     e_collision solid();
     e_collision disconnectpaths();
-    level waittill(# "wind_bunker_collision_off");
+    level waittill("wind_bunker_collision_off");
     e_collision notsolid();
     e_collision connectpaths();
   }
 }
 
-/*
-	Name: handle_tank_bunker_collision
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x66D31BF3
-	Offset: 0x5210
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function handle_tank_bunker_collision() {
   e_collision = getent("clip_foot_bottom_tank", "targetname");
   e_collision notsolid();
   e_collision connectpaths();
   while (true) {
-    level waittill(# "tank_bunker_collision_on");
+    level waittill("tank_bunker_collision_on");
     wait(0.1);
     e_collision solid();
     e_collision disconnectpaths();
-    level waittill(# "tank_bunker_collision_off");
+    level waittill("tank_bunker_collision_off");
     e_collision notsolid();
     e_collision connectpaths();
   }
 }
 
-/*
-	Name: church_ceiling_fxanim
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x1CD67F34
-	Offset: 0x52F8
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked
-*/
 function church_ceiling_fxanim(foot_side) {
   if(foot_side == "left") {
     tag_foot = self gettagorigin("TAG_ATTACH_HATCH_LE");
@@ -1160,15 +857,6 @@ function church_ceiling_fxanim(foot_side) {
   }
 }
 
-/*
-	Name: play_pap_shake_fxanim
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x7CE42C72
-	Offset: 0x5438
-	Size: 0x104
-	Parameters: 1
-	Flags: Linked
-*/
 function play_pap_shake_fxanim(foot_side) {
   if(foot_side == "left") {
     tag_foot = self gettagorigin("TAG_ATTACH_HATCH_LE");
@@ -1183,18 +871,9 @@ function play_pap_shake_fxanim(foot_side) {
   }
 }
 
-/*
-	Name: player_transition_into_robot_head_start
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x3B157B64
-	Offset: 0x5548
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function player_transition_into_robot_head_start(n_start_time) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.giant_robot_transition = 1;
   self.dontspeak = 1;
   self clientfield::set_to_player("giant_robot_rumble_and_shake", 3);
@@ -1202,18 +881,9 @@ function player_transition_into_robot_head_start(n_start_time) {
   self clientfield::set_to_player("player_rumble_and_shake", 4);
 }
 
-/*
-	Name: player_transition_into_robot_head_finish
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xB2B8ED62
-	Offset: 0x55D8
-	Size: 0x118
-	Parameters: 1
-	Flags: Linked
-*/
 function player_transition_into_robot_head_finish(n_transition_time) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   wait(n_transition_time);
   self clientfield::set_to_player("player_rumble_and_shake", 0);
   self clientfield::set_to_player("giant_robot_rumble_and_shake", 0);
@@ -1231,15 +901,6 @@ function player_transition_into_robot_head_finish(n_transition_time) {
   }
 }
 
-/*
-	Name: gr_head_exit_trigger_start
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x9C7EB815
-	Offset: 0x56F8
-	Size: 0x1C4
-	Parameters: 1
-	Flags: Linked
-*/
 function gr_head_exit_trigger_start(s_origin) {
   s_origin.unitrigger_stub = spawnstruct();
   s_origin.unitrigger_stub.origin = s_origin.origin;
@@ -1257,15 +918,6 @@ function gr_head_exit_trigger_start(s_origin) {
   zm_unitrigger::register_static_unitrigger(s_origin.unitrigger_stub, & player_exits_giant_robot_head_trigger_think);
 }
 
-/*
-	Name: gr_head_eject_trigger_visibility
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x8B337E3C
-	Offset: 0x58C8
-	Size: 0x8A
-	Parameters: 1
-	Flags: Linked
-*/
 function gr_head_eject_trigger_visibility(player) {
   b_is_invis = !(isdefined(self.stub.is_available) && self.stub.is_available);
   self setinvisibletoplayer(player, b_is_invis);
@@ -1273,33 +925,15 @@ function gr_head_eject_trigger_visibility(player) {
   return !b_is_invis;
 }
 
-/*
-	Name: reset_gr_head_unitriggers
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xF87C40D4
-	Offset: 0x5960
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function reset_gr_head_unitriggers() {
   zm_unitrigger::unregister_unitrigger(self.unitrigger_stub);
   zm_unitrigger::register_static_unitrigger(self.unitrigger_stub, & player_exits_giant_robot_head_trigger_think);
 }
 
-/*
-	Name: player_exits_giant_robot_head_trigger_think
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xE2B47D6A
-	Offset: 0x59B0
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function player_exits_giant_robot_head_trigger_think() {
-  self endon(# "tube_used_for_timeout");
+  self endon("tube_used_for_timeout");
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(!(isdefined(self.stub.is_available) && self.stub.is_available)) {
       continue;
     }
@@ -1311,15 +945,6 @@ function player_exits_giant_robot_head_trigger_think() {
   }
 }
 
-/*
-	Name: init_player_eject_logic
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x2D20D0E7
-	Offset: 0x5A88
-	Size: 0x258
-	Parameters: 3
-	Flags: Linked
-*/
 function init_player_eject_logic(s_unitrigger, player, b_timeout = 0) {
   s_unitrigger.is_available = 0;
   s_origin = struct::get(s_unitrigger.target, "targetname");
@@ -1340,23 +965,14 @@ function init_player_eject_logic(s_unitrigger, player, b_timeout = 0) {
   tube_clone setvisibletoall();
   tube_clone setinvisibletoplayer(player);
   tube_clone thread tube_clone_falls_to_earth(m_linkpoint);
-  m_linkpoint waittill(# "movedone");
+  m_linkpoint waittill("movedone");
   wait(6);
   s_unitrigger.is_available = 1;
 }
 
-/*
-	Name: giant_robot_head_player_eject_thread
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xD3DFF206
-	Offset: 0x5CE8
-	Size: 0x7E4
-	Parameters: 3
-	Flags: Linked
-*/
 function giant_robot_head_player_eject_thread(m_linkpoint, str_tube, b_timeout = 0) {
-  level endon(# "intermission");
-  self endon(# "death_or_disconnect");
+  level endon("intermission");
+  self endon("death_or_disconnect");
   w_current_weapon = self getcurrentweapon();
   self disableweapons();
   self disableoffhandweapons();
@@ -1369,7 +985,7 @@ function giant_robot_head_player_eject_thread(m_linkpoint, str_tube, b_timeout =
   self setplayerangles(m_linkpoint.angles);
   self.dontspeak = 1;
   self clientfield::set_to_player("isspeaking", 1);
-  self notify(# "teleport");
+  self notify("teleport");
   self.giant_robot_transition = 1;
   self playsoundtoplayer("zmb_bot_timeout_alarm", self);
   self.old_angles = self.angles;
@@ -1381,7 +997,7 @@ function giant_robot_head_player_eject_thread(m_linkpoint, str_tube, b_timeout =
   self stopsounds();
   util::wait_network_frame();
   self playsoundtoplayer("zmb_giantrobot_exit", self);
-  self notify(# "end_in_tube_rumble");
+  self notify("end_in_tube_rumble");
   self thread exit_gr_manual_looping_rumble();
   m_linkpoint moveto(m_linkpoint.origin + vectorscale((0, 0, 1), 2000), 2.5);
   self thread hud::fade_to_black_for_x_sec(0, 2, 0.5, 0, "white");
@@ -1395,11 +1011,11 @@ function giant_robot_head_player_eject_thread(m_linkpoint, str_tube, b_timeout =
   self playerlinktodelta(m_linkpoint, "tag_origin", 1, 180, 180, 20, 20);
   m_linkpoint moveto(self.teleport_initial_origin, 3, 1);
   m_linkpoint thread play_gr_eject_impact_player_fx(self);
-  m_linkpoint notify(# "start_gr_eject_fall_to_earth");
+  m_linkpoint notify("start_gr_eject_fall_to_earth");
   self thread player_screams_while_falling();
   wait(2.85);
   self thread hud::fade_to_black_for_x_sec(0, 1, 0, 0.5, "black");
-  self waittill(# "gr_eject_fall_complete");
+  self waittill("gr_eject_fall_complete");
   self setvisibletoall();
   self enableweapons();
   if(isdefined(w_current_weapon) && w_current_weapon != level.weaponnone) {
@@ -1429,66 +1045,37 @@ function giant_robot_head_player_eject_thread(m_linkpoint, str_tube, b_timeout =
   self setstance("prone");
   self shellshock("explosion", n_post_eject_time);
   self.giant_robot_transition = 0;
-  self notify(# "gr_eject_sequence_complete");
+  self notify("gr_eject_sequence_complete");
   if(!level flag::get("story_vo_playing")) {
     self util::delay(3, undefined, & zm_audio::create_and_play_dialog, "general", "air_chute_landing");
   }
-  /#
   debug_level = getdvarint("");
   if(isdefined(debug_level) && debug_level) {
     self enableinvulnerability();
   }
-  # /
-    wait(n_post_eject_time);
+  wait(n_post_eject_time);
   self.ignoreme = 0;
 }
 
-/*
-	Name: player_screams_while_falling
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x6C140823
-	Offset: 0x64D8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function player_screams_while_falling() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self stopsounds();
   util::wait_network_frame();
   self playsoundtoplayer(("vox_plr_" + self.characterindex) + "_exit_robot_0", self);
 }
 
-/*
-	Name: tube_clone_falls_to_earth
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x3F59D8E1
-	Offset: 0x6548
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function tube_clone_falls_to_earth(m_linkpoint) {
-  m_linkpoint waittill(# "start_gr_eject_fall_to_earth");
+  m_linkpoint waittill("start_gr_eject_fall_to_earth");
   self thread scene::play("cin_zm_dlc1_jump_pad_air_loop", self);
-  m_linkpoint waittill(# "movedone");
+  m_linkpoint waittill("movedone");
   self thread scene::stop("cin_zm_dlc1_jump_pad_air_loop");
   self delete();
 }
 
-/*
-	Name: in_tube_manual_looping_rumble
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x11D1D2B8
-	Offset: 0x65D0
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function in_tube_manual_looping_rumble() {
-  self endon(# "end_in_tube_rumble");
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("end_in_tube_rumble");
+  self endon("death");
+  self endon("disconnect");
   while (true) {
     self clientfield::set_to_player("giant_robot_rumble_and_shake", 1);
     util::wait_network_frame();
@@ -1498,19 +1085,10 @@ function in_tube_manual_looping_rumble() {
   }
 }
 
-/*
-	Name: exit_gr_manual_looping_rumble
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x3A96EBED
-	Offset: 0x6670
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function exit_gr_manual_looping_rumble() {
-  self endon(# "end_exit_gr_rumble");
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("end_exit_gr_rumble");
+  self endon("death");
+  self endon("disconnect");
   while (true) {
     self clientfield::set_to_player("giant_robot_rumble_and_shake", 1);
     util::wait_network_frame();
@@ -1520,19 +1098,10 @@ function exit_gr_manual_looping_rumble() {
   }
 }
 
-/*
-	Name: gr_eject_landing_rumble
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x8863C821
-	Offset: 0x6710
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function gr_eject_landing_rumble() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self notify(# "end_exit_gr_rumble");
+  self endon("death");
+  self endon("disconnect");
+  self notify("end_exit_gr_rumble");
   util::wait_network_frame();
   self clientfield::set_to_player("giant_robot_rumble_and_shake", 0);
   util::wait_network_frame();
@@ -1541,18 +1110,9 @@ function gr_eject_landing_rumble() {
   self clientfield::set_to_player("giant_robot_rumble_and_shake", 0);
 }
 
-/*
-	Name: gr_eject_landing_rumble_on_position
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x35492541
-	Offset: 0x67D8
-	Size: 0x122
-	Parameters: 0
-	Flags: Linked
-*/
 function gr_eject_landing_rumble_on_position() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   a_players = getplayers();
   foreach(player in a_players) {
     if(player == self) {
@@ -1567,18 +1127,9 @@ function gr_eject_landing_rumble_on_position() {
   }
 }
 
-/*
-	Name: teleport_player_to_gr_footprint_safe_spot
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x4CADB5BF
-	Offset: 0x6908
-	Size: 0x32A
-	Parameters: 0
-	Flags: Linked
-*/
 function teleport_player_to_gr_footprint_safe_spot() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(isdefined(self.entered_foot_from_tank_bunker) && self.entered_foot_from_tank_bunker) {
     a_s_orgs = struct::get_array("tank_platform_safe_spots", "targetname");
     foreach(struct in a_s_orgs) {
@@ -1614,17 +1165,8 @@ function teleport_player_to_gr_footprint_safe_spot() {
   }
 }
 
-/*
-	Name: giant_robot_head_teleport_timeout
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xA390CE8E
-	Offset: 0x6C40
-	Size: 0x6CE
-	Parameters: 1
-	Flags: Linked
-*/
 function giant_robot_head_teleport_timeout(n_robot_id) {
-  level endon(# "intermission");
+  level endon("intermission");
   wait(15);
   n_players_in_robot = count_players_in_gr_head(n_robot_id);
   if(n_players_in_robot == 0) {
@@ -1670,11 +1212,11 @@ function giant_robot_head_teleport_timeout(n_robot_id) {
               player.var_df0decf1 = undefined;
               player.var_25b88da = 0;
               player thread zm_laststand::bleed_out();
-              player notify(# "gr_head_forced_bleed_out");
+              player notify("gr_head_forced_bleed_out");
               continue;
             } else {
               player thread zm_laststand::bleed_out();
-              player notify(# "gr_head_forced_bleed_out");
+              player notify("gr_head_forced_bleed_out");
               continue;
             }
           }
@@ -1707,18 +1249,9 @@ function giant_robot_head_teleport_timeout(n_robot_id) {
   }
 }
 
-/*
-	Name: start_drag_player_to_eject_tube
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x70EC89B3
-	Offset: 0x7318
-	Size: 0x1F6
-	Parameters: 2
-	Flags: Linked
-*/
 function start_drag_player_to_eject_tube(n_robot_id, m_linkspot) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   a_gr_head_triggers = struct::get_array("giant_robot_head_exit_trigger", "script_noteworthy");
   a_gr_head_triggers = util::get_array_of_closest(self.origin, a_gr_head_triggers);
   foreach(trigger in a_gr_head_triggers) {
@@ -1735,77 +1268,41 @@ function start_drag_player_to_eject_tube(n_robot_id, m_linkspot) {
   }
 }
 
-/*
-	Name: move_player_to_eject_tube
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x550A1341
-	Offset: 0x7518
-	Size: 0x114
-	Parameters: 3
-	Flags: Linked
-*/
 function move_player_to_eject_tube(m_linkspot, s_tube, trigger) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.giant_robot_transition = 1;
   n_speed = 500;
   n_dist = distance(m_linkspot.origin, s_tube.origin);
   n_time = n_dist / n_speed;
   m_linkspot moveto(s_tube.origin, n_time);
-  m_linkspot waittill(# "movedone");
+  m_linkspot waittill("movedone");
   m_linkspot delete();
   level thread init_player_eject_logic(trigger.unitrigger_stub, self, 1);
 }
 
-/*
-	Name: sndalarmtimeout
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xEE00B64B
-	Offset: 0x7638
-	Size: 0x64
-	Parameters: 0
-	Flags: None
-*/
 function sndalarmtimeout() {
-  self endon(# "teleport");
-  self endon(# "disconnect");
+  self endon("teleport");
+  self endon("disconnect");
   self playsoundtoplayer("zmb_bot_timeout_alarm", self);
   wait(2.5);
   self playsoundtoplayer("zmb_bot_timeout_alarm", self);
 }
 
-/*
-	Name: play_gr_eject_impact_player_fx
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x4D8BB1DC
-	Offset: 0x76A8
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function play_gr_eject_impact_player_fx(player) {
-  player endon(# "death");
-  player endon(# "disconnect");
-  self waittill(# "movedone");
+  player endon("death");
+  player endon("disconnect");
+  self waittill("movedone");
   player clientfield::set("gr_eject_player_impact_fx", 1);
   util::wait_network_frame();
-  player notify(# "gr_eject_fall_complete");
+  player notify("gr_eject_fall_complete");
   wait(1);
   player clientfield::set("gr_eject_player_impact_fx", 0);
 }
 
-/*
-	Name: player_death_watch_on_giant_robot
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x3FA747E8
-	Offset: 0x7750
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function player_death_watch_on_giant_robot() {
-  self endon(# "disconnect");
-  self endon(# "gr_eject_sequence_complete");
+  self endon("disconnect");
+  self endon("gr_eject_sequence_complete");
   self util::waittill_either("bled_out", "gr_head_forced_bleed_out");
   self.entered_foot_from_tank_bunker = undefined;
   self.giant_robot_transition = undefined;
@@ -1814,18 +1311,9 @@ function player_death_watch_on_giant_robot() {
   self.dontspeak = 0;
 }
 
-/*
-	Name: giant_robot_eject_disconnect_watcher
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x947F57E0
-	Offset: 0x77C8
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function giant_robot_eject_disconnect_watcher(m_linkpoint, tube_clone) {
-  self endon(# "gr_eject_sequence_complete");
-  self waittill(# "disconnect");
+  self endon("gr_eject_sequence_complete");
+  self waittill("disconnect");
   if(isdefined(m_linkpoint)) {
     m_linkpoint delete();
   }
@@ -1834,31 +1322,13 @@ function giant_robot_eject_disconnect_watcher(m_linkpoint, tube_clone) {
   }
 }
 
-/*
-	Name: turn_clientside_rumble_off
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xA5B7B308
-	Offset: 0x7840
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function turn_clientside_rumble_off() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   util::wait_network_frame();
   self clientfield::set_to_player("giant_robot_rumble_and_shake", 0);
 }
 
-/*
-	Name: spawn_model
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xAC7C54A
-	Offset: 0x7898
-	Size: 0xB4
-	Parameters: 4
-	Flags: Linked
-*/
 function spawn_model(model_name, origin = (0, 0, 0), angles, n_spawnflags = 0) {
   model = spawn("script_model", origin, n_spawnflags);
   model setmodel(model_name);
@@ -1868,15 +1338,6 @@ function spawn_model(model_name, origin = (0, 0, 0), angles, n_spawnflags = 0) {
   return model;
 }
 
-/*
-	Name: count_players_in_gr_head
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x37231B3
-	Offset: 0x7958
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function count_players_in_gr_head(n_robot_id) {
   n_players_in_robot = 0;
   a_players = getplayers();
@@ -1888,17 +1349,8 @@ function count_players_in_gr_head(n_robot_id) {
   return n_players_in_robot;
 }
 
-/*
-	Name: setup_giant_robots_intermission
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x27D6844E
-	Offset: 0x7A40
-	Size: 0x116
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_giant_robots_intermission() {
-  level waittill(# "intermission");
+  level waittill("intermission");
   for (i = 0; i < 3; i++) {
     ai_giant_robot = getent("giant_robot_" + i, "targetname");
     if(!isdefined(ai_giant_robot)) {
@@ -1906,7 +1358,7 @@ function setup_giant_robots_intermission() {
     }
     ai_giant_robot ghost();
     ai_giant_robot stopanimscripted(0.05);
-    ai_giant_robot notify(# "giant_robot_stop");
+    ai_giant_robot notify("giant_robot_stop");
     if(i == 2) {
       util::wait_network_frame();
       ai_giant_robot show();
@@ -1915,26 +1367,17 @@ function setup_giant_robots_intermission() {
   }
 }
 
-/*
-	Name: giant_robot_discovered_vo
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xF151AA57
-	Offset: 0x7B60
-	Size: 0x110
-	Parameters: 1
-	Flags: Linked
-*/
 function giant_robot_discovered_vo(ai_giant_robot) {
-  ai_giant_robot endon(# "giant_robot_stop");
-  self endon(# "disconnect");
-  level endon(# "giant_robot_discovered");
+  ai_giant_robot endon("giant_robot_stop");
+  self endon("disconnect");
+  level endon("giant_robot_discovered");
   while (true) {
     if(distance2dsquared(self.origin, ai_giant_robot.origin) < 16000000) {
       if(self zm_utility::is_player_looking_at(ai_giant_robot.origin + vectorscale((0, 0, 1), 2000), 0.85)) {
         if(!(isdefined(self.dontspeak) && self.dontspeak)) {
           self zm_audio::create_and_play_dialog("general", "discover_robot");
           level.giant_robot_discovered = 1;
-          level notify(# "giant_robot_discovered");
+          level notify("giant_robot_discovered");
           break;
         }
       }
@@ -1943,26 +1386,17 @@ function giant_robot_discovered_vo(ai_giant_robot) {
   }
 }
 
-/*
-	Name: three_robot_round_vo
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xB836A1F4
-	Offset: 0x7C78
-	Size: 0x110
-	Parameters: 1
-	Flags: Linked
-*/
 function three_robot_round_vo(ai_giant_robot) {
-  ai_giant_robot endon(# "giant_robot_stop");
-  self endon(# "disconnect");
-  level endon(# "three_robot_round_vo");
+  ai_giant_robot endon("giant_robot_stop");
+  self endon("disconnect");
+  level endon("three_robot_round_vo");
   while (true) {
     if(distance2dsquared(self.origin, ai_giant_robot.origin) < 16000000) {
       if(self zm_utility::is_player_looking_at(ai_giant_robot.origin + vectorscale((0, 0, 1), 2000), 0.85)) {
         if(!(isdefined(self.dontspeak) && self.dontspeak)) {
           self zm_audio::create_and_play_dialog("general", "see_robots");
           level.three_robot_round_vo = 1;
-          level notify(# "three_robot_round_vo");
+          level notify("three_robot_round_vo");
           break;
         }
       }
@@ -1971,27 +1405,18 @@ function three_robot_round_vo(ai_giant_robot) {
   }
 }
 
-/*
-	Name: shoot_at_giant_robot_vo
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x389F7C16
-	Offset: 0x7D90
-	Size: 0x190
-	Parameters: 1
-	Flags: Linked
-*/
 function shoot_at_giant_robot_vo(ai_giant_robot) {
-  ai_giant_robot endon(# "giant_robot_stop");
-  self endon(# "disconnect");
-  level endon(# "shoot_robot_vo");
+  ai_giant_robot endon("giant_robot_stop");
+  self endon("disconnect");
+  level endon("shoot_robot_vo");
   while (true) {
     while (distance2dsquared(self.origin, ai_giant_robot.origin) < 16000000 && self zm_utility::is_player_looking_at(ai_giant_robot.origin + vectorscale((0, 0, 1), 2000), 0.7)) {
-      self waittill(# "weapon_fired");
+      self waittill("weapon_fired");
       if(distance2dsquared(self.origin, ai_giant_robot.origin) < 16000000 && self zm_utility::is_player_looking_at(ai_giant_robot.origin + vectorscale((0, 0, 1), 2000), 0.7)) {
         if(!(isdefined(self.dontspeak) && self.dontspeak)) {
           self zm_audio::create_and_play_dialog("general", "shoot_robot");
           level.shoot_robot_vo = 1;
-          level notify(# "shoot_robot_vo");
+          level notify("shoot_robot_vo");
           return;
         }
       }
@@ -2000,15 +1425,6 @@ function shoot_at_giant_robot_vo(ai_giant_robot) {
   }
 }
 
-/*
-	Name: start_robot_stomp_warning_vo
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xA2C9D39E
-	Offset: 0x7F28
-	Size: 0x2C2
-	Parameters: 1
-	Flags: Linked
-*/
 function start_robot_stomp_warning_vo(foot_side) {
   if(foot_side == "right") {
     str_tag = "TAG_ATTACH_HATCH_RI";
@@ -2041,15 +1457,6 @@ function start_robot_stomp_warning_vo(foot_side) {
   }
 }
 
-/*
-	Name: play_robot_stomp_warning_vo
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xDB3BBF35
-	Offset: 0x81F8
-	Size: 0x146
-	Parameters: 0
-	Flags: Linked
-*/
 function play_robot_stomp_warning_vo() {
   a_players = getplayers();
   foreach(player in a_players) {
@@ -2067,17 +1474,8 @@ function play_robot_stomp_warning_vo() {
   }
 }
 
-/*
-	Name: zombie_stomped_by_gr_vo
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x93D3B03A
-	Offset: 0x8348
-	Size: 0x1AC
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_stomped_by_gr_vo(foot_side) {
-  self endon(# "giant_robot_stop");
+  self endon("giant_robot_stop");
   if(foot_side == "right") {
     str_tag = "TAG_ATTACH_HATCH_RI";
   } else if(foot_side == "left") {
@@ -2097,17 +1495,8 @@ function zombie_stomped_by_gr_vo(foot_side) {
   }
 }
 
-/*
-	Name: play_robot_crush_player_vo
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x50C22948
-	Offset: 0x8500
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function play_robot_crush_player_vo() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(self laststand::player_is_in_laststand()) {
     if(math::cointoss()) {
       n_alt = 1;
@@ -2118,21 +1507,12 @@ function play_robot_crush_player_vo() {
   }
 }
 
-/*
-	Name: play_timeout_warning_vo
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x716B2B26
-	Offset: 0x85C8
-	Size: 0x2F4
-	Parameters: 1
-	Flags: Linked
-*/
 function play_timeout_warning_vo(n_robot_id) {
   level flag::set("timeout_vo_robot_" + n_robot_id);
   s_origin = struct::get("eject_warning_fx_robot_" + n_robot_id, "targetname");
   e_vo_origin = spawn_model("tag_origin", s_origin.origin);
   e_vo_origin playsoundwithnotify("vox_maxi_purge_robot_0", "vox_maxi_purge_robot_0_done");
-  e_vo_origin waittill(# "vox_maxi_purge_robot_0_done");
+  e_vo_origin waittill("vox_maxi_purge_robot_0_done");
   a_players = getplayers();
   foreach(player in a_players) {
     if(isdefined(player.in_giant_robot_head) && player.in_giant_robot_head == n_robot_id) {
@@ -2149,24 +1529,15 @@ function play_timeout_warning_vo(n_robot_id) {
   }
   wait(1);
   e_vo_origin playsoundwithnotify("vox_maxi_purge_countdown_0", "vox_maxi_purge_countdown_0_done");
-  e_vo_origin waittill(# "vox_maxi_purge_countdown_0_done");
+  e_vo_origin waittill("vox_maxi_purge_countdown_0_done");
   wait(1);
   level notify("timeout_warning_vo_complete_" + n_robot_id);
   e_vo_origin playsoundwithnotify("vox_maxi_purge_now_0", "vox_maxi_purge_now_0_done");
-  e_vo_origin waittill(# "vox_maxi_purge_now_0_done");
+  e_vo_origin waittill("vox_maxi_purge_now_0_done");
   e_vo_origin delete();
   level flag::clear("timeout_vo_robot_" + n_robot_id);
 }
 
-/*
-	Name: start_footprint_warning_vo
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x10DE0CF5
-	Offset: 0x88C8
-	Size: 0xE2
-	Parameters: 1
-	Flags: Linked
-*/
 function start_footprint_warning_vo(n_robot_id) {
   wait(20);
   a_structs = struct::get_array("giant_robot_footprint_center", "targetname");
@@ -2177,18 +1548,9 @@ function start_footprint_warning_vo(n_robot_id) {
   }
 }
 
-/*
-	Name: footprint_check_for_nearby_players
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x4352E6BB
-	Offset: 0x89B8
-	Size: 0x1B4
-	Parameters: 1
-	Flags: Linked
-*/
 function footprint_check_for_nearby_players(ai_giant_robot) {
-  level endon(# "footprint_warning_vo");
-  ai_giant_robot endon(# "giant_robot_stop");
+  level endon("footprint_warning_vo");
+  ai_giant_robot endon("giant_robot_stop");
   while (true) {
     a_players = getplayers();
     foreach(player in a_players) {
@@ -2198,7 +1560,7 @@ function footprint_check_for_nearby_players(ai_giant_robot) {
             if(!(isdefined(player.dontspeak) && player.dontspeak)) {
               player zm_utility::do_player_general_vox("general", "warn_robot");
               level.footprint_warning_vo = 1;
-              level notify(# "footprint_warning_vo");
+              level notify("footprint_warning_vo");
               return;
             }
           }
@@ -2209,17 +1571,7 @@ function footprint_check_for_nearby_players(ai_giant_robot) {
   }
 }
 
-/*
-	Name: setup_giant_robot_devgui
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0xEC2E3C22
-	Offset: 0x8B78
-	Size: 0x1AC
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_giant_robot_devgui() {
-  /#
   setdvar("", "");
   setdvar("", "");
   setdvar("", "");
@@ -2235,20 +1587,9 @@ function setup_giant_robot_devgui() {
   adddebugcommand("");
   adddebugcommand("");
   level thread watch_for_force_giant_robot();
-  # /
 }
 
-/*
-	Name: watch_for_force_giant_robot
-	Namespace: zm_tomb_giant_robot
-	Checksum: 0x4AD1FD54
-	Offset: 0x8D30
-	Size: 0x4C0
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_for_force_giant_robot() {
-  /#
   while (true) {
     if(getdvarstring("") == "") {
       setdvar("", "");
@@ -2317,5 +1658,4 @@ function watch_for_force_giant_robot() {
     }
     wait(0.05);
   }
-  # /
 }

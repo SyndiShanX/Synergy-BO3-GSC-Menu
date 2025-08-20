@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -62,32 +66,13 @@
 #using scripts\zm\zm_island_traps;
 #using scripts\zm\zm_island_ww_quest;
 #using scripts\zm\zm_island_zones;
-
 #namespace zm_island;
 
-/*
-	Name: opt_in
-	Namespace: zm_island
-	Checksum: 0xE58084F2
-	Offset: 0x1B08
-	Size: 0x1C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec opt_in() {
   level.aat_in_use = 1;
   level.bgb_in_use = 1;
 }
 
-/*
-	Name: main
-	Namespace: zm_island
-	Checksum: 0x1F89A3F9
-	Offset: 0x1B30
-	Size: 0x29C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   zm_island_ffotd::main_start();
   zm_island_fx::main();
@@ -129,15 +114,6 @@ function main() {
   zm_island_ffotd::main_end();
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_island
-	Checksum: 0xAADA0DC2
-	Offset: 0x1DD8
-	Size: 0x364
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   var_ddba80d7 = getminbitcountfornum(3);
   clientfield::register("clientuimodel", "zmInventory.widget_shield_parts", 9000, 1, "int", undefined, 0, 0);
@@ -154,29 +130,11 @@ function register_clientfields() {
   clientfield::register("world", "force_stream_takeo_arms", 11001, 1, "int", & force_stream_takeo_arms, 0, 0);
 }
 
-/*
-	Name: include_weapons
-	Namespace: zm_island
-	Checksum: 0x95533335
-	Offset: 0x2148
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function include_weapons() {
   zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_island_weapons.csv", 1);
   zm_weapons::autofill_wallbuys_init();
 }
 
-/*
-	Name: setup_personality_character_exerts
-	Namespace: zm_island
-	Checksum: 0xFC5D7CDD
-	Offset: 0x2188
-	Size: 0x1112
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_personality_character_exerts() {
   level.exert_sounds[1]["playerbreathinsound"][0] = "vox_plr_0_exert_inhale_0";
   level.exert_sounds[2]["playerbreathinsound"][0] = "vox_plr_1_exert_inhale_0";
@@ -292,29 +250,11 @@ function setup_personality_character_exerts() {
   level.exert_sounds[4]["dtplandsoundplayer"][3] = "vox_plr_3_exert_pain_medium_3";
 }
 
-/*
-	Name: postfx_futz_mild
-	Namespace: zm_island
-	Checksum: 0x1D1ED365
-	Offset: 0x32A8
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function postfx_futz_mild(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   player = getlocalplayer(localclientnum);
   player postfx::playpostfxbundle("pstfx_dni_interrupt_mild");
 }
 
-/*
-	Name: water_motes
-	Namespace: zm_island
-	Checksum: 0x55B5F4EF
-	Offset: 0x3330
-	Size: 0xDE
-	Parameters: 7
-	Flags: Linked
-*/
 function water_motes(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   wait(0.1);
   if(newval) {
@@ -327,15 +267,6 @@ function water_motes(localclientnum, oldval, newval, bnewent, binitialsnap, fiel
   }
 }
 
-/*
-	Name: function_58e931d1
-	Namespace: zm_island
-	Checksum: 0x52D7E579
-	Offset: 0x3418
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_58e931d1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self thread function_6e954d4(localclientnum);
@@ -344,64 +275,28 @@ function function_58e931d1(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_6e954d4
-	Namespace: zm_island
-	Checksum: 0x759D7927
-	Offset: 0x34A0
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6e954d4(localclientnum) {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self.var_b5e2500e)) {
     self.var_b5e2500e = playfxoncamera(localclientnum, level._effect["bubbles"], (0, 0, 0), (1, 0, 0), (0, 0, 1));
     self thread function_738868d4(localclientnum);
   }
 }
 
-/*
-	Name: function_6fb5501
-	Namespace: zm_island
-	Checksum: 0xF59468BC
-	Offset: 0x3528
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6fb5501(localclientnum) {
   if(isdefined(self.var_b5e2500e)) {
     deletefx(localclientnum, self.var_b5e2500e, 1);
     self.var_b5e2500e = undefined;
   }
-  self notify(# "hash_a48959b9");
+  self notify("hash_a48959b9");
 }
 
-/*
-	Name: function_738868d4
-	Namespace: zm_island
-	Checksum: 0x7FAB9966
-	Offset: 0x3588
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_738868d4(localclientnum) {
-  self endon(# "hash_a48959b9");
-  self waittill(# "death");
+  self endon("hash_a48959b9");
+  self waittill("death");
   self function_6fb5501(localclientnum);
 }
 
-/*
-	Name: function_346468e3
-	Namespace: zm_island
-	Checksum: 0x767F9287
-	Offset: 0x35D0
-	Size: 0xF4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_346468e3(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     setlitfogbank(localclientnum, -1, 1, -1);
@@ -416,15 +311,6 @@ function function_346468e3(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: on_localplayer_spawned
-	Namespace: zm_island
-	Checksum: 0x5F01FD23
-	Offset: 0x36D0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function on_localplayer_spawned(localclientnum) {
   if(self != getlocalplayer(localclientnum)) {
     return;
@@ -433,15 +319,6 @@ function on_localplayer_spawned(localclientnum) {
   filter::disable_filter_speed_burst(self, 3);
 }
 
-/*
-	Name: player_speed_changed
-	Namespace: zm_island
-	Checksum: 0x29AC8F53
-	Offset: 0x3730
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function player_speed_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     if(self == getlocalplayer(localclientnum)) {
@@ -452,15 +329,6 @@ function player_speed_changed(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: mapped_material_id
-	Namespace: zm_island
-	Checksum: 0x78E4714E
-	Offset: 0x37F8
-	Size: 0x30
-	Parameters: 1
-	Flags: None
-*/
 function mapped_material_id(materialname) {
   if(!isdefined(level.filter_matid)) {
     level.filter_matid = [];
@@ -468,15 +336,6 @@ function mapped_material_id(materialname) {
   return level.filter_matid[materialname];
 }
 
-/*
-	Name: water_sheeting_toggle
-	Namespace: zm_island
-	Checksum: 0xAB0F059D
-	Offset: 0x3830
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function water_sheeting_toggle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     startwatersheetingfx(localclientnum, 1);
@@ -488,15 +347,6 @@ function water_sheeting_toggle(localclientnum, oldval, newval, bnewent, binitial
   }
 }
 
-/*
-	Name: function_4a01cc4e
-	Namespace: zm_island
-	Checksum: 0xD9B3ED15
-	Offset: 0x3928
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked
-*/
 function function_4a01cc4e(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     enablespeedblur(localclientnum, 0.07, 0.55, 0.9, 0, 100, 100);
@@ -505,15 +355,6 @@ function function_4a01cc4e(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: set_heavy_web_fade_material
-	Namespace: zm_island
-	Checksum: 0xE9EE77A
-	Offset: 0x39C8
-	Size: 0x16C
-	Parameters: 7
-	Flags: Linked
-*/
 function set_heavy_web_fade_material(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     self mapshaderconstant(localclientnum, 0, "scriptVector2", 1, 1, 1, 0);
@@ -537,15 +378,6 @@ function set_heavy_web_fade_material(localclientnum, oldval, newval, bnewent, bi
   }
 }
 
-/*
-	Name: function_be61cf5a
-	Namespace: zm_island
-	Checksum: 0xA75DFB9B
-	Offset: 0x3B40
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_be61cf5a() {
   var_f47aa4cf = getdynentarray();
   foreach(dyn_ent in var_f47aa4cf) {
@@ -553,15 +385,6 @@ function function_be61cf5a() {
   }
 }
 
-/*
-	Name: function_3a429aee
-	Namespace: zm_island
-	Checksum: 0xB6E996FE
-	Offset: 0x3BF8
-	Size: 0x304
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3a429aee() {
   forcestreamxmodel("p7_zm_isl_bucket_115");
   forcestreamxmodel("p7_fxanim_zm_island_vine_gate_mod");
@@ -597,15 +420,6 @@ function function_3a429aee() {
   forcestreamxmodel("p7_zm_isl_plant_seed_pod_01");
 }
 
-/*
-	Name: force_stream_spiders
-	Namespace: zm_island
-	Checksum: 0xD960D244
-	Offset: 0x3F08
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function force_stream_spiders(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     forcestreamxmodel("c_zom_dlc2_spider");
@@ -614,15 +428,6 @@ function force_stream_spiders(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: force_stream_takeo_arms
-	Namespace: zm_island
-	Checksum: 0xA5B5D80D
-	Offset: 0x3F90
-	Size: 0x10C
-	Parameters: 7
-	Flags: Linked
-*/
 function force_stream_takeo_arms(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     forcestreamxmodel("p7_fxanim_zm_island_takeo_arm1_mod");

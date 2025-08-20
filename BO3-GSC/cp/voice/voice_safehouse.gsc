@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_safehouse.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_b7f87735;
 
-/*
-	Name: init_voice
-	Namespace: namespace_b7f87735
-	Checksum: 0xF6DC9BC4
-	Offset: 0x4290
-	Size: 0x2264
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("plyr_hey_hendricks_beat_0", "vox_safe_safehouse_01_000_plyr");
   dialog::add("plyr_hey_hendricks_beat_1", "vox_safe_safehouse_01_000_plyr");

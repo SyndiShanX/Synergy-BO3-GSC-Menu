@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_scoreevents.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_challenges;
 #using scripts\mp\_teamops;
@@ -14,85 +18,30 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapon_utils;
-
 #namespace scoreevents;
 
-/*
-	Name: __init__sytem__
-	Namespace: scoreevents
-	Checksum: 0x64C12F86
-	Offset: 0x1728
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("scoreevents", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: scoreevents
-	Checksum: 0x6ABB7C69
-	Offset: 0x1768
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
 }
 
-/*
-	Name: init
-	Namespace: scoreevents
-	Checksum: 0x70A5481E
-	Offset: 0x1798
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.scoreeventcallbacks = [];
   level.scoreeventgameendcallback = & ongameend;
   registerscoreeventcallback("playerKilled", & scoreeventplayerkill);
 }
 
-/*
-	Name: scoreeventtablelookupint
-	Namespace: scoreevents
-	Checksum: 0x5E39930A
-	Offset: 0x17F0
-	Size: 0x52
-	Parameters: 2
-	Flags: None
-*/
 function scoreeventtablelookupint(index, scoreeventcolumn) {
   return int(tablelookup(getscoreeventtablename(), 0, index, scoreeventcolumn));
 }
 
-/*
-	Name: scoreeventtablelookup
-	Namespace: scoreevents
-	Checksum: 0xA78C0C72
-	Offset: 0x1850
-	Size: 0x42
-	Parameters: 2
-	Flags: None
-*/
 function scoreeventtablelookup(index, scoreeventcolumn) {
   return tablelookup(getscoreeventtablename(), 0, index, scoreeventcolumn);
 }
 
-/*
-	Name: registerscoreeventcallback
-	Namespace: scoreevents
-	Checksum: 0xA25334BD
-	Offset: 0x18A0
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function registerscoreeventcallback(callback, func) {
   if(!isdefined(level.scoreeventcallbacks[callback])) {
     level.scoreeventcallbacks[callback] = [];
@@ -100,15 +49,6 @@ function registerscoreeventcallback(callback, func) {
   level.scoreeventcallbacks[callback][level.scoreeventcallbacks[callback].size] = func;
 }
 
-/*
-	Name: scoreeventplayerkill
-	Namespace: scoreevents
-	Checksum: 0x3E9DBC23
-	Offset: 0x1908
-	Size: 0x3104
-	Parameters: 2
-	Flags: Linked
-*/
 function scoreeventplayerkill(data, time) {
   victim = data.victim;
   attacker = data.attacker;
@@ -332,8 +272,8 @@ function scoreeventplayerkill(data, time) {
         }
       }
       if(isdefined(victimheroability)) {
-        attacker notify(# "hero_shutdown", victimheroability);
-        attacker notify(# "hero_shutdown_gadget", victimheroability, victim);
+        attacker notify("hero_shutdown", victimheroability);
+        attacker notify("hero_shutdown_gadget", victimheroability, victim);
       }
     }
     if(attackervisionpulseactivatetime != 0 && attackervisionpulseactivatetime > (time - 6500)) {
@@ -362,8 +302,8 @@ function scoreeventplayerkill(data, time) {
       }
     }
     if(victimheroabilityactive && isdefined(victimheroability)) {
-      attacker notify(# "hero_shutdown", victimheroability);
-      attacker notify(# "hero_shutdown_gadget", victimheroability, victim);
+      attacker notify("hero_shutdown", victimheroability);
+      attacker notify("hero_shutdown_gadget", victimheroability, victim);
       switch (victimheroability.name) {
         case "gadget_armor": {
           processscoreevent("kill_enemy_who_has_powerarmor", attacker, victim, weapon);
@@ -387,17 +327,17 @@ function scoreeventplayerkill(data, time) {
         }
       }
     } else if(isdefined(victimpowerarmorlasttookdamagetime) && (time - victimpowerarmorlasttookdamagetime) <= 3000) {
-      attacker notify(# "hero_shutdown", victimheroability);
-      attacker notify(# "hero_shutdown_gadget", victimheroability, victim);
+      attacker notify("hero_shutdown", victimheroability);
+      attacker notify("hero_shutdown_gadget", victimheroability, victim);
       processscoreevent("kill_enemy_who_has_powerarmor", attacker, victim, weapon);
       attacker util::player_contract_event("killed_hero_ability_enemy");
     }
     if(isdefined(data.victimweapon) && isdefined(data.victimweapon.isheroweapon) && data.victimweapon.isheroweapon == 1) {
-      attacker notify(# "hero_shutdown", data.victimweapon);
-      attacker notify(# "hero_shutdown_gadget", data.victimweapon, victim);
+      attacker notify("hero_shutdown", data.victimweapon);
+      attacker notify("hero_shutdown_gadget", data.victimweapon, victim);
     } else if(isdefined(victim.heroweapon) && victimgadgetwasactivelastdamage && victimgadgetpower < 100) {
-      attacker notify(# "hero_shutdown", victim.heroweapon);
-      attacker notify(# "hero_shutdown_gadget", victim.heroweapon, victim);
+      attacker notify("hero_shutdown", victim.heroweapon);
+      attacker notify("hero_shutdown_gadget", victim.heroweapon, victim);
     }
     if(attackerheroabilityactive && isdefined(attackerheroability)) {
       abilitytocheck = undefined;
@@ -653,15 +593,6 @@ function scoreeventplayerkill(data, time) {
   attacker disabledeathstreak();
 }
 
-/*
-	Name: get_equipped_hero_ability
-	Namespace: scoreevents
-	Checksum: 0x59A60FA6
-	Offset: 0x4A18
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function get_equipped_hero_ability(ability_name) {
   if(!isdefined(ability_name)) {
     return undefined;
@@ -669,15 +600,6 @@ function get_equipped_hero_ability(ability_name) {
   return getweapon(ability_name);
 }
 
-/*
-	Name: heroweaponkill
-	Namespace: scoreevents
-	Checksum: 0xD4876161
-	Offset: 0x4A58
-	Size: 0x1B4
-	Parameters: 3
-	Flags: Linked
-*/
 function heroweaponkill(attacker, victim, weapon) {
   if(!isdefined(weapon)) {
     return;
@@ -736,15 +658,6 @@ function heroweaponkill(attacker, victim, weapon) {
   processscoreevent(event, attacker, victim, weapon);
 }
 
-/*
-	Name: killedheroweaponenemy
-	Namespace: scoreevents
-	Checksum: 0x8F84E64B
-	Offset: 0x4C18
-	Size: 0x1FC
-	Parameters: 6
-	Flags: Linked
-*/
 function killedheroweaponenemy(attacker, victim, weapon, victim_weapon, victim_gadget_power, victimgadgetwasactivelastdamage) {
   if(!isdefined(victim_weapon)) {
     return;
@@ -802,15 +715,6 @@ function killedheroweaponenemy(attacker, victim, weapon, victim_weapon, victim_g
   attacker util::player_contract_event("killed_hero_weapon_enemy");
 }
 
-/*
-	Name: specificweaponkill
-	Namespace: scoreevents
-	Checksum: 0x6B553ECD
-	Offset: 0x4E20
-	Size: 0x3EC
-	Parameters: 5
-	Flags: Linked
-*/
 function specificweaponkill(attacker, victim, weapon, killstreak, inflictor) {
   switchweapon = weapon.name;
   if(isdefined(killstreak)) {
@@ -911,20 +815,9 @@ function specificweaponkill(attacker, victim, weapon, killstreak, inflictor) {
   processscoreevent(event, attacker, victim, weapon);
 }
 
-/*
-	Name: multikill
-	Namespace: scoreevents
-	Checksum: 0x1598000D
-	Offset: 0x5218
-	Size: 0x104
-	Parameters: 2
-	Flags: Linked
-*/
 function multikill(killcount, weapon) {
-  /#
   assert(killcount > 1);
-  # /
-    self challenges::multikill(killcount, weapon);
+  self challenges::multikill(killcount, weapon);
   if(killcount > 8) {
     processscoreevent("multikill_more_than_8", self, undefined, weapon);
   } else {
@@ -938,15 +831,6 @@ function multikill(killcount, weapon) {
   self recordmultikill(killcount);
 }
 
-/*
-	Name: multiheroabilitykill
-	Namespace: scoreevents
-	Checksum: 0x1253C2F
-	Offset: 0x5328
-	Size: 0x114
-	Parameters: 2
-	Flags: Linked
-*/
 function multiheroabilitykill(killcount, weapon) {
   if(killcount > 1) {
     self addplayerstat("multikill_2_with_heroability", int(killcount / 2));
@@ -956,15 +840,6 @@ function multiheroabilitykill(killcount, weapon) {
   }
 }
 
-/*
-	Name: is_weapon_valid
-	Namespace: scoreevents
-	Checksum: 0xA22CC850
-	Offset: 0x5448
-	Size: 0x1D6
-	Parameters: 4
-	Flags: Linked
-*/
 function is_weapon_valid(meansofdeath, weapon, weaponclass, killstreak) {
   valid_weapon = 0;
   if(isdefined(killstreak)) {
@@ -1000,20 +875,11 @@ function is_weapon_valid(meansofdeath, weapon, weaponclass, killstreak) {
   return valid_weapon;
 }
 
-/*
-	Name: updatesinglefragmultikill
-	Namespace: scoreevents
-	Checksum: 0x892FD8FA
-	Offset: 0x5628
-	Size: 0x110
-	Parameters: 4
-	Flags: Linked
-*/
 function updatesinglefragmultikill(victim, weapon, weaponclass, killstreak) {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
-  self notify(# "updatesinglefragmultikill");
-  self endon(# "updatesinglefragmultikill");
+  self endon("disconnect");
+  level endon("game_ended");
+  self notify("updatesinglefragmultikill");
+  self endon("updatesinglefragmultikill");
   if(!isdefined(self.recent_singlefragmultikill) || self.recent_singlefragmultikillid != victim.explosiveinfo["damageid"]) {
     self.recent_singlefragmultikill = 0;
   }
@@ -1026,23 +892,12 @@ function updatesinglefragmultikill(victim, weapon, weaponclass, killstreak) {
   self.recent_singlefragmultikill = 0;
 }
 
-/*
-	Name: updatemultikills
-	Namespace: scoreevents
-	Checksum: 0x1189EEFA
-	Offset: 0x5740
-	Size: 0xD54
-	Parameters: 4
-	Flags: Linked
-*/
 function updatemultikills(weapon, weaponclass, killstreak, victim) {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
-  self notify(# "updaterecentkills");
-  self endon(# "updaterecentkills");
-  baseweaponparam = [
-    [level.get_base_weapon_param]
-  ](weapon);
+  self endon("disconnect");
+  level endon("game_ended");
+  self notify("updaterecentkills");
+  self endon("updaterecentkills");
+  baseweaponparam = [[level.get_base_weapon_param]](weapon);
   baseweapon = getweapon(getreffromitemindex(getbaseweaponitemindex(baseweaponparam)));
   if(!isdefined(self.recentkillvariables)) {
     self resetrecentkillvariables();
@@ -1278,15 +1133,6 @@ function updatemultikills(weapon, weaponclass, killstreak, victim) {
   self resetrecentkillvariables();
 }
 
-/*
-	Name: resetrecentkillvariables
-	Namespace: scoreevents
-	Checksum: 0x15CB0E08
-	Offset: 0x64A0
-	Size: 0x120
-	Parameters: 0
-	Flags: Linked
-*/
 function resetrecentkillvariables() {
   self.recent_lmg_smg_killcount = 0;
   self.recentanihilatorcount = 0;
@@ -1314,32 +1160,14 @@ function resetrecentkillvariables() {
   self.recentkillvariables = 1;
 }
 
-/*
-	Name: waittilltimeoutordeath
-	Namespace: scoreevents
-	Checksum: 0x143BE0A0
-	Offset: 0x65C8
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function waittilltimeoutordeath(timeout) {
-  self endon(# "death");
+  self endon("death");
   wait(timeout);
 }
 
-/*
-	Name: updateoneshotmultikills
-	Namespace: scoreevents
-	Checksum: 0xE9ADFCB
-	Offset: 0x65F0
-	Size: 0x110
-	Parameters: 3
-	Flags: Linked
-*/
 function updateoneshotmultikills(victim, weapon, firsttimedamaged) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self notify("updateoneshotmultikills" + firsttimedamaged);
   self endon("updateoneshotmultikills" + firsttimedamaged);
   if(!isdefined(self.oneshotmultikills) || firsttimedamaged > (isdefined(self.oneshotmultikillsdamagetime) ? self.oneshotmultikillsdamagetime : 0)) {
@@ -1356,15 +1184,6 @@ function updateoneshotmultikills(victim, weapon, firsttimedamaged) {
   self.oneshotmultikills = 0;
 }
 
-/*
-	Name: get_distance_for_weapon
-	Namespace: scoreevents
-	Checksum: 0xC415295F
-	Offset: 0x6708
-	Size: 0x1C2
-	Parameters: 2
-	Flags: Linked
-*/
 function get_distance_for_weapon(weapon, weaponclass) {
   distance = 0;
   if(!isdefined(weaponclass)) {
@@ -1419,15 +1238,6 @@ function get_distance_for_weapon(weapon, weaponclass) {
   return distance;
 }
 
-/*
-	Name: ongameend
-	Namespace: scoreevents
-	Checksum: 0x170D6D
-	Offset: 0x68D8
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function ongameend(data) {
   player = data.player;
   winner = data.winner;
@@ -1451,15 +1261,6 @@ function ongameend(data) {
   processscoreevent("completed_match", player);
 }
 
-/*
-	Name: specialistmedalachievement
-	Namespace: scoreevents
-	Checksum: 0x9EFD134F
-	Offset: 0x6A58
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function specialistmedalachievement() {
   if(level.rankedmatch) {
     if(!isdefined(self.pers["specialistMedalAchievement"])) {
@@ -1473,20 +1274,11 @@ function specialistmedalachievement() {
   }
 }
 
-/*
-	Name: specialiststatabilityusage
-	Namespace: scoreevents
-	Checksum: 0xC9ADFF77
-	Offset: 0x6B08
-	Size: 0x218
-	Parameters: 2
-	Flags: Linked
-*/
 function specialiststatabilityusage(usagesinglegame, multitrackperlife) {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
-  self notify(# "hash_359cf118");
-  self endon(# "hash_359cf118");
+  self endon("disconnect");
+  level endon("game_ended");
+  self notify("hash_359cf118");
+  self endon("hash_359cf118");
   isroulette = self.isroulette === 1;
   if(isdefined(self.heroability) && !isroulette) {
     self addweaponstat(self.heroability, "combatRecordStat", 1);
@@ -1518,15 +1310,6 @@ function specialiststatabilityusage(usagesinglegame, multitrackperlife) {
   }
 }
 
-/*
-	Name: multikillmedalachievement
-	Namespace: scoreevents
-	Checksum: 0x54A0423F
-	Offset: 0x6D28
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function multikillmedalachievement() {
   if(level.rankedmatch) {
     self giveachievement("MP_MULTI_KILL_MEDALS");

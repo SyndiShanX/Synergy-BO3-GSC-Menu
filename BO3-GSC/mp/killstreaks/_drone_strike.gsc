@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_drone_strike.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
@@ -16,18 +20,8 @@
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_hacker_tool;
-
 #namespace drone_strike;
 
-/*
-	Name: init
-	Namespace: drone_strike
-	Checksum: 0xCACD8E6D
-	Offset: 0x6B0
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   killstreaks::register("drone_strike", "drone_strike", "killstreak_drone_strike", "drone_strike_used", & activatedronestrike, 1);
   killstreaks::register_strings("drone_strike", & "KILLSTREAK_DRONE_STRIKE_EARNED", & "KILLSTREAK_DRONE_STRIKE_NOT_AVAILABLE", & "KILLSTREAK_DRONE_STRIKE_INBOUND", & "KILLSTREAK_DRONE_STRIKE_INBOUND_NEAR_PLAYER", & "KILLSTREAK_DRONE_STRIKE_HACKED");
@@ -35,15 +29,6 @@ function init() {
   killstreaks::set_team_kill_penalty_scale("drone_strike", level.teamkillreducedpenalty);
 }
 
-/*
-	Name: activatedronestrike
-	Namespace: drone_strike
-	Checksum: 0xA3E9AC8D
-	Offset: 0x7C8
-	Size: 0x76
-	Parameters: 0
-	Flags: Linked
-*/
 function activatedronestrike() {
   if(self killstreakrules::iskillstreakallowed("drone_strike", self.team) == 0) {
     return false;
@@ -55,15 +40,6 @@ function activatedronestrike() {
   return true;
 }
 
-/*
-	Name: selectdronestrikepath
-	Namespace: drone_strike
-	Checksum: 0x2C1BED70
-	Offset: 0x848
-	Size: 0x18A
-	Parameters: 0
-	Flags: Linked
-*/
 function selectdronestrikepath() {
   self beginlocationnapalmselection("map_directional_selector");
   self.selectinglocation = 1;
@@ -78,46 +54,28 @@ function selectdronestrikepath() {
   }
   if(!isdefined(location.origin)) {
     self.pers["drone_strike_radar_used"] = 1;
-    self notify(# "cancel_selection");
+    self notify("cancel_selection");
     return 0;
   }
   if(self killstreakrules::iskillstreakallowed("drone_strike", self.team) == 0) {
     self.pers["drone_strike_radar_used"] = 1;
-    self notify(# "cancel_selection");
+    self notify("cancel_selection");
     return 0;
   }
   self.pers["drone_strike_radar_used"] = 0;
   return self airsupport::finishhardpointlocationusage(location, & dronestrikelocationselected);
 }
 
-/*
-	Name: waitforlocationselection
-	Namespace: drone_strike
-	Checksum: 0xF2ABE4F9
-	Offset: 0x9E0
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function waitforlocationselection() {
-  self endon(# "emp_jammed");
-  self endon(# "emp_grenaded");
-  self waittill(# "confirm_location", location, yaw);
+  self endon("emp_jammed");
+  self endon("emp_grenaded");
+  self waittill("confirm_location", location, yaw);
   locationinfo = spawnstruct();
   locationinfo.origin = location;
   locationinfo.yaw = yaw;
   return locationinfo;
 }
 
-/*
-	Name: dronestrikelocationselected
-	Namespace: drone_strike
-	Checksum: 0x8139DD51
-	Offset: 0xA78
-	Size: 0x158
-	Parameters: 1
-	Flags: Linked
-*/
 function dronestrikelocationselected(location) {
   team = self.team;
   killstreak_id = self killstreakrules::killstreakstart("drone_strike", team, 0, 1);
@@ -132,34 +90,16 @@ function dronestrikelocationselected(location) {
   return true;
 }
 
-/*
-	Name: watchforkillstreakend
-	Namespace: drone_strike
-	Checksum: 0x87D3F965
-	Offset: 0xBD8
-	Size: 0x7C
-	Parameters: 3
-	Flags: Linked
-*/
 function watchforkillstreakend(team, influencer, killstreak_id) {
   self util::waittill_any("disconnect", "joined_team", "joined_spectators", "drone_strike_complete", "emp_jammed");
   killstreakrules::killstreakstop("drone_strike", team, killstreak_id);
 }
 
-/*
-	Name: startdronestrike
-	Namespace: drone_strike
-	Checksum: 0x29047183
-	Offset: 0xC60
-	Size: 0x3AA
-	Parameters: 4
-	Flags: Linked
-*/
 function startdronestrike(position, yaw, team, killstreak_id) {
-  self endon(# "emp_jammed");
-  self endon(# "joined_team");
-  self endon(# "joined_spectators");
-  self endon(# "disconnect");
+  self endon("emp_jammed");
+  self endon("joined_team");
+  self endon("joined_spectators");
+  self endon("disconnect");
   angles = (0, yaw, 0);
   direction = anglestoforward(angles);
   height = airsupport::getminimumflyheight() + 3000;
@@ -183,18 +123,9 @@ function startdronestrike(position, yaw, team, killstreak_id) {
     self playsound("mpl_thunder_flyover_wash");
   }
   wait(3);
-  self notify(# "drone_strike_complete");
+  self notify("drone_strike_complete");
 }
 
-/*
-	Name: spawndrone
-	Namespace: drone_strike
-	Checksum: 0x3824999
-	Offset: 0x1018
-	Size: 0x524
-	Parameters: 6
-	Flags: Linked
-*/
 function spawndrone(startpoint, endpoint, targetpoint, angles, team, killstreak_id) {
   drone = spawnplane(self, "script_model", startpoint);
   drone.team = team;
@@ -205,8 +136,8 @@ function spawndrone(startpoint, endpoint, targetpoint, angles, team, killstreak_
   drone killstreaks::configure_team("drone_strike", killstreak_id, self);
   drone killstreak_hacking::enable_hacking("drone_strike");
   target_set(drone);
-  drone endon(# "delete");
-  drone endon(# "death");
+  drone endon("delete");
+  drone endon("death");
   drone.angles = angles;
   drone setmodel("veh_t7_drone_rolling_thunder");
   drone setenemymodel("veh_t7_drone_rolling_thunder");
@@ -229,7 +160,7 @@ function spawndrone(startpoint, endpoint, targetpoint, angles, team, killstreak_
   target_set(bomb);
   bomb killstreaks::configure_team("drone_strike", killstreak_id, self);
   bomb killstreak_hacking::enable_hacking("drone_strike");
-  drone notify(# "hackertool_update_ent", bomb);
+  drone notify("hackertool_update_ent", bomb);
   bomb clientfield::set("enemyvehicle", 1);
   bomb.targetname = "drone_strike";
   bomb setowner(self);
@@ -245,15 +176,6 @@ function spawndrone(startpoint, endpoint, targetpoint, angles, team, killstreak_
   drone delete();
 }
 
-/*
-	Name: setupdamagehandling
-	Namespace: drone_strike
-	Checksum: 0xB9EC8118
-	Offset: 0x1548
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function setupdamagehandling() {
   drone = self;
   drone setcandamage(1);
@@ -263,23 +185,14 @@ function setupdamagehandling() {
   drone thread killstreaks::monitordamage("drone_strike", drone.maxhealth, & destroydroneplane, drone.lowhealth, undefined, 0, & empdamagedrone, 1);
 }
 
-/*
-	Name: destroydroneplane
-	Namespace: drone_strike
-	Checksum: 0xF2466DB1
-	Offset: 0x1648
-	Size: 0x19C
-	Parameters: 2
-	Flags: Linked
-*/
 function destroydroneplane(attacker, weapon) {
-  self endon(# "death");
+  self endon("death");
   attacker = self[[level.figure_out_attacker]](attacker);
   if(isdefined(attacker) && (!isdefined(self.owner) || self.owner util::isenemyplayer(attacker))) {
     challenges::destroyedaircraft(attacker, weapon, 0);
     attacker challenges::addflyswatterstat(weapon, self);
     scoreevents::processscoreevent("destroyed_rolling_thunder_drone", attacker, self.owner, weapon);
-    luinotifyevent( & "player_callout", 2, & "KILLSTREAK_DESTROYED_ROLLING_THUNDER_DRONE", attacker.entnum);
+    luinotifyevent(&"player_callout", 2, & "KILLSTREAK_DESTROYED_ROLLING_THUNDER_DRONE", attacker.entnum);
   }
   params = level.killstreakbundle["drone_strike"];
   if(isdefined(params.ksexplosionfx)) {
@@ -290,87 +203,42 @@ function destroydroneplane(attacker, weapon) {
   self delete();
 }
 
-/*
-	Name: watchownerevents
-	Namespace: drone_strike
-	Checksum: 0x3E155982
-	Offset: 0x17F0
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function watchownerevents(bomb) {
   player = self;
-  bomb endon(# "death");
+  bomb endon("death");
   player util::waittill_any("disconnect", "joined_team", "joined_spectators");
   if(isdefined(isalive(bomb))) {
     bomb delete();
   }
 }
 
-/*
-	Name: watchforemp
-	Namespace: drone_strike
-	Checksum: 0x304E9434
-	Offset: 0x1880
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function watchforemp(owner) {
-  self endon(# "delete");
-  self endon(# "death");
-  self waittill(# "emp_deployed", attacker);
+  self endon("delete");
+  self endon("death");
+  self waittill("emp_deployed", attacker);
   thread dronestrikeawardempscoreevent(attacker, self);
   self blowupdronestrike();
 }
 
-/*
-	Name: empdamagedrone
-	Namespace: drone_strike
-	Checksum: 0xE67477E1
-	Offset: 0x18F8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function empdamagedrone(attacker) {
   thread dronestrikeawardempscoreevent(attacker, self);
   self blowupdronestrike();
 }
 
-/*
-	Name: dronestrikeawardempscoreevent
-	Namespace: drone_strike
-	Checksum: 0xA0E22A3C
-	Offset: 0x1940
-	Size: 0x15C
-	Parameters: 2
-	Flags: Linked
-*/
 function dronestrikeawardempscoreevent(attacker, victim) {
   owner = self.owner;
-  attacker endon(# "disconnect");
-  attacker notify(# "dronestrikeawardscoreevent_singleton");
-  attacker endon(# "dronestrikeawardscoreevent_singleton");
+  attacker endon("disconnect");
+  attacker notify("dronestrikeawardscoreevent_singleton");
+  attacker endon("dronestrikeawardscoreevent_singleton");
   waittillframeend();
   attacker = self[[level.figure_out_attacker]](attacker);
   scoreevents::processscoreevent("destroyed_rolling_thunder_all_drones", attacker, victim, getweapon("emp"));
   challenges::destroyedaircraft(attacker, getweapon("emp"), 0);
   attacker challenges::addflyswatterstat(getweapon("emp"), self);
-  luinotifyevent( & "player_callout", 2, & "KILLSTREAK_DESTROYED_ROLLING_THUNDER_ALL_DRONES", attacker.entnum);
+  luinotifyevent(&"player_callout", 2, & "KILLSTREAK_DESTROYED_ROLLING_THUNDER_ALL_DRONES", attacker.entnum);
   owner globallogic_audio::play_taacom_dialog("destroyed", "drone_strike");
 }
 
-/*
-	Name: blowupdronestrike
-	Namespace: drone_strike
-	Checksum: 0xA730FE5E
-	Offset: 0x1AA8
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function blowupdronestrike() {
   params = level.killstreakbundle["drone_strike"];
   if(isdefined(self) && isdefined(params.ksexplosionfx)) {

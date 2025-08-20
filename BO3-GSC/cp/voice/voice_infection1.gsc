@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_infection1.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_67bf0840;
 
-/*
-	Name: init_voice
-	Namespace: namespace_67bf0840
-	Checksum: 0x6A6DA443
-	Offset: 0x1250
-	Size: 0xD44
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("kane_egyptian_allies_are_0", "vox_infc_1_01_000_kane");
   dialog::add("kane_looks_like_sarah_hal_0", "vox_infc_2_01_001_kane");

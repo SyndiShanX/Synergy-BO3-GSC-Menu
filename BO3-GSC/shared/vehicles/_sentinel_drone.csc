@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicles\_sentinel_drone.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\archetype_shared\archetype_shared;
 #using scripts\shared\beam_shared;
@@ -9,33 +13,13 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
-
 #using_animtree("generic");
-
 #namespace sentinel_drone;
 
-/*
-	Name: __init__sytem__
-	Namespace: sentinel_drone
-	Checksum: 0xE866954C
-	Offset: 0x8B8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("sentinel_drone", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: sentinel_drone
-	Checksum: 0x5809DDBD
-	Offset: 0x8F8
-	Size: 0x866
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "sentinel_drone_beam_set_target_id", 12000, 5, "int", & sentinel_drone_beam_set_target_id, 0, 0);
   clientfield::register("vehicle", "sentinel_drone_beam_set_source_to_target", 12000, 5, "int", & sentinel_drone_beam_set_source_to_target, 0, 0);
@@ -115,15 +99,6 @@ function __init__() {
   level._sentinel_attack_taunts[level._sentinel_attack_taunts.size] = "vox_valk_valkyrie_attack_4";
 }
 
-/*
-	Name: sentinel_is_drone_initialized
-	Namespace: sentinel_drone
-	Checksum: 0xD258EA6B
-	Offset: 0x1168
-	Size: 0xDE
-	Parameters: 2
-	Flags: Linked
-*/
 function sentinel_is_drone_initialized(localclientnum, b_check_for_target_existance_only) {
   if(!(isdefined(b_check_for_target_existance_only) && b_check_for_target_existance_only)) {
     if(!(isdefined(self.init) && self.init)) {
@@ -141,15 +116,6 @@ function sentinel_is_drone_initialized(localclientnum, b_check_for_target_exista
   return false;
 }
 
-/*
-	Name: sentinel_drone_damage_player_fx
-	Namespace: sentinel_drone
-	Checksum: 0x9A3ADF8A
-	Offset: 0x1250
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_damage_player_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   localplayer = getlocalplayer(localclientnum);
   if(isdefined(localplayer)) {
@@ -157,15 +123,6 @@ function sentinel_drone_damage_player_fx(localclientnum, oldval, newval, bnewent
   }
 }
 
-/*
-	Name: sentinel_drone_deathfx
-	Namespace: sentinel_drone
-	Checksum: 0x6F40C38F
-	Offset: 0x12E0
-	Size: 0x118
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_deathfx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   settings = struct::get_script_bundle("vehiclecustomsettings", "sentinel_drone_settings");
   if(isdefined(settings)) {
@@ -180,15 +137,6 @@ function sentinel_drone_deathfx(localclientnum, oldval, newval, bnewent, binitia
   }
 }
 
-/*
-	Name: sentinel_drone_camera_scanner
-	Namespace: sentinel_drone
-	Checksum: 0xC80599F
-	Offset: 0x1400
-	Size: 0x16C
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_camera_scanner(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!sentinel_is_drone_initialized(localclientnum)) {
     return false;
@@ -199,26 +147,15 @@ function sentinel_drone_camera_scanner(localclientnum, oldval, newval, bnewent, 
     }
     sentinel_play_engine_fx(localclientnum, 0, 1);
   } else {
-    /#
     keep_scanner_on = getdvarint("", 0);
-    # /
-      if(isdefined(self.camerascannerfx) && (!(isdefined(keep_scanner_on) && keep_scanner_on))) {
-        stopfx(localclientnum, self.camerascannerfx);
-        self.camerascannerfx = undefined;
-      }
+    if(isdefined(self.camerascannerfx) && (!(isdefined(keep_scanner_on) && keep_scanner_on))) {
+      stopfx(localclientnum, self.camerascannerfx);
+      self.camerascannerfx = undefined;
+    }
     sentinel_play_engine_fx(localclientnum, 1, 0);
   }
 }
 
-/*
-	Name: sentinel_drone_camera_destroyed
-	Namespace: sentinel_drone
-	Checksum: 0x37C4EEE5
-	Offset: 0x1578
-	Size: 0xB6
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_camera_destroyed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self.cameradestroyed = 1;
   if(isdefined(self.camerascannerfx)) {
@@ -231,54 +168,18 @@ function sentinel_drone_camera_destroyed(localclientnum, oldval, newval, bnewent
   }
 }
 
-/*
-	Name: sentinel_drone_beam_fire1
-	Namespace: sentinel_drone
-	Checksum: 0xD1BA0FA9
-	Offset: 0x1638
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_beam_fire1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   sentinel_drone_beam_fire(localclientnum, newval, "tag_fx1");
 }
 
-/*
-	Name: sentinel_drone_beam_fire2
-	Namespace: sentinel_drone
-	Checksum: 0xBA5149AD
-	Offset: 0x16A0
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_beam_fire2(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   sentinel_drone_beam_fire(localclientnum, newval, "tag_fx2");
 }
 
-/*
-	Name: sentinel_drone_beam_fire3
-	Namespace: sentinel_drone
-	Checksum: 0xC1E29887
-	Offset: 0x1708
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_beam_fire3(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   sentinel_drone_beam_fire(localclientnum, newval, "tag_fx3");
 }
 
-/*
-	Name: sentinel_drone_beam_fire
-	Namespace: sentinel_drone
-	Checksum: 0x1D8BB6A9
-	Offset: 0x1770
-	Size: 0x284
-	Parameters: 3
-	Flags: Linked
-*/
 function sentinel_drone_beam_fire(localclientnum, newval, tag_id) {
   if(sentinel_is_drone_initialized(localclientnum, newval == 0)) {
     source_num = self getentitynumber();
@@ -295,13 +196,11 @@ function sentinel_drone_beam_fire(localclientnum, newval, tag_id) {
     if(!isdefined(beam_target.beam_target_fx[localclientnum])) {
       beam_target.beam_target_fx[localclientnum] = playfxontag(localclientnum, "dlc3/stalingrad/fx_sentinel_drone_taser_fire_tgt", beam_target, "tag_origin");
     }
-    /#
     keep_scanner_on = getdvarint("", 0);
-    # /
-      if(isdefined(self.camerascannerfx) && (!(isdefined(keep_scanner_on) && keep_scanner_on))) {
-        stopfx(localclientnum, self.camerascannerfx);
-        self.camerascannerfx = undefined;
-      }
+    if(isdefined(self.camerascannerfx) && (!(isdefined(keep_scanner_on) && keep_scanner_on))) {
+      stopfx(localclientnum, self.camerascannerfx);
+      self.camerascannerfx = undefined;
+    }
   } else {
     level beam::kill(self, tag_id, beam_target, "tag_origin", "electric_taser_beam_1");
     if(isdefined(beam_target.beam_target_fx) && isdefined(beam_target.beam_target_fx[localclientnum])) {
@@ -312,15 +211,6 @@ function sentinel_drone_beam_fire(localclientnum, newval, tag_id) {
   }
 }
 
-/*
-	Name: sentinel_drone_beam_set_target_id
-	Namespace: sentinel_drone
-	Checksum: 0x4CBF813
-	Offset: 0x1A00
-	Size: 0x66
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_beam_set_target_id(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(level.sentinel_drone_target_id)) {
     level.sentinel_drone_target_id = [];
@@ -328,15 +218,6 @@ function sentinel_drone_beam_set_target_id(localclientnum, oldval, newval, bnewe
   level.sentinel_drone_target_id[newval] = self;
 }
 
-/*
-	Name: sentinel_drone_beam_set_source_to_target
-	Namespace: sentinel_drone
-	Checksum: 0xF588F741
-	Offset: 0x1A70
-	Size: 0x174
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_beam_set_source_to_target(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(level.sentinel_drone_source_to_target)) {
     level.sentinel_drone_source_to_target = [];
@@ -352,54 +233,18 @@ function sentinel_drone_beam_set_source_to_target(localclientnum, oldval, newval
   self setanim("ai_zm_dlc3_sentinel_antenna_twitch");
 }
 
-/*
-	Name: sentinel_drone_arm_cut_1
-	Namespace: sentinel_drone
-	Checksum: 0x225AB245
-	Offset: 0x1BF0
-	Size: 0x54
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_arm_cut_1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   sentinel_drone_arm_cut(localclientnum, 1);
 }
 
-/*
-	Name: sentinel_drone_arm_cut_2
-	Namespace: sentinel_drone
-	Checksum: 0x8F4C8905
-	Offset: 0x1C50
-	Size: 0x54
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_arm_cut_2(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   sentinel_drone_arm_cut(localclientnum, 2);
 }
 
-/*
-	Name: sentinel_drone_arm_cut_3
-	Namespace: sentinel_drone
-	Checksum: 0x3EC54C3D
-	Offset: 0x1CB0
-	Size: 0x54
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_arm_cut_3(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   sentinel_drone_arm_cut(localclientnum, 3);
 }
 
-/*
-	Name: sentinel_spawn_broken_arm
-	Namespace: sentinel_drone
-	Checksum: 0x828D04A1
-	Offset: 0x1D10
-	Size: 0x2CC
-	Parameters: 4
-	Flags: Linked
-*/
 function sentinel_spawn_broken_arm(localclientnum, arm, arm_tag, claw_tag) {
   if(!sentinel_is_drone_initialized(localclientnum)) {
     return false;
@@ -432,15 +277,6 @@ function sentinel_spawn_broken_arm(localclientnum, arm, arm_tag, claw_tag) {
   thread sentinel_launch_piece(localclientnum, "veh_t7_dlc3_sentinel_drone_spawn_arm", arm_pos, arm_ang, self.origin, launch_dir);
 }
 
-/*
-	Name: sentinel_drone_arm_cut
-	Namespace: sentinel_drone
-	Checksum: 0x1625828D
-	Offset: 0x1FE8
-	Size: 0x3EC
-	Parameters: 2
-	Flags: Linked
-*/
 function sentinel_drone_arm_cut(localclientnum, arm) {
   if(arm == 1) {
     if(!(isdefined(self.rightarmlost) && self.rightarmlost)) {
@@ -501,15 +337,6 @@ function sentinel_drone_arm_cut(localclientnum, arm) {
   }
 }
 
-/*
-	Name: sentinel_drone_beam_charge
-	Namespace: sentinel_drone
-	Checksum: 0x5C45125B
-	Offset: 0x23E0
-	Size: 0x2A6
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_beam_charge(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!sentinel_is_drone_initialized(localclientnum)) {
     return false;
@@ -552,15 +379,6 @@ function sentinel_drone_beam_charge(localclientnum, oldval, newval, bnewent, bin
   }
 }
 
-/*
-	Name: sentinel_drone_face_cut
-	Namespace: sentinel_drone
-	Checksum: 0xFC7A6FE9
-	Offset: 0x2690
-	Size: 0x20C
-	Parameters: 7
-	Flags: Linked
-*/
 function sentinel_drone_face_cut(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!sentinel_is_drone_initialized(localclientnum)) {
     return false;
@@ -582,15 +400,6 @@ function sentinel_drone_face_cut(localclientnum, oldval, newval, bnewent, biniti
   playfxontag(localclientnum, "dlc3/stalingrad/fx_sentinel_drone_energy_core_glow", self, "ag_core_d0");
 }
 
-/*
-	Name: sentinel_play_claws_ambient_fx
-	Namespace: sentinel_drone
-	Checksum: 0xB5CE96D
-	Offset: 0x28A8
-	Size: 0x1DE
-	Parameters: 2
-	Flags: Linked
-*/
 function sentinel_play_claws_ambient_fx(localclientnum, b_false) {
   if(!sentinel_is_drone_initialized(localclientnum)) {
     return false;
@@ -621,15 +430,6 @@ function sentinel_play_claws_ambient_fx(localclientnum, b_false) {
   }
 }
 
-/*
-	Name: sentinel_play_engine_fx
-	Namespace: sentinel_drone
-	Checksum: 0xA36319B6
-	Offset: 0x2A90
-	Size: 0x11C
-	Parameters: 3
-	Flags: Linked
-*/
 function sentinel_play_engine_fx(localclientnum, b_engine, b_roll_engine) {
   if(!sentinel_is_drone_initialized(localclientnum)) {
     return false;
@@ -646,15 +446,6 @@ function sentinel_play_engine_fx(localclientnum, b_engine, b_roll_engine) {
   }
 }
 
-/*
-	Name: sentinel_play_taunt
-	Namespace: sentinel_drone
-	Checksum: 0x2C17BB0E
-	Offset: 0x2BB8
-	Size: 0xA4
-	Parameters: 2
-	Flags: Linked
-*/
 function sentinel_play_taunt(localclientnum, taunt_arr) {
   if(isdefined(level._lastplayed_drone_taunt) && (gettime() - level._lastplayed_drone_taunt) < 6000) {
     return;
@@ -667,15 +458,6 @@ function sentinel_play_taunt(localclientnum, taunt_arr) {
   self playsound(localclientnum, taunt_arr[taunt]);
 }
 
-/*
-	Name: sentinel_launch_piece
-	Namespace: sentinel_drone
-	Checksum: 0xA8B65AD7
-	Offset: 0x2C68
-	Size: 0x284
-	Parameters: 6
-	Flags: Linked
-*/
 function sentinel_launch_piece(localclientnum, model, pos, angles, hitpos, force) {
   dynent = createdynentandlaunch(localclientnum, model, pos, angles, hitpos, force);
   if(!isdefined(dynent)) {

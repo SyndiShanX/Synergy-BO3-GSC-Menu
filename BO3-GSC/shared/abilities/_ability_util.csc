@@ -1,3 +1,7 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\abilities\_ability_util.csc
+*************************************************/
+
 #using scripts\shared\abilities\_ability_player;
 #using scripts\shared\abilities\_ability_power;

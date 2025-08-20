@@ -1,21 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_sumpf_perks.gsc
+*************************************************/
+
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
 #using scripts\zm\_zm_audio;
 #using scripts\zm\_zm_perks;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_sumpf_perks;
 
-/*
-	Name: randomize_vending_machines
-	Namespace: zm_sumpf_perks
-	Checksum: 0x7203552E
-	Offset: 0x408
-	Size: 0x432
-	Parameters: 0
-	Flags: Linked
-*/
 function randomize_vending_machines() {
   level._dont_unhide_quickervive_on_hotjoin = 1;
   vending_machines = [];
@@ -57,18 +51,9 @@ function randomize_vending_machines() {
     }
   }
   level.sndperksacolajingleoverride = & function_25413096;
-  level notify(# "hash_57a00baa");
+  level notify("hash_57a00baa");
 }
 
-/*
-	Name: function_bede3562
-	Namespace: zm_sumpf_perks
-	Checksum: 0x458911A6
-	Offset: 0x848
-	Size: 0xE8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bede3562(var_22082ed0) {
   str_on = self.script_noteworthy + "_power_on";
   level waittill(str_on);
@@ -81,15 +66,6 @@ function function_bede3562(var_22082ed0) {
   var_22082ed0.s_fxloc.angles = var_22082ed0.angles;
 }
 
-/*
-	Name: function_1b58b796
-	Namespace: zm_sumpf_perks
-	Checksum: 0x6625FD84
-	Offset: 0x938
-	Size: 0x15E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1b58b796(str_trigger) {
   vending_machines = [];
   var_560b7d8d = getentarray(str_trigger, "targetname");
@@ -112,29 +88,11 @@ function function_1b58b796(str_trigger) {
   return vending_machines;
 }
 
-/*
-	Name: function_17db950e
-	Namespace: zm_sumpf_perks
-	Checksum: 0xDC574001
-	Offset: 0xAA0
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function function_17db950e() {
   level waittill(self.script_noteworthy + "_unhide");
   self.var_6ecf729b = 0;
 }
 
-/*
-	Name: function_25413096
-	Namespace: zm_sumpf_perks
-	Checksum: 0x8A82878B
-	Offset: 0xAD0
-	Size: 0x110
-	Parameters: 0
-	Flags: Linked
-*/
 function function_25413096() {
   perksacola = self.script_sound;
   if(!self.var_6ecf729b) {
@@ -161,30 +119,12 @@ function function_25413096() {
   }
 }
 
-/*
-	Name: solo_disable_quickrevive
-	Namespace: zm_sumpf_perks
-	Checksum: 0x6F127C37
-	Offset: 0xBE8
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function solo_disable_quickrevive() {
   level flag::wait_till("solo_revive");
   self unlink();
   self triggerenable(0);
 }
 
-/*
-	Name: get_vending_machine
-	Namespace: zm_sumpf_perks
-	Checksum: 0xA563579
-	Offset: 0xC48
-	Size: 0x178
-	Parameters: 1
-	Flags: Linked
-*/
 function get_vending_machine(start_location) {
   machine = undefined;
   machine_clip = undefined;
@@ -209,42 +149,33 @@ function get_vending_machine(start_location) {
   return machine;
 }
 
-/*
-	Name: activate_vending_machine
-	Namespace: zm_sumpf_perks
-	Checksum: 0xFCCB99C8
-	Offset: 0xDC8
-	Size: 0x18C
-	Parameters: 3
-	Flags: Linked
-*/
 function activate_vending_machine(machine, origin, entity) {
-  level notify(# "master_switch_activated");
+  level notify("master_switch_activated");
   switch (machine) {
     case "p7_zm_vending_jugg": {
       var_da5a8677 = "mus_perks_jugganog_sting";
-      level notify(# "hash_5203f90d");
+      level notify("hash_5203f90d");
       break;
     }
     case "p7_zm_vending_doubletap2": {
       var_da5a8677 = "mus_perks_doubletap_sting";
-      level notify(# "hash_b5265d08");
+      level notify("hash_b5265d08");
       break;
     }
     case "p7_zm_vending_revive": {
       var_da5a8677 = "mus_perks_quickrevive_sting";
-      level notify(# "hash_57a00baa");
+      level notify("hash_57a00baa");
       level._dont_unhide_quickervive_on_hotjoin = 0;
       break;
     }
     case "p7_zm_vending_sleight": {
       var_da5a8677 = "mus_perks_speed_sting";
-      level notify(# "hash_5331339b");
+      level notify("hash_5331339b");
       break;
     }
     case "p7_zm_vending_three_gun": {
       var_da5a8677 = "mus_perks_mulekick_sting";
-      level notify(# "hash_d2e0b345");
+      level notify("hash_d2e0b345");
       break;
     }
   }
@@ -252,19 +183,10 @@ function activate_vending_machine(machine, origin, entity) {
     e_trigger = getent(var_da5a8677, "script_label");
     e_trigger triggerenable(1);
   }
-  level notify(# "revive_on");
+  level notify("revive_on");
   play_vending_vo(machine, origin);
 }
 
-/*
-	Name: play_vending_vo
-	Namespace: zm_sumpf_perks
-	Checksum: 0x8FFDEC1F
-	Offset: 0xF60
-	Size: 0x1B6
-	Parameters: 2
-	Flags: Linked
-*/
 function play_vending_vo(machine, origin) {
   players = getplayers();
   players = array::get_all_closest(origin, players, undefined, undefined, 512);
@@ -297,15 +219,6 @@ function play_vending_vo(machine, origin) {
   }
 }
 
-/*
-	Name: vending_randomization_effect
-	Namespace: zm_sumpf_perks
-	Checksum: 0xFB4C0729
-	Offset: 0x1120
-	Size: 0xA34
-	Parameters: 1
-	Flags: Linked
-*/
 function vending_randomization_effect(index) {
   vending_triggers = getentarray("zombie_vending", "targetname");
   machines = [];

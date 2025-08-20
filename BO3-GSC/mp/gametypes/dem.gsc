@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\dem.gsc
+*************************************************/
+
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_battlechatter;
@@ -25,18 +29,8 @@
 #using scripts\shared\rank_shared;
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\sound_shared;
-
 #namespace dem;
 
-/*
-	Name: main
-	Namespace: dem
-	Checksum: 0x16CBE8F6
-	Offset: 0xE28
-	Size: 0x394
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   util::registerroundswitch(0, 9);
@@ -78,15 +72,6 @@ function main() {
   }
 }
 
-/*
-	Name: onprecachegametype
-	Namespace: dem
-	Checksum: 0x98C17885
-	Offset: 0x11C8
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function onprecachegametype() {
   game["bombmodelname"] = "t5_weapon_briefcase_bomb_world";
   game["bombmodelnameobj"] = "t5_weapon_briefcase_bomb_world";
@@ -94,15 +79,6 @@ function onprecachegametype() {
   game["bomb_recovered_sound"] = "fly_bomb_pickup_plr";
 }
 
-/*
-	Name: dem_getteamkillpenalty
-	Namespace: dem
-	Checksum: 0xF7365E5C
-	Offset: 0x1228
-	Size: 0x96
-	Parameters: 4
-	Flags: None
-*/
 function dem_getteamkillpenalty(einflictor, attacker, smeansofdeath, weapon) {
   teamkill_penalty = globallogic_defaults::default_getteamkillpenalty(einflictor, attacker, smeansofdeath, weapon);
   if(isdefined(self.isdefusing) && self.isdefusing || (isdefined(self.isplanting) && self.isplanting)) {
@@ -111,15 +87,6 @@ function dem_getteamkillpenalty(einflictor, attacker, smeansofdeath, weapon) {
   return teamkill_penalty;
 }
 
-/*
-	Name: dem_getteamkillscore
-	Namespace: dem
-	Checksum: 0x34D2E3D4
-	Offset: 0x12C8
-	Size: 0xA2
-	Parameters: 4
-	Flags: None
-*/
 function dem_getteamkillscore(einflictor, attacker, smeansofdeath, weapon) {
   teamkill_score = rank::getscoreinfovalue("team_kill");
   if(isdefined(self.isdefusing) && self.isdefusing || (isdefined(self.isplanting) && self.isplanting)) {
@@ -128,15 +95,6 @@ function dem_getteamkillscore(einflictor, attacker, smeansofdeath, weapon) {
   return int(teamkill_score);
 }
 
-/*
-	Name: onroundswitch
-	Namespace: dem
-	Checksum: 0xC89257BC
-	Offset: 0x1378
-	Size: 0x128
-	Parameters: 0
-	Flags: None
-*/
 function onroundswitch() {
   if(!isdefined(game["switchedsides"])) {
     game["switchedsides"] = 0;
@@ -156,15 +114,6 @@ function onroundswitch() {
   }
 }
 
-/*
-	Name: getbetterteam
-	Namespace: dem
-	Checksum: 0xC43F6717
-	Offset: 0x14A8
-	Size: 0x20A
-	Parameters: 0
-	Flags: None
-*/
 function getbetterteam() {
   kills["allies"] = 0;
   kills["axis"] = 0;
@@ -196,15 +145,6 @@ function getbetterteam() {
   return "axis";
 }
 
-/*
-	Name: onstartgametype
-	Namespace: dem
-	Checksum: 0x2CF1A558
-	Offset: 0x16C0
-	Size: 0x870
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   setbombtimer("A", 0);
   setmatchflag("bomb_timer_a", 0);
@@ -299,15 +239,6 @@ function onstartgametype() {
   }
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: dem
-	Checksum: 0x5E29C396
-	Offset: 0x1F38
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function onspawnplayer(predictedspawn) {
   self.isplanting = 0;
   self.isdefusing = 0;
@@ -315,28 +246,10 @@ function onspawnplayer(predictedspawn) {
   spawning::onspawnplayer(predictedspawn);
 }
 
-/*
-	Name: dem_playerspawnedcb
-	Namespace: dem
-	Checksum: 0x286E1E88
-	Offset: 0x1F88
-	Size: 0x12
-	Parameters: 0
-	Flags: None
-*/
 function dem_playerspawnedcb() {
-  level notify(# "spawned_player");
+  level notify("spawned_player");
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: dem
-	Checksum: 0xA8A316E6
-	Offset: 0x1FA8
-	Size: 0x55C
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   thread checkallowspectating();
   if(isdefined(level.droppedtagrespawn) && level.droppedtagrespawn) {
@@ -373,9 +286,7 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
         self recordkillmodifier("defending");
         scoreevents::processscoreevent("killed_defender", attacker, self, weapon);
       } else {
-        /#
         attacker iprintlnbold("");
-        # /
       }
     } else {
       if(!isdefined(attacker.dem_defends)) {
@@ -392,9 +303,7 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
         self recordkillmodifier("assaulting");
         scoreevents::processscoreevent("killed_attacker", attacker, self, weapon);
       } else {
-        /#
         attacker iprintlnbold("");
-        # /
       }
     }
   }
@@ -406,17 +315,8 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: checkallowspectating
-	Namespace: dem
-	Checksum: 0x73E3536C
-	Offset: 0x2510
-	Size: 0x11C
-	Parameters: 0
-	Flags: None
-*/
 function checkallowspectating() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(0.05);
   update = 0;
   livesleft = !(level.numlives && !self.pers["lives"]);
@@ -433,15 +333,6 @@ function checkallowspectating() {
   }
 }
 
-/*
-	Name: dem_endgame
-	Namespace: dem
-	Checksum: 0x8C0D7D10
-	Offset: 0x2638
-	Size: 0xEC
-	Parameters: 2
-	Flags: None
-*/
 function dem_endgame(winningteam, endreasontext) {
   foreach(bombzone in level.bombzones) {
     bombzone gameobjects::set_visible_team("none");
@@ -452,15 +343,6 @@ function dem_endgame(winningteam, endreasontext) {
   thread globallogic::endgame(winningteam, endreasontext);
 }
 
-/*
-	Name: ondeadevent
-	Namespace: dem
-	Checksum: 0x655E7268
-	Offset: 0x2730
-	Size: 0x174
-	Parameters: 1
-	Flags: None
-*/
 function ondeadevent(team) {
   if(level.bombexploded || level.bombdefused) {
     return;
@@ -483,15 +365,6 @@ function ondeadevent(team) {
   }
 }
 
-/*
-	Name: ononeleftevent
-	Namespace: dem
-	Checksum: 0x418B1DA2
-	Offset: 0x28B0
-	Size: 0x3C
-	Parameters: 1
-	Flags: None
-*/
 function ononeleftevent(team) {
   if(level.bombexploded || level.bombdefused) {
     return;
@@ -499,15 +372,6 @@ function ononeleftevent(team) {
   warnlastplayer(team);
 }
 
-/*
-	Name: ontimelimit
-	Namespace: dem
-	Checksum: 0x5914F7A9
-	Offset: 0x28F8
-	Size: 0x17C
-	Parameters: 0
-	Flags: None
-*/
 function ontimelimit() {
   if(isdefined(game["overtime_round"])) {
     dem_endgame("tie", game["strings"]["time_limit_reached"]);
@@ -530,15 +394,6 @@ function ontimelimit() {
   }
 }
 
-/*
-	Name: warnlastplayer
-	Namespace: dem
-	Checksum: 0xCCB15C4E
-	Offset: 0x2A80
-	Size: 0x15C
-	Parameters: 1
-	Flags: None
-*/
 function warnlastplayer(team) {
   if(!isdefined(level.warnedlastplayer)) {
     level.warnedlastplayer = [];
@@ -562,18 +417,9 @@ function warnlastplayer(team) {
   players[i] thread givelastattackerwarning();
 }
 
-/*
-	Name: givelastattackerwarning
-	Namespace: dem
-	Checksum: 0x8814B12B
-	Offset: 0x2BE8
-	Size: 0xC4
-	Parameters: 0
-	Flags: None
-*/
 function givelastattackerwarning() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   fullhealthtime = 0;
   interval = 0.05;
   while (true) {
@@ -590,15 +436,6 @@ function givelastattackerwarning() {
   self globallogic_audio::leader_dialog_on_player("roundSuddenDeath");
 }
 
-/*
-	Name: updategametypedvars
-	Namespace: dem
-	Checksum: 0xD29935C3
-	Offset: 0x2CB8
-	Size: 0x164
-	Parameters: 0
-	Flags: None
-*/
 function updategametypedvars() {
   level.planttime = getgametypesetting("plantTime");
   level.defusetime = getgametypesetting("defuseTime");
@@ -613,15 +450,6 @@ function updategametypedvars() {
   level.playerdefensivemax = getgametypesetting("maxPlayerDefensive");
 }
 
-/*
-	Name: resetbombzone
-	Namespace: dem
-	Checksum: 0x6AF0092D
-	Offset: 0x2E28
-	Size: 0x1F4
-	Parameters: 0
-	Flags: None
-*/
 function resetbombzone() {
   if(isdefined(game["overtime_round"])) {
     self gameobjects::set_owner_team("neutral");
@@ -630,8 +458,8 @@ function resetbombzone() {
     self gameobjects::allow_use("enemy");
   }
   self gameobjects::set_use_time(level.planttime);
-  self gameobjects::set_use_text( & "MP_PLANTING_EXPLOSIVE");
-  self gameobjects::set_use_hint_text( & "PLATFORM_HOLD_TO_PLANT_EXPLOSIVES");
+  self gameobjects::set_use_text(&"MP_PLANTING_EXPLOSIVE");
+  self gameobjects::set_use_hint_text(&"PLATFORM_HOLD_TO_PLANT_EXPLOSIVES");
   self gameobjects::set_key_object(level.ddbomb);
   self gameobjects::set_2d_icon("friendly", "waypoint_defend" + self.label);
   self gameobjects::set_3d_icon("friendly", "waypoint_defend" + self.label);
@@ -641,20 +469,11 @@ function resetbombzone() {
   self.useweapon = getweapon("briefcase_bomb");
 }
 
-/*
-	Name: setupfordefusing
-	Namespace: dem
-	Checksum: 0x164EAA84
-	Offset: 0x3028
-	Size: 0x17C
-	Parameters: 0
-	Flags: None
-*/
 function setupfordefusing() {
   self gameobjects::allow_use("friendly");
   self gameobjects::set_use_time(level.defusetime);
-  self gameobjects::set_use_text( & "MP_DEFUSING_EXPLOSIVE");
-  self gameobjects::set_use_hint_text( & "PLATFORM_HOLD_TO_DEFUSE_EXPLOSIVES");
+  self gameobjects::set_use_text(&"MP_DEFUSING_EXPLOSIVE");
+  self gameobjects::set_use_hint_text(&"PLATFORM_HOLD_TO_DEFUSE_EXPLOSIVES");
   self gameobjects::set_key_object(undefined);
   self gameobjects::set_2d_icon("friendly", "compass_waypoint_defuse" + self.label);
   self gameobjects::set_3d_icon("friendly", "waypoint_defuse" + self.label);
@@ -663,15 +482,6 @@ function setupfordefusing() {
   self gameobjects::set_visible_team("any");
 }
 
-/*
-	Name: bombs
-	Namespace: dem
-	Checksum: 0x47278EF9
-	Offset: 0x31B0
-	Size: 0x992
-	Parameters: 0
-	Flags: None
-*/
 function bombs() {
   level.bombaplanted = 0;
   level.bombbplanted = 0;
@@ -718,8 +528,8 @@ function bombs() {
     bombzone = gameobjects::create_use_object(bombsiteteamowner, trigger, visuals, (0, 0, 0), name, 1, 1);
     bombzone gameobjects::allow_use(bombsiteallowuse);
     bombzone gameobjects::set_use_time(level.planttime);
-    bombzone gameobjects::set_use_text( & "MP_PLANTING_EXPLOSIVE");
-    bombzone gameobjects::set_use_hint_text( & "PLATFORM_HOLD_TO_PLANT_EXPLOSIVES");
+    bombzone gameobjects::set_use_text(&"MP_PLANTING_EXPLOSIVE");
+    bombzone gameobjects::set_use_hint_text(&"PLATFORM_HOLD_TO_PLANT_EXPLOSIVES");
     bombzone gameobjects::set_key_object(level.ddbomb);
     bombzone.label = scriptlabel;
     bombzone.index = index;
@@ -750,10 +560,8 @@ function bombs() {
     }
     level.bombzones[level.bombzones.size] = bombzone;
     bombzone.bombdefusetrig = defusetrig;
-    /#
     assert(isdefined(bombzone.bombdefusetrig));
-    # /
-      bombzone.bombdefusetrig.origin = bombzone.bombdefusetrig.origin + (vectorscale((0, 0, -1), 10000));
+    bombzone.bombdefusetrig.origin = bombzone.bombdefusetrig.origin + (vectorscale((0, 0, -1), 10000));
     bombzone.bombdefusetrig.label = scriptlabel;
     team_mask = util::getteammask(game["attackers"]);
     bombzone.spawninfluencer = bombzone spawning::create_influencer("dem_enemy_base", trigger.origin, team_mask);
@@ -769,35 +577,17 @@ function bombs() {
   }
 }
 
-/*
-	Name: setbomboverheatingafterweaponchange
-	Namespace: dem
-	Checksum: 0x8B378748
-	Offset: 0x3B50
-	Size: 0x9C
-	Parameters: 3
-	Flags: None
-*/
 function setbomboverheatingafterweaponchange(useobject, overheated, heat) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "joined_team");
-  self endon(# "joined_spectators");
-  self waittill(# "weapon_change", weapon);
+  self endon("death");
+  self endon("disconnect");
+  self endon("joined_team");
+  self endon("joined_spectators");
+  self waittill("weapon_change", weapon);
   if(weapon == useobject.useweapon) {
     self setweaponoverheating(overheated, heat, weapon);
   }
 }
 
-/*
-	Name: onbeginuse
-	Namespace: dem
-	Checksum: 0xD3E7E53D
-	Offset: 0x3BF8
-	Size: 0x2E4
-	Parameters: 1
-	Flags: None
-*/
 function onbeginuse(player) {
   timeremaining = globallogic_utils::gettimeremaining();
   if(timeremaining <= (level.planttime * 1000)) {
@@ -824,10 +614,8 @@ function onbeginuse(player) {
           closestbomb = bomb;
         }
       }
-      /#
       assert(isdefined(closestbomb));
-      # /
-        player.defusing = closestbomb;
+      player.defusing = closestbomb;
       closestbomb hide();
     }
   } else {
@@ -838,15 +626,6 @@ function onbeginuse(player) {
   player playsound("fly_bomb_raise_plr");
 }
 
-/*
-	Name: onenduse
-	Namespace: dem
-	Checksum: 0xEA84883A
-	Offset: 0x3EE8
-	Size: 0xFC
-	Parameters: 3
-	Flags: None
-*/
 function onenduse(team, player, result) {
   if(!isdefined(player)) {
     return;
@@ -857,7 +636,7 @@ function onenduse(team, player, result) {
   }
   player.isdefusing = 0;
   player.isplanting = 0;
-  player notify(# "event_ended");
+  player notify("event_ended");
   if(self gameobjects::is_friendly_team(player.pers["team"])) {
     if(isdefined(player.defusing) && !result) {
       player.defusing show();
@@ -865,28 +644,10 @@ function onenduse(team, player, result) {
   }
 }
 
-/*
-	Name: oncantuse
-	Namespace: dem
-	Checksum: 0x4C1CB5B6
-	Offset: 0x3FF0
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function oncantuse(player) {
-  player iprintlnbold( & "MP_CANT_PLANT_WITHOUT_BOMB");
+  player iprintlnbold(&"MP_CANT_PLANT_WITHOUT_BOMB");
 }
 
-/*
-	Name: onuseobject
-	Namespace: dem
-	Checksum: 0x133D2C80
-	Offset: 0x4028
-	Size: 0x514
-	Parameters: 1
-	Flags: None
-*/
 function onuseobject(player) {
   team = player.team;
   enemyteam = util::getotherteam(team);
@@ -895,11 +656,9 @@ function onuseobject(player) {
   if(!self gameobjects::is_friendly_team(team)) {
     self gameobjects::set_flags(1);
     level thread bombplanted(self, player);
-    /#
     print("" + self.label);
-    # /
-      bbprint("mpobjective", "gametime %d objtype %s label %s team %s playerx %d playery %d playerz %d", gettime(), "dem_bombplant", self.label, team, player.origin);
-    player notify(# "bomb_planted");
+    bbprint("mpobjective", "gametime %d objtype %s label %s team %s playerx %d playery %d playerz %d", gettime(), "dem_bombplant", self.label, team, player.origin);
+    player notify("bomb_planted");
     thread globallogic_audio::set_music_on_team("DEM_WE_PLANT", team, 5);
     thread globallogic_audio::set_music_on_team("DEM_THEY_PLANT", enemyteam, 5);
     if(isdefined(player.pers["plants"])) {
@@ -912,19 +671,15 @@ function onuseobject(player) {
       scoreevents::processscoreevent("planted_bomb", player);
       player recordgameevent("plant");
     } else {
-      /#
       player iprintlnbold("");
-      # /
     }
-    level thread popups::displayteammessagetoall( & "MP_EXPLOSIVES_PLANTED_BY", player);
+    level thread popups::displayteammessagetoall(&"MP_EXPLOSIVES_PLANTED_BY", player);
     globallogic_audio::leader_dialog("bombPlanted");
   } else {
     self gameobjects::set_flags(0);
-    player notify(# "bomb_defused");
-    /#
+    player notify("bomb_defused");
     print("" + self.label);
-    # /
-      self thread bombdefused(player);
+    self thread bombdefused(player);
     self resetbombzone();
     bbprint("mpobjective", "gametime %d objtype %s label %s team %s playerx %d playery %d playerz %d", gettime(), "dem_bombdefused", self.label, team, player.origin);
     if(isdefined(player.pers["defuses"])) {
@@ -937,84 +692,42 @@ function onuseobject(player) {
       scoreevents::processscoreevent("defused_bomb", player);
       player recordgameevent("defuse");
     } else {
-      /#
       player iprintlnbold("");
-      # /
     }
-    level thread popups::displayteammessagetoall( & "MP_EXPLOSIVES_DEFUSED_BY", player);
+    level thread popups::displayteammessagetoall(&"MP_EXPLOSIVES_DEFUSED_BY", player);
     thread globallogic_audio::set_music_on_team("DEM_WE_DEFUSE", team, 5);
     thread globallogic_audio::set_music_on_team("DEM_THEY_DEFUSE", enemyteam, 5);
     globallogic_audio::leader_dialog("bombDefused");
   }
 }
 
-/*
-	Name: ondrop
-	Namespace: dem
-	Checksum: 0x3070A5C6
-	Offset: 0x4548
-	Size: 0xEC
-	Parameters: 1
-	Flags: None
-*/
 function ondrop(player) {
   if(!level.bombplanted) {
     globallogic_audio::leader_dialog("bombFriendlyDropped", player.pers["team"]);
-    /#
     if(isdefined(player)) {
       print("");
     } else {
       print("");
     }
-    # /
   }
-  player notify(# "event_ended");
+  player notify("event_ended");
   self gameobjects::set_3d_icon("friendly", "waypoint_bomb");
   sound::play_on_players(game["bomb_dropped_sound"], game["attackers"]);
 }
 
-/*
-	Name: onpickup
-	Namespace: dem
-	Checksum: 0x3CDCA151
-	Offset: 0x4640
-	Size: 0x11C
-	Parameters: 1
-	Flags: None
-*/
 function onpickup(player) {
   player.isbombcarrier = 1;
   self gameobjects::set_3d_icon("friendly", "waypoint_defend");
   if(!level.bombdefused) {
     thread sound::play_on_players(("mus_sd_pickup" + "_") + level.teampostfix[player.pers["team"]], player.pers["team"]);
     globallogic_audio::leader_dialog("bombFriendlyTaken", player.pers["team"]);
-    /#
     print("");
-    # /
   }
   sound::play_on_players(game["bomb_recovered_sound"], game["attackers"]);
 }
 
-/*
-	Name: onreset
-	Namespace: dem
-	Checksum: 0x99EC1590
-	Offset: 0x4768
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function onreset() {}
 
-/*
-	Name: bombreset
-	Namespace: dem
-	Checksum: 0xF2CBC5E7
-	Offset: 0x4778
-	Size: 0xDC
-	Parameters: 2
-	Flags: None
-*/
 function bombreset(label, reason) {
   if(label == "_a") {
     level.bombaplanted = 0;
@@ -1030,15 +743,6 @@ function bombreset(label, reason) {
   self.visuals[0] globallogic_utils::stoptickingsound();
 }
 
-/*
-	Name: dropbombmodel
-	Namespace: dem
-	Checksum: 0x511F4CF1
-	Offset: 0x4860
-	Size: 0x25C
-	Parameters: 2
-	Flags: None
-*/
 function dropbombmodel(player, site) {
   trace = bullettrace(player.origin + vectorscale((0, 0, 1), 20), player.origin - vectorscale((0, 0, 1), 2000), 0, player);
   tempangle = randomfloat(360);
@@ -1056,18 +760,9 @@ function dropbombmodel(player, site) {
   level.ddbombmodel[site] setmodel("p7_mp_suitcase_bomb");
 }
 
-/*
-	Name: bombplanted
-	Namespace: dem
-	Checksum: 0xDC531F9F
-	Offset: 0x4AC8
-	Size: 0xB44
-	Parameters: 2
-	Flags: None
-*/
 function bombplanted(destroyedobj, player) {
-  level endon(# "game_ended");
-  destroyedobj endon(# "bomb_defused");
+  level endon("game_ended");
+  destroyedobj endon("bomb_defused");
   team = player.team;
   game["challenge"][team]["plantedBomb"] = 1;
   globallogic_utils::pausetimer();
@@ -1110,7 +805,7 @@ function bombplanted(destroyedobj, player) {
   }
   if(isdefined(player)) {
     destroyedobj.visuals[0] radiusdamage(explosionorigin, 512, 200, 20, player, "MOD_EXPLOSIVE", getweapon("briefcase_bomb"));
-    level thread popups::displayteammessagetoall( & "MP_EXPLOSIVES_BLOWUP_BY", player);
+    level thread popups::displayteammessagetoall(&"MP_EXPLOSIVES_BLOWUP_BY", player);
     if(player.team == team) {
       player addplayerstatwithgametype("DESTRUCTIONS", 1);
       player addplayerstatwithgametype("captures", 1);
@@ -1179,15 +874,6 @@ function bombplanted(destroyedobj, player) {
   }
 }
 
-/*
-	Name: gettimelimit
-	Namespace: dem
-	Checksum: 0x5D105980
-	Offset: 0x5618
-	Size: 0x5A
-	Parameters: 0
-	Flags: None
-*/
 function gettimelimit() {
   timelimit = globallogic_defaults::default_gettimelimit();
   if(isdefined(game["overtime_round"])) {
@@ -1199,15 +885,6 @@ function gettimelimit() {
   return timelimit;
 }
 
-/*
-	Name: shouldplayovertimeround
-	Namespace: dem
-	Checksum: 0xCECC647E
-	Offset: 0x5680
-	Size: 0x6E
-	Parameters: 0
-	Flags: None
-*/
 function shouldplayovertimeround() {
   if(isdefined(game["overtime_round"])) {
     return false;
@@ -1218,23 +895,12 @@ function shouldplayovertimeround() {
   return false;
 }
 
-/*
-	Name: waitlongdurationwithbombtimeupdate
-	Namespace: dem
-	Checksum: 0x37DBFF0D
-	Offset: 0x56F8
-	Size: 0x170
-	Parameters: 2
-	Flags: None
-*/
 function waitlongdurationwithbombtimeupdate(whichbomb, duration) {
   if(duration == 0) {
     return;
   }
-  /#
   assert(duration > 0);
-  # /
-    starttime = gettime();
+  starttime = gettime();
   endtime = gettime() + (duration * 1000);
   while (gettime() < endtime) {
     hostmigration::waittillhostmigrationstarts((endtime - gettime()) / 1000);
@@ -1244,28 +910,17 @@ function waitlongdurationwithbombtimeupdate(whichbomb, duration) {
       wait(0.25);
     }
   }
-  /#
   if(gettime() != endtime) {
     println((("" + gettime()) + "") + endtime);
   }
-  # /
-    while (isdefined(level.hostmigrationtimer)) {
-      endtime = endtime + 250;
-      updatebombtimers(whichbomb, endtime);
-      wait(0.25);
-    }
+  while (isdefined(level.hostmigrationtimer)) {
+    endtime = endtime + 250;
+    updatebombtimers(whichbomb, endtime);
+    wait(0.25);
+  }
   return gettime() - starttime;
 }
 
-/*
-	Name: updatebombtimers
-	Namespace: dem
-	Checksum: 0x1A74AF36
-	Offset: 0x5870
-	Size: 0xDC
-	Parameters: 2
-	Flags: None
-*/
 function updatebombtimers(whichbomb, detonatetime) {
   if(whichbomb == "_a") {
     level.bombaplanted = 1;
@@ -1277,36 +932,18 @@ function updatebombtimers(whichbomb, detonatetime) {
   setmatchflag("bomb_timer" + whichbomb, int(detonatetime));
 }
 
-/*
-	Name: bombdefused
-	Namespace: dem
-	Checksum: 0x1830A104
-	Offset: 0x5958
-	Size: 0xEC
-	Parameters: 1
-	Flags: None
-*/
 function bombdefused(player) {
   self.tickingobject globallogic_utils::stoptickingsound();
   self gameobjects::allow_use("none");
   self gameobjects::set_visible_team("none");
   self.bombdefused = 1;
-  self notify(# "bomb_defused");
+  self notify("bomb_defused");
   self.bombplanted = 0;
   self bombreset(self.label, "bomb_defused");
   player setweaponoverheating(1, 100, self.useweapon);
   player playbombdefuse();
 }
 
-/*
-	Name: play_one_left_underscore
-	Namespace: dem
-	Checksum: 0x69217C5D
-	Offset: 0x5A50
-	Size: 0x74
-	Parameters: 2
-	Flags: None
-*/
 function play_one_left_underscore(team, enemyteam) {
   wait(3);
   if(!isdefined(team) || !isdefined(enemyteam)) {
@@ -1316,15 +953,6 @@ function play_one_left_underscore(team, enemyteam) {
   thread globallogic_audio::set_music_on_team("DEM_ONE_LEFT_UNDERSCORE", enemyteam);
 }
 
-/*
-	Name: updateeventsperminute
-	Namespace: dem
-	Checksum: 0x68DF5EF0
-	Offset: 0x5AD0
-	Size: 0xDC
-	Parameters: 0
-	Flags: None
-*/
 function updateeventsperminute() {
   if(!isdefined(self.eventsperminute)) {
     self.numbombevents = 0;
@@ -1341,15 +969,6 @@ function updateeventsperminute() {
   }
 }
 
-/*
-	Name: isscoreboosting
-	Namespace: dem
-	Checksum: 0x7A76EB75
-	Offset: 0x5BB8
-	Size: 0x64
-	Parameters: 2
-	Flags: None
-*/
 function isscoreboosting(player, flag) {
   if(!level.rankedmatch) {
     return false;

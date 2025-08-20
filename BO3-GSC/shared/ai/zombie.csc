@@ -1,30 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\zombie.csc
+*************************************************/
+
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\ai_shared;
 #using scripts\shared\clientfield_shared;
-
 #namespace zombie;
 
-/*
-	Name: precache
-	Namespace: zombie
-	Checksum: 0x99EC1590
-	Offset: 0x3C0
-	Size: 0x4
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec precache() {}
 
-/*
-	Name: main
-	Namespace: zombie
-	Checksum: 0x2FC1BADC
-	Offset: 0x3D0
-	Size: 0xD4
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   level._effect["zombie_special_day_effect"] = "zombie/fx_val_chest_burst";
   ai::add_archetype_spawn_function("zombie", & zombieclientutils::zombie_override_burn_fx);
@@ -34,15 +19,6 @@ function autoexec main() {
 
 #namespace zombieclientutils;
 
-/*
-	Name: zombiehandler
-	Namespace: zombieclientutils
-	Checksum: 0x2000701F
-	Offset: 0x4B0
-	Size: 0x184
-	Parameters: 7
-	Flags: Linked
-*/
 function zombiehandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   if(isdefined(entity.archetype) && entity.archetype != "zombie") {
@@ -58,15 +34,6 @@ function zombiehandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: _gibcallback
-	Namespace: zombieclientutils
-	Checksum: 0x1D4B1DA8
-	Offset: 0x640
-	Size: 0xC6
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _gibcallback(localclientnum, entity, gibflag) {
   switch (gibflag) {
     case 8: {
@@ -83,15 +50,6 @@ function private _gibcallback(localclientnum, entity, gibflag) {
   }
 }
 
-/*
-	Name: zombiespecialdayeffectshandler
-	Namespace: zombieclientutils
-	Checksum: 0x3E5013C9
-	Offset: 0x710
-	Size: 0xFC
-	Parameters: 7
-	Flags: Linked
-*/
 function zombiespecialdayeffectshandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   if(isdefined(entity.archetype) && entity.archetype != "zombie") {
@@ -102,15 +60,6 @@ function zombiespecialdayeffectshandler(localclientnum, oldvalue, newvalue, bnew
   setfxignorepause(localclientnum, fx, 1);
 }
 
-/*
-	Name: zombie_override_burn_fx
-	Namespace: zombieclientutils
-	Checksum: 0x2DD457DF
-	Offset: 0x818
-	Size: 0x14E
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_override_burn_fx(localclientnum) {
   if(sessionmodeiszombiesgame()) {
     if(!isdefined(self._effect)) {

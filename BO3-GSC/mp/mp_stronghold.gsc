@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_stronghold.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -7,18 +11,8 @@
 #using scripts\mp\mp_stronghold_sound;
 #using scripts\shared\compass;
 #using scripts\shared\util_shared;
-
 #namespace mp_stronghold;
 
-/*
-	Name: main
-	Namespace: mp_stronghold
-	Checksum: 0xD42F8A9A
-	Offset: 0x220
-	Size: 0x3F4
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache();
   mp_stronghold_fx::main();
@@ -41,26 +35,8 @@ function main() {
   level spawnkilltrigger();
 }
 
-/*
-	Name: precache
-	Namespace: mp_stronghold
-	Checksum: 0x99EC1590
-	Offset: 0x620
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {}
 
-/*
-	Name: spawnkilltrigger
-	Namespace: mp_stronghold
-	Checksum: 0x2AB37D13
-	Offset: 0x630
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnkilltrigger() {
   trigger = spawn("trigger_radius", (-1287.41, 620.422, -252.879), 0, 128, 128);
   trigger thread watchkilltrigger();
@@ -72,20 +48,11 @@ function spawnkilltrigger() {
   trigger thread watchkilltrigger();
 }
 
-/*
-	Name: watchkilltrigger
-	Namespace: mp_stronghold
-	Checksum: 0x4934E3E9
-	Offset: 0x788
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function watchkilltrigger() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   trigger = self;
   while (true) {
-    trigger waittill(# "trigger", player);
+    trigger waittill("trigger", player);
     player dodamage(1000, trigger.origin + (0, 0, 0), trigger, trigger, "none", "MOD_SUICIDE", 0);
   }
 }

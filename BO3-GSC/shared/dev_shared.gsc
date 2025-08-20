@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\dev_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\colors_shared;
@@ -6,20 +10,9 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace dev;
 
-/*
-	Name: debug_sphere
-	Namespace: dev
-	Checksum: 0x6A755D42
-	Offset: 0x150
-	Size: 0xCC
-	Parameters: 5
-	Flags: Linked
-*/
 function debug_sphere(origin, radius, color, alpha, time) {
-  /#
   if(!isdefined(time)) {
     time = 1000;
   }
@@ -28,20 +21,9 @@ function debug_sphere(origin, radius, color, alpha, time) {
   }
   sides = int(10 * (1 + (int(radius) % 100)));
   sphere(origin, radius, color, alpha, 1, sides, time);
-  # /
 }
 
-/*
-	Name: updateminimapsetting
-	Namespace: dev
-	Checksum: 0x9CB49404
-	Offset: 0x228
-	Size: 0xB1C
-	Parameters: 0
-	Flags: Linked
-*/
 function updateminimapsetting() {
-  /#
   requiredmapaspectratio = getdvarfloat("");
   if(!isdefined(level.minimapheight)) {
     setdvar("", "");
@@ -52,7 +34,7 @@ function updateminimapsetting() {
     if(minimapheight <= 0) {
       util::gethostplayer() cameraactivate(0);
       level.minimapheight = minimapheight;
-      level notify(# "end_draw_map_bounds");
+      level notify("end_draw_map_bounds");
     }
     if(minimapheight > 0) {
       level.minimapheight = minimapheight;
@@ -163,37 +145,15 @@ function updateminimapsetting() {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: vecscale
-	Namespace: dev
-	Checksum: 0x301D0C37
-	Offset: 0xD50
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked
-*/
 function vecscale(vec, scalar) {
-  /#
   return (vec[0] * scalar, vec[1] * scalar, vec[2] * scalar);
-  # /
 }
 
-/*
-	Name: drawminimapbounds
-	Namespace: dev
-	Checksum: 0x6B765295
-	Offset: 0xDA8
-	Size: 0x3C0
-	Parameters: 3
-	Flags: Linked
-*/
 function drawminimapbounds(viewpos, mincorner, maxcorner) {
-  /#
-  level notify(# "end_draw_map_bounds");
-  level endon(# "end_draw_map_bounds");
+  level notify("end_draw_map_bounds");
+  level endon("end_draw_map_bounds");
   viewheight = viewpos[2] - maxcorner[2];
   north = (cos(getnorthyaw()), sin(getnorthyaw()), 0);
   diaglen = length(mincorner - maxcorner);
@@ -220,20 +180,9 @@ function drawminimapbounds(viewpos, mincorner, maxcorner) {
     print3d(toppos, "", (1, 1, 1), 1, textscale);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: minimapwarn
-	Namespace: dev
-	Checksum: 0x3ABD2D34
-	Offset: 0x1170
-	Size: 0x1E6
-	Parameters: 1
-	Flags: Linked
-*/
 function minimapwarn(corners) {
-  /#
   threshold = 10;
   width = abs(corners[0].origin[0] - corners[1].origin[0]);
   width = int(width);
@@ -252,55 +201,22 @@ function minimapwarn(corners) {
       wait(10);
     }
   }
-  # /
 }
 
-/*
-	Name: body_customization_setup_helmet
-	Namespace: dev
-	Checksum: 0xF87EFA4F
-	Offset: 0x1360
-	Size: 0xAA
-	Parameters: 1
-	Flags: Linked
-*/
 function body_customization_setup_helmet(helmet_index) {
-  /#
   foreach(player in getplayers()) {
     player setcharacterhelmetstyle(helmet_index);
   }
-  # /
 }
 
-/*
-	Name: body_customization_setup_body
-	Namespace: dev
-	Checksum: 0x22469CFD
-	Offset: 0x1418
-	Size: 0xCA
-	Parameters: 2
-	Flags: Linked
-*/
 function body_customization_setup_body(character_index, body_index) {
-  /#
   foreach(player in getplayers()) {
     player setcharacterbodytype(character_index);
     player setcharacterbodystyle(body_index);
   }
-  # /
 }
 
-/*
-	Name: body_customization_process_command
-	Namespace: dev
-	Checksum: 0xCAEB5420
-	Offset: 0x14F0
-	Size: 0x21E
-	Parameters: 1
-	Flags: Linked
-*/
 function body_customization_process_command(character_index) {
-  /#
   split = strtok(character_index, "");
   switch (split.size) {
     case 1:
@@ -327,20 +243,9 @@ function body_customization_process_command(character_index) {
       break;
     }
   }
-  # /
 }
 
-/*
-	Name: body_customization_populate
-	Namespace: dev
-	Checksum: 0x13761B6
-	Offset: 0x1718
-	Size: 0x2E6
-	Parameters: 1
-	Flags: Linked
-*/
 function body_customization_populate(mode) {
-  /#
   bodies = getallcharacterbodies(mode);
   body_customization_devgui_base = "";
   foreach(playerbodytype in bodies) {
@@ -356,20 +261,9 @@ function body_customization_populate(mode) {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: body_customization_devgui
-	Namespace: dev
-	Checksum: 0xCE02794D
-	Offset: 0x1A08
-	Size: 0x98
-	Parameters: 1
-	Flags: Linked
-*/
 function body_customization_devgui(mode) {
-  /#
   thread body_customization_populate(mode);
   for (;;) {
     character_index = getdvarstring("");
@@ -379,23 +273,11 @@ function body_customization_devgui(mode) {
     setdvar("", "");
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: add_perk_devgui
-	Namespace: dev
-	Checksum: 0xA9980C64
-	Offset: 0x1AA8
-	Size: 0xDC
-	Parameters: 2
-	Flags: None
-*/
 function add_perk_devgui(name, specialties) {
-  /#
   perk_devgui_base = "";
   perk_name = makelocalizedstring(name);
   test = (((((perk_devgui_base + perk_name) + "") + "") + "") + specialties) + "";
   adddebugcommand((((((perk_devgui_base + perk_name) + "") + "") + "") + specialties) + "");
-  # /
 }

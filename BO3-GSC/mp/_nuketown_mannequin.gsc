@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_nuketown_mannequin.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_mannequin;
 #using scripts\shared\ai_shared;
 #using scripts\shared\music_shared;
 #using scripts\shared\util_shared;
-
 #namespace nuketownmannequin;
 
-/*
-	Name: spawnmannequin
-	Namespace: nuketownmannequin
-	Checksum: 0xF253A467
-	Offset: 0x188
-	Size: 0x470
-	Parameters: 5
-	Flags: Linked
-*/
 function spawnmannequin(origin, angles, gender = "male", speed = undefined, weepingangel) {
   if(!isdefined(level.mannequinspawn_music)) {
     level.mannequinspawn_music = 1;
@@ -66,15 +60,6 @@ function spawnmannequin(origin, angles, gender = "male", speed = undefined, weep
   return mannequin;
 }
 
-/*
-	Name: mannequindamage
-	Namespace: nuketownmannequin
-	Checksum: 0x17F917DA
-	Offset: 0x600
-	Size: 0xA8
-	Parameters: 12
-	Flags: Linked
-*/
 function mannequindamage(inflictor, attacker, damage, dflags, mod, weapon, point, dir, hitloc, offsettime, boneindex, modelindex) {
   if(isdefined(inflictor) && isactor(inflictor) && inflictor.archetype == "mannequin") {
     return 0;
@@ -82,34 +67,16 @@ function mannequindamage(inflictor, attacker, damage, dflags, mod, weapon, point
   return damage;
 }
 
-/*
-	Name: watch_game_ended
-	Namespace: nuketownmannequin
-	Checksum: 0x980BD82B
-	Offset: 0x6B0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private watch_game_ended() {
-  self endon(# "death");
-  level waittill(# "game_ended");
+  self endon("death");
+  level waittill("game_ended");
   self setentitypaused(1);
-  level waittill(# "endgame_sequence");
+  level waittill("endgame_sequence");
   self hide();
 }
 
-/*
-	Name: _mannequin_unfreeze_ragdoll
-	Namespace: nuketownmannequin
-	Checksum: 0x7022E4B
-	Offset: 0x710
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private _mannequin_unfreeze_ragdoll() {
-  self waittill(# "death");
+  self waittill("death");
   if(isdefined(self)) {
     self setentitypaused(0);
     if(!self isragdoll()) {
@@ -118,15 +85,6 @@ function private _mannequin_unfreeze_ragdoll() {
   }
 }
 
-/*
-	Name: _mannequin_update_freeze
-	Namespace: nuketownmannequin
-	Checksum: 0x32CA7607
-	Offset: 0x778
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _mannequin_update_freeze(frozen) {
   self.is_looking_at_me = frozen;
   if(self.is_looking_at_me && !self.was_looking_at_me) {
@@ -137,18 +95,9 @@ function private _mannequin_update_freeze(frozen) {
   self.was_looking_at_me = self.is_looking_at_me;
 }
 
-/*
-	Name: watch_player_looking
-	Namespace: nuketownmannequin
-	Checksum: 0xBD474627
-	Offset: 0x810
-	Size: 0x2A0
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_player_looking() {
-  level endon(# "game_ended");
-  level endon(# "mannequin_force_cleanup");
+  level endon("game_ended");
+  level endon("mannequin_force_cleanup");
   while (true) {
     mannequins = getaiarchetypearray("mannequin");
     foreach(mannequin in mannequins) {

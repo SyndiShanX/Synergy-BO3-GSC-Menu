@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_ai_astro.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\archetype_robot;
 #using scripts\shared\ai\archetype_utility;
@@ -19,18 +23,8 @@
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_ai_astro;
 
-/*
-	Name: init
-	Namespace: zm_ai_astro
-	Checksum: 0xDB52656A
-	Offset: 0x688
-	Size: 0x284
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   initastrobehaviorsandasm();
   spawner::add_archetype_spawn_function("astronaut", & archetypeastroblackboardinit);
@@ -66,82 +60,33 @@ function autoexec init() {
   zm::register_custom_ai_spawn_check("astro", & astro_spawn_check, & get_astro_spawners, & get_astro_locations);
 }
 
-/*
-	Name: archetypeastroblackboardinit
-	Namespace: zm_ai_astro
-	Checksum: 0x92A55608
-	Offset: 0x918
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function archetypeastroblackboardinit() {
   blackboard::createblackboardforentity(self);
   self aiutility::registerutilityblackboardattributes();
   ai::createinterfaceforentity(self);
   blackboard::registerblackboardattribute(self, "_locomotion_speed", "locomotion_speed_walk", & zombiebehavior::bb_getlocomotionspeedtype);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   self.___archetypeonanimscriptedcallback = & archetypeastroonanimscriptedcallback;
-  /#
   self finalizetrackedblackboardattributes();
-  # /
 }
 
-/*
-	Name: archetypeastroonanimscriptedcallback
-	Namespace: zm_ai_astro
-	Checksum: 0xCB9A2DF6
-	Offset: 0xA08
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private archetypeastroonanimscriptedcallback(entity) {
   entity.__blackboard = undefined;
   entity archetypeastroblackboardinit();
 }
 
-/*
-	Name: initastrobehaviorsandasm
-	Namespace: zm_ai_astro
-	Checksum: 0x664E962
-	Offset: 0xA48
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initastrobehaviorsandasm() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("astroTargetService", & astrotargetservice);
   behaviortreenetworkutility::registerbehaviortreeaction("moonAstroProceduralTraversal", & astrotraversestart, & robotsoldierbehavior::robotproceduraltraversalupdate, & astrotraverseend);
 }
 
-/*
-	Name: astrospawnsetup
-	Namespace: zm_ai_astro
-	Checksum: 0x1F5D5DE0
-	Offset: 0xAC8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function astrospawnsetup() {
   self astro_prespawn();
   self thread astro_zombie_spawn(self);
 }
 
-/*
-	Name: astrotargetservice
-	Namespace: zm_ai_astro
-	Checksum: 0xB6672ACB
-	Offset: 0xB08
-	Size: 0x246
-	Parameters: 1
-	Flags: Linked
-*/
 function astrotargetservice(entity) {
   if(isdefined(entity.ignoreall) && entity.ignoreall) {
     return false;
@@ -188,15 +133,6 @@ function astrotargetservice(entity) {
   return false;
 }
 
-/*
-	Name: astro_spawn_check
-	Namespace: zm_ai_astro
-	Checksum: 0x8F2F877F
-	Offset: 0xD58
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_spawn_check() {
   if(isdefined(level.zm_loc_types["astro_location"]) && level.zm_loc_types["astro_location"].size <= 0) {
     return false;
@@ -216,41 +152,14 @@ function astro_spawn_check() {
   return true;
 }
 
-/*
-	Name: get_astro_spawners
-	Namespace: zm_ai_astro
-	Checksum: 0x3162AA02
-	Offset: 0xE20
-	Size: 0xA
-	Parameters: 0
-	Flags: Linked
-*/
 function get_astro_spawners() {
   return level.astro_zombie_spawners;
 }
 
-/*
-	Name: get_astro_locations
-	Namespace: zm_ai_astro
-	Checksum: 0x772D6893
-	Offset: 0xE38
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function get_astro_locations() {
   return level.zm_loc_types["astro_location"];
 }
 
-/*
-	Name: astro_prespawn
-	Namespace: zm_ai_astro
-	Checksum: 0x4360516B
-	Offset: 0xE58
-	Size: 0x2AA
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_prespawn() {
   self.animname = "astro_zombie";
   self.ignoreall = 1;
@@ -296,32 +205,14 @@ function astro_prespawn() {
   self.zombie_think_done = 1;
   self thread zm_spawner::play_ambient_zombie_vocals();
   self thread zm_audio::zmbaivox_notifyconvert();
-  self notify(# "zombie_init_done");
+  self notify("zombie_init_done");
 }
 
-/*
-	Name: init_astro_zombie_fx
-	Namespace: zm_ai_astro
-	Checksum: 0x11F370E6
-	Offset: 0x1110
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function init_astro_zombie_fx() {
   level._effect["astro_spawn"] = "dlc5/moon/fx_moon_qbomb_explo_distort";
   level._effect["astro_explosion"] = "dlc5/moon/fx_moon_qbomb_explo_distort";
 }
 
-/*
-	Name: astro_zombie_spawn
-	Namespace: zm_ai_astro
-	Checksum: 0xD785B6DF
-	Offset: 0x1158
-	Size: 0x100
-	Parameters: 1
-	Flags: Linked
-*/
 function astro_zombie_spawn(astro_zombie) {
   self.script_moveoverride = 1;
   if(!isdefined(level.num_astro_zombies)) {
@@ -339,15 +230,6 @@ function astro_zombie_spawn(astro_zombie) {
   return astro_zombie;
 }
 
-/*
-	Name: astro_zombie_total_update
-	Namespace: zm_ai_astro
-	Checksum: 0x4F05BA75
-	Offset: 0x1260
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_zombie_total_update() {
   level.zombie_total_update = 1;
   level.zombies_left_before_astro_spawn = 1;
@@ -358,17 +240,8 @@ function astro_zombie_total_update() {
   _debug_astro_print("zombies to kill = " + (level.zombie_total - level.zombies_left_before_astro_spawn));
 }
 
-/*
-	Name: astro_zombie_think
-	Namespace: zm_ai_astro
-	Checksum: 0xF1D3017F
-	Offset: 0x1350
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_zombie_think() {
-  self endon(# "death");
+  self endon("death");
   self.entered_level = 0;
   self.ignoreall = 0;
   self.maxhealth = (level.zombie_health * getplayers().size) * level.astro_zombie_health_mult;
@@ -383,17 +256,8 @@ function astro_zombie_think() {
   self playloopsound(self.loopsound);
 }
 
-/*
-	Name: astro_zombie_headbutt_think
-	Namespace: zm_ai_astro
-	Checksum: 0x8929CAA
-	Offset: 0x1438
-	Size: 0x26C
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_zombie_headbutt_think() {
-  self endon(# "death");
+  self endon("death");
   self.is_headbutt = 0;
   self.next_headbutt_time = gettime() + level.astro_headbutt_delay;
   while (true) {
@@ -432,17 +296,8 @@ function astro_zombie_headbutt_think() {
   }
 }
 
-/*
-	Name: astro_restore_move_speed
-	Namespace: zm_ai_astro
-	Checksum: 0xF4311E76
-	Offset: 0x16B0
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function astro_restore_move_speed(time) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(time);
   self allowjump(1);
   self allowprone(1);
@@ -450,47 +305,20 @@ function astro_restore_move_speed(time) {
   self setmovespeedscale(1);
 }
 
-/*
-	Name: astrotraversestart
-	Namespace: zm_ai_astro
-	Checksum: 0x6EC6884
-	Offset: 0x1738
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked
-*/
 function astrotraversestart(entity, asmstatename) {
   robotsoldierbehavior::robotcalcproceduraltraversal(entity, asmstatename);
   robotsoldierbehavior::robottraversestart(entity, asmstatename);
   return 5;
 }
 
-/*
-	Name: astrotraverseend
-	Namespace: zm_ai_astro
-	Checksum: 0xF3A1B7B1
-	Offset: 0x1788
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked
-*/
 function astrotraverseend(entity, asmstatename) {
   robotsoldierbehavior::robotprocedurallandingupdate(entity, asmstatename);
   robotsoldierbehavior::robottraverseend(entity);
   return 4;
 }
 
-/*
-	Name: astro_turn_player
-	Namespace: zm_ai_astro
-	Checksum: 0x8B34E1BD
-	Offset: 0x17D8
-	Size: 0x26C
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_turn_player() {
-  self endon(# "death");
+  self endon("death");
   self.player_to_headbutt = self.enemy;
   player = self.player_to_headbutt;
   up = player.origin + vectorscale((0, 0, 1), 10);
@@ -510,23 +338,14 @@ function astro_turn_player() {
   player allowprone(0);
   player allowcrouch(0);
   player setmovespeedscale(0.1);
-  player notify(# "released");
+  player notify("released");
   dist = distance(self.origin, player.origin);
   _debug_astro_print("grab dist = " + dist);
 }
 
-/*
-	Name: lerp_player_view_to_position
-	Namespace: zm_ai_astro
-	Checksum: 0xEE061D7D
-	Offset: 0x1A50
-	Size: 0x22C
-	Parameters: 9
-	Flags: Linked
-*/
 function lerp_player_view_to_position(origin, angles, lerptime, fraction, right_arc, left_arc, top_arc, bottom_arc, hit_geo) {
   if(isplayer(self)) {
-    self endon(# "disconnect");
+    self endon("disconnect");
   }
   linker = spawn("script_origin", (0, 0, 0));
   linker.origin = self.origin;
@@ -546,37 +365,19 @@ function lerp_player_view_to_position(origin, angles, lerptime, fraction, right_
   }
   linker moveto(origin, lerptime, lerptime * 0.25);
   linker rotateto(angles, lerptime, lerptime * 0.25);
-  linker waittill(# "movedone");
+  linker waittill("movedone");
   linker delete();
 }
 
-/*
-	Name: astro_watch_controls
-	Namespace: zm_ai_astro
-	Checksum: 0xAA5F3417
-	Offset: 0x1C88
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function astro_watch_controls(astro) {
-  self endon(# "released");
-  self endon(# "disconnect");
+  self endon("released");
+  self endon("disconnect");
   animlen = astro getanimlengthfromasd("zm_headbutt", 0);
   time = 0.5 + animlen;
   astro util::waittill_notify_or_timeout("death", time);
   self freezecontrols(0);
 }
 
-/*
-	Name: astro_zombie_headbutt
-	Namespace: zm_ai_astro
-	Checksum: 0x2A5B9B59
-	Offset: 0x1D38
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function astro_zombie_headbutt(entity) {
   if(!isdefined(entity.player_to_headbutt) || !zombie_utility::is_player_valid(entity.player_to_headbutt)) {
     return;
@@ -585,15 +386,6 @@ function astro_zombie_headbutt(entity) {
   entity thread astro_zombie_teleport_enemy();
 }
 
-/*
-	Name: astro_zombie_headbutt_release
-	Namespace: zm_ai_astro
-	Checksum: 0xADF4A985
-	Offset: 0x1DC0
-	Size: 0x16C
-	Parameters: 1
-	Flags: Linked
-*/
 function astro_zombie_headbutt_release(entity) {
   _release_dist = 59;
   player = entity.player_to_headbutt;
@@ -612,17 +404,8 @@ function astro_zombie_headbutt_release(entity) {
   self animscripted("headbutt_anim", entity.origin, entity.angles, "ai_zm_dlc5_zombie_astro_headbutt_release");
 }
 
-/*
-	Name: astro_zombie_attack
-	Namespace: zm_ai_astro
-	Checksum: 0x1B330221
-	Offset: 0x1F38
-	Size: 0x22C
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_zombie_attack() {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self.player_to_headbutt)) {
     return;
   }
@@ -653,18 +436,9 @@ function astro_zombie_attack() {
   }
 }
 
-/*
-	Name: astro_headbutt_damage
-	Namespace: zm_ai_astro
-	Checksum: 0x69E4F563
-	Offset: 0x2170
-	Size: 0x9C
-	Parameters: 2
-	Flags: Linked
-*/
 function astro_headbutt_damage(astro, org) {
-  self endon(# "disconnect");
-  self waittill(# "perk_lost");
+  self endon("disconnect");
+  self waittill("perk_lost");
   damage = self.health - 1;
   if(isdefined(astro)) {
     self dodamage(damage, astro.origin, astro);
@@ -673,17 +447,8 @@ function astro_headbutt_damage(astro, org) {
   }
 }
 
-/*
-	Name: astro_zombie_teleport_enemy
-	Namespace: zm_ai_astro
-	Checksum: 0xBCCE0FAE
-	Offset: 0x2218
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_zombie_teleport_enemy() {
-  self endon(# "death");
+  self endon("death");
   player = self.player_to_headbutt;
   black_hole_teleport_structs = struct::get_array("struct_black_hole_teleport", "targetname");
   chosen_spot = undefined;
@@ -718,17 +483,8 @@ function astro_zombie_teleport_enemy() {
   }
 }
 
-/*
-	Name: astro_zombie_teleport
-	Namespace: zm_ai_astro
-	Checksum: 0xD2CAABD5
-	Offset: 0x2470
-	Size: 0x26C
-	Parameters: 1
-	Flags: Linked
-*/
 function astro_zombie_teleport(struct_dest) {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(struct_dest)) {
     return;
   }
@@ -761,15 +517,6 @@ function astro_zombie_teleport(struct_dest) {
   self playsoundtoplayer("zmb_gersh_teleporter_go_2d", self);
 }
 
-/*
-	Name: astro_zombie_die
-	Namespace: zm_ai_astro
-	Checksum: 0x43F8E88D
-	Offset: 0x26E8
-	Size: 0x15A
-	Parameters: 8
-	Flags: Linked
-*/
 function astro_zombie_die(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   playfxontag(level._effect["astro_explosion"], self, "J_SpineLower");
   self stoploopsound(1);
@@ -783,17 +530,8 @@ function astro_zombie_die(einflictor, attacker, idamage, smeansofdeath, weapon, 
   return self zm_spawner::zombie_death_animscript();
 }
 
-/*
-	Name: astro_delay_delete
-	Namespace: zm_ai_astro
-	Checksum: 0xCE5D524E
-	Offset: 0x2850
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_delay_delete() {
-  self endon(# "death");
+  self endon("death");
   self setplayercollision(0);
   self thread zombie_utility::zombie_eye_glow_stop();
   wait(0.05);
@@ -802,15 +540,6 @@ function astro_delay_delete() {
   self delete();
 }
 
-/*
-	Name: astro_player_pulse
-	Namespace: zm_ai_astro
-	Checksum: 0xCC2852E5
-	Offset: 0x28D8
-	Size: 0x47A
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_player_pulse() {
   eye_org = self geteye();
   foot_org = self.origin + vectorscale((0, 0, 1), 8);
@@ -864,17 +593,8 @@ function astro_player_pulse() {
   }
 }
 
-/*
-	Name: astro_actor_damage
-	Namespace: zm_ai_astro
-	Checksum: 0xBE8352DD
-	Offset: 0x2D60
-	Size: 0xA2
-	Parameters: 11
-	Flags: Linked
-*/
 function astro_actor_damage(inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex) {
-  self endon(# "death");
+  self endon("death");
   switch (weapon.name) {
     case "microwavegundw_upgraded_zm":
     case "microwavegundw_zm": {
@@ -885,28 +605,10 @@ function astro_actor_damage(inflictor, attacker, damage, flags, meansofdeath, we
   return damage;
 }
 
-/*
-	Name: astro_nuke_damage
-	Namespace: zm_ai_astro
-	Checksum: 0x302ABA93
-	Offset: 0x2E10
-	Size: 0xE
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_nuke_damage() {
-  self endon(# "death");
+  self endon("death");
 }
 
-/*
-	Name: astro_custom_damage
-	Namespace: zm_ai_astro
-	Checksum: 0xEF708F8B
-	Offset: 0x2E28
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked
-*/
 function astro_custom_damage(player) {
   damage = self.meleedamage;
   if(self.is_headbutt) {
@@ -916,28 +618,10 @@ function astro_custom_damage(player) {
   return damage;
 }
 
-/*
-	Name: astro_microwavegun_sizzle
-	Namespace: zm_ai_astro
-	Checksum: 0x86A399E4
-	Offset: 0x2E98
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function astro_microwavegun_sizzle(player) {
   _debug_astro_print("astro sizzle");
 }
 
-/*
-	Name: astro_zombie_default_enter_level
-	Namespace: zm_ai_astro
-	Checksum: 0xBAFB1638
-	Offset: 0x2EC8
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function astro_zombie_default_enter_level() {
   playfx(level._effect["astro_spawn"], self.origin);
   playsoundatposition("zmb_bolt", self.origin);
@@ -946,15 +630,6 @@ function astro_zombie_default_enter_level() {
   self.entered_level = 1;
 }
 
-/*
-	Name: astro_damage_callback
-	Namespace: zm_ai_astro
-	Checksum: 0xA21DFA10
-	Offset: 0x2F90
-	Size: 0x94
-	Parameters: 13
-	Flags: Linked
-*/
 function astro_damage_callback(mod, hit_location, hit_origin, player, amount, weapon, direction_vec, tagname, modelname, partname, dflags, inflictor, chargelevel) {
   if(isdefined(self.animname) && self.animname == "astro_zombie") {
     return true;
@@ -962,38 +637,16 @@ function astro_damage_callback(mod, hit_location, hit_origin, player, amount, we
   return false;
 }
 
-/*
-	Name: _debug_astro_health_watch
-	Namespace: zm_ai_astro
-	Checksum: 0xFAC80027
-	Offset: 0x3030
-	Size: 0x46
-	Parameters: 0
-	Flags: None
-*/
 function _debug_astro_health_watch() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    /#
     iprintln("" + self.health);
-    # /
-      wait(1);
+    wait(1);
   }
 }
 
-/*
-	Name: _debug_astro_print
-	Namespace: zm_ai_astro
-	Checksum: 0xE3B652E1
-	Offset: 0x3080
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function _debug_astro_print(str) {
-  /#
   if(isdefined(level.debug_astro) && level.debug_astro) {
     iprintln(str);
   }
-  # /
 }

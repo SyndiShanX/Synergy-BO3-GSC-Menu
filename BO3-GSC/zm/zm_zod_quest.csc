@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_quest.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\animation_shared;
 #using scripts\shared\array_shared;
@@ -15,33 +19,13 @@
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\craftables\_zm_craftables;
-
 #using_animtree("generic");
-
 #namespace zm_zod_quest;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_zod_quest
-	Checksum: 0xE167504
-	Offset: 0x1340
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_zod_quest", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_zod_quest
-	Checksum: 0x1619D77B
-	Offset: 0x1380
-	Size: 0xDEC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!isdefined(level.main_quest)) {
     level.main_quest = [];
@@ -123,15 +107,6 @@ function __init__() {
   flag::init("set_ritual_key_vanish_flag");
 }
 
-/*
-	Name: create_client_ritual_assembly
-	Namespace: zm_zod_quest
-	Checksum: 0xEAC280A8
-	Offset: 0x2178
-	Size: 0x844
-	Parameters: 2
-	Flags: Linked
-*/
 function create_client_ritual_assembly(localclientnum, n_current_ritual) {
   str_charname = get_name_from_ritual_clientfield_value(n_current_ritual);
   s_position = struct::get("defend_area_" + str_charname, "targetname");
@@ -192,15 +167,6 @@ function create_client_ritual_assembly(localclientnum, n_current_ritual) {
   level.main_quest[localclientnum][n_current_ritual].e_victim[localclientnum] useanimtree($generic);
 }
 
-/*
-	Name: function_9118f74a
-	Namespace: zm_zod_quest
-	Checksum: 0x4E35CBF1
-	Offset: 0x29C8
-	Size: 0x13E
-	Parameters: 3
-	Flags: Linked
-*/
 function function_9118f74a(localclientnum, n_current_ritual, var_85dc52da) {
   if(var_85dc52da) {
     var_3c32cd48 = getentarray(localclientnum, "quest_ritual_magic_circle_on", "targetname");
@@ -215,15 +181,6 @@ function function_9118f74a(localclientnum, n_current_ritual, var_85dc52da) {
   }
 }
 
-/*
-	Name: function_60f1115e
-	Namespace: zm_zod_quest
-	Checksum: 0x2F7F4B39
-	Offset: 0x2B10
-	Size: 0x226
-	Parameters: 4
-	Flags: Linked
-*/
 function function_60f1115e(localclientnum, n_current_ritual, n_state, var_abf03d83 = 0) {
   switch (n_state) {
     case 0: {
@@ -247,18 +204,9 @@ function function_60f1115e(localclientnum, n_current_ritual, n_state, var_abf03d
   }
 }
 
-/*
-	Name: function_ae5b7493
-	Namespace: zm_zod_quest
-	Checksum: 0x4443B764
-	Offset: 0x2D40
-	Size: 0x29C
-	Parameters: 6
-	Flags: Linked
-*/
 function function_ae5b7493(localclientnum, var_afc7cc94, var_b05b3457, b_on, var_abf03d83 = 0, var_c0ce8db2 = 0) {
-  self notify(# "hash_ae5b7493");
-  self endon(# "hash_ae5b7493");
+  self notify("hash_ae5b7493");
+  self endon("hash_ae5b7493");
   if(self.b_on === b_on) {
     return;
   }
@@ -302,41 +250,14 @@ function function_ae5b7493(localclientnum, var_afc7cc94, var_b05b3457, b_on, var
   }
 }
 
-/*
-	Name: function_487ce26
-	Namespace: zm_zod_quest
-	Checksum: 0xA3E906EF
-	Offset: 0x2FE8
-	Size: 0x54
-	Parameters: 3
-	Flags: Linked
-*/
 function function_487ce26(localclientnum, n_value, var_afc7cc94) {
   self mapshaderconstant(localclientnum, 0, "scriptVector" + var_afc7cc94, n_value, n_value, 0, 0);
 }
 
-/*
-	Name: set_fade_material
-	Namespace: zm_zod_quest
-	Checksum: 0x31354AE9
-	Offset: 0x3048
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function set_fade_material(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self mapshaderconstant(localclientnum, 0, "scriptVector0", newval, 0, 0, 0);
 }
 
-/*
-	Name: set_subway_wall_dissolve
-	Namespace: zm_zod_quest
-	Checksum: 0xA581FF91
-	Offset: 0x30B8
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function set_subway_wall_dissolve(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     self mapshaderconstant(localclientnum, 0, "scriptVector0", newval, 0, 0, 0);
@@ -346,18 +267,9 @@ function set_subway_wall_dissolve(localclientnum, oldval, newval, bnewent, binit
   }
 }
 
-/*
-	Name: function_6d34f463
-	Namespace: zm_zod_quest
-	Checksum: 0x5D7C5AC0
-	Offset: 0x3180
-	Size: 0xD6
-	Parameters: 2
-	Flags: Linked
-*/
 function function_6d34f463(localclientnum, n_total_time) {
-  self endon(# "death");
-  self endon(# "entityshutdown");
+  self endon("death");
+  self endon("entityshutdown");
   var_1baf89ac = n_total_time / 0.016;
   exploder::exploder("lgt_sword_altar_underground");
   for (i = 0; i <= var_1baf89ac; i++) {
@@ -367,15 +279,6 @@ function function_6d34f463(localclientnum, n_total_time) {
   }
 }
 
-/*
-	Name: get_name_from_ritual_clientfield_value
-	Namespace: zm_zod_quest
-	Checksum: 0x5B061C79
-	Offset: 0x3260
-	Size: 0x6E
-	Parameters: 1
-	Flags: Linked
-*/
 function get_name_from_ritual_clientfield_value(current_ritual) {
   switch (current_ritual) {
     case 1: {
@@ -396,15 +299,6 @@ function get_name_from_ritual_clientfield_value(current_ritual) {
   }
 }
 
-/*
-	Name: ritual_state_internal
-	Namespace: zm_zod_quest
-	Checksum: 0x8AFA6C69
-	Offset: 0x32D8
-	Size: 0xB66
-	Parameters: 3
-	Flags: Linked
-*/
 function ritual_state_internal(localclientnum, newval, n_current_ritual) {
   level notify("ritual_state_internal" + localclientnum);
   level endon("ritual_state_internal" + localclientnum);
@@ -443,7 +337,7 @@ function ritual_state_internal(localclientnum, newval, n_current_ritual) {
       break;
     }
     case 1: {
-      level notify(# "ritual_victim_animation");
+      level notify("ritual_victim_animation");
       mdl_ritual hide();
       mdl_memento show();
       mdl_memento function_ae5b7493(localclientnum, 0, 0.025, 1, 1);
@@ -485,7 +379,7 @@ function ritual_state_internal(localclientnum, newval, n_current_ritual) {
       break;
     }
     case 3: {
-      level notify(# "ritual_victim_animation");
+      level notify("ritual_victim_animation");
       mdl_relic setanim("ai_zombie_zod_gateworm_idle_loop", 1, 0, 1);
       mdl_ritual show();
       mdl_memento hide();
@@ -520,15 +414,6 @@ function ritual_state_internal(localclientnum, newval, n_current_ritual) {
   }
 }
 
-/*
-	Name: function_eb1d9e29
-	Namespace: zm_zod_quest
-	Checksum: 0x58A07EFC
-	Offset: 0x3E48
-	Size: 0x8C
-	Parameters: 4
-	Flags: Linked
-*/
 function function_eb1d9e29(localclientnum, mdl_ritual, mdl_memento, mdl_victim) {
   mdl_memento thread function_ae5b7493(localclientnum, 0, 0.025, 0, 0, 0);
   wait(0.15);
@@ -536,15 +421,6 @@ function function_eb1d9e29(localclientnum, mdl_ritual, mdl_memento, mdl_victim) 
   level thread ritual_victim_animation(localclientnum, mdl_ritual, mdl_victim);
 }
 
-/*
-	Name: ritual_victim_animation
-	Namespace: zm_zod_quest
-	Checksum: 0x395D113E
-	Offset: 0x3EE0
-	Size: 0x154
-	Parameters: 3
-	Flags: Linked
-*/
 function ritual_victim_animation(localclientnum, mdl_ritual, mdl_victim) {
   level notify("ritual_victim_animation" + localclientnum);
   level endon("ritual_victim_animation" + localclientnum);
@@ -557,15 +433,6 @@ function ritual_victim_animation(localclientnum, mdl_ritual, mdl_victim) {
   mdl_victim thread animation::play("ai_zombie_zod_ritual_sacrifice_loop", undefined, undefined, 1, 0.2, 0.4);
 }
 
-/*
-	Name: key_combines_notetrack_watcher
-	Namespace: zm_zod_quest
-	Checksum: 0xEE957936
-	Offset: 0x4040
-	Size: 0x24C
-	Parameters: 5
-	Flags: Linked
-*/
 function key_combines_notetrack_watcher(localclientnum, mdl_ritual, mdl_relic, mdl_victim, str_name) {
   flag::wait_till("set_ritual_finished_flag");
   v_origin = mdl_ritual gettagorigin("tag_fx_chest");
@@ -588,15 +455,6 @@ function key_combines_notetrack_watcher(localclientnum, mdl_ritual, mdl_relic, m
   flag::clear("set_ritual_finished_flag");
 }
 
-/*
-	Name: function_3a9a1b46
-	Namespace: zm_zod_quest
-	Checksum: 0xBA83D42D
-	Offset: 0x4298
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3a9a1b46(mdl_relic) {
   if(isdefined(mdl_relic)) {
     var_69146d00 = level clientfield::get("devgui_gateworm");
@@ -608,15 +466,6 @@ function function_3a9a1b46(mdl_relic) {
   }
 }
 
-/*
-	Name: function_ed53c8d4
-	Namespace: zm_zod_quest
-	Checksum: 0xB11B9D6E
-	Offset: 0x4338
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_ed53c8d4(localclientnum, mdl_ritual) {
   flag::wait_till("set_ritual_key_closed_flag");
   if(isdefined(mdl_ritual.var_958bf245)) {
@@ -625,44 +474,17 @@ function function_ed53c8d4(localclientnum, mdl_ritual) {
   flag::clear("set_ritual_key_closed_flag");
 }
 
-/*
-	Name: function_1088ce1d
-	Namespace: zm_zod_quest
-	Checksum: 0x2AE6B08F
-	Offset: 0x43C0
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_1088ce1d(localclientnum, mdl_ritual) {
   flag::wait_till("set_ritual_key_vanish_flag");
   mdl_ritual hide();
   flag::clear("set_ritual_key_vanish_flag");
 }
 
-/*
-	Name: ritual_success_light_exploder
-	Namespace: zm_zod_quest
-	Checksum: 0x6CF5B77D
-	Offset: 0x4428
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function ritual_success_light_exploder(str_name) {
   level thread exploder::stop_exploder("ritual_light_" + str_name);
   level thread exploder::exploder(("ritual_light_" + str_name) + "_fin");
 }
 
-/*
-	Name: toggle_altar_vfx
-	Namespace: zm_zod_quest
-	Checksum: 0x9612D8DF
-	Offset: 0x4488
-	Size: 0x1AE
-	Parameters: 3
-	Flags: Linked
-*/
 function toggle_altar_vfx(localclientnum, str_name, b_on) {
   a_ritual_pedestal = getentarray(localclientnum, "ritual_pedestal", "targetname");
   foreach(e_ritual_pedestal in a_ritual_pedestal) {
@@ -680,15 +502,6 @@ function toggle_altar_vfx(localclientnum, str_name, b_on) {
   }
 }
 
-/*
-	Name: function_46df8306
-	Namespace: zm_zod_quest
-	Checksum: 0xFE590E93
-	Offset: 0x4640
-	Size: 0x252
-	Parameters: 3
-	Flags: Linked
-*/
 function function_46df8306(localclientnum, str_name, b_on = 1) {
   a_s_spawn_points = struct::get_array(str_name, "targetname");
   foreach(s_spawn_point in a_s_spawn_points) {
@@ -711,15 +524,6 @@ function function_46df8306(localclientnum, str_name, b_on = 1) {
   }
 }
 
-/*
-	Name: function_267f859f
-	Namespace: zm_zod_quest
-	Checksum: 0x1BA33036
-	Offset: 0x48A0
-	Size: 0x190
-	Parameters: 5
-	Flags: Linked
-*/
 function function_267f859f(localclientnum, fx_id = undefined, b_on = 1, var_afcc5d76 = 0, str_tag = "tag_origin") {
   if(!isdefined(self.vfx_ref)) {
     self.vfx_ref = [];
@@ -742,18 +546,9 @@ function function_267f859f(localclientnum, fx_id = undefined, b_on = 1, var_afcc
   }
 }
 
-/*
-	Name: sndritual
-	Namespace: zm_zod_quest
-	Checksum: 0x4734B674
-	Offset: 0x4A38
-	Size: 0xB2
-	Parameters: 2
-	Flags: Linked
-*/
 function sndritual(state, e_model) {
-  level notify(# "sndritual");
-  level endon(# "sndritual");
+  level notify("sndritual");
+  level endon("sndritual");
   switch (state) {
     case 0: {
       break;
@@ -772,119 +567,38 @@ function sndritual(state, e_model) {
   }
 }
 
-/*
-	Name: ritual_state_boxer
-	Namespace: zm_zod_quest
-	Checksum: 0xEB849CCF
-	Offset: 0x4AF8
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function ritual_state_boxer(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   ritual_state_internal(localclientnum, newval, 1);
 }
 
-/*
-	Name: ritual_state_detective
-	Namespace: zm_zod_quest
-	Checksum: 0x61415650
-	Offset: 0x4B60
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function ritual_state_detective(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   ritual_state_internal(localclientnum, newval, 2);
 }
 
-/*
-	Name: ritual_state_femme
-	Namespace: zm_zod_quest
-	Checksum: 0xC46EB148
-	Offset: 0x4BC8
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function ritual_state_femme(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   ritual_state_internal(localclientnum, newval, 3);
 }
 
-/*
-	Name: ritual_state_magician
-	Namespace: zm_zod_quest
-	Checksum: 0x5B4BD691
-	Offset: 0x4C30
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function ritual_state_magician(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   ritual_state_internal(localclientnum, newval, 4);
 }
 
-/*
-	Name: quest_state_boxer
-	Namespace: zm_zod_quest
-	Checksum: 0x1EEBCFC4
-	Offset: 0x4C98
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked
-*/
 function quest_state_boxer(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   zm_utility::setsharedinventoryuimodels(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump);
 }
 
-/*
-	Name: quest_state_detective
-	Namespace: zm_zod_quest
-	Checksum: 0x56EC2D32
-	Offset: 0x4D10
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked
-*/
 function quest_state_detective(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   zm_utility::setsharedinventoryuimodels(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump);
 }
 
-/*
-	Name: quest_state_femme
-	Namespace: zm_zod_quest
-	Checksum: 0x75936A2A
-	Offset: 0x4D88
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked
-*/
 function quest_state_femme(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   zm_utility::setsharedinventoryuimodels(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump);
 }
 
-/*
-	Name: quest_state_magician
-	Namespace: zm_zod_quest
-	Checksum: 0xCEDE4CD
-	Offset: 0x4E00
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked
-*/
 function quest_state_magician(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   zm_utility::setsharedinventoryuimodels(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump);
 }
 
-/*
-	Name: ritual_state_pap
-	Namespace: zm_zod_quest
-	Checksum: 0xB0C030A
-	Offset: 0x4E78
-	Size: 0x5BE
-	Parameters: 7
-	Flags: Linked
-*/
 function ritual_state_pap(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   var_c6f3f6c3 = getent(localclientnum, "pap_portal", "targetname");
   var_c6f3f6c3 util::waittill_dobj(localclientnum);
@@ -940,29 +654,11 @@ function ritual_state_pap(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: function_b2aa47f0
-	Namespace: zm_zod_quest
-	Checksum: 0x614EECB9
-	Offset: 0x5440
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b2aa47f0() {
   soundlineemitter("zmb_zod_pap_portal_lp_dist", (2613, -2239, -258), (2608, -3045, -275));
   soundloopemitter("zmb_zod_pap_portal_lp", (2613, -2239, -258));
 }
 
-/*
-	Name: ritual_progress
-	Namespace: zm_zod_quest
-	Checksum: 0x137181CB
-	Offset: 0x54B0
-	Size: 0x96
-	Parameters: 7
-	Flags: Linked
-*/
 function ritual_progress(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(level.main_quest[localclientnum])) {
     return;
@@ -971,15 +667,6 @@ function ritual_progress(localclientnum, oldval, newval, bnewent, binitialsnap, 
   if(ritual_current != 5 && ritual_current != 0) {}
 }
 
-/*
-	Name: keeper_fx
-	Namespace: zm_zod_quest
-	Checksum: 0xDBBE6F32
-	Offset: 0x5550
-	Size: 0x27C
-	Parameters: 7
-	Flags: Linked
-*/
 function keeper_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval === 1) {
     self.var_341f7209 = playfxontag(localclientnum, level._effect["keeper_glow"], self, "j_spineupper");
@@ -1010,31 +697,13 @@ function keeper_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldn
   }
 }
 
-/*
-	Name: keeper_symbol_fx
-	Namespace: zm_zod_quest
-	Checksum: 0x848BFE9F
-	Offset: 0x57D8
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked
-*/
 function keeper_symbol_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self function_267f859f(localclientnum, level._effect["keeper_glow"], newval, 1);
 }
 
-/*
-	Name: item_glow_fx
-	Namespace: zm_zod_quest
-	Checksum: 0x60724998
-	Offset: 0x5850
-	Size: 0x1DE
-	Parameters: 7
-	Flags: Linked
-*/
 function item_glow_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self notify(# "item_glow_fx");
-  self endon(# "item_glow_fx");
+  self notify("item_glow_fx");
+  self endon("item_glow_fx");
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self)) {
     return;
@@ -1063,15 +732,6 @@ function item_glow_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fie
   }
 }
 
-/*
-	Name: keeper_spawn_portals
-	Namespace: zm_zod_quest
-	Checksum: 0x685D9FBA
-	Offset: 0x5A38
-	Size: 0xD6
-	Parameters: 7
-	Flags: Linked
-*/
 function keeper_spawn_portals(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   for (i = 0; i < 4; i++) {
     b_on = (newval >> i) & 1;
@@ -1080,28 +740,10 @@ function keeper_spawn_portals(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: function_af8eff6d
-	Namespace: zm_zod_quest
-	Checksum: 0x5B75085
-	Offset: 0x5B18
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_af8eff6d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   function_46df8306(localclientnum, "keeper_spawn_point_subway", newval);
 }
 
-/*
-	Name: cursetrap_fx
-	Namespace: zm_zod_quest
-	Checksum: 0x3FBE0D6C
-	Offset: 0x5B80
-	Size: 0x114
-	Parameters: 7
-	Flags: Linked
-*/
 function cursetrap_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.sndlooper)) {
     self stoploopsound(self.sndlooper, 0.5);
@@ -1115,15 +757,6 @@ function cursetrap_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fie
   self function_267f859f(localclientnum, level._effect["curse_circle"], newval, 1);
 }
 
-/*
-	Name: mini_cursetrap_fx
-	Namespace: zm_zod_quest
-	Checksum: 0xA386AC60
-	Offset: 0x5CA0
-	Size: 0x114
-	Parameters: 7
-	Flags: Linked
-*/
 function mini_cursetrap_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.sndlooper)) {
     self stoploopsound(self.sndlooper, 0.5);
@@ -1137,28 +770,10 @@ function mini_cursetrap_fx(localclientnum, oldval, newval, bnewent, binitialsnap
   self function_267f859f(localclientnum, level._effect["mini_curse_circle"], newval, 1);
 }
 
-/*
-	Name: curse_tell_fx
-	Namespace: zm_zod_quest
-	Checksum: 0x84643177
-	Offset: 0x5DC0
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked
-*/
 function curse_tell_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self function_267f859f(localclientnum, level._effect["curse_tell"], newval, 1);
 }
 
-/*
-	Name: boss_shield_fx
-	Namespace: zm_zod_quest
-	Checksum: 0x903C65C8
-	Offset: 0x5E38
-	Size: 0x264
-	Parameters: 7
-	Flags: Linked
-*/
 function boss_shield_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   var_53c5edf0 = self gettagorigin("j_spinelower");
   if(isdefined(self.sndlooper)) {
@@ -1185,15 +800,6 @@ function boss_shield_fx(localclientnum, oldval, newval, bnewent, binitialsnap, f
   }
 }
 
-/*
-	Name: status_fx
-	Namespace: zm_zod_quest
-	Checksum: 0x5E86FFBC
-	Offset: 0x60A8
-	Size: 0x11E
-	Parameters: 7
-	Flags: Linked
-*/
 function status_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 0 && isdefined(self.var_a77e68b9)) {
     stopfx(localclientnum, self.var_a77e68b9);
@@ -1211,15 +817,6 @@ function status_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldn
   }
 }
 
-/*
-	Name: veh_status_fx
-	Namespace: zm_zod_quest
-	Checksum: 0x505E9771
-	Offset: 0x61D0
-	Size: 0x11E
-	Parameters: 7
-	Flags: Linked
-*/
 function veh_status_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 0 && isdefined(self.var_a77e68b9)) {
     stopfx(localclientnum, self.var_a77e68b9);
@@ -1237,15 +834,6 @@ function veh_status_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fi
   }
 }
 
-/*
-	Name: shadowman_fx
-	Namespace: zm_zod_quest
-	Checksum: 0xC32A64A9
-	Offset: 0x62F8
-	Size: 0x392
-	Parameters: 7
-	Flags: Linked
-*/
 function shadowman_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.var_6067fcbe)) {
     stopfx(localclientnum, self.var_6067fcbe);
@@ -1298,43 +886,16 @@ function shadowman_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fie
   }
 }
 
-/*
-	Name: function_705b696b
-	Namespace: zm_zod_quest
-	Checksum: 0xFC8011A0
-	Offset: 0x6698
-	Size: 0x74
-	Parameters: 4
-	Flags: Linked
-*/
 function function_705b696b(localclientnum, str_fx, v_origin, n_seconds) {
   fx_id = playfx(localclientnum, str_fx, v_origin);
   wait(n_seconds);
   stopfx(localclientnum, fx_id);
 }
 
-/*
-	Name: darkportal_fx
-	Namespace: zm_zod_quest
-	Checksum: 0x6874AE89
-	Offset: 0x6718
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked
-*/
 function darkportal_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self function_267f859f(localclientnum, level._effect["darkfire_portal"], newval, 1);
 }
 
-/*
-	Name: totem_state_fx
-	Namespace: zm_zod_quest
-	Checksum: 0x1AE26DC4
-	Offset: 0x6790
-	Size: 0x2AE
-	Parameters: 7
-	Flags: Linked
-*/
 function totem_state_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.sndloopid)) {
     self stoploopsound(self.sndloopid, 0.25);
@@ -1372,15 +933,6 @@ function totem_state_fx(localclientnum, oldval, newval, bnewent, binitialsnap, f
   }
 }
 
-/*
-	Name: totem_damage_fx
-	Namespace: zm_zod_quest
-	Checksum: 0xB1A1C679
-	Offset: 0x6A48
-	Size: 0x146
-	Parameters: 7
-	Flags: Linked
-*/
 function totem_damage_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(level.var_da89d643)) {
     level.var_de6a5ba3 = [];
@@ -1397,15 +949,6 @@ function totem_damage_fx(localclientnum, oldval, newval, bnewent, binitialsnap, 
   }
 }
 
-/*
-	Name: function_1fea37a4
-	Namespace: zm_zod_quest
-	Checksum: 0xD6ADFB45
-	Offset: 0x6B98
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_1fea37a4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     level thread footsteps(localclientnum, "s_left_wallrun");
@@ -1414,15 +957,6 @@ function function_1fea37a4(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: gateworm_basin_fx
-	Namespace: zm_zod_quest
-	Checksum: 0x8C050197
-	Offset: 0x6C40
-	Size: 0xFC
-	Parameters: 7
-	Flags: Linked
-*/
 function gateworm_basin_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     self.fx_id = playfxontag(localclientnum, level._effect["gateworm_basin_placed"], self, "tag_origin");
@@ -1434,15 +968,6 @@ function gateworm_basin_fx(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: footsteps
-	Namespace: zm_zod_quest
-	Checksum: 0x3C824622
-	Offset: 0x6D48
-	Size: 0x30A
-	Parameters: 2
-	Flags: Linked
-*/
 function footsteps(localclientnum, str_name) {
   a_struct = [];
   var_8f19a67f = 10;

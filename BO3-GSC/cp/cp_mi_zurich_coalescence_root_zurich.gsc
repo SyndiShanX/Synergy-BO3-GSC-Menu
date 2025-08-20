@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*******************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_zurich_coalescence_root_zurich.gsc
+*******************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_dialog;
 #using scripts\cp\_load;
@@ -19,18 +23,8 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
-
 #namespace root_zurich;
 
-/*
-	Name: main
-	Namespace: root_zurich
-	Checksum: 0xCEE10A82
-	Offset: 0xBE0
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   init_clientfields();
   ai_spawners = getentarray("root_zurich_spawners", "script_noteworthy");
@@ -39,15 +33,6 @@ function main() {
   array::thread_all(var_603657ba, & spawner::add_spawn_function, & zurich_util::function_d8c91e6b);
 }
 
-/*
-	Name: init_clientfields
-	Namespace: root_zurich
-	Checksum: 0x3211216D
-	Offset: 0xCC0
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("scriptmover", "zurich_snow_rise", 1, 1, "counter");
   clientfield::register("toplayer", "reflection_extracam", 1, 1, "int");
@@ -57,15 +42,6 @@ function init_clientfields() {
   clientfield::register("scriptmover", "mirror_warp", 1, 1, "int");
 }
 
-/*
-	Name: skipto_main
-	Namespace: root_zurich
-	Checksum: 0xF51F0584
-	Offset: 0xDF0
-	Size: 0x2E4
-	Parameters: 2
-	Flags: Linked
-*/
 function skipto_main(str_objective, b_starting) {
   load::function_73adcefc();
   if(b_starting) {
@@ -97,15 +73,6 @@ function skipto_main(str_objective, b_starting) {
   level thread function_95b88092("root_zurich_vortex", 0);
 }
 
-/*
-	Name: function_95b88092
-	Namespace: root_zurich
-	Checksum: 0x1921466E
-	Offset: 0x10E0
-	Size: 0x2C4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_95b88092(str_objective, b_starting) {
   if(isdefined(b_starting) && b_starting) {
     load::function_73adcefc();
@@ -130,7 +97,7 @@ function function_95b88092(str_objective, b_starting) {
     savegame::checkpoint_save();
   }
   var_8fb0849a = zurich_util::function_a1851f86(str_objective);
-  var_8fb0849a waittill(# "brn");
+  var_8fb0849a waittill("brn");
   level thread root_cinematics::play_scene(str_objective, var_8fb0849a.var_90971f20.e_player);
   if(isdefined(level.bzm_forceaicleanup)) {
     [
@@ -141,17 +108,8 @@ function function_95b88092(str_objective, b_starting) {
   exploder::stop_exploder("zurich_lightning_exp");
 }
 
-/*
-	Name: skipto_done
-	Namespace: root_zurich
-	Checksum: 0xAF5B749
-	Offset: 0x13B0
-	Size: 0x132
-	Parameters: 4
-	Flags: Linked
-*/
 function skipto_done(str_objective, b_starting, b_direct, player) {
-  level notify(# "hash_c955b42d");
+  level notify("hash_c955b42d");
   level zurich_util::function_b0f0dd1f(0);
   level clientfield::increment("root_vine_cleanup");
   level thread zurich_util::function_4a00a473("root_zurich");
@@ -161,17 +119,8 @@ function skipto_done(str_objective, b_starting, b_direct, player) {
   }
 }
 
-/*
-	Name: function_a61dfb7
-	Namespace: root_zurich
-	Checksum: 0xFE09517C
-	Offset: 0x14F0
-	Size: 0x2CC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a61dfb7() {
-  level endon(# "hash_1d98ceef");
+  level endon("hash_1d98ceef");
   level flag::wait_till("flag_monologue_zurich_root_01");
   level dialog::player_say("plyr_i_don_t_understand_0", 3);
   level dialog::player_say("plyr_talk_to_me_please_0", 3);
@@ -196,34 +145,16 @@ function function_a61dfb7() {
   level flag::set("flag_monologue_zurich_root_04_done");
 }
 
-/*
-	Name: function_1ef8526e
-	Namespace: root_zurich
-	Checksum: 0x7C08B7B5
-	Offset: 0x17C8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1ef8526e() {
-  level endon(# "hash_1d98ceef");
+  level endon("hash_1d98ceef");
   level flag::wait_till("flag_monologue_zurich_root_04_done");
   level dialog::remote("salm_the_human_mind_holds_0", 4, "NO_DNI");
   level dialog::remote("salm_our_ability_to_analy_0", 1, "NO_DNI");
 }
 
-/*
-	Name: function_9dd2872e
-	Namespace: root_zurich
-	Checksum: 0xAFFECDA8
-	Offset: 0x1860
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9dd2872e(str_objective) {
   level endon(str_objective + "enter_vortex");
-  level notify(# "hash_d3c69346");
+  level notify("hash_d3c69346");
   level thread namespace_67110270::function_ff7a72bf();
   level.ai_taylor dialog::say("tayr_all_this_shit_around_1", 1);
   level.ai_taylor dialog::say("tayr_corvus_is_messing_wi_0", 1);
@@ -231,15 +162,6 @@ function function_9dd2872e(str_objective) {
   level thread function_a61dfb7();
 }
 
-/*
-	Name: function_53a7bcca
-	Namespace: root_zurich
-	Checksum: 0x3BA2962
-	Offset: 0x1938
-	Size: 0x13A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_53a7bcca() {
   e_trig = trigger::wait_till("t_zurichroot_2", "script_noteworthy");
   a_ai_enemy = getaiteamarray("axis", "team3");
@@ -251,15 +173,6 @@ function function_53a7bcca() {
   }
 }
 
-/*
-	Name: function_aa95075d
-	Namespace: root_zurich
-	Checksum: 0x14B7830D
-	Offset: 0x1A80
-	Size: 0x2BC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_aa95075d(str_objective) {
   util::wait_network_frame();
   scene::add_scene_func("p7_fxanim_cp_zurich_mirror_bundle", & function_b8580c84, "init");
@@ -271,16 +184,16 @@ function function_aa95075d(str_objective) {
     var_a3612ddd++;
     player thread function_2a895f94(var_a3612ddd);
   }
-  level waittill(# "hash_3e3847fd");
+  level waittill("hash_3e3847fd");
   wait(1);
   level thread util::screen_fade_in(1);
   array::thread_all(level.players, & clientfield::increment_to_player, "postfx_transition");
   playsoundatposition("evt_clearing_trans_in", (0, 0, 0));
-  level waittill(# "hash_1f51b705");
+  level waittill("hash_1f51b705");
   level thread scene::play("cin_zur_12_01_root_1st_mirror_taylor_cam");
-  level waittill(# "hash_c27a3d1");
+  level waittill("hash_c27a3d1");
   level thread scene::play("p7_fxanim_cp_zurich_mirror_bundle");
-  level waittill(# "hash_e01132f9");
+  level waittill("hash_e01132f9");
   util::clear_streamer_hint();
   savegame::checkpoint_save();
   level zurich_util::function_c90e23b6(str_objective, "breadcrumb_zurichroot_5");
@@ -291,39 +204,21 @@ function function_aa95075d(str_objective) {
   videostart("cp_zurich_env_corvusmonitor", 1);
 }
 
-/*
-	Name: function_b8580c84
-	Namespace: root_zurich
-	Checksum: 0x37FEFFB2
-	Offset: 0x1D48
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b8580c84(a_ents) {
   var_29613ea0 = a_ents["zurich_mirror_start"];
   array::thread_all(level.players, & clientfield::set_to_player, "reflection_extracam", 1);
   array::thread_all(level.players, & clientfield::set_to_player, "mirror_break", 1);
-  level notify(# "hash_3e3847fd");
-  level waittill(# "hash_80b2a624");
+  level notify("hash_3e3847fd");
+  level waittill("hash_80b2a624");
   var_29613ea0 clientfield::set("mirror_warp", 1);
   var_29613ea0 playsound("evt_mirror_warp_taylor");
-  level waittill(# "hash_1f51b705");
+  level waittill("hash_1f51b705");
   var_29613ea0 clientfield::set("mirror_warp", 0);
 }
 
-/*
-	Name: function_2a895f94
-	Namespace: root_zurich
-	Checksum: 0x146B700C
-	Offset: 0x1E70
-	Size: 0x422
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2a895f94(var_a3612ddd) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   scene::add_scene_func("cin_zur_12_01_root_1st_mirror_taylor_0" + var_a3612ddd, & function_cbebe415, "play");
   var_b16f0715 = [];
   var_e0cf565f = array::exclude(level.players, array(self));
@@ -349,22 +244,13 @@ function function_2a895f94(var_a3612ddd) {
   array::run_all(var_b16f0715, & delete);
   self show();
   self setvisibletoall();
-  level notify(# "hash_e01132f9");
+  level notify("hash_e01132f9");
 }
 
-/*
-	Name: function_2398f048
-	Namespace: root_zurich
-	Checksum: 0xC80B72A4
-	Offset: 0x22A0
-	Size: 0x1BC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_2398f048(var_b16f0715, var_a3612ddd) {
-  self endon(# "disconnect");
-  self endon(# "death");
-  level waittill(# "hash_1f51b705");
+  self endon("disconnect");
+  self endon("death");
+  level waittill("hash_1f51b705");
   e_taylor = scene::get_existing_ent("taylor_0" + var_a3612ddd);
   e_taylor setvisibletoplayer(self);
   wait(0.5);
@@ -376,35 +262,17 @@ function function_2398f048(var_b16f0715, var_a3612ddd) {
   }
   array::run_all(var_b16f0715, & setinvisibletoplayer, self, 1);
   self hide();
-  level waittill(# "hash_e01132f9");
+  level waittill("hash_e01132f9");
   wait(3);
   self clientfield::set_to_player("reflection_extracam", 0);
 }
 
-/*
-	Name: function_cbebe415
-	Namespace: root_zurich
-	Checksum: 0x49A68373
-	Offset: 0x2468
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cbebe415(a_ents) {
   foreach(e_taylor in a_ents) {
     e_taylor setinvisibletoall();
   }
 }
 
-/*
-	Name: function_9831305d
-	Namespace: root_zurich
-	Checksum: 0x24E2DE13
-	Offset: 0x2508
-	Size: 0x1C4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9831305d() {
   var_b6e5ad19 = getentarray("zurich_popup_poles", "targetname");
   for (i = 0; i < var_b6e5ad19.size; i++) {
@@ -425,15 +293,6 @@ function function_9831305d() {
   }
 }
 
-/*
-	Name: function_3292451c
-	Namespace: root_zurich
-	Checksum: 0x5E19EE15
-	Offset: 0x26D8
-	Size: 0x1CC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3292451c() {
   var_6fbeca4a = 1;
   var_6fe9b606 = getent("popup_pole_" + var_6fbeca4a, "script_noteworthy");
@@ -441,7 +300,7 @@ function function_3292451c() {
     var_6fe9b606 moveto(var_6fe9b606.end_pos, 0.5);
     v_ground = groundtrace(var_6fe9b606.fx_pos.origin, var_6fe9b606.origin, 0, var_6fe9b606)["position"];
     var_f33892ac = util::spawn_model("tag_origin", v_ground, var_6fe9b606.angles);
-    var_6fe9b606 waittill(# "movedone");
+    var_6fe9b606 waittill("movedone");
     var_f33892ac clientfield::increment("zurich_snow_rise");
     playsoundatposition("evt_roots_grow", var_f33892ac.origin);
     var_f33892ac thread function_df835392();
@@ -451,15 +310,6 @@ function function_3292451c() {
   }
 }
 
-/*
-	Name: function_c88fe82
-	Namespace: root_zurich
-	Checksum: 0x588B62D9
-	Offset: 0x28B0
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c88fe82() {
   level dialog::remote("mcor_you_ever_say_or_do_s_0", 1, "NO_DNI");
   level dialog::remote("tayr_maretti_is_that_yo_0", 1, "NO_DNI");
@@ -470,18 +320,9 @@ function function_c88fe82() {
   level dialog::player_say("plyr_are_you_still_with_m_0", 1);
 }
 
-/*
-	Name: function_2d897f84
-	Namespace: root_zurich
-	Checksum: 0x9B6E11B2
-	Offset: 0x2A00
-	Size: 0x13E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2d897f84(str_objective) {
   level endon(str_objective + "_done");
-  level endon(# "hash_c955b42d");
+  level endon("hash_c955b42d");
   var_b1cdbf1d = 1;
   while (true) {
     var_f6e695c0 = struct::get("breadcrumb_zurichroot_" + var_b1cdbf1d, "targetname");
@@ -490,37 +331,19 @@ function function_2d897f84(str_objective) {
       return;
     }
     objectives::set("cp_waypoint_breadcrumb", var_f6e695c0);
-    var_b1fe230f waittill(# "trigger");
-    level notify(# "hash_431e9a83");
+    var_b1fe230f waittill("trigger");
+    level notify("hash_431e9a83");
     savegame::checkpoint_save();
     objectives::complete("cp_waypoint_breadcrumb", var_f6e695c0);
     var_b1cdbf1d++;
   }
 }
 
-/*
-	Name: function_8182f3c5
-	Namespace: root_zurich
-	Checksum: 0x26632D43
-	Offset: 0x2B48
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8182f3c5() {
   var_3e269f89 = getentarray("zurich_vinewall_trig", "targetname");
   array::thread_all(var_3e269f89, & function_ddbd0859);
 }
 
-/*
-	Name: function_ddbd0859
-	Namespace: root_zurich
-	Checksum: 0x2B9D12A6
-	Offset: 0x2BA8
-	Size: 0x292
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ddbd0859() {
   var_4cb02780 = getentarray(self.target, "targetname");
   for (i = 0; i < var_4cb02780.size; i++) {
@@ -542,21 +365,12 @@ function function_ddbd0859() {
       var_4cb02780[i] movez(-128, 0.05);
     }
   }
-  self waittill(# "trigger");
+  self waittill("trigger");
   foreach(e_wall in var_4cb02780) {
     e_wall thread function_300319e3();
   }
 }
 
-/*
-	Name: function_300319e3
-	Namespace: root_zurich
-	Checksum: 0xD56A291C
-	Offset: 0x2E48
-	Size: 0x1D0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_300319e3() {
   n_time = randomfloatrange(0.2, 0.75);
   wait(n_time);
@@ -567,7 +381,7 @@ function function_300319e3() {
       if(var_abc323ed[i].script_noteworthy === "fx_pos") {
         v_ground = groundtrace(var_abc323ed[i].origin, self.origin, 0, self)["position"];
         var_f33892ac = util::spawn_model("tag_origin", v_ground, var_abc323ed[i].angles);
-        self waittill(# "movedone");
+        self waittill("movedone");
         var_f33892ac clientfield::increment("zurich_snow_rise");
         playsoundatposition("evt_roots_grow", var_abc323ed[i].origin);
         var_f33892ac thread function_df835392();
@@ -577,49 +391,22 @@ function function_300319e3() {
   }
 }
 
-/*
-	Name: function_e8047245
-	Namespace: root_zurich
-	Checksum: 0xCBFF9721
-	Offset: 0x3020
-	Size: 0x14A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e8047245() {
   a_nd_cover = getnodearray(self.script_string, "targetname");
   foreach(nd_cover in a_nd_cover) {
     setenablenode(nd_cover, 0);
   }
-  self waittill(# "movedone");
+  self waittill("movedone");
   foreach(nd_cover in a_nd_cover) {
     setenablenode(nd_cover, 1);
   }
 }
 
-/*
-	Name: function_df835392
-	Namespace: root_zurich
-	Checksum: 0x19C13B44
-	Offset: 0x3178
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_df835392() {
   wait(3);
   self delete();
 }
 
-/*
-	Name: function_187dfb55
-	Namespace: root_zurich
-	Checksum: 0x48F2CCFB
-	Offset: 0x31A0
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_187dfb55() {
   scene::add_scene_func("p7_fxanim_cp_zurich_roots_train_bundle", & function_74c17b69, "play");
   scene::add_scene_func("p7_fxanim_cp_zurich_roots_train_bundle", & zurich_util::function_9f90bc0f, "done", "zurich_root_completed");
@@ -636,62 +423,26 @@ function function_187dfb55() {
   level scene::play("p7_fxanim_cp_zurich_roots_train_bundle");
 }
 
-/*
-	Name: function_a85c54c7
-	Namespace: root_zurich
-	Checksum: 0x4477B264
-	Offset: 0x3350
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a85c54c7() {
-  level waittill(# "hash_bf94f0c3");
+  level waittill("hash_bf94f0c3");
   getent("zur_root_train_blocker", "targetname") delete();
   objectives::breadcrumb("t_breadcrumb_zurichroot_exit");
 }
 
-/*
-	Name: function_74c17b69
-	Namespace: root_zurich
-	Checksum: 0x19CB0FAE
-	Offset: 0x33B8
-	Size: 0x9A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_74c17b69(a_ents) {
   foreach(e_ent in a_ents) {
     e_ent playrumbleonentity("cp_infection_hideout_stretch");
   }
 }
 
-/*
-	Name: function_b9295ca8
-	Namespace: root_zurich
-	Checksum: 0xD2A8B5D6
-	Offset: 0x3460
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b9295ca8() {
-  level endon(# "hash_e0d2827d");
+  level endon("hash_e0d2827d");
   spawn_manager::wait_till_ai_remaining("sm_zurich_root_end", 2);
   level flag::set("flag_zurich_root_final_encounter_complete");
 }
 
-/*
-	Name: function_ddc2d04e
-	Namespace: root_zurich
-	Checksum: 0x3FB53A5D
-	Offset: 0x34B8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ddc2d04e() {
-  level endon(# "hash_e0d2827d");
+  level endon("hash_e0d2827d");
   wait(60);
   level flag::set("flag_zurich_root_final_encounter_complete");
 }

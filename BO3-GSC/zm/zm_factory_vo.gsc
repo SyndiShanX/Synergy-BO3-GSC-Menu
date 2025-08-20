@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_factory_vo.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -7,57 +11,20 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_audio;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_factory_vo;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_factory_vo
-	Checksum: 0xE2924806
-	Offset: 0xA38
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_factory_vo", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_factory_vo
-	Checksum: 0x99EC1590
-	Offset: 0xA80
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}
 
-/*
-	Name: __main__
-	Namespace: zm_factory_vo
-	Checksum: 0x57BC9CAC
-	Offset: 0xA90
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level thread function_7884e6b8();
 }
 
-/*
-	Name: function_7884e6b8
-	Namespace: zm_factory_vo
-	Checksum: 0xA35586B8
-	Offset: 0xAB8
-	Size: 0xB88
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7884e6b8() {
-  self endon(# "_zombie_game_over");
+  self endon("_zombie_game_over");
   level.a_e_speakers = [];
   var_f01f6eb2 = [];
   array::add(var_f01f6eb2, array("vox_plr_3_interaction_takeo_rich_1_0", "vox_plr_2_interaction_takeo_rich_1_0"));
@@ -101,11 +68,11 @@ function function_7884e6b8() {
   array::add(var_4c7aad4a, array("vox_plr_1_interaction_niko_demp_4_0", "vox_plr_0_interaction_niko_demp_4_0"));
   array::add(var_4c7aad4a, array("vox_plr_1_interaction_niko_demp_5_0", "vox_plr_0_interaction_niko_demp_5_0"));
   var_22f40782 = 0;
-  level waittill(# "all_players_spawned");
+  level waittill("all_players_spawned");
   wait(1);
   while (true) {
     if(level.round_number > 4) {
-      level waittill(# "end_of_round");
+      level waittill("end_of_round");
       if(level.activeplayers.size > 1 && !level flag::get("flytrap")) {
         n_player_index = randomint(level.activeplayers.size);
         var_e8669 = level.activeplayers[n_player_index];
@@ -159,35 +126,13 @@ function function_7884e6b8() {
   }
 }
 
-/*
-	Name: function_c23e3a71
-	Namespace: zm_factory_vo
-	Checksum: 0xC8CA1A8A
-	Offset: 0x1648
-	Size: 0xE4
-	Parameters: 5
-	Flags: Linked
-*/
 function function_c23e3a71(var_49fefccd, n_index, b_wait_if_busy = 0, var_7e649f23 = 0, var_d1295208 = 0) {
-  /#
   assert(isdefined(var_49fefccd), "");
-  # /
-    /#
   assert(n_index < var_49fefccd.size, "");
-  # /
-    var_3b5e4c24 = var_49fefccd[n_index];
+  var_3b5e4c24 = var_49fefccd[n_index];
   function_7aa5324a(var_3b5e4c24, b_wait_if_busy, var_7e649f23, var_d1295208);
 }
 
-/*
-	Name: function_7aa5324a
-	Namespace: zm_factory_vo
-	Checksum: 0xA73FC471
-	Offset: 0x1738
-	Size: 0x10C
-	Parameters: 4
-	Flags: Linked
-*/
 function function_7aa5324a(var_cbd11028, b_wait_if_busy = 0, n_priority = 0, var_d1295208 = 0) {
   function_218256bd(1);
   for (i = 0; i < var_cbd11028.size; i++) {
@@ -201,15 +146,6 @@ function function_7aa5324a(var_cbd11028, b_wait_if_busy = 0, n_priority = 0, var
   function_218256bd(0);
 }
 
-/*
-	Name: function_218256bd
-	Namespace: zm_factory_vo
-	Checksum: 0x69594EEC
-	Offset: 0x1850
-	Size: 0x16A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_218256bd(var_eca8128e) {
   foreach(player in level.activeplayers) {
     if(isdefined(player)) {
@@ -226,15 +162,6 @@ function function_218256bd(var_eca8128e) {
   }
 }
 
-/*
-	Name: function_897246e4
-	Namespace: zm_factory_vo
-	Checksum: 0x23700ED8
-	Offset: 0x19C8
-	Size: 0x17C
-	Parameters: 5
-	Flags: Linked
-*/
 function function_897246e4(str_vo_alias, n_wait = 0, b_wait_if_busy = 0, n_priority = 0, var_d1295208 = 0) {
   var_81132431 = strtok(str_vo_alias, "_");
   if(var_81132431[1] === "plr") {
@@ -242,27 +169,16 @@ function function_897246e4(str_vo_alias, n_wait = 0, b_wait_if_busy = 0, n_prior
     e_speaker = zm_utility::get_specific_character(var_edf0b06);
   } else {
     e_speaker = undefined;
-    /#
     assert(0, ("" + str_vo_alias) + "");
-    # /
   }
   if(zm_utility::is_player_valid(e_speaker)) {
     e_speaker function_7b697614(str_vo_alias, n_wait, b_wait_if_busy, n_priority);
   }
 }
 
-/*
-	Name: function_7b697614
-	Namespace: zm_factory_vo
-	Checksum: 0x2830973F
-	Offset: 0x1B50
-	Size: 0x30C
-	Parameters: 5
-	Flags: Linked
-*/
 function function_7b697614(str_vo_alias, n_delay = 0, b_wait_if_busy = 0, n_priority = 0, var_d1295208 = 0) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(!self flag::exists("in_beastmode") || !self flag::get("in_beastmode")) {
     if(zm_audio::arenearbyspeakersactive(10000) && (!(isdefined(var_d1295208) && var_d1295208))) {
       return;
@@ -302,15 +218,6 @@ function function_7b697614(str_vo_alias, n_delay = 0, b_wait_if_busy = 0, n_prio
   }
 }
 
-/*
-	Name: vo_clear
-	Namespace: zm_factory_vo
-	Checksum: 0x86C0863E
-	Offset: 0x1E68
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function vo_clear() {
   self.str_vo_being_spoken = "";
   self.n_vo_priority = 0;

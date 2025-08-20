@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_timer.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -15,42 +19,14 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_genesis_timer;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_genesis_timer
-	Checksum: 0xBF77C7FD
-	Offset: 0x348
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_timer", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_genesis_timer
-	Checksum: 0x99EC1590
-	Offset: 0x390
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}
 
-/*
-	Name: __main__
-	Namespace: zm_genesis_timer
-	Checksum: 0x3DA6BE8D
-	Offset: 0x3A0
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   clientfield::register("world", "time_attack_reward", 15000, 3, "int");
   level flag::init("time_attack_weapon_awarded");
@@ -65,15 +41,6 @@ function __main__() {
   level thread function_86419da();
 }
 
-/*
-	Name: function_6ac3689a
-	Namespace: zm_genesis_timer
-	Checksum: 0x12384F36
-	Offset: 0x4F8
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6ac3689a(player) {
   if(player zm_magicbox::can_buy_weapon() && !player bgb::is_enabled("zm_bgb_disorderly_combat") && level flag::get("time_attack_weapon_awarded")) {
     self setvisibletoplayer(player);
@@ -85,18 +52,9 @@ function function_6ac3689a(player) {
   return false;
 }
 
-/*
-	Name: function_86419da
-	Namespace: zm_genesis_timer
-	Checksum: 0x6883F9DC
-	Offset: 0x5F0
-	Size: 0x322
-	Parameters: 0
-	Flags: Linked
-*/
 function function_86419da() {
   do {
-    level waittill(# "end_of_round");
+    level waittill("end_of_round");
     n_current_time = (gettime() - level.n_gameplay_start_time) / 1000;
     var_99870abd = zm::get_round_number() - 1;
     var_ec31aba8 = undefined;
@@ -194,7 +152,7 @@ function function_86419da() {
     }
     if((var_99870abd % 5) == 0) {
       if(isdefined(var_ec31aba8) && n_current_time < var_ec31aba8) {
-        luinotifyevent( & "zombie_time_attack_notification", 2, zm::get_round_number() - 1, level.players.size);
+        luinotifyevent(&"zombie_time_attack_notification", 2, zm::get_round_number() - 1, level.players.size);
         playsoundatposition("zmb_genesis_timetrial_complete", (0, 0, 0));
         level thread function_cc8ae246(var_99870abd);
       }
@@ -203,15 +161,6 @@ function function_86419da() {
   while (var_99870abd < 50);
 }
 
-/*
-	Name: function_cc8ae246
-	Namespace: zm_genesis_timer
-	Checksum: 0xDA77AC43
-	Offset: 0x920
-	Size: 0x27C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cc8ae246(n_reward) {
   if(n_reward != 200 && level flag::get("hope_done")) {
     return;

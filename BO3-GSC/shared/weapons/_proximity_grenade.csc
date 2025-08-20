@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_proximity_grenade.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -6,18 +10,8 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace proximity_grenade;
 
-/*
-	Name: init_shared
-	Namespace: proximity_grenade
-	Checksum: 0x666763F5
-	Offset: 0x2F0
-	Size: 0x104
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   clientfield::register("toplayer", "tazered", 1, 1, "int", undefined, 0, 0);
   level._effect["prox_grenade_friendly_default"] = "weapon/fx_prox_grenade_scan_blue";
@@ -29,15 +23,6 @@ function init_shared() {
   level thread watchforproximityexplosion();
 }
 
-/*
-	Name: proximity_spawned
-	Namespace: proximity_grenade
-	Checksum: 0xE3118A1E
-	Offset: 0x400
-	Size: 0x84
-	Parameters: 1
-	Flags: None
-*/
 function proximity_spawned(localclientnum) {
   if(self isgrenadedud()) {
     return;
@@ -48,22 +33,13 @@ function proximity_spawned(localclientnum) {
   self thread weaponobjects::equipmentteamobject(localclientnum);
 }
 
-/*
-	Name: watchforproximityexplosion
-	Namespace: proximity_grenade
-	Checksum: 0xC1A64E51
-	Offset: 0x490
-	Size: 0x198
-	Parameters: 0
-	Flags: None
-*/
 function watchforproximityexplosion() {
   if(getactivelocalclients() > 1) {
     return;
   }
   weapon_proximity = getweapon("proximity_grenade");
   while (true) {
-    level waittill(# "explode", localclientnum, position, mod, weapon, owner_cent);
+    level waittill("explode", localclientnum, position, mod, weapon, owner_cent);
     if(weapon.rootweapon != weapon_proximity) {
       continue;
     }

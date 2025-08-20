@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\doors_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\flag_shared;
 #using scripts\shared\hud_util_shared;
@@ -19,15 +23,7 @@ class cdoor {
   var m_e_hint_trigger;
   var m_e_trigger_player;
 
-  /*
-  	Name: constructor
-  	Namespace: cdoor
-  	Checksum: 0x9F3F54B6
-  	Offset: 0x230
-  	Size: 0x34
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {
     m_n_trigger_height = 80;
     m_override_swing_angle = undefined;
@@ -35,43 +31,19 @@ class cdoor {
     m_e_trigger_player = undefined;
   }
 
-  /*
-  	Name: destructor
-  	Namespace: cdoor
-  	Checksum: 0x8DA9AEA7
-  	Offset: 0x270
-  	Size: 0x2C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {
     if(isdefined(m_e_trigger)) {
       m_e_trigger delete();
     }
   }
 
-  /*
-  	Name: setdooropendelay
-  	Namespace: cdoor
-  	Checksum: 0x4509FF20
-  	Offset: 0x1958
-  	Size: 0x18
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function setdooropendelay(delay_time) {
     m_door_open_delay_time = delay_time;
   }
 
-  /*
-  	Name: getswingangle
-  	Namespace: cdoor
-  	Checksum: 0x4659AA50
-  	Offset: 0x1910
-  	Size: 0x40
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function getswingangle() {
     if(isdefined(m_override_swing_angle)) {
       angle = m_override_swing_angle;
@@ -81,28 +53,12 @@ class cdoor {
     return angle;
   }
 
-  /*
-  	Name: set_swing_angle
-  	Namespace: cdoor
-  	Checksum: 0x743EE8A4
-  	Offset: 0x18F0
-  	Size: 0x18
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function set_swing_angle(angle) {
     m_override_swing_angle = angle;
   }
 
-  /*
-  	Name: calculate_offset_position
-  	Namespace: cdoor
-  	Checksum: 0x6DA45DE7
-  	Offset: 0x17D0
-  	Size: 0x118
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function calculate_offset_position(v_origin, v_angles, v_offset) {
     v_pos = v_origin;
     if(v_offset[0]) {
@@ -120,28 +76,12 @@ class cdoor {
     return v_pos;
   }
 
-  /*
-  	Name: set_door_paths
-  	Namespace: cdoor
-  	Checksum: 0x53EBB206
-  	Offset: 0x17B0
-  	Size: 0x18
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function set_door_paths(n_door_connect_paths) {
     m_n_door_connect_paths = n_door_connect_paths;
   }
 
-  /*
-  	Name: init_movement
-  	Namespace: cdoor
-  	Checksum: 0x483A0BAE
-  	Offset: 0x16E8
-  	Size: 0xBC
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function init_movement(n_slide_up, n_slide_amount) {
     if(m_s_bundle.door_open_method == "slide") {
       if(n_slide_up) {
@@ -154,15 +94,7 @@ class cdoor {
     }
   }
 
-  /*
-  	Name: set_script_flags
-  	Namespace: cdoor
-  	Checksum: 0x9BE49C60
-  	Offset: 0x15E0
-  	Size: 0xFA
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function set_script_flags(b_set) {
     if(isdefined(m_str_script_flag)) {
       a_flags = strtok(m_str_script_flag, ",");
@@ -176,15 +108,7 @@ class cdoor {
     }
   }
 
-  /*
-  	Name: init_trigger
-  	Namespace: cdoor
-  	Checksum: 0xBB002632
-  	Offset: 0x13C8
-  	Size: 0x20C
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function init_trigger(v_offset, n_radius) {
     v_pos = calculate_offset_position(m_e_door.origin, m_e_door.angles, v_offset);
     v_pos = (v_pos[0], v_pos[1], v_pos[2] + 50);
@@ -206,15 +130,7 @@ class cdoor {
     }
   }
 
-  /*
-  	Name: process_hint_trigger_message
-  	Namespace: cdoor
-  	Checksum: 0xAD8CDF04
-  	Offset: 0x1240
-  	Size: 0x180
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function process_hint_trigger_message() {
     str_hint = "";
     if(isdefined(m_s_bundle.door_trigger_at_target) && m_s_bundle.door_trigger_at_target) {
@@ -238,15 +154,7 @@ class cdoor {
     }
   }
 
-  /*
-  	Name: run_lock_fx
-  	Namespace: cdoor
-  	Checksum: 0x27951F73
-  	Offset: 0x1000
-  	Size: 0x238
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function run_lock_fx() {
     if(!isdefined(m_s_bundle.door_locked_fx) && !isdefined(m_s_bundle.door_unlocked_fx)) {
       return;
@@ -280,15 +188,7 @@ class cdoor {
     }
   }
 
-  /*
-  	Name: update_use_message
-  	Namespace: cdoor
-  	Checksum: 0x80E55F01
-  	Offset: 0xED0
-  	Size: 0x122
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function update_use_message() {
     if(!(isdefined(m_s_bundle.door_use_trigger) && m_s_bundle.door_use_trigger)) {
       return;
@@ -304,18 +204,10 @@ class cdoor {
     }
   }
 
-  /*
-  	Name: open_internal
-  	Namespace: cdoor
-  	Checksum: 0xD665CD3
-  	Offset: 0xB70
-  	Size: 0x354
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function open_internal() {
     self flag::set("animating");
-    m_e_door notify(# "door_opening");
+    m_e_door notify("door_opening");
     if(isdefined(m_s_bundle.door_start_sound) && m_s_bundle.door_start_sound != "") {
       m_e_door playsound(m_s_bundle.door_start_sound);
     }
@@ -346,28 +238,12 @@ class cdoor {
     update_use_message();
   }
 
-  /*
-  	Name: close
-  	Namespace: cdoor
-  	Checksum: 0xFFD4001C
-  	Offset: 0xB40
-  	Size: 0x24
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function close() {
     self flag::clear("open");
   }
 
-  /*
-  	Name: close_internal
-  	Namespace: cdoor
-  	Checksum: 0x28AEFD97
-  	Offset: 0x7D8
-  	Size: 0x35C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function close_internal() {
     self flag::clear("open");
     set_script_flags(0);
@@ -399,28 +275,12 @@ class cdoor {
     update_use_message();
   }
 
-  /*
-  	Name: open
-  	Namespace: cdoor
-  	Checksum: 0x1735149A
-  	Offset: 0x7A8
-  	Size: 0x24
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function open() {
     self flag::set("open");
   }
 
-  /*
-  	Name: delete_door
-  	Namespace: cdoor
-  	Checksum: 0x1AAC9C86
-  	Offset: 0x748
-  	Size: 0x58
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function delete_door() {
     m_e_door delete();
     m_e_door = undefined;
@@ -430,42 +290,18 @@ class cdoor {
     }
   }
 
-  /*
-  	Name: unlock
-  	Namespace: cdoor
-  	Checksum: 0x2A5369BB
-  	Offset: 0x718
-  	Size: 0x24
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function unlock() {
     self flag::clear("locked");
   }
 
-  /*
-  	Name: lock
-  	Namespace: cdoor
-  	Checksum: 0xB234477B
-  	Offset: 0x6D8
-  	Size: 0x34
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function lock() {
     self flag::set("locked");
     update_use_message();
   }
 
-  /*
-  	Name: init_hint_trigger
-  	Namespace: cdoor
-  	Checksum: 0xEF60C3C9
-  	Offset: 0x4E0
-  	Size: 0x1EC
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function init_hint_trigger() {
     if(m_s_bundle.door_unlock_method == "default" && (!(isdefined(m_s_bundle.door_trigger_at_target) && m_s_bundle.door_trigger_at_target))) {
       return;
@@ -487,15 +323,7 @@ class cdoor {
     thread process_hint_trigger_message();
   }
 
-  /*
-  	Name: get_hack_angles
-  	Namespace: cdoor
-  	Checksum: 0x57820E12
-  	Offset: 0x460
-  	Size: 0x74
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_hack_angles() {
     v_angles = m_e_door.angles;
     if(isdefined(m_str_target)) {
@@ -507,15 +335,7 @@ class cdoor {
     return v_angles;
   }
 
-  /*
-  	Name: get_hack_pos
-  	Namespace: cdoor
-  	Checksum: 0x46E8E6C9
-  	Offset: 0x370
-  	Size: 0xE4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_hack_pos() {
     v_trigger_offset = m_s_bundle.v_trigger_offset;
     v_pos = calculate_offset_position(m_e_door.origin, m_e_door.angles, v_trigger_offset);
@@ -529,15 +349,7 @@ class cdoor {
     return v_pos;
   }
 
-  /*
-  	Name: init_xmodel
-  	Namespace: cdoor
-  	Checksum: 0x69916EA7
-  	Offset: 0x2A8
-  	Size: 0xBC
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function init_xmodel(str_xmodel = "script_origin", connect_paths, v_origin, v_angles) {
     m_e_door = spawn("script_model", v_origin, 1);
     m_e_door setmodel(str_xmodel);
@@ -551,28 +363,10 @@ class cdoor {
 
 #namespace doors;
 
-/*
-	Name: __init__sytem__
-	Namespace: doors
-	Checksum: 0xF1DF7E63
-	Offset: 0x1E28
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("doors", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: doors
-	Checksum: 0x9AE5757F
-	Offset: 0x1E68
-	Size: 0xDA
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   a_doors = struct::get_array("scriptbundle_doors", "classname");
   foreach(s_instance in a_doors) {
@@ -583,15 +377,6 @@ function __init__() {
   }
 }
 
-/*
-	Name: init
-	Namespace: doors
-	Checksum: 0xBDE7E972
-	Offset: 0x1F50
-	Size: 0x5A
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   if(!isdefined(self.angles)) {
     self.angles = (0, 0, 0);
@@ -600,15 +385,6 @@ function init() {
   return setup_door_scriptbundle(s_door_bundle, self);
 }
 
-/*
-	Name: setup_door_scriptbundle
-	Namespace: doors
-	Checksum: 0xD682492C
-	Offset: 0x1FB8
-	Size: 0x768
-	Parameters: 2
-	Flags: Linked
-*/
 function setup_door_scriptbundle(s_door_bundle, s_door_instance) {
   c_door = new cdoor();
   c_door flag::init("locked", 0);
@@ -680,39 +456,20 @@ function setup_door_scriptbundle(s_door_bundle, s_door_instance) {
       level flag::init(str_flag);
     }
   }
-  [
-    [c_door]
-  ] - > init_xmodel(str_door_xmodel, n_door_connect_paths, s_door_instance.origin, s_door_instance.angles);
-  [
-    [c_door]
-  ] - > init_trigger(v_trigger_offset, n_trigger_radius, c_door.m_s_bundle);
-  [
-    [c_door]
-  ] - > init_hint_trigger();
+  [[c_door]] - > init_xmodel(str_door_xmodel, n_door_connect_paths, s_door_instance.origin, s_door_instance.angles);
+  [[c_door]] - > init_trigger(v_trigger_offset, n_trigger_radius, c_door.m_s_bundle);
+  [[c_door]] - > init_hint_trigger();
   thread[[c_door]] - > run_lock_fx();
-  [
-    [c_door]
-  ] - > init_movement(n_slide_up, n_slide_amount);
+  [[c_door]] - > init_movement(n_slide_up, n_slide_amount);
   if(!isdefined(c_door.m_s_bundle.door_open_time)) {
     c_door.m_s_bundle.door_open_time = 0.4;
   }
-  [
-    [c_door]
-  ] - > set_door_paths(n_door_connect_paths);
+  [[c_door]] - > set_door_paths(n_door_connect_paths);
   c_door.m_s_bundle.b_loop_sound = isdefined(c_door.m_s_bundle.door_loop_sound) && c_door.m_s_bundle.door_loop_sound != "";
   level thread door_update(c_door);
   return c_door;
 }
 
-/*
-	Name: door_open_update
-	Namespace: doors
-	Checksum: 0x8243F2C9
-	Offset: 0x2728
-	Size: 0x3C8
-	Parameters: 1
-	Flags: Linked
-*/
 function door_open_update(c_door) {
   str_unlock_method = "default";
   if(isdefined(c_door.m_s_bundle.door_unlock_method)) {
@@ -722,7 +479,7 @@ function door_open_update(c_door) {
   b_hold_open = isdefined(c_door.m_s_bundle.door_use_hold) && c_door.m_s_bundle.door_use_hold;
   b_manual_close = isdefined(c_door.m_s_bundle.door_use_trigger) && c_door.m_s_bundle.door_use_trigger && (isdefined(c_door.m_s_bundle.door_closes) && c_door.m_s_bundle.door_closes);
   while (true) {
-    c_door.m_e_trigger waittill(# "trigger", e_who);
+    c_door.m_e_trigger waittill("trigger", e_who);
     c_door.m_e_trigger_player = e_who;
     if(!c_door flag::get("open")) {
       if(!c_door flag::get("locked")) {
@@ -771,15 +528,6 @@ function door_open_update(c_door) {
   }
 }
 
-/*
-	Name: door_update
-	Namespace: doors
-	Checksum: 0xB03FB4DF
-	Offset: 0x2AF8
-	Size: 0x272
-	Parameters: 1
-	Flags: Linked
-*/
 function door_update(c_door) {
   str_unlock_method = "default";
   if(isdefined(c_door.m_s_bundle.door_unlock_method)) {
@@ -792,16 +540,14 @@ function door_update(c_door) {
     }
   }
   thread door_open_update(c_door);
-  [
-    [c_door]
-  ] - > update_use_message();
+  [[c_door]] - > update_use_message();
   while (true) {
     if(c_door flag::get("locked")) {
       c_door flag::wait_till_clear("locked");
     }
     c_door flag::wait_till("open");
     if(c_door.m_door_open_delay_time > 0) {
-      c_door.m_e_door notify(# "door_waiting_to_open", c_door.m_e_trigger_player);
+      c_door.m_e_door notify("door_waiting_to_open", c_door.m_e_trigger_player);
       wait(c_door.m_door_open_delay_time);
     }
     [
@@ -820,35 +566,17 @@ function door_update(c_door) {
   c_door.m_e_trigger = undefined;
 }
 
-/*
-	Name: door_update_lock_scripted
-	Namespace: doors
-	Checksum: 0xD1A569CD
-	Offset: 0x2D78
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function door_update_lock_scripted(c_door) {
   door_str = c_door.m_str_targetname;
   c_door.m_e_trigger.targetname = door_str + "_trig";
   while (true) {
-    c_door.m_e_trigger waittill(# "unlocked");
+    c_door.m_e_trigger waittill("unlocked");
     [
       [c_door]
     ] - > unlock();
   }
 }
 
-/*
-	Name: player_freeze_in_place
-	Namespace: doors
-	Checksum: 0xFE6C3B34
-	Offset: 0x2E00
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function player_freeze_in_place(b_do_freeze) {
   if(!b_do_freeze) {
     if(isdefined(self.freeze_origin)) {
@@ -864,17 +592,8 @@ function player_freeze_in_place(b_do_freeze) {
   }
 }
 
-/*
-	Name: trigger_wait_until_clear
-	Namespace: doors
-	Checksum: 0xCD587D65
-	Offset: 0x2F28
-	Size: 0xEA
-	Parameters: 1
-	Flags: Linked
-*/
 function trigger_wait_until_clear(c_door) {
-  self endon(# "death");
+  self endon("death");
   last_trigger_time = gettime();
   self.ents_in_trigger = 1;
   str_kill_trigger_notify = "trigger_now_clear";
@@ -894,15 +613,6 @@ function trigger_wait_until_clear(c_door) {
   self notify(str_kill_trigger_notify);
 }
 
-/*
-	Name: door_wait_until_user_release
-	Namespace: doors
-	Checksum: 0x6954BD70
-	Offset: 0x3020
-	Size: 0xF6
-	Parameters: 3
-	Flags: Linked
-*/
 function door_wait_until_user_release(c_door, e_triggerer, str_kill_on_door_notify) {
   if(isdefined(str_kill_on_door_notify)) {
     c_door endon(str_kill_on_door_notify);
@@ -919,15 +629,6 @@ function door_wait_until_user_release(c_door, e_triggerer, str_kill_on_door_noti
   while (b_pressed && n_dist < max_dist_sq);
 }
 
-/*
-	Name: door_wait_until_clear
-	Namespace: doors
-	Checksum: 0x4F1D9DC3
-	Offset: 0x3120
-	Size: 0x214
-	Parameters: 2
-	Flags: Linked
-*/
 function door_wait_until_clear(c_door, e_triggerer) {
   e_trigger = c_door.m_e_trigger;
   e_temp_trigger = undefined;
@@ -951,55 +652,26 @@ function door_wait_until_clear(c_door, e_triggerer) {
   }
 }
 
-/*
-	Name: trigger_check_for_ents_touching
-	Namespace: doors
-	Checksum: 0xEE1AFFA2
-	Offset: 0x3340
-	Size: 0x50
-	Parameters: 1
-	Flags: Linked
-*/
 function trigger_check_for_ents_touching(str_kill_trigger_notify) {
-  self endon(# "death");
+  self endon("death");
   self endon(str_kill_trigger_notify);
   while (true) {
-    self waittill(# "trigger", e_who);
+    self waittill("trigger", e_who);
     self.ents_in_trigger = 1;
   }
 }
 
-/*
-	Name: door_debug_line
-	Namespace: doors
-	Checksum: 0x517BA6BF
-	Offset: 0x3398
-	Size: 0x90
-	Parameters: 1
-	Flags: None
-*/
 function door_debug_line(v_origin) {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     v_start = v_origin;
     v_end = v_start + vectorscale((0, 0, 1), 1000);
     v_col = (0, 0, 1);
-    /#
     line(v_start, v_end, (0, 0, 1));
-    # /
-      wait(0.1);
+    wait(0.1);
   }
 }
 
-/*
-	Name: player_has_key
-	Namespace: doors
-	Checksum: 0xA3E29DB3
-	Offset: 0x3430
-	Size: 0x4E
-	Parameters: 1
-	Flags: Linked
-*/
 function player_has_key(str_key_type) {
   if(!isdefined(self.collectible_keys)) {
     return 0;
@@ -1010,15 +682,6 @@ function player_has_key(str_key_type) {
   return self.collectible_keys[str_key_type].num_keys > 0;
 }
 
-/*
-	Name: player_take_key
-	Namespace: doors
-	Checksum: 0xFF21EF6D
-	Offset: 0x3488
-	Size: 0xBA
-	Parameters: 1
-	Flags: Linked
-*/
 function player_take_key(str_key_type) {
   if(!player_has_key(str_key_type)) {
     return;
@@ -1030,34 +693,16 @@ function player_take_key(str_key_type) {
   }
 }
 
-/*
-	Name: rotate_key_forever
-	Namespace: doors
-	Checksum: 0xE8F7B543
-	Offset: 0x3550
-	Size: 0x40
-	Parameters: 0
-	Flags: Linked
-*/
 function rotate_key_forever() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     self rotateyaw(180, 3);
     wait(2.5);
   }
 }
 
-/*
-	Name: key_process_timeout
-	Namespace: doors
-	Checksum: 0x4A64825A
-	Offset: 0x3598
-	Size: 0x174
-	Parameters: 3
-	Flags: Linked
-*/
 function key_process_timeout(n_timeout_sec, e_trigger, e_model) {
-  e_trigger endon(# "death");
+  e_trigger endon("death");
   if(n_timeout_sec < 5) {
     n_timeout_sec = 5 + 1;
   }
@@ -1078,20 +723,11 @@ function key_process_timeout(n_timeout_sec, e_trigger, e_model) {
     }
     f = f + n_stepsize;
   }
-  level notify(# "key_drop_timeout");
+  level notify("key_drop_timeout");
   e_model delete();
   e_trigger delete();
 }
 
-/*
-	Name: give_ai_key_internal
-	Namespace: doors
-	Checksum: 0x40E6EA88
-	Offset: 0x3718
-	Size: 0x29C
-	Parameters: 2
-	Flags: Linked
-*/
 function give_ai_key_internal(n_timeout_sec, str_key_type) {
   v_pos = self.origin;
   e_model = spawn("script_model", v_pos + vectorscale((0, 0, 1), 80));
@@ -1112,9 +748,9 @@ function give_ai_key_internal(n_timeout_sec, str_key_type) {
   if(isdefined(n_timeout_sec)) {
     level thread key_process_timeout(n_timeout_sec, e_trigger, e_model);
   }
-  e_trigger endon(# "death");
+  e_trigger endon("death");
   while (true) {
-    e_trigger waittill(# "trigger", e_who);
+    e_trigger waittill("trigger", e_who);
     if(isplayer(e_who)) {
       e_who give_player_key(str_key_type);
       break;
@@ -1124,38 +760,16 @@ function give_ai_key_internal(n_timeout_sec, str_key_type) {
   e_trigger delete();
 }
 
-/*
-	Name: give_ai_key
-	Namespace: doors
-	Checksum: 0xF57CC901
-	Offset: 0x39C0
-	Size: 0x84
-	Parameters: 2
-	Flags: None
-*/
 function give_ai_key(n_timeout_sec = undefined, str_key_type = "door") {
-  /#
   assert(isdefined(level.door_key_model), "");
-  # /
-    self thread give_ai_key_internal(n_timeout_sec, str_key_type);
+  self thread give_ai_key_internal(n_timeout_sec, str_key_type);
 }
 
-/*
-	Name: give_player_key
-	Namespace: doors
-	Checksum: 0x230F1AD7
-	Offset: 0x3A50
-	Size: 0x210
-	Parameters: 1
-	Flags: Linked
-*/
 function give_player_key(str_key_type = "door") {
-  /#
   assert(isdefined(level.door_key_icon), "");
-  # /
-    if(!isdefined(self.collectible_keys)) {
-      self.collectible_keys = [];
-    }
+  if(!isdefined(self.collectible_keys)) {
+    self.collectible_keys = [];
+  }
   if(!isdefined(self.collectible_keys[str_key_type])) {
     self.collectible_keys[str_key_type] = spawnstruct();
     self.collectible_keys[str_key_type].num_keys = 0;
@@ -1178,15 +792,6 @@ function give_player_key(str_key_type = "door") {
   self.collectible_keys[str_key_type].num_keys++;
 }
 
-/*
-	Name: unlock_all
-	Namespace: doors
-	Checksum: 0xBBF92A43
-	Offset: 0x3C68
-	Size: 0x10E
-	Parameters: 1
-	Flags: None
-*/
 function unlock_all(b_do_open = 1) {
   a_s_inst_list = struct::get_array("scriptbundle_doors", "classname");
   foreach(s_inst in a_s_inst_list) {
@@ -1204,15 +809,6 @@ function unlock_all(b_do_open = 1) {
   }
 }
 
-/*
-	Name: unlock
-	Namespace: doors
-	Checksum: 0x5DAE71B2
-	Offset: 0x3D80
-	Size: 0x12A
-	Parameters: 3
-	Flags: None
-*/
 function unlock(str_name, str_name_type = "targetname", b_do_open = 1) {
   a_s_inst_list = struct::get_array(str_name, str_name_type);
   foreach(s_inst in a_s_inst_list) {

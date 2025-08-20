@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_ai_mechz_claw.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\_burnplayer;
 #using scripts\shared\aat_shared;
@@ -36,33 +40,13 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weap_riotshield;
 #using scripts\zm\_zm_zonemgr;
-
 #using_animtree("mechz_claw");
-
 #namespace zm_ai_mechz_claw;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x9EC616A5
-	Offset: 0x8A0
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_ai_mechz_claw", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x31EF4976
-	Offset: 0x8E8
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   function_f20c04a4();
   spawner::add_archetype_spawn_function("mechz", & function_1aacf7d4);
@@ -78,26 +62,8 @@ function __init__() {
   clientfield::register("toplayer", "mechz_grab", 21000, 1, "int");
 }
 
-/*
-	Name: __main__
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x99EC1590
-	Offset: 0xA80
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private __main__() {}
 
-/*
-	Name: function_f20c04a4
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xFBFB3FD1
-	Offset: 0xA90
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_f20c04a4() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("zmMechzShouldShootClaw", & function_bdc90f38);
   behaviortreenetworkutility::registerbehaviortreeaction("zmMechzShootClawAction", & function_86ac6346, & function_a94df749, & function_1b118e5);
@@ -109,15 +75,6 @@ function private function_f20c04a4() {
   animationstatenetwork::registernotetrackhandlerfunction("stop_ft", & function_235008e3);
 }
 
-/*
-	Name: function_bdc90f38
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x907B18C3
-	Offset: 0xC00
-	Size: 0x2B2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_bdc90f38(entity) {
   if(!isdefined(entity.favoriteenemy)) {
     return false;
@@ -154,15 +111,6 @@ function private function_bdc90f38(entity) {
   }
 }
 
-/*
-	Name: player_can_be_grabbed
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xB0E1850E
-	Offset: 0xEC0
-	Size: 0x4E
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private player_can_be_grabbed() {
   if(self getstance() == "prone") {
     return false;
@@ -173,30 +121,12 @@ function private player_can_be_grabbed() {
   return true;
 }
 
-/*
-	Name: function_86ac6346
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x352735E5
-	Offset: 0xF18
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_86ac6346(entity, asmstatename) {
   animationstatenetworkutility::requeststate(entity, asmstatename);
   function_456e76fa(entity);
   return 5;
 }
 
-/*
-	Name: function_a94df749
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xFFB16407
-	Offset: 0xF68
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_a94df749(entity, asmstatename) {
   if(!(isdefined(entity.var_7bee990f) && entity.var_7bee990f)) {
     return 4;
@@ -204,64 +134,19 @@ function private function_a94df749(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: function_1b118e5
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x9CF512EF
-	Offset: 0xFB8
-	Size: 0x18
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_1b118e5(entity, asmstatename) {
   return 4;
 }
 
-/*
-	Name: function_456e76fa
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xA327E930
-	Offset: 0xFD8
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_456e76fa(entity) {
   self thread function_31c4b972();
   level flag::set("mechz_launching_claw");
 }
 
-/*
-	Name: function_a844c266
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x2FFBD5C6
-	Offset: 0x1028
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_a844c266(entity) {}
 
-/*
-	Name: function_75278fab
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x5B9513E3
-	Offset: 0x1040
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_75278fab(entity) {}
 
-/*
-	Name: function_de3abdba
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x8D09ACA8
-	Offset: 0x1058
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_de3abdba(entity) {
   self.var_7bee990f = 1;
   self.last_claw_time = gettime();
@@ -270,34 +155,16 @@ function private function_de3abdba(entity) {
   self.last_claw_time = gettime();
 }
 
-/*
-	Name: function_48c03479
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x4E70C510
-	Offset: 0x10C0
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_48c03479(entity) {
-  entity notify(# "hash_8225d137");
+  entity notify("hash_8225d137");
   entity clientfield::set("mechz_ft", 1);
   entity.isshootingflame = 1;
   entity thread function_fa513ca0();
 }
 
-/*
-	Name: function_fa513ca0
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xC2AC5BEF
-	Offset: 0x1130
-	Size: 0x118
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_fa513ca0() {
-  self endon(# "death");
-  self endon(# "hash_8225d137");
+  self endon("death");
+  self endon("hash_8225d137");
   while (true) {
     players = getplayers();
     foreach(player in players) {
@@ -311,32 +178,14 @@ function private function_fa513ca0() {
   }
 }
 
-/*
-	Name: function_235008e3
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xFF08A825
-	Offset: 0x1250
-	Size: 0x72
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_235008e3(entity) {
-  entity notify(# "hash_8225d137");
+  entity notify("hash_8225d137");
   entity clientfield::set("mechz_ft", 0);
   entity.isshootingflame = 0;
   entity.nextflametime = gettime() + 7500;
   entity.stopshootingflametime = undefined;
 }
 
-/*
-	Name: function_1aacf7d4
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xD1A9ED74
-	Offset: 0x12D0
-	Size: 0x2EC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_1aacf7d4() {
   if(isdefined(self.m_claw)) {
     self.m_claw delete();
@@ -371,20 +220,11 @@ function private function_1aacf7d4() {
   self hidepart("tag_claw");
 }
 
-/*
-	Name: function_5dfc412a
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x34E549BA
-	Offset: 0x15C8
-	Size: 0x166
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_5dfc412a() {
-  self endon(# "death");
-  self.m_claw_damage_trigger endon(# "death");
+  self endon("death");
+  self.m_claw_damage_trigger endon("death");
   while (true) {
-    self.m_claw_damage_trigger waittill(# "damage", amount, inflictor, direction, point, type, tagname, modelname, partname, weaponname, idflags);
+    self.m_claw_damage_trigger waittill("damage", amount, inflictor, direction, point, type, tagname, modelname, partname, weaponname, idflags);
     self.m_claw_damage_trigger.health = 10000;
     if(self.m_claw islinkedto(self)) {
       continue;
@@ -392,35 +232,17 @@ function private function_5dfc412a() {
     if(zm_utility::is_player_valid(inflictor)) {
       self dodamage(1, inflictor.origin, inflictor, inflictor, "left_hand", type);
       self.m_claw setcandamage(0);
-      self notify(# "claw_damaged");
+      self notify("claw_damaged");
     }
   }
 }
 
-/*
-	Name: function_31c4b972
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x4AB73000
-	Offset: 0x1738
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_31c4b972() {
-  self endon(# "claw_complete");
+  self endon("claw_complete");
   self util::waittill_either("death", "kill_claw");
   self function_90832db7();
 }
 
-/*
-	Name: function_90832db7
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x3488FB5D
-	Offset: 0x1790
-	Size: 0x3C4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_90832db7() {
   self.fx_field = self.fx_field & (~256);
   self.fx_field = self.fx_field & (~64);
@@ -443,7 +265,7 @@ function private function_90832db7() {
         n_time = n_dist / 1000;
         self.m_claw moveto(v_claw_origin, max(0.05, n_time));
         self.m_claw playloopsound("zmb_ai_mechz_claw_loop_in", 0.1);
-        self.m_claw waittill(# "movedone");
+        self.m_claw waittill("movedone");
         v_claw_origin = self gettagorigin("tag_claw");
         v_claw_angles = self gettagangles("tag_claw");
         self.m_claw playsound("zmb_ai_mechz_claw_back");
@@ -456,19 +278,10 @@ function private function_90832db7() {
       self.m_claw setanim( % mechz_claw::ai_zombie_mech_grapple_arm_closed_idle, 1, 0.2, 1);
     }
   }
-  self notify(# "claw_complete");
+  self notify("claw_complete");
   self.var_7bee990f = 0;
 }
 
-/*
-	Name: function_4208b4ec
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xC95B0CC8
-	Offset: 0x1B60
-	Size: 0x136
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_4208b4ec() {
   if(isdefined(self.m_claw)) {
     self.m_claw setanim( % mechz_claw::ai_zombie_mech_grapple_arm_open_idle, 1, 0.2, 1);
@@ -487,29 +300,11 @@ function private function_4208b4ec() {
   }
 }
 
-/*
-	Name: function_36db86b
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x170A4A0C
-	Offset: 0x1CA0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_36db86b() {
   wait(30);
   self delete();
 }
 
-/*
-	Name: function_9bfd96c8
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x3726CB94
-	Offset: 0x1CC8
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_9bfd96c8(bopenclaw) {
   self.explosive_dmg_taken_on_grab_start = undefined;
   if(isdefined(self.e_grabbed)) {
@@ -532,15 +327,6 @@ function private function_9bfd96c8(bopenclaw) {
   }
 }
 
-/*
-	Name: function_7c33f4fb
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x821DF5F5
-	Offset: 0x1EB0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_7c33f4fb() {
   if(!isdefined(self.explosive_dmg_taken)) {
     self.explosive_dmg_taken = 0;
@@ -548,31 +334,13 @@ function private function_7c33f4fb() {
   self.explosive_dmg_taken_on_grab_start = self.explosive_dmg_taken;
 }
 
-/*
-	Name: function_d6f31ed2
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x941D14BB
-	Offset: 0x1EE8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_d6f31ed2() {
   self mechzserverutils::hide_part("tag_claw");
   self.m_claw hide();
 }
 
-/*
-	Name: function_5f5eaf3a
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xA7799255
-	Offset: 0x1F30
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_5f5eaf3a(ai_mechz) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self zm_audio::create_and_play_dialog("general", "mech_grab");
   while (isdefined(self) && (isdefined(self.isspeaking) && self.isspeaking)) {
     wait(0.1);
@@ -583,17 +351,8 @@ function private function_5f5eaf3a(ai_mechz) {
   }
 }
 
-/*
-	Name: play_shoot_arm_hint_vo
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xBA759057
-	Offset: 0x1FE8
-	Size: 0x188
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private play_shoot_arm_hint_vo() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     if(!isdefined(self.e_grabbed)) {
       return;
@@ -616,30 +375,12 @@ function private play_shoot_arm_hint_vo() {
   }
 }
 
-/*
-	Name: function_671deda5
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x75701F2F
-	Offset: 0x2178
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_671deda5() {
   if(isdefined(self.e_grabbed)) {
     self thread function_9bfd96c8(1);
   }
 }
 
-/*
-	Name: function_6028875a
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x34B66BA7
-	Offset: 0x21B0
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_6028875a() {
   if(isdefined(self.explosive_dmg_taken_on_grab_start)) {
     if(isdefined(self.e_grabbed) && (self.explosive_dmg_taken - self.explosive_dmg_taken_on_grab_start) > self.mechz_explosive_dmg_to_cancel_claw) {
@@ -649,21 +390,12 @@ function private function_6028875a() {
   }
 }
 
-/*
-	Name: function_8b0a73b5
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x169F6E1E
-	Offset: 0x2218
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_8b0a73b5(mechz) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  mechz endon(# "death");
-  mechz endon(# "claw_complete");
-  mechz endon(# "kill_claw");
+  self endon("death");
+  self endon("disconnect");
+  mechz endon("death");
+  mechz endon("claw_complete");
+  mechz endon("kill_claw");
   while (true) {
     if(isdefined(self) && self laststand::player_is_in_laststand()) {
       mechz thread function_9bfd96c8();
@@ -673,23 +405,14 @@ function private function_8b0a73b5(mechz) {
   }
 }
 
-/*
-	Name: function_bed84b4
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xE32C1EFF
-	Offset: 0x22B8
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_bed84b4(mechz) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  mechz endon(# "death");
-  mechz endon(# "claw_complete");
-  mechz endon(# "kill_claw");
+  self endon("death");
+  self endon("disconnect");
+  mechz endon("death");
+  mechz endon("claw_complete");
+  mechz endon("kill_claw");
   while (true) {
-    self waittill(# "bgb_activation_request");
+    self waittill("bgb_activation_request");
     if(isdefined(self) && self.bgb === "zm_bgb_anywhere_but_here") {
       mechz thread function_9bfd96c8();
       return;
@@ -697,40 +420,22 @@ function private function_bed84b4(mechz) {
   }
 }
 
-/*
-	Name: function_38d105a4
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xF69E84FF
-	Offset: 0x2358
-	Size: 0x7A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_38d105a4(mechz) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  mechz endon(# "death");
-  mechz endon(# "claw_complete");
-  mechz endon(# "kill_claw");
+  self endon("death");
+  self endon("disconnect");
+  mechz endon("death");
+  mechz endon("claw_complete");
+  mechz endon("kill_claw");
   if(1) {
-    self waittill(# "hash_e2be4752");
+    self waittill("hash_e2be4752");
     mechz thread function_9bfd96c8();
     return;
   }
 }
 
-/*
-	Name: function_672f9804
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xF302A04C
-	Offset: 0x23E0
-	Size: 0xE4C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_672f9804() {
-  self endon(# "death");
-  self endon(# "kill_claw");
+  self endon("death");
+  self endon("kill_claw");
   if(!isdefined(self.favoriteenemy)) {
     return;
   }
@@ -824,7 +529,7 @@ function private function_672f9804() {
   v_claw_angles = self gettagangles("tag_claw");
   self.m_claw moveto(v_claw_origin, max(0.05, n_time));
   self.m_claw playloopsound("zmb_ai_mechz_claw_loop_in", 0.1);
-  self.m_claw waittill(# "movedone");
+  self.m_claw waittill("movedone");
   v_claw_origin = self gettagorigin("tag_claw");
   v_claw_angles = self gettagangles("tag_claw");
   self.m_claw playsound("zmb_ai_mechz_claw_back");
@@ -856,100 +561,55 @@ function private function_672f9804() {
   level flag::clear("mechz_claw_move_complete");
 }
 
-/*
-	Name: function_eb9df173
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x96078390
-	Offset: 0x3238
-	Size: 0x1AA
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_eb9df173(player) {
-  player endon(# "death");
-  player endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "claw_complete");
-  self endon(# "kill_claw");
+  player endon("death");
+  player endon("disconnect");
+  self endon("death");
+  self endon("claw_complete");
+  self endon("kill_claw");
   self thread function_7792d05e(player);
   player thread function_d0e280a0(self);
   self.m_claw setcandamage(1);
   while (isdefined(self.e_grabbed)) {
-    self.m_claw waittill(# "damage", amount, inflictor, direction, point, type, tagname, modelname, partname, weaponname, idflags);
+    self.m_claw waittill("damage", amount, inflictor, direction, point, type, tagname, modelname, partname, weaponname, idflags);
     if(zm_utility::is_player_valid(inflictor)) {
       self dodamage(1, inflictor.origin, inflictor, inflictor, "left_hand", type);
       self.m_claw setcandamage(0);
-      self notify(# "claw_damaged");
+      self notify("claw_damaged");
       break;
     }
   }
 }
 
-/*
-	Name: function_7792d05e
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xD27C5750
-	Offset: 0x33F0
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_7792d05e(player) {
-  self endon(# "claw_damaged");
-  player endon(# "death");
-  player endon(# "disconnect");
+  self endon("claw_damaged");
+  player endon("death");
+  player endon("disconnect");
   self util::waittill_any("death", "claw_complete", "kill_claw");
   if(isdefined(self) && isdefined(self.m_claw)) {
     self.m_claw setcandamage(0);
   }
 }
 
-/*
-	Name: function_d0e280a0
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xBB4AC903
-	Offset: 0x3488
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_d0e280a0(mechz) {
-  mechz endon(# "claw_damaged");
-  mechz endon(# "death");
-  mechz endon(# "claw_complete");
-  mechz endon(# "kill_claw");
+  mechz endon("claw_damaged");
+  mechz endon("death");
+  mechz endon("claw_complete");
+  mechz endon("kill_claw");
   self util::waittill_any("death", "disconnect");
   if(isdefined(mechz) && isdefined(mechz.m_claw)) {
     mechz.m_claw setcandamage(0);
   }
 }
 
-/*
-	Name: function_2998f2a1
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0x7FDF7C4B
-	Offset: 0x3538
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_2998f2a1() {
-  self waittill(# "movedone");
+  self waittill("movedone");
   wait(0.05);
   level flag::set("mechz_claw_move_complete");
 }
 
-/*
-	Name: function_860f0461
-	Namespace: zm_ai_mechz_claw
-	Checksum: 0xB7441423
-	Offset: 0x3578
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_860f0461(mechz) {
-  mechz waittillmatch(# "flamethrower_anim");
+  mechz waittillmatch("flamethrower_anim");
   if(isalive(self)) {
     self dodamage(self.health, self.origin, self);
     self zombie_utility::gib_random_parts();

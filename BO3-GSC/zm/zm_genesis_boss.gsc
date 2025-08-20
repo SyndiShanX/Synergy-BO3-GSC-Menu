@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_boss.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\margwa;
 #using scripts\shared\ai\zombie_death;
@@ -39,84 +43,31 @@
 #using scripts\zm\zm_genesis_spiders;
 #using scripts\zm\zm_genesis_util;
 #using scripts\zm\zm_genesis_wasp;
-
 #using_animtree("generic");
-
 #namespace zm_genesis_boss;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_genesis_boss
-	Checksum: 0x292CB0DB
-	Offset: 0x5D8
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_boss", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_genesis_boss
-	Checksum: 0xAC8F5A80
-	Offset: 0x620
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "boss_clone_fx", 15000, getminbitcountfornum(3), "int");
   clientfield::register("world", "sophia_state", 15000, getminbitcountfornum(4), "int");
   clientfield::register("world", "boss_beam_state", 15000, 1, "int");
-  /#
   if(getdvarint("") > 0) {
     level thread function_7a5b2191();
   }
-  # /
 }
 
-/*
-	Name: __main__
-	Namespace: zm_genesis_boss
-	Checksum: 0x79BF1C3F
-	Offset: 0x718
-	Size: 0xC
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   wait(0.1);
 }
 
-/*
-	Name: function_7a5b2191
-	Namespace: zm_genesis_boss
-	Checksum: 0x80E6D00F
-	Offset: 0x730
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7a5b2191() {
-  /#
   level thread zm_genesis_util::setup_devgui_func("", "", 0, & function_92d90d50);
   level thread zm_genesis_util::setup_devgui_func("", "", 2, & function_92d90d50);
-  # /
 }
 
-/*
-	Name: function_92d90d50
-	Namespace: zm_genesis_boss
-	Checksum: 0x68A5BA7
-	Offset: 0x7B0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function function_92d90d50(n_val) {
-  /#
   level thread clientfield::set("", n_val);
-  # /
 }

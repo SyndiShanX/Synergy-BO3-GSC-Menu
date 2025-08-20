@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\bonuszm\_bonuszm_util.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_load;
 #using scripts\cp\_oed;
@@ -44,18 +48,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\weapons_shared;
-
 #namespace namespace_37cacec1;
 
-/*
-	Name: function_5e408c24
-	Namespace: namespace_37cacec1
-	Checksum: 0x872C3364
-	Offset: 0xAA0
-	Size: 0x17C
-	Parameters: 4
-	Flags: Linked
-*/
 function function_5e408c24(origin, region, minradius, maxradius) {
   nodes = getnodesinradius(origin, maxradius, minradius);
   var_54f3a637 = [];
@@ -73,20 +67,9 @@ function function_5e408c24(origin, region, minradius, maxradius) {
   return gotonode;
 }
 
-/*
-	Name: function_165bd27a
-	Namespace: namespace_37cacec1
-	Checksum: 0x381DC3F
-	Offset: 0xC28
-	Size: 0x132
-	Parameters: 1
-	Flags: Linked
-*/
 function function_165bd27a(health) {
-  /#
   assert(isdefined(health));
-  # /
-    scalar = 1;
+  scalar = 1;
   if(isdefined(level.currentdifficulty)) {
     switch (level.currentdifficulty) {
       case "easy": {
@@ -114,15 +97,6 @@ function function_165bd27a(health) {
   return int(health * scalar);
 }
 
-/*
-	Name: function_5f2c4513
-	Namespace: namespace_37cacec1
-	Checksum: 0x856E1F27
-	Offset: 0xD68
-	Size: 0x11A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5f2c4513() {
   scalar = 1;
   if(isdefined(level.activeplayers)) {
@@ -145,21 +119,10 @@ function function_5f2c4513() {
       }
     }
   }
-  /#
   assert(isdefined(level.var_a9e78bf7[""]));
-  # /
-    return int(level.var_a9e78bf7["extraspawns"] * scalar);
+  return int(level.var_a9e78bf7["extraspawns"] * scalar);
 }
 
-/*
-	Name: function_9cb5d4c9
-	Namespace: namespace_37cacec1
-	Checksum: 0x39A40085
-	Offset: 0xE90
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9cb5d4c9() {
   level.var_3a7fa0a9 = [];
   array::add(level.var_3a7fa0a9, "cin_gen_traversal_zipline_enemy01_attach");
@@ -177,15 +140,6 @@ function function_9cb5d4c9() {
   array::add(level.var_3a7fa0a9, "ch_sgen_18_01_pallasfight_aie_jumpdown_robot01");
 }
 
-/*
-	Name: function_51828ce6
-	Namespace: namespace_37cacec1
-	Checksum: 0x644B23EF
-	Offset: 0x1050
-	Size: 0xFE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_51828ce6() {
   if(!self isinscriptedstate()) {
     return false;
@@ -205,29 +159,11 @@ function function_51828ce6() {
   return false;
 }
 
-/*
-	Name: function_ce6a97e6
-	Namespace: namespace_37cacec1
-	Checksum: 0xC9CE7BEB
-	Offset: 0x1158
-	Size: 0x5A
-	Parameters: 0
-	Flags: None
-*/
 function function_ce6a97e6() {
   mapname = getdvarstring("mapname");
   return self getdstat("PlayerStatsByMap", mapname + "_nightmares", "hasBeenCompleted");
 }
 
-/*
-	Name: function_d68296ac
-	Namespace: namespace_37cacec1
-	Checksum: 0xD5F288A6
-	Offset: 0x11C0
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d68296ac() {
   mapname = getdvarstring("mapname");
   if(mapname == "cp_mi_eth_prologue") {
@@ -243,15 +179,6 @@ function function_d68296ac() {
   }
 }
 
-/*
-	Name: function_ec036ed3
-	Namespace: namespace_37cacec1
-	Checksum: 0xB4902CEF
-	Offset: 0x12B8
-	Size: 0x680
-	Parameters: 3
-	Flags: Linked
-*/
 function function_ec036ed3(var_28b84d73, var_14e6a7e9, var_df4e4d0f) {
   if(!isdefined(level.var_5e64ddb4)) {
     level.var_5e64ddb4 = [];
@@ -289,26 +216,18 @@ function function_ec036ed3(var_28b84d73, var_14e6a7e9, var_df4e4d0f) {
         var_59b020a9 = data;
       }
       if(data.score > var_59b020a9.score) {
-        /#
         record3dtext(((((((((("" + data.score) + "") + var_dcf3b4e8) + "") + var_8fb5ce54) + "") + var_6a9c89c0) + "") + var_77f56330) + "", data.origin, (0, 0, 1), "");
-        # /
-          var_59b020a9 = data;
+        var_59b020a9 = data;
         continue;
       }
-      /#
       record3dtext(((((((((("" + data.score) + "") + var_dcf3b4e8) + "") + var_8fb5ce54) + "") + var_6a9c89c0) + "") + var_77f56330) + "", data.origin, (1, 0, 0), "");
-      # /
     }
   }
-  /#
   function_4d084a77();
-  # /
-    if(isdefined(var_59b020a9)) {
-      /#
-      record3dtext("" + var_59b020a9.score, var_59b020a9.origin + vectorscale((0, 0, 1), 20), (0, 1, 0), "");
-      # /
-        var_42322402 = var_59b020a9.origin;
-    }
+  if(isdefined(var_59b020a9)) {
+    record3dtext("" + var_59b020a9.score, var_59b020a9.origin + vectorscale((0, 0, 1), 20), (0, 1, 0), "");
+    var_42322402 = var_59b020a9.origin;
+  }
   if(!isdefined(var_42322402)) {
     gotonode = function_5e408c24(var_14e6a7e9, var_df4e4d0f, 100, randomintrange(600, 1000));
     if(isdefined(gotonode)) {
@@ -326,15 +245,6 @@ function function_ec036ed3(var_28b84d73, var_14e6a7e9, var_df4e4d0f) {
   return var_42322402;
 }
 
-/*
-	Name: function_1f637867
-	Namespace: namespace_37cacec1
-	Checksum: 0xD678897
-	Offset: 0x1940
-	Size: 0x164
-	Parameters: 3
-	Flags: Linked
-*/
 function function_1f637867(var_28b84d73, closestplayer, data) {
   score = 0;
   foreach(player in level.activeplayers) {
@@ -348,15 +258,6 @@ function function_1f637867(var_28b84d73, closestplayer, data) {
   return score;
 }
 
-/*
-	Name: function_ae0beba6
-	Namespace: namespace_37cacec1
-	Checksum: 0xC5CEDEFE
-	Offset: 0x1AB0
-	Size: 0x1B4
-	Parameters: 3
-	Flags: Linked
-*/
 function function_ae0beba6(var_28b84d73, closestplayer, data) {
   score = 0;
   var_4d45bcdc = 0;
@@ -372,35 +273,15 @@ function function_ae0beba6(var_28b84d73, closestplayer, data) {
   return score;
 }
 
-/*
-	Name: function_d789e857
-	Namespace: namespace_37cacec1
-	Checksum: 0x3ADBC828
-	Offset: 0x1C70
-	Size: 0x82
-	Parameters: 3
-	Flags: Linked
-*/
 function function_d789e857(var_28b84d73, closestplayer, data) {
-  /#
   assert(isdefined(var_28b84d73));
-  # /
-    score = 1;
+  score = 1;
   if(var_28b84d73 isposinclaimedlocation(data.origin)) {
     score = 0;
   }
   return score;
 }
 
-/*
-	Name: function_fb8e7615
-	Namespace: namespace_37cacec1
-	Checksum: 0x33A2CD6
-	Offset: 0x1D00
-	Size: 0x112
-	Parameters: 3
-	Flags: Linked
-*/
 function function_fb8e7615(var_28b84d73, closestplayer, data) {
   score = 0;
   foreach(location in level.var_5e64ddb4) {
@@ -412,19 +293,8 @@ function function_fb8e7615(var_28b84d73, closestplayer, data) {
   return score;
 }
 
-/*
-	Name: function_4d084a77
-	Namespace: namespace_37cacec1
-	Checksum: 0x14E4B0C7
-	Offset: 0x1E20
-	Size: 0x9A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4d084a77() {
-  /#
   foreach(location in level.var_5e64ddb4) {
     recordsphere(location, 4, (1, 1, 0), "");
   }
-  # /
 }

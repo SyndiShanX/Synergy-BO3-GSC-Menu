@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_hackables_wallbuys.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_equip_hacker;
-
 #namespace zm_hackables_wallbuys;
 
-/*
-	Name: hack_wallbuys
-	Namespace: zm_hackables_wallbuys
-	Checksum: 0xDA2B6FAF
-	Offset: 0x180
-	Size: 0x224
-	Parameters: 0
-	Flags: Linked
-*/
 function hack_wallbuys() {
   weapon_spawns = struct::get_array("weapon_upgrade", "targetname");
   for (i = 0; i < weapon_spawns.size; i++) {
@@ -45,15 +39,6 @@ function hack_wallbuys() {
   array::thread_all(bowie_triggers, & zm_equip_hacker::hide_hint_when_hackers_active);
 }
 
-/*
-	Name: wallbuy_hack
-	Namespace: zm_hackables_wallbuys
-	Checksum: 0x961C1C94
-	Offset: 0x3B0
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function wallbuy_hack(hacker) {
   self.wallbuy.trigger_stub.hacked = 1;
   self.clientfieldname = (self.wallbuy.zombie_weapon_upgrade + "_") + self.origin;

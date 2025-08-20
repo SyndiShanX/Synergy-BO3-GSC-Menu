@@ -1,19 +1,13 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\systems\fx_character.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\destructible_character;
 #using scripts\shared\ai\systems\gib;
-
 #namespace fx_character;
 
-/*
-	Name: main
-	Namespace: fx_character
-	Checksum: 0xBEA295CF
-	Offset: 0x168
-	Size: 0x2D6
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   fxbundles = struct::get_script_bundles("fxcharacterdef");
   processedfxbundles = [];
@@ -40,15 +34,6 @@ function autoexec main() {
 
 #namespace fxclientutils;
 
-/*
-	Name: _configentity
-	Namespace: fxclientutils
-	Checksum: 0xD069E952
-	Offset: 0x448
-	Size: 0x156
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _configentity(localclientnum, entity) {
   if(!isdefined(entity._fxcharacter)) {
     entity._fxcharacter = [];
@@ -62,15 +47,6 @@ function private _configentity(localclientnum, entity) {
   }
 }
 
-/*
-	Name: _destructhandler
-	Namespace: fxclientutils
-	Checksum: 0xEDC6AABF
-	Offset: 0x5A8
-	Size: 0x166
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _destructhandler(localclientnum, entity, piecenumber) {
   if(!isdefined(entity._fxcharacter)) {
     return;
@@ -86,15 +62,6 @@ function private _destructhandler(localclientnum, entity, piecenumber) {
   }
 }
 
-/*
-	Name: _gibhandler
-	Namespace: fxclientutils
-	Checksum: 0xA16325FF
-	Offset: 0x718
-	Size: 0x166
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _gibhandler(localclientnum, entity, gibflag) {
   if(!isdefined(entity._fxcharacter)) {
     return;
@@ -110,15 +77,6 @@ function private _gibhandler(localclientnum, entity, gibflag) {
   }
 }
 
-/*
-	Name: _gibpartnametogibflag
-	Namespace: fxclientutils
-	Checksum: 0xB67E2208
-	Offset: 0x888
-	Size: 0x6E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _gibpartnametogibflag(gibpartname) {
   if(isdefined(gibpartname)) {
     switch (gibpartname) {
@@ -141,15 +99,6 @@ function private _gibpartnametogibflag(gibpartname) {
   }
 }
 
-/*
-	Name: _isgibbed
-	Namespace: fxclientutils
-	Checksum: 0x9C83D894
-	Offset: 0x900
-	Size: 0x4A
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _isgibbed(localclientnum, entity, stopongibflag) {
   if(!isdefined(stopongibflag)) {
     return 0;
@@ -157,15 +106,6 @@ function private _isgibbed(localclientnum, entity, stopongibflag) {
   return gibclientutils::isgibbed(localclientnum, entity, stopongibflag);
 }
 
-/*
-	Name: _ispiecedestructed
-	Namespace: fxclientutils
-	Checksum: 0x4227EFD6
-	Offset: 0x958
-	Size: 0x4A
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _ispiecedestructed(localclientnum, entity, stoponpiecedestroyed) {
   if(!isdefined(stoponpiecedestroyed)) {
     return 0;
@@ -173,15 +113,6 @@ function private _ispiecedestructed(localclientnum, entity, stoponpiecedestroyed
   return destructclientutils::ispiecedestructed(localclientnum, entity, stoponpiecedestroyed);
 }
 
-/*
-	Name: _shouldplayfx
-	Namespace: fxclientutils
-	Checksum: 0x53BF3B0A
-	Offset: 0x9B0
-	Size: 0x7E
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _shouldplayfx(localclientnum, entity, fxstruct) {
   if(_isgibbed(localclientnum, entity, fxstruct.stopongib)) {
     return false;
@@ -192,15 +123,6 @@ function private _shouldplayfx(localclientnum, entity, fxstruct) {
   return true;
 }
 
-/*
-	Name: playfxbundle
-	Namespace: fxclientutils
-	Checksum: 0x72DD5148
-	Offset: 0xA38
-	Size: 0x18E
-	Parameters: 3
-	Flags: Linked
-*/
 function playfxbundle(localclientnum, entity, fxscriptbundle) {
   if(!isdefined(fxscriptbundle)) {
     return;
@@ -224,15 +146,6 @@ function playfxbundle(localclientnum, entity, fxscriptbundle) {
   }
 }
 
-/*
-	Name: stopallfxbundles
-	Namespace: fxclientutils
-	Checksum: 0x9B874D97
-	Offset: 0xBD0
-	Size: 0x14A
-	Parameters: 2
-	Flags: Linked
-*/
 function stopallfxbundles(localclientnum, entity) {
   _configentity(localclientnum, entity);
   fxbundlenames = [];
@@ -244,15 +157,6 @@ function stopallfxbundles(localclientnum, entity) {
   }
 }
 
-/*
-	Name: stopfxbundle
-	Namespace: fxclientutils
-	Checksum: 0xB0508C91
-	Offset: 0xD28
-	Size: 0x154
-	Parameters: 3
-	Flags: Linked
-*/
 function stopfxbundle(localclientnum, entity, fxscriptbundle) {
   if(!isdefined(fxscriptbundle)) {
     return;

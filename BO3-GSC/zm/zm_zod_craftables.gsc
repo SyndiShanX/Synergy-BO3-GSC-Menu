@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_craftables.gsc
+*************************************************/
+
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -17,29 +21,10 @@
 #using scripts\zm\zm_zod_quest;
 #using scripts\zm\zm_zod_util;
 #using scripts\zm\zm_zod_vo;
-
 #namespace zm_zod_craftables;
 
-/*
-	Name: randomize_craftable_spawns
-	Namespace: zm_zod_craftables
-	Checksum: 0x99EC1590
-	Offset: 0xB48
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function randomize_craftable_spawns() {}
 
-/*
-	Name: include_craftables
-	Namespace: zm_zod_craftables
-	Checksum: 0x1F7879F7
-	Offset: 0xB58
-	Size: 0x12EC
-	Parameters: 0
-	Flags: Linked
-*/
 function include_craftables() {
   level.craftable_piece_swap_allowed = 0;
   shared_pieces = getnumexpectedplayers() == 1;
@@ -185,15 +170,6 @@ function include_craftables() {
   level flag::init("relic_magician" + "_found");
 }
 
-/*
-	Name: init_craftables
-	Namespace: zm_zod_craftables
-	Checksum: 0x7E82C3F1
-	Offset: 0x1E50
-	Size: 0x32C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_craftables() {
   level.custom_craftable_validation = & zod_player_can_craft;
   register_clientfields();
@@ -215,15 +191,6 @@ function init_craftables() {
   zm_craftables::set_build_time("ritual_pap", 0);
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_zod_craftables
-	Checksum: 0x643FD861
-	Offset: 0x2188
-	Size: 0x624
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   shared_bits = 1;
   registerclientfield("world", ("police_box" + "_") + "fuse_01", 1, shared_bits, "int", undefined, 0);
@@ -255,15 +222,6 @@ function register_clientfields() {
   clientfield::register("toplayer", "ZM_ZOD_UI_GATEWORM_PICKUP", 1, 1, "int");
 }
 
-/*
-	Name: craftable_add_glow_fx
-	Namespace: zm_zod_craftables
-	Checksum: 0xFBB6AF44
-	Offset: 0x27B8
-	Size: 0x120
-	Parameters: 0
-	Flags: None
-*/
 function craftable_add_glow_fx() {
   level flag::wait_till("start_zombie_round_logic");
   foreach(s_craftable in level.zombie_include_craftables) {
@@ -273,61 +231,25 @@ function craftable_add_glow_fx() {
   }
 }
 
-/*
-	Name: craftable_waittill_spawned
-	Namespace: zm_zod_craftables
-	Checksum: 0xD4F99449
-	Offset: 0x28E0
-	Size: 0x28
-	Parameters: 0
-	Flags: Linked
-*/
 function craftable_waittill_spawned() {
   while (!isdefined(self.piecespawn)) {
     util::wait_network_frame();
   }
 }
 
-/*
-	Name: ondrop_common
-	Namespace: zm_zod_craftables
-	Checksum: 0x9D8CD50C
-	Offset: 0x2910
-	Size: 0x16
-	Parameters: 1
-	Flags: None
-*/
 function ondrop_common(player) {
   self.piece_owner = undefined;
 }
 
-/*
-	Name: onpickup_common
-	Namespace: zm_zod_craftables
-	Checksum: 0x7EB1CD68
-	Offset: 0x2930
-	Size: 0x38
-	Parameters: 1
-	Flags: None
-*/
 function onpickup_common(player) {
   player thread function_9708cb71(self.piecename);
   self.piece_owner = player;
 }
 
-/*
-	Name: ondisconnect_common
-	Namespace: zm_zod_craftables
-	Checksum: 0x97777BD
-	Offset: 0x2970
-	Size: 0x254
-	Parameters: 1
-	Flags: Linked
-*/
 function ondisconnect_common(player) {
   level endon("crafted_" + self.piecename);
   level endon("dropped_" + self.piecename);
-  player waittill(# "disconnect");
+  player waittill("disconnect");
   if(self.is_shared) {
     return;
   }
@@ -345,15 +267,6 @@ function ondisconnect_common(player) {
   }
 }
 
-/*
-	Name: function_27ef9857
-	Namespace: zm_zod_craftables
-	Checksum: 0xAC1B939B
-	Offset: 0x2BD0
-	Size: 0x112
-	Parameters: 1
-	Flags: Linked
-*/
 function function_27ef9857(player) {
   level flag::set(self.piecename + "_found");
   player thread function_9708cb71(self.piecename);
@@ -363,15 +276,6 @@ function function_27ef9857(player) {
   }
 }
 
-/*
-	Name: function_6c41d7f2
-	Namespace: zm_zod_craftables
-	Checksum: 0xF8CFC1C0
-	Offset: 0x2CF0
-	Size: 0x11A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6c41d7f2(player) {
   var_6f73bd35 = getent("police_box", "targetname");
   if(isdefined(var_6f73bd35)) {
@@ -383,20 +287,9 @@ function function_6c41d7f2(player) {
   }
 }
 
-/*
-	Name: ondrop_ritual_piece
-	Namespace: zm_zod_craftables
-	Checksum: 0x50AE9A8A
-	Offset: 0x2E18
-	Size: 0x1FC
-	Parameters: 1
-	Flags: None
-*/
 function ondrop_ritual_piece(player) {
-  /#
   println("");
-  # /
-    level notify("dropped_" + self.piecename);
+  level notify("dropped_" + self.piecename);
   self droponmover(player);
   self.piece_owner = undefined;
   if(is_piece_a_memento(self.piecename)) {
@@ -414,24 +307,13 @@ function ondrop_ritual_piece(player) {
   level clientfield::set("holder_of_" + get_character_name_from_value(self.piecename), 0);
 }
 
-/*
-	Name: onpickup_ritual_piece
-	Namespace: zm_zod_craftables
-	Checksum: 0xF138CF8C
-	Offset: 0x3020
-	Size: 0x474
-	Parameters: 1
-	Flags: Linked
-*/
 function onpickup_ritual_piece(player) {
-  /#
   println("");
-  # /
-    if(!isdefined(level.mementos_picked_up)) {
-      level.mementos_picked_up = 0;
-      level.relics_picked_up = 0;
-      level.sndritualmementos = 1;
-    }
+  if(!isdefined(level.mementos_picked_up)) {
+    level.mementos_picked_up = 0;
+    level.relics_picked_up = 0;
+    level.sndritualmementos = 1;
+  }
   if(!(isdefined(self.var_34db6ce0) && self.var_34db6ce0)) {
     self.var_34db6ce0 = 1;
     self.start_origin = self.model.origin;
@@ -507,18 +389,9 @@ function onpickup_ritual_piece(player) {
   self thread ondisconnect_common(player);
 }
 
-/*
-	Name: onpickup_idgun_piece
-	Namespace: zm_zod_craftables
-	Checksum: 0xB8F441F2
-	Offset: 0x34A0
-	Size: 0x17A
-	Parameters: 1
-	Flags: Linked
-*/
 function onpickup_idgun_piece(player) {
   level flag::set(self.piecename + "_found");
-  level notify(# "idgun_part_found");
+  level notify("idgun_part_found");
   player thread function_9708cb71(self.piecename);
   switch (self.piecename) {
     case "part_heart": {
@@ -540,15 +413,6 @@ function onpickup_idgun_piece(player) {
   }
 }
 
-/*
-	Name: function_9708cb71
-	Namespace: zm_zod_craftables
-	Checksum: 0x80DE0767
-	Offset: 0x3628
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9708cb71(piecename) {
   var_983a0e9b = "zmb_zod_craftable_pickup";
   switch (piecename) {
@@ -589,17 +453,8 @@ function function_9708cb71(piecename) {
   self playsound(var_983a0e9b);
 }
 
-/*
-	Name: function_c6c55eb6
-	Namespace: zm_zod_craftables
-	Checksum: 0xC8D7D462
-	Offset: 0x3760
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c6c55eb6(e_player) {
-  level notify(# "hash_5b9acfd8");
+  level notify("hash_5b9acfd8");
   foreach(e_player in level.players) {
     if(zm_utility::is_player_valid(e_player)) {
       e_player thread zm_craftables::player_show_craftable_parts_ui("zmInventory.player_crafted_fusebox", "zmInventory.widget_fuses", 1);
@@ -609,15 +464,6 @@ function function_c6c55eb6(e_player) {
   return true;
 }
 
-/*
-	Name: oncrafted_ritual_piece
-	Namespace: zm_zod_craftables
-	Checksum: 0x7FC7A923
-	Offset: 0x3858
-	Size: 0x13C
-	Parameters: 1
-	Flags: Linked
-*/
 function oncrafted_ritual_piece(player) {
   if(is_piece_a_memento(self.piecename)) {
     level clientfield::set("quest_state_" + get_character_name_from_value(self.piecename), 2);
@@ -630,15 +476,6 @@ function oncrafted_ritual_piece(player) {
   level clientfield::set("holder_of_" + get_character_name_from_value(self.piecename), 0);
 }
 
-/*
-	Name: onfullycrafted_ritual
-	Namespace: zm_zod_craftables
-	Checksum: 0x8B0F08D9
-	Offset: 0x39A0
-	Size: 0xE0
-	Parameters: 1
-	Flags: Linked
-*/
 function onfullycrafted_ritual(player) {
   if(self.equipname != "ritual_pap") {
     str_character_name = get_character_name_from_value(self.equipname);
@@ -656,30 +493,12 @@ function onfullycrafted_ritual(player) {
   return true;
 }
 
-/*
-	Name: onfullycrafted_ritual_internal
-	Namespace: zm_zod_craftables
-	Checksum: 0xE92FB643
-	Offset: 0x3A88
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function onfullycrafted_ritual_internal(name) {
   level flag::set(("ritual_" + name) + "_ready");
   level clientfield::set("ritual_state_" + name, 1);
   level clientfield::set("quest_state_" + name, 2);
 }
 
-/*
-	Name: onfullycrafted_idgun
-	Namespace: zm_zod_craftables
-	Checksum: 0xBF0435A4
-	Offset: 0x3B18
-	Size: 0x1D8
-	Parameters: 1
-	Flags: Linked
-*/
 function onfullycrafted_idgun(player) {
   if(!(isdefined(self.var_5449dda7) && self.var_5449dda7)) {
     self.var_5449dda7 = 1;
@@ -699,15 +518,6 @@ function onfullycrafted_idgun(player) {
   return true;
 }
 
-/*
-	Name: function_57f30dec
-	Namespace: zm_zod_craftables
-	Checksum: 0xE7BD476A
-	Offset: 0x3CF8
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_57f30dec(player) {
   level.idgun[self.stub.n_gun_index].owner = player;
   level clientfield::set("add_idgun_to_box", level.idgun[self.stub.n_gun_index].var_e787e99a);
@@ -715,15 +525,6 @@ function function_57f30dec(player) {
   player zm_zod_vo::function_aca1bc0c(self.stub.n_gun_index);
 }
 
-/*
-	Name: function_d80876ac
-	Namespace: zm_zod_craftables
-	Checksum: 0xA2E588AF
-	Offset: 0x3DC8
-	Size: 0x130
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d80876ac(player) {
   players = level.players;
   foreach(e_player in players) {
@@ -736,15 +537,6 @@ function function_d80876ac(player) {
   return true;
 }
 
-/*
-	Name: function_a0e4fb00
-	Namespace: zm_zod_craftables
-	Checksum: 0xBD189B4D
-	Offset: 0x3F00
-	Size: 0x1AC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_a0e4fb00(v_origin, v_angles, n_gun_index) {
   width = 128;
   height = 128;
@@ -765,35 +557,17 @@ function function_a0e4fb00(v_origin, v_angles, n_gun_index) {
   zm_unitrigger::register_static_unitrigger(unitrigger_stub, & function_bae02fd4);
 }
 
-/*
-	Name: function_e983d2a0
-	Namespace: zm_zod_craftables
-	Checksum: 0x8ADA4811
-	Offset: 0x40B8
-	Size: 0x9A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e983d2a0(player) {
   n_gun_index = self.stub.n_gun_index;
-  self sethintstring( & "ZM_ZOD_PICKUP_IDGUN");
+  self sethintstring(&"ZM_ZOD_PICKUP_IDGUN");
   b_is_invis = isdefined(player.beastmode) && player.beastmode;
   self setinvisibletoplayer(player, b_is_invis);
   return !b_is_invis;
 }
 
-/*
-	Name: function_bae02fd4
-	Namespace: zm_zod_craftables
-	Checksum: 0xBEF0210B
-	Offset: 0x4160
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bae02fd4() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player zm_utility::in_revive_trigger()) {
       continue;
     }
@@ -808,15 +582,6 @@ function function_bae02fd4() {
   }
 }
 
-/*
-	Name: function_3071ed77
-	Namespace: zm_zod_craftables
-	Checksum: 0x575A1ADB
-	Offset: 0x4210
-	Size: 0x104
-	Parameters: 2
-	Flags: Linked
-*/
 function function_3071ed77(trig_stub, player) {
   level.idgun[trig_stub.n_gun_index].owner = player;
   trig_stub.var_193180cc setinvisibletoall();
@@ -827,15 +592,6 @@ function function_3071ed77(trig_stub, player) {
   zm_unitrigger::unregister_unitrigger(trig_stub);
 }
 
-/*
-	Name: init_craftable_choke
-	Namespace: zm_zod_craftables
-	Checksum: 0x4752E9F9
-	Offset: 0x4320
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_craftable_choke() {
   level.craftables_spawned_this_frame = 0;
   while (true) {
@@ -844,15 +600,6 @@ function init_craftable_choke() {
   }
 }
 
-/*
-	Name: craftable_wait_your_turn
-	Namespace: zm_zod_craftables
-	Checksum: 0x4322F490
-	Offset: 0x4368
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function craftable_wait_your_turn() {
   if(!isdefined(level.craftables_spawned_this_frame)) {
     level thread init_craftable_choke();
@@ -863,15 +610,6 @@ function craftable_wait_your_turn() {
   level.craftables_spawned_this_frame++;
 }
 
-/*
-	Name: zod_player_can_craft
-	Namespace: zm_zod_craftables
-	Checksum: 0x6A596135
-	Offset: 0x43C8
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function zod_player_can_craft(player) {
   if(isdefined(player.beastmode) && player.beastmode) {
     return false;
@@ -879,127 +617,46 @@ function zod_player_can_craft(player) {
   return true;
 }
 
-/*
-	Name: function_141a8c6e
-	Namespace: zm_zod_craftables
-	Checksum: 0xED6D56EC
-	Offset: 0x4410
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_141a8c6e() {
   craftable_wait_your_turn();
   zm_craftables::craftable_trigger_think("police_box_usetrigger", "police_box", "police_box", "", 1, 0);
 }
 
-/*
-	Name: ritual_boxer_craftable
-	Namespace: zm_zod_craftables
-	Checksum: 0xD6929ED7
-	Offset: 0x4468
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function ritual_boxer_craftable() {
   craftable_wait_your_turn();
   zm_craftables::craftable_trigger_think("quest_ritual_usetrigger_boxer", "ritual_boxer", "ritual_boxer", "", 1, 0);
 }
 
-/*
-	Name: ritual_detective_craftable
-	Namespace: zm_zod_craftables
-	Checksum: 0x23A1DFEB
-	Offset: 0x44C0
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function ritual_detective_craftable() {
   craftable_wait_your_turn();
   zm_craftables::craftable_trigger_think("quest_ritual_usetrigger_detective", "ritual_detective", "ritual_detective", "", 1, 0);
 }
 
-/*
-	Name: ritual_femme_craftable
-	Namespace: zm_zod_craftables
-	Checksum: 0xFECAD039
-	Offset: 0x4518
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function ritual_femme_craftable() {
   craftable_wait_your_turn();
   zm_craftables::craftable_trigger_think("quest_ritual_usetrigger_femme", "ritual_femme", "ritual_femme", "", 1, 0);
 }
 
-/*
-	Name: ritual_magician_craftable
-	Namespace: zm_zod_craftables
-	Checksum: 0x8B32E041
-	Offset: 0x4570
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function ritual_magician_craftable() {
   craftable_wait_your_turn();
   zm_craftables::craftable_trigger_think("quest_ritual_usetrigger_magician", "ritual_magician", "ritual_magician", "", 1, 0);
 }
 
-/*
-	Name: ritual_pap_craftable
-	Namespace: zm_zod_craftables
-	Checksum: 0x2EBED938
-	Offset: 0x45C8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function ritual_pap_craftable() {
   craftable_wait_your_turn();
   zm_craftables::craftable_trigger_think("quest_ritual_usetrigger_pap", "ritual_pap", "ritual_pap", "", 1, 0);
 }
 
-/*
-	Name: idgun_craftable
-	Namespace: zm_zod_craftables
-	Checksum: 0xDCEB045
-	Offset: 0x4620
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function idgun_craftable() {
   craftable_wait_your_turn();
   zm_craftables::craftable_trigger_think("idgun_zm_craftable_trigger", "idgun", "idgun", & "ZM_ZOD_PICKUP_IDGUN", 1, 2);
 }
 
-/*
-	Name: function_ee72d458
-	Namespace: zm_zod_craftables
-	Checksum: 0x38ABF079
-	Offset: 0x4678
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ee72d458() {
   craftable_wait_your_turn();
   zm_craftables::craftable_trigger_think("second_idgun_zm_craftable_trigger", "second_idgun", "second_idgun", "", 1, 0);
 }
 
-/*
-	Name: get_character_name_from_value
-	Namespace: zm_zod_craftables
-	Checksum: 0x397D315D
-	Offset: 0x46D0
-	Size: 0xDA
-	Parameters: 1
-	Flags: Linked
-*/
 function get_character_name_from_value(name) {
   a_character_names = array("boxer", "detective", "femme", "magician");
   foreach(character_name in a_character_names) {
@@ -1009,15 +666,6 @@ function get_character_name_from_value(name) {
   }
 }
 
-/*
-	Name: is_piece_a_memento
-	Namespace: zm_zod_craftables
-	Checksum: 0xB7194709
-	Offset: 0x47B8
-	Size: 0x6E
-	Parameters: 1
-	Flags: Linked
-*/
 function is_piece_a_memento(name) {
   a_memento_names = array("memento_boxer", "memento_detective", "memento_femme", "memento_magician");
   if(isinarray(a_memento_names, name)) {
@@ -1026,15 +674,6 @@ function is_piece_a_memento(name) {
   return false;
 }
 
-/*
-	Name: is_piece_a_relic
-	Namespace: zm_zod_craftables
-	Checksum: 0x2199FBA1
-	Offset: 0x4830
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function is_piece_a_relic(name) {
   if(name == "relic_boxer" || name == "relic_detective" || name == "relic_femme" || name == "relic_magician") {
     return true;
@@ -1042,24 +681,6 @@ function is_piece_a_relic(name) {
   return false;
 }
 
-/*
-	Name: droponmover
-	Namespace: zm_zod_craftables
-	Checksum: 0xEC3C1F8D
-	Offset: 0x4898
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function droponmover(player) {}
 
-/*
-	Name: pickupfrommover
-	Namespace: zm_zod_craftables
-	Checksum: 0x99EC1590
-	Offset: 0x48B0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function pickupfrommover() {}

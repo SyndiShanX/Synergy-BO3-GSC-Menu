@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_vengeance.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace voice_vengeance;
 
-/*
-	Name: init_voice
-	Namespace: voice_vengeance
-	Checksum: 0x681B03ED
-	Offset: 0x4A00
-	Size: 0x3144
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("plyr_kane_we_re_at_the_0", "vox_veng_10_10_001_plyr");
   dialog::add("plyr_kane_we_re_at_the_1", "vox_veng_10_10_001_plyr");

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_weapons.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_challenges;
 #using scripts\mp\_scoreevents;
@@ -20,66 +24,20 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapons;
 #using scripts\shared\weapons_shared;
-
 #namespace weapons;
 
-/*
-	Name: __init__sytem__
-	Namespace: weapons
-	Checksum: 0x6ACEAD72
-	Offset: 0x3A0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("weapons", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: weapons
-	Checksum: 0x8E70BB25
-	Offset: 0x3E0
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   init_shared();
 }
 
-/*
-	Name: bestweapon_kill
-	Namespace: weapons
-	Checksum: 0x7736F1DF
-	Offset: 0x400
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function bestweapon_kill(weapon) {}
 
-/*
-	Name: bestweapon_spawn
-	Namespace: weapons
-	Checksum: 0x6D3A70D9
-	Offset: 0x418
-	Size: 0x1C
-	Parameters: 3
-	Flags: Linked
-*/
 function bestweapon_spawn(weapon, options, acvi) {}
 
-/*
-	Name: bestweapon_init
-	Namespace: weapons
-	Checksum: 0x1D0DC094
-	Offset: 0x440
-	Size: 0xE6
-	Parameters: 3
-	Flags: None
-*/
 function bestweapon_init(weapon, options, acvi) {
   weapon_data = [];
   weapon_data["weapon"] = weapon;
@@ -92,15 +50,6 @@ function bestweapon_init(weapon, options, acvi) {
   return key;
 }
 
-/*
-	Name: bestweapon_find
-	Namespace: weapons
-	Checksum: 0xFBD35E31
-	Offset: 0x530
-	Size: 0x192
-	Parameters: 3
-	Flags: None
-*/
 function bestweapon_find(weapon, options, acvi) {
   if(!isdefined(self.pers["bestWeapon"])) {
     self.pers["bestWeapon"] = [];
@@ -118,15 +67,6 @@ function bestweapon_find(weapon, options, acvi) {
   return undefined;
 }
 
-/*
-	Name: bestweapon_get
-	Namespace: weapons
-	Checksum: 0xDCC9FE36
-	Offset: 0x6D0
-	Size: 0x224
-	Parameters: 0
-	Flags: None
-*/
 function bestweapon_get() {
   most_kills = 0;
   most_spawns = 0;
@@ -160,15 +100,6 @@ function bestweapon_get() {
   return self.pers["bestWeapon"][best_key][best_index];
 }
 
-/*
-	Name: showcaseweapon_get
-	Namespace: weapons
-	Checksum: 0xD2203524
-	Offset: 0x900
-	Size: 0x38E
-	Parameters: 0
-	Flags: Linked
-*/
 function showcaseweapon_get() {
   showcaseweapondata = self getplayershowcaseweapon();
   if(!isdefined(showcaseweapondata)) {

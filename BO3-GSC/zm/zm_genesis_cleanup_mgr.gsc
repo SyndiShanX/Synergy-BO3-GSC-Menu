@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_cleanup_mgr.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -10,71 +14,25 @@
 #using scripts\zm\_zm_shadow_zombie;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace genesis_cleanup;
 
-/*
-	Name: __init__sytem__
-	Namespace: genesis_cleanup
-	Checksum: 0x432ACFAD
-	Offset: 0x2B0
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("genesis_cleanup", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: genesis_cleanup
-	Checksum: 0xBDC857C7
-	Offset: 0x2F8
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.n_cleanups_processed_this_frame = 0;
 }
 
-/*
-	Name: __main__
-	Namespace: genesis_cleanup
-	Checksum: 0xEE15352E
-	Offset: 0x310
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level thread cleanup_main();
   level.no_target_override = & no_target_override;
 }
 
-/*
-	Name: force_check_now
-	Namespace: genesis_cleanup
-	Checksum: 0xC6097D
-	Offset: 0x350
-	Size: 0x12
-	Parameters: 0
-	Flags: None
-*/
 function force_check_now() {
-  level notify(# "pump_distance_check");
+  level notify("pump_distance_check");
 }
 
-/*
-	Name: cleanup_main
-	Namespace: genesis_cleanup
-	Checksum: 0xA6449552
-	Offset: 0x370
-	Size: 0x1FE
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private cleanup_main() {
   n_next_eval = 0;
   while (true) {
@@ -109,15 +67,6 @@ function private cleanup_main() {
   }
 }
 
-/*
-	Name: function_37a5b776
-	Namespace: genesis_cleanup
-	Checksum: 0x70B6F908
-	Offset: 0x578
-	Size: 0x200
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_37a5b776() {
   var_a8951c29 = [];
   var_9e84b959 = array("start_island", "apothicon_island", "temple_island", "prototype_island", "asylum_island", "prison_island", "arena_island");
@@ -146,15 +95,6 @@ function private function_37a5b776() {
   return false;
 }
 
-/*
-	Name: do_cleanup_check
-	Namespace: genesis_cleanup
-	Checksum: 0x10C53B9
-	Offset: 0x780
-	Size: 0x2F4
-	Parameters: 0
-	Flags: Linked
-*/
 function do_cleanup_check() {
   if(!isalive(self)) {
     return;
@@ -214,15 +154,6 @@ function do_cleanup_check() {
   }
 }
 
-/*
-	Name: delete_zombie_noone_looking
-	Namespace: genesis_cleanup
-	Checksum: 0x3B20B840
-	Offset: 0xA80
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function delete_zombie_noone_looking() {
   if(isdefined(self.in_the_ground) && self.in_the_ground) {
     return;
@@ -238,15 +169,6 @@ function delete_zombie_noone_looking() {
   self thread function_b4d588f5();
 }
 
-/*
-	Name: function_b4d588f5
-	Namespace: genesis_cleanup
-	Checksum: 0xBA8C5DAF
-	Offset: 0xB68
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_b4d588f5() {
   if(!(isdefined(self.exclude_cleanup_adding_to_total) && self.exclude_cleanup_adding_to_total)) {
     level.zombie_total++;
@@ -279,22 +201,11 @@ function private function_b4d588f5() {
   self kill();
   wait(0.05);
   if(isdefined(self)) {
-    /#
     debugstar(self.origin, 1000, (1, 1, 1));
-    # /
-      self delete();
+    self delete();
   }
 }
 
-/*
-	Name: player_can_see_me
-	Namespace: genesis_cleanup
-	Checksum: 0x767AD3AA
-	Offset: 0xDC0
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked
-*/
 function player_can_see_me(player) {
   v_player_angles = player getplayerangles();
   v_player_forward = anglestoforward(v_player_angles);
@@ -307,15 +218,6 @@ function player_can_see_me(player) {
   return true;
 }
 
-/*
-	Name: player_ahead_of_me
-	Namespace: genesis_cleanup
-	Checksum: 0xC377FD5A
-	Offset: 0xEA0
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private player_ahead_of_me(player) {
   v_player_angles = player getplayerangles();
   v_player_forward = anglestoforward(v_player_angles);
@@ -327,15 +229,6 @@ function private player_ahead_of_me(player) {
   return true;
 }
 
-/*
-	Name: get_adjacencies_to_zone
-	Namespace: genesis_cleanup
-	Checksum: 0xCECCE33D
-	Offset: 0xF60
-	Size: 0x11E
-	Parameters: 1
-	Flags: Linked
-*/
 function get_adjacencies_to_zone(str_zone) {
   a_adjacencies = [];
   a_adjacencies[0] = str_zone;
@@ -353,15 +246,6 @@ function get_adjacencies_to_zone(str_zone) {
   return a_adjacencies;
 }
 
-/*
-	Name: get_farthest_wait_location
-	Namespace: genesis_cleanup
-	Checksum: 0x1881BC16
-	Offset: 0x1088
-	Size: 0xD6
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private get_farthest_wait_location(var_aabb7ed9) {
   if(!isdefined(var_aabb7ed9) || var_aabb7ed9.size == 0) {
     return undefined;
@@ -378,15 +262,6 @@ function private get_farthest_wait_location(var_aabb7ed9) {
   return var_aabb7ed9[n_farthest_index];
 }
 
-/*
-	Name: get_wait_locations_in_zone
-	Namespace: genesis_cleanup
-	Checksum: 0x6F28E452
-	Offset: 0x1168
-	Size: 0x88
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private get_wait_locations_in_zone(zone) {
   if(isdefined(level.zones[zone].a_loc_types["wait_location"])) {
     var_aabb7ed9 = [];
@@ -396,17 +271,8 @@ function private get_wait_locations_in_zone(zone) {
   return undefined;
 }
 
-/*
-	Name: get_escape_position_in_current_zone
-	Namespace: genesis_cleanup
-	Checksum: 0xF160FC8D
-	Offset: 0x11F8
-	Size: 0x9C
-	Parameters: 0
-	Flags: None
-*/
 function get_escape_position_in_current_zone() {
-  self endon(# "death");
+  self endon("death");
   str_zone = self.zone_name;
   if(!isdefined(str_zone)) {
     str_zone = self.zone_name;
@@ -420,15 +286,6 @@ function get_escape_position_in_current_zone() {
   return s_farthest;
 }
 
-/*
-	Name: no_target_override
-	Namespace: genesis_cleanup
-	Checksum: 0x5DEC02F8
-	Offset: 0x12A0
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function no_target_override(ai_zombie) {
   if(isdefined(self.b_zombie_path_bad) && self.b_zombie_path_bad) {
     return;
@@ -437,15 +294,6 @@ function no_target_override(ai_zombie) {
   ai_zombie thread function_dc683d01(var_b52b26b9);
 }
 
-/*
-	Name: get_escape_position
-	Namespace: genesis_cleanup
-	Checksum: 0xBF29485A
-	Offset: 0x1310
-	Size: 0x146
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private get_escape_position() {
   str_zone = zm_zonemgr::get_zone_from_position(self.origin + vectorscale((0, 0, 1), 32), 1);
   if(!isdefined(str_zone)) {
@@ -465,15 +313,6 @@ function private get_escape_position() {
   return self.origin;
 }
 
-/*
-	Name: get_wait_locations_in_zones
-	Namespace: genesis_cleanup
-	Checksum: 0x9DCF6784
-	Offset: 0x1460
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private get_wait_locations_in_zones(a_str_zones) {
   var_aabb7ed9 = [];
   foreach(str_zone in a_str_zones) {
@@ -482,15 +321,6 @@ function private get_wait_locations_in_zones(a_str_zones) {
   return var_aabb7ed9;
 }
 
-/*
-	Name: function_eadbcbdb
-	Namespace: genesis_cleanup
-	Checksum: 0xC861F7A5
-	Offset: 0x1540
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_eadbcbdb() {
   if(!isdefined(self)) {
     return false;
@@ -501,19 +331,10 @@ function private function_eadbcbdb() {
   return true;
 }
 
-/*
-	Name: function_dc683d01
-	Namespace: genesis_cleanup
-	Checksum: 0x41928988
-	Offset: 0x15A8
-	Size: 0xCA
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_dc683d01(var_b52b26b9) {
-  self endon(# "death");
-  self notify(# "stop_find_flesh");
-  self notify(# "zombie_acquire_enemy");
+  self endon("death");
+  self notify("stop_find_flesh");
+  self notify("zombie_acquire_enemy");
   self.ignoreall = 1;
   self.b_zombie_path_bad = 1;
   self thread check_player_available();
@@ -524,36 +345,18 @@ function private function_dc683d01(var_b52b26b9) {
   self.b_zombie_path_bad = undefined;
 }
 
-/*
-	Name: check_player_available
-	Namespace: genesis_cleanup
-	Checksum: 0x76D5C3E4
-	Offset: 0x1680
-	Size: 0x78
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private check_player_available() {
-  self endon(# "death");
+  self endon("death");
   while (isdefined(self.b_zombie_path_bad) && self.b_zombie_path_bad) {
     wait(randomfloatrange(0.2, 0.5));
     if(self can_zombie_see_any_player()) {
       self.b_zombie_path_bad = undefined;
-      self notify(# "reaquire_player");
+      self notify("reaquire_player");
       return;
     }
   }
 }
 
-/*
-	Name: can_zombie_see_any_player
-	Namespace: genesis_cleanup
-	Checksum: 0x44747D87
-	Offset: 0x1700
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private can_zombie_see_any_player() {
   for (i = 0; i < level.activeplayers.size; i++) {
     if(zombie_utility::is_player_valid(level.activeplayers[i])) {
@@ -566,15 +369,6 @@ function private can_zombie_see_any_player() {
   return false;
 }
 
-/*
-	Name: function_ca420408
-	Namespace: genesis_cleanup
-	Checksum: 0x165D5985
-	Offset: 0x1788
-	Size: 0xE6
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ca420408(player) {
   var_334f2464 = undefined;
   str_player_zone = undefined;

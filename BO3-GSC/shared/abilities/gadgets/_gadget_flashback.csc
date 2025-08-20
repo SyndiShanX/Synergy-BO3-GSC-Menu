@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/**********************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\abilities\gadgets\_gadget_flashback.csc
+**********************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\abilities\_ability_player;
 #using scripts\shared\abilities\_ability_power;
@@ -9,31 +13,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace _gadget_flashback;
 
-/*
-	Name: __init__sytem__
-	Namespace: _gadget_flashback
-	Checksum: 0x5D2A0D9F
-	Offset: 0x3A0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("gadget_flashback", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _gadget_flashback
-	Checksum: 0x5D4D7917
-	Offset: 0x3E0
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "flashback_trail_fx", 1, 1, "int", & set_flashback_trail_fx, 0, 0);
   clientfield::register("playercorpse", "flashback_clone", 1, 1, "int", & clone_flashback_changed, 0, 0);
@@ -42,24 +27,15 @@ function __init__() {
   duplicate_render::set_dr_filter_framebuffer("flashback", 90, "flashback_on", "", 0, "mc/mtl_glitch", 0);
 }
 
-/*
-	Name: flashback_activated
-	Namespace: _gadget_flashback
-	Checksum: 0x271CC57E
-	Offset: 0x530
-	Size: 0x134
-	Parameters: 7
-	Flags: Linked
-*/
 function flashback_activated(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self notify(# "player_flashback");
+  self notify("player_flashback");
   player = getlocalplayer(localclientnum);
   isfirstperson = !isthirdperson(localclientnum) && player == self;
   if(newval) {
     if(isfirstperson) {
       self playsound(localclientnum, "mpl_flashback_reappear_plr");
     } else {
-      self endon(# "entityshutdown");
+      self endon("entityshutdown");
       self util::waittill_dobj(localclientnum);
       self playsound(localclientnum, "mpl_flashback_reappear_npc");
       playtagfxset(localclientnum, "gadget_flashback_3p_off", self);
@@ -67,15 +43,6 @@ function flashback_activated(localclientnum, oldval, newval, bnewent, binitialsn
   }
 }
 
-/*
-	Name: set_flashback_trail_fx
-	Namespace: _gadget_flashback
-	Checksum: 0x293D556B
-	Offset: 0x670
-	Size: 0x174
-	Parameters: 7
-	Flags: Linked
-*/
 function set_flashback_trail_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   player = getlocalplayer(localclientnum);
   isfirstperson = !isthirdperson(localclientnum) && isdefined(self.owner) && isdefined(player) && self.owner == player;
@@ -83,7 +50,7 @@ function set_flashback_trail_fx(localclientnum, oldval, newval, bnewent, binitia
     if(isfirstperson) {
       player playsound(localclientnum, "mpl_flashback_disappear_plr");
     } else {
-      self endon(# "entityshutdown");
+      self endon("entityshutdown");
       self util::waittill_dobj(localclientnum);
       self playsound(localclientnum, "mpl_flashback_disappear_npc");
       playfxontag(localclientnum, "player/fx_plyr_flashback_demat", self, "tag_origin");
@@ -92,32 +59,14 @@ function set_flashback_trail_fx(localclientnum, oldval, newval, bnewent, binitia
   }
 }
 
-/*
-	Name: clone_flashback_changed
-	Namespace: _gadget_flashback
-	Checksum: 0xD2C1EFEA
-	Offset: 0x7F0
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function clone_flashback_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self clone_flashback_changed_event(localclientnum, newval);
   }
 }
 
-/*
-	Name: clone_fade
-	Namespace: _gadget_flashback
-	Checksum: 0xD789A522
-	Offset: 0x860
-	Size: 0x13C
-	Parameters: 1
-	Flags: Linked
-*/
 function clone_fade(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   starttime = getservertime(localclientnum);
   while (true) {
     currenttime = getservertime(localclientnum);
@@ -134,15 +83,6 @@ function clone_fade(localclientnum) {
   }
 }
 
-/*
-	Name: clone_flashback_changed_event
-	Namespace: _gadget_flashback
-	Checksum: 0x35D10CE2
-	Offset: 0x9A8
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function clone_flashback_changed_event(localclientnum, armorstatusnew) {
   if(armorstatusnew) {
     self duplicate_render::set_dr_flag("flashback_on", 1);

@@ -1,46 +1,22 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_challenges.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\challenges_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_util;
-
 #namespace challenges;
 
-/*
-	Name: __init__sytem__
-	Namespace: challenges
-	Checksum: 0x3ABCC6F8
-	Offset: 0x980
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("challenges", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: challenges
-	Checksum: 0x99EC1590
-	Offset: 0x9C0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}
 
-/*
-	Name: init
-	Namespace: challenges
-	Checksum: 0x31B7CF42
-	Offset: 0x9D0
-	Size: 0x194
-	Parameters: 0
-	Flags: None
-*/
 function init() {
   if(!isdefined(level.challengescallbacks)) {
     level.challengescallbacks = [];
@@ -59,15 +35,6 @@ function init() {
   level.challengesoneventreceived = & eventreceived;
 }
 
-/*
-	Name: challengekills
-	Namespace: challenges
-	Checksum: 0x35A3B5E7
-	Offset: 0xB70
-	Size: 0x1F6C
-	Parameters: 2
-	Flags: Linked
-*/
 function challengekills(data, time) {
   victim = data.victim;
   player = data.attacker;
@@ -132,7 +99,7 @@ function challengekills(data, time) {
       return;
     }
   }
-  attacker notify(# "killed_enemy_player", time, weapon);
+  attacker notify("killed_enemy_player", time, weapon);
   if(isdefined(player.primaryloadoutweapon) && weapon == player.primaryloadoutweapon || (isdefined(player.primaryloadoutaltweapon) && weapon == player.primaryloadoutaltweapon)) {
     if(player isbonuscardactive(0, player.class_num)) {
       player addbonuscardstat(0, "kills", 1, player.class_num);
@@ -189,18 +156,12 @@ function challengekills(data, time) {
       player.attachmentkills[attachmentname] = 1;
     }
   }
-  /#
   assert(isdefined(player.activecounteruavs));
-  # /
-    /#
   assert(isdefined(player.activeuavs));
-  # /
-    /#
   assert(isdefined(player.activesatellites));
-  # /
-    if(player.activeuavs > 0) {
-      player addplayerstat("kill_while_uav_active", 1);
-    }
+  if(player.activeuavs > 0) {
+    player addplayerstat("kill_while_uav_active", 1);
+  }
   if(player.activecounteruavs > 0) {
     player addplayerstat("kill_while_cuav_active", 1);
   }
@@ -400,13 +361,13 @@ function challengekills(data, time) {
   switch (weapon.name) {
     case "bouncingbetty": {
       lethalgrenadekill = 1;
-      player notify(# "lethalgrenadekill");
+      player notify("lethalgrenadekill");
       break;
     }
     case "hatchet": {
       player bladekill();
       lethalgrenadekill = 1;
-      player notify(# "lethalgrenadekill");
+      player notify("lethalgrenadekill");
       if(isdefined(lastweaponbeforetoss)) {
         if(lastweaponbeforetoss.isriotshield) {
           player addweaponstat(lastweaponbeforetoss, "hatchet_kill_with_shield_equiped", 1);
@@ -417,7 +378,7 @@ function challengekills(data, time) {
     }
     case "claymore": {
       lethalgrenadekill = 1;
-      player notify(# "lethalgrenadekill");
+      player notify("lethalgrenadekill");
       player addplayerstat("kill_with_claymore", 1);
       if(data.washacked) {
         player addplayerstat("kill_with_hacked_claymore", 1);
@@ -426,7 +387,7 @@ function challengekills(data, time) {
     }
     case "satchel_charge": {
       lethalgrenadekill = 1;
-      player notify(# "lethalgrenadekill");
+      player notify("lethalgrenadekill");
       player addplayerstat("kill_with_c4", 1);
       break;
     }
@@ -439,7 +400,7 @@ function challengekills(data, time) {
     }
     case "sticky_grenade": {
       lethalgrenadekill = 1;
-      player notify(# "lethalgrenadekill");
+      player notify("lethalgrenadekill");
       if(isdefined(victim.explosiveinfo["stuckToPlayer"]) && victim.explosiveinfo["stuckToPlayer"] == victim) {
         attacker.pers["stickExplosiveKill"]++;
         if(attacker.pers["stickExplosiveKill"] >= 5) {
@@ -451,7 +412,7 @@ function challengekills(data, time) {
     }
     case "frag_grenade": {
       lethalgrenadekill = 1;
-      player notify(# "lethalgrenadekill");
+      player notify("lethalgrenadekill");
       if(isdefined(data.victim.explosiveinfo["cookedKill"]) && data.victim.explosiveinfo["cookedKill"] == 1) {
         player addplayerstat("kill_with_cooked_grenade", 1);
       }
@@ -476,13 +437,4 @@ function challengekills(data, time) {
   player perkkills(victim, isstunned, time);
 }
 
-/*
-	Name: challengeactorkills
-	Namespace: challenges
-	Checksum: 0x9055776D
-	Offset: 0x2AE8
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function challengeactorkills(data, time) {}

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_beastcode.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_death;
 #using scripts\shared\array_shared;
@@ -15,7 +19,6 @@
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_unitrigger;
 #using scripts\zm\_zm_utility;
-
 #using_animtree("generic");
 
 class cbeastcode {
@@ -34,37 +37,13 @@ class cbeastcode {
   var var_1d4fdfa6;
   var m_b_discovered;
 
-  /*
-  	Name: constructor
-  	Namespace: cbeastcode
-  	Checksum: 0x99EC1590
-  	Offset: 0x1A90
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cbeastcode
-  	Checksum: 0x99EC1590
-  	Offset: 0x1AA0
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: interpret_trigger_event
-  	Namespace: cbeastcode
-  	Checksum: 0x59BB32F7
-  	Offset: 0x1A08
-  	Size: 0x80
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function interpret_trigger_event(player, n_index) {
     m_n_device_state = 0;
     hide_given_input(n_index);
@@ -76,31 +55,15 @@ class cbeastcode {
     m_n_device_state = 1;
   }
 
-  /*
-  	Name: get_keycode_device_state
-  	Namespace: cbeastcode
-  	Checksum: 0xE6DE8CDE
-  	Offset: 0x19F0
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_keycode_device_state() {
     return m_n_device_state;
   }
 
-  /*
-  	Name: keycode_input_trigger_think
-  	Namespace: cbeastcode
-  	Checksum: 0xAD544E1C
-  	Offset: 0x1930
-  	Size: 0xB4
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function keycode_input_trigger_think(o_beastcode, n_index) {
     while (true) {
-      self waittill(# "trigger", player);
+      self waittill("trigger", player);
       if(o_beastcode.var_71f130fa <= 0) {
         continue;
       }
@@ -120,18 +83,10 @@ class cbeastcode {
     }
   }
 
-  /*
-  	Name: keycode_input_prompt
-  	Namespace: cbeastcode
-  	Checksum: 0xEAA53E1A
-  	Offset: 0x1570
-  	Size: 0x3B8
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function keycode_input_prompt(player) {
-    self endon(# "kill_trigger");
-    player endon(# "death_or_disconnect");
+    self endon("kill_trigger");
+    player endon("death_or_disconnect");
     str_hint = & "";
     str_old_hint = & "";
     a_s_input_button_tags = [
@@ -187,7 +142,7 @@ class cbeastcode {
       if(str_old_hint != str_hint) {
         str_old_hint = str_hint;
         stub.hint_string = str_hint;
-        if(str_hint === ( & "ZM_ZOD_KEYCODE_INCREMENT_NUMBER")) {
+        if(str_hint === (&"ZM_ZOD_KEYCODE_INCREMENT_NUMBER")) {
           self sethintstring(stub.hint_string, player.n_keycode_lookat_tag + 1);
         } else {
           self sethintstring(stub.hint_string);
@@ -197,15 +152,7 @@ class cbeastcode {
     }
   }
 
-  /*
-  	Name: keycode_input_visibility
-  	Namespace: cbeastcode
-  	Checksum: 0xCF010192
-  	Offset: 0x14E8
-  	Size: 0x7A
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function keycode_input_visibility(player) {
     b_is_invis = !(isdefined(player.beastmode) && player.beastmode);
     self setinvisibletoplayer(player, b_is_invis);
@@ -213,20 +160,12 @@ class cbeastcode {
     return !b_is_invis;
   }
 
-  /*
-  	Name: function_71154a2
-  	Namespace: cbeastcode
-  	Checksum: 0x78E69D39
-  	Offset: 0x1288
-  	Size: 0x252
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function function_71154a2(t_lookat, n_code_index, var_d7d7b586) {
     var_c929283d = struct::get(t_lookat.target, "targetname");
     var_43544e59 = var_c929283d.origin;
     while (true) {
-      t_lookat waittill(# "trigger", player);
+      t_lookat waittill("trigger", player);
       while (player istouching(t_lookat)) {
         v_eye_origin = player getplayercamerapos();
         v_eye_direction = anglestoforward(player getplayerangles());
@@ -247,15 +186,7 @@ class cbeastcode {
     }
   }
 
-  /*
-  	Name: create_code_input_unitrigger
-  	Namespace: cbeastcode
-  	Checksum: 0x41BF41ED
-  	Offset: 0x10C8
-  	Size: 0x1B4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function create_code_input_unitrigger() {
     width = 128;
     height = 128;
@@ -274,15 +205,7 @@ class cbeastcode {
     zm_unitrigger::register_static_unitrigger(m_mdl_input.unitrigger_stub, & keycode_input_trigger_think);
   }
 
-  /*
-  	Name: test_current_code_against_this_code
-  	Namespace: cbeastcode
-  	Checksum: 0xFFA6DECE
-  	Offset: 0x1060
-  	Size: 0x60
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function test_current_code_against_this_code(a_code) {
     for (i = 0; i < a_code.size; i++) {
       if(!isinarray(m_a_current, a_code[i])) {
@@ -292,15 +215,7 @@ class cbeastcode {
     return true;
   }
 
-  /*
-  	Name: activate_input_device
-  	Namespace: cbeastcode
-  	Checksum: 0x72A1E1C9
-  	Offset: 0xEE8
-  	Size: 0x16C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function activate_input_device() {
     var_71f130fa = var_71f130fa - 1;
     for (i = 0; i < m_a_codes.size; i++) {
@@ -327,15 +242,7 @@ class cbeastcode {
     }
   }
 
-  /*
-  	Name: update_clue_numbers_for_code
-  	Namespace: cbeastcode
-  	Checksum: 0x24BDB145
-  	Offset: 0xDC0
-  	Size: 0x11E
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function update_clue_numbers_for_code(n_index = 0) {
     a_code = m_a_codes[n_index];
     for (i = 0; i < 3; i++) {
@@ -348,15 +255,7 @@ class cbeastcode {
     }
   }
 
-  /*
-  	Name: set_input_number_visibility
-  	Namespace: cbeastcode
-  	Checksum: 0xF72C379E
-  	Offset: 0xD50
-  	Size: 0x64
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_input_number_visibility(n_index, b_is_visible) {
     if(b_is_visible) {
       m_a_mdl_inputs[n_index] show();
@@ -365,15 +264,7 @@ class cbeastcode {
     }
   }
 
-  /*
-  	Name: set_input_number
-  	Namespace: cbeastcode
-  	Checksum: 0x29F759F6
-  	Offset: 0xC78
-  	Size: 0xCC
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_input_number(n_index, n_value) {
     mdl_input = m_a_mdl_inputs[n_index];
     for (i = 0; i < 10; i++) {
@@ -383,18 +274,10 @@ class cbeastcode {
     mdl_input showpart("j_keeper_" + n_value);
   }
 
-  /*
-  	Name: function_36c50de5
-  	Namespace: cbeastcode
-  	Checksum: 0xC4D70E94
-  	Offset: 0xC10
-  	Size: 0x5C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_36c50de5() {
     while (true) {
-      level waittill(# "start_of_round");
+      level waittill("start_of_round");
       if(0 >= var_71f130fa) {
         hide_readout(0);
         m_n_device_state = 1;
@@ -403,15 +286,7 @@ class cbeastcode {
     }
   }
 
-  /*
-  	Name: setup_input_threads
-  	Namespace: cbeastcode
-  	Checksum: 0x6217FB4C
-  	Offset: 0xB68
-  	Size: 0x9E
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function setup_input_threads() {
     for (i = 0; i < m_a_mdl_inputs.size; i++) {
       m_a_mdl_inputs[i] thread zm_altbody_beast::watch_lightning_damage(m_a_t_inputs[i]);
@@ -420,28 +295,12 @@ class cbeastcode {
     }
   }
 
-  /*
-  	Name: hide_given_input
-  	Namespace: cbeastcode
-  	Checksum: 0x271B5DC
-  	Offset: 0xB30
-  	Size: 0x2C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function hide_given_input(n_index) {
     m_a_mdl_inputs[n_index] ghost();
   }
 
-  /*
-  	Name: hide_readout
-  	Namespace: cbeastcode
-  	Checksum: 0x2AAEFD80
-  	Offset: 0xA48
-  	Size: 0xDA
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function hide_readout(b_hide = 1) {
     foreach(mdl_input in m_a_mdl_inputs) {
       if(b_hide) {
@@ -453,15 +312,7 @@ class cbeastcode {
     }
   }
 
-  /*
-  	Name: set_clue_numbers_for_code
-  	Namespace: cbeastcode
-  	Checksum: 0x60982E6D
-  	Offset: 0x9C0
-  	Size: 0x7C
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_clue_numbers_for_code(a_mdl_clues, n_index = 0) {
     if(!isdefined(m_a_mdl_clues)) {
       m_a_mdl_clues = array(undefined);
@@ -470,26 +321,10 @@ class cbeastcode {
     self thread update_clue_numbers_for_code(n_index);
   }
 
-  /*
-  	Name: add_code_function_pair
-  	Namespace: cbeastcode
-  	Checksum: 0x81D19590
-  	Offset: 0x9A0
-  	Size: 0x14
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function add_code_function_pair(a_code, func_custom) {}
 
-  /*
-  	Name: generate_random_code
-  	Namespace: cbeastcode
-  	Checksum: 0x521180F3
-  	Offset: 0x880
-  	Size: 0x118
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function generate_random_code() {
     a_n_numbers = array(0, 1, 2, 3, 4, 5, 6, 7, 8);
     a_code = [];
@@ -506,55 +341,23 @@ class cbeastcode {
     return a_code;
   }
 
-  /*
-  	Name: get_tags_from_input_device
-  	Namespace: cbeastcode
-  	Checksum: 0xEA4C9267
-  	Offset: 0x868
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_tags_from_input_device() {
     return m_a_s_input_button_tags;
   }
 
-  /*
-  	Name: get_number_in_code
-  	Namespace: cbeastcode
-  	Checksum: 0x54EC2CA
-  	Offset: 0x838
-  	Size: 0x26
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function get_number_in_code(n_code_index, n_place_index) {
     return m_a_codes[n_code_index][n_place_index];
   }
 
-  /*
-  	Name: get_code
-  	Namespace: cbeastcode
-  	Checksum: 0x81DA9E91
-  	Offset: 0x7F0
-  	Size: 0x3E
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function get_code(n_code_index = 0) {
     a_code = m_a_codes[n_code_index];
     return a_code;
   }
 
-  /*
-  	Name: init
-  	Namespace: cbeastcode
-  	Checksum: 0x6A80B72F
-  	Offset: 0x6C0
-  	Size: 0x124
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function init(a_mdl_inputs, a_t_inputs, var_4582f16d, func_activate) {
     m_a_mdl_inputs = a_mdl_inputs;
     m_a_t_inputs = a_t_inputs;
@@ -575,39 +378,12 @@ class cbeastcode {
 
 #namespace zm_zod_beastcode;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_zod_beastcode
-	Checksum: 0xF5AC61D0
-	Offset: 0x438
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_zod_beastcode", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_zod_beastcode
-	Checksum: 0x99EC1590
-	Offset: 0x478
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}
 
-/*
-	Name: init
-	Namespace: zm_zod_beastcode
-	Checksum: 0xF86350C0
-	Offset: 0x488
-	Size: 0x200
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   a_mdl_inputs = [];
   a_mdl_clues = [];
@@ -624,26 +400,11 @@ function init() {
   }
   var_4582f16d = getentarray("keeper_sword_locker_clue_lookat", "targetname");
   level.o_canal_beastcode = new cbeastcode();
-  [
-    [level.o_canal_beastcode]
-  ] - > init(a_mdl_inputs, a_t_inputs, var_4582f16d, & keeper_sword_locker_open_locker);
-  a_code = [
-    [level.o_canal_beastcode]
-  ] - > get_code();
-  [
-    [level.o_canal_beastcode]
-  ] - > set_clue_numbers_for_code(a_mdl_clues);
+  [[level.o_canal_beastcode]] - > init(a_mdl_inputs, a_t_inputs, var_4582f16d, & keeper_sword_locker_open_locker);
+  a_code = [[level.o_canal_beastcode]] - > get_code();
+  [[level.o_canal_beastcode]] - > set_clue_numbers_for_code(a_mdl_clues);
 }
 
-/*
-	Name: keeper_sword_locker_open_locker
-	Namespace: zm_zod_beastcode
-	Checksum: 0xA3B990EF
-	Offset: 0x690
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function keeper_sword_locker_open_locker() {
   level flag::set("keeper_sword_locker");
 }

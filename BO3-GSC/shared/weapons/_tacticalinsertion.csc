@@ -1,21 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_tacticalinsertion.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\audio_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace tacticalinsertion;
 
-/*
-	Name: init_shared
-	Namespace: tacticalinsertion
-	Checksum: 0x89FF87CC
-	Offset: 0x1F8
-	Size: 0x1F4
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   level._effect["tacticalInsertionFriendly"] = "_t6/misc/fx_equip_tac_insert_light_grn";
   level._effect["tacticalInsertionEnemy"] = "_t6/misc/fx_equip_tac_insert_light_red";
@@ -45,15 +39,6 @@ function init_shared() {
   setmaplatlong(mapx, mapy, long, lat);
 }
 
-/*
-	Name: spawned
-	Namespace: tacticalinsertion
-	Checksum: 0xD1B26E43
-	Offset: 0x3F8
-	Size: 0x5C
-	Parameters: 7
-	Flags: None
-*/
 function spawned(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!newval) {
     return;
@@ -61,18 +46,9 @@ function spawned(localclientnum, oldval, newval, bnewent, binitialsnap, fieldnam
   self thread checkforplayerswitch(localclientnum);
 }
 
-/*
-	Name: playflarefx
-	Namespace: tacticalinsertion
-	Checksum: 0x6C028CAD
-	Offset: 0x460
-	Size: 0x11C
-	Parameters: 1
-	Flags: None
-*/
 function playflarefx(localclientnum) {
-  self endon(# "entityshutdown");
-  level endon(# "player_switch");
+  self endon("entityshutdown");
+  level endon("player_switch");
   if(util::friend_not_foe(localclientnum)) {
     self.tacticalinsertionfx = playfxontag(localclientnum, level._effect["tacticalInsertionFriendly"], self, "tag_flash");
   } else {
@@ -84,29 +60,11 @@ function playflarefx(localclientnum) {
   self thread stopflareloopwatcher(looporigin);
 }
 
-/*
-	Name: watchtacinsertshutdown
-	Namespace: tacticalinsertion
-	Checksum: 0x346141D1
-	Offset: 0x588
-	Size: 0x3C
-	Parameters: 2
-	Flags: None
-*/
 function watchtacinsertshutdown(localclientnum, fxhandle) {
-  self waittill(# "entityshutdown");
+  self waittill("entityshutdown");
   stopfx(localclientnum, fxhandle);
 }
 
-/*
-	Name: stopflareloopwatcher
-	Namespace: tacticalinsertion
-	Checksum: 0x63CEF46E
-	Offset: 0x5D0
-	Size: 0x5C
-	Parameters: 1
-	Flags: None
-*/
 function stopflareloopwatcher(looporigin) {
   while (true) {
     if(!isdefined(self) || !isdefined(self.tacticalinsertionfx)) {
@@ -117,19 +75,10 @@ function stopflareloopwatcher(looporigin) {
   }
 }
 
-/*
-	Name: checkforplayerswitch
-	Namespace: tacticalinsertion
-	Checksum: 0x2CF0F956
-	Offset: 0x638
-	Size: 0x64
-	Parameters: 1
-	Flags: None
-*/
 function checkforplayerswitch(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (true) {
-    level waittill(# "player_switch");
+    level waittill("player_switch");
     if(isdefined(self.tacticalinsertionfx)) {
       stopfx(localclientnum, self.tacticalinsertionfx);
       self.tacticalinsertionfx = undefined;

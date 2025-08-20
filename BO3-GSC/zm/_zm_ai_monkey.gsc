@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_ai_monkey.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\aat_shared;
 #using scripts\shared\ai\archetype_utility;
@@ -27,18 +31,8 @@
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_ai_monkey;
 
-/*
-	Name: init
-	Namespace: zm_ai_monkey
-	Checksum: 0xFFE93ED0
-	Offset: 0x12F0
-	Size: 0x254
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   initmonkeybehaviorsandasm();
   spawner::add_archetype_spawn_function("monkey", & archetypemonkeyblackboardinit);
@@ -58,31 +52,11 @@ function autoexec init() {
   }
 }
 
-/*
-	Name: monkeynotetrackmeleefire
-	Namespace: zm_ai_monkey
-	Checksum: 0x23A77594
-	Offset: 0x1550
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function monkeynotetrackmeleefire(entity) {
   entity melee();
-  /#
   record3dtext("", self.origin, (1, 0, 0), "", entity);
-  # /
 }
 
-/*
-	Name: monkeynotetrackgroundpound
-	Namespace: zm_ai_monkey
-	Checksum: 0x5F813DDA
-	Offset: 0x15B8
-	Size: 0x4D6
-	Parameters: 1
-	Flags: Linked
-*/
 function monkeynotetrackgroundpound(entity) {
   playfxontag(level._effect["monkey_groundhit"], entity, "tag_origin");
   entity playsound("zmb_monkey_groundpound");
@@ -149,15 +123,6 @@ function monkeynotetrackgroundpound(entity) {
   }
 }
 
-/*
-	Name: function_fcdc0829
-	Namespace: zm_ai_monkey
-	Checksum: 0x91E143EC
-	Offset: 0x1A98
-	Size: 0x194
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fcdc0829(entity) {
   target = self.monkey_thrower;
   throw_angle = randomintrange(20, 30);
@@ -174,68 +139,28 @@ function function_fcdc0829(entity) {
   entity magicgrenadetype(grenade_type, hand_pos, velocity, fuse);
 }
 
-/*
-	Name: archetypemonkeyblackboardinit
-	Namespace: zm_ai_monkey
-	Checksum: 0x7269284D
-	Offset: 0x1C38
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function archetypemonkeyblackboardinit() {
   blackboard::createblackboardforentity(self);
   self aiutility::registerutilityblackboardattributes();
   ai::createinterfaceforentity(self);
   blackboard::registerblackboardattribute(self, "_locomotion_speed", "locomotion_speed_walk", & zombiebehavior::bb_getlocomotionspeedtype);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   self.___archetypeonanimscriptedcallback = & archetypemonkeyonanimscriptedcallback;
-  /#
   self finalizetrackedblackboardattributes();
-  # /
 }
 
-/*
-	Name: monkeyspawnsetup
-	Namespace: zm_ai_monkey
-	Checksum: 0xD9C89BAF
-	Offset: 0x1D28
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private monkeyspawnsetup() {
   self setpitchorient();
   self monkey_prespawn();
 }
 
-/*
-	Name: archetypemonkeyonanimscriptedcallback
-	Namespace: zm_ai_monkey
-	Checksum: 0x51C3C39C
-	Offset: 0x1D68
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private archetypemonkeyonanimscriptedcallback(entity) {
   entity.__blackboard = undefined;
   entity archetypemonkeyblackboardinit();
 }
 
-/*
-	Name: initmonkeybehaviorsandasm
-	Namespace: zm_ai_monkey
-	Checksum: 0xCEEB5186
-	Offset: 0x1DA8
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initmonkeybehaviorsandasm() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("monkeyTargetService", & monkeytargetservice);
   behaviortreenetworkutility::registerbehaviortreescriptapi("monkeyShouldGroundHit", & monkeyshouldgroundhit);
@@ -247,15 +172,6 @@ function private initmonkeybehaviorsandasm() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("monkeyGrenadeTauntTerminate", & monkeygrenadetauntterminate);
 }
 
-/*
-	Name: monkeytargetservice
-	Namespace: zm_ai_monkey
-	Checksum: 0x61AC7B66
-	Offset: 0x1EF8
-	Size: 0x32E
-	Parameters: 1
-	Flags: Linked
-*/
 function monkeytargetservice(entity) {
   if(isdefined(entity.ignoreall) && entity.ignoreall) {
     return false;
@@ -313,15 +229,6 @@ function monkeytargetservice(entity) {
   return false;
 }
 
-/*
-	Name: monkeyshouldgroundhit
-	Namespace: zm_ai_monkey
-	Checksum: 0x485999D9
-	Offset: 0x2230
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function monkeyshouldgroundhit(entity) {
   if(isdefined(entity.var_aa9937) && entity.var_aa9937) {
     return true;
@@ -329,29 +236,11 @@ function monkeyshouldgroundhit(entity) {
   return false;
 }
 
-/*
-	Name: monkeygroundhitstart
-	Namespace: zm_ai_monkey
-	Checksum: 0xFF67A29E
-	Offset: 0x2278
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function monkeygroundhitstart(entity) {
   self monkey_zombie_set_state("ground_pound");
   self.ground_hit = 1;
 }
 
-/*
-	Name: monkeygroundhitterminate
-	Namespace: zm_ai_monkey
-	Checksum: 0x5BCA1090
-	Offset: 0x22B8
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function monkeygroundhitterminate(entity) {
   self.ground_hit = 0;
   self monkey_zombie_set_state("ground_pound_done");
@@ -359,15 +248,6 @@ function monkeygroundhitterminate(entity) {
   self.var_aa9937 = 0;
 }
 
-/*
-	Name: monkeyshouldthrowbackrun
-	Namespace: zm_ai_monkey
-	Checksum: 0x70BBDEF5
-	Offset: 0x2318
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function monkeyshouldthrowbackrun(entity) {
   if(isdefined(entity.var_cf51d24) && entity.var_cf51d24) {
     return true;
@@ -375,15 +255,6 @@ function monkeyshouldthrowbackrun(entity) {
   return false;
 }
 
-/*
-	Name: monkeyshouldthrowbackstill
-	Namespace: zm_ai_monkey
-	Checksum: 0x6E00DEDA
-	Offset: 0x2360
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function monkeyshouldthrowbackstill(entity) {
   if(isdefined(entity.var_6602f0c5) && entity.var_6602f0c5) {
     return true;
@@ -391,42 +262,15 @@ function monkeyshouldthrowbackstill(entity) {
   return false;
 }
 
-/*
-	Name: monkeythrowbackterminate
-	Namespace: zm_ai_monkey
-	Checksum: 0xC040E525
-	Offset: 0x23A8
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function monkeythrowbackterminate(entity) {
   entity.var_cf51d24 = 0;
   entity.var_6602f0c5 = 0;
 }
 
-/*
-	Name: monkeygrenadetauntterminate
-	Namespace: zm_ai_monkey
-	Checksum: 0xAA512407
-	Offset: 0x23E0
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function monkeygrenadetauntterminate(entity) {
-  entity notify(# "throw_done");
+  entity notify("throw_done");
 }
 
-/*
-	Name: function_4c8046f8
-	Namespace: zm_ai_monkey
-	Checksum: 0x494D7AB7
-	Offset: 0x2408
-	Size: 0x37C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4c8046f8() {
   function_dd79f3a8();
   level._effect["monkey_groundhit"] = "dlc5/zmhd/fx_zmb_monkey_ground_hit";
@@ -495,15 +339,6 @@ function function_4c8046f8() {
   level.revive_solo_fx_func = & monkey_revive_solo_fx;
 }
 
-/*
-	Name: monkey_prespawn
-	Namespace: zm_ai_monkey
-	Checksum: 0x46D0F081
-	Offset: 0x2790
-	Size: 0x2DE
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_prespawn() {
   self.animname = "monkey_zombie";
   self pushactors(1);
@@ -552,18 +387,9 @@ function monkey_prespawn() {
   self thread zm_spawner::play_ambient_zombie_vocals();
   self thread zm_audio::zmbaivox_notifyconvert();
   self.ground_hit_time = gettime();
-  self notify(# "zombie_init_done");
+  self notify("zombie_init_done");
 }
 
-/*
-	Name: function_dd79f3a8
-	Namespace: zm_ai_monkey
-	Checksum: 0xEBCFC4A8
-	Offset: 0x2A78
-	Size: 0x4B0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dd79f3a8() {
   level.monkey_perk_attack_anims[0] = "rtrg_ai_zm_dlc5_monkey_attack_perks_front";
   level.monkey_perk_attack_anims[1] = "rtrg_ai_zm_dlc5_monkey_attack_perks_left";
@@ -602,15 +428,6 @@ function function_dd79f3a8() {
   level.monkey_perk_attack_anims["specialty_widowswine"]["right_top"] = "rtrg_ai_zm_dlc5_monkey_attack_perks_right_top_widows_vine";
 }
 
-/*
-	Name: monkey_zombie_spawn
-	Namespace: zm_ai_monkey
-	Checksum: 0x6973F149
-	Offset: 0x2F30
-	Size: 0x1E8
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_zombie_spawn(pack) {
   self.script_moveoverride = 1;
   if(!isdefined(level.num_monkey_zombies)) {
@@ -642,19 +459,10 @@ function monkey_zombie_spawn(pack) {
   return monkey_zombie;
 }
 
-/*
-	Name: wait_for_damage
-	Namespace: zm_ai_monkey
-	Checksum: 0xE7A9D29D
-	Offset: 0x3120
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_for_damage() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "damage", n_amount, e_attacker, v_direction, v_point, str_type);
+    self waittill("damage", n_amount, e_attacker, v_direction, v_point, str_type);
     if(e_attacker zm_utility::is_player()) {
       e_attacker zm_score::player_add_points("damage");
       e_attacker.use_weapon_type = str_type;
@@ -663,39 +471,19 @@ function wait_for_damage() {
   }
 }
 
-/*
-	Name: watch_for_death
-	Namespace: zm_ai_monkey
-	Checksum: 0x99EC1590
-	Offset: 0x31F8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_for_death() {}
 
-/*
-	Name: monkey_round_spawning
-	Namespace: zm_ai_monkey
-	Checksum: 0x2777958D
-	Offset: 0x3208
-	Size: 0x140
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_round_spawning() {
-  level endon(# "intermission");
-  level endon(# "end_of_round");
-  level endon(# "restart_round");
-  /#
-  level endon(# "kill_round");
+  level endon("intermission");
+  level endon("end_of_round");
+  level endon("restart_round");
+  level endon("kill_round");
   if(getdvarint("") == 2 || getdvarint("") >= 4) {
     return;
   }
-  # /
-    if(level.intermission) {
-      return;
-    }
+  if(level.intermission) {
+    return;
+  }
   level.monkey_intermission = 1;
   level thread monkey_round_aftermath();
   pack_idx = 0;
@@ -711,15 +499,6 @@ function monkey_round_spawning() {
   }
 }
 
-/*
-	Name: monkey_setup_packs
-	Namespace: zm_ai_monkey
-	Checksum: 0xDF53AB55
-	Offset: 0x3350
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_setup_packs() {
   level.monkey_packs_killed = 0;
   players = getplayers();
@@ -731,15 +510,6 @@ function monkey_setup_packs() {
   level.monkey_encounters++;
 }
 
-/*
-	Name: monkey_setup_health
-	Namespace: zm_ai_monkey
-	Checksum: 0xBF365597
-	Offset: 0x33D8
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_setup_health() {
   switch (level.monkey_encounters) {
     case 1: {
@@ -765,15 +535,6 @@ function monkey_setup_health() {
   monkey_print("monkey health = " + level.monkey_zombie_health);
 }
 
-/*
-	Name: monkey_setup_spawners
-	Namespace: zm_ai_monkey
-	Checksum: 0x485540D
-	Offset: 0x34C8
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_setup_spawners() {
   level.current_monkey_spawners = [];
   for (i = 0; i < level.monkey_zombie_spawners.size; i++) {
@@ -785,15 +546,6 @@ function monkey_setup_spawners() {
   level.monkey_spawner_idx = 0;
 }
 
-/*
-	Name: randomize_array
-	Namespace: zm_ai_monkey
-	Checksum: 0xBDCA7198
-	Offset: 0x3588
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function randomize_array(array) {
   for (i = 0; i < array.size; i++) {
     j = randomint(array.size);
@@ -804,15 +556,6 @@ function randomize_array(array) {
   return array;
 }
 
-/*
-	Name: monkey_get_next_spawner
-	Namespace: zm_ai_monkey
-	Checksum: 0x14AB92F0
-	Offset: 0x3630
-	Size: 0x60
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_get_next_spawner() {
   spawner = level.current_monkey_spawners[level.monkey_spawner_idx];
   if(isdefined(spawner)) {
@@ -824,15 +567,6 @@ function monkey_get_next_spawner() {
   return spawner;
 }
 
-/*
-	Name: monkey_get_available_spawners
-	Namespace: zm_ai_monkey
-	Checksum: 0x23E9F9E5
-	Offset: 0x3698
-	Size: 0xAC
-	Parameters: 0
-	Flags: None
-*/
 function monkey_get_available_spawners() {
   spawners = [];
   for (i = 0; i < level.monkey_zombie_spawners.size; i++) {
@@ -844,15 +578,6 @@ function monkey_get_available_spawners() {
   return spawners;
 }
 
-/*
-	Name: monkey_pack_man_setup_perks
-	Namespace: zm_ai_monkey
-	Checksum: 0xC4EE089C
-	Offset: 0x3750
-	Size: 0x1E8
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_pack_man_setup_perks() {
   level.monkey_perks = [];
   vending_triggers = function_5b9c3e11();
@@ -880,15 +605,6 @@ function monkey_pack_man_setup_perks() {
   level.monkey_perk_idx = 0;
 }
 
-/*
-	Name: function_5b9c3e11
-	Namespace: zm_ai_monkey
-	Checksum: 0x6A96BEF6
-	Offset: 0x3940
-	Size: 0xEE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5b9c3e11() {
   vending_machines = [];
   var_560b7d8d = getentarray("zombie_vending", "targetname");
@@ -905,15 +621,6 @@ function function_5b9c3e11() {
   return vending_machines;
 }
 
-/*
-	Name: monkey_pack_man_get_next_perk
-	Namespace: zm_ai_monkey
-	Checksum: 0xFFAE2559
-	Offset: 0x3A38
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_pack_man_get_next_perk() {
   if(level.monkey_perks.size == 0) {
     self.perk = undefined;
@@ -928,15 +635,6 @@ function monkey_pack_man_get_next_perk() {
   self.perk = perk;
 }
 
-/*
-	Name: monkey_pack_spawn
-	Namespace: zm_ai_monkey
-	Checksum: 0x69CDA6AA
-	Offset: 0x3AD0
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_pack_spawn() {
   monkey_print("spawning pack");
   pack = spawnstruct();
@@ -947,15 +645,6 @@ function monkey_pack_spawn() {
   pack thread monkey_pack_think();
 }
 
-/*
-	Name: monkey_pack_think
-	Namespace: zm_ai_monkey
-	Checksum: 0x4BDA35BD
-	Offset: 0x3B70
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_pack_think() {
   self.ground_hit_time = gettime();
   self monkey_pack_man_get_next_perk();
@@ -978,15 +667,6 @@ function monkey_pack_think() {
   self thread monkey_pack_update_perk();
 }
 
-/*
-	Name: monkey_pack_update_perk
-	Namespace: zm_ai_monkey
-	Checksum: 0xEF8C5C41
-	Offset: 0x3CF0
-	Size: 0x168
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_pack_update_perk() {
   while (true) {
     if(!isdefined(self.perk)) {
@@ -1002,7 +682,7 @@ function monkey_pack_update_perk() {
       for (i = 0; i < self.monkeys.size; i++) {
         if(!self.monkeys[i].charge_player) {
           self.monkeys[i].perk = self.perk;
-          self.monkeys[i] notify(# "stop_perk_attack");
+          self.monkeys[i] notify("stop_perk_attack");
         }
       }
     }
@@ -1010,15 +690,6 @@ function monkey_pack_update_perk() {
   }
 }
 
-/*
-	Name: monkey_pack_next_perk
-	Namespace: zm_ai_monkey
-	Checksum: 0x816EAF7A
-	Offset: 0x3E60
-	Size: 0x138
-	Parameters: 0
-	Flags: None
-*/
 function monkey_pack_next_perk() {
   perk = undefined;
   perk_idx = -1;
@@ -1041,15 +712,6 @@ function monkey_pack_next_perk() {
   self.perk = perk;
 }
 
-/*
-	Name: monkey_pack_set_machine
-	Namespace: zm_ai_monkey
-	Checksum: 0x1C1CBB98
-	Offset: 0x3FA0
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_pack_set_machine() {
   self.machine = undefined;
   if(!isdefined(self.perk)) {
@@ -1063,15 +725,6 @@ function monkey_pack_set_machine() {
   }
 }
 
-/*
-	Name: monkey_pack_choose_enemy
-	Namespace: zm_ai_monkey
-	Checksum: 0xC80D82C1
-	Offset: 0x4058
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_pack_choose_enemy() {
   monkey_enemy = [];
   players = getplayers();
@@ -1089,15 +742,6 @@ function monkey_pack_choose_enemy() {
   }
 }
 
-/*
-	Name: monkey_pack_update_enemy
-	Namespace: zm_ai_monkey
-	Checksum: 0xEDD6F5B
-	Offset: 0x4148
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_pack_update_enemy() {
   while (self.monkeys.size > 0) {
     players = getplayers();
@@ -1136,15 +780,6 @@ function monkey_pack_update_enemy() {
   }
 }
 
-/*
-	Name: monkey_zombie_check_ground_hit
-	Namespace: zm_ai_monkey
-	Checksum: 0x3A35ED50
-	Offset: 0x43A0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_check_ground_hit() {
   if(gettime() >= self.ground_hit_time) {
     return true;
@@ -1152,15 +787,6 @@ function monkey_zombie_check_ground_hit() {
   return false;
 }
 
-/*
-	Name: monkey_pack_update_ground_hit
-	Namespace: zm_ai_monkey
-	Checksum: 0x5478D2FE
-	Offset: 0x43C8
-	Size: 0x22C
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_pack_update_ground_hit(hitter) {
   self.ground_hit_time = gettime() + level.ground_hit_delay;
   level.ground_hit_delay = randomfloatrange(4.5, 6.5) * 1000;
@@ -1193,22 +819,11 @@ function monkey_pack_update_ground_hit(hitter) {
   monkey_print("next ground hit in " + level.ground_hit_delay);
 }
 
-/*
-	Name: monkey_round_wait
-	Namespace: zm_ai_monkey
-	Checksum: 0x62BC8F7D
-	Offset: 0x4600
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_round_wait() {
-  /#
   if(getdvarint("") == 2 || getdvarint("") >= 4) {
-    level waittill(# "forever");
+    level waittill("forever");
   }
-  # /
-    wait(1);
+  wait(1);
   if(level flag::get("monkey_round")) {
     wait(7);
     while (level.monkey_intermission) {
@@ -1217,15 +832,6 @@ function monkey_round_wait() {
   }
 }
 
-/*
-	Name: monkey_round_aftermath
-	Namespace: zm_ai_monkey
-	Checksum: 0xF3B2023C
-	Offset: 0x46A8
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_round_aftermath() {
   level flag::wait_till("last_monkey_down");
   level thread zm_audio::sndmusicsystem_playstate("monkey_round_end");
@@ -1236,15 +842,6 @@ function monkey_round_aftermath() {
   level.monkey_intermission = 0;
 }
 
-/*
-	Name: monkey_round_tracker
-	Namespace: zm_ai_monkey
-	Checksum: 0x47E145E5
-	Offset: 0x4730
-	Size: 0x230
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_round_tracker() {
   level flag::wait_till("power_on");
   level flag::wait_till("perk_bought");
@@ -1253,7 +850,7 @@ function monkey_round_tracker() {
   level.next_monkey_round = level.round_number + randomintrange(1, 4);
   level.prev_monkey_round = level.next_monkey_round;
   while (true) {
-    level waittill(# "between_round_over");
+    level waittill("between_round_over");
     if(level.round_number == level.next_monkey_round) {
       if(!monkey_player_has_perk()) {
         level.next_monkey_round++;
@@ -1276,15 +873,6 @@ function monkey_round_tracker() {
   }
 }
 
-/*
-	Name: monkey_round_start
-	Namespace: zm_ai_monkey
-	Checksum: 0xF55A47A9
-	Offset: 0x4968
-	Size: 0x13C
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_round_start() {
   level flag::set("monkey_round");
   level flag::set("monkey_free_perk");
@@ -1302,30 +890,12 @@ function monkey_round_start() {
   level thread play_delayed_player_vox();
 }
 
-/*
-	Name: play_delayed_player_vox
-	Namespace: zm_ai_monkey
-	Checksum: 0x5CDBFF9
-	Offset: 0x4AB0
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function play_delayed_player_vox() {
   wait(8);
   players = getplayers();
   players[randomintrange(0, players.size)] zm_audio::create_and_play_dialog("general", "monkey_spawn");
 }
 
-/*
-	Name: monkey_round_stop
-	Namespace: zm_ai_monkey
-	Checksum: 0xF867B9F3
-	Offset: 0x4B28
-	Size: 0x120
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_round_stop() {
   level flag::clear("monkey_round");
   level flag::clear("last_monkey_down");
@@ -1333,22 +903,13 @@ function monkey_round_stop() {
     level thread[[level.monkey_round_stop]]();
   }
   util::clientnotify("monkey_stop");
-  level notify(# "grenade_watcher_stop");
+  level notify("grenade_watcher_stop");
   players = getplayers();
   foreach(player in players) {
     self.perk_hud_flash = undefined;
   }
 }
 
-/*
-	Name: monkey_player_has_perk
-	Namespace: zm_ai_monkey
-	Checksum: 0x15DAB1E4
-	Offset: 0x4C50
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_player_has_perk() {
   vending_triggers = function_5b9c3e11();
   for (i = 0; i < vending_triggers.size; i++) {
@@ -1368,15 +929,6 @@ function monkey_player_has_perk() {
   return false;
 }
 
-/*
-	Name: monkey_zombie_manager
-	Namespace: zm_ai_monkey
-	Checksum: 0x908FD001
-	Offset: 0x4DC0
-	Size: 0x78
-	Parameters: 0
-	Flags: None
-*/
 function monkey_zombie_manager() {
   while (true) {
     while (level.num_monkey_zombies < level.max_monkey_zombies) {
@@ -1390,15 +942,6 @@ function monkey_zombie_manager() {
   }
 }
 
-/*
-	Name: monkey_zombie_pick_best_spawner
-	Namespace: zm_ai_monkey
-	Checksum: 0x94BFEBE1
-	Offset: 0x4E40
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_pick_best_spawner() {
   best_spawner = undefined;
   best_score = -1;
@@ -1414,33 +957,15 @@ function monkey_zombie_pick_best_spawner() {
   return best_spawner;
 }
 
-/*
-	Name: monkey_zombie_choose_run
-	Namespace: zm_ai_monkey
-	Checksum: 0x368B3A02
-	Offset: 0x4EF8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_choose_run() {
-  self endon(# "death");
+  self endon("death");
   self.zombie_move_speed = "run";
-  self waittill(# "speed_up");
+  self waittill("speed_up");
   self.zombie_move_speed = "sprint";
 }
 
-/*
-	Name: monkey_zombie_think
-	Namespace: zm_ai_monkey
-	Checksum: 0xF8135EC
-	Offset: 0x4F40
-	Size: 0x1F0
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_think() {
-  self endon(# "death");
+  self endon("death");
   self thread play_random_monkey_vox();
   self.goalradius = 32;
   self.meleeattackdist = 64;
@@ -1473,17 +998,8 @@ function monkey_zombie_think() {
   }
 }
 
-/*
-	Name: monkey_zombie_debug
-	Namespace: zm_ai_monkey
-	Checksum: 0xC14C7294
-	Offset: 0x5138
-	Size: 0x88
-	Parameters: 0
-	Flags: None
-*/
 function monkey_zombie_debug() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     forward = vectornormalize(anglestoforward(self.angles));
     end_pos = self.origin - vectorscale(forward, 120);
@@ -1491,18 +1007,9 @@ function monkey_zombie_debug() {
   }
 }
 
-/*
-	Name: monkey_zombie_update
-	Namespace: zm_ai_monkey
-	Checksum: 0xD52B527
-	Offset: 0x51C8
-	Size: 0x186
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_update() {
-  self endon(# "death");
-  self endon(# "monkey_update_stop");
+  self endon("death");
+  self endon("monkey_update_stop");
   self animmode("none");
   while (true) {
     if(isdefined(self.custom_think) && self.custom_think) {
@@ -1515,7 +1022,7 @@ function monkey_zombie_update() {
       } else {
         if(isdefined(self.perk)) {
           self thread monkey_zombie_destroy_perk();
-          self waittill(# "stop_perk_attack");
+          self waittill("stop_perk_attack");
           util::wait_network_frame();
           continue;
         } else {
@@ -1533,17 +1040,8 @@ function monkey_zombie_update() {
   }
 }
 
-/*
-	Name: function_f0891021
-	Namespace: zm_ai_monkey
-	Checksum: 0x8FEE4977
-	Offset: 0x5358
-	Size: 0x116
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f0891021() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     dist_sq = 0;
     start_pos = self.origin;
@@ -1563,15 +1061,6 @@ function function_f0891021() {
   }
 }
 
-/*
-	Name: monkey_zombie_get_perk_pos
-	Namespace: zm_ai_monkey
-	Checksum: 0x97F2D3C7
-	Offset: 0x5478
-	Size: 0xDA
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_get_perk_pos() {
   a_s_points = struct::get_array(self.pack.machine.target, "targetname");
   for (i = 0; i < a_s_points.size; i++) {
@@ -1587,36 +1076,18 @@ function monkey_zombie_get_perk_pos() {
   }
 }
 
-/*
-	Name: monkey_pack_clear_perk_pos
-	Namespace: zm_ai_monkey
-	Checksum: 0x4172D43E
-	Offset: 0x5560
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_pack_clear_perk_pos() {
   self.attack = [];
 }
 
-/*
-	Name: monkey_zombie_health_watcher
-	Namespace: zm_ai_monkey
-	Checksum: 0x45B505A4
-	Offset: 0x5578
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_health_watcher() {
-  self endon(# "death");
+  self endon("death");
   health_limit = self.health * 0.75;
   while (true) {
     if(self.health <= health_limit) {
       self stopanimscripted();
       util::wait_network_frame();
-      self notify(# "stop_perk_attack");
+      self notify("stop_perk_attack");
       self monkey_zombie_set_state("charge_player");
       self.charge_player = 1;
       self.perk = undefined;
@@ -1626,17 +1097,8 @@ function monkey_zombie_health_watcher() {
   }
 }
 
-/*
-	Name: monkey_zombie_fling_watcher
-	Namespace: zm_ai_monkey
-	Checksum: 0x6EDC99A4
-	Offset: 0x5648
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_fling_watcher() {
-  self endon(# "death");
+  self endon("death");
   half_health = level.monkey_zombie_health * 0.5;
   while (true) {
     if(self.health <= half_health) {
@@ -1647,37 +1109,19 @@ function monkey_zombie_fling_watcher() {
   }
 }
 
-/*
-	Name: monkey_zombie_speed_watcher
-	Namespace: zm_ai_monkey
-	Checksum: 0x1E70152D
-	Offset: 0x56C0
-	Size: 0x56
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_speed_watcher() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     if(self.health < self.maxhealth) {
       break;
     }
     util::wait_network_frame();
   }
-  self notify(# "speed_up");
+  self notify("speed_up");
 }
 
-/*
-	Name: monkey_grenade_watcher
-	Namespace: zm_ai_monkey
-	Checksum: 0x1C631CBC
-	Offset: 0x5720
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_grenade_watcher() {
-  self endon(# "death");
+  self endon("death");
   level.monkey_grenades = [];
   level.monkey_bhbs = [];
   players = getplayers();
@@ -1686,20 +1130,11 @@ function monkey_grenade_watcher() {
   }
 }
 
-/*
-	Name: monkey_grenade_watch
-	Namespace: zm_ai_monkey
-	Checksum: 0x590A694
-	Offset: 0x57B0
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_grenade_watch() {
-  self endon(# "death");
-  level endon(# "grenade_watcher_stop");
+  self endon("death");
+  level endon("grenade_watcher_stop");
   while (true) {
-    self waittill(# "grenade_fire", grenade, weapon);
+    self waittill("grenade_fire", grenade, weapon);
     if(zm_utility::is_lethal_grenade(weapon)) {
       grenade thread monkey_grenade_wait();
       grenade.thrower = self;
@@ -1713,47 +1148,20 @@ function monkey_grenade_watch() {
   }
 }
 
-/*
-	Name: monkey_grenade_wait
-	Namespace: zm_ai_monkey
-	Checksum: 0xC692BF9
-	Offset: 0x58C0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_grenade_wait() {
-  self waittill(# "death");
+  self waittill("death");
   arrayremovevalue(level.monkey_grenades, self);
   monkey_print("remove grenade from level");
 }
 
-/*
-	Name: monkey_bhb_wait
-	Namespace: zm_ai_monkey
-	Checksum: 0x79DBC387
-	Offset: 0x5910
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_bhb_wait() {
-  self waittill(# "death");
+  self waittill("death");
   arrayremovevalue(level.monkey_bhbs, self);
   monkey_print("remove bhb from level");
 }
 
-/*
-	Name: monkey_zombie_grenade_throw_watcher
-	Namespace: zm_ai_monkey
-	Checksum: 0x3A27B53E
-	Offset: 0x5960
-	Size: 0x184
-	Parameters: 2
-	Flags: None
-*/
 function monkey_zombie_grenade_throw_watcher(target, animname) {
-  self endon(# "death");
+  self endon("death");
   self waittillmatch(animname);
   throw_angle = randomintrange(20, 30);
   dir = vectortoangles(target.origin - self.origin);
@@ -1766,17 +1174,8 @@ function monkey_zombie_grenade_throw_watcher(target, animname) {
   self magicgrenadetype(grenade_type, hand_pos, velocity, fuse);
 }
 
-/*
-	Name: monkey_zombie_grenade_throw
-	Namespace: zm_ai_monkey
-	Checksum: 0xA1826AB6
-	Offset: 0x5AF0
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_zombie_grenade_throw(target) {
-  self endon(# "death");
+  self endon("death");
   forward = vectornormalize(anglestoforward(self.angles));
   end_pos = self.origin + vector_scale(forward, 96);
   if(bullettracepassed(self.origin, end_pos, 0, undefined)) {
@@ -1786,33 +1185,15 @@ function monkey_zombie_grenade_throw(target) {
   }
 }
 
-/*
-	Name: vector_scale
-	Namespace: zm_ai_monkey
-	Checksum: 0x3312341E
-	Offset: 0x5BC0
-	Size: 0x4E
-	Parameters: 2
-	Flags: Linked
-*/
 function vector_scale(vec, scale) {
   vec = (vec[0] * scale, vec[1] * scale, vec[2] * scale);
   return vec;
 }
 
-/*
-	Name: monkey_zombie_watch_machine_damage
-	Namespace: zm_ai_monkey
-	Checksum: 0x41B2B5E0
-	Offset: 0x5C18
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_watch_machine_damage() {
-  self endon(# "death");
-  self endon(# "stop_perk_attack");
-  self endon(# "stop_machine_watch");
+  self endon("death");
+  self endon("stop_perk_attack");
+  self endon("stop_machine_watch");
   arrival_health = self.health;
   while (true) {
     monkey_zone = self monkey_get_zone();
@@ -1827,19 +1208,9 @@ function monkey_zombie_watch_machine_damage() {
   }
 }
 
-/*
-	Name: monkey_zombie_set_state
-	Namespace: zm_ai_monkey
-	Checksum: 0x2BC0A51F
-	Offset: 0x5CF8
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_zombie_set_state(state) {
   self.state = state;
   monkey_print("set state to " + state);
-  /#
   if(!isdefined(self.var_ee277195)) {
     self.var_ee277195 = [];
   }
@@ -1851,18 +1222,8 @@ function monkey_zombie_set_state(state) {
   if(self.var_d82deb25 > 100) {
     self.var_d82deb25 = 0;
   }
-  # /
 }
 
-/*
-	Name: monkey_zombie_get_state
-	Namespace: zm_ai_monkey
-	Checksum: 0xC696F719
-	Offset: 0x5DB0
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function monkey_zombie_get_state() {
   if(isdefined(self.state)) {
     return self.state;
@@ -1870,19 +1231,10 @@ function monkey_zombie_get_state() {
   return undefined;
 }
 
-/*
-	Name: monkey_zombie_attack_perk
-	Namespace: zm_ai_monkey
-	Checksum: 0xBB94FBC4
-	Offset: 0x5DD8
-	Size: 0x4B4
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_attack_perk() {
-  self endon(# "death");
-  self endon(# "stop_perk_attack");
-  self endon(# "next_perk");
+  self endon("death");
+  self endon("stop_perk_attack");
+  self endon("next_perk");
   if(!isdefined(self.perk)) {
     return;
   }
@@ -1942,21 +1294,12 @@ function monkey_zombie_attack_perk() {
     }
     wait(time);
   }
-  self notify(# "stop_machine_watch");
+  self notify("stop_machine_watch");
   self monkey_zombie_set_state("attack_perk_done");
 }
 
-/*
-	Name: monkey_wait_to_drop
-	Namespace: zm_ai_monkey
-	Checksum: 0x267F1CFF
-	Offset: 0x6298
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_wait_to_drop() {
-  self endon(# "death");
+  self endon("death");
   wait(0.2);
   self.dropped = 0;
   self.perk_attack_origin = self.attack.origin;
@@ -1971,15 +1314,6 @@ function monkey_wait_to_drop() {
   monkey_print("close to ground");
 }
 
-/*
-	Name: play_player_perk_theft_vox
-	Namespace: zm_ai_monkey
-	Checksum: 0xB84E8877
-	Offset: 0x6370
-	Size: 0x21A
-	Parameters: 2
-	Flags: Linked
-*/
 function play_player_perk_theft_vox(perk, monkey) {
   force_quit = 0;
   if(!isdefined(level.perk_theft_vox)) {
@@ -2014,17 +1348,8 @@ function play_player_perk_theft_vox(perk, monkey) {
   level.perk_theft_vox[perk] = 0;
 }
 
-/*
-	Name: play_attack_impacts
-	Namespace: zm_ai_monkey
-	Checksum: 0xFC3E248B
-	Offset: 0x6598
-	Size: 0x9E
-	Parameters: 1
-	Flags: Linked
-*/
 function play_attack_impacts(time) {
-  self endon(# "death");
+  self endon("death");
   for (i = 0; i < time; i++) {
     if(randomintrange(0, 100) >= 41) {
       self playsound("zmb_monkey_attack_machine");
@@ -2033,25 +1358,16 @@ function play_attack_impacts(time) {
   }
 }
 
-/*
-	Name: monkey_zombie_destroy_perk
-	Namespace: zm_ai_monkey
-	Checksum: 0x20C94A97
-	Offset: 0x6640
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_destroy_perk() {
-  self endon(# "death");
-  self endon(# "stop_perk_attack");
+  self endon("death");
+  self endon("stop_perk_attack");
   if(isdefined(self.perk)) {
     self monkey_zombie_set_state("destroy_perk");
     monkey_print("goto " + self.perk.script_noteworthy);
     self monkey_zombie_get_perk_pos();
     if(isdefined(self.attack)) {
       self setgoalpos(self.attack.origin);
-      self waittill(# "goal");
+      self waittill("goal");
       self setgoalpos(self.origin);
       self thread monkey_zombie_watch_machine_damage();
       self thread monkey_zombie_attack_perk();
@@ -2059,15 +1375,6 @@ function monkey_zombie_destroy_perk() {
   }
 }
 
-/*
-	Name: monkey_zombie_default_spawn_heuristic
-	Namespace: zm_ai_monkey
-	Checksum: 0xD43CF33D
-	Offset: 0x6760
-	Size: 0x126
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_zombie_default_spawn_heuristic(spawner) {
   if(!isdefined(spawner.script_noteworthy)) {
     return -1;
@@ -2083,17 +1390,8 @@ function monkey_zombie_default_spawn_heuristic(spawner) {
   return score;
 }
 
-/*
-	Name: monkey_zombie_ground_hit
-	Namespace: zm_ai_monkey
-	Checksum: 0xB203519F
-	Offset: 0x6890
-	Size: 0xF0
-	Parameters: 0
-	Flags: None
-*/
 function monkey_zombie_ground_hit() {
-  self endon(# "death");
+  self endon("death");
   if(self.ground_hit) {
     return;
   }
@@ -2110,15 +1408,6 @@ function monkey_zombie_ground_hit() {
   }
 }
 
-/*
-	Name: monkey_pack_ready_to_detonate
-	Namespace: zm_ai_monkey
-	Checksum: 0x1D7DE5FC
-	Offset: 0x6988
-	Size: 0xC6
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_pack_ready_to_detonate(claymore) {
   for (i = 0; i < self.monkeys.size; i++) {
     if(self.monkeys[i] == self) {
@@ -2136,15 +1425,6 @@ function monkey_pack_ready_to_detonate(claymore) {
   return false;
 }
 
-/*
-	Name: monkey_zombie_force_groundhit
-	Namespace: zm_ai_monkey
-	Checksum: 0xF4796CDF
-	Offset: 0x6A58
-	Size: 0x150
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_force_groundhit() {
   if(!isdefined(level.claymores)) {
     return 0;
@@ -2166,17 +1446,8 @@ function monkey_zombie_force_groundhit() {
   return self.force_detonate.size > 0;
 }
 
-/*
-	Name: monkey_zombie_ground_hit_think
-	Namespace: zm_ai_monkey
-	Checksum: 0x2E5F529D
-	Offset: 0x6BB0
-	Size: 0x280
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_ground_hit_think() {
-  self endon(# "death");
+  self endon("death");
   self.ground_hit = 0;
   self.nextgroundhit = gettime() + level.monkey_ground_attack_delay;
   while (true) {
@@ -2219,17 +1490,8 @@ function monkey_zombie_ground_hit_think() {
   }
 }
 
-/*
-	Name: groundhit_watcher
-	Namespace: zm_ai_monkey
-	Checksum: 0xB1382494
-	Offset: 0x6E38
-	Size: 0x4AE
-	Parameters: 1
-	Flags: Linked
-*/
 function groundhit_watcher(animname) {
-  self endon(# "death");
+  self endon("death");
   self waittillmatch(animname);
   playfxontag(level._effect["monkey_groundhit"], self, "tag_origin");
   self playsound("zmb_monkey_groundpound");
@@ -2296,17 +1558,8 @@ function groundhit_watcher(animname) {
   }
 }
 
-/*
-	Name: monkey_zombie_grenade_pickup
-	Namespace: zm_ai_monkey
-	Checksum: 0x69AFA50B
-	Offset: 0x72F0
-	Size: 0x240
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_grenade_pickup() {
-  self endon(# "death");
+  self endon("death");
   pickup_dist_sq = 1024;
   picked_up = 0;
   while (isdefined(self.monkey_grenade)) {
@@ -2333,25 +1586,16 @@ function monkey_zombie_grenade_pickup() {
       util::wait_network_frame();
     }
     self thread monkey_zombie_grenade_throw(self.monkey_thrower);
-    self waittill(# "throw_done");
+    self waittill("throw_done");
   }
 }
 
-/*
-	Name: monkey_zombie_grenade_response
-	Namespace: zm_ai_monkey
-	Checksum: 0xEAF0CDD7
-	Offset: 0x7538
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_grenade_response() {
-  self endon(# "death");
+  self endon("death");
   monkey_print("go for grenade");
-  self notify(# "stop_find_flesh");
-  self notify(# "monkey_update_stop");
-  self notify(# "stop_perk_attack");
+  self notify("stop_find_flesh");
+  self notify("monkey_update_stop");
+  self notify("stop_perk_attack");
   self.following_player = 0;
   self monkey_zombie_set_state("grenade_response");
   self monkey_zombie_clear_attack_pos();
@@ -2360,17 +1604,8 @@ function monkey_zombie_grenade_response() {
   self monkey_zombie_set_state("grenade_response_done");
 }
 
-/*
-	Name: monkey_zombie_grenade_watcher
-	Namespace: zm_ai_monkey
-	Checksum: 0x1D822F37
-	Offset: 0x7620
-	Size: 0x1C8
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_grenade_watcher() {
-  self endon(# "death");
+  self endon("death");
   grenade_respond_dist_sq = 14400;
   while (true) {
     if(self.state == "default") {
@@ -2405,17 +1640,8 @@ function monkey_zombie_grenade_watcher() {
   }
 }
 
-/*
-	Name: monkey_zombie_bhb_teleport
-	Namespace: zm_ai_monkey
-	Checksum: 0x7E5749EC
-	Offset: 0x77F0
-	Size: 0x284
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_bhb_teleport() {
-  self endon(# "death");
+  self endon("death");
   monkey_print("bhb teleport");
   black_hole_teleport = struct::get_array("struct_black_hole_teleport", "targetname");
   zone_name = self zm_utility::get_current_zone();
@@ -2451,18 +1677,9 @@ function monkey_zombie_bhb_teleport() {
   so delete();
 }
 
-/*
-	Name: monkey_zombie_bhb_failsafe
-	Namespace: zm_ai_monkey
-	Checksum: 0xA7C2F25E
-	Offset: 0x7A80
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_bhb_failsafe() {
-  self endon(# "death");
-  self endon(# "bhb_old_failsafe");
+  self endon("death");
+  self endon("bhb_old_failsafe");
   prev_origin = self.origin;
   min_movement = 256;
   while (true) {
@@ -2480,17 +1697,8 @@ function monkey_zombie_bhb_failsafe() {
   self animmode("none");
 }
 
-/*
-	Name: monkey_zombie_bhb_run
-	Namespace: zm_ai_monkey
-	Checksum: 0x734A7129
-	Offset: 0x7B68
-	Size: 0x1C4
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_bhb_run() {
-  self endon(# "death");
+  self endon("death");
   jump_dist_sq = 4096;
   jump = 0;
   util::wait_network_frame();
@@ -2514,20 +1722,11 @@ function monkey_zombie_bhb_run() {
   self.safetochangescript = 1;
   self setgoalpos(self.origin);
   self util::waittill_notify_or_timeout("goal", 0.5);
-  self notify(# "bhb_old_failsafe");
+  self notify("bhb_old_failsafe");
   util::wait_network_frame();
   self thread monkey_zombie_bhb_failsafe();
 }
 
-/*
-	Name: monkey_zombie_clear_attack_pos
-	Namespace: zm_ai_monkey
-	Checksum: 0x34F47F59
-	Offset: 0x7D38
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_clear_attack_pos() {
   if(isdefined(self.attack)) {
     if(isdefined(self.pack.attack)) {
@@ -2542,21 +1741,12 @@ function monkey_zombie_clear_attack_pos() {
   }
 }
 
-/*
-	Name: monkey_zombie_bhb_response
-	Namespace: zm_ai_monkey
-	Checksum: 0xD37F4E19
-	Offset: 0x7DE8
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_bhb_response() {
-  self endon(# "death");
+  self endon("death");
   monkey_print("bhb response");
-  self notify(# "stop_find_flesh");
-  self notify(# "monkey_update_stop");
-  self notify(# "stop_perk_attack");
+  self notify("stop_find_flesh");
+  self notify("monkey_update_stop");
+  self notify("stop_perk_attack");
   self.following_player = 0;
   self monkey_zombie_set_state("bhb_response");
   self monkey_zombie_clear_attack_pos();
@@ -2565,17 +1755,8 @@ function monkey_zombie_bhb_response() {
   self monkey_zombie_set_state("bhb_response_done");
 }
 
-/*
-	Name: monkey_zombie_bhb_watcher
-	Namespace: zm_ai_monkey
-	Checksum: 0x354F630B
-	Offset: 0x7ED0
-	Size: 0x200
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_bhb_watcher() {
-  self endon(# "death");
+  self endon("death");
   bhb_respond_dist_sq = 262144;
   while (true) {
     if(self.state == "default" || self.state == "ground_pound" || self.state == "ground_pound_taunt" || self.state == "grenade_reponse" || self.state == "bhb_response" || self.state == "attack_perk" || (!(isdefined(self.dropped) && self.dropped))) {
@@ -2601,15 +1782,6 @@ function monkey_zombie_bhb_watcher() {
   }
 }
 
-/*
-	Name: monkey_remove_from_pack
-	Namespace: zm_ai_monkey
-	Checksum: 0xBD54D08F
-	Offset: 0x80D8
-	Size: 0x284
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_remove_from_pack() {
   for (i = 0; i < level.monkey_pack.size; i++) {
     pack = level.monkey_pack[i];
@@ -2642,25 +1814,14 @@ function monkey_remove_from_pack() {
   }
 }
 
-/*
-	Name: monkey_zombie_can_drop_free_perk
-	Namespace: zm_ai_monkey
-	Checksum: 0xFC516522
-	Offset: 0x8368
-	Size: 0x1F6
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_can_drop_free_perk() {
   if(!level flag::get("monkey_free_perk")) {
     return false;
   }
   max_perks = 0;
   if(!isdefined(level.max_perks)) {
-    /#
     println("");
-    # /
-      max_perks = 4;
+    max_perks = 4;
   } else {
     max_perks = level.max_perks;
   }
@@ -2689,15 +1850,6 @@ function monkey_zombie_can_drop_free_perk() {
   return false;
 }
 
-/*
-	Name: monkey_zombie_die
-	Namespace: zm_ai_monkey
-	Checksum: 0x7AE6BCC6
-	Offset: 0x8568
-	Size: 0x1E6
-	Parameters: 8
-	Flags: Linked
-*/
 function monkey_zombie_die(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   self zombie_utility::reset_attack_spot();
   self clientfield::set("monkey_eye_glow", 0);
@@ -2720,17 +1872,8 @@ function monkey_zombie_die(einflictor, attacker, idamage, smeansofdeath, weapon,
   return false;
 }
 
-/*
-	Name: monkey_custom_damage
-	Namespace: zm_ai_monkey
-	Checksum: 0x3BCAA02D
-	Offset: 0x8758
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_custom_damage(player) {
-  self endon(# "death");
+  self endon("death");
   damage = self.meleedamage;
   if(isdefined(self.ground_hit) && self.ground_hit) {
     damage = int(player.maxhealth * 0.25);
@@ -2738,31 +1881,13 @@ function monkey_custom_damage(player) {
   return damage;
 }
 
-/*
-	Name: monkey_zombie_default_enter_level
-	Namespace: zm_ai_monkey
-	Checksum: 0xBCE782CF
-	Offset: 0x87D8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_default_enter_level() {
   playfx(level._effect["monkey_spawn"], self.origin);
   playsoundatposition("zmb_ape_intro_land", self.origin);
 }
 
-/*
-	Name: monkey_pathing
-	Namespace: zm_ai_monkey
-	Checksum: 0xDEB7447F
-	Offset: 0x8838
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_pathing() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     if(isdefined(self.favoriteenemy)) {
       self.ignoreall = 0;
@@ -2773,19 +1898,10 @@ function monkey_pathing() {
   }
 }
 
-/*
-	Name: monkey_find_flesh
-	Namespace: zm_ai_monkey
-	Checksum: 0xEA435C5B
-	Offset: 0x88C8
-	Size: 0x1B0
-	Parameters: 0
-	Flags: None
-*/
 function monkey_find_flesh() {
-  self endon(# "death");
-  level endon(# "intermission");
-  self endon(# "stop_find_flesh");
+  self endon("death");
+  level endon("intermission");
+  self endon("stop_find_flesh");
   if(level.intermission) {
     return;
   }
@@ -2814,15 +1930,6 @@ function monkey_find_flesh() {
   }
 }
 
-/*
-	Name: monkey_zombie_setup_perks
-	Namespace: zm_ai_monkey
-	Checksum: 0x3EC90D76
-	Offset: 0x8A80
-	Size: 0x66
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_setup_perks() {
   vending_triggers = function_5b9c3e11();
   for (i = 0; i < vending_triggers.size; i++) {
@@ -2830,15 +1937,6 @@ function monkey_zombie_setup_perks() {
   }
 }
 
-/*
-	Name: monkey_zombie_perk_init
-	Namespace: zm_ai_monkey
-	Checksum: 0x765FE1C5
-	Offset: 0x8AF0
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_zombie_perk_init() {
   self.targeted = 0;
   machine = undefined;
@@ -2854,15 +1952,6 @@ function monkey_zombie_perk_init() {
   }
 }
 
-/*
-	Name: monkey_zombie_perk_damage
-	Namespace: zm_ai_monkey
-	Checksum: 0xC385BA4B
-	Offset: 0x8BC8
-	Size: 0x9A
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_zombie_perk_damage(amount) {
   if(!isdefined(self.perk)) {
     return 1;
@@ -2875,15 +1964,6 @@ function monkey_zombie_perk_damage(amount) {
   return machine.monkey_health == 0;
 }
 
-/*
-	Name: monkey_pack_take_perk
-	Namespace: zm_ai_monkey
-	Checksum: 0x8157CC0E
-	Offset: 0x8C70
-	Size: 0x116
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_pack_take_perk() {
   players = getplayers();
   self.perk.targeted = 0;
@@ -2899,15 +1979,6 @@ function monkey_pack_take_perk() {
   }
 }
 
-/*
-	Name: monkey_perk_lost
-	Namespace: zm_ai_monkey
-	Checksum: 0x32F7BB71
-	Offset: 0x8D90
-	Size: 0x40
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_perk_lost(perk) {
   if(perk == "specialty_armorvest") {
     if(self.health > self.maxhealth) {
@@ -2916,29 +1987,11 @@ function monkey_perk_lost(perk) {
   }
 }
 
-/*
-	Name: monkey_perk_bought
-	Namespace: zm_ai_monkey
-	Checksum: 0xEE4A1DF1
-	Offset: 0x8DD8
-	Size: 0x36
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_perk_bought(perk) {
   level flag::set("perk_bought");
   level.perk_bought_func = undefined;
 }
 
-/*
-	Name: monkey_pack_flash_perk
-	Namespace: zm_ai_monkey
-	Checksum: 0x9D28A0F2
-	Offset: 0x8E18
-	Size: 0xA6
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_pack_flash_perk(perk) {
   if(!isdefined(perk)) {
     return;
@@ -2951,17 +2004,8 @@ function monkey_pack_flash_perk(perk) {
   }
 }
 
-/*
-	Name: function_7acaa6b4
-	Namespace: zm_ai_monkey
-	Checksum: 0xB92B76EC
-	Offset: 0x8EC8
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7acaa6b4(perk) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isdefined(self.perk_hud_flash) || self.perk_hud_flash != perk) {
     self.perk_hud_flash = perk;
     self zm_perks::set_perk_clientfield(perk, 2);
@@ -2973,29 +2017,11 @@ function function_7acaa6b4(perk) {
   }
 }
 
-/*
-	Name: monkey_pack_stop_flash
-	Namespace: zm_ai_monkey
-	Checksum: 0xF458E4A4
-	Offset: 0x8F88
-	Size: 0x5A
-	Parameters: 2
-	Flags: None
-*/
 function monkey_pack_stop_flash(perk, taken) {
   players = getplayers();
   for (i = 0; i < players.size; i++) {}
 }
 
-/*
-	Name: monkey_get_zone
-	Namespace: zm_ai_monkey
-	Checksum: 0x34FF64E3
-	Offset: 0x8FF0
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_get_zone() {
   zone = undefined;
   keys = getarraykeys(level.zones);
@@ -3010,15 +2036,6 @@ function monkey_get_zone() {
   return zone;
 }
 
-/*
-	Name: monkey_fling
-	Namespace: zm_ai_monkey
-	Checksum: 0xA35DB57
-	Offset: 0x90E0
-	Size: 0x1EA
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_fling(player) {
   monkey_print("fling monkey damage");
   damage = int(level.monkey_zombie_health * 0.5);
@@ -3038,15 +2055,6 @@ function monkey_fling(player) {
   self.thundergun_fling_func = undefined;
 }
 
-/*
-	Name: monkey_revive_solo_fx
-	Namespace: zm_ai_monkey
-	Checksum: 0x2BB34DC
-	Offset: 0x92D8
-	Size: 0x9A
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_revive_solo_fx() {
   vending_triggers = getentarray("zombie_vending", "targetname");
   for (i = 0; i < vending_triggers.size; i++) {
@@ -3057,34 +2065,14 @@ function monkey_revive_solo_fx() {
   }
 }
 
-/*
-	Name: monkey_print
-	Namespace: zm_ai_monkey
-	Checksum: 0xBD32F045
-	Offset: 0x9380
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function monkey_print(str) {
-  /#
   if(isdefined(level.var_ce37864e) && level.var_ce37864e) {
     iprintln(str + "");
   }
-  # /
 }
 
-/*
-	Name: play_random_monkey_vox
-	Namespace: zm_ai_monkey
-	Checksum: 0x706E2277
-	Offset: 0x93D0
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function play_random_monkey_vox() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     wait(randomfloatrange(1.25, 3));
   }

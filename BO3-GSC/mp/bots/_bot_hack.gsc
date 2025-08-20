@@ -1,15 +1,10 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\bots\_bot_hack.gsc
+*************************************************/
+
 #namespace bot_hack;
 
-/*
-	Name: hack_tank_get_goal_origin
-	Namespace: bot_hack
-	Checksum: 0x5CCFD285
-	Offset: 0xA8
-	Size: 0x14C
-	Parameters: 1
-	Flags: None
-*/
 function hack_tank_get_goal_origin(tank) {
   nodes = getnodesinradiussorted(tank.origin, 256, 0, 64, "Path");
   foreach(node in nodes) {
@@ -23,15 +18,6 @@ function hack_tank_get_goal_origin(tank) {
   return undefined;
 }
 
-/*
-	Name: hack_has_goal
-	Namespace: bot_hack
-	Checksum: 0x809C8489
-	Offset: 0x200
-	Size: 0x74
-	Parameters: 1
-	Flags: None
-*/
 function hack_has_goal(tank) {
   goal = self getgoal("hack");
   if(isdefined(goal)) {
@@ -42,15 +28,6 @@ function hack_has_goal(tank) {
   return false;
 }
 
-/*
-	Name: hack_at_goal
-	Namespace: bot_hack
-	Checksum: 0xA8F4A3B2
-	Offset: 0x280
-	Size: 0x18C
-	Parameters: 0
-	Flags: None
-*/
 function hack_at_goal() {
   if(self atgoal("hack")) {
     return true;
@@ -70,15 +47,6 @@ function hack_at_goal() {
   return false;
 }
 
-/*
-	Name: hack_goal_pregame
-	Namespace: bot_hack
-	Checksum: 0x415ABCF7
-	Offset: 0x418
-	Size: 0x134
-	Parameters: 1
-	Flags: None
-*/
 function hack_goal_pregame(tanks) {
   foreach(tank in tanks) {
     if(isdefined(tank.owner)) {
@@ -97,15 +65,6 @@ function hack_goal_pregame(tanks) {
   }
 }
 
-/*
-	Name: hack_think
-	Namespace: bot_hack
-	Checksum: 0x2C18BAF5
-	Offset: 0x558
-	Size: 0x45C
-	Parameters: 0
-	Flags: None
-*/
 function hack_think() {
   if(hack_at_goal()) {
     self setstance("crouch");
@@ -151,7 +110,7 @@ function hack_think() {
         continue;
       }
       if(self throwgrenade(getweapon("emp_grenade"), tank.origin)) {
-        self waittill(# "grenade_fire");
+        self waittill("grenade_fire");
         goal = self hack_tank_get_goal_origin(tank);
         if(isdefined(goal)) {
           self addgoal(goal, 24, 3, "hack");

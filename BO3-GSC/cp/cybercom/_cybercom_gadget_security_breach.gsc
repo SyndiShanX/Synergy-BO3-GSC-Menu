@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/************************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_gadget_security_breach.gsc
+************************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_challenges;
 #using scripts\cp\_util;
@@ -21,18 +25,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace cybercom_gadget_security_breach;
 
-/*
-	Name: init
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x6DA6A11E
-	Offset: 0x7B0
-	Size: 0x1D4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("toplayer", "hijack_vehicle_transition", 1, 2, "int");
   clientfield::register("toplayer", "hijack_static_effect", 1, 7, "float");
@@ -46,15 +40,6 @@ function init() {
   callback::on_spawned( & on_player_spawned);
 }
 
-/*
-	Name: main
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0xB2205049
-	Offset: 0x990
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   cybercom_gadget::registerability(0, 32);
   level.cybercom.security_breach = spawnstruct();
@@ -68,15 +53,6 @@ function main() {
   level.cybercom.security_breach._is_primed = & _is_primed;
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x1FD3723D
-	Offset: 0xB18
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self clientfield::set_to_player("hijack_static_effect", 0);
   self clientfield::set_to_player("hijack_spectate", 0);
@@ -85,37 +61,10 @@ function on_player_spawned() {
   self cameraactivate(0);
 }
 
-/*
-	Name: _is_flickering
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0xA56BADAB
-	Offset: 0xBB8
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function _is_flickering(slot) {}
 
-/*
-	Name: _on_flicker
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0xF658735E
-	Offset: 0xBD0
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_flicker(slot, weapon) {}
 
-/*
-	Name: _on_give
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x2B7954FA
-	Offset: 0xBF0
-	Size: 0x13C
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_give(slot, weapon) {
   self.cybercom.var_110c156a = 1;
   self.cybercom.security_breach_lifetime = getdvarint("scr_security_breach_lifetime", 30);
@@ -129,15 +78,6 @@ function _on_give(slot, weapon) {
   self thread cybercom::function_b5f4e597(weapon);
 }
 
-/*
-	Name: _on_take
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x815AAC1A
-	Offset: 0xD38
-	Size: 0x72
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_take(slot, weapon) {
   self _off(slot, weapon);
   self.cybercom.targetlockcb = undefined;
@@ -146,90 +86,34 @@ function _on_take(slot, weapon) {
   self.cybercom.var_73d069a7 = undefined;
 }
 
-/*
-	Name: _on_connect
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x99EC1590
-	Offset: 0xDB8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function _on_connect() {}
 
-/*
-	Name: function_17342509
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x773A4088
-	Offset: 0xDC8
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_17342509(slot, weapon) {
   self gadgetactivate(slot, weapon);
   _on(slot, weapon);
 }
 
-/*
-	Name: _on
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x7D4EE75B
-	Offset: 0xE20
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function _on(slot, weapon) {
   self thread _activate_security_breach(slot, weapon);
   self _off(slot, weapon);
 }
 
-/*
-	Name: _off
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x28B29453
-	Offset: 0xE80
-	Size: 0x46
-	Parameters: 2
-	Flags: Linked
-*/
 function _off(slot, weapon) {
   self thread cybercom::weaponendlockwatcher(weapon);
   self.cybercom.is_primed = undefined;
-  self notify(# "hash_8216024");
+  self notify("hash_8216024");
 }
 
-/*
-	Name: _is_primed
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x2635FA08
-	Offset: 0xED0
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function _is_primed(slot, weapon) {
   if(!(isdefined(self.cybercom.is_primed) && self.cybercom.is_primed)) {
-    /#
     assert(self.cybercom.activecybercomweapon == weapon);
-    # /
-      self notify(# "hash_50db7e6");
+    self notify("hash_50db7e6");
     self thread cybercom::weaponlockwatcher(slot, weapon, self.cybercom.var_110c156a);
     self.cybercom.is_primed = 1;
     self playsoundtoplayer("gdt_securitybreach_target", self);
   }
 }
 
-/*
-	Name: _lock_requirement
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x32AF010
-	Offset: 0xFA8
-	Size: 0x1D4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _lock_requirement(target) {
   if(target cybercom::cybercom_aicheckoptout("cybercom_hijack")) {
     if(isdefined(target.rogue_controlled) && target.rogue_controlled) {
@@ -261,30 +145,12 @@ function private _lock_requirement(target) {
   return true;
 }
 
-/*
-	Name: _get_valid_targets
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x735FCC3
-	Offset: 0x1188
-	Size: 0xA2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _get_valid_targets(weapon) {
   enemy = arraycombine(getaiteamarray("axis"), getaiteamarray("team3"), 0, 0);
   ally = getaiteamarray("allies");
   return arraycombine(enemy, ally, 0, 0);
 }
 
-/*
-	Name: _activate_security_breach
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x2F866C60
-	Offset: 0x1238
-	Size: 0x324
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _activate_security_breach(slot, weapon) {
   aborted = 0;
   fired = 0;
@@ -322,15 +188,6 @@ function private _activate_security_breach(slot, weapon) {
   }
 }
 
-/*
-	Name: _security_breach_ramp_visionset
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x109F5F2B
-	Offset: 0x1568
-	Size: 0xEC
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private _security_breach_ramp_visionset(player, setname, delay, direction, duration) {
   wait(delay);
   if(direction > 0) {
@@ -342,15 +199,6 @@ function private _security_breach_ramp_visionset(player, setname, delay, directi
   }
 }
 
-/*
-	Name: function_637db461
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x8A9F6750
-	Offset: 0x1660
-	Size: 0x82
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_637db461(player, weapon) {
   if(isdefined(self.hijacked) && self.hijacked) {
     player cybercom::function_29bf9dee(self, 4);
@@ -363,15 +211,6 @@ function private function_637db461(player, weapon) {
   return false;
 }
 
-/*
-	Name: _security_breach
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x47545DC0
-	Offset: 0x16F0
-	Size: 0x61C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _security_breach(player, weapon) {
   wait(getdvarfloat("scr_security_breach_activate_delay", 0.5));
   if(!isdefined(self)) {
@@ -390,17 +229,17 @@ function private _security_breach(player, weapon) {
     self setvehicletype(self.playerdrivenversion);
   }
   vehentnum = self getentitynumber();
-  self notify(# "hash_f8c5dd60", weapon, player);
-  self notify(# "cloneandremoveentity", vehentnum);
-  level notify(# "cloneandremoveentity", vehentnum);
+  self notify("hash_f8c5dd60", weapon, player);
+  self notify("cloneandremoveentity", vehentnum);
+  level notify("cloneandremoveentity", vehentnum);
   player gadgetpowerset(0, 0);
   player gadgetpowerset(1, 0);
   player gadgetpowerset(2, 0);
   player cybercom::disablecybercom(1);
   if(isai(self) && self.archetype == "quadtank") {
-    player notify(# "give_achievement", "CP_CONTROL_QUAD");
+    player notify("give_achievement", "CP_CONTROL_QUAD");
   }
-  player notify(# "security_breach", self);
+  player notify("security_breach", self);
   waittillframeend();
   self notsolid();
   var_66ff806d = self.var_66ff806d;
@@ -409,8 +248,8 @@ function private _security_breach(player, weapon) {
     return;
   }
   clone solid();
-  level notify(# "clonedentity", clone, vehentnum);
-  player notify(# "clonedentity", clone, vehentnum);
+  level notify("clonedentity", clone, vehentnum);
+  player notify("clonedentity", clone, vehentnum);
   clone.takedamage = 0;
   clone.hijacked = 1;
   clone.var_a076880e = undefined;
@@ -453,20 +292,9 @@ function private _security_breach(player, weapon) {
   player function_dc86efaa(playerstate, "finish");
 }
 
-/*
-	Name: function_dc86efaa
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x7101DC1
-	Offset: 0x1D18
-	Size: 0x556
-	Parameters: 2
-	Flags: Linked
-*/
 function function_dc86efaa(var_b6c35df6, str_state) {
-  /#
   assert(isplayer(self));
-  # /
-    player = self;
+  player = self;
   switch (str_state) {
     case "begin": {
       player setcontrolleruimodelvalue("vehicle.outOfRange", 0);
@@ -486,7 +314,7 @@ function function_dc86efaa(var_b6c35df6, str_state) {
       player clientfield::set("camo_shader", 2);
       player thread _start_transition(2);
       player thread _security_breach_ramp_visionset(player, "hijack_vehicle", 0.1, 1, 0.1);
-      player waittill(# "transition_in_do_switch");
+      player waittill("transition_in_do_switch");
       player setlowready(1);
       visionset_mgr::activate("visionset", "hijack_vehicle_blur", player);
       player hide();
@@ -498,12 +326,12 @@ function function_dc86efaa(var_b6c35df6, str_state) {
       return;
     }
     case "cloak_wait": {
-      player waittill(# "transition_done");
+      player waittill("transition_done");
       player clientfield::set_to_player("vehicle_hijacked", 1);
       return "return_wait";
     }
     case "return_wait": {
-      player waittill(# "return_to_body");
+      player waittill("return_to_body");
       player player::give_back_weapons(1);
       player seteverhadweaponall(1);
       player thread _security_breach_ramp_visionset(player, "hijack_vehicle", 0, -1, 0.1);
@@ -516,7 +344,7 @@ function function_dc86efaa(var_b6c35df6, str_state) {
       player setstance(var_b6c35df6.oldstance);
       player setlowready(0);
       player.b_tactical_mode_enabled = var_b6c35df6.var_d40d5a7d;
-      player waittill(# "transition_done");
+      player waittill("transition_done");
       player seteverhadweaponall(0);
       player clientfield::set_to_player("vehicle_hijacked", 0);
       player clientfield::set_to_player("sndInDrivableVehicle", 0);
@@ -527,88 +355,50 @@ function function_dc86efaa(var_b6c35df6, str_state) {
       player cybercom::enablecybercom();
       wait(1);
       player clientfield::set("camo_shader", 0);
-      player notify(# "stop_camo_sound");
+      player notify("stop_camo_sound");
       return;
     }
   }
 }
 
-/*
-	Name: _start_transition
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x117CDE52
-	Offset: 0x2278
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function _start_transition(direction) {
-  self endon(# "death");
-  self notify(# "_start_transition");
-  self endon(# "_start_transition");
+  self endon("death");
+  self notify("_start_transition");
+  self endon("_start_transition");
   self clientfield::set_to_player("hijack_vehicle_transition", direction);
   util::wait_network_frame();
-  self notify(# "transition_in_do_switch");
+  self notify("transition_in_do_switch");
   wait(0.2);
   wait(0.2);
-  self notify(# "transition_done");
+  self notify("transition_done");
   self clientfield::set_to_player("hijack_vehicle_transition", 1);
 }
 
-/*
-	Name: setanchorvolume
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0xBC21C0C5
-	Offset: 0x2330
-	Size: 0x144
-	Parameters: 1
-	Flags: None
-*/
 function setanchorvolume(ent) {
   clearanchorvolume();
   if(isdefined(ent) && isplayer(self)) {
     self.cybercom.secbreachanchorent = ent;
     if(isdefined(ent.script_parameters)) {
       data = strtok(ent.script_parameters, " ");
-      /#
       assert(data.size == 2);
-      # /
-        self.cybercom.secbreachanchorminsq = int(data[0]) * int(data[0]);
+      self.cybercom.secbreachanchorminsq = int(data[0]) * int(data[0]);
       self.cybercom.secbreachanchormaxsq = int(data[1]) * int(data[1]);
     }
   }
 }
 
-/*
-	Name: clearanchorvolume
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x7B230C7B
-	Offset: 0x2480
-	Size: 0x32
-	Parameters: 0
-	Flags: Linked
-*/
 function clearanchorvolume() {
   self.cybercom.secbreachanchorent = undefined;
   self.cybercom.secbreachanchorminsq = undefined;
   self.cybercom.secbreachanchormaxsq = undefined;
 }
 
-/*
-	Name: _anchor_to_location
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0xF0189EF0
-	Offset: 0x24C0
-	Size: 0x410
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _anchor_to_location(player, anchor) {
-  self endon(# "death");
-  player endon(# "return_to_body");
-  player endon(# "kill_static_achor");
-  player endon(# "disconnect");
-  player waittill(# "transition_done");
+  self endon("death");
+  player endon("return_to_body");
+  player endon("kill_static_achor");
+  player endon("disconnect");
+  player waittill("transition_done");
   wait(0.1);
   maxstatic = 0.95;
   lastoutofrangewarningvalue = undefined;
@@ -666,33 +456,15 @@ function private _anchor_to_location(player, anchor) {
   }
 }
 
-/*
-	Name: _invulnerableforatime
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0xC1EE1FE1
-	Offset: 0x28D8
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _invulnerableforatime(time, player) {
-  self endon(# "death");
+  self endon("death");
   self.takedamage = 0;
   player util::waittill_any_timeout(time, "return_to_body");
   self.takedamage = !isgodmode(player);
 }
 
-/*
-	Name: _playerspectate
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x115576B7
-	Offset: 0x2950
-	Size: 0x194
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _playerspectate(vehicle) {
-  self endon(# "spawned");
+  self endon("spawned");
   self util::freeze_player_controls(1);
   self clientfield::set_to_player("hijack_static_ramp_up", 1);
   if(isdefined(vehicle.archetype) && vehicle.archetype == "wasp" && (!(isdefined(vehicle.var_66ff806d) && vehicle.var_66ff806d))) {
@@ -701,7 +473,7 @@ function private _playerspectate(vehicle) {
     self clientfield::set_to_player("hijack_spectate", 1);
   }
   self cameraactivate(1);
-  self waittill(# "transition_in_do_switch");
+  self waittill("transition_in_do_switch");
   self clientfield::set_to_player("hijack_static_ramp_up", 0);
   self cameraactivate(0);
   self clientfield::set_to_player("hijack_spectate", 0);
@@ -709,15 +481,6 @@ function private _playerspectate(vehicle) {
   self util::freeze_player_controls(0);
 }
 
-/*
-	Name: _playerspectatechase
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x884DAC14
-	Offset: 0x2AF0
-	Size: 0x21C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _playerspectatechase(vehicle) {
   forward = anglestoforward(vehicle.angles);
   moveamount = vectorscale(forward, -200);
@@ -740,40 +503,22 @@ function private _playerspectatechase(vehicle) {
   cam delete();
 }
 
-/*
-	Name: _wait_for_death
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x6D9B32E1
-	Offset: 0x2D18
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _wait_for_death(player) {
-  player endon(# "return_to_body");
-  self waittill(# "death");
+  player endon("return_to_body");
+  self waittill("death");
   player thread _playerspectate(self);
   wait(3);
-  player notify(# "kill_static_achor");
+  player notify("kill_static_achor");
   player thread _start_transition(3);
-  player waittill(# "transition_in_do_switch");
+  player waittill("transition_in_do_switch");
   waittillframeend();
   player unlink();
-  player notify(# "return_to_body", 1);
+  player notify("return_to_body", 1);
 }
 
-/*
-	Name: _wait_for_player_exit
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0xDCC93333
-	Offset: 0x2DC8
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _wait_for_player_exit(player) {
-  self endon(# "death");
-  player endon(# "return_to_body");
+  self endon("death");
+  player endon("return_to_body");
   self util::waittill_any("unlink", "exit_vehicle");
   if(game["state"] == "postgame" || (isdefined(level.gameended) && level.gameended)) {
     return;
@@ -788,15 +533,6 @@ function private _wait_for_player_exit(player) {
   }
 }
 
-/*
-	Name: _wait_for_return
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x99F3E9A8
-	Offset: 0x2EE0
-	Size: 0x192
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _wait_for_return(player) {
   self thread _wait_for_death(player);
   self thread _wait_for_player_exit(player);
@@ -804,7 +540,7 @@ function private _wait_for_return(player) {
   original_angles = player.angles;
   player.cybercom.tacrigs_disabled = 1;
   self.vehdontejectoccupantsondeath = 1;
-  player waittill(# "return_to_body", reason);
+  player waittill("return_to_body", reason);
   wait(0.05);
   player setorigin(original_location);
   player setplayerangles(original_angles);
@@ -822,15 +558,6 @@ function private _wait_for_return(player) {
   player.cybercom.tacrigs_disabled = undefined;
 }
 
-/*
-	Name: clearusingremote
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x57D06F1D
-	Offset: 0x3080
-	Size: 0x64
-	Parameters: 0
-	Flags: None
-*/
 function clearusingremote() {
   self enableoffhandweapons();
   if(isdefined(self.lastweapon)) {
@@ -840,15 +567,6 @@ function clearusingremote() {
   self takeweapon(self.remoteweapon);
 }
 
-/*
-	Name: setusingremote
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0xB9E63F93
-	Offset: 0x30F0
-	Size: 0xA4
-	Parameters: 1
-	Flags: None
-*/
 function setusingremote(remotename) {
   self.lastweapon = self getcurrentweapon();
   self.remoteweapon = getweapon(remotename);
@@ -857,18 +575,9 @@ function setusingremote(remotename) {
   self disableoffhandweapons();
 }
 
-/*
-	Name: function_43b801ea
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x82C09A7B
-	Offset: 0x31A0
-	Size: 0x66
-	Parameters: 2
-	Flags: Linked
-*/
 function function_43b801ea(onoff, entnum) {
   while (true) {
-    level waittill(# "clonedentity", clone, vehentnum);
+    level waittill("clonedentity", clone, vehentnum);
     if(vehentnum == entnum) {
       clone.var_66ff806d = onoff;
       return;
@@ -876,30 +585,12 @@ function function_43b801ea(onoff, entnum) {
   }
 }
 
-/*
-	Name: function_f002d0f9
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0xC8D290A7
-	Offset: 0x3210
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function function_f002d0f9() {
-  self endon(# "death");
-  self waittill(# "cloneandremoveentity", var_3c0fc0de);
+  self endon("death");
+  self waittill("cloneandremoveentity", var_3c0fc0de);
   level thread function_43b801ea(0, var_3c0fc0de);
 }
 
-/*
-	Name: function_664c9cd6
-	Namespace: cybercom_gadget_security_breach
-	Checksum: 0x635D22C4
-	Offset: 0x3260
-	Size: 0x5C
-	Parameters: 0
-	Flags: None
-*/
 function function_664c9cd6() {
   self setteam("axis");
   self.takedamage = 1;

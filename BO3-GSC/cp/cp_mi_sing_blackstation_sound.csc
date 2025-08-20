@@ -1,34 +1,19 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_blackstation_sound.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\audio_shared;
 #using scripts\shared\clientfield_shared;
-
 #namespace cp_mi_sing_blackstation_sound;
 
-/*
-	Name: main
-	Namespace: cp_mi_sing_blackstation_sound
-	Checksum: 0x6DFC0B30
-	Offset: 0x2C8
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level thread function_87c8026c();
   level thread function_ca589ae4();
   clientfield::register("toplayer", "slowmo_duck_active", 1, 2, "int", & function_41d671f5, 0, 0);
 }
 
-/*
-	Name: sndwindsystem
-	Namespace: cp_mi_sing_blackstation_sound
-	Checksum: 0xD1F983D0
-	Offset: 0x350
-	Size: 0x27A
-	Parameters: 7
-	Flags: Linked
-*/
 function sndwindsystem(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     if(!isdefined(self.soundid1)) {
@@ -58,7 +43,7 @@ function sndwindsystem(localclientnum, oldval, newval, bnewent, binitialsnap, fi
       }
     }
   } else {
-    self notify(# "hash_450e1742");
+    self notify("hash_450e1742");
     self stopallloopsounds();
     if(isdefined(self.soundid1)) {
       self.soundid1 = undefined;
@@ -69,47 +54,20 @@ function sndwindsystem(localclientnum, oldval, newval, bnewent, binitialsnap, fi
   }
 }
 
-/*
-	Name: function_d84ed3d1
-	Namespace: cp_mi_sing_blackstation_sound
-	Checksum: 0x59984D
-	Offset: 0x5D8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d84ed3d1() {
-  self notify(# "hash_d84ed3d1");
-  self endon(# "hash_d84ed3d1");
-  self endon(# "hash_450e1742");
-  self waittill(# "entityshutdown");
+  self notify("hash_d84ed3d1");
+  self endon("hash_d84ed3d1");
+  self endon("hash_450e1742");
+  self waittill("entityshutdown");
   if(isdefined(self)) {
     self stopallloopsounds();
   }
 }
 
-/*
-	Name: function_87c8026c
-	Namespace: cp_mi_sing_blackstation_sound
-	Checksum: 0x16549F41
-	Offset: 0x638
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_87c8026c() {
   soundloopemitter("evt_barge_wave_looper", (1193, -8283, 193));
 }
 
-/*
-	Name: function_ca589ae4
-	Namespace: cp_mi_sing_blackstation_sound
-	Checksum: 0x1B8A0CE7
-	Offset: 0x670
-	Size: 0x504
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ca589ae4() {
   audio::playloopat("amb_glass_shake_loop", (-8446, 10255, 419));
   audio::playloopat("amb_glass_shake_loop", (-9941, 11040, 452));
@@ -145,15 +103,6 @@ function function_ca589ae4() {
   audio::playloopat("amb_subway_light", (-571, 9460, 30));
 }
 
-/*
-	Name: function_fb96c813
-	Namespace: cp_mi_sing_blackstation_sound
-	Checksum: 0xD954F333
-	Offset: 0xB80
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked
-*/
 function function_fb96c813(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     audio::playloopat("amb_station_walla", (-4172, 4988, 40));
@@ -162,15 +111,6 @@ function function_fb96c813(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_c6d82f9d
-	Namespace: cp_mi_sing_blackstation_sound
-	Checksum: 0x646F98CE
-	Offset: 0xC20
-	Size: 0x12C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_c6d82f9d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   audio::playloopat("amb_computer_error", (84, 9455, 140));
   audio::playloopat("amb_computer_error", (-950, 1088, 220));
@@ -180,15 +120,6 @@ function function_c6d82f9d(localclientnum, oldval, newval, bnewent, binitialsnap
   audio::playloopat("amb_computer_future", (-783, 9675, 220));
 }
 
-/*
-	Name: function_598a3b92
-	Namespace: cp_mi_sing_blackstation_sound
-	Checksum: 0x608C6E71
-	Offset: 0xD58
-	Size: 0x47C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_598a3b92(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     audio::stoploopat("amb_glass_shake_loop", (-8446, 10255, 419));
@@ -222,15 +153,6 @@ function function_598a3b92(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_41d671f5
-	Namespace: cp_mi_sing_blackstation_sound
-	Checksum: 0x34DD995
-	Offset: 0x11E0
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function function_41d671f5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval > 0) {
     audio::snd_set_snapshot("cp_barge_slowtime");

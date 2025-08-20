@@ -1,18 +1,12 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_human_interface.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_human;
 #using scripts\shared\ai\systems\ai_interface;
-
 #namespace humaninterface;
 
-/*
-	Name: registerhumaninterfaceattributes
-	Namespace: humaninterface
-	Checksum: 0x5707D523
-	Offset: 0x1B8
-	Size: 0x3C4
-	Parameters: 0
-	Flags: Linked
-*/
 function registerhumaninterfaceattributes() {
   ai::registermatchedinterface("human", "can_be_meleed", 1, array(1, 0));
   ai::registermatchedinterface("human", "can_melee", 1, array(1, 0));

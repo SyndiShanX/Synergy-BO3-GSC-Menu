@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_prologue_player_sacrifice.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_dialog;
 #using scripts\cp\_load;
@@ -32,18 +36,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\vehicleriders_shared;
-
 #namespace robot_defend;
 
-/*
-	Name: robot_defend_main
-	Namespace: robot_defend
-	Checksum: 0xEF7D3CE5
-	Offset: 0x1110
-	Size: 0x1F4
-	Parameters: 1
-	Flags: Linked
-*/
 function robot_defend_main(b_starting) {
   level flag::wait_till("apc_done");
   setup_defend_spawn_funcs();
@@ -67,15 +61,6 @@ function robot_defend_main(b_starting) {
   skipto::objective_completed("skipto_robot_defend");
 }
 
-/*
-	Name: function_21c12b92
-	Namespace: robot_defend
-	Checksum: 0xACDCDD15
-	Offset: 0x1310
-	Size: 0xB2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_21c12b92() {
   foreach(player in level.activeplayers) {
     player.var_c34702c6 = 0;
@@ -84,55 +69,28 @@ function function_21c12b92() {
   }
 }
 
-/*
-	Name: function_ae9ce6f0
-	Namespace: robot_defend
-	Checksum: 0x48799C9F
-	Offset: 0x13D0
-	Size: 0x82
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ae9ce6f0() {
-  self endon(# "disconnect");
-  self endon(# "hash_99343b5f");
-  level endon(# "hash_9d83ef5");
+  self endon("disconnect");
+  self endon("hash_99343b5f");
+  level endon("hash_9d83ef5");
   while (true) {
-    self waittill(# "weapon_fired", wpn_current);
+    self waittill("weapon_fired", wpn_current);
     if(wpn_current.weapclass !== "pistol") {
       self.var_c34702c6 = 1;
-      self notify(# "hash_99343b5f");
+      self notify("hash_99343b5f");
     }
   }
 }
 
-/*
-	Name: function_bfce7c2a
-	Namespace: robot_defend
-	Checksum: 0xA33FBD40
-	Offset: 0x1460
-	Size: 0x4E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bfce7c2a() {
-  self endon(# "disconnect");
-  self endon(# "hash_99343b5f");
-  level endon(# "hash_9d83ef5");
-  self waittill(# "grenade_fire");
+  self endon("disconnect");
+  self endon("hash_99343b5f");
+  level endon("hash_9d83ef5");
+  self waittill("grenade_fire");
   self.var_c34702c6 = 1;
-  self notify(# "hash_99343b5f");
+  self notify("hash_99343b5f");
 }
 
-/*
-	Name: function_fe88fdb1
-	Namespace: robot_defend
-	Checksum: 0xEE5D0EE4
-	Offset: 0x14B8
-	Size: 0xB2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fe88fdb1() {
   foreach(player in level.activeplayers) {
     if(!(isdefined(player.var_c34702c6) && player.var_c34702c6)) {
@@ -141,15 +99,6 @@ function function_fe88fdb1() {
   }
 }
 
-/*
-	Name: function_2e776cf4
-	Namespace: robot_defend
-	Checksum: 0xC0ED92AC
-	Offset: 0x1578
-	Size: 0x234
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2e776cf4() {
   level flag::wait_till("pod_go");
   var_fccc406f = struct::get_array("rpg_begin");
@@ -169,17 +118,8 @@ function function_2e776cf4() {
   level thread function_fe88fdb1();
 }
 
-/*
-	Name: function_9716eddb
-	Namespace: robot_defend
-	Checksum: 0x2C99135E
-	Offset: 0x17B8
-	Size: 0x190
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9716eddb() {
-  level endon(# "hash_2e90f258");
+  level endon("hash_2e90f258");
   var_fccc406f = struct::get_array("rpg_begin");
   var_90911853 = getweapon("launcher_standard_magic_bullet");
   while (true) {
@@ -192,15 +132,6 @@ function function_9716eddb() {
   }
 }
 
-/*
-	Name: function_d8ccdb23
-	Namespace: robot_defend
-	Checksum: 0x6E2544FB
-	Offset: 0x1950
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d8ccdb23() {
   level.ai_minister.accuracy = 0.5;
   level.ai_minister.grenadeammo = 0;
@@ -213,15 +144,6 @@ function function_d8ccdb23() {
   level.ai_khalil ai::set_ignoreall(0);
 }
 
-/*
-	Name: function_637fae36
-	Namespace: robot_defend
-	Checksum: 0x4317A3F5
-	Offset: 0x1A68
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function function_637fae36() {
   var_27606155 = getentarray("trigger_ob_defend", "targetname");
   foreach(var_a57773f5 in var_27606155) {
@@ -235,17 +157,8 @@ function function_637fae36() {
   var_b957e40 triggerenable(1);
 }
 
-/*
-	Name: function_a4e4e77d
-	Namespace: robot_defend
-	Checksum: 0xB3CA8AD1
-	Offset: 0x1BF8
-	Size: 0x13E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a4e4e77d() {
-  level waittill(# "hash_da66fd91");
+  level waittill("hash_da66fd91");
   foreach(player in level.activeplayers) {
     player playrumbleonentity("cp_prologue_rumble_apc_offroad");
   }
@@ -255,15 +168,6 @@ function function_a4e4e77d() {
   }
 }
 
-/*
-	Name: function_8e9f8d38
-	Namespace: robot_defend
-	Checksum: 0x35ABC398
-	Offset: 0x1D40
-	Size: 0x11A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8e9f8d38() {
   level.ai_hendricks forceteleport(struct::get("skipto_robot_defend_hendricks").origin);
   level cp_prologue_util::function_12ce22ee();
@@ -273,15 +177,6 @@ function function_8e9f8d38() {
   }
 }
 
-/*
-	Name: spawn_handler_main
-	Namespace: robot_defend
-	Checksum: 0xD7C57C98
-	Offset: 0x1E68
-	Size: 0x2EA
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_handler_main() {
   wait(1);
   vehicle::simple_spawn_single("defend_truck_3");
@@ -315,15 +210,6 @@ function spawn_handler_main() {
   }
 }
 
-/*
-	Name: function_633f337
-	Namespace: robot_defend
-	Checksum: 0x30BDAA3E
-	Offset: 0x2160
-	Size: 0x33C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_633f337() {
   level flag::wait_till("minister_pos");
   spawn_manager::enable("sm_robot_defend_tower");
@@ -338,13 +224,13 @@ function function_633f337() {
   wait(3);
   spawn_manager::enable("sm_robot_defend_tower");
   spawn_manager::enable("sm_defend_rpg");
-  level waittill(# "hash_2ac435dc");
+  level waittill("hash_2ac435dc");
   spawn_manager::disable("sm_robot_defend_tower");
   spawn_manager::disable("sm_robot_pod");
   spawn_manager::disable("sm_hilltop_guard");
   spawn_manager::disable("sm_perimeter_guard");
   spawn_manager::disable("sm_defend_rpg");
-  level waittill(# "hash_935fbb41");
+  level waittill("hash_935fbb41");
   savegame::checkpoint_save();
   wait(2);
   spawn_manager::enable("sm_robot_defend_tower");
@@ -365,15 +251,6 @@ function function_633f337() {
   spawn_manager::kill("sm_defend_rpg");
 }
 
-/*
-	Name: function_ff1a7b45
-	Namespace: robot_defend
-	Checksum: 0x25E17EE8
-	Offset: 0x24A8
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ff1a7b45() {
   wait(0.1);
   vh_truck3 = getent("defend_truck_3_vh", "targetname");
@@ -386,33 +263,15 @@ function function_ff1a7b45() {
   level flag::set("shift_defend");
 }
 
-/*
-	Name: function_2d1c6af3
-	Namespace: robot_defend
-	Checksum: 0xD6F2367B
-	Offset: 0x25C0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2d1c6af3() {
   self setcandamage(0);
-  self waittill(# "reached_end_node");
+  self waittill("reached_end_node");
   wait(5);
   self setcandamage(1);
 }
 
-/*
-	Name: function_40fd81b
-	Namespace: robot_defend
-	Checksum: 0x381E7C11
-	Offset: 0x2610
-	Size: 0x1F8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_40fd81b() {
-  self endon(# "death");
+  self endon("death");
   self ai::set_ignoreall(1);
   self.grenadeammo = 0;
   self.goalradius = 16;
@@ -433,20 +292,11 @@ function function_40fd81b() {
   }
 }
 
-/*
-	Name: function_54454538
-	Namespace: robot_defend
-	Checksum: 0xFBB9AF33
-	Offset: 0x2810
-	Size: 0x30C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_54454538() {
   if(sessionmodeiscampaignzombiesgame()) {
     return;
   }
-  self endon(# "death");
+  self endon("death");
   self thread function_32c0959c();
   self thread function_3b49905c();
   self util::magic_bullet_shield();
@@ -455,7 +305,7 @@ function function_54454538() {
   self ai::set_ignoreme(1);
   self.grenadeammo = 0;
   self.goalradius = 16;
-  self waittill(# "goal");
+  self waittill("goal");
   var_5aebca26 = getent("rpg_target", "targetname");
   var_5aebca26.health = 1;
   var_90911853 = getweapon("launcher_standard_magic_bullet");
@@ -465,13 +315,13 @@ function function_54454538() {
     var_f8e04bb3 = self.origin;
   }
   e_projectile = magicbullet(var_90911853, var_f8e04bb3, var_5aebca26.origin);
-  e_projectile waittill(# "death");
+  e_projectile waittill("death");
   e_projectile thread fx::play("rock_explosion", e_projectile.origin);
   wait(1);
   v_offset = (40, 0, 72);
   var_5aebca26 moveto(level.activeplayers[randomint(level.activeplayers.size)].origin + v_offset, 0.05);
   self thread ai::shoot_at_target("normal", var_5aebca26, undefined, undefined);
-  self waittill(# "stop_shoot_at_target");
+  self waittill("stop_shoot_at_target");
   self util::stop_magic_bullet_shield();
   self ai::enable_pain();
   self ai::set_ignoreall(0);
@@ -479,147 +329,66 @@ function function_54454538() {
   var_5aebca26 delete();
 }
 
-/*
-	Name: function_3b49905c
-	Namespace: robot_defend
-	Checksum: 0x27B65275
-	Offset: 0x2B28
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3b49905c() {
-  self endon(# "death");
+  self endon("death");
   level flag::wait_till("apc_arrive");
   self util::stop_magic_bullet_shield();
 }
 
-/*
-	Name: function_32c0959c
-	Namespace: robot_defend
-	Checksum: 0x1EEB193
-	Offset: 0x2B78
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_32c0959c() {
-  self waittill(# "death");
+  self waittill("death");
   if(level.players.size > 1) {
     spawner::simple_spawn_single("rpg_coop");
   }
 }
 
-/*
-	Name: function_4b1fb716
-	Namespace: robot_defend
-	Checksum: 0x23B01732
-	Offset: 0x2BC0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4b1fb716() {
-  self endon(# "death");
+  self endon("death");
   self.goalradius = 4;
   self ai::set_behavior_attribute("sprint", 1);
-  self waittill(# "goal");
+  self waittill("goal");
   self ai::set_behavior_attribute("sprint", 0);
 }
 
-/*
-	Name: function_64dd8530
-	Namespace: robot_defend
-	Checksum: 0xBE271FC3
-	Offset: 0x2C30
-	Size: 0x18
-	Parameters: 0
-	Flags: Linked
-*/
 function function_64dd8530() {
-  self endon(# "death");
+  self endon("death");
   self.grenadeammo = 0;
 }
 
-/*
-	Name: function_96551790
-	Namespace: robot_defend
-	Checksum: 0x6941ACA9
-	Offset: 0x2C50
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_96551790() {
-  self endon(# "death");
+  self endon("death");
   self.grenadeammo = 0;
   spawner::waittill_ai_group_count("group_defend_1", 1);
   self kill();
 }
 
-/*
-	Name: function_b9081af
-	Namespace: robot_defend
-	Checksum: 0xC6976A09
-	Offset: 0x2CA8
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b9081af() {
-  self endon(# "death");
+  self endon("death");
   self colors::set_force_color("o");
   self.grenadeammo = 0;
 }
 
-/*
-	Name: function_7f708ee
-	Namespace: robot_defend
-	Checksum: 0xCF087A8E
-	Offset: 0x2CE8
-	Size: 0x18
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7f708ee() {
-  self endon(# "death");
+  self endon("death");
   self.grenadeammo = 0;
 }
 
-/*
-	Name: function_bf932181
-	Namespace: robot_defend
-	Checksum: 0xE995D795
-	Offset: 0x2D08
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bf932181() {
-  self endon(# "death");
+  self endon("death");
   self.goalradius = 4;
   self ai::set_behavior_attribute("move_mode", "rambo");
-  self waittill(# "goal");
+  self waittill("goal");
   self ai::set_behavior_attribute("move_mode", "normal");
 }
 
-/*
-	Name: function_c3228115
-	Namespace: robot_defend
-	Checksum: 0x93315D8C
-	Offset: 0x2D88
-	Size: 0x134
-	Parameters: 2
-	Flags: Linked
-*/
 function function_c3228115(var_a917e7b9, var_cf1a6222) {
-  self endon(# "death");
+  self endon("death");
   self thread turret::disable_ai_getoff(var_a917e7b9, 1);
   self thread turret::disable_ai_getoff(var_cf1a6222, 1);
   self turret::enable(var_a917e7b9, 1);
   self turret::enable(var_cf1a6222, 1);
   self thread vehicle::get_on_and_go_path(getvehiclenode(self.target, "targetname"));
-  self waittill(# "reached_end_node");
+  self waittill("reached_end_node");
   wait(1);
   ai_driver = self vehicle::get_rider("driver");
   if(isalive(ai_driver)) {
@@ -627,23 +396,14 @@ function function_c3228115(var_a917e7b9, var_cf1a6222) {
   }
 }
 
-/*
-	Name: function_45c35350
-	Namespace: robot_defend
-	Checksum: 0x8A628A8E
-	Offset: 0x2EC8
-	Size: 0x1D4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_45c35350() {
-  self endon(# "death");
+  self endon("death");
   self util::magic_bullet_shield();
   self thread turret::disable_ai_getoff(1, 1);
   self turret::enable(1, 1);
   self thread vehicle::get_on_and_go_path(getvehiclenode(self.target, "targetname"));
   wait(1);
-  self waittill(# "reached_end_node");
+  self waittill("reached_end_node");
   self util::stop_magic_bullet_shield();
   foreach(ai_rider in self.riders) {
     if(isalive(ai_rider) && ai_rider.script_startingposition != "gunner1") {
@@ -655,17 +415,8 @@ function function_45c35350() {
   self kill();
 }
 
-/*
-	Name: function_b2d7edae
-	Namespace: robot_defend
-	Checksum: 0xA5A8B991
-	Offset: 0x30A8
-	Size: 0x22A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b2d7edae() {
-  self endon(# "death");
+  self endon("death");
   self util::magic_bullet_shield();
   self thread turret::disable_ai_getoff(1, 1);
   self turret::enable(1, 1);
@@ -676,7 +427,7 @@ function function_b2d7edae() {
       self thread function_58b0f8d8(ai_rider);
     }
   }
-  self waittill(# "reached_end_node");
+  self waittill("reached_end_node");
   self util::stop_magic_bullet_shield();
   foreach(ai_rider in self.riders) {
     if(isalive(ai_rider) && ai_rider.script_startingposition != "gunner1") {
@@ -685,37 +436,19 @@ function function_b2d7edae() {
   }
 }
 
-/*
-	Name: function_58b0f8d8
-	Namespace: robot_defend
-	Checksum: 0xE84390AF
-	Offset: 0x32E0
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function function_58b0f8d8(ai_gunner) {
-  self endon(# "death");
-  self waittill(# "reached_end_node");
+  self endon("death");
+  self waittill("reached_end_node");
   if(isalive(ai_gunner)) {
-    ai_gunner waittill(# "death");
+    ai_gunner waittill("death");
   } else {
     wait(2);
   }
   self dodamage(self.health + 1, self.origin);
 }
 
-/*
-	Name: function_98ae774
-	Namespace: robot_defend
-	Checksum: 0x40846AA0
-	Offset: 0x3370
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_98ae774() {
-  self endon(# "death");
+  self endon("death");
   if(randomint(6) < 2) {
     self cp_prologue_util::set_robot_unarmed();
   } else {
@@ -723,17 +456,8 @@ function function_98ae774() {
   }
 }
 
-/*
-	Name: function_9d374
-	Namespace: robot_defend
-	Checksum: 0x8AFBA2B6
-	Offset: 0x33E8
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9d374() {
-  self endon(# "death");
+  self endon("death");
   self ai::set_ignoreall(1);
   self cp_prologue_util::set_robot_unarmed();
   s_goal = struct::get("pod_pos");
@@ -745,15 +469,6 @@ function function_9d374() {
   self setgoal(a_v_points[randomint(a_v_points.size)], 1);
 }
 
-/*
-	Name: function_cc4c4e16
-	Namespace: robot_defend
-	Checksum: 0xA40AF0FE
-	Offset: 0x34E8
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cc4c4e16() {
   level flag::wait_till("shift_defend");
   level thread cp_prologue_util::function_47a62798(1);
@@ -762,15 +477,6 @@ function function_cc4c4e16() {
   level thread cp_prologue_util::function_db027040(1);
 }
 
-/*
-	Name: allied_ai_movements
-	Namespace: robot_defend
-	Checksum: 0x78D609CD
-	Offset: 0x3588
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function allied_ai_movements() {
   wait(1);
   trigger::use("trig_defend_position_allies1");
@@ -788,15 +494,6 @@ function allied_ai_movements() {
   level thread function_9282c858();
 }
 
-/*
-	Name: function_f76b808e
-	Namespace: robot_defend
-	Checksum: 0x99E7762B
-	Offset: 0x36B8
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f76b808e() {
   level scene::add_scene_func("cin_pro_17_02_robotdefend_vign_hookup_minsterlloop", & function_4dc9c2f9, "play");
   level scene::add_scene_func("cin_pro_17_02_robotdefend_vign_hookup_khalilloop", & function_4e2b6779, "play");
@@ -811,84 +508,30 @@ function function_f76b808e() {
   level scene::play("cin_pro_17_02_robotdefend_vign_hookup_loop");
 }
 
-/*
-	Name: function_deb83f0d
-	Namespace: robot_defend
-	Checksum: 0xF51C396
-	Offset: 0x3848
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_deb83f0d() {
-  level endon(# "hash_3b063ae9");
+  level endon("hash_3b063ae9");
   wait(15);
   level flag::set("ready_load");
 }
 
-/*
-	Name: function_5443e6cb
-	Namespace: robot_defend
-	Checksum: 0x7528CCE5
-	Offset: 0x3888
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5443e6cb() {
-  level endon(# "hash_3b063ae9");
+  level endon("hash_3b063ae9");
   level util::waittill_multiple("hendricks_ready", "khalil_ready", "minister_ready");
   level flag::set("ready_load");
 }
 
-/*
-	Name: function_4dc9c2f9
-	Namespace: robot_defend
-	Checksum: 0x683A7506
-	Offset: 0x38F0
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4dc9c2f9(a_ents) {
-  level notify(# "hash_43c7040");
+  level notify("hash_43c7040");
 }
 
-/*
-	Name: function_4e2b6779
-	Namespace: robot_defend
-	Checksum: 0x699E9630
-	Offset: 0x3918
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4e2b6779(a_ents) {
-  level notify(# "khalil_ready");
+  level notify("khalil_ready");
 }
 
-/*
-	Name: function_8600d87b
-	Namespace: robot_defend
-	Checksum: 0x59658937
-	Offset: 0x3940
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8600d87b(a_ents) {
-  level notify(# "hendricks_ready");
+  level notify("hendricks_ready");
 }
 
-/*
-	Name: function_10b855b0
-	Namespace: robot_defend
-	Checksum: 0x7D49EC6E
-	Offset: 0x3968
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_10b855b0() {
   level flag::wait_till("shift_defend");
   trigger::use("triggercolor_enemy_path");
@@ -898,15 +541,6 @@ function function_10b855b0() {
   trigger::use("triggercolor_enemy_end");
 }
 
-/*
-	Name: function_b0cce50c
-	Namespace: robot_defend
-	Checksum: 0xAA3F84CE
-	Offset: 0x3A20
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b0cce50c() {
   s_pod = struct::get("pod_pos");
   s_defend = struct::get("pod_defend");
@@ -918,39 +552,21 @@ function function_b0cce50c() {
   var_6848ea7f thread function_a950a3ec();
   level thread function_a3ac9ae0();
   level flag::wait_till("pod_arrive");
-  var_f3fb06d8 waittill(# "trigger");
+  var_f3fb06d8 waittill("trigger");
   objectives::complete("cp_waypoint_breadcrumb", s_pod);
   objectives::hide("cp_level_prologue_goto_exfil");
   objectives::set("cp_level_prologue_defend_pod", s_defend);
 }
 
-/*
-	Name: function_a3ac9ae0
-	Namespace: robot_defend
-	Checksum: 0xEB012DA6
-	Offset: 0x3BC8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a3ac9ae0() {
-  level endon(# "hash_2ef4a1f0");
+  level endon("hash_2ef4a1f0");
   spawn_manager::wait_till_ai_remaining("sm_apc_reinforce", 2);
   wait(10);
   level flag::set("goto_pod");
 }
 
-/*
-	Name: function_a950a3ec
-	Namespace: robot_defend
-	Checksum: 0xB0D2B7B0
-	Offset: 0x3C20
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a950a3ec() {
-  level endon(# "hash_2ef4a1f0");
+  level endon("hash_2ef4a1f0");
   foreach(player in level.players) {
     self thread function_cd56c2cf(player);
   }
@@ -961,34 +577,16 @@ function function_a950a3ec() {
   level flag::set("goto_pod");
 }
 
-/*
-	Name: function_cd56c2cf
-	Namespace: robot_defend
-	Checksum: 0xF53CB6A1
-	Offset: 0x3D10
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cd56c2cf(player) {
-  level endon(# "hash_2ef4a1f0");
+  level endon("hash_2ef4a1f0");
   while (true) {
-    self waittill(# "trigger", e_entity);
+    self waittill("trigger", e_entity);
     if(e_entity == player) {
       level.var_fc71d8f++;
     }
   }
 }
 
-/*
-	Name: pod_handler
-	Namespace: robot_defend
-	Checksum: 0x21A6C4BA
-	Offset: 0x3D70
-	Size: 0x2E4
-	Parameters: 0
-	Flags: Linked
-*/
 function pod_handler() {
   level.e_blocker = getent("brush_pod", "targetname");
   vehicle::add_spawn_function("fxanim_vtol_pod", & function_de0720c1);
@@ -998,7 +596,7 @@ function pod_handler() {
   level thread function_aba4324();
   level thread function_c0fa2edc();
   level thread function_2063548d();
-  level waittill(# "hash_39aa5979");
+  level waittill("hash_39aa5979");
   level flag::set("pod_on_ground");
   foreach(player in level.activeplayers) {
     player playrumbleonentity("cp_prologue_rumble_pod_land");
@@ -1016,50 +614,23 @@ function pod_handler() {
   level scene::play("cin_pro_17_02_robotdefend_vign_hookup_explosion");
 }
 
-/*
-	Name: function_4f43b0cc
-	Namespace: robot_defend
-	Checksum: 0x3A3CAE21
-	Offset: 0x4060
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4f43b0cc(a_ents) {
   exploder::exploder_stop("light_exploder_defend_radio_tower");
 }
 
-/*
-	Name: function_7a733ec7
-	Namespace: robot_defend
-	Checksum: 0xC3511F33
-	Offset: 0x4090
-	Size: 0x16A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7a733ec7() {
-  level waittill(# "hash_b9036ca8");
+  level waittill("hash_b9036ca8");
   exploder::exploder("fx_exploder_vtol_pod_rotorwash");
   foreach(player in level.activeplayers) {
     player clientfield::set_to_player("dropship_rumble_loop", 1);
   }
-  level waittill(# "hash_958c9db6");
+  level waittill("hash_958c9db6");
   exploder::stop_exploder("fx_exploder_vtol_pod_rotorwash");
   foreach(player in level.activeplayers) {
     player clientfield::set_to_player("dropship_rumble_loop", 0);
   }
 }
 
-/*
-	Name: function_2063548d
-	Namespace: robot_defend
-	Checksum: 0x53E0B8DD
-	Offset: 0x4208
-	Size: 0x2CC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2063548d() {
   level flag::wait_till("pod_loaded");
   objectives::complete("cp_level_prologue_defend_pod");
@@ -1075,7 +646,7 @@ function function_2063548d() {
   scene::add_scene_func("cin_pro_17_02_robotdefend_vign_hookup_player", & function_6e3b3bec, "play");
   level thread scene::play("cin_pro_17_02_robotdefend_vign_hookup_player");
   level util::clientnotify("sndOS1");
-  level waittill(# "hash_7176ec93");
+  level waittill("hash_7176ec93");
   level util::clientnotify("sndOS2");
   foreach(player in level.players) {
     player playrumbleonentity("damage_heavy");
@@ -1085,29 +656,11 @@ function function_2063548d() {
   level flag::set("pod_gone");
 }
 
-/*
-	Name: function_e7a97be1
-	Namespace: robot_defend
-	Checksum: 0x2461BFBE
-	Offset: 0x44E0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e7a97be1() {
   wait(10);
   level.activeplayers[0] stoploopsound(5);
 }
 
-/*
-	Name: function_657fb683
-	Namespace: robot_defend
-	Checksum: 0x145FA147
-	Offset: 0x4518
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_657fb683() {
   foreach(player in level.players) {
     if(isalive(player)) {
@@ -1119,15 +672,6 @@ function function_657fb683() {
   util::screen_fade_out(0.5, "black", "cinematic_fader");
 }
 
-/*
-	Name: function_a43cf0f6
-	Namespace: robot_defend
-	Checksum: 0xEFCDD2D
-	Offset: 0x4618
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a43cf0f6() {
   foreach(player in level.players) {
     if(isalive(player)) {
@@ -1136,17 +680,8 @@ function function_a43cf0f6() {
   }
 }
 
-/*
-	Name: function_c794d3c2
-	Namespace: robot_defend
-	Checksum: 0x71DAA60A
-	Offset: 0x46D0
-	Size: 0x204
-	Parameters: 4
-	Flags: Linked
-*/
 function function_c794d3c2(n_height = 300, var_7ad049d6 = 100, b_do_rumble = 1, var_688fa2d2 = 1) {
-  self endon(# "death");
+  self endon("death");
   self enableinvulnerability();
   v_player_fwd = anglestoforward(self.angles);
   var_652493a5 = v_player_fwd * var_7ad049d6;
@@ -1166,64 +701,28 @@ function function_c794d3c2(n_height = 300, var_7ad049d6 = 100, b_do_rumble = 1, 
   self disableinvulnerability();
 }
 
-/*
-	Name: function_6e3b3bec
-	Namespace: robot_defend
-	Checksum: 0x22526F32
-	Offset: 0x48E0
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6e3b3bec(a_ents) {
   var_a5eb4761 = struct::get("s_rocket_player_hookup", "targetname");
   var_2c7e0a5a = struct::get(var_a5eb4761.target, "targetname");
-  level waittill(# "hash_37113ae1");
+  level waittill("hash_37113ae1");
   var_90911853 = getweapon("launcher_standard_magic_bullet");
   magicbullet(var_90911853, var_a5eb4761.origin, var_2c7e0a5a.origin);
 }
 
-/*
-	Name: function_f7af5999
-	Namespace: robot_defend
-	Checksum: 0x80BEB560
-	Offset: 0x49B0
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f7af5999() {
   level.ai_hendricks dialog::say("hend_wait_my_team_s_still_0", 0.5);
   level.apc dialog::say("dops_negative_airspace_i_0", 0.5, 1);
   level.ai_hendricks dialog::say("hend_no_no_no_no_fu_0", 0.5);
 }
 
-/*
-	Name: function_de0720c1
-	Namespace: robot_defend
-	Checksum: 0xFC5469DD
-	Offset: 0x4A40
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_de0720c1() {
-  self endon(# "death");
+  self endon("death");
   self util::magic_bullet_shield();
   if(level flag::get("start_defend_countdown")) {
     self thread fx::play("dropship_spotlight", self.origin, self.angles, "notetrack_cease_fire", 1, "tag_fx_light_frontspot_ll");
   }
 }
 
-/*
-	Name: function_52d9a509
-	Namespace: robot_defend
-	Checksum: 0x9894727A
-	Offset: 0x4AD0
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_52d9a509() {
   self util::magic_bullet_shield();
   var_a3781dbd = getent("pod_panel", "targetname");
@@ -1235,15 +734,6 @@ function function_52d9a509() {
   radiusdamage(self.origin, 250, 150, 150, undefined, "MOD_EXPLOSIVE");
 }
 
-/*
-	Name: function_aba4324
-	Namespace: robot_defend
-	Checksum: 0x660546F4
-	Offset: 0x4C08
-	Size: 0xEA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_aba4324() {
   wait(3.5);
   vh_vtol = getent("fxanim_vtol_pod", "animname");
@@ -1253,17 +743,8 @@ function function_aba4324() {
   }
 }
 
-/*
-	Name: function_3df1f906
-	Namespace: robot_defend
-	Checksum: 0x82DADE53
-	Offset: 0x4D00
-	Size: 0x10E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3df1f906(s_rpg) {
-  self endon(# "death");
+  self endon("death");
   var_90911853 = getweapon("launcher_standard");
   for (i = 0; i < 8; i++) {
     v_offset = (randomintrange(-1500, -1300), randomintrange(-100, 100), randomintrange(-100, 100));
@@ -1272,32 +753,14 @@ function function_3df1f906(s_rpg) {
   }
 }
 
-/*
-	Name: function_6947ce3
-	Namespace: robot_defend
-	Checksum: 0xA2D231E2
-	Offset: 0x4E18
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6947ce3() {
   wait(1);
   var_f5882947 = getent("fxanim_vtol_pod", "animname");
   var_f5882947 thread function_34d9d6a7();
-  level waittill(# "hash_27dfe41d");
+  level waittill("hash_27dfe41d");
   level thread function_94856821();
 }
 
-/*
-	Name: function_94856821
-	Namespace: robot_defend
-	Checksum: 0x9A0427F9
-	Offset: 0x4E90
-	Size: 0x11E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_94856821() {
   n_dist_sq = 902500;
   s_pos = struct::get("pod_pos");
@@ -1311,17 +774,8 @@ function function_94856821() {
   }
 }
 
-/*
-	Name: function_34d9d6a7
-	Namespace: robot_defend
-	Checksum: 0x3CE506B1
-	Offset: 0x4FB8
-	Size: 0x22A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_34d9d6a7() {
-  level waittill(# "hash_2ac435dc");
+  level waittill("hash_2ac435dc");
   level scene::add_scene_func("p7_fxanim_cp_prologue_tower_vtol_collapse_v2_bundle", & function_4f43b0cc);
   level thread scene::play("p7_fxanim_cp_prologue_tower_vtol_collapse_v2_bundle");
   exploder::exploder_stop("light_exploder_defend_radio_tower");
@@ -1340,18 +794,9 @@ function function_34d9d6a7() {
       wait(0.5);
     }
   }
-  level notify(# "hash_27dfe41d");
+  level notify("hash_27dfe41d");
 }
 
-/*
-	Name: function_114d2017
-	Namespace: robot_defend
-	Checksum: 0x97C4967B
-	Offset: 0x51F0
-	Size: 0x19C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_114d2017(e_target) {
   var_8af78429 = getweapon("launcher_standard");
   var_9fab05ff = self gettagorigin("tag_fx_rocket_pod_l");
@@ -1365,43 +810,16 @@ function function_114d2017(e_target) {
   e_missile thread function_1082845c(v_target + v_offset);
 }
 
-/*
-	Name: function_1082845c
-	Namespace: robot_defend
-	Checksum: 0x597F59D1
-	Offset: 0x5398
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1082845c(v_target) {
-  self waittill(# "death");
+  self waittill("death");
   radiusdamage(v_target, 100, 1500, 500, undefined, "MOD_EXPLOSIVE");
 }
 
-/*
-	Name: function_c0fa2edc
-	Namespace: robot_defend
-	Checksum: 0xA7D6EFD3
-	Offset: 0x53E8
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c0fa2edc() {
-  level waittill(# "hash_1a9aaaa8");
+  level waittill("hash_1a9aaaa8");
   level.e_blocker delete();
 }
 
-/*
-	Name: setup_defend_spawn_funcs
-	Namespace: robot_defend
-	Checksum: 0xD1881655
-	Offset: 0x5420
-	Size: 0x434
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_defend_spawn_funcs() {
   vehicle::add_spawn_function("defend_truck_1", & function_45c35350);
   vehicle::add_spawn_function("defend_truck_2", & function_45c35350);
@@ -1428,28 +846,10 @@ function setup_defend_spawn_funcs() {
   spawner::add_spawn_function_group("group_tower_defender", "script_aigroup", & function_7f708ee);
 }
 
-/*
-	Name: background_effects
-	Namespace: robot_defend
-	Checksum: 0x54FC8776
-	Offset: 0x5860
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function background_effects() {
   exploder::exploder("fx_exploder_background_exp_muz");
 }
 
-/*
-	Name: function_6ba94a8
-	Namespace: robot_defend
-	Checksum: 0x59F83C54
-	Offset: 0x5888
-	Size: 0x3D4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6ba94a8() {
   battlechatter::function_d9f49fba(0);
   level thread namespace_21b2c1f2::function_92382f5c();
@@ -1475,7 +875,7 @@ function function_6ba94a8() {
   level flag::wait_till("dropship_return");
   battlechatter::function_d9f49fba(0);
   level dialog::remote("dops_drone_concentrating_0");
-  level waittill(# "hash_2bc95ac2");
+  level waittill("hash_2bc95ac2");
   level.apc dialog::say("dops_drone_is_in_position_0", 1, 1);
   level.ai_hendricks dialog::say("hend_secure_get_your_ass_1", 0.25);
   level flag::set("pod_loaded");
@@ -1483,17 +883,8 @@ function function_6ba94a8() {
   level dialog::remote("dops_drone_ready_to_move_0");
 }
 
-/*
-	Name: function_77fe86ff
-	Namespace: robot_defend
-	Checksum: 0x2B9AA891
-	Offset: 0x5C68
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_77fe86ff() {
-  level endon(# "hash_ba5c153");
+  level endon("hash_ba5c153");
   level flag::wait_till("pod_loaded");
   wait(5);
   level.ai_hendricks dialog::say("hend_get_your_ass_over_he_1");
@@ -1503,30 +894,12 @@ function function_77fe86ff() {
   level.ai_hendricks dialog::say("hend_the_drone_can_t_take_0");
 }
 
-/*
-	Name: function_da3c5a9d
-	Namespace: robot_defend
-	Checksum: 0x40972F8E
-	Offset: 0x5D18
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_da3c5a9d() {
   level.ai_hendricks dialog::say("hend_apc_from_the_right_0", 3);
 }
 
-/*
-	Name: function_9282c858
-	Namespace: robot_defend
-	Checksum: 0x7F8A4F90
-	Offset: 0x5D50
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9282c858() {
-  level endon(# "hash_7673dfe9");
+  level endon("hash_7673dfe9");
   wait(3);
   if(!level.var_fc71d8f) {
     level.ai_hendricks dialog::say("hend_move_move_move_0");
@@ -1539,28 +912,10 @@ function function_9282c858() {
   }
 }
 
-/*
-	Name: vo_end
-	Namespace: robot_defend
-	Checksum: 0xB84CACB4
-	Offset: 0x5E10
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function vo_end() {
   level.ai_hendricks dialog::say("tayr_inbound_two_minutes_0", 0.5);
 }
 
-/*
-	Name: function_947bfdac
-	Namespace: robot_defend
-	Checksum: 0x18DD4C8
-	Offset: 0x5E48
-	Size: 0xD6
-	Parameters: 13
-	Flags: Linked
-*/
 function function_947bfdac(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, modelindex, psoffsettime, vsurfacenormal) {
   if(isdefined(weapon) && isdefined(weapon.name)) {
     if(weapon.name == "turret_bo3_mil_macv_gunner3" || weapon.name == "turret_bo3_mil_macv_gunner4") {
@@ -1570,35 +925,17 @@ function function_947bfdac(einflictor, eattacker, idamage, idflags, smeansofdeat
   return idamage;
 }
 
-/*
-	Name: function_45756e82
-	Namespace: robot_defend
-	Checksum: 0x55AF813C
-	Offset: 0x5F28
-	Size: 0xA0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_45756e82(var_1fd9b48b = "chicken_zone") {
-  level endon(# "robot_defend_done");
+  level endon("robot_defend_done");
   var_e512db80 = getent(var_1fd9b48b + "_trigger", "targetname");
   while (true) {
-    var_e512db80 waittill(# "trigger", e_who);
+    var_e512db80 waittill("trigger", e_who);
     e_who function_d311c75a(var_1fd9b48b);
   }
 }
 
-/*
-	Name: function_d311c75a
-	Namespace: robot_defend
-	Checksum: 0xAFF994D1
-	Offset: 0x5FD0
-	Size: 0x2BE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d311c75a(var_1fd9b48b) {
-  self endon(# "death");
+  self endon("death");
   str_endon = "player_exited_" + var_1fd9b48b;
   level endon(str_endon);
   level thread function_4d64d2f6(var_1fd9b48b);
@@ -1628,33 +965,15 @@ function function_d311c75a(var_1fd9b48b) {
   }
 }
 
-/*
-	Name: function_e78f61a0
-	Namespace: robot_defend
-	Checksum: 0x2399FB9F
-	Offset: 0x6298
-	Size: 0x8C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_e78f61a0(w_weapon, a_s_starts, a_s_targets) {
   s_start = array::random(a_s_starts);
   s_target = array::random(a_s_targets);
   magicbullet(w_weapon, s_start.origin, s_target.origin);
 }
 
-/*
-	Name: function_4d64d2f6
-	Namespace: robot_defend
-	Checksum: 0xE989972E
-	Offset: 0x6330
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4d64d2f6(var_1fd9b48b) {
-  level endon(# "death");
-  level endon(# "robot_defend_done");
+  level endon("death");
+  level endon("robot_defend_done");
   var_fe2701d = "player_touching_" + var_1fd9b48b;
   level flag::wait_till_clear(var_fe2701d);
   str_endon = "player_exited_" + var_1fd9b48b;

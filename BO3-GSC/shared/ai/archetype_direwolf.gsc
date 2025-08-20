@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_direwolf.gsc
+*************************************************/
+
 #using scripts\shared\ai\behavior_zombie_dog;
 #using scripts\shared\ai\systems\ai_interface;
 #using scripts\shared\ai_shared;
@@ -6,31 +10,12 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace archetypedirewolf;
 
-/*
-	Name: __init__sytem__
-	Namespace: archetypedirewolf
-	Checksum: 0xEC7CA82E
-	Offset: 0x220
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("direwolf", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: archetypedirewolf
-	Checksum: 0xF11774C0
-	Offset: 0x260
-	Size: 0x1CC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   spawner::add_archetype_spawn_function("direwolf", & zombiedogbehavior::archetypezombiedogblackboardinit);
   spawner::add_archetype_spawn_function("direwolf", & direwolfspawnsetup);
@@ -46,15 +31,6 @@ function __init__() {
   }
 }
 
-/*
-	Name: direwolfspawnsetup
-	Namespace: archetypedirewolf
-	Checksum: 0x61639958
-	Offset: 0x438
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private direwolfspawnsetup() {
   self setteam("team3");
   self allowpitchangle(1);

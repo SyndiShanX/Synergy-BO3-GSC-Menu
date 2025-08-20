@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_traps.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_death;
 #using scripts\shared\array_shared;
@@ -17,74 +21,28 @@
 #using scripts\zm\_zm_score;
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_traps;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_traps
-	Checksum: 0x6CC2B4BC
-	Offset: 0x760
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_traps", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_traps
-	Checksum: 0x1480EF36
-	Offset: 0x7A8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.trap_kills = 0;
   level.burning_zombies = [];
   callback::on_finalize_initialization( & init);
 }
 
-/*
-	Name: init
-	Namespace: zm_traps
-	Checksum: 0xC376937B
-	Offset: 0x7F0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   traps = getentarray("zombie_trap", "targetname");
   array::thread_all(traps, & trap_init);
 }
 
-/*
-	Name: __main__
-	Namespace: zm_traps
-	Checksum: 0xC31006AC
-	Offset: 0x850
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   traps = getentarray("zombie_trap", "targetname");
   array::thread_all(traps, & trap_main);
 }
 
-/*
-	Name: trap_init
-	Namespace: zm_traps
-	Checksum: 0x1A55DCE6
-	Offset: 0x8B0
-	Size: 0x68C
-	Parameters: 0
-	Flags: Linked
-*/
 function trap_init() {
   self flag::init("flag_active");
   self flag::init("flag_cooldown");
@@ -204,33 +162,22 @@ function trap_init() {
     }
     self._trap_fx_structs[self._trap_fx_structs.size] = components[i];
   }
-  /#
   assert(self._trap_use_trigs.size > 0, "" + self.target);
-  # /
-    if(!isdefined(self.zombie_cost)) {
-      self.zombie_cost = 1000;
-    }
+  if(!isdefined(self.zombie_cost)) {
+    self.zombie_cost = 1000;
+  }
   self._trap_in_use = 0;
   self._trap_cooling_down = 0;
   self thread trap_dialog();
 }
 
-/*
-	Name: trap_main
-	Namespace: zm_traps
-	Checksum: 0x4E630E86
-	Offset: 0xF48
-	Size: 0x26E
-	Parameters: 0
-	Flags: Linked
-*/
 function trap_main() {
   level flag::wait_till("start_zombie_round_logic");
   for (i = 0; i < self._trap_use_trigs.size; i++) {
     self._trap_use_trigs[i] setcursorhint("HINT_NOICON");
   }
   if(!isdefined(self.script_string) || "disable_wait_for_power" != self.script_string) {
-    self trap_set_string( & "ZOMBIE_NEED_POWER");
+    self trap_set_string(&"ZOMBIE_NEED_POWER");
     if(isdefined(self.script_int)) {
       level flag::wait_till("power_on" + self.script_int);
     } else {
@@ -247,7 +194,7 @@ function trap_main() {
     level flag::wait_till(self.script_flag_wait);
     self triggerenable(1);
   }
-  self trap_set_string( & "ZOMBIE_BUTTON_BUY_TRAP", self.zombie_cost);
+  self trap_set_string(&"ZOMBIE_BUTTON_BUY_TRAP", self.zombie_cost);
   self trap_lights_green();
   for (i = 0; i < self._trap_use_trigs.size; i++) {
     self._trap_use_trigs[i] thread[[self._trap_use_func]](self);
@@ -255,18 +202,9 @@ function trap_main() {
   }
 }
 
-/*
-	Name: trap_use_think
-	Namespace: zm_traps
-	Checksum: 0xDF6AD76C
-	Offset: 0x11C0
-	Size: 0x3A0
-	Parameters: 1
-	Flags: Linked
-*/
 function trap_use_think(trap) {
   while (true) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     if(who zm_utility::in_revive_trigger()) {
       continue;
     }
@@ -284,50 +222,39 @@ function trap_use_think(trap) {
       }
       trap.activated_by_player = who;
       trap._trap_in_use = 1;
-      trap trap_set_string( & "ZOMBIE_TRAP_ACTIVE");
+      trap trap_set_string(&"ZOMBIE_TRAP_ACTIVE");
       zm_utility::play_sound_at_pos("purchase", who.origin);
       if(!(isdefined(level.b_trap_start_custom_vo) && level.b_trap_start_custom_vo)) {
         who zm_audio::create_and_play_dialog("trap", "start");
       }
       if(trap._trap_switches.size) {
         trap thread trap_move_switches();
-        trap waittill(# "switch_activated");
+        trap waittill("switch_activated");
       }
       trap triggerenable(1);
       trap thread[[trap._trap_activate_func]]();
-      trap waittill(# "trap_done");
+      trap waittill("trap_done");
       trap triggerenable(0);
       trap._trap_cooling_down = 1;
-      trap trap_set_string( & "ZOMBIE_TRAP_COOLDOWN");
-      /#
+      trap trap_set_string(&"ZOMBIE_TRAP_COOLDOWN");
       if(getdvarint("") >= 1) {
         trap._trap_cooldown_time = 5;
       }
-      # /
-        wait(trap._trap_cooldown_time);
+      wait(trap._trap_cooldown_time);
       trap._trap_cooling_down = 0;
       playsoundatposition("zmb_trap_ready", trap.origin);
       if(isdefined(level.sndtrapfunc)) {
         level thread[[level.sndtrapfunc]](trap, 0);
       }
-      trap notify(# "available");
+      trap notify("available");
       trap._trap_in_use = 0;
-      trap trap_set_string( & "ZOMBIE_BUTTON_BUY_TRAP", trap.zombie_cost);
+      trap trap_set_string(&"ZOMBIE_BUTTON_BUY_TRAP", trap.zombie_cost);
     }
   }
 }
 
-/*
-	Name: update_trigger_visibility
-	Namespace: zm_traps
-	Checksum: 0x5C77DF64
-	Offset: 0x1568
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private update_trigger_visibility() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     for (i = 0; i < level.players.size; i++) {
       if(distancesquared(level.players[i].origin, self.origin) < 16384) {
@@ -342,15 +269,6 @@ function private update_trigger_visibility() {
   }
 }
 
-/*
-	Name: trap_lights_red
-	Namespace: zm_traps
-	Checksum: 0xEA2504F2
-	Offset: 0x1670
-	Size: 0xC6
-	Parameters: 0
-	Flags: Linked
-*/
 function trap_lights_red() {
   for (i = 0; i < self._trap_lights.size; i++) {
     light = self._trap_lights[i];
@@ -361,15 +279,6 @@ function trap_lights_red() {
   }
 }
 
-/*
-	Name: trap_lights_green
-	Namespace: zm_traps
-	Checksum: 0xE0745F19
-	Offset: 0x1740
-	Size: 0xDE
-	Parameters: 0
-	Flags: Linked
-*/
 function trap_lights_green() {
   for (i = 0; i < self._trap_lights.size; i++) {
     light = self._trap_lights[i];
@@ -383,15 +292,6 @@ function trap_lights_green() {
   }
 }
 
-/*
-	Name: trap_set_string
-	Namespace: zm_traps
-	Checksum: 0xC0630692
-	Offset: 0x1828
-	Size: 0xDE
-	Parameters: 3
-	Flags: Linked
-*/
 function trap_set_string(string, param1, param2) {
   for (i = 0; i < self._trap_use_trigs.size; i++) {
     if(!isdefined(param1)) {
@@ -406,15 +306,6 @@ function trap_set_string(string, param1, param2) {
   }
 }
 
-/*
-	Name: trap_move_switches
-	Namespace: zm_traps
-	Checksum: 0x995BA8C6
-	Offset: 0x1910
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function trap_move_switches() {
   self trap_lights_red();
   for (i = 0; i < self._trap_switches.size; i++) {
@@ -425,25 +316,16 @@ function trap_move_switches() {
     }
     self._trap_switches[i] playsound("evt_switch_flip_trap");
   }
-  self._trap_switches[0] waittill(# "rotatedone");
-  self notify(# "switch_activated");
-  self waittill(# "available");
+  self._trap_switches[0] waittill("rotatedone");
+  self notify("switch_activated");
+  self waittill("available");
   for (i = 0; i < self._trap_switches.size; i++) {
     self._trap_switches[i] rotatepitch(-180, 0.5);
   }
-  self._trap_switches[0] waittill(# "rotatedone");
+  self._trap_switches[0] waittill("rotatedone");
   self trap_lights_green();
 }
 
-/*
-	Name: trap_activate_fire
-	Namespace: zm_traps
-	Checksum: 0xE3033BBD
-	Offset: 0x1AB8
-	Size: 0xD2
-	Parameters: 0
-	Flags: Linked
-*/
 function trap_activate_fire() {
   self._trap_duration = 40;
   self._trap_cooldown_time = 60;
@@ -454,20 +336,11 @@ function trap_activate_fire() {
   }
   self thread trap_damage();
   wait(self._trap_duration);
-  self notify(# "trap_done");
+  self notify("trap_done");
 }
 
-/*
-	Name: trap_activate_rotating
-	Namespace: zm_traps
-	Checksum: 0x87D64582
-	Offset: 0x1B98
-	Size: 0x236
-	Parameters: 0
-	Flags: Linked
-*/
 function trap_activate_rotating() {
-  self endon(# "trap_done");
+  self endon("trap_done");
   self._trap_duration = 30;
   self._trap_cooldown_time = 60;
   self thread trap_damage();
@@ -493,29 +366,11 @@ function trap_activate_rotating() {
   for (i = 0; i < self._trap_movers.size; i++) {
     self._trap_movers[i].angles = old_angles;
   }
-  self notify(# "trap_done");
+  self notify("trap_done");
 }
 
-/*
-	Name: trap_activate_flipper
-	Namespace: zm_traps
-	Checksum: 0x99EC1590
-	Offset: 0x1DD8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function trap_activate_flipper() {}
 
-/*
-	Name: trap_audio_fx
-	Namespace: zm_traps
-	Checksum: 0xA54858B7
-	Offset: 0x1DE8
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked
-*/
 function trap_audio_fx(trap) {
   if(isdefined(level._custom_traps) && isdefined(level._custom_traps[trap.script_noteworthy]) && isdefined(level._custom_traps[trap.script_noteworthy].audio)) {
     self[[level._custom_traps[trap.script_noteworthy].audio]](trap);
@@ -531,19 +386,10 @@ function trap_audio_fx(trap) {
   }
 }
 
-/*
-	Name: trap_damage
-	Namespace: zm_traps
-	Checksum: 0xD0F94275
-	Offset: 0x1F28
-	Size: 0x2AA
-	Parameters: 0
-	Flags: Linked
-*/
 function trap_damage() {
-  self endon(# "trap_done");
+  self endon("trap_done");
   while (true) {
-    self waittill(# "trigger", ent);
+    self waittill("trigger", ent);
     if(isplayer(ent)) {
       if(isdefined(level._custom_traps) && isdefined(level._custom_traps[self._trap_type]) && isdefined(level._custom_traps[self._trap_type].player_damage)) {
         ent thread[[level._custom_traps[self._trap_type].player_damage]]();
@@ -587,17 +433,8 @@ function trap_damage() {
   }
 }
 
-/*
-	Name: trig_update
-	Namespace: zm_traps
-	Checksum: 0xEF03CECE
-	Offset: 0x21E0
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function trig_update(parent) {
-  self endon(# "trap_done");
+  self endon("trap_done");
   start_angles = self.angles;
   while (true) {
     self.angles = parent.angles;
@@ -605,18 +442,9 @@ function trig_update(parent) {
   }
 }
 
-/*
-	Name: player_elec_damage
-	Namespace: zm_traps
-	Checksum: 0x5662F0A
-	Offset: 0x2240
-	Size: 0x23E
-	Parameters: 0
-	Flags: None
-*/
 function player_elec_damage() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(!isdefined(level.elec_loop)) {
     level.elec_loop = 0;
   }
@@ -650,18 +478,9 @@ function player_elec_damage() {
   }
 }
 
-/*
-	Name: player_fire_damage
-	Namespace: zm_traps
-	Checksum: 0x5BFC8BC9
-	Offset: 0x2488
-	Size: 0x17E
-	Parameters: 0
-	Flags: Linked
-*/
 function player_fire_damage() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(!(isdefined(self.is_burning) && self.is_burning) && !self laststand::player_is_in_laststand()) {
     self.is_burning = 1;
     if(isdefined(level.trap_fire_visionset_registered) && level.trap_fire_visionset_registered) {
@@ -669,7 +488,7 @@ function player_fire_damage() {
     } else {
       self setburn(1.25);
     }
-    self notify(# "burned");
+    self notify("burned");
     if(!self hasperk("specialty_armorvest") || (self.health - 100) < 1) {
       radiusdamage(self.origin, 10, self.health + 100, self.health + 100);
       self.is_burning = undefined;
@@ -681,17 +500,8 @@ function player_fire_damage() {
   }
 }
 
-/*
-	Name: zombie_trap_death
-	Namespace: zm_traps
-	Checksum: 0xC4D49547
-	Offset: 0x2610
-	Size: 0x434
-	Parameters: 2
-	Flags: Linked
-*/
 function zombie_trap_death(trap, param) {
-  self endon(# "death");
+  self endon("death");
   self.marked_for_death = 1;
   switch (trap._trap_type) {
     case "rocket": {
@@ -720,7 +530,7 @@ function zombie_trap_death(trap, param) {
       if(isdefined(self.fire_damage_func)) {
         self[[self.fire_damage_func]](trap);
       } else {
-        level notify(# "trap_kill", self, trap);
+        level notify("trap_kill", self, trap);
         self dodamage(self.health + 666, self.origin, trap);
       }
       break;
@@ -732,7 +542,7 @@ function zombie_trap_death(trap, param) {
       if(isdefined(self.trap_reaction_func)) {
         self[[self.trap_reaction_func]](trap);
       }
-      level notify(# "trap_kill", self, trap);
+      level notify("trap_kill", self, trap);
       self startragdoll();
       self launchragdoll(direction_vec);
       util::wait_network_frame();
@@ -746,30 +556,12 @@ function zombie_trap_death(trap, param) {
   }
 }
 
-/*
-	Name: zombie_flame_watch
-	Namespace: zm_traps
-	Checksum: 0x35DA5586
-	Offset: 0x2A50
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_flame_watch() {
-  self waittill(# "death");
+  self waittill("death");
   self stoploopsound();
   arrayremovevalue(level.burning_zombies, self);
 }
 
-/*
-	Name: play_elec_vocals
-	Namespace: zm_traps
-	Checksum: 0xA811D04
-	Offset: 0x2A98
-	Size: 0x84
-	Parameters: 0
-	Flags: None
-*/
 function play_elec_vocals() {
   if(isdefined(self)) {
     org = self.origin;
@@ -780,17 +572,8 @@ function play_elec_vocals() {
   }
 }
 
-/*
-	Name: electroctute_death_fx
-	Namespace: zm_traps
-	Checksum: 0xB0735DA6
-	Offset: 0x2B28
-	Size: 0x2EC
-	Parameters: 0
-	Flags: None
-*/
 function electroctute_death_fx() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.is_electrocuted) && self.is_electrocuted) {
     return;
   }
@@ -830,38 +613,20 @@ function electroctute_death_fx() {
   }
 }
 
-/*
-	Name: electrocute_timeout
-	Namespace: zm_traps
-	Checksum: 0x28D588F2
-	Offset: 0x2E20
-	Size: 0x7E
-	Parameters: 0
-	Flags: Linked
-*/
 function electrocute_timeout() {
-  self endon(# "death");
+  self endon("death");
   self playloopsound("amb_fire_manager_0");
   wait(12);
   self stoploopsound();
   if(isdefined(self) && isalive(self)) {
     self.is_electrocuted = 0;
-    self notify(# "stop_flame_damage");
+    self notify("stop_flame_damage");
   }
 }
 
-/*
-	Name: trap_dialog
-	Namespace: zm_traps
-	Checksum: 0x18CA2B0D
-	Offset: 0x2EA8
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function trap_dialog() {
-  self endon(# "warning_dialog");
-  level endon(# "switch_flipped");
+  self endon("warning_dialog");
+  level endon("switch_flipped");
   timer = 0;
   while (true) {
     wait(0.5);
@@ -883,21 +648,12 @@ function trap_dialog() {
         index = zm_utility::get_player_index(players[i]);
         plr = ("plr_" + index) + "_";
         wait(3);
-        self notify(# "warning_dialog");
+        self notify("warning_dialog");
       }
     }
   }
 }
 
-/*
-	Name: get_trap_array
-	Namespace: zm_traps
-	Checksum: 0xA8A36D08
-	Offset: 0x3048
-	Size: 0xAA
-	Parameters: 1
-	Flags: None
-*/
 function get_trap_array(trap_type) {
   ents = getentarray("zombie_trap", "targetname");
   traps = [];
@@ -909,50 +665,23 @@ function get_trap_array(trap_type) {
   return traps;
 }
 
-/*
-	Name: trap_disable
-	Namespace: zm_traps
-	Checksum: 0x26B078D5
-	Offset: 0x3100
-	Size: 0x98
-	Parameters: 0
-	Flags: None
-*/
 function trap_disable() {
   cooldown = self._trap_cooldown_time;
   if(self._trap_in_use) {
-    self notify(# "trap_done");
+    self notify("trap_done");
     self._trap_cooldown_time = 0.05;
-    self waittill(# "available");
+    self waittill("available");
   }
   array::thread_all(self._trap_use_trigs, & triggerenable, 0);
   self trap_lights_red();
   self._trap_cooldown_time = cooldown;
 }
 
-/*
-	Name: trap_enable
-	Namespace: zm_traps
-	Checksum: 0x9FDBA38B
-	Offset: 0x31A0
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function trap_enable() {
   array::thread_all(self._trap_use_trigs, & triggerenable, 1);
   self trap_lights_green();
 }
 
-/*
-	Name: trap_model_type_init
-	Namespace: zm_traps
-	Checksum: 0xD7509302
-	Offset: 0x31F8
-	Size: 0xD6
-	Parameters: 0
-	Flags: Linked
-*/
 function trap_model_type_init() {
   if(!isdefined(self.script_parameters)) {
     self.script_parameters = "default";
@@ -976,52 +705,19 @@ function trap_model_type_init() {
   }
 }
 
-/*
-	Name: is_trap_registered
-	Namespace: zm_traps
-	Checksum: 0x374EDD94
-	Offset: 0x32D8
-	Size: 0x1A
-	Parameters: 1
-	Flags: None
-*/
 function is_trap_registered(a_registered_traps) {
   return isdefined(a_registered_traps[self.script_noteworthy]);
 }
 
-/*
-	Name: register_trap_basic_info
-	Namespace: zm_traps
-	Checksum: 0x697AD7F
-	Offset: 0x3300
-	Size: 0xE4
-	Parameters: 3
-	Flags: None
-*/
 function register_trap_basic_info(str_trap, func_activate, func_audio) {
-  /#
   assert(isdefined(str_trap), "");
-  # /
-    /#
   assert(isdefined(func_activate), "");
-  # /
-    /#
   assert(isdefined(func_audio), "");
-  # /
-    _register_undefined_trap(str_trap);
+  _register_undefined_trap(str_trap);
   level._custom_traps[str_trap].activate = func_activate;
   level._custom_traps[str_trap].audio = func_audio;
 }
 
-/*
-	Name: _register_undefined_trap
-	Namespace: zm_traps
-	Checksum: 0x8EE7D68C
-	Offset: 0x33F0
-	Size: 0x5A
-	Parameters: 1
-	Flags: Linked
-*/
 function _register_undefined_trap(str_trap) {
   if(!isdefined(level._custom_traps)) {
     level._custom_traps = [];
@@ -1031,20 +727,9 @@ function _register_undefined_trap(str_trap) {
   }
 }
 
-/*
-	Name: register_trap_damage
-	Namespace: zm_traps
-	Checksum: 0xC9FE2270
-	Offset: 0x3458
-	Size: 0x94
-	Parameters: 3
-	Flags: None
-*/
 function register_trap_damage(str_trap, func_player_damage, func_damage) {
-  /#
   assert(isdefined(str_trap), "");
-  # /
-    _register_undefined_trap(str_trap);
+  _register_undefined_trap(str_trap);
   level._custom_traps[str_trap].player_damage = func_player_damage;
   level._custom_traps[str_trap].damage = func_damage;
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*********************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_gadget_misdirection.csc
+*********************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\audio_shared;
 #using scripts\shared\callbacks_shared;
@@ -8,61 +12,24 @@
 #using scripts\shared\math_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace cybercom_misdirection;
 
-/*
-	Name: init
-	Namespace: cybercom_misdirection
-	Checksum: 0xCFF9DBEB
-	Offset: 0x2E8
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   init_clientfields();
 }
 
-/*
-	Name: init_clientfields
-	Namespace: cybercom_misdirection
-	Checksum: 0xCC0D3757
-	Offset: 0x308
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("toplayer", "misdirection_enable", 1, 1, "int", & function_ec87e5c5, 0, 0);
   clientfield::register("scriptmover", "makedecoy", 1, 1, "int", & function_ac2a831d, 0, 0);
   duplicate_render::set_dr_filter_framebuffer_duplicate("armor_pl", 0, "armor_on", undefined, 1, "mc/mtl_power_armor", 0);
 }
 
-/*
-	Name: function_ec87e5c5
-	Namespace: cybercom_misdirection
-	Checksum: 0x22EF6C6C
-	Offset: 0x3D8
-	Size: 0x54
-	Parameters: 7
-	Flags: Linked
-*/
 function function_ec87e5c5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   misdirectionenable(localclientnum, newval);
 }
 
-/*
-	Name: function_2c16a75b
-	Namespace: cybercom_misdirection
-	Checksum: 0xD69D6BB
-	Offset: 0x438
-	Size: 0x144
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2c16a75b(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   wait(0.016);
   var_76dfdc9 = self.origin;
   amplitude = randomfloatrange(4, 12);
@@ -80,15 +47,6 @@ function function_2c16a75b(localclientnum) {
   }
 }
 
-/*
-	Name: function_ac2a831d
-	Namespace: cybercom_misdirection
-	Checksum: 0xA9084D34
-	Offset: 0x588
-	Size: 0x38C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_ac2a831d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self.decoy = spawn(localclientnum, self.origin, "script_model");
@@ -124,16 +82,7 @@ function function_ac2a831d(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_4fbb807c
-	Namespace: cybercom_misdirection
-	Checksum: 0x8585797C
-	Offset: 0x920
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4fbb807c(sndorigin) {
-  self waittill(# "entityshutdown");
+  self waittill("entityshutdown");
   playsound(0, "gdt_cybercore_decoy_delete", sndorigin);
 }

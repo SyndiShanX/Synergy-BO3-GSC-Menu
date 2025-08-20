@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_powered_bridge.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -16,18 +20,8 @@
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_stalingrad;
 #using scripts\zm\zm_stalingrad_util;
-
 #namespace zm_stalingrad_powered_bridge;
 
-/*
-	Name: main
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0xF808AA81
-	Offset: 0x540
-	Size: 0x222
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level flag::init("bridge_jitter_stop");
   level flag::init("bridge_in_use");
@@ -46,15 +40,6 @@ function main() {
   }
 }
 
-/*
-	Name: function_e457f1d
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0xCCF99EDC
-	Offset: 0x770
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e457f1d() {
   self.script_unitrigger_type = "unitrigger_radius_use";
   self.cursor_hint = "HINT_NOICON";
@@ -65,40 +50,22 @@ function function_e457f1d() {
   zm_unitrigger::register_static_unitrigger(self, & function_5156e4d8);
 }
 
-/*
-	Name: function_87d1b410
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0x282DB357
-	Offset: 0x7F8
-	Size: 0xC0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_87d1b410(e_player) {
   if(!level flag::get("power_on")) {
-    self sethintstring( & "ZOMBIE_NEED_POWER");
+    self sethintstring(&"ZOMBIE_NEED_POWER");
     return false;
   }
   if(level flag::get("bridge_in_use")) {
-    self sethintstring( & "ZM_STALINGRAD_BRIDGE_UNAVAILABLE");
+    self sethintstring(&"ZM_STALINGRAD_BRIDGE_UNAVAILABLE");
     return false;
   }
-  self sethintstring( & "ZM_STALINGRAD_BRIDGE_USE", 500);
+  self sethintstring(&"ZM_STALINGRAD_BRIDGE_USE", 500);
   return true;
 }
 
-/*
-	Name: function_5156e4d8
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0xF727E037
-	Offset: 0x8C8
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5156e4d8() {
   while (true) {
-    self waittill(# "trigger", e_player);
+    self waittill("trigger", e_player);
     if(!level flag::get("bridge_in_use")) {
       if(e_player zm_score::can_player_purchase(500)) {
         e_player clientfield::increment_to_player("interact_rumble");
@@ -117,15 +84,6 @@ function function_5156e4d8() {
   }
 }
 
-/*
-	Name: activate_bridge
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0xC3BD44BE
-	Offset: 0xA08
-	Size: 0x48C
-	Parameters: 1
-	Flags: Linked
-*/
 function activate_bridge(e_player) {
   level thread zm_stalingrad_util::function_903f6b36(1, "bridge_trap");
   level flag::set("bridge_in_use");
@@ -137,7 +95,7 @@ function activate_bridge(e_player) {
   level thread scene::play("p7_fxanim_zm_stal_elevator_bundle");
   function_ef72d561();
   e_gate movez(100 * -1, 0.05);
-  e_gate waittill(# "movedone");
+  e_gate waittill("movedone");
   e_gate connectpaths();
   foreach(var_8bd15b35 in var_cefeeda4) {
     linktraversal(var_8bd15b35);
@@ -150,7 +108,7 @@ function activate_bridge(e_player) {
   level flag::set("bridge_jitter_stop");
   level flag::wait_till_clear("bridge_jitter_stop");
   e_gate movez(100, 0.05);
-  e_gate waittill(# "movedone");
+  e_gate waittill("movedone");
   e_gate disconnectpaths();
   foreach(var_8bd15b35 in var_cefeeda4) {
     unlinktraversal(var_8bd15b35);
@@ -165,15 +123,6 @@ function activate_bridge(e_player) {
   level flag::clear("bridge_in_use");
 }
 
-/*
-	Name: function_462efa3d
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0x6B1E7CCE
-	Offset: 0xEA0
-	Size: 0xFA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_462efa3d() {
   var_435fc5db = getent("bridge_area", "targetname");
   a_zombies = getaiteamarray(level.zombie_team);
@@ -184,32 +133,14 @@ function function_462efa3d() {
   }
 }
 
-/*
-	Name: function_ef72d561
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0x210EE80
-	Offset: 0xFA8
-	Size: 0xBA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ef72d561() {
   e_bridge = getent("bridge_left", "targetname");
   var_c83a1961 = getent("bridge_right", "targetname");
   e_bridge rotatepitch(90, 0.75);
   var_c83a1961 rotatepitch(-90, 0.75);
-  e_bridge waittill(# "rotatedone");
+  e_bridge waittill("rotatedone");
 }
 
-/*
-	Name: function_40ac3c12
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0xEB5226D2
-	Offset: 0x1070
-	Size: 0x3AC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_40ac3c12(e_player) {
   var_efdf0fee = getentarray("bridge_light_on", "targetname");
   array::run_all(var_efdf0fee, & show);
@@ -221,10 +152,10 @@ function function_40ac3c12(e_player) {
   while (!level flag::get("bridge_jitter_stop")) {
     var_fa30b172 movez(2 * -1, 0.05);
     var_c83a1961 movez(2 * -1, 0.05);
-    var_fa30b172 waittill(# "movedone");
+    var_fa30b172 waittill("movedone");
     var_fa30b172 movez(2, 0.05);
     var_c83a1961 movez(2, 0.05);
-    var_fa30b172 waittill(# "movedone");
+    var_fa30b172 waittill("movedone");
   }
   var_edc0081d = getent("bridge_left_volume", "targetname");
   var_55155900 = getent("bridge_right_volume", "targetname");
@@ -241,15 +172,6 @@ function function_40ac3c12(e_player) {
   exploder::kill_exploder("bridge_lights_exploder");
 }
 
-/*
-	Name: function_e0c7ad1e
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0x180789C9
-	Offset: 0x1428
-	Size: 0x102
-	Parameters: 2
-	Flags: Linked
-*/
 function function_e0c7ad1e(var_fa30b172, var_c83a1961) {
   foreach(player in level.players) {
     if(player istouching(var_fa30b172)) {
@@ -262,17 +184,8 @@ function function_e0c7ad1e(var_fa30b172, var_c83a1961) {
   }
 }
 
-/*
-	Name: function_fce6cca8
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0xC2731B22
-	Offset: 0x1538
-	Size: 0x1FC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fce6cca8(str_side) {
-  self endon(# "death");
+  self endon("death");
   var_9439ece6 = struct::get("barracks_bridge_fling_target", "targetname");
   var_7bb55377 = struct::get("armory_bridge_fling_target", "targetname");
   v_left = var_9439ece6.origin;
@@ -294,15 +207,6 @@ function function_fce6cca8(str_side) {
   var_848f1155 delete();
 }
 
-/*
-	Name: function_54227761
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0xED56FAC
-	Offset: 0x1740
-	Size: 0x20C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_54227761(var_fa30b172, var_c83a1961, e_player) {
   a_zombies = getaiteamarray(level.zombie_team);
   n_count = 0;
@@ -333,21 +237,12 @@ function function_54227761(var_fa30b172, var_c83a1961, e_player) {
     }
   }
   if(isdefined(e_player)) {
-    e_player notify(# "hash_f7608efe", n_kill_count);
+    e_player notify("hash_f7608efe", n_kill_count);
   }
 }
 
-/*
-	Name: function_d2f913f5
-	Namespace: zm_stalingrad_powered_bridge
-	Checksum: 0x5E77BD5C
-	Offset: 0x1958
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d2f913f5(str_side) {
-  self endon(# "death");
+  self endon("death");
   if(str_side == "left") {
     self startragdoll();
     self launchragdoll((5 * -1, 0, 3));

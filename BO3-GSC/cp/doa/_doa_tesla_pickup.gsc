@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_tesla_pickup.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_util;
 #using scripts\cp\doa\_doa_dev;
@@ -15,20 +19,9 @@
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("generic_human");
-
 #namespace namespace_3f3eaecb;
 
-/*
-	Name: init
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x7A44167F
-	Offset: 0x460
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.weaponzmteslagun = getweapon("tesla_gun");
   level.weaponzmteslagunupgraded = getweapon("tesla_gun_upgraded");
@@ -40,36 +33,18 @@ function init() {
   level.doa.rules.var_37d05402 = 30;
 }
 
-/*
-	Name: tesla_discharge_mechanic
-	Namespace: namespace_3f3eaecb
-	Checksum: 0xFEADCEA
-	Offset: 0x558
-	Size: 0x5E
-	Parameters: 0
-	Flags: Linked
-*/
 function tesla_discharge_mechanic() {
-  self endon(# "tesla_discharge_mechanic");
-  self notify(# "tesla_discharge_mechanic");
-  self endon(# "disconnect");
+  self endon("tesla_discharge_mechanic");
+  self notify("tesla_discharge_mechanic");
+  self endon("disconnect");
   while (true) {
     self.tesla_discharge = 1;
-    self waittill(# "tesla_discharged");
+    self waittill("tesla_discharged");
     self.tesla_discharge = 0;
     wait(2);
   }
 }
 
-/*
-	Name: tesla_ok_to_discharge
-	Namespace: namespace_3f3eaecb
-	Checksum: 0xED26D94F
-	Offset: 0x5C0
-	Size: 0x42
-	Parameters: 1
-	Flags: Linked
-*/
 function tesla_ok_to_discharge(player) {
   if(!isdefined(player.tesla_discharge)) {
     return true;
@@ -80,18 +55,9 @@ function tesla_ok_to_discharge(player) {
   return true;
 }
 
-/*
-	Name: tesla_damage_init
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x78FEC1CF
-	Offset: 0x610
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function tesla_damage_init(player) {
-  player endon(# "disconnect");
-  player endon(# "death");
+  player endon("disconnect");
+  player endon("death");
   waittillframeend();
   if(!tesla_ok_to_discharge(player)) {
     return;
@@ -102,7 +68,7 @@ function tesla_damage_init(player) {
   player.tesla_enemies = undefined;
   player.tesla_enemies_hit = 1;
   player.tesla_powerup_dropped = 0;
-  player notify(# "tesla_discharged");
+  player notify("tesla_discharged");
   self thread namespace_eaa992c::function_285a2999("tesla_shock");
   if(!(isdefined(self.boss) && self.boss)) {
     self tesla_arc_damage(self, player, 0);
@@ -110,18 +76,9 @@ function tesla_damage_init(player) {
   player.tesla_enemies_hit = 0;
 }
 
-/*
-	Name: tesla_arc_damage
-	Namespace: namespace_3f3eaecb
-	Checksum: 0xDBFA5FB6
-	Offset: 0x710
-	Size: 0x20E
-	Parameters: 3
-	Flags: Linked
-*/
 function tesla_arc_damage(source_enemy, player, arc_num) {
-  player endon(# "disconnect");
-  player endon(# "death");
+  player endon("disconnect");
+  player endon("death");
   tesla_flag_hit(self, 1);
   radius_decay = level.doa.rules.tesla_radius_decay * arc_num;
   enemies = tesla_get_enemies_in_area(self gettagorigin("j_head"), level.doa.rules.tesla_radius_start - radius_decay, player);
@@ -143,15 +100,6 @@ function tesla_arc_damage(source_enemy, player, arc_num) {
   }
 }
 
-/*
-	Name: tesla_end_arc_damage
-	Namespace: namespace_3f3eaecb
-	Checksum: 0xE143672
-	Offset: 0x928
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function tesla_end_arc_damage(arc_num, enemies_hit_num) {
   if(arc_num >= level.doa.rules.tesla_max_arcs) {
     return true;
@@ -166,15 +114,6 @@ function tesla_end_arc_damage(arc_num, enemies_hit_num) {
   return false;
 }
 
-/*
-	Name: tesla_get_enemies_in_area
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x5783B256
-	Offset: 0x9F0
-	Size: 0x1E8
-	Parameters: 3
-	Flags: Linked
-*/
 function tesla_get_enemies_in_area(origin, distance, player) {
   distance_squared = distance * distance;
   enemies = [];
@@ -204,15 +143,6 @@ function tesla_get_enemies_in_area(origin, distance, player) {
   return enemies;
 }
 
-/*
-	Name: tesla_flag_hit
-	Namespace: namespace_3f3eaecb
-	Checksum: 0xA6185FF4
-	Offset: 0xBE0
-	Size: 0x90
-	Parameters: 2
-	Flags: Linked
-*/
 function tesla_flag_hit(enemy, hit) {
   if(!isdefined(enemy)) {
     return;
@@ -226,17 +156,8 @@ function tesla_flag_hit(enemy, hit) {
   }
 }
 
-/*
-	Name: tesla_do_damage
-	Namespace: namespace_3f3eaecb
-	Checksum: 0xD915E289
-	Offset: 0xC78
-	Size: 0x1F4
-	Parameters: 3
-	Flags: Linked
-*/
 function tesla_do_damage(source_enemy, arc_num, player) {
-  player endon(# "disconnect");
+  player endon("disconnect");
   timetowait = 0.2 * arc_num;
   if(timetowait > 0) {
     wait(timetowait);
@@ -269,15 +190,6 @@ function tesla_do_damage(source_enemy, arc_num, player) {
   self dodamage(self.health + 666, origin, player, player);
 }
 
-/*
-	Name: tesla_play_death_fx
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x23BD0038
-	Offset: 0xE78
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked
-*/
 function tesla_play_death_fx(arc_num) {
   if(arc_num > 1) {
     self thread namespace_eaa992c::function_285a2999("tesla_shock_eyes");
@@ -291,15 +203,6 @@ function tesla_play_death_fx(arc_num) {
   }
 }
 
-/*
-	Name: tesla_play_arc_fx
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x93C713FE
-	Offset: 0xF10
-	Size: 0x28C
-	Parameters: 1
-	Flags: Linked
-*/
 function tesla_play_arc_fx(target) {
   if(!isdefined(self) || !isdefined(target)) {
     wait(getdvarfloat("scr_arc_travel_time", 0.05));
@@ -331,49 +234,20 @@ function tesla_play_arc_fx(target) {
   fxorg delete();
 }
 
-/*
-	Name: tesla_debug_arc
-	Namespace: namespace_3f3eaecb
-	Checksum: 0xE464F405
-	Offset: 0x11A8
-	Size: 0x6C
-	Parameters: 2
-	Flags: None
-*/
 function tesla_debug_arc(origin, distance) {
-  /#
-  if(getdvarint(# "hash_fa91ea91") != 3) {
+  if(getdvarint("hash_fa91ea91") != 3) {
     return;
   }
   start = gettime();
   while (gettime() < (start + 3000)) {
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: enemy_killed_by_tesla
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x5A82EAB7
-	Offset: 0x1220
-	Size: 0x16
-	Parameters: 0
-	Flags: None
-*/
 function enemy_killed_by_tesla() {
   return isdefined(self.tesla_death) && self.tesla_death;
 }
 
-/*
-	Name: function_395fdfb8
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x4D86147E
-	Offset: 0x1240
-	Size: 0xF4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_395fdfb8(guy, attacker) {
   if(!isdefined(guy)) {
     return false;
@@ -392,20 +266,11 @@ function function_395fdfb8(guy, attacker) {
   return false;
 }
 
-/*
-	Name: tesla_blockers_damage_trigger
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x56FFB1CC
-	Offset: 0x1340
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function tesla_blockers_damage_trigger(player, note) {
   player endon(note);
-  player endon(# "disconnect");
+  player endon("disconnect");
   while (true) {
-    self waittill(# "trigger", guy);
+    self waittill("trigger", guy);
     if(level thread function_395fdfb8(guy, player)) {
       self.triggered = 1;
       break;
@@ -413,18 +278,9 @@ function tesla_blockers_damage_trigger(player, note) {
   }
 }
 
-/*
-	Name: tesla_blockers_timeout
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x8DA5BE2B
-	Offset: 0x13D0
-	Size: 0xEE
-	Parameters: 2
-	Flags: Linked
-*/
 function tesla_blockers_timeout(org, note) {
   self endon(note);
-  self endon(# "disconnect");
+  self endon("disconnect");
   org playloopsound("zmb_pwup_coco_loop");
   level doa_utility::function_124b9a08();
   wait(self doa_utility::function_1ded48e6(level.doa.rules.var_37d05402));
@@ -434,15 +290,6 @@ function tesla_blockers_timeout(org, note) {
   self notify(note);
 }
 
-/*
-	Name: function_ccf71744
-	Namespace: namespace_3f3eaecb
-	Checksum: 0xE9ABE27B
-	Offset: 0x14C8
-	Size: 0xAC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_ccf71744(org, vel) {
   self moveto(org.origin, 0.5);
   self util::waittill_any_timeout(1, "movedone");
@@ -451,18 +298,9 @@ function function_ccf71744(org, vel) {
   self physicslaunch(self.origin, vel);
 }
 
-/*
-	Name: function_89843a06
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x5CDB3F0B
-	Offset: 0x1580
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function function_89843a06(player) {
-  self endon(# "death");
-  player waittill(# "disconnect");
+  self endon("death");
+  player waittill("disconnect");
   for (i = 0; i < self.triggers.size; i++) {
     if(isdefined(self.triggers[i])) {
       self.triggers[i] delete();
@@ -480,15 +318,6 @@ function function_89843a06(player) {
   }
 }
 
-/*
-	Name: tesla_blockers_cleanup
-	Namespace: namespace_3f3eaecb
-	Checksum: 0xEB6CA3E1
-	Offset: 0x16B0
-	Size: 0x224
-	Parameters: 2
-	Flags: Linked
-*/
 function tesla_blockers_cleanup(org, note) {
   self util::waittill_any(note, "disconnect", "player_died", "kill_shield", "doa_playerVehiclePickup");
   if(isdefined(self)) {
@@ -522,18 +351,9 @@ function tesla_blockers_cleanup(org, note) {
   }
 }
 
-/*
-	Name: tesla_blockers_deletion_monitors
-	Namespace: namespace_3f3eaecb
-	Checksum: 0xCAD648F4
-	Offset: 0x18E0
-	Size: 0x13C
-	Parameters: 2
-	Flags: Linked
-*/
 function tesla_blockers_deletion_monitors(org, note) {
   self endon(note);
-  org endon(# "death");
+  org endon("death");
   count = 0;
   while (true) {
     for (i = 0; i < org.objects.size; i++) {
@@ -550,36 +370,18 @@ function tesla_blockers_deletion_monitors(org, note) {
   }
 }
 
-/*
-	Name: tesla_blockers_move
-	Namespace: namespace_3f3eaecb
-	Checksum: 0xFED77A14
-	Offset: 0x1A28
-	Size: 0x76
-	Parameters: 2
-	Flags: Linked
-*/
 function tesla_blockers_move(org, note) {
   self endon(note);
-  org endon(# "death");
+  org endon("death");
   while (true) {
     org rotateto(org.angles + vectorscale((0, 1, 0), 180), 1);
     wait(1);
   }
 }
 
-/*
-	Name: tesla_blockers_fx
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x85CA1AA1
-	Offset: 0x1AA8
-	Size: 0xC6
-	Parameters: 1
-	Flags: Linked
-*/
 function tesla_blockers_fx(org) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   for (i = 0; i < org.objects.size; i++) {
     if(isdefined(org.objects[i])) {
       org.objects[i] thread namespace_eaa992c::function_285a2999("tesla_trail");
@@ -588,15 +390,6 @@ function tesla_blockers_fx(org) {
   }
 }
 
-/*
-	Name: tesla_blockers_update
-	Namespace: namespace_3f3eaecb
-	Checksum: 0x44D991C9
-	Offset: 0x1B78
-	Size: 0x92C
-	Parameters: 0
-	Flags: Linked
-*/
 function tesla_blockers_update() {
   note = doa_utility::function_2ccf4b82("end_tesla_pickup");
   self endon(note);

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\bgbs\_zm_bgb_reign_drops.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\flag_shared;
 #using scripts\shared\system_shared;
@@ -7,31 +11,12 @@
 #using scripts\zm\_zm_powerups;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\bgbs\_zm_bgb_extra_credit;
-
 #namespace zm_bgb_reign_drops;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_bgb_reign_drops
-	Checksum: 0xDED1DE76
-	Offset: 0x1E0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_bgb_reign_drops", & __init__, undefined, "bgb");
 }
 
-/*
-	Name: __init__
-	Namespace: zm_bgb_reign_drops
-	Checksum: 0xEFAB241D
-	Offset: 0x220
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -39,15 +24,6 @@ function __init__() {
   bgb::register("zm_bgb_reign_drops", "activated", 2, undefined, undefined, & validation, & activation);
 }
 
-/*
-	Name: validation
-	Namespace: zm_bgb_reign_drops
-	Checksum: 0x7F3D91FE
-	Offset: 0x290
-	Size: 0x22
-	Parameters: 0
-	Flags: Linked
-*/
 function validation() {
   if(isdefined(self.var_b90dda44) && self.var_b90dda44) {
     return false;
@@ -55,18 +31,9 @@ function validation() {
   return true;
 }
 
-/*
-	Name: activation
-	Namespace: zm_bgb_reign_drops
-	Checksum: 0x1CC28CDD
-	Offset: 0x2C0
-	Size: 0x1E4
-	Parameters: 0
-	Flags: Linked
-*/
 function activation() {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
+  self endon("disconnect");
+  self endon("bled_out");
   level thread bgb::function_dea74fb0("minigun", self function_ed573cc2(1));
   self thread zm_bgb_extra_credit::function_b18c3b2d(self function_ed573cc2(2));
   level thread bgb::function_dea74fb0("nuke", self function_ed573cc2(3));
@@ -80,15 +47,6 @@ function activation() {
   self thread function_7892610e();
 }
 
-/*
-	Name: function_7892610e
-	Namespace: zm_bgb_reign_drops
-	Checksum: 0x495E79A9
-	Offset: 0x4B0
-	Size: 0x92
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7892610e() {
   wait(0.05);
   n_start_time = gettime();
@@ -104,15 +62,6 @@ function function_7892610e() {
   self.var_b90dda44 = undefined;
 }
 
-/*
-	Name: function_ed573cc2
-	Namespace: zm_bgb_reign_drops
-	Checksum: 0xAB8C78BA
-	Offset: 0x550
-	Size: 0x282
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ed573cc2(n_position) {
   v_powerup = self bgb::get_player_dropped_powerup_origin();
   v_up = vectorscale((0, 0, 1), 5);

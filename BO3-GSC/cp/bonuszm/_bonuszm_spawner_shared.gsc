@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\bonuszm\_bonuszm_spawner_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai_shared;
 #using scripts\shared\array_shared;
@@ -12,18 +16,8 @@
 #using scripts\shared\trigger_shared;
 #using scripts\shared\turret_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_2396e2d7;
 
-/*
-	Name: function_fc1970dd
-	Namespace: namespace_2396e2d7
-	Checksum: 0x3511D7ED
-	Offset: 0x578
-	Size: 0x314
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fc1970dd() {
   level.bonuszm_zombie_spawners = [];
   level.bonuszm_zombie_spawners["female"] = [];
@@ -55,15 +49,6 @@ function function_fc1970dd() {
   }
 }
 
-/*
-	Name: function_9bb9e127
-	Namespace: namespace_2396e2d7
-	Checksum: 0xBBBA969C
-	Offset: 0x898
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9bb9e127() {
   if(!isdefined(level.bonuszm_zombie_spawners)) {
     return undefined;
@@ -78,21 +63,10 @@ function function_9bb9e127() {
   } else {
     spawneraitype = array::random(level.bonuszm_zombie_spawners["male"]);
   }
-  /#
   assert(isdefined(spawneraitype));
-  # /
-    return spawneraitype;
+  return spawneraitype;
 }
 
-/*
-	Name: function_b6c845e8
-	Namespace: namespace_2396e2d7
-	Checksum: 0x880C9B2F
-	Offset: 0x998
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b6c845e8() {
   if(level.var_a9e78bf7["zombifyenabled"]) {
     level.overrideglobalspawnfunc = & bonuzm_spawn;
@@ -101,15 +75,6 @@ function function_b6c845e8() {
   }
 }
 
-/*
-	Name: function_cf0834db
-	Namespace: namespace_2396e2d7
-	Checksum: 0x9D176E31
-	Offset: 0x9E0
-	Size: 0x220
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_cf0834db(spawner) {
   if(spawner.archetype == "direwolf" || spawner.archetype == "civilian" || issubstr(spawner.classname, "hero") || issubstr(spawner.classname, "boss") || (isdefined(spawner.targetname) && issubstr(spawner.targetname, "hakim")) || (isdefined(spawner.targetname) && issubstr(spawner.targetname, "chase_bomber")) || spawner.targetname === "comm_relay_igc_robot" || spawner.targetname === "robot_wrestles_maretti" || spawner.targetname === "cin_lot_09_02_pursuit_vign_wallsmash_robot" || spawner.targetname === "cin_gen_hendricksmoment_riphead_robot" || spawner.targetname === "standdown_robot01" || spawner.targetname === "standdown_robot02" || spawner.targetname === "standdown_robot03" || spawner.targetname === "rainman" || spawner.targetname === "balcony_bash_robot") {
     return false;
@@ -120,15 +85,6 @@ function private function_cf0834db(spawner) {
   return true;
 }
 
-/*
-	Name: function_aa71a1e8
-	Namespace: namespace_2396e2d7
-	Checksum: 0xC01F17FF
-	Offset: 0xC08
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_aa71a1e8(spawner) {
   if(!isdefined(spawner.targetname)) {
     return true;
@@ -139,15 +95,6 @@ function private function_aa71a1e8(spawner) {
   return true;
 }
 
-/*
-	Name: function_559632b9
-	Namespace: namespace_2396e2d7
-	Checksum: 0xF8B5B829
-	Offset: 0xC78
-	Size: 0x2A6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_559632b9() {
   var_6cc76a5d = 0;
   var_fcbd82a5 = 0;
@@ -183,29 +130,18 @@ function function_559632b9() {
   return "";
 }
 
-/*
-	Name: bonuzm_spawn
-	Namespace: namespace_2396e2d7
-	Checksum: 0x458B2360
-	Offset: 0xF28
-	Size: 0x6DE
-	Parameters: 5
-	Flags: Linked
-*/
 function bonuzm_spawn(b_force = 0, str_targetname, v_origin, v_angles, bignorespawninglimit) {
   e_spawned = undefined;
   force_spawn = 0;
   makeroom = 0;
   infinitespawn = 0;
   deleteonzerocount = 0;
-  /#
   if(getdvarstring("") != "") {
     return;
   }
-  # /
-    if(!spawner::check_player_requirements()) {
-      return;
-    }
+  if(!spawner::check_player_requirements()) {
+    return;
+  }
   while (true) {
     if(!(isdefined(bignorespawninglimit) && bignorespawninglimit)) {
       spawner::global_spawn_throttle(1);
@@ -233,10 +169,8 @@ function bonuzm_spawn(b_force = 0, str_targetname, v_origin, v_angles, bignoresp
   }
   if(!isdefined(e_spawned)) {
     if(isactorspawner(self)) {
-      /#
       assert(isdefined(self.archetype));
-      # /
-        var_8b333c37 = function_cf0834db(self);
+      var_8b333c37 = function_cf0834db(self);
       if(self.team == "axis" && var_8b333c37) {
         var_2985e88a = self.archetype;
         var_1a2d16a4 = function_559632b9();

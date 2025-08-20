@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_z_provocation.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_27f0ae11;
 
-/*
-	Name: init_voice
-	Namespace: namespace_27f0ae11
-	Checksum: 0x4CB72791
-	Offset: 0xB70
-	Size: 0x6E4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("plyz_getting_in_was_easy_0", "vox_zbio_1_01_000_plyz");
   dialog::add("plyz_we_d_worried_about_b_0", "vox_zbio_2_01_000_plyz");

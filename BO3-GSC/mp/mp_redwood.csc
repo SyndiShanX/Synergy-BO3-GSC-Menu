@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_redwood.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
 #using scripts\mp\mp_redwood_fx;
 #using scripts\mp\mp_redwood_sound;
 #using scripts\shared\util_shared;
-
 #namespace mp_redwood;
 
-/*
-	Name: main
-	Namespace: mp_redwood
-	Checksum: 0x33A541C7
-	Offset: 0x1E0
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   mp_redwood_fx::main();
   mp_redwood_sound::main();
@@ -29,15 +23,6 @@ function main() {
   level.endgamexcamname = "ui_cam_endgame_mp_redwood";
 }
 
-/*
-	Name: dom_flag_base_fx_override
-	Namespace: mp_redwood
-	Checksum: 0xFF4A8645
-	Offset: 0x2B8
-	Size: 0x9E
-	Parameters: 2
-	Flags: Linked
-*/
 function dom_flag_base_fx_override(flag, team) {
   switch (flag.name) {
     case "a": {
@@ -62,15 +47,6 @@ function dom_flag_base_fx_override(flag, team) {
   }
 }
 
-/*
-	Name: dom_flag_cap_fx_override
-	Namespace: mp_redwood
-	Checksum: 0x490B20F8
-	Offset: 0x360
-	Size: 0x9E
-	Parameters: 2
-	Flags: Linked
-*/
 function dom_flag_cap_fx_override(flag, team) {
   switch (flag.name) {
     case "a": {

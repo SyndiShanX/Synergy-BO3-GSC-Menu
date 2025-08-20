@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_vo.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -14,18 +18,8 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\gametypes\_globallogic_score;
-
 #namespace zm_tomb_vo;
 
-/*
-	Name: init_flags
-	Namespace: zm_tomb_vo
-	Checksum: 0xC9C53379
-	Offset: 0x2BE0
-	Size: 0x1C4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_flags() {
   level flag::init("story_vo_playing");
   level flag::init("round_one_narrative_vo_complete");
@@ -43,15 +37,6 @@ function init_flags() {
   level flag::init("maxis_crafted_intro_done");
 }
 
-/*
-	Name: init_level_specific_audio
-	Namespace: zm_tomb_vo
-	Checksum: 0x1255E567
-	Offset: 0x2DB0
-	Size: 0x1F0C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_level_specific_audio() {
   level.oh_shit_vo_cooldown = 0;
   level.remove_perk_vo_delay = 1;
@@ -214,15 +199,6 @@ function init_level_specific_audio() {
   init_sam_promises();
 }
 
-/*
-	Name: tomb_add_player_dialogue
-	Namespace: zm_tomb_vo
-	Checksum: 0x2E0CB10
-	Offset: 0x4CC8
-	Size: 0xAC
-	Parameters: 6
-	Flags: Linked
-*/
 function tomb_add_player_dialogue(speaker, category, type, alias, response = 0, chance = 100) {
   level.vox zm_audio::zmbvoxadd(category, type, alias, chance, response);
   if(isdefined(chance)) {
@@ -230,15 +206,6 @@ function tomb_add_player_dialogue(speaker, category, type, alias, response = 0, 
   }
 }
 
-/*
-	Name: tomb_audio_get_mod_type_override
-	Namespace: zm_tomb_vo
-	Checksum: 0x424CE2DD
-	Offset: 0x4D80
-	Size: 0x78E
-	Parameters: 7
-	Flags: Linked
-*/
 function tomb_audio_get_mod_type_override(impact, mod, weapon, zombie, instakill, dist, player) {
   var_adac242b = 4096;
   var_2c1bd1bd = 15376;
@@ -382,17 +349,8 @@ function tomb_audio_get_mod_type_override(impact, mod, weapon, zombie, instakill
   return "default";
 }
 
-/*
-	Name: tomb_custom_zombie_oh_shit_vox
-	Namespace: zm_tomb_vo
-	Checksum: 0x6FF5FEF4
-	Offset: 0x5518
-	Size: 0x256
-	Parameters: 0
-	Flags: Linked
-*/
 function tomb_custom_zombie_oh_shit_vox() {
-  self endon(# "death_or_disconnect");
+  self endon("death_or_disconnect");
   while (true) {
     wait(1);
     if(isdefined(self.oh_shit_vo_cooldown) && self.oh_shit_vo_cooldown) {
@@ -429,33 +387,15 @@ function tomb_custom_zombie_oh_shit_vox() {
   }
 }
 
-/*
-	Name: global_oh_shit_cooldown_timer
-	Namespace: zm_tomb_vo
-	Checksum: 0xCBAF82C9
-	Offset: 0x5778
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function global_oh_shit_cooldown_timer(n_cooldown_time) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.oh_shit_vo_cooldown = 1;
   wait(n_cooldown_time);
   self.oh_shit_vo_cooldown = 0;
 }
 
-/*
-	Name: tomb_custom_crawler_spawned_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x6D9F00C9
-	Offset: 0x57B8
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function tomb_custom_crawler_spawned_vo() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.a.gib_ref) && isalive(self)) {
     if(self.a.gib_ref == "no_legs" || self.a.gib_ref == "right_leg" || self.a.gib_ref == "left_leg") {
       if(isdefined(self.attacker) && isplayer(self.attacker)) {
@@ -472,34 +412,16 @@ function tomb_custom_crawler_spawned_vo() {
   }
 }
 
-/*
-	Name: crawler_created_vo_cooldown
-	Namespace: zm_tomb_vo
-	Checksum: 0xAAF09214
-	Offset: 0x5920
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function crawler_created_vo_cooldown() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.crawler_created_vo_cooldown = 1;
   wait(30);
   self.crawler_created_vo_cooldown = 0;
 }
 
-/*
-	Name: tomb_audio_custom_weapon_check
-	Namespace: zm_tomb_vo
-	Checksum: 0xCFD67C2C
-	Offset: 0x5958
-	Size: 0x3B2
-	Parameters: 2
-	Flags: Linked
-*/
 function tomb_audio_custom_weapon_check(weapon, magic_box) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(weapon.name == "hero_annihilator" || weapon.name == "equip_dieseldrone") {
     return "crappy";
   }
@@ -519,18 +441,18 @@ function tomb_audio_custom_weapon_check(weapon, magic_box) {
     if(issubstr(str_weapon, "staff")) {
       if(str_weapon == "staff_fire") {
         self zm_audio::create_and_play_dialog("general", "pickup_fire");
-        level notify(# "staff_crafted_vo", self, 1);
+        level notify("staff_crafted_vo", self, 1);
       } else {
         if(str_weapon == "staff_water") {
           self zm_audio::create_and_play_dialog("general", "pickup_ice");
-          level notify(# "staff_crafted_vo", self, 4);
+          level notify("staff_crafted_vo", self, 4);
         } else {
           if(str_weapon == "staff_air") {
             self zm_audio::create_and_play_dialog("general", "pickup_wind");
-            level notify(# "staff_crafted_vo", self, 2);
+            level notify("staff_crafted_vo", self, 2);
           } else if(str_weapon == "staff_lightning") {
             self zm_audio::create_and_play_dialog("general", "pickup_light");
-            level notify(# "staff_crafted_vo", self, 3);
+            level notify("staff_crafted_vo", self, 3);
           }
         }
       }
@@ -554,15 +476,6 @@ function tomb_audio_custom_weapon_check(weapon, magic_box) {
   return "crappy";
 }
 
-/*
-	Name: tomb_magic_box_used_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x30727C30
-	Offset: 0x5D18
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function tomb_magic_box_used_vo() {
   if(!isdefined(self.magic_box_uses)) {
     self.magic_box_uses = 1;
@@ -576,15 +489,6 @@ function tomb_magic_box_used_vo() {
   }
 }
 
-/*
-	Name: easter_egg_song_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x1D477937
-	Offset: 0x5DB8
-	Size: 0x150
-	Parameters: 1
-	Flags: None
-*/
 function easter_egg_song_vo(player) {
   wait(3.5);
   if(isalive(player)) {
@@ -604,15 +508,6 @@ function easter_egg_song_vo(player) {
   }
 }
 
-/*
-	Name: play_gramophone_place_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0xDF9B48C8
-	Offset: 0x5F10
-	Size: 0x60
-	Parameters: 0
-	Flags: Linked
-*/
 function play_gramophone_place_vo() {
   if(!(isdefined(self.dontspeak) && self.dontspeak)) {
     if(!(isdefined(self.gramophone_place_vo) && self.gramophone_place_vo)) {
@@ -622,15 +517,6 @@ function play_gramophone_place_vo() {
   }
 }
 
-/*
-	Name: setup_personality_character_exerts
-	Namespace: zm_tomb_vo
-	Checksum: 0xA8D8F997
-	Offset: 0x5F78
-	Size: 0x8BA
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_personality_character_exerts() {
   level.exert_sounds[1]["burp"][0] = "vox_plr_0_exert_burp_0";
   level.exert_sounds[1]["burp"][1] = "vox_plr_0_exert_burp_1";
@@ -691,15 +577,6 @@ function setup_personality_character_exerts() {
   level.exert_sounds[4]["hitlrg"][3] = "vox_plr_3_exert_pain_high_3";
 }
 
-/*
-	Name: tomb_audio_custom_response_line
-	Namespace: zm_tomb_vo
-	Checksum: 0xD889E157
-	Offset: 0x6840
-	Size: 0x114
-	Parameters: 3
-	Flags: Linked
-*/
 function tomb_audio_custom_response_line(player, category, type) {
   if(type == "revive_up") {
     player thread play_pos_neg_response_on_closest_player("general", "heal_revived", "kills");
@@ -713,15 +590,6 @@ function tomb_audio_custom_response_line(player, category, type) {
   }
 }
 
-/*
-	Name: play_vo_category_on_closest_player
-	Namespace: zm_tomb_vo
-	Checksum: 0xA1526DA6
-	Offset: 0x6960
-	Size: 0x104
-	Parameters: 2
-	Flags: None
-*/
 function play_vo_category_on_closest_player(category, type) {
   a_players = getplayers();
   if(a_players.size <= 1) {
@@ -736,15 +604,6 @@ function play_vo_category_on_closest_player(category, type) {
   }
 }
 
-/*
-	Name: play_pos_neg_response_on_closest_player
-	Namespace: zm_tomb_vo
-	Checksum: 0x3965A268
-	Offset: 0x6A70
-	Size: 0x1AE
-	Parameters: 3
-	Flags: Linked
-*/
 function play_pos_neg_response_on_closest_player(category, type, str_stat) {
   a_players = getplayers();
   if(a_players.size <= 1) {
@@ -766,15 +625,6 @@ function play_pos_neg_response_on_closest_player(category, type, str_stat) {
   }
 }
 
-/*
-	Name: get_positive_or_negative_suffix
-	Namespace: zm_tomb_vo
-	Checksum: 0x6C7456D9
-	Offset: 0x6C28
-	Size: 0xBC
-	Parameters: 3
-	Flags: Linked
-*/
 function get_positive_or_negative_suffix(e_player1, e_player2, str_stat) {
   n_player1_stat = e_player1 globallogic_score::getpersstat(str_stat);
   n_player2_stat = e_player2 globallogic_score::getpersstat(str_stat);
@@ -789,47 +639,20 @@ function get_positive_or_negative_suffix(e_player1, e_player2, str_stat) {
   return str_result;
 }
 
-/*
-	Name: struggle_mud_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x40BFA4E6
-	Offset: 0x6CF0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function struggle_mud_vo() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.played_mud_vo = 1;
   self zm_audio::create_and_play_dialog("general", "struggle_mud");
-  self waittill(# "mud_slowdown_cleared");
+  self waittill("mud_slowdown_cleared");
   self thread struggle_mud_vo_cooldown();
 }
 
-/*
-	Name: struggle_mud_vo_cooldown
-	Namespace: zm_tomb_vo
-	Checksum: 0x90AF32BE
-	Offset: 0x6D60
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function struggle_mud_vo_cooldown() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(600);
   self.played_mud_vo = 0;
 }
 
-/*
-	Name: discover_dig_site_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x3D1E2F8C
-	Offset: 0x6D88
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function discover_dig_site_vo() {
   level flag::wait_till("activate_zone_nml");
   s_origin = struct::get("discover_dig_site_vo_trigger", "targetname");
@@ -843,18 +666,9 @@ function discover_dig_site_vo() {
   zm_unitrigger::register_static_unitrigger(s_origin.unitrigger_stub, & discover_dig_site_trigger_touch);
 }
 
-/*
-	Name: discover_dig_site_trigger_touch
-	Namespace: zm_tomb_vo
-	Checksum: 0x6372E0CF
-	Offset: 0x6EE0
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function discover_dig_site_trigger_touch() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(isplayer(player)) {
       if(!(isdefined(player.dontspeak) && player.dontspeak)) {
         player thread zm_audio::create_and_play_dialog("general", "discover_dig_site");
@@ -865,15 +679,6 @@ function discover_dig_site_trigger_touch() {
   }
 }
 
-/*
-	Name: maxis_audio_logs
-	Namespace: zm_tomb_vo
-	Checksum: 0xBFE69A94
-	Offset: 0x6F90
-	Size: 0x1DA
-	Parameters: 0
-	Flags: Linked
-*/
 function maxis_audio_logs() {
   a_s_radios = struct::get_array("maxis_audio_log", "targetname");
   foreach(s_origin in a_s_radios) {
@@ -890,15 +695,6 @@ function maxis_audio_logs() {
   }
 }
 
-/*
-	Name: discover_pack_a_punch
-	Namespace: zm_tomb_vo
-	Checksum: 0x10C2FC52
-	Offset: 0x7178
-	Size: 0x252
-	Parameters: 0
-	Flags: Linked
-*/
 function discover_pack_a_punch() {
   t_pap_intro = getent("pack_a_punch_intro_trigger", "targetname");
   if(!isdefined(t_pap_intro)) {
@@ -906,7 +702,7 @@ function discover_pack_a_punch() {
   }
   s_lookat = struct::get(t_pap_intro.target, "targetname");
   while (true) {
-    t_pap_intro waittill(# "trigger", e_player);
+    t_pap_intro waittill("trigger", e_player);
     if(!isdefined(e_player.discover_pap_vo_played)) {
       e_player.discover_pap_vo_played = 0;
     }
@@ -924,45 +720,18 @@ function discover_pack_a_punch() {
   }
 }
 
-/*
-	Name: can_player_speak
-	Namespace: zm_tomb_vo
-	Checksum: 0x659594B2
-	Offset: 0x73D8
-	Size: 0x56
-	Parameters: 0
-	Flags: Linked
-*/
 function can_player_speak() {
   return isplayer(self) && (!(isdefined(self.dontspeak) && self.dontspeak)) && self clientfield::get_to_player("isspeaking") == 0;
 }
 
-/*
-	Name: maxis_audio_log_think
-	Namespace: zm_tomb_vo
-	Checksum: 0xBB4F01B8
-	Offset: 0x7438
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function maxis_audio_log_think() {
-  self waittill(# "trigger", player);
+  self waittill("trigger", player);
   if(!isplayer(player) || !zombie_utility::is_player_valid(player)) {
     return;
   }
   level thread play_maxis_audio_log(self.stub.origin, self.stub.script_int);
 }
 
-/*
-	Name: play_maxis_audio_log
-	Namespace: zm_tomb_vo
-	Checksum: 0xA7B90476
-	Offset: 0x74C8
-	Size: 0x344
-	Parameters: 2
-	Flags: Linked
-*/
 function play_maxis_audio_log(v_trigger_origin, n_audiolog_id) {
   a_audiolog = get_audiolog_vo();
   a_audiolog_to_play = a_audiolog[n_audiolog_id];
@@ -1001,15 +770,6 @@ function play_maxis_audio_log(v_trigger_origin, n_audiolog_id) {
   level thread zm_unitrigger::register_static_unitrigger(s_trigger.unitrigger_stub, & maxis_audio_log_think);
 }
 
-/*
-	Name: reset_maxis_audiolog_unitrigger
-	Namespace: zm_tomb_vo
-	Checksum: 0x7181D169
-	Offset: 0x7818
-	Size: 0x172
-	Parameters: 1
-	Flags: Linked
-*/
 function reset_maxis_audiolog_unitrigger(n_robot_id) {
   if(n_robot_id == 0) {
     n_script_int = 4;
@@ -1033,15 +793,6 @@ function reset_maxis_audiolog_unitrigger(n_robot_id) {
   }
 }
 
-/*
-	Name: restart_maxis_audiolog_unitrigger
-	Namespace: zm_tomb_vo
-	Checksum: 0x22BFEC35
-	Offset: 0x7998
-	Size: 0x152
-	Parameters: 1
-	Flags: Linked
-*/
 function restart_maxis_audiolog_unitrigger(n_robot_id) {
   if(n_robot_id == 0) {
     n_script_int = 4;
@@ -1062,15 +813,6 @@ function restart_maxis_audiolog_unitrigger(n_robot_id) {
   }
 }
 
-/*
-	Name: get_audiolog_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0xF4EE8E78
-	Offset: 0x7AF8
-	Size: 0x1F8
-	Parameters: 0
-	Flags: Linked
-*/
 function get_audiolog_vo() {
   a_audiologs = [];
   a_audiologs[1] = [];
@@ -1098,15 +840,6 @@ function get_audiolog_vo() {
   return a_audiologs;
 }
 
-/*
-	Name: start_narrative_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0xB3EE6EF0
-	Offset: 0x7CF8
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function start_narrative_vo() {
   level flag::wait_till("start_zombie_round_logic");
   set_players_dontspeak(1);
@@ -1116,7 +849,7 @@ function start_narrative_vo() {
   } else {
     game_start_vo();
   }
-  level waittill(# "end_of_round");
+  level waittill("end_of_round");
   level thread round_two_end_narrative_vo();
   if(is_game_solo()) {
     round_one_end_solo_vo();
@@ -1126,18 +859,9 @@ function start_narrative_vo() {
   level flag::set("round_one_narrative_vo_complete");
 }
 
-/*
-	Name: start_samantha_intro_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x1CAC129B
-	Offset: 0x7E08
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function start_samantha_intro_vo() {
   while (true) {
-    level waittill(# "start_of_round");
+    level waittill("start_of_round");
     if(level.round_number == 5) {
       samantha_intro_1();
     } else {
@@ -1152,20 +876,9 @@ function start_samantha_intro_vo() {
   }
 }
 
-/*
-	Name: samantha_intro_1
-	Namespace: zm_tomb_vo
-	Checksum: 0xEDE3ABE6
-	Offset: 0x7EC8
-	Size: 0x1F4
-	Parameters: 0
-	Flags: Linked
-*/
 function samantha_intro_1() {
-  /#
   iprintln("");
-  # /
-    players = getplayers();
+  players = getplayers();
   if(!isdefined(players[0])) {
     return;
   }
@@ -1186,20 +899,9 @@ function samantha_intro_1() {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: samantha_intro_2
-	Namespace: zm_tomb_vo
-	Checksum: 0x4E2919D6
-	Offset: 0x80C8
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function samantha_intro_2() {
-  /#
   iprintln("");
-  # /
-    player_richtofen = get_player_character_if_present("Richtofen");
+  player_richtofen = get_player_character_if_present("Richtofen");
   if(!isdefined(player_richtofen)) {
     return;
   }
@@ -1218,20 +920,9 @@ function samantha_intro_2() {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: samantha_intro_3
-	Namespace: zm_tomb_vo
-	Checksum: 0xD7834B0F
-	Offset: 0x8240
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function samantha_intro_3() {
-  /#
   iprintln("");
-  # /
-    players = getplayers();
+  players = getplayers();
   if(!isdefined(players[0])) {
     return;
   }
@@ -1248,15 +939,6 @@ function samantha_intro_3() {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: play_category_on_player_character_if_present
-	Namespace: zm_tomb_vo
-	Checksum: 0xCD6AFB23
-	Offset: 0x83C8
-	Size: 0xD4
-	Parameters: 2
-	Flags: Linked
-*/
 function play_category_on_player_character_if_present(category, character_name) {
   vox_line_prefix = undefined;
   switch (character_name) {
@@ -1281,15 +963,6 @@ function play_category_on_player_character_if_present(category, character_name) 
   play_line_on_player_character_if_present(vox_line, character_name);
 }
 
-/*
-	Name: get_nearest_friend_within_speaking_distance
-	Namespace: zm_tomb_vo
-	Checksum: 0xE4D079DA
-	Offset: 0x84A8
-	Size: 0x13C
-	Parameters: 1
-	Flags: Linked
-*/
 function get_nearest_friend_within_speaking_distance(other_player) {
   distance_nearest = 800;
   nearest_friend = undefined;
@@ -1307,37 +980,17 @@ function get_nearest_friend_within_speaking_distance(other_player) {
   return undefined;
 }
 
-/*
-	Name: play_line_on_player_character_if_present
-	Namespace: zm_tomb_vo
-	Checksum: 0x3ADFE94B
-	Offset: 0x85F0
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function play_line_on_player_character_if_present(vox_line, character_name) {
   player_character = get_player_character_if_present(character_name);
   if(isdefined(player_character)) {
-    /#
     iprintln((("" + character_name) + "") + vox_line);
-    # /
-      player_character playsoundwithnotify(vox_line, "sound_done" + vox_line);
+    player_character playsoundwithnotify(vox_line, "sound_done" + vox_line);
     player_character waittill("sound_done" + vox_line);
     return true;
   }
   return false;
 }
 
-/*
-	Name: get_player_character_if_present
-	Namespace: zm_tomb_vo
-	Checksum: 0x2DD2CC34
-	Offset: 0x86B8
-	Size: 0xB6
-	Parameters: 1
-	Flags: Linked
-*/
 function get_player_character_if_present(character_name) {
   players = getplayers();
   foreach(player in players) {
@@ -1348,17 +1001,8 @@ function get_player_character_if_present(character_name) {
   return undefined;
 }
 
-/*
-	Name: round_two_end_narrative_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0xFE193631
-	Offset: 0x8778
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function round_two_end_narrative_vo() {
-  level waittill(# "end_of_round");
+  level waittill("end_of_round");
   level flag::wait_till("round_one_narrative_vo_complete");
   if(level flag::get("generator_find_vo_playing")) {
     level flag::wait_till_clear("generator_find_vo_playing");
@@ -1369,15 +1013,6 @@ function round_two_end_narrative_vo() {
   }
 }
 
-/*
-	Name: game_start_solo_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x640FF320
-	Offset: 0x8820
-	Size: 0x21C
-	Parameters: 0
-	Flags: Linked
-*/
 function game_start_solo_vo() {
   if(level flag::get("story_vo_playing")) {
     return;
@@ -1405,15 +1040,6 @@ function game_start_solo_vo() {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: build_game_start_solo_convo
-	Namespace: zm_tomb_vo
-	Checksum: 0xF2A82FB
-	Offset: 0x8A48
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function build_game_start_solo_convo() {
   a_game_start_solo_convo = [];
   a_game_start_solo_convo["Dempsey"] = "vox_plr_0_game_start_0";
@@ -1425,15 +1051,6 @@ function build_game_start_solo_convo() {
   return a_game_start_solo_convo;
 }
 
-/*
-	Name: game_start_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x85BC9278
-	Offset: 0x8AF8
-	Size: 0x454
-	Parameters: 0
-	Flags: Linked
-*/
 function game_start_vo() {
   players = getplayers();
   if(players.size <= 1) {
@@ -1503,15 +1120,6 @@ function game_start_vo() {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: build_game_start_convo
-	Namespace: zm_tomb_vo
-	Checksum: 0x2ADDD75C
-	Offset: 0x8F58
-	Size: 0x148
-	Parameters: 0
-	Flags: Linked
-*/
 function build_game_start_convo() {
   a_game_start_convo = [];
   a_game_start_convo["line_1"] = [];
@@ -1528,15 +1136,6 @@ function build_game_start_convo() {
   return a_game_start_convo;
 }
 
-/*
-	Name: run_staff_crafted_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0xC726A922
-	Offset: 0x90A8
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function run_staff_crafted_vo(str_sam_line) {
   wait(1);
   while (isdefined(self.isspeaking) && self.isspeaking) {
@@ -1554,20 +1153,11 @@ function run_staff_crafted_vo(str_sam_line) {
   }
 }
 
-/*
-	Name: staff_craft_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x589509CC
-	Offset: 0x91D0
-	Size: 0xE8
-	Parameters: 0
-	Flags: None
-*/
 function staff_craft_vo() {
   staff_crafted = [];
   lines = array("vox_sam_1st_staff_crafted_0", "vox_sam_2nd_staff_crafted_0", "vox_sam_3rd_staff_crafted_0");
   while (staff_crafted.size < 4) {
-    level waittill(# "staff_crafted_vo", e_crafter, n_element);
+    level waittill("staff_crafted_vo", e_crafter, n_element);
     if(!(isdefined(staff_crafted[n_element]) && staff_crafted[n_element])) {
       staff_crafted[n_element] = 1;
       line = lines[level.n_staffs_crafted - 1];
@@ -1576,15 +1166,6 @@ function staff_craft_vo() {
   }
 }
 
-/*
-	Name: all_staffs_crafted_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x9FE70590
-	Offset: 0x92C0
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function all_staffs_crafted_vo() {
   while (level flag::get("story_vo_playing")) {
     util::wait_network_frame();
@@ -1607,15 +1188,6 @@ function all_staffs_crafted_vo() {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: build_all_staffs_crafted_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x9B658B5
-	Offset: 0x9488
-	Size: 0x1DC
-	Parameters: 0
-	Flags: Linked
-*/
 function build_all_staffs_crafted_vo() {
   a_staff_convo = [];
   a_staff_convo["line_1"] = [];
@@ -1637,15 +1209,6 @@ function build_all_staffs_crafted_vo() {
   return a_staff_convo;
 }
 
-/*
-	Name: get_left_behind_plea
-	Namespace: zm_tomb_vo
-	Checksum: 0x79BABA5C
-	Offset: 0x9670
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function get_left_behind_plea() {
   pl_num = 0;
   if(self.character_name == "Nikolai") {
@@ -1660,15 +1223,6 @@ function get_left_behind_plea() {
   return (("vox_plr_" + pl_num) + "_miss_tank_") + randomint(3);
 }
 
-/*
-	Name: get_left_behind_response
-	Namespace: zm_tomb_vo
-	Checksum: 0x7395AD6B
-	Offset: 0x9720
-	Size: 0x2CA
-	Parameters: 1
-	Flags: Linked
-*/
 function get_left_behind_response(e_victim) {
   if(self.character_name == "Dempsey") {
     if(math::cointoss()) {
@@ -1730,15 +1284,6 @@ function get_left_behind_response(e_victim) {
   return undefined;
 }
 
-/*
-	Name: tank_left_behind_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0xB33F8D01
-	Offset: 0x99F8
-	Size: 0x1CC
-	Parameters: 2
-	Flags: Linked
-*/
 function tank_left_behind_vo(e_victim, e_rider) {
   if(!isdefined(e_victim) || !isdefined(e_rider)) {
     return;
@@ -1762,15 +1307,6 @@ function tank_left_behind_vo(e_victim, e_rider) {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: round_one_end_solo_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0xB7870F3D
-	Offset: 0x9BD0
-	Size: 0x21C
-	Parameters: 0
-	Flags: Linked
-*/
 function round_one_end_solo_vo() {
   if(level flag::get("story_vo_playing")) {
     return;
@@ -1798,15 +1334,6 @@ function round_one_end_solo_vo() {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: build_round_one_end_solo_convo
-	Namespace: zm_tomb_vo
-	Checksum: 0xE55666DF
-	Offset: 0x9DF8
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function build_round_one_end_solo_convo() {
   a_round_one_end_solo_convo = [];
   a_round_one_end_solo_convo["Dempsey"] = [];
@@ -1818,15 +1345,6 @@ function build_round_one_end_solo_convo() {
   return a_round_one_end_solo_convo;
 }
 
-/*
-	Name: round_one_end_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x5CBBF9E7
-	Offset: 0x9EA8
-	Size: 0x454
-	Parameters: 0
-	Flags: Linked
-*/
 function round_one_end_vo() {
   players = getplayers();
   if(players.size <= 1) {
@@ -1896,15 +1414,6 @@ function round_one_end_vo() {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: build_round_one_end_convo
-	Namespace: zm_tomb_vo
-	Checksum: 0xA89167F3
-	Offset: 0xA308
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function build_round_one_end_convo() {
   a_round_one_end_convo = [];
   a_round_one_end_convo["line_1"] = [];
@@ -1920,15 +1429,6 @@ function build_round_one_end_convo() {
   return a_round_one_end_convo;
 }
 
-/*
-	Name: round_two_end_solo_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x9E1771D0
-	Offset: 0xA440
-	Size: 0x21C
-	Parameters: 0
-	Flags: Linked
-*/
 function round_two_end_solo_vo() {
   if(level flag::get("story_vo_playing")) {
     return;
@@ -1956,15 +1456,6 @@ function round_two_end_solo_vo() {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: build_round_two_end_solo_convo
-	Namespace: zm_tomb_vo
-	Checksum: 0x4884771C
-	Offset: 0xA668
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function build_round_two_end_solo_convo() {
   a_round_two_end_solo_convo = [];
   a_round_two_end_solo_convo["Dempsey"] = "vox_plr_0_end_round_2_1_0";
@@ -1976,15 +1467,6 @@ function build_round_two_end_solo_convo() {
   return a_round_two_end_solo_convo;
 }
 
-/*
-	Name: first_magic_box_seen_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x1AF80BD0
-	Offset: 0xA718
-	Size: 0xF2
-	Parameters: 0
-	Flags: Linked
-*/
 function first_magic_box_seen_vo() {
   level flag::wait_till("start_zombie_round_logic");
   magicbox = level.chests[level.chest_index];
@@ -1994,18 +1476,9 @@ function first_magic_box_seen_vo() {
   }
 }
 
-/*
-	Name: wait_and_play_first_magic_box_seen_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x11A15772
-	Offset: 0xA818
-	Size: 0x5EC
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_and_play_first_magic_box_seen_vo(struct) {
-  self endon(# "disconnect");
-  level endon(# "first_maigc_box_discovered");
+  self endon("disconnect");
+  level endon("first_maigc_box_discovered");
   while (true) {
     if(distancesquared(self.origin, struct.origin) < 40000) {
       if(self zm_utility::is_player_looking_at(struct.origin, 0.75)) {
@@ -2078,7 +1551,7 @@ function wait_and_play_first_magic_box_seen_vo(struct) {
           }
           set_players_dontspeak(0);
           level flag::clear("story_vo_playing");
-          level notify(# "first_maigc_box_discovered");
+          level notify("first_maigc_box_discovered");
           break;
         }
       }
@@ -2087,15 +1560,6 @@ function wait_and_play_first_magic_box_seen_vo(struct) {
   }
 }
 
-/*
-	Name: build_first_magic_box_seen_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x53667BC1
-	Offset: 0xAE10
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function build_first_magic_box_seen_vo() {
   a_first_magic_box_seen_convo = [];
   a_first_magic_box_seen_convo[0] = [];
@@ -2109,15 +1573,6 @@ function build_first_magic_box_seen_vo() {
   return a_first_magic_box_seen_convo;
 }
 
-/*
-	Name: tomb_drone_built_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0xCD5D3CFE
-	Offset: 0xAEE8
-	Size: 0x2DC
-	Parameters: 1
-	Flags: Linked
-*/
 function tomb_drone_built_vo(s_craftable) {
   if(s_craftable.weaponname.name != "equip_dieseldrone") {
     return;
@@ -2129,27 +1584,21 @@ function tomb_drone_built_vo(s_craftable) {
   e_vo_origin = get_speaking_location_maxis_drone(self, s_craftable);
   vox_line = "vox_maxi_maxis_drone_1_0";
   e_vo_origin playsoundwithnotify(vox_line, "sound_done" + vox_line);
-  /#
   iprintln("" + vox_line);
-  # /
-    e_vo_origin waittill("sound_done" + vox_line);
+  e_vo_origin waittill("sound_done" + vox_line);
   e_vo_origin delete();
   wait(1);
   e_vo_origin = get_speaking_location_maxis_drone(self, s_craftable);
   vox_line = "vox_maxi_maxis_drone_4_0";
   e_vo_origin playsoundwithnotify(vox_line, "sound_done" + vox_line);
-  /#
   iprintln("" + vox_line);
-  # /
-    e_vo_origin waittill("sound_done" + vox_line);
+  e_vo_origin waittill("sound_done" + vox_line);
   e_vo_origin delete();
   wait(1);
   if(isdefined(self) && self.character_name == "Richtofen") {
     vox_line = "vox_plr_2_maxis_drone_5_0";
-    /#
     iprintln((("" + self.character_name) + "") + vox_line);
-    # /
-      self playsoundwithnotify(vox_line, "sound_done" + vox_line);
+    self playsoundwithnotify(vox_line, "sound_done" + vox_line);
     self waittill("sound_done" + vox_line);
   }
   set_players_dontspeak(0);
@@ -2157,15 +1606,6 @@ function tomb_drone_built_vo(s_craftable) {
   level flag::set("maxis_crafted_intro_done");
 }
 
-/*
-	Name: get_speaking_location_maxis_drone
-	Namespace: zm_tomb_vo
-	Checksum: 0x580B6392
-	Offset: 0xB1D0
-	Size: 0x11C
-	Parameters: 2
-	Flags: Linked
-*/
 function get_speaking_location_maxis_drone(player, s_craftable) {
   e_vo_origin = undefined;
   if(isdefined(level.maxis_quadrotor)) {
@@ -2183,15 +1623,6 @@ function get_speaking_location_maxis_drone(player, s_craftable) {
   return e_vo_origin;
 }
 
-/*
-	Name: b_player_has_dieseldrone_weapon
-	Namespace: zm_tomb_vo
-	Checksum: 0xC8740FE5
-	Offset: 0xB2F8
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function b_player_has_dieseldrone_weapon() {
   a_players = getplayers();
   var_703e6a13 = getweapon("equip_dieseldrone");
@@ -2203,15 +1634,6 @@ function b_player_has_dieseldrone_weapon() {
   return undefined;
 }
 
-/*
-	Name: set_players_dontspeak
-	Namespace: zm_tomb_vo
-	Checksum: 0xC08C2B44
-	Offset: 0xB3E0
-	Size: 0x222
-	Parameters: 1
-	Flags: Linked
-*/
 function set_players_dontspeak(bool) {
   players = getplayers();
   if(bool) {
@@ -2236,15 +1658,6 @@ function set_players_dontspeak(bool) {
   }
 }
 
-/*
-	Name: set_player_dontspeak
-	Namespace: zm_tomb_vo
-	Checksum: 0xEA6B7D74
-	Offset: 0xB610
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function set_player_dontspeak(bool) {
   if(bool) {
     self.dontspeak = 1;
@@ -2258,15 +1671,6 @@ function set_player_dontspeak(bool) {
   }
 }
 
-/*
-	Name: is_game_solo
-	Namespace: zm_tomb_vo
-	Checksum: 0x5E328D43
-	Offset: 0xB6B8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function is_game_solo() {
   players = getplayers();
   if(players.size == 1) {
@@ -2275,15 +1679,6 @@ function is_game_solo() {
   return false;
 }
 
-/*
-	Name: add_puzzle_completion_line
-	Namespace: zm_tomb_vo
-	Checksum: 0x2A7EC1F6
-	Offset: 0xB700
-	Size: 0x108
-	Parameters: 2
-	Flags: Linked
-*/
 function add_puzzle_completion_line(n_element_enum, str_line) {
   if(!isdefined(level.puzzle_completion_lines)) {
     level.puzzle_completion_lines = [];
@@ -2301,23 +1696,12 @@ function add_puzzle_completion_line(n_element_enum, str_line) {
   level.puzzle_completion_lines[n_element_enum][level.puzzle_completion_lines[n_element_enum].size] = str_line;
 }
 
-/*
-	Name: say_puzzle_completion_line
-	Namespace: zm_tomb_vo
-	Checksum: 0x69C0A4A3
-	Offset: 0xB810
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function say_puzzle_completion_line(n_element_enum) {
-  level notify(# "quest_progressed");
+  level notify("quest_progressed");
   wait(4);
   if(level.puzzle_completion_lines_count[n_element_enum] >= level.puzzle_completion_lines[n_element_enum].size) {
-    /#
     iprintlnbold("" + n_element_enum);
-    # /
-      return;
+    return;
   }
   str_line = level.puzzle_completion_lines[n_element_enum][level.puzzle_completion_lines_count[n_element_enum]];
   level.puzzle_completion_lines_count[n_element_enum]++;
@@ -2326,15 +1710,6 @@ function say_puzzle_completion_line(n_element_enum) {
   set_players_dontspeak(0);
 }
 
-/*
-	Name: watch_occasional_line
-	Namespace: zm_tomb_vo
-	Checksum: 0x3355B15E
-	Offset: 0xB908
-	Size: 0xC4
-	Parameters: 5
-	Flags: Linked
-*/
 function watch_occasional_line(str_category, str_line, str_notify, n_time_between = 30, n_times_to_play = 100) {
   for (i = 0; i < n_times_to_play; i++) {
     level waittill(str_notify, e_player);
@@ -2345,15 +1720,6 @@ function watch_occasional_line(str_category, str_line, str_notify, n_time_betwee
   }
 }
 
-/*
-	Name: watch_one_shot_line
-	Namespace: zm_tomb_vo
-	Checksum: 0x8F561DE2
-	Offset: 0xB9D8
-	Size: 0x6A
-	Parameters: 3
-	Flags: Linked
-*/
 function watch_one_shot_line(str_category, str_line, str_notify) {
   while (true) {
     level waittill(str_notify, e_player);
@@ -2364,15 +1730,6 @@ function watch_one_shot_line(str_category, str_line, str_notify) {
   }
 }
 
-/*
-	Name: watch_one_shot_samantha_line
-	Namespace: zm_tomb_vo
-	Checksum: 0x2248FB5F
-	Offset: 0xBA50
-	Size: 0xA0
-	Parameters: 2
-	Flags: Linked
-*/
 function watch_one_shot_samantha_line(str_line, str_notify) {
   while (true) {
     level waittill(str_notify, e_play_on);
@@ -2387,15 +1744,6 @@ function watch_one_shot_samantha_line(str_line, str_notify) {
   }
 }
 
-/*
-	Name: watch_one_shot_samantha_clue
-	Namespace: zm_tomb_vo
-	Checksum: 0x5C311956
-	Offset: 0xBAF8
-	Size: 0x372
-	Parameters: 3
-	Flags: Linked
-*/
 function watch_one_shot_samantha_clue(str_line, str_notify, str_endon) {
   if(isdefined(str_endon)) {
     level endon(str_endon);
@@ -2447,47 +1795,20 @@ function watch_one_shot_samantha_clue(str_line, str_notify, str_endon) {
   }
 }
 
-/*
-	Name: samantha_discourage_reset
-	Namespace: zm_tomb_vo
-	Checksum: 0xCE1BC6F7
-	Offset: 0xBE78
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function samantha_discourage_reset() {
   n_min_time = 60000 * 5;
   n_max_time = 60000 * 10;
   level.sam_next_beratement = gettime() + randomintrange(n_min_time, n_max_time);
 }
 
-/*
-	Name: samantha_encourage_watch_good_lines
-	Namespace: zm_tomb_vo
-	Checksum: 0xDD7058FA
-	Offset: 0xBEE0
-	Size: 0x46
-	Parameters: 0
-	Flags: Linked
-*/
 function samantha_encourage_watch_good_lines() {
   while (true) {
-    level waittill(# "vo_puzzle_good", e_player);
+    level waittill("vo_puzzle_good", e_player);
     wait(1);
-    level notify(# "quest_progressed", e_player, 1);
+    level notify("quest_progressed", e_player, 1);
   }
 }
 
-/*
-	Name: samantha_encourage_think
-	Namespace: zm_tomb_vo
-	Checksum: 0xA6C1C564
-	Offset: 0xBF30
-	Size: 0x2E8
-	Parameters: 0
-	Flags: None
-*/
 function samantha_encourage_think() {
   original_list = array("vox_sam_generic_encourage_0", "vox_sam_generic_encourage_1", "vox_sam_generic_encourage_2", "vox_sam_generic_encourage_3", "vox_sam_generic_encourage_4", "vox_sam_generic_encourage_5");
   available_list = [];
@@ -2501,7 +1822,7 @@ function samantha_encourage_think() {
     }
     e_player = undefined;
     say_something = 0;
-    level waittill(# "quest_progressed", e_player, say_something);
+    level waittill("quest_progressed", e_player, say_something);
     samantha_discourage_reset();
     if(gettime() < next_encouragement) {
       continue;
@@ -2533,17 +1854,8 @@ function samantha_encourage_think() {
   }
 }
 
-/*
-	Name: samantha_discourage_think
-	Namespace: zm_tomb_vo
-	Checksum: 0xC4C12AB5
-	Offset: 0xC220
-	Size: 0x200
-	Parameters: 0
-	Flags: None
-*/
 function samantha_discourage_think() {
-  level endon(# "ee_all_staffs_upgraded");
+  level endon("ee_all_staffs_upgraded");
   original_list = array("vox_sam_generic_chastise_0", "vox_sam_generic_chastise_1", "vox_sam_generic_chastise_2", "vox_sam_generic_chastise_3", "vox_sam_generic_chastise_4", "vox_sam_generic_chastise_5", "vox_sam_generic_chastise_6");
   available_list = [];
   level flag::wait_till("samantha_intro_done");
@@ -2570,17 +1882,8 @@ function samantha_discourage_think() {
   }
 }
 
-/*
-	Name: samanthasay
-	Namespace: zm_tomb_vo
-	Checksum: 0x44BE4FD6
-	Offset: 0xC428
-	Size: 0x224
-	Parameters: 4
-	Flags: Linked
-*/
 function samanthasay(vox_line, e_source, b_wait_for_nearby_speakers = 0, intro_line = 0) {
-  level endon(# "end_game");
+  level endon("end_game");
   if(!intro_line && !level flag::get("samantha_intro_done")) {
     return false;
   }
@@ -2602,38 +1905,20 @@ function samanthasay(vox_line, e_source, b_wait_for_nearby_speakers = 0, intro_l
     }
   }
   level thread samanthasayvoplay(e_source, vox_line);
-  level waittill(# "samanthasay_vo_finished");
+  level waittill("samanthasay_vo_finished");
   return true;
 }
 
-/*
-	Name: samanthasayvoplay
-	Namespace: zm_tomb_vo
-	Checksum: 0x77FF12E9
-	Offset: 0xC658
-	Size: 0x6A
-	Parameters: 2
-	Flags: Linked
-*/
 function samanthasayvoplay(e_source, vox_line) {
   e_source playsoundwithnotify(vox_line, "sound_done" + vox_line);
   e_source waittill("sound_done" + vox_line);
   level.sam_talking = 0;
-  level notify(# "samanthasay_vo_finished");
+  level notify("samanthasay_vo_finished");
 }
 
-/*
-	Name: maxissay
-	Namespace: zm_tomb_vo
-	Checksum: 0x2FB50B41
-	Offset: 0xC6D0
-	Size: 0x218
-	Parameters: 3
-	Flags: Linked
-*/
 function maxissay(vox_line, m_spot_override, b_wait_for_nearby_speakers) {
-  level endon(# "end_game");
-  level endon(# "intermission");
+  level endon("end_game");
+  level endon("intermission");
   if(isdefined(level.intermission) && level.intermission) {
     return;
   }
@@ -2644,12 +1929,10 @@ function maxissay(vox_line, m_spot_override, b_wait_for_nearby_speakers) {
     wait(0.05);
   }
   level.maxis_talking = 1;
-  /#
   iprintlnbold("" + vox_line);
-  # /
-    if(isdefined(m_spot_override)) {
-      m_vo_spot = m_spot_override;
-    }
+  if(isdefined(m_spot_override)) {
+    m_vo_spot = m_spot_override;
+  }
   if(isdefined(b_wait_for_nearby_speakers) && b_wait_for_nearby_speakers) {
     nearbyplayers = util::get_array_of_closest(m_vo_spot.origin, getplayers(), undefined, undefined, 256);
     if(isdefined(nearbyplayers) && nearbyplayers.size > 0) {
@@ -2661,34 +1944,16 @@ function maxissay(vox_line, m_spot_override, b_wait_for_nearby_speakers) {
     }
   }
   level thread maxissayvoplay(m_vo_spot, vox_line);
-  level waittill(# "maxissay_vo_finished");
+  level waittill("maxissay_vo_finished");
 }
 
-/*
-	Name: maxissayvoplay
-	Namespace: zm_tomb_vo
-	Checksum: 0xBD8EC137
-	Offset: 0xC8F0
-	Size: 0x86
-	Parameters: 2
-	Flags: Linked
-*/
 function maxissayvoplay(m_vo_spot, vox_line) {
   m_vo_spot playsoundwithnotify(vox_line, "sound_done" + vox_line);
   m_vo_spot util::waittill_either("sound_done" + vox_line, "death");
   level.maxis_talking = 0;
-  level notify(# "maxissay_vo_finished");
+  level notify("maxissay_vo_finished");
 }
 
-/*
-	Name: richtofenrespondvoplay
-	Namespace: zm_tomb_vo
-	Checksum: 0xCEEEE21B
-	Offset: 0xC980
-	Size: 0x724
-	Parameters: 3
-	Flags: Linked
-*/
 function richtofenrespondvoplay(vox_category, b_richtofen_first = 0, str_flag) {
   if(level flag::get("story_vo_playing")) {
     return;
@@ -2699,13 +1964,13 @@ function richtofenrespondvoplay(vox_category, b_richtofen_first = 0, str_flag) {
     if(self.character_name == "Richtofen") {
       str_vox_line = ((("vox_plr_" + self.characterindex) + "_") + vox_category) + "_0";
       self playsoundwithnotify(str_vox_line, "rich_done");
-      self waittill(# "rich_done");
+      self waittill("rich_done");
       wait(0.5);
       foreach(player in getplayers()) {
         if(player.character_name != "Richtofen" && distance2d(player.origin, self.origin) < 800) {
           str_vox_line = ((("vox_plr_" + player.characterindex) + "_") + vox_category) + "_0";
           player playsoundwithnotify(str_vox_line, "rich_done");
-          player waittill(# "rich_done");
+          player waittill("rich_done");
         }
       }
     } else {
@@ -2713,14 +1978,14 @@ function richtofenrespondvoplay(vox_category, b_richtofen_first = 0, str_flag) {
         if(player.character_name == "Richtofen" && distance2d(player.origin, self.origin) < 800) {
           str_vox_line = ((("vox_plr_" + player.characterindex) + "_") + vox_category) + "_0";
           player playsoundwithnotify(str_vox_line, "rich_done");
-          player waittill(# "rich_done");
+          player waittill("rich_done");
           wait(0.5);
         }
       }
       if(isdefined(self)) {
         str_vox_line = ((("vox_plr_" + self.characterindex) + "_") + vox_category) + "_0";
         self playsoundwithnotify(str_vox_line, "rich_response");
-        self waittill(# "rich_response");
+        self waittill("rich_response");
       }
     }
   } else {
@@ -2729,25 +1994,25 @@ function richtofenrespondvoplay(vox_category, b_richtofen_first = 0, str_flag) {
         if(player.character_name != "Richtofen" && distance2d(player.origin, self.origin) < 800) {
           str_vox_line = ((("vox_plr_" + player.characterindex) + "_") + vox_category) + "_0";
           player playsoundwithnotify(str_vox_line, "rich_done");
-          player waittill(# "rich_done");
+          player waittill("rich_done");
           wait(0.5);
         }
       }
       if(isdefined(self)) {
         str_vox_line = ((("vox_plr_" + self.characterindex) + "_") + vox_category) + "_0";
         self playsoundwithnotify(str_vox_line, "rich_done");
-        self waittill(# "rich_done");
+        self waittill("rich_done");
       }
     } else {
       str_vox_line = ((("vox_plr_" + self.characterindex) + "_") + vox_category) + "_0";
       self playsoundwithnotify(str_vox_line, "rich_response");
-      self waittill(# "rich_response");
+      self waittill("rich_response");
       wait(0.5);
       foreach(player in getplayers()) {
         if(player.character_name == "Richtofen" && distance2d(player.origin, self.origin) < 800) {
           str_vox_line = ((("vox_plr_" + player.characterindex) + "_") + vox_category) + "_0";
           player playsoundwithnotify(str_vox_line, "rich_done");
-          player waittill(# "rich_done");
+          player waittill("rich_done");
         }
       }
     }
@@ -2759,18 +2024,9 @@ function richtofenrespondvoplay(vox_category, b_richtofen_first = 0, str_flag) {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: wunderfizz_used_vo
-	Namespace: zm_tomb_vo
-	Checksum: 0x607C8A7F
-	Offset: 0xD0B0
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function wunderfizz_used_vo() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(isdefined(self.has_used_perk_random) && self.has_used_perk_random) {
     return;
   }
@@ -2794,15 +2050,6 @@ function wunderfizz_used_vo() {
   set_players_dontspeak(0);
 }
 
-/*
-	Name: init_sam_promises
-	Namespace: zm_tomb_vo
-	Checksum: 0x66EC1BAE
-	Offset: 0xD208
-	Size: 0x3EC
-	Parameters: 0
-	Flags: Linked
-*/
 function init_sam_promises() {
   level.vo_promises["Richtofen_1"][0] = "vox_sam_hear_samantha_2_plr_2_0";
   level.vo_promises["Richtofen_1"][1] = "vox_plr_2_hear_samantha_2_0";
@@ -2839,19 +2086,10 @@ function init_sam_promises() {
   level thread sam_promises_watch();
 }
 
-/*
-	Name: sam_promises_watch
-	Namespace: zm_tomb_vo
-	Checksum: 0x1F36BF92
-	Offset: 0xD600
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function sam_promises_watch() {
   level flag::wait_till("samantha_intro_done");
   while (true) {
-    level waittill(# "player_zombie_blood", e_player);
+    level waittill("player_zombie_blood", e_player);
     a_players = getplayers();
     if(randomint(100) < 20) {
       e_player thread sam_promises_conversation();
@@ -2859,17 +2097,8 @@ function sam_promises_watch() {
   }
 }
 
-/*
-	Name: sam_promises_conversation
-	Namespace: zm_tomb_vo
-	Checksum: 0xA66EA7C3
-	Offset: 0xD6A0
-	Size: 0x17E
-	Parameters: 0
-	Flags: Linked
-*/
 function sam_promises_conversation() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.vo_promises_playing = 1;
   wait(3);
   if(!isdefined(self.n_vo_promises)) {
@@ -2892,78 +2121,42 @@ function sam_promises_conversation() {
   self.vo_promises_playing = undefined;
 }
 
-/*
-	Name: play_sam_promises_conversation
-	Namespace: zm_tomb_vo
-	Checksum: 0x8AEDDF88
-	Offset: 0xD828
-	Size: 0x15A
-	Parameters: 1
-	Flags: Linked
-*/
 function play_sam_promises_conversation(a_promises) {
   for (i = 0; i < a_promises.size; i++) {
-    self endon(# "zombie_blood_over");
-    self endon(# "disconnect");
+    self endon("zombie_blood_over");
+    self endon("disconnect");
     if(issubstr(a_promises[i], "sam_sam") || issubstr(a_promises[i], "samantha")) {
       self thread sam_promises_conversation_ended_early(a_promises[i]);
       self playsoundtoplayer(a_promises[i], self);
       n_duration = soundgetplaybacktime(a_promises[i]);
       wait(n_duration / 1000);
-      self notify(# "promises_vo_end_early");
+      self notify("promises_vo_end_early");
     } else {
       self playsoundwithnotify(a_promises[i], "player_done");
-      self waittill(# "player_done");
+      self waittill("player_done");
     }
     wait(0.3);
   }
 }
 
-/*
-	Name: sam_promises_conversation_ended_early
-	Namespace: zm_tomb_vo
-	Checksum: 0x74E22504
-	Offset: 0xD990
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function sam_promises_conversation_ended_early(str_alias) {
-  self notify(# "promises_vo_end_early");
-  self endon(# "promises_vo_end_early");
+  self notify("promises_vo_end_early");
+  self endon("promises_vo_end_early");
   while (self.zombie_vars["zombie_powerup_zombie_blood_on"]) {
     wait(0.05);
   }
   self stoplocalsound(str_alias);
 }
 
-/*
-	Name: sam_promises_cooldown
-	Namespace: zm_tomb_vo
-	Checksum: 0x88327BB4
-	Offset: 0xDA00
-	Size: 0x32
-	Parameters: 0
-	Flags: Linked
-*/
 function sam_promises_cooldown() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.b_promise_cooldown = 1;
-  level waittill(# "end_of_round");
+  level waittill("end_of_round");
   self.b_promise_cooldown = undefined;
 }
 
-/*
-	Name: function_860b0710
-	Namespace: zm_tomb_vo
-	Checksum: 0xA6728923
-	Offset: 0xDA40
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_860b0710() {
-  self endon(# "death");
+  self endon("death");
   if(randomintrange(0, 100) < 20) {
     str_vox_line = "vox_maxi_drone_killed_" + randomintrange(0, 3);
     self maxissay(str_vox_line, self);
@@ -2974,17 +2167,8 @@ function function_860b0710() {
   }
 }
 
-/*
-	Name: function_a808bc8e
-	Namespace: zm_tomb_vo
-	Checksum: 0x9C205EDC
-	Offset: 0xDB38
-	Size: 0x118
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a808bc8e() {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(level.var_450ee971)) {
     level.var_450ee971 = [];
     for (i = 0; i < 9; i++) {

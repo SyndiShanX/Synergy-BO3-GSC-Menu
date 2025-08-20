@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\duplicaterenderbundle.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\filter_shared;
@@ -6,57 +10,20 @@
 #using scripts\shared\math_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace duplicate_render_bundle;
 
-/*
-	Name: __init__sytem__
-	Namespace: duplicate_render_bundle
-	Checksum: 0xB03B661A
-	Offset: 0x230
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("duplicate_render_bundle", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: duplicate_render_bundle
-	Checksum: 0x4FB7160B
-	Offset: 0x270
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_localplayer_spawned( & localplayer_duplicate_render_bundle_init);
 }
 
-/*
-	Name: localplayer_duplicate_render_bundle_init
-	Namespace: duplicate_render_bundle
-	Checksum: 0x5A01651D
-	Offset: 0x2A0
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function localplayer_duplicate_render_bundle_init(localclientnum) {
   init_duplicate_render_bundles();
 }
 
-/*
-	Name: init_duplicate_render_bundles
-	Namespace: duplicate_render_bundle
-	Checksum: 0xBCE53F3F
-	Offset: 0x2C8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function init_duplicate_render_bundles() {
   if(isdefined(self.duprenderbundelsinited)) {
     return;
@@ -65,23 +32,11 @@ function init_duplicate_render_bundles() {
   self.playingduprenderbundle = "";
   self.forcestopduprenderbundle = 0;
   self.exitduprenderbundle = 0;
-  /#
   self thread duprenderbundledebuglisten();
-  # /
 }
 
-/*
-	Name: duprenderbundledebuglisten
-	Namespace: duplicate_render_bundle
-	Checksum: 0xDF8C00CC
-	Offset: 0x338
-	Size: 0x1C0
-	Parameters: 0
-	Flags: Linked
-*/
 function duprenderbundledebuglisten() {
-  /#
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   setdvar("", "");
   setdvar("", "");
   setdvar("", "");
@@ -103,28 +58,16 @@ function duprenderbundledebuglisten() {
     }
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: playduprenderbundle
-	Namespace: duplicate_render_bundle
-	Checksum: 0x2CC9B982
-	Offset: 0x500
-	Size: 0x554
-	Parameters: 1
-	Flags: Linked
-*/
 function playduprenderbundle(playbundlename) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   init_duplicate_render_bundles();
   stopplayingduprenderbundle();
   bundle = struct::get_script_bundle("duprenderbundle", playbundlename);
   if(!isdefined(bundle)) {
-    /#
     println(("" + playbundlename) + "");
-    # /
-      return;
+    return;
   }
   totalaccumtime = 0;
   filter::init_filter_indices();
@@ -200,15 +143,6 @@ function playduprenderbundle(playbundlename) {
   finishplayingduprenderbundle(localclientnum, "Finished " + playbundlename);
 }
 
-/*
-	Name: adddupmaterial
-	Namespace: duplicate_render_bundle
-	Checksum: 0xF41254A7
-	Offset: 0xA60
-	Size: 0x1FC
-	Parameters: 4
-	Flags: Linked
-*/
 function adddupmaterial(localclientnum, bundle, prefix, type) {
   method = 0;
   methodstr = getstructfield(bundle, prefix + "method");
@@ -256,63 +190,25 @@ function adddupmaterial(localclientnum, bundle, prefix, type) {
   self addduplicaterenderoption(type, method, materialid);
 }
 
-/*
-	Name: setshaderconstants
-	Namespace: duplicate_render_bundle
-	Checksum: 0x8A82312D
-	Offset: 0xC68
-	Size: 0x6C
-	Parameters: 4
-	Flags: Linked
-*/
 function setshaderconstants(localclientnum, shaderconstantname, filterid, values) {
   self mapshaderconstant(localclientnum, 0, shaderconstantname, values[0], values[1], values[2], values[3]);
 }
 
-/*
-	Name: finishplayingduprenderbundle
-	Namespace: duplicate_render_bundle
-	Checksum: 0x48DA07DE
-	Offset: 0xCE0
-	Size: 0x64
-	Parameters: 2
-	Flags: Linked
-*/
 function finishplayingduprenderbundle(localclientnum, msg) {
-  /#
   if(isdefined(msg)) {
     println(msg);
   }
-  # /
-    self.forcestopduprenderbundle = 0;
+  self.forcestopduprenderbundle = 0;
   self.exitduprenderbundle = 0;
   self.playingduprenderbundle = "";
 }
 
-/*
-	Name: stopplayingduprenderbundle
-	Namespace: duplicate_render_bundle
-	Checksum: 0x9277AC22
-	Offset: 0xD50
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function stopplayingduprenderbundle() {
   if(self.playingduprenderbundle != "") {
     stopduprenderbundle();
   }
 }
 
-/*
-	Name: stopduprenderbundle
-	Namespace: duplicate_render_bundle
-	Checksum: 0x3BD6C971
-	Offset: 0xD88
-	Size: 0x72
-	Parameters: 0
-	Flags: Linked
-*/
 function stopduprenderbundle() {
   if(!(isdefined(self.forcestopduprenderbundle) && self.forcestopduprenderbundle) && isdefined(self.playingduprenderbundle) && self.playingduprenderbundle != "") {
     self.forcestopduprenderbundle = 1;
@@ -325,15 +221,6 @@ function stopduprenderbundle() {
   }
 }
 
-/*
-	Name: exitduprenderbundle
-	Namespace: duplicate_render_bundle
-	Checksum: 0x20BE7A97
-	Offset: 0xE08
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function exitduprenderbundle() {
   if(!(isdefined(self.exitduprenderbundle) && self.exitduprenderbundle) && isdefined(self.playingduprenderbundle) && self.playingduprenderbundle != "") {
     self.exitduprenderbundle = 1;

@@ -1,44 +1,20 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\gametypes\_damagefeedback.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
-
 #namespace damagefeedback;
 
-/*
-	Name: __init__
-	Namespace: damagefeedback
-	Checksum: 0xC1CDDCA
-	Offset: 0x210
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function __init__() {
   callback::on_start_gametype( & main);
   callback::on_connect( & on_player_connect);
 }
 
-/*
-	Name: main
-	Namespace: damagefeedback
-	Checksum: 0x99EC1590
-	Offset: 0x260
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {}
 
-/*
-	Name: on_player_connect
-	Namespace: damagefeedback
-	Checksum: 0x1A5D1AC9
-	Offset: 0x270
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   self.hud_damagefeedback = newdamageindicatorhudelem(self);
   self.hud_damagefeedback.horzalign = "center";
@@ -51,15 +27,6 @@ function on_player_connect() {
   self.hitsoundtracker = 1;
 }
 
-/*
-	Name: should_play_sound
-	Namespace: damagefeedback
-	Checksum: 0xD1F3C81D
-	Offset: 0x350
-	Size: 0x66
-	Parameters: 1
-	Flags: Linked
-*/
 function should_play_sound(mod) {
   if(!isdefined(mod)) {
     return false;
@@ -77,15 +44,6 @@ function should_play_sound(mod) {
   return true;
 }
 
-/*
-	Name: updatedamagefeedback
-	Namespace: damagefeedback
-	Checksum: 0x2ECBF3A1
-	Offset: 0x3C0
-	Size: 0x270
-	Parameters: 3
-	Flags: Linked
-*/
 function updatedamagefeedback(mod, inflictor, perkfeedback) {
   if(!isplayer(self) || sessionmodeiszombiesgame()) {
     return;
@@ -134,17 +92,8 @@ function updatedamagefeedback(mod, inflictor, perkfeedback) {
   self.hud_damagefeedback.alpha = 0;
 }
 
-/*
-	Name: playhitsound
-	Namespace: damagefeedback
-	Checksum: 0x6F63D84D
-	Offset: 0x638
-	Size: 0x60
-	Parameters: 2
-	Flags: Linked
-*/
 function playhitsound(mod, alert) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(self.hitsoundtracker) {
     self.hitsoundtracker = 0;
     self playlocalsound(alert);
@@ -153,15 +102,6 @@ function playhitsound(mod, alert) {
   }
 }
 
-/*
-	Name: updatespecialdamagefeedback
-	Namespace: damagefeedback
-	Checksum: 0x9659774
-	Offset: 0x6A0
-	Size: 0xEA
-	Parameters: 1
-	Flags: None
-*/
 function updatespecialdamagefeedback(hitent) {
   if(!isplayer(self)) {
     return;
@@ -184,17 +124,8 @@ function updatespecialdamagefeedback(hitent) {
   }
 }
 
-/*
-	Name: sendhitspecialeventatframeend
-	Namespace: damagefeedback
-	Checksum: 0xEEA33415
-	Offset: 0x798
-	Size: 0x17E
-	Parameters: 1
-	Flags: Linked
-*/
 function sendhitspecialeventatframeend(hitent) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   waittillframeend();
   enemyshit = 0;
   value = 1;

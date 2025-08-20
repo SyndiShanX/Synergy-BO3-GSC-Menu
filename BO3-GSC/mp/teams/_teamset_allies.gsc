@@ -1,18 +1,12 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\teams\_teamset_allies.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\teams\_teamset;
-
 #namespace _teamset_allies;
 
-/*
-	Name: main
-	Namespace: _teamset_allies
-	Checksum: 0x5DC4FF5C
-	Offset: 0x2F8
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   init("free");
   foreach(team in level.teams) {
@@ -25,15 +19,6 @@ function main() {
   precache();
 }
 
-/*
-	Name: init
-	Namespace: _teamset_allies
-	Checksum: 0x9B5C461F
-	Offset: 0x3E0
-	Size: 0x30A
-	Parameters: 1
-	Flags: Linked
-*/
 function init(team) {
   _teamset::init();
   game[team] = "allies";
@@ -62,13 +47,4 @@ function init(team) {
   game["flagmodels"]["neutral"] = "p7_mp_flag_neutral";
 }
 
-/*
-	Name: precache
-	Namespace: _teamset_allies
-	Checksum: 0x99EC1590
-	Offset: 0x6F8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {}

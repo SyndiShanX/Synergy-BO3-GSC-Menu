@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_powerup_zombie_blood.csc
+*************************************************/
+
 #using scripts\shared\array_shared;
 #using scripts\shared\audio_shared;
 #using scripts\shared\callbacks_shared;
@@ -8,31 +12,12 @@
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\zm\_zm_powerups;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_powerup_zombie_blood;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0x10A3FFA2
-	Offset: 0x2F0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_powerup_zombie_blood", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0xBC45CE0B
-	Offset: 0x330
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_localclient_connect( & function_a0b86d2c);
   registerclientfield("allplayers", "player_zombie_blood_fx", 21000, 1, "int", & toggle_player_zombie_blood_fx, 0, 1);
@@ -44,30 +29,12 @@ function __init__() {
   visionset_mgr::register_overlay_info_style_postfx_bundle("zm_tomb_in_plain_sight", 1, 1, "pstfx_zm_tomb_in_plain_sight");
 }
 
-/*
-	Name: function_a0b86d2c
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0x5958323F
-	Offset: 0x468
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a0b86d2c(localclientnum) {
   player = getlocalplayer(localclientnum);
   filter::init_filter_indices();
   filter::map_material_helper(player, "generic_filter_zombie_blood_tomb");
 }
 
-/*
-	Name: toggle_player_zombie_blood_fx
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0x78770197
-	Offset: 0x4D8
-	Size: 0x1B6
-	Parameters: 7
-	Flags: Linked
-*/
 function toggle_player_zombie_blood_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(isspectating(localclientnum, 0) || isdemoplaying()) {
     return;

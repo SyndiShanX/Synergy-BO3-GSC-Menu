@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\popups_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\flag_shared;
@@ -10,44 +14,16 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapons;
 #using scripts\shared\weapons_shared;
-
 #namespace popups;
 
-/*
-	Name: __init__sytem__
-	Namespace: popups
-	Checksum: 0xD9CEE6CE
-	Offset: 0x248
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("popups", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: popups
-	Checksum: 0x867E07C8
-	Offset: 0x288
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
 }
 
-/*
-	Name: init
-	Namespace: popups
-	Checksum: 0x1D47A933
-	Offset: 0x2B8
-	Size: 0x1FC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.contractsettings = spawnstruct();
   level.contractsettings.waittime = 4.2;
@@ -69,22 +45,11 @@ function init() {
   level.momentumnotifywaittime = 0;
   level.momentumnotifywaitlasttime = 0;
   level.teammessagequeuemax = 8;
-  /#
   level thread popupsfromconsole();
   level thread function_9a14a686();
-  # /
-    callback::on_connecting( & on_player_connect);
+  callback::on_connecting( & on_player_connect);
 }
 
-/*
-	Name: on_player_connect
-	Namespace: popups
-	Checksum: 0x545A4F4D
-	Offset: 0x4C0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   self.resetgameoverhudrequired = 0;
   self thread displaypopupswaiter();
@@ -93,17 +58,7 @@ function on_player_connect() {
   }
 }
 
-/*
-	Name: devgui_notif_getgunleveltablename
-	Namespace: popups
-	Checksum: 0xB34EB0A6
-	Offset: 0x510
-	Size: 0x52
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_notif_getgunleveltablename() {
-  /#
   if(sessionmodeiscampaigngame()) {
     return "";
   }
@@ -111,20 +66,9 @@ function devgui_notif_getgunleveltablename() {
     return "";
   }
   return "";
-  # /
 }
 
-/*
-	Name: devgui_notif_getchallengestablecount
-	Namespace: popups
-	Checksum: 0xA0AAB2C2
-	Offset: 0x570
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_notif_getchallengestablecount() {
-  /#
   if(sessionmodeiscampaigngame()) {
     return 4;
   }
@@ -132,20 +76,9 @@ function devgui_notif_getchallengestablecount() {
     return 4;
   }
   return 6;
-  # /
 }
 
-/*
-	Name: devgui_notif_getchallengestablename
-	Namespace: popups
-	Checksum: 0x6CFDA47E
-	Offset: 0x5C8
-	Size: 0x88
-	Parameters: 1
-	Flags: Linked
-*/
 function devgui_notif_getchallengestablename(tableid) {
-  /#
   if(sessionmodeiscampaigngame()) {
     return ("" + tableid) + "";
   }
@@ -153,37 +86,15 @@ function devgui_notif_getchallengestablename(tableid) {
     return ("" + tableid) + "";
   }
   return ("" + tableid) + "";
-  # /
 }
 
-/*
-	Name: set_statstable_id
-	Namespace: popups
-	Checksum: 0xEB7D1C2F
-	Offset: 0x660
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function set_statstable_id() {
-  /#
   if(!isdefined(level.statstableid)) {
     level.statstableid = tablelookupfindcoreasset(util::getstatstablename());
   }
-  # /
 }
 
-/*
-	Name: devgui_create_weapon_levels_table
-	Namespace: popups
-	Checksum: 0xBED6750F
-	Offset: 0x6B0
-	Size: 0x206
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_create_weapon_levels_table() {
-  /#
   level.tbl_weaponids = [];
   set_statstable_id();
   if(!isdefined(level.statstableid)) {
@@ -205,20 +116,9 @@ function devgui_create_weapon_levels_table() {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: function_9a14a686
-	Namespace: popups
-	Checksum: 0xEB16DA80
-	Offset: 0x8C0
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9a14a686() {
-  /#
   if(isdedicated()) {
     return;
   }
@@ -235,20 +135,9 @@ function function_9a14a686() {
     }
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: devgui_notif_init
-	Namespace: popups
-	Checksum: 0x6C6630A3
-	Offset: 0x9E0
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_notif_init() {
-  /#
   setdvar("", 0);
   setdvar("", 0);
   setdvar("", 0);
@@ -262,20 +151,9 @@ function devgui_notif_init() {
   if(!sessionmodeiscampaigngame()) {
     level thread notif_devgui_challenges();
   }
-  # /
 }
 
-/*
-	Name: notif_devgui_rank
-	Namespace: popups
-	Checksum: 0xA431CF3
-	Offset: 0xAD8
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function notif_devgui_rank() {
-  /#
   if(!isdefined(level.ranktable)) {
     return;
   }
@@ -292,20 +170,9 @@ function notif_devgui_rank() {
   }
   wait(0.05);
   level thread notif_devgui_rank_up_think();
-  # /
 }
 
-/*
-	Name: notif_devgui_rank_up_think
-	Namespace: popups
-	Checksum: 0x71C447B5
-	Offset: 0xC08
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function notif_devgui_rank_up_think() {
-  /#
   for (;;) {
     rank_number = getdvarint("");
     if(rank_number == 0) {
@@ -316,20 +183,9 @@ function notif_devgui_rank_up_think() {
     setdvar("", 0);
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: notif_devgui_gun_rank
-	Namespace: popups
-	Checksum: 0x3982CB3B
-	Offset: 0xCA8
-	Size: 0x7FC
-	Parameters: 0
-	Flags: Linked
-*/
 function notif_devgui_gun_rank() {
-  /#
   notif_gun_rank_devgui_base = "";
   gunlevel_rankid_col = 0;
   gunlevel_gunref_col = 2;
@@ -414,20 +270,9 @@ function notif_devgui_gun_rank() {
     wait(0.05);
   }
   level thread notif_devgui_gun_level_think();
-  # /
 }
 
-/*
-	Name: notif_devgui_gun_level_think
-	Namespace: popups
-	Checksum: 0x7DF47C8F
-	Offset: 0x14B0
-	Size: 0x156
-	Parameters: 0
-	Flags: Linked
-*/
 function notif_devgui_gun_level_think() {
-  /#
   for (;;) {
     weapon_item_index = getdvarint("");
     if(weapon_item_index == 0) {
@@ -444,20 +289,9 @@ function notif_devgui_gun_level_think() {
     setdvar("", 0);
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: notif_devgui_challenges
-	Namespace: popups
-	Checksum: 0xE91159F8
-	Offset: 0x1610
-	Size: 0x32C
-	Parameters: 0
-	Flags: Linked
-*/
 function notif_devgui_challenges() {
-  /#
   notif_challenges_devgui_base = "";
   for (i = 1; i <= devgui_notif_getchallengestablecount(); i++) {
     tablename = devgui_notif_getchallengestablename(i);
@@ -482,20 +316,9 @@ function notif_devgui_challenges() {
     }
   }
   level thread notif_devgui_challenges_think();
-  # /
 }
 
-/*
-	Name: notif_devgui_challenges_think
-	Namespace: popups
-	Checksum: 0xB79669BD
-	Offset: 0x1948
-	Size: 0x346
-	Parameters: 0
-	Flags: Linked
-*/
 function notif_devgui_challenges_think() {
-  /#
   setdvar("", 0);
   setdvar("", 0);
   for (;;) {
@@ -544,20 +367,9 @@ function notif_devgui_challenges_think() {
     setdvar("", 0);
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: popupsfromconsole
-	Namespace: popups
-	Checksum: 0x7829FCCA
-	Offset: 0x1C98
-	Size: 0x6A8
-	Parameters: 0
-	Flags: Linked
-*/
 function popupsfromconsole() {
-  /#
   while (true) {
     timeout = getdvarfloat("", 1);
     if(timeout == 0) {
@@ -617,7 +429,7 @@ function popupsfromconsole() {
       if(isdefined(level.players[1])) {
         player = level.players[1];
       }
-      level.players[0] displayteammessagetoall( & "", player);
+      level.players[0] displayteammessagetoall(&"", player);
     }
     reset = getdvarint("", 1);
     if(reset) {
@@ -647,18 +459,8 @@ function popupsfromconsole() {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: displaykillstreakteammessagetoall
-	Namespace: popups
-	Checksum: 0x2092EBE5
-	Offset: 0x2348
-	Size: 0x8C
-	Parameters: 2
-	Flags: None
-*/
 function displaykillstreakteammessagetoall(killstreak, player) {
   if(!isdefined(level.killstreaks[killstreak])) {
     return;
@@ -670,15 +472,6 @@ function displaykillstreakteammessagetoall(killstreak, player) {
   self displayteammessagetoall(message, player);
 }
 
-/*
-	Name: displaykillstreakhackedteammessagetoall
-	Namespace: popups
-	Checksum: 0x88CD6A5F
-	Offset: 0x23E0
-	Size: 0x8C
-	Parameters: 2
-	Flags: None
-*/
 function displaykillstreakhackedteammessagetoall(killstreak, player) {
   if(!isdefined(level.killstreaks[killstreak])) {
     return;
@@ -690,15 +483,6 @@ function displaykillstreakhackedteammessagetoall(killstreak, player) {
   self displayteammessagetoall(message, player);
 }
 
-/*
-	Name: shoulddisplayteammessages
-	Namespace: popups
-	Checksum: 0xB7681166
-	Offset: 0x2478
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function shoulddisplayteammessages() {
   if(level.hardcoremode == 1 || level.splitscreen == 1) {
     return false;
@@ -706,15 +490,6 @@ function shoulddisplayteammessages() {
   return true;
 }
 
-/*
-	Name: displayteammessagetoall
-	Namespace: popups
-	Checksum: 0x2D8E08C5
-	Offset: 0x24B0
-	Size: 0x136
-	Parameters: 2
-	Flags: Linked
-*/
 function displayteammessagetoall(message, player) {
   if(!shoulddisplayteammessages()) {
     return;
@@ -731,19 +506,10 @@ function displayteammessagetoall(message, player) {
     cur_player.teammessagequeue[size] = spawnstruct();
     cur_player.teammessagequeue[size].message = message;
     cur_player.teammessagequeue[size].player = player;
-    cur_player notify(# "hash_f0fa2450");
+    cur_player notify("hash_f0fa2450");
   }
 }
 
-/*
-	Name: displayteammessagetoteam
-	Namespace: popups
-	Checksum: 0xA1846B22
-	Offset: 0x25F0
-	Size: 0x156
-	Parameters: 3
-	Flags: None
-*/
 function displayteammessagetoteam(message, player, team) {
   if(!shoulddisplayteammessages()) {
     return;
@@ -763,29 +529,20 @@ function displayteammessagetoteam(message, player, team) {
     cur_player.teammessagequeue[size] = spawnstruct();
     cur_player.teammessagequeue[size].message = message;
     cur_player.teammessagequeue[size].player = player;
-    cur_player notify(# "hash_f0fa2450");
+    cur_player notify("hash_f0fa2450");
   }
 }
 
-/*
-	Name: displayteammessagewaiter
-	Namespace: popups
-	Checksum: 0xACF6B28A
-	Offset: 0x2750
-	Size: 0x150
-	Parameters: 0
-	Flags: Linked
-*/
 function displayteammessagewaiter() {
   if(!shoulddisplayteammessages()) {
     return;
   }
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  level endon("game_ended");
   self.teammessagequeue = [];
   for (;;) {
     if(self.teammessagequeue.size == 0) {
-      self waittill(# "hash_f0fa2450");
+      self waittill("hash_f0fa2450");
     }
     if(self.teammessagequeue.size > 0) {
       nextnotifydata = self.teammessagequeue[0];
@@ -796,23 +553,14 @@ function displayteammessagewaiter() {
       if(self isempjammed()) {
         continue;
       }
-      self luinotifyevent( & "player_callout", 2, nextnotifydata.message, nextnotifydata.player.entnum);
+      self luinotifyevent(&"player_callout", 2, nextnotifydata.message, nextnotifydata.player.entnum);
     }
     wait(level.teammessage.waittime);
   }
 }
 
-/*
-	Name: displaypopupswaiter
-	Namespace: popups
-	Checksum: 0x928D1EB1
-	Offset: 0x28A8
-	Size: 0x29A
-	Parameters: 0
-	Flags: Linked
-*/
 function displaypopupswaiter() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.ranknotifyqueue = [];
   if(!isdefined(self.pers["challengeNotifyQueue"])) {
     self.pers["challengeNotifyQueue"] = [];
@@ -828,7 +576,7 @@ function displaypopupswaiter() {
       break;
     }
     if(self.startmessagenotifyqueue.size == 0 && self.messagenotifyqueue.size == 0) {
-      self waittill(# "hash_2528173");
+      self waittill("hash_2528173");
     }
     waittillframeend();
     if(!isdefined(level)) {
@@ -867,15 +615,6 @@ function displaypopupswaiter() {
   }
 }
 
-/*
-	Name: milestonenotify
-	Namespace: popups
-	Checksum: 0x7F32B7F5
-	Offset: 0x2B50
-	Size: 0x12A
-	Parameters: 4
-	Flags: None
-*/
 function milestonenotify(index, itemindex, type, tier) {
   level.globalchallenges++;
   if(!isdefined(type)) {
@@ -887,5 +626,5 @@ function milestonenotify(index, itemindex, type, tier) {
   self.pers["challengeNotifyQueue"][size]["index"] = index;
   self.pers["challengeNotifyQueue"][size]["itemIndex"] = itemindex;
   self.pers["challengeNotifyQueue"][size]["type"] = type;
-  self notify(# "hash_2528173");
+  self notify("hash_2528173");
 }

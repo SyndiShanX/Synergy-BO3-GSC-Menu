@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_ffotd.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -10,18 +14,8 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_ffotd;
-
 #namespace zm_zod_ffotd;
 
-/*
-	Name: main_start
-	Namespace: zm_zod_ffotd
-	Checksum: 0x74C57C4D
-	Offset: 0x488
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function main_start() {
   level.var_42792b8b = 1;
   var_aab32ea1 = struct::get("zone_canal_junction", "script_noteworthy");
@@ -41,15 +35,6 @@ function main_start() {
   }
 }
 
-/*
-	Name: main_end
-	Namespace: zm_zod_ffotd
-	Checksum: 0xF1F49EF1
-	Offset: 0x628
-	Size: 0xA54
-	Parameters: 0
-	Flags: Linked
-*/
 function main_end() {
   zm::spawn_life_brush((1296, -1916, 660), 128, 128);
   zm::spawn_life_brush((2497, -5395, 444), 256, 400);
@@ -113,29 +98,11 @@ function main_end() {
   level thread function_e7337b94();
 }
 
-/*
-	Name: function_320b9477
-	Namespace: zm_zod_ffotd
-	Checksum: 0x6C405B91
-	Offset: 0x1088
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_320b9477() {
   level flag::wait_till("connect_start_to_junction");
   self delete();
 }
 
-/*
-	Name: function_2cba29a8
-	Namespace: zm_zod_ffotd
-	Checksum: 0x5340BA65
-	Offset: 0x10D0
-	Size: 0xF4
-	Parameters: 4
-	Flags: Linked
-*/
 function function_2cba29a8(zone, pos, radius, height) {
   if(!isdefined(level.var_e7337b94)) {
     level.var_e7337b94 = [];
@@ -148,15 +115,6 @@ function function_2cba29a8(zone, pos, radius, height) {
   level.var_e7337b94[zone][level.var_e7337b94[zone].size] = zm::spawn_kill_brush(pos, radius, height);
 }
 
-/*
-	Name: function_e7337b94
-	Namespace: zm_zod_ffotd
-	Checksum: 0x2BA9416F
-	Offset: 0x11D0
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e7337b94() {
   level.var_e7337b94 = [];
   function_2cba29a8("canal", (1031, -1726, 450), 128, 160);
@@ -166,15 +124,6 @@ function function_e7337b94() {
   level.player_out_of_playable_area_monitor_callback = & player_out_of_playable_area_monitor_callback;
 }
 
-/*
-	Name: player_out_of_playable_area_monitor_callback
-	Namespace: zm_zod_ffotd
-	Checksum: 0x65A7F7C6
-	Offset: 0x1278
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function player_out_of_playable_area_monitor_callback() {
   if(isdefined(self.kill_brush)) {
     train = level.o_zod_train;

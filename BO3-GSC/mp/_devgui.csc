@@ -1,67 +1,29 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_devgui.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
-
 #namespace mp_devgui;
 
-/*
-	Name: __init__sytem__
-	Namespace: mp_devgui
-	Checksum: 0x9457F723
-	Offset: 0xD8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("mp_devgui", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: mp_devgui
-	Checksum: 0x99EC1590
-	Offset: 0x118
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}
 
-/*
-	Name: remove_mp_contracts_devgui
-	Namespace: mp_devgui
-	Checksum: 0xDBBA9D9C
-	Offset: 0x128
-	Size: 0x4E
-	Parameters: 1
-	Flags: Linked
-*/
 function remove_mp_contracts_devgui(localclientnum) {
-  /#
   if(level.mp_contracts_devgui_added === 1) {
-    /#
     adddebugcommand(localclientnum, "");
-    # /
-      level.mp_contracts_devgui_added = undefined;
+    level.mp_contracts_devgui_added = undefined;
   }
-  # /
 }
 
-/*
-	Name: create_mp_contracts_devgui
-	Namespace: mp_devgui
-	Checksum: 0x2E67B32E
-	Offset: 0x180
-	Size: 0x110
-	Parameters: 1
-	Flags: Linked
-*/
 function create_mp_contracts_devgui(localclientnum) {
-  /#
-  level notify(# "create_mp_contracts_devgui_singleton");
-  level endon(# "create_mp_contracts_devgui_singleton");
+  level notify("create_mp_contracts_devgui_singleton");
+  level endon("create_mp_contracts_devgui_singleton");
   remove_mp_contracts_devgui(localclientnum);
   wait(0.05);
   if(0) {
@@ -78,20 +40,9 @@ function create_mp_contracts_devgui(localclientnum) {
   add_devgui_scheduler(localclientnum);
   level thread watch_devgui();
   level.mp_contracts_devgui_added = 1;
-  # /
 }
 
-/*
-	Name: add_blackjack_contract
-	Namespace: mp_devgui
-	Checksum: 0xA22A1402
-	Offset: 0x298
-	Size: 0x476
-	Parameters: 1
-	Flags: Linked
-*/
 function add_blackjack_contract(localclientnum) {
-  /#
   root = "";
   next_cmd = "";
   add_blackjack_contract_set_count(localclientnum, root, 0);
@@ -136,37 +87,15 @@ function add_blackjack_contract(localclientnum) {
     cmds = cmds + (stat_write_bjc_master + "") + (i == 6 ? 1 : 0);
     add_devgui_cmd(localclientnum, (side_bet_root + "") + i, cmds);
   }
-  # /
 }
 
-/*
-	Name: add_blackjack_contract_set_count
-	Namespace: mp_devgui
-	Checksum: 0x9654F7FE
-	Offset: 0x718
-	Size: 0xAC
-	Parameters: 3
-	Flags: Linked
-*/
 function add_blackjack_contract_set_count(localclientnum, root, contract_count) {
-  /#
   cmds = "" + contract_count;
   item_text = (contract_count == 1 ? "" : "");
   add_devgui_cmd(localclientnum, ((((root + "") + contract_count) + item_text) + "") + contract_count, cmds);
-  # /
 }
 
-/*
-	Name: add_contract_slot
-	Namespace: mp_devgui
-	Checksum: 0x3CF3F061
-	Offset: 0x7D0
-	Size: 0x74C
-	Parameters: 2
-	Flags: Linked
-*/
 function add_contract_slot(localclientnum, slot) {
-  /#
   root = "" + slot;
   add_weekly = 1;
   add_daily = 1;
@@ -283,20 +212,9 @@ function add_contract_slot(localclientnum, slot) {
   cmds = cmds + next_cmd;
   cmds = cmds + (stat_write + "");
   add_devgui_cmd(localclientnum, root + "", cmds);
-  # /
 }
 
-/*
-	Name: add_devgui_scheduler
-	Namespace: mp_devgui
-	Checksum: 0x8074706
-	Offset: 0xF28
-	Size: 0x2C4
-	Parameters: 1
-	Flags: Linked
-*/
 function add_devgui_scheduler(localclientnum) {
-  /#
   root = "";
   root_daily = root + "";
   add_contract_scheduler_daily_duration(localclientnum, root_daily, "", 86400);
@@ -318,94 +236,39 @@ function add_devgui_scheduler(localclientnum) {
   add_watched_devgui_cmd(localclientnum, root + "", cmds);
   cmds = "";
   add_watched_devgui_cmd(localclientnum, root + "", cmds);
-  # /
 }
 
-/*
-	Name: add_watched_devgui_cmd
-	Namespace: mp_devgui
-	Checksum: 0xE607CA0A
-	Offset: 0x11F8
-	Size: 0x74
-	Parameters: 3
-	Flags: Linked
-*/
 function add_watched_devgui_cmd(localclientnum, root, cmds) {
-  /#
   next_cmd = "";
   cmds = cmds + next_cmd;
   cmds = cmds + "";
   add_devgui_cmd(localclientnum, root, cmds);
-  # /
 }
 
-/*
-	Name: add_contract_scheduler_daily_duration
-	Namespace: mp_devgui
-	Checksum: 0xD2411B73
-	Offset: 0x1278
-	Size: 0xBC
-	Parameters: 4
-	Flags: Linked
-*/
 function add_contract_scheduler_daily_duration(localclientnum, root, label, daily_duration) {
-  /#
   next_cmd = "";
   cmds = "" + daily_duration;
   cmds = cmds + next_cmd;
   cmds = cmds + "";
   cmds = wrap_dvarconfig_cmds(cmds);
   add_devgui_cmd(localclientnum, root + label, cmds);
-  # /
 }
 
-/*
-	Name: wrap_dvarconfig_cmds
-	Namespace: mp_devgui
-	Checksum: 0xC954FA29
-	Offset: 0x1340
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function wrap_dvarconfig_cmds(cmds) {
-  /#
   next_cmd = "";
   newcmds = "";
   newcmds = newcmds + next_cmd;
   newcmds = newcmds + cmds;
   return newcmds;
-  # /
 }
 
-/*
-	Name: add_devgui_cmd
-	Namespace: mp_devgui
-	Checksum: 0xB16161D2
-	Offset: 0x13A8
-	Size: 0x64
-	Parameters: 3
-	Flags: Linked
-*/
 function add_devgui_cmd(localclientnum, menu_path, cmds) {
   /# /
   #
   adddebugcommand(localclientnum, ((("" + menu_path) + "") + cmds) + "");
-  # /
-    # /
 }
 
-/*
-	Name: calculate_schedule_start_time
-	Namespace: mp_devgui
-	Checksum: 0x3827E69A
-	Offset: 0x1418
-	Size: 0xE2
-	Parameters: 1
-	Flags: Linked
-*/
 function calculate_schedule_start_time(ref_time) {
-  /#
   new_start_time = ref_time;
   daily_duration = getdvarint("", 60);
   weekly_duration = daily_duration * 7;
@@ -414,22 +277,11 @@ function calculate_schedule_start_time(ref_time) {
   half_max_multiple = int(max_multiple / 2);
   new_start_time = new_start_time - (half_max_multiple * schedule_duration);
   return new_start_time;
-  # /
 }
 
-/*
-	Name: watch_devgui
-	Namespace: mp_devgui
-	Checksum: 0x592BE4F0
-	Offset: 0x1508
-	Size: 0x298
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_devgui() {
-  /#
-  level notify(# "watch_devgui_client_mp_singleton");
-  level endon(# "watch_devgui_client_mp_singleton");
+  level notify("watch_devgui_client_mp_singleton");
+  level endon("watch_devgui_client_mp_singleton");
   while (true) {
     wait(0.1);
     if(!dvar_has_value("")) {
@@ -463,68 +315,23 @@ function watch_devgui() {
     }
     clear_dvar("");
   }
-  # /
 }
 
-/*
-	Name: update_contract_start_time
-	Namespace: mp_devgui
-	Checksum: 0x69A3BF23
-	Offset: 0x17A8
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function update_contract_start_time(delta_days) {
-  /#
   setdvar("", 0);
   start_time = get_schedule_start_time();
   daily_duration = getdvarint("", 60);
   setdvar("", start_time + (daily_duration * delta_days));
-  # /
 }
 
-/*
-	Name: dvar_has_value
-	Namespace: mp_devgui
-	Checksum: 0xE52AA471
-	Offset: 0x1850
-	Size: 0x2E
-	Parameters: 1
-	Flags: Linked
-*/
 function dvar_has_value(dvar_name) {
-  /#
   return getdvarint(dvar_name, 0) != 0;
-  # /
 }
 
-/*
-	Name: clear_dvar
-	Namespace: mp_devgui
-	Checksum: 0x876F9ABF
-	Offset: 0x1888
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function clear_dvar(dvar_name) {
-  /#
   setdvar(dvar_name, 0);
-  # /
 }
 
-/*
-	Name: get_schedule_start_time
-	Namespace: mp_devgui
-	Checksum: 0x305AB4BF
-	Offset: 0x18C0
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked
-*/
 function get_schedule_start_time() {
-  /#
   return getdvarint("", 1463418000);
-  # /
 }

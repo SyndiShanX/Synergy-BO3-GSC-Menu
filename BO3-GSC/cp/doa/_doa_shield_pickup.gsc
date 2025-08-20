@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_shield_pickup.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\doa\_doa_dev;
 #using scripts\cp\doa\_doa_fx;
@@ -10,22 +14,12 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_6df66aa5;
 
-/*
-	Name: boxingpickupupdate
-	Namespace: namespace_6df66aa5
-	Checksum: 0x3CA3ADA0
-	Offset: 0x5B0
-	Size: 0x514
-	Parameters: 0
-	Flags: Linked
-*/
 function boxingpickupupdate() {
   note = doa_utility::function_2ccf4b82("end_boxing_pickup");
   self endon(note);
-  self notify(# "hash_3924e234");
+  self notify("hash_3924e234");
   org = spawn("script_model", self.origin);
   org.targetname = "boxingPickupUpdate";
   org.angles = (0, randomint(180), 0);
@@ -60,35 +54,17 @@ function boxingpickupupdate() {
   self thread function_3c5a0d64(org, note, undefined, "zmb_pwup_boxing_end");
   self thread function_6143f535(org, note);
   org thread function_121caed2(self);
-  self waittill(# "hash_eda7663d");
+  self waittill("hash_eda7663d");
   leftglove setmodel("zombietron_boxing_gloves_expiring_lt");
   rightglove setmodel("zombietron_boxing_gloves_expiring_rt");
 }
 
-/*
-	Name: function_fa8666fa
-	Namespace: namespace_6df66aa5
-	Checksum: 0x7E60F24B
-	Offset: 0xAD0
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fa8666fa() {
   self thread namespace_eaa992c::function_285a2999("boxing_stars");
-  self waittill(# "actor_corpse", corpse);
+  self waittill("actor_corpse", corpse);
   corpse thread namespace_eaa992c::function_285a2999("boxing_stars");
 }
 
-/*
-	Name: barrelupdate
-	Namespace: namespace_6df66aa5
-	Checksum: 0x66A9AB17
-	Offset: 0xB38
-	Size: 0x4E0
-	Parameters: 0
-	Flags: Linked
-*/
 function barrelupdate() {
   note = doa_utility::function_2ccf4b82("end_barrel_pickup");
   self endon(note);
@@ -132,19 +108,10 @@ function barrelupdate() {
   }
 }
 
-/*
-	Name: function_80bf1f40
-	Namespace: namespace_6df66aa5
-	Checksum: 0xE52DF30F
-	Offset: 0x1020
-	Size: 0x270
-	Parameters: 6
-	Flags: Linked, Private
-*/
 function private function_80bf1f40(player, note, sfx, var_5e61e69d, mod = "MOD_CRUSH", var_aa78744e) {
   player endon(note);
   while (true) {
-    self waittill(# "trigger", guy);
+    self waittill("trigger", guy);
     if(isplayer(guy)) {
       continue;
     }
@@ -175,25 +142,16 @@ function private function_80bf1f40(player, note, sfx, var_5e61e69d, mod = "MOD_C
   }
 }
 
-/*
-	Name: function_3c5a0d64
-	Namespace: namespace_6df66aa5
-	Checksum: 0xAEEE4FBC
-	Offset: 0x1298
-	Size: 0x11E
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private function_3c5a0d64(org, note, var_3587f608, var_eaac4dd5) {
   self endon(note);
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(isdefined(var_3587f608)) {
     self playloopsound(var_3587f608);
   }
   level doa_utility::function_c8f4d63a();
   time = self doa_utility::function_1ded48e6(level.doa.rules.var_f53cdb6e);
   wait(time - 3);
-  self notify(# "hash_eda7663d");
+  self notify("hash_eda7663d");
   wait(3);
   if(isdefined(var_3587f608)) {
     self stoploopsound(0.5);
@@ -204,18 +162,9 @@ function private function_3c5a0d64(org, note, var_3587f608, var_eaac4dd5) {
   self notify(note);
 }
 
-/*
-	Name: function_121caed2
-	Namespace: namespace_6df66aa5
-	Checksum: 0x5DB8301B
-	Offset: 0x13C0
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_121caed2(player) {
-  self endon(# "death");
-  player waittill(# "disconnect");
+  self endon("death");
+  player waittill("disconnect");
   if(isdefined(self.trigger1)) {
     self.trigger1 delete();
   }
@@ -252,15 +201,6 @@ function private function_121caed2(player) {
   }
 }
 
-/*
-	Name: function_6143f535
-	Namespace: namespace_6df66aa5
-	Checksum: 0xB745FF56
-	Offset: 0x15A8
-	Size: 0x564
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_6143f535(org, note) {
   self util::waittill_any(note, "player_died", "kill_shield", "doa_playerVehiclePickup", "kill_duplicate_shields", "disconnect");
   if(isdefined(self)) {
@@ -329,17 +269,8 @@ function private function_6143f535(org, note) {
   }
 }
 
-/*
-	Name: function_a0a646c2
-	Namespace: namespace_6df66aa5
-	Checksum: 0x6D81E761
-	Offset: 0x1B18
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_a0a646c2() {
-  self endon(# "death");
+  self endon("death");
   self.doa.stunned = 1;
   self thread namespace_eaa992c::function_285a2999("stunbear_affected");
   wait(level.doa.rules.var_83dda8f2);
@@ -347,21 +278,12 @@ function private function_a0a646c2() {
   self thread namespace_eaa992c::turnofffx("stunbear_affected");
 }
 
-/*
-	Name: function_5f0b5579
-	Namespace: namespace_6df66aa5
-	Checksum: 0x329A811A
-	Offset: 0x1BB0
-	Size: 0x138
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_5f0b5579(player) {
-  player endon(# "hash_792240f4");
-  player endon(# "disconnect");
-  self endon(# "death");
+  player endon("hash_792240f4");
+  player endon("disconnect");
+  self endon("death");
   while (true) {
-    self waittill(# "trigger", guy);
+    self waittill("trigger", guy);
     if(isdefined(guy.var_d538832c) && guy.var_d538832c) {
       continue;
     }
@@ -377,40 +299,22 @@ function private function_5f0b5579(player) {
   }
 }
 
-/*
-	Name: function_813e9dbd
-	Namespace: namespace_6df66aa5
-	Checksum: 0xC083A8AC
-	Offset: 0x1CF0
-	Size: 0xB2
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_813e9dbd() {
-  self endon(# "hash_792240f4");
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("hash_792240f4");
+  self endon("disconnect");
+  self endon("death");
   level doa_utility::function_c8f4d63a();
   self.doa.var_1a9bbba7 = gettime() + (self doa_utility::function_1ded48e6(level.doa.rules.var_4f139db6) * 1000);
   while (gettime() < self.doa.var_1a9bbba7) {
     wait(1);
   }
-  self notify(# "hash_792240f4");
+  self notify("hash_792240f4");
 }
 
-/*
-	Name: function_e6abac68
-	Namespace: namespace_6df66aa5
-	Checksum: 0x9FDF37FF
-	Offset: 0x1DB0
-	Size: 0x144
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_e6abac68(trigger) {
   self util::waittill_any("end_teddybear_stun", "disconnect", "player_died", "kill_shield", "disconnect");
   if(isdefined(self)) {
-    self notify(# "hash_792240f4");
+    self notify("hash_792240f4");
     self.doa.var_908e6b76 = undefined;
     self thread namespace_eaa992c::turnofffx("stunbear");
     self thread namespace_eaa992c::function_285a2999("stunbear_fade");
@@ -427,22 +331,13 @@ function private function_e6abac68(trigger) {
   }
 }
 
-/*
-	Name: function_affe0c28
-	Namespace: namespace_6df66aa5
-	Checksum: 0x1671988F
-	Offset: 0x1F00
-	Size: 0x1E4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_affe0c28() {
   if(isdefined(self.doa.var_908e6b76) && self.doa.var_908e6b76) {
     self.doa.var_1a9bbba7 = gettime() + (self doa_utility::function_1ded48e6(level.doa.rules.var_4f139db6) * 1000);
     return;
   }
-  self notify(# "hash_792240f4");
-  self endon(# "hash_792240f4");
+  self notify("hash_792240f4");
+  self endon("hash_792240f4");
   self.doa.var_908e6b76 = 1;
   self.doa.var_21520b4e = spawn("trigger_radius", self.origin, 9, 130, 50);
   self.doa.var_21520b4e.targetname = "stunBear";
@@ -455,15 +350,6 @@ function function_affe0c28() {
   self thread function_e6abac68(self.doa.var_21520b4e);
 }
 
-/*
-	Name: function_45123d3c
-	Namespace: namespace_6df66aa5
-	Checksum: 0x12A727C1
-	Offset: 0x20F0
-	Size: 0x1EA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_45123d3c(player) {
   def = doa_pickups::function_bac08508(19);
   blade = spawn("script_model", player.origin + (vectorscale((0, -1, 0), 70)));
@@ -481,15 +367,6 @@ function function_45123d3c(player) {
   self.triggers[self.triggers.size] = trigger;
 }
 
-/*
-	Name: sawbladeupdate
-	Namespace: namespace_6df66aa5
-	Checksum: 0xBDC27F3B
-	Offset: 0x22E8
-	Size: 0x228
-	Parameters: 0
-	Flags: Linked
-*/
 function sawbladeupdate() {
   note = doa_utility::function_2ccf4b82("end_sawblad_pickup");
   self endon(note);
@@ -519,20 +396,11 @@ function sawbladeupdate() {
   }
 }
 
-/*
-	Name: function_92374630
-	Namespace: namespace_6df66aa5
-	Checksum: 0xD9BC99F7
-	Offset: 0x2518
-	Size: 0x198
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_92374630(player) {
-  player endon(# "hash_1d724bbf");
-  player endon(# "disconnect");
+  player endon("hash_1d724bbf");
+  player endon("disconnect");
   while (true) {
-    self waittill(# "trigger", guy);
+    self waittill("trigger", guy);
     if(isplayer(guy)) {
       continue;
     }
@@ -554,39 +422,19 @@ function private function_92374630(player) {
   }
 }
 
-/*
-	Name: function_f797c54
-	Namespace: namespace_6df66aa5
-	Checksum: 0x6491F1AD
-	Offset: 0x26B8
-	Size: 0xE6
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_f797c54(org, note) {
   self endon(note);
-  self endon(# "disconnect");
+  self endon("disconnect");
   level doa_utility::function_c8f4d63a();
   time_left = gettime() + (self doa_utility::function_1ded48e6(level.doa.rules.var_fb13151a) * 1000);
   while (gettime() < time_left) {
     wait(0.05);
-    /#
-    # /
   }
   self stoploopsound(0.5);
   self thread namespace_1a381543::function_90118d8c("zmb_pwup_blade_end");
   self notify(note);
 }
 
-/*
-	Name: function_595842c5
-	Namespace: namespace_6df66aa5
-	Checksum: 0x228DFCF4
-	Offset: 0x27A8
-	Size: 0x22A
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_595842c5(org, note) {
   self util::waittill_any(note, "player_died", "kill_shield", "disconnect");
   if(isdefined(self)) {
@@ -612,15 +460,6 @@ function private function_595842c5(org, note) {
   }
 }
 
-/*
-	Name: function_64bb8338
-	Namespace: namespace_6df66aa5
-	Checksum: 0xB1DE8E0
-	Offset: 0x29E0
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_64bb8338(orb) {
   msg = self util::waittill_any_return("player_died", "magnet_update", "magnet_expired", "disconnect", "kill_shield");
   if(isdefined(msg) && msg == "magnet_update") {
@@ -637,20 +476,11 @@ function function_64bb8338(orb) {
   orb delete();
 }
 
-/*
-	Name: function_2016b381
-	Namespace: namespace_6df66aa5
-	Checksum: 0x74D19B07
-	Offset: 0x2B18
-	Size: 0x1B2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2016b381(time) {
-  self notify(# "hash_2016b381");
-  self endon(# "hash_2016b381");
-  self endon(# "player_died");
-  self endon(# "disconnect");
+  self notify("hash_2016b381");
+  self endon("hash_2016b381");
+  self endon("player_died");
+  self endon("disconnect");
   orb = spawn("script_model", self.origin);
   orb.targetname = "magnet_update";
   orb setmodel("tag_origin");
@@ -665,6 +495,6 @@ function function_2016b381(time) {
   } else {
     wait(self doa_utility::function_1ded48e6(level.doa.rules.var_2a59d58f));
   }
-  self notify(# "hash_f327cf19");
+  self notify("hash_f327cf19");
   self.doa.var_3df27425 = undefined;
 }

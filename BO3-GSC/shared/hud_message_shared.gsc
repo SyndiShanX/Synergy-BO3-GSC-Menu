@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\hud_message_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\hud_message_shared;
@@ -6,58 +10,21 @@
 #using scripts\shared\music_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace hud_message;
 
-/*
-	Name: __init__sytem__
-	Namespace: hud_message
-	Checksum: 0x3506DA05
-	Offset: 0x210
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("hud_message", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: hud_message
-	Checksum: 0x1BB5DB15
-	Offset: 0x250
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
 }
 
-/*
-	Name: init
-	Namespace: hud_message
-	Checksum: 0x87DBBE5E
-	Offset: 0x280
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   callback::on_connect( & on_player_connect);
   callback::on_disconnect( & on_player_disconnect);
 }
 
-/*
-	Name: on_player_connect
-	Namespace: hud_message
-	Checksum: 0x7311A22B
-	Offset: 0x2D0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   self thread hintmessagedeaththink();
   self thread lowermessagethink();
@@ -65,15 +32,6 @@ function on_player_connect() {
   self thread initcustomgametypeheader();
 }
 
-/*
-	Name: on_player_disconnect
-	Namespace: hud_message
-	Checksum: 0x49C5D77
-	Offset: 0x340
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_disconnect() {
   if(isdefined(self.customgametypeheader)) {
     self.customgametypeheader destroy();
@@ -83,15 +41,6 @@ function on_player_disconnect() {
   }
 }
 
-/*
-	Name: initcustomgametypeheader
-	Namespace: hud_message
-	Checksum: 0xE5E223EC
-	Offset: 0x3A0
-	Size: 0x1D4
-	Parameters: 0
-	Flags: Linked
-*/
 function initcustomgametypeheader() {
   font = "default";
   titlesize = 2.5;
@@ -113,15 +62,6 @@ function initcustomgametypeheader() {
   self.customgametypesubheader.alpha = 1;
 }
 
-/*
-	Name: hintmessage
-	Namespace: hud_message
-	Checksum: 0x7D1C6755
-	Offset: 0x580
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function hintmessage(hinttext, duration) {
   notifydata = spawnstruct();
   notifydata.notifytext = hinttext;
@@ -129,15 +69,6 @@ function hintmessage(hinttext, duration) {
   notifymessage(notifydata);
 }
 
-/*
-	Name: hintmessageplayers
-	Namespace: hud_message
-	Checksum: 0x325610D
-	Offset: 0x5F8
-	Size: 0xAE
-	Parameters: 3
-	Flags: None
-*/
 function hintmessageplayers(players, hinttext, duration) {
   notifydata = spawnstruct();
   notifydata.notifytext = hinttext;
@@ -147,29 +78,11 @@ function hintmessageplayers(players, hinttext, duration) {
   }
 }
 
-/*
-	Name: showinitialfactionpopup
-	Namespace: hud_message
-	Checksum: 0x4286D2D8
-	Offset: 0x6B0
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function showinitialfactionpopup(team) {
-  self luinotifyevent( & "faction_popup", 1, game["strings"][team + "_name"]);
+  self luinotifyevent(&"faction_popup", 1, game["strings"][team + "_name"]);
   oldnotifymessage(undefined, undefined, undefined, undefined);
 }
 
-/*
-	Name: initnotifymessage
-	Namespace: hud_message
-	Checksum: 0xC8ABAD1D
-	Offset: 0x718
-	Size: 0x4D0
-	Parameters: 0
-	Flags: Linked
-*/
 function initnotifymessage() {
   if(!sessionmodeiszombiesgame()) {
     if(self issplitscreen()) {
@@ -242,15 +155,6 @@ function initnotifymessage() {
   self.notifyqueue = [];
 }
 
-/*
-	Name: oldnotifymessage
-	Namespace: hud_message
-	Checksum: 0xB6EB90C5
-	Offset: 0xBF0
-	Size: 0xF6
-	Parameters: 6
-	Flags: Linked
-*/
 function oldnotifymessage(titletext, notifytext, iconname, glowcolor, sound, duration) {
   if(level.wagermatch && !level.teambased) {
     return;
@@ -262,37 +166,19 @@ function oldnotifymessage(titletext, notifytext, iconname, glowcolor, sound, dur
   notifydata.sound = sound;
   notifydata.duration = duration;
   self.startmessagenotifyqueue[self.startmessagenotifyqueue.size] = notifydata;
-  self notify(# "hash_2528173");
+  self notify("hash_2528173");
 }
 
-/*
-	Name: notifymessage
-	Namespace: hud_message
-	Checksum: 0xABA1D943
-	Offset: 0xCF0
-	Size: 0x5E
-	Parameters: 1
-	Flags: Linked
-*/
 function notifymessage(notifydata) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(!isdefined(self.messagenotifyqueue)) {
     self.messagenotifyqueue = [];
   }
   self.messagenotifyqueue[self.messagenotifyqueue.size] = notifydata;
-  self notify(# "hash_2528173");
+  self notify("hash_2528173");
 }
 
-/*
-	Name: playnotifyloop
-	Namespace: hud_message
-	Checksum: 0xE940172F
-	Offset: 0xD58
-	Size: 0x9C
-	Parameters: 1
-	Flags: None
-*/
 function playnotifyloop(duration) {
   playnotifyloop = spawn("script_origin", (0, 0, 0));
   playnotifyloop playloopsound("uin_notify_data_loop");
@@ -304,20 +190,11 @@ function playnotifyloop(duration) {
   playnotifyloop delete();
 }
 
-/*
-	Name: shownotifymessage
-	Namespace: hud_message
-	Checksum: 0x859CACCE
-	Offset: 0xE00
-	Size: 0x79C
-	Parameters: 2
-	Flags: Linked
-*/
 function shownotifymessage(notifydata, duration) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.doingnotify = 1;
   waitrequirevisibility(0);
-  self notify(# "notifymessagebegin", duration);
+  self notify("notifymessagebegin", duration);
   self thread resetoncancel();
   if(isdefined(notifydata.sound)) {
     self playlocalsound(notifydata.sound);
@@ -416,19 +293,10 @@ function shownotifymessage(notifydata, duration) {
   } else {
     waitrequirevisibility(duration);
   }
-  self notify(# "notifymessagedone");
+  self notify("notifymessagedone");
   self.doingnotify = 0;
 }
 
-/*
-	Name: waitrequirevisibility
-	Namespace: hud_message
-	Checksum: 0xFFDC977D
-	Offset: 0x15A8
-	Size: 0x7A
-	Parameters: 1
-	Flags: Linked
-*/
 function waitrequirevisibility(waittime) {
   interval = 0.05;
   while (!self canreadtext()) {
@@ -442,15 +310,6 @@ function waitrequirevisibility(waittime) {
   }
 }
 
-/*
-	Name: canreadtext
-	Namespace: hud_message
-	Checksum: 0xC8D94473
-	Offset: 0x1630
-	Size: 0x26
-	Parameters: 0
-	Flags: Linked
-*/
 function canreadtext() {
   if(self util::is_flashbanged()) {
     return false;
@@ -458,50 +317,23 @@ function canreadtext() {
   return true;
 }
 
-/*
-	Name: resetondeath
-	Namespace: hud_message
-	Checksum: 0x93939159
-	Offset: 0x1660
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function resetondeath() {
-  self endon(# "notifymessagedone");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
-  self waittill(# "death");
+  self endon("notifymessagedone");
+  self endon("disconnect");
+  level endon("game_ended");
+  self waittill("death");
   resetnotify();
 }
 
-/*
-	Name: resetoncancel
-	Namespace: hud_message
-	Checksum: 0xF8EBD61F
-	Offset: 0x16B0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function resetoncancel() {
-  self notify(# "resetoncancel");
-  self endon(# "resetoncancel");
-  self endon(# "notifymessagedone");
-  self endon(# "disconnect");
-  level waittill(# "cancel_notify");
+  self notify("resetoncancel");
+  self endon("resetoncancel");
+  self endon("notifymessagedone");
+  self endon("disconnect");
+  level waittill("cancel_notify");
   resetnotify();
 }
 
-/*
-	Name: resetnotify
-	Namespace: hud_message
-	Checksum: 0x43825907
-	Offset: 0x1710
-	Size: 0x60
-	Parameters: 0
-	Flags: Linked
-*/
 function resetnotify() {
   self.notifytitle.alpha = 0;
   self.notifytext.alpha = 0;
@@ -510,36 +342,18 @@ function resetnotify() {
   self.doingnotify = 0;
 }
 
-/*
-	Name: hintmessagedeaththink
-	Namespace: hud_message
-	Checksum: 0x8978C336
-	Offset: 0x1778
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function hintmessagedeaththink() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   for (;;) {
-    self waittill(# "death");
+    self waittill("death");
     if(isdefined(self.hintmessage)) {
       self.hintmessage hud::destroyelem();
     }
   }
 }
 
-/*
-	Name: lowermessagethink
-	Namespace: hud_message
-	Checksum: 0x2CD85EB0
-	Offset: 0x17C8
-	Size: 0x1C8
-	Parameters: 0
-	Flags: Linked
-*/
 function lowermessagethink() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   messagetexty = level.lowertexty;
   if(self issplitscreen()) {
     messagetexty = level.lowertexty - 50;
@@ -559,15 +373,6 @@ function lowermessagethink() {
   self.lowertimer.archived = 0;
 }
 
-/*
-	Name: setmatchscorehudelemforteam
-	Namespace: hud_message
-	Checksum: 0x4D0387A1
-	Offset: 0x1998
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function setmatchscorehudelemforteam(team) {
   if(level.cumulativeroundscores) {
     self setvalue(getteamscore(team));
@@ -576,15 +381,6 @@ function setmatchscorehudelemforteam(team) {
   }
 }
 
-/*
-	Name: isintop
-	Namespace: hud_message
-	Checksum: 0x4C8461C3
-	Offset: 0x1A10
-	Size: 0x66
-	Parameters: 2
-	Flags: None
-*/
 function isintop(players, topn) {
   for (i = 0; i < topn; i++) {
     if(isdefined(players[i]) && self == players[i]) {
@@ -594,50 +390,23 @@ function isintop(players, topn) {
   return false;
 }
 
-/*
-	Name: destroyhudelem
-	Namespace: hud_message
-	Checksum: 0x3D8C1855
-	Offset: 0x1A80
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function destroyhudelem(hudelem) {
   if(isdefined(hudelem)) {
     hudelem hud::destroyelem();
   }
 }
 
-/*
-	Name: setshoutcasterwaitingmessage
-	Namespace: hud_message
-	Checksum: 0xEF39D67C
-	Offset: 0x1AB8
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function setshoutcasterwaitingmessage() {
   if(!isdefined(self.waitingforplayerstext)) {
     self.waitingforplayerstext = hud::createfontstring("objective", 2.5);
     self.waitingforplayerstext hud::setpoint("CENTER", "CENTER", 0, -80);
     self.waitingforplayerstext.sort = 1001;
-    self.waitingforplayerstext settext( & "MP_WAITING_FOR_PLAYERS_SHOUTCASTER");
+    self.waitingforplayerstext settext(&"MP_WAITING_FOR_PLAYERS_SHOUTCASTER");
     self.waitingforplayerstext.foreground = 0;
     self.waitingforplayerstext.hidewheninmenu = 1;
   }
 }
 
-/*
-	Name: clearshoutcasterwaitingmessage
-	Namespace: hud_message
-	Checksum: 0xFC203B0E
-	Offset: 0x1B90
-	Size: 0x36
-	Parameters: 0
-	Flags: Linked
-*/
 function clearshoutcasterwaitingmessage() {
   if(isdefined(self.waitingforplayerstext)) {
     destroyhudelem(self.waitingforplayerstext);
@@ -645,15 +414,6 @@ function clearshoutcasterwaitingmessage() {
   }
 }
 
-/*
-	Name: waittillnotifiesdone
-	Namespace: hud_message
-	Checksum: 0x997D5D4F
-	Offset: 0x1BD0
-	Size: 0xEE
-	Parameters: 0
-	Flags: None
-*/
 function waittillnotifiesdone() {
   pendingnotifies = 1;
   timewaited = 0;

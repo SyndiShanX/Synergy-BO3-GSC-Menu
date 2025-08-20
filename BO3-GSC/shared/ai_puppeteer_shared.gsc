@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai_puppeteer_shared.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_utility;
 #using scripts\shared\ai\systems\init;
 #using scripts\shared\array_shared;
@@ -6,75 +10,33 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace ai_puppeteer;
 
-/*
-	Name: __init__sytem__
-	Namespace: ai_puppeteer
-	Checksum: 0x2FEB7CC4
-	Offset: 0x178
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("ai_puppeteer", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: ai_puppeteer
-	Checksum: 0xF2700EB1
-	Offset: 0x1B8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
-  /#
   level thread ai_puppeteer_think();
-  # /
 }
 
-/*
-	Name: ai_puppeteer_think
-	Namespace: ai_puppeteer
-	Checksum: 0x7D4EFA32
-	Offset: 0x1E0
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_puppeteer_think() {
-  /#
   while (true) {
     if(getdvarstring("") == "" && (!isdefined(level.ai_puppeteer_active) || level.ai_puppeteer_active == 0)) {
       level.ai_puppeteer_active = 1;
-      level notify(# "hash_23dbb5b");
+      level notify("hash_23dbb5b");
       adddebugcommand("");
       thread ai_puppeteer();
     } else if(getdvarstring("") == "" && isdefined(level.ai_puppeteer_active) && level.ai_puppeteer_active == 1) {
       level.ai_puppeteer_active = 0;
       adddebugcommand("");
-      level notify(# "hash_23dbb5b");
+      level notify("hash_23dbb5b");
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: ai_puppeteer
-	Namespace: ai_puppeteer
-	Checksum: 0x7D23B61A
-	Offset: 0x310
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_puppeteer() {
-  /#
   player = undefined;
   while (!isplayer(player)) {
     player = getplayers()[0];
@@ -85,29 +47,18 @@ function ai_puppeteer() {
   player thread ai_puppet_cursor_tracker();
   player thread ai_puppet_manager();
   player.ignoreme = 1;
-  level waittill(# "hash_23dbb5b");
+  level waittill("hash_23dbb5b");
   player.ignoreme = 0;
   ai_puppet_release(1);
   if(isdefined(level.ai_puppet_target)) {
     level.ai_puppet_target delete();
   }
   ai_puppeteer_destroy_hud();
-  # /
 }
 
-/*
-	Name: ai_puppet_manager
-	Namespace: ai_puppeteer
-	Checksum: 0x83018ECE
-	Offset: 0x440
-	Size: 0xBD0
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_puppet_manager() {
-  /#
-  level endon(# "hash_23dbb5b");
-  self endon(# "death");
+  level endon("hash_23dbb5b");
+  self endon("death");
   while (true) {
     if(isdefined(level.playercursor[""]) && isdefined(level.ai_puppet) && isdefined(level.ai_puppet.debuglookatenabled) && level.ai_puppet.debuglookatenabled == 1) {
       level.ai_puppet lookatpos(level.playercursor[""]);
@@ -254,39 +205,17 @@ function ai_puppet_manager() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: ai_puppet_set
-	Namespace: ai_puppeteer
-	Checksum: 0xD212E734
-	Offset: 0x1018
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_puppet_set() {
-  /#
   level.ai_puppet = level.playercursorai;
   level.ai_puppet.ispuppet = 1;
   level.ai_puppet.old_goalradius = level.ai_puppet.goalradius;
   level.ai_puppet.goalradius = 16;
   level.ai_puppet stopanimscripted();
-  # /
 }
 
-/*
-	Name: ai_puppet_release
-	Namespace: ai_puppeteer
-	Checksum: 0xABA40A3B
-	Offset: 0x10A0
-	Size: 0x7E
-	Parameters: 1
-	Flags: Linked
-*/
 function ai_puppet_release(restore) {
-  /#
   if(isdefined(level.ai_puppet)) {
     if(restore) {
       level.ai_puppet.goalradius = level.ai_puppet.old_goalradius;
@@ -295,22 +224,11 @@ function ai_puppet_release(restore) {
     }
     level.ai_puppet = undefined;
   }
-  # /
 }
 
-/*
-	Name: ai_puppet_cursor_tracker
-	Namespace: ai_puppeteer
-	Checksum: 0xD09280A4
-	Offset: 0x1128
-	Size: 0x2D0
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_puppet_cursor_tracker() {
-  /#
-  level endon(# "hash_23dbb5b");
-  self endon(# "death");
+  level endon("hash_23dbb5b");
+  self endon("death");
   while (true) {
     forward = anglestoforward(self getplayerangles());
     forward_vector = vectorscale(forward, 4000);
@@ -344,18 +262,8 @@ function ai_puppet_cursor_tracker() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: ai_puppeteer_create_hud
-	Namespace: ai_puppeteer
-	Checksum: 0x578FD6BB
-	Offset: 0x1400
-	Size: 0x3AC
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_puppeteer_create_hud() {
   /# /
   #
@@ -399,21 +307,9 @@ function ai_puppeteer_create_hud() {
   level.puppeteer_hud_lookat settext("");
   level.puppeteer_hud_shoot settext("");
   level.puppeteer_hud_teleport settext("");
-  # /
-    # /
 }
 
-/*
-	Name: ai_puppeteer_destroy_hud
-	Namespace: ai_puppeteer
-	Checksum: 0x400AB25A
-	Offset: 0x17B8
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_puppeteer_destroy_hud() {
-  /#
   if(isdefined(level.puppeteer_hud_select)) {
     level.puppeteer_hud_select destroy();
   }
@@ -426,20 +322,9 @@ function ai_puppeteer_destroy_hud() {
   if(isdefined(level.puppeteer_hud_shoot)) {
     level.puppeteer_hud_shoot destroy();
   }
-  # /
 }
 
-/*
-	Name: ai_puppeteer_render_point
-	Namespace: ai_puppeteer
-	Checksum: 0x3CAE6BCB
-	Offset: 0x1868
-	Size: 0x164
-	Parameters: 4
-	Flags: Linked
-*/
 function ai_puppeteer_render_point(point, normal, forward, color) {
-  /#
   surface_vector = vectorcross(forward, normal);
   surface_vector = vectornormalize(surface_vector);
   line(point, point + vectorscale(surface_vector, 5), color, 1, 1);
@@ -448,58 +333,25 @@ function ai_puppeteer_render_point(point, normal, forward, color) {
   surface_vector = vectornormalize(surface_vector);
   line(point, point + vectorscale(surface_vector, 5), color, 1, 1);
   line(point, point + (vectorscale(surface_vector, -5)), color, 1, 1);
-  # /
 }
 
-/*
-	Name: ai_puppeteer_render_node
-	Namespace: ai_puppeteer
-	Checksum: 0x69B4D232
-	Offset: 0x19D8
-	Size: 0x124
-	Parameters: 2
-	Flags: Linked
-*/
 function ai_puppeteer_render_node(node, color) {
-  /#
   print3d(node.origin, node.type, color, 1, 0.35);
   box(node.origin, vectorscale((-1, -1, 0), 16), vectorscale((1, 1, 1), 16), node.angles[1], color, 1, 1);
   nodeforward = anglestoforward(node.angles);
   nodeforward = vectorscale(nodeforward, 8);
   line(node.origin, node.origin + nodeforward, color, 1, 1);
-  # /
 }
 
-/*
-	Name: ai_puppeteer_render_ai
-	Namespace: ai_puppeteer
-	Checksum: 0xEEF902B
-	Offset: 0x1B08
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function ai_puppeteer_render_ai(ai, color) {
-  /#
   circle(ai.goalpos + (0, 0, 1), ai.goalradius, color, 0, 1);
   circle(ai.origin + (0, 0, 1), ai getpathfindingradius(), (1, 0, 0), 0, 1);
   line(ai.goalpos, ai.origin, color, 1, 1);
-  # /
 }
 
-/*
-	Name: ai_puppeteer_highlight_point
-	Namespace: ai_puppeteer
-	Checksum: 0x357DBADB
-	Offset: 0x1BE0
-	Size: 0xC8
-	Parameters: 4
-	Flags: Linked
-*/
 function ai_puppeteer_highlight_point(point, normal, forward, color) {
-  /#
-  level endon(# "hash_23dbb5b");
-  self endon(# "death");
+  level endon("hash_23dbb5b");
+  self endon("death");
   level.ai_puppet_highlighting = 1;
   timer = 0;
   while (timer < 0.7) {
@@ -508,22 +360,11 @@ function ai_puppeteer_highlight_point(point, normal, forward, color) {
     wait(0.15);
   }
   level.ai_puppet_highlighting = 0;
-  # /
 }
 
-/*
-	Name: ai_puppeteer_highlight_node
-	Namespace: ai_puppeteer
-	Checksum: 0xEFF01CBB
-	Offset: 0x1CB0
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function ai_puppeteer_highlight_node(node) {
-  /#
-  level endon(# "hash_23dbb5b");
-  self endon(# "death");
+  level endon("hash_23dbb5b");
+  self endon("death");
   level.ai_puppet_highlighting = 1;
   timer = 0;
   while (timer < 0.7) {
@@ -532,22 +373,11 @@ function ai_puppeteer_highlight_node(node) {
     wait(0.15);
   }
   level.ai_puppet_highlighting = 0;
-  # /
 }
 
-/*
-	Name: ai_puppeteer_highlight_ai
-	Namespace: ai_puppeteer
-	Checksum: 0x6A5D474
-	Offset: 0x1D60
-	Size: 0xC0
-	Parameters: 2
-	Flags: Linked
-*/
 function ai_puppeteer_highlight_ai(ai, color) {
-  /#
-  level endon(# "hash_23dbb5b");
-  self endon(# "death");
+  level endon("hash_23dbb5b");
+  self endon("death");
   level.ai_puppet_highlighting = 1;
   timer = 0;
   while (timer < 0.7 && isdefined(ai)) {
@@ -556,5 +386,4 @@ function ai_puppeteer_highlight_ai(ai, color) {
     wait(0.15);
   }
   level.ai_puppet_highlighting = 0;
-  # /
 }

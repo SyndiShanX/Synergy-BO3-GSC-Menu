@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_staff_air.gsc
+*************************************************/
+
 #using scripts\shared\ai\systems\blackboard;
 #using scripts\shared\ai\zombie_shared;
 #using scripts\shared\ai\zombie_utility;
@@ -14,31 +18,12 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weap_staff_common;
 #using scripts\zm\zm_tomb_utility;
-
 #namespace zm_weap_staff_air;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_weap_staff_air
-	Checksum: 0xA3F2B770
-	Offset: 0x410
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_staff_air", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_weap_staff_air
-	Checksum: 0xF1BFE87D
-	Offset: 0x450
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level._effect["whirlwind"] = "weapon/zmb_staff/fx_zmb_staff_air_ug_impact_miss";
   clientfield::register("scriptmover", "whirlwind_play_fx", 21000, 1, "int");
@@ -52,50 +37,23 @@ function __init__() {
   level.w_staff_air_upgraded = getweapon("staff_air_upgraded");
 }
 
-/*
-	Name: onplayerspawned
-	Namespace: zm_weap_staff_air
-	Checksum: 0xB7C64E83
-	Offset: 0x5C8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerspawned() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self thread watch_staff_air_fired();
   self thread watch_staff_air_impact();
   self thread zm_tomb_utility::watch_staff_usage();
 }
 
-/*
-	Name: air_projectile_delete
-	Namespace: zm_weap_staff_air
-	Checksum: 0x1E14AEF2
-	Offset: 0x628
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function air_projectile_delete() {
-  self endon(# "death");
+  self endon("death");
   wait(0.75);
   self delete();
 }
 
-/*
-	Name: watch_staff_air_fired
-	Namespace: zm_weap_staff_air
-	Checksum: 0x9B3F49F1
-	Offset: 0x660
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_staff_air_fired() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "missile_fire", e_projectile, w_weapon);
+    self waittill("missile_fire", e_projectile, w_weapon);
     if(w_weapon.name == "staff_air_upgraded" || w_weapon.name == "staff_air") {
       e_projectile thread air_projectile_delete();
       wind_damage_cone(w_weapon);
@@ -106,36 +64,18 @@ function watch_staff_air_fired() {
   }
 }
 
-/*
-	Name: watch_staff_air_impact
-	Namespace: zm_weap_staff_air
-	Checksum: 0xCE57585E
-	Offset: 0x760
-	Size: 0xB0
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_staff_air_impact() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "projectile_impact", w_weapon, v_explode_point, n_radius, projectile);
+    self waittill("projectile_impact", w_weapon, v_explode_point, n_radius, projectile);
     if(w_weapon.name == "staff_air_upgraded2" || w_weapon.name == "staff_air_upgraded3") {
       self thread staff_air_find_source(v_explode_point, w_weapon);
     }
   }
 }
 
-/*
-	Name: staff_air_find_source
-	Namespace: zm_weap_staff_air
-	Checksum: 0xAA8CA3D7
-	Offset: 0x818
-	Size: 0x184
-	Parameters: 2
-	Flags: Linked
-*/
 function staff_air_find_source(v_detonate, w_weapon) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isdefined(v_detonate)) {
     return;
   }
@@ -160,17 +100,8 @@ function staff_air_find_source(v_detonate, w_weapon) {
   }
 }
 
-/*
-	Name: staff_air_zombie_source
-	Namespace: zm_weap_staff_air
-	Checksum: 0xFF8D0695
-	Offset: 0x9A8
-	Size: 0xAC
-	Parameters: 2
-	Flags: Linked
-*/
 function staff_air_zombie_source(ai_zombie, w_weapon) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   ai_zombie.staff_hit = 1;
   ai_zombie.is_source = 1;
   v_whirlwind_pos = ai_zombie.origin;
@@ -180,22 +111,13 @@ function staff_air_zombie_source(ai_zombie, w_weapon) {
   }
 }
 
-/*
-	Name: staff_air_position_source
-	Namespace: zm_weap_staff_air
-	Checksum: 0xDB61B19E
-	Offset: 0xA60
-	Size: 0x23C
-	Parameters: 2
-	Flags: Linked
-*/
 function staff_air_position_source(v_detonate, w_weapon) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isdefined(v_detonate)) {
     return;
   }
   if(level flag::get("whirlwind_active")) {
-    level notify(# "whirlwind_stopped");
+    level notify("whirlwind_stopped");
     while (level flag::get("whirlwind_active")) {
       util::wait_network_frame();
     }
@@ -208,7 +130,7 @@ function staff_air_position_source(v_detonate, w_weapon) {
   e_whirlwind.angles = vectorscale((-1, 0, 0), 90);
   e_whirlwind thread zm_tomb_utility::puzzle_debug_position("X", vectorscale((1, 1, 0), 255));
   e_whirlwind moveto(zm_utility::groundpos_ignore_water_new(e_whirlwind.origin), 0.05);
-  e_whirlwind waittill(# "movedone");
+  e_whirlwind waittill("movedone");
   e_whirlwind clientfield::set("whirlwind_play_fx", 1);
   e_whirlwind thread zm_tomb_utility::whirlwind_rumble_nearby_players("whirlwind_active");
   e_whirlwind thread whirlwind_timeout(n_time);
@@ -217,17 +139,8 @@ function staff_air_position_source(v_detonate, w_weapon) {
   e_whirlwind thread whirlwind_seek_zombies(self.chargeshotlevel, w_weapon);
 }
 
-/*
-	Name: whirlwind_seek_zombies
-	Namespace: zm_weap_staff_air
-	Checksum: 0x654A88D6
-	Offset: 0xCA8
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function whirlwind_seek_zombies(n_level, w_weapon) {
-  self endon(# "death");
+  self endon("death");
   self.b_found_zombies = 0;
   n_range = get_air_blast_range(n_level);
   while (true) {
@@ -241,35 +154,17 @@ function whirlwind_seek_zombies(n_level, w_weapon) {
   }
 }
 
-/*
-	Name: whirlwind_timeout
-	Namespace: zm_weap_staff_air
-	Checksum: 0xBEC17C94
-	Offset: 0xD70
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function whirlwind_timeout(n_time) {
-  self endon(# "death");
+  self endon("death");
   level util::waittill_any_timeout(n_time, "whirlwind_stopped");
-  level notify(# "whirlwind_stopped");
+  level notify("whirlwind_stopped");
   self clientfield::set("whirlwind_play_fx", 0);
-  self notify(# "stop_debug_position");
+  self notify("stop_debug_position");
   level flag::clear("whirlwind_active");
   wait(1.5);
   self delete();
 }
 
-/*
-	Name: move_along_ground_position
-	Namespace: zm_weap_staff_air
-	Checksum: 0x69BCFA69
-	Offset: 0xE28
-	Size: 0xAC
-	Parameters: 2
-	Flags: Linked
-*/
 function move_along_ground_position(v_position, n_time) {
   v_diff = vectornormalize(v_position - self.origin);
   v_newpos = (self.origin + (v_diff * 50)) + vectorscale((0, 0, 1), 50);
@@ -277,17 +172,8 @@ function move_along_ground_position(v_position, n_time) {
   self moveto(v_ground, n_time);
 }
 
-/*
-	Name: whirlwind_kill_zombies
-	Namespace: zm_weap_staff_air
-	Checksum: 0x8BD63839
-	Offset: 0xEE0
-	Size: 0x2C8
-	Parameters: 2
-	Flags: Linked
-*/
 function whirlwind_kill_zombies(n_level, w_weapon) {
-  self endon(# "death");
+  self endon("death");
   n_range = get_air_blast_range(n_level);
   self.n_charge_level = n_level;
   while (true) {
@@ -327,15 +213,6 @@ function whirlwind_kill_zombies(n_level, w_weapon) {
   }
 }
 
-/*
-	Name: whirlwind_drag_zombie
-	Namespace: zm_weap_staff_air
-	Checksum: 0x9E4F41FC
-	Offset: 0x11B0
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function whirlwind_drag_zombie(e_whirlwind, w_weapon) {
   if(isdefined(self.e_linker)) {
     return;
@@ -348,15 +225,6 @@ function whirlwind_drag_zombie(e_whirlwind, w_weapon) {
   }
 }
 
-/*
-	Name: whirlwind_move_zombie
-	Namespace: zm_weap_staff_air
-	Checksum: 0x93D1DF45
-	Offset: 0x1288
-	Size: 0x234
-	Parameters: 1
-	Flags: Linked
-*/
 function whirlwind_move_zombie(e_whirlwind) {
   if(isdefined(self.e_linker)) {
     return;
@@ -381,36 +249,18 @@ function whirlwind_move_zombie(e_whirlwind) {
     self.e_linker thread move_along_ground_position(e_whirlwind.origin, n_movetime);
     wait(0.05);
   }
-  self notify(# "reached_whirlwind");
+  self notify("reached_whirlwind");
   self.e_linker delete();
 }
 
-/*
-	Name: whirlwind_unlink
-	Namespace: zm_weap_staff_air
-	Checksum: 0xD89FDCB
-	Offset: 0x14C8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function whirlwind_unlink(e_whirlwind) {
-  self endon(# "death");
-  e_whirlwind waittill(# "death");
+  self endon("death");
+  e_whirlwind waittill("death");
   self unlink();
 }
 
-/*
-	Name: source_zombie_death
-	Namespace: zm_weap_staff_air
-	Checksum: 0x9E794768
-	Offset: 0x1510
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function source_zombie_death(ai_zombie) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   n_range = get_air_blast_range(self.chargeshotlevel);
   tag = "J_SpineUpper";
   if(ai_zombie.isdog) {
@@ -425,15 +275,6 @@ function source_zombie_death(ai_zombie) {
   self thread staff_air_proximity_kill(a_zombies);
 }
 
-/*
-	Name: get_air_blast_range
-	Namespace: zm_weap_staff_air
-	Checksum: 0xEA0EEF7F
-	Offset: 0x1610
-	Size: 0x56
-	Parameters: 1
-	Flags: Linked
-*/
 function get_air_blast_range(n_charge) {
   switch (n_charge) {
     case 1: {
@@ -448,17 +289,8 @@ function get_air_blast_range(n_charge) {
   return n_range;
 }
 
-/*
-	Name: staff_air_proximity_kill
-	Namespace: zm_weap_staff_air
-	Checksum: 0xD6295F9C
-	Offset: 0x1670
-	Size: 0x8E
-	Parameters: 1
-	Flags: Linked
-*/
 function staff_air_proximity_kill(a_zombies) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isdefined(a_zombies)) {
     return;
   }
@@ -470,15 +302,6 @@ function staff_air_proximity_kill(a_zombies) {
   }
 }
 
-/*
-	Name: staff_air_zombie_range
-	Namespace: zm_weap_staff_air
-	Checksum: 0x63312265
-	Offset: 0x1708
-	Size: 0x15E
-	Parameters: 2
-	Flags: Linked
-*/
 function staff_air_zombie_range(v_source, n_range) {
   a_enemies = [];
   a_zombies = getaiarray();
@@ -502,17 +325,8 @@ function staff_air_zombie_range(v_source, n_range) {
   return a_enemies;
 }
 
-/*
-	Name: staff_air_fling_zombie
-	Namespace: zm_weap_staff_air
-	Checksum: 0xFBE45639
-	Offset: 0x1870
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function staff_air_fling_zombie(player) {
-  player endon(# "disconnect");
+  player endon("disconnect");
   if(!isalive(self)) {
     return;
   }
@@ -524,15 +338,6 @@ function staff_air_fling_zombie(player) {
   }
 }
 
-/*
-	Name: zombie_launch
-	Namespace: zm_weap_staff_air
-	Checksum: 0x2A57743E
-	Offset: 0x1938
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function zombie_launch(e_attacker, w_weapon) {
   self zm_tomb_utility::do_damage_network_safe(e_attacker, self.health, w_weapon, "MOD_IMPACT");
   if(isdefined(level.ragdoll_limit_check) && ![
@@ -548,29 +353,11 @@ function zombie_launch(e_attacker, w_weapon) {
   }
 }
 
-/*
-	Name: determine_launch_vector
-	Namespace: zm_weap_staff_air
-	Checksum: 0x5007A274
-	Offset: 0x1A10
-	Size: 0x8C
-	Parameters: 2
-	Flags: None
-*/
 function determine_launch_vector(e_attacker, ai_target) {
   v_launch = (vectornormalize(ai_target.origin - e_attacker.origin)) * randomintrange(125, 150) + (0, 0, randomintrange(75, 150));
   return v_launch;
 }
 
-/*
-	Name: staff_air_gib
-	Namespace: zm_weap_staff_air
-	Checksum: 0xEDB8979F
-	Offset: 0x1AA8
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function staff_air_gib(ai_zombie) {
   if(math::cointoss()) {
     ai_zombie thread zm_tomb_utility::zombie_gib_all();
@@ -578,15 +365,6 @@ function staff_air_gib(ai_zombie) {
   ai_zombie thread zm_tomb_utility::zombie_gib_guts();
 }
 
-/*
-	Name: staff_air_zombie_damage_response
-	Namespace: zm_weap_staff_air
-	Checksum: 0xCF913AB6
-	Offset: 0x1B00
-	Size: 0xBC
-	Parameters: 13
-	Flags: Linked
-*/
 function staff_air_zombie_damage_response(mod, hit_location, hit_origin, player, amount, weapon, direction_vec, tagname, modelname, partname, dflags, inflictor, chargelevel) {
   if(self is_staff_air_damage(self.damageweapon) && mod != "MOD_MELEE") {
     self thread stun_zombie();
@@ -595,28 +373,10 @@ function staff_air_zombie_damage_response(mod, hit_location, hit_origin, player,
   return false;
 }
 
-/*
-	Name: is_staff_air_damage
-	Namespace: zm_weap_staff_air
-	Checksum: 0xE2520E72
-	Offset: 0x1BC8
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked
-*/
 function is_staff_air_damage(weapon) {
   return isdefined(weapon) && (weapon.name == "staff_air" || weapon.name == "staff_air_upgraded") && (!(isdefined(self.set_beacon_damage) && self.set_beacon_damage));
 }
 
-/*
-	Name: staff_air_death_event
-	Namespace: zm_weap_staff_air
-	Checksum: 0x622DC4F3
-	Offset: 0x1C30
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function staff_air_death_event(attacker) {
   if(is_staff_air_damage(self.damageweapon) && self.damagemod != "MOD_MELEE") {
     if(isdefined(self.is_mechz) && self.is_mechz) {
@@ -634,15 +394,6 @@ function staff_air_death_event(attacker) {
   }
 }
 
-/*
-	Name: wind_damage_cone
-	Namespace: zm_weap_staff_air
-	Checksum: 0x7072F67A
-	Offset: 0x1D18
-	Size: 0x212
-	Parameters: 1
-	Flags: Linked
-*/
 function wind_damage_cone(w_weapon) {
   fire_angles = self getplayerangles();
   fire_origin = self getplayercamerapos();
@@ -667,17 +418,8 @@ function wind_damage_cone(w_weapon) {
   }
 }
 
-/*
-	Name: stun_zombie
-	Namespace: zm_weap_staff_air
-	Checksum: 0x7A6F27BB
-	Offset: 0x1F38
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function stun_zombie() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.is_mechz) && self.is_mechz) {
     return;
   }
@@ -700,17 +442,8 @@ function stun_zombie() {
   self.is_electrocuted = 0;
 }
 
-/*
-	Name: whirlwind_attract_anim_watch_cancel
-	Namespace: zm_weap_staff_air
-	Checksum: 0x62B57C7C
-	Offset: 0x2038
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function whirlwind_attract_anim_watch_cancel() {
-  self endon(# "death");
+  self endon("death");
   while (level flag::get("whirlwind_active")) {
     util::wait_network_frame();
   }
@@ -719,18 +452,9 @@ function whirlwind_attract_anim_watch_cancel() {
   self._whirlwind_attract_anim = 0;
 }
 
-/*
-	Name: whirlwind_attract_anim
-	Namespace: zm_weap_staff_air
-	Checksum: 0xBC0FEEA6
-	Offset: 0x20B0
-	Size: 0x1E0
-	Parameters: 2
-	Flags: Linked
-*/
 function whirlwind_attract_anim(v_attract_point, b_move_fast = 0) {
-  self endon(# "death");
-  level endon(# "whirlwind_stopped");
+  self endon("death");
+  level endon("whirlwind_stopped");
   if(isdefined(self._whirlwind_attract_anim) && self._whirlwind_attract_anim) {
     return;
   }
@@ -754,5 +478,5 @@ function whirlwind_attract_anim(v_attract_point, b_move_fast = 0) {
   self._whirlwind_attract_anim = 1;
   self.a.runblendtime = self._normal_run_blend_time;
   self thread whirlwind_attract_anim_watch_cancel();
-  self waittill(# "reached_whirlwind");
+  self waittill("reached_whirlwind");
 }

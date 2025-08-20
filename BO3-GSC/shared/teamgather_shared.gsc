@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\teamgather_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -27,15 +31,7 @@ class cteamgather {
   var m_gather_fx;
   var c_teamgather;
 
-  /*
-  	Name: constructor
-  	Namespace: cteamgather
-  	Checksum: 0x582A1C21
-  	Offset: 0x590
-  	Size: 0x74
-  	Parameters: 0
-  	Flags: None
-  */
+
   constructor() {
     e_gameobject = undefined;
     n_font_scale = 2;
@@ -48,26 +44,10 @@ class cteamgather {
     m_success = 0;
   }
 
-  /*
-  	Name: destructor
-  	Namespace: cteamgather
-  	Checksum: 0x99EC1590
-  	Offset: 0x610
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: None
-  */
+
   destructor() {}
 
-  /*
-  	Name: get_players_playing
-  	Namespace: cteamgather
-  	Checksum: 0xEF59DB9B
-  	Offset: 0x25E0
-  	Size: 0xA4
-  	Parameters: 0
-  	Flags: None
-  */
+
   function get_players_playing() {
     a_players = [];
     a_all_players = getplayers();
@@ -80,15 +60,7 @@ class cteamgather {
     return a_players;
   }
 
-  /*
-  	Name: get_time_remaining_in_seconds
-  	Namespace: cteamgather
-  	Checksum: 0xD67C85D1
-  	Offset: 0x2540
-  	Size: 0x98
-  	Parameters: 0
-  	Flags: None
-  */
+
   function get_time_remaining_in_seconds() {
     time_remaining = int(get_time_remaining());
     time_remaining = time_remaining + 1;
@@ -103,15 +75,7 @@ class cteamgather {
     return time_remaining;
   }
 
-  /*
-  	Name: get_time_remaining
-  	Namespace: cteamgather
-  	Checksum: 0x6028B0F7
-  	Offset: 0x24D0
-  	Size: 0x62
-  	Parameters: 0
-  	Flags: None
-  */
+
   function get_time_remaining() {
     time = gettime();
     dt = (time - e_gameobject.start_time) / 1000;
@@ -119,29 +83,13 @@ class cteamgather {
     return time_remaining;
   }
 
-  /*
-  	Name: start_player_timer
-  	Namespace: cteamgather
-  	Checksum: 0x893D1DFF
-  	Offset: 0x2490
-  	Size: 0x34
-  	Parameters: 1
-  	Flags: None
-  */
+
   function start_player_timer(total_time) {
     e_gameobject.start_time = gettime();
     e_gameobject.total_time = total_time;
   }
 
-  /*
-  	Name: __create_client_hud_elem
-  	Namespace: cteamgather
-  	Checksum: 0xE2B8F3AE
-  	Offset: 0x22D8
-  	Size: 0x1B0
-  	Parameters: 9
-  	Flags: None
-  */
+
   function __create_client_hud_elem(alignx, aligny, horzalign, vertalign, xoffset, yoffset, fontscale, color, str_text) {
     hud_elem = newclienthudelem(self);
     hud_elem.elemtype = "font";
@@ -161,22 +109,14 @@ class cteamgather {
     return hud_elem;
   }
 
-  /*
-  	Name: display_hud_player_team_member
-  	Namespace: cteamgather
-  	Checksum: 0x9B300D72
-  	Offset: 0x1EA8
-  	Size: 0x424
-  	Parameters: 1
-  	Flags: None
-  */
+
   function display_hud_player_team_member(e_player) {
-    e_player endon(# "disconnect");
+    e_player endon("disconnect");
     y_start = 180;
     x_off = 0;
     y_off = y_start;
     starting_hud_elem = e_player __create_client_hud_elem("center", "middle", "center", "top", x_off, y_off, n_font_scale, v_font_color, "");
-    starting_hud_elem settext( & "TEAM_GATHER_PLAYER_STARTING_EVENT", m_e_player_leader);
+    starting_hud_elem settext(&"TEAM_GATHER_PLAYER_STARTING_EVENT", m_e_player_leader);
     x_off = -118;
     y_off = y_start + 40;
     gathered_hud_elem = e_player __create_client_hud_elem("left", "middle", "center", "top", x_off, y_off, n_font_scale, v_font_color, "");
@@ -188,13 +128,13 @@ class cteamgather {
     go_hud_elem = e_player __create_client_hud_elem("center", "middle", "center", "top", x_off, y_off, n_font_scale, v_font_color, "");
     a_start_in = array("0", & "TEAM_GATHER_START_IN_1", & "TEAM_GATHER_START_IN_2", & "TEAM_GATHER_START_IN_3", & "TEAM_GATHER_START_IN_4", & "TEAM_GATHER_START_IN_5", & "TEAM_GATHER_START_IN_6", & "TEAM_GATHER_START_IN_7", & "TEAM_GATHER_START_IN_8", & "TEAM_GATHER_START_IN_9", & "TEAM_GATHER_START_IN_10");
     while (!is_teamgather_complete()) {
-      gathered_hud_elem settext( & "TEAM_GATHER_NUM_PLAYERS", int(m_num_players_ready), int(m_num_players));
+      gathered_hud_elem settext(&"TEAM_GATHER_NUM_PLAYERS", int(m_num_players_ready), int(m_num_players));
       time_remaining = get_time_remaining_in_seconds();
       start_in_hud_elem settext(a_start_in[time_remaining]);
       if(isdefined(e_player.in_gather_position) && e_player.in_gather_position) {
         go_hud_elem settext("");
       } else {
-        go_hud_elem settext( & "TEAM_GATHER_HOLD_TO_GO_NOW");
+        go_hud_elem settext(&"TEAM_GATHER_HOLD_TO_GO_NOW");
       }
       wait(0.05);
     }
@@ -204,17 +144,9 @@ class cteamgather {
     go_hud_elem destroy();
   }
 
-  /*
-  	Name: display_hud_player_leader
-  	Namespace: cteamgather
-  	Checksum: 0x5A0C539C
-  	Offset: 0x1BB0
-  	Size: 0x2EC
-  	Parameters: 1
-  	Flags: None
-  */
+
   function display_hud_player_leader(e_player) {
-    e_player endon(# "disconnect");
+    e_player endon("disconnect");
     y_start = 180;
     x_off = 0;
     y_off = y_start;
@@ -227,7 +159,7 @@ class cteamgather {
     execute_hud_elem = e_player __create_client_hud_elem("left", "middle", "center", "top", x_off, y_off, n_font_scale, v_font_color, "");
     a_time_remaining = array("0", & "TEAM_GATHER_TIME_REMAINING_1", & "TEAM_GATHER_TIME_REMAINING_2", & "TEAM_GATHER_TIME_REMAINING_3", & "TEAM_GATHER_TIME_REMAINING_4", & "TEAM_GATHER_TIME_REMAINING_5", & "TEAM_GATHER_TIME_REMAINING_6", & "TEAM_GATHER_TIME_REMAINING_7", & "TEAM_GATHER_TIME_REMAINING_8", & "TEAM_GATHER_TIME_REMAINING_9", & "TEAM_GATHER_TIME_REMAINING_10");
     while (!is_teamgather_complete()) {
-      ready_hud_elem settext( & "TEAM_GATHER_PLAYERS_READY", m_num_players_ready, m_num_players);
+      ready_hud_elem settext(&"TEAM_GATHER_PLAYERS_READY", m_num_players_ready, m_num_players);
       time_remaining = get_time_remaining_in_seconds();
       execute_hud_elem settext(a_time_remaining[time_remaining]);
       wait(0.05);
@@ -237,15 +169,7 @@ class cteamgather {
     execute_hud_elem destroy();
   }
 
-  /*
-  	Name: teleport_player_into_position
-  	Namespace: cteamgather
-  	Checksum: 0xD45779A8
-  	Offset: 0x1850
-  	Size: 0x354
-  	Parameters: 1
-  	Flags: None
-  */
+
   function teleport_player_into_position(e_player) {
     a_players = get_players_playing();
     while (true) {
@@ -285,30 +209,14 @@ class cteamgather {
     e_player setplayerangles(v_angles);
   }
 
-  /*
-  	Name: team_member_zoom_button_check
-  	Namespace: cteamgather
-  	Checksum: 0xC6EAAD37
-  	Offset: 0x1808
-  	Size: 0x3C
-  	Parameters: 1
-  	Flags: None
-  */
+
   function team_member_zoom_button_check(e_player) {
     if(e_player usebuttonpressed()) {
       teleport_player_into_position(e_player);
     }
   }
 
-  /*
-  	Name: player_lowready_state
-  	Namespace: cteamgather
-  	Checksum: 0x492EC5EA
-  	Offset: 0x1788
-  	Size: 0x74
-  	Parameters: 1
-  	Flags: None
-  */
+
   function player_lowready_state(lower_weapon) {
     if(lower_weapon) {
       if(self util::isweaponenabled()) {
@@ -319,15 +227,7 @@ class cteamgather {
     }
   }
 
-  /*
-  	Name: is_player_in_gather_position
-  	Namespace: cteamgather
-  	Checksum: 0x7A97BE5A
-  	Offset: 0x15C8
-  	Size: 0x1B2
-  	Parameters: 1
-  	Flags: None
-  */
+
   function is_player_in_gather_position(e_player) {
     player_valid = 1;
     n_dist = distance2d(e_player.origin, m_v_gather_position);
@@ -349,15 +249,7 @@ class cteamgather {
     return player_valid;
   }
 
-  /*
-  	Name: update_players_in_radius
-  	Namespace: cteamgather
-  	Checksum: 0x82001D62
-  	Offset: 0x1408
-  	Size: 0x1B6
-  	Parameters: 1
-  	Flags: None
-  */
+
   function update_players_in_radius(force_player_into_position) {
     a_players = get_players_playing();
     m_num_players = a_players.size;
@@ -383,15 +275,7 @@ class cteamgather {
     }
   }
 
-  /*
-  	Name: players_in_position
-  	Namespace: cteamgather
-  	Checksum: 0x2F62D74E
-  	Offset: 0x1370
-  	Size: 0x8C
-  	Parameters: 1
-  	Flags: None
-  */
+
   function players_in_position(in_position) {
     if(isdefined(in_position) && in_position) {
       if(!isdefined(in_position_start_time)) {
@@ -408,15 +292,7 @@ class cteamgather {
     return false;
   }
 
-  /*
-  	Name: teamgather_main_update
-  	Namespace: cteamgather
-  	Checksum: 0xA39F96AF
-  	Offset: 0x1170
-  	Size: 0x1F2
-  	Parameters: 0
-  	Flags: None
-  */
+
   function teamgather_main_update() {
     while (!is_teamgather_complete()) {
       update_players_in_radius(0);
@@ -453,42 +329,18 @@ class cteamgather {
     return m_success;
   }
 
-  /*
-  	Name: set_teamgather_complete
-  	Namespace: cteamgather
-  	Checksum: 0x84696FF8
-  	Offset: 0x1140
-  	Size: 0x24
-  	Parameters: 1
-  	Flags: None
-  */
+
   function set_teamgather_complete(success) {
     m_teamgather_complete = 1;
     m_success = success;
   }
 
-  /*
-  	Name: is_teamgather_complete
-  	Namespace: cteamgather
-  	Checksum: 0x6902C4B5
-  	Offset: 0x1128
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: None
-  */
+
   function is_teamgather_complete() {
     return m_teamgather_complete;
   }
 
-  /*
-  	Name: create_player_huds
-  	Namespace: cteamgather
-  	Checksum: 0xDE8E0F5F
-  	Offset: 0x1060
-  	Size: 0xBE
-  	Parameters: 0
-  	Flags: None
-  */
+
   function create_player_huds() {
     a_players = get_players_playing();
     if(a_players.size <= 1) {
@@ -504,15 +356,7 @@ class cteamgather {
     }
   }
 
-  /*
-  	Name: gather_players
-  	Namespace: cteamgather
-  	Checksum: 0x4BC46AF0
-  	Offset: 0x1008
-  	Size: 0x4C
-  	Parameters: 0
-  	Flags: None
-  */
+
   function gather_players() {
     start_player_timer(10);
     create_player_huds();
@@ -520,15 +364,7 @@ class cteamgather {
     return b_success;
   }
 
-  /*
-  	Name: interact_entity_highlight
-  	Namespace: cteamgather
-  	Checksum: 0xEA81B126
-  	Offset: 0xF88
-  	Size: 0x74
-  	Parameters: 1
-  	Flags: None
-  */
+
   function interact_entity_highlight(highlight_object) {
     if(isdefined(m_e_interact_entity)) {
       if(isdefined(highlight_object) && highlight_object) {
@@ -539,15 +375,7 @@ class cteamgather {
     }
   }
 
-  /*
-  	Name: cleanup_floor_effect
-  	Namespace: cteamgather
-  	Checksum: 0x9AB9BF60
-  	Offset: 0xF38
-  	Size: 0x48
-  	Parameters: 0
-  	Flags: None
-  */
+
   function cleanup_floor_effect() {
     if(!(isdefined(0) && 0)) {
       return;
@@ -558,15 +386,7 @@ class cteamgather {
     }
   }
 
-  /*
-  	Name: spawn_floor_effect
-  	Namespace: cteamgather
-  	Checksum: 0xD8E157F3
-  	Offset: 0xE20
-  	Size: 0x10C
-  	Parameters: 0
-  	Flags: None
-  */
+
   function spawn_floor_effect() {
     if(!(isdefined(0) && 0)) {
       return;
@@ -580,29 +400,13 @@ class cteamgather {
     triggerfx(m_gather_fx);
   }
 
-  /*
-  	Name: onusegameobject
-  	Namespace: cteamgather
-  	Checksum: 0xB2FA7DC5
-  	Offset: 0xDE8
-  	Size: 0x2E
-  	Parameters: 1
-  	Flags: None
-  */
+
   function onusegameobject(player) {
     c_teamgather.m_e_player_leader = player;
-    self notify(# "player_interaction");
+    self notify("player_interaction");
   }
 
-  /*
-  	Name: setup_gameobject
-  	Namespace: cteamgather
-  	Checksum: 0xAAAC6CE8
-  	Offset: 0xA78
-  	Size: 0x368
-  	Parameters: 4
-  	Flags: None
-  */
+
   function setup_gameobject(v_pos, str_model, str_use_hint, e_los_ignore_me) {
     n_radius = 48;
     e_trigger = spawn("trigger_radius_use", v_pos, 0, n_radius, 30);
@@ -637,15 +441,7 @@ class cteamgather {
     return e_object;
   }
 
-  /*
-  	Name: teamgather_failure
-  	Namespace: cteamgather
-  	Checksum: 0x577E6D7D
-  	Offset: 0x930
-  	Size: 0x13E
-  	Parameters: 0
-  	Flags: None
-  */
+
   function teamgather_failure() {
     x_off = 0;
     y_off = 180;
@@ -661,15 +457,7 @@ class cteamgather {
     }
   }
 
-  /*
-  	Name: teamgather_success
-  	Namespace: cteamgather
-  	Checksum: 0xC0FE96EA
-  	Offset: 0x7E0
-  	Size: 0x146
-  	Parameters: 0
-  	Flags: None
-  */
+
   function teamgather_success() {
     if(0 > 0) {
       x_off = 0;
@@ -687,15 +475,7 @@ class cteamgather {
     }
   }
 
-  /*
-  	Name: create_teamgather_event
-  	Namespace: cteamgather
-  	Checksum: 0x88ADEEE4
-  	Offset: 0x660
-  	Size: 0x178
-  	Parameters: 4
-  	Flags: None
-  */
+
   function create_teamgather_event(v_interact_pos, v_interact_angles, v_gather_pos, e_interact_entity) {
     m_v_interact_position = v_interact_pos;
     m_v_interact_angles = v_interact_angles;
@@ -703,7 +483,7 @@ class cteamgather {
     m_v_gather_position = v_gather_pos;
     e_gameobject = setup_gameobject(v_interact_pos, undefined, & "TEAM_GATHER_HOLD_FOR_TEAM_ENTER", m_e_interact_entity);
     e_gameobject.c_teamgather = self;
-    e_gameobject waittill(# "player_interaction");
+    e_gameobject waittill("player_interaction");
     e_gameobject gameobjects::disable_object();
     spawn_floor_effect();
     interact_entity_highlight(1);
@@ -718,15 +498,7 @@ class cteamgather {
     return b_success;
   }
 
-  /*
-  	Name: cleanup
-  	Namespace: cteamgather
-  	Checksum: 0xFCAFA201
-  	Offset: 0x620
-  	Size: 0x34
-  	Parameters: 0
-  	Flags: None
-  */
+
   function cleanup() {
     cleanup_floor_effect();
     e_gameobject gameobjects::destroy_object(1, 1);
@@ -736,15 +508,6 @@ class cteamgather {
 
 #namespace teamgather;
 
-/*
-	Name: setup_teamgather
-	Namespace: teamgather
-	Checksum: 0x1E8F92BA
-	Offset: 0x2C30
-	Size: 0x1C4
-	Parameters: 3
-	Flags: None
-*/
 function setup_teamgather(v_interact_pos, v_interact_angles, e_interact_entity) {
   v_forward = anglestoforward(v_interact_angles);
   v_gather_pos = v_interact_pos + (v_forward * -100);
@@ -754,36 +517,21 @@ function setup_teamgather(v_interact_pos, v_interact_angles, e_interact_entity) 
   v_floor_pos = v_trace["position"];
   v_gather_pos = (v_gather_pos[0], v_gather_pos[1], v_floor_pos[2] + 10);
   c_teamgather = new cteamgather();
-  success = [
-    [c_teamgather]
-  ] - > create_teamgather_event(v_interact_pos, v_interact_angles, v_gather_pos, e_interact_entity);
+  success = [[c_teamgather]] - > create_teamgather_event(v_interact_pos, v_interact_angles, v_gather_pos, e_interact_entity);
   if(success) {
     e_player = c_teamgather.m_e_player_leader;
   } else {
     e_player = undefined;
   }
-  [
-    [c_teamgather]
-  ] - > cleanup();
+  [[c_teamgather]] - > cleanup();
   return e_player;
 }
 
-/*
-	Name: mike_debug_line
-	Namespace: teamgather
-	Checksum: 0xE9E65ECD
-	Offset: 0x2E00
-	Size: 0x68
-	Parameters: 2
-	Flags: None
-*/
 function mike_debug_line(v1, v2) {
-  level notify(# "hash_62ab67ff");
-  self endon(# "hash_62ab67ff");
+  level notify("hash_62ab67ff");
+  self endon("hash_62ab67ff");
   while (true) {
-    /#
     line(v1, v2, (0, 0, 1));
-    # /
-      wait(0.1);
+    wait(0.1);
   }
 }

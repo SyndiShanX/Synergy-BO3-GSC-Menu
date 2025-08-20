@@ -1,33 +1,17 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_cosmodrome_fx.gsc
+*************************************************/
+
 #using scripts\shared\flagsys_shared;
-
 #using_animtree("fxanim_props");
-
 #namespace zm_cosmodrome_fx;
 
-/*
-	Name: main
-	Namespace: zm_cosmodrome_fx
-	Checksum: 0x51208832
-	Offset: 0x5B8
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_scripted_fx();
   level thread fx_overrides();
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_cosmodrome_fx
-	Checksum: 0x6F20814
-	Offset: 0x5F0
-	Size: 0x24E
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["monkey_eye_glow"] = "dlc5/zmhd/fx_zmb_monkey_eyes";
   level._effect["lunar_lander_dust"] = "dlc5/cosmo/fx_zombie_lunar_lander_dust";
@@ -52,15 +36,6 @@ function precache_scripted_fx() {
   level._effect["fx_light_ee_progress"] = "dlc5/cosmo/fx_light_ee_progress";
 }
 
-/*
-	Name: fx_overrides
-	Namespace: zm_cosmodrome_fx
-	Checksum: 0x4C494F54
-	Offset: 0x848
-	Size: 0xCA
-	Parameters: 0
-	Flags: Linked
-*/
 function fx_overrides() {
   level flagsys::wait_till("load_main_complete");
   level._effect["additionalprimaryweapon_light"] = "dlc5/zmhd/fx_perk_mule_kick";

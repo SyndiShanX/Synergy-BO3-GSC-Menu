@@ -1,30 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\codescripts\struct;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_fx.csc
+*************************************************/
 
+#using scripts\codescripts\struct;
 #namespace zm_stalingrad_fx;
 
-/*
-	Name: init
-	Namespace: zm_stalingrad_fx
-	Checksum: 0xF930F3AA
-	Offset: 0x880
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   precache_scripted_fx();
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_stalingrad_fx
-	Checksum: 0xE46F271A
-	Offset: 0x8A0
-	Size: 0x39E
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["zapper"] = "dlc3/stalingrad/fx_elec_trap_stalingrad";
   level._effect["dragon_fire_burn_tell"] = "dlc3/stalingrad/fx_player_screen_fire_embers_hazard";

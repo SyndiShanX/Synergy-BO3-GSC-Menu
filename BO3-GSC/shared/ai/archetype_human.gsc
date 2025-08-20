@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_human.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_cover_utility;
 #using scripts\shared\ai\archetype_human_blackboard;
 #using scripts\shared\ai\archetype_human_cover;
@@ -23,37 +27,16 @@
 #using scripts\shared\math_shared;
 #using scripts\shared\spawner_shared;
 #using scripts\shared\util_shared;
-
 #namespace archetype_human;
 
-/*
-	Name: init
-	Namespace: archetype_human
-	Checksum: 0xE4A9E2C8
-	Offset: 0x6C8
-	Size: 0xBC
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   spawner::add_archetype_spawn_function("human", & archetypehumanblackboardinit);
   spawner::add_archetype_spawn_function("human", & archetypehumaninit);
   humaninterface::registerhumaninterfaceattributes();
   clientfield::register("actor", "facial_dial", 1, 1, "int");
-  /#
   level.__ai_forcegibs = getdvarint("");
-  # /
 }
 
-/*
-	Name: archetypehumaninit
-	Namespace: archetype_human
-	Checksum: 0x80472732
-	Offset: 0x790
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private archetypehumaninit() {
   entity = self;
   aiutility::addaioverridedamagecallback(entity, & damageoverride);
@@ -66,15 +49,6 @@ function private archetypehumaninit() {
   }
 }
 
-/*
-	Name: archetypehumanblackboardinit
-	Namespace: archetype_human
-	Checksum: 0xB6638B53
-	Offset: 0x8C0
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private archetypehumanblackboardinit() {
   blackboard::createblackboardforentity(self);
   ai::createinterfaceforentity(self);
@@ -82,10 +56,8 @@ function private archetypehumanblackboardinit() {
   self blackboard::registeractorblackboardattributes();
   self.___archetypeonanimscriptedcallback = & archetypehumanonanimscriptedcallback;
   self.___archetypeonbehavecallback = & archetypehumanonbehavecallback;
-  /#
   self finalizetrackedblackboardattributes();
-  # /
-    self thread gameskill::accuracy_buildup_before_fire(self);
+  self thread gameskill::accuracy_buildup_before_fire(self);
   if(self.accuratefire) {
     self thread aiutility::preshootlaserandglinton(self);
     self thread aiutility::postshootlaserandglintoff(self);
@@ -94,15 +66,6 @@ function private archetypehumanblackboardinit() {
   gibserverutils::togglespawngibs(self, 1);
 }
 
-/*
-	Name: archetypehumanonbehavecallback
-	Namespace: archetype_human
-	Checksum: 0x48A413F9
-	Offset: 0x9F8
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private archetypehumanonbehavecallback(entity) {
   if(aiutility::isatcovercondition(entity)) {
     blackboard::setblackboardattribute(entity, "_previous_cover_mode", "cover_alert");
@@ -113,15 +76,6 @@ function private archetypehumanonbehavecallback(entity) {
   blackboard::addblackboardevent("human_grenade_throw", grenadethrowinfo, randomintrange(3000, 4000));
 }
 
-/*
-	Name: archetypehumanonanimscriptedcallback
-	Namespace: archetype_human
-	Checksum: 0x7C317ABD
-	Offset: 0xAE0
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private archetypehumanonanimscriptedcallback(entity) {
   entity.__blackboard = undefined;
   entity archetypehumanblackboardinit();
@@ -129,15 +83,6 @@ function private archetypehumanonanimscriptedcallback(entity) {
   humansoldierserverutils::vignettemodecallback(entity, "vignette_mode", vignettemode, vignettemode);
 }
 
-/*
-	Name: humangibkilledoverride
-	Namespace: archetype_human
-	Checksum: 0xCB3B9B1B
-	Offset: 0xB70
-	Size: 0x310
-	Parameters: 8
-	Flags: Linked, Private
-*/
 function private humangibkilledoverride(inflictor, attacker, damage, meansofdeath, weapon, dir, hitloc, offsettime) {
   entity = self;
   if(math::cointoss()) {
@@ -168,15 +113,6 @@ function private humangibkilledoverride(inflictor, attacker, damage, meansofdeat
   return damage;
 }
 
-/*
-	Name: trygibbinghead
-	Namespace: archetype_human
-	Checksum: 0x8BBF3326
-	Offset: 0xE88
-	Size: 0x9C
-	Parameters: 4
-	Flags: Private
-*/
 function private trygibbinghead(entity, damage, hitloc, isexplosive) {
   if(isexplosive) {
     gibserverutils::gibhead(entity);
@@ -185,15 +121,6 @@ function private trygibbinghead(entity, damage, hitloc, isexplosive) {
   }
 }
 
-/*
-	Name: trygibbinglimb
-	Namespace: archetype_human
-	Checksum: 0x47A97BBE
-	Offset: 0xF30
-	Size: 0x1CC
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private trygibbinglimb(entity, damage, hitloc, isexplosive) {
   if(isexplosive) {
     randomchance = randomfloatrange(0, 1);
@@ -219,15 +146,6 @@ function private trygibbinglimb(entity, damage, hitloc, isexplosive) {
   }
 }
 
-/*
-	Name: trygibbinglegs
-	Namespace: archetype_human
-	Checksum: 0x6553B96B
-	Offset: 0x1108
-	Size: 0x1FC
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private trygibbinglegs(entity, damage, hitloc, isexplosive, attacker) {
   if(isexplosive) {
     randomchance = randomfloatrange(0, 1);
@@ -257,15 +175,6 @@ function private trygibbinglegs(entity, damage, hitloc, isexplosive, attacker) {
   }
 }
 
-/*
-	Name: damageoverride
-	Namespace: archetype_human
-	Checksum: 0xF06BD2C0
-	Offset: 0x1310
-	Size: 0x1BC
-	Parameters: 12
-	Flags: Linked
-*/
 function damageoverride(einflictor, eattacker, idamage, idflags, smeansofdeath, sweapon, vpoint, vdir, shitloc, psoffsettime, boneindex, modelindex) {
   entity = self;
   entity destructserverutils::handledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, sweapon, vpoint, vdir, shitloc, psoffsettime, boneindex, modelindex);
@@ -285,15 +194,6 @@ function damageoverride(einflictor, eattacker, idamage, idflags, smeansofdeath, 
 
 #namespace humansoldierserverutils;
 
-/*
-	Name: cqbattributecallback
-	Namespace: humansoldierserverutils
-	Checksum: 0x1D67B7A6
-	Offset: 0x14D8
-	Size: 0xA4
-	Parameters: 4
-	Flags: Linked
-*/
 function cqbattributecallback(entity, attribute, oldvalue, value) {
   if(value) {
     entity asmchangeanimmappingtable(2);
@@ -306,28 +206,10 @@ function cqbattributecallback(entity, attribute, oldvalue, value) {
   }
 }
 
-/*
-	Name: forcetacticalwalkcallback
-	Namespace: humansoldierserverutils
-	Checksum: 0x811187B7
-	Offset: 0x1588
-	Size: 0x38
-	Parameters: 4
-	Flags: Linked
-*/
 function forcetacticalwalkcallback(entity, attribute, oldvalue, value) {
   entity.ignorerunandgundist = value;
 }
 
-/*
-	Name: movemodeattributecallback
-	Namespace: humansoldierserverutils
-	Checksum: 0xCFF08835
-	Offset: 0x15C8
-	Size: 0x6E
-	Parameters: 4
-	Flags: Linked
-*/
 function movemodeattributecallback(entity, attribute, oldvalue, value) {
   entity.ignorepathenemyfightdist = 0;
   switch (value) {
@@ -341,15 +223,6 @@ function movemodeattributecallback(entity, attribute, oldvalue, value) {
   }
 }
 
-/*
-	Name: useanimationoverridecallback
-	Namespace: humansoldierserverutils
-	Checksum: 0x95A7339E
-	Offset: 0x1640
-	Size: 0x64
-	Parameters: 4
-	Flags: Linked
-*/
 function useanimationoverridecallback(entity, attribute, oldvalue, value) {
   if(value) {
     entity asmchangeanimmappingtable(1);
@@ -358,15 +231,6 @@ function useanimationoverridecallback(entity, attribute, oldvalue, value) {
   }
 }
 
-/*
-	Name: vignettemodecallback
-	Namespace: humansoldierserverutils
-	Checksum: 0x8306D905
-	Offset: 0x16B0
-	Size: 0x1F2
-	Parameters: 4
-	Flags: Linked
-*/
 function vignettemodecallback(entity, attribute, oldvalue, value) {
   switch (value) {
     case "off": {

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_temple_minecart.gsc
+*************************************************/
+
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\exploder_shared;
@@ -10,31 +14,12 @@
 #using scripts\zm\_zm_score;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_temple_minecart;
 
-/*
-	Name: precache_assets
-	Namespace: zm_temple_minecart
-	Checksum: 0x62CAB016
-	Offset: 0x5A8
-	Size: 0x1E
-	Parameters: 0
-	Flags: None
-*/
 function precache_assets() {
   level._effect["fx_headlight"] = "env/light/fx_flashlight_ai_spotlight";
 }
 
-/*
-	Name: minecart_main
-	Namespace: zm_temple_minecart
-	Checksum: 0x4FB7C879
-	Offset: 0x5D0
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function minecart_main() {
   level flag::init("players_riding_minecart");
   level.var_b2360d92 = getentarray("minecart_lever_trigger", "targetname");
@@ -43,15 +28,6 @@ function minecart_main() {
   }
 }
 
-/*
-	Name: function_807ee0b0
-	Namespace: zm_temple_minecart
-	Checksum: 0x8C7FB37F
-	Offset: 0x670
-	Size: 0x764
-	Parameters: 0
-	Flags: Linked
-*/
 function function_807ee0b0() {
   self.drivepath = 0;
   self.accel = 5;
@@ -125,18 +101,9 @@ function function_807ee0b0() {
   self function_f16a275();
 }
 
-/*
-	Name: blocker_think
-	Namespace: zm_temple_minecart
-	Checksum: 0x7BF882AF
-	Offset: 0xDE0
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function blocker_think(minecart) {
-  minecart endon(# "hash_76e3734");
-  minecart waittill(# "hash_4c5d405f");
+  minecart endon("hash_76e3734");
+  minecart waittill("hash_4c5d405f");
   while (true) {
     if(self function_742e2b0d(minecart)) {
       self thread function_78442d5();
@@ -146,29 +113,11 @@ function blocker_think(minecart) {
   }
 }
 
-/*
-	Name: function_742e2b0d
-	Namespace: zm_temple_minecart
-	Checksum: 0xDAD062F3
-	Offset: 0xE58
-	Size: 0x4A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_742e2b0d(minecart) {
   dist2 = distance2dsquared(minecart.origin, self.origin);
   return dist2 < 4900;
 }
 
-/*
-	Name: function_1306489b
-	Namespace: zm_temple_minecart
-	Checksum: 0xDFFBA077
-	Offset: 0xEB0
-	Size: 0x70
-	Parameters: 0
-	Flags: None
-*/
 function function_1306489b() {
   players = getplayers();
   for (i = 0; i < players.size; i++) {
@@ -179,30 +128,12 @@ function function_1306489b() {
   return false;
 }
 
-/*
-	Name: function_78442d5
-	Namespace: zm_temple_minecart
-	Checksum: 0x153B5B05
-	Offset: 0xF28
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_78442d5() {
   level thread scene::play("p7_fxanim_zm_sha_minecart_gate_bundle");
   exploder::exploder("fxexp_400");
   self playsound("evt_minecart_barrier");
 }
 
-/*
-	Name: function_2ae67320
-	Namespace: zm_temple_minecart
-	Checksum: 0x82DFFCBA
-	Offset: 0xF90
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2ae67320(offsetorigin) {
   linkent = spawn("script_model", (0, 0, 0));
   linkent.offsetorigin = offsetorigin;
@@ -213,15 +144,6 @@ function function_2ae67320(offsetorigin) {
   util::wait_network_frame();
 }
 
-/*
-	Name: function_46d092ff
-	Namespace: zm_temple_minecart
-	Checksum: 0x1B994E5B
-	Offset: 0x1070
-	Size: 0x4CC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_46d092ff() {
   wait(0.5);
   players = getplayers();
@@ -288,19 +210,10 @@ function function_46d092ff() {
   array::thread_all(self.var_54277932, & function_a676846, self);
 }
 
-/*
-	Name: function_3ae7bd53
-	Namespace: zm_temple_minecart
-	Checksum: 0x3867337F
-	Offset: 0x1548
-	Size: 0x16C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3ae7bd53(minecart) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "hash_76e3734");
+  self endon("death");
+  self endon("disconnect");
+  level endon("hash_76e3734");
   self.is_on_minecart = 1;
   self allowsprint(0);
   turn_angle = 360;
@@ -321,36 +234,18 @@ function function_3ae7bd53(minecart) {
   self thread function_3321eefe();
 }
 
-/*
-	Name: function_a676846
-	Namespace: zm_temple_minecart
-	Checksum: 0xE1772631
-	Offset: 0x16C0
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a676846(minecart) {
-  level endon(# "hash_76e3734");
+  level endon("hash_76e3734");
   self setplayercollision(0);
   self linkto(self.var_68072c39, "tag_origin", (0, 0, 0), (0, 0, 0));
-  self waittill(# "death");
+  self waittill("death");
   self unlink();
 }
 
-/*
-	Name: function_3321eefe
-	Namespace: zm_temple_minecart
-	Checksum: 0xC89A9E03
-	Offset: 0x1748
-	Size: 0xD0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3321eefe(activetime) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "hash_aa83d93d");
+  self endon("death");
+  self endon("disconnect");
+  self endon("hash_aa83d93d");
   self clientfield::set_to_player("minecart_rumble", 1);
   while (true) {
     earthquake(randomfloatrange(0.1, 0.2), randomfloatrange(1, 2), self.origin, 100, self);
@@ -358,15 +253,6 @@ function function_3321eefe(activetime) {
   }
 }
 
-/*
-	Name: function_dd13ce12
-	Namespace: zm_temple_minecart
-	Checksum: 0x2F7EFEC1
-	Offset: 0x1820
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_dd13ce12(var_717a30ce) {
   if(!self laststand::player_is_in_laststand()) {
     self setstance("crouch");
@@ -377,18 +263,9 @@ function function_dd13ce12(var_717a30ce) {
   self playerlinktodelta(self.var_68072c39, undefined, 1, var_717a30ce, var_717a30ce, 90, 75, 1);
 }
 
-/*
-	Name: function_d7bc1fd8
-	Namespace: zm_temple_minecart
-	Checksum: 0x4EA130DE
-	Offset: 0x18F8
-	Size: 0x1F6
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d7bc1fd8(var_f127a043) {
-  self notify(# "hash_76e3734");
-  level notify(# "hash_76e3734");
+  self notify("hash_76e3734");
+  level notify("hash_76e3734");
   if(isdefined(self.front)) {
     self.front notsolid();
   }
@@ -414,15 +291,6 @@ function function_d7bc1fd8(var_f127a043) {
   }
 }
 
-/*
-	Name: function_41ad38d8
-	Namespace: zm_temple_minecart
-	Checksum: 0x6416859A
-	Offset: 0x1AF8
-	Size: 0xA4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_41ad38d8(zombie, vel) {
   if(!isdefined(zombie)) {
     return;
@@ -436,15 +304,6 @@ function function_41ad38d8(zombie, vel) {
   }
 }
 
-/*
-	Name: function_a3fe9db2
-	Namespace: zm_temple_minecart
-	Checksum: 0x72836A8F
-	Offset: 0x1BA8
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a3fe9db2(ent) {
   if(isdefined(self.var_a1647650)) {
     return ent istouching(self.var_a1647650);
@@ -452,15 +311,6 @@ function function_a3fe9db2(ent) {
   return distance2d(ent.origin, self.origin) < 120;
 }
 
-/*
-	Name: get_ai_touching_volume
-	Namespace: zm_temple_minecart
-	Checksum: 0x56C4EFEB
-	Offset: 0x1C18
-	Size: 0xE2
-	Parameters: 2
-	Flags: Linked
-*/
 function get_ai_touching_volume(team, volume) {
   ai_list = getaiarray();
   var_fadec02a = [];
@@ -472,15 +322,6 @@ function get_ai_touching_volume(team, volume) {
   return var_fadec02a;
 }
 
-/*
-	Name: function_81a9b489
-	Namespace: zm_temple_minecart
-	Checksum: 0x7C189904
-	Offset: 0x1D08
-	Size: 0xFE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_81a9b489() {
   ai_list = get_ai_touching_volume(level.zombie_team, self.var_a1647650);
   for (i = 0; i < ai_list.size; i++) {
@@ -496,15 +337,6 @@ function function_81a9b489() {
   }
 }
 
-/*
-	Name: function_9c70545
-	Namespace: zm_temple_minecart
-	Checksum: 0x679FEEA7
-	Offset: 0x1E10
-	Size: 0x1A6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9c70545() {
   if(!isdefined(level.spikemores) || level.spikemores.size <= 0) {
     return;
@@ -528,26 +360,8 @@ function function_9c70545() {
   }
 }
 
-/*
-	Name: function_539188d5
-	Namespace: zm_temple_minecart
-	Checksum: 0x99EC1590
-	Offset: 0x1FC0
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function function_539188d5() {}
 
-/*
-	Name: function_b6cb1d5a
-	Namespace: zm_temple_minecart
-	Checksum: 0x89263928
-	Offset: 0x1FD0
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b6cb1d5a(name) {
   node = getvehiclenode((self.targetname + "_") + name, "targetname");
   if(isdefined(node)) {
@@ -556,17 +370,8 @@ function function_b6cb1d5a(name) {
   }
 }
 
-/*
-	Name: function_4c5d405f
-	Namespace: zm_temple_minecart
-	Checksum: 0xE15A5E5C
-	Offset: 0x2060
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4c5d405f(accel) {
-  self notify(# "hash_4c5d405f");
+  self notify("hash_4c5d405f");
   if(!isdefined(accel)) {
     accel = self.accel;
   }
@@ -574,60 +379,24 @@ function function_4c5d405f(accel) {
   self thread function_7e02ada5();
 }
 
-/*
-	Name: function_7e02ada5
-	Namespace: zm_temple_minecart
-	Checksum: 0x6861B2B5
-	Offset: 0x20D0
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7e02ada5() {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self.var_282f646e)) {
     self.var_282f646e = 1;
   }
-  self waittill(# "hash_709c9be8");
+  self waittill("hash_709c9be8");
 }
 
-/*
-	Name: function_f16a275
-	Namespace: zm_temple_minecart
-	Checksum: 0x97096CD5
-	Offset: 0x2110
-	Size: 0x72
-	Parameters: 2
-	Flags: Linked
-*/
 function function_f16a275(accel = self.accel, decel = self.decel) {
   self setspeed(0, accel, decel);
-  self notify(# "hash_709c9be8");
+  self notify("hash_709c9be8");
 }
 
-/*
-	Name: function_b1da7b23
-	Namespace: zm_temple_minecart
-	Checksum: 0x762C05CE
-	Offset: 0x2190
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b1da7b23() {
   self setspeed(0, 10000);
-  self notify(# "hash_709c9be8");
+  self notify("hash_709c9be8");
 }
 
-/*
-	Name: function_b02072a5
-	Namespace: zm_temple_minecart
-	Checksum: 0x81428B6E
-	Offset: 0x21C8
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b02072a5(var_2f6d87e4) {
   playsoundatposition("evt_mine_cart_bar", self.origin);
   if(self.var_de36bfb8) {
@@ -639,17 +408,8 @@ function function_b02072a5(var_2f6d87e4) {
   }
 }
 
-/*
-	Name: function_f8358462
-	Namespace: zm_temple_minecart
-	Checksum: 0xC1280592
-	Offset: 0x2240
-	Size: 0xAFA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f8358462() {
-  level endon(# "fake_death");
+  level endon("fake_death");
   if(!isdefined(self.zombie_cost)) {
     self.zombie_cost = 250;
   }
@@ -670,17 +430,15 @@ function function_f8358462() {
   self.minecart function_807ee0b0();
   self function_b02072a5(0);
   wait_for_flags = 1;
-  /#
   wait_for_flags = getdvarint("") == 0;
-  # /
-    if(wait_for_flags) {
-      self sethintstring( & "ZOMBIE_NEED_POWER");
-      level flag::wait_till("power_on");
-      self sethintstring( & "ZM_TEMPLE_DESTINATION_NOT_OPEN");
-      level flag::wait_till_any(array("cave_water_to_waterfall", "waterfall_to_tunnel"));
-    }
+  if(wait_for_flags) {
+    self sethintstring(&"ZOMBIE_NEED_POWER");
+    level flag::wait_till("power_on");
+    self sethintstring(&"ZM_TEMPLE_DESTINATION_NOT_OPEN");
+    level flag::wait_till_any(array("cave_water_to_waterfall", "waterfall_to_tunnel"));
+  }
   wait(1);
-  level notify(# "hash_25007749");
+  level notify("hash_25007749");
   while (true) {
     self function_b02072a5(1);
     if(isdefined(self.minecart.cage)) {
@@ -692,9 +450,9 @@ function function_f8358462() {
     if(isdefined(self.minecart.front)) {
       self.minecart.front solid();
     }
-    self sethintstring( & "ZM_TEMPLE_MINECART_COST", self.zombie_cost);
+    self sethintstring(&"ZM_TEMPLE_MINECART_COST", self.zombie_cost);
     while (true) {
-      self waittill(# "trigger", player);
+      self waittill("trigger", player);
       if(player zm_score::can_player_purchase(self.zombie_cost)) {
         zm_utility::play_sound_at_pos("purchase", self.origin);
         player zm_score::minus_to_player_score(self.zombie_cost);
@@ -704,10 +462,10 @@ function function_f8358462() {
     level flag::set("players_riding_minecart");
     level thread function_43dedd2a();
     self triggerenable(0);
-    self sethintstring( & "ZM_TEMPLE_MINECART_UNAVAILABLE");
+    self sethintstring(&"ZM_TEMPLE_MINECART_UNAVAILABLE");
     if(isdefined(self.minecart.var_c25552a2)) {
       self.minecart.var_c25552a2 rotateroll(180, 0.3, 0.1, 0.1);
-      self.minecart.var_c25552a2 waittill(# "rotatedone");
+      self.minecart.var_c25552a2 waittill("rotatedone");
     }
     var_f60bdab9 = 0.25;
     self.minecart thread function_31bd47e5(var_f60bdab9);
@@ -734,7 +492,7 @@ function function_f8358462() {
     }
     wait(1);
     self triggerenable(1);
-    self.minecart waittill(# "reached_end_node");
+    self.minecart waittill("reached_end_node");
     self.minecart function_a2aafac6();
     self.minecart.speaker_left stoploopsound(1);
     wait(1);
@@ -755,7 +513,7 @@ function function_f8358462() {
       self.minecart.away = 0;
       self.minecart function_b6cb1d5a("start");
       var_246ba808 function_4c5d405f(self.minecart.accel);
-      var_246ba808 waittill(# "reached_end_node");
+      var_246ba808 waittill("reached_end_node");
       var_246ba808 function_f16a275(self.minecart.accel, self.minecart.decel);
       function_59dcb5d1(var_246ba808, self.minecart);
       var_246ba808 stoploopsound();
@@ -767,20 +525,11 @@ function function_f8358462() {
     }
     if(isdefined(self.minecart.var_c25552a2)) {
       self.minecart.var_c25552a2 rotateroll(-180, 0.3, 0.1, 0.1);
-      self.minecart.var_c25552a2 waittill(# "rotatedone");
+      self.minecart.var_c25552a2 waittill("rotatedone");
     }
   }
 }
 
-/*
-	Name: function_b56e3436
-	Namespace: zm_temple_minecart
-	Checksum: 0xB658202E
-	Offset: 0x2D48
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b56e3436() {
   var_6fbe862f = 1;
   players = getplayers();
@@ -795,15 +544,6 @@ function function_b56e3436() {
   return var_6fbe862f;
 }
 
-/*
-	Name: function_59dcb5d1
-	Namespace: zm_temple_minecart
-	Checksum: 0x398C27EA
-	Offset: 0x2E10
-	Size: 0x18C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_59dcb5d1(var_e48fa956, var_8c9fa61, time) {
   model = spawn("script_model", var_e48fa956.origin);
   model setmodel(var_e48fa956.model);
@@ -812,20 +552,11 @@ function function_59dcb5d1(var_e48fa956, var_8c9fa61, time) {
   model moveto(var_8c9fa61.origin, 1, 0.1, 0.1);
   rotateangles = (0 - var_8c9fa61.angles[0], var_8c9fa61.angles[1] - 180, 0);
   model rotateto(rotateangles, 1, 0.1, 0.1);
-  model waittill(# "movedone");
+  model waittill("movedone");
   model delete();
   var_8c9fa61 show();
 }
 
-/*
-	Name: function_a2aafac6
-	Namespace: zm_temple_minecart
-	Checksum: 0x90EBB348
-	Offset: 0x2FA8
-	Size: 0x4BE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a2aafac6() {
   speed = 500;
   self function_b1da7b23();
@@ -853,7 +584,7 @@ function function_a2aafac6() {
     }
     var_8e3b7101[var_8e3b7101.size] = player;
     var_e6eabdfa[var_e6eabdfa.size] = player;
-    player notify(# "hash_aa83d93d");
+    player notify("hash_aa83d93d");
     player clientfield::set_to_player("minecart_rumble", 0);
     player playrumbleonentity("damage_heavy");
     earthquake(0.5, 2, player.origin, 100, player);
@@ -885,119 +616,56 @@ function function_a2aafac6() {
   }
 }
 
-/*
-	Name: function_5724a279
-	Namespace: zm_temple_minecart
-	Checksum: 0x537BD127
-	Offset: 0x3470
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5724a279() {
   if(isdefined(self)) {
     self disableinvulnerability();
   }
 }
 
-/*
-	Name: function_b65d8973
-	Namespace: zm_temple_minecart
-	Checksum: 0x2EABFA1B
-	Offset: 0x34A0
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function function_b65d8973(minecart) {
-  minecart waittill(# "reached_end_node");
+  minecart waittill("reached_end_node");
   self zm_utility::deactivate_zombie_point_of_interest();
 }
 
-/*
-	Name: function_131c0ce7
-	Namespace: zm_temple_minecart
-	Checksum: 0x77B49A94
-	Offset: 0x34D8
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function function_131c0ce7() {
   trigger = getent("force_waterfall_active", "script_noteworthy");
   if(isdefined(trigger)) {
-    trigger waittill(# "trigger");
+    trigger waittill("trigger");
     level.minecart_force_zone_active = 1;
-    self waittill(# "reached_end_node");
+    self waittill("reached_end_node");
     level.minecart_force_zone_active = 0;
   }
 }
 
-/*
-	Name: function_b97fa0a1
-	Namespace: zm_temple_minecart
-	Checksum: 0x995373E7
-	Offset: 0x3550
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function function_b97fa0a1(time, delay) {
   wait(delay);
   self thread function_c379c791(time);
 }
 
-/*
-	Name: function_c379c791
-	Namespace: zm_temple_minecart
-	Checksum: 0x8D87B856
-	Offset: 0x3590
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c379c791(time) {
   if(isdefined(self.door)) {
     if(self.door.closed) {
       self.door movez(-130, time, 0.1, 0.1);
       self.door.clip movez(-130, time, 0.1, 0.1);
-      self.door waittill(# "movedone");
+      self.door waittill("movedone");
       self.door.closed = 0;
       self.door.clip connectpaths();
     }
   }
 }
 
-/*
-	Name: function_e42c263d
-	Namespace: zm_temple_minecart
-	Checksum: 0x77727FB6
-	Offset: 0x3678
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e42c263d() {
   if(isdefined(self.door)) {
     if(!self.door.closed) {
       self.door movez(130, 0.5, 0.1, 0.1);
       self.door.clip movez(130, 0.1);
-      self.door waittill(# "movedone");
+      self.door waittill("movedone");
       self.door.closed = 1;
       self.door.clip disconnectpaths();
     }
   }
 }
 
-/*
-	Name: function_31bd47e5
-	Namespace: zm_temple_minecart
-	Checksum: 0x563143E5
-	Offset: 0x3750
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_31bd47e5(time) {
   if(self.var_ab67891f) {
     door = undefined;
@@ -1006,7 +674,7 @@ function function_31bd47e5(time) {
       door rotateyaw(door.script_vector[1], time, 0.1, 0.1);
     }
     if(isdefined(door)) {
-      door waittill(# "rotatedone");
+      door waittill("rotatedone");
     }
     self.var_ab67891f = 0;
     if(isdefined(self.var_7c850021)) {
@@ -1015,15 +683,6 @@ function function_31bd47e5(time) {
   }
 }
 
-/*
-	Name: function_290ed469
-	Namespace: zm_temple_minecart
-	Checksum: 0xC96A3FCE
-	Offset: 0x3848
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_290ed469() {
   if(!self.var_ab67891f) {
     if(isdefined(self.var_7c850021)) {
@@ -1035,77 +694,41 @@ function function_290ed469() {
       door rotateyaw(-1 * door.script_vector[1], 1, 0.1, 0.1);
     }
     if(isdefined(door)) {
-      door waittill(# "rotatedone");
+      door waittill("rotatedone");
     }
     self.var_ab67891f = 1;
   }
 }
 
-/*
-	Name: function_a4db8189
-	Namespace: zm_temple_minecart
-	Checksum: 0x40FF18C
-	Offset: 0x3940
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a4db8189(delay) {
   wait(delay);
   self thread function_290ed469();
 }
 
-/*
-	Name: function_5b5fcc02
-	Namespace: zm_temple_minecart
-	Checksum: 0x267E3C77
-	Offset: 0x3970
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5b5fcc02() {
   if(isdefined(self.pusher)) {
     if(!self.pusher.out) {
       wait(0.3);
       self.pusher movey(166, 2, 0.25, 0.1);
-      self.pusher waittill(# "movedone");
+      self.pusher waittill("movedone");
       self.pusher.out = 1;
-      level waittill(# "hash_c6b9857c");
+      level waittill("hash_c6b9857c");
       wait(2.7);
       self thread function_c716b3b7();
     }
   }
 }
 
-/*
-	Name: function_c716b3b7
-	Namespace: zm_temple_minecart
-	Checksum: 0x427567AD
-	Offset: 0x3A30
-	Size: 0x78
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c716b3b7() {
   if(isdefined(self.pusher)) {
     if(self.pusher.out) {
       self.pusher movey(-166, 4, 0.25, 0.1);
-      self.pusher waittill(# "movedone");
+      self.pusher waittill("movedone");
       self.pusher.out = 0;
     }
   }
 }
 
-/*
-	Name: function_7fec5b68
-	Namespace: zm_temple_minecart
-	Checksum: 0x19241B5B
-	Offset: 0x3AB0
-	Size: 0x428
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7fec5b68() {
   height = 0;
   scale = getent("minecart1_scale", "targetname");
@@ -1113,7 +736,7 @@ function function_7fec5b68() {
     return;
   }
   scale.origin = scale.origin + (vectorscale((0, 0, -1), 37));
-  level waittill(# "hash_25007749");
+  level waittill("hash_25007749");
   while (true) {
     count = 0;
     if(isdefined(self.minecart) && !self.minecart.away) {
@@ -1141,12 +764,12 @@ function function_7fec5b68() {
           rise = rise + 1;
         }
         scale movez(rise, 0.35, 0.05, 0);
-        scale waittill(# "movedone");
+        scale waittill("movedone");
       }
       scale movez(-2, 0.2, 0, 0);
-      scale waittill(# "movedone");
+      scale waittill("movedone");
       scale movez(1, 0.1, 0, 0);
-      scale waittill(# "movedone");
+      scale waittill("movedone");
     } else if(height > count) {
       drop = 0;
       time = 0;
@@ -1171,43 +794,25 @@ function function_7fec5b68() {
         drop = drop + -1;
       }
       scale movez(drop, time, 0.1, 0);
-      scale waittill(# "movedone");
+      scale waittill("movedone");
       scale movez(pop, pop * 0.1, 0, 0);
-      scale waittill(# "movedone");
+      scale waittill("movedone");
       scale movez(dip, abs(dip * 0.1), 0, 0);
-      scale waittill(# "movedone");
+      scale waittill("movedone");
     }
     wait(0.1);
   }
 }
 
-/*
-	Name: function_86d73e41
-	Namespace: zm_temple_minecart
-	Checksum: 0xA95569BB
-	Offset: 0x3EE0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_86d73e41() {
   self triggerenable(1);
   wait(3);
   self triggerenable(0);
 }
 
-/*
-	Name: function_68c61932
-	Namespace: zm_temple_minecart
-	Checksum: 0xB4AE8342
-	Offset: 0x3F28
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_68c61932() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(isdefined(player) && isdefined(player.var_e4bd94c) && player.var_e4bd94c > gettime()) {
       playfx(level._effect["player_water_splash"], player.origin);
       player playsound("fly_bodyfall_large_water");
@@ -1216,15 +821,6 @@ function function_68c61932() {
   }
 }
 
-/*
-	Name: function_82d1ad64
-	Namespace: zm_temple_minecart
-	Checksum: 0x454099B9
-	Offset: 0x3FF0
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function function_82d1ad64(array) {
   if(array.size == 0) {
     return;
@@ -1236,15 +832,6 @@ function function_82d1ad64(array) {
   }
 }
 
-/*
-	Name: function_43dedd2a
-	Namespace: zm_temple_minecart
-	Checksum: 0x27915BF8
-	Offset: 0x4090
-	Size: 0xC6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_43dedd2a() {
   corpse_trig = getent("minecart1_start_volume", "targetname");
   corpses = getcorpsearray();
@@ -1257,15 +844,6 @@ function function_43dedd2a() {
   }
 }
 
-/*
-	Name: function_edc2ec93
-	Namespace: zm_temple_minecart
-	Checksum: 0x6AAA0453
-	Offset: 0x4160
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_edc2ec93() {
   playfx(level._effect["corpse_gib"], self.origin);
   self delete();

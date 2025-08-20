@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_bridges.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -11,7 +15,6 @@
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #using_animtree("generic");
 
 class cbridge {
@@ -23,51 +26,19 @@ class cbridge {
   var m_e_clip_blocker;
   var m_b_discovered;
 
-  /*
-  	Name: constructor
-  	Namespace: cbridge
-  	Checksum: 0x99EC1590
-  	Offset: 0xB88
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: None
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: cbridge
-  	Checksum: 0x99EC1590
-  	Offset: 0xB98
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: None
-  */
+
   destructor() {}
 
-  /*
-  	Name: move_blocker
-  	Namespace: cbridge
-  	Checksum: 0xE2E1D080
-  	Offset: 0xB38
-  	Size: 0x44
-  	Parameters: 0
-  	Flags: None
-  */
+
   function move_blocker() {
     self moveto(origin - vectorscale((0, 0, 1), 10000), 0.05);
     wait(0.05);
   }
 
-  /*
-  	Name: unlock_zones
-  	Namespace: cbridge
-  	Checksum: 0xB3E1E759
-  	Offset: 0xA80
-  	Size: 0xAC
-  	Parameters: 0
-  	Flags: None
-  */
+
   function unlock_zones() {
     str_zonename = m_str_areaname + "_district_zone_high";
     if(!zm_zonemgr::zone_is_enabled(str_zonename)) {
@@ -77,15 +48,7 @@ class cbridge {
     zm_zonemgr::add_adjacent_zone(m_str_areaname + "_district_zone_B", str_zonename, ("enter_" + m_str_areaname) + "_district_high_from_B");
   }
 
-  /*
-  	Name: bridge_connect
-  	Namespace: cbridge
-  	Checksum: 0xCEED0C4D
-  	Offset: 0x8A8
-  	Size: 0x1CC
-  	Parameters: 2
-  	Flags: None
-  */
+
   function bridge_connect(t_trigger_a, t_trigger_b) {
     util::waittill_any_ents_two(t_trigger_a, "trigger", t_trigger_b, "trigger");
     foreach(e_blocker in m_a_e_blockers) {
@@ -103,15 +66,7 @@ class cbridge {
     unlock_zones();
   }
 
-  /*
-  	Name: filter_areaname
-  	Namespace: cbridge
-  	Checksum: 0x5A78BAE8
-  	Offset: 0x858
-  	Size: 0x48
-  	Parameters: 2
-  	Flags: None
-  */
+
   function filter_areaname(e_entity, str_areaname) {
     if(!isdefined(e_entity.script_string) || e_entity.script_string != str_areaname) {
       return false;
@@ -119,15 +74,7 @@ class cbridge {
     return true;
   }
 
-  /*
-  	Name: init_bridge
-  	Namespace: cbridge
-  	Checksum: 0x5FFBAC61
-  	Offset: 0x488
-  	Size: 0x3C4
-  	Parameters: 1
-  	Flags: None
-  */
+
   function init_bridge(str_areaname) {
     m_str_areaname = str_areaname;
     m_n_state = 0;
@@ -162,41 +109,14 @@ class cbridge {
 
 #namespace zm_zod_bridges;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_zod_bridges
-	Checksum: 0xD1F51EE3
-	Offset: 0x330
-	Size: 0x2C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_zod_bridges", undefined, & __main__, undefined);
 }
 
-/*
-	Name: __main__
-	Namespace: zm_zod_bridges
-	Checksum: 0x9B24A9A6
-	Offset: 0x368
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function __main__() {
   level thread init_bridges();
 }
 
-/*
-	Name: init_bridges
-	Namespace: zm_zod_bridges
-	Checksum: 0xEE322FE9
-	Offset: 0x390
-	Size: 0x94
-	Parameters: 0
-	Flags: None
-*/
 function init_bridges() {
   if(!isdefined(level.beast_mode_targets)) {
     level.beast_mode_targets = [];
@@ -209,18 +129,7 @@ function init_bridges() {
   }
 }
 
-/*
-	Name: init_bridge
-	Namespace: zm_zod_bridges
-	Checksum: 0x645BB9C5
-	Offset: 0x430
-	Size: 0x50
-	Parameters: 2
-	Flags: None
-*/
 function init_bridge(str_areaname, n_index) {
   level.a_o_bridge[n_index] = new cbridge();
-  [
-    [level.a_o_bridge[n_index]]
-  ] - > init_bridge(str_areaname);
+  [[level.a_o_bridge[n_index]]] - > init_bridge(str_areaname);
 }

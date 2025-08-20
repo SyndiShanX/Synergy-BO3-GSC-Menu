@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicleriders_shared.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\animation_shared;
 #using scripts\shared\array_shared;
@@ -8,33 +12,13 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("generic");
-
 #namespace vehicle;
 
-/*
-	Name: __init__sytem__
-	Namespace: vehicle
-	Checksum: 0xF638FCCB
-	Offset: 0x1F0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("vehicleriders", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: vehicle
-	Checksum: 0xEA50B9D
-	Offset: 0x230
-	Size: 0x2A2
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   a_registered_fields = [];
   foreach(bundle in struct::get_script_bundles("vehicleriders")) {
@@ -55,15 +39,6 @@ function __init__() {
   }
 }
 
-/*
-	Name: play_vehicle_anim
-	Namespace: vehicle
-	Checksum: 0x57AFDDAF
-	Offset: 0x4E0
-	Size: 0x2C4
-	Parameters: 7
-	Flags: Linked
-*/
 function play_vehicle_anim(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   s_bundle = struct::get_script_bundle("vehicleriders", self.vehicleridersbundle);
   str_pos = "";
@@ -105,15 +80,6 @@ function play_vehicle_anim(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: set_vehicleriders_bundle
-	Namespace: vehicle
-	Checksum: 0x8E840B01
-	Offset: 0x7B0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function set_vehicleriders_bundle(str_bundlename) {
   self.vehicleriders = struct::get_script_bundle("vehicleriders", str_bundlename);
 }

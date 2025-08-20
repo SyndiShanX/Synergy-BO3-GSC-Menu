@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weapons.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -6,57 +10,20 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_weapons;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_weapons
-	Checksum: 0x3AA1875C
-	Offset: 0x2B0
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weapons", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_weapons
-	Checksum: 0xB42E9433
-	Offset: 0x2F8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level flag::init("weapon_table_loaded");
   level flag::init("weapon_wallbuys_created");
   callback::on_localclient_connect( & on_player_connect);
 }
 
-/*
-	Name: __main__
-	Namespace: zm_weapons
-	Checksum: 0x99EC1590
-	Offset: 0x368
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {}
 
-/*
-	Name: on_player_connect
-	Namespace: zm_weapons
-	Checksum: 0x4D6C5AC0
-	Offset: 0x378
-	Size: 0x16A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private on_player_connect(localclientnum) {
   if(getmigrationstatus(localclientnum)) {
     return;
@@ -70,15 +37,6 @@ function private on_player_connect(localclientnum) {
   }
 }
 
-/*
-	Name: is_weapon_included
-	Namespace: zm_weapons
-	Checksum: 0x672F56CB
-	Offset: 0x4F0
-	Size: 0x36
-	Parameters: 1
-	Flags: Linked
-*/
 function is_weapon_included(weapon) {
   if(!isdefined(level._included_weapons)) {
     return 0;
@@ -86,15 +44,6 @@ function is_weapon_included(weapon) {
   return isdefined(level._included_weapons[weapon.rootweapon]);
 }
 
-/*
-	Name: compute_player_weapon_ammo_cost
-	Namespace: zm_weapons
-	Checksum: 0x61490FB
-	Offset: 0x530
-	Size: 0x11A
-	Parameters: 5
-	Flags: Linked
-*/
 function compute_player_weapon_ammo_cost(weapon, cost, upgraded, n_base_non_wallbuy_cost = 750, n_upgraded_non_wallbuy_cost = 5000) {
   w_root = weapon.rootweapon;
   if(upgraded) {
@@ -114,15 +63,6 @@ function compute_player_weapon_ammo_cost(weapon, cost, upgraded, n_base_non_wall
   return n_ammo_cost;
 }
 
-/*
-	Name: include_weapon
-	Namespace: zm_weapons
-	Checksum: 0x2BC594EA
-	Offset: 0x658
-	Size: 0x24C
-	Parameters: 5
-	Flags: Linked
-*/
 function include_weapon(weapon_name, display_in_box, cost, ammo_cost, upgraded = 0) {
   if(!isdefined(level._included_weapons)) {
     level._included_weapons = [];
@@ -156,15 +96,6 @@ function include_weapon(weapon_name, display_in_box, cost, ammo_cost, upgraded =
   addzombieboxweapon(weapon, weapon.worldmodel, weapon.isdualwield);
 }
 
-/*
-	Name: include_upgraded_weapon
-	Namespace: zm_weapons
-	Checksum: 0x2092C57
-	Offset: 0x8B0
-	Size: 0xC2
-	Parameters: 5
-	Flags: Linked
-*/
 function include_upgraded_weapon(weapon_name, upgrade_name, display_in_box, cost, ammo_cost) {
   include_weapon(upgrade_name, display_in_box, cost, ammo_cost, 1);
   if(!isdefined(level.zombie_weapons_upgraded)) {
@@ -175,15 +106,6 @@ function include_upgraded_weapon(weapon_name, upgrade_name, display_in_box, cost
   level.zombie_weapons_upgraded[upgrade] = weapon;
 }
 
-/*
-	Name: is_weapon_upgraded
-	Namespace: zm_weapons
-	Checksum: 0xE907D068
-	Offset: 0x980
-	Size: 0x42
-	Parameters: 1
-	Flags: Linked
-*/
 function is_weapon_upgraded(weapon) {
   rootweapon = weapon.rootweapon;
   if(isdefined(level.zombie_weapons_upgraded[rootweapon])) {
@@ -192,15 +114,6 @@ function is_weapon_upgraded(weapon) {
   return false;
 }
 
-/*
-	Name: init
-	Namespace: zm_weapons
-	Checksum: 0xBD801785
-	Offset: 0x9D0
-	Size: 0x64C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   spawn_list = [];
   spawnable_weapon_spawns = struct::get_array("weapon_upgrade", "targetname");
@@ -262,15 +175,6 @@ function init() {
   callback::on_localclient_connect( & wallbuy_player_connect);
 }
 
-/*
-	Name: is_wallbuy
-	Namespace: zm_weapons
-	Checksum: 0xF495BD10
-	Offset: 0x1028
-	Size: 0xE6
-	Parameters: 1
-	Flags: Linked
-*/
 function is_wallbuy(w_to_check) {
   w_base = w_to_check.rootweapon;
   foreach(s_wallbuy in level._active_wallbuys) {
@@ -286,43 +190,23 @@ function is_wallbuy(w_to_check) {
   return false;
 }
 
-/*
-	Name: wallbuy_player_connect
-	Namespace: zm_weapons
-	Checksum: 0x89AB75C0
-	Offset: 0x1118
-	Size: 0x1C4
-	Parameters: 1
-	Flags: Linked
-*/
 function wallbuy_player_connect(localclientnum) {
   keys = getarraykeys(level._active_wallbuys);
-  /#
   println("" + localclientnum);
-  # /
-    for (i = 0; i < keys.size; i++) {
-      wallbuy = level._active_wallbuys[keys[i]];
-      fx = level._effect["870mcs_zm_fx"];
-      if(isdefined(level._effect[wallbuy.zombie_weapon_upgrade + "_fx"])) {
-        fx = level._effect[wallbuy.zombie_weapon_upgrade + "_fx"];
-      }
-      target_struct = struct::get(wallbuy.target, "targetname");
-      target_model = zm_utility::spawn_buildkit_weapon_model(localclientnum, wallbuy.weapon, undefined, target_struct.origin, target_struct.angles);
-      target_model hide();
-      target_model.parent_struct = target_struct;
-      wallbuy.models[localclientnum] = target_model;
+  for (i = 0; i < keys.size; i++) {
+    wallbuy = level._active_wallbuys[keys[i]];
+    fx = level._effect["870mcs_zm_fx"];
+    if(isdefined(level._effect[wallbuy.zombie_weapon_upgrade + "_fx"])) {
+      fx = level._effect[wallbuy.zombie_weapon_upgrade + "_fx"];
     }
+    target_struct = struct::get(wallbuy.target, "targetname");
+    target_model = zm_utility::spawn_buildkit_weapon_model(localclientnum, wallbuy.weapon, undefined, target_struct.origin, target_struct.angles);
+    target_model hide();
+    target_model.parent_struct = target_struct;
+    wallbuy.models[localclientnum] = target_model;
+  }
 }
 
-/*
-	Name: wallbuy_callback
-	Namespace: zm_weapons
-	Checksum: 0x18AA2680
-	Offset: 0x12E8
-	Size: 0x436
-	Parameters: 7
-	Flags: Linked
-*/
 function wallbuy_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(binitialsnap) {
     while (!isdefined(level._active_wallbuys) || !isdefined(level._active_wallbuys[fieldname])) {
@@ -330,63 +214,52 @@ function wallbuy_callback(localclientnum, oldval, newval, bnewent, binitialsnap,
     }
   }
   struct = level._active_wallbuys[fieldname];
-  /#
   println("" + localclientnum);
-  # /
-    switch (newval) {
-      case 0: {
-        struct.models[localclientnum].origin = struct.models[localclientnum].parent_struct.origin;
-        struct.models[localclientnum].angles = struct.models[localclientnum].parent_struct.angles;
-        struct.models[localclientnum] hide();
-        break;
-      }
-      case 1: {
-        if(binitialsnap) {
-          if(!isdefined(struct.models)) {
-            while (!isdefined(struct.models)) {
-              wait(0.05);
-            }
-            while (!isdefined(struct.models[localclientnum])) {
-              wait(0.05);
-            }
-          }
-          struct.models[localclientnum] show();
-          struct.models[localclientnum].origin = struct.models[localclientnum].parent_struct.origin;
-        } else {
-          wait(0.05);
-          if(localclientnum == 0) {
-            playsound(0, "zmb_weap_wall", struct.origin);
-          }
-          vec_offset = (0, 0, 0);
-          if(isdefined(struct.models[localclientnum].parent_struct.script_vector)) {
-            vec_offset = struct.models[localclientnum].parent_struct.script_vector;
-          }
-          struct.models[localclientnum].origin = struct.models[localclientnum].parent_struct.origin + ((anglestoright(struct.models[localclientnum].angles + vec_offset)) * 8);
-          struct.models[localclientnum] show();
-          struct.models[localclientnum] moveto(struct.models[localclientnum].parent_struct.origin, 1);
-        }
-        break;
-      }
-      case 2: {
-        if(isdefined(level.wallbuy_callback_hack_override)) {
-          struct.models[localclientnum][
-            [level.wallbuy_callback_hack_override]
-          ]();
-        }
-        break;
-      }
+  switch (newval) {
+    case 0: {
+      struct.models[localclientnum].origin = struct.models[localclientnum].parent_struct.origin;
+      struct.models[localclientnum].angles = struct.models[localclientnum].parent_struct.angles;
+      struct.models[localclientnum] hide();
+      break;
     }
+    case 1: {
+      if(binitialsnap) {
+        if(!isdefined(struct.models)) {
+          while (!isdefined(struct.models)) {
+            wait(0.05);
+          }
+          while (!isdefined(struct.models[localclientnum])) {
+            wait(0.05);
+          }
+        }
+        struct.models[localclientnum] show();
+        struct.models[localclientnum].origin = struct.models[localclientnum].parent_struct.origin;
+      } else {
+        wait(0.05);
+        if(localclientnum == 0) {
+          playsound(0, "zmb_weap_wall", struct.origin);
+        }
+        vec_offset = (0, 0, 0);
+        if(isdefined(struct.models[localclientnum].parent_struct.script_vector)) {
+          vec_offset = struct.models[localclientnum].parent_struct.script_vector;
+        }
+        struct.models[localclientnum].origin = struct.models[localclientnum].parent_struct.origin + ((anglestoright(struct.models[localclientnum].angles + vec_offset)) * 8);
+        struct.models[localclientnum] show();
+        struct.models[localclientnum] moveto(struct.models[localclientnum].parent_struct.origin, 1);
+      }
+      break;
+    }
+    case 2: {
+      if(isdefined(level.wallbuy_callback_hack_override)) {
+        struct.models[localclientnum][
+          [level.wallbuy_callback_hack_override]
+        ]();
+      }
+      break;
+    }
+  }
 }
 
-/*
-	Name: wallbuy_callback_idx
-	Namespace: zm_weapons
-	Checksum: 0x13830C4C
-	Offset: 0x1728
-	Size: 0x47A
-	Parameters: 7
-	Flags: Linked
-*/
 function wallbuy_callback_idx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   basefield = getsubstr(fieldname, 0, fieldname.size - 4);
   struct = level._active_wallbuys[basefield];
@@ -436,20 +309,11 @@ function wallbuy_callback_idx(localclientnum, oldval, newval, bnewent, binitials
         fx = level._effect[weaponname + "_fx"];
       }
       struct.fx[localclientnum] = playfx(localclientnum, fx, struct.origin, anglestoforward(struct.angles), anglestoup(struct.angles), 0.1);
-      level notify(# "wallbuy_updated");
+      level notify("wallbuy_updated");
     }
   }
 }
 
-/*
-	Name: checkstringvalid
-	Namespace: zm_weapons
-	Checksum: 0xFD7B7392
-	Offset: 0x1BB0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function checkstringvalid(str) {
   if(str != "") {
     return str;
@@ -457,15 +321,6 @@ function checkstringvalid(str) {
   return undefined;
 }
 
-/*
-	Name: load_weapon_spec_from_table
-	Namespace: zm_weapons
-	Checksum: 0xF3C38A0E
-	Offset: 0x1BE0
-	Size: 0x44C
-	Parameters: 2
-	Flags: Linked
-*/
 function load_weapon_spec_from_table(table, first_row) {
   gametype = getdvarstring("ui_gametype");
   index = 1;
@@ -503,15 +358,6 @@ function load_weapon_spec_from_table(table, first_row) {
   level flag::set("weapon_table_loaded");
 }
 
-/*
-	Name: autofill_wallbuys_init
-	Namespace: zm_weapons
-	Checksum: 0xAC0D7E8E
-	Offset: 0x2038
-	Size: 0x6A6
-	Parameters: 0
-	Flags: Linked
-*/
 function autofill_wallbuys_init() {
   wallbuys = struct::get_array("wallbuy_autofill", "targetname");
   if(!isdefined(wallbuys) || wallbuys.size == 0 || !isdefined(level.wallbuy_autofill_weapons) || level.wallbuy_autofill_weapons.size == 0) {

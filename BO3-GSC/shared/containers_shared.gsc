@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\containers_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -13,37 +17,13 @@
 class ccontainer {
   var m_e_container;
 
-  /*
-  	Name: constructor
-  	Namespace: ccontainer
-  	Checksum: 0x99EC1590
-  	Offset: 0x2D0
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: None
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: ccontainer
-  	Checksum: 0x99EC1590
-  	Offset: 0x2E0
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: None
-  */
+
   destructor() {}
 
-  /*
-  	Name: init_xmodel
-  	Namespace: ccontainer
-  	Checksum: 0x528395A8
-  	Offset: 0x2F0
-  	Size: 0x62
-  	Parameters: 3
-  	Flags: None
-  */
+
   function init_xmodel(str_xmodel = "script_origin", v_origin, v_angles) {
     m_e_container = util::spawn_model(str_xmodel, v_origin, v_angles);
     return m_e_container;
@@ -53,28 +33,10 @@ class ccontainer {
 
 #namespace containers;
 
-/*
-	Name: __init__sytem__
-	Namespace: containers
-	Checksum: 0x75CF0DA1
-	Offset: 0x420
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("containers", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: containers
-	Checksum: 0xDF834E5D
-	Offset: 0x460
-	Size: 0xDA
-	Parameters: 0
-	Flags: None
-*/
 function __init__() {
   a_containers = struct::get_array("scriptbundle_containers", "classname");
   foreach(s_instance in a_containers) {
@@ -85,15 +47,6 @@ function __init__() {
   }
 }
 
-/*
-	Name: init
-	Namespace: containers
-	Checksum: 0xF8CEEE0C
-	Offset: 0x548
-	Size: 0x62
-	Parameters: 0
-	Flags: None
-*/
 function init() {
   if(!isdefined(self.angles)) {
     self.angles = (0, 0, 0);
@@ -102,15 +55,6 @@ function init() {
   return setup_container_scriptbundle(s_bundle, self);
 }
 
-/*
-	Name: setup_container_scriptbundle
-	Namespace: containers
-	Checksum: 0x9694457B
-	Offset: 0x5B8
-	Size: 0xD8
-	Parameters: 2
-	Flags: None
-*/
 function setup_container_scriptbundle(s_bundle, s_container_instance) {
   c_container = new ccontainer();
   c_container.m_s_container_bundle = s_bundle;
@@ -121,35 +65,17 @@ function setup_container_scriptbundle(s_bundle, s_container_instance) {
   return c_container;
 }
 
-/*
-	Name: container_update
-	Namespace: containers
-	Checksum: 0x42B40120
-	Offset: 0x698
-	Size: 0x114
-	Parameters: 1
-	Flags: None
-*/
 function container_update(c_container) {
   e_ent = c_container.m_e_container;
   s_bundle = c_container.m_s_container_bundle;
   targetname = c_container.m_s_container_instance.targetname;
   n_radius = s_bundle.trigger_radius;
   e_trigger = create_locker_trigger(c_container.m_s_container_instance.origin, n_radius, "Press [{+activate}] to open");
-  e_trigger waittill(# "trigger", e_who);
+  e_trigger waittill("trigger", e_who);
   e_trigger delete();
   scene::play(targetname, "targetname");
 }
 
-/*
-	Name: create_locker_trigger
-	Namespace: containers
-	Checksum: 0xDAE2545C
-	Offset: 0x7B8
-	Size: 0x118
-	Parameters: 3
-	Flags: None
-*/
 function create_locker_trigger(v_pos, n_radius, str_message) {
   v_pos = (v_pos[0], v_pos[1], v_pos[2] + 50);
   e_trig = spawn("trigger_radius_use", v_pos, 0, n_radius, 100);
@@ -162,15 +88,6 @@ function create_locker_trigger(v_pos, n_radius, str_message) {
   return e_trig;
 }
 
-/*
-	Name: setup_general_container_bundle
-	Namespace: containers
-	Checksum: 0x5BD1CB48
-	Offset: 0x8D8
-	Size: 0x33C
-	Parameters: 4
-	Flags: None
-*/
 function setup_general_container_bundle(str_targetname, str_intel_vo, str_narrative_collectable_model, force_open) {
   s_struct = struct::get(str_targetname, "targetname");
   if(!isdefined(s_struct)) {
@@ -179,7 +96,7 @@ function setup_general_container_bundle(str_targetname, str_intel_vo, str_narrat
   level flag::wait_till("all_players_spawned");
   e_trigger = create_locker_trigger(s_struct.origin, 64, "Press [{+activate}] to open");
   if(!isdefined(force_open) || force_open == 0) {
-    e_trigger waittill(# "trigger", e_who);
+    e_trigger waittill("trigger", e_who);
   } else {
     rand_time = randomfloatrange(1, 1.5);
     wait(rand_time);
@@ -188,7 +105,7 @@ function setup_general_container_bundle(str_targetname, str_intel_vo, str_narrat
   level thread scene::play(str_targetname, "targetname");
   if(isdefined(s_struct.a_entity)) {
     for (i = 0; i < s_struct.a_entity.size; i++) {
-      s_struct.a_entity[i] notify(# "opened");
+      s_struct.a_entity[i] notify("opened");
     }
   }
   if(isdefined(str_narrative_collectable_model)) {
@@ -204,7 +121,7 @@ function setup_general_container_bundle(str_targetname, str_intel_vo, str_narrat
     e_collectable.angles = v_angles;
     wait(1);
     e_trigger = create_locker_trigger(s_struct.origin, 64, "Press [{+activate}] to pickup collectable");
-    e_trigger waittill(# "trigger", e_who);
+    e_trigger waittill("trigger", e_who);
     e_trigger delete();
     e_collectable delete();
   }
@@ -213,15 +130,6 @@ function setup_general_container_bundle(str_targetname, str_intel_vo, str_narrat
   }
 }
 
-/*
-	Name: setup_locker_double_doors
-	Namespace: containers
-	Checksum: 0x121CFAA9
-	Offset: 0xC20
-	Size: 0x196
-	Parameters: 3
-	Flags: None
-*/
 function setup_locker_double_doors(str_left_door_name, str_right_door_name, center_point_offset) {
   a_left_doors = getentarray(str_left_door_name, "targetname");
   if(!isdefined(a_left_doors)) {
@@ -244,15 +152,6 @@ function setup_locker_double_doors(str_left_door_name, str_right_door_name, cent
   }
 }
 
-/*
-	Name: get_closest_ent_from_array
-	Namespace: containers
-	Checksum: 0xCDA1C3C0
-	Offset: 0xDC0
-	Size: 0xC6
-	Parameters: 2
-	Flags: None
-*/
 function get_closest_ent_from_array(v_pos, a_ents) {
   e_closest = undefined;
   n_closest_dist = 9999999;
@@ -266,20 +165,11 @@ function get_closest_ent_from_array(v_pos, a_ents) {
   return e_closest;
 }
 
-/*
-	Name: create_locker_doors
-	Namespace: containers
-	Checksum: 0x1171F6C3
-	Offset: 0xE90
-	Size: 0x1AC
-	Parameters: 4
-	Flags: None
-*/
 function create_locker_doors(e_left_door, e_right_door, door_open_angle, door_open_time) {
   v_locker_pos = (e_left_door.origin + e_right_door.origin) / 2;
   n_trigger_radius = 48;
   e_trigger = create_locker_trigger(v_locker_pos, n_trigger_radius, "Press [{+activate}] to open");
-  e_trigger waittill(# "trigger");
+  e_trigger waittill("trigger");
   e_left_door playsound("evt_cabinet_open");
   v_angle = (e_left_door.angles[0], e_left_door.angles[1] - door_open_angle, e_left_door.angles[2]);
   e_left_door rotateto(v_angle, door_open_time);

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicles\_dragon_whelp.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\blackboard_vehicle;
 #using scripts\shared\ai\systems\blackboard;
@@ -14,46 +18,17 @@
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_death_shared;
 #using scripts\shared\vehicle_shared;
-
 #using_animtree("generic");
-
 #namespace dragon;
 
-/*
-	Name: __init__sytem__
-	Namespace: dragon
-	Checksum: 0x95A02DCE
-	Offset: 0x330
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("dragon", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: dragon
-	Checksum: 0x19735DDB
-	Offset: 0x370
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   vehicle::add_main_callback("dragon", & dragon_initialize);
 }
 
-/*
-	Name: dragon_initialize
-	Namespace: dragon
-	Checksum: 0x6E1FC824
-	Offset: 0x3A8
-	Size: 0x23C
-	Parameters: 0
-	Flags: Linked
-*/
 function dragon_initialize() {
   self useanimtree($generic);
   self.health = self.healthdefault;
@@ -61,10 +36,8 @@ function dragon_initialize() {
   if(isdefined(self.scriptbundlesettings)) {
     self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
   }
-  /#
   assert(isdefined(self.settings));
-  # /
-    self setneargoalnotifydist(self.radius * 1.5);
+  self setneargoalnotifydist(self.radius * 1.5);
   self sethoverparams(self.radius, self.settings.defaultmovespeed * 2, self.radius);
   self setspeed(self.settings.defaultmovespeed);
   blackboard::createblackboardforentity(self);
@@ -87,15 +60,6 @@ function dragon_initialize() {
   defaultrole();
 }
 
-/*
-	Name: defaultrole
-	Namespace: dragon
-	Checksum: 0xB07A22BD
-	Offset: 0x5F0
-	Size: 0x178
-	Parameters: 0
-	Flags: Linked
-*/
 function defaultrole() {
   self vehicle_ai::init_state_machine_for_role("default");
   self vehicle_ai::get_state_callbacks("combat").update_func = & state_combat_update;
@@ -105,23 +69,12 @@ function defaultrole() {
     self vehicle_ai::add_utility_connection("combat", "power_up", & should_go_for_power_up);
     self vehicle_ai::add_utility_connection("power_up", "combat");
   }
-  /#
   setdvar("", 0);
-  # /
-    self thread dragon_target_selection();
+  self thread dragon_target_selection();
   vehicle_ai::startinitialstate("combat");
   self.starttime = gettime();
 }
 
-/*
-	Name: is_enemy_valid
-	Namespace: dragon
-	Checksum: 0x301A319A
-	Offset: 0x770
-	Size: 0x1BE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private is_enemy_valid(target) {
   if(!isdefined(target)) {
     return false;
@@ -156,15 +109,6 @@ function private is_enemy_valid(target) {
   return false;
 }
 
-/*
-	Name: get_dragon_enemy
-	Namespace: dragon
-	Checksum: 0xC3DB2B33
-	Offset: 0x938
-	Size: 0x29C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private get_dragon_enemy() {
   dragon_enemies = getaiteamarray("axis");
   distsqr = 10000 * 10000;
@@ -193,17 +137,8 @@ function private get_dragon_enemy() {
   return best_enemy;
 }
 
-/*
-	Name: dragon_target_selection
-	Namespace: dragon
-	Checksum: 0x9CE7BF64
-	Offset: 0xBE0
-	Size: 0x100
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private dragon_target_selection() {
-  self endon(# "death");
+  self endon("death");
   for (;;) {
     if(!isdefined(self.owner)) {
       wait(0.25);
@@ -213,14 +148,12 @@ function private dragon_target_selection() {
       wait(0.25);
       continue;
     }
-    /#
     if(getdvarint("", 0)) {
       if(isdefined(self.dragonenemy)) {
         line(self.origin, self.dragonenemy.origin, (1, 0, 0), 1, 0, 5);
       }
     }
-    # /
-      target = get_dragon_enemy();
+    target = get_dragon_enemy();
     if(!isdefined(target)) {
       self.dragonenemy = undefined;
     } else {
@@ -230,18 +163,9 @@ function private dragon_target_selection() {
   }
 }
 
-/*
-	Name: state_power_up_update
-	Namespace: dragon
-	Checksum: 0x6AC2C56B
-	Offset: 0xCE8
-	Size: 0x264
-	Parameters: 1
-	Flags: Linked
-*/
 function state_power_up_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   closest_distsqr = 10000 * 10000;
   closest = undefined;
   foreach(powerup in level.active_powerups) {
@@ -270,15 +194,6 @@ function state_power_up_update(params) {
   self vehicle_ai::evaluate_connections();
 }
 
-/*
-	Name: should_go_for_power_up
-	Namespace: dragon
-	Checksum: 0x5C589533
-	Offset: 0xF58
-	Size: 0x5A
-	Parameters: 3
-	Flags: Linked
-*/
 function should_go_for_power_up(from_state, to_state, connection) {
   if(level.whelp_no_power_up_pickup === 1) {
     return false;
@@ -292,18 +207,9 @@ function should_go_for_power_up(from_state, to_state, connection) {
   return true;
 }
 
-/*
-	Name: state_combat_update
-	Namespace: dragon
-	Checksum: 0x170A7E76
-	Offset: 0xFC0
-	Size: 0x850
-	Parameters: 1
-	Flags: Linked
-*/
 function state_combat_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   idealdisttoowner = 300;
   self asmrequestsubstate("locomotion@movement");
   while (!isdefined(self.owner)) {
@@ -336,44 +242,36 @@ function state_combat_update(params) {
         foreach(point in queryresult.data) {
           distsqr = distance2dsquared(point.origin, ownerorigin);
           if(distsqr > (idealdisttoowner * idealdisttoowner)) {
-            /#
             if(!isdefined(point._scoredebug)) {
               point._scoredebug = [];
             }
             point._scoredebug[""] = (sqrt(distsqr) * -1) * 2;
-            # /
-              point.score = point.score + ((sqrt(distsqr) * -1) * 2);
+            point.score = point.score + ((sqrt(distsqr) * -1) * 2);
           }
           if(isdefined(point.visibility) && point.visibility) {
             if(bullettracepassed(point.origin, sighttarget, 0, self)) {
-              /#
               if(!isdefined(point._scoredebug)) {
                 point._scoredebug = [];
               }
               point._scoredebug[""] = 400;
-              # /
-                point.score = point.score + 400;
+              point.score = point.score + 400;
             }
           }
           vectoowner = point.origin - ownerorigin;
           dirtoowner = vectornormalize((vectoowner[0], vectoowner[1], 0));
           if(vectordot(ownerforward, dirtoowner) > 0.34) {
             if(abs(vectoowner[2]) < 100) {
-              /#
               if(!isdefined(point._scoredebug)) {
                 point._scoredebug = [];
               }
               point._scoredebug[""] = 300;
-              # /
-                point.score = point.score + 300;
+              point.score = point.score + 300;
             } else if(abs(vectoowner[2]) < 200) {
-              /#
               if(!isdefined(point._scoredebug)) {
                 point._scoredebug = [];
               }
               point._scoredebug[""] = 100;
-              # /
-                point.score = point.score + 100;
+              point.score = point.score + 100;
             }
           }
           if(point.score > best_score) {
@@ -383,18 +281,15 @@ function state_combat_update(params) {
         }
         self vehicle_ai::positionquery_debugscores(queryresult);
         if(isdefined(best_point)) {
-          /#
           if(isdefined(getdvarint("")) && getdvarint("")) {
             recordline(self.origin, best_point.origin, (0.3, 1, 0));
             recordline(self.origin, self.owner.origin, (1, 0, 0.4));
           }
-          # /
-            if(distancesquared(self.origin, best_point.origin) > (50 * 50)) {
-              self.current_pathto_pos = best_point.origin;
-              self setvehgoalpos(self.current_pathto_pos, 1, 1);
-              self vehicle_ai::waittill_pathing_done(5);
-            }
-          else {
+          if(distancesquared(self.origin, best_point.origin) > (50 * 50)) {
+            self.current_pathto_pos = best_point.origin;
+            self setvehgoalpos(self.current_pathto_pos, 1, 1);
+            self vehicle_ai::waittill_pathing_done(5);
+          } else {
             self vehicle_ai::cooldown("move_cooldown", 4);
           }
         }
@@ -406,18 +301,9 @@ function state_combat_update(params) {
   }
 }
 
-/*
-	Name: attack_thread
-	Namespace: dragon
-	Checksum: 0x36FDCF4
-	Offset: 0x1818
-	Size: 0x250
-	Parameters: 0
-	Flags: Linked
-*/
 function attack_thread() {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   for (;;) {
     wait(0.1);
     self vehicle_ai::evaluate_connections();
@@ -449,15 +335,6 @@ function attack_thread() {
   }
 }
 
-/*
-	Name: go_back_on_navvolume
-	Namespace: dragon
-	Checksum: 0x43D208C4
-	Offset: 0x1A70
-	Size: 0x2AC
-	Parameters: 0
-	Flags: Linked
-*/
 function go_back_on_navvolume() {
   queryresult = positionquery_source_navigation(self.origin, 0, 100, 90, self.radius, self);
   multiplier = 2;
@@ -488,28 +365,10 @@ function go_back_on_navvolume() {
   }
 }
 
-/*
-	Name: dragon_allowfriendlyfiredamage
-	Namespace: dragon
-	Checksum: 0xF44B4151
-	Offset: 0x1D28
-	Size: 0x26
-	Parameters: 4
-	Flags: Linked
-*/
 function dragon_allowfriendlyfiredamage(einflictor, eattacker, smeansofdeath, weapon) {
   return false;
 }
 
-/*
-	Name: dragon_callback_damage
-	Namespace: dragon
-	Checksum: 0x5610BCB2
-	Offset: 0x1D58
-	Size: 0x94
-	Parameters: 15
-	Flags: Linked
-*/
 function dragon_callback_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   if(self.dragon_recall_death !== 1) {
     return 0;
@@ -517,17 +376,8 @@ function dragon_callback_damage(einflictor, eattacker, idamage, idflags, smeanso
   return idamage;
 }
 
-/*
-	Name: state_death_update
-	Namespace: dragon
-	Checksum: 0xB059842E
-	Offset: 0x1DF8
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function state_death_update(params) {
-  self endon(# "death");
+  self endon("death");
   attacker = params.inflictor;
   if(!isdefined(attacker)) {
     attacker = params.attacker;

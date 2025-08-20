@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_wisps.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\animation_shared;
 #using scripts\shared\array_shared;
@@ -14,56 +18,19 @@
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\zm_genesis_util;
-
 #namespace zm_genesis_wisps;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_genesis_wisps
-	Checksum: 0x428F823F
-	Offset: 0x308
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_wisps", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_genesis_wisps
-	Checksum: 0xC5E553EB
-	Offset: 0x350
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "set_funfact_fx", 15000, 3, "int", & set_funfact_fx, 0, 0);
   clientfield::register("scriptmover", "wisp_fx", 15000, 2, "int", & wisp_fx, 0, 0);
 }
 
-/*
-	Name: __main__
-	Namespace: zm_genesis_wisps
-	Checksum: 0x99EC1590
-	Offset: 0x3F0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {}
 
-/*
-	Name: wisp_fx
-	Namespace: zm_genesis_wisps
-	Checksum: 0xAAB4BF93
-	Offset: 0x400
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function wisp_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     playfxontag(localclientnum, level._effect["wisp_abcd"], self, "tag_origin");
@@ -73,15 +40,6 @@ function wisp_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldnam
   }
 }
 
-/*
-	Name: set_funfact_fx
-	Namespace: zm_genesis_wisps
-	Checksum: 0xE7C5E163
-	Offset: 0x4C8
-	Size: 0x194
-	Parameters: 7
-	Flags: Linked
-*/
 function set_funfact_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     if(!isdefined(self.var_ab2ca08f)) {

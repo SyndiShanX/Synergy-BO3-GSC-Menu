@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\cybercom\_cybercom_gadget_firefly;
 #using scripts\cp\cybercom\_cybercom_gadget_misdirection;
@@ -10,31 +14,12 @@
 #using scripts\shared\math_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace cybercom;
 
-/*
-	Name: __init__sytem__
-	Namespace: cybercom
-	Checksum: 0xF06EE7DA
-	Offset: 0xB10
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("cybercom", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: cybercom
-	Checksum: 0x3D97D02A
-	Offset: 0xB50
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   setdvar("cybercom_fastswitch_enabled", "1");
   level.cybercom_status = 0;
@@ -46,15 +31,6 @@ function __init__() {
   cybercom_misdirection::init();
 }
 
-/*
-	Name: init_clientfields
-	Namespace: cybercom
-	Checksum: 0x8DA5274
-	Offset: 0xC00
-	Size: 0x5DA
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("world", "cybercom_disabled", 1, 1, "int", & cybercomdisabledall, 0, 0);
   clientfield::register("toplayer", "cybercom_disabled", 1, 1, "int", & cybercomdisabled, 0, 0);
@@ -80,15 +56,6 @@ function init_clientfields() {
   level._effect["forced_malfunction"] = "electric/fx_ability_elec_sensory_ol_weapon";
 }
 
-/*
-	Name: function_15b9d1ea
-	Namespace: cybercom
-	Checksum: 0xE224E8F4
-	Offset: 0x11E8
-	Size: 0x18A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_15b9d1ea() {
   level.var_6d1233cd = spawnstruct();
   level.var_6d1233cd.var_f9151455 = [];
@@ -107,41 +74,14 @@ function function_15b9d1ea() {
   level.var_6d1233cd.var_7835feac[5] = 2;
 }
 
-/*
-	Name: function_ff55db55
-	Namespace: cybercom
-	Checksum: 0x42990FE
-	Offset: 0x1380
-	Size: 0x20
-	Parameters: 1
-	Flags: None
-*/
 function function_ff55db55(var_29072664) {
   return level.var_6d1233cd.var_f9151455[var_29072664];
 }
 
-/*
-	Name: function_d3ef9004
-	Namespace: cybercom
-	Checksum: 0x665119D3
-	Offset: 0x13A8
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d3ef9004(var_b41337db) {
   return level.var_6d1233cd.var_7835feac[var_b41337db];
 }
 
-/*
-	Name: function_850a0f8d
-	Namespace: cybercom
-	Checksum: 0xADC74C16
-	Offset: 0x13D0
-	Size: 0xA8
-	Parameters: 2
-	Flags: Linked
-*/
 function function_850a0f8d(var_80c5df, start_index) {
   for (index = 1; index < 6; index++) {
     var_93a57fde = (start_index + index) % 6;
@@ -153,15 +93,6 @@ function function_850a0f8d(var_80c5df, start_index) {
   return undefined;
 }
 
-/*
-	Name: function_5eccc9a4
-	Namespace: cybercom
-	Checksum: 0x3B2FD7A2
-	Offset: 0x1480
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked
-*/
 function function_5eccc9a4(localclientnum) {
   var_28b99141 = self getcybercomtype();
   var_1d8356fd = function_371a93b4(localclientnum, var_28b99141);
@@ -178,29 +109,11 @@ function function_5eccc9a4(localclientnum) {
   function_62d5481c(localclientnum, var_28b99141, var_f0285882);
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: cybercom
-	Checksum: 0xBE3976B2
-	Offset: 0x15C0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_spawned(localclientnum) {
   self initcybercom(localclientnum);
   self thread watchmenu(localclientnum);
 }
 
-/*
-	Name: opentacmenu
-	Namespace: cybercom
-	Checksum: 0x1F342338
-	Offset: 0x1608
-	Size: 0xD6
-	Parameters: 1
-	Flags: Linked
-*/
 function opentacmenu(localclientnum) {
   if(!isdefined(self.tacticalmenu) && !isigcactive(localclientnum)) {
     self.tacticalmenu = createluimenu(localclientnum, self.cybercom.menu);
@@ -213,19 +126,10 @@ function opentacmenu(localclientnum) {
   self.var_5208f863 = undefined;
 }
 
-/*
-	Name: freetacmenuhandle
-	Namespace: cybercom
-	Checksum: 0xBE7B628C
-	Offset: 0x16E8
-	Size: 0xD6
-	Parameters: 2
-	Flags: Linked
-*/
 function freetacmenuhandle(localclientnum, menu) {
-  self endon(# "disconnect");
-  self notify(# "freetacmenuhandle");
-  self endon(# "freetacmenuhandle");
+  self endon("disconnect");
+  self notify("freetacmenuhandle");
+  self endon("freetacmenuhandle");
   audio::stoploopat("gdt_tac_menu_snapshot_loop", (0, 0, 0));
   wait(0.25);
   closeluimenu(localclientnum, menu);
@@ -240,15 +144,6 @@ function freetacmenuhandle(localclientnum, menu) {
   }
 }
 
-/*
-	Name: closetacmenu
-	Namespace: cybercom
-	Checksum: 0xB36F96C4
-	Offset: 0x17C8
-	Size: 0xD6
-	Parameters: 1
-	Flags: Linked
-*/
 function closetacmenu(localclientnum) {
   if(isdefined(self.tacticalmenu)) {
     setluimenudata(localclientnum, self.tacticalmenu, "close_current_menu", 1);
@@ -260,78 +155,42 @@ function closetacmenu(localclientnum) {
   self.var_5208f863 = undefined;
 }
 
-/*
-	Name: watchmenuclose
-	Namespace: cybercom
-	Checksum: 0x8A0A1DEE
-	Offset: 0x18A8
-	Size: 0x70
-	Parameters: 1
-	Flags: Linked
-*/
 function watchmenuclose(localclientnum) {
-  self endon(# "disconnect");
-  self notify(# "watchmenuclosestart");
-  self endon(# "watchmenuclosestart");
+  self endon("disconnect");
+  self notify("watchmenuclosestart");
+  self endon("watchmenuclosestart");
   for (;;) {
     self util::waittill_any("tactical_menu_close", "death");
     self closetacmenu(localclientnum);
   }
 }
 
-/*
-	Name: function_524667f7
-	Namespace: cybercom
-	Checksum: 0x61042E36
-	Offset: 0x1920
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_524667f7(localclientnum) {
-  self endon(# "tactical_menu_open");
-  self endon(# "tactical_menu_close");
-  self endon(# "watchmenuopenstart");
-  self endon(# "death");
+  self endon("tactical_menu_open");
+  self endon("tactical_menu_close");
+  self endon("watchmenuopenstart");
+  self endon("death");
   self.var_5208f863 = 1;
   wait(0.15);
   self opentacmenu(localclientnum);
 }
 
-/*
-	Name: watchmenuopen
-	Namespace: cybercom
-	Checksum: 0xD41E2F74
-	Offset: 0x1998
-	Size: 0x98
-	Parameters: 1
-	Flags: Linked
-*/
 function watchmenuopen(localclientnum) {
-  self notify(# "watchmenuopenstart");
-  self endon(# "watchmenuopenstart");
+  self notify("watchmenuopenstart");
+  self endon("watchmenuopenstart");
   for (;;) {
-    self waittill(# "tactical_menu_open");
+    self waittill("tactical_menu_open");
     if(level.cybercom_status == 0 && (!(isdefined(self.cybercomdisabled) && self.cybercomdisabled)) && !isigcactive(localclientnum)) {
       self thread function_524667f7(localclientnum);
     }
   }
 }
 
-/*
-	Name: function_820cd75b
-	Namespace: cybercom
-	Checksum: 0x4108D146
-	Offset: 0x1A38
-	Size: 0xC0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_820cd75b(localclientnum) {
-  self notify(# "hash_820cd75b");
-  self endon(# "hash_820cd75b");
+  self notify("hash_820cd75b");
+  self endon("hash_820cd75b");
   for (;;) {
-    self waittill(# "tactical_menu_toggle");
+    self waittill("tactical_menu_toggle");
     if(isdefined(self.tacticalmenu)) {
       self closetacmenu(localclientnum);
       continue;
@@ -342,15 +201,6 @@ function function_820cd75b(localclientnum) {
   }
 }
 
-/*
-	Name: watchmenu
-	Namespace: cybercom
-	Checksum: 0xEFA504B2
-	Offset: 0x1B00
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function watchmenu(localclientnum) {
   if(self islocalplayer()) {
     self thread watchmenuopen(localclientnum);
@@ -359,114 +209,63 @@ function watchmenu(localclientnum) {
   }
 }
 
-/*
-	Name: cybercomdisabled
-	Namespace: cybercom
-	Checksum: 0xF5BC6F83
-	Offset: 0x1B78
-	Size: 0x72
-	Parameters: 7
-	Flags: Linked
-*/
 function cybercomdisabled(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
-    self notify(# "tactical_menu_close");
+    self notify("tactical_menu_close");
     self.cybercomdisabled = 1;
   } else {
     self.cybercomdisabled = undefined;
   }
 }
 
-/*
-	Name: cybercomdisabledall
-	Namespace: cybercom
-	Checksum: 0x6F90DCFA
-	Offset: 0x1BF8
-	Size: 0x190
-	Parameters: 7
-	Flags: Linked
-*/
 function cybercomdisabledall(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   level.cybercom_status = newval;
   players = getlocalplayers();
   if(level.cybercom_status == 1) {
     foreach(player in players) {
-      player notify(# "tactical_menu_close");
+      player notify("tactical_menu_close");
       player.cybercomdisabled = 1;
     }
   } else {
     foreach(player in players) {
-      player notify(# "tactical_menu_close");
+      player notify("tactical_menu_close");
       player.cybercomdisabled = undefined;
     }
   }
 }
 
-/*
-	Name: emergencyreserve
-	Namespace: cybercom
-	Checksum: 0x589409BF
-	Offset: 0x1D90
-	Size: 0x15C
-	Parameters: 7
-	Flags: None
-*/
 function emergencyreserve(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   player = getlocalplayer(localclientnum);
-  /#
   assert(isdefined(player));
-  # /
-    if(isdefined(player.emergencyreserve) && player.emergencyreserve && !newval) {
-      player.emergencyreserve = undefined;
-      visionsetnaked(localclientnum, getdvarstring("mapname"), 0);
-    }
-  else if(!(isdefined(player.emergencyreserve) && player.emergencyreserve) && newval) {
+  if(isdefined(player.emergencyreserve) && player.emergencyreserve && !newval) {
+    player.emergencyreserve = undefined;
+    visionsetnaked(localclientnum, getdvarstring("mapname"), 0);
+  } else if(!(isdefined(player.emergencyreserve) && player.emergencyreserve) && newval) {
     player.emergencyreserve = 1;
     visionsetnaked(localclientnum, "cheat_bw", 0.5);
   }
 }
 
-/*
-	Name: repulsorarmorrecharging
-	Namespace: cybercom
-	Checksum: 0x611CD051
-	Offset: 0x1EF8
-	Size: 0x15C
-	Parameters: 7
-	Flags: None
-*/
 function repulsorarmorrecharging(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   player = getlocalplayer(localclientnum);
-  /#
   assert(isdefined(player));
-  # /
-    if(isdefined(player.repulsorrecharging) && player.repulsorrecharging && !newval) {
-      player.repulsorrecharging = undefined;
-      visionsetnaked(localclientnum, getdvarstring("mapname"), 0);
-    }
-  else if(!(isdefined(player.repulsorrecharging) && player.repulsorrecharging) && newval) {
+  if(isdefined(player.repulsorrecharging) && player.repulsorrecharging && !newval) {
+    player.repulsorrecharging = undefined;
+    visionsetnaked(localclientnum, getdvarstring("mapname"), 0);
+  } else if(!(isdefined(player.repulsorrecharging) && player.repulsorrecharging) && newval) {
     player.repulsorrecharging = 1;
     visionsetnaked(localclientnum, "cheat_bw", 0.5);
   }
 }
 
-/*
-	Name: castinganimationwatcher
-	Namespace: cybercom
-	Checksum: 0x57728CED
-	Offset: 0x2060
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function castinganimationwatcher(localclientnum) {
-  self notify(# "castinganimationwatcher");
-  self endon(# "castinganimationwatcher");
-  self endon(# "disconnect");
-  self endon(# "entityshutdown");
+  self notify("castinganimationwatcher");
+  self endon("castinganimationwatcher");
+  self endon("disconnect");
+  self endon("entityshutdown");
   self.cybercom.lastcastat = 0;
   while (true) {
-    self waittill(# "gadget_casting_anim");
+    self waittill("gadget_casting_anim");
     curtime = gettime();
     if((self.cybercom.lastcastat + 1000) < curtime) {
       cyber_arm_pulse(localclientnum, 0, 0);
@@ -475,15 +274,6 @@ function castinganimationwatcher(localclientnum) {
   }
 }
 
-/*
-	Name: initcybercom
-	Namespace: cybercom
-	Checksum: 0x13A4C30E
-	Offset: 0x2130
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function initcybercom(localclientnum) {
   if(!isdefined(self.cybercom)) {
     self.cybercom = spawnstruct();
@@ -493,15 +283,6 @@ function initcybercom(localclientnum) {
   self thread castinganimationwatcher(localclientnum);
 }
 
-/*
-	Name: function_38510c4a
-	Namespace: cybercom
-	Checksum: 0xEA7CDCD0
-	Offset: 0x21A8
-	Size: 0x17E
-	Parameters: 7
-	Flags: Linked
-*/
 function function_38510c4a(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     playfx(localclientnum, "electric/fx_elec_sparks_burst_lg_os", self.origin);
@@ -532,15 +313,6 @@ function function_38510c4a(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_572c7315
-	Namespace: cybercom
-	Checksum: 0xD5119E89
-	Offset: 0x2330
-	Size: 0xE4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_572c7315(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     playfxontag(localclientnum, "electric/fx_elec_sparks_burst_lg_os", self, "j_neck");
@@ -551,15 +323,6 @@ function function_572c7315(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_38cc3f2e
-	Namespace: cybercom
-	Checksum: 0x615904F3
-	Offset: 0x2420
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_38cc3f2e(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playfxontag(localclientnum, "electric/fx_ability_elec_surge_trail", self, "tag_origin");
@@ -567,15 +330,6 @@ function function_38cc3f2e(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_2d61bf2e
-	Namespace: cybercom
-	Checksum: 0x571CE7E9
-	Offset: 0x24B8
-	Size: 0xE4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_2d61bf2e(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     playfxontag(localclientnum, "electric/fx_ability_elec_surge_short_robot", self, "j_spine4");
@@ -586,15 +340,6 @@ function function_2d61bf2e(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_50dfd00b
-	Namespace: cybercom
-	Checksum: 0xDB02D505
-	Offset: 0x25A8
-	Size: 0x356
-	Parameters: 7
-	Flags: Linked
-*/
 function function_50dfd00b(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.var_3949887b)) {
     stopfx(localclientnum, self.var_3949887b);
@@ -623,10 +368,8 @@ function function_50dfd00b(localclientnum, oldval, newval, bnewent, binitialsnap
         break;
       }
       default: {
-        /#
         assert(0, "");
-        # /
-          break;
+        break;
       }
     }
   } else if(newval == 2) {
@@ -652,24 +395,13 @@ function function_50dfd00b(localclientnum, oldval, newval, bnewent, binitialsnap
         break;
       }
       default: {
-        /#
         assert(0, "");
-        # /
-          break;
+        break;
       }
     }
   }
 }
 
-/*
-	Name: function_82d4e6fe
-	Namespace: cybercom
-	Checksum: 0x9CA258CE
-	Offset: 0x2908
-	Size: 0xE4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_82d4e6fe(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self playsound(0, "gdt_servo_robot_die");
@@ -681,15 +413,6 @@ function function_82d4e6fe(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_6f88468d
-	Namespace: cybercom
-	Checksum: 0xBD9CB45B
-	Offset: 0x29F8
-	Size: 0x356
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6f88468d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.var_3e759796)) {
     stopfx(localclientnum, self.var_3e759796);
@@ -718,10 +441,8 @@ function function_6f88468d(localclientnum, oldval, newval, bnewent, binitialsnap
         break;
       }
       default: {
-        /#
         assert(0, "");
-        # /
-          break;
+        break;
       }
     }
   } else if(newval == 2) {
@@ -747,24 +468,13 @@ function function_6f88468d(localclientnum, oldval, newval, bnewent, binitialsnap
         break;
       }
       default: {
-        /#
         assert(0, "");
-        # /
-          break;
+        break;
       }
     }
   }
 }
 
-/*
-	Name: function_87475da2
-	Namespace: cybercom
-	Checksum: 0xA879A994
-	Offset: 0x2D58
-	Size: 0x1EC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_87475da2(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(self.archetype == "robot") {
     if(newval == 1) {
@@ -784,36 +494,18 @@ function function_87475da2(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_a7363f41
-	Namespace: cybercom
-	Checksum: 0x90467609
-	Offset: 0x2F50
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_a7363f41(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     self playsound(0, "gdt_immolation_robot_countdown");
   }
 }
 
-/*
-	Name: setiffname
-	Namespace: cybercom
-	Checksum: 0x8C19CEE2
-	Offset: 0x2FC0
-	Size: 0x236
-	Parameters: 7
-	Flags: Linked
-*/
 function setiffname(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 0: {
       self setdrawname();
       self.var_2b998b77 = undefined;
-      self notify(# "hash_e0f9c098");
+      self notify("hash_e0f9c098");
       break;
     }
     case 1: {
@@ -845,19 +537,10 @@ function setiffname(localclientnum, oldval, newval, bnewent, binitialsnap, field
   }
 }
 
-/*
-	Name: function_13f09a6b
-	Namespace: cybercom
-	Checksum: 0x3A2D7FB4
-	Offset: 0x3200
-	Size: 0x80
-	Parameters: 0
-	Flags: Private
-*/
 function private function_13f09a6b() {
-  self endon(# "entityshutdown");
-  self notify(# "hash_e0f9c098");
-  self endon(# "hash_e0f9c098");
+  self endon("entityshutdown");
+  self notify("hash_e0f9c098");
+  self endon("hash_e0f9c098");
   while (true) {
     wait(2);
     self setdrawname(self.var_2b998b77, 2);
@@ -866,28 +549,10 @@ function private function_13f09a6b() {
   }
 }
 
-/*
-	Name: function_d48fcfa6
-	Namespace: cybercom
-	Checksum: 0xF9A8425F
-	Offset: 0x3288
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_d48fcfa6(localclientnum) {
   self setdrawname();
 }
 
-/*
-	Name: function_66be631b
-	Namespace: cybercom
-	Checksum: 0x63FC349B
-	Offset: 0x32B8
-	Size: 0x198
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_66be631b() {
   alpha = array("A", "B", "C", "D", "E", "F");
   digit = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
@@ -896,15 +561,6 @@ function private function_66be631b() {
   return var_f00997fd + var_160c1266;
 }
 
-/*
-	Name: function_a4cd6b9a
-	Namespace: cybercom
-	Checksum: 0x55A79DB3
-	Offset: 0x3458
-	Size: 0x122
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_a4cd6b9a() {
   name = "";
   if(issubstr(self.model, "_54i_")) {
@@ -923,22 +579,13 @@ function private function_a4cd6b9a() {
   return name;
 }
 
-/*
-	Name: cyber_arm_pulse
-	Namespace: cybercom
-	Checksum: 0x50CBBFA6
-	Offset: 0x3588
-	Size: 0x176
-	Parameters: 7
-	Flags: Linked
-*/
 function cyber_arm_pulse(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   n_effect_duration = 1;
   n_pulse_speed = 1;
   n_number_of_pulses = 1;
   switch (newval) {
     case 0: {
-      self notify(# "hash_2f142d63");
+      self notify("hash_2f142d63");
       self thread function_38e32940();
       break;
     }
@@ -946,7 +593,7 @@ function cyber_arm_pulse(localclientnum, oldval, newval, bnewent, binitialsnap, 
       n_pulse_speed = 3.023;
       n_effect_duration = 3.05;
       n_number_of_pulses = 4;
-      self notify(# "hash_2f142d63");
+      self notify("hash_2f142d63");
       self setarmpulse(n_effect_duration, n_pulse_speed, n_number_of_pulses, "gdt_cybercore_arm_pulse");
       break;
     }
@@ -954,26 +601,17 @@ function cyber_arm_pulse(localclientnum, oldval, newval, bnewent, binitialsnap, 
       n_pulse_speed = 3.023;
       n_effect_duration = 3.05;
       n_number_of_pulses = 5;
-      self notify(# "hash_2f142d63");
+      self notify("hash_2f142d63");
       self setarmpulse(n_effect_duration, n_pulse_speed, n_number_of_pulses, "gdt_cybercore_arm_pulse");
       break;
     }
   }
 }
 
-/*
-	Name: function_38e32940
-	Namespace: cybercom
-	Checksum: 0x16E8FB94
-	Offset: 0x3708
-	Size: 0x33E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_38e32940() {
-  self endon(# "entityshutdown");
-  self endon(# "disconnect");
-  self endon(# "hash_2f142d63");
+  self endon("entityshutdown");
+  self endon("disconnect");
+  self endon("hash_2f142d63");
   var_f13af102 = 0;
   var_b608e411 = 0;
   var_9fd3593c = 1;
@@ -1027,15 +665,6 @@ function function_38e32940() {
   }
 }
 
-/*
-	Name: cybercom_forcedmalfunction
-	Namespace: cybercom
-	Checksum: 0xFAD030DF
-	Offset: 0x3A50
-	Size: 0x11C
-	Parameters: 7
-	Flags: Linked
-*/
 function cybercom_forcedmalfunction(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 0 && isdefined(self.var_dea2a612)) {
     deletefx(localclientnum, self.var_dea2a612);
@@ -1051,15 +680,6 @@ function cybercom_forcedmalfunction(localclientnum, oldval, newval, bnewent, bin
   }
 }
 
-/*
-	Name: cybercom_sensoryoverload
-	Namespace: cybercom
-	Checksum: 0x9659B0DF
-	Offset: 0x3B78
-	Size: 0x104
-	Parameters: 7
-	Flags: Linked
-*/
 function cybercom_sensoryoverload(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 0 && isdefined(self.var_ac70f183)) {
     deletefx(localclientnum, self.var_ac70f183);
@@ -1073,19 +693,10 @@ function cybercom_sensoryoverload(localclientnum, oldval, newval, bnewent, binit
   }
 }
 
-/*
-	Name: function_2aa9d708
-	Namespace: cybercom
-	Checksum: 0x103AB7D3
-	Offset: 0x3C88
-	Size: 0x11C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_2aa9d708(model, range, start) {
-  self notify(# "hash_2aa9d708");
-  self endon(# "hash_2aa9d708");
-  self endon(# "hash_14a1bc97");
+  self notify("hash_2aa9d708");
+  self endon("hash_2aa9d708");
+  self endon("hash_14a1bc97");
   starttime = getrealtime();
   val = start / range;
   while (val <= 1) {
@@ -1097,15 +708,6 @@ function function_2aa9d708(model, range, start) {
   setuimodelvalue(model, 0);
 }
 
-/*
-	Name: function_9439eecf
-	Namespace: cybercom
-	Checksum: 0x6E87CF72
-	Offset: 0x3DB0
-	Size: 0x116
-	Parameters: 7
-	Flags: Linked
-*/
 function function_9439eecf(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   model = getuimodel(getuimodelforcontroller(localclientnum), "WorldSpaceIndicators.hackingPercent");
   if(!isdefined(model)) {
@@ -1117,19 +719,10 @@ function function_9439eecf(localclientnum, oldval, newval, bnewent, binitialsnap
     start = ((newval >> 5) / 128) * range;
     self thread function_2aa9d708(model, range, start);
   } else {
-    self notify(# "hash_14a1bc97");
+    self notify("hash_14a1bc97");
   }
 }
 
-/*
-	Name: function_806d1a61
-	Namespace: cybercom
-	Checksum: 0x5E0F8EAD
-	Offset: 0x3ED0
-	Size: 0x20C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_806d1a61(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     controllermodel = getuimodelforcontroller(localclientnum);
@@ -1154,15 +747,6 @@ function function_806d1a61(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_62d5481c
-	Namespace: cybercom
-	Checksum: 0x57792AD
-	Offset: 0x40E8
-	Size: 0xAC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_62d5481c(localclientnum, var_5a8c2a63, var_191d8f6d) {
   controllermodel = getuimodelforcontroller(localclientnum);
   var_e4d4320f = "AbilityWheel.Selected" + (var_5a8c2a63 + 1);
@@ -1170,15 +754,6 @@ function function_62d5481c(localclientnum, var_5a8c2a63, var_191d8f6d) {
   setuimodelvalue(selected, var_191d8f6d + 1);
 }
 
-/*
-	Name: function_371a93b4
-	Namespace: cybercom
-	Checksum: 0x9210948C
-	Offset: 0x41A0
-	Size: 0x140
-	Parameters: 2
-	Flags: Linked
-*/
 function function_371a93b4(localclientnum, var_c5f458e4) {
   var_e4230c26 = self getcybercomtype();
   controllermodel = getuimodelforcontroller(localclientnum);

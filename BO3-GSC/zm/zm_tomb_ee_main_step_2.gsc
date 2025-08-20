@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_ee_main_step_2.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_shared;
 #using scripts\shared\ai\zombie_utility;
@@ -16,31 +20,12 @@
 #using scripts\zm\zm_tomb_ee_main;
 #using scripts\zm\zm_tomb_utility;
 #using scripts\zm\zm_tomb_vo;
-
 #namespace zm_tomb_ee_main_step_2;
 
-/*
-	Name: init
-	Namespace: zm_tomb_ee_main_step_2
-	Checksum: 0xFCA571DA
-	Offset: 0x408
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   zm_sidequests::declare_sidequest_stage("little_girl_lost", "step_2", & init_stage, & stage_logic, & exit_stage);
 }
 
-/*
-	Name: init_stage
-	Namespace: zm_tomb_ee_main_step_2
-	Checksum: 0x536546DA
-	Offset: 0x468
-	Size: 0xFA
-	Parameters: 0
-	Flags: Linked
-*/
 function init_stage() {
   level._cur_stage_name = "step_2";
   a_structs = struct::get_array("robot_head_staff", "targetname");
@@ -52,35 +37,15 @@ function init_stage() {
   }
 }
 
-/*
-	Name: stage_logic
-	Namespace: zm_tomb_ee_main_step_2
-	Checksum: 0x57FAD352
-	Offset: 0x570
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function stage_logic() {
-  /#
   iprintln(level._cur_stage_name + "");
-  # /
-    level flag::wait_till("ee_all_staffs_placed");
+  level flag::wait_till("ee_all_staffs_placed");
   playsoundatposition("zmb_squest_robot_alarm_blast", (-14, -1, 871));
   wait(3);
   util::wait_network_frame();
   zm_sidequests::stage_completed("little_girl_lost", level._cur_stage_name);
 }
 
-/*
-	Name: exit_stage
-	Namespace: zm_tomb_ee_main_step_2
-	Checksum: 0xCB690C82
-	Offset: 0x628
-	Size: 0x1A2
-	Parameters: 1
-	Flags: Linked
-*/
 function exit_stage(success) {
   a_structs = struct::get_array("robot_head_staff", "targetname");
   foreach(struct in a_structs) {
@@ -93,18 +58,9 @@ function exit_stage(success) {
     e_upgraded_staff = zm_tomb_craftables::get_staff_info_from_weapon_name(var_5ec0aa73.w_weapon, 0);
     e_upgraded_staff.ee_in_use = undefined;
   }
-  level notify(# "hash_4c5352e3");
+  level notify("hash_4c5352e3");
 }
 
-/*
-	Name: remove_plinth
-	Namespace: zm_tomb_ee_main_step_2
-	Checksum: 0x809EB3BB
-	Offset: 0x7D8
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function remove_plinth() {
   playfx(level._effect["teleport_1p"], self.m_plinth.origin);
   playsoundatposition("zmb_footprintbox_disappear", self.m_plinth.origin);
@@ -121,15 +77,6 @@ function remove_plinth() {
   zm_unitrigger::unregister_unitrigger(self);
 }
 
-/*
-	Name: create_robot_head_trigger
-	Namespace: zm_tomb_ee_main_step_2
-	Checksum: 0xFB7BA83D
-	Offset: 0x950
-	Size: 0x414
-	Parameters: 1
-	Flags: Linked
-*/
 function create_robot_head_trigger(unitrigger_stub) {
   playfx(level._effect["teleport_1p"], unitrigger_stub.origin);
   playsoundatposition("zmb_footprintbox_disappear", unitrigger_stub.origin);
@@ -179,22 +126,13 @@ function create_robot_head_trigger(unitrigger_stub) {
   zm_unitrigger::register_static_unitrigger(unitrigger_stub, & robot_head_trigger_think);
 }
 
-/*
-	Name: robot_head_trigger_think
-	Namespace: zm_tomb_ee_main_step_2
-	Checksum: 0xA962F0FB
-	Offset: 0xD70
-	Size: 0x178
-	Parameters: 0
-	Flags: Linked
-*/
 function robot_head_trigger_think() {
-  self endon(# "kill_trigger");
+  self endon("kill_trigger");
   str_weap_staff = "staff_" + self.script_noteworthy;
   var_5ec0aa73 = level.a_elemental_staffs[str_weap_staff].w_weapon;
   e_upgraded_staff = zm_tomb_craftables::get_staff_info_from_weapon_name(var_5ec0aa73, 0);
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player hasweapon(e_upgraded_staff.w_weapon)) {
       e_upgraded_staff.ee_in_use = 1;
       player takeweapon(e_upgraded_staff.w_weapon);
@@ -208,15 +146,6 @@ function robot_head_trigger_think() {
   }
 }
 
-/*
-	Name: place_staff
-	Namespace: zm_tomb_ee_main_step_2
-	Checksum: 0x7FED698D
-	Offset: 0xEF0
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function place_staff(m_plinth) {
   m_staff = getent(("craftable_" + self.name) + "_zm", "targetname");
   m_plinth.e_staff = self;

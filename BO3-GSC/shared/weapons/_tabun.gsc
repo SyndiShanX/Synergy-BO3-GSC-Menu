@@ -1,19 +1,13 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_tabun.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\sound_shared;
 #using scripts\shared\util_shared;
-
 #namespace tabun;
 
-/*
-	Name: init_shared
-	Namespace: tabun
-	Checksum: 0x6BE7C8BE
-	Offset: 0x390
-	Size: 0x2FC
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   level.tabuninitialgasshockduration = getdvarint("scr_tabunInitialGasShockDuration", "7");
   level.tabunwalkingasshockduration = getdvarint("scr_tabunWalkInGasShockDuration", "4");
@@ -40,20 +34,9 @@ function init_shared() {
   level.sound_shock_tabun_start = "";
   level.sound_shock_tabun_loop = "";
   level.sound_shock_tabun_stop = "";
-  /#
   level thread checkdvarupdates();
-  # /
 }
 
-/*
-	Name: checkdvarupdates
-	Namespace: tabun
-	Checksum: 0x6943BD01
-	Offset: 0x698
-	Size: 0x248
-	Parameters: 0
-	Flags: Linked
-*/
 function checkdvarupdates() {
   while (true) {
     level.tabungaspoisonradius = getdvarint("scr_tabun_effect_radius", level.tabungaspoisonradius);
@@ -74,18 +57,9 @@ function checkdvarupdates() {
   }
 }
 
-/*
-	Name: watchtabungrenadedetonation
-	Namespace: tabun
-	Checksum: 0x319B862E
-	Offset: 0x8E8
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked
-*/
 function watchtabungrenadedetonation(owner) {
-  self endon(# "trophy_destroyed");
-  self waittill(# "explode", position, surface);
+  self endon("trophy_destroyed");
+  self waittill("explode", position, surface);
   if(!isdefined(level.water_duds) || level.water_duds == 1) {
     if(isdefined(surface) && surface == "water") {
       return;
@@ -98,27 +72,16 @@ function watchtabungrenadedetonation(owner) {
   }
 }
 
-/*
-	Name: damageeffectarea
-	Namespace: tabun
-	Checksum: 0x50B3FA68
-	Offset: 0x9C8
-	Size: 0x3F2
-	Parameters: 5
-	Flags: Linked
-*/
 function damageeffectarea(owner, position, radius, height, killcament) {
   shockeffectarea = spawn("trigger_radius", position, 0, radius, height);
   gaseffectarea = spawn("trigger_radius", position, 0, radius, height);
-  /#
   if(getdvarint("")) {
     level thread util::drawcylinder(position, radius, height, undefined, "");
   }
-  # /
-    if(isdefined(level.dogsonflashdogs)) {
-      owner thread[[level.dogsonflashdogs]](shockeffectarea);
-      owner thread[[level.dogsonflashdogs]](gaseffectarea);
-    }
+  if(isdefined(level.dogsonflashdogs)) {
+    owner thread[[level.dogsonflashdogs]](shockeffectarea);
+    owner thread[[level.dogsonflashdogs]](gaseffectarea);
+  }
   loopwaittime = 0.5;
   durationoftabun = level.tabungasduration;
   while (durationoftabun > 0) {
@@ -154,25 +117,14 @@ function damageeffectarea(owner, position, radius, height, killcament) {
   }
   shockeffectarea delete();
   gaseffectarea delete();
-  /#
   if(getdvarint("")) {
-    level notify(# "tabun_draw_cylinder_stop");
+    level notify("tabun_draw_cylinder_stop");
   }
-  # /
 }
 
-/*
-	Name: damageinpoisonarea
-	Namespace: tabun
-	Checksum: 0xAE633B96
-	Offset: 0xDC8
-	Size: 0x3B0
-	Parameters: 4
-	Flags: Linked
-*/
 function damageinpoisonarea(gaseffectarea, killcament, trace, position) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   self thread watch_death();
   self.inpoisonarea = 1;
   self startpoisoning();
@@ -215,99 +167,43 @@ function damageinpoisonarea(gaseffectarea, killcament, trace, position) {
   wait(0.5);
   thread sound::play_in_space(level.sound_shock_tabun_stop, position);
   wait(0.5);
-  tabunshocksound notify(# "delete");
+  tabunshocksound notify("delete");
   tabunshocksound delete();
   self show_hud();
   self stoppoisoning();
   self.inpoisonarea = 0;
 }
 
-/*
-	Name: deleteentonownerdeath
-	Namespace: tabun
-	Checksum: 0x874B0FE4
-	Offset: 0x1180
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function deleteentonownerdeath(owner) {
-  self endon(# "delete");
-  owner waittill(# "death");
+  self endon("delete");
+  owner waittill("death");
   self delete();
 }
 
-/*
-	Name: watch_death
-	Namespace: tabun
-	Checksum: 0xAE128989
-	Offset: 0x11C8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_death() {
-  self waittill(# "death");
+  self waittill("death");
   self show_hud();
 }
 
-/*
-	Name: hide_hud
-	Namespace: tabun
-	Checksum: 0x5F3C9081
-	Offset: 0x11F8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function hide_hud() {
   self util::show_hud(0);
 }
 
-/*
-	Name: show_hud
-	Namespace: tabun
-	Checksum: 0x4323A513
-	Offset: 0x1220
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function show_hud() {
   self util::show_hud(1);
 }
 
-/*
-	Name: generatelocations
-	Namespace: tabun
-	Checksum: 0xE0A0BAA
-	Offset: 0x1248
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function generatelocations(position, owner) {
   onefoot = vectorscale((0, 0, 1), 12);
   startpos = position + onefoot;
-  /#
   level.tabun_debug = getdvarint("", 0);
   if(level.tabun_debug) {
     black = vectorscale((1, 1, 1), 0.2);
     debugstar(startpos, 2000, black);
   }
-  # /
-    spawnalllocs(owner, startpos);
+  spawnalllocs(owner, startpos);
 }
 
-/*
-	Name: singlelocation
-	Namespace: tabun
-	Checksum: 0x75D904FF
-	Offset: 0x1320
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function singlelocation(position, owner) {
   spawntimedfx(level.fx_tabun_single, position);
   killcament = spawn("script_model", position + vectorscale((0, 0, 1), 60));
@@ -316,36 +212,16 @@ function singlelocation(position, owner) {
   damageeffectarea(owner, position, level.tabungaspoisonradius, level.tabungaspoisonheight, killcament);
 }
 
-/*
-	Name: hitpos
-	Namespace: tabun
-	Checksum: 0xA81E5806
-	Offset: 0x13F8
-	Size: 0xD8
-	Parameters: 3
-	Flags: Linked
-*/
 function hitpos(start, end, color) {
   trace = bullettrace(start, end, 0, undefined);
-  /#
   level.tabun_debug = getdvarint("", 0);
   if(level.tabun_debug) {
     debugstar(trace[""], 2000, color);
   }
   thread tabun_debug_line(start, trace[""], color, 1, 80);
-  # /
-    return trace["position"];
+  return trace["position"];
 }
 
-/*
-	Name: spawnalllocs
-	Namespace: tabun
-	Checksum: 0x6533DE4F
-	Offset: 0x14D8
-	Size: 0x976
-	Parameters: 2
-	Flags: Linked
-*/
 function spawnalllocs(owner, startpos) {
   defaultdistance = getdvarint("scr_defaultDistanceTabun", 220);
   cos45 = 0.707;
@@ -453,15 +329,6 @@ function spawnalllocs(owner, startpos) {
   }
 }
 
-/*
-	Name: playtabunsound
-	Namespace: tabun
-	Checksum: 0xAC500C34
-	Offset: 0x1E58
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function playtabunsound(position) {
   tabunsound = spawn("script_origin", (0, 0, 1));
   tabunsound.origin = position;
@@ -474,15 +341,6 @@ function playtabunsound(position) {
   tabunsound delete();
 }
 
-/*
-	Name: setuptabunfx
-	Namespace: tabun
-	Checksum: 0xFB735030
-	Offset: 0x1F58
-	Size: 0x2E2
-	Parameters: 3
-	Flags: Linked
-*/
 function setuptabunfx(owner, locations, count) {
   fxtoplay = undefined;
   previous = count - 1;
@@ -515,39 +373,19 @@ function setuptabunfx(owner, locations, count) {
   return fxtoplay;
 }
 
-/*
-	Name: getcenteroflocations
-	Namespace: tabun
-	Checksum: 0xE3929658
-	Offset: 0x2248
-	Size: 0x100
-	Parameters: 1
-	Flags: Linked
-*/
 function getcenteroflocations(locations) {
   centroid = (0, 0, 0);
   for (i = 0; i < locations["loc"].size; i++) {
     centroid = centroid + (locations["loc"][i] / locations["loc"].size);
   }
-  /#
   level.tabun_debug = getdvarint("", 0);
   if(level.tabun_debug) {
     purple = (0.9, 0.2, 0.9);
     debugstar(centroid, 2000, purple);
   }
-  # /
-    return centroid;
+  return centroid;
 }
 
-/*
-	Name: getcenter
-	Namespace: tabun
-	Checksum: 0x9192584C
-	Offset: 0x2350
-	Size: 0x268
-	Parameters: 1
-	Flags: Linked
-*/
 function getcenter(locations) {
   center = (0, 0, 0);
   curx = locations["tracePos"][0][0];
@@ -575,27 +413,15 @@ function getcenter(locations) {
   avgx = (maxx + minx) / 2;
   avgy = (maxy + miny) / 2;
   center = (avgx, avgy, locations["tracePos"][0][2]);
-  /#
   level.tabun_debug = getdvarint("", 0);
   if(level.tabun_debug) {
     cyan = (0.2, 0.9, 0.9);
     debugstar(center, 2000, cyan);
   }
-  # /
-    return center;
+  return center;
 }
 
-/*
-	Name: tabun_debug_line
-	Namespace: tabun
-	Checksum: 0x93C5B9BC
-	Offset: 0x25C0
-	Size: 0xBC
-	Parameters: 5
-	Flags: Linked
-*/
 function tabun_debug_line(from, to, color, depthtest, time) {
-  /#
   debug_rcbomb = getdvarint("", 0);
   if(debug_rcbomb == "") {
     if(!isdefined(time)) {
@@ -606,5 +432,4 @@ function tabun_debug_line(from, to, color, depthtest, time) {
     }
     line(from, to, color, 1, depthtest, time);
   }
-  # /
 }

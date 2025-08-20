@@ -1,35 +1,20 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_keeper_skull.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weapons;
-
 #namespace keeper_skull;
 
-/*
-	Name: __init__sytem__
-	Namespace: keeper_skull
-	Checksum: 0xDED8E4E8
-	Offset: 0xB78
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("keeper_skull", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: keeper_skull
-	Checksum: 0xF9F81D59
-	Offset: 0xBB8
-	Size: 0x65E
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("actor", "zombie_explode", 9000, 1, "int", & zombie_explode_fx, 0, 0);
   clientfield::register("actor", "death_ray_shock_eye_fx", 9000, 1, "int", & death_ray_shock_eye_fx, 0, 0);
@@ -77,15 +62,6 @@ function __init__() {
   level._effect["fx_fire_thrash_waist_loop"] = "dlc2/island/fx_fire_thrash_waist_loop";
 }
 
-/*
-	Name: function_2802db6f
-	Namespace: keeper_skull
-	Checksum: 0xA44C072A
-	Offset: 0x1220
-	Size: 0x346
-	Parameters: 7
-	Flags: Linked
-*/
 function function_2802db6f(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isspectating(localclientnum)) {
     return;
@@ -128,15 +104,6 @@ function function_2802db6f(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_4fb98616
-	Namespace: keeper_skull
-	Checksum: 0xB99AC059
-	Offset: 0x1570
-	Size: 0x2F6
-	Parameters: 7
-	Flags: Linked
-*/
 function function_4fb98616(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isspectating(localclientnum)) {
     return;
@@ -175,15 +142,6 @@ function function_4fb98616(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: zombie_explode_fx
-	Namespace: keeper_skull
-	Checksum: 0x4EF8C552
-	Offset: 0x1870
-	Size: 0x314
-	Parameters: 7
-	Flags: Linked
-*/
 function zombie_explode_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.gibdef)) {
     gibbundle = struct::get_script_bundle("gibcharacterdef", self.gibdef);
@@ -207,15 +165,6 @@ function zombie_explode_fx(localclientnum, oldval, newval, bnewent, binitialsnap
   playfxontag(localclientnum, level._effect["zombie_explode"], self, "j_spine4");
 }
 
-/*
-	Name: death_ray_shock_eye_fx
-	Namespace: keeper_skull
-	Checksum: 0xA300BF3B
-	Offset: 0x1B90
-	Size: 0xC6
-	Parameters: 7
-	Flags: Linked
-*/
 function death_ray_shock_eye_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     if(!isdefined(self.var_5f35d5e4)) {
@@ -227,15 +176,6 @@ function death_ray_shock_eye_fx(localclientnum, oldval, newval, bnewent, binitia
   }
 }
 
-/*
-	Name: function_384d8884
-	Namespace: keeper_skull
-	Checksum: 0xBB2B7933
-	Offset: 0x1C60
-	Size: 0xC6
-	Parameters: 7
-	Flags: Linked
-*/
 function function_384d8884(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     if(!isdefined(self.var_60a62a48)) {
@@ -247,15 +187,6 @@ function function_384d8884(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: thrasher_skull_fire
-	Namespace: keeper_skull
-	Checksum: 0xFC56D6E1
-	Offset: 0x1D30
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked
-*/
 function thrasher_skull_fire(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 0) {
     self thread function_c16de463(0, localclientnum);
@@ -264,15 +195,6 @@ function thrasher_skull_fire(localclientnum, oldval, newval, bnewent, binitialsn
   }
 }
 
-/*
-	Name: function_c16de463
-	Namespace: keeper_skull
-	Checksum: 0x704D11CF
-	Offset: 0x1DD0
-	Size: 0x592
-	Parameters: 2
-	Flags: Linked
-*/
 function function_c16de463(var_1607039a, localclientnum) {
   if(var_1607039a) {
     if(!isdefined(self.var_9cd89d5f)) {
@@ -334,15 +256,6 @@ function function_c16de463(var_1607039a, localclientnum) {
   }
 }
 
-/*
-	Name: function_c92fcc97
-	Namespace: keeper_skull
-	Checksum: 0xA63DDE97
-	Offset: 0x2370
-	Size: 0xA4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_c92fcc97(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self mapshaderconstant(localclientnum, 0, "scriptVector2", 1, 1, 1, 0);
@@ -351,15 +264,6 @@ function function_c92fcc97(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_cea6821
-	Namespace: keeper_skull
-	Checksum: 0x3A41785
-	Offset: 0x2420
-	Size: 0x15E
-	Parameters: 7
-	Flags: Linked
-*/
 function function_cea6821(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isspectating(localclientnum)) {
     return;
@@ -383,15 +287,6 @@ function function_cea6821(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: function_3f47ba02
-	Namespace: keeper_skull
-	Checksum: 0xDCBFB49A
-	Offset: 0x2588
-	Size: 0x15E
-	Parameters: 7
-	Flags: Linked
-*/
 function function_3f47ba02(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isspectating(localclientnum)) {
     return;

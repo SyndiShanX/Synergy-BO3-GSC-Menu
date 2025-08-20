@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\custom_class.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\core\_multi_extracam;
 #using scripts\shared\_character_customization;
@@ -14,31 +18,12 @@
 #using scripts\shared\lui_shared;
 #using scripts\shared\postfx_shared;
 #using scripts\shared\util_shared;
-
 #namespace customclass;
 
-/*
-	Name: localclientconnect
-	Namespace: customclass
-	Checksum: 0x9276F3AB
-	Offset: 0x580
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function localclientconnect(localclientnum) {
   level thread custom_class_init(localclientnum);
 }
 
-/*
-	Name: init
-	Namespace: customclass
-	Checksum: 0x86D13E10
-	Offset: 0x5B0
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.weapon_script_model = [];
   level.preload_weapon_model = [];
@@ -59,15 +44,6 @@ function init() {
   duplicate_render::set_dr_filter_offscreen("cac_locked_weapon", 10, "cac_locked_weapon", undefined, 2, "mc/sonar_frontend_locked_gun", 1);
 }
 
-/*
-	Name: custom_class_init
-	Namespace: customclass
-	Checksum: 0x6B4B9546
-	Offset: 0x6E0
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function custom_class_init(localclientnum) {
   level.last_weapon_name[localclientnum] = "";
   level.current_weapon[localclientnum] = undefined;
@@ -75,17 +51,8 @@ function custom_class_init(localclientnum) {
   level thread handle_cac_customization(localclientnum);
 }
 
-/*
-	Name: custom_class_start_threads
-	Namespace: customclass
-	Checksum: 0x94EAAC47
-	Offset: 0x750
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function custom_class_start_threads(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   while (true) {
     level thread custom_class_update(localclientnum);
     level thread custom_class_attachment_select_focus(localclientnum);
@@ -95,17 +62,8 @@ function custom_class_start_threads(localclientnum) {
   }
 }
 
-/*
-	Name: handle_cac_customization
-	Namespace: customclass
-	Checksum: 0xA92B3143
-	Offset: 0x820
-	Size: 0xBA
-	Parameters: 1
-	Flags: Linked
-*/
 function handle_cac_customization(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   self.lastxcam = [];
   self.lastsubxcam = [];
   self.lastnotetrack = [];
@@ -118,17 +76,8 @@ function handle_cac_customization(localclientnum) {
   }
 }
 
-/*
-	Name: custom_class_update
-	Namespace: customclass
-	Checksum: 0xA5071951
-	Offset: 0x8E8
-	Size: 0x3D4
-	Parameters: 1
-	Flags: Linked
-*/
 function custom_class_update(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   level endon("CustomClass_focus" + localclientnum);
   level endon("CustomClass_remove" + localclientnum);
   level endon("CustomClass_closed" + localclientnum);
@@ -163,7 +112,7 @@ function custom_class_update(localclientnum) {
     toggle_locked_weapon_shader(localclientnum, is_item_unlocked);
     toggle_tokenlocked_weapon_shader(localclientnum, is_item_unlocked && is_item_tokenlocked);
     update_weapon_script_model(localclientnum, weapon_full_name, undefined, is_item_unlocked, is_item_tokenlocked);
-    level notify(# "xcammoved");
+    level notify("xcammoved");
     lerpduration = get_lerp_duration(camera);
     setup_paintshop_bg(localclientnum, camera);
     level transition_camera_immediate(localclientnum, base_weapon_slot, "cam_cac_weapon", "cam_cac", lerpduration, camera);
@@ -172,15 +121,6 @@ function custom_class_update(localclientnum) {
   }
 }
 
-/*
-	Name: toggle_locked_weapon_shader
-	Namespace: customclass
-	Checksum: 0xE6833470
-	Offset: 0xCC8
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function toggle_locked_weapon_shader(localclientnum, is_item_unlocked = 1) {
   if(!isdefined(level.weapon_script_model[localclientnum])) {
     return;
@@ -192,15 +132,6 @@ function toggle_locked_weapon_shader(localclientnum, is_item_unlocked = 1) {
   }
 }
 
-/*
-	Name: toggle_tokenlocked_weapon_shader
-	Namespace: customclass
-	Checksum: 0xE05208A5
-	Offset: 0xD58
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function toggle_tokenlocked_weapon_shader(localclientnum, is_item_tokenlocked = 0) {
   if(!isdefined(level.weapon_script_model[localclientnum])) {
     return;
@@ -212,15 +143,6 @@ function toggle_tokenlocked_weapon_shader(localclientnum, is_item_tokenlocked = 
   }
 }
 
-/*
-	Name: is_optic
-	Namespace: customclass
-	Checksum: 0xB71F6687
-	Offset: 0xDE0
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked
-*/
 function is_optic(attachmentname) {
   csv_filename = "gamedata/weapons/common/attachmentTable.csv";
   row = tablelookuprownum(csv_filename, 4, attachmentname);
@@ -231,17 +153,8 @@ function is_optic(attachmentname) {
   return 0;
 }
 
-/*
-	Name: custom_class_attachment_select_focus
-	Namespace: customclass
-	Checksum: 0x43C1D25A
-	Offset: 0xE78
-	Size: 0x344
-	Parameters: 1
-	Flags: Linked
-*/
 function custom_class_attachment_select_focus(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   level endon("CustomClass_update" + localclientnum);
   level endon("CustomClass_remove" + localclientnum);
   level endon("CustomClass_closed" + localclientnum);
@@ -285,17 +198,8 @@ function custom_class_attachment_select_focus(localclientnum) {
   }
 }
 
-/*
-	Name: custom_class_remove
-	Namespace: customclass
-	Checksum: 0x648093A7
-	Offset: 0x11C8
-	Size: 0x1D2
-	Parameters: 1
-	Flags: Linked
-*/
 function custom_class_remove(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   level endon("CustomClass_update" + localclientnum);
   level endon("CustomClass_focus" + localclientnum);
   level endon("CustomClass_closed" + localclientnum);
@@ -314,17 +218,8 @@ function custom_class_remove(localclientnum) {
   level.last_weapon_name[localclientnum] = "";
 }
 
-/*
-	Name: custom_class_closed
-	Namespace: customclass
-	Checksum: 0x1A54D780
-	Offset: 0x13A8
-	Size: 0x13A
-	Parameters: 1
-	Flags: Linked
-*/
 function custom_class_closed(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   level endon("CustomClass_update" + localclientnum);
   level endon("CustomClass_focus" + localclientnum);
   level endon("CustomClass_remove" + localclientnum);
@@ -338,15 +233,6 @@ function custom_class_closed(localclientnum) {
   level.last_weapon_name[localclientnum] = "";
 }
 
-/*
-	Name: spawn_weapon_model
-	Namespace: customclass
-	Checksum: 0xEEDD8DAB
-	Offset: 0x14F0
-	Size: 0x84
-	Parameters: 3
-	Flags: Linked
-*/
 function spawn_weapon_model(localclientnum, origin, angles) {
   weapon_model = spawn(localclientnum, origin, "script_model");
   weapon_model sethighdetail(1, 1);
@@ -356,15 +242,6 @@ function spawn_weapon_model(localclientnum, origin, angles) {
   return weapon_model;
 }
 
-/*
-	Name: set_attachment_cosmetic_variants
-	Namespace: customclass
-	Checksum: 0xB2EF07EE
-	Offset: 0x1580
-	Size: 0x108
-	Parameters: 2
-	Flags: Linked
-*/
 function set_attachment_cosmetic_variants(localclientnum, acv_param) {
   acv_indexes = strtok(acv_param, ",");
   level.attachment_names[localclientnum] = [];
@@ -377,15 +254,6 @@ function set_attachment_cosmetic_variants(localclientnum, acv_param) {
   }
 }
 
-/*
-	Name: hide_paintshop_bg
-	Namespace: customclass
-	Checksum: 0x5F20B684
-	Offset: 0x1690
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function hide_paintshop_bg(localclientnum) {
   paintshop_bg = getent(localclientnum, "paintshop_black", "targetname");
   if(isdefined(paintshop_bg)) {
@@ -397,15 +265,6 @@ function hide_paintshop_bg(localclientnum) {
   }
 }
 
-/*
-	Name: show_paintshop_bg
-	Namespace: customclass
-	Checksum: 0x9B49EF47
-	Offset: 0x1760
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function show_paintshop_bg(localclientnum) {
   paintshop_bg = getent(localclientnum, "paintshop_black", "targetname");
   if(isdefined(paintshop_bg)) {
@@ -414,15 +273,6 @@ function show_paintshop_bg(localclientnum) {
   }
 }
 
-/*
-	Name: get_camo_index
-	Namespace: customclass
-	Checksum: 0x1446350E
-	Offset: 0x1808
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function get_camo_index(localclientnum) {
   if(!isdefined(level.camo_index[localclientnum])) {
     level.camo_index[localclientnum] = 0;
@@ -430,15 +280,6 @@ function get_camo_index(localclientnum) {
   return level.camo_index[localclientnum];
 }
 
-/*
-	Name: get_reticle_index
-	Namespace: customclass
-	Checksum: 0xCFD735D9
-	Offset: 0x1850
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function get_reticle_index(localclientnum) {
   if(!isdefined(level.reticle_index[localclientnum])) {
     level.reticle_index[localclientnum] = 0;
@@ -446,15 +287,6 @@ function get_reticle_index(localclientnum) {
   return level.reticle_index[localclientnum];
 }
 
-/*
-	Name: get_show_payer_tag
-	Namespace: customclass
-	Checksum: 0x9E65D4B5
-	Offset: 0x1898
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function get_show_payer_tag(localclientnum) {
   if(!isdefined(level.show_player_tag[localclientnum])) {
     level.show_player_tag[localclientnum] = 0;
@@ -462,15 +294,6 @@ function get_show_payer_tag(localclientnum) {
   return level.show_player_tag[localclientnum];
 }
 
-/*
-	Name: get_show_emblem
-	Namespace: customclass
-	Checksum: 0x2F13A37
-	Offset: 0x18E0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function get_show_emblem(localclientnum) {
   if(!isdefined(level.show_emblem[localclientnum])) {
     level.show_emblem[localclientnum] = 0;
@@ -478,15 +301,6 @@ function get_show_emblem(localclientnum) {
   return level.show_emblem[localclientnum];
 }
 
-/*
-	Name: get_show_paintshop
-	Namespace: customclass
-	Checksum: 0xF03ABBD5
-	Offset: 0x1928
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function get_show_paintshop(localclientnum) {
   if(!isdefined(level.show_paintshop[localclientnum])) {
     level.show_paintshop[localclientnum] = 0;
@@ -494,15 +308,6 @@ function get_show_paintshop(localclientnum) {
   return level.show_paintshop[localclientnum];
 }
 
-/*
-	Name: set_weapon_options
-	Namespace: customclass
-	Checksum: 0x3CD10E22
-	Offset: 0x1970
-	Size: 0x18C
-	Parameters: 2
-	Flags: Linked
-*/
 function set_weapon_options(localclientnum, weapon_options_param) {
   weapon_options = strtok(weapon_options_param, ",");
   level.camo_index[localclientnum] = int(weapon_options[0]);
@@ -515,15 +320,6 @@ function set_weapon_options(localclientnum, weapon_options_param) {
   }
 }
 
-/*
-	Name: get_lerp_duration
-	Namespace: customclass
-	Checksum: 0x7B9A907F
-	Offset: 0x1B08
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function get_lerp_duration(camera) {
   lerpduration = 0;
   if(isdefined(camera)) {
@@ -535,15 +331,6 @@ function get_lerp_duration(camera) {
   return lerpduration;
 }
 
-/*
-	Name: setup_paintshop_bg
-	Namespace: customclass
-	Checksum: 0x70878526
-	Offset: 0x1BB8
-	Size: 0x19C
-	Parameters: 2
-	Flags: Linked
-*/
 function setup_paintshop_bg(localclientnum, camera) {
   if(isdefined(camera)) {
     paintshopcameracloseup = camera == "left" || camera == "right" || camera == "top" || camera == "paintshop_preview_left" || camera == "paintshop_preview_right" || camera == "paintshop_preview_top";
@@ -562,15 +349,6 @@ function setup_paintshop_bg(localclientnum, camera) {
   }
 }
 
-/*
-	Name: transition_camera_immediate
-	Namespace: customclass
-	Checksum: 0xBB8CE4E7
-	Offset: 0x1D60
-	Size: 0x28C
-	Parameters: 6
-	Flags: Linked
-*/
 function transition_camera_immediate(localclientnum, weapontype, camera, subxcam, lerpduration, notetrack) {
   xcam = getweaponxcam(level.current_weapon[localclientnum], camera);
   if(!isdefined(xcam)) {
@@ -603,15 +381,6 @@ function transition_camera_immediate(localclientnum, weapontype, camera, subxcam
   }
 }
 
-/*
-	Name: wait_preload_weapon
-	Namespace: customclass
-	Checksum: 0xFF1D246D
-	Offset: 0x1FF8
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_preload_weapon(localclientnum) {
   if(level.preload_weapon_complete[localclientnum]) {
     return;
@@ -619,15 +388,6 @@ function wait_preload_weapon(localclientnum) {
   level waittill("preload_weapon_complete_" + localclientnum);
 }
 
-/*
-	Name: preload_weapon_watcher
-	Namespace: customclass
-	Checksum: 0x37D959D2
-	Offset: 0x2038
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function preload_weapon_watcher(localclientnum) {
   level endon("preload_weapon_changing_" + localclientnum);
   level endon("preload_weapon_complete_" + localclientnum);
@@ -641,15 +401,6 @@ function preload_weapon_watcher(localclientnum) {
   }
 }
 
-/*
-	Name: preload_weapon_model
-	Namespace: customclass
-	Checksum: 0x5670F520
-	Offset: 0x20D0
-	Size: 0x2FC
-	Parameters: 3
-	Flags: Linked
-*/
 function preload_weapon_model(localclientnum, newweaponstring, should_update_weapon_options = 1) {
   level notify("preload_weapon_changing_" + localclientnum);
   level.preload_weapon_complete[localclientnum] = 0;
@@ -660,15 +411,11 @@ function preload_weapon_model(localclientnum, newweaponstring, should_update_wea
     return;
   }
   if(isdefined(current_weapon.frontendmodel)) {
-    /#
     println((("" + current_weapon.name) + "") + current_weapon.frontendmodel);
-    # /
-      level.preload_weapon_model[localclientnum] useweaponmodel(current_weapon, current_weapon.frontendmodel);
+    level.preload_weapon_model[localclientnum] useweaponmodel(current_weapon, current_weapon.frontendmodel);
   } else {
-    /#
     println("" + current_weapon.name);
-    # /
-      level.preload_weapon_model[localclientnum] useweaponmodel(current_weapon);
+    level.preload_weapon_model[localclientnum] useweaponmodel(current_weapon);
   }
   if(isdefined(level.preload_weapon_model[localclientnum])) {
     if(isdefined(level.attachment_names[localclientnum]) && isdefined(level.attachment_indices[localclientnum])) {
@@ -683,15 +430,6 @@ function preload_weapon_model(localclientnum, newweaponstring, should_update_wea
   level thread preload_weapon_watcher(localclientnum);
 }
 
-/*
-	Name: update_weapon_script_model
-	Namespace: customclass
-	Checksum: 0xC490E1F1
-	Offset: 0x23D8
-	Size: 0x474
-	Parameters: 5
-	Flags: Linked
-*/
 function update_weapon_script_model(localclientnum, newweaponstring, should_update_weapon_options = 1, is_item_unlocked = 1, is_item_tokenlocked = 0) {
   level.last_weapon_name[localclientnum] = newweaponstring;
   level.current_weapon[localclientnum] = getweaponwithattachments(level.last_weapon_name[localclientnum]);
@@ -706,15 +444,11 @@ function update_weapon_script_model(localclientnum, newweaponstring, should_upda
     return;
   }
   if(isdefined(level.current_weapon[localclientnum].frontendmodel)) {
-    /#
     println((("" + level.current_weapon[localclientnum].name) + "") + level.current_weapon[localclientnum].frontendmodel);
-    # /
-      level.weapon_script_model[localclientnum] useweaponmodel(level.current_weapon[localclientnum], level.current_weapon[localclientnum].frontendmodel);
+    level.weapon_script_model[localclientnum] useweaponmodel(level.current_weapon[localclientnum], level.current_weapon[localclientnum].frontendmodel);
   } else {
-    /#
     println("" + level.current_weapon[localclientnum].name);
-    # /
-      level.weapon_script_model[localclientnum] useweaponmodel(level.current_weapon[localclientnum]);
+    level.weapon_script_model[localclientnum] useweaponmodel(level.current_weapon[localclientnum]);
   }
   if(isdefined(level.weapon_script_model[localclientnum])) {
     if(isdefined(level.attachment_names[localclientnum]) && isdefined(level.attachment_indices[localclientnum])) {
@@ -729,20 +463,11 @@ function update_weapon_script_model(localclientnum, newweaponstring, should_upda
   level.weapon_script_model[localclientnum] setdedicatedshadow(1);
 }
 
-/*
-	Name: transition_camera
-	Namespace: customclass
-	Checksum: 0x12E5E38
-	Offset: 0x2858
-	Size: 0x134
-	Parameters: 9
-	Flags: Linked
-*/
 function transition_camera(localclientnum, weapontype, camera, subxcam, initialdelay, lerpduration, notetrack, newweaponstring, should_update_weapon_options = 0) {
-  self endon(# "entityshutdown");
-  self notify(# "xcammoved");
-  self endon(# "xcammoved");
-  level endon(# "cam_customization_closed");
+  self endon("entityshutdown");
+  self notify("xcammoved");
+  self endon("xcammoved");
+  level endon("cam_customization_closed");
   if(isdefined(newweaponstring)) {
     preload_weapon_model(localclientnum, newweaponstring, should_update_weapon_options);
   }
@@ -755,15 +480,6 @@ function transition_camera(localclientnum, weapontype, camera, subxcam, initiald
   }
 }
 
-/*
-	Name: get_attachments_intersection
-	Namespace: customclass
-	Checksum: 0x89325B4D
-	Offset: 0x2998
-	Size: 0x11C
-	Parameters: 2
-	Flags: Linked
-*/
 function get_attachments_intersection(oldweapon, newweapon) {
   if(!isdefined(oldweapon)) {
     return newweapon;
@@ -782,17 +498,8 @@ function get_attachments_intersection(oldweapon, newweapon) {
   return newweaponstring;
 }
 
-/*
-	Name: handle_cac_customization_focus
-	Namespace: customclass
-	Checksum: 0xD249EC2B
-	Offset: 0x2AC0
-	Size: 0xF8
-	Parameters: 1
-	Flags: Linked
-*/
 function handle_cac_customization_focus(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   level endon("cam_customization_closed" + localclientnum);
   while (true) {
     level waittill("cam_customization_focus" + localclientnum, param1, param2);
@@ -805,17 +512,8 @@ function handle_cac_customization_focus(localclientnum) {
   }
 }
 
-/*
-	Name: handle_cac_customization_weaponoption
-	Namespace: customclass
-	Checksum: 0x1C1A08F1
-	Offset: 0x2BC0
-	Size: 0x1E0
-	Parameters: 1
-	Flags: Linked
-*/
 function handle_cac_customization_weaponoption(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   level endon("cam_customization_closed" + localclientnum);
   while (true) {
     level waittill("cam_customization_wo" + localclientnum, weapon_option, weapon_option_new_index, is_item_locked);
@@ -845,17 +543,8 @@ function handle_cac_customization_weaponoption(localclientnum) {
   }
 }
 
-/*
-	Name: handle_cac_customization_attachmentvariant
-	Namespace: customclass
-	Checksum: 0x8F953D29
-	Offset: 0x2DA8
-	Size: 0x138
-	Parameters: 1
-	Flags: Linked
-*/
 function handle_cac_customization_attachmentvariant(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   level endon("cam_customization_closed" + localclientnum);
   while (true) {
     level waittill("cam_customization_acv" + localclientnum, weapon_attachment_name, acv_index);
@@ -871,17 +560,8 @@ function handle_cac_customization_attachmentvariant(localclientnum) {
   }
 }
 
-/*
-	Name: handle_cac_customization_closed
-	Namespace: customclass
-	Checksum: 0x1B7053D2
-	Offset: 0x2EE8
-	Size: 0x1BE
-	Parameters: 1
-	Flags: Linked
-*/
 function handle_cac_customization_closed(localclientnum) {
-  level endon(# "disconnect");
+  level endon("disconnect");
   level waittill("cam_customization_closed" + localclientnum, param1, param2, param3, param4);
   if(isdefined(level.weapon_clientscript_cac_model[localclientnum]) && isdefined(level.weapon_clientscript_cac_model[localclientnum][level.loadout_slot_name])) {
     level.weapon_clientscript_cac_model[localclientnum][level.loadout_slot_name] setweaponrenderoptions(get_camo_index(localclientnum), get_reticle_index(localclientnum), get_show_payer_tag(localclientnum), get_show_emblem(localclientnum), get_show_paintshop(localclientnum));

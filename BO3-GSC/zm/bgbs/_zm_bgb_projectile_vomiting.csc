@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\bgbs\_zm_bgb_projectile_vomiting.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\clientfield_shared;
@@ -7,31 +11,12 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_bgb;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_bgb_projectile_vomiting;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_bgb_projectile_vomiting
-	Checksum: 0x6DCE8D5F
-	Offset: 0x248
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_bgb_projectile_vomiting", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_bgb_projectile_vomiting
-	Checksum: 0xCC0EAEA8
-	Offset: 0x288
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -43,15 +28,6 @@ function __init__() {
   level.var_e0154011 = 0;
 }
 
-/*
-	Name: function_6ac13208
-	Namespace: zm_bgb_projectile_vomiting
-	Checksum: 0xB59A22BA
-	Offset: 0x358
-	Size: 0x10C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6ac13208(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(level.var_e0154011 < 10) {
     if(gibclientutils::isgibbed(localclientnum, self, 8)) {
@@ -64,15 +40,6 @@ function function_6ac13208(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_6d325051
-	Namespace: zm_bgb_projectile_vomiting
-	Checksum: 0x3D371B8D
-	Offset: 0x470
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6d325051() {
   level.var_e0154011++;
   wait(1);

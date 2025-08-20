@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\ctf.gsc
+*************************************************/
+
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
@@ -23,44 +27,16 @@
 #using scripts\shared\sound_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace ctf;
 
-/*
-	Name: __init__sytem__
-	Namespace: ctf
-	Checksum: 0xC2ECB0D4
-	Offset: 0xDC0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("ctf", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: ctf
-	Checksum: 0x872E2A9E
-	Offset: 0xE00
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "ctf_flag_away", 1, 1, "int");
 }
 
-/*
-	Name: main
-	Namespace: ctf
-	Checksum: 0x8F440284
-	Offset: 0xE40
-	Size: 0x3E4
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   util::registertimelimit(0, 1440);
@@ -104,38 +80,18 @@ function main() {
   }
 }
 
-/*
-	Name: onprecachegametype
-	Namespace: ctf
-	Checksum: 0xCD45D760
-	Offset: 0x1230
-	Size: 0x4A
-	Parameters: 0
-	Flags: Linked
-*/
 function onprecachegametype() {
   game["flag_dropped_sound"] = "mp_war_objective_lost";
   game["flag_recovered_sound"] = "mp_war_objective_taken";
   game["strings"]["score_limit_reached"] = & "MP_CAP_LIMIT_REACHED";
 }
 
-/*
-	Name: onstartgametype
-	Namespace: ctf
-	Checksum: 0x3ED468A2
-	Offset: 0x1288
-	Size: 0x654
-	Parameters: 0
-	Flags: Linked
-*/
 function onstartgametype() {
   if(!isdefined(game["switchedsides"])) {
     game["switchedsides"] = 0;
   }
-  /#
   setdebugsideswitch(game[""]);
-  # /
-    setclientnamemode("auto_change");
+  setclientnamemode("auto_change");
   globallogic_score::resetteamscores();
   util::setobjectivetext("allies", & "OBJECTIVES_CTF");
   util::setobjectivetext("axis", & "OBJECTIVES_CTF");
@@ -203,15 +159,6 @@ function onstartgametype() {
   thread ctf();
 }
 
-/*
-	Name: shouldplayovertimeround
-	Namespace: ctf
-	Checksum: 0x7D332BF
-	Offset: 0x18E8
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function shouldplayovertimeround() {
   if(isdefined(game["overtime_round"])) {
     if(game["overtime_round"] == 1 || !level.gameended) {
@@ -236,15 +183,6 @@ function shouldplayovertimeround() {
   return false;
 }
 
-/*
-	Name: minutesandsecondsstring
-	Namespace: ctf
-	Checksum: 0xA27FD30F
-	Offset: 0x1A70
-	Size: 0xB2
-	Parameters: 1
-	Flags: Linked
-*/
 function minutesandsecondsstring(milliseconds) {
   minutes = floor(milliseconds / 60000);
   milliseconds = milliseconds - (minutes * 60000);
@@ -255,15 +193,6 @@ function minutesandsecondsstring(milliseconds) {
   return (minutes + ":") + seconds;
 }
 
-/*
-	Name: setmatchscorehudelemforteam
-	Namespace: ctf
-	Checksum: 0x13825688
-	Offset: 0x1B30
-	Size: 0x104
-	Parameters: 1
-	Flags: Linked
-*/
 function setmatchscorehudelemforteam(team) {
   if(!isdefined(game["overtime_round"])) {
     self hud_message::setmatchscorehudelemforteam(team);
@@ -274,21 +203,12 @@ function setmatchscorehudelemforteam(team) {
       if(isdefined(game["ctf_overtime_first_winner"]) && game["ctf_overtime_first_winner"] == team) {
         self settext(minutesandsecondsstring(game["ctf_overtime_time_to_beat"]));
       } else {
-        self settext( & "");
+        self settext(&"");
       }
     }
   }
 }
 
-/*
-	Name: onroundswitch
-	Namespace: ctf
-	Checksum: 0xDF07C697
-	Offset: 0x1C40
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function onroundswitch() {
   if(!isdefined(game["switchedsides"])) {
     game["switchedsides"] = 0;
@@ -297,15 +217,6 @@ function onroundswitch() {
   game["switchedsides"] = !game["switchedsides"];
 }
 
-/*
-	Name: onendgame
-	Namespace: ctf
-	Checksum: 0xE4F19988
-	Offset: 0x1C98
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function onendgame(winningteam) {
   if(isdefined(game["overtime_round"])) {
     if(game["overtime_round"] == 1) {
@@ -320,15 +231,6 @@ function onendgame(winningteam) {
   }
 }
 
-/*
-	Name: updateteamscorebyroundswon
-	Namespace: ctf
-	Checksum: 0x11EB461B
-	Offset: 0x1D48
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function updateteamscorebyroundswon() {
   if(level.scoreroundwinbased) {
     foreach(team in level.teams) {
@@ -339,15 +241,6 @@ function updateteamscorebyroundswon() {
   }
 }
 
-/*
-	Name: updateteamscorebyflagscaptured
-	Namespace: ctf
-	Checksum: 0x975D7A77
-	Offset: 0x1DF8
-	Size: 0xBA
-	Parameters: 0
-	Flags: Linked
-*/
 function updateteamscorebyflagscaptured() {
   if(level.scoreroundwinbased) {
     return;
@@ -361,15 +254,6 @@ function updateteamscorebyflagscaptured() {
   }
 }
 
-/*
-	Name: onroundendgame
-	Namespace: ctf
-	Checksum: 0x2E99E5D9
-	Offset: 0x1EC0
-	Size: 0x254
-	Parameters: 1
-	Flags: Linked
-*/
 function onroundendgame(winningteam) {
   if(isdefined(game["overtime_round"])) {
     if(isdefined(game["ctf_overtime_first_winner"])) {
@@ -415,15 +299,6 @@ function onroundendgame(winningteam) {
   return winner;
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: ctf
-	Checksum: 0x55F5D8A9
-	Offset: 0x2120
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function onspawnplayer(predictedspawn) {
   self.isflagcarrier = 0;
   self.flagcarried = undefined;
@@ -431,15 +306,6 @@ function onspawnplayer(predictedspawn) {
   spawning::onspawnplayer(predictedspawn);
 }
 
-/*
-	Name: updategametypedvars
-	Namespace: ctf
-	Checksum: 0x82B24FC6
-	Offset: 0x2188
-	Size: 0x160
-	Parameters: 0
-	Flags: Linked
-*/
 function updategametypedvars() {
   level.flagcapturetime = getgametypesetting("captureTime");
   level.flagtouchreturntime = getgametypesetting("defuseTime");
@@ -457,15 +323,6 @@ function updategametypedvars() {
   }
 }
 
-/*
-	Name: createflag
-	Namespace: ctf
-	Checksum: 0xBF59F2A7
-	Offset: 0x22F0
-	Size: 0x3BA
-	Parameters: 1
-	Flags: Linked
-*/
 function createflag(trigger) {
   if(isdefined(trigger.target)) {
     visuals[0] = getent(trigger.target, "targetname");
@@ -505,15 +362,6 @@ function createflag(trigger) {
   return flag;
 }
 
-/*
-	Name: createflagzone
-	Namespace: ctf
-	Checksum: 0x2EC9B328
-	Offset: 0x26B8
-	Size: 0x1E8
-	Parameters: 1
-	Flags: Linked
-*/
 function createflagzone(trigger) {
   visuals = [];
   entityteam = trigger.script_team;
@@ -523,7 +371,7 @@ function createflagzone(trigger) {
   flagzone = gameobjects::create_use_object(entityteam, trigger, visuals, (0, 0, 0), istring(entityteam + "_base"));
   flagzone gameobjects::allow_use("friendly");
   flagzone gameobjects::set_use_time(0);
-  flagzone gameobjects::set_use_text( & "MP_CAPTURING_FLAG");
+  flagzone gameobjects::set_use_text(&"MP_CAPTURING_FLAG");
   flagzone gameobjects::set_visible_team("friendly");
   enemyteam = util::getotherteam(entityteam);
   flagzone gameobjects::set_key_object(level.teamflags[enemyteam]);
@@ -535,35 +383,17 @@ function createflagzone(trigger) {
   return flagzone;
 }
 
-/*
-	Name: createflaghint
-	Namespace: ctf
-	Checksum: 0xACB8E8C8
-	Offset: 0x28A8
-	Size: 0xD0
-	Parameters: 2
-	Flags: Linked
-*/
 function createflaghint(team, origin) {
   radius = 128;
   height = 64;
   trigger = spawn("trigger_radius", origin, 0, radius, height);
-  trigger sethintstring( & "MP_CTF_CANT_CAPTURE_FLAG");
+  trigger sethintstring(&"MP_CTF_CANT_CAPTURE_FLAG");
   trigger setcursorhint("HINT_NOICON");
   trigger.original_origin = origin;
   trigger turn_off();
   return trigger;
 }
 
-/*
-	Name: ctf
-	Namespace: ctf
-	Checksum: 0x170796C3
-	Offset: 0x2980
-	Size: 0x304
-	Parameters: 0
-	Flags: Linked
-*/
 function ctf() {
   level.flags = [];
   level.teamflags = [];
@@ -571,10 +401,8 @@ function ctf() {
   level.teamflagzones = [];
   flag_triggers = getentarray("ctf_flag_pickup_trig", "targetname");
   if(!isdefined(flag_triggers) || flag_triggers.size != 2) {
-    /#
     util::error("");
-    # /
-      return;
+    return;
   }
   for (index = 0; index < flag_triggers.size; index++) {
     trigger = flag_triggers[index];
@@ -585,10 +413,8 @@ function ctf() {
   }
   flag_zones = getentarray("ctf_flag_zone_trig", "targetname");
   if(!isdefined(flag_zones) || flag_zones.size != 2) {
-    /#
     util::error("");
-    # /
-      return;
+    return;
   }
   for (index = 0; index < flag_zones.size; index++) {
     trigger = flag_zones[index];
@@ -603,30 +429,12 @@ function ctf() {
   createreturnmessageelems();
 }
 
-/*
-	Name: ctf_icon_hide
-	Namespace: ctf
-	Checksum: 0x80A5C1A5
-	Offset: 0x2C90
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function ctf_icon_hide() {
-  level waittill(# "game_ended");
+  level waittill("game_ended");
   level.teamflags["allies"] gameobjects::set_visible_team("none");
   level.teamflags["axis"] gameobjects::set_visible_team("none");
 }
 
-/*
-	Name: removeinfluencers
-	Namespace: ctf
-	Checksum: 0x2A814FE7
-	Offset: 0x2D08
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function removeinfluencers() {
   if(isdefined(self.spawn_influencer_enemy_carrier)) {
     self spawning::remove_influencer(self.spawn_influencer_enemy_carrier);
@@ -642,15 +450,6 @@ function removeinfluencers() {
   }
 }
 
-/*
-	Name: ondrop
-	Namespace: ctf
-	Checksum: 0x7A5B67D2
-	Offset: 0x2DB8
-	Size: 0x554
-	Parameters: 1
-	Flags: Linked
-*/
 function ondrop(player) {
   origin = (0, 0, 0);
   if(isdefined(player)) {
@@ -667,23 +466,21 @@ function ondrop(player) {
   }
   if(isdefined(player)) {
     util::printandsoundoneveryone(team, undefined, & "", undefined, "mp_war_objective_lost");
-    level thread popups::displayteammessagetoteam( & "MP_FRIENDLY_FLAG_DROPPED", player, team);
-    level thread popups::displayteammessagetoteam( & "MP_ENEMY_FLAG_DROPPED", player, otherteam);
+    level thread popups::displayteammessagetoteam(&"MP_FRIENDLY_FLAG_DROPPED", player, team);
+    level thread popups::displayteammessagetoteam(&"MP_ENEMY_FLAG_DROPPED", player, otherteam);
   } else {
     util::printandsoundoneveryone(team, undefined, & "", undefined, "mp_war_objective_lost");
   }
   globallogic_audio::leader_dialog("ctfFriendlyFlagDropped", team, undefined, "ctf_flag");
   globallogic_audio::leader_dialog("ctfEnemyFlagDropped", otherteam, undefined, "ctf_flag_enemy");
-  /#
   if(isdefined(player)) {
     print(team + "");
   } else {
     print(team + "");
   }
-  # /
-    if(isdefined(player)) {
-      player playlocalsound("mpl_flag_drop_plr");
-    }
+  if(isdefined(player)) {
+    player playlocalsound("mpl_flag_drop_plr");
+  }
   globallogic_audio::play_2d_on_team("mpl_flagdrop_sting_friend", otherteam);
   globallogic_audio::play_2d_on_team("mpl_flagdrop_sting_enemy", team);
   if(level.touchreturn) {
@@ -713,15 +510,6 @@ function ondrop(player) {
   setinfluencertimeout(self.spawn_influencer_dropped, level.idleflagreturntime);
 }
 
-/*
-	Name: onpickup
-	Namespace: ctf
-	Checksum: 0x96F0E0EF
-	Offset: 0x3318
-	Size: 0x838
-	Parameters: 1
-	Flags: Linked
-*/
 function onpickup(player) {
   carrierkilledby = self.carrierkilledby;
   self.carrierkilledby = undefined;
@@ -738,7 +526,7 @@ function onpickup(player) {
   otherteam = util::getotherteam(team);
   self clearreturnflaghudelems();
   if(isdefined(player) && player.pers["team"] == team) {
-    self notify(# "picked_up");
+    self notify("picked_up");
     util::printandsoundoneveryone(team, undefined, & "", undefined, "mp_obj_returned");
     if(isdefined(player.pers["returns"])) {
       player.pers["returns"]++;
@@ -751,29 +539,27 @@ function onpickup(player) {
     }
     demo::bookmark("event", gettime(), player);
     player addplayerstatwithgametype("RETURNS", 1);
-    level thread popups::displayteammessagetoteam( & "MP_FRIENDLY_FLAG_RETURNED", player, team);
-    level thread popups::displayteammessagetoteam( & "MP_ENEMY_FLAG_RETURNED", player, otherteam);
+    level thread popups::displayteammessagetoteam(&"MP_FRIENDLY_FLAG_RETURNED", player, team);
+    level thread popups::displayteammessagetoteam(&"MP_ENEMY_FLAG_RETURNED", player, otherteam);
     self.visuals[0] clientfield::set("ctf_flag_away", 0);
     self gameobjects::set_flags(0);
     bbprint("mpobjective", "gametime %d objtype %s team %s playerx %d playery %d playerz %d", gettime(), "ctf_flagreturn", team, player.origin);
     player recordgameevent("return");
     self returnflag();
-    /#
     if(isdefined(player)) {
       print(team + "");
     } else {
       print(team + "");
     }
-    # /
-      return;
+    return;
   }
   bbprint("mpobjective", "gametime %d objtype %s team %s playerx %d playery %d playerz %d", gettime(), "ctf_flagpickup", team, player.origin);
   player recordgameevent("pickup");
   scoreevents::processscoreevent("flag_grab", player);
   demo::bookmark("event", gettime(), player);
   util::printandsoundoneveryone(otherteam, undefined, & "", undefined, "mp_obj_taken", "mp_enemy_obj_taken");
-  level thread popups::displayteammessagetoteam( & "MP_FRIENDLY_FLAG_TAKEN", player, team);
-  level thread popups::displayteammessagetoteam( & "MP_ENEMY_FLAG_TAKEN", player, otherteam);
+  level thread popups::displayteammessagetoteam(&"MP_FRIENDLY_FLAG_TAKEN", player, team);
+  level thread popups::displayteammessagetoteam(&"MP_ENEMY_FLAG_TAKEN", player, otherteam);
   globallogic_audio::leader_dialog("ctfFriendlyFlagTaken", team, undefined, "ctf_flag");
   globallogic_audio::leader_dialog("ctfEnemyFlagTaken", otherteam, undefined, "ctf_flag_enemy");
   player.isflagcarrier = 1;
@@ -795,40 +581,20 @@ function onpickup(player) {
   player thread claim_trigger(level.flaghints[otherteam]);
   update_hints();
   player resetflashback();
-  /#
   print(team + "");
-  # /
-    ss = level.spawnsystem;
+  ss = level.spawnsystem;
   player_team_mask = util::getteammask(otherteam);
   enemy_team_mask = util::getteammask(team);
   player.spawn_influencer_friendly_carrier = player spawning::create_entity_masked_friendly_influencer("ctf_carrier_friendly", player_team_mask);
   player.spawn_influencer_enemy_carrier = player spawning::create_entity_masked_enemy_influencer("ctf_carrier_enemy", enemy_team_mask);
 }
 
-/*
-	Name: onpickupmusicstate
-	Namespace: ctf
-	Checksum: 0xA369596A
-	Offset: 0x3B58
-	Size: 0x3A
-	Parameters: 1
-	Flags: None
-*/
 function onpickupmusicstate(player) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   wait(6);
 }
 
-/*
-	Name: ishome
-	Namespace: ctf
-	Checksum: 0x7C5498A2
-	Offset: 0x3BA0
-	Size: 0x38
-	Parameters: 0
-	Flags: None
-*/
 function ishome() {
   if(isdefined(self.carrier)) {
     return false;
@@ -839,15 +605,6 @@ function ishome() {
   return true;
 }
 
-/*
-	Name: returnflag
-	Namespace: ctf
-	Checksum: 0xA57CC9F9
-	Offset: 0x3BE0
-	Size: 0x234
-	Parameters: 0
-	Flags: Linked
-*/
 function returnflag() {
   team = self gameobjects::get_owner_team();
   otherteam = util::getotherteam(team);
@@ -869,15 +626,6 @@ function returnflag() {
   globallogic_audio::leader_dialog("ctfEnemyFlagReturned", otherteam, undefined, "ctf_flag_enemy");
 }
 
-/*
-	Name: oncapture
-	Namespace: ctf
-	Checksum: 0x46B6711B
-	Offset: 0x3E20
-	Size: 0x4C4
-	Parameters: 1
-	Flags: Linked
-*/
 function oncapture(player) {
   team = player.pers["team"];
   enemyteam = util::getotherteam(team);
@@ -898,15 +646,13 @@ function oncapture(player) {
   }
   demo::bookmark("event", gettime(), player);
   player addplayerstatwithgametype("CAPTURES", 1);
-  level thread popups::displayteammessagetoteam( & "MP_ENEMY_FLAG_CAPTURED", player, team);
-  level thread popups::displayteammessagetoteam( & "MP_FRIENDLY_FLAG_CAPTURED", player, enemyteam);
+  level thread popups::displayteammessagetoteam(&"MP_ENEMY_FLAG_CAPTURED", player, team);
+  level thread popups::displayteammessagetoteam(&"MP_FRIENDLY_FLAG_CAPTURED", player, enemyteam);
   globallogic_audio::play_2d_on_team("mpl_flagcapture_sting_enemy", enemyteam);
   globallogic_audio::play_2d_on_team("mpl_flagcapture_sting_friend", team);
   player giveflagcapturexp(player);
-  /#
   print(enemyteam + "");
-  # /
-    flag = player.carryobject;
+  flag = player.carryobject;
   player challenges::capturedobjective(time, flag.trigger);
   flag.dontannouncereturn = 1;
   flag gameobjects::return_home();
@@ -926,29 +672,11 @@ function oncapture(player) {
   player removeinfluencers();
 }
 
-/*
-	Name: giveflagcapturexp
-	Namespace: ctf
-	Checksum: 0x95EBC87
-	Offset: 0x42F0
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function giveflagcapturexp(player) {
   scoreevents::processscoreevent("flag_capture", player);
   player recordgameevent("capture");
 }
 
-/*
-	Name: onreset
-	Namespace: ctf
-	Checksum: 0x1E87B808
-	Offset: 0x4348
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function onreset() {
   update_hints();
   team = self gameobjects::get_owner_team();
@@ -967,15 +695,6 @@ function onreset() {
   self removeinfluencers();
 }
 
-/*
-	Name: getotherflag
-	Namespace: ctf
-	Checksum: 0xB5E286DB
-	Offset: 0x4510
-	Size: 0x3C
-	Parameters: 1
-	Flags: None
-*/
 function getotherflag(flag) {
   if(flag == level.flags[0]) {
     return level.flags[1];
@@ -983,15 +702,6 @@ function getotherflag(flag) {
   return level.flags[0];
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: ctf
-	Checksum: 0x68A4C20B
-	Offset: 0x4558
-	Size: 0x884
-	Parameters: 9
-	Flags: Linked
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(isdefined(attacker) && isplayer(attacker)) {
     for (index = 0; index < level.flags.size; index++) {
@@ -1097,15 +807,6 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: createreturnmessageelems
-	Namespace: ctf
-	Checksum: 0xA0EF27BB
-	Offset: 0x4DE8
-	Size: 0x430
-	Parameters: 0
-	Flags: Linked
-*/
 function createreturnmessageelems() {
   level.returnmessageelems = [];
   level.returnmessageelems["allies"]["axis"] = hud::createservertimer("objective", 1.4, "allies");
@@ -1130,21 +831,12 @@ function createreturnmessageelems() {
   level.returnmessageelems["axis"]["axis"].archived = 0;
 }
 
-/*
-	Name: returnflagaftertimemsg
-	Namespace: ctf
-	Checksum: 0x1AAE35A1
-	Offset: 0x5220
-	Size: 0xA0
-	Parameters: 1
-	Flags: Linked
-*/
 function returnflagaftertimemsg(time) {
   if(level.touchreturn || level.idleflagreturntime == 0) {
     return;
   }
-  self notify(# "returnflagaftertimemsg");
-  self endon(# "returnflagaftertimemsg");
+  self notify("returnflagaftertimemsg");
+  self endon("returnflagaftertimemsg");
   result = returnflaghudelems(time);
   self removeinfluencers();
   self clearreturnflaghudelems();
@@ -1153,28 +845,15 @@ function returnflagaftertimemsg(time) {
   }
 }
 
-/*
-	Name: returnflaghudelems
-	Namespace: ctf
-	Checksum: 0xBBAE85D9
-	Offset: 0x52C8
-	Size: 0x172
-	Parameters: 1
-	Flags: Linked
-*/
 function returnflaghudelems(time) {
-  self endon(# "picked_up");
-  level endon(# "game_ended");
+  self endon("picked_up");
+  level endon("game_ended");
   ownerteam = self gameobjects::get_owner_team();
-  /#
   assert(!level.returnmessageelems[""][ownerteam].alpha);
-  # /
-    level.returnmessageelems["axis"][ownerteam].alpha = 1;
+  level.returnmessageelems["axis"][ownerteam].alpha = 1;
   level.returnmessageelems["axis"][ownerteam] settimer(time);
-  /#
   assert(!level.returnmessageelems[""][ownerteam].alpha);
-  # /
-    level.returnmessageelems["allies"][ownerteam].alpha = 1;
+  level.returnmessageelems["allies"][ownerteam].alpha = 1;
   level.returnmessageelems["allies"][ownerteam] settimer(time);
   if(time <= 0) {
     return false;
@@ -1183,30 +862,12 @@ function returnflaghudelems(time) {
   return true;
 }
 
-/*
-	Name: clearreturnflaghudelems
-	Namespace: ctf
-	Checksum: 0xCE43D142
-	Offset: 0x5448
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function clearreturnflaghudelems() {
   ownerteam = self gameobjects::get_owner_team();
   level.returnmessageelems["allies"][ownerteam].alpha = 0;
   level.returnmessageelems["axis"][ownerteam].alpha = 0;
 }
 
-/*
-	Name: turn_on
-	Namespace: ctf
-	Checksum: 0xBA78765B
-	Offset: 0x54C0
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function turn_on() {
   if(level.hardcoremode) {
     return;
@@ -1214,28 +875,10 @@ function turn_on() {
   self.origin = self.original_origin;
 }
 
-/*
-	Name: turn_off
-	Namespace: ctf
-	Checksum: 0x99C5B95E
-	Offset: 0x54E8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function turn_off() {
   self.origin = (self.original_origin[0], self.original_origin[1], self.original_origin[2] - 10000);
 }
 
-/*
-	Name: update_hints
-	Namespace: ctf
-	Checksum: 0x9E455D93
-	Offset: 0x5530
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function update_hints() {
   allied_flag = level.teamflags["allies"];
   axis_flag = level.teamflags["axis"];
@@ -1254,31 +897,13 @@ function update_hints() {
   }
 }
 
-/*
-	Name: claim_trigger
-	Namespace: ctf
-	Checksum: 0x655A3AAC
-	Offset: 0x5680
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function claim_trigger(trigger) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self clientclaimtrigger(trigger);
-  self waittill(# "drop_object");
+  self waittill("drop_object");
   self clientreleasetrigger(trigger);
 }
 
-/*
-	Name: createflagspawninfluencer
-	Namespace: ctf
-	Checksum: 0x7DE0980E
-	Offset: 0x56E0
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function createflagspawninfluencer(entityteam) {
   otherteam = util::getotherteam(entityteam);
   team_mask = util::getteammask(entityteam);
@@ -1287,15 +912,6 @@ function createflagspawninfluencer(entityteam) {
   self.spawn_influencer_enemy = self spawning::create_influencer("ctf_base_friendly", self.trigger.origin, other_team_mask);
 }
 
-/*
-	Name: ctf_getteamkillpenalty
-	Namespace: ctf
-	Checksum: 0x4D9198F
-	Offset: 0x57D0
-	Size: 0x7E
-	Parameters: 4
-	Flags: Linked
-*/
 function ctf_getteamkillpenalty(einflictor, attacker, smeansofdeath, weapon) {
   teamkill_penalty = globallogic_defaults::default_getteamkillpenalty(einflictor, attacker, smeansofdeath, weapon);
   if(isdefined(self.isflagcarrier) && self.isflagcarrier) {
@@ -1304,15 +920,6 @@ function ctf_getteamkillpenalty(einflictor, attacker, smeansofdeath, weapon) {
   return teamkill_penalty;
 }
 
-/*
-	Name: ctf_getteamkillscore
-	Namespace: ctf
-	Checksum: 0x78675D57
-	Offset: 0x5858
-	Size: 0x8A
-	Parameters: 4
-	Flags: Linked
-*/
 function ctf_getteamkillscore(einflictor, attacker, smeansofdeath, weapon) {
   teamkill_score = rank::getscoreinfovalue("kill");
   if(isdefined(self.isflagcarrier) && self.isflagcarrier) {

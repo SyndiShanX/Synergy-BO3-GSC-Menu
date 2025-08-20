@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\aats\_zm_aat_thunder_wall.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\aat_shared;
 #using scripts\shared\ai\systems\gib;
@@ -11,31 +15,12 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_aat_thunder_wall;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_aat_thunder_wall
-	Checksum: 0xE4285D40
-	Offset: 0x2B8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_aat_thunder_wall", & __init__, undefined, "aat");
 }
 
-/*
-	Name: __init__
-	Namespace: zm_aat_thunder_wall
-	Checksum: 0x1D65D2CA
-	Offset: 0x2F8
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.aat_in_use) && level.aat_in_use)) {
     return;
@@ -44,28 +29,10 @@ function __init__() {
   level._effect["zm_aat_thunder_wall" + "_break_fx"] = "zombie/fx_aat_thunderwall_zmb";
 }
 
-/*
-	Name: result
-	Namespace: zm_aat_thunder_wall
-	Checksum: 0x1C0F7F83
-	Offset: 0x388
-	Size: 0x3C
-	Parameters: 4
-	Flags: Linked
-*/
 function result(death, attacker, mod, weapon) {
   self thread thunder_wall_blast(attacker);
 }
 
-/*
-	Name: thunder_wall_blast
-	Namespace: zm_aat_thunder_wall
-	Checksum: 0xFEDD4197
-	Offset: 0x3D0
-	Size: 0x536
-	Parameters: 1
-	Flags: Linked
-*/
 function thunder_wall_blast(attacker) {
   v_thunder_wall_blast_pos = self.origin;
   v_attacker_facing_forward_dir = vectortoangles(v_thunder_wall_blast_pos - attacker.origin);
@@ -123,15 +90,6 @@ function thunder_wall_blast(attacker) {
   }
 }
 
-/*
-	Name: thunder_wall_blast_fx
-	Namespace: zm_aat_thunder_wall
-	Checksum: 0x81EA2A9D
-	Offset: 0x910
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function thunder_wall_blast_fx(v_blast_origin, v_attacker_orientation) {
   fx::play("zm_aat_thunder_wall" + "_break_fx", v_blast_origin, v_attacker_orientation, 1);
 }

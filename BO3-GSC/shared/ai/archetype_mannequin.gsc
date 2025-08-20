@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_mannequin.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_mannequin_interface;
 #using scripts\shared\ai\systems\ai_interface;
 #using scripts\shared\ai\systems\behavior_tree_utility;
 #using scripts\shared\ai\zombie;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\spawner_shared;
-
 #namespace mannequinbehavior;
 
-/*
-	Name: init
-	Namespace: mannequinbehavior
-	Checksum: 0x41C61ABB
-	Offset: 0x1C8
-	Size: 0x214
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   level.zm_variant_type_max = [];
   level.zm_variant_type_max["walk"] = [];
@@ -37,15 +31,6 @@ function autoexec init() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("mannequinShouldMelee", & mannequinshouldmelee);
 }
 
-/*
-	Name: mannequincollisionservice
-	Namespace: mannequinbehavior
-	Checksum: 0xC9C59DC4
-	Offset: 0x3E8
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function mannequincollisionservice(entity) {
   if(isdefined(entity.enemy) && distancesquared(entity.origin, entity.enemy.origin) > (300 * 300)) {
     entity pushactors(0);
@@ -54,26 +39,8 @@ function mannequincollisionservice(entity) {
   }
 }
 
-/*
-	Name: mannequinspawnsetup
-	Namespace: mannequinbehavior
-	Checksum: 0xEDD38CBA
-	Offset: 0x490
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function mannequinspawnsetup(entity) {}
 
-/*
-	Name: mannequinshouldmelee
-	Namespace: mannequinbehavior
-	Checksum: 0xEB636FA1
-	Offset: 0x4A8
-	Size: 0x18C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private mannequinshouldmelee(entity) {
   if(!isdefined(entity.enemy)) {
     return false;

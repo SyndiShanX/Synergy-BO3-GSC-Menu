@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_portals.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_death;
 #using scripts\shared\ai\zombie_utility;
@@ -22,33 +26,13 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weap_ball;
 #using scripts\zm\_zm_zonemgr;
-
 #using_animtree("generic");
-
 #namespace zm_genesis_portals;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_genesis_portals
-	Checksum: 0xA22642AC
-	Offset: 0x8F0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_portals", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_genesis_portals
-	Checksum: 0x3EF0FD2B
-	Offset: 0x930
-	Size: 0x2F4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "player_stargate_fx", 15000, 1, "int");
   clientfield::register("toplayer", "player_light_exploder", 15000, 4, "int");
@@ -68,15 +52,6 @@ function __init__() {
   callback::on_connect( & function_cfc89ca);
 }
 
-/*
-	Name: function_16616103
-	Namespace: zm_genesis_portals
-	Checksum: 0xEF055A8A
-	Offset: 0xC30
-	Size: 0x1C4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_16616103() {
   level flag::init("verruct_portal");
   level thread create_portal("verruckt", "verruct_portal");
@@ -92,29 +67,11 @@ function function_16616103() {
   level thread function_e4ff383e("power_on1", "prison_portal");
 }
 
-/*
-	Name: function_e4ff383e
-	Namespace: zm_genesis_portals
-	Checksum: 0x195F9407
-	Offset: 0xE00
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function function_e4ff383e(var_49e3dd2e, var_d16ec704) {
   level flag::wait_till(var_49e3dd2e);
   level flag::set(var_d16ec704);
 }
 
-/*
-	Name: function_ff160813
-	Namespace: zm_genesis_portals
-	Checksum: 0x155F5F4F
-	Offset: 0xE50
-	Size: 0x9C
-	Parameters: 0
-	Flags: None
-*/
 function function_ff160813() {
   while (true) {
     if(level flag::get("power_on1") && level flag::get("power_on3") && level flag::get("power_on4")) {
@@ -125,15 +82,6 @@ function function_ff160813() {
   level flag::set("sheffield_portal");
 }
 
-/*
-	Name: create_portal
-	Namespace: zm_genesis_portals
-	Checksum: 0xB7FD06AA
-	Offset: 0xEF8
-	Size: 0x1F8
-	Parameters: 2
-	Flags: Linked
-*/
 function create_portal(str_id, var_776628b2) {
   width = 192;
   height = 128;
@@ -160,18 +108,9 @@ function create_portal(str_id, var_776628b2) {
   }
 }
 
-/*
-	Name: function_a90ab0d7
-	Namespace: zm_genesis_portals
-	Checksum: 0xDDD6991C
-	Offset: 0x10F8
-	Size: 0xCC
-	Parameters: 0
-	Flags: None
-*/
 function function_a90ab0d7() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player zm_utility::in_revive_trigger()) {
       continue;
     }
@@ -187,15 +126,6 @@ function function_a90ab0d7() {
   }
 }
 
-/*
-	Name: portal_activate
-	Namespace: zm_genesis_portals
-	Checksum: 0xDF02BAF4
-	Offset: 0x11D0
-	Size: 0x296
-	Parameters: 1
-	Flags: Linked
-*/
 function portal_activate(str_areaname) {
   switch (str_areaname) {
     case "prison": {
@@ -233,15 +163,6 @@ function portal_activate(str_areaname) {
   }
 }
 
-/*
-	Name: function_7fa2f44
-	Namespace: zm_genesis_portals
-	Checksum: 0x8E9B3E1E
-	Offset: 0x1470
-	Size: 0xB6
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7fa2f44(str_areaname) {
   switch (str_areaname) {
     case "sheffield": {
@@ -263,15 +184,6 @@ function function_7fa2f44(str_areaname) {
   }
 }
 
-/*
-	Name: portal_open
-	Namespace: zm_genesis_portals
-	Checksum: 0x3092C855
-	Offset: 0x1530
-	Size: 0x422
-	Parameters: 1
-	Flags: Linked
-*/
 function portal_open(str_areaname) {
   function_4a4784d4(str_areaname, 1);
   a_t_portal_top = getentarray(str_areaname + "_portal_top", "script_noteworthy");
@@ -303,15 +215,6 @@ function portal_open(str_areaname) {
   }
 }
 
-/*
-	Name: function_4a4784d4
-	Namespace: zm_genesis_portals
-	Checksum: 0x9AA5A641
-	Offset: 0x1960
-	Size: 0xD2
-	Parameters: 2
-	Flags: Linked
-*/
 function function_4a4784d4(str_areaname, b_enabled) {
   var_1693bd2 = getnodearray(str_areaname + "_portal_node", "script_noteworthy");
   foreach(var_9110bac3 in var_1693bd2) {
@@ -319,15 +222,6 @@ function function_4a4784d4(str_areaname, b_enabled) {
   }
 }
 
-/*
-	Name: portal_think
-	Namespace: zm_genesis_portals
-	Checksum: 0x71421E9
-	Offset: 0x1A40
-	Size: 0x1F0
-	Parameters: 1
-	Flags: Linked
-*/
 function portal_think(b_show_fx) {
   self.a_s_port_locs = struct::get_array(self.target, "targetname");
   if(!isdefined(b_show_fx)) {
@@ -340,7 +234,7 @@ function portal_think(b_show_fx) {
     var_759fb311 = self.e_dest.script_noteworthy;
   }
   while (true) {
-    self waittill(# "trigger", e_portee);
+    self waittill("trigger", e_portee);
     if(isdefined(level.var_ccae6720) && level.var_ccae6720) {
       continue;
     }
@@ -358,18 +252,9 @@ function portal_think(b_show_fx) {
   }
 }
 
-/*
-	Name: portal_teleport_player
-	Namespace: zm_genesis_portals
-	Checksum: 0x28A715CC
-	Offset: 0x1C38
-	Size: 0x97C
-	Parameters: 5
-	Flags: Linked
-*/
 function portal_teleport_player(show_fx = 1, a_s_port_locs, str_zone, var_6d359b2e, var_759fb311) {
-  self endon(# "disconnect");
-  self notify(# "gravityspikes_attack_watchers_end");
+  self endon("disconnect");
+  self notify("gravityspikes_attack_watchers_end");
   self.b_teleporting = 1;
   self.teleport_location = self.origin;
   self.a_s_port_locs = a_s_port_locs;
@@ -490,23 +375,12 @@ function portal_teleport_player(show_fx = 1, a_s_port_locs, str_zone, var_6d359b
   self freezecontrols(level.intermission);
   if(isdefined(var_759fb311)) {
     self clientfield::set_to_player("hint_" + var_759fb311, 0);
-    /#
     streamerskiptodebug("" + var_759fb311);
-    # /
   }
   self.b_teleporting = 0;
   self thread zm_audio::create_and_play_dialog("portal", "travel");
 }
 
-/*
-	Name: function_bfba39d8
-	Namespace: zm_genesis_portals
-	Checksum: 0xC8A2633
-	Offset: 0x25C0
-	Size: 0x46
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bfba39d8() {
   util::wait_network_frame();
   if(isdefined(self.teleport_origin)) {
@@ -515,15 +389,6 @@ function function_bfba39d8() {
   }
 }
 
-/*
-	Name: function_483df985
-	Namespace: zm_genesis_portals
-	Checksum: 0xD820DF84
-	Offset: 0x2610
-	Size: 0x464
-	Parameters: 1
-	Flags: Linked
-*/
 function function_483df985(s_pos) {
   a_ai = getaiarray();
   a_aoe_ai = arraysortclosest(a_ai, s_pos.origin, a_ai.size, 0, 260);
@@ -576,20 +441,11 @@ function function_483df985(s_pos) {
   }
 }
 
-/*
-	Name: ai_delay_cleanup
-	Namespace: zm_genesis_portals
-	Checksum: 0xB81AFFA0
-	Offset: 0x2A80
-	Size: 0x72
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_delay_cleanup() {
   if(!(isdefined(self.b_ignore_cleanup) && self.b_ignore_cleanup)) {
-    self notify(# "delay_cleanup");
-    self endon(# "death");
-    self endon(# "delay_cleanup");
+    self notify("delay_cleanup");
+    self endon("death");
+    self endon("delay_cleanup");
     self.b_ignore_cleanup = 1;
     self.var_b6b1080c = 1;
     wait(10);
@@ -598,17 +454,8 @@ function ai_delay_cleanup() {
   }
 }
 
-/*
-	Name: portal_teleport_ai
-	Namespace: zm_genesis_portals
-	Checksum: 0xAF790690
-	Offset: 0x2B00
-	Size: 0x2C4
-	Parameters: 1
-	Flags: Linked
-*/
 function portal_teleport_ai(e_portee) {
-  e_portee endon(# "death");
+  e_portee endon("death");
   e_portee.b_teleporting = 1;
   e_portee pathmode("dont move");
   playfx(level._effect["portal_3p"], e_portee.origin);
@@ -638,18 +485,9 @@ function portal_teleport_ai(e_portee) {
   e_portee.b_teleporting = 0;
 }
 
-/*
-	Name: function_cfc89ca
-	Namespace: zm_genesis_portals
-	Checksum: 0xB88E4CF4
-	Offset: 0x2DD0
-	Size: 0x464
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cfc89ca() {
-  self endon(# "disconnect");
-  level endon(# "hash_c9cb5160");
+  self endon("disconnect");
+  level endon("hash_c9cb5160");
   level flag::wait_till("start_zombie_round_logic");
   self.var_fe12a779 = [];
   self.var_fe12a779["start"] = 0;
@@ -706,15 +544,6 @@ function function_cfc89ca() {
   }
 }
 
-/*
-	Name: function_eec1f014
-	Namespace: zm_genesis_portals
-	Checksum: 0xE219447F
-	Offset: 0x3240
-	Size: 0x9E
-	Parameters: 3
-	Flags: Linked
-*/
 function function_eec1f014(str_name, n_value, b_toggle) {
   if(self.var_fe12a779[str_name] == b_toggle) {
     self clientfield::set_to_player("player_light_exploder", n_value);
@@ -727,17 +556,8 @@ function function_eec1f014(str_name, n_value, b_toggle) {
   }
 }
 
-/*
-	Name: function_b64d33a7
-	Namespace: zm_genesis_portals
-	Checksum: 0x59DA525D
-	Offset: 0x32E8
-	Size: 0x6E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b64d33a7() {
-  level waittill(# "start_zombie_round_logic");
+  level waittill("start_zombie_round_logic");
   wait(120);
   while (true) {
     level clientfield::set("genesis_light_exposure", 1);

@@ -1,46 +1,22 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_castle_characters.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_load;
 #using scripts\zm\_zm_audio;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_castle_characters;
 
-/*
-	Name: precachecustomcharacters
-	Namespace: zm_castle_characters
-	Checksum: 0x99EC1590
-	Offset: 0x748
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precachecustomcharacters() {}
 
-/*
-	Name: initcharacterstartindex
-	Namespace: zm_castle_characters
-	Checksum: 0x5A5DD539
-	Offset: 0x758
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function initcharacterstartindex() {
   level.characterstartindex = randomint(4);
 }
 
-/*
-	Name: selectcharacterindextouse
-	Namespace: zm_castle_characters
-	Checksum: 0x114A29D7
-	Offset: 0x788
-	Size: 0x3E
-	Parameters: 0
-	Flags: None
-*/
 function selectcharacterindextouse() {
   if(level.characterstartindex >= 4) {
     level.characterstartindex = 0;
@@ -50,15 +26,6 @@ function selectcharacterindextouse() {
   return self.characterindex;
 }
 
-/*
-	Name: assign_lowest_unused_character_index
-	Namespace: zm_castle_characters
-	Checksum: 0x6EBAF324
-	Offset: 0x7D0
-	Size: 0x214
-	Parameters: 0
-	Flags: Linked
-*/
 function assign_lowest_unused_character_index() {
   charindexarray = [];
   charindexarray[0] = 0;
@@ -96,15 +63,6 @@ function assign_lowest_unused_character_index() {
   return 0;
 }
 
-/*
-	Name: givecustomcharacters
-	Namespace: zm_castle_characters
-	Checksum: 0x535AD2A0
-	Offset: 0x9F0
-	Size: 0x2A4
-	Parameters: 0
-	Flags: Linked
-*/
 function givecustomcharacters() {
   self detachall();
   if(!isdefined(self.characterindex)) {
@@ -112,12 +70,10 @@ function givecustomcharacters() {
   }
   self.favorite_wall_weapons_list = [];
   self.talks_in_danger = 0;
-  /#
   if(getdvarstring("") != "") {
     self.characterindex = getdvarint("");
   }
-  # /
-    self setcharacterbodytype(self.characterindex);
+  self setcharacterbodytype(self.characterindex);
   self setcharacterbodystyle(0);
   self setcharacterhelmetstyle(0);
   switch (self.characterindex) {
@@ -148,31 +104,13 @@ function givecustomcharacters() {
   self thread set_exert_id();
 }
 
-/*
-	Name: set_exert_id
-	Namespace: zm_castle_characters
-	Checksum: 0xD002341D
-	Offset: 0xCA0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function set_exert_id() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   util::wait_network_frame();
   util::wait_network_frame();
   self zm_audio::setexertvoice(self.characterindex + 1);
 }
 
-/*
-	Name: setup_personality_character_exerts
-	Namespace: zm_castle_characters
-	Checksum: 0xBBF2F9FB
-	Offset: 0xD00
-	Size: 0x8BA
-	Parameters: 0
-	Flags: None
-*/
 function setup_personality_character_exerts() {
   level.exert_sounds[1]["burp"][0] = "vox_plr_0_exert_burp_0";
   level.exert_sounds[1]["burp"][1] = "vox_plr_0_exert_burp_1";

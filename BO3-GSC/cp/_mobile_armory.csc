@@ -1,55 +1,22 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_mobile_armory.csc
+*************************************************/
+
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
-
 #namespace _mobile_armory;
 
-/*
-	Name: __init__sytem__
-	Namespace: _mobile_armory
-	Checksum: 0xEA56AE85
-	Offset: 0x130
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("cp_mobile_armory", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _mobile_armory
-	Checksum: 0x9980BAFC
-	Offset: 0x178
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "mobile_armory_cac", 1, 4, "int", & function_dd709a6d, 0, 0);
 }
 
-/*
-	Name: __main__
-	Namespace: _mobile_armory
-	Checksum: 0x99EC1590
-	Offset: 0x1D0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {}
 
-/*
-	Name: function_dd709a6d
-	Namespace: _mobile_armory
-	Checksum: 0x2C5F84B4
-	Offset: 0x1E0
-	Size: 0x1B6
-	Parameters: 7
-	Flags: Linked
-*/
 function function_dd709a6d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isspectating(localclientnum, 0)) {
     return;

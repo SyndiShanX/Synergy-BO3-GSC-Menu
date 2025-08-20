@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_lightning_chain.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -17,31 +21,12 @@
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace lightning_chain;
 
-/*
-	Name: __init__sytem__
-	Namespace: lightning_chain
-	Checksum: 0x2DB8B2C1
-	Offset: 0x538
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("lightning_chain", & init, undefined, undefined);
 }
 
-/*
-	Name: init
-	Namespace: lightning_chain
-	Checksum: 0x146E8F0D
-	Offset: 0x578
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level._effect["tesla_bolt"] = "zombie/fx_tesla_bolt_secondary_zmb";
   level._effect["tesla_shock"] = "zombie/fx_tesla_shock_zmb";
@@ -56,15 +41,6 @@ function init() {
   callback::on_connect( & on_player_connect);
 }
 
-/*
-	Name: create_lightning_chain_params
-	Namespace: lightning_chain
-	Checksum: 0x2BB05F0A
-	Offset: 0x710
-	Size: 0x2C4
-	Parameters: 14
-	Flags: Linked
-*/
 function create_lightning_chain_params(max_arcs = 5, max_enemies_killed = 10, radius_start = 300, radius_decay = 20, head_gib_chance = 75, arc_travel_time = 0.11, kills_for_powerup = 10, min_fx_distance = 128, network_death_choke = 4, should_kill_enemies = 1, clientside_fx = 1, arc_fx_sound = undefined, no_fx = 0, prevent_weapon_kill_credit = 0) {
   lcp = spawnstruct();
   lcp.max_arcs = max_arcs;
@@ -84,19 +60,10 @@ function create_lightning_chain_params(max_arcs = 5, max_enemies_killed = 10, ra
   return lcp;
 }
 
-/*
-	Name: on_player_connect
-	Namespace: lightning_chain
-	Checksum: 0x3A5425B0
-	Offset: 0x9E0
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private on_player_connect() {
-  self endon(# "disconnect");
-  self endon(# "death");
-  self waittill(# "spawned_player");
+  self endon("disconnect");
+  self endon("death");
+  self waittill("spawned_player");
   self.tesla_network_death_choke = 0;
   for (;;) {
     util::wait_network_frame(2);
@@ -104,17 +71,8 @@ function private on_player_connect() {
   }
 }
 
-/*
-	Name: arc_damage
-	Namespace: lightning_chain
-	Checksum: 0x150E9BCB
-	Offset: 0xA48
-	Size: 0x2EE
-	Parameters: 4
-	Flags: Linked
-*/
 function arc_damage(source_enemy, player, arc_num, params = level.default_lightning_chain_params) {
-  player endon(# "disconnect");
+  player endon("disconnect");
   if(!isdefined(player.tesla_network_death_choke)) {
     player.tesla_network_death_choke = 0;
   }
@@ -146,29 +104,11 @@ function arc_damage(source_enemy, player, arc_num, params = level.default_lightn
   }
 }
 
-/*
-	Name: arc_damage_ent
-	Namespace: lightning_chain
-	Checksum: 0x2E5CB947
-	Offset: 0xD40
-	Size: 0x6C
-	Parameters: 3
-	Flags: Linked
-*/
 function arc_damage_ent(player, arc_num, params = level.default_lightning_chain_params) {
   lc_flag_hit(self, 1);
   self thread lc_do_damage(self, arc_num, player, params);
 }
 
-/*
-	Name: lc_end_arc_damage
-	Namespace: lightning_chain
-	Checksum: 0xA4970AA8
-	Offset: 0xDB8
-	Size: 0xE4
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private lc_end_arc_damage(arc_num, enemies_hit_num, params) {
   if(arc_num >= params.max_arcs) {
     zm_utility::debug_print("TESLA: Ending arcing. Max arcs hit");
@@ -186,20 +126,9 @@ function private lc_end_arc_damage(arc_num, enemies_hit_num, params) {
   return false;
 }
 
-/*
-	Name: lc_get_enemies_in_area
-	Namespace: lightning_chain
-	Checksum: 0x79F02624
-	Offset: 0xEA8
-	Size: 0x290
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private lc_get_enemies_in_area(origin, distance, player) {
-  /#
   level thread lc_debug_arc(origin, distance);
-  # /
-    distance_squared = distance * distance;
+  distance_squared = distance * distance;
   enemies = [];
   if(!isdefined(player.tesla_enemies)) {
     player.tesla_enemies = zombie_utility::get_round_enemy_array();
@@ -238,15 +167,6 @@ function private lc_get_enemies_in_area(origin, distance, player) {
   return enemies;
 }
 
-/*
-	Name: lc_flag_hit
-	Namespace: lightning_chain
-	Checksum: 0xC9F7E4CB
-	Offset: 0x1140
-	Size: 0xAC
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private lc_flag_hit(enemy, hit) {
   if(isdefined(enemy)) {
     if(isarray(enemy)) {
@@ -261,17 +181,8 @@ function private lc_flag_hit(enemy, hit) {
   }
 }
 
-/*
-	Name: lc_do_damage
-	Namespace: lightning_chain
-	Checksum: 0x18C16F91
-	Offset: 0x11F8
-	Size: 0x49C
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private lc_do_damage(source_enemy, arc_num, player, params) {
-  player endon(# "disconnect");
+  player endon("disconnect");
   if(arc_num > 1) {
     wait(randomfloatrange(0.2, 0.6) * arc_num);
   }
@@ -337,15 +248,6 @@ function private lc_do_damage(source_enemy, arc_num, player, params) {
   }
 }
 
-/*
-	Name: lc_play_death_fx
-	Namespace: lightning_chain
-	Checksum: 0xFDC6AC67
-	Offset: 0x16A0
-	Size: 0x1E0
-	Parameters: 2
-	Flags: Linked
-*/
 function lc_play_death_fx(arc_num, params) {
   tag = "J_SpineUpper";
   fx = "tesla_shock";
@@ -382,15 +284,6 @@ function lc_play_death_fx(arc_num, params) {
   }
 }
 
-/*
-	Name: lc_play_arc_fx
-	Namespace: lightning_chain
-	Checksum: 0x7F6C90CC
-	Offset: 0x1888
-	Size: 0x2AC
-	Parameters: 2
-	Flags: Linked
-*/
 function lc_play_arc_fx(target, params) {
   if(!isdefined(self) || !isdefined(target)) {
     wait(params.arc_travel_time);
@@ -421,21 +314,11 @@ function lc_play_arc_fx(target, params) {
     playsoundatposition(params.arc_fx_sound, fxorg.origin);
   }
   fxorg moveto(target_origin, params.arc_travel_time);
-  fxorg waittill(# "movedone");
+  fxorg waittill("movedone");
   fxorg delete();
 }
 
-/*
-	Name: lc_debug_arc
-	Namespace: lightning_chain
-	Checksum: 0x95031DA7
-	Offset: 0x1B40
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private lc_debug_arc(origin, distance) {
-  /#
   if(getdvarint("") != 3) {
     return;
   }
@@ -443,5 +326,4 @@ function private lc_debug_arc(origin, distance) {
   while (gettime() < (start + 3000)) {
     wait(0.05);
   }
-  # /
 }

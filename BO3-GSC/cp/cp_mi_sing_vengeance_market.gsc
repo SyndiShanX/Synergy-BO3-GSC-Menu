@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_vengeance_market.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_debug;
 #using scripts\cp\_dialog;
@@ -36,18 +40,8 @@
 #using scripts\shared\vehicleriders_shared;
 #using scripts\shared\vehicles\_quadtank;
 #using scripts\shared\vehicles\_wasp;
-
 #namespace vengeance_market;
 
-/*
-	Name: skipto_quad_init
-	Namespace: vengeance_market
-	Checksum: 0x451045A0
-	Offset: 0x1550
-	Size: 0x56C
-	Parameters: 2
-	Flags: Linked
-*/
 function skipto_quad_init(str_objective, b_starting) {
   if(b_starting) {
     load::function_73adcefc();
@@ -98,28 +92,10 @@ function skipto_quad_init(str_objective, b_starting) {
   quad_battle_main();
 }
 
-/*
-	Name: skipto_quad_done
-	Namespace: vengeance_market
-	Checksum: 0x7EE105AF
-	Offset: 0x1AC8
-	Size: 0x3C
-	Parameters: 4
-	Flags: Linked
-*/
 function skipto_quad_done(str_objective, b_starting, b_direct, player) {
   vengeance_util::function_4e8207e9("garage_igc", 0);
 }
 
-/*
-	Name: function_bd50a158
-	Namespace: vengeance_market
-	Checksum: 0x913866B4
-	Offset: 0x1B10
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bd50a158() {
   var_2d4309d9 = getent("quad_battle_qt_ramp", "targetname");
   e_trigger = getent("quad_battle_qt_cleared_wall", "targetname");
@@ -132,15 +108,6 @@ function function_bd50a158() {
   var_2d4309d9 delete();
 }
 
-/*
-	Name: quad_battle_main
-	Namespace: vengeance_market
-	Checksum: 0xED0F2CCD
-	Offset: 0x1C20
-	Size: 0x4AC
-	Parameters: 0
-	Flags: Linked
-*/
 function quad_battle_main() {
   thread cp_mi_sing_vengeance_sound::function_10de79ba();
   level.ai_hendricks vengeance_util::function_5fbec645("hend_rally_on_me_and_let_0");
@@ -185,19 +152,10 @@ function quad_battle_main() {
   skipto::objective_completed("quad_battle");
 }
 
-/*
-	Name: function_e8676a98
-	Namespace: vengeance_market
-	Checksum: 0x704F4436
-	Offset: 0x20D8
-	Size: 0x2AC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e8676a98() {
   if(level.activeplayers.size > 1) {
     wait(8);
-    level notify(# "hash_349fb948");
+    level notify("hash_349fb948");
     spawn_manager::enable("quad_battle_reinforcements");
     level flag::wait_till_any(array("quadtank_hijacked", "quad_tank_dead"));
     a_enemies = spawner::get_ai_group_ai("quad_battle_enemies");
@@ -228,36 +186,18 @@ function function_e8676a98() {
   }
 }
 
-/*
-	Name: function_ee2d9cb4
-	Namespace: vengeance_market
-	Checksum: 0x7AE33B03
-	Offset: 0x2390
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ee2d9cb4(volume) {
-  self endon(# "death");
+  self endon("death");
   self clearforcedgoal();
   self cleargoalvolume();
   self.fixednode = 0;
   self.forcegoal = 0;
   wait(0.1);
   self setgoal(volume, 1);
-  self waittill(# "goal");
+  self waittill("goal");
   self delete();
 }
 
-/*
-	Name: quad_battle_quadtank_setup
-	Namespace: vengeance_market
-	Checksum: 0x1AE04D23
-	Offset: 0x2440
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function quad_battle_quadtank_setup() {
   self thread function_7c605010();
   self thread quadtank_hijacked_watcher();
@@ -268,24 +208,15 @@ function quad_battle_quadtank_setup() {
   setthreatbias("quad_tank", "garage_hendricks", 10000);
   setthreatbias("garage_players", "quad_tank", 1000);
   util::delay(2.5, undefined, & objectives::set, "cp_level_vengeance_destroy_quad", self);
-  self waittill(# "death");
+  self waittill("death");
   level flag::set("quad_tank_dead");
   objectives::hide("cp_level_vengeance_destroy_quad");
 }
 
-/*
-	Name: quadtank_hijacked_watcher
-	Namespace: vengeance_market
-	Checksum: 0x419B1057
-	Offset: 0x25D0
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function quadtank_hijacked_watcher() {
-  level endon(# "hash_91e59520");
+  level endon("hash_91e59520");
   while (true) {
-    level waittill(# "clonedentity", e_clone);
+    level waittill("clonedentity", e_clone);
     if(isdefined(e_clone.scriptvehicletype) && e_clone.scriptvehicletype == "quadtank") {
       level flag::set("quadtank_hijacked");
       e_clone thread function_ca8f95ab();
@@ -293,17 +224,8 @@ function quadtank_hijacked_watcher() {
   }
 }
 
-/*
-	Name: function_ca8f95ab
-	Namespace: vengeance_market
-	Checksum: 0x6526B2ED
-	Offset: 0x2670
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ca8f95ab() {
-  self waittill(# "death");
+  self waittill("death");
   var_7f6ee28b = spawn("trigger_box", (-18575, -17133.5, 224), 0, 504, 375, 448);
   wait(10);
   if(isdefined(self) && self istouching(var_7f6ee28b)) {
@@ -312,22 +234,13 @@ function function_ca8f95ab() {
   var_7f6ee28b delete();
 }
 
-/*
-	Name: function_7c605010
-	Namespace: vengeance_market
-	Checksum: 0x6AE7030A
-	Offset: 0x2720
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7c605010() {
-  self endon(# "death");
+  self endon("death");
   e_goalvolume = getent("qt_right_goalvolume", "targetname");
   self setneargoalnotifydist(384);
   self.goalradius = 384;
   self setgoal(e_goalvolume, 1);
-  self waittill(# "at_anchor");
+  self waittill("at_anchor");
   level flag::set("quad_tank_downstairs");
   str_side = "right";
   while (true) {
@@ -338,23 +251,14 @@ function function_7c605010() {
     }
     level flag::set(("qt_" + str_side) + "_side");
     self thread function_b331b9b2(str_side);
-    self waittill(# "at_anchor");
+    self waittill("at_anchor");
   }
 }
 
-/*
-	Name: function_b331b9b2
-	Namespace: vengeance_market
-	Checksum: 0x78810B18
-	Offset: 0x2878
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b331b9b2(str_side) {
-  level notify(# "hash_b331b9b2");
-  level endon(# "hash_b331b9b2");
-  self endon(# "death");
+  level notify("hash_b331b9b2");
+  level endon("hash_b331b9b2");
+  self endon("death");
   if(str_side == "left") {
     e_goalvolume = getent("qt_left_goalvolume", "targetname");
   } else if(str_side == "right") {
@@ -366,15 +270,6 @@ function function_b331b9b2(str_side) {
   }
 }
 
-/*
-	Name: function_a5928078
-	Namespace: vengeance_market
-	Checksum: 0x4B9E2490
-	Offset: 0x2970
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a5928078() {
   level.quadtank = spawner::simple_spawn_single("plaza_quadtank");
   var_136e4f5c = struct::get("quad_tank_checkpoint_death", "script_noteworthy");
@@ -386,17 +281,8 @@ function function_a5928078() {
   level.quadtank kill();
 }
 
-/*
-	Name: function_7d7a1bdd
-	Namespace: vengeance_market
-	Checksum: 0x9FF68FA4
-	Offset: 0x2A60
-	Size: 0x2CC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7d7a1bdd() {
-  level endon(# "quad_battle_ends");
+  level endon("quad_battle_ends");
   var_a3076518 = getent("sm_qt_hijack", "targetname");
   e_goal_volume = getent("garage_enemy_n_goalvolume", "targetname");
   foreach(var_56b381f2 in getentarray(var_a3076518.target, "targetname")) {
@@ -416,56 +302,20 @@ function function_7d7a1bdd() {
   level flag::set("qt_hijack_enemies_dead");
 }
 
-/*
-	Name: function_a59909a9
-	Namespace: vengeance_market
-	Checksum: 0x68CCF2CB
-	Offset: 0x2D38
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a59909a9(e_vol) {
   self setgoal(e_vol, 1);
 }
 
-/*
-	Name: function_18ed3322
-	Namespace: vengeance_market
-	Checksum: 0x27891201
-	Offset: 0x2D70
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_18ed3322() {
   spawner::waittill_ai_group_ai_count("qt_hijack_enemies", 0);
   level flag::set("qt_hijack_warlords_dead");
 }
 
-/*
-	Name: function_547cd992
-	Namespace: vengeance_market
-	Checksum: 0xFFB245A6
-	Offset: 0x2DB8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_547cd992() {
   spawner::waittill_ai_group_ai_count("garage_enemies", 0);
   level flag::set("qt_hijack_grunts_dead");
 }
 
-/*
-	Name: quad_battle_hendricks
-	Namespace: vengeance_market
-	Checksum: 0x4CEBE7B
-	Offset: 0x2E00
-	Size: 0x484
-	Parameters: 0
-	Flags: Linked
-*/
 function quad_battle_hendricks() {
   self battlechatter::function_d9f49fba(0);
   level flag::wait_till("quad_tank_wall_broken");
@@ -479,7 +329,7 @@ function quad_battle_hendricks() {
   self.script_accuracy = 0.2;
   e_node = getnode("quad_battle_hendricks_node", "targetname");
   self setgoalnode(e_node, 1);
-  self waittill(# "goal");
+  self waittill("goal");
   self thread function_fd7b3b3b();
   self thread function_1314293f();
   level flag::wait_till("quad_battle_ends");
@@ -495,7 +345,7 @@ function quad_battle_hendricks() {
   level flag::wait_till("hendricks_exiting_market");
   self ai::set_behavior_attribute("sprint", 0);
   level thread plaza_enemies();
-  self waittill(# "goal");
+  self waittill("goal");
   exit_trigger = getent("exit_to_plaza", "targetname");
   exit_trigger triggerenable(1);
   s_node = struct::get("quad_battle_script_node", "targetname");
@@ -512,51 +362,24 @@ function quad_battle_hendricks() {
   level flag::set("exiting_market");
 }
 
-/*
-	Name: function_8ccac57d
-	Namespace: vengeance_market
-	Checksum: 0x9B4246D4
-	Offset: 0x3290
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8ccac57d() {
-  level waittill(# "hash_8ccac57d");
+  level waittill("hash_8ccac57d");
   level flag::set("start_plaza_wave_2");
   var_ac036920 = getent("plaza_wall", "targetname");
   var_ac036920 connectpaths();
   var_ac036920 delete();
 }
 
-/*
-	Name: function_fd7b3b3b
-	Namespace: vengeance_market
-	Checksum: 0x1B3BE1D
-	Offset: 0x3320
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fd7b3b3b() {
-  level.quadtank endon(# "death");
+  level.quadtank endon("death");
   level flag::wait_till("quad_tank_downstairs");
   self colors::enable();
   wait(0.05);
   trigger::use("hendricks_qt_move_back");
 }
 
-/*
-	Name: function_1314293f
-	Namespace: vengeance_market
-	Checksum: 0xF438EE65
-	Offset: 0x3398
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1314293f() {
-  level.quadtank endon(# "death");
+  level.quadtank endon("death");
   while (true) {
     if(isdefined(self) && self isatcovernode()) {
       self ai::shoot_at_target("normal", level.quadtank, undefined, 5);
@@ -566,17 +389,8 @@ function function_1314293f() {
   }
 }
 
-/*
-	Name: quad_battle_vo
-	Namespace: vengeance_market
-	Checksum: 0x83A41D08
-	Offset: 0x3430
-	Size: 0x43C
-	Parameters: 0
-	Flags: Linked
-*/
 function quad_battle_vo() {
-  level.ai_hendricks notify(# "hash_6f33cd57");
+  level.ai_hendricks notify("hash_6f33cd57");
   level.ai_hendricks battlechatter::function_d9f49fba(1);
   level.ai_hendricks.var_5d9fbd2d = 0;
   level flag::wait_till("players_at_market");
@@ -620,58 +434,31 @@ function quad_battle_vo() {
   level.ai_hendricks vengeance_util::function_5fbec645("hend_taylor_fucked_up_h_0");
   wait(0.75);
   level.ai_hendricks vengeance_util::function_5fbec645("hend_now_we_don_t_know_wh_0");
-  level waittill(# "hash_15c8f178");
+  level waittill("hash_15c8f178");
   level.ai_hendricks vengeance_util::function_5fbec645("hend_even_if_they_ve_hack_0");
 }
 
-/*
-	Name: function_f14d81a9
-	Namespace: vengeance_market
-	Checksum: 0x94B5D044
-	Offset: 0x3878
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f14d81a9() {
-  level.quadtank endon(# "death");
-  self endon(# "hash_b8804640");
+  level.quadtank endon("death");
+  self endon("hash_b8804640");
   wait(20);
   level.ai_hendricks vengeance_util::function_5fbec645("hend_we_need_something_bi_0");
 }
 
-/*
-	Name: function_bc3db33d
-	Namespace: vengeance_market
-	Checksum: 0x514C0A9A
-	Offset: 0x38C8
-	Size: 0x122
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bc3db33d() {
-  level.quadtank waittill(# "trophy_system_disabled");
+  level.quadtank waittill("trophy_system_disabled");
   var_90911853 = getweapon("launcher_standard");
   foreach(e_player in level.activeplayers) {
     w_current_weapon = e_player getcurrentweapon();
     if(e_player hasweapon(var_90911853) && w_current_weapon != var_90911853) {
-      e_player thread util::show_hint_text( & "COOP_EQUIP_XM53", undefined, undefined, 6);
+      e_player thread util::show_hint_text(&"COOP_EQUIP_XM53", undefined, undefined, 6);
     }
   }
 }
 
-/*
-	Name: function_43458bf2
-	Namespace: vengeance_market
-	Checksum: 0x3BE712B6
-	Offset: 0x39F8
-	Size: 0x178
-	Parameters: 0
-	Flags: Linked
-*/
 function function_43458bf2() {
-  level.quadtank endon(# "death");
-  self endon(# "trophy_system_disabled");
+  level.quadtank endon("death");
+  self endon("trophy_system_disabled");
   wait(20);
   var_c823b7c6 = [];
   var_c823b7c6[0] = "hend_shoot_out_its_weak_p_1";
@@ -696,123 +483,60 @@ function function_43458bf2() {
   }
 }
 
-/*
-	Name: function_55c599e4
-	Namespace: vengeance_market
-	Checksum: 0x1F3BF369
-	Offset: 0x3B78
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function function_55c599e4() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "trophy_system_disabled");
+    self waittill("trophy_system_disabled");
     vengeance_garage::function_73a79ca0("hend_hit_it_with_a_rocket_1");
-    self waittill(# "trophy_system_enabled");
+    self waittill("trophy_system_enabled");
     self thread function_455f3062();
-    self waittill(# "trophy_system_disabled");
+    self waittill("trophy_system_disabled");
     vengeance_garage::function_73a79ca0("hend_defenses_down_hit_0");
   }
 }
 
-/*
-	Name: function_455f3062
-	Namespace: vengeance_market
-	Checksum: 0xBE64571A
-	Offset: 0x3C08
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_455f3062() {
-  self endon(# "death");
-  self endon(# "trophy_system_disabled");
+  self endon("death");
+  self endon("trophy_system_disabled");
   wait(20);
   vengeance_garage::function_73a79ca0("hend_it_s_defense_system_0");
 }
 
-/*
-	Name: function_e955ac45
-	Namespace: vengeance_market
-	Checksum: 0xE587A35D
-	Offset: 0x3C50
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e955ac45() {
-  self endon(# "death");
-  self waittill(# "trophy_system_enabled");
+  self endon("death");
+  self waittill("trophy_system_enabled");
   level dialog::player_say("plyr_how_the_hell_is_this_0");
-  self waittill(# "trophy_system_disabled");
-  self waittill(# "trophy_system_enabled");
+  self waittill("trophy_system_disabled");
+  self waittill("trophy_system_enabled");
   vengeance_garage::function_73a79ca0("hend_it_s_back_online_wa_0");
 }
 
-/*
-	Name: monitor_quadtank_health
-	Namespace: vengeance_market
-	Checksum: 0xF8922FE1
-	Offset: 0x3CC8
-	Size: 0x13E
-	Parameters: 2
-	Flags: Linked
-*/
 function monitor_quadtank_health(obj, params) {
   if(isplayer(params.eattacker)) {
     if(params.smeansofdeath === "MOD_RIFLE_BULLET" || params.smeansofdeath === "MOD_PISTOL_BULLET") {
       if(params.partname != "tag_target_lower" && params.partname != "tag_target_upper" && params.partname != "tag_defense_active" && params.partname != "tag_body_animate") {
-        level notify(# "hash_52293e91");
+        level notify("hash_52293e91");
       }
     }
     if(params.weapon.name === "launcher_standard" || params.weapon.name === "turret_bo3_civ_truck_pickup_tech_54i_grenade") {
-      level notify(# "hash_e09e14de");
+      level notify("hash_e09e14de");
     }
   }
 }
 
-/*
-	Name: function_82671202
-	Namespace: vengeance_market
-	Checksum: 0x9556BA8D
-	Offset: 0x3E10
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_82671202() {
-  self endon(# "death");
-  level waittill(# "hash_e09e14de");
+  self endon("death");
+  level waittill("hash_e09e14de");
   vengeance_garage::function_73a79ca0("hend_that_outta_slow_it_d_0");
 }
 
-/*
-	Name: function_f8295b7
-	Namespace: vengeance_market
-	Checksum: 0x7A592131
-	Offset: 0x3E50
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f8295b7() {
-  level waittill(# "hash_349fb948");
+  level waittill("hash_349fb948");
   vengeance_garage::function_73a79ca0("hend_54i_coming_in_from_t_0");
 }
 
-/*
-	Name: function_23dea593
-	Namespace: vengeance_market
-	Checksum: 0x1E383A71
-	Offset: 0x3E88
-	Size: 0xA8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_23dea593() {
-  self endon(# "death");
+  self endon("death");
   var_361ba23a = [];
   var_361ba23a[0] = "hend_keep_moving_don_t_l_2";
   while (true) {
@@ -826,15 +550,6 @@ function function_23dea593() {
   }
 }
 
-/*
-	Name: function_3ae8447c
-	Namespace: vengeance_market
-	Checksum: 0x5000401D
-	Offset: 0x3F38
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3ae8447c() {
   hidemiscmodels("quad_wall_static3");
   level flag::wait_till("quad_battle_starts");
@@ -845,15 +560,6 @@ function function_3ae8447c() {
   var_1e8fa774 delete();
 }
 
-/*
-	Name: function_6f79b65d
-	Namespace: vengeance_market
-	Checksum: 0x5F8AE3BB
-	Offset: 0x3FF8
-	Size: 0x4DC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6f79b65d() {
   level util::clientnotify("start_qt_stomp");
   foreach(e_player in level.activeplayers) {
@@ -889,28 +595,10 @@ function function_6f79b65d() {
   exploder::stop_exploder("garage_wall_light_pulse");
 }
 
-/*
-	Name: function_27bbd465
-	Namespace: vengeance_market
-	Checksum: 0x95124D7D
-	Offset: 0x44E0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_27bbd465() {
   exploder::exploder("garage_wall_light_flicker");
 }
 
-/*
-	Name: function_31629d62
-	Namespace: vengeance_market
-	Checksum: 0x75A52CE7
-	Offset: 0x4508
-	Size: 0x102
-	Parameters: 0
-	Flags: Linked
-*/
 function function_31629d62() {
   a_triggers = getentarray("garage_damage_trigger", "targetname");
   foreach(e_trigger in a_triggers) {
@@ -921,15 +609,6 @@ function function_31629d62() {
   }
 }
 
-/*
-	Name: skipto_plaza_init
-	Namespace: vengeance_market
-	Checksum: 0x1BBCC257
-	Offset: 0x4618
-	Size: 0x644
-	Parameters: 2
-	Flags: Linked
-*/
 function skipto_plaza_init(str_objective, b_starting) {
   if(b_starting) {
     load::function_73adcefc();
@@ -989,15 +668,6 @@ function skipto_plaza_init(str_objective, b_starting) {
   plaza_main();
 }
 
-/*
-	Name: skipto_plaza_done
-	Namespace: vengeance_market
-	Checksum: 0x929FDB0F
-	Offset: 0x4C68
-	Size: 0x13C
-	Parameters: 4
-	Flags: Linked
-*/
 function skipto_plaza_done(str_objective, b_starting, b_direct, player) {
   level struct::delete_script_bundle("scene", "cin_ven_06_10_parkingstructure_1st_shot08");
   level struct::delete_script_bundle("scene", "cin_ven_06_15_parkingstructure_deadbodies");
@@ -1008,15 +678,6 @@ function skipto_plaza_done(str_objective, b_starting, b_direct, player) {
   level struct::delete_script_bundle("scene", "cin_ven_07_20_jumpdownplaza_vign");
 }
 
-/*
-	Name: function_88f591dc
-	Namespace: vengeance_market
-	Checksum: 0x40E4C4E7
-	Offset: 0x4DB0
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_88f591dc() {
   wait(0.5);
   foreach(player in level.players) {
@@ -1024,15 +685,6 @@ function function_88f591dc() {
   }
 }
 
-/*
-	Name: plaza_main
-	Namespace: vengeance_market
-	Checksum: 0x655F223
-	Offset: 0x4E48
-	Size: 0x2F4
-	Parameters: 0
-	Flags: Linked
-*/
 function plaza_main() {
   level thread function_214b5ddf();
   level flag::wait_till_all(array("hendricks_at_plaza", "players_at_plaza"));
@@ -1064,49 +716,22 @@ function plaza_main() {
   namespace_523da15d::function_b4f6e07d();
 }
 
-/*
-	Name: function_f7d00e6a
-	Namespace: vengeance_market
-	Checksum: 0xEFD46EE3
-	Offset: 0x5148
-	Size: 0x62
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f7d00e6a() {
   var_a3a9af43 = getent("players_near_safehouse", "targetname");
-  var_a3a9af43 endon(# "death");
+  var_a3a9af43 endon("death");
   var_a3a9af43 trigger::wait_till();
   return var_a3a9af43.who;
 }
 
-/*
-	Name: function_214b5ddf
-	Namespace: vengeance_market
-	Checksum: 0x2C62FE57
-	Offset: 0x51B8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_214b5ddf() {
   trigger::wait_till("plaza_combat_failsafe");
   exploder::stop_exploder("fire_light_balcony");
 }
 
-/*
-	Name: plaza_hendricks
-	Namespace: vengeance_market
-	Checksum: 0xAE8C1FD9
-	Offset: 0x51F8
-	Size: 0x324
-	Parameters: 0
-	Flags: Linked
-*/
 function plaza_hendricks() {
   e_node = getnode("hendricks_plaza_node", "targetname");
   self setgoalnode(e_node, 1);
-  self waittill(# "goal");
+  self waittill("goal");
   level flag::set("hendricks_at_plaza");
   level flag::wait_till("plaza_hendricks_jump");
   self ai::set_behavior_attribute("cqb", 0);
@@ -1129,21 +754,12 @@ function plaza_hendricks() {
     trigger::use("plaza_hendricks_color_sniper", "targetname");
   }
   level flag::wait_till("plaza_cleared");
-  self notify(# "hash_90a20e6d");
+  self notify("hash_90a20e6d");
   self colors::disable();
   e_node = getnode("hendricks_approach_sh_node", "targetname");
   self setgoalnode(e_node, 1);
 }
 
-/*
-	Name: plaza_enemies
-	Namespace: vengeance_market
-	Checksum: 0xC51FF3D0
-	Offset: 0x5528
-	Size: 0xBB4
-	Parameters: 1
-	Flags: Linked
-*/
 function plaza_enemies(b_starting = 0) {
   init_plaza_spawn_functions();
   level flag::init("initial_plaza_spawns");
@@ -1241,15 +857,6 @@ function plaza_enemies(b_starting = 0) {
   level flag::set("plaza_cleared");
 }
 
-/*
-	Name: init_plaza_spawn_functions
-	Namespace: vengeance_market
-	Checksum: 0xB798490B
-	Offset: 0x60E8
-	Size: 0x71A
-	Parameters: 0
-	Flags: Linked
-*/
 function init_plaza_spawn_functions() {
   createthreatbiasgroup("players");
   createthreatbiasgroup("hendricks");
@@ -1293,30 +900,12 @@ function init_plaza_spawn_functions() {
   }
 }
 
-/*
-	Name: function_db772ecc
-	Namespace: vengeance_market
-	Checksum: 0xDE5D5BA8
-	Offset: 0x6810
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function function_db772ecc(goalradius) {
   self.goalradius = goalradius;
 }
 
-/*
-	Name: function_d824ba94
-	Namespace: vengeance_market
-	Checksum: 0xF70CE297
-	Offset: 0x6830
-	Size: 0x1DA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d824ba94(group) {
-  self endon(# "death");
+  self endon("death");
   self setthreatbiasgroup(group);
   if(level flag::get("plaza_combat_live")) {
     return;
@@ -1334,15 +923,6 @@ function function_d824ba94(group) {
   }
 }
 
-/*
-	Name: function_688b4ed7
-	Namespace: vengeance_market
-	Checksum: 0x296E0C1F
-	Offset: 0x6A18
-	Size: 0x1F4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_688b4ed7() {
   a_volume = [];
   a_volume[0] = getent("plaza_volume_01", "targetname");
@@ -1367,15 +947,6 @@ function function_688b4ed7() {
   self setgoal(var_71484221, 1);
 }
 
-/*
-	Name: function_ea5edc3b
-	Namespace: vengeance_market
-	Checksum: 0x80E2C66E
-	Offset: 0x6C18
-	Size: 0x202
-	Parameters: 5
-	Flags: Linked
-*/
 function function_ea5edc3b(var_fe5aba79, var_242401fb, var_b21c92c0, var_d81f0d29, var_962b7136) {
   a_enemies = spawner::get_ai_group_ai("plaza_enemies");
   foreach(e_enemy in a_enemies) {
@@ -1404,15 +975,6 @@ function function_ea5edc3b(var_fe5aba79, var_242401fb, var_b21c92c0, var_d81f0d2
   }
 }
 
-/*
-	Name: function_b25bc7b2
-	Namespace: vengeance_market
-	Checksum: 0x3E4AC244
-	Offset: 0x6E28
-	Size: 0xDA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b25bc7b2() {
   self.goalheight = 512;
   a_warlord_nodes = getnodearray(self.script_noteworthy, "targetname");
@@ -1421,46 +983,19 @@ function function_b25bc7b2() {
   }
 }
 
-/*
-	Name: function_3dc47c4e
-	Namespace: vengeance_market
-	Checksum: 0x12CDA8D2
-	Offset: 0x6F10
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3dc47c4e() {
   e_vol = getent("gv_plaza_siegebot", "targetname");
   self setgoal(e_vol, 1);
 }
 
-/*
-	Name: function_eef8125c
-	Namespace: vengeance_market
-	Checksum: 0xB01DACB0
-	Offset: 0x6F68
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_eef8125c() {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self) || !isalive(self)) {
     return;
   }
   self.overrideactordamage = & function_7273d688;
 }
 
-/*
-	Name: function_7273d688
-	Namespace: vengeance_market
-	Checksum: 0x64ABCBC4
-	Offset: 0x6FC0
-	Size: 0xE8
-	Parameters: 12
-	Flags: Linked
-*/
 function function_7273d688(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, modelindex, psoffsettime, bonename) {
   if(isdefined(eattacker) && !isplayer(eattacker) && eattacker != level.ai_hendricks) {
     idamage = 0;
@@ -1470,82 +1005,37 @@ function function_7273d688(einflictor, eattacker, idamage, idflags, smeansofdeat
   return idamage;
 }
 
-/*
-	Name: function_aecb2215
-	Namespace: vengeance_market
-	Checksum: 0x90D19214
-	Offset: 0x70B0
-	Size: 0x8A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_aecb2215() {
   foreach(e_player in level.activeplayers) {
     e_player thread function_dcf7f342();
   }
 }
 
-/*
-	Name: function_dcf7f342
-	Namespace: vengeance_market
-	Checksum: 0xFCD16ACC
-	Offset: 0x7148
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dcf7f342() {
-  level endon(# "plaza_combat_live");
+  level endon("plaza_combat_live");
   while (true) {
-    self waittill(# "weapon_fired", curweapon);
+    self waittill("weapon_fired", curweapon);
     if(!weaponhasattachment(curweapon, "suppressed") || curweapon.name != "ar_marksman_veng_hero_weap") {
       level flag::set("plaza_combat_live");
     }
   }
 }
 
-/*
-	Name: wasp_think
-	Namespace: vengeance_market
-	Checksum: 0xD623FE90
-	Offset: 0x71E0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function wasp_think(e_goal_volume) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(e_goal_volume)) {
     self setgoal(e_goal_volume, 1);
   }
 }
 
-/*
-	Name: function_47370bbe
-	Namespace: vengeance_market
-	Checksum: 0x896EB2D9
-	Offset: 0x7228
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_47370bbe() {
-  self endon(# "death");
+  self endon("death");
   wait(randomfloatrange(1.5, 5));
   self kill();
 }
 
-/*
-	Name: function_892fb7e0
-	Namespace: vengeance_market
-	Checksum: 0xA2645E14
-	Offset: 0x7278
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_892fb7e0() {
-  level endon(# "plaza_cleared");
+  level endon("plaza_cleared");
   level thread function_5f5b64cf();
   exploder::exploder("sh_lhs_fire");
   wait(2.5);
@@ -1556,35 +1046,17 @@ function function_892fb7e0() {
   exploder::exploder("sh_upper_fire");
 }
 
-/*
-	Name: function_5f5b64cf
-	Namespace: vengeance_market
-	Checksum: 0xCB8F437
-	Offset: 0x7320
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5f5b64cf() {
-  level waittill(# "hash_ffdc982b");
+  level waittill("hash_ffdc982b");
   exploder::stop_exploder("sh_lhs_fire");
   exploder::stop_exploder("sh_rhs_fire");
   exploder::stop_exploder("sh_cent_fire");
   exploder::stop_exploder("sh_upper_fire");
 }
 
-/*
-	Name: function_29587c78
-	Namespace: vengeance_market
-	Checksum: 0x2CD01782
-	Offset: 0x73A0
-	Size: 0x358
-	Parameters: 0
-	Flags: Linked
-*/
 function function_29587c78() {
-  self endon(# "disconnect");
-  level endon(# "plaza_cleared");
+  self endon("disconnect");
+  level endon("plaza_cleared");
   while (true) {
     eye = self geteye();
     var_fd26df34 = anglestoforward(self getplayerangles());
@@ -1636,18 +1108,9 @@ function function_29587c78() {
   }
 }
 
-/*
-	Name: function_9af0090
-	Namespace: vengeance_market
-	Checksum: 0x6572EC89
-	Offset: 0x7700
-	Size: 0x110
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9af0090() {
-  self endon(# "disconnect");
-  self endon(# "hash_c23c76ef");
+  self endon("disconnect");
+  self endon("hash_c23c76ef");
   nag_vo = [];
   nag_vo[0] = "hend_get_down_here_we_go_0";
   nag_vo[1] = "hend_i_m_being_flanked_g_0";
@@ -1664,17 +1127,8 @@ function function_9af0090() {
   }
 }
 
-/*
-	Name: function_2b657656
-	Namespace: vengeance_market
-	Checksum: 0x41AE87E2
-	Offset: 0x7818
-	Size: 0x42
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2b657656() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   trigger::wait_till("plaza_combat_failsafe", "targetname", self);
-  self notify(# "hash_c23c76ef");
+  self notify("hash_c23c76ef");
 }

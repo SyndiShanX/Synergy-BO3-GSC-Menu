@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_bgb.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -19,32 +23,13 @@
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\bgbs\_zm_bgb_anywhere_but_here;
-
 #namespace zm_island_bgb;
 
-/*
-	Name: init
-	Namespace: zm_island_bgb
-	Checksum: 0xC3FD3AAF
-	Offset: 0x3A8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.var_2c12d9a6 = & function_fa778ca4;
   level.var_2d0e5eb6 = & function_2d0e5eb6;
 }
 
-/*
-	Name: function_fa778ca4
-	Namespace: zm_island_bgb
-	Checksum: 0x19C8CE9D
-	Offset: 0x3E8
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fa778ca4() {
   str_player_zone = self zm_zonemgr::get_player_zone();
   if(str_player_zone == "zone_bunker_prison" && !level flag::get("flag_outro_cutscene_done")) {
@@ -61,15 +46,6 @@ function function_fa778ca4() {
   return s_respawn_point;
 }
 
-/*
-	Name: function_2d0e5eb6
-	Namespace: zm_island_bgb
-	Checksum: 0xD2510803
-	Offset: 0x538
-	Size: 0x1D4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2d0e5eb6() {
   var_cdb0f86b = getarraykeys(level.zombie_powerups);
   var_b4442b55 = array("shield_charge", "ww_grenade", "bonus_points_team");

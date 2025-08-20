@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_globallogic_vehicle.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_vehicle;
 #using scripts\mp\gametypes\_globallogic_player;
@@ -9,18 +13,8 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\weapons\_weapons;
-
 #namespace globallogic_vehicle;
 
-/*
-	Name: callback_vehiclespawned
-	Namespace: globallogic_vehicle
-	Checksum: 0xD15116A4
-	Offset: 0x2D0
-	Size: 0xE6
-	Parameters: 1
-	Flags: Linked
-*/
 function callback_vehiclespawned(spawner) {
   self.health = self.healthdefault;
   if(issentient(self)) {
@@ -37,15 +31,6 @@ function callback_vehiclespawned(spawner) {
   }
 }
 
-/*
-	Name: callback_vehicledamage
-	Namespace: globallogic_vehicle
-	Checksum: 0xD70C5827
-	Offset: 0x3C0
-	Size: 0xCE4
-	Parameters: 15
-	Flags: Linked
-*/
 function callback_vehicledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   selfentnum = self getentitynumber();
   eattackernotself = isdefined(eattacker) && eattacker != self;
@@ -71,12 +56,10 @@ function callback_vehicledamage(einflictor, eattacker, idamage, idflags, smeanso
   } else if(isdefined(level.overridevehicledamage)) {
     idamage = self[[level.overridevehicledamage]](einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal);
   }
-  /#
   assert(isdefined(idamage), "");
-  # /
-    if(idamage == 0) {
-      return;
-    }
+  if(idamage == 0) {
+    return;
+  }
   if(!isdefined(vdir)) {
     idflags = idflags | 4;
   }
@@ -174,41 +157,28 @@ function callback_vehicledamage(einflictor, eattacker, idamage, idflags, smeanso
       }
     }
   }
-  /#
   if(getdvarint("")) {
     println(((((((((("" + self getentitynumber()) + "") + self.health) + "") + eattacker.clientid) + "") + isplayer(einflictor) + "") + idamage) + "") + shitloc);
   }
-  # /
-    if(1) {
-      lpselfnum = selfentnum;
-      lpselfteam = "";
-      lpattackerteam = "";
-      if(isplayer(eattacker)) {
-        lpattacknum = eattacker getentitynumber();
-        lpattackguid = eattacker getguid();
-        lpattackname = eattacker.name;
-        lpattackerteam = eattacker.pers["team"];
-      } else {
-        lpattacknum = -1;
-        lpattackguid = "";
-        lpattackname = "";
-        lpattackerteam = "world";
-      }
-      /#
-      logprint(((((((((((((((((((("" + lpselfnum) + "") + lpselfteam) + "") + lpattackguid) + "") + lpattacknum) + "") + lpattackerteam) + "") + lpattackname) + "") + weapon.name) + "") + idamage) + "") + smeansofdeath) + "") + shitloc) + "");
-      # /
+  if(1) {
+    lpselfnum = selfentnum;
+    lpselfteam = "";
+    lpattackerteam = "";
+    if(isplayer(eattacker)) {
+      lpattacknum = eattacker getentitynumber();
+      lpattackguid = eattacker getguid();
+      lpattackname = eattacker.name;
+      lpattackerteam = eattacker.pers["team"];
+    } else {
+      lpattacknum = -1;
+      lpattackguid = "";
+      lpattackname = "";
+      lpattackerteam = "world";
     }
+    logprint(((((((((((((((((((("" + lpselfnum) + "") + lpselfteam) + "") + lpattackguid) + "") + lpattacknum) + "") + lpattackerteam) + "") + lpattackname) + "") + weapon.name) + "") + idamage) + "") + smeansofdeath) + "") + shitloc) + "");
+  }
 }
 
-/*
-	Name: callback_vehicleradiusdamage
-	Namespace: globallogic_vehicle
-	Checksum: 0x2CB48363
-	Offset: 0x10B0
-	Size: 0x49C
-	Parameters: 13
-	Flags: Linked
-*/
 function callback_vehicleradiusdamage(einflictor, eattacker, idamage, finnerdamage, fouterdamage, idflags, smeansofdeath, weapon, vpoint, fradius, fconeanglecos, vconedir, psoffsettime) {
   idamage = loadout::cac_modified_vehicle_damage(self, eattacker, idamage, smeansofdeath, weapon, einflictor);
   finnerdamage = loadout::cac_modified_vehicle_damage(self, eattacker, finnerdamage, smeansofdeath, weapon, einflictor);
@@ -263,15 +233,6 @@ function callback_vehicleradiusdamage(einflictor, eattacker, idamage, finnerdama
   }
 }
 
-/*
-	Name: callback_vehiclekilled
-	Namespace: globallogic_vehicle
-	Checksum: 0x868BA28D
-	Offset: 0x1558
-	Size: 0x130
-	Parameters: 8
-	Flags: Linked
-*/
 function callback_vehiclekilled(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   if(game["state"] == "postgame" && (!isdefined(self.selfdestruct) || !self.selfdestruct)) {
     if(isdefined(self.overridevehicledeathpostgame)) {
@@ -287,32 +248,14 @@ function callback_vehiclekilled(einflictor, eattacker, idamage, smeansofdeath, w
   }
 }
 
-/*
-	Name: vehiclecrush
-	Namespace: globallogic_vehicle
-	Checksum: 0x594E8B52
-	Offset: 0x1690
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function vehiclecrush() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(isdefined(level._effect) && isdefined(level._effect["tanksquish"])) {
     playfx(level._effect["tanksquish"], self.origin + vectorscale((0, 0, 1), 30));
   }
   self playsound("chr_crunch");
 }
 
-/*
-	Name: getvehicleunderneathsplashscalar
-	Namespace: globallogic_vehicle
-	Checksum: 0x9723BDF7
-	Offset: 0x1728
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function getvehicleunderneathsplashscalar(weapon) {
   if(isdefined(self) && isdefined(self.ignore_vehicle_underneath_splash_scalar)) {
     return 1;
@@ -326,15 +269,6 @@ function getvehicleunderneathsplashscalar(weapon) {
   return scale;
 }
 
-/*
-	Name: allowfriendlyfiredamage
-	Namespace: globallogic_vehicle
-	Checksum: 0x7B420C5D
-	Offset: 0x17B0
-	Size: 0x52
-	Parameters: 4
-	Flags: Linked
-*/
 function allowfriendlyfiredamage(einflictor, eattacker, smeansofdeath, weapon) {
   if(isdefined(self.allowfriendlyfiredamageoverride)) {
     return [

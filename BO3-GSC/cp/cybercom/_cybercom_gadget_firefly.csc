@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_gadget_firefly.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -6,18 +10,8 @@
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace cybercom_firefly;
 
-/*
-	Name: init
-	Namespace: cybercom_firefly
-	Checksum: 0xC45E0C15
-	Offset: 0x428
-	Size: 0x162
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   init_clientfields();
   level._effect["swarm_attack"] = "weapon/fx_ability_firefly_attack";
@@ -34,29 +28,11 @@ function init() {
   level._effect["upgraded_swarm_move"] = "weapon/fx_ability_firebug_travel";
 }
 
-/*
-	Name: init_clientfields
-	Namespace: cybercom_firefly
-	Checksum: 0xD9E1CC2
-	Offset: 0x598
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("vehicle", "firefly_state", 1, 4, "int", & firefly_state, 0, 0);
   clientfield::register("actor", "firefly_state", 1, 4, "int", & actor_firefly_state, 0, 0);
 }
 
-/*
-	Name: firefly_state
-	Namespace: cybercom_firefly
-	Checksum: 0x88F23BF1
-	Offset: 0x638
-	Size: 0x370
-	Parameters: 7
-	Flags: Linked
-*/
 function firefly_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 0 || newval == oldval) {
     return;
@@ -109,15 +85,6 @@ function firefly_state(localclientnum, oldval, newval, bnewent, binitialsnap, fi
   self.currentstate = newval;
 }
 
-/*
-	Name: actor_firefly_state
-	Namespace: cybercom_firefly
-	Checksum: 0xD8A5393
-	Offset: 0x9B0
-	Size: 0x308
-	Parameters: 7
-	Flags: Linked
-*/
 function actor_firefly_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 0 || newval == oldval) {
     return;

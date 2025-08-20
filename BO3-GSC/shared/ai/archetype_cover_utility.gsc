@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_cover_utility.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_utility;
 #using scripts\shared\ai\systems\animation_state_machine_utility;
 #using scripts\shared\ai\systems\behavior_tree_utility;
 #using scripts\shared\ai\systems\blackboard;
 #using scripts\shared\ai_shared;
 #using scripts\shared\math_shared;
-
 #namespace aiutility;
 
-/*
-	Name: registerbehaviorscriptfunctions
-	Namespace: aiutility
-	Checksum: 0xAFB593FB
-	Offset: 0x658
-	Size: 0x504
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec registerbehaviorscriptfunctions() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCrouchNode", & isatcrouchnode);
   behaviortreenetworkutility::registerbehaviortreescriptapi("isAtCoverCondition", & isatcovercondition);
@@ -52,29 +46,11 @@ function autoexec registerbehaviorscriptfunctions() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("refillAmmoAndCleanupCoverMode", & refillammoandcleanupcovermode);
 }
 
-/*
-	Name: coverreloadinitialize
-	Namespace: aiutility
-	Checksum: 0x6A6FDD18
-	Offset: 0xB68
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coverreloadinitialize(behaviortreeentity) {
   blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_alert");
   keepclaimnode(behaviortreeentity);
 }
 
-/*
-	Name: refillammoandcleanupcovermode
-	Namespace: aiutility
-	Checksum: 0x61DB8B36
-	Offset: 0xBC0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function refillammoandcleanupcovermode(behaviortreeentity) {
   if(isalive(behaviortreeentity)) {
     refillammo(behaviortreeentity);
@@ -82,57 +58,21 @@ function refillammoandcleanupcovermode(behaviortreeentity) {
   cleanupcovermode(behaviortreeentity);
 }
 
-/*
-	Name: supportspeekcovercondition
-	Namespace: aiutility
-	Checksum: 0xFE942645
-	Offset: 0xC20
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private supportspeekcovercondition(behaviortreeentity) {
   return isdefined(behaviortreeentity.node);
 }
 
-/*
-	Name: coverpeekinitialize
-	Namespace: aiutility
-	Checksum: 0x64C072A5
-	Offset: 0xC48
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coverpeekinitialize(behaviortreeentity) {
   blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_alert");
   keepclaimnode(behaviortreeentity);
   choosecoverdirection(behaviortreeentity);
 }
 
-/*
-	Name: coverpeekterminate
-	Namespace: aiutility
-	Checksum: 0xAE796100
-	Offset: 0xCB8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coverpeekterminate(behaviortreeentity) {
   choosefrontcoverdirection(behaviortreeentity);
   cleanupcovermode(behaviortreeentity);
 }
 
-/*
-	Name: supportsleancovercondition
-	Namespace: aiutility
-	Checksum: 0xE70EF4A6
-	Offset: 0xD00
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private supportsleancovercondition(behaviortreeentity) {
   if(isdefined(behaviortreeentity.node)) {
     if(behaviortreeentity.node.type == "Cover Left" || behaviortreeentity.node.type == "Cover Right") {
@@ -147,15 +87,6 @@ function private supportsleancovercondition(behaviortreeentity) {
   return false;
 }
 
-/*
-	Name: shouldleanatcovercondition
-	Namespace: aiutility
-	Checksum: 0xA1C27AEC
-	Offset: 0xE30
-	Size: 0x340
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private shouldleanatcovercondition(behaviortreeentity) {
   if(!isdefined(behaviortreeentity.node) || !isdefined(behaviortreeentity.node.type) || !isdefined(behaviortreeentity.enemy) || !isdefined(behaviortreeentity.enemy.origin)) {
     return 0;
@@ -188,15 +119,6 @@ function private shouldleanatcovercondition(behaviortreeentity) {
   return legalaimyaw;
 }
 
-/*
-	Name: continueleaningatcovercondition
-	Namespace: aiutility
-	Checksum: 0xEC2360E2
-	Offset: 0x1178
-	Size: 0x42
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private continueleaningatcovercondition(behaviortreeentity) {
   if(behaviortreeentity asmistransitionrunning()) {
     return 1;
@@ -204,15 +126,6 @@ function private continueleaningatcovercondition(behaviortreeentity) {
   return shouldleanatcovercondition(behaviortreeentity);
 }
 
-/*
-	Name: coverleaninitialize
-	Namespace: aiutility
-	Checksum: 0x562801CD
-	Offset: 0x11C8
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coverleaninitialize(behaviortreeentity) {
   setcovershootstarttime(behaviortreeentity);
   keepclaimnode(behaviortreeentity);
@@ -220,30 +133,12 @@ function private coverleaninitialize(behaviortreeentity) {
   choosecoverdirection(behaviortreeentity);
 }
 
-/*
-	Name: coverleanterminate
-	Namespace: aiutility
-	Checksum: 0x98EA0A0E
-	Offset: 0x1250
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coverleanterminate(behaviortreeentity) {
   choosefrontcoverdirection(behaviortreeentity);
   cleanupcovermode(behaviortreeentity);
   clearcovershootstarttime(behaviortreeentity);
 }
 
-/*
-	Name: supportsovercovercondition
-	Namespace: aiutility
-	Checksum: 0x2FEF1789
-	Offset: 0x12B0
-	Size: 0x1B4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private supportsovercovercondition(behaviortreeentity) {
   stance = blackboard::getblackboardattribute(behaviortreeentity, "_stance");
   if(isdefined(behaviortreeentity.node)) {
@@ -263,15 +158,6 @@ function private supportsovercovercondition(behaviortreeentity) {
   return false;
 }
 
-/*
-	Name: shouldoveratcovercondition
-	Namespace: aiutility
-	Checksum: 0xF1209478
-	Offset: 0x1470
-	Size: 0x1F2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private shouldoveratcovercondition(entity) {
   if(!isdefined(entity.node) || !isdefined(entity.node.type) || !isdefined(entity.enemy) || !isdefined(entity.enemy.origin)) {
     return false;
@@ -291,113 +177,41 @@ function private shouldoveratcovercondition(entity) {
   return true;
 }
 
-/*
-	Name: coveroverinitialize
-	Namespace: aiutility
-	Checksum: 0x9F66328F
-	Offset: 0x1670
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coveroverinitialize(behaviortreeentity) {
   setcovershootstarttime(behaviortreeentity);
   keepclaimnode(behaviortreeentity);
   blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_over");
 }
 
-/*
-	Name: coveroverterminate
-	Namespace: aiutility
-	Checksum: 0x30598AD9
-	Offset: 0x16E0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coveroverterminate(behaviortreeentity) {
   cleanupcovermode(behaviortreeentity);
   clearcovershootstarttime(behaviortreeentity);
 }
 
-/*
-	Name: coveridleinitialize
-	Namespace: aiutility
-	Checksum: 0x317799C8
-	Offset: 0x1728
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coveridleinitialize(behaviortreeentity) {
   keepclaimnode(behaviortreeentity);
   blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_alert");
 }
 
-/*
-	Name: coveridleupdate
-	Namespace: aiutility
-	Checksum: 0xD4CC29C4
-	Offset: 0x1780
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coveridleupdate(behaviortreeentity) {
   if(!behaviortreeentity asmistransitionrunning()) {
     releaseclaimnode(behaviortreeentity);
   }
 }
 
-/*
-	Name: coveridleterminate
-	Namespace: aiutility
-	Checksum: 0x3CBAD582
-	Offset: 0x17C8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coveridleterminate(behaviortreeentity) {
   releaseclaimnode(behaviortreeentity);
   cleanupcovermode(behaviortreeentity);
 }
 
-/*
-	Name: isflankedbyenemyatcover
-	Namespace: aiutility
-	Checksum: 0xF3337E03
-	Offset: 0x1810
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private isflankedbyenemyatcover(behaviortreeentity) {
   return canbeflanked(behaviortreeentity) && behaviortreeentity isatcovernodestrict() && behaviortreeentity isflankedatcovernode() && !behaviortreeentity haspath();
 }
 
-/*
-	Name: canbeflankedservice
-	Namespace: aiutility
-	Checksum: 0x43C9E4EA
-	Offset: 0x1888
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private canbeflankedservice(behaviortreeentity) {
   setcanbeflanked(behaviortreeentity, 1);
 }
 
-/*
-	Name: coverflankedinitialize
-	Namespace: aiutility
-	Checksum: 0x34B27321
-	Offset: 0x18B8
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coverflankedinitialize(behaviortreeentity) {
   if(isdefined(behaviortreeentity.enemy)) {
     behaviortreeentity getperfectinfo(behaviortreeentity.enemy);
@@ -409,29 +223,11 @@ function private coverflankedinitialize(behaviortreeentity) {
   blackboard::setblackboardattribute(behaviortreeentity, "_desired_stance", "stand");
 }
 
-/*
-	Name: coverflankedactionterminate
-	Namespace: aiutility
-	Checksum: 0xC476C8E3
-	Offset: 0x1998
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private coverflankedactionterminate(behaviortreeentity) {
   behaviortreeentity.newenemyreaction = 0;
   releaseclaimnode(behaviortreeentity);
 }
 
-/*
-	Name: isatcrouchnode
-	Namespace: aiutility
-	Checksum: 0x40CE1BF0
-	Offset: 0x19D8
-	Size: 0x11E
-	Parameters: 1
-	Flags: Linked
-*/
 function isatcrouchnode(behaviortreeentity) {
   if(isdefined(behaviortreeentity.node) && (behaviortreeentity.node.type == "Exposed" || behaviortreeentity.node.type == "Guard" || behaviortreeentity.node.type == "Path")) {
     if(distancesquared(behaviortreeentity.origin, behaviortreeentity.node.origin) <= (24 * 24)) {
@@ -441,82 +237,28 @@ function isatcrouchnode(behaviortreeentity) {
   return 0;
 }
 
-/*
-	Name: isatcovercondition
-	Namespace: aiutility
-	Checksum: 0xE95D1FCE
-	Offset: 0x1B00
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function isatcovercondition(behaviortreeentity) {
   return behaviortreeentity isatcovernodestrict() && behaviortreeentity shouldusecovernode() && !behaviortreeentity haspath();
 }
 
-/*
-	Name: isatcoverstrictcondition
-	Namespace: aiutility
-	Checksum: 0xA8964D68
-	Offset: 0x1B60
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function isatcoverstrictcondition(behaviortreeentity) {
   return behaviortreeentity isatcovernodestrict() && !behaviortreeentity haspath();
 }
 
-/*
-	Name: isatcovermodeover
-	Namespace: aiutility
-	Checksum: 0x5ED99EA0
-	Offset: 0x1BA8
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function isatcovermodeover(behaviortreeentity) {
   covermode = blackboard::getblackboardattribute(behaviortreeentity, "_cover_mode");
   return covermode == "cover_over";
 }
 
-/*
-	Name: isatcovermodenone
-	Namespace: aiutility
-	Checksum: 0x61592CAE
-	Offset: 0x1BF8
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function isatcovermodenone(behaviortreeentity) {
   covermode = blackboard::getblackboardattribute(behaviortreeentity, "_cover_mode");
   return covermode == "cover_mode_none";
 }
 
-/*
-	Name: isexposedatcovercondition
-	Namespace: aiutility
-	Checksum: 0xED85490D
-	Offset: 0x1C48
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function isexposedatcovercondition(behaviortreeentity) {
   return behaviortreeentity isatcovernodestrict() && !behaviortreeentity shouldusecovernode();
 }
 
-/*
-	Name: shouldcoveridleonly
-	Namespace: aiutility
-	Checksum: 0x80415F0E
-	Offset: 0x1C90
-	Size: 0x72
-	Parameters: 1
-	Flags: Linked
-*/
 function shouldcoveridleonly(behaviortreeentity) {
   if(behaviortreeentity ai::get_behavior_attribute("coverIdleOnly")) {
     return true;
@@ -527,57 +269,21 @@ function shouldcoveridleonly(behaviortreeentity) {
   return false;
 }
 
-/*
-	Name: issuppressedatcovercondition
-	Namespace: aiutility
-	Checksum: 0x6A05B019
-	Offset: 0x1D10
-	Size: 0x28
-	Parameters: 1
-	Flags: Linked
-*/
 function issuppressedatcovercondition(behaviortreeentity) {
   return behaviortreeentity.suppressionmeter > behaviortreeentity.suppressionthreshold;
 }
 
-/*
-	Name: keepclaimednodeandchoosecoverdirection
-	Namespace: aiutility
-	Checksum: 0x5D1FF9D
-	Offset: 0x1D40
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function keepclaimednodeandchoosecoverdirection(behaviortreeentity) {
   keepclaimnode(behaviortreeentity);
   choosecoverdirection(behaviortreeentity);
 }
 
-/*
-	Name: resetcoverparameters
-	Namespace: aiutility
-	Checksum: 0xD9A5C848
-	Offset: 0x1D88
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function resetcoverparameters(behaviortreeentity) {
   choosefrontcoverdirection(behaviortreeentity);
   cleanupcovermode(behaviortreeentity);
   clearcovershootstarttime(behaviortreeentity);
 }
 
-/*
-	Name: choosecoverdirection
-	Namespace: aiutility
-	Checksum: 0x34827DB8
-	Offset: 0x1DE8
-	Size: 0xAC
-	Parameters: 2
-	Flags: Linked
-*/
 function choosecoverdirection(behaviortreeentity, stepout) {
   if(!isdefined(behaviortreeentity.node)) {
     return;
@@ -587,15 +293,6 @@ function choosecoverdirection(behaviortreeentity, stepout) {
   blackboard::setblackboardattribute(behaviortreeentity, "_cover_direction", calculatecoverdirection(behaviortreeentity, stepout));
 }
 
-/*
-	Name: calculatecoverdirection
-	Namespace: aiutility
-	Checksum: 0x34D777BD
-	Offset: 0x1EA0
-	Size: 0x494
-	Parameters: 2
-	Flags: Linked
-*/
 function calculatecoverdirection(behaviortreeentity, stepout) {
   if(isdefined(behaviortreeentity.treatallcoversasgeneric)) {
     if(!isdefined(stepout)) {
@@ -652,67 +349,22 @@ function calculatecoverdirection(behaviortreeentity, stepout) {
   return coverdirection;
 }
 
-/*
-	Name: clearcovershootstarttime
-	Namespace: aiutility
-	Checksum: 0xBA8F02C
-	Offset: 0x2340
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function clearcovershootstarttime(behaviortreeentity) {
   behaviortreeentity.covershootstarttime = undefined;
 }
 
-/*
-	Name: setcovershootstarttime
-	Namespace: aiutility
-	Checksum: 0x9AC73F53
-	Offset: 0x2368
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function setcovershootstarttime(behaviortreeentity) {
   behaviortreeentity.covershootstarttime = gettime();
 }
 
-/*
-	Name: canbeflanked
-	Namespace: aiutility
-	Checksum: 0x7902730E
-	Offset: 0x2390
-	Size: 0x2E
-	Parameters: 1
-	Flags: Linked
-*/
 function canbeflanked(behaviortreeentity) {
   return isdefined(behaviortreeentity.canbeflanked) && behaviortreeentity.canbeflanked;
 }
 
-/*
-	Name: setcanbeflanked
-	Namespace: aiutility
-	Checksum: 0xFF7096CB
-	Offset: 0x23C8
-	Size: 0x28
-	Parameters: 2
-	Flags: Linked
-*/
 function setcanbeflanked(behaviortreeentity, canbeflanked) {
   behaviortreeentity.canbeflanked = canbeflanked;
 }
 
-/*
-	Name: cleanupcovermode
-	Namespace: aiutility
-	Checksum: 0xB57632BD
-	Offset: 0x23F8
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function cleanupcovermode(behaviortreeentity) {
   if(isatcovercondition(behaviortreeentity)) {
     covermode = blackboard::getblackboardattribute(behaviortreeentity, "_cover_mode");

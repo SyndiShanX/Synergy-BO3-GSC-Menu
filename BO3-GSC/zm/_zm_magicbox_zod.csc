@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_magicbox_zod.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_magicbox_zod;
 
-/*
-	Name: init
-	Namespace: zm_magicbox_zod
-	Checksum: 0x72867DD5
-	Offset: 0x1F0
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level._effect["box_open"] = "zombie/fx_weapon_box_open_zod_zmb";
   level._effect["box_closed"] = "zombie/fx_weapon_box_closed_zod_zmb";
@@ -23,15 +17,6 @@ function init() {
   registerclientfield("zbarrier", "magicbox_open_fx", 1, 2, "int", & magicbox_open_fx);
 }
 
-/*
-	Name: magicbox_open_fx
-	Namespace: zm_magicbox_zod
-	Checksum: 0xA0B9E134
-	Offset: 0x2F8
-	Size: 0x286
-	Parameters: 7
-	Flags: Linked
-*/
 function magicbox_open_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.fx_obj)) {
     self.fx_obj = util::spawn_model(localclientnum, "tag_origin", self.origin, self.angles);
@@ -47,7 +32,7 @@ function magicbox_open_fx(localclientnum, oldval, newval, bnewent, binitialsnap,
       }
       self.fx_obj.curr_amb_fx = playfxontag(localclientnum, level._effect["box_closed"], self.fx_obj, "tag_origin");
       self.fx_obj_2 stopallloopsounds(1);
-      self notify(# "magicbox_portal_finished");
+      self notify("magicbox_portal_finished");
       break;
     }
     case 1: {
@@ -66,15 +51,6 @@ function magicbox_open_fx(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: magicbox_initial_closed_fx
-	Namespace: zm_magicbox_zod
-	Checksum: 0x3CFE9F14
-	Offset: 0x588
-	Size: 0xB4
-	Parameters: 7
-	Flags: Linked
-*/
 function magicbox_initial_closed_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.fx_obj)) {
     self.fx_obj = util::spawn_model(localclientnum, "tag_origin", self.origin, self.angles);
@@ -86,15 +62,6 @@ function magicbox_initial_closed_fx(localclientnum, oldval, newval, bnewent, bin
   }
 }
 
-/*
-	Name: magicbox_ambient_sound
-	Namespace: zm_magicbox_zod
-	Checksum: 0x2013F6E0
-	Offset: 0x648
-	Size: 0x174
-	Parameters: 7
-	Flags: Linked
-*/
 function magicbox_ambient_sound(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.fx_obj)) {
     self.fx_obj = util::spawn_model(localclientnum, "tag_origin", self.origin, self.angles);

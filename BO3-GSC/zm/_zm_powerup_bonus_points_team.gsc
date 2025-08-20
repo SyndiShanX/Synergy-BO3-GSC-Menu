@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_powerup_bonus_points_team.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_death;
 #using scripts\shared\clientfield_shared;
@@ -14,31 +18,12 @@
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_powerup_bonus_points_team;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_powerup_bonus_points_team
-	Checksum: 0xC5050AFA
-	Offset: 0x2F0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_powerup_bonus_points_team", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_powerup_bonus_points_team
-	Checksum: 0xA1A63203
-	Offset: 0x330
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   zm_powerups::register_powerup("bonus_points_team", & grab_bonus_points_team);
   if(tolower(getdvarstring("g_gametype")) != "zcleansed") {
@@ -46,29 +31,11 @@ function __init__() {
   }
 }
 
-/*
-	Name: grab_bonus_points_team
-	Namespace: zm_powerup_bonus_points_team
-	Checksum: 0xAD851C14
-	Offset: 0x3D8
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function grab_bonus_points_team(player) {
   level thread bonus_points_team_powerup(self);
   player thread zm_powerups::powerup_vo("bonus_points_team");
 }
 
-/*
-	Name: bonus_points_team_powerup
-	Namespace: zm_powerup_bonus_points_team
-	Checksum: 0xA47BED21
-	Offset: 0x428
-	Size: 0x10E
-	Parameters: 1
-	Flags: Linked
-*/
 function bonus_points_team_powerup(item) {
   points = randomintrange(1, 25) * 100;
   if(isdefined(level.bonus_points_powerup_override)) {

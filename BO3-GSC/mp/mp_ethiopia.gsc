@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_ethiopia.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -6,18 +10,8 @@
 #using scripts\mp\mp_ethiopia_sound;
 #using scripts\shared\compass;
 #using scripts\shared\util_shared;
-
 #namespace mp_ethiopia;
 
-/*
-	Name: main
-	Namespace: mp_ethiopia
-	Checksum: 0xCC4B4D07
-	Offset: 0x1F8
-	Size: 0x40C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache();
   mp_ethiopia_fx::main();
@@ -43,26 +37,8 @@ function main() {
   level spawnkilltrigger();
 }
 
-/*
-	Name: precache
-	Namespace: mp_ethiopia
-	Checksum: 0x99EC1590
-	Offset: 0x610
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {}
 
-/*
-	Name: add_raps_drop_locations
-	Namespace: mp_ethiopia
-	Checksum: 0x85ED3478
-	Offset: 0x620
-	Size: 0x1AC
-	Parameters: 1
-	Flags: Linked
-*/
 function add_raps_drop_locations( & drop_candidate_array) {
   if(!isdefined(drop_candidate_array)) {
     drop_candidate_array = [];
@@ -90,15 +66,6 @@ function add_raps_drop_locations( & drop_candidate_array) {
   drop_candidate_array[drop_candidate_array.size] = (-690, -850, 26);
 }
 
-/*
-	Name: spawnkilltrigger
-	Namespace: mp_ethiopia
-	Checksum: 0x7F85F6B1
-	Offset: 0x7D8
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnkilltrigger() {
   trigger = spawn("trigger_radius", (-993.5, -1327.5, 0.5), 0, 50, 300);
   trigger thread watchkilltrigger();
@@ -108,20 +75,11 @@ function spawnkilltrigger() {
   trigger thread watchkilltrigger();
 }
 
-/*
-	Name: watchkilltrigger
-	Namespace: mp_ethiopia
-	Checksum: 0x9919DD65
-	Offset: 0x8E0
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function watchkilltrigger() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   trigger = self;
   while (true) {
-    trigger waittill(# "trigger", player);
+    trigger waittill("trigger", player);
     player dodamage(1000, trigger.origin + (0, 0, 0), trigger, trigger, "none", "MOD_SUICIDE", 0);
   }
 }

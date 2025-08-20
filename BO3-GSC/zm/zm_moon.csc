@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\audio_shared;
@@ -47,34 +51,14 @@
 #using scripts\zm\zm_moon_fx;
 #using scripts\zm\zm_moon_gravity;
 #using scripts\zm\zm_moon_sq;
-
 #using_animtree("generic");
-
 #namespace zm_moon;
 
-/*
-	Name: opt_in
-	Namespace: zm_moon
-	Checksum: 0xE5BAEA7E
-	Offset: 0x1970
-	Size: 0x1C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec opt_in() {
   level.aat_in_use = 1;
   level.bgb_in_use = 1;
 }
 
-/*
-	Name: main
-	Namespace: zm_moon
-	Checksum: 0x9A028AC1
-	Offset: 0x1998
-	Size: 0x294
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level thread zm_moon_ffotd::main_start();
   level.default_game_mode = "zclassic";
@@ -111,15 +95,6 @@ function main() {
   level thread zm_moon_ffotd::main_end();
 }
 
-/*
-	Name: function_73cc64f1
-	Namespace: zm_moon
-	Checksum: 0x56FDA7D8
-	Offset: 0x1C38
-	Size: 0x14C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_73cc64f1(localclientnum) {
   level.var_98cd8f08 = [];
   level.var_98cd8f08[1] = "c_t7_zm_dlchd_moon_pressuresuit_dempsey_mpc";
@@ -133,17 +108,8 @@ function function_73cc64f1(localclientnum) {
   callback::on_spawned( & function_c06d0a4e);
 }
 
-/*
-	Name: function_c06d0a4e
-	Namespace: zm_moon
-	Checksum: 0xA9D234E6
-	Offset: 0x1D90
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c06d0a4e(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self util::waittill_dobj(localclientnum);
   while (isdefined(self) && !isdefined(self.player_exert_id)) {
     wait(1);
@@ -153,15 +119,6 @@ function function_c06d0a4e(localclientnum) {
   }
 }
 
-/*
-	Name: lock_model
-	Namespace: zm_moon
-	Checksum: 0x15CA7F1
-	Offset: 0x1E28
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function lock_model(model) {
   if(isdefined(model)) {
     if(!isdefined(level.model_locks)) {
@@ -177,15 +134,6 @@ function lock_model(model) {
   }
 }
 
-/*
-	Name: unlock_model
-	Namespace: zm_moon
-	Checksum: 0x3369B572
-	Offset: 0x1EC8
-	Size: 0x94
-	Parameters: 1
-	Flags: None
-*/
 function unlock_model(model) {
   if(isdefined(model)) {
     if(!isdefined(level.model_locks)) {
@@ -201,41 +149,14 @@ function unlock_model(model) {
   }
 }
 
-/*
-	Name: start_zombie_stuff
-	Namespace: zm_moon
-	Checksum: 0xBE08FF66
-	Offset: 0x1F68
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function start_zombie_stuff() {
   include_weapons();
 }
 
-/*
-	Name: include_weapons
-	Namespace: zm_moon
-	Checksum: 0x4C528E2D
-	Offset: 0x1F88
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function include_weapons() {
   zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_moon_weapons.csv", 1);
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_moon
-	Checksum: 0xB91C0843
-	Offset: 0x1FB8
-	Size: 0x696
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("scriptmover", "digger_moving", 21000, 1, "int", & zm_moon_digger::digger_moving_earthquake_rumble, 0, 0);
   clientfield::register("scriptmover", "digger_digging", 21000, 1, "int", & zm_moon_digger::digger_digging_earthquake_rumble, 0, 0);
@@ -266,15 +187,6 @@ function register_clientfields() {
   }
 }
 
-/*
-	Name: function_20c21740
-	Namespace: zm_moon
-	Checksum: 0x63CE4650
-	Offset: 0x2658
-	Size: 0x3F4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_20c21740() {
   clientfield::register("world", "BIO", 21000, 1, "int", & zm_moon_digger::function_a0cf54a0, 0, 0);
   clientfield::register("world", "DH", 21000, 1, "int", & zm_moon_digger::function_245b13ce, 0, 0);
@@ -292,15 +204,6 @@ function function_20c21740() {
   clientfield::register("world", "Az5", 21000, 1, "counter", & zm_moon_amb::function_6ce4d731, 0, 0);
 }
 
-/*
-	Name: disable_deadshot
-	Namespace: zm_moon
-	Checksum: 0xCC6FDD93
-	Offset: 0x2A58
-	Size: 0x9E
-	Parameters: 1
-	Flags: None
-*/
 function disable_deadshot(i_local_client_num) {
   while (!self hasdobj(i_local_client_num)) {
     wait(0.05);
@@ -313,15 +216,6 @@ function disable_deadshot(i_local_client_num) {
   }
 }
 
-/*
-	Name: radar_dish_init
-	Namespace: zm_moon
-	Checksum: 0xC42E6BC8
-	Offset: 0x2B00
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function radar_dish_init() {
   radar_dish = getentarray(0, "zombie_cosmodrome_radar_dish", "targetname");
   if(isdefined(radar_dish)) {
@@ -331,32 +225,14 @@ function radar_dish_init() {
   }
 }
 
-/*
-	Name: radar_dish_rotate
-	Namespace: zm_moon
-	Checksum: 0x24BD4498
-	Offset: 0x2B90
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function radar_dish_rotate() {
   wait(0.1);
   while (true) {
     self rotateyaw(360, randomfloatrange(60, 120));
-    self waittill(# "rotatedone");
+    self waittill("rotatedone");
   }
 }
 
-/*
-	Name: receiving_bay_doors_init
-	Namespace: zm_moon
-	Checksum: 0x88F9FBCF
-	Offset: 0x2BF8
-	Size: 0x9E
-	Parameters: 0
-	Flags: Linked
-*/
 function receiving_bay_doors_init() {
   util::waitforallclients();
   players = getlocalplayers();
@@ -366,17 +242,8 @@ function receiving_bay_doors_init() {
   }
 }
 
-/*
-	Name: receiving_bay_doors
-	Namespace: zm_moon
-	Checksum: 0xF3F48142
-	Offset: 0x2CA0
-	Size: 0x146
-	Parameters: 1
-	Flags: Linked
-*/
 function receiving_bay_doors(localclientnum) {
-  level waittill(# "power_on");
+  level waittill("power_on");
   doors = getentarray(localclientnum, "receiving_bay_doors", "targetname");
   for (i = 0; i < doors.size; i++) {
     if(isdefined(doors[i].script_vector)) {
@@ -388,50 +255,23 @@ function receiving_bay_doors(localclientnum) {
   }
 }
 
-/*
-	Name: stop_loop_play_end
-	Namespace: zm_moon
-	Checksum: 0x2A4AD90C
-	Offset: 0x2DF0
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function stop_loop_play_end() {
   wait(2.6);
   self stoploopsound(0.5);
   self playsound(0, "evt_loading_door_end");
 }
 
-/*
-	Name: computer_screens_power
-	Namespace: zm_moon
-	Checksum: 0x85F74C7B
-	Offset: 0x2E48
-	Size: 0xD6
-	Parameters: 1
-	Flags: Linked
-*/
 function computer_screens_power(localclientnum) {
   screens = getentarray(localclientnum, "moon_comp_screens", "targetname");
   for (i = 0; i < screens.size; i++) {
     screens[i] hide();
   }
-  level waittill(# "power_on");
+  level waittill("power_on");
   for (i = 0; i < screens.size; i++) {
     screens[i] show();
   }
 }
 
-/*
-	Name: jump_pad_activate
-	Namespace: zm_moon
-	Checksum: 0xDFA830C
-	Offset: 0x2F28
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function jump_pad_activate(clientnum) {
   level function_c00b8efb(clientnum);
   wait(0.016);
@@ -441,15 +281,6 @@ function jump_pad_activate(clientnum) {
   jump_pad_start_fx(clientnum);
 }
 
-/*
-	Name: function_c00b8efb
-	Namespace: zm_moon
-	Checksum: 0xEE57F24B
-	Offset: 0x2FC8
-	Size: 0x16A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c00b8efb(clientnum) {
   player = getlocalplayers()[clientnum];
   if(!isdefined(player)) {
@@ -465,15 +296,6 @@ function function_c00b8efb(clientnum) {
   }
 }
 
-/*
-	Name: function_1cd5e7c6
-	Namespace: zm_moon
-	Checksum: 0xF8701513
-	Offset: 0x3140
-	Size: 0x14A
-	Parameters: 7
-	Flags: Linked
-*/
 function function_1cd5e7c6(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   var_e3a2cc12 = getentarray(localclientnum, "jump_pads", "targetname");
   foreach(var_f5f4e9cc in var_e3a2cc12) {
@@ -484,41 +306,14 @@ function function_1cd5e7c6(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_7c00de2d
-	Namespace: zm_moon
-	Checksum: 0x65E75CCA
-	Offset: 0x3298
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_7c00de2d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   playsound(localclientnum, "evt_gasmask_suit_on", self.origin);
 }
 
-/*
-	Name: function_29c0676c
-	Namespace: zm_moon
-	Checksum: 0x39D4AE0E
-	Offset: 0x3308
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_29c0676c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   playsound(localclientnum, "evt_gasmask_on_v2", self.origin);
 }
 
-/*
-	Name: jump_pad_start_fx
-	Namespace: zm_moon
-	Checksum: 0xE27EF74B
-	Offset: 0x3378
-	Size: 0x102
-	Parameters: 1
-	Flags: Linked
-*/
 function jump_pad_start_fx(int_local_player_num) {
   player = getlocalplayers()[int_local_player_num];
   if(!isdefined(player)) {
@@ -532,15 +327,6 @@ function jump_pad_start_fx(int_local_player_num) {
   }
 }
 
-/*
-	Name: dome_malfunction_pad
-	Namespace: zm_moon
-	Checksum: 0x74E26108
-	Offset: 0x3488
-	Size: 0x55A
-	Parameters: 7
-	Flags: Linked
-*/
 function dome_malfunction_pad(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(localclientnum != 0) {
     return;
@@ -606,15 +392,6 @@ function dome_malfunction_pad(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: player_gasp_rumble
-	Namespace: zm_moon
-	Checksum: 0xB508F66D
-	Offset: 0x39F0
-	Size: 0xE4
-	Parameters: 7
-	Flags: Linked
-*/
 function player_gasp_rumble(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(!self islocalplayer()) {
     return;
@@ -631,15 +408,6 @@ function player_gasp_rumble(localclientnum, oldval, newval, bnewent, binitialsna
   }
 }
 
-/*
-	Name: show_earth
-	Namespace: zm_moon
-	Checksum: 0x9F5A3DFE
-	Offset: 0x3AE0
-	Size: 0x166
-	Parameters: 7
-	Flags: Linked
-*/
 function show_earth(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   for (i = 0; i < level.localplayers.size; i++) {
     player = getlocalplayers()[i];
@@ -655,15 +423,6 @@ function show_earth(localclientnum, oldval, newval, bnewent, binitialsnap, field
   }
 }
 
-/*
-	Name: hide_earth
-	Namespace: zm_moon
-	Checksum: 0xC12C7CD
-	Offset: 0x3C50
-	Size: 0xCE
-	Parameters: 7
-	Flags: Linked
-*/
 function hide_earth(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   for (i = 0; i < level.localplayers.size; i++) {
     player = getlocalplayers()[i];
@@ -676,15 +435,6 @@ function hide_earth(localclientnum, oldval, newval, bnewent, binitialsnap, field
   }
 }
 
-/*
-	Name: show_destroyed_earth
-	Namespace: zm_moon
-	Checksum: 0x383EF2D6
-	Offset: 0x3D28
-	Size: 0xD6
-	Parameters: 7
-	Flags: Linked
-*/
 function show_destroyed_earth(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   for (i = 0; i < level.localplayers.size; i++) {
     player = getlocalplayers()[i];
@@ -697,31 +447,13 @@ function show_destroyed_earth(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: hide_destroyed_earth
-	Namespace: zm_moon
-	Checksum: 0xA2D3FF63
-	Offset: 0x3E08
-	Size: 0x30
-	Parameters: 0
-	Flags: Linked
-*/
 function hide_destroyed_earth() {
   while (true) {
-    level waittill(# "hde");
+    level waittill("hde");
     level thread do_hide_destroyed_earth();
   }
 }
 
-/*
-	Name: do_hide_destroyed_earth
-	Namespace: zm_moon
-	Checksum: 0x584F8757
-	Offset: 0x3E40
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function do_hide_destroyed_earth() {
   for (i = 0; i < level.localplayers.size; i++) {
     player = getlocalplayers()[i];
@@ -734,39 +466,21 @@ function do_hide_destroyed_earth() {
   }
 }
 
-/*
-	Name: function_d87a7dcc
-	Namespace: zm_moon
-	Checksum: 0x62ED1FD7
-	Offset: 0x3EE0
-	Size: 0xBA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d87a7dcc() {
   var_bd7ba30 = 0;
   while (true) {
     if(!level clientfield::get("zombie_power_on")) {
       if(var_bd7ba30) {
-        level notify(# "power_controlled_light");
+        level notify("power_controlled_light");
       }
       level util::waittill_any("power_on", "pwr", "ZPO");
     }
-    level notify(# "power_controlled_light");
+    level notify("power_controlled_light");
     level util::waittill_any("pwo", "ZPOff");
     var_bd7ba30 = 1;
   }
 }
 
-/*
-	Name: function_947f06dd
-	Namespace: zm_moon
-	Checksum: 0x3C686302
-	Offset: 0x3FA8
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_947f06dd(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     exploder::exploder("lgt_dome_int");
@@ -775,15 +489,6 @@ function function_947f06dd(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: moon_nml_transition
-	Namespace: zm_moon
-	Checksum: 0x3D7C0261
-	Offset: 0x4030
-	Size: 0x12C
-	Parameters: 7
-	Flags: Linked
-*/
 function moon_nml_transition(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(!self islocalplayer()) {
     return;
@@ -800,22 +505,13 @@ function moon_nml_transition(localclientnum, oldval, newval, bnewent, binitialsn
     }
   } else {
     visionset_mgr::fog_vol_to_visionset_set_suffix("");
-    level notify(# "hash_d2b77ba2");
+    level notify("hash_d2b77ba2");
     setukkoscriptindex(localclientnum, 1, 1);
   }
 }
 
-/*
-	Name: function_fbf77a74
-	Namespace: zm_moon
-	Checksum: 0x777CE4FF
-	Offset: 0x4168
-	Size: 0x99A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fbf77a74(localclientnum) {
-  self endon(# "hash_d2b77ba2");
+  self endon("hash_d2b77ba2");
   while (true) {
     var_f4570d42 = randomint(5);
     switch (var_f4570d42) {
@@ -956,42 +652,15 @@ function function_fbf77a74(localclientnum) {
   }
 }
 
-/*
-	Name: function_36f98292
-	Namespace: zm_moon
-	Checksum: 0xFF0302A0
-	Offset: 0x4B10
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function function_36f98292() {
   self rotateroll(180, 0.5);
 }
 
-/*
-	Name: function_ff7d3b7
-	Namespace: zm_moon
-	Checksum: 0x1EB83D6E
-	Offset: 0x4B40
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_ff7d3b7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   var_28a1ce70 = tablelookup("gamedata/tables/zm/zm_astro_names.csv", 0, newval - 1, 1);
   self setdrawname(var_28a1ce70);
 }
 
-/*
-	Name: function_6ac83719
-	Namespace: zm_moon
-	Checksum: 0x49BEEBD
-	Offset: 0x4BD8
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6ac83719() {
   visionset_mgr::init_fog_vol_to_visionset_monitor("zombie_moonHanger18", 2);
   visionset_mgr::fog_vol_to_visionset_set_suffix("_off");
@@ -1002,15 +671,6 @@ function function_6ac83719() {
   visionset_mgr::fog_vol_to_visionset_set_info(5, "zombie_moonBioDome");
 }
 
-/*
-	Name: setup_personality_character_exerts
-	Namespace: zm_moon
-	Checksum: 0x257EB70
-	Offset: 0x4CC0
-	Size: 0x1482
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_personality_character_exerts() {
   level.exert_sounds[1]["playerbreathinsound"][0] = "vox_plr_0_exert_inhale_0";
   level.exert_sounds[1]["playerbreathinsound"][1] = "vox_plr_0_exert_inhale_1";

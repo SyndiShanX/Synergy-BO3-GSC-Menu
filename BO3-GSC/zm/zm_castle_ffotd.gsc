@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_castle_ffotd.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -13,31 +17,12 @@
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_castle_cleanup_mgr;
 #using scripts\zm\zm_castle_zombie;
-
 #namespace zm_castle_ffotd;
 
-/*
-	Name: main_start
-	Namespace: zm_castle_ffotd
-	Checksum: 0x31B116FF
-	Offset: 0x400
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function main_start() {
   level.var_42792b8b = 1;
 }
 
-/*
-	Name: main_end
-	Namespace: zm_castle_ffotd
-	Checksum: 0xACC763F1
-	Offset: 0x418
-	Size: 0x814
-	Parameters: 0
-	Flags: Linked
-*/
 function main_end() {
   spawncollision("collision_monster_wall_256x256x10", "collider", (1519, 1051.5, 210), vectorscale((0, 1, 0), 5.49973));
   spawncollision("collision_monster_wall_128x128x10", "collider", (1763.25, 1340.5, 307), vectorscale((0, 1, 0), 335.598));
@@ -77,15 +62,6 @@ function main_end() {
   level.player_intersection_tracker_override = & function_401305fb;
 }
 
-/*
-	Name: function_965d5385
-	Namespace: zm_castle_ffotd
-	Checksum: 0x9B2077EE
-	Offset: 0xC38
-	Size: 0x236
-	Parameters: 0
-	Flags: Linked
-*/
 function function_965d5385() {
   a_s_spawn_pos = struct::get_array("zone_tram_to_gatehouse_spawners", "targetname");
   for (i = 0; i < a_s_spawn_pos.size; i++) {
@@ -105,15 +81,6 @@ function function_965d5385() {
   }
 }
 
-/*
-	Name: function_b1c9999
-	Namespace: zm_castle_ffotd
-	Checksum: 0xE7EF05F5
-	Offset: 0xE78
-	Size: 0xE6
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b1c9999(s_player_respawn) {
   switch (s_player_respawn.script_noteworthy) {
     case "player_1": {
@@ -138,15 +105,6 @@ function function_b1c9999(s_player_respawn) {
   }
 }
 
-/*
-	Name: function_78328cd0
-	Namespace: zm_castle_ffotd
-	Checksum: 0xFC1A3F67
-	Offset: 0xF68
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_78328cd0() {
   var_7f68d264 = (5426, -2802, -2253);
   level thread function_f9f5dbb3(var_7f68d264);
@@ -154,21 +112,12 @@ function function_78328cd0() {
   level thread function_f9f5dbb3(var_f170419f);
 }
 
-/*
-	Name: function_f9f5dbb3
-	Namespace: zm_castle_ffotd
-	Checksum: 0xC9825762
-	Offset: 0xFE8
-	Size: 0x144
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f9f5dbb3(v_origin) {
   var_640a9eac = spawn("trigger_box", v_origin, 9, 100, 128, 128);
   var_640a9eac.angles = vectorscale((0, 1, 0), 75.7984);
   var_640a9eac setteamfortrigger(level.zombie_team);
   while (true) {
-    var_640a9eac waittill(# "trigger", e_who);
+    var_640a9eac waittill("trigger", e_who);
     e_who.no_powerups = 1;
     while (isalive(e_who) && e_who istouching(var_640a9eac)) {
       wait(1);
@@ -179,15 +128,6 @@ function function_f9f5dbb3(v_origin) {
   }
 }
 
-/*
-	Name: function_c428951
-	Namespace: zm_castle_ffotd
-	Checksum: 0x6733F32F
-	Offset: 0x1138
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c428951(ai_zombie) {
   if(isdefined(self.b_zombie_path_bad) && self.b_zombie_path_bad) {
     return;
@@ -196,15 +136,6 @@ function function_c428951(ai_zombie) {
   ai_zombie thread function_dc683d01(var_b52b26b9);
 }
 
-/*
-	Name: get_escape_position
-	Namespace: zm_castle_ffotd
-	Checksum: 0x89805C5F
-	Offset: 0x11A8
-	Size: 0x146
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private get_escape_position() {
   str_zone = zm_zonemgr::get_zone_from_position(self.origin + vectorscale((0, 0, 1), 32), 1);
   if(!isdefined(str_zone)) {
@@ -224,15 +155,6 @@ function private get_escape_position() {
   return self.origin;
 }
 
-/*
-	Name: get_wait_locations_in_zones
-	Namespace: zm_castle_ffotd
-	Checksum: 0xA78BEFFF
-	Offset: 0x12F8
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private get_wait_locations_in_zones(a_zones) {
   a_wait_locations = [];
   foreach(zone in a_zones) {
@@ -241,15 +163,6 @@ function private get_wait_locations_in_zones(a_zones) {
   return a_wait_locations;
 }
 
-/*
-	Name: function_eadbcbdb
-	Namespace: zm_castle_ffotd
-	Checksum: 0x918D5C91
-	Offset: 0x13D8
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_eadbcbdb() {
   if(!isdefined(self)) {
     return false;
@@ -260,19 +173,10 @@ function private function_eadbcbdb() {
   return true;
 }
 
-/*
-	Name: function_dc683d01
-	Namespace: zm_castle_ffotd
-	Checksum: 0x95C923E8
-	Offset: 0x1440
-	Size: 0xCA
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_dc683d01(var_b52b26b9) {
-  self endon(# "death");
-  self notify(# "stop_find_flesh");
-  self notify(# "zombie_acquire_enemy");
+  self endon("death");
+  self notify("stop_find_flesh");
+  self notify("zombie_acquire_enemy");
   self.ignoreall = 1;
   self.b_zombie_path_bad = 1;
   self thread check_player_available();
@@ -283,36 +187,18 @@ function private function_dc683d01(var_b52b26b9) {
   self.b_zombie_path_bad = undefined;
 }
 
-/*
-	Name: check_player_available
-	Namespace: zm_castle_ffotd
-	Checksum: 0xDDD3520A
-	Offset: 0x1518
-	Size: 0x78
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private check_player_available() {
-  self endon(# "death");
+  self endon("death");
   while (isdefined(self.b_zombie_path_bad) && self.b_zombie_path_bad) {
     wait(randomfloatrange(0.2, 0.5));
     if(self can_zombie_see_any_player()) {
       self.b_zombie_path_bad = undefined;
-      self notify(# "reaquire_player");
+      self notify("reaquire_player");
       return;
     }
   }
 }
 
-/*
-	Name: can_zombie_see_any_player
-	Namespace: zm_castle_ffotd
-	Checksum: 0x90E2E4CD
-	Offset: 0x1598
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private can_zombie_see_any_player() {
   for (i = 0; i < level.activeplayers.size; i++) {
     if(zombie_utility::is_player_valid(level.activeplayers[i])) {
@@ -325,15 +211,6 @@ function private can_zombie_see_any_player() {
   return false;
 }
 
-/*
-	Name: function_d6da0785
-	Namespace: zm_castle_ffotd
-	Checksum: 0x6CBCC355
-	Offset: 0x1620
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d6da0785(var_2f7fd5db, n_points) {
   if(!isdefined(n_points)) {
     return 0;
@@ -344,15 +221,6 @@ function function_d6da0785(var_2f7fd5db, n_points) {
   return n_points;
 }
 
-/*
-	Name: function_401305fb
-	Namespace: zm_castle_ffotd
-	Checksum: 0x2E76BBF5
-	Offset: 0x1688
-	Size: 0x4E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_401305fb(var_3c6a24bf) {
   if(isdefined(self.is_flung) && self.is_flung || (isdefined(var_3c6a24bf.is_flung) && var_3c6a24bf.is_flung)) {
     return true;

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_dev.gsc
+*************************************************/
+
 #using scripts\cp\cybercom\_cybercom_gadget;
 #using scripts\cp\cybercom\_cybercom_tactical_rig;
 #using scripts\cp\cybercom\_cybercom_util;
@@ -6,18 +10,8 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\system_shared;
-
 #namespace cybercom_dev;
 
-/*
-	Name: function_a0e51d80
-	Namespace: cybercom_dev
-	Checksum: 0xC5B65AEA
-	Offset: 0x318
-	Size: 0x1C0
-	Parameters: 4
-	Flags: Linked
-*/
 function function_a0e51d80(point, timesec, size, color) {
   end = gettime() + (timesec * 1000);
   halfwidth = int(size / 2);
@@ -28,45 +22,23 @@ function function_a0e51d80(point, timesec, size, color) {
   h1 = point + (0, 0, halfwidth * -1);
   h2 = point + (0, 0, halfwidth);
   while (end > gettime()) {
-    /#
     line(l1, l2, color, 1, 0, 1);
     line(var_5e2b69e1, var_842de44a, color, 1, 0, 1);
     line(h1, h2, color, 1, 0, 1);
-    # /
-      wait(0.05);
+    wait(0.05);
   }
 }
 
-/*
-	Name: cybercom_setupdevgui
-	Namespace: cybercom_dev
-	Checksum: 0xFDD5B616
-	Offset: 0x4E0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function cybercom_setupdevgui() {
-  /#
   execdevgui("");
   level thread cybercom_devguithink();
-  # /
 }
 
-/*
-	Name: constantjuice
-	Namespace: cybercom_dev
-	Checksum: 0x85BBAA5
-	Offset: 0x528
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function constantjuice() {
-  self notify(# "constantjuice");
-  self endon(# "constantjuice");
-  self endon(# "disconnect");
-  self endon(# "spawned");
+  self notify("constantjuice");
+  self endon("constantjuice");
+  self endon("disconnect");
+  self endon("spawned");
   while (true) {
     wait(1);
     if(isdefined(self.cybercom.var_ebeecfd5) && self.cybercom.var_ebeecfd5) {
@@ -82,15 +54,6 @@ function constantjuice() {
   }
 }
 
-/*
-	Name: cybercom_devguithink
-	Namespace: cybercom_dev
-	Checksum: 0x38569580
-	Offset: 0x638
-	Size: 0x710
-	Parameters: 0
-	Flags: Linked
-*/
 function cybercom_devguithink() {
   setdvar("devgui_cybercore", "");
   setdvar("devgui_cybercore_upgrade", "");

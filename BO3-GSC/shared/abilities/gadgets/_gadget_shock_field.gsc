@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/************************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\abilities\gadgets\_gadget_shock_field.gsc
+************************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\abilities\_ability_player;
 #using scripts\shared\abilities\_ability_util;
@@ -9,31 +13,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace _gadget_shock_field;
 
-/*
-	Name: __init__sytem__
-	Namespace: _gadget_shock_field
-	Checksum: 0x16894BC6
-	Offset: 0x260
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("gadget_shock_field", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _gadget_shock_field
-	Checksum: 0x552495A1
-	Offset: 0x2A0
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("allplayers", "shock_field", 1, 1, "int");
   ability_player::register_gadget_activation_callbacks(39, & gadget_shock_field_on, & gadget_shock_field_off);
@@ -44,120 +29,39 @@ function __init__() {
   callback::on_connect( & gadget_shock_field_on_connect);
 }
 
-/*
-	Name: gadget_shock_field_is_inuse
-	Namespace: _gadget_shock_field
-	Checksum: 0x5BAE1465
-	Offset: 0x3C0
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function gadget_shock_field_is_inuse(slot) {
   return self gadgetisactive(slot);
 }
 
-/*
-	Name: gadget_shock_field_is_flickering
-	Namespace: _gadget_shock_field
-	Checksum: 0x295742D3
-	Offset: 0x3F0
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function gadget_shock_field_is_flickering(slot) {}
 
-/*
-	Name: gadget_shock_field_on_flicker
-	Namespace: _gadget_shock_field
-	Checksum: 0x388F0484
-	Offset: 0x408
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_shock_field_on_flicker(slot, weapon) {}
 
-/*
-	Name: gadget_shock_field_on_give
-	Namespace: _gadget_shock_field
-	Checksum: 0x61BF7317
-	Offset: 0x428
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_shock_field_on_give(slot, weapon) {
   self clientfield::set("shock_field", 0);
 }
 
-/*
-	Name: gadget_shock_field_on_take
-	Namespace: _gadget_shock_field
-	Checksum: 0x8C45E4C6
-	Offset: 0x468
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_shock_field_on_take(slot, weapon) {
   self clientfield::set("shock_field", 0);
 }
 
-/*
-	Name: gadget_shock_field_on_connect
-	Namespace: _gadget_shock_field
-	Checksum: 0x99EC1590
-	Offset: 0x4A8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function gadget_shock_field_on_connect() {}
 
-/*
-	Name: gadget_shock_field_on
-	Namespace: _gadget_shock_field
-	Checksum: 0x78865025
-	Offset: 0x4B8
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_shock_field_on(slot, weapon) {
   self gadgetsetactivatetime(slot, gettime());
   self thread shock_field_think(slot, weapon);
   self clientfield::set("shock_field", 1);
 }
 
-/*
-	Name: gadget_shock_field_off
-	Namespace: _gadget_shock_field
-	Checksum: 0x3F54A044
-	Offset: 0x530
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_shock_field_off(slot, weapon) {
-  self notify(# "shock_field_off");
+  self notify("shock_field_off");
   self clientfield::set("shock_field", 0);
 }
 
-/*
-	Name: shock_field_think
-	Namespace: _gadget_shock_field
-	Checksum: 0x3647E524
-	Offset: 0x580
-	Size: 0x2DE
-	Parameters: 2
-	Flags: Linked
-*/
 function shock_field_think(slot, weapon) {
-  self endon(# "shock_field_off");
-  self notify(# "shock_field_on");
-  self endon(# "shock_field_on");
+  self endon("shock_field_off");
+  self notify("shock_field_on");
+  self endon("shock_field_on");
   while (true) {
     wait(0.25);
     if(!self gadget_shock_field_is_inuse(slot)) {
@@ -192,15 +96,6 @@ function shock_field_think(slot, weapon) {
   }
 }
 
-/*
-	Name: shock_field_zap_sound
-	Namespace: _gadget_shock_field
-	Checksum: 0x852D1FA3
-	Offset: 0x868
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked
-*/
 function shock_field_zap_sound(weapon) {
   if(isdefined(self.shock_field_zap_sound) && self.shock_field_zap_sound) {
     return;
@@ -213,19 +108,10 @@ function shock_field_zap_sound(weapon) {
   }
 }
 
-/*
-	Name: flicker_field_fx
-	Namespace: _gadget_shock_field
-	Checksum: 0x3B5B5E28
-	Offset: 0x8D8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function flicker_field_fx() {
-  self endon(# "shock_field_off");
-  self notify(# "flicker_field_fx");
-  self endon(# "flicker_field_fx");
+  self endon("shock_field_off");
+  self notify("flicker_field_fx");
+  self endon("flicker_field_fx");
   self clientfield::set("shock_field", 0);
   wait(randomfloatrange(0.03, 0.23));
   if(isdefined(self)) {

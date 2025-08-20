@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_z_zurich.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_738cec14;
 
-/*
-	Name: init_voice
-	Namespace: namespace_738cec14
-	Checksum: 0x1DDF6FA8
-	Offset: 0x1A60
-	Size: 0x1084
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("deim_with_hendricks_as_my_0", "vox_zzur_1_01_000_deim");
   dialog::add("deim_61_15_the_virus_tha_0", "vox_zzur_7_01_001_deim");

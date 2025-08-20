@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_satchel_charge.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\challenges_shared;
@@ -6,33 +10,14 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace satchel_charge;
 
-/*
-	Name: init_shared
-	Namespace: satchel_charge
-	Checksum: 0x6F420386
-	Offset: 0x2A0
-	Size: 0x5C
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   level._effect["satchel_charge_enemy_light"] = "weapon/fx_c4_light_orng";
   level._effect["satchel_charge_friendly_light"] = "weapon/fx_c4_light_blue";
   callback::add_weapon_watcher( & createsatchelwatcher);
 }
 
-/*
-	Name: createsatchelwatcher
-	Namespace: satchel_charge
-	Checksum: 0x1165C958
-	Offset: 0x308
-	Size: 0x1C4
-	Parameters: 0
-	Flags: Linked
-*/
 function createsatchelwatcher() {
   watcher = self weaponobjects::createuseweaponobjectwatcher("satchel_charge", self.team);
   watcher.altdetonate = 1;
@@ -54,15 +39,6 @@ function createsatchelwatcher() {
   watcher.immunespecialty = "specialty_immunetriggerc4";
 }
 
-/*
-	Name: satcheldetonate
-	Namespace: satchel_charge
-	Checksum: 0xBFCA25A
-	Offset: 0x4D8
-	Size: 0xBC
-	Parameters: 3
-	Flags: Linked
-*/
 function satcheldetonate(attacker, weapon, target) {
   if(isdefined(weapon) && weapon.isvalid) {
     if(isdefined(attacker)) {
@@ -75,17 +51,8 @@ function satcheldetonate(attacker, weapon, target) {
   weaponobjects::weapondetonate(attacker, weapon);
 }
 
-/*
-	Name: satchelspawn
-	Namespace: satchel_charge
-	Checksum: 0xC228611F
-	Offset: 0x5A0
-	Size: 0x114
-	Parameters: 2
-	Flags: Linked
-*/
 function satchelspawn(watcher, owner) {
-  self endon(# "death");
+  self endon("death");
   self thread weaponobjects::onspawnuseweaponobject(watcher, owner);
   if(!(isdefined(self.previouslyhacked) && self.previouslyhacked)) {
     if(isdefined(owner)) {

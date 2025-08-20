@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_digger.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -14,18 +18,8 @@
 #using scripts\zm\zm_moon;
 #using scripts\zm\zm_moon_amb;
 #using scripts\zm\zm_moon_gravity;
-
 #namespace zm_moon_digger;
 
-/*
-	Name: digger_init_flags
-	Namespace: zm_moon_digger
-	Checksum: 0x60296F2D
-	Offset: 0xB00
-	Size: 0x320
-	Parameters: 0
-	Flags: Linked
-*/
 function digger_init_flags() {
   level.diggers_global_time = 240;
   level flag::init("teleporter_digger_hacked");
@@ -59,28 +53,10 @@ function digger_init_flags() {
   }
 }
 
-/*
-	Name: digger_init
-	Namespace: zm_moon_digger
-	Checksum: 0x2DBCFDAF
-	Offset: 0xE28
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function digger_init() {
   level thread setup_diggers();
 }
 
-/*
-	Name: setup_diggers
-	Namespace: zm_moon_digger
-	Checksum: 0xE2C7C29C
-	Offset: 0xE50
-	Size: 0x1D4
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_diggers() {
   level thread digger_think_panel("digger_hangar_blocker", "hangar_digger_switch", "start_hangar_digger", "hangar_digger_hacked", "hangar_digger_hacked_before_breached", "hangar_breached", & digger_think_blocker, "hangar");
   level thread digger_think_panel("digger_teleporter_blocker", "teleporter_digger_switch", "start_teleporter_digger", "teleporter_digger_hacked", "teleporter_digger_hacked_before_breached", "teleporter_breached", & digger_think_blocker, "teleporter");
@@ -95,15 +71,6 @@ function setup_diggers() {
   level flag::clear("init_diggers");
 }
 
-/*
-	Name: function_c497263d
-	Namespace: zm_moon_digger
-	Checksum: 0xE351979F
-	Offset: 0x1030
-	Size: 0x44C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c497263d() {
   for (i = 0; i < 3; i++) {
     switch (i) {
@@ -163,17 +130,8 @@ function function_c497263d() {
   }
 }
 
-/*
-	Name: digger_round_logic
-	Namespace: zm_moon_digger
-	Checksum: 0x442E4A69
-	Offset: 0x1488
-	Size: 0x2E4
-	Parameters: 0
-	Flags: Linked
-*/
 function digger_round_logic() {
-  level endon(# "digger_logic_stop");
+  level endon("digger_logic_stop");
   level flag::wait_till("power_on");
   wait(30);
   last_active_round = level.round_number;
@@ -185,7 +143,7 @@ function digger_round_logic() {
   }
   rnd = 0;
   while (!first_digger_activated) {
-    level waittill(# "between_round_over");
+    level waittill("between_round_over");
     if(level flag::exists("teleporter_used") && level flag::get("teleporter_used")) {
       continue;
     }
@@ -197,7 +155,7 @@ function digger_round_logic() {
     rnd++;
   }
   while (true) {
-    level waittill(# "between_round_over");
+    level waittill("between_round_over");
     if(level flag::exists("teleporter_used") && level flag::get("teleporter_used")) {
       continue;
     }
@@ -224,15 +182,6 @@ function digger_round_logic() {
   }
 }
 
-/*
-	Name: digger_activate
-	Namespace: zm_moon_digger
-	Checksum: 0xA5E2F855
-	Offset: 0x1778
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked
-*/
 function digger_activate(force_digger) {
   if(isdefined(force_digger)) {
     level flag::set(("start_" + force_digger) + "_digger");
@@ -259,15 +208,6 @@ function digger_activate(force_digger) {
   }
 }
 
-/*
-	Name: play_digger_start_vox
-	Namespace: zm_moon_digger
-	Checksum: 0xEF32ED6C
-	Offset: 0x1960
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function play_digger_start_vox(digger_name) {
   level thread zm_moon_amb::play_mooncomp_vox("vox_mcomp_digger_start_", digger_name);
   wait(7);
@@ -278,15 +218,6 @@ function play_digger_start_vox(digger_name) {
   players[randomintrange(0, players.size)] thread zm_audio::create_and_play_dialog("digger", "incoming");
 }
 
-/*
-	Name: send_clientnotify
-	Namespace: zm_moon_digger
-	Checksum: 0x11B1F013
-	Offset: 0x1A18
-	Size: 0x10E
-	Parameters: 2
-	Flags: Linked
-*/
 function send_clientnotify(digger_name, pause) {
   switch (digger_name) {
     case "hangar": {
@@ -316,15 +247,6 @@ function send_clientnotify(digger_name, pause) {
   }
 }
 
-/*
-	Name: digger_think_move
-	Namespace: zm_moon_digger
-	Checksum: 0x98F24A38
-	Offset: 0x1B30
-	Size: 0x58C
-	Parameters: 0
-	Flags: Linked
-*/
 function digger_think_move() {
   targets = getentarray(self.target, "targetname");
   if(targets[0].model == "p7_zm_moo_crane_mining_body_vista") {
@@ -397,18 +319,9 @@ function digger_think_move() {
   self thread digger_arm_logic(arm, blade_center, tracks);
 }
 
-/*
-	Name: wait_for_digger_hack_digging
-	Namespace: zm_moon_digger
-	Checksum: 0x1D360F41
-	Offset: 0x20C8
-	Size: 0x10C
-	Parameters: 3
-	Flags: Linked
-*/
 function wait_for_digger_hack_digging(arm, blade_center, tracks) {
-  self endon(# "stop_monitor");
-  self waittill(# "digger_arm_raised");
+  self endon("stop_monitor");
+  self waittill("digger_arm_raised");
   exploder::delete_exploder_on_clients(self.var_575a869f);
   blade_center linkto(arm);
   arm linkto(self);
@@ -419,45 +332,27 @@ function wait_for_digger_hack_digging(arm, blade_center, tracks) {
   self thread digger_think_move();
 }
 
-/*
-	Name: wait_for_digger_hack_moving
-	Namespace: zm_moon_digger
-	Checksum: 0xF9479A4A
-	Offset: 0x21E0
-	Size: 0xBC
-	Parameters: 3
-	Flags: Linked
-*/
 function wait_for_digger_hack_moving(arm, blade_center, tracks) {
-  self endon(# "arm_lower");
+  self endon("arm_lower");
   while (true) {
-    level waittill(# "digger_hacked", digger_name);
+    level waittill("digger_hacked", digger_name);
     if(digger_name == self.digger_name) {
       level flag::clear(self.hacked_flag);
       level flag::clear(self.start_flag);
-      self notify(# "stop_monitor");
+      self notify("stop_monitor");
       self thread digger_think_move();
       break;
     }
   }
 }
 
-/*
-	Name: digger_arm_breach_logic
-	Namespace: zm_moon_digger
-	Checksum: 0xE11DABD9
-	Offset: 0x22A8
-	Size: 0x5B6
-	Parameters: 3
-	Flags: Linked
-*/
 function digger_arm_breach_logic(arm, blade_center, tracks) {
   self endon(self.hacked_flag);
   wait(8);
   if(level flag::get(self.hacked_flag)) {
     return;
   }
-  level notify(# "digger_arm_smash", self.digger_name, self.zones);
+  level notify("digger_arm_smash", self.digger_name, self.zones);
   switch (self.digger_name) {
     case "hangar": {
       exploder::exploder("fxexp_101");
@@ -499,7 +394,7 @@ function digger_arm_breach_logic(arm, blade_center, tracks) {
   } else {
     level flag::clear("both_tunnels_blocked");
   }
-  arm waittill(# "rotatedone");
+  arm waittill("rotatedone");
   arm playsound("evt_dig_arm_stop");
   blade_center unlink();
   switch (self.digger_name) {
@@ -524,15 +419,6 @@ function digger_arm_breach_logic(arm, blade_center, tracks) {
   self.arm_moving = undefined;
 }
 
-/*
-	Name: digger_arm_logic
-	Namespace: zm_moon_digger
-	Checksum: 0xC0A4936E
-	Offset: 0x2868
-	Size: 0x57A
-	Parameters: 3
-	Flags: Linked
-*/
 function digger_arm_logic(arm, blade_center, tracks) {
   arm clientfield::set("digger_arm_fx", 1);
   tracks clientfield::set("digger_moving", 1);
@@ -540,7 +426,7 @@ function digger_arm_logic(arm, blade_center, tracks) {
   exploder::exploder(self.var_575a869f);
   if(!level flag::get(self.hacked_flag)) {
     if(!(isdefined(self.arm_lowered) && self.arm_lowered)) {
-      self notify(# "arm_lower");
+      self notify("arm_lower");
       self.arm_lowered = 1;
       self.arm_moving = 1;
       arm unlink();
@@ -567,7 +453,7 @@ function digger_arm_logic(arm, blade_center, tracks) {
     arm playsound("evt_dig_arm_move");
     arm rotatepitch(self.up_angle, level.arm_move_speed, level.arm_move_speed / 4, level.arm_move_speed / 4);
     wait(2);
-    level notify(# "digger_arm_lift", self.digger_name);
+    level notify("digger_arm_lift", self.digger_name);
     switch (self.digger_name) {
       case "hangar": {
         exploder::stop_exploder("fxexp_101");
@@ -590,23 +476,14 @@ function digger_arm_logic(arm, blade_center, tracks) {
         break;
       }
     }
-    arm waittill(# "rotatedone");
+    arm waittill("rotatedone");
     arm linkto(self);
     arm playsound("evt_dig_arm_stop");
     self.arm_moving = undefined;
-    self notify(# "digger_arm_raised");
+    self notify("digger_arm_raised");
   }
 }
 
-/*
-	Name: digger_think_panel
-	Namespace: zm_moon_digger
-	Checksum: 0xDE988CB5
-	Offset: 0x2DF0
-	Size: 0x364
-	Parameters: 8
-	Flags: Linked
-*/
 function digger_think_panel(blocker_name, trig_name, start_flag, hacked_flag, hacked_before_breached_flag, breached_flag, blocker_func, digger_name) {
   if(isdefined(blocker_name)) {
     dmg_trig = getent(("digger_" + digger_name) + "_dmg", "targetname");
@@ -639,29 +516,20 @@ function digger_think_panel(blocker_name, trig_name, start_flag, hacked_flag, ha
   trig usetriggerrequirelookat();
   trig setcursorhint("HINT_NOICON");
   trig thread zm_equip_hacker::hide_hint_when_hackers_active();
-  trig sethintstring( & "ZM_MOON_NO_HACK");
+  trig sethintstring(&"ZM_MOON_NO_HACK");
   trig thread set_hint_on_digger_trig(start_flag, hacked_flag, struct);
 }
 
-/*
-	Name: set_hint_on_digger_trig
-	Namespace: zm_moon_digger
-	Checksum: 0xA77F8452
-	Offset: 0x3160
-	Size: 0x2A8
-	Parameters: 3
-	Flags: Linked
-*/
 function set_hint_on_digger_trig(start_flag, hacked_flag, struct) {
   while (true) {
     if(!level flag::get(start_flag)) {
       zm_equip_hacker::deregister_hackable_struct(struct);
-      self sethintstring( & "ZM_MOON_NO_HACK");
+      self sethintstring(&"ZM_MOON_NO_HACK");
     }
     level flag::wait_till(start_flag);
     if(!level flag::get(hacked_flag)) {
       zm_equip_hacker::register_pooled_hackable_struct(struct, & digger_hack_func, & digger_hack_qualifer);
-      self sethintstring( & "ZM_MOON_SYSTEM_ONLINE");
+      self sethintstring(&"ZM_MOON_SYSTEM_ONLINE");
       switch (struct.digger_name) {
         case "hangar": {
           level clientfield::set("HCA", 1);
@@ -679,7 +547,7 @@ function set_hint_on_digger_trig(start_flag, hacked_flag, struct) {
     }
     level flag::wait_till(hacked_flag);
     zm_equip_hacker::deregister_hackable_struct(struct);
-    self sethintstring( & "ZM_MOON_NO_HACK");
+    self sethintstring(&"ZM_MOON_NO_HACK");
     switch (struct.digger_name) {
       case "hangar": {
         level clientfield::set("HCA", 0);
@@ -699,15 +567,6 @@ function set_hint_on_digger_trig(start_flag, hacked_flag, struct) {
   }
 }
 
-/*
-	Name: digger_hack_func
-	Namespace: zm_moon_digger
-	Checksum: 0x38FE3E38
-	Offset: 0x3410
-	Size: 0x13A
-	Parameters: 1
-	Flags: Linked
-*/
 function digger_hack_func(hacker) {
   level thread send_clientnotify(self.digger_name, 1);
   hacker thread zm_audio::create_and_play_dialog("digger", "hacked");
@@ -718,37 +577,19 @@ function digger_hack_func(hacker) {
   }
   level notify(self.digger_name + "_vox_timer_stop");
   while (true) {
-    level waittill(# "digger_reached_end", digger_name);
+    level waittill("digger_reached_end", digger_name);
     if(digger_name == self.digger_name) {
       break;
     }
   }
-  level notify(# "digger_hacked", self.digger_name);
+  level notify("digger_hacked", self.digger_name);
 }
 
-/*
-	Name: delayed_computer_hacked_vox
-	Namespace: zm_moon_digger
-	Checksum: 0x120CA481
-	Offset: 0x3558
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function delayed_computer_hacked_vox(digger) {
   wait(4);
   level thread zm_moon_amb::play_mooncomp_vox("vox_mcomp_digger_hacked_", digger);
 }
 
-/*
-	Name: digger_hack_qualifer
-	Namespace: zm_moon_digger
-	Checksum: 0x65B20DB0
-	Offset: 0x3598
-	Size: 0x36
-	Parameters: 1
-	Flags: Linked
-*/
 function digger_hack_qualifer(player) {
   if(!level flag::get(self.hacked_flag)) {
     return true;
@@ -756,18 +597,9 @@ function digger_hack_qualifer(player) {
   return false;
 }
 
-/*
-	Name: digger_think_biodome
-	Namespace: zm_moon_digger
-	Checksum: 0x48D2987E
-	Offset: 0x35D8
-	Size: 0x14E
-	Parameters: 1
-	Flags: Linked
-*/
 function digger_think_biodome(digger_name) {
   while (true) {
-    level waittill(# "digger_arm_smash", name, zones);
+    level waittill("digger_arm_smash", name, zones);
     if(name == digger_name) {
       level flag::set("biodome_breached");
       level thread biodome_breach_fx();
@@ -784,15 +616,6 @@ function digger_think_biodome(digger_name) {
   }
 }
 
-/*
-	Name: biodome_breach_fx
-	Namespace: zm_moon_digger
-	Checksum: 0x5252F7
-	Offset: 0x3730
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function biodome_breach_fx() {
   util::clientnotify("BIO");
   level clientfield::set("BIO", 1);
@@ -800,24 +623,15 @@ function biodome_breach_fx() {
   exploder::delete_exploder_on_clients("fxexp_1100");
 }
 
-/*
-	Name: digger_think_blocker
-	Namespace: zm_moon_digger
-	Checksum: 0x6BFB6488
-	Offset: 0x37A8
-	Size: 0x1F2
-	Parameters: 3
-	Flags: Linked
-*/
 function digger_think_blocker(blocker, digger_name, dmg_trig) {
   dmg_trig triggerenable(0);
   dmg_trig thread digger_damage_player();
   level thread digger_think_blocker_remove(blocker, digger_name, dmg_trig);
   while (true) {
-    level waittill(# "digger_arm_smash", name, zones);
+    level waittill("digger_arm_smash", name, zones);
     if(name == digger_name) {
       blocker movez(-512, 0.05, 0.05);
-      blocker waittill(# "movedone");
+      blocker waittill("movedone");
       blocker disconnectpaths();
       blocker thread kill_anyone_touching_blocker();
       dmg_trig triggerenable(1);
@@ -833,18 +647,9 @@ function digger_think_blocker(blocker, digger_name, dmg_trig) {
   }
 }
 
-/*
-	Name: digger_damage_player
-	Namespace: zm_moon_digger
-	Checksum: 0xD8984F12
-	Offset: 0x39A8
-	Size: 0xE8
-	Parameters: 0
-	Flags: Linked
-*/
 function digger_damage_player() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(!zombie_utility::is_player_valid(player) && (!(isdefined(player._pushed) && player._pushed))) {
       continue;
     }
@@ -857,17 +662,8 @@ function digger_damage_player() {
   }
 }
 
-/*
-	Name: digger_push_player
-	Namespace: zm_moon_digger
-	Checksum: 0xDBC9C600
-	Offset: 0x3A98
-	Size: 0x24E
-	Parameters: 2
-	Flags: Linked
-*/
 function digger_push_player(trig, player) {
-  player endon(# "disconnect");
+  player endon("disconnect");
   player._pushed = 1;
   eye_org = trig.origin;
   foot_org = trig.origin;
@@ -891,17 +687,8 @@ function digger_push_player(trig, player) {
   player._pushed = undefined;
 }
 
-/*
-	Name: kill_anyone_touching_blocker
-	Namespace: zm_moon_digger
-	Checksum: 0x2AABFE7D
-	Offset: 0x3CF0
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function kill_anyone_touching_blocker() {
-  self endon(# "stop_check");
+  self endon("stop_check");
   while (true) {
     if(isdefined(self.trigger_off)) {
       wait(0.05);
@@ -926,30 +713,12 @@ function kill_anyone_touching_blocker() {
   }
 }
 
-/*
-	Name: player_digger_instant_kill
-	Namespace: zm_moon_digger
-	Checksum: 0xAD9177C9
-	Offset: 0x3E80
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function player_digger_instant_kill() {
   self thread zm_moon::insta_kill_player();
 }
 
-/*
-	Name: zombie_ragdoll_death
-	Namespace: zm_moon_digger
-	Checksum: 0x89BC86EF
-	Offset: 0x3EA8
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_ragdoll_death() {
-  self endon(# "death");
+  self endon("death");
   fwd = anglestoforward(zm_utility::flat_angle(self.angles));
   my_velocity = vectorscale(fwd, 200);
   my_velocity_with_lift = (my_velocity[0], my_velocity[1], 20);
@@ -958,38 +727,20 @@ function zombie_ragdoll_death() {
   self dodamage(self.health + 666, self.origin);
 }
 
-/*
-	Name: digger_think_blocker_remove
-	Namespace: zm_moon_digger
-	Checksum: 0xCAABADE4
-	Offset: 0x3F90
-	Size: 0xB8
-	Parameters: 3
-	Flags: Linked
-*/
 function digger_think_blocker_remove(blocker, digger_name, dmg_trig) {
   while (true) {
-    level waittill(# "digger_arm_lift", name);
+    level waittill("digger_arm_lift", name);
     if(name == digger_name) {
       blocker connectpaths();
       blocker movez(512, 0.05, 0.05);
       dmg_trig triggerenable(0);
-      blocker notify(# "stop_check");
+      blocker notify("stop_check");
     }
   }
 }
 
-/*
-	Name: diggers_think_no_mans_land
-	Namespace: zm_moon_digger
-	Checksum: 0x95AF6C82
-	Offset: 0x4050
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function diggers_think_no_mans_land() {
-  level endon(# "intermission");
+  level endon("intermission");
   diggers = getentarray("digger_body", "targetname");
   while (true) {
     level flag::wait_till("enter_nml");
@@ -999,15 +750,6 @@ function diggers_think_no_mans_land() {
   }
 }
 
-/*
-	Name: diggers_visible
-	Namespace: zm_moon_digger
-	Checksum: 0x680B595E
-	Offset: 0x4118
-	Size: 0x26C
-	Parameters: 1
-	Flags: Linked
-*/
 function diggers_visible(visible) {
   targets = getentarray(self.target, "targetname");
   if(targets[0].model == "p7_zm_moo_crane_mining_body_vista") {
@@ -1041,15 +783,6 @@ function diggers_visible(visible) {
   }
 }
 
-/*
-	Name: function_267c538a
-	Namespace: zm_moon_digger
-	Checksum: 0x18428E03
-	Offset: 0x4390
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_267c538a() {
   self show();
   foreach(player in level.players) {
@@ -1057,15 +790,6 @@ function function_267c538a() {
   }
 }
 
-/*
-	Name: play_timer_vox
-	Namespace: zm_moon_digger
-	Checksum: 0x73D95691
-	Offset: 0x4440
-	Size: 0x1FC
-	Parameters: 1
-	Flags: Linked
-*/
 function play_timer_vox(digger_name) {
   level endon(digger_name + "_vox_timer_stop");
   time_left = level.diggers_global_time;
@@ -1098,50 +822,23 @@ function play_timer_vox(digger_name) {
   }
 }
 
-/*
-	Name: get_correct_times
-	Namespace: zm_moon_digger
-	Checksum: 0x567022B8
-	Offset: 0x4648
-	Size: 0x5C
-	Parameters: 1
-	Flags: None
-*/
 function get_correct_times(digger) {
-  level endon(# "digger_arm_smash");
+  level endon("digger_arm_smash");
   for (i = 0; i < 500; i++) {
     iprintlnbold(i);
     wait(1);
   }
 }
 
-/*
-	Name: waitfor_smash
-	Namespace: zm_moon_digger
-	Checksum: 0x76EAAF47
-	Offset: 0x46B0
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function waitfor_smash() {
   while (true) {
-    level waittill(# "digger_arm_smash", digger, zones);
+    level waittill("digger_arm_smash", digger, zones);
     level thread play_delayed_breach_vox(digger);
     level thread switch_ambient_packages(digger);
     level thread player_breach_vox(zones);
   }
 }
 
-/*
-	Name: switch_ambient_packages
-	Namespace: zm_moon_digger
-	Checksum: 0x1D078ABB
-	Offset: 0x4738
-	Size: 0x1CE
-	Parameters: 1
-	Flags: Linked
-*/
 function switch_ambient_packages(digger) {
   switch (digger) {
     case "hangar": {
@@ -1171,15 +868,6 @@ function switch_ambient_packages(digger) {
   }
 }
 
-/*
-	Name: play_delayed_breach_vox
-	Namespace: zm_moon_digger
-	Checksum: 0xA942F213
-	Offset: 0x4910
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function play_delayed_breach_vox(digger) {
   if(!level.on_the_moon) {
     return;
@@ -1199,15 +887,6 @@ function play_delayed_breach_vox(digger) {
   level thread zm_moon_amb::play_mooncomp_vox("vox_mcomp_digger_breach_", digger);
 }
 
-/*
-	Name: player_breach_vox
-	Namespace: zm_moon_digger
-	Checksum: 0xC325DD22
-	Offset: 0x49D8
-	Size: 0x15A
-	Parameters: 1
-	Flags: Linked
-*/
 function player_breach_vox(zones) {
   players = getplayers();
   for (i = 0; i < zones.size; i++) {
@@ -1223,15 +902,6 @@ function player_breach_vox(zones) {
   }
 }
 
-/*
-	Name: link_vehicle_nodes
-	Namespace: zm_moon_digger
-	Checksum: 0xA2DEF36D
-	Offset: 0x4B40
-	Size: 0x11E
-	Parameters: 1
-	Flags: Linked
-*/
 function link_vehicle_nodes(start_node) {
   start_node.previous_node = undefined;
   linked_nodes = [];
@@ -1252,17 +922,7 @@ function link_vehicle_nodes(start_node) {
   return linked_nodes;
 }
 
-/*
-	Name: digger_debug_star
-	Namespace: zm_moon_digger
-	Checksum: 0x251B7996
-	Offset: 0x4C68
-	Size: 0x64
-	Parameters: 3
-	Flags: Linked
-*/
 function digger_debug_star(origin, color, time) {
-  /#
   if(!isdefined(time)) {
     time = 1000;
   }
@@ -1270,18 +930,8 @@ function digger_debug_star(origin, color, time) {
     color = (1, 1, 1);
   }
   debugstar(origin, time, color);
-  # /
 }
 
-/*
-	Name: digger_follow_path_calc_speed
-	Namespace: zm_moon_digger
-	Checksum: 0x69539A04
-	Offset: 0x4CD8
-	Size: 0x150
-	Parameters: 0
-	Flags: Linked
-*/
 function digger_follow_path_calc_speed() {
   path_start_node = getvehiclenode(self.target, "targetname");
   number_nodes = 0;
@@ -1300,15 +950,6 @@ function digger_follow_path_calc_speed() {
   self.digger_speed = self.path_length / level.diggers_global_time;
 }
 
-/*
-	Name: digger_follow_path_recalc_speed
-	Namespace: zm_moon_digger
-	Checksum: 0x6339CEEB
-	Offset: 0x4E30
-	Size: 0x17C
-	Parameters: 1
-	Flags: Linked
-*/
 function digger_follow_path_recalc_speed(path_start_node) {
   number_nodes = 0;
   self.path_length = 0;
@@ -1329,17 +970,7 @@ function digger_follow_path_recalc_speed(path_start_node) {
   self.digger_speed = self.path_length / time_left;
 }
 
-/*
-	Name: digger_debugger_counter
-	Namespace: zm_moon_digger
-	Checksum: 0x30DF0681
-	Offset: 0x4FB8
-	Size: 0x15C
-	Parameters: 1
-	Flags: Linked
-*/
 function digger_debugger_counter(time_to_help_them) {
-  /#
   elem = newhudelem();
   elem.hidewheninmenu = 1;
   elem.horzalign = "";
@@ -1356,18 +987,8 @@ function digger_debugger_counter(time_to_help_them) {
   elem settimer(time_to_help_them);
   wait(time_to_help_them + 3);
   elem destroy();
-  # /
 }
 
-/*
-	Name: digger_follow_path
-	Namespace: zm_moon_digger
-	Checksum: 0x6C83F305
-	Offset: 0x5120
-	Size: 0xD62
-	Parameters: 3
-	Flags: Linked
-*/
 function digger_follow_path(body, reverse, arm) {
   last_node = undefined;
   next_node_dir = undefined;
@@ -1528,19 +1149,10 @@ function digger_follow_path(body, reverse, arm) {
   exploder::delete_exploder_on_clients(body.var_3d838929);
   exploder::delete_exploder_on_clients(body.var_ebcc585f);
   level flag::clear("digger_moving");
-  level notify(# "digger_reached_end", body.digger_name);
-  self notify(# "path_end");
+  level notify("digger_reached_end", body.digger_name);
+  self notify("path_end");
 }
 
-/*
-	Name: quantum_bomb_remove_digger_validation
-	Namespace: zm_moon_digger
-	Checksum: 0x50E11624
-	Offset: 0x5E90
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function quantum_bomb_remove_digger_validation(position) {
   if(!level flag::get("both_tunnels_breached")) {
     return false;
@@ -1557,15 +1169,6 @@ function quantum_bomb_remove_digger_validation(position) {
   return false;
 }
 
-/*
-	Name: quantum_bomb_remove_digger_result
-	Namespace: zm_moon_digger
-	Checksum: 0x96540AB0
-	Offset: 0x5FA8
-	Size: 0x140
-	Parameters: 1
-	Flags: Linked
-*/
 function quantum_bomb_remove_digger_result(position) {
   range_squared = 360000;
   hangar_blocker = getent("digger_hangar_blocker", "targetname");

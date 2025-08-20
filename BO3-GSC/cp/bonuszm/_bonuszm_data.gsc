@@ -1,19 +1,13 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\bonuszm\_bonuszm_data.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\bonuszm\_bonuszm;
 #using scripts\cp\bonuszm\_bonuszm_spawner_shared;
-
 #namespace namespace_a432d965;
 
-/*
-	Name: function_dc036a7c
-	Namespace: namespace_a432d965
-	Checksum: 0xCA21C695
-	Offset: 0x5D8
-	Size: 0x9C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec function_dc036a7c() {
   if(!sessionmodeiscampaignzombiesgame()) {
     return;
@@ -24,15 +18,6 @@ function autoexec function_dc036a7c() {
   level.bzm_overridesuicidalchance = & bzm_overridesuicidalchance;
 }
 
-/*
-	Name: function_da5f2c0d
-	Namespace: namespace_a432d965
-	Checksum: 0x494BD8B7
-	Offset: 0x680
-	Size: 0xE34
-	Parameters: 2
-	Flags: Linked
-*/
 function function_da5f2c0d(mapname, checkpointname) {
   level.var_a9e78bf7 = undefined;
   if(!isdefined(level.var_a432d965)) {
@@ -58,19 +43,15 @@ function function_da5f2c0d(mapname, checkpointname) {
   }
   level.var_a9e78bf7 = [];
   if(!isdefined(var_6967e3b9)) {
-    /#
     level.var_5deb2d16 = 1;
-    # /
-      function_9a6a6726();
+    function_9a6a6726();
     function_97b4bacb(1, 0);
     function_4542e087();
     namespace_2396e2d7::function_fc1970dd();
     return;
   }
-  /#
   level.var_5deb2d16 = 0;
-  # /
-    level.var_a9e78bf7["skiptoname"] = var_454219da;
+  level.var_a9e78bf7["skiptoname"] = var_454219da;
   level.var_a9e78bf7["powerdropchance"] = getstructfield(level.var_a432d965, "powerdropchance");
   level.var_a9e78bf7["cybercoredropchance"] = getstructfield(level.var_a432d965, "cybercoredropchance");
   level.var_a9e78bf7["cybercoreupgradeddropchance"] = getstructfield(level.var_a432d965, "cybercoreupgradeddropchance");
@@ -142,15 +123,6 @@ function function_da5f2c0d(mapname, checkpointname) {
   }
 }
 
-/*
-	Name: function_9a6a6726
-	Namespace: namespace_a432d965
-	Checksum: 0xE2103E6
-	Offset: 0x14C0
-	Size: 0x1D6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9a6a6726() {
   if(!isdefined(level.var_a432d965)) {
     return;
@@ -169,15 +141,6 @@ function function_9a6a6726() {
   level.var_a9e78bf7["femaleSpawnChance"] = getstructfield(level.var_a432d965, "femaleSpawnChance");
 }
 
-/*
-	Name: function_97b4bacb
-	Namespace: namespace_a432d965
-	Checksum: 0xCA6321F4
-	Offset: 0x16A0
-	Size: 0xF86
-	Parameters: 2
-	Flags: Linked
-*/
 function function_97b4bacb(zombify, var_a621e856) {
   if(!isdefined(level.var_a9e78bf7["powerdropchance"])) {
     if(isdefined(level.var_a432d965)) {
@@ -439,79 +402,33 @@ function function_97b4bacb(zombify, var_a621e856) {
   }
 }
 
-/*
-	Name: function_15c7079
-	Namespace: namespace_a432d965
-	Checksum: 0x632909F
-	Offset: 0x2630
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function function_15c7079(index) {
   return ("skipto" + index) + "_";
 }
 
-/*
-	Name: function_4542e087
-	Namespace: namespace_a432d965
-	Checksum: 0x44553725
-	Offset: 0x2658
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_4542e087() {
   if(!level.var_a9e78bf7["zombifyenabled"]) {
     return;
   }
   total_percentage = (level.var_a9e78bf7["levelonezombies"] + level.var_a9e78bf7["leveltwozombies"]) + level.var_a9e78bf7["levelthreezombies"];
-  /#
   assert(total_percentage == 100, "" + level.var_a9e78bf7[""]);
-  # /
-    total_percentage = (level.var_a9e78bf7["walkpercent"] + level.var_a9e78bf7["runpercent"]) + level.var_a9e78bf7["sprintpercent"];
-  /#
+  total_percentage = (level.var_a9e78bf7["walkpercent"] + level.var_a9e78bf7["runpercent"]) + level.var_a9e78bf7["sprintpercent"];
   assert(total_percentage == 100, "" + level.var_a9e78bf7[""]);
-  # /
-    /#
   assert(level.var_a9e78bf7[""] < level.var_a9e78bf7[""], "");
-  # /
-    /#
   assert(level.var_a9e78bf7[""] < level.var_a9e78bf7[""], "");
-  # /
 }
 
-/*
-	Name: bzm_overridelocomotion
-	Namespace: namespace_a432d965
-	Checksum: 0xEE8DC0E0
-	Offset: 0x27F8
-	Size: 0xD2
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private bzm_overridelocomotion(var_68d35041, var_dbe80e3b, var_5a7ff9f0) {
   if(!level.var_a9e78bf7["zombifyenabled"]) {
     return;
   }
   total_percentage = (var_68d35041 + var_dbe80e3b) + var_5a7ff9f0;
-  /#
   assert(total_percentage == 100, "" + level.var_a9e78bf7[""]);
-  # /
-    level.var_a9e78bf7["walkpercent"] = var_68d35041;
+  level.var_a9e78bf7["walkpercent"] = var_68d35041;
   level.var_a9e78bf7["runpercent"] = var_dbe80e3b;
   level.var_a9e78bf7["sprintpercent"] = var_5a7ff9f0;
 }
 
-/*
-	Name: bzm_overridehealth
-	Namespace: namespace_a432d965
-	Checksum: 0x43FB351E
-	Offset: 0x28D8
-	Size: 0x7A
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private bzm_overridehealth(var_52292ab5, var_d3cfcdb3, var_dd13b525) {
   if(!level.var_a9e78bf7["zombifyenabled"]) {
     return;
@@ -521,15 +438,6 @@ function private bzm_overridehealth(var_52292ab5, var_d3cfcdb3, var_dd13b525) {
   level.var_a9e78bf7["levelthreehealth"] = var_dd13b525;
 }
 
-/*
-	Name: bzm_overridesuicidalchance
-	Namespace: namespace_a432d965
-	Checksum: 0x6139457D
-	Offset: 0x2960
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private bzm_overridesuicidalchance(chance) {
   if(!level.var_a9e78bf7["zombifyenabled"]) {
     return;
@@ -540,15 +448,6 @@ function private bzm_overridesuicidalchance(chance) {
   level.var_a9e78bf7["suicidalzombiechance"] = chance;
 }
 
-/*
-	Name: function_481f94
-	Namespace: namespace_a432d965
-	Checksum: 0xB3F5ED5
-	Offset: 0x29C0
-	Size: 0x52
-	Parameters: 1
-	Flags: Private
-*/
 function private function_481f94(chance) {
   if(!level.var_a9e78bf7["zombifyenabled"]) {
     return;

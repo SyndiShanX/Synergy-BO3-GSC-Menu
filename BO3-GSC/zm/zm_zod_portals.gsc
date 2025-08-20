@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_portals.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_death;
 #using scripts\shared\array_shared;
@@ -18,33 +22,13 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_zod_quest;
-
 #using_animtree("generic");
-
 #namespace zm_zod_portals;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_zod_portals
-	Checksum: 0xB683972A
-	Offset: 0x600
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_zod_portals", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_zod_portals
-	Checksum: 0x54A6FBBE
-	Offset: 0x640
-	Size: 0x294
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level._effect["portal_3p"] = "zombie/fx_quest_portal_trail_zod_zmb";
   n_bits = getminbitcountfornum(3);
@@ -62,15 +46,6 @@ function __init__() {
   visionset_mgr::register_info("overlay", "zm_zod_transported", 1, 20, 15, 1, & visionset_mgr::duration_lerp_thread_per_player, 0);
 }
 
-/*
-	Name: function_54ec766b
-	Namespace: zm_zod_portals
-	Checksum: 0x3B736B57
-	Offset: 0x8E0
-	Size: 0x2BC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_54ec766b(str_id) {
   width = 192;
   height = 128;
@@ -95,21 +70,12 @@ function function_54ec766b(str_id) {
   zm_unitrigger::register_static_unitrigger(s_loc.unitrigger_stub, & function_a90ab0d7);
 }
 
-/*
-	Name: function_16fca6d
-	Namespace: zm_zod_portals
-	Checksum: 0xE6446812
-	Offset: 0xBA8
-	Size: 0xF2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_16fca6d(player) {
-  level endon(# "ritual_pap_complete");
+  level endon("ritual_pap_complete");
   str_areaname = self.stub.str_areaname;
   var_8f5050e8 = level clientfield::get("portal_state_" + str_areaname);
   if(var_8f5050e8 !== 1 && (!(isdefined(player.beastmode) && player.beastmode))) {
-    self sethintstring( & "ZM_ZOD_PORTAL_OPEN");
+    self sethintstring(&"ZM_ZOD_PORTAL_OPEN");
     b_is_invis = 0;
   } else {
     b_is_invis = 1;
@@ -118,19 +84,10 @@ function function_16fca6d(player) {
   return !b_is_invis;
 }
 
-/*
-	Name: function_a90ab0d7
-	Namespace: zm_zod_portals
-	Checksum: 0x909F3271
-	Offset: 0xCA8
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a90ab0d7() {
-  level endon(# "ritual_pap_complete");
+  level endon("ritual_pap_complete");
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player zm_utility::in_revive_trigger()) {
       continue;
     }
@@ -145,15 +102,6 @@ function function_a90ab0d7() {
   }
 }
 
-/*
-	Name: function_42ed55f2
-	Namespace: zm_zod_portals
-	Checksum: 0xAC2689B9
-	Offset: 0xD60
-	Size: 0xE6
-	Parameters: 1
-	Flags: Linked
-*/
 function function_42ed55f2(str_areaname) {
   a_s_portal_locs = struct::get_array("teleport_effect_origin", "targetname");
   s_return_loc = undefined;
@@ -165,29 +113,11 @@ function function_42ed55f2(str_areaname) {
   return s_return_loc;
 }
 
-/*
-	Name: function_e0c93f92
-	Namespace: zm_zod_portals
-	Checksum: 0x69B35316
-	Offset: 0xE50
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e0c93f92(str_areaname) {
   level clientfield::set("portal_state_" + str_areaname, 1);
   portal_open(str_areaname);
 }
 
-/*
-	Name: portal_open
-	Namespace: zm_zod_portals
-	Checksum: 0x36C40FF2
-	Offset: 0xEA8
-	Size: 0x38C
-	Parameters: 2
-	Flags: Linked
-*/
 function portal_open(str_areaname, var_14429fc9 = 0) {
   if(var_14429fc9) {
     level clientfield::set("portal_state_" + str_areaname, 2);
@@ -217,15 +147,6 @@ function portal_open(str_areaname, var_14429fc9 = 0) {
   level flag::set("activate_underground");
 }
 
-/*
-	Name: return_district_name_from_string
-	Namespace: zm_zod_portals
-	Checksum: 0x8EA2C018
-	Offset: 0x1240
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked
-*/
 function return_district_name_from_string(str_input) {
   a_str_names = array("canal", "slums", "theater");
   foreach(str_name in a_str_names) {
@@ -235,19 +156,10 @@ function return_district_name_from_string(str_input) {
   }
 }
 
-/*
-	Name: portal_think
-	Namespace: zm_zod_portals
-	Checksum: 0x355A376
-	Offset: 0x1320
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function portal_think() {
   self.a_s_port_locs = struct::get_array(self.target, "targetname");
   while (true) {
-    self waittill(# "trigger", e_portee);
+    self waittill("trigger", e_portee);
     level clientfield::increment("pulse_" + self.script_noteworthy);
     if(isdefined(e_portee.teleporting) && e_portee.teleporting) {
       continue;
@@ -263,17 +175,8 @@ function portal_think() {
   }
 }
 
-/*
-	Name: portal_teleport_player
-	Namespace: zm_zod_portals
-	Checksum: 0x733F4314
-	Offset: 0x14A0
-	Size: 0x924
-	Parameters: 2
-	Flags: Linked
-*/
 function portal_teleport_player(player, show_fx = 1) {
-  player endon(# "disconnect");
+  player endon("disconnect");
   player.teleporting = 1;
   player.teleport_location = player.origin;
   if(show_fx) {
@@ -364,37 +267,19 @@ function portal_teleport_player(player, show_fx = 1) {
   player thread zm_audio::create_and_play_dialog("portal", "travel");
 }
 
-/*
-	Name: ai_delay_cleanup
-	Namespace: zm_zod_portals
-	Checksum: 0x7FFAFFFF
-	Offset: 0x1DD0
-	Size: 0x5E
-	Parameters: 0
-	Flags: Linked
-*/
 function ai_delay_cleanup() {
   if(!(isdefined(self.b_ignore_cleanup) && self.b_ignore_cleanup)) {
-    self notify(# "delay_cleanup");
-    self endon(# "death");
-    self endon(# "delay_cleanup");
+    self notify("delay_cleanup");
+    self endon("death");
+    self endon("delay_cleanup");
     self.b_ignore_cleanup = 1;
     wait(10);
     self.b_ignore_cleanup = undefined;
   }
 }
 
-/*
-	Name: portal_teleport_ai
-	Namespace: zm_zod_portals
-	Checksum: 0xEFF1321
-	Offset: 0x1E38
-	Size: 0x2C4
-	Parameters: 1
-	Flags: Linked
-*/
 function portal_teleport_ai(e_portee) {
-  e_portee endon(# "death");
+  e_portee endon("death");
   e_portee.teleporting = 1;
   e_portee pathmode("dont move");
   playfx(level._effect["portal_3p"], e_portee.origin);

@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_teargrenades.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_util;
 #using scripts\cp\gametypes\_perplayer;
 #using scripts\shared\util_shared;
-
 #namespace _teargrenades;
 
-/*
-	Name: main
-	Namespace: _teargrenades
-	Checksum: 0x5499B84F
-	Offset: 0x138
-	Size: 0xA4
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   level.tearradius = 170;
   level.tearheight = 128;
@@ -26,43 +20,16 @@ function main() {
   perplayer::enable(fgmonitor);
 }
 
-/*
-	Name: startmonitoringtearusage
-	Namespace: _teargrenades
-	Checksum: 0x503985BF
-	Offset: 0x1E8
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function startmonitoringtearusage() {
   self thread monitortearusage();
 }
 
-/*
-	Name: stopmonitoringtearusage
-	Namespace: _teargrenades
-	Checksum: 0xAEE3C42C
-	Offset: 0x210
-	Size: 0x1A
-	Parameters: 1
-	Flags: None
-*/
 function stopmonitoringtearusage(disconnected) {
-  self notify(# "stop_monitoring_tear_usage");
+  self notify("stop_monitoring_tear_usage");
 }
 
-/*
-	Name: monitortearusage
-	Namespace: _teargrenades
-	Checksum: 0xD2559B5E
-	Offset: 0x238
-	Size: 0x274
-	Parameters: 0
-	Flags: None
-*/
 function monitortearusage() {
-  self endon(# "stop_monitoring_tear_usage");
+  self endon("stop_monitoring_tear_usage");
   wait(0.05);
   weapon = getweapon("tear_grenade");
   if(!self hasweapon(weapon)) {
@@ -73,63 +40,43 @@ function monitortearusage() {
     ammo = self getammocount(weapon);
     if(ammo < prevammo) {
       num = prevammo - ammo;
-      /#
-      # /
-        for (i = 0; i < num; i++) {
-          grenades = getentarray("grenade", "classname");
-          bestdist = undefined;
-          bestg = undefined;
-          for (g = 0; g < grenades.size; g++) {
-            if(!isdefined(grenades[g].teargrenade)) {
-              dist = distance(grenades[g].origin, self.origin + vectorscale((0, 0, 1), 48));
-              if(!isdefined(bestdist) || dist < bestdist) {
-                bestdist = dist;
-                bestg = g;
-              }
+      for (i = 0; i < num; i++) {
+        grenades = getentarray("grenade", "classname");
+        bestdist = undefined;
+        bestg = undefined;
+        for (g = 0; g < grenades.size; g++) {
+          if(!isdefined(grenades[g].teargrenade)) {
+            dist = distance(grenades[g].origin, self.origin + vectorscale((0, 0, 1), 48));
+            if(!isdefined(bestdist) || dist < bestdist) {
+              bestdist = dist;
+              bestg = g;
             }
           }
-          if(isdefined(bestdist)) {
-            grenades[bestg].teargrenade = 1;
-            grenades[bestg] thread teargrenade_think(self.team);
-          }
         }
+        if(isdefined(bestdist)) {
+          grenades[bestg].teargrenade = 1;
+          grenades[bestg] thread teargrenade_think(self.team);
+        }
+      }
     }
     prevammo = ammo;
     wait(0.05);
   }
 }
 
-/*
-	Name: teargrenade_think
-	Namespace: _teargrenades
-	Checksum: 0xABA8AB64
-	Offset: 0x4B8
-	Size: 0x4C
-	Parameters: 1
-	Flags: None
-*/
 function teargrenade_think(team) {
   wait(level.teargrenadetimer);
   ent = spawnstruct();
   ent thread tear(self.origin);
 }
 
-/*
-	Name: tear
-	Namespace: _teargrenades
-	Checksum: 0x160B98FA
-	Offset: 0x510
-	Size: 0x228
-	Parameters: 1
-	Flags: None
-*/
 function tear(pos) {
   trig = spawn("trigger_radius", pos, 0, level.tearradius, level.tearheight);
   starttime = gettime();
   self thread teartimer();
-  self endon(# "tear_timeout");
+  self endon("tear_timeout");
   while (true) {
-    trig waittill(# "trigger", player);
+    trig waittill("trigger", player);
     if(player.sessionstate != "playing") {
       continue;
     }
@@ -155,32 +102,14 @@ function tear(pos) {
   }
 }
 
-/*
-	Name: teartimer
-	Namespace: _teargrenades
-	Checksum: 0x419F689A
-	Offset: 0x740
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function teartimer() {
   wait(level.teargasduration);
-  self notify(# "tear_timeout");
+  self notify("tear_timeout");
 }
 
-/*
-	Name: teargassuffering
-	Namespace: _teargrenades
-	Checksum: 0x60985C87
-	Offset: 0x768
-	Size: 0xD6
-	Parameters: 0
-	Flags: None
-*/
 function teargassuffering() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self.teargassuffering = 1;
   if(self util::mayapplyscreeneffect()) {
     self shellshock("teargas", 60);
@@ -197,17 +126,7 @@ function teargassuffering() {
   }
 }
 
-/*
-	Name: drawcylinder
-	Namespace: _teargrenades
-	Checksum: 0xEC7D4004
-	Offset: 0x848
-	Size: 0x2EC
-	Parameters: 3
-	Flags: None
-*/
 function drawcylinder(pos, rad, height) {
-  /#
   time = 0;
   while (true) {
     currad = rad;
@@ -229,5 +148,4 @@ function drawcylinder(pos, rad, height) {
     }
     wait(0.05);
   }
-  # /
 }

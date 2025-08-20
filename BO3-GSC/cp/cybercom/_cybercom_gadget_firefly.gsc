@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_gadget_firefly.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_achievements;
 #using scripts\cp\cybercom\_cybercom;
@@ -19,20 +23,9 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_shared;
-
 #using_animtree("generic");
-
 #namespace cybercom_gadget_firefly;
 
-/*
-	Name: init
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xD697869
-	Offset: 0x8B0
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("vehicle", "firefly_state", 1, 4, "int");
   clientfield::register("actor", "firefly_state", 1, 4, "int");
@@ -40,15 +33,6 @@ function init() {
   scene::add_scene_func("p7_fxanim_gp_ability_firebug_launch_bundle", & on_scene_firefly_launch, "play");
 }
 
-/*
-	Name: main
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xF97F2A90
-	Offset: 0x980
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   cybercom_gadget::registerability(2, 8, 1);
   level.cybercom.firefly_swarm = spawnstruct();
@@ -62,37 +46,10 @@ function main() {
   level.cybercom.firefly_swarm._is_primed = & _is_primed;
 }
 
-/*
-	Name: _is_flickering
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xADC32B30
-	Offset: 0xB10
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function _is_flickering(slot) {}
 
-/*
-	Name: _on_flicker
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x5F7CE284
-	Offset: 0xB28
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_flicker(slot, weapon) {}
 
-/*
-	Name: _on_give
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xD8EA36DE
-	Offset: 0xB48
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_give(slot, weapon) {
   self.cybercom.targetlockcb = & _get_valid_targets;
   self.cybercom.targetlockrequirementcb = & _lock_requirement;
@@ -102,41 +59,14 @@ function _on_give(slot, weapon) {
   self cybercom::function_8257bcb3("riotshield", 2);
 }
 
-/*
-	Name: _on_take
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xAFACF266
-	Offset: 0xC20
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_take(slot, weapon) {}
 
-/*
-	Name: _on_connect
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x99EC1590
-	Offset: 0xC40
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function _on_connect() {}
 
-/*
-	Name: _on
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x2F1D4256
-	Offset: 0xC50
-	Size: 0xF4
-	Parameters: 2
-	Flags: Linked
-*/
 function _on(slot, weapon) {
   cybercom::function_adc40f11(weapon, 1);
   self thread spawn_firefly_swarm(self hascybercomability("cybercom_fireflyswarm") == 2);
-  self notify(# "bhtn_action_notify", "firefly_deploy");
+  self notify("bhtn_action_notify", "firefly_deploy");
   if(isplayer(self)) {
     itemindex = getitemindexfromref("cybercom_fireflyswarm");
     if(isdefined(itemindex)) {
@@ -145,39 +75,12 @@ function _on(slot, weapon) {
   }
 }
 
-/*
-	Name: _off
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xC9F26572
-	Offset: 0xD50
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _off(slot, weapon) {}
 
-/*
-	Name: _is_primed
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x36B4B19
-	Offset: 0xD70
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _is_primed(slot, weapon) {}
 
-/*
-	Name: ai_activatefireflyswarm
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x6E6BEBCE
-	Offset: 0xD90
-	Size: 0x2DC
-	Parameters: 3
-	Flags: Linked
-*/
 function ai_activatefireflyswarm(target, var_9bc2efcb = 1, upgraded = 1) {
-  self endon(# "death");
+  self endon("death");
   if(self.archetype != "human") {
     return;
   }
@@ -186,7 +89,7 @@ function ai_activatefireflyswarm(target, var_9bc2efcb = 1, upgraded = 1) {
     self orientmode("face default");
     self animscripted("ai_cybercom_anim", self.origin, self.angles, ("ai_base_rifle_" + type) + "_exposed_cybercom_activate");
     self playsound("gdt_firefly_activate_npc");
-    self waittillmatch(# "ai_cybercom_anim");
+    self waittillmatch("ai_cybercom_anim");
   }
   if(isarray(target)) {
     foreach(guy in target) {
@@ -204,18 +107,9 @@ function ai_activatefireflyswarm(target, var_9bc2efcb = 1, upgraded = 1) {
   }
 }
 
-/*
-	Name: on_scene_firefly_launch
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xF5D479F6
-	Offset: 0x1078
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function on_scene_firefly_launch(a_ents) {
   anim_model = a_ents["ability_firefly_launch"];
-  anim_model waittill(# "firefly_launch_vehicle");
+  anim_model waittill("firefly_launch_vehicle");
   if(isdefined(anim_model)) {
     origin = anim_model gettagorigin("tag_fx_01_end_jnt");
     angles = anim_model gettagangles("tag_fx_01_end_jnt");
@@ -228,19 +122,10 @@ function on_scene_firefly_launch(a_ents) {
     if(!isdefined(angles)) {
       angles = self.owner.angles;
     }
-    self.owner notify(# "firefly_intro_done", origin, angles);
+    self.owner notify("firefly_intro_done", origin, angles);
   }
 }
 
-/*
-	Name: initthreatbias
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x71A2327F
-	Offset: 0x11A0
-	Size: 0xD2
-	Parameters: 0
-	Flags: Linked
-*/
 function initthreatbias() {
   aiarray = getaiarray();
   foreach(ai in aiarray) {
@@ -253,17 +138,8 @@ function initthreatbias() {
   }
 }
 
-/*
-	Name: spawn_firefly_swarm
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xFA7BC0BE
-	Offset: 0x1280
-	Size: 0x968
-	Parameters: 4
-	Flags: Linked
-*/
 function spawn_firefly_swarm(upgraded, targetent, swarms = getdvarint("scr_firefly_swarm_count", 3), swarmsplits = getdvarint("scr_firefly_swarm_split_count", 0)) {
-  self endon(# "death");
+  self endon("death");
   lifetime = getdvarint("scr_firefly_swarm_lifetime", 14);
   splitsleft = swarmsplits;
   offspring = 0;
@@ -290,12 +166,12 @@ function spawn_firefly_swarm(upgraded, targetent, swarms = getdvarint("scr_firef
       if(upgraded) {
         if(sessionmodeiscampaignzombiesgame() && isworldpaused()) {} else {
           s_anim_pos thread scene::play("p7_fxanim_gp_ability_firebug_launch_bundle");
-          self waittill(# "firefly_intro_done", origin, angles);
+          self waittill("firefly_intro_done", origin, angles);
         }
       } else {
         if(sessionmodeiscampaignzombiesgame() && isworldpaused()) {} else {
           s_anim_pos thread scene::play("p7_fxanim_gp_ability_firefly_launch_bundle");
-          self waittill(# "firefly_intro_done", origin, angles);
+          self waittill("firefly_intro_done", origin, angles);
         }
       }
     } else {
@@ -358,23 +234,14 @@ function spawn_firefly_swarm(upgraded, targetent, swarms = getdvarint("scr_firef
       swarm.state_machine statemachine::set_state("init");
       targetent = undefined;
     }
-    level notify(# "cybercom_swarm_released", swarm);
+    level notify("cybercom_swarm_released", swarm);
     level.cybercom.swarms_released = level.cybercom.swarms_released + 1;
     level.cybercom.var_12f85dec++;
   }
 }
 
-/*
-	Name: function_54bc061f
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x154F396E
-	Offset: 0x1BF0
-	Size: 0xE8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_54bc061f() {
-  self endon(# "death");
+  self endon("death");
   wait(0.1);
   for (;;) {
     self setspeed(self.settings.defaultmovespeed);
@@ -393,40 +260,22 @@ function function_54bc061f() {
   }
 }
 
-/*
-	Name: path_update_interrupt
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x70CC82BA
-	Offset: 0x1CE0
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function path_update_interrupt() {
-  self endon(# "death");
-  self endon(# "near_goal");
-  self endon(# "reached_end_node");
+  self endon("death");
+  self endon("near_goal");
+  self endon("reached_end_node");
   wait(1);
   while (true) {
     if(isdefined(self.current_pathto_pos)) {
       if(distance2dsquared(self.current_pathto_pos, self.goalpos) > (self.goalradius * self.goalradius)) {
         wait(0.2);
-        self notify(# "near_goal");
+        self notify("near_goal");
       }
     }
     wait(0.2);
   }
 }
 
-/*
-	Name: getnextmoveposition_tactical
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x104AC3E7
-	Offset: 0x1D88
-	Size: 0x316
-	Parameters: 0
-	Flags: Linked
-*/
 function getnextmoveposition_tactical() {
   if(self.goalforced) {
     goalpos = self getclosestpointonnavvolume(self.goalpos, 100);
@@ -449,13 +298,11 @@ function getnextmoveposition_tactical() {
     randomscore = randomfloatrange(0, 100);
     disttooriginscore = point.disttoorigin2d * 0.2;
     point.score = point.score + (randomscore + disttooriginscore);
-    /#
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = disttooriginscore;
-    # /
-      point.score = point.score + disttooriginscore;
+    point.score = point.score + disttooriginscore;
     if(point.score > best_score) {
       best_score = point.score;
       best_point = point;
@@ -468,15 +315,6 @@ function getnextmoveposition_tactical() {
   return best_point.origin;
 }
 
-/*
-	Name: swarm_state_cleanup
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xF691E8F5
-	Offset: 0x20A8
-	Size: 0x46
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_state_cleanup(params) {
   if(isdefined(self.badplace)) {
     badplace_delete("swarmBP_" + self.swarm_id);
@@ -484,28 +322,10 @@ function swarm_state_cleanup(params) {
   }
 }
 
-/*
-	Name: swarm_state_enter
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x7C4ABDD6
-	Offset: 0x20F8
-	Size: 0x14
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_state_enter(params) {
   wait(0.05);
 }
 
-/*
-	Name: getenemyteam
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xC9FC7B5D
-	Offset: 0x2118
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked
-*/
 function getenemyteam() {
   if(self.team === "axis") {
     return "allies";
@@ -513,21 +333,12 @@ function getenemyteam() {
   return "axis";
 }
 
-/*
-	Name: swarm_init
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xE27D6667
-	Offset: 0x2150
-	Size: 0x634
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_init(params) {
   self setmodel("tag_origin");
   self notsolid();
   self.notsolid = 1;
   self.vehaircraftcollisionenabled = 0;
-  self notify(# "end_nudge_collision");
+  self notify("end_nudge_collision");
   self.ignoreall = 1;
   self.takedamage = 0;
   self.goalradius = 36;
@@ -595,18 +406,9 @@ function swarm_init(params) {
   }
 }
 
-/*
-	Name: swarm_split_monitor
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x9631C0F9
-	Offset: 0x2790
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function swarm_split_monitor() {
-  self endon(# "swarm_is_dead");
-  self endon(# "death");
+  self endon("swarm_is_dead");
+  self endon("death");
   wait(3);
   while (self.splitsleft > 0) {
     wait(0.5);
@@ -618,15 +420,6 @@ function swarm_split_monitor() {
   }
 }
 
-/*
-	Name: swarm_attackhumantarget
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x27B62359
-	Offset: 0x2838
-	Size: 0x350
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_attackhumantarget(target) {
   reactionanims = [];
   base = "base_rifle";
@@ -650,7 +443,7 @@ function swarm_attackhumantarget(target) {
     self.firebugcount--;
     reactionanims["intro"] = (((("ai_" + base) + "_") + type) + "_exposed_swarm_upg_react_intro") + variant;
     target thread _firebombtarget(self, reactionanims, getweapon("gadget_firefly_swarm_upgraded"));
-    target notify(# "bhtn_action_notify", "fireflyAttack");
+    target notify("bhtn_action_notify", "fireflyAttack");
     target clientfield::set("firefly_state", 9);
   } else {
     if(target.archetype === "human") {
@@ -661,28 +454,16 @@ function swarm_attackhumantarget(target) {
     }
     target clientfield::set("firefly_state", 4);
     target thread _reacttoswarm(self, reactionanims, getweapon("gadget_firefly_swarm"));
-    target notify(# "bhtn_action_notify", "fireflyAttack");
+    target notify("bhtn_action_notify", "fireflyAttack");
   }
-  self waittill(# "attack_stopped");
+  self waittill("attack_stopped");
 }
 
-/*
-	Name: swarm_attackzombietarget
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xCD248B28
-	Offset: 0x2B90
-	Size: 0x164
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_attackzombietarget(target) {
-  /#
   assert(isdefined(target));
-  # /
-    if(!self.firebugcount) {
-      target clientfield::set("firefly_state", 4);
-    }
-  else {
+  if(!self.firebugcount) {
+    target clientfield::set("firefly_state", 4);
+  } else {
     target clientfield::set("firefly_state", 9);
   }
   if(self.firebugcount > 0) {
@@ -700,23 +481,11 @@ function swarm_attackzombietarget(target) {
   }
 }
 
-/*
-	Name: function_cb5f9a2
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xCBD5A040
-	Offset: 0x2D00
-	Size: 0x1F0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cb5f9a2(target) {
-  /#
   assert(isdefined(target));
-  # /
-    if(!self.firebugcount) {
-      target clientfield::set("firefly_state", 4);
-    }
-  else {
+  if(!self.firebugcount) {
+    target clientfield::set("firefly_state", 4);
+  } else {
     target clientfield::set("firefly_state", 9);
   }
   self thread swarm_monitortargetdeath(target);
@@ -725,25 +494,16 @@ function function_cb5f9a2(target) {
   if(self.firebugcount > 0 && target.health <= getdvarint("scr_firefly_swarm_warlord_hitpoint_allowed_thresh", 400)) {
     self.firebugcount--;
     target thread _firebombtarget(self, reactionanims, getweapon("gadget_firefly_swarm_upgraded"));
-    target notify(# "bhtn_action_notify", "fireflyAttack");
+    target notify("bhtn_action_notify", "fireflyAttack");
     target clientfield::set("firefly_state", 9);
   } else {
     target clientfield::set("firefly_state", 4);
     target thread _reacttoswarm(self, reactionanims, getweapon("gadget_firefly_swarm"));
-    target notify(# "bhtn_action_notify", "fireflyAttack");
+    target notify("bhtn_action_notify", "fireflyAttack");
   }
-  self waittill(# "attack_stopped");
+  self waittill("attack_stopped");
 }
 
-/*
-	Name: swarm_attackplayertarget
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x6169CE67
-	Offset: 0x2EF8
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_attackplayertarget(target) {
   self thread fireflyplayereffect(target);
   if(isdefined(self.owner)) {
@@ -754,18 +514,9 @@ function swarm_attackplayertarget(target) {
   target dodamage(getdvarint("scr_swarm_player_damage", 50), target.origin, attacker, self, "none", "MOD_UNKNOWN", 0, getweapon("gadget_firefly_swarm_upgraded"));
 }
 
-/*
-	Name: swarm_attack_think
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xF45241EF
-	Offset: 0x2FC0
-	Size: 0x39C
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_attack_think(params) {
-  self endon(# "swarm_is_dead");
-  self endon(# "death");
+  self endon("swarm_is_dead");
+  self endon("death");
   self.debug.attack++;
   self clientfield::set("firefly_state", 1);
   target = self.targetent;
@@ -774,7 +525,7 @@ function swarm_attack_think(params) {
     self.state_machine statemachine::set_state("main");
     return;
   }
-  target notify(# "hash_f8c5dd60", getweapon("gadget_firefly_swarm"), self.owner);
+  target notify("hash_f8c5dd60", getweapon("gadget_firefly_swarm"), self.owner);
   if(!self.firebugcount) {
     target clientfield::set("firefly_state", 4);
   } else {
@@ -804,79 +555,43 @@ function swarm_attack_think(params) {
   self.debug.attack--;
 }
 
-/*
-	Name: swarm_monitortargetdeath
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xCCF3C95B
-	Offset: 0x3368
-	Size: 0x3E
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_monitortargetdeath(target) {
-  self endon(# "death");
-  self endon(# "attack_stopped");
-  target waittill(# "death");
-  self notify(# "attack_stopped");
+  self endon("death");
+  self endon("attack_stopped");
+  target waittill("death");
+  self notify("attack_stopped");
 }
 
-/*
-	Name: _firebombtargetpain
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x96299D04
-	Offset: 0x33B0
-	Size: 0xBA
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _firebombtargetpain(swarm, reactionanims, weapon) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(swarm)) {
     self dodamage(5, self.origin, swarm.owner, swarm, "none", "MOD_BURNED", 0, weapon, -1, 1);
   }
   if(!self cybercom::function_421746e0()) {
-    self waittillmatch(# "bhtn_action_terminate");
+    self waittillmatch("bhtn_action_terminate");
   }
-  self notify(# "firebug_time_to_die", "specialpain");
+  self notify("firebug_time_to_die", "specialpain");
 }
 
-/*
-	Name: _firebombtargetcorpselistener
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x6A605B37
-	Offset: 0x3478
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private _firebombtargetcorpselistener() {
-  self waittill(# "actor_corpse", corpse);
+  self waittill("actor_corpse", corpse);
   corpse clientfield::set("arch_actor_fire_fx", 2);
 }
 
-/*
-	Name: _firebombtarget
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xDEC40CA7
-	Offset: 0x34C0
-	Size: 0x344
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _firebombtarget(swarm, reactionanims, weapon) {
-  self endon(# "death");
+  self endon("death");
   self.ignoreall = 1;
   self.is_disabled = 1;
   var_c318824b = 0;
-  self notify(# "hash_37486b44", swarm);
-  level notify(# "hash_37486b44", self, swarm);
+  self notify("hash_37486b44", swarm);
+  level notify("hash_37486b44", self, swarm);
   if(self cybercom::islinked()) {
     self unlink();
     var_c318824b = 1;
   }
   if(!(isdefined(var_c318824b) && var_c318824b) && isdefined(reactionanims["intro"])) {
     self animscripted("swarm_intro_anim", self.origin, self.angles, reactionanims["intro"]);
-    self waittillmatch(# "swarm_intro_anim");
+    self waittillmatch("swarm_intro_anim");
   }
   self clientfield::set("arch_actor_fire_fx", 1);
   self thread _firebombtargetcorpselistener();
@@ -886,11 +601,11 @@ function private _firebombtarget(swarm, reactionanims, weapon) {
   }
   self clientfield::set("firefly_state", 10);
   if(isdefined(swarm)) {
-    swarm notify(# "attack_stopped", "end");
+    swarm notify("attack_stopped", "end");
     if(isdefined(self.voiceprefix) && isdefined(self.bcvoicenumber)) {
       self thread battlechatter::do_sound((self.voiceprefix + self.bcvoicenumber) + "_exert_firefly_burning", 1);
     }
-    swarm.owner notify(# "hash_304642e3");
+    swarm.owner notify("hash_304642e3");
     self dodamage(self.health, self.origin, swarm.owner, swarm, "none", "MOD_BURNED", 0, weapon, -1, 1);
   } else {
     if(isdefined(self.voiceprefix) && isdefined(self.bcvoicenumber)) {
@@ -900,15 +615,6 @@ function private _firebombtarget(swarm, reactionanims, weapon) {
   }
 }
 
-/*
-	Name: _deathlistener
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x188338F0
-	Offset: 0x3810
-	Size: 0x72
-	Parameters: 1
-	Flags: Private
-*/
 function private _deathlistener(swarm) {
   while (isdefined(swarm)) {
     self util::waittill_any_timeout(1, "damage");
@@ -919,32 +625,14 @@ function private _deathlistener(swarm) {
   }
 }
 
-/*
-	Name: _corpsewatcher
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x88C1F5D2
-	Offset: 0x3890
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _corpsewatcher(swarm) {
-  swarm endon(# "death");
-  self waittill(# "actor_corpse", corpse);
+  swarm endon("death");
+  self waittill("actor_corpse", corpse);
   corpse clientfield::set("firefly_state", 10);
 }
 
-/*
-	Name: function_963f8ef6
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xA54D7D0A
-	Offset: 0x38F0
-	Size: 0xB4
-	Parameters: 4
-	Flags: None
-*/
 function function_963f8ef6(match, note, var_1ccbc268, end) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(end)) {
     self endon(end);
     while (true) {
@@ -965,28 +653,19 @@ function function_963f8ef6(match, note, var_1ccbc268, end) {
   }
 }
 
-/*
-	Name: _reacttoswarm
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xA0B31D42
-	Offset: 0x39B0
-	Size: 0x46C
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _reacttoswarm(swarm, reactionanims, weapon) {
-  self endon(# "death");
+  self endon("death");
   self thread _corpsewatcher(swarm);
   oldaware = self.badplaceawareness;
   self.badplaceawareness = 0.1;
   self.is_disabled = 1;
   self orientmode("face point", swarm.origin);
-  self notify(# "hash_4457f945", swarm);
-  level notify(# "hash_4457f945", self, swarm);
+  self notify("hash_4457f945", swarm);
+  level notify("hash_4457f945", self, swarm);
   if(self cybercom::function_421746e0()) {
     self kill(self.origin, (isdefined(swarm.owner) ? swarm.owner : undefined));
     if(isdefined(swarm)) {
-      swarm notify(# "attack_stopped");
+      swarm notify("attack_stopped");
     }
     return;
   }
@@ -996,16 +675,16 @@ function private _reacttoswarm(swarm, reactionanims, weapon) {
   if(isdefined(reactionanims["intro"])) {
     self animscripted("swarm_intro_anim", self.origin, self.angles, reactionanims["intro"]);
     self thread cybercom::stopanimscriptedonnotify("damage", "swarm_intro_anim");
-    self waittillmatch(# "swarm_intro_anim");
+    self waittillmatch("swarm_intro_anim");
   }
   attack = 1;
   while (attack && isdefined(swarm)) {
     self dodamage(5, self.origin, swarm.owner, swarm, "none", "MOD_UNKNOWN", 0, weapon, -1, 1);
     wait(0.05);
-    self waittillmatch(# "bhtn_action_terminate");
+    self waittillmatch("bhtn_action_terminate");
     attack = isdefined(swarm) && (!(isdefined(swarm.dying_out) && swarm.dying_out)) && (distancesquared(self.origin + vectorscale((0, 0, 1), 48), swarm.origin)) < (getdvarint("scr_firefly_swarm_attack_radius", 110) * getdvarint("scr_firefly_swarm_attack_radius", 110)) && isalive(self);
   }
-  self notify(# "attack_stopped", "specialpain", "end");
+  self notify("attack_stopped", "specialpain", "end");
   if(isalive(self) && !self isragdoll()) {
     self clientfield::set("firefly_state", 5);
     self.badplaceawareness = oldaware;
@@ -1014,27 +693,18 @@ function private _reacttoswarm(swarm, reactionanims, weapon) {
     if(isdefined(reactionanims["outro"])) {
       self animscripted("swarm_outro_anim", self.origin, self.angles, reactionanims["outro"]);
       self thread cybercom::stopanimscriptedonnotify("damage", "swarm_outro_anim");
-      self waittillmatch(# "swarm_outro_anim");
+      self waittillmatch("swarm_outro_anim");
     }
     self.is_disabled = undefined;
   }
   if(isdefined(swarm)) {
-    swarm notify(# "attack_stopped", "end");
+    swarm notify("attack_stopped", "end");
   }
 }
 
-/*
-	Name: swarm_delete
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xBFE99AD4
-	Offset: 0x3E28
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function swarm_delete() {
   if(isdefined(self)) {
-    self notify(# "swarm_is_dead");
+    self notify("swarm_is_dead");
     if(isdefined(self.targetent) && !isplayer(self.targetent)) {
       self.targetent clientfield::set("firefly_state", 5);
       self.targetent.swarm = undefined;
@@ -1047,17 +717,8 @@ function swarm_delete() {
   }
 }
 
-/*
-	Name: swarm_death_wait
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x1815D5B3
-	Offset: 0x3F18
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function swarm_death_wait() {
-  self endon(# "death");
+  self endon("death");
   while (gettime() < self.lifetime) {
     wait(1);
   }
@@ -1066,18 +727,9 @@ function swarm_death_wait() {
   self swarm_delete();
 }
 
-/*
-	Name: swarm_dead_think
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x401B90A4
-	Offset: 0x3F70
-	Size: 0x15C
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_dead_think(params) {
-  self notify(# "swarm_is_dead");
-  self endon(# "death");
+  self notify("swarm_is_dead");
+  self endon("death");
   self clearforcedgoal();
   if(!self.firebugcount) {
     self clientfield::set("firefly_state", 5);
@@ -1091,24 +743,15 @@ function swarm_dead_think(params) {
   }
   self vehicle::toggle_sounds(0);
   if(isdefined(self.owner)) {
-    self.owner notify(# "bhtn_action_notify", "firefly_end");
+    self.owner notify("bhtn_action_notify", "firefly_end");
   }
   wait(3);
   self swarm_delete();
 }
 
-/*
-	Name: swarm_main_think
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x1E0A005D
-	Offset: 0x40D8
-	Size: 0x16C
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_main_think(params) {
-  self endon(# "swarm_is_dead");
-  self endon(# "death");
+  self endon("swarm_is_dead");
+  self endon("death");
   if(isdefined(self.dying_out) && self.dying_out) {
     self.state_machine statemachine::set_state("dead");
     return;
@@ -1126,30 +769,12 @@ function swarm_main_think(params) {
   self.debug.main--;
 }
 
-/*
-	Name: _get_valid_targets
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x378BF8F3
-	Offset: 0x4250
-	Size: 0xF2
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private _get_valid_targets() {
   humans = arraycombine(getaispeciesarray(self getenemyteam(), "human"), getaispeciesarray("team3", "human"), 0, 0);
   zombies = arraycombine(getaispeciesarray(self getenemyteam(), "zombie"), getaispeciesarray("team3", "zombie"), 0, 0);
   return arraycombine(humans, zombies, 0, 0);
 }
 
-/*
-	Name: _lock_requirement
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0xCD42BBF
-	Offset: 0x4350
-	Size: 0x1C8
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _lock_requirement(target) {
   if(isdefined(self.owner) && !self.owner cybercom::targetisvalid(target, getweapon("gadget_firefly_swarm"))) {
     return false;
@@ -1178,15 +803,6 @@ function private _lock_requirement(target) {
   return true;
 }
 
-/*
-	Name: get_swarm_targetswithinfov
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x96F2D438
-	Offset: 0x4520
-	Size: 0x1A2
-	Parameters: 4
-	Flags: Linked
-*/
 function get_swarm_targetswithinfov(origin, angles, var_10a84c6e = getdvarint("scr_firefly_swarm_hunt_radius", 1536), nfor = cos(45)) {
   enemies = self _get_valid_targets();
   closetargets = arraysortclosest(enemies, origin, enemies.size, 0, var_10a84c6e);
@@ -1202,18 +818,9 @@ function get_swarm_targetswithinfov(origin, angles, var_10a84c6e = getdvarint("s
   return fovtargets;
 }
 
-/*
-	Name: swarm_find_good_target
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x1A5D1EB0
-	Offset: 0x46D0
-	Size: 0x224
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_find_good_target(var_10a84c6e = getdvarint("scr_firefly_swarm_hunt_radius", 1536)) {
-  self endon(# "swarm_is_dead");
-  self endon(# "death");
+  self endon("swarm_is_dead");
+  self endon("death");
   enemies = self _get_valid_targets();
   closetargets = arraysortclosest(enemies, self.origin, enemies.size, 0, var_10a84c6e);
   closest = undefined;
@@ -1244,18 +851,9 @@ function swarm_find_good_target(var_10a84c6e = getdvarint("scr_firefly_swarm_hun
   return closest;
 }
 
-/*
-	Name: swarm_hunt_think
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x3963BB96
-	Offset: 0x4900
-	Size: 0x1A4
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_hunt_think(params) {
-  self endon(# "swarm_is_dead");
-  self endon(# "death");
+  self endon("swarm_is_dead");
+  self endon("death");
   self.debug.hunt++;
   self util::waittill_any_timeout(3, "near_goal");
   self clearforcedgoal();
@@ -1275,18 +873,9 @@ function swarm_hunt_think(params) {
   self.debug.hunt--;
 }
 
-/*
-	Name: swarm_move_think
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x6FE6DFCB
-	Offset: 0x4AB0
-	Size: 0x1BC
-	Parameters: 1
-	Flags: Linked
-*/
 function swarm_move_think(params) {
-  self endon(# "swarm_is_dead");
-  self endon(# "death");
+  self endon("swarm_is_dead");
+  self endon("death");
   self.debug.move++;
   if(!self.firebugcount) {
     self clientfield::set("firefly_state", 2);
@@ -1310,16 +899,7 @@ function swarm_move_think(params) {
   self.debug.move--;
 }
 
-/*
-	Name: fireflyplayereffect
-	Namespace: cybercom_gadget_firefly
-	Checksum: 0x259916C8
-	Offset: 0x4C78
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function fireflyplayereffect(player) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   player shellshock("proximity_grenade", 2, 0);
 }

@@ -1,66 +1,33 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\clientfaceanim_shared.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace clientfaceanim;
 
-/*
-	Name: __init__sytem__
-	Namespace: clientfaceanim
-	Checksum: 0x80E118D8
-	Offset: 0x328
-	Size: 0x2C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("clientfaceanim_shared", undefined, & main, undefined);
 }
 
-/*
-	Name: main
-	Namespace: clientfaceanim
-	Checksum: 0xA42D971C
-	Offset: 0x360
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   callback::on_spawned( & on_player_spawned);
   level._clientfaceanimonplayerspawned = & on_player_spawned;
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: clientfaceanim
-	Checksum: 0xBBE2C022
-	Offset: 0x3A8
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private on_player_spawned(localclientnum) {
   facialanimationsinit(localclientnum);
   self callback::on_shutdown( & on_player_shutdown);
   self thread on_player_death(localclientnum);
 }
 
-/*
-	Name: on_player_shutdown
-	Namespace: clientfaceanim
-	Checksum: 0x313D414B
-	Offset: 0x410
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private on_player_shutdown(localclientnum) {
   if(self isplayer()) {
-    self notify(# "stopfacialthread");
+    self notify("stopfacialthread");
     corpse = self getplayercorpse();
     if(!isdefined(corpse)) {
       return;
@@ -76,20 +43,11 @@ function private on_player_shutdown(localclientnum) {
   }
 }
 
-/*
-	Name: on_player_death
-	Namespace: clientfaceanim
-	Checksum: 0xF32C995
-	Offset: 0x4F0
-	Size: 0xE8
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private on_player_death(localclientnum) {
-  self endon(# "entityshutdown");
-  self waittill(# "death");
+  self endon("entityshutdown");
+  self waittill("death");
   if(self isplayer()) {
-    self notify(# "stopfacialthread");
+    self notify("stopfacialthread");
     corpse = self getplayercorpse();
     if(isdefined(corpse.facialdeathanimstarted) && corpse.facialdeathanimstarted) {
       return;
@@ -102,15 +60,6 @@ function private on_player_death(localclientnum) {
   }
 }
 
-/*
-	Name: facialanimationsinit
-	Namespace: clientfaceanim
-	Checksum: 0xFA166F08
-	Offset: 0x5E0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private facialanimationsinit(localclientnum) {
   buildandvalidatefacialanimationlist(localclientnum);
   if(self isplayer()) {
@@ -118,15 +67,6 @@ function private facialanimationsinit(localclientnum) {
   }
 }
 
-/*
-	Name: buildandvalidatefacialanimationlist
-	Namespace: clientfaceanim
-	Checksum: 0xC86E8F29
-	Offset: 0x640
-	Size: 0x2BA
-	Parameters: 1
-	Flags: Linked
-*/
 function buildandvalidatefacialanimationlist(localclientnum) {
   if(!isdefined(level.__clientfacialanimationslist)) {
     level.__clientfacialanimationslist = [];
@@ -142,22 +82,11 @@ function buildandvalidatefacialanimationlist(localclientnum) {
     level.__clientfacialanimationslist["wallrunning"] = array("mp_face_male_wall_run_1");
     deathanims = level.__clientfacialanimationslist["death"];
     foreach(deathanim in deathanims) {
-      /#
       assert(!isanimlooping(localclientnum, deathanim), ("" + deathanim) + "");
-      # /
     }
   }
 }
 
-/*
-	Name: facialanimationthink_getwaittime
-	Namespace: clientfaceanim
-	Checksum: 0x5CBB042C
-	Offset: 0x908
-	Size: 0x170
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private facialanimationthink_getwaittime(localclientnum) {
   if(!isdefined(localclientnum)) {
     return 1;
@@ -186,27 +115,16 @@ function private facialanimationthink_getwaittime(localclientnum) {
   return ((max_wait - min_wait) * distance_factor) + min_wait;
 }
 
-/*
-	Name: facialanimationthink
-	Namespace: clientfaceanim
-	Checksum: 0xB6D6EF24
-	Offset: 0xA80
-	Size: 0xF2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private facialanimationthink(localclientnum) {
-  self endon(# "entityshutdown");
-  self notify(# "stopfacialthread");
-  self endon(# "stopfacialthread");
+  self endon("entityshutdown");
+  self notify("stopfacialthread");
+  self endon("stopfacialthread");
   if(isdefined(self.__clientfacialanimationsthinkstarted)) {
     return;
   }
   self.__clientfacialanimationsthinkstarted = 1;
-  /#
   assert(self isplayer());
-  # /
-    self util::waittill_dobj(localclientnum);
+  self util::waittill_dobj(localclientnum);
   while (isdefined(self)) {
     updatefacialanimforplayer(localclientnum, self);
     wait_time = self facialanimationthink_getwaittime(localclientnum);
@@ -217,15 +135,6 @@ function private facialanimationthink(localclientnum) {
   }
 }
 
-/*
-	Name: updatefacialanimforplayer
-	Namespace: clientfaceanim
-	Checksum: 0x4E24A182
-	Offset: 0xB80
-	Size: 0x2A8
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private updatefacialanimforplayer(localclientnum, player) {
   if(!isdefined(player)) {
     return;
@@ -273,23 +182,12 @@ function private updatefacialanimforplayer(localclientnum, player) {
     }
   }
   if(player._currentfacestate == "inactive" || currfacestate != nextfacestate) {
-    /#
     assert(isdefined(level.__clientfacialanimationslist[nextfacestate]));
-    # /
-      applynewfaceanim(localclientnum, array::random(level.__clientfacialanimationslist[nextfacestate]));
+    applynewfaceanim(localclientnum, array::random(level.__clientfacialanimationslist[nextfacestate]));
     player._currentfacestate = nextfacestate;
   }
 }
 
-/*
-	Name: applynewfaceanim
-	Namespace: clientfaceanim
-	Checksum: 0x962F22E9
-	Offset: 0xE30
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private applynewfaceanim(localclientnum, animation) {
   clearallfacialanims(localclientnum);
   if(isdefined(animation)) {
@@ -298,15 +196,6 @@ function private applynewfaceanim(localclientnum, animation) {
   }
 }
 
-/*
-	Name: applydeathanim
-	Namespace: clientfaceanim
-	Checksum: 0x4E830B8D
-	Offset: 0xEB8
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private applydeathanim(localclientnum) {
   if(isdefined(self._currentfacestate) && self._currentfacestate == "death") {
     return;
@@ -317,15 +206,6 @@ function private applydeathanim(localclientnum) {
   }
 }
 
-/*
-	Name: clearallfacialanims
-	Namespace: clientfaceanim
-	Checksum: 0x87D8F06A
-	Offset: 0xF68
-	Size: 0x66
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private clearallfacialanims(localclientnum) {
   if(isdefined(self._currentfaceanim) && self hasdobj(localclientnum)) {
     self clearanim(self._currentfaceanim, 0.2);

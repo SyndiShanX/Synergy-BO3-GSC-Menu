@@ -1,18 +1,12 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_robot_interface.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_robot;
 #using scripts\shared\ai\systems\ai_interface;
-
 #namespace robotinterface;
 
-/*
-	Name: registerrobotinterfaceattributes
-	Namespace: robotinterface
-	Checksum: 0x90F18DA3
-	Offset: 0x318
-	Size: 0x69C
-	Parameters: 0
-	Flags: Linked
-*/
 function registerrobotinterfaceattributes() {
   ai::registermatchedinterface("robot", "can_be_meleed", 1, array(1, 0));
   ai::registermatchedinterface("robot", "can_become_crawler", 1, array(1, 0));

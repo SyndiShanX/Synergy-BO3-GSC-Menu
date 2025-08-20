@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_audio.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\doa\_doa_arena;
 #using scripts\cp\doa\_doa_player_utility;
@@ -10,36 +14,17 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\music_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_b5c133c;
 
-/*
-	Name: init
-	Namespace: namespace_b5c133c
-	Checksum: 0xB9935F75
-	Offset: 0x440
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   function_4bbc3ecf();
   level thread musicsystem();
 }
 
-/*
-	Name: musicsystem
-	Namespace: namespace_b5c133c
-	Checksum: 0x7995AD16
-	Offset: 0x478
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function musicsystem() {
   musicent = spawn("script_origin", (0, 0, 0));
   while (true) {
-    level waittill(# "hash_ba37290e", type);
+    level waittill("hash_ba37290e", type);
     if(!isdefined(type)) {
       type = namespace_3ca3c537::function_d2d75f5d();
       level thread function_1a5a0c78();
@@ -51,15 +36,6 @@ function musicsystem() {
   }
 }
 
-/*
-	Name: function_4bbc3ecf
-	Namespace: namespace_b5c133c
-	Checksum: 0xBD577D28
-	Offset: 0x540
-	Size: 0x444
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4bbc3ecf() {
   function_2f2996ee("island", "slight_chance_of_zombies");
   function_2f2996ee("dock", "poison_mushroom");
@@ -97,15 +73,6 @@ function function_4bbc3ecf() {
   function_2f2996ee("gameover", "zombies_dont_surf");
 }
 
-/*
-	Name: function_2f2996ee
-	Namespace: namespace_b5c133c
-	Checksum: 0x893330BD
-	Offset: 0x990
-	Size: 0x4E
-	Parameters: 2
-	Flags: Linked
-*/
 function function_2f2996ee(var_82a18d17, state) {
   if(!isdefined(level.var_d068d66e)) {
     level.var_d068d66e = array();
@@ -113,15 +80,6 @@ function function_2f2996ee(var_82a18d17, state) {
   level.var_d068d66e[var_82a18d17] = state;
 }
 
-/*
-	Name: function_1a5a0c78
-	Namespace: namespace_b5c133c
-	Checksum: 0xF71DBB06
-	Offset: 0x9E8
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1a5a0c78() {
   if(!isdefined(level.var_7f30be2b)) {
     level.var_7f30be2b = 0;

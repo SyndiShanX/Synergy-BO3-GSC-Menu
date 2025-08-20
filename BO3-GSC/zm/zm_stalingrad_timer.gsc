@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_timer.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -15,42 +19,14 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_stalingrad_timer;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_stalingrad_timer
-	Checksum: 0x744B49DE
-	Offset: 0x360
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_stalingrad_timer", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_stalingrad_timer
-	Checksum: 0x99EC1590
-	Offset: 0x3A8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}
 
-/*
-	Name: __main__
-	Namespace: zm_stalingrad_timer
-	Checksum: 0xFEC4A344
-	Offset: 0x3B8
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   clientfield::register("world", "time_attack_reward", 12000, 3, "int");
   level flag::init("time_attack_weapon_awarded");
@@ -65,15 +41,6 @@ function __main__() {
   level thread function_86419da();
 }
 
-/*
-	Name: function_6ac3689a
-	Namespace: zm_stalingrad_timer
-	Checksum: 0x54E521E1
-	Offset: 0x510
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6ac3689a(player) {
   if(player zm_magicbox::can_buy_weapon() && !player bgb::is_enabled("zm_bgb_disorderly_combat") && level flag::get("time_attack_weapon_awarded")) {
     self setvisibletoplayer(player);
@@ -85,18 +52,9 @@ function function_6ac3689a(player) {
   return false;
 }
 
-/*
-	Name: function_86419da
-	Namespace: zm_stalingrad_timer
-	Checksum: 0x3BE65786
-	Offset: 0x608
-	Size: 0x3BC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_86419da() {
   do {
-    level waittill(# "end_of_round");
+    level waittill("end_of_round");
     n_current_time = (gettime() - level.n_gameplay_start_time) / 1000;
     var_99870abd = zm::get_round_number() - 1;
     var_ec31aba8 = undefined;
@@ -216,11 +174,11 @@ function function_86419da() {
     }
     if((var_99870abd % 5) == 0) {
       if(isdefined(var_ec31aba8) && n_current_time < var_ec31aba8) {
-        luinotifyevent( & "zombie_time_attack_notification", 2, zm::get_round_number() - 1, level.players.size);
+        luinotifyevent(&"zombie_time_attack_notification", 2, zm::get_round_number() - 1, level.players.size);
         playsoundatposition("zmb_stalingrad_time_trial_complete", (0, 0, 0));
         level thread function_cc8ae246(var_99870abd);
         if(var_99870abd == 20) {
-          level notify(# "hash_399599c1");
+          level notify("hash_399599c1");
         }
       }
     }
@@ -228,15 +186,6 @@ function function_86419da() {
   while (var_99870abd < 50);
 }
 
-/*
-	Name: function_cc8ae246
-	Namespace: zm_stalingrad_timer
-	Checksum: 0x6B3E463
-	Offset: 0x9D0
-	Size: 0x26C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cc8ae246(str_reward) {
   switch (str_reward) {
     case 5: {
@@ -280,15 +229,6 @@ function function_cc8ae246(str_reward) {
   level flag::set("time_attack_weapon_awarded");
 }
 
-/*
-	Name: function_3d5b5002
-	Namespace: zm_stalingrad_timer
-	Checksum: 0xD2A28F06
-	Offset: 0xC48
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3d5b5002() {
   switch (level.players.size) {
     case 1: {
@@ -315,28 +255,10 @@ function function_3d5b5002() {
   }
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: zm_stalingrad_timer
-	Checksum: 0x88CCF2D6
-	Offset: 0xD38
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self thread function_88b9bf27();
 }
 
-/*
-	Name: function_88b9bf27
-	Namespace: zm_stalingrad_timer
-	Checksum: 0x6217008D
-	Offset: 0xD60
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_88b9bf27() {
   if(!isdefined(self.num_perks)) {
     wait(0.1);
@@ -344,19 +266,10 @@ function function_88b9bf27() {
   self zm_utility::give_player_all_perks();
 }
 
-/*
-	Name: function_959f59b8
-	Namespace: zm_stalingrad_timer
-	Checksum: 0x75B3CE55
-	Offset: 0xD98
-	Size: 0x60
-	Parameters: 0
-	Flags: Linked
-*/
 function function_959f59b8() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (isdefined(self)) {
-    self waittill(# "player_revived");
+    self waittill("player_revived");
     b_exclude_quick_revive = level.players.size == 1;
     self zm_utility::give_player_all_perks(b_exclude_quick_revive);
   }

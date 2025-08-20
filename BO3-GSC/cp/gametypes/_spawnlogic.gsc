@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\gametypes\_spawnlogic.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_callbacks;
 #using scripts\cp\gametypes\_spawning;
@@ -9,31 +13,12 @@
 #using scripts\shared\gameobjects_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\system_shared;
-
 #namespace spawnlogic;
 
-/*
-	Name: __init__sytem__
-	Namespace: spawnlogic
-	Checksum: 0x8A8088D7
-	Offset: 0x348
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("spawnlogic", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: spawnlogic
-	Checksum: 0x9FA329BB
-	Offset: 0x388
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   function_4489f2c9();
   foreach(spawn_point in get_all_spawn_points()) {
@@ -50,20 +35,9 @@ function __init__() {
   }
   level thread update_spawn_points();
   callback::on_start_gametype( & init);
-  /#
   level thread debug_spawn_points();
-  # /
 }
 
-/*
-	Name: function_4489f2c9
-	Namespace: spawnlogic
-	Checksum: 0x3EF5FF22
-	Offset: 0x5E0
-	Size: 0x13A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4489f2c9() {
   foreach(spawn_point in get_all_spawn_points()) {
     if(isdefined(spawn_point.linkto)) {
@@ -78,15 +52,6 @@ function function_4489f2c9() {
   }
 }
 
-/*
-	Name: function_98b48204
-	Namespace: spawnlogic
-	Checksum: 0xEBFFD5E7
-	Offset: 0x728
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_98b48204(e_linkto) {
   var_14497229 = spawn("script_origin", self.origin);
   var_14497229.angles = self.angles;
@@ -100,50 +65,23 @@ function function_98b48204(e_linkto) {
   self struct::delete();
 }
 
-/*
-	Name: _spawn_point_enable
-	Namespace: spawnlogic
-	Checksum: 0xB29B001B
-	Offset: 0x810
-	Size: 0x50
-	Parameters: 1
-	Flags: Linked
-*/
 function _spawn_point_enable(trig) {
-  trig endon(# "death");
+  trig endon("death");
   self.disabled = 1;
   while (true) {
-    trig waittill(# "trigger");
+    trig waittill("trigger");
     function_82c857e9(0);
   }
 }
 
-/*
-	Name: _spawn_point_disable
-	Namespace: spawnlogic
-	Checksum: 0xD515BD34
-	Offset: 0x868
-	Size: 0x48
-	Parameters: 1
-	Flags: Linked
-*/
 function _spawn_point_disable(trig) {
-  trig endon(# "death");
+  trig endon("death");
   while (true) {
-    trig waittill(# "trigger");
+    trig waittill("trigger");
     function_82c857e9(1);
   }
 }
 
-/*
-	Name: function_82c857e9
-	Namespace: spawnlogic
-	Checksum: 0xE637A5D0
-	Offset: 0x8B8
-	Size: 0x70
-	Parameters: 1
-	Flags: Linked
-*/
 function function_82c857e9(b_enabled) {
   var_1b30c0b0 = isdefined(b_enabled) && (b_enabled ? 1 : undefined);
   if(self.disabled !== var_1b30c0b0) {
@@ -152,15 +90,6 @@ function function_82c857e9(b_enabled) {
   }
 }
 
-/*
-	Name: update_spawn_points
-	Namespace: spawnlogic
-	Checksum: 0xFF193C80
-	Offset: 0x930
-	Size: 0x100
-	Parameters: 0
-	Flags: Linked
-*/
 function update_spawn_points() {
   while (true) {
     if(level flagsys::get("spawnpoints_dirty")) {
@@ -175,31 +104,12 @@ function update_spawn_points() {
   }
 }
 
-/*
-	Name: get_all_spawn_points
-	Namespace: spawnlogic
-	Checksum: 0x6331C46B
-	Offset: 0xA38
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function get_all_spawn_points(b_include_disabled) {
   a_spawn_points = arraycombine(get_spawnpoint_array("cp_coop_spawn", b_include_disabled), get_spawnpoint_array("cp_coop_respawn", b_include_disabled), 0, 0);
   return a_spawn_points;
 }
 
-/*
-	Name: debug_spawn_points
-	Namespace: spawnlogic
-	Checksum: 0x300AF62A
-	Offset: 0xAA8
-	Size: 0x2B0
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_spawn_points() {
-  /#
   if(getdvarstring("") == "") {
     setdvar("", 0);
     setdvar("", 0);
@@ -222,20 +132,9 @@ function debug_spawn_points() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: init
-	Namespace: spawnlogic
-	Checksum: 0x3091C87F
-	Offset: 0xD60
-	Size: 0x3BC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
-  /#
   if(getdvarstring("") == "") {
     setdvar("", 0);
   }
@@ -247,8 +146,7 @@ function init() {
     setdvar("", 0.25);
   }
   thread loop_bot_spawns();
-  # /
-    level.spawnlogic_deaths = [];
+  level.spawnlogic_deaths = [];
   level.spawnlogic_spawnkills = [];
   level.players = [];
   level.grenades = [];
@@ -267,7 +165,6 @@ function init() {
   if(getdvarstring("scr_spawn_enemyavoidweight") == "") {
     setdvar("scr_spawn_enemyavoidweight", "0");
   }
-  /#
   if(getdvarstring("") == "") {
     setdvar("", "");
   }
@@ -287,18 +184,8 @@ function init() {
   }
   thread watch_spawn_profile();
   thread spawn_graph_check();
-  # /
 }
 
-/*
-	Name: add_spawn_points_internal
-	Namespace: spawnlogic
-	Checksum: 0x5B22B67B
-	Offset: 0x1128
-	Size: 0x1EA
-	Parameters: 2
-	Flags: Linked
-*/
 function add_spawn_points_internal(team, spawnpoints) {
   oldspawnpoints = [];
   if(level.teamspawnpoints[team].size) {
@@ -328,15 +215,6 @@ function add_spawn_points_internal(team, spawnpoints) {
   }
 }
 
-/*
-	Name: clear_spawn_points
-	Namespace: spawnlogic
-	Checksum: 0xAFCDA111
-	Offset: 0x1320
-	Size: 0x9A
-	Parameters: 0
-	Flags: Linked
-*/
 function clear_spawn_points() {
   foreach(team in level.teams) {
     level.teamspawnpoints[team] = [];
@@ -345,41 +223,19 @@ function clear_spawn_points() {
   level.unified_spawn_points = undefined;
 }
 
-/*
-	Name: add_spawn_points
-	Namespace: spawnlogic
-	Checksum: 0x67D58D2F
-	Offset: 0x13C8
-	Size: 0xD4
-	Parameters: 2
-	Flags: Linked
-*/
 function add_spawn_points(team, spawnpointname) {
   add_spawn_point_classname(spawnpointname);
   add_spawn_point_team_classname(team, spawnpointname);
   add_spawn_points_internal(team, get_spawnpoint_array(spawnpointname));
   if(!level.teamspawnpoints[team].size) {
-    /#
     if(!isdefined(level.var_a6f85f47)) {
-      /#
       assert(level.teamspawnpoints[team].size, ("" + spawnpointname) + "");
-      # /
     }
-    # /
-      wait(1);
+    wait(1);
     return;
   }
 }
 
-/*
-	Name: rebuild_spawn_points
-	Namespace: spawnlogic
-	Checksum: 0x66A6EB92
-	Offset: 0x14A8
-	Size: 0x86
-	Parameters: 1
-	Flags: Linked
-*/
 function rebuild_spawn_points(team) {
   level.teamspawnpoints[team] = [];
   for (index = 0; index < level.spawn_point_team_class_names[team].size; index++) {
@@ -387,71 +243,36 @@ function rebuild_spawn_points(team) {
   }
 }
 
-/*
-	Name: place_spawn_points
-	Namespace: spawnlogic
-	Checksum: 0x3DD5C882
-	Offset: 0x1538
-	Size: 0x138
-	Parameters: 1
-	Flags: None
-*/
 function place_spawn_points(spawnpointname) {
   add_spawn_point_classname(spawnpointname);
   spawnpoints = get_spawnpoint_array(spawnpointname);
-  /#
   if(!isdefined(level.extraspawnpointsused)) {
     level.extraspawnpointsused = [];
   }
-  # /
-    if(!spawnpoints.size) {
-      /#
-      println(("" + spawnpointname) + "");
-      # /
-        callback::abort_level();
-      wait(1);
-      return;
-    }
+  if(!spawnpoints.size) {
+    println(("" + spawnpointname) + "");
+    callback::abort_level();
+    wait(1);
+    return;
+  }
   for (index = 0; index < spawnpoints.size; index++) {
     spawnpoints[index] spawnpoint_init();
-    /#
     spawnpoints[index].fakeclassname = spawnpointname;
     level.extraspawnpointsused[level.extraspawnpointsused.size] = spawnpoints[index];
-    # /
   }
 }
 
-/*
-	Name: drop_spawn_points
-	Namespace: spawnlogic
-	Checksum: 0xEC46E7F9
-	Offset: 0x1678
-	Size: 0xAE
-	Parameters: 1
-	Flags: None
-*/
 function drop_spawn_points(spawnpointname) {
   spawnpoints = get_spawnpoint_array(spawnpointname);
   if(!spawnpoints.size) {
-    /#
     println(("" + spawnpointname) + "");
-    # /
-      return;
+    return;
   }
   for (index = 0; index < spawnpoints.size; index++) {
     spawnpoints[index] place_spawn();
   }
 }
 
-/*
-	Name: add_spawn_point_classname
-	Namespace: spawnlogic
-	Checksum: 0x908DFE4
-	Offset: 0x1730
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function add_spawn_point_classname(spawnpointclassname) {
   if(!isdefined(level.spawn_point_class_names)) {
     level.spawn_point_class_names = [];
@@ -459,28 +280,10 @@ function add_spawn_point_classname(spawnpointclassname) {
   array::add(level.spawn_point_class_names, spawnpointclassname, 0);
 }
 
-/*
-	Name: add_spawn_point_team_classname
-	Namespace: spawnlogic
-	Checksum: 0xFA8E2E9F
-	Offset: 0x1780
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function add_spawn_point_team_classname(team, spawnpointclassname) {
   array::add(level.spawn_point_team_class_names[team], spawnpointclassname, 0);
 }
 
-/*
-	Name: get_spawnpoint_array
-	Namespace: spawnlogic
-	Checksum: 0x7B09A86B
-	Offset: 0x17C8
-	Size: 0x21A
-	Parameters: 2
-	Flags: Linked
-*/
 function get_spawnpoint_array(classname, b_include_disabled = 0) {
   a_all_spawn_points = arraycombine(struct::get_array(classname, "targetname"), getentarray(classname, "targetname"), 0, 0);
   a_spawn_points = [];
@@ -507,15 +310,6 @@ function get_spawnpoint_array(classname, b_include_disabled = 0) {
   return a_spawn_points;
 }
 
-/*
-	Name: spawnpoint_init
-	Namespace: spawnlogic
-	Checksum: 0x50B264B5
-	Offset: 0x19F0
-	Size: 0x160
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnpoint_init() {
   spawnpoint = self;
   origin = spawnpoint.origin;
@@ -536,28 +330,10 @@ function spawnpoint_init() {
   spawnpoint.inited = 1;
 }
 
-/*
-	Name: get_team_spawnpoints
-	Namespace: spawnlogic
-	Checksum: 0xC09F1E89
-	Offset: 0x1B58
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function get_team_spawnpoints(team) {
   return level.teamspawnpoints[team];
 }
 
-/*
-	Name: get_spawnpoint_final
-	Namespace: spawnlogic
-	Checksum: 0xAD6892B3
-	Offset: 0x1B78
-	Size: 0x240
-	Parameters: 2
-	Flags: Linked
-*/
 function get_spawnpoint_final(spawnpoints, useweights) {
   bestspawnpoint = undefined;
   if(!isdefined(spawnpoints) || spawnpoints.size == 0) {
@@ -599,21 +375,10 @@ function get_spawnpoint_final(spawnpoints, useweights) {
     }
   }
   self finalize_spawnpoint_choice(bestspawnpoint);
-  /#
   self store_spawn_data(spawnpoints, useweights, bestspawnpoint);
-  # /
-    return bestspawnpoint;
+  return bestspawnpoint;
 }
 
-/*
-	Name: finalize_spawnpoint_choice
-	Namespace: spawnlogic
-	Checksum: 0x8EE68E39
-	Offset: 0x1DC0
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function finalize_spawnpoint_choice(spawnpoint) {
   time = gettime();
   self.lastspawnpoint = spawnpoint;
@@ -622,15 +387,6 @@ function finalize_spawnpoint_choice(spawnpoint) {
   spawnpoint.lastspawntime = time;
 }
 
-/*
-	Name: get_best_weighted_spawnpoint
-	Namespace: spawnlogic
-	Checksum: 0x3B7B2E63
-	Offset: 0x1E20
-	Size: 0x2B6
-	Parameters: 1
-	Flags: Linked
-*/
 function get_best_weighted_spawnpoint(spawnpoints) {
   maxsighttracedspawnpoints = 3;
   for (
@@ -672,27 +428,15 @@ function get_best_weighted_spawnpoint(spawnpoints) {
       return bestspawnpoint;
     }
     penalty = get_los_penalty();
-    /#
     if(level.storespawndata || level.debugspawning) {
       bestspawnpoint.spawndata[bestspawnpoint.spawndata.size] = "" + penalty;
     }
-    # /
-      bestspawnpoint.weight = bestspawnpoint.weight - penalty;
+    bestspawnpoint.weight = bestspawnpoint.weight - penalty;
     bestspawnpoint.lastsighttracetime = gettime();
   }
 }
 
-/*
-	Name: check_bad
-	Namespace: spawnlogic
-	Checksum: 0x14975231
-	Offset: 0x20E0
-	Size: 0x156
-	Parameters: 1
-	Flags: Linked
-*/
 function check_bad(spawnpoint) {
-  /#
   for (i = 0; i < level.players.size; i++) {
     player = level.players[i];
     if(!isalive(player) || player.sessionstate != "") {
@@ -706,20 +450,9 @@ function check_bad(spawnpoint) {
       thread bad_spawn_line(spawnpoint.sighttracepoint, player.origin + vectorscale((0, 0, 1), 50), self.name, player.name);
     }
   }
-  # /
 }
 
-/*
-	Name: bad_spawn_line
-	Namespace: spawnlogic
-	Checksum: 0x3C3150C6
-	Offset: 0x2240
-	Size: 0xE6
-	Parameters: 4
-	Flags: Linked
-*/
 function bad_spawn_line(start, end, name1, name2) {
-  /#
   dist = distance(start, end);
   for (i = 0; i < 200; i++) {
     line(start, end, (1, 0, 0));
@@ -727,20 +460,9 @@ function bad_spawn_line(start, end, name1, name2) {
     print3d(end, name2);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: store_spawn_data
-	Namespace: spawnlogic
-	Checksum: 0x6A7E6551
-	Offset: 0x2330
-	Size: 0x88C
-	Parameters: 3
-	Flags: Linked
-*/
 function store_spawn_data(spawnpoints, useweights, bestspawnpoint) {
-  /#
   if(!isdefined(level.storespawndata) || !level.storespawndata) {
     return;
   }
@@ -832,20 +554,9 @@ function store_spawn_data(spawnpoints, useweights, bestspawnpoint) {
   closefile(file);
   thisspawnid = (level.spawngameid + "") + level.spawnid;
   self.thisspawnid = thisspawnid;
-  # /
 }
 
-/*
-	Name: read_spawn_data
-	Namespace: spawnlogic
-	Checksum: 0x11E58333
-	Offset: 0x2BC8
-	Size: 0xB34
-	Parameters: 2
-	Flags: Linked
-*/
 function read_spawn_data(desiredid, relativepos) {
-  /#
   file = openfile("", "");
   if(file < 0) {
     return;
@@ -996,22 +707,11 @@ function read_spawn_data(desiredid, relativepos) {
     }
   }
   closefile(file);
-  # /
 }
 
-/*
-	Name: draw_spawn_data
-	Namespace: spawnlogic
-	Checksum: 0xA688EC78
-	Offset: 0x3708
-	Size: 0x474
-	Parameters: 0
-	Flags: Linked
-*/
 function draw_spawn_data() {
-  /#
-  level notify(# "drawing_spawn_data");
-  level endon(# "drawing_spawn_data");
+  level notify("drawing_spawn_data");
+  level endon("drawing_spawn_data");
   textoffset = vectorscale((0, 0, -1), 12);
   while (true) {
     if(!isdefined(level.curspawndata)) {
@@ -1048,52 +748,20 @@ function draw_spawn_data() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: vec_to_str
-	Namespace: spawnlogic
-	Checksum: 0x877CABC6
-	Offset: 0x3B88
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function vec_to_str(vec) {
-  /#
   return ((int(vec[0]) + "") + int(vec[1]) + "") + int(vec[2]);
-  # /
 }
 
-/*
-	Name: str_to_vec
-	Namespace: spawnlogic
-	Checksum: 0x88D89BE4
-	Offset: 0x3C10
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function str_to_vec(str) {
-  /#
   parts = strtok(str, "");
   if(parts.size != 3) {
     return (0, 0, 0);
   }
   return (int(parts[0]), int(parts[1]), int(parts[2]));
-  # /
 }
 
-/*
-	Name: get_spawnpoint_random
-	Namespace: spawnlogic
-	Checksum: 0x7BDF592F
-	Offset: 0x3CB8
-	Size: 0xC2
-	Parameters: 1
-	Flags: Linked
-*/
 function get_spawnpoint_random(spawnpoints) {
   if(!isdefined(spawnpoints)) {
     return undefined;
@@ -1107,15 +775,6 @@ function get_spawnpoint_random(spawnpoints) {
   return get_spawnpoint_final(spawnpoints, 0);
 }
 
-/*
-	Name: get_all_other_players
-	Namespace: spawnlogic
-	Checksum: 0xACB256AB
-	Offset: 0x3D88
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function get_all_other_players() {
   aliveplayers = [];
   for (i = 0; i < level.players.size; i++) {
@@ -1131,21 +790,10 @@ function get_all_other_players() {
   return aliveplayers;
 }
 
-/*
-	Name: get_all_allied_and_enemy_players
-	Namespace: spawnlogic
-	Checksum: 0xE24F2998
-	Offset: 0x3E48
-	Size: 0x1EC
-	Parameters: 1
-	Flags: Linked
-*/
 function get_all_allied_and_enemy_players(obj) {
   if(level.teambased) {
-    /#
     assert(isdefined(level.teams[self.team]));
-    # /
-      obj.allies = level.aliveplayers[self.team];
+    obj.allies = level.aliveplayers[self.team];
     obj.enemies = undefined;
     foreach(team in level.teams) {
       if(team == self.team) {
@@ -1165,53 +813,31 @@ function get_all_allied_and_enemy_players(obj) {
   }
 }
 
-/*
-	Name: init_weights
-	Namespace: spawnlogic
-	Checksum: 0xAFBE77A0
-	Offset: 0x4040
-	Size: 0xBA
-	Parameters: 1
-	Flags: Linked
-*/
 function init_weights(spawnpoints) {
   for (i = 0; i < spawnpoints.size; i++) {
     spawnpoints[i].weight = 0;
   }
-  /#
   if(level.storespawndata || level.debugspawning) {
     for (i = 0; i < spawnpoints.size; i++) {
       spawnpoints[i].spawndata = [];
       spawnpoints[i].sightchecks = [];
     }
   }
-  # /
 }
 
-/*
-	Name: get_spawnpoint_near_team
-	Namespace: spawnlogic
-	Checksum: 0x845BCCB9
-	Offset: 0x4108
-	Size: 0x540
-	Parameters: 2
-	Flags: Linked
-*/
 function get_spawnpoint_near_team(spawnpoints, favoredspawnpoints) {
   if(!isdefined(spawnpoints)) {
     return undefined;
   }
-  /#
   if(getdvarstring("") == "") {
     setdvar("", "");
   }
   if(getdvarstring("") == "") {
     return get_spawnpoint_random(spawnpoints);
   }
-  # /
-    if(getdvarint("scr_spawnsimple") > 0) {
-      return get_spawnpoint_random(spawnpoints);
-    }
+  if(getdvarint("scr_spawnsimple") > 0) {
+    return get_spawnpoint_random(spawnpoints);
+  }
   begin();
   k_favored_spawn_point_bonus = 25000;
   init_weights(spawnpoints);
@@ -1229,19 +855,15 @@ function get_spawnpoint_near_team(spawnpoints, favoredspawnpoints) {
       allydistsum = spawnpoint.distsum[myteam];
       enemydistsum = spawnpoint.enemydistsum[myteam];
       spawnpoint.weight = (enemydistsum - (allieddistanceweight * allydistsum)) / spawnpoint.numplayersatlastupdate;
-      /#
       if(level.storespawndata || level.debugspawning) {
         spawnpoint.spawndata[spawnpoint.spawndata.size] = (((((("" + int(spawnpoint.weight)) + "") + int(enemydistsum) + "") + allieddistanceweight) + "") + int(allydistsum) + "") + spawnpoint.numplayersatlastupdate;
       }
-      # /
-        continue;
+      continue;
     }
     spawnpoint.weight = 0;
-    /#
     if(level.storespawndata || level.debugspawning) {
       spawnpoint.spawndata[spawnpoint.spawndata.size] = "";
     }
-    # /
   }
   if(isdefined(favoredspawnpoints)) {
     for (i = 0; i < favoredspawnpoints.size; i++) {
@@ -1257,26 +879,15 @@ function get_spawnpoint_near_team(spawnpoints, favoredspawnpoints) {
   avoid_weapon_damage(spawnpoints);
   avoid_visible_enemies(spawnpoints, 1);
   result = get_spawnpoint_final(spawnpoints);
-  /#
   if(getdvarstring("") == "") {
     setdvar("", "");
   }
   if(getdvarstring("") == "") {
     check_bad(result);
   }
-  # /
-    return result;
+  return result;
 }
 
-/*
-	Name: get_spawnpoint_dm
-	Namespace: spawnlogic
-	Checksum: 0xFA1AE4F7
-	Offset: 0x4650
-	Size: 0x29A
-	Parameters: 1
-	Flags: None
-*/
 function get_spawnpoint_dm(spawnpoints) {
   if(!isdefined(spawnpoints)) {
     return undefined;
@@ -1310,33 +921,12 @@ function get_spawnpoint_dm(spawnpoints) {
   return get_spawnpoint_final(spawnpoints);
 }
 
-/*
-	Name: begin
-	Namespace: spawnlogic
-	Checksum: 0x7A324981
-	Offset: 0x48F8
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function begin() {
-  /#
   level.storespawndata = getdvarint("");
   level.debugspawning = getdvarint("") > 0;
-  # /
 }
 
-/*
-	Name: watch_spawn_profile
-	Namespace: spawnlogic
-	Checksum: 0x1A1AE24F
-	Offset: 0x4950
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_spawn_profile() {
-  /#
   while (true) {
     while (true) {
       if(getdvarint("") > 0) {
@@ -1351,23 +941,12 @@ function watch_spawn_profile() {
       }
       wait(0.05);
     }
-    level notify(# "stop_spawn_profile");
+    level notify("stop_spawn_profile");
   }
-  # /
 }
 
-/*
-	Name: spawn_profile
-	Namespace: spawnlogic
-	Checksum: 0x12CA3AC
-	Offset: 0x4A00
-	Size: 0x110
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_profile() {
-  /#
-  level endon(# "stop_spawn_profile");
+  level endon("stop_spawn_profile");
   while (true) {
     if(level.players.size > 0 && level.spawnpoints.size > 0) {
       playernum = randomint(level.players.size);
@@ -1382,40 +961,18 @@ function spawn_profile() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: spawn_graph_check
-	Namespace: spawnlogic
-	Checksum: 0xA2F3901C
-	Offset: 0x4B18
-	Size: 0x5A
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_graph_check() {
-  /#
   while (true) {
     wait(3);
   }
   if(getdvarint("") < 1) {}
   thread spawn_graph();
   return;
-  # /
 }
 
-/*
-	Name: spawn_graph
-	Namespace: spawnlogic
-	Checksum: 0x8A7DA13B
-	Offset: 0x4B80
-	Size: 0x650
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_graph() {
-  /#
   w = 20;
   h = 20;
   weightscale = 0.1;
@@ -1483,20 +1040,9 @@ function spawn_graph() {
     level.players[0] draw_spawn_graph(fakespawnpoints, w, h, weightscale);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: draw_spawn_graph
-	Namespace: spawnlogic
-	Checksum: 0xE87546D
-	Offset: 0x51D8
-	Size: 0x146
-	Parameters: 4
-	Flags: Linked
-*/
 function draw_spawn_graph(fakespawnpoints, w, h, weightscale) {
-  /#
   i = 0;
   for (y = 0; y < h; y++) {
     yamnt = y / (h - 1);
@@ -1511,58 +1057,25 @@ function draw_spawn_graph(fakespawnpoints, w, h, weightscale) {
       i++;
     }
   }
-  # /
 }
 
-/*
-	Name: setup_spawn_graph_point
-	Namespace: spawnlogic
-	Checksum: 0xDAA8BDAA
-	Offset: 0x5328
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function setup_spawn_graph_point(s1, weightscale) {
-  /#
   s1.visible = 1;
   if(s1.weight < -1000 / weightscale) {
     s1.visible = 0;
   }
-  # /
 }
 
-/*
-	Name: spawn_graph_line
-	Namespace: spawnlogic
-	Checksum: 0x658A4EA6
-	Offset: 0x5390
-	Size: 0xDC
-	Parameters: 3
-	Flags: Linked
-*/
 function spawn_graph_line(s1, s2, weightscale) {
-  /#
   if(!s1.visible || !s2.visible) {
     return;
   }
   p1 = s1.origin + (0, 0, (s1.weight * weightscale) + 100);
   p2 = s2.origin + (0, 0, (s2.weight * weightscale) + 100);
   line(p1, p2, (1, 1, 1));
-  # /
 }
 
-/*
-	Name: loop_bot_spawns
-	Namespace: spawnlogic
-	Checksum: 0xC305282A
-	Offset: 0x5478
-	Size: 0x374
-	Parameters: 0
-	Flags: Linked
-*/
 function loop_bot_spawns() {
-  /#
   while (true) {
     if(getdvarint("") < 1) {
       wait(3);
@@ -1606,20 +1119,9 @@ function loop_bot_spawns() {
       wait(0.05);
     }
   }
-  # /
 }
 
-/*
-	Name: allow_spawn_data_reading
-	Namespace: spawnlogic
-	Checksum: 0x4656EE6C
-	Offset: 0x57F8
-	Size: 0x1E8
-	Parameters: 0
-	Flags: Linked
-*/
 function allow_spawn_data_reading() {
-  /#
   setdvar("", "");
   prevval = getdvarstring("");
   prevrelval = getdvarstring("");
@@ -1646,20 +1148,9 @@ function allow_spawn_data_reading() {
     }
     thread draw_spawn_data();
   }
-  # /
 }
 
-/*
-	Name: show_deaths_debug
-	Namespace: spawnlogic
-	Checksum: 0xE7EE5738
-	Offset: 0x59E8
-	Size: 0x4B0
-	Parameters: 0
-	Flags: Linked
-*/
 function show_deaths_debug() {
-  /#
   while (true) {
     if(getdvarstring("") == "") {
       wait(3);
@@ -1704,18 +1195,8 @@ function show_deaths_debug() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: update_death_info_debug
-	Namespace: spawnlogic
-	Checksum: 0x63DD92BA
-	Offset: 0x5EA0
-	Size: 0x56
-	Parameters: 0
-	Flags: Linked
-*/
 function update_death_info_debug() {
   while (true) {
     if(getdvarstring("scr_spawnpointdebug") == "0") {
@@ -1727,19 +1208,9 @@ function update_death_info_debug() {
   }
 }
 
-/*
-	Name: spawn_weight_debug
-	Namespace: spawnlogic
-	Checksum: 0x94F24A10
-	Offset: 0x5F00
-	Size: 0x314
-	Parameters: 1
-	Flags: Linked
-*/
 function spawn_weight_debug(spawnpoints) {
-  level notify(# "stop_spawn_weight_debug");
-  level endon(# "stop_spawn_weight_debug");
-  /#
+  level notify("stop_spawn_weight_debug");
+  level endon("stop_spawn_weight_debug");
   while (true) {
     if(getdvarstring("") == "") {
       wait(3);
@@ -1775,18 +1246,8 @@ function spawn_weight_debug(spawnpoints) {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: profile_debug
-	Namespace: spawnlogic
-	Checksum: 0xFD9796C0
-	Offset: 0x6220
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked
-*/
 function profile_debug() {
   while (true) {
     if(getdvarstring("scr_spawnpointprofile") != "1") {
@@ -1803,17 +1264,7 @@ function profile_debug() {
   }
 }
 
-/*
-	Name: debug_nearby_players
-	Namespace: spawnlogic
-	Checksum: 0xC2A22C43
-	Offset: 0x6318
-	Size: 0xE0
-	Parameters: 2
-	Flags: None
-*/
 function debug_nearby_players(players, origin) {
-  /#
   if(getdvarstring("") == "") {
     return;
   }
@@ -1827,29 +1278,10 @@ function debug_nearby_players(players, origin) {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: death_occured
-	Namespace: spawnlogic
-	Checksum: 0xC5612788
-	Offset: 0x6400
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function death_occured(dier, killer) {}
 
-/*
-	Name: check_for_similar_deaths
-	Namespace: spawnlogic
-	Checksum: 0xD976DF9E
-	Offset: 0x6420
-	Size: 0x122
-	Parameters: 1
-	Flags: None
-*/
 function check_for_similar_deaths(deathinfo) {
   for (i = 0; i < level.spawnlogic_deaths.size; i++) {
     if(level.spawnlogic_deaths[i].killer == deathinfo.killer) {
@@ -1866,15 +1298,6 @@ function check_for_similar_deaths(deathinfo) {
   }
 }
 
-/*
-	Name: update_death_info
-	Namespace: spawnlogic
-	Checksum: 0x3F01D1A8
-	Offset: 0x6550
-	Size: 0x1E4
-	Parameters: 0
-	Flags: Linked
-*/
 function update_death_info() {
   time = gettime();
   for (i = 0; i < level.spawnlogic_deaths.size; i++) {
@@ -1896,15 +1319,6 @@ function update_death_info() {
   }
 }
 
-/*
-	Name: is_point_vulnerable
-	Namespace: spawnlogic
-	Checksum: 0x73FBDD1B
-	Offset: 0x6740
-	Size: 0x128
-	Parameters: 1
-	Flags: None
-*/
 function is_point_vulnerable(playerorigin) {
   pos = self.origin + level.bettymodelcenteroffset;
   playerpos = playerorigin + vectorscale((0, 0, 1), 32);
@@ -1920,15 +1334,6 @@ function is_point_vulnerable(playerorigin) {
   return false;
 }
 
-/*
-	Name: avoid_weapon_damage
-	Namespace: spawnlogic
-	Checksum: 0x9BF393C4
-	Offset: 0x6870
-	Size: 0x212
-	Parameters: 1
-	Flags: Linked
-*/
 function avoid_weapon_damage(spawnpoints) {
   if(getdvarstring("scr_spawnpointnewlogic") == "0") {
     return;
@@ -1945,25 +1350,14 @@ function avoid_weapon_damage(spawnpoints) {
       }
       if(distancesquared(spawnpoints[i].origin, level.grenades[j].origin) < mingrenadedistsquared) {
         spawnpoints[i].weight = spawnpoints[i].weight - weapondamagepenalty;
-        /#
         if(level.storespawndata || level.debugspawning) {
           spawnpoints[i].spawndata[spawnpoints[i].spawndata.size] = "" + int(weapondamagepenalty);
         }
-        # /
       }
     }
   }
 }
 
-/*
-	Name: spawn_per_frame_update
-	Namespace: spawnlogic
-	Checksum: 0xAF74B47F
-	Offset: 0x6A90
-	Size: 0x80
-	Parameters: 0
-	Flags: None
-*/
 function spawn_per_frame_update() {
   spawnpointindex = 0;
   while (true) {
@@ -1977,15 +1371,6 @@ function spawn_per_frame_update() {
   }
 }
 
-/*
-	Name: get_non_team_sum
-	Namespace: spawnlogic
-	Checksum: 0x8422B618
-	Offset: 0x6B18
-	Size: 0xC0
-	Parameters: 2
-	Flags: Linked
-*/
 function get_non_team_sum(skip_team, sums) {
   value = 0;
   foreach(team in level.teams) {
@@ -1997,15 +1382,6 @@ function get_non_team_sum(skip_team, sums) {
   return value;
 }
 
-/*
-	Name: get_non_team_min_dist
-	Namespace: spawnlogic
-	Checksum: 0xB500B02F
-	Offset: 0x6BE0
-	Size: 0xD2
-	Parameters: 2
-	Flags: Linked
-*/
 function get_non_team_min_dist(skip_team, mindists) {
   dist = 9999999;
   foreach(team in level.teams) {
@@ -2019,15 +1395,6 @@ function get_non_team_min_dist(skip_team, mindists) {
   return dist;
 }
 
-/*
-	Name: spawnpoint_update
-	Namespace: spawnlogic
-	Checksum: 0xD5F0D82F
-	Offset: 0x6CC0
-	Size: 0x6EA
-	Parameters: 1
-	Flags: Linked
-*/
 function spawnpoint_update(spawnpoint) {
   if(level.teambased) {
     sights = [];
@@ -2042,10 +1409,8 @@ function spawnpoint_update(spawnpoint) {
   }
   spawnpointdir = spawnpoint.forward;
   debug = 0;
-  /#
   debug = getdvarint("") > 0;
-  # /
-    mindist = [];
+  mindist = [];
   distsum = [];
   if(!level.teambased) {
     mindist["all"] = 9999999;
@@ -2089,11 +1454,9 @@ function spawnpoint_update(spawnpoint) {
       } else {
         spawnpoint.enemysights++;
       }
-      /#
       if(debug) {
         line(player.origin + vectorscale((0, 0, 1), 50), spawnpoint.sighttracepoint, (0.5, 1, 0.5));
       }
-      # /
     }
   }
   if(level.teambased) {
@@ -2110,15 +1473,6 @@ function spawnpoint_update(spawnpoint) {
   }
 }
 
-/*
-	Name: get_los_penalty
-	Namespace: spawnlogic
-	Checksum: 0x18BA0E18
-	Offset: 0x73B8
-	Size: 0x72
-	Parameters: 0
-	Flags: Linked
-*/
 function get_los_penalty() {
   if(getdvarstring("scr_spawnpointlospenalty") != "" && getdvarstring("scr_spawnpointlospenalty") != "0") {
     return getdvarfloat("scr_spawnpointlospenalty");
@@ -2126,15 +1480,6 @@ function get_los_penalty() {
   return 100000;
 }
 
-/*
-	Name: last_minute_sight_traces
-	Namespace: spawnlogic
-	Checksum: 0xF13FB75B
-	Offset: 0x7438
-	Size: 0x2DE
-	Parameters: 1
-	Flags: Linked
-*/
 function last_minute_sight_traces(spawnpoint) {
   if(!isdefined(spawnpoint.nearbyplayers)) {
     return false;
@@ -2185,15 +1530,6 @@ function last_minute_sight_traces(spawnpoint) {
   return false;
 }
 
-/*
-	Name: avoid_visible_enemies
-	Namespace: spawnlogic
-	Checksum: 0xC988B060
-	Offset: 0x7720
-	Size: 0x570
-	Parameters: 2
-	Flags: Linked
-*/
 function avoid_visible_enemies(spawnpoints, teambased) {
   if(getdvarstring("scr_spawnpointnewlogic") == "0") {
     return;
@@ -2207,13 +1543,11 @@ function avoid_visible_enemies(spawnpoints, teambased) {
       }
       penalty = lospenalty * spawnpoints[i].enemysights[self.team];
       spawnpoints[i].weight = spawnpoints[i].weight - penalty;
-      /#
       if(level.storespawndata || level.debugspawning) {
         index = spawnpoints[i].sightchecks.size;
         spawnpoints[i].sightchecks[index] = spawnstruct();
         spawnpoints[i].sightchecks[index].penalty = penalty;
       }
-      # /
     }
   } else {
     for (i = 0; i < spawnpoints.size; i++) {
@@ -2222,13 +1556,11 @@ function avoid_visible_enemies(spawnpoints, teambased) {
       }
       penalty = lospenalty * spawnpoints[i].enemysights;
       spawnpoints[i].weight = spawnpoints[i].weight - penalty;
-      /#
       if(level.storespawndata || level.debugspawning) {
         index = spawnpoints[i].sightchecks.size;
         spawnpoints[i].sightchecks[index] = spawnstruct();
         spawnpoints[i].sightchecks[index].penalty = penalty;
       }
-      # /
     }
     mindistteam = "all";
   }
@@ -2255,26 +1587,15 @@ function avoid_visible_enemies(spawnpoints, teambased) {
         }
         if(penalty > 0) {
           spawnpoints[i].weight = spawnpoints[i].weight - penalty;
-          /#
           if(level.storespawndata || level.debugspawning) {
             spawnpoints[i].spawndata[spawnpoints[i].spawndata.size] = (("" + int(spawnpoints[i].minenemydist[mindistteam])) + "") + int(penalty);
           }
-          # /
         }
       }
     }
   }
 }
 
-/*
-	Name: avoid_spawn_reuse
-	Namespace: spawnlogic
-	Checksum: 0xDD3D43B9
-	Offset: 0x7C98
-	Size: 0x28C
-	Parameters: 2
-	Flags: Linked
-*/
 function avoid_spawn_reuse(spawnpoints, teambased) {
   if(getdvarstring("scr_spawnpointnewlogic") == "0") {
     return;
@@ -2299,11 +1620,9 @@ function avoid_spawn_reuse(spawnpoints, teambased) {
       if(distsq < maxdistsq) {
         worsen = (5000 * (1 - (distsq / maxdistsq))) * (1 - (timepassed / maxtime));
         spawnpoint.weight = spawnpoint.weight - worsen;
-        /#
         if(level.storespawndata || level.debugspawning) {
           spawnpoint.spawndata[spawnpoint.spawndata.size] = "" + worsen;
         }
-        # /
       } else {
         spawnpoint.lastspawnedplayer = undefined;
       }
@@ -2313,15 +1632,6 @@ function avoid_spawn_reuse(spawnpoints, teambased) {
   }
 }
 
-/*
-	Name: avoid_same_spawn
-	Namespace: spawnlogic
-	Checksum: 0x37ECBE93
-	Offset: 0x7F30
-	Size: 0x104
-	Parameters: 1
-	Flags: Linked
-*/
 function avoid_same_spawn(spawnpoints) {
   if(getdvarstring("scr_spawnpointnewlogic") == "0") {
     return;
@@ -2332,44 +1642,22 @@ function avoid_same_spawn(spawnpoints) {
   for (i = 0; i < spawnpoints.size; i++) {
     if(spawnpoints[i] == self.lastspawnpoint) {
       spawnpoints[i].weight = spawnpoints[i].weight - 50000;
-      /#
       if(level.storespawndata || level.debugspawning) {
         spawnpoints[i].spawndata[spawnpoints[i].spawndata.size] = "";
       }
-      # /
-        break;
+      break;
     }
   }
 }
 
-/*
-	Name: get_random_intermission_point
-	Namespace: spawnlogic
-	Checksum: 0xC84B4010
-	Offset: 0x8040
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function get_random_intermission_point() {
   spawnpoints = struct::get_array("cp_global_intermission", "targetname");
   if(!spawnpoints.size) {
     spawnpoints = struct::get_array("cp_coop_spawn", "targetname");
   }
-  /#
   assert(spawnpoints.size);
-  # /
-    spawnpoint = get_spawnpoint_random(spawnpoints);
+  spawnpoint = get_spawnpoint_random(spawnpoints);
   return spawnpoint;
 }
 
-/*
-	Name: place_spawn
-	Namespace: spawnlogic
-	Checksum: 0x99EC1590
-	Offset: 0x80F0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function place_spawn() {}

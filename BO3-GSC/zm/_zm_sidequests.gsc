@@ -1,36 +1,19 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_sidequests.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_sidequests;
 
-/*
-	Name: init_sidequests
-	Namespace: zm_sidequests
-	Checksum: 0xE82D6BE4
-	Offset: 0x228
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_sidequests() {
   level._zombie_sidequests = [];
-  /#
   level thread sidequest_debug();
-  # /
 }
 
-/*
-	Name: is_sidequest_allowed
-	Namespace: zm_sidequests
-	Checksum: 0x422CA32E
-	Offset: 0x260
-	Size: 0xD2
-	Parameters: 1
-	Flags: None
-*/
 function is_sidequest_allowed(a_gametypes) {
   if(isdefined(level.gamedifficulty) && level.gamedifficulty == 0) {
     return 0;
@@ -47,38 +30,18 @@ function is_sidequest_allowed(a_gametypes) {
   return b_is_gametype_active;
 }
 
-/*
-	Name: sidequest_debug
-	Namespace: zm_sidequests
-	Checksum: 0x76616890
-	Offset: 0x340
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function sidequest_debug() {
-  /#
   if(getdvarstring("") != "") {
     return;
   }
   while (true) {
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: damager_trigger_thread
-	Namespace: zm_sidequests
-	Checksum: 0x1F517EEA
-	Offset: 0x390
-	Size: 0x10A
-	Parameters: 2
-	Flags: None
-*/
 function damager_trigger_thread(dam_types, trigger_func) {
   while (true) {
-    self waittill(# "damage", amount, attacker, dir, point, type);
+    self waittill("damage", amount, attacker, dir, point, type);
     self.dam_amount = amount;
     self.attacker = attacker;
     self.dam_dir = dir;
@@ -93,80 +56,35 @@ function damager_trigger_thread(dam_types, trigger_func) {
   if(isdefined(trigger_func)) {
     self[[trigger_func]]();
   }
-  self notify(# "triggered");
+  self notify("triggered");
 }
 
-/*
-	Name: damage_trigger_thread
-	Namespace: zm_sidequests
-	Checksum: 0xF715094F
-	Offset: 0x4A8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function damage_trigger_thread() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "damage");
-    self.owner_ent notify(# "triggered");
+    self waittill("damage");
+    self.owner_ent notify("triggered");
   }
 }
 
-/*
-	Name: entity_damage_thread
-	Namespace: zm_sidequests
-	Checksum: 0xF6762281
-	Offset: 0x4F0
-	Size: 0x3C
-	Parameters: 0
-	Flags: None
-*/
 function entity_damage_thread() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "damage");
-    self.owner_ent notify(# "triggered");
+    self waittill("damage");
+    self.owner_ent notify("triggered");
   }
 }
 
-/*
-	Name: sidequest_uses_teleportation
-	Namespace: zm_sidequests
-	Checksum: 0xE6B43D0F
-	Offset: 0x538
-	Size: 0x28
-	Parameters: 1
-	Flags: None
-*/
 function sidequest_uses_teleportation(name) {
   level._zombie_sidequests[name].uses_teleportation = 1;
 }
 
-/*
-	Name: register_sidequest_icon
-	Namespace: zm_sidequests
-	Checksum: 0xB276C266
-	Offset: 0x568
-	Size: 0xA4
-	Parameters: 2
-	Flags: None
-*/
 function register_sidequest_icon(icon_name, version_number) {
   clientfieldprefix = ("sidequestIcons." + icon_name) + ".";
   clientfield::register("clientuimodel", clientfieldprefix + "icon", version_number, 1, "int");
   clientfield::register("clientuimodel", clientfieldprefix + "notification", version_number, 1, "int");
 }
 
-/*
-	Name: add_sidequest_icon
-	Namespace: zm_sidequests
-	Checksum: 0x91BCD30E
-	Offset: 0x618
-	Size: 0x9C
-	Parameters: 3
-	Flags: None
-*/
 function add_sidequest_icon(sidequest_name, icon_name, var_275b4f28 = 1) {
   clientfield::set_player_uimodel(("sidequestIcons." + icon_name) + ".icon", 1);
   if(isdefined(var_275b4f28) && var_275b4f28) {
@@ -174,40 +92,20 @@ function add_sidequest_icon(sidequest_name, icon_name, var_275b4f28 = 1) {
   }
 }
 
-/*
-	Name: remove_sidequest_icon
-	Namespace: zm_sidequests
-	Checksum: 0xA476429A
-	Offset: 0x6C0
-	Size: 0x64
-	Parameters: 2
-	Flags: None
-*/
 function remove_sidequest_icon(sidequest_name, icon_name) {
   clientfield::set_player_uimodel(("sidequestIcons." + icon_name) + ".icon", 0);
   clientfield::set_player_uimodel(("sidequestIcons." + icon_name) + ".notification", 0);
 }
 
-/*
-	Name: declare_sidequest
-	Namespace: zm_sidequests
-	Checksum: 0x4743D63A
-	Offset: 0x730
-	Size: 0x1D2
-	Parameters: 6
-	Flags: None
-*/
 function declare_sidequest(name, init_func, logic_func, complete_func, generic_stage_start_func, generic_stage_end_func) {
   if(!isdefined(level._zombie_sidequests)) {
     init_sidequests();
   }
-  /#
   if(isdefined(level._zombie_sidequests[name])) {
     println("" + name);
     return;
   }
-  # /
-    sq = spawnstruct();
+  sq = spawnstruct();
   sq.name = name;
   sq.stages = [];
   sq.last_completed_stage = -1;
@@ -226,17 +124,7 @@ function declare_sidequest(name, init_func, logic_func, complete_func, generic_s
   level._zombie_sidequests[name] = sq;
 }
 
-/*
-	Name: declare_sidequest_stage
-	Namespace: zm_sidequests
-	Checksum: 0x7DB614D6
-	Offset: 0x910
-	Size: 0x1F2
-	Parameters: 5
-	Flags: None
-*/
 function declare_sidequest_stage(sidequest_name, stage_name, init_func, logic_func, exit_func) {
-  /#
   if(!isdefined(level._zombie_sidequests)) {
     println("");
     return;
@@ -249,8 +137,7 @@ function declare_sidequest_stage(sidequest_name, stage_name, init_func, logic_fu
     println((("" + sidequest_name) + "") + stage_name);
     return;
   }
-  # /
-    stage = spawnstruct();
+  stage = spawnstruct();
   stage.name = stage_name;
   stage.stage_number = level._zombie_sidequests[sidequest_name].stages.size;
   stage.assets = [];
@@ -263,17 +150,7 @@ function declare_sidequest_stage(sidequest_name, stage_name, init_func, logic_fu
   level._zombie_sidequests[sidequest_name].stages[stage_name] = stage;
 }
 
-/*
-	Name: set_stage_time_limit
-	Namespace: zm_sidequests
-	Checksum: 0xE745E5B2
-	Offset: 0xB10
-	Size: 0x158
-	Parameters: 4
-	Flags: None
-*/
 function set_stage_time_limit(sidequest_name, stage_name, time_limit, timer_func) {
-  /#
   if(!isdefined(level._zombie_sidequests)) {
     println("");
     return;
@@ -286,23 +163,12 @@ function set_stage_time_limit(sidequest_name, stage_name, time_limit, timer_func
     println(((("" + stage_name) + "") + sidequest_name) + "");
     return;
   }
-  # /
-    level._zombie_sidequests[sidequest_name].stages[stage_name].time_limit = time_limit;
+  level._zombie_sidequests[sidequest_name].stages[stage_name].time_limit = time_limit;
   level._zombie_sidequests[sidequest_name].stages[stage_name].time_limit_func = timer_func;
 }
 
-/*
-	Name: declare_stage_asset_from_struct
-	Namespace: zm_sidequests
-	Checksum: 0x20A25844
-	Offset: 0xC70
-	Size: 0x284
-	Parameters: 5
-	Flags: None
-*/
 function declare_stage_asset_from_struct(sidequest_name, stage_name, target_name, thread_func, trigger_thread_func) {
   structs = struct::get_array(target_name, "targetname");
-  /#
   if(!isdefined(level._zombie_sidequests)) {
     println(("" + target_name) + "");
     return;
@@ -319,28 +185,17 @@ function declare_stage_asset_from_struct(sidequest_name, stage_name, target_name
     println(("" + target_name) + "");
     return;
   }
-  # /
-    for (i = 0; i < structs.size; i++) {
-      asset = spawnstruct();
-      asset.type = "struct";
-      asset.struct = structs[i];
-      asset.thread_func = thread_func;
-      asset.trigger_thread_func = trigger_thread_func;
-      level._zombie_sidequests[sidequest_name].stages[stage_name].assets[level._zombie_sidequests[sidequest_name].stages[stage_name].assets.size] = asset;
-    }
+  for (i = 0; i < structs.size; i++) {
+    asset = spawnstruct();
+    asset.type = "struct";
+    asset.struct = structs[i];
+    asset.thread_func = thread_func;
+    asset.trigger_thread_func = trigger_thread_func;
+    level._zombie_sidequests[sidequest_name].stages[stage_name].assets[level._zombie_sidequests[sidequest_name].stages[stage_name].assets.size] = asset;
+  }
 }
 
-/*
-	Name: declare_stage_title
-	Namespace: zm_sidequests
-	Checksum: 0x2C3F7AB6
-	Offset: 0xF00
-	Size: 0x144
-	Parameters: 3
-	Flags: None
-*/
 function declare_stage_title(sidequest_name, stage_name, title) {
-  /#
   if(!isdefined(level._zombie_sidequests)) {
     println(("" + title) + "");
     return;
@@ -353,22 +208,11 @@ function declare_stage_title(sidequest_name, stage_name, title) {
     println(((((("" + title) + "") + sidequest_name) + "") + stage_name) + "");
     return;
   }
-  # /
-    level._zombie_sidequests[sidequest_name].stages[stage_name].title = title;
+  level._zombie_sidequests[sidequest_name].stages[stage_name].title = title;
 }
 
-/*
-	Name: declare_stage_asset
-	Namespace: zm_sidequests
-	Checksum: 0xECB7FFD2
-	Offset: 0x1050
-	Size: 0x284
-	Parameters: 5
-	Flags: None
-*/
 function declare_stage_asset(sidequest_name, stage_name, target_name, thread_func, trigger_thread_func) {
   ents = getentarray(target_name, "targetname");
-  /#
   if(!isdefined(level._zombie_sidequests)) {
     println(("" + target_name) + "");
     return;
@@ -385,29 +229,18 @@ function declare_stage_asset(sidequest_name, stage_name, target_name, thread_fun
     println(("" + target_name) + "");
     return;
   }
-  # /
-    for (i = 0; i < ents.size; i++) {
-      asset = spawnstruct();
-      asset.type = "entity";
-      asset.ent = ents[i];
-      asset.thread_func = thread_func;
-      asset.trigger_thread_func = trigger_thread_func;
-      level._zombie_sidequests[sidequest_name].stages[stage_name].assets[level._zombie_sidequests[sidequest_name].stages[stage_name].assets.size] = asset;
-    }
+  for (i = 0; i < ents.size; i++) {
+    asset = spawnstruct();
+    asset.type = "entity";
+    asset.ent = ents[i];
+    asset.thread_func = thread_func;
+    asset.trigger_thread_func = trigger_thread_func;
+    level._zombie_sidequests[sidequest_name].stages[stage_name].assets[level._zombie_sidequests[sidequest_name].stages[stage_name].assets.size] = asset;
+  }
 }
 
-/*
-	Name: declare_sidequest_asset
-	Namespace: zm_sidequests
-	Checksum: 0xD680E68F
-	Offset: 0x12E0
-	Size: 0x224
-	Parameters: 4
-	Flags: None
-*/
 function declare_sidequest_asset(sidequest_name, target_name, thread_func, trigger_thread_func) {
   ents = getentarray(target_name, "targetname");
-  /#
   if(!isdefined(level._zombie_sidequests)) {
     println(("" + target_name) + "");
     return;
@@ -420,31 +253,20 @@ function declare_sidequest_asset(sidequest_name, target_name, thread_func, trigg
     println(("" + target_name) + "");
     return;
   }
-  # /
-    for (i = 0; i < ents.size; i++) {
-      asset = spawnstruct();
-      asset.type = "entity";
-      asset.ent = ents[i];
-      asset.thread_func = thread_func;
-      asset.trigger_thread_func = trigger_thread_func;
-      asset.ent.thread_func = thread_func;
-      asset.ent.trigger_thread_func = trigger_thread_func;
-      level._zombie_sidequests[sidequest_name].assets[level._zombie_sidequests[sidequest_name].assets.size] = asset;
-    }
+  for (i = 0; i < ents.size; i++) {
+    asset = spawnstruct();
+    asset.type = "entity";
+    asset.ent = ents[i];
+    asset.thread_func = thread_func;
+    asset.trigger_thread_func = trigger_thread_func;
+    asset.ent.thread_func = thread_func;
+    asset.ent.trigger_thread_func = trigger_thread_func;
+    level._zombie_sidequests[sidequest_name].assets[level._zombie_sidequests[sidequest_name].assets.size] = asset;
+  }
 }
 
-/*
-	Name: declare_sidequest_asset_from_struct
-	Namespace: zm_sidequests
-	Checksum: 0x85696CF
-	Offset: 0x1510
-	Size: 0x1EC
-	Parameters: 4
-	Flags: None
-*/
 function declare_sidequest_asset_from_struct(sidequest_name, target_name, thread_func, trigger_thread_func) {
   structs = struct::get_array(target_name, "targetname");
-  /#
   if(!isdefined(level._zombie_sidequests)) {
     println(("" + target_name) + "");
     return;
@@ -457,26 +279,16 @@ function declare_sidequest_asset_from_struct(sidequest_name, target_name, thread
     println(("" + target_name) + "");
     return;
   }
-  # /
-    for (i = 0; i < structs.size; i++) {
-      asset = spawnstruct();
-      asset.type = "struct";
-      asset.struct = structs[i];
-      asset.thread_func = thread_func;
-      asset.trigger_thread_func = trigger_thread_func;
-      level._zombie_sidequests[sidequest_name].assets[level._zombie_sidequests[sidequest_name].assets.size] = asset;
-    }
+  for (i = 0; i < structs.size; i++) {
+    asset = spawnstruct();
+    asset.type = "struct";
+    asset.struct = structs[i];
+    asset.thread_func = thread_func;
+    asset.trigger_thread_func = trigger_thread_func;
+    level._zombie_sidequests[sidequest_name].assets[level._zombie_sidequests[sidequest_name].assets.size] = asset;
+  }
 }
 
-/*
-	Name: build_asset_from_struct
-	Namespace: zm_sidequests
-	Checksum: 0xB075FC6
-	Offset: 0x1708
-	Size: 0x228
-	Parameters: 2
-	Flags: Linked
-*/
 function build_asset_from_struct(asset, parent_struct) {
   ent = spawn("script_model", asset.origin);
   if(isdefined(asset.model)) {
@@ -502,27 +314,16 @@ function build_asset_from_struct(asset, parent_struct) {
   return ent;
 }
 
-/*
-	Name: delete_stage_assets
-	Namespace: zm_sidequests
-	Checksum: 0xF6DD6427
-	Offset: 0x1938
-	Size: 0x200
-	Parameters: 0
-	Flags: Linked
-*/
 function delete_stage_assets() {
   for (i = 0; i < self.active_assets.size; i++) {
     asset = self.active_assets[i];
     switch (asset.type) {
       case "struct": {
         if(isdefined(asset.trigger)) {
-          /#
           println("");
-          # /
-            if(!(isdefined(asset.trigger.var_b82c7478) && asset.trigger.var_b82c7478)) {
-              asset.trigger delete();
-            }
+          if(!(isdefined(asset.trigger.var_b82c7478) && asset.trigger.var_b82c7478)) {
+            asset.trigger delete();
+          }
           asset.trigger = undefined;
         }
         asset delete();
@@ -530,10 +331,8 @@ function delete_stage_assets() {
       }
       case "entity": {
         if(isdefined(asset.trigger)) {
-          /#
           println("");
-          # /
-            asset.trigger delete();
+          asset.trigger delete();
           asset.trigger = undefined;
         }
         break;
@@ -549,15 +348,6 @@ function delete_stage_assets() {
   self.active_assets = remaining_assets;
 }
 
-/*
-	Name: build_assets
-	Namespace: zm_sidequests
-	Checksum: 0x5C4B1E5E
-	Offset: 0x1B40
-	Size: 0x7D6
-	Parameters: 0
-	Flags: Linked
-*/
 function build_assets() {
   for (i = 0; i < self.assets.size; i++) {
     asset = undefined;
@@ -580,10 +370,8 @@ function build_assets() {
         break;
       }
       default: {
-        /#
         println("" + self.assets.type);
-        # /
-          break;
+        break;
       }
     }
     if(isdefined(asset.script_noteworthy) && (self.assets[i].type == "entity" && !isdefined(asset.trigger)) || isdefined(asset.script_noteworthy)) {
@@ -667,39 +455,21 @@ function build_assets() {
   }
 }
 
-/*
-	Name: radius_trigger_thread
-	Namespace: zm_sidequests
-	Checksum: 0x40CEACE8
-	Offset: 0x2320
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function radius_trigger_thread() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(!isplayer(player)) {
       continue;
     }
-    self.owner_ent notify(# "triggered");
+    self.owner_ent notify("triggered");
     while (player istouching(self)) {
       wait(0.05);
     }
-    self.owner_ent notify(# "untriggered");
+    self.owner_ent notify("untriggered");
   }
 }
 
-/*
-	Name: thread_on_assets
-	Namespace: zm_sidequests
-	Checksum: 0x47B8A987
-	Offset: 0x23C8
-	Size: 0x7C
-	Parameters: 2
-	Flags: None
-*/
 function thread_on_assets(target_name, thread_func) {
   for (i = 0; i < self.active_assets.size; i++) {
     if(self.active_assets[i].targetname == target_name) {
@@ -708,15 +478,6 @@ function thread_on_assets(target_name, thread_func) {
   }
 }
 
-/*
-	Name: stage_logic_func_wrapper
-	Namespace: zm_sidequests
-	Checksum: 0xDF2E493B
-	Offset: 0x2450
-	Size: 0x74
-	Parameters: 2
-	Flags: Linked
-*/
 function stage_logic_func_wrapper(sidequest, stage) {
   if(isdefined(stage.logic_func)) {
     level endon(((sidequest.name + "_") + stage.name) + "_over");
@@ -724,17 +485,7 @@ function stage_logic_func_wrapper(sidequest, stage) {
   }
 }
 
-/*
-	Name: sidequest_start
-	Namespace: zm_sidequests
-	Checksum: 0xC0087F1C
-	Offset: 0x24D0
-	Size: 0x114
-	Parameters: 1
-	Flags: None
-*/
 function sidequest_start(sidequest_name) {
-  /#
   if(!isdefined(level._zombie_sidequests)) {
     println(("" + sidequest_name) + "");
     return;
@@ -743,8 +494,7 @@ function sidequest_start(sidequest_name) {
     println(("" + sidequest_name) + "");
     return;
   }
-  # /
-    sidequest = level._zombie_sidequests[sidequest_name];
+  sidequest = level._zombie_sidequests[sidequest_name];
   sidequest build_assets();
   if(isdefined(sidequest.init_func)) {
     sidequest[[sidequest.init_func]]();
@@ -754,15 +504,6 @@ function sidequest_start(sidequest_name) {
   }
 }
 
-/*
-	Name: stage_start
-	Namespace: zm_sidequests
-	Checksum: 0xA55CC497
-	Offset: 0x25F0
-	Size: 0x1E4
-	Parameters: 2
-	Flags: Linked
-*/
 function stage_start(sidequest, stage) {
   if(isstring(sidequest)) {
     sidequest = level._zombie_sidequests[sidequest];
@@ -790,18 +531,9 @@ function stage_start(sidequest, stage) {
   }
 }
 
-/*
-	Name: display_stage_title
-	Namespace: zm_sidequests
-	Checksum: 0x3B5C4D8E
-	Offset: 0x27E0
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked
-*/
 function display_stage_title(wait_for_teleport_done_notify) {
   if(wait_for_teleport_done_notify) {
-    level waittill(# "teleport_done");
+    level waittill("teleport_done");
     wait(2);
   }
   stage_text = newhudelem();
@@ -827,22 +559,11 @@ function display_stage_title(wait_for_teleport_done_notify) {
   stage_text destroy();
 }
 
-/*
-	Name: time_limited_stage
-	Namespace: zm_sidequests
-	Checksum: 0x72DE4E23
-	Offset: 0x29C8
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function time_limited_stage(sidequest) {
-  /#
   println(((((("" + sidequest.name) + "") + self.name) + "") + self.time_limit) + "");
-  # /
-    level endon(((sidequest.name + "_") + self.name) + "_over");
-  level endon(# "suspend_timer");
-  level endon(# "end_game");
+  level endon(((sidequest.name + "_") + self.name) + "_over");
+  level endon("suspend_timer");
+  level endon("end_game");
   time_limit = undefined;
   if(isdefined(self.time_limit_func)) {
     time_limit = [
@@ -852,57 +573,27 @@ function time_limited_stage(sidequest) {
     time_limit = self.time_limit * 0.25;
   }
   wait(time_limit);
-  level notify(# "timed_stage_75_percent");
+  level notify("timed_stage_75_percent");
   wait(time_limit);
-  level notify(# "timed_stage_50_percent");
+  level notify("timed_stage_50_percent");
   wait(time_limit);
-  level notify(# "timed_stage_25_percent");
+  level notify("timed_stage_25_percent");
   wait(time_limit - 10);
-  level notify(# "timed_stage_10_seconds_to_go");
+  level notify("timed_stage_10_seconds_to_go");
   wait(10);
   stage_failed(sidequest, self);
 }
 
-/*
-	Name: sidequest_println
-	Namespace: zm_sidequests
-	Checksum: 0x22F0BCA
-	Offset: 0x2B48
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function sidequest_println(str) {
-  /#
   if(getdvarstring("") != "") {
     return;
   }
   println(str);
-  # /
 }
 
-/*
-	Name: precache_sidequest_assets
-	Namespace: zm_sidequests
-	Checksum: 0x99EC1590
-	Offset: 0x2BA8
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function precache_sidequest_assets() {}
 
-/*
-	Name: sidequest_complete
-	Namespace: zm_sidequests
-	Checksum: 0x74B1B447
-	Offset: 0x2BB8
-	Size: 0x9E
-	Parameters: 1
-	Flags: None
-*/
 function sidequest_complete(sidequest_name) {
-  /#
   if(!isdefined(level._zombie_sidequests)) {
     println(("" + sidequest_name) + "");
     return;
@@ -911,21 +602,10 @@ function sidequest_complete(sidequest_name) {
     println(("" + sidequest_name) + "");
     return;
   }
-  # /
-    return level._zombie_sidequests[sidequest_name].sidequest_complete;
+  return level._zombie_sidequests[sidequest_name].sidequest_complete;
 }
 
-/*
-	Name: stage_completed
-	Namespace: zm_sidequests
-	Checksum: 0xD206FE7D
-	Offset: 0x2C60
-	Size: 0x15C
-	Parameters: 2
-	Flags: None
-*/
 function stage_completed(sidequest_name, stage_name) {
-  /#
   if(!isdefined(level._zombie_sidequests)) {
     println(("" + sidequest_name) + "");
     return;
@@ -939,35 +619,21 @@ function stage_completed(sidequest_name, stage_name) {
     return;
   }
   println("");
-  # /
-    sidequest = level._zombie_sidequests[sidequest_name];
+  sidequest = level._zombie_sidequests[sidequest_name];
   stage = sidequest.stages[stage_name];
   level thread stage_completed_internal(sidequest, stage);
 }
 
-/*
-	Name: stage_completed_internal
-	Namespace: zm_sidequests
-	Checksum: 0x4BF3CAB2
-	Offset: 0x2DC8
-	Size: 0x278
-	Parameters: 2
-	Flags: Linked
-*/
 function stage_completed_internal(sidequest, stage) {
   level notify(((sidequest.name + "_") + stage.name) + "_over");
   level notify(((sidequest.name + "_") + stage.name) + "_completed");
   if(isdefined(sidequest.generic_stage_end_func)) {
-    /#
     println("");
-    # /
-      stage[[sidequest.generic_stage_end_func]]();
+    stage[[sidequest.generic_stage_end_func]]();
   }
   if(isdefined(stage.exit_func)) {
-    /#
     println("");
-    # /
-      stage[[stage.exit_func]](1);
+    stage[[stage.exit_func]](1);
   }
   stage.completed = 1;
   sidequest.last_completed_stage = sidequest.active_stage;
@@ -990,15 +656,6 @@ function stage_completed_internal(sidequest, stage) {
   }
 }
 
-/*
-	Name: stage_failed_internal
-	Namespace: zm_sidequests
-	Checksum: 0xF1CCE015
-	Offset: 0x3048
-	Size: 0x104
-	Parameters: 2
-	Flags: Linked
-*/
 function stage_failed_internal(sidequest, stage) {
   level notify(((sidequest.name + "_") + stage.name) + "_over");
   level notify(((sidequest.name + "_") + stage.name) + "_failed");
@@ -1012,37 +669,17 @@ function stage_failed_internal(sidequest, stage) {
   stage delete_stage_assets();
 }
 
-/*
-	Name: stage_failed
-	Namespace: zm_sidequests
-	Checksum: 0x3A3503F
-	Offset: 0x3158
-	Size: 0xB4
-	Parameters: 2
-	Flags: Linked
-*/
 function stage_failed(sidequest, stage) {
-  /#
   println("");
-  # /
-    if(isstring(sidequest)) {
-      sidequest = level._zombie_sidequests[sidequest];
-    }
+  if(isstring(sidequest)) {
+    sidequest = level._zombie_sidequests[sidequest];
+  }
   if(isstring(stage)) {
     stage = sidequest.stages[stage];
   }
   level thread stage_failed_internal(sidequest, stage);
 }
 
-/*
-	Name: get_sidequest_stage
-	Namespace: zm_sidequests
-	Checksum: 0x98936EC6
-	Offset: 0x3218
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function get_sidequest_stage(sidequest, stage_number) {
   stage = undefined;
   stage_names = getarraykeys(sidequest.stages);
@@ -1055,70 +692,34 @@ function get_sidequest_stage(sidequest, stage_number) {
   return stage;
 }
 
-/*
-	Name: get_damage_trigger
-	Namespace: zm_sidequests
-	Checksum: 0x8DF06D02
-	Offset: 0x32F0
-	Size: 0x70
-	Parameters: 3
-	Flags: None
-*/
 function get_damage_trigger(radius, origin, damage_types) {
   trig = spawn("trigger_damage", origin, 0, radius, 72);
   trig thread dam_trigger_thread(damage_types);
   return trig;
 }
 
-/*
-	Name: dam_trigger_thread
-	Namespace: zm_sidequests
-	Checksum: 0x7B7980EF
-	Offset: 0x3368
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function dam_trigger_thread(damage_types) {
-  self endon(# "death");
+  self endon("death");
   damage_type = "NONE";
   while (true) {
-    self waittill(# "damage", amount, attacker, dir, point, mod);
+    self waittill("damage", amount, attacker, dir, point, mod);
     for (i = 0; i < damage_types.size; i++) {
       if(mod == damage_types[i]) {
-        self notify(# "triggered");
+        self notify("triggered");
       }
     }
   }
 }
 
-/*
-	Name: use_trigger_thread
-	Namespace: zm_sidequests
-	Checksum: 0x7946712F
-	Offset: 0x3440
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function use_trigger_thread() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "trigger", player);
-    self.owner_ent notify(# "triggered", player);
+    self waittill("trigger", player);
+    self.owner_ent notify("triggered", player);
     wait(0.1);
   }
 }
 
-/*
-	Name: sidequest_stage_active
-	Namespace: zm_sidequests
-	Checksum: 0xA642A7C9
-	Offset: 0x34A0
-	Size: 0x78
-	Parameters: 2
-	Flags: None
-*/
 function sidequest_stage_active(sidequest_name, stage_name) {
   sidequest = level._zombie_sidequests[sidequest_name];
   stage = sidequest.stages[stage_name];
@@ -1128,17 +729,7 @@ function sidequest_stage_active(sidequest_name, stage_name) {
   return false;
 }
 
-/*
-	Name: sidequest_start_next_stage
-	Namespace: zm_sidequests
-	Checksum: 0xD5F51995
-	Offset: 0x3528
-	Size: 0x178
-	Parameters: 1
-	Flags: None
-*/
 function sidequest_start_next_stage(sidequest_name) {
-  /#
   if(!isdefined(level._zombie_sidequests)) {
     println(("" + sidequest_name) + "");
     return;
@@ -1147,8 +738,7 @@ function sidequest_start_next_stage(sidequest_name) {
     println(("" + sidequest_name) + "");
     return;
   }
-  # /
-    sidequest = level._zombie_sidequests[sidequest_name];
+  sidequest = level._zombie_sidequests[sidequest_name];
   if(sidequest.sidequest_complete == 1) {
     return;
   }
@@ -1160,35 +750,15 @@ function sidequest_start_next_stage(sidequest_name) {
   }
   stage = get_sidequest_stage(sidequest, last_completed);
   if(!isdefined(stage)) {
-    /#
     println((("" + sidequest_name) + "") + last_completed);
-    # /
-      return;
+    return;
   }
   stage_start(sidequest, stage);
   return stage;
 }
 
-/*
-	Name: main
-	Namespace: zm_sidequests
-	Checksum: 0x99EC1590
-	Offset: 0x36A8
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function main() {}
 
-/*
-	Name: is_facing
-	Namespace: zm_sidequests
-	Checksum: 0x86C31BE0
-	Offset: 0x36B8
-	Size: 0x13C
-	Parameters: 1
-	Flags: Linked
-*/
 function is_facing(facee) {
   orientation = self getplayerangles();
   forwardvec = anglestoforward(orientation);
@@ -1201,25 +771,14 @@ function is_facing(facee) {
   return dotproduct > 0.9;
 }
 
-/*
-	Name: fake_use
-	Namespace: zm_sidequests
-	Checksum: 0x8AD29FEA
-	Offset: 0x3800
-	Size: 0x18C
-	Parameters: 2
-	Flags: None
-*/
 function fake_use(notify_string, qualifier_func) {
   waittillframeend();
   while (!(isdefined(level.disable_print3d_ent) && level.disable_print3d_ent)) {
     if(!isdefined(self)) {
       return;
     }
-    /#
     print3d(self.origin, "", vectorscale((0, 1, 0), 255), 1);
-    # /
-      players = getplayers();
+    players = getplayers();
     for (i = 0; i < players.size; i++) {
       qualifier_passed = 1;
       if(isdefined(qualifier_func)) {

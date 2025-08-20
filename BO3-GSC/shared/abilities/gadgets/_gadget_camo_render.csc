@@ -1,32 +1,17 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/************************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\abilities\gadgets\_gadget_camo_render.csc
+************************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\duplicaterender_mgr;
 #using scripts\shared\system_shared;
-
 #namespace _gadget_camo_render;
 
-/*
-	Name: __init__sytem__
-	Namespace: _gadget_camo_render
-	Checksum: 0x9A5421E1
-	Offset: 0x420
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("gadget_camo_render", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _gadget_camo_render
-	Checksum: 0xAB0EC71B
-	Offset: 0x460
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   duplicate_render::set_dr_filter_framebuffer_duplicate("camo_rev_dr", 90, "gadget_camo_reveal,", "gadget_camo_flicker,gadget_camo_break,hide_model", 1, "mc/hud_outline_predator", 0);
   duplicate_render::set_dr_filter_framebuffer("camo_rev", 90, "gadget_camo_reveal,hide_model", "gadget_camo_flicker,gadget_camo_break", 0, "mc/hud_outline_predator", 0);
@@ -39,17 +24,8 @@ function __init__() {
 
 #namespace gadget_camo_render;
 
-/*
-	Name: forceon
-	Namespace: gadget_camo_render
-	Checksum: 0x29AA0B9F
-	Offset: 0x5F0
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function forceon(local_client_num) {
-  self notify(# "kill_gadget_camo_render_doreveal");
+  self notify("kill_gadget_camo_render_doreveal");
   self duplicate_render::update_dr_flag(local_client_num, "hide_model", 1);
   self mapshaderconstant(local_client_num, 0, "scriptVector0", 1, 0, 0, 0);
   self duplicate_render::set_dr_flag("gadget_camo_reveal", 0);
@@ -57,19 +33,10 @@ function forceon(local_client_num) {
   self duplicate_render::update_dr_filters(local_client_num);
 }
 
-/*
-	Name: doreveal
-	Namespace: gadget_camo_render
-	Checksum: 0xC14D6820
-	Offset: 0x6B8
-	Size: 0x364
-	Parameters: 2
-	Flags: Linked
-*/
 function doreveal(local_client_num, direction) {
-  self notify(# "kill_gadget_camo_render_doreveal");
-  self endon(# "kill_gadget_camo_render_doreveal");
-  self endon(# "entityshutdown");
+  self notify("kill_gadget_camo_render_doreveal");
+  self endon("kill_gadget_camo_render_doreveal");
+  self endon("entityshutdown");
   if(!isdefined(self)) {
     return;
   }

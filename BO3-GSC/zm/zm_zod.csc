@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\margwa;
 #using scripts\shared\animation_shared;
@@ -66,34 +70,14 @@
 #using scripts\zm\zm_zod_transformer;
 #using scripts\zm\zm_zod_traps;
 #using scripts\zm\zm_zod_util;
-
 #using_animtree("generic");
-
 #namespace zm_zod;
 
-/*
-	Name: opt_in
-	Namespace: zm_zod
-	Checksum: 0xFD3F7874
-	Offset: 0x17C0
-	Size: 0x1C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec opt_in() {
   level.aat_in_use = 1;
   level.bgb_in_use = 1;
 }
 
-/*
-	Name: main
-	Namespace: zm_zod
-	Checksum: 0x4850D5DB
-	Offset: 0x17E8
-	Size: 0x364
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   zm_zod_ffotd::main_start();
   forcestreamxmodel("p7_zm_vending_widows_wine");
@@ -134,15 +118,6 @@ function main() {
   util::waitforclient(0);
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_zod
-	Checksum: 0x81E3C41D
-	Offset: 0x1B58
-	Size: 0x5CC
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("toplayer", "fullscreen_rain_fx", 1, 1, "int", & toggle_rain_overlay, 0, 1);
   clientfield::register("world", "rain_state", 1, 1, "int", undefined, 0, 0);
@@ -172,15 +147,6 @@ function register_clientfields() {
   visionset_mgr::register_visionset_info("zombie_noire", 1, 1, undefined, "zombie_noire");
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: zm_zod
-	Checksum: 0x888E40EC
-	Offset: 0x2130
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_spawned(localclientnum) {
   if(self == getlocalplayer(localclientnum)) {
     self thread player_rain_thread(localclientnum);
@@ -190,39 +156,17 @@ function on_player_spawned(localclientnum) {
   }
 }
 
-/*
-	Name: toggle_rain_overlay
-	Namespace: zm_zod
-	Checksum: 0x408FD6C8
-	Offset: 0x21F0
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function toggle_rain_overlay(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
-    /#
     println("");
-    # /
   } else {
-    /#
     println("");
-    # /
   }
 }
 
-/*
-	Name: player_rain_thread
-	Namespace: zm_zod
-	Checksum: 0xF5A5366E
-	Offset: 0x2280
-	Size: 0x158
-	Parameters: 1
-	Flags: Linked
-*/
 function player_rain_thread(localclientnum) {
-  self endon(# "disconnect");
-  self endon(# "entityshutdown");
+  self endon("disconnect");
+  self endon("entityshutdown");
   if(!self islocalplayer() || !isdefined(self getlocalclientnumber()) || localclientnum != self getlocalclientnumber()) {
     return;
   }
@@ -241,15 +185,6 @@ function player_rain_thread(localclientnum) {
   }
 }
 
-/*
-	Name: junction_crane_state
-	Namespace: zm_zod
-	Checksum: 0x87889480
-	Offset: 0x23E0
-	Size: 0x29C
-	Parameters: 7
-	Flags: Linked
-*/
 function junction_crane_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   wait(0.016);
   e_phrase = getent(localclientnum, "junction_crane_crate_phrase", "targetname");
@@ -276,43 +211,16 @@ function junction_crane_state(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: function_8db965a5
-	Namespace: zm_zod
-	Checksum: 0x58D8FA7
-	Offset: 0x2688
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8db965a5(var_df899b02) {
   wait(9.5);
   unhidestaticmodel(var_df899b02);
 }
 
-/*
-	Name: include_weapons
-	Namespace: zm_zod
-	Checksum: 0x3E06A848
-	Offset: 0x26C0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function include_weapons() {
   zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_zod_weapons.csv", 1);
   zm_weapons::autofill_wallbuys_init();
 }
 
-/*
-	Name: setup_personality_character_exerts
-	Namespace: zm_zod
-	Checksum: 0x5080CA6A
-	Offset: 0x2700
-	Size: 0x107A
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_personality_character_exerts() {
   level.exert_sounds[1]["playerbreathinsound"][2] = "vox_plr_0_exert_inhale";
   level.exert_sounds[2]["playerbreathinsound"][2] = "vox_plr_1_exert_inhale";
@@ -423,15 +331,6 @@ function setup_personality_character_exerts() {
   level.exert_sounds[4]["dtplandsoundplayer"][14] = "vox_plr_3_exert_bit_10";
 }
 
-/*
-	Name: show_hide_pap_weed
-	Namespace: zm_zod
-	Checksum: 0xA2299820
-	Offset: 0x3788
-	Size: 0x1AE
-	Parameters: 7
-	Flags: None
-*/
 function show_hide_pap_weed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   a_misc_model = findstaticmodelindexarray("pap_weed");
   if(newval == 1) {
@@ -451,15 +350,6 @@ function show_hide_pap_weed(localclientnum, oldval, newval, bnewent, binitialsna
   }
 }
 
-/*
-	Name: devgui_lightning_test
-	Namespace: zm_zod
-	Checksum: 0xC24E7569
-	Offset: 0x3940
-	Size: 0x184
-	Parameters: 7
-	Flags: Linked
-*/
 function devgui_lightning_test(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   setukkoscriptindex(localclientnum, 2, 1);
   exploder::exploder("fx_exploder_lightning_dock");
@@ -478,15 +368,6 @@ function devgui_lightning_test(localclientnum, oldval, newval, bnewent, binitial
   setukkoscriptindex(localclientnum, 1, 1);
 }
 
-/*
-	Name: function_f650f42a
-	Namespace: zm_zod
-	Checksum: 0xDD510285
-	Offset: 0x3AD0
-	Size: 0xFC
-	Parameters: 7
-	Flags: None
-*/
 function function_f650f42a(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(self isplayer() && self islocalplayer() && !isdemoplaying()) {
     if(!isdefined(self getlocalclientnumber()) || localclientnum == self getlocalclientnumber()) {
@@ -497,29 +378,11 @@ function function_f650f42a(localclientnum, oldval, newval, bnewent, binitialsnap
   self duplicate_render::update_dr_filters(localclientnum);
 }
 
-/*
-	Name: ghost_actor
-	Namespace: zm_zod
-	Checksum: 0x8EDE04D
-	Offset: 0x3BD8
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function ghost_actor(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self duplicate_render::set_dr_flag("zod_ghost", newval);
   self duplicate_render::update_dr_filters(localclientnum);
 }
 
-/*
-	Name: hide_perf_static_models
-	Namespace: zm_zod
-	Checksum: 0x43FDA5A5
-	Offset: 0x3C58
-	Size: 0x264
-	Parameters: 7
-	Flags: Linked
-*/
 function hide_perf_static_models(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   var_bc94ac00 = findstaticmodelindexarray("fxanim_crate_waterfront_break_static");
   var_90dba62a = findstaticmodelindexarray("fxanim_crate_canal_static");
@@ -543,15 +406,6 @@ function hide_perf_static_models(localclientnum, oldval, newval, bnewent, biniti
   hidestaticmodel(var_48d31804[0]);
 }
 
-/*
-	Name: function_66fdd0a3
-	Namespace: zm_zod
-	Checksum: 0x23B06917
-	Offset: 0x3EC8
-	Size: 0xDE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_66fdd0a3(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 1: {
@@ -567,15 +421,6 @@ function function_66fdd0a3(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_5a6fb328
-	Namespace: zm_zod
-	Checksum: 0xE526335
-	Offset: 0x3FB0
-	Size: 0xDE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_5a6fb328(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 1: {

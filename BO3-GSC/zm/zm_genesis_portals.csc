@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_portals.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\animation_shared;
 #using scripts\shared\array_shared;
@@ -15,33 +19,13 @@
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #using_animtree("generic");
-
 #namespace zm_genesis_portals;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_genesis_portals
-	Checksum: 0x146EC814
-	Offset: 0x568
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_portals", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_genesis_portals
-	Checksum: 0x970E7E6F
-	Offset: 0x5A8
-	Size: 0x464
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   visionset_mgr::register_overlay_info_style_transported("zm_zod", 15000, 15, 2);
   clientfield::register("toplayer", "player_stargate_fx", 15000, 1, "int", & player_stargate_fx, 0, 0);
@@ -61,18 +45,9 @@ function __init__() {
   clientfield::register("toplayer", "hint_prison_portal_bottom", 15000, 1, "int", & function_44c843d5, 0, 0);
 }
 
-/*
-	Name: player_stargate_fx
-	Namespace: zm_genesis_portals
-	Checksum: 0x5B09EDD
-	Offset: 0xA18
-	Size: 0xDE
-	Parameters: 7
-	Flags: Linked
-*/
 function player_stargate_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self notify(# "player_stargate_fx");
-  self endon(# "player_stargate_fx");
+  self notify("player_stargate_fx");
+  self endon("player_stargate_fx");
   if(newval == 1) {
     if(isdemoplaying() && demoisanyfreemovecamera()) {
       return;
@@ -80,33 +55,15 @@ function player_stargate_fx(localclientnum, oldval, newval, bnewent, binitialsna
     self thread function_e7a8756e(localclientnum);
     self thread postfx::playpostfxbundle("pstfx_zm_wormhole");
   } else {
-    self notify(# "player_portal_complete");
+    self notify("player_portal_complete");
   }
 }
 
-/*
-	Name: function_e7a8756e
-	Namespace: zm_genesis_portals
-	Checksum: 0x5924945F
-	Offset: 0xB00
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e7a8756e(localclientnum) {
   self util::waittill_any("player_stargate_fx", "player_portal_complete");
   self postfx::exitpostfxbundle();
 }
 
-/*
-	Name: player_light_exploder
-	Namespace: zm_genesis_portals
-	Checksum: 0x90F4CA8C
-	Offset: 0xB58
-	Size: 0x1DE
-	Parameters: 7
-	Flags: Linked
-*/
 function player_light_exploder(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 1: {
@@ -152,15 +109,6 @@ function player_light_exploder(localclientnum, oldval, newval, bnewent, binitial
   }
 }
 
-/*
-	Name: genesis_light_exposure
-	Namespace: zm_genesis_portals
-	Checksum: 0x146146C6
-	Offset: 0xD40
-	Size: 0xB4
-	Parameters: 7
-	Flags: Linked
-*/
 function genesis_light_exposure(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     setpbgactivebank(localclientnum, 2);
@@ -171,15 +119,6 @@ function genesis_light_exposure(localclientnum, oldval, newval, bnewent, binitia
   }
 }
 
-/*
-	Name: function_44c843d5
-	Namespace: zm_genesis_portals
-	Checksum: 0x25B6EC63
-	Offset: 0xE00
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_44c843d5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     setstreamerrequest(localclientnum, fieldname);
@@ -188,15 +127,6 @@ function function_44c843d5(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_7e1ae25a
-	Namespace: zm_genesis_portals
-	Checksum: 0xDC270E20
-	Offset: 0xE88
-	Size: 0x262
-	Parameters: 7
-	Flags: Linked
-*/
 function function_7e1ae25a(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (fieldname) {
     case "power_pad_prison": {

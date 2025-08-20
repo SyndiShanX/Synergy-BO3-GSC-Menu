@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_theater_movie_screen.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -8,32 +12,13 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\zm_theater;
 #using scripts\zm\zm_theater_amb;
-
 #namespace zm_theater_movie_screen;
 
-/*
-	Name: initmoviescreen
-	Namespace: zm_theater_movie_screen
-	Checksum: 0x5481440D
-	Offset: 0x398
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function initmoviescreen() {
   level thread setupcurtains();
   level thread movie_reels_init();
 }
 
-/*
-	Name: setupcurtains
-	Namespace: zm_theater_movie_screen
-	Checksum: 0xD7ACA72A
-	Offset: 0x3D8
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function setupcurtains() {
   level flag::wait_till("power_on");
   curtains_clip = getent("theater_curtains_clip", "targetname");
@@ -46,15 +31,6 @@ function setupcurtains() {
   level flag::set("curtains_done");
 }
 
-/*
-	Name: monitorcurtain
-	Namespace: zm_theater_movie_screen
-	Checksum: 0x916091BB
-	Offset: 0x4B0
-	Size: 0xF8
-	Parameters: 1
-	Flags: None
-*/
 function monitorcurtain(curtorg) {
   clip = getent(self.target, "targetname");
   while (isdefined(clip)) {
@@ -71,15 +47,6 @@ function monitorcurtain(curtorg) {
   }
 }
 
-/*
-	Name: open_left_curtain
-	Namespace: zm_theater_movie_screen
-	Checksum: 0xA7E5F4E8
-	Offset: 0x5B0
-	Size: 0x12C
-	Parameters: 0
-	Flags: None
-*/
 function open_left_curtain() {
   level flag::wait_till("power_on");
   curtain = getent("left_curtain", "targetname");
@@ -95,15 +62,6 @@ function open_left_curtain() {
   }
 }
 
-/*
-	Name: open_right_curtain
-	Namespace: zm_theater_movie_screen
-	Checksum: 0x6F37431A
-	Offset: 0x6E8
-	Size: 0x12C
-	Parameters: 0
-	Flags: None
-*/
 function open_right_curtain() {
   level flag::wait_till("power_on");
   curtain = getent("right_curtain", "targetname");
@@ -119,15 +77,6 @@ function open_right_curtain() {
   }
 }
 
-/*
-	Name: lower_movie_screen
-	Namespace: zm_theater_movie_screen
-	Checksum: 0x4D8083B8
-	Offset: 0x820
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function lower_movie_screen() {
   var_d647fedd = getentarray("movie_screen", "targetname");
   var_d647fedd[0] playsound("evt_screen_lower");
@@ -137,15 +86,6 @@ function lower_movie_screen() {
   util::clientnotify("sip");
 }
 
-/*
-	Name: movie_reels_init
-	Namespace: zm_theater_movie_screen
-	Checksum: 0xC444409A
-	Offset: 0x8E8
-	Size: 0x2C4
-	Parameters: 0
-	Flags: Linked
-*/
 function movie_reels_init() {
   clean_bedroom_reels = getentarray("trigger_movie_reel_clean_bedroom", "targetname");
   bear_bedroom_reels = getentarray("trigger_movie_reel_bear_bedroom", "targetname");
@@ -167,15 +107,6 @@ function movie_reels_init() {
   level thread movie_projector_reel_change();
 }
 
-/*
-	Name: movie_reels_random
-	Namespace: zm_theater_movie_screen
-	Checksum: 0x155000C5
-	Offset: 0xBB8
-	Size: 0xA0
-	Parameters: 2
-	Flags: Linked
-*/
 function movie_reels_random(array_reel_triggers, str_reel) {
   if(!isdefined(array_reel_triggers)) {
     return;
@@ -192,23 +123,12 @@ function movie_reels_random(array_reel_triggers, str_reel) {
   return random_reels[0];
 }
 
-/*
-	Name: movie_reels
-	Namespace: zm_theater_movie_screen
-	Checksum: 0xEC88EC94
-	Offset: 0xC60
-	Size: 0x22C
-	Parameters: 0
-	Flags: Linked
-*/
 function movie_reels() {
   if(!isdefined(self.target)) {
     /# /
     #
     assert(isdefined(self.target), "");
-    # /
-      # /
-      return;
+    return;
   }
   self.reel_model = getent(self.target, "targetname");
   if(!isdefined(self.reel_active)) {
@@ -226,7 +146,7 @@ function movie_reels() {
     self setcursorhint("HINT_NOICON");
   }
   level flag::wait_till("power_on");
-  self waittill(# "trigger", who);
+  self waittill("trigger", who);
   who playsound("zmb_reel_pickup");
   self.reel_model hide();
   self triggerenable(0);
@@ -235,33 +155,15 @@ function movie_reels() {
   who thread theater_movie_reel_hud();
 }
 
-/*
-	Name: function_63d5f7f2
-	Namespace: zm_theater_movie_screen
-	Checksum: 0x4AB87ED7
-	Offset: 0xE98
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function function_63d5f7f2(e_player) {
-  level endon(# "end_game");
-  e_player waittill(# "disconnect");
+  level endon("end_game");
+  e_player waittill("disconnect");
   self.reel_model show();
   self triggerenable(1);
   self.reel_active = 1;
   self thread movie_reels();
 }
 
-/*
-	Name: movie_projector_reel_change
-	Namespace: zm_theater_movie_screen
-	Checksum: 0xA1C7F78A
-	Offset: 0xF18
-	Size: 0x240
-	Parameters: 0
-	Flags: Linked
-*/
 function movie_projector_reel_change() {
   screen_struct = struct::get("struct_theater_screen", "targetname");
   projector_trigger = getent("trigger_change_projector_reels", "targetname");
@@ -270,7 +172,7 @@ function movie_projector_reel_change() {
     screen_struct.script_string = "ps0";
   }
   while (true) {
-    projector_trigger waittill(# "trigger", who);
+    projector_trigger waittill("trigger", who);
     if(isdefined(who.reel) && isstring(who.reel)) {
       switch (who.reel) {
         case "ps1": {
@@ -286,11 +188,11 @@ function movie_projector_reel_change() {
           break;
         }
       }
-      who notify(# "reel_set");
+      who notify("reel_set");
       who thread theater_remove_reel_hud();
       projector_trigger thread zm_theater_amb::play_radio_egg(2);
       who playsound("zmb_reel_place");
-      level notify(# "play_movie", who.reel);
+      level notify("play_movie", who.reel);
       who.reel = undefined;
       wait(3);
     } else {
@@ -300,44 +202,17 @@ function movie_projector_reel_change() {
   }
 }
 
-/*
-	Name: theater_movie_reel_hud
-	Namespace: zm_theater_movie_screen
-	Checksum: 0x66F6031D
-	Offset: 0x1160
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function theater_movie_reel_hud() {
   self zm_sidequests::add_sidequest_icon(undefined, "movieReel");
   self thread theater_remove_reel_on_death();
 }
 
-/*
-	Name: theater_remove_reel_hud
-	Namespace: zm_theater_movie_screen
-	Checksum: 0x587AB918
-	Offset: 0x11A8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function theater_remove_reel_hud() {
   self zm_sidequests::remove_sidequest_icon(undefined, "movieReel");
 }
 
-/*
-	Name: theater_remove_reel_on_death
-	Namespace: zm_theater_movie_screen
-	Checksum: 0x4BB5F8BA
-	Offset: 0x11D8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function theater_remove_reel_on_death() {
-  self endon(# "reel_set");
+  self endon("reel_set");
   self util::waittill_either("death", "_zombie_game_over");
   self thread theater_remove_reel_hud();
 }

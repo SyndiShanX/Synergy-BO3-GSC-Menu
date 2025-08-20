@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_acousticsensor.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\challenges_shared;
@@ -7,33 +11,14 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace acousticsensor;
 
-/*
-	Name: init_shared
-	Namespace: acousticsensor
-	Checksum: 0xEFFDB9B0
-	Offset: 0x280
-	Size: 0x5C
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   level._effect["acousticsensor_enemy_light"] = "_t6/misc/fx_equip_light_red";
   level._effect["acousticsensor_friendly_light"] = "_t6/misc/fx_equip_light_green";
   callback::add_weapon_watcher( & createacousticsensorwatcher);
 }
 
-/*
-	Name: createacousticsensorwatcher
-	Namespace: acousticsensor
-	Checksum: 0xA24F1A71
-	Offset: 0x2E8
-	Size: 0xC0
-	Parameters: 0
-	Flags: None
-*/
 function createacousticsensorwatcher() {
   watcher = self weaponobjects::createuseweaponobjectwatcher("acoustic_sensor", self.team);
   watcher.onspawn = & onspawnacousticsensor;
@@ -44,17 +29,8 @@ function createacousticsensorwatcher() {
   watcher.ondamage = & watchacousticsensordamage;
 }
 
-/*
-	Name: onspawnacousticsensor
-	Namespace: acousticsensor
-	Checksum: 0x8B5D3BD7
-	Offset: 0x3B0
-	Size: 0x10C
-	Parameters: 2
-	Flags: None
-*/
 function onspawnacousticsensor(watcher, player) {
-  self endon(# "death");
+  self endon("death");
   self thread weaponobjects::onspawnuseweaponobject(watcher, player);
   player.acousticsensor = self;
   self setowner(player);
@@ -67,15 +43,6 @@ function onspawnacousticsensor(watcher, player) {
   self thread watchshutdown(player, self.origin);
 }
 
-/*
-	Name: acousticsensordetonate
-	Namespace: acousticsensor
-	Checksum: 0xE3739FA
-	Offset: 0x4C8
-	Size: 0x104
-	Parameters: 3
-	Flags: None
-*/
 function acousticsensordetonate(attacker, weapon, target) {
   if(!isdefined(weapon) || !weapon.isemp) {
     playfx(level._equipment_explode_fx, self.origin);
@@ -90,28 +57,10 @@ function acousticsensordetonate(attacker, weapon, target) {
   self destroyent();
 }
 
-/*
-	Name: destroyent
-	Namespace: acousticsensor
-	Checksum: 0x8135D255
-	Offset: 0x5D8
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function destroyent() {
   self delete();
 }
 
-/*
-	Name: watchshutdown
-	Namespace: acousticsensor
-	Checksum: 0x9939EFBF
-	Offset: 0x600
-	Size: 0x52
-	Parameters: 2
-	Flags: None
-*/
 function watchshutdown(player, origin) {
   self util::waittill_any("death", "hacked");
   if(isdefined(player)) {
@@ -119,18 +68,9 @@ function watchshutdown(player, origin) {
   }
 }
 
-/*
-	Name: watchacousticsensordamage
-	Namespace: acousticsensor
-	Checksum: 0x8499F6B3
-	Offset: 0x660
-	Size: 0x38A
-	Parameters: 1
-	Flags: None
-*/
 function watchacousticsensordamage(watcher) {
-  self endon(# "death");
-  self endon(# "hacked");
+  self endon("death");
+  self endon("hacked");
   self setcandamage(1);
   damagemax = 100;
   if(!self util::ishacked()) {
@@ -139,7 +79,7 @@ function watchacousticsensordamage(watcher) {
   while (true) {
     self.maxhealth = 100000;
     self.health = self.maxhealth;
-    self waittill(# "damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon, idflags);
+    self waittill("damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon, idflags);
     if(!isdefined(attacker) || !isplayer(attacker)) {
       continue;
     }

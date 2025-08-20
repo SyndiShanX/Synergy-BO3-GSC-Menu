@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_beacon.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -11,20 +15,9 @@
 #using scripts\zm\_zm_laststand;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #using_animtree("zombie_beacon");
-
 #namespace _zm_weap_beacon;
 
-/*
-	Name: init
-	Namespace: _zm_weap_beacon
-	Checksum: 0x7920F28E
-	Offset: 0x4D0
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.w_beacon = getweapon("beacon");
   clientfield::register("world", "play_launch_artillery_fx_robot_0", 21000, 1, "int");
@@ -35,39 +28,19 @@ function init() {
   level._effect["grenade_samantha_steal"] = "dlc5/zmhd/fx_zombie_couch_effect";
   level.beacons = [];
   level.zombie_weapons_callbacks[level.w_beacon] = & player_give_beacon;
-  /#
   level thread function_45216da2();
-  # /
 }
 
-/*
-	Name: player_give_beacon
-	Namespace: _zm_weap_beacon
-	Checksum: 0xC37D65E2
-	Offset: 0x648
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function player_give_beacon() {
   self giveweapon(level.w_beacon);
   self zm_utility::set_player_tactical_grenade(level.w_beacon);
   self thread player_handle_beacon();
 }
 
-/*
-	Name: player_handle_beacon
-	Namespace: _zm_weap_beacon
-	Checksum: 0x590C63B5
-	Offset: 0x6B0
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function player_handle_beacon() {
-  self notify(# "starting_beacon_watch");
-  self endon(# "disconnect");
-  self endon(# "starting_beacon_watch");
+  self notify("starting_beacon_watch");
+  self endon("disconnect");
+  self endon("starting_beacon_watch");
   attract_dist_diff = level.beacon_attract_dist_diff;
   if(!isdefined(attract_dist_diff)) {
     attract_dist_diff = 45;
@@ -87,18 +60,9 @@ function player_handle_beacon() {
   }
 }
 
-/*
-	Name: watch_for_dud
-	Namespace: _zm_weap_beacon
-	Checksum: 0xEF5A6E95
-	Offset: 0x7B0
-	Size: 0xDC
-	Parameters: 2
-	Flags: Linked
-*/
 function watch_for_dud(model, actor) {
-  self endon(# "death");
-  self waittill(# "grenade_dud");
+  self endon("death");
+  self waittill("grenade_dud");
   model.dud = 1;
   self.monk_scream_vox = 1;
   wait(3);
@@ -116,22 +80,13 @@ function watch_for_dud(model, actor) {
   }
 }
 
-/*
-	Name: watch_for_emp
-	Namespace: _zm_weap_beacon
-	Checksum: 0xC2517402
-	Offset: 0x898
-	Size: 0x1CC
-	Parameters: 2
-	Flags: None
-*/
 function watch_for_emp(model, actor) {
-  self endon(# "death");
+  self endon("death");
   if(!zm_utility::should_watch_for_emp()) {
     return;
   }
   while (true) {
-    level waittill(# "emp_detonate", origin, radius);
+    level waittill("emp_detonate", origin, radius);
     if(distancesquared(origin, self.origin) < (radius * radius)) {
       break;
     }
@@ -160,35 +115,17 @@ function watch_for_emp(model, actor) {
   }
 }
 
-/*
-	Name: clone_player_angles
-	Namespace: _zm_weap_beacon
-	Checksum: 0xF373DEC9
-	Offset: 0xA70
-	Size: 0x50
-	Parameters: 1
-	Flags: Linked
-*/
 function clone_player_angles(owner) {
-  self endon(# "death");
-  owner endon(# "bled_out");
+  self endon("death");
+  owner endon("bled_out");
   while (isdefined(self)) {
     self.angles = owner.angles;
     wait(0.05);
   }
 }
 
-/*
-	Name: show_briefly
-	Namespace: _zm_weap_beacon
-	Checksum: 0xF4118AD3
-	Offset: 0xAC8
-	Size: 0xAE
-	Parameters: 1
-	Flags: Linked
-*/
 function show_briefly(showtime) {
-  self endon(# "show_owner");
+  self endon("show_owner");
   if(isdefined(self.show_for_time)) {
     self.show_for_time = showtime;
     return;
@@ -203,44 +140,26 @@ function show_briefly(showtime) {
   self.show_for_time = undefined;
 }
 
-/*
-	Name: show_owner_on_attack
-	Namespace: _zm_weap_beacon
-	Checksum: 0xE29E4179
-	Offset: 0xB80
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function show_owner_on_attack(owner) {
-  owner endon(# "hide_owner");
-  owner endon(# "show_owner");
-  self endon(# "explode");
-  self endon(# "death");
-  self endon(# "grenade_dud");
+  owner endon("hide_owner");
+  owner endon("show_owner");
+  self endon("explode");
+  self endon("death");
+  self endon("grenade_dud");
   owner.show_for_time = undefined;
   for (;;) {
-    owner waittill(# "weapon_fired");
+    owner waittill("weapon_fired");
     owner thread show_briefly(0.5);
   }
 }
 
-/*
-	Name: hide_owner
-	Namespace: _zm_weap_beacon
-	Checksum: 0xEC36EB24
-	Offset: 0xC08
-	Size: 0x23C
-	Parameters: 1
-	Flags: Linked
-*/
 function hide_owner(owner) {
-  self notify(# "hide_owner");
-  owner notify(# "hide_owner");
-  owner endon(# "hide_owner");
+  self notify("hide_owner");
+  owner notify("hide_owner");
+  owner endon("hide_owner");
   owner setperk("specialty_immunemms");
   owner.no_burning_sfx = 1;
-  owner notify(# "stop_flame_sounds");
+  owner notify("stop_flame_sounds");
   owner setvisibletoallexceptteam(level.zombie_team);
   owner.hide_owner = 1;
   if(isdefined(level._effect["human_disappears"])) {
@@ -248,10 +167,8 @@ function hide_owner(owner) {
   }
   self thread show_owner_on_attack(owner);
   evt = self util::waittill_any_return("explode", "death", "grenade_dud", "hide_owner");
-  /#
   println("" + evt);
-  # /
-    owner notify(# "show_owner");
+  owner notify("show_owner");
   owner unsetperk("specialty_immunemms");
   if(isdefined(level._effect["human_disappears"])) {
     playfx(level._effect["human_disappears"], owner.origin);
@@ -262,15 +179,6 @@ function hide_owner(owner) {
   owner show();
 }
 
-/*
-	Name: proximity_detonate
-	Namespace: _zm_weap_beacon
-	Checksum: 0x8BD3F3E0
-	Offset: 0xE50
-	Size: 0x26C
-	Parameters: 1
-	Flags: Linked
-*/
 function proximity_detonate(owner) {
   wait(1.5);
   if(!isdefined(self)) {
@@ -284,7 +192,7 @@ function proximity_detonate(owner) {
   damagearea linkto(self);
   self.damagearea = damagearea;
   while (isdefined(self)) {
-    damagearea waittill(# "trigger", ent);
+    damagearea waittill("trigger", ent);
     if(isdefined(owner) && ent == owner) {
       continue;
     }
@@ -306,20 +214,11 @@ function proximity_detonate(owner) {
   }
 }
 
-/*
-	Name: player_throw_beacon
-	Namespace: _zm_weap_beacon
-	Checksum: 0xBA2713DE
-	Offset: 0x10C8
-	Size: 0x704
-	Parameters: 4
-	Flags: Linked
-*/
 function player_throw_beacon(grenade, num_attractors, max_attract_dist, attract_dist_diff) {
-  self endon(# "disconnect");
-  self endon(# "starting_beacon_watch");
+  self endon("disconnect");
+  self endon("starting_beacon_watch");
   if(isdefined(grenade)) {
-    grenade endon(# "death");
+    grenade endon("death");
     if(self laststand::player_is_in_laststand()) {
       if(isdefined(grenade.damagearea)) {
         grenade.damagearea delete();
@@ -330,7 +229,7 @@ function player_throw_beacon(grenade, num_attractors, max_attract_dist, attract_
     var_65f5946c = vectorscale((0, 0, 1), 8);
     grenade ghost();
     model = spawn("script_model", grenade.origin + var_65f5946c);
-    model endon(# "weapon_beacon_timeout");
+    model endon("weapon_beacon_timeout");
     model setmodel("wpn_t7_zmb_hd_g_strike_world");
     model useanimtree($zombie_beacon);
     model linkto(grenade, "", var_65f5946c);
@@ -350,7 +249,7 @@ function player_throw_beacon(grenade, num_attractors, max_attract_dist, attract_
     grenade thread watch_for_dud(model, clone);
     info = spawnstruct();
     info.sound_attractors = [];
-    grenade waittill(# "stationary");
+    grenade waittill("stationary");
     if(isdefined(level.grenade_planted)) {
       self thread[[level.grenade_planted]](grenade, model);
     }
@@ -406,15 +305,6 @@ function player_throw_beacon(grenade, num_attractors, max_attract_dist, attract_
   }
 }
 
-/*
-	Name: weapon_beacon_anims
-	Namespace: _zm_weap_beacon
-	Checksum: 0xA32F09F5
-	Offset: 0x17D8
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function weapon_beacon_anims() {
   n_time = getanimlength( % zombie_beacon::o_zm_dlc5_zombie_homing_deploy);
   self animscripted("beacon_deploy", self.origin, self.angles, % zombie_beacon::o_zm_dlc5_zombie_homing_deploy);
@@ -424,15 +314,6 @@ function weapon_beacon_anims() {
   }
 }
 
-/*
-	Name: grenade_stolen_by_sam
-	Namespace: _zm_weap_beacon
-	Checksum: 0xC314E9FE
-	Offset: 0x1898
-	Size: 0x2AC
-	Parameters: 3
-	Flags: Linked
-*/
 function grenade_stolen_by_sam(ent_grenade, ent_model, ent_actor) {
   if(!isdefined(ent_model)) {
     return;
@@ -452,7 +333,7 @@ function grenade_stolen_by_sam(ent_grenade, ent_model, ent_actor) {
   playfxontag(level._effect["grenade_samantha_steal"], ent_model, "tag_origin");
   ent_model movez(60, 1, 0.25, 0.25);
   ent_model vibrate(direction, 1.5, 2.5, 1);
-  ent_model waittill(# "movedone");
+  ent_model waittill("movedone");
   if(isdefined(self.damagearea)) {
     self.damagearea delete();
   }
@@ -468,29 +349,11 @@ function grenade_stolen_by_sam(ent_grenade, ent_model, ent_actor) {
   }
 }
 
-/*
-	Name: wait_for_attractor_positions_complete
-	Namespace: _zm_weap_beacon
-	Checksum: 0xA5D3F40B
-	Offset: 0x1B50
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function wait_for_attractor_positions_complete() {
-  self waittill(# "attractor_positions_generated");
+  self waittill("attractor_positions_generated");
   self.attract_to_origin = 0;
 }
 
-/*
-	Name: beacon_cleanup
-	Namespace: _zm_weap_beacon
-	Checksum: 0xE5511937
-	Offset: 0x1B78
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function beacon_cleanup(parent) {
   while (true) {
     if(!isdefined(parent)) {
@@ -507,15 +370,6 @@ function beacon_cleanup(parent) {
   }
 }
 
-/*
-	Name: do_beacon_sound
-	Namespace: _zm_weap_beacon
-	Checksum: 0x185EBF16
-	Offset: 0x1C10
-	Size: 0x234
-	Parameters: 2
-	Flags: Linked
-*/
 function do_beacon_sound(model, info) {
   self.monk_scream_vox = 0;
   if(isdefined(level.grenade_safe_to_bounce)) {
@@ -535,8 +389,8 @@ function do_beacon_sound(model, info) {
   if(!self.monk_scream_vox) {
     self thread play_delayed_explode_vox();
   }
-  self waittill(# "robot_artillery_barrage", position);
-  level notify(# "grenade_exploded", position, 100, 5000, 450);
+  self waittill("robot_artillery_barrage", position);
+  level notify("grenade_exploded", position, 100, 5000, 450);
   beacon_index = -1;
   for (i = 0; i < level.beacons.size; i++) {
     if(!isdefined(level.beacons[i])) {
@@ -549,39 +403,21 @@ function do_beacon_sound(model, info) {
   }
   for (i = 0; i < info.sound_attractors.size; i++) {
     if(isdefined(info.sound_attractors[i])) {
-      info.sound_attractors[i] notify(# "beacon_blown_up");
+      info.sound_attractors[i] notify("beacon_blown_up");
     }
   }
   self delete();
 }
 
-/*
-	Name: play_delayed_explode_vox
-	Namespace: _zm_weap_beacon
-	Checksum: 0xDE401303
-	Offset: 0x1E50
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function play_delayed_explode_vox() {
   wait(6.5);
 }
 
-/*
-	Name: get_thrown_beacon
-	Namespace: _zm_weap_beacon
-	Checksum: 0xF16A9000
-	Offset: 0x1E70
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function get_thrown_beacon() {
-  self endon(# "disconnect");
-  self endon(# "starting_beacon_watch");
+  self endon("disconnect");
+  self endon("starting_beacon_watch");
   while (true) {
-    self waittill(# "grenade_fire", grenade, weapon);
+    self waittill("grenade_fire", grenade, weapon);
     if(weapon == level.w_beacon) {
       grenade.use_grenade_special_long_bookmark = 1;
       grenade.grenade_multiattack_bookmark_count = 1;
@@ -591,35 +427,17 @@ function get_thrown_beacon() {
   }
 }
 
-/*
-	Name: wait_and_explode
-	Namespace: _zm_weap_beacon
-	Checksum: 0x87C66E1B
-	Offset: 0x1F10
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_and_explode(grenade) {
-  self endon(# "beacon_missile_launch");
-  grenade waittill(# "explode", position);
-  self notify(# "weapon_beacon_timeout");
+  self endon("beacon_missile_launch");
+  grenade waittill("explode", position);
+  self notify("weapon_beacon_timeout");
   if(isdefined(grenade)) {
-    grenade notify(# "robot_artillery_barrage", self.origin);
+    grenade notify("robot_artillery_barrage", self.origin);
   }
 }
 
-/*
-	Name: start_artillery_launch_normal
-	Namespace: _zm_weap_beacon
-	Checksum: 0x9624A788
-	Offset: 0x1F78
-	Size: 0x168
-	Parameters: 1
-	Flags: Linked
-*/
 function start_artillery_launch_normal(grenade) {
-  self endon(# "weapon_beacon_timeout");
+  self endon("weapon_beacon_timeout");
   sp_giant_robot = undefined;
   while (!isdefined(sp_giant_robot)) {
     for (i = 0; i < 3; i++) {
@@ -627,7 +445,7 @@ function start_artillery_launch_normal(grenade) {
         if(!(isdefined(level.a_giant_robots[i].weap_beacon_firing) && level.a_giant_robots[i].weap_beacon_firing)) {
           sp_giant_robot = level.a_giant_robots[i];
           self thread artillery_fx_logic(sp_giant_robot, grenade);
-          self notify(# "beacon_missile_launch");
+          self notify("beacon_missile_launch");
           level.weapon_beacon_busy = 1;
           grenade.fuse_reset = 1;
           grenade.fuse_time = 100;
@@ -640,17 +458,8 @@ function start_artillery_launch_normal(grenade) {
   }
 }
 
-/*
-	Name: start_artillery_launch_ee
-	Namespace: _zm_weap_beacon
-	Checksum: 0x295EE644
-	Offset: 0x20E8
-	Size: 0x22C
-	Parameters: 1
-	Flags: Linked
-*/
 function start_artillery_launch_ee(grenade) {
-  self endon(# "weapon_beacon_timeout");
+  self endon("weapon_beacon_timeout");
   sp_giant_robot = undefined;
   n_index = 0;
   a_robot_index = [];
@@ -663,7 +472,7 @@ function start_artillery_launch_ee(grenade) {
       if(!(isdefined(level.a_giant_robots[n_robot_num].weap_beacon_firing) && level.a_giant_robots[n_robot_num].weap_beacon_firing)) {
         sp_giant_robot = level.a_giant_robots[n_robot_num];
         self thread artillery_fx_logic_ee(sp_giant_robot, grenade);
-        self notify(# "beacon_missile_launch");
+        self notify("beacon_missile_launch");
         level.weapon_beacon_busy = 1;
         grenade.fuse_reset = 1;
         grenade.fuse_time = 100;
@@ -686,15 +495,6 @@ function start_artillery_launch_ee(grenade) {
   self thread artillery_barrage_logic(grenade, 1);
 }
 
-/*
-	Name: artillery_fx_logic
-	Namespace: _zm_weap_beacon
-	Checksum: 0x21985A45
-	Offset: 0x2320
-	Size: 0xE4
-	Parameters: 2
-	Flags: Linked
-*/
 function artillery_fx_logic(sp_giant_robot, grenade) {
   sp_giant_robot.weap_beacon_firing = 1;
   level clientfield::set("play_launch_artillery_fx_robot_" + sp_giant_robot.giant_robot_id, 1);
@@ -709,15 +509,6 @@ function artillery_fx_logic(sp_giant_robot, grenade) {
   }
 }
 
-/*
-	Name: artillery_fx_logic_ee
-	Namespace: _zm_weap_beacon
-	Checksum: 0x80EFA85B
-	Offset: 0x2410
-	Size: 0xE4
-	Parameters: 2
-	Flags: Linked
-*/
 function artillery_fx_logic_ee(sp_giant_robot, grenade) {
   sp_giant_robot.weap_beacon_firing = 1;
   sp_giant_robot playsound("zmb_homingbeacon_missiile_alarm");
@@ -731,15 +522,6 @@ function artillery_fx_logic_ee(sp_giant_robot, grenade) {
   sp_giant_robot.weap_beacon_firing = 0;
 }
 
-/*
-	Name: homing_beacon_vo
-	Namespace: _zm_weap_beacon
-	Checksum: 0xA9047E8D
-	Offset: 0x2500
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function homing_beacon_vo() {
   if(isdefined(self.owner) && isplayer(self.owner)) {
     n_time = gettime();
@@ -751,15 +533,6 @@ function homing_beacon_vo() {
   }
 }
 
-/*
-	Name: artillery_barrage_logic
-	Namespace: _zm_weap_beacon
-	Checksum: 0x7243BF56
-	Offset: 0x2598
-	Size: 0x2CC
-	Parameters: 2
-	Flags: Linked
-*/
 function artillery_barrage_logic(grenade, b_ee = 0) {
   if(isdefined(b_ee) && b_ee) {
     a_v_land_offsets = self build_weap_beacon_landing_offsets_ee();
@@ -795,32 +568,14 @@ function artillery_barrage_logic(grenade, b_ee = 0) {
   }
   level thread allow_beacons_to_be_targeted_by_giant_robot();
   wait(6);
-  grenade notify(# "robot_artillery_barrage", self.origin);
+  grenade notify("robot_artillery_barrage", self.origin);
 }
 
-/*
-	Name: allow_beacons_to_be_targeted_by_giant_robot
-	Namespace: _zm_weap_beacon
-	Checksum: 0x3241C1F9
-	Offset: 0x2870
-	Size: 0x18
-	Parameters: 0
-	Flags: Linked
-*/
 function allow_beacons_to_be_targeted_by_giant_robot() {
   wait(3);
   level.weapon_beacon_busy = 0;
 }
 
-/*
-	Name: build_weap_beacon_landing_offsets
-	Namespace: _zm_weap_beacon
-	Checksum: 0x8852EF93
-	Offset: 0x2890
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function build_weap_beacon_landing_offsets() {
   a_offsets = [];
   a_offsets[0] = (0, 0, 0);
@@ -831,15 +586,6 @@ function build_weap_beacon_landing_offsets() {
   return a_offsets;
 }
 
-/*
-	Name: build_weap_beacon_start_offsets
-	Namespace: _zm_weap_beacon
-	Checksum: 0x3519B2BF
-	Offset: 0x2920
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function build_weap_beacon_start_offsets() {
   a_offsets = [];
   a_offsets[0] = vectorscale((0, 0, 1), 8500);
@@ -850,15 +596,6 @@ function build_weap_beacon_start_offsets() {
   return a_offsets;
 }
 
-/*
-	Name: build_weap_beacon_landing_offsets_ee
-	Namespace: _zm_weap_beacon
-	Checksum: 0xEBAFF4E4
-	Offset: 0x29C0
-	Size: 0x178
-	Parameters: 0
-	Flags: Linked
-*/
 function build_weap_beacon_landing_offsets_ee() {
   a_offsets = [];
   a_offsets[0] = (0, 0, 0);
@@ -879,15 +616,6 @@ function build_weap_beacon_landing_offsets_ee() {
   return a_offsets;
 }
 
-/*
-	Name: build_weap_beacon_start_offsets_ee
-	Namespace: _zm_weap_beacon
-	Checksum: 0xB7E5D2C1
-	Offset: 0x2B40
-	Size: 0x19A
-	Parameters: 0
-	Flags: Linked
-*/
 function build_weap_beacon_start_offsets_ee() {
   a_offsets = [];
   a_offsets[0] = vectorscale((0, 0, 1), 8500);
@@ -908,15 +636,6 @@ function build_weap_beacon_start_offsets_ee() {
   return a_offsets;
 }
 
-/*
-	Name: wait_and_do_weapon_beacon_damage
-	Namespace: _zm_weap_beacon
-	Checksum: 0xCAB8ADA
-	Offset: 0x2CE8
-	Size: 0x2A4
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_and_do_weapon_beacon_damage(index) {
   wait(3);
   v_damage_origin = self.a_v_land_spots[index];
@@ -944,15 +663,6 @@ function wait_and_do_weapon_beacon_damage(index) {
   self thread weap_beacon_rumble();
 }
 
-/*
-	Name: weap_beacon_zombie_death
-	Namespace: _zm_weap_beacon
-	Checksum: 0x9EED7B5A
-	Offset: 0x2F98
-	Size: 0x14E
-	Parameters: 2
-	Flags: Linked
-*/
 function weap_beacon_zombie_death(model, a_zombies_to_kill) {
   n_interval = 0;
   for (i = 0; i < a_zombies_to_kill.size; i++) {
@@ -971,15 +681,6 @@ function weap_beacon_zombie_death(model, a_zombies_to_kill) {
   }
 }
 
-/*
-	Name: weapon_beacon_launch_ragdoll
-	Namespace: _zm_weap_beacon
-	Checksum: 0x2EF9C21F
-	Offset: 0x30F0
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function weapon_beacon_launch_ragdoll() {
   if(isdefined(self.is_mechz) && self.is_mechz) {
     return;
@@ -1010,30 +711,12 @@ function weapon_beacon_launch_ragdoll() {
   self launchragdoll(v_launch);
 }
 
-/*
-	Name: weap_beacon_gib
-	Namespace: _zm_weap_beacon
-	Checksum: 0x454A3FC0
-	Offset: 0x3280
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function weap_beacon_gib(ai_zombie) {
   a_gib_ref = [];
   a_gib_ref[0] = level._zombie_gib_piece_index_all;
   ai_zombie gib("normal", a_gib_ref);
 }
 
-/*
-	Name: weap_beacon_rumble
-	Namespace: _zm_weap_beacon
-	Checksum: 0xBE7AA98B
-	Offset: 0x32D8
-	Size: 0xF2
-	Parameters: 0
-	Flags: Linked
-*/
 function weap_beacon_rumble() {
   a_players = getplayers();
   foreach(player in a_players) {
@@ -1045,61 +728,25 @@ function weap_beacon_rumble() {
   }
 }
 
-/*
-	Name: execute_weap_beacon_rumble
-	Namespace: _zm_weap_beacon
-	Checksum: 0xCEE3C05B
-	Offset: 0x33D8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function execute_weap_beacon_rumble() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self clientfield::set_to_player("player_rumble_and_shake", 3);
   util::wait_network_frame();
   self clientfield::set_to_player("player_rumble_and_shake", 0);
 }
 
-/*
-	Name: set_beacon_damage
-	Namespace: _zm_weap_beacon
-	Checksum: 0xBB6090F4
-	Offset: 0x3450
-	Size: 0x30
-	Parameters: 0
-	Flags: Linked
-*/
 function set_beacon_damage() {
-  self endon(# "death");
+  self endon("death");
   self.set_beacon_damage = 1;
   wait(0.05);
   self.set_beacon_damage = 0;
 }
 
-/*
-	Name: function_45216da2
-	Namespace: _zm_weap_beacon
-	Checksum: 0xA4F6D6EC
-	Offset: 0x3488
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_45216da2() {
   level thread setup_devgui_func("ZM/Weapons/Offhand/Give Beacon", "give_beacon", 4, & function_eeb65596);
 }
 
-/*
-	Name: setup_devgui_func
-	Namespace: _zm_weap_beacon
-	Checksum: 0x1C1EC45C
-	Offset: 0x34D0
-	Size: 0x120
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private setup_devgui_func(str_devgui_path, str_dvar, n_value, func, n_base_value = -1) {
   setdvar(str_dvar, n_base_value);
   adddebugcommand(((((("devgui_cmd \"" + str_devgui_path) + "\" \"") + str_dvar) + " ") + n_value) + "\"\n");
@@ -1115,15 +762,6 @@ function private setup_devgui_func(str_devgui_path, str_dvar, n_value, func, n_b
   }
 }
 
-/*
-	Name: function_eeb65596
-	Namespace: _zm_weap_beacon
-	Checksum: 0x9626DDF6
-	Offset: 0x35F8
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_eeb65596(n_player_index) {
   players = getplayers();
   foreach(player in players) {

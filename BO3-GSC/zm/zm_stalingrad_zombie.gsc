@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_zombie.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\animation_state_machine_mocomp;
 #using scripts\shared\ai\systems\animation_state_machine_notetracks;
@@ -21,18 +25,8 @@
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_stalingrad_zombie;
 
-/*
-	Name: init
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x9E3CB516
-	Offset: 0x508
-	Size: 0x1B4
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   initzmstalingradbehaviorsandasm();
   level.zombie_init_done = & stalingrad_zombie_init_done;
@@ -52,28 +46,10 @@ function autoexec init() {
   level.var_ca793258 = struct::get("sentinel_back_door_teleport", "targetname");
 }
 
-/*
-	Name: initzmstalingradbehaviorsandasm
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0xAD484C45
-	Offset: 0x6C8
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initzmstalingradbehaviorsandasm() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("ZmStalingradAttackableObjectService", & zmstalingradattackableobjectservice);
 }
 
-/*
-	Name: zmstalingradattackableobjectservice
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x71E31E69
-	Offset: 0x700
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private zmstalingradattackableobjectservice(entity) {
   if(!(isdefined(entity.completed_emerging_into_playable_area) && entity.completed_emerging_into_playable_area)) {
     if(!(isdefined(entity.var_9d6ece1a) && entity.var_9d6ece1a)) {
@@ -84,15 +60,6 @@ function private zmstalingradattackableobjectservice(entity) {
   zm_behavior::zombieattackableobjectservice(entity);
 }
 
-/*
-	Name: function_7854f310
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0xEE1007E9
-	Offset: 0x788
-	Size: 0x60
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_7854f310() {
   self ai::set_behavior_attribute("use_attackable", 1);
   self.cant_move_cb = & function_c2866c1b;
@@ -100,17 +67,8 @@ function private function_7854f310() {
   self.attackable_goal_radius = 8;
 }
 
-/*
-	Name: function_72fad482
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x4D53D231
-	Offset: 0x7F0
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_72fad482() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     if(isdefined(self.zone_name)) {
       if(self.zone_name == "pavlovs_A_zone" || self.zone_name == "pavlovs_B_zone") {
@@ -122,15 +80,6 @@ function private function_72fad482() {
   }
 }
 
-/*
-	Name: function_c2866c1b
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x8E6D37AA
-	Offset: 0x878
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_c2866c1b() {
   if(isdefined(self.attackable)) {
     if(isdefined(self.attackable.is_active) && self.attackable.is_active) {
@@ -140,15 +89,6 @@ function private function_c2866c1b() {
   }
 }
 
-/*
-	Name: function_a796c73f
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x53F365F
-	Offset: 0x8E0
-	Size: 0x12A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_a796c73f(player) {
   var_c3cc60d3 = 0;
   var_4d53d2ae = 0;
@@ -171,28 +111,10 @@ function private function_a796c73f(player) {
   return true;
 }
 
-/*
-	Name: stalingrad_zombie_init_done
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x62AAA2B3
-	Offset: 0xA18
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function stalingrad_zombie_init_done() {
   self pushactors(0);
 }
 
-/*
-	Name: stalingrad_validate_last_closest_player
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x83DD9480
-	Offset: 0xA40
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private stalingrad_validate_last_closest_player(players) {
   if(isdefined(self.last_closest_player) && (isdefined(self.last_closest_player.am_i_valid) && self.last_closest_player.am_i_valid)) {
     return;
@@ -207,15 +129,6 @@ function private stalingrad_validate_last_closest_player(players) {
   self.last_closest_player = undefined;
 }
 
-/*
-	Name: function_6d4522d4
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x653DD38B
-	Offset: 0xB38
-	Size: 0x8A
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_6d4522d4() {
   targets = getplayers();
   for (i = 0; i < targets.size; i++) {
@@ -226,15 +139,6 @@ function private function_6d4522d4() {
   return targets;
 }
 
-/*
-	Name: function_5915f3d5
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x6C8B4F37
-	Offset: 0xBD0
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_5915f3d5(target) {
   distance = distance2dsquared(target.origin, self.origin);
   if(distance > (10000 * 10000)) {
@@ -243,15 +147,6 @@ function private function_5915f3d5(target) {
   return true;
 }
 
-/*
-	Name: stalingrad_closest_player
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0xA470B310
-	Offset: 0xC38
-	Size: 0x57A
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private stalingrad_closest_player(origin, players) {
   if(isdefined(self.zombie_poi)) {
     return undefined;
@@ -347,17 +242,8 @@ function private stalingrad_closest_player(origin, players) {
   return self.last_closest_player;
 }
 
-/*
-	Name: update_closest_player
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0xC50735DE
-	Offset: 0x11C0
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private update_closest_player() {
-  level waittill(# "start_of_round");
+  level waittill("start_of_round");
   while (true) {
     reset_closest_player = 1;
     zombies = zombie_utility::get_round_enemy_array();
@@ -378,18 +264,9 @@ function private update_closest_player() {
   }
 }
 
-/*
-	Name: function_b10a912a
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x1ACCEA1
-	Offset: 0x1358
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b10a912a() {
-  self endon(# "death");
-  self waittill(# "completed_spawning");
+  self endon("death");
+  self waittill("completed_spawning");
   if(isdefined(self.s_spawn_loc) && issubstr(self.s_spawn_loc.targetname, "pavlov")) {
     self.should_buff_zombies = 1;
     if(self.var_c94972aa === 1) {
@@ -398,31 +275,13 @@ function function_b10a912a() {
   }
 }
 
-/*
-	Name: function_ec1b37df
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0xC37056A7
-	Offset: 0x13E0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ec1b37df() {
   self thread zm::update_zone_name();
   self thread function_72fad482();
 }
 
-/*
-	Name: function_cec23cbf
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x95D89736
-	Offset: 0x1420
-	Size: 0x5A6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cec23cbf() {
-  level waittill(# "start_of_round");
+  level waittill("start_of_round");
   n_current_time = gettime();
   var_36eeba73 = 0;
   var_c48f3f8a = 0;
@@ -457,7 +316,7 @@ function function_cec23cbf() {
       level flag::wait_till_clear("world_is_paused");
     }
     if(!level flag::get("spawn_zombies")) {
-      level waittill(# "spawn_zombies");
+      level waittill("spawn_zombies");
     }
     n_current_time = gettime();
     var_a62c1873 = 0;
@@ -495,7 +354,7 @@ function function_cec23cbf() {
         }
       }
     } else {
-      level waittill(# "hash_9a634383");
+      level waittill("hash_9a634383");
       wait(5);
       var_b8e747cf = 1;
       continue;
@@ -504,15 +363,6 @@ function function_cec23cbf() {
   }
 }
 
-/*
-	Name: function_8caf1f25
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x5F079D38
-	Offset: 0x19D0
-	Size: 0x9E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8caf1f25(n_players) {
   n_current_time = gettime();
   if(n_players > 0 && n_players <= 2) {
@@ -527,15 +377,6 @@ function function_8caf1f25(n_players) {
   return var_36eeba73;
 }
 
-/*
-	Name: function_c7a940c4
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x403166B
-	Offset: 0x1A78
-	Size: 0x9E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c7a940c4(n_players) {
   n_current_time = gettime();
   if(n_players > 0 && n_players <= 2) {
@@ -550,15 +391,6 @@ function function_c7a940c4(n_players) {
   return var_c48f3f8a;
 }
 
-/*
-	Name: function_3de9d297
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0x9C556507
-	Offset: 0x1B20
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3de9d297() {
   var_eb1ae81f = 0;
   var_1916d2ed = getentarray("zombie_sentinel", "targetname");
@@ -571,17 +403,8 @@ function function_3de9d297() {
   return var_eb1ae81f;
 }
 
-/*
-	Name: function_9b4d9341
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0xD56C7E3D
-	Offset: 0x1C50
-	Size: 0x1D6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9b4d9341() {
-  level waittill(# "start_of_round");
+  level waittill("start_of_round");
   while (true) {
     if(flag::exists("world_is_paused")) {
       level flag::wait_till_clear("world_is_paused");
@@ -609,15 +432,6 @@ function function_9b4d9341() {
   }
 }
 
-/*
-	Name: function_8b981aa0
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0xBD063D43
-	Offset: 0x1E30
-	Size: 0x82
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8b981aa0() {
   var_eb1ae81f = function_3de9d297();
   if(var_eb1ae81f == 0) {
@@ -627,15 +441,6 @@ function function_8b981aa0() {
   return zm_ai_sentinel_drone::function_f9c9e7e0();
 }
 
-/*
-	Name: function_a442e988
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0xFD70C948
-	Offset: 0x1EC0
-	Size: 0x36C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a442e988(e_player) {
   if(level.var_dc87592f) {
     return;
@@ -658,7 +463,7 @@ function function_a442e988(e_player) {
         if(var_663b2442.var_7e04bb3 === 1) {
           continue;
         } else {
-          var_663b2442 notify(# "hash_d600cb9a");
+          var_663b2442 notify("hash_d600cb9a");
         }
       }
       var_d7b33d0c = var_663b2442;
@@ -668,10 +473,10 @@ function function_a442e988(e_player) {
   if(isdefined(var_d7b33d0c)) {
     level.var_dc87592f = 1;
     var_d7b33d0c thread function_f05eb36e();
-    var_d7b33d0c endon(# "death");
+    var_d7b33d0c endon("death");
     var_663b2442 flag::wait_till("completed_spawning");
     var_d7b33d0c sentinel_drone::sentinel_forcegoandstayinposition(1, level.var_44d3a45c.origin);
-    var_d7b33d0c waittill(# "goal");
+    var_d7b33d0c waittill("goal");
     var_d7b33d0c.origin = level.var_ca793258.origin;
     var_d7b33d0c sentinel_drone::sentinel_forcegoandstayinposition(0);
     var_d7b33d0c.should_buff_zombies = 0;
@@ -682,16 +487,7 @@ function function_a442e988(e_player) {
   }
 }
 
-/*
-	Name: function_f05eb36e
-	Namespace: zm_stalingrad_zombie
-	Checksum: 0xB60129C6
-	Offset: 0x2238
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f05eb36e() {
-  self waittill(# "death");
+  self waittill("death");
   level.var_dc87592f = 0;
 }

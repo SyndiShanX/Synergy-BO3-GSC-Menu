@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\bots\_bot_dom.gsc
+*************************************************/
+
 #using scripts\mp\bots\_bot;
 #using scripts\mp\bots\_bot_combat;
 #using scripts\mp\gametypes\dom;
@@ -8,18 +12,8 @@
 #using scripts\shared\gameobjects_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace bot_dom;
 
-/*
-	Name: init
-	Namespace: bot_dom
-	Checksum: 0xFCD9EB92
-	Offset: 0x188
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.botupdate = & bot_update;
   level.botprecombat = & bot_pre_combat;
@@ -27,15 +21,6 @@ function init() {
   level.botidle = & bot_idle;
 }
 
-/*
-	Name: bot_update
-	Namespace: bot_dom
-	Checksum: 0x72BFAB5B
-	Offset: 0x1F8
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_update() {
   self.bot.capturingflag = self get_capturing_flag();
   self.bot.goalflag = undefined;
@@ -50,15 +35,6 @@ function bot_update() {
   self bot::bot_update();
 }
 
-/*
-	Name: bot_pre_combat
-	Namespace: bot_dom
-	Checksum: 0x18C9A380
-	Offset: 0x318
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_pre_combat() {
   if(!self bot_combat::has_threat() && isdefined(self.bot.goalflag) && self.bot.goalflag gameobjects::get_owner_team() == self.team) {
     self botsetgoal(self.origin);
@@ -66,15 +42,6 @@ function bot_pre_combat() {
   self bot_combat::mp_pre_combat();
 }
 
-/*
-	Name: bot_idle
-	Namespace: bot_dom
-	Checksum: 0xBA0ACA38
-	Offset: 0x3B8
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_idle() {
   if(isdefined(self.bot.capturingflag)) {
     self bot::path_to_point_in_trigger(self.bot.capturingflag.trigger);
@@ -89,15 +56,6 @@ function bot_idle() {
   self bot::bot_idle();
 }
 
-/*
-	Name: bot_update_threat_goal
-	Namespace: bot_dom
-	Checksum: 0x8234ABA5
-	Offset: 0x488
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_update_threat_goal() {
   if(isdefined(self.bot.capturingflag)) {
     if(self botgoalreached()) {
@@ -108,15 +66,6 @@ function bot_update_threat_goal() {
   self bot_combat::update_threat_goal();
 }
 
-/*
-	Name: get_capturing_flag
-	Namespace: bot_dom
-	Checksum: 0xDCE622E0
-	Offset: 0x508
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function get_capturing_flag() {
   foreach(flag in level.domflags) {
     if(self.team != flag gameobjects::get_owner_team() && self istouching(flag.trigger)) {
@@ -126,15 +75,6 @@ function get_capturing_flag() {
   return undefined;
 }
 
-/*
-	Name: get_best_flag
-	Namespace: bot_dom
-	Checksum: 0x190A3D78
-	Offset: 0x5D8
-	Size: 0x15E
-	Parameters: 0
-	Flags: Linked
-*/
 function get_best_flag() {
   bestflag = undefined;
   bestflagdistsq = undefined;

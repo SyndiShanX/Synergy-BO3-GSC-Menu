@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*****************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\bgbs\_zm_bgb_near_death_experience.csc
+*****************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
@@ -6,31 +10,12 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_bgb;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_bgb_near_death_experience;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_bgb_near_death_experience
-	Checksum: 0xAD32B558
-	Offset: 0x220
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_bgb_near_death_experience", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_bgb_near_death_experience
-	Checksum: 0xA21B77B
-	Offset: 0x260
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -41,15 +26,6 @@ function __init__() {
   level.var_3b53e98b = [];
 }
 
-/*
-	Name: function_24480126
-	Namespace: zm_bgb_near_death_experience
-	Checksum: 0xF9B89D2F
-	Offset: 0x340
-	Size: 0x128
-	Parameters: 7
-	Flags: Linked
-*/
 function function_24480126(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   e_local_player = getlocalplayer(localclientnum);
   if(newval) {
@@ -68,15 +44,6 @@ function function_24480126(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_11972f24
-	Namespace: zm_bgb_near_death_experience
-	Checksum: 0xC232C717
-	Offset: 0x470
-	Size: 0xF8
-	Parameters: 7
-	Flags: Linked
-*/
 function function_11972f24(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     if(isdefined(level.var_3b53e98b[localclientnum])) {

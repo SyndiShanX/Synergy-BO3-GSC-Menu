@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_zurich_coalescence_patch.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_load;
 #using scripts\cp\_objectives;
@@ -12,18 +16,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\vehicles\_quadtank;
-
 #namespace namespace_98d4ffda;
 
-/*
-	Name: function_7403e82b
-	Namespace: namespace_98d4ffda
-	Checksum: 0x9B1666BE
-	Offset: 0x390
-	Size: 0xA0C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7403e82b() {
   spawncollision("collision_clip_ramp_256x24", "collider", (-9254.16, 39197.2, 224), (270, 0.6, 23.9983));
   trashcan1 = spawn("script_model", (-9245.16, 39172.6, 218));

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_dragon_scale_shield.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_death;
 #using scripts\shared\ai\zombie_shared;
@@ -26,31 +30,12 @@
 #using scripts\zm\_zm_weap_riotshield;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\craftables\_zm_craft_shield;
-
 #namespace dragon_scale_shield;
 
-/*
-	Name: __init__sytem__
-	Namespace: dragon_scale_shield
-	Checksum: 0x88D4C809
-	Offset: 0x958
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_dragonshield", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: dragon_scale_shield
-	Checksum: 0xDED349F0
-	Offset: 0x9A0
-	Size: 0x49C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   zm_craft_shield::init("craft_shield_zm", "dragonshield", "wpn_t7_zmb_dlc3_dragon_shield_dmg0_world", & "ZOMBIE_DRAGON_SHIELD_CRAFT", & "ZOMBIE_DRAGON_SHIELD_TAKEN", & "ZOMBIE_DRAGON_SHIELD_PICKUP");
   clientfield::register("allplayers", "ds_ammo", 12000, 1, "int");
@@ -87,15 +72,6 @@ function __init__() {
   level.var_337d1ed2 = & zombie_knockdown;
 }
 
-/*
-	Name: __main__
-	Namespace: dragon_scale_shield
-	Checksum: 0xFF136AA5
-	Offset: 0xE48
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   zm_equipment::register_for_level("dragonshield");
   zm_equipment::include("dragonshield");
@@ -108,57 +84,28 @@ function __main__() {
   zombie_utility::set_zombie_var("riotshield_fling_range", 120);
   zombie_utility::set_zombie_var("riotshield_gib_range", 120);
   zombie_utility::set_zombie_var("riotshield_knockdown_range", 120);
-  /#
   level thread function_a3a9c2dc();
-  # /
 }
 
-/*
-	Name: on_player_connect
-	Namespace: dragon_scale_shield
-	Checksum: 0xD74ED34A
-	Offset: 0xFD0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   self thread watchfirstuse();
 }
 
-/*
-	Name: watchfirstuse
-	Namespace: dragon_scale_shield
-	Checksum: 0x2BDD36E6
-	Offset: 0xFF8
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function watchfirstuse() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (isdefined(self)) {
-    self waittill(# "weapon_change", newweapon);
+    self waittill("weapon_change", newweapon);
     if(newweapon.isriotshield) {
       break;
     }
   }
-  self notify(# "hide_equipment_hint_text");
+  self notify("hide_equipment_hint_text");
   level flag::set("dragon_shield_used");
   util::wait_network_frame();
   self.rocket_shield_hint_shown = 1;
-  zm_equipment::show_hint_text( & "ZOMBIE_DRAGON_SHIELD_HINT", 5);
+  zm_equipment::show_hint_text(&"ZOMBIE_DRAGON_SHIELD_HINT", 5);
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: dragon_scale_shield
-	Checksum: 0x5F865FD2
-	Offset: 0x10B0
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self thread function_98962bde();
   self thread player_watch_ammo_change();
@@ -167,21 +114,12 @@ function on_player_spawned() {
   self.riotshield_damage_absorb_callback = & riotshield_damage_absorb_callback;
 }
 
-/*
-	Name: function_98962bde
-	Namespace: dragon_scale_shield
-	Checksum: 0xF9520209
-	Offset: 0x1138
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_98962bde() {
-  self notify(# "hash_34db92fa");
-  self endon(# "hash_34db92fa");
-  self endon(# "disconnect");
+  self notify("hash_34db92fa");
+  self endon("hash_34db92fa");
+  self endon("disconnect");
   while (isdefined(self)) {
-    level waittill(# "start_of_round");
+    level waittill("start_of_round");
     if(isdefined(self) && (isdefined(self.hasriotshield) && self.hasriotshield)) {
       self zm_equipment::change_ammo(self.weaponriotshield, 1);
       self thread check_weapon_ammo(self.weaponriotshield);
@@ -189,20 +127,11 @@ function function_98962bde() {
   }
 }
 
-/*
-	Name: player_watch_ammo_change
-	Namespace: dragon_scale_shield
-	Checksum: 0xE1F05A13
-	Offset: 0x11E0
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function player_watch_ammo_change() {
-  self notify(# "player_watch_ammo_change");
-  self endon(# "player_watch_ammo_change");
+  self notify("player_watch_ammo_change");
+  self endon("player_watch_ammo_change");
   for (;;) {
-    self waittill(# "equipment_ammo_changed", equipment);
+    self waittill("equipment_ammo_changed", equipment);
     if(isstring(equipment)) {
       equipment = getweapon(equipment);
     }
@@ -212,20 +141,11 @@ function player_watch_ammo_change() {
   }
 }
 
-/*
-	Name: player_watch_max_ammo
-	Namespace: dragon_scale_shield
-	Checksum: 0x7819E21A
-	Offset: 0x12B0
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function player_watch_max_ammo() {
-  self notify(# "player_watch_max_ammo");
-  self endon(# "player_watch_max_ammo");
+  self notify("player_watch_max_ammo");
+  self endon("player_watch_max_ammo");
   for (;;) {
-    self waittill(# "zmb_max_ammo");
+    self waittill("zmb_max_ammo");
     wait(0.05);
     if(isdefined(self.hasriotshield) && self.hasriotshield) {
       self thread check_weapon_ammo(self.weaponriotshield);
@@ -233,15 +153,6 @@ function player_watch_max_ammo() {
   }
 }
 
-/*
-	Name: check_weapon_ammo
-	Namespace: dragon_scale_shield
-	Checksum: 0x7A1738AE
-	Offset: 0x1320
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function check_weapon_ammo(weapon) {
   wait(0.05);
   if(isdefined(self)) {
@@ -250,15 +161,6 @@ function check_weapon_ammo(weapon) {
   }
 }
 
-/*
-	Name: should_shield_absorb_damage
-	Namespace: dragon_scale_shield
-	Checksum: 0x3F026E8B
-	Offset: 0x1390
-	Size: 0x14A
-	Parameters: 10
-	Flags: Linked
-*/
 function should_shield_absorb_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime) {
   if(isdefined(self.hasriotshield) && self.hasriotshield) {
     if(isdefined(self.hasriotshieldequipped) && self.hasriotshieldequipped && smeansofdeath == "MOD_EXPLOSIVE" && isdefined(eattacker) && (isdefined(eattacker.is_elemental_zombie) && eattacker.is_elemental_zombie) && eattacker.var_9a02a614 === "napalm") {
@@ -271,41 +173,14 @@ function should_shield_absorb_damage(einflictor, eattacker, idamage, idflags, sm
   return riotshield::should_shield_absorb_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime);
 }
 
-/*
-	Name: function_247d568b
-	Namespace: dragon_scale_shield
-	Checksum: 0x8B78A4DF
-	Offset: 0x14E8
-	Size: 0x7C
-	Parameters: 4
-	Flags: Linked
-*/
 function function_247d568b(idamage, bheld, fromcode = 0, smod = "MOD_UNKNOWN") {
   if(smod != "MOD_BURNED") {
     riotshield::player_damage_shield(idamage, bheld, fromcode, smod);
   }
 }
 
-/*
-	Name: riotshield_damage_absorb_callback
-	Namespace: dragon_scale_shield
-	Checksum: 0x4798668F
-	Offset: 0x1570
-	Size: 0x24
-	Parameters: 4
-	Flags: Linked
-*/
 function riotshield_damage_absorb_callback(eattacker, idamage, shitloc, smeansofdeath) {}
 
-/*
-	Name: function_71d88f26
-	Namespace: dragon_scale_shield
-	Checksum: 0x4C466E01
-	Offset: 0x15A0
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_71d88f26(weapon) {
   ammo = self getammocount(weapon);
   disabled = isdefined(self.var_a0a9409e) && self.var_a0a9409e;
@@ -319,15 +194,6 @@ function function_71d88f26(weapon) {
   }
 }
 
-/*
-	Name: function_f894ad3e
-	Namespace: dragon_scale_shield
-	Checksum: 0x9794B1E0
-	Offset: 0x1690
-	Size: 0x158
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f894ad3e() {
   self playrumbleonentity("zod_shield_juke");
   if(self zm_equipment::get_player_equipment() == getweapon("dragonshield")) {
@@ -345,15 +211,6 @@ function function_f894ad3e() {
   var_aa911866 = magicbullet(var_c3937998, view_pos, end_pos, self);
 }
 
-/*
-	Name: function_c9b3ba45
-	Namespace: dragon_scale_shield
-	Checksum: 0x92627D0
-	Offset: 0x17F0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c9b3ba45(e_attacker) {
   self.marked_for_death = 1;
   if(isdefined(self)) {
@@ -361,15 +218,6 @@ function function_c9b3ba45(e_attacker) {
   }
 }
 
-/*
-	Name: function_3f5e8a65
-	Namespace: dragon_scale_shield
-	Checksum: 0x2970F0F7
-	Offset: 0x1850
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3f5e8a65() {
   level.var_9e674825++;
   if(!level.var_9e674825 % 10) {
@@ -379,15 +227,6 @@ function function_3f5e8a65() {
   }
 }
 
-/*
-	Name: burninate
-	Namespace: dragon_scale_shield
-	Checksum: 0x454D0BC0
-	Offset: 0x18A8
-	Size: 0xA6
-	Parameters: 1
-	Flags: Linked
-*/
 function burninate(w_weapon) {
   physicsexplosioncylinder(self.origin, 600, 240, 1);
   if(w_weapon == getweapon("dragonshield_upgraded")) {
@@ -396,18 +235,9 @@ function burninate(w_weapon) {
     n_clientfield = 1;
   }
   self thread function_8b8bd269(n_clientfield);
-  self notify(# "hash_10fa975d", w_weapon);
+  self notify("hash_10fa975d", w_weapon);
 }
 
-/*
-	Name: function_8b8bd269
-	Namespace: dragon_scale_shield
-	Checksum: 0xD64C0CFB
-	Offset: 0x1958
-	Size: 0x238
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8b8bd269(n_clientfield) {
   if(!isdefined(level.var_2f79fc7)) {
     level.var_2f79fc7 = [];
@@ -432,22 +262,13 @@ function function_8b8bd269(n_clientfield) {
     level.var_2f79fc7[i] thread function_c25e3d4b(self, level.var_490f6a0d[i]);
     function_3f5e8a65();
   }
-  self notify(# "hash_8c80a390", self.var_3a6322f2);
+  self notify("hash_8c80a390", self.var_3a6322f2);
   level.var_2f79fc7 = [];
   level.var_490f6a0d = [];
   level.var_e4a96ed9 = [];
   level.var_1c1b4cce = [];
 }
 
-/*
-	Name: function_459dacdd
-	Namespace: dragon_scale_shield
-	Checksum: 0xC56DC6D3
-	Offset: 0x1B98
-	Size: 0x976
-	Parameters: 0
-	Flags: Linked
-*/
 function function_459dacdd() {
   view_pos = self getweaponmuzzlepoint();
   zombies = array::get_all_closest(view_pos, getaiteamarray(level.zombie_team), undefined, undefined, level.zombie_vars["dragonshield_knockdown_range"]);
@@ -462,101 +283,89 @@ function function_459dacdd() {
   var_36f73bb5 = level.zombie_vars["dragonshield_proximity_fling_radius"] * level.zombie_vars["dragonshield_proximity_fling_radius"];
   forward_view_angles = self getweaponforwarddir();
   end_pos = view_pos + vectorscale(forward_view_angles, level.zombie_vars["dragonshield_knockdown_range"]);
-  /#
   if(2 == getdvarint("")) {
     near_circle_pos = view_pos + vectorscale(forward_view_angles, 2);
     circle(near_circle_pos, level.zombie_vars[""], (1, 0, 0), 0, 0, 100);
     line(near_circle_pos, end_pos, (0, 0, 1), 1, 0, 100);
     circle(end_pos, level.zombie_vars[""], (1, 0, 0), 0, 0, 100);
   }
-  # /
-    for (i = 0; i < zombies.size; i++) {
-      if(!isdefined(zombies[i]) || !isalive(zombies[i])) {
-        continue;
-      }
-      test_origin = zombies[i] getcentroid();
-      test_range_squared = distancesquared(view_pos, test_origin);
-      if(test_range_squared > knockdown_range_squared) {
-        zombies[i] function_8e9a1613("range", (1, 0, 0));
-        return;
-      }
-      normal = vectornormalize(test_origin - view_pos);
-      dot = vectordot(forward_view_angles, normal);
-      if(test_range_squared < var_36f73bb5) {
-        level.var_e4a96ed9[level.var_e4a96ed9.size] = zombies[i];
-        dist_mult = 1;
-        fling_vec = vectornormalize(test_origin - view_pos);
-        fling_vec = (fling_vec[0], fling_vec[1], abs(fling_vec[2]));
-        fling_vec = vectorscale(fling_vec, 50 + (50 * dist_mult));
-        level.var_1c1b4cce[level.var_1c1b4cce.size] = fling_vec;
-        zombies[i] thread function_41f7c503(self, 1, 0, 0);
-        continue;
-      } else if(test_range_squared < var_26ce68e3 && 0 > dot) {
-        if(!isdefined(zombies[i].var_e1dbd63)) {
-          zombies[i].var_e1dbd63 = level.var_337d1ed2;
-        }
-        level.var_2f79fc7[level.var_2f79fc7.size] = zombies[i];
-        level.var_490f6a0d[level.var_490f6a0d.size] = 0;
-        zombies[i] thread function_41f7c503(self, 0, 0, 1);
-        continue;
-      }
-      if(0 > dot) {
-        zombies[i] function_8e9a1613("dot", (1, 0, 0));
-        continue;
-      }
-      radial_origin = pointonsegmentnearesttopoint(view_pos, end_pos, test_origin);
-      if(distancesquared(test_origin, radial_origin) > cylinder_radius_squared) {
-        zombies[i] function_8e9a1613("cylinder", (1, 0, 0));
-        continue;
-      }
-      if(0 == zombies[i] damageconetrace(view_pos, self)) {
-        zombies[i] function_8e9a1613("cone", (1, 0, 0));
-        continue;
-      }
-      var_6ce0bf79 = level.zombie_vars["dragonshield_projectile_lifetime"];
-      zombies[i].var_d8486721 = (var_6ce0bf79 * sqrt(test_range_squared)) / level.zombie_vars["dragonshield_knockdown_range"];
-      if(test_range_squared < fling_range_squared) {
-        level.var_e4a96ed9[level.var_e4a96ed9.size] = zombies[i];
-        dist_mult = (fling_range_squared - test_range_squared) / fling_range_squared;
-        fling_vec = vectornormalize(test_origin - view_pos);
-        if(5000 < test_range_squared) {
-          fling_vec = fling_vec + (vectornormalize(test_origin - radial_origin));
-        }
-        fling_vec = (fling_vec[0], fling_vec[1], abs(fling_vec[2]));
-        fling_vec = vectorscale(fling_vec, 50 + (50 * dist_mult));
-        level.var_1c1b4cce[level.var_1c1b4cce.size] = fling_vec;
-        zombies[i] thread function_41f7c503(self, 1, 0, 0);
-        continue;
-      }
-      if(test_range_squared < gib_range_squared) {
-        if(!isdefined(zombies[i].var_e1dbd63)) {
-          zombies[i].var_e1dbd63 = level.var_337d1ed2;
-        }
-        level.var_2f79fc7[level.var_2f79fc7.size] = zombies[i];
-        level.var_490f6a0d[level.var_490f6a0d.size] = 1;
-        zombies[i] thread function_41f7c503(self, 0, 1, 0);
-        continue;
-      }
+  for (i = 0; i < zombies.size; i++) {
+    if(!isdefined(zombies[i]) || !isalive(zombies[i])) {
+      continue;
+    }
+    test_origin = zombies[i] getcentroid();
+    test_range_squared = distancesquared(view_pos, test_origin);
+    if(test_range_squared > knockdown_range_squared) {
+      zombies[i] function_8e9a1613("range", (1, 0, 0));
+      return;
+    }
+    normal = vectornormalize(test_origin - view_pos);
+    dot = vectordot(forward_view_angles, normal);
+    if(test_range_squared < var_36f73bb5) {
+      level.var_e4a96ed9[level.var_e4a96ed9.size] = zombies[i];
+      dist_mult = 1;
+      fling_vec = vectornormalize(test_origin - view_pos);
+      fling_vec = (fling_vec[0], fling_vec[1], abs(fling_vec[2]));
+      fling_vec = vectorscale(fling_vec, 50 + (50 * dist_mult));
+      level.var_1c1b4cce[level.var_1c1b4cce.size] = fling_vec;
+      zombies[i] thread function_41f7c503(self, 1, 0, 0);
+      continue;
+    } else if(test_range_squared < var_26ce68e3 && 0 > dot) {
       if(!isdefined(zombies[i].var_e1dbd63)) {
         zombies[i].var_e1dbd63 = level.var_337d1ed2;
       }
       level.var_2f79fc7[level.var_2f79fc7.size] = zombies[i];
       level.var_490f6a0d[level.var_490f6a0d.size] = 0;
       zombies[i] thread function_41f7c503(self, 0, 0, 1);
+      continue;
     }
+    if(0 > dot) {
+      zombies[i] function_8e9a1613("dot", (1, 0, 0));
+      continue;
+    }
+    radial_origin = pointonsegmentnearesttopoint(view_pos, end_pos, test_origin);
+    if(distancesquared(test_origin, radial_origin) > cylinder_radius_squared) {
+      zombies[i] function_8e9a1613("cylinder", (1, 0, 0));
+      continue;
+    }
+    if(0 == zombies[i] damageconetrace(view_pos, self)) {
+      zombies[i] function_8e9a1613("cone", (1, 0, 0));
+      continue;
+    }
+    var_6ce0bf79 = level.zombie_vars["dragonshield_projectile_lifetime"];
+    zombies[i].var_d8486721 = (var_6ce0bf79 * sqrt(test_range_squared)) / level.zombie_vars["dragonshield_knockdown_range"];
+    if(test_range_squared < fling_range_squared) {
+      level.var_e4a96ed9[level.var_e4a96ed9.size] = zombies[i];
+      dist_mult = (fling_range_squared - test_range_squared) / fling_range_squared;
+      fling_vec = vectornormalize(test_origin - view_pos);
+      if(5000 < test_range_squared) {
+        fling_vec = fling_vec + (vectornormalize(test_origin - radial_origin));
+      }
+      fling_vec = (fling_vec[0], fling_vec[1], abs(fling_vec[2]));
+      fling_vec = vectorscale(fling_vec, 50 + (50 * dist_mult));
+      level.var_1c1b4cce[level.var_1c1b4cce.size] = fling_vec;
+      zombies[i] thread function_41f7c503(self, 1, 0, 0);
+      continue;
+    }
+    if(test_range_squared < gib_range_squared) {
+      if(!isdefined(zombies[i].var_e1dbd63)) {
+        zombies[i].var_e1dbd63 = level.var_337d1ed2;
+      }
+      level.var_2f79fc7[level.var_2f79fc7.size] = zombies[i];
+      level.var_490f6a0d[level.var_490f6a0d.size] = 1;
+      zombies[i] thread function_41f7c503(self, 0, 1, 0);
+      continue;
+    }
+    if(!isdefined(zombies[i].var_e1dbd63)) {
+      zombies[i].var_e1dbd63 = level.var_337d1ed2;
+    }
+    level.var_2f79fc7[level.var_2f79fc7.size] = zombies[i];
+    level.var_490f6a0d[level.var_490f6a0d.size] = 0;
+    zombies[i] thread function_41f7c503(self, 0, 0, 1);
+  }
 }
 
-/*
-	Name: function_8e9a1613
-	Namespace: dragon_scale_shield
-	Checksum: 0x3B641B81
-	Offset: 0x2518
-	Size: 0x8C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_8e9a1613(msg, color) {
-  /#
   if(!getdvarint("")) {
     return;
   }
@@ -564,18 +373,8 @@ function function_8e9a1613(msg, color) {
     color = (1, 1, 1);
   }
   print3d(self.origin + vectorscale((0, 0, 1), 60), msg, color, 1, 1, 40);
-  # /
 }
 
-/*
-	Name: function_64bd9bf5
-	Namespace: dragon_scale_shield
-	Checksum: 0xFECE0A27
-	Offset: 0x25B0
-	Size: 0x190
-	Parameters: 3
-	Flags: Linked
-*/
 function function_64bd9bf5(player, fling_vec, index) {
   delay = self.var_d8486721;
   if(isdefined(delay) && delay > 0.05) {
@@ -606,15 +405,6 @@ function function_64bd9bf5(player, fling_vec, index) {
   }
 }
 
-/*
-	Name: zombie_knockdown
-	Namespace: dragon_scale_shield
-	Checksum: 0x1434C65
-	Offset: 0x2748
-	Size: 0x200
-	Parameters: 2
-	Flags: Linked
-*/
 function zombie_knockdown(player, gib) {
   delay = self.var_d8486721;
   if(isdefined(delay) && delay > 0.05) {
@@ -647,20 +437,11 @@ function zombie_knockdown(player, gib) {
   }
 }
 
-/*
-	Name: function_2d1a5562
-	Namespace: dragon_scale_shield
-	Checksum: 0xDDF66692
-	Offset: 0x2950
-	Size: 0x23C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2d1a5562() {
-  self notify(# "hash_21776edb");
-  self endon(# "killanimscript");
-  self endon(# "death");
-  self endon(# "hash_21776edb");
+  self notify("hash_21776edb");
+  self endon("killanimscript");
+  self endon("death");
+  self endon("hash_21776edb");
   if(isdefined(self.marked_for_death) && self.marked_for_death) {
     return;
   }
@@ -698,17 +479,8 @@ function function_2d1a5562() {
   self zombie_shared::donotetracks("dragonshield_getup_anim");
 }
 
-/*
-	Name: function_c25e3d4b
-	Namespace: dragon_scale_shield
-	Checksum: 0x70E869A4
-	Offset: 0x2B98
-	Size: 0x88
-	Parameters: 2
-	Flags: Linked
-*/
 function function_c25e3d4b(player, gib) {
-  self endon(# "death");
+  self endon("death");
   self clientfield::increment("dragonshield_snd_projectile_impact");
   if(!isdefined(self) || !isalive(self)) {
     return;
@@ -718,15 +490,6 @@ function function_c25e3d4b(player, gib) {
   }
 }
 
-/*
-	Name: function_21b74baa
-	Namespace: dragon_scale_shield
-	Checksum: 0x9A1EA5BB
-	Offset: 0x2C28
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function function_21b74baa(note) {
   if(note == "zombie_knockdown_ground_impact") {
     playfx(level._effect["dragonshield_knockdown_ground"], self.origin, anglestoforward(self.angles), anglestoup(self.angles));
@@ -734,15 +497,6 @@ function function_21b74baa(note) {
   }
 }
 
-/*
-	Name: function_41f7c503
-	Namespace: dragon_scale_shield
-	Checksum: 0x327520DD
-	Offset: 0x2CC8
-	Size: 0xD4
-	Parameters: 4
-	Flags: Linked
-*/
 function function_41f7c503(player, fling, gib, knockdown) {
   if(!isdefined(self) || !isalive(self)) {
     return;
@@ -755,17 +509,7 @@ function function_41f7c503(player, fling, gib, knockdown) {
   }
 }
 
-/*
-	Name: function_a3a9c2dc
-	Namespace: dragon_scale_shield
-	Checksum: 0xD4AC19C9
-	Offset: 0x2DA8
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a3a9c2dc() {
-  /#
   level flagsys::wait_till("");
   wait(1);
   zm_devgui::add_custom_devgui_callback( & function_6f901616);
@@ -775,20 +519,9 @@ function function_a3a9c2dc() {
   if(getdvarint("") > 0) {
     adddebugcommand("");
   }
-  # /
 }
 
-/*
-	Name: function_6f901616
-	Namespace: dragon_scale_shield
-	Checksum: 0xFE4FB03F
-	Offset: 0x2E80
-	Size: 0x146
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6f901616(cmd) {
-  /#
   players = getplayers();
   retval = 0;
   switch (cmd) {
@@ -814,20 +547,9 @@ function function_6f901616(cmd) {
     }
   }
   return retval;
-  # /
 }
 
-/*
-	Name: detect_reentry
-	Namespace: dragon_scale_shield
-	Checksum: 0x4C8619CA
-	Offset: 0x2FD0
-	Size: 0x36
-	Parameters: 0
-	Flags: Linked
-*/
 function detect_reentry() {
-  /#
   if(isdefined(self.devgui_preserve_time)) {
     if(self.devgui_preserve_time == gettime()) {
       return true;
@@ -835,25 +557,14 @@ function detect_reentry() {
   }
   self.devgui_preserve_time = gettime();
   return false;
-  # /
 }
 
-/*
-	Name: function_f685a6db
-	Namespace: dragon_scale_shield
-	Checksum: 0x20DE0634
-	Offset: 0x3010
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f685a6db() {
-  /#
   if(self detect_reentry()) {
     return;
   }
-  self notify(# "hash_f685a6db");
-  self endon(# "hash_f685a6db");
+  self notify("hash_f685a6db");
+  self endon("hash_f685a6db");
   level flagsys::wait_till("");
   self.var_f685a6db = !(isdefined(self.var_f685a6db) && self.var_f685a6db);
   if(self.var_f685a6db) {
@@ -871,25 +582,14 @@ function function_f685a6db() {
       wait(0.5);
     }
   }
-  # /
 }
 
-/*
-	Name: function_eeac5a22
-	Namespace: dragon_scale_shield
-	Checksum: 0x637E728C
-	Offset: 0x3170
-	Size: 0xE6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_eeac5a22() {
-  /#
   if(self detect_reentry()) {
     return;
   }
-  self notify(# "hash_eeac5a22");
-  self endon(# "hash_eeac5a22");
+  self notify("hash_eeac5a22");
+  self endon("hash_eeac5a22");
   level flagsys::wait_till("");
   self.var_eeac5a22 = !(isdefined(self.var_eeac5a22) && self.var_eeac5a22);
   if(self.var_eeac5a22) {
@@ -901,5 +601,4 @@ function function_eeac5a22() {
       wait(1);
     }
   }
-  # /
 }

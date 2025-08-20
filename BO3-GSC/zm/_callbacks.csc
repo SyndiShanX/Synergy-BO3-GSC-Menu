@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_callbacks.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\audio_shared;
 #using scripts\shared\callbacks_shared;
@@ -11,44 +15,16 @@
 #using scripts\shared\vehicles\_driving_fx;
 #using scripts\zm\_filter;
 #using scripts\zm\_sticky_grenade;
-
 #namespace callback;
 
-/*
-	Name: __init__sytem__
-	Namespace: callback
-	Checksum: 0x5AD5873D
-	Offset: 0x238
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("callback", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: callback
-	Checksum: 0x5D7E15A0
-	Offset: 0x278
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level thread set_default_callbacks();
 }
 
-/*
-	Name: set_default_callbacks
-	Namespace: callback
-	Checksum: 0xCBF53703
-	Offset: 0x2A0
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function set_default_callbacks() {
   level.callbackplayerspawned = & playerspawned;
   level.callbacklocalclientconnect = & localclientconnect;
@@ -59,20 +35,9 @@ function set_default_callbacks() {
   level._custom_weapon_cb_func = & spawned_weapon_type;
 }
 
-/*
-	Name: localclientconnect
-	Namespace: callback
-	Checksum: 0x4A89D19C
-	Offset: 0x358
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function localclientconnect(localclientnum) {
-  /#
   println("" + localclientnum);
-  # /
-    callback(# "hash_da8d7d74", localclientnum);
+  callback("hash_da8d7d74", localclientnum);
   if(isdefined(level.charactercustomizationsetup)) {
     [
       [level.charactercustomizationsetup]
@@ -80,42 +45,22 @@ function localclientconnect(localclientnum) {
   }
 }
 
-/*
-	Name: playerspawned
-	Namespace: callback
-	Checksum: 0xDE18DDED
-	Offset: 0x3D8
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function playerspawned(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(isdefined(level._playerspawned_override)) {
     self thread[[level._playerspawned_override]](localclientnum);
     return;
   }
-  /#
   println("");
-  # /
-    if(self islocalplayer()) {
-      callback(# "hash_842e788a", localclientnum);
-    }
-  callback(# "hash_bc12b61f", localclientnum);
+  if(self islocalplayer()) {
+    callback("hash_842e788a", localclientnum);
+  }
+  callback("hash_bc12b61f", localclientnum);
   level.localplayers = getlocalplayers();
 }
 
-/*
-	Name: entityspawned
-	Namespace: callback
-	Checksum: 0xE536F726
-	Offset: 0x4A8
-	Size: 0x268
-	Parameters: 1
-	Flags: Linked
-*/
 function entityspawned(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(self isplayer()) {
     if(isdefined(level._clientfaceanimonplayerspawned)) {
       self thread[[level._clientfaceanimonplayerspawned]](localclientnum);
@@ -126,10 +71,8 @@ function entityspawned(localclientnum) {
     return;
   }
   if(!isdefined(self.type)) {
-    /#
     println("");
-    # /
-      return;
+    return;
   }
   if(self.type == "missile") {
     if(isdefined(level._custom_weapon_cb_func)) {
@@ -161,28 +104,10 @@ function entityspawned(localclientnum) {
   }
 }
 
-/*
-	Name: host_migration
-	Namespace: callback
-	Checksum: 0x8E874C0B
-	Offset: 0x718
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function host_migration(localclientnum) {
   level thread prevent_round_switch_animation();
 }
 
-/*
-	Name: prevent_round_switch_animation
-	Namespace: callback
-	Checksum: 0xCFCD975C
-	Offset: 0x748
-	Size: 0xA
-	Parameters: 0
-	Flags: Linked
-*/
 function prevent_round_switch_animation() {
   wait(3);
 }

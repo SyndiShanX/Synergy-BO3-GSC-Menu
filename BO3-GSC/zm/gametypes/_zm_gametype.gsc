@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\gametypes\_zm_gametype.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -30,18 +34,8 @@
 #using scripts\zm\gametypes\_hud_message;
 #using scripts\zm\gametypes\_spawning;
 #using scripts\zm\gametypes\_weapons;
-
 #namespace zm_gametype;
 
-/*
-	Name: main
-	Namespace: zm_gametype
-	Checksum: 0x783FA47F
-	Offset: 0xAF0
-	Size: 0x654
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   globallogic::init();
   globallogic_setupdefault_zombiecallbacks();
@@ -114,15 +108,6 @@ function main() {
   callback::on_connect( & onplayerconnect_check_for_hotjoin);
 }
 
-/*
-	Name: globallogic_setupdefault_zombiecallbacks
-	Namespace: zm_gametype
-	Checksum: 0x9F68562F
-	Offset: 0x1150
-	Size: 0x4D4
-	Parameters: 0
-	Flags: Linked
-*/
 function globallogic_setupdefault_zombiecallbacks() {
   level.spawnplayer = & globallogic_spawn::spawnplayer;
   level.spawnplayerprediction = & globallogic_spawn::spawnplayerprediction;
@@ -178,45 +163,18 @@ function globallogic_setupdefault_zombiecallbacks() {
   level.callbackvehiclekilled = & globallogic::blank;
 }
 
-/*
-	Name: do_game_mode_shellshock
-	Namespace: zm_gametype
-	Checksum: 0xE2FEFFD6
-	Offset: 0x1630
-	Size: 0x58
-	Parameters: 0
-	Flags: None
-*/
 function do_game_mode_shellshock() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self._being_shellshocked = 1;
   self shellshock("grief_stab_zm", 0.75);
   wait(0.75);
   self._being_shellshocked = 0;
 }
 
-/*
-	Name: canplayersuicide
-	Namespace: zm_gametype
-	Checksum: 0x19B751C5
-	Offset: 0x1690
-	Size: 0x6
-	Parameters: 0
-	Flags: Linked
-*/
 function canplayersuicide() {
   return false;
 }
 
-/*
-	Name: onplayerdisconnect
-	Namespace: zm_gametype
-	Checksum: 0xF848057E
-	Offset: 0x16A0
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerdisconnect() {
   if(isdefined(level.game_mode_custom_onplayerdisconnect)) {
     level[[level.game_mode_custom_onplayerdisconnect]](self);
@@ -228,36 +186,16 @@ function onplayerdisconnect() {
   level zm::checkforalldead(self);
 }
 
-/*
-	Name: ondeadevent
-	Namespace: zm_gametype
-	Checksum: 0xED8BF7D9
-	Offset: 0x1718
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function ondeadevent(team) {
   thread globallogic::endgame(level.zombie_team, "");
 }
 
-/*
-	Name: onspawnintermission
-	Namespace: zm_gametype
-	Checksum: 0xEBE2A04
-	Offset: 0x1750
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function onspawnintermission() {
   spawnpointname = "info_intermission";
   spawnpoints = getentarray(spawnpointname, "classname");
   if(spawnpoints.size < 1) {
-    /#
     println(("" + spawnpointname) + "");
-    # /
-      return;
+    return;
   }
   spawnpoint = spawnpoints[randomint(spawnpoints.size)];
   if(isdefined(spawnpoint)) {
@@ -265,47 +203,20 @@ function onspawnintermission() {
   }
 }
 
-/*
-	Name: onspawnspectator
-	Namespace: zm_gametype
-	Checksum: 0x61458BE8
-	Offset: 0x1838
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawnspectator(origin, angles) {}
 
-/*
-	Name: mayspawn
-	Namespace: zm_gametype
-	Checksum: 0x28F4AD58
-	Offset: 0x1858
-	Size: 0x5A
-	Parameters: 0
-	Flags: Linked
-*/
 function mayspawn() {
   if(isdefined(level.custommayspawnlogic)) {
     return self[[level.custommayspawnlogic]]();
   }
   if(self.pers["lives"] == 0) {
-    level notify(# "player_eliminated");
-    self notify(# "player_eliminated");
+    level notify("player_eliminated");
+    self notify("player_eliminated");
     return 0;
   }
   return 1;
 }
 
-/*
-	Name: onstartgametype
-	Namespace: zm_gametype
-	Checksum: 0x1A23C67B
-	Offset: 0x18C0
-	Size: 0x1CC
-	Parameters: 0
-	Flags: Linked
-*/
 function onstartgametype() {
   setclientnamemode("auto_change");
   level.spawnmins = (0, 0, 0);
@@ -327,40 +238,18 @@ function onstartgametype() {
   }
 }
 
-/*
-	Name: onspawnplayerunified
-	Namespace: zm_gametype
-	Checksum: 0xA9D6F9D0
-	Offset: 0x1A98
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function onspawnplayerunified() {
   onspawnplayer(0);
 }
 
-/*
-	Name: onfindvalidspawnpoint
-	Namespace: zm_gametype
-	Checksum: 0xA136A1F9
-	Offset: 0x1AC0
-	Size: 0x31C
-	Parameters: 0
-	Flags: Linked
-*/
 function onfindvalidspawnpoint() {
-  /#
   println("");
-  # /
-    if(level flag::get("begin_spawning")) {
-      spawnpoint = zm::check_for_valid_spawn_near_team(self, 1);
-      /#
-      if(!isdefined(spawnpoint)) {
-        println("");
-      }
-      # /
+  if(level flag::get("begin_spawning")) {
+    spawnpoint = zm::check_for_valid_spawn_near_team(self, 1);
+    if(!isdefined(spawnpoint)) {
+      println("");
     }
+  }
   if(!isdefined(spawnpoint)) {
     match_string = "";
     location = level.scr_zm_map_start_location;
@@ -385,23 +274,12 @@ function onfindvalidspawnpoint() {
     if(!isdefined(spawnpoints) || spawnpoints.size == 0) {
       spawnpoints = struct::get_array("initial_spawn_points", "targetname");
     }
-    /#
     assert(isdefined(spawnpoints), "");
-    # /
-      spawnpoint = zm::getfreespawnpoint(spawnpoints, self);
+    spawnpoint = zm::getfreespawnpoint(spawnpoints, self);
   }
   return spawnpoint;
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: zm_gametype
-	Checksum: 0xACBE64EA
-	Offset: 0x1DE8
-	Size: 0x374
-	Parameters: 1
-	Flags: Linked
-*/
 function onspawnplayer(predictedspawn = 0) {
   pixbeginevent("ZSURVIVAL:onSpawnPlayer");
   self.usingobj = undefined;
@@ -412,18 +290,14 @@ function onspawnplayer(predictedspawn = 0) {
     return;
   }
   if(isdefined(level.customspawnlogic)) {
-    /#
     println("");
-    # /
-      spawnpoint = self[[level.customspawnlogic]](predictedspawn);
+    spawnpoint = self[[level.customspawnlogic]](predictedspawn);
     if(predictedspawn) {
       return;
     }
   } else {
-    /#
     println("");
-    # /
-      spawnpoint = self onfindvalidspawnpoint();
+    spawnpoint = self onfindvalidspawnpoint();
     if(predictedspawn) {
       self predictspawnpoint(spawnpoint.origin, spawnpoint.angles);
       return;
@@ -437,12 +311,10 @@ function onspawnplayer(predictedspawn = 0) {
   self.spectator_respawn = spawnpoint;
   self.score = self globallogic_score::getpersstat("score");
   self.pers["participation"] = 0;
-  /#
   if(getdvarint("") >= 1) {
     self.score = 100000;
   }
-  # /
-    self.score_total = self.score;
+  self.score_total = self.score;
   self.old_score = self.score;
   self.player_initialized = 0;
   self.zombification_time = 0;
@@ -463,15 +335,6 @@ function onspawnplayer(predictedspawn = 0) {
   pixendevent();
 }
 
-/*
-	Name: get_player_spawns_for_gametype
-	Namespace: zm_gametype
-	Checksum: 0x42F8595A
-	Offset: 0x2168
-	Size: 0x21E
-	Parameters: 0
-	Flags: Linked
-*/
 function get_player_spawns_for_gametype() {
   match_string = "";
   location = level.scr_zm_map_start_location;
@@ -496,26 +359,8 @@ function get_player_spawns_for_gametype() {
   return player_spawns;
 }
 
-/*
-	Name: onendgame
-	Namespace: zm_gametype
-	Checksum: 0x296DDE4C
-	Offset: 0x2390
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function onendgame(winningteam) {}
 
-/*
-	Name: onroundendgame
-	Namespace: zm_gametype
-	Checksum: 0x119131E8
-	Offset: 0x23A8
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function onroundendgame(roundwinner) {
   if(game["roundswon"]["allies"] == game["roundswon"]["axis"]) {
     winner = "tie";
@@ -529,15 +374,6 @@ function onroundendgame(roundwinner) {
   return winner;
 }
 
-/*
-	Name: menu_init
-	Namespace: zm_gametype
-	Checksum: 0x8EBF43F3
-	Offset: 0x2458
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function menu_init() {
   game["menu_team"] = "ChangeTeam";
   game["menu_changeclass_allies"] = "ChooseClass_InGame";
@@ -560,35 +396,17 @@ function menu_init() {
   level thread menu_onplayerconnect();
 }
 
-/*
-	Name: menu_onplayerconnect
-	Namespace: zm_gametype
-	Checksum: 0xB7A889FB
-	Offset: 0x25E8
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function menu_onplayerconnect() {
   for (;;) {
-    level waittill(# "connecting", player);
+    level waittill("connecting", player);
     player thread menu_onmenuresponse();
   }
 }
 
-/*
-	Name: menu_onmenuresponse
-	Namespace: zm_gametype
-	Checksum: 0x1A981B2D
-	Offset: 0x2628
-	Size: 0x75C
-	Parameters: 0
-	Flags: Linked
-*/
 function menu_onmenuresponse() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   for (;;) {
-    self waittill(# "menuresponse", menu, response);
+    self waittill("menuresponse", menu, response);
     if(response == "back") {
       self closeingamemenu();
       if(level.console) {
@@ -648,7 +466,7 @@ function menu_onmenuresponse() {
           self zm_pers_upgrades_functions::pers_upgrade_jugg_player_death_stat();
           level.host_ended_game = 1;
           zm_game_module::freeze_players(1);
-          level notify(# "end_game");
+          level notify("end_game");
         }
       }
       continue;
@@ -671,10 +489,10 @@ function menu_onmenuresponse() {
         self closeingamemenu();
         level.host_ended_game = 1;
         zm_game_module::freeze_players(1);
-        level notify(# "end_game");
+        level notify("end_game");
       } else {
         self closeingamemenu();
-        self iprintln( & "MP_HOST_ENDGAME_RESPONSE");
+        self iprintln(&"MP_HOST_ENDGAME_RESPONSE");
       }
       continue;
     }
@@ -707,15 +525,6 @@ function menu_onmenuresponse() {
   }
 }
 
-/*
-	Name: menuallieszombies
-	Namespace: zm_gametype
-	Checksum: 0x7E41310C
-	Offset: 0x2D90
-	Size: 0x1FA
-	Parameters: 0
-	Flags: Linked
-*/
 function menuallieszombies() {
   self globallogic_ui::closemenus();
   if(!level.console && level.allow_teamchange == "0" && (isdefined(self.hasdonecombat) && self.hasdonecombat)) {
@@ -740,54 +549,27 @@ function menuallieszombies() {
     self globallogic_ui::updateobjectivetext();
     self.sessionteam = "allies";
     self setclientscriptmainmenu(game["menu_start_menu"]);
-    self notify(# "joined_team");
-    level notify(# "joined_team");
-    self callback::callback(# "hash_95a6c4c0");
-    self notify(# "end_respawn");
+    self notify("joined_team");
+    level notify("joined_team");
+    self callback::callback("hash_95a6c4c0");
+    self notify("end_respawn");
   }
 }
 
-/*
-	Name: custom_spawn_init_func
-	Namespace: zm_gametype
-	Checksum: 0x6395C280
-	Offset: 0x2F98
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function custom_spawn_init_func() {
   array::thread_all(level.zombie_spawners, & spawner::add_spawn_function, & zm_spawner::zombie_spawn_init);
   array::thread_all(level.zombie_spawners, & spawner::add_spawn_function, level._zombies_round_spawn_failsafe);
 }
 
-/*
-	Name: init
-	Namespace: zm_gametype
-	Checksum: 0x9CDD9EA3
-	Offset: 0x3010
-	Size: 0x5C
-	Parameters: 0
-	Flags: None
-*/
 function init() {
   level flag::init("pregame");
   level flag::set("pregame");
   level thread onplayerconnect();
 }
 
-/*
-	Name: onplayerconnect
-	Namespace: zm_gametype
-	Checksum: 0x4B694B63
-	Offset: 0x3078
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerconnect() {
   for (;;) {
-    level waittill(# "connected", player);
+    level waittill("connected", player);
     player thread onplayerspawned();
     if(isdefined(level.game_module_onplayerconnect)) {
       player[[level.game_module_onplayerconnect]]();
@@ -795,18 +577,9 @@ function onplayerconnect() {
   }
 }
 
-/*
-	Name: onplayerspawned
-	Namespace: zm_gametype
-	Checksum: 0x6B82615A
-	Offset: 0x30D8
-	Size: 0x214
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerspawned() {
-  level endon(# "end_game");
-  self endon(# "disconnect");
+  level endon("end_game");
+  self endon("disconnect");
   for (;;) {
     self util::waittill_either("spawned_player", "fake_spawned_player");
     if(isdefined(level.match_is_ending) && level.match_is_ending) {
@@ -845,39 +618,19 @@ function onplayerspawned() {
   }
 }
 
-/*
-	Name: onplayerconnect_check_for_hotjoin
-	Namespace: zm_gametype
-	Checksum: 0x3BB5EE96
-	Offset: 0x32F8
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerconnect_check_for_hotjoin() {
-  /#
   if(getdvarint("") > 0) {
     return;
   }
-  # /
-    map_logic_exists = level flag::exists("start_zombie_round_logic");
+  map_logic_exists = level flag::exists("start_zombie_round_logic");
   map_logic_started = level flag::get("start_zombie_round_logic");
   if(map_logic_exists && map_logic_started) {
     self thread player_hotjoin();
   }
 }
 
-/*
-	Name: player_hotjoin
-	Namespace: zm_gametype
-	Checksum: 0xB8D9C228
-	Offset: 0x33A8
-	Size: 0x138
-	Parameters: 0
-	Flags: Linked
-*/
 function player_hotjoin() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self initialblack();
   self.rebuild_barrier_reward = 1;
   self.is_hotjoining = 1;
@@ -898,15 +651,6 @@ function player_hotjoin() {
   }
 }
 
-/*
-	Name: wait_fade_in
-	Namespace: zm_gametype
-	Checksum: 0xB4B3DEA8
-	Offset: 0x34E8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_fade_in() {
   self util::streamer_wait(undefined, 0, 30);
   if(isdefined(level.hotjoin_extra_blackscreen_time)) {
@@ -915,29 +659,11 @@ function wait_fade_in() {
   initialblackend();
 }
 
-/*
-	Name: initialblack
-	Namespace: zm_gametype
-	Checksum: 0xCC42AF6B
-	Offset: 0x3540
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function initialblack() {
   self closemenu("InitialBlack");
   self openmenu("InitialBlack");
 }
 
-/*
-	Name: initialblackend
-	Namespace: zm_gametype
-	Checksum: 0xBFDBF3DE
-	Offset: 0x3590
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function initialblackend() {
   self closemenu("InitialBlack");
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_ee_side.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -24,18 +28,8 @@
 #using scripts\zm\zm_tomb_ee_lights;
 #using scripts\zm\zm_tomb_utility;
 #using scripts\zm\zm_tomb_vo;
-
 #namespace zm_tomb_ee_side;
 
-/*
-	Name: init
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x3F7A2B86
-	Offset: 0x868
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("world", "wagon_1_fire", 21000, 1, "int");
   clientfield::register("world", "wagon_2_fire", 21000, 1, "int");
@@ -51,29 +45,11 @@ function init() {
   level thread radio_ee_song();
 }
 
-/*
-	Name: on_player_connect
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x14736736
-	Offset: 0xA10
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   self thread onplayerconnect_ee_jump_scare();
   self thread onplayerconnect_ee_oneinchpunch();
 }
 
-/*
-	Name: quadrotor_medallions
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x60351E0C
-	Offset: 0xA50
-	Size: 0x2A4
-	Parameters: 0
-	Flags: Linked
-*/
 function quadrotor_medallions() {
   level flag::init("ee_medallions_collected");
   level thread quadrotor_medallions_vo();
@@ -94,26 +70,17 @@ function quadrotor_medallions() {
   t_weapon_swap.cursor_hint_weapon = var_67f03e82;
   b_retrieved = 0;
   while (!b_retrieved) {
-    t_weapon_swap waittill(# "trigger", e_player);
+    t_weapon_swap waittill("trigger", e_player);
     b_retrieved = swap_mg(e_player);
   }
   t_weapon_swap zm_tomb_utility::tomb_unitrigger_delete();
   var_c91432f delete();
 }
 
-/*
-	Name: quadrotor_medallions_vo
-	Namespace: zm_tomb_ee_side
-	Checksum: 0xD049722E
-	Offset: 0xD00
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function quadrotor_medallions_vo() {
   n_vo_counter = 0;
   while (n_vo_counter < 4) {
-    level waittill(# "quadrotor_medallion_found", v_quadrotor);
+    level waittill("quadrotor_medallion_found", v_quadrotor);
     v_quadrotor playsound("zmb_medallion_pickup");
     if(isdefined(v_quadrotor)) {
       zm_tomb_vo::maxissay("vox_maxi_drone_pickups_" + n_vo_counter, v_quadrotor);
@@ -125,15 +92,6 @@ function quadrotor_medallions_vo() {
   }
 }
 
-/*
-	Name: swap_mg
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x9A0BBF74
-	Offset: 0xDD8
-	Size: 0x240
-	Parameters: 1
-	Flags: Linked
-*/
 function swap_mg(e_player) {
   w_current_weapon = e_player getcurrentweapon();
   var_4caca97d = getweapon("lmg_mg08_upgraded");
@@ -154,37 +112,19 @@ function swap_mg(e_player) {
   return false;
 }
 
-/*
-	Name: wall_hole_poster
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x1FD90D20
-	Offset: 0x1028
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function wall_hole_poster() {
   m_poster = getent("hole_poster", "targetname");
   m_poster setcandamage(1);
   m_poster.health = 1000;
   m_poster.maxhealth = m_poster.health;
   while (true) {
-    m_poster waittill(# "damage");
+    m_poster waittill("damage");
     if(m_poster.health <= 0) {
       m_poster physicslaunch(m_poster.origin, (0, 0, 0));
     }
   }
 }
 
-/*
-	Name: wagon_fire_challenge
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x8F05C8D1
-	Offset: 0x1100
-	Size: 0x228
-	Parameters: 0
-	Flags: Linked
-*/
 function wagon_fire_challenge() {
   level flag::init("ee_wagon_timer_start");
   level flag::init("ee_wagon_challenge_complete");
@@ -202,10 +142,10 @@ function wagon_fire_challenge() {
       level flag::clear("ee_wagon_timer_start");
     } else {
       zm_powerups::specific_powerup_drop("zombie_blood", s_powerup.origin);
-      level waittill(# "end_of_round");
+      level waittill("end_of_round");
       waittillframeend();
       while (level.weather_rain > 0) {
-        level waittill(# "end_of_round");
+        level waittill("end_of_round");
         waittillframeend();
       }
       wagon_fire_start();
@@ -215,15 +155,6 @@ function wagon_fire_challenge() {
   }
 }
 
-/*
-	Name: wagon_fire_start
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x548D6783
-	Offset: 0x1330
-	Size: 0xEA
-	Parameters: 0
-	Flags: Linked
-*/
 function wagon_fire_start() {
   level.n_wagon_fires_out = 0;
   a_triggers = getentarray("wagon_damage_trigger", "targetname");
@@ -233,22 +164,13 @@ function wagon_fire_start() {
   }
 }
 
-/*
-	Name: wagon_fire_trigger_watch
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x6D87A55B
-	Offset: 0x1428
-	Size: 0x1E2
-	Parameters: 0
-	Flags: Linked
-*/
 function wagon_fire_trigger_watch() {
-  self notify(# "watch_reset");
-  self endon(# "watch_reset");
+  self notify("watch_reset");
+  self endon("watch_reset");
   var_83560def = level.a_elemental_staffs["staff_water"].w_weapon;
   var_2499bc6a = level.a_elemental_staffs_upgraded["staff_water_upgraded"].w_weapon;
   while (true) {
-    self waittill(# "damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon);
+    self waittill("damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon);
     if(isplayer(attacker) && (weapon == var_83560def || weapon == var_2499bc6a)) {
       level.n_wagon_fires_out++;
       if(!level flag::get("ee_wagon_timer_start")) {
@@ -264,17 +186,8 @@ function wagon_fire_trigger_watch() {
   }
 }
 
-/*
-	Name: onplayerconnect_ee_jump_scare
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x1B714E1E
-	Offset: 0x1618
-	Size: 0x204
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerconnect_ee_jump_scare() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isdefined(level.jump_scare_lookat_point)) {
     level.jump_scare_lookat_point = struct::get("struct_gg_look", "targetname");
   }
@@ -302,31 +215,13 @@ function onplayerconnect_ee_jump_scare() {
   }
 }
 
-/*
-	Name: onplayerconnect_ee_oneinchpunch
-	Namespace: zm_tomb_ee_side
-	Checksum: 0xB7B7D374
-	Offset: 0x1828
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerconnect_ee_oneinchpunch() {
   self.sq_one_inch_punch_stage = 0;
   self.sq_one_inch_punch_kills = 0;
 }
 
-/*
-	Name: sq_one_inch_punch_disconnect_watch
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x5860AB92
-	Offset: 0x1850
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function sq_one_inch_punch_disconnect_watch() {
-  self waittill(# "disconnect");
+  self waittill("disconnect");
   if(isdefined(self.sq_one_inch_punch_tablet)) {
     self.sq_one_inch_punch_tablet delete();
   }
@@ -334,18 +229,9 @@ function sq_one_inch_punch_disconnect_watch() {
   level.n_tablets_remaining++;
 }
 
-/*
-	Name: sq_one_inch_punch_death_watch
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x136C94F9
-	Offset: 0x18C0
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function sq_one_inch_punch_death_watch() {
-  self endon(# "disconnect");
-  self waittill(# "bled_out");
+  self endon("disconnect");
+  self waittill("bled_out");
   if(self.sq_one_inch_punch_stage < 6) {
     self.sq_one_inch_punch_stage = 0;
     self.sq_one_inch_punch_kills = 0;
@@ -357,15 +243,6 @@ function sq_one_inch_punch_death_watch() {
   }
 }
 
-/*
-	Name: sq_one_inch_punch
-	Namespace: zm_tomb_ee_side
-	Checksum: 0xBC40B53A
-	Offset: 0x1968
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function sq_one_inch_punch() {
   zm_spawner::add_custom_zombie_spawn_logic( & bunker_volume_death_check);
   zm_spawner::add_custom_zombie_spawn_logic( & church_volume_death_check);
@@ -382,18 +259,9 @@ function sq_one_inch_punch() {
   t_birdbath setcursorhint("HINT_NOICON");
 }
 
-/*
-	Name: bunker_trigger_thread
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x5DE293DD
-	Offset: 0x1AF8
-	Size: 0x370
-	Parameters: 0
-	Flags: Linked
-*/
 function bunker_trigger_thread() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player.sq_one_inch_punch_stage == 0) {
       player.sq_one_inch_punch_stage++;
       player.sq_one_inch_punch_tablet_num = level.n_tablets_remaining;
@@ -404,18 +272,14 @@ function bunker_trigger_thread() {
       m_tablet = getent("tablet_bunker_" + level.n_tablets_remaining, "targetname");
       m_tablet delete();
       level.n_tablets_remaining--;
-      /#
       iprintln("");
-      # /
     }
     if(player.sq_one_inch_punch_stage == 4) {
       player.sq_one_inch_punch_tablet = spawn_tablet_model(player.sq_one_inch_punch_tablet_num, "bunker", "clean");
       player.sq_one_inch_punch_stage++;
       player clientfield::set_to_player("player_tablet_state", 0);
       player playsound("zmb_squest_oiptablet_place_table");
-      /#
       iprintln("");
-      # /
     } else if(player.sq_one_inch_punch_stage == 6 && (isdefined(player.beacon_ready) && player.beacon_ready)) {
       player clientfield::set_to_player("ee_beacon_reward", 0);
       w_beacon = getweapon("beacon");
@@ -427,25 +291,14 @@ function bunker_trigger_thread() {
       }
       player playsound("zmb_squest_oiptablet_get_reward");
       player.sq_one_inch_punch_stage++;
-      /#
       iprintln("");
-      # /
     }
   }
 }
 
-/*
-	Name: birdbath_trigger_thread
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x7EBC66B5
-	Offset: 0x1E70
-	Size: 0x240
-	Parameters: 0
-	Flags: Linked
-*/
 function birdbath_trigger_thread() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player.sq_one_inch_punch_stage == 1) {
       if(isdefined(player.sq_one_inch_punch_reclean)) {
         player.sq_one_inch_punch_reclean = undefined;
@@ -458,9 +311,7 @@ function birdbath_trigger_thread() {
       player playsound("zmb_squest_oiptablet_bathe");
       player clientfield::set_to_player("player_tablet_state", 0);
       player.sq_one_inch_punch_stage++;
-      /#
       iprintln("");
-      # /
     }
     if(player.sq_one_inch_punch_stage == 3) {
       player clientfield::set_to_player("player_tablet_state", 1);
@@ -470,24 +321,13 @@ function birdbath_trigger_thread() {
       }
       player playsound("zmb_squest_oiptablet_pickup_clean");
       player thread tablet_cleanliness_thread();
-      /#
       iprintln("");
-      # /
     }
   }
 }
 
-/*
-	Name: tablet_cleanliness_thread
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x2D5DB34C
-	Offset: 0x20B8
-	Size: 0xC6
-	Parameters: 0
-	Flags: Linked
-*/
 function tablet_cleanliness_thread() {
-  self endon(# "death_or_disconnect");
+  self endon("death_or_disconnect");
   while (self.sq_one_inch_punch_stage == 4) {
     if(self.is_player_slowed) {
       self clientfield::set_to_player("player_tablet_state", 2);
@@ -495,23 +335,12 @@ function tablet_cleanliness_thread() {
       self.sq_one_inch_punch_stage = 1;
       self.sq_one_inch_punch_reclean = 1;
       level thread tablet_cleanliness_chastise(self);
-      /#
       iprintln("");
-      # /
     }
     wait(1);
   }
 }
 
-/*
-	Name: tablet_cleanliness_chastise
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x5383F31D
-	Offset: 0x2188
-	Size: 0x174
-	Parameters: 2
-	Flags: Linked
-*/
 function tablet_cleanliness_chastise(e_player, b_cleaned = 0) {
   if(!isdefined(e_player) || (isdefined(level.sam_talking) && level.sam_talking) || level flag::get("story_vo_playing")) {
     return;
@@ -535,116 +364,68 @@ function tablet_cleanliness_chastise(e_player, b_cleaned = 0) {
   }
 }
 
-/*
-	Name: bunker_volume_death_check
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x6D5CBBDA
-	Offset: 0x2308
-	Size: 0x1FC
-	Parameters: 0
-	Flags: Linked
-*/
 function bunker_volume_death_check() {
-  self waittill(# "death");
+  self waittill("death");
   if(!isdefined(self)) {
     return;
   }
   volume_name = "oneinchpunch_bunker_volume";
   volume = getent(volume_name, "targetname");
-  /#
   assert(isdefined(volume), volume_name + "");
-  # /
-    attacker = self.attacker;
+  attacker = self.attacker;
   if(isdefined(attacker) && isplayer(attacker)) {
     if(attacker.sq_one_inch_punch_stage == 5 && (self.damagemod == "MOD_MELEE" || self.damageweapon.name == "tomb_shield")) {
       if(self istouching(volume)) {
         self clientfield::set("ee_zombie_tablet_fx", 1);
         attacker.sq_one_inch_punch_kills++;
-        /#
         iprintln("" + attacker.sq_one_inch_punch_kills);
-        # /
-          if(attacker.sq_one_inch_punch_kills >= 20) {
-            attacker thread bunker_spawn_reward();
-            attacker.sq_one_inch_punch_stage++;
-            level thread zm_tomb_amb::sndplaystinger("side_sting_3");
-            /#
-            iprintln("");
-            # /
-          }
+        if(attacker.sq_one_inch_punch_kills >= 20) {
+          attacker thread bunker_spawn_reward();
+          attacker.sq_one_inch_punch_stage++;
+          level thread zm_tomb_amb::sndplaystinger("side_sting_3");
+          iprintln("");
+        }
       }
     }
   }
 }
 
-/*
-	Name: bunker_spawn_reward
-	Namespace: zm_tomb_ee_side
-	Checksum: 0xFA2E147D
-	Offset: 0x2510
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function bunker_spawn_reward() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(2);
   self clientfield::set_to_player("ee_beacon_reward", 1);
   wait(2);
   self.beacon_ready = 1;
 }
 
-/*
-	Name: church_volume_death_check
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x2D815139
-	Offset: 0x2560
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked
-*/
 function church_volume_death_check() {
-  self waittill(# "death");
+  self waittill("death");
   if(!isdefined(self)) {
     return;
   }
   volume_name = "oneinchpunch_church_volume";
   volume = getent(volume_name, "targetname");
-  /#
   assert(isdefined(volume), volume_name + "");
-  # /
-    attacker = self.attacker;
+  attacker = self.attacker;
   if(isdefined(attacker) && isplayer(attacker)) {
     if(attacker.sq_one_inch_punch_stage == 2 && (self.damagemod == "MOD_MELEE" || self.damageweapon.name == "tomb_shield")) {
       if(self istouching(volume)) {
         self clientfield::set("ee_zombie_tablet_fx", 1);
         attacker.sq_one_inch_punch_kills++;
-        /#
         iprintln("" + attacker.sq_one_inch_punch_kills);
-        # /
-          if(attacker.sq_one_inch_punch_kills >= 20) {
-            attacker.sq_one_inch_punch_stage++;
-            attacker.sq_one_inch_punch_kills = 0;
-            attacker.sq_one_inch_punch_tablet delete();
-            attacker.sq_one_inch_punch_tablet = spawn_tablet_model(attacker.sq_one_inch_punch_tablet_num, "church", "clean");
-            level thread zm_tomb_amb::sndplaystinger("side_sting_6");
-            /#
-            iprintln("");
-            # /
-          }
+        if(attacker.sq_one_inch_punch_kills >= 20) {
+          attacker.sq_one_inch_punch_stage++;
+          attacker.sq_one_inch_punch_kills = 0;
+          attacker.sq_one_inch_punch_tablet delete();
+          attacker.sq_one_inch_punch_tablet = spawn_tablet_model(attacker.sq_one_inch_punch_tablet_num, "church", "clean");
+          level thread zm_tomb_amb::sndplaystinger("side_sting_6");
+          iprintln("");
+        }
       }
     }
   }
 }
 
-/*
-	Name: spawn_tablet_model
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x356E3F77
-	Offset: 0x27B8
-	Size: 0x180
-	Parameters: 3
-	Flags: Linked
-*/
 function spawn_tablet_model(n_player_id, str_location, str_state) {
   s_tablet_spawn = struct::get((("oneinchpunch_" + str_location) + "_tablet_") + n_player_id, "targetname");
   v_spawnpt = s_tablet_spawn.origin;
@@ -663,15 +444,6 @@ function spawn_tablet_model(n_player_id, str_location, str_state) {
   return m_tablet;
 }
 
-/*
-	Name: radio_ee_song
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x600E9BCA
-	Offset: 0x2940
-	Size: 0x1F2
-	Parameters: 0
-	Flags: Linked
-*/
 function radio_ee_song() {
   level.found_ee_radio_count = 0;
   wait(3);
@@ -687,45 +459,23 @@ function radio_ee_song() {
     m_radio setmodel("p7_zm_ori_radio_01");
     m_radio attach("p7_zm_ori_radio_01_panel_02", "tag_j_cover");
     zm_unitrigger::register_static_unitrigger(unitrigger_stub, & radio_ee_think);
-    /#
     unitrigger_stub thread radio_ee_debug();
-    # /
-      util::wait_network_frame();
+    util::wait_network_frame();
   }
 }
 
-/*
-	Name: radio_ee_debug
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x63344D39
-	Offset: 0x2B40
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function radio_ee_debug() {
-  /#
-  self endon(# "stop_display");
+  self endon("stop_display");
   while (true) {
     print3d(self.origin, "", vectorscale((1, 0, 1), 255), 1);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: radio_ee_think
-	Namespace: zm_tomb_ee_side
-	Checksum: 0x590BADE5
-	Offset: 0x2BA0
-	Size: 0xFA
-	Parameters: 0
-	Flags: Linked
-*/
 function radio_ee_think() {
-  self endon(# "kill_trigger");
+  self endon("kill_trigger");
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(!zm_audio_zhd::function_8090042c()) {
       continue;
     }
@@ -735,10 +485,8 @@ function radio_ee_think() {
       if(level.found_ee_radio_count == 3) {
         level thread zm_audio::sndmusicsystem_playstate("shepherd_of_fire");
       }
-      /#
-      self.stub notify(# "stop_display");
-      # /
-        zm_unitrigger::unregister_unitrigger(self.stub);
+      self.stub notify("stop_display");
+      zm_unitrigger::unregister_unitrigger(self.stub);
       return;
     }
   }

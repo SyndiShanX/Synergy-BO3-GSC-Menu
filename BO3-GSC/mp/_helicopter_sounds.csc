@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_helicopter_sounds.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_helicopter_sounds;
 #using scripts\mp\_util;
@@ -7,31 +11,12 @@
 #using scripts\shared\music_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace helicopter_sounds;
 
-/*
-	Name: __init__sytem__
-	Namespace: helicopter_sounds
-	Checksum: 0x6122946D
-	Offset: 0x650
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("helicopter_sounds", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: helicopter_sounds
-	Checksum: 0xBBAEC1F0
-	Offset: 0x690
-	Size: 0x5BC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level._entityshutdowncbfunc = & heli_linkto_sound_ents_delete;
   level.helisoundvalues = [];
@@ -54,44 +39,21 @@ function __init__() {
   init_heli_sound_values("qrdrone", "turn", 5, 0, 1, 1, 1, 1);
   init_heli_sound_values("heli_guard", "turbine", 10, 0.9, 1, 30, 0.9, 1.05);
   init_heli_sound_values("heli_guard", "rotor", 10, 0.9, 1, 30, 0.9, 1.1);
-  /#
   if(getdvarstring("") == "") {
     setdvar("", "");
   }
   level thread command_parser();
-  # /
 }
 
-/*
-	Name: vehicle_is_firing_function
-	Namespace: helicopter_sounds
-	Checksum: 0xF367C73F
-	Offset: 0xC58
-	Size: 0x8C
-	Parameters: 7
-	Flags: None
-*/
 function vehicle_is_firing_function(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  /#
   println("" + newval);
-  # /
-    if(newval == 0) {
-      self.isfiring = 0;
-    }
-  else {
+  if(newval == 0) {
+    self.isfiring = 0;
+  } else {
     self.isfiring = 1;
   }
 }
 
-/*
-	Name: init_heli_sound_values
-	Namespace: helicopter_sounds
-	Checksum: 0x2B9A059A
-	Offset: 0xCF0
-	Size: 0x28C
-	Parameters: 8
-	Flags: Linked
-*/
 function init_heli_sound_values(heli_type, part_type, max_speed_vol, min_vol, max_vol, max_speed_pitch, min_pitch, max_pitch) {
   if(!isdefined(level.helisoundvalues[heli_type])) {
     level.helisoundvalues[heli_type] = [];
@@ -105,7 +67,6 @@ function init_heli_sound_values(heli_type, part_type, max_speed_vol, min_vol, ma
   level.helisoundvalues[heli_type][part_type].volumemax = max_vol;
   level.helisoundvalues[heli_type][part_type].pitchmin = min_pitch;
   level.helisoundvalues[heli_type][part_type].pitchmax = max_pitch;
-  /#
   if(getdvarint("") > 0) {
     println("" + heli_type);
     println("" + part_type);
@@ -116,20 +77,9 @@ function init_heli_sound_values(heli_type, part_type, max_speed_vol, min_vol, ma
     println("" + min_pitch);
     println("" + max_pitch);
   }
-  # /
 }
 
-/*
-	Name: command_parser
-	Namespace: helicopter_sounds
-	Checksum: 0x42CA86DF
-	Offset: 0xF88
-	Size: 0x558
-	Parameters: 0
-	Flags: Linked
-*/
 function command_parser() {
-  /#
   while (true) {
     command = getdvarstring("");
     if(command != "") {
@@ -209,18 +159,8 @@ function command_parser() {
     }
     wait(0.1);
   }
-  # /
 }
 
-/*
-	Name: init_heli_sounds_gunner
-	Namespace: helicopter_sounds
-	Checksum: 0x4A8EF87D
-	Offset: 0x14E8
-	Size: 0x134
-	Parameters: 0
-	Flags: None
-*/
 function init_heli_sounds_gunner() {
   setup_heli_sounds("lfe", "engine", "snd_cockpit", "veh_huey_rotor_lfe");
   setup_heli_sounds("turbine", "engine", "snd_rotor", "veh_huey_turbine");
@@ -231,15 +171,6 @@ function init_heli_sounds_gunner() {
   self.warning_tag = "snd_cockpit";
 }
 
-/*
-	Name: init_heli_sounds_player_controlled
-	Namespace: helicopter_sounds
-	Checksum: 0xAB29AD5B
-	Offset: 0x1628
-	Size: 0xD4
-	Parameters: 0
-	Flags: None
-*/
 function init_heli_sounds_player_controlled() {
   setup_heli_sounds("lfe", "engine", "snd_cockpit", "veh_cobra_rotor_lfe");
   setup_heli_sounds("turbine", "engine", "snd_rotor", "veh_cobra_turbine");
@@ -248,15 +179,6 @@ function init_heli_sounds_player_controlled() {
   self.warning_tag = "snd_cockpit";
 }
 
-/*
-	Name: init_heli_sounds_supply
-	Namespace: helicopter_sounds
-	Checksum: 0x3472C2EA
-	Offset: 0x1708
-	Size: 0x86
-	Parameters: 0
-	Flags: None
-*/
 function init_heli_sounds_supply() {
   setup_heli_sounds("lfe", "engine", undefined, "veh_supply_rotor_lfe");
   setup_heli_sounds("turbine", "engine", undefined, "veh_supply_turbine");
@@ -264,15 +186,6 @@ function init_heli_sounds_supply() {
   self.warning_tag = undefined;
 }
 
-/*
-	Name: init_heli_sounds_ai_attack
-	Namespace: helicopter_sounds
-	Checksum: 0x857C2BF5
-	Offset: 0x1798
-	Size: 0xAE
-	Parameters: 0
-	Flags: None
-*/
 function init_heli_sounds_ai_attack() {
   setup_heli_sounds("lfe", "engine", undefined, "veh_hind_rotor_lfe");
   setup_heli_sounds("turbine", "engine", undefined, "veh_hind_turbine");
@@ -281,15 +194,6 @@ function init_heli_sounds_ai_attack() {
   self.warning_tag = undefined;
 }
 
-/*
-	Name: init_heli_sounds_player_drone
-	Namespace: helicopter_sounds
-	Checksum: 0x406B614C
-	Offset: 0x1850
-	Size: 0x9E
-	Parameters: 0
-	Flags: None
-*/
 function init_heli_sounds_player_drone() {
   setup_heli_sounds("turbine_idle", "engine", "tag_body", "veh_qrdrone_turbine_idle");
   setup_heli_sounds("turbine_moving", "engine", "tag_body", "veh_qrdrone_turbine_moving");
@@ -297,15 +201,6 @@ function init_heli_sounds_player_drone() {
   self.warning_tag = undefined;
 }
 
-/*
-	Name: init_heli_sounds_heli_guard
-	Namespace: helicopter_sounds
-	Checksum: 0x852CD41A
-	Offset: 0x18F8
-	Size: 0x86
-	Parameters: 0
-	Flags: None
-*/
 function init_heli_sounds_heli_guard() {
   setup_heli_sounds("lfe", "engine", undefined, "veh_overwatch_lfe");
   setup_heli_sounds("turbine", "engine", undefined, "veh_overwatch_turbine");
@@ -313,15 +208,6 @@ function init_heli_sounds_heli_guard() {
   self.warning_tag = undefined;
 }
 
-/*
-	Name: sound_linkto
-	Namespace: helicopter_sounds
-	Checksum: 0x350FC11A
-	Offset: 0x1988
-	Size: 0x64
-	Parameters: 2
-	Flags: Linked
-*/
 function sound_linkto(parent, tag) {
   if(isdefined(tag)) {
     self linkto(parent, tag);
@@ -330,15 +216,6 @@ function sound_linkto(parent, tag) {
   }
 }
 
-/*
-	Name: setup_heli_sounds
-	Namespace: helicopter_sounds
-	Checksum: 0x198FC8CD
-	Offset: 0x19F8
-	Size: 0x38C
-	Parameters: 7
-	Flags: Linked
-*/
 function setup_heli_sounds(bone_location, type, tag, run, dmg1, dmg2, dmg3) {
   self.heli[bone_location] = spawnstruct();
   self.heli[bone_location].sound_type = type;
@@ -366,15 +243,6 @@ function setup_heli_sounds(bone_location, type, tag, run, dmg1, dmg2, dmg3) {
   }
 }
 
-/*
-	Name: init_terrain_sounds
-	Namespace: helicopter_sounds
-	Checksum: 0x57ED8B38
-	Offset: 0x1D90
-	Size: 0x234
-	Parameters: 0
-	Flags: Linked
-*/
 function init_terrain_sounds() {
   self.surface_type = [];
   self.surface_type["default"] = "dirt";
@@ -398,45 +266,18 @@ function init_terrain_sounds() {
   self setup_terrain_sounds("water", "veh_chopper_prop_wash_water");
 }
 
-/*
-	Name: setup_terrain_sounds
-	Namespace: helicopter_sounds
-	Checksum: 0x88C9A4AB
-	Offset: 0x1FD0
-	Size: 0x8C
-	Parameters: 2
-	Flags: Linked
-*/
 function setup_terrain_sounds(surface_type, alias) {
   self.terrain_ent_array[surface_type] = spawn(0, self.origin, "script_origin");
   self.terrain_ent_array[surface_type].alias = alias;
   self thread heli_loop_sound_delete(self.terrain_ent_array[surface_type]);
 }
 
-/*
-	Name: setup_terrain_brass_sounds
-	Namespace: helicopter_sounds
-	Checksum: 0x6B84B8C3
-	Offset: 0x2068
-	Size: 0x8C
-	Parameters: 2
-	Flags: Linked
-*/
 function setup_terrain_brass_sounds(surface_type, alias) {
   self.terrain_brass_ent_array[surface_type] = spawn(0, self.origin, "script_origin");
   self.terrain_brass_ent_array[surface_type].alias = alias;
   self thread heli_loop_sound_delete(self.terrain_brass_ent_array[surface_type]);
 }
 
-/*
-	Name: start_helicopter_sounds
-	Namespace: helicopter_sounds
-	Checksum: 0x2B8F847F
-	Offset: 0x2100
-	Size: 0x1A4
-	Parameters: 1
-	Flags: None
-*/
 function start_helicopter_sounds(localclientnum) {
   if(isdefined(self.sounddef)) {
     self.heli = [];
@@ -466,64 +307,31 @@ function start_helicopter_sounds(localclientnum) {
         break;
       }
       default: {
-        /#
         println(("" + self.vehicletype) + "");
-        # /
-          break;
+        break;
       }
     }
     self init_terrain_sounds();
     self thread terrain_trace();
-    /#
     if(getdvarint("") > 0) {
       iprintlnbold(("" + self.vehicletype) + "");
     }
-    # /
   } else {
-    /#
     println("");
-    # /
   }
 }
 
-/*
-	Name: heli_loop_sound_delete
-	Namespace: helicopter_sounds
-	Checksum: 0x721DDAAB
-	Offset: 0x22B0
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_loop_sound_delete(real_ent) {
-  self waittill(# "entityshutdown");
+  self waittill("entityshutdown");
   real_ent unlink();
   real_ent stopallloopsounds(4);
   real_ent delete();
 }
 
-/*
-	Name: heli_linkto_sound_ents_delete
-	Namespace: helicopter_sounds
-	Checksum: 0x630AA80D
-	Offset: 0x2318
-	Size: 0x24
-	Parameters: 2
-	Flags: Linked
-*/
 function heli_linkto_sound_ents_delete(localclientnum, entity) {
-  entity notify(# "entityshutdown");
+  entity notify("entityshutdown");
 }
 
-/*
-	Name: heli_sound_play
-	Namespace: helicopter_sounds
-	Checksum: 0xC916A022
-	Offset: 0x2348
-	Size: 0xBE
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_sound_play(heli_bone) {
   switch (heli_bone.sound_type) {
     case "engine": {
@@ -534,23 +342,12 @@ function heli_sound_play(heli_bone) {
       break;
     }
     default: {
-      /#
       println(("" + heli_bone.type) + "");
-      # /
-        break;
+      break;
     }
   }
 }
 
-/*
-	Name: play_player_controlled_sounds
-	Namespace: helicopter_sounds
-	Checksum: 0xB1D68C5D
-	Offset: 0x2410
-	Size: 0xA4
-	Parameters: 0
-	Flags: None
-*/
 function play_player_controlled_sounds() {
   self heli_sound_play(self.heli["lfe"]);
   self thread heli_idle_run_transition("cobra", "turbine");
@@ -558,15 +355,6 @@ function play_player_controlled_sounds() {
   self thread heli_idle_run_transition("cobra", "tail_rotor");
 }
 
-/*
-	Name: play_attack_ai_sounds
-	Namespace: helicopter_sounds
-	Checksum: 0x3932FF93
-	Offset: 0x24C0
-	Size: 0xA4
-	Parameters: 0
-	Flags: None
-*/
 function play_attack_ai_sounds() {
   self heli_sound_play(self.heli["lfe"]);
   self thread heli_idle_run_transition("hind", "turbine");
@@ -574,30 +362,12 @@ function play_attack_ai_sounds() {
   self thread heli_idle_run_transition("hind", "tail_rotor");
 }
 
-/*
-	Name: play_supply_sounds
-	Namespace: helicopter_sounds
-	Checksum: 0x9AF9BE45
-	Offset: 0x2570
-	Size: 0x7C
-	Parameters: 0
-	Flags: None
-*/
 function play_supply_sounds() {
   self thread heli_idle_run_transition("supply", "turbine");
   self thread heli_idle_run_transition("supply", "top_rotor");
   self heli_sound_play(self.heli["lfe"]);
 }
 
-/*
-	Name: play_gunner_sounds
-	Namespace: helicopter_sounds
-	Checksum: 0x3844080
-	Offset: 0x25F8
-	Size: 0xF4
-	Parameters: 0
-	Flags: None
-*/
 function play_gunner_sounds() {
   self heli_sound_play(self.heli["lfe"]);
   self heli_sound_play(self.heli["radio"]);
@@ -607,26 +377,8 @@ function play_gunner_sounds() {
   self thread heli_idle_run_transition("huey", "wind_rt");
 }
 
-/*
-	Name: play_player_drone_sounds
-	Namespace: helicopter_sounds
-	Checksum: 0x99EC1590
-	Offset: 0x26F8
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function play_player_drone_sounds() {}
 
-/*
-	Name: play_heli_guard_sounds
-	Namespace: helicopter_sounds
-	Checksum: 0x471E0A82
-	Offset: 0x2708
-	Size: 0x94
-	Parameters: 0
-	Flags: None
-*/
 function play_heli_guard_sounds() {
   self heli_sound_play(self.heli["lfe"]);
   self thread heli_idle_run_transition("heli_guard", "turbine");
@@ -634,17 +386,8 @@ function play_heli_guard_sounds() {
   self thread terrain_trace_brass();
 }
 
-/*
-	Name: heli_idle_run_transition
-	Namespace: helicopter_sounds
-	Checksum: 0x5EDE8830
-	Offset: 0x27A8
-	Size: 0x45E
-	Parameters: 4
-	Flags: Linked
-*/
 function heli_idle_run_transition(heli_type, heli_part, wait_time, updown) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   heli_bone = self.heli[heli_part];
   run_id = heli_bone.run playloopsound(heli_bone.run.alias, 0.5);
   if(!isdefined(wait_time)) {
@@ -652,10 +395,8 @@ function heli_idle_run_transition(heli_type, heli_part, wait_time, updown) {
   }
   while (isdefined(self)) {
     if(!isdefined(level.helisoundvalues[heli_type]) || !isdefined(level.helisoundvalues[heli_type][heli_part])) {
-      /#
       println("");
-      # /
-        return;
+      return;
     }
     max_speed_vol = level.helisoundvalues[heli_type][heli_part].speedvolumemax;
     min_vol = level.helisoundvalues[heli_type][heli_part].volumemin;
@@ -676,30 +417,19 @@ function heli_idle_run_transition(heli_type, heli_part, wait_time, updown) {
     }
     if(isdefined(run_volume) && isdefined(run_pitch)) {
       heli_bone.run setloopstate(heli_bone.run.alias, run_volume, run_pitch, 1, 0.15);
-      /#
       if(getdvarint("") > 0) {
         println("" + self.cur_speed);
         println("" + run_pitch);
         println("" + self.cur_speed);
         println("" + run_volume);
       }
-      # /
     }
     wait(wait_time);
   }
 }
 
-/*
-	Name: terrain_trace_brass
-	Namespace: helicopter_sounds
-	Checksum: 0x92E49FF4
-	Offset: 0x2C10
-	Size: 0x398
-	Parameters: 0
-	Flags: Linked
-*/
 function terrain_trace_brass() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self setup_terrain_brass_sounds("dirt", "prj_brass_loop_dirt");
   self setup_terrain_brass_sounds("water", "prj_brass_loop_water");
   self.isfiring = 0;
@@ -727,9 +457,7 @@ function terrain_trace_brass() {
       continue;
     }
     if(!isdefined(self.surface_type[next_terrain]) || !isdefined(self.surface_type[pre_terrain])) {
-      /#
-      # /
-        continue;
+      continue;
     }
     surf_type = self.surface_type[next_terrain];
     trace_real_ent = self.terrain_brass_ent_array[surf_type];
@@ -756,17 +484,8 @@ function terrain_trace_brass() {
   }
 }
 
-/*
-	Name: terrain_trace
-	Namespace: helicopter_sounds
-	Checksum: 0x3424B5D7
-	Offset: 0x2FB0
-	Size: 0x310
-	Parameters: 0
-	Flags: Linked
-*/
 function terrain_trace() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   trace = undefined;
   trace_ent = self;
   pre_terrain = undefined;
@@ -791,9 +510,7 @@ function terrain_trace() {
       continue;
     }
     if(!isdefined(self.surface_type[next_terrain]) || !isdefined(self.surface_type[pre_terrain])) {
-      /#
-      # /
-        continue;
+      continue;
     }
     surf_type = self.surface_type[next_terrain];
     trace_real_ent = self.terrain_ent_array[surf_type];
@@ -817,20 +534,9 @@ function terrain_trace() {
   }
 }
 
-/*
-	Name: aircraft_dustkick
-	Namespace: helicopter_sounds
-	Checksum: 0x26FBC07A
-	Offset: 0x32C8
-	Size: 0x3F0
-	Parameters: 1
-	Flags: Linked
-*/
 function aircraft_dustkick(localclientnum) {
-  /#
   println("");
-  # /
-    self endon(# "entityshutdown");
+  self endon("entityshutdown");
   maxheight = 1200;
   minheight = 350;
   if(self.vehicletype == "qrdrone_mp") {
@@ -866,13 +572,11 @@ function aircraft_dustkick(localclientnum) {
     if(!isdefined(trace)) {
       continue;
     }
-    /#
     assert(isdefined(d));
-    # /
-      if(d > maxheight) {
-        repeatrate = defaultrepeatrate;
-        continue;
-      }
+    if(d > maxheight) {
+      repeatrate = defaultrepeatrate;
+      continue;
+    }
     if(isdefined(trace["entity"])) {
       repeatrate = defaultrepeatrate;
       continue;
@@ -885,14 +589,12 @@ function aircraft_dustkick(localclientnum) {
       trace["surfacetype"] = "dirt";
     }
     if(!isdefined(self.treadfxnamearray) || !isdefined(self.treadfxnamearray[trace["surfacetype"]])) {
-      /#
       if(isdefined(self.vehicletype)) {
         println((("" + trace[""]) + "") + self.vehicletype);
       } else {
         println(("" + trace[""]) + "");
       }
-      # /
-        return;
+      return;
     }
     if(isdefined(self.treadfxnamearray[trace["surfacetype"]])) {
       playfx(localclientnum, self.treadfxnamearray[trace["surfacetype"]], trace["position"]);
@@ -900,15 +602,6 @@ function aircraft_dustkick(localclientnum) {
   }
 }
 
-/*
-	Name: play_targeting_sound
-	Namespace: helicopter_sounds
-	Checksum: 0x8A7CC0C0
-	Offset: 0x36C0
-	Size: 0x88
-	Parameters: 3
-	Flags: Linked
-*/
 function play_targeting_sound(play, sound, handle) {
   sound_ent = get_lock_sound_ent();
   if(play) {
@@ -920,54 +613,18 @@ function play_targeting_sound(play, sound, handle) {
   }
 }
 
-/*
-	Name: play_targeted_sound
-	Namespace: helicopter_sounds
-	Checksum: 0x6253A50C
-	Offset: 0x3750
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function play_targeted_sound(play) {
   self.lockingsound = play_targeting_sound(play, "veh_hind_alarm_missile_locking_mp", self.lockingsound);
 }
 
-/*
-	Name: play_locked_sound
-	Namespace: helicopter_sounds
-	Checksum: 0xAD4E68AF
-	Offset: 0x3798
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function play_locked_sound(play) {
   self.lockedsound = play_targeting_sound(play, "veh_hind_alarm_missile_locked_mp", self.lockedsound);
 }
 
-/*
-	Name: play_fired_sound
-	Namespace: helicopter_sounds
-	Checksum: 0x700BDAA3
-	Offset: 0x37E0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function play_fired_sound(play) {
   self.firedsound = play_targeting_sound(play, "veh_hind_alarm_missile_fired", self.firedsound);
 }
 
-/*
-	Name: play_leaving_battlefield_alarm
-	Namespace: helicopter_sounds
-	Checksum: 0x82CF1E67
-	Offset: 0x3828
-	Size: 0x8C
-	Parameters: 1
-	Flags: None
-*/
 function play_leaving_battlefield_alarm(play) {
   sound_ent = get_leaving_sound_ent();
   if(play) {
@@ -977,15 +634,6 @@ function play_leaving_battlefield_alarm(play) {
   }
 }
 
-/*
-	Name: get_heli_sound_ent
-	Namespace: helicopter_sounds
-	Checksum: 0x6F6B505C
-	Offset: 0x38C0
-	Size: 0xB0
-	Parameters: 1
-	Flags: Linked
-*/
 function get_heli_sound_ent(sound_ent) {
   if(!isdefined(sound_ent)) {
     tag = "tag_origin";
@@ -999,60 +647,24 @@ function get_heli_sound_ent(sound_ent) {
   return sound_ent;
 }
 
-/*
-	Name: get_lock_sound_ent
-	Namespace: helicopter_sounds
-	Checksum: 0xB6034567
-	Offset: 0x3978
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked
-*/
 function get_lock_sound_ent() {
   self.lock_sound_ent = get_heli_sound_ent(self.lock_sound_ent);
   return self.lock_sound_ent;
 }
 
-/*
-	Name: get_leaving_sound_ent
-	Namespace: helicopter_sounds
-	Checksum: 0x61D55D23
-	Offset: 0x39B0
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked
-*/
 function get_leaving_sound_ent() {
   self.leaving_sound_ent = get_heli_sound_ent(self.leaving_sound_ent);
   return self.leaving_sound_ent;
 }
 
-/*
-	Name: heli_sound_ent_delete
-	Namespace: helicopter_sounds
-	Checksum: 0x309A20C3
-	Offset: 0x39E8
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_sound_ent_delete(real_ent) {
-  self waittill(# "entityshutdown");
+  self waittill("entityshutdown");
   real_ent stopallloopsounds(0.1);
   real_ent delete();
 }
 
-/*
-	Name: drone_up_down_transition
-	Namespace: helicopter_sounds
-	Checksum: 0xC318817D
-	Offset: 0x3A40
-	Size: 0x528
-	Parameters: 0
-	Flags: None
-*/
 function drone_up_down_transition() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   volumerate = 1;
   qr_ent_up = spawn(0, self.origin, "script_origin");
   qr_ent_down = spawn(0, self.origin, "script_origin");
@@ -1096,32 +708,14 @@ function drone_up_down_transition() {
   }
 }
 
-/*
-	Name: qr_ent_cleanup
-	Namespace: helicopter_sounds
-	Checksum: 0x97E11BA4
-	Offset: 0x3F70
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function qr_ent_cleanup(veh_ent) {
-  veh_ent waittill(# "entityshutdown");
+  veh_ent waittill("entityshutdown");
   self delete();
 }
 
-/*
-	Name: drone_rotate_angle
-	Namespace: helicopter_sounds
-	Checksum: 0xA090772B
-	Offset: 0x3FA8
-	Size: 0x230
-	Parameters: 2
-	Flags: None
-*/
 function drone_rotate_angle(heli_type, heli_part) {
-  self endon(# "entityshutdown");
-  level endon(# "save_restore");
+  self endon("entityshutdown");
+  level endon("save_restore");
   volumerate = 2.5;
   qr_ent_angle = spawn(0, self.origin, "script_origin");
   qr_ent_angle thread qr_ent_cleanup(self);
@@ -1140,17 +734,8 @@ function drone_rotate_angle(heli_type, heli_part) {
   }
 }
 
-/*
-	Name: drone_button_watch
-	Namespace: helicopter_sounds
-	Checksum: 0x8193A39F
-	Offset: 0x41E0
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function drone_button_watch() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   player = getlocalplayers()[0];
   return_to_zero = 1;
   while (true) {

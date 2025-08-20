@@ -1,46 +1,22 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\hud_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\lui_shared;
 #using scripts\shared\system_shared;
-
 #namespace hud;
 
-/*
-	Name: __init__sytem__
-	Namespace: hud
-	Checksum: 0xACBA1B15
-	Offset: 0x128
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("hud", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: hud
-	Checksum: 0x67B6B5B9
-	Offset: 0x168
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
 }
 
-/*
-	Name: init
-	Namespace: hud
-	Checksum: 0xCEA92629
-	Offset: 0x198
-	Size: 0x384
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.uiparent = spawnstruct();
   level.uiparent.horzalign = "left";
@@ -101,15 +77,6 @@ function init() {
   }
 }
 
-/*
-	Name: font_pulse_init
-	Namespace: hud
-	Checksum: 0x1D41364
-	Offset: 0x528
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function font_pulse_init() {
   self.basefontscale = self.fontscale;
   self.maxfontscale = self.fontscale * 2;
@@ -117,22 +84,13 @@ function font_pulse_init() {
   self.outframes = 3;
 }
 
-/*
-	Name: font_pulse
-	Namespace: hud
-	Checksum: 0x225808C6
-	Offset: 0x578
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function font_pulse(player) {
-  self notify(# "fontpulse");
-  self endon(# "fontpulse");
-  self endon(# "death");
-  player endon(# "disconnect");
-  player endon(# "joined_team");
-  player endon(# "joined_spectators");
+  self notify("fontpulse");
+  self endon("fontpulse");
+  self endon("death");
+  player endon("disconnect");
+  player endon("joined_team");
+  player endon("joined_spectators");
   if(self.outframes == 0) {
     self.fontscale = 0.01;
   } else {
@@ -154,32 +112,14 @@ function font_pulse(player) {
   }
 }
 
-/*
-	Name: fade_to_black_for_x_sec
-	Namespace: hud
-	Checksum: 0x2D9AF48C
-	Offset: 0x6F8
-	Size: 0x74
-	Parameters: 5
-	Flags: Linked
-*/
 function fade_to_black_for_x_sec(startwait, blackscreenwait, fadeintime, fadeouttime, shadername) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(startwait);
   lui::screen_fade_out(fadeintime, shadername);
   wait(blackscreenwait);
   lui::screen_fade_in(fadeouttime, shadername);
 }
 
-/*
-	Name: screen_fade_in
-	Namespace: hud
-	Checksum: 0xC469113F
-	Offset: 0x778
-	Size: 0x24
-	Parameters: 1
-	Flags: None
-*/
 function screen_fade_in(fadeintime) {
   lui::screen_fade_in(fadeintime);
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_sq_ctt.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -15,33 +19,14 @@
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_moon_amb;
 #using scripts\zm\zm_moon_sq;
-
 #namespace zm_moon_sq_ctt;
 
-/*
-	Name: init_1
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x337D1609
-	Offset: 0x538
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function init_1() {
   level._active_tanks = [];
   zm_spawner::add_custom_zombie_spawn_logic( & tank_volume_death_check);
   zm_sidequests::declare_sidequest_stage("tanks", "ctt1", & init_stage_1, & stage_logic, & exit_stage_1);
 }
 
-/*
-	Name: init_stage_1
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0xCD29E1B
-	Offset: 0x5C8
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function init_stage_1() {
   level._active_tanks = [];
   level._cur_stage_name = "ctt1";
@@ -52,41 +37,14 @@ function init_stage_1() {
   level thread setup_and_play_ctt1_vox();
 }
 
-/*
-	Name: exit_stage_1
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x8A1BFB0F
-	Offset: 0x668
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function exit_stage_1(success) {
   kill_tanks();
 }
 
-/*
-	Name: init_2
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x9612A6AA
-	Offset: 0x690
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function init_2() {
   zm_sidequests::declare_sidequest_stage("tanks", "ctt2", & init_stage_2, & stage_logic, & exit_stage_2);
 }
 
-/*
-	Name: init_stage_2
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x93C696DC
-	Offset: 0x6F0
-	Size: 0x40
-	Parameters: 0
-	Flags: Linked
-*/
 function init_stage_2() {
   level._active_tanks = [];
   level._cur_stage_name = "ctt2";
@@ -94,29 +52,11 @@ function init_stage_2() {
   level._charge_flag = "second_tanks_charged";
 }
 
-/*
-	Name: exit_stage_2
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0xB398749C
-	Offset: 0x738
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function exit_stage_2(success) {
   level flag::set("second_tanks_charged");
   kill_tanks();
 }
 
-/*
-	Name: stage_logic
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x4815D848
-	Offset: 0x780
-	Size: 0x4D4
-	Parameters: 0
-	Flags: Linked
-*/
 function stage_logic() {
   if(level._cur_stage_name == "ctt2") {
     s = struct::get("sq_vg_final", "targetname");
@@ -147,7 +87,7 @@ function stage_logic() {
   while (true) {
     if(all_tanks_full()) {
       sound::play_in_space("zmb_squest_all_souls_full", (0, 0, 0));
-      level notify(# "ctt_aud_note");
+      level notify("ctt_aud_note");
       break;
     }
     wait(0.1);
@@ -174,29 +114,11 @@ function stage_logic() {
   zm_sidequests::stage_completed("tanks", level._cur_stage_name);
 }
 
-/*
-	Name: play_delayed_stop_sound
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0xB96228C4
-	Offset: 0xC60
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function play_delayed_stop_sound(time) {
   wait(time);
   self playsound("evt_tube_stop");
 }
 
-/*
-	Name: build_sam_stage
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0xC58B1661
-	Offset: 0xC98
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function build_sam_stage(percent, l) {
   s = spawnstruct();
   s.percent = percent;
@@ -204,15 +126,6 @@ function build_sam_stage(percent, l) {
   return s;
 }
 
-/*
-	Name: percent_full
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x45160E2C
-	Offset: 0xD00
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function percent_full() {
   max_fill = 0;
   fill = 0;
@@ -223,17 +136,8 @@ function percent_full() {
   return fill / max_fill;
 }
 
-/*
-	Name: hit_sam
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0xFA4524AF
-	Offset: 0xDB0
-	Size: 0x242
-	Parameters: 0
-	Flags: Linked
-*/
 function hit_sam() {
-  level endon(# "tanks_ctt2_over");
+  level endon("tanks_ctt2_over");
   stages = array(build_sam_stage(0.1, "vox_plr_4_quest_step6_1"), build_sam_stage(0.2, "vox_plr_4_quest_step6_1a"), build_sam_stage(0.3, "vox_plr_4_quest_step6_2"), build_sam_stage(0.4, "vox_plr_4_quest_step6_2a"), build_sam_stage(0.5, "vox_plr_4_quest_step6_3"), build_sam_stage(0.6, "vox_plr_4_quest_step6_3a"), build_sam_stage(0.7, "vox_plr_4_quest_step6_4"), build_sam_stage(0.9, "vox_plr_4_quest_step6_5"));
   index = 0;
   targ = struct::get("sq_sam", "targetname");
@@ -250,15 +154,6 @@ function hit_sam() {
   }
 }
 
-/*
-	Name: play_sam_vo
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x1A262E13
-	Offset: 0x1000
-	Size: 0xDC
-	Parameters: 3
-	Flags: Linked
-*/
 function play_sam_vo(_line, origin, index) {
   level clientfield::set("sam_vo_rumble", 1);
   snd_ent = spawn("script_origin", origin);
@@ -268,15 +163,6 @@ function play_sam_vo(_line, origin, index) {
   snd_ent delete();
 }
 
-/*
-	Name: drain_tanks
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0xA83BA7D4
-	Offset: 0x10E8
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function drain_tanks() {
   for (i = 0; i < level._active_tanks.size; i++) {
     tank = level._active_tanks[i];
@@ -289,29 +175,11 @@ function drain_tanks() {
   wait(2);
 }
 
-/*
-	Name: delay_hide
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0xEB9ABC9C
-	Offset: 0x1218
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function delay_hide() {
   wait(2);
   self ghost();
 }
 
-/*
-	Name: all_tanks_full
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x526F6BF4
-	Offset: 0x1240
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function all_tanks_full() {
   if(level._active_tanks.size == 0) {
     return false;
@@ -325,15 +193,6 @@ function all_tanks_full() {
   return true;
 }
 
-/*
-	Name: kill_tanks
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0xE384C598
-	Offset: 0x12D0
-	Size: 0x10E
-	Parameters: 0
-	Flags: Linked
-*/
 function kill_tanks() {
   level clientfield::increment("charge_tank_cleanup");
   tanks = getentarray("ctt_tank", "script_noteworthy");
@@ -348,28 +207,10 @@ function kill_tanks() {
   }
 }
 
-/*
-	Name: movetopos
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x5917EF7C
-	Offset: 0x13E8
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function movetopos(pos) {
   self moveto(pos, 1);
 }
 
-/*
-	Name: add_tank
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x7654CBF2
-	Offset: 0x1420
-	Size: 0x500
-	Parameters: 2
-	Flags: Linked
-*/
 function add_tank(tank_name, other_tank_name) {
   tanks = struct::get_array(tank_name, "targetname");
   if(isdefined(other_tank_name)) {
@@ -412,15 +253,6 @@ function add_tank(tank_name, other_tank_name) {
   }
 }
 
-/*
-	Name: do_tank_fill
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x352F58A
-	Offset: 0x1928
-	Size: 0x18C
-	Parameters: 2
-	Flags: Linked
-*/
 function do_tank_fill(actor, tank) {
   if(tank.fill >= tank.max_fill) {
     return;
@@ -428,7 +260,7 @@ function do_tank_fill(actor, tank) {
   actor clientfield::set("ctt", 1);
   wait(0.5);
   if(tank.fill <= 0) {
-    level notify(# "ctt_first_kill");
+    level notify("ctt_first_kill");
   }
   if(isdefined(tank) && tank.fill < tank.max_fill) {
     tank.fill++;
@@ -441,17 +273,8 @@ function do_tank_fill(actor, tank) {
   }
 }
 
-/*
-	Name: tank_volume_death_check
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x8BF8C164
-	Offset: 0x1AC0
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_volume_death_check() {
-  self waittill(# "death", attacker);
+  self waittill("death", attacker);
   if(!isplayer(attacker)) {
     return;
   }
@@ -468,15 +291,6 @@ function tank_volume_death_check() {
   }
 }
 
-/*
-	Name: setup_and_play_ctt1_vox
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0xF4ECF994
-	Offset: 0x1B98
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_and_play_ctt1_vox() {
   level thread ctt1_first_kill_vox();
   level thread ctt1_full_vox();
@@ -484,17 +298,8 @@ function setup_and_play_ctt1_vox() {
   level thread ctt1_fifty_percent_vox();
 }
 
-/*
-	Name: ctt1_first_kill_vox
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x24E56F2B
-	Offset: 0x1C08
-	Size: 0xA8
-	Parameters: 0
-	Flags: Linked
-*/
 function ctt1_first_kill_vox() {
-  level waittill(# "ctt_first_kill");
+  level waittill("ctt_first_kill");
   for (i = 0; i < level._active_tanks.size; i++) {
     player = zm_utility::get_closest_player(level._active_tanks[i].origin);
     if(isdefined(player)) {
@@ -504,15 +309,6 @@ function ctt1_first_kill_vox() {
   }
 }
 
-/*
-	Name: ctt1_fifty_percent_vox
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x93A9A390
-	Offset: 0x1CB8
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function ctt1_fifty_percent_vox() {
   while (percent_full() < 0.5) {
     wait(0.5);
@@ -521,30 +317,12 @@ function ctt1_fifty_percent_vox() {
   players[randomintrange(0, players.size)] thread zm_audio::create_and_play_dialog("eggs", "quest4", 1);
 }
 
-/*
-	Name: ctt1_full_vox
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x7FC3FA28
-	Offset: 0x1D58
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function ctt1_full_vox() {
-  level waittill(# "ctt_aud_note");
+  level waittill("ctt_aud_note");
   players = getplayers();
   players[randomintrange(0, players.size)] thread zm_audio::create_and_play_dialog("eggs", "quest4", 2);
 }
 
-/*
-	Name: vox_override_while_near_tank
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x22067188
-	Offset: 0x1DE0
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function vox_override_while_near_tank() {
   while (!level flag::get("sam_switch_thrown")) {
     while (level.zones["generator_zone"].is_occupied) {
@@ -562,43 +340,16 @@ function vox_override_while_near_tank() {
   level.skit_vox_override = 0;
 }
 
-/*
-	Name: setup_and_play_ctt2_vox
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x56845241
-	Offset: 0x1EA0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_and_play_ctt2_vox() {
   level thread vox_override_while_near_tank2();
 }
 
-/*
-	Name: ctt2_full_vox
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x42D16C78
-	Offset: 0x1EC8
-	Size: 0x7C
-	Parameters: 0
-	Flags: None
-*/
 function ctt2_full_vox() {
-  level waittill(# "ctt_aud_note");
+  level waittill("ctt_aud_note");
   players = getplayers();
   players[randomintrange(0, players.size)] thread zm_audio::create_and_play_dialog("eggs", "quest6", 6);
 }
 
-/*
-	Name: vox_override_while_near_tank2
-	Namespace: zm_moon_sq_ctt
-	Checksum: 0x5C7DB4F0
-	Offset: 0x1F50
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function vox_override_while_near_tank2() {
   while (!level flag::get("cvg_placed")) {
     while (level.zones["generator_zone"].is_occupied) {

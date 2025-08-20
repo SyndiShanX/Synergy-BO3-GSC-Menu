@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_dragon_strike.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\animation_shared;
 #using scripts\shared\array_shared;
@@ -18,31 +22,12 @@
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace dragon_strike;
 
-/*
-	Name: __init__sytem__
-	Namespace: dragon_strike
-	Checksum: 0xE5E01DC9
-	Offset: 0x648
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_dragon_strike", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: dragon_strike
-	Checksum: 0x16F28517
-	Offset: 0x690
-	Size: 0x2EC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "dragon_strike_spawn_fx", 12000, 1, "int");
   clientfield::register("scriptmover", "dragon_strike_marker_on", 12000, 1, "int");
@@ -63,15 +48,6 @@ function __init__() {
   zm::register_player_damage_callback( & function_43b5419a);
 }
 
-/*
-	Name: __main__
-	Namespace: dragon_strike
-	Checksum: 0x522F0CC
-	Offset: 0x988
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   zm_placeable_mine::add_mine_type("launcher_dragon_strike");
   zm_placeable_mine::add_mine_type("launcher_dragon_strike_upgraded");
@@ -84,30 +60,12 @@ function __main__() {
   zm_spawner::register_zombie_death_event_callback( & function_22664e38);
 }
 
-/*
-	Name: on_player_connect
-	Namespace: dragon_strike
-	Checksum: 0xADBA46C9
-	Offset: 0xA58
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   self thread function_2d8749cd();
   self thread on_player_disconnect();
   self thread function_1939853d();
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: dragon_strike
-	Checksum: 0xF7EF1555
-	Offset: 0xAB0
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   if(!self flag::exists("show_dragon_strike_reticule")) {
     self flag::init("show_dragon_strike_reticule");
@@ -119,35 +77,17 @@ function on_player_spawned() {
   self thread function_3e8c94e3();
 }
 
-/*
-	Name: function_1939853d
-	Namespace: dragon_strike
-	Checksum: 0x5816D350
-	Offset: 0xB70
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1939853d() {
-  self endon(# "disconnect");
-  self notify(# "hash_1939853d");
-  self endon(# "hash_1939853d");
+  self endon("disconnect");
+  self notify("hash_1939853d");
+  self endon("hash_1939853d");
   for (;;) {
-    self waittill(# "zmb_max_ammo");
+    self waittill("zmb_max_ammo");
     wait(0.05);
     self function_ab4fad2f();
   }
 }
 
-/*
-	Name: function_ab4fad2f
-	Namespace: dragon_strike
-	Checksum: 0x3028027E
-	Offset: 0xBD0
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ab4fad2f() {
   var_5a0c399b = self zm_utility::get_player_placeable_mine();
   if(var_5a0c399b == getweapon("launcher_dragon_strike")) {
@@ -161,21 +101,12 @@ function function_ab4fad2f() {
   }
   if(self getammocount(var_5a0c399b) < n_max_ammo) {
     if(array::contains(level.var_163a43e4, self)) {
-      self waittill(# "hash_2e47bc4a");
+      self waittill("hash_2e47bc4a");
     }
     self setweaponammoclip(var_5a0c399b, n_max_ammo);
   }
 }
 
-/*
-	Name: function_ff07e778
-	Namespace: dragon_strike
-	Checksum: 0xEB7630FF
-	Offset: 0xCD8
-	Size: 0x1E0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ff07e778() {
   a_players = getplayers();
   for (i = 0; i < a_players.size; i++) {
@@ -196,17 +127,8 @@ function function_ff07e778() {
   }
 }
 
-/*
-	Name: on_player_disconnect
-	Namespace: dragon_strike
-	Checksum: 0x8DABD792
-	Offset: 0xEC0
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_disconnect() {
-  self waittill(# "disconnect");
+  self waittill("disconnect");
   if(isdefined(self.mdl_target) && !self flag::get("dragon_strike_active")) {
     mdl_target = self.mdl_target;
     mdl_target clientfield::set("dragon_strike_marker_on", 0);
@@ -215,15 +137,6 @@ function on_player_disconnect() {
   }
 }
 
-/*
-	Name: function_43b5419a
-	Namespace: dragon_strike
-	Checksum: 0x85652A4
-	Offset: 0xF60
-	Size: 0xD4
-	Parameters: 11
-	Flags: Linked
-*/
 function function_43b5419a(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex) {
   if(isdefined(einflictor) && isdefined(einflictor.item) && (einflictor.item == getweapon("launcher_dragon_fire") || einflictor.item == getweapon("launcher_dragon_fire_upgraded"))) {
     return 0;
@@ -231,83 +144,47 @@ function function_43b5419a(einflictor, eattacker, idamage, idflags, smeansofdeat
   return -1;
 }
 
-/*
-	Name: function_2d8749cd
-	Namespace: dragon_strike
-	Checksum: 0xEE52A88D
-	Offset: 0x1040
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2d8749cd() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (isdefined(self)) {
-    self waittill(# "weapon_change", weapon);
+    self waittill("weapon_change", weapon);
     if(weapon == getweapon("launcher_dragon_strike")) {
       break;
     }
   }
-  zm_equipment::show_hint_text( & "ZM_STALINGRAD_DRAGON_STRIKE_USE");
+  zm_equipment::show_hint_text(&"ZM_STALINGRAD_DRAGON_STRIKE_USE");
 }
 
-/*
-	Name: function_d5acc054
-	Namespace: dragon_strike
-	Checksum: 0x3E536AF9
-	Offset: 0x10C0
-	Size: 0x110
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d5acc054() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "weapon_change", weapon, previous_weapon);
+    self waittill("weapon_change", weapon, previous_weapon);
     if(function_9e0c324b(weapon)) {
       if(self.var_8660deae === 0) {
         self playsoundtoplayer("fly_dragon_strike_ui_error", self);
-        self thread zm_equipment::show_hint_text( & "ZM_STALINGRAD_DRAGON_STRIKE_UNAVAILABLE");
+        self thread zm_equipment::show_hint_text(&"ZM_STALINGRAD_DRAGON_STRIKE_UNAVAILABLE");
         self function_6c8dfca2(previous_weapon);
         continue;
       } else {
         self thread function_8ad253d8(previous_weapon);
       }
     } else {
-      self notify(# "hash_85e0a572");
+      self notify("hash_85e0a572");
       self flag::clear("show_dragon_strike_reticule");
     }
   }
 }
 
-/*
-	Name: function_3e8c94e3
-	Namespace: dragon_strike
-	Checksum: 0xF973ABE5
-	Offset: 0x11D8
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3e8c94e3() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "specify_weapon_request", weapon);
+    self waittill("specify_weapon_request", weapon);
     if(function_9e0c324b(weapon) && (self getammocount(weapon) == 0 || self.var_8660deae === 0)) {
       self clientfield::increment_uimodel("dragon_strike_invalid_use");
     }
   }
 }
 
-/*
-	Name: function_9e0c324b
-	Namespace: dragon_strike
-	Checksum: 0xD3FB12D7
-	Offset: 0x1270
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9e0c324b(var_382bb75) {
   if(var_382bb75 == getweapon("launcher_dragon_strike") || var_382bb75 == getweapon("launcher_dragon_strike_upgraded")) {
     return true;
@@ -315,24 +192,15 @@ function function_9e0c324b(var_382bb75) {
   return false;
 }
 
-/*
-	Name: function_8ad253d8
-	Namespace: dragon_strike
-	Checksum: 0x8D7DCF80
-	Offset: 0x12D0
-	Size: 0x21C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8ad253d8(previous_weapon) {
-  self endon(# "hash_85e0a572");
-  self endon(# "disconnect");
+  self endon("hash_85e0a572");
+  self endon("disconnect");
   self flag::set("show_dragon_strike_reticule");
   self thread function_7fcb14a8();
-  self waittill(# "weapon_fired");
+  self waittill("weapon_fired");
   if(self flag::get("dragon_strike_active")) {
     self playsoundtoplayer("fly_dragon_strike_ui_error", self);
-    self thread zm_equipment::show_hint_text( & "ZM_STALINGRAD_DRAGON_STRIKE_BUSY");
+    self thread zm_equipment::show_hint_text(&"ZM_STALINGRAD_DRAGON_STRIKE_BUSY");
     self function_6c8dfca2(previous_weapon);
     return;
   }
@@ -346,19 +214,10 @@ function function_8ad253d8(previous_weapon) {
     return;
   }
   self playsoundtoplayer("fly_dragon_strike_ui_error", self);
-  self thread zm_equipment::show_hint_text( & "ZM_STALINGRAD_DRAGON_STRIKE_INVALID");
+  self thread zm_equipment::show_hint_text(&"ZM_STALINGRAD_DRAGON_STRIKE_INVALID");
   self thread function_8ad253d8(previous_weapon);
 }
 
-/*
-	Name: function_f80cd2c9
-	Namespace: dragon_strike
-	Checksum: 0x1E5DB088
-	Offset: 0x14F8
-	Size: 0x18
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f80cd2c9() {
   if(isdefined(self.var_be00572f)) {
     return true;
@@ -366,17 +225,8 @@ function function_f80cd2c9() {
   return false;
 }
 
-/*
-	Name: function_2864e2c1
-	Namespace: dragon_strike
-	Checksum: 0xEB39B139
-	Offset: 0x1518
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2864e2c1() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.var_8660deae = 0;
   self flag::wait_till_clear("dragon_strike_active");
   self.var_8660deae = 1;
@@ -386,31 +236,13 @@ function function_2864e2c1() {
   }
 }
 
-/*
-	Name: function_42ab5fbb
-	Namespace: dragon_strike
-	Checksum: 0xDF0FDEE5
-	Offset: 0x15B0
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_42ab5fbb(var_5d020ece) {
   self clientfield::set("dragon_strike_spawn_fx", 1);
   self thread animation::play("ai_zm_dlc3_dragon_strike_1", self);
 }
 
-/*
-	Name: function_a3b69ec0
-	Namespace: dragon_strike
-	Checksum: 0x17AA93EE
-	Offset: 0x1608
-	Size: 0x1CC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a3b69ec0(var_5d020ece) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   var_5a0c399b = self zm_utility::get_player_placeable_mine();
   if(var_5a0c399b == getweapon("launcher_dragon_strike_upgraded")) {
     b_upgraded = 1;
@@ -427,20 +259,11 @@ function function_a3b69ec0(var_5d020ece) {
   self flag::clear("show_dragon_strike_reticule");
   self.mdl_target thread function_6efadb82(var_825b87b9, var_5a0c399b);
   level thread function_9af893e8(self, var_5d020ece, b_upgraded, var_35ab0c48, var_6646a04b);
-  level waittill(# "hash_d3a01285");
-  self notify(# "hash_ddb84fad", self.var_8e17738c);
+  level waittill("hash_d3a01285");
+  self notify("hash_ddb84fad", self.var_8e17738c);
   self flag::clear("dragon_strike_active");
 }
 
-/*
-	Name: function_9af893e8
-	Namespace: dragon_strike
-	Checksum: 0x8C5609C3
-	Offset: 0x17E0
-	Size: 0x242
-	Parameters: 5
-	Flags: Linked
-*/
 function function_9af893e8(e_player, var_5d020ece, b_upgraded, var_35ab0c48, var_6646a04b) {
   var_2fcea154 = util::spawn_anim_model("c_zom_dlc3_dragon_body_airstrike", var_5d020ece.var_53d81d57, var_5d020ece.angles + vectorscale((1, 0, 0), 25));
   var_2fcea154 function_42ab5fbb(var_5d020ece);
@@ -449,7 +272,7 @@ function function_9af893e8(e_player, var_5d020ece, b_upgraded, var_35ab0c48, var
     e_player.var_8e17738c = 0;
   }
   for (i = 0; i < 4; i++) {
-    var_2fcea154 waittill(# "fireball");
+    var_2fcea154 waittill("fireball");
     var_2fcea154.var_201fdf35 = var_2fcea154 gettagorigin("tag_throat_fx");
     var_c606eb7 = 6;
     do {
@@ -464,18 +287,9 @@ function function_9af893e8(e_player, var_5d020ece, b_upgraded, var_35ab0c48, var
   while (isdefined(var_aa911866)) {
     wait(0.05);
   }
-  level notify(# "hash_d67e330d");
+  level notify("hash_d67e330d");
 }
 
-/*
-	Name: function_a6d19957
-	Namespace: dragon_strike
-	Checksum: 0xC2B88D80
-	Offset: 0x1A30
-	Size: 0x17A
-	Parameters: 4
-	Flags: Linked
-*/
 function function_a6d19957(b_upgraded, var_aa911866, v_hitloc, n_range) {
   while (isdefined(var_aa911866)) {
     wait(0.05);
@@ -494,15 +308,6 @@ function function_a6d19957(b_upgraded, var_aa911866, v_hitloc, n_range) {
   }
 }
 
-/*
-	Name: function_adac83c4
-	Namespace: dragon_strike
-	Checksum: 0x4C8A78AB
-	Offset: 0x1BB8
-	Size: 0x6E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_adac83c4() {
   var_8eae13b3 = randomintrange(-50, 50);
   var_68ab994a = randomintrange(-50, 50);
@@ -510,21 +315,12 @@ function function_adac83c4() {
   return var_8d74b778;
 }
 
-/*
-	Name: function_6efadb82
-	Namespace: dragon_strike
-	Checksum: 0x8DF7853A
-	Offset: 0x1C30
-	Size: 0x1AC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_6efadb82(var_825b87b9, var_5a0c399b) {
   self clientfield::set("dragon_strike_flare_fx", 1);
   var_dc5fde65 = getclosestpointonnavmesh(self.origin, 128);
   var_1e43571f = util::spawn_model("tag_origin", var_dc5fde65);
   var_1e43571f zm_utility::create_zombie_point_of_interest(var_825b87b9, 64, 10000);
-  level waittill(# "hash_d67e330d");
+  level waittill("hash_d67e330d");
   if(isdefined(self)) {
     self clientfield::set("dragon_strike_flare_fx", 0);
     if(var_5a0c399b == getweapon("launcher_dragon_strike_upgraded")) {
@@ -544,15 +340,6 @@ function function_6efadb82(var_825b87b9, var_5a0c399b) {
   }
 }
 
-/*
-	Name: function_22664e38
-	Namespace: dragon_strike
-	Checksum: 0x59986E5C
-	Offset: 0x1DE8
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_22664e38(e_attacker) {
   if(isdefined(self) && (self.damageweapon === getweapon("launcher_dragon_fire") || self.damageweapon === getweapon("launcher_dragon_fire_upgraded"))) {
     if(isdefined(e_attacker) && isdefined(e_attacker.player)) {
@@ -561,34 +348,16 @@ function function_22664e38(e_attacker) {
   }
 }
 
-/*
-	Name: function_604af93b
-	Namespace: dragon_strike
-	Checksum: 0xCACDF1F0
-	Offset: 0x1E80
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_604af93b() {
-  self waittill(# "scriptedanim");
-  level notify(# "hash_d3a01285");
+  self waittill("scriptedanim");
+  level notify("hash_d3a01285");
   self delete();
 }
 
-/*
-	Name: function_7fcb14a8
-	Namespace: dragon_strike
-	Checksum: 0x118CF8F0
-	Offset: 0x1EC0
-	Size: 0x354
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7fcb14a8() {
-  self notify(# "hash_26b100ad");
-  self endon(# "hash_26b100ad");
-  self endon(# "disconnect");
+  self notify("hash_26b100ad");
+  self endon("hash_26b100ad");
+  self endon("disconnect");
   var_b912cdaf = vectorscale((0, 0, 1), 8);
   if(!isdefined(self.mdl_target)) {
     self.mdl_target = util::spawn_model("tag_origin", self.origin);
@@ -630,15 +399,6 @@ function function_7fcb14a8() {
   self.mdl_target delete();
 }
 
-/*
-	Name: function_c7832a90
-	Namespace: dragon_strike
-	Checksum: 0xA1ADCF0E
-	Offset: 0x2220
-	Size: 0x2DA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c7832a90(v_loc) {
   var_feed8b5b = 0;
   v_forward = v_loc - self.origin;
@@ -664,30 +424,12 @@ function function_c7832a90(v_loc) {
   return undefined;
 }
 
-/*
-	Name: function_5a9be7d8
-	Namespace: dragon_strike
-	Checksum: 0x15FFBBB6
-	Offset: 0x2508
-	Size: 0x5E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_5a9be7d8(var_854898eb) {
   self.mdl_target clientfield::increment(var_854898eb);
   self.mdl_target moveto(self.var_be00572f, 0.05);
   self.var_be00572f = undefined;
 }
 
-/*
-	Name: function_6c8dfca2
-	Namespace: dragon_strike
-	Checksum: 0x92A69549
-	Offset: 0x2570
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6c8dfca2(w_weapon) {
   if(!isdefined(w_weapon) || zm_utility::is_hero_weapon(w_weapon)) {
     if(isdefined(self.prev_weapon_before_equipment_change)) {

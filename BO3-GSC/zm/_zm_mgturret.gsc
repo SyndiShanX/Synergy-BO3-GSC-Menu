@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\codescripts\struct;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_mgturret.gsc
+*************************************************/
 
+#using scripts\codescripts\struct;
 #namespace zm_mgturret;
 
-/*
-	Name: main
-	Namespace: zm_mgturret
-	Checksum: 0x35BCD110
-	Offset: 0x168
-	Size: 0xCE
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   if(getdvarstring("mg42") == "") {
     setdvar("mgTurret", "off");
@@ -23,15 +17,6 @@ function main() {
   }
 }
 
-/*
-	Name: set_difficulty
-	Namespace: zm_mgturret
-	Checksum: 0xBF49FFEA
-	Offset: 0x240
-	Size: 0x136
-	Parameters: 1
-	Flags: None
-*/
 function set_difficulty(difficulty) {
   init_turret_difficulty_settings();
   turrets = getentarray("misc_turret", "classname");
@@ -63,15 +48,6 @@ function set_difficulty(difficulty) {
   }
 }
 
-/*
-	Name: init_turret_difficulty_settings
-	Namespace: zm_mgturret
-	Checksum: 0x60546273
-	Offset: 0x380
-	Size: 0x2C4
-	Parameters: 0
-	Flags: None
-*/
 function init_turret_difficulty_settings() {
   level.mgturretsettings["easy"]["convergenceTime"] = 2.5;
   level.mgturretsettings["easy"]["suppressionTime"] = 3;
@@ -95,15 +71,6 @@ function init_turret_difficulty_settings() {
   level.mgturretsettings["fu"]["playerSpread"] = 0.5;
 }
 
-/*
-	Name: turret_set_difficulty
-	Namespace: zm_mgturret
-	Checksum: 0x71A3412
-	Offset: 0x650
-	Size: 0xC8
-	Parameters: 2
-	Flags: None
-*/
 function turret_set_difficulty(turret, difficulty) {
   turret.convergencetime = level.mgturretsettings[difficulty]["convergenceTime"];
   turret.suppressiontime = level.mgturretsettings[difficulty]["suppressionTime"];
@@ -112,18 +79,9 @@ function turret_set_difficulty(turret, difficulty) {
   turret.playerspread = level.mgturretsettings[difficulty]["playerSpread"];
 }
 
-/*
-	Name: turret_suppression_fire
-	Namespace: zm_mgturret
-	Checksum: 0x83D70FD1
-	Offset: 0x720
-	Size: 0xC4
-	Parameters: 1
-	Flags: None
-*/
 function turret_suppression_fire(targets) {
-  self endon(# "death");
-  self endon(# "stop_suppression_fire");
+  self endon("death");
+  self endon("stop_suppression_fire");
   if(!isdefined(self.suppresionfire)) {
     self.suppresionfire = 1;
   }
@@ -139,15 +97,6 @@ function turret_suppression_fire(targets) {
   }
 }
 
-/*
-	Name: burst_fire_settings
-	Namespace: zm_mgturret
-	Checksum: 0xAAB9269D
-	Offset: 0x7F0
-	Size: 0x76
-	Parameters: 1
-	Flags: None
-*/
 function burst_fire_settings(setting) {
   if(setting == "delay") {
     return 0.2;
@@ -163,19 +112,10 @@ function burst_fire_settings(setting) {
   }
 }
 
-/*
-	Name: burst_fire
-	Namespace: zm_mgturret
-	Checksum: 0x50606535
-	Offset: 0x870
-	Size: 0x24A
-	Parameters: 2
-	Flags: None
-*/
 function burst_fire(turret, manual_target) {
-  turret endon(# "death");
-  turret endon(# "stopfiring");
-  self endon(# "stop_using_built_in_burst_fire");
+  turret endon("death");
+  turret endon("stopfiring");
+  self endon("stop_using_built_in_burst_fire");
   if(isdefined(turret.script_delay_min)) {
     turret_delay = turret.script_delay_min;
   } else {
@@ -209,21 +149,12 @@ function burst_fire(turret, manual_target) {
   }
 }
 
-/*
-	Name: burst_fire_unmanned
-	Namespace: zm_mgturret
-	Checksum: 0xCE8B1BE
-	Offset: 0xAC8
-	Size: 0x37C
-	Parameters: 0
-	Flags: None
-*/
 function burst_fire_unmanned() {
-  self notify(# "stop_burst_fire_unmanned");
-  self endon(# "stop_burst_fire_unmanned");
-  self endon(# "death");
-  self endon(# "remote_start");
-  level endon(# "game_ended");
+  self notify("stop_burst_fire_unmanned");
+  self endon("stop_burst_fire_unmanned");
+  self endon("death");
+  self endon("remote_start");
+  level endon("game_ended");
   if(isdefined(self.controlled) && self.controlled) {
     return;
   }
@@ -265,7 +196,7 @@ function burst_fire_unmanned() {
       }
       duration = turret_burst + randomfloat(turret_burst_range);
       self thread turret_timer(duration);
-      self waittill(# "turretstatechange");
+      self waittill("turretstatechange");
       self.script_shooting = 0;
       duration = turret_delay + randomfloat(turret_delay_range);
       pauseuntiltime = gettime() + (int(duration * 1000));
@@ -275,19 +206,10 @@ function burst_fire_unmanned() {
       turretstate = "aim";
     }
     self thread turret_timer(duration);
-    self waittill(# "turretstatechange");
+    self waittill("turretstatechange");
   }
 }
 
-/*
-	Name: avoid_synchronization
-	Namespace: zm_mgturret
-	Checksum: 0x33AE99AC
-	Offset: 0xE50
-	Size: 0x3C
-	Parameters: 1
-	Flags: None
-*/
 function avoid_synchronization(time) {
   if(!isdefined(level._zm_mgturret_firing)) {
     level._zm_mgturret_firing = 0;
@@ -297,18 +219,9 @@ function avoid_synchronization(time) {
   level._zm_mgturret_firing--;
 }
 
-/*
-	Name: do_shoot
-	Namespace: zm_mgturret
-	Checksum: 0x9E8260B2
-	Offset: 0xE98
-	Size: 0x80
-	Parameters: 0
-	Flags: None
-*/
 function do_shoot() {
-  self endon(# "death");
-  self endon(# "turretstatechange");
+  self endon("death");
+  self endon("turretstatechange");
   for (;;) {
     while (isdefined(level._zm_mgturret_firing) && level._zm_mgturret_firing) {
       wait(0.1);
@@ -319,40 +232,22 @@ function do_shoot() {
   }
 }
 
-/*
-	Name: turret_timer
-	Namespace: zm_mgturret
-	Checksum: 0xFACAE9F2
-	Offset: 0xF20
-	Size: 0x42
-	Parameters: 1
-	Flags: None
-*/
 function turret_timer(duration) {
   if(duration <= 0) {
     return;
   }
-  self endon(# "turretstatechange");
+  self endon("turretstatechange");
   wait(duration);
   if(isdefined(self)) {
-    self notify(# "turretstatechange");
+    self notify("turretstatechange");
   }
 }
 
-/*
-	Name: random_spread
-	Namespace: zm_mgturret
-	Checksum: 0xD18A1C08
-	Offset: 0xF70
-	Size: 0x13C
-	Parameters: 1
-	Flags: None
-*/
 function random_spread(ent) {
-  self endon(# "death");
-  self notify(# "hash_d175a918");
-  self endon(# "hash_d175a918");
-  self endon(# "stopfiring");
+  self endon("death");
+  self notify("hash_d175a918");
+  self endon("hash_d175a918");
+  self endon("stopfiring");
   self settargetentity(ent);
   self.manual_target = ent;
   while (true) {

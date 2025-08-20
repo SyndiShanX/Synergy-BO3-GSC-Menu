@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_spores.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -22,18 +26,8 @@
 #using scripts\zm\_zm_weap_mirg2000;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_island_vo;
-
 #namespace zm_island_spores;
 
-/*
-	Name: init
-	Namespace: zm_island_spores
-	Checksum: 0xFC5CAB27
-	Offset: 0x748
-	Size: 0x354
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   if(getdvarint("splitscreen_playerCount") > 2) {
     array::run_all(getentarray("mdl_mushroom_spore", "targetname"), & delete);
@@ -58,15 +52,6 @@ function init() {
   }
 }
 
-/*
-	Name: function_62f658cb
-	Namespace: zm_island_spores
-	Checksum: 0xD474AF86
-	Offset: 0xAA8
-	Size: 0x1DC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_62f658cb(v_origin, weapon, e_attacker) {
   var_a21dd47a = util::spawn_model("tag_origin", v_origin);
   var_a21dd47a.var_a5969fbf = spawnstruct();
@@ -87,15 +72,6 @@ function function_62f658cb(v_origin, weapon, e_attacker) {
   var_a21dd47a delete();
 }
 
-/*
-	Name: function_53848c29
-	Namespace: zm_island_spores
-	Checksum: 0x4E698295
-	Offset: 0xC90
-	Size: 0x3D4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_53848c29() {
   self ghost();
   level flag::wait_till("start_zombie_round_logic");
@@ -142,59 +118,32 @@ function function_53848c29() {
   self thread function_e92dbdce();
 }
 
-/*
-	Name: function_e92dbdce
-	Namespace: zm_island_spores
-	Checksum: 0x8A1A56BB
-	Offset: 0x1070
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e92dbdce() {
   while (true) {
     self thread function_3dc43cc5();
-    self waittill(# "hash_dcef79ff");
+    self waittill("hash_dcef79ff");
   }
 }
 
-/*
-	Name: function_15e20abb
-	Namespace: zm_island_spores
-	Checksum: 0xF2ABFE69
-	Offset: 0x10B0
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function function_15e20abb() {
-  self endon(# "hash_dcef79ff");
+  self endon("hash_dcef79ff");
   while (true) {
-    self.t_spore_explode waittill(# "touch", e_who);
+    self.t_spore_explode waittill("touch", e_who);
     if(isai(e_who)) {
       self thread function_dcef79ff(0);
     }
   }
 }
 
-/*
-	Name: function_3dc43cc5
-	Namespace: zm_island_spores
-	Checksum: 0x64175CD9
-	Offset: 0x1120
-	Size: 0x1DA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3dc43cc5() {
-  self endon(# "hash_dcef79ff");
+  self endon("hash_dcef79ff");
   if(!isdefined(self.var_4448f463)) {
     self.var_4448f463 = 0;
   }
   self.var_4448f463 = randomintrange(3, 5);
   self.var_f9f788a6 = 0;
   while (self.var_4448f463 > 0) {
-    level waittill(# "end_of_round");
+    level waittill("end_of_round");
     self.var_4448f463 = self.var_4448f463 - 1;
     if(self.var_4448f463 < 3) {
       self.var_f9f788a6 = self.var_f9f788a6 + 1;
@@ -221,20 +170,11 @@ function function_3dc43cc5() {
   }
 }
 
-/*
-	Name: function_523b2f00
-	Namespace: zm_island_spores
-	Checksum: 0xCDDD2199
-	Offset: 0x1308
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function function_523b2f00() {
-  self endon(# "hash_dcef79ff");
+  self endon("hash_dcef79ff");
   self setcandamage(1);
-  self.t_spore_damage waittill(# "damage", damage, e_attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
-  e_attacker notify(# "update_challenge_1_4");
+  self.t_spore_damage waittill("damage", damage, e_attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
+  e_attacker notify("update_challenge_1_4");
   if(mirg2000::is_wonder_weapon(weapon)) {
     self thread function_dcef79ff(1, e_attacker);
   } else {
@@ -242,34 +182,16 @@ function function_523b2f00() {
   }
 }
 
-/*
-	Name: function_c77e825c
-	Namespace: zm_island_spores
-	Checksum: 0x92563C2A
-	Offset: 0x1428
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c77e825c() {
-  self endon(# "hash_dcef79ff");
-  self.t_spore_damage waittill(# "touch", e_who);
+  self endon("hash_dcef79ff");
+  self.t_spore_damage waittill("touch", e_who);
   self thread function_dcef79ff(0, e_who);
 }
 
-/*
-	Name: function_dcef79ff
-	Namespace: zm_island_spores
-	Checksum: 0x79029291
-	Offset: 0x1480
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_dcef79ff(b_hero_weapon, e_attacker) {
   var_f9f788a6 = self.var_f9f788a6;
   self thread function_4c6beece(var_f9f788a6, b_hero_weapon, e_attacker);
-  self notify(# "hash_dcef79ff");
+  self notify("hash_dcef79ff");
   if(var_f9f788a6 == 1) {
     self clientfield::set("spore_grows", 5);
   } else {
@@ -278,15 +200,6 @@ function function_dcef79ff(b_hero_weapon, e_attacker) {
   self clientfield::set("spore_glow_fx", 0);
 }
 
-/*
-	Name: function_4c6beece
-	Namespace: zm_island_spores
-	Checksum: 0xFF4D8A60
-	Offset: 0x1558
-	Size: 0x24C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_4c6beece(var_f9f788a6, b_hero_weapon, e_attacker) {
   if(var_f9f788a6 == 1) {
     var_d7bb540a = 5;
@@ -315,54 +228,27 @@ function function_4c6beece(var_f9f788a6, b_hero_weapon, e_attacker) {
     wait(0.25);
   }
   self clientfield::set("spore_cloud_fx", 0);
-  var_6d602035 notify(# "cleanup");
+  var_6d602035 notify("cleanup");
   var_6d602035 delete();
 }
 
-/*
-	Name: spore_cloud_fx
-	Namespace: zm_island_spores
-	Checksum: 0x5470E3C3
-	Offset: 0x17B0
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function spore_cloud_fx(b_hero_weapon, var_f9f788a6) {
   n_base_value = (b_hero_weapon ? 0 : 3);
   self clientfield::set("spore_cloud_fx", var_f9f788a6 + n_base_value);
 }
 
-/*
-	Name: function_cc07e4ad
-	Namespace: zm_island_spores
-	Checksum: 0xF8B90EF9
-	Offset: 0x1818
-	Size: 0x80
-	Parameters: 2
-	Flags: Linked
-*/
 function function_cc07e4ad(var_66bbb0c0, s_org) {
   var_6d602035 = spawn("trigger_radius", s_org.origin - vectorscale((0, 0, 1), 60), 0, var_66bbb0c0, 90);
   var_6d602035.angles = s_org.angles;
   return var_6d602035;
 }
 
-/*
-	Name: function_ba7a3b74
-	Namespace: zm_island_spores
-	Checksum: 0x6DD67368
-	Offset: 0x18A0
-	Size: 0x5EC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_ba7a3b74(is_enemy, b_hero_weapon, e_attacker) {
   if(!isdefined(self.var_d07c64b6)) {
     self.var_d07c64b6 = 0;
   }
   if(is_enemy) {
-    self endon(# "death");
+    self endon("death");
     if(self.targetname === "zombie") {
       if(!self.var_d07c64b6) {
         self.var_d07c64b6 = 1;
@@ -371,7 +257,7 @@ function function_ba7a3b74(is_enemy, b_hero_weapon, e_attacker) {
           self thread function_94e2552f();
           wait(10);
           self.var_d07c64b6 = 0;
-          self notify(# "hash_ab24308c");
+          self notify("hash_ab24308c");
           self clientfield::set("spore_trail_enemy_fx", 0);
         } else {
           self clientfield::set("spore_trail_enemy_fx", 2);
@@ -395,7 +281,7 @@ function function_ba7a3b74(is_enemy, b_hero_weapon, e_attacker) {
         if(!self.var_d07c64b6) {
           self.var_d07c64b6 = 1;
           if(isdefined(e_attacker)) {
-            e_attacker notify(# "update_challenge_3_1");
+            e_attacker notify("update_challenge_3_1");
           }
           if(b_hero_weapon) {
             a_enemies = array::get_all_closest(self.origin, getaiteamarray("axis"), undefined, undefined, 128);
@@ -416,7 +302,7 @@ function function_ba7a3b74(is_enemy, b_hero_weapon, e_attacker) {
       }
     }
   } else {
-    self endon(# "disconnect");
+    self endon("disconnect");
     if(isdefined(self.var_59bd3c5a)) {
       self.var_59bd3c5a kill();
     } else if(!self.var_d07c64b6) {
@@ -432,7 +318,7 @@ function function_ba7a3b74(is_enemy, b_hero_weapon, e_attacker) {
           wait(10);
         } else {
           if(self.var_df4182b1) {
-            self notify(# "hash_b56a74a8");
+            self notify("hash_b56a74a8");
             wait(5);
           } else {
             self clientfield::set("spore_trail_player_fx", 2);
@@ -440,14 +326,14 @@ function function_ba7a3b74(is_enemy, b_hero_weapon, e_attacker) {
             self thread function_6cea25bb();
             self thread function_7fa4a0dd();
             self thread function_afacd209();
-            self notify(# "hash_ece519d9");
-            self waittill(# "coughing_complete");
+            self notify("hash_ece519d9");
+            self waittill("coughing_complete");
             wait(1);
           }
         }
       }
       self.var_d07c64b6 = 0;
-      self notify(# "hash_dd8e5266");
+      self notify("hash_dd8e5266");
       self clientfield::set("spore_trail_player_fx", 0);
       self clientfield::set_to_player("spore_camera_fx", 0);
       self clientfield::set_to_player("play_spore_bubbles", 0);
@@ -455,18 +341,9 @@ function function_ba7a3b74(is_enemy, b_hero_weapon, e_attacker) {
   }
 }
 
-/*
-	Name: function_365b46bb
-	Namespace: zm_island_spores
-	Checksum: 0xBF2EAFF1
-	Offset: 0x1E98
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_365b46bb() {
-  self endon(# "death");
-  self notify(# "player_spore_enhanced");
+  self endon("death");
+  self notify("player_spore_enhanced");
   self setmovespeedscale(1.15);
   self setsprintduration(4);
   self setsprintcooldown(0);
@@ -474,7 +351,7 @@ function function_365b46bb() {
   self clientfield::set_to_player("wind_blur", 1);
   self playsound("zmb_spore_power_start");
   self playloopsound("zmb_spore_power_loop", 0.5);
-  self waittill(# "hash_dd8e5266");
+  self waittill("hash_dd8e5266");
   self playsound("zmb_spore_power_stop");
   self stoploopsound(1);
   self unsetperk("specialty_unlimitedsprint");
@@ -482,17 +359,8 @@ function function_365b46bb() {
   self clientfield::set_to_player("wind_blur", 0);
 }
 
-/*
-	Name: function_703ef5e8
-	Namespace: zm_island_spores
-	Checksum: 0x83A72594
-	Offset: 0x2030
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_703ef5e8() {
-  self notify(# "update_challenge_1_2");
+  self notify("update_challenge_1_2");
   self.drownstage = 0;
   self clientfield::set_to_player("drown_stage", 0);
   self.lastwaterdamagetime = gettime();
@@ -500,35 +368,17 @@ function function_703ef5e8() {
   self clientfield::set_to_player("play_spore_bubbles", 1);
 }
 
-/*
-	Name: function_94e2552f
-	Namespace: zm_island_spores
-	Checksum: 0xD43413F0
-	Offset: 0x20B8
-	Size: 0x56
-	Parameters: 0
-	Flags: Linked
-*/
 function function_94e2552f() {
-  self endon(# "hash_ab24308c");
-  self endon(# "death");
+  self endon("hash_ab24308c");
+  self endon("death");
   while (true) {
     self dodamage(self.health / 10, self.origin);
     wait(1);
   }
 }
 
-/*
-	Name: function_6cea25bb
-	Namespace: zm_island_spores
-	Checksum: 0x52B5B84F
-	Offset: 0x2118
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6cea25bb() {
-  self endon(# "death");
+  self endon("death");
   if(self isinvehicle()) {
     return;
   }
@@ -549,53 +399,26 @@ function function_6cea25bb() {
   }
 }
 
-/*
-	Name: function_4febf04e
-	Namespace: zm_island_spores
-	Checksum: 0xA3598BEC
-	Offset: 0x2220
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4febf04e() {
-  self endon(# "death");
+  self endon("death");
   self.var_7149fc41 = 1;
   wait(120);
   self.var_7149fc41 = 0;
 }
 
-/*
-	Name: function_afacd209
-	Namespace: zm_island_spores
-	Checksum: 0x21FBC0F0
-	Offset: 0x2258
-	Size: 0x5A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_afacd209() {
-  self endon(# "disconnect");
-  self endon(# "coughing_complete");
-  self waittill(# "player_eaten_by_thrasher");
+  self endon("disconnect");
+  self endon("coughing_complete");
+  self waittill("player_eaten_by_thrasher");
   if(self.is_drinking > 0) {
     self zm_utility::decrement_is_drinking();
   }
-  self notify(# "coughing_complete");
+  self notify("coughing_complete");
 }
 
-/*
-	Name: function_7fa4a0dd
-	Namespace: zm_island_spores
-	Checksum: 0x5578058E
-	Offset: 0x22C0
-	Size: 0xCE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7fa4a0dd() {
-  self endon(# "disconnect");
-  self endon(# "coughing_complete");
+  self endon("disconnect");
+  self endon("coughing_complete");
   if(self isinvehicle()) {
     return;
   }
@@ -604,26 +427,17 @@ function function_7fa4a0dd() {
   self util::waittill_any("fake_death", "death", "player_downed", "weapon_change_complete", "player_cancel_cough", "coughing_complete");
   self function_909c515f();
   self.var_e1f8edd6 = 0;
-  self notify(# "coughing_complete");
+  self notify("coughing_complete");
 }
 
-/*
-	Name: function_2ce1c95f
-	Namespace: zm_island_spores
-	Checksum: 0x47C8715B
-	Offset: 0x2398
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2ce1c95f() {
-  self endon(# "disconnect");
-  self endon(# "coughing_complete");
+  self endon("disconnect");
+  self endon("coughing_complete");
   if(!(self.is_drinking > 0) && (isdefined(zm_utility::is_player_valid(self)) && zm_utility::is_player_valid(self))) {
     self zm_utility::increment_is_drinking();
   } else {
     wait(1);
-    self notify(# "coughing_complete");
+    self notify("coughing_complete");
   }
   w_original = self getcurrentweapon();
   var_cb4caef3 = getweapon("zombie_cough");
@@ -631,7 +445,7 @@ function function_2ce1c95f() {
     self.original_weapon = w_original;
   } else {
     wait(1);
-    self notify(# "player_cancel_cough");
+    self notify("player_cancel_cough");
     return;
   }
   self.var_e1f8edd6 = 1;
@@ -640,18 +454,9 @@ function function_2ce1c95f() {
   self switchtoweapon(var_cb4caef3);
 }
 
-/*
-	Name: function_909c515f
-	Namespace: zm_island_spores
-	Checksum: 0xDAE774F4
-	Offset: 0x2560
-	Size: 0x1CC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_909c515f() {
-  self endon(# "disconnect");
-  self endon(# "coughing_complete");
+  self endon("disconnect");
+  self endon("coughing_complete");
   self zm_utility::enable_player_move_states();
   var_cb4caef3 = getweapon("zombie_cough");
   if(self laststand::player_is_in_laststand() || (isdefined(self.intermission) && self.intermission)) {

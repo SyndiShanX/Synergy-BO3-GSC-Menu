@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_zombie.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\animation_state_machine_mocomp;
 #using scripts\shared\ai\systems\animation_state_machine_notetracks;
@@ -15,18 +19,8 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_behavior;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_island_zombie;
 
-/*
-	Name: init
-	Namespace: zm_island_zombie
-	Checksum: 0x5821BC50
-	Offset: 0x488
-	Size: 0xBC
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   initzmislandbehaviorsandasm();
   setdvar("scr_zm_use_code_enemy_selection", 0);
@@ -37,42 +31,15 @@ function autoexec init() {
   spawner::add_archetype_spawn_function("zombie", & function_1d7e9058);
 }
 
-/*
-	Name: initzmislandbehaviorsandasm
-	Namespace: zm_island_zombie
-	Checksum: 0xF58059DD
-	Offset: 0x550
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initzmislandbehaviorsandasm() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("ZmIslandAttackableObjectService", & zmislandattackableobjectservice);
 }
 
-/*
-	Name: function_1d7e9058
-	Namespace: zm_island_zombie
-	Checksum: 0xDFF6E1BA
-	Offset: 0x588
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_1d7e9058() {
   self ai::set_behavior_attribute("use_attackable", 1);
   self.cant_move_cb = & island_cant_move_cb;
 }
 
-/*
-	Name: island_cant_move_cb
-	Namespace: zm_island_zombie
-	Checksum: 0xF4408998
-	Offset: 0x5D0
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private island_cant_move_cb() {
   if(isdefined(self.attackable)) {
     if(isdefined(self.attackable.is_active) && self.attackable.is_active) {
@@ -92,29 +59,11 @@ function private island_cant_move_cb() {
   }
 }
 
-/*
-	Name: function_b3de8aa4
-	Namespace: zm_island_zombie
-	Checksum: 0xD876C509
-	Offset: 0x798
-	Size: 0x60
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_b3de8aa4(ent, radius) {
   radius_sq = radius * radius;
   return ent != self && distancesquared(self.origin, ent.origin) <= radius_sq;
 }
 
-/*
-	Name: zmislandattackableobjectservice
-	Namespace: zm_island_zombie
-	Checksum: 0x16A49482
-	Offset: 0x800
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private zmislandattackableobjectservice(entity) {
   if(isdefined(entity.var_7d79a6) && entity.var_7d79a6) {
     entity.attackable = undefined;
@@ -123,15 +72,6 @@ function private zmislandattackableobjectservice(entity) {
   zm_behavior::zombieattackableobjectservice(entity);
 }
 
-/*
-	Name: function_2d4f3007
-	Namespace: zm_island_zombie
-	Checksum: 0x8F0ED33C
-	Offset: 0x868
-	Size: 0x404
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2d4f3007(player) {
   var_6841e023 = "zone_spider_boss";
   var_930276ab = "zone_bunker_underwater_defend";
@@ -235,15 +175,6 @@ function function_2d4f3007(player) {
   return true;
 }
 
-/*
-	Name: function_f8e95ea2
-	Namespace: zm_island_zombie
-	Checksum: 0x9AD3EC5C
-	Offset: 0xC78
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_f8e95ea2(players) {
   if(isdefined(self.last_closest_player) && (isdefined(self.last_closest_player.am_i_valid) && self.last_closest_player.am_i_valid)) {
     return;
@@ -258,15 +189,6 @@ function private function_f8e95ea2(players) {
   self.last_closest_player = undefined;
 }
 
-/*
-	Name: island_closest_player
-	Namespace: zm_island_zombie
-	Checksum: 0xB7C70C19
-	Offset: 0xD70
-	Size: 0x312
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private island_closest_player(origin, players) {
   if(self.ignoreall === 1) {
     return undefined;
@@ -334,17 +256,8 @@ function private island_closest_player(origin, players) {
   return self.last_closest_player;
 }
 
-/*
-	Name: update_closest_player
-	Namespace: zm_island_zombie
-	Checksum: 0x596C4655
-	Offset: 0x1090
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private update_closest_player() {
-  level waittill(# "start_of_round");
+  level waittill("start_of_round");
   while (true) {
     reset_closest_player = 1;
     zombies = zombie_utility::get_round_enemy_array();
@@ -365,50 +278,32 @@ function private update_closest_player() {
   }
 }
 
-/*
-	Name: function_50565360
-	Namespace: zm_island_zombie
-	Checksum: 0xAA9DBBE6
-	Offset: 0x1228
-	Size: 0x1D4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_50565360(s_spot) {
-  self endon(# "death");
+  self endon("death");
   self.in_the_ground = 1;
   mdl_anchor = util::spawn_model("tag_origin", self.origin, self.angles);
   self linkto(mdl_anchor);
   self thread function_cd5d6101();
   mdl_anchor moveto(s_spot.origin, 0.05);
-  mdl_anchor waittill(# "movedone");
+  mdl_anchor waittill("movedone");
   var_ac82e424 = zombie_utility::get_desired_origin();
   if(isdefined(var_ac82e424)) {
     var_585cefca = vectortoangles(var_ac82e424 - self.origin);
     mdl_anchor rotateto((0, var_585cefca[1], 0), 0.05);
-    mdl_anchor waittill(# "rotatedone");
+    mdl_anchor waittill("rotatedone");
   }
   self unlink();
   mdl_anchor thread scene::play("scene_zm_dlc2_zombie_quick_rise_v2", self);
-  self notify(# "risen", s_spot.script_string);
+  self notify("risen", s_spot.script_string);
   self.in_the_ground = 0;
-  mdl_anchor waittill(# "scene_done");
+  mdl_anchor waittill("scene_done");
   if(isdefined(mdl_anchor)) {
     mdl_anchor delete();
   }
 }
 
-/*
-	Name: function_cd5d6101
-	Namespace: zm_island_zombie
-	Checksum: 0x7D97FEE3
-	Offset: 0x1408
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cd5d6101() {
-  self endon(# "death");
+  self endon("death");
   self ghost();
   wait(0.4);
   if(isdefined(self)) {

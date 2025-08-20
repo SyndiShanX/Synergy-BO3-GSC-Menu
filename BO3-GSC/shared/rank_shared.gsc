@@ -1,48 +1,24 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\rank_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\hud_shared;
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace rank;
 
-/*
-	Name: __init__sytem__
-	Namespace: rank
-	Checksum: 0xAD97CE6B
-	Offset: 0x6E0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("rank", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: rank
-	Checksum: 0x51E9FE91
-	Offset: 0x720
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
 }
 
-/*
-	Name: init
-	Namespace: rank
-	Checksum: 0x6C7A32A6
-	Offset: 0x750
-	Size: 0x584
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.scoreinfo = [];
   level.codpointsxpscale = getdvarfloat("scr_codpointsxpscale");
@@ -78,55 +54,38 @@ function init() {
   level.maxprestige = int(tablelookup(level.rankicontable_name, 0, "maxprestige", 1));
   rankid = 0;
   rankname = tablelookup(level.ranktable_name, 0, rankid, 1);
-  /#
   assert(isdefined(rankname) && rankname != "");
-  # /
-    while (isdefined(rankname) && rankname != "") {
-      level.ranktable[rankid][1] = tablelookup(level.ranktable_name, 0, rankid, 1);
-      level.ranktable[rankid][2] = tablelookup(level.ranktable_name, 0, rankid, 2);
-      level.ranktable[rankid][3] = tablelookup(level.ranktable_name, 0, rankid, 3);
-      level.ranktable[rankid][7] = tablelookup(level.ranktable_name, 0, rankid, 7);
-      level.ranktable[rankid][14] = tablelookup(level.ranktable_name, 0, rankid, 14);
-      if(sessionmodeiscampaigngame()) {
-        level.ranktable[rankid][18] = tablelookup(level.ranktable_name, 0, rankid, 18);
-      }
-      rankid++;
-      rankname = tablelookup(level.ranktable_name, 0, rankid, 1);
+  while (isdefined(rankname) && rankname != "") {
+    level.ranktable[rankid][1] = tablelookup(level.ranktable_name, 0, rankid, 1);
+    level.ranktable[rankid][2] = tablelookup(level.ranktable_name, 0, rankid, 2);
+    level.ranktable[rankid][3] = tablelookup(level.ranktable_name, 0, rankid, 3);
+    level.ranktable[rankid][7] = tablelookup(level.ranktable_name, 0, rankid, 7);
+    level.ranktable[rankid][14] = tablelookup(level.ranktable_name, 0, rankid, 14);
+    if(sessionmodeiscampaigngame()) {
+      level.ranktable[rankid][18] = tablelookup(level.ranktable_name, 0, rankid, 18);
     }
+    rankid++;
+    rankname = tablelookup(level.ranktable_name, 0, rankid, 1);
+  }
   callback::on_connect( & on_player_connect);
 }
 
-/*
-	Name: initscoreinfo
-	Namespace: rank
-	Checksum: 0xBB4AFA63
-	Offset: 0xCE0
-	Size: 0x56C
-	Parameters: 0
-	Flags: Linked
-*/
 function initscoreinfo() {
   scoreinfotableid = scoreevents::getscoreeventtableid();
-  /#
   assert(isdefined(scoreinfotableid));
-  # /
-    if(!isdefined(scoreinfotableid)) {
-      return;
-    }
+  if(!isdefined(scoreinfotableid)) {
+    return;
+  }
   scorecolumn = scoreevents::getscoreeventcolumn(level.gametype);
   xpcolumn = scoreevents::getxpeventcolumn(level.gametype);
-  /#
   assert(scorecolumn >= 0);
-  # /
-    if(scorecolumn < 0) {
-      return;
-    }
-  /#
+  if(scorecolumn < 0) {
+    return;
+  }
   assert(xpcolumn >= 0);
-  # /
-    if(xpcolumn < 0) {
-      return;
-    }
+  if(xpcolumn < 0) {
+    return;
+  }
   for (row = 1; row < 512; row++) {
     type = tablelookupcolumnforrow(scoreinfotableid, row, 0);
     if(type != "") {
@@ -152,7 +111,7 @@ function initscoreinfo() {
         }
         ismedal = 0;
         istring = tablelookupistring(scoreinfotableid, 0, type, 2);
-        if(isdefined(istring) && istring != ( & "")) {
+        if(isdefined(istring) && istring != (&"")) {
           ismedal = 1;
         }
         demobookmarkpriority = int(tablelookupcolumnforrow(scoreinfotableid, row, 9));
@@ -178,15 +137,6 @@ function initscoreinfo() {
   game["ScoreInfoInitialized"] = 1;
 }
 
-/*
-	Name: getrankxpcapped
-	Namespace: rank
-	Checksum: 0xCA12B509
-	Offset: 0x1258
-	Size: 0x40
-	Parameters: 1
-	Flags: Linked
-*/
 function getrankxpcapped(inrankxp) {
   if(isdefined(level.rankxpcap) && level.rankxpcap && level.rankxpcap <= inrankxp) {
     return level.rankxpcap;
@@ -194,15 +144,6 @@ function getrankxpcapped(inrankxp) {
   return inrankxp;
 }
 
-/*
-	Name: getcodpointscapped
-	Namespace: rank
-	Checksum: 0x543DAEEB
-	Offset: 0x12A0
-	Size: 0x40
-	Parameters: 1
-	Flags: Linked
-*/
 function getcodpointscapped(incodpoints) {
   if(isdefined(level.codpointscap) && level.codpointscap && level.codpointscap <= incodpoints) {
     return level.codpointscap;
@@ -210,15 +151,6 @@ function getcodpointscapped(incodpoints) {
   return incodpoints;
 }
 
-/*
-	Name: registerscoreinfo
-	Namespace: rank
-	Checksum: 0x2F451C23
-	Offset: 0x12E8
-	Size: 0x1B0
-	Parameters: 5
-	Flags: Linked
-*/
 function registerscoreinfo(type, value, xp, label, teamscore_material) {
   overridedvar = (("scr_" + level.gametype) + "_score_") + type;
   if(getdvarstring(overridedvar) != "") {
@@ -242,15 +174,6 @@ function registerscoreinfo(type, value, xp, label, teamscore_material) {
   }
 }
 
-/*
-	Name: getscoreinfovalue
-	Namespace: rank
-	Checksum: 0x2645D314
-	Offset: 0x14A0
-	Size: 0x7A
-	Parameters: 1
-	Flags: Linked
-*/
 function getscoreinfovalue(type) {
   if(isdefined(level.scoreinfo[type])) {
     n_score = level.scoreinfo[type]["value"];
@@ -263,15 +186,6 @@ function getscoreinfovalue(type) {
   }
 }
 
-/*
-	Name: getscoreinfoxp
-	Namespace: rank
-	Checksum: 0x3CEB7265
-	Offset: 0x1528
-	Size: 0x7A
-	Parameters: 1
-	Flags: Linked
-*/
 function getscoreinfoxp(type) {
   if(isdefined(level.scoreinfo[type])) {
     n_xp = level.scoreinfo[type]["xp"];
@@ -284,15 +198,6 @@ function getscoreinfoxp(type) {
   }
 }
 
-/*
-	Name: shouldskipmomentumdisplay
-	Namespace: rank
-	Checksum: 0x2ADC181E
-	Offset: 0x15B0
-	Size: 0x58
-	Parameters: 1
-	Flags: None
-*/
 function shouldskipmomentumdisplay(type) {
   if(isdefined(level.disablemomentum) && level.disablemomentum) {
     return true;
@@ -303,145 +208,46 @@ function shouldskipmomentumdisplay(type) {
   return false;
 }
 
-/*
-	Name: getscoreinfolabel
-	Namespace: rank
-	Checksum: 0x3A8619FD
-	Offset: 0x1610
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function getscoreinfolabel(type) {
   return level.scoreinfo[type]["label"];
 }
 
-/*
-	Name: getcombatefficiencyevent
-	Namespace: rank
-	Checksum: 0x41CC360
-	Offset: 0x1640
-	Size: 0x22
-	Parameters: 1
-	Flags: None
-*/
 function getcombatefficiencyevent(type) {
   return level.scoreinfo[type]["combat_efficiency_event"];
 }
 
-/*
-	Name: doesscoreinfocounttowardrampage
-	Namespace: rank
-	Checksum: 0x859BA387
-	Offset: 0x1670
-	Size: 0x3E
-	Parameters: 1
-	Flags: None
-*/
 function doesscoreinfocounttowardrampage(type) {
   return isdefined(level.scoreinfo[type]["rampage"]) && level.scoreinfo[type]["rampage"];
 }
 
-/*
-	Name: getrankinfominxp
-	Namespace: rank
-	Checksum: 0xAE52A085
-	Offset: 0x16B8
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function getrankinfominxp(rankid) {
   return int(level.ranktable[rankid][2]);
 }
 
-/*
-	Name: getrankinfoxpamt
-	Namespace: rank
-	Checksum: 0xA9D64B95
-	Offset: 0x16F8
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function getrankinfoxpamt(rankid) {
   return int(level.ranktable[rankid][3]);
 }
 
-/*
-	Name: getrankinfomaxxp
-	Namespace: rank
-	Checksum: 0x2E3B73E9
-	Offset: 0x1738
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function getrankinfomaxxp(rankid) {
   return int(level.ranktable[rankid][7]);
 }
 
-/*
-	Name: getrankinfofull
-	Namespace: rank
-	Checksum: 0x692D9C7D
-	Offset: 0x1778
-	Size: 0x2A
-	Parameters: 1
-	Flags: None
-*/
 function getrankinfofull(rankid) {
   return tablelookupistring(level.ranktable_name, 0, rankid, 16);
 }
 
-/*
-	Name: getrankinfoicon
-	Namespace: rank
-	Checksum: 0xC8ABBFC0
-	Offset: 0x17B0
-	Size: 0x3A
-	Parameters: 2
-	Flags: None
-*/
 function getrankinfoicon(rankid, prestigeid) {
   return tablelookup(level.rankicontable_name, 0, rankid, prestigeid + 1);
 }
 
-/*
-	Name: getrankinfolevel
-	Namespace: rank
-	Checksum: 0xBEDDB22C
-	Offset: 0x17F8
-	Size: 0x42
-	Parameters: 1
-	Flags: None
-*/
 function getrankinfolevel(rankid) {
   return int(tablelookup(level.ranktable_name, 0, rankid, 13));
 }
 
-/*
-	Name: getrankinfocodpointsearned
-	Namespace: rank
-	Checksum: 0x4FF70D3E
-	Offset: 0x1848
-	Size: 0x42
-	Parameters: 1
-	Flags: Linked
-*/
 function getrankinfocodpointsearned(rankid) {
   return int(tablelookup(level.ranktable_name, 0, rankid, 17));
 }
 
-/*
-	Name: shouldkickbyrank
-	Namespace: rank
-	Checksum: 0x4140A883
-	Offset: 0x1898
-	Size: 0xBE
-	Parameters: 0
-	Flags: Linked
-*/
 function shouldkickbyrank() {
   if(self ishost()) {
     return false;
@@ -458,15 +264,6 @@ function shouldkickbyrank() {
   return false;
 }
 
-/*
-	Name: getcodpointsstat
-	Namespace: rank
-	Checksum: 0xD867DB71
-	Offset: 0x1960
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function getcodpointsstat() {
   codpoints = self getdstat("playerstatslist", "CODPOINTS", "StatValue");
   codpointscapped = getcodpointscapped(codpoints);
@@ -476,28 +273,10 @@ function getcodpointsstat() {
   return codpointscapped;
 }
 
-/*
-	Name: setcodpointsstat
-	Namespace: rank
-	Checksum: 0xCC1A9CC
-	Offset: 0x19F0
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function setcodpointsstat(codpoints) {
   self setdstat("PlayerStatsList", "CODPOINTS", "StatValue", getcodpointscapped(codpoints));
 }
 
-/*
-	Name: getrankxpstat
-	Namespace: rank
-	Checksum: 0x5D49367
-	Offset: 0x1A48
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function getrankxpstat() {
   rankxp = self getdstat("playerstatslist", "RANKXP", "StatValue");
   rankxpcapped = getrankxpcapped(rankxp);
@@ -507,30 +286,12 @@ function getrankxpstat() {
   return rankxpcapped;
 }
 
-/*
-	Name: getarenapointsstat
-	Namespace: rank
-	Checksum: 0x96D8F505
-	Offset: 0x1AF0
-	Size: 0x62
-	Parameters: 0
-	Flags: Linked
-*/
 function getarenapointsstat() {
   arenaslot = arenagetslot();
   arenapoints = self getdstat("arenaStats", arenaslot, "points");
   return arenapoints + 1;
 }
 
-/*
-	Name: on_player_connect
-	Namespace: rank
-	Checksum: 0x41400E7B
-	Offset: 0x1B60
-	Size: 0x68C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   self.pers["rankxp"] = self getrankxpstat();
   self.pers["codpoints"] = self getcodpointsstat();
@@ -547,10 +308,8 @@ function on_player_connect() {
   }
   self.rankupdatetotal = 0;
   self.cur_ranknum = rankid;
-  /#
   assert(isdefined(self.cur_ranknum), (("" + rankid) + "") + level.ranktable_name);
-  # /
-    prestige = self getdstat("playerstatslist", "plevel", "StatValue");
+  prestige = self getdstat("playerstatslist", "plevel", "StatValue");
   self setrank(rankid, prestige);
   self.pers["prestige"] = prestige;
   if(sessionmodeismultiplayergame() && gamemodeisusingstats() || (sessionmodeiszombiesgame() && sessionmodeisonlinegame())) {
@@ -588,45 +347,18 @@ function on_player_connect() {
   callback::on_joined_spectate( & on_joined_spectators);
 }
 
-/*
-	Name: on_joined_team
-	Namespace: rank
-	Checksum: 0x4EC3D9C4
-	Offset: 0x21F8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function on_joined_team() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self thread removerankhud();
 }
 
-/*
-	Name: on_joined_spectators
-	Namespace: rank
-	Checksum: 0x51D8B29
-	Offset: 0x2228
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function on_joined_spectators() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self thread removerankhud();
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: rank
-	Checksum: 0x57EF742D
-	Offset: 0x2258
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isdefined(self.hud_rankscroreupdate)) {
     self.hud_rankscroreupdate = newscorehudelem(self);
     self.hud_rankscroreupdate.horzalign = "center";
@@ -649,15 +381,6 @@ function on_player_spawned() {
   }
 }
 
-/*
-	Name: inccodpoints
-	Namespace: rank
-	Checksum: 0x11480C1D
-	Offset: 0x2400
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function inccodpoints(amount) {
   if(!util::isrankenabled()) {
     return;
@@ -673,15 +396,6 @@ function inccodpoints(amount) {
   setcodpointsstat(int(newcodpoints));
 }
 
-/*
-	Name: atleastoneplayeroneachteam
-	Namespace: rank
-	Checksum: 0xCB10DC5B
-	Offset: 0x2518
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function atleastoneplayeroneachteam() {
   foreach(team in level.teams) {
     if(!level.playercount[team]) {
@@ -691,17 +405,8 @@ function atleastoneplayeroneachteam() {
   return true;
 }
 
-/*
-	Name: giverankxp
-	Namespace: rank
-	Checksum: 0x5FEF201E
-	Offset: 0x25B0
-	Size: 0x66C
-	Parameters: 3
-	Flags: None
-*/
 function giverankxp(type, value, devadd) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(sessionmodeiszombiesgame()) {
     return;
   }
@@ -820,29 +525,11 @@ function giverankxp(type, value, devadd) {
   pixendevent();
 }
 
-/*
-	Name: round_this_number
-	Namespace: rank
-	Checksum: 0xF5305A17
-	Offset: 0x2C28
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function round_this_number(value) {
   value = int(value + 0.5);
   return value;
 }
 
-/*
-	Name: updaterank
-	Namespace: rank
-	Checksum: 0x6E180D2B
-	Offset: 0x2C68
-	Size: 0x310
-	Parameters: 0
-	Flags: Linked
-*/
 function updaterank() {
   newrankid = self getrank();
   if(newrankid == self.pers["rank"]) {
@@ -869,22 +556,11 @@ function updaterank() {
     }
     rankid++;
   }
-  /#
   print((((("" + oldrank) + "") + newrankid) + "") + self getdstat("", "", ""));
-  # /
-    self setrank(newrankid);
+  self setrank(newrankid);
   return true;
 }
 
-/*
-	Name: codecallback_rankup
-	Namespace: rank
-	Checksum: 0x627FFA57
-	Offset: 0x2F80
-	Size: 0x198
-	Parameters: 3
-	Flags: Linked
-*/
 function codecallback_rankup(rank, prestige, unlocktokensadded) {
   if(sessionmodeiscampaigngame()) {
     n_extra_tokens = level.ranktable[rank][18];
@@ -902,65 +578,36 @@ function codecallback_rankup(rank, prestige, unlocktokensadded) {
       self giveachievement("MP_REACH_SERGEANT");
     }
   }
-  self luinotifyevent( & "rank_up", 3, rank, prestige, unlocktokensadded);
-  self luinotifyeventtospectators( & "rank_up", 3, rank, prestige, unlocktokensadded);
+  self luinotifyevent(&"rank_up", 3, rank, prestige, unlocktokensadded);
+  self luinotifyeventtospectators(&"rank_up", 3, rank, prestige, unlocktokensadded);
   if(isdefined(level.playpromotionreaction)) {
     self thread[[level.playpromotionreaction]]();
   }
 }
 
-/*
-	Name: getitemindex
-	Namespace: rank
-	Checksum: 0x1A2D6973
-	Offset: 0x3120
-	Size: 0xA8
-	Parameters: 1
-	Flags: None
-*/
 function getitemindex(refstring) {
   statstablename = util::getstatstablename();
   itemindex = int(tablelookup(statstablename, 4, refstring, 0));
-  /#
   assert(itemindex > 0, (("" + refstring) + "") + itemindex);
-  # /
-    return itemindex;
+  return itemindex;
 }
 
-/*
-	Name: endgameupdate
-	Namespace: rank
-	Checksum: 0xC8810436
-	Offset: 0x31D0
-	Size: 0x14
-	Parameters: 0
-	Flags: None
-*/
 function endgameupdate() {
   player = self;
 }
 
-/*
-	Name: updaterankscorehud
-	Namespace: rank
-	Checksum: 0xD49D78CD
-	Offset: 0x31F0
-	Size: 0x1BC
-	Parameters: 1
-	Flags: Linked
-*/
 function updaterankscorehud(amount) {
-  self endon(# "disconnect");
-  self endon(# "joined_team");
-  self endon(# "joined_spectators");
+  self endon("disconnect");
+  self endon("joined_team");
+  self endon("joined_spectators");
   if(isdefined(level.usingmomentum) && level.usingmomentum) {
     return;
   }
   if(amount == 0) {
     return;
   }
-  self notify(# "update_score");
-  self endon(# "update_score");
+  self notify("update_score");
+  self endon("update_score");
   self.rankupdatetotal = self.rankupdatetotal + amount;
   wait(0.05);
   if(isdefined(self.hud_rankscroreupdate)) {
@@ -981,24 +628,15 @@ function updaterankscorehud(amount) {
   }
 }
 
-/*
-	Name: updatemomentumhud
-	Namespace: rank
-	Checksum: 0xCA282A52
-	Offset: 0x33B8
-	Size: 0x2EC
-	Parameters: 3
-	Flags: None
-*/
 function updatemomentumhud(amount, reason, reasonvalue) {
-  self endon(# "disconnect");
-  self endon(# "joined_team");
-  self endon(# "joined_spectators");
+  self endon("disconnect");
+  self endon("joined_team");
+  self endon("joined_spectators");
   if(amount == 0) {
     return;
   }
-  self notify(# "update_score");
-  self endon(# "update_score");
+  self notify("update_score");
+  self endon("update_score");
   self.rankupdatetotal = self.rankupdatetotal + amount;
   if(isdefined(self.hud_rankscroreupdate)) {
     if(self.rankupdatetotal < 0) {
@@ -1039,15 +677,6 @@ function updatemomentumhud(amount, reason, reasonvalue) {
   }
 }
 
-/*
-	Name: removerankhud
-	Namespace: rank
-	Checksum: 0x1F443B49
-	Offset: 0x36B0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function removerankhud() {
   if(isdefined(self.hud_rankscroreupdate)) {
     self.hud_rankscroreupdate.alpha = 0;
@@ -1057,15 +686,6 @@ function removerankhud() {
   }
 }
 
-/*
-	Name: getrank
-	Namespace: rank
-	Checksum: 0x359B8374
-	Offset: 0x3700
-	Size: 0xB2
-	Parameters: 0
-	Flags: Linked
-*/
 function getrank() {
   rankxp = getrankxpcapped(self.pers["rankxp"]);
   rankid = self.pers["rank"];
@@ -1075,72 +695,34 @@ function getrank() {
   return self getrankforxp(rankxp);
 }
 
-/*
-	Name: getrankforxp
-	Namespace: rank
-	Checksum: 0xE146AE37
-	Offset: 0x37C0
-	Size: 0x106
-	Parameters: 1
-	Flags: Linked
-*/
 function getrankforxp(xpval) {
   rankid = 0;
   rankname = level.ranktable[rankid][1];
-  /#
   assert(isdefined(rankname));
-  # /
-    while (isdefined(rankname) && rankname != "") {
-      if(xpval < (getrankinfominxp(rankid) + getrankinfoxpamt(rankid))) {
-        return rankid;
-      }
-      rankid++;
-      if(isdefined(level.ranktable[rankid])) {
-        rankname = level.ranktable[rankid][1];
-      } else {
-        rankname = undefined;
-      }
+  while (isdefined(rankname) && rankname != "") {
+    if(xpval < (getrankinfominxp(rankid) + getrankinfoxpamt(rankid))) {
+      return rankid;
     }
+    rankid++;
+    if(isdefined(level.ranktable[rankid])) {
+      rankname = level.ranktable[rankid][1];
+    } else {
+      rankname = undefined;
+    }
+  }
   rankid--;
   return rankid;
 }
 
-/*
-	Name: getspm
-	Namespace: rank
-	Checksum: 0x5C7CF053
-	Offset: 0x38D0
-	Size: 0x48
-	Parameters: 0
-	Flags: None
-*/
 function getspm() {
   ranklevel = self getrank() + 1;
   return (3 + (ranklevel * 0.5)) * 10;
 }
 
-/*
-	Name: getrankxp
-	Namespace: rank
-	Checksum: 0xA3C8BB4A
-	Offset: 0x3920
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked
-*/
 function getrankxp() {
   return getrankxpcapped(self.pers["rankxp"]);
 }
 
-/*
-	Name: incrankxp
-	Namespace: rank
-	Checksum: 0xD911516E
-	Offset: 0x3958
-	Size: 0x1AA
-	Parameters: 1
-	Flags: Linked
-*/
 function incrankxp(amount) {
   if(!level.rankedmatch) {
     return 0;
@@ -1161,15 +743,6 @@ function incrankxp(amount) {
   return xpincrease;
 }
 
-/*
-	Name: syncxpstat
-	Namespace: rank
-	Checksum: 0xFC596716
-	Offset: 0x3B10
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function syncxpstat() {
   xp = getrankxpcapped(self getrankxp());
   cp = getcodpointscapped(int(self.pers["codpoints"]));

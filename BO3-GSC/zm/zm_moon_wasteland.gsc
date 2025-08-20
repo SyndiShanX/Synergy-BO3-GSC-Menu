@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_wasteland.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -18,18 +22,8 @@
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_moon_teleporter;
-
 #namespace zm_moon_wasteland;
 
-/*
-	Name: init_no_mans_land
-	Namespace: zm_moon_wasteland
-	Checksum: 0xD6F064A
-	Offset: 0x538
-	Size: 0x314
-	Parameters: 0
-	Flags: Linked
-*/
 function init_no_mans_land() {
   level flag::init("enter_nml");
   level flag::init("teleporter_used");
@@ -63,15 +57,6 @@ function init_no_mans_land() {
   level.nml_max_reaction_dist_sq = 5760000;
 }
 
-/*
-	Name: zombie_moon_start_init
-	Namespace: zm_moon_wasteland
-	Checksum: 0xF2762CA9
-	Offset: 0x858
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_moon_start_init() {
   level flag::wait_till("begin_spawning");
   level thread nml_dogs_init();
@@ -80,30 +65,12 @@ function zombie_moon_start_init() {
   zm_moon_teleporter::teleporter_ending(teleporter, 0);
 }
 
-/*
-	Name: nml_dogs_init
-	Namespace: zm_moon_wasteland
-	Checksum: 0xEB51D92A
-	Offset: 0x900
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function nml_dogs_init() {
   level.nml_dogs_enabled = 0;
   wait(30);
   level.nml_dogs_enabled = 1;
 }
 
-/*
-	Name: nml_setup_round_spawner
-	Namespace: zm_moon_wasteland
-	Checksum: 0x80753610
-	Offset: 0x930
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function nml_setup_round_spawner() {
   if(isdefined(level.round_number)) {
     if(level flag::get("between_rounds")) {
@@ -121,15 +88,6 @@ function nml_setup_round_spawner() {
   init_moon_nml_round(level.nml_last_round);
 }
 
-/*
-	Name: num_players_touching_volume
-	Namespace: zm_moon_wasteland
-	Checksum: 0x408EBB49
-	Offset: 0x9F8
-	Size: 0xF2
-	Parameters: 1
-	Flags: Linked
-*/
 function num_players_touching_volume(volume) {
   players = getplayers();
   num_players_inside = 0;
@@ -145,15 +103,6 @@ function num_players_touching_volume(volume) {
   return num_players_inside;
 }
 
-/*
-	Name: check_players_in_nml_dogs_volume
-	Namespace: zm_moon_wasteland
-	Checksum: 0xA8E9E154
-	Offset: 0xAF8
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function check_players_in_nml_dogs_volume() {
   while (true) {
     level.num_nml_dog_targets = num_players_touching_volume(self);
@@ -161,15 +110,6 @@ function check_players_in_nml_dogs_volume() {
   }
 }
 
-/*
-	Name: init_hint_hudelem
-	Namespace: zm_moon_wasteland
-	Checksum: 0x2F1FB5AC
-	Offset: 0xB38
-	Size: 0x88
-	Parameters: 6
-	Flags: Linked
-*/
 function init_hint_hudelem(x, y, alignx, aligny, fontscale, alpha) {
   self.x = x;
   self.y = y;
@@ -180,60 +120,24 @@ function init_hint_hudelem(x, y, alignx, aligny, fontscale, alpha) {
   self.sort = 20;
 }
 
-/*
-	Name: init_teleporter_message
-	Namespace: zm_moon_wasteland
-	Checksum: 0xEF3B4106
-	Offset: 0xBC8
-	Size: 0xB0
-	Parameters: 0
-	Flags: Linked
-*/
 function init_teleporter_message() {
   players = getplayers();
   for (i = 0; i < players.size; i++) {
     player = players[i];
     player.teleporter_message = function_25deb972(player);
-    player.teleporter_message settext( & "NULL_EMPTY");
+    player.teleporter_message settext(&"NULL_EMPTY");
   }
   level.lastmessagetime = 0;
 }
 
-/*
-	Name: function_25deb972
-	Namespace: zm_moon_wasteland
-	Checksum: 0xD5B94683
-	Offset: 0xC80
-	Size: 0x70
-	Parameters: 1
-	Flags: Linked
-*/
 function function_25deb972(player) {
   teleporter_message = newclienthudelem(player);
   teleporter_message init_hint_hudelem(320, 140, "center", "bottom", 1.6, 1);
   return teleporter_message;
 }
 
-/*
-	Name: set_teleporter_message
-	Namespace: zm_moon_wasteland
-	Checksum: 0x7107694
-	Offset: 0xCF8
-	Size: 0xC
-	Parameters: 1
-	Flags: None
-*/
 function set_teleporter_message(message) {}
 
-/*
-	Name: init_moon_nml_round
-	Namespace: zm_moon_wasteland
-	Checksum: 0x83A0E7F8
-	Offset: 0xD10
-	Size: 0x1D4
-	Parameters: 1
-	Flags: Linked
-*/
 function init_moon_nml_round(target_round) {
   zombies = getaiarray();
   if(isdefined(zombies)) {
@@ -245,7 +149,7 @@ function init_moon_nml_round(target_round) {
         zombies[i].fx_quad_trail delete();
       }
       zombies[i] zombie_utility::reset_attack_spot();
-      zombies[i] notify(# "zombie_delete");
+      zombies[i] notify("zombie_delete");
       zombies[i] delete();
     }
   }
@@ -256,35 +160,17 @@ function init_moon_nml_round(target_round) {
   level.round_number = zm::get_round_number();
   level.chalk_override = " ";
   level thread clear_nml_rounds();
-  level waittill(# "between_round_over");
+  level waittill("between_round_over");
 }
 
-/*
-	Name: clear_nml_rounds
-	Namespace: zm_moon_wasteland
-	Checksum: 0x6DC56176
-	Offset: 0xEF0
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function clear_nml_rounds() {
-  level endon(# "restart_round");
+  level endon("restart_round");
   while (isdefined(level.chalk_override)) {
     if(isdefined(level.chalk_override)) {}
     wait(1);
   }
 }
 
-/*
-	Name: resume_moon_rounds
-	Namespace: zm_moon_wasteland
-	Checksum: 0xB544DB29
-	Offset: 0xF48
-	Size: 0x20E
-	Parameters: 1
-	Flags: Linked
-*/
 function resume_moon_rounds(target_round) {
   if(target_round < 1) {
     target_round = 1;
@@ -293,7 +179,7 @@ function resume_moon_rounds(target_round) {
   level.zombie_health = level.zombie_vars["zombie_health_start"];
   level.zombie_total = 0;
   zombie_utility::ai_calculate_health(target_round);
-  level notify(# "restart_round");
+  level notify("restart_round");
   level._from_nml = 1;
   zombies = getaispeciesarray(level.zombie_team, "all");
   if(isdefined(zombies)) {
@@ -309,23 +195,14 @@ function resume_moon_rounds(target_round) {
         zombies[i].fx_quad_trail delete();
       }
       zombies[i] zombie_utility::reset_attack_spot();
-      zombies[i] notify(# "zombie_delete");
+      zombies[i] notify("zombie_delete");
       zombies[i] delete();
     }
   }
 }
 
-/*
-	Name: nml_round_manager
-	Namespace: zm_moon_wasteland
-	Checksum: 0x29E13313
-	Offset: 0x1160
-	Size: 0x950
-	Parameters: 0
-	Flags: Linked
-*/
 function nml_round_manager() {
-  level endon(# "restart_round");
+  level endon("restart_round");
   level.dog_targets = getplayers();
   for (i = 0; i < level.dog_targets.size; i++) {
     level.dog_targets[i].hunted_by = 0;
@@ -387,14 +264,14 @@ function nml_round_manager() {
             }
             zombies[i] zombie_utility::set_zombie_run_cycle(move_speed);
             level.initial_spawn = 0;
-            level notify(# "start_nml_ramp");
+            level notify("start_nml_ramp");
             if(isdefined(zombies[i].pre_black_hole_bomb_run_combatanim)) {
               zombies[i].pre_black_hole_bomb_run_combatanim = move_speed;
             }
           }
         }
         if(current_time > next_round_time) {
-          level notify(# "nml_attack_wave");
+          level notify("nml_attack_wave");
           mode = "spawn_wave_active";
           if(area == 1) {
             area = 2;
@@ -425,7 +302,7 @@ function nml_round_manager() {
             }
           }
         } else {
-          level notify(# "wave_attack_finished");
+          level notify("wave_attack_finished");
           mode = "wave_finished_cooldown";
           next_round_time = current_time + cooldown_time;
         }
@@ -481,17 +358,8 @@ function nml_round_manager() {
   }
 }
 
-/*
-	Name: function_3eb8ebf9
-	Namespace: zm_moon_wasteland
-	Checksum: 0x9B1F0938
-	Offset: 0x1AB8
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3eb8ebf9(move_speed) {
-  self endon(# "death");
+  self endon("death");
   time = gettime();
   while (true) {
     if(isdefined(self.zombie_init_done) && self.zombie_init_done) {
@@ -505,18 +373,9 @@ function function_3eb8ebf9(move_speed) {
   self zombie_utility::set_zombie_run_cycle(move_speed);
 }
 
-/*
-	Name: nml_wave_attack
-	Namespace: zm_moon_wasteland
-	Checksum: 0x253FB15C
-	Offset: 0x1B48
-	Size: 0x160
-	Parameters: 2
-	Flags: Linked
-*/
 function nml_wave_attack(num_in_wave, var_c194e88d) {
-  level endon(# "wave_attack_finished");
-  level endon(# "restart_round");
+  level endon("wave_attack_finished");
+  level endon("restart_round");
   while (true) {
     zombies = getaispeciesarray(level.zombie_team, "all");
     if(zombies.size < num_in_wave) {
@@ -537,15 +396,6 @@ function nml_wave_attack(num_in_wave, var_c194e88d) {
   }
 }
 
-/*
-	Name: spawn_a_zombie
-	Namespace: zm_moon_wasteland
-	Checksum: 0x678B6B69
-	Offset: 0x1CB0
-	Size: 0x18C
-	Parameters: 4
-	Flags: Linked
-*/
 function spawn_a_zombie(max_zombies, var_c194e88d, wait_delay, ignoregravity) {
   zombies = getaispeciesarray(level.zombie_team);
   if(zombies.size >= max_zombies) {
@@ -568,18 +418,9 @@ function spawn_a_zombie(max_zombies, var_c194e88d, wait_delay, ignoregravity) {
   return ai;
 }
 
-/*
-	Name: screen_shake_manager
-	Namespace: zm_moon_wasteland
-	Checksum: 0xD14D700F
-	Offset: 0x1E48
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function screen_shake_manager(next_round_time) {
-  level endon(# "nml_attack_wave");
-  level endon(# "restart_round");
+  level endon("nml_attack_wave");
+  level endon("restart_round");
   time = 0;
   while (time < next_round_time) {
     level thread attack_wave_screen_shake();
@@ -589,15 +430,6 @@ function screen_shake_manager(next_round_time) {
   }
 }
 
-/*
-	Name: attack_wave_screen_shake
-	Namespace: zm_moon_wasteland
-	Checksum: 0x51905871
-	Offset: 0x1EE8
-	Size: 0x156
-	Parameters: 0
-	Flags: Linked
-*/
 function attack_wave_screen_shake() {
   num_valid = 0;
   players = getplayers();
@@ -619,15 +451,6 @@ function attack_wave_screen_shake() {
   radius = 16800;
 }
 
-/*
-	Name: rumble_all_players
-	Namespace: zm_moon_wasteland
-	Checksum: 0xC92D6F51
-	Offset: 0x2048
-	Size: 0x15E
-	Parameters: 5
-	Flags: Linked
-*/
 function rumble_all_players(high_rumble_string, low_rumble_string, rumble_org, high_rumble_range, low_rumble_range) {
   players = getplayers();
   for (i = 0; i < players.size; i++) {
@@ -643,15 +466,6 @@ function rumble_all_players(high_rumble_string, low_rumble_string, rumble_org, h
   }
 }
 
-/*
-	Name: get_perk_machine_ents
-	Namespace: zm_moon_wasteland
-	Checksum: 0xEB639E61
-	Offset: 0x21B0
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function get_perk_machine_ents() {
   nml_position_helper = struct::get("nml_perk_location_helper", "script_noteworthy");
   nml_dist = 4200;
@@ -659,15 +473,6 @@ function get_perk_machine_ents() {
   level.jugg_ents = get_vending_ents("vending_jugg", "jugg_perk", nml_position_helper.origin, nml_dist);
 }
 
-/*
-	Name: get_vending_ents
-	Namespace: zm_moon_wasteland
-	Checksum: 0x2F2D7972
-	Offset: 0x2270
-	Size: 0x1EE
-	Parameters: 4
-	Flags: Linked
-*/
 function get_vending_ents(vending_name, perk_script_string, nml_pos, nml_radius) {
   names = [];
   names[0] = vending_name;
@@ -687,15 +492,6 @@ function get_vending_ents(vending_name, perk_script_string, nml_pos, nml_radius)
   return ent_array;
 }
 
-/*
-	Name: move_perk
-	Namespace: zm_moon_wasteland
-	Checksum: 0xF1ED20A9
-	Offset: 0x2468
-	Size: 0x15C
-	Parameters: 3
-	Flags: Linked
-*/
 function move_perk(dist, time, accel) {
   ent = level.speed_cola_ents[0];
   pos = (ent.origin[0], ent.origin[1], ent.origin[2] + dist);
@@ -707,15 +503,6 @@ function move_perk(dist, time, accel) {
   level.jugg_ents[1] triggerenable(0);
 }
 
-/*
-	Name: perk_machines_hide
-	Namespace: zm_moon_wasteland
-	Checksum: 0x1C322213
-	Offset: 0x25D0
-	Size: 0x29C
-	Parameters: 3
-	Flags: Linked
-*/
 function perk_machines_hide(cola, jug, moving = 0) {
   if(cola) {
     level.speed_cola_ents[0] hide();
@@ -753,15 +540,6 @@ function perk_machines_hide(cola, jug, moving = 0) {
   }
 }
 
-/*
-	Name: perk_machine_show_selected
-	Namespace: zm_moon_wasteland
-	Checksum: 0xD3D69435
-	Offset: 0x2878
-	Size: 0x76
-	Parameters: 2
-	Flags: Linked
-*/
 function perk_machine_show_selected(perk_index, moving) {
   switch (perk_index) {
     case 0: {
@@ -775,15 +553,6 @@ function perk_machine_show_selected(perk_index, moving) {
   }
 }
 
-/*
-	Name: perk_machine_arrival_update
-	Namespace: zm_moon_wasteland
-	Checksum: 0x521C7385
-	Offset: 0x28F8
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked
-*/
 function perk_machine_arrival_update() {
   top_height = 1200;
   fall_time = 4;
@@ -812,15 +581,6 @@ function perk_machine_arrival_update() {
   perk_machine_show_selected(perk_index, 0);
 }
 
-/*
-	Name: perk_arrive_fx
-	Namespace: zm_moon_wasteland
-	Checksum: 0x13C07103
-	Offset: 0x2AF0
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function perk_arrive_fx(pos) {
   wait(0.15);
   playfx(level._effect["lightning_dog_spawn"], pos);
@@ -830,18 +590,9 @@ function perk_arrive_fx(pos) {
   playsoundatposition("zmb_hellhound_bolt", pos);
 }
 
-/*
-	Name: nml_round_never_ends
-	Namespace: zm_moon_wasteland
-	Checksum: 0x396C1ED4
-	Offset: 0x2BA8
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function nml_round_never_ends() {
   wait(2);
-  level endon(# "restart_round");
+  level endon("restart_round");
   while (level flag::get("enter_nml")) {
     zombies = getaispeciesarray(level.zombie_team, "all");
     if(zombies.size >= 2) {
@@ -852,33 +603,15 @@ function nml_round_never_ends() {
   }
 }
 
-/*
-	Name: nml_side_stepping_zombies
-	Namespace: zm_moon_wasteland
-	Checksum: 0x21F8672
-	Offset: 0x2C38
-	Size: 0x28
-	Parameters: 0
-	Flags: None
-*/
 function nml_side_stepping_zombies() {
   level.mp_side_step = 0;
-  level waittill(# "nml_attack_wave");
+  level waittill("nml_attack_wave");
   level.mp_side_step = 1;
 }
 
-/*
-	Name: nml_ramp_up_zombies
-	Namespace: zm_moon_wasteland
-	Checksum: 0x14193E0D
-	Offset: 0x2C68
-	Size: 0x388
-	Parameters: 0
-	Flags: Linked
-*/
 function nml_ramp_up_zombies() {
-  self endon(# "stop_ramp");
-  level waittill(# "start_nml_ramp");
+  self endon("stop_ramp");
+  level waittill("start_nml_ramp");
   level.nml_timer = level.nml_last_round;
   while (level flag::get("enter_nml")) {
     if(!level.on_the_moon) {
@@ -917,15 +650,6 @@ function nml_ramp_up_zombies() {
   }
 }
 
-/*
-	Name: nml_dog_health_increase
-	Namespace: zm_moon_wasteland
-	Checksum: 0xB87F4F5D
-	Offset: 0x2FF8
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function nml_dog_health_increase() {
   if(level.nml_timer < 4) {
     level.nml_dog_health = 100;
@@ -946,15 +670,6 @@ function nml_dog_health_increase() {
   }
 }
 
-/*
-	Name: nml_shouldsidestep
-	Namespace: zm_moon_wasteland
-	Checksum: 0xA5A5B073
-	Offset: 0x30D0
-	Size: 0x2E
-	Parameters: 0
-	Flags: Linked
-*/
 function nml_shouldsidestep() {
   if(self nml_cansidestep()) {
     return "step";
@@ -962,15 +677,6 @@ function nml_shouldsidestep() {
   return "none";
 }
 
-/*
-	Name: nml_cansidestep
-	Namespace: zm_moon_wasteland
-	Checksum: 0xB04EDE6E
-	Offset: 0x3108
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function nml_cansidestep() {
   if((gettime() - self.a.lastsidesteptime) < level.nml_reaction_interval) {
     return false;

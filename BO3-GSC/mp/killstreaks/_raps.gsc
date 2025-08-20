@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_raps.gsc
+*************************************************/
+
 #using scripts\mp\gametypes\_battlechatter;
 #using scripts\mp\gametypes\_globallogic_audio;
 #using scripts\mp\gametypes\_spawning;
@@ -23,24 +27,12 @@
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\vehicles\_raps;
 #using scripts\shared\weapons\_smokegrenade;
-
 #namespace raps_mp;
 
-/*
-	Name: init
-	Namespace: raps_mp
-	Checksum: 0x479C4C6A
-	Offset: 0x890
-	Size: 0x2AA
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.raps_settings = level.scriptbundles["vehiclecustomsettings"]["rapssettings_mp"];
-  /#
   assert(isdefined(level.raps_settings));
-  # /
-    level.raps = [];
+  level.raps = [];
   level.raps_helicopters = [];
   level.raps_force_get_enemies = & forcegetenemies;
   killstreaks::register("raps", "raps", "killstreak_raps", "raps_used", & activaterapskillstreak, 1);
@@ -59,15 +51,6 @@ function init() {
   level.raps_helicopter_drop_tag_names[1] = "tag_raps_drop_right";
 }
 
-/*
-	Name: onplayerconnect
-	Namespace: raps_mp
-	Checksum: 0xE0B34048
-	Offset: 0xB48
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerconnect() {
   self.entnum = self getentitynumber();
   level.raps[self.entnum] = spawnstruct();
@@ -76,17 +59,8 @@ function onplayerconnect() {
   level.raps[self.entnum].helicopter = undefined;
 }
 
-/*
-	Name: rapshelicopterdynamicavoidance
-	Namespace: raps_mp
-	Checksum: 0xBC213822
-	Offset: 0xBF8
-	Size: 0x6C
-	Parameters: 0
-	Flags: None
-*/
 function rapshelicopterdynamicavoidance() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   index_to_update = 0;
   while (true) {
     rapshelicopterdynamicavoidanceupdate(index_to_update);
@@ -98,15 +72,6 @@ function rapshelicopterdynamicavoidance() {
   }
 }
 
-/*
-	Name: rapshelicopterdynamicavoidanceupdate
-	Namespace: raps_mp
-	Checksum: 0x656151F7
-	Offset: 0xC70
-	Size: 0xA8C
-	Parameters: 1
-	Flags: Linked
-*/
 function rapshelicopterdynamicavoidanceupdate(index_to_update) {
   helicopterreforigin = (0, 0, 0);
   otherhelicopterreforigin = (0, 0, 0);
@@ -116,99 +81,74 @@ function rapshelicopterdynamicavoidanceupdate(index_to_update) {
   }
   if(level.raps_helicopters.size >= 2) {
     helicopter = level.raps_helicopters[index_to_update];
-    /#
     helicopter.__action_just_made = 0;
-    # /
-      for (i = 0; i < level.raps_helicopters.size; i++) {
-        if(i == index_to_update) {
-          continue;
-        }
-        if(helicopter.droppingraps) {
-          continue;
-        }
-        if(!isdefined(helicopter.lastnewgoaltime)) {
-          helicopter.lastnewgoaltime = gettime();
-        }
-        helicopterforward = anglestoforward(helicopter getangles());
-        helicopterreforigin = helicopter.origin + (helicopterforward * 500);
-        otherhelicopterforward = anglestoforward(level.raps_helicopters[i] getangles());
-        otherhelicopterreforigin = level.raps_helicopters[i].origin + (otherhelicopterforward * 100);
-        deltatoother = otherhelicopterreforigin - helicopterreforigin;
-        otherinfront = vectordot(helicopterforward, vectornormalize(deltatoother)) > 0.707;
-        distancesqr = distance2dsquared(helicopterreforigin, otherhelicopterreforigin);
-        if(distancesqr < (200 + 1200) * (200 + 1200) || helicopter getspeed() == 0 && (gettime() - helicopter.lastnewgoaltime) > 5000) {
-          /#
-          helicopter.__last_dynamic_avoidance_action = 20;
-          # /
-            /#
-          helicopter.__action_just_made = 1;
-          # /
-            helicopter updatehelicopterspeed();
-          if(helicopter.isleaving) {
-            self.leavelocation = getrandomhelicopterleaveorigin(0, self.origin);
-            helicopter setvehgoalpos(self.leavelocation, 0);
-          } else {
-            self.targetdroplocation = getrandomhelicopterposition(self.lastdroplocation);
-            helicopter setvehgoalpos(self.targetdroplocation, 1);
-          }
-          helicopter.lastnewgoaltime = gettime();
-          continue;
-        }
-        if(distancesqr < (1200 * 1200) && otherinfront && (gettime() - helicopter.laststoptime) > 500) {
-          /#
-          helicopter.__last_dynamic_avoidance_action = 10;
-          # /
-            /#
-          helicopter.__action_just_made = 1;
-          # /
-            helicopter stophelicopter();
-          continue;
-        }
-        if(helicopter getspeed() == 0 && otherinfront && distancesqr < (1200 * 1200)) {
-          /#
-          helicopter.__last_dynamic_avoidance_action = 50;
-          # /
-            /#
-          helicopter.__action_just_made = 1;
-          # /
-            delta = otherhelicopterreforigin - helicopterreforigin;
-          newgoalposition = helicopter.origin - (deltatoother[0] * randomfloatrange(0.7, 2.5), deltatoother[1] * randomfloatrange(0.7, 2.5), 0);
-          helicopter updatehelicopterspeed();
-          helicopter setvehgoalpos(newgoalposition, 0);
-          if(1 || (gettime() - helicopter.lastnewgoaltime) > 5000) {
-            /#
-            helicopter.__last_dynamic_avoidance_action = 51;
-            # /
-              helicopter.targetdroplocation = getclosestrandomhelicopterposition(newgoalposition, 8);
-            helicopter.lastnewgoaltime = gettime();
-          }
-          continue;
-        }
-        if(distancesqr < (1000 + (200 + 1200)) * (1000 + (200 + 1200)) && helicopter.drivemodespeedscale == 1) {
-          /#
-          helicopter.__last_dynamic_avoidance_action = (otherinfront ? 31 : 30);
-          # /
-            /#
-          helicopter.__action_just_made = 1;
-          # /
-            helicopter updatehelicopterspeed((otherinfront ? 2 : 1));
-          continue;
-        }
-        if(distancesqr >= (1000 + (200 + 1200)) * (1000 + (200 + 1200)) && helicopter.drivemodespeedscale < 1) {
-          /#
-          helicopter.__last_dynamic_avoidance_action = 40;
-          # /
-            /#
-          helicopter.__action_just_made = 1;
-          # /
-            helicopter updatehelicopterspeed(0);
-          continue;
-        }
-        if(helicopter getspeed() == 0 && (gettime() - helicopter.laststoptime) > 500) {
-          helicopter updatehelicopterspeed();
-        }
+    for (i = 0; i < level.raps_helicopters.size; i++) {
+      if(i == index_to_update) {
+        continue;
       }
-    /#
+      if(helicopter.droppingraps) {
+        continue;
+      }
+      if(!isdefined(helicopter.lastnewgoaltime)) {
+        helicopter.lastnewgoaltime = gettime();
+      }
+      helicopterforward = anglestoforward(helicopter getangles());
+      helicopterreforigin = helicopter.origin + (helicopterforward * 500);
+      otherhelicopterforward = anglestoforward(level.raps_helicopters[i] getangles());
+      otherhelicopterreforigin = level.raps_helicopters[i].origin + (otherhelicopterforward * 100);
+      deltatoother = otherhelicopterreforigin - helicopterreforigin;
+      otherinfront = vectordot(helicopterforward, vectornormalize(deltatoother)) > 0.707;
+      distancesqr = distance2dsquared(helicopterreforigin, otherhelicopterreforigin);
+      if(distancesqr < (200 + 1200) * (200 + 1200) || helicopter getspeed() == 0 && (gettime() - helicopter.lastnewgoaltime) > 5000) {
+        helicopter.__last_dynamic_avoidance_action = 20;
+        helicopter.__action_just_made = 1;
+        helicopter updatehelicopterspeed();
+        if(helicopter.isleaving) {
+          self.leavelocation = getrandomhelicopterleaveorigin(0, self.origin);
+          helicopter setvehgoalpos(self.leavelocation, 0);
+        } else {
+          self.targetdroplocation = getrandomhelicopterposition(self.lastdroplocation);
+          helicopter setvehgoalpos(self.targetdroplocation, 1);
+        }
+        helicopter.lastnewgoaltime = gettime();
+        continue;
+      }
+      if(distancesqr < (1200 * 1200) && otherinfront && (gettime() - helicopter.laststoptime) > 500) {
+        helicopter.__last_dynamic_avoidance_action = 10;
+        helicopter.__action_just_made = 1;
+        helicopter stophelicopter();
+        continue;
+      }
+      if(helicopter getspeed() == 0 && otherinfront && distancesqr < (1200 * 1200)) {
+        helicopter.__last_dynamic_avoidance_action = 50;
+        helicopter.__action_just_made = 1;
+        delta = otherhelicopterreforigin - helicopterreforigin;
+        newgoalposition = helicopter.origin - (deltatoother[0] * randomfloatrange(0.7, 2.5), deltatoother[1] * randomfloatrange(0.7, 2.5), 0);
+        helicopter updatehelicopterspeed();
+        helicopter setvehgoalpos(newgoalposition, 0);
+        if(1 || (gettime() - helicopter.lastnewgoaltime) > 5000) {
+          helicopter.__last_dynamic_avoidance_action = 51;
+          helicopter.targetdroplocation = getclosestrandomhelicopterposition(newgoalposition, 8);
+          helicopter.lastnewgoaltime = gettime();
+        }
+        continue;
+      }
+      if(distancesqr < (1000 + (200 + 1200)) * (1000 + (200 + 1200)) && helicopter.drivemodespeedscale == 1) {
+        helicopter.__last_dynamic_avoidance_action = (otherinfront ? 31 : 30);
+        helicopter.__action_just_made = 1;
+        helicopter updatehelicopterspeed((otherinfront ? 2 : 1));
+        continue;
+      }
+      if(distancesqr >= (1000 + (200 + 1200)) * (1000 + (200 + 1200)) && helicopter.drivemodespeedscale < 1) {
+        helicopter.__last_dynamic_avoidance_action = 40;
+        helicopter.__action_just_made = 1;
+        helicopter updatehelicopterspeed(0);
+        continue;
+      }
+      if(helicopter getspeed() == 0 && (gettime() - helicopter.laststoptime) > 500) {
+        helicopter updatehelicopterspeed();
+      }
+    }
     if(getdvarint("")) {
       if(isdefined(helicopter)) {
         server_frames_to_persist = int((0.05 * 2) / 0.05);
@@ -263,34 +203,22 @@ function rapshelicopterdynamicavoidanceupdate(index_to_update) {
         print3d(helicopter.origin + (vectorscale((0, 0, -1), 50)), debug_action_string, action_debug_color, 1, 2.5, server_frames_to_persist);
       }
     }
-    # /
   }
 }
 
-/*
-	Name: activaterapskillstreak
-	Namespace: raps_mp
-	Checksum: 0x9D2428B5
-	Offset: 0x1708
-	Size: 0x388
-	Parameters: 1
-	Flags: Linked
-*/
 function activaterapskillstreak(hardpointtype) {
   player = self;
   if(!player killstreakrules::iskillstreakallowed("raps", player.team)) {
     return false;
   }
   if(game["raps_helicopter_positions"].size <= 0) {
-    /#
     iprintlnbold("");
-    # /
-      self iprintlnbold( & "KILLSTREAK_RAPS_NOT_AVAILABLE");
+    self iprintlnbold(&"KILLSTREAK_RAPS_NOT_AVAILABLE");
     return false;
   }
   killstreakid = player killstreakrules::killstreakstart("raps", player.team);
   if(killstreakid == -1) {
-    player iprintlnbold( & "KILLSTREAK_RAPS_NOT_AVAILABLE");
+    player iprintlnbold(&"KILLSTREAK_RAPS_NOT_AVAILABLE");
     return false;
   }
   player thread teams::waituntilteamchange(player, & onteamchanged, player.entnum, "raps_complete");
@@ -308,25 +236,13 @@ function activaterapskillstreak(hardpointtype) {
   }
   level.raps_helicopters[level.raps_helicopters.size] = level.raps[player.entnum].helicopter;
   level thread updatekillstreakonhelicopterdeath(level.raps[player.entnum].helicopter, player.entnum);
-  /#
   if(getdvarint("")) {
     level thread autoreactivaterapskillstreak(player.entnum, player, hardpointtype);
   }
-  # /
-    return true;
+  return true;
 }
 
-/*
-	Name: autoreactivaterapskillstreak
-	Namespace: raps_mp
-	Checksum: 0x6166109
-	Offset: 0x1A98
-	Size: 0x9A
-	Parameters: 3
-	Flags: Linked
-*/
 function autoreactivaterapskillstreak(ownerentnum, player, hardpointtype) {
-  /#
   if(1) {
     for (;;) {
       level waittill("" + ownerentnum);
@@ -336,18 +252,8 @@ function autoreactivaterapskillstreak(ownerentnum, player, hardpointtype) {
     player thread activaterapskillstreak(hardpointtype);
     return;
   }
-  # /
 }
 
-/*
-	Name: watchrapskillstreakend
-	Namespace: raps_mp
-	Checksum: 0x210A7C97
-	Offset: 0x1B40
-	Size: 0x82
-	Parameters: 3
-	Flags: Linked
-*/
 function watchrapskillstreakend(killstreakid, ownerentnum, team) {
   if(1) {
     for (;;) {
@@ -359,71 +265,26 @@ function watchrapskillstreakend(killstreakid, ownerentnum, team) {
   }
 }
 
-/*
-	Name: updatekillstreakonhelicopterdeath
-	Namespace: raps_mp
-	Checksum: 0xAAF12B68
-	Offset: 0x1BD0
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function updatekillstreakonhelicopterdeath(helicopter, ownerentenum) {
-  helicopter waittill(# "death");
+  helicopter waittill("death");
   level notify("raps_updated_" + ownerentenum);
 }
 
-/*
-	Name: onteamchanged
-	Namespace: raps_mp
-	Checksum: 0x949D64EF
-	Offset: 0x1C10
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function onteamchanged(entnum, event) {
   abandoned = 1;
   destroyallraps(entnum, abandoned);
 }
 
-/*
-	Name: onemp
-	Namespace: raps_mp
-	Checksum: 0x5F3613F2
-	Offset: 0x1C60
-	Size: 0x2C
-	Parameters: 2
-	Flags: None
-*/
 function onemp(attacker, ownerentnum) {
   destroyallraps(ownerentnum);
 }
 
-/*
-	Name: novehiclefacethread
-	Namespace: raps_mp
-	Checksum: 0xD966CB85
-	Offset: 0x1C98
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function novehiclefacethread(mapcenter, radius) {
-  level endon(# "game_ended");
+  level endon("game_ended");
   wait(3);
   marknovehiclenavmeshfaces(mapcenter, radius, 21);
 }
 
-/*
-	Name: inithelicopterpositions
-	Namespace: raps_mp
-	Checksum: 0xFF5FD701
-	Offset: 0x1CE8
-	Size: 0x1042
-	Parameters: 0
-	Flags: Linked
-*/
 function inithelicopterpositions() {
   startsearchpoint = airsupport::getmapcenter();
   mapcenter = getclosestpointonnavmesh(startsearchpoint, 1024);
@@ -452,29 +313,24 @@ function inithelicopterpositions() {
     mapcenter = vectorscale((0, 0, 1), 39);
     randomnavmeshpoints = util::positionquery_pointarray(mapcenter, 0, radius, 70, 132);
   }
-  /#
   position_query_drop_location_count = randomnavmeshpoints.size;
-  # /
-    if(isdefined(level.add_raps_drop_locations)) {
-      [
-        [level.add_raps_drop_locations]
-      ](randomnavmeshpoints);
-    }
-  /#
+  if(isdefined(level.add_raps_drop_locations)) {
+    [
+      [level.add_raps_drop_locations]
+    ](randomnavmeshpoints);
+  }
   if(getdvarint("")) {
     boxhalfwidth = 220 * 0.25;
     for (i = position_query_drop_location_count; i < randomnavmeshpoints.size; i++) {
       box(randomnavmeshpoints[i], (boxhalfwidth * -1, boxhalfwidth * -1, 0), (boxhalfwidth, boxhalfwidth, 8.88), 0, (1, 0.53, 0), 0.9, 0, 9999999);
     }
   }
-  # /
-    omit_locations = [];
+  omit_locations = [];
   if(isdefined(level.add_raps_omit_locations)) {
     [
       [level.add_raps_omit_locations]
     ](omit_locations);
   }
-  /#
   if(getdvarint("")) {
     debug_radius = 220 * 0.5;
     foreach(omit_location in omit_locations) {
@@ -483,8 +339,7 @@ function inithelicopterpositions() {
       circle(omit_location + vectorscale((0, 0, 1), 8), debug_radius, vectorscale((1, 1, 1), 0.05), 0, 1, 9999999);
     }
   }
-  # /
-    game["raps_helicopter_positions"] = [];
+  game["raps_helicopter_positions"] = [];
   minflyheight = int(airsupport::getminimumflyheight() + 1000);
   test_point_radius = 12;
   fit_radius = 220 * 0.5;
@@ -495,28 +350,24 @@ function inithelicopterpositions() {
     stop_water_trace = point + vectorscale((0, 0, 1), 8);
     trace = physicstrace(start_water_trace, stop_water_trace, vectorscale((-1, -1, -1), 2), vectorscale((1, 1, 1), 2), undefined, 4);
     if(trace["fraction"] < 1) {
-      /#
       if(getdvarint("")) {
         debugboxwidth = 220 * 0.5;
         debugboxheight = 10;
         box(start_water_trace, (debugboxwidth * -1, debugboxwidth * -1, 0), (debugboxwidth, debugboxwidth, debugboxheight), 0, (0, 0, 1), 0.9, 0, 9999999);
         box(start_water_trace, vectorscale((-1, -1, -1), 2), vectorscale((1, 1, 1), 2), 0, (0, 0, 1), 0.9, 0, 9999999);
       }
-      # /
-        continue;
+      continue;
     }
     should_omit = 0;
     foreach(omit_location in omit_locations) {
       if(distancesquared(omit_location, point) < (omit_radius * omit_radius)) {
         should_omit = 1;
-        /#
         if(getdvarint("")) {
           debugboxwidth = 220 * 0.5;
           debugboxheight = 10;
           box(point, (debugboxwidth * -1, debugboxwidth * -1, 0), (debugboxwidth, debugboxwidth, debugboxheight), 0, vectorscale((1, 1, 1), 0.05), 1, 0, 9999999);
         }
-        # /
-          break;
+        break;
       }
     }
     if(should_omit) {
@@ -534,10 +385,8 @@ function inithelicopterpositions() {
     }
   }
   if(game["raps_helicopter_positions"].size == 0) {
-    /#
     iprintlnbold("");
-    # /
-      game["raps_helicopter_positions"] = randomnavmeshpoints;
+    game["raps_helicopter_positions"] = randomnavmeshpoints;
   }
   flood_fill_start_point = undefined;
   flood_fill_start_point_distance_squared = 9999999;
@@ -556,7 +405,6 @@ function inithelicopterpositions() {
   }
   level thread novehiclefacethread(flood_fill_start_point, radius * 2);
   force_debug_draw = 0;
-  /#
   if(killstreaks::should_draw_debug("") || force_debug_draw) {
     time = 9999999;
     sphere(mapcenter, 20, (1, 1, 0), 1, 0, 10, time);
@@ -577,18 +425,8 @@ function inithelicopterpositions() {
       box(point, (halfboxwidth * -1, halfboxwidth * -1, 2), (halfboxwidth, halfboxwidth, 300), 0, vectorscale((0, 0, 1), 0.6), 0.6, 0, time);
     }
   }
-  # /
 }
 
-/*
-	Name: tryaddpointforhelicopterposition
-	Namespace: raps_mp
-	Checksum: 0xB7ED0D3C
-	Offset: 0x2D38
-	Size: 0xFE
-	Parameters: 2
-	Flags: Linked
-*/
 function tryaddpointforhelicopterposition(spaciouspoint, minflyheight) {
   traceheight = minflyheight + 500;
   traceboxhalfwidth = 220 * 0.5;
@@ -604,20 +442,10 @@ function tryaddpointforhelicopterposition(spaciouspoint, minflyheight) {
   return false;
 }
 
-/*
-	Name: istracesafeforrapsdronedropfromhelicopter
-	Namespace: raps_mp
-	Checksum: 0x27F4C236
-	Offset: 0x2E40
-	Size: 0x208
-	Parameters: 3
-	Flags: Linked
-*/
 function istracesafeforrapsdronedropfromhelicopter(spaciouspoint, traceheight, traceboxhalfwidth) {
   start = (spaciouspoint[0], spaciouspoint[1], traceheight);
   end = (spaciouspoint[0], spaciouspoint[1], spaciouspoint[2] + 36);
   trace = physicstrace(start, end, (traceboxhalfwidth * -1, traceboxhalfwidth * -1, 0), (traceboxhalfwidth, traceboxhalfwidth, traceboxhalfwidth * 2), undefined, 1);
-  /#
   if(getdvarint("")) {
     if(trace[""] < 1) {
       box(end, (traceboxhalfwidth * -1, traceboxhalfwidth * -1, 0), (traceboxhalfwidth, traceboxhalfwidth, (start[2] - end[2]) * (1 - trace[""])), 0, (1, 0, 0), 0.6, 0, 9999999);
@@ -625,47 +453,19 @@ function istracesafeforrapsdronedropfromhelicopter(spaciouspoint, traceheight, t
       box(end, (traceboxhalfwidth * -1, traceboxhalfwidth * -1, 0), (traceboxhalfwidth, traceboxhalfwidth, 8.88), 0, (0, 1, 0), 0.6, 0, 9999999);
     }
   }
-  # /
-    return trace["fraction"] == 1 && trace["surfacetype"] == "none";
+  return trace["fraction"] == 1 && trace["surfacetype"] == "none";
 }
 
-/*
-	Name: getrandomhelicopterstartorigin
-	Namespace: raps_mp
-	Checksum: 0xF4E38A78
-	Offset: 0x3050
-	Size: 0x52
-	Parameters: 2
-	Flags: Linked
-*/
 function getrandomhelicopterstartorigin(fly_height, firstdroplocation) {
   best_node = helicopter::getvalidrandomstartnode(firstdroplocation);
   return best_node.origin + (0, 0, fly_height);
 }
 
-/*
-	Name: getrandomhelicopterleaveorigin
-	Namespace: raps_mp
-	Checksum: 0xB7CFE505
-	Offset: 0x30B0
-	Size: 0x52
-	Parameters: 2
-	Flags: Linked
-*/
 function getrandomhelicopterleaveorigin(fly_height, startlocationtoleavefrom) {
   best_node = helicopter::getvalidrandomleavenode(startlocationtoleavefrom);
   return best_node.origin + (0, 0, fly_height);
 }
 
-/*
-	Name: getinitialhelicopterflyheight
-	Namespace: raps_mp
-	Checksum: 0x1B8C3DF
-	Offset: 0x3110
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function getinitialhelicopterflyheight() {
   arrayremovevalue(level.raps_helicopters, undefined);
   minimum_fly_height = airsupport::getminimumflyheight();
@@ -678,30 +478,12 @@ function getinitialhelicopterflyheight() {
   return minimum_fly_height + (int(airsupport::getminimumflyheight() + 1000));
 }
 
-/*
-	Name: configurechopperteampost
-	Namespace: raps_mp
-	Checksum: 0x34C0E48A
-	Offset: 0x3230
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function configurechopperteampost(owner, ishacked) {
   helicopter = self;
   helicopter thread watchownerdisconnect(owner);
   helicopter thread createrapshelicopterinfluencer();
 }
 
-/*
-	Name: spawnrapshelicopter
-	Namespace: raps_mp
-	Checksum: 0x378BDEF3
-	Offset: 0x3290
-	Size: 0x4E8
-	Parameters: 1
-	Flags: Linked
-*/
 function spawnrapshelicopter(killstreakid) {
   player = self;
   assigned_fly_height = getinitialhelicopterflyheight();
@@ -722,10 +504,8 @@ function spawnrapshelicopter(killstreakid) {
   helicopter.targetdroplocation = vectorscale((-1, -1, -1), 9999999);
   helicopter.lastdroplocation = vectorscale((-1, -1, -1), 9999999);
   helicopter.firstdropreferencepoint = (player.origin[0], player.origin[1], int(airsupport::getminimumflyheight() + 1000));
-  /#
   helicopter.__last_dynamic_avoidance_action = 0;
-  # /
-    helicopter clientfield::set("enemyvehicle", 1);
+  helicopter clientfield::set("enemyvehicle", 1);
   helicopter.health = 99999999;
   helicopter.maxhealth = killstreak_bundles::get_max_health("raps");
   helicopter.lowhealth = killstreak_bundles::get_low_health("raps");
@@ -742,24 +522,13 @@ function spawnrapshelicopter(killstreakid) {
   helicopter thread waitforhelicoptershutdown();
   helicopter thread helicopterthink();
   helicopter thread watchgameended();
-  /#
   helicopter thread helicopterthinkdebugvisitall();
-  # /
-    return helicopter;
+  return helicopter;
 }
 
-/*
-	Name: waitforhelicoptershutdown
-	Namespace: raps_mp
-	Checksum: 0x37654FFD
-	Offset: 0x3780
-	Size: 0x284
-	Parameters: 0
-	Flags: Linked
-*/
 function waitforhelicoptershutdown() {
   helicopter = self;
-  helicopter waittill(# "raps_helicopter_shutdown", killed);
+  helicopter waittill("raps_helicopter_shutdown", killed);
   level notify("raps_updated_" + helicopter.ownerentnum);
   if(target_istarget(helicopter)) {
     target_remove(helicopter);
@@ -782,7 +551,7 @@ function waitforhelicoptershutdown() {
     helicopter finalhelideathexplode();
     wait(0.1);
     helicopter ghost();
-    self notify(# "stop_death_spin");
+    self notify("stop_death_spin");
     wait(0.5);
   } else {
     helicopter helicopterleave();
@@ -790,50 +559,23 @@ function waitforhelicoptershutdown() {
   helicopter delete();
 }
 
-/*
-	Name: watchownerdisconnect
-	Namespace: raps_mp
-	Checksum: 0xDE6FF177
-	Offset: 0x3A10
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function watchownerdisconnect(owner) {
-  self notify(# "watchownerdisconnect_singleton");
-  self endon(# "watchownerdisconnect_singleton");
+  self notify("watchownerdisconnect_singleton");
+  self endon("watchownerdisconnect_singleton");
   helicopter = self;
-  helicopter endon(# "raps_helicopter_shutdown");
+  helicopter endon("raps_helicopter_shutdown");
   owner util::waittill_any("joined_team", "disconnect", "joined_spectators");
-  helicopter notify(# "raps_helicopter_shutdown", 0);
+  helicopter notify("raps_helicopter_shutdown", 0);
 }
 
-/*
-	Name: watchgameended
-	Namespace: raps_mp
-	Checksum: 0x93A1615D
-	Offset: 0x3AA0
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function watchgameended() {
   helicopter = self;
-  helicopter endon(# "raps_helicopter_shutdown");
-  helicopter endon(# "death");
-  level waittill(# "game_ended");
-  helicopter notify(# "raps_helicopter_shutdown", 0);
+  helicopter endon("raps_helicopter_shutdown");
+  helicopter endon("death");
+  level waittill("game_ended");
+  helicopter notify("raps_helicopter_shutdown", 0);
 }
 
-/*
-	Name: ondeath
-	Namespace: raps_mp
-	Checksum: 0xDFBA2745
-	Offset: 0x3AF0
-	Size: 0x1C4
-	Parameters: 2
-	Flags: Linked
-*/
 function ondeath(attacker, weapon) {
   helicopter = self;
   if(isdefined(attacker) && (!isdefined(helicopter.owner) || helicopter.owner util::isenemyplayer(attacker))) {
@@ -843,8 +585,8 @@ function ondeath(attacker, weapon) {
     if(isdefined(helicopter.droppedraps) && helicopter.droppedraps == 0) {
       attacker addplayerstat("destroy_raps_before_drop", 1);
     }
-    luinotifyevent( & "player_callout", 2, & "KILLSTREAK_DESTROYED_RAPS_DEPLOY_SHIP", attacker.entnum);
-    helicopter notify(# "raps_helicopter_shutdown", 1);
+    luinotifyevent(&"player_callout", 2, & "KILLSTREAK_DESTROYED_RAPS_DEPLOY_SHIP", attacker.entnum);
+    helicopter notify("raps_helicopter_shutdown", 1);
   }
   if(helicopter.isleaving !== 1) {
     helicopter killstreaks::play_pilot_dialog_on_owner("destroyed", "raps");
@@ -852,44 +594,17 @@ function ondeath(attacker, weapon) {
   }
 }
 
-/*
-	Name: onlowhealth
-	Namespace: raps_mp
-	Checksum: 0x64729DCB
-	Offset: 0x3CC0
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function onlowhealth(attacker, weapon) {
   helicopter = self;
   helicopter killstreaks::play_pilot_dialog_on_owner("damaged", "raps", helicopter.killstreakid);
   helicopter helilowhealthfx();
 }
 
-/*
-	Name: onextralowhealth
-	Namespace: raps_mp
-	Checksum: 0x629C7941
-	Offset: 0x3D38
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function onextralowhealth(attacker, weapon) {
   helicopter = self;
   helicopter heliextralowhealthfx();
 }
 
-/*
-	Name: getrandomhelicopterposition
-	Namespace: raps_mp
-	Checksum: 0x85642215
-	Offset: 0x3D80
-	Size: 0x388
-	Parameters: 3
-	Flags: Linked
-*/
 function getrandomhelicopterposition(avoidpoint = vectorscale((-1, -1, -1), 9999999), otheravoidpoint = vectorscale((-1, -1, -1), 9999999), avoidradiussqr = 1800 * 1800) {
   flyheight = int(airsupport::getminimumflyheight() + 1000);
   found = 0;
@@ -898,7 +613,6 @@ function getrandomhelicopterposition(avoidpoint = vectorscale((-1, -1, -1), 9999
     if(i == 3) {
       avoidradiussqr = -1;
     }
-    /#
     if(getdvarint("") > 0) {
       server_frames_to_persist = int(60);
       circle(avoidpoint, 1800, (1, 0, 0), 1, 1, server_frames_to_persist);
@@ -908,33 +622,21 @@ function getrandomhelicopterposition(avoidpoint = vectorscale((-1, -1, -1), 9999
       circle(otheravoidpoint, 1800 - 1, (1, 0, 0), 1, 1, server_frames_to_persist);
       circle(otheravoidpoint, 1800 - 2, (1, 0, 0), 1, 1, server_frames_to_persist);
     }
-    # /
-      while (!found && tries < game["raps_helicopter_positions"].size) {
-        index = randomintrange(0, game["raps_helicopter_positions"].size);
-        randompoint = (game["raps_helicopter_positions"][index][0], game["raps_helicopter_positions"][index][1], flyheight);
-        found = distance2dsquared(randompoint, avoidpoint) > avoidradiussqr && distance2dsquared(randompoint, otheravoidpoint) > avoidradiussqr;
-        tries++;
-      }
+    while (!found && tries < game["raps_helicopter_positions"].size) {
+      index = randomintrange(0, game["raps_helicopter_positions"].size);
+      randompoint = (game["raps_helicopter_positions"][index][0], game["raps_helicopter_positions"][index][1], flyheight);
+      found = distance2dsquared(randompoint, avoidpoint) > avoidradiussqr && distance2dsquared(randompoint, otheravoidpoint) > avoidradiussqr;
+      tries++;
+    }
     if(!found) {
       avoidradiussqr = avoidradiussqr * 0.25;
       tries = 0;
     }
   }
-  /#
   assert(found, "");
-  # /
-    return randompoint;
+  return randompoint;
 }
 
-/*
-	Name: getclosestrandomhelicopterposition
-	Namespace: raps_mp
-	Checksum: 0x665F76DC
-	Offset: 0x4110
-	Size: 0x150
-	Parameters: 4
-	Flags: Linked
-*/
 function getclosestrandomhelicopterposition(refpoint, pickcount, avoidpoint = vectorscale((-1, -1, -1), 9999999), otheravoidpoint = vectorscale((-1, -1, -1), 9999999)) {
   bestposition = getrandomhelicopterposition(avoidpoint, otheravoidpoint);
   bestdistancesqr = distance2dsquared(bestposition, refpoint);
@@ -949,15 +651,6 @@ function getclosestrandomhelicopterposition(refpoint, pickcount, avoidpoint = ve
   return bestposition;
 }
 
-/*
-	Name: waitforstoppingmovetoexpire
-	Namespace: raps_mp
-	Checksum: 0xA5B4445
-	Offset: 0x4268
-	Size: 0x42
-	Parameters: 0
-	Flags: Linked
-*/
 function waitforstoppingmovetoexpire() {
   elapsedtimestopping = gettime() - self.laststoptime;
   if(elapsedtimestopping < 2000) {
@@ -965,15 +658,6 @@ function waitforstoppingmovetoexpire() {
   }
 }
 
-/*
-	Name: getotherhelicopterpointtoavoid
-	Namespace: raps_mp
-	Checksum: 0xBC9A69C9
-	Offset: 0x42B8
-	Size: 0xC2
-	Parameters: 0
-	Flags: Linked
-*/
 function getotherhelicopterpointtoavoid() {
   avoid_point = undefined;
   arrayremovevalue(level.raps_helicopters, undefined);
@@ -986,15 +670,6 @@ function getotherhelicopterpointtoavoid() {
   return avoid_point;
 }
 
-/*
-	Name: picknextdroplocation
-	Namespace: raps_mp
-	Checksum: 0xDDA23EF8
-	Offset: 0x4388
-	Size: 0x13A
-	Parameters: 5
-	Flags: Linked
-*/
 function picknextdroplocation(heli, drop_index, firstdropreferencepoint, assigned_fly_height, lastdroplocation) {
   avoid_point = self getotherhelicopterpointtoavoid();
   if(isdefined(heli) && isdefined(heli.prepickeddroplocation)) {
@@ -1007,29 +682,18 @@ function picknextdroplocation(heli, drop_index, firstdropreferencepoint, assigne
   return targetdroplocation;
 }
 
-/*
-	Name: helicopterthink
-	Namespace: raps_mp
-	Checksum: 0xEA04A85
-	Offset: 0x44D0
-	Size: 0x2EE
-	Parameters: 0
-	Flags: Linked
-*/
 function helicopterthink() {
-  /#
   if(getdvarint("")) {
     return;
   }
-  # /
-    self endon(# "raps_helicopter_shutdown");
+  self endon("raps_helicopter_shutdown");
   for (i = 0; i < 3; i++) {
     self.targetdroplocation = picknextdroplocation(self, i, self.firstdropreferencepoint, self.assigned_fly_height, self.lastdroplocation);
     while (distance2dsquared(self.origin, self.targetdroplocation) > 25) {
       self waitforstoppingmovetoexpire();
       self updatehelicopterspeed();
       self setvehgoalpos(self.targetdroplocation, 1);
-      self waittill(# "goal");
+      self waittill("goal");
     }
     if(isdefined(self.owner)) {
       if((i + 1) < 3) {
@@ -1046,21 +710,11 @@ function helicopterthink() {
     self dropraps();
     wait(((i + 1) >= 3 ? 2 + (randomfloatrange(1 * -1, 1)) : 2 + (randomfloatrange(2 * -1, 2))));
   }
-  self notify(# "raps_helicopter_shutdown", 0);
+  self notify("raps_helicopter_shutdown", 0);
 }
 
-/*
-	Name: helicopterthinkdebugvisitall
-	Namespace: raps_mp
-	Checksum: 0x3BD65471
-	Offset: 0x47C8
-	Size: 0x26E
-	Parameters: 0
-	Flags: Linked
-*/
 function helicopterthinkdebugvisitall() {
-  /#
-  self endon(# "death");
+  self endon("death");
   if(getdvarint("") == 0) {
     return;
   }
@@ -1071,7 +725,7 @@ function helicopterthinkdebugvisitall() {
         self waitforstoppingmovetoexpire();
         self updatehelicopterspeed();
         self setvehgoalpos(self.targetdroplocation, 1);
-        self waittill(# "goal");
+        self waittill("goal");
       }
       self dropraps();
       wait(1);
@@ -1082,35 +736,25 @@ function helicopterthinkdebugvisitall() {
             self waitforstoppingmovetoexpire();
             self updatehelicopterspeed();
             self setvehgoalpos(self.targetdroplocation, 1);
-            self waittill(# "goal");
+            self waittill("goal");
           }
         }
       }
     }
   }
-  self notify(# "raps_helicopter_shutdown", 0);
-  # /
+  self notify("raps_helicopter_shutdown", 0);
 }
 
-/*
-	Name: dropraps
-	Namespace: raps_mp
-	Checksum: 0x283A8B20
-	Offset: 0x4A40
-	Size: 0x238
-	Parameters: 0
-	Flags: Linked
-*/
 function dropraps() {
-  level endon(# "game_ended");
-  self endon(# "death");
+  level endon("game_ended");
+  self endon("death");
   self.droppingraps = 1;
   self.lastdroplocation = self.origin;
   precisedroplocation = 0.5 * (self gettagorigin(level.raps_helicopter_drop_tag_names[0]) + self gettagorigin(level.raps_helicopter_drop_tag_names[1]));
   precisegoallocation = self.targetdroplocation + (self.targetdroplocation - precisedroplocation);
   precisegoallocation = (precisegoallocation[0], precisegoallocation[1], self.targetdroplocation[2]);
   self setvehgoalpos(precisegoallocation, 1);
-  self waittill(# "goal");
+  self waittill("goal");
   self.droppedraps = 1;
   for (i = 0; i < level.raps_settings.spawn_count; i++) {
     spawn_tag = level.raps_helicopter_drop_tag_names[i % level.raps_helicopter_drop_tag_names.size];
@@ -1127,17 +771,8 @@ function dropraps() {
   self.droppingraps = 0;
 }
 
-/*
-	Name: spin
-	Namespace: raps_mp
-	Checksum: 0xA3CB64CE
-	Offset: 0x4C80
-	Size: 0xD6
-	Parameters: 0
-	Flags: Linked
-*/
 function spin() {
-  self endon(# "stop_death_spin");
+  self endon("stop_death_spin");
   speed = randomintrange(180, 220);
   self setyawspeed(speed, speed * 0.25, speed);
   if(randomintrange(0, 2) > 0) {
@@ -1149,82 +784,28 @@ function spin() {
   }
 }
 
-/*
-	Name: firstheliexplo
-	Namespace: raps_mp
-	Checksum: 0xAD53C445
-	Offset: 0x4D60
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function firstheliexplo() {
   playfxontag("killstreaks/fx_heli_raps_exp_sm", self, "tag_fx_engine_exhaust_back");
   self playsound(level.heli_sound["crash"]);
 }
 
-/*
-	Name: helilowhealthfx
-	Namespace: raps_mp
-	Checksum: 0xCAE3B582
-	Offset: 0x4DB8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function helilowhealthfx() {
   self clientfield::set("raps_heli_low_health", 1);
 }
 
-/*
-	Name: heliextralowhealthfx
-	Namespace: raps_mp
-	Checksum: 0x2F679691
-	Offset: 0x4DE8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function heliextralowhealthfx() {
   self clientfield::set("raps_heli_extra_low_health", 1);
 }
 
-/*
-	Name: helideathtrails
-	Namespace: raps_mp
-	Checksum: 0xB41FC3B6
-	Offset: 0x4E18
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function helideathtrails() {
   playfxontag("killstreaks/fx_heli_raps_exp_trail", self, "tag_fx_engine_exhaust_back");
 }
 
-/*
-	Name: finalhelideathexplode
-	Namespace: raps_mp
-	Checksum: 0xD3870968
-	Offset: 0x4E48
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function finalhelideathexplode() {
   playfxontag("killstreaks/fx_heli_raps_exp_lg", self, "tag_fx_death");
   self playsound(level.heli_sound["crash"]);
 }
 
-/*
-	Name: helicopterleave
-	Namespace: raps_mp
-	Checksum: 0x7CBCDE96
-	Offset: 0x4EA0
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function helicopterleave() {
   self.isleaving = 1;
   self killstreaks::play_pilot_dialog_on_owner("timeout", "raps");
@@ -1233,19 +814,10 @@ function helicopterleave() {
   while (distance2dsquared(self.origin, self.leavelocation) > 360000) {
     self updatehelicopterspeed();
     self setvehgoalpos(self.leavelocation, 0);
-    self waittill(# "goal");
+    self waittill("goal");
   }
 }
 
-/*
-	Name: updatehelicopterspeed
-	Namespace: raps_mp
-	Checksum: 0x5852CAEB
-	Offset: 0x4FA0
-	Size: 0x164
-	Parameters: 1
-	Flags: Linked
-*/
 function updatehelicopterspeed(drivemode) {
   if(isdefined(drivemode)) {
     switch (drivemode) {
@@ -1272,29 +844,11 @@ function updatehelicopterspeed(drivemode) {
   }
 }
 
-/*
-	Name: stophelicopter
-	Namespace: raps_mp
-	Checksum: 0xEA51925F
-	Offset: 0x5110
-	Size: 0x30
-	Parameters: 0
-	Flags: Linked
-*/
 function stophelicopter() {
   self setspeed(0, 500, 500);
   self.laststoptime = gettime();
 }
 
-/*
-	Name: spawnraps
-	Namespace: raps_mp
-	Checksum: 0x6F2F6FB0
-	Offset: 0x5148
-	Size: 0x354
-	Parameters: 2
-	Flags: Linked
-*/
 function spawnraps(origin, angles) {
   originalowner = self;
   originalownerentnum = originalowner.entnum;
@@ -1327,15 +881,6 @@ function spawnraps(origin, angles) {
   raps thread killstreaks::waitfortimeout("raps", raps.settings.max_duration * 1000, & onrapstimeout, "death");
 }
 
-/*
-	Name: configureteampost
-	Namespace: raps_mp
-	Checksum: 0x9DA73730
-	Offset: 0x54A8
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function configureteampost(owner, ishacked) {
   raps = self;
   raps thread createrapsinfluencer();
@@ -1343,66 +888,30 @@ function configureteampost(owner, ishacked) {
   raps thread watchrapstippedover(owner);
 }
 
-/*
-	Name: autosetvisibletoall
-	Namespace: raps_mp
-	Checksum: 0x8836D64E
-	Offset: 0x5520
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function autosetvisibletoall() {
-  self endon(# "death");
+  self endon("death");
   wait(0.05);
   wait(0.05);
   self setvisibletoall();
 }
 
-/*
-	Name: onrapstimeout
-	Namespace: raps_mp
-	Checksum: 0x877DF6FF
-	Offset: 0x5560
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function onrapstimeout() {
   self selfdestruct(self.owner);
 }
 
-/*
-	Name: selfdestruct
-	Namespace: raps_mp
-	Checksum: 0x91DFBCB9
-	Offset: 0x5590
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function selfdestruct(attacker) {
   self.selfdestruct = 1;
   self raps::detonate(attacker);
 }
 
-/*
-	Name: watchrapskills
-	Namespace: raps_mp
-	Checksum: 0x1A7DA20E
-	Offset: 0x55D0
-	Size: 0xE0
-	Parameters: 1
-	Flags: Linked
-*/
 function watchrapskills(originalowner) {
-  originalowner endon(# "raps_complete");
-  self endon(# "death");
+  originalowner endon("raps_complete");
+  self endon("death");
   if(self.settings.max_kill_count == 0) {
     return;
   }
   while (true) {
-    self waittill(# "killed", victim);
+    self waittill("killed", victim);
     if(isdefined(victim) && isplayer(victim)) {
       if(!isdefined(self.killcount)) {
         self.killcount = 0;
@@ -1415,18 +924,9 @@ function watchrapskills(originalowner) {
   }
 }
 
-/*
-	Name: watchrapstippedover
-	Namespace: raps_mp
-	Checksum: 0x74349800
-	Offset: 0x56B8
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function watchrapstippedover(owner) {
-  owner endon(# "disconnect");
-  self endon(# "death");
+  owner endon("disconnect");
+  self endon("death");
   while (true) {
     wait(3.5);
     if(abs(self.angles[2]) > 75) {
@@ -1435,18 +935,9 @@ function watchrapstippedover(owner) {
   }
 }
 
-/*
-	Name: watchrapsdeath
-	Namespace: raps_mp
-	Checksum: 0x241A2301
-	Offset: 0x5738
-	Size: 0x22C
-	Parameters: 1
-	Flags: Linked
-*/
 function watchrapsdeath(originalowner) {
   originalownerentnum = originalowner.entnum;
-  self waittill(# "death", attacker, damagefromunderneath, weapon);
+  self waittill("death", attacker, damagefromunderneath, weapon);
   attacker = self[[level.figure_out_attacker]](attacker);
   if(isdefined(attacker) && isplayer(attacker)) {
     if(isdefined(self.owner) && self.owner != attacker && self.owner.team != attacker.team) {
@@ -1465,19 +956,10 @@ function watchrapsdeath(originalowner) {
   arrayremovevalue(level.raps[originalownerentnum].raps, self);
 }
 
-/*
-	Name: initenemyselection
-	Namespace: raps_mp
-	Checksum: 0xDB392AA5
-	Offset: 0x5970
-	Size: 0x274
-	Parameters: 1
-	Flags: Linked
-*/
 function initenemyselection(owner) {
-  owner endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "hacked");
+  owner endon("disconnect");
+  self endon("death");
+  self endon("hacked");
   self vehicle_ai::set_state("off");
   util::wait_network_frame();
   util::wait_network_frame();
@@ -1503,15 +985,6 @@ function initenemyselection(owner) {
   }
 }
 
-/*
-	Name: initialwaituntilsettled
-	Namespace: raps_mp
-	Checksum: 0x8C6AEB3E
-	Offset: 0x5BF0
-	Size: 0x136
-	Parameters: 0
-	Flags: Linked
-*/
 function initialwaituntilsettled() {
   waittime = 0;
   while (abs(self.velocity[2]) > 0.1 && waittime < 5) {
@@ -1522,23 +995,12 @@ function initialwaituntilsettled() {
     wait(0.2);
     waittime = waittime + 0.2;
   }
-  /#
   if(0) {
     waittime = waittime + (5 + 5);
   }
-  # /
-    return waittime < (5 + 5);
+  return waittime < (5 + 5);
 }
 
-/*
-	Name: destroyallraps
-	Namespace: raps_mp
-	Checksum: 0xCA01F090
-	Offset: 0x5D30
-	Size: 0xFA
-	Parameters: 2
-	Flags: Linked
-*/
 function destroyallraps(entnum, abandoned = 0) {
   foreach(raps in level.raps[entnum].raps) {
     if(isalive(raps)) {
@@ -1549,15 +1011,6 @@ function destroyallraps(entnum, abandoned = 0) {
   }
 }
 
-/*
-	Name: forcegetenemies
-	Namespace: raps_mp
-	Checksum: 0x618812D8
-	Offset: 0x5E38
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function forcegetenemies() {
   foreach(player in level.players) {
     if(isdefined(self.owner) && self.owner util::isenemyplayer(player) && !player smokegrenade::isinsmokegrenade() && !player hasperk("specialty_nottargetedbyraps")) {
@@ -1567,17 +1020,8 @@ function forcegetenemies() {
   }
 }
 
-/*
-	Name: createrapshelicopterinfluencer
-	Namespace: raps_mp
-	Checksum: 0xC57333FF
-	Offset: 0x5F40
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function createrapshelicopterinfluencer() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   helicopter = self;
   if(isdefined(helicopter.influencerent)) {
     helicopter.influencerent delete();
@@ -1592,21 +1036,12 @@ function createrapshelicopterinfluencer() {
   }
   enemy_team_mask = helicopter spawning::get_enemy_team_mask(helicopter.team);
   helicopter.influencerent spawning::create_entity_influencer("helicopter", enemy_team_mask);
-  helicopter waittill(# "death");
+  helicopter waittill("death");
   if(isdefined(influencerent)) {
     influencerent delete();
   }
 }
 
-/*
-	Name: createrapsinfluencer
-	Namespace: raps_mp
-	Checksum: 0xB8E45F7D
-	Offset: 0x60E8
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function createrapsinfluencer() {
   raps = self;
   preset = getinfluencerpreset("raps");

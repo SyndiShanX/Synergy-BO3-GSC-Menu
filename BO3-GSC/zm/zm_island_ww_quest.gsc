@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_ww_quest.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\ai_shared;
@@ -36,18 +40,8 @@
 #using scripts\zm\zm_island_spider_ee_quest;
 #using scripts\zm\zm_island_util;
 #using scripts\zm\zm_island_vo;
-
 #namespace zm_island_ww_quest;
 
-/*
-	Name: main
-	Namespace: zm_island_ww_quest
-	Checksum: 0x9FF1F78D
-	Offset: 0x12E8
-	Size: 0x224
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level flag::init("ww_upgrade_spawned_from_plant");
   level flag::init("players_lost_ww");
@@ -67,15 +61,6 @@ function main() {
   level thread function_b7685b2e();
 }
 
-/*
-	Name: function_30d4f164
-	Namespace: zm_island_ww_quest
-	Checksum: 0x6005D32D
-	Offset: 0x1518
-	Size: 0x3FC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_30d4f164() {
   register_clientfield();
   level flag::init("pool_filled");
@@ -107,20 +92,9 @@ function function_30d4f164() {
   var_db6efb17 setignorepauseworld(1);
   level thread function_961485f0();
   function_c5cd1083();
-  /#
   function_982c97e5();
-  # /
 }
 
-/*
-	Name: register_clientfield
-	Namespace: zm_island_ww_quest
-	Checksum: 0x70D3FCAF
-	Offset: 0x1920
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfield() {
   clientfield::register("scriptmover", "play_underwater_plant_fx", 9000, 1, "int");
   clientfield::register("actor", "play_carrier_fx", 9000, 1, "int");
@@ -129,15 +103,6 @@ function register_clientfield() {
   clientfield::register("scriptmover", "spider_bait", 9000, 1, "int");
 }
 
-/*
-	Name: function_11571878
-	Namespace: zm_island_ww_quest
-	Checksum: 0x7818F179
-	Offset: 0x1A20
-	Size: 0x528
-	Parameters: 0
-	Flags: Linked
-*/
 function function_11571878() {
   self.trigger = zm_island_util::spawn_trigger_radius(self.origin, 50, 1, & function_5f3935a);
   var_85b2b1ab = getent("ww_station", "targetname");
@@ -149,11 +114,11 @@ function function_11571878() {
   var_218752f9 hidepart("j_glow_purple");
   var_218752f9 hidepart("j_glow_red");
   level.var_97c56c3c moveto(v_pos, 0.05);
-  level.var_97c56c3c waittill(# "movedone");
+  level.var_97c56c3c waittill("movedone");
   level.var_97c56c3c.angles = v_ang;
   level.var_97c56c3c linkto(var_85b2b1ab, "mirg_cent_gun_tag_jnt");
   while (true) {
-    self.trigger waittill(# "trigger", player);
+    self.trigger waittill("trigger", player);
     if(zm_utility::is_player_valid(player)) {
       if(level flag::get("ww1_found") && !level flag::get("wwup1_placed")) {
         level flag::set("wwup1_placed");
@@ -181,21 +146,12 @@ function function_11571878() {
         self thread function_255b7efb();
         break;
       } else if(zm_utility::is_player_valid(player)) {
-        player notify(# "player_tried_pickup_mirg2000");
+        player notify("player_tried_pickup_mirg2000");
       }
     }
   }
 }
 
-/*
-	Name: function_5f3935a
-	Namespace: zm_island_ww_quest
-	Checksum: 0xD125D1E2
-	Offset: 0x1F50
-	Size: 0x9A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_5f3935a(e_player) {
   if(level flag::get("ww1_found") && level flag::get("ww2_found") && level flag::get("ww3_found")) {
     return & "ZM_ISLAND_WONDERWEAPON_AMMO";
@@ -206,19 +162,10 @@ function private function_5f3935a(e_player) {
   return & "ZOMBIE_BUILD_PIECE_MORE";
 }
 
-/*
-	Name: function_255b7efb
-	Namespace: zm_island_ww_quest
-	Checksum: 0x5BD0FF8F
-	Offset: 0x1FF8
-	Size: 0x13C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_255b7efb() {
   self.trigger = zm_island_util::spawn_trigger_radius(self.origin, 50, 1, & function_d23a4109);
   while (true) {
-    self.trigger waittill(# "trigger", player);
+    self.trigger waittill("trigger", player);
     if(player zm_hero_weapon::is_hero_weapon_in_use()) {
       continue;
     }
@@ -241,15 +188,6 @@ function function_255b7efb() {
   }
 }
 
-/*
-	Name: function_d23a4109
-	Namespace: zm_island_ww_quest
-	Checksum: 0xFF991FDF
-	Offset: 0x2140
-	Size: 0x62
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_d23a4109(e_player) {
   if(e_player bgb::is_enabled("zm_bgb_disorderly_combat")) {
     return "";
@@ -260,22 +198,13 @@ function private function_d23a4109(e_player) {
   return "";
 }
 
-/*
-	Name: function_2578c564
-	Namespace: zm_island_ww_quest
-	Checksum: 0xC44496CC
-	Offset: 0x21B0
-	Size: 0x138
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2578c564(str_flag) {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self.trigger waittill(# "trigger", player);
+    self.trigger waittill("trigger", player);
     if(zm_utility::is_player_valid(player)) {
       level.var_622692a9++;
-      player notify(# "player_got_ww_part");
+      player notify("player_got_ww_part");
       zm_unitrigger::unregister_unitrigger(self.trigger);
       level flag::set(str_flag);
       if(str_flag == "ww3_found") {
@@ -290,30 +219,12 @@ function function_2578c564(str_flag) {
   }
 }
 
-/*
-	Name: function_3c6e89ad
-	Namespace: zm_island_ww_quest
-	Checksum: 0x6A22CD5F
-	Offset: 0x22F0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3c6e89ad() {
   self scene::play("p7_fxanim_zm_island_venom_extractor_end_bundle", self);
   self setmodel("p7_fxanim_zm_island_venom_extractor_red_mod");
   self scene::init("p7_fxanim_zm_island_venom_extractor_red_bundle", self);
 }
 
-/*
-	Name: function_9279976b
-	Namespace: zm_island_ww_quest
-	Checksum: 0x7839ADD0
-	Offset: 0x2360
-	Size: 0x1AC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9279976b(player) {
   if(player should_take_weapon()) {
     var_dc7ddcde = player getcurrentweapon();
@@ -324,7 +235,7 @@ function function_9279976b(player) {
   player giveweapon(level.var_5e75629a);
   player givemaxammo(level.var_5e75629a);
   player switchtoweapon(level.var_5e75629a);
-  player notify(# "player_got_mirg2000");
+  player notify("player_got_mirg2000");
   level clientfield::set("add_ww_to_box", 1);
   player.var_3599826c = 1;
   level.zombie_weapons[level.var_5e75629a].is_in_box = 1;
@@ -334,15 +245,6 @@ function function_9279976b(player) {
   level flag::set("ww_obtained");
 }
 
-/*
-	Name: function_9dd4723a
-	Namespace: zm_island_ww_quest
-	Checksum: 0x53FA1CA3
-	Offset: 0x2518
-	Size: 0x72
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9dd4723a() {
   while (true) {
     self util::waittill_any("bled_out", "weapon_change", "disconnect");
@@ -353,15 +255,6 @@ function function_9dd4723a() {
   }
 }
 
-/*
-	Name: function_659c2324
-	Namespace: zm_island_ww_quest
-	Checksum: 0x17E00E36
-	Offset: 0x2598
-	Size: 0x1F8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_659c2324(a_keys) {
   var_b45fbf8c = zm_pap_util::get_triggers();
   if(level flag::get("players_lost_ww")) {
@@ -400,18 +293,9 @@ function function_659c2324(a_keys) {
   return a_keys;
 }
 
-/*
-	Name: function_97d5f905
-	Namespace: zm_island_ww_quest
-	Checksum: 0x5D7FCEBC
-	Offset: 0x2798
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_97d5f905() {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
+  self endon("disconnect");
+  self endon("bled_out");
   var_1f4c3936 = undefined;
   foreach(var_c3763c58 in level.chests) {
     if(var_c3763c58.chest_user === self) {
@@ -430,15 +314,6 @@ function function_97d5f905() {
   }
 }
 
-/*
-	Name: function_52193f1e
-	Namespace: zm_island_ww_quest
-	Checksum: 0xD3D52A8A
-	Offset: 0x2900
-	Size: 0xCE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_52193f1e() {
   n_count = 0;
   foreach(player in level.players) {
@@ -449,15 +324,6 @@ function function_52193f1e() {
   return n_count;
 }
 
-/*
-	Name: should_take_weapon
-	Namespace: zm_island_ww_quest
-	Checksum: 0x85F38C19
-	Offset: 0x29D8
-	Size: 0x9A
-	Parameters: 0
-	Flags: Linked
-*/
 function should_take_weapon() {
   a_weapons = self getweaponslistprimaries();
   if(!self hasperk("specialty_additionalprimaryweapon") && a_weapons.size > 1) {
@@ -469,18 +335,9 @@ function should_take_weapon() {
   return false;
 }
 
-/*
-	Name: function_6590511d
-	Namespace: zm_island_ww_quest
-	Checksum: 0x275B652B
-	Offset: 0x2A80
-	Size: 0x17E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6590511d() {
   level flag::wait_till("power_on");
-  level waittill(# "start_of_round");
+  level waittill("start_of_round");
   wait(randomintrange(5, 8));
   while (true) {
     ai_carrier = function_1c683357();
@@ -502,15 +359,6 @@ function function_6590511d() {
   }
 }
 
-/*
-	Name: function_1c683357
-	Namespace: zm_island_ww_quest
-	Checksum: 0x1156211A
-	Offset: 0x2C08
-	Size: 0x2B2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1c683357() {
   a_ai_zombies = getaiteamarray(level.zombie_team);
   var_2513c269 = [];
@@ -531,15 +379,6 @@ function function_1c683357() {
   }
 }
 
-/*
-	Name: function_f5d430d7
-	Namespace: zm_island_ww_quest
-	Checksum: 0x9055639E
-	Offset: 0x2EC8
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f5d430d7() {
   str_notify = self util::waittill_any_return("enemy_cleaned_up", "death");
   if(str_notify == "enemy_cleaned_up") {
@@ -559,35 +398,17 @@ function function_f5d430d7() {
   return false;
 }
 
-/*
-	Name: function_d7b19999
-	Namespace: zm_island_ww_quest
-	Checksum: 0x59F837AD
-	Offset: 0x3078
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d7b19999() {
-  self endon(# "death");
+  self endon("death");
   wait(20);
   self function_2fe542aa();
-  level notify(# "ww1_timed_out");
+  level notify("ww1_timed_out");
   zm_unitrigger::unregister_unitrigger(self.trigger);
   self delete();
 }
 
-/*
-	Name: function_2fe542aa
-	Namespace: zm_island_ww_quest
-	Checksum: 0x9C81D89A
-	Offset: 0x30F0
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2fe542aa() {
-  self endon(# "death");
+  self endon("death");
   for (i = 0; i < 40; i++) {
     if(i % 2) {
       self ghost();
@@ -606,15 +427,6 @@ function function_2fe542aa() {
   }
 }
 
-/*
-	Name: function_9bd3096f
-	Namespace: zm_island_ww_quest
-	Checksum: 0x3E1AF6D
-	Offset: 0x31A8
-	Size: 0x3E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_9bd3096f(player) {
   if(level flag::get("ww_obtained")) {
     return "";
@@ -622,15 +434,6 @@ function private function_9bd3096f(player) {
   return & "ZOMBIE_BUILD_PIECE_GRAB";
 }
 
-/*
-	Name: function_c3efae8e
-	Namespace: zm_island_ww_quest
-	Checksum: 0x73CC06D1
-	Offset: 0x31F0
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c3efae8e() {
   s_part = struct::get("ww_part_underwater", "script_noteworthy");
   mdl_part = util::spawn_model("p7_zm_isl_foliage_plant_underwater_01_red", s_part.origin);
@@ -640,15 +443,6 @@ function function_c3efae8e() {
   mdl_part thread function_2578c564("ww2_found");
 }
 
-/*
-	Name: function_7def4961
-	Namespace: zm_island_ww_quest
-	Checksum: 0x8DB34606
-	Offset: 0x32F8
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7def4961() {
   level.var_1dbad94a = 0;
   level.var_90e478e7 = 0;
@@ -667,15 +461,6 @@ function function_7def4961() {
   level thread function_ebbb27ae();
 }
 
-/*
-	Name: function_2020490f
-	Namespace: zm_island_ww_quest
-	Checksum: 0x8B1C5605
-	Offset: 0x3468
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2020490f(a_ents) {
   level.var_1a139831 = a_ents["fxanim_cage_trap_spid"];
   level.var_1a139831.var_272ec8a1 = 0;
@@ -686,34 +471,16 @@ function function_2020490f(a_ents) {
   var_ccefca71 linkto(level.var_1a139831);
 }
 
-/*
-	Name: function_385c3ebb
-	Namespace: zm_island_ww_quest
-	Checksum: 0x6EB19ABB
-	Offset: 0x3568
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function function_385c3ebb(a_ents) {
   level.var_17e2756d = a_ents["cage_trap_spid_hatch"];
 }
 
-/*
-	Name: function_9faff60c
-	Namespace: zm_island_ww_quest
-	Checksum: 0xFDDBEA2D
-	Offset: 0x3590
-	Size: 0x550
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9faff60c() {
   self.trigger = zm_island_util::spawn_trigger_radius(self.origin, 16, 1, & function_a50aa078);
   var_a78de5fc = getent("cage_entity", "targetname");
   var_c120c3f6 = getent("clip_jungle_door", "targetname");
   while (true) {
-    self.trigger waittill(# "trigger");
+    self.trigger waittill("trigger");
     if(!level.var_1dbad94a && !level flag::get("power_on")) {
       continue;
     }
@@ -767,14 +534,14 @@ function function_9faff60c() {
       if(!(isdefined(level.var_1deeff56) && level.var_1deeff56)) {
         level.var_1a139831 scene::play("p7_fxanim_zm_island_cage_trap_spid_down_open_bundle", level.var_1a139831);
         var_c120c3f6 movez(-100, 0.05);
-        var_c120c3f6 waittill(# "movedone");
+        var_c120c3f6 waittill("movedone");
         var_c120c3f6 solid();
         var_c120c3f6 disconnectpaths();
       }
     } else {
       level.var_1a139831.mdl_clip connectpaths();
       var_c120c3f6 movez(100, 0.05);
-      var_c120c3f6 waittill(# "movedone");
+      var_c120c3f6 waittill("movedone");
       var_c120c3f6 connectpaths();
     }
     if(isdefined(level.var_90e478e7) && level.var_90e478e7 && (isdefined(level.var_1deeff56) && level.var_1deeff56)) {
@@ -786,15 +553,6 @@ function function_9faff60c() {
   }
 }
 
-/*
-	Name: function_429e7f8a
-	Namespace: zm_island_ww_quest
-	Checksum: 0x841CD70D
-	Offset: 0x3AE8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function function_429e7f8a(b_state) {
   if(b_state) {
     wait(1.5);
@@ -804,15 +562,6 @@ function function_429e7f8a(b_state) {
   level.var_17e2756d scene::play("p7_fxanim_zm_island_cage_trap_spid_hatch_close_bundle", level.var_17e2756d);
 }
 
-/*
-	Name: function_a50aa078
-	Namespace: zm_island_ww_quest
-	Checksum: 0x5CA3BD2E
-	Offset: 0x3B68
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_a50aa078(player) {
   if(level.var_1a139831.var_272ec8a1) {
     return "";
@@ -832,21 +581,12 @@ function private function_a50aa078(player) {
   return "";
 }
 
-/*
-	Name: function_ebbb27ae
-	Namespace: zm_island_ww_quest
-	Checksum: 0x299D043F
-	Offset: 0x3C48
-	Size: 0x560
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ebbb27ae() {
-  level endon(# "hash_d8d0f829");
+  level endon("hash_d8d0f829");
   var_60532813 = getent("trigger_trap", "targetname");
   var_799520c1 = struct::get("trap_pos");
   while (true) {
-    var_60532813 waittill(# "trigger", ai_zombie);
+    var_60532813 waittill("trigger", ai_zombie);
     if(!ai_zombie.b_is_spider) {
       continue;
     }
@@ -879,7 +619,7 @@ function function_ebbb27ae() {
       ai_zombie.e_mover.targetname = "tag_align";
       ai_zombie linkto(ai_zombie.e_mover);
       ai_zombie.e_mover moveto(var_799520c1.origin, 1);
-      ai_zombie.e_mover waittill(# "movedone");
+      ai_zombie.e_mover waittill("movedone");
       ai_zombie.e_mover linkto(level.var_1a139831);
       ai_zombie.e_mover thread scene::play("zm_dlc2_spider_trapped_in_cage_loop", ai_zombie);
       level.var_67359403 = 1;
@@ -895,7 +635,7 @@ function function_ebbb27ae() {
         level.var_1a139831.var_272ec8a1 = 1;
         var_db6efb17 = getent("venom_extractor", "targetname");
         var_db6efb17 thread scene::play("p7_fxanim_zm_island_venom_extractor_bundle", var_db6efb17);
-        level waittill(# "hash_e48828c5");
+        level waittill("hash_e48828c5");
         ai_zombie.allowdeath = 1;
         ai_zombie dodamage(ai_zombie.health, ai_zombie.origin);
         var_ccefca71 = getent("spider_bait", "targetname");
@@ -908,15 +648,6 @@ function function_ebbb27ae() {
   }
 }
 
-/*
-	Name: function_cc8fe309
-	Namespace: zm_island_ww_quest
-	Checksum: 0xB9E7E88
-	Offset: 0x41B0
-	Size: 0x152
-	Parameters: 2
-	Flags: Linked
-*/
 function function_cc8fe309(var_c79d3f71, var_18130313) {
   if(isdefined(var_c79d3f71.var_41ff1b25) && var_c79d3f71.var_41ff1b25) {
     level._powerup_timeout_custom_time = & namespace_1aa6bd0c::function_3321a018;
@@ -931,15 +662,6 @@ function function_cc8fe309(var_c79d3f71, var_18130313) {
   level.zm_override_ai_aftermath_powerup_drop = undefined;
 }
 
-/*
-	Name: function_23d17338
-	Namespace: zm_island_ww_quest
-	Checksum: 0x56797A6D
-	Offset: 0x4310
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function function_23d17338(var_7afe5e99 = 1) {
   var_a2176993 = getent("jungle_lab_ee_control_panel_elf", "targetname");
   if(var_7afe5e99) {
@@ -949,15 +671,6 @@ function function_23d17338(var_7afe5e99 = 1) {
   }
 }
 
-/*
-	Name: function_cea70075
-	Namespace: zm_island_ww_quest
-	Checksum: 0xC75EF6D4
-	Offset: 0x43B0
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cea70075() {
   self util::waittill_notify_or_timeout("death", 90);
   if(isalive(self) && !level.var_1a139831.var_272ec8a1) {
@@ -970,15 +683,6 @@ function function_cea70075() {
   level.var_67359403 = 0;
 }
 
-/*
-	Name: function_4a13e10b
-	Namespace: zm_island_ww_quest
-	Checksum: 0xFE35170D
-	Offset: 0x4498
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4a13e10b() {
   level flag::set("pool_filled");
   var_bbcd41a3 = struct::get("vial_pos").origin;
@@ -989,15 +693,6 @@ function function_4a13e10b() {
   level thread zm_island_vo::function_3bf2d62a("spider_venom", 1, 0, 0);
 }
 
-/*
-	Name: any_player_is_touching
-	Namespace: zm_island_ww_quest
-	Checksum: 0x788BEA15
-	Offset: 0x45B8
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function any_player_is_touching(ent) {
   foreach(player in level.players) {
     if(isalive(player) && player istouching(ent)) {
@@ -1007,15 +702,6 @@ function any_player_is_touching(ent) {
   return false;
 }
 
-/*
-	Name: function_baa845f4
-	Namespace: zm_island_ww_quest
-	Checksum: 0x4FFED459
-	Offset: 0x4680
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_baa845f4() {
   n_radius = 24;
   n_height = 100;
@@ -1027,17 +713,8 @@ function function_baa845f4() {
   t_kill delete();
 }
 
-/*
-	Name: function_1228bd27
-	Namespace: zm_island_ww_quest
-	Checksum: 0x1359E518
-	Offset: 0x4740
-	Size: 0x1A8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1228bd27() {
-  self endon(# "death");
+  self endon("death");
   v_moveto = undefined;
   v_org = (-1135, 367, -115);
   e_linkto = getent("cage_linkto", "targetname");
@@ -1057,30 +734,12 @@ function function_1228bd27() {
   }
 }
 
-/*
-	Name: function_c5cd1083
-	Namespace: zm_island_ww_quest
-	Checksum: 0x27ED3FD4
-	Offset: 0x48F0
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c5cd1083() {
   level.var_9fce15de = getent("trigger_inside_cage", "targetname");
   level.var_9fce15de setinvisibletoall();
   level.var_2ba557f2 = getent("clip_swamp_hatch", "targetname");
 }
 
-/*
-	Name: function_cc882a46
-	Namespace: zm_island_ww_quest
-	Checksum: 0x5152E65E
-	Offset: 0x4968
-	Size: 0x4C0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cc882a46() {
   var_85b2b1ab = getent("wwup_station", "targetname");
   var_85b2b1ab scene::init("p7_fxanim_zm_island_mirg_centrifuge_table_gun_up_bundle", var_85b2b1ab);
@@ -1091,7 +750,7 @@ function function_cc882a46() {
   level flag::wait_till("ww_obtained");
   self.trigger = zm_island_util::spawn_trigger_radius(self.origin, 50, 1, & function_5521d6b5);
   while (true) {
-    self.trigger waittill(# "trigger", player);
+    self.trigger waittill("trigger", player);
     if(level flag::get("wwup1_found")) {
       var_218752f9 showpart("j_glow_red");
     }
@@ -1135,15 +794,6 @@ function function_cc882a46() {
   }
 }
 
-/*
-	Name: function_5521d6b5
-	Namespace: zm_island_ww_quest
-	Checksum: 0xF2EA3058
-	Offset: 0x4E30
-	Size: 0xE2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_5521d6b5(player) {
   if(level flag::get("wwup_ready") && !player zm_hero_weapon::is_hero_weapon_in_use()) {
     return & "ZM_ISLAND_WONDERWEAPON_UP_PICKUP";
@@ -1154,19 +804,10 @@ function private function_5521d6b5(player) {
   return "";
 }
 
-/*
-	Name: function_9f93c407
-	Namespace: zm_island_ww_quest
-	Checksum: 0x30D99C1D
-	Offset: 0x4F20
-	Size: 0x250
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9f93c407(player) {
-  player endon(# "player_upgraded_ww");
+  player endon("player_upgraded_ww");
   while (true) {
-    self waittill(# "trigger", e_who);
+    self waittill("trigger", e_who);
     if(e_who == player && !e_who zm_hero_weapon::is_hero_weapon_in_use()) {
       if(player zm_utility::in_revive_trigger()) {
         continue;
@@ -1190,23 +831,14 @@ function function_9f93c407(player) {
       player switchtoweapon(level.var_a4052592);
       var_85b2b1ab = getent("wwup_station", "targetname");
       var_85b2b1ab detach(level.var_7cb81d3c.model, "mirg_cent_gun_tag_jnt");
-      player notify(# "player_upgraded_ww");
+      player notify("player_upgraded_ww");
     }
   }
 }
 
-/*
-	Name: function_598781a4
-	Namespace: zm_island_ww_quest
-	Checksum: 0xEBA6EF59
-	Offset: 0x5178
-	Size: 0x13A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_598781a4() {
-  self endon(# "disconnect");
-  level endon(# "hash_5d5bf177");
+  self endon("disconnect");
+  level endon("hash_5d5bf177");
   level flag::wait_till("trilogy_released");
   var_537f25a1 = getent("ww_upgrade_cave_blocker", "targetname");
   self zm_island_util::function_7448e472(var_537f25a1);
@@ -1217,18 +849,9 @@ function function_598781a4() {
     e_rock thread function_d5faaef8();
   }
   callback::remove_on_spawned( & function_598781a4);
-  level notify(# "hash_5d5bf177");
+  level notify("hash_5d5bf177");
 }
 
-/*
-	Name: function_d5faaef8
-	Namespace: zm_island_ww_quest
-	Checksum: 0xE3F8A8A2
-	Offset: 0x52C0
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d5faaef8() {
   if(!(isdefined(self.var_7a022fa0) && self.var_7a022fa0)) {
     self.var_7a022fa0 = 1;
@@ -1239,15 +862,6 @@ function function_d5faaef8() {
   }
 }
 
-/*
-	Name: function_c9d8bea4
-	Namespace: zm_island_ww_quest
-	Checksum: 0xD3BFA599
-	Offset: 0x5340
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c9d8bea4(a_ents) {
   level.var_f353ae68 = a_ents["fxanim_cage_trap"];
   level.var_f353ae68.b_occupied = 0;
@@ -1257,32 +871,14 @@ function function_c9d8bea4(a_ents) {
   level.var_f353ae68 setignorepauseworld(1);
 }
 
-/*
-	Name: function_4ee53d8b
-	Namespace: zm_island_ww_quest
-	Checksum: 0x276E1AE0
-	Offset: 0x53D8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4ee53d8b(a_ents) {
   level.mdl_hatch = a_ents["cage_trap_hatch"];
   level.mdl_hatch setignorepauseworld(1);
 }
 
-/*
-	Name: hatch_open
-	Namespace: zm_island_ww_quest
-	Checksum: 0xEDACB5BD
-	Offset: 0x5420
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function hatch_open(a_ents) {
   level thread function_e3f30b83(1);
-  level waittill(# "open_hatch");
+  level waittill("open_hatch");
   hatch_clip(0);
   level.mdl_hatch thread scene::play("p7_fxanim_zm_island_cage_trap_hatch_open_bundle", level.mdl_hatch);
   wait(3);
@@ -1290,17 +886,8 @@ function hatch_open(a_ents) {
   hatch_clip(1);
 }
 
-/*
-	Name: function_10877763
-	Namespace: zm_island_ww_quest
-	Checksum: 0x7E630A67
-	Offset: 0x54E0
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_10877763(a_ents) {
-  level waittill(# "hash_40a91595");
+  level waittill("hash_40a91595");
   hatch_clip(0);
   level.mdl_hatch thread scene::play("p7_fxanim_zm_island_cage_trap_hatch_open_bundle", level.mdl_hatch);
   wait(3);
@@ -1308,15 +895,6 @@ function function_10877763(a_ents) {
   hatch_clip(1);
 }
 
-/*
-	Name: hatch_clip
-	Namespace: zm_island_ww_quest
-	Checksum: 0x457A6203
-	Offset: 0x5588
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function hatch_clip(b_connect) {
   if(b_connect) {
     n_dist = 100;
@@ -1324,7 +902,7 @@ function hatch_clip(b_connect) {
     n_dist = -100;
   }
   level.var_2ba557f2 movez(n_dist, 0.05);
-  level.var_2ba557f2 waittill(# "movedone");
+  level.var_2ba557f2 waittill("movedone");
   if(b_connect) {
     level.var_2ba557f2 connectpaths();
   } else {
@@ -1332,43 +910,25 @@ function hatch_clip(b_connect) {
   }
 }
 
-/*
-	Name: function_1dc42fdf
-	Namespace: zm_island_ww_quest
-	Checksum: 0xCA921888
-	Offset: 0x5640
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1dc42fdf(var_7afe5e99 = 1) {
   var_a2176993 = getent("swamp_lab_ee_control_panel_elf", "targetname");
   if(var_7afe5e99) {
     var_a2176993 setmodel("p7_zm_isl_control_panel_cage");
     if(level.var_f353ae68.is_down) {
-      level.var_e48a6587 sethintstring( & "ZM_ISLAND_CAGE_RAISE");
+      level.var_e48a6587 sethintstring(&"ZM_ISLAND_CAGE_RAISE");
     } else {
-      level.var_e48a6587 sethintstring( & "ZM_ISLAND_CAGE_LOWER");
+      level.var_e48a6587 sethintstring(&"ZM_ISLAND_CAGE_LOWER");
     }
   } else {
     var_a2176993 setmodel("p7_zm_isl_control_panel_cage_off");
-    level.var_e48a6587 sethintstring( & "ZOMBIE_NEED_POWER");
+    level.var_e48a6587 sethintstring(&"ZOMBIE_NEED_POWER");
   }
 }
 
-/*
-	Name: function_961485f0
-	Namespace: zm_island_ww_quest
-	Checksum: 0x8CD414A0
-	Offset: 0x5758
-	Size: 0x410
-	Parameters: 0
-	Flags: Linked
-*/
 function function_961485f0() {
   level.var_e48a6587 = getent("trigger_swamp_cage", "targetname");
   level.var_e48a6587 setcursorhint("HINT_NOICON");
-  level.var_e48a6587 sethintstring( & "ZOMBIE_NEED_POWER");
+  level.var_e48a6587 sethintstring(&"ZOMBIE_NEED_POWER");
   level.var_e48a6587.is_charged = 0;
   level.var_2e16e689 = 0;
   var_964b337d = getent("clip_cage_control", "targetname");
@@ -1389,13 +949,13 @@ function function_961485f0() {
   while (!level.var_2e16e689) {
     wait(0.1);
   }
-  level.var_e48a6587 sethintstring( & "ZM_ISLAND_CAGE_LOWER");
+  level.var_e48a6587 sethintstring(&"ZM_ISLAND_CAGE_LOWER");
   while (true) {
     while (level.var_f353ae68.is_moving) {
       util::wait_network_frame();
     }
-    level.var_e48a6587 waittill(# "trigger", player);
-    level notify(# "hash_9d1c8527");
+    level.var_e48a6587 waittill("trigger", player);
+    level notify("hash_9d1c8527");
     if(level.var_f353ae68.is_moving) {
       continue;
     }
@@ -1416,37 +976,19 @@ function function_961485f0() {
   }
 }
 
-/*
-	Name: function_1d3366a8
-	Namespace: zm_island_ww_quest
-	Checksum: 0x4FD136B4
-	Offset: 0x5B70
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1d3366a8() {
-  level endon(# "hash_9d1c8527");
+  level endon("hash_9d1c8527");
   wait(60);
   if(level.var_f353ae68.is_down && !level.var_f353ae68.is_moving) {
     function_3cd05ecf("up");
   }
 }
 
-/*
-	Name: function_871dbb3a
-	Namespace: zm_island_ww_quest
-	Checksum: 0x3BF1C5AE
-	Offset: 0x5BD0
-	Size: 0x1FC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_871dbb3a() {
   level flag::wait_till("power_on");
   level.var_9fce15de setvisibletoall();
   while (true) {
-    level.var_9fce15de waittill(# "trigger", player);
+    level.var_9fce15de waittill("trigger", player);
     if(level.var_f353ae68.is_moving) {
       continue;
     }
@@ -1472,15 +1014,6 @@ function function_871dbb3a() {
   }
 }
 
-/*
-	Name: function_d452a2ca
-	Namespace: zm_island_ww_quest
-	Checksum: 0x2A82EFD6
-	Offset: 0x5DD8
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d452a2ca(player) {
   e_linkto = getent("cage_linkto", "targetname");
   e_linkto linkto(level.var_f353ae68);
@@ -1489,17 +1022,8 @@ function function_d452a2ca(player) {
   player playerlinkto(e_linkto);
 }
 
-/*
-	Name: function_e2cd4141
-	Namespace: zm_island_ww_quest
-	Checksum: 0xEC17AE4E
-	Offset: 0x5E80
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e2cd4141() {
-  self waittill(# "charged");
+  self waittill("charged");
   level.var_e48a6587.is_charged = 1;
   if(!level.var_f353ae68.is_down && !level.var_326fd87.is_open) {
     self.var_3c8bdb5a = 1;
@@ -1508,15 +1032,6 @@ function function_e2cd4141() {
   }
 }
 
-/*
-	Name: function_953bec10
-	Namespace: zm_island_ww_quest
-	Checksum: 0xE6294A61
-	Offset: 0x5F10
-	Size: 0x194
-	Parameters: 1
-	Flags: Linked
-*/
 function function_953bec10(str_state) {
   var_ac769486 = getent("clip_cage_swamp_door", "targetname");
   if(str_state == "close") {
@@ -1528,7 +1043,7 @@ function function_953bec10(str_state) {
   }
   self rotateyaw(n_rotate, 2);
   self playsound("evt_spider_gate_move");
-  self waittill(# "rotatedone");
+  self waittill("rotatedone");
   if(str_state == "close") {
     self.is_open = 0;
     level.var_f353ae68 scene::play("p7_fxanim_zm_island_cage_trap_tp_door_close_bundle", level.var_f353ae68);
@@ -1540,15 +1055,6 @@ function function_953bec10(str_state) {
   }
 }
 
-/*
-	Name: function_3cd05ecf
-	Namespace: zm_island_ww_quest
-	Checksum: 0xFC7F169D
-	Offset: 0x60B0
-	Size: 0x4DA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3cd05ecf(str_direction) {
   level thread function_46d3d1b0(1);
   level.var_f353ae68.is_moving = 1;
@@ -1577,7 +1083,7 @@ function function_3cd05ecf(str_direction) {
       level.var_f353ae68 scene::play("p7_fxanim_zm_island_cage_trap_mid_down_bundle", level.var_f353ae68);
     }
     wait(0.5);
-    level.var_e48a6587 sethintstring( & "ZM_ISLAND_CAGE_RAISE");
+    level.var_e48a6587 sethintstring(&"ZM_ISLAND_CAGE_RAISE");
   } else {
     t_kill = spawn("trigger_radius", (2591, 765, -475), 0, 20, 40);
     t_kill thread function_6a47d3d7();
@@ -1593,7 +1099,7 @@ function function_3cd05ecf(str_direction) {
       level.var_326fd87 function_953bec10("open");
     }
     wait(0.5);
-    level.var_e48a6587 sethintstring( & "ZM_ISLAND_CAGE_LOWER");
+    level.var_e48a6587 sethintstring(&"ZM_ISLAND_CAGE_LOWER");
     t_kill delete();
   }
   level.var_f353ae68.is_moving = 0;
@@ -1608,15 +1114,6 @@ function function_3cd05ecf(str_direction) {
   }
 }
 
-/*
-	Name: function_46d3d1b0
-	Namespace: zm_island_ww_quest
-	Checksum: 0x493D0179
-	Offset: 0x6598
-	Size: 0x15A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_46d3d1b0(var_9330a364) {
   if(var_9330a364) {
     foreach(player in level.players) {
@@ -1633,15 +1130,6 @@ function function_46d3d1b0(var_9330a364) {
   }
 }
 
-/*
-	Name: function_e3f30b83
-	Namespace: zm_island_ww_quest
-	Checksum: 0xBA0801E5
-	Offset: 0x6700
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e3f30b83(b_charged) {
   n_radius = 25;
   n_height = 100;
@@ -1657,17 +1145,8 @@ function function_e3f30b83(b_charged) {
   t_kill delete();
 }
 
-/*
-	Name: function_6a47d3d7
-	Namespace: zm_island_ww_quest
-	Checksum: 0xB11F6CD3
-	Offset: 0x67D8
-	Size: 0x1F8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6a47d3d7() {
-  self endon(# "death");
+  self endon("death");
   v_moveto = undefined;
   v_org = (2671, 851, -687);
   e_linkto = getent("cage_linkto", "targetname");
@@ -1690,34 +1169,16 @@ function function_6a47d3d7() {
   }
 }
 
-/*
-	Name: function_bc717528
-	Namespace: zm_island_ww_quest
-	Checksum: 0x63C6619D
-	Offset: 0x69D8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bc717528() {
   self.var_1da52e7e = zm_island_util::spawn_trigger_radius(self gettagorigin("Tag_tooth_RI"), 50, 1, & function_2f27cb1);
   self thread function_72c5554a("wwup2_found");
 }
 
-/*
-	Name: function_72c5554a
-	Namespace: zm_island_ww_quest
-	Checksum: 0x88BBDE9B
-	Offset: 0x6A50
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_72c5554a(str_flag) {
   while (true) {
-    self.var_1da52e7e waittill(# "trigger", player);
+    self.var_1da52e7e waittill("trigger", player);
     if(zm_utility::is_player_valid(player)) {
-      player notify(# "player_got_ww_part");
+      player notify("player_got_ww_part");
       zm_unitrigger::unregister_unitrigger(self);
       level flag::set(str_flag);
       self.var_1da52e7e = undefined;
@@ -1728,28 +1189,10 @@ function function_72c5554a(str_flag) {
   }
 }
 
-/*
-	Name: function_2f27cb1
-	Namespace: zm_island_ww_quest
-	Checksum: 0x554A3654
-	Offset: 0x6B30
-	Size: 0x12
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_2f27cb1(player) {
   return "";
 }
 
-/*
-	Name: function_b7685b2e
-	Namespace: zm_island_ww_quest
-	Checksum: 0xE0C304BD
-	Offset: 0x6B50
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b7685b2e() {
   var_f96ad154 = struct::get("ee_planting_spot", "script_noteworthy");
   var_4b9ce062 = util::spawn_model("tag_origin", var_f96ad154.origin);
@@ -1759,15 +1202,6 @@ function function_b7685b2e() {
   var_4b9ce062 thread function_2578c564("wwup3_found");
 }
 
-/*
-	Name: function_e2b90d40
-	Namespace: zm_island_ww_quest
-	Checksum: 0xD10DCCA1
-	Offset: 0x6C40
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e2b90d40() {
   var_2c2cf2e6 = struct::get("wweapon_up_part_wwup1");
   var_babd6f9c = util::spawn_model("p7_zm_bgb_vial", var_2c2cf2e6.origin, var_2c2cf2e6.angles);
@@ -1775,15 +1209,6 @@ function function_e2b90d40() {
   var_babd6f9c thread function_2578c564("wwup1_found");
 }
 
-/*
-	Name: function_ce9a171c
-	Namespace: zm_island_ww_quest
-	Checksum: 0x8DBA6D1F
-	Offset: 0x6D10
-	Size: 0x2B6
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ce9a171c(str_flag) {
   a_players = [];
   if(self == level) {
@@ -1820,17 +1245,7 @@ function function_ce9a171c(str_flag) {
   }
 }
 
-/*
-	Name: function_982c97e5
-	Namespace: zm_island_ww_quest
-	Checksum: 0x796117BD
-	Offset: 0x6FD0
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function function_982c97e5() {
-  /#
   zm_devgui::add_custom_devgui_callback( & function_efbc0e1);
   adddebugcommand("");
   adddebugcommand("");
@@ -1841,20 +1256,9 @@ function function_982c97e5() {
   adddebugcommand("");
   adddebugcommand("");
   adddebugcommand("");
-  # /
 }
 
-/*
-	Name: function_efbc0e1
-	Namespace: zm_island_ww_quest
-	Checksum: 0x9E79C1CE
-	Offset: 0x70E0
-	Size: 0x42C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_efbc0e1(cmd) {
-  /#
   switch (cmd) {
     case "": {
       level flag::set("");
@@ -1918,5 +1322,4 @@ function function_efbc0e1(cmd) {
     }
   }
   return false;
-  # /
 }

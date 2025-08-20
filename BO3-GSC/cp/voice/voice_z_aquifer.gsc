@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_z_aquifer.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_f4f2fcc8;
 
-/*
-	Name: init_voice
-	Namespace: namespace_f4f2fcc8
-	Checksum: 0x2B2141DC
-	Offset: 0x1270
-	Size: 0xBA4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("salm_tell_me_what_happene_1", "vox_zaqu_2_01_000_salm");
   dialog::add("plyz_our_dni_there_was_0", "vox_zaqu_2_01_001_plyz");

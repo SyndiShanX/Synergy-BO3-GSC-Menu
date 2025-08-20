@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_contracts.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
@@ -12,47 +16,17 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapon_utils;
-
 #namespace contracts;
 
-/*
-	Name: __init__sytem__
-	Namespace: contracts
-	Checksum: 0x3249040E
-	Offset: 0x6A0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("contracts", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: contracts
-	Checksum: 0x850AAA27
-	Offset: 0x6E0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & start_gametype);
-  /#
   level thread watch_contract_debug();
-  # /
 }
 
-/*
-	Name: start_gametype
-	Namespace: contracts
-	Checksum: 0x89AA1D43
-	Offset: 0x728
-	Size: 0x2A4
-	Parameters: 0
-	Flags: Linked
-*/
 function start_gametype() {
   if(!isdefined(level.challengescallbacks)) {
     level.challengescallbacks = [];
@@ -60,10 +34,8 @@ function start_gametype() {
   util::init_player_contract_events();
   waittillframeend();
   if(can_process_contracts()) {
-    /#
     execdevgui("");
-    # /
-      challenges::registerchallengescallback("playerKilled", & contract_kills);
+    challenges::registerchallengescallback("playerKilled", & contract_kills);
     challenges::registerchallengescallback("gameEnd", & contract_game_ended);
     globallogic_score::registercontractwinevent( & contract_win);
     scoreevents::register_hero_ability_kill_event( & on_hero_ability_kill);
@@ -81,41 +53,14 @@ function start_gametype() {
   callback::on_connect( & on_player_connect);
 }
 
-/*
-	Name: on_killed_hero_ability_enemy
-	Namespace: contracts
-	Checksum: 0xA83D543F
-	Offset: 0x9D8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_killed_hero_ability_enemy() {
   self add_stat(1014);
 }
 
-/*
-	Name: on_killed_hero_weapon_enemy
-	Namespace: contracts
-	Checksum: 0x130E2875
-	Offset: 0xA00
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_killed_hero_weapon_enemy() {
   self add_stat(1014);
 }
 
-/*
-	Name: on_player_connect
-	Namespace: contracts
-	Checksum: 0x6ED1C92C
-	Offset: 0xA28
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   player = self;
   if(can_process_contracts()) {
@@ -123,15 +68,6 @@ function on_player_connect() {
   }
 }
 
-/*
-	Name: can_process_contracts
-	Namespace: contracts
-	Checksum: 0x160BBED6
-	Offset: 0xA70
-	Size: 0x42
-	Parameters: 0
-	Flags: Linked
-*/
 function can_process_contracts() {
   if(getdvarint("contracts_enabled_mp", 1) == 0) {
     return 0;
@@ -139,15 +75,6 @@ function can_process_contracts() {
   return challenges::canprocesschallenges();
 }
 
-/*
-	Name: setup_player_contracts
-	Namespace: contracts
-	Checksum: 0xB6C88943
-	Offset: 0xAC0
-	Size: 0x2B2
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_player_contracts() {
   player = self;
   player.pers["contracts"] = [];
@@ -169,20 +96,10 @@ function setup_player_contracts() {
   }
 }
 
-/*
-	Name: watch_contract_debug
-	Namespace: contracts
-	Checksum: 0x7858D105
-	Offset: 0xD80
-	Size: 0x658
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_contract_debug() {
-  /#
-  level notify(# "watch_contract_debug_singleton");
-  level endon(# "watch_contract_debug_singleton");
-  level endon(# "game_ended");
+  level notify("watch_contract_debug_singleton");
+  level endon("watch_contract_debug_singleton");
+  level endon("game_ended");
   while (true) {
     if(getdvarint("") > 0) {
       if(isdefined(level.players)) {
@@ -256,18 +173,8 @@ function watch_contract_debug() {
     }
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: is_contract_active
-	Namespace: contracts
-	Checksum: 0x7F21C2AF
-	Offset: 0x13E0
-	Size: 0x98
-	Parameters: 1
-	Flags: Linked
-*/
 function is_contract_active(challenge_index) {
   if(!isplayer(self)) {
     return false;
@@ -284,15 +191,6 @@ function is_contract_active(challenge_index) {
   return true;
 }
 
-/*
-	Name: on_hero_ability_kill
-	Namespace: contracts
-	Checksum: 0xEFF8A2D9
-	Offset: 0x1480
-	Size: 0x4A
-	Parameters: 2
-	Flags: Linked
-*/
 function on_hero_ability_kill(ability, victimability) {
   player = self;
   if(!isdefined(player) || !isplayer(player)) {
@@ -300,15 +198,6 @@ function on_hero_ability_kill(ability, victimability) {
   }
 }
 
-/*
-	Name: on_hero_ability_medal
-	Namespace: contracts
-	Checksum: 0xAB2A75B7
-	Offset: 0x14D8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_hero_ability_medal() {
   player = self;
   if(!isdefined(player) || !isplayer(player)) {
@@ -318,15 +207,6 @@ function on_hero_ability_medal() {
   player add_stat(3);
 }
 
-/*
-	Name: on_hero_ability_multikill
-	Namespace: contracts
-	Checksum: 0x807D2E7C
-	Offset: 0x1550
-	Size: 0x4A
-	Parameters: 2
-	Flags: Linked
-*/
 function on_hero_ability_multikill(killcount, ability) {
   player = self;
   if(!isdefined(player) || !isplayer(player)) {
@@ -334,15 +214,6 @@ function on_hero_ability_multikill(killcount, ability) {
   }
 }
 
-/*
-	Name: on_hero_weapon_multikill
-	Namespace: contracts
-	Checksum: 0xBD1CCE6
-	Offset: 0x15A8
-	Size: 0x4A
-	Parameters: 2
-	Flags: Linked
-*/
 function on_hero_weapon_multikill(killcount, weapon) {
   player = self;
   if(!isdefined(player) || !isplayer(player)) {
@@ -350,44 +221,17 @@ function on_hero_weapon_multikill(killcount, weapon) {
   }
 }
 
-/*
-	Name: on_player_score
-	Namespace: contracts
-	Checksum: 0xA516D792
-	Offset: 0x1600
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_score(delta_score) {
   self add_stat(1009, delta_score);
   self add_stat(5, delta_score);
 }
 
-/*
-	Name: on_killstreak_score
-	Namespace: contracts
-	Checksum: 0x3E45FBFE
-	Offset: 0x1658
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function on_killstreak_score(delta_score, killstreak_purchased) {
   if(killstreak_purchased) {
     self add_stat(1011, delta_score);
   }
 }
 
-/*
-	Name: contract_kills
-	Namespace: contracts
-	Checksum: 0x63EF2311
-	Offset: 0x16A0
-	Size: 0x474
-	Parameters: 1
-	Flags: Linked
-*/
 function contract_kills(data) {
   victim = data.victim;
   attacker = data.attacker;
@@ -465,39 +309,19 @@ function contract_kills(data) {
   }
 }
 
-/*
-	Name: add_stat
-	Namespace: contracts
-	Checksum: 0x42B9B06F
-	Offset: 0x1B20
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function add_stat(contract_index, delta) {
   if(self is_contract_active(contract_index)) {
     self add_active_stat(contract_index, delta);
   }
 }
 
-/*
-	Name: add_active_stat
-	Namespace: contracts
-	Checksum: 0x2F24C64F
-	Offset: 0x1B78
-	Size: 0x5FC
-	Parameters: 2
-	Flags: Linked
-*/
 function add_active_stat(contract_index, delta = 1) {
   slot = self.pers["contracts"][contract_index].slot;
   target_value = self.pers["contracts"][contract_index].target_value;
-  /#
   if(getdvarint("", 0) > 0) {
     delta = delta * getdvarint("", 1);
   }
-  # /
-    old_progress = get_contract_stat(slot, "progress");
+  old_progress = get_contract_stat(slot, "progress");
   new_progress = old_progress + delta;
   if(new_progress > target_value) {
     new_progress = target_value;
@@ -550,7 +374,6 @@ function add_active_stat(contract_index, delta = 1) {
         self set_contract_stat(3, "award_given", 1);
       }
     }
-    /#
     test_slot = getdvarint("", 9);
     if(slot == test_slot) {
       if(contract_index >= 1000 && contract_index <= 2999) {
@@ -558,64 +381,25 @@ function add_active_stat(contract_index, delta = 1) {
       }
       display_rewards = 1;
     }
-    # /
-      self luinotifyevent(event, 2, contract_index, display_rewards);
+    self luinotifyevent(event, 2, contract_index, display_rewards);
   }
-  /#
   if(getdvarint("", 0) > 0) {
     iprintln((((((("" + slot) + "") + contract_index) + "") + new_progress) + "") + target_value);
   }
-  # /
 }
 
-/*
-	Name: get_contract_stat
-	Namespace: contracts
-	Checksum: 0xAFAB6906
-	Offset: 0x2180
-	Size: 0x3A
-	Parameters: 2
-	Flags: Linked
-*/
 function get_contract_stat(slot, stat_name) {
   return self getdstat("contracts", slot, stat_name);
 }
 
-/*
-	Name: set_contract_stat
-	Namespace: contracts
-	Checksum: 0xAACED76D
-	Offset: 0x21C8
-	Size: 0x42
-	Parameters: 3
-	Flags: Linked
-*/
 function set_contract_stat(slot, stat_name, stat_value) {
   return self setdstat("contracts", slot, stat_name, stat_value);
 }
 
-/*
-	Name: set_contract_award_stat
-	Namespace: contracts
-	Checksum: 0x3FC6FE7A
-	Offset: 0x2218
-	Size: 0x4A
-	Parameters: 3
-	Flags: Linked
-*/
 function set_contract_award_stat(award_type, stat_name, stat_value = 1) {
   return self addplayerstat(stat_name, stat_value);
 }
 
-/*
-	Name: set_contract_award_stat_from_path
-	Namespace: contracts
-	Checksum: 0xA578165B
-	Offset: 0x2270
-	Size: 0x36E
-	Parameters: 2
-	Flags: Linked
-*/
 function set_contract_award_stat_from_path(stat_path, stat_value) {
   stat_path_array = strtok(stat_path, " ");
   string_path_1 = "";
@@ -677,23 +461,12 @@ function set_contract_award_stat_from_path(stat_path, stat_value) {
       break;
     }
     default: {
-      /#
       assertmsg(("" + stat_path_array.size) + "");
-      # /
-        break;
+      break;
     }
   }
 }
 
-/*
-	Name: award_loot_xp_due
-	Namespace: contracts
-	Checksum: 0xF17A2E27
-	Offset: 0x25E8
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function award_loot_xp_due(amount) {
   if(!isdefined(self)) {
     return;
@@ -706,15 +479,6 @@ function award_loot_xp_due(amount) {
   self setdstat("mp_loot_xp_due", new_amount);
 }
 
-/*
-	Name: get_hero_weapon_mask
-	Namespace: contracts
-	Checksum: 0x982BDD84
-	Offset: 0x26A0
-	Size: 0x14E
-	Parameters: 2
-	Flags: None
-*/
 function get_hero_weapon_mask(attacker, weapon) {
   if(!isdefined(weapon)) {
     return 0;
@@ -772,15 +536,6 @@ function get_hero_weapon_mask(attacker, weapon) {
   }
 }
 
-/*
-	Name: get_hero_ability_mask
-	Namespace: contracts
-	Checksum: 0x9A4837AF
-	Offset: 0x27F8
-	Size: 0xE2
-	Parameters: 1
-	Flags: None
-*/
 function get_hero_ability_mask(ability) {
   if(!isdefined(ability)) {
     return 0;
@@ -828,26 +583,8 @@ function get_hero_ability_mask(ability) {
   }
 }
 
-/*
-	Name: contract_game_ended
-	Namespace: contracts
-	Checksum: 0x46C035A5
-	Offset: 0x28E8
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function contract_game_ended(data) {}
 
-/*
-	Name: contract_win
-	Namespace: contracts
-	Checksum: 0xE8179616
-	Offset: 0x2900
-	Size: 0x2CC
-	Parameters: 1
-	Flags: Linked
-*/
 function contract_win(winner) {
   winner add_stat(1000);
   winner add_stat(1);
@@ -882,15 +619,6 @@ function contract_win(winner) {
   gametype_win(winner);
 }
 
-/*
-	Name: gametype_win
-	Namespace: contracts
-	Checksum: 0x89B99D78
-	Offset: 0x2BD8
-	Size: 0x1E2
-	Parameters: 1
-	Flags: Linked
-*/
 function gametype_win(winner) {
   switch (level.gametype) {
     case "tdm": {
@@ -943,56 +671,20 @@ function gametype_win(winner) {
   }
 }
 
-/*
-	Name: on_offender_kill
-	Namespace: contracts
-	Checksum: 0x6FF8581E
-	Offset: 0x2DC8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function on_offender_kill() {
   self add_stat(1018);
   self add_stat(6);
 }
 
-/*
-	Name: on_defender_kill
-	Namespace: contracts
-	Checksum: 0xEA689751
-	Offset: 0x2E08
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function on_defender_kill() {
   self add_stat(1017);
   self add_stat(6);
 }
 
-/*
-	Name: on_headshot_kill
-	Namespace: contracts
-	Checksum: 0xBD3E0955
-	Offset: 0x2E48
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function on_headshot_kill() {
   self add_stat(1016, 1);
 }
 
-/*
-	Name: award_loot_xp
-	Namespace: contracts
-	Checksum: 0x3CB0B94F
-	Offset: 0x2E78
-	Size: 0x238
-	Parameters: 0
-	Flags: None
-*/
 function award_loot_xp() {
   player = self;
   if(!isdefined(player.pers["contracts"])) {
@@ -1018,15 +710,6 @@ function award_loot_xp() {
   return loot_xp;
 }
 
-/*
-	Name: contract_slot_met
-	Namespace: contracts
-	Checksum: 0xBB1C970B
-	Offset: 0x30B8
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked
-*/
 function contract_slot_met(slot) {
   player = self;
   contract_index = get_contract_stat(slot, "index");
@@ -1038,42 +721,15 @@ function contract_slot_met(slot) {
   return progress >= target_value;
 }
 
-/*
-	Name: award_daily_contract
-	Namespace: contracts
-	Checksum: 0x8FA08BB7
-	Offset: 0x3198
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function award_daily_contract() {
   return getdvarint("daily_contract_cryptokey_reward_count", 10) * getdvarint("loot_cryptokeyCost", 100);
 }
 
-/*
-	Name: award_weekly_contract
-	Namespace: contracts
-	Checksum: 0xF8853F7C
-	Offset: 0x31E0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function award_weekly_contract() {
   self award_blackjack_contract();
   return getdvarint("weekly_contract_cryptokey_reward_count", 30) * getdvarint("loot_cryptokeyCost", 100);
 }
 
-/*
-	Name: award_blackjack_contract
-	Namespace: contracts
-	Checksum: 0x7C0478B8
-	Offset: 0x3240
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function award_blackjack_contract() {
   contract_count = self getdstat("blackjack_contract_count");
   reward_count = getdvarint("weekly_contract_blackjack_contract_reward_count", 1);

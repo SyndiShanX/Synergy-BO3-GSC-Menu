@@ -1,33 +1,18 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\teams\_teamset_axis.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\teams\_teamset;
-
 #namespace _teamset_axis;
 
-/*
-	Name: main
-	Namespace: _teamset_axis
-	Checksum: 0xD26A60AE
-	Offset: 0x2B8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   init("axis");
   _teamset::customteam_init();
   precache();
 }
 
-/*
-	Name: init
-	Namespace: _teamset_axis
-	Checksum: 0xB0E82F6A
-	Offset: 0x300
-	Size: 0x30A
-	Parameters: 1
-	Flags: Linked
-*/
 function init(team) {
   _teamset::init();
   game[team] = "axis";
@@ -56,13 +41,4 @@ function init(team) {
   game["flagmodels"]["neutral"] = "p7_mp_flag_neutral";
 }
 
-/*
-	Name: precache
-	Namespace: _teamset_axis
-	Checksum: 0x99EC1590
-	Offset: 0x618
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {}

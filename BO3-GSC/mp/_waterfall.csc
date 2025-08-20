@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_waterfall.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -8,18 +12,8 @@
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\water_surface;
-
 #namespace waterfall;
 
-/*
-	Name: waterfalloverlay
-	Namespace: waterfall
-	Checksum: 0x1A70C90F
-	Offset: 0x210
-	Size: 0xCA
-	Parameters: 1
-	Flags: None
-*/
 function waterfalloverlay(localclientnum) {
   triggers = getentarray(localclientnum, "waterfall", "targetname");
   foreach(trigger in triggers) {
@@ -27,15 +21,6 @@ function waterfalloverlay(localclientnum) {
   }
 }
 
-/*
-	Name: waterfallmistoverlay
-	Namespace: waterfall
-	Checksum: 0xFD5D4B84
-	Offset: 0x2E8
-	Size: 0xCA
-	Parameters: 1
-	Flags: None
-*/
 function waterfallmistoverlay(localclientnum) {
   triggers = getentarray(localclientnum, "waterfall_mist", "targetname");
   foreach(trigger in triggers) {
@@ -43,35 +28,17 @@ function waterfallmistoverlay(localclientnum) {
   }
 }
 
-/*
-	Name: waterfallmistoverlayreset
-	Namespace: waterfall
-	Checksum: 0x63426D8C
-	Offset: 0x3C0
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function waterfallmistoverlayreset(localclientnum) {
   localplayer = getlocalplayer(localclientnum);
   localplayer.rainopacity = 0;
 }
 
-/*
-	Name: setupwaterfallmist
-	Namespace: waterfall
-	Checksum: 0x3AFB91A9
-	Offset: 0x410
-	Size: 0x128
-	Parameters: 1
-	Flags: None
-*/
 function setupwaterfallmist(localclientnum) {
   level notify("setupWaterfallmist_waterfall_csc" + localclientnum);
   level endon("setupWaterfallmist_waterfall_csc" + localclientnum);
   trigger = self;
   for (;;) {
-    trigger waittill(# "trigger", trigplayer);
+    trigger waittill("trigger", trigplayer);
     if(!trigplayer islocalplayer()) {
       continue;
     }
@@ -86,21 +53,12 @@ function setupwaterfallmist(localclientnum) {
   }
 }
 
-/*
-	Name: setupwaterfall
-	Namespace: waterfall
-	Checksum: 0x181D276E
-	Offset: 0x540
-	Size: 0x118
-	Parameters: 2
-	Flags: None
-*/
 function setupwaterfall(localclientnum, localowner) {
   level notify("setupWaterfall_waterfall_csc" + localclientnum);
   level endon("setupWaterfall_waterfall_csc" + localclientnum);
   trigger = self;
   for (;;) {
-    trigger waittill(# "trigger", trigplayer);
+    trigger waittill("trigger", trigplayer);
     if(!trigplayer islocalplayer()) {
       continue;
     }
@@ -114,15 +72,6 @@ function setupwaterfall(localclientnum, localowner) {
   }
 }
 
-/*
-	Name: trig_enter_waterfall
-	Namespace: waterfall
-	Checksum: 0xF395F41
-	Offset: 0x660
-	Size: 0xB8
-	Parameters: 1
-	Flags: None
-*/
 function trig_enter_waterfall(localplayer) {
   trigger = self;
   localclientnum = localplayer.localclientnum;
@@ -134,15 +83,6 @@ function trig_enter_waterfall(localplayer) {
   }
 }
 
-/*
-	Name: trig_leave_waterfall
-	Namespace: waterfall
-	Checksum: 0x235A7961
-	Offset: 0x720
-	Size: 0x84
-	Parameters: 1
-	Flags: None
-*/
 function trig_leave_waterfall(localplayer) {
   trigger = self;
   localclientnum = localplayer.localclientnum;
@@ -152,17 +92,8 @@ function trig_leave_waterfall(localplayer) {
   }
 }
 
-/*
-	Name: trig_enter_waterfall_mist
-	Namespace: waterfall
-	Checksum: 0xD9836BD
-	Offset: 0x7B0
-	Size: 0x1F0
-	Parameters: 1
-	Flags: None
-*/
 function trig_enter_waterfall_mist(localplayer) {
-  localplayer endon(# "entityshutdown");
+  localplayer endon("entityshutdown");
   trigger = self;
   if(!isdefined(localplayer.rainopacity)) {
     localplayer.rainopacity = 0;
@@ -190,17 +121,8 @@ function trig_enter_waterfall_mist(localplayer) {
   }
 }
 
-/*
-	Name: trig_leave_waterfall_mist
-	Namespace: waterfall
-	Checksum: 0x8382A05C
-	Offset: 0x9A8
-	Size: 0x174
-	Parameters: 1
-	Flags: None
-*/
 function trig_leave_waterfall_mist(localplayer) {
-  localplayer endon(# "entityshutdown");
+  localplayer endon("entityshutdown");
   trigger = self;
   if(isdefined(localplayer.rainopacity)) {
     while (!trigger istouching(localplayer) && localplayer.rainopacity > 0) {

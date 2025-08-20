@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_powerup_zombie_blood.gsc
+*************************************************/
+
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -8,31 +12,12 @@
 #using scripts\zm\_zm_bgb;
 #using scripts\zm\_zm_powerups;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_powerup_zombie_blood;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0xA6F82ACA
-	Offset: 0x398
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_powerup_zombie_blood", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0x2D0A0913
-	Offset: 0x3D8
-	Size: 0x2CC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!isdefined(level.str_zombie_blood_model)) {
     level.str_zombie_blood_model = "c_zom_der_zombie1";
@@ -61,46 +46,19 @@ function __init__() {
   visionset_mgr::register_info("overlay", "zm_tomb_in_plain_sight", 21000, level.var_e8b932c5, 1, 1);
 }
 
-/*
-	Name: init_player_zombie_blood_vars
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0x14B80CAF
-	Offset: 0x6B0
-	Size: 0x32
-	Parameters: 0
-	Flags: Linked
-*/
 function init_player_zombie_blood_vars() {
   self.zombie_vars["zombie_powerup_zombie_blood_on"] = 0;
   self.zombie_vars["zombie_powerup_zombie_blood_time"] = 30;
 }
 
-/*
-	Name: function_73234659
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0xD36BBA9F
-	Offset: 0x6F0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function function_73234659(player) {
   level thread zombie_blood_powerup(self, player);
 }
 
-/*
-	Name: zombie_blood_powerup
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0xF9671EA9
-	Offset: 0x720
-	Size: 0x6BA
-	Parameters: 2
-	Flags: Linked
-*/
 function zombie_blood_powerup(var_bae0d10b, e_player) {
-  e_player notify(# "zombie_blood");
-  e_player endon(# "zombie_blood");
-  e_player endon(# "disconnect");
+  e_player notify("zombie_blood");
+  e_player endon("zombie_blood");
+  e_player endon("disconnect");
   e_player thread zm_powerups::powerup_vo("zombie_blood");
   e_player._show_solo_hud = 1;
   if(bgb::is_team_enabled("zm_bgb_temporal_gift")) {
@@ -114,7 +72,7 @@ function zombie_blood_powerup(var_bae0d10b, e_player) {
   e_player.zombie_vars["zombie_powerup_zombie_blood_time"] = var_bf0a128b;
   e_player.zombie_vars["zombie_powerup_zombie_blood_on"] = 1;
   e_player setcharacterbodystyle(1);
-  level notify(# "player_zombie_blood", e_player);
+  level notify("player_zombie_blood", e_player);
   visionset_mgr::activate("visionset", "zm_tomb_in_plain_sight", e_player, 0.5, var_bf0a128b, 0.5);
   visionset_mgr::activate("overlay", "zm_tomb_in_plain_sight", e_player);
   e_player clientfield::set("player_zombie_blood_fx", 1);
@@ -146,7 +104,7 @@ function zombie_blood_powerup(var_bae0d10b, e_player) {
     e_player.zombie_vars["zombie_powerup_zombie_blood_time"] = e_player.zombie_vars["zombie_powerup_zombie_blood_time"] - 0.05;
   }
   e_player setcharacterbodystyle(0);
-  e_player notify(# "zombie_blood_over");
+  e_player notify("zombie_blood_over");
   if(isdefined(e_player.characterindex)) {
     e_player playsound((("vox_plr_" + e_player.characterindex) + "_exert_grunt_") + randomintrange(0, 3));
   }
@@ -164,57 +122,27 @@ function zombie_blood_powerup(var_bae0d10b, e_player) {
   }
 }
 
-/*
-	Name: fx_disconnect_watch
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0xFD05D0BF
-	Offset: 0xDE8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function fx_disconnect_watch(e_player) {
-  self endon(# "death");
-  e_player waittill(# "disconnect");
+  self endon("death");
+  e_player waittill("disconnect");
   self delete();
 }
 
-/*
-	Name: watch_zombie_blood_early_exit
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0x1F6115D5
-	Offset: 0xE30
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_zombie_blood_early_exit() {
-  self notify(# "early_exit_watch");
-  self endon(# "early_exit_watch");
-  self endon(# "zombie_blood_over");
-  self endon(# "disconnect");
+  self notify("early_exit_watch");
+  self endon("early_exit_watch");
+  self endon("zombie_blood_over");
+  self endon("disconnect");
   util::waittill_any_ents_two(self, "player_downed", level, "end_game");
   self.zombie_vars["zombie_powerup_zombie_blood_time"] = -0.05;
   self.early_exit = 1;
 }
 
-/*
-	Name: make_zombie_blood_entity
-	Namespace: zm_powerup_zombie_blood
-	Checksum: 0x407F8505
-	Offset: 0xEC0
-	Size: 0x192
-	Parameters: 0
-	Flags: Linked
-*/
 function make_zombie_blood_entity() {
-  /#
   assert(isdefined(level.a_zombie_blood_entities), "");
-  # /
-    if(!isdefined(level.a_zombie_blood_entities)) {
-      level.a_zombie_blood_entities = [];
-    }
-  else if(!isarray(level.a_zombie_blood_entities)) {
+  if(!isdefined(level.a_zombie_blood_entities)) {
+    level.a_zombie_blood_entities = [];
+  } else if(!isarray(level.a_zombie_blood_entities)) {
     level.a_zombie_blood_entities = array(level.a_zombie_blood_entities);
   }
   level.a_zombie_blood_entities[level.a_zombie_blood_entities.size] = self;

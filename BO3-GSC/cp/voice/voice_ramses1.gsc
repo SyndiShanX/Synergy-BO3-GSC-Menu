@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_ramses1.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_db167d30;
 
-/*
-	Name: init_voice
-	Namespace: namespace_db167d30
-	Checksum: 0xFA701263
-	Offset: 0x1BD8
-	Size: 0x1144
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("hend_hey_you_still_with_0", "vox_rams_1_01_000_hend");
   dialog::add("plrf_yeah_i_just_z_0", "vox_rams_1_01_001_plyr");

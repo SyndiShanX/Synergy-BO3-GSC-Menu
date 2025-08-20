@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_remaster_zombie.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\animation_state_machine_mocomp;
 #using scripts\shared\ai\systems\animation_state_machine_notetracks;
@@ -19,18 +23,8 @@
 #using scripts\zm\_zm_laststand;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_remaster_zombie;
 
-/*
-	Name: init
-	Namespace: zm_remaster_zombie
-	Checksum: 0x51794904
-	Offset: 0x3F0
-	Size: 0x64
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   initzmbehaviorsandasm();
   setdvar("tu5_zmPathDistanceCheckTolarance", 20);
@@ -39,52 +33,23 @@ function autoexec init() {
   level.pathdist_type = 2;
 }
 
-/*
-	Name: initzmbehaviorsandasm
-	Namespace: zm_remaster_zombie
-	Checksum: 0x192DB3C2
-	Offset: 0x460
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initzmbehaviorsandasm() {
   animationstatenetwork::registeranimationmocomp("mocomp_teleport_traversal@zombie", & teleporttraversalmocompstart, undefined, undefined);
   behaviortreenetworkutility::registerbehaviortreescriptapi("zodShouldMove", & shouldmove);
   spawner::add_archetype_spawn_function("zombie", & function_9fb7c76f);
 }
 
-/*
-	Name: teleporttraversalmocompstart
-	Namespace: zm_remaster_zombie
-	Checksum: 0x304ADC98
-	Offset: 0x4F0
-	Size: 0x19C
-	Parameters: 5
-	Flags: Linked
-*/
 function teleporttraversalmocompstart(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity orientmode("face angle", entity.angles[1]);
   entity animmode("normal");
   if(isdefined(entity.traverseendnode)) {
-    /#
     print3d(entity.traversestartnode.origin, "", (1, 0, 0), 1, 1, 60);
     print3d(entity.traverseendnode.origin, "", (0, 1, 0), 1, 1, 60);
     line(entity.traversestartnode.origin, entity.traverseendnode.origin, (0, 1, 0), 1, 0, 60);
-    # /
-      entity forceteleport(entity.traverseendnode.origin, entity.traverseendnode.angles, 0);
+    entity forceteleport(entity.traverseendnode.origin, entity.traverseendnode.angles, 0);
   }
 }
 
-/*
-	Name: shouldmove
-	Namespace: zm_remaster_zombie
-	Checksum: 0xDB831DFD
-	Offset: 0x698
-	Size: 0x18A
-	Parameters: 1
-	Flags: Linked
-*/
 function shouldmove(entity) {
   if(isdefined(entity.zombie_tesla_hit) && entity.zombie_tesla_hit && (!(isdefined(entity.tesla_death) && entity.tesla_death))) {
     return false;
@@ -118,42 +83,15 @@ function shouldmove(entity) {
   return false;
 }
 
-/*
-	Name: function_9fb7c76f
-	Namespace: zm_remaster_zombie
-	Checksum: 0xE13E6074
-	Offset: 0x830
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_9fb7c76f() {
   self.cant_move_cb = & function_f05a4eb4;
 }
 
-/*
-	Name: function_f05a4eb4
-	Namespace: zm_remaster_zombie
-	Checksum: 0x6CBA3491
-	Offset: 0x858
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_f05a4eb4() {
   self pushactors(0);
   self.enablepushtime = gettime() + 1000;
 }
 
-/*
-	Name: remaster_validate_last_closest_player
-	Namespace: zm_remaster_zombie
-	Checksum: 0x688943FF
-	Offset: 0x890
-	Size: 0xFA
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private remaster_validate_last_closest_player(players) {
   if(isdefined(self.last_closest_player) && (isdefined(self.last_closest_player.am_i_valid) && self.last_closest_player.am_i_valid)) {
     return;
@@ -168,15 +106,6 @@ function private remaster_validate_last_closest_player(players) {
   self.last_closest_player = undefined;
 }
 
-/*
-	Name: remaster_closest_player
-	Namespace: zm_remaster_zombie
-	Checksum: 0x5F28E87F
-	Offset: 0x998
-	Size: 0x27A
-	Parameters: 2
-	Flags: Linked
-*/
 function remaster_closest_player(origin, players) {
   if(players.size == 0) {
     return undefined;
@@ -232,17 +161,8 @@ function remaster_closest_player(origin, players) {
   return self.last_closest_player;
 }
 
-/*
-	Name: update_closest_player
-	Namespace: zm_remaster_zombie
-	Checksum: 0xF9C34E28
-	Offset: 0xC20
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function update_closest_player() {
-  level waittill(# "start_of_round");
+  level waittill("start_of_round");
   while (true) {
     reset_closest_player = 1;
     zombies = zombie_utility::get_round_enemy_array();

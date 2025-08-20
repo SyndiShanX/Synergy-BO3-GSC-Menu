@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_castle_death_ray_trap.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\beam_shared;
@@ -6,18 +10,8 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_castle_death_ray_trap;
 
-/*
-	Name: main
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0xE332F20F
-	Offset: 0x3D8
-	Size: 0x264
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level._effect["console_green_light"] = "dlc1/castle/fx_glow_panel_green_castle";
   level._effect["console_red_light"] = "dlc1/castle/fx_glow_panel_red_castle";
@@ -32,15 +26,6 @@ function main() {
   clientfield::register("actor", "tesla_beam_mechz", 5000, 1, "int", & tesla_beam_mechz, 0, 0);
 }
 
-/*
-	Name: death_ray_shock_fx
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0x7E36BEDB
-	Offset: 0x648
-	Size: 0x124
-	Parameters: 7
-	Flags: Linked
-*/
 function death_ray_shock_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self function_51adc559(localclientnum);
   if(newval) {
@@ -58,48 +43,21 @@ function death_ray_shock_fx(localclientnum, oldval, newval, bnewent, binitialsna
   }
 }
 
-/*
-	Name: function_7772592b
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0xDC26AB0D
-	Offset: 0x778
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7772592b(localclientnum) {
-  self notify(# "hash_51adc559");
-  self endon(# "hash_51adc559");
-  level waittill(# "demo_jump");
+  self notify("hash_51adc559");
+  self endon("hash_51adc559");
+  level waittill("demo_jump");
   self function_51adc559(localclientnum);
 }
 
-/*
-	Name: function_51adc559
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0xB62D7854
-	Offset: 0x7D0
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function function_51adc559(localclientnum) {
   if(isdefined(self.tesla_shock_fx)) {
     deletefx(localclientnum, self.tesla_shock_fx, 1);
     self.tesla_shock_fx = undefined;
   }
-  self notify(# "hash_51adc559");
+  self notify("hash_51adc559");
 }
 
-/*
-	Name: death_ray_shock_eye_fx
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0x68D17467
-	Offset: 0x830
-	Size: 0xC6
-	Parameters: 7
-	Flags: Linked
-*/
 function death_ray_shock_eye_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     if(!isdefined(self.var_5f35d5e4)) {
@@ -111,28 +69,10 @@ function death_ray_shock_eye_fx(localclientnum, oldval, newval, bnewent, binitia
   }
 }
 
-/*
-	Name: death_ray_explode_fx
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0xC097A2B8
-	Offset: 0x900
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked
-*/
 function death_ray_explode_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   playfxontag(localclientnum, level._effect["tesla_zombie_explode"], self, "j_spine4");
 }
 
-/*
-	Name: death_ray_status_light
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0x2CC74244
-	Offset: 0x978
-	Size: 0x17C
-	Parameters: 7
-	Flags: Linked
-*/
 function death_ray_status_light(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   v_forward = anglestoright(self.angles);
   v_forward = v_forward * -1;
@@ -159,15 +99,6 @@ function death_ray_status_light(localclientnum, oldval, newval, bnewent, binitia
   self.status_fx = playfxontag(localclientnum, level._effect[str_fx_name], self, tag);
 }
 
-/*
-	Name: function_200eea36
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0x1ABB6518
-	Offset: 0xB00
-	Size: 0x13C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_200eea36(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   var_fda0d24 = [];
   array::add(var_fda0d24, struct::get("bolt_source_1"), 0);
@@ -181,15 +112,6 @@ function function_200eea36(localclientnum, oldval, newval, bnewent, binitialsnap
   self thread function_ec4ecaed(localclientnum, s_source, var_53106e7c);
 }
 
-/*
-	Name: function_ec4ecaed
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0x4E3EE856
-	Offset: 0xC48
-	Size: 0xFC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_ec4ecaed(localclientnum, s_source, var_53106e7c) {
   var_e43465f2 = util::spawn_model(localclientnum, "tag_origin", s_source.origin, s_source.angles);
   level beam::launch(var_e43465f2, "tag_origin", self, "j_spinelower", var_53106e7c);
@@ -198,15 +120,6 @@ function function_ec4ecaed(localclientnum, s_source, var_53106e7c) {
   var_e43465f2 delete();
 }
 
-/*
-	Name: tesla_beam_mechz
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0x8E946630
-	Offset: 0xD50
-	Size: 0x1D4
-	Parameters: 7
-	Flags: Linked
-*/
 function tesla_beam_mechz(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     var_fda0d24 = [];
@@ -228,36 +141,18 @@ function tesla_beam_mechz(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: function_3c5fc735
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0xA92B0A90
-	Offset: 0xF30
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3c5fc735(localclientnum) {
-  self notify(# "hash_1139a457");
-  self endon(# "hash_1139a457");
-  level waittill(# "demo_jump");
+  self notify("hash_1139a457");
+  self endon("hash_1139a457");
+  level waittill("demo_jump");
   function_1139a457(localclientnum);
 }
 
-/*
-	Name: function_1139a457
-	Namespace: zm_castle_death_ray_trap
-	Checksum: 0x6EC0DC46
-	Offset: 0xF88
-	Size: 0x8A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1139a457(localclientnum) {
   if(isdefined(self.var_e43465f2) && isdefined(self.var_53106e7c)) {
     level beam::kill(self.var_e43465f2, "tag_origin", self, "j_spinelower", self.var_53106e7c);
     self.var_e43465f2 delete();
     self.var_53106e7c = undefined;
-    self notify(# "hash_1139a457");
+    self notify("hash_1139a457");
   }
 }

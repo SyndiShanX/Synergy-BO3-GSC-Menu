@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_audio.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -13,66 +17,27 @@
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_audio;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_audio
-	Checksum: 0x42D46E52
-	Offset: 0x758
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_audio", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_audio
-	Checksum: 0x830BA0F9
-	Offset: 0x798
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("allplayers", "charindex", 1, 3, "int");
   clientfield::register("toplayer", "isspeaking", 1, 1, "int");
-  /#
   println("");
-  # /
-    level.audio_get_mod_type = & get_mod_type;
+  level.audio_get_mod_type = & get_mod_type;
   level zmbvox();
   callback::on_connect( & init_audio_functions);
   level thread sndannouncer_init();
 }
 
-/*
-	Name: setexertvoice
-	Namespace: zm_audio
-	Checksum: 0x59D1B587
-	Offset: 0x890
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function setexertvoice(exert_id) {
   self.player_exert_id = exert_id;
   self clientfield::set("charindex", self.player_exert_id);
 }
 
-/*
-	Name: playerexert
-	Namespace: zm_audio
-	Checksum: 0x1E24A43E
-	Offset: 0x8D8
-	Size: 0x1E4
-	Parameters: 2
-	Flags: Linked
-*/
 function playerexert(exert, notifywait = 0) {
   if(isdefined(self.isspeaking) && self.isspeaking || (isdefined(self.isexerting) && self.isexerting)) {
     return;
@@ -95,7 +60,7 @@ function playerexert(exert, notifywait = 0) {
     self.isexerting = 1;
     if(notifywait) {
       self playsoundwithnotify(id, "done_exerting");
-      self waittill(# "done_exerting");
+      self waittill("done_exerting");
       self.isexerting = 0;
     } else {
       self thread exert_timer();
@@ -104,30 +69,12 @@ function playerexert(exert, notifywait = 0) {
   }
 }
 
-/*
-	Name: exert_timer
-	Namespace: zm_audio
-	Checksum: 0x6010C3FA
-	Offset: 0xAC8
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function exert_timer() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(randomfloatrange(1.5, 3));
   self.isexerting = 0;
 }
 
-/*
-	Name: zmbvox
-	Namespace: zm_audio
-	Checksum: 0xB6E8CA47
-	Offset: 0xB08
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function zmbvox() {
   level.votimer = [];
   level.vox = zmbvoxcreate();
@@ -149,15 +96,6 @@ function zmbvox() {
   }
 }
 
-/*
-	Name: init_audio_functions
-	Namespace: zm_audio
-	Checksum: 0xEBFB6660
-	Offset: 0xC40
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_audio_functions() {
   self thread zombie_behind_vox();
   self thread player_killstreak_timer();
@@ -168,18 +106,9 @@ function init_audio_functions() {
   }
 }
 
-/*
-	Name: zombie_behind_vox
-	Namespace: zm_audio
-	Checksum: 0x27DFF9B7
-	Offset: 0xCB8
-	Size: 0x2F8
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_behind_vox() {
-  level endon(# "unloaded");
-  self endon(# "death_or_disconnect");
+  level endon("unloaded");
+  self endon("death_or_disconnect");
   if(!isdefined(level._zbv_vox_last_update_time)) {
     level._zbv_vox_last_update_time = 0;
     level._audio_zbv_shared_ent_list = zombie_utility::get_zombie_array();
@@ -223,7 +152,7 @@ function zombie_behind_vox() {
         yaw = self zm_utility::getyawtospot(zombs[i].origin);
         z_diff = self.origin[2] - zombs[i].origin[2];
         if(yaw < -95 || yaw > 95 && abs(z_diff) < 50) {
-          zombs[i] notify(# "bhtn_action_notify", "behind");
+          zombs[i] notify("bhtn_action_notify", "behind");
           played_sound = 1;
           break;
         }
@@ -235,17 +164,8 @@ function zombie_behind_vox() {
   }
 }
 
-/*
-	Name: oh_shit_vox
-	Namespace: zm_audio
-	Checksum: 0x96B82E50
-	Offset: 0xFB8
-	Size: 0x16E
-	Parameters: 0
-	Flags: Linked
-*/
 function oh_shit_vox() {
-  self endon(# "death_or_disconnect");
+  self endon("death_or_disconnect");
   while (true) {
     wait(1);
     players = getplayers();
@@ -267,18 +187,9 @@ function oh_shit_vox() {
   }
 }
 
-/*
-	Name: player_killstreak_timer
-	Namespace: zm_audio
-	Checksum: 0x3B238D26
-	Offset: 0x1130
-	Size: 0x1E0
-	Parameters: 0
-	Flags: Linked
-*/
 function player_killstreak_timer() {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   if(getdvarstring("zombie_kills") == "") {
     setdvar("zombie_kills", "7");
   }
@@ -292,7 +203,7 @@ function player_killstreak_timer() {
     self.killcounter = 0;
   }
   while (true) {
-    self waittill(# "zom_kill", zomb);
+    self waittill("zom_kill", zomb);
     if(isdefined(zomb._black_hole_bomb_collapse_death) && zomb._black_hole_bomb_collapse_death == 1) {
       continue;
     }
@@ -307,15 +218,6 @@ function player_killstreak_timer() {
   }
 }
 
-/*
-	Name: player_zombie_kill_vox
-	Namespace: zm_audio
-	Checksum: 0xB068737E
-	Offset: 0x1318
-	Size: 0x1B4
-	Parameters: 4
-	Flags: Linked
-*/
 function player_zombie_kill_vox(hit_location, player, mod, zombie) {
   weapon = player getcurrentweapon();
   dist = distancesquared(player.origin, zombie.origin);
@@ -323,9 +225,7 @@ function player_zombie_kill_vox(hit_location, player, mod, zombie) {
     level.zombie_vars[player.team]["zombie_insta_kill"] = 0;
   }
   instakill = level.zombie_vars[player.team]["zombie_insta_kill"];
-  death = [
-    [level.audio_get_mod_type]
-  ](hit_location, mod, weapon, zombie, instakill, dist, player);
+  death = [[level.audio_get_mod_type]](hit_location, mod, weapon, zombie, instakill, dist, player);
   if(!isdefined(death)) {
     return undefined;
   }
@@ -339,15 +239,6 @@ function player_zombie_kill_vox(hit_location, player, mod, zombie) {
   }
 }
 
-/*
-	Name: get_response_chance
-	Namespace: zm_audio
-	Checksum: 0x2DEF7C6
-	Offset: 0x14D8
-	Size: 0x30
-	Parameters: 1
-	Flags: None
-*/
 function get_response_chance(event) {
   if(!isdefined(level.response_chances[event])) {
     return 0;
@@ -355,15 +246,6 @@ function get_response_chance(event) {
   return level.response_chances[event];
 }
 
-/*
-	Name: get_mod_type
-	Namespace: zm_audio
-	Checksum: 0x6A6BCB82
-	Offset: 0x1510
-	Size: 0x36A
-	Parameters: 7
-	Flags: Linked
-*/
 function get_mod_type(impact, mod, weapon, zombie, instakill, dist, player) {
   close_dist = 4096;
   med_dist = 15376;
@@ -431,18 +313,9 @@ function get_mod_type(impact, mod, weapon, zombie, instakill, dist, player) {
   return "default";
 }
 
-/*
-	Name: timer_actual
-	Namespace: zm_audio
-	Checksum: 0xDF07C9C
-	Offset: 0x1888
-	Size: 0xD0
-	Parameters: 2
-	Flags: Linked
-*/
 function timer_actual(kills, time) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   timer = gettime() + (time * 1000);
   while (gettime() < timer) {
     if(self.killcounter > kills) {
@@ -458,30 +331,12 @@ function timer_actual(kills, time) {
   self.timerisrunning = 0;
 }
 
-/*
-	Name: zmbvoxcreate
-	Namespace: zm_audio
-	Checksum: 0xA2589B20
-	Offset: 0x1960
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function zmbvoxcreate() {
   vox = spawnstruct();
   vox.speaker = [];
   return vox;
 }
 
-/*
-	Name: zmbvoxinitspeaker
-	Namespace: zm_audio
-	Checksum: 0xFFCC5613
-	Offset: 0x19A0
-	Size: 0xB4
-	Parameters: 3
-	Flags: Linked
-*/
 function zmbvoxinitspeaker(speaker, prefix, ent) {
   ent.zmbvoxid = speaker;
   if(!isdefined(self.speaker[speaker])) {
@@ -492,33 +347,15 @@ function zmbvoxinitspeaker(speaker, prefix, ent) {
   self.speaker[speaker].ent = ent;
 }
 
-/*
-	Name: custom_kill_damaged_vo
-	Namespace: zm_audio
-	Checksum: 0xE97141B5
-	Offset: 0x1A60
-	Size: 0x4E
-	Parameters: 1
-	Flags: None
-*/
 function custom_kill_damaged_vo(player) {
-  self notify(# "sound_damage_player_updated");
-  self endon(# "death");
-  self endon(# "sound_damage_player_updated");
+  self notify("sound_damage_player_updated");
+  self endon("death");
+  self endon("sound_damage_player_updated");
   self.sound_damage_player = player;
   wait(2);
   self.sound_damage_player = undefined;
 }
 
-/*
-	Name: loadplayervoicecategories
-	Namespace: zm_audio
-	Checksum: 0x420AC1DC
-	Offset: 0x1AB8
-	Size: 0x23C
-	Parameters: 1
-	Flags: Linked
-*/
 function loadplayervoicecategories(table) {
   level.votimer = [];
   level.sndplayervox = [];
@@ -545,15 +382,6 @@ function loadplayervoicecategories(table) {
   }
 }
 
-/*
-	Name: checkstringvalid
-	Namespace: zm_audio
-	Checksum: 0x229354A2
-	Offset: 0x1D00
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function checkstringvalid(str) {
   if(str != "") {
     return str;
@@ -561,15 +389,6 @@ function checkstringvalid(str) {
   return undefined;
 }
 
-/*
-	Name: checkstringtrue
-	Namespace: zm_audio
-	Checksum: 0xF88A98B7
-	Offset: 0x1D30
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function checkstringtrue(str) {
   if(!isdefined(str)) {
     return false;
@@ -582,15 +401,6 @@ function checkstringtrue(str) {
   return false;
 }
 
-/*
-	Name: checkintvalid
-	Namespace: zm_audio
-	Checksum: 0x7817D175
-	Offset: 0x1D90
-	Size: 0x62
-	Parameters: 2
-	Flags: Linked
-*/
 function checkintvalid(value, defaultvalue = 0) {
   if(!isdefined(value)) {
     return defaultvalue;
@@ -601,35 +411,14 @@ function checkintvalid(value, defaultvalue = 0) {
   return int(value);
 }
 
-/*
-	Name: zmbvoxadd
-	Namespace: zm_audio
-	Checksum: 0x9B960C06
-	Offset: 0x1E00
-	Size: 0x1F4
-	Parameters: 6
-	Flags: Linked
-*/
 function zmbvoxadd(category, subcategory, suffix, percentage, response, delaybeforeplayagain = 0) {
-  /#
   assert(isdefined(category));
-  # /
-    /#
   assert(isdefined(subcategory));
-  # /
-    /#
   assert(isdefined(suffix));
-  # /
-    /#
   assert(isdefined(percentage));
-  # /
-    /#
   assert(isdefined(response));
-  # /
-    /#
   assert(isdefined(delaybeforeplayagain));
-  # /
-    vox = level.sndplayervox;
+  vox = level.sndplayervox;
   if(!isdefined(vox[category])) {
     vox[category] = [];
   }
@@ -641,15 +430,6 @@ function zmbvoxadd(category, subcategory, suffix, percentage, response, delaybef
   zm_utility::create_vox_timer(subcategory);
 }
 
-/*
-	Name: create_and_play_dialog
-	Namespace: zm_audio
-	Checksum: 0xF6A81C8F
-	Offset: 0x2000
-	Size: 0x224
-	Parameters: 3
-	Flags: Linked
-*/
 function create_and_play_dialog(category, subcategory, force_variant) {
   if(!isdefined(level.sndplayervox)) {
     return;
@@ -658,12 +438,10 @@ function create_and_play_dialog(category, subcategory, force_variant) {
     return;
   }
   if(!isdefined(level.sndplayervox[category][subcategory])) {
-    /#
     if(getdvarint("") > 0) {
       println(((("" + category) + "") + subcategory) + "");
     }
-    # /
-      return;
+    return;
   }
   if(isdefined(level.sndvoxoverride) && level.sndvoxoverride || (isdefined(self.isspeaking) && self.isspeaking && (!(isdefined(self.b_wait_if_busy) && self.b_wait_if_busy)))) {
     return;
@@ -678,24 +456,13 @@ function create_and_play_dialog(category, subcategory, force_variant) {
   if(isdefined(sound_to_play)) {
     self thread do_player_or_npc_playvox(sound_to_play, category, subcategory);
   } else {
-    /#
     iprintln("");
-    # /
-      if(getdvarint("") > 0) {}
+    if(getdvarint("") > 0) {}
   }
 }
 
-/*
-	Name: do_player_or_npc_playvox
-	Namespace: zm_audio
-	Checksum: 0x958E9326
-	Offset: 0x2230
-	Size: 0x32C
-	Parameters: 3
-	Flags: Linked
-*/
 function do_player_or_npc_playvox(sound_to_play, category, subcategory) {
-  self endon(# "death_or_disconnect");
+  self endon("death_or_disconnect");
   if(self flag::exists("in_beastmode") && self flag::get("in_beastmode")) {
     return;
   }
@@ -749,15 +516,6 @@ function do_player_or_npc_playvox(sound_to_play, category, subcategory) {
   }
 }
 
-/*
-	Name: setup_response_line_override
-	Namespace: zm_audio
-	Checksum: 0xF039DD3C
-	Offset: 0x2568
-	Size: 0x12E
-	Parameters: 3
-	Flags: Linked
-*/
 function setup_response_line_override(player, category, subcategory) {
   if(isdefined(level._audio_custom_response_line)) {
     self thread[[level._audio_custom_response_line]](player, category, subcategory);
@@ -783,15 +541,6 @@ function setup_response_line_override(player, category, subcategory) {
   }
 }
 
-/*
-	Name: setup_hero_rival
-	Namespace: zm_audio
-	Checksum: 0x1FB0577E
-	Offset: 0x26A0
-	Size: 0x2DC
-	Parameters: 5
-	Flags: Linked
-*/
 function setup_hero_rival(player, hero, rival, category, type) {
   players = getplayers();
   hero_player = undefined;
@@ -827,15 +576,6 @@ function setup_hero_rival(player, hero, rival, category, type) {
   }
 }
 
-/*
-	Name: setup_response_line
-	Namespace: zm_audio
-	Checksum: 0xF3E7AECE
-	Offset: 0x2988
-	Size: 0x114
-	Parameters: 3
-	Flags: Linked
-*/
 function setup_response_line(player, category, subcategory) {
   players = array::get_all_closest(player.origin, level.activeplayers);
   players_that_can_respond = array::exclude(players, player);
@@ -848,15 +588,6 @@ function setup_response_line(player, category, subcategory) {
   }
 }
 
-/*
-	Name: shouldplayerspeak
-	Namespace: zm_audio
-	Checksum: 0xE6B8352C
-	Offset: 0x2AA8
-	Size: 0x1CC
-	Parameters: 4
-	Flags: Linked
-*/
 function shouldplayerspeak(player, category, subcategory, percentage) {
   if(!isdefined(player)) {
     return undefined;
@@ -891,15 +622,6 @@ function shouldplayerspeak(player, category, subcategory, percentage) {
   return ("vox_plr_" + index) + "_";
 }
 
-/*
-	Name: isvoxoncooldown
-	Namespace: zm_audio
-	Checksum: 0x4389C05A
-	Offset: 0x2C80
-	Size: 0x124
-	Parameters: 3
-	Flags: Linked
-*/
 function isvoxoncooldown(player, category, subcategory) {
   if(level.sndplayervox[category][subcategory].delaybeforeplayagain <= 0) {
     return false;
@@ -920,15 +642,6 @@ function isvoxoncooldown(player, category, subcategory) {
   return false;
 }
 
-/*
-	Name: zmbvoxgetlinevariant
-	Namespace: zm_audio
-	Checksum: 0x1B9E86EB
-	Offset: 0x2DB0
-	Size: 0x20A
-	Parameters: 3
-	Flags: Linked
-*/
 function zmbvoxgetlinevariant(prefix, suffix, force_variant) {
   if(!isdefined(self.sound_dialog)) {
     self.sound_dialog = [];
@@ -937,12 +650,10 @@ function zmbvoxgetlinevariant(prefix, suffix, force_variant) {
   if(!isdefined(self.sound_dialog[suffix])) {
     num_variants = zm_spawner::get_number_variants(prefix + suffix);
     if(num_variants <= 0) {
-      /#
       if(getdvarint("") > 0) {
         println(("" + prefix) + suffix);
       }
-      # /
-        return undefined;
+      return undefined;
     }
     for (i = 0; i < num_variants; i++) {
       self.sound_dialog[suffix][i] = i;
@@ -962,15 +673,6 @@ function zmbvoxgetlinevariant(prefix, suffix, force_variant) {
   return ((prefix + suffix) + "_") + variation;
 }
 
-/*
-	Name: arenearbyspeakersactive
-	Namespace: zm_audio
-	Checksum: 0xD5B923AD
-	Offset: 0x2FC8
-	Size: 0x1AE
-	Parameters: 1
-	Flags: Linked
-*/
 function arenearbyspeakersactive(radius = 1000) {
   nearbyspeakeractive = 0;
   speakers = getplayers();
@@ -995,15 +697,6 @@ function arenearbyspeakersactive(radius = 1000) {
   return nearbyspeakeractive;
 }
 
-/*
-	Name: musicstate_create
-	Namespace: zm_audio
-	Checksum: 0xD95FDC5F
-	Offset: 0x3180
-	Size: 0x2C4
-	Parameters: 8
-	Flags: Linked
-*/
 function musicstate_create(statename, playtype = 1, musname1, musname2, musname3, musname4, musname5, musname6) {
   if(!isdefined(level.musicsystem)) {
     level.musicsystem = spawnstruct();
@@ -1035,15 +728,6 @@ function musicstate_create(statename, playtype = 1, musname1, musname2, musname3
   }
 }
 
-/*
-	Name: sndmusicsystem_createstate
-	Namespace: zm_audio
-	Checksum: 0x7E4F223C
-	Offset: 0x3450
-	Size: 0x1D4
-	Parameters: 4
-	Flags: None
-*/
 function sndmusicsystem_createstate(state, statename, playtype = 1, delay = 0) {
   if(!isdefined(level.musicsystem)) {
     level.musicsystem = spawnstruct();
@@ -1062,15 +746,6 @@ function sndmusicsystem_createstate(state, statename, playtype = 1, delay = 0) {
   m.states[state][m.states[state].size].playtype = playtype;
 }
 
-/*
-	Name: sndmusicsystem_playstate
-	Namespace: zm_audio
-	Checksum: 0x17260107
-	Offset: 0x3630
-	Size: 0x1B4
-	Parameters: 1
-	Flags: Linked
-*/
 function sndmusicsystem_playstate(state) {
   if(!isdefined(level.musicsystem)) {
     return;
@@ -1100,17 +775,8 @@ function sndmusicsystem_playstate(state) {
   }
 }
 
-/*
-	Name: playstate
-	Namespace: zm_audio
-	Checksum: 0xD6A025BF
-	Offset: 0x37F0
-	Size: 0x1F6
-	Parameters: 1
-	Flags: Linked
-*/
 function playstate(state) {
-  level endon(# "sndstatestop");
+  level endon("sndstatestop");
   m = level.musicsystem;
   musarray = level.musicsystem.states[state].musarray;
   if(musarray.size <= 0) {
@@ -1140,17 +806,8 @@ function playstate(state) {
   m.currentstate = undefined;
 }
 
-/*
-	Name: sndmusicsystem_queuestate
-	Namespace: zm_audio
-	Checksum: 0x10FE1281
-	Offset: 0x39F0
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function sndmusicsystem_queuestate(state) {
-  level endon(# "sndqueueflush");
+  level endon("sndqueueflush");
   m = level.musicsystem;
   count = 0;
   if(isdefined(m.queue) && m.queue) {
@@ -1169,32 +826,14 @@ function sndmusicsystem_queuestate(state) {
   m.queue = 0;
 }
 
-/*
-	Name: sndmusicsystem_stopandflush
-	Namespace: zm_audio
-	Checksum: 0x7B074426
-	Offset: 0x3AE8
-	Size: 0x52
-	Parameters: 0
-	Flags: Linked
-*/
 function sndmusicsystem_stopandflush() {
-  level notify(# "sndqueueflush");
+  level notify("sndqueueflush");
   level.musicsystem.queue = 0;
-  level notify(# "sndstatestop");
+  level notify("sndstatestop");
   level.musicsystem.currentplaytype = 0;
   level.musicsystem.currentstate = undefined;
 }
 
-/*
-	Name: sndmusicsystem_isabletoplay
-	Namespace: zm_audio
-	Checksum: 0x1D7CD718
-	Offset: 0x3B48
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function sndmusicsystem_isabletoplay() {
   if(!isdefined(level.musicsystem)) {
     return false;
@@ -1208,15 +847,6 @@ function sndmusicsystem_isabletoplay() {
   return true;
 }
 
-/*
-	Name: sndmusicsystem_locationsinit
-	Namespace: zm_audio
-	Checksum: 0xAF6E6A86
-	Offset: 0x3BA0
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function sndmusicsystem_locationsinit(locationarray) {
   if(!isdefined(locationarray) || locationarray.size <= 0) {
     return;
@@ -1225,21 +855,12 @@ function sndmusicsystem_locationsinit(locationarray) {
   level thread sndmusicsystem_locations(locationarray);
 }
 
-/*
-	Name: sndmusicsystem_locations
-	Namespace: zm_audio
-	Checksum: 0x8A26EB8F
-	Offset: 0x3C00
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function sndmusicsystem_locations(locationarray) {
   numcut = 0;
   level.sndlastzone = undefined;
   m = level.musicsystem;
   while (true) {
-    level waittill(# "newzoneactive", activezone);
+    level waittill("newzoneactive", activezone);
     wait(0.1);
     if(!sndlocationshouldplay(locationarray, activezone)) {
       continue;
@@ -1252,19 +873,10 @@ function sndmusicsystem_locations(locationarray) {
     } else {
       numcut++;
     }
-    level waittill(# "between_round_over");
+    level waittill("between_round_over");
   }
 }
 
-/*
-	Name: sndlocationshouldplay
-	Namespace: zm_audio
-	Checksum: 0xBF707041
-	Offset: 0x3D08
-	Size: 0x128
-	Parameters: 2
-	Flags: Linked
-*/
 function sndlocationshouldplay(array, activezone) {
   shouldplay = 0;
   if(level.musicsystem.currentplaytype >= 3) {
@@ -1287,15 +899,6 @@ function sndlocationshouldplay(array, activezone) {
   return shouldplay;
 }
 
-/*
-	Name: sndcurrentlocationarray
-	Namespace: zm_audio
-	Checksum: 0x1E12A154
-	Offset: 0x3E38
-	Size: 0xEA
-	Parameters: 4
-	Flags: Linked
-*/
 function sndcurrentlocationarray(current_array, activezone, numcut, num) {
   if(numcut >= num) {
     current_array = level.musicsystem.locationarray;
@@ -1309,32 +912,14 @@ function sndcurrentlocationarray(current_array, activezone, numcut, num) {
   return current_array;
 }
 
-/*
-	Name: sndlocationqueue
-	Namespace: zm_audio
-	Checksum: 0x1171B9E8
-	Offset: 0x3F30
-	Size: 0x4E
-	Parameters: 1
-	Flags: Linked
-*/
 function sndlocationqueue(zone) {
-  level endon(# "newzoneactive");
+  level endon("newzoneactive");
   while (level.musicsystem.currentplaytype >= 3) {
     wait(0.5);
   }
-  level notify(# "newzoneactive", zone);
+  level notify("newzoneactive", zone);
 }
 
-/*
-	Name: sndmusicsystem_eesetup
-	Namespace: zm_audio
-	Checksum: 0x28AEC4E4
-	Offset: 0x3F88
-	Size: 0x30A
-	Parameters: 6
-	Flags: None
-*/
 function sndmusicsystem_eesetup(state, origin1, origin2, origin3, origin4, origin5) {
   sndeearray = array();
   if(isdefined(origin1)) {
@@ -1386,39 +971,21 @@ function sndmusicsystem_eesetup(state, origin1, origin2, origin3, origin4, origi
   }
 }
 
-/*
-	Name: sndmusicsystem_eewait
-	Namespace: zm_audio
-	Checksum: 0x19F65AF0
-	Offset: 0x42A0
-	Size: 0x144
-	Parameters: 2
-	Flags: Linked
-*/
 function sndmusicsystem_eewait(origin, state) {
   temp_ent = spawn("script_origin", origin);
   temp_ent playloopsound("zmb_meteor_loop");
   temp_ent thread secretuse("main_music_egg_hit", vectorscale((0, 1, 0), 255), & sndmusicsystem_eeoverride);
-  temp_ent waittill(# "main_music_egg_hit", player);
+  temp_ent waittill("main_music_egg_hit", player);
   temp_ent stoploopsound(1);
   player playsound("zmb_meteor_activate");
   level.sndeecount++;
   if(level.sndeecount >= level.sndeemax) {
-    level notify(# "hash_a1b1dadb");
+    level notify("hash_a1b1dadb");
     level thread sndmusicsystem_playstate(state);
   }
   temp_ent delete();
 }
 
-/*
-	Name: sndmusicsystem_eeoverride
-	Namespace: zm_audio
-	Checksum: 0x498E176D
-	Offset: 0x43F0
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked
-*/
 function sndmusicsystem_eeoverride(arg1, arg2) {
   if(isdefined(level.musicsystem.currentplaytype) && level.musicsystem.currentplaytype >= 4) {
     return false;
@@ -1426,25 +993,14 @@ function sndmusicsystem_eeoverride(arg1, arg2) {
   return true;
 }
 
-/*
-	Name: secretuse
-	Namespace: zm_audio
-	Checksum: 0x81ADC26D
-	Offset: 0x4440
-	Size: 0x1A8
-	Parameters: 5
-	Flags: Linked
-*/
 function secretuse(notify_string, color, qualifier_func, arg1, arg2) {
   waittillframeend();
   while (true) {
     if(!isdefined(self)) {
       return;
     }
-    /#
     print3d(self.origin, "", color, 1);
-    # /
-      players = level.players;
+    players = level.players;
     foreach(player in players) {
       qualifier_passed = 1;
       if(isdefined(qualifier_func)) {
@@ -1463,15 +1019,6 @@ function secretuse(notify_string, color, qualifier_func, arg1, arg2) {
   }
 }
 
-/*
-	Name: sndannouncer_init
-	Namespace: zm_audio
-	Checksum: 0x5E163E76
-	Offset: 0x45F0
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function sndannouncer_init() {
   if(!isdefined(level.zmannouncerprefix)) {
     level.zmannouncerprefix = ("vox_" + "zmba") + "_";
@@ -1487,15 +1034,6 @@ function sndannouncer_init() {
   sndannouncervoxadd("dogstart", "event_dogstart_0");
 }
 
-/*
-	Name: sndannouncervoxadd
-	Namespace: zm_audio
-	Checksum: 0xAB47A598
-	Offset: 0x4750
-	Size: 0x4E
-	Parameters: 2
-	Flags: Linked
-*/
 function sndannouncervoxadd(type, suffix) {
   if(!isdefined(level.zmannouncervox)) {
     level.zmannouncervox = array();
@@ -1503,15 +1041,6 @@ function sndannouncervoxadd(type, suffix) {
   level.zmannouncervox[type] = suffix;
 }
 
-/*
-	Name: sndannouncerplayvox
-	Namespace: zm_audio
-	Checksum: 0x7C6AD48B
-	Offset: 0x47A8
-	Size: 0x154
-	Parameters: 2
-	Flags: Linked
-*/
 function sndannouncerplayvox(type, player) {
   if(!isdefined(level.zmannouncervox[type])) {
     return;
@@ -1533,23 +1062,14 @@ function sndannouncerplayvox(type, player) {
   }
 }
 
-/*
-	Name: zmbaivox_notifyconvert
-	Namespace: zm_audio
-	Checksum: 0x45B62A5E
-	Offset: 0x4908
-	Size: 0x2EA
-	Parameters: 0
-	Flags: Linked
-*/
 function zmbaivox_notifyconvert() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   self thread zmbaivox_playdeath();
   self thread zmbaivox_playelectrocution();
   while (true) {
-    self waittill(# "bhtn_action_notify", notify_string);
+    self waittill("bhtn_action_notify", notify_string);
     switch (notify_string) {
       case "pain": {
         level thread zmbaivox_playvox(self, notify_string, 1, 9);
@@ -1605,17 +1125,8 @@ function zmbaivox_notifyconvert() {
   }
 }
 
-/*
-	Name: zmbaivox_playvox
-	Namespace: zm_audio
-	Checksum: 0x3A8838C8
-	Offset: 0x4C00
-	Size: 0x370
-	Parameters: 5
-	Flags: Linked
-*/
 function zmbaivox_playvox(zombie, type, override, priority, delayambientvox = 0) {
-  zombie endon(# "death");
+  zombie endon("death");
   if(!isdefined(zombie)) {
     return;
   }
@@ -1675,18 +1186,9 @@ function zmbaivox_playvox(zombie, type, override, priority, delayambientvox = 0)
   }
 }
 
-/*
-	Name: zmbaivox_playdeath
-	Namespace: zm_audio
-	Checksum: 0x5ED9DB76
-	Offset: 0x4F78
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function zmbaivox_playdeath() {
-  self endon(# "disconnect");
-  self waittill(# "death", attacker, meansofdeath);
+  self endon("disconnect");
+  self waittill("death", attacker, meansofdeath);
   if(isdefined(self)) {
     if(isdefined(self.bgb_tone_death) && self.bgb_tone_death) {
       level thread zmbaivox_playvox(self, "death_whimsy", 1);
@@ -1696,53 +1198,26 @@ function zmbaivox_playdeath() {
   }
 }
 
-/*
-	Name: zmbaivox_playelectrocution
-	Namespace: zm_audio
-	Checksum: 0x1884F579
-	Offset: 0x5020
-	Size: 0x10A
-	Parameters: 0
-	Flags: Linked
-*/
 function zmbaivox_playelectrocution() {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   while (true) {
-    self waittill(# "damage", amount, attacker, direction_vec, point, type, tagname, modelname, partname, weapon);
+    self waittill("damage", amount, attacker, direction_vec, point, type, tagname, modelname, partname, weapon);
     if(weapon.name == "zombie_beast_lightning_dwl" || weapon.name == "zombie_beast_lightning_dwl2" || weapon.name == "zombie_beast_lightning_dwl3") {
-      self notify(# "bhtn_action_notify", "electrocute");
+      self notify("bhtn_action_notify", "electrocute");
     }
   }
 }
 
-/*
-	Name: zmbaivox_ambientdelay
-	Namespace: zm_audio
-	Checksum: 0xB69D0B99
-	Offset: 0x5138
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function zmbaivox_ambientdelay() {
-  self notify(# "sndambientdelay");
-  self endon(# "sndambientdelay");
-  self endon(# "death");
-  self endon(# "disconnect");
+  self notify("sndambientdelay");
+  self endon("sndambientdelay");
+  self endon("death");
+  self endon("disconnect");
   wait(2);
   self.delayambientvox = 0;
 }
 
-/*
-	Name: networksafereset
-	Namespace: zm_audio
-	Checksum: 0x366AA0DC
-	Offset: 0x5188
-	Size: 0x30
-	Parameters: 0
-	Flags: Linked
-*/
 function networksafereset() {
   while (true) {
     level._numzmbaivox = 0;
@@ -1750,15 +1225,6 @@ function networksafereset() {
   }
 }
 
-/*
-	Name: sndisnetworksafe
-	Namespace: zm_audio
-	Checksum: 0xB8CC1B77
-	Offset: 0x51C0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function sndisnetworksafe() {
   if(!isdefined(level._numzmbaivox)) {
     level thread networksafereset();
@@ -1770,15 +1236,6 @@ function sndisnetworksafe() {
   return true;
 }
 
-/*
-	Name: is_last_zombie
-	Namespace: zm_audio
-	Checksum: 0x504D9BCE
-	Offset: 0x5210
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function is_last_zombie() {
   if(zombie_utility::get_current_zombie_count() <= 1) {
     return true;
@@ -1786,15 +1243,6 @@ function is_last_zombie() {
   return false;
 }
 
-/*
-	Name: sndradiosetup
-	Namespace: zm_audio
-	Checksum: 0x33228CA2
-	Offset: 0x5240
-	Size: 0x466
-	Parameters: 7
-	Flags: None
-*/
 function sndradiosetup(alias_prefix, is_sequential = 0, origin1, origin2, origin3, origin4, origin5) {
   radio = spawnstruct();
   radio.counter = 1;
@@ -1848,19 +1296,10 @@ function sndradiosetup(alias_prefix, is_sequential = 0, origin1, origin2, origin
   }
 }
 
-/*
-	Name: sndradiowait
-	Namespace: zm_audio
-	Checksum: 0x840AA86B
-	Offset: 0x56B0
-	Size: 0x244
-	Parameters: 4
-	Flags: Linked
-*/
 function sndradiowait(origin, radio, is_sequential, num) {
   temp_ent = spawn("script_origin", origin);
   temp_ent thread secretuse("sndRadioHit", vectorscale((0, 0, 1), 255), & sndradio_override, radio);
-  temp_ent waittill(# "sndradiohit", player);
+  temp_ent waittill("sndradiohit", player);
   if(!(isdefined(is_sequential) && is_sequential)) {
     radionum = num;
   } else {
@@ -1889,15 +1328,6 @@ function sndradiowait(origin, radio, is_sequential, num) {
   temp_ent delete();
 }
 
-/*
-	Name: sndradio_override
-	Namespace: zm_audio
-	Checksum: 0xFF325D57
-	Offset: 0x5900
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function sndradio_override(arg1, arg2) {
   if(isdefined(arg1) && arg1.isplaying == 1) {
     return false;
@@ -1905,17 +1335,8 @@ function sndradio_override(arg1, arg2) {
   return true;
 }
 
-/*
-	Name: sndperksjingles_timer
-	Namespace: zm_audio
-	Checksum: 0xC1938EE9
-	Offset: 0x5948
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function sndperksjingles_timer() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.sndjinglecooldown)) {
     self.sndjinglecooldown = 0;
   }
@@ -1927,17 +1348,8 @@ function sndperksjingles_timer() {
   }
 }
 
-/*
-	Name: sndperksjingles_player
-	Namespace: zm_audio
-	Checksum: 0x5FF07620
-	Offset: 0x59F0
-	Size: 0x180
-	Parameters: 1
-	Flags: Linked
-*/
 function sndperksjingles_player(type) {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self.sndjingleactive)) {
     self.sndjingleactive = 0;
   }
@@ -1967,17 +1379,8 @@ function sndperksjingles_player(type) {
   }
 }
 
-/*
-	Name: sndperksjingles_cooldown
-	Namespace: zm_audio
-	Checksum: 0x23DBBB7D
-	Offset: 0x5B78
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function sndperksjingles_cooldown() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.var_1afc1154)) {
     while (isdefined(self.var_1afc1154) && self.var_1afc1154) {
       wait(1);
@@ -1987,15 +1390,6 @@ function sndperksjingles_cooldown() {
   self.sndjinglecooldown = 0;
 }
 
-/*
-	Name: sndconversation_init
-	Namespace: zm_audio
-	Checksum: 0x56EF71D6
-	Offset: 0x5BD0
-	Size: 0x88
-	Parameters: 2
-	Flags: Linked
-*/
 function sndconversation_init(name, specialendon = undefined) {
   if(!isdefined(level.sndconversations)) {
     level.sndconversations = array();
@@ -2004,15 +1398,6 @@ function sndconversation_init(name, specialendon = undefined) {
   level.sndconversations[name].specialendon = specialendon;
 }
 
-/*
-	Name: sndconversation_addline
-	Namespace: zm_audio
-	Checksum: 0xBB08D499
-	Offset: 0x5C60
-	Size: 0x2A6
-	Parameters: 4
-	Flags: Linked
-*/
 function sndconversation_addline(name, line, player_or_random, ignoreplayer = 5) {
   thisconvo = level.sndconversations[name];
   if(!isdefined(thisconvo.line)) {
@@ -2044,18 +1429,9 @@ function sndconversation_addline(name, line, player_or_random, ignoreplayer = 5)
   thisconvo.ignoreplayer[thisconvo.ignoreplayer.size] = ignoreplayer;
 }
 
-/*
-	Name: sndconversation_play
-	Namespace: zm_audio
-	Checksum: 0xE1CBFCFF
-	Offset: 0x5F10
-	Size: 0x28E
-	Parameters: 1
-	Flags: Linked
-*/
 function sndconversation_play(name) {
   thisconvo = level.sndconversations[name];
-  level endon(# "sndconvointerrupt");
+  level endon("sndconvointerrupt");
   if(isdefined(thisconvo.specialendon)) {
     level endon(thisconvo.specialendon);
   }
@@ -2085,27 +1461,18 @@ function sndconversation_play(name) {
       }
       speaker playsoundontag(level.currentconvoline, "J_Head");
       waitplaybacktime(level.currentconvoline);
-      level notify(# "sndconvolinedone");
+      level notify("sndconvolinedone");
     }
   }
   level.sndvoxoverride = 0;
-  level notify(# "sndconversationdone");
+  level notify("sndconversationdone");
   level.currentconvoline = undefined;
   level.currentconvoplayer = undefined;
 }
 
-/*
-	Name: sndconvostopcurrentconversation
-	Namespace: zm_audio
-	Checksum: 0x66A509E0
-	Offset: 0x61A8
-	Size: 0x76
-	Parameters: 0
-	Flags: Linked
-*/
 function sndconvostopcurrentconversation() {
-  level notify(# "sndconvointerrupt");
-  level notify(# "sndconversationdone");
+  level notify("sndconvointerrupt");
+  level notify("sndconversationdone");
   level.sndvoxoverride = 0;
   if(isdefined(level.currentconvoplayer) && isdefined(level.currentconvoline)) {
     level.currentconvoplayer stopsound(level.currentconvoline);
@@ -2114,15 +1481,6 @@ function sndconvostopcurrentconversation() {
   }
 }
 
-/*
-	Name: waitplaybacktime
-	Namespace: zm_audio
-	Checksum: 0xB70CDCB5
-	Offset: 0x6228
-	Size: 0x76
-	Parameters: 1
-	Flags: Linked
-*/
 function waitplaybacktime(alias) {
   playbacktime = soundgetplaybacktime(alias);
   if(!isdefined(playbacktime)) {
@@ -2136,15 +1494,6 @@ function waitplaybacktime(alias) {
   wait(playbacktime);
 }
 
-/*
-	Name: iscurrentspeakerabletotalk
-	Namespace: zm_audio
-	Checksum: 0xE56EF69F
-	Offset: 0x62A8
-	Size: 0x66
-	Parameters: 1
-	Flags: Linked
-*/
 function iscurrentspeakerabletotalk(player) {
   if(!isdefined(player)) {
     return false;
@@ -2158,15 +1507,6 @@ function iscurrentspeakerabletotalk(player) {
   return true;
 }
 
-/*
-	Name: getrandomcharacter
-	Namespace: zm_audio
-	Checksum: 0xC6C50B99
-	Offset: 0x6318
-	Size: 0xC6
-	Parameters: 1
-	Flags: Linked
-*/
 function getrandomcharacter(ignore) {
   array = level.players;
   array::randomize(array);
@@ -2179,15 +1519,6 @@ function getrandomcharacter(ignore) {
   return undefined;
 }
 
-/*
-	Name: getspecificcharacter
-	Namespace: zm_audio
-	Checksum: 0x906DF99B
-	Offset: 0x63E8
-	Size: 0x9A
-	Parameters: 1
-	Flags: Linked
-*/
 function getspecificcharacter(charindex) {
   foreach(guy in level.players) {
     if(guy.characterindex == charindex) {
@@ -2197,15 +1528,6 @@ function getspecificcharacter(charindex) {
   return undefined;
 }
 
-/*
-	Name: isanyonetalking
-	Namespace: zm_audio
-	Checksum: 0x91CF5572
-	Offset: 0x6490
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function isanyonetalking() {
   foreach(player in level.players) {
     if(isdefined(player.isspeaking) && player.isspeaking) {
@@ -2215,17 +1537,8 @@ function isanyonetalking() {
   return false;
 }
 
-/*
-	Name: sndconvointerrupt
-	Namespace: zm_audio
-	Checksum: 0xD181A787
-	Offset: 0x6538
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function sndconvointerrupt() {
-  level endon(# "sndconvolinedone");
+  level endon("sndconvolinedone");
   while (true) {
     if(!isdefined(self)) {
       return;
@@ -2249,19 +1562,10 @@ function sndconvointerrupt() {
   level thread sndconvostopcurrentconversation();
 }
 
-/*
-	Name: water_vox
-	Namespace: zm_audio
-	Checksum: 0x7BA90ECD
-	Offset: 0x6690
-	Size: 0x16C
-	Parameters: 0
-	Flags: None
-*/
 function water_vox() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "end_game");
+  self endon("death");
+  self endon("disconnect");
+  level endon("end_game");
   self.voxunderwatertime = 0;
   self.voxemergebreath = 0;
   self.voxdrowning = 0;
@@ -2293,15 +1597,6 @@ function water_vox() {
   }
 }
 
-/*
-	Name: vo_clear_underwater
-	Namespace: zm_audio
-	Checksum: 0x3977F264
-	Offset: 0x6808
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function vo_clear_underwater() {
   if(level flag::exists("abcd_speaking")) {
     if(level flag::get("abcd_speaking")) {
@@ -2314,7 +1609,7 @@ function vo_clear_underwater() {
     }
   }
   self stopsounds();
-  self notify(# "stop_vo_convo");
+  self notify("stop_vo_convo");
   self.str_vo_being_spoken = "";
   self.n_vo_priority = 0;
   self.isspeaking = 0;
@@ -2331,15 +1626,6 @@ function vo_clear_underwater() {
   }
 }
 
-/*
-	Name: sndplayerhitalert
-	Namespace: zm_audio
-	Checksum: 0xEE82D5D8
-	Offset: 0x69B8
-	Size: 0xCC
-	Parameters: 4
-	Flags: Linked
-*/
 function sndplayerhitalert(e_victim, str_meansofdeath, e_inflictor, weapon) {
   if(!(isdefined(level.sndzhdaudio) && level.sndzhdaudio)) {
     return;
@@ -2360,17 +1646,8 @@ function sndplayerhitalert(e_victim, str_meansofdeath, e_inflictor, weapon) {
   self thread sndplayerhitalert_playsound(str_alias);
 }
 
-/*
-	Name: sndplayerhitalert_playsound
-	Namespace: zm_audio
-	Checksum: 0x52736E3
-	Offset: 0x6A90
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function sndplayerhitalert_playsound(str_alias) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(self.hitsoundtracker) {
     self.hitsoundtracker = 0;
     self playsoundtoplayer(str_alias, self);
@@ -2379,15 +1656,6 @@ function sndplayerhitalert_playsound(str_alias) {
   }
 }
 
-/*
-	Name: checkforvalidmod
-	Namespace: zm_audio
-	Checksum: 0xE1A1B2D1
-	Offset: 0x6AF0
-	Size: 0x66
-	Parameters: 1
-	Flags: Linked
-*/
 function checkforvalidmod(str_meansofdeath) {
   if(!isdefined(str_meansofdeath)) {
     return false;
@@ -2405,28 +1673,10 @@ function checkforvalidmod(str_meansofdeath) {
   return true;
 }
 
-/*
-	Name: checkforvalidweapon
-	Namespace: zm_audio
-	Checksum: 0x472CCE52
-	Offset: 0x6B60
-	Size: 0x10
-	Parameters: 1
-	Flags: Linked
-*/
 function checkforvalidweapon(weapon) {
   return true;
 }
 
-/*
-	Name: checkforvalidaitype
-	Namespace: zm_audio
-	Checksum: 0x9E8FBC95
-	Offset: 0x6B78
-	Size: 0x10
-	Parameters: 1
-	Flags: Linked
-*/
 function checkforvalidaitype(e_victim) {
   return true;
 }

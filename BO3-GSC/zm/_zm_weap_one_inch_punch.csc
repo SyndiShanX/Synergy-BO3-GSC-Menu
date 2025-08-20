@@ -1,35 +1,20 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_one_inch_punch.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
-
 #namespace _zm_weap_one_inch_punch;
 
-/*
-	Name: init
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x34B56D3E
-	Offset: 0x120
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("allplayers", "oneinchpunch_impact", 21000, 1, "int", & oneinchpunch_impact, 0, 0);
   clientfield::register("actor", "oneinchpunch_physics_launchragdoll", 21000, 1, "int", & oneinchpunch_physics_launchragdoll, 0, 0);
 }
 
-/*
-	Name: oneinchpunch_impact
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0x5BCC485E
-	Offset: 0x1C0
-	Size: 0x17C
-	Parameters: 7
-	Flags: Linked
-*/
 function oneinchpunch_impact(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   var_4383636a = 75;
   var_bf0c8e05 = 60;
   if(newval == 1) {
@@ -46,17 +31,8 @@ function oneinchpunch_impact(localclientnum, oldval, newval, bnewent, binitialsn
   }
 }
 
-/*
-	Name: oneinchpunch_physics_launchragdoll
-	Namespace: _zm_weap_one_inch_punch
-	Checksum: 0xA4AD2197
-	Offset: 0x348
-	Size: 0x1D4
-	Parameters: 7
-	Flags: Linked
-*/
 function oneinchpunch_physics_launchragdoll(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
-  self endon(# "entity_shutdown");
+  self endon("entity_shutdown");
   if(newval == 1) {
     var_70efc576 = undefined;
     var_17013cd1 = 0;

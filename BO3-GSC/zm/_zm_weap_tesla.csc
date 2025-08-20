@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_tesla.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_lightning_chain;
 #using scripts\zm\_zm_weapons;
-
 #namespace _zm_weap_tesla;
 
-/*
-	Name: init
-	Namespace: _zm_weap_tesla
-	Checksum: 0x744BFA64
-	Offset: 0x340
-	Size: 0x184
-	Parameters: 0
-	Flags: None
-*/
 function init() {
   level.weaponzmteslagun = getweapon("tesla_gun");
   level.weaponzmteslagunupgraded = getweapon("tesla_gun_upgraded");
@@ -33,15 +27,6 @@ function init() {
   level thread tesla_notetrack_think();
 }
 
-/*
-	Name: player_init
-	Namespace: _zm_weap_tesla
-	Checksum: 0x69C2FB84
-	Offset: 0x4D0
-	Size: 0x10E
-	Parameters: 0
-	Flags: Linked
-*/
 function player_init() {
   util::waitforclient(0);
   level.tesla_play_fx = [];
@@ -56,18 +41,9 @@ function player_init() {
   }
 }
 
-/*
-	Name: tesla_fx_rail
-	Namespace: _zm_weap_tesla
-	Checksum: 0x308FBEA
-	Offset: 0x5E8
-	Size: 0x1B8
-	Parameters: 1
-	Flags: Linked
-*/
 function tesla_fx_rail(localclientnum) {
-  self endon(# "disconnect");
-  self endon(# "entityshutdown");
+  self endon("disconnect");
+  self endon("entityshutdown");
   for (;;) {
     waitrealtime(randomfloatrange(8, 12));
     if(!level.tesla_play_fx[localclientnum]) {
@@ -95,18 +71,9 @@ function tesla_fx_rail(localclientnum) {
   }
 }
 
-/*
-	Name: tesla_fx_tube
-	Namespace: _zm_weap_tesla
-	Checksum: 0x5C5F757E
-	Offset: 0x7A8
-	Size: 0x350
-	Parameters: 1
-	Flags: Linked
-*/
 function tesla_fx_tube(localclientnum) {
-  self endon(# "disconnect");
-  self endon(# "entityshutdown");
+  self endon("disconnect");
+  self endon("entityshutdown");
   for (;;) {
     waitrealtime(0.1);
     if(!level.tesla_play_fx[localclientnum]) {
@@ -177,18 +144,9 @@ function tesla_fx_tube(localclientnum) {
   }
 }
 
-/*
-	Name: tesla_notetrack_think
-	Namespace: _zm_weap_tesla
-	Checksum: 0x2EA8FE49
-	Offset: 0xB00
-	Size: 0x7A
-	Parameters: 0
-	Flags: Linked
-*/
 function tesla_notetrack_think() {
   for (;;) {
-    level waittill(# "notetrack", localclientnum, note);
+    level waittill("notetrack", localclientnum, note);
     switch (note) {
       case "tesla_play_fx_off": {
         level.tesla_play_fx[localclientnum] = 0;
@@ -202,18 +160,9 @@ function tesla_notetrack_think() {
   }
 }
 
-/*
-	Name: tesla_happy
-	Namespace: _zm_weap_tesla
-	Checksum: 0x8011AB1B
-	Offset: 0xB88
-	Size: 0xA0
-	Parameters: 1
-	Flags: Linked
-*/
 function tesla_happy(localclientnum) {
   for (;;) {
-    level waittill(# "tgh");
+    level waittill("tgh");
     currentweapon = getcurrentweapon(localclientnum);
     if(currentweapon == level.weaponzmteslagun || currentweapon == level.weaponzmteslagunupgraded) {
       playsound(localclientnum, "wpn_tesla_happy", (0, 0, 0));
@@ -224,32 +173,14 @@ function tesla_happy(localclientnum) {
   }
 }
 
-/*
-	Name: tesla_change_watcher
-	Namespace: _zm_weap_tesla
-	Checksum: 0xE074B7D5
-	Offset: 0xC30
-	Size: 0x48
-	Parameters: 1
-	Flags: Linked
-*/
 function tesla_change_watcher(localclientnum) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "weapon_change");
+    self waittill("weapon_change");
     self clear_tesla_tube_effect(localclientnum);
   }
 }
 
-/*
-	Name: clear_tesla_tube_effect
-	Namespace: _zm_weap_tesla
-	Checksum: 0x94EA0EE4
-	Offset: 0xC80
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function clear_tesla_tube_effect(localclientnum) {
   if(isdefined(self.n_tesla_tube_fx_id)) {
     deletefx(localclientnum, self.n_tesla_tube_fx_id, 1);

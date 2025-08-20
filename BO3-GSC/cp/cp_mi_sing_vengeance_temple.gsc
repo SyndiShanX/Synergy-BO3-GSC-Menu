@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_vengeance_temple.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_dialog;
 #using scripts\cp\_load;
@@ -32,18 +36,8 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
-
 #namespace vengeance_temple;
 
-/*
-	Name: skipto_temple_init
-	Namespace: vengeance_temple
-	Checksum: 0xFB15E3DC
-	Offset: 0x13E0
-	Size: 0x13C
-	Parameters: 2
-	Flags: Linked
-*/
 function skipto_temple_init(str_objective, b_starting) {
   if(b_starting) {
     load::function_73adcefc();
@@ -61,15 +55,6 @@ function skipto_temple_init(str_objective, b_starting) {
   temple_main(str_objective);
 }
 
-/*
-	Name: temple_main
-	Namespace: vengeance_temple
-	Checksum: 0x245311A1
-	Offset: 0x1528
-	Size: 0x802
-	Parameters: 1
-	Flags: Linked
-*/
 function temple_main(str_objective) {
   stealth::reset();
   level.var_67e1f60e[level.var_67e1f60e.size] = & function_591ead63;
@@ -127,15 +112,6 @@ function temple_main(str_objective) {
   }
 }
 
-/*
-	Name: function_68be9dc2
-	Namespace: vengeance_temple
-	Checksum: 0x77A65954
-	Offset: 0x1D38
-	Size: 0x260
-	Parameters: 0
-	Flags: Linked
-*/
 function function_68be9dc2() {
   wait(0.25);
   var_dd48cfe3 = [];
@@ -162,17 +138,8 @@ function function_68be9dc2() {
   }
 }
 
-/*
-	Name: function_558af5fd
-	Namespace: vengeance_temple
-	Checksum: 0xA50A4B90
-	Offset: 0x1FA0
-	Size: 0x1DC
-	Parameters: 4
-	Flags: Linked
-*/
 function function_558af5fd(var_7131db57, var_1f486a3b, react_scene, drop_object) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(var_7131db57)) {
     self stealth_vo::function_4970c8b8(var_7131db57);
   }
@@ -182,7 +149,7 @@ function function_558af5fd(var_7131db57, var_1f486a3b, react_scene, drop_object)
     group = getaiarray(self.script_aigroup, "script_aigroup");
     foreach(guy in group) {
       if(isalive(guy) && guy != self) {
-        guy notify(# "alert", "combat");
+        guy notify("alert", "combat");
       }
     }
   }
@@ -195,15 +162,6 @@ function function_558af5fd(var_7131db57, var_1f486a3b, react_scene, drop_object)
   }
 }
 
-/*
-	Name: function_c2627018
-	Namespace: vengeance_temple
-	Checksum: 0x4B290FD7
-	Offset: 0x2188
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function function_c2627018(var_1f486a3b, drop_object) {
   self util::waittill_any("death", "alert", "damage");
   if(isdefined(drop_object)) {
@@ -214,17 +172,8 @@ function function_c2627018(var_1f486a3b, drop_object) {
   }
 }
 
-/*
-	Name: function_e0d6af75
-	Namespace: vengeance_temple
-	Checksum: 0x594BFDEA
-	Offset: 0x2218
-	Size: 0x114
-	Parameters: 0
-	Flags: None
-*/
 function function_e0d6af75() {
-  self endon(# "death");
+  self endon("death");
   self ai::set_ignoreme(1);
   self thread function_64cea510();
   self util::waittill_any("alert", "fake_alert");
@@ -232,26 +181,17 @@ function function_e0d6af75() {
   self stopanimscripted();
   civ = getent("gunpoint_civilian_ai", "targetname");
   if(isdefined(civ) && isalive(civ)) {
-    civ notify(# "fake_death");
+    civ notify("fake_death");
   }
   wait(0.1);
   self ai::set_ignoreme(0);
 }
 
-/*
-	Name: function_64cea510
-	Namespace: vengeance_temple
-	Checksum: 0xC8542168
-	Offset: 0x2338
-	Size: 0x148
-	Parameters: 0
-	Flags: Linked
-*/
 function function_64cea510() {
-  self waittill(# "death");
+  self waittill("death");
   civ = getent("gunpoint_civilian_ai", "targetname");
   if(isdefined(civ) && isalive(civ)) {
-    civ notify(# "fake_death");
+    civ notify("fake_death");
   }
   if(isdefined(self)) {
     start_origin = self gettagorigin("tag_flash");
@@ -264,17 +204,8 @@ function function_64cea510() {
   }
 }
 
-/*
-	Name: function_bddcb39c
-	Namespace: vengeance_temple
-	Checksum: 0xAB435EE5
-	Offset: 0x2488
-	Size: 0x17C
-	Parameters: 0
-	Flags: None
-*/
 function function_bddcb39c() {
-  self endon(# "death");
+  self endon("death");
   self.team = "allies";
   self.civilian = 1;
   self ai::set_ignoreme(1);
@@ -284,7 +215,7 @@ function function_bddcb39c() {
   self util::waittill_any("damage", "alert", "fake_death");
   guy = getent("gunpoint_enemy_ai", "targetname");
   if(isdefined(guy) && isalive(guy)) {
-    guy notify(# "hash_da6a4775");
+    guy notify("hash_da6a4775");
   }
   if(isdefined(self.magic_bullet_shield)) {
     util::stop_magic_bullet_shield(self);
@@ -295,15 +226,6 @@ function function_bddcb39c() {
   self startragdoll();
 }
 
-/*
-	Name: function_54c1902c
-	Namespace: vengeance_temple
-	Checksum: 0x9E622472
-	Offset: 0x2610
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_54c1902c(e_obj) {
   if(isdefined(e_obj)) {
     e_obj = getent(e_obj, "targetname");
@@ -314,17 +236,8 @@ function function_54c1902c(e_obj) {
   }
 }
 
-/*
-	Name: function_8e6475bd
-	Namespace: vengeance_temple
-	Checksum: 0x5B05475D
-	Offset: 0x26A8
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8e6475bd() {
-  self endon(# "death");
+  self endon("death");
   self.team = "allies";
   self.civilian = 1;
   self ai::set_ignoreme(1);
@@ -333,43 +246,16 @@ function function_8e6475bd() {
   self.health = 1;
 }
 
-/*
-	Name: function_e8f0e2bd
-	Namespace: vengeance_temple
-	Checksum: 0xE6499894
-	Offset: 0x2738
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e8f0e2bd() {
   self thread vengeance_util::setup_patroller();
   self playloopsound("amb_patrol_walla");
   self thread ai_sniper::agent_init();
 }
 
-/*
-	Name: function_47dc557f
-	Namespace: vengeance_temple
-	Checksum: 0x8BF68457
-	Offset: 0x2798
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_47dc557f() {
   level.var_47dc557f = spawner::simple_spawn("temple_wasps", & function_a044ee0);
 }
 
-/*
-	Name: function_a044ee0
-	Namespace: vengeance_temple
-	Checksum: 0x5F66F194
-	Offset: 0x27D8
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a044ee0() {
   var_850a4b14 = getent("temple_wasp_gv", "targetname");
   if(isdefined(var_850a4b14)) {
@@ -379,18 +265,9 @@ function function_a044ee0() {
   }
 }
 
-/*
-	Name: setup_temple_hendricks
-	Namespace: vengeance_temple
-	Checksum: 0x56CEED60
-	Offset: 0x2860
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_temple_hendricks() {
-  level endon(# "hash_8a3b89d3");
-  self endon(# "death");
+  level endon("hash_8a3b89d3");
+  self endon("death");
   self thread function_f6b53854();
   self ai::set_ignoreall(1);
   self ai::set_ignoreme(1);
@@ -403,21 +280,12 @@ function setup_temple_hendricks() {
   self.disableexits = 1;
   node = getnode("temple_hendricks_node_05", "targetname");
   self setgoal(node, 1);
-  level notify(# "temple_vo");
+  level notify("temple_vo");
   wait(1);
   self.disablearrivals = 0;
   self.disableexits = 0;
 }
 
-/*
-	Name: function_f6b53854
-	Namespace: vengeance_temple
-	Checksum: 0xE855E725
-	Offset: 0x29D0
-	Size: 0x2D4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f6b53854() {
   level flag::wait_till("stealth_discovered");
   level flag::set("temple_stealth_broken");
@@ -434,7 +302,7 @@ function function_f6b53854() {
   objectives::set("cp_level_vengeance_support", self);
   self thread vengeance_util::function_5a886ae0();
   level flag::wait_till_clear("stealth_discovered");
-  self notify(# "hash_90a20e6d");
+  self notify("hash_90a20e6d");
   self ai::set_ignoreall(1);
   self ai::set_ignoreme(1);
   self.holdfire = 1;
@@ -449,21 +317,12 @@ function function_f6b53854() {
   self.goalradius = 32;
   self setgoalnode(var_d7b9ba9b, 1);
   level flag::clear("stealth_combat");
-  self waittill(# "goal");
+  self waittill("goal");
   self.forcegoal = 0;
   self.fixednode = 0;
   level flag::set("temple_hendricks_done");
 }
 
-/*
-	Name: function_4002969a
-	Namespace: vengeance_temple
-	Checksum: 0xA6D4BAC4
-	Offset: 0x2CB0
-	Size: 0x19C
-	Parameters: 0
-	Flags: None
-*/
 function function_4002969a() {
   level flag::wait_till("all_players_at_temple_exit");
   if(!level flag::get("hendricks_near_dogleg_2")) {
@@ -482,15 +341,6 @@ function function_4002969a() {
   }
 }
 
-/*
-	Name: function_578145a3
-	Namespace: vengeance_temple
-	Checksum: 0xCBE0D6DA
-	Offset: 0x2E58
-	Size: 0xBBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_578145a3() {
   var_1044cded = 0;
   i = 3;
@@ -621,15 +471,6 @@ function function_578145a3() {
   }
 }
 
-/*
-	Name: function_f1c7b73f
-	Namespace: vengeance_temple
-	Checksum: 0x4CEA7C11
-	Offset: 0x3A20
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f1c7b73f(trigger) {
   foreach(player in getplayers()) {
     if(!player istouching(trigger)) {
@@ -639,15 +480,6 @@ function function_f1c7b73f(trigger) {
   return true;
 }
 
-/*
-	Name: function_620fbb8a
-	Namespace: vengeance_temple
-	Checksum: 0xEAA41B3D
-	Offset: 0x3AD8
-	Size: 0x14C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_620fbb8a(var_7cd99f10, e_volume) {
   a_ai = [];
   foreach(ai in var_7cd99f10) {
@@ -663,19 +495,10 @@ function function_620fbb8a(var_7cd99f10, e_volume) {
   level thread vengeance_util::delete_ai_when_out_of_sight(a_ai, 512);
 }
 
-/*
-	Name: temple_vo
-	Namespace: vengeance_temple
-	Checksum: 0x89177B15
-	Offset: 0x3C30
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function temple_vo() {
-  level endon(# "hash_8a3b89d3");
-  level.ai_hendricks endon(# "death");
-  level waittill(# "temple_vo");
+  level endon("hash_8a3b89d3");
+  level.ai_hendricks endon("death");
+  level waittill("temple_vo");
   foreach(player in level.activeplayers) {
     player thread vengeance_util::function_51caee84("temple_end");
   }
@@ -689,17 +512,8 @@ function temple_vo() {
   vengeance_util::function_ee75acde("hend_keep_moving_they_ha_0");
 }
 
-/*
-	Name: function_a86ac59d
-	Namespace: vengeance_temple
-	Checksum: 0x46002196
-	Offset: 0x3DB8
-	Size: 0x1FC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a86ac59d() {
-  level endon(# "hash_29964e40");
+  level endon("hash_29964e40");
   level flag::wait_till("stealth_discovered");
   array::thread_all(getaiteamarray("axis"), & function_329c89f);
   level thread vengeance_util::function_e6399870("temple_molotov_trigger", "script_noteworthy", 2);
@@ -721,34 +535,16 @@ function function_a86ac59d() {
   level flag::clear("stealth_discovered");
 }
 
-/*
-	Name: function_329c89f
-	Namespace: vengeance_temple
-	Checksum: 0x838FBE86
-	Offset: 0x3FC0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_329c89f() {
   self stopsounds();
 }
 
-/*
-	Name: function_dd797045
-	Namespace: vengeance_temple
-	Checksum: 0x48D27CAE
-	Offset: 0x3FE8
-	Size: 0x5E4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dd797045() {
-  level endon(# "hash_29964e40");
-  level endon(# "hash_fecd096c");
-  self endon(# "death");
+  level endon("hash_29964e40");
+  level endon("hash_fecd096c");
+  self endon("death");
   while (true) {
-    self waittill(# "trigger");
+    self waittill("trigger");
     guys = getaiteamarray("axis");
     guys = array::remove_dead(guys);
     if(guys.size > 37) {
@@ -810,17 +606,8 @@ function function_dd797045() {
   }
 }
 
-/*
-	Name: function_e4612dd6
-	Namespace: vengeance_temple
-	Checksum: 0xD6C6271C
-	Offset: 0x45D8
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e4612dd6() {
-  level endon(# "hash_29964e40");
+  level endon("hash_29964e40");
   level.ai_hendricks battlechatter::function_d9f49fba(0);
   var_eb6e35ef = [];
   var_eb6e35ef[0] = "hend_shifting_positions_0";
@@ -832,41 +619,14 @@ function function_e4612dd6() {
   level.ai_hendricks battlechatter::function_d9f49fba(1);
 }
 
-/*
-	Name: function_1a289333
-	Namespace: vengeance_temple
-	Checksum: 0x99EC1590
-	Offset: 0x46D0
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function function_1a289333() {}
 
-/*
-	Name: skipto_temple_done
-	Namespace: vengeance_temple
-	Checksum: 0x911F34C1
-	Offset: 0x46E0
-	Size: 0x84
-	Parameters: 4
-	Flags: Linked
-*/
 function skipto_temple_done(str_objective, b_starting, b_direct, player) {
   level flag::set("temple_end");
   level thread cleanup_temple();
   level struct::delete_script_bundle("scene", "cin_ven_hanging_body_loop_vign_civ07_ropeshort");
 }
 
-/*
-	Name: cleanup_temple
-	Namespace: vengeance_temple
-	Checksum: 0x8F9585A2
-	Offset: 0x4770
-	Size: 0x152
-	Parameters: 0
-	Flags: Linked
-*/
 function cleanup_temple() {
   if(isdefined(level.temple_patroller_spawners)) {
     foreach(enemy in level.temple_patroller_spawners) {
@@ -885,34 +645,16 @@ function cleanup_temple() {
   }
 }
 
-/*
-	Name: setup_breakable_garden_windows
-	Namespace: vengeance_temple
-	Checksum: 0xD0A187DC
-	Offset: 0x48D0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_breakable_garden_windows() {
   breakable_garden_windows = getentarray("breakable_garden_window", "targetname");
   array::thread_all(breakable_garden_windows, & breakable_garden_window_watcher);
 }
 
-/*
-	Name: breakable_garden_window_watcher
-	Namespace: vengeance_temple
-	Checksum: 0x87033EBD
-	Offset: 0x4930
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function breakable_garden_window_watcher() {
   self setcandamage(1);
   self.health = 10;
   while (true) {
-    self waittill(# "damage", damage, attacker);
+    self waittill("damage", damage, attacker);
     if(isdefined(attacker) && isplayer(attacker) && isdefined(damage)) {
       self.health = self.health - damage;
       if(self.health <= 0) {
@@ -923,15 +665,6 @@ function breakable_garden_window_watcher() {
   }
 }
 
-/*
-	Name: function_f8f4e73e
-	Namespace: vengeance_temple
-	Checksum: 0xA384A0FE
-	Offset: 0x49F8
-	Size: 0x30C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f8f4e73e() {
   var_cd0466c3 = struct::get("dogleg_2_intro_obj_struct");
   if(isdefined(var_cd0466c3)) {
@@ -954,10 +687,10 @@ function function_f8f4e73e() {
   s_anim_node = struct::get("tag_align_dogleg_2", "targetname");
   s_anim_node thread scene::play("cin_ven_05_65_deadcivilians_vign");
   n_node = getnode("hendricks_dogleg_2_stairs", "targetname");
-  level waittill(# "hash_ad75a4f1");
+  level waittill("hash_ad75a4f1");
   level thread function_29e96a35();
   if(level flag::get("temple_stealth_broken")) {
-    level waittill(# "hash_9fb1ff75");
+    level waittill("hash_9fb1ff75");
     level.ai_hendricks setgoal(n_node, 1);
   } else {
     wait(1.5);
@@ -967,37 +700,19 @@ function function_f8f4e73e() {
   level flag::set("dogleg_2_begin");
 }
 
-/*
-	Name: function_29e96a35
-	Namespace: vengeance_temple
-	Checksum: 0xCDD34A40
-	Offset: 0x4D10
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_29e96a35() {
-  level.ai_hendricks notify(# "hash_6f33cd57");
+  level.ai_hendricks notify("hash_6f33cd57");
   level.ai_hendricks.var_5d9fbd2d = 0;
   if(level flag::get("temple_stealth_broken")) {
-    level waittill(# "hash_9fb1ff75");
+    level waittill("hash_9fb1ff75");
     level.ai_hendricks dialog::say("hend_you_sure_you_don_t_w_0");
   } else {
-    level waittill(# "hash_132639c7");
+    level waittill("hash_132639c7");
     level.ai_hendricks dialog::say("hend_you_sure_you_don_t_w_0", 1);
   }
   level dialog::player_say("plyr_not_a_chance_hendri_0");
 }
 
-/*
-	Name: function_38bcd0
-	Namespace: vengeance_temple
-	Checksum: 0x34C60F6D
-	Offset: 0x4DF0
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function function_38bcd0() {
   e_trigger = getent("dogleg_2_door_entry_trigger", "targetname");
   e_trigger triggerenable(0);
@@ -1011,21 +726,12 @@ function function_38bcd0() {
   var_35a1e4f8 thread scene::init("cin_ven_05_60_officedoor_1st");
 }
 
-/*
-	Name: function_cf782b84
-	Namespace: vengeance_temple
-	Checksum: 0xDA8C4721
-	Offset: 0x4F70
-	Size: 0x39C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cf782b84() {
   e_trigger = getent("dogleg_2_door_entry_trigger", "targetname");
   e_trigger triggerenable(1);
   e_door_use_object = util::init_interactive_gameobject(e_trigger, & "cp_prompt_enter_ven_doors", & "CP_MI_SING_VENGEANCE_HINT_OPEN", & function_863781f2);
   objectives::set("cp_level_vengeance_open_dogleg_2_menu");
-  level notify(# "hash_479fadce");
+  level notify("hash_479fadce");
   var_71678477 = getent("dogleg_2_entry_door_lf", "targetname");
   var_1d746940 = getent(var_71678477.target, "targetname");
   var_71678477.animname = "dogleg_2_entry_door_lf";
@@ -1039,10 +745,10 @@ function function_cf782b84() {
   var_1d746940 linkto(var_71678477);
   var_4a669fbc linkto(var_b8e4988b);
   level thread vengeance_util::stealth_combat_toggle_trigger_and_objective(e_trigger, undefined, "cp_level_vengeance_open_dogleg_2_menu", "dogleg_2_entry_door_opening", "cp_level_vengeance_clear_area", e_door_use_object);
-  level waittill(# "hash_ad75a4f1");
+  level waittill("hash_ad75a4f1");
   e_door_use_object gameobjects::disable_object();
   objectives::hide("cp_level_vengeance_open_dogleg_2_menu");
-  level waittill(# "hash_c4bb0520");
+  level waittill("hash_c4bb0520");
   if(!level flag::get("temple_stealth_broken")) {
     var_71678477 stopanimscripted();
     var_71678477.angles = var_71678477.old_angles;
@@ -1056,15 +762,6 @@ function function_cf782b84() {
   }
 }
 
-/*
-	Name: function_863781f2
-	Namespace: vengeance_temple
-	Checksum: 0x48D0F0A2
-	Offset: 0x5318
-	Size: 0x19E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_863781f2(e_player) {
   level.var_67e1f60e = undefined;
   foreach(player in level.activeplayers) {
@@ -1080,22 +777,13 @@ function function_863781f2(e_player) {
     vengeance_util::co_op_teleport_on_igc_end("cin_ven_05_60_officedoor_1st_shared", "dogleg_2_entrance_teleport");
     var_35a1e4f8 thread scene::play("cin_ven_05_60_officedoor_1st_shared", e_player);
   }
-  level notify(# "hash_ad75a4f1");
-  var_35a1e4f8 waittill(# "scene_done");
-  level notify(# "hash_9fb1ff75");
+  level notify("hash_ad75a4f1");
+  var_35a1e4f8 waittill("scene_done");
+  level notify("hash_9fb1ff75");
 }
 
-/*
-	Name: function_37d4d605
-	Namespace: vengeance_temple
-	Checksum: 0x4010AE1E
-	Offset: 0x54C0
-	Size: 0xF2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_37d4d605() {
-  level waittill(# "hash_132639c7");
+  level waittill("hash_132639c7");
   var_c13b7e2a = struct::get_array("dogleg_2_glass_break", "targetname");
   exploder::exploder("dogleg_2_railing_break");
   foreach(var_d64f5bac in var_c13b7e2a) {
@@ -1103,17 +791,8 @@ function function_37d4d605() {
   }
 }
 
-/*
-	Name: function_ca660ef7
-	Namespace: vengeance_temple
-	Checksum: 0xA0BDF0BA
-	Offset: 0x55C0
-	Size: 0x102
-	Parameters: 0
-	Flags: None
-*/
 function function_ca660ef7() {
-  self endon(# "death");
+  self endon("death");
   level flag::wait_till("stealth_discovered");
   self.goalheight = 512;
   a_warlord_nodes = getnodearray(self.script_noteworthy, "targetname");
@@ -1122,29 +801,11 @@ function function_ca660ef7() {
   }
 }
 
-/*
-	Name: function_ea758541
-	Namespace: vengeance_temple
-	Checksum: 0x2215ACF5
-	Offset: 0x56D0
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_ea758541(name, key) {
   var_fc0a0636 = getentarray(name, key);
   array::thread_all(var_fc0a0636, & function_8f9d056c);
 }
 
-/*
-	Name: function_3bb1295b
-	Namespace: vengeance_temple
-	Checksum: 0x4F35C107
-	Offset: 0x5738
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3bb1295b() {
   guys = getaiteamarray("axis");
   guys = arraysortclosest(guys, self.origin);
@@ -1155,37 +816,19 @@ function function_3bb1295b() {
   }
 }
 
-/*
-	Name: function_8f9d056c
-	Namespace: vengeance_temple
-	Checksum: 0xABF12506
-	Offset: 0x5838
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8f9d056c() {
-  self endon(# "death");
-  level endon(# "hash_8a3b89d3");
+  self endon("death");
+  level endon("hash_8a3b89d3");
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(isplayer(player)) {
       self function_a1a65fdc(player);
     }
   }
 }
 
-/*
-	Name: function_a1a65fdc
-	Namespace: vengeance_temple
-	Checksum: 0xCD132F91
-	Offset: 0x58B0
-	Size: 0x2B8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a1a65fdc(player) {
-  player endon(# "death_or_disconnect");
+  player endon("death_or_disconnect");
   if(isdefined(player.var_15f789fb) && player.var_15f789fb == self) {
     return;
   }
@@ -1221,20 +864,11 @@ function function_a1a65fdc(player) {
   }
 }
 
-/*
-	Name: function_b321fac9
-	Namespace: vengeance_temple
-	Checksum: 0x68223329
-	Offset: 0x5B70
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b321fac9(trigger) {
-  self notify(# "hash_b321fac9");
-  self endon(# "hash_b321fac9");
-  self endon(# "death");
-  self endon(# "disconnect");
+  self notify("hash_b321fac9");
+  self endon("hash_b321fac9");
+  self endon("death");
+  self endon("disconnect");
   while (true) {
     if(self istouching(trigger)) {
       self.var_18091778 = self.origin;
@@ -1245,15 +879,6 @@ function function_b321fac9(trigger) {
   }
 }
 
-/*
-	Name: function_591ead63
-	Namespace: vengeance_temple
-	Checksum: 0x9968D547
-	Offset: 0x5C00
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_591ead63() {
   foreach(player in level.activeplayers) {
     if(isdefined(player.var_b9e5210f) && player.var_b9e5210f) {

@@ -1,18 +1,12 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_asylum_fx.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\util_shared;
-
 #namespace zm_asylum_fx;
 
-/*
-	Name: main
-	Namespace: zm_asylum_fx
-	Checksum: 0x3C90F6AC
-	Offset: 0x10F0
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_createfx_fx();
   disablefx = getdvarint("disable_fx");
@@ -26,15 +20,6 @@ function main() {
   level thread perk_wire_fx("jugger_on", "electric_juggernog");
 }
 
-/*
-	Name: function_dc095355
-	Namespace: zm_asylum_fx
-	Checksum: 0x18E2801E
-	Offset: 0x1228
-	Size: 0x244
-	Parameters: 2
-	Flags: Linked
-*/
 function function_dc095355(ent, localclientnum) {
   switchfx = struct::get("zapper_switch_fx_" + ent, "targetname");
   zapperfx = struct::get("zapper_fx_" + ent, "targetname");
@@ -52,15 +37,6 @@ function function_dc095355(ent, localclientnum) {
   triggerfx(zapperfx.loopfx);
 }
 
-/*
-	Name: function_1c1a68e1
-	Namespace: zm_asylum_fx
-	Checksum: 0x771CF514
-	Offset: 0x1478
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1c1a68e1(ent) {
   switchfx = struct::get("zapper_switch_fx_" + ent, "targetname");
   zapperfx = struct::get("zapper_fx_" + ent, "targetname");
@@ -70,15 +46,6 @@ function function_1c1a68e1(ent) {
   }
 }
 
-/*
-	Name: perk_wire_fx
-	Namespace: zm_asylum_fx
-	Checksum: 0xCC4957F
-	Offset: 0x1550
-	Size: 0x128
-	Parameters: 2
-	Flags: Linked
-*/
 function perk_wire_fx(notify_wait, init_targetname) {
   level waittill(notify_wait);
   targ = struct::get(init_targetname, "targetname");
@@ -96,15 +63,6 @@ function perk_wire_fx(notify_wait, init_targetname) {
   }
 }
 
-/*
-	Name: function_93f91575
-	Namespace: zm_asylum_fx
-	Checksum: 0x84AC52A0
-	Offset: 0x1680
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_93f91575(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     level thread function_46f37b91("north", localclientnum);
@@ -115,15 +73,6 @@ function function_93f91575(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_4c17ba1b
-	Namespace: zm_asylum_fx
-	Checksum: 0xC9CE3E34
-	Offset: 0x1748
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_4c17ba1b(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     level thread function_46f37b91("south", localclientnum);
@@ -134,15 +83,6 @@ function function_4c17ba1b(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_46f37b91
-	Namespace: zm_asylum_fx
-	Checksum: 0xA29E99B7
-	Offset: 0x1810
-	Size: 0x178
-	Parameters: 2
-	Flags: Linked
-*/
 function function_46f37b91(str_side, localclientnum) {
   ent = struct::get("trap_wire_sparks_" + str_side, "targetname");
   ent.fx = 1;
@@ -163,29 +103,11 @@ function function_46f37b91(str_side, localclientnum) {
   }
 }
 
-/*
-	Name: function_576a2cdd
-	Namespace: zm_asylum_fx
-	Checksum: 0xABE4814A
-	Offset: 0x1990
-	Size: 0x4E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_576a2cdd(str_side) {
   ent = struct::get("trap_wire_sparks_" + str_side, "targetname");
   ent.fx = undefined;
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_asylum_fx
-	Checksum: 0xD15E433C
-	Offset: 0x19E8
-	Size: 0x1FA
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["zombie_grain"] = "misc/fx_zombie_grain_cloud";
   level._effect["zapper_fx"] = "dlc5/zmhd/fx_zombie_zapper_powerbox_on";
@@ -207,15 +129,6 @@ function precache_scripted_fx() {
   level._effect["perk_machine_light_green"] = "dlc5/zmhd/fx_wonder_fizz_light_green";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_asylum_fx
-	Checksum: 0xC2AC7C3B
-	Offset: 0x1BF0
-	Size: 0x622
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {
   level._effect["god_rays_small"] = "env/light/fx_light_god_ray_sm_single";
   level._effect["god_rays_dust_motes"] = "env/light/fx_light_god_rays_dust_motes";

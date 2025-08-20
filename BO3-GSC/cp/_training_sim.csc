@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_training_sim.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_oed;
 #using scripts\shared\array_shared;
@@ -10,31 +14,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicles\_quadtank;
-
 #namespace namespace_c550ee23;
 
-/*
-	Name: __init__sytem__
-	Namespace: namespace_c550ee23
-	Checksum: 0x520563CA
-	Offset: 0x6C0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("training_sim", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: namespace_c550ee23
-	Checksum: 0x3AEE74C0
-	Offset: 0x700
-	Size: 0x2BC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("actor", "rez_in", 1, 1, "int", & function_86af5f80, 0, 0);
   clientfield::register("actor", "rez_out", 1, 1, "int", & function_11225c9f, 0, 0);
@@ -48,15 +33,6 @@ function __init__() {
   duplicate_render::set_dr_filter_framebuffer_duplicate("armor_pl", 0, "armor_on", undefined, 1, "mc/mtl_power_armor", 0);
 }
 
-/*
-	Name: function_86af5f80
-	Namespace: namespace_c550ee23
-	Checksum: 0xBDA90FD8
-	Offset: 0x9C8
-	Size: 0x4B4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_86af5f80(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     if(issubstr(self.archetype, "human") || issubstr(self.archetype, "robot") || issubstr(self.archetype, "warlord")) {
@@ -99,15 +75,6 @@ function function_86af5f80(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_11225c9f
-	Namespace: namespace_c550ee23
-	Checksum: 0xB11E6213
-	Offset: 0xE88
-	Size: 0x4C4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_11225c9f(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     if(issubstr(self.archetype, "human") || issubstr(self.archetype, "robot") || issubstr(self.archetype, "warlord")) {
@@ -151,15 +118,6 @@ function function_11225c9f(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_d3b7cf16
-	Namespace: namespace_c550ee23
-	Checksum: 0x82E1965F
-	Offset: 0x1358
-	Size: 0x174
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d3b7cf16(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self duplicate_render::set_dr_flag("armor_on", newval);
   self duplicate_render::update_dr_filters(localclientnum);
@@ -177,29 +135,11 @@ function function_d3b7cf16(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_14646786
-	Namespace: namespace_c550ee23
-	Checksum: 0x7ADAC76B
-	Offset: 0x14D8
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function function_14646786(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self thread postfx::playpostfxbundle("pstfx_world_construction");
   self playsound(0, "evt_glitch_start", self.origin);
 }
 
-/*
-	Name: function_b699155b
-	Namespace: namespace_c550ee23
-	Checksum: 0x74D35E5A
-	Offset: 0x1568
-	Size: 0x122
-	Parameters: 7
-	Flags: Linked
-*/
 function function_b699155b(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   a_dynents = getdynentarray();
   foreach(dynent in a_dynents) {

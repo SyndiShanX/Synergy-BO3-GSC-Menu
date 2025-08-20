@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_raygun_mark3.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -7,31 +11,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace _zm_weap_raygun_mark3;
 
-/*
-	Name: __init__sytem__
-	Namespace: _zm_weap_raygun_mark3
-	Checksum: 0x304A131A
-	Offset: 0x468
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_raygun_mark3", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _zm_weap_raygun_mark3
-	Checksum: 0xEAA6CF0
-	Offset: 0x4A8
-	Size: 0x2C4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.w_raygun_mark3 = getweapon("raygun_mark3");
   level.w_raygun_mark3_upgraded = getweapon("raygun_mark3_upgraded");
@@ -50,15 +35,6 @@ function __init__() {
   callback::on_localclient_connect( & monitor_raygun_mark3);
 }
 
-/*
-	Name: is_beam_raygun
-	Namespace: _zm_weap_raygun_mark3
-	Checksum: 0x8322BB81
-	Offset: 0x778
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function is_beam_raygun(weapon) {
   if(weapon === level.w_raygun_mark3 || weapon === level.w_raygun_mark3_upgraded) {
     return true;
@@ -66,43 +42,25 @@ function is_beam_raygun(weapon) {
   return false;
 }
 
-/*
-	Name: monitor_raygun_mark3
-	Namespace: _zm_weap_raygun_mark3
-	Checksum: 0xE800478A
-	Offset: 0x7B8
-	Size: 0x100
-	Parameters: 1
-	Flags: Linked
-*/
 function monitor_raygun_mark3(n_local_client) {
   player = getlocalplayer(n_local_client);
-  player endon(# "death");
+  player endon("death");
   while (true) {
-    player waittill(# "weapon_change", weapon);
+    player waittill("weapon_change", weapon);
     if(is_beam_raygun(weapon)) {
       player mapshaderconstant(n_local_client, 0, "scriptVector2", 0, 1, 0, 0);
       player thread glow_monitor(n_local_client);
     } else {
-      player notify(# "glow_monitor");
+      player notify("glow_monitor");
       player mapshaderconstant(n_local_client, 0, "scriptVector2", 0, 0, 0, 0);
     }
   }
 }
 
-/*
-	Name: glow_monitor
-	Namespace: _zm_weap_raygun_mark3
-	Checksum: 0xB9A9B102
-	Offset: 0x8C0
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function glow_monitor(n_local_client) {
-  self notify(# "glow_monitor");
-  self endon(# "glow_monitor");
-  self endon(# "death");
+  self notify("glow_monitor");
+  self endon("glow_monitor");
+  self endon("death");
   while (true) {
     self waittill_notetrack("clamps_open");
     self mapshaderconstant(n_local_client, 0, "scriptVector2", 0, 0, 0, 0);
@@ -111,35 +69,17 @@ function glow_monitor(n_local_client) {
   }
 }
 
-/*
-	Name: waittill_notetrack
-	Namespace: _zm_weap_raygun_mark3
-	Checksum: 0x6F4BED28
-	Offset: 0x990
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function waittill_notetrack(str_notetrack) {
-  self endon(# "glow_monitor");
-  self endon(# "death");
+  self endon("glow_monitor");
+  self endon("death");
   while (true) {
-    self waittill(# "notetrack", str_note);
+    self waittill("notetrack", str_note);
     if(str_note == str_notetrack) {
       return;
     }
   }
 }
 
-/*
-	Name: slow_vortex_fx
-	Namespace: _zm_weap_raygun_mark3
-	Checksum: 0x6714F73
-	Offset: 0x9F0
-	Size: 0x134
-	Parameters: 7
-	Flags: Linked
-*/
 function slow_vortex_fx(n_local_client, n_old, n_new, b_new_ent, b_initial_snap, str_field, b_was_time_jump) {
   if(isdefined(self.fx_slow_vortex)) {
     killfx(n_local_client, self.fx_slow_vortex);
@@ -155,15 +95,6 @@ function slow_vortex_fx(n_local_client, n_old, n_new, b_new_ent, b_initial_snap,
   }
 }
 
-/*
-	Name: ai_slow_vortex_fx
-	Namespace: _zm_weap_raygun_mark3
-	Checksum: 0x71253CC3
-	Offset: 0xB30
-	Size: 0x154
-	Parameters: 7
-	Flags: Linked
-*/
 function ai_slow_vortex_fx(n_local_client, n_old, n_new, b_new_ent, b_initial_snap, str_field, b_was_time_jump) {
   if(n_new) {
     if(n_new == 1) {
@@ -179,19 +110,10 @@ function ai_slow_vortex_fx(n_local_client, n_old, n_new, b_new_ent, b_initial_sn
   }
 }
 
-/*
-	Name: vortex_shake_and_rumble
-	Namespace: _zm_weap_raygun_mark3
-	Checksum: 0xE0070E9F
-	Offset: 0xC90
-	Size: 0xA0
-	Parameters: 2
-	Flags: Linked
-*/
 function vortex_shake_and_rumble(n_local_client, n_damage_level) {
-  self notify(# "vortex_shake_and_rumble");
-  self endon(# "vortex_shake_and_rumble");
-  self endon(# "entity_shutdown");
+  self notify("vortex_shake_and_rumble");
+  self endon("vortex_shake_and_rumble");
+  self endon("entity_shutdown");
   if(n_damage_level == 1) {
     str_rumble = "raygun_mark3_vortex_sm";
   } else {
@@ -203,17 +125,8 @@ function vortex_shake_and_rumble(n_local_client, n_damage_level) {
   }
 }
 
-/*
-	Name: zombie_blacken
-	Namespace: _zm_weap_raygun_mark3
-	Checksum: 0x921731EC
-	Offset: 0xD38
-	Size: 0x120
-	Parameters: 2
-	Flags: Linked
-*/
 function zombie_blacken(n_local_client, b_blacken) {
-  self endon(# "entity_shutdown");
+  self endon("entity_shutdown");
   if(!isdefined(self.n_blacken)) {
     self.n_blacken = 0;
   }
@@ -232,17 +145,8 @@ function zombie_blacken(n_local_client, b_blacken) {
   }
 }
 
-/*
-	Name: ai_disintegrate
-	Namespace: _zm_weap_raygun_mark3
-	Checksum: 0xFC9F7296
-	Offset: 0xE60
-	Size: 0x124
-	Parameters: 7
-	Flags: Linked
-*/
 function ai_disintegrate(n_local_client, n_old, n_new, b_new_ent, b_initial_snap, str_field, b_was_time_jump) {
-  self endon(# "entity_shutdown");
+  self endon("entity_shutdown");
   self duplicate_render::set_dr_flag("dissolve_on", n_new);
   self duplicate_render::update_dr_filters(n_local_client);
   self.n_dissolve = 1;

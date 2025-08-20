@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\bgbs\_zm_bgb_im_feelin_lucky.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
@@ -7,31 +11,12 @@
 #using scripts\zm\_zm_bgb;
 #using scripts\zm\_zm_powerups;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_bgb_im_feelin_lucky;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_bgb_im_feelin_lucky
-	Checksum: 0x3327B3A5
-	Offset: 0x198
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_bgb_im_feelin_lucky", & __init__, undefined, "bgb");
 }
 
-/*
-	Name: __init__
-	Namespace: zm_bgb_im_feelin_lucky
-	Checksum: 0x618ABAC6
-	Offset: 0x1D8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -39,15 +24,6 @@ function __init__() {
   bgb::register("zm_bgb_im_feelin_lucky", "activated", 2, undefined, undefined, undefined, & activation);
 }
 
-/*
-	Name: activation
-	Namespace: zm_bgb_im_feelin_lucky
-	Checksum: 0x13E16015
-	Offset: 0x238
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function activation() {
   powerup_origin = self bgb::get_player_dropped_powerup_origin();
   var_a8c63b5d = 0.75;
@@ -80,15 +56,6 @@ function activation() {
   }
 }
 
-/*
-	Name: function_29a9b9b8
-	Namespace: zm_bgb_im_feelin_lucky
-	Checksum: 0x43562EDC
-	Offset: 0x400
-	Size: 0xF2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_29a9b9b8() {
   var_d7a75a6e = getarraykeys(level.zombie_powerups);
   var_d7a75a6e = array::randomize(var_d7a75a6e);

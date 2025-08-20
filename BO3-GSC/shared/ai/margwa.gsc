@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\margwa.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\archetype_mocomps_utility;
 #using scripts\shared\ai\archetype_utility;
@@ -20,18 +24,8 @@
 #using scripts\shared\scene_shared;
 #using scripts\shared\spawner_shared;
 #using scripts\shared\util_shared;
-
 #namespace margwabehavior;
 
-/*
-	Name: init
-	Namespace: margwabehavior
-	Checksum: 0xA965E697
-	Offset: 0xBA8
-	Size: 0x374
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   initmargwabehaviorsandasm();
   spawner::add_archetype_spawn_function("margwa", & archetypemargwablackboardinit);
@@ -55,15 +49,6 @@ function autoexec init() {
   initdirecthitweapons();
 }
 
-/*
-	Name: initdirecthitweapons
-	Namespace: margwabehavior
-	Checksum: 0xC4888C0D
-	Offset: 0xF28
-	Size: 0xDE
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initdirecthitweapons() {
   if(!isdefined(level.dhweapons)) {
     level.dhweapons = [];
@@ -77,15 +62,6 @@ function private initdirecthitweapons() {
   level.dhweapons[level.dhweapons.size] = "launcher_standard_upgraded";
 }
 
-/*
-	Name: adddirecthitweapon
-	Namespace: margwabehavior
-	Checksum: 0x8767BE64
-	Offset: 0x1010
-	Size: 0xA2
-	Parameters: 1
-	Flags: None
-*/
 function adddirecthitweapon(weaponname) {
   foreach(weapon in level.dhweapons) {
     if(weapon == weaponname) {
@@ -95,15 +71,6 @@ function adddirecthitweapon(weaponname) {
   level.dhweapons[level.dhweapons.size] = weaponname;
 }
 
-/*
-	Name: initmargwabehaviorsandasm
-	Namespace: margwabehavior
-	Checksum: 0xA7B6071C
-	Offset: 0x10C0
-	Size: 0x654
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initmargwabehaviorsandasm() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("margwaTargetService", & margwatargetservice);
   behaviortreenetworkutility::registerbehaviortreescriptapi("margwaShouldSmashAttack", & margwashouldsmashattack);
@@ -146,71 +113,34 @@ function private initmargwabehaviorsandasm() {
   animationstatenetwork::registernotetrackhandlerfunction("margwa_melee_fire", & margwanotetrackpainmelee);
 }
 
-/*
-	Name: archetypemargwablackboardinit
-	Namespace: margwabehavior
-	Checksum: 0xFA165BD7
-	Offset: 0x1720
-	Size: 0x1E4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private archetypemargwablackboardinit() {
   blackboard::createblackboardforentity(self);
   self aiutility::registerutilityblackboardattributes();
   blackboard::registerblackboardattribute(self, "_locomotion_speed", "locomotion_speed_walk", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_board_attack_spot", undefined, undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_locomotion_should_turn", "should_not_turn", & bb_getshouldturn);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_zombie_damageweapon_type", "regular", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   self.___archetypeonanimscriptedcallback = & archetypemargwaonanimscriptedcallback;
-  /#
   self finalizetrackedblackboardattributes();
-  # /
 }
 
-/*
-	Name: archetypemargwaonanimscriptedcallback
-	Namespace: margwabehavior
-	Checksum: 0x8CF5C123
-	Offset: 0x1910
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private archetypemargwaonanimscriptedcallback(entity) {
   entity.__blackboard = undefined;
   entity archetypemargwablackboardinit();
 }
 
-/*
-	Name: bb_getshouldturn
-	Namespace: margwabehavior
-	Checksum: 0x4CEB83C0
-	Offset: 0x1950
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private bb_getshouldturn() {
   if(isdefined(self.should_turn) && self.should_turn) {
     return "should_turn";
@@ -218,15 +148,6 @@ function private bb_getshouldturn() {
   return "should_not_turn";
 }
 
-/*
-	Name: margwanotetracksmashattack
-	Namespace: margwabehavior
-	Checksum: 0xA780BA6F
-	Offset: 0x1988
-	Size: 0x330
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwanotetracksmashattack(entity) {
   players = getplayers();
   foreach(player in players) {
@@ -269,15 +190,6 @@ function private margwanotetracksmashattack(entity) {
   }
 }
 
-/*
-	Name: margwanotetrackbodyfall
-	Namespace: margwabehavior
-	Checksum: 0xCC2FF858
-	Offset: 0x1CC0
-	Size: 0x50
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwanotetrackbodyfall(entity) {
   if(self.archetype == "margwa") {
     entity ghost();
@@ -287,28 +199,10 @@ function private margwanotetrackbodyfall(entity) {
   }
 }
 
-/*
-	Name: margwanotetrackpainmelee
-	Namespace: margwabehavior
-	Checksum: 0x3D30E629
-	Offset: 0x1D18
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwanotetrackpainmelee(entity) {
   entity melee();
 }
 
-/*
-	Name: margwatargetservice
-	Namespace: margwabehavior
-	Checksum: 0xD35CFD3F
-	Offset: 0x1D48
-	Size: 0x156
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwatargetservice(entity) {
   if(isdefined(entity.ignoreall) && entity.ignoreall) {
     return false;
@@ -335,15 +229,6 @@ function private margwatargetservice(entity) {
   return false;
 }
 
-/*
-	Name: margwashouldsmashattack
-	Namespace: margwabehavior
-	Checksum: 0x55FEA848
-	Offset: 0x1EA8
-	Size: 0x8E
-	Parameters: 1
-	Flags: Linked
-*/
 function margwashouldsmashattack(entity) {
   if(!isdefined(entity.enemy)) {
     return false;
@@ -358,15 +243,6 @@ function margwashouldsmashattack(entity) {
   return true;
 }
 
-/*
-	Name: margwashouldswipeattack
-	Namespace: margwabehavior
-	Checksum: 0xAA61328B
-	Offset: 0x1F40
-	Size: 0xA6
-	Parameters: 1
-	Flags: Linked
-*/
 function margwashouldswipeattack(entity) {
   if(!isdefined(entity.enemy)) {
     return false;
@@ -381,15 +257,6 @@ function margwashouldswipeattack(entity) {
   return true;
 }
 
-/*
-	Name: margwashouldshowpain
-	Namespace: margwabehavior
-	Checksum: 0x55B8C89E
-	Offset: 0x1FF0
-	Size: 0xFE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwashouldshowpain(entity) {
   if(isdefined(entity.headdestroyed)) {
     headinfo = entity.head[entity.headdestroyed];
@@ -412,15 +279,6 @@ function private margwashouldshowpain(entity) {
   return false;
 }
 
-/*
-	Name: margwashouldreactstun
-	Namespace: margwabehavior
-	Checksum: 0x6F008555
-	Offset: 0x20F8
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwashouldreactstun(entity) {
   if(isdefined(entity.reactstun) && entity.reactstun) {
     return true;
@@ -428,15 +286,6 @@ function private margwashouldreactstun(entity) {
   return false;
 }
 
-/*
-	Name: margwashouldreactidgun
-	Namespace: margwabehavior
-	Checksum: 0x99E54D21
-	Offset: 0x2140
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwashouldreactidgun(entity) {
   if(isdefined(entity.reactidgun) && entity.reactidgun) {
     return true;
@@ -444,15 +293,6 @@ function private margwashouldreactidgun(entity) {
   return false;
 }
 
-/*
-	Name: margwashouldreactsword
-	Namespace: margwabehavior
-	Checksum: 0x5502ADC7
-	Offset: 0x2188
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwashouldreactsword(entity) {
   if(isdefined(entity.reactsword) && entity.reactsword) {
     return true;
@@ -460,15 +300,6 @@ function private margwashouldreactsword(entity) {
   return false;
 }
 
-/*
-	Name: margwashouldspawn
-	Namespace: margwabehavior
-	Checksum: 0x16151AD8
-	Offset: 0x21D0
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwashouldspawn(entity) {
   if(isdefined(entity.needspawn) && entity.needspawn) {
     return true;
@@ -476,15 +307,6 @@ function private margwashouldspawn(entity) {
   return false;
 }
 
-/*
-	Name: margwashouldfreeze
-	Namespace: margwabehavior
-	Checksum: 0xC130F05
-	Offset: 0x2218
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwashouldfreeze(entity) {
   if(isdefined(entity.isfrozen) && entity.isfrozen) {
     return true;
@@ -492,15 +314,6 @@ function private margwashouldfreeze(entity) {
   return false;
 }
 
-/*
-	Name: margwashouldteleportin
-	Namespace: margwabehavior
-	Checksum: 0x3BCAEDEB
-	Offset: 0x2260
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwashouldteleportin(entity) {
   if(isdefined(entity.needteleportin) && entity.needteleportin) {
     return true;
@@ -508,15 +321,6 @@ function private margwashouldteleportin(entity) {
   return false;
 }
 
-/*
-	Name: margwashouldteleportout
-	Namespace: margwabehavior
-	Checksum: 0x244FF5FB
-	Offset: 0x22A8
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwashouldteleportout(entity) {
   if(isdefined(entity.needteleportout) && entity.needteleportout) {
     return true;
@@ -524,15 +328,6 @@ function private margwashouldteleportout(entity) {
   return false;
 }
 
-/*
-	Name: margwashouldwait
-	Namespace: margwabehavior
-	Checksum: 0x87DA610
-	Offset: 0x22F0
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwashouldwait(entity) {
   if(isdefined(entity.waiting) && entity.waiting) {
     return true;
@@ -540,15 +335,6 @@ function private margwashouldwait(entity) {
   return false;
 }
 
-/*
-	Name: margwashouldreset
-	Namespace: margwabehavior
-	Checksum: 0xBE201424
-	Offset: 0x2338
-	Size: 0xAA
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwashouldreset(entity) {
   if(isdefined(entity.headdestroyed)) {
     return true;
@@ -565,15 +351,6 @@ function private margwashouldreset(entity) {
   return false;
 }
 
-/*
-	Name: margwareactstunaction
-	Namespace: margwabehavior
-	Checksum: 0xB4B5902E
-	Offset: 0x23F0
-	Size: 0xF0
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private margwareactstunaction(entity, asmstatename) {
   animationstatenetworkutility::requeststate(entity, asmstatename);
   stunactionast = entity astsearch(istring(asmstatename));
@@ -584,15 +361,6 @@ function private margwareactstunaction(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: margwaswipeattackaction
-	Namespace: margwabehavior
-	Checksum: 0xD06E7FC6
-	Offset: 0x24E8
-	Size: 0xE8
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private margwaswipeattackaction(entity, asmstatename) {
   animationstatenetworkutility::requeststate(entity, asmstatename);
   if(!isdefined(entity.swipe_end_time)) {
@@ -604,15 +372,6 @@ function private margwaswipeattackaction(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: margwaswipeattackactionupdate
-	Namespace: margwabehavior
-	Checksum: 0xC27867E9
-	Offset: 0x25D8
-	Size: 0x46
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private margwaswipeattackactionupdate(entity, asmstatename) {
   if(isdefined(entity.swipe_end_time) && gettime() > entity.swipe_end_time) {
     return 4;
@@ -620,30 +379,12 @@ function private margwaswipeattackactionupdate(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: margwaidlestart
-	Namespace: margwabehavior
-	Checksum: 0x40D5DCA6
-	Offset: 0x2628
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwaidlestart(entity) {
   if(entity margwaserverutils::shouldupdatejaw()) {
     entity clientfield::set("margwa_jaw", 1);
   }
 }
 
-/*
-	Name: margwamovestart
-	Namespace: margwabehavior
-	Checksum: 0x5DEEBAD0
-	Offset: 0x2678
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwamovestart(entity) {
   if(entity margwaserverutils::shouldupdatejaw()) {
     if(entity.zombie_move_speed == "run") {
@@ -654,26 +395,8 @@ function private margwamovestart(entity) {
   }
 }
 
-/*
-	Name: margwadeathaction
-	Namespace: margwabehavior
-	Checksum: 0x57CEAD69
-	Offset: 0x2710
-	Size: 0xC
-	Parameters: 1
-	Flags: Private
-*/
 function private margwadeathaction(entity) {}
 
-/*
-	Name: margwatraverseactionstart
-	Namespace: margwabehavior
-	Checksum: 0xDD88BF83
-	Offset: 0x2728
-	Size: 0x14E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwatraverseactionstart(entity) {
   blackboard::setblackboardattribute(entity, "_traversal_type", entity.traversestartnode.animscript);
   if(isdefined(entity.traversestartnode.animscript)) {
@@ -700,15 +423,6 @@ function private margwatraverseactionstart(entity) {
   }
 }
 
-/*
-	Name: margwateleportinstart
-	Namespace: margwabehavior
-	Checksum: 0x84B64EC8
-	Offset: 0x2880
-	Size: 0x154
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwateleportinstart(entity) {
   entity unlink();
   if(isdefined(entity.teleportpos)) {
@@ -727,15 +441,6 @@ function private margwateleportinstart(entity) {
   }
 }
 
-/*
-	Name: margwateleportinterminate
-	Namespace: margwabehavior
-	Checksum: 0xB1CFCFC2
-	Offset: 0x29E0
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function margwateleportinterminate(entity) {
   if(isdefined(self.traveler)) {
     self.traveler clientfield::set("margwa_fx_travel", 0);
@@ -743,15 +448,6 @@ function margwateleportinterminate(entity) {
   entity.isteleporting = 0;
 }
 
-/*
-	Name: margwateleportoutstart
-	Namespace: margwabehavior
-	Checksum: 0x646D917E
-	Offset: 0x2A38
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwateleportoutstart(entity) {
   entity.needteleportout = 0;
   entity.isteleporting = 1;
@@ -763,15 +459,6 @@ function private margwateleportoutstart(entity) {
   }
 }
 
-/*
-	Name: margwateleportoutterminate
-	Namespace: margwabehavior
-	Checksum: 0x70776916
-	Offset: 0x2B10
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwateleportoutterminate(entity) {
   if(isdefined(entity.traveler)) {
     entity.traveler.origin = entity gettagorigin("j_spine_1");
@@ -789,17 +476,8 @@ function private margwateleportoutterminate(entity) {
   }
 }
 
-/*
-	Name: margwapainstart
-	Namespace: margwabehavior
-	Checksum: 0x1DD691BE
-	Offset: 0x2C50
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwapainstart(entity) {
-  entity notify(# "stop_head_update");
+  entity notify("stop_head_update");
   if(entity margwaserverutils::shouldupdatejaw()) {
     head = blackboard::getblackboardattribute(self, "_margwa_head");
     switch (head) {
@@ -822,15 +500,6 @@ function private margwapainstart(entity) {
   entity.candamage = 0;
 }
 
-/*
-	Name: margwapainterminate
-	Namespace: margwabehavior
-	Checksum: 0x13FC1942
-	Offset: 0x2D88
-	Size: 0xA0
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwapainterminate(entity) {
   entity.headdestroyed = undefined;
   entity.canstun = 1;
@@ -842,15 +511,6 @@ function private margwapainterminate(entity) {
   }
 }
 
-/*
-	Name: margwareactstunstart
-	Namespace: margwabehavior
-	Checksum: 0xE29ED658
-	Offset: 0x2E30
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwareactstunstart(entity) {
   entity.reactstun = undefined;
   entity.canstun = 0;
@@ -859,28 +519,10 @@ function private margwareactstunstart(entity) {
   }
 }
 
-/*
-	Name: margwareactstunterminate
-	Namespace: margwabehavior
-	Checksum: 0x567ED9E2
-	Offset: 0x2EA0
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function margwareactstunterminate(entity) {
   entity.canstun = 1;
 }
 
-/*
-	Name: margwareactidgunstart
-	Namespace: margwabehavior
-	Checksum: 0x6EA2D157
-	Offset: 0x2EC8
-	Size: 0x13C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwareactidgunstart(entity) {
   entity.reactidgun = undefined;
   entity.canstun = 0;
@@ -902,72 +544,27 @@ function private margwareactidgunstart(entity) {
   }
 }
 
-/*
-	Name: margwareactidgunterminate
-	Namespace: margwabehavior
-	Checksum: 0x417F8CEF
-	Offset: 0x3010
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function margwareactidgunterminate(entity) {
   entity.canstun = 1;
   blackboard::setblackboardattribute(entity, "_zombie_damageweapon_type", "regular");
 }
 
-/*
-	Name: margwareactswordstart
-	Namespace: margwabehavior
-	Checksum: 0xB22073AE
-	Offset: 0x3060
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwareactswordstart(entity) {
   entity.reactsword = undefined;
   entity.canstun = 0;
   if(isdefined(entity.head_chopper)) {
-    entity.head_chopper notify(# "react_sword");
+    entity.head_chopper notify("react_sword");
   }
 }
 
-/*
-	Name: margwareactswordterminate
-	Namespace: margwabehavior
-	Checksum: 0xFF73C378
-	Offset: 0x30C0
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwareactswordterminate(entity) {
   entity.canstun = 1;
 }
 
-/*
-	Name: margwaspawnstart
-	Namespace: margwabehavior
-	Checksum: 0x38AD1A57
-	Offset: 0x30E8
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwaspawnstart(entity) {
   entity.needspawn = 0;
 }
 
-/*
-	Name: margwasmashattackstart
-	Namespace: margwabehavior
-	Checksum: 0xF8F02AF9
-	Offset: 0x3110
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwasmashattackstart(entity) {
   entity margwaserverutils::margwaheadsmash();
   if(entity margwaserverutils::shouldupdatejaw()) {
@@ -975,56 +572,20 @@ function private margwasmashattackstart(entity) {
   }
 }
 
-/*
-	Name: margwasmashattackterminate
-	Namespace: margwabehavior
-	Checksum: 0xD562EA55
-	Offset: 0x3178
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function margwasmashattackterminate(entity) {
   entity margwaserverutils::margwacloseallheads();
 }
 
-/*
-	Name: margwaswipeattackstart
-	Namespace: margwabehavior
-	Checksum: 0x37DE952B
-	Offset: 0x31A8
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function margwaswipeattackstart(entity) {
   if(entity margwaserverutils::shouldupdatejaw()) {
     entity clientfield::set("margwa_jaw", 16);
   }
 }
 
-/*
-	Name: margwaswipeattackterminate
-	Namespace: margwabehavior
-	Checksum: 0xFA0A0930
-	Offset: 0x31F8
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwaswipeattackterminate(entity) {
   entity margwaserverutils::margwacloseallheads();
 }
 
-/*
-	Name: mocompmargwateleporttraversalinit
-	Namespace: margwabehavior
-	Checksum: 0x1C7A55F3
-	Offset: 0x3228
-	Size: 0x144
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompmargwateleporttraversalinit(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity orientmode("face angle", entity.angles[1]);
   entity animmode("normal");
@@ -1040,41 +601,14 @@ function private mocompmargwateleporttraversalinit(entity, mocompanim, mocompani
   }
 }
 
-/*
-	Name: mocompmargwateleporttraversalupdate
-	Namespace: margwabehavior
-	Checksum: 0x44041490
-	Offset: 0x3378
-	Size: 0x2C
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompmargwateleporttraversalupdate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {}
 
-/*
-	Name: mocompmargwateleporttraversalterminate
-	Namespace: margwabehavior
-	Checksum: 0x897D052C
-	Offset: 0x33B0
-	Size: 0x44
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompmargwateleporttraversalterminate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   margwateleportoutterminate(entity);
 }
 
 #namespace margwaserverutils;
 
-/*
-	Name: margwaspawnsetup
-	Namespace: margwaserverutils
-	Checksum: 0x99D9DEB3
-	Offset: 0x3400
-	Size: 0x224
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private margwaspawnsetup() {
   self disableaimassist();
   self.disableammodrop = 1;
@@ -1103,19 +637,10 @@ function private margwaspawnsetup() {
   self.ignorerunandgundist = 1;
 }
 
-/*
-	Name: margwadeath
-	Namespace: margwaserverutils
-	Checksum: 0x10D7870E
-	Offset: 0x3630
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private margwadeath() {
-  self waittill(# "death");
+  self waittill("death");
   if(isdefined(self.e_head_attacker)) {
-    self.e_head_attacker notify(# "margwa_kill");
+    self.e_head_attacker notify("margwa_kill");
   }
   if(isdefined(self.traveler)) {
     self.traveler delete();
@@ -1125,41 +650,14 @@ function private margwadeath() {
   }
 }
 
-/*
-	Name: margwaenablestun
-	Namespace: margwaserverutils
-	Checksum: 0x7BFCD1CF
-	Offset: 0x36B8
-	Size: 0x10
-	Parameters: 0
-	Flags: None
-*/
 function margwaenablestun() {
   self.canstun = 1;
 }
 
-/*
-	Name: margwadisablestun
-	Namespace: margwaserverutils
-	Checksum: 0xE1852A59
-	Offset: 0x36D0
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private margwadisablestun() {
   self.canstun = 0;
 }
 
-/*
-	Name: margwainithead
-	Namespace: margwaserverutils
-	Checksum: 0x4F6311E4
-	Offset: 0x36E8
-	Size: 0x454
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private margwainithead(headmodel, headtag) {
   model = headmodel;
   model_gore = undefined;
@@ -1236,15 +734,6 @@ function private margwainithead(headmodel, headtag) {
   self thread margwaheadupdate(self.head[model]);
 }
 
-/*
-	Name: margwasetheadhealth
-	Namespace: margwaserverutils
-	Checksum: 0x91582E3A
-	Offset: 0x3B48
-	Size: 0x9A
-	Parameters: 1
-	Flags: Linked
-*/
 function margwasetheadhealth(health) {
   self.headhealthmax = health;
   foreach(head in self.head) {
@@ -1252,29 +741,11 @@ function margwasetheadhealth(health) {
   }
 }
 
-/*
-	Name: margwaresetheadtime
-	Namespace: margwaserverutils
-	Checksum: 0xEE2C76D4
-	Offset: 0x3BF0
-	Size: 0x46
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private margwaresetheadtime(min, max) {
   time = gettime() + randomintrange(min, max);
   return time;
 }
 
-/*
-	Name: margwaheadcanopen
-	Namespace: margwaserverutils
-	Checksum: 0xA2C54F6B
-	Offset: 0x3C40
-	Size: 0x40
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private margwaheadcanopen() {
   if(self.headattached > 1) {
     if(self.headopen < (self.headattached - 1)) {
@@ -1286,20 +757,11 @@ function private margwaheadcanopen() {
   return false;
 }
 
-/*
-	Name: margwaheadupdate
-	Namespace: margwaserverutils
-	Checksum: 0x81D78407
-	Offset: 0x3C88
-	Size: 0x298
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwaheadupdate(headinfo) {
-  self endon(# "death");
-  self endon(# "stop_head_update");
-  headinfo notify(# "stop_head_update");
-  headinfo endon(# "stop_head_update");
+  self endon("death");
+  self endon("stop_head_update");
+  headinfo notify("stop_head_update");
+  headinfo endon("stop_head_update");
   while (true) {
     if(self ispaused()) {
       util::wait_network_frame();
@@ -1340,32 +802,14 @@ function private margwaheadupdate(headinfo) {
   }
 }
 
-/*
-	Name: margwaheaddamagedelay
-	Namespace: margwaserverutils
-	Checksum: 0xCB063EC9
-	Offset: 0x3F28
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private margwaheaddamagedelay(headinfo, candamage) {
-  self endon(# "death");
+  self endon("death");
   wait(0.1);
   headinfo.candamage = candamage;
 }
 
-/*
-	Name: margwaheadsmash
-	Namespace: margwaserverutils
-	Checksum: 0x94918C5C
-	Offset: 0x3F70
-	Size: 0x1C2
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private margwaheadsmash() {
-  self notify(# "stop_head_update");
+  self notify("stop_head_update");
   headalive = [];
   foreach(head in self.head) {
     if(head.health > 0) {
@@ -1385,29 +829,11 @@ function private margwaheadsmash() {
   }
 }
 
-/*
-	Name: margwaclosehead
-	Namespace: margwaserverutils
-	Checksum: 0xEBA348FD
-	Offset: 0x4140
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwaclosehead(headinfo) {
   headinfo.candamage = 0;
   self clientfield::set(headinfo.cf, headinfo.closed);
 }
 
-/*
-	Name: margwacloseallheads
-	Namespace: margwaserverutils
-	Checksum: 0x51F32313
-	Offset: 0x4198
-	Size: 0x122
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private margwacloseallheads(closetime) {
   if(self ispaused()) {
     return;
@@ -1426,19 +852,10 @@ function private margwacloseallheads(closetime) {
   }
 }
 
-/*
-	Name: margwakillhead
-	Namespace: margwaserverutils
-	Checksum: 0xB02E33BE
-	Offset: 0x42C8
-	Size: 0x17A
-	Parameters: 2
-	Flags: Linked
-*/
 function margwakillhead(modelhit, attacker) {
   headinfo = self.head[modelhit];
   headinfo.health = 0;
-  headinfo notify(# "stop_head_update");
+  headinfo notify("stop_head_update");
   if(isdefined(headinfo.candamage) && headinfo.candamage) {
     self margwaclosehead(headinfo);
     self.headopen--;
@@ -1459,15 +876,6 @@ function margwakillhead(modelhit, attacker) {
   return false;
 }
 
-/*
-	Name: margwacandamageanyhead
-	Namespace: margwaserverutils
-	Checksum: 0x43563241
-	Offset: 0x4450
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function margwacandamageanyhead() {
   foreach(head in self.head) {
     if(isdefined(head) && head.health > 0 && (isdefined(head.candamage) && head.candamage)) {
@@ -1477,15 +885,6 @@ function margwacandamageanyhead() {
   return false;
 }
 
-/*
-	Name: margwacandamagehead
-	Namespace: margwaserverutils
-	Checksum: 0x2167A7ED
-	Offset: 0x4518
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function margwacandamagehead() {
   if(isdefined(self) && self.health > 0 && (isdefined(self.candamage) && self.candamage)) {
     return true;
@@ -1493,15 +892,6 @@ function margwacandamagehead() {
   return false;
 }
 
-/*
-	Name: show_hit_marker
-	Namespace: margwaserverutils
-	Checksum: 0x7D7D2633
-	Offset: 0x4560
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function show_hit_marker() {
   if(isdefined(self) && isdefined(self.hud_damagefeedback)) {
     self.hud_damagefeedback setshader("damage_feedback", 24, 48);
@@ -1511,15 +901,6 @@ function show_hit_marker() {
   }
 }
 
-/*
-	Name: isdirecthitweapon
-	Namespace: margwaserverutils
-	Checksum: 0x9E36F596
-	Offset: 0x45F0
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private isdirecthitweapon(weapon) {
   foreach(dhweapon in level.dhweapons) {
     if(weapon.name == dhweapon) {
@@ -1532,15 +913,6 @@ function private isdirecthitweapon(weapon) {
   return false;
 }
 
-/*
-	Name: margwadamage
-	Namespace: margwaserverutils
-	Checksum: 0xD0E1889D
-	Offset: 0x46E8
-	Size: 0x67C
-	Parameters: 12
-	Flags: Linked
-*/
 function margwadamage(inflictor, attacker, damage, dflags, mod, weapon, point, dir, hitloc, offsettime, boneindex, modelindex) {
   if(isdefined(self.is_kill) && self.is_kill) {
     return damage;
@@ -1603,12 +975,10 @@ function margwadamage(inflictor, attacker, damage, dflags, mod, weapon, point, d
   }
   partname = getpartname(self.model, boneindex);
   if(isdefined(partname)) {
-    /#
     if(isdefined(self.debughitloc) && self.debughitloc) {
       printtoprightln((partname + "") + damage);
     }
-    # /
-      modelhit = self margwaheadhit(self, partname);
+    modelhit = self margwaheadhit(self, partname);
     if(isdefined(modelhit)) {
       headinfo = self.head[modelhit];
       if(headinfo margwacandamagehead()) {
@@ -1616,7 +986,7 @@ function margwadamage(inflictor, attacker, damage, dflags, mod, weapon, point, d
           damage = attacker[[level.margwa_damage_override_callback]](damage);
         }
         if(isdefined(attacker)) {
-          attacker notify(# "margwa_headshot", self);
+          attacker notify("margwa_headshot", self);
         }
         headinfo.health = headinfo.health - damage;
         damageopen = 1;
@@ -1642,15 +1012,6 @@ function margwadamage(inflictor, attacker, damage, dflags, mod, weapon, point, d
   return 1;
 }
 
-/*
-	Name: margwaheadhit
-	Namespace: margwaserverutils
-	Checksum: 0x5A7E92A6
-	Offset: 0x4D70
-	Size: 0x70
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private margwaheadhit(entity, partname) {
   switch (partname) {
     case "j_chunk_head_bone_le":
@@ -1669,15 +1030,6 @@ function private margwaheadhit(entity, partname) {
   return undefined;
 }
 
-/*
-	Name: margwaupdatemovespeed
-	Namespace: margwaserverutils
-	Checksum: 0x5C02A521
-	Offset: 0x4DE8
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private margwaupdatemovespeed() {
   if(self.zombie_move_speed == "walk") {
     self.zombie_move_speed = "run";
@@ -1688,40 +1040,13 @@ function private margwaupdatemovespeed() {
   }
 }
 
-/*
-	Name: margwaforcesprint
-	Namespace: margwaserverutils
-	Checksum: 0x98CBB6AB
-	Offset: 0x4E90
-	Size: 0x3C
-	Parameters: 0
-	Flags: None
-*/
 function margwaforcesprint() {
   self.zombie_move_speed = "sprint";
   blackboard::setblackboardattribute(self, "_locomotion_speed", "locomotion_speed_sprint");
 }
 
-/*
-	Name: margwadestroyhead
-	Namespace: margwaserverutils
-	Checksum: 0xA69A2999
-	Offset: 0x4ED8
-	Size: 0xC
-	Parameters: 1
-	Flags: Private
-*/
 function private margwadestroyhead(modelhit) {}
 
-/*
-	Name: shouldupdatejaw
-	Namespace: margwaserverutils
-	Checksum: 0x2EAC2FC5
-	Offset: 0x4EF0
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function shouldupdatejaw() {
   if(!(isdefined(self.jawanimenabled) && self.jawanimenabled)) {
     return false;
@@ -1732,15 +1057,6 @@ function shouldupdatejaw() {
   return false;
 }
 
-/*
-	Name: margwasetgoal
-	Namespace: margwaserverutils
-	Checksum: 0x47B9066C
-	Offset: 0x4F30
-	Size: 0x8E
-	Parameters: 3
-	Flags: Linked
-*/
 function margwasetgoal(origin, radius, boundarydist) {
   pos = getclosestpointonnavmesh(origin, 64, 30);
   if(isdefined(pos)) {
@@ -1751,17 +1067,8 @@ function margwasetgoal(origin, radius, boundarydist) {
   return false;
 }
 
-/*
-	Name: margwawait
-	Namespace: margwaserverutils
-	Checksum: 0x35D62B4D
-	Offset: 0x4FC8
-	Size: 0x18A
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private margwawait() {
-  self endon(# "death");
+  self endon("death");
   self.waiting = 1;
   self.needteleportin = 1;
   destpos = self.teleportpos + vectorscale((0, 0, 1), 60);
@@ -1785,31 +1092,13 @@ function private margwawait() {
   }
 }
 
-/*
-	Name: margwatell
-	Namespace: margwaserverutils
-	Checksum: 0x7FEB04F2
-	Offset: 0x5160
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function margwatell() {
-  self endon(# "death");
+  self endon("death");
   self.travelertell.origin = self.teleportpos;
   util::wait_network_frame();
   self.travelertell clientfield::set("margwa_fx_travel_tell", 1);
 }
 
-/*
-	Name: shieldfacing
-	Namespace: margwaserverutils
-	Checksum: 0x241B8C09
-	Offset: 0x51D0
-	Size: 0x162
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private shieldfacing(vdir, limit, front = 1) {
   orientation = self getplayerangles();
   forwardvec = anglestoforward(orientation);
@@ -1825,15 +1114,6 @@ function private shieldfacing(vdir, limit, front = 1) {
   return dotproduct > limit;
 }
 
-/*
-	Name: insmashattackrange
-	Namespace: margwaserverutils
-	Checksum: 0x63151C0A
-	Offset: 0x5340
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private insmashattackrange(enemy) {
   smashpos = self.origin;
   heightoffset = abs(self.origin[2] - enemy.origin[2]);

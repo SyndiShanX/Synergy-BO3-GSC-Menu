@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_stats.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
@@ -7,46 +11,18 @@
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\gametypes\_globallogic;
 #using scripts\zm\gametypes\_globallogic_score;
-
 #namespace zm_stats;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_stats
-	Checksum: 0x205FDF82
-	Offset: 0xFA0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_stats", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_stats
-	Checksum: 0x7418303C
-	Offset: 0xFE0
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.player_stats_init = & player_stats_init;
   level.add_client_stat = & add_client_stat;
   level.increment_client_stat = & increment_client_stat;
 }
 
-/*
-	Name: player_stats_init
-	Namespace: zm_stats
-	Checksum: 0x1785A5EB
-	Offset: 0x1038
-	Size: 0xCD4
-	Parameters: 0
-	Flags: Linked
-*/
 function player_stats_init() {
   self globallogic_score::initpersstat("kills", 0);
   self globallogic_score::initpersstat("suicides", 0);
@@ -161,15 +137,6 @@ function player_stats_init() {
   self add_global_stat("ZM_DAILY_CHALLENGE_GAMES_PLAYED", 1);
 }
 
-/*
-	Name: update_players_stats_at_match_end
-	Namespace: zm_stats
-	Checksum: 0xF69E65B8
-	Offset: 0x1D18
-	Size: 0x65E
-	Parameters: 1
-	Flags: Linked
-*/
 function update_players_stats_at_match_end(players) {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -240,15 +207,6 @@ function update_players_stats_at_match_end(players) {
   }
 }
 
-/*
-	Name: update_playing_utc_time
-	Namespace: zm_stats
-	Checksum: 0x7A4847DB
-	Offset: 0x2380
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked
-*/
 function update_playing_utc_time(matchendutctime) {
   current_days = int(matchendutctime / 86400);
   last_days = self get_global_stat("TIMESTAMPLASTDAY1");
@@ -270,50 +228,14 @@ function update_playing_utc_time(matchendutctime) {
   }
 }
 
-/*
-	Name: survival_classic_custom_stat_update
-	Namespace: zm_stats
-	Checksum: 0x99EC1590
-	Offset: 0x2568
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function survival_classic_custom_stat_update() {}
 
-/*
-	Name: grief_custom_stat_update
-	Namespace: zm_stats
-	Checksum: 0x99EC1590
-	Offset: 0x2578
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function grief_custom_stat_update() {}
 
-/*
-	Name: get_global_stat
-	Namespace: zm_stats
-	Checksum: 0x2DF621D2
-	Offset: 0x2588
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function get_global_stat(stat_name) {
   return self getdstat("PlayerStatsList", stat_name, "StatValue");
 }
 
-/*
-	Name: set_global_stat
-	Namespace: zm_stats
-	Checksum: 0x51C49EB7
-	Offset: 0x25C8
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function set_global_stat(stat_name, value) {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -321,15 +243,6 @@ function set_global_stat(stat_name, value) {
   self setdstat("PlayerStatsList", stat_name, "StatValue", value);
 }
 
-/*
-	Name: add_global_stat
-	Namespace: zm_stats
-	Checksum: 0x2B89A18F
-	Offset: 0x2630
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function add_global_stat(stat_name, value) {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -337,15 +250,6 @@ function add_global_stat(stat_name, value) {
   self adddstat("PlayerStatsList", stat_name, "StatValue", value);
 }
 
-/*
-	Name: increment_global_stat
-	Namespace: zm_stats
-	Checksum: 0x74D674FB
-	Offset: 0x2698
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function increment_global_stat(stat_name) {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -353,30 +257,12 @@ function increment_global_stat(stat_name) {
   self adddstat("PlayerStatsList", stat_name, "StatValue", 1);
 }
 
-/*
-	Name: highwater_global_stat
-	Namespace: zm_stats
-	Checksum: 0xC017DCBF
-	Offset: 0x26F8
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function highwater_global_stat(stat_name, value) {
   if(value > get_global_stat(stat_name)) {
     set_global_stat(stat_name, value);
   }
 }
 
-/*
-	Name: add_client_stat
-	Namespace: zm_stats
-	Checksum: 0x7C071AC4
-	Offset: 0x2750
-	Size: 0x7E
-	Parameters: 3
-	Flags: Linked
-*/
 function add_client_stat(stat_name, stat_value, include_gametype) {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -388,15 +274,6 @@ function add_client_stat(stat_name, stat_value, include_gametype) {
   self.stats_this_frame[stat_name] = 1;
 }
 
-/*
-	Name: increment_player_stat
-	Namespace: zm_stats
-	Checksum: 0x83097ECA
-	Offset: 0x27D8
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function increment_player_stat(stat_name) {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -404,15 +281,6 @@ function increment_player_stat(stat_name) {
   self incrementplayerstat(stat_name, 1);
 }
 
-/*
-	Name: increment_root_stat
-	Namespace: zm_stats
-	Checksum: 0xB51A0380
-	Offset: 0x2828
-	Size: 0x4C
-	Parameters: 2
-	Flags: None
-*/
 function increment_root_stat(stat_name, stat_value) {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -420,15 +288,6 @@ function increment_root_stat(stat_name, stat_value) {
   self adddstat(stat_name, stat_value);
 }
 
-/*
-	Name: increment_client_stat
-	Namespace: zm_stats
-	Checksum: 0x971DCCFB
-	Offset: 0x2880
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function increment_client_stat(stat_name, include_gametype) {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -436,15 +295,6 @@ function increment_client_stat(stat_name, include_gametype) {
   add_client_stat(stat_name, 1, include_gametype);
 }
 
-/*
-	Name: set_client_stat
-	Namespace: zm_stats
-	Checksum: 0xD4111DE9
-	Offset: 0x28D8
-	Size: 0x96
-	Parameters: 3
-	Flags: Linked
-*/
 function set_client_stat(stat_name, stat_value, include_gametype) {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -454,15 +304,6 @@ function set_client_stat(stat_name, stat_value, include_gametype) {
   self.stats_this_frame[stat_name] = 1;
 }
 
-/*
-	Name: zero_client_stat
-	Namespace: zm_stats
-	Checksum: 0x8BFC54BC
-	Offset: 0x2978
-	Size: 0x8E
-	Parameters: 2
-	Flags: Linked
-*/
 function zero_client_stat(stat_name, include_gametype) {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -472,28 +313,10 @@ function zero_client_stat(stat_name, include_gametype) {
   self.stats_this_frame[stat_name] = 1;
 }
 
-/*
-	Name: get_map_stat
-	Namespace: zm_stats
-	Checksum: 0xB1C5B003
-	Offset: 0x2A10
-	Size: 0x42
-	Parameters: 1
-	Flags: Linked
-*/
 function get_map_stat(stat_name) {
   return self getdstat("PlayerStatsByMap", level.script, "stats", stat_name, "StatValue");
 }
 
-/*
-	Name: set_map_stat
-	Namespace: zm_stats
-	Checksum: 0xF76A9A96
-	Offset: 0x2A60
-	Size: 0x74
-	Parameters: 2
-	Flags: Linked
-*/
 function set_map_stat(stat_name, value) {
   if(!level.onlinegame || (isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats)) {
     return;
@@ -501,15 +324,6 @@ function set_map_stat(stat_name, value) {
   self setdstat("PlayerStatsByMap", level.script, "stats", stat_name, "StatValue", value);
 }
 
-/*
-	Name: add_map_stat
-	Namespace: zm_stats
-	Checksum: 0x3DE567AB
-	Offset: 0x2AE0
-	Size: 0x74
-	Parameters: 2
-	Flags: Linked
-*/
 function add_map_stat(stat_name, value) {
   if(!level.onlinegame || (isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats)) {
     return;
@@ -517,15 +331,6 @@ function add_map_stat(stat_name, value) {
   self adddstat("PlayerStatsByMap", level.script, "stats", stat_name, "StatValue", value);
 }
 
-/*
-	Name: increment_map_stat
-	Namespace: zm_stats
-	Checksum: 0x3783D560
-	Offset: 0x2B60
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function increment_map_stat(stat_name) {
   if(!level.onlinegame || (isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats)) {
     return;
@@ -533,30 +338,12 @@ function increment_map_stat(stat_name) {
   self adddstat("PlayerStatsByMap", level.script, "stats", stat_name, "StatValue", 1);
 }
 
-/*
-	Name: highwater_map_stat
-	Namespace: zm_stats
-	Checksum: 0xB8037726
-	Offset: 0x2BD8
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function highwater_map_stat(stat_name, value) {
   if(value > get_map_stat(stat_name)) {
     set_map_stat(stat_name, value);
   }
 }
 
-/*
-	Name: increment_map_cheat_stat
-	Namespace: zm_stats
-	Checksum: 0x1DCCFBD8
-	Offset: 0x2C30
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function increment_map_cheat_stat(stat_name) {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -564,15 +351,6 @@ function increment_map_cheat_stat(stat_name) {
   self adddstat("PlayerStatsByMap", level.script, "cheats", stat_name, 1);
 }
 
-/*
-	Name: increment_challenge_stat
-	Namespace: zm_stats
-	Checksum: 0xD73691F7
-	Offset: 0x2C98
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function increment_challenge_stat(stat_name, amount = 1) {
   if(!level.onlinegame || (isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats)) {
     return;
@@ -580,15 +358,6 @@ function increment_challenge_stat(stat_name, amount = 1) {
   self addplayerstat(stat_name, amount);
 }
 
-/*
-	Name: get_stat_distance_traveled
-	Namespace: zm_stats
-	Checksum: 0xB68FBA3C
-	Offset: 0x2D10
-	Size: 0xB6
-	Parameters: 0
-	Flags: Linked
-*/
 function get_stat_distance_traveled() {
   miles = int(self.pers["distance_traveled"] / 63360);
   remainder = (self.pers["distance_traveled"] / 63360) - miles;
@@ -600,28 +369,10 @@ function get_stat_distance_traveled() {
   return miles;
 }
 
-/*
-	Name: get_stat_round_number
-	Namespace: zm_stats
-	Checksum: 0x97E9D24A
-	Offset: 0x2DD0
-	Size: 0x12
-	Parameters: 0
-	Flags: Linked
-*/
 function get_stat_round_number() {
   return zm::get_round_number();
 }
 
-/*
-	Name: get_stat_combined_rank_value_survival_classic
-	Namespace: zm_stats
-	Checksum: 0x9BDD147
-	Offset: 0x2DF0
-	Size: 0x7C
-	Parameters: 0
-	Flags: None
-*/
 function get_stat_combined_rank_value_survival_classic() {
   rounds = get_stat_round_number();
   kills = self.pers["kills"];
@@ -632,15 +383,6 @@ function get_stat_combined_rank_value_survival_classic() {
   return result;
 }
 
-/*
-	Name: update_global_counters_on_match_end
-	Namespace: zm_stats
-	Checksum: 0x4CE04057
-	Offset: 0x2E78
-	Size: 0x12AC
-	Parameters: 0
-	Flags: Linked
-*/
 function update_global_counters_on_match_end() {
   if(isdefined(level.zm_disable_recording_stats) && level.zm_disable_recording_stats) {
     return;
@@ -822,28 +564,10 @@ function update_global_counters_on_match_end() {
   incrementcounter("global_zm_total_cheats", cheat_total);
 }
 
-/*
-	Name: get_specific_stat
-	Namespace: zm_stats
-	Checksum: 0x16A3727A
-	Offset: 0x4130
-	Size: 0x3A
-	Parameters: 2
-	Flags: None
-*/
 function get_specific_stat(stat_category, stat_name) {
   return self getdstat(stat_category, stat_name, "StatValue");
 }
 
-/*
-	Name: initializematchstats
-	Namespace: zm_stats
-	Checksum: 0x937E02E3
-	Offset: 0x4178
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function initializematchstats() {
   if(!level.onlinegame || !gamemodeismode(0)) {
     return;
@@ -853,37 +577,17 @@ function initializematchstats() {
   self gamehistorystartmatch(getgametypeenumfromname(currgametype, 0));
 }
 
-/*
-	Name: adjustrecentstats
-	Namespace: zm_stats
-	Checksum: 0x666EEB34
-	Offset: 0x4220
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function adjustrecentstats() {
-  /#
   if(getdvarint("") == 1 || getdvarint("") == 1) {
     return;
   }
-  # /
-    initializematchstats();
+  initializematchstats();
 }
 
-/*
-	Name: uploadstatssoon
-	Namespace: zm_stats
-	Checksum: 0xEA9AAA5A
-	Offset: 0x4290
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function uploadstatssoon() {
-  self notify(# "upload_stats_soon");
-  self endon(# "upload_stats_soon");
-  self endon(# "disconnect");
+  self notify("upload_stats_soon");
+  self endon("upload_stats_soon");
+  self endon("disconnect");
   wait(1);
   uploadstats(self);
 }

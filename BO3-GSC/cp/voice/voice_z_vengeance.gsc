@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_z_vengeance.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_10893d25;
 
-/*
-	Name: init_voice
-	Namespace: namespace_10893d25
-	Checksum: 0xCD02AE3A
-	Offset: 0x780
-	Size: 0x464
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("plyz_getting_to_the_safeh_0", "vox_zven_1_01_000_plyz");
   dialog::add("plyz_the_vultures_sadist_0", "vox_zven_2_01_000_plyz");

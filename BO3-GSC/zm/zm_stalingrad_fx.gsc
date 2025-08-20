@@ -1,33 +1,18 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_fx.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_stalingrad_fx;
 
-/*
-	Name: init
-	Namespace: zm_stalingrad_fx
-	Checksum: 0xDDD33384
-	Offset: 0x628
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   precache_scripted_fx();
   precache_createfx_fx();
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_stalingrad_fx
-	Checksum: 0x3E0C4437
-	Offset: 0x658
-	Size: 0x1FA
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["drop_pod_marker"] = "dlc3/stalingrad/fx_drop_pod_ground_marker";
   level._effect["drop_pod_charge_kill"] = "dlc3/stalingrad/fx_drop_pod_zombie_soul";
@@ -49,26 +34,8 @@ function precache_scripted_fx() {
   level._effect["meatball_impact"] = "zombie/fx_meatball_impact_ground_tell_zod_zmb";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_stalingrad_fx
-	Checksum: 0x99EC1590
-	Offset: 0x860
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {}
 
-/*
-	Name: fx_overrides
-	Namespace: zm_stalingrad_fx
-	Checksum: 0xD5AD6FBD
-	Offset: 0x870
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function fx_overrides() {
   level._effect["jugger_light"] = "dlc3/stalingrad/fx_perk_juggernaut_sta";
   level._effect["doubletap2_light"] = "dlc3/stalingrad/fx_perk_doubletap_sta";

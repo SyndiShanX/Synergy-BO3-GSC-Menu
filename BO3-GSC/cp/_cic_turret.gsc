@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_cic_turret.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
@@ -10,31 +14,12 @@
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_death_shared;
 #using scripts\shared\vehicle_shared;
-
 #namespace cic_turret;
 
-/*
-	Name: __init__sytem__
-	Namespace: cic_turret
-	Checksum: 0x8A6E355
-	Offset: 0x500
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("cic_turret", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: cic_turret
-	Checksum: 0x6BA16EA4
-	Offset: 0x540
-	Size: 0x1B6
-	Parameters: 0
-	Flags: None
-*/
 function __init__() {
   vehicle::add_main_callback("turret_cic", & cic_turret_think);
   vehicle::add_main_callback("turret_cic_world", & cic_turret_think);
@@ -51,15 +36,6 @@ function __init__() {
   level._effect["sentry_turret_stun"] = "_t6/electrical/fx_elec_sp_emp_stun_sentry_turret";
 }
 
-/*
-	Name: cic_turret_think
-	Namespace: cic_turret
-	Checksum: 0x34715B9C
-	Offset: 0x700
-	Size: 0x2DC
-	Parameters: 0
-	Flags: None
-*/
 function cic_turret_think() {
   self enableaimassist();
   if(issubstr(self.vehicletype, "cic")) {
@@ -94,41 +70,14 @@ function cic_turret_think() {
   self laseron();
 }
 
-/*
-	Name: cic_turret_start_scripted
-	Namespace: cic_turret
-	Checksum: 0xC2E6879B
-	Offset: 0x9E8
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function cic_turret_start_scripted() {
   self.state_machine statemachine::set_state("scripted");
 }
 
-/*
-	Name: cic_turret_start_ai
-	Namespace: cic_turret
-	Checksum: 0xF2E06DF2
-	Offset: 0xA18
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function cic_turret_start_ai() {
   self.state_machine statemachine::set_state("main");
 }
 
-/*
-	Name: cic_turret_main
-	Namespace: cic_turret
-	Checksum: 0x71837B3E
-	Offset: 0xA48
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function cic_turret_main(params) {
   if(isalive(self)) {
     self enableaimassist();
@@ -136,15 +85,6 @@ function cic_turret_main(params) {
   }
 }
 
-/*
-	Name: cic_turret_off
-	Namespace: cic_turret
-	Checksum: 0x44F56E9F
-	Offset: 0xAA8
-	Size: 0x168
-	Parameters: 1
-	Flags: None
-*/
 function cic_turret_off(angles) {
   self.state_machine statemachine::set_state("scripted");
   self vehicle::lights_off();
@@ -164,17 +104,8 @@ function cic_turret_off(angles) {
   self.ignoreme = 1;
 }
 
-/*
-	Name: cic_turret_on
-	Namespace: cic_turret
-	Checksum: 0x5FBE3CA5
-	Offset: 0xC18
-	Size: 0xE0
-	Parameters: 0
-	Flags: None
-*/
 function cic_turret_on() {
-  self endon(# "death");
+  self endon("death");
   self playsound("veh_cic_turret_boot");
   self vehicle::lights_on();
   self enableaimassist();
@@ -187,15 +118,6 @@ function cic_turret_on() {
   self.ignoreme = 0;
 }
 
-/*
-	Name: bootup
-	Namespace: cic_turret
-	Checksum: 0x35465245
-	Offset: 0xD00
-	Size: 0x118
-	Parameters: 0
-	Flags: None
-*/
 function bootup() {
   for (i = 0; i < 6; i++) {
     wait(0.1);
@@ -213,18 +135,9 @@ function bootup() {
   }
 }
 
-/*
-	Name: cic_turret_fireupdate
-	Namespace: cic_turret
-	Checksum: 0xB9C163CD
-	Offset: 0xE20
-	Size: 0x498
-	Parameters: 0
-	Flags: None
-*/
 function cic_turret_fireupdate() {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   cant_see_enemy_count = 0;
   wait(0.2);
   origin = self gettagorigin("tag_barrel");
@@ -287,15 +200,6 @@ function cic_turret_fireupdate() {
   }
 }
 
-/*
-	Name: cic_turret_scripted
-	Namespace: cic_turret
-	Checksum: 0x849787E2
-	Offset: 0x12C0
-	Size: 0xC4
-	Parameters: 1
-	Flags: None
-*/
 function cic_turret_scripted(params) {
   driver = self getseatoccupant(0);
   if(isdefined(driver)) {
@@ -309,15 +213,6 @@ function cic_turret_scripted(params) {
   self cleartargetentity();
 }
 
-/*
-	Name: cic_turret_get_damage_effect
-	Namespace: cic_turret
-	Checksum: 0x1F3E6725
-	Offset: 0x1390
-	Size: 0xA8
-	Parameters: 1
-	Flags: None
-*/
 function cic_turret_get_damage_effect(health_pct) {
   if(issubstr(self.vehicletype, "turret_sentry")) {
     if(health_pct < 0.6) {
@@ -331,15 +226,6 @@ function cic_turret_get_damage_effect(health_pct) {
   return level._effect["cic_turret_damage01"];
 }
 
-/*
-	Name: cic_turret_play_single_fx_on_tag
-	Namespace: cic_turret
-	Checksum: 0x23638C18
-	Offset: 0x1448
-	Size: 0x1B0
-	Parameters: 2
-	Flags: None
-*/
 function cic_turret_play_single_fx_on_tag(effect, tag) {
   if(isdefined(self.damage_fx_ent)) {
     if(self.damage_fx_ent.effect == effect) {
@@ -363,19 +249,10 @@ function cic_turret_play_single_fx_on_tag(effect, tag) {
   self.damage_fx_ent = ent;
 }
 
-/*
-	Name: cic_turret_damage
-	Namespace: cic_turret
-	Checksum: 0xC8EC1E6D
-	Offset: 0x1600
-	Size: 0x98
-	Parameters: 0
-	Flags: None
-*/
 function cic_turret_damage() {
-  self endon(# "crash_done");
+  self endon("crash_done");
   while (isdefined(self)) {
-    self waittill(# "damage");
+    self waittill("damage");
     if(self.health > 0) {
       effect = self cic_turret_get_damage_effect(self.health / self.healthdefault);
       tag = "tag_fx";
@@ -385,19 +262,10 @@ function cic_turret_damage() {
   }
 }
 
-/*
-	Name: cic_turret_death
-	Namespace: cic_turret
-	Checksum: 0xB5C7BA71
-	Offset: 0x16A0
-	Size: 0x244
-	Parameters: 0
-	Flags: None
-*/
 function cic_turret_death() {
   wait(0.1);
-  self notify(# "nodeath_thread");
-  self waittill(# "death", attacker, damagefromunderneath, weapon, point, dir);
+  self notify("nodeath_thread");
+  self waittill("death", attacker, damagefromunderneath, weapon, point, dir);
   if(isdefined(self.delete_on_death)) {
     if(isdefined(self.damage_fx_ent)) {
       self.damage_fx_ent delete();
@@ -424,19 +292,10 @@ function cic_turret_death() {
     self.damage_fx_ent delete();
   }
   self.ignoreme = 1;
-  self waittill(# "crash_done");
+  self waittill("crash_done");
   self freevehicle();
 }
 
-/*
-	Name: death_fx
-	Namespace: cic_turret
-	Checksum: 0x9574B5A2
-	Offset: 0x18F0
-	Size: 0xAC
-	Parameters: 0
-	Flags: None
-*/
 function death_fx() {
   self vehicle::do_death_fx();
   self playsound("veh_cic_turret_sparks");
@@ -446,18 +305,9 @@ function death_fx() {
   fire_ent delete();
 }
 
-/*
-	Name: cic_turret_death_movement
-	Namespace: cic_turret
-	Checksum: 0xAD37636E
-	Offset: 0x19A8
-	Size: 0x106
-	Parameters: 2
-	Flags: None
-*/
 function cic_turret_death_movement(attacker, hitdir) {
-  self endon(# "crash_done");
-  self endon(# "death");
+  self endon("crash_done");
+  self endon("death");
   self playsound("veh_cic_turret_dmg_hit");
   wait(0.1);
   self.turretrotscale = 0.5;
@@ -465,21 +315,12 @@ function cic_turret_death_movement(attacker, hitdir) {
   target_pos = (self.origin + (anglestoforward((0, tag_angles[1], 0)) * 1000)) + (vectorscale((0, 0, -1), 1800));
   self setturrettargetvec(target_pos);
   wait(4);
-  self notify(# "crash_done");
+  self notify("crash_done");
 }
 
-/*
-	Name: cic_turret_fire_for_time
-	Namespace: cic_turret
-	Checksum: 0x55B66B0A
-	Offset: 0x1AB8
-	Size: 0x224
-	Parameters: 1
-	Flags: None
-*/
 function cic_turret_fire_for_time(totalfiretime) {
-  self endon(# "crash_done");
-  self endon(# "death");
+  self endon("crash_done");
+  self endon("death");
   cic_turret_alert_sound();
   wait(0.1);
   weapon = self seatgetweapon(0);
@@ -515,28 +356,10 @@ function cic_turret_fire_for_time(totalfiretime) {
   }
 }
 
-/*
-	Name: cic_turret_alert_sound
-	Namespace: cic_turret
-	Checksum: 0xA4C83C37
-	Offset: 0x1CE8
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function cic_turret_alert_sound() {
   self playsound("veh_turret_alert");
 }
 
-/*
-	Name: cic_turret_set_team
-	Namespace: cic_turret
-	Checksum: 0x723778BE
-	Offset: 0x1D18
-	Size: 0x34
-	Parameters: 1
-	Flags: None
-*/
 function cic_turret_set_team(team) {
   self.team = team;
   if(!isdefined(self.off)) {
@@ -544,35 +367,17 @@ function cic_turret_set_team(team) {
   }
 }
 
-/*
-	Name: cic_turret_blink_lights
-	Namespace: cic_turret
-	Checksum: 0xE0AA07ED
-	Offset: 0x1D58
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function cic_turret_blink_lights() {
-  self endon(# "death");
+  self endon("death");
   self vehicle::lights_off();
   wait(0.1);
   self vehicle::lights_on();
 }
 
-/*
-	Name: cic_turret_emped
-	Namespace: cic_turret
-	Checksum: 0x9E72899F
-	Offset: 0x1DA8
-	Size: 0x1DC
-	Parameters: 0
-	Flags: None
-*/
 function cic_turret_emped() {
-  self endon(# "death");
-  self notify(# "emped");
-  self endon(# "emped");
+  self endon("death");
+  self notify("emped");
+  self endon("emped");
   self.emped = 1;
   playsoundatposition("veh_cic_turret_emp_down", self.origin);
   self.turretrotscale = 0.2;
@@ -593,15 +398,6 @@ function cic_turret_emped() {
   self cic_turret_on();
 }
 
-/*
-	Name: cicturretcallback_vehicledamage
-	Namespace: cic_turret
-	Checksum: 0xFC69B334
-	Offset: 0x1F90
-	Size: 0x17C
-	Parameters: 14
-	Flags: None
-*/
 function cicturretcallback_vehicledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname) {
   if(weapon.isemp && smeansofdeath != "MOD_IMPACT") {
     driver = self getseatoccupant(0);
@@ -619,19 +415,10 @@ function cicturretcallback_vehicledamage(einflictor, eattacker, idamage, idflags
   return idamage;
 }
 
-/*
-	Name: cic_overheat_hud
-	Namespace: cic_turret
-	Checksum: 0x72136C4
-	Offset: 0x2118
-	Size: 0x128
-	Parameters: 1
-	Flags: None
-*/
 function cic_overheat_hud(turret) {
-  self endon(# "exit_vehicle");
-  turret endon(# "turret_exited");
-  level endon(# "player_using_turret");
+  self endon("exit_vehicle");
+  turret endon("turret_exited");
+  level endon("player_using_turret");
   heat = 0;
   overheat = 0;
   while (true) {
@@ -641,26 +428,17 @@ function cic_overheat_hud(turret) {
       old_overheat = overheat;
       overheat = self.viewlockedentity isvehicleturretoverheating(0);
       if(old_heat != heat || old_overheat != overheat) {
-        luinotifyevent( & "hud_cic_weapon_heat", 2, int(heat), overheat);
+        luinotifyevent(&"hud_cic_weapon_heat", 2, int(heat), overheat);
       }
     }
     wait(0.05);
   }
 }
 
-/*
-	Name: cic_turret_stunned
-	Namespace: cic_turret
-	Checksum: 0xD83D71DF
-	Offset: 0x2248
-	Size: 0x1DC
-	Parameters: 0
-	Flags: None
-*/
 function cic_turret_stunned() {
-  self endon(# "death");
-  self notify(# "stunned");
-  self endon(# "stunned");
+  self endon("death");
+  self notify("stunned");
+  self endon("stunned");
   self.stunned = 1;
   self.turretrotscale = 0.2;
   self cic_turret_off();

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_infection.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -6,18 +10,8 @@
 #using scripts\mp\mp_infection_sound;
 #using scripts\shared\compass;
 #using scripts\shared\util_shared;
-
 #namespace namespace_82e4b148;
 
-/*
-	Name: main
-	Namespace: namespace_82e4b148
-	Checksum: 0xC13691C0
-	Offset: 0x220
-	Size: 0xC14
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache();
   level.var_bb421b36 = 0.5;
@@ -78,26 +72,8 @@ function main() {
   level.cleandepositpoints = array((-353.721, -175.155, 9), (563.775, -119.256, 84.125), (-654.231, -1578.36, -5.74457), (-1059.83, 1145.25, 80));
 }
 
-/*
-	Name: precache
-	Namespace: namespace_82e4b148
-	Checksum: 0x99EC1590
-	Offset: 0xE40
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {}
 
-/*
-	Name: add_raps_omit_locations
-	Namespace: namespace_82e4b148
-	Checksum: 0x15FE86B8
-	Offset: 0xE50
-	Size: 0x1AC
-	Parameters: 1
-	Flags: Linked
-*/
 function add_raps_omit_locations( & omit_locations) {
   if(!isdefined(omit_locations)) {
     omit_locations = [];
@@ -125,15 +101,6 @@ function add_raps_omit_locations( & omit_locations) {
   omit_locations[omit_locations.size] = (1139, -2779, -20);
 }
 
-/*
-	Name: add_raps_drop_locations
-	Namespace: namespace_82e4b148
-	Checksum: 0x626FD65D
-	Offset: 0x1008
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function add_raps_drop_locations( & drop_candidate_array) {
   if(!isdefined(drop_candidate_array)) {
     drop_candidate_array = [];

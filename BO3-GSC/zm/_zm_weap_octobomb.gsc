@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_octobomb.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\debug;
 #using scripts\shared\ai\systems\gib;
@@ -19,31 +23,12 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace _zm_weap_octobomb;
 
-/*
-	Name: __init__sytem__
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x51ACE1EA
-	Offset: 0x628
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_octobomb", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x4DFB5D0
-	Offset: 0x670
-	Size: 0x13C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "octobomb_fx", 1, 2, "int");
   clientfield::register("actor", "octobomb_spores_fx", 1, 2, "int");
@@ -51,20 +36,9 @@ function __init__() {
   clientfield::register("actor", "octobomb_zombie_explode_fx", 8000, 1, "counter");
   clientfield::register("toplayer", "octobomb_state", 1, 3, "int");
   clientfield::register("missile", "octobomb_spit_fx", 1, 2, "int");
-  /#
   level thread octobomb_devgui();
-  # /
 }
 
-/*
-	Name: __main__
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xF33BB175
-	Offset: 0x7B8
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level.w_octobomb = getweapon("octobomb");
   level.w_octobomb_upgraded = getweapon("octobomb_upgraded");
@@ -78,28 +52,10 @@ function __main__() {
   level.octobombs = [];
 }
 
-/*
-	Name: player_give_octobomb_upgraded
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x66860B28
-	Offset: 0x8A0
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function player_give_octobomb_upgraded() {
   self player_give_octobomb("octobomb_upgraded");
 }
 
-/*
-	Name: player_give_octobomb
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x6BBE70AE
-	Offset: 0x8D0
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function player_give_octobomb(str_weapon = "octobomb") {
   w_tactical = self zm_utility::get_player_tactical_grenade();
   if(isdefined(w_tactical)) {
@@ -111,19 +67,10 @@ function player_give_octobomb(str_weapon = "octobomb") {
   self thread player_handle_octobomb();
 }
 
-/*
-	Name: player_handle_octobomb
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xBC22068E
-	Offset: 0x9B8
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function player_handle_octobomb() {
-  self notify(# "starting_octobomb_watch");
-  self endon(# "death");
-  self endon(# "starting_octobomb_watch");
+  self notify("starting_octobomb_watch");
+  self endon("death");
+  self endon("starting_octobomb_watch");
   attract_dist_custom = level.octobomb_attract_dist_custom;
   if(!isdefined(attract_dist_custom)) {
     attract_dist_custom = 10;
@@ -144,17 +91,8 @@ function player_handle_octobomb() {
   }
 }
 
-/*
-	Name: show_briefly
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x1DC08BC5
-	Offset: 0xAB8
-	Size: 0xAE
-	Parameters: 1
-	Flags: Linked
-*/
 function show_briefly(showtime) {
-  self endon(# "show_owner");
+  self endon("show_owner");
   if(isdefined(self.show_for_time)) {
     self.show_for_time = showtime;
     return;
@@ -169,43 +107,25 @@ function show_briefly(showtime) {
   self.show_for_time = undefined;
 }
 
-/*
-	Name: show_owner_on_attack
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x6EB61A86
-	Offset: 0xB70
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function show_owner_on_attack(owner) {
-  owner endon(# "hide_owner");
-  owner endon(# "show_owner");
-  self endon(# "explode");
-  self endon(# "death");
-  self endon(# "grenade_dud");
+  owner endon("hide_owner");
+  owner endon("show_owner");
+  self endon("explode");
+  self endon("death");
+  self endon("grenade_dud");
   owner.show_for_time = undefined;
   for (;;) {
-    owner waittill(# "weapon_fired");
+    owner waittill("weapon_fired");
     owner thread show_briefly(0.5);
   }
 }
 
-/*
-	Name: hide_owner
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x3F16585C
-	Offset: 0xBF8
-	Size: 0x22C
-	Parameters: 1
-	Flags: None
-*/
 function hide_owner(owner) {
-  owner notify(# "hide_owner");
-  owner endon(# "hide_owner");
+  owner notify("hide_owner");
+  owner endon("hide_owner");
   owner setperk("specialty_immunemms");
   owner.no_burning_sfx = 1;
-  owner notify(# "stop_flame_sounds");
+  owner notify("stop_flame_sounds");
   owner setvisibletoallexceptteam(level.zombie_team);
   owner.hide_owner = 1;
   if(isdefined(level._effect["human_disappears"])) {
@@ -213,10 +133,8 @@ function hide_owner(owner) {
   }
   self thread show_owner_on_attack(owner);
   evt = self util::waittill_any_ex("explode", "death", "grenade_dud", owner, "hide_owner");
-  /#
   println("" + evt);
-  # /
-    owner notify(# "show_owner");
+  owner notify("show_owner");
   owner unsetperk("specialty_immunemms");
   if(isdefined(level._effect["human_disappears"])) {
     playfx(level._effect["human_disappears"], owner.origin);
@@ -227,18 +145,9 @@ function hide_owner(owner) {
   owner show();
 }
 
-/*
-	Name: fakelinkto
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xCAD41153
-	Offset: 0xE30
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function fakelinkto(linkee) {
-  self notify(# "fakelinkto");
-  self endon(# "fakelinkto");
+  self notify("fakelinkto");
+  self endon("fakelinkto");
   self.backlinked = 1;
   while (isdefined(self) && isdefined(linkee)) {
     self.origin = linkee.origin;
@@ -247,15 +156,6 @@ function fakelinkto(linkee) {
   }
 }
 
-/*
-	Name: grenade_planted
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xF1B25D27
-	Offset: 0xEB8
-	Size: 0x184
-	Parameters: 2
-	Flags: Linked
-*/
 function grenade_planted(grenade, model) {
   ride_vehicle = undefined;
   grenade.ground_ent = grenade getgroundent();
@@ -280,17 +180,8 @@ function grenade_planted(grenade, model) {
   }
 }
 
-/*
-	Name: check_octobomb_on_train
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xACD4817C
-	Offset: 0x1048
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function check_octobomb_on_train() {
-  self endon(# "death");
+  self endon("death");
   if(self zm_zonemgr::entity_in_zone("zone_train_rail")) {
     while (!level.o_zod_train flag::get("moving")) {
       wait(0.05);
@@ -300,18 +191,9 @@ function check_octobomb_on_train() {
   }
 }
 
-/*
-	Name: player_throw_octobomb
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xE43C1BAF
-	Offset: 0x10C8
-	Size: 0x61C
-	Parameters: 4
-	Flags: Linked
-*/
 function player_throw_octobomb(e_grenade, num_attractors, max_attract_dist, attract_dist_custom) {
-  self endon(# "starting_octobomb_watch");
-  e_grenade endon(# "death");
+  self endon("starting_octobomb_watch");
+  e_grenade endon("death");
   if(self laststand::player_is_in_laststand()) {
     if(isdefined(e_grenade.damagearea)) {
       e_grenade.damagearea delete();
@@ -332,7 +214,7 @@ function player_throw_octobomb(e_grenade, num_attractors, max_attract_dist, attr
   e_grenade.clone_model = util::spawn_model(e_grenade.model, e_grenade.origin, e_grenade.angles);
   e_grenade.clone_model linkto(e_grenade);
   e_grenade thread octobomb_cleanup();
-  e_grenade waittill(# "stationary", v_position, v_normal);
+  e_grenade waittill("stationary", v_position, v_normal);
   e_grenade thread check_octobomb_on_train();
   self thread grenade_planted(e_grenade, e_grenade.clone_model);
   e_grenade resetmissiledetonationtime();
@@ -378,17 +260,8 @@ function player_throw_octobomb(e_grenade, num_attractors, max_attract_dist, attr
   }
 }
 
-/*
-	Name: is_on_navmesh
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x215730C8
-	Offset: 0x16F0
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function is_on_navmesh() {
-  self endon(# "death");
+  self endon("death");
   if(ispointonnavmesh(self.origin, 60) == 1) {
     self.navmesh_check = 1;
     return;
@@ -406,17 +279,8 @@ function is_on_navmesh() {
   self.navmesh_check = 0;
 }
 
-/*
-	Name: animate_octobomb
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x4E4583A9
-	Offset: 0x17F0
-	Size: 0x1B4
-	Parameters: 1
-	Flags: Linked
-*/
 function animate_octobomb(is_upgraded) {
-  self endon(# "death");
+  self endon("death");
   self playsound("wpn_octobomb_explode");
   self scene::play("p7_fxanim_zm_zod_octobomb_start_bundle", self.anim_model);
   self thread scene::play("p7_fxanim_zm_zod_octobomb_loop_bundle", self.anim_model);
@@ -435,15 +299,6 @@ function animate_octobomb(is_upgraded) {
   self playsound("wpn_octobomb_end");
 }
 
-/*
-	Name: move_away_from_edges
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xA4B302B0
-	Offset: 0x19B0
-	Size: 0x1DA
-	Parameters: 0
-	Flags: Linked
-*/
 function move_away_from_edges() {
   v_orig = self.origin;
   n_angles = self.angles;
@@ -463,15 +318,6 @@ function move_away_from_edges() {
   }
 }
 
-/*
-	Name: grenade_stolen_by_sam
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x2B271FDB
-	Offset: 0x1B98
-	Size: 0x2FC
-	Parameters: 1
-	Flags: Linked
-*/
 function grenade_stolen_by_sam(e_grenade) {
   if(!isdefined(e_grenade)) {
     return;
@@ -495,7 +341,7 @@ function grenade_stolen_by_sam(e_grenade) {
   e_grenade.clone_model unlink();
   e_grenade.clone_model movez(60, 1, 0.25, 0.25);
   e_grenade.clone_model vibrate(direction, 1.5, 2.5, 1);
-  e_grenade.clone_model waittill(# "movedone");
+  e_grenade.clone_model waittill("movedone");
   if(isdefined(self.damagearea)) {
     self.damagearea delete();
   }
@@ -508,15 +354,6 @@ function grenade_stolen_by_sam(e_grenade) {
   }
 }
 
-/*
-	Name: octobomb_cleanup
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xD9072A32
-	Offset: 0x1EA0
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function octobomb_cleanup() {
   while (true) {
     if(!isdefined(self)) {
@@ -539,18 +376,9 @@ function octobomb_cleanup() {
   }
 }
 
-/*
-	Name: do_octobomb_sound
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x1469FE2F
-	Offset: 0x1F78
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function do_octobomb_sound() {
-  self waittill(# "explode", position);
-  level notify(# "grenade_exploded", position, 100, 5000, 450);
+  self waittill("explode", position);
+  level notify("grenade_exploded", position, 100, 5000, 450);
   octobomb_index = -1;
   for (i = 0; i < level.octobombs.size; i++) {
     if(!isdefined(level.octobombs[i])) {
@@ -563,17 +391,8 @@ function do_octobomb_sound() {
   }
 }
 
-/*
-	Name: do_tentacle_burst
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x321C0A6C
-	Offset: 0x2048
-	Size: 0x288
-	Parameters: 2
-	Flags: Linked
-*/
 function do_tentacle_burst(e_player, is_upgraded) {
-  self endon(# "explode");
+  self endon("explode");
   n_time_started = gettime() / 1000;
   while (true) {
     n_time_current = gettime() / 1000;
@@ -594,7 +413,7 @@ function do_tentacle_burst(e_player, is_upgraded) {
       if(isalive(ai_target)) {
         ai_target thread clientfield::set("octobomb_tentacle_hit_fx", 1);
         if(ai_target.b_octobomb_infected !== 1) {
-          self notify(# "sndkillvox");
+          self notify("sndkillvox");
           ai_target playsound("wpn_octobomb_zombie_imp");
           ai_target thread zombie_explodes();
           ai_target thread zombie_spore_infect(e_player, self, is_upgraded);
@@ -607,17 +426,8 @@ function do_tentacle_burst(e_player, is_upgraded) {
   }
 }
 
-/*
-	Name: zombie_spore_infect
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x605D82E8
-	Offset: 0x22D8
-	Size: 0x14C
-	Parameters: 3
-	Flags: Linked
-*/
 function zombie_spore_infect(e_player, e_grenade, is_upgraded) {
-  self endon(# "death");
+  self endon("death");
   self.octobomb_infected = 1;
   n_infection_time = 0;
   n_infection_half_time = 3.5;
@@ -640,17 +450,8 @@ function zombie_spore_infect(e_player, e_grenade, is_upgraded) {
   self clientfield::set("octobomb_spores_fx", 0);
 }
 
-/*
-	Name: zombie_explodes
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xD42BFE1C
-	Offset: 0x2430
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_explodes() {
-  self waittill(# "death");
+  self waittill("death");
   if(isdefined(self)) {
     if(self.octobomb_infected == 1) {
       self clientfield::increment("octobomb_zombie_explode_fx", 1);
@@ -659,17 +460,8 @@ function zombie_explodes() {
   }
 }
 
-/*
-	Name: do_tentacle_grab
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x8C57E552
-	Offset: 0x24A0
-	Size: 0x380
-	Parameters: 2
-	Flags: Linked
-*/
 function do_tentacle_grab(e_player, is_upgraded) {
-  self endon(# "death");
+  self endon("death");
   b_fast_grab = 1;
   n_grabs = 0;
   if(is_upgraded) {
@@ -702,7 +494,7 @@ function do_tentacle_grab(e_player, is_upgraded) {
       if(isalive(ai_target)) {
         ai_target clientfield::set("octobomb_spores_fx", n_spore_val);
         self.octobomb_infected = 1;
-        self notify(# "sndkillvox");
+        self notify("sndkillvox");
         ai_target playsound("wpn_octobomb_zombie_imp");
         ai_target octo_gib();
         ai_target dodamage(ai_target.health, ai_target.origin, e_player, self);
@@ -722,15 +514,6 @@ function do_tentacle_grab(e_player, is_upgraded) {
   }
 }
 
-/*
-	Name: octo_gib
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xD03FC6FB
-	Offset: 0x2828
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function octo_gib() {
   gibserverutils::gibhead(self);
   if(math::cointoss()) {
@@ -741,17 +524,8 @@ function octo_gib() {
   gibserverutils::giblegs(self);
 }
 
-/*
-	Name: special_attractor_spawn
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xCD367F35
-	Offset: 0x28A8
-	Size: 0x350
-	Parameters: 2
-	Flags: Linked
-*/
 function special_attractor_spawn(e_player, max_attract_dist) {
-  self endon(# "death");
+  self endon("death");
   self makesentient();
   self setmaxhealth(1000);
   self setnormalhealth(1);
@@ -783,36 +557,18 @@ function special_attractor_spawn(e_player, max_attract_dist) {
   }
 }
 
-/*
-	Name: vehicle_attractor
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x4AC33718
-	Offset: 0x2C00
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked
-*/
 function vehicle_attractor(e_grenade) {
-  self endon(# "death");
+  self endon("death");
   self.favoriteenemy = e_grenade;
   self.b_attracted_to_octobomb = 1;
   self.ignoreme = 1;
-  e_grenade waittill(# "death");
+  e_grenade waittill("death");
   self.b_attracted_to_octobomb = 0;
   self.ignoreme = 0;
 }
 
-/*
-	Name: vehicle_attractor_damage
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xBF318B1A
-	Offset: 0x2C68
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function vehicle_attractor_damage(e_player) {
-  self endon(# "death");
+  self endon("death");
   self.octobomb_infected = 1;
   n_infection_time = 0;
   while (n_infection_time < 7) {
@@ -822,15 +578,6 @@ function vehicle_attractor_damage(e_player) {
   self.octobomb_infected = 0;
 }
 
-/*
-	Name: parasite_attractor_init
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x66612A2E
-	Offset: 0x2CF0
-	Size: 0x22E
-	Parameters: 0
-	Flags: Linked
-*/
 function parasite_attractor_init() {
   self.v_parasite_attractor_center = self.origin + vectorscale((0, 0, 1), 80);
   self.a_v_parasite_attractors = [];
@@ -860,24 +607,15 @@ function parasite_attractor_init() {
   self.a_v_parasite_attractors[self.a_v_parasite_attractors.size] = self.v_parasite_attractor_center + (vectorscale((0, -1, 0), 80));
 }
 
-/*
-	Name: parasite_variables
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xD738A365
-	Offset: 0x2F28
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function parasite_variables(e_grenade) {
-  self endon(# "death");
+  self endon("death");
   self.favoriteenemy = e_grenade;
   self vehicle_ai::set_state("scripted");
   self.b_parasite_attracted = 1;
   self.ignoreme = 1;
   self.parasiteenemy = e_grenade;
   self ai::set_ignoreall(1);
-  e_grenade waittill(# "death");
+  e_grenade waittill("death");
   self resumespeed();
   self vehicle_ai::set_state("combat");
   self.b_parasite_attracted = 0;
@@ -885,18 +623,9 @@ function parasite_variables(e_grenade) {
   self ai::set_ignoreall(0);
 }
 
-/*
-	Name: parasite_attractor
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xA3E24B1F
-	Offset: 0x3028
-	Size: 0x1D0
-	Parameters: 1
-	Flags: Linked
-*/
 function parasite_attractor(e_grenade) {
-  self endon(# "death");
-  e_grenade endon(# "death");
+  self endon("death");
+  e_grenade endon("death");
   f_speed = 10;
   if(distance(e_grenade.v_parasite_attractor_center, self.origin) > 80) {
     self setspeed(10);
@@ -924,18 +653,9 @@ function parasite_attractor(e_grenade) {
   }
 }
 
-/*
-	Name: parasite_attractor_grab
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x61A6C658
-	Offset: 0x3200
-	Size: 0x260
-	Parameters: 1
-	Flags: Linked
-*/
 function parasite_attractor_grab(e_grenade) {
-  e_grenade endon(# "death");
-  self endon(# "death");
+  e_grenade endon("death");
+  self endon("death");
   b_fast_grab = 1;
   n_grabs = 0;
   while (true) {
@@ -972,39 +692,21 @@ function parasite_attractor_grab(e_grenade) {
   }
 }
 
-/*
-	Name: sndattackvox
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x1A76B328
-	Offset: 0x3468
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function sndattackvox() {
-  self endon(# "explode");
+  self endon("explode");
   while (true) {
-    self waittill(# "sndkillvox");
+    self waittill("sndkillvox");
     wait(0.25);
     self playsound("wpn_octobomb_attack_vox");
     wait(2.5);
   }
 }
 
-/*
-	Name: get_thrown_octobomb
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xA00E9117
-	Offset: 0x34C8
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function get_thrown_octobomb() {
-  self endon(# "death");
-  self endon(# "starting_octobomb_watch");
+  self endon("death");
+  self endon("starting_octobomb_watch");
   while (true) {
-    self waittill(# "grenade_fire", e_grenade, w_weapon);
+    self waittill("grenade_fire", e_grenade, w_weapon);
     if(w_weapon == level.w_octobomb || w_weapon == level.w_octobomb_upgraded) {
       e_grenade.use_grenade_special_long_bookmark = 1;
       e_grenade.grenade_multiattack_bookmark_count = 1;
@@ -1015,28 +717,10 @@ function get_thrown_octobomb() {
   }
 }
 
-/*
-	Name: octobomb_exists
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x188ABBD
-	Offset: 0x3588
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function octobomb_exists() {
   return zm_weapons::is_weapon_included(level.w_octobomb);
 }
 
-/*
-	Name: octobomb_devgui
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xFAA6A6A7
-	Offset: 0x35B0
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function octobomb_devgui() {
   for (i = 0; i < 4; i++) {
     level thread setup_devgui_func(("ZM/Weapons/Offhand/Octobomb/Give") + i, "zod_give_octobomb", i, & devgui_octobomb_give);
@@ -1044,15 +728,6 @@ function octobomb_devgui() {
   level thread setup_devgui_func("ZM/Weapons/Offhand/Octobomb/Give to All", "zod_give_octobomb", 4, & devgui_octobomb_give);
 }
 
-/*
-	Name: setup_devgui_func
-	Namespace: _zm_weap_octobomb
-	Checksum: 0xE4FD05DB
-	Offset: 0x3658
-	Size: 0x120
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private setup_devgui_func(str_devgui_path, str_dvar, n_value, func, n_base_value = -1) {
   setdvar(str_dvar, n_base_value);
   adddebugcommand(((((("devgui_cmd \"" + str_devgui_path) + "\" \"") + str_dvar) + " ") + n_value) + "\"\n");
@@ -1068,15 +743,6 @@ function private setup_devgui_func(str_devgui_path, str_dvar, n_value, func, n_b
   }
 }
 
-/*
-	Name: devgui_octobomb_give
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x35598070
-	Offset: 0x3780
-	Size: 0xF2
-	Parameters: 1
-	Flags: Linked
-*/
 function devgui_octobomb_give(n_player_index) {
   players = getplayers();
   player = players[n_player_index];
@@ -1089,15 +755,6 @@ function devgui_octobomb_give(n_player_index) {
   }
 }
 
-/*
-	Name: octobomb_give
-	Namespace: _zm_weap_octobomb
-	Checksum: 0x6B955389
-	Offset: 0x3880
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function octobomb_give(player) {
   player clientfield::set_to_player("octobomb_state", 3);
   weapon = getweapon("octobomb");

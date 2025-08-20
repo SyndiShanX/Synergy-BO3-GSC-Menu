@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_cairo_infection.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_load;
 #using scripts\cp\_siegebot_theia;
@@ -12,18 +16,8 @@
 #using scripts\cp\cp_mi_cairo_infection_util;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\util_shared;
-
 #namespace cp_mi_cairo_infection;
 
-/*
-	Name: main
-	Namespace: cp_mi_cairo_infection
-	Checksum: 0x2A899235
-	Offset: 0x5F8
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   init_clientfields();
   util::set_streamer_hint_function( & force_streamer, 11);
@@ -37,28 +31,10 @@ function main() {
   namespace_f397b667::function_7403e82b();
 }
 
-/*
-	Name: init_clientfields
-	Namespace: cp_mi_cairo_infection
-	Checksum: 0xC202D5DF
-	Offset: 0x6C8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("world", "set_exposure_bank", 1, 2, "int", & function_1e832062, 0, 0);
 }
 
-/*
-	Name: force_streamer
-	Namespace: cp_mi_cairo_infection
-	Checksum: 0x2289709A
-	Offset: 0x720
-	Size: 0x3DA
-	Parameters: 1
-	Flags: Linked
-*/
 function force_streamer(n_zone) {
   switch (n_zone) {
     case 1: {
@@ -116,15 +92,6 @@ function force_streamer(n_zone) {
   }
 }
 
-/*
-	Name: function_1e832062
-	Namespace: cp_mi_cairo_infection
-	Checksum: 0x6C1D0B05
-	Offset: 0xB08
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_1e832062(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval != oldval) {
     setexposureactivebank(localclientnum, newval);

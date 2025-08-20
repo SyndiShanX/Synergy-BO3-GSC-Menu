@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_power.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\animation_shared;
 #using scripts\shared\audio_shared;
@@ -16,33 +20,13 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_genesis_util;
-
 #using_animtree("generic");
-
 #namespace zm_genesis_power;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_genesis_power
-	Checksum: 0x63B9D68C
-	Offset: 0x4F0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_power", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_genesis_power
-	Checksum: 0xE1133CC0
-	Offset: 0x530
-	Size: 0x116
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "power_zombie_soul", 15000, 1, "int", & function_cb47574e, 0, 0);
   clientfield::register("scriptmover", "power_cables_shader", 15000, 1, "int", & power_cables_shader, 0, 0);
@@ -52,15 +36,6 @@ function __init__() {
   }
 }
 
-/*
-	Name: function_cb47574e
-	Namespace: zm_genesis_power
-	Checksum: 0x45D99C80
-	Offset: 0x650
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_cb47574e(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playfxontag(localclientnum, level._effect["corruption_engine_soul"], self, "tag_origin");
@@ -69,15 +44,6 @@ function function_cb47574e(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: power_cables_shader
-	Namespace: zm_genesis_power
-	Checksum: 0x34E936A2
-	Offset: 0x718
-	Size: 0xA4
-	Parameters: 7
-	Flags: Linked
-*/
 function power_cables_shader(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     self mapshaderconstant(localclientnum, 0, "scriptVector2", 0, 1, 0, 0);
@@ -86,15 +52,6 @@ function power_cables_shader(localclientnum, oldval, newval, bnewent, binitialsn
   }
 }
 
-/*
-	Name: corruption_tower
-	Namespace: zm_genesis_power
-	Checksum: 0xD3048BF4
-	Offset: 0x7C8
-	Size: 0x5FC
-	Parameters: 7
-	Flags: Linked
-*/
 function corruption_tower(n_local_client, n_old, n_new, b_new_ent, b_initial_snap, str_field, b_was_time_jump) {
   var_6bf7783a = getent(n_local_client, str_field, "targetname");
   var_6bf7783a util::waittill_dobj(n_local_client);
@@ -154,15 +111,6 @@ function corruption_tower(n_local_client, n_old, n_new, b_new_ent, b_initial_sna
   }
 }
 
-/*
-	Name: tower_fx
-	Namespace: zm_genesis_power
-	Checksum: 0x253433EA
-	Offset: 0xDD0
-	Size: 0x2E4
-	Parameters: 5
-	Flags: Linked
-*/
 function tower_fx(n_local_client, var_47d9b5f4, str_tag, str_fx, str_alias) {
   if(var_47d9b5f4 == 2 || var_47d9b5f4 == 3) {
     if(isdefined(str_alias)) {

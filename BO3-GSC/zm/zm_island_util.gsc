@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_util.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -22,31 +26,12 @@
 #using scripts\zm\_zm_weap_keeper_skull;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_island_util;
 
-/*
-	Name: spawn_trigger_radius
-	Namespace: zm_island_util
-	Checksum: 0xEDFDAB31
-	Offset: 0x3D0
-	Size: 0x5A
-	Parameters: 4
-	Flags: Linked
-*/
 function spawn_trigger_radius(origin, radius, use_trigger = 0, func_per_player_msg) {
   return spawn_unitrigger(origin, undefined, radius, use_trigger, func_per_player_msg);
 }
 
-/*
-	Name: spawn_unitrigger
-	Namespace: zm_island_util
-	Checksum: 0xB27FE2A0
-	Offset: 0x438
-	Size: 0x1F8
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private spawn_unitrigger(origin, angles, radius_or_dims, use_trigger = 0, func_per_player_msg) {
   trigger_stub = spawnstruct();
   trigger_stub.origin = origin;
@@ -78,15 +63,6 @@ function private spawn_unitrigger(origin, angles, radius_or_dims, use_trigger = 
   return trigger_stub;
 }
 
-/*
-	Name: function_5ea427bf
-	Namespace: zm_island_util
-	Checksum: 0xCEA5676
-	Offset: 0x638
-	Size: 0x170
-	Parameters: 1
-	Flags: Linked
-*/
 function function_5ea427bf(player) {
   b_visible = 1;
   if(isdefined(player.beastmode) && player.beastmode && (!(isdefined(self.allow_beastmode) && self.allow_beastmode))) {
@@ -112,63 +88,27 @@ function function_5ea427bf(player) {
   return b_visible;
 }
 
-/*
-	Name: unitrigger_think
-	Namespace: zm_island_util
-	Checksum: 0xCEB4F4F2
-	Offset: 0x7B0
-	Size: 0x60
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private unitrigger_think() {
-  self endon(# "kill_trigger");
+  self endon("kill_trigger");
   self.stub thread unitrigger_refresh_message();
   while (true) {
-    self waittill(# "trigger", player);
-    self.stub notify(# "trigger", player);
+    self waittill("trigger", player);
+    self.stub notify("trigger", player);
   }
 }
 
-/*
-	Name: unitrigger_refresh_message
-	Namespace: zm_island_util
-	Checksum: 0x68689137
-	Offset: 0x818
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function unitrigger_refresh_message() {
   self zm_unitrigger::run_visibility_function_for_all_triggers();
 }
 
-/*
-	Name: function_acd04dc9
-	Namespace: zm_island_util
-	Checksum: 0x4CFD57A9
-	Offset: 0x840
-	Size: 0x28
-	Parameters: 0
-	Flags: Linked
-*/
 function function_acd04dc9() {
-  self endon(# "death");
-  self waittill(# "completed_emerging_into_playable_area");
+  self endon("death");
+  self waittill("completed_emerging_into_playable_area");
   self.no_powerups = 1;
 }
 
-/*
-	Name: function_7448e472
-	Namespace: zm_island_util
-	Checksum: 0x623A4F3D
-	Offset: 0x870
-	Size: 0x324
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7448e472(e_target) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(e_target.targetname)) {
     var_241c185a = "someone_revealed_" + e_target.targetname;
     self endon(var_241c185a);
@@ -197,7 +137,7 @@ function function_7448e472(e_target) {
               e_target.var_f0b65c0a = self;
               var_c2b47c7a = 1;
               playsoundatposition("zmb_wpn_skullgun_discover", e_target.origin);
-              self notify(# "skullweapon_revealed_location");
+              self notify("skullweapon_revealed_location");
               self thread function_4aedb20b();
               foreach(player in level.players) {
                 if(e_target === player.var_abd1c759) {
@@ -220,15 +160,6 @@ function function_7448e472(e_target) {
   return var_c2b47c7a;
 }
 
-/*
-	Name: function_4aedb20b
-	Namespace: zm_island_util
-	Checksum: 0xB69E2633
-	Offset: 0xBA0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4aedb20b() {
   if(self.var_118ab24e >= 33) {
     self gadgetpowerset(0, self.var_118ab24e - 33);
@@ -237,15 +168,6 @@ function function_4aedb20b() {
   }
 }
 
-/*
-	Name: function_925aa63a
-	Namespace: zm_island_util
-	Checksum: 0xC2793D9B
-	Offset: 0xC10
-	Size: 0x182
-	Parameters: 4
-	Flags: Linked
-*/
 function function_925aa63a(var_fedda046, n_delay = 0.1, n_value, b_delete = 1) {
   foreach(var_1c7231df in var_fedda046) {
     if(isdefined(var_1c7231df)) {
@@ -261,15 +183,6 @@ function function_925aa63a(var_fedda046, n_delay = 0.1, n_value, b_delete = 1) {
   }
 }
 
-/*
-	Name: function_f2a55b5f
-	Namespace: zm_island_util
-	Checksum: 0xE2EE335F
-	Offset: 0xDA0
-	Size: 0x62
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f2a55b5f(a_str_zones) {
   if(!zm_utility::is_player_valid(self)) {
     return 0;
@@ -278,15 +191,6 @@ function function_f2a55b5f(a_str_zones) {
   return isinarray(a_str_zones, str_player_zone);
 }
 
-/*
-	Name: is_facing
-	Namespace: zm_island_util
-	Checksum: 0x1C271C0A
-	Offset: 0xE10
-	Size: 0x142
-	Parameters: 2
-	Flags: Linked
-*/
 function is_facing(target, n_tolerance = 0.707) {
   if(isentity(target)) {
     v_target = target.origin;
@@ -301,15 +205,6 @@ function is_facing(target, n_tolerance = 0.707) {
   return n_dot >= n_tolerance;
 }
 
-/*
-	Name: function_1867f3e8
-	Namespace: zm_island_util
-	Checksum: 0x5BBDA886
-	Offset: 0xF60
-	Size: 0x15C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1867f3e8(n_distance) {
   n_dist_sq = n_distance * n_distance;
   str_player_zone = self zm_zonemgr::get_player_zone();
@@ -323,15 +218,6 @@ function function_1867f3e8(n_distance) {
   return var_9efb74d5;
 }
 
-/*
-	Name: function_4bf4ac40
-	Namespace: zm_island_util
-	Checksum: 0xF03D770
-	Offset: 0x10C8
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4bf4ac40(v_loc) {
   a_players = arraycopy(level.activeplayers);
   e_player = undefined;
@@ -347,15 +233,6 @@ function function_4bf4ac40(v_loc) {
   return e_player;
 }
 
-/*
-	Name: any_player_looking_at
-	Namespace: zm_island_util
-	Checksum: 0x2C12842F
-	Offset: 0x11A8
-	Size: 0xDC
-	Parameters: 4
-	Flags: Linked
-*/
 function any_player_looking_at(v_org, n_dot, b_do_trace, e_ignore) {
   foreach(player in level.players) {
     if(zm_utility::is_player_valid(player) && player util::is_player_looking_at(v_org, n_dot, b_do_trace, e_ignore)) {
@@ -365,15 +242,6 @@ function any_player_looking_at(v_org, n_dot, b_do_trace, e_ignore) {
   return false;
 }
 
-/*
-	Name: swap_weapon
-	Namespace: zm_island_util
-	Checksum: 0x83F1C76A
-	Offset: 0x1290
-	Size: 0x242
-	Parameters: 1
-	Flags: Linked
-*/
 function swap_weapon(wpn_new) {
   wpn_current = self getcurrentweapon();
   if(!zm_utility::is_player_valid(self)) {
@@ -406,15 +274,6 @@ function swap_weapon(wpn_new) {
   }
 }
 
-/*
-	Name: take_old_weapon_and_give_new
-	Namespace: zm_island_util
-	Checksum: 0xBB6AB070
-	Offset: 0x14E0
-	Size: 0xA0
-	Parameters: 2
-	Flags: Linked
-*/
 function take_old_weapon_and_give_new(current_weapon, weapon) {
   a_weapons = self getweaponslistprimaries();
   if(isdefined(a_weapons) && a_weapons.size >= zm_utility::get_player_weapon_limit(self)) {
@@ -423,15 +282,6 @@ function take_old_weapon_and_give_new(current_weapon, weapon) {
   var_7b9ca68 = self zm_weapons::give_build_kit_weapon(weapon);
 }
 
-/*
-	Name: function_3420bc2f
-	Namespace: zm_island_util
-	Checksum: 0x23F61BBF
-	Offset: 0x1588
-	Size: 0x140
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3420bc2f(wpn_new) {
   var_c5716cdc = self getweaponslist(1);
   foreach(weapon in var_c5716cdc) {
@@ -447,17 +297,7 @@ function function_3420bc2f(wpn_new) {
   }
 }
 
-/*
-	Name: function_8faf1d24
-	Namespace: zm_island_util
-	Checksum: 0xAFA07A94
-	Offset: 0x16D0
-	Size: 0x108
-	Parameters: 4
-	Flags: Linked
-*/
 function function_8faf1d24(v_color, var_8882142e, n_scale, str_endon) {
-  /#
   if(!isdefined(v_color)) {
     v_color = vectorscale((0, 0, 1), 255);
   }
@@ -481,5 +321,4 @@ function function_8faf1d24(v_color, var_8882142e, n_scale, str_endon) {
     print3d(origin, var_8882142e, v_color, n_scale);
     wait(0.1);
   }
-  # /
 }

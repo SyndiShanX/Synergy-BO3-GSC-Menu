@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\gameobjects_shared.gsc
+*************************************************/
+
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\hostmigration_shared;
 #using scripts\shared\hud_util_shared;
@@ -10,31 +14,12 @@
 #using scripts\shared\tweakables_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons_shared;
-
 #namespace gameobjects;
 
-/*
-	Name: __init__sytem__
-	Namespace: gameobjects
-	Checksum: 0x2A163B6C
-	Offset: 0x440
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("gameobjects", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: gameobjects
-	Checksum: 0xF6DD918E
-	Offset: 0x480
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.numgametypereservedobjectives = 0;
   level.releasedobjectives = [];
@@ -43,15 +28,6 @@ function __init__() {
   callback::on_laststand( & on_player_last_stand);
 }
 
-/*
-	Name: main
-	Namespace: gameobjects
-	Checksum: 0xF49F0968
-	Offset: 0x508
-	Size: 0x186
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   level.vehiclesenabled = getgametypesetting("vehiclesEnabled");
   level.vehiclestimed = getgametypesetting("vehiclesTimed");
@@ -60,15 +36,13 @@ function main() {
   if(!isdefined(level.allowedgameobjects)) {
     level.allowedgameobjects = [];
   }
-  /#
   if(level.script == "") {
     level.vehiclesenabled = 1;
   }
-  # /
-    if(level.vehiclesenabled) {
-      level.allowedgameobjects[level.allowedgameobjects.size] = "vehicle";
-      filter_script_vehicles_from_vehicle_descriptors(level.allowedgameobjects);
-    }
+  if(level.vehiclesenabled) {
+    level.allowedgameobjects[level.allowedgameobjects.size] = "vehicle";
+    filter_script_vehicles_from_vehicle_descriptors(level.allowedgameobjects);
+  }
   entities = getentarray();
   for (entity_index = entities.size - 1; entity_index >= 0; entity_index--) {
     entity = entities[entity_index];
@@ -78,15 +52,6 @@ function main() {
   }
 }
 
-/*
-	Name: register_allowed_gameobject
-	Namespace: gameobjects
-	Checksum: 0xB6046714
-	Offset: 0x698
-	Size: 0x3A
-	Parameters: 1
-	Flags: None
-*/
 function register_allowed_gameobject(gameobject) {
   if(!isdefined(level.allowedgameobjects)) {
     level.allowedgameobjects = [];
@@ -94,28 +59,10 @@ function register_allowed_gameobject(gameobject) {
   level.allowedgameobjects[level.allowedgameobjects.size] = gameobject;
 }
 
-/*
-	Name: clear_allowed_gameobjects
-	Namespace: gameobjects
-	Checksum: 0x5488802E
-	Offset: 0x6E0
-	Size: 0x10
-	Parameters: 0
-	Flags: None
-*/
 function clear_allowed_gameobjects() {
   level.allowedgameobjects = [];
 }
 
-/*
-	Name: entity_is_allowed
-	Namespace: gameobjects
-	Checksum: 0x7955C27C
-	Offset: 0x6F8
-	Size: 0x118
-	Parameters: 2
-	Flags: Linked
-*/
 function entity_is_allowed(entity, allowed_game_modes) {
   allowed = 1;
   if(isdefined(entity.script_gameobjectname) && entity.script_gameobjectname != "[all_modes]") {
@@ -130,15 +77,6 @@ function entity_is_allowed(entity, allowed_game_modes) {
   return allowed;
 }
 
-/*
-	Name: location_is_allowed
-	Namespace: gameobjects
-	Checksum: 0xBB16E102
-	Offset: 0x818
-	Size: 0x130
-	Parameters: 2
-	Flags: None
-*/
 function location_is_allowed(entity, location) {
   allowed = 1;
   location_list = undefined;
@@ -165,15 +103,6 @@ function location_is_allowed(entity, location) {
   return allowed;
 }
 
-/*
-	Name: filter_script_vehicles_from_vehicle_descriptors
-	Namespace: gameobjects
-	Checksum: 0x13452D51
-	Offset: 0x950
-	Size: 0x206
-	Parameters: 1
-	Flags: Linked
-*/
 function filter_script_vehicles_from_vehicle_descriptors(allowed_game_modes) {
   vehicle_descriptors = getentarray("vehicle_descriptor", "targetname");
   script_vehicles = getentarray("script_vehicle", "classname");
@@ -201,18 +130,9 @@ function filter_script_vehicles_from_vehicle_descriptors(allowed_game_modes) {
   }
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: gameobjects
-	Checksum: 0x47ECDB6F
-	Offset: 0xB60
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  level endon("game_ended");
   self thread on_death();
   self.touchtriggers = [];
   self.packobject = [];
@@ -224,58 +144,22 @@ function on_player_spawned() {
   self.killedinuse = undefined;
 }
 
-/*
-	Name: on_death
-	Namespace: gameobjects
-	Checksum: 0x9A49462
-	Offset: 0xBF0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_death() {
-  level endon(# "game_ended");
-  self endon(# "killondeathmonitor");
-  self waittill(# "death");
+  level endon("game_ended");
+  self endon("killondeathmonitor");
+  self waittill("death");
   self thread gameobjects_dropped();
 }
 
-/*
-	Name: on_disconnect
-	Namespace: gameobjects
-	Checksum: 0xE9B3FAE
-	Offset: 0xC38
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function on_disconnect() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   self thread gameobjects_dropped();
 }
 
-/*
-	Name: on_player_last_stand
-	Namespace: gameobjects
-	Checksum: 0x1CAC77BD
-	Offset: 0xC68
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_last_stand() {
   self thread gameobjects_dropped();
 }
 
-/*
-	Name: gameobjects_dropped
-	Namespace: gameobjects
-	Checksum: 0x9A70D5C0
-	Offset: 0xC90
-	Size: 0xD2
-	Parameters: 0
-	Flags: Linked
-*/
 function gameobjects_dropped() {
   if(isdefined(self.carryobject)) {
     self.carryobject thread set_dropped();
@@ -287,15 +171,6 @@ function gameobjects_dropped() {
   }
 }
 
-/*
-	Name: create_carry_object
-	Namespace: gameobjects
-	Checksum: 0xD4A5D341
-	Offset: 0xD70
-	Size: 0xA28
-	Parameters: 6
-	Flags: None
-*/
 function create_carry_object(ownerteam, trigger, visuals, offset, objectivename, hitsound) {
   carryobject = spawnstruct();
   carryobject.type = "carryObject";
@@ -413,20 +288,11 @@ function create_carry_object(ownerteam, trigger, visuals, offset, objectivename,
   return carryobject;
 }
 
-/*
-	Name: carry_object_use_think
-	Namespace: gameobjects
-	Checksum: 0xA56C3042
-	Offset: 0x17A0
-	Size: 0x1D0
-	Parameters: 0
-	Flags: Linked
-*/
 function carry_object_use_think() {
-  level endon(# "game_ended");
-  self.trigger endon(# "destroyed");
+  level endon("game_ended");
+  self.trigger endon("destroyed");
   while (true) {
-    self.trigger waittill(# "trigger", player);
+    self.trigger waittill("trigger", player);
     if(self.isresetting) {
       continue;
     }
@@ -467,20 +333,11 @@ function carry_object_use_think() {
   }
 }
 
-/*
-	Name: carry_object_prox_think
-	Namespace: gameobjects
-	Checksum: 0x647FCEAF
-	Offset: 0x1978
-	Size: 0x1D0
-	Parameters: 0
-	Flags: None
-*/
 function carry_object_prox_think() {
-  level endon(# "game_ended");
-  self.trigger endon(# "destroyed");
+  level endon("game_ended");
+  self.trigger endon("destroyed");
   while (true) {
-    self.trigger waittill(# "trigger", player);
+    self.trigger waittill("trigger", player);
     if(self.isresetting) {
       continue;
     }
@@ -521,19 +378,10 @@ function carry_object_prox_think() {
   }
 }
 
-/*
-	Name: pickup_object_delay
-	Namespace: gameobjects
-	Checksum: 0x4669BF18
-	Offset: 0x1B50
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function pickup_object_delay(origin) {
-  level endon(# "game_ended");
-  self endon(# "death");
-  self endon(# "disconnect");
+  level endon("game_ended");
+  self endon("death");
+  self endon("disconnect");
   self.canpickupobject = 0;
   for (;;) {
     if(distancesquared(self.origin, origin) > 4096) {
@@ -544,15 +392,6 @@ function pickup_object_delay(origin) {
   self.canpickupobject = 1;
 }
 
-/*
-	Name: set_picked_up
-	Namespace: gameobjects
-	Checksum: 0x58F59212
-	Offset: 0x1BD0
-	Size: 0x234
-	Parameters: 1
-	Flags: Linked
-*/
 function set_picked_up(player) {
   if(!isalive(player)) {
     return;
@@ -581,7 +420,7 @@ function set_picked_up(player) {
   self set_carrier(player);
   self ghost_visuals();
   self.trigger.origin = self.trigger.origin + vectorscale((0, 0, 1), 10000);
-  self notify(# "pickup_object");
+  self notify("pickup_object");
   if(isdefined(self.onpickup)) {
     self[[self.onpickup]](player);
   }
@@ -590,15 +429,6 @@ function set_picked_up(player) {
   self update_objective();
 }
 
-/*
-	Name: unlink_grenades
-	Namespace: gameobjects
-	Checksum: 0xE0D425A
-	Offset: 0x1E10
-	Size: 0x212
-	Parameters: 0
-	Flags: Linked
-*/
 function unlink_grenades() {
   radius = 32;
   origin = self.origin;
@@ -619,15 +449,6 @@ function unlink_grenades() {
   }
 }
 
-/*
-	Name: ghost_visuals
-	Namespace: gameobjects
-	Checksum: 0x8BCCD6BD
-	Offset: 0x2030
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function ghost_visuals() {
   foreach(visual in self.visuals) {
     visual ghost();
@@ -635,18 +456,9 @@ function ghost_visuals() {
   }
 }
 
-/*
-	Name: update_carry_object_origin
-	Namespace: gameobjects
-	Checksum: 0xF48C4938
-	Offset: 0x20E0
-	Size: 0x560
-	Parameters: 0
-	Flags: Linked
-*/
 function update_carry_object_origin() {
-  level endon(# "game_ended");
-  self.trigger endon(# "destroyed");
+  level endon("game_ended");
+  self.trigger endon("destroyed");
   if(self.newstyle) {
     return;
   }
@@ -700,18 +512,9 @@ function update_carry_object_origin() {
   }
 }
 
-/*
-	Name: update_carry_object_objective_origin
-	Namespace: gameobjects
-	Checksum: 0xF3A909D6
-	Offset: 0x2648
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function update_carry_object_objective_origin() {
-  level endon(# "game_ended");
-  self.trigger endon(# "destroyed");
+  level endon("game_ended");
+  self.trigger endon("destroyed");
   if(!self.newstyle) {
     return;
   }
@@ -728,20 +531,9 @@ function update_carry_object_objective_origin() {
   }
 }
 
-/*
-	Name: give_object
-	Namespace: gameobjects
-	Checksum: 0xF589352C
-	Offset: 0x2730
-	Size: 0x3E0
-	Parameters: 1
-	Flags: Linked
-*/
 function give_object(object) {
-  /#
   assert(!isdefined(self.carryobject));
-  # /
-    self.carryobject = object;
+  self.carryobject = object;
   self thread track_carrier(object);
   if(isdefined(object.carryweapon)) {
     if(isdefined(object.carryweaponthink)) {
@@ -793,15 +585,6 @@ function give_object(object) {
   }
 }
 
-/*
-	Name: move_visuals_to_base
-	Namespace: gameobjects
-	Checksum: 0xC1708D5E
-	Offset: 0x2B18
-	Size: 0xDA
-	Parameters: 0
-	Flags: Linked
-*/
 function move_visuals_to_base() {
   foreach(visual in self.visuals) {
     visual.origin = visual.baseorigin;
@@ -811,19 +594,10 @@ function move_visuals_to_base() {
   }
 }
 
-/*
-	Name: return_home
-	Namespace: gameobjects
-	Checksum: 0xD0AB47
-	Offset: 0x2C00
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function return_home() {
   self.isresetting = 1;
   prev_origin = self.trigger.origin;
-  self notify(# "reset");
+  self notify("reset");
   self move_visuals_to_base();
   self.trigger.origin = self.trigger.baseorigin;
   self.curorigin = self.trigger.origin;
@@ -837,15 +611,6 @@ function return_home() {
   self.isresetting = 0;
 }
 
-/*
-	Name: is_object_away_from_home
-	Namespace: gameobjects
-	Checksum: 0x116D6B0E
-	Offset: 0x2D00
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function is_object_away_from_home() {
   if(isdefined(self.carrier)) {
     return true;
@@ -856,15 +621,6 @@ function is_object_away_from_home() {
   return false;
 }
 
-/*
-	Name: set_position
-	Namespace: gameobjects
-	Checksum: 0xFB4B5DD4
-	Offset: 0x2D60
-	Size: 0x160
-	Parameters: 2
-	Flags: None
-*/
 function set_position(origin, angles) {
   self.isresetting = 1;
   foreach(visual in self.visuals) {
@@ -882,28 +638,10 @@ function set_position(origin, angles) {
   self.isresetting = 0;
 }
 
-/*
-	Name: set_drop_offset
-	Namespace: gameobjects
-	Checksum: 0x5C7C1D06
-	Offset: 0x2EC8
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function set_drop_offset(height) {
   self.dropoffset = height;
 }
 
-/*
-	Name: set_dropped
-	Namespace: gameobjects
-	Checksum: 0x60E9CD05
-	Offset: 0x2EE8
-	Size: 0x6D8
-	Parameters: 0
-	Flags: Linked
-*/
 function set_dropped() {
   if(isdefined(self.setdropped)) {
     if([
@@ -913,7 +651,7 @@ function set_dropped() {
     }
   }
   self.isresetting = 1;
-  self notify(# "dropped");
+  self notify("dropped");
   startorigin = (0, 0, 0);
   endorigin = (0, 0, 0);
   body = undefined;
@@ -986,58 +724,22 @@ function set_dropped() {
   self.isresetting = 0;
 }
 
-/*
-	Name: update_icons_and_objective
-	Namespace: gameobjects
-	Checksum: 0xEF9FD5A1
-	Offset: 0x35C8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function update_icons_and_objective() {
   self update_compass_icons();
   self update_world_icons();
   self update_objective();
 }
 
-/*
-	Name: set_carrier
-	Namespace: gameobjects
-	Checksum: 0xD8282EDC
-	Offset: 0x3620
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function set_carrier(carrier) {
   self.carrier = carrier;
   objective_setplayerusing(self.objectiveid, carrier);
   self thread update_visibility_according_to_radar();
 }
 
-/*
-	Name: get_carrier
-	Namespace: gameobjects
-	Checksum: 0xD9311F34
-	Offset: 0x3678
-	Size: 0xA
-	Parameters: 0
-	Flags: None
-*/
 function get_carrier() {
   return self.carrier;
 }
 
-/*
-	Name: clear_carrier
-	Namespace: gameobjects
-	Checksum: 0x3A8EA0FF
-	Offset: 0x3690
-	Size: 0x62
-	Parameters: 0
-	Flags: Linked
-*/
 function clear_carrier() {
   if(!isdefined(self.carrier)) {
     return;
@@ -1045,18 +747,9 @@ function clear_carrier() {
   self.carrier take_object(self);
   objective_clearplayerusing(self.objectiveid, self.carrier);
   self.carrier = undefined;
-  self notify(# "carrier_cleared");
+  self notify("carrier_cleared");
 }
 
-/*
-	Name: is_touching_any_trigger
-	Namespace: gameobjects
-	Checksum: 0x366ED7F8
-	Offset: 0x3700
-	Size: 0xB4
-	Parameters: 3
-	Flags: Linked
-*/
 function is_touching_any_trigger(triggers, minz, maxz) {
   foreach(trigger in triggers) {
     if(self istouchingswept(trigger, minz, maxz)) {
@@ -1066,28 +759,10 @@ function is_touching_any_trigger(triggers, minz, maxz) {
   return false;
 }
 
-/*
-	Name: is_touching_any_trigger_key_value
-	Namespace: gameobjects
-	Checksum: 0xF343E613
-	Offset: 0x37C0
-	Size: 0x5A
-	Parameters: 4
-	Flags: Linked
-*/
 function is_touching_any_trigger_key_value(value, key, minz, maxz) {
   return self is_touching_any_trigger(getentarray(value, key), minz, maxz);
 }
 
-/*
-	Name: should_be_reset
-	Namespace: gameobjects
-	Checksum: 0x48F7C1D6
-	Offset: 0x3828
-	Size: 0x1DC
-	Parameters: 3
-	Flags: Linked
-*/
 function should_be_reset(minz, maxz, testhurttriggers) {
   if(self.visuals[0] is_touching_any_trigger_key_value("minefield", "targetname", minz, maxz)) {
     return true;
@@ -1100,28 +775,17 @@ function should_be_reset(minz, maxz, testhurttriggers) {
   }
   elevators = getentarray("script_elevator", "targetname");
   foreach(elevator in elevators) {
-    /#
     assert(isdefined(elevator.occupy_volume));
-    # /
-      if(self.visuals[0] istouchingswept(elevator.occupy_volume, minz, maxz)) {
-        return true;
-      }
+    if(self.visuals[0] istouchingswept(elevator.occupy_volume, minz, maxz)) {
+      return true;
+    }
   }
   return false;
 }
 
-/*
-	Name: pickup_timeout
-	Namespace: gameobjects
-	Checksum: 0x66C66250
-	Offset: 0x3A10
-	Size: 0xC4
-	Parameters: 2
-	Flags: Linked
-*/
 function pickup_timeout(minz, maxz) {
-  self endon(# "pickup_object");
-  self endon(# "reset");
+  self endon("pickup_object");
+  self endon("reset");
   wait(0.05);
   if(self should_be_reset(minz, maxz, 1)) {
     self thread return_home();
@@ -1137,15 +801,6 @@ function pickup_timeout(minz, maxz) {
   }
 }
 
-/*
-	Name: take_object
-	Namespace: gameobjects
-	Checksum: 0xBA743F52
-	Offset: 0x3AE0
-	Size: 0x2EC
-	Parameters: 1
-	Flags: Linked
-*/
 function take_object(object) {
   if(isdefined(object.visiblecarriermodel)) {
     self weapons::detach_all_weapons();
@@ -1178,7 +833,7 @@ function take_object(object) {
   if(!isalive(self) || isdefined(self.player_disconnected)) {
     return;
   }
-  self notify(# "drop_object");
+  self notify("drop_object");
   self.disallowvehicleusage = 0;
   if(object.triggertype == "proximity") {
     self thread pickup_object_delay(object.trigger.origin);
@@ -1191,47 +846,20 @@ function take_object(object) {
   }
 }
 
-/*
-	Name: wait_take_carry_weapon
-	Namespace: gameobjects
-	Checksum: 0x9A848935
-	Offset: 0x3DD8
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_take_carry_weapon(weapon) {
   self thread take_carry_weapon_on_death(weapon);
   wait(max(0, weapon.firetime - 0.1));
   self take_carry_weapon(weapon);
 }
 
-/*
-	Name: take_carry_weapon_on_death
-	Namespace: gameobjects
-	Checksum: 0x3AE8E9E1
-	Offset: 0x3E48
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function take_carry_weapon_on_death(weapon) {
-  self endon(# "take_carry_weapon");
-  self waittill(# "death");
+  self endon("take_carry_weapon");
+  self waittill("death");
   self take_carry_weapon(weapon);
 }
 
-/*
-	Name: take_carry_weapon
-	Namespace: gameobjects
-	Checksum: 0xB34B1225
-	Offset: 0x3E90
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function take_carry_weapon(weapon) {
-  self notify(# "take_carry_weapon");
+  self notify("take_carry_weapon");
   if(self hasweapon(weapon, 1)) {
     ballweapon = getweapon("ball");
     currweapon = self getcurrentweapon();
@@ -1247,20 +875,11 @@ function take_carry_weapon(weapon) {
   }
 }
 
-/*
-	Name: track_carrier
-	Namespace: gameobjects
-	Checksum: 0xF55419A1
-	Offset: 0x3FB8
-	Size: 0x130
-	Parameters: 1
-	Flags: Linked
-*/
 function track_carrier(object) {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "drop_object");
+  level endon("game_ended");
+  self endon("disconnect");
+  self endon("death");
+  self endon("drop_object");
   wait(0.05);
   while (isdefined(object.carrier) && object.carrier == self && isalive(self)) {
     if(self isonground()) {
@@ -1273,20 +892,11 @@ function track_carrier(object) {
   }
 }
 
-/*
-	Name: manual_drop_think
-	Namespace: gameobjects
-	Checksum: 0xEFE86245
-	Offset: 0x40F0
-	Size: 0x150
-	Parameters: 0
-	Flags: Linked
-*/
 function manual_drop_think() {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "drop_object");
+  level endon("game_ended");
+  self endon("disconnect");
+  self endon("death");
+  self endon("drop_object");
   for (;;) {
     while (self attackbuttonpressed() || self fragbuttonpressed() || self secondaryoffhandbuttonpressed() || self meleebuttonpressed()) {
       wait(0.05);
@@ -1300,15 +910,6 @@ function manual_drop_think() {
   }
 }
 
-/*
-	Name: create_use_object
-	Namespace: gameobjects
-	Checksum: 0x4ED5B286
-	Offset: 0x4248
-	Size: 0x9F0
-	Parameters: 7
-	Flags: None
-*/
 function create_use_object(ownerteam, trigger, visuals, offset, objectivename, allowinitialholddelay = 0, allowweaponcyclingduringhold = 0) {
   useobject = spawn("script_model", trigger.origin);
   useobject.type = "useObject";
@@ -1416,15 +1017,6 @@ function create_use_object(ownerteam, trigger, visuals, offset, objectivename, a
   return useobject;
 }
 
-/*
-	Name: set_key_object
-	Namespace: gameobjects
-	Checksum: 0xF09C09D6
-	Offset: 0x4C40
-	Size: 0x4E
-	Parameters: 1
-	Flags: None
-*/
 function set_key_object(object) {
   if(!isdefined(object)) {
     self.keyobject = undefined;
@@ -1436,15 +1028,6 @@ function set_key_object(object) {
   self.keyobject[self.keyobject.size] = object;
 }
 
-/*
-	Name: has_key_object
-	Namespace: gameobjects
-	Checksum: 0xAA7E2951
-	Offset: 0x4C98
-	Size: 0xF6
-	Parameters: 1
-	Flags: Linked
-*/
 function has_key_object(use) {
   if(!isdefined(use.keyobject)) {
     return false;
@@ -1464,22 +1047,13 @@ function has_key_object(use) {
   return false;
 }
 
-/*
-	Name: use_object_use_think
-	Namespace: gameobjects
-	Checksum: 0x9EB2E901
-	Offset: 0x4D98
-	Size: 0x2E8
-	Parameters: 2
-	Flags: Linked
-*/
 function use_object_use_think(disableinitialholddelay, disableweaponcyclingduringhold) {
-  self.trigger endon(# "destroyed");
+  self.trigger endon("destroyed");
   if(self.usetime > 0 && disableinitialholddelay) {
     self.trigger usetriggerignoreuseholdtime();
   }
   while (true) {
-    self.trigger waittill(# "trigger", player);
+    self.trigger waittill("trigger", player);
     if(level.gameended) {
       continue;
     }
@@ -1536,18 +1110,9 @@ function use_object_use_think(disableinitialholddelay, disableweaponcyclingdurin
   }
 }
 
-/*
-	Name: use_object_onuse
-	Namespace: gameobjects
-	Checksum: 0x4A7250B8
-	Offset: 0x5088
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function use_object_onuse(player) {
-  level endon(# "game_ended");
-  self.trigger endon(# "destroyed");
+  level endon("game_ended");
+  self.trigger endon("destroyed");
   if(isdefined(self.classobj)) {
     [
       [self.classobj]
@@ -1557,20 +1122,9 @@ function use_object_onuse(player) {
   }
 }
 
-/*
-	Name: get_earliest_claim_player
-	Namespace: gameobjects
-	Checksum: 0xA1C05ED9
-	Offset: 0x50F8
-	Size: 0x14A
-	Parameters: 0
-	Flags: Linked
-*/
 function get_earliest_claim_player() {
-  /#
   assert(self.claimteam != "");
-  # /
-    team = self.claimteam;
+  team = self.claimteam;
   earliestplayer = self.claimplayer;
   if(self.touchlist[team].size > 0) {
     earliesttime = undefined;
@@ -1586,18 +1140,9 @@ function get_earliest_claim_player() {
   return earliestplayer;
 }
 
-/*
-	Name: use_object_prox_think
-	Namespace: gameobjects
-	Checksum: 0xA4218BC3
-	Offset: 0x5250
-	Size: 0x740
-	Parameters: 0
-	Flags: Linked
-*/
 function use_object_prox_think() {
-  level endon(# "game_ended");
-  self.trigger endon(# "destroyed");
+  level endon("game_ended");
+  self.trigger endon("destroyed");
   self thread prox_trigger_think();
   while (true) {
     if(self.usetime && self.curprogress >= self.usetime) {
@@ -1714,15 +1259,6 @@ function use_object_prox_think() {
   }
 }
 
-/*
-	Name: use_object_locked_for_team
-	Namespace: gameobjects
-	Checksum: 0x18D12F08
-	Offset: 0x5998
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function use_object_locked_for_team(team) {
   if(isdefined(self.teamlock) && isdefined(level.teams[team])) {
     return self.teamlock[team];
@@ -1730,15 +1266,6 @@ function use_object_locked_for_team(team) {
   return 0;
 }
 
-/*
-	Name: can_claim
-	Namespace: gameobjects
-	Checksum: 0x306555C3
-	Offset: 0x59E0
-	Size: 0x96
-	Parameters: 1
-	Flags: Linked
-*/
 function can_claim(player) {
   if(isdefined(self.carrier)) {
     return false;
@@ -1755,24 +1282,15 @@ function can_claim(player) {
   return false;
 }
 
-/*
-	Name: prox_trigger_think
-	Namespace: gameobjects
-	Checksum: 0x9B3AF5B6
-	Offset: 0x5A80
-	Size: 0x3D0
-	Parameters: 0
-	Flags: Linked
-*/
 function prox_trigger_think() {
-  level endon(# "game_ended");
-  self.trigger endon(# "destroyed");
+  level endon("game_ended");
+  self.trigger endon("destroyed");
   entitynumber = self.entnum;
   if(!isdefined(self.trigger.remote_control_player_can_trigger)) {
     self.trigger.remote_control_player_can_trigger = 0;
   }
   while (true) {
-    self.trigger waittill(# "trigger", player);
+    self.trigger waittill("trigger", player);
     if(!isplayer(player)) {
       continue;
     }
@@ -1830,15 +1348,6 @@ function prox_trigger_think() {
   }
 }
 
-/*
-	Name: is_excluded
-	Namespace: gameobjects
-	Checksum: 0x3C360BB0
-	Offset: 0x5E58
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function is_excluded(player) {
   if(!isdefined(self.exclusions)) {
     return false;
@@ -1851,15 +1360,6 @@ function is_excluded(player) {
   return false;
 }
 
-/*
-	Name: clear_progress
-	Namespace: gameobjects
-	Checksum: 0xD6BE9694
-	Offset: 0x5F18
-	Size: 0x40
-	Parameters: 0
-	Flags: Linked
-*/
 function clear_progress() {
   self.curprogress = 0;
   self update_current_progress();
@@ -1868,23 +1368,11 @@ function clear_progress() {
   }
 }
 
-/*
-	Name: set_claim_team
-	Namespace: gameobjects
-	Checksum: 0x96D0B689
-	Offset: 0x5F60
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function set_claim_team(newteam) {
-  /#
   assert(newteam != self.claimteam);
-  # /
-    if(self.claimteam == "none" && (gettime() - self.lastclaimtime) > (self.claimgraceperiod * 1000)) {
-      self clear_progress();
-    }
-  else if(newteam != "none" && newteam != self.lastclaimteam) {
+  if(self.claimteam == "none" && (gettime() - self.lastclaimtime) > (self.claimgraceperiod * 1000)) {
+    self clear_progress();
+  } else if(newteam != "none" && newteam != self.lastclaimteam) {
     self clear_progress();
   }
   self.lastclaimteam = self.claimteam;
@@ -1893,28 +1381,10 @@ function set_claim_team(newteam) {
   self update_use_rate();
 }
 
-/*
-	Name: get_claim_team
-	Namespace: gameobjects
-	Checksum: 0x986DD103
-	Offset: 0x6060
-	Size: 0xA
-	Parameters: 0
-	Flags: Linked
-*/
 function get_claim_team() {
   return self.claimteam;
 }
 
-/*
-	Name: continue_trigger_touch_think
-	Namespace: gameobjects
-	Checksum: 0x61E7E3A1
-	Offset: 0x6078
-	Size: 0x226
-	Parameters: 2
-	Flags: Linked
-*/
 function continue_trigger_touch_think(team, object) {
   if(!isalive(self)) {
     return false;
@@ -1953,15 +1423,6 @@ function continue_trigger_touch_think(team, object) {
   return true;
 }
 
-/*
-	Name: trigger_touch_think
-	Namespace: gameobjects
-	Checksum: 0x8E0F267F
-	Offset: 0x62A8
-	Size: 0x3A4
-	Parameters: 1
-	Flags: Linked
-*/
 function trigger_touch_think(object) {
   team = self.pers["team"];
   score = 1;
@@ -2012,15 +1473,6 @@ function trigger_touch_think(object) {
   object update_use_rate();
 }
 
-/*
-	Name: update_prox_bar
-	Namespace: gameobjects
-	Checksum: 0xEA1E0A98
-	Offset: 0x6658
-	Size: 0x5AC
-	Parameters: 2
-	Flags: Linked
-*/
 function update_prox_bar(object, forceremove) {
   if(object.newstyle) {
     return;
@@ -2101,15 +1553,6 @@ function update_prox_bar(object, forceremove) {
   }
 }
 
-/*
-	Name: get_num_touching_except_team
-	Namespace: gameobjects
-	Checksum: 0xB3EBE4DA
-	Offset: 0x6C10
-	Size: 0xBA
-	Parameters: 1
-	Flags: Linked
-*/
 function get_num_touching_except_team(ignoreteam) {
   numtouching = 0;
   foreach(team in level.teams) {
@@ -2121,15 +1564,6 @@ function get_num_touching_except_team(ignoreteam) {
   return numtouching;
 }
 
-/*
-	Name: update_use_rate
-	Namespace: gameobjects
-	Checksum: 0x21899A96
-	Offset: 0x6CD8
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function update_use_rate() {
   numclaimants = self.numtouching[self.claimteam];
   numother = 0;
@@ -2153,17 +1587,8 @@ function update_use_rate() {
   }
 }
 
-/*
-	Name: use_hold_think
-	Namespace: gameobjects
-	Checksum: 0x27B8F339
-	Offset: 0x6DF0
-	Size: 0x498
-	Parameters: 2
-	Flags: Linked
-*/
 function use_hold_think(player, disableweaponcyclingduringhold) {
-  player notify(# "use_hold");
+  player notify("use_hold");
   if(!(isdefined(self.dontlinkplayertotrigger) && self.dontlinkplayertotrigger)) {
     if(!sessionmodeismultiplayergame()) {
       gameobject_link = util::spawn_model("tag_origin", player.origin, player.angles);
@@ -2205,7 +1630,7 @@ function use_hold_think(player, disableweaponcyclingduringhold) {
       player detach(player.attachedusemodel, "tag_inhand");
       player.attachedusemodel = undefined;
     }
-    player notify(# "done_using");
+    player notify("done_using");
     if(isdefined(useweapon)) {
       player thread take_use_weapon(useweapon);
     }
@@ -2232,15 +1657,6 @@ function use_hold_think(player, disableweaponcyclingduringhold) {
   return result;
 }
 
-/*
-	Name: waitthenfreezeplayercontrolsifgameendedstill
-	Namespace: gameobjects
-	Checksum: 0x1B80441B
-	Offset: 0x7290
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function waitthenfreezeplayercontrolsifgameendedstill(wait_time = 1) {
   player = self;
   wait(wait_time);
@@ -2249,35 +1665,17 @@ function waitthenfreezeplayercontrolsifgameendedstill(wait_time = 1) {
   }
 }
 
-/*
-	Name: take_use_weapon
-	Namespace: gameobjects
-	Checksum: 0x2CDF079B
-	Offset: 0x7308
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function take_use_weapon(useweapon) {
-  self endon(# "use_hold");
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("use_hold");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   while (self getcurrentweapon() == useweapon && !self.throwinggrenade) {
     wait(0.05);
   }
   self takeweapon(useweapon);
 }
 
-/*
-	Name: continue_hold_think_loop
-	Namespace: gameobjects
-	Checksum: 0xA69DACE4
-	Offset: 0x7398
-	Size: 0x206
-	Parameters: 4
-	Flags: Linked
-*/
 function continue_hold_think_loop(player, waitforweapon, timedout, usetime) {
   maxwaittime = 1.5;
   if(!isalive(player)) {
@@ -2327,15 +1725,6 @@ function continue_hold_think_loop(player, waitforweapon, timedout, usetime) {
   return true;
 }
 
-/*
-	Name: update_current_progress
-	Namespace: gameobjects
-	Checksum: 0x4C34A39
-	Offset: 0x75A8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function update_current_progress() {
   if(self.usetime) {
     if(isdefined(self.curprogress)) {
@@ -2347,17 +1736,8 @@ function update_current_progress() {
   }
 }
 
-/*
-	Name: use_hold_think_loop
-	Namespace: gameobjects
-	Checksum: 0xA6F94669
-	Offset: 0x7640
-	Size: 0x1AA
-	Parameters: 1
-	Flags: Linked
-*/
 function use_hold_think_loop(player) {
-  self endon(# "disabled");
+  self endon("disabled");
   useweapon = self.useweapon;
   waitforweapon = 1;
   timedout = 0;
@@ -2389,17 +1769,8 @@ function use_hold_think_loop(player) {
   return false;
 }
 
-/*
-	Name: personal_use_bar
-	Namespace: gameobjects
-	Checksum: 0x3C7598E6
-	Offset: 0x77F8
-	Size: 0x384
-	Parameters: 1
-	Flags: Linked
-*/
 function personal_use_bar(object) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(object.newstyle) {
     return;
   }
@@ -2450,15 +1821,6 @@ function personal_use_bar(object) {
   self.usebartext hud::destroyelem();
 }
 
-/*
-	Name: update_trigger
-	Namespace: gameobjects
-	Checksum: 0x747AB918
-	Offset: 0x7B88
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function update_trigger() {
   if(self.triggertype != "use") {
     return;
@@ -2485,15 +1847,6 @@ function update_trigger() {
   }
 }
 
-/*
-	Name: update_objective
-	Namespace: gameobjects
-	Checksum: 0xB553AFF6
-	Offset: 0x7D28
-	Size: 0x28C
-	Parameters: 0
-	Flags: Linked
-*/
 function update_objective() {
   if(!self.newstyle) {
     return;
@@ -2529,15 +1882,6 @@ function update_objective() {
   }
 }
 
-/*
-	Name: update_world_icons
-	Namespace: gameobjects
-	Checksum: 0x8DCE9B5A
-	Offset: 0x7FC0
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function update_world_icons() {
   if(self.visibleteam == "any") {
     update_world_icon("friendly", 1);
@@ -2558,15 +1902,6 @@ function update_world_icons() {
   }
 }
 
-/*
-	Name: update_world_icon
-	Namespace: gameobjects
-	Checksum: 0x23E69F8D
-	Offset: 0x80F8
-	Size: 0x32E
-	Parameters: 2
-	Flags: Linked
-*/
 function update_world_icon(relativeteam, showicon) {
   if(self.newstyle) {
     return;
@@ -2581,7 +1916,7 @@ function update_world_icon(relativeteam, showicon) {
     }
     opname = (("objpoint_" + updateteams[index]) + "_") + self.entnum;
     objpoint = objpoints::get_by_name(opname);
-    objpoint notify(# "stop_flashing_thread");
+    objpoint notify("stop_flashing_thread");
     objpoint thread objpoints::stop_flashing();
     if(showicon) {
       objpoint setshader(self.worldicons[relativeteam], level.objpointsize, level.objpointsize);
@@ -2613,15 +1948,6 @@ function update_world_icon(relativeteam, showicon) {
   }
 }
 
-/*
-	Name: update_compass_icons
-	Namespace: gameobjects
-	Checksum: 0x3427E21B
-	Offset: 0x8430
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function update_compass_icons() {
   if(self.visibleteam == "any") {
     update_compass_icon("friendly", 1);
@@ -2642,15 +1968,6 @@ function update_compass_icons() {
   }
 }
 
-/*
-	Name: update_compass_icon
-	Namespace: gameobjects
-	Checksum: 0xCB4BB31A
-	Offset: 0x8568
-	Size: 0x26E
-	Parameters: 2
-	Flags: Linked
-*/
 function update_compass_icon(relativeteam, showicon) {
   if(self.newstyle) {
     return;
@@ -2689,55 +2006,24 @@ function update_compass_icon(relativeteam, showicon) {
   }
 }
 
-/*
-	Name: hide_waypoint
-	Namespace: gameobjects
-	Checksum: 0x599F0506
-	Offset: 0x87E0
-	Size: 0x8C
-	Parameters: 1
-	Flags: None
-*/
 function hide_waypoint(e_player) {
   if(isdefined(e_player)) {
-    /#
     assert(isplayer(e_player), "");
-    # /
-      objective_setinvisibletoplayer(self.objectiveid, e_player);
+    objective_setinvisibletoplayer(self.objectiveid, e_player);
   } else {
     objective_setinvisibletoall(self.objectiveid);
   }
 }
 
-/*
-	Name: show_waypoint
-	Namespace: gameobjects
-	Checksum: 0xCC2EA3B4
-	Offset: 0x8878
-	Size: 0x8C
-	Parameters: 1
-	Flags: None
-*/
 function show_waypoint(e_player) {
   if(isdefined(e_player)) {
-    /#
     assert(isplayer(e_player), "");
-    # /
-      objective_setvisibletoplayer(self.objectiveid, e_player);
+    objective_setvisibletoplayer(self.objectiveid, e_player);
   } else {
     objective_setvisibletoall(self.objectiveid);
   }
 }
 
-/*
-	Name: should_ping_object
-	Namespace: gameobjects
-	Checksum: 0x458B775B
-	Offset: 0x8910
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function should_ping_object(relativeteam) {
   if(relativeteam == "friendly" && self.objidpingfriendly) {
     return true;
@@ -2748,15 +2034,6 @@ function should_ping_object(relativeteam) {
   return false;
 }
 
-/*
-	Name: get_update_teams
-	Namespace: gameobjects
-	Checksum: 0x26E67958
-	Offset: 0x8970
-	Size: 0x1C4
-	Parameters: 1
-	Flags: Linked
-*/
 function get_update_teams(relativeteam) {
   updateteams = [];
   if(level.teambased) {
@@ -2783,15 +2060,6 @@ function get_update_teams(relativeteam) {
   return updateteams;
 }
 
-/*
-	Name: should_show_compass_due_to_radar
-	Namespace: gameobjects
-	Checksum: 0x6CF7B265
-	Offset: 0x8B40
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function should_show_compass_due_to_radar(team) {
   showcompass = 0;
   if(!isdefined(self.carrier)) {
@@ -2808,33 +2076,15 @@ function should_show_compass_due_to_radar(team) {
   return showcompass;
 }
 
-/*
-	Name: update_visibility_according_to_radar
-	Namespace: gameobjects
-	Checksum: 0xA2083056
-	Offset: 0x8BE8
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function update_visibility_according_to_radar() {
-  self endon(# "death");
-  self endon(# "carrier_cleared");
+  self endon("death");
+  self endon("carrier_cleared");
   while (true) {
-    level waittill(# "radar_status_change");
+    level waittill("radar_status_change");
     self update_compass_icons();
   }
 }
 
-/*
-	Name: _set_team
-	Namespace: gameobjects
-	Checksum: 0xCFFF5854
-	Offset: 0x8C38
-	Size: 0xB6
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _set_team(team) {
   self.ownerteam = team;
   if(team != "any") {
@@ -2845,148 +2095,49 @@ function private _set_team(team) {
   }
 }
 
-/*
-	Name: set_owner_team
-	Namespace: gameobjects
-	Checksum: 0x6D78F2EF
-	Offset: 0x8CF8
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function set_owner_team(team) {
   self _set_team(team);
   self update_trigger();
   self update_icons_and_objective();
 }
 
-/*
-	Name: get_owner_team
-	Namespace: gameobjects
-	Checksum: 0x98DB38C3
-	Offset: 0x8D58
-	Size: 0xA
-	Parameters: 0
-	Flags: Linked
-*/
 function get_owner_team() {
   return self.ownerteam;
 }
 
-/*
-	Name: set_decay_time
-	Namespace: gameobjects
-	Checksum: 0x2E6F4ACB
-	Offset: 0x8D70
-	Size: 0x34
-	Parameters: 1
-	Flags: None
-*/
 function set_decay_time(time) {
   self.decaytime = int(time * 1000);
 }
 
-/*
-	Name: set_use_time
-	Namespace: gameobjects
-	Checksum: 0x64B08F18
-	Offset: 0x8DB0
-	Size: 0x34
-	Parameters: 1
-	Flags: None
-*/
 function set_use_time(time) {
   self.usetime = int(time * 1000);
 }
 
-/*
-	Name: set_use_text
-	Namespace: gameobjects
-	Checksum: 0xD4182D6C
-	Offset: 0x8DF0
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function set_use_text(text) {
   self.usetext = text;
 }
 
-/*
-	Name: set_team_use_time
-	Namespace: gameobjects
-	Checksum: 0xC2AE9C23
-	Offset: 0x8E10
-	Size: 0x42
-	Parameters: 2
-	Flags: None
-*/
 function set_team_use_time(relativeteam, time) {
   self.teamusetimes[relativeteam] = int(time * 1000);
 }
 
-/*
-	Name: set_team_use_text
-	Namespace: gameobjects
-	Checksum: 0x75DB1836
-	Offset: 0x8E60
-	Size: 0x26
-	Parameters: 2
-	Flags: None
-*/
 function set_team_use_text(relativeteam, text) {
   self.teamusetexts[relativeteam] = text;
 }
 
-/*
-	Name: set_use_hint_text
-	Namespace: gameobjects
-	Checksum: 0x2AF8EA43
-	Offset: 0x8E90
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function set_use_hint_text(text) {
   self.trigger sethintstring(text);
 }
 
-/*
-	Name: allow_carry
-	Namespace: gameobjects
-	Checksum: 0xA826FCB4
-	Offset: 0x8EC8
-	Size: 0x24
-	Parameters: 1
-	Flags: None
-*/
 function allow_carry(relativeteam) {
   allow_use(relativeteam);
 }
 
-/*
-	Name: allow_use
-	Namespace: gameobjects
-	Checksum: 0x6075BAC7
-	Offset: 0x8EF8
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function allow_use(relativeteam) {
   self.interactteam = relativeteam;
   update_trigger();
 }
 
-/*
-	Name: set_visible_team
-	Namespace: gameobjects
-	Checksum: 0x316FFDF0
-	Offset: 0x8F30
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function set_visible_team(relativeteam) {
   self.visibleteam = relativeteam;
   if(!tweakables::gettweakablevalue("hud", "showobjicons")) {
@@ -2995,15 +2146,6 @@ function set_visible_team(relativeteam) {
   update_icons_and_objective();
 }
 
-/*
-	Name: set_model_visibility
-	Namespace: gameobjects
-	Checksum: 0xFC5F6E90
-	Offset: 0x8FA0
-	Size: 0x18E
-	Parameters: 1
-	Flags: None
-*/
 function set_model_visibility(visibility) {
   if(visibility) {
     for (index = 0; index < self.visuals.size; index++) {
@@ -3016,26 +2158,17 @@ function set_model_visibility(visibility) {
     for (index = 0; index < self.visuals.size; index++) {
       self.visuals[index] ghost();
       if(self.visuals[index].classname == "script_brushmodel" || self.visuals[index].classname == "script_model") {
-        self.visuals[index] notify(# "changing_solidness");
+        self.visuals[index] notify("changing_solidness");
         self.visuals[index] notsolid();
       }
     }
   }
 }
 
-/*
-	Name: make_solid
-	Namespace: gameobjects
-	Checksum: 0xB3AE3DB2
-	Offset: 0x9138
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function make_solid() {
-  self endon(# "death");
-  self notify(# "changing_solidness");
-  self endon(# "changing_solidness");
+  self endon("death");
+  self notify("changing_solidness");
+  self endon("changing_solidness");
   while (true) {
     for (i = 0; i < level.players.size; i++) {
       if(level.players[i] istouching(self)) {
@@ -3050,55 +2183,19 @@ function make_solid() {
   }
 }
 
-/*
-	Name: set_carrier_visible
-	Namespace: gameobjects
-	Checksum: 0xE200A3BB
-	Offset: 0x9200
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function set_carrier_visible(relativeteam) {
   self.carriervisible = relativeteam;
 }
 
-/*
-	Name: set_can_use
-	Namespace: gameobjects
-	Checksum: 0x546A8F8E
-	Offset: 0x9220
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function set_can_use(relativeteam) {
   self.useteam = relativeteam;
 }
 
-/*
-	Name: set_2d_icon
-	Namespace: gameobjects
-	Checksum: 0xBE4E1343
-	Offset: 0x9240
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function set_2d_icon(relativeteam, shader) {
   self.compassicons[relativeteam] = shader;
   update_compass_icons();
 }
 
-/*
-	Name: set_3d_icon
-	Namespace: gameobjects
-	Checksum: 0xD4A1135C
-	Offset: 0x9288
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function set_3d_icon(relativeteam, shader) {
   if(!isdefined(shader)) {
     self.worldicons_disabled[relativeteam] = 1;
@@ -3109,15 +2206,6 @@ function set_3d_icon(relativeteam, shader) {
   update_world_icons();
 }
 
-/*
-	Name: set_3d_icon_color
-	Namespace: gameobjects
-	Checksum: 0x1F70A2DF
-	Offset: 0x9300
-	Size: 0x12E
-	Parameters: 3
-	Flags: Linked
-*/
 function set_3d_icon_color(relativeteam, v_color, alpha) {
   updateteams = get_update_teams(relativeteam);
   for (index = 0; index < updateteams.size; index++) {
@@ -3137,15 +2225,6 @@ function set_3d_icon_color(relativeteam, v_color, alpha) {
   }
 }
 
-/*
-	Name: set_objective_color
-	Namespace: gameobjects
-	Checksum: 0xC21D0E62
-	Offset: 0x9438
-	Size: 0x12E
-	Parameters: 3
-	Flags: None
-*/
 function set_objective_color(relativeteam, v_color, alpha = 1) {
   if(self.newstyle) {
     objective_setcolor(self.objectiveid, v_color[0], v_color[1], v_color[2], alpha);
@@ -3160,15 +2239,6 @@ function set_objective_color(relativeteam, v_color, alpha = 1) {
   }
 }
 
-/*
-	Name: set_objective_entity
-	Namespace: gameobjects
-	Checksum: 0x475AEFBC
-	Offset: 0x9570
-	Size: 0x102
-	Parameters: 1
-	Flags: None
-*/
 function set_objective_entity(entity) {
   if(self.newstyle) {
     if(isdefined(self.objectiveid)) {
@@ -3182,15 +2252,6 @@ function set_objective_entity(entity) {
   }
 }
 
-/*
-	Name: get_objective_ids
-	Namespace: gameobjects
-	Checksum: 0x7297B4BE
-	Offset: 0x9680
-	Size: 0x1D0
-	Parameters: 1
-	Flags: None
-*/
 function get_objective_ids(str_team) {
   a_objective_ids = [];
   if(isdefined(self.newstyle) && self.newstyle) {
@@ -3222,18 +2283,9 @@ function get_objective_ids(str_team) {
   return a_objective_ids;
 }
 
-/*
-	Name: hide_icon_distance_and_los
-	Namespace: gameobjects
-	Checksum: 0xE4955DAA
-	Offset: 0x9858
-	Size: 0x1F8
-	Parameters: 4
-	Flags: None
-*/
 function hide_icon_distance_and_los(v_color, hide_distance, los_check, ignore_ent) {
-  self endon(# "disabled");
-  self endon(# "destroyed_complete");
+  self endon("disabled");
+  self endon("destroyed_complete");
   while (true) {
     hide = 0;
     if(isdefined(self.worldicons_disabled["friendly"]) && self.worldicons_disabled["friendly"] == 1) {
@@ -3266,22 +2318,11 @@ function hide_icon_distance_and_los(v_color, hide_distance, los_check, ignore_en
   }
 }
 
-/*
-	Name: gameobject_is_player_looking_at
-	Namespace: gameobjects
-	Checksum: 0xD8E0AEBF
-	Offset: 0x9A58
-	Size: 0x240
-	Parameters: 5
-	Flags: Linked
-*/
 function gameobject_is_player_looking_at(origin, dot, do_trace, ignore_ent, ignore_trace_distance) {
-  /#
   assert(isplayer(self), "");
-  # /
-    if(!isdefined(dot)) {
-      dot = 0.7;
-    }
+  if(!isdefined(dot)) {
+    dot = 0.7;
+  }
   if(!isdefined(do_trace)) {
     do_trace = 1;
   }
@@ -3310,15 +2351,6 @@ function gameobject_is_player_looking_at(origin, dot, do_trace, ignore_ent, igno
   return false;
 }
 
-/*
-	Name: hide_icons
-	Namespace: gameobjects
-	Checksum: 0x3F3D75F1
-	Offset: 0x9CA0
-	Size: 0x18C
-	Parameters: 1
-	Flags: None
-*/
 function hide_icons(team) {
   if(self.visibleteam == "any" || self.visibleteam == "friendly") {
     hide_friendly = 1;
@@ -3344,15 +2376,6 @@ function hide_icons(team) {
   self set_3d_icon(team, undefined);
 }
 
-/*
-	Name: show_icons
-	Namespace: gameobjects
-	Checksum: 0x610AA78E
-	Offset: 0x9E38
-	Size: 0x7C
-	Parameters: 1
-	Flags: None
-*/
 function show_icons(team) {
   if(isdefined(self.hidden_compassicon[team])) {
     self set_2d_icon(team, self.hidden_compassicon[team]);
@@ -3362,83 +2385,27 @@ function show_icons(team) {
   }
 }
 
-/*
-	Name: set_3d_use_icon
-	Namespace: gameobjects
-	Checksum: 0x6D0DF958
-	Offset: 0x9EC0
-	Size: 0x26
-	Parameters: 2
-	Flags: None
-*/
 function set_3d_use_icon(relativeteam, shader) {
   self.worlduseicons[relativeteam] = shader;
 }
 
-/*
-	Name: set_3d_is_waypoint
-	Namespace: gameobjects
-	Checksum: 0xAF5AF8C5
-	Offset: 0x9EF0
-	Size: 0x26
-	Parameters: 2
-	Flags: None
-*/
 function set_3d_is_waypoint(relativeteam, waypoint) {
   self.worldiswaypoint[relativeteam] = waypoint;
 }
 
-/*
-	Name: set_carry_icon
-	Namespace: gameobjects
-	Checksum: 0xA8B7E38F
-	Offset: 0x9F20
-	Size: 0x48
-	Parameters: 1
-	Flags: None
-*/
 function set_carry_icon(shader) {
-  /#
   assert(self.type == "", "");
-  # /
-    self.carryicon = shader;
+  self.carryicon = shader;
 }
 
-/*
-	Name: set_visible_carrier_model
-	Namespace: gameobjects
-	Checksum: 0xDEE4DC23
-	Offset: 0x9F70
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function set_visible_carrier_model(visiblemodel) {
   self.visiblecarriermodel = visiblemodel;
 }
 
-/*
-	Name: get_visible_carrier_model
-	Namespace: gameobjects
-	Checksum: 0xB71CC207
-	Offset: 0x9F90
-	Size: 0xA
-	Parameters: 0
-	Flags: Linked
-*/
 function get_visible_carrier_model() {
   return self.visiblecarriermodel;
 }
 
-/*
-	Name: destroy_object
-	Namespace: gameobjects
-	Checksum: 0x50039FD8
-	Offset: 0x9FA8
-	Size: 0x18A
-	Parameters: 3
-	Flags: None
-*/
 function destroy_object(deletetrigger, forcehide = 1, b_connect_paths = 0) {
   self disable_object(forcehide);
   foreach(visual in self.visuals) {
@@ -3450,26 +2417,17 @@ function destroy_object(deletetrigger, forcehide = 1, b_connect_paths = 0) {
       visual delete();
     }
   }
-  self.trigger notify(# "destroyed");
+  self.trigger notify("destroyed");
   if(isdefined(deletetrigger) && deletetrigger) {
     self.trigger delete();
   } else {
     self.trigger triggerenable(1);
   }
-  self notify(# "destroyed_complete");
+  self notify("destroyed_complete");
 }
 
-/*
-	Name: disable_object
-	Namespace: gameobjects
-	Checksum: 0xA6B26050
-	Offset: 0xA140
-	Size: 0x144
-	Parameters: 1
-	Flags: Linked
-*/
 function disable_object(forcehide) {
-  self notify(# "disabled");
+  self notify("disabled");
   if(self.type == "carryObject" || self.type == "packObject" || (isdefined(forcehide) && forcehide)) {
     if(isdefined(self.carrier)) {
       self.carrier take_object(self);
@@ -3487,15 +2445,6 @@ function disable_object(forcehide) {
   }
 }
 
-/*
-	Name: enable_object
-	Namespace: gameobjects
-	Checksum: 0x97D77F34
-	Offset: 0xA290
-	Size: 0xFC
-	Parameters: 1
-	Flags: None
-*/
 function enable_object(forceshow) {
   if(self.type == "carryObject" || self.type == "packObject" || (isdefined(forceshow) && forceshow)) {
     for (index = 0; index < self.visuals.size; index++) {
@@ -3509,15 +2458,6 @@ function enable_object(forceshow) {
   }
 }
 
-/*
-	Name: get_relative_team
-	Namespace: gameobjects
-	Checksum: 0xC284422
-	Offset: 0xA398
-	Size: 0x7A
-	Parameters: 1
-	Flags: Linked
-*/
 function get_relative_team(team) {
   if(self.ownerteam == "any") {
     return "friendly";
@@ -3531,15 +2471,6 @@ function get_relative_team(team) {
   return "neutral";
 }
 
-/*
-	Name: is_friendly_team
-	Namespace: gameobjects
-	Checksum: 0x74FDE2AF
-	Offset: 0xA420
-	Size: 0x50
-	Parameters: 1
-	Flags: Linked
-*/
 function is_friendly_team(team) {
   if(!level.teambased) {
     return true;
@@ -3553,15 +2484,6 @@ function is_friendly_team(team) {
   return false;
 }
 
-/*
-	Name: can_interact_with
-	Namespace: gameobjects
-	Checksum: 0x64A9A256
-	Offset: 0xA478
-	Size: 0x1A6
-	Parameters: 1
-	Flags: Linked
-*/
 function can_interact_with(player) {
   if(player.using_map_vehicle === 1) {
     if(!isdefined(self.allow_map_vehicles) || self.allow_map_vehicles == 0) {
@@ -3611,23 +2533,12 @@ function can_interact_with(player) {
       }
     }
     default: {
-      /#
       assert(0, "");
-      # /
-        return false;
+      return false;
     }
   }
 }
 
-/*
-	Name: is_team
-	Namespace: gameobjects
-	Checksum: 0x6946FABD
-	Offset: 0xA628
-	Size: 0x5A
-	Parameters: 1
-	Flags: None
-*/
 function is_team(team) {
   switch (team) {
     case "any":
@@ -3643,15 +2554,6 @@ function is_team(team) {
   return false;
 }
 
-/*
-	Name: is_relative_team
-	Namespace: gameobjects
-	Checksum: 0xAA3FCA20
-	Offset: 0xA690
-	Size: 0x56
-	Parameters: 1
-	Flags: None
-*/
 function is_relative_team(relativeteam) {
   switch (relativeteam) {
     case "any":
@@ -3668,15 +2570,6 @@ function is_relative_team(relativeteam) {
   }
 }
 
-/*
-	Name: get_enemy_team
-	Namespace: gameobjects
-	Checksum: 0x3CE61800
-	Offset: 0xA6F0
-	Size: 0x5A
-	Parameters: 1
-	Flags: Linked
-*/
 function get_enemy_team(team) {
   switch (team) {
     case "neutral": {
@@ -3694,15 +2587,6 @@ function get_enemy_team(team) {
   }
 }
 
-/*
-	Name: get_next_obj_id
-	Namespace: gameobjects
-	Checksum: 0xEFC1C87C
-	Offset: 0xA758
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function get_next_obj_id() {
   nextid = 0;
   if(level.releasedobjectives.size > 0) {
@@ -3712,54 +2596,30 @@ function get_next_obj_id() {
     nextid = level.numgametypereservedobjectives;
     level.numgametypereservedobjectives++;
   }
-  /#
   if(nextid >= 128) {
     println("");
   }
-  # /
-    if(nextid > 127) {
-      nextid = 127;
-    }
+  if(nextid > 127) {
+    nextid = 127;
+  }
   return nextid;
 }
 
-/*
-	Name: release_obj_id
-	Namespace: gameobjects
-	Checksum: 0xDA1D62C
-	Offset: 0xA818
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function release_obj_id(objid) {
-  /#
   assert(objid < level.numgametypereservedobjectives);
-  # /
-    for (i = 0; i < level.releasedobjectives.size; i++) {
-      if(objid == level.releasedobjectives[i] && objid == 127) {
-        return;
-      }
-      /# /
-      #
-      assert(objid != level.releasedobjectives[i]);
-      # /
-        # /
+  for (i = 0; i < level.releasedobjectives.size; i++) {
+    if(objid == level.releasedobjectives[i] && objid == 127) {
+      return;
     }
+    /# /
+    #
+    assert(objid != level.releasedobjectives[i]);
+  }
   level.releasedobjectives[level.releasedobjectives.size] = objid;
   objective_setcolor(objid, 1, 1, 1, 1);
   objective_state(objid, "empty");
 }
 
-/*
-	Name: release_all_objective_ids
-	Namespace: gameobjects
-	Checksum: 0x99534E1F
-	Offset: 0xA938
-	Size: 0xAC
-	Parameters: 0
-	Flags: None
-*/
 function release_all_objective_ids() {
   if(isdefined(self.objid)) {
     a_keys = getarraykeys(self.objid);
@@ -3772,15 +2632,6 @@ function release_all_objective_ids() {
   }
 }
 
-/*
-	Name: get_label
-	Namespace: gameobjects
-	Checksum: 0x18E84BA2
-	Offset: 0xA9F0
-	Size: 0x66
-	Parameters: 0
-	Flags: None
-*/
 function get_label() {
   label = self.trigger.script_label;
   if(!isdefined(label)) {
@@ -3793,75 +2644,28 @@ function get_label() {
   return label;
 }
 
-/*
-	Name: must_maintain_claim
-	Namespace: gameobjects
-	Checksum: 0x8A97C263
-	Offset: 0xAA60
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function must_maintain_claim(enabled) {
   self.mustmaintainclaim = enabled;
 }
 
-/*
-	Name: can_contest_claim
-	Namespace: gameobjects
-	Checksum: 0x5377AF22
-	Offset: 0xAA80
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function can_contest_claim(enabled) {
   self.cancontestclaim = enabled;
 }
 
-/*
-	Name: set_flags
-	Namespace: gameobjects
-	Checksum: 0x4E6917B7
-	Offset: 0xAAA0
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function set_flags(flags) {
   objective_setgamemodeflags(self.objectiveid, flags);
 }
 
-/*
-	Name: get_flags
-	Namespace: gameobjects
-	Checksum: 0x9E6D636C
-	Offset: 0xAAD8
-	Size: 0x22
-	Parameters: 1
-	Flags: None
-*/
 function get_flags(flags) {
   return objective_getgamemodeflags(self.objectiveid);
 }
 
-/*
-	Name: create_pack_object
-	Namespace: gameobjects
-	Checksum: 0x37C1B5CE
-	Offset: 0xAB08
-	Size: 0x998
-	Parameters: 5
-	Flags: None
-*/
 function create_pack_object(ownerteam, trigger, visuals, offset, objectivename) {
   if(!isdefined(level.max_packobjects)) {
     level.max_packobjects = 4;
   }
-  /#
   assert(level.max_packobjects < 5, "");
-  # /
-    packobject = spawnstruct();
+  packobject = spawnstruct();
   packobject.type = "packObject";
   packobject.curorigin = trigger.origin;
   packobject.entnum = trigger getentitynumber();
@@ -3967,15 +2771,6 @@ function create_pack_object(ownerteam, trigger, visuals, offset, objectivename) 
   return packobject;
 }
 
-/*
-	Name: give_pack_object
-	Namespace: gameobjects
-	Checksum: 0x8BF9A107
-	Offset: 0xB4A8
-	Size: 0x1E6
-	Parameters: 1
-	Flags: Linked
-*/
 function give_pack_object(object) {
   self.packobject[self.packobject.size] = object;
   self thread track_carrier(object);
@@ -4002,15 +2797,6 @@ function give_pack_object(object) {
   }
 }
 
-/*
-	Name: get_packicon_offset
-	Namespace: gameobjects
-	Checksum: 0xFE5E94A4
-	Offset: 0xB698
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function get_packicon_offset(index = 0) {
   if(self issplitscreen()) {
     size = 25;
@@ -4023,15 +2809,6 @@ function get_packicon_offset(index = 0) {
   return int;
 }
 
-/*
-	Name: adjust_remaining_packicons
-	Namespace: gameobjects
-	Checksum: 0x77B319A0
-	Offset: 0xB738
-	Size: 0x7E
-	Parameters: 0
-	Flags: Linked
-*/
 function adjust_remaining_packicons() {
   if(!isdefined(self.packicon)) {
     return;
@@ -4043,18 +2820,7 @@ function adjust_remaining_packicons() {
   }
 }
 
-/*
-	Name: set_pack_icon
-	Namespace: gameobjects
-	Checksum: 0xC66754AA
-	Offset: 0xB7C0
-	Size: 0x48
-	Parameters: 1
-	Flags: None
-*/
 function set_pack_icon(shader) {
-  /#
   assert(self.type == "", "");
-  # /
-    self.packicon = shader;
+  self.packicon = shader;
 }

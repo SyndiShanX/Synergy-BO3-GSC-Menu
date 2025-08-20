@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/****************************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\abilities\gadgets\_gadget_security_breach.csc
+****************************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\abilities\_ability_player;
 #using scripts\shared\abilities\_ability_power;
@@ -8,29 +12,10 @@
 #using scripts\shared\filter_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace _gadget_security_breach;
 
-/*
-	Name: __init__sytem__
-	Namespace: _gadget_security_breach
-	Checksum: 0xFB747C75
-	Offset: 0x1F8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("gadget_security_breach", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _gadget_security_breach
-	Checksum: 0x99EC1590
-	Offset: 0x238
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\gametypes\_dev.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\bots\_bot;
@@ -12,50 +16,17 @@
 #using scripts\zm\gametypes\_globallogic;
 #using scripts\zm\gametypes\_globallogic_score;
 #using scripts\zm\gametypes\_globallogic_utils;
-
 #namespace dev;
 
-/*
-	Name: __init__sytem__
-	Namespace: dev
-	Checksum: 0xAC029F3C
-	Offset: 0x228
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
-  /#
   system::register("", & __init__, undefined, "");
-  # /
 }
 
-/*
-	Name: __init__
-	Namespace: dev
-	Checksum: 0xB8BEAF42
-	Offset: 0x270
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
-  /#
   callback::on_start_gametype( & init);
-  # /
 }
 
-/*
-	Name: init
-	Namespace: dev
-	Checksum: 0x8DA1E1DE
-	Offset: 0x2A8
-	Size: 0x400
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
-  /#
   if(getdvarstring("") == "") {
     setdvar("", "");
   }
@@ -104,50 +75,16 @@ function init() {
     updatedevsettings();
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: on_player_connect
-	Namespace: dev
-	Checksum: 0x278095A5
-	Offset: 0x6B0
-	Size: 0x8
-	Parameters: 0
-	Flags: Linked
-*/
-function on_player_connect() {
-  /#
-  # /
-}
+function on_player_connect() {}
 
-/*
-	Name: warpalltohost
-	Namespace: dev
-	Checksum: 0x73878099
-	Offset: 0x6C0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function warpalltohost(team) {
-  /#
   host = util::gethostplayer();
   warpalltoplayer(team, host.name);
-  # /
 }
 
-/*
-	Name: warpalltoplayer
-	Namespace: dev
-	Checksum: 0xAC4B34D4
-	Offset: 0x720
-	Size: 0x374
-	Parameters: 2
-	Flags: Linked
-*/
 function warpalltoplayer(team, player) {
-  /#
   players = getplayers();
   target = undefined;
   for (i = 0; i < players.size; i++) {
@@ -191,20 +128,9 @@ function warpalltoplayer(team, player) {
     }
   }
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: updatedevsettingszm
-	Namespace: dev
-	Checksum: 0xC3AEE491
-	Offset: 0xAA0
-	Size: 0x454
-	Parameters: 0
-	Flags: None
-*/
 function updatedevsettingszm() {
-  /#
   if(level.players.size > 0) {
     if(getdvarstring("") == "") {
       if(!isdefined(level.streamdumpteamindex)) {
@@ -257,20 +183,9 @@ function updatedevsettingszm() {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: updatedevsettings
-	Namespace: dev
-	Checksum: 0xF469B382
-	Offset: 0xF00
-	Size: 0x1DC6
-	Parameters: 0
-	Flags: Linked
-*/
 function updatedevsettings() {
-  /#
   show_spawns = getdvarint("");
   show_start_spawns = getdvarint("");
   player = util::gethostplayer();
@@ -416,7 +331,7 @@ function updatedevsettings() {
                             player.devgui_spawn_active = 1;
                             player thread devgui_spawn_think();
                           } else {
-                            player notify(# "devgui_spawn_think");
+                            player notify("devgui_spawn_think");
                             player.devgui_spawn_active = 0;
                             player setactionslot(3, "");
                           }
@@ -439,7 +354,7 @@ function updatedevsettings() {
                                 players[i] thread devgui_unlimited_ammo();
                                 continue;
                               }
-                              players[i] notify(# "devgui_unlimited_ammo");
+                              players[i] notify("devgui_unlimited_ammo");
                             }
                             setdvar("", "");
                           } else {
@@ -454,7 +369,7 @@ function updatedevsettings() {
                                 level thread devgui_unlimited_momentum();
                               } else {
                                 iprintln("");
-                                level notify(# "devgui_unlimited_momentum");
+                                level notify("devgui_unlimited_momentum");
                               }
                               setdvar("", "");
                             } else {
@@ -514,7 +429,7 @@ function updatedevsettings() {
                                               level showonespawnpoint(level.radios[i], color, "", 32, "");
                                             }
                                           } else {
-                                            level notify(# "hide_hq_points");
+                                            level notify("hide_hq_points");
                                           }
                                           level.devgui_show_hq = !level.devgui_show_hq;
                                         }
@@ -651,23 +566,12 @@ function updatedevsettings() {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: devgui_spawn_think
-	Namespace: dev
-	Checksum: 0x7FEF9BC0
-	Offset: 0x2CD0
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_spawn_think() {
-  /#
-  self notify(# "devgui_spawn_think");
-  self endon(# "devgui_spawn_think");
-  self endon(# "disconnect");
+  self notify("devgui_spawn_think");
+  self endon("devgui_spawn_think");
+  self endon("disconnect");
   dpad_left = 0;
   dpad_right = 0;
   for (;;) {
@@ -687,23 +591,12 @@ function devgui_spawn_think() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: devgui_unlimited_ammo
-	Namespace: dev
-	Checksum: 0xB80672C5
-	Offset: 0x2E68
-	Size: 0x14A
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_unlimited_ammo() {
-  /#
-  self notify(# "devgui_unlimited_ammo");
-  self endon(# "devgui_unlimited_ammo");
-  self endon(# "disconnect");
+  self notify("devgui_unlimited_ammo");
+  self endon("devgui_unlimited_ammo");
+  self endon("disconnect");
   for (;;) {
     wait(1);
     primary_weapons = self getweaponslistprimaries();
@@ -718,22 +611,11 @@ function devgui_unlimited_ammo() {
       self givemaxammo(weapon);
     }
   }
-  # /
 }
 
-/*
-	Name: devgui_unlimited_momentum
-	Namespace: dev
-	Checksum: 0xC615B559
-	Offset: 0x2FC0
-	Size: 0x11E
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_unlimited_momentum() {
-  /#
-  level notify(# "devgui_unlimited_momentum");
-  level endon(# "devgui_unlimited_momentum");
+  level notify("devgui_unlimited_momentum");
+  level endon("devgui_unlimited_momentum");
   for (;;) {
     wait(1);
     players = getplayers();
@@ -750,20 +632,9 @@ function devgui_unlimited_momentum() {
       globallogic_score::_setplayermomentum(player, 5000);
     }
   }
-  # /
 }
 
-/*
-	Name: devgui_increase_momentum
-	Namespace: dev
-	Checksum: 0x5DE7DF38
-	Offset: 0x30E8
-	Size: 0x112
-	Parameters: 1
-	Flags: Linked
-*/
 function devgui_increase_momentum(score) {
-  /#
   players = getplayers();
   foreach(player in players) {
     if(!isdefined(player)) {
@@ -777,23 +648,12 @@ function devgui_increase_momentum(score) {
     }
     player globallogic_score::giveplayermomentumnotification(score, & "", "", 0);
   }
-  # /
 }
 
-/*
-	Name: devgui_health_debug
-	Namespace: dev
-	Checksum: 0xF72FFC35
-	Offset: 0x3208
-	Size: 0x318
-	Parameters: 0
-	Flags: None
-*/
 function devgui_health_debug() {
-  /#
-  self notify(# "devgui_health_debug");
-  self endon(# "devgui_health_debug");
-  self endon(# "disconnect");
+  self notify("devgui_health_debug");
+  self endon("devgui_health_debug");
+  self endon("disconnect");
   x = 80;
   y = 40;
   self.debug_health_bar = newclienthudelem(self);
@@ -826,44 +686,20 @@ function devgui_health_debug() {
     self.debug_health_bar setshader("", width, 8);
     self.debug_health_text setvalue(self.health);
   }
-  # /
 }
 
-/*
-	Name: giveextraperks
-	Namespace: dev
-	Checksum: 0x676A75FE
-	Offset: 0x3528
-	Size: 0xC6
-	Parameters: 0
-	Flags: None
-*/
 function giveextraperks() {
-  /#
   if(!isdefined(self.extraperks)) {
     return;
   }
   perks = getarraykeys(self.extraperks);
   for (i = 0; i < perks.size; i++) {
-    /#
     println(((("" + self.name) + "") + perks[i]) + "");
-    # /
-      self setperk(perks[i]);
+    self setperk(perks[i]);
   }
-  # /
 }
 
-/*
-	Name: xkillsy
-	Namespace: dev
-	Checksum: 0x6CC04F7A
-	Offset: 0x35F8
-	Size: 0x144
-	Parameters: 2
-	Flags: Linked
-*/
 function xkillsy(attackername, victimname) {
-  /#
   attacker = undefined;
   victim = undefined;
   for (index = 0; index < level.players.size; index++) {
@@ -879,71 +715,25 @@ function xkillsy(attackername, victimname) {
     return;
   }
   victim thread[[level.callbackplayerdamage]](attacker, attacker, 1000, 0, "", level.weaponnone, (0, 0, 0), (0, 0, 0), "", 0, 0);
-  # /
 }
 
-/*
-	Name: testscriptruntimeerrorassert
-	Namespace: dev
-	Checksum: 0xB5A5361C
-	Offset: 0x3748
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function testscriptruntimeerrorassert() {
-  /#
   wait(1);
-  /#
   assert(0);
-  # /
-    # /
 }
 
-/*
-	Name: testscriptruntimeerror2
-	Namespace: dev
-	Checksum: 0x6C7AA9B3
-	Offset: 0x3778
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function testscriptruntimeerror2() {
-  /#
   myundefined = "";
   if(myundefined == 1) {
     println("");
   }
-  # /
 }
 
-/*
-	Name: testscriptruntimeerror1
-	Namespace: dev
-	Checksum: 0xAF449B5
-	Offset: 0x37C8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function testscriptruntimeerror1() {
-  /#
   testscriptruntimeerror2();
-  # /
 }
 
-/*
-	Name: testscriptruntimeerror
-	Namespace: dev
-	Checksum: 0x1DAB855B
-	Offset: 0x37F0
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function testscriptruntimeerror() {
-  /#
   wait(5);
   for (;;) {
     if(getdvarstring("") != "") {
@@ -959,20 +749,9 @@ function testscriptruntimeerror() {
     testscriptruntimeerror1();
   }
   thread testscriptruntimeerror();
-  # /
 }
 
-/*
-	Name: testdvars
-	Namespace: dev
-	Checksum: 0xD2497C9A
-	Offset: 0x38C8
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function testdvars() {
-  /#
   wait(5);
   for (;;) {
     if(getdvarstring("") != "") {
@@ -986,20 +765,9 @@ function testdvars() {
   setdvar(dvarname, dvarvalue);
   setdvar("", "");
   thread testdvars();
-  # /
 }
 
-/*
-	Name: showonespawnpoint
-	Namespace: dev
-	Checksum: 0xF9836ABD
-	Offset: 0x39C8
-	Size: 0x58C
-	Parameters: 5
-	Flags: Linked
-*/
 function showonespawnpoint(spawn_point, color, notification, height, print) {
-  /#
   if(!isdefined(height) || height <= 0) {
     height = util::get_player_height();
   }
@@ -1045,20 +813,9 @@ function showonespawnpoint(spawn_point, color, notification, height, print) {
   thread lineuntilnotified(a, b, color, 0, notification);
   thread lineuntilnotified(a, c, color, 0, notification);
   thread print3duntilnotified(spawn_point.origin + (0, 0, height), print, color, 1, 1, notification);
-  # /
 }
 
-/*
-	Name: showspawnpoints
-	Namespace: dev
-	Checksum: 0xA1F683B7
-	Offset: 0x3F60
-	Size: 0xE6
-	Parameters: 0
-	Flags: Linked
-*/
 function showspawnpoints() {
-  /#
   if(isdefined(level.spawnpoints)) {
     color = (1, 1, 1);
     for (spawn_point_index = 0; spawn_point_index < level.spawnpoints.size; spawn_point_index++) {
@@ -1069,35 +826,13 @@ function showspawnpoints() {
     color = (0, 1, 0);
     showonespawnpoint(level.dem_spawns[i], color, "");
   }
-  # /
 }
 
-/*
-	Name: hidespawnpoints
-	Namespace: dev
-	Checksum: 0xA335972A
-	Offset: 0x4050
-	Size: 0x16
-	Parameters: 0
-	Flags: Linked
-*/
 function hidespawnpoints() {
-  /#
-  level notify(# "hide_spawnpoints");
-  # /
+  level notify("hide_spawnpoints");
 }
 
-/*
-	Name: showstartspawnpoints
-	Namespace: dev
-	Checksum: 0x565BEBB1
-	Offset: 0x4070
-	Size: 0x220
-	Parameters: 0
-	Flags: Linked
-*/
 function showstartspawnpoints() {
-  /#
   if(!level.teambased) {
     return;
   }
@@ -1119,91 +854,36 @@ function showstartspawnpoints() {
       showonespawnpoint(spawnpoint, color, "");
     }
   }
-  # /
 }
 
-/*
-	Name: hidestartspawnpoints
-	Namespace: dev
-	Checksum: 0x3320C390
-	Offset: 0x42A0
-	Size: 0x16
-	Parameters: 0
-	Flags: Linked
-*/
 function hidestartspawnpoints() {
-  /#
-  level notify(# "hide_startspawnpoints");
-  # /
+  level notify("hide_startspawnpoints");
 }
 
-/*
-	Name: print3duntilnotified
-	Namespace: dev
-	Checksum: 0xBAF713B1
-	Offset: 0x42C0
-	Size: 0x70
-	Parameters: 6
-	Flags: Linked
-*/
 function print3duntilnotified(origin, text, color, alpha, scale, notification) {
-  /#
   level endon(notification);
   for (;;) {
     print3d(origin, text, color, alpha, scale);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: lineuntilnotified
-	Namespace: dev
-	Checksum: 0x5E25762E
-	Offset: 0x4338
-	Size: 0x68
-	Parameters: 5
-	Flags: Linked
-*/
 function lineuntilnotified(start, end, color, depthtest, notification) {
-  /#
   level endon(notification);
   for (;;) {
     line(start, end, color, depthtest);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: dvar_turned_on
-	Namespace: dev
-	Checksum: 0x7C627ADA
-	Offset: 0x43A8
-	Size: 0x28
-	Parameters: 1
-	Flags: None
-*/
 function dvar_turned_on(val) {
-  /#
   if(val <= 0) {
     return false;
   }
   return true;
-  # /
 }
 
-/*
-	Name: new_hud
-	Namespace: dev
-	Checksum: 0x966535A
-	Offset: 0x43E0
-	Size: 0xC0
-	Parameters: 5
-	Flags: None
-*/
 function new_hud(hud_name, msg, x, y, scale) {
-  /#
   if(!isdefined(level.hud_array)) {
     level.hud_array = [];
   }
@@ -1213,18 +893,8 @@ function new_hud(hud_name, msg, x, y, scale) {
   hud = set_hudelem(msg, x, y, scale);
   level.hud_array[hud_name][level.hud_array[hud_name].size] = hud;
   return hud;
-  # /
 }
 
-/*
-	Name: set_hudelem
-	Namespace: dev
-	Checksum: 0x16DDC577
-	Offset: 0x44B0
-	Size: 0x1A0
-	Parameters: 7
-	Flags: Linked
-*/
 function set_hudelem(text, x, y, scale, alpha, sort, debug_hudelem) {
   /# /
   #
@@ -1253,37 +923,14 @@ function set_hudelem(text, x, y, scale, alpha, sort, debug_hudelem) {
     hud settext(text);
   }
   return hud;
-  # /
-    # /
 }
 
-/*
-	Name: getattachmentchangemodifierbutton
-	Namespace: dev
-	Checksum: 0xA797B16D
-	Offset: 0x4660
-	Size: 0xE
-	Parameters: 0
-	Flags: Linked
-*/
 function getattachmentchangemodifierbutton() {
-  /#
   return "";
-  # /
 }
 
-/*
-	Name: watchattachmentchange
-	Namespace: dev
-	Checksum: 0x48EF0A43
-	Offset: 0x4678
-	Size: 0x3AC
-	Parameters: 0
-	Flags: None
-*/
 function watchattachmentchange() {
-  /#
-  self endon(# "disconnect");
+  self endon("disconnect");
   clientnum = self getentitynumber();
   if(clientnum != 0) {
     return;
@@ -1339,28 +986,17 @@ function watchattachmentchange() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: print_weapon_name
-	Namespace: dev
-	Checksum: 0xFC0A9F7F
-	Offset: 0x4A30
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function print_weapon_name() {
-  /#
-  self notify(# "print_weapon_name");
-  self endon(# "print_weapon_name");
+  self notify("print_weapon_name");
+  self endon("print_weapon_name");
   wait(0.2);
   if(self isswitchingweapons()) {
-    self waittill(# "weapon_change_complete", weapon);
+    self waittill("weapon_change_complete", weapon);
     fail_safe = 0;
     while (weapon == level.weaponnone) {
-      self waittill(# "weapon_change_complete", weapon);
+      self waittill("weapon_change_complete", weapon);
       wait(0.05);
       fail_safe++;
       if(fail_safe > 120) {
@@ -1374,20 +1010,9 @@ function print_weapon_name() {
   if(printweaponname) {
     iprintlnbold(weapon.name);
   }
-  # /
 }
 
-/*
-	Name: set_equipment_list
-	Namespace: dev
-	Checksum: 0x99911C09
-	Offset: 0x4B58
-	Size: 0x18A
-	Parameters: 0
-	Flags: Linked
-*/
 function set_equipment_list() {
-  /#
   if(isdefined(level.dev_equipment)) {
     return;
   }
@@ -1401,20 +1026,9 @@ function set_equipment_list() {
   level.dev_equipment[7] = getweapon("");
   level.dev_equipment[8] = getweapon("");
   level.dev_equipment[9] = getweapon("");
-  # /
 }
 
-/*
-	Name: set_grenade_list
-	Namespace: dev
-	Checksum: 0xE61B4E5D
-	Offset: 0x4CF0
-	Size: 0x1B2
-	Parameters: 0
-	Flags: Linked
-*/
 function set_grenade_list() {
-  /#
   if(isdefined(level.dev_grenade)) {
     return;
   }
@@ -1429,40 +1043,18 @@ function set_grenade_list() {
   level.dev_grenade[8] = getweapon("");
   level.dev_grenade[9] = getweapon("");
   level.dev_grenade[10] = getweapon("");
-  # /
 }
 
-/*
-	Name: take_all_grenades_and_equipment
-	Namespace: dev
-	Checksum: 0x52574342
-	Offset: 0x4EB0
-	Size: 0xB6
-	Parameters: 1
-	Flags: Linked
-*/
 function take_all_grenades_and_equipment(player) {
-  /#
   for (i = 0; i < level.dev_equipment.size; i++) {
     player takeweapon(level.dev_equipment[i + 1]);
   }
   for (i = 0; i < level.dev_grenade.size; i++) {
     player takeweapon(level.dev_grenade[i + 1]);
   }
-  # /
 }
 
-/*
-	Name: equipment_dev_gui
-	Namespace: dev
-	Checksum: 0xDE08C1BB
-	Offset: 0x4F70
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function equipment_dev_gui() {
-  /#
   set_equipment_list();
   set_grenade_list();
   setdvar("", "");
@@ -1477,20 +1069,9 @@ function equipment_dev_gui() {
       setdvar("", "");
     }
   }
-  # /
 }
 
-/*
-	Name: grenade_dev_gui
-	Namespace: dev
-	Checksum: 0x1A1DB87A
-	Offset: 0x50A0
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function grenade_dev_gui() {
-  /#
   set_equipment_list();
   set_grenade_list();
   setdvar("", "");
@@ -1505,20 +1086,9 @@ function grenade_dev_gui() {
       setdvar("", "");
     }
   }
-  # /
 }
 
-/*
-	Name: devstraferunpathdebugdraw
-	Namespace: dev
-	Checksum: 0xA0FEAB5D
-	Offset: 0x51D0
-	Size: 0x49A
-	Parameters: 0
-	Flags: Linked
-*/
 function devstraferunpathdebugdraw() {
-  /#
   white = (1, 1, 1);
   red = (1, 0, 0);
   green = (0, 1, 0);
@@ -1598,20 +1168,9 @@ function devstraferunpathdebugdraw() {
       wait(1);
     }
   }
-  # /
 }
 
-/*
-	Name: devhelipathdebugdraw
-	Namespace: dev
-	Checksum: 0x49642BBD
-	Offset: 0x5678
-	Size: 0x3C0
-	Parameters: 0
-	Flags: Linked
-*/
 function devhelipathdebugdraw() {
-  /#
   white = (1, 1, 1);
   red = (1, 0, 0);
   green = (0, 1, 0);
@@ -1682,115 +1241,49 @@ function devhelipathdebugdraw() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: draworiginlines
-	Namespace: dev
-	Checksum: 0x2F4EF59E
-	Offset: 0x5A40
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function draworiginlines() {
-  /#
   red = (1, 0, 0);
   green = (0, 1, 0);
   blue = (0, 0, 1);
   line(self.origin, self.origin + (anglestoforward(self.angles) * 10), red);
   line(self.origin, self.origin + (anglestoright(self.angles) * 10), green);
   line(self.origin, self.origin + (anglestoup(self.angles) * 10), blue);
-  # /
 }
 
-/*
-	Name: drawtargetnametext
-	Namespace: dev
-	Checksum: 0x2250E984
-	Offset: 0x5B60
-	Size: 0x74
-	Parameters: 4
-	Flags: Linked
-*/
 function drawtargetnametext(textcolor, textalpha, textscale, textoffset) {
-  /#
   if(!isdefined(textoffset)) {
     textoffset = (0, 0, 0);
   }
   print3d(self.origin + textoffset, self.targetname, textcolor, textalpha, textscale);
-  # /
 }
 
-/*
-	Name: drawnoteworthytext
-	Namespace: dev
-	Checksum: 0xE47BE90
-	Offset: 0x5BE0
-	Size: 0x74
-	Parameters: 4
-	Flags: Linked
-*/
 function drawnoteworthytext(textcolor, textalpha, textscale, textoffset) {
-  /#
   if(!isdefined(textoffset)) {
     textoffset = (0, 0, 0);
   }
   print3d(self.origin + textoffset, self.script_noteworthy, textcolor, textalpha, textscale);
-  # /
 }
 
-/*
-	Name: draworigintext
-	Namespace: dev
-	Checksum: 0x4E1414B4
-	Offset: 0x5C60
-	Size: 0xC4
-	Parameters: 4
-	Flags: Linked
-*/
 function draworigintext(textcolor, textalpha, textscale, textoffset) {
-  /#
   if(!isdefined(textoffset)) {
     textoffset = (0, 0, 0);
   }
   originstring = ((((("" + self.origin[0]) + "") + self.origin[1]) + "") + self.origin[2]) + "";
   print3d(self.origin + textoffset, originstring, textcolor, textalpha, textscale);
-  # /
 }
 
-/*
-	Name: drawspeedacceltext
-	Namespace: dev
-	Checksum: 0x6290D8AE
-	Offset: 0x5D30
-	Size: 0xDC
-	Parameters: 4
-	Flags: Linked
-*/
 function drawspeedacceltext(textcolor, textalpha, textscale, textoffset) {
-  /#
   if(isdefined(self.script_airspeed)) {
     print3d(self.origin + (0, 0, textoffset[2] * 2), "" + self.script_airspeed, textcolor, textalpha, textscale);
   }
   if(isdefined(self.script_accel)) {
     print3d(self.origin + (0, 0, textoffset[2] * 3), "" + self.script_accel, textcolor, textalpha, textscale);
   }
-  # /
 }
 
-/*
-	Name: drawpath
-	Namespace: dev
-	Checksum: 0x70C8ACFB
-	Offset: 0x5E18
-	Size: 0x154
-	Parameters: 7
-	Flags: Linked
-*/
 function drawpath(linecolor, textcolor, textalpha, textscale, textoffset, drawtime, endonmsg) {
-  /#
   level endon(endonmsg);
   ent = self;
   entfirsttarget = ent.targetname;
@@ -1805,20 +1298,9 @@ function drawpath(linecolor, textcolor, textalpha, textscale, textoffset, drawti
     ent = enttarget;
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: drawpathsegment
-	Namespace: dev
-	Checksum: 0x6013EAA1
-	Offset: 0x5F78
-	Size: 0x124
-	Parameters: 8
-	Flags: Linked
-*/
 function drawpathsegment(enttarget, linecolor, textcolor, textalpha, textscale, textoffset, drawtime, endonmsg) {
-  /#
   level endon(endonmsg);
   while (drawtime > 0) {
     if(isdefined(self.targetname) && self.targetname == "") {
@@ -1829,93 +1311,38 @@ function drawpathsegment(enttarget, linecolor, textcolor, textalpha, textscale, 
     drawtime = drawtime - 0.05;
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: get_lookat_origin
-	Namespace: dev
-	Checksum: 0x7B3EFDB4
-	Offset: 0x60A8
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function get_lookat_origin(player) {
-  /#
   angles = player getplayerangles();
   forward = anglestoforward(angles);
   dir = vectorscale(forward, 8000);
   eye = player geteye();
   trace = bullettrace(eye, eye + dir, 0, undefined);
   return trace[""];
-  # /
 }
 
-/*
-	Name: draw_pathnode
-	Namespace: dev
-	Checksum: 0x7DDCFFEB
-	Offset: 0x6178
-	Size: 0x74
-	Parameters: 2
-	Flags: Linked
-*/
 function draw_pathnode(node, color) {
-  /#
   if(!isdefined(color)) {
     color = (1, 0, 1);
   }
   box(node.origin, vectorscale((-1, -1, 0), 16), vectorscale((1, 1, 1), 16), 0, color, 1, 0, 1);
-  # /
 }
 
-/*
-	Name: draw_pathnode_think
-	Namespace: dev
-	Checksum: 0xDF9A0CFC
-	Offset: 0x61F8
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked
-*/
 function draw_pathnode_think(node, color) {
-  /#
-  level endon(# "draw_pathnode_stop");
+  level endon("draw_pathnode_stop");
   for (;;) {
     draw_pathnode(node, color);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: draw_pathnodes_stop
-	Namespace: dev
-	Checksum: 0x3BA9E3FC
-	Offset: 0x6248
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function draw_pathnodes_stop() {
-  /#
   wait(5);
-  level notify(# "draw_pathnode_stop");
-  # /
+  level notify("draw_pathnode_stop");
 }
 
-/*
-	Name: node_get
-	Namespace: dev
-	Checksum: 0xFF2042AF
-	Offset: 0x6270
-	Size: 0x120
-	Parameters: 1
-	Flags: Linked
-*/
 function node_get(player) {
-  /#
   for (;;) {
     wait(0.05);
     origin = get_lookat_origin(player);
@@ -1935,26 +1362,15 @@ function node_get(player) {
     }
     draw_pathnode(node, (0.85, 0.85, 0.1));
   }
-  # /
 }
 
-/*
-	Name: dev_get_node_pair
-	Namespace: dev
-	Checksum: 0x8619B1A7
-	Offset: 0x6398
-	Size: 0x1A6
-	Parameters: 0
-	Flags: None
-*/
 function dev_get_node_pair() {
-  /#
   player = util::gethostplayer();
   start = undefined;
   while (!isdefined(start)) {
     start = node_get(player);
     if(player buttonpressed("")) {
-      level notify(# "draw_pathnode_stop");
+      level notify("draw_pathnode_stop");
       return undefined;
     }
   }
@@ -1966,7 +1382,7 @@ function dev_get_node_pair() {
   while (!isdefined(end)) {
     end = node_get(player);
     if(player buttonpressed("")) {
-      level notify(# "draw_pathnode_stop");
+      level notify("draw_pathnode_stop");
       return undefined;
     }
   }
@@ -1976,38 +1392,16 @@ function dev_get_node_pair() {
   array[0] = start;
   array[1] = end;
   return array;
-  # /
 }
 
-/*
-	Name: draw_point
-	Namespace: dev
-	Checksum: 0x98E37D0A
-	Offset: 0x6548
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function draw_point(origin, color) {
-  /#
   if(!isdefined(color)) {
     color = (1, 0, 1);
   }
   sphere(origin, 16, color, 0.25, 0, 16, 1);
-  # /
 }
 
-/*
-	Name: point_get
-	Namespace: dev
-	Checksum: 0xA73E3740
-	Offset: 0x65B0
-	Size: 0xA0
-	Parameters: 1
-	Flags: Linked
-*/
 function point_get(player) {
-  /#
   for (;;) {
     wait(0.05);
     origin = get_lookat_origin(player);
@@ -2019,20 +1413,9 @@ function point_get(player) {
     }
     draw_point(origin, (1, 0, 1));
   }
-  # /
 }
 
-/*
-	Name: dev_get_point_pair
-	Namespace: dev
-	Checksum: 0x510A2EAE
-	Offset: 0x6658
-	Size: 0x11E
-	Parameters: 0
-	Flags: None
-*/
 function dev_get_point_pair() {
-  /#
   player = util::gethostplayer();
   start = undefined;
   points = [];
@@ -2055,5 +1438,4 @@ function dev_get_point_pair() {
   points[0] = start;
   points[1] = end;
   return points;
-  # /
 }

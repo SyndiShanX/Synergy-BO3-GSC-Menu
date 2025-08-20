@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_destructible.gsc
+*************************************************/
+
 #using scripts\cp\_achievements;
 #using scripts\cp\_bb;
 #using scripts\cp\_challenges;
@@ -10,33 +14,13 @@
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("mp_vehicles");
-
 #namespace destructible;
 
-/*
-	Name: __init__sytem__
-	Namespace: destructible
-	Checksum: 0xBAEF40EB
-	Offset: 0x4D0
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("destructible", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: destructible
-	Checksum: 0xB0790C96
-	Offset: 0x518
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "start_destructible_explosion", 1, 11, "int");
   level.destructible_callbacks = [];
@@ -57,15 +41,6 @@ function __init__() {
   init_explosions();
 }
 
-/*
-	Name: __main__
-	Namespace: destructible
-	Checksum: 0x9D891769
-	Offset: 0x698
-	Size: 0x13A
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   waittillframeend();
   a_destructibles = getentarray("destructible", "targetname");
@@ -79,15 +54,6 @@ function __main__() {
   }
 }
 
-/*
-	Name: init_explosions
-	Namespace: destructible
-	Checksum: 0xE687C0F6
-	Offset: 0x7E0
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function init_explosions() {
   level.explosion_manager = spawnstruct();
   level.explosion_manager.count = 0;
@@ -103,15 +69,6 @@ function init_explosions() {
   }
 }
 
-/*
-	Name: get_unused_explosion
-	Namespace: destructible
-	Checksum: 0x102B4A5A
-	Offset: 0x920
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function get_unused_explosion() {
   foreach(explosion in level.explosion_manager.a_explosions) {
     if(!(isdefined(explosion.in_use) && explosion.in_use)) {
@@ -121,24 +78,13 @@ function get_unused_explosion() {
   return level.explosion_manager.a_explosions[0];
 }
 
-/*
-	Name: physics_explosion_and_rumble
-	Namespace: destructible
-	Checksum: 0x3646D451
-	Offset: 0x9E0
-	Size: 0x154
-	Parameters: 4
-	Flags: Linked
-*/
 function physics_explosion_and_rumble(origin, radius, var_824b40e2 = 1, var_34aa7e9b = 0) {
   sexplosion = get_unused_explosion();
   sexplosion.in_use = 1;
   sexplosion.origin = origin;
   wait(0.05);
-  /#
   assert(radius <= (pow(2, 10) - 1));
-  # /
-    var_e0d11135 = radius;
+  var_e0d11135 = radius;
   if(var_824b40e2) {
     var_e0d11135 = var_e0d11135 + (1 << 10);
   }
@@ -149,15 +95,6 @@ function physics_explosion_and_rumble(origin, radius, var_824b40e2 = 1, var_34aa
   sexplosion.in_use = 0;
 }
 
-/*
-	Name: event_callback
-	Namespace: destructible
-	Checksum: 0x9432782D
-	Offset: 0xB40
-	Size: 0x3CE
-	Parameters: 3
-	Flags: Linked
-*/
 function event_callback(destructible_event, attacker, weapon) {
   explosion_radius = 0;
   if(issubstr(destructible_event, "explode") && destructible_event != "explode") {
@@ -236,30 +173,12 @@ function event_callback(destructible_event, attacker, weapon) {
   }
 }
 
-/*
-	Name: car_fire_think
-	Namespace: destructible
-	Checksum: 0xB75096CF
-	Offset: 0xF18
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function car_fire_think(attacker) {
-  self endon(# "death");
+  self endon("death");
   wait(randomintrange(7, 10));
   self thread car_explosion(attacker);
 }
 
-/*
-	Name: simple_explosion
-	Namespace: destructible
-	Checksum: 0xAA3E1C70
-	Offset: 0xF70
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function simple_explosion(attacker) {
   if(isdefined(self.exploded) && self.exploded) {
     return;
@@ -275,17 +194,8 @@ function simple_explosion(attacker) {
   }
 }
 
-/*
-	Name: simple_timed_explosion
-	Namespace: destructible
-	Checksum: 0xC52AA86A
-	Offset: 0x10A0
-	Size: 0x13C
-	Parameters: 2
-	Flags: Linked
-*/
 function simple_timed_explosion(destructible_event, attacker) {
-  self endon(# "death");
+  self endon("death");
   wait_times = [];
   str = getsubstr(destructible_event, 23);
   tokens = strtok(str, "_");
@@ -300,15 +210,6 @@ function simple_timed_explosion(destructible_event, attacker) {
   simple_explosion(attacker);
 }
 
-/*
-	Name: complex_explosion
-	Namespace: destructible
-	Checksum: 0x70B2562F
-	Offset: 0x11E8
-	Size: 0x124
-	Parameters: 2
-	Flags: Linked
-*/
 function complex_explosion(attacker, max_radius) {
   offset = vectorscale((0, 0, 1), 5);
   if(isdefined(attacker)) {
@@ -324,15 +225,6 @@ function complex_explosion(attacker, max_radius) {
   }
 }
 
-/*
-	Name: car_explosion
-	Namespace: destructible
-	Checksum: 0xDE2C219B
-	Offset: 0x1318
-	Size: 0x1C4
-	Parameters: 2
-	Flags: Linked
-*/
 function car_explosion(attacker, physics_explosion) {
   if(isdefined(self.car_dead) && self.car_dead) {
     return;
@@ -340,7 +232,7 @@ function car_explosion(attacker, physics_explosion) {
   if(!isdefined(physics_explosion)) {
     physics_explosion = 1;
   }
-  self notify(# "car_dead");
+  self notify("car_dead");
   self.car_dead = 1;
   if(!isvehicle(self)) {
     if(isdefined(attacker)) {
@@ -362,20 +254,11 @@ function car_explosion(attacker, physics_explosion) {
   self markdestructibledestroyed();
 }
 
-/*
-	Name: tank_grenade_stuck_think
-	Namespace: destructible
-	Checksum: 0x6AE7220D
-	Offset: 0x14E8
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function tank_grenade_stuck_think() {
-  self endon(# "destructible_base_piece_death");
-  self endon(# "death");
+  self endon("destructible_base_piece_death");
+  self endon("death");
   for (;;) {
-    self waittill(# "grenade_stuck", missile);
+    self waittill("grenade_stuck", missile);
     if(!isdefined(missile) || !isdefined(missile.model)) {
       continue;
     }
@@ -385,26 +268,17 @@ function tank_grenade_stuck_think() {
   }
 }
 
-/*
-	Name: tank_grenade_stuck_explode
-	Namespace: destructible
-	Checksum: 0x4A9AEE59
-	Offset: 0x15B8
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function tank_grenade_stuck_explode(missile) {
-  self endon(# "destructible_base_piece_death");
-  self endon(# "death");
+  self endon("destructible_base_piece_death");
+  self endon("death");
   owner = getmissileowner(missile);
   if(isdefined(owner) && missile.model == "wpn_t7_c4_world") {
-    owner endon(# "disconnect");
-    owner endon(# "weapon_object_destroyed");
-    missile endon(# "picked_up");
+    owner endon("disconnect");
+    owner endon("weapon_object_destroyed");
+    missile endon("picked_up");
     missile thread tank_hacked_c4(self);
   }
-  missile waittill(# "explode");
+  missile waittill("explode");
   if(isdefined(owner)) {
     self dodamage(self.health + 10000, self.origin + (0, 0, 1), owner);
   } else {
@@ -412,58 +286,31 @@ function tank_grenade_stuck_explode(missile) {
   }
 }
 
-/*
-	Name: tank_hacked_c4
-	Namespace: destructible
-	Checksum: 0x5F30CA38
-	Offset: 0x16E8
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function tank_hacked_c4(tank) {
-  tank endon(# "destructible_base_piece_death");
-  tank endon(# "death");
-  self endon(# "death");
-  self waittill(# "hacked");
-  self notify(# "picked_up");
+  tank endon("destructible_base_piece_death");
+  tank endon("death");
+  self endon("death");
+  self waittill("hacked");
+  self notify("picked_up");
   tank thread tank_grenade_stuck_explode(self);
 }
 
-/*
-	Name: car_death_think
-	Namespace: destructible
-	Checksum: 0x97D00261
-	Offset: 0x1758
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function car_death_think() {
-  self endon(# "car_dead");
+  self endon("car_dead");
   self.car_dead = 0;
   self thread car_death_notify();
-  self waittill(# "destructible_base_piece_death", attacker);
+  self waittill("destructible_base_piece_death", attacker);
   if(isdefined(self)) {
     self thread car_explosion(attacker, 0);
   }
 }
 
-/*
-	Name: car_grenade_stuck_think
-	Namespace: destructible
-	Checksum: 0x716F1A2F
-	Offset: 0x17C8
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function car_grenade_stuck_think() {
-  self endon(# "destructible_base_piece_death");
-  self endon(# "car_dead");
-  self endon(# "death");
+  self endon("destructible_base_piece_death");
+  self endon("car_dead");
+  self endon("death");
   for (;;) {
-    self waittill(# "grenade_stuck", missile);
+    self waittill("grenade_stuck", missile);
     if(!isdefined(missile) || !isdefined(missile.model)) {
       continue;
     }
@@ -473,27 +320,18 @@ function car_grenade_stuck_think() {
   }
 }
 
-/*
-	Name: car_grenade_stuck_explode
-	Namespace: destructible
-	Checksum: 0xA4CD371
-	Offset: 0x18A8
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function car_grenade_stuck_explode(missile) {
-  self endon(# "destructible_base_piece_death");
-  self endon(# "car_dead");
-  self endon(# "death");
+  self endon("destructible_base_piece_death");
+  self endon("car_dead");
+  self endon("death");
   owner = getmissileowner(missile);
   if(isdefined(owner) && missile.model == "wpn_t7_c4_world") {
-    owner endon(# "disconnect");
-    owner endon(# "weapon_object_destroyed");
-    missile endon(# "picked_up");
+    owner endon("disconnect");
+    owner endon("weapon_object_destroyed");
+    missile endon("picked_up");
     missile thread car_hacked_c4(self);
   }
-  missile waittill(# "explode");
+  missile waittill("explode");
   if(isdefined(owner)) {
     self dodamage(self.health + 10000, self.origin + (0, 0, 1), owner);
   } else {
@@ -501,49 +339,22 @@ function car_grenade_stuck_explode(missile) {
   }
 }
 
-/*
-	Name: car_hacked_c4
-	Namespace: destructible
-	Checksum: 0x357EC4B1
-	Offset: 0x19E0
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function car_hacked_c4(car) {
-  car endon(# "destructible_base_piece_death");
-  car endon(# "car_dead");
-  car endon(# "death");
-  self endon(# "death");
-  self waittill(# "hacked");
-  self notify(# "picked_up");
+  car endon("destructible_base_piece_death");
+  car endon("car_dead");
+  car endon("death");
+  self endon("death");
+  self waittill("hacked");
+  self notify("picked_up");
   car thread car_grenade_stuck_explode(self);
 }
 
-/*
-	Name: car_death_notify
-	Namespace: destructible
-	Checksum: 0xC8815DBB
-	Offset: 0x1A58
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function car_death_notify() {
-  self endon(# "car_dead");
-  self waittill(# "death", attacker);
-  self notify(# "destructible_base_piece_death", attacker);
+  self endon("car_dead");
+  self waittill("death", attacker);
+  self notify("destructible_base_piece_death", attacker);
 }
 
-/*
-	Name: codecallback_destructibleevent
-	Namespace: destructible
-	Checksum: 0xB501EA33
-	Offset: 0x1AA0
-	Size: 0x11C
-	Parameters: 5
-	Flags: Linked
-*/
 function codecallback_destructibleevent(event, param1, param2, param3, param4) {
   if(event == "broken") {
     notify_type = param1;
@@ -560,31 +371,13 @@ function codecallback_destructibleevent(event, param1, param2, param3, param4) {
   }
 }
 
-/*
-	Name: breakafter
-	Namespace: destructible
-	Checksum: 0x2D7AB1C2
-	Offset: 0x1BC8
-	Size: 0x64
-	Parameters: 3
-	Flags: Linked
-*/
 function breakafter(time, damage, piece) {
-  self notify(# "breakafter");
-  self endon(# "breakafter");
+  self notify("breakafter");
+  self endon("breakafter");
   wait(time);
   self dodamage(damage, self.origin, undefined, undefined);
 }
 
-/*
-	Name: explosive_incendiary_explosion
-	Namespace: destructible
-	Checksum: 0xA7A30C58
-	Offset: 0x1C38
-	Size: 0x1E4
-	Parameters: 3
-	Flags: Linked
-*/
 function explosive_incendiary_explosion(attacker, explosion_radius, var_34aa7e9b = 0) {
   if(!isvehicle(self)) {
     offset = vectorscale((0, 0, 1), 5);
@@ -609,15 +402,6 @@ function explosive_incendiary_explosion(attacker, explosion_radius, var_34aa7e9b
   self markdestructibledestroyed();
 }
 
-/*
-	Name: function_906eae90
-	Namespace: destructible
-	Checksum: 0xE30D7A2E
-	Offset: 0x1E28
-	Size: 0x84
-	Parameters: 3
-	Flags: Linked
-*/
 function function_906eae90(v_origin, n_radius, n_time) {
   e_trig = spawn("trigger_radius_hurt", v_origin, 0, n_radius, n_radius);
   e_trig.script_hazard = "heat";
@@ -625,15 +409,6 @@ function function_906eae90(v_origin, n_radius, n_time) {
   e_trig delete();
 }
 
-/*
-	Name: explosive_electrical_explosion
-	Namespace: destructible
-	Checksum: 0xDFDF4049
-	Offset: 0x1EB8
-	Size: 0x164
-	Parameters: 3
-	Flags: Linked
-*/
 function explosive_electrical_explosion(attacker, explosion_radius, var_34aa7e9b) {
   if(!isvehicle(self)) {
     offset = vectorscale((0, 0, 1), 5);
@@ -653,15 +428,6 @@ function explosive_electrical_explosion(attacker, explosion_radius, var_34aa7e9b
   self markdestructibledestroyed();
 }
 
-/*
-	Name: explosive_concussive_explosion
-	Namespace: destructible
-	Checksum: 0x53764405
-	Offset: 0x2028
-	Size: 0x164
-	Parameters: 3
-	Flags: Linked
-*/
 function explosive_concussive_explosion(attacker, explosion_radius, var_34aa7e9b) {
   if(!isvehicle(self)) {
     offset = vectorscale((0, 0, 1), 5);

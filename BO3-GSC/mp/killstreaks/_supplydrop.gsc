@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_supplydrop.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
@@ -37,20 +41,9 @@
 #using scripts\shared\weapons\_tacticalinsertion;
 #using scripts\shared\weapons\_weaponobjects;
 #using scripts\shared\weapons\_weapons;
-
 #using_animtree("mp_vehicles");
-
 #namespace supplydrop;
 
-/*
-	Name: init
-	Namespace: supplydrop
-	Checksum: 0x6F79795A
-	Offset: 0x1670
-	Size: 0x12DC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.cratemodelfriendly = "wpn_t7_care_package_world";
   level.cratemodelenemy = "wpn_t7_care_package_world";
@@ -143,20 +136,9 @@ function init() {
   foreach(categorykey, category in level.cratetypes) {
     finalizecratecategory(categorykey);
   }
-  /#
   level thread supply_drop_dev_gui();
-  # /
 }
 
-/*
-	Name: finalizecratecategory
-	Namespace: supplydrop
-	Checksum: 0xF03BDACF
-	Offset: 0x2958
-	Size: 0x112
-	Parameters: 1
-	Flags: Linked
-*/
 function finalizecratecategory(category) {
   level.cratecategoryweights[category] = 0;
   cratetypekeys = getarraykeys(level.cratetypes[category]);
@@ -168,15 +150,6 @@ function finalizecratecategory(category) {
   }
 }
 
-/*
-	Name: advancedfinalizecratecategory
-	Namespace: supplydrop
-	Checksum: 0x9E5D4A55
-	Offset: 0x2A78
-	Size: 0x104
-	Parameters: 1
-	Flags: None
-*/
 function advancedfinalizecratecategory(category) {
   level.cratecategorytypeweights[category] = 0;
   cratetypekeys = getarraykeys(level.categorytypeweight[category]);
@@ -188,15 +161,6 @@ function advancedfinalizecratecategory(category) {
   finalizecratecategory(category);
 }
 
-/*
-	Name: setcategorytypeweight
-	Namespace: supplydrop
-	Checksum: 0x1E1ADEE1
-	Offset: 0x2B88
-	Size: 0x27C
-	Parameters: 3
-	Flags: None
-*/
 function setcategorytypeweight(category, type, weight) {
   if(!isdefined(level.categorytypeweight[category])) {
     level.categorytypeweight[category] = [];
@@ -217,10 +181,8 @@ function setcategorytypeweight(category, type, weight) {
         startindex = cratename;
       }
       if(isdefined(finalindex) && (finalindex + 1) != cratename) {
-        /#
         util::error("");
-        # /
-          callback::abort_level();
+        callback::abort_level();
         return;
       }
       finalindex = cratename;
@@ -232,19 +194,8 @@ function setcategorytypeweight(category, type, weight) {
   level.categorytypeweight[category][type].finalindex = finalindex;
 }
 
-/*
-	Name: registercratetype
-	Namespace: supplydrop
-	Checksum: 0x8B4BB121
-	Offset: 0x2E10
-	Size: 0x204
-	Parameters: 8
-	Flags: Linked
-*/
 function registercratetype(category, type, name, weight, hint, hint_gambler, givefunction, landfunctionoverride) {
-  /#
-  # /
-    itemname = level.killstreaks[name].menuname;
+  itemname = level.killstreaks[name].menuname;
   if(isitemrestricted(itemname)) {
     return;
   }
@@ -267,54 +218,26 @@ function registercratetype(category, type, name, weight, hint, hint_gambler, giv
   }
   level.cratetypes[category][name] = cratetype;
   game["strings"][name + "_hint"] = hint;
-  /#
   level thread add_devgui_command(category, name);
-  # /
 }
 
-/*
-	Name: add_devgui_command
-	Namespace: supplydrop
-	Checksum: 0x32EEE0A1
-	Offset: 0x3020
-	Size: 0xA4
-	Parameters: 2
-	Flags: Linked
-*/
 function add_devgui_command(category, name) {
-  /#
-  level endon(# "game_ended");
+  level endon("game_ended");
   wait(0.1);
   wait(randomintrange(2, 10) * 0.05);
   if(category == "" && killstreaks::is_registered(name)) {
     killstreaks::devgui_scorestreak_command(name, "", ("" + name) + "");
   }
-  # /
 }
 
-/*
-	Name: getrandomcratetype
-	Namespace: supplydrop
-	Checksum: 0xDF8A6084
-	Offset: 0x30D0
-	Size: 0x3CE
-	Parameters: 2
-	Flags: Linked
-*/
 function getrandomcratetype(category, gambler_crate_name) {
   if(!isdefined(level.cratetypes) || !isdefined(level.cratetypes[category])) {
     return;
   }
-  /#
   assert(isdefined(level.cratetypes));
-  # /
-    /#
   assert(isdefined(level.cratetypes[category]));
-  # /
-    /#
   assert(isdefined(level.cratecategoryweights[category]));
-  # /
-    typekey = undefined;
+  typekey = undefined;
   cratetypestart = 0;
   randomweightend = randomintrange(1, level.cratecategoryweights[category] + 1);
   find_another = 0;
@@ -351,99 +274,57 @@ function getrandomcratetype(category, gambler_crate_name) {
     }
     break;
   }
-  /#
   if(isdefined(level.dev_gui_supply_drop) && level.dev_gui_supply_drop != "" && level.dev_gui_supply_drop != "") {
     typekey = level.dev_gui_supply_drop;
   }
-  # /
-    return level.cratetypes[category][typekey];
+  return level.cratetypes[category][typekey];
 }
 
-/*
-	Name: givecrateitem
-	Namespace: supplydrop
-	Checksum: 0x8E8DFC79
-	Offset: 0x34A8
-	Size: 0xC6
-	Parameters: 1
-	Flags: Linked
-*/
 function givecrateitem(crate) {
   if(!isalive(self) || !isdefined(crate.cratetype)) {
     return;
   }
-  /#
   assert(isdefined(crate.cratetype.givefunction), "" + crate.cratetype.name);
-  # /
-    return [
-      [crate.cratetype.givefunction]
-    ]("inventory_" + crate.cratetype.name);
+  return [[crate.cratetype.givefunction]]("inventory_" + crate.cratetype.name);
 }
 
-/*
-	Name: givecratekillstreakwaiter
-	Namespace: supplydrop
-	Checksum: 0xEB84B8EA
-	Offset: 0x3578
-	Size: 0x52
-	Parameters: 3
-	Flags: None
-*/
 function givecratekillstreakwaiter(event, removecrate, extraendon) {
-  self endon(# "give_crate_killstreak_done");
+  self endon("give_crate_killstreak_done");
   if(isdefined(extraendon)) {
     self endon(extraendon);
   }
   self waittill(event);
-  self notify(# "give_crate_killstreak_done", removecrate);
+  self notify("give_crate_killstreak_done", removecrate);
 }
 
-/*
-	Name: givecratekillstreak
-	Namespace: supplydrop
-	Checksum: 0x991A1255
-	Offset: 0x35D8
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function givecratekillstreak(killstreak) {
   self killstreaks::give(killstreak);
 }
 
-/*
-	Name: givespecializedcrateweapon
-	Namespace: supplydrop
-	Checksum: 0x384D2FF1
-	Offset: 0x3608
-	Size: 0x1A2
-	Parameters: 1
-	Flags: Linked
-*/
 function givespecializedcrateweapon(weapon) {
   switch (weapon.name) {
     case "minigun": {
-      level thread popups::displayteammessagetoall( & "KILLSTREAK_MINIGUN_INBOUND", self);
+      level thread popups::displayteammessagetoall(&"KILLSTREAK_MINIGUN_INBOUND", self);
       level weapons::add_limited_weapon(weapon, self, 3);
       break;
     }
     case "m32": {
-      level thread popups::displayteammessagetoall( & "KILLSTREAK_M32_INBOUND", self);
+      level thread popups::displayteammessagetoall(&"KILLSTREAK_M32_INBOUND", self);
       level weapons::add_limited_weapon(weapon, self, 3);
       break;
     }
     case "m202_flash": {
-      level thread popups::displayteammessagetoall( & "KILLSTREAK_M202_FLASH_INBOUND", self);
+      level thread popups::displayteammessagetoall(&"KILLSTREAK_M202_FLASH_INBOUND", self);
       level weapons::add_limited_weapon(weapon, self, 3);
       break;
     }
     case "m220_tow": {
-      level thread popups::displayteammessagetoall( & "KILLSTREAK_M220_TOW_INBOUND", self);
+      level thread popups::displayteammessagetoall(&"KILLSTREAK_M220_TOW_INBOUND", self);
       level weapons::add_limited_weapon(weapon, self, 3);
       break;
     }
     case "mp40_blinged": {
-      level thread popups::displayteammessagetoall( & "KILLSTREAK_MP40_INBOUND", self);
+      level thread popups::displayteammessagetoall(&"KILLSTREAK_MP40_INBOUND", self);
       level weapons::add_limited_weapon(weapon, self, 3);
       break;
     }
@@ -453,15 +334,6 @@ function givespecializedcrateweapon(weapon) {
   }
 }
 
-/*
-	Name: givecrateweapon
-	Namespace: supplydrop
-	Checksum: 0x323F7BA
-	Offset: 0x37B8
-	Size: 0x1C8
-	Parameters: 1
-	Flags: None
-*/
 function givecrateweapon(weapon_name) {
   weapon = getweapon(weapon_name);
   if(weapon == level.weaponnone) {
@@ -482,24 +354,15 @@ function givecrateweapon(weapon_name) {
   givespecializedcrateweapon(weapon);
   self giveweapon(weapon);
   self switchtoweapon(weapon);
-  self waittill(# "weapon_change", newweapon);
+  self waittill("weapon_change", newweapon);
   self killstreak_weapons::usekillstreakweaponfromcrate(weapon);
   return true;
 }
 
-/*
-	Name: usesupplydropmarker
-	Namespace: supplydrop
-	Checksum: 0x88A32571
-	Offset: 0x3988
-	Size: 0x2CC
-	Parameters: 2
-	Flags: Linked
-*/
 function usesupplydropmarker(package_contents_id, context) {
   player = self;
-  self endon(# "disconnect");
-  self endon(# "spawned_player");
+  self endon("disconnect");
+  self endon("spawned_player");
   supplydropweapon = level.weaponnone;
   currentweapon = self getcurrentweapon();
   prevweapon = currentweapon;
@@ -525,7 +388,7 @@ function usesupplydropmarker(package_contents_id, context) {
       break;
     }
   }
-  self notify(# "trigger_weapon_shutdown");
+  self notify("trigger_weapon_shutdown");
   if(supplydropweapon == level.weaponnone) {
     cleanup(context, player);
     return false;
@@ -541,15 +404,6 @@ function usesupplydropmarker(package_contents_id, context) {
   return true;
 }
 
-/*
-	Name: issupplydropgrenadeallowed
-	Namespace: supplydrop
-	Checksum: 0xCDF06DF4
-	Offset: 0x3C60
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function issupplydropgrenadeallowed(killstreak) {
   if(!self killstreakrules::iskillstreakallowed(killstreak, self.team)) {
     self killstreaks::switch_to_last_non_killstreak_weapon();
@@ -558,41 +412,14 @@ function issupplydropgrenadeallowed(killstreak) {
   return true;
 }
 
-/*
-	Name: adddroplocation
-	Namespace: supplydrop
-	Checksum: 0x9E7DFBE0
-	Offset: 0x3CB8
-	Size: 0x26
-	Parameters: 2
-	Flags: Linked
-*/
 function adddroplocation(killstreak_id, location) {
   level.droplocations[killstreak_id] = location;
 }
 
-/*
-	Name: deldroplocation
-	Namespace: supplydrop
-	Checksum: 0xC17ED8AB
-	Offset: 0x3CE8
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function deldroplocation(killstreak_id) {
   level.droplocations[killstreak_id] = undefined;
 }
 
-/*
-	Name: islocationgood
-	Namespace: supplydrop
-	Checksum: 0x98814C5C
-	Offset: 0x3D08
-	Size: 0x3F0
-	Parameters: 2
-	Flags: Linked
-*/
 function islocationgood(location, context) {
   foreach(droplocation in level.droplocations) {
     if(distance2dsquared(droplocation, location) < 3600) {
@@ -618,7 +445,6 @@ function islocationgood(location, context) {
   if(isvalidpoint && distance2dsquared(location, closestpoint) > (context.max_dist_from_location * context.max_dist_from_location)) {
     isvalidpoint = 0;
   }
-  /#
   if(getdvarint("", 0)) {
     if(!isvalidpoint) {
       otherclosestpoint = getclosestpointonnavmesh(location, getdvarfloat("", 96), context.dist_from_boundary);
@@ -630,19 +456,9 @@ function islocationgood(location, context) {
       util::drawcylinder(closestpoint, context.radius, 8000, 0.01666667, undefined, vectorscale((0, 1, 0), 0.9), 0.7);
     }
   }
-  # /
-    return isvalidpoint;
+  return isvalidpoint;
 }
 
-/*
-	Name: usekillstreaksupplydrop
-	Namespace: supplydrop
-	Checksum: 0x6F11E84A
-	Offset: 0x4100
-	Size: 0x1AE
-	Parameters: 1
-	Flags: Linked
-*/
 function usekillstreaksupplydrop(killstreak) {
   player = self;
   if(!player issupplydropgrenadeallowed(killstreak)) {
@@ -661,22 +477,13 @@ function usekillstreaksupplydrop(killstreak) {
   context.droptagoffset = (-32, 0, 23);
   context.killstreaktype = killstreak;
   result = player usesupplydropmarker(undefined, context);
-  player notify(# "supply_drop_marker_done");
+  player notify("supply_drop_marker_done");
   if(!isdefined(result) || !result) {
     return 0;
   }
   return result;
 }
 
-/*
-	Name: use_killstreak_death_machine
-	Namespace: supplydrop
-	Checksum: 0xF9C15CCA
-	Offset: 0x42B8
-	Size: 0x1D0
-	Parameters: 1
-	Flags: None
-*/
 function use_killstreak_death_machine(killstreak) {
   if(!self killstreakrules::iskillstreakallowed(killstreak, self.team)) {
     return false;
@@ -690,7 +497,7 @@ function use_killstreak_death_machine(killstreak) {
     self setblockweaponpickup(weapon, 1);
     return true;
   }
-  level thread popups::displayteammessagetoall( & "KILLSTREAK_MINIGUN_INBOUND", self);
+  level thread popups::displayteammessagetoall(&"KILLSTREAK_MINIGUN_INBOUND", self);
   level weapons::add_limited_weapon(weapon, self, 3);
   self takeweapon(currentweapon);
   self giveweapon(weapon);
@@ -699,15 +506,6 @@ function use_killstreak_death_machine(killstreak) {
   return true;
 }
 
-/*
-	Name: use_killstreak_grim_reaper
-	Namespace: supplydrop
-	Checksum: 0xFE8C92B0
-	Offset: 0x4490
-	Size: 0x1D0
-	Parameters: 1
-	Flags: None
-*/
 function use_killstreak_grim_reaper(killstreak) {
   if(!self killstreakrules::iskillstreakallowed(killstreak, self.team)) {
     return false;
@@ -721,7 +519,7 @@ function use_killstreak_grim_reaper(killstreak) {
     self setblockweaponpickup(weapon, 1);
     return true;
   }
-  level thread popups::displayteammessagetoall( & "KILLSTREAK_M202_FLASH_INBOUND", self);
+  level thread popups::displayteammessagetoall(&"KILLSTREAK_M202_FLASH_INBOUND", self);
   level weapons::add_limited_weapon(weapon, self, 3);
   self takeweapon(currentweapon);
   self giveweapon(weapon);
@@ -730,15 +528,6 @@ function use_killstreak_grim_reaper(killstreak) {
   return true;
 }
 
-/*
-	Name: use_killstreak_tv_guided_missile
-	Namespace: supplydrop
-	Checksum: 0x1443F187
-	Offset: 0x4668
-	Size: 0x200
-	Parameters: 1
-	Flags: None
-*/
 function use_killstreak_tv_guided_missile(killstreak) {
   if(!killstreakrules::iskillstreakallowed(killstreak, self.team)) {
     self iprintlnbold(level.killstreaks[killstreak].notavailabletext);
@@ -753,7 +542,7 @@ function use_killstreak_tv_guided_missile(killstreak) {
     self setblockweaponpickup(weapon, 1);
     return true;
   }
-  level thread popups::displayteammessagetoall( & "KILLSTREAK_M220_TOW_INBOUND", self);
+  level thread popups::displayteammessagetoall(&"KILLSTREAK_M220_TOW_INBOUND", self);
   level weapons::add_limited_weapon(weapon, self, 3);
   self takeweapon(currentweapon);
   self giveweapon(weapon);
@@ -762,15 +551,6 @@ function use_killstreak_tv_guided_missile(killstreak) {
   return true;
 }
 
-/*
-	Name: use_killstreak_mp40
-	Namespace: supplydrop
-	Checksum: 0x86EB188C
-	Offset: 0x4870
-	Size: 0x200
-	Parameters: 1
-	Flags: None
-*/
 function use_killstreak_mp40(killstreak) {
   if(!killstreakrules::iskillstreakallowed(killstreak, self.team)) {
     self iprintlnbold(level.killstreaks[killstreak].notavailabletext);
@@ -785,7 +565,7 @@ function use_killstreak_mp40(killstreak) {
     self setblockweaponpickup(weapon, 1);
     return true;
   }
-  level thread popups::displayteammessagetoall( & "KILLSTREAK_MP40_INBOUND", self);
+  level thread popups::displayteammessagetoall(&"KILLSTREAK_MP40_INBOUND", self);
   level weapons::add_limited_weapon(weapon, self, 3);
   self takeweapon(currentweapon);
   self giveweapon(weapon);
@@ -794,36 +574,18 @@ function use_killstreak_mp40(killstreak) {
   return true;
 }
 
-/*
-	Name: cleanupwatcherondeath
-	Namespace: supplydrop
-	Checksum: 0x760FFF8A
-	Offset: 0x4A78
-	Size: 0xBA
-	Parameters: 2
-	Flags: Linked
-*/
 function cleanupwatcherondeath(team, killstreak_id) {
   player = self;
-  self endon(# "disconnect");
-  self endon(# "supplydropwatcher");
-  self endon(# "trigger_weapon_shutdown");
-  self endon(# "spawned_player");
-  self endon(# "weapon_change");
+  self endon("disconnect");
+  self endon("supplydropwatcher");
+  self endon("trigger_weapon_shutdown");
+  self endon("spawned_player");
+  self endon("weapon_change");
   self util::waittill_any("death", "joined_team", "joined_spectators");
   killstreakrules::killstreakstop("supply_drop", team, killstreak_id);
-  self notify(# "cleanup_marker");
+  self notify("cleanup_marker");
 }
 
-/*
-	Name: cleanup
-	Namespace: supplydrop
-	Checksum: 0x8466F01B
-	Offset: 0x4B40
-	Size: 0xE4
-	Parameters: 2
-	Flags: Linked
-*/
 function cleanup(context, player) {
   if(isdefined(context) && isdefined(context.marker)) {
     context.marker delete();
@@ -839,22 +601,13 @@ function cleanup(context, player) {
   }
 }
 
-/*
-	Name: markerupdatethread
-	Namespace: supplydrop
-	Checksum: 0xD069746B
-	Offset: 0x4C30
-	Size: 0x358
-	Parameters: 1
-	Flags: Linked
-*/
 function markerupdatethread(context) {
   player = self;
-  player endon(# "supplydropwatcher");
-  player endon(# "spawned_player");
-  player endon(# "disconnect");
-  player endon(# "weapon_change");
-  player endon(# "death");
+  player endon("supplydropwatcher");
+  player endon("spawned_player");
+  player endon("disconnect");
+  player endon("weapon_change");
+  player endon("death");
   markermodel = spawn("script_model", (0, 0, 0));
   context.marker = markermodel;
   player thread markercleanupthread(context);
@@ -886,22 +639,13 @@ function markerupdatethread(context) {
   }
 }
 
-/*
-	Name: supplydropwatcher
-	Namespace: supplydrop
-	Checksum: 0xE7321242
-	Offset: 0x4F90
-	Size: 0x424
-	Parameters: 4
-	Flags: Linked
-*/
 function supplydropwatcher(package_contents_id, trigger_event, supplydropweapon, context) {
   player = self;
-  self notify(# "supplydropwatcher");
-  self endon(# "supplydropwatcher");
-  self endon(# "spawned_player");
-  self endon(# "disconnect");
-  self endon(# "weapon_change");
+  self notify("supplydropwatcher");
+  self endon("supplydropwatcher");
+  self endon("spawned_player");
+  self endon("disconnect");
+  self endon("weapon_change");
   team = self.team;
   killstreak_id = killstreakrules::killstreakstart("supply_drop", team, 0, 0);
   if(killstreak_id == -1) {
@@ -944,7 +688,7 @@ function supplydropwatcher(package_contents_id, trigger_event, supplydropweapon,
       self killstreaks::switch_to_last_non_killstreak_weapon();
     } else {
       killstreakrules::killstreakstop("supply_drop", team, killstreak_id);
-      self notify(# "cleanup_marker");
+      self notify("cleanup_marker");
     }
     break;
   }
@@ -952,101 +696,65 @@ function supplydropwatcher(package_contents_id, trigger_event, supplydropweapon,
   player clientfield::set_to_player("marker_state", 0);
 }
 
-/*
-	Name: checkforemp
-	Namespace: supplydrop
-	Checksum: 0x758CF3C
-	Offset: 0x53C0
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function checkforemp() {
-  self endon(# "supplydropwatcher");
-  self endon(# "spawned_player");
-  self endon(# "disconnect");
-  self endon(# "weapon_change");
-  self endon(# "death");
-  self endon(# "trigger_weapon_shutdown");
-  self waittill(# "emp_jammed");
+  self endon("supplydropwatcher");
+  self endon("spawned_player");
+  self endon("disconnect");
+  self endon("weapon_change");
+  self endon("death");
+  self endon("trigger_weapon_shutdown");
+  self waittill("emp_jammed");
   self killstreaks::switch_to_last_non_killstreak_weapon();
 }
 
-/*
-	Name: supplydropgrenadetimeout
-	Namespace: supplydrop
-	Checksum: 0xFE78D1C1
-	Offset: 0x5438
-	Size: 0x1D4
-	Parameters: 3
-	Flags: Linked
-*/
 function supplydropgrenadetimeout(team, killstreak_id, weapon) {
-  self endon(# "death");
-  self endon(# "stationary");
+  self endon("death");
+  self endon("stationary");
   grenade_lifetime = 10;
   wait(grenade_lifetime);
   if(!isdefined(self)) {
     return;
   }
-  self notify(# "grenade_timeout");
+  self notify("grenade_timeout");
   killstreakrules::killstreakstop("supply_drop", team, killstreak_id);
   if(weapon.name == "ai_tank_drop") {
     killstreakrules::killstreakstop("ai_tank_drop", team, killstreak_id);
-    self notify(# "cleanup_marker");
+    self notify("cleanup_marker");
   } else {
     if(weapon.name == "inventory_ai_tank_drop") {
       killstreakrules::killstreakstop("inventory_ai_tank_drop", team, killstreak_id);
-      self notify(# "cleanup_marker");
+      self notify("cleanup_marker");
     } else {
       if(weapon.name == "combat_robot_drop") {
         killstreakrules::killstreakstop("combat_robot_drop", team, killstreak_id);
-        self notify(# "cleanup_marker");
+        self notify("cleanup_marker");
       } else if(weapon.name == "inventory_combat_robot_drop") {
         killstreakrules::killstreakstop("inventory_combat_robot_drop", team, killstreak_id);
-        self notify(# "cleanup_marker");
+        self notify("cleanup_marker");
       }
     }
   }
   self delete();
 }
 
-/*
-	Name: checkweaponchange
-	Namespace: supplydrop
-	Checksum: 0xD4564F17
-	Offset: 0x5618
-	Size: 0x8A
-	Parameters: 2
-	Flags: Linked
-*/
 function checkweaponchange(team, killstreak_id) {
-  self endon(# "supplydropwatcher");
-  self endon(# "spawned_player");
-  self endon(# "disconnect");
-  self endon(# "trigger_weapon_shutdown");
-  self endon(# "death");
-  self waittill(# "weapon_change");
+  self endon("supplydropwatcher");
+  self endon("spawned_player");
+  self endon("disconnect");
+  self endon("trigger_weapon_shutdown");
+  self endon("death");
+  self waittill("weapon_change");
   killstreakrules::killstreakstop("supply_drop", team, killstreak_id);
-  self notify(# "cleanup_marker");
+  self notify("cleanup_marker");
 }
 
-/*
-	Name: supplydropgrenadepullwatcher
-	Namespace: supplydrop
-	Checksum: 0x93B37467
-	Offset: 0x56B0
-	Size: 0x11C
-	Parameters: 1
-	Flags: None
-*/
 function supplydropgrenadepullwatcher(killstreak_id) {
-  self endon(# "disconnect");
-  self endon(# "weapon_change");
-  self waittill(# "grenade_pullback", weapon);
+  self endon("disconnect");
+  self endon("weapon_change");
+  self waittill("grenade_pullback", weapon);
   self util::_disableusability();
   self thread watchforgrenadeputdown();
-  self waittill(# "death");
+  self waittill("death");
   killstreak = "supply_drop";
   self.supplygrenadedeathdrop = 1;
   if(weapon.issupplydropweapon) {
@@ -1059,55 +767,28 @@ function supplydropgrenadepullwatcher(killstreak_id) {
   }
 }
 
-/*
-	Name: watchforgrenadeputdown
-	Namespace: supplydrop
-	Checksum: 0x5919CF2B
-	Offset: 0x57D8
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function watchforgrenadeputdown() {
-  self notify(# "watchforgrenadeputdown");
-  self endon(# "watchforgrenadeputdown");
-  self endon(# "death");
-  self endon(# "disconnect");
+  self notify("watchforgrenadeputdown");
+  self endon("watchforgrenadeputdown");
+  self endon("death");
+  self endon("disconnect");
   self util::waittill_any("grenade_fire", "weapon_change");
-  self notify(# "trigger_weapon_shutdown");
+  self notify("trigger_weapon_shutdown");
   self util::_enableusability();
 }
 
-/*
-	Name: playerchangeweaponwaiter
-	Namespace: supplydrop
-	Checksum: 0x854CD560
-	Offset: 0x5860
-	Size: 0x7E
-	Parameters: 0
-	Flags: None
-*/
 function playerchangeweaponwaiter() {
-  self endon(# "supply_drop_marker_done");
-  self endon(# "disconnect");
-  self endon(# "spawned_player");
+  self endon("supply_drop_marker_done");
+  self endon("disconnect");
+  self endon("spawned_player");
   currentweapon = self getcurrentweapon();
   while (currentweapon.issupplydropweapon) {
-    self waittill(# "weapon_change", currentweapon);
+    self waittill("weapon_change", currentweapon);
   }
   waittillframeend();
-  self notify(# "supply_drop_marker_done");
+  self notify("supply_drop_marker_done");
 }
 
-/*
-	Name: geticonforcrate
-	Namespace: supplydrop
-	Checksum: 0xD8AC150B
-	Offset: 0x58E8
-	Size: 0x1C8
-	Parameters: 0
-	Flags: Linked
-*/
 function geticonforcrate() {
   icon = undefined;
   switch (self.cratetype.type) {
@@ -1166,15 +847,6 @@ function geticonforcrate() {
   return icon + "_drop";
 }
 
-/*
-	Name: crateactivate
-	Namespace: supplydrop
-	Checksum: 0x8871838D
-	Offset: 0x5AB8
-	Size: 0x6E4
-	Parameters: 1
-	Flags: Linked
-*/
 function crateactivate(hacker) {
   self makeusable();
   self setcursorhint("HINT_NOICON");
@@ -1252,23 +924,14 @@ function crateactivate(hacker) {
     }
   }
   if(isdefined(self.owner) && isplayer(self.owner) && self.owner util::is_bot()) {
-    self.owner notify(# "bot_crate_landed", self);
+    self.owner notify("bot_crate_landed", self);
   }
   if(isdefined(self.owner)) {
-    self.owner notify(# "crate_landed", self);
+    self.owner notify("crate_landed", self);
     setricochetprotectionendtime("supply_drop", self.killstreak_id, self.owner);
   }
 }
 
-/*
-	Name: setricochetprotectionendtime
-	Namespace: supplydrop
-	Checksum: 0xF5820818
-	Offset: 0x61A8
-	Size: 0xAC
-	Parameters: 3
-	Flags: Linked
-*/
 function setricochetprotectionendtime(killstreak, killstreak_id, owner) {
   ksbundle = level.killstreakbundle[killstreak];
   if(isdefined(ksbundle) && isdefined(ksbundle.ksricochetpostlandduration) && ksbundle.ksricochetpostlandduration > 0) {
@@ -1277,15 +940,6 @@ function setricochetprotectionendtime(killstreak, killstreak_id, owner) {
   }
 }
 
-/*
-	Name: cratedeactivate
-	Namespace: supplydrop
-	Checksum: 0x79326374
-	Offset: 0x6260
-	Size: 0x166
-	Parameters: 0
-	Flags: Linked
-*/
 function cratedeactivate() {
   self makeunusable();
   if(isdefined(self.friendlyobjid)) {
@@ -1307,80 +961,35 @@ function cratedeactivate() {
   }
 }
 
-/*
-	Name: ownerteamchangewatcher
-	Namespace: supplydrop
-	Checksum: 0xAAE377AF
-	Offset: 0x63D0
-	Size: 0x62
-	Parameters: 0
-	Flags: Linked
-*/
 function ownerteamchangewatcher() {
-  self notify(# "ownerteamchangewatcher_singleton");
-  self endon(# "ownerteamchangewatcher_singleton");
-  self endon(# "death");
+  self notify("ownerteamchangewatcher_singleton");
+  self endon("ownerteamchangewatcher_singleton");
+  self endon("death");
   if(!level.teambased || !isdefined(self.owner)) {
     return;
   }
-  self.owner waittill(# "joined_team");
+  self.owner waittill("joined_team");
   self.owner = undefined;
 }
 
-/*
-	Name: dropalltoground
-	Namespace: supplydrop
-	Checksum: 0x85F3E630
-	Offset: 0x6440
-	Size: 0x8A
-	Parameters: 3
-	Flags: Linked
-*/
 function dropalltoground(origin, radius, stickyobjectradius) {
   physicsexplosionsphere(origin, radius, radius, 0);
   wait(0.05);
   weapons::drop_all_to_ground(origin, radius);
   dropcratestoground(origin, radius);
-  level notify(# "drop_objects_to_ground", origin, stickyobjectradius);
+  level notify("drop_objects_to_ground", origin, stickyobjectradius);
 }
 
-/*
-	Name: dropeverythingtouchingcrate
-	Namespace: supplydrop
-	Checksum: 0x6935091F
-	Offset: 0x64D8
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function dropeverythingtouchingcrate(origin) {
   dropalltoground(origin, 70, 70);
 }
 
-/*
-	Name: dropalltogroundaftercratedelete
-	Namespace: supplydrop
-	Checksum: 0x87D980B4
-	Offset: 0x6510
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function dropalltogroundaftercratedelete(crate, crate_origin) {
-  crate waittill(# "death");
+  crate waittill("death");
   wait(0.1);
   crate dropeverythingtouchingcrate(crate_origin);
 }
 
-/*
-	Name: dropcratestoground
-	Namespace: supplydrop
-	Checksum: 0x3C9EC5E7
-	Offset: 0x6560
-	Size: 0xD6
-	Parameters: 2
-	Flags: Linked
-*/
 function dropcratestoground(origin, radius) {
   crate_ents = getentarray("care_package", "script_noteworthy");
   radius_sq = radius * radius;
@@ -1391,17 +1000,8 @@ function dropcratestoground(origin, radius) {
   }
 }
 
-/*
-	Name: dropcratetoground
-	Namespace: supplydrop
-	Checksum: 0x811C8674
-	Offset: 0x6640
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function dropcratetoground() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.droppingtoground)) {
     return;
   }
@@ -1414,29 +1014,11 @@ function dropcratetoground() {
   self.droppingtoground = undefined;
 }
 
-/*
-	Name: configureteampost
-	Namespace: supplydrop
-	Checksum: 0xE0A882FE
-	Offset: 0x66F8
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function configureteampost(owner) {
   crate = self;
   crate thread ownerteamchangewatcher();
 }
 
-/*
-	Name: cratespawn
-	Namespace: supplydrop
-	Checksum: 0x93D38E60
-	Offset: 0x6738
-	Size: 0x326
-	Parameters: 6
-	Flags: Linked
-*/
 function cratespawn(killstreak, killstreakid, owner, team, drop_origin, drop_angle) {
   crate = spawn("script_model", drop_origin, 1);
   crate killstreaks::configure_team(killstreak, killstreakid, owner, undefined, undefined, & configureteampost);
@@ -1488,15 +1070,6 @@ function cratespawn(killstreak, killstreakid, owner, team, drop_origin, drop_ang
   return crate;
 }
 
-/*
-	Name: cratedelete
-	Namespace: supplydrop
-	Checksum: 0xCCCAD795
-	Offset: 0x6A68
-	Size: 0x1F4
-	Parameters: 1
-	Flags: Linked
-*/
 function cratedelete(drop_all_to_ground) {
   if(!isdefined(self)) {
     return;
@@ -1531,49 +1104,22 @@ function cratedelete(drop_all_to_ground) {
   self delete();
 }
 
-/*
-	Name: stationarycrateoverride
-	Namespace: supplydrop
-	Checksum: 0x12220DF6
-	Offset: 0x6C68
-	Size: 0x4E
-	Parameters: 0
-	Flags: Linked
-*/
 function stationarycrateoverride() {
-  self endon(# "death");
-  self endon(# "stationary");
+  self endon("death");
+  self endon("stationary");
   wait(3);
   self.angles = self.angles;
   self.origin = self.origin;
-  self notify(# "stationary");
+  self notify("stationary");
 }
 
-/*
-	Name: timeoutcratewaiter
-	Namespace: supplydrop
-	Checksum: 0xF4DED14B
-	Offset: 0x6CC0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function timeoutcratewaiter() {
-  self endon(# "death");
-  self endon(# "stationary");
+  self endon("death");
+  self endon("stationary");
   wait(20);
   self cratedelete(1);
 }
 
-/*
-	Name: cratephysics
-	Namespace: supplydrop
-	Checksum: 0x29695EB8
-	Offset: 0x6D08
-	Size: 0x110
-	Parameters: 0
-	Flags: Linked
-*/
 function cratephysics() {
   forcepoint = self.origin;
   params = level.killstreakbundle["supply_drop"];
@@ -1586,35 +1132,15 @@ function cratephysics() {
   self thread stationarycrateoverride();
   self thread update_crate_velocity();
   self thread play_impact_sound();
-  self waittill(# "stationary");
+  self waittill("stationary");
 }
 
-/*
-	Name: get_height
-	Namespace: supplydrop
-	Checksum: 0x47657ED9
-	Offset: 0x6E20
-	Size: 0xEA
-	Parameters: 1
-	Flags: None
-*/
 function get_height(e_ignore = self) {
   trace = groundtrace(self.origin + (0, 0, 10), self.origin + (vectorscale((0, 0, -1), 10000)), 0, e_ignore, 0);
-  /#
   recordline(self.origin + (0, 0, 10), trace[""], (1, 0.5, 0), "", self);
-  # /
-    return distance(self.origin, trace["position"]);
+  return distance(self.origin, trace["position"]);
 }
 
-/*
-	Name: cratecontrolleddrop
-	Namespace: supplydrop
-	Checksum: 0xDF961C5E
-	Offset: 0x6F18
-	Size: 0x304
-	Parameters: 2
-	Flags: Linked
-*/
 function cratecontrolleddrop(killstreak, v_target_location) {
   crate = self;
   supplydrop = 1;
@@ -1647,7 +1173,7 @@ function cratecontrolleddrop(killstreak, v_target_location) {
   } else {
     crate clientfield::set("aitank_thrusters_state", 1);
   }
-  crate waittill(# "movedone");
+  crate waittill("movedone");
   hostmigration::waittillhostmigrationdone();
   if(supplydrop) {
     crate clientfield::set("supplydrop_thrusters_state", 0);
@@ -1657,19 +1183,10 @@ function cratecontrolleddrop(killstreak, v_target_location) {
   crate cratephysics();
 }
 
-/*
-	Name: play_impact_sound
-	Namespace: supplydrop
-	Checksum: 0x701E8961
-	Offset: 0x7228
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function play_impact_sound() {
-  self endon(# "entityshutdown");
-  self endon(# "stationary");
-  self endon(# "death");
+  self endon("entityshutdown");
+  self endon("stationary");
+  self endon("death");
   wait(0.5);
   while (abs(self.velocity[2]) > 5) {
     wait(0.1);
@@ -1677,18 +1194,9 @@ function play_impact_sound() {
   self playsound("phy_impact_supply");
 }
 
-/*
-	Name: update_crate_velocity
-	Namespace: supplydrop
-	Checksum: 0x75D17FBF
-	Offset: 0x72B8
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function update_crate_velocity() {
-  self endon(# "entityshutdown");
-  self endon(# "stationary");
+  self endon("entityshutdown");
+  self endon("stationary");
   self.velocity = (0, 0, 0);
   self.old_origin = self.origin;
   while (isdefined(self)) {
@@ -1698,40 +1206,22 @@ function update_crate_velocity() {
   }
 }
 
-/*
-	Name: crateredophysics
-	Namespace: supplydrop
-	Checksum: 0xB63B7A8
-	Offset: 0x7338
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function crateredophysics() {
   forcepoint = self.origin;
   initialvelocity = (0, 0, 0);
   self physicslaunch(forcepoint, initialvelocity);
   self thread timeoutcratewaiter();
   self thread stationarycrateoverride();
-  self waittill(# "stationary");
+  self waittill("stationary");
 }
 
-/*
-	Name: do_supply_drop_detonation
-	Namespace: supplydrop
-	Checksum: 0x73899FB
-	Offset: 0x73C0
-	Size: 0x184
-	Parameters: 2
-	Flags: Linked
-*/
 function do_supply_drop_detonation(weapon, owner) {
-  self notify(# "supplydropwatcher");
-  self endon(# "supplydropwatcher");
-  self endon(# "spawned_player");
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "grenade_timeout");
+  self notify("supplydropwatcher");
+  self endon("supplydropwatcher");
+  self endon("spawned_player");
+  self endon("disconnect");
+  self endon("death");
+  self endon("grenade_timeout");
   self util::waittillnotmoving();
   self.angles = (0, self.angles[1], 90);
   fuse_time = weapon.fusetime / 1000;
@@ -1746,111 +1236,48 @@ function do_supply_drop_detonation(weapon, owner) {
   self delete();
 }
 
-/*
-	Name: dosupplydrop
-	Namespace: supplydrop
-	Checksum: 0xFD6A2B70
-	Offset: 0x7550
-	Size: 0xF4
-	Parameters: 6
-	Flags: Linked
-*/
 function dosupplydrop(weapon_instance, weapon, owner, killstreak_id, package_contents_id, context) {
-  weapon endon(# "explode");
-  weapon endon(# "grenade_timeout");
-  self endon(# "disconnect");
+  weapon endon("explode");
+  weapon endon("grenade_timeout");
+  self endon("disconnect");
   team = owner.team;
   weapon_instance thread watchexplode(weapon, owner, killstreak_id, package_contents_id);
   weapon_instance util::waittillnotmoving();
-  weapon_instance notify(# "stoppedmoving");
+  weapon_instance notify("stoppedmoving");
   self thread helidelivercrate(weapon_instance.origin, weapon, owner, team, killstreak_id, package_contents_id, context);
 }
 
-/*
-	Name: watchexplode
-	Namespace: supplydrop
-	Checksum: 0x181D4617
-	Offset: 0x7650
-	Size: 0x8C
-	Parameters: 4
-	Flags: Linked
-*/
 function watchexplode(weapon, owner, killstreak_id, package_contents_id) {
-  self endon(# "stoppedmoving");
+  self endon("stoppedmoving");
   team = owner.team;
-  self waittill(# "explode", position);
+  self waittill("explode", position);
   owner thread helidelivercrate(position, weapon, owner, team, killstreak_id, package_contents_id);
 }
 
-/*
-	Name: cratetimeoutthreader
-	Namespace: supplydrop
-	Checksum: 0xBD2C81CF
-	Offset: 0x76E8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function cratetimeoutthreader() {
   crate = self;
   cratetimeout(90);
   crate thread deleteonownerleave();
 }
 
-/*
-	Name: cratetimeout
-	Namespace: supplydrop
-	Checksum: 0xD13A5FFB
-	Offset: 0x7738
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function cratetimeout(time) {
   crate = self;
   self thread killstreaks::waitfortimeout("inventory_supply_drop", 90000, & cratedelete, "death");
 }
 
-/*
-	Name: deleteonownerleave
-	Namespace: supplydrop
-	Checksum: 0x262852A5
-	Offset: 0x7798
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function deleteonownerleave() {
   crate = self;
-  crate endon(# "death");
+  crate endon("death");
   crate.owner util::waittill_any("joined_team", "joined_spectators", "disconnect");
   crate cratedelete(1);
 }
 
-/*
-	Name: waitanddelete
-	Namespace: supplydrop
-	Checksum: 0xFDA33AD3
-	Offset: 0x7810
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function waitanddelete(time) {
-  self endon(# "death");
+  self endon("death");
   wait(time);
   self delete();
 }
 
-/*
-	Name: dropcrate
-	Namespace: supplydrop
-	Checksum: 0x7F53F382
-	Offset: 0x7850
-	Size: 0x424
-	Parameters: 10
-	Flags: Linked
-*/
 function dropcrate(origin, angle, killstreak, owner, team, killcament, killstreak_id, package_contents_id, crate_, context) {
   angle = (angle[0] * 0.5, angle[1] * 0.5, angle[2] * 0.5);
   if(isdefined(crate_)) {
@@ -1866,16 +1293,14 @@ function dropcrate(origin, angle, killstreak, owner, team, killcament, killstrea
   crate.package_contents_id = package_contents_id;
   killcament thread util::deleteaftertime(15);
   killcament thread unlinkonrotation(crate);
-  crate endon(# "death");
+  crate endon("death");
   crate cratetimeoutthreader();
   trace = groundtrace(crate.origin + (vectorscale((0, 0, -1), 100)), crate.origin + (vectorscale((0, 0, -1), 10000)), 0, crate, 0);
   v_target_location = trace["position"];
-  /#
   if(getdvarint("", 0)) {
     util::drawcylinder(v_target_location, context.radius, 8000, 99999999, "", vectorscale((0, 0, 1), 0.9), 0.8);
   }
-  # /
-    crate cratecontrolleddrop(killstreak, v_target_location);
+  crate cratecontrolleddrop(killstreak, v_target_location);
   crate thread hacker_tool::registerwithhackertool(level.carepackagehackertoolradius, level.carepackagehackertooltimems);
   cleanup(context, owner);
   if(isdefined(crate.cratetype) && isdefined(crate.cratetype.landfunctionoverride)) {
@@ -1893,20 +1318,11 @@ function dropcrate(origin, angle, killstreak, owner, team, killcament, killstrea
   }
 }
 
-/*
-	Name: unlinkonrotation
-	Namespace: supplydrop
-	Checksum: 0xCBD2C630
-	Offset: 0x7C80
-	Size: 0x184
-	Parameters: 1
-	Flags: Linked
-*/
 function unlinkonrotation(crate) {
-  self endon(# "delete");
-  crate endon(# "death");
-  crate endon(# "entityshutdown");
-  crate endon(# "stationary");
+  self endon("delete");
+  crate endon("death");
+  crate endon("entityshutdown");
+  crate endon("stationary");
   waitbeforerotationcheck = getdvarfloat("scr_supplydrop_killcam_rot_wait", 0.5);
   wait(waitbeforerotationcheck);
   mincos = getdvarfloat("scr_supplydrop_killcam_max_rot", 0.999);
@@ -1921,19 +1337,10 @@ function unlinkonrotation(crate) {
   self unlink();
 }
 
-/*
-	Name: default_land_function
-	Namespace: supplydrop
-	Checksum: 0x607ED3A
-	Offset: 0x7E10
-	Size: 0x1C2
-	Parameters: 4
-	Flags: Linked
-*/
 function default_land_function(crate, category, owner, team) {
   if(1) {
     for (;;) {
-      crate waittill(# "captured", player, remote_hack);
+      crate waittill("captured", player, remote_hack);
       player challenges::capturedcrate(owner);
       deletecrate = player givecrateitem(crate);
     }
@@ -1951,15 +1358,6 @@ function default_land_function(crate, category, owner, team) {
   }
 }
 
-/*
-	Name: spawn_explosive_crate
-	Namespace: supplydrop
-	Checksum: 0x16E18538
-	Offset: 0x7FE0
-	Size: 0x1E0
-	Parameters: 7
-	Flags: Linked
-*/
 function spawn_explosive_crate(origin, angle, killstreak, owner, team, hacker, playerhasengineerperk) {
   crate = cratespawn(killstreak, undefined, owner, team, origin, angle);
   crate setowner(owner);
@@ -1981,19 +1379,10 @@ function spawn_explosive_crate(origin, angle, killstreak, owner, team, hacker, p
   crate.playerhasengineerperk = playerhasengineerperk;
 }
 
-/*
-	Name: watch_explosive_crate
-	Namespace: supplydrop
-	Checksum: 0xCEC43876
-	Offset: 0x81C8
-	Size: 0x23C
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_explosive_crate() {
   killcament = spawn("script_model", self.origin + vectorscale((0, 0, 1), 60));
   self.killcament = killcament;
-  self waittill(# "captured", player, remote_hack);
+  self waittill("captured", player, remote_hack);
   if(!player hasperk("specialty_showenemyequipment") && !remote_hack) {
     self thread entityheadicons::setentityheadicon(player.team, player, level.crate_headicon_offset, "headicon_dead", 1);
     self loop_sound("wpn_semtex_alert", 0.15);
@@ -2013,17 +1402,8 @@ function watch_explosive_crate() {
   killcament thread util::deleteaftertime(5);
 }
 
-/*
-	Name: loop_sound
-	Namespace: supplydrop
-	Checksum: 0x24326B77
-	Offset: 0x8410
-	Size: 0x78
-	Parameters: 2
-	Flags: Linked
-*/
 function loop_sound(alias, interval) {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     playsoundatposition(alias, self.origin);
     wait(interval);
@@ -2034,19 +1414,10 @@ function loop_sound(alias, interval) {
   }
 }
 
-/*
-	Name: watchforcratekill
-	Namespace: supplydrop
-	Checksum: 0xD56D0635
-	Offset: 0x8490
-	Size: 0x16C
-	Parameters: 1
-	Flags: Linked
-*/
 function watchforcratekill(start_kill_watch_z_threshold) {
   crate = self;
-  crate endon(# "death");
-  crate endon(# "stationary");
+  crate endon("death");
+  crate endon("stationary");
   while (crate.origin[2] > start_kill_watch_z_threshold) {
     wait(0.05);
   }
@@ -2075,17 +1446,8 @@ function watchforcratekill(start_kill_watch_z_threshold) {
   }
 }
 
-/*
-	Name: cratekill
-	Namespace: supplydrop
-	Checksum: 0xD75B512C
-	Offset: 0x8608
-	Size: 0x11C
-	Parameters: 0
-	Flags: None
-*/
 function cratekill() {
-  self endon(# "death");
+  self endon("death");
   stationarythreshold = 2;
   killthreshold = 15;
   maxframestillstationary = 20;
@@ -2111,18 +1473,9 @@ function cratekill() {
   }
 }
 
-/*
-	Name: cratedroptogroundkill
-	Namespace: supplydrop
-	Checksum: 0xDFFB5DAF
-	Offset: 0x8730
-	Size: 0x42C
-	Parameters: 0
-	Flags: Linked
-*/
 function cratedroptogroundkill() {
-  self endon(# "death");
-  self endon(# "stationary");
+  self endon("death");
+  self endon("stationary");
   for (;;) {
     players = getplayers();
     dotrace = 0;
@@ -2171,15 +1524,6 @@ function cratedroptogroundkill() {
   }
 }
 
-/*
-	Name: cratedroptogroundtrace
-	Namespace: supplydrop
-	Checksum: 0x646750B4
-	Offset: 0x8B68
-	Size: 0x1F4
-	Parameters: 1
-	Flags: Linked
-*/
 function cratedroptogroundtrace(start) {
   end = start + (vectorscale((0, 0, -1), 8000));
   trace = bullettrace(start, end, 1, self, 1, 1);
@@ -2199,15 +1543,6 @@ function cratedroptogroundtrace(start) {
   }
 }
 
-/*
-	Name: is_touching_crate
-	Namespace: supplydrop
-	Checksum: 0x108E0021
-	Offset: 0x8D68
-	Size: 0x3BA
-	Parameters: 0
-	Flags: Linked
-*/
 function is_touching_crate() {
   if(!isdefined(self)) {
     return;
@@ -2235,22 +1570,13 @@ function is_touching_crate() {
     if(isvehicle(vehicle)) {
       if(isdefined(vehicle.archetype) && vehicle.archetype == "wasp") {
         if(crate istouching(vehicle, vectorscale((1, 1, 1), 2))) {
-          vehicle notify(# "sentinel_shutdown");
+          vehicle notify("sentinel_shutdown");
         }
       }
     }
   }
 }
 
-/*
-	Name: is_clone_touching_crate
-	Namespace: supplydrop
-	Checksum: 0x1440CC0F
-	Offset: 0x9130
-	Size: 0x1F6
-	Parameters: 0
-	Flags: Linked
-*/
 function is_clone_touching_crate() {
   if(!isdefined(self)) {
     return;
@@ -2267,15 +1593,6 @@ function is_clone_touching_crate() {
   }
 }
 
-/*
-	Name: is_equipment_touching_crate
-	Namespace: supplydrop
-	Checksum: 0xDC00F327
-	Offset: 0x9330
-	Size: 0x1EC
-	Parameters: 1
-	Flags: Linked
-*/
 function is_equipment_touching_crate(player) {
   extraboundary = vectorscale((1, 1, 1), 10);
   if(isdefined(player) && isdefined(player.weaponobjectwatcherarray)) {
@@ -2301,15 +1618,6 @@ function is_equipment_touching_crate(player) {
   }
 }
 
-/*
-	Name: spawnuseent
-	Namespace: supplydrop
-	Checksum: 0x95B27F0A
-	Offset: 0x9528
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnuseent() {
   useent = spawn("script_origin", self.origin);
   useent.curprogress = 0;
@@ -2321,33 +1629,15 @@ function spawnuseent() {
   return useent;
 }
 
-/*
-	Name: useentownerdeathwaiter
-	Namespace: supplydrop
-	Checksum: 0x2506AB40
-	Offset: 0x95D0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function useentownerdeathwaiter(owner) {
-  self endon(# "death");
-  owner waittill(# "death");
+  self endon("death");
+  owner waittill("death");
   self delete();
 }
 
-/*
-	Name: crateusethink
-	Namespace: supplydrop
-	Checksum: 0xE4383EFA
-	Offset: 0x9618
-	Size: 0x172
-	Parameters: 0
-	Flags: Linked
-*/
 function crateusethink() {
   while (isdefined(self)) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(!isdefined(self)) {
       break;
     }
@@ -2372,24 +1662,15 @@ function crateusethink() {
     }
     if(result && isdefined(self)) {
       scoreevents::givecratecapturemedal(self, player);
-      self notify(# "captured", player, 0);
+      self notify("captured", player, 0);
     }
   }
 }
 
-/*
-	Name: crateusethinkowner
-	Namespace: supplydrop
-	Checksum: 0x6FAAF267
-	Offset: 0x9798
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function crateusethinkowner() {
-  self endon(# "joined_team");
+  self endon("joined_team");
   while (isdefined(self)) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(!isdefined(self)) {
       break;
     }
@@ -2404,22 +1685,13 @@ function crateusethinkowner() {
     }
     result = self useholdthink(player, level.crateownerusetime);
     if(result && isdefined(self) && isdefined(player)) {
-      self notify(# "captured", player, 0);
+      self notify("captured", player, 0);
     }
   }
 }
 
-/*
-	Name: useholdthink
-	Namespace: supplydrop
-	Checksum: 0x832D62AD
-	Offset: 0x9888
-	Size: 0x15A
-	Parameters: 2
-	Flags: Linked
-*/
 function useholdthink(player, usetime) {
-  player notify(# "use_hold");
+  player notify("use_hold");
   player util::freeze_player_controls(1);
   player util::_disableweapon();
   self.curprogress = 0;
@@ -2429,7 +1701,7 @@ function useholdthink(player, usetime) {
   player thread personalusebar(self);
   result = useholdthinkloop(player);
   if(isdefined(player)) {
-    player notify(# "done_using");
+    player notify("done_using");
   }
   if(isdefined(player)) {
     if(isalive(player)) {
@@ -2446,15 +1718,6 @@ function useholdthink(player, usetime) {
   return false;
 }
 
-/*
-	Name: continueholdthinkloop
-	Namespace: supplydrop
-	Checksum: 0x39999FAC
-	Offset: 0x99F0
-	Size: 0xFE
-	Parameters: 1
-	Flags: Linked
-*/
 function continueholdthinkloop(player) {
   if(!isdefined(self)) {
     return false;
@@ -2486,19 +1749,10 @@ function continueholdthinkloop(player) {
   return true;
 }
 
-/*
-	Name: useholdthinkloop
-	Namespace: supplydrop
-	Checksum: 0xCAE826B8
-	Offset: 0x9AF8
-	Size: 0xFA
-	Parameters: 1
-	Flags: Linked
-*/
 function useholdthinkloop(player) {
-  level endon(# "game_ended");
-  self endon(# "disabled");
-  self.owner endon(# "crate_use_interrupt");
+  level endon("game_ended");
+  self endon("disabled");
+  self.owner endon("crate_use_interrupt");
   timedout = 0;
   while (self continueholdthinkloop(player)) {
     timedout = timedout + 0.05;
@@ -2515,19 +1769,10 @@ function useholdthinkloop(player) {
   return 0;
 }
 
-/*
-	Name: crategamblerthink
-	Namespace: supplydrop
-	Checksum: 0xADD1C8BE
-	Offset: 0x9C00
-	Size: 0x148
-	Parameters: 0
-	Flags: Linked
-*/
 function crategamblerthink() {
-  self endon(# "death");
+  self endon("death");
   for (;;) {
-    self waittill(# "trigger_use_doubletap", player);
+    self waittill("trigger_use_doubletap", player);
     if(!player hasperk("specialty_showenemyequipment")) {
       continue;
     }
@@ -2540,38 +1785,20 @@ function crategamblerthink() {
     self.cratetype = getrandomcratetype("gambler", self.cratetype.name);
     self cratereactivate();
     self sethintstringforperk("specialty_showenemyequipment", self.cratetype.hint);
-    self notify(# "crate_use_interrupt");
-    level notify(# "use_interrupt", self);
+    self notify("crate_use_interrupt");
+    level notify("use_interrupt", self);
     return;
   }
 }
 
-/*
-	Name: cratereactivate
-	Namespace: supplydrop
-	Checksum: 0x1A7F17FB
-	Offset: 0x9D50
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function cratereactivate() {
   self sethintstring(self.cratetype.hint);
   icon = self geticonforcrate();
   self thread entityheadicons::setentityheadicon(self.team, self, level.crate_headicon_offset, icon, 1);
 }
 
-/*
-	Name: personalusebar
-	Namespace: supplydrop
-	Checksum: 0x38EA0A6F
-	Offset: 0x9DD8
-	Size: 0x3F4
-	Parameters: 1
-	Flags: Linked
-*/
 function personalusebar(object) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   capturecratestate = 0;
   if(self hasperk("specialty_showenemyequipment") && object.owner != self && !isdefined(object.hacker) && (level.teambased && object.owner.team != self.team || !level.teambased)) {
     capturecratestate = 2;
@@ -2613,21 +1840,12 @@ function personalusebar(object) {
   self clientfield::set_player_uimodel("hudItems.captureCrateState", 0);
 }
 
-/*
-	Name: spawn_helicopter
-	Namespace: supplydrop
-	Checksum: 0xA76C288A
-	Offset: 0xA1D8
-	Size: 0x3D8
-	Parameters: 8
-	Flags: Linked
-*/
 function spawn_helicopter(owner, team, origin, angles, model, targetname, killstreak_id, context) {
   chopper = spawnhelicopter(owner, origin, angles, model, targetname);
   if(!isdefined(chopper)) {
     if(isplayer(owner)) {
       killstreakrules::killstreakstop("supply_drop", team, killstreak_id);
-      self notify(# "cleanup_marker");
+      self notify("cleanup_marker");
     }
     return undefined;
   }
@@ -2648,10 +1866,8 @@ function spawn_helicopter(owner, team, origin, angles, model, targetname, killst
   supplydropspeed = getdvarint("scr_supplydropSpeedStarting", 250);
   supplydropaccel = getdvarint("scr_supplydropAccelStarting", 100);
   chopper setspeed(supplydropspeed, supplydropaccel);
-  /#
   chopper util::debug_slow_heli_speed();
-  # /
-    maxpitch = getdvarint("scr_supplydropMaxPitch", 25);
+  maxpitch = getdvarint("scr_supplydropMaxPitch", 25);
   maxroll = getdvarint("scr_supplydropMaxRoll", 45);
   chopper setmaxpitchroll(0, maxroll);
   chopper setdrawinfrared(1);
@@ -2663,41 +1879,14 @@ function spawn_helicopter(owner, team, origin, angles, model, targetname, killst
   return chopper;
 }
 
-/*
-	Name: getdropheight
-	Namespace: supplydrop
-	Checksum: 0x93563A49
-	Offset: 0xA5B8
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function getdropheight(origin) {
   return airsupport::getminimumflyheight();
 }
 
-/*
-	Name: getdropdirection
-	Namespace: supplydrop
-	Checksum: 0x5E75CE89
-	Offset: 0xA5E0
-	Size: 0x1E
-	Parameters: 0
-	Flags: Linked
-*/
 function getdropdirection() {
   return (0, randomint(360), 0);
 }
 
-/*
-	Name: getnextdropdirection
-	Namespace: supplydrop
-	Checksum: 0x3D4B4522
-	Offset: 0xA608
-	Size: 0x64
-	Parameters: 2
-	Flags: Linked
-*/
 function getnextdropdirection(drop_direction, degrees) {
   drop_direction = (0, drop_direction[1] + degrees, 0);
   if(drop_direction[1] >= 360) {
@@ -2706,22 +1895,12 @@ function getnextdropdirection(drop_direction, degrees) {
   return drop_direction;
 }
 
-/*
-	Name: gethelistart
-	Namespace: supplydrop
-	Checksum: 0xF70C0456
-	Offset: 0xA678
-	Size: 0x20A
-	Parameters: 2
-	Flags: Linked
-*/
 function gethelistart(drop_origin, drop_direction) {
   dist = -1 * getdvarint("scr_supplydropIncomingDistance", 15000);
   pathrandomness = 100;
   direction = drop_direction + (0, randomintrange(-2, 3), 0);
   start_origin = drop_origin + (anglestoforward(direction) * dist);
   start_origin = start_origin + ((randomfloat(2) - 1) * pathrandomness, (randomfloat(2) - 1) * pathrandomness, 0);
-  /#
   if(getdvarint("", 0)) {
     if(level.noflyzones.size) {
       index = randomintrange(0, level.noflyzones.size);
@@ -2731,19 +1910,9 @@ function gethelistart(drop_origin, drop_direction) {
       start_origin = drop_origin + (delta * dist);
     }
   }
-  # /
-    return start_origin;
+  return start_origin;
 }
 
-/*
-	Name: getheliend
-	Namespace: supplydrop
-	Checksum: 0xC6EF3487
-	Offset: 0xA890
-	Size: 0x164
-	Parameters: 2
-	Flags: Linked
-*/
 function getheliend(drop_origin, drop_direction) {
   pathrandomness = 150;
   dist = -1 * getdvarint("scr_supplydropOutgoingDistance", 15000);
@@ -2758,74 +1927,29 @@ function getheliend(drop_origin, drop_direction) {
   return end_origin;
 }
 
-/*
-	Name: addoffsetontopoint
-	Namespace: supplydrop
-	Checksum: 0x988B17A2
-	Offset: 0xAA00
-	Size: 0x82
-	Parameters: 3
-	Flags: Linked
-*/
 function addoffsetontopoint(point, direction, offset) {
   angles = vectortoangles((direction[0], direction[1], 0));
   offset_world = rotatepoint(offset, angles);
   return point + offset_world;
 }
 
-/*
-	Name: supplydrophelistartpath_v2_setup
-	Namespace: supplydrop
-	Checksum: 0xDC08698F
-	Offset: 0xAA90
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function supplydrophelistartpath_v2_setup(goal, goal_offset) {
   goalpath = spawnstruct();
   goalpath.start = helicopter::getvalidrandomstartnode(goal).origin;
   return goalpath;
 }
 
-/*
-	Name: supplydrophelistartpath_v2_part2_local
-	Namespace: supplydrop
-	Checksum: 0xD9DD0721
-	Offset: 0xAAF8
-	Size: 0x7E
-	Parameters: 3
-	Flags: Linked
-*/
 function supplydrophelistartpath_v2_part2_local(goal, goalpath, goal_local_offset) {
   direction = goal - goalpath.start;
   goalpath.path = [];
   goalpath.path[0] = addoffsetontopoint(goal, direction, goal_local_offset);
 }
 
-/*
-	Name: supplydrophelistartpath_v2_part2
-	Namespace: supplydrop
-	Checksum: 0x261F1A24
-	Offset: 0xAB80
-	Size: 0x4A
-	Parameters: 3
-	Flags: Linked
-*/
 function supplydrophelistartpath_v2_part2(goal, goalpath, goal_world_offset) {
   goalpath.path = [];
   goalpath.path[0] = goal + goal_world_offset;
 }
 
-/*
-	Name: supplydrophelistartpath
-	Namespace: supplydrop
-	Checksum: 0x213E8454
-	Offset: 0xABD8
-	Size: 0x362
-	Parameters: 2
-	Flags: None
-*/
 function supplydrophelistartpath(goal, goal_offset) {
   total_tries = 12;
   tries = 0;
@@ -2842,10 +1966,8 @@ function supplydrophelistartpath(goal, goal_offset) {
         direction = (goalpath.path[goalpath.path.size - 1]) - goalpath.start;
       }
       goalpath.path[goalpath.path.size - 1] = addoffsetontopoint(goalpath.path[goalpath.path.size - 1], direction, goal_offset);
-      /#
       sphere(goalpath.path[goalpath.path.size - 1], 10, (0, 0, 1), 1, 1, 10, 1000);
-      # /
-        return goalpath;
+      return goalpath;
     }
     drop_direction = getnextdropdirection(drop_direction, 30);
     tries++;
@@ -2858,15 +1980,6 @@ function supplydrophelistartpath(goal, goal_offset) {
   return goalpath;
 }
 
-/*
-	Name: supplydropheliendpath_v2
-	Namespace: supplydrop
-	Checksum: 0xCA88B311
-	Offset: 0xAF48
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function supplydropheliendpath_v2(start) {
   goalpath = spawnstruct();
   goalpath.start = start;
@@ -2876,15 +1989,6 @@ function supplydropheliendpath_v2(start) {
   return goalpath;
 }
 
-/*
-	Name: supplydropheliendpath
-	Namespace: supplydrop
-	Checksum: 0x50BEF97
-	Offset: 0xAFE8
-	Size: 0x202
-	Parameters: 2
-	Flags: None
-*/
 function supplydropheliendpath(origin, drop_direction) {
   total_tries = 5;
   tries = 0;
@@ -2909,15 +2013,6 @@ function supplydropheliendpath(origin, drop_direction) {
   return goalpath;
 }
 
-/*
-	Name: inccratekillstreakusagestat
-	Namespace: supplydrop
-	Checksum: 0xAC7C01E0
-	Offset: 0xB1F8
-	Size: 0x2CE
-	Parameters: 2
-	Flags: Linked
-*/
 function inccratekillstreakusagestat(weapon, killstreak_id) {
   if(weapon == level.weaponnone) {
     return;
@@ -2963,61 +2058,32 @@ function inccratekillstreakusagestat(weapon, killstreak_id) {
   }
 }
 
-/*
-	Name: markercleanupthread
-	Namespace: supplydrop
-	Checksum: 0xAC0B42BA
-	Offset: 0xB4D0
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function markercleanupthread(context) {
   player = self;
   player util::waittill_any("death", "disconnect", "joined_team", "joined_spectators", "cleanup_marker");
   cleanup(context, player);
 }
 
-/*
-	Name: getchopperdroppoint
-	Namespace: supplydrop
-	Checksum: 0x29FBB0CD
-	Offset: 0xB550
-	Size: 0xAE
-	Parameters: 1
-	Flags: Linked
-*/
 function getchopperdroppoint(context) {
   chopper = self;
   return (isdefined(context.droptag) ? chopper gettagorigin(context.droptag) + rotatepoint((isdefined(context.droptagoffset) ? context.droptagoffset : (0, 0, 0)), chopper.angles) : chopper.origin);
 }
 
-/*
-	Name: helidelivercrate
-	Namespace: supplydrop
-	Checksum: 0xE922D23D
-	Offset: 0xB608
-	Size: 0xFEC
-	Parameters: 7
-	Flags: Linked
-*/
 function helidelivercrate(origin, weapon, owner, team, killstreak_id, package_contents_id, context) {
   if(owner emp::enemyempactive() && !owner hasperk("specialty_immuneemp")) {
     killstreakrules::killstreakstop("supply_drop", team, killstreak_id);
-    self notify(# "cleanup_marker");
+    self notify("cleanup_marker");
     return;
   }
-  /#
   if(getdvarint("", 0)) {
-    level notify(# "stop_heli_drop_valid_location_marked_cylinder");
-    level notify(# "stop_heli_drop_valid_location_arrived_at_goal_cylinder");
-    level notify(# "stop_heli_drop_valid_location_dropped_cylinder");
+    level notify("stop_heli_drop_valid_location_marked_cylinder");
+    level notify("stop_heli_drop_valid_location_arrived_at_goal_cylinder");
+    level notify("stop_heli_drop_valid_location_dropped_cylinder");
     util::drawcylinder(origin, context.radius, 8000, 99999999, "", vectorscale((1, 0, 1), 0.4), 0.8);
   }
-  # /
-    if(!isdefined(context.marker)) {
-      return;
-    }
+  if(!isdefined(context.marker)) {
+    return;
+  }
   context.markerfxhandle = spawnfx(level.killstreakcorebundle.fxmarkedlocation, context.marker.origin + vectorscale((0, 0, 1), 5), (0, 0, 1), (1, 0, 0));
   context.markerfxhandle.team = owner.team;
   triggerfx(context.markerfxhandle);
@@ -3040,10 +2106,8 @@ function helidelivercrate(origin, weapon, owner, team, killstreak_id, package_co
     level.zoffsetcounter = 0;
   }
   heli_drop_goal = (drop_origin[0], drop_origin[1], drop_height);
-  /#
   sphere(heli_drop_goal, 10, (0, 1, 0), 1, 1, 10, 1000);
-  # /
-    goalpath = undefined;
+  goalpath = undefined;
   if(isdefined(context.dropoffset)) {
     goalpath = supplydrophelistartpath_v2_setup(heli_drop_goal, context.dropoffset);
     supplydrophelistartpath_v2_part2_local(heli_drop_goal, goalpath, context.dropoffset);
@@ -3103,17 +2167,14 @@ function helidelivercrate(origin, weapon, owner, team, killstreak_id, package_co
   } else {
     chopper thread helidropcrate(level.killstreakweapons[weapon], owner, rear_hatch_offset_local, killcament, killstreak_id, package_contents_id, context);
   }
-  chopper endon(# "death");
+  chopper endon("death");
   chopper thread airsupport::followpath(goalpath.path, "drop_goal", 1);
   chopper thread speedregulator(heli_drop_goal);
-  chopper waittill(# "drop_goal");
+  chopper waittill("drop_goal");
   if(isdefined(context) && isdefined(context.epilog)) {
     chopper[[context.epilog]](context);
   }
-  /#
   println("" + (gettime() - chopper.spawntime));
-  # /
-    /#
   if(getdvarint("", 0)) {
     if(isdefined(context.dropoffset)) {
       chopper_drop_point = chopper.origin - rotatepoint(context.dropoffset, chopper.angles);
@@ -3125,8 +2186,7 @@ function helidelivercrate(origin, weapon, owner, team, killstreak_id, package_co
     util::drawcylinder(debug_drop_location, context.radius, 8000, 99999999, "", (1, 0.6, 0), 0.9);
     iprintln("" + distance2d(chopper_drop_point, heli_drop_goal));
   }
-  # /
-    on_target = 0;
+  on_target = 0;
   last_distance_from_goal_squared = 9999999 * 9999999;
   continue_waiting = 1;
   for (remaining_tries = 30; continue_waiting && remaining_tries > 0; remaining_tries--) {
@@ -3138,26 +2198,20 @@ function helidelivercrate(origin, weapon, owner, team, killstreak_id, package_co
     current_distance_from_goal_squared = distance2dsquared(chopper_drop_point, heli_drop_goal);
     continue_waiting = current_distance_from_goal_squared < last_distance_from_goal_squared && current_distance_from_goal_squared > (3.7 * 3.7);
     last_distance_from_goal_squared = current_distance_from_goal_squared;
-    /#
     if(getdvarint("", 0)) {
       sphere(chopper_drop_point, 8, (1, 0, 0), 0.9, 0, 20, 1);
     }
-    # /
-      if(continue_waiting) {
-        /#
-        if(getdvarint("", 0)) {
-          iprintln("" + distance2d(chopper_drop_point, heli_drop_goal));
-        }
-        # /
-          wait(0.05);
+    if(continue_waiting) {
+      if(getdvarint("", 0)) {
+        iprintln("" + distance2d(chopper_drop_point, heli_drop_goal));
       }
+      wait(0.05);
+    }
   }
-  /#
   if(getdvarint("", 0)) {
     iprintln("" + distance2d(chopper_drop_point, heli_drop_goal));
   }
-  # /
-    chopper notify(# "drop_crate", chopper.origin, chopper.angles, chopper.owner);
+  chopper notify("drop_crate", chopper.origin, chopper.angles, chopper.owner);
   chopper.droptime = gettime();
   chopper playsound("veh_supply_drop");
   wait(0.7);
@@ -3167,31 +2221,18 @@ function helidelivercrate(origin, weapon, owner, team, killstreak_id, package_co
   supplydropspeed = getdvarint("scr_supplydropSpeedLeaving", 250);
   supplydropaccel = getdvarint("scr_supplydropAccelLeaving", 60);
   chopper setspeed(supplydropspeed, supplydropaccel);
-  /#
   chopper util::debug_slow_heli_speed();
-  # /
-    goalpath = supplydropheliendpath_v2(chopper.origin);
+  goalpath = supplydropheliendpath_v2(chopper.origin);
   chopper airsupport::followpath(goalpath.path, undefined, 0);
-  /#
   println("" + (gettime() - chopper.droptime));
-  # /
-    chopper notify(# "leaving");
+  chopper notify("leaving");
   chopper delete();
 }
 
-/*
-	Name: samturretwatcher
-	Namespace: supplydrop
-	Checksum: 0x48B3EB3E
-	Offset: 0xC600
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function samturretwatcher(destination) {
-  self endon(# "leaving");
-  self endon(# "helicopter_gone");
-  self endon(# "death");
+  self endon("leaving");
+  self endon("helicopter_gone");
+  self endon("death");
   sam_turret_aquire_dist = 1500;
   while (true) {
     if(distance(destination, self.origin) < sam_turret_aquire_dist) {
@@ -3205,44 +2246,24 @@ function samturretwatcher(destination) {
   target_setturretaquire(self, 1);
 }
 
-/*
-	Name: speedregulator
-	Namespace: supplydrop
-	Checksum: 0xC72677ED
-	Offset: 0xC720
-	Size: 0x144
-	Parameters: 1
-	Flags: Linked
-*/
 function speedregulator(goal) {
-  self endon(# "drop_goal");
-  self endon(# "death");
+  self endon("drop_goal");
+  self endon("death");
   wait(3);
   supplydropspeed = getdvarint("scr_supplydropSpeed", 400);
   supplydropaccel = getdvarint("scr_supplydropAccel", 60);
   self setyawspeed(100, 60, 60);
   self setspeed(supplydropspeed, supplydropaccel);
-  /#
   self util::debug_slow_heli_speed();
-  # /
-    wait(1);
+  wait(1);
   maxpitch = getdvarint("scr_supplydropMaxPitch", 25);
   maxroll = getdvarint("scr_supplydropMaxRoll", 35);
   self setmaxpitchroll(maxpitch, maxroll);
 }
 
-/*
-	Name: helidropcrate
-	Namespace: supplydrop
-	Checksum: 0xC8C97A39
-	Offset: 0xC870
-	Size: 0x4D4
-	Parameters: 7
-	Flags: Linked
-*/
 function helidropcrate(killstreak, originalowner, offset, killcament, killstreak_id, package_contents_id, context) {
   helicopter = self;
-  originalowner endon(# "disconnect");
+  originalowner endon("disconnect");
   crate = cratespawn(killstreak, killstreak_id, originalowner, self.team, self.origin, self.angles);
   if(killstreak == "inventory_supply_drop" || killstreak == "supply_drop") {
     loc_0000C9A0: crate linkto(helicopter, (isdefined(context.droptag) ? context.droptag : "tag_origin"), (isdefined(context.droptagoffset) ? context.droptagoffset : (0, 0, 0)));
@@ -3253,7 +2274,7 @@ function helidropcrate(killstreak, originalowner, offset, killcament, killstreak
     helicopter clientfield::set("supplydrop_ai_tank_state", 1);
   }
   team = self.team;
-  helicopter waittill(# "drop_crate", origin, angles, chopperowner);
+  helicopter waittill("drop_crate", origin, angles, chopperowner);
   if(isdefined(chopperowner)) {
     owner = chopperowner;
     if(owner != originalowner) {
@@ -3284,19 +2305,10 @@ function helidropcrate(killstreak, originalowner, offset, killcament, killstreak
   }
 }
 
-/*
-	Name: helidestroyed
-	Namespace: supplydrop
-	Checksum: 0x1E44AA78
-	Offset: 0xCD50
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function helidestroyed() {
-  self endon(# "leaving");
-  self endon(# "helicopter_gone");
-  self endon(# "death");
+  self endon("leaving");
+  self endon("helicopter_gone");
+  self endon("death");
   while (true) {
     if(self.damagetaken > self.maxhealth) {
       break;
@@ -3309,24 +2321,15 @@ function helidestroyed() {
   self setspeed(25, 5);
   self thread lbspin(randomintrange(180, 220));
   wait(randomfloatrange(0.5, 1.5));
-  self notify(# "drop_crate", self.origin, self.angles, self.owner);
+  self notify("drop_crate", self.origin, self.angles, self.owner);
   lbexplode();
 }
 
-/*
-	Name: lbexplode
-	Namespace: supplydrop
-	Checksum: 0xDADBD483
-	Offset: 0xCE60
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function lbexplode() {
   forward = (self.origin + (0, 0, 1)) - self.origin;
   playfx(level.chopper_fx["explode"]["death"], self.origin, forward);
   self playsound(level.heli_sound["crash"]);
-  self notify(# "explode");
+  self notify("explode");
   if(isdefined(self.delete_after_destruction_wait_time)) {
     self hide();
     self waitanddelete(self.delete_after_destruction_wait_time);
@@ -3335,17 +2338,8 @@ function lbexplode() {
   }
 }
 
-/*
-	Name: lbspin
-	Namespace: supplydrop
-	Checksum: 0x4B6534FD
-	Offset: 0xCF58
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked
-*/
 function lbspin(speed) {
-  self endon(# "explode");
+  self endon("explode");
   playfxontag(level.chopper_fx["explode"]["large"], self, "tail_rotor_jnt");
   playfxontag(level.chopper_fx["fire"]["trail"]["large"], self, "tail_rotor_jnt");
   self setyawspeed(speed, speed, speed);
@@ -3355,37 +2349,17 @@ function lbspin(speed) {
   }
 }
 
-/*
-	Name: refcountdecchopper
-	Namespace: supplydrop
-	Checksum: 0x98D8B603
-	Offset: 0xD050
-	Size: 0x52
-	Parameters: 2
-	Flags: Linked
-*/
 function refcountdecchopper(team, killstreak_id) {
-  self waittill(# "death");
+  self waittill("death");
   killstreakrules::killstreakstop("supply_drop", team, killstreak_id);
-  self notify(# "cleanup_marker");
+  self notify("cleanup_marker");
 }
 
-/*
-	Name: supply_drop_dev_gui
-	Namespace: supplydrop
-	Checksum: 0x48101EBA
-	Offset: 0xD0B0
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function supply_drop_dev_gui() {
-  /#
   setdvar("", "");
   while (true) {
     wait(0.5);
     devgui_string = getdvarstring("");
     level.dev_gui_supply_drop = devgui_string;
   }
-  # /
 }

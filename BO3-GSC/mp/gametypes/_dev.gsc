@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_dev.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_teamops;
 #using scripts\mp\_util;
@@ -24,50 +28,19 @@
 #using scripts\shared\sound_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace dev;
 
-/*
-	Name: __init__sytem__
-	Namespace: dev
-	Checksum: 0xC847BBC1
-	Offset: 0x3E0
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
-  /#
   system::register("", & __init__, undefined, "");
-  # /
 }
 
-/*
-	Name: __init__
-	Namespace: dev
-	Checksum: 0x3577BE2F
-	Offset: 0x428
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
   callback::on_connect( & on_player_connected);
   level.devongetormakebot = & getormakebot;
 }
 
-/*
-	Name: init
-	Namespace: dev
-	Checksum: 0x13BE6343
-	Offset: 0x490
-	Size: 0x4A0
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
-  /#
   if(getdvarstring("") == "") {
     setdvar("", "");
   }
@@ -126,38 +99,16 @@ function init() {
     updatedevsettings();
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: on_player_connected
-	Namespace: dev
-	Checksum: 0xE27529EC
-	Offset: 0x938
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connected() {
-  /#
   if(isdefined(level.devgui_unlimited_ammo) && level.devgui_unlimited_ammo) {
     wait(1);
     self thread devgui_unlimited_ammo();
   }
-  # /
 }
 
-/*
-	Name: updatehardpoints
-	Namespace: dev
-	Checksum: 0x11700FD3
-	Offset: 0x980
-	Size: 0x46E
-	Parameters: 0
-	Flags: Linked
-*/
 function updatehardpoints() {
-  /#
   keys = getarraykeys(level.killstreaks);
   for (i = 0; i < keys.size; i++) {
     dvar = level.killstreaks[keys[i]].devdvar;
@@ -205,55 +156,22 @@ function updatehardpoints() {
       setdvar(enemydvar, "");
     }
   }
-  # /
 }
 
-/*
-	Name: updateteamops
-	Namespace: dev
-	Checksum: 0x94DF881F
-	Offset: 0xDF8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function updateteamops() {
-  /#
   teamops = getdvarstring(level.teamops_dvar);
   if(getdvarstring(level.teamops_dvar) != "") {
     teamops::startteamops(teamops);
     setdvar(level.teamops_dvar, "");
   }
-  # /
 }
 
-/*
-	Name: warpalltohost
-	Namespace: dev
-	Checksum: 0xA451EAB2
-	Offset: 0xE90
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function warpalltohost(team) {
-  /#
   host = util::gethostplayer();
   warpalltoplayer(team, host.name);
-  # /
 }
 
-/*
-	Name: warpalltoplayer
-	Namespace: dev
-	Checksum: 0x6D1D1EA2
-	Offset: 0xEF0
-	Size: 0x374
-	Parameters: 2
-	Flags: Linked
-*/
 function warpalltoplayer(team, player) {
-  /#
   players = getplayers();
   target = undefined;
   for (i = 0; i < players.size; i++) {
@@ -297,20 +215,9 @@ function warpalltoplayer(team, player) {
     }
   }
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: updatedevsettingszm
-	Namespace: dev
-	Checksum: 0x8C070C5
-	Offset: 0x1270
-	Size: 0x454
-	Parameters: 0
-	Flags: None
-*/
 function updatedevsettingszm() {
-  /#
   if(level.players.size > 0) {
     if(getdvarstring("") == "") {
       if(!isdefined(level.streamdumpteamindex)) {
@@ -363,20 +270,9 @@ function updatedevsettingszm() {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: updatedevsettings
-	Namespace: dev
-	Checksum: 0xE5697C3C
-	Offset: 0x16D0
-	Size: 0x24DE
-	Parameters: 0
-	Flags: Linked
-*/
 function updatedevsettings() {
-  /#
   show_spawns = getdvarint("");
   show_start_spawns = getdvarint("");
   player = util::gethostplayer();
@@ -525,7 +421,7 @@ function updatedevsettings() {
                             player.devgui_spawn_active = 1;
                             player thread devgui_spawn_think();
                           } else {
-                            player notify(# "devgui_spawn_think");
+                            player notify("devgui_spawn_think");
                             player.devgui_spawn_active = 0;
                             player setactionslot(3, "");
                           }
@@ -548,7 +444,7 @@ function updatedevsettings() {
                                 players[i] thread devgui_unlimited_ammo();
                                 continue;
                               }
-                              players[i] notify(# "devgui_unlimited_ammo");
+                              players[i] notify("devgui_unlimited_ammo");
                             }
                             setdvar("", "");
                           } else {
@@ -563,7 +459,7 @@ function updatedevsettings() {
                                 level thread devgui_unlimited_momentum();
                               } else {
                                 iprintln("");
-                                level notify(# "devgui_unlimited_momentum");
+                                level notify("devgui_unlimited_momentum");
                               }
                               setdvar("", "");
                             } else {
@@ -622,7 +518,7 @@ function updatedevsettings() {
                                           if(host.devgui_health_debug) {
                                             host.devgui_health_debug = 0;
                                             for (i = 0; i < players.size; i++) {
-                                              players[i] notify(# "devgui_health_debug");
+                                              players[i] notify("devgui_health_debug");
                                               if(isdefined(players[i].debug_health_bar)) {
                                                 players[i].debug_health_bar destroy();
                                                 players[i].debug_health_text destroy();
@@ -648,7 +544,7 @@ function updatedevsettings() {
                                                 level showonespawnpoint(level.radios[i], color, "", 32, "");
                                               }
                                             } else {
-                                              level notify(# "hide_hq_points");
+                                              level notify("hide_hq_points");
                                             }
                                             level.devgui_show_hq = !level.devgui_show_hq;
                                           }
@@ -787,7 +683,7 @@ function updatedevsettings() {
       player thread rank::giverankxp("", newxp - lastxp);
       lastxp = newxp;
       wait(0.25);
-      self notify(# "cancel_notify");
+      self notify("cancel_notify");
     }
   }
   if(getdvarstring("") != "") {
@@ -825,7 +721,7 @@ function updatedevsettings() {
   if(getdvarstring("") == "" && !isdefined(level.larry)) {
     thread larry_thread();
   } else if(getdvarstring("") == "") {
-    level notify(# "kill_larry");
+    level notify("kill_larry");
   }
   if(level.bot_overlay == 0 && getdvarint("") == 1) {
     level thread bot_overlay_think();
@@ -857,60 +753,27 @@ function updatedevsettings() {
     level thread waitthennotifyroundkillcam();
   }
   if(!level.bot_overlay && !level.bot_threat && !level.bot_path) {
-    level notify(# "bot_dpad_terminate");
+    level notify("bot_dpad_terminate");
   }
-  # /
 }
 
-/*
-	Name: waitthennotifyroundkillcam
-	Namespace: dev
-	Checksum: 0xAA2F7617
-	Offset: 0x3BB8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function waitthennotifyroundkillcam() {
-  /#
   wait(0.05);
-  level notify(# "play_final_killcam");
+  level notify("play_final_killcam");
   setdvar("", 0);
-  # /
 }
 
-/*
-	Name: waitthennotifyfinalkillcam
-	Namespace: dev
-	Checksum: 0xDADD415A
-	Offset: 0x3C00
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function waitthennotifyfinalkillcam() {
-  /#
   wait(0.05);
-  level notify(# "play_final_killcam");
+  level notify("play_final_killcam");
   wait(0.05);
   setdvar("", 0);
-  # /
 }
 
-/*
-	Name: devgui_spawn_think
-	Namespace: dev
-	Checksum: 0x2B40E928
-	Offset: 0x3C50
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_spawn_think() {
-  /#
-  self notify(# "devgui_spawn_think");
-  self endon(# "devgui_spawn_think");
-  self endon(# "disconnect");
+  self notify("devgui_spawn_think");
+  self endon("devgui_spawn_think");
+  self endon("disconnect");
   dpad_left = 0;
   dpad_right = 0;
   for (;;) {
@@ -930,23 +793,12 @@ function devgui_spawn_think() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: devgui_unlimited_ammo
-	Namespace: dev
-	Checksum: 0x27A030A3
-	Offset: 0x3DE8
-	Size: 0x162
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_unlimited_ammo() {
-  /#
-  self notify(# "devgui_unlimited_ammo");
-  self endon(# "devgui_unlimited_ammo");
-  self endon(# "disconnect");
+  self notify("devgui_unlimited_ammo");
+  self endon("devgui_unlimited_ammo");
+  self endon("disconnect");
   for (;;) {
     wait(1);
     primary_weapons = self getweaponslistprimaries();
@@ -964,22 +816,11 @@ function devgui_unlimited_ammo() {
       self givemaxammo(weapon);
     }
   }
-  # /
 }
 
-/*
-	Name: devgui_unlimited_momentum
-	Namespace: dev
-	Checksum: 0x71B2D8B6
-	Offset: 0x3F58
-	Size: 0x11E
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_unlimited_momentum() {
-  /#
-  level notify(# "devgui_unlimited_momentum");
-  level endon(# "devgui_unlimited_momentum");
+  level notify("devgui_unlimited_momentum");
+  level endon("devgui_unlimited_momentum");
   for (;;) {
     wait(1);
     players = getplayers();
@@ -996,20 +837,9 @@ function devgui_unlimited_momentum() {
       globallogic_score::_setplayermomentum(player, 5000);
     }
   }
-  # /
 }
 
-/*
-	Name: devgui_increase_momentum
-	Namespace: dev
-	Checksum: 0x50FB2A68
-	Offset: 0x4080
-	Size: 0x112
-	Parameters: 1
-	Flags: Linked
-*/
 function devgui_increase_momentum(score) {
-  /#
   players = getplayers();
   foreach(player in players) {
     if(!isdefined(player)) {
@@ -1023,23 +853,12 @@ function devgui_increase_momentum(score) {
     }
     player globallogic_score::giveplayermomentumnotification(score, & "", "");
   }
-  # /
 }
 
-/*
-	Name: devgui_health_debug
-	Namespace: dev
-	Checksum: 0x156BCB9F
-	Offset: 0x41A0
-	Size: 0x318
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_health_debug() {
-  /#
-  self notify(# "devgui_health_debug");
-  self endon(# "devgui_health_debug");
-  self endon(# "disconnect");
+  self notify("devgui_health_debug");
+  self endon("devgui_health_debug");
+  self endon("disconnect");
   x = 80;
   y = 40;
   self.debug_health_bar = newclienthudelem(self);
@@ -1072,44 +891,20 @@ function devgui_health_debug() {
     self.debug_health_bar setshader("", width, 8);
     self.debug_health_text setvalue(self.health);
   }
-  # /
 }
 
-/*
-	Name: giveextraperks
-	Namespace: dev
-	Checksum: 0xE50D0B39
-	Offset: 0x44C0
-	Size: 0xC6
-	Parameters: 0
-	Flags: Linked
-*/
 function giveextraperks() {
-  /#
   if(!isdefined(self.extraperks)) {
     return;
   }
   perks = getarraykeys(self.extraperks);
   for (i = 0; i < perks.size; i++) {
-    /#
     println(((("" + self.name) + "") + perks[i]) + "");
-    # /
-      self setperk(perks[i]);
+    self setperk(perks[i]);
   }
-  # /
 }
 
-/*
-	Name: xkillsy
-	Namespace: dev
-	Checksum: 0xBC81E1ED
-	Offset: 0x4590
-	Size: 0x14C
-	Parameters: 2
-	Flags: Linked
-*/
 function xkillsy(attackername, victimname) {
-  /#
   attacker = undefined;
   victim = undefined;
   for (index = 0; index < level.players.size; index++) {
@@ -1125,107 +920,35 @@ function xkillsy(attackername, victimname) {
     return;
   }
   victim thread[[level.callbackplayerdamage]](attacker, attacker, 1000, 0, "", level.weaponnone, (0, 0, 0), (0, 0, 0), "", (0, 0, 0), 0, 0, (1, 0, 0));
-  # /
 }
 
-/*
-	Name: testscriptruntimeerrorassert
-	Namespace: dev
-	Checksum: 0x23FC05B7
-	Offset: 0x46E8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function testscriptruntimeerrorassert() {
-  /#
   wait(1);
-  /#
   assert(0);
-  # /
-    # /
 }
 
-/*
-	Name: testscriptruntimeassertmsgassert
-	Namespace: dev
-	Checksum: 0xF0D6B813
-	Offset: 0x4718
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function testscriptruntimeassertmsgassert() {
-  /#
   wait(1);
-  /#
   assertmsg("");
-  # /
-    # /
 }
 
-/*
-	Name: testscriptruntimeerrormsgassert
-	Namespace: dev
-	Checksum: 0x6AB82F7
-	Offset: 0x4750
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function testscriptruntimeerrormsgassert() {
-  /#
   wait(1);
-  /#
   errormsg("");
-  # /
-    # /
 }
 
-/*
-	Name: testscriptruntimeerror2
-	Namespace: dev
-	Checksum: 0x967402EB
-	Offset: 0x4788
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function testscriptruntimeerror2() {
-  /#
   myundefined = "";
   if(myundefined == 1) {
     println("");
   }
-  # /
 }
 
-/*
-	Name: testscriptruntimeerror1
-	Namespace: dev
-	Checksum: 0x99F770E5
-	Offset: 0x47D8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function testscriptruntimeerror1() {
-  /#
   testscriptruntimeerror2();
-  # /
 }
 
-/*
-	Name: testscriptruntimeerror
-	Namespace: dev
-	Checksum: 0x8F8AF74D
-	Offset: 0x4800
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function testscriptruntimeerror() {
-  /#
   wait(5);
   for (;;) {
     if(getdvarstring("") != "") {
@@ -1249,20 +972,9 @@ function testscriptruntimeerror() {
     }
   }
   thread testscriptruntimeerror();
-  # /
 }
 
-/*
-	Name: testdvars
-	Namespace: dev
-	Checksum: 0x85EEF04E
-	Offset: 0x4928
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function testdvars() {
-  /#
   wait(5);
   for (;;) {
     if(getdvarstring("") != "") {
@@ -1276,20 +988,9 @@ function testdvars() {
   setdvar(dvarname, dvarvalue);
   setdvar("", "");
   thread testdvars();
-  # /
 }
 
-/*
-	Name: addenemyheli
-	Namespace: dev
-	Checksum: 0x953B8AD6
-	Offset: 0x4A28
-	Size: 0x1E4
-	Parameters: 0
-	Flags: Linked
-*/
 function addenemyheli() {
-  /#
   wait(5);
   for (;;) {
     if(getdvarint("") > 0) {
@@ -1316,7 +1017,7 @@ function addenemyheli() {
       level.helilocation = ent.origin;
       ent thread helicopter::usekillstreakhelicopter("");
       wait(0.5);
-      ent notify(# "confirm_location", level.helilocation);
+      ent notify("confirm_location", level.helilocation);
       break;
     }
     case 2: {
@@ -1324,20 +1025,9 @@ function addenemyheli() {
     }
   }
   thread addenemyheli();
-  # /
 }
 
-/*
-	Name: getormakebot
-	Namespace: dev
-	Checksum: 0xAED7C259
-	Offset: 0x4C18
-	Size: 0x106
-	Parameters: 1
-	Flags: Linked
-*/
 function getormakebot(team) {
-  /#
   for (i = 0; i < level.players.size; i++) {
     if(level.players[i].team == team) {
       if(isdefined(level.players[i].pers[""]) && level.players[i].pers[""]) {
@@ -1351,20 +1041,9 @@ function getormakebot(team) {
     wait(1);
   }
   return ent;
-  # /
 }
 
-/*
-	Name: addtestcarepackage
-	Namespace: dev
-	Checksum: 0xD723E670
-	Offset: 0x4D28
-	Size: 0x20C
-	Parameters: 0
-	Flags: Linked
-*/
 function addtestcarepackage() {
-  /#
   wait(5);
   for (;;) {
     if(getdvarint("") > 0) {
@@ -1399,20 +1078,9 @@ function addtestcarepackage() {
   ent killstreakrules::killstreakstart("", team);
   ent thread supplydrop::helidelivercrate(ent.origin, getweapon(""), ent, team);
   thread addtestcarepackage();
-  # /
 }
 
-/*
-	Name: showonespawnpoint
-	Namespace: dev
-	Checksum: 0x5FA1B150
-	Offset: 0x4F40
-	Size: 0x5B4
-	Parameters: 5
-	Flags: Linked
-*/
 function showonespawnpoint(spawn_point, color, notification, height, print) {
-  /#
   if(!isdefined(height) || height <= 0) {
     height = util::get_player_height();
   }
@@ -1462,20 +1130,9 @@ function showonespawnpoint(spawn_point, color, notification, height, print) {
   thread lineuntilnotified(a, b, color, 0, notification);
   thread lineuntilnotified(a, c, color, 0, notification);
   thread print3duntilnotified(spawn_point.origin + (0, 0, height), print, color, 1, 1, notification);
-  # /
 }
 
-/*
-	Name: showspawnpoints
-	Namespace: dev
-	Checksum: 0x873925CD
-	Offset: 0x5500
-	Size: 0xE6
-	Parameters: 0
-	Flags: Linked
-*/
 function showspawnpoints() {
-  /#
   if(isdefined(level.spawnpoints)) {
     color = (1, 1, 1);
     for (spawn_point_index = 0; spawn_point_index < level.spawnpoints.size; spawn_point_index++) {
@@ -1486,35 +1143,13 @@ function showspawnpoints() {
     color = (0, 1, 0);
     showonespawnpoint(level.dem_spawns[i], color, "");
   }
-  # /
 }
 
-/*
-	Name: hidespawnpoints
-	Namespace: dev
-	Checksum: 0x8F477CDA
-	Offset: 0x55F0
-	Size: 0x16
-	Parameters: 0
-	Flags: Linked
-*/
 function hidespawnpoints() {
-  /#
-  level notify(# "hide_spawnpoints");
-  # /
+  level notify("hide_spawnpoints");
 }
 
-/*
-	Name: showstartspawnpoints
-	Namespace: dev
-	Checksum: 0x19DA8736
-	Offset: 0x5610
-	Size: 0x2BA
-	Parameters: 0
-	Flags: Linked
-*/
 function showstartspawnpoints() {
-  /#
   if(!isdefined(level.spawn_start)) {
     return;
   }
@@ -1542,74 +1177,30 @@ function showstartspawnpoints() {
       showonespawnpoint(spawnpoint, color, "");
     }
   }
-  # /
 }
 
-/*
-	Name: hidestartspawnpoints
-	Namespace: dev
-	Checksum: 0x8BAC8A46
-	Offset: 0x58D8
-	Size: 0x16
-	Parameters: 0
-	Flags: Linked
-*/
 function hidestartspawnpoints() {
-  /#
-  level notify(# "hide_startspawnpoints");
-  # /
+  level notify("hide_startspawnpoints");
 }
 
-/*
-	Name: print3duntilnotified
-	Namespace: dev
-	Checksum: 0xDC31652C
-	Offset: 0x58F8
-	Size: 0x70
-	Parameters: 6
-	Flags: Linked
-*/
 function print3duntilnotified(origin, text, color, alpha, scale, notification) {
-  /#
   level endon(notification);
   for (;;) {
     print3d(origin, text, color, alpha, scale);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: lineuntilnotified
-	Namespace: dev
-	Checksum: 0xF629061E
-	Offset: 0x5970
-	Size: 0x68
-	Parameters: 5
-	Flags: Linked
-*/
 function lineuntilnotified(start, end, color, depthtest, notification) {
-  /#
   level endon(notification);
   for (;;) {
     line(start, end, color, depthtest);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: engagement_distance_debug_toggle
-	Namespace: dev
-	Checksum: 0xFA58C923
-	Offset: 0x59E0
-	Size: 0x160
-	Parameters: 0
-	Flags: Linked
-*/
 function engagement_distance_debug_toggle() {
-  /#
-  level endon(# "kill_engage_dist_debug_toggle_watcher");
+  level endon("kill_engage_dist_debug_toggle_watcher");
   if(!isdefined(getdvarint(""))) {
     setdvar("", "");
   }
@@ -1621,43 +1212,21 @@ function engagement_distance_debug_toggle() {
       thread debug_realtime_engage_dist();
       laststate = currentstate;
     } else if(!dvar_turned_on(currentstate) && dvar_turned_on(laststate)) {
-      level notify(# "kill_all_engage_dist_debug");
+      level notify("kill_all_engage_dist_debug");
       laststate = currentstate;
     }
     wait(0.3);
   }
-  # /
 }
 
-/*
-	Name: dvar_turned_on
-	Namespace: dev
-	Checksum: 0x5AEC9DA2
-	Offset: 0x5B48
-	Size: 0x28
-	Parameters: 1
-	Flags: Linked
-*/
 function dvar_turned_on(val) {
-  /#
   if(val <= 0) {
     return false;
   }
   return true;
-  # /
 }
 
-/*
-	Name: engagement_distance_debug_init
-	Namespace: dev
-	Checksum: 0x18123CE9
-	Offset: 0x5B80
-	Size: 0x3BA
-	Parameters: 0
-	Flags: Linked
-*/
 function engagement_distance_debug_init() {
-  /#
   level.debug_xpos = -50;
   level.debug_ypos = 250;
   level.debug_yinc = 18;
@@ -1703,38 +1272,16 @@ function engagement_distance_debug_init() {
   hudobjarray[2] = level.realtimeengagedist_middle;
   hudobjarray[3] = level.realtimeengagedist_offvalue;
   return hudobjarray;
-  # /
 }
 
-/*
-	Name: engage_dist_debug_hud_destroy
-	Namespace: dev
-	Checksum: 0x6D743A90
-	Offset: 0x5F48
-	Size: 0x66
-	Parameters: 2
-	Flags: Linked
-*/
 function engage_dist_debug_hud_destroy(hudarray, killnotify) {
-  /#
   level waittill(killnotify);
   for (i = 0; i < hudarray.size; i++) {
     hudarray[i] destroy();
   }
-  # /
 }
 
-/*
-	Name: weapon_engage_dists_init
-	Namespace: dev
-	Checksum: 0x8BA9F94A
-	Offset: 0x5FB8
-	Size: 0x8C4
-	Parameters: 0
-	Flags: Linked
-*/
 function weapon_engage_dists_init() {
-  /#
   level.engagedists = [];
   genericpistol = spawnstruct();
   genericpistol.engagedistmin = 125;
@@ -1818,55 +1365,22 @@ function weapon_engage_dists_init() {
   engage_dists_add("", genericsniper);
   engage_dists_add("", genericsniper);
   level thread engage_dists_watcher();
-  # /
 }
 
-/*
-	Name: engage_dists_add
-	Namespace: dev
-	Checksum: 0xD0850EA4
-	Offset: 0x6888
-	Size: 0x3E
-	Parameters: 2
-	Flags: Linked
-*/
 function engage_dists_add(weaponname, values) {
-  /#
   level.engagedists[getweapon(weaponname)] = values;
-  # /
 }
 
-/*
-	Name: get_engage_dists
-	Namespace: dev
-	Checksum: 0xA8B80D86
-	Offset: 0x68D0
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function get_engage_dists(weapon) {
-  /#
   if(isdefined(level.engagedists[weapon])) {
     return level.engagedists[weapon];
   }
   return undefined;
-  # /
 }
 
-/*
-	Name: engage_dists_watcher
-	Namespace: dev
-	Checksum: 0x27F13CB3
-	Offset: 0x6918
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function engage_dists_watcher() {
-  /#
-  level endon(# "kill_all_engage_dist_debug");
-  level endon(# "kill_engage_dists_watcher");
+  level endon("kill_all_engage_dist_debug");
+  level endon("kill_engage_dists_watcher");
   while (true) {
     player = util::gethostplayer();
     playerweapon = player getcurrentweapon();
@@ -1885,22 +1399,11 @@ function engage_dists_watcher() {
     player.lastweapon = playerweapon;
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: debug_realtime_engage_dist
-	Namespace: dev
-	Checksum: 0xE6FC00D7
-	Offset: 0x6A40
-	Size: 0x498
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_realtime_engage_dist() {
-  /#
-  level endon(# "kill_all_engage_dist_debug");
-  level endon(# "kill_realtime_engagement_distance_debug");
+  level endon("kill_all_engage_dist_debug");
+  level endon("kill_realtime_engagement_distance_debug");
   hudobjarray = engagement_distance_debug_init();
   level thread engage_dist_debug_hud_destroy(hudobjarray, "");
   level.debugrtengagedistcolor = level.green;
@@ -1948,20 +1451,9 @@ function debug_realtime_engage_dist() {
     thread plot_circle_fortime(1, 1, 0.05, level.debugrtengagedistcolor, tracepoint, tracenormal);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: hudobj_changecolor
-	Namespace: dev
-	Checksum: 0x193DE1DA
-	Offset: 0x6EE0
-	Size: 0x92
-	Parameters: 2
-	Flags: Linked
-*/
 function hudobj_changecolor(hudobjarray, newcolor) {
-  /#
   for (i = 0; i < hudobjarray.size; i++) {
     hudobj = hudobjarray[i];
     if(hudobj.color != newcolor) {
@@ -1969,20 +1461,9 @@ function hudobj_changecolor(hudobjarray, newcolor) {
       level.debugrtengagedistcolor = newcolor;
     }
   }
-  # /
 }
 
-/*
-	Name: engagedist_hud_changetext
-	Namespace: dev
-	Checksum: 0xD73A623A
-	Offset: 0x6F80
-	Size: 0x2EC
-	Parameters: 2
-	Flags: Linked
-*/
 function engagedist_hud_changetext(engagedisttype, units) {
-  /#
   if(!isdefined(level.lastdisttype)) {
     level.lastdisttype = "";
   }
@@ -2022,20 +1503,9 @@ function engagedist_hud_changetext(engagedisttype, units) {
     }
   }
   level.lastdisttype = engagedisttype;
-  # /
 }
 
-/*
-	Name: plot_circle_fortime
-	Namespace: dev
-	Checksum: 0x860109FD
-	Offset: 0x7278
-	Size: 0x1EE
-	Parameters: 6
-	Flags: Linked
-*/
 function plot_circle_fortime(radius1, radius2, time, color, origin, normal) {
-  /#
   if(!isdefined(color)) {
     color = (0, 1, 0);
   }
@@ -2059,20 +1529,9 @@ function plot_circle_fortime(radius1, radius2, time, color, origin, normal) {
     plotpoints = [];
     wait(hangtime);
   }
-  # /
 }
 
-/*
-	Name: larry_thread
-	Namespace: dev
-	Checksum: 0xB6977D03
-	Offset: 0x7470
-	Size: 0x1C6
-	Parameters: 0
-	Flags: Linked
-*/
 function larry_thread() {
-  /#
   setdvar("", "");
   setdvar("", "");
   setdvar("", "");
@@ -2080,7 +1539,7 @@ function larry_thread() {
   level.larry = spawnstruct();
   player = util::gethostplayer();
   player thread larry_init(level.larry);
-  level waittill(# "kill_larry");
+  level waittill("kill_larry");
   larry_hud_destroy(level.larry);
   if(isdefined(level.larry.model)) {
     level.larry.model delete();
@@ -2091,21 +1550,10 @@ function larry_thread() {
     }
   }
   level.larry = undefined;
-  # /
 }
 
-/*
-	Name: larry_init
-	Namespace: dev
-	Checksum: 0x5110F
-	Offset: 0x7640
-	Size: 0x270
-	Parameters: 1
-	Flags: Linked
-*/
 function larry_init(larry) {
-  /#
-  level endon(# "kill_larry");
+  level endon("kill_larry");
   larry_hud_init(larry);
   larry.model = spawn("", (0, 0, 0));
   larry.model setmodel("");
@@ -2132,42 +1580,20 @@ function larry_init(larry) {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: larry_ai
-	Namespace: dev
-	Checksum: 0x21E6AABB
-	Offset: 0x78B8
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function larry_ai(larry) {
-  /#
   larry.ai[larry.ai.size] = bot::add_bot("");
   i = larry.ai.size - 1;
   larry.ai[i] thread larry_ai_thread(larry, larry.model.origin, larry.model.angles);
   larry.ai[i] thread larry_ai_damage(larry);
   larry.ai[i] thread larry_ai_health(larry);
-  # /
 }
 
-/*
-	Name: larry_ai_thread
-	Namespace: dev
-	Checksum: 0x3B01A55C
-	Offset: 0x79D0
-	Size: 0x1D0
-	Parameters: 3
-	Flags: Linked
-*/
 function larry_ai_thread(larry, origin, angles) {
-  /#
-  level endon(# "kill_larry");
+  level endon("kill_larry");
   for (;;) {
-    self waittill(# "spawned_player");
+    self waittill("spawned_player");
     larry.menu[larry.menu_health] setvalue(self.health);
     larry.menu[larry.menu_damage] settext("");
     larry.menu[larry.menu_range] settext("");
@@ -2178,23 +1604,12 @@ function larry_ai_thread(larry, origin, angles) {
     self setplayerangles(angles);
     self clearperks();
   }
-  # /
 }
 
-/*
-	Name: larry_ai_damage
-	Namespace: dev
-	Checksum: 0xD3629016
-	Offset: 0x7BA8
-	Size: 0x288
-	Parameters: 1
-	Flags: Linked
-*/
 function larry_ai_damage(larry) {
-  /#
-  level endon(# "kill_larry");
+  level endon("kill_larry");
   for (;;) {
-    self waittill(# "damage", damage, attacker, dir, point);
+    self waittill("damage", damage, attacker, dir, point);
     if(!isdefined(attacker)) {
       continue;
     }
@@ -2221,37 +1636,16 @@ function larry_ai_damage(larry) {
     }
     larry.menu[larry.menu_weapon] settext("");
   }
-  # /
 }
 
-/*
-	Name: larry_ai_health
-	Namespace: dev
-	Checksum: 0x4CA61D9E
-	Offset: 0x7E38
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked
-*/
 function larry_ai_health(larry) {
-  /#
-  level endon(# "kill_larry");
+  level endon("kill_larry");
   for (;;) {
     wait(0.05);
     larry.menu[larry.menu_health] setvalue(self.health);
   }
-  # /
 }
 
-/*
-	Name: larry_hud_init
-	Namespace: dev
-	Checksum: 0x37D24781
-	Offset: 0x7EA0
-	Size: 0x5C6
-	Parameters: 1
-	Flags: Linked
-*/
 function larry_hud_init(larry) {
   /# /
   #
@@ -2286,21 +1680,9 @@ function larry_hud_init(larry) {
   larry.menu[larry.menu_hitloc] = new_hud(menu_name, "", x + x_offset, y + 40, 1);
   larry.menu[larry.menu_weapon] = new_hud(menu_name, "", x + x_offset, y + 50, 1);
   larry.menu[larry.menu_perks] = new_hud(menu_name, "", x + x_offset, y + 60, 1);
-  # /
-    # /
 }
 
-/*
-	Name: larry_hud_destroy
-	Namespace: dev
-	Checksum: 0x1C98712B
-	Offset: 0x8470
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function larry_hud_destroy(larry) {
-  /#
   if(isdefined(larry.hud)) {
     larry.hud destroy();
     for (i = 0; i < larry.menu.size; i++) {
@@ -2308,20 +1690,9 @@ function larry_hud_destroy(larry) {
     }
     larry.cleartextmarker destroy();
   }
-  # /
 }
 
-/*
-	Name: new_hud
-	Namespace: dev
-	Checksum: 0x144876F9
-	Offset: 0x8538
-	Size: 0xC0
-	Parameters: 5
-	Flags: Linked
-*/
 function new_hud(hud_name, msg, x, y, scale) {
-  /#
   if(!isdefined(level.hud_array)) {
     level.hud_array = [];
   }
@@ -2331,18 +1702,8 @@ function new_hud(hud_name, msg, x, y, scale) {
   hud = set_hudelem(msg, x, y, scale);
   level.hud_array[hud_name][level.hud_array[hud_name].size] = hud;
   return hud;
-  # /
 }
 
-/*
-	Name: set_hudelem
-	Namespace: dev
-	Checksum: 0x7A6D5DE1
-	Offset: 0x8608
-	Size: 0x1A0
-	Parameters: 7
-	Flags: Linked
-*/
 function set_hudelem(text, x, y, scale, alpha, sort, debug_hudelem) {
   /# /
   #
@@ -2371,21 +1732,9 @@ function set_hudelem(text, x, y, scale, alpha, sort, debug_hudelem) {
     hud settext(text);
   }
   return hud;
-  # /
-    # /
 }
 
-/*
-	Name: watch_botsdvars
-	Namespace: dev
-	Checksum: 0x6DCDBA09
-	Offset: 0x87B8
-	Size: 0x228
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_botsdvars() {
-  /#
   hasplayerweaponprev = getdvarint("");
   grenadesonlyprev = getdvarint("");
   secondarygrenadesonlyprev = getdvarint("");
@@ -2416,36 +1765,14 @@ function watch_botsdvars() {
     }
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: getattachmentchangemodifierbutton
-	Namespace: dev
-	Checksum: 0xF5AFDBAF
-	Offset: 0x89E8
-	Size: 0xE
-	Parameters: 0
-	Flags: Linked
-*/
 function getattachmentchangemodifierbutton() {
-  /#
   return "";
-  # /
 }
 
-/*
-	Name: watchattachmentchange
-	Namespace: dev
-	Checksum: 0x974EB8F2
-	Offset: 0x8A00
-	Size: 0x3AC
-	Parameters: 0
-	Flags: None
-*/
 function watchattachmentchange() {
-  /#
-  self endon(# "disconnect");
+  self endon("disconnect");
   clientnum = self getentitynumber();
   if(clientnum != 0) {
     return;
@@ -2501,28 +1828,17 @@ function watchattachmentchange() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: print_weapon_name
-	Namespace: dev
-	Checksum: 0x4B66C4C8
-	Offset: 0x8DB8
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function print_weapon_name() {
-  /#
-  self notify(# "print_weapon_name");
-  self endon(# "print_weapon_name");
+  self notify("print_weapon_name");
+  self endon("print_weapon_name");
   wait(0.2);
   if(self isswitchingweapons()) {
-    self waittill(# "weapon_change_complete", weapon);
+    self waittill("weapon_change_complete", weapon);
     fail_safe = 0;
     while (weapon == level.weaponnone) {
-      self waittill(# "weapon_change_complete", weapon);
+      self waittill("weapon_change_complete", weapon);
       wait(0.05);
       fail_safe++;
       if(fail_safe > 120) {
@@ -2536,20 +1852,9 @@ function print_weapon_name() {
   if(printweaponname) {
     iprintlnbold(weapon.name);
   }
-  # /
 }
 
-/*
-	Name: set_equipment_list
-	Namespace: dev
-	Checksum: 0x6B3B6A44
-	Offset: 0x8EE0
-	Size: 0x1B2
-	Parameters: 0
-	Flags: Linked
-*/
 function set_equipment_list() {
-  /#
   if(isdefined(level.dev_equipment)) {
     return;
   }
@@ -2564,20 +1869,9 @@ function set_equipment_list() {
   level.dev_equipment[8] = getweapon("");
   level.dev_equipment[9] = getweapon("");
   level.dev_equipment[10] = getweapon("");
-  # /
 }
 
-/*
-	Name: set_grenade_list
-	Namespace: dev
-	Checksum: 0xE8D5E3A2
-	Offset: 0x90A0
-	Size: 0x1DA
-	Parameters: 0
-	Flags: Linked
-*/
 function set_grenade_list() {
-  /#
   if(isdefined(level.dev_grenade)) {
     return;
   }
@@ -2593,40 +1887,18 @@ function set_grenade_list() {
   level.dev_grenade[9] = getweapon("");
   level.dev_grenade[10] = getweapon("");
   level.dev_grenade[11] = getweapon("");
-  # /
 }
 
-/*
-	Name: take_all_grenades_and_equipment
-	Namespace: dev
-	Checksum: 0x511E34B6
-	Offset: 0x9288
-	Size: 0xB6
-	Parameters: 1
-	Flags: Linked
-*/
 function take_all_grenades_and_equipment(player) {
-  /#
   for (i = 0; i < level.dev_equipment.size; i++) {
     player takeweapon(level.dev_equipment[i + 1]);
   }
   for (i = 0; i < level.dev_grenade.size; i++) {
     player takeweapon(level.dev_grenade[i + 1]);
   }
-  # /
 }
 
-/*
-	Name: equipment_dev_gui
-	Namespace: dev
-	Checksum: 0xE5EEE73F
-	Offset: 0x9348
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function equipment_dev_gui() {
-  /#
   set_equipment_list();
   set_grenade_list();
   setdvar("", "");
@@ -2641,20 +1913,9 @@ function equipment_dev_gui() {
       setdvar("", "");
     }
   }
-  # /
 }
 
-/*
-	Name: grenade_dev_gui
-	Namespace: dev
-	Checksum: 0x46D7C44D
-	Offset: 0x9478
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function grenade_dev_gui() {
-  /#
   set_equipment_list();
   set_grenade_list();
   setdvar("", "");
@@ -2669,20 +1930,9 @@ function grenade_dev_gui() {
       setdvar("", "");
     }
   }
-  # /
 }
 
-/*
-	Name: force_grenade_throw
-	Namespace: dev
-	Checksum: 0x84E4D854
-	Offset: 0x95A8
-	Size: 0x28C
-	Parameters: 1
-	Flags: Linked
-*/
 function force_grenade_throw(weapon) {
-  /#
   if(weapon == level.weaponnone) {
     return;
   }
@@ -2710,23 +1960,12 @@ function force_grenade_throw(weapon) {
   grenade = bot magicgrenadeplayer(weapon, origin, velocity);
   grenade setteam(bot.team);
   grenade setowner(bot);
-  # /
 }
 
-/*
-	Name: bot_dpad_think
-	Namespace: dev
-	Checksum: 0xA5E9190C
-	Offset: 0x9840
-	Size: 0x2A6
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_dpad_think() {
-  /#
-  level notify(# "bot_dpad_stop");
-  level endon(# "bot_dpad_stop");
-  level endon(# "bot_dpad_terminate");
+  level notify("bot_dpad_stop");
+  level endon("bot_dpad_stop");
+  level endon("bot_dpad_terminate");
   if(!isdefined(level.bot_index)) {
     level.bot_index = 0;
   }
@@ -2768,23 +2007,12 @@ function bot_dpad_think() {
     } else if(!host buttonpressed("")) {
       dpad_right = 0;
     }
-    level notify(# "bot_index_changed");
+    level notify("bot_index_changed");
   }
-  # /
 }
 
-/*
-	Name: bot_overlay_think
-	Namespace: dev
-	Checksum: 0x122DCE78
-	Offset: 0x9AF0
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_overlay_think() {
-  /#
-  level endon(# "bot_overlay_stop");
+  level endon("bot_overlay_stop");
   level thread bot_dpad_think();
   iprintln("");
   iprintln("");
@@ -2792,23 +2020,12 @@ function bot_overlay_think() {
     if(getdvarint("") != level.bot_index) {
       setdvar("", level.bot_index);
     }
-    level waittill(# "bot_index_changed");
+    level waittill("bot_index_changed");
   }
-  # /
 }
 
-/*
-	Name: bot_threat_think
-	Namespace: dev
-	Checksum: 0x4BB85F63
-	Offset: 0x9BA8
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_threat_think() {
-  /#
-  level endon(# "bot_threat_stop");
+  level endon("bot_threat_stop");
   level thread bot_dpad_think();
   iprintln("");
   iprintln("");
@@ -2816,23 +2033,12 @@ function bot_threat_think() {
     if(getdvarint("") != level.bot_index) {
       setdvar("", level.bot_index);
     }
-    level waittill(# "bot_index_changed");
+    level waittill("bot_index_changed");
   }
-  # /
 }
 
-/*
-	Name: bot_path_think
-	Namespace: dev
-	Checksum: 0x6B4A398C
-	Offset: 0x9C60
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_path_think() {
-  /#
-  level endon(# "bot_path_stop");
+  level endon("bot_path_stop");
   level thread bot_dpad_think();
   iprintln("");
   iprintln("");
@@ -2840,70 +2046,26 @@ function bot_path_think() {
     if(getdvarint("") != level.bot_index) {
       setdvar("", level.bot_index);
     }
-    level waittill(# "bot_index_changed");
+    level waittill("bot_index_changed");
   }
-  # /
 }
 
-/*
-	Name: bot_overlay_stop
-	Namespace: dev
-	Checksum: 0x4870ABD
-	Offset: 0x9D18
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_overlay_stop() {
-  /#
-  level notify(# "bot_overlay_stop");
+  level notify("bot_overlay_stop");
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: bot_path_stop
-	Namespace: dev
-	Checksum: 0x56CF9897
-	Offset: 0x9D58
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_path_stop() {
-  /#
-  level notify(# "bot_path_stop");
+  level notify("bot_path_stop");
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: bot_threat_stop
-	Namespace: dev
-	Checksum: 0x8D38DD0C
-	Offset: 0x9D98
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_threat_stop() {
-  /#
-  level notify(# "bot_threat_stop");
+  level notify("bot_threat_stop");
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: devstraferunpathdebugdraw
-	Namespace: dev
-	Checksum: 0xB5CB3734
-	Offset: 0x9DD8
-	Size: 0x49A
-	Parameters: 0
-	Flags: Linked
-*/
 function devstraferunpathdebugdraw() {
-  /#
   white = (1, 1, 1);
   red = (1, 0, 0);
   green = (0, 1, 0);
@@ -2983,20 +2145,9 @@ function devstraferunpathdebugdraw() {
       wait(1);
     }
   }
-  # /
 }
 
-/*
-	Name: devhelipathdebugdraw
-	Namespace: dev
-	Checksum: 0x7D199DF4
-	Offset: 0xA280
-	Size: 0x3C0
-	Parameters: 0
-	Flags: Linked
-*/
 function devhelipathdebugdraw() {
-  /#
   white = (1, 1, 1);
   red = (1, 0, 0);
   green = (0, 1, 0);
@@ -3067,115 +2218,49 @@ function devhelipathdebugdraw() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: draworiginlines
-	Namespace: dev
-	Checksum: 0x6ABFDE4E
-	Offset: 0xA648
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function draworiginlines() {
-  /#
   red = (1, 0, 0);
   green = (0, 1, 0);
   blue = (0, 0, 1);
   line(self.origin, self.origin + (anglestoforward(self.angles) * 10), red);
   line(self.origin, self.origin + (anglestoright(self.angles) * 10), green);
   line(self.origin, self.origin + (anglestoup(self.angles) * 10), blue);
-  # /
 }
 
-/*
-	Name: drawtargetnametext
-	Namespace: dev
-	Checksum: 0xA3935E6C
-	Offset: 0xA768
-	Size: 0x74
-	Parameters: 4
-	Flags: Linked
-*/
 function drawtargetnametext(textcolor, textalpha, textscale, textoffset) {
-  /#
   if(!isdefined(textoffset)) {
     textoffset = (0, 0, 0);
   }
   print3d(self.origin + textoffset, self.targetname, textcolor, textalpha, textscale);
-  # /
 }
 
-/*
-	Name: drawnoteworthytext
-	Namespace: dev
-	Checksum: 0x42E4CCD3
-	Offset: 0xA7E8
-	Size: 0x74
-	Parameters: 4
-	Flags: Linked
-*/
 function drawnoteworthytext(textcolor, textalpha, textscale, textoffset) {
-  /#
   if(!isdefined(textoffset)) {
     textoffset = (0, 0, 0);
   }
   print3d(self.origin + textoffset, self.script_noteworthy, textcolor, textalpha, textscale);
-  # /
 }
 
-/*
-	Name: draworigintext
-	Namespace: dev
-	Checksum: 0x85C30AB3
-	Offset: 0xA868
-	Size: 0xC4
-	Parameters: 4
-	Flags: Linked
-*/
 function draworigintext(textcolor, textalpha, textscale, textoffset) {
-  /#
   if(!isdefined(textoffset)) {
     textoffset = (0, 0, 0);
   }
   originstring = ((((("" + self.origin[0]) + "") + self.origin[1]) + "") + self.origin[2]) + "";
   print3d(self.origin + textoffset, originstring, textcolor, textalpha, textscale);
-  # /
 }
 
-/*
-	Name: drawspeedacceltext
-	Namespace: dev
-	Checksum: 0xD9E111A9
-	Offset: 0xA938
-	Size: 0xDC
-	Parameters: 4
-	Flags: Linked
-*/
 function drawspeedacceltext(textcolor, textalpha, textscale, textoffset) {
-  /#
   if(isdefined(self.script_airspeed)) {
     print3d(self.origin + (0, 0, textoffset[2] * 2), "" + self.script_airspeed, textcolor, textalpha, textscale);
   }
   if(isdefined(self.script_accel)) {
     print3d(self.origin + (0, 0, textoffset[2] * 3), "" + self.script_accel, textcolor, textalpha, textscale);
   }
-  # /
 }
 
-/*
-	Name: drawpath
-	Namespace: dev
-	Checksum: 0xDAB997ED
-	Offset: 0xAA20
-	Size: 0x154
-	Parameters: 7
-	Flags: Linked
-*/
 function drawpath(linecolor, textcolor, textalpha, textscale, textoffset, drawtime, endonmsg) {
-  /#
   level endon(endonmsg);
   ent = self;
   entfirsttarget = ent.targetname;
@@ -3190,20 +2275,9 @@ function drawpath(linecolor, textcolor, textalpha, textscale, textoffset, drawti
     ent = enttarget;
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: drawpathsegment
-	Namespace: dev
-	Checksum: 0xB6F3ECBC
-	Offset: 0xAB80
-	Size: 0x124
-	Parameters: 8
-	Flags: Linked
-*/
 function drawpathsegment(enttarget, linecolor, textcolor, textalpha, textscale, textoffset, drawtime, endonmsg) {
-  /#
   level endon(endonmsg);
   while (drawtime > 0) {
     if(isdefined(self.targetname) && self.targetname == "") {
@@ -3214,93 +2288,38 @@ function drawpathsegment(enttarget, linecolor, textcolor, textalpha, textscale, 
     drawtime = drawtime - 0.05;
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: get_lookat_origin
-	Namespace: dev
-	Checksum: 0xD9794609
-	Offset: 0xACB0
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function get_lookat_origin(player) {
-  /#
   angles = player getplayerangles();
   forward = anglestoforward(angles);
   dir = vectorscale(forward, 8000);
   eye = player geteye();
   trace = bullettrace(eye, eye + dir, 0, undefined);
   return trace[""];
-  # /
 }
 
-/*
-	Name: draw_pathnode
-	Namespace: dev
-	Checksum: 0x2065D9E6
-	Offset: 0xAD80
-	Size: 0x74
-	Parameters: 2
-	Flags: Linked
-*/
 function draw_pathnode(node, color) {
-  /#
   if(!isdefined(color)) {
     color = (1, 0, 1);
   }
   box(node.origin, vectorscale((-1, -1, 0), 16), vectorscale((1, 1, 1), 16), 0, color, 1, 0, 1);
-  # /
 }
 
-/*
-	Name: draw_pathnode_think
-	Namespace: dev
-	Checksum: 0xB08A4281
-	Offset: 0xAE00
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked
-*/
 function draw_pathnode_think(node, color) {
-  /#
-  level endon(# "draw_pathnode_stop");
+  level endon("draw_pathnode_stop");
   for (;;) {
     draw_pathnode(node, color);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: draw_pathnodes_stop
-	Namespace: dev
-	Checksum: 0x785CC348
-	Offset: 0xAE50
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function draw_pathnodes_stop() {
-  /#
   wait(5);
-  level notify(# "draw_pathnode_stop");
-  # /
+  level notify("draw_pathnode_stop");
 }
 
-/*
-	Name: node_get
-	Namespace: dev
-	Checksum: 0x2D6353B9
-	Offset: 0xAE78
-	Size: 0x120
-	Parameters: 1
-	Flags: Linked
-*/
 function node_get(player) {
-  /#
   for (;;) {
     wait(0.05);
     origin = get_lookat_origin(player);
@@ -3320,26 +2339,15 @@ function node_get(player) {
     }
     draw_pathnode(node, (0.85, 0.85, 0.1));
   }
-  # /
 }
 
-/*
-	Name: dev_get_node_pair
-	Namespace: dev
-	Checksum: 0x6ABA584
-	Offset: 0xAFA0
-	Size: 0x1A6
-	Parameters: 0
-	Flags: Linked
-*/
 function dev_get_node_pair() {
-  /#
   player = util::gethostplayer();
   start = undefined;
   while (!isdefined(start)) {
     start = node_get(player);
     if(player buttonpressed("")) {
-      level notify(# "draw_pathnode_stop");
+      level notify("draw_pathnode_stop");
       return undefined;
     }
   }
@@ -3351,7 +2359,7 @@ function dev_get_node_pair() {
   while (!isdefined(end)) {
     end = node_get(player);
     if(player buttonpressed("")) {
-      level notify(# "draw_pathnode_stop");
+      level notify("draw_pathnode_stop");
       return undefined;
     }
   }
@@ -3361,38 +2369,16 @@ function dev_get_node_pair() {
   array[0] = start;
   array[1] = end;
   return array;
-  # /
 }
 
-/*
-	Name: draw_point
-	Namespace: dev
-	Checksum: 0xF5C55329
-	Offset: 0xB150
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function draw_point(origin, color) {
-  /#
   if(!isdefined(color)) {
     color = (1, 0, 1);
   }
   sphere(origin, 16, color, 0.25, 0, 16, 1);
-  # /
 }
 
-/*
-	Name: point_get
-	Namespace: dev
-	Checksum: 0x5272ED8D
-	Offset: 0xB1B8
-	Size: 0xA0
-	Parameters: 1
-	Flags: Linked
-*/
 function point_get(player) {
-  /#
   for (;;) {
     wait(0.05);
     origin = get_lookat_origin(player);
@@ -3404,20 +2390,9 @@ function point_get(player) {
     }
     draw_point(origin, (1, 0, 1));
   }
-  # /
 }
 
-/*
-	Name: dev_get_point_pair
-	Namespace: dev
-	Checksum: 0x606626A1
-	Offset: 0xB260
-	Size: 0x11E
-	Parameters: 0
-	Flags: None
-*/
 function dev_get_point_pair() {
-  /#
   player = util::gethostplayer();
   start = undefined;
   points = [];
@@ -3440,5 +2415,4 @@ function dev_get_point_pair() {
   points[0] = start;
   points[1] = end;
   return points;
-  # /
 }

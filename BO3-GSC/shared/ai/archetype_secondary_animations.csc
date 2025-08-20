@@ -1,22 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/********************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_secondary_animations.csc
+********************************************************/
+
 #using scripts\shared\ai_shared;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
-
 #using_animtree("generic");
-
 #namespace archetype_secondary_animations;
 
-/*
-	Name: main
-	Namespace: archetype_secondary_animations
-	Checksum: 0xD888C374
-	Offset: 0x3C0
-	Size: 0xA4
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   if(sessionmodeiszombiesgame() && getdvarint("splitscreen_playerCount") > 2) {
     return;
@@ -26,15 +19,6 @@ function autoexec main() {
   ai::add_ai_spawn_function( & on_entity_spawn);
 }
 
-/*
-	Name: secondaryanimationsinit
-	Namespace: archetype_secondary_animations
-	Checksum: 0xF3450D01
-	Offset: 0x470
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private secondaryanimationsinit(localclientnum) {
   if(!isdefined(level.__facialanimationslist)) {
     buildandvalidatefacialanimationlist(localclientnum);
@@ -43,15 +27,6 @@ function private secondaryanimationsinit(localclientnum) {
   self thread secondaryfacialanimationthink(localclientnum);
 }
 
-/*
-	Name: on_entity_spawn
-	Namespace: archetype_secondary_animations
-	Checksum: 0xF119293A
-	Offset: 0x4E0
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private on_entity_spawn(localclientnum) {
   if(self hasdobj(localclientnum)) {
     self clearanim( % generic::faces, 0);
@@ -59,18 +34,9 @@ function private on_entity_spawn(localclientnum) {
   self._currentfacestate = "inactive";
 }
 
-/*
-	Name: on_entity_shutdown
-	Namespace: archetype_secondary_animations
-	Checksum: 0x14A1909C
-	Offset: 0x548
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private on_entity_shutdown(localclientnum) {
   if(isdefined(self)) {
-    self notify(# "stopfacialthread");
+    self notify("stopfacialthread");
     if(isdefined(self.facialdeathanimstarted) && self.facialdeathanimstarted) {
       return;
     }
@@ -79,20 +45,9 @@ function private on_entity_shutdown(localclientnum) {
   }
 }
 
-/*
-	Name: buildandvalidatefacialanimationlist
-	Namespace: archetype_secondary_animations
-	Checksum: 0x3C7D436E
-	Offset: 0x5B0
-	Size: 0x5A2
-	Parameters: 1
-	Flags: Linked
-*/
 function buildandvalidatefacialanimationlist(localclientnum) {
-  /#
   assert(!isdefined(level.__facialanimationslist));
-  # /
-    level.__facialanimationslist = [];
+  level.__facialanimationslist = [];
   level.__facialanimationslist["human"] = [];
   level.__facialanimationslist["human"]["combat"] = array("ai_face_male_generic_idle_1", "ai_face_male_generic_idle_2", "ai_face_male_generic_idle_3");
   level.__facialanimationslist["human"]["combat_aim"] = array("ai_face_male_aim_idle_1", "ai_face_male_aim_idle_2", "ai_face_male_aim_idle_3");
@@ -117,21 +72,10 @@ function buildandvalidatefacialanimationlist(localclientnum) {
     array::add(deathanims, animation);
   }
   foreach(deathanim in deathanims) {
-    /#
     assert(!isanimlooping(localclientnum, deathanim), ("" + deathanim) + "");
-    # /
   }
 }
 
-/*
-	Name: getfacialanimoverride
-	Namespace: archetype_secondary_animations
-	Checksum: 0x7C0B2A0E
-	Offset: 0xB60
-	Size: 0x18E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private getfacialanimoverride(localclientnum) {
   if(sessionmodeiscampaigngame()) {
     primarydeltaanim = self getprimarydeltaanim();
@@ -142,9 +86,7 @@ function private getfacialanimoverride(localclientnum) {
         if(notetrack[1] == "facial_anim") {
           facialanim = notetrack[2];
           facialanimlength = getanimlength(facialanim);
-          /#
-          # /
-            return facialanim;
+          return facialanim;
         }
       }
     }
@@ -152,21 +94,10 @@ function private getfacialanimoverride(localclientnum) {
   return undefined;
 }
 
-/*
-	Name: secondaryfacialanimationthink
-	Namespace: archetype_secondary_animations
-	Checksum: 0x7CAAE203
-	Offset: 0xCF8
-	Size: 0x5FC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private secondaryfacialanimationthink(localclientnum) {
-  /#
   assert(isdefined(self.archetype) && (self.archetype == "" || self.archetype == ""));
-  # /
-    self endon(# "entityshutdown");
-  self endon(# "stopfacialthread");
+  self endon("entityshutdown");
+  self endon("stopfacialthread");
   self._currentfacestate = "inactive";
   while (true) {
     if(self.archetype == "human" && self clientfield::get("facial_dial")) {
@@ -242,16 +173,12 @@ function private secondaryfacialanimationthink(localclientnum) {
       }
     }
     if(currfacestate == "inactive" || currfacestate != nextfacestate || forcenewanim) {
-      /#
       assert(isdefined(level.__facialanimationslist[self.archetype][nextfacestate]));
-      # /
-        clearoncompletion = 0;
+      clearoncompletion = 0;
       animtoplay = array::random(level.__facialanimationslist[self.archetype][nextfacestate]);
       if(isdefined(animoverride)) {
         animtoplay = animoverride;
-        /#
         assert(nextfacestate != "" || !isanimlooping(localclientnum, animtoplay), ("" + animtoplay) + "");
-        # /
       }
       applynewfaceanim(localclientnum, animtoplay, clearoncompletion);
       self._currentfacestate = nextfacestate;
@@ -263,15 +190,6 @@ function private secondaryfacialanimationthink(localclientnum) {
   }
 }
 
-/*
-	Name: applynewfaceanim
-	Namespace: archetype_secondary_animations
-	Checksum: 0xCBC5A89F
-	Offset: 0x1300
-	Size: 0xFC
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private applynewfaceanim(localclientnum, animation, clearoncompletion = 0) {
   clearcurrentfacialanim(localclientnum);
   if(isdefined(animation)) {
@@ -286,15 +204,6 @@ function private applynewfaceanim(localclientnum, animation, clearoncompletion =
   }
 }
 
-/*
-	Name: applydeathanim
-	Namespace: archetype_secondary_animations
-	Checksum: 0xED6696AD
-	Offset: 0x1408
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private applydeathanim(localclientnum) {
   if(isdefined(self._currentfacestate) && self._currentfacestate == "death") {
     return;
@@ -313,15 +222,6 @@ function private applydeathanim(localclientnum) {
   }
 }
 
-/*
-	Name: clearcurrentfacialanim
-	Namespace: archetype_secondary_animations
-	Checksum: 0xA313C959
-	Offset: 0x1548
-	Size: 0x7E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private clearcurrentfacialanim(localclientnum) {
   if(isdefined(self._currentfaceanim) && self hasdobj(localclientnum) && self hasanimtree()) {
     self clearanim(self._currentfaceanim, 0.2);

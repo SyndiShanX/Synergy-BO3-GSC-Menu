@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\bots\_bot_ball.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\bots\_bot;
 #using scripts\mp\bots\_bot_combat;
@@ -12,36 +16,17 @@
 #using scripts\shared\math_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace bot_ball;
 
-/*
-	Name: init
-	Namespace: bot_ball
-	Checksum: 0xD96C8B0B
-	Offset: 0x208
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.botidle = & bot_idle;
   level.botcombat = & bot_combat;
   level.botprecombat = & bot_pre_combat;
 }
 
-/*
-	Name: release_control_on_landing
-	Namespace: bot_ball
-	Checksum: 0xDA2BF4D
-	Offset: 0x260
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function release_control_on_landing() {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   while (self isonground()) {
     wait(0.05);
   }
@@ -51,15 +36,6 @@ function release_control_on_landing() {
   self botreleasemanualcontrol();
 }
 
-/*
-	Name: bot_pre_combat
-	Namespace: bot_ball
-	Checksum: 0x1CA59796
-	Offset: 0x2E8
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_pre_combat() {
   if(isdefined(self.carryobject)) {
     if(self isonground() && self botgoalset()) {
@@ -83,15 +59,6 @@ function bot_pre_combat() {
   self bot_combat::mp_pre_combat();
 }
 
-/*
-	Name: bot_combat
-	Namespace: bot_ball
-	Checksum: 0xE169ED02
-	Offset: 0x480
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_combat() {
   if(isdefined(self.carryobject)) {
     if(self bot_combat::has_threat()) {
@@ -113,15 +80,6 @@ function bot_combat() {
   self bot_combat::combat_think();
 }
 
-/*
-	Name: bot_idle
-	Namespace: bot_ball
-	Checksum: 0x1A9AC30F
-	Offset: 0x5E8
-	Size: 0x29C
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_idle() {
   if(isdefined(self.carryobject)) {
     if(!self botgoalset()) {

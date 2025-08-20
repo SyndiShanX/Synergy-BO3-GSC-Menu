@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_challenges.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -17,75 +21,36 @@
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_challenges_tomb;
 #using scripts\zm\zm_tomb_vo;
-
 #namespace zm_tomb_challenges;
 
-/*
-	Name: challenges_init
-	Namespace: zm_tomb_challenges
-	Checksum: 0xC57866F3
-	Offset: 0x580
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function challenges_init() {
   level.challenges_add_stats = & tomb_challenges_add_stats;
 }
 
-/*
-	Name: tomb_challenges_add_stats
-	Namespace: zm_tomb_challenges
-	Checksum: 0x3145D99A
-	Offset: 0x5A8
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function tomb_challenges_add_stats() {
   n_kills = 115;
   n_zone_caps = 6;
   n_points_spent = 30000;
   n_boxes_filled = 4;
-  /#
   if(getdvarint("") > 0) {
     n_kills = 1;
     n_zone_caps = 2;
     n_points_spent = 500;
     n_boxes_filled = 1;
   }
-  # /
-    zm_challenges_tomb::add_stat("zc_headshots", 0, & "ZM_TOMB_CH1", n_kills, undefined, & reward_packed_weapon);
+  zm_challenges_tomb::add_stat("zc_headshots", 0, & "ZM_TOMB_CH1", n_kills, undefined, & reward_packed_weapon);
   zm_challenges_tomb::add_stat("zc_zone_captures", 0, & "ZM_TOMB_CH2", n_zone_caps, undefined, & reward_powerup_max_ammo);
   zm_challenges_tomb::add_stat("zc_points_spent", 0, & "ZM_TOMB_CH3", n_points_spent, undefined, & reward_double_tap, & track_points_spent);
   zm_challenges_tomb::add_stat("zc_boxes_filled", 1, & "ZM_TOMB_CHT", n_boxes_filled, undefined, & reward_one_inch_punch, & init_box_footprints);
 }
 
-/*
-	Name: track_points_spent
-	Namespace: zm_tomb_challenges
-	Checksum: 0x60DC65B4
-	Offset: 0x738
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function track_points_spent() {
   while (true) {
-    level waittill(# "spent_points", player, points);
+    level waittill("spent_points", player, points);
     player zm_challenges_tomb::increment_stat("zc_points_spent", points);
   }
 }
 
-/*
-	Name: init_box_footprints
-	Namespace: zm_tomb_challenges
-	Checksum: 0xBCCB72C0
-	Offset: 0x798
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_box_footprints() {
   level.n_soul_boxes_completed = 0;
   level flag::init("vo_soul_box_intro_played");
@@ -94,31 +59,20 @@ function init_box_footprints() {
   array::thread_all(a_boxes, & box_footprint_think);
 }
 
-/*
-	Name: box_footprint_think
-	Namespace: zm_tomb_challenges
-	Checksum: 0x47476CD2
-	Offset: 0x840
-	Size: 0x724
-	Parameters: 0
-	Flags: Linked
-*/
 function box_footprint_think() {
   self.n_souls_absorbed = 0;
   self disconnectpaths();
   n_souls_required = 30;
-  /#
   if(getdvarint("") > 0) {
     n_souls_required = 10;
   }
-  # /
-    self thread watch_for_foot_stomp();
+  self thread watch_for_foot_stomp();
   wait(1);
   self clientfield::set("foot_print_box_glow", 1);
   wait(1);
   self clientfield::set("foot_print_box_glow", 0);
   while (self.n_souls_absorbed < n_souls_required) {
-    self waittill(# "soul_absorbed", player);
+    self waittill("soul_absorbed", player);
     self.n_souls_absorbed++;
     if(self.n_souls_absorbed == 1) {
       self thread scene::play("p7_fxanim_zm_ori_challenge_box_open_bundle", self);
@@ -142,7 +96,7 @@ function box_footprint_think() {
       self scene::play("p7_fxanim_zm_ori_challenge_box_close_bundle", self);
     }
   }
-  self notify(# "box_finished");
+  self notify("box_finished");
   level.n_soul_boxes_completed++;
   self scene::stop("p7_fxanim_zm_ori_challenge_box_close_bundle", self);
   e_volume = getent(self.target, "targetname");
@@ -160,16 +114,16 @@ function box_footprint_think() {
     v_rotate_angles = v_start_angles + (randomfloatrange(-10, 10), randomfloatrange(-10, 10), randomfloatrange(-10, 10));
     n_rotate_time = randomfloatrange(0.2, 0.4);
     self rotateto(v_rotate_angles, n_rotate_time);
-    self waittill(# "rotatedone");
+    self waittill("rotatedone");
   }
   self rotateto(v_start_angles, 0.3);
   self movez(-60, 0.5, 0.5);
-  self waittill(# "rotatedone");
+  self waittill("rotatedone");
   trace_start = self.origin + vectorscale((0, 0, 1), 200);
   trace_end = self.origin;
   fx_trace = bullettrace(trace_start, trace_end, 0, self);
   playfx(level._effect["mech_booster_landing"], fx_trace["position"], anglestoforward(self.angles), anglestoup(self.angles));
-  self waittill(# "movedone");
+  self waittill("movedone");
   level zm_challenges_tomb::increment_stat("zc_boxes_filled");
   if(isdefined(player)) {
     if(level.n_soul_boxes_completed == 1) {
@@ -182,19 +136,10 @@ function box_footprint_think() {
   self delete();
 }
 
-/*
-	Name: watch_for_foot_stomp
-	Namespace: zm_tomb_challenges
-	Checksum: 0xC06AE652
-	Offset: 0xF70
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_for_foot_stomp() {
-  self endon(# "box_finished");
+  self endon("box_finished");
   while (true) {
-    self waittill(# "robot_foot_stomp");
+    self waittill("robot_foot_stomp");
     self scene::play("p7_fxanim_zm_ori_challenge_box_close_bundle", self);
     self clientfield::set("foot_print_box_glow", 0);
     self.n_souls_absorbed = 0;
@@ -203,37 +148,19 @@ function watch_for_foot_stomp() {
   }
 }
 
-/*
-	Name: footprint_zombie_killed
-	Namespace: zm_tomb_challenges
-	Checksum: 0x843AF902
-	Offset: 0x1010
-	Size: 0x152
-	Parameters: 1
-	Flags: Linked
-*/
 function footprint_zombie_killed(attacker) {
   a_volumes = getentarray("foot_box_volume", "script_noteworthy");
   foreach(e_volume in a_volumes) {
     if(self istouching(e_volume) && isdefined(attacker) && isplayer(attacker)) {
       self clientfield::set("foot_print_box_fx", 1);
       m_box = getent(e_volume.target, "targetname");
-      m_box notify(# "soul_absorbed", attacker);
+      m_box notify("soul_absorbed", attacker);
       return true;
     }
   }
   return false;
 }
 
-/*
-	Name: reward_packed_weapon
-	Namespace: zm_tomb_challenges
-	Checksum: 0x693573FD
-	Offset: 0x1170
-	Size: 0x360
-	Parameters: 2
-	Flags: Linked
-*/
 function reward_packed_weapon(player, s_stat) {
   if(!isdefined(s_stat.var_e564b69e)) {
     a_weapons = array("smg_capacity", "smg_mp40_1940", "ar_accurate");
@@ -266,54 +193,18 @@ function reward_packed_weapon(player, s_stat) {
   return true;
 }
 
-/*
-	Name: reward_powerup_max_ammo
-	Namespace: zm_tomb_challenges
-	Checksum: 0xA8217238
-	Offset: 0x14D8
-	Size: 0x32
-	Parameters: 2
-	Flags: Linked
-*/
 function reward_powerup_max_ammo(player, s_stat) {
   return reward_powerup(player, "full_ammo");
 }
 
-/*
-	Name: reward_powerup_double_points
-	Namespace: zm_tomb_challenges
-	Checksum: 0xDED5B6D2
-	Offset: 0x1518
-	Size: 0x32
-	Parameters: 2
-	Flags: Linked
-*/
 function reward_powerup_double_points(player, n_timeout) {
   return reward_powerup(player, "double_points", n_timeout);
 }
 
-/*
-	Name: reward_powerup_zombie_blood
-	Namespace: zm_tomb_challenges
-	Checksum: 0x5DA3C5B5
-	Offset: 0x1558
-	Size: 0x32
-	Parameters: 2
-	Flags: Linked
-*/
 function reward_powerup_zombie_blood(player, n_timeout) {
   return reward_powerup(player, "zombie_blood", n_timeout);
 }
 
-/*
-	Name: reward_powerup
-	Namespace: zm_tomb_challenges
-	Checksum: 0x88284733
-	Offset: 0x1598
-	Size: 0x2B0
-	Parameters: 3
-	Flags: Linked
-*/
 function reward_powerup(player, str_powerup, n_timeout = 10) {
   if(!isdefined(level.zombie_powerups[str_powerup])) {
     return;
@@ -355,15 +246,6 @@ function reward_powerup(player, str_powerup, n_timeout = 10) {
   return true;
 }
 
-/*
-	Name: reward_double_tap
-	Namespace: zm_tomb_challenges
-	Checksum: 0x3131F67F
-	Offset: 0x1850
-	Size: 0x240
-	Parameters: 2
-	Flags: Linked
-*/
 function reward_double_tap(player, s_stat) {
   m_reward = spawn("script_model", self.origin);
   m_reward.angles = self.angles + vectorscale((0, 1, 0), 180);
@@ -383,21 +265,12 @@ function reward_double_tap(player, s_stat) {
   player playsound("zmb_powerup_grabbed");
   m_reward thread zm_perks::vending_trigger_post_think(player, "specialty_doubletap2");
   m_reward ghost();
-  player waittill(# "burp");
+  player waittill("burp");
   wait(1.2);
   m_reward delete();
   return true;
 }
 
-/*
-	Name: bottle_reject_sink
-	Namespace: zm_tomb_challenges
-	Checksum: 0x9BA3B77E
-	Offset: 0x1A98
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function bottle_reject_sink(player) {
   n_time = 1;
   player playlocalsound(level.zmb_laugh_alias);
@@ -406,15 +279,6 @@ function bottle_reject_sink(player) {
   self delete();
 }
 
-/*
-	Name: reward_one_inch_punch
-	Namespace: zm_tomb_challenges
-	Checksum: 0xF644B7E0
-	Offset: 0x1B18
-	Size: 0x1C8
-	Parameters: 2
-	Flags: Linked
-*/
 function reward_one_inch_punch(player, s_stat) {
   m_reward = spawn("script_model", self.origin);
   m_reward.angles = self.angles + vectorscale((0, 1, 0), 180);
@@ -434,33 +298,15 @@ function reward_one_inch_punch(player, s_stat) {
   return true;
 }
 
-/*
-	Name: one_inch_punch_watch_for_death
-	Namespace: zm_tomb_challenges
-	Checksum: 0x4D3C8B16
-	Offset: 0x1CE8
-	Size: 0x62
-	Parameters: 1
-	Flags: Linked
-*/
 function one_inch_punch_watch_for_death(s_stat) {
-  self endon(# "disconnect");
-  self waittill(# "bled_out");
+  self endon("disconnect");
+  self waittill("bled_out");
   if(s_stat.b_reward_claimed) {
     s_stat.b_reward_claimed = 0;
   }
   s_stat.a_b_player_rewarded[self.characterindex] = 0;
 }
 
-/*
-	Name: reward_beacon
-	Namespace: zm_tomb_challenges
-	Checksum: 0xAB1B3491
-	Offset: 0x1D58
-	Size: 0x200
-	Parameters: 2
-	Flags: None
-*/
 function reward_beacon(player, s_stat) {
   m_reward = spawn("script_model", self.origin);
   m_reward.angles = self.angles + vectorscale((0, 1, 0), 180);
@@ -483,15 +329,6 @@ function reward_beacon(player, s_stat) {
   return true;
 }
 
-/*
-	Name: getweaponmodel
-	Namespace: zm_tomb_challenges
-	Checksum: 0x319FB4E2
-	Offset: 0x1F60
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function getweaponmodel(weapon) {
   return weapon.worldmodel;
 }

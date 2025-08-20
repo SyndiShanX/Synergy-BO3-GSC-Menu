@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_side_ee_golden_bucket.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\ai_shared;
@@ -33,61 +37,22 @@
 #using scripts\zm\zm_island_planting;
 #using scripts\zm\zm_island_power;
 #using scripts\zm\zm_island_util;
-
 #namespace namespace_d9f30fb4;
 
-/*
-	Name: init
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x2B91F652
-	Offset: 0x988
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   register_clientfields();
-  /#
   function_66eeac50();
-  # /
 }
 
-/*
-	Name: register_clientfields
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x20759AC0
-	Offset: 0x9C0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("world", "reveal_golden_bucket_planting_location", 9000, 1, "int");
   clientfield::register("scriptmover", "golden_bucket_glow_fx", 9000, 1, "int");
 }
 
-/*
-	Name: main
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x7F8014D0
-	Offset: 0xA30
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level thread function_ee79f2bd();
 }
 
-/*
-	Name: function_ee79f2bd
-	Namespace: namespace_d9f30fb4
-	Checksum: 0xA62E7D02
-	Offset: 0xA58
-	Size: 0x234
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ee79f2bd() {
   level flag::init("prereq_plants_grown_golden_bucket_ee");
   level flag::init("bucket_planted");
@@ -105,32 +70,14 @@ function function_ee79f2bd() {
   callback::on_spawned( & function_e6cfa209);
 }
 
-/*
-	Name: function_8db1ed35
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x516ACECE
-	Offset: 0xC98
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8db1ed35() {
   level util::waittill_multiple("minor_cache_plant_spawned", "major_cache_plant_spawned", "babysitter_plant_spawned", "trap_plant_spawned", "fruit_plant_spawned");
   level flag::set("prereq_plants_grown_golden_bucket_ee");
 }
 
-/*
-	Name: function_e6cfa209
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x6EB61B13
-	Offset: 0xD08
-	Size: 0x15A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e6cfa209() {
-  self endon(# "disconnect");
-  level endon(# "hash_e6cfa209");
+  self endon("disconnect");
+  level endon("hash_e6cfa209");
   e_clip = getent("swamp_planter_skull_reveal", "targetname");
   while (true) {
     if(self util::ads_button_held()) {
@@ -148,18 +95,9 @@ function function_e6cfa209() {
   }
   level thread function_26f677a6(e_clip);
   callback::remove_on_spawned( & function_e6cfa209);
-  level notify(# "hash_e6cfa209");
+  level notify("hash_e6cfa209");
 }
 
-/*
-	Name: function_26f677a6
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x36C28675
-	Offset: 0xE70
-	Size: 0x1A4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_26f677a6(e_clip) {
   level clientfield::set("reveal_golden_bucket_planting_location", 1);
   playsoundatposition("zmb_wpn_skullgun_discover", e_clip.origin);
@@ -179,36 +117,18 @@ function function_26f677a6(e_clip) {
   zm_unitrigger::unregister_unitrigger(s_planting_spot);
 }
 
-/*
-	Name: function_4fd948c5
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x77FA9D63
-	Offset: 0x1020
-	Size: 0x96
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4fd948c5(player) {
   if(player clientfield::get_to_player("bucket_held") && !level flag::get("bucket_planted")) {
-    self sethintstring( & "ZM_ISLAND_PLANT_BUCKET");
+    self sethintstring(&"ZM_ISLAND_PLANT_BUCKET");
     return true;
   }
   self sethintstring("");
   return false;
 }
 
-/*
-	Name: function_870bdfee
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x845ACC53
-	Offset: 0x10C0
-	Size: 0xB0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_870bdfee() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player zm_utility::in_revive_trigger()) {
       continue;
     }
@@ -224,15 +144,6 @@ function function_870bdfee() {
   }
 }
 
-/*
-	Name: function_9b3bd7c4
-	Namespace: namespace_d9f30fb4
-	Checksum: 0xB891E83F
-	Offset: 0x1178
-	Size: 0x144
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9b3bd7c4(e_player) {
   level flag::set("bucket_planted");
   e_player thread zm_island_power::function_4b057b64();
@@ -244,15 +155,6 @@ function function_9b3bd7c4(e_player) {
   level thread function_4cebde70();
 }
 
-/*
-	Name: function_4cebde70
-	Namespace: namespace_d9f30fb4
-	Checksum: 0xD2A330AC
-	Offset: 0x12C8
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4cebde70() {
   level thread function_c2dab6c5();
   exploder::exploder("fxexp_800");
@@ -263,19 +165,10 @@ function function_4cebde70() {
     s_planting_spot.model movez(16, 2);
     playsoundatposition("zmb_planters_appear", s_planting_spot.origin);
   }
-  s_planting_spot.model waittill(# "movedone");
+  s_planting_spot.model waittill("movedone");
   level thread function_152720d8(var_fc72ce0a);
 }
 
-/*
-	Name: function_152720d8
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x1B6AC74B
-	Offset: 0x1468
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_152720d8(var_fc72ce0a) {
   foreach(var_8c46024b in var_fc72ce0a) {
     var_8c46024b.origin = var_8c46024b.model.origin;
@@ -284,15 +177,6 @@ function function_152720d8(var_fc72ce0a) {
   level.a_s_planting_spots = arraycombine(level.a_s_planting_spots, var_fc72ce0a, 0, 0);
 }
 
-/*
-	Name: function_c2dab6c5
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x559CE7C0
-	Offset: 0x1558
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c2dab6c5() {
   e_volume = getent("golden_bucket_ee_volume", "targetname");
   while (!level flag::get("golden_bucket_ee_completed")) {
@@ -309,74 +193,38 @@ function function_c2dab6c5() {
   }
 }
 
-/*
-	Name: function_21bde96b
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x9C7AB744
-	Offset: 0x1650
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_21bde96b() {
-  level endon(# "hash_247c3608");
+  level endon("hash_247c3608");
   for (var_79f8fdda = 0; var_79f8fdda < 50; var_79f8fdda++) {
-    level waittill(# "hash_8c54f723");
+    level waittill("hash_8c54f723");
   }
   level flag::set("golden_bucket_ee_completed");
-  level notify(# "hash_4d1841e4");
+  level notify("hash_4d1841e4");
   level thread function_4d1841e4();
 }
 
-/*
-	Name: function_64b86454
-	Namespace: namespace_d9f30fb4
-	Checksum: 0xBEA4E365
-	Offset: 0x16D8
-	Size: 0x4E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_64b86454() {
-  level endon(# "hash_4d1841e4");
+  level endon("hash_4d1841e4");
   while (true) {
     if(!function_e630b27f()) {
       break;
     }
     wait(1);
   }
-  level notify(# "hash_247c3608");
+  level notify("hash_247c3608");
 }
 
-/*
-	Name: function_738acad6
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x1340E0CC
-	Offset: 0x1730
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_738acad6() {
-  level endon(# "hash_247c3608");
-  level endon(# "hash_4d1841e4");
+  level endon("hash_247c3608");
+  level endon("hash_4d1841e4");
   wait(600);
   level thread function_72c0a344();
 }
 
-/*
-	Name: function_f0d8de1d
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x8524D8AC
-	Offset: 0x1770
-	Size: 0xE8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f0d8de1d() {
-  level endon(# "hash_247c3608");
-  level endon(# "hash_62e8dbc1");
-  level endon(# "hash_4d1841e4");
+  level endon("hash_247c3608");
+  level endon("hash_62e8dbc1");
+  level endon("hash_4d1841e4");
   e_volume = getent("golden_bucket_ee_volume", "targetname");
   n_timeout = 120;
   while (true) {
@@ -385,7 +233,7 @@ function function_f0d8de1d() {
       n_counter = n_counter - 1;
       if(n_counter == 0) {
         level thread function_72c0a344();
-        level notify(# "hash_62e8dbc1");
+        level notify("hash_62e8dbc1");
       }
       wait(1);
     }
@@ -393,15 +241,6 @@ function function_f0d8de1d() {
   }
 }
 
-/*
-	Name: function_72c0a344
-	Namespace: namespace_d9f30fb4
-	Checksum: 0xB928972C
-	Offset: 0x1860
-	Size: 0xC2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_72c0a344() {
   var_fc72ce0a = struct::get_array("planting_spot_golden_bucket_challenge", "targetname");
   foreach(var_8c46024b in var_fc72ce0a) {
@@ -410,15 +249,6 @@ function function_72c0a344() {
   }
 }
 
-/*
-	Name: function_9a2f5188
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x9AAC77A1
-	Offset: 0x1930
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9a2f5188(e_volume) {
   a_players = getplayers();
   foreach(player in a_players) {
@@ -429,15 +259,6 @@ function function_9a2f5188(e_volume) {
   return false;
 }
 
-/*
-	Name: function_e630b27f
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x28BC77BD
-	Offset: 0x19F8
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e630b27f() {
   var_fc72ce0a = struct::get_array("planting_spot_golden_bucket_challenge", "targetname");
   foreach(var_8c46024b in var_fc72ce0a) {
@@ -448,15 +269,6 @@ function function_e630b27f() {
   return false;
 }
 
-/*
-	Name: function_4d1841e4
-	Namespace: namespace_d9f30fb4
-	Checksum: 0xC87A7D21
-	Offset: 0x1B00
-	Size: 0x62C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4d1841e4() {
   level flag::init("golden_bucket_cache_plant_opened");
   level flag::init("golden_bucket_planters_empty");
@@ -482,12 +294,12 @@ function function_4d1841e4() {
   wait(2);
   s_planting_spot.s_plant.model clientfield::set("plant_growth_siege_anims", 3);
   s_planting_spot thread scene::play("p7_fxanim_zm_island_plant_stage3_bundle", s_planting_spot.s_plant.model);
-  s_planting_spot.s_plant.model waittill(# "hash_116e737b");
+  s_planting_spot.s_plant.model waittill("hash_116e737b");
   s_planting_spot.s_plant.model setmodel("p7_fxanim_zm_island_plant_cache_major_glow_mod");
   s_planting_spot.s_plant.model clientfield::set("cache_plant_interact_fx", 1);
   s_planting_spot.s_plant.model disconnectpaths();
   s_planting_spot thread scene::init("p7_fxanim_zm_island_plant_cache_major_bundle", s_planting_spot.s_plant.model);
-  s_planting_spot.s_plant.model waittill(# "hash_aa2731d8");
+  s_planting_spot.s_plant.model waittill("hash_aa2731d8");
   s_planting_spot.prompt_and_visibility_func = & function_53296cde;
   zm_unitrigger::register_static_unitrigger(s_planting_spot, & function_30804104);
   level flag::wait_till("golden_bucket_cache_plant_opened");
@@ -502,21 +314,12 @@ function function_4d1841e4() {
   zm_unitrigger::register_static_unitrigger(s_planting_spot, & function_da9c118b);
 }
 
-/*
-	Name: function_c1f64636
-	Namespace: namespace_d9f30fb4
-	Checksum: 0xDA7BD2CA
-	Offset: 0x2138
-	Size: 0x194
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c1f64636(b_completed) {
   if(b_completed) {
     zm_unitrigger::unregister_unitrigger(self.s_plant_unitrigger);
     if(isdefined(self.s_plant.var_b454101b)) {
       self.s_plant.var_b454101b zm_attackables::deactivate();
-      self notify(# "hash_4729ad2");
+      self notify("hash_4729ad2");
     }
     wait(3);
     while (true) {
@@ -524,43 +327,25 @@ function function_c1f64636(b_completed) {
         self.s_plant.var_b454101b zm_attackables::do_damage(self.s_plant.var_b454101b.health);
       }
       if(self.var_75c7a97e == 0) {
-        self notify(# "hash_7a0cef7b");
+        self notify("hash_7a0cef7b");
         break;
       }
       wait(0.1);
     }
-    level notify(# "hash_46080242");
+    level notify("hash_46080242");
     arrayremovevalue(level.a_s_planting_spots, self);
   } else if(isdefined(self.s_plant) && isdefined(self.s_plant.var_b454101b)) {
     self.s_plant.var_b454101b zm_attackables::do_damage(self.s_plant.var_b454101b.health);
   }
 }
 
-/*
-	Name: function_6742be8f
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x6A3D31DD
-	Offset: 0x22D8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6742be8f() {
   for (i = 0; i < 3; i++) {
-    level waittill(# "hash_46080242");
+    level waittill("hash_46080242");
   }
   level flag::set("golden_bucket_planters_empty");
 }
 
-/*
-	Name: function_41280a71
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x94CB8FF8
-	Offset: 0x2338
-	Size: 0x202
-	Parameters: 0
-	Flags: Linked
-*/
 function function_41280a71() {
   exploder::exploder("fxexp_801");
   var_fc72ce0a = struct::get_array("planting_spot_golden_bucket_challenge", "targetname");
@@ -569,47 +354,29 @@ function function_41280a71() {
     s_planting_spot.model movez(-16, 2);
     playsoundatposition("zmb_planters_disappear", s_planting_spot.origin);
   }
-  s_planting_spot.model waittill(# "movedone");
+  s_planting_spot.model waittill("movedone");
   foreach(s_planting_spot in var_fc72ce0a) {
     s_planting_spot.s_plant.model delete();
     s_planting_spot.model delete();
   }
 }
 
-/*
-	Name: function_53296cde
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x223011B1
-	Offset: 0x2548
-	Size: 0xBE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_53296cde(player) {
   if(!level flag::get("golden_bucket_cache_plant_opened")) {
-    self sethintstring( & "ZM_ISLAND_CACHE_PLANT");
+    self sethintstring(&"ZM_ISLAND_CACHE_PLANT");
     return true;
   }
   if(!(isdefined(player.var_b6a244f9) && player.var_b6a244f9)) {
-    self sethintstring( & "ZM_ISLAND_PICKUP_GOLDEN_BUCKET");
+    self sethintstring(&"ZM_ISLAND_PICKUP_GOLDEN_BUCKET");
     return true;
   }
   self sethintstring("");
   return false;
 }
 
-/*
-	Name: function_30804104
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x1B79BF1C
-	Offset: 0x2610
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function function_30804104() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player zm_utility::in_revive_trigger()) {
       continue;
     }
@@ -623,18 +390,9 @@ function function_30804104() {
   }
 }
 
-/*
-	Name: function_da9c118b
-	Namespace: namespace_d9f30fb4
-	Checksum: 0xF5A6DE40
-	Offset: 0x26B0
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_da9c118b() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player zm_utility::in_revive_trigger()) {
       continue;
     }
@@ -646,38 +404,20 @@ function function_da9c118b() {
     }
     if(!(isdefined(player.var_b6a244f9) && player.var_b6a244f9)) {
       player thread function_bbd146a7();
-      player notify(# "player_got_gold_bucket");
+      player notify("player_got_gold_bucket");
     }
   }
 }
 
-/*
-	Name: function_bbd146a7
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x9159FCC8
-	Offset: 0x2780
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bbd146a7() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.var_b6a244f9 = 1;
   self zm_island_power::function_d570abb();
   self thread function_da0bbc71();
 }
 
-/*
-	Name: function_da0bbc71
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x67A5312C
-	Offset: 0x27D8
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_da0bbc71() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   wait(3.75);
   while (true) {
     if(self meleebuttonpressed() && self sprintbuttonpressed()) {
@@ -705,35 +445,14 @@ function function_da0bbc71() {
   }
 }
 
-/*
-	Name: function_66eeac50
-	Namespace: namespace_d9f30fb4
-	Checksum: 0x587EA36C
-	Offset: 0x2900
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_66eeac50() {
-  /#
   zm_devgui::add_custom_devgui_callback( & function_3655d28a);
   adddebugcommand("");
   adddebugcommand("");
   adddebugcommand("");
-  # /
 }
 
-/*
-	Name: function_3655d28a
-	Namespace: namespace_d9f30fb4
-	Checksum: 0xE3F9E170
-	Offset: 0x2980
-	Size: 0x1A0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3655d28a(cmd) {
-  /#
   switch (cmd) {
     case "": {
       level flag::set("");
@@ -745,7 +464,7 @@ function function_3655d28a(cmd) {
       level flag::set("");
       e_clip = getent("", "");
       level thread function_26f677a6(e_clip);
-      level notify(# "hash_e6cfa209");
+      level notify("hash_e6cfa209");
       return true;
     }
     case "": {
@@ -756,5 +475,4 @@ function function_3655d28a(cmd) {
     }
   }
   return false;
-  # /
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\behavior_zombie_dog.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_mocomps_utility;
 #using scripts\shared\ai\archetype_utility;
 #using scripts\shared\ai\archetype_zombie_dog_interface;
@@ -11,18 +15,8 @@
 #using scripts\shared\ai_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\spawner_shared;
-
 #namespace zombiedogbehavior;
 
-/*
-	Name: registerbehaviorscriptfunctions
-	Namespace: zombiedogbehavior
-	Checksum: 0xA551AFE6
-	Offset: 0x3F8
-	Size: 0x13C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec registerbehaviorscriptfunctions() {
   spawner::add_archetype_spawn_function("zombie_dog", & archetypezombiedogblackboardinit);
   behaviortreenetworkutility::registerbehaviortreescriptapi("zombieDogTargetService", & zombiedogtargetservice);
@@ -34,88 +28,42 @@ function autoexec registerbehaviorscriptfunctions() {
   zombiedoginterface::registerzombiedoginterfaceattributes();
 }
 
-/*
-	Name: archetypezombiedogblackboardinit
-	Namespace: zombiedogbehavior
-	Checksum: 0x3F2BF9C1
-	Offset: 0x540
-	Size: 0x1B8
-	Parameters: 0
-	Flags: Linked
-*/
 function archetypezombiedogblackboardinit() {
   blackboard::createblackboardforentity(self);
   ai::createinterfaceforentity(self);
   self aiutility::registerutilityblackboardattributes();
   blackboard::registerblackboardattribute(self, "_low_gravity", "normal", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_should_run", "walk", & bb_getshouldrunstatus);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_should_howl", "dont_howl", & bb_getshouldhowlstatus);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   self.___archetypeonanimscriptedcallback = & archetypezombiedogonanimscriptedcallback;
-  /#
   self finalizetrackedblackboardattributes();
-  # /
-    self.kill_on_wine_coccon = 1;
+  self.kill_on_wine_coccon = 1;
 }
 
-/*
-	Name: archetypezombiedogonanimscriptedcallback
-	Namespace: zombiedogbehavior
-	Checksum: 0xA802FDE6
-	Offset: 0x700
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private archetypezombiedogonanimscriptedcallback(entity) {
   entity.__blackboard = undefined;
   entity archetypezombiedogblackboardinit();
 }
 
-/*
-	Name: bb_getshouldrunstatus
-	Namespace: zombiedogbehavior
-	Checksum: 0xF20CE35D
-	Offset: 0x740
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function bb_getshouldrunstatus() {
-  /#
   if(isdefined(self.ispuppet) && self.ispuppet) {
     return "";
   }
-  # /
-    if(isdefined(self.hasseenfavoriteenemy) && self.hasseenfavoriteenemy || (ai::hasaiattribute(self, "sprint") && ai::getaiattribute(self, "sprint"))) {
-      return "run";
-    }
+  if(isdefined(self.hasseenfavoriteenemy) && self.hasseenfavoriteenemy || (ai::hasaiattribute(self, "sprint") && ai::getaiattribute(self, "sprint"))) {
+    return "run";
+  }
   return "walk";
 }
 
-/*
-	Name: bb_getshouldhowlstatus
-	Namespace: zombiedogbehavior
-	Checksum: 0x5AE64F5D
-	Offset: 0x7D8
-	Size: 0xBE
-	Parameters: 0
-	Flags: Linked
-*/
 function bb_getshouldhowlstatus() {
   if(self ai::has_behavior_attribute("howl_chance") && (isdefined(self.hasseenfavoriteenemy) && self.hasseenfavoriteenemy)) {
     if(!isdefined(self.shouldhowl)) {
@@ -130,34 +78,14 @@ function bb_getshouldhowlstatus() {
   return "dont_howl";
 }
 
-/*
-	Name: getyaw
-	Namespace: zombiedogbehavior
-	Checksum: 0x620981F
-	Offset: 0x8A0
-	Size: 0x42
-	Parameters: 1
-	Flags: Linked
-*/
 function getyaw(org) {
   angles = vectortoangles(org - self.origin);
   return angles[1];
 }
 
-/*
-	Name: absyawtoenemy
-	Namespace: zombiedogbehavior
-	Checksum: 0xD4D00370
-	Offset: 0x8F0
-	Size: 0xA0
-	Parameters: 0
-	Flags: Linked
-*/
 function absyawtoenemy() {
-  /#
   assert(isdefined(self.enemy));
-  # /
-    yaw = self.angles[1] - getyaw(self.enemy.origin);
+  yaw = self.angles[1] - getyaw(self.enemy.origin);
   yaw = angleclamp180(yaw);
   if(yaw < 0) {
     yaw = -1 * yaw;
@@ -165,15 +93,6 @@ function absyawtoenemy() {
   return yaw;
 }
 
-/*
-	Name: need_to_run
-	Namespace: zombiedogbehavior
-	Checksum: 0x51B27044
-	Offset: 0x998
-	Size: 0x234
-	Parameters: 0
-	Flags: Linked
-*/
 function need_to_run() {
   run_dist_squared = self ai::get_behavior_attribute("min_run_dist") * self ai::get_behavior_attribute("min_run_dist");
   run_yaw = 20;
@@ -207,15 +126,6 @@ function need_to_run() {
   return true;
 }
 
-/*
-	Name: is_target_valid
-	Namespace: zombiedogbehavior
-	Checksum: 0x51D4D9A5
-	Offset: 0xBD8
-	Size: 0x1EC
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private is_target_valid(dog, target) {
   if(!isdefined(target)) {
     return 0;
@@ -257,15 +167,6 @@ function private is_target_valid(dog, target) {
   return 1;
 }
 
-/*
-	Name: get_favorite_enemy
-	Namespace: zombiedogbehavior
-	Checksum: 0x58636A97
-	Offset: 0xDD0
-	Size: 0x26C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private get_favorite_enemy(dog) {
   dog_targets = [];
   if(sessionmodeiszombiesgame()) {
@@ -302,15 +203,6 @@ function private get_favorite_enemy(dog) {
   return least_hunted;
 }
 
-/*
-	Name: get_last_valid_position
-	Namespace: zombiedogbehavior
-	Checksum: 0xF80434A
-	Offset: 0x1048
-	Size: 0x2E
-	Parameters: 0
-	Flags: Linked
-*/
 function get_last_valid_position() {
   if(isplayer(self)) {
     return self.last_valid_position;
@@ -318,15 +210,6 @@ function get_last_valid_position() {
   return self.origin;
 }
 
-/*
-	Name: get_locomotion_target
-	Namespace: zombiedogbehavior
-	Checksum: 0xE0F97C6E
-	Offset: 0x1080
-	Size: 0x280
-	Parameters: 1
-	Flags: Linked
-*/
 function get_locomotion_target(behaviortreeentity) {
   last_valid_position = behaviortreeentity.favoriteenemy get_last_valid_position();
   if(!isdefined(last_valid_position)) {
@@ -352,36 +235,25 @@ function get_locomotion_target(behaviortreeentity) {
   return locomotion_target;
 }
 
-/*
-	Name: zombiedogtargetservice
-	Namespace: zombiedogbehavior
-	Checksum: 0xAE29F58E
-	Offset: 0x1308
-	Size: 0x3C0
-	Parameters: 1
-	Flags: Linked
-*/
 function zombiedogtargetservice(behaviortreeentity) {
   if(isdefined(level.intermission) && level.intermission) {
     behaviortreeentity clearpath();
     return;
   }
-  /#
   if(isdefined(behaviortreeentity.ispuppet) && behaviortreeentity.ispuppet) {
     return;
   }
-  # /
-    if(behaviortreeentity.ignoreall || behaviortreeentity.pacifist || (isdefined(behaviortreeentity.favoriteenemy) && !is_target_valid(behaviortreeentity, behaviortreeentity.favoriteenemy))) {
-      if(isdefined(behaviortreeentity.favoriteenemy) && isdefined(behaviortreeentity.favoriteenemy.hunted_by) && behaviortreeentity.favoriteenemy.hunted_by > 0) {
-        behaviortreeentity.favoriteenemy.hunted_by--;
-      }
-      behaviortreeentity.favoriteenemy = undefined;
-      behaviortreeentity.hasseenfavoriteenemy = 0;
-      if(!behaviortreeentity.ignoreall) {
-        behaviortreeentity setgoal(behaviortreeentity.origin);
-      }
-      return;
+  if(behaviortreeentity.ignoreall || behaviortreeentity.pacifist || (isdefined(behaviortreeentity.favoriteenemy) && !is_target_valid(behaviortreeentity, behaviortreeentity.favoriteenemy))) {
+    if(isdefined(behaviortreeentity.favoriteenemy) && isdefined(behaviortreeentity.favoriteenemy.hunted_by) && behaviortreeentity.favoriteenemy.hunted_by > 0) {
+      behaviortreeentity.favoriteenemy.hunted_by--;
     }
+    behaviortreeentity.favoriteenemy = undefined;
+    behaviortreeentity.hasseenfavoriteenemy = 0;
+    if(!behaviortreeentity.ignoreall) {
+      behaviortreeentity setgoal(behaviortreeentity.origin);
+    }
+    return;
+  }
   if(isdefined(behaviortreeentity.ignoreme) && behaviortreeentity.ignoreme) {
     return;
   }
@@ -414,15 +286,6 @@ function zombiedogtargetservice(behaviortreeentity) {
   }
 }
 
-/*
-	Name: zombiedogshouldmelee
-	Namespace: zombiedogbehavior
-	Checksum: 0x8C4C8C99
-	Offset: 0x16D0
-	Size: 0x1E8
-	Parameters: 1
-	Flags: Linked
-*/
 function zombiedogshouldmelee(behaviortreeentity) {
   if(behaviortreeentity.ignoreall || !is_target_valid(behaviortreeentity, behaviortreeentity.favoriteenemy)) {
     return false;
@@ -443,41 +306,14 @@ function zombiedogshouldmelee(behaviortreeentity) {
   return false;
 }
 
-/*
-	Name: zombiedogshouldwalk
-	Namespace: zombiedogbehavior
-	Checksum: 0x3B6EAC05
-	Offset: 0x18C0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function zombiedogshouldwalk(behaviortreeentity) {
   return bb_getshouldrunstatus() == "walk";
 }
 
-/*
-	Name: zombiedogshouldrun
-	Namespace: zombiedogbehavior
-	Checksum: 0xA7BA0B7B
-	Offset: 0x18F0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function zombiedogshouldrun(behaviortreeentity) {
   return bb_getshouldrunstatus() == "run";
 }
 
-/*
-	Name: use_low_attack
-	Namespace: zombiedogbehavior
-	Checksum: 0x515F4316
-	Offset: 0x1920
-	Size: 0x166
-	Parameters: 0
-	Flags: Linked
-*/
 function use_low_attack() {
   if(!isdefined(self.enemy) || !isplayer(self.enemy)) {
     return false;
@@ -495,15 +331,6 @@ function use_low_attack() {
   return false;
 }
 
-/*
-	Name: zombiedogmeleeaction
-	Namespace: zombiedogbehavior
-	Checksum: 0xC19E23DD
-	Offset: 0x1A90
-	Size: 0xA0
-	Parameters: 2
-	Flags: Linked
-*/
 function zombiedogmeleeaction(behaviortreeentity, asmstatename) {
   behaviortreeentity clearpath();
   context = "high";
@@ -515,29 +342,11 @@ function zombiedogmeleeaction(behaviortreeentity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: zombiedogmeleeactionterminate
-	Namespace: zombiedogbehavior
-	Checksum: 0xE2F947DC
-	Offset: 0x1B38
-	Size: 0x38
-	Parameters: 2
-	Flags: Linked
-*/
 function zombiedogmeleeactionterminate(behaviortreeentity, asmstatename) {
   blackboard::setblackboardattribute(behaviortreeentity, "_context", undefined);
   return 4;
 }
 
-/*
-	Name: zombiedoggravity
-	Namespace: zombiedogbehavior
-	Checksum: 0x217E011F
-	Offset: 0x1B78
-	Size: 0x44
-	Parameters: 4
-	Flags: Linked
-*/
 function zombiedoggravity(entity, attribute, oldvalue, value) {
   blackboard::setblackboardattribute(entity, "_low_gravity", value);
 }

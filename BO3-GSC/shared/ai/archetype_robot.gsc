@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_robot.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_cover_utility;
 #using scripts\shared\ai\archetype_locomotion_utility;
 #using scripts\shared\ai\archetype_mocomps_utility;
@@ -25,31 +29,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicles\_raps;
-
 #namespace archetype_robot;
 
-/*
-	Name: __init__sytem__
-	Namespace: archetype_robot
-	Checksum: 0x21F84E4A
-	Offset: 0x14B8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("robot", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: archetype_robot
-	Checksum: 0x216DE72D
-	Offset: 0x14F8
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   spawner::add_archetype_spawn_function("robot", & robotsoldierbehavior::archetyperobotblackboardinit);
   spawner::add_archetype_spawn_function("robot", & robotsoldierserverutils::robotsoldierspawnsetup);
@@ -65,15 +50,6 @@ function __init__() {
 
 #namespace robotsoldierbehavior;
 
-/*
-	Name: registerbehaviorscriptfunctions
-	Namespace: robotsoldierbehavior
-	Checksum: 0x55DED62F
-	Offset: 0x1650
-	Size: 0x105C
-	Parameters: 0
-	Flags: Linked
-*/
 function registerbehaviorscriptfunctions() {
   behaviortreenetworkutility::registerbehaviortreeaction("robotStepIntoAction", & stepintoinitialize, undefined, & stepintoterminate);
   behaviortreenetworkutility::registerbehaviortreeaction("robotStepOutAction", & stepoutinitialize, undefined, & stepoutterminate);
@@ -176,105 +152,42 @@ function registerbehaviorscriptfunctions() {
   animationstatenetwork::registeranimationmocomp("robot_start_wallrun", & mocomprobotstartwallruninit, & mocomprobotstartwallrunupdate, & mocomprobotstartwallrunterminate);
 }
 
-/*
-	Name: robotcleanupchargemeleeattack
-	Namespace: robotsoldierbehavior
-	Checksum: 0x3F5A3671
-	Offset: 0x26B8
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function robotcleanupchargemeleeattack(behaviortreeentity) {
   aiutility::meleereleasemutex(behaviortreeentity);
   aiutility::releaseclaimnode(behaviortreeentity);
   blackboard::setblackboardattribute(behaviortreeentity, "_melee_enemy_type", undefined);
 }
 
-/*
-	Name: robotlightsoff
-	Namespace: robotsoldierbehavior
-	Checksum: 0x2FDF2C1D
-	Offset: 0x2720
-	Size: 0x58
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private robotlightsoff(entity, asmstatename) {
   entity ai::set_behavior_attribute("robot_lights", 2);
   clientfield::set("robot_EMP", 1);
   return 4;
 }
 
-/*
-	Name: robotlightsflicker
-	Namespace: robotsoldierbehavior
-	Checksum: 0x9A9989AF
-	Offset: 0x2780
-	Size: 0x68
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private robotlightsflicker(entity, asmstatename) {
   entity ai::set_behavior_attribute("robot_lights", 1);
   clientfield::set("robot_EMP", 1);
-  entity notify(# "emp_fx_start");
+  entity notify("emp_fx_start");
   return 4;
 }
 
-/*
-	Name: robotlightson
-	Namespace: robotsoldierbehavior
-	Checksum: 0xA13D03C4
-	Offset: 0x27F0
-	Size: 0x50
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private robotlightson(entity, asmstatename) {
   entity ai::set_behavior_attribute("robot_lights", 0);
   clientfield::set("robot_EMP", 0);
   return 4;
 }
 
-/*
-	Name: robotshouldgibdeath
-	Namespace: robotsoldierbehavior
-	Checksum: 0x3BF60785
-	Offset: 0x2848
-	Size: 0x22
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private robotshouldgibdeath(entity, asmstatename) {
   return entity.gibdeath;
 }
 
-/*
-	Name: robotempidleinitialize
-	Namespace: robotsoldierbehavior
-	Checksum: 0xAA4FA4C6
-	Offset: 0x2878
-	Size: 0x60
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private robotempidleinitialize(entity, asmstatename) {
   entity.empstoptime = gettime() + entity.empshutdowntime;
   animationstatenetworkutility::requeststate(entity, asmstatename);
-  entity notify(# "emp_shutdown_start");
+  entity notify("emp_shutdown_start");
   return 5;
 }
 
-/*
-	Name: robotempidleupdate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x4F438208
-	Offset: 0x28E0
-	Size: 0x8E
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private robotempidleupdate(entity, asmstatename) {
   if(gettime() < entity.empstoptime || entity ai::get_behavior_attribute("shutdown")) {
     if(entity asmgetstatus() == "asm_status_complete") {
@@ -285,34 +198,14 @@ function private robotempidleupdate(entity, asmstatename) {
   return 4;
 }
 
-/*
-	Name: robotempidleterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0xED902163
-	Offset: 0x2978
-	Size: 0x28
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private robotempidleterminate(entity, asmstatename) {
-  entity notify(# "emp_shutdown_end");
+  entity notify("emp_shutdown_end");
   return 4;
 }
 
-/*
-	Name: robotproceduraltraversalupdate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x5C7F5B2A
-	Offset: 0x29A8
-	Size: 0xFE
-	Parameters: 2
-	Flags: Linked
-*/
 function robotproceduraltraversalupdate(entity, asmstatename) {
-  /#
   assert(isdefined(entity.traversal));
-  # /
-    traversal = entity.traversal;
+  traversal = entity.traversal;
   t = min((gettime() - traversal.starttime) / traversal.totaltime, 1);
   curveremaining = traversal.curvelength * (1 - t);
   if(curveremaining < traversal.landingdistance) {
@@ -322,15 +215,6 @@ function robotproceduraltraversalupdate(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: robotprocedurallandingupdate
-	Namespace: robotsoldierbehavior
-	Checksum: 0xF272CFCD
-	Offset: 0x2AB0
-	Size: 0x40
-	Parameters: 2
-	Flags: Linked
-*/
 function robotprocedurallandingupdate(entity, asmstatename) {
   if(isdefined(entity.traversal)) {
     entity finishtraversal();
@@ -338,15 +222,6 @@ function robotprocedurallandingupdate(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: robotcalcproceduraltraversal
-	Namespace: robotsoldierbehavior
-	Checksum: 0x26170401
-	Offset: 0x2AF8
-	Size: 0xB58
-	Parameters: 2
-	Flags: Linked
-*/
 function robotcalcproceduraltraversal(entity, asmstatename) {
   if(!isdefined(entity.traversestartnode) || !isdefined(entity.traverseendnode)) {
     return true;
@@ -423,23 +298,19 @@ function robotcalcproceduraltraversal(entity, asmstatename) {
     }
     traversal.speedoncurve = traversal.speedoncurve * 1.2;
   }
-  /#
   recordline(traversal.startpoint1, traversal.startpoint2, (1, 0.5, 0), "", entity);
   recordline(traversal.startpoint1, traversal.endpoint1, (1, 0.5, 0), "", entity);
   recordline(traversal.endpoint1, traversal.endpoint2, (1, 0.5, 0), "", entity);
   recordline(traversal.startpoint2, traversal.endpoint2, (1, 0.5, 0), "", entity);
   record3dtext(traversal.abslengthtoend, traversal.endpoint1 + vectorscale((0, 0, 1), 12), (1, 0.5, 0), "", entity);
-  # /
-    segments = 10;
+  segments = 10;
   previouspoint = traversal.startpoint1;
   traversal.curvelength = 0;
   for (index = 1; index <= segments; index++) {
     t = index / segments;
     nextpoint = calculatecubicbezier(t, traversal.startpoint1, traversal.startpoint2, traversal.endpoint2, traversal.endpoint1);
-    /#
     recordline(previouspoint, nextpoint, (0, 1, 0), "", entity);
-    # /
-      traversal.curvelength = traversal.curvelength + distance(previouspoint, nextpoint);
+    traversal.curvelength = traversal.curvelength + distance(previouspoint, nextpoint);
     previouspoint = nextpoint;
   }
   traversal.starttime = gettime();
@@ -449,15 +320,6 @@ function robotcalcproceduraltraversal(entity, asmstatename) {
   return true;
 }
 
-/*
-	Name: robottraversestart
-	Namespace: robotsoldierbehavior
-	Checksum: 0x87FB7673
-	Offset: 0x3658
-	Size: 0xE0
-	Parameters: 2
-	Flags: Linked
-*/
 function robottraversestart(entity, asmstatename) {
   entity.skipdeath = 1;
   traversal = entity.traversal;
@@ -468,32 +330,14 @@ function robottraversestart(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: robottraverseend
-	Namespace: robotsoldierbehavior
-	Checksum: 0xC3C5FF11
-	Offset: 0x3740
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function robottraverseend(entity) {
   robottraverseragdollondeath(entity);
   entity.skipdeath = 0;
   entity.traversal = undefined;
-  entity notify(# "traverse_end");
+  entity notify("traverse_end");
   return 4;
 }
 
-/*
-	Name: robottraverseragdollondeath
-	Namespace: robotsoldierbehavior
-	Checksum: 0x8908868A
-	Offset: 0x37A0
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private robottraverseragdollondeath(entity, asmstatename) {
   if(!isalive(entity)) {
     entity startragdoll();
@@ -501,15 +345,6 @@ function private robottraverseragdollondeath(entity, asmstatename) {
   return 4;
 }
 
-/*
-	Name: robotshouldproceduraltraverse
-	Namespace: robotsoldierbehavior
-	Checksum: 0xA809D124
-	Offset: 0x37F0
-	Size: 0xB2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotshouldproceduraltraverse(entity) {
   if(isdefined(entity.traversestartnode) && isdefined(entity.traverseendnode)) {
     isprocedural = entity ai::get_behavior_attribute("traversals") == "procedural" || entity.traversestartnode.spawnflags & 1024 || entity.traverseendnode.spawnflags & 1024;
@@ -518,15 +353,6 @@ function private robotshouldproceduraltraverse(entity) {
   return 0;
 }
 
-/*
-	Name: robotwallruntraverse
-	Namespace: robotsoldierbehavior
-	Checksum: 0xA2C18BFB
-	Offset: 0x38B0
-	Size: 0xBE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotwallruntraverse(entity) {
   startnode = entity.traversestartnode;
   endnode = entity.traverseendnode;
@@ -538,28 +364,10 @@ function private robotwallruntraverse(entity) {
   return 0;
 }
 
-/*
-	Name: robotshouldwallrun
-	Namespace: robotsoldierbehavior
-	Checksum: 0x732BD2E0
-	Offset: 0x3978
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotshouldwallrun(entity) {
   return blackboard::getblackboardattribute(entity, "_robot_traversal_type") == "wall";
 }
 
-/*
-	Name: mocomprobotstartwallruninit
-	Namespace: robotsoldierbehavior
-	Checksum: 0xA457A717
-	Offset: 0x39B8
-	Size: 0xD4
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocomprobotstartwallruninit(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity setrepairpaths(0);
   entity orientmode("face angle", entity.angles[1]);
@@ -569,15 +377,6 @@ function private mocomprobotstartwallruninit(entity, mocompanim, mocompanimblend
   entity setavoidancemask("avoid none");
 }
 
-/*
-	Name: mocomprobotstartwallrunupdate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x5E42EA20
-	Offset: 0x3A98
-	Size: 0x1F4
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocomprobotstartwallrunupdate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   facenormal = getnavmeshfacenormal(entity.origin, 30);
   positiononwall = getclosestpointonnavmesh(entity.origin, 30, 0);
@@ -591,22 +390,11 @@ function private mocomprobotstartwallrunupdate(entity, mocompanim, mocompanimble
     }
     forwardpositiononwall = getclosestpointonnavmesh(positiononwall + (movedirection * 12), 30, 0);
     anglestoend = vectortoangles(forwardpositiononwall - positiononwall);
-    /#
     recordline(positiononwall, forwardpositiononwall, (1, 0, 0), "", entity);
-    # /
-      entity orientmode("face angle", anglestoend[1]);
+    entity orientmode("face angle", anglestoend[1]);
   }
 }
 
-/*
-	Name: mocomprobotstartwallrunterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x4E48D9BD
-	Offset: 0x3C98
-	Size: 0x88
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocomprobotstartwallrunterminate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity setrepairpaths(1);
   entity setavoidancemask("avoid all");
@@ -614,28 +402,10 @@ function private mocomprobotstartwallrunterminate(entity, mocompanim, mocompanim
   entity.clamptonavmesh = 1;
 }
 
-/*
-	Name: calculatecubicbezier
-	Namespace: robotsoldierbehavior
-	Checksum: 0x14CABEDE
-	Offset: 0x3D28
-	Size: 0xD2
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private calculatecubicbezier(t, p1, p2, p3, p4) {
   return ((pow(1 - t, 3)) * p1) + (((3 * (pow(1 - t, 2))) * t) * p2) + ((3 * (1 - t)) * pow(t, 2) * p3) + (pow(t, 3) * p4);
 }
 
-/*
-	Name: mocomprobotstarttraversalinit
-	Namespace: robotsoldierbehavior
-	Checksum: 0xBEB34710
-	Offset: 0x3E08
-	Size: 0x394
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocomprobotstarttraversalinit(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   startnode = entity.traversestartnode;
   startiswallrun = startnode.spawnflags & 2048;
@@ -656,13 +426,9 @@ function private mocomprobotstarttraversalinit(entity, mocompanim, mocompanimble
     if(direction == "right") {
       movedirection = movedirection * -1;
     }
-    /#
     recordline(endnode.origin, endnode.origin + (facenormal * 20), (1, 0, 0), "", entity);
-    # /
-      /#
     recordline(endnode.origin, endnode.origin + (movedirection * 20), (1, 0, 0), "", entity);
-    # /
-      angles = vectortoangles(movedirection);
+    angles = vectortoangles(movedirection);
     entity orientmode("face angle", angles[1]);
     if(startiswallrun) {
       entity animmode("normal_nogravity", 0);
@@ -676,26 +442,8 @@ function private mocomprobotstarttraversalinit(entity, mocompanim, mocompanimble
   entity pathmode("dont move");
 }
 
-/*
-	Name: mocomprobotstarttraversalterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0xAE69CDB5
-	Offset: 0x41A8
-	Size: 0x2C
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocomprobotstarttraversalterminate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {}
 
-/*
-	Name: mocomprobotproceduraltraversalinit
-	Namespace: robotsoldierbehavior
-	Checksum: 0x55C2AF72
-	Offset: 0x41E0
-	Size: 0x12C
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocomprobotproceduraltraversalinit(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   traversal = entity.traversal;
   entity setavoidancemask("avoid none");
@@ -709,15 +457,6 @@ function private mocomprobotproceduraltraversalinit(entity, mocompanim, mocompan
   }
 }
 
-/*
-	Name: mocomprobotproceduraltraversalupdate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x52E22152
-	Offset: 0x4318
-	Size: 0x21C
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocomprobotproceduraltraversalupdate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   traversal = entity.traversal;
   if(isdefined(traversal)) {
@@ -741,15 +480,6 @@ function private mocomprobotproceduraltraversalupdate(entity, mocompanim, mocomp
   }
 }
 
-/*
-	Name: mocomprobotproceduraltraversalterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x715B485C
-	Offset: 0x4540
-	Size: 0x114
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocomprobotproceduraltraversalterminate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   traversal = entity.traversal;
   if(isdefined(traversal) && gettime() >= traversal.endtime) {
@@ -764,15 +494,6 @@ function private mocomprobotproceduraltraversalterminate(entity, mocompanim, moc
   entity setavoidancemask("avoid all");
 }
 
-/*
-	Name: mocompignorepainfaceenemyinit
-	Namespace: robotsoldierbehavior
-	Checksum: 0xC6F197CF
-	Offset: 0x4660
-	Size: 0xC4
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompignorepainfaceenemyinit(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity.blockingpain = 1;
   if(isdefined(entity.enemy)) {
@@ -783,15 +504,6 @@ function private mocompignorepainfaceenemyinit(entity, mocompanim, mocompanimble
   entity animmode("pos deltas");
 }
 
-/*
-	Name: mocompignorepainfaceenemyupdate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x537BA79B
-	Offset: 0x4730
-	Size: 0xB4
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompignorepainfaceenemyupdate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   if(isdefined(entity.enemy) && entity getanimtime(mocompanim) < 0.5) {
     entity orientmode("face enemy");
@@ -800,58 +512,27 @@ function private mocompignorepainfaceenemyupdate(entity, mocompanim, mocompanimb
   }
 }
 
-/*
-	Name: mocompignorepainfaceenemyterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x3DC4535E
-	Offset: 0x47F0
-	Size: 0x3C
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompignorepainfaceenemyterminate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity.blockingpain = 0;
 }
 
-/*
-	Name: _calculatewallrundirection
-	Namespace: robotsoldierbehavior
-	Checksum: 0xDE67D908
-	Offset: 0x4838
-	Size: 0x186
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _calculatewallrundirection(startposition, endposition) {
   entity = self;
   facenormal = getnavmeshfacenormal(endposition, 30);
-  /#
   recordline(startposition, endposition, (1, 0.5, 0), "", entity);
-  # /
-    if(isdefined(facenormal)) {
-      /#
-      recordline(endposition, endposition + (facenormal * 12), (1, 0.5, 0), "", entity);
-      # /
-        angles = vectortoangles(facenormal);
-      right = anglestoright(angles);
-      d = vectordot(right, endposition) * -1;
-      if((vectordot(right, startposition) + d) > 0) {
-        return "right";
-      }
-      return "left";
+  if(isdefined(facenormal)) {
+    recordline(endposition, endposition + (facenormal * 12), (1, 0.5, 0), "", entity);
+    angles = vectortoangles(facenormal);
+    right = anglestoright(angles);
+    d = vectordot(right, endposition) * -1;
+    if((vectordot(right, startposition) + d) > 0) {
+      return "right";
     }
+    return "left";
+  }
   return "unknown";
 }
 
-/*
-	Name: robotwallrunstart
-	Namespace: robotsoldierbehavior
-	Checksum: 0x996B3036
-	Offset: 0x49C8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private robotwallrunstart() {
   entity = self;
   entity.skipdeath = 1;
@@ -860,15 +541,6 @@ function private robotwallrunstart() {
   entity.pushable = 0;
 }
 
-/*
-	Name: robotwallrunend
-	Namespace: robotsoldierbehavior
-	Checksum: 0xBE61E437
-	Offset: 0x4A40
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private robotwallrunend() {
   entity = self;
   robottraverseragdollondeath(entity);
@@ -878,15 +550,6 @@ function private robotwallrunend() {
   entity.pushable = 1;
 }
 
-/*
-	Name: robotsetupwallrunjump
-	Namespace: robotsoldierbehavior
-	Checksum: 0x429C844
-	Offset: 0x4AC8
-	Size: 0x220
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private robotsetupwallrunjump() {
   entity = self;
   startnode = entity.traversestartnode;
@@ -917,15 +580,6 @@ function private robotsetupwallrunjump() {
   return 5;
 }
 
-/*
-	Name: robotsetupwallrunland
-	Namespace: robotsoldierbehavior
-	Checksum: 0x1C65B6C6
-	Offset: 0x4CF0
-	Size: 0x100
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private robotsetupwallrunland() {
   entity = self;
   startnode = entity.traversestartnode;
@@ -941,15 +595,6 @@ function private robotsetupwallrunland() {
   return 5;
 }
 
-/*
-	Name: robotstartjumpdirection
-	Namespace: robotsoldierbehavior
-	Checksum: 0x7340AAE4
-	Offset: 0x4DF8
-	Size: 0x13A
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private robotstartjumpdirection() {
   entity = self;
   startnode = entity.traversestartnode;
@@ -968,15 +613,6 @@ function private robotstartjumpdirection() {
   return "unknown";
 }
 
-/*
-	Name: robotendjumpdirection
-	Namespace: robotsoldierbehavior
-	Checksum: 0x64AC1EE3
-	Offset: 0x4F40
-	Size: 0x13A
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private robotendjumpdirection() {
   entity = self;
   startnode = entity.traversestartnode;
@@ -995,15 +631,6 @@ function private robotendjumpdirection() {
   return "unknown";
 }
 
-/*
-	Name: robottraversaltype
-	Namespace: robotsoldierbehavior
-	Checksum: 0xAAC419B3
-	Offset: 0x5088
-	Size: 0x42
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robottraversaltype(node) {
   if(isdefined(node)) {
     if(node.spawnflags & 2048) {
@@ -1014,15 +641,6 @@ function private robottraversaltype(node) {
   return "unknown";
 }
 
-/*
-	Name: archetyperobotblackboardinit
-	Namespace: robotsoldierbehavior
-	Checksum: 0x3F77DBFD
-	Offset: 0x50D8
-	Size: 0x454
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private archetyperobotblackboardinit() {
   entity = self;
   blackboard::createblackboardforentity(entity);
@@ -1030,80 +648,51 @@ function private archetyperobotblackboardinit() {
   entity aiutility::registerutilityblackboardattributes();
   blackboard::registerblackboardattribute(self, "_locomotion_speed", "locomotion_speed_sprint", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_mind_control", "normal", & robotismindcontrolled);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_move_mode", "normal", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_gibbed_limbs", undefined, & robotgetgibbedlimbs);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_robot_jump_direction", undefined, undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_robot_locomotion_type", undefined, undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_robot_traversal_type", undefined, undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_robot_wallrun_direction", undefined, undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_robot_mode", "normal", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   entity.___archetypeonanimscriptedcallback = & archetyperobotonanimscriptedcallback;
-  /#
   entity finalizetrackedblackboardattributes();
-  # /
-    if(sessionmodeiscampaigngame() || sessionmodeiszombiesgame()) {
-      self thread gameskill::accuracy_buildup_before_fire(self);
-    }
+  if(sessionmodeiscampaigngame() || sessionmodeiszombiesgame()) {
+    self thread gameskill::accuracy_buildup_before_fire(self);
+  }
   if(self.accuratefire) {
     self thread aiutility::preshootlaserandglinton(self);
     self thread aiutility::postshootlaserandglintoff(self);
   }
 }
 
-/*
-	Name: robotcrawlercanshootenemy
-	Namespace: robotsoldierbehavior
-	Checksum: 0x88FD0AD2
-	Offset: 0x5538
-	Size: 0x118
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotcrawlercanshootenemy(entity) {
   if(!isdefined(entity.enemy)) {
     return 0;
@@ -1114,29 +703,11 @@ function private robotcrawlercanshootenemy(entity) {
   return yawtoenemy <= (aimlimits["aim_left"] + angleepsilon) && yawtoenemy >= (aimlimits["aim_right"] + angleepsilon);
 }
 
-/*
-	Name: archetyperobotonanimscriptedcallback
-	Namespace: robotsoldierbehavior
-	Checksum: 0xD8FE3E94
-	Offset: 0x5658
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private archetyperobotonanimscriptedcallback(entity) {
   entity.__blackboard = undefined;
   entity archetyperobotblackboardinit();
 }
 
-/*
-	Name: robotgetgibbedlimbs
-	Namespace: robotsoldierbehavior
-	Checksum: 0xB2237CDC
-	Offset: 0x5698
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private robotgetgibbedlimbs() {
   entity = self;
   rightarmgibbed = gibserverutils::isgibbed(entity, 16);
@@ -1153,57 +724,21 @@ function private robotgetgibbedlimbs() {
   return "none";
 }
 
-/*
-	Name: robotinvalidatecover
-	Namespace: robotsoldierbehavior
-	Checksum: 0xFE09B0F4
-	Offset: 0x5748
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotinvalidatecover(entity) {
   entity.steppedoutofcover = 0;
   entity pathmode("move allowed");
 }
 
-/*
-	Name: robotdelaymovement
-	Namespace: robotsoldierbehavior
-	Checksum: 0x70589C81
-	Offset: 0x5790
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotdelaymovement(entity) {
   entity pathmode("move delayed", 0, randomfloatrange(1, 2));
 }
 
-/*
-	Name: robotmovement
-	Namespace: robotsoldierbehavior
-	Checksum: 0x69377831
-	Offset: 0x57E0
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotmovement(entity) {
   if(blackboard::getblackboardattribute(entity, "_stance") != "stand") {
     blackboard::setblackboardattribute(entity, "_desired_stance", "stand");
   }
 }
 
-/*
-	Name: robotcoverscaninitialize
-	Namespace: robotsoldierbehavior
-	Checksum: 0x56F5016F
-	Offset: 0x5848
-	Size: 0xD0
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotcoverscaninitialize(entity) {
   blackboard::setblackboardattribute(entity, "_cover_mode", "cover_scan");
   blackboard::setblackboardattribute(entity, "_desired_stance", "stand");
@@ -1213,15 +748,6 @@ function private robotcoverscaninitialize(entity) {
   entity.steppedoutofcovernode = entity.node;
 }
 
-/*
-	Name: robotcoverscanterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0xD2A1F12D
-	Offset: 0x5920
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotcoverscanterminate(entity) {
   aiutility::cleanupcovermode(entity);
   entity.steppedoutofcover = 1;
@@ -1230,15 +756,6 @@ function private robotcoverscanterminate(entity) {
   entity pathmode("dont move");
 }
 
-/*
-	Name: robotcanjuke
-	Namespace: robotsoldierbehavior
-	Checksum: 0xE1F5860B
-	Offset: 0x59B0
-	Size: 0x156
-	Parameters: 1
-	Flags: Linked
-*/
 function robotcanjuke(entity) {
   if(!entity ai::get_behavior_attribute("phalanx") && (!(isdefined(entity.steppedoutofcover) && entity.steppedoutofcover)) && aiutility::canjuke(entity)) {
     jukeevents = blackboard::getblackboardevents("actor_juke");
@@ -1253,15 +770,6 @@ function robotcanjuke(entity) {
   return false;
 }
 
-/*
-	Name: robotcantacticaljuke
-	Namespace: robotsoldierbehavior
-	Checksum: 0xB5DE2B0F
-	Offset: 0x5B10
-	Size: 0x88
-	Parameters: 1
-	Flags: Linked
-*/
 function robotcantacticaljuke(entity) {
   if(entity haspath() && aiutility::bb_getlocomotionfaceenemyquadrant() == "locomotion_face_enemy_front") {
     jukedirection = aiutility::calculatejukedirection(entity, 50, entity.jukedistance);
@@ -1270,15 +778,6 @@ function robotcantacticaljuke(entity) {
   return 0;
 }
 
-/*
-	Name: robotcanpreemptivejuke
-	Namespace: robotsoldierbehavior
-	Checksum: 0xB5498ACB
-	Offset: 0x5BA0
-	Size: 0x3DE
-	Parameters: 1
-	Flags: Linked
-*/
 function robotcanpreemptivejuke(entity) {
   if(!isdefined(entity.enemy) || !isplayer(entity.enemy)) {
     return 0;
@@ -1304,62 +803,31 @@ function robotcanpreemptivejuke(entity) {
   }
   if(distancesquared(entity.origin, entity.enemy.origin) < (jukemaxdistance * jukemaxdistance)) {
     angledifference = absangleclamp180(entity.angles[1] - entity.enemy.angles[1]);
-    /#
     record3dtext(angledifference, entity.origin + vectorscale((0, 0, 1), 5), (0, 1, 0), "");
-    # /
-      if(angledifference > 135) {
-        enemyangles = entity.enemy getgunangles();
-        toenemy = entity.enemy.origin - entity.origin;
-        forward = anglestoforward(enemyangles);
-        dotproduct = abs(vectordot(vectornormalize(toenemy), forward));
-        /#
-        record3dtext(acos(dotproduct), entity.origin + vectorscale((0, 0, 1), 10), (0, 1, 0), "");
-        # /
-          if(dotproduct > 0.9848) {
-            return robotcanjuke(entity);
-          }
+    if(angledifference > 135) {
+      enemyangles = entity.enemy getgunangles();
+      toenemy = entity.enemy.origin - entity.origin;
+      forward = anglestoforward(enemyangles);
+      dotproduct = abs(vectordot(vectornormalize(toenemy), forward));
+      record3dtext(acos(dotproduct), entity.origin + vectorscale((0, 0, 1), 10), (0, 1, 0), "");
+      if(dotproduct > 0.9848) {
+        return robotcanjuke(entity);
       }
+    }
   }
   return 0;
 }
 
-/*
-	Name: robotisatcovermodescan
-	Namespace: robotsoldierbehavior
-	Checksum: 0x3E07442F
-	Offset: 0x5F88
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function robotisatcovermodescan(entity) {
   covermode = blackboard::getblackboardattribute(entity, "_cover_mode");
   return covermode == "cover_scan";
 }
 
-/*
-	Name: robotprepareforadjusttocover
-	Namespace: robotsoldierbehavior
-	Checksum: 0xB83B04C6
-	Offset: 0x5FD8
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotprepareforadjusttocover(entity) {
   aiutility::keepclaimnode(entity);
   blackboard::setblackboardattribute(entity, "_desired_stance", "crouch");
 }
 
-/*
-	Name: robotcrawlerservice
-	Namespace: robotsoldierbehavior
-	Checksum: 0x861E448C
-	Offset: 0x6030
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotcrawlerservice(entity) {
   if(isdefined(entity.crawlerlifetime) && entity.crawlerlifetime <= gettime() && entity.health > 0) {
     entity kill();
@@ -1367,28 +835,10 @@ function private robotcrawlerservice(entity) {
   return true;
 }
 
-/*
-	Name: robotiscrawler
-	Namespace: robotsoldierbehavior
-	Checksum: 0x389DDE9D
-	Offset: 0x60A0
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function robotiscrawler(entity) {
   return entity.iscrawler;
 }
 
-/*
-	Name: robotbecomecrawler
-	Namespace: robotsoldierbehavior
-	Checksum: 0x1DE27696
-	Offset: 0x60C8
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotbecomecrawler(entity) {
   if(!entity ai::get_behavior_attribute("can_become_crawler")) {
     return;
@@ -1398,44 +848,17 @@ function private robotbecomecrawler(entity) {
   entity allowpitchangle(1);
   entity setpitchorient();
   entity.crawlerlifetime = gettime() + randomintrange(10000, 20000);
-  entity notify(# "bhtn_action_notify", "rbCrawler");
+  entity notify("bhtn_action_notify", "rbCrawler");
 }
 
-/*
-	Name: robotshouldbecomecrawler
-	Namespace: robotsoldierbehavior
-	Checksum: 0x8ED1E249
-	Offset: 0x61A0
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function robotshouldbecomecrawler(entity) {
   return entity.becomecrawler;
 }
 
-/*
-	Name: robotismarching
-	Namespace: robotsoldierbehavior
-	Checksum: 0x11AEC71
-	Offset: 0x61C8
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotismarching(entity) {
   return blackboard::getblackboardattribute(entity, "_move_mode") == "marching";
 }
 
-/*
-	Name: robotlocomotionspeed
-	Namespace: robotsoldierbehavior
-	Checksum: 0xAB9B95EC
-	Offset: 0x6208
-	Size: 0xBE
-	Parameters: 0
-	Flags: Private
-*/
 function private robotlocomotionspeed() {
   entity = self;
   if(robotismindcontrolled() == "mind_controlled") {
@@ -1456,15 +879,6 @@ function private robotlocomotionspeed() {
   return "locomotion_speed_walk";
 }
 
-/*
-	Name: robotcoveroverinitialize
-	Namespace: robotsoldierbehavior
-	Checksum: 0x9C69A9CD
-	Offset: 0x62D0
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotcoveroverinitialize(behaviortreeentity) {
   aiutility::setcovershootstarttime(behaviortreeentity);
   aiutility::keepclaimnode(behaviortreeentity);
@@ -1472,29 +886,11 @@ function private robotcoveroverinitialize(behaviortreeentity) {
   blackboard::setblackboardattribute(behaviortreeentity, "_cover_mode", "cover_over");
 }
 
-/*
-	Name: robotcoveroverterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0xBF2C9C8B
-	Offset: 0x6368
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotcoveroverterminate(behaviortreeentity) {
   aiutility::cleanupcovermode(behaviortreeentity);
   aiutility::clearcovershootstarttime(behaviortreeentity);
 }
 
-/*
-	Name: robotismindcontrolled
-	Namespace: robotsoldierbehavior
-	Checksum: 0xDF72676D
-	Offset: 0x63B0
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private robotismindcontrolled() {
   entity = self;
   if(entity.controllevel > 1) {
@@ -1503,29 +899,11 @@ function private robotismindcontrolled() {
   return "normal";
 }
 
-/*
-	Name: robotdonttakecover
-	Namespace: robotsoldierbehavior
-	Checksum: 0xCE5EA347
-	Offset: 0x63F8
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotdonttakecover(entity) {
   entity.combatmode = "no_cover";
   entity.resumecover = gettime() + 4000;
 }
 
-/*
-	Name: _isvalidplayer
-	Namespace: robotsoldierbehavior
-	Checksum: 0x47E979B0
-	Offset: 0x6438
-	Size: 0xAE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _isvalidplayer(player) {
   if(!isdefined(player) || !isalive(player) || !isplayer(player) || player.sessionstate == "spectator" || player.sessionstate == "intermission" || player laststand::player_is_in_laststand() || player.ignoreme) {
     return false;
@@ -1533,15 +911,6 @@ function private _isvalidplayer(player) {
   return true;
 }
 
-/*
-	Name: robotrushenemyservice
-	Namespace: robotsoldierbehavior
-	Checksum: 0x5C2D94AF
-	Offset: 0x64F0
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotrushenemyservice(entity) {
   if(!isdefined(entity.enemy)) {
     return false;
@@ -1555,28 +924,10 @@ function private robotrushenemyservice(entity) {
   }
 }
 
-/*
-	Name: _isvalidrusher
-	Namespace: robotsoldierbehavior
-	Checksum: 0x371F6B9F
-	Offset: 0x65F0
-	Size: 0x184
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _isvalidrusher(entity, neighbor) {
   return isdefined(neighbor) && isdefined(neighbor.archetype) && neighbor.archetype == "robot" && isdefined(neighbor.team) && entity.team == neighbor.team && entity != neighbor && isdefined(neighbor.enemy) && neighbor ai::get_behavior_attribute("move_mode") == "normal" && !neighbor ai::get_behavior_attribute("phalanx") && neighbor ai::get_behavior_attribute("rogue_control") == "level_0" && distancesquared(entity.origin, neighbor.origin) < 160000 && distancesquared(neighbor.origin, neighbor.enemy.origin) < 1440000;
 }
 
-/*
-	Name: robotrushneighborservice
-	Namespace: robotsoldierbehavior
-	Checksum: 0x34225F58
-	Offset: 0x6780
-	Size: 0x1BC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotrushneighborservice(entity) {
   actors = getaiarray();
   closestenemy = undefined;
@@ -1598,15 +949,6 @@ function private robotrushneighborservice(entity) {
   }
 }
 
-/*
-	Name: _findclosest
-	Namespace: robotsoldierbehavior
-	Checksum: 0x64B28D47
-	Offset: 0x6948
-	Size: 0x142
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _findclosest(entity, entities) {
   closest = spawnstruct();
   if(entities.size > 0) {
@@ -1623,15 +965,6 @@ function private _findclosest(entity, entities) {
   return closest;
 }
 
-/*
-	Name: robottargetservice
-	Namespace: robotsoldierbehavior
-	Checksum: 0x4A07A9B9
-	Offset: 0x6A98
-	Size: 0x5EC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robottargetservice(entity) {
   if(robotabletoshootcondition(entity)) {
     return false;
@@ -1698,15 +1031,6 @@ function private robottargetservice(entity) {
   entity.nexttargetserviceupdate = gettime() + randomintrange(2500, 3500);
 }
 
-/*
-	Name: setdesiredstancetostand
-	Namespace: robotsoldierbehavior
-	Checksum: 0x74627B3
-	Offset: 0x7090
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private setdesiredstancetostand(behaviortreeentity) {
   currentstance = blackboard::getblackboardattribute(behaviortreeentity, "_stance");
   if(currentstance == "crouch") {
@@ -1714,15 +1038,6 @@ function private setdesiredstancetostand(behaviortreeentity) {
   }
 }
 
-/*
-	Name: setdesiredstancetocrouch
-	Namespace: robotsoldierbehavior
-	Checksum: 0x56950DC8
-	Offset: 0x7108
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private setdesiredstancetocrouch(behaviortreeentity) {
   currentstance = blackboard::getblackboardattribute(behaviortreeentity, "_stance");
   if(currentstance == "stand") {
@@ -1730,15 +1045,6 @@ function private setdesiredstancetocrouch(behaviortreeentity) {
   }
 }
 
-/*
-	Name: toggledesiredstance
-	Namespace: robotsoldierbehavior
-	Checksum: 0xA4925103
-	Offset: 0x7180
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private toggledesiredstance(entity) {
   currentstance = blackboard::getblackboardattribute(entity, "_stance");
   if(currentstance == "stand") {
@@ -1748,28 +1054,10 @@ function private toggledesiredstance(entity) {
   }
 }
 
-/*
-	Name: robotshouldshutdown
-	Namespace: robotsoldierbehavior
-	Checksum: 0x7A400745
-	Offset: 0x7220
-	Size: 0x2A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotshouldshutdown(entity) {
   return entity ai::get_behavior_attribute("shutdown");
 }
 
-/*
-	Name: robotshouldexplode
-	Namespace: robotsoldierbehavior
-	Checksum: 0x1E0228F1
-	Offset: 0x7258
-	Size: 0xAE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotshouldexplode(entity) {
   if(entity.controllevel >= 3) {
     if(entity ai::get_behavior_attribute("rogue_force_explosion")) {
@@ -1783,15 +1071,6 @@ function private robotshouldexplode(entity) {
   return 0;
 }
 
-/*
-	Name: robotshouldadjusttocover
-	Namespace: robotsoldierbehavior
-	Checksum: 0x987AF481
-	Offset: 0x7310
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotshouldadjusttocover(entity) {
   if(!isdefined(entity.node)) {
     return 0;
@@ -1799,42 +1078,15 @@ function private robotshouldadjusttocover(entity) {
   return blackboard::getblackboardattribute(entity, "_stance") != "crouch";
 }
 
-/*
-	Name: robotshouldreactatcover
-	Namespace: robotsoldierbehavior
-	Checksum: 0x74655515
-	Offset: 0x7368
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotshouldreactatcover(behaviortreeentity) {
   return blackboard::getblackboardattribute(behaviortreeentity, "_stance") == "crouch" && aiutility::canbeflanked(behaviortreeentity) && behaviortreeentity isatcovernodestrict() && behaviortreeentity isflankedatcovernode() && !behaviortreeentity haspath();
 }
 
-/*
-	Name: robotexplode
-	Namespace: robotsoldierbehavior
-	Checksum: 0x1055F9B6
-	Offset: 0x7408
-	Size: 0x30
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotexplode(entity) {
   entity.allowdeath = 0;
   entity.nocybercom = 1;
 }
 
-/*
-	Name: robotexplodeterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x3BD8284D
-	Offset: 0x7440
-	Size: 0x164
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotexplodeterminate(entity) {
   blackboard::setblackboardattribute(entity, "_gib_location", "legs");
   entity radiusdamage(entity.origin + vectorscale((0, 0, 1), 36), 60, 100, 50, entity, "MOD_EXPLOSIVE");
@@ -1853,15 +1105,6 @@ function private robotexplodeterminate(entity) {
   entity startragdoll();
 }
 
-/*
-	Name: robotexposedcoverservice
-	Namespace: robotsoldierbehavior
-	Checksum: 0x7BB93282
-	Offset: 0x75B0
-	Size: 0xFE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotexposedcoverservice(entity) {
   if(isdefined(entity.steppedoutofcover) && isdefined(entity.steppedoutofcovernode) && (!entity iscovervalid(entity.steppedoutofcovernode) || entity haspath() || !entity issafefromgrenade())) {
     entity.steppedoutofcover = 0;
@@ -1873,15 +1116,6 @@ function private robotexposedcoverservice(entity) {
   }
 }
 
-/*
-	Name: robotisatcovercondition
-	Namespace: robotsoldierbehavior
-	Checksum: 0xFBB5E771
-	Offset: 0x76B8
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotisatcovercondition(entity) {
   enemytooclose = 0;
   if(isdefined(entity.enemy)) {
@@ -1892,15 +1126,6 @@ function private robotisatcovercondition(entity) {
   return !enemytooclose && !entity.steppedoutofcover && entity isatcovernodestrict() && entity shouldusecovernode() && !entity haspath() && entity issafefromgrenade() && entity.combatmode != "no_cover";
 }
 
-/*
-	Name: robotsupportsovercover
-	Namespace: robotsoldierbehavior
-	Checksum: 0x1B6E4D05
-	Offset: 0x77F8
-	Size: 0x158
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotsupportsovercover(entity) {
   if(isdefined(entity.node)) {
     if(isdefined(entity.node.spawnflags) && (entity.node.spawnflags & 4) == 4) {
@@ -1911,15 +1136,6 @@ function private robotsupportsovercover(entity) {
   return 0;
 }
 
-/*
-	Name: canmovetoenemycondition
-	Namespace: robotsoldierbehavior
-	Checksum: 0xEF59239D
-	Offset: 0x7958
-	Size: 0x180
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private canmovetoenemycondition(entity) {
   if(!isdefined(entity.enemy) || entity.enemy.health <= 0) {
     return 0;
@@ -1930,24 +1146,13 @@ function private canmovetoenemycondition(entity) {
     return 0;
   }
   findpathresult = entity findpath(positiononnavmesh, enemypositiononnavmesh, 1, 0);
-  /#
   if(!findpathresult) {
     record3dtext("", enemypositiononnavmesh + vectorscale((0, 0, 1), 5), (1, 0.5, 0), "");
     recordline(positiononnavmesh, enemypositiononnavmesh, (1, 0.5, 0), "", entity);
   }
-  # /
-    return findpathresult;
+  return findpathresult;
 }
 
-/*
-	Name: canmoveclosetoenemycondition
-	Namespace: robotsoldierbehavior
-	Checksum: 0xD21F67B1
-	Offset: 0x7AE0
-	Size: 0xB8
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private canmoveclosetoenemycondition(entity) {
   if(!isdefined(entity.enemy) || entity.enemy.health <= 0) {
     return 0;
@@ -1957,43 +1162,16 @@ function private canmoveclosetoenemycondition(entity) {
   return queryresult.data.size > 0;
 }
 
-/*
-	Name: robotstartsprint
-	Namespace: robotsoldierbehavior
-	Checksum: 0x42E423F0
-	Offset: 0x7BA0
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotstartsprint(entity) {
   blackboard::setblackboardattribute(entity, "_locomotion_speed", "locomotion_speed_sprint");
   return true;
 }
 
-/*
-	Name: robotstartsupersprint
-	Namespace: robotsoldierbehavior
-	Checksum: 0xF24FDFE5
-	Offset: 0x7BE0
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotstartsupersprint(entity) {
   blackboard::setblackboardattribute(entity, "_locomotion_speed", "locomotion_speed_super_sprint");
   return true;
 }
 
-/*
-	Name: robottacticalwalkactionstart
-	Namespace: robotsoldierbehavior
-	Checksum: 0xEBCA12B9
-	Offset: 0x7C20
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robottacticalwalkactionstart(entity) {
   aiutility::resetcoverparameters(entity);
   aiutility::setcanbeflanked(entity, 0);
@@ -2002,30 +1180,12 @@ function private robottacticalwalkactionstart(entity) {
   return true;
 }
 
-/*
-	Name: robotdie
-	Namespace: robotsoldierbehavior
-	Checksum: 0xF69D8C31
-	Offset: 0x7CB8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotdie(entity) {
   if(isalive(entity)) {
     entity kill();
   }
 }
 
-/*
-	Name: movetoplayerupdate
-	Namespace: robotsoldierbehavior
-	Checksum: 0xD20766A9
-	Offset: 0x7D00
-	Size: 0x7C8
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private movetoplayerupdate(entity, asmstatename) {
   entity.keepclaimednode = 0;
   positiononnavmesh = getclosestpointonnavmesh(entity.origin, 200);
@@ -2083,24 +1243,20 @@ function private movetoplayerupdate(entity, asmstatename) {
       entity useposition(entity.lastvalidenemypos);
       if(distancesquared(entity.origin, entity.lastvalidenemypos) > (240 * 240)) {
         path = entity calcapproximatepathtoposition(entity.lastvalidenemypos, 0);
-        /#
         if(getdvarint("")) {
           for (index = 1; index < path.size; index++) {
             recordline(path[index - 1], path[index], (1, 0.5, 0), "", entity);
           }
         }
-        # /
-          deviationdistance = randomintrange(240, 480);
+        deviationdistance = randomintrange(240, 480);
         segmentlength = 0;
         for (index = 1; index < path.size; index++) {
           currentseglength = distance(path[index - 1], path[index]);
           if((segmentlength + currentseglength) > deviationdistance) {
             remaininglength = deviationdistance - segmentlength;
             seedposition = (path[index - 1]) + ((vectornormalize(path[index] - (path[index - 1]))) * remaininglength);
-            /#
             recordcircle(seedposition, 2, (1, 0.5, 0), "", entity);
-            # /
-              innerzigzagradius = 0;
+            innerzigzagradius = 0;
             outerzigzagradius = 64;
             queryresult = positionquery_source_navigation(seedposition, innerzigzagradius, outerzigzagradius, 36, 16, entity, 16);
             positionquery_filter_inclaimedlocation(queryresult, entity);
@@ -2119,15 +1275,6 @@ function private movetoplayerupdate(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: robotshouldchargemelee
-	Namespace: robotsoldierbehavior
-	Checksum: 0xE5675B53
-	Offset: 0x84D0
-	Size: 0x46
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotshouldchargemelee(entity) {
   if(aiutility::shouldmutexmelee(entity) && robothasenemytomelee(entity)) {
     return true;
@@ -2135,15 +1282,6 @@ function private robotshouldchargemelee(entity) {
   return false;
 }
 
-/*
-	Name: robothasenemytomelee
-	Namespace: robotsoldierbehavior
-	Checksum: 0xDE2B1C99
-	Offset: 0x8520
-	Size: 0x194
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robothasenemytomelee(entity) {
   if(isdefined(entity.enemy) && issentient(entity.enemy) && entity.enemy.health > 0) {
     enemydistsq = distancesquared(entity.origin, entity.enemy.origin);
@@ -2155,15 +1293,6 @@ function private robothasenemytomelee(entity) {
   return 0;
 }
 
-/*
-	Name: robotroguehasenemytomelee
-	Namespace: robotsoldierbehavior
-	Checksum: 0x82106044
-	Offset: 0x86C0
-	Size: 0xEA
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotroguehasenemytomelee(entity) {
   if(isdefined(entity.enemy) && issentient(entity.enemy) && entity.enemy.health > 0 && entity ai::get_behavior_attribute("rogue_control") != "level_3") {
     if(!entity cansee(entity.enemy)) {
@@ -2174,15 +1303,6 @@ function private robotroguehasenemytomelee(entity) {
   return 0;
 }
 
-/*
-	Name: robotshouldmelee
-	Namespace: robotsoldierbehavior
-	Checksum: 0xA7EA7A0
-	Offset: 0x87B8
-	Size: 0x46
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotshouldmelee(entity) {
   if(aiutility::shouldmutexmelee(entity) && robothascloseenemytomelee(entity)) {
     return true;
@@ -2190,15 +1310,6 @@ function private robotshouldmelee(entity) {
   return false;
 }
 
-/*
-	Name: robothascloseenemytomelee
-	Namespace: robotsoldierbehavior
-	Checksum: 0x82162DE5
-	Offset: 0x8808
-	Size: 0x15C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robothascloseenemytomelee(entity) {
   if(isdefined(entity.enemy) && issentient(entity.enemy) && entity.enemy.health > 0) {
     if(!entity cansee(entity.enemy)) {
@@ -2213,15 +1324,6 @@ function private robothascloseenemytomelee(entity) {
   return 0;
 }
 
-/*
-	Name: robotroguehascloseenemytomelee
-	Namespace: robotsoldierbehavior
-	Checksum: 0xCFB35B13
-	Offset: 0x8970
-	Size: 0xC2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotroguehascloseenemytomelee(entity) {
   if(isdefined(entity.enemy) && issentient(entity.enemy) && entity.enemy.health > 0 && entity ai::get_behavior_attribute("rogue_control") != "level_3") {
     return distancesquared(entity.origin, entity.enemy.origin) < (64 * 64);
@@ -2229,42 +1331,15 @@ function private robotroguehascloseenemytomelee(entity) {
   return 0;
 }
 
-/*
-	Name: scriptrequirestosprintcondition
-	Namespace: robotsoldierbehavior
-	Checksum: 0x3BF63F69
-	Offset: 0x8A40
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private scriptrequirestosprintcondition(entity) {
   return entity ai::get_behavior_attribute("sprint") && !entity ai::get_behavior_attribute("disablesprint");
 }
 
-/*
-	Name: robotscanexposedpainterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x5B428F6A
-	Offset: 0x8A98
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotscanexposedpainterminate(entity) {
   aiutility::cleanupcovermode(entity);
   blackboard::setblackboardattribute(entity, "_robot_step_in", "fast");
 }
 
-/*
-	Name: robottookempdamage
-	Namespace: robotsoldierbehavior
-	Checksum: 0xEA7C44CB
-	Offset: 0x8AF0
-	Size: 0xAE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robottookempdamage(entity) {
   if(isdefined(entity.damageweapon) && isdefined(entity.damagemod)) {
     weapon = entity.damageweapon;
@@ -2273,15 +1348,6 @@ function private robottookempdamage(entity) {
   return 0;
 }
 
-/*
-	Name: robotnocloseenemyservice
-	Namespace: robotsoldierbehavior
-	Checksum: 0xA5CAEE9C
-	Offset: 0x8BA8
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotnocloseenemyservice(entity) {
   if(isdefined(entity.enemy) && aiutility::shouldmelee(entity)) {
     entity clearpath();
@@ -2290,22 +1356,11 @@ function private robotnocloseenemyservice(entity) {
   return false;
 }
 
-/*
-	Name: _robotoutsidemovementrange
-	Namespace: robotsoldierbehavior
-	Checksum: 0xB23C0E25
-	Offset: 0x8C08
-	Size: 0x120
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _robotoutsidemovementrange(entity, range, useenemypos) {
-  /#
   assert(isdefined(range));
-  # /
-    if(!isdefined(entity.enemy) && !entity haspath()) {
-      return 0;
-    }
+  if(!isdefined(entity.enemy) && !entity haspath()) {
+    return 0;
+  }
   goalpos = entity.pathgoalpos;
   if(isdefined(entity.enemy) && useenemypos) {
     goalpos = entity lastknownpos(entity.enemy);
@@ -2317,28 +1372,10 @@ function private _robotoutsidemovementrange(entity, range, useenemypos) {
   return outsiderange;
 }
 
-/*
-	Name: robotoutsidesupersprintrange
-	Namespace: robotsoldierbehavior
-	Checksum: 0x18AAA216
-	Offset: 0x8D30
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotoutsidesupersprintrange(entity) {
   return !robotwithinsupersprintrange(entity);
 }
 
-/*
-	Name: robotwithinsupersprintrange
-	Namespace: robotsoldierbehavior
-	Checksum: 0xC9767F8
-	Offset: 0x8D60
-	Size: 0x76
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotwithinsupersprintrange(entity) {
   if(entity ai::get_behavior_attribute("supports_super_sprint") && !entity ai::get_behavior_attribute("disablesprint")) {
     return _robotoutsidemovementrange(entity, entity.supersprintdistance, 0);
@@ -2346,15 +1383,6 @@ function private robotwithinsupersprintrange(entity) {
   return 0;
 }
 
-/*
-	Name: robotoutsidesprintrange
-	Namespace: robotsoldierbehavior
-	Checksum: 0x7852671C
-	Offset: 0x8DE0
-	Size: 0x86
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotoutsidesprintrange(entity) {
   if(entity ai::get_behavior_attribute("supports_super_sprint") && !entity ai::get_behavior_attribute("disablesprint")) {
     return _robotoutsidemovementrange(entity, entity.supersprintdistance * 1.15, 0);
@@ -2362,15 +1390,6 @@ function private robotoutsidesprintrange(entity) {
   return 0;
 }
 
-/*
-	Name: robotoutsidetacticalwalkrange
-	Namespace: robotsoldierbehavior
-	Checksum: 0xFE05F237
-	Offset: 0x8E70
-	Size: 0xC2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotoutsidetacticalwalkrange(entity) {
   if(entity ai::get_behavior_attribute("disablesprint")) {
     return 0;
@@ -2381,15 +1400,6 @@ function private robotoutsidetacticalwalkrange(entity) {
   return _robotoutsidemovementrange(entity, entity.runandgundist * 1.15, 1);
 }
 
-/*
-	Name: robotwithinsprintrange
-	Namespace: robotsoldierbehavior
-	Checksum: 0xEC87FFDB
-	Offset: 0x8F40
-	Size: 0xB2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotwithinsprintrange(entity) {
   if(entity ai::get_behavior_attribute("disablesprint")) {
     return 0;
@@ -2400,15 +1410,6 @@ function private robotwithinsprintrange(entity) {
   return _robotoutsidemovementrange(entity, entity.runandgundist, 1);
 }
 
-/*
-	Name: shouldtakeovercondition
-	Namespace: robotsoldierbehavior
-	Checksum: 0xE943A261
-	Offset: 0x9000
-	Size: 0x118
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private shouldtakeovercondition(entity) {
   switch (entity.controllevel) {
     case 0: {
@@ -2424,28 +1425,10 @@ function private shouldtakeovercondition(entity) {
   return 0;
 }
 
-/*
-	Name: hasminiraps
-	Namespace: robotsoldierbehavior
-	Checksum: 0xEE8F2833
-	Offset: 0x9120
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private hasminiraps(entity) {
   return isdefined(entity.miniraps);
 }
 
-/*
-	Name: robotismoving
-	Namespace: robotsoldierbehavior
-	Checksum: 0xC8D5EFDC
-	Offset: 0x9148
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotismoving(entity) {
   velocity = entity getvelocity();
   velocity = (velocity[0], 0, velocity[1]);
@@ -2453,28 +1436,10 @@ function private robotismoving(entity) {
   return velocitysqr > (24 * 24);
 }
 
-/*
-	Name: robotabletoshootcondition
-	Namespace: robotsoldierbehavior
-	Checksum: 0x83CD6A80
-	Offset: 0x91D0
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotabletoshootcondition(entity) {
   return entity.controllevel <= 1;
 }
 
-/*
-	Name: robotshouldtacticalwalk
-	Namespace: robotsoldierbehavior
-	Checksum: 0x679E3D16
-	Offset: 0x91F8
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotshouldtacticalwalk(entity) {
   if(!entity haspath()) {
     return 0;
@@ -2482,15 +1447,6 @@ function private robotshouldtacticalwalk(entity) {
   return !robotismarching(entity);
 }
 
-/*
-	Name: _robotcoverposition
-	Namespace: robotsoldierbehavior
-	Checksum: 0xE03BB6A8
-	Offset: 0x9248
-	Size: 0x64C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _robotcoverposition(entity) {
   if(entity isflankedatcovernode()) {
     return false;
@@ -2509,66 +1465,55 @@ function private _robotcoverposition(entity) {
     shouldusecovernode = entity shouldusecovernode();
   }
   shouldlookforbettercover = !shouldusecovernode || itsbeenawhile || !isatscriptgoal;
-  /#
   recordenttext((((("" + shouldusecovernode) + "") + itsbeenawhile) + "") + isatscriptgoal, entity, (shouldlookforbettercover ? (0, 1, 0) : (1, 0, 0)), "");
-  # /
-    if(shouldlookforbettercover && isdefined(entity.enemy) && !entity.keepclaimednode) {
-      transitionrunning = entity asmistransitionrunning();
-      substatepending = entity asmissubstatepending();
-      transdecrunning = entity asmistransdecrunning();
-      isbehaviortreeinrunningstate = entity getbehaviortreestatus() == 5;
-      if(!transitionrunning && !substatepending && !transdecrunning && isbehaviortreeinrunningstate) {
-        nodes = entity findbestcovernodes(entity.goalradius, entity.goalpos);
-        node = undefined;
-        for (nodeindex = 0; nodeindex < nodes.size; nodeindex++) {
-          if(entity.robotnode === nodes[nodeindex] || !isdefined(nodes[nodeindex].robotclaimed)) {
-            node = nodes[nodeindex];
-            break;
-          }
-        }
-        if(isentity(entity.node) && (!isdefined(entity.robotnode) || entity.robotnode != entity.node)) {
-          entity.robotnode = entity.node;
-          entity.robotnode.robotclaimed = 1;
-        }
-        goingtodifferentnode = isdefined(node) && (!isdefined(entity.robotnode) || node != entity.robotnode) && (!isdefined(entity.steppedoutofcovernode) || entity.steppedoutofcovernode != node);
-        aiutility::setnextfindbestcovertime(entity, node);
-        if(goingtodifferentnode) {
-          if(randomfloat(1) <= 0.75 || entity ai::get_behavior_attribute("force_cover")) {
-            aiutility::usecovernodewrapper(entity, node);
-          } else {
-            searchradius = entity.goalradius;
-            if(searchradius > 200) {
-              searchradius = 200;
-            }
-            covernodepoints = util::positionquery_pointarray(node.origin, 30, searchradius, 72, 30);
-            if(covernodepoints.size > 0) {
-              entity useposition(covernodepoints[randomint(covernodepoints.size)]);
-            } else {
-              entity useposition(entity getnodeoffsetposition(node));
-            }
-          }
-          if(isdefined(entity.robotnode)) {
-            entity.robotnode.robotclaimed = undefined;
-          }
-          entity.robotnode = node;
-          entity.robotnode.robotclaimed = 1;
-          entity pathmode("move delayed", 0, randomfloatrange(0.25, 2));
-          return true;
+  if(shouldlookforbettercover && isdefined(entity.enemy) && !entity.keepclaimednode) {
+    transitionrunning = entity asmistransitionrunning();
+    substatepending = entity asmissubstatepending();
+    transdecrunning = entity asmistransdecrunning();
+    isbehaviortreeinrunningstate = entity getbehaviortreestatus() == 5;
+    if(!transitionrunning && !substatepending && !transdecrunning && isbehaviortreeinrunningstate) {
+      nodes = entity findbestcovernodes(entity.goalradius, entity.goalpos);
+      node = undefined;
+      for (nodeindex = 0; nodeindex < nodes.size; nodeindex++) {
+        if(entity.robotnode === nodes[nodeindex] || !isdefined(nodes[nodeindex].robotclaimed)) {
+          node = nodes[nodeindex];
+          break;
         }
       }
+      if(isentity(entity.node) && (!isdefined(entity.robotnode) || entity.robotnode != entity.node)) {
+        entity.robotnode = entity.node;
+        entity.robotnode.robotclaimed = 1;
+      }
+      goingtodifferentnode = isdefined(node) && (!isdefined(entity.robotnode) || node != entity.robotnode) && (!isdefined(entity.steppedoutofcovernode) || entity.steppedoutofcovernode != node);
+      aiutility::setnextfindbestcovertime(entity, node);
+      if(goingtodifferentnode) {
+        if(randomfloat(1) <= 0.75 || entity ai::get_behavior_attribute("force_cover")) {
+          aiutility::usecovernodewrapper(entity, node);
+        } else {
+          searchradius = entity.goalradius;
+          if(searchradius > 200) {
+            searchradius = 200;
+          }
+          covernodepoints = util::positionquery_pointarray(node.origin, 30, searchradius, 72, 30);
+          if(covernodepoints.size > 0) {
+            entity useposition(covernodepoints[randomint(covernodepoints.size)]);
+          } else {
+            entity useposition(entity getnodeoffsetposition(node));
+          }
+        }
+        if(isdefined(entity.robotnode)) {
+          entity.robotnode.robotclaimed = undefined;
+        }
+        entity.robotnode = node;
+        entity.robotnode.robotclaimed = 1;
+        entity pathmode("move delayed", 0, randomfloatrange(0.25, 2));
+        return true;
+      }
     }
+  }
   return false;
 }
 
-/*
-	Name: _robotescortposition
-	Namespace: robotsoldierbehavior
-	Checksum: 0xBA260F09
-	Offset: 0x98A0
-	Size: 0x31C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _robotescortposition(entity) {
   if(entity ai::get_behavior_attribute("move_mode") == "escort") {
     escortposition = entity ai::get_behavior_attribute("escort_position");
@@ -2612,15 +1557,6 @@ function private _robotescortposition(entity) {
   return false;
 }
 
-/*
-	Name: _robotrusherposition
-	Namespace: robotsoldierbehavior
-	Checksum: 0xA5A07A52
-	Offset: 0x9BC8
-	Size: 0x404
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _robotrusherposition(entity) {
   if(entity ai::get_behavior_attribute("move_mode") == "rusher") {
     entity pathmode("move allowed");
@@ -2663,15 +1599,6 @@ function private _robotrusherposition(entity) {
   return false;
 }
 
-/*
-	Name: _robotguardposition
-	Namespace: robotsoldierbehavior
-	Checksum: 0xA1481FFC
-	Offset: 0x9FD8
-	Size: 0x418
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _robotguardposition(entity) {
   if(entity ai::get_behavior_attribute("move_mode") == "guard") {
     if(entity getpathmode() == "dont move") {
@@ -2717,31 +1644,20 @@ function private _robotguardposition(entity) {
   return false;
 }
 
-/*
-	Name: robotpositionservice
-	Namespace: robotsoldierbehavior
-	Checksum: 0x2E9595C9
-	Offset: 0xA3F8
-	Size: 0x28E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotpositionservice(entity) {
-  /#
   if(getdvarint("") && isdefined(entity.enemy)) {
     lastknownpos = entity lastknownpos(entity.enemy);
     recordline(entity.origin, lastknownpos, (1, 0.5, 0), "", entity);
     record3dtext("", lastknownpos + vectorscale((0, 0, 1), 5), (1, 0.5, 0), "");
   }
-  # /
-    if(!isalive(entity)) {
-      if(isdefined(entity.robotnode)) {
-        aiutility::releaseclaimnode(entity);
-        entity.robotnode.robotclaimed = undefined;
-        entity.robotnode = undefined;
-      }
-      return false;
+  if(!isalive(entity)) {
+    if(isdefined(entity.robotnode)) {
+      aiutility::releaseclaimnode(entity);
+      entity.robotnode.robotclaimed = undefined;
+      entity.robotnode = undefined;
     }
+    return false;
+  }
   if(entity.disablerepath) {
     return false;
   }
@@ -2773,15 +1689,6 @@ function private robotpositionservice(entity) {
   return false;
 }
 
-/*
-	Name: robotdropstartingweapon
-	Namespace: robotsoldierbehavior
-	Checksum: 0x43E905EC
-	Offset: 0xA690
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private robotdropstartingweapon(entity, asmstatename) {
   if(entity.weapon.name == level.weaponnone.name) {
     entity shared::placeweaponon(entity.startingweapon, "right");
@@ -2789,48 +1696,21 @@ function private robotdropstartingweapon(entity, asmstatename) {
   }
 }
 
-/*
-	Name: robotjukeinitialize
-	Namespace: robotsoldierbehavior
-	Checksum: 0xBD5F0289
-	Offset: 0xA720
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotjukeinitialize(entity) {
   aiutility::choosejukedirection(entity);
   entity clearpath();
-  entity notify(# "bhtn_action_notify", "rbJuke");
+  entity notify("bhtn_action_notify", "rbJuke");
   jukeinfo = spawnstruct();
   jukeinfo.origin = entity.origin;
   jukeinfo.entity = entity;
   blackboard::addblackboardevent("actor_juke", jukeinfo, 3000);
 }
 
-/*
-	Name: robotpreemptivejuketerminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x7AEFF500
-	Offset: 0xA7F0
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robotpreemptivejuketerminate(entity) {
   entity.nextpreemptivejuke = gettime() + randomintrange(4000, 6000);
   entity.nextpreemptivejukeads = randomfloatrange(0.5, 0.95);
 }
 
-/*
-	Name: robottryreacquireservice
-	Namespace: robotsoldierbehavior
-	Checksum: 0x407A6089
-	Offset: 0xA860
-	Size: 0x372
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private robottryreacquireservice(entity) {
   movemode = entity ai::get_behavior_attribute("move_mode");
   if(movemode == "rusher" || movemode == "escort" || movemode == "guard") {
@@ -2892,15 +1772,6 @@ function private robottryreacquireservice(entity) {
   return false;
 }
 
-/*
-	Name: takeoverinitialize
-	Namespace: robotsoldierbehavior
-	Checksum: 0xB0A829E8
-	Offset: 0xABE0
-	Size: 0xC8
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private takeoverinitialize(entity, asmstatename) {
   switch (entity ai::get_behavior_attribute("rogue_control")) {
     case "level_1": {
@@ -2920,15 +1791,6 @@ function private takeoverinitialize(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: takeoverterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0x41CB79FE
-	Offset: 0xACB0
-	Size: 0x72
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private takeoverterminate(entity, asmstatename) {
   switch (entity ai::get_behavior_attribute("rogue_control")) {
     case "level_2":
@@ -2940,15 +1802,6 @@ function private takeoverterminate(entity, asmstatename) {
   return 4;
 }
 
-/*
-	Name: stepintoinitialize
-	Namespace: robotsoldierbehavior
-	Checksum: 0xF386F477
-	Offset: 0xAD30
-	Size: 0xB8
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private stepintoinitialize(entity, asmstatename) {
   aiutility::releaseclaimnode(entity);
   aiutility::usecovernodewrapper(entity, entity.steppedoutofcovernode);
@@ -2959,15 +1812,6 @@ function private stepintoinitialize(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: stepintoterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0xF5DC206
-	Offset: 0xADF0
-	Size: 0x60
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private stepintoterminate(entity, asmstatename) {
   entity.steppedoutofcover = 0;
   aiutility::releaseclaimnode(entity);
@@ -2975,15 +1819,6 @@ function private stepintoterminate(entity, asmstatename) {
   return 4;
 }
 
-/*
-	Name: stepoutinitialize
-	Namespace: robotsoldierbehavior
-	Checksum: 0xBE2BFC47
-	Offset: 0xAE58
-	Size: 0x100
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private stepoutinitialize(entity, asmstatename) {
   entity.steppedoutofcovernode = entity.node;
   aiutility::keepclaimnode(entity);
@@ -2998,15 +1833,6 @@ function private stepoutinitialize(entity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: stepoutterminate
-	Namespace: robotsoldierbehavior
-	Checksum: 0xA7A33179
-	Offset: 0xAF60
-	Size: 0x70
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private stepoutterminate(entity, asmstatename) {
   entity.steppedoutofcover = 1;
   entity.steppedouttime = gettime();
@@ -3015,28 +1841,10 @@ function private stepoutterminate(entity, asmstatename) {
   return 4;
 }
 
-/*
-	Name: supportsstepoutcondition
-	Namespace: robotsoldierbehavior
-	Checksum: 0x11C62BC1
-	Offset: 0xAFD8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private supportsstepoutcondition(entity) {
   return entity.node.type == "Cover Left" || entity.node.type == "Cover Right" || entity.node.type == "Cover Pillar";
 }
 
-/*
-	Name: shouldstepincondition
-	Namespace: robotsoldierbehavior
-	Checksum: 0xDBA8877B
-	Offset: 0xB058
-	Size: 0xE6
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private shouldstepincondition(entity) {
   if(!isdefined(entity.steppedoutofcover) || !entity.steppedoutofcover || !isdefined(entity.steppedouttime) || !entity.steppedoutofcover) {
     return 0;
@@ -3047,15 +1855,6 @@ function private shouldstepincondition(entity) {
   return exceededtime || (exceededtime && suppressed);
 }
 
-/*
-	Name: robotdeployminiraps
-	Namespace: robotsoldierbehavior
-	Checksum: 0xE6A24FF8
-	Offset: 0xB148
-	Size: 0xD2
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private robotdeployminiraps() {
   entity = self;
   if(isdefined(entity) && isdefined(entity.miniraps)) {
@@ -3069,15 +1868,6 @@ function private robotdeployminiraps() {
 
 #namespace robotsoldierserverutils;
 
-/*
-	Name: _trygibbinghead
-	Namespace: robotsoldierserverutils
-	Checksum: 0x464E3A
-	Offset: 0xB228
-	Size: 0x134
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private _trygibbinghead(entity, damage, hitloc, isexplosive) {
   if(isexplosive && randomfloatrange(0, 1) <= 0.5) {
     gibserverutils::gibhead(entity);
@@ -3090,15 +1880,6 @@ function private _trygibbinghead(entity, damage, hitloc, isexplosive) {
   }
 }
 
-/*
-	Name: _trygibbinglimb
-	Namespace: robotsoldierserverutils
-	Checksum: 0xCED0797C
-	Offset: 0xB368
-	Size: 0x28C
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private _trygibbinglimb(entity, damage, hitloc, isexplosive, ondeath) {
   if(gibserverutils::isgibbed(entity, 32) || gibserverutils::isgibbed(entity, 16)) {
     return;
@@ -3130,15 +1911,6 @@ function private _trygibbinglimb(entity, damage, hitloc, isexplosive, ondeath) {
   }
 }
 
-/*
-	Name: _trygibbinglegs
-	Namespace: robotsoldierserverutils
-	Checksum: 0x89AB4CD8
-	Offset: 0xB600
-	Size: 0x404
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private _trygibbinglegs(entity, damage, hitloc, isexplosive, attacker = entity) {
   cangiblegs = (entity.health - damage) <= 0 && entity.allowdeath;
   if(entity ai::get_behavior_attribute("can_become_crawler")) {
@@ -3173,15 +1945,6 @@ function private _trygibbinglegs(entity, damage, hitloc, isexplosive, attacker =
   }
 }
 
-/*
-	Name: robotgibdamageoverride
-	Namespace: robotsoldierserverutils
-	Checksum: 0xEE873AD5
-	Offset: 0xBA10
-	Size: 0x208
-	Parameters: 12
-	Flags: Linked, Private
-*/
 function private robotgibdamageoverride(inflictor, attacker, damage, flags, meansofdeath, weapon, point, dir, hitloc, offsettime, boneindex, modelindex) {
   entity = self;
   if(isdefined(attacker) && attacker.team == entity.team) {
@@ -3202,30 +1965,12 @@ function private robotgibdamageoverride(inflictor, attacker, damage, flags, mean
   return damage;
 }
 
-/*
-	Name: robotdeathoverride
-	Namespace: robotsoldierserverutils
-	Checksum: 0x5E889BF3
-	Offset: 0xBC20
-	Size: 0x78
-	Parameters: 8
-	Flags: Linked, Private
-*/
 function private robotdeathoverride(inflictor, attacker, damage, meansofdeath, weapon, dir, hitloc, offsettime) {
   entity = self;
   entity ai::set_behavior_attribute("robot_lights", 4);
   return damage;
 }
 
-/*
-	Name: robotgibdeathoverride
-	Namespace: robotsoldierserverutils
-	Checksum: 0x40B66BAB
-	Offset: 0xBCA0
-	Size: 0x310
-	Parameters: 8
-	Flags: Linked, Private
-*/
 function private robotgibdeathoverride(inflictor, attacker, damage, meansofdeath, weapon, dir, hitloc, offsettime) {
   entity = self;
   if(!entity ai::get_behavior_attribute("can_gib") || entity.skipdeath) {
@@ -3255,15 +2000,6 @@ function private robotgibdeathoverride(inflictor, attacker, damage, meansofdeath
   return damage;
 }
 
-/*
-	Name: robotdestructdeathoverride
-	Namespace: robotsoldierserverutils
-	Checksum: 0x4FE93A46
-	Offset: 0xBFB8
-	Size: 0x208
-	Parameters: 8
-	Flags: Linked, Private
-*/
 function private robotdestructdeathoverride(inflictor, attacker, damage, meansofdeath, weapon, dir, hitloc, offsettime) {
   entity = self;
   if(entity.skipdeath) {
@@ -3288,15 +2024,6 @@ function private robotdestructdeathoverride(inflictor, attacker, damage, meansof
   return damage;
 }
 
-/*
-	Name: robotdamageoverride
-	Namespace: robotsoldierserverutils
-	Checksum: 0x95695E22
-	Offset: 0xC1C8
-	Size: 0x396
-	Parameters: 12
-	Flags: Linked, Private
-*/
 function private robotdamageoverride(inflictor, attacker, damage, flags, meansofdamage, weapon, point, dir, hitloc, offsettime, boneindex, modelindex) {
   entity = self;
   if(hitloc != "helmet" || hitloc != "head" || hitloc != "neck") {
@@ -3339,15 +2066,6 @@ function private robotdamageoverride(inflictor, attacker, damage, flags, meansof
   return damage;
 }
 
-/*
-	Name: robotdestructrandompieces
-	Namespace: robotsoldierserverutils
-	Checksum: 0xDE7D49A2
-	Offset: 0xC568
-	Size: 0xF8
-	Parameters: 12
-	Flags: Linked, Private
-*/
 function private robotdestructrandompieces(inflictor, attacker, damage, flags, meansofdamage, weapon, point, dir, hitloc, offsettime, boneindex, modelindex) {
   entity = self;
   isexplosive = isinarray(array("MOD_CRUSH", "MOD_GRENADE", "MOD_GRENADE_SPLASH", "MOD_PROJECTILE", "MOD_PROJECTILE_SPLASH", "MOD_EXPLOSIVE"), meansofdamage);
@@ -3357,15 +2075,6 @@ function private robotdestructrandompieces(inflictor, attacker, damage, flags, m
   return damage;
 }
 
-/*
-	Name: findclosestnavmeshpositiontoenemy
-	Namespace: robotsoldierserverutils
-	Checksum: 0x140A47AC
-	Offset: 0xC668
-	Size: 0x8C
-	Parameters: 1
-	Flags: Private
-*/
 function private findclosestnavmeshpositiontoenemy(enemy) {
   enemypositiononnavmesh = undefined;
   for (tolerancelevel = 1; tolerancelevel <= 4; tolerancelevel++) {
@@ -3377,15 +2086,6 @@ function private findclosestnavmeshpositiontoenemy(enemy) {
   return enemypositiononnavmesh;
 }
 
-/*
-	Name: robotchoosecoverdirection
-	Namespace: robotsoldierserverutils
-	Checksum: 0xD150017E
-	Offset: 0xC700
-	Size: 0xAC
-	Parameters: 2
-	Flags: Private
-*/
 function private robotchoosecoverdirection(entity, stepout) {
   if(!isdefined(entity.node)) {
     return;
@@ -3395,15 +2095,6 @@ function private robotchoosecoverdirection(entity, stepout) {
   blackboard::setblackboardattribute(entity, "_cover_direction", aiutility::calculatecoverdirection(entity, stepout));
 }
 
-/*
-	Name: robotsoldierspawnsetup
-	Namespace: robotsoldierserverutils
-	Checksum: 0xC1EF79DD
-	Offset: 0xC7B8
-	Size: 0x644
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private robotsoldierspawnsetup() {
   entity = self;
   entity.iscrawler = 0;
@@ -3435,12 +2126,10 @@ function private robotsoldierspawnsetup() {
   destructserverutils::togglespawngibs(entity, 1);
   gibserverutils::togglespawngibs(entity, 1);
   clientfield::set("robot_mind_control", 0);
-  /#
   if(getdvarint("")) {
     entity ai::set_behavior_attribute("", "");
   }
-  # /
-    entity thread cleanupequipment(entity);
+  entity thread cleanupequipment(entity);
   aiutility::addaioverridedamagecallback(entity, & destructserverutils::handledamage);
   aiutility::addaioverridedamagecallback(entity, & robotdamageoverride);
   aiutility::addaioverridedamagecallback(entity, & robotdestructrandompieces);
@@ -3448,7 +2137,6 @@ function private robotsoldierspawnsetup() {
   aiutility::addaioverridekilledcallback(entity, & robotdeathoverride);
   aiutility::addaioverridekilledcallback(entity, & robotgibdeathoverride);
   aiutility::addaioverridekilledcallback(entity, & robotdestructdeathoverride);
-  /#
   if(getdvarint("") == 1) {
     entity ai::set_behavior_attribute("", "");
   } else {
@@ -3467,24 +2155,13 @@ function private robotsoldierspawnsetup() {
       entity ai::set_behavior_attribute("", "");
     }
   }
-  # /
-    if(getdvarint("ai_robotForceCrawler") == 1) {
-      entity ai::set_behavior_attribute("force_crawler", "gib_legs");
-    }
-  else if(getdvarint("ai_robotForceCrawler") == 2) {
+  if(getdvarint("ai_robotForceCrawler") == 1) {
+    entity ai::set_behavior_attribute("force_crawler", "gib_legs");
+  } else if(getdvarint("ai_robotForceCrawler") == 2) {
     entity ai::set_behavior_attribute("force_crawler", "remove_legs");
   }
 }
 
-/*
-	Name: robotgivewasp
-	Namespace: robotsoldierserverutils
-	Checksum: 0x62BCA8E2
-	Offset: 0xCE08
-	Size: 0xD8
-	Parameters: 1
-	Flags: Private
-*/
 function private robotgivewasp(entity) {
   if(isdefined(entity) && !isdefined(entity.wasp)) {
     wasp = spawn("script_model", (0, 0, 0));
@@ -3495,17 +2172,8 @@ function private robotgivewasp(entity) {
   }
 }
 
-/*
-	Name: robotdeploywasp
-	Namespace: robotsoldierserverutils
-	Checksum: 0x72DAC310
-	Offset: 0xCEE8
-	Size: 0x132
-	Parameters: 1
-	Flags: Private
-*/
 function private robotdeploywasp(entity) {
-  entity endon(# "death");
+  entity endon("death");
   wait(randomfloatrange(7, 10));
   if(isdefined(entity) && isdefined(entity.wasp)) {
     spawnoffset = (5, -15, 0);
@@ -3519,47 +2187,20 @@ function private robotdeploywasp(entity) {
   entity.wasp = undefined;
 }
 
-/*
-	Name: rapsdetonatecountdown
-	Namespace: robotsoldierserverutils
-	Checksum: 0x937BB8DF
-	Offset: 0xD028
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private rapsdetonatecountdown(entity) {
-  entity endon(# "death");
+  entity endon("death");
   wait(randomfloatrange(20, 30));
   raps::detonate();
 }
 
-/*
-	Name: becomecrawler
-	Namespace: robotsoldierserverutils
-	Checksum: 0xC93AA75E
-	Offset: 0xD078
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private becomecrawler(entity) {
   if(!robotsoldierbehavior::robotiscrawler(entity) && entity ai::get_behavior_attribute("can_become_crawler")) {
     entity.becomecrawler = 1;
   }
 }
 
-/*
-	Name: cleanupequipment
-	Namespace: robotsoldierserverutils
-	Checksum: 0x441C4FA7
-	Offset: 0xD0D8
-	Size: 0x82
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private cleanupequipment(entity) {
-  entity waittill(# "death");
+  entity waittill("death");
   if(!isdefined(entity)) {
     return;
   }
@@ -3572,15 +2213,6 @@ function private cleanupequipment(entity) {
   }
 }
 
-/*
-	Name: forcerobotsoldiermindcontrollevel1
-	Namespace: robotsoldierserverutils
-	Checksum: 0xE4268612
-	Offset: 0xD168
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private forcerobotsoldiermindcontrollevel1() {
   entity = self;
   if(entity.controllevel >= 1) {
@@ -3592,15 +2224,6 @@ function private forcerobotsoldiermindcontrollevel1() {
   entity ai::set_behavior_attribute("rogue_control", "level_1");
 }
 
-/*
-	Name: forcerobotsoldiermindcontrollevel2
-	Namespace: robotsoldierserverutils
-	Checksum: 0x9C933B01
-	Offset: 0xD210
-	Size: 0x2C4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private forcerobotsoldiermindcontrollevel2() {
   entity = self;
   if(entity.controllevel >= 2) {
@@ -3629,15 +2252,6 @@ function private forcerobotsoldiermindcontrollevel2() {
   entity ai::set_behavior_attribute("can_become_crawler", 0);
 }
 
-/*
-	Name: forcerobotsoldiermindcontrollevel3
-	Namespace: robotsoldierserverutils
-	Checksum: 0xD92E82F4
-	Offset: 0xD4E0
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private forcerobotsoldiermindcontrollevel3() {
   entity = self;
   if(entity.controllevel >= 3) {
@@ -3649,28 +2263,10 @@ function private forcerobotsoldiermindcontrollevel3() {
   entity ai::set_behavior_attribute("rogue_control", "level_3");
 }
 
-/*
-	Name: robotequipminiraps
-	Namespace: robotsoldierserverutils
-	Checksum: 0x1CBDF600
-	Offset: 0xD588
-	Size: 0x38
-	Parameters: 4
-	Flags: Linked
-*/
 function robotequipminiraps(entity, attribute, oldvalue, value) {
   entity.miniraps = value;
 }
 
-/*
-	Name: robotlights
-	Namespace: robotsoldierserverutils
-	Checksum: 0x77EBD5C5
-	Offset: 0xD5C8
-	Size: 0x104
-	Parameters: 4
-	Flags: Linked
-*/
 function robotlights(entity, attribute, oldvalue, value) {
   if(value == 3) {
     clientfield::set("robot_lights", 3);
@@ -3691,15 +2287,6 @@ function robotlights(entity, attribute, oldvalue, value) {
   }
 }
 
-/*
-	Name: randomgibroguerobot
-	Namespace: robotsoldierserverutils
-	Checksum: 0xE2BE951B
-	Offset: 0xD6D8
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function randomgibroguerobot(entity) {
   gibserverutils::togglespawngibs(entity, 0);
   if(math::cointoss()) {
@@ -3717,15 +2304,6 @@ function randomgibroguerobot(entity) {
   }
 }
 
-/*
-	Name: roguecontrolattributecallback
-	Namespace: robotsoldierserverutils
-	Checksum: 0x58C2CA
-	Offset: 0xD7D8
-	Size: 0x176
-	Parameters: 4
-	Flags: Linked
-*/
 function roguecontrolattributecallback(entity, attribute, oldvalue, value) {
   switch (value) {
     case "forced_level_1": {
@@ -3757,15 +2335,6 @@ function roguecontrolattributecallback(entity, attribute, oldvalue, value) {
   }
 }
 
-/*
-	Name: robotmovemodeattributecallback
-	Namespace: robotsoldierserverutils
-	Checksum: 0xCBB6752B
-	Offset: 0xD958
-	Size: 0x146
-	Parameters: 4
-	Flags: Linked
-*/
 function robotmovemodeattributecallback(entity, attribute, oldvalue, value) {
   entity.ignorepathenemyfightdist = 0;
   blackboard::setblackboardattribute(entity, "_move_mode", "normal");
@@ -3794,15 +2363,6 @@ function robotmovemodeattributecallback(entity, attribute, oldvalue, value) {
   }
 }
 
-/*
-	Name: robotforcecrawler
-	Namespace: robotsoldierserverutils
-	Checksum: 0x66A94C3B
-	Offset: 0xDAA8
-	Size: 0x24C
-	Parameters: 4
-	Flags: Linked
-*/
 function robotforcecrawler(entity, attribute, oldvalue, value) {
   if(robotsoldierbehavior::robotiscrawler(entity)) {
     return;
@@ -3848,15 +2408,6 @@ function robotforcecrawler(entity, attribute, oldvalue, value) {
   }
 }
 
-/*
-	Name: roguecontrolforcegoalattributecallback
-	Namespace: robotsoldierserverutils
-	Checksum: 0xC2811623
-	Offset: 0xDD00
-	Size: 0x114
-	Parameters: 4
-	Flags: Linked
-*/
 function roguecontrolforcegoalattributecallback(entity, attribute, oldvalue, value) {
   if(!isvec(value)) {
     return;
@@ -3871,15 +2422,6 @@ function roguecontrolforcegoalattributecallback(entity, attribute, oldvalue, val
   }
 }
 
-/*
-	Name: roguecontrolspeedattributecallback
-	Namespace: robotsoldierserverutils
-	Checksum: 0xBE56418
-	Offset: 0xDE20
-	Size: 0xC6
-	Parameters: 4
-	Flags: Linked
-*/
 function roguecontrolspeedattributecallback(entity, attribute, oldvalue, value) {
   switch (value) {
     case "walk": {
@@ -3897,15 +2439,6 @@ function roguecontrolspeedattributecallback(entity, attribute, oldvalue, value) 
   }
 }
 
-/*
-	Name: robottraversalattributecallback
-	Namespace: robotsoldierserverutils
-	Checksum: 0xBB04ACC1
-	Offset: 0xDEF0
-	Size: 0x72
-	Parameters: 4
-	Flags: Linked
-*/
 function robottraversalattributecallback(entity, attribute, oldvalue, value) {
   switch (value) {
     case "normal": {

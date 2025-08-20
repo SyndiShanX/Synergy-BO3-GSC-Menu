@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_ee.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\animation_shared;
 #using scripts\shared\array_shared;
@@ -18,7 +22,6 @@
 #using scripts\zm\craftables\_zm_craftables;
 #using scripts\zm\zm_zod;
 #using scripts\zm\zm_zod_quest;
-
 #using_animtree("generic");
 
 class class_b454dc63 {
@@ -27,37 +30,13 @@ class class_b454dc63 {
   var var_8d207f9b;
   var var_a9547cdf;
 
-  /*
-  	Name: constructor
-  	Namespace: namespace_b454dc63
-  	Checksum: 0x99EC1590
-  	Offset: 0x5A58
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: namespace_b454dc63
-  	Checksum: 0x99EC1590
-  	Offset: 0x5A68
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: function_66844d0d
-  	Namespace: namespace_b454dc63
-  	Checksum: 0x79C68E9
-  	Offset: 0x5920
-  	Size: 0x12C
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function function_66844d0d(localclientnum, b_active) {
     var_3b3701c9 = b_active;
     if(!var_3b3701c9) {
@@ -68,7 +47,7 @@ class class_b454dc63 {
         var_dbea7369 setanim("p7_fxanim_zm_zod_apothicons_god_loop_anim", 1, 0, 1);
         var_dbea7369 playsound(localclientnum, "zmb_zod_apothigod_vox_spawn");
       } else {
-        level notify(# "hash_465ed3ec");
+        level notify("hash_465ed3ec");
         var_a9547cdf = "p7_fxanim_zm_zod_apothicons_god_body_idle_anim";
         var_dbea7369 setanim(var_a9547cdf, 1, 0, 1);
         var_dbea7369 playloopsound("zmb_zod_apothigod_vox_lookat_lp", 12);
@@ -76,15 +55,7 @@ class class_b454dc63 {
     }
   }
 
-  /*
-  	Name: function_839ff35f
-  	Namespace: namespace_b454dc63
-  	Checksum: 0x309F06B9
-  	Offset: 0x5860
-  	Size: 0xB2
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function function_839ff35f(localclientnum, mdl_god) {
     if(!isdefined(mdl_god)) {
       return;
@@ -96,15 +67,7 @@ class class_b454dc63 {
     wait(n_animlength);
   }
 
-  /*
-  	Name: function_2de612ff
-  	Namespace: namespace_b454dc63
-  	Checksum: 0x641658DF
-  	Offset: 0x5750
-  	Size: 0x104
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function function_2de612ff(localclientnum, mdl_god) {
     if(!isdefined(mdl_god)) {
       return;
@@ -118,18 +81,10 @@ class class_b454dc63 {
     mdl_god setanim(var_a9547cdf, 1, 0, 1);
   }
 
-  /*
-  	Name: function_465ed3ec
-  	Namespace: namespace_b454dc63
-  	Checksum: 0x2F609B58
-  	Offset: 0x56C0
-  	Size: 0x82
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function function_465ed3ec(localclientnum, mdl_god) {
-    level notify(# "hash_465ed3ec");
-    level endon(# "hash_465ed3ec");
+    level notify("hash_465ed3ec");
+    level endon("hash_465ed3ec");
     while (true) {
       self thread function_2de612ff(localclientnum, mdl_god);
       var_7397ca31 = randomintrange(15, 60);
@@ -137,28 +92,12 @@ class class_b454dc63 {
     }
   }
 
-  /*
-  	Name: function_9e0e6936
-  	Namespace: namespace_b454dc63
-  	Checksum: 0x3F7C6A0F
-  	Offset: 0x56A8
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_9e0e6936() {
     return var_8d207f9b;
   }
 
-  /*
-  	Name: init
-  	Namespace: namespace_b454dc63
-  	Checksum: 0x8C5E4990
-  	Offset: 0x5600
-  	Size: 0x9C
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function init(localclientnum, mdl_god, var_bae1bdd7) {
     var_dbea7369 = mdl_god;
     var_8d207f9b = var_bae1bdd7;
@@ -171,28 +110,10 @@ class class_b454dc63 {
 
 #namespace zm_zod_ee;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_zod_ee
-	Checksum: 0x1604008A
-	Offset: 0x1168
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_zod_ee", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_zod_ee
-	Checksum: 0x46556135
-	Offset: 0x11A8
-	Size: 0x6D4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level._effect["player_cleanse"] = "zombie/fx_ee_player_cleanse_zod_zmb";
   level._effect["ee_quest_keeper_spirit_mist"] = "zombie/fx_ee_altar_mist_zod_zmb";
@@ -231,15 +152,6 @@ function __init__() {
   clientfield::register("world", "sndEndIGC", 1, 1, "int", & sndendigc, 0, 0);
 }
 
-/*
-	Name: sndendigc
-	Namespace: zm_zod_ee
-	Checksum: 0x6C2C3DB1
-	Offset: 0x1888
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function sndendigc(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     audio::snd_set_snapshot("zmb_zod_endigc");
@@ -248,15 +160,6 @@ function sndendigc(localclientnum, oldval, newval, bnewent, binitialsnap, fieldn
   }
 }
 
-/*
-	Name: ee_shadowman_battle_active
-	Namespace: zm_zod_ee
-	Checksum: 0xCBC2C4F5
-	Offset: 0x1910
-	Size: 0xE4
-	Parameters: 7
-	Flags: Linked
-*/
 function ee_shadowman_battle_active(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     s_loc = struct::get("defend_area_pap", "targetname");
@@ -266,15 +169,6 @@ function ee_shadowman_battle_active(localclientnum, oldval, newval, bnewent, bin
   }
 }
 
-/*
-	Name: function_f2a0dbdc
-	Namespace: zm_zod_ee
-	Checksum: 0x36C60824
-	Offset: 0x1A00
-	Size: 0x76C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_f2a0dbdc(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval !== 3 && newval !== 2) {
     return;
@@ -343,44 +237,17 @@ function function_f2a0dbdc(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_705b696b
-	Namespace: zm_zod_ee
-	Checksum: 0x6DD815A
-	Offset: 0x2178
-	Size: 0x7C
-	Parameters: 5
-	Flags: Linked
-*/
 function function_705b696b(localclientnum, str_fx, v_origin, v_fwd, n_seconds) {
   fx_id = playfx(localclientnum, str_fx, v_origin, v_fwd);
   wait(n_seconds);
   stopfx(localclientnum, fx_id);
 }
 
-/*
-	Name: function_cf8ff04b
-	Namespace: zm_zod_ee
-	Checksum: 0x30A76634
-	Offset: 0x2200
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cf8ff04b(localclientnum) {
   flag::wait_till("set_ritual_finished_flag");
   ee_superworm_state(localclientnum, undefined, 1);
 }
 
-/*
-	Name: function_373d3423
-	Namespace: zm_zod_ee
-	Checksum: 0xA9C07A96
-	Offset: 0x2250
-	Size: 0x2D4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_373d3423(localclientnum) {
   s_position = struct::get("defend_area_pap", "targetname");
   level.main_quest[localclientnum]["pap"] = s_position;
@@ -397,67 +264,22 @@ function function_373d3423(localclientnum) {
   level.main_quest[localclientnum]["pap"].e_victim.angles = v_tag_angles;
 }
 
-/*
-	Name: ee_keeper_boxer_state
-	Namespace: zm_zod_ee
-	Checksum: 0x6FDDC0B1
-	Offset: 0x2530
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function ee_keeper_boxer_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   function_a39c9866(localclientnum, newval, oldval, 1);
 }
 
-/*
-	Name: ee_keeper_detective_state
-	Namespace: zm_zod_ee
-	Checksum: 0x1CEF5D46
-	Offset: 0x2598
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function ee_keeper_detective_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   function_a39c9866(localclientnum, newval, oldval, 2);
 }
 
-/*
-	Name: ee_keeper_femme_state
-	Namespace: zm_zod_ee
-	Checksum: 0x1CED8764
-	Offset: 0x2600
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function ee_keeper_femme_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   function_a39c9866(localclientnum, newval, oldval, 3);
 }
 
-/*
-	Name: ee_keeper_magician_state
-	Namespace: zm_zod_ee
-	Checksum: 0xAA20489A
-	Offset: 0x2668
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function ee_keeper_magician_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   function_a39c9866(localclientnum, newval, oldval, 4);
 }
 
-/*
-	Name: function_a39c9866
-	Namespace: zm_zod_ee
-	Checksum: 0x5F243027
-	Offset: 0x26D0
-	Size: 0x12B6
-	Parameters: 4
-	Flags: Linked
-*/
 function function_a39c9866(localclientnum, var_fe2fb4b9, var_f471914b, n_character_index) {
   var_4fafa709 = function_e1e53e16(localclientnum, n_character_index);
   mdl_target = function_2c557738(localclientnum, n_character_index);
@@ -477,7 +299,7 @@ function function_a39c9866(localclientnum, var_fe2fb4b9, var_f471914b, n_charact
     }
     case 1: {
       var_4fafa709.model show();
-      var_4fafa709.model notify(# "hash_274ba0e6");
+      var_4fafa709.model notify("hash_274ba0e6");
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_give_egg_intro", 0);
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_give_egg_loop", 0);
       var_4fafa709.var_c8ca4ded = playfx(localclientnum, level._effect["ee_quest_keeper_spirit_mist"], var_4fafa709.model.origin, var_4fafa709.model.angles);
@@ -487,7 +309,7 @@ function function_a39c9866(localclientnum, var_fe2fb4b9, var_f471914b, n_charact
       break;
     }
     case 2: {
-      var_4fafa709.model notify(# "hash_274ba0e6");
+      var_4fafa709.model notify("hash_274ba0e6");
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_idle", 0);
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_give_egg_intro", 0);
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_give_egg_loop", 0);
@@ -533,7 +355,7 @@ function function_a39c9866(localclientnum, var_fe2fb4b9, var_f471914b, n_charact
     }
     case 4: {
       function_6f29ee45(var_4fafa709);
-      var_4fafa709.model notify(# "hash_274ba0e6");
+      var_4fafa709.model notify("hash_274ba0e6");
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_intro_idle", 0);
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_injured_idle", 0);
       var_4fafa709.model.sndloop = var_4fafa709.model playloopsound("zmb_zod_shadfight_keeper_up_lp", 2);
@@ -559,7 +381,7 @@ function function_a39c9866(localclientnum, var_fe2fb4b9, var_f471914b, n_charact
       break;
     }
     case 5: {
-      var_4fafa709.model notify(# "hash_274ba0e6");
+      var_4fafa709.model notify("hash_274ba0e6");
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_revived", 0);
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_take_sword", 0);
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_ready_idle", 0);
@@ -573,7 +395,7 @@ function function_a39c9866(localclientnum, var_fe2fb4b9, var_f471914b, n_charact
       break;
     }
     case 6: {
-      var_4fafa709.model notify(# "hash_274ba0e6");
+      var_4fafa709.model notify("hash_274ba0e6");
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_attack_intro", 0);
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_attack_idle", 0);
       var_4fafa709.model.sndloop = var_4fafa709.model playloopsound("zmb_zod_shadfight_keeper_down_lp", 2);
@@ -585,7 +407,7 @@ function function_a39c9866(localclientnum, var_fe2fb4b9, var_f471914b, n_charact
       break;
     }
     case 7: {
-      var_4fafa709.model notify(# "hash_274ba0e6");
+      var_4fafa709.model notify("hash_274ba0e6");
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_attack_intro", 0);
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_attack_idle", 0);
       str_targetname = "ee_apothigod_keeper_" + (n_character_index - 1);
@@ -597,7 +419,7 @@ function function_a39c9866(localclientnum, var_fe2fb4b9, var_f471914b, n_charact
     }
     case 8: {
       function_6f29ee45(var_4fafa709);
-      var_4fafa709.model notify(# "hash_274ba0e6");
+      var_4fafa709.model notify("hash_274ba0e6");
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_attack_intro", 0);
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_attack_idle", 0);
       str_targetname = "ee_apothigod_keeper_" + (n_character_index - 1);
@@ -608,7 +430,7 @@ function function_a39c9866(localclientnum, var_fe2fb4b9, var_f471914b, n_charact
       break;
     }
     case 9: {
-      var_4fafa709.model notify(# "hash_274ba0e6");
+      var_4fafa709.model notify("hash_274ba0e6");
       var_4fafa709.model clearanim("ai_zombie_zod_keeper_sword_quest_ready_idle", 0);
       var_4fafa709.model animation::play("ai_zombie_zod_keeper_sword_quest_attack_intro", undefined, undefined, 1, 0, 0);
       var_4fafa709.model thread function_274ba0e6("ai_zombie_zod_keeper_sword_quest_attack_idle", 1);
@@ -617,15 +439,6 @@ function function_a39c9866(localclientnum, var_fe2fb4b9, var_f471914b, n_charact
   }
 }
 
-/*
-	Name: function_a48022e
-	Namespace: zm_zod_ee
-	Checksum: 0x74B28FC4
-	Offset: 0x3990
-	Size: 0x144
-	Parameters: 3
-	Flags: Linked
-*/
 function function_a48022e(localclientnum, b_on = 1, n_character_index) {
   if(n_character_index == 1 || n_character_index == 4) {
     var_53106e7c = level._effect["zombie/fx_ee_keeper_beam_shield1_fail_zod_zmb"];
@@ -642,15 +455,6 @@ function function_a48022e(localclientnum, b_on = 1, n_character_index) {
   }
 }
 
-/*
-	Name: function_6f29ee45
-	Namespace: zm_zod_ee
-	Checksum: 0x38EA5CBB
-	Offset: 0x3AE0
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6f29ee45(var_4fafa709) {
   if(var_4fafa709.model isattached("wpn_t7_zmb_zod_sword2_world", "tag_weapon_right")) {
     return;
@@ -658,15 +462,6 @@ function function_6f29ee45(var_4fafa709) {
   var_4fafa709.model attach("wpn_t7_zmb_zod_sword2_world", "tag_weapon_right");
 }
 
-/*
-	Name: function_4d0c8ca8
-	Namespace: zm_zod_ee
-	Checksum: 0xACD25163
-	Offset: 0x3B58
-	Size: 0x18C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_4d0c8ca8(var_4fafa709, var_fe2fb4b9, n_character_index) {
   if(var_fe2fb4b9 < 4) {
     var_64c74a6d = 0;
@@ -700,15 +495,6 @@ function function_4d0c8ca8(var_4fafa709, var_fe2fb4b9, n_character_index) {
   var_4fafa709.var_64c74a6d = var_64c74a6d;
 }
 
-/*
-	Name: function_e1e53e16
-	Namespace: zm_zod_ee
-	Checksum: 0x79C34E13
-	Offset: 0x3CF0
-	Size: 0x248
-	Parameters: 2
-	Flags: Linked
-*/
 function function_e1e53e16(localclientnum, n_character_index) {
   function_1461c206(localclientnum, n_character_index);
   s_loc = struct::get("keeper_spirit_" + (n_character_index - 1), "targetname");
@@ -730,15 +516,6 @@ function function_e1e53e16(localclientnum, n_character_index) {
   return var_4fafa709;
 }
 
-/*
-	Name: function_2c557738
-	Namespace: zm_zod_ee
-	Checksum: 0xC05A3FA9
-	Offset: 0x3F40
-	Size: 0x112
-	Parameters: 2
-	Flags: Linked
-*/
 function function_2c557738(localclientnum, n_character_index) {
   function_1461c206(localclientnum, n_character_index);
   var_4fafa709 = level.var_673f721c[localclientnum][n_character_index];
@@ -751,15 +528,6 @@ function function_2c557738(localclientnum, n_character_index) {
   return var_4fafa709.var_f929ecf4;
 }
 
-/*
-	Name: function_27e2b2cc
-	Namespace: zm_zod_ee
-	Checksum: 0x6ADBA04
-	Offset: 0x4060
-	Size: 0x21C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_27e2b2cc(localclientnum) {
   if(!isdefined(level.var_a9f994a9)) {
     level.var_a9f994a9 = spawnstruct();
@@ -780,15 +548,6 @@ function function_27e2b2cc(localclientnum) {
   }
 }
 
-/*
-	Name: ee_superworm_state
-	Namespace: zm_zod_ee
-	Checksum: 0xE75F4482
-	Offset: 0x4288
-	Size: 0x536
-	Parameters: 7
-	Flags: Linked
-*/
 function ee_superworm_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 4) {
     return;
@@ -846,15 +605,6 @@ function ee_superworm_state(localclientnum, oldval, newval, bnewent, binitialsna
   }
 }
 
-/*
-	Name: function_bdd91321
-	Namespace: zm_zod_ee
-	Checksum: 0xBDD8746
-	Offset: 0x47C8
-	Size: 0x314
-	Parameters: 3
-	Flags: Linked
-*/
 function function_bdd91321(localclientnum, b_hide, var_b4c5825f = 0) {
   if(b_hide) {
     if(isdefined(self.sndlooper)) {
@@ -886,15 +636,6 @@ function function_bdd91321(localclientnum, b_hide, var_b4c5825f = 0) {
   }
 }
 
-/*
-	Name: ee_keeper_beam_state
-	Namespace: zm_zod_ee
-	Checksum: 0x6BEC491E
-	Offset: 0x4AE8
-	Size: 0x236
-	Parameters: 7
-	Flags: Linked
-*/
 function ee_keeper_beam_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(level.var_4c0f7435)) {
     var_7cb357a4 = struct::get("ee_apothigod_beam_unite", "targetname");
@@ -923,15 +664,6 @@ function ee_keeper_beam_state(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: ee_final_boss_shields
-	Namespace: zm_zod_ee
-	Checksum: 0x62B5CD0E
-	Offset: 0x4D28
-	Size: 0x162
-	Parameters: 7
-	Flags: Linked
-*/
 function ee_final_boss_shields(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   var_dcd4f61a = struct::get_array("final_boss_safepoint", "targetname");
   foreach(var_495730fe in var_dcd4f61a) {
@@ -944,15 +676,6 @@ function ee_final_boss_shields(localclientnum, oldval, newval, bnewent, binitial
   }
 }
 
-/*
-	Name: ee_final_boss_attack_tell
-	Namespace: zm_zod_ee
-	Checksum: 0xEC248245
-	Offset: 0x4E98
-	Size: 0x1A4
-	Parameters: 7
-	Flags: Linked
-*/
 function ee_final_boss_attack_tell(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self thread postfx::playpostfxbundle("pstfx_ring_loop_purple");
@@ -974,15 +697,6 @@ function ee_final_boss_attack_tell(localclientnum, oldval, newval, bnewent, bini
   self function_267f859f(localclientnum, level._effect["curse_tell"], newval, 1, "tag_origin");
 }
 
-/*
-	Name: ee_rail_electricity_state
-	Namespace: zm_zod_ee
-	Checksum: 0xC1A52EFC
-	Offset: 0x5048
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function ee_rail_electricity_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self function_267f859f(localclientnum, level._effect["ee_quest_powerbox"], newval, 1, "tag_origin");
   if(newval == 1) {
@@ -990,15 +704,6 @@ function ee_rail_electricity_state(localclientnum, oldval, newval, bnewent, bini
   }
 }
 
-/*
-	Name: function_1461c206
-	Namespace: zm_zod_ee
-	Checksum: 0x2D3D1E37
-	Offset: 0x50F0
-	Size: 0x90
-	Parameters: 2
-	Flags: Linked
-*/
 function function_1461c206(localclientnum, n_character_index) {
   if(!isdefined(level.var_673f721c)) {
     level.var_673f721c = [];
@@ -1011,18 +716,9 @@ function function_1461c206(localclientnum, n_character_index) {
   }
 }
 
-/*
-	Name: function_274ba0e6
-	Namespace: zm_zod_ee
-	Checksum: 0x81AA5B4C
-	Offset: 0x5188
-	Size: 0x78
-	Parameters: 2
-	Flags: Linked
-*/
 function function_274ba0e6(str_animname, var_e3c27047) {
-  self notify(# "hash_274ba0e6");
-  self endon(# "hash_274ba0e6");
+  self notify("hash_274ba0e6");
+  self endon("hash_274ba0e6");
   if(!isdefined(var_e3c27047)) {
     var_e3c27047 = 1;
   }
@@ -1031,15 +727,6 @@ function function_274ba0e6(str_animname, var_e3c27047) {
   }
 }
 
-/*
-	Name: function_267f859f
-	Namespace: zm_zod_ee
-	Checksum: 0x1186DD63
-	Offset: 0x5208
-	Size: 0x18E
-	Parameters: 5
-	Flags: Linked
-*/
 function function_267f859f(localclientnum, fx_id = undefined, b_on = 1, var_afcc5d76 = 0, str_tag = "tag_origin") {
   if(b_on) {
     if(isdefined(self.vfx_ref)) {
@@ -1060,15 +747,6 @@ function function_267f859f(localclientnum, fx_id = undefined, b_on = 1, var_afcc
   }
 }
 
-/*
-	Name: near_apothigod_active
-	Namespace: zm_zod_ee
-	Checksum: 0x53CB2FE4
-	Offset: 0x53A0
-	Size: 0x98
-	Parameters: 7
-	Flags: Linked
-*/
 function near_apothigod_active(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(level.var_76ed0403)) {
     level.var_76ed0403 = new class_b454dc63();
@@ -1079,15 +757,6 @@ function near_apothigod_active(localclientnum, oldval, newval, bnewent, binitial
   thread[[level.var_76ed0403]] - > function_66844d0d(localclientnum, newval);
 }
 
-/*
-	Name: far_apothigod_active
-	Namespace: zm_zod_ee
-	Checksum: 0x768A8B63
-	Offset: 0x5440
-	Size: 0x98
-	Parameters: 7
-	Flags: Linked
-*/
 function far_apothigod_active(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(level.var_d566da8c)) {
     level.var_d566da8c = new class_b454dc63();
@@ -1098,41 +767,14 @@ function far_apothigod_active(localclientnum, oldval, newval, bnewent, binitials
   thread[[level.var_d566da8c]] - > function_66844d0d(localclientnum, newval);
 }
 
-/*
-	Name: far_apothigod_roar
-	Namespace: zm_zod_ee
-	Checksum: 0x368CDF31
-	Offset: 0x54E0
-	Size: 0x54
-	Parameters: 7
-	Flags: None
-*/
 function far_apothigod_roar(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   thread[[level.var_d566da8c]] - > function_2de612ff(localclientnum, self);
 }
 
-/*
-	Name: near_apothigod_roar
-	Namespace: zm_zod_ee
-	Checksum: 0x76BB163B
-	Offset: 0x5540
-	Size: 0x54
-	Parameters: 7
-	Flags: None
-*/
 function near_apothigod_roar(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   thread[[level.var_76ed0403]] - > function_2de612ff(localclientnum, self);
 }
 
-/*
-	Name: apothigod_death
-	Namespace: zm_zod_ee
-	Checksum: 0x81DA6929
-	Offset: 0x55A0
-	Size: 0x54
-	Parameters: 7
-	Flags: Linked
-*/
 function apothigod_death(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   thread[[level.var_76ed0403]] - > function_839ff35f(localclientnum, self);
 }

@@ -1,19 +1,13 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/********************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\systems\destructible_character.csc
+********************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\clientfield_shared;
-
 #namespace destructible_character;
 
-/*
-	Name: main
-	Namespace: destructible_character
-	Checksum: 0xD7C6F9F5
-	Offset: 0x198
-	Size: 0x3E6
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   clientfield::register("actor", "destructible_character_state", 1, 21, "int", & destructclientutils::_destructhandler, 0, 0);
   destructibles = struct::get_script_bundles("destructiblecharacterdef");
@@ -43,15 +37,6 @@ function autoexec main() {
 
 #namespace destructclientutils;
 
-/*
-	Name: _destructhandler
-	Namespace: destructclientutils
-	Checksum: 0xACFAC1D4
-	Offset: 0x588
-	Size: 0x138
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private _destructhandler(localclientnum, oldvalue, newvalue, bnewent, binitialsnap, fieldname, wasdemojump) {
   entity = self;
   destructflags = oldvalue ^ newvalue;
@@ -74,15 +59,6 @@ function private _destructhandler(localclientnum, oldvalue, newvalue, bnewent, b
   entity._destruct_state = newvalue;
 }
 
-/*
-	Name: _destructpiece
-	Namespace: destructclientutils
-	Checksum: 0x521F25B2
-	Offset: 0x6C8
-	Size: 0x164
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private _destructpiece(localclientnum, entity, piecenumber, shouldspawngibs) {
   if(!isdefined(entity.destructibledef)) {
     return;
@@ -99,15 +75,6 @@ function private _destructpiece(localclientnum, entity, piecenumber, shouldspawn
   }
 }
 
-/*
-	Name: _getdestructstate
-	Namespace: destructclientutils
-	Checksum: 0x557F08AF
-	Offset: 0x838
-	Size: 0x3A
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _getdestructstate(localclientnum, entity) {
   if(isdefined(entity._destruct_state)) {
     return entity._destruct_state;
@@ -115,15 +82,6 @@ function private _getdestructstate(localclientnum, entity) {
   return 0;
 }
 
-/*
-	Name: _handledestructcallbacks
-	Namespace: destructclientutils
-	Checksum: 0xE0D458C6
-	Offset: 0x880
-	Size: 0xF4
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _handledestructcallbacks(localclientnum, entity, piecenumber) {
   if(isdefined(entity._destructcallbacks) && isdefined(entity._destructcallbacks[piecenumber])) {
     foreach(callback in entity._destructcallbacks[piecenumber]) {
@@ -136,22 +94,11 @@ function private _handledestructcallbacks(localclientnum, entity, piecenumber) {
   }
 }
 
-/*
-	Name: adddestructpiececallback
-	Namespace: destructclientutils
-	Checksum: 0xB1C157A2
-	Offset: 0x980
-	Size: 0xF6
-	Parameters: 4
-	Flags: Linked
-*/
 function adddestructpiececallback(localclientnum, entity, piecenumber, callbackfunction) {
-  /#
   assert(isfunctionptr(callbackfunction));
-  # /
-    if(!isdefined(entity._destructcallbacks)) {
-      entity._destructcallbacks = [];
-    }
+  if(!isdefined(entity._destructcallbacks)) {
+    entity._destructcallbacks = [];
+  }
   if(!isdefined(entity._destructcallbacks[piecenumber])) {
     entity._destructcallbacks[piecenumber] = [];
   }
@@ -160,15 +107,6 @@ function adddestructpiececallback(localclientnum, entity, piecenumber, callbackf
   entity._destructcallbacks[piecenumber] = destructcallbacks;
 }
 
-/*
-	Name: ispiecedestructed
-	Namespace: destructclientutils
-	Checksum: 0x50F61D1F
-	Offset: 0xA80
-	Size: 0x3E
-	Parameters: 3
-	Flags: Linked
-*/
 function ispiecedestructed(localclientnum, entity, piecenumber) {
   return _getdestructstate(localclientnum, entity) & (1 << piecenumber);
 }

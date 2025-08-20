@@ -1,20 +1,14 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\teams\_teamset_multiteam.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\teams\_teamset;
 #using scripts\mp\teams\_teamset_allies;
 #using scripts\mp\teams\_teamset_axis;
-
 #namespace _teamset_multiteam;
 
-/*
-	Name: main
-	Namespace: _teamset_multiteam
-	Checksum: 0x4A4CCA84
-	Offset: 0x460
-	Size: 0xEC
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   _teamset::init();
   toggle = 0;
@@ -29,29 +23,11 @@ function main() {
   precache();
 }
 
-/*
-	Name: precache
-	Namespace: _teamset_multiteam
-	Checksum: 0x1D58E302
-	Offset: 0x558
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function precache() {
   _teamset_allies::precache();
   _teamset_axis::precache();
 }
 
-/*
-	Name: init_allies
-	Namespace: _teamset_multiteam
-	Checksum: 0xC91B41AF
-	Offset: 0x588
-	Size: 0x32A
-	Parameters: 1
-	Flags: None
-*/
 function init_allies(team) {
   game[team] = "allies";
   game["attackers"] = team;
@@ -80,15 +56,6 @@ function init_allies(team) {
   game["carry_flagmodels"][team] = "mp_flag_allies_1_carry";
 }
 
-/*
-	Name: init_axis
-	Namespace: _teamset_multiteam
-	Checksum: 0x90A9FBF4
-	Offset: 0x8C0
-	Size: 0x32A
-	Parameters: 1
-	Flags: None
-*/
 function init_axis(team) {
   game[team] = "axis";
   game["defenders"] = team;

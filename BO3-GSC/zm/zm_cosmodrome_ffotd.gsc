@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_cosmodrome_ffotd.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -10,29 +14,10 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_cosmodrome_ffotd;
 
-/*
-	Name: main_start
-	Namespace: zm_cosmodrome_ffotd
-	Checksum: 0x99EC1590
-	Offset: 0x2B0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function main_start() {}
 
-/*
-	Name: main_end
-	Namespace: zm_cosmodrome_ffotd
-	Checksum: 0x16DF7916
-	Offset: 0x2C0
-	Size: 0x5E4
-	Parameters: 0
-	Flags: Linked
-*/
 function main_end() {
   spawncollision("collision_player_64x64x256", "collider", (189.68, 666.753, -208), vectorscale((0, 1, 0), 45.4));
   spawncollision("collision_player_wall_64x64x10", "collider", (-48, 1135, -454), vectorscale((0, 1, 0), 270));

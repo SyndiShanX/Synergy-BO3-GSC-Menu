@@ -1,35 +1,20 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_mirg2000.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weapons;
-
 #namespace mirg2000;
 
-/*
-	Name: __init__sytem__
-	Namespace: mirg2000
-	Checksum: 0xEA92BE10
-	Offset: 0x4D8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("mirg2000", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: mirg2000
-	Checksum: 0x536A33D7
-	Offset: 0x518
-	Size: 0x2DA
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "plant_killer", 9000, getminbitcountfornum(4), "int", & function_23a70949, 0, 0);
   clientfield::register("vehicle", "mirg2000_spider_death_fx", 9000, 2, "int", & function_1d3d9723, 0, 0);
@@ -49,15 +34,6 @@ function __init__() {
   level._effect["mirg2000_glow_up"] = "dlc2/zmb_weapon/fx_mirg_weapon_canister_light_blue";
 }
 
-/*
-	Name: function_23a70949
-	Namespace: mirg2000
-	Checksum: 0x5F993857
-	Offset: 0x800
-	Size: 0x1DE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_23a70949(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 0: {
@@ -91,15 +67,6 @@ function function_23a70949(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_15ad909d
-	Namespace: mirg2000
-	Checksum: 0xA6E33B24
-	Offset: 0x9E8
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_15ad909d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 2) {
     playfxontag(localclientnum, level._effect["mirg2000_enemy_impact_up"], self, "J_SpineUpper");
@@ -108,15 +75,6 @@ function function_15ad909d(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_1d3d9723
-	Namespace: mirg2000
-	Checksum: 0xFE84FCFF
-	Offset: 0xAB0
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_1d3d9723(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 2) {
     playfxontag(localclientnum, level._effect["mirg2000_spider_death_fx_up"], self, "tag_origin");
@@ -125,15 +83,6 @@ function function_1d3d9723(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: mirg2000_fire_button_held_sound
-	Namespace: mirg2000
-	Checksum: 0xE0F014D9
-	Offset: 0xB78
-	Size: 0xCE
-	Parameters: 7
-	Flags: Linked
-*/
 function mirg2000_fire_button_held_sound(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     if(!isdefined(self.var_c56da363)) {
@@ -147,15 +96,6 @@ function mirg2000_fire_button_held_sound(localclientnum, oldval, newval, bnewent
   }
 }
 
-/*
-	Name: mirg2000_charge_glow
-	Namespace: mirg2000
-	Checksum: 0xF8D3E9CE
-	Offset: 0xC50
-	Size: 0x1B6
-	Parameters: 7
-	Flags: Linked
-*/
 function mirg2000_charge_glow(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   w_current = getcurrentweapon(localclientnum);
   str_weapon_name = w_current.name;

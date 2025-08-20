@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_sq_datalogs.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -15,18 +19,8 @@
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_moon_amb;
 #using scripts\zm\zm_moon_sq;
-
 #namespace zm_moon_sq_datalogs;
 
-/*
-	Name: init
-	Namespace: zm_moon_sq_datalogs
-	Checksum: 0xFFAE8298
-	Offset: 0x368
-	Size: 0x404
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   datalogs = array("vox_story_2_log_1", "vox_story_2_log_2", "vox_story_2_log_3", "vox_story_2_log_4", "vox_story_2_log_5", "vox_story_2_log_6");
   datalogs_delay = [];
@@ -48,13 +42,13 @@ function init() {
     }
     log setmodel("p7_zm_moo_data_reel");
     log thread zm_sidequests::fake_use("pickedup");
-    log waittill(# "pickedup", who);
+    log waittill("pickedup", who);
     playsoundatposition("fly_log_pickup", who.origin);
     who._has_log = 1;
     log delete();
     who zm_sidequests::add_sidequest_icon("sq", "datalog");
     player thread zm_sidequests::fake_use("placed", & log_qualifier);
-    player waittill(# "placed", who);
+    player waittill("placed", who);
     who._has_log = undefined;
     who zm_sidequests::remove_sidequest_icon("sq", "datalog");
     sound_ent = spawn("script_origin", player.origin);
@@ -68,15 +62,6 @@ function init() {
   }
 }
 
-/*
-	Name: log_qualifier
-	Namespace: zm_moon_sq_datalogs
-	Checksum: 0x20A4EECD
-	Offset: 0x778
-	Size: 0x18
-	Parameters: 0
-	Flags: Linked
-*/
 function log_qualifier() {
   if(isdefined(self._has_log)) {
     return true;

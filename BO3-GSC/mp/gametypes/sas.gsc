@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\sas.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -17,18 +21,8 @@
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapon_utils;
-
 #namespace sas;
 
-/*
-	Name: main
-	Namespace: sas
-	Checksum: 0xCB35EC99
-	Offset: 0x5D8
-	Size: 0x594
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   level.weapon_sas_primary_weapon = getweapon("special_crossbow");
@@ -66,10 +60,8 @@ function main() {
       break;
     }
     default: {
-      /#
       assert(1, "");
-      # /
-        break;
+      break;
     }
   }
   game["dialog"]["gametype"] = "sns_start";
@@ -114,17 +106,8 @@ function main() {
   globallogic::setvisiblescoreboardcolumns("pointstowin", "kills", "deaths", "tomahawks", "humiliated");
 }
 
-/*
-	Name: givecustomloadout
-	Namespace: sas
-	Checksum: 0x3911C7E8
-	Offset: 0xB78
-	Size: 0x304
-	Parameters: 0
-	Flags: None
-*/
 function givecustomloadout() {
-  self notify(# "sas_spectator_hud");
+  self notify("sas_spectator_hud");
   defaultweapon = level.weapon_sas_primary_weapon;
   loadout::setclassnum(self.curclass);
   self wager::setup_blank_random_player(1, 1, defaultweapon);
@@ -161,15 +144,6 @@ function givecustomloadout() {
   return defaultweapon;
 }
 
-/*
-	Name: function_9b921991
-	Namespace: sas
-	Checksum: 0x828A3174
-	Offset: 0xE88
-	Size: 0x138
-	Parameters: 0
-	Flags: None
-*/
 function function_9b921991() {
   specialoffhand = self.var_8ed41d1a;
   var_a664ae9a = 0;
@@ -190,30 +164,12 @@ function function_9b921991() {
   self.var_8ed41d1a = specialoffhand;
 }
 
-/*
-	Name: giveperks
-	Namespace: sas
-	Checksum: 0x8E4EC873
-	Offset: 0xFC8
-	Size: 0x8A
-	Parameters: 0
-	Flags: None
-*/
 function giveperks() {
   foreach(perkname in level.var_e9a58782) {
     self setperk(perkname);
   }
 }
 
-/*
-	Name: onplayerdamage
-	Namespace: sas
-	Checksum: 0xDF3ADC1A
-	Offset: 0x1060
-	Size: 0x114
-	Parameters: 10
-	Flags: None
-*/
 function onplayerdamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime) {
   if(weapon == level.weapon_sas_primary_weapon && smeansofdeath == "MOD_IMPACT") {
     if(isdefined(eattacker) && isplayer(eattacker)) {
@@ -228,15 +184,6 @@ function onplayerdamage(einflictor, eattacker, idamage, idflags, smeansofdeath, 
   return idamage;
 }
 
-/*
-	Name: onplayerscore
-	Namespace: sas
-	Checksum: 0xF38C1B40
-	Offset: 0x1180
-	Size: 0xEC
-	Parameters: 3
-	Flags: None
-*/
 function onplayerscore(event, player, victim) {
   score = player.pers["pointstowin"];
   if(!level.rankedmatch) {
@@ -247,15 +194,6 @@ function onplayerscore(event, player, victim) {
   recordplayerstats(player, "score", player.pers["score"]);
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: sas
-	Checksum: 0x5F7A79F6
-	Offset: 0x1278
-	Size: 0x42C
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(isdefined(attacker) && isplayer(attacker) && attacker != self) {
     if(weapon_utils::ismeleemod(smeansofdeath)) {
@@ -313,20 +251,11 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: function_238fd5eb
-	Namespace: sas
-	Checksum: 0xF81789AC
-	Offset: 0x16B0
-	Size: 0x244
-	Parameters: 0
-	Flags: None
-*/
 function function_238fd5eb() {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   self addplayerstatwithgametype("HUMILIATE_VICTIM", 1);
-  self waittill(# "spawned_player");
+  self waittill("spawned_player");
   self playlocalsound("mpl_assassination_sting");
   var_a40af05c = self hud::createfontstring("default", 2.5);
   var_a40af05c hud::setpoint("CENTER", undefined, 0, -100);
@@ -348,36 +277,18 @@ function function_238fd5eb() {
   var_a40af05c changefontscaleovertime(0.5);
   var_a40af05c.fontscale = 2.5;
   wait(1);
-  self notify(# "hash_c8d75045");
+  self notify("hash_c8d75045");
   var_a40af05c destroy();
 }
 
-/*
-	Name: function_71a0cd6d
-	Namespace: sas
-	Checksum: 0xFE326D88
-	Offset: 0x1900
-	Size: 0x5C
-	Parameters: 1
-	Flags: None
-*/
 function function_71a0cd6d(var_a40af05c) {
-  self endon(# "hash_c8d75045");
+  self endon("hash_c8d75045");
   self util::waittill_any("disconnect", "death");
   if(isdefined(var_a40af05c)) {
     var_a40af05c destroy();
   }
 }
 
-/*
-	Name: setupteam
-	Namespace: sas
-	Checksum: 0x1375481C
-	Offset: 0x1968
-	Size: 0xEC
-	Parameters: 1
-	Flags: None
-*/
 function setupteam(team) {
   util::setobjectivetext(team, & "OBJECTIVES_SAS");
   if(level.splitscreen) {
@@ -391,15 +302,6 @@ function setupteam(team) {
   level.spawn_start = spawnlogic::get_spawnpoint_array("mp_dm_spawn_start");
 }
 
-/*
-	Name: onstartgametype
-	Namespace: sas
-	Checksum: 0x7B81F6C5
-	Offset: 0x1A60
-	Size: 0x1FC
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   setdvar("tu29_gametypeOverridesGadget", 1);
   setclientnamemode("auto_change");
@@ -423,15 +325,6 @@ function onstartgametype() {
   }
 }
 
-/*
-	Name: onwagerawards
-	Namespace: sas
-	Checksum: 0xFCAAE734
-	Offset: 0x1C68
-	Size: 0x124
-	Parameters: 0
-	Flags: None
-*/
 function onwagerawards() {
   tomahawks = self globallogic_score::getpersstat("tomahawks");
   if(!isdefined(tomahawks)) {

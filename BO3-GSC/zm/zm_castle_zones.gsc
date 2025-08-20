@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_castle_zones.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -10,18 +14,8 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_castle;
-
 #namespace zm_castle_zones;
 
-/*
-	Name: init
-	Namespace: zm_castle_zones
-	Checksum: 0xD893DA8A
-	Offset: 0x838
-	Size: 0x9CC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.custom_spawner_entry["crawl"] = & function_48cfc7df;
   level flag::init("always_on");
@@ -94,15 +88,6 @@ function init() {
   zm_zonemgr::add_zone_flags("connect_greathall_to_undercroft", "activate_undercroft");
 }
 
-/*
-	Name: function_15166300
-	Namespace: zm_castle_zones
-	Checksum: 0x27FFAFC7
-	Offset: 0x1210
-	Size: 0xC4
-	Parameters: 0
-	Flags: None
-*/
 function function_15166300() {
   var_49fa7253 = 0;
   var_565450eb = 0;
@@ -114,15 +99,6 @@ function function_15166300() {
   return var_49fa7253;
 }
 
-/*
-	Name: function_e9579b3e
-	Namespace: zm_castle_zones
-	Checksum: 0xF001CDD4
-	Offset: 0x12E0
-	Size: 0x1A6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e9579b3e() {
   level flag::wait_till("zones_initialized");
   var_874b8995 = struct::get_array("zone_start_spawners", "targetname");
@@ -132,7 +108,7 @@ function function_e9579b3e() {
     }
   }
   while (true) {
-    level waittill(# "end_of_round");
+    level waittill("end_of_round");
     if(level.round_number >= 5) {
       break;
     }
@@ -144,15 +120,6 @@ function function_e9579b3e() {
   }
 }
 
-/*
-	Name: function_8ead5cf5
-	Namespace: zm_castle_zones
-	Checksum: 0xE8C5082E
-	Offset: 0x1490
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8ead5cf5() {
   var_405e4f24 = struct::get_array("zone_wizards_tower_spawners", "targetname");
   foreach(s_spawner in var_405e4f24) {
@@ -167,15 +134,6 @@ function function_8ead5cf5() {
   level thread function_affecb53(var_405e4f24);
 }
 
-/*
-	Name: function_affecb53
-	Namespace: zm_castle_zones
-	Checksum: 0x7E01306
-	Offset: 0x1600
-	Size: 0x19A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_affecb53(var_405e4f24) {
   level flag::wait_till("zones_initialized");
   while (true) {
@@ -194,17 +152,8 @@ function function_affecb53(var_405e4f24) {
   }
 }
 
-/*
-	Name: function_48cfc7df
-	Namespace: zm_castle_zones
-	Checksum: 0x59E55E6D
-	Offset: 0x17A8
-	Size: 0x236
-	Parameters: 1
-	Flags: Linked
-*/
 function function_48cfc7df(spot) {
-  self endon(# "death");
+  self endon("death");
   self.var_2be9fa75 = 1;
   if(isdefined(self.mdl_anchor)) {
     self.mdl_anchor delete();
@@ -217,7 +166,7 @@ function function_48cfc7df(spot) {
   self thread anchor_delete_watcher();
   self.mdl_anchor moveto(spot.origin, 0.05);
   self.mdl_anchor rotateto(spot.angles, 0.05);
-  self.mdl_anchor waittill(# "movedone");
+  self.mdl_anchor waittill("movedone");
   wait(0.05);
   if(!isdefined(self) || !isdefined(self.mdl_anchor)) {
     return;
@@ -233,37 +182,19 @@ function function_48cfc7df(spot) {
   }
   self.var_2be9fa75 = 0;
   self thread function_27a6dd5f();
-  self notify(# "risen", spot.script_string);
+  self notify("risen", spot.script_string);
 }
 
-/*
-	Name: function_27a6dd5f
-	Namespace: zm_castle_zones
-	Checksum: 0x8C3C5793
-	Offset: 0x19E8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_27a6dd5f() {
-  self endon(# "death");
+  self endon("death");
   util::wait_network_frame();
   if(isdefined(self.mdl_anchor)) {
     self.mdl_anchor delete();
   }
 }
 
-/*
-	Name: anchor_delete_watcher
-	Namespace: zm_castle_zones
-	Checksum: 0xA6CB66B5
-	Offset: 0x1A40
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function anchor_delete_watcher() {
-  self waittill(# "death");
+  self waittill("death");
   if(isdefined(self.mdl_anchor)) {
     wait(0.05);
     if(isdefined(self.mdl_anchor)) {

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_ee_lights.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -8,18 +12,8 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\zm_tomb_quest_crypt;
-
 #namespace zm_tomb_ee_lights;
 
-/*
-	Name: main
-	Namespace: zm_tomb_ee_lights
-	Checksum: 0xB7B91082
-	Offset: 0x388
-	Size: 0x3DE
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   clientfield::register("world", "light_show", 21000, 2, "int");
   level flag::init("show_morse_code");
@@ -59,15 +53,6 @@ function main() {
   }
 }
 
-/*
-	Name: init_morse_code
-	Namespace: zm_tomb_ee_lights
-	Checksum: 0xAF88A798
-	Offset: 0x770
-	Size: 0x3BC
-	Parameters: 0
-	Flags: Linked
-*/
 function init_morse_code() {
   level.morse_letters = [];
   level.morse_letters["A"] = ".-";
@@ -108,45 +93,18 @@ function init_morse_code() {
   level.cipher_key = "INFERNO";
 }
 
-/*
-	Name: turn_all_lights_off
-	Namespace: zm_tomb_ee_lights
-	Checksum: 0x8B90E740
-	Offset: 0xB38
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function turn_all_lights_off(a_discs) {
   foreach(disc in a_discs) {
     disc zm_tomb_quest_crypt::bryce_cake_light_update(0);
   }
 }
 
-/*
-	Name: turn_all_lights_on
-	Namespace: zm_tomb_ee_lights
-	Checksum: 0xF8128BC9
-	Offset: 0xBD8
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function turn_all_lights_on(a_discs) {
   foreach(disc in a_discs) {
     disc zm_tomb_quest_crypt::bryce_cake_light_update(1);
   }
 }
 
-/*
-	Name: phrase_convert_to_cipher
-	Namespace: zm_tomb_ee_lights
-	Checksum: 0xA8CEC5F8
-	Offset: 0xC78
-	Size: 0x1AC
-	Parameters: 2
-	Flags: Linked
-*/
 function phrase_convert_to_cipher(str_phrase, str_key) {
   alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   alphabet_vals = [];
@@ -174,15 +132,6 @@ function phrase_convert_to_cipher(str_phrase, str_key) {
   return encrypted_phrase;
 }
 
-/*
-	Name: light_show_morse
-	Namespace: zm_tomb_ee_lights
-	Checksum: 0xB4E90173
-	Offset: 0xE30
-	Size: 0x12E
-	Parameters: 2
-	Flags: Linked
-*/
 function light_show_morse(a_discs, message) {
   for (i = 0; i < message.size; i++) {
     letter = message[i];

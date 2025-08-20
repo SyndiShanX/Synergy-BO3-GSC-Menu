@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\gametypes\_hud_message.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\hud_message_shared;
@@ -7,18 +11,8 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_util;
 #using scripts\zm\gametypes\_globallogic_audio;
-
 #namespace hud_message;
 
-/*
-	Name: init
-	Namespace: hud_message
-	Checksum: 0x597C422B
-	Offset: 0x428
-	Size: 0x1A2
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   game["strings"]["draw"] = & "MP_DRAW_CAPS";
   game["strings"]["round_draw"] = & "MP_ROUND_DRAW_CAPS";
@@ -35,18 +29,9 @@ function init() {
   game["strings"]["match_bonus"] = & "MP_MATCH_BONUS_IS";
 }
 
-/*
-	Name: teamoutcomenotify
-	Namespace: hud_message
-	Checksum: 0x802C7D5B
-	Offset: 0x5D8
-	Size: 0xE74
-	Parameters: 3
-	Flags: Linked
-*/
 function teamoutcomenotify(winner, isround, endreasontext) {
-  self endon(# "disconnect");
-  self notify(# "reset_outcome");
+  self endon("disconnect");
+  self notify("reset_outcome");
   team = self.pers["team"];
   if(isdefined(team) && team == "spectator") {
     for (i = 0; i < level.players.size; i++) {
@@ -62,7 +47,7 @@ function teamoutcomenotify(winner, isround, endreasontext) {
   while (self.doingnotify) {
     wait(0.05);
   }
-  self endon(# "reset_outcome");
+  self endon("reset_outcome");
   headerfont = "extrabig";
   font = "default";
   if(self issplitscreen()) {
@@ -215,18 +200,9 @@ function teamoutcomenotify(winner, isround, endreasontext) {
   self thread resetoutcomenotify(teamicons, teamscores, outcometitle, outcometext);
 }
 
-/*
-	Name: teamoutcomenotifyzombie
-	Namespace: hud_message
-	Checksum: 0x14D3008F
-	Offset: 0x1458
-	Size: 0x29C
-	Parameters: 3
-	Flags: Linked
-*/
 function teamoutcomenotifyzombie(winner, isround, endreasontext) {
-  self endon(# "disconnect");
-  self notify(# "reset_outcome");
+  self endon("disconnect");
+  self notify("reset_outcome");
   team = self.pers["team"];
   if(isdefined(team) && team == "spectator") {
     for (i = 0; i < level.players.size; i++) {
@@ -242,7 +218,7 @@ function teamoutcomenotifyzombie(winner, isround, endreasontext) {
   while (self.doingnotify) {
     wait(0.05);
   }
-  self endon(# "reset_outcome");
+  self endon("reset_outcome");
   if(self issplitscreen()) {
     titlesize = 2;
     spacing = 10;
@@ -262,22 +238,13 @@ function teamoutcomenotifyzombie(winner, isround, endreasontext) {
   self thread resetoutcomenotify(undefined, undefined, outcometitle);
 }
 
-/*
-	Name: outcomenotify
-	Namespace: hud_message
-	Checksum: 0xA1D32CCE
-	Offset: 0x1700
-	Size: 0x99C
-	Parameters: 3
-	Flags: Linked
-*/
 function outcomenotify(winner, isroundend, endreasontext) {
-  self endon(# "disconnect");
-  self notify(# "reset_outcome");
+  self endon("disconnect");
+  self notify("reset_outcome");
   while (self.doingnotify) {
     wait(0.05);
   }
-  self endon(# "reset_outcome");
+  self endon("reset_outcome");
   headerfont = "extrabig";
   font = "default";
   if(self issplitscreen()) {
@@ -375,22 +342,13 @@ function outcomenotify(winner, isroundend, endreasontext) {
   self thread resetoutcomenotify(undefined, undefined, outcometitle, outcometext, firsttitle, secondtitle, thirdtitle, matchbonus);
 }
 
-/*
-	Name: wageroutcomenotify
-	Namespace: hud_message
-	Checksum: 0xF9458B9F
-	Offset: 0x20A8
-	Size: 0xA0C
-	Parameters: 2
-	Flags: Linked
-*/
 function wageroutcomenotify(winner, endreasontext) {
-  self endon(# "disconnect");
-  self notify(# "reset_outcome");
+  self endon("disconnect");
+  self notify("reset_outcome");
   while (self.doingnotify) {
     wait(0.05);
   }
-  self endon(# "reset_outcome");
+  self endon("reset_outcome");
   headerfont = "extrabig";
   font = "objective";
   if(self issplitscreen()) {
@@ -513,18 +471,9 @@ function wageroutcomenotify(winner, endreasontext) {
   }
 }
 
-/*
-	Name: teamwageroutcomenotify
-	Namespace: hud_message
-	Checksum: 0x48C57BC3
-	Offset: 0x2AC0
-	Size: 0xD6C
-	Parameters: 3
-	Flags: Linked
-*/
 function teamwageroutcomenotify(winner, isroundend, endreasontext) {
-  self endon(# "disconnect");
-  self notify(# "reset_outcome");
+  self endon("disconnect");
+  self notify("reset_outcome");
   team = self.pers["team"];
   if(!isdefined(team) || !isdefined(level.teams[team])) {
     team = "allies";
@@ -533,7 +482,7 @@ function teamwageroutcomenotify(winner, isroundend, endreasontext) {
   while (self.doingnotify) {
     wait(0.05);
   }
-  self endon(# "reset_outcome");
+  self endon("reset_outcome");
   headerfont = "extrabig";
   font = "objective";
   if(self issplitscreen()) {
@@ -667,18 +616,9 @@ function teamwageroutcomenotify(winner, isroundend, endreasontext) {
   self thread resetoutcomenotify(teamicons, teamscores, outcometitle, outcometext, matchbonus, sidebetwinnings);
 }
 
-/*
-	Name: resetoutcomenotify
-	Namespace: hud_message
-	Checksum: 0x6304B2C9
-	Offset: 0x3838
-	Size: 0x242
-	Parameters: 10
-	Flags: Linked
-*/
 function resetoutcomenotify(hudelemlist1, hudelemlist2, hudelem3, hudelem4, hudelem5, hudelem6, hudelem7, hudelem8, hudelem9, hudelem10) {
-  self endon(# "disconnect");
-  self waittill(# "reset_outcome");
+  self endon("disconnect");
+  self waittill("reset_outcome");
   destroyhudelem(hudelem3);
   destroyhudelem(hudelem4);
   destroyhudelem(hudelem5);
@@ -699,18 +639,9 @@ function resetoutcomenotify(hudelemlist1, hudelemlist2, hudelem3, hudelem4, hude
   }
 }
 
-/*
-	Name: resetwageroutcomenotify
-	Namespace: hud_message
-	Checksum: 0xB7D5C738
-	Offset: 0x3A88
-	Size: 0x12C
-	Parameters: 4
-	Flags: Linked
-*/
 function resetwageroutcomenotify(playernamehudelems, playercphudelems, outcometitle, outcometext) {
-  self endon(# "disconnect");
-  self waittill(# "reset_outcome");
+  self endon("disconnect");
+  self waittill("reset_outcome");
   for (i = playernamehudelems.size - 1; i >= 0; i--) {
     if(isdefined(playernamehudelems[i])) {
       playernamehudelems[i] destroy();
@@ -729,20 +660,11 @@ function resetwageroutcomenotify(playernamehudelems, playercphudelems, outcometi
   }
 }
 
-/*
-	Name: updateoutcome
-	Namespace: hud_message
-	Checksum: 0xFCA790C3
-	Offset: 0x3BC0
-	Size: 0x170
-	Parameters: 3
-	Flags: Linked
-*/
 function updateoutcome(firsttitle, secondtitle, thirdtitle) {
-  self endon(# "disconnect");
-  self endon(# "reset_outcome");
+  self endon("disconnect");
+  self endon("reset_outcome");
   while (true) {
-    self waittill(# "update_outcome");
+    self waittill("update_outcome");
     players = level.placement["all"];
     if(isdefined(firsttitle) && isdefined(players[0])) {
       firsttitle setplayernamestring(players[0]);
@@ -762,20 +684,11 @@ function updateoutcome(firsttitle, secondtitle, thirdtitle) {
   }
 }
 
-/*
-	Name: updatewageroutcome
-	Namespace: hud_message
-	Checksum: 0xE596F585
-	Offset: 0x3D38
-	Size: 0x146
-	Parameters: 2
-	Flags: Linked
-*/
 function updatewageroutcome(playernamehudelems, playercphudelems) {
-  self endon(# "disconnect");
-  self endon(# "reset_outcome");
+  self endon("disconnect");
+  self endon("reset_outcome");
   while (true) {
-    self waittill(# "update_outcome");
+    self waittill("update_outcome");
     players = level.placement["all"];
     for (i = 0; i < playernamehudelems.size; i++) {
       if(isdefined(playernamehudelems[i]) && isdefined(players[playernamehudelems[i].playernum])) {

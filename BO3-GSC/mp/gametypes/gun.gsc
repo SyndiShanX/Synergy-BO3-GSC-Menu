@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\gun.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -13,18 +17,8 @@
 #using scripts\shared\rank_shared;
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\weapons\_weapon_utils;
-
 #namespace gun;
 
-/*
-	Name: main
-	Namespace: gun
-	Checksum: 0x9D70BA5E
-	Offset: 0x7A8
-	Size: 0x24C
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   level.onstartgametype = & onstartgametype;
@@ -49,15 +43,6 @@ function main() {
   }
 }
 
-/*
-	Name: function_5ada47ea
-	Namespace: gun
-	Checksum: 0x90FECCB9
-	Offset: 0xA00
-	Size: 0x29C
-	Parameters: 0
-	Flags: None
-*/
 function function_5ada47ea() {
   addguntoprogression("pistol_m1911");
   addguntoprogression("pistol_shotgun_dw");
@@ -81,15 +66,6 @@ function function_5ada47ea() {
   addguntoprogression("knife_ballistic");
 }
 
-/*
-	Name: function_74c19bbc
-	Namespace: gun
-	Checksum: 0x9058D56F
-	Offset: 0xCA8
-	Size: 0x29C
-	Parameters: 0
-	Flags: None
-*/
 function function_74c19bbc() {
   addguntoprogression("pistol_standard", "fastreload", "steadyaim");
   addguntoprogression("pistol_burst_dw");
@@ -113,15 +89,6 @@ function function_74c19bbc() {
   addguntoprogression("bare_hands");
 }
 
-/*
-	Name: function_6b594b42
-	Namespace: gun
-	Checksum: 0x1A6EB9B7
-	Offset: 0xF50
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function function_6b594b42() {
   if(getdvarint("black_market_gun_game", 0) > 0) {
     function_5ada47ea();
@@ -130,15 +97,6 @@ function function_6b594b42() {
   }
 }
 
-/*
-	Name: function_990f40f7
-	Namespace: gun
-	Checksum: 0xC2E21EFB
-	Offset: 0xFA8
-	Size: 0x59E
-	Parameters: 0
-	Flags: None
-*/
 function function_990f40f7() {
   level.gunprogression = [];
   gunlist = getgametypesetting("gunSelection");
@@ -199,15 +157,6 @@ function function_990f40f7() {
   }
 }
 
-/*
-	Name: onstartgametype
-	Namespace: gun
-	Checksum: 0x7AAD8E58
-	Offset: 0x1550
-	Size: 0x218
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   level.gungamekillscore = rank::getscoreinfovalue("kill_gun");
   util::registerscorelimit(level.gunprogression.size * level.gungamekillscore, level.gunprogression.size * level.gungamekillscore);
@@ -229,18 +178,9 @@ function onstartgametype() {
   level.displayroundendtext = 0;
 }
 
-/*
-	Name: inactivitykick
-	Namespace: gun
-	Checksum: 0xA15FE160
-	Offset: 0x1770
-	Size: 0x154
-	Parameters: 0
-	Flags: None
-*/
 function inactivitykick() {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   if(sessionmodeisprivate()) {
     return;
   }
@@ -260,15 +200,6 @@ function inactivitykick() {
   }
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: gun
-	Checksum: 0x18751C98
-	Offset: 0x18D0
-	Size: 0x64
-	Parameters: 1
-	Flags: None
-*/
 function onspawnplayer(predictedspawn) {
   if(!level.inprematchperiod) {
     level.usestartspawns = 0;
@@ -278,15 +209,6 @@ function onspawnplayer(predictedspawn) {
   self thread inactivitykick();
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: gun
-	Checksum: 0x819251CF
-	Offset: 0x1940
-	Size: 0x214
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   level.usestartspawns = 0;
   if(smeansofdeath == "MOD_SUICIDE" || smeansofdeath == "MOD_TRIGGER_HURT") {
@@ -314,15 +236,6 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: onendgame
-	Namespace: gun
-	Checksum: 0x4C326BDE
-	Offset: 0x1B60
-	Size: 0x5C
-	Parameters: 1
-	Flags: None
-*/
 function onendgame(winningplayer) {
   if(isdefined(winningplayer) && isplayer(winningplayer)) {
     [
@@ -333,15 +246,6 @@ function onendgame(winningplayer) {
   }
 }
 
-/*
-	Name: addguntoprogression
-	Namespace: gun
-	Checksum: 0xD6BED09E
-	Offset: 0x1BC8
-	Size: 0x176
-	Parameters: 9
-	Flags: None
-*/
 function addguntoprogression(weaponname, attachment1, attachment2, attachment3, attachment4, attachment5, attachment6, attachment7, attachment8) {
   attachments = [];
   if(isdefined(attachment1)) {
@@ -372,15 +276,6 @@ function addguntoprogression(weaponname, attachment1, attachment2, attachment3, 
   level.gunprogression[level.gunprogression.size] = weapon;
 }
 
-/*
-	Name: setupteam
-	Namespace: gun
-	Checksum: 0x9814568B
-	Offset: 0x1D48
-	Size: 0xCC
-	Parameters: 1
-	Flags: None
-*/
 function setupteam(team) {
   util::setobjectivetext(team, & "OBJECTIVES_GUN");
   if(level.splitscreen) {
@@ -393,31 +288,13 @@ function setupteam(team) {
   spawnlogic::place_spawn_points("mp_dm_spawn_start");
 }
 
-/*
-	Name: takeoldweapon
-	Namespace: gun
-	Checksum: 0x5895EE75
-	Offset: 0x1E20
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function takeoldweapon(oldweapon) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   wait(1);
   self takeweapon(oldweapon);
 }
 
-/*
-	Name: givecustomloadout
-	Namespace: gun
-	Checksum: 0x68FA108
-	Offset: 0x1E70
-	Size: 0x200
-	Parameters: 1
-	Flags: None
-*/
 function givecustomloadout(takeoldweapon = 0) {
   self loadout::giveloadout_init(!takeoldweapon);
   self loadout::setclassnum("CLASS_ASSAULT");
@@ -444,19 +321,10 @@ function givecustomloadout(takeoldweapon = 0) {
   return currentweapon;
 }
 
-/*
-	Name: promoteplayer
-	Namespace: gun
-	Checksum: 0xA3C30F80
-	Offset: 0x2078
-	Size: 0x180
-	Parameters: 1
-	Flags: None
-*/
 function promoteplayer(weaponused) {
-  self endon(# "disconnect");
-  self endon(# "cancel_promotion");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  self endon("cancel_promotion");
+  level endon("game_ended");
   wait(0.05);
   if(weaponused.rootweapon == level.gunprogression[self.gunprogress].rootweapon || (isdefined(level.gunprogression[self.gunprogress].dualwieldweapon) && level.gunprogression[self.gunprogress].dualwieldweapon.rootweapon == weaponused.rootweapon)) {
     if(self.gunprogress < (level.gunprogression.size - 1)) {
@@ -474,18 +342,9 @@ function promoteplayer(weaponused) {
   }
 }
 
-/*
-	Name: demoteplayer
-	Namespace: gun
-	Checksum: 0x47FB69DC
-	Offset: 0x2200
-	Size: 0x1CC
-	Parameters: 1
-	Flags: None
-*/
 function demoteplayer(attacker) {
-  self endon(# "disconnect");
-  self notify(# "cancel_promotion");
+  self endon("disconnect");
+  self notify("cancel_promotion");
   currentgunprogress = self.gunprogress;
   for (i = 0; i < level.setbacksperdemotion; i++) {
     if(self.gunprogress <= 0) {
@@ -509,18 +368,9 @@ function demoteplayer(attacker) {
   self globallogic_audio::leader_dialog_on_player("humiliated");
 }
 
-/*
-	Name: infiniteammo
-	Namespace: gun
-	Checksum: 0xCB1FDA5C
-	Offset: 0x23D8
-	Size: 0x90
-	Parameters: 0
-	Flags: None
-*/
 function infiniteammo() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   while (true) {
     wait(0.1);
     weapon = self getcurrentweapon();

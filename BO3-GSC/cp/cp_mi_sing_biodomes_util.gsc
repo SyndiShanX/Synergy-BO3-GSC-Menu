@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_biodomes_util.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_ammo_cache;
 #using scripts\cp\_dialog;
@@ -31,33 +35,12 @@
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace cp_mi_sing_biodomes_util;
 
-/*
-	Name: objective_message
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0xB1513FF6
-	Offset: 0x6D0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function objective_message(msg) {
-  /#
   println("" + msg);
-  # /
 }
 
-/*
-	Name: init_hendricks
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0x5245256D
-	Offset: 0x710
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function init_hendricks(str_objective) {
   level.ai_hendricks = util::get_hero("hendricks");
   level.ai_hendricks flag::init("hendricks_on_zipline");
@@ -65,15 +48,6 @@ function init_hendricks(str_objective) {
   skipto::teleport_ai(str_objective);
 }
 
-/*
-	Name: kill_previous_spawns
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0xF7CD0514
-	Offset: 0x7A0
-	Size: 0x13C
-	Parameters: 1
-	Flags: Linked
-*/
 function kill_previous_spawns(spawn_str) {
   if(!spawn_manager::is_killed(spawn_str) && spawn_manager::is_enabled(spawn_str)) {
     a_enemies = spawn_manager::get_ai(spawn_str);
@@ -89,36 +63,16 @@ function kill_previous_spawns(spawn_str) {
   }
 }
 
-/*
-	Name: group_triggers_enable
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0xC6B11AF8
-	Offset: 0x8E8
-	Size: 0x102
-	Parameters: 2
-	Flags: None
-*/
 function group_triggers_enable(str_group, b_enable) {
   a_triggers = getentarray(str_group, "script_noteworthy");
-  /#
   assert(isdefined(a_triggers), str_group + "");
-  # /
-    if(isdefined(a_triggers)) {
-      foreach(trigger in a_triggers) {
-        trigger triggerenable(b_enable);
-      }
+  if(isdefined(a_triggers)) {
+    foreach(trigger in a_triggers) {
+      trigger triggerenable(b_enable);
     }
+  }
 }
 
-/*
-	Name: enable_traversals
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0x1906A8A9
-	Offset: 0x9F8
-	Size: 0xCA
-	Parameters: 3
-	Flags: Linked
-*/
 function enable_traversals(b_enable, str_name, str_key) {
   a_nd_traversals = getnodearray(str_name, str_key);
   foreach(node in a_nd_traversals) {
@@ -126,30 +80,12 @@ function enable_traversals(b_enable, str_name, str_key) {
   }
 }
 
-/*
-	Name: vo_pick_random_line
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0x3355764B
-	Offset: 0xAD0
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function vo_pick_random_line(a_dialogue_lines) {
   return array::random(a_dialogue_lines);
 }
 
-/*
-	Name: player_interact_anim_generic
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0xCD8776DB
-	Offset: 0xB00
-	Size: 0x22C
-	Parameters: 1
-	Flags: Linked
-*/
 function player_interact_anim_generic(n_duration = 1) {
-  self endon(# "death");
+  self endon("death");
   weapon_current = self getcurrentweapon();
   weapon_fake_interact = getweapon("syrette");
   self giveweapon(weapon_fake_interact);
@@ -175,15 +111,6 @@ function player_interact_anim_generic(n_duration = 1) {
   }
 }
 
-/*
-	Name: function_f61c0df8
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0x71A266A1
-	Offset: 0xD38
-	Size: 0xEA
-	Parameters: 3
-	Flags: Linked
-*/
 function function_f61c0df8(var_e39815ad, n_time_min, n_time_max) {
   var_91efa0da = getnodearray(var_e39815ad, "targetname");
   foreach(node in var_91efa0da) {
@@ -191,15 +118,6 @@ function function_f61c0df8(var_e39815ad, n_time_min, n_time_max) {
   }
 }
 
-/*
-	Name: aigroup_retreat
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0xEF2AAB5A
-	Offset: 0xE30
-	Size: 0x94
-	Parameters: 4
-	Flags: Linked
-*/
 function aigroup_retreat(str_aigroup, str_volume, n_delay_min = 0, n_delay_max = 0) {
   a_enemies = spawner::get_ai_group_ai(str_aigroup);
   if(isdefined(a_enemies)) {
@@ -207,41 +125,21 @@ function aigroup_retreat(str_aigroup, str_volume, n_delay_min = 0, n_delay_max =
   }
 }
 
-/*
-	Name: set_group_goal_volume
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0x99BE592E
-	Offset: 0xED0
-	Size: 0x172
-	Parameters: 3
-	Flags: Linked
-*/
 function set_group_goal_volume(str_volume, n_delay_min = 0, n_delay_max = 0) {
   volume = getent(str_volume, "targetname");
-  /#
   assert(isdefined(volume), ("" + str_volume) + "");
-  # /
-    if(isdefined(volume)) {
-      foreach(ai in self) {
-        if(isalive(ai)) {
-          ai setgoal(volume, 1);
-        }
-        if(n_delay_max > n_delay_min) {
-          wait(randomfloatrange(n_delay_min, n_delay_max));
-        }
+  if(isdefined(volume)) {
+    foreach(ai in self) {
+      if(isalive(ai)) {
+        ai setgoal(volume, 1);
+      }
+      if(n_delay_max > n_delay_min) {
+        wait(randomfloatrange(n_delay_min, n_delay_max));
       }
     }
+  }
 }
 
-/*
-	Name: function_753a859
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0x43E12498
-	Offset: 0x1050
-	Size: 0x49E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_753a859(str_objective) {
   switch (str_objective) {
     case "objective_igc": {
@@ -321,15 +219,6 @@ function function_753a859(str_objective) {
   }
 }
 
-/*
-	Name: function_d28654c9
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0xD3E8B52C
-	Offset: 0x14F8
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d28654c9() {
   if(sessionmodeiscampaignzombiesgame()) {
     return;
@@ -344,15 +233,6 @@ function function_d28654c9() {
   }
 }
 
-/*
-	Name: function_cc20e187
-	Namespace: cp_mi_sing_biodomes_util
-	Checksum: 0x447E3411
-	Offset: 0x15F8
-	Size: 0x144
-	Parameters: 2
-	Flags: Linked
-*/
 function function_cc20e187(str_area, var_da49671a = 0) {
   if(sessionmodeiscampaignzombiesgame()) {
     return;

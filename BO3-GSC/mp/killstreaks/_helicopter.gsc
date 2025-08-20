@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_helicopter.gsc
+*************************************************/
+
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -24,20 +28,9 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_heatseekingmissile;
 #using scripts\shared\weapons\_weaponobjects;
-
 #using_animtree("mp_vehicles");
-
 #namespace helicopter;
 
-/*
-	Name: precachehelicopter
-	Namespace: helicopter
-	Checksum: 0x7234CA08
-	Offset: 0x1448
-	Size: 0x102
-	Parameters: 2
-	Flags: Linked
-*/
 function precachehelicopter(model, type = "blackhawk") {
   level.vehicle_deathmodel[model] = model;
   level.heli_sound["hit"] = "evt_helicopter_hit";
@@ -49,24 +42,13 @@ function precachehelicopter(model, type = "blackhawk") {
   level.heli_sound["missilefire"] = "wpn_hellfire_fire_npc";
 }
 
-/*
-	Name: usekillstreakhelicopter
-	Namespace: helicopter
-	Checksum: 0xE81FD668
-	Offset: 0x1558
-	Size: 0x338
-	Parameters: 1
-	Flags: Linked
-*/
 function usekillstreakhelicopter(hardpointtype) {
   if(self killstreakrules::iskillstreakallowed(hardpointtype, self.team) == 0) {
     return false;
   }
   if(!isdefined(level.heli_paths) || !level.heli_paths.size) {
-    /#
     iprintlnbold("");
-    # /
-      return false;
+    return false;
   }
   if(hardpointtype == "helicopter_comlink" || hardpointtype == "inventory_helicopter_comlink") {
     result = self selecthelicopterlocation(hardpointtype);
@@ -79,10 +61,8 @@ function usekillstreakhelicopter(hardpointtype) {
   if(hardpointtype == "helicopter_x2") {
     missilesenabled = 1;
   }
-  /#
   assert(level.heli_paths.size > 0, "");
-  # /
-    random_path = randomint(level.heli_paths[destination].size);
+  random_path = randomint(level.heli_paths[destination].size);
   startnode = level.heli_paths[destination][random_path];
   protectlocation = undefined;
   armored = 0;
@@ -104,29 +84,11 @@ function usekillstreakhelicopter(hardpointtype) {
   return true;
 }
 
-/*
-	Name: announcehelicopterinbound
-	Namespace: helicopter
-	Checksum: 0xBF4A7E37
-	Offset: 0x1898
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function announcehelicopterinbound(hardpointtype) {
   team = self.team;
   self addweaponstat(killstreaks::get_killstreak_weapon(hardpointtype), "used", 1);
 }
 
-/*
-	Name: heli_path_graph
-	Namespace: helicopter
-	Checksum: 0x826BD8C9
-	Offset: 0x18F8
-	Size: 0x754
-	Parameters: 0
-	Flags: Linked
-*/
 function heli_path_graph() {
   path_start = getentarray("heli_start", "targetname");
   path_dest = getentarray("heli_dest", "targetname");
@@ -134,100 +96,77 @@ function heli_path_graph() {
   gunner_loop_start = getentarray("heli_gunner_loop_start", "targetname");
   leave_nodes = getentarray("heli_leave", "targetname");
   crash_start = getentarray("heli_crash_start", "targetname");
-  /#
   assert(isdefined(path_start) && isdefined(path_dest), "");
-  # /
-    for (i = 0; i < path_dest.size; i++) {
-      startnode_array = [];
-      isprimarydest = 0;
-      destnode_pointer = path_dest[i];
-      destnode = getent(destnode_pointer.target, "targetname");
-      for (j = 0; j < path_start.size; j++) {
-        todest = 0;
-        currentnode = path_start[j];
-        while (isdefined(currentnode.target)) {
-          nextnode = getent(currentnode.target, "targetname");
-          if(nextnode.origin == destnode.origin) {
-            todest = 1;
-            break;
-          }
-          airsupport::debug_print3d_simple("+", currentnode, vectorscale((0, 0, -1), 10));
-          if(isdefined(nextnode.target)) {
-            airsupport::debug_line(nextnode.origin, getent(nextnode.target, "targetname").origin, (0.25, 0.5, 0.25), 5);
-          }
-          if(isdefined(currentnode.script_delay)) {
-            airsupport::debug_print3d_simple("Wait: " + currentnode.script_delay, currentnode, vectorscale((0, 0, 1), 10));
-          }
-          currentnode = nextnode;
+  for (i = 0; i < path_dest.size; i++) {
+    startnode_array = [];
+    isprimarydest = 0;
+    destnode_pointer = path_dest[i];
+    destnode = getent(destnode_pointer.target, "targetname");
+    for (j = 0; j < path_start.size; j++) {
+      todest = 0;
+      currentnode = path_start[j];
+      while (isdefined(currentnode.target)) {
+        nextnode = getent(currentnode.target, "targetname");
+        if(nextnode.origin == destnode.origin) {
+          todest = 1;
+          break;
         }
-        if(todest) {
-          startnode_array[startnode_array.size] = getent(path_start[j].target, "targetname");
-          if(isdefined(path_start[j].script_noteworthy) && path_start[j].script_noteworthy == "primary") {
-            isprimarydest = 1;
-          }
+        airsupport::debug_print3d_simple("+", currentnode, vectorscale((0, 0, -1), 10));
+        if(isdefined(nextnode.target)) {
+          airsupport::debug_line(nextnode.origin, getent(nextnode.target, "targetname").origin, (0.25, 0.5, 0.25), 5);
+        }
+        if(isdefined(currentnode.script_delay)) {
+          airsupport::debug_print3d_simple("Wait: " + currentnode.script_delay, currentnode, vectorscale((0, 0, 1), 10));
+        }
+        currentnode = nextnode;
+      }
+      if(todest) {
+        startnode_array[startnode_array.size] = getent(path_start[j].target, "targetname");
+        if(isdefined(path_start[j].script_noteworthy) && path_start[j].script_noteworthy == "primary") {
+          isprimarydest = 1;
         }
       }
-      /#
-      assert(isdefined(startnode_array) && startnode_array.size > 0, "");
-      # /
-        if(isprimarydest) {
-          level.heli_primary_path = startnode_array;
-          continue;
-        }
-      level.heli_paths[level.heli_paths.size] = startnode_array;
     }
+    assert(isdefined(startnode_array) && startnode_array.size > 0, "");
+    if(isprimarydest) {
+      level.heli_primary_path = startnode_array;
+      continue;
+    }
+    level.heli_paths[level.heli_paths.size] = startnode_array;
+  }
   for (i = 0; i < loop_start.size; i++) {
     startnode = getent(loop_start[i].target, "targetname");
     level.heli_loop_paths[level.heli_loop_paths.size] = startnode;
   }
-  /#
   assert(isdefined(level.heli_loop_paths[0]), "");
-  # /
-    for (i = 0; i < gunner_loop_start.size; i++) {
-      startnode = getent(gunner_loop_start[i].target, "targetname");
-      startnode.isgunnerpath = 1;
-      level.heli_loop_paths[level.heli_loop_paths.size] = startnode;
-    }
+  for (i = 0; i < gunner_loop_start.size; i++) {
+    startnode = getent(gunner_loop_start[i].target, "targetname");
+    startnode.isgunnerpath = 1;
+    level.heli_loop_paths[level.heli_loop_paths.size] = startnode;
+  }
   for (i = 0; i < path_start.size; i++) {
     if(isdefined(path_start[i].script_noteworthy) && path_start[i].script_noteworthy == "primary") {
       continue;
     }
     level.heli_startnodes[level.heli_startnodes.size] = path_start[i];
   }
-  /#
   assert(isdefined(level.heli_startnodes[0]), "");
-  # /
-    for (i = 0; i < leave_nodes.size; i++) {
-      level.heli_leavenodes[level.heli_leavenodes.size] = leave_nodes[i];
-    }
-  /#
+  for (i = 0; i < leave_nodes.size; i++) {
+    level.heli_leavenodes[level.heli_leavenodes.size] = leave_nodes[i];
+  }
   assert(isdefined(level.heli_leavenodes[0]), "");
-  # /
-    for (i = 0; i < crash_start.size; i++) {
-      crash_start_node = getent(crash_start[i].target, "targetname");
-      level.heli_crash_paths[level.heli_crash_paths.size] = crash_start_node;
-    }
-  /#
+  for (i = 0; i < crash_start.size; i++) {
+    crash_start_node = getent(crash_start[i].target, "targetname");
+    level.heli_crash_paths[level.heli_crash_paths.size] = crash_start_node;
+  }
   assert(isdefined(level.heli_crash_paths[0]), "");
-  # /
 }
 
-/*
-	Name: init
-	Namespace: helicopter
-	Checksum: 0xACCDB620
-	Offset: 0x2058
-	Size: 0x66C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   path_start = getentarray("heli_start", "targetname");
   loop_start = getentarray("heli_loop_start", "targetname");
-  /#
   debug_refresh = 1;
-  # /
-    thread heli_update_global_dvars(debug_refresh);
+  thread heli_update_global_dvars(debug_refresh);
   level.chaff_offset["attack"] = (-130, 0, -140);
   level.choppercomlinkfriendly = "veh_t7_drone_hunter";
   level.choppercomlinkenemy = "veh_t7_drone_hunter";
@@ -275,15 +214,6 @@ function init() {
   heli_path_graph();
 }
 
-/*
-	Name: heli_update_global_dvars
-	Namespace: helicopter
-	Checksum: 0xDC61D0CF
-	Offset: 0x26D0
-	Size: 0x55C
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_update_global_dvars(debug_refresh) {
   do {
     level.heli_loopmax = heli_get_dvar_int("scr_heli_loopmax", "2");
@@ -324,28 +254,10 @@ function heli_update_global_dvars(debug_refresh) {
   while (isdefined(debug_refresh));
 }
 
-/*
-	Name: heli_get_dvar_int
-	Namespace: helicopter
-	Checksum: 0x42A4E8BB
-	Offset: 0x2C38
-	Size: 0x42
-	Parameters: 2
-	Flags: Linked
-*/
 function heli_get_dvar_int(dvar, def) {
   return int(heli_get_dvar(dvar, def));
 }
 
-/*
-	Name: heli_get_dvar
-	Namespace: helicopter
-	Checksum: 0x92617F88
-	Offset: 0x2C88
-	Size: 0x82
-	Parameters: 2
-	Flags: Linked
-*/
 function heli_get_dvar(dvar, def) {
   if(getdvarstring(dvar) != "") {
     return getdvarfloat(dvar);
@@ -354,29 +266,11 @@ function heli_get_dvar(dvar, def) {
   return float(def);
 }
 
-/*
-	Name: set_goal_pos
-	Namespace: helicopter
-	Checksum: 0x620A50A6
-	Offset: 0x2D18
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function set_goal_pos(goalpos, stop) {
   self.heligoalpos = goalpos;
   self setvehgoalpos(goalpos, stop);
 }
 
-/*
-	Name: spawn_helicopter
-	Namespace: helicopter
-	Checksum: 0xFC201790
-	Offset: 0x2D60
-	Size: 0x268
-	Parameters: 8
-	Flags: Linked
-*/
 function spawn_helicopter(owner, origin, angles, model, targetname, target_offset, hardpointtype, killstreak_id) {
   chopper = spawnhelicopter(owner, origin, angles, model, targetname);
   chopper.owner = owner;
@@ -407,15 +301,6 @@ function spawn_helicopter(owner, origin, angles, model, targetname, target_offse
   return chopper;
 }
 
-/*
-	Name: onflakdronedestroyed
-	Namespace: helicopter
-	Checksum: 0xCEADA76F
-	Offset: 0x2FD0
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function onflakdronedestroyed() {
   chopper = self;
   if(!isdefined(chopper)) {
@@ -426,33 +311,15 @@ function onflakdronedestroyed() {
   chopper thread heatseekingmissile::missiletarget_proximitydetonateincomingmissile("crashing", "death");
 }
 
-/*
-	Name: explodeoncontact
-	Namespace: helicopter
-	Checksum: 0x395789B1
-	Offset: 0x3068
-	Size: 0x40
-	Parameters: 1
-	Flags: Linked
-*/
 function explodeoncontact(hardpointtype) {
-  self endon(# "death");
+  self endon("death");
   wait(10);
   for (;;) {
-    self waittill(# "touch");
+    self waittill("touch");
     self thread heli_explode();
   }
 }
 
-/*
-	Name: getvalidprotectlocationstart
-	Namespace: helicopter
-	Checksum: 0x22D7F822
-	Offset: 0x30B0
-	Size: 0x18A
-	Parameters: 3
-	Flags: Linked
-*/
 function getvalidprotectlocationstart(random_path, protectlocation, destination) {
   startnode = level.heli_paths[destination][random_path];
   path_index = (random_path + 1) % level.heli_paths[destination].size;
@@ -470,15 +337,6 @@ function getvalidprotectlocationstart(random_path, protectlocation, destination)
   return level.heli_paths[destination][path_index];
 }
 
-/*
-	Name: getvalidrandomleavenode
-	Namespace: helicopter
-	Checksum: 0x3094FF64
-	Offset: 0x3248
-	Size: 0x218
-	Parameters: 1
-	Flags: Linked
-*/
 function getvalidrandomleavenode(start) {
   if(self === level.vtol) {
     foreach(node in level.heli_leavenodes) {
@@ -501,15 +359,6 @@ function getvalidrandomleavenode(start) {
   return level.heli_leavenodes[path_index];
 }
 
-/*
-	Name: getvalidrandomstartnode
-	Namespace: helicopter
-	Checksum: 0x4A59A6ED
-	Offset: 0x3468
-	Size: 0x130
-	Parameters: 1
-	Flags: Linked
-*/
 function getvalidrandomstartnode(dest) {
   path_index = randomint(level.heli_startnodes.size);
   best_index = path_index;
@@ -529,15 +378,6 @@ function getvalidrandomstartnode(dest) {
   return level.heli_startnodes[best_index];
 }
 
-/*
-	Name: getvalidrandomcrashnode
-	Namespace: helicopter
-	Checksum: 0xE46217F6
-	Offset: 0x35A0
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function getvalidrandomcrashnode(start) {
   random_leave_node = randomint(level.heli_crash_paths.size);
   leavenode = level.heli_crash_paths[random_leave_node];
@@ -551,29 +391,11 @@ function getvalidrandomcrashnode(start) {
   return level.heli_crash_paths[path_index];
 }
 
-/*
-	Name: configureteampost
-	Namespace: helicopter
-	Checksum: 0x18420C22
-	Offset: 0x36C8
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function configureteampost(owner, ishacked) {
   chopper = self;
   owner thread watchforearlyleave(chopper);
 }
 
-/*
-	Name: hackedcallbackpost
-	Namespace: helicopter
-	Checksum: 0x2174FA3F
-	Offset: 0x3710
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedcallbackpost(hacker) {
   heli = self;
   if(isdefined(heli.flak_drone)) {
@@ -583,15 +405,6 @@ function hackedcallbackpost(hacker) {
   heli.killstreakendtime = int(heli.endtime);
 }
 
-/*
-	Name: heli_think
-	Namespace: helicopter
-	Checksum: 0x95B6BFEF
-	Offset: 0x37C0
-	Size: 0x6DC
-	Parameters: 8
-	Flags: Linked
-*/
 function heli_think(owner, startnode, heli_team, missilesenabled, protectlocation, hardpointtype, armored, killstreak_id) {
   heliorigin = startnode.origin;
   heliangles = startnode.angles;
@@ -673,67 +486,31 @@ function heli_think(owner, startnode, heli_team, missilesenabled, protectlocatio
   }
 }
 
-/*
-	Name: autostopsound
-	Namespace: helicopter
-	Checksum: 0xA5DF8658
-	Offset: 0x3EA8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function autostopsound() {
-  self endon(# "death");
-  level waittill(# "game_ended");
+  self endon("death");
+  level waittill("game_ended");
   self stoploopsound();
 }
 
-/*
-	Name: heli_existance
-	Namespace: helicopter
-	Checksum: 0xEF3F32C5
-	Offset: 0x3EE8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function heli_existance() {
-  self waittill(# "leaving");
+  self waittill("leaving");
   self spawning::remove_influencers();
 }
 
-/*
-	Name: create_flare_ent
-	Namespace: helicopter
-	Checksum: 0xECF9BA72
-	Offset: 0x3F18
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function create_flare_ent(offset) {
   self.flare_ent = spawn("script_model", self gettagorigin("tag_origin"));
   self.flare_ent setmodel("tag_origin");
   self.flare_ent linkto(self, "tag_origin", offset);
 }
 
-/*
-	Name: heli_missile_regen
-	Namespace: helicopter
-	Checksum: 0x45119E0E
-	Offset: 0x3FB8
-	Size: 0x110
-	Parameters: 0
-	Flags: Linked
-*/
 function heli_missile_regen() {
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "leaving");
+  self endon("death");
+  self endon("crashing");
+  self endon("leaving");
   for (;;) {
     airsupport::debug_print3d("Missile Ammo: " + self.missile_ammo, (0.5, 0.5, 1), self, vectorscale((0, 0, -1), 100), 0);
     if(self.missile_ammo >= level.heli_missile_max) {
-      self waittill(# "hash_b0c5ea03");
+      self waittill("hash_b0c5ea03");
     } else {
       if(self.currentstate == "heavy smoke") {
         wait(level.heli_missile_regen_time / 4);
@@ -751,19 +528,10 @@ function heli_missile_regen() {
   }
 }
 
-/*
-	Name: heli_targeting
-	Namespace: helicopter
-	Checksum: 0x63E1F0D5
-	Offset: 0x40D0
-	Size: 0x740
-	Parameters: 2
-	Flags: Linked
-*/
 function heli_targeting(missilesenabled, hardpointtype) {
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "leaving");
+  self endon("death");
+  self endon("crashing");
+  self endon("leaving");
   for (;;) {
     targets = [];
     targetsmissile = [];
@@ -830,7 +598,7 @@ function heli_targeting(missilesenabled, hardpointtype) {
         }
       }
       self.primarytarget = targets[0];
-      self notify(# "hash_907788c7");
+      self notify("hash_907788c7");
       self.secondarytarget = undefined;
       debug_print_target();
     } else if(targets.size > 1) {
@@ -843,7 +611,7 @@ function heli_targeting(missilesenabled, hardpointtype) {
         self killstreaks::update_missile_dog_threat(targetsmissile[0]);
       }
       self.secondarytarget = targetsmissile[0];
-      self notify(# "hash_519af70b");
+      self notify("hash_519af70b");
       debug_print_target();
     } else if(targetsmissile.size > 1) {
       assignsecondarytargets(targetsmissile);
@@ -853,15 +621,6 @@ function heli_targeting(missilesenabled, hardpointtype) {
   }
 }
 
-/*
-	Name: cantargetplayer_turret
-	Namespace: helicopter
-	Checksum: 0x3C2D61E4
-	Offset: 0x4818
-	Size: 0x240
-	Parameters: 2
-	Flags: Linked
-*/
 function cantargetplayer_turret(player, hardpointtype) {
   cantarget = 1;
   if(!isalive(player) || player.sessionstate != "playing") {
@@ -902,15 +661,6 @@ function cantargetplayer_turret(player, hardpointtype) {
   return cantarget;
 }
 
-/*
-	Name: cantargetactor_turret
-	Namespace: helicopter
-	Checksum: 0xA28F99DE
-	Offset: 0x4A60
-	Size: 0x190
-	Parameters: 2
-	Flags: Linked
-*/
 function cantargetactor_turret(actor, hardpointtype) {
   helicopter = self;
   cantarget = 1;
@@ -936,15 +686,6 @@ function cantargetactor_turret(actor, hardpointtype) {
   return cantarget;
 }
 
-/*
-	Name: getverticaltan
-	Namespace: helicopter
-	Checksum: 0xA14C30FB
-	Offset: 0x4BF8
-	Size: 0xE4
-	Parameters: 2
-	Flags: None
-*/
 function getverticaltan(startorigin, endorigin) {
   vector = endorigin - startorigin;
   opposite = startorigin[2] - endorigin[2];
@@ -962,15 +703,6 @@ function getverticaltan(startorigin, endorigin) {
   return tangent;
 }
 
-/*
-	Name: cantargetplayer_missile
-	Namespace: helicopter
-	Checksum: 0xB76D3800
-	Offset: 0x4CE8
-	Size: 0x2A6
-	Parameters: 2
-	Flags: Linked
-*/
 function cantargetplayer_missile(player, hardpointtype) {
   cantarget = 1;
   if(!isalive(player) || player.sessionstate != "playing") {
@@ -1017,15 +749,6 @@ function cantargetplayer_missile(player, hardpointtype) {
   return cantarget;
 }
 
-/*
-	Name: cantargetdog_turret
-	Namespace: helicopter
-	Checksum: 0x39A65B5B
-	Offset: 0x4F98
-	Size: 0x1B6
-	Parameters: 1
-	Flags: Linked
-*/
 function cantargetdog_turret(dog) {
   cantarget = 1;
   if(!isdefined(dog)) {
@@ -1056,15 +779,6 @@ function cantargetdog_turret(dog) {
   return cantarget;
 }
 
-/*
-	Name: cantargetdog_missile
-	Namespace: helicopter
-	Checksum: 0xDC655CAF
-	Offset: 0x5158
-	Size: 0x1B6
-	Parameters: 1
-	Flags: Linked
-*/
 function cantargetdog_missile(dog) {
   cantarget = 1;
   if(!isdefined(dog)) {
@@ -1095,15 +809,6 @@ function cantargetdog_missile(dog) {
   return cantarget;
 }
 
-/*
-	Name: cantargettank_turret
-	Namespace: helicopter
-	Checksum: 0x360AE6BC
-	Offset: 0x5318
-	Size: 0xF0
-	Parameters: 1
-	Flags: Linked
-*/
 function cantargettank_turret(tank) {
   cantarget = 1;
   if(!isdefined(tank)) {
@@ -1127,15 +832,6 @@ function cantargettank_turret(tank) {
   return cantarget;
 }
 
-/*
-	Name: assignprimarytargets
-	Namespace: helicopter
-	Checksum: 0x2505DC01
-	Offset: 0x5410
-	Size: 0x256
-	Parameters: 1
-	Flags: Linked
-*/
 function assignprimarytargets(targets) {
   for (idx = 0; idx < targets.size; idx++) {
     if(isdefined(targets[idx].isaiclone)) {
@@ -1152,37 +848,22 @@ function assignprimarytargets(targets) {
     }
     killstreaks::update_non_player_threat(targets[idx]);
   }
-  /#
   assert(targets.size >= 2, "");
-  # /
-    highest = 0;
+  highest = 0;
   second_highest = 0;
   primarytarget = undefined;
   for (idx = 0; idx < targets.size; idx++) {
-    /#
     assert(isdefined(targets[idx].threatlevel), "");
-    # /
-      if(targets[idx].threatlevel >= highest) {
-        highest = targets[idx].threatlevel;
-        primarytarget = targets[idx];
-      }
+    if(targets[idx].threatlevel >= highest) {
+      highest = targets[idx].threatlevel;
+      primarytarget = targets[idx];
+    }
   }
-  /#
   assert(isdefined(primarytarget), "");
-  # /
-    self.primarytarget = primarytarget;
-  self notify(# "hash_907788c7");
+  self.primarytarget = primarytarget;
+  self notify("hash_907788c7");
 }
 
-/*
-	Name: assignsecondarytargets
-	Namespace: helicopter
-	Checksum: 0x214564FA
-	Offset: 0x5670
-	Size: 0x22E
-	Parameters: 1
-	Flags: Linked
-*/
 function assignsecondarytargets(targets) {
   for (idx = 0; idx < targets.size; idx++) {
     if(!isdefined(targets[idx].type) || targets[idx].type != "dog") {
@@ -1193,38 +874,23 @@ function assignsecondarytargets(targets) {
       killstreaks::update_missile_dog_threat(targets[idx]);
     }
   }
-  /#
   assert(targets.size >= 2, "");
-  # /
-    highest = 0;
+  highest = 0;
   second_highest = 0;
   primarytarget = undefined;
   secondarytarget = undefined;
   for (idx = 0; idx < targets.size; idx++) {
-    /#
     assert(isdefined(targets[idx].missilethreatlevel), "");
-    # /
-      if(targets[idx].missilethreatlevel >= highest) {
-        highest = targets[idx].missilethreatlevel;
-        secondarytarget = targets[idx];
-      }
+    if(targets[idx].missilethreatlevel >= highest) {
+      highest = targets[idx].missilethreatlevel;
+      secondarytarget = targets[idx];
+    }
   }
-  /#
   assert(isdefined(secondarytarget), "");
-  # /
-    self.secondarytarget = secondarytarget;
-  self notify(# "hash_519af70b");
+  self.secondarytarget = secondarytarget;
+  self notify("hash_519af70b");
 }
 
-/*
-	Name: heli_reset
-	Namespace: helicopter
-	Checksum: 0x9289C20B
-	Offset: 0x58A8
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function heli_reset() {
   self cleartargetyaw();
   self cleargoalyaw();
@@ -1235,60 +901,33 @@ function heli_reset() {
   self setturningability(0.9);
 }
 
-/*
-	Name: heli_wait
-	Namespace: helicopter
-	Checksum: 0xA63952D6
-	Offset: 0x5980
-	Size: 0x6A
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_wait(waittime) {
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "evasive");
+  self endon("death");
+  self endon("crashing");
+  self endon("evasive");
   self thread heli_hover();
   wait(waittime);
   heli_reset();
-  self notify(# "hash_38f853e7");
+  self notify("hash_38f853e7");
 }
 
-/*
-	Name: heli_hover
-	Namespace: helicopter
-	Checksum: 0xC0C1A218
-	Offset: 0x59F8
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function heli_hover() {
-  self endon(# "death");
-  self endon(# "hash_38f853e7");
-  self endon(# "evasive");
-  self endon(# "leaving");
-  self endon(# "crashing");
+  self endon("death");
+  self endon("hash_38f853e7");
+  self endon("evasive");
+  self endon("leaving");
+  self endon("crashing");
   randint = randomint(360);
   self setgoalyaw(self.angles[1] + randint);
 }
 
-/*
-	Name: wait_for_killed
-	Namespace: helicopter
-	Checksum: 0x7C914A5D
-	Offset: 0x5A90
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_for_killed() {
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "leaving");
+  self endon("death");
+  self endon("crashing");
+  self endon("leaving");
   self.bda = 0;
   while (true) {
-    self waittill(# "killed", victim);
+    self waittill("killed", victim);
     if(!isdefined(self.owner) || !isdefined(victim)) {
       continue;
     }
@@ -1302,17 +941,8 @@ function wait_for_killed() {
   }
 }
 
-/*
-	Name: wait_for_bda_timeout
-	Namespace: helicopter
-	Checksum: 0x1F02D7E8
-	Offset: 0x5B68
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_for_bda_timeout() {
-  self endon(# "killed");
+  self endon("killed");
   wait(2.5);
   if(!isdefined(self)) {
     return;
@@ -1320,15 +950,6 @@ function wait_for_bda_timeout() {
   self play_bda_dialog();
 }
 
-/*
-	Name: play_bda_dialog
-	Namespace: helicopter
-	Checksum: 0xF425599E
-	Offset: 0x5BA8
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function play_bda_dialog() {
   if(self.bda == 1) {
     bdadialog = "kill1";
@@ -1344,43 +965,23 @@ function play_bda_dialog() {
     }
   }
   self killstreaks::play_pilot_dialog_on_owner(bdadialog, self.killstreaktype, self.killstreak_id);
-  self notify(# "bda_dialog", bdadialog);
+  self notify("bda_dialog", bdadialog);
   self.bda = 0;
 }
 
-/*
-	Name: heli_hacked_health_update
-	Namespace: helicopter
-	Checksum: 0xECE16515
-	Offset: 0x5C80
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_hacked_health_update(hacker) {
   helicopter = self;
   hackeddamagetaken = helicopter.maxhealth - helicopter.hackedhealth;
-  /#
   assert(hackeddamagetaken > 0);
-  # /
-    if(hackeddamagetaken > helicopter.damagetaken) {
-      helicopter.damagetaken = hackeddamagetaken;
-    }
+  if(hackeddamagetaken > helicopter.damagetaken) {
+    helicopter.damagetaken = hackeddamagetaken;
+  }
 }
 
-/*
-	Name: heli_damage_monitor
-	Namespace: helicopter
-	Checksum: 0xA78CA9A8
-	Offset: 0x5D18
-	Size: 0xBE8
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_damage_monitor(hardpointtype) {
   helicopter = self;
-  self endon(# "death");
-  self endon(# "crashing");
+  self endon("death");
+  self endon("crashing");
   self.damagetaken = 0;
   last_hit_vo = 0;
   hit_vo_spacing = 6000;
@@ -1397,7 +998,7 @@ function heli_damage_monitor(hardpointtype) {
     self.flareattackerdamage = [];
   }
   for (;;) {
-    self waittill(# "damage", damage, attacker, direction, point, type, modelname, tagname, partname, weapon, flags, inflictor, chargelevel);
+    self waittill("damage", damage, attacker, direction, point, type, modelname, tagname, partname, weapon, flags, inflictor, chargelevel);
     if(!isdefined(attacker) || !isplayer(attacker)) {
       continue;
     }
@@ -1565,7 +1166,7 @@ function heli_damage_monitor(hardpointtype) {
         self.owner sendkillstreakdamageevent(600);
       }
       if(isdefined(notifystring)) {
-        luinotifyevent( & "player_callout", 2, notifystring, attacker.entnum);
+        luinotifyevent(&"player_callout", 2, notifystring, attacker.entnum);
       }
       if(isdefined(self.attackers)) {
         for (j = 0; j < self.attackers.size; j++) {
@@ -1586,7 +1187,7 @@ function heli_damage_monitor(hardpointtype) {
         }
         self.attackers = [];
       }
-      attacker notify(# "destroyed_helicopter");
+      attacker notify("destroyed_helicopter");
       if(target_istarget(self)) {
         target_remove(self);
       }
@@ -1603,15 +1204,6 @@ function heli_damage_monitor(hardpointtype) {
   }
 }
 
-/*
-	Name: init_active_camo
-	Namespace: helicopter
-	Checksum: 0xCA90174F
-	Offset: 0x6908
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_active_camo() {
   heli = self;
   heli.active_camo_supported = 1;
@@ -1624,15 +1216,6 @@ function init_active_camo() {
   }
 }
 
-/*
-	Name: heli_set_active_camo_state
-	Namespace: helicopter
-	Checksum: 0x64170790
-	Offset: 0x69B8
-	Size: 0x274
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_set_active_camo_state(state) {
   heli = self;
   if(!isdefined(heli.active_camo_supported)) {
@@ -1674,18 +1257,9 @@ function heli_set_active_camo_state(state) {
   heli clientfield::set("active_camo", state);
 }
 
-/*
-	Name: heli_active_camo_damage_update
-	Namespace: helicopter
-	Checksum: 0x914B74FF
-	Offset: 0x6C38
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_active_camo_damage_update(damage) {
-  self endon(# "death");
-  self endon(# "crashing");
+  self endon("death");
+  self endon("crashing");
   heli = self;
   heli.active_camo_damage = heli.active_camo_damage + damage;
   if(heli.active_camo_damage > 100) {
@@ -1698,21 +1272,12 @@ function heli_active_camo_damage_update(damage) {
   }
 }
 
-/*
-	Name: heli_active_camo_damage_disable
-	Namespace: helicopter
-	Checksum: 0x97EA038C
-	Offset: 0x6D18
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function heli_active_camo_damage_disable() {
-  self endon(# "death");
-  self endon(# "crashing");
+  self endon("death");
+  self endon("crashing");
   heli = self;
-  heli notify(# "heli_active_camo_damage_disable");
-  heli endon(# "heli_active_camo_damage_disable");
+  heli notify("heli_active_camo_damage_disable");
+  heli endon("heli_active_camo_damage_disable");
   heli heli_set_active_camo_state(0);
   wait(10);
   heli.active_camo_damage = 0;
@@ -1720,18 +1285,9 @@ function heli_active_camo_damage_disable() {
   heli heli_set_active_camo_state(1);
 }
 
-/*
-	Name: heli_health
-	Namespace: helicopter
-	Checksum: 0x1DCA9C4
-	Offset: 0x6DC0
-	Size: 0x458
-	Parameters: 2
-	Flags: Linked
-*/
 function heli_health(hardpointtype, playernotify) {
-  self endon(# "death");
-  self endon(# "crashing");
+  self endon("death");
+  self endon("crashing");
   self.currentstate = "ok";
   self.laststate = "ok";
   self setdamagestage(3);
@@ -1741,7 +1297,7 @@ function heli_health(hardpointtype, playernotify) {
     self.maxhealth = tablehealth;
   }
   for (;;) {
-    self waittill(# "damage", damage, attacker, direction, point, type, modelname, tagname, partname, weapon);
+    self waittill("damage", damage, attacker, direction, point, type, modelname, tagname, partname, weapon);
     wait(0.05);
     if(self.damagetaken > self.maxhealth) {
       damagestate = 0;
@@ -1759,7 +1315,7 @@ function heli_health(hardpointtype, playernotify) {
         damagestate = 1;
         self.currentstate = "heavy smoke";
         self.evasive = 1;
-        self notify(# "hash_2b25e23d");
+        self notify("hash_2b25e23d");
       } else if(self.damagetaken >= (self.maxhealth * 0.33) && damagestate == 3) {
         if(isdefined(self.vehicletype) && self.vehicletype == "heli_player_gunner_mp") {
           playfxontag(level.chopper_fx["damage"]["light_smoke"], self, "tag_origin");
@@ -1768,7 +1324,7 @@ function heli_health(hardpointtype, playernotify) {
         }
         damagestate = 2;
         self.currentstate = "light smoke";
-        self notify(# "hash_2b25e23d");
+        self notify("hash_2b25e23d");
       }
     }
     if(self.damagetaken <= level.heli_armor) {
@@ -1779,17 +1335,8 @@ function heli_health(hardpointtype, playernotify) {
   }
 }
 
-/*
-	Name: heli_evasive
-	Namespace: helicopter
-	Checksum: 0xC809114D
-	Offset: 0x7220
-	Size: 0x164
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_evasive(hardpointtype) {
-  self notify(# "evasive");
+  self notify("evasive");
   self.evasive = 1;
   loop_startnode = level.heli_loop_paths[0];
   gunnerpathfound = 1;
@@ -1803,25 +1350,14 @@ function heli_evasive(hardpointtype) {
       }
     }
   }
-  /#
   assert(gunnerpathfound, "");
-  # /
-    startwait = 2;
+  startwait = 2;
   if(isdefined(self.donotstop) && self.donotstop) {
     startwait = 0;
   }
   self thread heli_fly(loop_startnode, startwait, hardpointtype);
 }
 
-/*
-	Name: notify_player
-	Namespace: helicopter
-	Checksum: 0x83970B31
-	Offset: 0x7390
-	Size: 0x5C
-	Parameters: 3
-	Flags: Linked
-*/
 function notify_player(player, playernotify, delay) {
   if(!isdefined(player)) {
     return;
@@ -1829,39 +1365,21 @@ function notify_player(player, playernotify, delay) {
   if(!isdefined(playernotify)) {
     return;
   }
-  player endon(# "disconnect");
+  player endon("disconnect");
   player endon(playernotify);
   wait(delay);
   player notify(playernotify);
 }
 
-/*
-	Name: play_going_down_vo
-	Namespace: helicopter
-	Checksum: 0xA9C1E7E1
-	Offset: 0x73F8
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function play_going_down_vo(delay) {
-  self.owner endon(# "disconnect");
-  self endon(# "death");
+  self.owner endon("disconnect");
+  self endon("death");
   wait(delay);
 }
 
-/*
-	Name: heli_crash
-	Namespace: helicopter
-	Checksum: 0x796DEC9E
-	Offset: 0x7430
-	Size: 0x4AC
-	Parameters: 3
-	Flags: Linked
-*/
 function heli_crash(hardpointtype, player, playernotify) {
-  self endon(# "death");
-  self notify(# "crashing");
+  self endon("death");
+  self notify("crashing");
   self spawning::remove_influencers();
   self stoploopsound(0);
   if(isdefined(self.minigun_snd_ent)) {
@@ -1877,7 +1395,6 @@ function heli_crash(hardpointtype, player, playernotify) {
   if(isdefined(self.crashtype)) {
     crashtype = self.crashtype;
   }
-  /#
   if(level.heli_debug_crash) {
     switch (level.heli_debug_crash) {
       case 1: {
@@ -1895,88 +1412,60 @@ function heli_crash(hardpointtype, player, playernotify) {
       default: {}
     }
   }
-  # /
-    switch (crashtype) {
-      case "explode": {
-        thread notify_player(player, playernotify, 0);
-        self thread heli_explode();
-        break;
-      }
-      case "crashOnPath": {
-        if(isdefined(player)) {
-          self thread play_going_down_vo(0.5);
-        }
-        thread notify_player(player, playernotify, 4);
-        self clear_client_flags();
-        self thread crashonnearestcrashpath(hardpointtype);
-        break;
-      }
-      case "spinOut": {
-        if(isdefined(player)) {
-          self thread play_going_down_vo(0.5);
-        }
-        thread notify_player(player, playernotify, 4);
-        self clear_client_flags();
-        heli_reset();
-        heli_speed = 30 + randomint(50);
-        heli_accel = 10 + randomint(25);
-        leavenode = getvalidrandomcrashnode(self.origin);
-        self setspeed(heli_speed, heli_accel);
-        self set_goal_pos(leavenode.origin, 0);
-        rateofspin = 45 + randomint(90);
-        thread heli_secondary_explosions();
-        self thread heli_spin(rateofspin);
-        self util::waittill_any_timeout(randomintrange(4, 6), "near_goal");
-        if(isdefined(player) && isdefined(playernotify)) {
-          player notify(playernotify);
-        }
-        self thread heli_explode();
-        break;
-      }
+  switch (crashtype) {
+    case "explode": {
+      thread notify_player(player, playernotify, 0);
+      self thread heli_explode();
+      break;
     }
+    case "crashOnPath": {
+      if(isdefined(player)) {
+        self thread play_going_down_vo(0.5);
+      }
+      thread notify_player(player, playernotify, 4);
+      self clear_client_flags();
+      self thread crashonnearestcrashpath(hardpointtype);
+      break;
+    }
+    case "spinOut": {
+      if(isdefined(player)) {
+        self thread play_going_down_vo(0.5);
+      }
+      thread notify_player(player, playernotify, 4);
+      self clear_client_flags();
+      heli_reset();
+      heli_speed = 30 + randomint(50);
+      heli_accel = 10 + randomint(25);
+      leavenode = getvalidrandomcrashnode(self.origin);
+      self setspeed(heli_speed, heli_accel);
+      self set_goal_pos(leavenode.origin, 0);
+      rateofspin = 45 + randomint(90);
+      thread heli_secondary_explosions();
+      self thread heli_spin(rateofspin);
+      self util::waittill_any_timeout(randomintrange(4, 6), "near_goal");
+      if(isdefined(player) && isdefined(playernotify)) {
+        player notify(playernotify);
+      }
+      self thread heli_explode();
+      break;
+    }
+  }
   self thread explodeoncontact(hardpointtype);
   time = randomintrange(4, 6);
   self thread waitthenexplode(time);
 }
 
-/*
-	Name: damagedrotorfx
-	Namespace: helicopter
-	Checksum: 0xED3430E2
-	Offset: 0x78E8
-	Size: 0x2C
-	Parameters: 0
-	Flags: None
-*/
 function damagedrotorfx() {
-  self endon(# "death");
+  self endon("death");
   self setrotorspeed(0.6);
 }
 
-/*
-	Name: waitthenexplode
-	Namespace: helicopter
-	Checksum: 0xEA8D9413
-	Offset: 0x7920
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function waitthenexplode(time) {
-  self endon(# "death");
+  self endon("death");
   wait(time);
   self thread heli_explode();
 }
 
-/*
-	Name: crashonnearestcrashpath
-	Namespace: helicopter
-	Checksum: 0x43127D8F
-	Offset: 0x7960
-	Size: 0x1E4
-	Parameters: 1
-	Flags: Linked
-*/
 function crashonnearestcrashpath(hardpointtype) {
   crashpathdistance = -1;
   crashpath = level.heli_crash_paths[0];
@@ -1994,20 +1483,11 @@ function crashonnearestcrashpath(hardpointtype) {
   self thread heli_fly(crashpath, 0, hardpointtype);
   rateofspin = 45 + randomint(90);
   self thread heli_spin(rateofspin);
-  self waittill(# "hash_df5908ac");
-  self waittill(# "hash_9b1f1e2d");
+  self waittill("hash_df5908ac");
+  self waittill("hash_9b1f1e2d");
   self thread heli_explode();
 }
 
-/*
-	Name: checkhelicoptertag
-	Namespace: helicopter
-	Checksum: 0x4C7E7C25
-	Offset: 0x7B50
-	Size: 0x7E
-	Parameters: 1
-	Flags: Linked
-*/
 function checkhelicoptertag(tagname) {
   if(isdefined(self.model)) {
     if(self.model == "veh_t7_drone_hunter") {
@@ -2030,17 +1510,8 @@ function checkhelicoptertag(tagname) {
   return tagname;
 }
 
-/*
-	Name: heli_secondary_explosions
-	Namespace: helicopter
-	Checksum: 0x863DD9F1
-	Offset: 0x7BD8
-	Size: 0x244
-	Parameters: 0
-	Flags: Linked
-*/
 function heli_secondary_explosions() {
-  self endon(# "death");
+  self endon("death");
   playfxontag(level.chopper_fx["explode"]["large"], self, self checkhelicoptertag("tag_engine_left"));
   self playsound(level.heli_sound["hit"]);
   if(isdefined(self.vehicletype) && self.vehicletype == "heli_player_gunner_mp") {
@@ -2058,17 +1529,8 @@ function heli_secondary_explosions() {
   self playsound(level.heli_sound["hitsecondary"]);
 }
 
-/*
-	Name: heli_spin
-	Namespace: helicopter
-	Checksum: 0x58AF75D3
-	Offset: 0x7E28
-	Size: 0x9E
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_spin(speed) {
-  self endon(# "death");
+  self endon("death");
   self thread spinsoundshortly();
   self setyawspeed(speed, speed / 3, speed / 3);
   while (isdefined(self)) {
@@ -2077,17 +1539,8 @@ function heli_spin(speed) {
   }
 }
 
-/*
-	Name: spinsoundshortly
-	Namespace: helicopter
-	Checksum: 0x86FEC863
-	Offset: 0x7ED0
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function spinsoundshortly() {
-  self endon(# "death");
+  self endon("death");
   wait(0.25);
   self stoploopsound();
   wait(0.05);
@@ -2096,28 +1549,10 @@ function spinsoundshortly() {
   self playsound(level.heli_sound["spinstart"]);
 }
 
-/*
-	Name: trail_fx
-	Namespace: helicopter
-	Checksum: 0xFF9A9CD0
-	Offset: 0x7F68
-	Size: 0x3C
-	Parameters: 3
-	Flags: Linked
-*/
 function trail_fx(trail_fx, trail_tag, stop_notify) {
   playfxontag(trail_fx, self, trail_tag);
 }
 
-/*
-	Name: destroyhelicopter
-	Namespace: helicopter
-	Checksum: 0x62218E3C
-	Offset: 0x7FB0
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function destroyhelicopter() {
   team = self.originalteam;
   if(target_istarget(self)) {
@@ -2145,17 +1580,8 @@ function destroyhelicopter() {
   self delete();
 }
 
-/*
-	Name: heli_explode
-	Namespace: helicopter
-	Checksum: 0x7F2F4A66
-	Offset: 0x8130
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function heli_explode() {
-  self endon(# "death");
+  self endon("death");
   forward = (self.origin + vectorscale((0, 0, 1), 100)) - self.origin;
   if(isdefined(self.helitype) && self.helitype == "littlebird") {
     playfx(level.chopper_fx["explode"]["guard"], self.origin, forward);
@@ -2168,39 +1594,19 @@ function heli_explode() {
   }
   self playsound(level.heli_sound["crash"]);
   wait(0.1);
-  /#
   assert(isdefined(self.destroyfunc));
-  # /
-    self[[self.destroyfunc]]();
+  self[[self.destroyfunc]]();
 }
 
-/*
-	Name: clear_client_flags
-	Namespace: helicopter
-	Checksum: 0xCE89C105
-	Offset: 0x82D8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function clear_client_flags() {
   self clientfield::set("heli_warn_fired", 0);
   self clientfield::set("heli_warn_targeted", 0);
   self clientfield::set("heli_warn_locked", 0);
 }
 
-/*
-	Name: heli_leave
-	Namespace: helicopter
-	Checksum: 0xEDD27A21
-	Offset: 0x8348
-	Size: 0x2BC
-	Parameters: 0
-	Flags: Linked
-*/
 function heli_leave() {
-  self notify(# "hash_df1f87c9");
-  self notify(# "leaving");
+  self notify("hash_df1f87c9");
+  self notify("leaving");
   hardpointtype = self.hardpointtype;
   self.leaving = 1;
   if(!(isdefined(self.detroyscoreeventgiven) && self.detroyscoreeventgiven)) {
@@ -2217,14 +1623,12 @@ function heli_leave() {
     return;
   }
   self setspeed(180, 65);
-  /#
   self util::debug_slow_heli_speed();
-  # /
-    self set_goal_pos((self.origin + ((leavenode.origin - self.origin) / 2)) + vectorscale((0, 0, 1), 1000), 0);
-  self waittill(# "near_goal");
+  self set_goal_pos((self.origin + ((leavenode.origin - self.origin) / 2)) + vectorscale((0, 0, 1), 1000), 0);
+  self waittill("near_goal");
   if(isdefined(self)) {
     self set_goal_pos(leavenode.origin, 1);
-    self waittillmatch(# "goal");
+    self waittillmatch("goal");
     if(isdefined(self)) {
       self stoploopsound(1);
       self util::death_notify_wrapper();
@@ -2233,39 +1637,26 @@ function heli_leave() {
         self.alarm_snd_ent delete();
         self.alarm_snd_ent = undefined;
       }
-      /#
       assert(isdefined(self.destroyfunc));
-      # /
-        self[[self.destroyfunc]]();
+      self[[self.destroyfunc]]();
     }
   }
 }
 
-/*
-	Name: heli_fly
-	Namespace: helicopter
-	Checksum: 0x12905098
-	Offset: 0x8610
-	Size: 0x51C
-	Parameters: 3
-	Flags: Linked
-*/
 function heli_fly(currentnode, startwait, hardpointtype) {
-  self endon(# "death");
-  self endon(# "leaving");
-  self notify(# "flying");
-  self endon(# "flying");
-  self endon(# "abandoned");
+  self endon("death");
+  self endon("leaving");
+  self notify("flying");
+  self endon("flying");
+  self endon("abandoned");
   self.reached_dest = 0;
   heli_reset();
   pos = self.origin;
   wait(startwait);
   while (isdefined(currentnode.target)) {
     nextnode = getent(currentnode.target, "targetname");
-    /#
     assert(isdefined(nextnode), "");
-    # /
-      pos = nextnode.origin + vectorscale((0, 0, 1), 30);
+    pos = nextnode.origin + vectorscale((0, 0, 1), 30);
     if(isdefined(currentnode.script_airspeed) && isdefined(currentnode.script_accel)) {
       heli_speed = currentnode.script_airspeed;
       heli_accel = currentnode.script_accel;
@@ -2286,8 +1677,8 @@ function heli_fly(currentnode, startwait, hardpointtype) {
     if(self.currentstate == "heavy smoke" || self.currentstate == "light smoke") {
       self setspeed(heli_speed, heli_accel);
       self set_goal_pos(pos, stop);
-      self waittill(# "near_goal");
-      self notify(# "hash_df5908ac");
+      self waittill("near_goal");
+      self notify("hash_df5908ac");
     } else {
       if(isdefined(nextnode.script_delay) && !isdefined(self.donotstop)) {
         stop = 1;
@@ -2295,11 +1686,11 @@ function heli_fly(currentnode, startwait, hardpointtype) {
       self setspeed(heli_speed, heli_accel);
       self set_goal_pos(pos, stop);
       if(!isdefined(nextnode.script_delay) || isdefined(self.donotstop)) {
-        self waittill(# "near_goal");
-        self notify(# "hash_df5908ac");
+        self waittill("near_goal");
+        self notify("hash_df5908ac");
       } else {
         self setgoalyaw(nextnode.angles[1]);
-        self waittillmatch(# "goal");
+        self waittillmatch("goal");
         heli_wait(nextnode.script_delay);
       }
     }
@@ -2316,7 +1707,7 @@ function heli_fly(currentnode, startwait, hardpointtype) {
   }
   self setgoalyaw(currentnode.angles[1]);
   self.reached_dest = 1;
-  self notify(# "hash_9b1f1e2d");
+  self notify("hash_9b1f1e2d");
   if(isdefined(self.waittime) && self.waittime > 0) {
     heli_wait(self.waittime);
   }
@@ -2325,15 +1716,6 @@ function heli_fly(currentnode, startwait, hardpointtype) {
   }
 }
 
-/*
-	Name: heli_random_point_in_radius
-	Namespace: helicopter
-	Checksum: 0x86853B7D
-	Offset: 0x8B38
-	Size: 0x11C
-	Parameters: 2
-	Flags: Linked
-*/
 function heli_random_point_in_radius(protectdest, nodeheight) {
   min_distance = int(level.heli_protect_radius * 0.2);
   direction = randomintrange(0, 360);
@@ -2345,15 +1727,6 @@ function heli_random_point_in_radius(protectdest, nodeheight) {
   return (protectdest[0] + x, protectdest[1] + y, nodeheight);
 }
 
-/*
-	Name: heli_get_protect_spot
-	Namespace: helicopter
-	Checksum: 0x174F8F69
-	Offset: 0x8C60
-	Size: 0x118
-	Parameters: 2
-	Flags: Linked
-*/
 function heli_get_protect_spot(protectdest, nodeheight) {
   protect_spot = heli_random_point_in_radius(protectdest, nodeheight);
   tries = 10;
@@ -2367,15 +1740,6 @@ function heli_get_protect_spot(protectdest, nodeheight) {
   return (protect_spot[0], protect_spot[1], noflyzoneheight);
 }
 
-/*
-	Name: wait_or_waittill
-	Namespace: helicopter
-	Checksum: 0xBE9FCF78
-	Offset: 0x8D80
-	Size: 0x46
-	Parameters: 4
-	Flags: Linked
-*/
 function wait_or_waittill(time, msg1, msg2, msg3) {
   self endon(msg1);
   self endon(msg2);
@@ -2384,15 +1748,6 @@ function wait_or_waittill(time, msg1, msg2, msg3) {
   return true;
 }
 
-/*
-	Name: set_heli_speed_normal
-	Namespace: helicopter
-	Checksum: 0xFBA72374
-	Offset: 0x8DD0
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function set_heli_speed_normal() {
   self setmaxpitchroll(30, 30);
   heli_speed = 30 + randomint(20);
@@ -2401,15 +1756,6 @@ function set_heli_speed_normal() {
   self setyawspeed(75, 45, 45);
 }
 
-/*
-	Name: set_heli_speed_evasive
-	Namespace: helicopter
-	Checksum: 0x5151E8F
-	Offset: 0x8E88
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function set_heli_speed_evasive() {
   self setmaxpitchroll(30, 90);
   heli_speed = 50 + randomint(20);
@@ -2418,30 +1764,12 @@ function set_heli_speed_evasive() {
   self setyawspeed(100, 75, 75);
 }
 
-/*
-	Name: set_heli_speed_hover
-	Namespace: helicopter
-	Checksum: 0x94F565C4
-	Offset: 0x8F40
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function set_heli_speed_hover() {
   self setmaxpitchroll(0, 90);
   self setspeed(20, 10);
   self setyawspeed(55, 25, 25);
 }
 
-/*
-	Name: is_targeted
-	Namespace: helicopter
-	Checksum: 0xE594DF09
-	Offset: 0x8FA8
-	Size: 0x5A
-	Parameters: 0
-	Flags: Linked
-*/
 function is_targeted() {
   if(isdefined(self.locking_on) && self.locking_on) {
     return true;
@@ -2455,44 +1783,26 @@ function is_targeted() {
   return false;
 }
 
-/*
-	Name: heli_mobilespawn
-	Namespace: helicopter
-	Checksum: 0x389AD7D0
-	Offset: 0x9010
-	Size: 0x114
-	Parameters: 1
-	Flags: None
-*/
 function heli_mobilespawn(protectdest) {
-  self endon(# "death");
-  self notify(# "flying");
-  self endon(# "flying");
-  self endon(# "abandoned");
+  self endon("death");
+  self notify("flying");
+  self endon("flying");
+  self endon("abandoned");
   iprintlnbold(((((("PROTECT ORIGIN: (" + protectdest[0]) + ",") + protectdest[1]) + ",") + protectdest[2]) + ")\n");
   heli_reset();
   self sethoverparams(50, 100, 50);
   wait(2);
   set_heli_speed_normal();
   self set_goal_pos(protectdest, 1);
-  self waittill(# "near_goal");
+  self waittill("near_goal");
   set_heli_speed_hover();
 }
 
-/*
-	Name: heli_protect
-	Namespace: helicopter
-	Checksum: 0x42FBE55
-	Offset: 0x9130
-	Size: 0x4F4
-	Parameters: 4
-	Flags: Linked
-*/
 function heli_protect(startnode, protectdest, hardpointtype, heli_team) {
-  self endon(# "death");
-  self notify(# "flying");
-  self endon(# "flying");
-  self endon(# "abandoned");
+  self endon("death");
+  self notify("flying");
+  self endon("flying");
+  self endon("abandoned");
   self.reached_dest = 0;
   heli_reset();
   self sethoverparams(50, 100, 50);
@@ -2512,11 +1822,9 @@ function heli_protect(startnode, protectdest, hardpointtype, heli_team) {
   self.endtime = starttime + (level.heli_protect_time * 1000);
   self.killstreakendtime = int(self.endtime);
   self setspeed(150, 80);
-  /#
   self util::debug_slow_heli_speed();
-  # /
-    self set_goal_pos((self.origin + ((currentdest - self.origin) / 3)) + vectorscale((0, 0, 1), 1000), 0);
-  self waittill(# "near_goal");
+  self set_goal_pos((self.origin + ((currentdest - self.origin) / 3)) + vectorscale((0, 0, 1), 1000), 0);
+  self waittill("near_goal");
   heli_speed = 30 + randomint(20);
   heli_accel = 10 + randomint(5);
   self thread updatetargetyaw();
@@ -2532,7 +1840,7 @@ function heli_protect(startnode, protectdest, hardpointtype, heli_team) {
     self thread updatespeedonlock();
     self util::waittill_any("near_goal", "locking on", "locking on hacking");
     hostmigration::waittillhostmigrationdone();
-    self notify(# "hash_df5908ac");
+    self notify("hash_df5908ac");
     if(!self is_targeted()) {
       waittillframeend();
       time = level.heli_protect_pos_time;
@@ -2557,32 +1865,14 @@ function heli_protect(startnode, protectdest, hardpointtype, heli_team) {
   self thread heli_leave();
 }
 
-/*
-	Name: updatespeedonlock
-	Namespace: helicopter
-	Checksum: 0x515245ED
-	Offset: 0x9630
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function updatespeedonlock() {
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "leaving");
+  self endon("death");
+  self endon("crashing");
+  self endon("leaving");
   self util::waittill_any("near_goal", "locking on", "locking on hacking");
   self updatespeed();
 }
 
-/*
-	Name: updatespeed
-	Namespace: helicopter
-	Checksum: 0xF1787FF2
-	Offset: 0x96A8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function updatespeed() {
   if(self is_targeted() || (isdefined(self.evasive) && self.evasive)) {
     set_heli_speed_evasive();
@@ -2591,21 +1881,12 @@ function updatespeed() {
   }
 }
 
-/*
-	Name: updatetargetyaw
-	Namespace: helicopter
-	Checksum: 0x82009F8F
-	Offset: 0x9718
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function updatetargetyaw() {
-  self notify(# "endtargetyawupdate");
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "leaving");
-  self endon(# "endtargetyawupdate");
+  self notify("endtargetyawupdate");
+  self endon("death");
+  self endon("crashing");
+  self endon("leaving");
+  self endon("endtargetyawupdate");
   for (;;) {
     if(isdefined(self.primarytarget)) {
       yaw = math::get_2d_yaw(self.origin, self.primarytarget.origin);
@@ -2615,20 +1896,9 @@ function updatetargetyaw() {
   }
 }
 
-/*
-	Name: fire_missile
-	Namespace: helicopter
-	Checksum: 0x37C9F48C
-	Offset: 0x97D0
-	Size: 0x230
-	Parameters: 3
-	Flags: Linked
-*/
 function fire_missile(smissiletype, ishots = 1, etarget) {
-  /#
   assert(self.health > 0);
-  # /
-    weapon = undefined;
+  weapon = undefined;
   weaponshoottime = undefined;
   tags = [];
   switch (smissiletype) {
@@ -2638,23 +1908,15 @@ function fire_missile(smissiletype, ishots = 1, etarget) {
       break;
     }
     default: {
-      /#
       assertmsg("");
-      # /
-        break;
+      break;
     }
   }
-  /#
   assert(isdefined(weapon));
-  # /
-    /#
   assert(tags.size > 0);
-  # /
-    weaponshoottime = weapon.firetime;
-  /#
+  weaponshoottime = weapon.firetime;
   assert(isdefined(weaponshoottime));
-  # /
-    self setvehweapon(weapon);
+  self setvehweapon(weapon);
   nextmissiletag = -1;
   for (i = 0; i < ishots; i++) {
     nextmissiletag++;
@@ -2670,31 +1932,13 @@ function fire_missile(smissiletype, ishots = 1, etarget) {
   }
 }
 
-/*
-	Name: check_owner
-	Namespace: helicopter
-	Checksum: 0x90A723C
-	Offset: 0x9A08
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function check_owner(hardpointtype) {
   if(!isdefined(self.owner) || !isdefined(self.owner.team) || self.owner.team != self.team) {
-    self notify(# "abandoned");
+    self notify("abandoned");
     self thread heli_leave();
   }
 }
 
-/*
-	Name: attack_targets
-	Namespace: helicopter
-	Checksum: 0xAA611BE5
-	Offset: 0x9A88
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function attack_targets(missilesenabled, hardpointtype) {
   self thread attack_primary(hardpointtype);
   if(missilesenabled) {
@@ -2702,19 +1946,10 @@ function attack_targets(missilesenabled, hardpointtype) {
   }
 }
 
-/*
-	Name: attack_secondary
-	Namespace: helicopter
-	Checksum: 0x11F9BE9D
-	Offset: 0x9AE0
-	Size: 0x1A0
-	Parameters: 1
-	Flags: Linked
-*/
 function attack_secondary(hardpointtype) {
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "leaving");
+  self endon("death");
+  self endon("crashing");
+  self endon("leaving");
   for (;;) {
     if(isdefined(self.secondarytarget)) {
       self.secondarytarget.antithreat = undefined;
@@ -2737,20 +1972,11 @@ function attack_secondary(hardpointtype) {
         self.missiletarget.antithreat = undefined;
       }
     }
-    self waittill(# "hash_519af70b");
+    self waittill("hash_519af70b");
     self check_owner(hardpointtype);
   }
 }
 
-/*
-	Name: turret_target_check
-	Namespace: helicopter
-	Checksum: 0x16146E8D
-	Offset: 0x9C88
-	Size: 0x122
-	Parameters: 2
-	Flags: Linked
-*/
 function turret_target_check(turrettarget, attackangle) {
   targetyaw = math::get_2d_yaw(self.origin, turrettarget.origin);
   chopperyaw = self.angles[1];
@@ -2770,15 +1996,6 @@ function turret_target_check(turrettarget, attackangle) {
   return difference <= attackangle;
 }
 
-/*
-	Name: target_cone_check
-	Namespace: helicopter
-	Checksum: 0xF6C52CF2
-	Offset: 0x9DB8
-	Size: 0x104
-	Parameters: 2
-	Flags: Linked
-*/
 function target_cone_check(target, conecosine) {
   heli2target_normal = vectornormalize(target.origin - self.origin);
   heli2forward = anglestoforward(self.angles);
@@ -2791,19 +2008,10 @@ function target_cone_check(target, conecosine) {
   return false;
 }
 
-/*
-	Name: missile_support
-	Namespace: helicopter
-	Checksum: 0x4A59C1E7
-	Offset: 0x9EC8
-	Size: 0x2C2
-	Parameters: 4
-	Flags: Linked
-*/
 function missile_support(target_player, rof, instantfire, endon_notify) {
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "leaving");
+  self endon("death");
+  self endon("crashing");
+  self endon("leaving");
   if(isdefined(endon_notify)) {
     self endon(endon_notify);
   }
@@ -2811,7 +2019,7 @@ function missile_support(target_player, rof, instantfire, endon_notify) {
   if(!instantfire) {
     wait(rof);
     self.turret_giveup = 1;
-    self notify(# "hash_e4ae4515");
+    self notify("hash_e4ae4515");
   }
   if(isdefined(target_player)) {
     if(level.teambased) {
@@ -2819,7 +2027,7 @@ function missile_support(target_player, rof, instantfire, endon_notify) {
         player = level.players[i];
         if(isdefined(player.team) && player.team == self.team && distance(player.origin, target_player.origin) <= level.heli_missile_friendlycare) {
           airsupport::debug_print3d_simple("Missile omitted due to nearby friendly", self, vectorscale((0, 0, -1), 80), 40);
-          self notify(# "hash_2ff1ad5e");
+          self notify("hash_2ff1ad5e");
           return;
         }
       }
@@ -2827,7 +2035,7 @@ function missile_support(target_player, rof, instantfire, endon_notify) {
       player = self.owner;
       if(isdefined(player) && isdefined(player.team) && player.team == self.team && distance(player.origin, target_player.origin) <= level.heli_missile_friendlycare) {
         airsupport::debug_print3d_simple("Missile omitted due to nearby friendly", self, vectorscale((0, 0, -1), 80), 40);
-        self notify(# "hash_2ff1ad5e");
+        self notify("hash_2ff1ad5e");
         return;
       }
     }
@@ -2835,30 +2043,21 @@ function missile_support(target_player, rof, instantfire, endon_notify) {
   if(self.missile_ammo > 0 && isdefined(target_player)) {
     self fire_missile("ffar", 1, target_player);
     self.missile_ammo--;
-    self notify(# "hash_b0c5ea03");
+    self notify("hash_b0c5ea03");
   } else {
     return;
   }
   if(instantfire) {
     wait(rof);
-    self notify(# "hash_2ff1ad5e");
+    self notify("hash_2ff1ad5e");
   }
 }
 
-/*
-	Name: attack_primary
-	Namespace: helicopter
-	Checksum: 0x73E265B8
-	Offset: 0xA198
-	Size: 0x4E0
-	Parameters: 1
-	Flags: Linked
-*/
 function attack_primary(hardpointtype) {
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "leaving");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("crashing");
+  self endon("leaving");
+  level endon("game_ended");
   for (;;) {
     if(isdefined(self.primarytarget)) {
       self.primarytarget.antithreat = undefined;
@@ -2877,9 +2076,9 @@ function attack_primary(hardpointtype) {
           break;
         }
         self setturrettargetent(self.turrettarget, vectorscale((0, 0, 1), 50));
-        self waittill(# "turret_on_target");
+        self waittill("turret_on_target");
         hostmigration::waittillhostmigrationdone();
-        self notify(# "turret_on_target");
+        self notify("turret_on_target");
         self thread turret_target_flag(self.turrettarget);
         wait(1);
         self heli_set_active_camo_state(0);
@@ -2906,7 +2105,7 @@ function attack_primary(hardpointtype) {
             wait(weaponshoottime);
           }
         }
-        self notify(# "hash_849f87ba", self.pilotistalking);
+        self notify("hash_849f87ba", self.pilotistalking);
         wait(level.heli_turretreloadtime);
         wait(3);
         self heli_set_active_camo_state(1);
@@ -2922,30 +2121,21 @@ function attack_primary(hardpointtype) {
         self.turrettarget.antithreat = undefined;
       }
     }
-    self waittill(# "hash_907788c7");
+    self waittill("hash_907788c7");
     self check_owner(hardpointtype);
   }
 }
 
-/*
-	Name: turret_target_flag
-	Namespace: helicopter
-	Checksum: 0x460A89AE
-	Offset: 0xA680
-	Size: 0x286
-	Parameters: 1
-	Flags: Linked
-*/
 function turret_target_flag(turrettarget) {
-  self notify(# "hash_4008e0d0");
-  self endon(# "hash_4008e0d0");
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "leaving");
-  self endon(# "hash_849f87ba");
+  self notify("hash_4008e0d0");
+  self endon("hash_4008e0d0");
+  self endon("death");
+  self endon("crashing");
+  self endon("leaving");
+  self endon("hash_849f87ba");
   if(isdefined(turrettarget)) {
-    turrettarget endon(# "death");
-    turrettarget endon(# "disconnect");
+    turrettarget endon("death");
+    turrettarget endon("disconnect");
   }
   self.targetlost = 0;
   self.turret_last_pos = undefined;
@@ -2960,18 +2150,12 @@ function turret_target_flag(turrettarget) {
     wait(0.05);
   }
   if(isdefined(turrettarget) && isdefined(turrettarget.origin)) {
-    /#
     assert(isdefined(turrettarget.origin), "");
-    # /
-      self.turret_last_pos = turrettarget.origin + vectorscale((0, 0, 1), 40);
-    /#
+    self.turret_last_pos = turrettarget.origin + vectorscale((0, 0, 1), 40);
     assert(isdefined(self.turret_last_pos), "");
-    # /
-      self setturrettargetvec(self.turret_last_pos);
-    /#
+    self setturrettargetvec(self.turret_last_pos);
     assert(isdefined(self.turret_last_pos), "");
-    # /
-      airsupport::debug_print3d_simple("Turret target lost at: " + self.turret_last_pos, self, vectorscale((0, 0, -1), 70), 60);
+    airsupport::debug_print3d_simple("Turret target lost at: " + self.turret_last_pos, self, vectorscale((0, 0, -1), 70), 60);
     self.targetlost = 1;
   } else {
     self.targetlost = undefined;
@@ -2979,15 +2163,6 @@ function turret_target_flag(turrettarget) {
   }
 }
 
-/*
-	Name: debug_print_target
-	Namespace: helicopter
-	Checksum: 0x535AF45A
-	Offset: 0xA910
-	Size: 0x244
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_print_target() {
   if(isdefined(level.heli_debug) && level.heli_debug == 1) {
     if(isdefined(self.primarytarget) && isdefined(self.primarytarget.threatlevel)) {
@@ -3016,31 +2191,13 @@ function debug_print_target() {
   }
 }
 
-/*
-	Name: waittill_confirm_location
-	Namespace: helicopter
-	Checksum: 0x7A9BADD
-	Offset: 0xAB60
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function waittill_confirm_location() {
-  self endon(# "emp_jammed");
-  self endon(# "emp_grenaded");
-  self waittill(# "confirm_location", location);
+  self endon("emp_jammed");
+  self endon("emp_grenaded");
+  self waittill("confirm_location", location);
   return location;
 }
 
-/*
-	Name: selecthelicopterlocation
-	Namespace: helicopter
-	Checksum: 0x4CBE6901
-	Offset: 0xABA0
-	Size: 0xCA
-	Parameters: 1
-	Flags: Linked
-*/
 function selecthelicopterlocation(hardpointtype) {
   self beginlocationcomlinkselection("compass_objpoint_helicopter", 1500);
   self.selectinglocation = 1;
@@ -3056,18 +2213,9 @@ function selecthelicopterlocation(hardpointtype) {
   return airsupport::finishhardpointlocationusage(location, undefined);
 }
 
-/*
-	Name: processcopterassist
-	Namespace: helicopter
-	Checksum: 0x496F54C3
-	Offset: 0xAC78
-	Size: 0x12C
-	Parameters: 2
-	Flags: Linked
-*/
 function processcopterassist(destroyedcopter, damagedone) {
-  self endon(# "disconnect");
-  destroyedcopter endon(# "disconnect");
+  self endon("disconnect");
+  destroyedcopter endon("disconnect");
   wait(0.05);
   if(!isdefined(level.teams[self.team])) {
     return;
@@ -3086,36 +2234,18 @@ function processcopterassist(destroyedcopter, damagedone) {
   scoreevents::processscoreevent(assist_level, self);
 }
 
-/*
-	Name: samturretwatcher
-	Namespace: helicopter
-	Checksum: 0xC66E2A72
-	Offset: 0xADB0
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function samturretwatcher() {
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "leaving");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("crashing");
+  self endon("leaving");
+  level endon("game_ended");
   self util::waittill_any("turret_on_target", "path start", "near_goal");
   target_setturretaquire(self, 1);
 }
 
-/*
-	Name: playpilotdialog
-	Namespace: helicopter
-	Checksum: 0x84F6802A
-	Offset: 0xAE30
-	Size: 0xF4
-	Parameters: 4
-	Flags: None
-*/
 function playpilotdialog(dialog, time, voice, shouldwait) {
-  self endon(# "death");
-  level endon(# "remote_end");
+  self endon("death");
+  level endon("remote_end");
   if(isdefined(time)) {
     wait(time);
   }
@@ -3133,19 +2263,10 @@ function playpilotdialog(dialog, time, voice, shouldwait) {
   }
 }
 
-/*
-	Name: playpilottalking
-	Namespace: helicopter
-	Checksum: 0xF2172DA
-	Offset: 0xAF30
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function playpilottalking(shouldwait, soundalias) {
-  self endon(# "disconnect");
-  self endon(# "joined_team");
-  self endon(# "joined_spectators");
+  self endon("disconnect");
+  self endon("joined_team");
+  self endon("joined_spectators");
   for (trycounter = 0; isdefined(self.pilottalking) && self.pilottalking && trycounter < 10; trycounter++) {
     if(isdefined(shouldwait) && !shouldwait) {
       return;
@@ -3158,42 +2279,24 @@ function playpilottalking(shouldwait, soundalias) {
   self.pilottalking = 0;
 }
 
-/*
-	Name: watchforearlyleave
-	Namespace: helicopter
-	Checksum: 0xA91713CF
-	Offset: 0xB008
-	Size: 0x9A
-	Parameters: 1
-	Flags: Linked
-*/
 function watchforearlyleave(chopper) {
-  chopper notify(# "watchforearlyleave_helicopter");
-  chopper endon(# "watchforearlyleave_helicopter");
-  chopper endon(# "death");
-  self endon(# "heli_timeup");
+  chopper notify("watchforearlyleave_helicopter");
+  chopper endon("watchforearlyleave_helicopter");
+  chopper endon("death");
+  self endon("heli_timeup");
   self util::waittill_any("joined_team", "disconnect");
   if(isdefined(chopper)) {
     chopper thread heli_leave();
   }
   if(isdefined(self)) {
-    self notify(# "heli_timeup");
+    self notify("heli_timeup");
   }
 }
 
-/*
-	Name: watchforemp
-	Namespace: helicopter
-	Checksum: 0x971EE825
-	Offset: 0xB0B0
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function watchforemp() {
   heli = self;
-  heli endon(# "death");
-  heli endon(# "heli_timeup");
-  heli.owner waittill(# "emp_jammed");
+  heli endon("death");
+  heli endon("heli_timeup");
+  heli.owner waittill("emp_jammed");
   heli thread heli_explode();
 }

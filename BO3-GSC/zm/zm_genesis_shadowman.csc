@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_shadowman.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\animation_shared;
 #using scripts\shared\array_shared;
@@ -14,46 +18,17 @@
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\craftables\_zm_craftables;
-
 #using_animtree("generic");
-
 #namespace zm_genesis_shadowman;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_genesis_shadowman
-	Checksum: 0x80F065F8
-	Offset: 0x378
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_shadowman", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_genesis_shadowman
-	Checksum: 0x4C0B4543
-	Offset: 0x3B8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "shadowman_fx", 15000, 3, "int", & shadowman_fx, 0, 0);
 }
 
-/*
-	Name: shadowman_fx
-	Namespace: zm_genesis_shadowman
-	Checksum: 0xFB9D61A5
-	Offset: 0x410
-	Size: 0x3DA
-	Parameters: 7
-	Flags: Linked
-*/
 function shadowman_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.var_6067fcbe)) {
     stopfx(localclientnum, self.var_6067fcbe);
@@ -107,15 +82,6 @@ function shadowman_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fie
   }
 }
 
-/*
-	Name: function_705b696b
-	Namespace: zm_genesis_shadowman
-	Checksum: 0xF747EB5B
-	Offset: 0x7F8
-	Size: 0x74
-	Parameters: 4
-	Flags: Linked
-*/
 function function_705b696b(localclientnum, str_fx, v_origin, n_seconds) {
   fx_id = playfx(localclientnum, str_fx, v_origin);
   wait(n_seconds);

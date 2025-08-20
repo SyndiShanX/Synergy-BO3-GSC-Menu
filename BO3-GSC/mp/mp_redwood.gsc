@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_redwood.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -8,18 +12,8 @@
 #using scripts\shared\_oob;
 #using scripts\shared\compass;
 #using scripts\shared\util_shared;
-
 #namespace mp_redwood;
 
-/*
-	Name: main
-	Namespace: mp_redwood
-	Checksum: 0x7A848F9F
-	Offset: 0x240
-	Size: 0x314
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache();
   level.uav_z_offset = 500;
@@ -51,26 +45,8 @@ function main() {
   function_9f6a9d3f();
 }
 
-/*
-	Name: precache
-	Namespace: mp_redwood
-	Checksum: 0x99EC1590
-	Offset: 0x560
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {}
 
-/*
-	Name: spawnkilltrigger
-	Namespace: mp_redwood
-	Checksum: 0x8187CF12
-	Offset: 0x570
-	Size: 0x2D4
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnkilltrigger() {
   trigger = spawn("trigger_radius", (2772.36, -2224.02, -77.52), 0, 500, 300);
   trigger thread watchkilltrigger();
@@ -94,33 +70,15 @@ function spawnkilltrigger() {
   trigger thread watchkilltrigger();
 }
 
-/*
-	Name: watchkilltrigger
-	Namespace: mp_redwood
-	Checksum: 0x3749D84C
-	Offset: 0x850
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function watchkilltrigger() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   trigger = self;
   while (true) {
-    trigger waittill(# "trigger", player);
+    trigger waittill("trigger", player);
     player dodamage(1000, trigger.origin + (0, 0, 0), trigger, trigger, "none", "MOD_SUICIDE", 0);
   }
 }
 
-/*
-	Name: function_9f6a9d3f
-	Namespace: mp_redwood
-	Checksum: 0x163A8E35
-	Offset: 0x8E8
-	Size: 0x224
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9f6a9d3f() {
   if(level.gametype == "prop") {
     spawncollision("collision_player_32x32x32", "collider", (-762, -336, 42), vectorscale((0, 1, 0), 40));

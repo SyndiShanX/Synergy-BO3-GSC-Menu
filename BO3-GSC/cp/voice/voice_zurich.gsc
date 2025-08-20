@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\cp\_dialog;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\voice\voice_zurich.gsc
+*************************************************/
 
+#using scripts\cp\_dialog;
 #namespace namespace_2fedc4ad;
 
-/*
-	Name: init_voice
-	Namespace: namespace_2fedc4ad
-	Checksum: 0x98FB219B
-	Offset: 0x4150
-	Size: 0x2F44
-	Parameters: 0
-	Flags: Linked
-*/
 function init_voice() {
   dialog::add("zsfs_our_comms_are_down_0", "vox_zuri_1_01_000_zsfs");
   dialog::add("kane_what_does_it_want_0", "vox_zuri_2_01_000_kane");

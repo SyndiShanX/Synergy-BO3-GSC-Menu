@@ -1,21 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_hackables_perks.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_equip_hacker;
-
 #namespace zm_hackables_perks;
 
-/*
-	Name: hack_perks
-	Namespace: zm_hackables_perks
-	Checksum: 0xF8C1C590
-	Offset: 0x168
-	Size: 0x28C
-	Parameters: 0
-	Flags: Linked
-*/
 function hack_perks() {
   vending_triggers = getentarray("zombie_vending", "targetname");
   for (i = 0; i < vending_triggers.size; i++) {
@@ -44,15 +38,6 @@ function hack_perks() {
   level._solo_revive_machine_expire_func = & solo_revive_expire_func;
 }
 
-/*
-	Name: solo_revive_expire_func
-	Namespace: zm_hackables_perks
-	Checksum: 0xC5A10708
-	Offset: 0x400
-	Size: 0x36
-	Parameters: 0
-	Flags: Linked
-*/
 function solo_revive_expire_func() {
   if(isdefined(self.hackable)) {
     zm_equip_hacker::deregister_hackable_struct(self.hackable);
@@ -60,15 +45,6 @@ function solo_revive_expire_func() {
   }
 }
 
-/*
-	Name: perk_hack_qualifier
-	Namespace: zm_hackables_perks
-	Checksum: 0x69D95EB1
-	Offset: 0x440
-	Size: 0x76
-	Parameters: 1
-	Flags: Linked
-*/
 function perk_hack_qualifier(player) {
   if(isdefined(player._retain_perks)) {
     return false;
@@ -81,15 +57,6 @@ function perk_hack_qualifier(player) {
   return false;
 }
 
-/*
-	Name: perk_hack
-	Namespace: zm_hackables_perks
-	Checksum: 0xAEF62BD
-	Offset: 0x4C0
-	Size: 0x13A
-	Parameters: 1
-	Flags: Linked
-*/
 function perk_hack(hacker) {
   if(level flag::get("solo_game") && self.perk.script_noteworthy == "specialty_quickrevive") {
     hacker.lives--;

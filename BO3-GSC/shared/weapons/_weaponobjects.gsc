@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_weaponobjects.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -19,18 +23,8 @@
 #using scripts\shared\weapons\_trophy_system;
 #using scripts\shared\weapons\_weaponobjects;
 #using scripts\shared\weapons_shared;
-
 #namespace weaponobjects;
 
-/*
-	Name: init_shared
-	Namespace: weaponobjects
-	Checksum: 0xF8BC256E
-	Offset: 0xB48
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function init_shared() {
   callback::on_start_gametype( & start_gametype);
   clientfield::register("toplayer", "proximity_alarm", 1, 2, "int");
@@ -42,20 +36,9 @@ function init_shared() {
   clientfield::register("missile", "teamequip", 1, 1, "int");
   level.weaponobjectdebug = getdvarint("scr_weaponobject_debug", 0);
   level.supplementalwatcherobjects = [];
-  /#
   level thread updatedvars();
-  # /
 }
 
-/*
-	Name: updatedvars
-	Namespace: weaponobjects
-	Checksum: 0xC3469F96
-	Offset: 0xD10
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function updatedvars() {
   while (true) {
     level.weaponobjectdebug = getdvarint("scr_weaponobject_debug", 0);
@@ -63,15 +46,6 @@ function updatedvars() {
   }
 }
 
-/*
-	Name: start_gametype
-	Namespace: weaponobjects
-	Checksum: 0xDEEF9EEF
-	Offset: 0xD50
-	Size: 0x25C
-	Parameters: 0
-	Flags: Linked
-*/
 function start_gametype() {
   coneangle = getdvarint("scr_weaponobject_coneangle", 70);
   mindist = getdvarint("scr_weaponobject_mindist", 20);
@@ -100,15 +74,6 @@ function start_gametype() {
   level.weaponobjects_hacker_trigger_height = 32;
 }
 
-/*
-	Name: setupretrievablehintstrings
-	Namespace: weaponobjects
-	Checksum: 0xC7729429
-	Offset: 0xFB8
-	Size: 0x244
-	Parameters: 0
-	Flags: Linked
-*/
 function setupretrievablehintstrings() {
   createretrievablehint("hatchet", & "MP_HATCHET_PICKUP");
   createretrievablehint("claymore", & "MP_CLAYMORE_PICKUP");
@@ -130,15 +95,6 @@ function setupretrievablehintstrings() {
   createhackerhint("scrambler", & "MP_SCRAMBLER_HACKING");
 }
 
-/*
-	Name: on_player_connect
-	Namespace: weaponobjects
-	Checksum: 0x48BC741F
-	Offset: 0x1208
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   if(isdefined(level._weaponobjects_on_player_connect_override)) {
     level thread[[level._weaponobjects_on_player_connect_override]]();
@@ -148,17 +104,8 @@ function on_player_connect() {
   self.hits = 0;
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: weaponobjects
-	Checksum: 0xF39A0617
-	Offset: 0x1248
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   pixbeginevent("onPlayerSpawned");
   if(!isdefined(self.watchersinitialized)) {
     self createbasewatchers();
@@ -180,15 +127,6 @@ function on_player_spawned() {
   pixendevent();
 }
 
-/*
-	Name: resetwatchers
-	Namespace: weaponobjects
-	Checksum: 0xF1A3AB03
-	Offset: 0x13E8
-	Size: 0xB2
-	Parameters: 0
-	Flags: Linked
-*/
 function resetwatchers() {
   if(!isdefined(self.weaponobjectwatcherarray)) {
     return undefined;
@@ -199,15 +137,6 @@ function resetwatchers() {
   }
 }
 
-/*
-	Name: createbasewatchers
-	Namespace: weaponobjects
-	Checksum: 0xDBAB33AF
-	Offset: 0x14A8
-	Size: 0x11A
-	Parameters: 0
-	Flags: Linked
-*/
 function createbasewatchers() {
   foreach(weapon in level.watcherweapons) {
     self createweaponobjectwatcher(weapon.name, self.team);
@@ -217,15 +146,6 @@ function createbasewatchers() {
   }
 }
 
-/*
-	Name: setupretrievablewatcher
-	Namespace: weaponobjects
-	Checksum: 0x515730F8
-	Offset: 0x15D0
-	Size: 0xF2
-	Parameters: 0
-	Flags: Linked
-*/
 function setupretrievablewatcher() {
   for (i = 0; i < level.retrievableweapons.size; i++) {
     watcher = getweaponobjectwatcherbyweapon(level.retrievableweapons[i]);
@@ -243,15 +163,6 @@ function setupretrievablewatcher() {
   }
 }
 
-/*
-	Name: createspecialcrossbowwatchertypes
-	Namespace: weaponobjects
-	Checksum: 0x5A03682
-	Offset: 0x16D0
-	Size: 0x118
-	Parameters: 1
-	Flags: Linked
-*/
 function createspecialcrossbowwatchertypes(weaponname) {
   watcher = self createuseweaponobjectwatcher(weaponname, self.team);
   watcher.ondetonatecallback = & deleteent;
@@ -267,15 +178,6 @@ function createspecialcrossbowwatchertypes(weaponname) {
   }
 }
 
-/*
-	Name: createspecialcrossbowwatcher
-	Namespace: weaponobjects
-	Checksum: 0x357583BF
-	Offset: 0x17F0
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function createspecialcrossbowwatcher() {
   createspecialcrossbowwatchertypes("special_crossbow");
   createspecialcrossbowwatchertypes("special_crossbowlh");
@@ -286,15 +188,6 @@ function createspecialcrossbowwatcher() {
   }
 }
 
-/*
-	Name: createhatchetwatcher
-	Namespace: weaponobjects
-	Checksum: 0x370D4DB8
-	Offset: 0x1890
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function createhatchetwatcher() {
   watcher = self createuseweaponobjectwatcher("hatchet", self.team);
   watcher.ondetonatecallback = & deleteent;
@@ -303,29 +196,11 @@ function createhatchetwatcher() {
   watcher.onspawnretrievetriggers = & onspawnhatchettrigger;
 }
 
-/*
-	Name: createtactinsertwatcher
-	Namespace: weaponobjects
-	Checksum: 0x6D17FB88
-	Offset: 0x1930
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function createtactinsertwatcher() {
   watcher = self createuseweaponobjectwatcher("tactical_insertion", self.team);
   watcher.playdestroyeddialog = 0;
 }
 
-/*
-	Name: creatercbombwatcher
-	Namespace: weaponobjects
-	Checksum: 0x12C9DBB2
-	Offset: 0x1980
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function creatercbombwatcher() {
   watcher = self createuseweaponobjectwatcher("rcbomb", self.team);
   watcher.altdetonate = 0;
@@ -339,15 +214,6 @@ function creatercbombwatcher() {
   watcher.notequipment = 1;
 }
 
-/*
-	Name: createqrdronewatcher
-	Namespace: weaponobjects
-	Checksum: 0xD0B96BBF
-	Offset: 0x1A68
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked
-*/
 function createqrdronewatcher() {
   watcher = self createuseweaponobjectwatcher("qrdrone", self.team);
   watcher.altdetonate = 0;
@@ -362,15 +228,6 @@ function createqrdronewatcher() {
   watcher.notequipment = 1;
 }
 
-/*
-	Name: getspikelauncheractivespikecount
-	Namespace: weaponobjects
-	Checksum: 0x4E57AE7A
-	Offset: 0x1B60
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function getspikelauncheractivespikecount(watcher) {
   currentitemcount = 0;
   foreach(obj in watcher.objectarray) {
@@ -381,20 +238,11 @@ function getspikelauncheractivespikecount(watcher) {
   return currentitemcount;
 }
 
-/*
-	Name: watchspikelauncheritemcountchanged
-	Namespace: weaponobjects
-	Checksum: 0x41CDC0FC
-	Offset: 0x1C30
-	Size: 0xE8
-	Parameters: 1
-	Flags: Linked
-*/
 function watchspikelauncheritemcountchanged(watcher) {
-  self endon(# "death");
+  self endon("death");
   lastitemcount = undefined;
   while (true) {
-    self waittill(# "weapon_change", weapon);
+    self waittill("weapon_change", weapon);
     while (weapon.name == "spike_launcher") {
       currentitemcount = getspikelauncheractivespikecount(watcher);
       if(currentitemcount !== lastitemcount) {
@@ -407,15 +255,6 @@ function watchspikelauncheritemcountchanged(watcher) {
   }
 }
 
-/*
-	Name: spikesdetonating
-	Namespace: weaponobjects
-	Checksum: 0xAA9A0BE5
-	Offset: 0x1D20
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function spikesdetonating(watcher) {
   spikecount = getspikelauncheractivespikecount(watcher);
   if(spikecount > 0) {
@@ -425,15 +264,6 @@ function spikesdetonating(watcher) {
   }
 }
 
-/*
-	Name: createspikelauncherwatcher
-	Namespace: weaponobjects
-	Checksum: 0x16A0479B
-	Offset: 0x1DB0
-	Size: 0x1A4
-	Parameters: 1
-	Flags: None
-*/
 function createspikelauncherwatcher(weapon) {
   watcher = self createuseweaponobjectwatcher(weapon, self.team);
   watcher.altname = "spike_charge";
@@ -455,15 +285,6 @@ function createspikelauncherwatcher(weapon) {
   self thread watchspikelauncheritemcountchanged(watcher);
 }
 
-/*
-	Name: createplayerhelicopterwatcher
-	Namespace: weaponobjects
-	Checksum: 0x9086791E
-	Offset: 0x1F60
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function createplayerhelicopterwatcher() {
   watcher = self createuseweaponobjectwatcher("helicopter_player", self.team);
   watcher.altdetonate = 1;
@@ -471,15 +292,6 @@ function createplayerhelicopterwatcher() {
   watcher.notequipment = 1;
 }
 
-/*
-	Name: createclaymorewatcher
-	Namespace: weaponobjects
-	Checksum: 0x992402CA
-	Offset: 0x1FD8
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function createclaymorewatcher() {
   watcher = self createproximityweaponobjectwatcher("claymore", self.team);
   watcher.watchforfire = 1;
@@ -498,87 +310,24 @@ function createclaymorewatcher() {
   watcher.stuntime = 1;
 }
 
-/*
-	Name: voidonspawn
-	Namespace: weaponobjects
-	Checksum: 0xA524D68C
-	Offset: 0x2198
-	Size: 0x14
-	Parameters: 2
-	Flags: None
-*/
 function voidonspawn(unused0, unused1) {}
 
-/*
-	Name: voidondamage
-	Namespace: weaponobjects
-	Checksum: 0x19B3433
-	Offset: 0x21B8
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function voidondamage(unused0) {}
 
-/*
-	Name: voidonspawnretrievetriggers
-	Namespace: weaponobjects
-	Checksum: 0x7B1CE4C3
-	Offset: 0x21D0
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function voidonspawnretrievetriggers(unused0, unused1) {}
 
-/*
-	Name: voidpickup
-	Namespace: weaponobjects
-	Checksum: 0x34BFC36B
-	Offset: 0x21F0
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function voidpickup(unused0, unused1) {}
 
-/*
-	Name: deleteent
-	Namespace: weaponobjects
-	Checksum: 0x9A595374
-	Offset: 0x2210
-	Size: 0x34
-	Parameters: 3
-	Flags: Linked
-*/
 function deleteent(attacker, emp, target) {
   self delete();
 }
 
-/*
-	Name: clearfxondeath
-	Namespace: weaponobjects
-	Checksum: 0xC1C380A3
-	Offset: 0x2250
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function clearfxondeath(fx) {
-  fx endon(# "death");
+  fx endon("death");
   self util::waittill_any("death", "hacked");
   fx delete();
 }
 
-/*
-	Name: deleteweaponobjectinstance
-	Namespace: weaponobjects
-	Checksum: 0x17E34678
-	Offset: 0x22B0
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function deleteweaponobjectinstance() {
   if(!isdefined(self)) {
     return;
@@ -592,15 +341,6 @@ function deleteweaponobjectinstance() {
   self delete();
 }
 
-/*
-	Name: deleteweaponobjectarray
-	Namespace: weaponobjects
-	Checksum: 0xDFF5D9AB
-	Offset: 0x2340
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function deleteweaponobjectarray() {
   if(isdefined(self.objectarray)) {
     foreach(weaponobject in self.objectarray) {
@@ -610,15 +350,6 @@ function deleteweaponobjectarray() {
   self.objectarray = [];
 }
 
-/*
-	Name: delayedspikedetonation
-	Namespace: weaponobjects
-	Checksum: 0xECAD4261
-	Offset: 0x23F0
-	Size: 0xF4
-	Parameters: 2
-	Flags: Linked
-*/
 function delayedspikedetonation(attacker, weapon) {
   if(!isdefined(self.owner.spikedelay)) {
     self.owner.spikedelay = 0;
@@ -634,15 +365,6 @@ function delayedspikedetonation(attacker, weapon) {
   }
 }
 
-/*
-	Name: spikedetonate
-	Namespace: weaponobjects
-	Checksum: 0x2FBE828
-	Offset: 0x24F0
-	Size: 0x7C
-	Parameters: 3
-	Flags: Linked
-*/
 function spikedetonate(attacker, weapon, target) {
   if(isdefined(weapon) && weapon.isvalid) {
     if(isdefined(attacker)) {}
@@ -650,15 +372,6 @@ function spikedetonate(attacker, weapon, target) {
   thread delayedspikedetonation(attacker, weapon);
 }
 
-/*
-	Name: claymoredetonate
-	Namespace: weaponobjects
-	Checksum: 0xCB87575E
-	Offset: 0x2578
-	Size: 0xC4
-	Parameters: 3
-	Flags: Linked
-*/
 function claymoredetonate(attacker, weapon, target) {
   if(isdefined(attacker) && self.owner util::isenemyplayer(attacker)) {
     attacker challenges::destroyedexplosive(weapon);
@@ -667,15 +380,6 @@ function claymoredetonate(attacker, weapon, target) {
   weapondetonate(attacker, weapon);
 }
 
-/*
-	Name: weapondetonate
-	Namespace: weaponobjects
-	Checksum: 0x160CD586
-	Offset: 0x2648
-	Size: 0x124
-	Parameters: 2
-	Flags: Linked
-*/
 function weapondetonate(attacker, weapon) {
   if(isdefined(weapon) && weapon.isemp) {
     self delete();
@@ -700,38 +404,20 @@ function weapondetonate(attacker, weapon) {
   }
 }
 
-/*
-	Name: detonatewhenstationary
-	Namespace: weaponobjects
-	Checksum: 0x1657E892
-	Offset: 0x2778
-	Size: 0xA4
-	Parameters: 4
-	Flags: Linked
-*/
 function detonatewhenstationary(object, delay, attacker, weapon) {
-  level endon(# "game_ended");
-  object endon(# "death");
-  object endon(# "hacked");
-  object endon(# "detonating");
+  level endon("game_ended");
+  object endon("death");
+  object endon("hacked");
+  object endon("detonating");
   if(object isonground() == 0) {
-    object waittill(# "stationary");
+    object waittill("stationary");
   }
   self thread waitanddetonate(object, delay, attacker, weapon);
 }
 
-/*
-	Name: waitanddetonate
-	Namespace: weaponobjects
-	Checksum: 0x4D81C32D
-	Offset: 0x2828
-	Size: 0x398
-	Parameters: 4
-	Flags: Linked
-*/
 function waitanddetonate(object, delay, attacker, weapon) {
-  object endon(# "death");
-  object endon(# "hacked");
+  object endon("death");
+  object endon("hacked");
   if(!isdefined(attacker) && !isdefined(weapon) && object.weapon.proximityalarmactivationdelay > 0) {
     if(isdefined(object.armed_detonation_wait) && object.armed_detonation_wait) {
       return;
@@ -745,7 +431,7 @@ function waitanddetonate(object, delay, attacker, weapon) {
     return;
   }
   object.detonated = 1;
-  object notify(# "detonating");
+  object notify("detonating");
   isempdetonated = isdefined(weapon) && weapon.isemp;
   if(isempdetonated && object.weapon.doempdestroyfx) {
     object.stun_fx = 1;
@@ -771,32 +457,23 @@ function waitanddetonate(object, delay, attacker, weapon) {
   if(isdefined(attacker) && isplayer(attacker) && isdefined(attacker.pers["team"]) && isdefined(object.owner) && isdefined(object.owner.pers["team"])) {
     if(level.teambased) {
       if(attacker.pers["team"] != object.owner.pers["team"]) {
-        attacker notify(# "destroyed_explosive");
+        attacker notify("destroyed_explosive");
       }
     } else if(attacker != object.owner) {
-      attacker notify(# "destroyed_explosive");
+      attacker notify("destroyed_explosive");
     }
   }
   object[[self.ondetonatecallback]](attacker, weapon, undefined);
 }
 
-/*
-	Name: waitandfizzleout
-	Namespace: weaponobjects
-	Checksum: 0xF7C2224A
-	Offset: 0x2BC8
-	Size: 0xC8
-	Parameters: 2
-	Flags: Linked
-*/
 function waitandfizzleout(object, delay) {
-  object endon(# "death");
-  object endon(# "hacked");
+  object endon("death");
+  object endon("hacked");
   if(isdefined(object.detonated) && object.detonated == 1) {
     return;
   }
   object.detonated = 1;
-  object notify(# "fizzleout");
+  object notify("fizzleout");
   if(delay > 0) {
     wait(delay);
   }
@@ -807,15 +484,6 @@ function waitandfizzleout(object, delay) {
   object[[self.onfizzleout]]();
 }
 
-/*
-	Name: detonateweaponobjectarray
-	Namespace: weaponobjects
-	Checksum: 0xC5992079
-	Offset: 0x2C98
-	Size: 0x23C
-	Parameters: 2
-	Flags: Linked
-*/
 function detonateweaponobjectarray(forcedetonation, weapon) {
   undetonated = [];
   if(isdefined(self.objectarray)) {
@@ -845,32 +513,12 @@ function detonateweaponobjectarray(forcedetonation, weapon) {
   self.objectarray = undetonated;
 }
 
-/*
-	Name: addweaponobjecttowatcher
-	Namespace: weaponobjects
-	Checksum: 0xADA34BBE
-	Offset: 0x2EE0
-	Size: 0x8C
-	Parameters: 2
-	Flags: None
-*/
 function addweaponobjecttowatcher(watchername, weapon_instance) {
   watcher = getweaponobjectwatcher(watchername);
-  /#
   assert(isdefined(watcher), ("" + watchername) + "");
-  # /
-    self addweaponobject(watcher, weapon_instance);
+  self addweaponobject(watcher, weapon_instance);
 }
 
-/*
-	Name: addweaponobject
-	Namespace: weaponobjects
-	Checksum: 0x4D2EE354
-	Offset: 0x2F78
-	Size: 0x334
-	Parameters: 3
-	Flags: Linked
-*/
 function addweaponobject(watcher, weapon_instance, weapon) {
   if(!isdefined(watcher.storedifferentobject)) {
     watcher.objectarray[watcher.objectarray.size] = weapon_instance;
@@ -922,17 +570,8 @@ function addweaponobject(watcher, weapon_instance, weapon) {
   weapon_instance thread cleanupwatcherondeath(watcher);
 }
 
-/*
-	Name: cleanupwatcherondeath
-	Namespace: weaponobjects
-	Checksum: 0xAC44725A
-	Offset: 0x32B8
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function cleanupwatcherondeath(watcher) {
-  self waittill(# "death");
+  self waittill("death");
   if(isdefined(watcher) && isdefined(watcher.objectarray)) {
     removeweaponobject(watcher, self);
   }
@@ -941,46 +580,19 @@ function cleanupwatcherondeath(watcher) {
   }
 }
 
-/*
-	Name: weapon_object_timeout
-	Namespace: weaponobjects
-	Checksum: 0x5939E650
-	Offset: 0x3340
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function weapon_object_timeout(watcher) {
-  self endon(# "death");
+  self endon("death");
   wait(watcher.timeout);
   self deleteent();
 }
 
-/*
-	Name: delete_on_notify
-	Namespace: weaponobjects
-	Checksum: 0x52B8BC2A
-	Offset: 0x3388
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function delete_on_notify(e_player) {
-  e_player endon(# "disconnect");
-  self endon(# "death");
-  e_player waittill(# "delete_weapon_objects");
+  e_player endon("disconnect");
+  self endon("death");
+  e_player waittill("delete_weapon_objects");
   self delete();
 }
 
-/*
-	Name: deleteweaponobjecthelper
-	Namespace: weaponobjects
-	Checksum: 0x21AC3DA4
-	Offset: 0x33D8
-	Size: 0x5C
-	Parameters: 1
-	Flags: None
-*/
 function deleteweaponobjecthelper(weapon_ent) {
   watcher = self getweaponobjectwatcherbyweapon(weapon_ent.weapon);
   if(!isdefined(watcher)) {
@@ -989,42 +601,15 @@ function deleteweaponobjecthelper(weapon_ent) {
   removeweaponobject(watcher, weapon_ent);
 }
 
-/*
-	Name: removeweaponobject
-	Namespace: weaponobjects
-	Checksum: 0xC6D68181
-	Offset: 0x3440
-	Size: 0x64
-	Parameters: 2
-	Flags: Linked
-*/
 function removeweaponobject(watcher, weapon_ent) {
   watcher.objectarray = array::remove_undefined(watcher.objectarray);
   arrayremovevalue(watcher.objectarray, weapon_ent);
 }
 
-/*
-	Name: cleanweaponobjectarray
-	Namespace: weaponobjects
-	Checksum: 0x9E9C53A9
-	Offset: 0x34B0
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function cleanweaponobjectarray(watcher) {
   watcher.objectarray = array::remove_undefined(watcher.objectarray);
 }
 
-/*
-	Name: weapon_object_do_damagefeedback
-	Namespace: weaponobjects
-	Checksum: 0x7F8B26E6
-	Offset: 0x34F0
-	Size: 0xEC
-	Parameters: 2
-	Flags: Linked
-*/
 function weapon_object_do_damagefeedback(weapon, attacker) {
   if(isdefined(weapon) && isdefined(attacker)) {
     if(weapon.dodamagefeedback) {
@@ -1041,26 +626,17 @@ function weapon_object_do_damagefeedback(weapon, attacker) {
   }
 }
 
-/*
-	Name: weaponobjectdamage
-	Namespace: weaponobjects
-	Checksum: 0xDBC64138
-	Offset: 0x35E8
-	Size: 0x42C
-	Parameters: 1
-	Flags: Linked
-*/
 function weaponobjectdamage(watcher) {
-  self endon(# "death");
-  self endon(# "hacked");
-  self endon(# "detonating");
+  self endon("death");
+  self endon("hacked");
+  self endon("detonating");
   self setcandamage(1);
   self.maxhealth = 100000;
   self.health = self.maxhealth;
   self.damagetaken = 0;
   attacker = undefined;
   while (true) {
-    self waittill(# "damage", damage, attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
+    self waittill("damage", damage, attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
     self.damagetaken = self.damagetaken + damage;
     if(!isplayer(attacker) && isdefined(attacker.owner)) {
       attacker = attacker.owner;
@@ -1106,20 +682,11 @@ function weaponobjectdamage(watcher) {
   watcher thread waitanddetonate(self, 0, attacker, weapon);
 }
 
-/*
-	Name: playdialogondeath
-	Namespace: weaponobjects
-	Checksum: 0x4DB3CF1C
-	Offset: 0x3A20
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function playdialogondeath(owner) {
-  owner endon(# "death");
-  owner endon(# "disconnect");
-  self endon(# "hacked");
-  self waittill(# "death");
+  owner endon("death");
+  owner endon("disconnect");
+  self endon("hacked");
+  self waittill("death");
   if(isdefined(self.playdialog) && self.playdialog) {
     if(isdefined(level.playequipmentdestroyedonplayer)) {
       owner[[level.playequipmentdestroyedonplayer]]();
@@ -1127,22 +694,13 @@ function playdialogondeath(owner) {
   }
 }
 
-/*
-	Name: watchobjectdamage
-	Namespace: weaponobjects
-	Checksum: 0x32130B58
-	Offset: 0x3AA0
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function watchobjectdamage(owner) {
-  owner endon(# "death");
-  owner endon(# "disconnect");
-  self endon(# "hacked");
-  self endon(# "death");
+  owner endon("death");
+  owner endon("disconnect");
+  self endon("hacked");
+  self endon("death");
   while (true) {
-    self waittill(# "damage", damage, attacker);
+    self waittill("damage", damage, attacker);
     if(isdefined(attacker) && isplayer(attacker) && attacker != owner) {
       self.playdialog = 1;
     } else {
@@ -1151,17 +709,8 @@ function watchobjectdamage(owner) {
   }
 }
 
-/*
-	Name: stunstart
-	Namespace: weaponobjects
-	Checksum: 0xD6C5131C
-	Offset: 0x3B68
-	Size: 0x10C
-	Parameters: 2
-	Flags: Linked
-*/
 function stunstart(watcher, time) {
-  self endon(# "death");
+  self endon("death");
   if(self isstunned()) {
     return;
   }
@@ -1182,31 +731,13 @@ function stunstart(watcher, time) {
   self stunstop();
 }
 
-/*
-	Name: stunstop
-	Namespace: weaponobjects
-	Checksum: 0x529CEAA0
-	Offset: 0x3C80
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function stunstop() {
-  self notify(# "not_stunned");
+  self notify("not_stunned");
 }
 
-/*
-	Name: weaponstun
-	Namespace: weaponobjects
-	Checksum: 0xFFA07B51
-	Offset: 0x3CA8
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function weaponstun() {
-  self endon(# "death");
-  self endon(# "not_stunned");
+  self endon("death");
+  self endon("not_stunned");
   origin = self gettagorigin("tag_fx");
   if(!isdefined(origin)) {
     origin = self.origin + vectorscale((0, 0, 1), 10);
@@ -1218,72 +749,27 @@ function weaponstun() {
   playfxontag(level._equipment_spark_fx, self.stun_fx, "tag_origin");
 }
 
-/*
-	Name: stunfxthink
-	Namespace: weaponobjects
-	Checksum: 0x4AEB7DC2
-	Offset: 0x3DB0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function stunfxthink(fx) {
-  fx endon(# "death");
+  fx endon("death");
   self util::waittill_any("death", "not_stunned");
   fx delete();
 }
 
-/*
-	Name: isstunned
-	Namespace: weaponobjects
-	Checksum: 0xE4FA26A
-	Offset: 0x3E10
-	Size: 0xC
-	Parameters: 0
-	Flags: Linked
-*/
 function isstunned() {
   return isdefined(self.stun_fx);
 }
 
-/*
-	Name: weaponobjectfizzleout
-	Namespace: weaponobjects
-	Checksum: 0xABD20804
-	Offset: 0x3E28
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function weaponobjectfizzleout() {
-  self endon(# "death");
+  self endon("death");
   playfx(level._equipment_fizzleout_fx, self.origin);
   deleteent();
 }
 
-/*
-	Name: resetweaponobjectexplodethisframe
-	Namespace: weaponobjects
-	Checksum: 0x1AE0EB89
-	Offset: 0x3E70
-	Size: 0x18
-	Parameters: 0
-	Flags: Linked
-*/
 function resetweaponobjectexplodethisframe() {
   wait(0.05);
   level.weaponobjectexplodethisframe = 0;
 }
 
-/*
-	Name: getweaponobjectwatcher
-	Namespace: weaponobjects
-	Checksum: 0x5EB43710
-	Offset: 0x3E90
-	Size: 0xB6
-	Parameters: 1
-	Flags: Linked
-*/
 function getweaponobjectwatcher(name) {
   if(!isdefined(self.weaponobjectwatcherarray)) {
     return undefined;
@@ -1296,15 +782,6 @@ function getweaponobjectwatcher(name) {
   return undefined;
 }
 
-/*
-	Name: getweaponobjectwatcherbyweapon
-	Namespace: weaponobjects
-	Checksum: 0xAD5B758B
-	Offset: 0x3F50
-	Size: 0x136
-	Parameters: 1
-	Flags: Linked
-*/
 function getweaponobjectwatcherbyweapon(weapon) {
   if(!isdefined(self.weaponobjectwatcherarray)) {
     return undefined;
@@ -1323,32 +800,14 @@ function getweaponobjectwatcherbyweapon(weapon) {
   return undefined;
 }
 
-/*
-	Name: resetweaponobjectwatcher
-	Namespace: weaponobjects
-	Checksum: 0xBDE01247
-	Offset: 0x4090
-	Size: 0x90
-	Parameters: 2
-	Flags: Linked
-*/
 function resetweaponobjectwatcher(watcher, ownerteam) {
   if(watcher.deleteonplayerspawn == 1 || (isdefined(watcher.ownerteam) && watcher.ownerteam != ownerteam)) {
-    self notify(# "weapon_object_destroyed");
+    self notify("weapon_object_destroyed");
     watcher deleteweaponobjectarray();
   }
   watcher.ownerteam = ownerteam;
 }
 
-/*
-	Name: createweaponobjectwatcher
-	Namespace: weaponobjects
-	Checksum: 0x30C9CC52
-	Offset: 0x4128
-	Size: 0x398
-	Parameters: 2
-	Flags: Linked
-*/
 function createweaponobjectwatcher(weaponname, ownerteam) {
   if(!isdefined(self.weaponobjectwatcherarray)) {
     self.weaponobjectwatcherarray = [];
@@ -1403,15 +862,6 @@ function createweaponobjectwatcher(weaponname, ownerteam) {
   return weaponobjectwatcher;
 }
 
-/*
-	Name: createuseweaponobjectwatcher
-	Namespace: weaponobjects
-	Checksum: 0x919BFA09
-	Offset: 0x44C8
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function createuseweaponobjectwatcher(weaponname, ownerteam) {
   weaponobjectwatcher = createweaponobjectwatcher(weaponname, ownerteam);
   weaponobjectwatcher.type = "use";
@@ -1419,15 +869,6 @@ function createuseweaponobjectwatcher(weaponname, ownerteam) {
   return weaponobjectwatcher;
 }
 
-/*
-	Name: createproximityweaponobjectwatcher
-	Namespace: weaponobjects
-	Checksum: 0x4CDF0E6E
-	Offset: 0x4540
-	Size: 0x12C
-	Parameters: 2
-	Flags: Linked
-*/
 function createproximityweaponobjectwatcher(weaponname, ownerteam) {
   weaponobjectwatcher = createweaponobjectwatcher(weaponname, ownerteam);
   weaponobjectwatcher.type = "proximity";
@@ -1440,19 +881,10 @@ function createproximityweaponobjectwatcher(weaponname, ownerteam) {
   return weaponobjectwatcher;
 }
 
-/*
-	Name: commononspawnuseweaponobject
-	Namespace: weaponobjects
-	Checksum: 0x43D14E9F
-	Offset: 0x4678
-	Size: 0x23C
-	Parameters: 2
-	Flags: Linked
-*/
 function commononspawnuseweaponobject(watcher, owner) {
-  level endon(# "game_ended");
-  self endon(# "death");
-  self endon(# "hacked");
+  level endon("game_ended");
+  self endon("death");
+  self endon("hacked");
   if(watcher.detectable) {
     if(watcher.headicon && level.teambased) {
       self util::waittillnotmoving();
@@ -1476,28 +908,10 @@ function commononspawnuseweaponobject(watcher, owner) {
   }
 }
 
-/*
-	Name: wasproximityalarmactivatedbyself
-	Namespace: weaponobjects
-	Checksum: 0xFEDE9AD4
-	Offset: 0x48C0
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked
-*/
 function wasproximityalarmactivatedbyself() {
   return isdefined(self.owner.proximityamlarment) && self.owner.proximityamlarment == self;
 }
 
-/*
-	Name: proximityalarmactivate
-	Namespace: weaponobjects
-	Checksum: 0x39972161
-	Offset: 0x48F8
-	Size: 0x15C
-	Parameters: 2
-	Flags: Linked
-*/
 function proximityalarmactivate(active, watcher) {
   if(!isdefined(self.owner) || !isplayer(self.owner)) {
     return;
@@ -1513,20 +927,11 @@ function proximityalarmactivate(active, watcher) {
   }
 }
 
-/*
-	Name: proximityalarmloop
-	Namespace: weaponobjects
-	Checksum: 0xF08BFA33
-	Offset: 0x4A60
-	Size: 0x696
-	Parameters: 2
-	Flags: Linked
-*/
 function proximityalarmloop(watcher, owner) {
-  level endon(# "game_ended");
-  self endon(# "death");
-  self endon(# "hacked");
-  self endon(# "detonating");
+  level endon("game_ended");
+  self endon("death");
+  self endon("hacked");
+  self endon("detonating");
   if(self.weapon.proximityalarminnerradius <= 0) {
     return;
   }
@@ -1627,48 +1032,19 @@ function proximityalarmloop(watcher, owner) {
   }
 }
 
-/*
-	Name: commononspawnuseweaponobjectproximityalarm
-	Namespace: weaponobjects
-	Checksum: 0x6ED92634
-	Offset: 0x5100
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function commononspawnuseweaponobjectproximityalarm(watcher, owner) {
-  /#
   if(level.weaponobjectdebug == 1) {
     self thread proximityalarmweaponobjectdebug(watcher);
   }
-  # /
-    self proximityalarmloop(watcher, owner);
+  self proximityalarmloop(watcher, owner);
   self proximityalarmactivate(0, watcher);
 }
 
-/*
-	Name: onspawnuseweaponobject
-	Namespace: weaponobjects
-	Checksum: 0x331DD17A
-	Offset: 0x5188
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawnuseweaponobject(watcher, owner) {
   self thread commononspawnuseweaponobject(watcher, owner);
   self thread commononspawnuseweaponobjectproximityalarm(watcher, owner);
 }
 
-/*
-	Name: onspawnproximityweaponobject
-	Namespace: weaponobjects
-	Checksum: 0x82672BCF
-	Offset: 0x51E8
-	Size: 0xAC
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawnproximityweaponobject(watcher, owner) {
   self.protected_entities = [];
   self thread commononspawnuseweaponobject(watcher, owner);
@@ -1677,24 +1053,13 @@ function onspawnproximityweaponobject(watcher, owner) {
   } else {
     self thread proximityweaponobjectdetonation(watcher);
   }
-  /#
   if(level.weaponobjectdebug == 1) {
     self thread proximityweaponobjectdebug(watcher);
   }
-  # /
 }
 
-/*
-	Name: watchweaponobjectusage
-	Namespace: weaponobjects
-	Checksum: 0xC401BCFD
-	Offset: 0x52A0
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function watchweaponobjectusage() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isdefined(self.weaponobjectwatcherarray)) {
     self.weaponobjectwatcherarray = [];
   }
@@ -1707,19 +1072,10 @@ function watchweaponobjectusage() {
   self thread deleteweaponobjectson();
 }
 
-/*
-	Name: watchweaponobjectspawn
-	Namespace: weaponobjects
-	Checksum: 0x606225FE
-	Offset: 0x5390
-	Size: 0x200
-	Parameters: 1
-	Flags: Linked
-*/
 function watchweaponobjectspawn(notify_type) {
   self notify("watchWeaponObjectSpawn_" + notify_type);
   self endon("watchWeaponObjectSpawn_" + notify_type);
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
     self waittill(notify_type, weapon_instance, weapon);
     if(sessionmodeiscampaignzombiesgame() || (isdefined(level.projectiles_should_ignore_world_pause) && level.projectiles_should_ignore_world_pause) && isdefined(weapon_instance)) {
@@ -1743,15 +1099,6 @@ function watchweaponobjectspawn(notify_type) {
   }
 }
 
-/*
-	Name: anyobjectsinworld
-	Namespace: weaponobjects
-	Checksum: 0x8DD940B4
-	Offset: 0x5598
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function anyobjectsinworld(weapon) {
   objectsinworld = 0;
   for (i = 0; i < self.weaponobjectwatcherarray.size; i++) {
@@ -1766,18 +1113,8 @@ function anyobjectsinworld(weapon) {
   return objectsinworld;
 }
 
-/*
-	Name: proximitysphere
-	Namespace: weaponobjects
-	Checksum: 0xB3372E19
-	Offset: 0x5660
-	Size: 0xB0
-	Parameters: 5
-	Flags: Linked
-*/
 function proximitysphere(origin, innerradius, incolor, outerradius, outcolor) {
-  /#
-  self endon(# "death");
+  self endon("death");
   while (true) {
     if(isdefined(innerradius)) {
       dev::debug_sphere(origin, innerradius, incolor, 0.25, 1);
@@ -1787,41 +1124,19 @@ function proximitysphere(origin, innerradius, incolor, outerradius, outcolor) {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: proximityalarmweaponobjectdebug
-	Namespace: weaponobjects
-	Checksum: 0x60D4C255
-	Offset: 0x5718
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function proximityalarmweaponobjectdebug(watcher) {
-  /#
-  self endon(# "death");
+  self endon("death");
   self util::waittillnotmoving();
   if(!isdefined(self)) {
     return;
   }
   self thread proximitysphere(self.origin, self.weapon.proximityalarminnerradius, vectorscale((0, 1, 0), 0.75), self.weapon.proximityalarmouterradius, vectorscale((0, 1, 0), 0.75));
-  # /
 }
 
-/*
-	Name: proximityweaponobjectdebug
-	Namespace: weaponobjects
-	Checksum: 0x5897BAAC
-	Offset: 0x57B0
-	Size: 0x104
-	Parameters: 1
-	Flags: Linked
-*/
 function proximityweaponobjectdebug(watcher) {
-  /#
-  self endon(# "death");
+  self endon("death");
   self util::waittillnotmoving();
   if(!isdefined(self)) {
     return;
@@ -1832,21 +1147,10 @@ function proximityweaponobjectdebug(watcher) {
     self thread showcone(acos(watcher.detectiondot), watcher.detonateradius, (1, 0.85, 0));
     self thread showcone(60, 256, (1, 0, 0));
   }
-  # /
 }
 
-/*
-	Name: showcone
-	Namespace: weaponobjects
-	Checksum: 0x8456960E
-	Offset: 0x58C0
-	Size: 0x22C
-	Parameters: 3
-	Flags: Linked
-*/
 function showcone(angle, range, color) {
-  /#
-  self endon(# "death");
+  self endon("death");
   start = self.origin;
   forward = anglestoforward(self.angles);
   right = vectorcross(forward, (0, 0, 1));
@@ -1866,97 +1170,49 @@ function showcone(angle, range, color) {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: weaponobjectdetectionmovable
-	Namespace: weaponobjects
-	Checksum: 0xBE03BCBF
-	Offset: 0x5AF8
-	Size: 0x74
-	Parameters: 1
-	Flags: None
-*/
 function weaponobjectdetectionmovable(ownerteam) {
-  self endon(# "end_detection");
-  level endon(# "game_ended");
-  self endon(# "death");
-  self endon(# "hacked");
+  self endon("end_detection");
+  level endon("game_ended");
+  self endon("death");
+  self endon("hacked");
   if(!level.teambased) {
     return;
   }
   self.detectid = ("rcBomb" + gettime()) + randomint(1000000);
 }
 
-/*
-	Name: seticonpos
-	Namespace: weaponobjects
-	Checksum: 0x48ED7D4F
-	Offset: 0x5B78
-	Size: 0x88
-	Parameters: 3
-	Flags: None
-*/
 function seticonpos(item, icon, heightincrease) {
   icon.x = item.origin[0];
   icon.y = item.origin[1];
   icon.z = item.origin[2] + heightincrease;
 }
 
-/*
-	Name: weaponobjectdetectiontrigger_wait
-	Namespace: weaponobjects
-	Checksum: 0xA7C358E
-	Offset: 0x5C08
-	Size: 0x5C
-	Parameters: 1
-	Flags: None
-*/
 function weaponobjectdetectiontrigger_wait(ownerteam) {
-  self endon(# "death");
-  self endon(# "hacked");
-  self endon(# "detonating");
+  self endon("death");
+  self endon("hacked");
+  self endon("detonating");
   util::waittillnotmoving();
   self thread weaponobjectdetectiontrigger(ownerteam);
 }
 
-/*
-	Name: weaponobjectdetectiontrigger
-	Namespace: weaponobjects
-	Checksum: 0x5EBCCCB4
-	Offset: 0x5C70
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function weaponobjectdetectiontrigger(ownerteam) {
   trigger = spawn("trigger_radius", self.origin - vectorscale((0, 0, 1), 128), 0, 512, 256);
   trigger.detectid = ("trigger" + gettime()) + randomint(1000000);
   trigger sethintlowpriority(1);
   self util::waittill_any("death", "hacked", "detonating");
-  trigger notify(# "end_detection");
+  trigger notify("end_detection");
   if(isdefined(trigger.bombsquadicon)) {
     trigger.bombsquadicon destroy();
   }
   trigger delete();
 }
 
-/*
-	Name: hackertriggersetvisibility
-	Namespace: weaponobjects
-	Checksum: 0x955B1FF5
-	Offset: 0x5DA0
-	Size: 0x130
-	Parameters: 1
-	Flags: Linked
-*/
 function hackertriggersetvisibility(owner) {
-  self endon(# "death");
-  /#
+  self endon("death");
   assert(isplayer(owner));
-  # /
-    ownerteam = owner.pers["team"];
+  ownerteam = owner.pers["team"];
   for (;;) {
     if(level.teambased && isdefined(ownerteam)) {
       self setvisibletoallexceptteam(ownerteam);
@@ -1972,30 +1228,12 @@ function hackertriggersetvisibility(owner) {
   }
 }
 
-/*
-	Name: hackernotmoving
-	Namespace: weaponobjects
-	Checksum: 0x3E4AA773
-	Offset: 0x5ED8
-	Size: 0x32
-	Parameters: 0
-	Flags: Linked
-*/
 function hackernotmoving() {
-  self endon(# "death");
+  self endon("death");
   self util::waittillnotmoving();
-  self notify(# "landed");
+  self notify("landed");
 }
 
-/*
-	Name: hackerinit
-	Namespace: weaponobjects
-	Checksum: 0x6C253D37
-	Offset: 0x5F18
-	Size: 0x264
-	Parameters: 1
-	Flags: Linked
-*/
 function hackerinit(watcher) {
   self thread hackernotmoving();
   event = self util::waittill_any_return("death", "landed");
@@ -2007,9 +1245,7 @@ function hackerinit(watcher) {
     triggerorigin = self gettagorigin(self.weapon.hackertriggerorigintag);
   }
   self.hackertrigger = spawn("trigger_radius_use", triggerorigin, level.weaponobjects_hacker_trigger_width, level.weaponobjects_hacker_trigger_height);
-  /#
-  # /
-    self.hackertrigger sethintlowpriority(1);
+  self.hackertrigger sethintlowpriority(1);
   self.hackertrigger setcursorhint("HINT_NOICON", self);
   self.hackertrigger setignoreentfortrigger(self);
   self.hackertrigger enablelinkto();
@@ -2017,26 +1253,17 @@ function hackerinit(watcher) {
   if(isdefined(level.hackerhints[self.weapon.name])) {
     self.hackertrigger sethintstring(level.hackerhints[self.weapon.name].hint);
   } else {
-    self.hackertrigger sethintstring( & "MP_GENERIC_HACKING");
+    self.hackertrigger sethintstring(&"MP_GENERIC_HACKING");
   }
   self.hackertrigger setperkfortrigger("specialty_disarmexplosive");
   self.hackertrigger thread hackertriggersetvisibility(self.owner);
   self thread hackerthink(self.hackertrigger, watcher);
 }
 
-/*
-	Name: hackerthink
-	Namespace: weaponobjects
-	Checksum: 0x4ACC328D
-	Offset: 0x6188
-	Size: 0xA2
-	Parameters: 2
-	Flags: Linked
-*/
 function hackerthink(trigger, watcher) {
-  self endon(# "death");
+  self endon("death");
   for (;;) {
-    trigger waittill(# "trigger", player, instant);
+    trigger waittill("trigger", player, instant);
     if(!isdefined(instant) && !trigger hackerresult(player, self.owner)) {
       continue;
     }
@@ -2045,15 +1272,6 @@ function hackerthink(trigger, watcher) {
   }
 }
 
-/*
-	Name: itemhacked
-	Namespace: weaponobjects
-	Checksum: 0x1D78C87B
-	Offset: 0x6238
-	Size: 0x354
-	Parameters: 2
-	Flags: Linked
-*/
 function itemhacked(watcher, player) {
   self proximityalarmactivate(0, watcher);
   self.owner hackerremoveweapon(self);
@@ -2077,53 +1295,33 @@ function itemhacked(watcher, player) {
     player challenges::hackedordestroyedequipment();
   }
   if(self.weapon.rootweapon == level.weaponsatchelcharge && isdefined(player.lowermessage)) {
-    player.lowermessage settext( & "PLATFORM_SATCHEL_CHARGE_DOUBLE_TAP");
+    player.lowermessage settext(&"PLATFORM_SATCHEL_CHARGE_DOUBLE_TAP");
     player.lowermessage.alpha = 1;
     player.lowermessage fadeovertime(2);
     player.lowermessage.alpha = 0;
   }
-  self notify(# "hacked", player);
-  level notify(# "hacked", self, player);
+  self notify("hacked", player);
+  level notify("hacked", self, player);
   if(isdefined(self.camerahead)) {
-    self.camerahead notify(# "hacked", player);
+    self.camerahead notify("hacked", player);
   }
-  /#
-  # /
-    wait(0.05);
+  wait(0.05);
   if(isdefined(player) && player.sessionstate == "playing") {
-    player notify(# "grenade_fire", self, self.weapon, 1);
+    player notify("grenade_fire", self, self.weapon, 1);
   } else {
     watcher thread waitanddetonate(self, 0, undefined, self.weapon);
   }
 }
 
-/*
-	Name: hackerunfreezeplayer
-	Namespace: weaponobjects
-	Checksum: 0xCC5D4AE
-	Offset: 0x6598
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function hackerunfreezeplayer(player) {
-  self endon(# "hack_done");
-  self waittill(# "death");
+  self endon("hack_done");
+  self waittill("death");
   if(isdefined(player)) {
     player util::freeze_player_controls(0);
     player enableweapons();
   }
 }
 
-/*
-	Name: hackerresult
-	Namespace: weaponobjects
-	Checksum: 0x2AB3D6E2
-	Offset: 0x6600
-	Size: 0x2E6
-	Parameters: 2
-	Flags: Linked
-*/
 function hackerresult(player, owner) {
   success = 1;
   time = gettime();
@@ -2153,7 +1351,7 @@ function hackerresult(player, owner) {
       self.progressbar hud::showelem();
       self.progressbar hud::updatebar(0.01, 1 / hacktime);
       self.progresstext = player hud::createprimaryprogressbartext();
-      self.progresstext settext( & "MP_HACKING");
+      self.progresstext settext(&"MP_HACKING");
       self.progresstext hud::showelem();
       player playlocalsound("evt_hacker_hacking");
     }
@@ -2168,20 +1366,11 @@ function hackerresult(player, owner) {
     self.progresstext hud::destroyelem();
   }
   if(isdefined(self)) {
-    self notify(# "hack_done");
+    self notify("hack_done");
   }
   return success;
 }
 
-/*
-	Name: canhack
-	Namespace: weaponobjects
-	Checksum: 0xAD90914F
-	Offset: 0x68F0
-	Size: 0x32A
-	Parameters: 3
-	Flags: Linked
-*/
 function canhack(player, owner, weapon_check) {
   if(!isdefined(player)) {
     return false;
@@ -2258,15 +1447,6 @@ function canhack(player, owner, weapon_check) {
   return true;
 }
 
-/*
-	Name: hackerremoveweapon
-	Namespace: weaponobjects
-	Checksum: 0xB1186F91
-	Offset: 0x6C28
-	Size: 0x98
-	Parameters: 1
-	Flags: Linked
-*/
 function hackerremoveweapon(weapon_instance) {
   for (i = 0; i < self.weaponobjectwatcherarray.size; i++) {
     if(self.weaponobjectwatcherarray[i].weapon != weapon_instance.weapon.rootweapon) {
@@ -2277,15 +1457,6 @@ function hackerremoveweapon(weapon_instance) {
   }
 }
 
-/*
-	Name: proximityweaponobject_createdamagearea
-	Namespace: weaponobjects
-	Checksum: 0x3A3CEC37
-	Offset: 0x6CC8
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function proximityweaponobject_createdamagearea(watcher) {
   damagearea = spawn("trigger_radius", self.origin + (0, 0, 0 - watcher.detonateradius), level.aitriggerspawnflags | level.vehicletriggerspawnflags, watcher.detonateradius, watcher.detonateradius * 2);
   damagearea enablelinkto();
@@ -2294,15 +1465,6 @@ function proximityweaponobject_createdamagearea(watcher) {
   return damagearea;
 }
 
-/*
-	Name: proximityweaponobject_validtriggerentity
-	Namespace: weaponobjects
-	Checksum: 0xD69C2206
-	Offset: 0x6D98
-	Size: 0x206
-	Parameters: 2
-	Flags: Linked
-*/
 function proximityweaponobject_validtriggerentity(watcher, ent) {
   if(level.weaponobjectdebug != 1) {
     if(isdefined(self.owner) && ent == self.owner) {
@@ -2343,34 +1505,16 @@ function proximityweaponobject_validtriggerentity(watcher, ent) {
   return true;
 }
 
-/*
-	Name: proximityweaponobject_removespawnprotectondeath
-	Namespace: weaponobjects
-	Checksum: 0x74ED0825
-	Offset: 0x6FA8
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function proximityweaponobject_removespawnprotectondeath(ent) {
-  self endon(# "death");
+  self endon("death");
   ent util::waittill_any("death", "disconnected");
   arrayremovevalue(self.protected_entities, ent);
 }
 
-/*
-	Name: proximityweaponobject_spawnprotect
-	Namespace: weaponobjects
-	Checksum: 0x3FFB7002
-	Offset: 0x7010
-	Size: 0xF4
-	Parameters: 2
-	Flags: Linked
-*/
 function proximityweaponobject_spawnprotect(watcher, ent) {
-  self endon(# "death");
-  ent endon(# "death");
-  ent endon(# "disconnect");
+  self endon("death");
+  ent endon("death");
+  ent endon("disconnect");
   self.protected_entities[self.protected_entities.size] = ent;
   self thread proximityweaponobject_removespawnprotectondeath(ent);
   radius_sqr = watcher.detonateradius * watcher.detonateradius;
@@ -2383,15 +1527,6 @@ function proximityweaponobject_spawnprotect(watcher, ent) {
   }
 }
 
-/*
-	Name: proximityweaponobject_isspawnprotected
-	Namespace: weaponobjects
-	Checksum: 0xACDAF6D1
-	Offset: 0x7110
-	Size: 0x12C
-	Parameters: 2
-	Flags: Linked
-*/
 function proximityweaponobject_isspawnprotected(watcher, ent) {
   if(!isplayer(ent)) {
     return false;
@@ -2412,19 +1547,10 @@ function proximityweaponobject_isspawnprotected(watcher, ent) {
   return false;
 }
 
-/*
-	Name: proximityweaponobject_dodetonation
-	Namespace: weaponobjects
-	Checksum: 0x23FFA9B9
-	Offset: 0x7248
-	Size: 0x170
-	Parameters: 3
-	Flags: Linked
-*/
 function proximityweaponobject_dodetonation(watcher, ent, traceorigin) {
-  self endon(# "death");
-  self endon(# "hacked");
-  self notify(# "kill_target_detection");
+  self endon("death");
+  self endon("hacked");
+  self notify("kill_target_detection");
   if(isdefined(watcher.activatesound)) {
     self playsound(watcher.activatesound);
   }
@@ -2441,15 +1567,6 @@ function proximityweaponobject_dodetonation(watcher, ent, traceorigin) {
   }
 }
 
-/*
-	Name: proximityweaponobject_activationdelay
-	Namespace: weaponobjects
-	Checksum: 0x5DC6E7AE
-	Offset: 0x73C0
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function proximityweaponobject_activationdelay(watcher) {
   self util::waittillnotmoving();
   if(watcher.activationdelay) {
@@ -2457,50 +1574,32 @@ function proximityweaponobject_activationdelay(watcher) {
   }
 }
 
-/*
-	Name: proximityweaponobject_waittillframeendanddodetonation
-	Namespace: weaponobjects
-	Checksum: 0xA415E575
-	Offset: 0x7410
-	Size: 0xC4
-	Parameters: 3
-	Flags: Linked
-*/
 function proximityweaponobject_waittillframeendanddodetonation(watcher, ent, traceorigin) {
-  self endon(# "death");
+  self endon("death");
   dist = distance(ent.origin, self.origin);
   if(isdefined(self.activated_entity_distance)) {
     if(dist < self.activated_entity_distance) {
-      self notify(# "better_target");
+      self notify("better_target");
     } else {
       return;
     }
   }
-  self endon(# "better_target");
+  self endon("better_target");
   self.activated_entity_distance = dist;
   wait(0.05);
   proximityweaponobject_dodetonation(watcher, ent, traceorigin);
 }
 
-/*
-	Name: proximityweaponobjectdetonation
-	Namespace: weaponobjects
-	Checksum: 0xE488DEE
-	Offset: 0x74E0
-	Size: 0x158
-	Parameters: 1
-	Flags: Linked
-*/
 function proximityweaponobjectdetonation(watcher) {
-  self endon(# "death");
-  self endon(# "hacked");
-  self endon(# "kill_target_detection");
+  self endon("death");
+  self endon("hacked");
+  self endon("kill_target_detection");
   proximityweaponobject_activationdelay(watcher);
   damagearea = proximityweaponobject_createdamagearea(watcher);
   up = anglestoup(self.angles);
   traceorigin = self.origin + up;
   while (true) {
-    damagearea waittill(# "trigger", ent);
+    damagearea waittill("trigger", ent);
     if(!proximityweaponobject_validtriggerentity(watcher, ent)) {
       continue;
     }
@@ -2513,15 +1612,6 @@ function proximityweaponobjectdetonation(watcher) {
   }
 }
 
-/*
-	Name: shouldaffectweaponobject
-	Namespace: weaponobjects
-	Checksum: 0x496DB00E
-	Offset: 0x7640
-	Size: 0x1A4
-	Parameters: 2
-	Flags: Linked
-*/
 function shouldaffectweaponobject(object, watcher) {
   radius = object.weapon.explosionradius;
   distancesqr = distancesquared(self.origin, object.origin);
@@ -2543,15 +1633,6 @@ function shouldaffectweaponobject(object, watcher) {
   return dot > watcher.detectiondot;
 }
 
-/*
-	Name: deleteondeath
-	Namespace: weaponobjects
-	Checksum: 0xECD05237
-	Offset: 0x77F0
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function deleteondeath(ent) {
   self util::waittill_any("death", "hacked");
   wait(0.05);
@@ -2560,19 +1641,10 @@ function deleteondeath(ent) {
   }
 }
 
-/*
-	Name: testkillbrushonstationary
-	Namespace: weaponobjects
-	Checksum: 0xB3F708D7
-	Offset: 0x7858
-	Size: 0x15C
-	Parameters: 2
-	Flags: Linked
-*/
 function testkillbrushonstationary(a_killbrushes, player) {
-  player endon(# "disconnect");
-  self endon(# "death");
-  self waittill(# "stationary");
+  player endon("disconnect");
+  self endon("death");
+  self waittill("stationary");
   foreach(trig in a_killbrushes) {
     if(isdefined(trig) && self istouching(trig)) {
       if(!trig istriggerenabled()) {
@@ -2592,19 +1664,10 @@ function testkillbrushonstationary(a_killbrushes, player) {
   }
 }
 
-/*
-	Name: deleteonkillbrush
-	Namespace: weaponobjects
-	Checksum: 0xBCF66354
-	Offset: 0x79C0
-	Size: 0x18C
-	Parameters: 1
-	Flags: Linked
-*/
 function deleteonkillbrush(player) {
-  player endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "stationary");
+  player endon("disconnect");
+  self endon("death");
+  self endon("stationary");
   a_killbrushes = getentarray("trigger_hurt", "classname");
   self thread testkillbrushonstationary(a_killbrushes, player);
   while (true) {
@@ -2630,19 +1693,10 @@ function deleteonkillbrush(player) {
   }
 }
 
-/*
-	Name: watchweaponobjectaltdetonation
-	Namespace: weaponobjects
-	Checksum: 0x5CA1C7BF
-	Offset: 0x7B58
-	Size: 0xCA
-	Parameters: 0
-	Flags: Linked
-*/
 function watchweaponobjectaltdetonation() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "alt_detonate");
+    self waittill("alt_detonate");
     if(!isalive(self) || self util::isusingremote()) {
       continue;
     }
@@ -2654,42 +1708,24 @@ function watchweaponobjectaltdetonation() {
   }
 }
 
-/*
-	Name: watchweaponobjectaltdetonate
-	Namespace: weaponobjects
-	Checksum: 0xCED61C76
-	Offset: 0x7C30
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function watchweaponobjectaltdetonate() {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  level endon("game_ended");
   buttontime = 0;
   for (;;) {
-    self waittill(# "doubletap_detonate");
+    self waittill("doubletap_detonate");
     if(!isalive(self) && !self util::isusingremote()) {
       continue;
     }
-    self notify(# "alt_detonate");
+    self notify("alt_detonate");
     wait(0.05);
   }
 }
 
-/*
-	Name: watchweaponobjectdetonation
-	Namespace: weaponobjects
-	Checksum: 0x4B4CB0EA
-	Offset: 0x7CC0
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function watchweaponobjectdetonation() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "detonate");
+    self waittill("detonate");
     if(self isusingoffhand()) {
       weap = self getcurrentoffhand();
     } else {
@@ -2705,21 +1741,10 @@ function watchweaponobjectdetonation() {
   }
 }
 
-/*
-	Name: cleanupwatchers
-	Namespace: weaponobjects
-	Checksum: 0xD7C6DB4D
-	Offset: 0x7DC0
-	Size: 0x136
-	Parameters: 0
-	Flags: Linked
-*/
 function cleanupwatchers() {
   if(!isdefined(self.weaponobjectwatcherarray)) {
-    /#
     assert("");
-    # /
-      return;
+    return;
   }
   watchers = [];
   for (watcher = 0; watcher < self.weaponobjectwatcherarray.size; watcher++) {
@@ -2736,32 +1761,14 @@ function cleanupwatchers() {
   }
 }
 
-/*
-	Name: watchfordisconnectcleanup
-	Namespace: weaponobjects
-	Checksum: 0x9003A486
-	Offset: 0x7F00
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function watchfordisconnectcleanup() {
-  self waittill(# "disconnect");
+  self waittill("disconnect");
   cleanupwatchers();
 }
 
-/*
-	Name: deleteweaponobjectson
-	Namespace: weaponobjects
-	Checksum: 0x221BDA1B
-	Offset: 0x7F30
-	Size: 0xB0
-	Parameters: 0
-	Flags: Linked
-*/
 function deleteweaponobjectson() {
   self thread watchfordisconnectcleanup();
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isplayer(self)) {
     return;
   }
@@ -2774,33 +1781,13 @@ function deleteweaponobjectson() {
   }
 }
 
-/*
-	Name: saydamaged
-	Namespace: weaponobjects
-	Checksum: 0x199C0A4D
-	Offset: 0x7FE8
-	Size: 0x6E
-	Parameters: 2
-	Flags: None
-*/
 function saydamaged(orig, amount) {
-  /#
   for (i = 0; i < 60; i++) {
     print3d(orig, "" + amount);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: showheadicon
-	Namespace: weaponobjects
-	Checksum: 0xB75D0F50
-	Offset: 0x8060
-	Size: 0x29C
-	Parameters: 1
-	Flags: None
-*/
 function showheadicon(trigger) {
   triggerdetectid = trigger.detectid;
   useid = -1;
@@ -2835,15 +1822,6 @@ function showheadicon(trigger) {
   self.bombsquadids[triggerdetectid] = undefined;
 }
 
-/*
-	Name: friendlyfirecheck
-	Namespace: weaponobjects
-	Checksum: 0x6D5D4A21
-	Offset: 0x8308
-	Size: 0x230
-	Parameters: 3
-	Flags: Linked
-*/
 function friendlyfirecheck(owner, attacker, forcedfriendlyfirerule) {
   if(!isdefined(owner)) {
     return true;
@@ -2851,9 +1829,7 @@ function friendlyfirecheck(owner, attacker, forcedfriendlyfirerule) {
   if(!level.teambased) {
     return true;
   }
-  friendlyfirerule = [
-    [level.figure_out_friendly_fire]
-  ](undefined);
+  friendlyfirerule = [[level.figure_out_friendly_fire]](undefined);
   if(isdefined(forcedfriendlyfirerule)) {
     friendlyfirerule = forcedfriendlyfirerule;
   }
@@ -2891,47 +1867,20 @@ function friendlyfirecheck(owner, attacker, forcedfriendlyfirerule) {
   return false;
 }
 
-/*
-	Name: onspawnhatchet
-	Namespace: weaponobjects
-	Checksum: 0x8F34F670
-	Offset: 0x8540
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawnhatchet(watcher, player) {
   if(isdefined(level.playthrowhatchet)) {
     player[[level.playthrowhatchet]]();
   }
 }
 
-/*
-	Name: onspawncrossbowbolt
-	Namespace: weaponobjects
-	Checksum: 0x1EB4F530
-	Offset: 0x8580
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawncrossbowbolt(watcher, player) {
   self.delete_on_death = 1;
   self thread onspawncrossbowbolt_internal(watcher, player);
 }
 
-/*
-	Name: onspawncrossbowbolt_internal
-	Namespace: weaponobjects
-	Checksum: 0x9F901473
-	Offset: 0x85C8
-	Size: 0xD4
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawncrossbowbolt_internal(watcher, player) {
-  player endon(# "disconnect");
-  self endon(# "death");
+  player endon("disconnect");
+  self endon("death");
   wait(0.25);
   linkedent = self getlinkedent();
   if(!isdefined(linkedent) || !isvehicle(linkedent)) {
@@ -2944,52 +1893,25 @@ function onspawncrossbowbolt_internal(watcher, player) {
   }
 }
 
-/*
-	Name: dieonentitydeath
-	Namespace: weaponobjects
-	Checksum: 0xC3E90E6
-	Offset: 0x86A8
-	Size: 0x96
-	Parameters: 2
-	Flags: Linked
-*/
 function dieonentitydeath(entity, player) {
-  player endon(# "disconnect");
-  self endon(# "death");
+  player endon("disconnect");
+  self endon("death");
   alreadydead = entity.dead === 1 || (isdefined(entity.health) && entity.health < 0);
   if(!alreadydead) {
-    entity waittill(# "death");
+    entity waittill("death");
   }
-  self notify(# "death");
+  self notify("death");
 }
 
-/*
-	Name: onspawncrossbowboltimpact
-	Namespace: weaponobjects
-	Checksum: 0x20A3C85E
-	Offset: 0x8748
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawncrossbowboltimpact(s_watcher, e_player) {
   self.delete_on_death = 1;
   self thread onspawncrossbowboltimpact_internal(s_watcher, e_player);
 }
 
-/*
-	Name: onspawncrossbowboltimpact_internal
-	Namespace: weaponobjects
-	Checksum: 0x7ADE11B
-	Offset: 0x8790
-	Size: 0x104
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawncrossbowboltimpact_internal(s_watcher, e_player) {
-  self endon(# "death");
-  e_player endon(# "disconnect");
-  self waittill(# "stationary");
+  self endon("death");
+  e_player endon("disconnect");
+  self waittill("stationary");
   s_watcher thread waitandfizzleout(self, 0);
   foreach(n_index, e_object in s_watcher.objectarray) {
     if(self == e_object) {
@@ -2999,17 +1921,8 @@ function onspawncrossbowboltimpact_internal(s_watcher, e_player) {
   cleanweaponobjectarray(s_watcher);
 }
 
-/*
-	Name: onspawnspecialcrossbowtrigger
-	Namespace: weaponobjects
-	Checksum: 0xC5177EB5
-	Offset: 0x88A0
-	Size: 0x31C
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawnspecialcrossbowtrigger(watcher, player) {
-  self endon(# "death");
+  self endon("death");
   self setowner(player);
   self setteam(player.pers["team"]);
   self.owner = player;
@@ -3050,26 +1963,15 @@ function onspawnspecialcrossbowtrigger(watcher, player) {
     self.hatchetpickuptrigger linkto(triggerparentent);
   }
   self thread watchspecialcrossbowtrigger(self.hatchetpickuptrigger, watcher.pickup, watcher.pickupsoundplayer, watcher.pickupsound);
-  /#
   thread switch_team(self, watcher, player);
-  # /
-    self thread watchshutdown(player);
+  self thread watchshutdown(player);
 }
 
-/*
-	Name: watchspecialcrossbowtrigger
-	Namespace: weaponobjects
-	Checksum: 0x3E871BE9
-	Offset: 0x8BC8
-	Size: 0x186
-	Parameters: 4
-	Flags: Linked
-*/
 function watchspecialcrossbowtrigger(trigger, callback, playersoundonuse, npcsoundonuse) {
-  self endon(# "delete");
-  self endon(# "hacked");
+  self endon("delete");
+  self endon("hacked");
   while (true) {
-    trigger waittill(# "trigger", player);
+    trigger waittill("trigger", player);
     if(!isalive(player)) {
       continue;
     }
@@ -3094,17 +1996,8 @@ function watchspecialcrossbowtrigger(trigger, callback, playersoundonuse, npcsou
   }
 }
 
-/*
-	Name: onspawnhatchettrigger
-	Namespace: weaponobjects
-	Checksum: 0x13227FC
-	Offset: 0x8D58
-	Size: 0x31C
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawnhatchettrigger(watcher, player) {
-  self endon(# "death");
+  self endon("death");
   self setowner(player);
   self setteam(player.pers["team"]);
   self.owner = player;
@@ -3145,26 +2038,15 @@ function onspawnhatchettrigger(watcher, player) {
     self.hatchetpickuptrigger linkto(triggerparentent);
   }
   self thread watchhatchettrigger(self.hatchetpickuptrigger, watcher.pickup, watcher.pickupsoundplayer, watcher.pickupsound);
-  /#
   thread switch_team(self, watcher, player);
-  # /
-    self thread watchshutdown(player);
+  self thread watchshutdown(player);
 }
 
-/*
-	Name: watchhatchettrigger
-	Namespace: weaponobjects
-	Checksum: 0x4317A9B4
-	Offset: 0x9080
-	Size: 0x282
-	Parameters: 4
-	Flags: Linked
-*/
 function watchhatchettrigger(trigger, callback, playersoundonuse, npcsoundonuse) {
-  self endon(# "delete");
-  self endon(# "hacked");
+  self endon("delete");
+  self endon("hacked");
   while (true) {
-    trigger waittill(# "trigger", player);
+    trigger waittill("trigger", player);
     if(!isalive(player)) {
       continue;
     }
@@ -3201,15 +2083,6 @@ function watchhatchettrigger(trigger, callback, playersoundonuse, npcsoundonuse)
   }
 }
 
-/*
-	Name: get_held_weapon_match_or_root_match
-	Namespace: weaponobjects
-	Checksum: 0x77A9C063
-	Offset: 0x9310
-	Size: 0x13E
-	Parameters: 1
-	Flags: Linked
-*/
 function get_held_weapon_match_or_root_match(weapon) {
   pweapons = self getweaponslist(1);
   foreach(pweapon in pweapons) {
@@ -3225,15 +2098,6 @@ function get_held_weapon_match_or_root_match(weapon) {
   return undefined;
 }
 
-/*
-	Name: get_player_crossbow_weapon
-	Namespace: weaponobjects
-	Checksum: 0xDB9CA7D
-	Offset: 0x9458
-	Size: 0x11E
-	Parameters: 0
-	Flags: Linked
-*/
 function get_player_crossbow_weapon() {
   pweapons = self getweaponslist(1);
   crossbow = getweapon("special_crossbow");
@@ -3246,18 +2110,9 @@ function get_player_crossbow_weapon() {
   return undefined;
 }
 
-/*
-	Name: onspawnretrievableweaponobject
-	Namespace: weaponobjects
-	Checksum: 0x48C8AD67
-	Offset: 0x9580
-	Size: 0x60C
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawnretrievableweaponobject(watcher, player) {
-  self endon(# "death");
-  self endon(# "hacked");
+  self endon("death");
+  self endon("hacked");
   self setowner(player);
   self setteam(player.pers["team"]);
   self.owner = player;
@@ -3299,7 +2154,7 @@ function onspawnretrievableweaponobject(watcher, player) {
     if(isdefined(level.retrievehints[watcher.name])) {
       self.pickuptrigger sethintstring(level.retrievehints[watcher.name].hint);
     } else {
-      self.pickuptrigger sethintstring( & "MP_GENERIC_PICKUP");
+      self.pickuptrigger sethintstring(&"MP_GENERIC_PICKUP");
     }
     self.pickuptrigger setteamfortrigger(player.pers["team"]);
     if(isdefined(triggerparentent)) {
@@ -3323,38 +2178,18 @@ function onspawnretrievableweaponobject(watcher, player) {
     if(isdefined(level.destroyhints[watcher.name])) {
       self.enemytrigger sethintstring(level.destroyhints[watcher.name].hint);
     } else {
-      self.enemytrigger sethintstring( & "MP_GENERIC_DESTROY");
+      self.enemytrigger sethintstring(&"MP_GENERIC_DESTROY");
     }
     self thread watchusetrigger(self.enemytrigger, watcher.ondestroyed);
   }
-  /#
   thread switch_team(self, watcher, player);
-  # /
-    self thread watchshutdown(player);
+  self thread watchshutdown(player);
 }
 
-/*
-	Name: destroyent
-	Namespace: weaponobjects
-	Checksum: 0x1B3A93A8
-	Offset: 0x9B98
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function destroyent() {
   self delete();
 }
 
-/*
-	Name: pickup
-	Namespace: weaponobjects
-	Checksum: 0xE8FC221D
-	Offset: 0x9BC0
-	Size: 0x26C
-	Parameters: 1
-	Flags: Linked
-*/
 function pickup(player) {
   if(!self.weapon.anyplayercanretrieve && isdefined(self.owner) && self.owner != player) {
     return;
@@ -3363,7 +2198,7 @@ function pickup(player) {
   if(self.weapon.ammocountequipment > 0 && isdefined(self.ammo)) {
     ammoleftequipment = self.ammo;
   }
-  self notify(# "picked_up");
+  self notify("picked_up");
   self.playdialog = 0;
   self destroyent();
   heldweapon = player get_held_weapon_match_or_root_match(self.weapon);
@@ -3391,17 +2226,8 @@ function pickup(player) {
   player setweaponammoclip(heldweapon, clip_ammo);
 }
 
-/*
-	Name: pickupcrossbowbolt
-	Namespace: weaponobjects
-	Checksum: 0xAC2F0E17
-	Offset: 0x9E38
-	Size: 0x8C
-	Parameters: 2
-	Flags: Linked
-*/
 function pickupcrossbowbolt(player, heldweapon) {
-  self notify(# "picked_up");
+  self notify("picked_up");
   self.playdialog = 0;
   self destroyent();
   stock_ammo = player getweaponammostock(heldweapon);
@@ -3409,15 +2235,6 @@ function pickupcrossbowbolt(player, heldweapon) {
   player setweaponammostock(heldweapon, stock_ammo);
 }
 
-/*
-	Name: ondestroyed
-	Namespace: weaponobjects
-	Checksum: 0x55B06FB1
-	Offset: 0x9ED0
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function ondestroyed(attacker) {
   playfx(level._effect["tacticalInsertionFizzle"], self.origin);
   self playsound("dst_tac_insert_break");
@@ -3427,15 +2244,6 @@ function ondestroyed(attacker) {
   self delete();
 }
 
-/*
-	Name: watchshutdown
-	Namespace: weaponobjects
-	Checksum: 0x4C7878EE
-	Offset: 0x9F70
-	Size: 0x15C
-	Parameters: 1
-	Flags: Linked
-*/
 function watchshutdown(player) {
   self util::waittill_any("death", "hacked", "detonating");
   pickuptrigger = self.pickuptrigger;
@@ -3460,20 +2268,11 @@ function watchshutdown(player) {
   }
 }
 
-/*
-	Name: watchusetrigger
-	Namespace: weaponobjects
-	Checksum: 0xA88D1CBE
-	Offset: 0xA0D8
-	Size: 0x25A
-	Parameters: 4
-	Flags: Linked
-*/
 function watchusetrigger(trigger, callback, playersoundonuse, npcsoundonuse) {
-  self endon(# "delete");
-  self endon(# "hacked");
+  self endon("delete");
+  self endon("hacked");
   while (true) {
-    trigger waittill(# "trigger", player);
+    trigger waittill("trigger", player);
     if(isdefined(self.detonated) && self.detonated == 1) {
       if(isdefined(trigger)) {
         trigger delete();
@@ -3509,15 +2308,6 @@ function watchusetrigger(trigger, callback, playersoundonuse, npcsoundonuse) {
   }
 }
 
-/*
-	Name: createretrievablehint
-	Namespace: weaponobjects
-	Checksum: 0xE8D3B64E
-	Offset: 0xA340
-	Size: 0x6A
-	Parameters: 2
-	Flags: Linked
-*/
 function createretrievablehint(name, hint) {
   retrievehint = spawnstruct();
   retrievehint.name = name;
@@ -3525,15 +2315,6 @@ function createretrievablehint(name, hint) {
   level.retrievehints[name] = retrievehint;
 }
 
-/*
-	Name: createhackerhint
-	Namespace: weaponobjects
-	Checksum: 0xEE07352A
-	Offset: 0xA3B8
-	Size: 0x6A
-	Parameters: 2
-	Flags: Linked
-*/
 function createhackerhint(name, hint) {
   hackerhint = spawnstruct();
   hackerhint.name = name;
@@ -3541,15 +2322,6 @@ function createhackerhint(name, hint) {
   level.hackerhints[name] = hackerhint;
 }
 
-/*
-	Name: createdestroyhint
-	Namespace: weaponobjects
-	Checksum: 0xE0EB667B
-	Offset: 0xA430
-	Size: 0x6A
-	Parameters: 2
-	Flags: Linked
-*/
 function createdestroyhint(name, hint) {
   destroyhint = spawnstruct();
   destroyhint.name = name;
@@ -3557,15 +2329,6 @@ function createdestroyhint(name, hint) {
   level.destroyhints[name] = destroyhint;
 }
 
-/*
-	Name: setupreconeffect
-	Namespace: weaponobjects
-	Checksum: 0x10424D35
-	Offset: 0xA4A8
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function setupreconeffect() {
   if(!isdefined(self)) {
     return;
@@ -3579,15 +2342,6 @@ function setupreconeffect() {
   }
 }
 
-/*
-	Name: useteamequipmentclientfield
-	Namespace: weaponobjects
-	Checksum: 0x7667216F
-	Offset: 0xA548
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function useteamequipmentclientfield(watcher) {
   if(isdefined(watcher)) {
     if(!isdefined(watcher.notequipment)) {
@@ -3599,15 +2353,6 @@ function useteamequipmentclientfield(watcher) {
   return false;
 }
 
-/*
-	Name: getwatcherforweapon
-	Namespace: weaponobjects
-	Checksum: 0x56F47BA6
-	Offset: 0xA588
-	Size: 0x96
-	Parameters: 1
-	Flags: Linked
-*/
 function getwatcherforweapon(weapon) {
   if(!isdefined(self)) {
     return undefined;
@@ -3624,15 +2369,6 @@ function getwatcherforweapon(weapon) {
   return undefined;
 }
 
-/*
-	Name: destroy_other_teams_supplemental_watcher_objects
-	Namespace: weaponobjects
-	Checksum: 0xD4A3D6CE
-	Offset: 0xA628
-	Size: 0xEC
-	Parameters: 2
-	Flags: None
-*/
 function destroy_other_teams_supplemental_watcher_objects(attacker, weapon) {
   if(level.teambased) {
     foreach(team in level.teams) {
@@ -3645,15 +2381,6 @@ function destroy_other_teams_supplemental_watcher_objects(attacker, weapon) {
   destroy_supplemental_watcher_objects(attacker, "free", weapon);
 }
 
-/*
-	Name: destroy_supplemental_watcher_objects
-	Namespace: weaponobjects
-	Checksum: 0x99C5D786
-	Offset: 0xA720
-	Size: 0x17E
-	Parameters: 3
-	Flags: Linked
-*/
 function destroy_supplemental_watcher_objects(attacker, team, weapon) {
   foreach(item in level.supplementalwatcherobjects) {
     if(!isdefined(item.weapon)) {
@@ -3675,48 +2402,20 @@ function destroy_supplemental_watcher_objects(attacker, team, weapon) {
   }
 }
 
-/*
-	Name: add_supplemental_object
-	Namespace: weaponobjects
-	Checksum: 0x54675ACA
-	Offset: 0xA8A8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function add_supplemental_object(object) {
   level.supplementalwatcherobjects[level.supplementalwatcherobjects.size] = object;
   object thread watch_supplemental_object_death();
 }
 
-/*
-	Name: watch_supplemental_object_death
-	Namespace: weaponobjects
-	Checksum: 0x52B5CA6C
-	Offset: 0xA8F0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_supplemental_object_death() {
-  self waittill(# "death");
+  self waittill("death");
   arrayremovevalue(level.supplementalwatcherobjects, self);
 }
 
-/*
-	Name: switch_team
-	Namespace: weaponobjects
-	Checksum: 0x7B0A97FC
-	Offset: 0xA928
-	Size: 0x198
-	Parameters: 3
-	Flags: Linked
-*/
 function switch_team(entity, watcher, owner) {
-  /#
-  self notify(# "stop_disarmthink");
-  self endon(# "stop_disarmthink");
-  self endon(# "death");
+  self notify("stop_disarmthink");
+  self endon("stop_disarmthink");
+  self endon("death");
   setdvar("", "");
   while (true) {
     wait(0.5);
@@ -3742,5 +2441,4 @@ function switch_team(entity, watcher, owner) {
       setdvar("", "");
     }
   }
-  # /
 }

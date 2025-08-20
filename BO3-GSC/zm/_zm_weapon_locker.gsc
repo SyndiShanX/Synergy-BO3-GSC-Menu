@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weapon_locker.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\zm\_zm_audio;
@@ -6,18 +10,8 @@
 #using scripts\zm\_zm_unitrigger;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace _zm_weapon_locker;
 
-/*
-	Name: main
-	Namespace: _zm_weapon_locker
-	Checksum: 0x6B94BF62
-	Offset: 0x2A8
-	Size: 0x8C
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   if(!isdefined(level.weapon_locker_map)) {
     level.weapon_locker_map = level.script;
@@ -27,75 +21,30 @@ function main() {
   array::thread_all(weapon_lockers, & triggerweaponslockerwatch);
 }
 
-/*
-	Name: wl_has_stored_weapondata
-	Namespace: _zm_weapon_locker
-	Checksum: 0x39C2B763
-	Offset: 0x340
-	Size: 0x1E
-	Parameters: 0
-	Flags: None
-*/
 function wl_has_stored_weapondata() {
   if(level.weapon_locker_online) {} else {
     return isdefined(self.stored_weapon_data);
   }
 }
 
-/*
-	Name: wl_get_stored_weapondata
-	Namespace: _zm_weapon_locker
-	Checksum: 0xED6E3818
-	Offset: 0x368
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function wl_get_stored_weapondata() {
   if(level.weapon_locker_online) {} else {
     return self.stored_weapon_data;
   }
 }
 
-/*
-	Name: wl_clear_stored_weapondata
-	Namespace: _zm_weapon_locker
-	Checksum: 0x91D1283
-	Offset: 0x390
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function wl_clear_stored_weapondata() {
   if(level.weapon_locker_online) {} else {
     self.stored_weapon_data = undefined;
   }
 }
 
-/*
-	Name: wl_set_stored_weapondata
-	Namespace: _zm_weapon_locker
-	Checksum: 0xAC0BF029
-	Offset: 0x3B8
-	Size: 0x28
-	Parameters: 1
-	Flags: None
-*/
 function wl_set_stored_weapondata(weapondata) {
   if(level.weapon_locker_online) {} else {
     self.stored_weapon_data = weapondata;
   }
 }
 
-/*
-	Name: triggerweaponslockerwatch
-	Namespace: _zm_weapon_locker
-	Checksum: 0xFBD35371
-	Offset: 0x3E8
-	Size: 0x214
-	Parameters: 0
-	Flags: None
-*/
 function triggerweaponslockerwatch() {
   unitrigger_stub = spawnstruct();
   unitrigger_stub.origin = self.origin;
@@ -129,15 +78,6 @@ function triggerweaponslockerwatch() {
   zm_unitrigger::register_static_unitrigger(unitrigger_stub, & triggerweaponslockerthink);
 }
 
-/*
-	Name: triggerweaponslockerisvalidweapon
-	Namespace: _zm_weapon_locker
-	Checksum: 0x48A60A6D
-	Offset: 0x608
-	Size: 0x7E
-	Parameters: 1
-	Flags: None
-*/
 function triggerweaponslockerisvalidweapon(weapon) {
   weapon = zm_weapons::get_base_weapon(weapon);
   if(!zm_weapons::is_weapon_included(weapon)) {
@@ -149,15 +89,6 @@ function triggerweaponslockerisvalidweapon(weapon) {
   return true;
 }
 
-/*
-	Name: triggerweaponslockerisvalidweaponpromptupdate
-	Namespace: _zm_weapon_locker
-	Checksum: 0x5DAC4E0E
-	Offset: 0x690
-	Size: 0x354
-	Parameters: 2
-	Flags: None
-*/
 function triggerweaponslockerisvalidweaponpromptupdate(player, weapon) {
   retrievingweapon = player wl_has_stored_weapondata();
   if(!retrievingweapon) {
@@ -165,16 +96,16 @@ function triggerweaponslockerisvalidweaponpromptupdate(player, weapon) {
     if(weapon == level.weaponnone) {
       self setcursorhint("HINT_NOICON");
       if(!triggerweaponslockerisvalidweapon(weapon)) {
-        self sethintstring( & "ZOMBIE_WEAPON_LOCKER_DENY");
+        self sethintstring(&"ZOMBIE_WEAPON_LOCKER_DENY");
       } else {
-        self sethintstring( & "ZOMBIE_WEAPON_LOCKER_STORE");
+        self sethintstring(&"ZOMBIE_WEAPON_LOCKER_STORE");
       }
     } else {
       self setcursorhint("HINT_WEAPON", weapon);
       if(!triggerweaponslockerisvalidweapon(weapon)) {
-        self sethintstring( & "ZOMBIE_WEAPON_LOCKER_DENY_FILL");
+        self sethintstring(&"ZOMBIE_WEAPON_LOCKER_DENY_FILL");
       } else {
-        self sethintstring( & "ZOMBIE_WEAPON_LOCKER_STORE_FILL");
+        self sethintstring(&"ZOMBIE_WEAPON_LOCKER_STORE_FILL");
       }
     }
   } else {
@@ -190,46 +121,28 @@ function triggerweaponslockerisvalidweaponpromptupdate(player, weapon) {
       if(!triggerweaponslockerisvalidweapon(weapon)) {
         if(weapon == level.weaponnone) {
           self setcursorhint("HINT_NOICON", weapon);
-          self sethintstring( & "ZOMBIE_WEAPON_LOCKER_DENY");
+          self sethintstring(&"ZOMBIE_WEAPON_LOCKER_DENY");
         } else {
           self setcursorhint("HINT_WEAPON", weapon);
-          self sethintstring( & "ZOMBIE_WEAPON_LOCKER_DENY_FILL");
+          self sethintstring(&"ZOMBIE_WEAPON_LOCKER_DENY_FILL");
         }
         return;
       }
     }
     self setcursorhint("HINT_WEAPON", weapontogive);
-    self sethintstring( & "ZOMBIE_WEAPON_LOCKER_GRAB_FILL");
+    self sethintstring(&"ZOMBIE_WEAPON_LOCKER_GRAB_FILL");
   }
 }
 
-/*
-	Name: triggerweaponslockerthinkupdateprompt
-	Namespace: _zm_weapon_locker
-	Checksum: 0x29EC76EC
-	Offset: 0x9F0
-	Size: 0x40
-	Parameters: 1
-	Flags: None
-*/
 function triggerweaponslockerthinkupdateprompt(player) {
   self triggerweaponslockerisvalidweaponpromptupdate(player, player getcurrentweapon());
   return true;
 }
 
-/*
-	Name: triggerweaponslockerthink
-	Namespace: _zm_weapon_locker
-	Checksum: 0xF9DCB9B5
-	Offset: 0xA38
-	Size: 0x6C0
-	Parameters: 0
-	Flags: None
-*/
 function triggerweaponslockerthink() {
   self.parent_player thread triggerweaponslockerweaponchangethink(self);
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     retrievingweapon = player wl_has_stored_weapondata();
     if(!retrievingweapon) {
       curweapon = player getcurrentweapon();
@@ -239,10 +152,8 @@ function triggerweaponslockerthink() {
       }
       weapondata = player zm_weapons::get_player_weapondata(player);
       player wl_set_stored_weapondata(weapondata);
-      /#
       assert(curweapon == weapondata[""], "");
-      # /
-        player takeweapon(curweapon);
+      player takeweapon(curweapon);
       primaries = player getweaponslistprimaries();
       if(isdefined(primaries[0])) {
         player switchtoweapon(primaries[0]);
@@ -269,7 +180,7 @@ function triggerweaponslockerthink() {
       curweap_base = zm_weapons::get_base_weapon(curweapon);
       weap_base = zm_weapons::get_base_weapon(weapontogive);
       if(player zm_weapons::has_weapon_or_upgrade(weap_base) && weap_base != curweap_base) {
-        self sethintstring( & "ZOMBIE_WEAPON_LOCKER_DENY");
+        self sethintstring(&"ZOMBIE_WEAPON_LOCKER_DENY");
         wait(3);
         self triggerweaponslockerisvalidweaponpromptupdate(player, player getcurrentweapon());
         continue;
@@ -278,7 +189,7 @@ function triggerweaponslockerthink() {
       if(isdefined(primaries) && primaries.size >= maxweapons || weapontogive == curweapon) {
         curweapon = player zm_weapons::switch_from_alt_weapon(curweapon);
         if(!triggerweaponslockerisvalidweapon(curweapon)) {
-          self sethintstring( & "ZOMBIE_WEAPON_LOCKER_DENY");
+          self sethintstring(&"ZOMBIE_WEAPON_LOCKER_DENY");
           wait(3);
           self triggerweaponslockerisvalidweaponpromptupdate(player, player getcurrentweapon());
           continue;
@@ -297,41 +208,23 @@ function triggerweaponslockerthink() {
         player switchtoweapon(weapondata["weapon"]);
         self triggerweaponslockerisvalidweaponpromptupdate(player, player getcurrentweapon());
       }
-      level notify(# "weapon_locker_grab");
+      level notify("weapon_locker_grab");
       player playsoundtoplayer("evt_fridge_locker_open", player);
     }
     wait(0.5);
   }
 }
 
-/*
-	Name: triggerweaponslockerweaponchangethink
-	Namespace: _zm_weapon_locker
-	Checksum: 0x5877EC12
-	Offset: 0x1100
-	Size: 0x70
-	Parameters: 1
-	Flags: None
-*/
 function triggerweaponslockerweaponchangethink(trigger) {
-  self endon(# "disconnect");
-  self endon(# "death");
-  trigger endon(# "kill_trigger");
+  self endon("disconnect");
+  self endon("death");
+  trigger endon("kill_trigger");
   while (true) {
-    self waittill(# "weapon_change", newweapon);
+    self waittill("weapon_change", newweapon);
     trigger triggerweaponslockerisvalidweaponpromptupdate(self, newweapon);
   }
 }
 
-/*
-	Name: add_weapon_locker_mapping
-	Namespace: _zm_weapon_locker
-	Checksum: 0x9991D4B7
-	Offset: 0x1178
-	Size: 0x3E
-	Parameters: 2
-	Flags: None
-*/
 function add_weapon_locker_mapping(fromweapon, toweapon) {
   if(!isdefined(level.remap_weapon_locker_weapons)) {
     level.remap_weapon_locker_weapons = [];
@@ -339,15 +232,6 @@ function add_weapon_locker_mapping(fromweapon, toweapon) {
   level.remap_weapon_locker_weapons[fromweapon] = toweapon;
 }
 
-/*
-	Name: remap_weapon
-	Namespace: _zm_weapon_locker
-	Checksum: 0xE8B5956D
-	Offset: 0x11C0
-	Size: 0x456
-	Parameters: 2
-	Flags: None
-*/
 function remap_weapon(weapondata, maptable) {
   weapon = weapondata["weapon"].rootweapon;
   att = undefined;

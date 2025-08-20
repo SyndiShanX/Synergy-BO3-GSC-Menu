@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\bgbs\_zm_bgb_disorderly_combat.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\aat_shared;
 #using scripts\shared\ai\zombie_utility;
@@ -14,31 +18,12 @@
 #using scripts\zm\_zm_powerups;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_bgb_disorderly_combat;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0xF8ED0BCC
-	Offset: 0x3B0
-	Size: 0x44
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_bgb_disorderly_combat", & __init__, & __main__, "bgb");
 }
 
-/*
-	Name: __init__
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0xAA7C8B1C
-	Offset: 0x400
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -49,15 +34,6 @@ function __init__() {
   level.var_5013e65c = [];
 }
 
-/*
-	Name: __main__
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x53464231
-	Offset: 0x4A0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -65,44 +41,17 @@ function __main__() {
   function_32710943();
 }
 
-/*
-	Name: enable
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x7BCFE5E3
-	Offset: 0x4D8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function enable() {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "bgb_update");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("bgb_update");
   self function_7039f685();
 }
 
-/*
-	Name: disable
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0xF5DEC5E0
-	Offset: 0x520
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function disable() {
   function_bd7f98af();
 }
 
-/*
-	Name: function_32710943
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x7DB249BE
-	Offset: 0x540
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_32710943() {
   var_dd341085 = getarraykeys(level.zombie_weapons);
   foreach(var_134a15b0 in var_dd341085) {
@@ -114,47 +63,20 @@ function function_32710943() {
   }
 }
 
-/*
-	Name: function_a2ab8d19
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x9DDDFA3B
-	Offset: 0x648
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function function_a2ab8d19(var_390e457) {
   arrayremovevalue(level.var_8fcdc919, var_390e457);
 }
 
-/*
-	Name: function_32818605
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x1601F055
-	Offset: 0x680
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_32818605() {
   if(!self.ismeleeweapon && !self.isgrenadeweapon && !self function_f0cecf3c()) {
     array::add(level.var_8fcdc919, self, 0);
   }
 }
 
-/*
-	Name: function_7039f685
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x3A61DE60
-	Offset: 0x6E0
-	Size: 0x34E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7039f685() {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "bgb_update");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("bgb_update");
   level.var_8fcdc919 = array::randomize(level.var_8fcdc919);
   self setperk("specialty_ammodrainsfromstockfirst");
   self thread disable_weapons();
@@ -203,36 +125,18 @@ function function_7039f685() {
   }
 }
 
-/*
-	Name: function_dedb7bff
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x99D0311D
-	Offset: 0xA38
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dedb7bff() {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "bgb_update");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("bgb_update");
   wait(5);
   self playsoundtoplayer("zmb_bgb_disorderly_5seconds", self);
 }
 
-/*
-	Name: disable_weapons
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x26973370
-	Offset: 0xA90
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function disable_weapons() {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
-  self endon(# "bgb_update");
+  self endon("disconnect");
+  self endon("bled_out");
+  self endon("bgb_update");
   while (true) {
     waittillframeend();
     self disableweaponcycling();
@@ -241,15 +145,6 @@ function disable_weapons() {
   }
 }
 
-/*
-	Name: function_4035ce17
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0xCE0C0F39
-	Offset: 0xB00
-	Size: 0x1A6
-	Parameters: 3
-	Flags: Linked
-*/
 function function_4035ce17(n_index, b_upgraded, var_77bd95a) {
   if(n_index >= level.var_8fcdc919.size) {
     level.var_8fcdc919 = array::randomize(level.var_8fcdc919);
@@ -271,21 +166,10 @@ function function_4035ce17(n_index, b_upgraded, var_77bd95a) {
     self bgb::do_one_shot_use(1);
     return true;
   }
-  /#
   println("" + var_e3c04036.displayname);
-  # /
-    return false;
+  return false;
 }
 
-/*
-	Name: function_f0cecf3c
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x102EF4D5
-	Offset: 0xCB0
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f0cecf3c() {
   switch (self.name) {
     case "ar_marksman":
@@ -307,18 +191,9 @@ function function_f0cecf3c() {
   return false;
 }
 
-/*
-	Name: function_bd7f98af
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0xEBF79993
-	Offset: 0xD50
-	Size: 0x182
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bd7f98af() {
-  self endon(# "disconnect");
-  self endon(# "bled_out");
+  self endon("disconnect");
+  self endon("bled_out");
   self endon("bgb_update_give_" + "zm_bgb_disorderly_combat");
   self thread function_be4232bc();
   self unsetperk("specialty_ammodrainsfromstockfirst");
@@ -338,34 +213,16 @@ function function_bd7f98af() {
     self.aat = arraycopy(self.var_cc73883d);
     self.var_cc73883d = undefined;
   }
-  self notify(# "hash_46a5bae0");
+  self notify("hash_46a5bae0");
 }
 
-/*
-	Name: function_be4232bc
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0xCBEC705C
-	Offset: 0xEE0
-	Size: 0x2E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_be4232bc() {
-  self endon(# "hash_46a5bae0");
-  self waittill(# "bled_out");
+  self endon("hash_46a5bae0");
+  self waittill("bled_out");
   self.var_8cee13f3 = undefined;
   self.var_fe555a38 = undefined;
 }
 
-/*
-	Name: function_1f90c35a
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x460964ED
-	Offset: 0xF18
-	Size: 0x22
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1f90c35a() {
   if(isdefined(level.var_464197de)) {
     return self[[level.var_464197de]]();
@@ -373,30 +230,12 @@ function function_1f90c35a() {
   return 0;
 }
 
-/*
-	Name: function_8a5ef15f
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x18EB50ED
-	Offset: 0xF48
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8a5ef15f() {
   while (self.is_drinking > 0 || zm_utility::is_placeable_mine(self.currentweapon) || zm_equipment::is_equipment(self.currentweapon) || self zm_utility::is_player_revive_tool(self.currentweapon) || level.weaponnone == self.currentweapon || self zm_equipment::hacker_active() || self laststand::player_is_in_laststand() || self function_1f90c35a()) {
     wait(0.05);
   }
 }
 
-/*
-	Name: function_c7d73bac
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0xF6B7C8F0
-	Offset: 0x1028
-	Size: 0xBA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c7d73bac(str_name) {
   arrayremovevalue(level.var_5013e65c, str_name);
   level.var_5013e65c = array::randomize(level.var_5013e65c);
@@ -408,15 +247,6 @@ function function_c7d73bac(str_name) {
   level.var_5013e65c[level.var_5013e65c.size] = str_name;
 }
 
-/*
-	Name: has_weapon
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x575CFA8C
-	Offset: 0x10F0
-	Size: 0xBE
-	Parameters: 1
-	Flags: Linked
-*/
 function has_weapon(var_382bb75) {
   a_weapons = self getweaponslistprimaries();
   w_base = zm_weapons::get_base_weapon(var_382bb75);
@@ -430,15 +260,6 @@ function has_weapon(var_382bb75) {
   return false;
 }
 
-/*
-	Name: function_7087df78
-	Namespace: zm_bgb_disorderly_combat
-	Checksum: 0x1C90CA94
-	Offset: 0x11B8
-	Size: 0x56
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7087df78(e_player) {
   var_dd27188c = 2;
   if(e_player hasperk("specialty_additionalprimaryweapon")) {

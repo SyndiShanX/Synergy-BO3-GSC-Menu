@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_craftables.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -6,18 +10,8 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\craftables\_zm_craftables;
-
 #namespace zm_tomb_craftables;
 
-/*
-	Name: init_craftables
-	Namespace: zm_tomb_craftables
-	Checksum: 0x4FA199F3
-	Offset: 0x680
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_craftables() {
   level.craftable_piece_count = 4;
   zm_craftables::add_zombie_craftable("equip_dieseldrone");
@@ -32,15 +26,6 @@ function init_craftables() {
   level thread zm_craftables::set_clientfield_craftables_code_callbacks();
 }
 
-/*
-	Name: include_craftables
-	Namespace: zm_tomb_craftables
-	Checksum: 0x848867A4
-	Offset: 0x780
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function include_craftables() {
   zm_craftables::include_zombie_craftable("equip_dieseldrone");
   zm_craftables::include_zombie_craftable("shovel");
@@ -51,15 +36,6 @@ function include_craftables() {
   zm_craftables::include_zombie_craftable("gramophone");
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_tomb_craftables
-	Checksum: 0x9A15B3B8
-	Offset: 0x838
-	Size: 0xBCC
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   bits = 1;
   clientfield::register("world", "piece_quadrotor_zm_body", 21000, bits, "int", & zm_utility::setsharedinventoryuimodels, 0, 0);

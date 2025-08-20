@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_cosmodrome.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\audio_shared;
@@ -40,32 +44,13 @@
 #using scripts\zm\zm_cosmodrome_amb;
 #using scripts\zm\zm_cosmodrome_ffotd;
 #using scripts\zm\zm_cosmodrome_fx;
-
 #namespace zm_cosmodrome;
 
-/*
-	Name: opt_in
-	Namespace: zm_cosmodrome
-	Checksum: 0xBC6FD27B
-	Offset: 0x1E08
-	Size: 0x1C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec opt_in() {
   level.aat_in_use = 1;
   level.bgb_in_use = 1;
 }
 
-/*
-	Name: main
-	Namespace: zm_cosmodrome
-	Checksum: 0x1D5A3D1A
-	Offset: 0x1E30
-	Size: 0x28C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   zm_cosmodrome_ffotd::main_start();
   level.default_game_mode = "zclassic";
@@ -97,31 +82,13 @@ function main() {
   zm_cosmodrome_ffotd::main_end();
 }
 
-/*
-	Name: function_82a94b2c
-	Namespace: zm_cosmodrome
-	Checksum: 0x1BF86409
-	Offset: 0x20C8
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function function_82a94b2c(localclientnum) {
   setsaveddvar("phys_buoyancy", 1);
   level thread function_85c8e13c(localclientnum);
 }
 
-/*
-	Name: function_85c8e13c
-	Namespace: zm_cosmodrome
-	Checksum: 0x5DACB551
-	Offset: 0x2118
-	Size: 0xA32
-	Parameters: 1
-	Flags: Linked
-*/
 function function_85c8e13c(localclientnum) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
     var_f4570d42 = randomint(5);
     switch (var_f4570d42) {
@@ -267,30 +234,12 @@ function function_85c8e13c(localclientnum) {
   }
 }
 
-/*
-	Name: function_6ac83719
-	Namespace: zm_cosmodrome
-	Checksum: 0x3AD0C86
-	Offset: 0x2B58
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6ac83719() {
   visionset_mgr::init_fog_vol_to_visionset_monitor("zombie_cosmodrome", 0.01);
   visionset_mgr::fog_vol_to_visionset_set_suffix("");
   visionset_mgr::fog_vol_to_visionset_set_info(0, "zombie_cosmodrome");
 }
 
-/*
-	Name: function_c07d3f2c
-	Namespace: zm_cosmodrome
-	Checksum: 0x713CFB03
-	Offset: 0x2BC0
-	Size: 0xD0
-	Parameters: 7
-	Flags: Linked
-*/
 function function_c07d3f2c(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     player = getlocalplayers()[localclientnum];
@@ -301,15 +250,6 @@ function function_c07d3f2c(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_d0429093
-	Namespace: zm_cosmodrome
-	Checksum: 0xC240C67A
-	Offset: 0x2C98
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_d0429093(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     if(isdefined(level.intro_done) && !level.intro_done) {
@@ -323,15 +263,6 @@ function function_d0429093(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_e470dce
-	Namespace: zm_cosmodrome
-	Checksum: 0xC71C2EAD
-	Offset: 0x2D90
-	Size: 0x16C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_e470dce(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     level.var_f2fba834 = 1;
@@ -348,15 +279,6 @@ function function_e470dce(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: function_87f08b47
-	Namespace: zm_cosmodrome
-	Checksum: 0xAE75706D
-	Offset: 0x2F08
-	Size: 0x136
-	Parameters: 7
-	Flags: Linked
-*/
 function function_87f08b47(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     level.var_f2fba834 = 0;
@@ -373,15 +295,6 @@ function function_87f08b47(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_2f143630
-	Namespace: zm_cosmodrome
-	Checksum: 0x88099171
-	Offset: 0x3048
-	Size: 0xA4
-	Parameters: 5
-	Flags: Linked
-*/
 function function_2f143630(var_54168c72, var_f8308617, n_wait, var_2e141209, var_862916dc) {
   visionset_mgr::fog_vol_to_visionset_set_suffix(var_54168c72);
   visionset_mgr::fog_vol_to_visionset_set_info(0, "zombie_cosmodrome", var_f8308617);
@@ -390,15 +303,6 @@ function function_2f143630(var_54168c72, var_f8308617, n_wait, var_2e141209, var
   visionset_mgr::fog_vol_to_visionset_set_info(0, "zombie_cosmodrome", var_862916dc);
 }
 
-/*
-	Name: function_ea758913
-	Namespace: zm_cosmodrome
-	Checksum: 0x79FA4513
-	Offset: 0x30F8
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ea758913() {
   if(isdefined(level.var_f2fba834) && level.var_f2fba834 && isdefined(level.var_90e9447c) && !level.var_90e9447c) {
     level.var_90e9447c = 1;
@@ -407,15 +311,6 @@ function function_ea758913() {
   }
 }
 
-/*
-	Name: register_client_fields
-	Namespace: zm_cosmodrome
-	Checksum: 0x85555357
-	Offset: 0x3188
-	Size: 0x754
-	Parameters: 0
-	Flags: Linked
-*/
 function register_client_fields() {
   clientfield::register("scriptmover", "zombie_has_eyes", 21000, 1, "int", & zm::zombie_eyes_clientfield_cb, 0, 0);
   clientfield::register("actor", "COSMO_SOULPULL", 21000, 1, "int", & actor_flag_soulpull_handler, 0, 0);
@@ -445,26 +340,17 @@ function register_client_fields() {
   clientfield::register("world", "COSMO_VISIONSET_MONKEY", 21000, 1, "int", & function_e470dce, 0, 0);
 }
 
-/*
-	Name: function_d87a7dcc
-	Namespace: zm_cosmodrome
-	Checksum: 0xC4372349
-	Offset: 0x38E8
-	Size: 0x16A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d87a7dcc() {
   var_bd7ba30 = 0;
   while (true) {
     if(!level clientfield::get("zombie_power_on")) {
       if(var_bd7ba30) {
-        level notify(# "power_controlled_light");
+        level notify("power_controlled_light");
       }
       level util::waittill_any("power_on", "pwr", "ZPO");
     }
     level._power_on = 1;
-    level notify(# "power_controlled_light");
+    level notify("power_controlled_light");
     players = getlocalplayers();
     for (i = 0; i < players.size; i++) {
       level thread setup_lander_screens(i);
@@ -475,28 +361,10 @@ function function_d87a7dcc() {
   }
 }
 
-/*
-	Name: include_weapons
-	Namespace: zm_cosmodrome
-	Checksum: 0x6BD479AB
-	Offset: 0x3A60
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function include_weapons() {
   zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_cosmodrome_weapons.csv", 1);
 }
 
-/*
-	Name: radar_dish_init
-	Namespace: zm_cosmodrome
-	Checksum: 0x43888848
-	Offset: 0x3A90
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function radar_dish_init() {
   radar_dish = getentarray(0, "zombie_cosmodrome_radar_dish", "targetname");
   if(isdefined(radar_dish)) {
@@ -506,37 +374,17 @@ function radar_dish_init() {
   }
 }
 
-/*
-	Name: radar_dish_rotate
-	Namespace: zm_cosmodrome
-	Checksum: 0xFF82D4B5
-	Offset: 0x3B20
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function radar_dish_rotate() {
   wait(0.1);
   while (true) {
     self rotateyaw(360, 10);
-    self waittill(# "rotatedone");
+    self waittill("rotatedone");
   }
 }
 
-/*
-	Name: perk_wire_fx_client
-	Namespace: zm_cosmodrome
-	Checksum: 0x1B4BD602
-	Offset: 0x3B70
-	Size: 0x20E
-	Parameters: 2
-	Flags: None
-*/
 function perk_wire_fx_client(client_num, done_notify) {
-  /#
   println("" + client_num);
-  # /
-    targ = struct::get(self.target, "targetname");
+  targ = struct::get(self.target, "targetname");
   if(!isdefined(targ)) {
     return;
   }
@@ -545,10 +393,8 @@ function perk_wire_fx_client(client_num, done_notify) {
   fx = playfxontag(client_num, level._effect["wire_spark"], mover, "tag_origin");
   while (isdefined(targ)) {
     if(isdefined(targ.target)) {
-      /#
       println((("" + client_num) + "") + targ.target);
-      # /
-        target = struct::get(targ.target, "targetname");
+      target = struct::get(targ.target, "targetname");
       mover moveto(target.origin, 0.5);
       wait(0.5);
       targ = target;
@@ -556,56 +402,27 @@ function perk_wire_fx_client(client_num, done_notify) {
       break;
     }
   }
-  level notify(# "spark_done");
+  level notify("spark_done");
   mover delete();
   level notify(done_notify);
 }
 
-/*
-	Name: tele_spark_audio_mover
-	Namespace: zm_cosmodrome
-	Checksum: 0x2AD100BD
-	Offset: 0x3D88
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function tele_spark_audio_mover(fake_ent) {
-  level endon(# "spark_done");
+  level endon("spark_done");
   while (true) {
     wait(0.05);
   }
 }
 
-/*
-	Name: actor_flag_soulpull_handler
-	Namespace: zm_cosmodrome
-	Checksum: 0xE15CC649
-	Offset: 0x3DC0
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function actor_flag_soulpull_handler(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     self thread soul_pull(localclientnum);
   }
 }
 
-/*
-	Name: soul_pull
-	Namespace: zm_cosmodrome
-	Checksum: 0xF1EC976F
-	Offset: 0x3E28
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked
-*/
 function soul_pull(client_num) {
-  /#
   println((("" + self.origin) + "") + level.nml_spark_pull.origin);
-  # /
-    mover = spawn(client_num, self.origin, "script_model");
+  mover = spawn(client_num, self.origin, "script_model");
   mover setmodel("tag_origin");
   fx = playfxontag(client_num, level._effect["soul_spark"], mover, "tag_origin");
   wait(1);
@@ -614,15 +431,6 @@ function soul_pull(client_num) {
   mover delete();
 }
 
-/*
-	Name: init_cosmodrome_box_screens
-	Namespace: zm_cosmodrome
-	Checksum: 0xBB09FE26
-	Offset: 0x3F68
-	Size: 0x1FC
-	Parameters: 0
-	Flags: Linked
-*/
 function init_cosmodrome_box_screens() {
   level._cosmodrome_fire_sale = array("p7_zm_asc_cam_monitor_screen_fsale1", "p7_zm_asc_cam_monitor_screen_fsale2");
   level.magic_box_tv_off = array("p7_zm_asc_cam_monitor_screen_off");
@@ -640,15 +448,6 @@ function init_cosmodrome_box_screens() {
   level._custom_box_monitor = & cosmodrome_screen_switch;
 }
 
-/*
-	Name: cosmodrome_screen_switch
-	Namespace: zm_cosmodrome
-	Checksum: 0x42D04C78
-	Offset: 0x4170
-	Size: 0x186
-	Parameters: 3
-	Flags: Linked
-*/
 function cosmodrome_screen_switch(client_num, state, oldstate) {
   cosmodrome_tv_init(client_num);
   if(state == "n") {
@@ -675,15 +474,6 @@ function cosmodrome_screen_switch(client_num, state, oldstate) {
   }
 }
 
-/*
-	Name: cosmodrome_tv_init
-	Namespace: zm_cosmodrome
-	Checksum: 0xBD2C2496
-	Offset: 0x4300
-	Size: 0xE6
-	Parameters: 1
-	Flags: Linked
-*/
 function cosmodrome_tv_init(client_num) {
   if(!isdefined(level.cosmodrome_tvs)) {
     level.cosmodrome_tvs = [];
@@ -699,15 +489,6 @@ function cosmodrome_tv_init(client_num) {
   }
 }
 
-/*
-	Name: magic_box_screen_swap
-	Namespace: zm_cosmodrome
-	Checksum: 0xC3B74BFB
-	Offset: 0x43F0
-	Size: 0xF0
-	Parameters: 2
-	Flags: Linked
-*/
 function magic_box_screen_swap(model_array, endon_notify) {
   self endon(endon_notify);
   while (true) {
@@ -723,15 +504,6 @@ function magic_box_screen_swap(model_array, endon_notify) {
   }
 }
 
-/*
-	Name: play_magic_box_tv_audio
-	Namespace: zm_cosmodrome
-	Checksum: 0xDD23B5A4
-	Offset: 0x44E8
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function play_magic_box_tv_audio(state) {
   self.alias = "amb_tv_static";
   if(state == "n") {
@@ -750,67 +522,22 @@ function play_magic_box_tv_audio(state) {
   }
 }
 
-/*
-	Name: function_89e03497
-	Namespace: zm_cosmodrome
-	Checksum: 0xA80DDED4
-	Offset: 0x45A8
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_89e03497(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   level function_18769931(localclientnum, newval, "catwalk_zip_door");
 }
 
-/*
-	Name: function_429d7872
-	Namespace: zm_cosmodrome
-	Checksum: 0xF82369D3
-	Offset: 0x4618
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_429d7872(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   level function_18769931(localclientnum, newval, "base_entry_zip_door");
 }
 
-/*
-	Name: function_7eaa1812
-	Namespace: zm_cosmodrome
-	Checksum: 0x75A39D3E
-	Offset: 0x4688
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_7eaa1812(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   level function_18769931(localclientnum, newval, "centrifuge_zip_door");
 }
 
-/*
-	Name: function_686d40af
-	Namespace: zm_cosmodrome
-	Checksum: 0x9E4F3075
-	Offset: 0x46F8
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_686d40af(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   level function_18769931(localclientnum, newval, "storage_zip_door");
 }
 
-/*
-	Name: function_18769931
-	Namespace: zm_cosmodrome
-	Checksum: 0x929F070A
-	Offset: 0x4768
-	Size: 0x18C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_18769931(localclientnum, n_state, door_name) {
   sound_count = 0;
   doors = getentarray(localclientnum, door_name, "targetname");
@@ -828,15 +555,6 @@ function function_18769931(localclientnum, n_state, door_name) {
   }
 }
 
-/*
-	Name: function_b2c64ce4
-	Namespace: zm_cosmodrome
-	Checksum: 0xD7589C4C
-	Offset: 0x4900
-	Size: 0x7E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b2c64ce4(n_state) {
   switch (n_state) {
     case 1: {
@@ -862,15 +580,6 @@ function function_b2c64ce4(n_state) {
   }
 }
 
-/*
-	Name: function_b27e98c0
-	Namespace: zm_cosmodrome
-	Checksum: 0x9C4D7931
-	Offset: 0x4988
-	Size: 0xCE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b27e98c0(var_2291984a) {
   open_pos = struct::get(self.target, "targetname");
   start_pos = struct::get(open_pos.target, "targetname");
@@ -886,15 +595,6 @@ function function_b27e98c0(var_2291984a) {
   return start_pos.origin;
 }
 
-/*
-	Name: function_53c16d30
-	Namespace: zm_cosmodrome
-	Checksum: 0xBECAF23C
-	Offset: 0x4A60
-	Size: 0x28
-	Parameters: 1
-	Flags: Linked
-*/
 function function_53c16d30(v_pos) {
   if(self.origin != v_pos) {
     return true;
@@ -902,15 +602,6 @@ function function_53c16d30(v_pos) {
   return false;
 }
 
-/*
-	Name: rocket_fx
-	Namespace: zm_cosmodrome
-	Checksum: 0x476904E8
-	Offset: 0x4A98
-	Size: 0xAC
-	Parameters: 7
-	Flags: Linked
-*/
 function rocket_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     self.var_a13e8509 = playfxontag(localclientnum, level._effect["rocket_blast_trail"], self, "tag_engine");
@@ -919,15 +610,6 @@ function rocket_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldn
   }
 }
 
-/*
-	Name: lander_engine_fx
-	Namespace: zm_cosmodrome
-	Checksum: 0xBE5A646
-	Offset: 0x4B50
-	Size: 0x3CC
-	Parameters: 7
-	Flags: Linked
-*/
 function lander_engine_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   player = getlocalplayers()[localclientnum];
   if(newval) {
@@ -958,19 +640,10 @@ function lander_engine_fx(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: start_ground_sounds
-	Namespace: zm_cosmodrome
-	Checksum: 0xA3CFF149
-	Offset: 0x4F28
-	Size: 0x248
-	Parameters: 0
-	Flags: Linked
-*/
 function start_ground_sounds() {
-  self endon(# "entityshutdown");
-  level endon(# "save_restore");
-  self notify(# "start_ground_sounds");
+  self endon("entityshutdown");
+  level endon("save_restore");
+  self notify("start_ground_sounds");
   self.stop_ground_sounds = 0;
   trace = undefined;
   self.ground_sound_ent = spawn(0, (0, 0, 0), "script_origin");
@@ -1001,32 +674,14 @@ function start_ground_sounds() {
   }
 }
 
-/*
-	Name: function_fb377b79
-	Namespace: zm_cosmodrome
-	Checksum: 0x91F5669C
-	Offset: 0x5178
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fb377b79() {
-  self endon(# "entityshutdown");
-  level waittill(# "demo_jump");
+  self endon("entityshutdown");
+  level waittill("demo_jump");
   self delete();
 }
 
-/*
-	Name: end_ground_sounds
-	Namespace: zm_cosmodrome
-	Checksum: 0x87EF6250
-	Offset: 0x51B8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function end_ground_sounds() {
-  self endon(# "start_ground_sounds");
+  self endon("start_ground_sounds");
   self.stop_ground_sounds = 1;
   wait(3);
   if(isdefined(self) && isdefined(self.ground_sound_ent)) {
@@ -1034,15 +689,6 @@ function end_ground_sounds() {
   }
 }
 
-/*
-	Name: get_random_spot_in_player_view
-	Namespace: zm_cosmodrome
-	Checksum: 0xC2265FA3
-	Offset: 0x5218
-	Size: 0x1CC
-	Parameters: 4
-	Flags: None
-*/
 function get_random_spot_in_player_view(fwd_min, fwd_max, side_min, side_max) {
   fwd = anglestoforward(self.angles);
   scale = randomintrange(fwd_min, fwd_max);
@@ -1059,15 +705,6 @@ function get_random_spot_in_player_view(fwd_min, fwd_max, side_min, side_max) {
   return trace["position"];
 }
 
-/*
-	Name: debris_crash_and_burn
-	Namespace: zm_cosmodrome
-	Checksum: 0xC6274AA4
-	Offset: 0x53F0
-	Size: 0x184
-	Parameters: 3
-	Flags: None
-*/
 function debris_crash_and_burn(spot, client, player) {
   playfxontag(client, level._effect["debris_trail"], self, "tag_origin");
   self moveto(spot, 3.1);
@@ -1082,15 +719,6 @@ function debris_crash_and_burn(spot, client, player) {
   self delete();
 }
 
-/*
-	Name: setup_lander_screens
-	Namespace: zm_cosmodrome
-	Checksum: 0x5EEE3233
-	Offset: 0x5580
-	Size: 0xA6
-	Parameters: 1
-	Flags: Linked
-*/
 function setup_lander_screens(clientnum) {
   screens = getentarray(clientnum, "lander_screens", "targetname");
   for (i = 0; i < screens.size; i++) {
@@ -1100,15 +728,6 @@ function setup_lander_screens(clientnum) {
   }
 }
 
-/*
-	Name: lander_at_station
-	Namespace: zm_cosmodrome
-	Checksum: 0xFA38BB0E
-	Offset: 0x5630
-	Size: 0x366
-	Parameters: 2
-	Flags: Linked
-*/
 function lander_at_station(station, clientnum) {
   self util::waittill_dobj(clientnum);
   if(isdefined(self.panel_fx)) {
@@ -1149,15 +768,6 @@ function lander_at_station(station, clientnum) {
   }
 }
 
-/*
-	Name: lander_move_fx
-	Namespace: zm_cosmodrome
-	Checksum: 0x36A6B08F
-	Offset: 0x59A0
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function lander_move_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     player = getlocalplayers()[localclientnum];
@@ -1165,15 +775,6 @@ function lander_move_fx(localclientnum, oldval, newval, bnewent, binitialsnap, f
   }
 }
 
-/*
-	Name: lander_station_move_lander_marker
-	Namespace: zm_cosmodrome
-	Checksum: 0x7938D34E
-	Offset: 0x5A30
-	Size: 0x306
-	Parameters: 1
-	Flags: Linked
-*/
 function lander_station_move_lander_marker(localclientnum) {
   dest = undefined;
   x = localclientnum;
@@ -1215,15 +816,6 @@ function lander_station_move_lander_marker(localclientnum) {
   }
 }
 
-/*
-	Name: function_446c53e5
-	Namespace: zm_cosmodrome
-	Checksum: 0xD10401BB
-	Offset: 0x5D40
-	Size: 0xBE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_446c53e5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   screens = getentarray(localclientnum, "lander_screens", "targetname");
   for (i = 0; i < screens.size; i++) {
@@ -1231,15 +823,6 @@ function function_446c53e5(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_32db5393
-	Namespace: zm_cosmodrome
-	Checksum: 0xBB11744C
-	Offset: 0x5E08
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_32db5393(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval == 1) {
     level zm_cosmodrome_fx::toggle_lander_lights("red", localclientnum);
@@ -1248,15 +831,6 @@ function function_32db5393(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_f6ffc831
-	Namespace: zm_cosmodrome
-	Checksum: 0xA7C6A36F
-	Offset: 0x5EB0
-	Size: 0xBE
-	Parameters: 7
-	Flags: Linked
-*/
 function function_f6ffc831(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   switch (newval) {
     case 2: {
@@ -1278,15 +852,6 @@ function function_f6ffc831(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: launch_panel_centrifuge_status
-	Namespace: zm_cosmodrome
-	Checksum: 0x259F582C
-	Offset: 0x5F78
-	Size: 0x14C
-	Parameters: 7
-	Flags: Linked
-*/
 function launch_panel_centrifuge_status(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     if(isdefined(self.centrifuge_status)) {
@@ -1303,15 +868,6 @@ function launch_panel_centrifuge_status(localclientnum, oldval, newval, bnewent,
   }
 }
 
-/*
-	Name: launch_panel_storage_status
-	Namespace: zm_cosmodrome
-	Checksum: 0xD9A399A
-	Offset: 0x60D0
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function launch_panel_storage_status(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     if(localclientnum == 0) {
@@ -1321,15 +877,6 @@ function launch_panel_storage_status(localclientnum, oldval, newval, bnewent, bi
   }
 }
 
-/*
-	Name: launch_panel_baseentry_status
-	Namespace: zm_cosmodrome
-	Checksum: 0x760147DC
-	Offset: 0x6150
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function launch_panel_baseentry_status(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     if(localclientnum == 0) {
@@ -1339,15 +886,6 @@ function launch_panel_baseentry_status(localclientnum, oldval, newval, bnewent, 
   }
 }
 
-/*
-	Name: launch_panel_catwalk_status
-	Namespace: zm_cosmodrome
-	Checksum: 0xD33B1D3B
-	Offset: 0x61D0
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function launch_panel_catwalk_status(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     if(localclientnum == 0) {
@@ -1357,15 +895,6 @@ function launch_panel_catwalk_status(localclientnum, oldval, newval, bnewent, bi
   }
 }
 
-/*
-	Name: rocket_launch_display
-	Namespace: zm_cosmodrome
-	Checksum: 0xECFF03A
-	Offset: 0x6250
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function rocket_launch_display(localclientnum) {
   wait(1);
   rocket_screens = getentarray(localclientnum, "rocket_launch_sign", "targetname");
@@ -1387,15 +916,6 @@ function rocket_launch_display(localclientnum) {
   array::thread_all(rocket_screens, & update_rocket_display, model);
 }
 
-/*
-	Name: update_rocket_display
-	Namespace: zm_cosmodrome
-	Checksum: 0x1409F8E6
-	Offset: 0x6348
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function update_rocket_display(on_model) {
   old_model = self.model;
   for (i = 0; i < 3; i++) {
@@ -1407,19 +927,10 @@ function update_rocket_display(on_model) {
   self setmodel(on_model);
 }
 
-/*
-	Name: lander_rumble_and_quake
-	Namespace: zm_cosmodrome
-	Checksum: 0xA55E390
-	Offset: 0x63F0
-	Size: 0x232
-	Parameters: 7
-	Flags: Linked
-*/
 function lander_rumble_and_quake(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   player = getlocalplayers()[localclientnum];
-  player endon(# "death");
-  player endon(# "disconnect");
+  player endon("death");
+  player endon("disconnect");
   if(isspectating(localclientnum, 0)) {
     return;
   }
@@ -1434,24 +945,15 @@ function lander_rumble_and_quake(localclientnum, oldval, newval, bnewent, biniti
     if(isdefined(player) && isdefined(self)) {
       player earthquake(randomfloatrange(0.1, 0.2), randomfloatrange(0.2, 0.3), self.origin, 150);
     }
-    level notify(# "stop_lander_rumble");
+    level notify("stop_lander_rumble");
   }
 }
 
-/*
-	Name: do_lander_rumble_quake
-	Namespace: zm_cosmodrome
-	Checksum: 0x7BD758C6
-	Offset: 0x6630
-	Size: 0x218
-	Parameters: 1
-	Flags: Linked
-*/
 function do_lander_rumble_quake(localclientnum) {
-  level endon(# "stop_lander_rumble");
+  level endon("stop_lander_rumble");
   player = getlocalplayers()[localclientnum];
-  player endon(# "entityshutdown");
-  player endon(# "disconnect");
+  player endon("entityshutdown");
+  player endon("disconnect");
   while (true) {
     if(!isdefined(self.origin) || !isdefined(player.origin)) {
       wait(0.05);
@@ -1474,15 +976,6 @@ function do_lander_rumble_quake(localclientnum) {
   }
 }
 
-/*
-	Name: centrifuge_rumble_control
-	Namespace: zm_cosmodrome
-	Checksum: 0xC654BEE3
-	Offset: 0x6850
-	Size: 0xCE
-	Parameters: 7
-	Flags: Linked
-*/
 function centrifuge_rumble_control(local_client_num, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(local_client_num != 0) {
     return;
@@ -1493,23 +986,14 @@ function centrifuge_rumble_control(local_client_num, oldval, newval, bnewent, bi
       players[i] thread centrifuge_rumble_when_close(self, i);
     }
   } else {
-    level notify(# "centrifuge_rumble_done");
+    level notify("centrifuge_rumble_done");
   }
 }
 
-/*
-	Name: centrifuge_rumble_when_close
-	Namespace: zm_cosmodrome
-	Checksum: 0x38B7CA80
-	Offset: 0x6928
-	Size: 0x130
-	Parameters: 2
-	Flags: Linked
-*/
 function centrifuge_rumble_when_close(ent_centrifuge, int_client_num) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "centrifuge_rumble_done");
+  self endon("death");
+  self endon("disconnect");
+  level endon("centrifuge_rumble_done");
   rumble_range = 360000;
   centrifuge_rumble = "damage_heavy";
   client_num = undefined;
@@ -1529,30 +1013,12 @@ function centrifuge_rumble_when_close(ent_centrifuge, int_client_num) {
   }
 }
 
-/*
-	Name: centrifuge_clean_rumble
-	Namespace: zm_cosmodrome
-	Checksum: 0x45B603F
-	Offset: 0x6A60
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function centrifuge_clean_rumble(int_client_num) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   self stoprumble(int_client_num, "damage_heavy");
 }
 
-/*
-	Name: centrifuge_warning_lights_init
-	Namespace: zm_cosmodrome
-	Checksum: 0x989AF7C1
-	Offset: 0x6AB0
-	Size: 0x14E
-	Parameters: 7
-	Flags: Linked
-*/
 function centrifuge_warning_lights_init(local_client_num, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   while (!self hasdobj(local_client_num)) {
     wait(0.1);
@@ -1573,17 +1039,8 @@ function centrifuge_warning_lights_init(local_client_num, oldval, newval, bnewen
   }
 }
 
-/*
-	Name: monkey_lander_fx_on
-	Namespace: zm_cosmodrome
-	Checksum: 0x620C3B69
-	Offset: 0x6C08
-	Size: 0x1C6
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_lander_fx_on() {
-  self endon(# "switch_off_monkey_lander_fx");
+  self endon("switch_off_monkey_lander_fx");
   playsound(0, "zmb_ape_intro_whoosh", self.origin);
   wait(2.5);
   if(isdefined(self)) {
@@ -1605,15 +1062,6 @@ function monkey_lander_fx_on() {
   }
 }
 
-/*
-	Name: monkey_lander_fx_off
-	Namespace: zm_cosmodrome
-	Checksum: 0xCBFA65BB
-	Offset: 0x6DD8
-	Size: 0x13C
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_lander_fx_off() {
   players = getlocalplayers();
   ent_num = self getentitynumber();
@@ -1626,15 +1074,6 @@ function monkey_lander_fx_off() {
   playsound(0, "zmb_ape_intro_land", self.origin);
 }
 
-/*
-	Name: monkey_lander_fx
-	Namespace: zm_cosmodrome
-	Checksum: 0x88624C57
-	Offset: 0x6F20
-	Size: 0xC4
-	Parameters: 7
-	Flags: Linked
-*/
 function monkey_lander_fx(local_client_num, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(local_client_num != 0) {
     return;
@@ -1650,30 +1089,12 @@ function monkey_lander_fx(local_client_num, oldval, newval, bnewent, binitialsna
   }
 }
 
-/*
-	Name: samantha_is_angry
-	Namespace: zm_cosmodrome
-	Checksum: 0x16AE9243
-	Offset: 0x6FF0
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function samantha_is_angry(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     zm_cosmodrome_amb::samantha_is_angry_earthquake_and_rumbles(localclientnum);
   }
 }
 
-/*
-	Name: centrifuge_fx_spot_init
-	Namespace: zm_cosmodrome
-	Checksum: 0xEAB403BA
-	Offset: 0x7058
-	Size: 0x220
-	Parameters: 1
-	Flags: Linked
-*/
 function centrifuge_fx_spot_init(int_client_num) {
   self._centrifuge_lights_[int_client_num] = [];
   self._centrifuge_lights_[int_client_num] = array::add(self._centrifuge_lights_[int_client_num], "tag_light_bk_top", 0);
@@ -1690,15 +1111,6 @@ function centrifuge_fx_spot_init(int_client_num) {
   self._centrifuge_fx_setup = 1;
 }
 
-/*
-	Name: centrifuge_warning_lights_on
-	Namespace: zm_cosmodrome
-	Checksum: 0xAE25F620
-	Offset: 0x7280
-	Size: 0x34C
-	Parameters: 1
-	Flags: Linked
-*/
 function centrifuge_warning_lights_on(client_num) {
   for (i = 0; i < self._centrifuge_lights_[client_num].size; i++) {
     temp_mdl = spawn(client_num, self gettagorigin(self._centrifuge_lights_[client_num][i]), "script_model");
@@ -1722,32 +1134,14 @@ function centrifuge_warning_lights_on(client_num) {
   self thread centrifuge_steam_warning(client_num);
 }
 
-/*
-	Name: centrifuge_steam_warning
-	Namespace: zm_cosmodrome
-	Checksum: 0xFC9C33CB
-	Offset: 0x75D8
-	Size: 0x8E
-	Parameters: 1
-	Flags: Linked
-*/
 function centrifuge_steam_warning(client_num) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   wait(1);
   for (i = 0; i < self._centrifuge_steams_[client_num].size; i++) {
     playfxontag(client_num, level._effect["centrifuge_start_steam"], self, self._centrifuge_steams_[client_num][i]);
   }
 }
 
-/*
-	Name: centrifuge_warning_lights_off
-	Namespace: zm_cosmodrome
-	Checksum: 0x60F8A9E3
-	Offset: 0x7670
-	Size: 0xC6
-	Parameters: 1
-	Flags: Linked
-*/
 function centrifuge_warning_lights_off(client_num) {
   if(!isdefined(self._centrifuge_fx_setup)) {
     return;
@@ -1762,18 +1156,9 @@ function centrifuge_warning_lights_off(client_num) {
   self._centrifuge_light_mdls_[client_num] = [];
 }
 
-/*
-	Name: fog_apply
-	Namespace: zm_cosmodrome
-	Checksum: 0x2884C846
-	Offset: 0x7740
-	Size: 0x1DC
-	Parameters: 2
-	Flags: Linked
-*/
 function fog_apply(str_fog, int_priority) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(!isdefined(self._zombie_fog_list)) {
     self._zombie_fog_list = [];
   }
@@ -1802,18 +1187,9 @@ function fog_apply(str_fog, int_priority) {
   set_fog(fog_to_set);
 }
 
-/*
-	Name: fog_remove
-	Namespace: zm_cosmodrome
-	Checksum: 0x730742D1
-	Offset: 0x7928
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function fog_remove(str_fog) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(!isdefined(str_fog)) {
     return;
   }
@@ -1838,15 +1214,6 @@ function fog_remove(str_fog) {
   set_fog(fog_to_set);
 }
 
-/*
-	Name: get_fog_by_priority
-	Namespace: zm_cosmodrome
-	Checksum: 0x555917E8
-	Offset: 0x7AA8
-	Size: 0xDA
-	Parameters: 0
-	Flags: Linked
-*/
 function get_fog_by_priority() {
   if(!isdefined(self._zombie_fog_list)) {
     return;
@@ -1862,15 +1229,6 @@ function get_fog_by_priority() {
   return highest_score_fog;
 }
 
-/*
-	Name: setup_fog
-	Namespace: zm_cosmodrome
-	Checksum: 0xA0A37002
-	Offset: 0x7B90
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_fog() {
   util::waitforclient(0);
   wait(1);
@@ -1880,15 +1238,6 @@ function setup_fog() {
   }
 }
 
-/*
-	Name: set_fog
-	Namespace: zm_cosmodrome
-	Checksum: 0x8BFD1CF6
-	Offset: 0x7C30
-	Size: 0xBA
-	Parameters: 1
-	Flags: Linked
-*/
 function set_fog(fog_type) {
   util::waitforclient(0);
   if(!isdefined(fog_type)) {
@@ -1909,15 +1258,6 @@ function set_fog(fog_type) {
   }
 }
 
-/*
-	Name: player_lander_fog
-	Namespace: zm_cosmodrome
-	Checksum: 0x312BACC1
-	Offset: 0x7CF8
-	Size: 0xAC
-	Parameters: 7
-	Flags: Linked
-*/
 function player_lander_fog(local_client_num, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   player = getlocalplayers()[local_client_num];
   if(newval) {
@@ -1927,15 +1267,6 @@ function player_lander_fog(local_client_num, oldval, newval, bnewent, binitialsn
   }
 }
 
-/*
-	Name: setup_personality_character_exerts
-	Namespace: zm_cosmodrome
-	Checksum: 0xD318A0FF
-	Offset: 0x7DB0
-	Size: 0x1482
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_personality_character_exerts() {
   level.exert_sounds[1]["playerbreathinsound"][0] = "vox_plr_0_exert_inhale_0";
   level.exert_sounds[1]["playerbreathinsound"][1] = "vox_plr_0_exert_inhale_1";

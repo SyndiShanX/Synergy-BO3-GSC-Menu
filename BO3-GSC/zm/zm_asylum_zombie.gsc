@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_asylum_zombie.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\animation_state_machine_mocomp;
 #using scripts\shared\ai\systems\animation_state_machine_notetracks;
@@ -20,18 +24,8 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\zm_remaster_zombie;
-
 #namespace zm_asylum_zombie;
 
-/*
-	Name: init
-	Namespace: zm_asylum_zombie
-	Checksum: 0xDCCE7CDB
-	Offset: 0x3B0
-	Size: 0xA4
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   setdvar("scr_zm_use_code_enemy_selection", 0);
   level.closest_player_override = & zm_remaster_zombie::remaster_closest_player;
@@ -42,28 +36,10 @@ function autoexec init() {
   level.last_valid_position_override = & asylum_last_valid_position;
 }
 
-/*
-	Name: function_87ff545e
-	Namespace: zm_asylum_zombie
-	Checksum: 0xE71E7E3B
-	Offset: 0x460
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_87ff545e() {
   self pushactors(0);
 }
 
-/*
-	Name: asylum_last_valid_position
-	Namespace: zm_asylum_zombie
-	Checksum: 0x48308429
-	Offset: 0x488
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private asylum_last_valid_position() {
   bad_pos = (-307, -55, 226);
   var_c49c5ad0 = (-307, -60, 226);

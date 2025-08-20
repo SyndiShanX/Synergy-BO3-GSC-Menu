@@ -1,32 +1,17 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\shared\flagsys_shared;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_theater_fx.gsc
+*************************************************/
 
+#using scripts\shared\flagsys_shared;
 #namespace zm_theater_fx;
 
-/*
-	Name: main
-	Namespace: zm_theater_fx
-	Checksum: 0x192968B2
-	Offset: 0x1690
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   scriptedfx();
   precachefx();
   level thread fx_overrides();
 }
 
-/*
-	Name: fx_overrides
-	Namespace: zm_theater_fx
-	Checksum: 0x4404D4E6
-	Offset: 0x16D8
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function fx_overrides() {
   level flagsys::wait_till("load_main_complete");
   level._effect["jugger_light"] = "dlc5/zmhd/fx_perk_juggernaut";
@@ -36,15 +21,6 @@ function fx_overrides() {
   level._effect["additionalprimaryweapon_light"] = "dlc5/zmhd/fx_perk_mule_kick";
 }
 
-/*
-	Name: scriptedfx
-	Namespace: zm_theater_fx
-	Checksum: 0xE4B9AC2F
-	Offset: 0x1790
-	Size: 0x2A2
-	Parameters: 0
-	Flags: Linked
-*/
 function scriptedfx() {
   level._effect["animscript_gibtrail_fx"] = "trail/fx_trail_blood_streak";
   level._effect["large_ceiling_dust"] = "maps/zombie/fx_dust_ceiling_impact_lg_mdbrown";
@@ -72,15 +48,6 @@ function scriptedfx() {
   level._effect["auto_turret_light"] = "dlc5/zmhd/fx_zombie_auto_turret_light";
 }
 
-/*
-	Name: precachefx
-	Namespace: zm_theater_fx
-	Checksum: 0xA45B0CBA
-	Offset: 0x1A40
-	Size: 0x756
-	Parameters: 0
-	Flags: Linked
-*/
 function precachefx() {
   level._effect["fx_mp_smoke_thick_indoor"] = "maps/zombie/fx_mp_smoke_thick_indoor";
   level._effect["fx_mp_smoke_amb_indoor_misty"] = "maps/zombie/fx_zombie_theater_smoke_amb_indoor";

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_pickup_area_affect.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\doa\_doa_dev;
 #using scripts\cp\doa\_doa_fx;
@@ -12,39 +16,19 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("zombie_cymbal_monkey");
-
 #namespace namespace_4f1562f7;
 
-/*
-	Name: function_be253d27
-	Namespace: namespace_4f1562f7
-	Checksum: 0xE35CE39C
-	Offset: 0x3B0
-	Size: 0x6E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_be253d27(var_53e67bd3 = 0.6) {
-  self endon(# "death");
+  self endon("death");
   while (isdefined(self)) {
     self rotateto(self.angles + vectorscale((0, 1, 0), 180), var_53e67bd3);
     wait(var_53e67bd3);
   }
 }
 
-/*
-	Name: function_c4e6a6fb
-	Namespace: namespace_4f1562f7
-	Checksum: 0x66B4CD3C
-	Offset: 0x428
-	Size: 0xE0
-	Parameters: 3
-	Flags: Linked
-*/
 function function_c4e6a6fb(startscale, var_870d9a2 = 1, timems = 3000) {
-  self endon(# "death");
+  self endon("death");
   curscale = startscale;
   var_aa32d9f9 = (var_870d9a2 - startscale) / (timems / 50);
   endtime = gettime() + timems;
@@ -55,15 +39,6 @@ function function_c4e6a6fb(startscale, var_870d9a2 = 1, timems = 3000) {
   }
 }
 
-/*
-	Name: function_ca06d008
-	Namespace: namespace_4f1562f7
-	Checksum: 0x10A8D466
-	Offset: 0x510
-	Size: 0x39C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_ca06d008(player, origin) {
   hitp = playerphysicstrace(origin + vectorscale((0, 0, 1), 72), origin + (vectorscale((0, 0, -1), 500)));
   origin = (origin[0], origin[1], hitp[2]);
@@ -101,19 +76,10 @@ function function_ca06d008(player, origin) {
   }
 }
 
-/*
-	Name: function_963e13a0
-	Namespace: namespace_4f1562f7
-	Checksum: 0x188ACB5D
-	Offset: 0x8B8
-	Size: 0x220
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_963e13a0() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "trigger", guy);
+    self waittill("trigger", guy);
     if(isdefined(guy.var_bfd5bf9d) && guy.var_bfd5bf9d) {
       continue;
     }
@@ -149,19 +115,10 @@ function private function_963e13a0() {
   }
 }
 
-/*
-	Name: function_770e1327
-	Namespace: namespace_4f1562f7
-	Checksum: 0x1AD49281
-	Offset: 0xAE0
-	Size: 0x146
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_770e1327(trigger) {
-  self endon(# "death");
-  self notify(# "hash_770e1327");
-  self endon(# "hash_770e1327");
+  self endon("death");
+  self notify("hash_770e1327");
+  self endon("hash_770e1327");
   self.var_bfd5bf9d = 1;
   self thread namespace_eaa992c::function_285a2999("teamShift_contact");
   self thread namespace_eaa992c::function_285a2999("zombie_angry");
@@ -178,15 +135,6 @@ function private function_770e1327(trigger) {
   self.favoriteenemy = undefined;
 }
 
-/*
-	Name: timeshifterupdate
-	Namespace: namespace_4f1562f7
-	Checksum: 0xE4870E36
-	Offset: 0xC30
-	Size: 0x374
-	Parameters: 2
-	Flags: Linked
-*/
 function timeshifterupdate(player, origin) {
   hitp = playerphysicstrace(origin + vectorscale((0, 0, 1), 72), origin + (vectorscale((0, 0, -1), 500)));
   origin = (origin[0], origin[1], hitp[2]);
@@ -204,9 +152,7 @@ function timeshifterupdate(player, origin) {
   trigger.var_96ff2cda = gettime() + trigger.opentime;
   trigger.radiussq = level.doa.rules.var_942b8706 * level.doa.rules.var_942b8706;
   timetowait = player doa_utility::function_1ded48e6(level.doa.rules.var_ecfc4359);
-  /#
-  # /
-    clock thread namespace_eaa992c::function_285a2999("timeshift");
+  clock thread namespace_eaa992c::function_285a2999("timeshift");
   trigger thread function_78d20ce0();
   level util::waittill_any_timeout(player doa_utility::function_1ded48e6(level.doa.rules.var_ecfc4359), "exit_taken");
   clock thread namespace_1a381543::function_90118d8c("zmb_pwup_clock_end");
@@ -219,19 +165,10 @@ function timeshifterupdate(player, origin) {
   }
 }
 
-/*
-	Name: function_78d20ce0
-	Namespace: namespace_4f1562f7
-	Checksum: 0x74CBFDA
-	Offset: 0xFB0
-	Size: 0x1D8
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_78d20ce0() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "trigger", guy);
+    self waittill("trigger", guy);
     if(isdefined(guy.var_dd70dacd) && guy.var_dd70dacd) {
       continue;
     }
@@ -263,26 +200,15 @@ function private function_78d20ce0() {
   }
 }
 
-/*
-	Name: function_59a20c67
-	Namespace: namespace_4f1562f7
-	Checksum: 0xA4D7167A
-	Offset: 0x1190
-	Size: 0x146
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_59a20c67(trigger) {
-  self endon(# "death");
-  self notify(# "hash_59a20c67");
-  self endon(# "hash_59a20c67");
+  self endon("death");
+  self notify("hash_59a20c67");
+  self endon("hash_59a20c67");
   self.var_dd70dacd = 1;
   self thread namespace_eaa992c::function_285a2999("timeshift_contact");
   self asmsetanimationrate(0.5);
   while (isalive(self) && isdefined(trigger) && self istouching(trigger)) {
-    /#
-    # /
-      wait(0.5);
+    wait(0.5);
   }
   self thread namespace_eaa992c::turnofffx("timeshift_contact");
   wait(0.75);
@@ -290,28 +216,10 @@ function private function_59a20c67(trigger) {
   self.var_dd70dacd = undefined;
 }
 
-/*
-	Name: function_d171e15a
-	Namespace: namespace_4f1562f7
-	Checksum: 0x202ED582
-	Offset: 0x12E0
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d171e15a(player, origin) {
   level thread zombie_vortex::start_timed_vortex(origin, 128, 9, 10, undefined, player, undefined, undefined, undefined, undefined, 2);
 }
 
-/*
-	Name: function_159bb1dd
-	Namespace: namespace_4f1562f7
-	Checksum: 0xC93F1FF3
-	Offset: 0x1338
-	Size: 0x29C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_159bb1dd(player, origin) {
   hitp = playerphysicstrace(origin + vectorscale((0, 0, 1), 72), origin + (vectorscale((0, 0, -1), 500)));
   origin = (origin[0], origin[1], hitp[2]);
@@ -327,25 +235,16 @@ function function_159bb1dd(player, origin) {
   monkey makesentient();
   monkey.threatbias = 0;
   doa_utility::function_5fd5c3ea(monkey);
-  monkey endon(# "death");
+  monkey endon("death");
   level thread function_254f3480(monkey);
   monkey thread function_2271edf2(player);
   wait(player doa_utility::function_1ded48e6(level.doa.rules.monkey_fuse_time));
-  monkey notify(# "hash_2271edf2");
+  monkey notify("hash_2271edf2");
 }
 
-/*
-	Name: function_2271edf2
-	Namespace: namespace_4f1562f7
-	Checksum: 0x152C013A
-	Offset: 0x15E0
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2271edf2(player) {
-  self endon(# "death");
-  self waittill(# "hash_2271edf2");
+  self endon("death");
+  self waittill("hash_2271edf2");
   doa_utility::function_3d81b494(self);
   self thread namespace_1a381543::function_90118d8c("zmb_monkey_explo");
   self thread namespace_eaa992c::function_285a2999("monkey_explode");
@@ -357,21 +256,12 @@ function function_2271edf2(player) {
   physicsexplosionsphere(self.origin, 200, 128, 2);
   earthquake(0.3, 1, self.origin, 100);
   playrumbleonposition("artillery_rumble", self.origin);
-  self waittill(# "hash_6a404ade");
+  self waittill("hash_6a404ade");
   self delete();
 }
 
-/*
-	Name: function_254f3480
-	Namespace: namespace_4f1562f7
-	Checksum: 0xEC38ED65
-	Offset: 0x1760
-	Size: 0x40
-	Parameters: 1
-	Flags: Linked
-*/
 function function_254f3480(monkey) {
-  monkey endon(# "death");
-  level waittill(# "exit_taken", exit_trigger);
-  monkey notify(# "hash_2271edf2");
+  monkey endon("death");
+  level waittill("exit_taken", exit_trigger);
+  monkey notify("hash_2271edf2");
 }

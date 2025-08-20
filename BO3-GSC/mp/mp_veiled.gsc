@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_veiled.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -8,18 +12,8 @@
 #using scripts\shared\compass;
 #using scripts\shared\scene_shared;
 #using scripts\shared\util_shared;
-
 #namespace mp_veiled;
 
-/*
-	Name: main
-	Namespace: mp_veiled
-	Checksum: 0xAD65A792
-	Offset: 0x2D8
-	Size: 0x33C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache();
   spawnlogic::move_spawn_point("mp_dm_spawn_start", (1687.56, -465.166, 45.625), (-1164.6, 603.783, 29.625), vectorscale((0, 1, 0), 315.516));
@@ -41,26 +35,8 @@ function main() {
   level thread rocket_launch();
 }
 
-/*
-	Name: precache
-	Namespace: mp_veiled
-	Checksum: 0x99EC1590
-	Offset: 0x620
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {}
 
-/*
-	Name: rocket_launch
-	Namespace: mp_veiled
-	Checksum: 0x80B207EB
-	Offset: 0x630
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function rocket_launch() {
   var_c6821b9b = 15;
   var_810de4c4 = 45;

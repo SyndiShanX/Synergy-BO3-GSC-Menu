@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_traps.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_island_traps;
 
-/*
-	Name: init
-	Namespace: zm_island_traps
-	Checksum: 0xDF5D7F41
-	Offset: 0x218
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("world", "proptrap_downdraft_rumble", 9000, 1, "int", & proptrap_downdraft_rumble, 0, 0);
   clientfield::register("toplayer", "proptrap_downdraft_blur", 9000, 1, "int", & proptrap_downdraft_blur, 0, 0);
@@ -24,15 +18,6 @@ function init() {
   clientfield::register("toplayer", "walltrap_draft_blur", 9000, 1, "int", & walltrap_draft_blur, 0, 0);
 }
 
-/*
-	Name: proptrap_downdraft_rumble
-	Namespace: zm_island_traps
-	Checksum: 0xC9D4DB6D
-	Offset: 0x348
-	Size: 0x2EE
-	Parameters: 7
-	Flags: Linked
-*/
 function proptrap_downdraft_rumble(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   player = getlocalplayer(localclientnum);
   if(isdefined(newval) && newval) {
@@ -58,33 +43,15 @@ function proptrap_downdraft_rumble(localclientnum, oldval, newval, bnewent, bini
   }
 }
 
-/*
-	Name: proptrap_downdraft_blur
-	Namespace: zm_island_traps
-	Checksum: 0xA8BEFD82
-	Offset: 0x640
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked
-*/
 function proptrap_downdraft_blur(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self thread function_24f1be38(localclientnum, "s_proptrap_downdraft_rumble");
   } else {
-    self notify(# "hash_602aae2b");
+    self notify("hash_602aae2b");
     disablespeedblur(localclientnum);
   }
 }
 
-/*
-	Name: walltrap_draft_rumble
-	Namespace: zm_island_traps
-	Checksum: 0x27DAF088
-	Offset: 0x6D8
-	Size: 0x2EE
-	Parameters: 7
-	Flags: Linked
-*/
 function walltrap_draft_rumble(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   player = getlocalplayer(localclientnum);
   if(isdefined(newval) && newval) {
@@ -110,36 +77,18 @@ function walltrap_draft_rumble(localclientnum, oldval, newval, bnewent, binitial
   }
 }
 
-/*
-	Name: walltrap_draft_blur
-	Namespace: zm_island_traps
-	Checksum: 0x82EAEB21
-	Offset: 0x9D0
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked
-*/
 function walltrap_draft_blur(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self thread function_24f1be38(localclientnum, "s_walltrap_draft_rumble");
   } else {
-    self notify(# "hash_602aae2b");
+    self notify("hash_602aae2b");
     disablespeedblur(localclientnum);
   }
 }
 
-/*
-	Name: function_24f1be38
-	Namespace: zm_island_traps
-	Checksum: 0x81875FD7
-	Offset: 0xA68
-	Size: 0x150
-	Parameters: 2
-	Flags: Linked
-*/
 function function_24f1be38(localclientnum, str_structname) {
-  self endon(# "hash_602aae2b");
-  self endon(# "death");
+  self endon("hash_602aae2b");
+  self endon("death");
   var_719bbcb8 = struct::get_array(str_structname, "targetname");
   while (true) {
     foreach(var_dd3351d8 in var_719bbcb8) {

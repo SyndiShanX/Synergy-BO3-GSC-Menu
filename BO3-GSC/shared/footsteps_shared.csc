@@ -1,32 +1,17 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\footsteps_shared.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\audio_shared;
 #using scripts\shared\system_shared;
-
 #namespace footsteps;
 
-/*
-	Name: __init__sytem__
-	Namespace: footsteps
-	Checksum: 0x1B3A7C62
-	Offset: 0x170
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("footsteps", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: footsteps
-	Checksum: 0x2356D33
-	Offset: 0x1B0
-	Size: 0x19E
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   surfacearray = getsurfacestrings();
   movementarray = [];
@@ -54,17 +39,7 @@ function __init__() {
   }
 }
 
-/*
-	Name: checksurfacetypeiscorrect
-	Namespace: footsteps
-	Checksum: 0xE57EE82
-	Offset: 0x358
-	Size: 0x114
-	Parameters: 2
-	Flags: Linked
-*/
 function checksurfacetypeiscorrect(movetype, surfacetype) {
-  /#
   if(!isdefined(level.playerfootsounds[movetype][surfacetype])) {
     println(("" + surfacetype) + "");
     println("");
@@ -75,44 +50,21 @@ function checksurfacetypeiscorrect(movetype, surfacetype) {
     }
     println("");
   }
-  # /
 }
 
-/*
-	Name: playerjump
-	Namespace: footsteps
-	Checksum: 0x41C9C4E9
-	Offset: 0x478
-	Size: 0xCC
-	Parameters: 6
-	Flags: None
-*/
 function playerjump(client_num, player, surfacetype, firstperson, quiet, islouder) {
   if(isdefined(player.audiomaterialoverride)) {
     surfacetype = player.audiomaterialoverride;
-    /#
     checksurfacetypeiscorrect("", surfacetype);
-    # /
   }
   sound_alias = level.playerfootsounds["step_run"][surfacetype][firstperson][islouder];
   player playsound(client_num, sound_alias);
 }
 
-/*
-	Name: playerland
-	Namespace: footsteps
-	Checksum: 0x804095FA
-	Offset: 0x550
-	Size: 0x1D4
-	Parameters: 7
-	Flags: None
-*/
 function playerland(client_num, player, surfacetype, firstperson, quiet, damageplayer, islouder) {
   if(isdefined(player.audiomaterialoverride)) {
     surfacetype = player.audiomaterialoverride;
-    /#
     checksurfacetypeiscorrect("", surfacetype);
-    # /
   }
   sound_alias = level.playerfootsounds["land"][surfacetype][firstperson][islouder];
   player playsound(client_num, sound_alias);
@@ -133,15 +85,6 @@ function playerland(client_num, player, surfacetype, firstperson, quiet, damagep
   }
 }
 
-/*
-	Name: playerfoliage
-	Namespace: footsteps
-	Checksum: 0xE83C03C1
-	Offset: 0x730
-	Size: 0x9C
-	Parameters: 4
-	Flags: Linked
-*/
 function playerfoliage(client_num, player, firstperson, quiet) {
   sound_alias = "fly_movement_foliage_npc";
   if(firstperson) {
@@ -151,15 +94,6 @@ function playerfoliage(client_num, player, firstperson, quiet) {
   player playsound(client_num, sound_alias, player.origin, volume);
 }
 
-/*
-	Name: buildandcachesoundalias
-	Namespace: footsteps
-	Checksum: 0x19E5897
-	Offset: 0x7D8
-	Size: 0x234
-	Parameters: 4
-	Flags: Linked
-*/
 function buildandcachesoundalias(movementtype, surfacetype, firstperson, islouder) {
   sound_alias = "fly_" + movementtype;
   if(firstperson) {
@@ -180,31 +114,14 @@ function buildandcachesoundalias(movementtype, surfacetype, firstperson, isloude
   if(!isdefined(level.playerfootsounds[movementtype][surfacetype][firstperson])) {
     level.playerfootsounds[movementtype][surfacetype][firstperson] = [];
   }
-  /#
   assert(isarray(level.playerfootsounds));
-  # /
-    /#
   assert(isarray(level.playerfootsounds[movementtype]));
-  # /
-    /#
   assert(isarray(level.playerfootsounds[movementtype][surfacetype]));
-  # /
-    /#
   assert(isarray(level.playerfootsounds[movementtype][surfacetype][firstperson]));
-  # /
-    level.playerfootsounds[movementtype][surfacetype][firstperson][islouder] = sound_alias;
+  level.playerfootsounds[movementtype][surfacetype][firstperson][islouder] = sound_alias;
   return sound_alias;
 }
 
-/*
-	Name: do_foot_effect
-	Namespace: footsteps
-	Checksum: 0x681FD8A3
-	Offset: 0xA18
-	Size: 0x158
-	Parameters: 4
-	Flags: None
-*/
 function do_foot_effect(client_num, ground_type, foot_pos, on_fire) {
   if(!isdefined(level._optionalstepeffects)) {
     return;
@@ -212,56 +129,32 @@ function do_foot_effect(client_num, ground_type, foot_pos, on_fire) {
   if(on_fire) {
     ground_type = "fire";
   }
-  /#
   if(getdvarint("")) {
     print3d(foot_pos, ground_type, (0.5, 0.5, 0.8), 1, 3, 30);
   }
-  # /
-    for (i = 0; i < level._optionalstepeffects.size; i++) {
-      if(level._optionalstepeffects[i] == ground_type) {
-        effect = "fly_step_" + ground_type;
-        if(isdefined(level._effect[effect])) {
-          playfx(client_num, level._effect[effect], foot_pos, foot_pos + vectorscale((0, 0, 1), 100));
-          return;
-        }
+  for (i = 0; i < level._optionalstepeffects.size; i++) {
+    if(level._optionalstepeffects[i] == ground_type) {
+      effect = "fly_step_" + ground_type;
+      if(isdefined(level._effect[effect])) {
+        playfx(client_num, level._effect[effect], foot_pos, foot_pos + vectorscale((0, 0, 1), 100));
+        return;
       }
     }
+  }
 }
 
-/*
-	Name: missing_ai_footstep_callback
-	Namespace: footsteps
-	Checksum: 0x2E5C63DC
-	Offset: 0xB78
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function missing_ai_footstep_callback() {
-  /#
   type = self.archetype;
   if(!isdefined(type)) {
     type = "";
   }
   println(((("" + type) + "") + self._aitype) + "");
-  # /
 }
 
-/*
-	Name: playaifootstep
-	Namespace: footsteps
-	Checksum: 0xCED7A97A
-	Offset: 0xBF0
-	Size: 0xE2
-	Parameters: 5
-	Flags: Linked
-*/
 function playaifootstep(client_num, pos, surface, notetrack, bone) {
   if(!isdefined(self.archetype)) {
-    /#
     println("");
-    # /
-      footstepdoeverything();
+    footstepdoeverything();
     return;
   }
   if(!isdefined(level._footstepcbfuncs) || !isdefined(level._footstepcbfuncs[self.archetype])) {
@@ -269,7 +162,5 @@ function playaifootstep(client_num, pos, surface, notetrack, bone) {
     footstepdoeverything();
     return;
   }
-  [
-    [level._footstepcbfuncs[self.archetype]]
-  ](client_num, pos, surface, notetrack, bone);
+  [[level._footstepcbfuncs[self.archetype]]](client_num, pos, surface, notetrack, bone);
 }

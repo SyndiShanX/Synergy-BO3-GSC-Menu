@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_power.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -6,18 +10,8 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_island_power;
 
-/*
-	Name: init
-	Namespace: zm_island_power
-	Checksum: 0xA58A8E1A
-	Offset: 0x258
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("scriptmover", "bucket_fx", 9000, 1, "int", & bucket_fx, 0, 0);
   clientfield::register("world", "power_switch_1_fx", 9000, 1, "int", & power_switch_1_fx, 0, 0);
@@ -26,15 +20,6 @@ function init() {
   clientfield::register("scriptmover", "power_plant_glow", 9000, 1, "int", & power_plant_glow, 0, 0);
 }
 
-/*
-	Name: bucket_fx
-	Namespace: zm_island_power
-	Checksum: 0x5C8CEBD
-	Offset: 0x3D0
-	Size: 0xDC
-	Parameters: 7
-	Flags: Linked
-*/
 function bucket_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self)) {
@@ -49,15 +34,6 @@ function bucket_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldn
   }
 }
 
-/*
-	Name: power_switch_1_fx
-	Namespace: zm_island_power
-	Checksum: 0xB2C01677
-	Offset: 0x4B8
-	Size: 0x3A4
-	Parameters: 7
-	Flags: Linked
-*/
 function power_switch_1_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   a_s_fx = struct::get_array("power_switch_1_fx", "targetname");
   foreach(s_fx in a_s_fx) {
@@ -89,15 +65,6 @@ function power_switch_1_fx(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: power_switch_2_fx
-	Namespace: zm_island_power
-	Checksum: 0x8315189E
-	Offset: 0x868
-	Size: 0x3A4
-	Parameters: 7
-	Flags: Linked
-*/
 function power_switch_2_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   a_s_fx = struct::get_array("power_switch_2_fx", "targetname");
   foreach(s_fx in a_s_fx) {
@@ -129,19 +96,10 @@ function power_switch_2_fx(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_5ae9f178
-	Namespace: zm_island_power
-	Checksum: 0x3EB5843
-	Offset: 0xC18
-	Size: 0x1C0
-	Parameters: 2
-	Flags: Linked
-*/
 function function_5ae9f178(localclientnum, b_on = 1) {
-  self endon(# "entityshutdown");
-  self notify(# "hash_67a9e087");
-  self endon(# "hash_67a9e087");
+  self endon("entityshutdown");
+  self notify("hash_67a9e087");
+  self endon("hash_67a9e087");
   n_start_time = gettime();
   n_end_time = n_start_time + (2 * 1000);
   b_is_updating = 1;
@@ -165,15 +123,6 @@ function function_5ae9f178(localclientnum, b_on = 1) {
   }
 }
 
-/*
-	Name: function_8816d2aa
-	Namespace: zm_island_power
-	Checksum: 0x50BB08B9
-	Offset: 0xDE0
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function function_8816d2aa(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     scene::init("p7_fxanim_zm_island_penstock_vent_stuck_bundle");
@@ -182,15 +131,6 @@ function function_8816d2aa(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: power_plant_glow
-	Namespace: zm_island_power
-	Checksum: 0x114B2009
-	Offset: 0xE70
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked
-*/
 function power_plant_glow(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     self thread function_a88bde9b(localclientnum, 1);
@@ -199,19 +139,10 @@ function power_plant_glow(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: function_a88bde9b
-	Namespace: zm_island_power
-	Checksum: 0x77305CEE
-	Offset: 0xF00
-	Size: 0x1C0
-	Parameters: 2
-	Flags: Linked
-*/
 function function_a88bde9b(localclientnum, b_on = 1) {
-  self endon(# "entityshutdown");
-  self notify(# "hash_67a9e087");
-  self endon(# "hash_67a9e087");
+  self endon("entityshutdown");
+  self notify("hash_67a9e087");
+  self endon("hash_67a9e087");
   n_start_time = gettime();
   n_end_time = n_start_time + (2 * 1000);
   b_is_updating = 1;

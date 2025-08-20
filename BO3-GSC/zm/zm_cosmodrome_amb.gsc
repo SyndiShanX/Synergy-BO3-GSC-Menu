@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_cosmodrome_amb.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -8,18 +12,8 @@
 #using scripts\zm\_zm_audio_zhd;
 #using scripts\zm\_zm_unitrigger;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_cosmodrome_amb;
 
-/*
-	Name: main
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0x55B4A5A8
-	Offset: 0x3C0
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level._blackhole_bomb_valid_area_check = & function_a0f14d15;
   level thread function_5b4692c9();
@@ -32,29 +26,11 @@ function main() {
   level thread play_intro_music();
 }
 
-/*
-	Name: play_intro_music
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xDBD49CF6
-	Offset: 0x4A8
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function play_intro_music() {
-  level waittill(# "hash_fd9adc1e");
+  level waittill("hash_fd9adc1e");
   level thread zm_audio::sndmusicsystem_playstate("round_start_first_lander");
 }
 
-/*
-	Name: power_clangs
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0x41C9ABC6
-	Offset: 0x4E0
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function power_clangs() {
   clangs = struct::get_array("amb_power_clang", "targetname");
   for (i = 0; i < clangs.size; i++) {
@@ -63,15 +39,6 @@ function power_clangs() {
   }
 }
 
-/*
-	Name: play_cosmo_announcer_vox
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xAFAE44F0
-	Offset: 0x598
-	Size: 0xFC
-	Parameters: 3
-	Flags: Linked
-*/
 function play_cosmo_announcer_vox(alias, alarm_override, wait_override) {
   if(!isdefined(alias)) {
     return;
@@ -97,15 +64,6 @@ function play_cosmo_announcer_vox(alias, alarm_override, wait_override) {
   }
 }
 
-/*
-	Name: play_gersh_vox
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0x49B769BA
-	Offset: 0x6A0
-	Size: 0x70
-	Parameters: 1
-	Flags: Linked
-*/
 function play_gersh_vox(alias) {
   if(!isdefined(alias)) {
     return;
@@ -120,15 +78,6 @@ function play_gersh_vox(alias) {
   }
 }
 
-/*
-	Name: play_initial_alarm
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xB23EBE59
-	Offset: 0x718
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function play_initial_alarm() {
   structs = struct::get_array("amb_warning_siren", "targetname");
   wait(1);
@@ -138,108 +87,54 @@ function play_initial_alarm() {
   wait(0.5);
 }
 
-/*
-	Name: monkey_round_announcer
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xEFFF50E0
-	Offset: 0x7B8
-	Size: 0x7E
-	Parameters: 0
-	Flags: Linked
-*/
 function monkey_round_announcer() {
   wait(3);
   while (true) {
     level flag::wait_till("monkey_round");
     level thread play_cosmo_announcer_vox("vox_ann_monkey_begin");
-    level waittill(# "between_round_over");
+    level waittill("between_round_over");
     level thread play_cosmo_announcer_vox("vox_ann_monkey_end");
     wait(10);
   }
 }
 
-/*
-	Name: radio_easter_eggs
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xD5C51A1
-	Offset: 0x840
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function radio_easter_eggs() {
   var_385d0c76 = struct::get_array("radio_egg", "targetname");
   array::thread_all(var_385d0c76, & function_5fd10b57);
 }
 
-/*
-	Name: function_5fd10b57
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xC71C7D78
-	Offset: 0x8A0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5fd10b57() {
   self zm_unitrigger::create_unitrigger();
-  self waittill(# "trigger_activated");
+  self waittill("trigger_activated");
   playsoundatposition("vox_radio_egg_" + self.script_int, self.origin);
 }
 
-/*
-	Name: function_7624a208
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xBA8E27EF
-	Offset: 0x900
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7624a208() {
   level thread zm_audio_zhd::function_e753d4f();
   level flag::wait_till("snd_song_completed");
   level thread zm_audio::sndmusicsystem_playstate("abracadavre");
 }
 
-/*
-	Name: function_337aada8
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0x17F13715
-	Offset: 0x968
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_337aada8() {
   level.var_568da27 = 0;
   var_85d06ae4 = struct::get_array("egg_phone", "targetname");
   while (true) {
-    level waittill(# "hash_b524a8eb");
+    level waittill("hash_b524a8eb");
     level.var_568da27++;
     if(level.var_568da27 == var_85d06ae4.size) {
       break;
     }
   }
-  level notify(# "hash_2d7a77fa");
+  level notify("hash_2d7a77fa");
   level thread zm_audio::sndmusicsystem_playstate("not_ready_to_die");
 }
 
-/*
-	Name: function_10544d8
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xF0F7873
-	Offset: 0xA10
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_10544d8() {
-  self endon(# "phone_activated");
-  self endon(# "timeout");
+  self endon("phone_activated");
+  self endon("timeout");
   self.t_damage = spawn("trigger_damage", self.origin, 0, 5, 5);
   while (true) {
-    self.t_damage waittill(# "damage", n_amount, e_attacker, dir, point, str_means_of_death);
+    self.t_damage waittill("damage", n_amount, e_attacker, dir, point, str_means_of_death);
     if(!zm_audio_zhd::function_8090042c()) {
       continue;
     }
@@ -255,26 +150,17 @@ function function_10544d8() {
     break;
   }
   self.broken = 1;
-  self notify(# "hash_b524a8eb");
+  self notify("hash_b524a8eb");
   if(isdefined(self.var_48df29fd)) {
     self.var_48df29fd delete();
   }
-  level notify(# "hash_b524a8eb");
+  level notify("hash_b524a8eb");
   playsoundatposition("zmb_redphone_destroy", self.origin);
   self.t_damage delete();
 }
 
-/*
-	Name: init_redphone_eggs
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xD73FE40A
-	Offset: 0xBD0
-	Size: 0x268
-	Parameters: 0
-	Flags: Linked
-*/
 function init_redphone_eggs() {
-  level endon(# "hash_2d7a77fa");
+  level endon("hash_2d7a77fa");
   var_85d06ae4 = struct::get_array("egg_phone", "targetname");
   var_a008170d = array(0, 1, 2, 3, 4, 5, 6, 7, 8);
   if(var_85d06ae4.size <= 0) {
@@ -308,18 +194,9 @@ function init_redphone_eggs() {
   }
 }
 
-/*
-	Name: function_de8ef595
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0x55BE04C
-	Offset: 0xE40
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_de8ef595() {
-  level endon(# "hash_2d7a77fa");
-  self endon(# "hash_b524a8eb");
+  level endon("hash_2d7a77fa");
+  self endon("hash_b524a8eb");
   self thread function_99199901();
   self thread function_d772340();
   self thread function_10544d8();
@@ -335,31 +212,22 @@ function function_de8ef595() {
   return true;
 }
 
-/*
-	Name: function_99199901
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0x30ECC7A6
-	Offset: 0xF30
-	Size: 0x198
-	Parameters: 0
-	Flags: Linked
-*/
 function function_99199901() {
-  level endon(# "hash_2d7a77fa");
-  self endon(# "timeout");
-  self endon(# "hash_b524a8eb");
+  level endon("hash_2d7a77fa");
+  self endon("timeout");
+  self endon("hash_b524a8eb");
   self.var_7f6e3a35 = spawn("trigger_radius", self.origin - vectorscale((0, 0, 1), 200), 0, 75, 400);
   self.var_48df29fd = spawn("script_origin", self.origin);
   self.var_48df29fd playloopsound("zmb_egg_phone_loop", 0.05);
   while (true) {
-    self.var_7f6e3a35 waittill(# "trigger", who);
+    self.var_7f6e3a35 waittill("trigger", who);
     if(!isplayer(who)) {
       wait(0.05);
       continue;
     }
     while (who istouching(self.var_7f6e3a35)) {
       if(who usebuttonpressed()) {
-        self notify(# "phone_activated");
+        self notify("phone_activated");
         self.var_7f6e3a35 delete();
         self.var_48df29fd delete();
         return;
@@ -369,34 +237,16 @@ function function_99199901() {
   }
 }
 
-/*
-	Name: function_d772340
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0x82CEB9D8
-	Offset: 0x10D0
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d772340() {
-  level endon(# "hash_2d7a77fa");
-  self endon(# "phone_activated");
-  self endon(# "hash_b524a8eb");
+  level endon("hash_2d7a77fa");
+  self endon("phone_activated");
+  self endon("hash_b524a8eb");
   wait(10);
-  self notify(# "timeout");
+  self notify("timeout");
   self.var_7f6e3a35 delete();
   self.var_48df29fd delete();
 }
 
-/*
-	Name: init_doll_eggs
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xC2B93900
-	Offset: 0x1148
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function init_doll_eggs() {
   wait(10);
   for (i = 0; i < 4; i++) {
@@ -408,15 +258,6 @@ function init_doll_eggs() {
   }
 }
 
-/*
-	Name: doll_egg
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0x984750
-	Offset: 0x11E0
-	Size: 0x1B6
-	Parameters: 1
-	Flags: Linked
-*/
 function doll_egg(num) {
   if(!isdefined(self)) {
     return;
@@ -425,7 +266,7 @@ function doll_egg(num) {
   self setcursorhint("HINT_NOICON");
   alias = undefined;
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     index = zm_utility::get_player_index(player);
     switch (index) {
       case 0: {
@@ -452,15 +293,6 @@ function doll_egg(num) {
   }
 }
 
-/*
-	Name: function_a0f14d15
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xB0D56239
-	Offset: 0x13A0
-	Size: 0xBC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_a0f14d15(grenade, model, player) {
   var_7d5605b7 = getent("sndzhdeggtrig", "targetname");
   if(!isdefined(var_7d5605b7)) {
@@ -474,15 +306,6 @@ function function_a0f14d15(grenade, model, player) {
   return false;
 }
 
-/*
-	Name: function_5b4692c9
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xF346DE0A
-	Offset: 0x1468
-	Size: 0x10E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5b4692c9() {
   var_7533f11 = struct::get_array("s_ballerina_bhb", "targetname");
   if(var_7533f11.size <= 0) {
@@ -496,34 +319,16 @@ function function_5b4692c9() {
   level._blackhole_bomb_valid_area_check = undefined;
 }
 
-/*
-	Name: function_2e4843da
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0xE2E95507
-	Offset: 0x1580
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2e4843da() {
   self.var_ac086ffb = util::spawn_model(self.model, self.origin, self.angles);
   e_trig = spawn("trigger_radius", self.origin + (vectorscale((0, 0, -1), 120)), 0, 175, 200);
   e_trig.targetname = "sndzhdeggtrig";
   e_trig.s_target = self;
-  e_trig waittill(# "hash_de264026");
+  e_trig waittill("hash_de264026");
   self.var_ac086ffb delete();
   e_trig delete();
 }
 
-/*
-	Name: function_61c7f9a3
-	Namespace: zm_cosmodrome_amb
-	Checksum: 0x264A5D9E
-	Offset: 0x1668
-	Size: 0xF4
-	Parameters: 3
-	Flags: Linked
-*/
 function function_61c7f9a3(grenade, model, var_7d5605b7) {
   wait(1);
   time = 3;
@@ -531,5 +336,5 @@ function function_61c7f9a3(grenade, model, var_7d5605b7) {
   wait(time);
   playsoundatposition("zmb_gersh_teleporter_out", grenade.origin + vectorscale((0, 0, 1), 50));
   model delete();
-  var_7d5605b7 notify(# "hash_de264026");
+  var_7d5605b7 notify("hash_de264026");
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\bgbs\_zm_bgb_arms_grace.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\flag_shared;
@@ -10,31 +14,12 @@
 #using scripts\zm\_zm_powerups;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_bgb_arms_grace;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_bgb_arms_grace
-	Checksum: 0xA0B58439
-	Offset: 0x1E8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_bgb_arms_grace", & __init__, undefined, "bgb");
 }
 
-/*
-	Name: __init__
-	Namespace: zm_bgb_arms_grace
-	Checksum: 0x6FAA7CB9
-	Offset: 0x228
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -43,32 +28,14 @@ function __init__() {
   level.givestartloadout = & givestartloadout;
 }
 
-/*
-	Name: event
-	Namespace: zm_bgb_arms_grace
-	Checksum: 0x38795B6C
-	Offset: 0x2A0
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function event() {
-  self endon(# "disconnect");
-  self endon(# "bgb_update");
-  self waittill(# "bgb_about_to_take_on_bled_out");
+  self endon("disconnect");
+  self endon("bgb_update");
+  self waittill("bgb_about_to_take_on_bled_out");
   self bgb::do_one_shot_use(1);
   self.var_e445bfc6 = 1;
 }
 
-/*
-	Name: givestartloadout
-	Namespace: zm_bgb_arms_grace
-	Checksum: 0x43BEADFE
-	Offset: 0x2F8
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function givestartloadout() {
   if(isdefined(self.var_e445bfc6) && self.var_e445bfc6) {
     self.var_e445bfc6 = 0;
@@ -78,15 +45,6 @@ function givestartloadout() {
   }
 }
 
-/*
-	Name: function_f1adaf91
-	Namespace: zm_bgb_arms_grace
-	Checksum: 0x9C90067D
-	Offset: 0x360
-	Size: 0x35C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_f1adaf91(player) {
   var_f49711f9 = player getcurrentweapon();
   weapon_limit = zm_utility::get_player_weapon_limit(player);

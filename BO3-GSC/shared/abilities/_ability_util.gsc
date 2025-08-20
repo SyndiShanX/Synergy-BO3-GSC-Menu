@@ -1,19 +1,13 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\abilities\_ability_util.gsc
+*************************************************/
+
 #using scripts\shared\abilities\_ability_player;
 #using scripts\shared\abilities\_ability_power;
 #using scripts\shared\util_shared;
-
 #namespace ability_util;
 
-/*
-	Name: gadget_is_type
-	Namespace: ability_util
-	Checksum: 0xED0AF001
-	Offset: 0x140
-	Size: 0x48
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_is_type(slot, type) {
   if(!isdefined(self._gadgets_player[slot])) {
     return 0;
@@ -21,15 +15,6 @@ function gadget_is_type(slot, type) {
   return self._gadgets_player[slot].gadget_type == type;
 }
 
-/*
-	Name: gadget_slot_for_type
-	Namespace: ability_util
-	Checksum: 0xD401017C
-	Offset: 0x190
-	Size: 0x76
-	Parameters: 1
-	Flags: Linked
-*/
 function gadget_slot_for_type(type) {
   invalid = 3;
   for (i = 0; i < 3; i++) {
@@ -41,28 +26,10 @@ function gadget_slot_for_type(type) {
   return invalid;
 }
 
-/*
-	Name: gadget_is_camo_suit_on
-	Namespace: ability_util
-	Checksum: 0xD45622EC
-	Offset: 0x210
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function gadget_is_camo_suit_on() {
   return gadget_is_active(2);
 }
 
-/*
-	Name: gadget_combat_efficiency_enabled
-	Namespace: ability_util
-	Checksum: 0xB1EE0AB7
-	Offset: 0x238
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function gadget_combat_efficiency_enabled() {
   if(isdefined(self._gadget_combat_efficiency)) {
     return self._gadget_combat_efficiency;
@@ -70,15 +37,6 @@ function gadget_combat_efficiency_enabled() {
   return 0;
 }
 
-/*
-	Name: gadget_combat_efficiency_power_drain
-	Namespace: ability_util
-	Checksum: 0xE3FAF6FD
-	Offset: 0x260
-	Size: 0x94
-	Parameters: 1
-	Flags: None
-*/
 function gadget_combat_efficiency_power_drain(score) {
   powerchange = -1 * score * getdvarfloat("scr_combat_efficiency_power_loss_scalar", 0.275);
   slot = gadget_slot_for_type(15);
@@ -87,15 +45,6 @@ function gadget_combat_efficiency_power_drain(score) {
   }
 }
 
-/*
-	Name: gadget_is_camo_suit_flickering
-	Namespace: ability_util
-	Checksum: 0x138BF8A8
-	Offset: 0x300
-	Size: 0x66
-	Parameters: 0
-	Flags: None
-*/
 function gadget_is_camo_suit_flickering() {
   slot = self gadget_slot_for_type(2);
   if(slot >= 0 && slot < 3) {
@@ -106,28 +55,10 @@ function gadget_is_camo_suit_flickering() {
   return false;
 }
 
-/*
-	Name: gadget_is_escort_drone_on
-	Namespace: ability_util
-	Checksum: 0xBF190DB7
-	Offset: 0x370
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function gadget_is_escort_drone_on() {
   return gadget_is_active(5);
 }
 
-/*
-	Name: is_weapon_gadget
-	Namespace: ability_util
-	Checksum: 0xD5CDA0DC
-	Offset: 0x398
-	Size: 0x92
-	Parameters: 1
-	Flags: None
-*/
 function is_weapon_gadget(weapon) {
   foreach(gadget_key, gadget_val in level._gadgets_level) {
     if(gadget_key == weapon) {
@@ -137,15 +68,6 @@ function is_weapon_gadget(weapon) {
   return false;
 }
 
-/*
-	Name: gadget_power_reset
-	Namespace: ability_util
-	Checksum: 0xA6596205
-	Offset: 0x438
-	Size: 0x84
-	Parameters: 1
-	Flags: None
-*/
 function gadget_power_reset(gadgetweapon) {
   slot = self gadgetgetslot(gadgetweapon);
   if(slot >= 0 && slot < 3) {
@@ -154,15 +76,6 @@ function gadget_power_reset(gadgetweapon) {
   }
 }
 
-/*
-	Name: gadget_reset
-	Namespace: ability_util
-	Checksum: 0xF48973F9
-	Offset: 0x4C8
-	Size: 0x33C
-	Parameters: 4
-	Flags: None
-*/
 function gadget_reset(gadgetweapon, changedclass, roundbased, firstround) {
   if(getdvarint("gadgetEnabled") == 0) {
     return;
@@ -189,28 +102,10 @@ function gadget_reset(gadgetweapon, changedclass, roundbased, firstround) {
   }
 }
 
-/*
-	Name: gadget_power_armor_on
-	Namespace: ability_util
-	Checksum: 0xDA8321D2
-	Offset: 0x810
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function gadget_power_armor_on() {
   return gadget_is_active(4);
 }
 
-/*
-	Name: gadget_is_active
-	Namespace: ability_util
-	Checksum: 0x9807CFD6
-	Offset: 0x838
-	Size: 0x6E
-	Parameters: 1
-	Flags: Linked
-*/
 function gadget_is_active(gadgettype) {
   slot = self gadget_slot_for_type(gadgettype);
   if(slot >= 0 && slot < 3) {
@@ -221,15 +116,6 @@ function gadget_is_active(gadgettype) {
   return false;
 }
 
-/*
-	Name: gadget_has_type
-	Namespace: ability_util
-	Checksum: 0xE203E3A9
-	Offset: 0x8B0
-	Size: 0x52
-	Parameters: 1
-	Flags: None
-*/
 function gadget_has_type(gadgettype) {
   slot = self gadget_slot_for_type(gadgettype);
   if(slot >= 0 && slot < 3) {

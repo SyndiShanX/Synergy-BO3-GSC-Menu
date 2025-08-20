@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_dev.gsc
+*************************************************/
+
 #using scripts\cp\doa\_doa_arena;
 #using scripts\cp\doa\_doa_fate;
 #using scripts\cp\doa\_doa_pickups;
@@ -8,20 +12,10 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\system_shared;
-
 #namespace namespace_2f63e553;
 
-/*
-	Name: function_40206fdf
-	Namespace: namespace_2f63e553
-	Checksum: 0x5D704E08
-	Offset: 0x770
-	Size: 0x288
-	Parameters: 0
-	Flags: Linked
-*/
 function function_40206fdf() {
-  level endon(# "hash_1684cf71");
+  level endon("hash_1684cf71");
   while (true) {
     player = getplayers()[0];
     wait(0.05);
@@ -65,15 +59,6 @@ function function_40206fdf() {
   }
 }
 
-/*
-	Name: function_35d58a26
-	Namespace: namespace_2f63e553
-	Checksum: 0xD11245EC
-	Offset: 0xA00
-	Size: 0xDA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_35d58a26() {
   while (namespace_831a4a7c::function_5eb6e4d1().size == 0) {
     wait(0.05);
@@ -84,17 +69,7 @@ function function_35d58a26() {
   }
 }
 
-/*
-	Name: setupdevgui
-	Namespace: namespace_2f63e553
-	Checksum: 0xCCB7ECE2
-	Offset: 0xAE8
-	Size: 0x4A4
-	Parameters: 0
-	Flags: Linked
-*/
 function setupdevgui() {
-  /#
   execdevgui("");
   level thread devguithink();
   level thread function_40206fdf();
@@ -131,31 +106,21 @@ function setupdevgui() {
   } else {
     doa_utility::debugmsg("");
   }
-  # /
-    if(getdvarint("scr_doa_kingme_soak_think", 0)) {
-      setdvar("scr_doa_kingme_soak_think", 0);
-      setdvar("scr_doa_soak_think", 1);
-      level thread function_35d58a26();
-    }
+  if(getdvarint("scr_doa_kingme_soak_think", 0)) {
+    setdvar("scr_doa_kingme_soak_think", 0);
+    setdvar("scr_doa_soak_think", 1);
+    level thread function_35d58a26();
+  }
   if(getdvarint("scr_doa_soak_think", 0) && (!(isdefined(level.var_1575b6db) && level.var_1575b6db))) {
     level thread function_a3bba13d();
   }
 }
 
-/*
-	Name: function_92c840a6
-	Namespace: namespace_2f63e553
-	Checksum: 0xAE695569
-	Offset: 0xF98
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_92c840a6(delay = 0.1) {
-  self notify(# "hash_92c840a6");
-  self endon(# "hash_92c840a6");
-  level endon(# "hash_a291d1ee");
-  self endon(# "disconnect");
+  self notify("hash_92c840a6");
+  self endon("hash_92c840a6");
+  level endon("hash_a291d1ee");
+  self endon("disconnect");
   wait(delay);
   while (true) {
     if(self.doa.lives <= 3) {
@@ -171,18 +136,9 @@ function function_92c840a6(delay = 0.1) {
   }
 }
 
-/*
-	Name: function_a4d5519a
-	Namespace: namespace_2f63e553
-	Checksum: 0x8D98C1B0
-	Offset: 0x1098
-	Size: 0x23C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a4d5519a(pickup) {
-  self endon(# "disconnect");
-  pickup endon(# "death");
+  self endon("disconnect");
+  pickup endon("death");
   wait(randomfloatrange(0.1, 1));
   if(self isinmovemode("ufo", "noclip")) {
     return;
@@ -206,20 +162,11 @@ function function_a4d5519a(pickup) {
   doa_utility::debugmsg((("Bot is boosting at pickup:" + pickup.def.gdtname) + ".Boosts Left:") + self.doa.boosters);
 }
 
-/*
-	Name: function_733651c
-	Namespace: namespace_2f63e553
-	Checksum: 0x321D8385
-	Offset: 0x12E0
-	Size: 0x118
-	Parameters: 0
-	Flags: Linked
-*/
 function function_733651c() {
-  self endon(# "disconnect");
-  self notify(# "hash_733651c");
-  self endon(# "hash_733651c");
-  level endon(# "hash_e20ba07c");
+  self endon("disconnect");
+  self notify("hash_733651c");
+  self endon("hash_733651c");
+  level endon("hash_e20ba07c");
   while (isdefined(self)) {
     if(isdefined(self.doa.boosters) && self.doa.boosters) {
       pickupsitems = getentarray("a_pickup_item", "script_noteworthy");
@@ -234,52 +181,25 @@ function function_733651c() {
   }
 }
 
-/*
-	Name: function_7abdb1e8
-	Namespace: namespace_2f63e553
-	Checksum: 0x9C92CCFE
-	Offset: 0x1400
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7abdb1e8() {
-  level notify(# "hash_7abdb1e8");
-  level endon(# "hash_7abdb1e8");
-  level waittill(# "hash_e20ba07c");
+  level notify("hash_7abdb1e8");
+  level endon("hash_7abdb1e8");
+  level waittill("hash_e20ba07c");
   level.var_1575b6db = 0;
   doa_utility::debugmsg("DOA Soak Test [OFF]");
 }
 
-/*
-	Name: function_f71d59c
-	Namespace: namespace_2f63e553
-	Checksum: 0x9D9D9DAB
-	Offset: 0x1460
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f71d59c() {
-  level notify(# "hash_f71d59c");
-  level endon(# "hash_f71d59c");
-  level waittill(# "hash_24d3a44");
+  level notify("hash_f71d59c");
+  level endon("hash_f71d59c");
+  level waittill("hash_24d3a44");
   adddebugcommand("set devgui_bot remove_all");
 }
 
-/*
-	Name: function_a3bba13d
-	Namespace: namespace_2f63e553
-	Checksum: 0x68E748D4
-	Offset: 0x14B0
-	Size: 0x850
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a3bba13d() {
-  level notify(# "hash_a3bba13d");
-  level endon(# "hash_a3bba13d");
-  level endon(# "hash_e20ba07c");
+  level notify("hash_a3bba13d");
+  level endon("hash_a3bba13d");
+  level endon("hash_e20ba07c");
   level.botcount = 0;
   level thread function_7abdb1e8();
   level.var_1575b6db = 1;
@@ -366,24 +286,15 @@ function function_a3bba13d() {
           wait(5);
         }
         if(isdefined(level.doa.teleporter) && isdefined(level.doa.teleporter.trigger)) {
-          level.doa.teleporter.trigger notify(# "trigger");
+          level.doa.teleporter.trigger notify("trigger");
         }
       }
     }
   }
 }
 
-/*
-	Name: function_f24eee41
-	Namespace: namespace_2f63e553
-	Checksum: 0x34C478BD
-	Offset: 0x1D08
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f24eee41() {
-  level endon(# "hash_da8786df");
+  level endon("hash_da8786df");
   lockspot = self.origin;
   while (true) {
     self setorigin(lockspot);
@@ -391,15 +302,6 @@ function function_f24eee41() {
   }
 }
 
-/*
-	Name: devguithink
-	Namespace: namespace_2f63e553
-	Checksum: 0x3480E02E
-	Offset: 0x1D60
-	Size: 0x16E8
-	Parameters: 0
-	Flags: Linked
-*/
 function devguithink() {
   setdvar("zombie_devgui", "");
   setdvar("scr_spawn_pickup", "");
@@ -419,7 +321,7 @@ function devguithink() {
         level thread function_a3bba13d();
       }
     } else if(isdefined(level.var_1575b6db) && level.var_1575b6db) {
-      level notify(# "hash_e20ba07c");
+      level notify("hash_e20ba07c");
     }
     cmd = getdvarstring("zombie_devgui");
     if(cmd == "") {
@@ -485,7 +387,7 @@ function devguithink() {
         }
         doa_utility::debugmsg(("camera debug FIX ARENA CAM LOC [" + (level.var_cee29ae7 == 1 ? "ON" : "OFF")) + "]");
         level clientfield::set("debugCamera", level.var_cee29ae7);
-        level notify(# "hash_da8786df");
+        level notify("hash_da8786df");
         if(level.var_cee29ae7 == 1) {
           foreach(player in getplayers()) {
             player thread function_f24eee41();
@@ -530,7 +432,7 @@ function devguithink() {
         break;
       }
       case "unking": {
-        level notify(# "hash_a291d1ee");
+        level notify("hash_a291d1ee");
         break;
       }
       case "pickup": {
@@ -642,7 +544,7 @@ function devguithink() {
         break;
       }
       case "round": {
-        level.doa.dev_level_skipped = getdvarint(# "hash_d81b6e19") - 1;
+        level.doa.dev_level_skipped = getdvarint("hash_d81b6e19") - 1;
         flag::clear("doa_round_active");
         setdvar("timescale", "10");
         doa_utility::function_1ced251e();
@@ -702,19 +604,9 @@ function devguithink() {
   }
 }
 
-/*
-	Name: function_5e6b8376
-	Namespace: namespace_2f63e553
-	Checksum: 0x879EDB88
-	Offset: 0x3450
-	Size: 0x200
-	Parameters: 4
-	Flags: Linked
-*/
 function function_5e6b8376(origin, radius, time, color = (0, 1, 0)) {
-  /#
-  level endon(# "hash_48b870e4");
-  self endon(# "death");
+  level endon("hash_48b870e4");
+  self endon("death");
   hangtime = 0.05;
   circleres = 16;
   hemires = circleres / 2;
@@ -733,20 +625,9 @@ function function_5e6b8376(origin, radius, time, color = (0, 1, 0)) {
     }
     plotpoints(plotpoints, color, hangtime);
   }
-  # /
 }
 
-/*
-	Name: plotpoints
-	Namespace: namespace_2f63e553
-	Checksum: 0xBAB68229
-	Offset: 0x3658
-	Size: 0xFA
-	Parameters: 3
-	Flags: Linked
-*/
 function plotpoints(plotpoints, var_c75b4e78, server_frames = 1) {
-  /#
   if(plotpoints.size == 0) {
     return;
   }
@@ -758,22 +639,11 @@ function plotpoints(plotpoints, var_c75b4e78, server_frames = 1) {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: drawcylinder
-	Namespace: namespace_2f63e553
-	Checksum: 0xC42DB679
-	Offset: 0x3760
-	Size: 0x2FA
-	Parameters: 5
-	Flags: Linked
-*/
 function drawcylinder(pos, rad, height, server_frames = 1, color = (0, 0, 0)) {
-  /#
-  self endon(# "stop_cylinder");
-  self endon(# "death");
+  self endon("stop_cylinder");
+  self endon("death");
   currad = rad;
   curheight = height;
   for (server_frames = int(server_frames); server_frames; server_frames--) {
@@ -786,23 +656,12 @@ function drawcylinder(pos, rad, height, server_frames = 1, color = (0, 0, 0)) {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: debugorigin
-	Namespace: namespace_2f63e553
-	Checksum: 0xD8D2482E
-	Offset: 0x3A68
-	Size: 0x1D0
-	Parameters: 0
-	Flags: None
-*/
 function debugorigin() {
-  /#
-  self notify(# "hash_707e044");
-  self endon(# "hash_707e044");
-  self endon(# "death");
+  self notify("hash_707e044");
+  self endon("hash_707e044");
+  self endon("death");
   for (;;) {
     forward = anglestoforward(self.angles);
     forwardfar = vectorscale(forward, 30);
@@ -815,18 +674,8 @@ function debugorigin() {
     line(self.origin + forwardfar, (self.origin + forwardclose) + left, (0.9, 0.7, 0.6), 0.9);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: function_a0e51d80
-	Namespace: namespace_2f63e553
-	Checksum: 0x963F7917
-	Offset: 0x3C40
-	Size: 0x1C0
-	Parameters: 4
-	Flags: Linked
-*/
 function function_a0e51d80(point, timesec, size, color) {
   end = gettime() + (timesec * 1000);
   halfwidth = int(size / 2);
@@ -837,30 +686,17 @@ function function_a0e51d80(point, timesec, size, color) {
   h1 = point + (0, 0, halfwidth * -1);
   h2 = point + (0, 0, halfwidth);
   while (end > gettime()) {
-    /#
     line(l1, l2, color, 1, 0, 1);
     line(var_5e2b69e1, var_842de44a, color, 1, 0, 1);
     line(h1, h2, color, 1, 0, 1);
-    # /
-      wait(0.05);
+    wait(0.05);
   }
 }
 
-/*
-	Name: debugline
-	Namespace: namespace_2f63e553
-	Checksum: 0xBBBDD605
-	Offset: 0x3E08
-	Size: 0x88
-	Parameters: 4
-	Flags: Linked
-*/
 function debugline(p1, p2, timesec, color) {
   end = gettime() + (timesec * 1000);
   while (end > gettime()) {
-    /#
     line(p1, p2, color, 1, 0, 1);
-    # /
-      wait(0.05);
+    wait(0.05);
   }
 }

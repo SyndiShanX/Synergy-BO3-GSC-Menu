@@ -1,35 +1,20 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_fx.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_island_fx;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_island_fx
-	Checksum: 0x6AB58937
-	Offset: 0x1E18
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_island_fx", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_island_fx
-	Checksum: 0xFCEED3B0
-	Offset: 0x1E58
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("scriptmover", "do_fade_material", 9000, 3, "float", & do_fade_material, 0, 0);
   clientfield::register("scriptmover", "do_fade_material_slow", 9000, 3, "float", & do_fade_material_slow, 0, 0);
@@ -38,15 +23,6 @@ function __init__() {
   clientfield::register("scriptmover", "do_emissive_material_direct", 9000, 3, "float", & do_emissive_material_direct, 0, 0);
 }
 
-/*
-	Name: main
-	Namespace: zm_island_fx
-	Checksum: 0xCF57D351
-	Offset: 0x1FD0
-	Size: 0xEAA
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level._effect["zm_bgb_machine_available"] = "dlc2/island/fx_bgb_machine_available_island";
   level._effect["zm_bgb_machine_flying_elec"] = "dlc2/island/fx_bgb_machine_flying_elec_island";
@@ -184,15 +160,6 @@ function main() {
   level._effect["spider_queen_mouth_glow"] = "dlc2/island/fx_spider_queen_mouth_glow";
 }
 
-/*
-	Name: do_fade_material
-	Namespace: zm_island_fx
-	Checksum: 0xC64E0097
-	Offset: 0x2E88
-	Size: 0xAC
-	Parameters: 7
-	Flags: Linked
-*/
 function do_fade_material(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   b_on = 0;
   if(newval <= 0) {
@@ -204,15 +171,6 @@ function do_fade_material(localclientnum, oldval, newval, bnewent, binitialsnap,
   self thread function_bea149a5(localclientnum, 0, 0.05, b_on, n_alpha);
 }
 
-/*
-	Name: do_fade_material_slow
-	Namespace: zm_island_fx
-	Checksum: 0xBD8CFE3E
-	Offset: 0x2F40
-	Size: 0xAC
-	Parameters: 7
-	Flags: Linked
-*/
 function do_fade_material_slow(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   b_on = 0;
   if(newval <= 0) {
@@ -224,28 +182,10 @@ function do_fade_material_slow(localclientnum, oldval, newval, bnewent, binitial
   self thread function_bea149a5(localclientnum, 0, 0.1, b_on, n_alpha);
 }
 
-/*
-	Name: do_fade_material_direct
-	Namespace: zm_island_fx
-	Checksum: 0xABFC713C
-	Offset: 0x2FF8
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function do_fade_material_direct(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self transition_shader(localclientnum, newval, 0, 1);
 }
 
-/*
-	Name: do_emissive_material
-	Namespace: zm_island_fx
-	Checksum: 0xFEFE8769
-	Offset: 0x3060
-	Size: 0xB4
-	Parameters: 7
-	Flags: Linked
-*/
 function do_emissive_material(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   b_on = 0;
   if(newval <= 0) {
@@ -257,30 +197,12 @@ function do_emissive_material(localclientnum, oldval, newval, bnewent, binitials
   self thread function_bea149a5(localclientnum, 2, 0.05, b_on, n_alpha, 0, 0, 0);
 }
 
-/*
-	Name: do_emissive_material_direct
-	Namespace: zm_island_fx
-	Checksum: 0x6A7A582F
-	Offset: 0x3120
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function do_emissive_material_direct(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self transition_shader(localclientnum, newval, 2, 1);
 }
 
-/*
-	Name: function_bea149a5
-	Namespace: zm_island_fx
-	Checksum: 0x1E003576
-	Offset: 0x3190
-	Size: 0x2EC
-	Parameters: 8
-	Flags: Linked
-*/
 function function_bea149a5(localclientnum, var_afc7cc94, var_b05b3457, b_on, n_alpha = 1, var_abf03d83 = 0, var_c0ce8db2 = 0, var_30e780ae = 1) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(self.b_on === b_on) {
     return;
   }
@@ -330,15 +252,6 @@ function function_bea149a5(localclientnum, var_afc7cc94, var_b05b3457, b_on, n_a
   }
 }
 
-/*
-	Name: transition_shader
-	Namespace: zm_island_fx
-	Checksum: 0x9C99D191
-	Offset: 0x3488
-	Size: 0x94
-	Parameters: 4
-	Flags: Linked
-*/
 function transition_shader(localclientnum, n_value, var_afc7cc94, var_519aaca5 = 1) {
   if(var_519aaca5) {
     var_43ab126f = n_value;
@@ -348,15 +261,6 @@ function transition_shader(localclientnum, n_value, var_afc7cc94, var_519aaca5 =
   self mapshaderconstant(localclientnum, 0, "scriptVector" + var_afc7cc94, var_43ab126f, n_value, 0, 0);
 }
 
-/*
-	Name: set_fade_material
-	Namespace: zm_island_fx
-	Checksum: 0xF500CCC8
-	Offset: 0x3528
-	Size: 0x64
-	Parameters: 7
-	Flags: None
-*/
 function set_fade_material(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self mapshaderconstant(localclientnum, 0, "scriptVector0", newval, 0, 0, 0);
 }

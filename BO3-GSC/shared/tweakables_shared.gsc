@@ -1,30 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\shared\system_shared;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\tweakables_shared.gsc
+*************************************************/
 
+#using scripts\shared\system_shared;
 #namespace tweakables;
 
-/*
-	Name: __init__sytem__
-	Namespace: tweakables
-	Checksum: 0x3EE9FD73
-	Offset: 0x448
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("tweakables", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: tweakables
-	Checksum: 0xCDE7E501
-	Offset: 0x488
-	Size: 0x4CC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.clienttweakables = [];
   level.tweakablesinitialized = 1;
@@ -59,21 +44,10 @@ function __init__() {
   registertweakable("killstreak", "allowhelicopter_comlink", "scr_hardpoint_allowhelicopter_comlink", 1);
   registertweakable("killstreak", "allowrcbomb", "scr_hardpoint_allowrcbomb", 1);
   registertweakable("killstreak", "allowauto_turret", "scr_hardpoint_allowauto_turret", 1);
-  /#
   debug_refresh = 1;
-  # /
-    level thread updateuitweakables(debug_refresh);
+  level thread updateuitweakables(debug_refresh);
 }
 
-/*
-	Name: gettweakabledvarvalue
-	Namespace: tweakables
-	Checksum: 0x93066055
-	Offset: 0x960
-	Size: 0x1C4
-	Parameters: 2
-	Flags: Linked
-*/
 function gettweakabledvarvalue(category, name) {
   switch (category) {
     case "rule": {
@@ -113,22 +87,11 @@ function gettweakabledvarvalue(category, name) {
       break;
     }
   }
-  /#
   assert(isdefined(dvar));
-  # /
-    value = getdvarint(dvar);
+  value = getdvarint(dvar);
   return value;
 }
 
-/*
-	Name: gettweakabledvar
-	Namespace: tweakables
-	Checksum: 0x9F27CE84
-	Offset: 0xB30
-	Size: 0x1A0
-	Parameters: 2
-	Flags: Linked
-*/
 function gettweakabledvar(category, name) {
   switch (category) {
     case "rule": {
@@ -168,21 +131,10 @@ function gettweakabledvar(category, name) {
       break;
     }
   }
-  /#
   assert(isdefined(value));
-  # /
-    return value;
+  return value;
 }
 
-/*
-	Name: gettweakablevalue
-	Namespace: tweakables
-	Checksum: 0x9629BCE
-	Offset: 0xCD8
-	Size: 0x218
-	Parameters: 2
-	Flags: Linked
-*/
 function gettweakablevalue(category, name) {
   switch (category) {
     case "rule": {
@@ -226,21 +178,10 @@ function gettweakablevalue(category, name) {
   if(getdvarstring(overridedvar) != "") {
     return getdvarint(overridedvar);
   }
-  /#
   assert(isdefined(value));
-  # /
-    return value;
+  return value;
 }
 
-/*
-	Name: gettweakablelastvalue
-	Namespace: tweakables
-	Checksum: 0x31FC11E7
-	Offset: 0xEF8
-	Size: 0x1A0
-	Parameters: 2
-	Flags: Linked
-*/
 function gettweakablelastvalue(category, name) {
   switch (category) {
     case "rule": {
@@ -280,21 +221,10 @@ function gettweakablelastvalue(category, name) {
       break;
     }
   }
-  /#
   assert(isdefined(value));
-  # /
-    return value;
+  return value;
 }
 
-/*
-	Name: settweakablevalue
-	Namespace: tweakables
-	Checksum: 0x2EE0F11C
-	Offset: 0x10A0
-	Size: 0x1A4
-	Parameters: 3
-	Flags: None
-*/
 function settweakablevalue(category, name, value) {
   switch (category) {
     case "rule": {
@@ -337,15 +267,6 @@ function settweakablevalue(category, name, value) {
   setdvar(dvar, value);
 }
 
-/*
-	Name: settweakablelastvalue
-	Namespace: tweakables
-	Checksum: 0x17D9D3F5
-	Offset: 0x1250
-	Size: 0x17A
-	Parameters: 3
-	Flags: Linked
-*/
 function settweakablelastvalue(category, name, value) {
   switch (category) {
     case "rule": {
@@ -386,15 +307,6 @@ function settweakablelastvalue(category, name, value) {
   }
 }
 
-/*
-	Name: registertweakable
-	Namespace: tweakables
-	Checksum: 0xF1CCAD1
-	Offset: 0x13D8
-	Size: 0x5CA
-	Parameters: 4
-	Flags: Linked
-*/
 function registertweakable(category, name, dvar, value) {
   if(isstring(value)) {
     if(getdvarstring(dvar) == "") {
@@ -485,28 +397,10 @@ function registertweakable(category, name, dvar, value) {
   }
 }
 
-/*
-	Name: setclienttweakable
-	Namespace: tweakables
-	Checksum: 0x91310E53
-	Offset: 0x19B0
-	Size: 0x2A
-	Parameters: 2
-	Flags: Linked
-*/
 function setclienttweakable(category, name) {
   level.clienttweakables[level.clienttweakables.size] = name;
 }
 
-/*
-	Name: updateuitweakables
-	Namespace: tweakables
-	Checksum: 0x68FAE5B6
-	Offset: 0x19E8
-	Size: 0x12E
-	Parameters: 1
-	Flags: Linked
-*/
 function updateuitweakables(debug_refresh) {
   do {
     for (index = 0; index < level.clienttweakables.size; index++) {
@@ -523,13 +417,4 @@ function updateuitweakables(debug_refresh) {
   while (isdefined(debug_refresh));
 }
 
-/*
-	Name: updateserverdvar
-	Namespace: tweakables
-	Checksum: 0xE472FDD5
-	Offset: 0x1B20
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function updateserverdvar(dvar, value) {}

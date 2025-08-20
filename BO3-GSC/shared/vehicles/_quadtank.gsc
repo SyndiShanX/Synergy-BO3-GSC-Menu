@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicles\_quadtank.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_objectives;
 #using scripts\cp\_oed;
@@ -19,48 +23,19 @@
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_death_shared;
 #using scripts\shared\vehicle_shared;
-
 #using_animtree("generic");
-
 #namespace quadtank;
 
-/*
-	Name: __init__sytem__
-	Namespace: quadtank
-	Checksum: 0x3BB21369
-	Offset: 0x8E0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("quadtank", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: quadtank
-	Checksum: 0x58DD96E9
-	Offset: 0x920
-	Size: 0x8C
-	Parameters: 0
-	Flags: None
-*/
 function __init__() {
   vehicle::add_main_callback("quadtank", & quadtank_initialize);
   clientfield::register("toplayer", "player_shock_fx", 1, 1, "int");
   clientfield::register("vehicle", "quadtank_trophy_state", 1, 1, "int");
 }
 
-/*
-	Name: quadtank_initialize
-	Namespace: quadtank
-	Checksum: 0x24B7E787
-	Offset: 0x9B8
-	Size: 0x3DC
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_initialize() {
   self useanimtree($generic);
   self enableaimassist();
@@ -77,10 +52,8 @@ function quadtank_initialize() {
   self.spike_hits_during_trophy_down = 0;
   self.trophy_disables = 0;
   self.allow_movement = 1;
-  /#
   assert(isdefined(self.scriptbundlesettings));
-  # /
-    self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
+  self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
   objectives::set("cp_quadtank_rocket_icon", self);
   objectives::hide_for_target("cp_quadtank_rocket_icon", self);
   self.variant = "cannon";
@@ -115,15 +88,6 @@ function quadtank_initialize() {
   defaultrole();
 }
 
-/*
-	Name: quadtank_update_difficulty
-	Namespace: quadtank
-	Checksum: 0x515EA16
-	Offset: 0xDA0
-	Size: 0x13C
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_update_difficulty() {
   if(isdefined(level.players)) {
     value = level.players.size;
@@ -138,15 +102,6 @@ function quadtank_update_difficulty() {
   self.difficulty_scale_down = scale_down;
 }
 
-/*
-	Name: defaultrole
-	Namespace: quadtank
-	Checksum: 0xA7EA5204
-	Offset: 0xEE8
-	Size: 0x20C
-	Parameters: 0
-	Flags: None
-*/
 function defaultrole() {
   self.state_machine = self vehicle_ai::init_state_machine_for_role("default");
   self vehicle_ai::get_state_callbacks("pain").update_func = & pain_update;
@@ -162,43 +117,16 @@ function defaultrole() {
   self vehicle_ai::startinitialstate();
 }
 
-/*
-	Name: quadtank_off
-	Namespace: quadtank
-	Checksum: 0xAF1A9DD7
-	Offset: 0x1100
-	Size: 0x30
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_off() {
   self vehicle_ai::set_state("off");
   self.combatactive = 0;
 }
 
-/*
-	Name: quadtank_on
-	Namespace: quadtank
-	Checksum: 0xC2BEC379
-	Offset: 0x1138
-	Size: 0x30
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_on() {
   self vehicle_ai::set_state("combat");
   self.combatactive = 1;
 }
 
-/*
-	Name: state_off_enter
-	Namespace: quadtank
-	Checksum: 0xB0A2E301
-	Offset: 0x1170
-	Size: 0x1E4
-	Parameters: 1
-	Flags: None
-*/
 function state_off_enter(params) {
   self playsound("veh_quadtank_power_down");
   self laseroff();
@@ -221,15 +149,6 @@ function state_off_enter(params) {
   }
 }
 
-/*
-	Name: state_off_exit
-	Namespace: quadtank
-	Checksum: 0xAECE5E52
-	Offset: 0x1360
-	Size: 0x9C
-	Parameters: 1
-	Flags: None
-*/
 function state_off_exit(params) {
   self vehicle::lights_on();
   self vehicle::toggle_tread_fx(1);
@@ -239,17 +158,8 @@ function state_off_exit(params) {
   self enableaimassist();
 }
 
-/*
-	Name: bootup
-	Namespace: quadtank
-	Checksum: 0x6BD57B2C
-	Offset: 0x1408
-	Size: 0x128
-	Parameters: 0
-	Flags: None
-*/
 function bootup() {
-  self endon(# "death");
+  self endon("death");
   self playsound("veh_quadtank_power_up");
   self vehicle_ai::blink_lights_for_time(1.5);
   angles = self gettagangles("tag_flash");
@@ -263,18 +173,9 @@ function bootup() {
   self.turretrotscale = 1 * self.difficulty_scale_up;
 }
 
-/*
-	Name: pain_update
-	Namespace: quadtank
-	Checksum: 0x8403ABF0
-	Offset: 0x1538
-	Size: 0x1CC
-	Parameters: 1
-	Flags: None
-*/
 function pain_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   istrophydownpain = params.notify_param[0];
   if(istrophydownpain === 1) {
     asmstate = "trophy_disabled@stationary";
@@ -298,18 +199,9 @@ function pain_update(params) {
   }
 }
 
-/*
-	Name: state_scripted_update
-	Namespace: quadtank
-	Checksum: 0xBE84BAD3
-	Offset: 0x1710
-	Size: 0xBC
-	Parameters: 1
-	Flags: None
-*/
 function state_scripted_update(params) {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   self set_side_turrets_enabled(0);
   self laseroff();
   self cleartargetentity();
@@ -318,18 +210,9 @@ function state_scripted_update(params) {
   self vehicle::toggle_ambient_anim_group(2, 1);
 }
 
-/*
-	Name: state_driving_update
-	Namespace: quadtank
-	Checksum: 0xD65FA606
-	Offset: 0x17D8
-	Size: 0x1CC
-	Parameters: 1
-	Flags: None
-*/
 function state_driving_update(params) {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   self set_side_turrets_enabled(0);
   self laseroff();
   self cleartargetentity();
@@ -351,31 +234,13 @@ function state_driving_update(params) {
   }
 }
 
-/*
-	Name: quadtank_exit_vehicle
-	Namespace: quadtank
-	Checksum: 0x1B9D90C7
-	Offset: 0x19B0
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_exit_vehicle() {
   self setgoal(self.origin);
 }
 
-/*
-	Name: state_combat_update
-	Namespace: quadtank
-	Checksum: 0xD0489819
-	Offset: 0x19E0
-	Size: 0x12E
-	Parameters: 1
-	Flags: None
-*/
 function state_combat_update(params) {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   if(isalive(self) && !trophy_disabled()) {
     self thread quadtank_enabletrophy();
   }
@@ -397,34 +262,16 @@ function state_combat_update(params) {
   }
 }
 
-/*
-	Name: state_combat_exit
-	Namespace: quadtank
-	Checksum: 0xA900C375
-	Offset: 0x1B18
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function state_combat_exit(params) {
-  self notify(# "end_attack_thread");
-  self notify(# "end_movement_thread");
+  self notify("end_attack_thread");
+  self notify("end_movement_thread");
   self clearturrettarget();
   self clearlookatent();
 }
 
-/*
-	Name: quadtank_death
-	Namespace: quadtank
-	Checksum: 0x74C7BDDC
-	Offset: 0x1B78
-	Size: 0x28C
-	Parameters: 1
-	Flags: None
-*/
 function quadtank_death(params) {
-  self endon(# "death");
-  self endon(# "nodeath_thread");
+  self endon("death");
+  self endon("nodeath_thread");
   self set_trophy_state(0);
   self quadtank_weakpoint_display(0);
   objectives::hide_for_target("cp_quadtank_rocket_icon", self);
@@ -437,7 +284,7 @@ function quadtank_death(params) {
     self playsound("veh_quadtank_power_down");
     self playsound("veh_quadtank_sparks");
     self asmrequestsubstate("death@stationary");
-    self waittill(# "explosion_c");
+    self waittill("explosion_c");
   } else {
     self[[self.custom_death_sequence]]();
   }
@@ -457,19 +304,10 @@ function quadtank_death(params) {
   vehicle_death::freewhensafe();
 }
 
-/*
-	Name: quadtank_emped
-	Namespace: quadtank
-	Checksum: 0x2A37805B
-	Offset: 0x1E10
-	Size: 0x20C
-	Parameters: 1
-	Flags: None
-*/
 function quadtank_emped(params) {
-  self endon(# "death");
-  self endon(# "change_state");
-  self endon(# "emped");
+  self endon("death");
+  self endon("change_state");
+  self endon("emped");
   if(isdefined(self.emped)) {
     return;
   }
@@ -482,10 +320,8 @@ function quadtank_emped(params) {
     self.stun_fx linkto(self, "tag_turret", (0, 0, 0), (0, 0, 0));
   }
   time = params.notify_param[0];
-  /#
   assert(isdefined(time));
-  # /
-    vehicle_ai::cooldown("emped_timer", time);
+  vehicle_ai::cooldown("emped_timer", time);
   while (!vehicle_ai::iscooldownready("emped_timer")) {
     timeleft = max(vehicle_ai::getcooldownleft("emped_timer"), 0.5);
     wait(timeleft);
@@ -496,15 +332,6 @@ function quadtank_emped(params) {
   self vehicle_ai::evaluate_connections();
 }
 
-/*
-	Name: trophy_disabled
-	Namespace: quadtank
-	Checksum: 0x240566E0
-	Offset: 0x2028
-	Size: 0x36
-	Parameters: 0
-	Flags: None
-*/
 function trophy_disabled() {
   if(self.trophy_down === 1) {
     return true;
@@ -515,15 +342,6 @@ function trophy_disabled() {
   return false;
 }
 
-/*
-	Name: trophy_destroyed
-	Namespace: quadtank
-	Checksum: 0x985FC96B
-	Offset: 0x2068
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function trophy_destroyed() {
   if(self.trophy_disables >= 4) {
     return true;
@@ -531,33 +349,15 @@ function trophy_destroyed() {
   return false;
 }
 
-/*
-	Name: set_trophy_state
-	Namespace: quadtank
-	Checksum: 0xAA72DC4B
-	Offset: 0x2090
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function set_trophy_state(ison) {
   self clientfield::set("quadtank_trophy_state", ison);
 }
 
-/*
-	Name: quadtank_disabletrophy
-	Namespace: quadtank
-	Checksum: 0xF48FC13F
-	Offset: 0x20C8
-	Size: 0x4A4
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_disabletrophy() {
-  self endon(# "death");
-  self notify(# "stop_disabletrophy");
-  self endon(# "stop_disabletrophy");
-  self notify(# "stop_enabletrophy");
+  self endon("death");
+  self notify("stop_disabletrophy");
+  self endon("stop_disabletrophy");
+  self notify("stop_enabletrophy");
   set_trophy_state(0);
   if(trophy_disabled()) {
     return;
@@ -565,7 +365,7 @@ function quadtank_disabletrophy() {
   self.trophy_down = 1;
   driver = self getseatoccupant(0);
   if(!isdefined(driver) && self vehicle_ai::get_current_state() != "off" && self vehicle_ai::get_next_state() !== "off") {
-    self notify(# "pain", 1);
+    self notify("pain", 1);
   }
   target_set(self, vectorscale((0, 0, 1), 60));
   self hidepart("tag_defense_active");
@@ -588,15 +388,15 @@ function quadtank_disabletrophy() {
     ](self, 0);
   }
   if(trophy_destroyed()) {
-    self notify(# "trophy_system_destroyed");
-    level notify(# "trophy_system_destroyed", self);
+    self notify("trophy_system_destroyed");
+    level notify("trophy_system_destroyed", self);
     self playsound("wpn_trophy_disable");
     playfxontag(self.settings.trophydetonationfx, self, "tag_target_lower");
     self hidepart("tag_lidar_null", "", 1);
     return;
   }
-  self notify(# "trophy_system_disabled");
-  level notify(# "trophy_system_disabled", self);
+  self notify("trophy_system_disabled");
+  level notify("trophy_system_disabled", self);
   self playsound("wpn_trophy_disable");
   self vehicle_ai::cooldown("trophy_down", self.settings.trophysystemdowntime);
   while (!self vehicle_ai::iscooldownready("trophy_down") || self vehicle_ai::get_current_state() === "off") {
@@ -614,19 +414,10 @@ function quadtank_disabletrophy() {
   }
 }
 
-/*
-	Name: quadtank_enabletrophy
-	Namespace: quadtank
-	Checksum: 0xC2BD8FBF
-	Offset: 0x2578
-	Size: 0x29A
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_enabletrophy() {
-  self endon(# "death");
-  self notify(# "stop_enabletrophy");
-  self endon(# "stop_enabletrophy");
+  self endon("death");
+  self notify("stop_enabletrophy");
+  self endon("stop_enabletrophy");
   set_trophy_state(1);
   time = (isdefined(self.settings.trophywarmup) ? self.settings.trophywarmup : 0.1);
   wait(time);
@@ -667,37 +458,19 @@ function quadtank_enabletrophy() {
       [level.vehicle_defense_cb]
     ](self, 1);
   }
-  self notify(# "trophy_system_enabled");
-  level notify(# "trophy_system_enabled", self);
+  self notify("trophy_system_enabled");
+  level notify("trophy_system_enabled", self);
 }
 
-/*
-	Name: quadtank_side_turrets_forward
-	Namespace: quadtank
-	Checksum: 0xE3312B7A
-	Offset: 0x2820
-	Size: 0x68
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_side_turrets_forward() {
   self setturrettargetrelativeangles((10, -90, 0), 1);
   self setturrettargetrelativeangles((10, 90, 0), 2);
   self.turretrotscale = 1 * self.difficulty_scale_up;
 }
 
-/*
-	Name: quadtank_turret_scan
-	Namespace: quadtank
-	Checksum: 0xB6B66A13
-	Offset: 0x2890
-	Size: 0x2C0
-	Parameters: 1
-	Flags: None
-*/
 function quadtank_turret_scan(scan_forever) {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   self.turretrotscale = 0.3;
   while (scan_forever || (!isdefined(self.enemy) || !self vehcansee(self.enemy))) {
     if(self.turretontarget && self.turret_state != 0) {
@@ -740,15 +513,6 @@ function quadtank_turret_scan(scan_forever) {
   }
 }
 
-/*
-	Name: set_side_turrets_enabled
-	Namespace: quadtank
-	Checksum: 0x499AB7CF
-	Offset: 0x2B58
-	Size: 0x74
-	Parameters: 1
-	Flags: None
-*/
 function set_side_turrets_enabled(on) {
   if(on) {
     turret::enable(1, 0);
@@ -759,15 +523,6 @@ function set_side_turrets_enabled(on) {
   }
 }
 
-/*
-	Name: show_weak_spots
-	Namespace: quadtank
-	Checksum: 0x908FA68
-	Offset: 0x2BD8
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function show_weak_spots(show) {
   if(show) {
     self vehicle::toggle_exhaust_fx(1);
@@ -776,19 +531,10 @@ function show_weak_spots(show) {
   }
 }
 
-/*
-	Name: set_detonation_time
-	Namespace: quadtank
-	Checksum: 0xD37057ED
-	Offset: 0x2C28
-	Size: 0x13C
-	Parameters: 1
-	Flags: None
-*/
 function set_detonation_time(target) {
-  self endon(# "change_state");
+  self endon("change_state");
   self playsound("veh_quadtank_cannon_charge");
-  self waittill(# "weapon_fired", proj);
+  self waittill("weapon_fired", proj);
   self thread railgun_sound(proj);
   if(isdefined(target) && isdefined(proj)) {
     vel = proj getvelocity();
@@ -799,18 +545,9 @@ function set_detonation_time(target) {
   }
 }
 
-/*
-	Name: quadtank_weapon_think_cannon
-	Namespace: quadtank
-	Checksum: 0xC2115316
-	Offset: 0x2D70
-	Size: 0x620
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_weapon_think_cannon() {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   cant_see_enemy_count = 0;
   self set_side_turrets_enabled(1);
   self setontargetangle(10);
@@ -832,7 +569,7 @@ function quadtank_weapon_think_cannon() {
         wait(0.1);
         self cancelaimove();
         self clearvehgoalpos();
-        self notify(# "near_goal");
+        self notify("near_goal");
       }
       cant_see_enemy_count = 0;
       fired = 0;
@@ -854,10 +591,10 @@ function quadtank_weapon_think_cannon() {
             fired = 1;
             self cancelaimove();
             self clearvehgoalpos();
-            self notify(# "near_goal");
+            self notify("near_goal");
             self.turretrotscale = 0.7;
             wait(1);
-            level notify(# "sndstopcountdown");
+            level notify("sndstopcountdown");
             self vehicle_ai::waittill_asm_complete("fire@stationary", 6);
             self set_side_turrets_enabled(1);
             self.turretrotscale = 1;
@@ -898,18 +635,9 @@ function quadtank_weapon_think_cannon() {
   }
 }
 
-/*
-	Name: attack_thread_rocket
-	Namespace: quadtank
-	Checksum: 0x79B1937F
-	Offset: 0x3398
-	Size: 0x566
-	Parameters: 0
-	Flags: None
-*/
 function attack_thread_rocket() {
-  self endon(# "death");
-  self endon(# "end_attack_thread");
+  self endon("death");
+  self endon("end_attack_thread");
   self vehicle::toggle_ambient_anim_group(2, 0);
   while (true) {
     usejavelin = 0;
@@ -927,7 +655,7 @@ function attack_thread_rocket() {
         self set_side_turrets_enabled(0);
       }
       self clearvehgoalpos();
-      self notify(# "near_goal");
+      self notify("near_goal");
       self show_weak_spots(1);
       self vehicle::toggle_ambient_anim_group(2, 1);
       if(!usejavelin) {
@@ -973,15 +701,6 @@ function attack_thread_rocket() {
   }
 }
 
-/*
-	Name: trigger_player_shock_fx
-	Namespace: quadtank
-	Checksum: 0x7838D4DD
-	Offset: 0x3908
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function trigger_player_shock_fx() {
   if(!isdefined(self._player_shock_fx_quadtank_melee)) {
     self._player_shock_fx_quadtank_melee = 0;
@@ -990,20 +709,11 @@ function trigger_player_shock_fx() {
   self clientfield::set_to_player("player_shock_fx", self._player_shock_fx_quadtank_melee);
 }
 
-/*
-	Name: path_update_interrupt
-	Namespace: quadtank
-	Checksum: 0xDDFC8E6A
-	Offset: 0x3968
-	Size: 0x190
-	Parameters: 0
-	Flags: None
-*/
 function path_update_interrupt() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self endon(# "near_goal");
-  self endon(# "reached_end_node");
+  self endon("death");
+  self endon("change_state");
+  self endon("near_goal");
+  self endon("reached_end_node");
   wait(1);
   cantseeenemycount = 0;
   while (true) {
@@ -1011,14 +721,14 @@ function path_update_interrupt() {
       if(isdefined(self.enemy)) {
         if(distance2dsquared(self.enemy.origin, self.current_pathto_pos) < 62500) {
           self.move_now = 1;
-          self notify(# "near_goal");
+          self notify("near_goal");
         }
         if(!self vehcansee(self.enemy)) {
           if(!self vehicle_ai::canseeenemyfromposition(self.current_pathto_pos, self.enemy, 80)) {
             cantseeenemycount++;
             if(cantseeenemycount > 5) {
               self.move_now = 1;
-              self notify(# "near_goal");
+              self notify("near_goal");
             }
           }
         }
@@ -1026,27 +736,18 @@ function path_update_interrupt() {
       if(distance2dsquared(self.current_pathto_pos, self.goalpos) > (self.goalradius * self.goalradius)) {
         wait(1);
         self.move_now = 1;
-        self notify(# "near_goal");
+        self notify("near_goal");
       }
     }
     wait(0.3);
   }
 }
 
-/*
-	Name: movement_thread_wander
-	Namespace: quadtank
-	Checksum: 0x9987BF0F
-	Offset: 0x3B00
-	Size: 0x50A
-	Parameters: 0
-	Flags: None
-*/
 function movement_thread_wander() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self notify(# "end_movement_thread");
-  self endon(# "end_movement_thread");
+  self endon("death");
+  self endon("change_state");
+  self notify("end_movement_thread");
+  self endon("end_movement_thread");
   if(self.goalforced) {
     return self.goalpos;
   }
@@ -1069,13 +770,11 @@ function movement_thread_wander() {
     vehicle_ai::positionquery_filter_random(queryresult, 200, 250);
     foreach(point in queryresult.data) {
       if(distance2dsquared(self.origin, point.origin) < 28900) {
-        /#
         if(!isdefined(point._scoredebug)) {
           point._scoredebug = [];
         }
         point._scoredebug[""] = -100;
-        # /
-          point.score = point.score + -100;
+        point.score = point.score + -100;
       }
     }
     self vehicle_ai::positionquery_debugscores(queryresult);
@@ -1111,18 +810,9 @@ function movement_thread_wander() {
   }
 }
 
-/*
-	Name: quadtank_movementupdate
-	Namespace: quadtank
-	Checksum: 0x37C5C0AF
-	Offset: 0x4018
-	Size: 0x248
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_movementupdate() {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   self asmrequestsubstate("locomotion@movement");
   wait(0.5);
   self setbrake(0);
@@ -1137,7 +827,7 @@ function quadtank_movementupdate() {
         self asmrequestsubstate("locomotion@movement");
         result = self util::waittill_any_return("near_goal", "reached_end_node", "force_goal");
       } else {
-        self notify(# "goal");
+        self notify("goal");
       }
       self cancelaimove();
       self clearvehgoalpos();
@@ -1155,18 +845,9 @@ function quadtank_movementupdate() {
   }
 }
 
-/*
-	Name: quadtank_player_fireupdate
-	Namespace: quadtank
-	Checksum: 0xC79E01F7
-	Offset: 0x4268
-	Size: 0xCE
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_player_fireupdate() {
-  self endon(# "death");
-  self endon(# "exit_vehicle");
+  self endon("death");
+  self endon("exit_vehicle");
   weapon = self seatgetweapon(1);
   firetime = weapon.firetime;
   while (true) {
@@ -1178,15 +859,6 @@ function quadtank_player_fireupdate() {
   }
 }
 
-/*
-	Name: do_melee
-	Namespace: quadtank
-	Checksum: 0x7F972227
-	Offset: 0x4340
-	Size: 0x438
-	Parameters: 2
-	Flags: None
-*/
 function do_melee(shoulddodamage, enemy) {
   if(!isalive(enemy) || distancesquared(enemy.origin, self.origin) > (270 * 270)) {
     return false;
@@ -1197,7 +869,7 @@ function do_melee(shoulddodamage, enemy) {
   if(isplayer(enemy) && enemy laststand::player_is_in_laststand()) {
     return false;
   }
-  self notify(# "play_meleefx");
+  self notify("play_meleefx");
   if(shoulddodamage) {
     players = getplayers();
     foreach(player in players) {
@@ -1225,45 +897,25 @@ function do_melee(shoulddodamage, enemy) {
   return true;
 }
 
-/*
-	Name: quadtank_automelee_update
-	Namespace: quadtank
-	Checksum: 0x1CFE72E2
-	Offset: 0x4780
-	Size: 0x140
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_automelee_update() {
-  self endon(# "death");
-  /#
+  self endon("death");
   assert(isdefined(self.team));
-  # /
-    while (!trophy_disabled()) {
-      enemies = self getenemies();
-      meleed = 0;
-      foreach(enemy in enemies) {
-        if(enemy isnotarget()) {
-          continue;
-        }
-        meleed = meleed || self do_melee(!meleed, enemy);
-        if(meleed) {
-          break;
-        }
+  while (!trophy_disabled()) {
+    enemies = self getenemies();
+    meleed = 0;
+    foreach(enemy in enemies) {
+      if(enemy isnotarget()) {
+        continue;
       }
-      wait(0.3);
+      meleed = meleed || self do_melee(!meleed, enemy);
+      if(meleed) {
+        break;
+      }
     }
+    wait(0.3);
+  }
 }
 
-/*
-	Name: quadtank_destroyturret
-	Namespace: quadtank
-	Checksum: 0xC32E6EB5
-	Offset: 0x48C8
-	Size: 0xBC
-	Parameters: 1
-	Flags: None
-*/
 function quadtank_destroyturret(index) {
   turret::disable(index);
   if(index == 1) {
@@ -1275,15 +927,6 @@ function quadtank_destroyturret(index) {
   }
 }
 
-/*
-	Name: quadtankcallback_vehicledamage
-	Namespace: quadtank
-	Checksum: 0xEDCE8C5C
-	Offset: 0x4990
-	Size: 0x6DC
-	Parameters: 15
-	Flags: None
-*/
 function quadtankcallback_vehicledamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   is_damaged_by_grenade = weapon.weapclass == "grenade";
   if(issubstr(weapon.name, "spike")) {
@@ -1356,15 +999,6 @@ function quadtankcallback_vehicledamage(einflictor, eattacker, idamage, idflags,
   return idamage;
 }
 
-/*
-	Name: quadtank_set_team
-	Namespace: quadtank
-	Checksum: 0x88F3F29F
-	Offset: 0x5078
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function quadtank_set_team(team) {
   self.team = team;
   if(!self vehicle_ai::is_instate("off")) {
@@ -1372,37 +1006,19 @@ function quadtank_set_team(team) {
   }
 }
 
-/*
-	Name: remove_repulsor
-	Namespace: quadtank
-	Checksum: 0xFDA320DF
-	Offset: 0x50D8
-	Size: 0x42
-	Parameters: 0
-	Flags: None
-*/
 function remove_repulsor() {
   if(isdefined(self.missile_repulsor)) {
     missile_deleteattractor(self.missile_repulsor);
     self.missile_repulsor = undefined;
   }
-  self notify(# "end_repulsor_fx");
+  self notify("end_repulsor_fx");
 }
 
-/*
-	Name: repulsor_fx
-	Namespace: quadtank
-	Checksum: 0xC9CD5A6E
-	Offset: 0x5128
-	Size: 0x120
-	Parameters: 0
-	Flags: None
-*/
 function repulsor_fx() {
-  self notify(# "end_repulsor_fx");
-  self endon(# "end_repulsor_fx");
-  self endon(# "death");
-  self endon(# "change_state");
+  self notify("end_repulsor_fx");
+  self endon("end_repulsor_fx");
+  self endon("death");
+  self endon("change_state");
   while (true) {
     self util::waittill_any("projectile_applyattractor", "play_meleefx");
     if(vehicle_ai::iscooldownready("repulsorfx_interval")) {
@@ -1415,15 +1031,6 @@ function repulsor_fx() {
   }
 }
 
-/*
-	Name: quadtank_projectile_watcher
-	Namespace: quadtank
-	Checksum: 0x6F0864C8
-	Offset: 0x5250
-	Size: 0x64
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_projectile_watcher() {
   if(!isdefined(self.missile_repulsor)) {
     self.missile_repulsor = missile_createrepulsorent(self, 40000, self.settings.trophysystemrange, 1);
@@ -1431,32 +1038,14 @@ function quadtank_projectile_watcher() {
   self thread repulsor_fx();
 }
 
-/*
-	Name: turn_off_laser_after
-	Namespace: quadtank
-	Checksum: 0xC333D3F7
-	Offset: 0x52C0
-	Size: 0x4C
-	Parameters: 1
-	Flags: None
-*/
 function turn_off_laser_after(time) {
-  self notify(# "turn_off_laser_thread");
-  self endon(# "turn_off_laser_thread");
-  self endon(# "death");
+  self notify("turn_off_laser_thread");
+  self endon("turn_off_laser_thread");
+  self endon("death");
   wait(time);
   self laseroff();
 }
 
-/*
-	Name: side_turret_is_target_in_view_score
-	Namespace: quadtank
-	Checksum: 0x455084D8
-	Offset: 0x5318
-	Size: 0x246
-	Parameters: 2
-	Flags: None
-*/
 function side_turret_is_target_in_view_score(v_target, n_index) {
   s_turret = turret::_get_turret_data(n_index);
   v_pivot_pos = self gettagorigin(s_turret.str_tag_pivot);
@@ -1486,15 +1075,6 @@ function side_turret_is_target_in_view_score(v_target, n_index) {
   return (abs(n_ang_yaw) / 90) * 800;
 }
 
-/*
-	Name: _get_best_target_quadtank_side_turret
-	Namespace: quadtank
-	Checksum: 0x33D44F02
-	Offset: 0x5568
-	Size: 0x3E4
-	Parameters: 2
-	Flags: None
-*/
 function _get_best_target_quadtank_side_turret(a_potential_targets, n_index) {
   takeeasyononetarget = mapfloat(0, 4, 800, 0, level.gameskill);
   if(n_index === 1) {
@@ -1546,57 +1126,30 @@ function _get_best_target_quadtank_side_turret(a_potential_targets, n_index) {
   return e_best_target;
 }
 
-/*
-	Name: quadtank_weakpoint_trigger
-	Namespace: quadtank
-	Checksum: 0x6D2B8381
-	Offset: 0x5958
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function quadtank_weakpoint_trigger() {
   if(isdefined(self.displayweakpoint) && self.displayweakpoint) {
-    self globallogic_ui::triggerweakpointdamage( & "tag_target_lower");
+    self globallogic_ui::triggerweakpointdamage(&"tag_target_lower");
   }
 }
 
-/*
-	Name: quadtank_weakpoint_display
-	Namespace: quadtank
-	Checksum: 0xAC007AE0
-	Offset: 0x5998
-	Size: 0x104
-	Parameters: 1
-	Flags: None
-*/
 function quadtank_weakpoint_display(state) {
   if(self.displayweakpoint !== state) {
     self.displayweakpoint = state;
     if(!self.displayweakpoint && self.weakpointobjective === 1) {
       self.weakpointobjective = 0;
-      self globallogic_ui::destroyweakpointwidget( & "tag_target_lower");
+      self globallogic_ui::destroyweakpointwidget(&"tag_target_lower");
     }
     player = level.players[0];
     if(self.displayweakpoint && self.combatactive && self.weakpointobjective !== 1 && (!isdefined(player) || player.team !== self.team)) {
       self.weakpointobjective = 1;
-      self globallogic_ui::createweakpointwidget( & "tag_target_lower");
+      self globallogic_ui::createweakpointwidget(&"tag_target_lower");
     }
   }
 }
 
-/*
-	Name: footstep_handler
-	Namespace: quadtank
-	Checksum: 0xC1DFC1DF
-	Offset: 0x5AA8
-	Size: 0x140
-	Parameters: 0
-	Flags: None
-*/
 function footstep_handler() {
-  self endon(# "death");
-  self endon(# "exit_vehicle");
+  self endon("death");
+  self endon("exit_vehicle");
   while (true) {
     note = self util::waittill_any_return("footstep_front_left", "footstep_front_right", "footstep_rear_left", "footstep_rear_right");
     switch (note) {
@@ -1622,19 +1175,10 @@ function footstep_handler() {
   }
 }
 
-/*
-	Name: javeline_incoming
-	Namespace: quadtank
-	Checksum: 0xD7799EFB
-	Offset: 0x5BF0
-	Size: 0x124
-	Parameters: 1
-	Flags: None
-*/
 function javeline_incoming(projectile) {
-  self endon(# "entityshutdown");
-  self endon(# "death");
-  self waittill(# "weapon_fired", projectile);
+  self endon("entityshutdown");
+  self endon("death");
+  self waittill("weapon_fired", projectile);
   distance = 1400;
   alias = "prj_quadtank_javelin_incoming";
   wait(5);
@@ -1653,19 +1197,10 @@ function javeline_incoming(projectile) {
   }
 }
 
-/*
-	Name: railgun_sound
-	Namespace: quadtank
-	Checksum: 0x687B9220
-	Offset: 0x5D20
-	Size: 0x124
-	Parameters: 1
-	Flags: None
-*/
 function railgun_sound(projectile) {
-  self endon(# "entityshutdown");
-  self endon(# "death");
-  self waittill(# "weapon_fired", projectile);
+  self endon("entityshutdown");
+  self endon("death");
+  self waittill("weapon_fired", projectile);
   distance = 900;
   alais = "wpn_quadtank_railgun_fire_rocket_flux";
   players = level.players;

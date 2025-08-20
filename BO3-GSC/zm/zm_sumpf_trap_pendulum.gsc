@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_sumpf_trap_pendulum.gsc
+*************************************************/
+
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -11,18 +15,8 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\zm_sumpf;
 #using scripts\zm\zm_sumpf_zipline;
-
 #namespace zm_sumpf_trap_pendulum;
 
-/*
-	Name: initpendulumtrap
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0x21D92F5E
-	Offset: 0x428
-	Size: 0x210
-	Parameters: 0
-	Flags: Linked
-*/
 function initpendulumtrap() {
   penbuytrigger = getentarray("pendulum_buy_trigger", "targetname");
   for (i = 0; i < penbuytrigger.size; i++) {
@@ -38,55 +32,28 @@ function initpendulumtrap() {
   level.var_99432870 = 0;
 }
 
-/*
-	Name: moveleverdown
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0x84A42404
-	Offset: 0x640
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function moveleverdown() {
   soundent_left = getent("switch_left", "targetname");
   soundent_right = getent("switch_right", "targetname");
   self.lever rotatepitch(180, 0.5);
   soundent_left playsound("zmb_switch_on");
   soundent_right playsound("zmb_switch_on");
-  self.lever waittill(# "rotatedone");
-  self notify(# "leverdown");
+  self.lever waittill("rotatedone");
+  self notify("leverdown");
 }
 
-/*
-	Name: moveleverup
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0xDAA11660
-	Offset: 0x730
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function moveleverup() {
   soundent_left = getent("switch_left", "targetname");
   soundent_right = getent("switch_right", "targetname");
   self.lever rotatepitch(-180, 0.5);
   soundent_left playsound("zmb_switch_off");
   soundent_right playsound("zmb_switch_off");
-  self.lever waittill(# "rotatedone");
-  self notify(# "leverup");
+  self.lever waittill("rotatedone");
+  self notify("leverup");
 }
 
-/*
-	Name: hint_string
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0x2A2F17D1
-	Offset: 0x820
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function hint_string(string) {
-  if(string == ( & "ZOMBIE_BUTTON_BUY_TRAP")) {
+  if(string == (&"ZOMBIE_BUTTON_BUY_TRAP")) {
     self.is_available = 1;
     self.zombie_cost = 750;
     self.in_use = 0;
@@ -97,27 +64,18 @@ function hint_string(string) {
   self setcursorhint("HINT_NOICON");
 }
 
-/*
-	Name: penthink
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0x98DE429A
-	Offset: 0x8D0
-	Size: 0x438
-	Parameters: 0
-	Flags: Linked
-*/
 function penthink() {
   self sethintstring("");
   pa_system = getent("speaker_by_log", "targetname");
   wait(0.5);
   self.is_available = 1;
   self.zombie_cost = 750;
-  self sethintstring( & "ZOMBIE_BUTTON_BUY_TRAP", self.zombie_cost);
+  self sethintstring(&"ZOMBIE_BUTTON_BUY_TRAP", self.zombie_cost);
   self setcursorhint("HINT_NOICON");
   triggers = getentarray("pendulum_buy_trigger", "targetname");
   array::thread_all(triggers, & hint_string, & "ZOMBIE_BUTTON_BUY_TRAP");
   while (true) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     self.used_by = who;
     if(who zm_utility::in_revive_trigger() || level.var_99432870) {
       continue;
@@ -132,17 +90,17 @@ function penthink() {
           who thread zm_audio::create_and_play_dialog("level", "trap_log");
           who zm_score::minus_to_player_score(self.zombie_cost);
           self thread moveleverdown();
-          self waittill(# "leverdown");
+          self waittill("leverdown");
           motor_left = getent("engine_loop_left", "targetname");
           motor_right = getent("engine_loop_right", "targetname");
           playsoundatposition("zmb_motor_start_left", motor_left.origin);
           playsoundatposition("zmb_motor_start_right", motor_right.origin);
           wait(0.5);
           self thread activatepen(motor_left, motor_right, who);
-          self waittill(# "pendown");
+          self waittill("pendown");
           array::thread_all(triggers, & hint_string, & "ZOMBIE_TRAP_COOLDOWN");
           self thread moveleverup();
-          self waittill(# "leverup");
+          self waittill("leverup");
           wait(45);
           pa_system playsound("zmb_warning");
           level thread zm_sumpf::turnlightgreen("pendulum_light");
@@ -154,15 +112,6 @@ function penthink() {
   }
 }
 
-/*
-	Name: activatepen
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0xF4E47C6C
-	Offset: 0xD10
-	Size: 0x344
-	Parameters: 3
-	Flags: Linked
-*/
 function activatepen(motor_left, motor_right, who) {
   wheel_left = spawn("script_origin", motor_left.origin);
   wheel_right = spawn("script_origin", motor_right.origin);
@@ -172,7 +121,7 @@ function activatepen(motor_left, motor_right, who) {
   util::wait_network_frame();
   wheel_left playloopsound("zmb_wheel_loop");
   wheel_right playloopsound("zmb_belt_loop");
-  self.pen notify(# "stopmonitorsolid");
+  self.pen notify("stopmonitorsolid");
   self.pen notsolid();
   self.pendamagetrig triggerenable(1);
   self.pendamagetrig thread pendamage(self, who);
@@ -186,28 +135,19 @@ function activatepen(motor_left, motor_right, who) {
   }
   level thread trap_sounds(motor_left, motor_right, wheel_left, wheel_right);
   self.pen thread blade_sounds();
-  self.pen waittill(# "rotatedone");
+  self.pen waittill("rotatedone");
   self.pendamagetrig triggerenable(0);
   self.penactive = 0;
   self.pen thread zm_sumpf_zipline::objectsolid();
-  self notify(# "pendown");
-  level notify(# "stop_blade_sounds");
+  self notify("pendown");
+  level notify("stop_blade_sounds");
   wait(3);
   wheel_left delete();
   wheel_right delete();
 }
 
-/*
-	Name: blade_sounds
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0x3D95905D
-	Offset: 0x1060
-	Size: 0x26A
-	Parameters: 0
-	Flags: Linked
-*/
 function blade_sounds() {
-  self endon(# "rotatedone");
+  self endon("rotatedone");
   blade_left = getent("blade_left", "targetname");
   blade_right = getent("blade_right", "targetname");
   lastangle = self.angles[0];
@@ -234,15 +174,6 @@ function blade_sounds() {
   }
 }
 
-/*
-	Name: trap_sounds
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0xB9AFC176
-	Offset: 0x12D8
-	Size: 0xD4
-	Parameters: 4
-	Flags: Linked
-*/
 function trap_sounds(motor_left, motor_right, wheel_left, wheel_right) {
   wait(13);
   motor_left stoploopsound(2);
@@ -254,19 +185,10 @@ function trap_sounds(motor_left, motor_right, wheel_left, wheel_right) {
   wheel_right stoploopsound(8);
 }
 
-/*
-	Name: pendamage
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0x76900D20
-	Offset: 0x13B8
-	Size: 0xB8
-	Parameters: 2
-	Flags: Linked
-*/
 function pendamage(parent, who) {
   level thread customtimer();
   while (true) {
-    self waittill(# "trigger", ent);
+    self waittill("trigger", ent);
     if(parent.penactive == 1) {
       if(isplayer(ent)) {
         ent thread playerpendamage();
@@ -277,15 +199,6 @@ function pendamage(parent, who) {
   }
 }
 
-/*
-	Name: customtimer
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0xF4BFAC35
-	Offset: 0x1478
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function customtimer() {
   level.my_time = 0;
   while (level.my_time <= 20) {
@@ -294,18 +207,9 @@ function customtimer() {
   }
 }
 
-/*
-	Name: playerpendamage
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0x866F0943
-	Offset: 0x14C8
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function playerpendamage() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   players = getplayers();
   if(players.size == 1) {
     self dodamage(80, self.origin + vectorscale((0, 0, 1), 20));
@@ -315,17 +219,8 @@ function playerpendamage() {
   }
 }
 
-/*
-	Name: zombiependamage
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0xE12DA9F6
-	Offset: 0x15C0
-	Size: 0x264
-	Parameters: 2
-	Flags: Linked
-*/
 function zombiependamage(parent, who) {
-  self endon(# "death");
+  self endon("death");
   self.var_9a9a0f55 = parent;
   self.var_aa99de67 = who;
   parent.activated_by_player = who;
@@ -362,15 +257,6 @@ function zombiependamage(parent, who) {
   }
 }
 
-/*
-	Name: launch_monitor
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0xCC78F9F3
-	Offset: 0x1830
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function launch_monitor() {
   level.numlaunched = 0;
   while (true) {
@@ -380,15 +266,6 @@ function launch_monitor() {
   }
 }
 
-/*
-	Name: do_launch
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0x11DAFD2A
-	Offset: 0x1888
-	Size: 0x13C
-	Parameters: 4
-	Flags: Linked
-*/
 function do_launch(x, y, z, parent) {
   self.flung = 1;
   while (level.numlaunched > 4) {
@@ -405,15 +282,6 @@ function do_launch(x, y, z, parent) {
   level.numlaunched++;
 }
 
-/*
-	Name: flogger_vocal_monitor
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0xAEE0D34
-	Offset: 0x19D0
-	Size: 0x40
-	Parameters: 0
-	Flags: Linked
-*/
 function flogger_vocal_monitor() {
   while (true) {
     level.numfloggervox = 0;
@@ -422,15 +290,6 @@ function flogger_vocal_monitor() {
   }
 }
 
-/*
-	Name: play_imp_sound
-	Namespace: zm_sumpf_trap_pendulum
-	Checksum: 0x427ED8A9
-	Offset: 0x1A18
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function play_imp_sound() {
   if(!isdefined(level.numfloggervox)) {
     level thread flogger_vocal_monitor();

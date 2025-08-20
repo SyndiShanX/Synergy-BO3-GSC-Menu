@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_jump_pad.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -17,18 +21,8 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_moon_gravity;
-
 #namespace zm_moon_jump_pad;
 
-/*
-	Name: init
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x9CCE7033
-	Offset: 0x5A0
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level._uses_jump_pads = 1;
   level moon_jump_pad_overrides();
@@ -38,15 +32,6 @@ function init() {
   level thread moon_jump_pad_cushion_sound_init();
 }
 
-/*
-	Name: moon_jump_pad_overrides
-	Namespace: zm_moon_jump_pad
-	Checksum: 0xF09CAB5F
-	Offset: 0x630
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_jump_pad_overrides() {
   level._jump_pad_override["biodome_logic"] = & moon_jump_pad_progression_end;
   level._jump_pad_override["low_grav"] = & moon_low_gravity_velocity;
@@ -58,15 +43,6 @@ function moon_jump_pad_overrides() {
   level flag::set("pad_allow_anim_change");
 }
 
-/*
-	Name: function_4b3d145d
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x7D212656
-	Offset: 0x720
-	Size: 0x178
-	Parameters: 11
-	Flags: Linked
-*/
 function function_4b3d145d(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex) {
   if(smeansofdeath === "MOD_FALLING") {
     if(isdefined(self._padded) && self._padded) {
@@ -85,15 +61,6 @@ function function_4b3d145d(einflictor, eattacker, idamage, idflags, smeansofdeat
   return idamage;
 }
 
-/*
-	Name: moon_jump_pad_progression_end
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x4D49378C
-	Offset: 0x8A0
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function moon_jump_pad_progression_end(ent_player) {
   if(isdefined(self.start.script_string)) {
     ent_player.script_string = self.start.script_string;
@@ -113,15 +80,6 @@ function moon_jump_pad_progression_end(ent_player) {
   }
 }
 
-/*
-	Name: moon_low_gravity_velocity
-	Namespace: zm_moon_jump_pad
-	Checksum: 0xCA153267
-	Offset: 0xA20
-	Size: 0x5C8
-	Parameters: 2
-	Flags: Linked
-*/
 function moon_low_gravity_velocity(ent_start_point, struct_end_point) {
   end_point = struct_end_point;
   start_point = ent_start_point;
@@ -145,40 +103,32 @@ function moon_low_gravity_velocity(ent_start_point, struct_end_point) {
   if(z_dist > 40 && z_dist < 135) {
     z_dist = z_dist * 0.2;
     forward_scaling = 0.8;
-    /#
     if(getdvarint("")) {
       z_dist = z_dist * getdvarfloat("");
       forward_scaling = getdvarfloat("");
     }
-    # /
   } else {
     if(z_dist >= 135) {
       z_dist = z_dist * 0.2;
       forward_scaling = 0.7;
-      /#
       if(getdvarint("")) {
         z_dist = z_dist * getdvarfloat("");
         forward_scaling = getdvarfloat("");
       }
-      # /
     } else if(z_dist < 0) {
       z_dist = z_dist * 0.1;
       forward_scaling = 0.95;
-      /#
       if(getdvarint("")) {
         z_dist = z_dist * getdvarfloat("");
         forward_scaling = getdvarfloat("");
       }
-      # /
     }
   }
   n_reduction = 0.035;
-  /#
   if(getdvarfloat("") > 0) {
     n_reduction = getdvarfloat("");
   }
-  # /
-    z_velocity = ((n_reduction * 0.75) * z_dist) * world_gravity;
+  z_velocity = ((n_reduction * 0.75) * z_dist) * world_gravity;
   if(z_velocity < 0) {
     z_velocity = z_velocity * -1;
   }
@@ -201,15 +151,6 @@ function moon_low_gravity_velocity(ent_start_point, struct_end_point) {
   return jump_info;
 }
 
-/*
-	Name: moon_vertical_jump
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x7E095B7B
-	Offset: 0xFF0
-	Size: 0x3A2
-	Parameters: 2
-	Flags: Linked
-*/
 function moon_vertical_jump(ent_start_point, struct_end_point) {
   end_point = struct_end_point;
   start_point = ent_start_point;
@@ -250,15 +191,6 @@ function moon_vertical_jump(ent_start_point, struct_end_point) {
   return jump_info;
 }
 
-/*
-	Name: moon_biodome_temptation_init
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x97E3C6C1
-	Offset: 0x13A0
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_biodome_temptation_init() {
   level._biodome_tempt_arrays = [];
   level._biodome_tempt_arrays["struct_tempt_left_medium_start"] = struct::get_array("struct_tempt_left_medium_start", "targetname");
@@ -273,17 +205,8 @@ function moon_biodome_temptation_init() {
   level thread moon_biodome_random_pad_temptation();
 }
 
-/*
-	Name: moon_biodome_random_pad_temptation
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x698B7BC4
-	Offset: 0x1550
-	Size: 0x168
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_biodome_random_pad_temptation() {
-  level endon(# "end_game");
+  level endon("end_game");
   structs = struct::get_array("struct_biodome_temptation", "script_noteworthy");
   while (true) {
     rand = randomint(structs.size);
@@ -298,20 +221,11 @@ function moon_biodome_random_pad_temptation() {
   }
 }
 
-/*
-	Name: moon_biodome_powerup_temptation
-	Namespace: zm_moon_jump_pad
-	Checksum: 0xC74EF0D8
-	Offset: 0x16C0
-	Size: 0x302
-	Parameters: 1
-	Flags: Linked
-*/
 function moon_biodome_powerup_temptation(struct_array) {
   powerup = spawn("script_model", struct_array[0].origin);
   level thread moon_biodome_temptation_active(powerup);
-  powerup endon(# "powerup_grabbed");
-  powerup endon(# "powerup_timedout");
+  powerup endon("powerup_grabbed");
+  powerup endon("powerup_timedout");
   temptation_array = array("fire_sale", "insta_kill", "nuke", "double_points", "carpenter");
   temptation_index = 0;
   spot_index = 0;
@@ -364,15 +278,6 @@ function moon_biodome_powerup_temptation(struct_array) {
   }
 }
 
-/*
-	Name: moon_biodome_temptation_active
-	Namespace: zm_moon_jump_pad
-	Checksum: 0xFF4F5023
-	Offset: 0x19D0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function moon_biodome_temptation_active(ent_powerup) {
   level._pad_powerup = 1;
   while (isdefined(ent_powerup)) {
@@ -381,21 +286,12 @@ function moon_biodome_temptation_active(ent_powerup) {
   level._pad_powerup = 0;
 }
 
-/*
-	Name: moon_jump_pads_low_gravity
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x501039BD
-	Offset: 0x1A18
-	Size: 0x10A
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_jump_pads_low_gravity() {
-  level endon(# "end_game");
+  level endon("end_game");
   biodome_pads = getentarray("biodome_pads", "script_noteworthy");
   biodome_compromised = 0;
   while (!biodome_compromised) {
-    level waittill(# "digger_arm_smash", digger, zone);
+    level waittill("digger_arm_smash", digger, zone);
     if(digger == "biodome" && isarray(zone) && zone[0] == "forest_zone") {
       biodome_compromised = 1;
     }
@@ -405,17 +301,8 @@ function moon_jump_pads_low_gravity() {
   }
 }
 
-/*
-	Name: moon_jump_pads_malfunctions
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x4721C971
-	Offset: 0x1B30
-	Size: 0x206
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_jump_pads_malfunctions() {
-  level endon(# "end_game");
+  level endon("end_game");
   jump_pad_triggers = getentarray("trig_jump_pad", "targetname");
   level flag::wait_till("start_zombie_round_logic");
   wait(2);
@@ -436,37 +323,24 @@ function moon_jump_pads_malfunctions() {
       }
     }
   }
-  /#
   if(level._dome_malfunction_pads.size == 0) {
     println("");
     return;
   }
-  # /
-    level flag::wait_till("power_on");
+  level flag::wait_till("power_on");
   for (i = 0; i < level._dome_malfunction_pads.size; i++) {
     level._dome_malfunction_pads[i] thread moon_pad_malfunction_think();
   }
 }
 
-/*
-	Name: moon_pad_malfunction_think
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x67D71083
-	Offset: 0x1D40
-	Size: 0x1A0
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_pad_malfunction_think() {
-  level endon(# "end_game");
+  level endon("end_game");
   pad_hook = spawn("script_model", self.origin);
   pad_hook setmodel("tag_origin");
   while (isdefined(self)) {
     wait(randomintrange(30, 60));
-    /#
     println("");
-    # /
-      pad_hook playsound("zmb_turret_down");
+    pad_hook playsound("zmb_turret_down");
     pad_hook clientfield::set("dome_malfunction_pad", 1);
     util::wait_network_frame();
     self triggerenable(0);
@@ -475,23 +349,12 @@ function moon_pad_malfunction_think() {
     pad_hook clientfield::set("dome_malfunction_pad", 0);
     util::wait_network_frame();
     self triggerenable(1);
-    /#
     println("");
-    # /
   }
 }
 
-/*
-	Name: moon_zombie_run_change
-	Namespace: zm_moon_jump_pad
-	Checksum: 0xF59B1A10
-	Offset: 0x1EE8
-	Size: 0x254
-	Parameters: 1
-	Flags: Linked
-*/
 function moon_zombie_run_change(ent_poi) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self._pad_chase) && self._pad_chase) {
     return;
   }
@@ -528,17 +391,8 @@ function moon_zombie_run_change(ent_poi) {
   self thread moon_stop_running_to_catch();
 }
 
-/*
-	Name: jump_pad_store_movement_anim
-	Namespace: zm_moon_jump_pad
-	Checksum: 0xE8A17298
-	Offset: 0x2148
-	Size: 0xD4
-	Parameters: 0
-	Flags: None
-*/
 function jump_pad_store_movement_anim() {
-  self endon(# "death");
+  self endon("death");
   current_anim = self.run_combatanim;
   anim_keys = getarraykeys(level.scr_anim[self.animname]);
   for (j = 0; j < anim_keys.size; j++) {
@@ -549,21 +403,10 @@ function jump_pad_store_movement_anim() {
   /# /
   #
   assertmsg("");
-  # /
-    # /
 }
 
-/*
-	Name: moon_stop_running_to_catch
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x80F0F46E
-	Offset: 0x2228
-	Size: 0x150
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_stop_running_to_catch() {
-  self endon(# "death");
+  self endon("death");
   if(!(isdefined(self._pad_chase) && self._pad_chase)) {
     return;
   }
@@ -584,15 +427,6 @@ function moon_stop_running_to_catch() {
   self._pad_chase = 0;
 }
 
-/*
-	Name: moon_jump_pad_cushion_sound_init
-	Namespace: zm_moon_jump_pad
-	Checksum: 0xEC311AFA
-	Offset: 0x2380
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_jump_pad_cushion_sound_init() {
   level flag::wait_till("start_zombie_round_logic");
   level.cushion_sound_triggers = getentarray("trig_cushion_sound", "targetname");
@@ -601,33 +435,15 @@ function moon_jump_pad_cushion_sound_init() {
   }
 }
 
-/*
-	Name: moon_jump_pad_cushion_play_sound
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x5F0149A
-	Offset: 0x2410
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function moon_jump_pad_cushion_play_sound() {
   while (isdefined(self)) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     if(isplayer(who) && (isdefined(who._padded) && who._padded)) {
       self playsound("evt_jump_pad_land");
     }
   }
 }
 
-/*
-	Name: function_d4f0f4fe
-	Namespace: zm_moon_jump_pad
-	Checksum: 0x27E8526C
-	Offset: 0x2498
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d4f0f4fe() {
   if(isdefined(self.script_int)) {
     level clientfield::increment("jump_pad_pulse", self.script_int);

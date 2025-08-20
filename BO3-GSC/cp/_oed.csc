@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_oed.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\audio_shared;
 #using scripts\shared\callbacks_shared;
@@ -10,31 +14,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace oed;
 
-/*
-	Name: __init__sytem__
-	Namespace: oed
-	Checksum: 0x9E85F2E
-	Offset: 0x4E0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("oed", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: oed
-	Checksum: 0x9CB242EB
-	Offset: 0x520
-	Size: 0x59C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "ev_toggle", 1, 1, "int", & ev_player_toggle, 0, 0);
   clientfield::register("toplayer", "sitrep_toggle", 1, 1, "int", & sitrep_player_toggle, 0, 0);
@@ -62,15 +47,6 @@ function __init__() {
   callback::on_localclient_shutdown( & on_localplayer_shutdown);
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: oed
-	Checksum: 0x38F833BB
-	Offset: 0xAC8
-	Size: 0x13C
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_spawned(localclientnum) {
   self.b_ev_active = 0;
   var_7fd179a9 = 10500;
@@ -91,40 +67,13 @@ function on_player_spawned(localclientnum) {
   function_22ee3552(localclientnum);
 }
 
-/*
-	Name: on_localplayer_shutdown
-	Namespace: oed
-	Checksum: 0xA4633418
-	Offset: 0xC10
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function on_localplayer_shutdown(localclientnum) {
   function_357cbbf0(localclientnum);
   function_22ee3552(localclientnum);
 }
 
-/*
-	Name: tmode_init_ent_shader_materials
-	Namespace: oed
-	Checksum: 0x99EC1590
-	Offset: 0xC58
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function tmode_init_ent_shader_materials() {}
 
-/*
-	Name: tmode_remove_all_ents
-	Namespace: oed
-	Checksum: 0xD0AC6A6E
-	Offset: 0xC68
-	Size: 0x10A
-	Parameters: 1
-	Flags: Linked
-*/
 function tmode_remove_all_ents(localclientnum) {
   if(!self islocalplayer()) {
     return;
@@ -138,15 +87,6 @@ function tmode_remove_all_ents(localclientnum) {
   }
 }
 
-/*
-	Name: ev_player_toggle
-	Namespace: oed
-	Checksum: 0x576291E5
-	Offset: 0xD80
-	Size: 0xCC
-	Parameters: 7
-	Flags: Linked
-*/
 function ev_player_toggle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!self islocalplayer()) {
     return;
@@ -163,35 +103,15 @@ function ev_player_toggle(localclientnum, oldval, newval, bnewent, binitialsnap,
   self player_toggle_ev(localclientnum, newval);
 }
 
-/*
-	Name: function_e8b1e8b2
-	Namespace: oed
-	Checksum: 0xE305AAF5
-	Offset: 0xE58
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_e8b1e8b2(localclientnum, newval) {
   if(isdefined(self)) {
     self evenable(newval);
   } else {
-    /#
     println("");
-    # /
-      gadgetsetinfrared(localclientnum, newval);
+    gadgetsetinfrared(localclientnum, newval);
   }
 }
 
-/*
-	Name: function_22ee3552
-	Namespace: oed
-	Checksum: 0x214B8EF7
-	Offset: 0xED0
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_22ee3552(localclientnum) {
   audio::stoploopat("gdt_oed_loop", (1, 2, 3));
   deactivate_thermal_ents(localclientnum);
@@ -200,15 +120,6 @@ function function_22ee3552(localclientnum) {
   level flag::clear("activate_thermal");
 }
 
-/*
-	Name: function_357cbbf0
-	Namespace: oed
-	Checksum: 0x172B43BC
-	Offset: 0xF68
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_357cbbf0(localclientnum) {
   self tmodeenable(0);
   self thread tmode_remove_all_ents(localclientnum);
@@ -216,15 +127,6 @@ function function_357cbbf0(localclientnum) {
   level flag::clear("activate_tmode");
 }
 
-/*
-	Name: player_toggle_ev
-	Namespace: oed
-	Checksum: 0x766E1517
-	Offset: 0xFD8
-	Size: 0x1AC
-	Parameters: 2
-	Flags: Linked
-*/
 function player_toggle_ev(lcn, newval) {
   self.b_ev_active = newval;
   if(newval) {
@@ -249,26 +151,14 @@ function player_toggle_ev(lcn, newval) {
   }
 }
 
-/*
-	Name: ent_thermal_callback
-	Namespace: oed
-	Checksum: 0x2EFF89D1
-	Offset: 0x1190
-	Size: 0x14C
-	Parameters: 7
-	Flags: Linked
-*/
 function ent_thermal_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   level flagsys::wait_till("duplicaterender_registry_ready");
-  /#
   assert(isdefined(self), "");
-  # /
-    if(newval == 0) {
-      self.b_show_thermal = 0;
-      self set_entity_thermal(localclientnum, 0);
-    }
-  else {
+  if(newval == 0) {
+    self.b_show_thermal = 0;
+    self set_entity_thermal(localclientnum, 0);
+  } else {
     self.b_show_thermal = newval;
     player = getlocalplayer(localclientnum);
     if(isdefined(player.b_ev_active) && player.b_ev_active) {
@@ -279,15 +169,6 @@ function ent_thermal_callback(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: set_entity_thermal
-	Namespace: oed
-	Checksum: 0xD700ABB5
-	Offset: 0x12E8
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function set_entity_thermal(localclientnum, b_enabled) {
   if(self.team == "allies") {
     self duplicate_render::set_dr_flag("thermal_friendly_active", b_enabled);
@@ -303,15 +184,6 @@ function set_entity_thermal(localclientnum, b_enabled) {
   }
 }
 
-/*
-	Name: activate_thermal_ents
-	Namespace: oed
-	Checksum: 0x6BDD7A07
-	Offset: 0x13C0
-	Size: 0xE2
-	Parameters: 1
-	Flags: Linked
-*/
 function activate_thermal_ents(localclientnum) {
   a_e_thermals = getentarray(localclientnum);
   foreach(entity in a_e_thermals) {
@@ -321,15 +193,6 @@ function activate_thermal_ents(localclientnum) {
   }
 }
 
-/*
-	Name: deactivate_thermal_ents
-	Namespace: oed
-	Checksum: 0x34E2355B
-	Offset: 0x14B0
-	Size: 0xE2
-	Parameters: 1
-	Flags: Linked
-*/
 function deactivate_thermal_ents(localclientnum) {
   a_e_thermals = getentarray(localclientnum);
   foreach(entity in a_e_thermals) {
@@ -339,35 +202,15 @@ function deactivate_thermal_ents(localclientnum) {
   }
 }
 
-/*
-	Name: structural_weakness_callback
-	Namespace: oed
-	Checksum: 0x8B34FE18
-	Offset: 0x15A0
-	Size: 0xAC
-	Parameters: 7
-	Flags: None
-*/
 function structural_weakness_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   level flagsys::wait_till("duplicaterender_registry_ready");
-  /#
   assert(isdefined(self), "");
-  # /
-    if(newval) {
-      self duplicate_render::set_item_enemy_equipment(localclientnum, newval);
-    }
+  if(newval) {
+    self duplicate_render::set_item_enemy_equipment(localclientnum, newval);
+  }
 }
 
-/*
-	Name: tmode_force_toggle
-	Namespace: oed
-	Checksum: 0x7C2C5A3A
-	Offset: 0x1658
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function tmode_force_toggle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     self.b_force_tmode = 1;
@@ -378,55 +221,19 @@ function tmode_force_toggle(localclientnum, oldval, newval, bnewent, binitialsna
   }
 }
 
-/*
-	Name: tagged_toggle
-	Namespace: oed
-	Checksum: 0x8BC85B39
-	Offset: 0x1700
-	Size: 0x54
-	Parameters: 7
-	Flags: Linked
-*/
 function tagged_toggle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   forcetmodevisible(self, newval);
 }
 
-/*
-	Name: function_6b87ceb0
-	Namespace: oed
-	Checksum: 0xB23A7F52
-	Offset: 0x1760
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6b87ceb0(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self thread postfx::playpostfxbundle("pstfx_tactical_bootup");
 }
 
-/*
-	Name: hack_dni_fx
-	Namespace: oed
-	Checksum: 0x2279FF1E
-	Offset: 0x17C8
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function hack_dni_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self thread postfx::playpostfxbundle("pstfx_hacking_bootup");
   self playsound(0, "uin_hack_mode_activate");
 }
 
-/*
-	Name: function_3b4d6db0
-	Namespace: oed
-	Checksum: 0xBF8D3CDB
-	Offset: 0x1850
-	Size: 0x104
-	Parameters: 2
-	Flags: Linked
-*/
 function function_3b4d6db0(localclientnum, b_playsound = 1) {
   self tmodeenable(0);
   if(!isdefined(level.var_e46224ba) && !isigcactive(localclientnum) && b_playsound) {
@@ -439,15 +246,6 @@ function function_3b4d6db0(localclientnum, b_playsound = 1) {
   level flag::clear("activate_tmode");
 }
 
-/*
-	Name: function_165838aa
-	Namespace: oed
-	Checksum: 0xD69F07C4
-	Offset: 0x1960
-	Size: 0xEC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_165838aa(localclientnum, b_playsound = 1) {
   function_22ee3552(localclientnum);
   level flag::set("activate_tmode");
@@ -465,15 +263,6 @@ function function_165838aa(localclientnum, b_playsound = 1) {
   }
 }
 
-/*
-	Name: tmode_player_toggle
-	Namespace: oed
-	Checksum: 0x868F52F
-	Offset: 0x1A58
-	Size: 0x124
-	Parameters: 7
-	Flags: Linked
-*/
 function tmode_player_toggle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!self islocalplayer()) {
     return;
@@ -487,7 +276,7 @@ function tmode_player_toggle(localclientnum, oldval, newval, bnewent, binitialsn
   if(level flagsys::get("menu_open")) {
     return;
   }
-  self notify(# "tmode_cancel");
+  self notify("tmode_cancel");
   self.var_8b70667f = newval;
   b_playsound = 0;
   if(newval & 2) {
@@ -500,15 +289,6 @@ function tmode_player_toggle(localclientnum, oldval, newval, bnewent, binitialsn
   }
 }
 
-/*
-	Name: sitrep_player_toggle
-	Namespace: oed
-	Checksum: 0x74B8B325
-	Offset: 0x1B88
-	Size: 0x94
-	Parameters: 7
-	Flags: Linked
-*/
 function sitrep_player_toggle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!self islocalplayer()) {
     return;
@@ -522,45 +302,22 @@ function sitrep_player_toggle(localclientnum, oldval, newval, bnewent, binitials
   self thread player_toggle_sitrep(localclientnum, newval);
 }
 
-/*
-	Name: player_toggle_sitrep
-	Namespace: oed
-	Checksum: 0x551127AC
-	Offset: 0x1C28
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function player_toggle_sitrep(lcn, newval) {
   self.sitrep_active = newval;
   self oed_sitrepscan_enable(newval);
 }
 
-/*
-	Name: ent_material_callback
-	Namespace: oed
-	Checksum: 0xA39F2ACA
-	Offset: 0x1C70
-	Size: 0x184
-	Parameters: 7
-	Flags: Linked
-*/
 function ent_material_callback(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
-  /#
+  self endon("entityshutdown");
   assert(isdefined(self), "");
-  # /
-    level flagsys::wait_till("duplicaterender_registry_ready");
-  /#
+  level flagsys::wait_till("duplicaterender_registry_ready");
   assert(isdefined(self), "");
-  # /
-    if(newval == 0) {
-      self notify(# "hash_1b32b83b");
-      self.var_6c4eaf38 = undefined;
-      self duplicate_render::change_dr_flags(localclientnum, undefined, "keyline_active,keyfill_active");
-      self tmodesetflag(2);
-    }
-  else {
+  if(newval == 0) {
+    self notify("hash_1b32b83b");
+    self.var_6c4eaf38 = undefined;
+    self duplicate_render::change_dr_flags(localclientnum, undefined, "keyline_active,keyfill_active");
+    self tmodesetflag(2);
+  } else {
     self duplicate_render::change_dr_flags(localclientnum, "keyline_active", "keyfill_active");
     self.var_ac0e7241 = 1;
     self tmodeclearflag(2);
@@ -571,22 +328,13 @@ function ent_material_callback(localclientnum, oldval, newval, bnewent, binitial
   }
 }
 
-/*
-	Name: function_537efcea
-	Namespace: oed
-	Checksum: 0x67D6593E
-	Offset: 0x1E00
-	Size: 0x27A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_537efcea(localclientnum) {
-  self endon(# "death");
-  self endon(# "entityshutdown");
-  self endon(# "hash_1b32b83b");
+  self endon("death");
+  self endon("entityshutdown");
+  self endon("hash_1b32b83b");
   player = getlocalplayer(localclientnum);
-  player endon(# "disconnect");
-  player endon(# "entityshutdown");
+  player endon("disconnect");
+  player endon("entityshutdown");
   var_56f99f06 = 0;
   var_56f99f06 = getdvarfloat("interactivePromptNearToDist", 8.4);
   var_56f99f06 = var_56f99f06 * 39.37;

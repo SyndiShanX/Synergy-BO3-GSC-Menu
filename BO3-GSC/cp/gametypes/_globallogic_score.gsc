@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\gametypes\_globallogic_score.gsc
+*************************************************/
+
 #using scripts\cp\_bb;
 #using scripts\cp\_challenges;
 #using scripts\cp\_scoreevents;
@@ -17,18 +21,8 @@
 #using scripts\shared\rank_shared;
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\util_shared;
-
 #namespace globallogic_score;
 
-/*
-	Name: updatematchbonusscores
-	Namespace: globallogic_score
-	Checksum: 0xAD191013
-	Offset: 0x9B8
-	Size: 0x7F2
-	Parameters: 1
-	Flags: Linked
-*/
 function updatematchbonusscores(winner) {
   if(!game["timepassed"]) {
     return;
@@ -141,33 +135,15 @@ function updatematchbonusscores(winner) {
   }
 }
 
-/*
-	Name: givematchbonus
-	Namespace: globallogic_score
-	Checksum: 0xB0D30588
-	Offset: 0x11B8
-	Size: 0x7C
-	Parameters: 2
-	Flags: Linked
-*/
 function givematchbonus(scoretype, score) {
-  self endon(# "disconnect");
-  level waittill(# "give_match_bonus");
+  self endon("disconnect");
+  level waittill("give_match_bonus");
   if(scoreevents::shouldaddrankxp(self)) {
     self addrankxpvalue(scoretype, score);
   }
   self rank::endgameupdate();
 }
 
-/*
-	Name: gethighestscoringplayer
-	Namespace: globallogic_score
-	Checksum: 0xB7D5858C
-	Offset: 0x1240
-	Size: 0x138
-	Parameters: 0
-	Flags: Linked
-*/
 function gethighestscoringplayer() {
   players = level.players;
   winner = undefined;
@@ -194,49 +170,22 @@ function gethighestscoringplayer() {
   return winner;
 }
 
-/*
-	Name: resetscorechain
-	Namespace: globallogic_score
-	Checksum: 0x8F60D7A3
-	Offset: 0x1388
-	Size: 0x28
-	Parameters: 0
-	Flags: Linked
-*/
 function resetscorechain() {
-  self notify(# "reset_score_chain");
+  self notify("reset_score_chain");
   self.scorechain = 0;
   self.rankupdatetotal = 0;
 }
 
-/*
-	Name: scorechaintimer
-	Namespace: globallogic_score
-	Checksum: 0x57456112
-	Offset: 0x13B8
-	Size: 0x5C
-	Parameters: 0
-	Flags: None
-*/
 function scorechaintimer() {
-  self notify(# "score_chain_timer");
-  self endon(# "reset_score_chain");
-  self endon(# "score_chain_timer");
-  self endon(# "death");
-  self endon(# "disconnect");
+  self notify("score_chain_timer");
+  self endon("reset_score_chain");
+  self endon("score_chain_timer");
+  self endon("death");
+  self endon("disconnect");
   wait(20);
   self thread resetscorechain();
 }
 
-/*
-	Name: roundtonearestfive
-	Namespace: globallogic_score
-	Checksum: 0x23E16688
-	Offset: 0x1420
-	Size: 0x52
-	Parameters: 1
-	Flags: None
-*/
 function roundtonearestfive(score) {
   rounding = score % 5;
   if(rounding <= 2) {
@@ -245,15 +194,6 @@ function roundtonearestfive(score) {
   return score + (5 - rounding);
 }
 
-/*
-	Name: giveplayerscore
-	Namespace: globallogic_score
-	Checksum: 0xF94D9FFD
-	Offset: 0x1480
-	Size: 0x30C
-	Parameters: 4
-	Flags: Linked
-*/
 function giveplayerscore(event, player, victim, descvalue) {
   scorediff = 0;
   if(level.overrideplayerscore) {
@@ -261,9 +201,7 @@ function giveplayerscore(event, player, victim, descvalue) {
   }
   pixbeginevent("level.onPlayerScore");
   score = player.pers["score"];
-  [
-    [level.onplayerscore]
-  ](event, player, victim);
+  [[level.onplayerscore]](event, player, victim);
   newscore = player.pers["score"];
   pixendevent();
   player bb::add_to_stat("score", newscore - score);
@@ -295,39 +233,19 @@ function giveplayerscore(event, player, victim, descvalue) {
   }
   player persistence::add_recent_stat(0, 0, "score", scorediff);
   pixendevent();
-  player notify(# "score_event", scorediff);
+  player notify("score_event", scorediff);
   return scorediff;
 }
 
-/*
-	Name: default_onplayerscore
-	Namespace: globallogic_score
-	Checksum: 0x9BCEDA13
-	Offset: 0x1798
-	Size: 0xB4
-	Parameters: 3
-	Flags: Linked
-*/
 function default_onplayerscore(event, player, victim) {
   score = rank::getscoreinfovalue(event);
-  /#
   assert(isdefined(score));
-  # /
-    if(level.wagermatch) {
-      player thread rank::updaterankscorehud(score);
-    }
+  if(level.wagermatch) {
+    player thread rank::updaterankscorehud(score);
+  }
   _setplayerscore(player, player.pers["score"] + score);
 }
 
-/*
-	Name: _setplayerscore
-	Namespace: globallogic_score
-	Checksum: 0xE0162BDB
-	Offset: 0x1858
-	Size: 0xFC
-	Parameters: 2
-	Flags: Linked
-*/
 function _setplayerscore(player, score) {
   if(score == player.pers["score"]) {
     return;
@@ -343,28 +261,10 @@ function _setplayerscore(player, score) {
   }
 }
 
-/*
-	Name: _getplayerscore
-	Namespace: globallogic_score
-	Checksum: 0x9FFDA43
-	Offset: 0x1960
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked
-*/
 function _getplayerscore(player) {
   return player.pers["score"];
 }
 
-/*
-	Name: playtop3sounds
-	Namespace: globallogic_score
-	Checksum: 0x92DCD2F4
-	Offset: 0x1988
-	Size: 0x176
-	Parameters: 0
-	Flags: Linked
-*/
 function playtop3sounds() {
   wait(0.05);
   globallogic::updateplacement();
@@ -385,15 +285,6 @@ function playtop3sounds() {
   }
 }
 
-/*
-	Name: setpointstowin
-	Namespace: globallogic_score
-	Checksum: 0x3E8CAB36
-	Offset: 0x1B08
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function setpointstowin(points) {
   self.pers["pointstowin"] = math::clamp(points, 0, 65000);
   self.pointstowin = self.pers["pointstowin"];
@@ -402,37 +293,17 @@ function setpointstowin(points) {
   level thread playtop3sounds();
 }
 
-/*
-	Name: givepointstowin
-	Namespace: globallogic_score
-	Checksum: 0xA13C53D1
-	Offset: 0x1BB0
-	Size: 0x3C
-	Parameters: 1
-	Flags: None
-*/
 function givepointstowin(points) {
   self setpointstowin(self.pers["pointstowin"] + points);
 }
 
-/*
-	Name: giveteamscore
-	Namespace: globallogic_score
-	Checksum: 0x91BD1334
-	Offset: 0x1BF8
-	Size: 0x124
-	Parameters: 4
-	Flags: Linked
-*/
 function giveteamscore(event, team, player, victim) {
   if(level.overrideteamscore) {
     return;
   }
   pixbeginevent("level.onTeamScore");
   teamscore = game["teamScores"][team];
-  [
-    [level.onteamscore]
-  ](event, team);
+  [[level.onteamscore]](event, team);
   pixendevent();
   newscore = game["teamScores"][team];
   bbprint("mpteamscores", "gametime %d event %s team %d diff %d score %d", gettime(), event, team, newscore - teamscore, newscore);
@@ -443,15 +314,6 @@ function giveteamscore(event, team, player, victim) {
   thread globallogic::checkscorelimit();
 }
 
-/*
-	Name: giveteamscoreforobjective_delaypostprocessing
-	Namespace: globallogic_score
-	Checksum: 0x61A33D6F
-	Offset: 0x1D28
-	Size: 0x94
-	Parameters: 2
-	Flags: None
-*/
 function giveteamscoreforobjective_delaypostprocessing(team, score) {
   teamscore = game["teamScores"][team];
   onteamscore_incrementscore(score, team);
@@ -462,15 +324,6 @@ function giveteamscoreforobjective_delaypostprocessing(team, score) {
   updateteamscores(team);
 }
 
-/*
-	Name: postprocessteamscores
-	Namespace: globallogic_score
-	Checksum: 0xD4AA1010
-	Offset: 0x1DC8
-	Size: 0xA4
-	Parameters: 1
-	Flags: None
-*/
 function postprocessteamscores(teams) {
   foreach(team in teams) {
     onteamscore_postprocess(team);
@@ -478,15 +331,6 @@ function postprocessteamscores(teams) {
   thread globallogic::checkscorelimit();
 }
 
-/*
-	Name: giveteamscoreforobjective
-	Namespace: globallogic_score
-	Checksum: 0xCFB22F95
-	Offset: 0x1E78
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function giveteamscoreforobjective(team, score) {
   if(!isdefined(level.teams[team])) {
     return;
@@ -501,15 +345,6 @@ function giveteamscoreforobjective(team, score) {
   thread globallogic::checkscorelimit();
 }
 
-/*
-	Name: _setteamscore
-	Namespace: globallogic_score
-	Checksum: 0x897E89D4
-	Offset: 0x1F40
-	Size: 0x8C
-	Parameters: 2
-	Flags: Linked
-*/
 function _setteamscore(team, teamscore) {
   if(teamscore == game["teamScores"][team]) {
     return;
@@ -519,15 +354,6 @@ function _setteamscore(team, teamscore) {
   thread globallogic::checkscorelimit();
 }
 
-/*
-	Name: resetteamscores
-	Namespace: globallogic_score
-	Checksum: 0x7B63756D
-	Offset: 0x1FD8
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function resetteamscores() {
   if(level.scoreroundwinbased || util::isfirstround()) {
     foreach(team in level.teams) {
@@ -537,29 +363,11 @@ function resetteamscores() {
   updateallteamscores();
 }
 
-/*
-	Name: resetallscores
-	Namespace: globallogic_score
-	Checksum: 0xBADEEF00
-	Offset: 0x20A0
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function resetallscores() {
   resetteamscores();
   resetplayerscores();
 }
 
-/*
-	Name: resetplayerscores
-	Namespace: globallogic_score
-	Checksum: 0xED4FA3FD
-	Offset: 0x20D0
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function resetplayerscores() {
   players = level.players;
   winner = undefined;
@@ -571,57 +379,21 @@ function resetplayerscores() {
   }
 }
 
-/*
-	Name: updateteamscores
-	Namespace: globallogic_score
-	Checksum: 0x2031AE4C
-	Offset: 0x2180
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function updateteamscores(team) {
   setteamscore(team, game["teamScores"][team]);
   level thread globallogic::checkteamscorelimitsoon(team);
 }
 
-/*
-	Name: updateallteamscores
-	Namespace: globallogic_score
-	Checksum: 0x9714EFB6
-	Offset: 0x21D8
-	Size: 0x8A
-	Parameters: 0
-	Flags: Linked
-*/
 function updateallteamscores() {
   foreach(team in level.teams) {
     updateteamscores(team);
   }
 }
 
-/*
-	Name: _getteamscore
-	Namespace: globallogic_score
-	Checksum: 0x237FD4D1
-	Offset: 0x2270
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function _getteamscore(team) {
   return game["teamScores"][team];
 }
 
-/*
-	Name: gethighestteamscoreteam
-	Namespace: globallogic_score
-	Checksum: 0x51614EA2
-	Offset: 0x2298
-	Size: 0xF6
-	Parameters: 0
-	Flags: Linked
-*/
 function gethighestteamscoreteam() {
   score = 0;
   winning_teams = [];
@@ -638,15 +410,6 @@ function gethighestteamscoreteam() {
   return winning_teams;
 }
 
-/*
-	Name: areteamarraysequal
-	Namespace: globallogic_score
-	Checksum: 0x48FB0629
-	Offset: 0x2398
-	Size: 0xB0
-	Parameters: 2
-	Flags: Linked
-*/
 function areteamarraysequal(teamsa, teamsb) {
   if(teamsa.size != teamsb.size) {
     return false;
@@ -659,29 +422,11 @@ function areteamarraysequal(teamsa, teamsb) {
   return true;
 }
 
-/*
-	Name: onteamscore
-	Namespace: globallogic_score
-	Checksum: 0x3A9F0DD5
-	Offset: 0x2450
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function onteamscore(score, team) {
   onteamscore_incrementscore(score, team);
   onteamscore_postprocess(team);
 }
 
-/*
-	Name: onteamscore_incrementscore
-	Namespace: globallogic_score
-	Checksum: 0x272C69B8
-	Offset: 0x24A0
-	Size: 0xB2
-	Parameters: 2
-	Flags: Linked
-*/
 function onteamscore_incrementscore(score, team) {
   game["teamScores"][team] = game["teamScores"][team] + score;
   if(game["teamScores"][team] < 0) {
@@ -692,15 +437,6 @@ function onteamscore_incrementscore(score, team) {
   }
 }
 
-/*
-	Name: onteamscore_postprocess
-	Namespace: globallogic_score
-	Checksum: 0x9A72E19D
-	Offset: 0x2560
-	Size: 0x208
-	Parameters: 1
-	Flags: Linked
-*/
 function onteamscore_postprocess(team) {
   if(level.splitscreen) {
     return;
@@ -745,32 +481,12 @@ function onteamscore_postprocess(team) {
   level.waswinning = iswinning;
 }
 
-/*
-	Name: default_onteamscore
-	Namespace: globallogic_score
-	Checksum: 0xBD492797
-	Offset: 0x2770
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function default_onteamscore(event, team) {
   score = rank::getscoreinfovalue(event);
-  /#
   assert(isdefined(score));
-  # /
-    onteamscore(score, team);
+  onteamscore(score, team);
 }
 
-/*
-	Name: initpersstat
-	Namespace: globallogic_score
-	Checksum: 0x270C706C
-	Offset: 0x27E8
-	Size: 0x8C
-	Parameters: 2
-	Flags: Linked
-*/
 function initpersstat(dataname, record_stats) {
   if(!isdefined(self.pers[dataname])) {
     self.pers[dataname] = 0;
@@ -780,28 +496,10 @@ function initpersstat(dataname, record_stats) {
   }
 }
 
-/*
-	Name: getpersstat
-	Namespace: globallogic_score
-	Checksum: 0x5921CD07
-	Offset: 0x2880
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function getpersstat(dataname) {
   return self.pers[dataname];
 }
 
-/*
-	Name: incpersstat
-	Namespace: globallogic_score
-	Checksum: 0x541FF97F
-	Offset: 0x28A0
-	Size: 0xEC
-	Parameters: 4
-	Flags: Linked
-*/
 function incpersstat(dataname, increment, record_stats, includegametype) {
   pixbeginevent("incPersStat");
   self.pers[dataname] = self.pers[dataname] + increment;
@@ -816,30 +514,12 @@ function incpersstat(dataname, increment, record_stats, includegametype) {
   pixendevent();
 }
 
-/*
-	Name: threadedrecordplayerstats
-	Namespace: globallogic_score
-	Checksum: 0x847B5AF8
-	Offset: 0x2998
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function threadedrecordplayerstats(dataname) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   waittillframeend();
   recordplayerstats(self, dataname, self.pers[dataname]);
 }
 
-/*
-	Name: updatewinstats
-	Namespace: globallogic_score
-	Checksum: 0x8ED52756
-	Offset: 0x29E0
-	Size: 0x234
-	Parameters: 1
-	Flags: Linked
-*/
 function updatewinstats(winner) {
   winner addplayerstatwithgametype("losses", -1);
   winner addplayerstatwithgametype("wins", 1);
@@ -852,7 +532,7 @@ function updatewinstats(winner) {
   winner updatestatratio("wlratio", "wins", "losses");
   restorewinstreaks(winner);
   winner addplayerstatwithgametype("cur_win_streak", 1);
-  winner notify(# "win");
+  winner notify("win");
   cur_gamemode_win_streak = winner persistence::stat_get_with_gametype("cur_win_streak");
   gamemode_win_streak = winner persistence::stat_get_with_gametype("win_streak");
   cur_win_streak = winner getdstat("playerstatslist", "cur_win_streak", "StatValue");
@@ -864,30 +544,12 @@ function updatewinstats(winner) {
   }
 }
 
-/*
-	Name: updatelossstats
-	Namespace: globallogic_score
-	Checksum: 0x786B76D3
-	Offset: 0x2C20
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function updatelossstats(loser) {
   loser addplayerstatwithgametype("losses", 1);
   loser updatestatratio("wlratio", "wins", "losses");
-  loser notify(# "loss");
+  loser notify("loss");
 }
 
-/*
-	Name: updatetiestats
-	Namespace: globallogic_score
-	Checksum: 0x745F448A
-	Offset: 0x2C98
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function updatetiestats(loser) {
   loser addplayerstatwithgametype("losses", -1);
   loser addplayerstatwithgametype("ties", 1);
@@ -895,18 +557,9 @@ function updatetiestats(loser) {
   if(!level.disablestattracking) {
     loser setdstat("playerstatslist", "cur_win_streak", "StatValue", 0);
   }
-  loser notify(# "tie");
+  loser notify("tie");
 }
 
-/*
-	Name: updatewinlossstats
-	Namespace: globallogic_score
-	Checksum: 0xE32AEBC0
-	Offset: 0x2D68
-	Size: 0x366
-	Parameters: 1
-	Flags: None
-*/
 function updatewinlossstats(winner) {
   if(!util::waslastround() && !level.hostforcedend) {
     return;
@@ -960,15 +613,6 @@ function updatewinlossstats(winner) {
   }
 }
 
-/*
-	Name: backupandclearwinstreaks
-	Namespace: globallogic_score
-	Checksum: 0x43637901
-	Offset: 0x30D8
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function backupandclearwinstreaks() {
   self.pers["winStreak"] = self getdstat("playerstatslist", "cur_win_streak", "StatValue");
   if(!level.disablestattracking) {
@@ -978,15 +622,6 @@ function backupandclearwinstreaks() {
   self persistence::stat_set_with_gametype("cur_win_streak", 0);
 }
 
-/*
-	Name: restorewinstreaks
-	Namespace: globallogic_score
-	Checksum: 0x8FF4054E
-	Offset: 0x31B0
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function restorewinstreaks(winner) {
   if(!level.disablestattracking) {
     winner setdstat("playerstatslist", "cur_win_streak", "StatValue", winner.pers["winStreak"]);
@@ -994,17 +629,8 @@ function restorewinstreaks(winner) {
   winner persistence::stat_set_with_gametype("cur_win_streak", winner.pers["winStreakForGametype"]);
 }
 
-/*
-	Name: inckillstreaktracker
-	Namespace: globallogic_score
-	Checksum: 0xEB8F5327
-	Offset: 0x3240
-	Size: 0x72
-	Parameters: 1
-	Flags: Linked
-*/
 function inckillstreaktracker(weapon) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   waittillframeend();
   if(weapon.name == "artillery") {
     self.pers["artillery_kills"]++;
@@ -1014,17 +640,8 @@ function inckillstreaktracker(weapon) {
   }
 }
 
-/*
-	Name: trackattackerkill
-	Namespace: globallogic_score
-	Checksum: 0x216623F7
-	Offset: 0x32C0
-	Size: 0x42C
-	Parameters: 5
-	Flags: Linked
-*/
 function trackattackerkill(name, rank, xp, prestige, xuid) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   attacker = self;
   waittillframeend();
   pixbeginevent("trackAttackerKill");
@@ -1070,17 +687,8 @@ function trackattackerkill(name, rank, xp, prestige, xuid) {
   pixendevent();
 }
 
-/*
-	Name: trackattackeedeath
-	Namespace: globallogic_score
-	Checksum: 0xB7C94182
-	Offset: 0x36F8
-	Size: 0x264
-	Parameters: 5
-	Flags: Linked
-*/
 function trackattackeedeath(attackername, rank, xp, prestige, xuid) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   waittillframeend();
   pixbeginevent("trackAttackeeDeath");
   if(!isdefined(self.pers["killed_by"][attackername])) {
@@ -1104,36 +712,16 @@ function trackattackeedeath(attackername, rank, xp, prestige, xuid) {
   pixendevent();
 }
 
-/*
-	Name: default_iskillboosting
-	Namespace: globallogic_score
-	Checksum: 0xFE7FC4D0
-	Offset: 0x3968
-	Size: 0x6
-	Parameters: 0
-	Flags: Linked
-*/
 function default_iskillboosting() {
   return false;
 }
 
-/*
-	Name: givekillstats
-	Namespace: globallogic_score
-	Checksum: 0x516D742E
-	Offset: 0x3978
-	Size: 0xA0C
-	Parameters: 3
-	Flags: Linked
-*/
 function givekillstats(smeansofdeath, weapon, evictim) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   waittillframeend();
   if(level.rankedmatch && self[[level.iskillboosting]]()) {
-    /#
     self iprintlnbold("");
-    # /
-      return;
+    return;
   }
   pixbeginevent("giveKillStats");
   self incpersstat("kills", 1, 1, 1);
@@ -1224,30 +812,12 @@ function givekillstats(smeansofdeath, weapon, evictim) {
   pixendevent();
 }
 
-/*
-	Name: function_28c6cf9e
-	Namespace: globallogic_score
-	Checksum: 0x837E9E53
-	Offset: 0x4390
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function function_28c6cf9e(itemindex) {
   if(isdefined(itemindex)) {
     self adddstat("ItemStats", itemindex, "stats", "kills", "statValue", 1);
   }
 }
 
-/*
-	Name: inctotalkills
-	Namespace: globallogic_score
-	Checksum: 0x6F84E06C
-	Offset: 0x43F0
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function inctotalkills(team) {
   if(level.teambased && isdefined(level.teams[team])) {
     game["totalKillsTeam"][team]++;
@@ -1255,15 +825,6 @@ function inctotalkills(team) {
   game["totalKills"]++;
 }
 
-/*
-	Name: setinflictorstat
-	Namespace: globallogic_score
-	Checksum: 0x2EDD3C55
-	Offset: 0x4448
-	Size: 0x194
-	Parameters: 3
-	Flags: Linked
-*/
 function setinflictorstat(einflictor, eattacker, weapon) {
   if(!isdefined(eattacker)) {
     return;
@@ -1291,18 +852,9 @@ function setinflictorstat(einflictor, eattacker, weapon) {
   }
 }
 
-/*
-	Name: processshieldassist
-	Namespace: globallogic_score
-	Checksum: 0x61651588
-	Offset: 0x45E8
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function processshieldassist(killedplayer) {
-  self endon(# "disconnect");
-  killedplayer endon(# "disconnect");
+  self endon("disconnect");
+  killedplayer endon("disconnect");
   wait(0.05);
   util::waittillslowprocessallowed();
   if(!isdefined(level.teams[self.pers["team"]])) {
@@ -1319,18 +871,9 @@ function processshieldassist(killedplayer) {
   scoreevents::processscoreevent("shield_assist", self, killedplayer, "riotshield");
 }
 
-/*
-	Name: processassist
-	Namespace: globallogic_score
-	Checksum: 0x3FC4CDDA
-	Offset: 0x4700
-	Size: 0x20C
-	Parameters: 4
-	Flags: Linked
-*/
 function processassist(killed_sentient, damagedone, weapon, assist_level) {
-  self endon(# "disconnect");
-  killed_sentient endon(# "disconnect");
+  self endon("disconnect");
+  killed_sentient endon("disconnect");
   wait(0.05);
   util::waittillslowprocessallowed();
   if(!isdefined(level.teams[self.team])) {
@@ -1361,20 +904,10 @@ function processassist(killed_sentient, damagedone, weapon, assist_level) {
   scoreevents::processscoreevent(assist_level, self, killed_sentient, weapon);
 }
 
-/*
-	Name: xpratethread
-	Namespace: globallogic_score
-	Checksum: 0x574E664D
-	Offset: 0x4918
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function xpratethread() {
-  /#
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   while (level.inprematchperiod) {
     wait(0.05);
   }
@@ -1384,5 +917,4 @@ function xpratethread() {
       self rank::giverankxp("", int(min(getdvarint(""), 50)));
     }
   }
-  # /
 }

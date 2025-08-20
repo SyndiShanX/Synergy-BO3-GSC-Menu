@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_sumpf.csc
+*************************************************/
+
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\util_shared;
@@ -34,32 +38,13 @@
 #using scripts\zm\zm_sumpf_amb;
 #using scripts\zm\zm_sumpf_ffotd;
 #using scripts\zm\zm_sumpf_fx;
-
 #namespace zm_sumpf;
 
-/*
-	Name: function_d9af860b
-	Namespace: zm_sumpf
-	Checksum: 0xF5C67DE7
-	Offset: 0x628
-	Size: 0x1C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec function_d9af860b() {
   level.bgb_in_use = 1;
   level.aat_in_use = 1;
 }
 
-/*
-	Name: main
-	Namespace: zm_sumpf
-	Checksum: 0xBBFEBB54
-	Offset: 0x650
-	Size: 0x244
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level thread zm_sumpf_ffotd::main_start();
   level.default_game_mode = "zclassic";
@@ -78,34 +63,14 @@ function main() {
   setdvar("player_shallowWaterWadeScale", 0.5);
   setdvar("player_waistWaterWadeScale", 0.5);
   level thread function_4e327cec();
-  /#
   println("");
-  # /
-    level thread zm_sumpf_ffotd::main_end();
+  level thread zm_sumpf_ffotd::main_end();
 }
 
-/*
-	Name: function_794950d2
-	Namespace: zm_sumpf
-	Checksum: 0xD8779FFE
-	Offset: 0x8A0
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_794950d2(localclientnum) {
   setsaveddvar("phys_buoyancy", 1);
 }
 
-/*
-	Name: player_legs_hide
-	Namespace: zm_sumpf
-	Checksum: 0x37CE1928
-	Offset: 0x8D8
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function player_legs_hide(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     self hideviewlegs();
@@ -114,15 +79,6 @@ function player_legs_hide(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: function_166277c8
-	Namespace: zm_sumpf
-	Checksum: 0x8F01FC6B
-	Offset: 0x958
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_166277c8(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     setworldfogactivebank(localclientnum, 2);
@@ -131,57 +87,21 @@ function function_166277c8(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_f79e9b4f
-	Namespace: zm_sumpf
-	Checksum: 0x670A1BEF
-	Offset: 0x9E0
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_f79e9b4f(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   if(newval) {
     playfxontag(localclientnum, level._effect["trap_log"], self, "tag_origin");
   }
 }
 
-/*
-	Name: start_zombie_stuff
-	Namespace: zm_sumpf
-	Checksum: 0x1E44EDF2
-	Offset: 0xA60
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function start_zombie_stuff() {
   include_weapons();
   _zm_weap_cymbal_monkey::init();
 }
 
-/*
-	Name: include_weapons
-	Namespace: zm_sumpf
-	Checksum: 0xE985534
-	Offset: 0xA90
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function include_weapons() {
   zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_sumpf_weapons.csv", 1);
 }
 
-/*
-	Name: function_4e327cec
-	Namespace: zm_sumpf
-	Checksum: 0x423429E1
-	Offset: 0xAC0
-	Size: 0xEA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4e327cec() {
   steptrigs = getentarray(0, "audio_step_trigger", "targetname");
   foreach(trig in steptrigs) {
@@ -191,18 +111,9 @@ function function_4e327cec() {
   }
 }
 
-/*
-	Name: function_938d448f
-	Namespace: zm_sumpf
-	Checksum: 0xDB50EE1B
-	Offset: 0xBB8
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function function_938d448f() {
   while (true) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     if(who isplayer()) {
       if(!(isdefined(who.var_b115a3e6) && who.var_b115a3e6)) {
         who.var_b115a3e6 = 1;
@@ -213,18 +124,9 @@ function function_938d448f() {
   }
 }
 
-/*
-	Name: function_387efde5
-	Namespace: zm_sumpf
-	Checksum: 0xC3E91A56
-	Offset: 0xC58
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_387efde5(trigger) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   while (self istouching(trigger)) {
     if(self getspeed() > 5) {
       playsound(0, "fly_water_wade_plr", (0, 0, 0));

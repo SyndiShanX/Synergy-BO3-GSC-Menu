@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_light_zombie.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\_burnplayer;
 #using scripts\shared\ai\archetype_utility;
@@ -21,62 +25,23 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_devgui;
 #using scripts\zm\_zm_elemental_zombies;
-
 #namespace zm_light_zombie;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_light_zombie
-	Checksum: 0xD7E28D21
-	Offset: 0x418
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_light_zombie", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_light_zombie
-	Checksum: 0xAF548679
-	Offset: 0x458
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   register_clientfields();
-  /#
   thread function_ff8b7145();
-  # /
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_light_zombie
-	Checksum: 0x660078B6
-	Offset: 0x490
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private register_clientfields() {
   clientfield::register("actor", "light_zombie_clientfield_aura_fx", 15000, 1, "int");
   clientfield::register("actor", "light_zombie_clientfield_death_fx", 15000, 1, "int");
   clientfield::register("actor", "light_zombie_clientfield_damaged_fx", 15000, 1, "counter");
 }
 
-/*
-	Name: function_a35db70f
-	Namespace: zm_light_zombie
-	Checksum: 0xDCEA95C4
-	Offset: 0x530
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a35db70f() {
   ai_zombie = self;
   var_715d2624 = zm_elemental_zombie::function_4aeed0a5("light");
@@ -92,35 +57,17 @@ function function_a35db70f() {
   }
 }
 
-/*
-	Name: function_cb744db7
-	Namespace: zm_light_zombie
-	Checksum: 0x3B185D59
-	Offset: 0x658
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_cb744db7() {
-  self endon(# "death");
+  self endon("death");
   wait(2);
   self clientfield::set("light_zombie_clientfield_aura_fx", 1);
 }
 
-/*
-	Name: function_68da949
-	Namespace: zm_light_zombie
-	Checksum: 0xB0D7002A
-	Offset: 0x698
-	Size: 0x78
-	Parameters: 0
-	Flags: Linked
-*/
 function function_68da949() {
-  self endon(# "entityshutdown");
-  self endon(# "death");
+  self endon("entityshutdown");
+  self endon("death");
   while (true) {
-    self waittill(# "damage");
+    self waittill("damage");
     if(randomint(100) < 50) {
       self clientfield::increment("light_zombie_clientfield_damaged_fx");
     }
@@ -128,18 +75,9 @@ function function_68da949() {
   }
 }
 
-/*
-	Name: light_zombie_death
-	Namespace: zm_light_zombie
-	Checksum: 0xD1349829
-	Offset: 0x718
-	Size: 0x1FC
-	Parameters: 0
-	Flags: Linked
-*/
 function light_zombie_death() {
   ai_zombie = self;
-  ai_zombie waittill(# "death", attacker);
+  ai_zombie waittill("death", attacker);
   if(!isdefined(ai_zombie) || ai_zombie.nuked === 1) {
     return;
   }
@@ -158,18 +96,9 @@ function light_zombie_death() {
   ai_zombie notsolid();
 }
 
-/*
-	Name: function_4745b0a9
-	Namespace: zm_light_zombie
-	Checksum: 0x7D16CC23
-	Offset: 0x920
-	Size: 0x194
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4745b0a9(flash_origin) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   player = self;
   dist_sq = distancesquared(player.origin, flash_origin);
   var_bfff29b1 = 16384;
@@ -190,18 +119,9 @@ function function_4745b0a9(flash_origin) {
   }
 }
 
-/*
-	Name: function_2335214f
-	Namespace: zm_light_zombie
-	Checksum: 0xC3B9D835
-	Offset: 0xAC0
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2335214f(flash_time) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   player = self;
   player.var_442e1e5b = 1;
   player shellshock("light_zombie_death", flash_time, 0);
@@ -209,19 +129,9 @@ function function_2335214f(flash_time) {
   player.var_442e1e5b = 0;
 }
 
-/*
-	Name: function_ff8b7145
-	Namespace: zm_light_zombie
-	Checksum: 0x9B395481
-	Offset: 0xB48
-	Size: 0x228
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ff8b7145() {
-  /#
   wait(0.05);
-  level waittill(# "start_zombie_round_logic");
+  level waittill("start_zombie_round_logic");
   wait(0.05);
   str_cmd = "";
   adddebugcommand(str_cmd);
@@ -248,5 +158,4 @@ function function_ff8b7145() {
     }
     wait(0.05);
   }
-  # /
 }

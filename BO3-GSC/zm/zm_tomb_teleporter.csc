@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_teleporter.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -6,49 +10,20 @@
 #using scripts\shared\scene_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #using_animtree("generic");
-
 #namespace zm_tomb_teleporter;
 
-/*
-	Name: init
-	Namespace: zm_tomb_teleporter
-	Checksum: 0xACA97E60
-	Offset: 0x260
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("allplayers", "teleport_arrival_departure_fx", 21000, 1, "counter", & function_dadd24b7, 0, 0);
   clientfield::register("vehicle", "teleport_arrival_departure_fx", 21000, 1, "counter", & function_dadd24b7, 0, 0);
 }
 
-/*
-	Name: main
-	Namespace: zm_tomb_teleporter
-	Checksum: 0x7784DED7
-	Offset: 0x300
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   visionset_mgr::register_overlay_info_style_postfx_bundle("zm_factory_teleport", 21000, 1, "pstfx_zm_tomb_teleport");
 }
 
-/*
-	Name: function_a8255fab
-	Namespace: zm_tomb_teleporter
-	Checksum: 0xD3E25CE2
-	Offset: 0x338
-	Size: 0x106
-	Parameters: 7
-	Flags: Linked
-*/
 function function_a8255fab(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(newval == 1) {
     if(!isdefined(self.var_1e8e073f)) {
       self.var_1e8e073f = playfxontag(localclientnum, level._effect["teleport_1p"], self, "tag_origin");
@@ -60,15 +35,6 @@ function function_a8255fab(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_ffedfe48
-	Namespace: zm_tomb_teleporter
-	Checksum: 0xB8CCA17
-	Offset: 0x448
-	Size: 0xE4
-	Parameters: 7
-	Flags: None
-*/
 function function_ffedfe48(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump) {
   var_b162502d = !(isdefined(self.var_76534568) && self.var_76534568);
   if(!(isdefined(self.var_76534568) && self.var_76534568)) {
@@ -82,15 +48,6 @@ function function_ffedfe48(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_dadd24b7
-	Namespace: zm_tomb_teleporter
-	Checksum: 0xE7FFB710
-	Offset: 0x538
-	Size: 0x172
-	Parameters: 7
-	Flags: Linked
-*/
 function function_dadd24b7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   str_tag_name = "";
   if(self isplayer()) {

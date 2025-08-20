@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_combat_robot.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_challenges;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -24,18 +28,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicleriders_shared;
 #using scripts\shared\weapons\_heatseekingmissile;
-
 #namespace combat_robot;
 
-/*
-	Name: init
-	Namespace: combat_robot
-	Checksum: 0xCCE5922A
-	Offset: 0x9E8
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   killstreaks::register("combat_robot", "combat_robot_marker", "killstreak_" + "combat_robot", "combat_robot" + "_used", & activatecombatrobot, undefined, 1);
   killstreaks::register_alt_weapon("combat_robot", "lmg_light_robot");
@@ -46,42 +40,15 @@ function init() {
   level thread _cleanuprobotcorpses();
 }
 
-/*
-	Name: _calculateprojectedguardposition
-	Namespace: combat_robot
-	Checksum: 0xED9CCE1F
-	Offset: 0xB68
-	Size: 0x2A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _calculateprojectedguardposition(player) {
   return getclosestpointonnavmesh(player.origin, 48);
 }
 
-/*
-	Name: _calculaterobotspawnposition
-	Namespace: combat_robot
-	Checksum: 0xB0D63A62
-	Offset: 0xBA0
-	Size: 0x6A
-	Parameters: 1
-	Flags: Private
-*/
 function private _calculaterobotspawnposition(player) {
   desiredspawnposition = (anglestoforward(player.angles) * 72) + player.origin;
   return getclosestpointonnavmesh(desiredspawnposition, 48);
 }
 
-/*
-	Name: _cleanuprobotcorpses
-	Namespace: combat_robot
-	Checksum: 0x1F8AEA73
-	Offset: 0xC18
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private _cleanuprobotcorpses() {
   corpsedeletetime = 15000;
   while (true) {
@@ -98,15 +65,6 @@ function private _cleanuprobotcorpses() {
   }
 }
 
-/*
-	Name: configureteampost
-	Namespace: combat_robot
-	Checksum: 0x55E894B8
-	Offset: 0xDA0
-	Size: 0x21C
-	Parameters: 2
-	Flags: Linked
-*/
 function configureteampost(player, ishacked) {
   robot = self;
   robot.propername = "";
@@ -131,15 +89,6 @@ function configureteampost(player, ishacked) {
   robot ai::set_behavior_attribute("supports_super_sprint", 1);
 }
 
-/*
-	Name: _configurerobotteam
-	Namespace: combat_robot
-	Checksum: 0xADB4D1FF
-	Offset: 0xFC8
-	Size: 0xFC
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _configurerobotteam(robot, player, ishacked) {
   if(ishacked) {
     lightsstate = 3;
@@ -155,15 +104,6 @@ function private _configurerobotteam(robot, player, ishacked) {
   robot thread _underwater(robot);
 }
 
-/*
-	Name: _createguardmarker
-	Namespace: combat_robot
-	Checksum: 0x85D73383
-	Offset: 0x10D0
-	Size: 0xA8
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _createguardmarker(robot, position) {
   owner = robot.owner;
   guardmarker = spawn("script_model", (0, 0, 0));
@@ -172,32 +112,14 @@ function private _createguardmarker(robot, position) {
   return guardmarker;
 }
 
-/*
-	Name: _destroyguardmarker
-	Namespace: combat_robot
-	Checksum: 0x7F6199E9
-	Offset: 0x1180
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _destroyguardmarker(robot) {
   if(isdefined(robot.guardmarker)) {
     robot.guardmarker delete();
   }
 }
 
-/*
-	Name: _underwater
-	Namespace: combat_robot
-	Checksum: 0x3E8A6D29
-	Offset: 0x11C8
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _underwater(robot) {
-  robot endon(# "death");
+  robot endon("death");
   while (true) {
     if((robot.origin[2] + 36) <= getwaterheight(robot.origin)) {
       robot asmsetanimationrate(0.85);
@@ -208,17 +130,8 @@ function private _underwater(robot) {
   }
 }
 
-/*
-	Name: _escort
-	Namespace: combat_robot
-	Checksum: 0x5071CE34
-	Offset: 0x1278
-	Size: 0x20E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _escort(robot) {
-  robot endon(# "death");
+  robot endon("death");
   robot.escorting = 1;
   robot.guarding = 0;
   _destroyguardmarker(robot);
@@ -242,33 +155,15 @@ function private _escort(robot) {
   }
 }
 
-/*
-	Name: _ignoreunattackableenemy
-	Namespace: combat_robot
-	Checksum: 0x1929A29D
-	Offset: 0x1490
-	Size: 0x64
-	Parameters: 2
-	Flags: Private
-*/
 function private _ignoreunattackableenemy(robot, enemy) {
-  robot endon(# "death");
+  robot endon("death");
   robot setignoreent(enemy, 1);
   wait(5);
   robot setignoreent(enemy, 0);
 }
 
-/*
-	Name: _guardposition
-	Namespace: combat_robot
-	Checksum: 0x3EBD7A05
-	Offset: 0x1500
-	Size: 0x1B6
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _guardposition(robot, position) {
-  robot endon(# "death");
+  robot endon("death");
   robot.goalradius = 1000;
   robot setgoal(position);
   robot.escorting = 0;
@@ -292,24 +187,15 @@ function private _guardposition(robot, position) {
   }
 }
 
-/*
-	Name: _watchmodeswap
-	Namespace: combat_robot
-	Checksum: 0x8247011
-	Offset: 0x16C0
-	Size: 0x3EE
-	Parameters: 2
-	Flags: Linked
-*/
 function _watchmodeswap(robot, player) {
-  robot endon(# "death");
+  robot endon("death");
   nextswitchtime = gettime();
   while (true) {
     wait(0.05);
     if(!isdefined(robot.usetrigger)) {
       continue;
     }
-    robot.usetrigger waittill(# "trigger");
+    robot.usetrigger waittill("trigger");
     if(nextswitchtime <= gettime() && isalive(player)) {
       if(isdefined(robot.guarding) && robot.guarding) {
         robot.guarding = 0;
@@ -317,7 +203,7 @@ function _watchmodeswap(robot, player) {
         player playsoundtoplayer("uin_mp_combat_bot_escort", player);
         robot thread _escort(robot);
         if(isdefined(robot.usetrigger)) {
-          robot.usetrigger sethintstring( & "KILLSTREAK_COMBAT_ROBOT_GUARD_HINT");
+          robot.usetrigger sethintstring(&"KILLSTREAK_COMBAT_ROBOT_GUARD_HINT");
         }
         if(isdefined(robot.markerfxhandle)) {
           robot.markerfxhandle delete();
@@ -330,7 +216,7 @@ function _watchmodeswap(robot, player) {
           player playsoundtoplayer("uin_mp_combat_bot_guard", player);
           robot thread _guardposition(robot, navguardposition);
           if(isdefined(robot.usetrigger)) {
-            robot.usetrigger sethintstring( & "KILLSTREAK_COMBAT_ROBOT_ESCORT_HINT");
+            robot.usetrigger sethintstring(&"KILLSTREAK_COMBAT_ROBOT_ESCORT_HINT");
           }
           if(isdefined(robot.markerfxhandle)) {
             robot.markerfxhandle delete();
@@ -348,24 +234,15 @@ function _watchmodeswap(robot, player) {
             robot.markerfxhandle setvisibletoplayer(player);
           }
         } else {
-          player iprintlnbold( & "KILLSTREAK_COMBAT_ROBOT_PATROL_FAIL");
+          player iprintlnbold(&"KILLSTREAK_COMBAT_ROBOT_PATROL_FAIL");
         }
       }
-      robot notify(# "bhtn_action_notify", "modeSwap");
+      robot notify("bhtn_action_notify", "modeSwap");
       nextswitchtime = gettime() + 1000;
     }
   }
 }
 
-/*
-	Name: activatecombatrobot
-	Namespace: combat_robot
-	Checksum: 0x920D3E7E
-	Offset: 0x1AB8
-	Size: 0x300
-	Parameters: 1
-	Flags: Linked
-*/
 function activatecombatrobot(killstreak) {
   player = self;
   team = self.team;
@@ -404,19 +281,10 @@ function activatecombatrobot(killstreak) {
   return result;
 }
 
-/*
-	Name: dropkillthread
-	Namespace: combat_robot
-	Checksum: 0xC6096BB7
-	Offset: 0x1DC0
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function dropkillthread() {
   robot = self;
-  robot endon(# "death");
-  robot endon(# "combat_robot_land");
+  robot endon("death");
+  robot endon("combat_robot_land");
   while (true) {
     robot supplydrop::is_touching_crate();
     robot supplydrop::is_clone_touching_crate();
@@ -424,19 +292,10 @@ function dropkillthread() {
   }
 }
 
-/*
-	Name: watchhelicopterdeath
-	Namespace: combat_robot
-	Checksum: 0xE61DC09E
-	Offset: 0x1E38
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function watchhelicopterdeath(context) {
   helicopter = self;
-  helicopter waittill(# "death");
-  callback::callback(# "hash_acb66515");
+  helicopter waittill("death");
+  callback::callback("hash_acb66515");
   if(isdefined(context.marker)) {
     context.marker delete();
     context.marker = undefined;
@@ -448,15 +307,6 @@ function watchhelicopterdeath(context) {
   }
 }
 
-/*
-	Name: prolog
-	Namespace: combat_robot
-	Checksum: 0xE610B521
-	Offset: 0x1F28
-	Size: 0x508
-	Parameters: 1
-	Flags: Linked
-*/
 function prolog(context) {
   helicopter = self;
   player = helicopter.owner;
@@ -504,52 +354,22 @@ function prolog(context) {
   context.robot = combatrobot;
 }
 
-/*
-	Name: respectnottargetedbyrobotperk
-	Namespace: combat_robot
-	Checksum: 0x96CBA5C9
-	Offset: 0x2438
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function respectnottargetedbyrobotperk(player) {
   combatrobot = self;
   combatrobot setignoreent(player, player hasperk("specialty_nottargetedbyrobot"));
 }
 
-/*
-	Name: epilog
-	Namespace: combat_robot
-	Checksum: 0x4CC68B08
-	Offset: 0x2498
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function epilog(context) {
   helicopter = self;
   context.robot thread dropkillthread();
   context.robot.starttime = gettime() + 750;
   thread cleanupthread(context);
-  /#
   debug_delay_robot_deploy();
-  # /
-    helicopter waitthensetdeleteafterdestructionwaittime(0.8, (isdefined(self.unloadtimeout) ? self.unloadtimeout : 0) + 0.1);
+  helicopter waitthensetdeleteafterdestructionwaittime(0.8, (isdefined(self.unloadtimeout) ? self.unloadtimeout : 0) + 0.1);
   helicopter vehicle::unload("all", undefined, 1, 0.8);
 }
 
-/*
-	Name: debug_delay_robot_deploy
-	Namespace: combat_robot
-	Checksum: 0x5F2834FB
-	Offset: 0x2598
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_delay_robot_deploy() {
-  /#
   seconds_to_wait = getdvarint("", 0);
   while (seconds_to_wait > 0) {
     iprintlnbold("" + seconds_to_wait);
@@ -559,18 +379,8 @@ function debug_delay_robot_deploy() {
       iprintlnbold("");
     }
   }
-  # /
 }
 
-/*
-	Name: waitthensetdeleteafterdestructionwaittime
-	Namespace: combat_robot
-	Checksum: 0x7437DBEB
-	Offset: 0x2630
-	Size: 0x30
-	Parameters: 2
-	Flags: Linked
-*/
 function waitthensetdeleteafterdestructionwaittime(set_wait_time, delete_after_destruction_wait_time) {
   wait(set_wait_time);
   if(isdefined(self)) {
@@ -578,52 +388,25 @@ function waitthensetdeleteafterdestructionwaittime(set_wait_time, delete_after_d
   }
 }
 
-/*
-	Name: hackedcallbackpost
-	Namespace: combat_robot
-	Checksum: 0x32095855
-	Offset: 0x2668
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedcallbackpost(hacker) {
   robot = self;
   robot clearenemy();
   robot setupcombatrobothinttrigger(hacker);
 }
 
-/*
-	Name: watchcombatrobothelicopterhacked
-	Namespace: combat_robot
-	Checksum: 0x1BEEAEF0
-	Offset: 0x26C0
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function watchcombatrobothelicopterhacked(helicopter) {
   robot = self;
-  robot endon(# "death");
-  robot endon(# "killstreak_hacked");
-  robot endon(# "combat_robot_land");
-  helicopter endon(# "death");
-  helicopter waittill(# "killstreak_hacked", hacker);
+  robot endon("death");
+  robot endon("killstreak_hacked");
+  robot endon("combat_robot_land");
+  helicopter endon("death");
+  helicopter waittill("killstreak_hacked", hacker);
   if(robot flagsys::get("in_vehicle") == 0) {
     return;
   }
   robot[[robot.killstreak_hackedcallback]](hacker);
 }
 
-/*
-	Name: cleanupthread
-	Namespace: combat_robot
-	Checksum: 0xB840D1FB
-	Offset: 0x2770
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function cleanupthread(context) {
   robot = context.robot;
   while (isdefined(robot) && isdefined(context.marker) && robot flagsys::get("in_vehicle")) {
@@ -640,70 +423,43 @@ function cleanupthread(context) {
   }
 }
 
-/*
-	Name: watchcombatrobotdeath
-	Namespace: combat_robot
-	Checksum: 0xD2B6976A
-	Offset: 0x2890
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function watchcombatrobotdeath() {
   combatrobot = self;
-  combatrobot endon(# "combat_robot_shutdown");
+  combatrobot endon("combat_robot_shutdown");
   callback::remove_on_spawned( & respectnottargetedbyrobotperk, combatrobot);
-  combatrobot waittill(# "death", attacker, damagefromunderneath, weapon);
+  combatrobot waittill("death", attacker, damagefromunderneath, weapon);
   attacker = self[[level.figure_out_attacker]](attacker);
   if(isdefined(attacker) && isplayer(attacker) && (!isdefined(combatrobot.owner) || combatrobot.owner util::isenemyplayer(attacker))) {
     attacker challenges::destroyscorestreak(weapon, 0, 1);
     attacker challenges::destroynonairscorestreak_poststatslock(weapon);
     scoreevents::processscoreevent("destroyed_combat_robot", attacker, combatrobot.owner, weapon);
-    luinotifyevent( & "player_callout", 2, & "KILLSTREAK_DESTROYED_COMBAT_ROBOT", attacker.entnum);
+    luinotifyevent(&"player_callout", 2, & "KILLSTREAK_DESTROYED_COMBAT_ROBOT", attacker.entnum);
   }
   combatrobot killstreaks::play_destroyed_dialog_on_owner("combat_robot", combatrobot.killstreak_id);
-  combatrobot notify(# "combat_robot_shutdown");
+  combatrobot notify("combat_robot_shutdown");
 }
 
-/*
-	Name: watchcombatrobotlanding
-	Namespace: combat_robot
-	Checksum: 0x95D76796
-	Offset: 0x2A58
-	Size: 0x120
-	Parameters: 0
-	Flags: Linked
-*/
 function watchcombatrobotlanding() {
   robot = self;
-  robot endon(# "death");
-  robot endon(# "combat_robot_shutdown");
+  robot endon("death");
+  robot endon("combat_robot_shutdown");
   while (robot flagsys::get("in_vehicle")) {
     wait(1);
   }
-  robot notify(# "combat_robot_land");
+  robot notify("combat_robot_land");
   robot.ignoretriggerdamage = 0;
   while (isdefined(robot.traversestartnode)) {
-    robot waittill(# "traverse_end");
+    robot waittill("traverse_end");
   }
   v_on_navmesh = getclosestpointonnavmesh(robot.origin, 50, 20);
   if(isdefined(v_on_navmesh)) {
     player = robot.owner;
     robot setupcombatrobothinttrigger(player);
   } else {
-    robot notify(# "combat_robot_shutdown");
+    robot notify("combat_robot_shutdown");
   }
 }
 
-/*
-	Name: setupcombatrobothinttrigger
-	Namespace: combat_robot
-	Checksum: 0xE322B6DF
-	Offset: 0x2B80
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked
-*/
 function setupcombatrobothinttrigger(player) {
   robot = self;
   if(isdefined(robot.usetrigger)) {
@@ -714,7 +470,7 @@ function setupcombatrobothinttrigger(player) {
   robot.usetrigger linkto(player);
   robot.usetrigger sethintlowpriority(1);
   robot.usetrigger setcursorhint("HINT_NOICON");
-  robot.usetrigger sethintstring( & "KILLSTREAK_COMBAT_ROBOT_GUARD_HINT");
+  robot.usetrigger sethintstring(&"KILLSTREAK_COMBAT_ROBOT_GUARD_HINT");
   robot.usetrigger setteamfortrigger(player.team);
   robot.usetrigger.team = player.team;
   player clientclaimtrigger(robot.usetrigger);
@@ -722,48 +478,21 @@ function setupcombatrobothinttrigger(player) {
   robot.usetrigger.claimedby = player;
 }
 
-/*
-	Name: watchcombatrobotownerdisconnect
-	Namespace: combat_robot
-	Checksum: 0x9E4E51E9
-	Offset: 0x2D68
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function watchcombatrobotownerdisconnect(player) {
   combatrobot = self;
-  combatrobot notify(# "watchcombatrobotownerdisconnect_singleton");
-  combatrobot endon(# "watchcombatrobotownerdisconnect_singleton");
-  combatrobot endon(# "combat_robot_shutdown");
+  combatrobot notify("watchcombatrobotownerdisconnect_singleton");
+  combatrobot endon("watchcombatrobotownerdisconnect_singleton");
+  combatrobot endon("combat_robot_shutdown");
   player util::waittill_any("joined_team", "disconnect", "joined_spectators");
-  combatrobot notify(# "combat_robot_shutdown");
+  combatrobot notify("combat_robot_shutdown");
 }
 
-/*
-	Name: _corpsewatcher
-	Namespace: combat_robot
-	Checksum: 0xA055F172
-	Offset: 0x2DF8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private _corpsewatcher() {
   archetype = self.archetype;
-  self waittill(# "actor_corpse", corpse);
+  self waittill("actor_corpse", corpse);
   corpse clientfield::set("arch_actor_fire_fx", 3);
 }
 
-/*
-	Name: _exploderobot
-	Namespace: combat_robot
-	Checksum: 0x376610D0
-	Offset: 0x2E58
-	Size: 0x1AC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _exploderobot(combatrobot) {
   combatrobot clientfield::set("arch_actor_fire_fx", 1);
   clientfield::set("robot_mind_control_explosion", 1);
@@ -780,15 +509,6 @@ function private _exploderobot(combatrobot) {
   combatrobot launchragdoll((velocity[0] + (randomfloatrange(-20, 20)), velocity[1] + (randomfloatrange(-20, 20)), randomfloatrange(60, 80)), "j_mainroot");
 }
 
-/*
-	Name: oncombatrobottimeout
-	Namespace: combat_robot
-	Checksum: 0xE6DDE25B
-	Offset: 0x3010
-	Size: 0x2FC
-	Parameters: 0
-	Flags: Linked
-*/
 function oncombatrobottimeout() {
   combatrobot = self;
   combatrobot killstreaks::play_pilot_dialog_on_owner("timeout", "combat_robot");
@@ -823,23 +543,14 @@ function oncombatrobottimeout() {
     }
   }
   wait(0.2);
-  combatrobot notify(# "combat_robot_shutdown");
+  combatrobot notify("combat_robot_shutdown");
 }
 
-/*
-	Name: watchcombatrobotshutdown
-	Namespace: combat_robot
-	Checksum: 0x981DDDB4
-	Offset: 0x3318
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function watchcombatrobotshutdown() {
   combatrobot = self;
   combatrobotteam = combatrobot.originalteam;
   combatrobotkillstreakid = combatrobot.killstreak_id;
-  combatrobot waittill(# "combat_robot_shutdown");
+  combatrobot waittill("combat_robot_shutdown");
   combatrobot playsound("evt_combat_bot_mech_fail_explode");
   if(isdefined(combatrobot.usetrigger)) {
     combatrobot.usetrigger delete();
@@ -862,23 +573,14 @@ function watchcombatrobotshutdown() {
   }
 }
 
-/*
-	Name: sndwatchcombatrobotvoxnotifies
-	Namespace: combat_robot
-	Checksum: 0xAF043E63
-	Offset: 0x34C0
-	Size: 0x100
-	Parameters: 0
-	Flags: Linked
-*/
 function sndwatchcombatrobotvoxnotifies() {
   combatrobot = self;
-  combatrobot endon(# "combat_robot_shutdown");
-  combatrobot endon(# "death");
+  combatrobot endon("combat_robot_shutdown");
+  combatrobot endon("death");
   combatrobot playsoundontag("vox_robot_chatter", "j_head");
   while (true) {
     soundalias = undefined;
-    combatrobot waittill(# "bhtn_action_notify", notify_string);
+    combatrobot waittill("bhtn_action_notify", notify_string);
     switch (notify_string) {
       case "attack_kill":
       case "attack_melee":
@@ -895,37 +597,19 @@ function sndwatchcombatrobotvoxnotifies() {
   }
 }
 
-/*
-	Name: sndwatchexit
-	Namespace: combat_robot
-	Checksum: 0x45B5B559
-	Offset: 0x35C8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function sndwatchexit() {
   combatrobot = self;
-  combatrobot endon(# "combat_robot_shutdown");
-  combatrobot endon(# "death");
-  combatrobot waittill(# "exiting_vehicle");
+  combatrobot endon("combat_robot_shutdown");
+  combatrobot endon("death");
+  combatrobot waittill("exiting_vehicle");
   combatrobot playsound("veh_vtol_supply_robot_launch");
 }
 
-/*
-	Name: sndwatchlanding
-	Namespace: combat_robot
-	Checksum: 0xAEE064B6
-	Offset: 0x3628
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function sndwatchlanding() {
   combatrobot = self;
-  combatrobot endon(# "combat_robot_shutdown");
-  combatrobot endon(# "death");
-  combatrobot waittill(# "falling", falltime);
+  combatrobot endon("combat_robot_shutdown");
+  combatrobot endon("death");
+  combatrobot waittill("falling", falltime);
   wait_time = falltime - 0.5;
   if(wait_time > 0) {
     wait(wait_time);
@@ -933,33 +617,15 @@ function sndwatchlanding() {
   combatrobot playsound("veh_vtol_supply_robot_land");
 }
 
-/*
-	Name: sndwatchactivate
-	Namespace: combat_robot
-	Checksum: 0x2D7295B4
-	Offset: 0x36C8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function sndwatchactivate() {
   combatrobot = self;
-  combatrobot endon(# "combat_robot_shutdown");
-  combatrobot endon(# "death");
-  combatrobot waittill(# "landing");
+  combatrobot endon("combat_robot_shutdown");
+  combatrobot endon("death");
+  combatrobot waittill("landing");
   wait(0.1);
   combatrobot playsound("veh_vtol_supply_robot_activate");
 }
 
-/*
-	Name: combatrobotdamageoverride
-	Namespace: combat_robot
-	Checksum: 0x5E2702DE
-	Offset: 0x3738
-	Size: 0x1A0
-	Parameters: 12
-	Flags: Linked
-*/
 function combatrobotdamageoverride(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex, modelindex) {
   combatrobot = self;
   if(combatrobot flagsys::get("in_vehicle") && smeansofdeath == "MOD_TRIGGER_HURT") {

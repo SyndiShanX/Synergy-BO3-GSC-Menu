@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\abilities\_ability_player.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\abilities\_ability_gadgets;
 #using scripts\shared\abilities\_ability_power;
@@ -48,31 +52,12 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\shared\weapons\replay_gun;
-
 #namespace ability_player;
 
-/*
-	Name: __init__sytem__
-	Namespace: ability_player
-	Checksum: 0x15DADA27
-	Offset: 0xBA8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("ability_player", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: ability_player
-	Checksum: 0x1171DEF3
-	Offset: 0xBE8
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   init_abilities();
   setup_clientfields();
@@ -83,60 +68,20 @@ function __init__() {
   if(!isdefined(level._gadgets_level)) {
     level._gadgets_level = [];
   }
-  /#
   level thread abilities_devgui_init();
-  # /
 }
 
-/*
-	Name: init_abilities
-	Namespace: ability_player
-	Checksum: 0x99EC1590
-	Offset: 0xCC0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_abilities() {}
 
-/*
-	Name: setup_clientfields
-	Namespace: ability_player
-	Checksum: 0x99EC1590
-	Offset: 0xCD0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_clientfields() {}
 
-/*
-	Name: on_player_connect
-	Namespace: ability_player
-	Checksum: 0x47B2A0B0
-	Offset: 0xCE0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   if(!isdefined(self._gadgets_player)) {
     self._gadgets_player = [];
   }
-  /#
   self thread abilities_devgui_player_connect();
-  # /
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: ability_player
-	Checksum: 0xC335CAFA
-	Offset: 0xD20
-	Size: 0x36
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self thread gadgets_wait_for_death();
   self.heroabilityactivatetime = undefined;
@@ -144,30 +89,10 @@ function on_player_spawned() {
   self.heroabilityactive = undefined;
 }
 
-/*
-	Name: on_player_disconnect
-	Namespace: ability_player
-	Checksum: 0x2BD5899D
-	Offset: 0xD60
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_disconnect() {
-  /#
   self thread abilities_devgui_player_disconnect();
-  # /
 }
 
-/*
-	Name: is_using_any_gadget
-	Namespace: ability_player
-	Checksum: 0x67E528A2
-	Offset: 0xD88
-	Size: 0x70
-	Parameters: 0
-	Flags: None
-*/
 function is_using_any_gadget() {
   if(!isplayer(self)) {
     return false;
@@ -180,15 +105,6 @@ function is_using_any_gadget() {
   return false;
 }
 
-/*
-	Name: gadgets_save_power
-	Namespace: ability_player
-	Checksum: 0xFDECCBA7
-	Offset: 0xE00
-	Size: 0x136
-	Parameters: 1
-	Flags: Linked
-*/
 function gadgets_save_power(game_ended) {
   for (slot = 0; slot < 3; slot++) {
     if(!isdefined(self._gadgets_player[slot])) {
@@ -207,36 +123,18 @@ function gadgets_save_power(game_ended) {
   }
 }
 
-/*
-	Name: gadgets_wait_for_death
-	Namespace: ability_player
-	Checksum: 0x31CAD955
-	Offset: 0xF40
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function gadgets_wait_for_death() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.pers["held_gadgets_power"] = [];
-  self waittill(# "death");
+  self waittill("death");
   if(!isdefined(self._gadgets_player)) {
     return;
   }
   self gadgets_save_power(0);
 }
 
-/*
-	Name: gadgets_wait_for_game_end
-	Namespace: ability_player
-	Checksum: 0xAAE251B8
-	Offset: 0xFA0
-	Size: 0xEA
-	Parameters: 0
-	Flags: Linked
-*/
 function gadgets_wait_for_game_end() {
-  level waittill(# "game_ended");
+  level waittill("game_ended");
   players = getplayers();
   foreach(player in players) {
     if(!isalive(player)) {
@@ -249,37 +147,10 @@ function gadgets_wait_for_game_end() {
   }
 }
 
-/*
-	Name: script_set_cclass
-	Namespace: ability_player
-	Checksum: 0x4E354DAC
-	Offset: 0x1098
-	Size: 0x28
-	Parameters: 2
-	Flags: None
-*/
 function script_set_cclass(cclass, save = 1) {}
 
-/*
-	Name: update_gadget
-	Namespace: ability_player
-	Checksum: 0xEAA6C6C6
-	Offset: 0x10C8
-	Size: 0xC
-	Parameters: 1
-	Flags: None
-*/
 function update_gadget(weapon) {}
 
-/*
-	Name: register_gadget
-	Namespace: ability_player
-	Checksum: 0x6C63B481
-	Offset: 0x10E0
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked
-*/
 function register_gadget(type) {
   if(!isdefined(level._gadgets_level)) {
     level._gadgets_level = [];
@@ -290,15 +161,6 @@ function register_gadget(type) {
   }
 }
 
-/*
-	Name: register_gadget_should_notify
-	Namespace: ability_player
-	Checksum: 0x58A8BC5D
-	Offset: 0x1160
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function register_gadget_should_notify(type, should_notify) {
   register_gadget(type);
   if(isdefined(should_notify)) {
@@ -306,15 +168,6 @@ function register_gadget_should_notify(type, should_notify) {
   }
 }
 
-/*
-	Name: register_gadget_possession_callbacks
-	Namespace: ability_player
-	Checksum: 0x16CF01D6
-	Offset: 0x11C0
-	Size: 0x272
-	Parameters: 3
-	Flags: Linked
-*/
 function register_gadget_possession_callbacks(type, on_give, on_take) {
   register_gadget(type);
   if(!isdefined(level._gadgets_level[type].on_give)) {
@@ -341,15 +194,6 @@ function register_gadget_possession_callbacks(type, on_give, on_take) {
   }
 }
 
-/*
-	Name: register_gadget_activation_callbacks
-	Namespace: ability_player
-	Checksum: 0x39D1228D
-	Offset: 0x1440
-	Size: 0x272
-	Parameters: 3
-	Flags: Linked
-*/
 function register_gadget_activation_callbacks(type, turn_on, turn_off) {
   register_gadget(type);
   if(!isdefined(level._gadgets_level[type].turn_on)) {
@@ -376,15 +220,6 @@ function register_gadget_activation_callbacks(type, turn_on, turn_off) {
   }
 }
 
-/*
-	Name: register_gadget_flicker_callbacks
-	Namespace: ability_player
-	Checksum: 0x4130076E
-	Offset: 0x16C0
-	Size: 0x14A
-	Parameters: 2
-	Flags: Linked
-*/
 function register_gadget_flicker_callbacks(type, on_flicker) {
   register_gadget(type);
   if(!isdefined(level._gadgets_level[type].on_flicker)) {
@@ -400,15 +235,6 @@ function register_gadget_flicker_callbacks(type, on_flicker) {
   }
 }
 
-/*
-	Name: register_gadget_ready_callbacks
-	Namespace: ability_player
-	Checksum: 0xD6638E12
-	Offset: 0x1818
-	Size: 0x14A
-	Parameters: 2
-	Flags: Linked
-*/
 function register_gadget_ready_callbacks(type, ready_func) {
   register_gadget(type);
   if(!isdefined(level._gadgets_level[type].on_ready)) {
@@ -424,15 +250,6 @@ function register_gadget_ready_callbacks(type, ready_func) {
   }
 }
 
-/*
-	Name: register_gadget_primed_callbacks
-	Namespace: ability_player
-	Checksum: 0x5425F352
-	Offset: 0x1970
-	Size: 0x14A
-	Parameters: 2
-	Flags: Linked
-*/
 function register_gadget_primed_callbacks(type, primed_func) {
   register_gadget(type);
   if(!isdefined(level._gadgets_level[type].on_primed)) {
@@ -448,15 +265,6 @@ function register_gadget_primed_callbacks(type, primed_func) {
   }
 }
 
-/*
-	Name: register_gadget_is_inuse_callbacks
-	Namespace: ability_player
-	Checksum: 0x5FD2674E
-	Offset: 0x1AC8
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function register_gadget_is_inuse_callbacks(type, inuse_func) {
   register_gadget(type);
   if(isdefined(inuse_func)) {
@@ -464,15 +272,6 @@ function register_gadget_is_inuse_callbacks(type, inuse_func) {
   }
 }
 
-/*
-	Name: register_gadget_is_flickering_callbacks
-	Namespace: ability_player
-	Checksum: 0x7814EF64
-	Offset: 0x1B28
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function register_gadget_is_flickering_callbacks(type, flickering_func) {
   register_gadget(type);
   if(isdefined(flickering_func)) {
@@ -480,15 +279,6 @@ function register_gadget_is_flickering_callbacks(type, flickering_func) {
   }
 }
 
-/*
-	Name: register_gadget_failed_activate_callback
-	Namespace: ability_player
-	Checksum: 0x871D9F5E
-	Offset: 0x1B88
-	Size: 0x14A
-	Parameters: 2
-	Flags: None
-*/
 function register_gadget_failed_activate_callback(type, failed_activate) {
   register_gadget(type);
   if(!isdefined(level._gadgets_level[type].failed_activate)) {
@@ -504,15 +294,6 @@ function register_gadget_failed_activate_callback(type, failed_activate) {
   }
 }
 
-/*
-	Name: gadget_is_in_use
-	Namespace: ability_player
-	Checksum: 0x4336353A
-	Offset: 0x1CE0
-	Size: 0xCA
-	Parameters: 1
-	Flags: Linked
-*/
 function gadget_is_in_use(slot) {
   if(isdefined(self._gadgets_player[slot])) {
     if(isdefined(level._gadgets_level[self._gadgets_player[slot].gadget_type])) {
@@ -524,15 +305,6 @@ function gadget_is_in_use(slot) {
   return self gadgetisactive(slot);
 }
 
-/*
-	Name: gadget_is_flickering
-	Namespace: ability_player
-	Checksum: 0xCCC9FBCA
-	Offset: 0x1DB8
-	Size: 0x8E
-	Parameters: 1
-	Flags: Linked
-*/
 function gadget_is_flickering(slot) {
   if(!isdefined(self._gadgets_player[slot])) {
     return 0;
@@ -543,15 +315,6 @@ function gadget_is_flickering(slot) {
   return self[[level._gadgets_level[self._gadgets_player[slot].gadget_type].isflickering]](slot);
 }
 
-/*
-	Name: give_gadget
-	Namespace: ability_player
-	Checksum: 0x92DF06EF
-	Offset: 0x1E50
-	Size: 0x22C
-	Parameters: 2
-	Flags: Linked
-*/
 function give_gadget(slot, weapon) {
   if(isdefined(self._gadgets_player[slot])) {
     self take_gadget(slot, self._gadgets_player[slot]);
@@ -578,15 +341,6 @@ function give_gadget(slot, weapon) {
   }
 }
 
-/*
-	Name: take_gadget
-	Namespace: ability_player
-	Checksum: 0x673409B5
-	Offset: 0x2088
-	Size: 0x138
-	Parameters: 2
-	Flags: Linked
-*/
 function take_gadget(slot, weapon) {
   if(!isdefined(self._gadgets_player[slot])) {
     return;
@@ -601,15 +355,6 @@ function take_gadget(slot, weapon) {
   self._gadgets_player[slot] = undefined;
 }
 
-/*
-	Name: turn_gadget_on
-	Namespace: ability_player
-	Checksum: 0x9EEFB215
-	Offset: 0x21C8
-	Size: 0x304
-	Parameters: 2
-	Flags: Linked
-*/
 function turn_gadget_on(slot, weapon) {
   if(!isdefined(self._gadgets_player[slot])) {
     return;
@@ -620,8 +365,8 @@ function turn_gadget_on(slot, weapon) {
       foreach(turn_on in level._gadgets_level[self._gadgets_player[slot].gadget_type].turn_on) {
         self[[turn_on]](slot, weapon);
         self trackheropoweractivated(game["timepassed"]);
-        level notify(# "hero_gadget_activated", self, weapon);
-        self notify(# "hero_gadget_activated", weapon);
+        level notify("hero_gadget_activated", self, weapon);
+        self notify("hero_gadget_activated", weapon);
       }
     }
   }
@@ -649,15 +394,6 @@ function turn_gadget_on(slot, weapon) {
   self thread ability_power::power_consume_timer_think(slot, weapon);
 }
 
-/*
-	Name: turn_gadget_off
-	Namespace: ability_player
-	Checksum: 0xA9A853A1
-	Offset: 0x24D8
-	Size: 0x33C
-	Parameters: 2
-	Flags: Linked
-*/
 function turn_gadget_off(slot, weapon) {
   if(!isdefined(self._gadgets_player[slot])) {
     return;
@@ -688,7 +424,7 @@ function turn_gadget_off(slot, weapon) {
     self.heroabilityactive = undefined;
     self.heroability = weapon;
   }
-  self notify(# "heroability_off", weapon);
+  self notify("heroability_off", weapon);
   xuid = self getxuid();
   bbprint("mpheropowerevents", "spawnid %d gametime %d name %s powerstate %s playername %s xuid %s", getplayerspawnid(self), gettime(), self._gadgets_player[slot].name, "expired", self.name, xuid);
   if(isdefined(level.oldschool) && level.oldschool) {
@@ -696,15 +432,6 @@ function turn_gadget_off(slot, weapon) {
   }
 }
 
-/*
-	Name: gadget_checkheroabilitykill
-	Namespace: ability_player
-	Checksum: 0x884ADF33
-	Offset: 0x2820
-	Size: 0x282
-	Parameters: 1
-	Flags: Linked
-*/
 function gadget_checkheroabilitykill(attacker) {
   heroabilitystat = 0;
   if(isdefined(attacker.heroability)) {
@@ -756,15 +483,6 @@ function gadget_checkheroabilitykill(attacker) {
   return heroabilitystat;
 }
 
-/*
-	Name: gadget_flicker
-	Namespace: ability_player
-	Checksum: 0xE69D06FC
-	Offset: 0x2AB0
-	Size: 0x12A
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_flicker(slot, weapon) {
   if(!isdefined(self._gadgets_player[slot])) {
     return;
@@ -779,15 +497,6 @@ function gadget_flicker(slot, weapon) {
   }
 }
 
-/*
-	Name: gadget_ready
-	Namespace: ability_player
-	Checksum: 0x91D0226A
-	Offset: 0x2BE8
-	Size: 0x3AE
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_ready(slot, weapon) {
   if(!isdefined(self._gadgets_player[slot])) {
     return;
@@ -801,8 +510,8 @@ function gadget_ready(slot, weapon) {
       if(itemrow > -1) {
         index = int(tablelookupcolumnforrow(level.statstableid, itemrow, 0));
         if(index != 0) {
-          self luinotifyevent( & "hero_weapon_received", 1, index);
-          self luinotifyeventtospectators( & "hero_weapon_received", 1, index);
+          self luinotifyevent(&"hero_weapon_received", 1, index);
+          self luinotifyeventtospectators(&"hero_weapon_received", 1, index);
         }
       }
     }
@@ -825,15 +534,6 @@ function gadget_ready(slot, weapon) {
   }
 }
 
-/*
-	Name: gadget_primed
-	Namespace: ability_player
-	Checksum: 0x8CA4D2AE
-	Offset: 0x2FA0
-	Size: 0x12A
-	Parameters: 2
-	Flags: Linked
-*/
 function gadget_primed(slot, weapon) {
   if(!isdefined(self._gadgets_player[slot])) {
     return;
@@ -848,33 +548,12 @@ function gadget_primed(slot, weapon) {
   }
 }
 
-/*
-	Name: abilities_print
-	Namespace: ability_player
-	Checksum: 0x99DAABCB
-	Offset: 0x30D8
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function abilities_print(str) {
-  /#
   toprint = "" + str;
   println(toprint);
-  # /
 }
 
-/*
-	Name: abilities_devgui_init
-	Namespace: ability_player
-	Checksum: 0x2504E69E
-	Offset: 0x3128
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function abilities_devgui_init() {
-  /#
   setdvar("", "");
   setdvar("", "");
   setdvar("", 0);
@@ -883,20 +562,9 @@ function abilities_devgui_init() {
   }
   level.abilities_devgui_base = "";
   level thread abilities_devgui_think();
-  # /
 }
 
-/*
-	Name: abilities_devgui_player_connect
-	Namespace: ability_player
-	Checksum: 0x5774A221
-	Offset: 0x31D0
-	Size: 0xB0
-	Parameters: 0
-	Flags: Linked
-*/
 function abilities_devgui_player_connect() {
-  /#
   if(!isdefined(level.abilities_devgui_base)) {
     return;
   }
@@ -908,76 +576,32 @@ function abilities_devgui_player_connect() {
     abilities_devgui_add_player_commands(level.abilities_devgui_base, players[i].playername, i + 1);
     return;
   }
-  # /
 }
 
-/*
-	Name: abilities_devgui_add_player_commands
-	Namespace: ability_player
-	Checksum: 0x8AF9FB44
-	Offset: 0x3288
-	Size: 0xB8
-	Parameters: 3
-	Flags: Linked
-*/
 function abilities_devgui_add_player_commands(root, pname, index) {
-  /#
   add_cmd_with_root = (("" + root) + pname) + "";
   pid = "" + index;
   menu_index = 1;
   menu_index = abilities_devgui_add_gadgets(add_cmd_with_root, pid, menu_index);
   menu_index = abilities_devgui_add_power(add_cmd_with_root, pid, menu_index);
-  # /
 }
 
-/*
-	Name: abilities_devgui_add_player_command
-	Namespace: ability_player
-	Checksum: 0x10C2ECE4
-	Offset: 0x3348
-	Size: 0xD4
-	Parameters: 6
-	Flags: Linked
-*/
 function abilities_devgui_add_player_command(root, pid, cmdname, menu_index, cmddvar, argdvar) {
-  /#
   if(!isdefined(argdvar)) {
     argdvar = "";
   }
   adddebugcommand((((((((((((((root + cmdname) + "") + "") + "") + pid) + "") + "") + "") + cmddvar) + "") + "") + "") + argdvar) + "");
-  # /
 }
 
-/*
-	Name: abilities_devgui_add_power
-	Namespace: ability_player
-	Checksum: 0xB088DF98
-	Offset: 0x3428
-	Size: 0xBE
-	Parameters: 3
-	Flags: Linked
-*/
 function abilities_devgui_add_power(add_cmd_with_root, pid, menu_index) {
-  /#
   root = ((add_cmd_with_root + "") + menu_index) + "";
   abilities_devgui_add_player_command(root, pid, "", 1, "", "");
   abilities_devgui_add_player_command(root, pid, "", 2, "", "");
   menu_index++;
   return menu_index;
-  # /
 }
 
-/*
-	Name: abilities_devgui_add_gadgets
-	Namespace: ability_player
-	Checksum: 0x4550D7DC
-	Offset: 0x34F0
-	Size: 0x176
-	Parameters: 3
-	Flags: Linked
-*/
 function abilities_devgui_add_gadgets(add_cmd_with_root, pid, menu_index) {
-  /#
   a_weapons = enumerateweapons("");
   a_hero = [];
   a_abilities = [];
@@ -995,20 +619,9 @@ function abilities_devgui_add_gadgets(add_cmd_with_root, pid, menu_index) {
   abilities_devgui_add_player_weapons(add_cmd_with_root, pid, a_hero, "", menu_index);
   menu_index++;
   return menu_index;
-  # /
 }
 
-/*
-	Name: abilities_devgui_add_player_weapons
-	Namespace: ability_player
-	Checksum: 0x1B3BA78A
-	Offset: 0x3670
-	Size: 0xC6
-	Parameters: 5
-	Flags: Linked
-*/
 function abilities_devgui_add_player_weapons(root, pid, a_weapons, weapon_type, menu_index) {
-  /#
   if(isdefined(a_weapons)) {
     player_devgui_root = (root + weapon_type) + "";
     for (i = 0; i < a_weapons.size; i++) {
@@ -1016,54 +629,21 @@ function abilities_devgui_add_player_weapons(root, pid, a_weapons, weapon_type, 
       wait(0.05);
     }
   }
-  # /
 }
 
-/*
-	Name: abilities_devgui_add_player_weap_command
-	Namespace: ability_player
-	Checksum: 0xE2DAE482
-	Offset: 0x3740
-	Size: 0xAC
-	Parameters: 4
-	Flags: Linked
-*/
 function abilities_devgui_add_player_weap_command(root, pid, weap_name, cmdindex) {
-  /#
   adddebugcommand((((((((((((((root + weap_name) + "") + "") + "") + pid) + "") + "") + "") + "") + "") + "") + "") + weap_name) + "");
-  # /
 }
 
-/*
-	Name: abilities_devgui_player_disconnect
-	Namespace: ability_player
-	Checksum: 0x6FAD21CC
-	Offset: 0x37F8
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function abilities_devgui_player_disconnect() {
-  /#
   if(!isdefined(level.abilities_devgui_base)) {
     return;
   }
   remove_cmd_with_root = (("" + level.abilities_devgui_base) + self.playername) + "";
   util::add_queued_debug_command(remove_cmd_with_root);
-  # /
 }
 
-/*
-	Name: abilities_devgui_think
-	Namespace: ability_player
-	Checksum: 0x4528A55A
-	Offset: 0x3860
-	Size: 0x150
-	Parameters: 0
-	Flags: Linked
-*/
 function abilities_devgui_think() {
-  /#
   for (;;) {
     cmd = getdvarstring("");
     if(cmd == "") {
@@ -1093,27 +673,16 @@ function abilities_devgui_think() {
     setdvar("", "");
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: abilities_devgui_give
-	Namespace: ability_player
-	Checksum: 0x91375EF0
-	Offset: 0x39B8
-	Size: 0x146
-	Parameters: 1
-	Flags: Linked
-*/
 function abilities_devgui_give(weapon_name) {
-  /#
   level.devgui_giving_abilities = 1;
   for (i = 0; i < 3; i++) {
     if(isdefined(self._gadgets_player[i])) {
       self takeweapon(self._gadgets_player[i]);
     }
   }
-  self notify(# "gadget_devgui_give");
+  self notify("gadget_devgui_give");
   weapon = getweapon(weapon_name);
   self giveweapon(weapon);
   if(self util::is_bot()) {
@@ -1122,20 +691,9 @@ function abilities_devgui_give(weapon_name) {
     self bot::activate_hero_gadget(weapon);
   }
   level.devgui_giving_abilities = undefined;
-  # /
 }
 
-/*
-	Name: abilities_devgui_handle_player_command
-	Namespace: ability_player
-	Checksum: 0xAC66A026
-	Offset: 0x3B08
-	Size: 0x10C
-	Parameters: 3
-	Flags: Linked
-*/
 function abilities_devgui_handle_player_command(cmd, playercallback, pcb_param) {
-  /#
   pid = getdvarint("");
   if(pid > 0) {
     player = getplayers()[pid - 1];
@@ -1150,20 +708,9 @@ function abilities_devgui_handle_player_command(cmd, playercallback, pcb_param) 
     array::thread_all(getplayers(), playercallback, pcb_param);
   }
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: abilities_devgui_power_fill
-	Namespace: ability_player
-	Checksum: 0xE1EABF1B
-	Offset: 0x3C20
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function abilities_devgui_power_fill() {
-  /#
   if(!isdefined(self) || !isdefined(self._gadgets_player)) {
     return;
   }
@@ -1172,42 +719,20 @@ function abilities_devgui_power_fill() {
       self gadgetpowerset(i, self._gadgets_player[i].gadget_powermax);
     }
   }
-  # /
 }
 
-/*
-	Name: abilities_devgui_power_toggle_auto_fill
-	Namespace: ability_player
-	Checksum: 0x24513600
-	Offset: 0x3CB8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function abilities_devgui_power_toggle_auto_fill() {
-  /#
   if(!isdefined(self) || !isdefined(self._gadgets_player)) {
     return;
   }
   self.abilities_devgui_power_toggle_auto_fill = !(isdefined(self.abilities_devgui_power_toggle_auto_fill) && self.abilities_devgui_power_toggle_auto_fill);
   self thread abilities_devgui_power_toggle_auto_fill_think();
-  # /
 }
 
-/*
-	Name: abilities_devgui_power_toggle_auto_fill_think
-	Namespace: ability_player
-	Checksum: 0xC26C35E5
-	Offset: 0x3D18
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function abilities_devgui_power_toggle_auto_fill_think() {
-  /#
-  self endon(# "disconnect");
-  self notify(# "auto_fill_think");
-  self endon(# "auto_fill_think");
+  self endon("disconnect");
+  self notify("auto_fill_think");
+  self endon("auto_fill_think");
   for (;;) {
     if(!isdefined(self) || !isdefined(self._gadgets_player)) {
       return;
@@ -1224,5 +749,4 @@ function abilities_devgui_power_toggle_auto_fill_think() {
     }
     wait(1);
   }
-  # /
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_zombie.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\animation_state_machine_mocomp;
 #using scripts\shared\ai\systems\animation_state_machine_notetracks;
@@ -17,18 +21,8 @@
 #using scripts\zm\_zm_behavior;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\zm_genesis_portals;
-
 #namespace zm_genesis_zombie;
 
-/*
-	Name: init
-	Namespace: zm_genesis_zombie
-	Checksum: 0x975CF94D
-	Offset: 0x4E0
-	Size: 0x154
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   initzmgenesisbehaviorsandasm();
   setdvar("scr_zm_use_code_enemy_selection", 0);
@@ -46,15 +40,6 @@ function autoexec init() {
   level.octobomb_targets = & genesis_octobomb_targets;
 }
 
-/*
-	Name: function_68528574
-	Namespace: zm_genesis_zombie
-	Checksum: 0x80D35B2A
-	Offset: 0x640
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_68528574() {
   level.var_a397a77 = [];
   level.var_a397a77[level.var_a397a77.size] = "start_island";
@@ -69,56 +54,20 @@ function private function_68528574() {
   }
 }
 
-/*
-	Name: initzmgenesisbehaviorsandasm
-	Namespace: zm_genesis_zombie
-	Checksum: 0xD7518B
-	Offset: 0x7A8
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initzmgenesisbehaviorsandasm() {
   animationstatenetwork::registeranimationmocomp("mocomp_teleport_traversal@zombie", & teleporttraversalmocompstart, undefined, undefined);
   behaviortreenetworkutility::registerbehaviortreescriptapi("shouldMoveLowg", & shouldmovelowg);
 }
 
-/*
-	Name: shouldmovelowg
-	Namespace: zm_genesis_zombie
-	Checksum: 0x5CF6507E
-	Offset: 0x810
-	Size: 0x2E
-	Parameters: 1
-	Flags: Linked
-*/
 function shouldmovelowg(entity) {
   return isdefined(entity.low_gravity) && entity.low_gravity;
 }
 
-/*
-	Name: function_6c5e4588
-	Namespace: zm_genesis_zombie
-	Checksum: 0x8FFF20AC
-	Offset: 0x848
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_6c5e4588() {
   self thread zm::update_zone_name();
   self.can_reach_enemy = & function_2f50c929;
 }
 
-/*
-	Name: function_2f50c929
-	Namespace: zm_genesis_zombie
-	Checksum: 0xC50498B6
-	Offset: 0x888
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_2f50c929() {
   if(isdefined(self.enemy) && isdefined(self.enemy.zone_name)) {
     if(isdefined(self.zone_name)) {
@@ -132,43 +81,16 @@ function private function_2f50c929() {
   return true;
 }
 
-/*
-	Name: function_e0c0cb69
-	Namespace: zm_genesis_zombie
-	Checksum: 0x417969E2
-	Offset: 0x920
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_e0c0cb69() {
   self thread function_2fa8f151();
   self thread function_bb062ca5();
   self.traversalspeedboost = & function_1108488e;
 }
 
-/*
-	Name: function_a11812c
-	Namespace: zm_genesis_zombie
-	Checksum: 0x69B05296
-	Offset: 0x978
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_a11812c() {
   self thread function_dc84c8cc();
 }
 
-/*
-	Name: genesis_octobomb_targets
-	Namespace: zm_genesis_zombie
-	Checksum: 0xEA2B5116
-	Offset: 0x9A0
-	Size: 0x134
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private genesis_octobomb_targets(targets) {
   zombies = getactorteamarray(level.zombie_team);
   foreach(zombie in zombies) {
@@ -184,18 +106,9 @@ function private genesis_octobomb_targets(targets) {
   return targets;
 }
 
-/*
-	Name: function_dc84c8cc
-	Namespace: zm_genesis_zombie
-	Checksum: 0x2EB06116
-	Offset: 0xAE0
-	Size: 0x250
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dc84c8cc() {
-  self endon(# "death");
-  self endon(# "disconnnect");
+  self endon("death");
+  self endon("disconnnect");
   var_c17e74e6 = gettime();
   var_eaacaebf = level.round_number;
   var_e274e0c3 = undefined;
@@ -208,17 +121,17 @@ function function_dc84c8cc() {
       if(self istouching(volume)) {
         var_7da7c388 = gettime() - var_c17e74e6;
         if(var_7da7c388 > var_a83e7943) {
-          level notify(# "hash_b1d69866", self);
+          level notify("hash_b1d69866", self);
         }
         if(var_7da7c388 > var_320b8666) {
           if(var_e274e0c3 == "apothicon_island") {
-            level notify(# "hash_8dbe1895", self);
+            level notify("hash_8dbe1895", self);
           }
         }
         var_42215f9c = level.round_number - var_eaacaebf;
         if(var_42215f9c > var_ed78383b) {
           if(var_e274e0c3 == "prototype_island") {
-            level notify(# "hash_e15c8839", self);
+            level notify("hash_e15c8839", self);
           }
         }
         if(isdefined(var_e274e0c3) && var_e274e0c3 != volume.targetname) {
@@ -234,18 +147,9 @@ function function_dc84c8cc() {
   }
 }
 
-/*
-	Name: function_2fa8f151
-	Namespace: zm_genesis_zombie
-	Checksum: 0x2997E025
-	Offset: 0xD38
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2fa8f151() {
-  self endon(# "death");
-  self endon(# "disconnnect");
+  self endon("death");
+  self endon("disconnnect");
   while (isdefined(self)) {
     self.var_a3d40b8 = undefined;
     foreach(volume in level.var_15ba7eb8) {
@@ -258,28 +162,10 @@ function function_2fa8f151() {
   }
 }
 
-/*
-	Name: function_bb062ca5
-	Namespace: zm_genesis_zombie
-	Checksum: 0xDD05D293
-	Offset: 0xE30
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bb062ca5() {
   self pushactors(0);
 }
 
-/*
-	Name: function_1108488e
-	Namespace: zm_genesis_zombie
-	Checksum: 0xE08F991B
-	Offset: 0xE58
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_1108488e() {
   traversal = self.traversal;
   speedboost = 0;
@@ -295,15 +181,6 @@ function private function_1108488e() {
   return speedboost;
 }
 
-/*
-	Name: teleporttraversalmocompstart
-	Namespace: zm_genesis_zombie
-	Checksum: 0x38147028
-	Offset: 0xF10
-	Size: 0xEC
-	Parameters: 5
-	Flags: Linked
-*/
 function teleporttraversalmocompstart(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   entity.is_teleporting = 1;
   entity orientmode("face angle", entity.angles[1]);
@@ -316,15 +193,6 @@ function teleporttraversalmocompstart(entity, mocompanim, mocompanimblendouttime
   }
 }
 
-/*
-	Name: function_ca420408
-	Namespace: zm_genesis_zombie
-	Checksum: 0xD21B0F42
-	Offset: 0x1008
-	Size: 0x1EE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ca420408(player) {
   if(isdefined(self.b_ignore_cleanup) && self.b_ignore_cleanup) {
     return true;
@@ -370,15 +238,6 @@ function function_ca420408(player) {
   return true;
 }
 
-/*
-	Name: function_f01c3337
-	Namespace: zm_genesis_zombie
-	Checksum: 0xDCD59196
-	Offset: 0x1200
-	Size: 0x10E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_f01c3337(players) {
   if(isdefined(self.last_closest_player) && (isdefined(self.last_closest_player.am_i_valid) && self.last_closest_player.am_i_valid) && self function_ca420408(self.last_closest_player)) {
     return;
@@ -393,15 +252,6 @@ function private function_f01c3337(players) {
   self.last_closest_player = undefined;
 }
 
-/*
-	Name: genesis_custom_rise_func
-	Namespace: zm_genesis_zombie
-	Checksum: 0x88562F39
-	Offset: 0x1318
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function genesis_custom_rise_func(s_spot) {
   str_anim = "ai_zombie_traverse_ground_climbout_fast";
   if(isdefined(s_spot.speed)) {
@@ -412,15 +262,6 @@ function genesis_custom_rise_func(s_spot) {
   self animscripted("rise_anim", self.origin, s_spot.angles, str_anim);
 }
 
-/*
-	Name: genesis_closest_player
-	Namespace: zm_genesis_zombie
-	Checksum: 0x7EA00C02
-	Offset: 0x13F0
-	Size: 0x39A
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private genesis_closest_player(origin, players) {
   keepers = getactorteamarray("allies");
   foreach(keeper in keepers) {
@@ -488,17 +329,8 @@ function private genesis_closest_player(origin, players) {
   return self.last_closest_player;
 }
 
-/*
-	Name: update_closest_player
-	Namespace: zm_genesis_zombie
-	Checksum: 0x783AB177
-	Offset: 0x1798
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private update_closest_player() {
-  level waittill(# "start_of_round");
+  level waittill("start_of_round");
   while (true) {
     reset_closest_player = 1;
     zombies = getactorteamarray(level.zombie_team);
@@ -519,15 +351,6 @@ function private update_closest_player() {
   }
 }
 
-/*
-	Name: genesis_custom_spawn_location_selection
-	Namespace: zm_genesis_zombie
-	Checksum: 0xC197807
-	Offset: 0x1938
-	Size: 0x274
-	Parameters: 1
-	Flags: Linked
-*/
 function genesis_custom_spawn_location_selection(a_spots) {
   if(math::cointoss()) {
     if(!isdefined(level.n_player_spawn_selection_index)) {
@@ -567,15 +390,6 @@ function genesis_custom_spawn_location_selection(a_spots) {
   return s_spot;
 }
 
-/*
-	Name: genesis_should_zigzag
-	Namespace: zm_genesis_zombie
-	Checksum: 0xEF703AE
-	Offset: 0x1BB8
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function genesis_should_zigzag() {
   if(isdefined(self.var_b6b1080c) && self.var_b6b1080c) {
     return false;
@@ -591,15 +405,6 @@ function genesis_should_zigzag() {
   return true;
 }
 
-/*
-	Name: set_gravity
-	Namespace: zm_genesis_zombie
-	Checksum: 0x66425383
-	Offset: 0x1C40
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function set_gravity(gravity) {
   if(gravity == "low") {
     self.low_gravity = 1;

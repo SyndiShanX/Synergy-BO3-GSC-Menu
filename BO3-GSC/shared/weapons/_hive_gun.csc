@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_hive_gun.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\callbacks_shared;
@@ -7,46 +11,18 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace hive_gun;
 
-/*
-	Name: init_shared
-	Namespace: hive_gun
-	Checksum: 0xA687986D
-	Offset: 0x3A0
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   level thread register();
 }
 
-/*
-	Name: register
-	Namespace: hive_gun
-	Checksum: 0x72891D0A
-	Offset: 0x3C8
-	Size: 0xDC
-	Parameters: 0
-	Flags: None
-*/
 function register() {
   clientfield::register("scriptmover", "firefly_state", 1, 3, "int", & firefly_state_change, 0, 0);
   clientfield::register("toplayer", "fireflies_attacking", 1, 1, "int", & fireflies_attacking, 0, 1);
   clientfield::register("toplayer", "fireflies_chasing", 1, 1, "int", & fireflies_chasing, 0, 1);
 }
 
-/*
-	Name: getotherteam
-	Namespace: hive_gun
-	Checksum: 0x2A432276
-	Offset: 0x4B0
-	Size: 0x4A
-	Parameters: 1
-	Flags: None
-*/
 function getotherteam(team) {
   if(team == "allies") {
     return "axis";
@@ -57,49 +33,31 @@ function getotherteam(team) {
   return "free";
 }
 
-/*
-	Name: fireflies_attacking
-	Namespace: hive_gun
-	Checksum: 0xF387E8A9
-	Offset: 0x508
-	Size: 0x10E
-	Parameters: 7
-	Flags: None
-*/
 function fireflies_attacking(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self)) {
     return;
   }
   if(newval) {
-    self notify(# "stop_player_fx");
+    self notify("stop_player_fx");
     if(self islocalplayer() && !self getinkillcam(localclientnum)) {
       fx = playfxoncamera(localclientnum, "weapon/fx_ability_firefly_attack_1p", (0, 0, 0), (1, 0, 0), (0, 0, 1));
       self thread watch_player_fx_finished(localclientnum, fx);
     }
   } else {
-    self notify(# "stop_player_fx");
+    self notify("stop_player_fx");
   }
 }
 
-/*
-	Name: fireflies_chasing
-	Namespace: hive_gun
-	Checksum: 0xA5D1AC2A
-	Offset: 0x620
-	Size: 0x15E
-	Parameters: 7
-	Flags: None
-*/
 function fireflies_chasing(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self)) {
     return;
   }
   if(newval) {
-    self notify(# "stop_player_fx");
+    self notify("stop_player_fx");
     if(self islocalplayer() && !self getinkillcam(localclientnum)) {
       fx = playfxoncamera(localclientnum, "weapon/fx_ability_firefly_chase_1p", (0, 0, 0), (1, 0, 0), (0, 0, 1));
       sound = self playloopsound("wpn_gelgun_hive_hunt_lp");
@@ -107,19 +65,10 @@ function fireflies_chasing(localclientnum, oldval, newval, bnewent, binitialsnap
       self thread watch_player_fx_finished(localclientnum, fx, sound);
     }
   } else {
-    self notify(# "stop_player_fx");
+    self notify("stop_player_fx");
   }
 }
 
-/*
-	Name: watch_player_fx_finished
-	Namespace: hive_gun
-	Checksum: 0x67FC62A1
-	Offset: 0x788
-	Size: 0xBC
-	Parameters: 3
-	Flags: None
-*/
 function watch_player_fx_finished(localclientnum, fx, sound) {
   self util::waittill_any("entityshutdown", "stop_player_fx");
   if(isdefined(self)) {
@@ -133,17 +82,8 @@ function watch_player_fx_finished(localclientnum, fx, sound) {
   }
 }
 
-/*
-	Name: firefly_state_change
-	Namespace: hive_gun
-	Checksum: 0x184CFD32
-	Offset: 0x850
-	Size: 0x14E
-	Parameters: 7
-	Flags: None
-*/
 function firefly_state_change(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self)) {
     return;
@@ -175,15 +115,6 @@ function firefly_state_change(localclientnum, oldval, newval, bnewent, binitials
   }
 }
 
-/*
-	Name: on_shutdown
-	Namespace: hive_gun
-	Checksum: 0x93F98983
-	Offset: 0x9A8
-	Size: 0xB4
-	Parameters: 2
-	Flags: None
-*/
 function on_shutdown(localclientnum, ent) {
   if(isdefined(ent) && isdefined(ent.origin) && self === ent && (!(isdefined(self.no_death_fx) && self.no_death_fx))) {
     fx = playfx(localclientnum, "weapon/fx_hero_firefly_death", ent.origin, (0, 0, 1));
@@ -191,57 +122,21 @@ function on_shutdown(localclientnum, ent) {
   }
 }
 
-/*
-	Name: firefly_init
-	Namespace: hive_gun
-	Checksum: 0x51AAEE7F
-	Offset: 0xA68
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function firefly_init(localclientnum) {
   self callback::on_shutdown( & on_shutdown, self);
 }
 
-/*
-	Name: firefly_deploying
-	Namespace: hive_gun
-	Checksum: 0x4F834A09
-	Offset: 0xAA0
-	Size: 0x74
-	Parameters: 1
-	Flags: None
-*/
 function firefly_deploying(localclientnum) {
   fx = playfx(localclientnum, "weapon/fx_hero_firefly_start", self.origin, anglestoup(self.angles));
   setfxteam(localclientnum, fx, self.team);
 }
 
-/*
-	Name: firefly_hunting
-	Namespace: hive_gun
-	Checksum: 0x7BFF501F
-	Offset: 0xB20
-	Size: 0x84
-	Parameters: 1
-	Flags: None
-*/
 function firefly_hunting(localclientnum) {
   fx = playfxontag(localclientnum, "weapon/fx_hero_firefly_hunting", self, "tag_origin");
   setfxteam(localclientnum, fx, self.team);
   self thread firefly_watch_fx_finished(localclientnum, fx);
 }
 
-/*
-	Name: firefly_watch_fx_finished
-	Namespace: hive_gun
-	Checksum: 0xC31B21CB
-	Offset: 0xBB0
-	Size: 0x64
-	Parameters: 2
-	Flags: None
-*/
 function firefly_watch_fx_finished(localclientnum, fx) {
   self util::waittill_any("entityshutdown", "stop_effects");
   if(isdefined(fx)) {
@@ -249,45 +144,18 @@ function firefly_watch_fx_finished(localclientnum, fx) {
   }
 }
 
-/*
-	Name: firefly_attacking
-	Namespace: hive_gun
-	Checksum: 0x2E3A5C2B
-	Offset: 0xC20
-	Size: 0x28
-	Parameters: 1
-	Flags: None
-*/
 function firefly_attacking(localclientnum) {
-  self notify(# "stop_effects");
+  self notify("stop_effects");
   self.no_death_fx = 1;
 }
 
-/*
-	Name: firefly_link_attacking
-	Namespace: hive_gun
-	Checksum: 0xDBACAAA3
-	Offset: 0xC50
-	Size: 0x90
-	Parameters: 1
-	Flags: None
-*/
 function firefly_link_attacking(localclientnum) {
   fx = playfx(localclientnum, "weapon/fx_hero_firefly_start_entity", self.origin, anglestoup(self.angles));
   setfxteam(localclientnum, fx, self.team);
-  self notify(# "stop_effects");
+  self notify("stop_effects");
   self.no_death_fx = 1;
 }
 
-/*
-	Name: gib_fx
-	Namespace: hive_gun
-	Checksum: 0xB1549DB5
-	Offset: 0xCE8
-	Size: 0xAC
-	Parameters: 3
-	Flags: None
-*/
 function gib_fx(localclientnum, fxfilename, gibflag) {
   fxtag = gibclientutils::playergibtag(localclientnum, gibflag);
   if(isdefined(fxtag)) {
@@ -296,31 +164,13 @@ function gib_fx(localclientnum, fxfilename, gibflag) {
   }
 }
 
-/*
-	Name: gib_corpse
-	Namespace: hive_gun
-	Checksum: 0xD2504F7C
-	Offset: 0xDA0
-	Size: 0x34
-	Parameters: 2
-	Flags: None
-*/
 function gib_corpse(localclientnum, value) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self thread watch_for_gib_notetracks(localclientnum);
 }
 
-/*
-	Name: watch_for_gib_notetracks
-	Namespace: hive_gun
-	Checksum: 0xF782D03
-	Offset: 0xDE0
-	Size: 0x34E
-	Parameters: 1
-	Flags: None
-*/
 function watch_for_gib_notetracks(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(!util::is_mature() || util::is_gib_restricted_build()) {
     return;
   }

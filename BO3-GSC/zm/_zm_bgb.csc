@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_bgb.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -6,31 +10,12 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_load;
 #using scripts\zm\_zm_bgb_machine;
-
 #namespace bgb;
 
-/*
-	Name: __init__sytem__
-	Namespace: bgb
-	Checksum: 0x8E44099B
-	Offset: 0x278
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("bgb", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: bgb
-	Checksum: 0x9F12A9D8
-	Offset: 0x2C0
-	Size: 0x236
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -49,15 +34,6 @@ function __init__() {
   level._effect["bgb_blow_bubble"] = "zombie/fx_bgb_bubble_blow_zmb";
 }
 
-/*
-	Name: __main__
-	Namespace: bgb
-	Checksum: 0xE5DF4326
-	Offset: 0x500
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private __main__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -65,15 +41,6 @@ function private __main__() {
   bgb_finalize();
 }
 
-/*
-	Name: on_player_connect
-	Namespace: bgb
-	Checksum: 0xF80D05EB
-	Offset: 0x538
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private on_player_connect(localclientnum) {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -81,15 +48,6 @@ function private on_player_connect(localclientnum) {
   self thread bgb_player_init(localclientnum);
 }
 
-/*
-	Name: bgb_player_init
-	Namespace: bgb
-	Checksum: 0x7253B4EB
-	Offset: 0x580
-	Size: 0x42
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private bgb_player_init(localclientnum) {
   if(isdefined(level.bgb_pack[localclientnum])) {
     return;
@@ -97,15 +55,6 @@ function private bgb_player_init(localclientnum) {
   level.bgb_pack[localclientnum] = getbubblegumpack(localclientnum);
 }
 
-/*
-	Name: bgb_finalize
-	Namespace: bgb
-	Checksum: 0x92D48920
-	Offset: 0x5D0
-	Size: 0x384
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private bgb_finalize() {
   level.var_f3c83828 = [];
   level.var_f3c83828[0] = "base";
@@ -131,45 +80,19 @@ function private bgb_finalize() {
   }
 }
 
-/*
-	Name: register
-	Namespace: bgb
-	Checksum: 0x8C8068F6
-	Offset: 0x960
-	Size: 0x144
-	Parameters: 2
-	Flags: Linked
-*/
 function register(name, limit_type) {
-  /#
   assert(isdefined(name), "");
-  # /
-    /#
   assert("" != name, ("" + "") + "");
-  # /
-    /#
   assert(!isdefined(level.bgb[name]), ("" + name) + "");
-  # /
-    /#
   assert(isdefined(limit_type), ("" + name) + "");
-  # /
-    level.bgb[name] = spawnstruct();
+  level.bgb[name] = spawnstruct();
   level.bgb[name].name = name;
   level.bgb[name].limit_type = limit_type;
 }
 
-/*
-	Name: function_78c4bfa
-	Namespace: bgb
-	Checksum: 0x199C3CA9
-	Offset: 0xAB0
-	Size: 0x17C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_78c4bfa(localclientnum, time) {
-  self endon(# "death");
-  self endon(# "entityshutdown");
+  self endon("death");
+  self endon("entityshutdown");
   if(isdemoplaying()) {
     return;
   }
@@ -204,29 +127,11 @@ function private function_78c4bfa(localclientnum, time) {
   }
 }
 
-/*
-	Name: function_cec2dbda
-	Namespace: bgb
-	Checksum: 0xD8DC07CD
-	Offset: 0xC38
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private function_cec2dbda(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self.bgb = level.bgb_item_index_to_name[newval];
   self thread function_78c4bfa(localclientnum, 3);
 }
 
-/*
-	Name: function_c8a1c86
-	Namespace: bgb
-	Checksum: 0x8B49EA30
-	Offset: 0xCB0
-	Size: 0x94
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_c8a1c86(localclientnum, fx) {
   if(isdefined(self.var_d7197e33)) {
     deletefx(localclientnum, self.var_d7197e33, 1);
@@ -237,15 +142,6 @@ function private function_c8a1c86(localclientnum, fx) {
   }
 }
 
-/*
-	Name: bgb_blow_bubble
-	Namespace: bgb
-	Checksum: 0x66C74291
-	Offset: 0xD50
-	Size: 0x84
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private bgb_blow_bubble(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   function_c8a1c86(localclientnum, level._effect["bgb_blow_bubble"]);
   self thread function_78c4bfa(localclientnum, 0.5);

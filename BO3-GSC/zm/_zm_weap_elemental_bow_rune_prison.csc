@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*****************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_elemental_bow_rune_prison.csc
+*****************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -9,31 +13,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weap_elemental_bow;
-
 #namespace _zm_weap_elemental_bow_rune_prison;
 
-/*
-	Name: __init__sytem__
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0x48DBD3C
-	Offset: 0x510
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("_zm_weap_elemental_bow_rune_prison", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0x2A6A6B8C
-	Offset: 0x550
-	Size: 0x32E
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "elemental_bow_rune_prison" + "_ambient_bow_fx", 5000, 1, "int", & function_8339cd3d, 0, 0);
   clientfield::register("missile", "elemental_bow_rune_prison" + "_arrow_impact_fx", 5000, 1, "int", & function_4b59f7f4, 0, 0);
@@ -51,58 +36,22 @@ function __init__() {
   level._effect["rune_lava_geyser_dot"] = "dlc1/zmb_weapon/fx_bow_rune_fire_torso_zmb";
 }
 
-/*
-	Name: function_8339cd3d
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0xC37DC270
-	Offset: 0x888
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_8339cd3d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self zm_weap_elemental_bow::function_3158b481(localclientnum, newval, "rune_ambient_bow");
 }
 
-/*
-	Name: function_4b59f7f4
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0xE93829D1
-	Offset: 0x8F8
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_4b59f7f4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playfx(localclientnum, level._effect["rune_arrow_impact"], self.origin);
   }
 }
 
-/*
-	Name: function_ed22f261
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0xC2EAB864
-	Offset: 0x978
-	Size: 0x74
-	Parameters: 7
-	Flags: Linked
-*/
 function function_ed22f261(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playfx(localclientnum, level._effect["rune_arrow_impact"], self.origin);
   }
 }
 
-/*
-	Name: runeprison_rock_fx
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0xEA86C45D
-	Offset: 0x9F8
-	Size: 0x126
-	Parameters: 7
-	Flags: Linked
-*/
 function runeprison_rock_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 0: {
@@ -122,18 +71,9 @@ function runeprison_rock_fx(localclientnum, oldval, newval, bnewent, binitialsna
   }
 }
 
-/*
-	Name: scene_play
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0xB7EF3984
-	Offset: 0xB28
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function scene_play(scene, var_7b98b639) {
-  self notify(# "scene_play");
-  self endon(# "scene_play");
+  self notify("scene_play");
+  self endon("scene_play");
   self scene::stop();
   self function_6221b6b9(scene, var_7b98b639);
   if(isdefined(self)) {
@@ -141,31 +81,13 @@ function scene_play(scene, var_7b98b639) {
   }
 }
 
-/*
-	Name: function_6221b6b9
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0x5DA365BC
-	Offset: 0xBB8
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_6221b6b9(scene, var_7b98b639) {
-  level endon(# "demo_jump");
+  level endon("demo_jump");
   self scene::play(scene, var_7b98b639);
 }
 
-/*
-	Name: function_79854312
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0xCC36C409
-	Offset: 0xC00
-	Size: 0x118
-	Parameters: 1
-	Flags: Linked
-*/
 function function_79854312(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   n_start_time = gettime();
   n_end_time = n_start_time + 1633;
   b_is_updating = 1;
@@ -182,30 +104,12 @@ function function_79854312(localclientnum) {
   }
 }
 
-/*
-	Name: runeprison_explode_fx
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0x776F42C8
-	Offset: 0xD20
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function runeprison_explode_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playfx(localclientnum, level._effect["rune_fire_pillar"], self.origin, (0, 0, 1), (1, 0, 0));
   }
 }
 
-/*
-	Name: runeprison_lava_geyser_fx
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0xFBE809E1
-	Offset: 0xDA8
-	Size: 0xA4
-	Parameters: 7
-	Flags: Linked
-*/
 function runeprison_lava_geyser_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     playfx(localclientnum, level._effect["rune_lava_geyser"], self.origin, (0, 0, 1), (1, 0, 0));
@@ -213,15 +117,6 @@ function runeprison_lava_geyser_fx(localclientnum, oldval, newval, bnewent, bini
   }
 }
 
-/*
-	Name: runeprison_lava_geyser_dot_fx
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0xCB126A2F
-	Offset: 0xE58
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function runeprison_lava_geyser_dot_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self.var_1892be10 = playfxontag(localclientnum, level._effect["rune_lava_geyser_dot"], self, "j_spine4");
@@ -230,17 +125,8 @@ function runeprison_lava_geyser_dot_fx(localclientnum, oldval, newval, bnewent, 
   }
 }
 
-/*
-	Name: runeprison_zombie_charring
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0xA6C6940A
-	Offset: 0xF00
-	Size: 0xF8
-	Parameters: 7
-	Flags: Linked
-*/
 function runeprison_zombie_charring(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(newval) {
     n_cur_time = gettime();
     n_start_time = n_cur_time;
@@ -254,15 +140,6 @@ function runeprison_zombie_charring(localclientnum, oldval, newval, bnewent, bin
   }
 }
 
-/*
-	Name: runeprison_zombie_death_skull
-	Namespace: _zm_weap_elemental_bow_rune_prison
-	Checksum: 0x3470F574
-	Offset: 0x1000
-	Size: 0x10C
-	Parameters: 7
-	Flags: Linked
-*/
 function runeprison_zombie_death_skull(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     var_3704946b = self gettagorigin("j_head");

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_thrasher.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\archetype_locomotion_utility;
 #using scripts\shared\ai\archetype_mocomps_utility;
@@ -27,31 +31,12 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace thrasherbehavior;
 
-/*
-	Name: __init__sytem__
-	Namespace: thrasherbehavior
-	Checksum: 0x29456890
-	Offset: 0x9A0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("thrasher", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: thrasherbehavior
-	Checksum: 0xE5A1DC12
-	Offset: 0x9E0
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   visionset_mgr::register_info("visionset", "zm_isl_thrasher_stomach_visionset", 9000, 30, 16, 1, & visionset_mgr::ramp_in_thread_per_player, 0);
   initthrasherbehaviorsandasm();
@@ -69,15 +54,6 @@ function __init__() {
   thrasherinterface::registerthrasherinterfaceattributes();
 }
 
-/*
-	Name: initthrasherbehaviorsandasm
-	Namespace: thrasherbehavior
-	Checksum: 0xD3F9FA18
-	Offset: 0xC38
-	Size: 0x374
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initthrasherbehaviorsandasm() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("thrasherRageService", & thrasherrageservice);
   behaviortreenetworkutility::registerbehaviortreescriptapi("thrasherTargetService", & thrashertargetservice);
@@ -103,15 +79,6 @@ function private initthrasherbehaviorsandasm() {
   animationstatenetwork::registernotetrackhandlerfunction("thrasher_melee", & thrashernotetrackmelee);
 }
 
-/*
-	Name: archetypethrasherblackboardinit
-	Namespace: thrasherbehavior
-	Checksum: 0x678177C
-	Offset: 0xFB8
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private archetypethrasherblackboardinit() {
   entity = self;
   blackboard::createblackboardforentity(entity);
@@ -123,51 +90,25 @@ function private archetypethrasherblackboardinit() {
   }
   blackboard::registerblackboardattribute(self, "_locomotion_speed", thrasher_speed, undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_locomotion_should_turn", "should_not_turn", & bb_getshouldturn);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_zombie_damageweapon_type", "regular", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   entity.___archetypeonanimscriptedcallback = & archetypethrasheronanimscriptedcallback;
-  /#
   entity finalizetrackedblackboardattributes();
-  # /
 }
 
-/*
-	Name: archetypethrasheronanimscriptedcallback
-	Namespace: thrasherbehavior
-	Checksum: 0x87E960E4
-	Offset: 0x11B0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private archetypethrasheronanimscriptedcallback(entity) {
   entity.__blackboard = undefined;
   entity archetypethrasherblackboardinit();
 }
 
-/*
-	Name: thrasherspawnsetup
-	Namespace: thrasherbehavior
-	Checksum: 0xF825EA8
-	Offset: 0x11F0
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private thrasherspawnsetup() {
   entity = self;
   entity.health = 1000;
@@ -189,15 +130,6 @@ function private thrasherspawnsetup() {
   aiutility::addaioverridedamagecallback(entity, & thrasherserverutils::thrasherdamagecallback);
 }
 
-/*
-	Name: bb_getshouldturn
-	Namespace: thrasherbehavior
-	Checksum: 0xE46124EF
-	Offset: 0x1360
-	Size: 0x4A
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private bb_getshouldturn() {
   entity = self;
   if(isdefined(entity.should_turn) && entity.should_turn) {
@@ -206,21 +138,10 @@ function private bb_getshouldturn() {
   return "should_not_turn";
 }
 
-/*
-	Name: thrasherinitspores
-	Namespace: thrasherbehavior
-	Checksum: 0x8127BA64
-	Offset: 0x13B8
-	Size: 0x218
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private thrasherinitspores() {
   entity = self;
-  /#
   assert(array("", "", "").size == array(1, 2, 4).size);
-  # /
-    thrasherspores = array("tag_spore_chest", "tag_spore_back", "tag_spore_leg");
+  thrasherspores = array("tag_spore_chest", "tag_spore_back", "tag_spore_leg");
   thrashersporedamagedists = array(12, 18, 12);
   thrasherclientfields = array(1, 2, 4);
   entity.thrasherspores = [];
@@ -236,15 +157,6 @@ function private thrasherinitspores() {
   }
 }
 
-/*
-	Name: thrashernotetrackmelee
-	Namespace: thrasherbehavior
-	Checksum: 0xE71FAD1
-	Offset: 0x15D8
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrashernotetrackmelee(entity) {
   if(isdefined(entity.thrasher_melee_knockdown_function)) {
     entity thread[[entity.thrasher_melee_knockdown_function]]();
@@ -260,15 +172,6 @@ function private thrashernotetrackmelee(entity) {
   }
 }
 
-/*
-	Name: thrashergetclosestlaststandplayer
-	Namespace: thrasherbehavior
-	Checksum: 0xF48C2413
-	Offset: 0x16B8
-	Size: 0x212
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrashergetclosestlaststandplayer(entity) {
   if(entity.thrasherconsumedplayer) {
     return;
@@ -296,15 +199,6 @@ function private thrashergetclosestlaststandplayer(entity) {
   }
 }
 
-/*
-	Name: thrasherrageservice
-	Namespace: thrasherbehavior
-	Checksum: 0xDF486965
-	Offset: 0x18D8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherrageservice(entity) {
   entity.thrasherragecount = entity.thrasherragecount + ((entity.thrasherragelevel * 1) + 1);
   if(entity.thrasherragecount >= 200) {
@@ -312,15 +206,6 @@ function private thrasherrageservice(entity) {
   }
 }
 
-/*
-	Name: thrashertargetservice
-	Namespace: thrasherbehavior
-	Checksum: 0x1302C530
-	Offset: 0x1958
-	Size: 0x428
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrashertargetservice(entity) {
   if(isdefined(entity.ignoreall) && entity.ignoreall) {
     return false;
@@ -380,15 +265,6 @@ function private thrashertargetservice(entity) {
   }
 }
 
-/*
-	Name: thrasherattackableobjectservice
-	Namespace: thrasherbehavior
-	Checksum: 0x4CC09F9
-	Offset: 0x1D88
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherattackableobjectservice(entity) {
   if(isdefined(entity.thrasherattackableobjectcallback)) {
     return [
@@ -398,15 +274,6 @@ function private thrasherattackableobjectservice(entity) {
   return 0;
 }
 
-/*
-	Name: thrasherknockdownservice
-	Namespace: thrasherbehavior
-	Checksum: 0xF8674B3F
-	Offset: 0x1DD0
-	Size: 0x1BA
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherknockdownservice(entity) {
   velocity = entity getvelocity();
   predict_time = 0.3;
@@ -424,15 +291,6 @@ function private thrasherknockdownservice(entity) {
   }
 }
 
-/*
-	Name: thrasherzombieeligibleforknockdown
-	Namespace: thrasherbehavior
-	Checksum: 0x1FF6C4D4
-	Offset: 0x1F98
-	Size: 0x1AC
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private thrasherzombieeligibleforknockdown(zombie, thrasher, predicted_pos) {
   if(zombie.knockdown === 1) {
     return false;
@@ -456,15 +314,6 @@ function private thrasherzombieeligibleforknockdown(zombie, thrasher, predicted_
   return true;
 }
 
-/*
-	Name: thrashershouldmelee
-	Namespace: thrasherbehavior
-	Checksum: 0x4693D96A
-	Offset: 0x2150
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked
-*/
 function thrashershouldmelee(entity) {
   if(!isdefined(entity.favoriteenemy)) {
     return false;
@@ -485,41 +334,14 @@ function thrashershouldmelee(entity) {
   return true;
 }
 
-/*
-	Name: thrashershouldshowpain
-	Namespace: thrasherbehavior
-	Checksum: 0x231B7965
-	Offset: 0x2248
-	Size: 0xE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrashershouldshowpain(entity) {
   return false;
 }
 
-/*
-	Name: thrashershouldturnberserk
-	Namespace: thrasherbehavior
-	Checksum: 0xC3065116
-	Offset: 0x2260
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrashershouldturnberserk(entity) {
   return entity.thrasherisberserk && !entity.thrasherhasturnedberserk;
 }
 
-/*
-	Name: thrashershouldteleport
-	Namespace: thrasherbehavior
-	Checksum: 0xFC1B23E8
-	Offset: 0x2298
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrashershouldteleport(entity) {
   if(!isdefined(entity.favoriteenemy)) {
     return 0;
@@ -540,15 +362,6 @@ function private thrashershouldteleport(entity) {
   return 0;
 }
 
-/*
-	Name: thrashershouldconsumeplayer
-	Namespace: thrasherbehavior
-	Checksum: 0xBCD705A9
-	Offset: 0x2390
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrashershouldconsumeplayer(entity) {
   if(!isdefined(entity.favoriteenemy)) {
     return false;
@@ -572,15 +385,6 @@ function private thrashershouldconsumeplayer(entity) {
   return true;
 }
 
-/*
-	Name: thrashershouldconsumezombie
-	Namespace: thrasherbehavior
-	Checksum: 0xD09001F7
-	Offset: 0x24C0
-	Size: 0x12A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrashershouldconsumezombie(entity) {
   if(entity.thrasherconsumecount >= entity.thrasherconsumemax) {
     return 0;
@@ -606,43 +410,16 @@ function private thrashershouldconsumezombie(entity) {
   return 0;
 }
 
-/*
-	Name: thrasherconsumeplayer
-	Namespace: thrasherbehavior
-	Checksum: 0x11DC2B78
-	Offset: 0x25F8
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherconsumeplayer(entity) {
   if(isplayer(entity.favoriteenemy)) {
     entity thread thrasherserverutils::thrasherconsumeplayerutil(entity, entity.favoriteenemy);
   }
 }
 
-/*
-	Name: thrasherdeath
-	Namespace: thrasherbehavior
-	Checksum: 0x1720B8F9
-	Offset: 0x2658
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherdeath(entity) {
   gibserverutils::annihilate(entity);
 }
 
-/*
-	Name: thrasherconsumezombie
-	Namespace: thrasherbehavior
-	Checksum: 0xB2B27CF3
-	Offset: 0x2688
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherconsumezombie(entity) {
   if(isdefined(entity.thrasherconsumezombiecallback)) {
     if([
@@ -654,30 +431,12 @@ function private thrasherconsumezombie(entity) {
   }
 }
 
-/*
-	Name: thrashershouldbestunned
-	Namespace: thrasherbehavior
-	Checksum: 0xE89546DC
-	Offset: 0x26E8
-	Size: 0x2A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrashershouldbestunned(entity) {
   return entity ai::get_behavior_attribute("stunned");
 }
 
 #namespace thrasherserverutils;
 
-/*
-	Name: thrasherknockdownzombie
-	Namespace: thrasherserverutils
-	Checksum: 0x99D29B4D
-	Offset: 0x2720
-	Size: 0x2B4
-	Parameters: 2
-	Flags: Linked
-*/
 function thrasherknockdownzombie(entity, zombie) {
   zombie.knockdown = 1;
   zombie.knockdown_type = "knockdown_shoved";
@@ -712,15 +471,6 @@ function thrasherknockdownzombie(entity, zombie) {
   }
 }
 
-/*
-	Name: thrashergoberserk
-	Namespace: thrasherserverutils
-	Checksum: 0x6826BA18
-	Offset: 0x29E0
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function thrashergoberserk(entity) {
   if(!entity.thrasherisberserk) {
     entity thread thrasherinvulnerability(2.5);
@@ -731,15 +481,6 @@ function thrashergoberserk(entity) {
   }
 }
 
-/*
-	Name: thrasherplayedberserkintro
-	Namespace: thrasherserverutils
-	Checksum: 0x1FB02543
-	Offset: 0x2A98
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherplayedberserkintro(entity) {
   entity.thrasherhasturnedberserk = 1;
   meleeweapon = getweapon("thrasher_melee_enraged");
@@ -749,15 +490,6 @@ function private thrasherplayedberserkintro(entity) {
   blackboard::setblackboardattribute(self, "_locomotion_speed", "locomotion_speed_run");
 }
 
-/*
-	Name: thrasherdamagecallback
-	Namespace: thrasherserverutils
-	Checksum: 0x2A04F810
-	Offset: 0x2B68
-	Size: 0x2B4
-	Parameters: 12
-	Flags: Linked
-*/
 function thrasherdamagecallback(inflictor, attacker, damage, dflags, mod, weapon, point, dir, hitloc, offsettime, boneindex, modelindex) {
   entity = self;
   if(hitloc == "head" && !gibserverutils::isgibbed(entity, 8)) {
@@ -765,7 +497,7 @@ function thrasherdamagecallback(inflictor, attacker, damage, dflags, mod, weapon
     entity.thrasherheadhealth = entity.thrasherheadhealth - damage;
     if(entity.thrasherheadhealth <= 0) {
       if(isdefined(attacker)) {
-        attacker notify(# "destroyed_thrasher_head");
+        attacker notify("destroyed_thrasher_head");
       }
       gibserverutils::gibhead(entity);
       thrasherhidepoppedpustules(entity);
@@ -776,7 +508,7 @@ function thrasherdamagecallback(inflictor, attacker, damage, dflags, mod, weapon
     if(entity.thrasherstunhealth <= 0) {
       entity ai::set_behavior_attribute("stunned", 1);
       if(isdefined(attacker)) {
-        attacker notify(# "player_stunned_thrasher");
+        attacker notify("player_stunned_thrasher");
       }
     }
   }
@@ -784,7 +516,7 @@ function thrasherdamagecallback(inflictor, attacker, damage, dflags, mod, weapon
   if(entity.thrasherragecount >= 200) {
     thrashergoberserk(entity);
     if(isdefined(attacker)) {
-      attacker notify(# "player_enraged_thrasher");
+      attacker notify("player_enraged_thrasher");
     }
   }
   if(isdefined(entity.b_thrasher_temp_invulnerable) && entity.b_thrasher_temp_invulnerable) {
@@ -794,50 +526,28 @@ function thrasherdamagecallback(inflictor, attacker, damage, dflags, mod, weapon
   return damage;
 }
 
-/*
-	Name: thrasherinvulnerability
-	Namespace: thrasherserverutils
-	Checksum: 0x87EC0DE0
-	Offset: 0x2E28
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherinvulnerability(n_time) {
   entity = self;
-  entity endon(# "death");
-  entity notify(# "end_invulnerability");
+  entity endon("death");
+  entity notify("end_invulnerability");
   entity.b_thrasher_temp_invulnerable = 1;
   entity util::waittill_notify_or_timeout("end_invulnerability", n_time);
   entity.b_thrasher_temp_invulnerable = 0;
 }
 
-/*
-	Name: thrashersporedamagecallback
-	Namespace: thrasherserverutils
-	Checksum: 0x5D463412
-	Offset: 0x2EB0
-	Size: 0x404
-	Parameters: 12
-	Flags: Linked
-*/
 function thrashersporedamagecallback(inflictor, attacker, damage, dflags, mod, weapon, point, dir, hitloc, offsettime, boneindex, modelindex) {
   entity = self;
-  /#
   assert(isdefined(entity.thrasherspores));
-  # /
-    if(!isdefined(point)) {
-      return damage;
-    }
+  if(!isdefined(point)) {
+    return damage;
+  }
   healthyspores = 0;
   for (index = 0; index < array("tag_spore_chest", "tag_spore_back", "tag_spore_leg").size; index++) {
     sporestruct = entity.thrasherspores[index];
-    /#
     assert(isdefined(sporestruct));
-    # /
-      if(sporestruct.health < 0) {
-        continue;
-      }
+    if(sporestruct.health < 0) {
+      continue;
+    }
     tagorigin = entity gettagorigin(sporestruct.tag);
     if(isdefined(tagorigin) && distancesquared(tagorigin, point) < (sporestruct.dist * sporestruct.dist)) {
       entity.thrasherragecount = entity.thrasherragecount + 10;
@@ -855,9 +565,7 @@ function thrashersporedamagecallback(inflictor, attacker, damage, dflags, mod, w
         entity ai::set_behavior_attribute("stunned", 1);
         damage = entity.maxhealth / array("tag_spore_chest", "tag_spore_back", "tag_spore_leg").size;
       }
-      /#
       recordsphere(tagorigin, sporestruct.dist, (1, 1, 0), "", entity);
-      # /
     }
     if(sporestruct.health > 0) {
       healthyspores++;
@@ -869,30 +577,12 @@ function thrashersporedamagecallback(inflictor, attacker, damage, dflags, mod, w
   return damage;
 }
 
-/*
-	Name: thrasherteleportout
-	Namespace: thrasherserverutils
-	Checksum: 0x2935C7B9
-	Offset: 0x32C0
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherteleportout(entity) {
   if(isdefined(entity.thrasherteleportcallback)) {
     entity thread[[entity.thrasherteleportcallback]](entity);
   }
 }
 
-/*
-	Name: thrasherstarttraverse
-	Namespace: thrasherserverutils
-	Checksum: 0xC024D678
-	Offset: 0x3308
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function thrasherstarttraverse(entity) {
   aiutility::traversesetup(entity);
   if(isdefined(entity.thrasherstarttraversecallback)) {
@@ -900,36 +590,16 @@ function thrasherstarttraverse(entity) {
   }
 }
 
-/*
-	Name: thrasherterminatetraverse
-	Namespace: thrasherserverutils
-	Checksum: 0xF8B7153
-	Offset: 0x3368
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function thrasherterminatetraverse(entity) {
   if(isdefined(entity.thrasherterminatetraversecallback)) {
     entity[[entity.thrasherterminatetraversecallback]](entity);
   }
 }
 
-/*
-	Name: thrasherteleport
-	Namespace: thrasherserverutils
-	Checksum: 0x5043328D
-	Offset: 0x33B0
-	Size: 0x32C
-	Parameters: 1
-	Flags: Linked
-*/
 function thrasherteleport(entity) {
   if(!isdefined(entity.favoriteenemy)) {
-    /#
     println("");
-    # /
-      return;
+    return;
   }
   points = util::positionquery_pointarray(entity.favoriteenemy.origin, 128, 256, 32, 64, entity);
   filteredpoints = [];
@@ -961,28 +631,10 @@ function thrasherteleport(entity) {
   entity.thrasherlastteleporttime = gettime();
 }
 
-/*
-	Name: thrasherstuninitialize
-	Namespace: thrasherserverutils
-	Checksum: 0x4E326DAD
-	Offset: 0x36E8
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherstuninitialize(entity) {
   entity.thrasherstunstarttime = gettime();
 }
 
-/*
-	Name: thrasherstunupdate
-	Namespace: thrasherserverutils
-	Checksum: 0x666E896E
-	Offset: 0x3710
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private thrasherstunupdate(entity) {
   if((entity.thrasherstunstarttime + 1000) < gettime()) {
     entity ai::set_behavior_attribute("stunned", 0);
@@ -990,15 +642,6 @@ function private thrasherstunupdate(entity) {
   }
 }
 
-/*
-	Name: thrasherhidespikes
-	Namespace: thrasherserverutils
-	Checksum: 0x8C74BC8
-	Offset: 0x3770
-	Size: 0xDE
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private thrasherhidespikes(entity, hide) {
   for (index = 1; index <= 24; index++) {
     tag = "j_spike";
@@ -1014,15 +657,6 @@ function private thrasherhidespikes(entity, hide) {
   }
 }
 
-/*
-	Name: thrasherhidefromplayer
-	Namespace: thrasherserverutils
-	Checksum: 0x9E5E9434
-	Offset: 0x3858
-	Size: 0xE4
-	Parameters: 3
-	Flags: Linked
-*/
 function thrasherhidefromplayer(thrasher, player, hide) {
   entitynumber = player getentitynumber();
   entitybit = 1 << entitynumber;
@@ -1036,15 +670,6 @@ function thrasherhidefromplayer(thrasher, player, hide) {
   thrasher clientfield::set("thrasher_player_hide", hiddenplayers);
 }
 
-/*
-	Name: thrasherhidepoppedpustules
-	Namespace: thrasherserverutils
-	Checksum: 0x27B6A563
-	Offset: 0x3948
-	Size: 0xDE
-	Parameters: 1
-	Flags: Linked
-*/
 function thrasherhidepoppedpustules(entity) {
   for (index = 0; index < array("tag_spore_chest", "tag_spore_back", "tag_spore_leg").size; index++) {
     sporestruct = entity.thrasherspores[index];
@@ -1056,15 +681,6 @@ function thrasherhidepoppedpustules(entity) {
   }
 }
 
-/*
-	Name: thrasherrestorepustule
-	Namespace: thrasherserverutils
-	Checksum: 0x4D0617A0
-	Offset: 0x3A30
-	Size: 0x194
-	Parameters: 1
-	Flags: None
-*/
 function thrasherrestorepustule(entity) {
   for (index = 0; index < array("tag_spore_chest", "tag_spore_back", "tag_spore_leg").size; index++) {
     sporestruct = entity.thrasherspores[index];
@@ -1080,15 +696,6 @@ function thrasherrestorepustule(entity) {
   thrasherhidepoppedpustules(entity);
 }
 
-/*
-	Name: thrashercreateplayerclone
-	Namespace: thrasherserverutils
-	Checksum: 0xDED70FAE
-	Offset: 0x3BD0
-	Size: 0x190
-	Parameters: 1
-	Flags: Linked
-*/
 function thrashercreateplayerclone(player) {
   clone = spawn("script_model", player.origin);
   clone.angles = player.angles;
@@ -1110,30 +717,12 @@ function thrashercreateplayerclone(player) {
   return clone;
 }
 
-/*
-	Name: thrasherhideplayerbody
-	Namespace: thrasherserverutils
-	Checksum: 0x95733BBD
-	Offset: 0x3D68
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked
-*/
 function thrasherhideplayerbody(thrasher, player) {
-  player endon(# "death");
-  player waittill(# "hide_body");
+  player endon("death");
+  player waittill("hide_body");
   player hide();
 }
 
-/*
-	Name: thrashercanberevived
-	Namespace: thrasherserverutils
-	Checksum: 0xD3EA8F13
-	Offset: 0x3DB8
-	Size: 0x3A
-	Parameters: 1
-	Flags: None
-*/
 function thrashercanberevived(revivee) {
   if(isdefined(revivee.thrasherconsumed) && revivee.thrasherconsumed) {
     return false;
@@ -1141,18 +730,9 @@ function thrashercanberevived(revivee) {
   return true;
 }
 
-/*
-	Name: thrasherstopconsumeplayerscene
-	Namespace: thrasherserverutils
-	Checksum: 0xF65DAAF4
-	Offset: 0x3E00
-	Size: 0x74
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private thrasherstopconsumeplayerscene(thrasher, playerclone) {
-  thrasher endon(# "consume_scene_end");
-  thrasher waittill(# "death");
+  thrasher endon("consume_scene_end");
+  thrasher waittill("death");
   if(isdefined(thrasher)) {
     thrasher scene::stop("scene_zm_dlc2_thrasher_eat_player");
   }
@@ -1161,46 +741,22 @@ function private thrasherstopconsumeplayerscene(thrasher, playerclone) {
   }
 }
 
-/*
-	Name: thrasherconsumeplayerscene
-	Namespace: thrasherserverutils
-	Checksum: 0x581A335C
-	Offset: 0x3E80
-	Size: 0xDC
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private thrasherconsumeplayerscene(thrasher, playerclone) {
-  thrasher endon(# "death");
+  thrasher endon("death");
   thrasher thread thrasherstopconsumeplayerscene(thrasher, playerclone);
   thrasher scene::play("scene_zm_dlc2_thrasher_eat_player", array(thrasher, playerclone));
-  thrasher notify(# "consume_scene_end");
+  thrasher notify("consume_scene_end");
   targetpos = getclosestpointonnavmesh(thrasher.origin, 1024, 18);
   if(isdefined(targetpos)) {
     thrasher forceteleport(targetpos);
   }
 }
 
-/*
-	Name: thrasherconsumeplayerutil
-	Namespace: thrasherserverutils
-	Checksum: 0x187AC39E
-	Offset: 0x3F68
-	Size: 0x5D4
-	Parameters: 2
-	Flags: Linked
-*/
 function thrasherconsumeplayerutil(thrasher, player) {
-  /#
   assert(isactor(thrasher));
-  # /
-    /#
   assert(thrasher.archetype == "");
-  # /
-    /#
   assert(isplayer(player));
-  # /
-    thrasher endon(# "kill_consume_player");
+  thrasher endon("kill_consume_player");
   if(isdefined(player.thrasherconsumed) && player.thrasherconsumed) {
     return;
   }
@@ -1251,39 +807,21 @@ function thrasherconsumeplayerutil(thrasher, player) {
   if(isdefined(playerclone)) {
     thrasher thread thrasherconsumeplayerscene(thrasher, playerclone);
     playerclone thread thrasherhideplayerbody(thrasher, playerclone);
-    player notify(# "player_eaten_by_thrasher");
+    player notify("player_eaten_by_thrasher");
   }
-  thrasher waittill(# "death");
+  thrasher waittill("death");
   thrasherreleaseplayer(thrasher, player);
 }
 
-/*
-	Name: thrasherkillthrasheronautorevive
-	Namespace: thrasherserverutils
-	Checksum: 0x82132D62
-	Offset: 0x4548
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function thrasherkillthrasheronautorevive(thrasher, player) {
-  player endon(# "death");
-  player endon(# "kill_thrasher_on_auto_revive");
-  player waittill(# "bgb_revive");
+  player endon("death");
+  player endon("kill_thrasher_on_auto_revive");
+  player waittill("bgb_revive");
   if(isdefined(player.thrasher)) {
     player.thrasher kill();
   }
 }
 
-/*
-	Name: thrasherreleaseplayer
-	Namespace: thrasherserverutils
-	Checksum: 0x6698408E
-	Offset: 0x45C0
-	Size: 0x4B4
-	Parameters: 2
-	Flags: Linked
-*/
 function thrasherreleaseplayer(thrasher, player) {
   if(!isalive(player)) {
     return;
@@ -1306,7 +844,7 @@ function thrasherreleaseplayer(thrasher, player) {
   player setclientuivisibilityflag("weapon_hud_visible", 1);
   player.thrasherfreedtime = gettime();
   player setstance("prone");
-  player notify(# "kill_thrasher_on_auto_revive");
+  player notify("kill_thrasher_on_auto_revive");
   player.thrasherconsumed = undefined;
   player.thrasher = undefined;
   player walkunderwater(0);
@@ -1341,41 +879,23 @@ function thrasherreleaseplayer(thrasher, player) {
       player.origin = newposition;
     }
   }
-  thrasher notify(# "kill_consume_player");
+  thrasher notify("kill_consume_player");
 }
 
-/*
-	Name: check_revive_after_consumed
-	Namespace: thrasherserverutils
-	Checksum: 0x3501FE8
-	Offset: 0x4A80
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked
-*/
 function check_revive_after_consumed() {
-  self endon(# "death");
-  self waittill(# "player_revived");
-  self notify(# "achievement_zm_island_thrasher_rescue");
+  self endon("death");
+  self waittill("player_revived");
+  self notify("achievement_zm_island_thrasher_rescue");
 }
 
-/*
-	Name: thrasherplayerdeath
-	Namespace: thrasherserverutils
-	Checksum: 0x1F92872F
-	Offset: 0x4AB8
-	Size: 0x12C
-	Parameters: 2
-	Flags: Linked
-*/
 function thrasherplayerdeath(thrasher, player) {
-  thrasher endon(# "kill_consume_player");
+  thrasher endon("kill_consume_player");
   thrasher.thrasherplayer = undefined;
   characterindex = player.characterindex;
   if(!isdefined(characterindex)) {
     return;
   }
-  level waittill(# "bleed_out", characterindex);
+  level waittill("bleed_out", characterindex);
   if(isdefined(thrasher.thrasherreleaseconsumedcallback)) {
     [
       [thrasher.thrasherreleaseconsumedcallback]
@@ -1391,15 +911,6 @@ function thrasherplayerdeath(thrasher, player) {
   }
 }
 
-/*
-	Name: thrashermovemodeattributecallback
-	Namespace: thrasherserverutils
-	Checksum: 0x10A803AF
-	Offset: 0x4BF0
-	Size: 0x70
-	Parameters: 4
-	Flags: Linked
-*/
 function thrashermovemodeattributecallback(entity, attribute, oldvalue, value) {
   if(value == "normal") {
     entity.team = "axis";

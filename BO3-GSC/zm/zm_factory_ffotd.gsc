@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_factory_ffotd.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -9,31 +13,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm;
-
 #namespace zm_factory_ffotd;
 
-/*
-	Name: main_start
-	Namespace: zm_factory_ffotd
-	Checksum: 0xF9D6B859
-	Offset: 0x2D8
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function main_start() {
   level.var_42792b8b = 1;
 }
 
-/*
-	Name: main_end
-	Namespace: zm_factory_ffotd
-	Checksum: 0xC6A0EFD2
-	Offset: 0x2F0
-	Size: 0x4B4
-	Parameters: 0
-	Flags: Linked
-*/
 function main_end() {
   zm::spawn_life_brush((700, -986, 280), 128, 128);
   spawncollision("collision_clip_wall_128x128x10", "collider", (104, -2520, 328), (0, 0, 0));
@@ -59,17 +44,8 @@ function main_end() {
   level thread function_1c45822c();
 }
 
-/*
-	Name: function_1c45822c
-	Namespace: zm_factory_ffotd
-	Checksum: 0x2F3CF534
-	Offset: 0x7B0
-	Size: 0x148
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1c45822c() {
-  level waittill(# "start_zombie_round_logic");
+  level waittill("start_zombie_round_logic");
   var_5381c01a = struct::get_array("player_respawn_point", "targetname");
   foreach(s_respawn in var_5381c01a) {
     if(s_respawn.script_noteworthy === "reciever_zone") {

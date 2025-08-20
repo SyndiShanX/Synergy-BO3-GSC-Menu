@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/********************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_zurich_coalescence_zurich_rails.gsc
+********************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_dialog;
 #using scripts\cp\_load;
@@ -23,18 +27,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace zurich_rails;
 
-/*
-	Name: skipto_main
-	Namespace: zurich_rails
-	Checksum: 0x82E5FF28
-	Offset: 0x828
-	Size: 0x4A4
-	Parameters: 2
-	Flags: Linked
-*/
 function skipto_main(str_objective, b_starting) {
   spawner::add_spawn_function_group("plaza_battle_boss", "targetname", & zurich_plaza_battle::function_8fdd138);
   spawner::add_spawn_function_group("plaza_battle_intro_redshirts", "targetname", & zurich_plaza_battle::function_adfa2b54);
@@ -68,7 +62,7 @@ function skipto_main(str_objective, b_starting) {
   level thread function_51e389ee(b_starting);
   level.var_438d2fd9 = [];
   level.ai_boss = spawner::simple_spawn_single("plaza_battle_boss");
-  level notify(# "hash_4f700a7e");
+  level notify("hash_4f700a7e");
   level thread zurich_util::function_2361541e("rails");
   level thread zurich_util::function_1eb6ea27("plaza_battle_intro_zone_trig", "rails");
   level.ai_kane ai::set_ignoreall(1);
@@ -82,30 +76,12 @@ function skipto_main(str_objective, b_starting) {
   skipto::objective_completed(str_objective);
 }
 
-/*
-	Name: skipto_done
-	Namespace: zurich_rails
-	Checksum: 0xD3A5294F
-	Offset: 0xCD8
-	Size: 0x5C
-	Parameters: 4
-	Flags: Linked
-*/
 function skipto_done(str_objective, b_starting, b_direct, player) {
   zurich_util::enable_surreal_ai_fx(0);
   level.var_ebb30c1a = undefined;
   zurich_city::function_9b46fb9();
 }
 
-/*
-	Name: function_51e389ee
-	Namespace: zurich_rails
-	Checksum: 0xAE9D89DD
-	Offset: 0xD40
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_51e389ee(b_starting) {
   if(b_starting) {
     objectives::set("cp_level_zurich_assault_hq_obj");
@@ -120,15 +96,6 @@ function function_51e389ee(b_starting) {
   }
 }
 
-/*
-	Name: function_302750ab
-	Namespace: zurich_rails
-	Checksum: 0x49043B59
-	Offset: 0xE30
-	Size: 0x174
-	Parameters: 0
-	Flags: Linked
-*/
 function function_302750ab() {
   level flag::wait_till_all(array("flag_start_kane_it_won_t_vo_done", "flag_zurich_rails_vo_01"));
   level.ai_kane dialog::say("kane_so_much_chaos_so_0");
@@ -144,17 +111,8 @@ function function_302750ab() {
   }
 }
 
-/*
-	Name: function_5ea42950
-	Namespace: zurich_rails
-	Checksum: 0x8F67466B
-	Offset: 0xFB0
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5ea42950() {
-  level endon(# "hash_a835a95b");
+  level endon("hash_a835a95b");
   nd_spline = getvehiclenode("rails_hunter_spline", "targetname");
   s_look = struct::get("rails_hunter_look_spot");
   while (!zurich_util::function_f8645b6(-1, s_look.origin, 0.6)) {
@@ -162,21 +120,12 @@ function function_5ea42950() {
   }
   ai_hunter = nd_spline zurich_util::function_a569867c();
   ai_hunter vehicle::god_on();
-  ai_hunter waittill(# "reached_end_node");
+  ai_hunter waittill("reached_end_node");
   ai_hunter delete();
 }
 
-/*
-	Name: function_d5b7d39e
-	Namespace: zurich_rails
-	Checksum: 0xEC7BE583
-	Offset: 0x10B8
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d5b7d39e() {
-  level endon(# "hash_a835a95b");
+  level endon("hash_a835a95b");
   trigger::wait_till("trig_rails_hallucination", "targetname", self);
   self clientfield::increment_to_player("postfx_hallucinations", 1);
   wait(0.8);

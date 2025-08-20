@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\raz.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_mocomps_utility;
 #using scripts\shared\ai\archetype_utility;
 #using scripts\shared\ai\systems\animation_state_machine_mocomp;
@@ -23,18 +27,8 @@
 #using scripts\zm\_zm_behavior;
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
-
 #namespace razbehavior;
 
-/*
-	Name: init
-	Namespace: razbehavior
-	Checksum: 0xC94AB4BB
-	Offset: 0xA60
-	Size: 0x244
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   initrazbehaviorsandasm();
   spawner::add_archetype_spawn_function("raz", & archetyperazblackboardinit);
@@ -51,15 +45,6 @@ function autoexec init() {
   clientfield::register("actor", "raz_detach_l_thigh_armor", 12000, 1, "int");
 }
 
-/*
-	Name: initrazbehaviorsandasm
-	Namespace: razbehavior
-	Checksum: 0x5B252FB7
-	Offset: 0xCB0
-	Size: 0x2D4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initrazbehaviorsandasm() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("razTargetService", & raztargetservice);
   behaviortreenetworkutility::registerbehaviortreescriptapi("razSprintService", & razsprintservice);
@@ -81,63 +66,33 @@ function private initrazbehaviorsandasm() {
   animationstatenetwork::registernotetrackhandlerfunction("mangler_fire", & raznotetrackshootgroundtorpedo);
 }
 
-/*
-	Name: archetyperazblackboardinit
-	Namespace: razbehavior
-	Checksum: 0xB7600660
-	Offset: 0xF90
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private archetyperazblackboardinit() {
   blackboard::createblackboardforentity(self);
   self aiutility::registerutilityblackboardattributes();
   blackboard::registerblackboardattribute(self, "_gibbed_limbs", "none", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_locomotion_speed", "locomotion_speed_walk", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_locomotion_should_turn", "should_not_turn", & bb_getshouldturn);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_zombie_damageweapon_type", "regular", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   blackboard::registerblackboardattribute(self, "_gib_location", "legs", undefined);
   if(isactor(self)) {
-    /#
     self trackblackboardattribute("");
-    # /
   }
   self.___archetypeonanimscriptedcallback = & archetyperazonanimscriptedcallback;
-  /#
   self finalizetrackedblackboardattributes();
-  # /
 }
 
-/*
-	Name: archetyperazonanimscriptedcallback
-	Namespace: razbehavior
-	Checksum: 0xDE2514D4
-	Offset: 0x11E8
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private archetyperazonanimscriptedcallback(entity) {
   entity.__blackboard = undefined;
   entity archetyperazblackboardinit();
@@ -150,15 +105,6 @@ function private archetyperazonanimscriptedcallback(entity) {
   }
 }
 
-/*
-	Name: bb_getshouldturn
-	Namespace: razbehavior
-	Checksum: 0x43C0E8AC
-	Offset: 0x12C8
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private bb_getshouldturn() {
   if(isdefined(self.should_turn) && self.should_turn) {
     return "should_turn";
@@ -166,15 +112,6 @@ function private bb_getshouldturn() {
   return "should_not_turn";
 }
 
-/*
-	Name: findnodesservice
-	Namespace: razbehavior
-	Checksum: 0x340080BC
-	Offset: 0x1300
-	Size: 0x22E
-	Parameters: 1
-	Flags: Linked
-*/
 function findnodesservice(behaviortreeentity) {
   node = undefined;
   behaviortreeentity.entrance_nodes = [];
@@ -189,10 +126,8 @@ function findnodesservice(behaviortreeentity) {
       }
     }
     behaviortreeentity.entrance_nodes[behaviortreeentity.entrance_nodes.size] = node;
-    /#
     assert(isdefined(node), ("" + behaviortreeentity.find_flesh_struct_string) + "");
-    # /
-      behaviortreeentity.first_node = node;
+    behaviortreeentity.first_node = node;
     behaviortreeentity.goalradius = 80;
     behaviortreeentity.mocomp_barricade_offset = getdvarint("raz_node_origin_offset", -22);
     node_origin = node.origin + (anglestoforward(node.angles) * behaviortreeentity.mocomp_barricade_offset);
@@ -204,15 +139,6 @@ function findnodesservice(behaviortreeentity) {
   }
 }
 
-/*
-	Name: shouldskipteardown
-	Namespace: razbehavior
-	Checksum: 0xEA70976C
-	Offset: 0x1538
-	Size: 0x70
-	Parameters: 1
-	Flags: Linked
-*/
 function shouldskipteardown(entity) {
   if(isdefined(entity.destroying_window) && entity.destroying_window) {
     return true;
@@ -223,15 +149,6 @@ function shouldskipteardown(entity) {
   return false;
 }
 
-/*
-	Name: razgetnondestroyedchuncks
-	Namespace: razbehavior
-	Checksum: 0x2554564B
-	Offset: 0x15B0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private razgetnondestroyedchuncks() {
   chunks = undefined;
   if(isdefined(self.first_node)) {
@@ -240,15 +157,6 @@ function private razgetnondestroyedchuncks() {
   return chunks;
 }
 
-/*
-	Name: razdestroywindow
-	Namespace: razbehavior
-	Checksum: 0xD82C6E29
-	Offset: 0x1610
-	Size: 0x21E
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private razdestroywindow(entity, b_destroy_actual_pieces) {
   if(!(isdefined(b_destroy_actual_pieces) && b_destroy_actual_pieces)) {
     entity.got_to_entrance = 0;
@@ -279,15 +187,6 @@ function private razdestroywindow(entity, b_destroy_actual_pieces) {
   }
 }
 
-/*
-	Name: raztargetservice
-	Namespace: razbehavior
-	Checksum: 0x202B5C51
-	Offset: 0x1838
-	Size: 0x36E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private raztargetservice(entity) {
   if(isdefined(entity.ignoreall) && entity.ignoreall) {
     return false;
@@ -348,15 +247,6 @@ function private raztargetservice(entity) {
   return false;
 }
 
-/*
-	Name: razsprintservice
-	Namespace: razbehavior
-	Checksum: 0xF3C5CA2
-	Offset: 0x1BB0
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razsprintservice(entity) {
   if(isdefined(entity.started_running) && entity.started_running) {
     return false;
@@ -373,15 +263,6 @@ function private razsprintservice(entity) {
   }
 }
 
-/*
-	Name: razshouldmelee
-	Namespace: razbehavior
-	Checksum: 0x505E2969
-	Offset: 0x1C90
-	Size: 0xD6
-	Parameters: 1
-	Flags: Linked
-*/
 function razshouldmelee(entity) {
   if(isdefined(entity.destroy_window_by_melee) && entity.destroy_window_by_melee) {
     return true;
@@ -399,15 +280,6 @@ function razshouldmelee(entity) {
   return true;
 }
 
-/*
-	Name: razshouldshowpain
-	Namespace: razbehavior
-	Checksum: 0x601E170B
-	Offset: 0x1D70
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razshouldshowpain(entity) {
   if(isdefined(entity.berserk) && entity.berserk && (!(isdefined(entity.razhasgoneberserk) && entity.razhasgoneberserk))) {
     return false;
@@ -415,15 +287,6 @@ function private razshouldshowpain(entity) {
   return true;
 }
 
-/*
-	Name: razshouldshowspecialpain
-	Namespace: razbehavior
-	Checksum: 0x88DC2499
-	Offset: 0x1DD8
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razshouldshowspecialpain(entity) {
   gib_location = blackboard::getblackboardattribute(entity, "_gib_location");
   if(gib_location == "right_arm") {
@@ -438,15 +301,6 @@ function private razshouldshowspecialpain(entity) {
   return false;
 }
 
-/*
-	Name: razshouldshowshieldpain
-	Namespace: razbehavior
-	Checksum: 0x9A0151A4
-	Offset: 0x1EA8
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razshouldshowshieldpain(entity) {
   if(isdefined(entity.damageweapon) && isdefined(entity.damageweapon.name)) {
     return entity.damageweapon.name == "dragonshield";
@@ -454,15 +308,6 @@ function private razshouldshowshieldpain(entity) {
   return 0;
 }
 
-/*
-	Name: razshouldgoberserk
-	Namespace: razbehavior
-	Checksum: 0x13999C9F
-	Offset: 0x1F10
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razshouldgoberserk(entity) {
   if(isdefined(entity.berserk) && entity.berserk && (!(isdefined(entity.razhasgoneberserk) && entity.razhasgoneberserk))) {
     return true;
@@ -470,56 +315,20 @@ function private razshouldgoberserk(entity) {
   return false;
 }
 
-/*
-	Name: razshouldtraversewindow
-	Namespace: razbehavior
-	Checksum: 0x382C99CB
-	Offset: 0x1F78
-	Size: 0x2E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razshouldtraversewindow(entity) {
   return isdefined(entity.jump_through_window) && entity.jump_through_window;
 }
 
-/*
-	Name: razgoneberserk
-	Namespace: razbehavior
-	Checksum: 0x8E446BA
-	Offset: 0x1FB0
-	Size: 0x20
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razgoneberserk(entity) {
   entity.razhasgoneberserk = 1;
 }
 
-/*
-	Name: razstarttraversewindow
-	Namespace: razbehavior
-	Checksum: 0x3B361966
-	Offset: 0x1FD8
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razstarttraversewindow(entity) {
   raz_dir = anglestoforward(entity.first_node.angles);
   raz_dir = vectorscale(raz_dir, 100);
   entity setgoal(entity.origin + raz_dir);
 }
 
-/*
-	Name: razfinishtraversewindow
-	Namespace: razbehavior
-	Checksum: 0x7AF1F812
-	Offset: 0x2060
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razfinishtraversewindow(entity) {
   entity setgoal(entity.origin);
   entity.jump_through_window = undefined;
@@ -529,28 +338,10 @@ function private razfinishtraversewindow(entity) {
   }
 }
 
-/*
-	Name: raztookpain
-	Namespace: razbehavior
-	Checksum: 0x601CC735
-	Offset: 0x20F0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private raztookpain(entity) {
   blackboard::setblackboardattribute(entity, "_gib_location", "legs");
 }
 
-/*
-	Name: razstartdeath
-	Namespace: razbehavior
-	Checksum: 0x3FE12893
-	Offset: 0x2130
-	Size: 0x50C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razstartdeath(entity) {
   entity playsoundontag("zmb_raz_death", "tag_eye");
   if(isdefined(entity.razhasgunattached) && entity.razhasgunattached) {
@@ -602,15 +393,6 @@ function private razstartdeath(entity) {
   }
 }
 
-/*
-	Name: razshouldshootgroundtorpedo
-	Namespace: razbehavior
-	Checksum: 0xC2D39429
-	Offset: 0x2648
-	Size: 0x178
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razshouldshootgroundtorpedo(entity) {
   if(isdefined(entity.destroy_window_by_torpedo) && entity.destroy_window_by_torpedo) {
     return true;
@@ -640,15 +422,6 @@ function private razshouldshootgroundtorpedo(entity) {
   return true;
 }
 
-/*
-	Name: razcanseetorpedotarget
-	Namespace: razbehavior
-	Checksum: 0xF75344D1
-	Offset: 0x27C8
-	Size: 0x186
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razcanseetorpedotarget(enemy) {
   entity = self;
   origin_point = entity gettagorigin("tag_weapon_right");
@@ -670,15 +443,6 @@ function private razcanseetorpedotarget(enemy) {
   return false;
 }
 
-/*
-	Name: razstartmelee
-	Namespace: razbehavior
-	Checksum: 0xD0958A24
-	Offset: 0x2958
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razstartmelee(entity) {
   if(isdefined(entity.destroy_window_by_melee) && entity.destroy_window_by_melee) {
     wait(1.1);
@@ -686,48 +450,19 @@ function private razstartmelee(entity) {
   }
 }
 
-/*
-	Name: razfinishmelee
-	Namespace: razbehavior
-	Checksum: 0x2CDF71EF
-	Offset: 0x29B8
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razfinishmelee(entity) {
   entity.destroy_window_by_melee = undefined;
 }
 
-/*
-	Name: razfinishgroundtorpedo
-	Namespace: razbehavior
-	Checksum: 0x8122CFB4
-	Offset: 0x29E0
-	Size: 0x30
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razfinishgroundtorpedo(entity) {
   entity.destroy_window_by_torpedo = undefined;
   entity.next_torpedo_time = gettime() + 3000;
 }
 
-/*
-	Name: raznotetrackshootgroundtorpedo
-	Namespace: razbehavior
-	Checksum: 0xFBBCD6EB
-	Offset: 0x2A18
-	Size: 0x164
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private raznotetrackshootgroundtorpedo(entity) {
   if(!isdefined(entity.enemy) && (!(isdefined(entity.destroy_window_by_torpedo) && entity.destroy_window_by_torpedo))) {
-    /#
     println("");
-    # /
-      return;
+    return;
   }
   if(isdefined(entity.destroy_window_by_torpedo) && entity.destroy_window_by_torpedo) {
     razdestroywindow(entity, 1);
@@ -739,15 +474,6 @@ function private raznotetrackshootgroundtorpedo(entity) {
   entity.next_torpedo_time = gettime() + 3000;
 }
 
-/*
-	Name: raztorpedolaunchdirection
-	Namespace: razbehavior
-	Checksum: 0xAA5EC59A
-	Offset: 0x2B88
-	Size: 0x130
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private raztorpedolaunchdirection(forward_dir, torpedo_pos, torpedo_target_pos, max_angle) {
   vec_to_enemy = torpedo_target_pos - torpedo_pos;
   vec_to_enemy_normal = vectornormalize(vec_to_enemy);
@@ -761,15 +487,6 @@ function private raztorpedolaunchdirection(forward_dir, torpedo_pos, torpedo_tar
   return torpedo_dir;
 }
 
-/*
-	Name: razshootgroundtorpedo
-	Namespace: razbehavior
-	Checksum: 0xD8574203
-	Offset: 0x2CC0
-	Size: 0x2B4
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private razshootgroundtorpedo(torpedo_target, torpedo_target_offset) {
   torpedo_pos = self gettagorigin("tag_weapon_right");
   torpedo_target_pos = torpedo_target.origin + torpedo_target_offset;
@@ -799,18 +516,9 @@ function private razshootgroundtorpedo(torpedo_target, torpedo_target_offset) {
   }
 }
 
-/*
-	Name: raztorpedodetonateifclosetotarget
-	Namespace: razbehavior
-	Checksum: 0x4055C23A
-	Offset: 0x2F80
-	Size: 0xC0
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private raztorpedodetonateifclosetotarget(torpedo_target, torpedo_target_offset) {
-  self endon(# "death");
-  self endon(# "detonated");
+  self endon("death");
+  self endon("detonated");
   torpedo = self;
   while (isdefined(torpedo) && isdefined(torpedo_target)) {
     torpedo_target_pos = torpedo_target.origin + torpedo_target_offset;
@@ -821,18 +529,9 @@ function private raztorpedodetonateifclosetotarget(torpedo_target, torpedo_targe
   }
 }
 
-/*
-	Name: raztorpedomovetotarget
-	Namespace: razbehavior
-	Checksum: 0x995511F9
-	Offset: 0x3048
-	Size: 0x43C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private raztorpedomovetotarget(torpedo_target) {
-  self endon(# "death");
-  self endon(# "detonated");
+  self endon("death");
+  self endon("detonated");
   if(!isdefined(self.torpedo_max_yaw_cos)) {
     torpedo_yaw_per_interval = 13.5;
     self.torpedo_max_yaw_cos = cos(torpedo_yaw_per_interval);
@@ -889,18 +588,9 @@ function private raztorpedomovetotarget(torpedo_target) {
   self moveto(move_to_point, 0.1);
 }
 
-/*
-	Name: raztorpedoplaytraileffect
-	Namespace: razbehavior
-	Checksum: 0xBB879762
-	Offset: 0x3490
-	Size: 0xC4
-	Parameters: 0
-	Flags: Private
-*/
 function private raztorpedoplaytraileffect() {
-  self endon(# "death");
-  self endon(# "detonated");
+  self endon("death");
+  self endon("detonated");
   surface_check_offset = 26;
   if(self.torpedo_trail_iterations >= 1) {
     trace = bullettrace(self.origin + vectorscale((0, 0, 1), 10), self.origin - (0, 0, surface_check_offset), 0, self);
@@ -910,17 +600,8 @@ function private raztorpedoplaytraileffect() {
   }
 }
 
-/*
-	Name: razknockdownzombies
-	Namespace: razbehavior
-	Checksum: 0x33FBAFD9
-	Offset: 0x3560
-	Size: 0x5F0
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razknockdownzombies(target) {
-  self endon(# "death");
+  self endon("death");
   while (isdefined(self)) {
     if(isdefined(target)) {
       if(isplayer(target)) {
@@ -1002,48 +683,21 @@ function private razknockdownzombies(target) {
   }
 }
 
-/*
-	Name: raztorpedoknockdownzombies
-	Namespace: razbehavior
-	Checksum: 0xBB9652D9
-	Offset: 0x3B58
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private raztorpedoknockdownzombies(torpedo_target) {
-  self endon(# "death");
-  self endon(# "detonated");
+  self endon("death");
+  self endon("detonated");
   razknockdownzombies(torpedo_target);
 }
 
-/*
-	Name: razsprintknockdownzombies
-	Namespace: razbehavior
-	Checksum: 0xD2ECA887
-	Offset: 0x3BA0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private razsprintknockdownzombies() {
-  self endon(# "death");
-  self notify(# "razsprintknockdownzombies");
-  self endon(# "razsprintknockdownzombies");
+  self endon("death");
+  self notify("razsprintknockdownzombies");
+  self endon("razsprintknockdownzombies");
   razknockdownzombies();
 }
 
-/*
-	Name: raztorpedodetonate
-	Namespace: razbehavior
-	Checksum: 0x9BE57EC4
-	Offset: 0x3BE8
-	Size: 0x1B4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private raztorpedodetonate(delay) {
-  self notify(# "detonated");
+  self notify("detonated");
   torpedo = self;
   raz_torpedo_owner = self.raz_torpedo_owner;
   if(delay > 0) {
@@ -1067,15 +721,6 @@ function private raztorpedodetonate(delay) {
   }
 }
 
-/*
-	Name: razapplytorpedodetonationpushtoplayers
-	Namespace: razbehavior
-	Checksum: 0xC3B0478B
-	Offset: 0x3DA8
-	Size: 0x28E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private razapplytorpedodetonationpushtoplayers(torpedo_origin) {
   players = getplayers();
   v_length = 100 * 100;
@@ -1115,15 +760,6 @@ function private razapplytorpedodetonationpushtoplayers(torpedo_origin) {
   }
 }
 
-/*
-	Name: razapplyplayerdetonationeffects
-	Namespace: razbehavior
-	Checksum: 0x9EE1D5D7
-	Offset: 0x4040
-	Size: 0xE6
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private razapplyplayerdetonationeffects() {
   earthquake(0.4, 0.8, self.origin, 300);
   for (i = 0; i < level.activeplayers.size; i++) {
@@ -1135,15 +771,6 @@ function private razapplyplayerdetonationeffects() {
   }
 }
 
-/*
-	Name: razzombieeligibleforknockdown
-	Namespace: razbehavior
-	Checksum: 0xB8178867
-	Offset: 0x4130
-	Size: 0x234
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private razzombieeligibleforknockdown(zombie, target, predicted_pos) {
   if(zombie.knockdown === 1) {
     return false;
@@ -1178,15 +805,6 @@ function private razzombieeligibleforknockdown(zombie, target, predicted_pos) {
 
 #namespace razserverutils;
 
-/*
-	Name: razspawnsetup
-	Namespace: razserverutils
-	Checksum: 0x8CA07DAC
-	Offset: 0x4370
-	Size: 0x1DC
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private razspawnsetup() {
   self.invoke_sprint_time = gettime() + 90000;
   self.next_torpedo_time = gettime();
@@ -1229,20 +847,11 @@ function private razspawnsetup() {
   self thread razgibzombiesonmelee();
 }
 
-/*
-	Name: razgibzombiesonmelee
-	Namespace: razserverutils
-	Checksum: 0x15309EDA
-	Offset: 0x4558
-	Size: 0x42E
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private razgibzombiesonmelee() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "melee_fire");
+    self waittill("melee_fire");
     a_zombies = getaiarchetypearray("zombie");
     foreach(zombie in a_zombies) {
       if(isdefined(zombie.no_gib) && zombie.no_gib) {
@@ -1301,15 +910,6 @@ function private razgibzombiesonmelee() {
   }
 }
 
-/*
-	Name: razinvalidategibbedarmor
-	Namespace: razserverutils
-	Checksum: 0xEB19C9B5
-	Offset: 0x4990
-	Size: 0x30C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private razinvalidategibbedarmor() {
   if(!(isdefined(self.razhasgunattached) && self.razhasgunattached)) {
     self hidepart("j_shouldertwist_ri_attach", "", 1);
@@ -1341,15 +941,6 @@ function private razinvalidategibbedarmor() {
   }
 }
 
-/*
-	Name: razdamagecallback
-	Namespace: razserverutils
-	Checksum: 0xA0DE63A3
-	Offset: 0x4CA8
-	Size: 0x5E4
-	Parameters: 12
-	Flags: Linked, Private
-*/
 function private razdamagecallback(inflictor, attacker, damage, dflags, mod, weapon, point, dir, hitloc, offsettime, boneindex, modelindex) {
   entity = self;
   entity.last_damage_hit_armor = 0;
@@ -1423,15 +1014,6 @@ function private razdamagecallback(inflictor, attacker, damage, dflags, mod, wea
   return damage;
 }
 
-/*
-	Name: raz_check_for_location_hit
-	Namespace: razserverutils
-	Checksum: 0xF51E0C5
-	Offset: 0x5298
-	Size: 0xD4
-	Parameters: 6
-	Flags: Linked, Private
-*/
 function private raz_check_for_location_hit(entity, hitloc, point, location, hit_radius_sq, tag) {
   b_hit_location = 0;
   if(isdefined(hitloc) && hitloc != "none") {
@@ -1447,15 +1029,6 @@ function private raz_check_for_location_hit(entity, hitloc, point, location, hit
   return b_hit_location;
 }
 
-/*
-	Name: raztrackgundamage
-	Namespace: razserverutils
-	Checksum: 0xAD25CE7
-	Offset: 0x5378
-	Size: 0x30E
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private raztrackgundamage(damage, attacker) {
   entity = self;
   entity.razgunhealth = entity.razgunhealth - damage;
@@ -1482,20 +1055,11 @@ function private raztrackgundamage(damage, attacker) {
     self hidepart("j_shouldertwist_ri_attach", "", 1);
     self hidepart("j_shoulder_ri_attach");
     razinvalidategibbedarmor();
-    level notify(# "raz_arm_detach", attacker);
-    self notify(# "raz_arm_detach", attacker);
+    level notify("raz_arm_detach", attacker);
+    self notify("raz_arm_detach", attacker);
   }
 }
 
-/*
-	Name: raztrackhelmetdamage
-	Namespace: razserverutils
-	Checksum: 0xE8C8A2C0
-	Offset: 0x5690
-	Size: 0xEE
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private raztrackhelmetdamage(damage, attacker) {
   entity = self;
   entity.razhelmethealth = entity.razhelmethealth - damage;
@@ -1504,19 +1068,10 @@ function private raztrackhelmetdamage(damage, attacker) {
     entity hidepart("j_head_attach", "", 1);
     entity.razhashelmet = 0;
     blackboard::setblackboardattribute(entity, "_gib_location", "head");
-    level notify(# "raz_mask_destroyed", attacker);
+    level notify("raz_mask_destroyed", attacker);
   }
 }
 
-/*
-	Name: raztrackchestarmordamage
-	Namespace: razserverutils
-	Checksum: 0x79369C9
-	Offset: 0x5788
-	Size: 0x19C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private raztrackchestarmordamage(damage) {
   entity = self;
   entity.razchestarmorhealth = entity.razchestarmorhealth - damage;
@@ -1533,15 +1088,6 @@ function private raztrackchestarmordamage(damage) {
   }
 }
 
-/*
-	Name: raztrackleftshoulderarmordamage
-	Namespace: razserverutils
-	Checksum: 0x8BACF320
-	Offset: 0x5930
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private raztrackleftshoulderarmordamage(damage) {
   entity = self;
   entity.razleftshoulderarmorhealth = entity.razleftshoulderarmorhealth - damage;
@@ -1555,15 +1101,6 @@ function private raztrackleftshoulderarmordamage(damage) {
   }
 }
 
-/*
-	Name: raztrackleftthigharmordamage
-	Namespace: razserverutils
-	Checksum: 0xAFAAAE6F
-	Offset: 0x5A60
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private raztrackleftthigharmordamage(damage) {
   entity = self;
   entity.razleftthighhealth = entity.razleftthighhealth - damage;
@@ -1576,15 +1113,6 @@ function private raztrackleftthigharmordamage(damage) {
   }
 }
 
-/*
-	Name: raztrackrightthigharmordamage
-	Namespace: razserverutils
-	Checksum: 0x6C288447
-	Offset: 0x5B68
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private raztrackrightthigharmordamage(damage) {
   entity = self;
   entity.razrightthighhealth = entity.razrightthighhealth - damage;

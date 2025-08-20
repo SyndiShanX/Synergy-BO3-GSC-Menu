@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\conf.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_dogtags;
 #using scripts\mp\gametypes\_globallogic;
@@ -13,18 +17,8 @@
 #using scripts\shared\math_shared;
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\util_shared;
-
 #namespace conf;
 
-/*
-	Name: main
-	Namespace: conf
-	Checksum: 0xC4B9E3EB
-	Offset: 0x3C8
-	Size: 0x2FC
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   util::registertimelimit(0, 1440);
@@ -56,26 +50,8 @@ function main() {
   }
 }
 
-/*
-	Name: onprecachegametype
-	Namespace: conf
-	Checksum: 0x99EC1590
-	Offset: 0x6D0
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function onprecachegametype() {}
 
-/*
-	Name: onstartgametype
-	Namespace: conf
-	Checksum: 0xAC37D318
-	Offset: 0x6E0
-	Size: 0x38C
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   setclientnamemode("auto_change");
   if(!isdefined(game["switchedsides"])) {
@@ -118,15 +94,6 @@ function onstartgametype() {
   }
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: conf
-	Checksum: 0x2F335DC2
-	Offset: 0xA78
-	Size: 0x114
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(!isplayer(attacker) || attacker.team == self.team) {
     return;
@@ -137,35 +104,21 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: onuse
-	Namespace: conf
-	Checksum: 0x54979FB2
-	Offset: 0xB98
-	Size: 0x248
-	Parameters: 1
-	Flags: None
-*/
 function onuse(player) {
   tacinsertboost = 0;
   if(player.team != self.attackerteam) {
     tacinsertboost = self.tacinsert;
     if(isdefined(self.attacker) && self.attacker.team == self.attackerteam) {
-      self.attacker luinotifyevent( & "player_callout", 2, & "MP_KILL_DENIED", player.entnum);
+      self.attacker luinotifyevent(&"player_callout", 2, & "MP_KILL_DENIED", player.entnum);
     }
     if(!tacinsertboost) {
       player globallogic_score::giveteamscoreforobjective(player.team, level.teamscoreperkilldenied);
     }
   } else {
-    /#
     assert(isdefined(player.lastkillconfirmedtime));
     assert(isdefined(player.lastkillconfirmedcount));
-    # /
-      /#
-    # /
-      /#
-    # /
-      player.pers["killsconfirmed"]++;
+    /#
+    player.pers["killsconfirmed"]++;
     player.killsconfirmed = player.pers["killsconfirmed"];
     player globallogic_score::giveteamscoreforobjective(player.team, level.teamscoreperkillconfirmed);
   }
@@ -184,15 +137,6 @@ function onuse(player) {
   }
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: conf
-	Checksum: 0x15C51E97
-	Offset: 0xDE8
-	Size: 0x7C
-	Parameters: 1
-	Flags: None
-*/
 function onspawnplayer(predictedspawn) {
   self.usingobj = undefined;
   if(level.usestartspawns && !level.ingraceperiod) {
@@ -204,41 +148,14 @@ function onspawnplayer(predictedspawn) {
   dogtags::on_spawn_player();
 }
 
-/*
-	Name: onroundswitch
-	Namespace: conf
-	Checksum: 0xBF8DC844
-	Offset: 0xE70
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function onroundswitch() {
   game["switchedsides"] = !game["switchedsides"];
 }
 
-/*
-	Name: determinewinner
-	Namespace: conf
-	Checksum: 0x779C23EE
-	Offset: 0xE98
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function determinewinner() {
   return globallogic::determineteamwinnerbygamestat("roundswon");
 }
 
-/*
-	Name: onroundendgame
-	Namespace: conf
-	Checksum: 0x20D5C7B7
-	Offset: 0xEC0
-	Size: 0x22
-	Parameters: 1
-	Flags: None
-*/
 function onroundendgame(roundwinner) {
   return globallogic::determineteamwinnerbygamestat("roundswon");
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\mp_metro.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_load;
 #using scripts\mp\_util;
@@ -6,18 +10,8 @@
 #using scripts\mp\mp_metro_sound;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\util_shared;
-
 #namespace mp_metro;
 
-/*
-	Name: main
-	Namespace: mp_metro
-	Checksum: 0xEE30CA84
-	Offset: 0x278
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   mp_metro_fx::main();
   mp_metro_sound::main();
@@ -31,17 +25,8 @@ function main() {
   setdvar("phys_ragdoll_buoyancy", 1);
 }
 
-/*
-	Name: train_countdown
-	Namespace: mp_metro
-	Checksum: 0xFDBFC8BB
-	Offset: 0x398
-	Size: 0x448
-	Parameters: 1
-	Flags: Linked
-*/
 function train_countdown(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   angles = (self.angles[0], self.angles[1] * -1, 0);
   minutesorigin = self.origin + (cos(self.angles[1]) * 37, sin(self.angles[1]) * 37, 0);
   numbermodelminutes = util::spawn_model(localclientnum, "p7_3d_txt_antiqua_bold_00_brushed_aluminum", minutesorigin, angles);
@@ -72,15 +57,6 @@ function train_countdown(localclientnum) {
   }
 }
 
-/*
-	Name: traintimerspawned
-	Namespace: mp_metro
-	Checksum: 0x6323AED2
-	Offset: 0x7E8
-	Size: 0x6C
-	Parameters: 7
-	Flags: Linked
-*/
 function traintimerspawned(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!newval) {
     return;
@@ -90,15 +66,6 @@ function traintimerspawned(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: dom_flag_base_fx_override
-	Namespace: mp_metro
-	Checksum: 0x146D954
-	Offset: 0x860
-	Size: 0xC2
-	Parameters: 2
-	Flags: Linked
-*/
 function dom_flag_base_fx_override(flag, team) {
   switch (flag.name) {
     case "a": {
@@ -128,15 +95,6 @@ function dom_flag_base_fx_override(flag, team) {
   }
 }
 
-/*
-	Name: dom_flag_cap_fx_override
-	Namespace: mp_metro
-	Checksum: 0xFF48E7B
-	Offset: 0x930
-	Size: 0xC2
-	Parameters: 2
-	Flags: Linked
-*/
 function dom_flag_cap_fx_override(flag, team) {
   switch (flag.name) {
     case "a": {

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_skullweapon_quest.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\ai\zombie_shared;
@@ -34,31 +38,12 @@
 #using scripts\zm\craftables\_zm_craftables;
 #using scripts\zm\zm_island_util;
 #using scripts\zm\zm_island_vo;
-
 #namespace zm_island_skullquest;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_island_skullquest
-	Checksum: 0xEDD9D6B4
-	Offset: 0x1268
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_island_skullquest", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_island_skullquest
-	Checksum: 0x64DF121F
-	Offset: 0x12A8
-	Size: 0x2E4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("world", "keeper_spawn_portals", 1, 1, "int");
   clientfield::register("actor", "keeper_fx", 1, 1, "int");
@@ -79,20 +64,9 @@ function __init__() {
   callback::on_spawned( & function_e0075c9f);
 }
 
-/*
-	Name: main
-	Namespace: zm_island_skullquest
-	Checksum: 0x5F79C743
-	Offset: 0x1598
-	Size: 0x14C8
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
-  /#
   level thread function_18d60013();
-  # /
-    level.var_b34be0cd = array(0, 1, 2, 0, 3);
+  level.var_b34be0cd = array(0, 1, 2, 0, 3);
   level.var_53df8575 = array(0, "p7_zm_isl_pedestal_battle", "p7_zm_isl_pedestal_blood", "p7_zm_isl_pedestal_chaos", "p7_zm_isl_pedestal_doom");
   level.var_8b0a8fa9 = & "ZM_ISLAND_SKULL_GET";
   level.var_983da0e6 = & "ZM_ISLAND_SKULL_PUT";
@@ -111,13 +85,9 @@ function main() {
   var_ca0fb49a = struct::get_array("s_skulltar_base_pos", "targetname");
   var_d76f80e0 = struct::get_array("s_utrig_pillar", "targetname");
   var_4b5bea8 = struct::get_array("s_utrig_skulltar", "targetname");
-  /#
   assert(var_cdbcb282.size == 4, "" + var_cdbcb282.size);
-  # /
-    /#
   assert(var_a7ba3819.size == 4, "" + var_a7ba3819.size);
-  # /
-    level.var_cdbcb282 = [];
+  level.var_cdbcb282 = [];
   level.var_d76f80e0 = [];
   level.var_a576e0b9 = [];
   for (i = 1; i <= 4; i++) {
@@ -243,15 +213,6 @@ function main() {
   level.var_69fe775a = 0;
 }
 
-/*
-	Name: function_80794095
-	Namespace: zm_island_skullquest
-	Checksum: 0x902D01AC
-	Offset: 0x2A68
-	Size: 0x1C4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_80794095() {
   level flag::set("skullquest_ritual_inprogress" + self.script_special);
   self.var_6f46f579 = 1;
@@ -277,15 +238,6 @@ function function_80794095() {
   self thread function_c3360ba8();
 }
 
-/*
-	Name: function_279e8476
-	Namespace: zm_island_skullquest
-	Checksum: 0xE51881EB
-	Offset: 0x2C38
-	Size: 0x164
-	Parameters: 1
-	Flags: Linked
-*/
 function function_279e8476(str_state) {
   switch (str_state) {
     case "rise": {
@@ -304,7 +256,7 @@ function function_279e8476(str_state) {
   if(str_state == "rise") {
     wait(1);
   } else if(str_state == "fall") {
-    self.mdl_skulltar waittill(# "scene_done");
+    self.mdl_skulltar waittill("scene_done");
     var_affd5bec unlink();
     if(isdefined(self.var_226d2560)) {
       self.var_226d2560 delete();
@@ -313,15 +265,6 @@ function function_279e8476(str_state) {
   scene::remove_scene_func(str_anim, & function_b00b433f);
 }
 
-/*
-	Name: function_b00b433f
-	Namespace: zm_island_skullquest
-	Checksum: 0x173DF114
-	Offset: 0x2DA8
-	Size: 0xF0
-	Parameters: 2
-	Flags: Linked
-*/
 function function_b00b433f(a_ents, var_f2e38849) {
   var_affd5bec = level.var_a576e0b9[var_f2e38849].mdl_skull_s;
   var_86045b9a = a_ents["pedestal_skull"];
@@ -332,15 +275,6 @@ function function_b00b433f(a_ents, var_f2e38849) {
   level.var_a576e0b9[var_f2e38849].var_226d2560 = var_86045b9a;
 }
 
-/*
-	Name: function_e1c1e667
-	Namespace: zm_island_skullquest
-	Checksum: 0x69CE0BA6
-	Offset: 0x2EA0
-	Size: 0x1AE
-	Parameters: 0
-	Flags: None
-*/
 function function_e1c1e667() {
   self.var_fcfa044d = 0;
   self._team = "axis";
@@ -356,26 +290,15 @@ function function_e1c1e667() {
   self.var_94495615.attract_to_origin = 1;
   self.var_94495615 thread zm_utility::create_zombie_point_of_interest_attractor_positions(4, var_d78038f4);
   self.var_94495615 thread zm_utility::wait_for_attractor_positions_complete();
-  /#
   self.var_94495615 thread zm_utility::debug_draw_attractor_positions();
-  # /
-    self thread function_d15f7b3d();
+  self thread function_d15f7b3d();
   level flag::wait_till_clear("skullquest_ritual_inprogress" + self.script_special);
-  self.var_94495615 notify(# "death");
-  self notify(# "skulltar_attractors_off");
+  self.var_94495615 notify("death");
+  self notify("skulltar_attractors_off");
 }
 
-/*
-	Name: function_d15f7b3d
-	Namespace: zm_island_skullquest
-	Checksum: 0xB08BCC04
-	Offset: 0x3058
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d15f7b3d() {
-  self endon(# "skulltar_attractors_off");
+  self endon("skulltar_attractors_off");
   level endon("skullquest_ritual_ended" + self.script_special);
   while (true) {
     a_enemy_ai = self.var_41335b73;
@@ -390,20 +313,11 @@ function function_d15f7b3d() {
   }
 }
 
-/*
-	Name: function_afdb341
-	Namespace: zm_island_skullquest
-	Checksum: 0xC3663C3C
-	Offset: 0x31B8
-	Size: 0x2D4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_afdb341(ai) {
   self endon("skulltar_attractors_off" + self.script_special);
   level endon("skullquest_ritual_ended" + self.script_special);
-  ai endon(# "hash_87952665");
-  ai endon(# "death");
+  ai endon("hash_87952665");
+  ai endon("death");
   if(isdefined(ai.var_6a7c27af) && ai.var_6a7c27af) {
     return;
   }
@@ -429,7 +343,7 @@ function function_afdb341(ai) {
   }
   var_430b638 = getanimlength(var_872d00dd);
   self thread function_2a2ce01f(ai);
-  ai notify(# "hash_aedf5455");
+  ai notify("hash_aedf5455");
   while (level flag::get("skullquest_ritual_inprogress" + self.script_special) && isalive(ai) && (!(isdefined(ai.var_3f6ea790) && ai.var_3f6ea790))) {
     self thread function_f20126b2();
     if(!(isdefined(ai.var_3f6ea790) && ai.var_3f6ea790)) {
@@ -440,33 +354,15 @@ function function_afdb341(ai) {
   }
 }
 
-/*
-	Name: function_2a2ce01f
-	Namespace: zm_island_skullquest
-	Checksum: 0x83E26191
-	Offset: 0x3498
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2a2ce01f(ai) {
   self.var_cec6c329++;
   ai.var_6a7c27af = 1;
-  ai waittill(# "death");
+  ai waittill("death");
   if(isdefined(ai.var_6a7c27af) && ai.var_6a7c27af) {
     self.var_cec6c329--;
   }
 }
 
-/*
-	Name: function_9098a17a
-	Namespace: zm_island_skullquest
-	Checksum: 0x3B68FD21
-	Offset: 0x3508
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9098a17a(var_c198423 = 1) {
   self endon("skullquest_ritual_abandoned" + self.script_special);
   level endon("skullquest_ritual_ended" + self.script_special);
@@ -486,15 +382,6 @@ function function_9098a17a(var_c198423 = 1) {
   self thread function_186d9bd6();
 }
 
-/*
-	Name: function_194dd3fe
-	Namespace: zm_island_skullquest
-	Checksum: 0xF3AE7F68
-	Offset: 0x3630
-	Size: 0xB8
-	Parameters: 2
-	Flags: Linked
-*/
 function function_194dd3fe(var_9f8b46b0 = 2, var_d03250e = 0.25) {
   var_fc1e97a0 = self.n_progress / (self.n_goal * 0.75);
   var_f3370df8 = var_9f8b46b0 - var_d03250e;
@@ -505,15 +392,6 @@ function function_194dd3fe(var_9f8b46b0 = 2, var_d03250e = 0.25) {
   }
 }
 
-/*
-	Name: function_be54bf9f
-	Namespace: zm_island_skullquest
-	Checksum: 0x718CAADE
-	Offset: 0x36F0
-	Size: 0x130
-	Parameters: 0
-	Flags: Linked
-*/
 function function_be54bf9f() {
   var_8e94b38a = self.var_2f6a00a / 10;
   if(var_8e94b38a > 1) {
@@ -539,15 +417,6 @@ function function_be54bf9f() {
   }
 }
 
-/*
-	Name: function_85a2a491
-	Namespace: zm_island_skullquest
-	Checksum: 0x5C23471A
-	Offset: 0x3828
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_85a2a491() {
   mdl_temp = util::spawn_model("tag_origin", self.origin, self.angles);
   mdl_temp clientfield::set("skullquest_finish_start_fx", 1);
@@ -556,17 +425,8 @@ function function_85a2a491() {
   mdl_temp delete();
 }
 
-/*
-	Name: function_c3360ba8
-	Namespace: zm_island_skullquest
-	Checksum: 0xE3E32D8C
-	Offset: 0x38D0
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c3360ba8(n_step_time = 0.1) {
-  self endon(# "hash_52ad0df5");
+  self endon("hash_52ad0df5");
   var_da791f1d = 30 / n_step_time;
   n_steps = 0;
   while (true) {
@@ -579,19 +439,10 @@ function function_c3360ba8(n_step_time = 0.1) {
   }
 }
 
-/*
-	Name: function_186d9bd6
-	Namespace: zm_island_skullquest
-	Checksum: 0x25711656
-	Offset: 0x39D0
-	Size: 0x2C8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_186d9bd6() {
   zm_spawner::deregister_zombie_death_event_callback( & function_3aa06eec);
   callback::remove_on_vehicle_killed( & function_5681b8d3);
-  self notify(# "hash_52ad0df5");
+  self notify("hash_52ad0df5");
   level flag::clear("skullquest_ritual_inprogress" + self.script_special);
   level notify("skullquest_ritual_ended" + self.script_special);
   self.mdl_skulltar thread scene::stop("p7_fxanim_zm_island_pedestal_skull_rise_bundle");
@@ -622,18 +473,9 @@ function function_186d9bd6() {
   level.zombie_ai_limit = level.zombie_ai_limit + self.var_eca4fee1;
 }
 
-/*
-	Name: function_c7a0c111
-	Namespace: zm_island_skullquest
-	Checksum: 0x1A943C6B
-	Offset: 0x3CA0
-	Size: 0x2AC
-	Parameters: 2
-	Flags: Linked
-*/
 function function_c7a0c111(b_success = 1, var_bf49654c = 1) {
-  self endon(# "death");
-  self notify(# "hash_eb13d3a5");
+  self endon("death");
+  self notify("hash_eb13d3a5");
   if(!(isdefined(self.var_3f6ea790) && self.var_3f6ea790)) {
     self setgoal(self.origin);
     if(isdefined(var_bf49654c) && var_bf49654c) {
@@ -663,15 +505,6 @@ function function_c7a0c111(b_success = 1, var_bf49654c = 1) {
   }
 }
 
-/*
-	Name: function_44181b60
-	Namespace: zm_island_skullquest
-	Checksum: 0x31C86B49
-	Offset: 0x3F58
-	Size: 0xAA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_44181b60() {
   var_6c71c640 = 0;
   foreach(zone in self.var_aa15c945) {
@@ -680,15 +513,6 @@ function function_44181b60() {
   return var_6c71c640;
 }
 
-/*
-	Name: function_3654cf4c
-	Namespace: zm_island_skullquest
-	Checksum: 0x5B1FCD32
-	Offset: 0x4010
-	Size: 0xD4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_3654cf4c(n_amount = 10, var_f8ad0afc) {
   if(isdefined(var_f8ad0afc)) {
     var_964af2de = var_f8ad0afc + vectorscale((0, 0, 1), 32);
@@ -701,15 +525,6 @@ function function_3654cf4c(n_amount = 10, var_f8ad0afc) {
   }
 }
 
-/*
-	Name: function_82fc8508
-	Namespace: zm_island_skullquest
-	Checksum: 0x417D0AC
-	Offset: 0x40F0
-	Size: 0x64
-	Parameters: 1
-	Flags: None
-*/
 function function_82fc8508(var_40e67963) {
   if(!isdefined(var_40e67963)) {
     var_40e67963 = -1 * (self.n_progress / 4);
@@ -720,15 +535,6 @@ function function_82fc8508(var_40e67963) {
   self thread function_3654cf4c(var_40e67963);
 }
 
-/*
-	Name: function_f20126b2
-	Namespace: zm_island_skullquest
-	Checksum: 0xFE1BCFBF
-	Offset: 0x4160
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f20126b2() {
   self.var_2f6a00a++;
   self thread function_be54bf9f();
@@ -737,35 +543,17 @@ function function_f20126b2() {
   }
 }
 
-/*
-	Name: function_a050863e
-	Namespace: zm_island_skullquest
-	Checksum: 0x1156EC7C
-	Offset: 0x41B8
-	Size: 0xD4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_a050863e(var_964af2de, v_dest) {
   if(isdefined(var_964af2de) && isdefined(v_dest)) {
     var_b6f3d7c3 = spawn("script_model", var_964af2de);
     var_b6f3d7c3 setmodel("p7_sky_vista_light_flare_blue");
     var_b6f3d7c3 playsound("zmb_skull_soul_feed");
     var_b6f3d7c3 moveto(v_dest, 0.5);
-    var_b6f3d7c3 waittill(# "movedone");
+    var_b6f3d7c3 waittill("movedone");
     var_b6f3d7c3 delete();
   }
 }
 
-/*
-	Name: function_2b848418
-	Namespace: zm_island_skullquest
-	Checksum: 0xF807A937
-	Offset: 0x4298
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2b848418() {
   level clientfield::set(self.var_ba133ee2, 5);
   self.mdl_skulltar clientfield::set("do_emissive_material", 1);
@@ -782,15 +570,6 @@ function function_2b848418() {
   function_fae0aa01(self.script_special, "postritual");
 }
 
-/*
-	Name: function_743b2f2f
-	Namespace: zm_island_skullquest
-	Checksum: 0x92E9751
-	Offset: 0x4428
-	Size: 0x204
-	Parameters: 1
-	Flags: Linked
-*/
 function function_743b2f2f(var_6763afa8) {
   str_notify = "skullquest_ritual_failed_" + self.script_special;
   level notify(str_notify);
@@ -821,15 +600,6 @@ function function_743b2f2f(var_6763afa8) {
   level thread function_fae0aa01(self.script_special, "pre_retry");
 }
 
-/*
-	Name: function_7fe36843
-	Namespace: zm_island_skullquest
-	Checksum: 0x4D8051FF
-	Offset: 0x4638
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7fe36843(var_a9df1394 = 1) {
   self.mdl_skulltar scene::stop("p7_fxanim_zm_island_pedestal_skull_rise_bundle");
   self.mdl_skull_s unlink();
@@ -841,15 +611,6 @@ function function_7fe36843(var_a9df1394 = 1) {
   mdl_temp delete();
 }
 
-/*
-	Name: function_ff1550bd
-	Namespace: zm_island_skullquest
-	Checksum: 0x7D0FFF92
-	Offset: 0x4750
-	Size: 0xBDC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ff1550bd() {
   self endon("skullquest_ritual_abandoned" + self.script_special);
   level endon("skullquest_ritual_ended" + self.script_special);
@@ -945,11 +706,9 @@ function function_ff1550bd() {
               self.a_s_spawnpts[i].script_string = "find_flesh";
               self.a_s_spawnpts[i].script_noteworthy = "spawn_location";
               ai_attacker = zombie_utility::spawn_zombie(e_spawner, var_19b19369, self.a_s_spawnpts[i]);
-              /#
               if(isdefined(level.var_32d5991a) && level.var_32d5991a) {
                 iprintlnbold((("" + i) + "") + self.a_s_spawnpts[i].origin);
               }
-              # /
             }
             break;
           }
@@ -1010,25 +769,14 @@ function function_ff1550bd() {
   }
 }
 
-/*
-	Name: function_c46730e7
-	Namespace: zm_island_skullquest
-	Checksum: 0x8EB8C0E0
-	Offset: 0x5338
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c46730e7(var_f2e38849) {
-  self endon(# "death");
+  self endon("death");
   wait(5);
   if(!self function_b948e12a(var_f2e38849)) {
-    /#
     if(isdefined(level.var_32d5991a) && level.var_32d5991a) {
       iprintlnbold(("" + self.origin) + "");
     }
-    # /
-      arrayremovevalue(level.var_a576e0b9[var_f2e38849].var_d38f69da, self);
+    arrayremovevalue(level.var_a576e0b9[var_f2e38849].var_d38f69da, self);
     arrayremovevalue(level.var_a576e0b9[var_f2e38849].var_41335b73, self);
     util::stop_magic_bullet_shield(self);
     if(isalive(self)) {
@@ -1037,15 +785,6 @@ function function_c46730e7(var_f2e38849) {
   }
 }
 
-/*
-	Name: function_b948e12a
-	Namespace: zm_island_skullquest
-	Checksum: 0xB38E778C
-	Offset: 0x5458
-	Size: 0xC2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b948e12a(var_f2e38849) {
   b_in_zone = 0;
   foreach(zone in level.var_a576e0b9[var_f2e38849].var_aa15c945) {
@@ -1054,17 +793,8 @@ function function_b948e12a(var_f2e38849) {
   return b_in_zone;
 }
 
-/*
-	Name: function_bd5d2a96
-	Namespace: zm_island_skullquest
-	Checksum: 0x8401F053
-	Offset: 0x5528
-	Size: 0x1E4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bd5d2a96(var_4126c532) {
-  self endon(# "death");
+  self endon("death");
   if(isalive(self)) {
     self disableaimassist();
     array::add(var_4126c532.var_41335b73, self);
@@ -1080,7 +810,7 @@ function function_bd5d2a96(var_4126c532) {
     wait(0.05);
     if(isalive(self)) {
       self show();
-      var_197f1988 waittill(# "scene_done");
+      var_197f1988 waittill("scene_done");
       self thread function_1cbe53ee(var_4126c532);
       self enableaimassist();
     }
@@ -1090,35 +820,17 @@ function function_bd5d2a96(var_4126c532) {
   }
 }
 
-/*
-	Name: function_1c624caf
-	Namespace: zm_island_skullquest
-	Checksum: 0xFDDF7360
-	Offset: 0x5718
-	Size: 0x2C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_1c624caf(a_ents, e_align) {
   self zm_utility::self_delete();
 }
 
-/*
-	Name: function_1cbe53ee
-	Namespace: zm_island_skullquest
-	Checksum: 0xE66502AB
-	Offset: 0x5750
-	Size: 0x2AA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1cbe53ee(var_5e9499e0) {
-  self endon(# "death");
-  self endon(# "hash_aedf5455");
-  self endon(# "hash_eb13d3a5");
+  self endon("death");
+  self endon("hash_aedf5455");
+  self endon("hash_eb13d3a5");
   self zombie_utility::set_zombie_run_cycle("walk");
-  self notify(# "stop_find_flesh");
-  self notify(# "zombie_acquire_enemy");
+  self notify("stop_find_flesh");
+  self notify("zombie_acquire_enemy");
   self ai::set_ignoreall(1);
   while (distance(self.origin, var_5e9499e0.s_skulltar_skull_pos.origin) > 32 && (!(isdefined(self.aat_turned) && self.aat_turned))) {
     var_b6bec422 = undefined;
@@ -1143,33 +855,15 @@ function function_1cbe53ee(var_5e9499e0) {
       self.s_goal.var_b1c2844f = self;
     }
     self lookatentity(var_5e9499e0.mdl_skull_s);
-    self waittill(# "goal");
+    self waittill("goal");
     wait(1);
   }
 }
 
-/*
-	Name: function_5681b8d3
-	Namespace: zm_island_skullquest
-	Checksum: 0x813EBD99
-	Offset: 0x5A08
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_5681b8d3(params) {
   self thread function_3aa06eec(params.eattacker);
 }
 
-/*
-	Name: function_3aa06eec
-	Namespace: zm_island_skullquest
-	Checksum: 0xB6BA1A6A
-	Offset: 0x5A40
-	Size: 0x14A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3aa06eec(e_attacker) {
   if(isdefined(self) && isdefined(self.var_ecc789a5) && isinarray(level.var_a576e0b9[self.var_ecc789a5].var_d38f69da, self)) {
     arrayremovevalue(level.var_a576e0b9[self.var_ecc789a5].var_d38f69da, self);
@@ -1188,17 +882,8 @@ function function_3aa06eec(e_attacker) {
   }
 }
 
-/*
-	Name: function_25b82d3f
-	Namespace: zm_island_skullquest
-	Checksum: 0xD7905BF2
-	Offset: 0x5B98
-	Size: 0x170
-	Parameters: 0
-	Flags: None
-*/
 function function_25b82d3f() {
-  self waittill(# "death");
+  self waittill("death");
   if(isdefined(self) && isdefined(self.var_ecc789a5) && isinarray(level.var_a576e0b9[self.var_ecc789a5].var_d38f69da, self)) {
     arrayremovevalue(level.var_a576e0b9[self.var_ecc789a5].var_d38f69da, self);
     if(self.script_noteworthy === "zombie_thrasher_spawner") {
@@ -1214,15 +899,6 @@ function function_25b82d3f() {
   }
 }
 
-/*
-	Name: function_f94079c3
-	Namespace: zm_island_skullquest
-	Checksum: 0x87AA30FF
-	Offset: 0x5D10
-	Size: 0xAC
-	Parameters: 1
-	Flags: None
-*/
 function function_f94079c3(var_84c62227) {
   switch (self.archetype) {
     case "zombie": {
@@ -1245,15 +921,6 @@ function function_f94079c3(var_84c62227) {
   level.var_a576e0b9[var_84c62227] thread function_3654cf4c(n_value, self.origin);
 }
 
-/*
-	Name: function_3fe31e5b
-	Namespace: zm_island_skullquest
-	Checksum: 0xEF808FB
-	Offset: 0x5DC8
-	Size: 0xD4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_3fe31e5b(var_f2e38849, var_9fe01ec5 = 0) {
   var_f8a0e213 = level.var_a576e0b9[var_f2e38849].mdl_skull_s.var_afb64bf6;
   if(zombie_utility::is_player_valid(var_f8a0e213)) {
@@ -1264,15 +931,6 @@ function function_3fe31e5b(var_f2e38849, var_9fe01ec5 = 0) {
   function_fae0aa01(var_f2e38849, "start");
 }
 
-/*
-	Name: function_eba0c996
-	Namespace: zm_island_skullquest
-	Checksum: 0x3251651A
-	Offset: 0x5EA8
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_eba0c996(var_f2e38849) {
   var_f8a0e213 = level.var_a576e0b9[var_f2e38849].mdl_skull_p.var_afb64bf6;
   if(isdefined(var_f8a0e213)) {
@@ -1282,15 +940,6 @@ function function_eba0c996(var_f2e38849) {
   function_fae0aa01(var_f2e38849, "postritual");
 }
 
-/*
-	Name: function_fdafeea2
-	Namespace: zm_island_skullquest
-	Checksum: 0x4D2BFAA7
-	Offset: 0x5F40
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fdafeea2(var_48d11f40) {
   if(!(isdefined(level.var_d19220ee) && level.var_d19220ee)) {
     level.var_d19220ee = 1;
@@ -1303,15 +952,6 @@ function function_fdafeea2(var_48d11f40) {
   }
 }
 
-/*
-	Name: function_f20b6331
-	Namespace: zm_island_skullquest
-	Checksum: 0x10DE97B6
-	Offset: 0x6000
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f20b6331() {
   level thread exploder::exploder("fxexp_500");
   level thread scene::play("p7_fxanim_zm_island_alter_stairs_bundle");
@@ -1324,30 +964,12 @@ function function_f20b6331() {
   level flag::set("connect_ruins_to_ruins_underground");
 }
 
-/*
-	Name: function_9839b367
-	Namespace: zm_island_skullquest
-	Checksum: 0xF02885A4
-	Offset: 0x6118
-	Size: 0x6C
-	Parameters: 0
-	Flags: None
-*/
 function function_9839b367() {
   level.var_9046e7b0 playsound("zmb_skull_door_close");
   level.var_9046e7b0 moveto(level.var_9046e7b0.var_9c93e17, 3);
   exploder::exploder("fxexp_501");
 }
 
-/*
-	Name: function_e20f6c97
-	Namespace: zm_island_skullquest
-	Checksum: 0x72FAE60C
-	Offset: 0x6190
-	Size: 0x140
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e20f6c97(b_on = 1) {
   mdl_skullroom_seal = getent("mdl_skullroom_seal", "targetname");
   if(isdefined(b_on) && b_on) {
@@ -1365,15 +987,6 @@ function function_e20f6c97(b_on = 1) {
   }
 }
 
-/*
-	Name: function_97106262
-	Namespace: zm_island_skullquest
-	Checksum: 0x8E99EA98
-	Offset: 0x62D8
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_97106262() {
   if(!level flag::exists("skullroom_defend_inprogress")) {
     level flag::init("skullroom_defend_inprogress");
@@ -1386,15 +999,6 @@ function function_97106262() {
   }
 }
 
-/*
-	Name: function_d3554921
-	Namespace: zm_island_skullquest
-	Checksum: 0xBC8D23F8
-	Offset: 0x63A0
-	Size: 0xE8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d3554921(player) {
   if(isdefined(level.var_b10ab148) && level.var_b10ab148 && player bgb::is_enabled("zm_bgb_disorderly_combat")) {
     self sethintstring("");
@@ -1404,22 +1008,13 @@ function function_d3554921(player) {
     self sethintstring("");
     return false;
   }
-  self sethintstring( & "ZM_ISLAND_SKULLQUEST_GET_SKULLGUN");
+  self sethintstring(&"ZM_ISLAND_SKULLQUEST_GET_SKULLGUN");
   return true;
 }
 
-/*
-	Name: function_c8ef1118
-	Namespace: zm_island_skullquest
-	Checksum: 0x8548EB4B
-	Offset: 0x6498
-	Size: 0x17E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c8ef1118() {
   while (true) {
-    self waittill(# "trigger", ent);
+    self waittill("trigger", ent);
     if(ent function_9e2f0e52() && !level flag::get("skullroom_defend_inprogress")) {
       if(isdefined(level.var_b10ab148) && level.var_b10ab148 && !ent hasweapon(level.var_c003f5b, 1)) {
         ent thread function_458f50f2();
@@ -1439,15 +1034,6 @@ function function_c8ef1118() {
   }
 }
 
-/*
-	Name: function_b10feb68
-	Namespace: zm_island_skullquest
-	Checksum: 0x8CD34D94
-	Offset: 0x6620
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b10feb68() {
   if(!level flag::get("skullroom_defend_inprogress")) {
     level flag::set("skullroom_defend_inprogress");
@@ -1464,15 +1050,6 @@ function function_b10feb68() {
   }
 }
 
-/*
-	Name: function_ef5b1df5
-	Namespace: zm_island_skullquest
-	Checksum: 0x18769216
-	Offset: 0x6778
-	Size: 0x778
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ef5b1df5() {
   var_8ac892bf = array(0, 3, 5, 7, 8);
   var_59d27c2f = array(0, 20, 29, 38, 47);
@@ -1545,15 +1122,6 @@ function function_ef5b1df5() {
   level.disable_nuke_delay_spawning = 0;
 }
 
-/*
-	Name: function_d91adba6
-	Namespace: zm_island_skullquest
-	Checksum: 0xD8B4CFF0
-	Offset: 0x6EF8
-	Size: 0x1E6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d91adba6() {
   t_inside_skullroom = getent("t_inside_skullroom", "targetname");
   level.var_d9d19dae = 0;
@@ -1578,15 +1146,6 @@ function function_d91adba6() {
   }
 }
 
-/*
-	Name: function_41b94a87
-	Namespace: zm_island_skullquest
-	Checksum: 0xCFE812B4
-	Offset: 0x70E8
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_41b94a87() {
   var_e312b793 = level.var_9bc0cd6e / level.var_49c6fb1c;
   if(var_e312b793 > 1) {
@@ -1597,28 +1156,10 @@ function function_41b94a87() {
   level.var_55c48492 moveto(var_ba7b8d86, 0.2);
 }
 
-/*
-	Name: function_b820cada
-	Namespace: zm_island_skullquest
-	Checksum: 0x99EC1590
-	Offset: 0x71C8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b820cada() {}
 
-/*
-	Name: function_2d0c5aa1
-	Namespace: zm_island_skullquest
-	Checksum: 0x4501E29A
-	Offset: 0x71D8
-	Size: 0x19C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2d0c5aa1(s_spawn_point) {
-  self endon(# "death");
+  self endon("death");
   self.script_string = "find_flesh";
   self setphysparams(15, 0, 72);
   self.ignore_enemy_count = 1;
@@ -1643,15 +1184,6 @@ function function_2d0c5aa1(s_spawn_point) {
   }
 }
 
-/*
-	Name: function_440fec7a
-	Namespace: zm_island_skullquest
-	Checksum: 0xD0395F39
-	Offset: 0x7380
-	Size: 0xA4
-	Parameters: 1
-	Flags: None
-*/
 function function_440fec7a(params) {
   if(isdefined(self) && (isdefined(self.var_2f846873) && self.var_2f846873)) {
     level.var_92914699--;
@@ -1664,17 +1196,8 @@ function function_440fec7a(params) {
   }
 }
 
-/*
-	Name: function_efbd4abf
-	Namespace: zm_island_skullquest
-	Checksum: 0x3BC296BC
-	Offset: 0x7430
-	Size: 0x10C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_efbd4abf(ai_zombie, s_spawn_point) {
-  ai_zombie waittill(# "death");
+  ai_zombie waittill("death");
   var_4124898d = ai_zombie.origin;
   level.var_92914699--;
   level.var_9bc0cd6e++;
@@ -1693,17 +1216,8 @@ function function_efbd4abf(ai_zombie, s_spawn_point) {
   }
 }
 
-/*
-	Name: function_458f50f2
-	Namespace: zm_island_skullquest
-	Checksum: 0x2E70A059
-	Offset: 0x7548
-	Size: 0x31C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_458f50f2() {
-  self endon(# "death");
+  self endon("death");
   if(!self hasweapon(level.var_c003f5b, 1)) {
     if(!(isdefined(self.var_b319e777) && self.var_b319e777)) {
       self.var_b319e777 = 1;
@@ -1715,12 +1229,12 @@ function function_458f50f2() {
       self zm_weapons::weapon_give(level.var_c003f5b, undefined, undefined, 1);
       self gadgetpowerset(0, 100);
       self switchtoweapon(level.var_c003f5b);
-      self notify(# "hash_ae5d6003");
+      self notify("hash_ae5d6003");
       level flag::set("a_player_got_skullgun");
-      self waittill(# "weapon_change_complete");
+      self waittill("weapon_change_complete");
       wait(0.25);
       self switchtoweapon(var_7277c7f7);
-      self waittill(# "weapon_change_complete");
+      self waittill("weapon_change_complete");
       self gadgetpowerset(0, 100);
       self setweaponammoclip(level.var_c003f5b, 0);
       self giveachievement("ZM_ISLAND_OBTAIN_SKULL");
@@ -1738,17 +1252,8 @@ function function_458f50f2() {
   }
 }
 
-/*
-	Name: function_940267cd
-	Namespace: zm_island_skullquest
-	Checksum: 0x9F9A8188
-	Offset: 0x7870
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_940267cd() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   level flag::wait_till("a_player_got_skullgun");
   var_d9516038 = getent("reveal_keeper_mural_01", "targetname");
   if(isdefined(var_d9516038) && !isdefined(var_d9516038.b_shown)) {
@@ -1758,17 +1263,8 @@ function function_940267cd() {
   }
 }
 
-/*
-	Name: function_ba04e236
-	Namespace: zm_island_skullquest
-	Checksum: 0x925C564
-	Offset: 0x7938
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ba04e236() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   level flag::wait_till("a_player_got_skullgun");
   var_d9516038 = getent("reveal_keeper_mural_02", "targetname");
   if(isdefined(var_d9516038) && !isdefined(var_d9516038.b_shown)) {
@@ -1778,17 +1274,8 @@ function function_ba04e236() {
   }
 }
 
-/*
-	Name: function_e0075c9f
-	Namespace: zm_island_skullquest
-	Checksum: 0xBF01C4C0
-	Offset: 0x7A00
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e0075c9f() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   level flag::wait_till("a_player_got_skullgun");
   var_d9516038 = getent("reveal_keeper_mural_03", "targetname");
   if(isdefined(var_d9516038) && !isdefined(var_d9516038.b_shown)) {
@@ -1798,18 +1285,9 @@ function function_e0075c9f() {
   }
 }
 
-/*
-	Name: function_f293f820
-	Namespace: zm_island_skullquest
-	Checksum: 0x1C5DB16A
-	Offset: 0x7AC8
-	Size: 0x92
-	Parameters: 2
-	Flags: Linked
-*/
 function function_f293f820(mdl_target, var_6a4cf64a) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   level endon(var_6a4cf64a);
   if(isdefined(mdl_target)) {
     self zm_island_util::function_7448e472(mdl_target);
@@ -1819,15 +1297,6 @@ function function_f293f820(mdl_target, var_6a4cf64a) {
   }
 }
 
-/*
-	Name: function_d4ebb4b0
-	Namespace: zm_island_skullquest
-	Checksum: 0x3F9A5566
-	Offset: 0x7B68
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d4ebb4b0() {
   if(isdefined(self.var_d64275e8) && self.var_d64275e8 > 0) {
     var_fc880a6c = level.var_a576e0b9[self.var_d64275e8].mdl_skull_s;
@@ -1841,15 +1310,6 @@ function function_d4ebb4b0() {
   return -1;
 }
 
-/*
-	Name: function_9e63bcd3
-	Namespace: zm_island_skullquest
-	Checksum: 0x7263FB0E
-	Offset: 0x7C38
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9e63bcd3(var_f2e38849) {
   level.var_a576e0b9[var_f2e38849].mdl_skull_s.var_afb64bf6 = undefined;
   if(isdefined(self)) {
@@ -1859,42 +1319,15 @@ function function_9e63bcd3(var_f2e38849) {
   function_c029cf5b(var_f2e38849);
 }
 
-/*
-	Name: function_880d3333
-	Namespace: zm_island_skullquest
-	Checksum: 0x3801C10F
-	Offset: 0x7CA8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function function_880d3333(var_f2e38849) {
   level.var_a576e0b9[var_f2e38849].mdl_skull_s function_b15a5bc1(level.var_a576e0b9[var_f2e38849].mdl_skull_s.var_5cd7e450, level.var_a576e0b9[var_f2e38849].mdl_skull_s.var_d7778aba);
 }
 
-/*
-	Name: function_c029cf5b
-	Namespace: zm_island_skullquest
-	Checksum: 0xC8C27F5D
-	Offset: 0x7D28
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c029cf5b(var_f2e38849) {
   level.var_a576e0b9[var_f2e38849].mdl_skull_s function_b15a5bc1(level.var_a576e0b9[var_f2e38849].s_skulltar_skull_pos.origin, level.var_a576e0b9[var_f2e38849].s_skulltar_skull_pos.angles);
   level.var_a576e0b9[var_f2e38849].mdl_skull_s show();
 }
 
-/*
-	Name: function_b15a5bc1
-	Namespace: zm_island_skullquest
-	Checksum: 0xA3EFA459
-	Offset: 0x7DD0
-	Size: 0x6C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_b15a5bc1(v_pos, v_angles, b_show = 1) {
   self.origin = v_pos;
   self.angles = v_angles;
@@ -1903,15 +1336,6 @@ function function_b15a5bc1(v_pos, v_angles, b_show = 1) {
   }
 }
 
-/*
-	Name: function_e3ff3bac
-	Namespace: zm_island_skullquest
-	Checksum: 0x73AC0DEC
-	Offset: 0x7E48
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e3ff3bac(var_f2e38849) {
   level.var_a576e0b9[var_f2e38849].mdl_skull_p ghost();
   level.var_a576e0b9[var_f2e38849].mdl_skull_p.var_afb64bf6 = self;
@@ -1921,15 +1345,6 @@ function function_e3ff3bac(var_f2e38849) {
   self thread zm_island_vo::function_87d97caa();
 }
 
-/*
-	Name: function_b6c35b21
-	Namespace: zm_island_skullquest
-	Checksum: 0x48444B5F
-	Offset: 0x7F18
-	Size: 0x48C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b6c35b21(var_f2e38849) {
   if(!(isdefined(level.var_a576e0b9[var_f2e38849].mdl_skull_p.var_d17d835d) && level.var_a576e0b9[var_f2e38849].mdl_skull_p.var_d17d835d)) {
     level.var_a576e0b9[var_f2e38849].mdl_skull_p.var_d17d835d = 1;
@@ -1957,46 +1372,19 @@ function function_b6c35b21(var_f2e38849) {
     var_e36aa077 clientfield::set("do_emissive_material", 1);
     var_e36aa077 thread scene::play(var_c9260a5[var_f7d3c273], var_e36aa077);
     mdl_skull_p linkto(var_e36aa077, var_9d012998[var_f7d3c273]);
-    var_e36aa077 waittill(# "scene_done");
+    var_e36aa077 waittill("scene_done");
     level notify("skull_p_returned" + var_1a3afb94);
   }
 }
 
-/*
-	Name: function_76e79e0e
-	Namespace: zm_island_skullquest
-	Checksum: 0xC48BD38B
-	Offset: 0x83B0
-	Size: 0x18
-	Parameters: 0
-	Flags: Linked
-*/
 function function_76e79e0e() {
   return (self.var_4849e523 + self.var_d64275e8) > 0;
 }
 
-/*
-	Name: function_9e2f0e52
-	Namespace: zm_island_skullquest
-	Checksum: 0x5E8A58B7
-	Offset: 0x83D0
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9e2f0e52() {
   return zombie_utility::is_player_valid(self) && isalive(self) && !self laststand::player_is_in_laststand();
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: zm_island_skullquest
-	Checksum: 0x9A50C1F3
-	Offset: 0x8428
-	Size: 0x88
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self.var_d64275e8 = 0;
   self.var_4849e523 = 0;
@@ -2004,21 +1392,12 @@ function on_player_spawned() {
   self.var_335e6491[0] = undefined;
   self.var_335e6491[1] = undefined;
   while (true) {
-    self waittill(# "bled_out");
+    self waittill("bled_out");
     self thread function_c7cd5585();
     self function_29d2aa0e(0, 0, 0);
   }
 }
 
-/*
-	Name: function_c7cd5585
-	Namespace: zm_island_skullquest
-	Checksum: 0x8901A7BA
-	Offset: 0x84B8
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c7cd5585() {
   if(self.var_d64275e8 !== 0) {
     level thread function_3fe31e5b(self.var_d64275e8);
@@ -2027,17 +1406,7 @@ function function_c7cd5585() {
   }
 }
 
-/*
-	Name: function_18d60013
-	Namespace: zm_island_skullquest
-	Checksum: 0x9A5CFD92
-	Offset: 0x8520
-	Size: 0x20C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_18d60013() {
-  /#
   zm_devgui::add_custom_devgui_callback( & function_3bd86987);
   adddebugcommand("");
   adddebugcommand("");
@@ -2059,20 +1428,9 @@ function function_18d60013() {
   adddebugcommand("");
   adddebugcommand("");
   adddebugcommand("");
-  # /
 }
 
-/*
-	Name: function_3bd86987
-	Namespace: zm_island_skullquest
-	Checksum: 0x572BFF83
-	Offset: 0x8738
-	Size: 0x420
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3bd86987(cmd) {
-  /#
   switch (cmd) {
     case "": {
       function_fdafeea2(level.activeplayers[0]);
@@ -2169,82 +1527,28 @@ function function_3bd86987(cmd) {
     }
   }
   return false;
-  # /
 }
 
-/*
-	Name: function_138d72ee
-	Namespace: zm_island_skullquest
-	Checksum: 0xC389BF35
-	Offset: 0x8B68
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_138d72ee(var_f2e38849) {
-  /#
   level thread function_fae0aa01(var_f2e38849, "", level.activeplayers[0]);
-  # /
 }
 
-/*
-	Name: function_bc2507a3
-	Namespace: zm_island_skullquest
-	Checksum: 0x87B9484
-	Offset: 0x8BB0
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bc2507a3(n_progress) {
-  /#
   level.var_4ffafd2 = n_progress;
-  # /
 }
 
-/*
-	Name: function_8196b5ee
-	Namespace: zm_island_skullquest
-	Checksum: 0x8A38A04
-	Offset: 0x8BD8
-	Size: 0x92
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8196b5ee() {
-  /#
   foreach(player in level.activeplayers) {
     player function_458f50f2();
   }
-  # /
 }
 
-/*
-	Name: function_f7ec6ad4
-	Namespace: zm_island_skullquest
-	Checksum: 0x29036CC0
-	Offset: 0x8C78
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_f7ec6ad4(var_f2e38849, ent) {
-  /#
   if(ent.var_d64275e8 === 0) {
     function_fae0aa01(var_f2e38849, "", ent);
   }
-  # /
 }
 
-/*
-	Name: function_38f8b6e3
-	Namespace: zm_island_skullquest
-	Checksum: 0x1E751342
-	Offset: 0x8CD0
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function function_38f8b6e3(var_f2e38849) {
   if(!level flag::exists("skullquest_completed" + var_f2e38849)) {
     level flag::init("skullquest_completed" + var_f2e38849);
@@ -2254,15 +1558,6 @@ function function_38f8b6e3(var_f2e38849) {
   level.var_a576e0b9[var_f2e38849].s_utrig_skulltar setup_unitrigger("unitrigger_radius_use", & function_3cd83908, & function_d757eab6);
 }
 
-/*
-	Name: setup_unitrigger
-	Namespace: zm_island_skullquest
-	Checksum: 0x1D79DEE7
-	Offset: 0x8DF0
-	Size: 0xF4
-	Parameters: 6
-	Flags: Linked
-*/
 function setup_unitrigger(str_type = "unitrigger_radius_use", var_fe58e458, func_think, n_radius = 64, n_height = 256, b_lookat = 1) {
   self.script_unitrigger_type = "unitrigger_radius_use";
   self.cursor_hint = "HINT_NOICON";
@@ -2273,15 +1568,6 @@ function setup_unitrigger(str_type = "unitrigger_radius_use", var_fe58e458, func
   zm_unitrigger::register_static_unitrigger(self, func_think);
 }
 
-/*
-	Name: function_fae0aa01
-	Namespace: zm_island_skullquest
-	Checksum: 0x7D644B35
-	Offset: 0x8EF0
-	Size: 0xA36
-	Parameters: 3
-	Flags: Linked
-*/
 function function_fae0aa01(var_f2e38849, var_f2a1da83, player) {
   var_f1556de = array("start", "skull_s_picked_up", "inritual", "pre_retry", "retry", "postritual", "skull_p_picked_up", "completed");
   if(level.var_a576e0b9[var_f2e38849].str_state !== var_f2a1da83 && isinarray(var_f1556de, var_f2a1da83)) {
@@ -2327,7 +1613,7 @@ function function_fae0aa01(var_f2e38849, var_f2a1da83, player) {
         level.var_a576e0b9[var_f2e38849].mdl_skull_s.angles = level.var_a576e0b9[var_f2e38849].s_skulltar_skull_pos.angles;
         level.var_a576e0b9[var_f2e38849].mdl_skull_s ghost();
         level.var_a576e0b9[var_f2e38849].mdl_skull_s clientfield::set("skullquest_finish_start_fx", 1);
-        level waittill(# "start_of_round");
+        level waittill("start_of_round");
         if(level.var_a576e0b9[var_f2e38849].str_state === "pre_retry") {
           level thread function_fae0aa01(var_f2e38849, "start");
         }
@@ -2374,28 +1660,10 @@ function function_fae0aa01(var_f2e38849, var_f2a1da83, player) {
   }
 }
 
-/*
-	Name: function_741beb6d
-	Namespace: zm_island_skullquest
-	Checksum: 0xBA5DC3CD
-	Offset: 0x9930
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function function_741beb6d(var_f2e38849) {
   return level.var_a576e0b9[var_f2e38849].str_state;
 }
 
-/*
-	Name: function_8c6a13d0
-	Namespace: zm_island_skullquest
-	Checksum: 0xFDA63421
-	Offset: 0x9960
-	Size: 0x210
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8c6a13d0(player) {
   var_6d538e4e = function_741beb6d(self.stub.script_special);
   if(player !== level.var_2371bbc) {
@@ -2438,18 +1706,9 @@ function function_8c6a13d0(player) {
   }
 }
 
-/*
-	Name: function_dc9fe8fe
-	Namespace: zm_island_skullquest
-	Checksum: 0xB9D2BE94
-	Offset: 0x9B78
-	Size: 0x260
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dc9fe8fe() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player function_9e2f0e52()) {
       var_6d538e4e = function_741beb6d(self.stub.script_special);
       switch (var_6d538e4e) {
@@ -2483,15 +1742,6 @@ function function_dc9fe8fe() {
   }
 }
 
-/*
-	Name: function_3cd83908
-	Namespace: zm_island_skullquest
-	Checksum: 0xA3740A08
-	Offset: 0x9DE0
-	Size: 0x17E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_3cd83908(player) {
   var_6d538e4e = function_741beb6d(self.stub.script_special);
   switch (var_6d538e4e) {
@@ -2527,18 +1777,9 @@ function function_3cd83908(player) {
   }
 }
 
-/*
-	Name: function_d757eab6
-	Namespace: zm_island_skullquest
-	Checksum: 0xB8329916
-	Offset: 0x9F68
-	Size: 0x220
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d757eab6() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player function_9e2f0e52()) {
       var_6d538e4e = function_741beb6d(self.stub.script_special);
       switch (var_6d538e4e) {
@@ -2570,15 +1811,6 @@ function function_d757eab6() {
   }
 }
 
-/*
-	Name: function_5f43b720
-	Namespace: zm_island_skullquest
-	Checksum: 0x3263A6C7
-	Offset: 0xA190
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function function_5f43b720(var_f2e38849) {
   var_de2720b3 = level.var_a576e0b9[var_f2e38849].mdl_skulltar.origin - vectorscale((0, 0, 1), 32);
   level.var_a576e0b9[var_f2e38849].mdl_skull_s function_b15a5bc1(var_de2720b3, level.var_a576e0b9[var_f2e38849].s_skulltar_skull_pos.angles);
@@ -2589,30 +1821,12 @@ function function_5f43b720(var_f2e38849) {
   self thread zm_island_vo::function_97ed7288();
 }
 
-/*
-	Name: function_8302a101
-	Namespace: zm_island_skullquest
-	Checksum: 0xCA6CFCE0
-	Offset: 0xA2C0
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8302a101(var_f2e38849) {
   var_96b8c7e2 = self function_d4ebb4b0();
   self function_29d2aa0e(0, var_96b8c7e2, 1);
   level thread function_3fe31e5b(var_f2e38849);
 }
 
-/*
-	Name: function_74513d26
-	Namespace: zm_island_skullquest
-	Checksum: 0x2862AE22
-	Offset: 0xA330
-	Size: 0x92
-	Parameters: 0
-	Flags: None
-*/
 function function_74513d26() {
   var_28ff596b = 0;
   for (i = 1; i <= 4; i++) {
@@ -2624,15 +1838,6 @@ function function_74513d26() {
   return var_28ff596b;
 }
 
-/*
-	Name: function_567dfe61
-	Namespace: zm_island_skullquest
-	Checksum: 0x7C1A3070
-	Offset: 0xA3D0
-	Size: 0x92
-	Parameters: 0
-	Flags: None
-*/
 function function_567dfe61() {
   var_aa60e64e = 0;
   for (i = 1; i <= 4; i++) {
@@ -2644,15 +1849,6 @@ function function_567dfe61() {
   return var_aa60e64e;
 }
 
-/*
-	Name: function_29d2aa0e
-	Namespace: zm_island_skullquest
-	Checksum: 0x33114096
-	Offset: 0xA470
-	Size: 0x9C
-	Parameters: 3
-	Flags: Linked
-*/
 function function_29d2aa0e(var_228798e1, var_96b8c7e2, var_b89973c8 = 0) {
   self clientfield::set_to_player("skull_skull_state", var_228798e1);
   if(isdefined(var_96b8c7e2)) {
@@ -2663,36 +1859,18 @@ function function_29d2aa0e(var_228798e1, var_96b8c7e2, var_b89973c8 = 0) {
   }
 }
 
-/*
-	Name: function_71593151
-	Namespace: zm_island_skullquest
-	Checksum: 0x1ACD51DF
-	Offset: 0xA518
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_71593151() {
   self function_29d2aa0e(0, 0, 0);
 }
 
-/*
-	Name: function_5d65695d
-	Namespace: zm_island_skullquest
-	Checksum: 0x57D69C80
-	Offset: 0xA540
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5d65695d() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.var_1ff2320b = 0;
   while (!self.var_1ff2320b) {
-    self waittill(# "weapon_change");
+    self waittill("weapon_change");
     if(self getcurrentweapon() == level.var_c003f5b) {
       self.var_1ff2320b = 1;
-      self zm_equipment::show_hint_text( & "ZM_ISLAND_SKULL_VAPORIZE", 4);
+      self zm_equipment::show_hint_text(&"ZM_ISLAND_SKULL_VAPORIZE", 4);
     }
   }
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_perks.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -23,18 +27,8 @@
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_perks;
 
-/*
-	Name: init
-	Namespace: zm_perks
-	Checksum: 0x6BD042E2
-	Offset: 0x700
-	Size: 0x32C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.perk_purchase_limit = 4;
   perks_register_clientfield();
@@ -52,9 +46,7 @@ function init() {
   if(!isdefined(level.custom_vending_precaching)) {
     level.custom_vending_precaching = & default_vending_precaching;
   }
-  [
-    [level.custom_vending_precaching]
-  ]();
+  [[level.custom_vending_precaching]]();
   zombie_utility::set_zombie_var("zombie_perk_cost", 2000);
   array::thread_all(vending_triggers, & vending_trigger_think);
   array::thread_all(vending_triggers, & electric_perks_dialog);
@@ -81,15 +73,6 @@ function init() {
   level thread perk_hostmigration();
 }
 
-/*
-	Name: perk_machine_think
-	Namespace: zm_perks
-	Checksum: 0xFB96891
-	Offset: 0xA38
-	Size: 0x3C0
-	Parameters: 2
-	Flags: Linked
-*/
 function perk_machine_think(str_key, s_custom_perk) {
   str_endon = str_key + "_power_thread_end";
   level endon(str_endon);
@@ -126,15 +109,6 @@ function perk_machine_think(str_key, s_custom_perk) {
   }
 }
 
-/*
-	Name: default_vending_precaching
-	Namespace: zm_perks
-	Checksum: 0x8EE7AB53
-	Offset: 0xE00
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function default_vending_precaching() {
   if(level._custom_perks.size > 0) {
     a_keys = getarraykeys(level._custom_perks);
@@ -146,21 +120,10 @@ function default_vending_precaching() {
   }
 }
 
-/*
-	Name: do_initial_power_off_callback
-	Namespace: zm_perks
-	Checksum: 0xE9D40F1C
-	Offset: 0xEB8
-	Size: 0x9C
-	Parameters: 2
-	Flags: Linked
-*/
 function do_initial_power_off_callback(machine_array, perkname) {
   if(!isdefined(level.machine_assets[perkname])) {
-    /#
     println("");
-    # /
-      return;
+    return;
   }
   if(!isdefined(level.machine_assets[perkname].power_off_callback)) {
     return;
@@ -169,15 +132,6 @@ function do_initial_power_off_callback(machine_array, perkname) {
   array::thread_all(machine_array, level.machine_assets[perkname].power_off_callback);
 }
 
-/*
-	Name: use_solo_revive
-	Namespace: zm_perks
-	Checksum: 0xA672AEF8
-	Offset: 0xF60
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function use_solo_revive() {
   if(isdefined(level.override_use_solo_revive)) {
     return [
@@ -193,30 +147,12 @@ function use_solo_revive() {
   return solo_mode;
 }
 
-/*
-	Name: set_power_on
-	Namespace: zm_perks
-	Checksum: 0x6C27850F
-	Offset: 0xFF8
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function set_power_on(state) {
   self.power_on = state;
 }
 
-/*
-	Name: turn_perk_off
-	Namespace: zm_perks
-	Checksum: 0xF969AD45
-	Offset: 0x1018
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function turn_perk_off(ishidden) {
-  self notify(# "stop_loopsound");
+  self notify("stop_loopsound");
   if(!(isdefined(self.b_keep_when_turned_off) && self.b_keep_when_turned_off)) {
     newmachine = spawn("script_model", self.origin);
     newmachine.angles = self.angles;
@@ -232,15 +168,6 @@ function turn_perk_off(ishidden) {
   }
 }
 
-/*
-	Name: play_loop_on_machine
-	Namespace: zm_perks
-	Checksum: 0x512B5493
-	Offset: 0x1138
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function play_loop_on_machine() {
   if(isdefined(level.sndperksacolaloopoverride)) {
     return;
@@ -248,20 +175,11 @@ function play_loop_on_machine() {
   sound_ent = spawn("script_origin", self.origin);
   sound_ent playloopsound("zmb_perks_machine_loop");
   sound_ent linkto(self);
-  self waittill(# "stop_loopsound");
+  self waittill("stop_loopsound");
   sound_ent unlink();
   sound_ent delete();
 }
 
-/*
-	Name: perk_fx
-	Namespace: zm_perks
-	Checksum: 0xED7826D3
-	Offset: 0x11F0
-	Size: 0x168
-	Parameters: 2
-	Flags: Linked
-*/
 function perk_fx(fx, turnofffx) {
   if(isdefined(turnofffx)) {
     self.perk_fx = 0;
@@ -286,25 +204,16 @@ function perk_fx(fx, turnofffx) {
   }
 }
 
-/*
-	Name: electric_perks_dialog
-	Namespace: zm_perks
-	Checksum: 0xC97ABA4D
-	Offset: 0x1360
-	Size: 0x1FA
-	Parameters: 0
-	Flags: Linked
-*/
 function electric_perks_dialog() {
-  self endon(# "death");
+  self endon("death");
   wait(0.01);
   level flag::wait_till("start_zombie_round_logic");
   players = getplayers();
   if(players.size == 1) {
     return;
   }
-  self endon(# "warning_dialog");
-  level endon(# "switch_flipped");
+  self endon("warning_dialog");
+  level endon("switch_flipped");
   timer = 0;
   while (true) {
     wait(0.5);
@@ -328,24 +237,13 @@ function electric_perks_dialog() {
         }
         players[i] thread zm_utility::do_player_vo("vox_start", 5);
         wait(3);
-        self notify(# "warning_dialog");
-        /#
+        self notify("warning_dialog");
         iprintlnbold("");
-        # /
       }
     }
   }
 }
 
-/*
-	Name: reset_vending_hint_string
-	Namespace: zm_perks
-	Checksum: 0xB4D379B8
-	Offset: 0x1568
-	Size: 0x13C
-	Parameters: 0
-	Flags: None
-*/
 function reset_vending_hint_string() {
   perk = self.script_noteworthy;
   solo = use_solo_revive();
@@ -363,15 +261,6 @@ function reset_vending_hint_string() {
   }
 }
 
-/*
-	Name: vending_trigger_can_player_use
-	Namespace: zm_perks
-	Checksum: 0xF3BCD714
-	Offset: 0x16B0
-	Size: 0xE6
-	Parameters: 1
-	Flags: Linked
-*/
 function vending_trigger_can_player_use(player) {
   if(player laststand::player_is_in_laststand() || (isdefined(player.intermission) && player.intermission)) {
     return false;
@@ -394,17 +283,8 @@ function vending_trigger_can_player_use(player) {
   return true;
 }
 
-/*
-	Name: vending_trigger_think
-	Namespace: zm_perks
-	Checksum: 0x16185BAA
-	Offset: 0x17A0
-	Size: 0x800
-	Parameters: 0
-	Flags: Linked
-*/
 function vending_trigger_think() {
-  self endon(# "death");
+  self endon("death");
   wait(0.01);
   perk = self.script_noteworthy;
   solo = 0;
@@ -413,7 +293,7 @@ function vending_trigger_think() {
   if(isdefined(perk) && perk == "specialty_quickrevive") {
     level flag::wait_till("start_zombie_round_logic");
     solo = use_solo_revive();
-    self endon(# "stop_quickrevive_logic");
+    self endon("stop_quickrevive_logic");
     level.quick_revive_trigger = self;
     if(solo) {
       if(!(isdefined(level.revive_machine_is_solo) && level.revive_machine_is_solo)) {
@@ -431,7 +311,7 @@ function vending_trigger_think() {
       level.revive_machine_is_solo = 1;
     }
   }
-  self sethintstring( & "ZOMBIE_NEED_POWER");
+  self sethintstring(&"ZOMBIE_NEED_POWER");
   self setcursorhint("HINT_NOICON");
   self usetriggerrequirelookat();
   cost = level.zombie_vars["zombie_perk_cost"];
@@ -464,7 +344,7 @@ function vending_trigger_think() {
     self sethintstring(level._custom_perks[perk].hint_string, cost);
   }
   for (;;) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     index = zm_utility::get_player_index(player);
     if(!vending_trigger_can_player_use(player)) {
       wait(0.1);
@@ -472,16 +352,14 @@ function vending_trigger_think() {
     }
     if(player hasperk(perk) || player has_perk_paused(perk)) {
       cheat = 0;
-      /#
       if(getdvarint("") >= 5) {
         cheat = 1;
       }
-      # /
-        if(cheat != 1) {
-          self playsound("evt_perk_deny");
-          player zm_audio::create_and_play_dialog("general", "sigh");
-          continue;
-        }
+      if(cheat != 1) {
+        self playsound("evt_perk_deny");
+        player zm_audio::create_and_play_dialog("general", "sigh");
+        continue;
+      }
     }
     if(isdefined(level.custom_perk_validation)) {
       valid = self[[level.custom_perk_validation]](player);
@@ -513,25 +391,16 @@ function vending_trigger_think() {
     }
     player recordmapevent(29, gettime(), self.origin, level.round_number, perkhash);
     player.perk_purchased = perk;
-    player notify(# "perk_purchased", perk);
+    player notify("perk_purchased", perk);
     self thread zm_audio::sndperksjingles_player(1);
     self thread vending_trigger_post_think(player, perk);
   }
 }
 
-/*
-	Name: vending_trigger_post_think
-	Namespace: zm_perks
-	Checksum: 0xF077F3EA
-	Offset: 0x1FA8
-	Size: 0x214
-	Parameters: 2
-	Flags: Linked
-*/
 function vending_trigger_post_think(player, perk) {
-  player endon(# "disconnect");
-  player endon(# "end_game");
-  player endon(# "perk_abort_drinking");
+  player endon("disconnect");
+  player endon("end_game");
+  player endon("perk_abort_drinking");
   gun = player perk_give_bottle_begin(perk);
   evt = player util::waittill_any_return("fake_death", "death", "player_downed", "weapon_change_complete", "perk_abort_drinking", "disconnect");
   if(evt == "weapon_change_complete") {
@@ -541,7 +410,7 @@ function vending_trigger_post_think(player, perk) {
   if(player laststand::player_is_in_laststand() || (isdefined(player.intermission) && player.intermission)) {
     return;
   }
-  player notify(# "burp");
+  player notify("burp");
   if(isdefined(level.pers_upgrade_cash_back) && level.pers_upgrade_cash_back) {
     player zm_pers_upgrades_functions::cash_back_player_drinks_perk();
   }
@@ -558,33 +427,15 @@ function vending_trigger_post_think(player, perk) {
   }
 }
 
-/*
-	Name: wait_give_perk
-	Namespace: zm_perks
-	Checksum: 0xAA3BC49C
-	Offset: 0x21C8
-	Size: 0xA4
-	Parameters: 2
-	Flags: Linked
-*/
 function wait_give_perk(perk, bought) {
-  self endon(# "player_downed");
-  self endon(# "disconnect");
-  self endon(# "end_game");
-  self endon(# "perk_abort_drinking");
+  self endon("player_downed");
+  self endon("disconnect");
+  self endon("end_game");
+  self endon("perk_abort_drinking");
   self util::waittill_any_timeout(0.5, "burp", "player_downed", "disconnect", "end_game", "perk_abort_drinking");
   self give_perk(perk, bought);
 }
 
-/*
-	Name: return_retained_perks
-	Namespace: zm_perks
-	Checksum: 0x9BD0E26D
-	Offset: 0x2278
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function return_retained_perks() {
   if(isdefined(self._retain_perks_array)) {
     keys = getarraykeys(self._retain_perks_array);
@@ -596,20 +447,11 @@ function return_retained_perks() {
   }
 }
 
-/*
-	Name: give_perk_presentation
-	Namespace: zm_perks
-	Checksum: 0xEA4822DD
-	Offset: 0x2368
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function give_perk_presentation(perk) {
-  self endon(# "player_downed");
-  self endon(# "disconnect");
-  self endon(# "end_game");
-  self endon(# "perk_abort_drinking");
+  self endon("player_downed");
+  self endon("disconnect");
+  self endon("end_game");
+  self endon("perk_abort_drinking");
   self zm_audio::playerexert("burp");
   if(isdefined(level.remove_perk_vo_delay) && level.remove_perk_vo_delay) {
     self zm_audio::create_and_play_dialog("perk", perk);
@@ -621,21 +463,12 @@ function give_perk_presentation(perk) {
   self setblur(0, 0.1);
 }
 
-/*
-	Name: give_perk
-	Namespace: zm_perks
-	Checksum: 0xD8309A64
-	Offset: 0x2480
-	Size: 0x27C
-	Parameters: 2
-	Flags: Linked
-*/
 function give_perk(perk, bought) {
   self setperk(perk);
   self.num_perks++;
   if(isdefined(bought) && bought) {
     self thread give_perk_presentation(perk);
-    self notify(# "perk_bought", perk);
+    self notify("perk_bought", perk);
     self zm_stats::increment_challenge_stat("SURVIVALIST_BUY_PERK");
   }
   if(isdefined(level._custom_perks[perk]) && isdefined(level._custom_perks[perk].player_thread_give)) {
@@ -660,19 +493,10 @@ function give_perk(perk, bought) {
     self.perks_active = array(self.perks_active);
   }
   self.perks_active[self.perks_active.size] = perk;
-  self notify(# "perk_acquired");
+  self notify("perk_acquired");
   self thread perk_think(perk);
 }
 
-/*
-	Name: perk_set_max_health_if_jugg
-	Namespace: zm_perks
-	Checksum: 0xD502595E
-	Offset: 0x2708
-	Size: 0x218
-	Parameters: 3
-	Flags: Linked
-*/
 function perk_set_max_health_if_jugg(str_perk, set_premaxhealth, clamp_health_to_max_health) {
   n_max_total_health = undefined;
   switch (str_perk) {
@@ -718,23 +542,12 @@ function perk_set_max_health_if_jugg(str_perk, set_premaxhealth, clamp_health_to
   }
 }
 
-/*
-	Name: check_player_has_perk
-	Namespace: zm_perks
-	Checksum: 0xB0904E5B
-	Offset: 0x2928
-	Size: 0x204
-	Parameters: 1
-	Flags: Linked
-*/
 function check_player_has_perk(perk) {
-  self endon(# "death");
-  /#
+  self endon("death");
   if(getdvarint("") >= 5) {
     return;
   }
-  # /
-    dist = 16384;
+  dist = 16384;
   while (true) {
     players = getplayers();
     for (i = 0; i < players.size; i++) {
@@ -750,15 +563,6 @@ function check_player_has_perk(perk) {
   }
 }
 
-/*
-	Name: vending_set_hintstring
-	Namespace: zm_perks
-	Checksum: 0x2C91FF24
-	Offset: 0x2B38
-	Size: 0x2A
-	Parameters: 1
-	Flags: None
-*/
 function vending_set_hintstring(perk) {
   switch (perk) {
     case "specialty_armorvest": {
@@ -767,25 +571,14 @@ function vending_set_hintstring(perk) {
   }
 }
 
-/*
-	Name: perk_think
-	Namespace: zm_perks
-	Checksum: 0x46125510
-	Offset: 0x2B70
-	Size: 0x2B2
-	Parameters: 1
-	Flags: Linked
-*/
 function perk_think(perk) {
-  self endon(# "disconnect");
-  /#
+  self endon("disconnect");
   if(getdvarint("") >= 5) {
     if(isdefined(self.perk_hud[perk])) {
       return;
     }
   }
-  # /
-    perk_str = perk + "_stop";
+  perk_str = perk + "_stop";
   result = self util::waittill_any_return("fake_death", "death", "player_downed", perk_str);
   while (self bgb::lost_perk_override(perk)) {
     result = self util::waittill_any_return("fake_death", "death", "player_downed", perk_str);
@@ -815,47 +608,20 @@ function perk_think(perk) {
   if(isdefined(self.perks_active) && isinarray(self.perks_active, perk)) {
     arrayremovevalue(self.perks_active, perk, 0);
   }
-  self notify(# "perk_lost");
+  self notify("perk_lost");
 }
 
-/*
-	Name: set_perk_clientfield
-	Namespace: zm_perks
-	Checksum: 0x18A9D516
-	Offset: 0x2E30
-	Size: 0x68
-	Parameters: 2
-	Flags: Linked
-*/
 function set_perk_clientfield(perk, state) {
   if(isdefined(level._custom_perks[perk]) && isdefined(level._custom_perks[perk].clientfield_set)) {
     self[[level._custom_perks[perk].clientfield_set]](state);
   }
 }
 
-/*
-	Name: perk_hud_destroy
-	Namespace: zm_perks
-	Checksum: 0x5FF4467A
-	Offset: 0x2EA0
-	Size: 0x38
-	Parameters: 1
-	Flags: None
-*/
 function perk_hud_destroy(perk) {
   self.perk_hud[perk] zm_utility::destroy_hud();
   self.perk_hud[perk] = undefined;
 }
 
-/*
-	Name: perk_hud_grey
-	Namespace: zm_perks
-	Checksum: 0x76CACB76
-	Offset: 0x2EE0
-	Size: 0x60
-	Parameters: 2
-	Flags: None
-*/
 function perk_hud_grey(perk, grey_on_off) {
   if(grey_on_off) {
     self.perk_hud[perk].alpha = 0.3;
@@ -864,15 +630,6 @@ function perk_hud_grey(perk, grey_on_off) {
   }
 }
 
-/*
-	Name: perk_give_bottle_begin
-	Namespace: zm_perks
-	Checksum: 0xA648D1F8
-	Offset: 0x2F48
-	Size: 0xF8
-	Parameters: 1
-	Flags: Linked
-*/
 function perk_give_bottle_begin(perk) {
   self zm_utility::increment_is_drinking();
   self zm_utility::disable_player_move_states(1);
@@ -886,24 +643,11 @@ function perk_give_bottle_begin(perk) {
   return original_weapon;
 }
 
-/*
-	Name: perk_give_bottle_end
-	Namespace: zm_perks
-	Checksum: 0x429504D4
-	Offset: 0x3048
-	Size: 0x274
-	Parameters: 2
-	Flags: Linked
-*/
 function perk_give_bottle_end(original_weapon, perk) {
-  self endon(# "perk_abort_drinking");
-  /#
+  self endon("perk_abort_drinking");
   assert(!original_weapon.isperkbottle);
-  # /
-    /#
   assert(original_weapon != level.weaponrevivetool);
-  # /
-    self zm_utility::enable_player_move_states();
+  self zm_utility::enable_player_move_states();
   weapon = "";
   if(isdefined(level._custom_perks[perk]) && isdefined(level._custom_perks[perk].perk_bottle_weapon)) {
     weapon = level._custom_perks[perk].perk_bottle_weapon;
@@ -926,24 +670,15 @@ function perk_give_bottle_end(original_weapon, perk) {
   } else {
     self zm_weapons::switch_back_primary_weapon();
   }
-  self waittill(# "weapon_change_complete");
+  self waittill("weapon_change_complete");
   if(!self laststand::player_is_in_laststand() && (!(isdefined(self.intermission) && self.intermission))) {
     self zm_utility::decrement_is_drinking();
   }
 }
 
-/*
-	Name: perk_abort_drinking
-	Namespace: zm_perks
-	Checksum: 0xF8AA95C1
-	Offset: 0x32C8
-	Size: 0x5C
-	Parameters: 1
-	Flags: None
-*/
 function perk_abort_drinking(post_delay) {
   if(self.is_drinking) {
-    self notify(# "perk_abort_drinking");
+    self notify("perk_abort_drinking");
     self zm_utility::decrement_is_drinking();
     self zm_utility::enable_player_move_states();
     if(isdefined(post_delay)) {
@@ -952,15 +687,6 @@ function perk_abort_drinking(post_delay) {
   }
 }
 
-/*
-	Name: give_random_perk
-	Namespace: zm_perks
-	Checksum: 0x997B241E
-	Offset: 0x3330
-	Size: 0x170
-	Parameters: 0
-	Flags: Linked
-*/
 function give_random_perk() {
   random_perk = undefined;
   a_str_perks = getarraykeys(level._custom_perks);
@@ -984,15 +710,6 @@ function give_random_perk() {
   return random_perk;
 }
 
-/*
-	Name: lose_random_perk
-	Namespace: zm_perks
-	Checksum: 0x98787054
-	Offset: 0x34A8
-	Size: 0x168
-	Parameters: 0
-	Flags: None
-*/
 function lose_random_perk() {
   a_str_perks = getarraykeys(level._custom_perks);
   perks = [];
@@ -1016,15 +733,6 @@ function lose_random_perk() {
   }
 }
 
-/*
-	Name: update_perk_hud
-	Namespace: zm_perks
-	Checksum: 0x95380BC6
-	Offset: 0x3618
-	Size: 0x8E
-	Parameters: 0
-	Flags: None
-*/
 function update_perk_hud() {
   if(isdefined(self.perk_hud)) {
     keys = getarraykeys(self.perk_hud);
@@ -1034,15 +742,6 @@ function update_perk_hud() {
   }
 }
 
-/*
-	Name: quantum_bomb_give_nearest_perk_validation
-	Namespace: zm_perks
-	Checksum: 0xC8B4DB0C
-	Offset: 0x36B0
-	Size: 0xAE
-	Parameters: 1
-	Flags: Linked
-*/
 function quantum_bomb_give_nearest_perk_validation(position) {
   vending_triggers = getentarray("zombie_vending", "targetname");
   range_squared = 32400;
@@ -1054,19 +753,8 @@ function quantum_bomb_give_nearest_perk_validation(position) {
   return false;
 }
 
-/*
-	Name: quantum_bomb_give_nearest_perk_result
-	Namespace: zm_perks
-	Checksum: 0xD9A0C586
-	Offset: 0x3768
-	Size: 0x25A
-	Parameters: 1
-	Flags: Linked
-*/
 function quantum_bomb_give_nearest_perk_result(position) {
-  [
-    [level.quantum_bomb_play_mystery_effect_func]
-  ](position);
+  [[level.quantum_bomb_play_mystery_effect_func]](position);
   vending_triggers = getentarray("zombie_vending", "targetname");
   nearest = 0;
   for (i = 1; i < vending_triggers.size; i++) {
@@ -1091,15 +779,6 @@ function quantum_bomb_give_nearest_perk_result(position) {
   }
 }
 
-/*
-	Name: perk_pause
-	Namespace: zm_perks
-	Checksum: 0x3748456F
-	Offset: 0x39D0
-	Size: 0x1EE
-	Parameters: 1
-	Flags: Linked
-*/
 function perk_pause(perk) {
   if(isdefined(level.dont_unset_perk_when_machine_paused) && level.dont_unset_perk_when_machine_paused) {
     return;
@@ -1116,22 +795,11 @@ function perk_pause(perk) {
       if(isdefined(level._custom_perks[perk]) && isdefined(level._custom_perks[perk].player_thread_take)) {
         player thread[[level._custom_perks[perk].player_thread_take]](1);
       }
-      /#
       println(((("" + player.name) + "") + perk) + "");
-      # /
     }
   }
 }
 
-/*
-	Name: perk_unpause
-	Namespace: zm_perks
-	Checksum: 0x8A42EECD
-	Offset: 0x3BC8
-	Size: 0x1DA
-	Parameters: 1
-	Flags: Linked
-*/
 function perk_unpause(perk) {
   if(isdefined(level.dont_unset_perk_when_machine_paused) && level.dont_unset_perk_when_machine_paused) {
     return;
@@ -1145,10 +813,8 @@ function perk_unpause(perk) {
       player.disabled_perks[perk] = 0;
       player set_perk_clientfield(perk, 1);
       player setperk(perk);
-      /#
       println(((("" + player.name) + "") + perk) + "");
-      # /
-        player perk_set_max_health_if_jugg(perk, 0, 0);
+      player perk_set_max_health_if_jugg(perk, 0, 0);
       if(isdefined(level._custom_perks[perk]) && isdefined(level._custom_perks[perk].player_thread_give)) {
         player thread[[level._custom_perks[perk].player_thread_give]]();
       }
@@ -1156,15 +822,6 @@ function perk_unpause(perk) {
   }
 }
 
-/*
-	Name: perk_pause_all_perks
-	Namespace: zm_perks
-	Checksum: 0x90A7C8C2
-	Offset: 0x3DB0
-	Size: 0x122
-	Parameters: 1
-	Flags: Linked
-*/
 function perk_pause_all_perks(power_zone) {
   vending_triggers = getentarray("zombie_vending", "targetname");
   foreach(trigger in vending_triggers) {
@@ -1178,15 +835,6 @@ function perk_pause_all_perks(power_zone) {
   }
 }
 
-/*
-	Name: perk_unpause_all_perks
-	Namespace: zm_perks
-	Checksum: 0x630B2E27
-	Offset: 0x3EE0
-	Size: 0x122
-	Parameters: 1
-	Flags: Linked
-*/
 function perk_unpause_all_perks(power_zone) {
   vending_triggers = getentarray("zombie_vending", "targetname");
   foreach(trigger in vending_triggers) {
@@ -1200,15 +848,6 @@ function perk_unpause_all_perks(power_zone) {
   }
 }
 
-/*
-	Name: has_perk_paused
-	Namespace: zm_perks
-	Checksum: 0x50C1337E
-	Offset: 0x4010
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function has_perk_paused(perk) {
   if(isdefined(self.disabled_perks) && isdefined(self.disabled_perks[perk]) && self.disabled_perks[perk]) {
     return true;
@@ -1216,15 +855,6 @@ function has_perk_paused(perk) {
   return false;
 }
 
-/*
-	Name: getvendingmachinenotify
-	Namespace: zm_perks
-	Checksum: 0xDDB2DB67
-	Offset: 0x4060
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function getvendingmachinenotify() {
   if(!isdefined(self)) {
     return "";
@@ -1236,15 +866,6 @@ function getvendingmachinenotify() {
   return str_perk;
 }
 
-/*
-	Name: perk_machine_removal
-	Namespace: zm_perks
-	Checksum: 0xBD07B4D5
-	Offset: 0x40F0
-	Size: 0x294
-	Parameters: 2
-	Flags: None
-*/
 function perk_machine_removal(machine, replacement_model) {
   if(!isdefined(machine)) {
     return;
@@ -1252,7 +873,7 @@ function perk_machine_removal(machine, replacement_model) {
   trig = getent(machine, "script_noteworthy");
   machine_model = undefined;
   if(isdefined(trig)) {
-    trig notify(# "warning_dialog");
+    trig notify("warning_dialog");
     if(isdefined(trig.target)) {
       parts = getentarray(trig.target, "targetname");
       for (i = 0; i < parts.size; i++) {
@@ -1285,15 +906,6 @@ function perk_machine_removal(machine, replacement_model) {
   }
 }
 
-/*
-	Name: perk_machine_spawn_init
-	Namespace: zm_perks
-	Checksum: 0xBA8C7C82
-	Offset: 0x4390
-	Size: 0x99E
-	Parameters: 0
-	Flags: Linked
-*/
 function perk_machine_spawn_init() {
   match_string = "";
   location = level.scr_zm_map_start_location;
@@ -1413,37 +1025,17 @@ function perk_machine_spawn_init() {
   }
 }
 
-/*
-	Name: get_perk_machine_start_state
-	Namespace: zm_perks
-	Checksum: 0x2066C483
-	Offset: 0x4D38
-	Size: 0x66
-	Parameters: 1
-	Flags: Linked
-*/
 function get_perk_machine_start_state(perk) {
   if(isdefined(level.vending_machines_powered_on_at_start) && level.vending_machines_powered_on_at_start) {
     return 1;
   }
   if(perk == "specialty_quickrevive") {
-    /#
     assert(isdefined(level.revive_machine_is_solo));
-    # /
-      return level.revive_machine_is_solo;
+    return level.revive_machine_is_solo;
   }
   return 0;
 }
 
-/*
-	Name: perks_register_clientfield
-	Namespace: zm_perks
-	Checksum: 0xCDF9575
-	Offset: 0x4DA8
-	Size: 0xF6
-	Parameters: 0
-	Flags: Linked
-*/
 function perks_register_clientfield() {
   if(isdefined(level.zombiemode_using_perk_intro_fx) && level.zombiemode_using_perk_intro_fx) {
     clientfield::register("scriptmover", "clientfield_perk_intro_fx", 1, 1, "int");
@@ -1458,18 +1050,9 @@ function perks_register_clientfield() {
   }
 }
 
-/*
-	Name: thread_bump_trigger
-	Namespace: zm_perks
-	Checksum: 0x82A06E57
-	Offset: 0x4EA8
-	Size: 0x80
-	Parameters: 0
-	Flags: None
-*/
 function thread_bump_trigger() {
   for (;;) {
-    self waittill(# "trigger", trigplayer);
+    self waittill("trigger", trigplayer);
     trigplayer playsound(self.script_sound);
     while (zm_utility::is_player_valid(trigplayer) && trigplayer istouching(self)) {
       wait(0.5);
@@ -1477,15 +1060,6 @@ function thread_bump_trigger() {
   }
 }
 
-/*
-	Name: players_are_in_perk_area
-	Namespace: zm_perks
-	Checksum: 0xA75EA30E
-	Offset: 0x4F30
-	Size: 0x162
-	Parameters: 1
-	Flags: Linked
-*/
 function players_are_in_perk_area(perk_machine) {
   perk_area_origin = level.quick_revive_default_origin;
   if(isdefined(perk_machine._linked_ent)) {
@@ -1505,21 +1079,12 @@ function players_are_in_perk_area(perk_machine) {
   return false;
 }
 
-/*
-	Name: perk_hostmigration
-	Namespace: zm_perks
-	Checksum: 0x87B82EE5
-	Offset: 0x50A0
-	Size: 0x14E
-	Parameters: 0
-	Flags: Linked
-*/
 function perk_hostmigration() {
-  level endon(# "end_game");
-  level notify(# "perk_hostmigration");
-  level endon(# "perk_hostmigration");
+  level endon("end_game");
+  level notify("perk_hostmigration");
+  level endon("perk_hostmigration");
   while (true) {
-    level waittill(# "host_migration_end");
+    level waittill("host_migration_end");
     if(isdefined(level._custom_perks) && level._custom_perks.size > 0) {
       a_keys = getarraykeys(level._custom_perks);
       foreach(key in a_keys) {
@@ -1531,15 +1096,6 @@ function perk_hostmigration() {
   }
 }
 
-/*
-	Name: host_migration_func
-	Namespace: zm_perks
-	Checksum: 0x3C7D354E
-	Offset: 0x51F8
-	Size: 0x132
-	Parameters: 2
-	Flags: Linked
-*/
 function host_migration_func(s_custom_perk, keyname) {
   a_machines = getentarray(s_custom_perk.radiant_machine_name, "targetname");
   foreach(perk in a_machines) {
@@ -1550,15 +1106,6 @@ function host_migration_func(s_custom_perk, keyname) {
   }
 }
 
-/*
-	Name: spare_change
-	Namespace: zm_perks
-	Checksum: 0x869CA063
-	Offset: 0x5338
-	Size: 0x10A
-	Parameters: 2
-	Flags: None
-*/
 function spare_change(str_trigger = "audio_bump_trigger", str_sound = "zmb_perks_bump_bottle") {
   a_t_audio = getentarray(str_trigger, "targetname");
   foreach(t_audio_bump in a_t_audio) {
@@ -1568,19 +1115,10 @@ function spare_change(str_trigger = "audio_bump_trigger", str_sound = "zmb_perks
   }
 }
 
-/*
-	Name: check_for_change
-	Namespace: zm_perks
-	Checksum: 0x30EB634E
-	Offset: 0x5450
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function check_for_change() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player getstance() == "prone") {
       player zm_score::add_to_player_score(100);
       zm_utility::play_sound_at_pos("purchase", player.origin);
@@ -1590,15 +1128,6 @@ function check_for_change() {
   }
 }
 
-/*
-	Name: get_perk_array
-	Namespace: zm_perks
-	Checksum: 0xD119D379
-	Offset: 0x5500
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function get_perk_array() {
   perk_array = [];
   if(level._custom_perks.size > 0) {
@@ -1612,30 +1141,12 @@ function get_perk_array() {
   return perk_array;
 }
 
-/*
-	Name: initialize_custom_perk_arrays
-	Namespace: zm_perks
-	Checksum: 0x537DDE75
-	Offset: 0x55B8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function initialize_custom_perk_arrays() {
   if(!isdefined(level._custom_perks)) {
     level._custom_perks = [];
   }
 }
 
-/*
-	Name: register_revive_success_perk_func
-	Namespace: zm_perks
-	Checksum: 0x2186D1B3
-	Offset: 0x55E0
-	Size: 0x3A
-	Parameters: 1
-	Flags: None
-*/
 function register_revive_success_perk_func(revive_func) {
   if(!isdefined(level.a_revive_success_perk_func)) {
     level.a_revive_success_perk_func = [];
@@ -1643,32 +1154,13 @@ function register_revive_success_perk_func(revive_func) {
   level.a_revive_success_perk_func[level.a_revive_success_perk_func.size] = revive_func;
 }
 
-/*
-	Name: register_perk_basic_info
-	Namespace: zm_perks
-	Checksum: 0xD1BBC6EA
-	Offset: 0x5628
-	Size: 0x1A8
-	Parameters: 5
-	Flags: Linked
-*/
 function register_perk_basic_info(str_perk, str_alias, n_perk_cost, str_hint_string, w_perk_bottle_weapon) {
-  /#
   assert(isdefined(str_perk), "");
-  # /
-    /#
   assert(isdefined(str_alias), "");
-  # /
-    /#
   assert(isdefined(n_perk_cost), "");
-  # /
-    /#
   assert(isdefined(str_hint_string), "");
-  # /
-    /#
   assert(isdefined(w_perk_bottle_weapon), "");
-  # /
-    _register_undefined_perk(str_perk);
+  _register_undefined_perk(str_perk);
   level._custom_perks[str_perk].alias = str_alias;
   level._custom_perks[str_perk].var_2c8ee667 = hashstring(str_alias);
   level._custom_perks[str_perk].cost = n_perk_cost;
@@ -1676,23 +1168,10 @@ function register_perk_basic_info(str_perk, str_alias, n_perk_cost, str_hint_str
   level._custom_perks[str_perk].perk_bottle_weapon = w_perk_bottle_weapon;
 }
 
-/*
-	Name: register_perk_machine
-	Namespace: zm_perks
-	Checksum: 0x6FDDA2E5
-	Offset: 0x57D8
-	Size: 0x100
-	Parameters: 3
-	Flags: Linked
-*/
 function register_perk_machine(str_perk, func_perk_machine_setup, func_perk_machine_thread) {
-  /#
   assert(isdefined(str_perk), "");
-  # /
-    /#
   assert(isdefined(func_perk_machine_setup), "");
-  # /
-    _register_undefined_perk(str_perk);
+  _register_undefined_perk(str_perk);
   if(!isdefined(level._custom_perks[str_perk].perk_machine_set_kvps)) {
     level._custom_perks[str_perk].perk_machine_set_kvps = func_perk_machine_setup;
   }
@@ -1701,67 +1180,28 @@ function register_perk_machine(str_perk, func_perk_machine_setup, func_perk_mach
   }
 }
 
-/*
-	Name: register_perk_machine_power_override
-	Namespace: zm_perks
-	Checksum: 0x4C26A367
-	Offset: 0x58E0
-	Size: 0xC0
-	Parameters: 2
-	Flags: Linked
-*/
 function register_perk_machine_power_override(str_perk, func_perk_machine_power_override) {
-  /#
   assert(isdefined(str_perk), "");
-  # /
-    /#
   assert(isdefined(func_perk_machine_power_override), "");
-  # /
-    _register_undefined_perk(str_perk);
+  _register_undefined_perk(str_perk);
   if(!isdefined(level._custom_perks[str_perk].perk_machine_power_override_thread) && isdefined(func_perk_machine_power_override)) {
     level._custom_perks[str_perk].perk_machine_power_override_thread = func_perk_machine_power_override;
   }
 }
 
-/*
-	Name: register_perk_precache_func
-	Namespace: zm_perks
-	Checksum: 0x9F7294C5
-	Offset: 0x59A8
-	Size: 0xB4
-	Parameters: 2
-	Flags: Linked
-*/
 function register_perk_precache_func(str_perk, func_precache) {
-  /#
   assert(isdefined(str_perk), "");
-  # /
-    /#
   assert(isdefined(func_precache), "");
-  # /
-    _register_undefined_perk(str_perk);
+  _register_undefined_perk(str_perk);
   if(!isdefined(level._custom_perks[str_perk].precache_func)) {
     level._custom_perks[str_perk].precache_func = func_precache;
   }
 }
 
-/*
-	Name: register_perk_threads
-	Namespace: zm_perks
-	Checksum: 0x81BA92CE
-	Offset: 0x5A68
-	Size: 0x100
-	Parameters: 3
-	Flags: Linked
-*/
 function register_perk_threads(str_perk, func_give_player_perk, func_take_player_perk) {
-  /#
   assert(isdefined(str_perk), "");
-  # /
-    /#
   assert(isdefined(func_give_player_perk), "");
-  # /
-    _register_undefined_perk(str_perk);
+  _register_undefined_perk(str_perk);
   if(!isdefined(level._custom_perks[str_perk].player_thread_give)) {
     level._custom_perks[str_perk].player_thread_give = func_give_player_perk;
   }
@@ -1772,26 +1212,11 @@ function register_perk_threads(str_perk, func_give_player_perk, func_take_player
   }
 }
 
-/*
-	Name: register_perk_clientfields
-	Namespace: zm_perks
-	Checksum: 0xA4E28C8B
-	Offset: 0x5B70
-	Size: 0x11C
-	Parameters: 3
-	Flags: Linked
-*/
 function register_perk_clientfields(str_perk, func_clientfield_register, func_clientfield_set) {
-  /#
   assert(isdefined(str_perk), "");
-  # /
-    /#
   assert(isdefined(func_clientfield_register), "");
-  # /
-    /#
   assert(isdefined(func_clientfield_set), "");
-  # /
-    _register_undefined_perk(str_perk);
+  _register_undefined_perk(str_perk);
   if(!isdefined(level._custom_perks[str_perk].clientfield_register)) {
     level._custom_perks[str_perk].clientfield_register = func_clientfield_register;
   }
@@ -1800,26 +1225,11 @@ function register_perk_clientfields(str_perk, func_clientfield_register, func_cl
   }
 }
 
-/*
-	Name: register_perk_host_migration_params
-	Namespace: zm_perks
-	Checksum: 0xFE9D97AC
-	Offset: 0x5C98
-	Size: 0x11C
-	Parameters: 3
-	Flags: Linked
-*/
 function register_perk_host_migration_params(str_perk, str_radiant_name, str_effect_name) {
-  /#
   assert(isdefined(str_perk), "");
-  # /
-    /#
   assert(isdefined(str_radiant_name), "");
-  # /
-    /#
   assert(isdefined(str_effect_name), "");
-  # /
-    _register_undefined_perk(str_perk);
+  _register_undefined_perk(str_perk);
   if(!isdefined(level._custom_perks[str_perk].radiant_name)) {
     level._custom_perks[str_perk].radiant_machine_name = str_radiant_name;
   }
@@ -1828,15 +1238,6 @@ function register_perk_host_migration_params(str_perk, str_radiant_name, str_eff
   }
 }
 
-/*
-	Name: _register_undefined_perk
-	Namespace: zm_perks
-	Checksum: 0x97AAAE8
-	Offset: 0x5DC0
-	Size: 0x5A
-	Parameters: 1
-	Flags: Linked
-*/
 function _register_undefined_perk(str_perk) {
   if(!isdefined(level._custom_perks)) {
     level._custom_perks = [];
@@ -1846,21 +1247,10 @@ function _register_undefined_perk(str_perk) {
   }
 }
 
-/*
-	Name: register_perk_damage_override_func
-	Namespace: zm_perks
-	Checksum: 0x3D65EFE7
-	Offset: 0x5E28
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function register_perk_damage_override_func(func_damage_override) {
-  /#
   assert(isdefined(func_damage_override), "");
-  # /
-    if(!isdefined(level.perk_damage_override)) {
-      level.perk_damage_override = [];
-    }
+  if(!isdefined(level.perk_damage_override)) {
+    level.perk_damage_override = [];
+  }
   array::add(level.perk_damage_override, func_damage_override, 0);
 }

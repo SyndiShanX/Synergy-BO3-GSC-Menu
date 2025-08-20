@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_dragon_strike.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -20,45 +24,17 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_stalingrad_pap_quest;
-
 #namespace namespace_19e79ea1;
 
-/*
-	Name: __init__sytem__
-	Namespace: namespace_19e79ea1
-	Checksum: 0x42D8F5FA
-	Offset: 0x828
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_stalingrad_dragon_strike", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: namespace_19e79ea1
-	Checksum: 0x2C8E5FDD
-	Offset: 0x870
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_spawned( & on_player_spawned);
   zm::register_player_damage_callback( & function_43b5419a);
 }
 
-/*
-	Name: __main__
-	Namespace: namespace_19e79ea1
-	Checksum: 0x61DCD413
-	Offset: 0x8C0
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level flag::init("dragon_strike_unlocked");
   level flag::init("dragon_strike_acquired");
@@ -69,15 +45,6 @@ function __main__() {
   function_316be9a7();
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: namespace_19e79ea1
-	Checksum: 0xCB33EFF
-	Offset: 0x9E0
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   if(!self flag::exists("dragon_strike_lockbox_trigger_used")) {
     self flag::init("dragon_strike_lockbox_trigger_used");
@@ -93,15 +60,6 @@ function on_player_spawned() {
   }
 }
 
-/*
-	Name: function_43b5419a
-	Namespace: namespace_19e79ea1
-	Checksum: 0x9BB5F7F5
-	Offset: 0xAF0
-	Size: 0xAC
-	Parameters: 11
-	Flags: Linked
-*/
 function function_43b5419a(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex) {
   if(isdefined(einflictor) && isdefined(einflictor.item) && einflictor.item == getweapon("launcher_dragon_fire")) {
     return 0;
@@ -109,17 +67,8 @@ function function_43b5419a(einflictor, eattacker, idamage, idflags, smeansofdeat
   return -1;
 }
 
-/*
-	Name: function_ea7e3000
-	Namespace: namespace_19e79ea1
-	Checksum: 0x6F8426A7
-	Offset: 0xBA8
-	Size: 0xC4
-	Parameters: 3
-	Flags: Linked
-*/
 function function_ea7e3000(s_unitrigger, var_df61c394, var_60e07243) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   var_8de3e280 = getent("pavlovs_second_floor", "targetname");
   while (!level flag::get(var_df61c394)) {
     if(!self istouching(var_8de3e280)) {
@@ -131,15 +80,6 @@ function function_ea7e3000(s_unitrigger, var_df61c394, var_60e07243) {
   }
 }
 
-/*
-	Name: function_748696f0
-	Namespace: namespace_19e79ea1
-	Checksum: 0x89C76558
-	Offset: 0xC78
-	Size: 0x74
-	Parameters: 2
-	Flags: Linked
-*/
 function function_748696f0(b_on, n_tag) {
   str_clientfield = "lockbox_light_" + n_tag;
   if(b_on) {
@@ -149,17 +89,8 @@ function function_748696f0(b_on, n_tag) {
   }
 }
 
-/*
-	Name: function_41457bd1
-	Namespace: namespace_19e79ea1
-	Checksum: 0xE27E0EE9
-	Offset: 0xCF8
-	Size: 0x22E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_41457bd1() {
-  level endon(# "_zombie_game_over");
+  level endon("_zombie_game_over");
   level flag::wait_till("all_players_spawned");
   self.var_f2c16bcc = 0;
   while (self.var_f2c16bcc < 4) {
@@ -189,17 +120,8 @@ function function_41457bd1() {
   }
 }
 
-/*
-	Name: function_8f02cb7e
-	Namespace: namespace_19e79ea1
-	Checksum: 0xF55A5E79
-	Offset: 0xF30
-	Size: 0x24E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8f02cb7e() {
-  level endon(# "_zombie_game_over");
+  level endon("_zombie_game_over");
   for (i = 1; i <= 4; i++) {
     self thread function_748696f0(0, i);
   }
@@ -231,15 +153,6 @@ function function_8f02cb7e() {
   }
 }
 
-/*
-	Name: function_316be9a7
-	Namespace: namespace_19e79ea1
-	Checksum: 0xA2628307
-	Offset: 0x1188
-	Size: 0x2F4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_316be9a7() {
   s_unitrigger = struct::get("dragon_strike_controller");
   s_unitrigger.var_f30d1f8f = spawn("script_model", s_unitrigger.origin);
@@ -266,15 +179,6 @@ function function_316be9a7() {
   s_unitrigger.var_f30d1f8f.var_6306226 thread function_f25c1083();
 }
 
-/*
-	Name: function_10d61b3
-	Namespace: namespace_19e79ea1
-	Checksum: 0x39BE6252
-	Offset: 0x1488
-	Size: 0x47A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_10d61b3(player) {
   if(level flag::get("draconite_available") && player zm_utility::get_player_placeable_mine() != getweapon("launcher_dragon_strike_upgraded")) {
     self sethintstringforplayer(player, & "ZM_STALINGRAD_DRAGON_STRIKE_UPGRADED_PICKUP");
@@ -302,19 +206,10 @@ function function_10d61b3(player) {
   }
 }
 
-/*
-	Name: function_68299355
-	Namespace: namespace_19e79ea1
-	Checksum: 0x5E41BE97
-	Offset: 0x1910
-	Size: 0x3C8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_68299355() {
   level flag::wait_till("all_players_spawned");
   while (true) {
-    self waittill(# "trigger", e_player);
+    self waittill("trigger", e_player);
     e_player clientfield::increment_to_player("interact_rumble");
     e_player playsound("zmb_stalingrad_buttons");
     if(level flag::get("draconite_available") && e_player zm_utility::get_player_placeable_mine() != getweapon("launcher_dragon_strike_upgraded")) {
@@ -343,15 +238,6 @@ function function_68299355() {
   }
 }
 
-/*
-	Name: function_f25c1083
-	Namespace: namespace_19e79ea1
-	Checksum: 0xF85A7C84
-	Offset: 0x1CE0
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f25c1083() {
   level flag::wait_till("dragon_strike_quest_complete");
   var_8de3e280 = getent("pavlovs_second_floor", "targetname");
@@ -361,15 +247,6 @@ function function_f25c1083() {
   self scene::play("p7_fxanim_zm_stal_dragon_strike_console_bundle");
 }
 
-/*
-	Name: function_8258d71c
-	Namespace: namespace_19e79ea1
-	Checksum: 0xA8EE90DA
-	Offset: 0x1D80
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8258d71c() {
   if(level flag::get("draconite_available")) {
     var_5a0c399b = getweapon("launcher_dragon_strike_upgraded");
@@ -382,35 +259,17 @@ function function_8258d71c() {
   self thread function_b8ea3482("zmInventory.widget_dragon_strike");
   self zm_weapons::weapon_give(var_5a0c399b);
   self setweaponammoclip(var_5a0c399b, n_max_ammo);
-  self thread zm_equipment::show_hint_text( & "ZM_STALINGRAD_DRAGON_STRIKE_EQUIP");
+  self thread zm_equipment::show_hint_text(&"ZM_STALINGRAD_DRAGON_STRIKE_EQUIP");
   self zm_audio::create_and_play_dialog("weapon_pickup", "controller");
 }
 
-/*
-	Name: function_b8ea3482
-	Namespace: namespace_19e79ea1
-	Checksum: 0xBF45FAC4
-	Offset: 0x1ED0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b8ea3482(str_widget_clientuimodel) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self thread clientfield::set_player_uimodel(str_widget_clientuimodel, 1);
   wait(3);
   self thread clientfield::set_player_uimodel(str_widget_clientuimodel, 0);
 }
 
-/*
-	Name: function_56059128
-	Namespace: namespace_19e79ea1
-	Checksum: 0x303BE90C
-	Offset: 0x1F30
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_56059128() {
   level flag::init("dragonstrike_stage_complete");
   level flag::init("dragon_stage1_started");
@@ -420,15 +279,6 @@ function function_56059128() {
   level thread function_93510b8b();
 }
 
-/*
-	Name: function_93510b8b
-	Namespace: namespace_19e79ea1
-	Checksum: 0x3BC239FA
-	Offset: 0x1FF8
-	Size: 0x344
-	Parameters: 0
-	Flags: Linked
-*/
 function function_93510b8b() {
   level flag::wait_till("dragon_strike_unlocked");
   level flag::set("dragon_stage1_started");
@@ -463,32 +313,12 @@ function function_93510b8b() {
   playsoundatposition("zmb_ee_dragon_success", (0, 0, 0));
 }
 
-/*
-	Name: function_e6794c49
-	Namespace: namespace_19e79ea1
-	Checksum: 0x2EEFBE17
-	Offset: 0x2348
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e6794c49() {
   wait(10);
   playsoundatposition("zmb_drag_strike_lockdown_over", (0, 0, 0));
-  /#
   iprintlnbold("");
-  # /
 }
 
-/*
-	Name: function_af4562b1
-	Namespace: namespace_19e79ea1
-	Checksum: 0x4B795451
-	Offset: 0x2398
-	Size: 0xDA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_af4562b1() {
   var_5a0c399b = getweapon("launcher_dragon_strike");
   foreach(player in level.players) {
@@ -498,39 +328,21 @@ function function_af4562b1() {
   }
 }
 
-/*
-	Name: function_2e107eef
-	Namespace: namespace_19e79ea1
-	Checksum: 0xC41B03DA
-	Offset: 0x2480
-	Size: 0xC2
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2e107eef(e_attacker) {
   if(isdefined(self) && self.damageweapon === getweapon("launcher_dragon_fire") && (level flag::get("dragon_stage1_started") || (level flag::get("dragon_stage3_started") && level flag::get("lockdown_active")))) {
     if(isdefined(e_attacker) && isdefined(e_attacker.player)) {
-      level notify(# "hash_d4eb8535");
+      level notify("hash_d4eb8535");
     }
   }
 }
 
-/*
-	Name: function_815a155e
-	Namespace: namespace_19e79ea1
-	Checksum: 0x5BE9FB9D
-	Offset: 0x2550
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_815a155e(var_62a210b7) {
-  level notify(# "hash_2e199c2");
-  level endon(# "hash_2e199c2");
+  level notify("hash_2e199c2");
+  level endon("hash_2e199c2");
   level flag::clear("dragonstrike_stage_complete");
   level.var_3810a36f = 0;
   while (true) {
-    level waittill(# "hash_d4eb8535");
+    level waittill("hash_d4eb8535");
     level.var_3810a36f++;
     if(level.var_3810a36f >= var_62a210b7) {
       level flag::set("dragonstrike_stage_complete");
@@ -539,15 +351,6 @@ function function_815a155e(var_62a210b7) {
   }
 }
 
-/*
-	Name: function_5cb61169
-	Namespace: namespace_19e79ea1
-	Checksum: 0x13EEE73
-	Offset: 0x2600
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5cb61169() {
   level flag::wait_till("all_players_connected");
   var_47295c1 = getentarray("dragonstrike_ee_banner", "targetname");
@@ -560,19 +363,10 @@ function function_5cb61169() {
   array::thread_all(var_47295c1, & function_75a7ba2d);
 }
 
-/*
-	Name: function_75a7ba2d
-	Namespace: namespace_19e79ea1
-	Checksum: 0x1E6B4E4A
-	Offset: 0x2710
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked
-*/
 function function_75a7ba2d() {
   self.takedamage = 1;
   while (true) {
-    self waittill(# "damage", damage, attacker, dir, loc, type, model, tag, part, weapon, flags);
+    self waittill("damage", damage, attacker, dir, loc, type, model, tag, part, weapon, flags);
     if(weapon === getweapon("launcher_dragon_fire")) {
       break;
     }
@@ -587,15 +381,6 @@ function function_75a7ba2d() {
   self delete();
 }
 
-/*
-	Name: function_46c8b621
-	Namespace: namespace_19e79ea1
-	Checksum: 0x97A910BF
-	Offset: 0x2870
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_46c8b621() {
   var_2b71b5b4 = 3 + level.players.size;
   var_af22dd13 = 2 + level.players.size;

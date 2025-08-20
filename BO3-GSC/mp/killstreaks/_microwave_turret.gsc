@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_microwave_turret.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -27,20 +31,9 @@
 #using scripts\shared\vehicle_death_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #using_animtree("mp_microwaveturret");
-
 #namespace microwave_turret;
 
-/*
-	Name: init
-	Namespace: microwave_turret
-	Checksum: 0x5964803C
-	Offset: 0x970
-	Size: 0x23C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   killstreaks::register("microwave_turret", "microwave_turret_deploy", "killstreak_" + "microwave_turret", "microwave_turret" + "_used", & activatemicrowaveturret, 0, 1);
   killstreaks::register_strings("microwave_turret", & "KILLSTREAK_EARNED_MICROWAVE_TURRET", & "KILLSTREAK_MICROWAVE_TURRET_NOT_AVAILABLE", & "KILLSTREAK_MICROWAVE_TURRET_INBOUND", undefined, & "KILLSTREAK_MICROWAVE_TURRET_HACKED", 0);
@@ -56,15 +49,6 @@ function init() {
   callback::on_vehicle_spawned( & on_vehicle_spawned);
 }
 
-/*
-	Name: initturretvehicle
-	Namespace: microwave_turret
-	Checksum: 0xADA05FE9
-	Offset: 0xBB8
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function initturretvehicle() {
   turretvehicle = self;
   turretvehicle killstreaks::setup_health("microwave_turret");
@@ -81,61 +65,23 @@ function initturretvehicle() {
   turretvehicle.aim_only_no_shooting = 1;
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: microwave_turret
-	Checksum: 0xF5FEBB9C
-	Offset: 0xD10
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self reset_being_microwaved();
 }
 
-/*
-	Name: on_vehicle_spawned
-	Namespace: microwave_turret
-	Checksum: 0xD795ACC2
-	Offset: 0xD38
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_vehicle_spawned() {
   self reset_being_microwaved();
 }
 
-/*
-	Name: reset_being_microwaved
-	Namespace: microwave_turret
-	Checksum: 0xB875DF0
-	Offset: 0xD60
-	Size: 0x16
-	Parameters: 0
-	Flags: Linked
-*/
 function reset_being_microwaved() {
   self.lastmicrowavedby = undefined;
   self.beingmicrowavedby = undefined;
 }
 
-/*
-	Name: activatemicrowaveturret
-	Namespace: microwave_turret
-	Checksum: 0x3DB8207B
-	Offset: 0xD80
-	Size: 0x2C8
-	Parameters: 0
-	Flags: Linked
-*/
 function activatemicrowaveturret() {
   player = self;
-  /#
   assert(isplayer(player));
-  # /
-    killstreakid = self killstreakrules::killstreakstart("microwave_turret", player.team, 0, 0);
+  killstreakid = self killstreakrules::killstreakstart("microwave_turret", player.team, 0, 0);
   if(killstreakid == -1) {
     return false;
   }
@@ -156,26 +102,14 @@ function activatemicrowaveturret() {
   return true;
 }
 
-/*
-	Name: onplaceturret
-	Namespace: microwave_turret
-	Checksum: 0xE5113736
-	Offset: 0x1050
-	Size: 0x424
-	Parameters: 1
-	Flags: Linked
-*/
 function onplaceturret(turret) {
   player = self;
-  /#
   assert(isplayer(player));
-  # /
-    if(isdefined(turret.vehicle)) {
-      turret.vehicle.origin = turret.origin;
-      turret.vehicle.angles = turret.angles;
-      turret.vehicle thread util::ghost_wait_show(0.05);
-    }
-  else {
+  if(isdefined(turret.vehicle)) {
+    turret.vehicle.origin = turret.origin;
+    turret.vehicle.angles = turret.angles;
+    turret.vehicle thread util::ghost_wait_show(0.05);
+  } else {
     turret.vehicle = spawnvehicle("microwave_turret", turret.origin, turret.angles, "dynamic_spawn_ai");
     turret.vehicle.owner = player;
     turret.vehicle setowner(player);
@@ -200,58 +134,22 @@ function onplaceturret(turret) {
   turret startmicrowave();
 }
 
-/*
-	Name: hackedprefunction
-	Namespace: microwave_turret
-	Checksum: 0xD89A2A45
-	Offset: 0x1480
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedprefunction(hacker) {
   turretvehicle = self;
-  turretvehicle.turret notify(# "hacker_delete_placeable_trigger");
+  turretvehicle.turret notify("hacker_delete_placeable_trigger");
   turretvehicle.turret stopmicrowave();
   turretvehicle.turret killstreaks::configure_team("microwave_turret", turretvehicle.turret.killstreakid, hacker, undefined, undefined, undefined, 1);
 }
 
-/*
-	Name: hackedpostfunction
-	Namespace: microwave_turret
-	Checksum: 0x284327A6
-	Offset: 0x1528
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedpostfunction(hacker) {
   turretvehicle = self;
   turretvehicle.turret startmicrowave();
 }
 
-/*
-	Name: oncancelplacement
-	Namespace: microwave_turret
-	Checksum: 0x74CF63C
-	Offset: 0x1570
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function oncancelplacement(turret) {
-  turret notify(# "microwave_turret_shutdown");
+  turret notify("microwave_turret_shutdown");
 }
 
-/*
-	Name: onpickupturret
-	Namespace: microwave_turret
-	Checksum: 0x444DF70E
-	Offset: 0x1598
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function onpickupturret(turret) {
   turret stopmicrowave();
   turret.vehicle thread ghostafterwait(0.05);
@@ -261,43 +159,16 @@ function onpickupturret(turret) {
   turret.vehicle vehicle::connect_paths();
 }
 
-/*
-	Name: ghostafterwait
-	Namespace: microwave_turret
-	Checksum: 0xB643856F
-	Offset: 0x1670
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function ghostafterwait(wait_time) {
-  self endon(# "death");
+  self endon("death");
   wait(wait_time);
   self ghost();
 }
 
-/*
-	Name: onemp
-	Namespace: microwave_turret
-	Checksum: 0x19110E16
-	Offset: 0x16B0
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function onemp(attacker) {
   turret = self;
 }
 
-/*
-	Name: onturretdamage
-	Namespace: microwave_turret
-	Checksum: 0x2294D9AE
-	Offset: 0x16D8
-	Size: 0x138
-	Parameters: 15
-	Flags: Linked
-*/
 function onturretdamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   empdamage = int((idamage + (self.healthdefault * 1)) + 0.5);
   idamage = self killstreaks::ondamageperweapon("microwave_turret", eattacker, idamage, idflags, smeansofdeath, weapon, self.maxhealth, undefined, self.maxhealth * 0.4, undefined, empdamage, undefined, 1, 1);
@@ -305,15 +176,6 @@ function onturretdamage(einflictor, eattacker, idamage, idflags, smeansofdeath, 
   return idamage;
 }
 
-/*
-	Name: onturretdeath
-	Namespace: microwave_turret
-	Checksum: 0x3BF8AA93
-	Offset: 0x1818
-	Size: 0x32C
-	Parameters: 8
-	Flags: Linked
-*/
 function onturretdeath(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   turretvehicle = self;
   eattacker = self[[level.figure_out_attacker]](eattacker);
@@ -331,80 +193,44 @@ function onturretdeath(einflictor, eattacker, idamage, smeansofdeath, weapon, vd
     eattacker challenges::destroynonairscorestreak_poststatslock(weapon);
     eattacker addplayerstat("destroy_turret", 1);
     eattacker addweaponstat(weapon, "destroy_turret", 1);
-    luinotifyevent( & "player_callout", 2, & "KILLSTREAK_DESTROYED_MICROWAVE_TURRET", eattacker.entnum);
+    luinotifyevent(&"player_callout", 2, & "KILLSTREAK_DESTROYED_MICROWAVE_TURRET", eattacker.entnum);
   }
   if(isdefined(turretvehicle.parentstruct)) {
-    turretvehicle.parentstruct notify(# "microwave_turret_shutdown");
+    turretvehicle.parentstruct notify("microwave_turret_shutdown");
   }
   turretvehicle vehicle_death::death_fx();
   wait(0.1);
   turretvehicle delete();
 }
 
-/*
-	Name: onturretdeathpostgame
-	Namespace: microwave_turret
-	Checksum: 0x3CF83048
-	Offset: 0x1B50
-	Size: 0xE4
-	Parameters: 8
-	Flags: Linked
-*/
 function onturretdeathpostgame(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   turretvehicle = self;
   if(isdefined(turretvehicle.parentstruct)) {
     turretvehicle.parentstruct placeables::forceshutdown();
   }
   if(isdefined(turretvehicle.parentstruct)) {
-    turretvehicle.parentstruct notify(# "microwave_turret_shutdown");
+    turretvehicle.parentstruct notify("microwave_turret_shutdown");
   }
   turretvehicle vehicle_death::death_fx();
   wait(0.1);
   turretvehicle delete();
 }
 
-/*
-	Name: onshutdown
-	Namespace: microwave_turret
-	Checksum: 0x95D65599
-	Offset: 0x1C40
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function onshutdown(turret) {
   turret stopmicrowave();
   if(isdefined(turret.vehicle)) {
     turret.vehicle playsound("mpl_m_turret_exp");
     turret.vehicle kill();
   }
-  turret notify(# "microwave_turret_shutdown");
+  turret notify("microwave_turret_shutdown");
 }
 
-/*
-	Name: watchkillstreakend
-	Namespace: microwave_turret
-	Checksum: 0xC31FFF4D
-	Offset: 0x1CD8
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function watchkillstreakend(killstreak_id, team) {
   turret = self;
-  turret waittill(# "microwave_turret_shutdown");
+  turret waittill("microwave_turret_shutdown");
   killstreakrules::killstreakstop("microwave_turret", team, killstreak_id);
 }
 
-/*
-	Name: startmicrowave
-	Namespace: microwave_turret
-	Checksum: 0xEFA9CFD6
-	Offset: 0x1D38
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function startmicrowave() {
   turret = self;
   if(isdefined(turret.trigger)) {
@@ -419,20 +245,9 @@ function startmicrowave() {
   }
   turret turret::createturretinfluencer("turret");
   turret turret::createturretinfluencer("turret_close");
-  /#
   turret thread turretdebugwatch();
-  # /
 }
 
-/*
-	Name: stopmicrowave
-	Namespace: microwave_turret
-	Checksum: 0x704AED9E
-	Offset: 0x1EE0
-	Size: 0x160
-	Parameters: 0
-	Flags: Linked
-*/
 function stopmicrowave() {
   turret = self;
   turret spawning::remove_influencers();
@@ -447,27 +262,16 @@ function stopmicrowave() {
       turret.microwavefxent delete();
     }
     if(isdefined(turret.trigger)) {
-      turret.trigger notify(# "microwave_end_fx");
+      turret.trigger notify("microwave_end_fx");
       turret.trigger delete();
     }
-    /#
-    turret notify(# "stop_turret_debug");
-    # /
+    turret notify("stop_turret_debug");
   }
 }
 
-/*
-	Name: turretdebugwatch
-	Namespace: microwave_turret
-	Checksum: 0x4FFEED07
-	Offset: 0x2048
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function turretdebugwatch() {
   turret = self;
-  turret endon(# "stop_turret_debug");
+  turret endon("stop_turret_debug");
   for (;;) {
     if(getdvarint("scr_microwave_turret_debug") != 0) {
       turret turretdebug();
@@ -478,15 +282,6 @@ function turretdebugwatch() {
   }
 }
 
-/*
-	Name: turretdebug
-	Namespace: microwave_turret
-	Checksum: 0x83388755
-	Offset: 0x20C8
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function turretdebug() {
   turret = self;
   debug_line_frames = 3;
@@ -498,23 +293,14 @@ function turretdebug() {
   util::debug_spherical_cone(cone_apex, dome_apex, 15, 16, (0.95, 0.1, 0.1), 0.3, 1, debug_line_frames);
 }
 
-/*
-	Name: turretthink
-	Namespace: microwave_turret
-	Checksum: 0xCD51CE19
-	Offset: 0x2200
-	Size: 0x110
-	Parameters: 0
-	Flags: Linked
-*/
 function turretthink() {
   turret = self;
-  turret endon(# "microwave_turret_shutdown");
-  turret.trigger endon(# "death");
-  turret.trigger endon(# "delete");
+  turret endon("microwave_turret_shutdown");
+  turret.trigger endon("death");
+  turret.trigger endon("delete");
   turret.turret_vehicle_entnum = turret.vehicle getentitynumber();
   while (true) {
-    turret.trigger waittill(# "trigger", ent);
+    turret.trigger waittill("trigger", ent);
     if(ent == turret) {
       continue;
     }
@@ -527,21 +313,12 @@ function turretthink() {
   }
 }
 
-/*
-	Name: microwaveentitypostshutdowncleanup
-	Namespace: microwave_turret
-	Checksum: 0x2B0869D7
-	Offset: 0x2318
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function microwaveentitypostshutdowncleanup(entity) {
-  entity endon(# "disconnect");
-  entity endon(# "end_microwaveentitypostshutdowncleanup");
+  entity endon("disconnect");
+  entity endon("end_microwaveentitypostshutdowncleanup");
   turret = self;
   turret_vehicle_entnum = turret.turret_vehicle_entnum;
-  turret waittill(# "microwave_turret_shutdown");
+  turret waittill("microwave_turret_shutdown");
   if(isdefined(entity)) {
     if(isdefined(entity.beingmicrowavedby) && isdefined(entity.beingmicrowavedby[turret_vehicle_entnum])) {
       entity.beingmicrowavedby[turret_vehicle_entnum] = undefined;
@@ -549,23 +326,14 @@ function microwaveentitypostshutdowncleanup(entity) {
   }
 }
 
-/*
-	Name: microwaveentity
-	Namespace: microwave_turret
-	Checksum: 0x46C49B69
-	Offset: 0x23C8
-	Size: 0x6F8
-	Parameters: 1
-	Flags: Linked
-*/
 function microwaveentity(entity) {
   turret = self;
-  turret endon(# "microwave_turret_shutdown");
-  entity endon(# "disconnect");
-  entity endon(# "death");
+  turret endon("microwave_turret_shutdown");
+  entity endon("disconnect");
+  entity endon("death");
   if(isplayer(entity)) {
-    entity endon(# "joined_team");
-    entity endon(# "joined_spectators");
+    entity endon("joined_team");
+    entity endon("joined_spectators");
   }
   turret thread microwaveentitypostshutdowncleanup(entity);
   entity.beingmicrowavedby[turret.turret_vehicle_entnum] = turret.owner;
@@ -589,7 +357,7 @@ function microwaveentity(entity) {
       if(isdefined(entity.microwavepoisoning) && entity.microwavepoisoning) {
         entity.microwavepoisoning = 0;
       }
-      entity notify(# "end_microwaveentitypostshutdowncleanup");
+      entity notify("end_microwaveentitypostshutdowncleanup");
       return;
     }
     damage = 15 * damagescalar;
@@ -636,15 +404,6 @@ function microwaveentity(entity) {
   }
 }
 
-/*
-	Name: microwaveturretaffectsentity
-	Namespace: microwave_turret
-	Checksum: 0xBF232E13
-	Offset: 0x2AC8
-	Size: 0x2BA
-	Parameters: 1
-	Flags: Linked
-*/
 function microwaveturretaffectsentity(entity) {
   turret = self;
   if(!isalive(entity)) {

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_killstreak_weapons.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic_utils;
@@ -11,18 +15,8 @@
 #using scripts\shared\popups_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapons;
-
 #namespace killstreak_weapons;
 
-/*
-	Name: init
-	Namespace: killstreak_weapons
-	Checksum: 0xE0F85950
-	Offset: 0x570
-	Size: 0x284
-	Parameters: 0
-	Flags: None
-*/
 function init() {
   killstreaks::register("minigun", "minigun", "killstreak_minigun", "minigun_used", & usecarriedkillstreakweapon, 0, 1, "MINIGUN_USED");
   killstreaks::register_strings("minigun", & "KILLSTREAK_EARNED_MINIGUN", & "KILLSTREAK_MINIGUN_NOT_AVAILABLE", & "KILLSTREAK_MINIGUN_INBOUND", undefined, & "KILLSTREAK_MINIGUN_HACKED");
@@ -40,17 +34,8 @@ function init() {
   setdvar("scr_HeldKillstreak_Penalty", 0);
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: killstreak_weapons
-	Checksum: 0x9781C0D5
-	Offset: 0x800
-	Size: 0x8C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.firedkillstreakweapon = 0;
   self.usingkillstreakheldweapon = undefined;
   if(!util::isfirstround() && !util::isoneround()) {
@@ -60,21 +45,12 @@ function on_player_spawned() {
   }
 }
 
-/*
-	Name: watchkillstreakweapondelay
-	Namespace: killstreak_weapons
-	Checksum: 0xB827EBB8
-	Offset: 0x898
-	Size: 0x1A0
-	Parameters: 0
-	Flags: Linked
-*/
 function watchkillstreakweapondelay() {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   while (true) {
     currentweapon = self getcurrentweapon();
-    self waittill(# "weapon_change", newweapon);
+    self waittill("weapon_change", newweapon);
     if(level.roundstartkillstreakdelay < (globallogic_utils::gettimepassed() / 1000)) {
       return;
     }
@@ -88,43 +64,25 @@ function watchkillstreakweapondelay() {
       if(!timeleft) {
         timeleft = 1;
       }
-      self iprintlnbold( & "MP_UNAVAILABLE_FOR_N", (" " + timeleft) + " ", & "EXE_SECONDS");
+      self iprintlnbold(&"MP_UNAVAILABLE_FOR_N", (" " + timeleft) + " ", & "EXE_SECONDS");
       self switchtoweapon(currentweapon);
       wait(0.5);
     }
   }
 }
 
-/*
-	Name: usekillstreakweapondrop
-	Namespace: killstreak_weapons
-	Checksum: 0xDC2E927D
-	Offset: 0xA40
-	Size: 0x7C
-	Parameters: 1
-	Flags: None
-*/
 function usekillstreakweapondrop(hardpointtype) {
   if(self supplydrop::issupplydropgrenadeallowed(hardpointtype) == 0) {
     return 0;
   }
   result = self supplydrop::usesupplydropmarker();
-  self notify(# "supply_drop_marker_done");
+  self notify("supply_drop_marker_done");
   if(!isdefined(result) || !result) {
     return 0;
   }
   return result;
 }
 
-/*
-	Name: usecarriedkillstreakweapon
-	Namespace: killstreak_weapons
-	Checksum: 0x910925FC
-	Offset: 0xAC8
-	Size: 0x6BA
-	Parameters: 1
-	Flags: Linked
-*/
 function usecarriedkillstreakweapon(hardpointtype) {
   if(!isdefined(hardpointtype)) {
     return false;
@@ -188,10 +146,8 @@ function usecarriedkillstreakweapon(hardpointtype) {
       killstreak_id = self.m32id;
     }
   }
-  /#
   assert(killstreak_id != -1);
-  # /
-    self.firedkillstreakweapon = 0;
+  self.firedkillstreakweapon = 0;
   self setblockweaponpickup(killstreakweapon, 1);
   if(isfrominventory) {
     self setweaponammoclip(killstreakweapon, self.pers["held_killstreak_clip_count"][killstreakweapon]);
@@ -210,15 +166,6 @@ function usecarriedkillstreakweapon(hardpointtype) {
   return false;
 }
 
-/*
-	Name: usekillstreakweaponfromcrate
-	Namespace: killstreak_weapons
-	Checksum: 0x83A49612
-	Offset: 0x1190
-	Size: 0x194
-	Parameters: 1
-	Flags: Linked
-*/
 function usekillstreakweaponfromcrate(hardpointtype) {
   if(!isdefined(hardpointtype)) {
     return false;
@@ -230,13 +177,10 @@ function usekillstreakweaponfromcrate(hardpointtype) {
   self.firedkillstreakweapon = 0;
   self setblockweaponpickup(killstreakweapon, 1);
   killstreak_id = self killstreakrules::killstreakstart(hardpointtype, self.team, 0, 0);
-  /#
   assert(killstreak_id != -1);
-  # /
-    if(issubstr(killstreakweapon.name, "inventory")) {
-      isfrominventory = 1;
-    }
-  else {
+  if(issubstr(killstreakweapon.name, "inventory")) {
+    isfrominventory = 1;
+  } else {
     isfrominventory = 0;
   }
   self thread watchkillstreakweaponswitch(killstreakweapon, killstreak_id, isfrominventory);
@@ -248,24 +192,15 @@ function usekillstreakweaponfromcrate(hardpointtype) {
   return true;
 }
 
-/*
-	Name: watchkillstreakweaponswitch
-	Namespace: killstreak_weapons
-	Checksum: 0x98BA25E4
-	Offset: 0x1330
-	Size: 0x4A4
-	Parameters: 3
-	Flags: Linked
-*/
 function watchkillstreakweaponswitch(killstreakweapon, killstreak_id, isfrominventory) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   noneweapon = getweapon("none");
   minigunweapon = getweapon("minigun");
   miniguninventoryweapon = getweapon("inventory_minigun");
   while (true) {
     currentweapon = self getcurrentweapon();
-    self waittill(# "weapon_change", newweapon);
+    self waittill("weapon_change", newweapon);
     if(level.infinalkillcam) {
       continue;
     }
@@ -294,7 +229,7 @@ function watchkillstreakweaponswitch(killstreakweapon, killstreak_id, isfrominve
     self.pers["held_killstreak_ammo_count"][killstreakweapon] = currentammo;
     self.pers["held_killstreak_clip_count"][killstreakweapon] = currentammoinclip;
     if(killstreak_id != -1) {
-      self notify(# "killstreak_weapon_switch");
+      self notify("killstreak_weapon_switch");
     }
     self.firedkillstreakweapon = 0;
     self.usingkillstreakheldweapon = undefined;
@@ -323,23 +258,14 @@ function watchkillstreakweaponswitch(killstreakweapon, killstreak_id, isfrominve
   }
 }
 
-/*
-	Name: watchkillstreakweapondeath
-	Namespace: killstreak_weapons
-	Checksum: 0xCD1AE03C
-	Offset: 0x17E0
-	Size: 0x4FC
-	Parameters: 3
-	Flags: Linked
-*/
 function watchkillstreakweapondeath(killstreakweapon, killstreak_id, isfrominventory) {
-  self endon(# "disconnect");
-  self endon(# "killstreak_weapon_switch");
+  self endon("disconnect");
+  self endon("killstreak_weapon_switch");
   if(killstreak_id == -1) {
     return;
   }
   oldteam = self.team;
-  self waittill(# "death");
+  self waittill("death");
   penalty = getdvarfloat("scr_HeldKillstreak_Penalty", 0.5);
   maxammo = killstreakweapon.maxammo;
   currentammo = self getammocount(killstreakweapon);
@@ -391,38 +317,20 @@ function watchkillstreakweapondeath(killstreakweapon, killstreak_id, isfrominven
   }
 }
 
-/*
-	Name: watchplayerdeath
-	Namespace: killstreak_weapons
-	Checksum: 0x6BA2F7A2
-	Offset: 0x1CE8
-	Size: 0xC0
-	Parameters: 1
-	Flags: Linked
-*/
 function watchplayerdeath(killstreakweapon) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   endonweaponstring = "killstreakWeapon_" + killstreakweapon.name;
   self endon(endonweaponstring);
-  self waittill(# "death");
+  self waittill("death");
   currentammo = self getammocount(killstreakweapon);
   self.pers["held_killstreak_clip_count"][killstreakweapon] = (killstreakweapon.clipsize <= currentammo ? killstreakweapon.clipsize : currentammo);
 }
 
-/*
-	Name: watchkillstreakremoval
-	Namespace: killstreak_weapons
-	Checksum: 0xAAA4FFDA
-	Offset: 0x1DB0
-	Size: 0xE8
-	Parameters: 2
-	Flags: Linked
-*/
 function watchkillstreakremoval(killstreaktype, killstreak_id) {
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "killstreak_weapon_switch");
-  self waittill(# "oldest_killstreak_removed", removedkillstreaktype, removed_id);
+  self endon("disconnect");
+  self endon("death");
+  self endon("killstreak_weapon_switch");
+  self waittill("oldest_killstreak_removed", removedkillstreaktype, removed_id);
   if(killstreaktype == removedkillstreaktype && killstreak_id == removed_id) {
     removedkillstreakweapon = killstreaks::get_killstreak_weapon(removedkillstreaktype);
     if(removedkillstreakweapon.name == "inventory_minigun") {
@@ -435,20 +343,11 @@ function watchkillstreakremoval(killstreaktype, killstreak_id) {
   }
 }
 
-/*
-	Name: watchkillstreakroundchange
-	Namespace: killstreak_weapons
-	Checksum: 0xD356F5A9
-	Offset: 0x1EA0
-	Size: 0x1A8
-	Parameters: 2
-	Flags: Linked
-*/
 function watchkillstreakroundchange(isfrominventory, killstreak_id) {
-  self endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "killstreak_weapon_switch");
-  self waittill(# "round_ended");
+  self endon("disconnect");
+  self endon("death");
+  self endon("killstreak_weapon_switch");
+  self waittill("round_ended");
   currentweapon = self getcurrentweapon();
   if(!currentweapon.iscarriedkillstreak) {
     return;
@@ -467,15 +366,6 @@ function watchkillstreakroundchange(isfrominventory, killstreak_id) {
   }
 }
 
-/*
-	Name: checkifswitchableweapon
-	Namespace: killstreak_weapons
-	Checksum: 0x9940A900
-	Offset: 0x2050
-	Size: 0x236
-	Parameters: 4
-	Flags: None
-*/
 function checkifswitchableweapon(currentweapon, newweapon, killstreakweapon, currentkillstreakid) {
   switchableweapon = 1;
   topkillstreak = killstreaks::get_top_killstreak();

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\bonuszm\_bonuszm_weapons.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\math_shared;
@@ -6,41 +10,16 @@
 
 class class_a17e6f03 {
 
-  /*
-  	Name: constructor
-  	Namespace: namespace_a17e6f03
-  	Checksum: 0x99EC1590
-  	Offset: 0x198
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: namespace_a17e6f03
-  	Checksum: 0x99EC1590
-  	Offset: 0x1A8
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
 }
 
 #namespace namespace_fdfaa57d;
 
-/*
-	Name: function_58d5283a
-	Namespace: namespace_fdfaa57d
-	Checksum: 0x30387A33
-	Offset: 0x248
-	Size: 0x154
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec function_58d5283a() {
   if(!sessionmodeiscampaignzombiesgame()) {
     return;
@@ -54,21 +33,10 @@ function autoexec function_58d5283a() {
   level.var_24893e7 ghost();
   level.var_a432d965 = struct::get_script_bundle("bonuszmdata", mapname);
   var_6a173bd1 = getstructfield(level.var_a432d965, "weaponsTable");
-  /#
   assert(isdefined(var_6a173bd1));
-  # /
-    function_549c28ac(("gamedata/tables/cpzm/") + var_6a173bd1);
+  function_549c28ac(("gamedata/tables/cpzm/") + var_6a173bd1);
 }
 
-/*
-	Name: function_549c28ac
-	Namespace: namespace_fdfaa57d
-	Checksum: 0x9597F221
-	Offset: 0x3A8
-	Size: 0x24E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_549c28ac(var_6a173bd1) {
   noneweapon = getweapon("none");
   var_adeb478a = tablelookuprowcount(var_6a173bd1);
@@ -94,15 +62,6 @@ function function_549c28ac(var_6a173bd1) {
   }
 }
 
-/*
-	Name: function_1e2e0936
-	Namespace: namespace_fdfaa57d
-	Checksum: 0x97A564D
-	Offset: 0x600
-	Size: 0xEA
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1e2e0936(var_1010f96a = 0) {
   if(isdefined(level.var_fd21e404)) {
     weaponinfo = level.var_fd21e404;
@@ -116,26 +75,11 @@ function function_1e2e0936(var_1010f96a = 0) {
   return function_53200e4d(var_1010f96a);
 }
 
-/*
-	Name: function_53200e4d
-	Namespace: namespace_fdfaa57d
-	Checksum: 0x93E48692
-	Offset: 0x6F8
-	Size: 0x890
-	Parameters: 1
-	Flags: Linked
-*/
 function function_53200e4d(var_1010f96a) {
-  /#
   assert(isdefined(level.var_acba406b));
-  # /
-    /#
   assert(isdefined(level.var_ed11f8b7));
-  # /
-    /#
   assert(isdefined(level.var_a9e78bf7[""]));
-  # /
-    var_82d771df = undefined;
+  var_82d771df = undefined;
   var_d9cb0358 = [];
   if(var_1010f96a && level.var_5e3f3853 < level.var_a9e78bf7["maxmagicboxonlyweapons"] && randomint(100) < level.var_a9e78bf7["magicboxonlyweaponchance"] && level.var_ed11f8b7.size) {
     level.var_5e3f3853++;
@@ -204,26 +148,13 @@ function function_53200e4d(var_1010f96a) {
   } else {
     weaponinfo[2] = 0;
   }
-  /#
   assert(weaponinfo[0] != level.weaponnone);
-  # /
-    return weaponinfo;
+  return weaponinfo;
 }
 
-/*
-	Name: function_43128d49
-	Namespace: namespace_fdfaa57d
-	Checksum: 0xE01C7CC
-	Offset: 0xF90
-	Size: 0x48C
-	Parameters: 2
-	Flags: Linked
-*/
 function function_43128d49(weaponinfo, var_fe7b5ca3 = 1) {
-  /#
   assert(isdefined(weaponinfo));
-  # /
-    randomweapon = weaponinfo[0];
+  randomweapon = weaponinfo[0];
   var_d6c5d457 = weaponinfo[1];
   var_54a70e6e = weaponinfo[2];
   if(!isdefined(randomweapon)) {
@@ -274,38 +205,20 @@ function function_43128d49(weaponinfo, var_fe7b5ca3 = 1) {
   }
 }
 
-/*
-	Name: function_7e774306
-	Namespace: namespace_fdfaa57d
-	Checksum: 0xA9502087
-	Offset: 0x1428
-	Size: 0x156
-	Parameters: 0
-	Flags: None
-*/
 function function_7e774306() {
   level.var_3d2f81f1 = getweapon("ar_standard");
   while (true) {
-    level waittill(# "scene_sequence_started");
+    level waittill("scene_sequence_started");
     foreach(player in level.activeplayers) {
       player function_be94c003();
     }
-    level waittill(# "scene_sequence_ended");
+    level waittill("scene_sequence_ended");
     foreach(player in level.activeplayers) {
       player function_d5efb07f();
     }
   }
 }
 
-/*
-	Name: function_be94c003
-	Namespace: namespace_fdfaa57d
-	Checksum: 0x639C1FBF
-	Offset: 0x1588
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function function_be94c003() {
   self.var_c74b20c1 = self getcurrentweapon();
   if(self hasweapon(level.var_3d2f81f1)) {
@@ -316,15 +229,6 @@ function function_be94c003() {
   self switchtoweapon(level.var_3d2f81f1);
 }
 
-/*
-	Name: function_d5efb07f
-	Namespace: namespace_fdfaa57d
-	Checksum: 0x5600CDC8
-	Offset: 0x1628
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d5efb07f() {
   if(!(isdefined(self.var_7a5a5490) && self.var_7a5a5490)) {
     self takeweapon(level.var_3d2f81f1);
@@ -334,15 +238,6 @@ function function_d5efb07f() {
   }
 }
 
-/*
-	Name: function_132d9eee
-	Namespace: namespace_fdfaa57d
-	Checksum: 0xEC9D94B6
-	Offset: 0x16B0
-	Size: 0x174
-	Parameters: 1
-	Flags: Linked
-*/
 function function_132d9eee(weapon) {
   clipammo = self getweaponammoclip(weapon);
   stockammo = self getweaponammostock(weapon);
@@ -352,10 +247,8 @@ function function_132d9eee(weapon) {
   }
   item = self dropitem(weapon, "tag_origin");
   if(!isdefined(item)) {
-    /#
     iprintlnbold(("" + weapon.name) + "");
-    # /
-      return;
+    return;
   }
   level weapons::drop_limited_weapon(weapon, self, item);
   item itemweaponsetammo(clipammo, stockammo);

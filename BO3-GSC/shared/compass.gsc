@@ -1,25 +1,17 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\codescripts\struct;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\compass.gsc
+*************************************************/
 
+#using scripts\codescripts\struct;
 #namespace compass;
 
-/*
-	Name: setupminimap
-	Namespace: compass
-	Checksum: 0xB5439AEF
-	Offset: 0xC0
-	Size: 0x46C
-	Parameters: 1
-	Flags: None
-*/
 function setupminimap(material) {
   requiredmapaspectratio = getdvarfloat("scr_requiredMapAspectRatio");
   corners = getentarray("minimap_corner", "targetname");
   if(corners.size != 2) {
-    /#
     println("");
-    # /
-      return;
+    return;
   }
   corner0 = (corners[0].origin[0], corners[0].origin[1], 0);
   corner1 = (corners[1].origin[0], corners[1].origin[1], 0);
@@ -62,15 +54,6 @@ function setupminimap(material) {
   setminimap(material, northwest[0], northwest[1], southeast[0], southeast[1]);
 }
 
-/*
-	Name: vecscale
-	Namespace: compass
-	Checksum: 0x9F81D54E
-	Offset: 0x538
-	Size: 0x44
-	Parameters: 2
-	Flags: None
-*/
 function vecscale(vec, scalar) {
   return (vec[0] * scalar, vec[1] * scalar, vec[2] * scalar);
 }

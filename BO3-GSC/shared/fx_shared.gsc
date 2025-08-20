@@ -1,74 +1,30 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\fx_shared.gsc
+*************************************************/
+
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\exploder_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace fx;
 
-/*
-	Name: __init__sytem__
-	Namespace: fx
-	Checksum: 0xE214437B
-	Offset: 0x150
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("fx", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: fx
-	Checksum: 0x99EC1590
-	Offset: 0x190
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}
 
-/*
-	Name: set_forward_and_up_vectors
-	Namespace: fx
-	Checksum: 0x2C0A4AB
-	Offset: 0x1A0
-	Size: 0x76
-	Parameters: 0
-	Flags: None
-*/
 function set_forward_and_up_vectors() {
   self.v["up"] = anglestoup(self.v["angles"]);
   self.v["forward"] = anglestoforward(self.v["angles"]);
 }
 
-/*
-	Name: get
-	Namespace: fx
-	Checksum: 0x3C47BE68
-	Offset: 0x220
-	Size: 0x50
-	Parameters: 1
-	Flags: Linked
-*/
 function get(fx) {
-  /#
   assert(isdefined(level._effect[fx]), ("" + fx) + "");
-  # /
-    return level._effect[fx];
+  return level._effect[fx];
 }
 
-/*
-	Name: create_effect
-	Namespace: fx
-	Checksum: 0xB1486A1F
-	Offset: 0x278
-	Size: 0x144
-	Parameters: 2
-	Flags: Linked
-*/
 function create_effect(type, fxid) {
   ent = undefined;
   if(!isdefined(level.createfxent)) {
@@ -92,45 +48,18 @@ function create_effect(type, fxid) {
   return ent;
 }
 
-/*
-	Name: create_loop_effect
-	Namespace: fx
-	Checksum: 0xFA974DE
-	Offset: 0x3C8
-	Size: 0x5A
-	Parameters: 1
-	Flags: None
-*/
 function create_loop_effect(fxid) {
   ent = create_effect("loopfx", fxid);
   ent.v["delay"] = 0.5;
   return ent;
 }
 
-/*
-	Name: create_oneshot_effect
-	Namespace: fx
-	Checksum: 0xFE0A3F2F
-	Offset: 0x430
-	Size: 0x56
-	Parameters: 1
-	Flags: None
-*/
 function create_oneshot_effect(fxid) {
   ent = create_effect("oneshotfx", fxid);
   ent.v["delay"] = -15;
   return ent;
 }
 
-/*
-	Name: play
-	Namespace: fx
-	Checksum: 0xC94B3312
-	Offset: 0x490
-	Size: 0x294
-	Parameters: 8
-	Flags: Linked
-*/
 function play(str_fx, v_origin = (0, 0, 0), v_angles = (0, 0, 0), time_to_delete_or_notify, b_link_to_self = 0, str_tag, b_no_cull, b_ignore_pause_world) {
   self notify(str_fx);
   if(!isdefined(time_to_delete_or_notify) || (!isstring(time_to_delete_or_notify) && time_to_delete_or_notify == -1) && (isdefined(b_link_to_self) && b_link_to_self) && isdefined(str_tag)) {
@@ -156,15 +85,6 @@ function play(str_fx, v_origin = (0, 0, 0), v_angles = (0, 0, 0), time_to_delete
   playfx(get(str_fx), v_origin, anglestoforward(v_angles), anglestoup(v_angles), b_ignore_pause_world);
 }
 
-/*
-	Name: _play_fx_delete
-	Namespace: fx
-	Checksum: 0x37468010
-	Offset: 0x730
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function _play_fx_delete(ent, time_to_delete_or_notify = -1) {
   if(isstring(time_to_delete_or_notify)) {
     ent util::waittill_either("death", time_to_delete_or_notify);
@@ -172,7 +92,7 @@ function _play_fx_delete(ent, time_to_delete_or_notify = -1) {
     if(time_to_delete_or_notify > 0) {
       ent util::waittill_any_timeout(time_to_delete_or_notify, "death");
     } else {
-      ent waittill(# "death");
+      ent waittill("death");
     }
   }
   if(isdefined(self)) {

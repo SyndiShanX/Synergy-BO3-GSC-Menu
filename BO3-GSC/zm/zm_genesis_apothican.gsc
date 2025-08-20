@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_apothican.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -31,31 +35,12 @@
 #using scripts\zm\zm_genesis_util;
 #using scripts\zm\zm_genesis_vo;
 #using scripts\zm\zm_genesis_wasp;
-
 #namespace zm_genesis_apothican;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_genesis_apothican
-	Checksum: 0x75EF2E6A
-	Offset: 0xB80
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_apothican", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_genesis_apothican
-	Checksum: 0x85464193
-	Offset: 0xBC8
-	Size: 0x40C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("allplayers", "apothicon_player_keyline", 15000, 1, "int");
   clientfield::register("toplayer", "apothicon_entry_postfx", 15000, 1, "int");
@@ -69,11 +54,9 @@ function __init__() {
   clientfield::register("clientuimodel", "zmInventory.widget_gate_worm", 15000, 1, "int");
   clientfield::register("clientuimodel", "zmInventory.player_gate_worm_bg", 15000, 1, "int");
   level flag::init("player_in_apothicon");
-  /#
   level flag::init("");
   level thread function_87d7a33f();
-  # /
-    level thread function_890c450c("prison");
+  level thread function_890c450c("prison");
   level thread function_890c450c("sheffield");
   level thread function_890c450c("castle");
   level thread function_890c450c("verrucht");
@@ -90,29 +73,11 @@ function __init__() {
   callback::on_spawned( & function_ceb45430);
 }
 
-/*
-	Name: __main__
-	Namespace: zm_genesis_apothican
-	Checksum: 0x21FF58D7
-	Offset: 0xFE0
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level thread function_2af9e8f2();
   level thread function_9071b894();
 }
 
-/*
-	Name: function_ceb45430
-	Namespace: zm_genesis_apothican
-	Checksum: 0xC15C6290
-	Offset: 0x1020
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_ceb45430() {
   if(!self flag::exists("holding_egg")) {
     self flag::init("holding_egg");
@@ -127,18 +92,9 @@ function private function_ceb45430() {
   }
 }
 
-/*
-	Name: function_b67eab19
-	Namespace: zm_genesis_apothican
-	Checksum: 0xAF960AC8
-	Offset: 0x1130
-	Size: 0xF4
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private function_b67eab19(var_1d640f59, str_widget_clientuimodel, var_18bfcc38) {
-  level notify(# "widget_ui_override");
-  self endon(# "disconnect");
+  level notify("widget_ui_override");
+  self endon("disconnect");
   if(var_18bfcc38) {
     if(isdefined(var_1d640f59)) {
       self thread clientfield::set_to_player(var_1d640f59, 1);
@@ -151,15 +107,6 @@ function private function_b67eab19(var_1d640f59, str_widget_clientuimodel, var_1
   self thread clientfield::set_player_uimodel(str_widget_clientuimodel, 0);
 }
 
-/*
-	Name: function_890c450c
-	Namespace: zm_genesis_apothican
-	Checksum: 0xE1936E2C
-	Offset: 0x1230
-	Size: 0x1A4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_890c450c(str_name) {
   s_trigger_pos = struct::get("apothican_exit_" + str_name, "targetname");
   var_79ade33c = spawnstruct();
@@ -178,21 +125,12 @@ function function_890c450c(str_name) {
   zm_unitrigger::register_unitrigger(var_79ade33c, & function_ea9e816a);
 }
 
-/*
-	Name: function_ea9e816a
-	Namespace: zm_genesis_apothican
-	Checksum: 0x6AE3770E
-	Offset: 0x13E0
-	Size: 0xE8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ea9e816a() {
   if(isdefined(self.script_string)) {
     str_zone = self.script_string;
   }
   while (true) {
-    self waittill(# "trigger", e_portee);
+    self waittill("trigger", e_portee);
     if(isdefined(e_portee.var_5aef0317) && e_portee.var_5aef0317) {
       continue;
     }
@@ -202,18 +140,9 @@ function function_ea9e816a() {
   }
 }
 
-/*
-	Name: function_657f1d1
-	Namespace: zm_genesis_apothican
-	Checksum: 0xCD52D87C
-	Offset: 0x14D0
-	Size: 0x51C
-	Parameters: 4
-	Flags: Linked
-*/
 function function_657f1d1(s_stub, str_zone, var_6d359b2e, var_db6533 = 0) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   if(isdefined(self.var_5aef0317) && self.var_5aef0317) {
     return;
   }
@@ -257,38 +186,20 @@ function function_657f1d1(s_stub, str_zone, var_6d359b2e, var_db6533 = 0) {
   self.var_5aef0317 = undefined;
   util::wait_network_frame();
   var_413ea50f.delete_on_death = 1;
-  var_413ea50f notify(# "death");
+  var_413ea50f notify("death");
   if(!isalive(var_413ea50f)) {
     var_413ea50f delete();
   }
 }
 
-/*
-	Name: ground_slam
-	Namespace: zm_genesis_apothican
-	Checksum: 0xEBD3C309
-	Offset: 0x19F8
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function ground_slam() {
   self playrumbleonentity("zm_castle_flinger_land");
   self clientfield::set_to_player("flinger_flying_postfx", 0);
   earthquake(0.5, 1, self.origin, 100);
 }
 
-/*
-	Name: function_538e24a
-	Namespace: zm_genesis_apothican
-	Checksum: 0x9D4F645
-	Offset: 0x1A70
-	Size: 0x174
-	Parameters: 2
-	Flags: Linked
-*/
 function function_538e24a(var_413ea50f, s_stub) {
-  var_413ea50f waittill(# "hash_39ee366a");
+  var_413ea50f waittill("hash_39ee366a");
   switch (s_stub.name) {
     case "prison": {
       n_hold_time = 1;
@@ -314,17 +225,8 @@ function function_538e24a(var_413ea50f, s_stub) {
   self thread lui::screen_flash(0.1, n_hold_time, 0.8, 1, "white");
 }
 
-/*
-	Name: function_3298b25f
-	Namespace: zm_genesis_apothican
-	Checksum: 0x7242F020
-	Offset: 0x1BF0
-	Size: 0x14C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_3298b25f(s_stub) {
-  self endon(# "death");
+  self endon("death");
   a_s_spots = struct::get_array(("apothican_exit_" + s_stub.name) + "_pos", "targetname");
   var_a05a47c7 = s_stub function_fbd80603(self);
   while (positionwouldtelefrag(var_a05a47c7.origin)) {
@@ -337,36 +239,16 @@ function private function_3298b25f(s_stub) {
   self clientfield::increment_to_player("flinger_land_smash");
 }
 
-/*
-	Name: function_fbd80603
-	Namespace: zm_genesis_apothican
-	Checksum: 0xD90A2531
-	Offset: 0x1D48
-	Size: 0x116
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_fbd80603(player) {
   a_s_spots = struct::get_array(("apothican_exit_" + self.name) + "_pos", "targetname");
-  /#
   assert(a_s_spots.size, "" + self.name);
-  # /
-    foreach(s_spot in a_s_spots) {
-      if(s_spot.script_int === (player.characterindex + 1)) {
-        return s_spot;
-      }
+  foreach(s_spot in a_s_spots) {
+    if(s_spot.script_int === (player.characterindex + 1)) {
+      return s_spot;
     }
+  }
 }
 
-/*
-	Name: function_d1338047
-	Namespace: zm_genesis_apothican
-	Checksum: 0xCA8EB0C0
-	Offset: 0x1E68
-	Size: 0x236
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d1338047() {
   level.var_b8b48a73 = [];
   level flag::wait_till_all(array("power_on1", "power_on2", "power_on3", "power_on4"));
@@ -394,15 +276,6 @@ function function_d1338047() {
   }
 }
 
-/*
-	Name: function_bb3f566
-	Namespace: zm_genesis_apothican
-	Checksum: 0xB6323560
-	Offset: 0x20A8
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bb3f566() {
   level.var_b3671284 = 1;
   wait(4);
@@ -428,17 +301,8 @@ function function_bb3f566() {
   level.var_b3671284 = 0;
 }
 
-/*
-	Name: function_6e5d600d
-	Namespace: zm_genesis_apothican
-	Checksum: 0x4943377F
-	Offset: 0x2200
-	Size: 0x278
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6e5d600d() {
-  level waittill(# "start_zombie_round_logic");
+  level waittill("start_zombie_round_logic");
   while (true) {
     a_players = level.activeplayers;
     foreach(e_player in a_players) {
@@ -447,7 +311,7 @@ function function_6e5d600d() {
           e_player.var_13102f86 = 1;
           e_player clientfield::set("apothicon_player_keyline", 1);
           e_player.var_e033e4dc = 1;
-          e_player notify(# "hash_a8c34632");
+          e_player notify("hash_a8c34632");
           continue;
         }
         if(e_player.var_a3d40b8 === "arena_island" && (!(isdefined(e_player.var_13102f86) && e_player.var_13102f86))) {
@@ -466,17 +330,8 @@ function function_6e5d600d() {
   }
 }
 
-/*
-	Name: function_dd6ccbfc
-	Namespace: zm_genesis_apothican
-	Checksum: 0x1E2BD621
-	Offset: 0x2480
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function function_dd6ccbfc() {
-  level endon(# "apothicon_trapped");
+  level endon("apothicon_trapped");
   level flag::wait_till_all(array("power_on1", "power_on2", "power_on3", "power_on4"));
   while (true) {
     foreach(e_player in level.activeplayers) {
@@ -488,28 +343,10 @@ function function_dd6ccbfc() {
   }
 }
 
-/*
-	Name: function_913ca89b
-	Namespace: zm_genesis_apothican
-	Checksum: 0x64B13387
-	Offset: 0x25B0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_913ca89b() {
   level.var_2ac85a6c = struct::get_array("apothican_wasp_spawn_pos", "targetname");
 }
 
-/*
-	Name: function_21a5cf5e
-	Namespace: zm_genesis_apothican
-	Checksum: 0x6CA7BBAC
-	Offset: 0x25E8
-	Size: 0x600
-	Parameters: 0
-	Flags: Linked
-*/
 function function_21a5cf5e() {
   level flag::wait_till_all(array("power_on1", "power_on2", "power_on3", "power_on4"));
   function_9ccb8410(30);
@@ -585,15 +422,6 @@ function function_21a5cf5e() {
   }
 }
 
-/*
-	Name: function_1affd18d
-	Namespace: zm_genesis_apothican
-	Checksum: 0xE7DB6C5
-	Offset: 0x2BF0
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1affd18d() {
   var_bd061860 = 0;
   switch (level.var_b8b48a73.size) {
@@ -622,15 +450,6 @@ function function_1affd18d() {
   return var_bd061860;
 }
 
-/*
-	Name: function_2b03ee2a
-	Namespace: zm_genesis_apothican
-	Checksum: 0xDFE1DB4B
-	Offset: 0x2CA0
-	Size: 0x14A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2b03ee2a(e_player) {
   queryresult = positionquery_source_navigation(e_player.origin + (0, 0, randomintrange(40, 100)), 300, 600, 10, 10, "navvolume_small");
   a_points = array::randomize(queryresult.data);
@@ -642,15 +461,6 @@ function function_2b03ee2a(e_player) {
   return a_points[0];
 }
 
-/*
-	Name: function_551d8f75
-	Namespace: zm_genesis_apothican
-	Checksum: 0xCD6A25C
-	Offset: 0x2DF8
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function function_551d8f75() {
   e_target = undefined;
   n_wait_time = 25;
@@ -673,37 +483,19 @@ function function_551d8f75() {
   return e_target;
 }
 
-/*
-	Name: function_bfaac59
-	Namespace: zm_genesis_apothican
-	Checksum: 0x16EBECA9
-	Offset: 0x2F18
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bfaac59(e_attacker) {
   if(isdefined(self.var_95494717) && self.var_95494717) {
     level.var_973d41cb--;
   }
 }
 
-/*
-	Name: function_6119f23
-	Namespace: zm_genesis_apothican
-	Checksum: 0xA48D0D2E
-	Offset: 0x2F50
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6119f23(e_attacker) {
   if(isdefined(self.var_9f6fbb95) && self.var_9f6fbb95) {
     if(self.var_6ac86802 === 1) {
       level.var_c15eb311--;
       if(level.var_c15eb311 == 0 && level flag::get("acm_wave_in_progress")) {
         level flag::clear("acm_wave_in_progress");
-        level notify(# "hash_ee91de1d");
+        level notify("hash_ee91de1d");
         if(level.var_db16318c == level.var_4bf2a542.size) {
           level.var_d29b5881 = self.origin;
           level flag::set("acm_done");
@@ -713,17 +505,8 @@ function function_6119f23(e_attacker) {
   }
 }
 
-/*
-	Name: function_e45363e3
-	Namespace: zm_genesis_apothican
-	Checksum: 0x1EBD65D9
-	Offset: 0x3038
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e45363e3() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
     if(level.var_b8b48a73.size == 0) {
       self dodamage(self.health + 1, self.origin);
@@ -733,22 +516,13 @@ function function_e45363e3() {
   }
 }
 
-/*
-	Name: function_a2a299a1
-	Namespace: zm_genesis_apothican
-	Checksum: 0x81C1AEC6
-	Offset: 0x30B0
-	Size: 0x138
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a2a299a1() {
   level.var_a3ad836b = 8;
   level flag::wait_till_all(array("power_on1", "power_on2", "power_on3", "power_on4"));
   function_9ccb8410(120);
   level.var_3013498 = level.round_number + 2;
   while (true) {
-    level waittill(# "between_round_over");
+    level waittill("between_round_over");
     var_8a82d706 = 0;
     if(level.var_3013498 <= level.round_number) {
       if(level.var_b8b48a73.size > 0) {
@@ -758,36 +532,18 @@ function function_a2a299a1() {
       }
     }
     if(var_8a82d706) {
-      level waittill(# "end_of_round");
+      level waittill("end_of_round");
       level.var_3013498 = level.round_number + randomintrange(4, 6);
     }
   }
 }
 
-/*
-	Name: function_bd0872bb
-	Namespace: zm_genesis_apothican
-	Checksum: 0xDD7A2324
-	Offset: 0x31F0
-	Size: 0x28
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bd0872bb(n_time) {
   wait(n_time);
   level.var_adca2f3c = 0;
   level.var_7cba7005 = 0;
 }
 
-/*
-	Name: function_72e88a5f
-	Namespace: zm_genesis_apothican
-	Checksum: 0xCC7A7EEB
-	Offset: 0x3220
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_72e88a5f() {
   level flag::wait_till_all(array("power_on1", "power_on2", "power_on3", "power_on4"));
   level flag::init("apothican_random_boss_first_session_completed");
@@ -799,15 +555,6 @@ function function_72e88a5f() {
   level thread function_e550951a();
 }
 
-/*
-	Name: function_e550951a
-	Namespace: zm_genesis_apothican
-	Checksum: 0xB32E66C2
-	Offset: 0x3300
-	Size: 0xD0
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e550951a() {
   while (true) {
     n_delay = randomfloatrange(360, 480);
@@ -821,15 +568,6 @@ function function_e550951a() {
   }
 }
 
-/*
-	Name: function_fd1e5c6c
-	Namespace: zm_genesis_apothican
-	Checksum: 0xC857BE13
-	Offset: 0x33D8
-	Size: 0x116
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fd1e5c6c() {
   function_49a0c182();
   switch (level.var_71630d50) {
@@ -860,15 +598,6 @@ function function_fd1e5c6c() {
   }
 }
 
-/*
-	Name: function_57f2485e
-	Namespace: zm_genesis_apothican
-	Checksum: 0x938BA770
-	Offset: 0x34F8
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_57f2485e(var_d3c04db8 = 0) {
   if(var_d3c04db8) {
     var_43ac43b2 = struct::get("apothican_mechz_spawn", "targetname");
@@ -883,15 +612,6 @@ function function_57f2485e(var_d3c04db8 = 0) {
   }
 }
 
-/*
-	Name: function_cc6165b0
-	Namespace: zm_genesis_apothican
-	Checksum: 0xA404292A
-	Offset: 0x35B0
-	Size: 0x198
-	Parameters: 2
-	Flags: Linked
-*/
 function function_cc6165b0(str_type = "random", var_6ac86802 = 0) {
   if(str_type == "random") {
     var_c624cf3b = randomint(100);
@@ -929,15 +649,6 @@ function function_cc6165b0(str_type = "random", var_6ac86802 = 0) {
   }
 }
 
-/*
-	Name: function_49a0c182
-	Namespace: zm_genesis_apothican
-	Checksum: 0xBB2A5F6
-	Offset: 0x3750
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_49a0c182() {
   if(level.var_71630d50 >= 2 && level.var_89b9d07e >= 1) {
     level.var_71630d50 = 0;
@@ -946,15 +657,6 @@ function function_49a0c182() {
   }
 }
 
-/*
-	Name: function_26da4beb
-	Namespace: zm_genesis_apothican
-	Checksum: 0xBFEF2F9A
-	Offset: 0x37B8
-	Size: 0x30
-	Parameters: 1
-	Flags: None
-*/
 function function_26da4beb(n_stage) {
   if(isdefined(self.script_int)) {
     if(self.script_int > n_stage) {
@@ -964,15 +666,6 @@ function function_26da4beb(n_stage) {
   return true;
 }
 
-/*
-	Name: function_a6e114bc
-	Namespace: zm_genesis_apothican
-	Checksum: 0x50E83D7
-	Offset: 0x37F0
-	Size: 0xB8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_a6e114bc(s_pos) {
   var_d695363e = 1;
   n_current_time = gettime();
@@ -992,25 +685,14 @@ function function_a6e114bc(s_pos) {
   return true;
 }
 
-/*
-	Name: function_ecd2e6b5
-	Namespace: zm_genesis_apothican
-	Checksum: 0xDD62D84A
-	Offset: 0x38B0
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ecd2e6b5() {
-  /#
   if(level flag::get("")) {
     return;
   }
-  level endon(# "hash_540f913f");
-  # /
-    if(!isdefined(level.var_f77d7372)) {
-      return;
-    }
+  level endon("hash_540f913f");
+  if(!isdefined(level.var_f77d7372)) {
+    return;
+  }
   n_time = gettime();
   var_43421314 = (n_time - level.var_f77d7372) / 1000;
   if(var_43421314 < 240) {
@@ -1019,23 +701,12 @@ function function_ecd2e6b5() {
   }
 }
 
-/*
-	Name: function_9ccb8410
-	Namespace: zm_genesis_apothican
-	Checksum: 0xE4E29D7D
-	Offset: 0x3970
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9ccb8410(n_delay) {
-  /#
   if(level flag::get("")) {
     return;
   }
-  level endon(# "hash_540f913f");
-  # /
-    n_time = gettime();
+  level endon("hash_540f913f");
+  n_time = gettime();
   var_47768568 = n_time;
   n_total_time = 0;
   while (true) {
@@ -1051,15 +722,6 @@ function function_9ccb8410(n_delay) {
   }
 }
 
-/*
-	Name: function_411feb6a
-	Namespace: zm_genesis_apothican
-	Checksum: 0x1C675777
-	Offset: 0x3A50
-	Size: 0x234
-	Parameters: 0
-	Flags: Linked
-*/
 function function_411feb6a() {
   function_9ccb8410(10);
   s_center = struct::get("apothicon_center", "targetname");
@@ -1087,15 +749,6 @@ function function_411feb6a() {
   }
 }
 
-/*
-	Name: function_2af9e8f2
-	Namespace: zm_genesis_apothican
-	Checksum: 0x4ABBF6D9
-	Offset: 0x3C90
-	Size: 0x17A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2af9e8f2() {
   level flag::wait_till("book_placed");
   var_9c840b49 = struct::get_array("gateworm_egg", "targetname");
@@ -1111,15 +764,6 @@ function function_2af9e8f2() {
   }
 }
 
-/*
-	Name: function_79912fdc
-	Namespace: zm_genesis_apothican
-	Checksum: 0xBDCAC2BB
-	Offset: 0x3E18
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_79912fdc() {
   self.origin = self.var_89bdf56b;
   e_egg = util::spawn_model("p7_fxanim_zm_gen_gateworm_egg_mod", self.var_c1c6575b, self.angles);
@@ -1128,15 +772,6 @@ function function_79912fdc() {
   e_egg playloopsound("zmb_main_omelettes_egg_lp", 2);
 }
 
-/*
-	Name: function_c73dbcf0
-	Namespace: zm_genesis_apothican
-	Checksum: 0x97ED6508
-	Offset: 0x3EC8
-	Size: 0x24C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c73dbcf0(var_21e43ff6) {
   self enablelinkto();
   var_e777b564 = self gettagorigin("ovary_egg_tag_jnt");
@@ -1149,7 +784,7 @@ function function_c73dbcf0(var_21e43ff6) {
   var_1436760b delete();
   var_21e43ff6.origin = var_21e43ff6.origin + vectorscale((0, 0, 1), 16);
   s_unitrigger = var_21e43ff6 zm_unitrigger::create_unitrigger("", 64, & function_e3dd263c);
-  var_21e43ff6 waittill(# "trigger_activated", e_player);
+  var_21e43ff6 waittill("trigger_activated", e_player);
   if(!e_player flag::get("holding_egg")) {
     e_player thread zm_genesis_vo::function_2a22bd54();
     e_player function_4d6562d8(var_21e43ff6);
@@ -1159,15 +794,6 @@ function function_c73dbcf0(var_21e43ff6) {
   }
 }
 
-/*
-	Name: function_e3dd263c
-	Namespace: zm_genesis_apothican
-	Checksum: 0x246245E9
-	Offset: 0x4120
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e3dd263c(e_player) {
   if(e_player flag::get("holding_egg") || e_player flag::get("holding_gateworm")) {
     self sethintstring("");
@@ -1177,15 +803,6 @@ function function_e3dd263c(e_player) {
   return true;
 }
 
-/*
-	Name: function_9071b894
-	Namespace: zm_genesis_apothican
-	Checksum: 0xACF5FC54
-	Offset: 0x41B8
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9071b894() {
   level flag::wait_till("book_placed");
   zm_spawner::register_zombie_death_event_callback( & function_31a6b711);
@@ -1197,15 +814,6 @@ function function_9071b894() {
   zm_spawner::deregister_zombie_death_event_callback( & function_31a6b711);
 }
 
-/*
-	Name: function_ff65120e
-	Namespace: zm_genesis_apothican
-	Checksum: 0x5AF2FAC3
-	Offset: 0x42F0
-	Size: 0x414
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ff65120e() {
   var_3e51eb2c = getent(self.script_string, "targetname");
   self.var_3e51eb2c = var_3e51eb2c;
@@ -1213,8 +821,8 @@ function function_ff65120e() {
   var_5e99fdc8 = "lgt_apoth_int_" + self.script_string;
   var_87302b25 = strtok(self.script_string, "_");
   var_b2f4a489 = "lgt_apoth_int_eggworm_" + var_87302b25[1];
-  s_unitrigger = self zm_unitrigger::create_unitrigger( & "ZM_GENESIS_PICKUP_EGG", 64, & function_5bd5869a);
-  self waittill(# "trigger_activated", e_player);
+  s_unitrigger = self zm_unitrigger::create_unitrigger(&"ZM_GENESIS_PICKUP_EGG", 64, & function_5bd5869a);
+  self waittill("trigger_activated", e_player);
   level thread function_88893a6c(var_b2f4a489);
   v_pos = self.var_3e51eb2c gettagorigin("tag_origin");
   var_165d49f6 = util::spawn_model("p7_fxanim_zm_gen_gateworm_egg_mod", v_pos, var_3e51eb2c.angles);
@@ -1226,7 +834,7 @@ function function_ff65120e() {
   var_165d49f6 scene::play("p7_fxanim_zm_gen_gateworm_egg_deposit_bundle", var_165d49f6);
   exploder::exploder(var_5e99fdc8);
   var_165d49f6.var_b99b1b98 = 10;
-  var_165d49f6 waittill(# "hash_71f0e810");
+  var_165d49f6 waittill("hash_71f0e810");
   var_165d49f6 playsound("zmb_main_omelettes_ovary_worm_hatch");
   var_165d49f6 scene::stop("p7_fxanim_zm_gen_gateworm_egg_deposit_bundle");
   var_165d49f6 delete();
@@ -1242,47 +850,20 @@ function function_ff65120e() {
   var_3e51eb2c thread scene::play("p7_fxanim_zm_gen_gateworm_ovary_worm_birth_idle_bundle", var_3e51eb2c);
 }
 
-/*
-	Name: function_88893a6c
-	Namespace: zm_genesis_apothican
-	Checksum: 0x2F6498EF
-	Offset: 0x4710
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function function_88893a6c(var_b2f4a489) {
   exploder::exploder(var_b2f4a489);
   wait(5);
   exploder::exploder_stop(var_b2f4a489);
 }
 
-/*
-	Name: function_5c65688b
-	Namespace: zm_genesis_apothican
-	Checksum: 0x89D95491
-	Offset: 0x4760
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function function_5c65688b(mdl_gateworm) {
   wait(1);
   mdl_gateworm playloopsound("zmb_main_omelettes_worm_lp", 2);
 }
 
-/*
-	Name: function_7fd5874f
-	Namespace: zm_genesis_apothican
-	Checksum: 0xBCC8E59F
-	Offset: 0x47A0
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7fd5874f(mdl_gateworm) {
   s_unitrigger = self zm_unitrigger::create_unitrigger("", 64, & function_4661867f);
-  self waittill(# "trigger_activated", e_player);
+  self waittill("trigger_activated", e_player);
   self.var_56390601 = mdl_gateworm.origin;
   self.var_5a5b5ecf = mdl_gateworm.angles;
   e_player function_42781615(self);
@@ -1292,15 +873,6 @@ function function_7fd5874f(mdl_gateworm) {
   mdl_gateworm delete();
 }
 
-/*
-	Name: function_5bd5869a
-	Namespace: zm_genesis_apothican
-	Checksum: 0x7945A5A1
-	Offset: 0x48C0
-	Size: 0x6E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_5bd5869a(e_player) {
   if(e_player flag::get("holding_egg")) {
     self sethintstring("");
@@ -1310,15 +882,6 @@ function function_5bd5869a(e_player) {
   return false;
 }
 
-/*
-	Name: function_4661867f
-	Namespace: zm_genesis_apothican
-	Checksum: 0xD694707C
-	Offset: 0x4938
-	Size: 0xD0
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4661867f(e_player) {
   if(e_player flag::get("holding_gateworm") || e_player flag::get("holding_egg") || (isdefined(self.stub.related_parent.var_22ee51d7) && self.stub.related_parent.var_22ee51d7 !== e_player)) {
     self sethintstring("");
@@ -1328,15 +891,6 @@ function function_4661867f(e_player) {
   return true;
 }
 
-/*
-	Name: function_4d6562d8
-	Namespace: zm_genesis_apothican
-	Checksum: 0x8AFB0DDE
-	Offset: 0x4A10
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4d6562d8(var_21e43ff6) {
   self thread function_b67eab19("player_apothicon_egg", "zmInventory.widget_apothicon_egg", 1);
   self clientfield::set_player_uimodel("zmInventory.player_apothicon_egg_bg", 1);
@@ -1345,30 +899,12 @@ function function_4d6562d8(var_21e43ff6) {
   self thread function_9b3d1bca(var_21e43ff6);
 }
 
-/*
-	Name: function_9b3d1bca
-	Namespace: zm_genesis_apothican
-	Checksum: 0x53C1D52B
-	Offset: 0x4AC8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9b3d1bca(var_21e43ff6) {
-  self endon(# "holding_egg");
-  self waittill(# "disconnect");
+  self endon("holding_egg");
+  self waittill("disconnect");
   var_21e43ff6 thread function_79912fdc();
 }
 
-/*
-	Name: function_eb908d5e
-	Namespace: zm_genesis_apothican
-	Checksum: 0x3B23CE25
-	Offset: 0x4B10
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_eb908d5e() {
   self clientfield::set_to_player("player_apothicon_egg", 0);
   self clientfield::set_player_uimodel("zmInventory.player_apothicon_egg_bg", 0);
@@ -1376,15 +912,6 @@ function function_eb908d5e() {
   self flag::clear("holding_egg");
 }
 
-/*
-	Name: function_42781615
-	Namespace: zm_genesis_apothican
-	Checksum: 0xFBE8DD2A
-	Offset: 0x4BA0
-	Size: 0xC4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_42781615(s_pod) {
   self thread function_b67eab19("player_gate_worm", "zmInventory.widget_gate_worm", 1);
   self clientfield::set_player_uimodel("zmInventory.player_apothicon_egg_bg", 0);
@@ -1394,31 +921,13 @@ function function_42781615(s_pod) {
   self zm_genesis_vo::function_78d4f20e();
 }
 
-/*
-	Name: function_ed0fe018
-	Namespace: zm_genesis_apothican
-	Checksum: 0xD0D6532C
-	Offset: 0x4C70
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ed0fe018(e_player) {
-  e_player endon(# "holding_gateworm");
-  e_player waittill(# "disconnect");
+  e_player endon("holding_gateworm");
+  e_player waittill("disconnect");
   mdl_gateworm = util::spawn_model("p7_zm_dlc4_gateworm", self.var_56390601, self.var_5a5b5ecf);
   self thread function_7fd5874f(mdl_gateworm);
 }
 
-/*
-	Name: function_4aa2c78f
-	Namespace: zm_genesis_apothican
-	Checksum: 0xCDED3849
-	Offset: 0x4CF0
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4aa2c78f() {
   self clientfield::set_to_player("player_gate_worm", 0);
   self clientfield::set_player_uimodel("zmInventory.player_gate_worm_bg", 0);
@@ -1426,28 +935,10 @@ function function_4aa2c78f() {
   self flag::clear("holding_gateworm");
 }
 
-/*
-	Name: function_f5260da
-	Namespace: zm_genesis_apothican
-	Checksum: 0xB53EE573
-	Offset: 0x4D80
-	Size: 0x22
-	Parameters: 0
-	Flags: None
-*/
 function function_f5260da() {
   return self flag::get("holding_gateworm");
 }
 
-/*
-	Name: function_31a6b711
-	Namespace: zm_genesis_apothican
-	Checksum: 0xD1A51F36
-	Offset: 0x4DB0
-	Size: 0x20E
-	Parameters: 1
-	Flags: Linked
-*/
 function function_31a6b711(e_attacker) {
   if(self.archetype != "zombie") {
     return;
@@ -1472,43 +963,21 @@ function function_31a6b711(e_attacker) {
     level thread zm_genesis_power::zombie_blood_soul_streak_fx(self.origin + vectorscale((0, 0, 1), 50), self.angles, v_pos, 1);
     var_e6ca3c26.var_b99b1b98--;
     if(var_e6ca3c26.var_b99b1b98 <= 0) {
-      var_e6ca3c26 notify(# "hash_71f0e810");
+      var_e6ca3c26 notify("hash_71f0e810");
       var_e6ca3c26.var_b99b1b98 = undefined;
-      level notify(# "hash_10ed65db", e_attacker);
+      level notify("hash_10ed65db", e_attacker);
     }
   }
 }
 
-/*
-	Name: function_87d7a33f
-	Namespace: zm_genesis_apothican
-	Checksum: 0xEDD0F04D
-	Offset: 0x4FC8
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_87d7a33f() {
-  /#
   level thread zm_genesis_util::setup_devgui_func("", "", 1, & function_540f913f);
-  # /
 }
 
-/*
-	Name: function_540f913f
-	Namespace: zm_genesis_apothican
-	Checksum: 0xD89004A
-	Offset: 0x5018
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function function_540f913f(n_val) {
-  /#
   if(n_val) {
     level flag::set("");
     wait(1);
     level flag::clear("");
   }
-  # /
 }

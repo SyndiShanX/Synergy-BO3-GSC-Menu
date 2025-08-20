@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_devgui.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_vehicle;
 #using scripts\mp\killstreaks\_killstreaks;
@@ -15,35 +19,13 @@
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\weapons\_weapons;
 #using scripts\shared\weapons_shared;
-
 #namespace devgui;
 
-/*
-	Name: __init__sytem__
-	Namespace: devgui
-	Checksum: 0xA37866F7
-	Offset: 0x278
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
-  /#
   system::register("", & __init__, undefined, undefined);
-  # /
 }
 
-/*
-	Name: __init__
-	Namespace: devgui
-	Checksum: 0xF04A5C64
-	Offset: 0x2B8
-	Size: 0x4B4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
-  /#
   setdvar("", "");
   setdvar("", 0);
   setdvar("", 0);
@@ -89,38 +71,16 @@ function __init__() {
   level thread dev::body_customization_devgui(1);
   callback::on_connect( & hero_art_on_player_connect);
   callback::on_connect( & on_player_connect);
-  # /
 }
 
-/*
-	Name: on_player_connect
-	Namespace: devgui
-	Checksum: 0x9CD0602E
-	Offset: 0x778
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   /# /
   #
   self.devguilockspawn = 0;
   self thread devgui_player_spawn();
-  # /
-    # /
 }
 
-/*
-	Name: devgui_player_spawn
-	Namespace: devgui
-	Checksum: 0xB1985489
-	Offset: 0x7B0
-	Size: 0x172
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_player_spawn() {
-  /#
   wait(1);
   player_devgui_base_mp = "";
   wait(0.05);
@@ -132,20 +92,9 @@ function devgui_player_spawn() {
     temp = (((((player_devgui_base_mp + player.playername) + "") + "") + "") + player.playername) + "";
     adddebugcommand((((((player_devgui_base_mp + player.playername) + "") + "") + "") + player.playername) + "");
   }
-  # /
 }
 
-/*
-	Name: devgui_player_spawn_think
-	Namespace: devgui
-	Checksum: 0x364FB713
-	Offset: 0x930
-	Size: 0x188
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_player_spawn_think() {
-  /#
   for (;;) {
     playername = getdvarstring("");
     if(playername == "") {
@@ -166,20 +115,9 @@ function devgui_player_spawn_think() {
     setdvar("", "");
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: devgui_vehicle_spawn_think
-	Namespace: devgui
-	Checksum: 0xFA3065BB
-	Offset: 0xAC0
-	Size: 0x110
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_vehicle_spawn_think() {
-  /#
   wait(0.05);
   for (;;) {
     val = getdvarint("");
@@ -201,20 +139,9 @@ function devgui_vehicle_spawn_think() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: devgui_player_weapons
-	Namespace: devgui
-	Checksum: 0x92344CFD
-	Offset: 0xBD8
-	Size: 0x8FC
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_player_weapons() {
-  /#
   if(isdefined(game[""]) && game[""]) {
     return;
   }
@@ -300,20 +227,9 @@ function devgui_player_weapons() {
   }
   level thread devgui_attachment_cosmetic_variant_think();
   level thread devgui_attachment_cycling_think();
-  # /
 }
 
-/*
-	Name: devgui_add_player_weapons
-	Namespace: devgui
-	Checksum: 0x315A2F80
-	Offset: 0x14E0
-	Size: 0x21E
-	Parameters: 6
-	Flags: Linked
-*/
 function devgui_add_player_weapons(root, pname, index, a_weapons, weapon_type, mindex) {
-  /#
   if(isdedicated()) {
     return;
   }
@@ -335,20 +251,9 @@ function devgui_add_player_weapons(root, pname, index, a_weapons, weapon_type, m
       wait(0.05);
     }
   }
-  # /
 }
 
-/*
-	Name: function_27141585
-	Namespace: devgui
-	Checksum: 0x81A2D5B5
-	Offset: 0x1708
-	Size: 0x5E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_27141585() {
-  /#
   if(!isdefined(level.var_f842514b)) {
     level.var_f842514b = 0;
   }
@@ -356,36 +261,14 @@ function function_27141585() {
   if((level.var_f842514b % 10) == 0) {
     wait(randomintrange(2, 5) * 0.05);
   }
-  # /
 }
 
-/*
-	Name: devgui_add_player_weap_command
-	Namespace: devgui
-	Checksum: 0x1C86EC2F
-	Offset: 0x1770
-	Size: 0x84
-	Parameters: 4
-	Flags: Linked
-*/
 function devgui_add_player_weap_command(root, pid, weap_name, cmdindex) {
-  /#
   function_27141585();
   adddebugcommand((((((root + weap_name) + "") + "") + "") + weap_name) + "");
-  # /
 }
 
-/*
-	Name: devgui_weapon_think
-	Namespace: devgui
-	Checksum: 0xA13A7FD4
-	Offset: 0x1800
-	Size: 0x90
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_weapon_think() {
-  /#
   for (;;) {
     weapon_name = getdvarstring("");
     if(weapon_name != "") {
@@ -394,35 +277,13 @@ function devgui_weapon_think() {
     setdvar("", "");
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: hero_art_on_player_connect
-	Namespace: devgui
-	Checksum: 0x83890241
-	Offset: 0x1898
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function hero_art_on_player_connect() {
-  /#
   self._debugheromodels = spawnstruct();
-  # /
 }
 
-/*
-	Name: devgui_weapon_asset_name_display_think
-	Namespace: devgui
-	Checksum: 0xF144B144
-	Offset: 0x18C8
-	Size: 0x3E0
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_weapon_asset_name_display_think() {
-  /#
   update_time = 1;
   print_duration = int(update_time / 0.05);
   printlnbold_update = int(1 / update_time);
@@ -479,20 +340,9 @@ function devgui_weapon_asset_name_display_think() {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: devgui_attachment_cosmetic_variant_think
-	Namespace: devgui
-	Checksum: 0x1C06142B
-	Offset: 0x1CB0
-	Size: 0x138
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_attachment_cosmetic_variant_think() {
-  /#
   old_index = 0;
   old_attachment_1 = "";
   old_attachment_2 = "";
@@ -508,36 +358,14 @@ function devgui_attachment_cosmetic_variant_think() {
     old_attachment_2 = attachment_2;
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: devgui_attachment_cycling_clear
-	Namespace: devgui
-	Checksum: 0xE29D96C
-	Offset: 0x1DF0
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function devgui_attachment_cycling_clear(index) {
-  /#
   setdvar(level.attachment_cycling_dvars[index], "");
   setdvar(level.acv_cycling_dvars[index], 0);
-  # /
 }
 
-/*
-	Name: devgui_attachment_cycling_update
-	Namespace: devgui
-	Checksum: 0xABD9F930
-	Offset: 0x1E58
-	Size: 0x514
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_attachment_cycling_update() {
-  /#
   currentweapon = self getcurrentweapon();
   rootweapon = currentweapon.rootweapon;
   supportedattachments = currentweapon.supportedattachments;
@@ -598,20 +426,9 @@ function devgui_attachment_cycling_update() {
   wait(0.25);
   self giveweapon(currentweapon, undefined, acvi);
   self switchtoweapon(currentweapon);
-  # /
 }
 
-/*
-	Name: devgui_attachment_cycling_think
-	Namespace: devgui
-	Checksum: 0x34B9EA45
-	Offset: 0x2378
-	Size: 0x178
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_attachment_cycling_think() {
-  /#
   for (;;) {
     state = getdvarstring("");
     setdvar("", "");
@@ -631,20 +448,9 @@ function devgui_attachment_cycling_think() {
     }
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: devgui_test_chart_think
-	Namespace: devgui
-	Checksum: 0x6FB99D43
-	Offset: 0x24F8
-	Size: 0x20C
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_test_chart_think() {
-  /#
   wait(0.05);
   old_val = getdvarint("");
   for (;;) {
@@ -668,31 +474,16 @@ function devgui_test_chart_think() {
     old_val = val;
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: devgui_give_weapon
-	Namespace: devgui
-	Checksum: 0xFF585057
-	Offset: 0x2710
-	Size: 0x4AC
-	Parameters: 1
-	Flags: Linked
-*/
 function devgui_give_weapon(weapon_name) {
   /# /
   #
   assert(isdefined(self));
-  # /
-    /#
   assert(isplayer(self));
-  # /
-    /#
   assert(isalive(self));
-  # /
-    self notify(# "devgui_give_ammo");
-  self endon(# "devgui_give_ammo");
+  self notify("devgui_give_ammo");
+  self endon("devgui_give_ammo");
   currentweapon = self getcurrentweapon();
   split = strtok(weapon_name, "");
   switch (split.size) {
@@ -753,50 +544,24 @@ function devgui_give_weapon(weapon_name) {
       self setweaponammostock(weapon, max);
     }
   }
-  # /
 }
 
-/*
-	Name: devgui_update_attachment_cosmetic_variant
-	Namespace: devgui
-	Checksum: 0x98638C6
-	Offset: 0x2BC8
-	Size: 0x15C
-	Parameters: 2
-	Flags: Linked
-*/
 function devgui_update_attachment_cosmetic_variant(attachment_1, attachment_2) {
   /# /
   #
   assert(isdefined(self));
-  # /
-    /#
   assert(isplayer(self));
-  # /
-    /#
   assert(isalive(self));
-  # /
-    currentweapon = self getcurrentweapon();
+  currentweapon = self getcurrentweapon();
   variant_index = getdvarint("");
   acvi = getattachmentcosmeticvariantindexes(currentweapon, attachment_1, variant_index, attachment_2, variant_index);
   self takeweapon(currentweapon);
   wait(0.25);
   self giveweapon(currentweapon, undefined, acvi);
   self switchtoweapon(currentweapon);
-  # /
 }
 
-/*
-	Name: devgui_handle_player_command
-	Namespace: devgui
-	Checksum: 0x8010D4E
-	Offset: 0x2D30
-	Size: 0x13C
-	Parameters: 3
-	Flags: Linked
-*/
 function devgui_handle_player_command(playercallback, pcb_param_1, pcb_param_2) {
-  /#
   pid = getdvarint("");
   if(pid > 0) {
     player = getplayers()[pid - 1];
@@ -815,20 +580,9 @@ function devgui_handle_player_command(playercallback, pcb_param_1, pcb_param_2) 
     array::thread_all(getplayers(), playercallback, pcb_param_1, pcb_param_2);
   }
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: init_debug_center_screen
-	Namespace: devgui
-	Checksum: 0xA879970A
-	Offset: 0x2E78
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_debug_center_screen() {
-  /#
   zero_idle_movement = "";
   for (;;) {
     if(getdvarint("")) {
@@ -841,7 +595,7 @@ function init_debug_center_screen() {
         }
       }
     } else {
-      level notify(# "hash_8e42baed");
+      level notify("hash_8e42baed");
       if(zero_idle_movement == "") {
         setdvar("", "");
         zero_idle_movement = "";
@@ -849,20 +603,9 @@ function init_debug_center_screen() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: debug_center_screen
-	Namespace: devgui
-	Checksum: 0x107ADB7B
-	Offset: 0x2FB0
-	Size: 0x228
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_center_screen() {
-  /#
   level.center_screen_debug_hudelem_active = 1;
   wait(0.1);
   level.center_screen_debug_hudelem1 = newclienthudelem(level.players[0]);
@@ -881,24 +624,13 @@ function debug_center_screen() {
   level.center_screen_debug_hudelem2.x = 320 - 1;
   level.center_screen_debug_hudelem2.y = 240;
   level.center_screen_debug_hudelem2 setshader("", 1, 480);
-  level waittill(# "hash_8e42baed");
+  level waittill("hash_8e42baed");
   level.center_screen_debug_hudelem1 destroy();
   level.center_screen_debug_hudelem2 destroy();
   level.center_screen_debug_hudelem_active = 0;
-  # /
 }
 
-/*
-	Name: add_vehicle_at_eye_trace
-	Namespace: devgui
-	Checksum: 0xDB996DDB
-	Offset: 0x31E0
-	Size: 0x140
-	Parameters: 1
-	Flags: Linked
-*/
 function add_vehicle_at_eye_trace(vehiclename) {
-  /#
   host = util::gethostplayer();
   trace = host bot::eye_trace();
   veh_spawner = getent(vehiclename + "", "");
@@ -911,21 +643,10 @@ function add_vehicle_at_eye_trace(vehiclename) {
   vehicle thread vehicle::vehicleteamthread();
   vehicle thread watch_player_death();
   return vehicle;
-  # /
 }
 
-/*
-	Name: watch_player_death
-	Namespace: devgui
-	Checksum: 0xF3E9DF2B
-	Offset: 0x3330
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_player_death() {
-  /#
-  self endon(# "death");
+  self endon("death");
   vehicle = self;
   while (true) {
     driver = self getseatoccupant(0);
@@ -934,5 +655,4 @@ function watch_player_death() {
     }
     wait(0.05);
   }
-  # /
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: core\gametypes\frontend.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\core\gametypes\frontend_zm_bgb_chance;
 #using scripts\shared\ai\animation_selector_table_evaluators;
@@ -18,44 +22,15 @@
 #using scripts\shared\scene_shared;
 #using scripts\shared\spawner_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("all_player");
-
 #namespace frontend;
 
-/*
-	Name: callback_void
-	Namespace: frontend
-	Checksum: 0x99EC1590
-	Offset: 0x7F0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function callback_void() {}
 
-/*
-	Name: callback_actorspawnedfrontend
-	Namespace: frontend
-	Checksum: 0xD71A51E
-	Offset: 0x800
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function callback_actorspawnedfrontend(spawner) {
   self thread spawner::spawn_think(spawner);
 }
 
-/*
-	Name: main
-	Namespace: frontend
-	Checksum: 0xD2CABD20
-	Offset: 0x830
-	Size: 0x324
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level.callbackstartgametype = & callback_void;
   level.callbackplayerconnect = & callback_playerconnect;
@@ -70,7 +45,6 @@ function main() {
   clientfield::register("actor", "zombie_has_eyes", 1, 1, "int");
   clientfield::register("scriptmover", "dni_eyes", 1000, 1, "int");
   level.weaponnone = getweapon("none");
-  /#
   level thread dailychallengedevguiinit();
   level thread function_4afc218();
   setdvar("", 0);
@@ -80,54 +54,29 @@ function main() {
   adddebugcommand("");
   adddebugcommand("");
   adddebugcommand("");
-  # /
-    level thread zm_frontend_zombie_logic();
+  level thread zm_frontend_zombie_logic();
   level thread zm_frontend_zm_bgb_chance::zm_frontend_bgb_slots_logic();
   level thread set_current_safehouse_on_client();
 }
 
-/*
-	Name: set_current_safehouse_on_client
-	Namespace: frontend
-	Checksum: 0x88CB220A
-	Offset: 0xB60
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function set_current_safehouse_on_client() {
   wait(0.05);
   if(world.is_first_time_flow !== 0) {
     world.cp_bunk_anim_type = 0;
     level clientfield::set("first_time_flow", 1);
-    /#
     printtoprightln("", (1, 1, 1));
-    # /
   } else {
     if(math::cointoss()) {
       world.cp_bunk_anim_type = 0;
-      /#
       printtoprightln("", (1, 1, 1));
-      # /
     } else {
       world.cp_bunk_anim_type = 1;
-      /#
       printtoprightln("", (1, 1, 1));
-      # /
     }
     level clientfield::set("cp_bunk_anim_type", world.cp_bunk_anim_type);
   }
 }
 
-/*
-	Name: zm_frontend_zombie_logic
-	Namespace: frontend
-	Checksum: 0xF94AC8B6
-	Offset: 0xC80
-	Size: 0x206
-	Parameters: 0
-	Flags: Linked
-*/
 function zm_frontend_zombie_logic() {
   wait(5);
   a_sp_zombie = getentarray("sp_zombie_frontend", "targetname");
@@ -153,32 +102,12 @@ function zm_frontend_zombie_logic() {
   }
 }
 
-/*
-	Name: callback_playerconnect
-	Namespace: frontend
-	Checksum: 0xB8D35BF
-	Offset: 0xE90
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function callback_playerconnect() {
   self thread black_market_dialog();
-  /#
   self thread dailychallengedevguithink();
   self thread function_ead1dc1a();
-  # /
 }
 
-/*
-	Name: black_market_play
-	Namespace: frontend
-	Checksum: 0xEDA11B44
-	Offset: 0xEE8
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function black_market_play(a_ents) {
   level.blackmarketsceneorigin = self.origin;
   level.blackmarketsceneangles = self.angles;
@@ -189,19 +118,10 @@ function black_market_play(a_ents) {
   level.blackmarketdealer clientfield::set("dni_eyes", 1);
 }
 
-/*
-	Name: black_market_dialog
-	Namespace: frontend
-	Checksum: 0x2B9C7FD8
-	Offset: 0xFA0
-	Size: 0x276
-	Parameters: 0
-	Flags: Linked
-*/
 function black_market_dialog() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "menuresponse", menu, response);
+    self waittill("menuresponse", menu, response);
     if(menu != "BlackMarket") {
       continue;
     }
@@ -251,22 +171,13 @@ function black_market_dialog() {
         level.blackmarketdealer thread animation::stop(0.2);
         level.blackmarketdealertumbler thread animation::stop(0.2);
         level.blackmarketdealerpistol thread animation::stop(0.2);
-        level.blackmarketdealer notify(# "closed");
+        level.blackmarketdealer notify("closed");
         break;
       }
     }
   }
 }
 
-/*
-	Name: play_black_market_dialog
-	Namespace: frontend
-	Checksum: 0xBDDAC410
-	Offset: 0x1220
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function play_black_market_dialog(dialogalias) {
   if(!isdefined(dialogalias)) {
     return;
@@ -275,37 +186,19 @@ function play_black_market_dialog(dialogalias) {
   level.blackmarketdealer playsoundontag(dialogalias, "J_Head");
 }
 
-/*
-	Name: play_black_market_1st_greeting
-	Namespace: frontend
-	Checksum: 0x703E9E33
-	Offset: 0x1288
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function play_black_market_1st_greeting() {
   if(getlocalprofileint("com_firsttime_blackmarket")) {
     return false;
   }
-  level.blackmarketdealer endon(# "closed");
+  level.blackmarketdealer endon("closed");
   play_black_market_animations("pb_black_marketeer_1st_time_greeting_", "o_black_marketeer_tumbler_1st_time_greeting_", "o_black_marketeer_pistol_1st_time_greeting_", "01");
-  level.blackmarketdealer waittill(# "finished_black_market_animation");
+  level.blackmarketdealer waittill("finished_black_market_animation");
   setlocalprofilevar("com_firsttime_blackmarket", 1);
   return true;
 }
 
-/*
-	Name: play_black_market_greeting_animations
-	Namespace: frontend
-	Checksum: 0x777801B0
-	Offset: 0x1328
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function play_black_market_greeting_animations() {
-  level.blackmarketdealer endon(# "closed");
+  level.blackmarketdealer endon("closed");
   if(play_black_market_1st_greeting()) {
     return;
   }
@@ -313,17 +206,8 @@ function play_black_market_greeting_animations() {
   play_black_market_animations("pb_black_marketeer_greeting_", "o_black_marketeer_tumbler_greeting_", "o_black_marketeer_pistol_greeting_", animnumber);
 }
 
-/*
-	Name: play_black_market_broke_animations
-	Namespace: frontend
-	Checksum: 0xCD573E99
-	Offset: 0x13A8
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function play_black_market_broke_animations() {
-  level.blackmarketdealer endon(# "closed");
+  level.blackmarketdealer endon("closed");
   if(play_black_market_1st_greeting()) {
     return;
   }
@@ -331,29 +215,11 @@ function play_black_market_broke_animations() {
   play_black_market_animations("pb_black_marketeer_insufficient_funds_", "o_black_marketeer_tumbler_insufficient_funds_", "o_black_marketeer_pistol_insufficient_funds_", animnumber);
 }
 
-/*
-	Name: play_black_market_burn_animations
-	Namespace: frontend
-	Checksum: 0x4E854C65
-	Offset: 0x1428
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function play_black_market_burn_animations() {
   animnumber = pick_black_market_anim(6);
   play_black_market_animations("pb_black_marketeer_burn_dupes_", "o_black_marketeer_tumbler_burn_dupes_", "o_black_marketeer_pistol_burn_dupes_", animnumber);
 }
 
-/*
-	Name: pick_black_market_anim
-	Namespace: frontend
-	Checksum: 0x6B767CB5
-	Offset: 0x1488
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function pick_black_market_anim(animcount) {
   animnumber = randomint(animcount);
   if(animnumber < 10) {
@@ -362,15 +228,6 @@ function pick_black_market_anim(animcount) {
   return animnumber;
 }
 
-/*
-	Name: play_black_market_animations
-	Namespace: frontend
-	Checksum: 0x847C4682
-	Offset: 0x14E8
-	Size: 0xFC
-	Parameters: 4
-	Flags: Linked
-*/
 function play_black_market_animations(dealeranim, tumbleranim, pistolanim, animnumber = "") {
   level.blackmarketdealer stopsounds();
   level.blackmarketdealer thread play_black_market_animation(dealeranim + animnumber, "pb_black_marketeer_idle", level.blackmarketsceneorigin, level.blackmarketsceneangles);
@@ -378,36 +235,17 @@ function play_black_market_animations(dealeranim, tumbleranim, pistolanim, animn
   level.blackmarketdealerpistol thread play_black_market_animation(pistolanim + animnumber, "o_black_marketeer_pistol_idle", level.blackmarketdealer, "tag_origin");
 }
 
-/*
-	Name: play_black_market_animation
-	Namespace: frontend
-	Checksum: 0xDE984D95
-	Offset: 0x15F0
-	Size: 0xE4
-	Parameters: 4
-	Flags: Linked
-*/
 function play_black_market_animation(animname, idleanimname, originent, tagangles) {
-  self notify(# "play_black_market_animation");
-  self endon(# "play_black_market_animation");
-  level.blackmarketdealer endon(# "closed");
+  self notify("play_black_market_animation");
+  self endon("play_black_market_animation");
+  level.blackmarketdealer endon("closed");
   self thread animation::stop(0.2);
   self animation::play(animname, originent, tagangles, 1, 0.2, 0.2);
-  self notify(# "finished_black_market_animation");
+  self notify("finished_black_market_animation");
   self thread animation::play(idleanimname, originent, tagangles, 1, 0.2, 0);
 }
 
-/*
-	Name: dailychallengedevguiinit
-	Namespace: frontend
-	Checksum: 0x95CC8CEC
-	Offset: 0x16E0
-	Size: 0x15E
-	Parameters: 0
-	Flags: Linked
-*/
 function dailychallengedevguiinit() {
-  /#
   setdvar("", 0);
   num_rows = tablelookuprowcount("");
   for (row_num = 2; row_num < num_rows; row_num++) {
@@ -417,21 +255,10 @@ function dailychallengedevguiinit() {
     devgui_string = ((((("" + "") + (display_row_num < 10 ? "" + display_row_num : display_row_num) + "") + challenge_name) + "") + row_num) + "";
     adddebugcommand(devgui_string);
   }
-  # /
 }
 
-/*
-	Name: dailychallengedevguithink
-	Namespace: frontend
-	Checksum: 0x1CB2D5A5
-	Offset: 0x1848
-	Size: 0x178
-	Parameters: 0
-	Flags: Linked
-*/
 function dailychallengedevguithink() {
-  /#
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
     daily_challenge_cmd = getdvarint("");
     if(daily_challenge_cmd == 0 || !sessionmodeiszombiesgame()) {
@@ -446,20 +273,9 @@ function dailychallengedevguithink() {
     adddebugcommand("" + "");
     setdvar("", 0);
   }
-  # /
 }
 
-/*
-	Name: function_4afc218
-	Namespace: frontend
-	Checksum: 0x498C0ABC
-	Offset: 0x19C8
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4afc218() {
-  /#
   setdvar("", 0);
   while (true) {
     if(getdvarint("") <= 0 || !sessionmodeiszombiesgame()) {
@@ -480,21 +296,10 @@ function function_4afc218() {
     adddebugcommand("");
     break;
   }
-  # /
 }
 
-/*
-	Name: function_ead1dc1a
-	Namespace: frontend
-	Checksum: 0xD0C5CF35
-	Offset: 0x1B68
-	Size: 0x1F8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ead1dc1a() {
-  /#
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
     if(getdvarstring("") == "") {
       wait(0.2);
@@ -520,5 +325,4 @@ function function_ead1dc1a() {
     setdvar("", "");
     wait(0.2);
   }
-  # /
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_load.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\_oob;
 #using scripts\shared\abilities\_ability_player;
@@ -47,25 +51,13 @@
 #using scripts\zm\gametypes\_spawnlogic;
 #using scripts\zm\gametypes\_spectating;
 #using scripts\zm\gametypes\_weaponobjects;
-
 #namespace load;
 
-/*
-	Name: main
-	Namespace: load
-	Checksum: 0x85A46EC4
-	Offset: 0x7C0
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   /# /
   #
   assert(isdefined(level.first_frame), "");
-  # /
-    # /
-    zm::init();
+  zm::init();
   level._loadstarted = 1;
   register_clientfields();
   level.aitriggerspawnflags = getaitriggerflags();
@@ -78,15 +70,6 @@ function main() {
   level flagsys::set("load_main_complete");
 }
 
-/*
-	Name: footsteps
-	Namespace: load
-	Checksum: 0x4240B549
-	Offset: 0x8E8
-	Size: 0x23C
-	Parameters: 0
-	Flags: Linked
-*/
 function footsteps() {
   if(isdefined(level.fx_exclude_footsteps) && level.fx_exclude_footsteps) {
     return;
@@ -110,26 +93,8 @@ function footsteps() {
   zombie_utility::setfootstepeffect("wood", "_t6/bio/player/fx_footstep_dust");
 }
 
-/*
-	Name: setup_traversals
-	Namespace: load
-	Checksum: 0x99EC1590
-	Offset: 0xB30
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_traversals() {}
 
-/*
-	Name: start_intro_screen_zm
-	Namespace: load
-	Checksum: 0xBE8A0915
-	Offset: 0xB40
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function start_intro_screen_zm() {
   players = getplayers();
   for (i = 0; i < players.size; i++) {
@@ -139,15 +104,6 @@ function start_intro_screen_zm() {
   wait(1);
 }
 
-/*
-	Name: register_clientfields
-	Namespace: load
-	Checksum: 0xE474FA
-	Offset: 0xBE0
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("allplayers", "zmbLastStand", 1, 1, "int");
   clientfield::register("clientuimodel", "zmhud.swordEnergy", 1, 7, "float");

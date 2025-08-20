@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai_sniper_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\blackboard;
 #using scripts\shared\ai_shared;
@@ -6,44 +10,16 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace ai_sniper;
 
-/*
-	Name: __init__sytem__
-	Namespace: ai_sniper
-	Checksum: 0x23D78D65
-	Offset: 0x200
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("ai_sniper", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: ai_sniper
-	Checksum: 0xD1F6A6ED
-	Offset: 0x240
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   thread init_node_scan();
 }
 
-/*
-	Name: init_node_scan
-	Namespace: ai_sniper
-	Checksum: 0x1086FD21
-	Offset: 0x260
-	Size: 0x326
-	Parameters: 1
-	Flags: Linked
-*/
 function init_node_scan(targetname) {
   wait(0.05);
   if(!isdefined(targetname)) {
@@ -76,30 +52,12 @@ function init_node_scan(targetname) {
   }
 }
 
-/*
-	Name: agent_init
-	Namespace: ai_sniper
-	Checksum: 0x78564A6B
-	Offset: 0x590
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function agent_init() {
   self thread patrol_lase_goal_waiter();
   self thread function_6a517a0a();
   self thread function_6fb6a6d3();
 }
 
-/*
-	Name: function_b61dfa9e
-	Namespace: ai_sniper
-	Checksum: 0x8EFF84FE
-	Offset: 0x5E8
-	Size: 0x132
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b61dfa9e(node) {
   if(!isdefined(node)) {
     return;
@@ -107,10 +65,10 @@ function function_b61dfa9e(node) {
   if(!isdefined(node.lase_points) && !isdefined(node.var_57357d16)) {
     return;
   }
-  self notify(# "hash_b61dfa9e");
-  self endon(# "hash_b61dfa9e");
-  self endon(# "death");
-  self endon(# "lase_points");
+  self notify("hash_b61dfa9e");
+  self endon("hash_b61dfa9e");
+  self endon("death");
+  self endon("lase_points");
   if(isdefined(self.patroller) && self.patroller) {
     self ai::end_and_clean_patrol_behaviors();
   }
@@ -124,66 +82,39 @@ function function_b61dfa9e(node) {
   while (distancesquared(self.origin, goalpos) > 256) {
     wait(0.05);
   }
-  self notify(# "hash_50b88a46", node);
+  self notify("hash_50b88a46", node);
 }
 
-/*
-	Name: function_6a517a0a
-	Namespace: ai_sniper
-	Checksum: 0x31DC4EDB
-	Offset: 0x728
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6a517a0a() {
-  self notify(# "hash_6a517a0a");
-  self endon(# "hash_6a517a0a");
-  self endon(# "death");
+  self notify("hash_6a517a0a");
+  self endon("hash_6a517a0a");
+  self endon("death");
   while (true) {
-    self waittill(# "patrol_goal", node);
+    self waittill("patrol_goal", node);
     self function_b61dfa9e(node);
   }
 }
 
-/*
-	Name: function_6fb6a6d3
-	Namespace: ai_sniper
-	Checksum: 0x94B80BDB
-	Offset: 0x798
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6fb6a6d3() {
-  self notify(# "hash_6fb6a6d3");
-  self endon(# "hash_6fb6a6d3");
-  self endon(# "death");
+  self notify("hash_6fb6a6d3");
+  self endon("hash_6fb6a6d3");
+  self endon("death");
   if(isdefined(self.target) && (!(isdefined(self.patroller) && self.patroller))) {
     node = getnode(self.target, "targetname");
     if(isdefined(node)) {
-      self waittill(# "goal");
+      self waittill("goal");
       self function_b61dfa9e(node);
     }
   }
 }
 
-/*
-	Name: patrol_lase_goal_waiter
-	Namespace: ai_sniper
-	Checksum: 0x549EAA89
-	Offset: 0x858
-	Size: 0x278
-	Parameters: 0
-	Flags: Linked
-*/
 function patrol_lase_goal_waiter() {
-  self notify(# "patrol_lase_goal_waiter");
-  self endon(# "patrol_lase_goal_waiter");
-  self endon(# "death");
+  self notify("patrol_lase_goal_waiter");
+  self endon("patrol_lase_goal_waiter");
+  self endon("death");
   while (true) {
     was_stealth = 0;
-    self waittill(# "hash_50b88a46", node);
+    self waittill("hash_50b88a46", node);
     if(isdefined(node.var_57357d16)) {
       self thread actor_lase_points_behavior(node.var_57357d16);
     } else {
@@ -195,8 +126,8 @@ function patrol_lase_goal_waiter() {
     }
     if(isdefined(self.currentgoal) && isdefined(self.currentgoal.target) && self.currentgoal.target != "") {
       self setgoal(node, 1);
-      self waittill(# "lase_points_loop");
-      self notify(# "lase_points");
+      self waittill("lase_points_loop");
+      self notify("lase_points");
       self laseroff();
       self.holdfire = 0;
       self ai::stop_shoot_at_target();
@@ -216,19 +147,10 @@ function patrol_lase_goal_waiter() {
   }
 }
 
-/*
-	Name: actor_lase_points_behavior
-	Namespace: ai_sniper
-	Checksum: 0x1808EB64
-	Offset: 0xAD8
-	Size: 0x314
-	Parameters: 1
-	Flags: Linked
-*/
 function actor_lase_points_behavior(entity_or_point_array) {
-  self notify(# "lase_points");
-  self endon(# "lase_points");
-  self endon(# "death");
+  self notify("lase_points");
+  self endon("lase_points");
+  self endon("death");
   self.holdfire = 1;
   self.blindaim = 1;
   if(!isdefined(self.var_d1ddf246)) {
@@ -242,10 +164,8 @@ function actor_lase_points_behavior(entity_or_point_array) {
     entity_or_point_array = struct::get(self.target, "targetname");
   }
   if(!isdefined(entity_or_point_array) || (isarray(entity_or_point_array) && entity_or_point_array.size == 0)) {
-    /#
     iprintlnbold("");
-    # /
-      return;
+    return;
   }
   var_978eac89 = undefined;
   if(isarray(entity_or_point_array)) {
@@ -269,20 +189,11 @@ function actor_lase_points_behavior(entity_or_point_array) {
   self thread function_659cb4db();
 }
 
-/*
-	Name: actor_lase_stop
-	Namespace: ai_sniper
-	Checksum: 0x89504E76
-	Offset: 0xDF8
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function actor_lase_stop() {
   if(!isdefined(self.lase_ent)) {
     return;
   }
-  self notify(# "lase_points");
+  self notify("lase_points");
   self.holdfire = 0;
   self.blindaim = 0;
   self.lase_ent delete();
@@ -298,18 +209,8 @@ function actor_lase_stop() {
   }
 }
 
-/*
-	Name: debug_position
-	Namespace: ai_sniper
-	Checksum: 0x4B2AA06C
-	Offset: 0xED0
-	Size: 0x94
-	Parameters: 0
-	Flags: None
-*/
 function debug_position() {
-  /#
-  self endon(# "death");
+  self endon("death");
   lastpos = self.origin;
   while (true) {
     debugstar(self.origin, 1, (1, 0, 0));
@@ -317,21 +218,11 @@ function debug_position() {
     lastpos = self.origin;
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: actor_lase_force_laser_on
-	Namespace: ai_sniper
-	Checksum: 0xC637A92F
-	Offset: 0xF70
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function actor_lase_force_laser_on() {
-  self endon(# "death");
-  self endon(# "lase_points");
+  self endon("death");
+  self endon("lase_points");
   var_bef987c0 = gettime();
   while (true) {
     if(self asmistransdecrunning()) {
@@ -344,32 +235,14 @@ function actor_lase_force_laser_on() {
   }
 }
 
-/*
-	Name: function_659cb4db
-	Namespace: ai_sniper
-	Checksum: 0x6F5C83B3
-	Offset: 0x1010
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_659cb4db() {
-  self endon(# "lase_points");
-  self waittill(# "death");
+  self endon("lase_points");
+  self waittill("death");
   if(isdefined(self)) {
     self laseroff();
   }
 }
 
-/*
-	Name: lase_point
-	Namespace: ai_sniper
-	Checksum: 0xCE81701A
-	Offset: 0x1058
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function lase_point(entity_or_point) {
   if(!isdefined(entity_or_point)) {
     return (0, 0, 0);
@@ -384,19 +257,10 @@ function lase_point(entity_or_point) {
   return result;
 }
 
-/*
-	Name: target_lase_points_ally_track
-	Namespace: ai_sniper
-	Checksum: 0x47C57FA9
-	Offset: 0x1120
-	Size: 0x3C8
-	Parameters: 3
-	Flags: Linked
-*/
 function target_lase_points_ally_track(v_eye, entity_or_point_array, a_owner) {
-  self notify(# "actor_lase_points_player_track");
-  self endon(# "actor_lase_points_player_track");
-  self endon(# "death");
+  self notify("actor_lase_points_player_track");
+  self endon("actor_lase_points_player_track");
+  self endon("death");
   if(!isdefined(level.var_b8032721)) {
     level.var_b8032721 = [];
   }
@@ -435,7 +299,7 @@ function target_lase_points_ally_track(v_eye, entity_or_point_array, a_owner) {
       if(distancesquared(var_633cfa62, var_6a3f5d89) < 40000) {
         if(sighttracepassed(v_eye, var_633cfa62, 0, undefined)) {
           if(isdefined(a_owner)) {
-            a_owner notify(# "alert", "combat", var_633cfa62, ally);
+            a_owner notify("alert", "combat", var_633cfa62, ally);
           }
           self function_b77b41d1(v_eye, ally, a_owner);
           break;
@@ -446,15 +310,6 @@ function target_lase_points_ally_track(v_eye, entity_or_point_array, a_owner) {
   }
 }
 
-/*
-	Name: function_b77b41d1
-	Namespace: ai_sniper
-	Checksum: 0x7AED1337
-	Offset: 0x14F0
-	Size: 0xAC
-	Parameters: 4
-	Flags: Linked
-*/
 function function_b77b41d1(v_eye, entity_or_point, a_owner, var_12065f0b = 1) {
   sight_timeout = 7;
   if(isdefined(self.a_owner) && isdefined(self.a_owner.var_815502c4)) {
@@ -463,19 +318,10 @@ function function_b77b41d1(v_eye, entity_or_point, a_owner, var_12065f0b = 1) {
   self target_lase_override(v_eye, entity_or_point, sight_timeout, a_owner, 1, var_12065f0b);
 }
 
-/*
-	Name: target_lase_points
-	Namespace: ai_sniper
-	Checksum: 0x4E7EBBFE
-	Offset: 0x15A8
-	Size: 0x288
-	Parameters: 2
-	Flags: Linked
-*/
 function target_lase_points(entity_or_point_array, e_owner) {
-  self notify(# "lase_points");
-  self endon(# "lase_points");
-  self endon(# "death");
+  self notify("lase_points");
+  self endon("lase_points");
+  self endon("death");
   pausetime = randomfloatrange(2, 4);
   if(isarray(entity_or_point_array) && entity_or_point_array.size <= 0) {
     return;
@@ -510,27 +356,18 @@ function target_lase_points(entity_or_point_array, e_owner) {
       looped = 1;
     }
     if(looped) {
-      self notify(# "lase_points_loop");
+      self notify("lase_points_loop");
       if(isdefined(e_owner)) {
-        e_owner notify(# "lase_points_loop");
+        e_owner notify("lase_points_loop");
       }
     }
   }
 }
 
-/*
-	Name: function_9c1ac1cb
-	Namespace: ai_sniper
-	Checksum: 0x148C09E1
-	Offset: 0x1838
-	Size: 0x3BC
-	Parameters: 3
-	Flags: Linked
-*/
 function function_9c1ac1cb(endposition, totaltime, var_5d61a864) {
-  self notify(# "hash_9c1ac1cb");
-  self endon(# "hash_9c1ac1cb");
-  self endon(# "death");
+  self notify("hash_9c1ac1cb");
+  self endon("hash_9c1ac1cb");
+  self endon("death");
   startposition = self.origin;
   var_e651c736 = self.velocity;
   var_c8240fdb = vectornormalize(self.velocity);
@@ -542,11 +379,11 @@ function function_9c1ac1cb(endposition, totaltime, var_5d61a864) {
   notified = 0;
   var_3d372c1a = 65000;
   if(!isdefined(var_5d61a864) || var_5d61a864) {
-    self endon(# "hash_9744842a");
+    self endon("hash_9744842a");
   }
   while ((gettime() - starttime) < var_ea09f212) {
     if(!notified && (gettime() - starttime) > var_1632b53d) {
-      self notify(# "hash_9744842a");
+      self notify("hash_9744842a");
       notified = 1;
     }
     deltatime = (float(gettime() - starttime)) / 1000;
@@ -556,10 +393,8 @@ function function_9c1ac1cb(endposition, totaltime, var_5d61a864) {
     var_60941c0a = deltatime / totaltime;
     var_60941c0a = 1 - (0.5 + ((cos(var_60941c0a * 180)) * 0.5));
     var_515ca7cf = endposition;
-    /#
     assert(isdefined(var_515ca7cf));
-    # /
-      neworigin = vectorlerp(var_7a592a87, var_515ca7cf, var_60941c0a);
+    neworigin = vectorlerp(var_7a592a87, var_515ca7cf, var_60941c0a);
     self.velocity = (neworigin - self.origin) / 0.05;
     if(neworigin[0] > (var_3d372c1a * -1) && neworigin[0] < var_3d372c1a && neworigin[1] > (var_3d372c1a * -1) && neworigin[1] < var_3d372c1a && neworigin[2] > (var_3d372c1a * -1) && neworigin[2] < var_3d372c1a) {
       self.origin = neworigin;
@@ -568,15 +403,6 @@ function function_9c1ac1cb(endposition, totaltime, var_5d61a864) {
   }
 }
 
-/*
-	Name: target_lase_next
-	Namespace: ai_sniper
-	Checksum: 0x2CA68A2C
-	Offset: 0x1C00
-	Size: 0x180
-	Parameters: 1
-	Flags: Linked
-*/
 function target_lase_next(node) {
   if(!isdefined(node)) {
     return undefined;
@@ -602,21 +428,12 @@ function target_lase_next(node) {
   return var_e236c887;
 }
 
-/*
-	Name: target_lase_transition
-	Namespace: ai_sniper
-	Checksum: 0x9EA054B1
-	Offset: 0x1D88
-	Size: 0x1D8
-	Parameters: 2
-	Flags: Linked
-*/
 function target_lase_transition(entity_or_point, owner) {
-  self notify(# "target_lase_transition");
-  self endon(# "target_lase_transition");
-  self endon(# "death");
+  self notify("target_lase_transition");
+  self endon("target_lase_transition");
+  self endon("death");
   if(isentity(entity_or_point)) {
-    entity_or_point endon(# "death");
+    entity_or_point endon("death");
     while (true) {
       point = lase_point(entity_or_point);
       delta = point - self.origin;
@@ -635,27 +452,18 @@ function target_lase_transition(entity_or_point, owner) {
     }
     if(time > 0) {
       self thread function_9c1ac1cb(point, time, var_779fd53f);
-      self waittill(# "hash_9744842a");
+      self waittill("hash_9744842a");
     }
   }
 }
 
-/*
-	Name: target_lase_override
-	Namespace: ai_sniper
-	Checksum: 0xE14A5317
-	Offset: 0x1F68
-	Size: 0x272
-	Parameters: 6
-	Flags: Linked
-*/
 function target_lase_override(v_eye, entity_or_point, sight_timeout, a_owner, fire_weapon, var_12065f0b = 1) {
   if(isdefined(self.lase_override) && (!var_12065f0b || self.lase_override == entity_or_point)) {
     return;
   }
-  self notify(# "target_lase_override");
-  self endon(# "target_lase_override");
-  self endon(# "death");
+  self notify("target_lase_override");
+  self endon("target_lase_override");
+  self endon("death");
   self.lase_override = entity_or_point;
   self thread target_lase_transition(entity_or_point, a_owner);
   outofsighttime = 0;
@@ -677,7 +485,7 @@ function target_lase_override(v_eye, entity_or_point, sight_timeout, a_owner, fi
       }
     }
     if(!isdefined(entity_or_point) || outofsighttime >= sight_timeout) {
-      self notify(# "target_lase_transition");
+      self notify("target_lase_transition");
       break;
     }
     if(!sighttracepassed(v_eye, lase_point(entity_or_point), 0, undefined)) {
@@ -694,15 +502,6 @@ function target_lase_override(v_eye, entity_or_point, sight_timeout, a_owner, fi
   self.lase_override = undefined;
 }
 
-/*
-	Name: is_firing
-	Namespace: ai_sniper
-	Checksum: 0x62D49F3A
-	Offset: 0x21E8
-	Size: 0x46
-	Parameters: 1
-	Flags: None
-*/
 function is_firing(a_owner) {
   if(!isdefined(a_owner)) {
     return 0;

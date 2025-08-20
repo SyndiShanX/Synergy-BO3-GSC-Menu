@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*********************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_gadget_misdirection.gsc
+*********************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_challenges;
 #using scripts\cp\_util;
@@ -19,32 +23,13 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
-
 #namespace cybercom_gadget_misdirection;
 
-/*
-	Name: init
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x7F7E2015
-	Offset: 0x5B0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("toplayer", "misdirection_enable", 1, 1, "int");
   clientfield::register("scriptmover", "makedecoy", 1, 1, "int");
 }
 
-/*
-	Name: main
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0xB587B2A
-	Offset: 0x620
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   cybercom_gadget::registerability(2, 32, 1);
   level.cybercom.misdirection = spawnstruct();
@@ -58,37 +43,10 @@ function main() {
   level.cybercom.misdirection._is_primed = & _is_primed;
 }
 
-/*
-	Name: _is_flickering
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x6324FF93
-	Offset: 0x7B0
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function _is_flickering(slot) {}
 
-/*
-	Name: _on_flicker
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x93687036
-	Offset: 0x7C8
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_flicker(slot, weapon) {}
 
-/*
-	Name: _on_give
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x3DA85D42
-	Offset: 0x7E8
-	Size: 0x194
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_give(slot, weapon) {
   self.cybercom.misdirection_lifetime = getdvarfloat("scr_misdirection_lifetime", 4);
   self.cybercom.var_c0a69197 = getdvarint("scr_misdirection_target_count", 3);
@@ -102,40 +60,13 @@ function _on_give(slot, weapon) {
   self thread cybercom::function_b5f4e597(weapon);
 }
 
-/*
-	Name: _on_take
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x3AE22221
-	Offset: 0x988
-	Size: 0x40
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_take(slot, weapon) {
   clientfield::set_to_player("misdirection_enable", 0);
   self.cybercom.is_primed = 0;
 }
 
-/*
-	Name: _on_connect
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x99EC1590
-	Offset: 0x9D0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function _on_connect() {}
 
-/*
-	Name: _on
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0xD4E032BC
-	Offset: 0x9E0
-	Size: 0x114
-	Parameters: 2
-	Flags: Linked
-*/
 function _on(slot, weapon) {
   result = self _activate_misdirection(slot, weapon);
   if(!result) {
@@ -151,43 +82,16 @@ function _on(slot, weapon) {
   }
 }
 
-/*
-	Name: _off
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0xB67E7E71
-	Offset: 0xB00
-	Size: 0x28
-	Parameters: 2
-	Flags: Linked
-*/
 function _off(slot, weapon) {
   self.cybercom.is_primed = 0;
 }
 
-/*
-	Name: _is_primed
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0xA456AF9A
-	Offset: 0xB30
-	Size: 0x50
-	Parameters: 2
-	Flags: Linked
-*/
 function _is_primed(slot, weapon) {
   if(!(isdefined(self.cybercom.is_primed) && self.cybercom.is_primed)) {
     self.cybercom.is_primed = 1;
   }
 }
 
-/*
-	Name: _get_valid_targets
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x3EF02424
-	Offset: 0xB88
-	Size: 0x33E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _get_valid_targets(weapon) {
   playerforward = anglestoforward(self getplayerangles());
   enemies = arraycombine(getaiteamarray("axis"), getaiteamarray("team3"), 0, 0);
@@ -220,15 +124,6 @@ function private _get_valid_targets(weapon) {
   return valid;
 }
 
-/*
-	Name: _activate_misdirection
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x9F743A02
-	Offset: 0xED0
-	Size: 0x186
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _activate_misdirection(slot, weapon) {
   targets = _get_valid_targets(weapon);
   self.cybercom.var_1beb8e5f = [];
@@ -245,15 +140,6 @@ function private _activate_misdirection(slot, weapon) {
   return true;
 }
 
-/*
-	Name: function_7074260
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x81231AD7
-	Offset: 0x1060
-	Size: 0x116
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7074260(point) {
   foreach(var_d3c532e6 in self.cybercom.var_1beb8e5f) {
     distsq = distance2dsquared(point, var_d3c532e6.origin);
@@ -264,15 +150,6 @@ function function_7074260(point) {
   return true;
 }
 
-/*
-	Name: function_10cd71b
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x4A6A2932
-	Offset: 0x1180
-	Size: 0x6B8
-	Parameters: 2
-	Flags: Linked
-*/
 function function_10cd71b(decoy, & potentialtargets) {
   mins = vectorscale((1, 1, 1), 1000000);
   maxs = vectorscale((-1, -1, -1), 1000000);
@@ -325,15 +202,6 @@ function function_10cd71b(decoy, & potentialtargets) {
   decoy.origin = var_b333c85b + vectorscale((0, 0, 1), 64);
 }
 
-/*
-	Name: initthreatbias
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x1E70FAEF
-	Offset: 0x1840
-	Size: 0xD2
-	Parameters: 0
-	Flags: Linked
-*/
 function initthreatbias() {
   aiarray = getaiarray();
   foreach(ai in aiarray) {
@@ -346,15 +214,6 @@ function initthreatbias() {
   }
 }
 
-/*
-	Name: function_4adc7dc8
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0xCA2770FF
-	Offset: 0x1920
-	Size: 0x388
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4adc7dc8( & potentialtargets) {
   decoy = spawn("script_model", self.origin);
   if(!isdefined(decoy)) {
@@ -384,7 +243,7 @@ function function_4adc7dc8( & potentialtargets) {
   }
   decoy notsolid();
   decoy.notsolid = 1;
-  decoy notify(# "end_nudge_collision");
+  decoy notify("end_nudge_collision");
   decoy.ignoreall = 1;
   decoy.takedamage = 0;
   decoy.health = 10000;
@@ -394,18 +253,9 @@ function function_4adc7dc8( & potentialtargets) {
   return decoy;
 }
 
-/*
-	Name: function_7ca046a9
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0xCCE458D8
-	Offset: 0x1CB0
-	Size: 0x124
-	Parameters: 2
-	Flags: Linked
-*/
 function function_7ca046a9(lifetime, player) {
-  self notify(# "hash_7ca046a9");
-  self endon(# "hash_7ca046a9");
+  self notify("hash_7ca046a9");
+  self endon("hash_7ca046a9");
   self show();
   self clientfield::set("makedecoy", 1);
   waittime = lifetime + randomfloatrange(1, 3);
@@ -418,15 +268,6 @@ function function_7ca046a9(lifetime, player) {
   self delete();
 }
 
-/*
-	Name: function_44a2ae85
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0xCB981DFC
-	Offset: 0x1DE0
-	Size: 0xCE
-	Parameters: 2
-	Flags: Linked
-*/
 function function_44a2ae85(vec, mins) {
   if(vec[0] < mins[0]) {
     mins = (vec[0], mins[1], mins[2]);
@@ -440,15 +281,6 @@ function function_44a2ae85(vec, mins) {
   return mins;
 }
 
-/*
-	Name: function_b72ba417
-	Namespace: cybercom_gadget_misdirection
-	Checksum: 0x49ACDF7B
-	Offset: 0x1EB8
-	Size: 0xCE
-	Parameters: 2
-	Flags: Linked
-*/
 function function_b72ba417(vec, maxs) {
   if(vec[0] > maxs[0]) {
     maxs = (vec[0], maxs[1], maxs[2]);

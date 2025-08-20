@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_loadout.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_armor;
 #using scripts\mp\_challenges;
@@ -23,56 +27,19 @@
 #using scripts\shared\tweakables_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapon_utils;
-
 #namespace loadout;
 
-/*
-	Name: __init__sytem__
-	Namespace: loadout
-	Checksum: 0xA024A300
-	Offset: 0xE08
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("loadout", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: loadout
-	Checksum: 0x7A239E71
-	Offset: 0xE48
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
   callback::on_connect( & on_connect);
 }
 
-/*
-	Name: on_connect
-	Namespace: loadout
-	Checksum: 0x99EC1590
-	Offset: 0xE98
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_connect() {}
 
-/*
-	Name: init
-	Namespace: loadout
-	Checksum: 0x5FFC14C0
-	Offset: 0xEA8
-	Size: 0x1554
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.classmap["class_smg"] = "CLASS_SMG";
   level.classmap["class_cqb"] = "CLASS_CQB";
@@ -327,15 +294,6 @@ function init() {
   callback::add_weapon_damage(level.weaponspecialdiscgun, & on_damage_special_discgun);
 }
 
-/*
-	Name: on_damage_special_discgun
-	Namespace: loadout
-	Checksum: 0x13235F1A
-	Offset: 0x2408
-	Size: 0x5C
-	Parameters: 5
-	Flags: Linked
-*/
 function on_damage_special_discgun(eattacker, einflictor, weapon, meansofdeath, damage) {
   if(weapon != level.weaponspecialdiscgun) {
     return;
@@ -343,15 +301,6 @@ function on_damage_special_discgun(eattacker, einflictor, weapon, meansofdeath, 
   playsoundatposition("wpn_disc_bounce_fatal", self.origin);
 }
 
-/*
-	Name: create_class_exclusion_list
-	Namespace: loadout
-	Checksum: 0x16100275
-	Offset: 0x2470
-	Size: 0xFC
-	Parameters: 0
-	Flags: Linked
-*/
 function create_class_exclusion_list() {
   currentdvar = 0;
   level.itemexclusions = [];
@@ -366,15 +315,6 @@ function create_class_exclusion_list() {
   }
 }
 
-/*
-	Name: is_attachment_excluded
-	Namespace: loadout
-	Checksum: 0x56E26C26
-	Offset: 0x2578
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked
-*/
 function is_attachment_excluded(attachment) {
   numexclusions = level.attachmentexclusions.size;
   for (exclusionindex = 0; exclusionindex < numexclusions; exclusionindex++) {
@@ -385,15 +325,6 @@ function is_attachment_excluded(attachment) {
   return false;
 }
 
-/*
-	Name: set_statstable_id
-	Namespace: loadout
-	Checksum: 0x3EF66FEB
-	Offset: 0x25E8
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function set_statstable_id() {
   if(!isdefined(level.statstableid)) {
     statstablename = util::getstatstablename();
@@ -401,15 +332,6 @@ function set_statstable_id() {
   }
 }
 
-/*
-	Name: get_item_count
-	Namespace: loadout
-	Checksum: 0x5B3E2A1
-	Offset: 0x2640
-	Size: 0x7C
-	Parameters: 1
-	Flags: None
-*/
 function get_item_count(itemreference) {
   set_statstable_id();
   itemcount = int(tablelookup(level.statstableid, 4, itemreference, 5));
@@ -419,15 +341,6 @@ function get_item_count(itemreference) {
   return itemcount;
 }
 
-/*
-	Name: getdefaultclassslotwithexclusions
-	Namespace: loadout
-	Checksum: 0x3BA676F5
-	Offset: 0x26C8
-	Size: 0xCC
-	Parameters: 2
-	Flags: None
-*/
 function getdefaultclassslotwithexclusions(classname, slotname) {
   itemreference = getdefaultclassslot(classname, slotname);
   set_statstable_id();
@@ -438,28 +351,10 @@ function getdefaultclassslotwithexclusions(classname, slotname) {
   return itemreference;
 }
 
-/*
-	Name: load_default_loadout
-	Namespace: loadout
-	Checksum: 0xAA24FAE2
-	Offset: 0x27A0
-	Size: 0x26
-	Parameters: 2
-	Flags: Linked
-*/
 function load_default_loadout(weaponclass, classnum) {
   level.classtoclassnum[weaponclass] = classnum;
 }
 
-/*
-	Name: weapon_class_register
-	Namespace: loadout
-	Checksum: 0x65673028
-	Offset: 0x27D0
-	Size: 0x18C
-	Parameters: 2
-	Flags: Linked
-*/
 function weapon_class_register(weaponname, weapon_type) {
   if(issubstr("weapon_smg weapon_cqb weapon_assault weapon_lmg weapon_sniper weapon_shotgun weapon_launcher weapon_knife weapon_special", weapon_type)) {
     level.primary_weapon_array[getweapon(weaponname)] = 1;
@@ -476,9 +371,7 @@ function weapon_class_register(weaponname, weapon_type) {
           if(weapon_type == "weapon_rifle") {
             level.inventory_array[getweapon(weaponname)] = 1;
           } else if(weapon_type != "hero") {
-            /#
             assert(0, "" + weapon_type);
-            # /
           }
         }
       }
@@ -486,29 +379,11 @@ function weapon_class_register(weaponname, weapon_type) {
   }
 }
 
-/*
-	Name: hero_register_dialog
-	Namespace: loadout
-	Checksum: 0x99CF728F
-	Offset: 0x2968
-	Size: 0x4A
-	Parameters: 1
-	Flags: Linked
-*/
 function hero_register_dialog(weapon) {
   readyvo = weapon.name + "_ready";
   game["dialog"][readyvo] = readyvo;
 }
 
-/*
-	Name: cac_init
-	Namespace: loadout
-	Checksum: 0x909A0343
-	Offset: 0x29C0
-	Size: 0x5BC
-	Parameters: 0
-	Flags: Linked
-*/
 function cac_init() {
   level.tbl_weaponids = [];
   level.heroweaponstable = [];
@@ -550,9 +425,7 @@ function cac_init() {
           perk_name = tablelookupcolumnforrow(level.statstableid, itemrow, 3);
           level.perkicons[perk_name] = perkicon;
           level.perkspecialties[perk_name] = reference_s;
-          /#
           dev::add_perk_devgui(perkname, reference_s);
-          # /
         }
       }
     }
@@ -580,31 +453,11 @@ function cac_init() {
   }
 }
 
-/*
-	Name: getclasschoice
-	Namespace: loadout
-	Checksum: 0xA7B3DCBD
-	Offset: 0x2F88
-	Size: 0x40
-	Parameters: 1
-	Flags: Linked
-*/
 function getclasschoice(response) {
-  /#
   assert(isdefined(level.classmap[response]));
-  # /
-    return level.classmap[response];
+  return level.classmap[response];
 }
 
-/*
-	Name: getattachmentstring
-	Namespace: loadout
-	Checksum: 0x9FDA5F30
-	Offset: 0x2FD0
-	Size: 0x88
-	Parameters: 2
-	Flags: None
-*/
 function getattachmentstring(weaponnum, attachmentnum) {
   attachmentstring = getitemattachment(weaponnum, attachmentnum);
   if(attachmentstring != "none" && !is_attachment_excluded(attachmentstring)) {
@@ -615,15 +468,6 @@ function getattachmentstring(weaponnum, attachmentnum) {
   return attachmentstring;
 }
 
-/*
-	Name: getattachmentsdisabled
-	Namespace: loadout
-	Checksum: 0x382956C5
-	Offset: 0x3060
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function getattachmentsdisabled() {
   if(!isdefined(level.attachmentsdisabled)) {
     return 0;
@@ -631,15 +475,6 @@ function getattachmentsdisabled() {
   return level.attachmentsdisabled;
 }
 
-/*
-	Name: getkillstreakindex
-	Namespace: loadout
-	Checksum: 0xFDE1AFF8
-	Offset: 0x3088
-	Size: 0x92
-	Parameters: 2
-	Flags: Linked
-*/
 function getkillstreakindex(weaponclass, killstreaknum) {
   killstreaknum++;
   killstreakstring = "killstreak" + killstreaknum;
@@ -649,15 +484,6 @@ function getkillstreakindex(weaponclass, killstreaknum) {
   return self getloadoutitem(weaponclass, killstreakstring);
 }
 
-/*
-	Name: givekillstreaks
-	Namespace: loadout
-	Checksum: 0xA13713BC
-	Offset: 0x3128
-	Size: 0x546
-	Parameters: 0
-	Flags: Linked
-*/
 function givekillstreaks() {
   self.killstreak = [];
   if(!level.loadoutkillstreaksenabled) {
@@ -669,55 +495,53 @@ function givekillstreaks() {
   for (killstreaknum = 0; killstreaknum < level.maxkillstreaks; killstreaknum++) {
     killstreakindex = getkillstreakindex(classnum, killstreaknum);
     if(isdefined(killstreakindex) && killstreakindex > 0) {
-      /#
       assert(isdefined(level.tbl_killstreakdata[killstreakindex]), ("" + killstreakindex) + "");
-      # /
-        if(isdefined(level.tbl_killstreakdata[killstreakindex])) {
-          self.killstreak[currentkillstreak] = level.tbl_killstreakdata[killstreakindex];
-          if(isdefined(level.usingmomentum) && level.usingmomentum) {
-            killstreaktype = killstreaks::get_by_menu_name(self.killstreak[currentkillstreak]);
-            if(isdefined(killstreaktype)) {
-              weapon = killstreaks::get_killstreak_weapon(killstreaktype);
-              self giveweapon(weapon);
-              if(isdefined(level.usingscorestreaks) && level.usingscorestreaks) {
-                if(weapon.iscarriedkillstreak) {
-                  if(!isdefined(self.pers["held_killstreak_ammo_count"][weapon])) {
-                    self.pers["held_killstreak_ammo_count"][weapon] = 0;
-                  }
-                  if(!isdefined(self.pers["held_killstreak_clip_count"][weapon])) {
-                    self.pers["held_killstreak_clip_count"][weapon] = 0;
-                  }
-                  if(self.pers["held_killstreak_ammo_count"][weapon] > 0) {
-                    self setweaponammoclip(weapon, self.pers["held_killstreak_clip_count"][weapon]);
-                    self setweaponammostock(weapon, self.pers["held_killstreak_ammo_count"][weapon] - self.pers["held_killstreak_clip_count"][weapon]);
-                  } else {
-                    self setweaponammooverall(weapon, 0);
-                  }
+      if(isdefined(level.tbl_killstreakdata[killstreakindex])) {
+        self.killstreak[currentkillstreak] = level.tbl_killstreakdata[killstreakindex];
+        if(isdefined(level.usingmomentum) && level.usingmomentum) {
+          killstreaktype = killstreaks::get_by_menu_name(self.killstreak[currentkillstreak]);
+          if(isdefined(killstreaktype)) {
+            weapon = killstreaks::get_killstreak_weapon(killstreaktype);
+            self giveweapon(weapon);
+            if(isdefined(level.usingscorestreaks) && level.usingscorestreaks) {
+              if(weapon.iscarriedkillstreak) {
+                if(!isdefined(self.pers["held_killstreak_ammo_count"][weapon])) {
+                  self.pers["held_killstreak_ammo_count"][weapon] = 0;
+                }
+                if(!isdefined(self.pers["held_killstreak_clip_count"][weapon])) {
+                  self.pers["held_killstreak_clip_count"][weapon] = 0;
+                }
+                if(self.pers["held_killstreak_ammo_count"][weapon] > 0) {
+                  self setweaponammoclip(weapon, self.pers["held_killstreak_clip_count"][weapon]);
+                  self setweaponammostock(weapon, self.pers["held_killstreak_ammo_count"][weapon] - self.pers["held_killstreak_clip_count"][weapon]);
                 } else {
-                  quantity = self.pers["killstreak_quantity"][weapon];
-                  if(!isdefined(quantity)) {
-                    quantity = 0;
-                  }
-                  self setweaponammoclip(weapon, quantity);
+                  self setweaponammooverall(weapon, 0);
                 }
-              }
-              sortdata = spawnstruct();
-              sortdata.cost = level.killstreaks[killstreaktype].momentumcost;
-              sortdata.weapon = weapon;
-              sortindex = 0;
-              for (sortindex = 0; sortindex < sortedkillstreaks.size; sortindex++) {
-                if(sortedkillstreaks[sortindex].cost > sortdata.cost) {
-                  break;
+              } else {
+                quantity = self.pers["killstreak_quantity"][weapon];
+                if(!isdefined(quantity)) {
+                  quantity = 0;
                 }
+                self setweaponammoclip(weapon, quantity);
               }
-              for (i = sortedkillstreaks.size; i > sortindex; i--) {
-                sortedkillstreaks[i] = sortedkillstreaks[i - 1];
-              }
-              sortedkillstreaks[sortindex] = sortdata;
             }
+            sortdata = spawnstruct();
+            sortdata.cost = level.killstreaks[killstreaktype].momentumcost;
+            sortdata.weapon = weapon;
+            sortindex = 0;
+            for (sortindex = 0; sortindex < sortedkillstreaks.size; sortindex++) {
+              if(sortedkillstreaks[sortindex].cost > sortdata.cost) {
+                break;
+              }
+            }
+            for (i = sortedkillstreaks.size; i > sortindex; i--) {
+              sortedkillstreaks[i] = sortedkillstreaks[i - 1];
+            }
+            sortedkillstreaks[sortindex] = sortdata;
           }
-          currentkillstreak++;
         }
+        currentkillstreak++;
+      }
     }
   }
   actionslotorder = [];
@@ -733,54 +557,18 @@ function givekillstreaks() {
   }
 }
 
-/*
-	Name: isperkgroup
-	Namespace: loadout
-	Checksum: 0xE75C382D
-	Offset: 0x3678
-	Size: 0x2A
-	Parameters: 1
-	Flags: None
-*/
 function isperkgroup(perkname) {
   return isdefined(perkname) && isstring(perkname);
 }
 
-/*
-	Name: reset_specialty_slots
-	Namespace: loadout
-	Checksum: 0x533E9206
-	Offset: 0x36B0
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function reset_specialty_slots(class_num) {
   self.specialty = [];
 }
 
-/*
-	Name: initstaticweaponstime
-	Namespace: loadout
-	Checksum: 0x876A0FA9
-	Offset: 0x36D0
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function initstaticweaponstime() {
   self.staticweaponsstarttime = gettime();
 }
 
-/*
-	Name: isequipmentallowed
-	Namespace: loadout
-	Checksum: 0xAFB972
-	Offset: 0x36E8
-	Size: 0x36
-	Parameters: 1
-	Flags: Linked
-*/
 function isequipmentallowed(equipment_name) {
   if(equipment_name == level.weapontacticalinsertion.name && level.disabletacinsert) {
     return false;
@@ -788,15 +576,6 @@ function isequipmentallowed(equipment_name) {
   return true;
 }
 
-/*
-	Name: isleagueitemrestricted
-	Namespace: loadout
-	Checksum: 0xA3D98562
-	Offset: 0x3728
-	Size: 0x2E
-	Parameters: 1
-	Flags: Linked
-*/
 function isleagueitemrestricted(item) {
   if(level.leaguematch) {
     return isitemrestricted(item);
@@ -804,15 +583,6 @@ function isleagueitemrestricted(item) {
   return 0;
 }
 
-/*
-	Name: giveloadoutlevelspecific
-	Namespace: loadout
-	Checksum: 0xB01C2B0E
-	Offset: 0x3760
-	Size: 0x74
-	Parameters: 2
-	Flags: Linked
-*/
 function giveloadoutlevelspecific(team, weaponclass) {
   pixbeginevent("giveLoadoutLevelSpecific");
   if(isdefined(level.givecustomcharacters)) {
@@ -824,15 +594,6 @@ function giveloadoutlevelspecific(team, weaponclass) {
   pixendevent();
 }
 
-/*
-	Name: giveloadout_init
-	Namespace: loadout
-	Checksum: 0xC9A9BD06
-	Offset: 0x37E0
-	Size: 0xA2
-	Parameters: 1
-	Flags: Linked
-*/
 function giveloadout_init(takeallweapons) {
   if(takeallweapons) {
     self takeallweapons();
@@ -845,18 +606,9 @@ function giveloadout_init(takeallweapons) {
   self.grenadetypeprimarycount = 0;
   self.grenadetypesecondary = level.weaponnone;
   self.grenadetypesecondarycount = 0;
-  self notify(# "give_map");
+  self notify("give_map");
 }
 
-/*
-	Name: giveperks
-	Namespace: loadout
-	Checksum: 0x457EA9B8
-	Offset: 0x3890
-	Size: 0x22C
-	Parameters: 0
-	Flags: Linked
-*/
 function giveperks() {
   pixbeginevent("givePerks");
   self.specialty = self getloadoutperks(self.class_num);
@@ -881,15 +633,6 @@ function giveperks() {
   pixendevent();
 }
 
-/*
-	Name: setclassnum
-	Namespace: loadout
-	Checksum: 0xD5F38CCE
-	Offset: 0x3AC8
-	Size: 0x1D4
-	Parameters: 1
-	Flags: Linked
-*/
 function setclassnum(weaponclass) {
   if(issubstr(weaponclass, "CLASS_CUSTOM")) {
     pixbeginevent("custom class");
@@ -904,10 +647,8 @@ function setclassnum(weaponclass) {
     pixendevent();
   } else {
     pixbeginevent("default class");
-    /#
     assert(isdefined(self.pers[""]), "");
-    # /
-      self.class_num = level.classtoclassnum[weaponclass];
+    self.class_num = level.classtoclassnum[weaponclass];
     self.class_num_for_global_weapons = 0;
     self setplayerrenderoptions(0);
     pixendevent();
@@ -915,15 +656,6 @@ function setclassnum(weaponclass) {
   self recordloadoutindex(self.class_num);
 }
 
-/*
-	Name: givebaseweapon
-	Namespace: loadout
-	Checksum: 0x27EF5F50
-	Offset: 0x3CA8
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function givebaseweapon() {
   self.spawnweapon = level.weaponbasemeleeheld;
   knifeweaponoptions = self calcweaponoptions(self.class_num, 2);
@@ -934,15 +666,6 @@ function givebaseweapon() {
   self.alreadysetspawnweapononce = 1;
 }
 
-/*
-	Name: giveweapons
-	Namespace: loadout
-	Checksum: 0xAB1880C1
-	Offset: 0x3D70
-	Size: 0x60C
-	Parameters: 0
-	Flags: Linked
-*/
 function giveweapons() {
   pixbeginevent("giveWeapons");
   spawnweapon = level.weaponnull;
@@ -1019,15 +742,6 @@ function giveweapons() {
   pixendevent();
 }
 
-/*
-	Name: giveprimaryoffhand
-	Namespace: loadout
-	Checksum: 0x6881A1E8
-	Offset: 0x4388
-	Size: 0x2EC
-	Parameters: 0
-	Flags: Linked
-*/
 function giveprimaryoffhand() {
   pixbeginevent("givePrimaryOffhand");
   changedclass = self.pers["changed_class"];
@@ -1064,15 +778,6 @@ function giveprimaryoffhand() {
   pixendevent();
 }
 
-/*
-	Name: givesecondaryoffhand
-	Namespace: loadout
-	Checksum: 0xDD23E178
-	Offset: 0x4680
-	Size: 0x2EC
-	Parameters: 0
-	Flags: Linked
-*/
 function givesecondaryoffhand() {
   pixbeginevent("giveSecondaryOffhand");
   changedclass = self.pers["changed_class"];
@@ -1109,15 +814,6 @@ function givesecondaryoffhand() {
   pixendevent();
 }
 
-/*
-	Name: givespecialoffhand
-	Namespace: loadout
-	Checksum: 0xFCD5D577
-	Offset: 0x4978
-	Size: 0x31C
-	Parameters: 0
-	Flags: Linked
-*/
 function givespecialoffhand() {
   pixbeginevent("giveSpecialOffhand");
   changedclass = self.pers["changed_class"];
@@ -1128,7 +824,6 @@ function givespecialoffhand() {
   specialoffhandcount = 0;
   specialoffhand = self getloadoutweapon(self.class_num_for_global_weapons, "herogadget");
   specialoffhandcount = specialoffhand.startammo;
-  /#
   if(getdvarstring("") != "") {
     herogagdetname = getdvarstring("");
     specialoffhand = level.weaponnone;
@@ -1136,14 +831,11 @@ function givespecialoffhand() {
       specialoffhand = getweapon(herogagdetname);
     }
   }
-  # /
-    if(isdefined(self.pers[# "hash_65987563"])) {
-      /#
-      assert(specialoffhand.name == "");
-      # /
-        specialoffhand = self.pers[# "hash_65987563"];
-      roulette::gadget_roulette_give_earned_specialist(specialoffhand, 0);
-    }
+  if(isdefined(self.pers[# "hash_65987563"])) {
+    assert(specialoffhand.name == "");
+    specialoffhand = self.pers[# "hash_65987563"];
+    roulette::gadget_roulette_give_earned_specialist(specialoffhand, 0);
+  }
   if(isleagueitemrestricted(specialoffhand.name) || !isequipmentallowed(specialoffhand.name)) {
     specialoffhand = level.weaponnone;
     specialoffhandcount = 0;
@@ -1163,15 +855,6 @@ function givespecialoffhand() {
   pixendevent();
 }
 
-/*
-	Name: giveheroweapon
-	Namespace: loadout
-	Checksum: 0x27818157
-	Offset: 0x4CA0
-	Size: 0x224
-	Parameters: 0
-	Flags: Linked
-*/
 function giveheroweapon() {
   pixbeginevent("giveHeroWeapon");
   changedclass = self.pers["changed_class"];
@@ -1180,20 +863,18 @@ function giveheroweapon() {
   classnum = self.class_num_for_global_weapons;
   heroweapon = level.weaponnone;
   heroweaponname = self getloadoutitemref(self.class_num_for_global_weapons, "heroWeapon");
-  /#
   if(getdvarstring("") != "") {
     heroweaponname = getdvarstring("");
   }
-  # /
-    if(heroweaponname != "" && heroweaponname != "weapon_null") {
-      if(heroweaponname == "hero_minigun") {
-        model = self getcharacterbodymodel();
-        if(isdefined(model) && issubstr(model, "body3")) {
-          heroweaponname = "hero_minigun_body3";
-        }
+  if(heroweaponname != "" && heroweaponname != "weapon_null") {
+    if(heroweaponname == "hero_minigun") {
+      model = self getcharacterbodymodel();
+      if(isdefined(model) && issubstr(model, "body3")) {
+        heroweaponname = "hero_minigun_body3";
       }
-      heroweapon = getweapon(heroweaponname);
     }
+    heroweapon = getweapon(heroweaponname);
+  }
   if(heroweapon != level.weaponnone) {
     self.heroweapon = heroweapon;
     self giveweapon(heroweapon);
@@ -1202,15 +883,6 @@ function giveheroweapon() {
   pixendevent();
 }
 
-/*
-	Name: giveloadout
-	Namespace: loadout
-	Checksum: 0x9FB6EFFA
-	Offset: 0x4ED0
-	Size: 0x294
-	Parameters: 2
-	Flags: Linked
-*/
 function giveloadout(team, weaponclass) {
   pixbeginevent("giveLoadout");
   if(isdefined(level.givecustomloadout)) {
@@ -1249,15 +921,6 @@ function giveloadout(team, weaponclass) {
   pixendevent();
 }
 
-/*
-	Name: giveloadout_finalize
-	Namespace: loadout
-	Checksum: 0x408B0F04
-	Offset: 0x5170
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function giveloadout_finalize(spawnweapon, primaryweapon) {
   if(!isdefined(self.firstspawn)) {
     if(isdefined(spawnweapon)) {
@@ -1273,37 +936,17 @@ function giveloadout_finalize(spawnweapon, primaryweapon) {
   self flagsys::set("loadout_given");
 }
 
-/*
-	Name: setweaponammooverall
-	Namespace: loadout
-	Checksum: 0x262D3DDA
-	Offset: 0x5238
-	Size: 0xD4
-	Parameters: 2
-	Flags: Linked
-*/
 function setweaponammooverall(weapon, amount) {
   if(weapon.iscliponly) {
     self setweaponammoclip(weapon, amount);
   } else {
     self setweaponammoclip(weapon, amount);
     diff = amount - self getweaponammoclip(weapon);
-    /#
     assert(diff >= 0);
-    # /
-      self setweaponammostock(weapon, diff);
+    self setweaponammostock(weapon, diff);
   }
 }
 
-/*
-	Name: on_player_connecting
-	Namespace: loadout
-	Checksum: 0x66F725DC
-	Offset: 0x5318
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connecting() {
   if(!isdefined(self.pers["class"])) {
     self.pers["class"] = "";
@@ -1317,43 +960,16 @@ function on_player_connecting() {
   self.reviveids = [];
 }
 
-/*
-	Name: fadeaway
-	Namespace: loadout
-	Checksum: 0x516A7B5E
-	Offset: 0x53C0
-	Size: 0x40
-	Parameters: 2
-	Flags: None
-*/
 function fadeaway(waitdelay, fadedelay) {
   wait(waitdelay);
   self fadeovertime(fadedelay);
   self.alpha = 0;
 }
 
-/*
-	Name: setclass
-	Namespace: loadout
-	Checksum: 0xECA5592D
-	Offset: 0x5408
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function setclass(newclass) {
   self.curclass = newclass;
 }
 
-/*
-	Name: initperkdvars
-	Namespace: loadout
-	Checksum: 0x7296D380
-	Offset: 0x5428
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function initperkdvars() {
   level.cac_armorpiercing_data = getdvarint("perk_armorpiercing", 40) / 100;
   level.cac_bulletdamage_data = getdvarint("perk_bulletDamage", 35);
@@ -1363,15 +979,6 @@ function initperkdvars() {
   level.cac_flakjacket_hardcore_data = getdvarint("perk_flakJacket_hardcore", 9);
 }
 
-/*
-	Name: cac_selector
-	Namespace: loadout
-	Checksum: 0x9EEAC2C2
-	Offset: 0x5528
-	Size: 0x8E
-	Parameters: 0
-	Flags: Linked
-*/
 function cac_selector() {
   self.detectexplosives = 0;
   if(isdefined(self.specialty)) {
@@ -1385,15 +992,6 @@ function cac_selector() {
   }
 }
 
-/*
-	Name: register_perks
-	Namespace: loadout
-	Checksum: 0xCB5B5876
-	Offset: 0x55C0
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function register_perks() {
   perks = self.specialty;
   self clearperks();
@@ -1407,20 +1005,9 @@ function register_perks() {
     }
     self setperk(perk);
   }
-  /#
   dev::giveextraperks();
-  # /
 }
 
-/*
-	Name: cac_modified_vehicle_damage
-	Namespace: loadout
-	Checksum: 0x1B5520EB
-	Offset: 0x56C0
-	Size: 0x1EA
-	Parameters: 6
-	Flags: Linked
-*/
 function cac_modified_vehicle_damage(victim, attacker, damage, meansofdeath, weapon, inflictor) {
   if(!isdefined(victim) || !isdefined(attacker) || !isplayer(attacker)) {
     return damage;
@@ -1432,46 +1019,26 @@ function cac_modified_vehicle_damage(victim, attacker, damage, meansofdeath, wea
   final_damage = damage;
   if(attacker hasperk("specialty_bulletdamage") && isprimarydamage(meansofdeath)) {
     final_damage = (damage * (100 + level.cac_bulletdamage_data)) / 100;
-    /#
     if(getdvarint("")) {
       println(("" + attacker.name) + "");
     }
-    # /
   } else {
     final_damage = old_damage;
   }
-  /#
   if(getdvarint("")) {
     println((((("" + (final_damage / old_damage)) + "") + old_damage) + "") + final_damage);
   }
-  # /
-    return int(final_damage);
+  return int(final_damage);
 }
 
-/*
-	Name: cac_modified_damage
-	Namespace: loadout
-	Checksum: 0x7AA99C79
-	Offset: 0x58B8
-	Size: 0x70C
-	Parameters: 7
-	Flags: Linked
-*/
 function cac_modified_damage(victim, attacker, damage, mod, weapon, inflictor, hitloc) {
-  /#
   assert(isdefined(victim));
-  # /
-    /#
   assert(isdefined(attacker));
-  # /
-    /#
   assert(isplayer(victim));
-  # /
-    attacker_is_player = isplayer(attacker);
+  attacker_is_player = isplayer(attacker);
   if(damage <= 0) {
     return damage;
   }
-  /#
   debug = 0;
   if(getdvarint("")) {
     debug = 1;
@@ -1479,40 +1046,31 @@ function cac_modified_damage(victim, attacker, damage, mod, weapon, inflictor, h
       attacker.name = "";
     }
   }
-  # /
-    final_damage = damage;
+  final_damage = damage;
   if(victim != attacker) {
     if(attacker_is_player && attacker hasperk("specialty_bulletdamage") && isprimarydamage(mod)) {
       if(victim hasperk("specialty_armorvest") && !isheaddamage(hitloc)) {
-        /#
         if(debug) {
           println(((("" + victim.name) + "") + attacker.name) + "");
         }
-        # /
       } else {
         final_damage = (damage * (100 + level.cac_bulletdamage_data)) / 100;
-        /#
         if(debug) {
           println((("" + attacker.name) + "") + victim.name);
         }
-        # /
       }
     } else {
       if(victim hasperk("specialty_armorvest") && isprimarydamage(mod) && !isheaddamage(hitloc)) {
         final_damage = damage * (level.cac_armorvest_data * 0.01);
-        /#
         if(debug) {
           println((("" + attacker.name) + "") + victim.name);
         }
-        # /
       } else {
         if(victim hasperk("specialty_fireproof") && isfiredamage(weapon, mod)) {
           final_damage = damage * (level.cac_fireproof_data * 0.01);
-          /#
           if(debug) {
             println((("" + attacker.name) + "") + victim.name);
           }
-          # /
         } else if(victim hasperk("specialty_flakjacket") && isexplosivedamage(mod) && !weapon.ignoresflakjacket && !victim grenadestuck(inflictor)) {
           cac_data = (level.hardcoremode ? level.cac_flakjacket_hardcore_data : level.cac_flakjacket_data);
           if(victim util::has_flak_jacket_perk_purchased_and_equipped()) {
@@ -1523,16 +1081,13 @@ function cac_modified_damage(victim, attacker, damage, mod, weapon, inflictor, h
             }
           }
           final_damage = int(damage * (cac_data / 100));
-          /#
           if(debug) {
             println(((("" + victim.name) + "") + attacker.name) + "");
           }
-          # /
         }
       }
     }
   }
-  /#
   victim.cac_debug_damage_type = tolower(mod);
   victim.cac_debug_original_damage = damage;
   victim.cac_debug_final_damage = final_damage;
@@ -1542,23 +1097,13 @@ function cac_modified_damage(victim, attacker, damage, mod, weapon, inflictor, h
   if(debug) {
     println((((("" + (final_damage / damage)) + "") + damage) + "") + final_damage);
   }
-  # /
-    final_damage = int(final_damage);
+  final_damage = int(final_damage);
   if(final_damage < 1) {
     final_damage = 1;
   }
   return final_damage;
 }
 
-/*
-	Name: isexplosivedamage
-	Namespace: loadout
-	Checksum: 0xF4D9F7DC
-	Offset: 0x5FD0
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function isexplosivedamage(meansofdeath) {
   switch (meansofdeath) {
     case "MOD_EXPLOSIVE":
@@ -1572,67 +1117,22 @@ function isexplosivedamage(meansofdeath) {
   return false;
 }
 
-/*
-	Name: hastacticalmask
-	Namespace: loadout
-	Checksum: 0x8C35470
-	Offset: 0x6028
-	Size: 0x6A
-	Parameters: 1
-	Flags: Linked
-*/
 function hastacticalmask(player) {
   return player hasperk("specialty_stunprotection") || player hasperk("specialty_flashprotection") || player hasperk("specialty_proximityprotection");
 }
 
-/*
-	Name: isprimarydamage
-	Namespace: loadout
-	Checksum: 0x1E56D988
-	Offset: 0x60A0
-	Size: 0x28
-	Parameters: 1
-	Flags: Linked
-*/
 function isprimarydamage(meansofdeath) {
   return meansofdeath == "MOD_RIFLE_BULLET" || meansofdeath == "MOD_PISTOL_BULLET";
 }
 
-/*
-	Name: isbulletdamage
-	Namespace: loadout
-	Checksum: 0x3D3DF362
-	Offset: 0x60D0
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function isbulletdamage(meansofdeath) {
   return meansofdeath == "MOD_RIFLE_BULLET" || meansofdeath == "MOD_PISTOL_BULLET" || meansofdeath == "MOD_HEAD_SHOT";
 }
 
-/*
-	Name: isfmjdamage
-	Namespace: loadout
-	Checksum: 0xC611D287
-	Offset: 0x6110
-	Size: 0x7A
-	Parameters: 3
-	Flags: None
-*/
 function isfmjdamage(sweapon, smeansofdeath, attacker) {
   return isdefined(attacker) && isplayer(attacker) && attacker hasperk("specialty_armorpiercing") && isdefined(smeansofdeath) && isbulletdamage(smeansofdeath);
 }
 
-/*
-	Name: isfiredamage
-	Namespace: loadout
-	Checksum: 0x76B21971
-	Offset: 0x6198
-	Size: 0x60
-	Parameters: 2
-	Flags: Linked
-*/
 function isfiredamage(weapon, meansofdeath) {
   if(weapon.doesfiredamage && (meansofdeath == "MOD_BURNED" || meansofdeath == "MOD_GRENADE" || meansofdeath == "MOD_GRENADE_SPLASH")) {
     return true;
@@ -1640,28 +1140,10 @@ function isfiredamage(weapon, meansofdeath) {
   return false;
 }
 
-/*
-	Name: isheaddamage
-	Namespace: loadout
-	Checksum: 0x78284D8E
-	Offset: 0x6200
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function isheaddamage(hitloc) {
   return hitloc == "helmet" || hitloc == "head" || hitloc == "neck";
 }
 
-/*
-	Name: grenadestuck
-	Namespace: loadout
-	Checksum: 0xA616EDA
-	Offset: 0x6240
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function grenadestuck(inflictor) {
   return isdefined(inflictor) && isdefined(inflictor.stucktoplayer) && inflictor.stucktoplayer == self;
 }

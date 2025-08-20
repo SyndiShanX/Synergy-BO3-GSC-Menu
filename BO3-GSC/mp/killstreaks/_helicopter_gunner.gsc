@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_helicopter_gunner.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
@@ -27,18 +31,8 @@
 #using scripts\shared\weapons\_hacker_tool;
 #using scripts\shared\weapons\_heatseekingmissile;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace helicopter_gunner;
 
-/*
-	Name: init
-	Namespace: helicopter_gunner
-	Checksum: 0xB50AB7E6
-	Offset: 0xB30
-	Size: 0x4F6
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   killstreaks::register("helicopter_gunner", "helicopter_player_gunner", "killstreak_helicopter_player_gunner", "helicopter_used", & activatemaingunner, 1);
   killstreaks::register_strings("helicopter_gunner", & "KILLSTREAK_EARNED_HELICOPTER_GUNNER", & "KILLSTREAK_HELICOPTER_GUNNER_NOT_AVAILABLE", & "KILLSTREAK_HELICOPTER_GUNNER_INBOUND", undefined, & "KILLSTREAK_HELICOPTER_GUNNER_HACKED");
@@ -70,44 +64,17 @@ function init() {
   level.vtol = undefined;
 }
 
-/*
-	Name: onplayerconnect
-	Namespace: helicopter_gunner
-	Checksum: 0x3B0A68FC
-	Offset: 0x1030
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerconnect() {
   if(!isdefined(self.entnum)) {
     self.entnum = self getentitynumber();
   }
 }
 
-/*
-	Name: updateplayerstate
-	Namespace: helicopter_gunner
-	Checksum: 0x5DD0B5D8
-	Offset: 0x1068
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function updateplayerstate() {
   player = self;
   updateallkillstreakinventory();
 }
 
-/*
-	Name: updateallkillstreakinventory
-	Namespace: helicopter_gunner
-	Checksum: 0x2EF7601C
-	Offset: 0x1098
-	Size: 0xBA
-	Parameters: 0
-	Flags: Linked
-*/
 function updateallkillstreakinventory() {
   foreach(player in level.players) {
     if(isdefined(player.sessionstate) && player.sessionstate == "playing") {
@@ -116,15 +83,6 @@ function updateallkillstreakinventory() {
   }
 }
 
-/*
-	Name: updatekillstreakinventory
-	Namespace: helicopter_gunner
-	Checksum: 0xF1D6925A
-	Offset: 0x1160
-	Size: 0x17C
-	Parameters: 1
-	Flags: Linked
-*/
 function updatekillstreakinventory(player) {
   if(!isdefined(player)) {
     return;
@@ -146,15 +104,6 @@ function updatekillstreakinventory(player) {
   }
 }
 
-/*
-	Name: activatemaingunner
-	Namespace: helicopter_gunner
-	Checksum: 0x57C6D983
-	Offset: 0x12E8
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked
-*/
 function activatemaingunner(killstreaktype) {
   player = self;
   while (isdefined(level.vtol) && level.vtol.shuttingdown) {
@@ -174,15 +123,6 @@ function activatemaingunner(killstreaktype) {
   return result;
 }
 
-/*
-	Name: activatesupportgunner
-	Namespace: helicopter_gunner
-	Checksum: 0x1211BD18
-	Offset: 0x13E0
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function activatesupportgunner(killstreaktype) {
   player = self;
   if(isdefined(level.vtol) && level.vtol.shuttingdown) {
@@ -197,15 +137,6 @@ function activatesupportgunner(killstreaktype) {
   return result;
 }
 
-/*
-	Name: getfirstavailableseat
-	Namespace: helicopter_gunner
-	Checksum: 0x1B42B19B
-	Offset: 0x14B0
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function getfirstavailableseat(player) {
   if(isdefined(level.vtol) && !level.vtol.shuttingdown && level.vtol.team == player.team && level.vtol.owner != player) {
     for (i = 0; i < 2; i++) {
@@ -217,15 +148,6 @@ function getfirstavailableseat(player) {
   return -1;
 }
 
-/*
-	Name: inithelicopterseat
-	Namespace: helicopter_gunner
-	Checksum: 0xFA61F929
-	Offset: 0x15A0
-	Size: 0x1EC
-	Parameters: 2
-	Flags: Linked
-*/
 function inithelicopterseat(index, destroytag) {
   level.vtol.assistants[index] = spawnstruct();
   assistant = level.vtol.assistants[index];
@@ -244,15 +166,6 @@ function inithelicopterseat(index, destroytag) {
   level.vtol vehicle::add_to_target_group(assistant.targetent);
 }
 
-/*
-	Name: hackedprefunction
-	Namespace: helicopter_gunner
-	Checksum: 0xFE572684
-	Offset: 0x1798
-	Size: 0x27C
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedprefunction(hacker) {
   heligunner = self;
   heligunner.owner unlink();
@@ -261,29 +174,20 @@ function hackedprefunction(hacker) {
   heligunner.owner setmodellodbias(0);
   heligunner.owner clientfield::set_to_player("fog_bank_2", 0);
   heligunner.owner clientfield::set_to_player("toggle_flir_postfx", 0);
-  heligunner.owner notify(# "gunner_left");
+  heligunner.owner notify("gunner_left");
   heligunner.owner killstreaks::clear_using_remote();
   heligunner.owner killstreaks::unhide_compass();
   heligunner.owner vehicle::stop_monitor_missiles_locked_on_to_me();
   heligunner.owner vehicle::stop_monitor_damage_as_occupant();
   foreach(assistant in heligunner.assistants) {
     if(isdefined(assistant.occupant)) {
-      assistant.occupant iprintlnbold( & "KILLSTREAK_HELICOPTER_GUNNER_DAMAGED");
+      assistant.occupant iprintlnbold(&"KILLSTREAK_HELICOPTER_GUNNER_DAMAGED");
     }
     leavehelicopter(assistant.occupant, 0);
   }
   heligunner makevehicleunusable();
 }
 
-/*
-	Name: hackedpostfunction
-	Namespace: helicopter_gunner
-	Checksum: 0xD04A05BC
-	Offset: 0x1A20
-	Size: 0x2B0
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedpostfunction(hacker) {
   heligunner = self;
   heligunner clientfield::set("enemyvehicle", 2);
@@ -310,19 +214,10 @@ function hackedpostfunction(hacker) {
   }
 }
 
-/*
-	Name: spawnheligunner
-	Namespace: helicopter_gunner
-	Checksum: 0x86EC705E
-	Offset: 0x1CD8
-	Size: 0x7BC
-	Parameters: 0
-	Flags: Linked
-*/
 function spawnheligunner() {
   player = self;
-  player endon(# "disconnect");
-  level endon(# "game_ended");
+  player endon("disconnect");
+  level endon("game_ended");
   if(!isdefined(level.heli_paths) || !level.heli_paths.size) {
     return 0;
   }
@@ -395,59 +290,30 @@ function spawnheligunner() {
   return result;
 }
 
-/*
-	Name: helicoptergunner_hacked_health_callback
-	Namespace: helicopter_gunner
-	Checksum: 0x66D2E21F
-	Offset: 0x24A0
-	Size: 0x98
-	Parameters: 0
-	Flags: Linked
-*/
 function helicoptergunner_hacked_health_callback() {
   helicopter = self;
   if(helicopter.shuttingdown == 1) {
     return;
   }
   hackedhealth = killstreak_bundles::get_hacked_health("helicopter_gunner");
-  /#
   assert(isdefined(hackedhealth));
-  # /
-    if(helicopter.health > hackedhealth) {
-      helicopter.health = hackedhealth;
-    }
+  if(helicopter.health > hackedhealth) {
+    helicopter.health = hackedhealth;
+  }
 }
 
-/*
-	Name: waitforgameendthread
-	Namespace: helicopter_gunner
-	Checksum: 0x9B165EDC
-	Offset: 0x2540
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function waitforgameendthread() {
-  level waittill(# "game_ended");
+  level waittill("game_ended");
   if(isdefined(level.vtol) && isdefined(level.vtol.owner)) {
     leavehelicopter(level.vtol.owner, 1);
   }
 }
 
-/*
-	Name: waitforvtolshutdownthread
-	Namespace: helicopter_gunner
-	Checksum: 0x963DAAFF
-	Offset: 0x25A0
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked
-*/
 function waitforvtolshutdownthread() {
   helicopter = self;
-  helicopter waittill(# "vtol_shutdown", attacker);
+  helicopter waittill("vtol_shutdown", attacker);
   if(isdefined(attacker)) {
-    luinotifyevent( & "player_callout", 2, & "KILLSTREAK_DESTROYED_HELICOPTER_GUNNER", attacker.entnum);
+    luinotifyevent(&"player_callout", 2, & "KILLSTREAK_DESTROYED_HELICOPTER_GUNNER", attacker.entnum);
   }
   if(isdefined(helicopter.targetent)) {
     target_remove(helicopter.targetent);
@@ -468,29 +334,11 @@ function waitforvtolshutdownthread() {
   helicopter delete();
 }
 
-/*
-	Name: deletehelicoptercallback
-	Namespace: helicopter_gunner
-	Checksum: 0x60E307A4
-	Offset: 0x2798
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function deletehelicoptercallback() {
   helicopter = self;
-  helicopter notify(# "vtol_shutdown", undefined);
+  helicopter notify("vtol_shutdown", undefined);
 }
 
-/*
-	Name: ontimeoutcallback
-	Namespace: helicopter_gunner
-	Checksum: 0x8D329945
-	Offset: 0x27C8
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function ontimeoutcallback() {
   for (i = 0; i < 2; i++) {
     if(isdefined(level.vtol.assistants[i].occupant)) {
@@ -500,50 +348,28 @@ function ontimeoutcallback() {
   leavehelicopter(level.vtol.owner, 1);
 }
 
-/*
-	Name: watchplayerteamchangethread
-	Namespace: helicopter_gunner
-	Checksum: 0x7BB7B082
-	Offset: 0x28A0
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function watchplayerteamchangethread(helicopter) {
-  helicopter notify(# "mothership_team_change");
-  helicopter endon(# "mothership_team_change");
-  /#
+  helicopter notify("mothership_team_change");
+  helicopter endon("mothership_team_change");
   assert(isplayer(self));
-  # /
-    player = self;
-  player endon(# "gunner_left");
+  player = self;
+  player endon("gunner_left");
   player util::waittill_any("joined_team", "disconnect", "joined_spectators");
   ownerleft = helicopter.ownerentnum == player.entnum;
   player thread leavehelicopter(player, ownerleft);
   if(ownerleft) {
-    helicopter notify(# "vtol_shutdown", undefined);
+    helicopter notify("vtol_shutdown", undefined);
   }
 }
 
-/*
-	Name: watchplayerexitrequestthread
-	Namespace: helicopter_gunner
-	Checksum: 0xC33AEA47
-	Offset: 0x29A8
-	Size: 0x180
-	Parameters: 1
-	Flags: Linked
-*/
 function watchplayerexitrequestthread(player) {
-  player notify(# "watchplayerexitrequestthread_singleton");
-  player endon(# "watchplayerexitrequestthread_singleton");
-  /#
+  player notify("watchplayerexitrequestthread_singleton");
+  player endon("watchplayerexitrequestthread_singleton");
   assert(isplayer(player));
-  # /
-    mothership = self;
-  level endon(# "game_ended");
-  player endon(# "disconnect");
-  player endon(# "gunner_left");
+  mothership = self;
+  level endon("game_ended");
+  player endon("disconnect");
+  player endon("gunner_left");
   owner = mothership.ownerentnum == player.entnum;
   while (true) {
     timeused = 0;
@@ -560,20 +386,9 @@ function watchplayerexitrequestthread(player) {
   }
 }
 
-/*
-	Name: enterhelicopter
-	Namespace: helicopter_gunner
-	Checksum: 0x6787071
-	Offset: 0x2B30
-	Size: 0x5E0
-	Parameters: 1
-	Flags: Linked
-*/
 function enterhelicopter(isowner) {
-  /#
   assert(isplayer(self));
-  # /
-    player = self;
+  player = self;
   seatindex = -1;
   if(!isowner) {
     seatindex = getfirstavailableseat(player);
@@ -596,7 +411,7 @@ function enterhelicopter(isowner) {
     }
     if(isowner) {
       level.vtol.failed2enter = 1;
-      level.vtol notify(# "vtol_shutdown");
+      level.vtol notify("vtol_shutdown");
     }
     return false;
   }
@@ -642,33 +457,15 @@ function enterhelicopter(isowner) {
   return true;
 }
 
-/*
-	Name: hidecompassafterwait
-	Namespace: helicopter_gunner
-	Checksum: 0x96D27AA8
-	Offset: 0x3118
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function hidecompassafterwait(waittime) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   wait(waittime);
   self killstreaks::hide_compass();
 }
 
-/*
-	Name: mainturretdestroyed
-	Namespace: helicopter_gunner
-	Checksum: 0x3C5D7C6A
-	Offset: 0x3160
-	Size: 0x22C
-	Parameters: 3
-	Flags: Linked
-*/
 function mainturretdestroyed(helicopter, eattacker, weapon) {
-  helicopter.owner iprintlnbold( & "KILLSTREAK_HELICOPTER_GUNNER_DAMAGED");
+  helicopter.owner iprintlnbold(&"KILLSTREAK_HELICOPTER_GUNNER_DAMAGED");
   if(isdefined(helicopter.targetent)) {
     target_remove(helicopter.targetent);
     helicopter.targetent delete();
@@ -678,7 +475,7 @@ function mainturretdestroyed(helicopter, eattacker, weapon) {
   updateallkillstreakinventory();
   eattacker = self[[level.figure_out_attacker]](eattacker);
   if(!isdefined(helicopter.destroyscoreeventgiven) && isdefined(eattacker) && (!isdefined(helicopter.owner) || helicopter.owner util::isenemyplayer(eattacker))) {
-    luinotifyevent( & "player_callout", 2, & "KILLSTREAK_HELICOPTER_GUNNER_DAMAGED", eattacker.entnum);
+    luinotifyevent(&"player_callout", 2, & "KILLSTREAK_HELICOPTER_GUNNER_DAMAGED", eattacker.entnum);
     challenges::destroyedaircraft(eattacker, weapon, 1);
     eattacker challenges::addflyswatterstat(weapon, helicopter);
     scoreevents::processscoreevent("destroyed_vtol_mothership", eattacker, helicopter.owner, weapon);
@@ -688,19 +485,10 @@ function mainturretdestroyed(helicopter, eattacker, weapon) {
   helicopter thread performleavehelicopterfromdamage();
 }
 
-/*
-	Name: wait_for_bda_dialog
-	Namespace: helicopter_gunner
-	Checksum: 0xE25F82F7
-	Offset: 0x3398
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_for_bda_dialog(killstreakid) {
-  self endon(# "vtol_shutdown");
+  self endon("vtol_shutdown");
   while (true) {
-    self waittill(# "bda_dialog", dialogkey);
+    self waittill("bda_dialog", dialogkey);
     for (i = 0; i < 2; i++) {
       if(isdefined(level.vtol.assistants[i].occupant)) {
         level.vtol.assistants[i].occupant killstreaks::play_pilot_dialog(dialogkey, "helicopter_gunner", killstreakid, self.pilotindex);
@@ -709,15 +497,6 @@ function wait_for_bda_dialog(killstreakid) {
   }
 }
 
-/*
-	Name: supportturretdestroyed
-	Namespace: helicopter_gunner
-	Checksum: 0x3436E159
-	Offset: 0x3478
-	Size: 0x25C
-	Parameters: 2
-	Flags: Linked
-*/
 function supportturretdestroyed(helicopter, seatindex) {
   assistant = helicopter.assistants[seatindex];
   if(!assistant.destroyed) {
@@ -745,15 +524,6 @@ function supportturretdestroyed(helicopter, seatindex) {
   }
 }
 
-/*
-	Name: update_client_for_driver_and_occupants
-	Namespace: helicopter_gunner
-	Checksum: 0xE0C11AC7
-	Offset: 0x36E0
-	Size: 0xCA
-	Parameters: 0
-	Flags: Linked
-*/
 function update_client_for_driver_and_occupants() {
   vtol = self;
   update_client_for_player(vtol.owner);
@@ -762,34 +532,16 @@ function update_client_for_driver_and_occupants() {
   }
 }
 
-/*
-	Name: update_client_for_player
-	Namespace: helicopter_gunner
-	Checksum: 0x7A79714C
-	Offset: 0x37B8
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function update_client_for_player(player) {
   if(isdefined(player)) {
     player clientfield::increment_to_player("vtol_update_client", 1);
   }
 }
 
-/*
-	Name: vtoldestructiblecallback
-	Namespace: helicopter_gunner
-	Checksum: 0xEF8E1B4B
-	Offset: 0x37F8
-	Size: 0x11C
-	Parameters: 3
-	Flags: Linked
-*/
 function vtoldestructiblecallback(brokennotify, eattacker, weapon) {
   helicopter = self;
-  helicopter endon(# "delete");
-  helicopter endon(# "vtol_shutdown");
+  helicopter endon("delete");
+  helicopter endon("vtol_shutdown");
   notifies = [];
   notifies[0] = "turret1_destroyed";
   notifies[1] = "turret2_destroyed";
@@ -806,15 +558,6 @@ function vtoldestructiblecallback(brokennotify, eattacker, weapon) {
   helicopter allowmainturretlockon();
 }
 
-/*
-	Name: allowmainturretlockon
-	Namespace: helicopter_gunner
-	Checksum: 0xE7E424A
-	Offset: 0x3920
-	Size: 0x1B4
-	Parameters: 0
-	Flags: Linked
-*/
 function allowmainturretlockon() {
   helicopter = self;
   if(helicopter.assistants[0].destroyed && helicopter.assistants[1].destroyed) {
@@ -832,15 +575,6 @@ function allowmainturretlockon() {
   }
 }
 
-/*
-	Name: leavehelicopter
-	Namespace: helicopter_gunner
-	Checksum: 0x8E69A1DA
-	Offset: 0x3AE0
-	Size: 0x4A0
-	Parameters: 2
-	Flags: Linked
-*/
 function leavehelicopter(player, ownerleft) {
   if(!isdefined(level.vtol) || level.vtol.completely_shutdown === 1) {
     return;
@@ -864,7 +598,7 @@ function leavehelicopter(player, ownerleft) {
     level.vtol.shuttingdown = 1;
     foreach(assistant in level.vtol.assistants) {
       if(isdefined(assistant.occupant)) {
-        assistant.occupant iprintlnbold( & "KILLSTREAK_HELICOPTER_GUNNER_DAMAGED");
+        assistant.occupant iprintlnbold(&"KILLSTREAK_HELICOPTER_GUNNER_DAMAGED");
         leavehelicopter(assistant.occupant, 0);
       }
     }
@@ -888,7 +622,7 @@ function leavehelicopter(player, ownerleft) {
     player givededicatedshadow(player);
     player clientfield::set_to_player("fog_bank_2", 0);
     player killstreaks::unhide_compass();
-    player notify(# "gunner_left");
+    player notify("gunner_left");
     player killstreaks::clear_using_remote();
     if(level.gameended) {
       player util::freeze_player_controls(1);
@@ -900,15 +634,6 @@ function leavehelicopter(player, ownerleft) {
   }
 }
 
-/*
-	Name: vtol_shake
-	Namespace: helicopter_gunner
-	Checksum: 0xD676C95E
-	Offset: 0x3F88
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function vtol_shake() {
   if(isdefined(level.vtol) && isdefined(level.vtol.owner)) {
     org = level.vtol gettagorigin("tag_barrel");
@@ -920,15 +645,6 @@ function vtol_shake() {
   }
 }
 
-/*
-	Name: helicoptergunnerdamageoverride
-	Namespace: helicopter_gunner
-	Checksum: 0x52B5C602
-	Offset: 0x4050
-	Size: 0x7FA
-	Parameters: 15
-	Flags: Linked
-*/
 function helicoptergunnerdamageoverride(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   helicopter = self;
   if(smeansofdeath == "MOD_TRIGGER_HURT") {
@@ -998,7 +714,7 @@ function helicoptergunnerdamageoverride(einflictor, eattacker, idamage, idflags,
     updateallkillstreakinventory();
     if(!isdefined(helicopter.destroyscoreeventgiven) && isdefined(eattacker) && (!isdefined(helicopter.owner) || helicopter.owner util::isenemyplayer(eattacker))) {
       eattacker = self[[level.figure_out_attacker]](eattacker);
-      luinotifyevent( & "player_callout", 2, & "KILLSTREAK_HELICOPTER_GUNNER_DAMAGED", eattacker.entnum);
+      luinotifyevent(&"player_callout", 2, & "KILLSTREAK_HELICOPTER_GUNNER_DAMAGED", eattacker.entnum);
       scoreevents::processscoreevent("destroyed_vtol_mothership", eattacker, helicopter.owner, weapon);
       helicopter killstreaks::play_destroyed_dialog_on_owner("helicopter_gunner", helicopter.killstreak_id);
       helicopter.destroyscoreeventgiven = 1;
@@ -1013,18 +729,9 @@ function helicoptergunnerdamageoverride(einflictor, eattacker, idamage, idflags,
   return idamage;
 }
 
-/*
-	Name: performleavehelicopterfromdamage
-	Namespace: helicopter_gunner
-	Checksum: 0xFF8B76AF
-	Offset: 0x4858
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function performleavehelicopterfromdamage() {
   helicopter = self;
-  helicopter endon(# "death");
+  helicopter endon("death");
   if(self.leave_by_damage_initiated === 1) {
     return;
   }
@@ -1035,90 +742,50 @@ function performleavehelicopterfromdamage() {
   leavehelicopter(helicopter.owner, 1);
 }
 
-/*
-	Name: helicoptedetonateviaemp
-	Namespace: helicopter_gunner
-	Checksum: 0x8D224FAC
-	Offset: 0x4910
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function helicoptedetonateviaemp(attacker, weapon) {
   mainturretdestroyed(level.vtol, attacker, weapon);
 }
 
-/*
-	Name: missilecleanupthread
-	Namespace: helicopter_gunner
-	Checksum: 0xAD29608B
-	Offset: 0x4950
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function missilecleanupthread(missile) {
   targetent = self;
-  targetent endon(# "delete");
-  targetent endon(# "death");
+  targetent endon("delete");
+  targetent endon("death");
   missile util::waittill_any("death", "delete");
   targetent delete();
 }
 
-/*
-	Name: watchmissilesthread
-	Namespace: helicopter_gunner
-	Checksum: 0xFC6497D4
-	Offset: 0x49D0
-	Size: 0x2E0
-	Parameters: 0
-	Flags: Linked
-*/
 function watchmissilesthread() {
   helicopter = self;
   player = helicopter.owner;
-  player endon(# "disconnect");
-  player endon(# "gunner_left");
+  player endon("disconnect");
+  player endon("gunner_left");
   helimissile = getweapon("helicopter_gunner_turret_rockets");
   while (true) {
-    player waittill(# "missile_fire", missile);
+    player waittill("missile_fire", missile);
     trace_origin = level.vtol gettagorigin("tag_flash");
     trace_direction = level.vtol gettagangles("tag_barrel");
     trace_direction = anglestoforward(trace_direction) * 8000;
     trace = bullettrace(trace_origin, trace_origin + trace_direction, 0, level.vtol);
     end_origin = trace["position"];
     missiles = getentarray("rocket", "classname");
-    /#
-    # /
-      foreach(missile in missiles) {
-        if(missile.item == helimissile) {
-          targetent = spawn("script_model", end_origin);
-          missile missile_settarget(targetent);
-          targetent thread missilecleanupthread(missile);
-        }
+    foreach(missile in missiles) {
+      if(missile.item == helimissile) {
+        targetent = spawn("script_model", end_origin);
+        missile missile_settarget(targetent);
+        targetent thread missilecleanupthread(missile);
       }
+    }
     weapon_wait_duration_ms = int(helimissile.firetime * 1000);
     player setvehicleweaponwaitduration(weapon_wait_duration_ms);
     player setvehicleweaponwaitendtime(gettime() + weapon_wait_duration_ms);
   }
 }
 
-/*
-	Name: watchvisionswitchthread
-	Namespace: helicopter_gunner
-	Checksum: 0x654C2945
-	Offset: 0x4CB8
-	Size: 0x170
-	Parameters: 0
-	Flags: Linked
-*/
 function watchvisionswitchthread() {
-  /#
   assert(isplayer(self));
-  # /
-    player = self;
-  player endon(# "disconnect");
-  player endon(# "gunner_left");
+  player = self;
+  player endon("disconnect");
+  player endon("gunner_left");
   inverted = 0;
   player clientfield::set_to_player("toggle_flir_postfx", 2);
   while (true) {
@@ -1139,26 +806,17 @@ function watchvisionswitchthread() {
   }
 }
 
-/*
-	Name: playlockonsoundsthread
-	Namespace: helicopter_gunner
-	Checksum: 0x48A9330B
-	Offset: 0x4E30
-	Size: 0x1C0
-	Parameters: 2
-	Flags: Linked
-*/
 function playlockonsoundsthread(player, heli) {
-  player endon(# "disconnect");
-  player endon(# "gunner_left");
-  heli endon(# "death");
-  heli endon(# "crashing");
-  heli endon(# "leaving");
+  player endon("disconnect");
+  player endon("gunner_left");
+  heli endon("death");
+  heli endon("crashing");
+  heli endon("leaving");
   heli.locksounds = spawn("script_model", heli.origin);
   wait(0.1);
   heli.locksounds linkto(heli, "tag_player");
   while (true) {
-    heli waittill(# "hash_b081980b");
+    heli waittill("hash_b081980b");
     while (true) {
       if(enemyislocking(heli)) {
         heli.locksounds playsoundtoplayer("uin_alert_lockon", player);
@@ -1176,54 +834,25 @@ function playlockonsoundsthread(player, heli) {
   }
 }
 
-/*
-	Name: enemyislocking
-	Namespace: helicopter_gunner
-	Checksum: 0x99D538BC
-	Offset: 0x4FF8
-	Size: 0x2E
-	Parameters: 1
-	Flags: Linked
-*/
 function enemyislocking(heli) {
   return isdefined(heli.locking_on) && heli.locking_on;
 }
 
-/*
-	Name: enemylockedon
-	Namespace: helicopter_gunner
-	Checksum: 0xE8EB2565
-	Offset: 0x5030
-	Size: 0x2E
-	Parameters: 1
-	Flags: Linked
-*/
 function enemylockedon(heli) {
   return isdefined(heli.locked_on) && heli.locked_on;
 }
 
-/*
-	Name: helicopterthinkthread
-	Namespace: helicopter_gunner
-	Checksum: 0x4B93C7A7
-	Offset: 0x5068
-	Size: 0x442
-	Parameters: 2
-	Flags: Linked
-*/
 function helicopterthinkthread(startnode, destnodes) {
-  self notify(# "flying");
-  self endon(# "flying");
-  self endon(# "death");
-  self endon(# "crashing");
-  self endon(# "leaving");
+  self notify("flying");
+  self endon("flying");
+  self endon("death");
+  self endon("crashing");
+  self endon("leaving");
   nextnode = getent(startnode.target, "targetname");
-  /#
   assert(isdefined(nextnode), "");
-  # /
-    self setspeed(150, 80);
+  self setspeed(150, 80);
   self setvehgoalpos(nextnode.origin + (0, 0, 2000), 1);
-  self waittill(# "near_goal");
+  self waittill("near_goal");
   firstpass = 1;
   if(!self.playermovedrecently) {
     node = self updateareanodes(destnodes, 0);
@@ -1242,14 +871,14 @@ function helicopterthinkthread(startnode, destnodes) {
     self setgoalyaw(targetnode.angles[1] + 0);
   }
   if(0 != 0) {
-    self waittill(# "near_goal");
+    self waittill("near_goal");
     waittime = 0;
   } else {
     if(!isdefined(targetnode.script_delay)) {
-      self waittill(# "near_goal");
+      self waittill("near_goal");
       waittime = 10 + randomint(5);
     } else {
-      self waittillmatch(# "goal");
+      self waittillmatch("goal");
       waittime = targetnode.script_delay;
     }
   }
@@ -1265,15 +894,6 @@ function helicopterthinkthread(startnode, destnodes) {
   wait(waittime);
 }
 
-/*
-	Name: updatedrivabletimeforalloccupants
-	Namespace: helicopter_gunner
-	Checksum: 0x8D189C9C
-	Offset: 0x54B8
-	Size: 0xD6
-	Parameters: 2
-	Flags: Linked
-*/
 function updatedrivabletimeforalloccupants(duration_ms, end_time_ms) {
   if(isdefined(self.owner)) {
     self.owner vehicle::set_vehicle_drivable_time(duration_ms, end_time_ms);
@@ -1285,25 +905,16 @@ function updatedrivabletimeforalloccupants(duration_ms, end_time_ms) {
   }
 }
 
-/*
-	Name: watchlocationchangethread
-	Namespace: helicopter_gunner
-	Checksum: 0x750A6B94
-	Offset: 0x5598
-	Size: 0x2E0
-	Parameters: 1
-	Flags: Linked
-*/
 function watchlocationchangethread(destnodes) {
   player = self;
-  player endon(# "disconnect");
-  player endon(# "gunner_left");
+  player endon("disconnect");
+  player endon("gunner_left");
   helicopter = level.vtol;
-  helicopter endon(# "delete");
-  helicopter endon(# "vtol_shutdown");
+  helicopter endon("delete");
+  helicopter endon("vtol_shutdown");
   player.moves = 0;
-  helicopter waittill(# "near_goal");
-  helicopter waittill(# "goal");
+  helicopter waittill("near_goal");
+  helicopter waittill("goal");
   while (true) {
     if(self secondaryoffhandbuttonpressed()) {
       player.moves++;
@@ -1323,7 +934,7 @@ function watchlocationchangethread(destnodes) {
       helicopter setspeed(heli_speed, heli_accel);
       helicopter setvehgoalpos(targetnode.origin + (0, 0, 2000), 1);
       helicopter setgoalyaw(targetnode.angles[1] + 0);
-      helicopter waittill(# "goal");
+      helicopter waittill("goal");
       while (self secondaryoffhandbuttonpressed()) {
         wait(0.05);
       }
@@ -1332,22 +943,13 @@ function watchlocationchangethread(destnodes) {
   }
 }
 
-/*
-	Name: setplayermovedrecentlythread
-	Namespace: helicopter_gunner
-	Checksum: 0x633EC1CE
-	Offset: 0x5880
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function setplayermovedrecentlythread() {
   player = self;
-  player endon(# "disconnect");
-  player endon(# "gunner_left");
+  player endon("disconnect");
+  player endon("gunner_left");
   helicopter = level.vtol;
-  helicopter endon(# "delete");
-  helicopter endon(# "vtol_shutdown");
+  helicopter endon("delete");
+  helicopter endon("vtol_shutdown");
   mymove = self.moves;
   level.vtol.playermovedrecently = 1;
   wait(100);
@@ -1356,15 +958,6 @@ function setplayermovedrecentlythread() {
   }
 }
 
-/*
-	Name: updateareanodes
-	Namespace: helicopter_gunner
-	Checksum: 0x22BFC9FB
-	Offset: 0x5940
-	Size: 0x480
-	Parameters: 2
-	Flags: Linked
-*/
 function updateareanodes(areanodes, forcemove) {
   validenemies = [];
   foreach(node in areanodes) {
@@ -1407,15 +1000,6 @@ function updateareanodes(areanodes, forcemove) {
   return bestnode;
 }
 
-/*
-	Name: traveltonode
-	Namespace: helicopter_gunner
-	Checksum: 0xB956FBC2
-	Offset: 0x5DC8
-	Size: 0x298
-	Parameters: 1
-	Flags: Linked
-*/
 function traveltonode(goalnode) {
   originoffets = getoriginoffsets(goalnode);
   if(originoffets["start"] != self.origin) {
@@ -1429,7 +1013,7 @@ function traveltonode(goalnode) {
     self setspeed(heli_speed, heli_accel);
     self setvehgoalpos(originoffets["start"] + vectorscale((0, 0, 1), 30), 0);
     self setgoalyaw(goalnode.angles[1] + 0);
-    self waittill(# "goal");
+    self waittill("goal");
   }
   if(originoffets["end"] != goalnode.origin) {
     if(isdefined(goalnode.script_airspeed) && isdefined(goalnode.script_accel)) {
@@ -1442,19 +1026,10 @@ function traveltonode(goalnode) {
     self setspeed(heli_speed, heli_accel);
     self setvehgoalpos(originoffets["end"] + vectorscale((0, 0, 1), 30), 0);
     self setgoalyaw(goalnode.angles[1] + 0);
-    self waittill(# "goal");
+    self waittill("goal");
   }
 }
 
-/*
-	Name: getoriginoffsets
-	Namespace: helicopter_gunner
-	Checksum: 0x8D3348A9
-	Offset: 0x6068
-	Size: 0x24E
-	Parameters: 1
-	Flags: Linked
-*/
 function getoriginoffsets(goalnode) {
   startorigin = self.origin;
   endorigin = goalnode.origin;
@@ -1463,13 +1038,10 @@ function getoriginoffsets(goalnode) {
   traceoffset = vectorscale((0, 0, -1), 196);
   traceorigin = bullettrace(startorigin + traceoffset, endorigin + traceoffset, 0, self);
   while ((distancesquared(traceorigin["position"], endorigin + traceoffset)) > 10 && numtraces < maxtraces) {
-    /#
     println("" + (distancesquared(traceorigin[""], endorigin + traceoffset)));
-    # /
-      if(startorigin[2] < endorigin[2]) {
-        startorigin = startorigin + vectorscale((0, 0, 1), 128);
-      }
-    else {
+    if(startorigin[2] < endorigin[2]) {
+      startorigin = startorigin + vectorscale((0, 0, 1), 128);
+    } else {
       if(startorigin[2] > endorigin[2]) {
         endorigin = endorigin + vectorscale((0, 0, 1), 128);
       } else {

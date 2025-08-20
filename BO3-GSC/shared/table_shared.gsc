@@ -1,22 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\table_shared.gsc
+*************************************************/
+
 #namespace table;
 
-/*
-	Name: load
-	Namespace: table
-	Checksum: 0xB1E72BDA
-	Offset: 0x80
-	Size: 0x280
-	Parameters: 3
-	Flags: Linked
-*/
 function load(str_filename, str_table_start, b_convert_numbers = 1) {
   a_table = [];
   n_header_row = tablelookuprownum(str_filename, 0, str_table_start);
-  /#
   assert(n_header_row > -1, "");
-  # /
-    a_headers = tablelookuprow(str_filename, n_header_row);
+  a_headers = tablelookuprow(str_filename, n_header_row);
   n_row = n_header_row + 1;
   do {
     a_row = tablelookuprow(str_filename, n_row);
@@ -47,15 +40,6 @@ function load(str_filename, str_table_start, b_convert_numbers = 1) {
   return a_table;
 }
 
-/*
-	Name: str_to_num
-	Namespace: table
-	Checksum: 0x3C48F56
-	Offset: 0x308
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function str_to_num(value) {
   if(strisint(value)) {
     value = int(value);

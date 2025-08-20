@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\aats\_zm_aat_turned.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\aat_shared;
 #using scripts\shared\ai\systems\gib;
@@ -13,31 +17,12 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_aat_turned;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_aat_turned
-	Checksum: 0x73DAB5C
-	Offset: 0x2C0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_aat_turned", & __init__, undefined, "aat");
 }
 
-/*
-	Name: __init__
-	Namespace: zm_aat_turned
-	Checksum: 0x1EAB11B
-	Offset: 0x300
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.aat_in_use) && level.aat_in_use)) {
     return;
@@ -46,15 +31,6 @@ function __init__() {
   clientfield::register("actor", "zm_aat_turned", 1, 1, "int");
 }
 
-/*
-	Name: result
-	Namespace: zm_aat_turned
-	Checksum: 0xBBB572B6
-	Offset: 0x3B0
-	Size: 0x1AC
-	Parameters: 4
-	Flags: Linked
-*/
 function result(death, attacker, mod, weapon) {
   self thread clientfield::set("zm_aat_turned", 1);
   self thread zombie_death_time_limit(attacker);
@@ -85,15 +61,6 @@ function result(death, attacker, mod, weapon) {
   self thread zombie_kill_tracker(attacker);
 }
 
-/*
-	Name: turned_local_blast
-	Namespace: zm_aat_turned
-	Checksum: 0xD47BEFED
-	Offset: 0x568
-	Size: 0x2EE
-	Parameters: 1
-	Flags: Linked
-*/
 function turned_local_blast(attacker) {
   v_turned_blast_pos = self.origin;
   a_ai_zombies = array::get_all_closest(v_turned_blast_pos, getaiteamarray("axis"), undefined, undefined, 90);
@@ -128,15 +95,6 @@ function turned_local_blast(attacker) {
   }
 }
 
-/*
-	Name: turned_zombie_validation
-	Namespace: zm_aat_turned
-	Checksum: 0x27FB16E3
-	Offset: 0x860
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function turned_zombie_validation() {
   if(isdefined(level.aat["zm_aat_turned"].immune_result_direct[self.archetype]) && level.aat["zm_aat_turned"].immune_result_direct[self.archetype]) {
     return false;
@@ -159,36 +117,18 @@ function turned_zombie_validation() {
   return true;
 }
 
-/*
-	Name: zombie_death_time_limit
-	Namespace: zm_aat_turned
-	Checksum: 0x52150375
-	Offset: 0x960
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_death_time_limit(e_attacker) {
-  self endon(# "death");
-  self endon(# "entityshutdown");
+  self endon("death");
+  self endon("entityshutdown");
   wait(20);
   self clientfield::set("zm_aat_turned", 0);
   self.allowdeath = 1;
   self zombie_death_gib(e_attacker);
 }
 
-/*
-	Name: zombie_kill_tracker
-	Namespace: zm_aat_turned
-	Checksum: 0xBD0059C6
-	Offset: 0x9D8
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_kill_tracker(e_attacker) {
-  self endon(# "death");
-  self endon(# "entityshutdown");
+  self endon("death");
+  self endon("entityshutdown");
   while (self.n_aat_turned_zombie_kills < 12) {
     wait(0.05);
   }
@@ -198,15 +138,6 @@ function zombie_kill_tracker(e_attacker) {
   self zombie_death_gib(e_attacker);
 }
 
-/*
-	Name: zombie_death_gib
-	Namespace: zm_aat_turned
-	Checksum: 0x4380C991
-	Offset: 0xA70
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_death_gib(e_attacker) {
   gibserverutils::gibhead(self);
   if(math::cointoss()) {

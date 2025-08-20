@@ -1,32 +1,17 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\serverfaceanim_shared.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
-
 #namespace serverfaceanim;
 
-/*
-	Name: __init__sytem__
-	Namespace: serverfaceanim
-	Checksum: 0xE6AB256C
-	Offset: 0x180
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("serverfaceanim", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: serverfaceanim
-	Checksum: 0x82F7FE
-	Offset: 0x1C0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level._use_faceanim) && level._use_faceanim)) {
     return;
@@ -34,15 +19,6 @@ function __init__() {
   callback::on_spawned( & init_serverfaceanim);
 }
 
-/*
-	Name: init_serverfaceanim
-	Namespace: serverfaceanim
-	Checksum: 0xA6E06F9
-	Offset: 0x208
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_serverfaceanim() {
   self.do_face_anims = 1;
   if(!isdefined(level.face_event_handler)) {
@@ -61,18 +37,9 @@ function init_serverfaceanim() {
   }
 }
 
-/*
-	Name: wait_for_face_event
-	Namespace: serverfaceanim
-	Checksum: 0x43055E4F
-	Offset: 0x3B0
-	Size: 0xA8
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_for_face_event() {
   while (true) {
-    level waittill(# "face", face_notify, ent);
+    level waittill("face", face_notify, ent);
     if(isdefined(ent) && isdefined(ent.do_face_anims) && ent.do_face_anims) {
       if(isdefined(level.face_event_handler.events[face_notify])) {
         ent sendfaceevent(level.face_event_handler.events[face_notify]);

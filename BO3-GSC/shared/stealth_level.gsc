@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\stealth_level.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai_shared;
 #using scripts\shared\ai_sniper_shared;
@@ -13,25 +17,13 @@
 #using scripts\shared\stealth_vo;
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
-
 #namespace stealth_level;
 
-/*
-	Name: init
-	Namespace: stealth_level
-	Checksum: 0xB976633A
-	Offset: 0x3C0
-	Size: 0x39C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
-  /#
   assert(!isdefined(self.stealth));
-  # /
-    if(!isdefined(self.stealth)) {
-      self.stealth = spawnstruct();
-    }
+  if(!isdefined(self.stealth)) {
+    self.stealth = spawnstruct();
+  }
   self.stealth.enabled_level = 1;
   self.stealth.enemies = [];
   self.stealth.awareness_index = [];
@@ -51,10 +43,8 @@ function init() {
   self thread function_f8b0594a();
   self thread stealth_music_thread();
   self thread function_945a718();
-  /#
   self stealth_debug::init_debug();
-  # /
-    level.using_awareness = 1;
+  level.using_awareness = 1;
   setdvar("ai_stumbleSightRange", 200);
   setdvar("ai_awarenessenabled", 1);
   setdvar("stealth_display", 0);
@@ -68,15 +58,6 @@ function init() {
   setdvar("stealth_events", "sentientevents_vengeance_default");
 }
 
-/*
-	Name: stop
-	Namespace: stealth_level
-	Checksum: 0xE32EDAD7
-	Offset: 0x768
-	Size: 0x142
-	Parameters: 0
-	Flags: Linked
-*/
 function stop() {
   spawner::remove_global_spawn_function("axis", & stealth::agent_init);
   level.using_awareness = 0;
@@ -91,15 +72,6 @@ function stop() {
   }
 }
 
-/*
-	Name: reset
-	Namespace: stealth_level
-	Checksum: 0x324C4859
-	Offset: 0x8B8
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function reset() {
   level flag::clear("stealth_alert");
   level flag::clear("stealth_combat");
@@ -107,35 +79,15 @@ function reset() {
   self thread function_f8b0594a();
 }
 
-/*
-	Name: enabled
-	Namespace: stealth_level
-	Checksum: 0x751511A5
-	Offset: 0x940
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function enabled() {
   return isdefined(self.stealth) && isdefined(self.stealth.enabled_level);
 }
 
-/*
-	Name: init_parms
-	Namespace: stealth_level
-	Checksum: 0x4874FA84
-	Offset: 0x968
-	Size: 0x3FC
-	Parameters: 0
-	Flags: Linked
-*/
 function init_parms() {
-  /#
   assert(self enabled());
-  # /
-    if(!isdefined(self.stealth.parm)) {
-      self.stealth.parm = spawnstruct();
-    }
+  if(!isdefined(self.stealth.parm)) {
+    self.stealth.parm = spawnstruct();
+  }
   self.stealth.parm.awareness["unaware"] = spawnstruct();
   self.stealth.parm.awareness["low_alert"] = spawnstruct();
   self.stealth.parm.awareness["high_alert"] = spawnstruct();
@@ -162,49 +114,20 @@ function init_parms() {
   setstealthsight("combat", 32, 0.01, 0.01, 100, 1500, 1);
 }
 
-/*
-	Name: get_parms
-	Namespace: stealth_level
-	Checksum: 0xD5D10691
-	Offset: 0xD70
-	Size: 0x48
-	Parameters: 1
-	Flags: Linked
-*/
 function get_parms(strawareness) {
-  /#
   assert(isdefined(level.stealth));
-  # /
-    return level.stealth.parm.awareness[strawareness];
+  return level.stealth.parm.awareness[strawareness];
 }
 
-/*
-	Name: function_7bf2f7ba
-	Namespace: stealth_level
-	Checksum: 0xD9733856
-	Offset: 0xDC0
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7bf2f7ba() {
   array::thread_all(getentarray("_stealth_shadow", "targetname"), & stealth_shadow_volumes);
   array::thread_all(getentarray("stealth_shadow", "targetname"), & stealth_shadow_volumes);
 }
 
-/*
-	Name: stealth_shadow_volumes
-	Namespace: stealth_level
-	Checksum: 0x72C7ABBC
-	Offset: 0xE50
-	Size: 0xB0
-	Parameters: 0
-	Flags: Linked
-*/
 function stealth_shadow_volumes() {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "trigger", other);
+    self waittill("trigger", other);
     if(!isalive(other)) {
       continue;
     }
@@ -215,17 +138,8 @@ function stealth_shadow_volumes() {
   }
 }
 
-/*
-	Name: function_9f3c4fa
-	Namespace: stealth_level
-	Checksum: 0x1E8D875C
-	Offset: 0xF08
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function function_9f3c4fa(volume) {
-  self endon(# "death");
+  self endon("death");
   if(!isdefined(self.stealth)) {
     return;
   }
@@ -236,20 +150,9 @@ function function_9f3c4fa(volume) {
   self.stealth.in_shadow = 0;
 }
 
-/*
-	Name: update_thread
-	Namespace: stealth_level
-	Checksum: 0x513C5EEA
-	Offset: 0xF90
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function update_thread() {
-  /#
   assert(self enabled());
-  # /
-    self endon(# "stop_stealth");
+  self endon("stop_stealth");
   while (true) {
     self update_arrays();
     sentientevents = getdvarstring("stealth_events");
@@ -261,20 +164,9 @@ function update_thread() {
   }
 }
 
-/*
-	Name: update_arrays
-	Namespace: stealth_level
-	Checksum: 0x1C0C85B2
-	Offset: 0x1070
-	Size: 0x79C
-	Parameters: 0
-	Flags: Linked
-*/
 function update_arrays() {
-  /#
   assert(self enabled());
-  # /
-    self.stealth.enemies["axis"] = [];
+  self.stealth.enemies["axis"] = [];
   self.stealth.enemies["allies"] = [];
   self.stealth.seek = [];
   playerlist = getplayers();
@@ -355,17 +247,8 @@ function update_arrays() {
   }
 }
 
-/*
-	Name: function_a3cf57bf
-	Namespace: stealth_level
-	Checksum: 0x4614A380
-	Offset: 0x1818
-	Size: 0x120
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a3cf57bf() {
-  self endon(# "stop_stealth");
+  self endon("stop_stealth");
   grace_period = 6;
   while (true) {
     level flag::wait_till("stealth_combat");
@@ -387,19 +270,10 @@ function function_a3cf57bf() {
   }
 }
 
-/*
-	Name: function_f8b0594a
-	Namespace: stealth_level
-	Checksum: 0xCDAF5BEE
-	Offset: 0x1940
-	Size: 0x260
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f8b0594a() {
-  self notify(# "hash_f8b0594a");
-  self endon(# "hash_f8b0594a");
-  self endon(# "stop_stealth");
+  self notify("hash_f8b0594a");
+  self endon("hash_f8b0594a");
+  self endon("stop_stealth");
   while (true) {
     level flag::wait_till("stealth_alert");
     level flag::wait_till_clear("stealth_alert");
@@ -423,18 +297,9 @@ function function_f8b0594a() {
   }
 }
 
-/*
-	Name: function_959a64c9
-	Namespace: stealth_level
-	Checksum: 0xA1F9BE49
-	Offset: 0x1BA8
-	Size: 0x282
-	Parameters: 0
-	Flags: Linked
-*/
 function function_959a64c9() {
-  self notify(# "hash_959a64c9");
-  self endon(# "hash_959a64c9");
+  self notify("hash_959a64c9");
+  self endon("hash_959a64c9");
   if(getdvarint("stealth_no_return")) {
     enemies = getaiteamarray("axis");
     foreach(enemy in enemies) {
@@ -442,8 +307,8 @@ function function_959a64c9() {
         continue;
       }
       if(isdefined(enemy.stealth)) {
-        enemy notify(# "hash_959a64c9");
-        enemy notify(# "alert", "combat", enemy.origin, undefined, "wake_all");
+        enemy notify("hash_959a64c9");
+        enemy notify("alert", "combat", enemy.origin, undefined, "wake_all");
         enemy stealth::stop();
       }
       foreach(player in level.activeplayers) {
@@ -462,17 +327,8 @@ function function_959a64c9() {
   }
 }
 
-/*
-	Name: stealth_music_thread
-	Namespace: stealth_level
-	Checksum: 0x262D9CA
-	Offset: 0x1E38
-	Size: 0xE8
-	Parameters: 0
-	Flags: Linked
-*/
 function stealth_music_thread() {
-  self endon(# "stop_stealth");
+  self endon("stop_stealth");
   stealth::function_862e861f();
   while (true) {
     if(!level flag::get("stealth_discovered")) {
@@ -490,15 +346,6 @@ function stealth_music_thread() {
   }
 }
 
-/*
-	Name: function_945a718
-	Namespace: stealth_level
-	Checksum: 0xC9E92EA9
-	Offset: 0x1F28
-	Size: 0x2DA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_945a718() {
   wait(0.05);
   var_e3fe91b2 = struct::get_array("stealth_callout", "targetname");

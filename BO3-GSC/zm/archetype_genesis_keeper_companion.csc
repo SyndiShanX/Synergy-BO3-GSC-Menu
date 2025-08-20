@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*****************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\archetype_genesis_keeper_companion.csc
+*****************************************************/
+
 #using scripts\shared\ai\systems\fx_character;
 #using scripts\shared\ai\systems\gib;
 #using scripts\shared\ai_shared;
@@ -6,18 +10,8 @@
 #using scripts\shared\exploder_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace keepercompanionbehavior;
 
-/*
-	Name: main
-	Namespace: keepercompanionbehavior
-	Checksum: 0xD76E2ED8
-	Offset: 0x4E0
-	Size: 0x3AE
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   ai::add_archetype_spawn_function("keeper_companion", & function_bfd27b96);
   clientfield::register("allplayers", "being_keeper_revived", 15000, 1, "int", & function_802744a7, 0, 0);
@@ -40,15 +34,6 @@ function autoexec main() {
   level._effect["dlc4/genesis/fx_keeperprot_360_attack"] = "dlc4/genesis/fx_keeperprot_360_attack";
 }
 
-/*
-	Name: function_b945954d
-	Namespace: keepercompanionbehavior
-	Checksum: 0x6C98C685
-	Offset: 0x898
-	Size: 0x1A6
-	Parameters: 7
-	Flags: Linked
-*/
 function function_b945954d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 1: {
@@ -78,32 +63,14 @@ function function_b945954d(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_bfd27b96
-	Namespace: keepercompanionbehavior
-	Checksum: 0x1C8E9184
-	Offset: 0xA48
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bfd27b96(localclientnum) {
   self thread function_8aaa4093(localclientnum);
 }
 
-/*
-	Name: function_8aaa4093
-	Namespace: keepercompanionbehavior
-	Checksum: 0x57F357C
-	Offset: 0xA78
-	Size: 0x130
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8aaa4093(localclientnum) {
-  self endon(# "entityshutdown");
-  self notify(# "hash_6f5d947d");
-  self endon(# "hash_6f5d947d");
+  self endon("entityshutdown");
+  self notify("hash_6f5d947d");
+  self endon("hash_6f5d947d");
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self)) {
     return;
@@ -117,22 +84,13 @@ function function_8aaa4093(localclientnum) {
     self mapshaderconstant(localclientnum, 0, "scriptVector2", n_delta_val);
   }
   while (n_current_time < n_phase_in);
-  s_timer notify(# "timer_done");
+  s_timer notify("timer_done");
 }
 
-/*
-	Name: function_55296393
-	Namespace: keepercompanionbehavior
-	Checksum: 0x6CA10925
-	Offset: 0xBB0
-	Size: 0x130
-	Parameters: 1
-	Flags: Linked
-*/
 function function_55296393(localclientnum) {
-  self endon(# "entityshutdown");
-  self notify(# "hash_6f5d947d");
-  self endon(# "hash_6f5d947d");
+  self endon("entityshutdown");
+  self notify("hash_6f5d947d");
+  self endon("hash_6f5d947d");
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self)) {
     return;
@@ -146,18 +104,9 @@ function function_55296393(localclientnum) {
     self mapshaderconstant(localclientnum, 0, "scriptVector2", n_delta_val);
   }
   while (n_current_time < n_phase_in);
-  s_timer notify(# "timer_done");
+  s_timer notify("timer_done");
 }
 
-/*
-	Name: keeper_fx
-	Namespace: keepercompanionbehavior
-	Checksum: 0x9301D8A
-	Offset: 0xCE8
-	Size: 0x184
-	Parameters: 7
-	Flags: Linked
-*/
 function keeper_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval === 1) {
     self.var_2afcd501 = playfxontag(localclientnum, level._effect["dlc4/genesis/fx_keeperprot_underlit_amb"], self, "tag_origin");
@@ -177,15 +126,6 @@ function keeper_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldn
   }
 }
 
-/*
-	Name: function_a9b854ea
-	Namespace: keepercompanionbehavior
-	Checksum: 0xA2BF5CE5
-	Offset: 0xE78
-	Size: 0xE4
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private function_a9b854ea(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.var_a9b854ea) && oldval == 1 && newval == 0) {
     stopfx(localclientnum, self.var_a9b854ea);
@@ -196,15 +136,6 @@ function private function_a9b854ea(localclientnum, oldval, newval, bnewent, bini
   }
 }
 
-/*
-	Name: function_802744a7
-	Namespace: keepercompanionbehavior
-	Checksum: 0x2D7E6419
-	Offset: 0xF68
-	Size: 0xDC
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private function_802744a7(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.var_b4d5098) && oldval == 1 && newval == 0) {
     stopfx(localclientnum, self.var_b4d5098);
@@ -215,17 +146,8 @@ function private function_802744a7(localclientnum, oldval, newval, bnewent, bini
   }
 }
 
-/*
-	Name: keeper_thunderwall
-	Namespace: keepercompanionbehavior
-	Checksum: 0x1F6F1FEC
-	Offset: 0x1050
-	Size: 0xA8
-	Parameters: 7
-	Flags: Linked
-*/
 function keeper_thunderwall(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self)) {
     return;
@@ -235,17 +157,8 @@ function keeper_thunderwall(localclientnum, oldval, newval, bnewent, binitialsna
   }
 }
 
-/*
-	Name: keeper_thunderwall_360
-	Namespace: keepercompanionbehavior
-	Checksum: 0xD6ACDE6E
-	Offset: 0x1100
-	Size: 0x98
-	Parameters: 7
-	Flags: Linked
-*/
 function keeper_thunderwall_360(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(!isdefined(self)) {
     return;
   }
@@ -254,17 +167,8 @@ function keeper_thunderwall_360(localclientnum, oldval, newval, bnewent, binitia
   }
 }
 
-/*
-	Name: function_2935ac4d
-	Namespace: keepercompanionbehavior
-	Checksum: 0x4F612082
-	Offset: 0x11A0
-	Size: 0x1E8
-	Parameters: 7
-	Flags: Linked
-*/
 function function_2935ac4d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self util::waittill_dobj(localclientnum);
   if(!isdefined(self)) {
     return;
@@ -284,17 +188,8 @@ function function_2935ac4d(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_fa8bf98f
-	Namespace: keepercompanionbehavior
-	Checksum: 0xC4747BBF
-	Offset: 0x1390
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_fa8bf98f(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(!isdefined(self)) {
     return;
   }
@@ -306,15 +201,6 @@ function function_fa8bf98f(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: new_timer
-	Namespace: keepercompanionbehavior
-	Checksum: 0x71DEF7AB
-	Offset: 0x1488
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function new_timer(localclientnum) {
   s_timer = spawnstruct();
   s_timer.n_time_current = 0;
@@ -322,59 +208,23 @@ function new_timer(localclientnum) {
   return s_timer;
 }
 
-/*
-	Name: timer_increment_loop
-	Namespace: keepercompanionbehavior
-	Checksum: 0xC0822774
-	Offset: 0x14E8
-	Size: 0x68
-	Parameters: 2
-	Flags: Linked
-*/
 function timer_increment_loop(localclientnum, entity) {
-  entity endon(# "entityshutdown");
-  self endon(# "timer_done");
+  entity endon("entityshutdown");
+  self endon("timer_done");
   while (isdefined(self)) {
     util::server_wait(localclientnum, 0.016);
     self.n_time_current = self.n_time_current + 0.016;
   }
 }
 
-/*
-	Name: get_time
-	Namespace: keepercompanionbehavior
-	Checksum: 0x9FFCD470
-	Offset: 0x1558
-	Size: 0x10
-	Parameters: 0
-	Flags: None
-*/
 function get_time() {
   return self.n_time_current * 1000;
 }
 
-/*
-	Name: get_time_in_seconds
-	Namespace: keepercompanionbehavior
-	Checksum: 0xA2707C0E
-	Offset: 0x1570
-	Size: 0xA
-	Parameters: 0
-	Flags: Linked
-*/
 function get_time_in_seconds() {
   return self.n_time_current;
 }
 
-/*
-	Name: reset_timer
-	Namespace: keepercompanionbehavior
-	Checksum: 0x76DD02BB
-	Offset: 0x1588
-	Size: 0x10
-	Parameters: 0
-	Flags: None
-*/
 function reset_timer() {
   self.n_time_current = 0;
 }

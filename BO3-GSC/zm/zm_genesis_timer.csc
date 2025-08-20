@@ -1,72 +1,30 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_timer.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_genesis_timer;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_genesis_timer
-	Checksum: 0x7D77C56C
-	Offset: 0x1D8
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_genesis_timer", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_genesis_timer
-	Checksum: 0x99EC1590
-	Offset: 0x220
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {}
 
-/*
-	Name: __main__
-	Namespace: zm_genesis_timer
-	Checksum: 0x393961B1
-	Offset: 0x230
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   clientfield::register("world", "time_attack_reward", 12000, 3, "int", & function_b94ee48a, 0, 0);
   level.wallbuy_callback_hack_override = & function_3ec869e2;
 }
 
-/*
-	Name: function_b94ee48a
-	Namespace: zm_genesis_timer
-	Checksum: 0x10087577
-	Offset: 0x2A0
-	Size: 0x48
-	Parameters: 7
-	Flags: Linked
-*/
 function function_b94ee48a(n_local_client, var_3bf16bb3, var_6998917a, b_new_ent, var_b54312de, str_field_name, b_was_time_jump) {
   level.var_dd724c18 = var_6998917a;
 }
 
-/*
-	Name: function_3ec869e2
-	Namespace: zm_genesis_timer
-	Checksum: 0x5C64D2C9
-	Offset: 0x2F0
-	Size: 0x224
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3ec869e2() {
   s_parent = self.parent_struct;
   if(!isdefined(s_parent.var_67b0ba8d)) {

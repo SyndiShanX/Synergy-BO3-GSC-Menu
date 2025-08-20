@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\gametypes\_spawning.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_util;
 #using scripts\zm\gametypes\_spawnlogic;
-
 #namespace spawning;
 
-/*
-	Name: __init__
-	Namespace: spawning
-	Checksum: 0x26A7CB93
-	Offset: 0x3F0
-	Size: 0x1EC
-	Parameters: 0
-	Flags: None
-*/
 function __init__() {
   level init_spawn_system();
   level.recently_deceased = [];
@@ -26,25 +20,14 @@ function __init__() {
   callback::on_connecting( & on_player_connecting);
   level.spawnprotectiontime = getgametypesetting("spawnprotectiontime");
   level.spawnprotectiontimems = int((isdefined(level.spawnprotectiontime) ? level.spawnprotectiontime : 0) * 1000);
-  /#
   setdvar("", "");
   setdvar("", "");
   setdvar("", "");
   setdvar("", "");
   level.test_spawn_point_index = 0;
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: init_spawn_system
-	Namespace: spawning
-	Checksum: 0x9B22C85F
-	Offset: 0x5E8
-	Size: 0x1B2
-	Parameters: 0
-	Flags: Linked
-*/
 function init_spawn_system() {
   level.spawnsystem = spawnstruct();
   spawnsystem = level.spawnsystem;
@@ -65,102 +48,48 @@ function init_spawn_system() {
   spawnsystem.ispawn_teammask["all"] = all;
 }
 
-/*
-	Name: on_player_connecting
-	Namespace: spawning
-	Checksum: 0x5D0EB288
-	Offset: 0x7A8
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connecting() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   self setentertime(gettime());
   callback::on_spawned( & on_player_spawned);
   callback::on_joined_team( & on_joined_team);
   self thread ongrenadethrow();
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: spawning
-	Checksum: 0x7132A790
-	Offset: 0x830
-	Size: 0x60
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  level endon("game_ended");
   for (;;) {
-    self waittill(# "spawned_player");
+    self waittill("spawned_player");
     self enable_player_influencers(1);
     self thread ondeath();
   }
 }
 
-/*
-	Name: ondeath
-	Namespace: spawning
-	Checksum: 0xA7EB5A19
-	Offset: 0x898
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function ondeath() {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
-  self waittill(# "death");
+  self endon("disconnect");
+  level endon("game_ended");
+  self waittill("death");
   self enable_player_influencers(0);
   level create_friendly_influencer("friend_dead", self.origin, self.team);
 }
 
-/*
-	Name: on_joined_team
-	Namespace: spawning
-	Checksum: 0x4CF10D65
-	Offset: 0x910
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_joined_team() {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  level endon("game_ended");
   self player_influencers_set_team();
 }
 
-/*
-	Name: ongrenadethrow
-	Namespace: spawning
-	Checksum: 0x4C5AD434
-	Offset: 0x948
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function ongrenadethrow() {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "grenade_fire", grenade, weapon);
+    self waittill("grenade_fire", grenade, weapon);
     level thread create_grenade_influencers(self.pers["team"], weapon, grenade);
     wait(0.05);
   }
 }
 
-/*
-	Name: get_friendly_team_mask
-	Namespace: spawning
-	Checksum: 0x3463AC60
-	Offset: 0x9D0
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function get_friendly_team_mask(team) {
   if(level.teambased) {
     team_mask = util::getteammask(team);
@@ -170,15 +99,6 @@ function get_friendly_team_mask(team) {
   return team_mask;
 }
 
-/*
-	Name: get_enemy_team_mask
-	Namespace: spawning
-	Checksum: 0xA05B3C3E
-	Offset: 0xA30
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function get_enemy_team_mask(team) {
   if(level.teambased) {
     team_mask = util::getotherteamsmask(team);
@@ -188,143 +108,57 @@ function get_enemy_team_mask(team) {
   return team_mask;
 }
 
-/*
-	Name: create_influencer
-	Namespace: spawning
-	Checksum: 0x865213FF
-	Offset: 0xA90
-	Size: 0x68
-	Parameters: 3
-	Flags: Linked
-*/
 function create_influencer(name, origin, team_mask) {
   self.influencers[name] = addinfluencer(name, origin, team_mask);
   self thread watch_remove_influencer();
   return self.influencers[name];
 }
 
-/*
-	Name: create_friendly_influencer
-	Namespace: spawning
-	Checksum: 0x275FDD8F
-	Offset: 0xB00
-	Size: 0x78
-	Parameters: 3
-	Flags: Linked
-*/
 function create_friendly_influencer(name, origin, team) {
   team_mask = self get_friendly_team_mask(team);
   self.influencersfriendly[name] = create_influencer(name, origin, team_mask);
   return self.influencersfriendly[name];
 }
 
-/*
-	Name: create_enemy_influencer
-	Namespace: spawning
-	Checksum: 0x89F20AE3
-	Offset: 0xB80
-	Size: 0x78
-	Parameters: 3
-	Flags: Linked
-*/
 function create_enemy_influencer(name, origin, team) {
   team_mask = self get_enemy_team_mask(team);
   self.influencersenemy[name] = create_influencer(name, origin, team_mask);
   return self.influencersenemy[name];
 }
 
-/*
-	Name: create_entity_influencer
-	Namespace: spawning
-	Checksum: 0x8C8245F8
-	Offset: 0xC00
-	Size: 0x50
-	Parameters: 2
-	Flags: Linked
-*/
 function create_entity_influencer(name, team_mask) {
   self.influencers[name] = addentityinfluencer(name, self, team_mask);
   return self.influencers[name];
 }
 
-/*
-	Name: create_entity_friendly_influencer
-	Namespace: spawning
-	Checksum: 0x1436A7CE
-	Offset: 0xC58
-	Size: 0x4A
-	Parameters: 1
-	Flags: None
-*/
 function create_entity_friendly_influencer(name) {
   team_mask = self get_friendly_team_mask();
   return self create_entity_masked_friendly_influencer(name, team_mask);
 }
 
-/*
-	Name: create_entity_enemy_influencer
-	Namespace: spawning
-	Checksum: 0x205ED741
-	Offset: 0xCB0
-	Size: 0x4A
-	Parameters: 1
-	Flags: None
-*/
 function create_entity_enemy_influencer(name) {
   team_mask = self get_enemy_team_mask();
   return self create_entity_masked_enemy_influencer(name, team_mask);
 }
 
-/*
-	Name: create_entity_masked_friendly_influencer
-	Namespace: spawning
-	Checksum: 0x8376247B
-	Offset: 0xD08
-	Size: 0x50
-	Parameters: 2
-	Flags: Linked
-*/
 function create_entity_masked_friendly_influencer(name, team_mask) {
   self.influencersfriendly[name] = self create_entity_influencer(name, team_mask);
   return self.influencersfriendly[name];
 }
 
-/*
-	Name: create_entity_masked_enemy_influencer
-	Namespace: spawning
-	Checksum: 0xC0152F10
-	Offset: 0xD60
-	Size: 0x50
-	Parameters: 2
-	Flags: Linked
-*/
 function create_entity_masked_enemy_influencer(name, team_mask) {
   self.influencersenemy[name] = self create_entity_influencer(name, team_mask);
   return self.influencersenemy[name];
 }
 
-/*
-	Name: create_player_influencers
-	Namespace: spawning
-	Checksum: 0x67EB6933
-	Offset: 0xDB8
-	Size: 0x22C
-	Parameters: 0
-	Flags: Linked
-*/
 function create_player_influencers() {
-  /#
   assert(!isdefined(self.influencers));
-  # /
-    /#
   assert(!isdefined(self.influencers));
-  # /
-    if(!level.teambased) {
-      team_mask = level.spawnsystem.ispawn_teammask_free;
-      other_team_mask = level.spawnsystem.ispawn_teammask_free;
-      weapon_team_mask = level.spawnsystem.ispawn_teammask_free;
-    }
-  else {
+  if(!level.teambased) {
+    team_mask = level.spawnsystem.ispawn_teammask_free;
+    other_team_mask = level.spawnsystem.ispawn_teammask_free;
+    weapon_team_mask = level.spawnsystem.ispawn_teammask_free;
+  } else {
     if(isdefined(self.pers["team"])) {
       team = self.pers["team"];
       team_mask = util::getteammask(team);
@@ -350,15 +184,6 @@ function create_player_influencers() {
   }
 }
 
-/*
-	Name: remove_influencers
-	Namespace: spawning
-	Checksum: 0xA8693910
-	Offset: 0xFF0
-	Size: 0xC4
-	Parameters: 0
-	Flags: None
-*/
 function remove_influencers() {
   foreach(influencer in self.influencers) {
     removeinfluencer(influencer);
@@ -372,50 +197,23 @@ function remove_influencers() {
   }
 }
 
-/*
-	Name: watch_remove_influencer
-	Namespace: spawning
-	Checksum: 0xEF7624D3
-	Offset: 0x10C0
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_remove_influencer() {
-  self endon(# "death");
-  self notify(# "watch_remove_influencer");
-  self endon(# "watch_remove_influencer");
-  self waittill(# "influencer_removed", index);
+  self endon("death");
+  self notify("watch_remove_influencer");
+  self endon("watch_remove_influencer");
+  self waittill("influencer_removed", index);
   arrayremovevalue(self.influencers, index);
   arrayremovevalue(self.influencersfriendly, index);
   arrayremovevalue(self.influencersenemy, index);
   self thread watch_remove_influencer();
 }
 
-/*
-	Name: enable_influencers
-	Namespace: spawning
-	Checksum: 0x13865551
-	Offset: 0x1180
-	Size: 0x9A
-	Parameters: 1
-	Flags: Linked
-*/
 function enable_influencers(enabled) {
   foreach(influencer in self.influencers) {
     enableinfluencer(influencer, enabled);
   }
 }
 
-/*
-	Name: enable_player_influencers
-	Namespace: spawning
-	Checksum: 0xBD42F983
-	Offset: 0x1228
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function enable_player_influencers(enabled) {
   if(!isdefined(self.influencers)) {
     self create_player_influencers();
@@ -423,15 +221,6 @@ function enable_player_influencers(enabled) {
   self enable_influencers(enabled);
 }
 
-/*
-	Name: player_influencers_set_team
-	Namespace: spawning
-	Checksum: 0xFD2B9C69
-	Offset: 0x1278
-	Size: 0x1CA
-	Parameters: 0
-	Flags: Linked
-*/
 function player_influencers_set_team() {
   if(!level.teambased) {
     team_mask = level.spawnsystem.ispawn_teammask_free;
@@ -453,15 +242,6 @@ function player_influencers_set_team() {
   }
 }
 
-/*
-	Name: create_grenade_influencers
-	Namespace: spawning
-	Checksum: 0x8BE8A0B0
-	Offset: 0x1450
-	Size: 0x114
-	Parameters: 3
-	Flags: Linked
-*/
 function create_grenade_influencers(parent_team, weapon, grenade) {
   pixbeginevent("create_grenade_influencers");
   spawn_influencer = weapon.spawninfluencer;
@@ -479,15 +259,6 @@ function create_grenade_influencers(parent_team, weapon, grenade) {
   pixendevent();
 }
 
-/*
-	Name: create_map_placed_influencers
-	Namespace: spawning
-	Checksum: 0x8DFF2EB
-	Offset: 0x1570
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function create_map_placed_influencers() {
   staticinfluencerents = getentarray("mp_uspawn_influencer", "classname");
   for (i = 0; i < staticinfluencerents.size; i++) {
@@ -496,37 +267,17 @@ function create_map_placed_influencers() {
   }
 }
 
-/*
-	Name: create_map_placed_influencer
-	Namespace: spawning
-	Checksum: 0x1DF0B7
-	Offset: 0x1600
-	Size: 0xB0
-	Parameters: 1
-	Flags: Linked
-*/
 function create_map_placed_influencer(influencer_entity) {
   influencer_id = -1;
   if(isdefined(influencer_entity.script_noteworty)) {
     team_mask = util::getteammask(influencer_entity.script_team);
     level create_enemy_influencer(influencer_entity.script_noteworty, influencer_entity.origin, team_mask);
   } else {
-    /#
     assertmsg("");
-    # /
   }
   return influencer_id;
 }
 
-/*
-	Name: updateallspawnpoints
-	Namespace: spawning
-	Checksum: 0xDD5D62C1
-	Offset: 0x16B8
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked
-*/
 function updateallspawnpoints() {
   foreach(team in level.teams) {
     gatherspawnpoints(team);
@@ -544,24 +295,13 @@ function updateallspawnpoints() {
   remove_unused_spawn_entities();
 }
 
-/*
-	Name: onspawnplayer_unified
-	Namespace: spawning
-	Checksum: 0x53C3D24F
-	Offset: 0x18B0
-	Size: 0x144
-	Parameters: 1
-	Flags: Linked
-*/
 function onspawnplayer_unified(predictedspawn = 0) {
-  /#
   if(getdvarint("") != 0) {
     spawn_point = get_debug_spawnpoint(self);
     self spawn(spawn_point.origin, spawn_point.angles);
     return;
   }
-  # /
-    use_new_spawn_system = 0;
+  use_new_spawn_system = 0;
   initial_spawn = 1;
   if(isdefined(self.uspawn_already_spawned)) {
     initial_spawn = !self.uspawn_already_spawned;
@@ -573,23 +313,12 @@ function onspawnplayer_unified(predictedspawn = 0) {
     use_new_spawn_system = 0;
   }
   util::set_dvar_if_unset("scr_spawn_force_unified", "0");
-  [
-    [level.onspawnplayer]
-  ](predictedspawn);
+  [[level.onspawnplayer]](predictedspawn);
   if(!predictedspawn) {
     self.uspawn_already_spawned = 1;
   }
 }
 
-/*
-	Name: getspawnpoint
-	Namespace: spawning
-	Checksum: 0x82C1BC6E
-	Offset: 0x1A00
-	Size: 0x148
-	Parameters: 2
-	Flags: None
-*/
 function getspawnpoint(player_entity, predictedspawn = 0) {
   if(level.teambased) {
     point_team = player_entity.pers["team"];
@@ -608,15 +337,6 @@ function getspawnpoint(player_entity, predictedspawn = 0) {
   return best_spawn;
 }
 
-/*
-	Name: get_debug_spawnpoint
-	Namespace: spawning
-	Checksum: 0x4D4178F9
-	Offset: 0x1B50
-	Size: 0x27A
-	Parameters: 1
-	Flags: Linked
-*/
 function get_debug_spawnpoint(player) {
   if(level.teambased) {
     team = player.pers["team"];
@@ -649,15 +369,6 @@ function get_debug_spawnpoint(player) {
   }
 }
 
-/*
-	Name: get_best_spawnpoint
-	Namespace: spawning
-	Checksum: 0x57D47B9D
-	Offset: 0x1DD8
-	Size: 0xE8
-	Parameters: 4
-	Flags: Linked
-*/
 function get_best_spawnpoint(point_team, influencer_team, player, predictedspawn) {
   if(level.teambased) {
     vis_team_mask = util::getotherteamsmask(player.pers["team"]);
@@ -671,15 +382,6 @@ function get_best_spawnpoint(point_team, influencer_team, player, predictedspawn
   return spawn_point;
 }
 
-/*
-	Name: gatherspawnpoints
-	Namespace: spawning
-	Checksum: 0xDF2D315
-	Offset: 0x1EC8
-	Size: 0xC2
-	Parameters: 1
-	Flags: Linked
-*/
 function gatherspawnpoints(player_team) {
   if(!isdefined(level.unified_spawn_points)) {
     level.unified_spawn_points = [];
@@ -695,28 +397,10 @@ function gatherspawnpoints(player_team) {
   return spawn_entities_s;
 }
 
-/*
-	Name: is_hardcore
-	Namespace: spawning
-	Checksum: 0xF710A2C9
-	Offset: 0x1F98
-	Size: 0x16
-	Parameters: 0
-	Flags: None
-*/
 function is_hardcore() {
   return isdefined(level.hardcoremode) && level.hardcoremode;
 }
 
-/*
-	Name: teams_have_enmity
-	Namespace: spawning
-	Checksum: 0x7ED98DDC
-	Offset: 0x1FB8
-	Size: 0x72
-	Parameters: 2
-	Flags: None
-*/
 function teams_have_enmity(team1, team2) {
   if(!isdefined(team1) || !isdefined(team2) || level.gametype == "dm") {
     return 1;
@@ -724,15 +408,6 @@ function teams_have_enmity(team1, team2) {
   return team1 != "neutral" && team2 != "neutral" && team1 != team2;
 }
 
-/*
-	Name: remove_unused_spawn_entities
-	Namespace: spawning
-	Checksum: 0x2C185004
-	Offset: 0x2038
-	Size: 0x22E
-	Parameters: 0
-	Flags: Linked
-*/
 function remove_unused_spawn_entities() {
   spawn_entity_types = [];
   spawn_entity_types[spawn_entity_types.size] = "mp_dm_spawn";
@@ -764,30 +439,12 @@ function remove_unused_spawn_entities() {
   }
 }
 
-/*
-	Name: delete_all_spawns
-	Namespace: spawning
-	Checksum: 0xCDE1D01D
-	Offset: 0x2270
-	Size: 0x56
-	Parameters: 1
-	Flags: Linked
-*/
 function delete_all_spawns(spawnpoints) {
   for (i = 0; i < spawnpoints.size; i++) {
     spawnpoints[i] delete();
   }
 }
 
-/*
-	Name: spawn_point_class_name_being_used
-	Namespace: spawning
-	Checksum: 0xC47E94B0
-	Offset: 0x22D0
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked
-*/
 function spawn_point_class_name_being_used(name) {
   if(!isdefined(level.spawn_point_class_names)) {
     return false;
@@ -800,15 +457,6 @@ function spawn_point_class_name_being_used(name) {
   return false;
 }
 
-/*
-	Name: codecallback_updatespawnpoints
-	Namespace: spawning
-	Checksum: 0x6F654D0A
-	Offset: 0x2340
-	Size: 0xA4
-	Parameters: 0
-	Flags: None
-*/
 function codecallback_updatespawnpoints() {
   foreach(team in level.teams) {
     spawnlogic::rebuildspawnpoints(team);
@@ -817,18 +465,9 @@ function codecallback_updatespawnpoints() {
   updateallspawnpoints();
 }
 
-/*
-	Name: initialspawnprotection
-	Namespace: spawning
-	Checksum: 0xA0A91454
-	Offset: 0x23F0
-	Size: 0xCC
-	Parameters: 2
-	Flags: None
-*/
 function initialspawnprotection(specialtyname, spawnmonitorspeed) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(!isdefined(level.spawnprotectiontime) || level.spawnprotectiontime == 0) {
     return;
   }

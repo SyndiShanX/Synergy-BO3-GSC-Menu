@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_defend_areas.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_death;
 #using scripts\shared\ai\zombie_utility;
@@ -55,37 +59,13 @@ class careadefend {
   var m_n_rumble_radius_sq;
   var m_str_area_defend_in_progress;
 
-  /*
-  	Name: constructor
-  	Namespace: careadefend
-  	Checksum: 0x99EC1590
-  	Offset: 0x2930
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {}
 
-  /*
-  	Name: destructor
-  	Namespace: careadefend
-  	Checksum: 0x99EC1590
-  	Offset: 0x2940
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: function_a5e2032d
-  	Namespace: careadefend
-  	Checksum: 0xAFC1AB88
-  	Offset: 0x25C8
-  	Size: 0x35C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_a5e2032d() {
     var_7591ca03 = zm_zonemgr::get_zone_from_position(m_s_centerpoint.origin);
     if(issubstr(var_7591ca03, "burlesque")) {
@@ -135,15 +115,7 @@ class careadefend {
     return a_ai_zombies;
   }
 
-  /*
-  	Name: ritual_nuke
-  	Namespace: careadefend
-  	Checksum: 0x4378E3F1
-  	Offset: 0x2240
-  	Size: 0x37A
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function ritual_nuke() {
     level lui::screen_flash(0.2, 0.5, 1, 0.8, "white");
     wait(0.2);
@@ -193,15 +165,7 @@ class careadefend {
     }
   }
 
-  /*
-  	Name: reset_hud
-  	Namespace: careadefend
-  	Checksum: 0x835059C9
-  	Offset: 0x2150
-  	Size: 0xE2
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function reset_hud(player) {
     if(isdefined(player) && player.sessionstate === "spectator") {
       return;
@@ -216,15 +180,7 @@ class careadefend {
     }
   }
 
-  /*
-  	Name: defend_failed_hud
-  	Namespace: careadefend
-  	Checksum: 0x6908AEEB
-  	Offset: 0x20D8
-  	Size: 0x6C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function defend_failed_hud(player) {
     self reset_hud(player);
     if(isdefined(player) && player.sessionstate === "spectator") {
@@ -234,15 +190,7 @@ class careadefend {
     self reset_hud(player);
   }
 
-  /*
-  	Name: defend_succeeded_hud
-  	Namespace: careadefend
-  	Checksum: 0x30A4562C
-  	Offset: 0x2050
-  	Size: 0x7C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function defend_succeeded_hud(player) {
     self reset_hud(player);
     if(isdefined(player) && isdefined(player.sessionstate) && player.sessionstate == "spectator") {
@@ -252,28 +200,12 @@ class careadefend {
     self reset_hud(player);
   }
 
-  /*
-  	Name: get_current_progress
-  	Namespace: careadefend
-  	Checksum: 0xC02B5ADB
-  	Offset: 0x2038
-  	Size: 0x10
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_current_progress() {
     return m_n_defend_current_progress / 100;
   }
 
-  /*
-  	Name: is_player_in_defend_area
-  	Namespace: careadefend
-  	Checksum: 0x6DED2910
-  	Offset: 0x1F28
-  	Size: 0x100
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function is_player_in_defend_area(player) {
     if(isdefined(m_e_defend_volume)) {
       if(zm_utility::is_player_valid(player, 1, 1) && player istouching(m_e_defend_volume)) {
@@ -287,15 +219,7 @@ class careadefend {
     return false;
   }
 
-  /*
-  	Name: get_players_in_defend_area
-  	Namespace: careadefend
-  	Checksum: 0x1A05B52F
-  	Offset: 0x1E48
-  	Size: 0xD6
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_players_in_defend_area() {
     a_players_in_defend_area = [];
     foreach(player in level.activeplayers) {
@@ -306,42 +230,18 @@ class careadefend {
     return a_players_in_defend_area;
   }
 
-  /*
-  	Name: get_state
-  	Namespace: careadefend
-  	Checksum: 0x14CBC257
-  	Offset: 0x1E30
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_state() {
     return m_n_state;
   }
 
-  /*
-  	Name: get_progress_rate
-  	Namespace: careadefend
-  	Checksum: 0x50673FE9
-  	Offset: 0x1DE8
-  	Size: 0x3A
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function get_progress_rate(n_players_in_defend_area, n_players_total) {
     n_current_update_rate = (n_players_in_defend_area / n_players_total) * m_n_defend_progress_per_update_interval;
     return n_current_update_rate;
   }
 
-  /*
-  	Name: kill_all_defend_event_zombies
-  	Namespace: careadefend
-  	Checksum: 0xB6C9E505
-  	Offset: 0x1D10
-  	Size: 0xCA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function kill_all_defend_event_zombies() {
     foreach(zombie in m_a_defend_event_zombies) {
       if(isalive(zombie) && (isdefined(zombie.allowdeath) && zombie.allowdeath)) {
@@ -350,20 +250,10 @@ class careadefend {
     }
   }
 
-  /*
-  	Name: defend_failed
-  	Namespace: careadefend
-  	Checksum: 0x1A3A4BD8
-  	Offset: 0x1BC0
-  	Size: 0x148
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function defend_failed() {
-    /#
     println("");
-    # /
-      m_n_state = 1;
+    m_n_state = 1;
     update_usetrigger_hintstring();
     kill_all_defend_event_zombies();
     m_e_spawn_points = [];
@@ -381,20 +271,10 @@ class careadefend {
       ](m_arg1);
   }
 
-  /*
-  	Name: defend_succeeded
-  	Namespace: careadefend
-  	Checksum: 0x421A8147
-  	Offset: 0x19A0
-  	Size: 0x216
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function defend_succeeded() {
-    /#
     println("");
-    # /
-      m_n_state = 3;
+    m_n_state = 3;
     kill_all_defend_event_zombies();
     foreach(s_spawn_point in m_e_spawn_points) {
       s_spawn_point delete();
@@ -415,18 +295,10 @@ class careadefend {
       [
         [m_func_succeed]
       ](m_arg1, m_a_players_involved);
-    self notify(# "area_defend_completed");
+    self notify("area_defend_completed");
   }
 
-  /*
-  	Name: get_unused_spawn_point
-  	Namespace: careadefend
-  	Checksum: 0xA8776FA2
-  	Offset: 0x1850
-  	Size: 0x148
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_unused_spawn_point() {
     a_valid_spawn_points = [];
     b_all_points_used = 0;
@@ -448,17 +320,9 @@ class careadefend {
     return s_spawn_point;
   }
 
-  /*
-  	Name: function_877a7365
-  	Namespace: careadefend
-  	Checksum: 0x726908E6
-  	Offset: 0x1668
-  	Size: 0x1E0
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_877a7365() {
-    self endon(# "death");
+    self endon("death");
     while (true) {
       var_c7ca004c = [];
       foreach(player in level.activeplayers) {
@@ -474,35 +338,19 @@ class careadefend {
       e_target_player = array::random(var_c7ca004c);
       while (isalive(e_target_player) && (!(isdefined(e_target_player.beastmode) && e_target_player.beastmode)) && !e_target_player laststand::player_is_in_laststand()) {
         self setgoal(e_target_player);
-        self waittill(# "goal");
+        self waittill("goal");
       }
       wait(0.1);
     }
   }
 
-  /*
-  	Name: function_df5ae14e
-  	Namespace: careadefend
-  	Checksum: 0xDC74743C
-  	Offset: 0x1620
-  	Size: 0x3C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_df5ae14e(ai_zombie) {
-    ai_zombie waittill(# "death");
+    ai_zombie waittill("death");
     ai_zombie clientfield::set("keeper_fx", 0);
   }
 
-  /*
-  	Name: monitor_defend_event_zombies
-  	Namespace: careadefend
-  	Checksum: 0x500FF50D
-  	Offset: 0x1470
-  	Size: 0x1A2
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function monitor_defend_event_zombies() {
     m_a_defend_event_zombies = [];
     while (m_n_state == 2) {
@@ -517,10 +365,8 @@ class careadefend {
         s_spawn_point = get_unused_spawn_point();
         ai = zombie_utility::spawn_zombie(m_a_e_zombie_spawners[0], "defend_event_zombie", s_spawn_point);
         if(!isdefined(ai)) {
-          /#
           println("");
-          # /
-            continue;
+          continue;
         }
         ai.var_81ac9e79 = 1;
         ai thread zm_zod_quest::function_2d0c5aa1(s_spawn_point);
@@ -531,15 +377,7 @@ class careadefend {
     }
   }
 
-  /*
-  	Name: function_d9a5609b
-  	Namespace: careadefend
-  	Checksum: 0x2D8C6303
-  	Offset: 0x1308
-  	Size: 0x15E
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function function_d9a5609b(n_players_total, n_players_in_defend_area) {
     if(n_players_total == 1) {
       return 20;
@@ -574,20 +412,10 @@ class careadefend {
     return 30;
   }
 
-  /*
-  	Name: progress_think
-  	Namespace: careadefend
-  	Checksum: 0x4EB6C0E1
-  	Offset: 0xEF8
-  	Size: 0x404
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function progress_think() {
-    /#
     println("");
-    # /
-      m_n_defend_current_progress = 0;
+    m_n_defend_current_progress = 0;
     m_n_defend_grace_remaining = m_n_defend_grace_duration;
     m_a_players_involved = [];
     var_db69778c = level.activeplayers.size;
@@ -641,19 +469,11 @@ class careadefend {
     }
   }
 
-  /*
-  	Name: usetrigger_think
-  	Namespace: careadefend
-  	Checksum: 0x96CCCB54
-  	Offset: 0xD90
-  	Size: 0x15C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function usetrigger_think() {
-    self endon(# "area_defend_completed");
+    self endon("area_defend_completed");
     while (true) {
-      m_t_use waittill(# "trigger", e_triggerer);
+      m_t_use waittill("trigger", e_triggerer);
       if(e_triggerer zm_utility::in_revive_trigger()) {
         continue;
       }
@@ -682,32 +502,16 @@ class careadefend {
     }
   }
 
-  /*
-  	Name: update_usetrigger_hintstring
-  	Namespace: careadefend
-  	Checksum: 0x8F9FF512
-  	Offset: 0xD58
-  	Size: 0x2C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function update_usetrigger_hintstring() {
     if(isdefined(m_t_use)) {
       m_t_use zm_unitrigger::run_visibility_function_for_all_triggers();
     }
   }
 
-  /*
-  	Name: function_4e035595
-  	Namespace: careadefend
-  	Checksum: 0x391EFB7F
-  	Offset: 0xC58
-  	Size: 0xF4
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_4e035595(player) {
-    self endon(# "disconnect");
+    self endon("disconnect");
     if(isdefined(player.var_b999c630) && player.var_b999c630 || !level flag::get("ritual_in_progress")) {
       return;
     }
@@ -720,15 +524,7 @@ class careadefend {
     player.var_b999c630 = 0;
   }
 
-  /*
-  	Name: ritual_start_prompt_and_visibility
-  	Namespace: careadefend
-  	Checksum: 0xC818E23F
-  	Offset: 0xB90
-  	Size: 0xC0
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function ritual_start_prompt_and_visibility(player) {
     b_is_visible = [
       [stub.o_defend_area]
@@ -740,20 +536,12 @@ class careadefend {
       self sethintstring(str_msg);
       thread function_4e035595(player);
     } else {
-      self sethintstring( & "");
+      self sethintstring(&"");
     }
     return b_is_visible;
   }
 
-  /*
-  	Name: ritual_start_visible_internal
-  	Namespace: careadefend
-  	Checksum: 0x8E2E5971
-  	Offset: 0xAF0
-  	Size: 0x98
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function ritual_start_visible_internal(player) {
     if(isdefined(player.beastmode) && player.beastmode) {
       return false;
@@ -775,15 +563,7 @@ class careadefend {
     return false;
   }
 
-  /*
-  	Name: ritual_start_message_internal
-  	Namespace: careadefend
-  	Checksum: 0x27E6D9F
-  	Offset: 0xA80
-  	Size: 0x66
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function ritual_start_message_internal(player) {
     if(!m_b_started) {
       return & "";
@@ -801,15 +581,7 @@ class careadefend {
     }
   }
 
-  /*
-  	Name: set_availability
-  	Namespace: careadefend
-  	Checksum: 0x2BCE6B1E
-  	Offset: 0xA08
-  	Size: 0x6C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function set_availability(b_is_available) {
     if(b_is_available && m_n_state == 0) {
       m_n_state = 1;
@@ -819,15 +591,7 @@ class careadefend {
     update_usetrigger_hintstring();
   }
 
-  /*
-  	Name: start
-  	Namespace: careadefend
-  	Checksum: 0xD8419F75
-  	Offset: 0x938
-  	Size: 0xC4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function start() {
     ritual_start_dims = (110, 110, 128);
     m_t_use = zm_zod_util::spawn_trigger_box(m_s_centerpoint.origin, m_s_centerpoint.angles, ritual_start_dims, 1);
@@ -838,49 +602,21 @@ class careadefend {
     self thread usetrigger_think();
   }
 
-  /*
-  	Name: set_duration
-  	Namespace: careadefend
-  	Checksum: 0x82F5A088
-  	Offset: 0x8F8
-  	Size: 0x34
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function set_duration(n_duration) {
     m_n_defend_duration = n_duration;
     m_n_defend_progress_per_update_interval = (100 / m_n_defend_duration) * 0.1;
   }
 
-  /*
-  	Name: set_volumes
-  	Namespace: careadefend
-  	Checksum: 0x58CBDD78
-  	Offset: 0x838
-  	Size: 0xB4
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function set_volumes(str_defend_volume, str_rumble_volume) {
     m_e_defend_volume = getent(str_defend_volume, "targetname");
     m_e_rumble_volume = getent(str_rumble_volume, "targetname");
-    /#
     assert(isdefined(m_e_defend_volume), "");
-    # /
-      /#
     assert(isdefined(m_e_rumble_volume), "");
-    # /
   }
 
-  /*
-  	Name: set_luimenus
-  	Namespace: careadefend
-  	Checksum: 0x4D1ABDB8
-  	Offset: 0x7D8
-  	Size: 0x54
-  	Parameters: 4
-  	Flags: Linked
-  */
+
   function set_luimenus(str_luimenu_progress, str_luimenu_return, str_luimenu_succeeded, str_luimenu_failed) {
     m_str_luimenu_progress = str_luimenu_progress;
     m_str_luimenu_return = str_luimenu_return;
@@ -888,15 +624,7 @@ class careadefend {
     m_str_luimenu_failed = str_luimenu_failed;
   }
 
-  /*
-  	Name: set_external_functions
-  	Namespace: careadefend
-  	Checksum: 0xF7E639A7
-  	Offset: 0x768
-  	Size: 0x68
-  	Parameters: 5
-  	Flags: Linked
-  */
+
   function set_external_functions(func_prereq, func_start, func_succeed, func_fail, arg1) {
     m_func_prereq = func_prereq;
     m_func_start = func_start;
@@ -905,28 +633,12 @@ class careadefend {
     m_arg1 = arg1;
   }
 
-  /*
-  	Name: set_trigger_visibility_function
-  	Namespace: careadefend
-  	Checksum: 0x71FD5A1D
-  	Offset: 0x748
-  	Size: 0x18
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function set_trigger_visibility_function(func_trigger_visibility) {
     m_func_trigger_visibility = func_trigger_visibility;
   }
 
-  /*
-  	Name: populate_spawn_points
-  	Namespace: careadefend
-  	Checksum: 0xA0DBF1B5
-  	Offset: 0x588
-  	Size: 0x1B8
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function populate_spawn_points() {
     m_a_e_zombie_spawners = getentarray("ritual_zombie_spawner", "targetname");
     a_s_spawn_points = struct::get_array(m_str_spawn, "targetname");
@@ -944,15 +656,7 @@ class careadefend {
     }
   }
 
-  /*
-  	Name: init
-  	Namespace: careadefend
-  	Checksum: 0x8CE06DDE
-  	Offset: 0x3F8
-  	Size: 0x184
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function init(str_centerpoint, str_spawn) {
     m_s_centerpoint = struct::get(str_centerpoint, "targetname");
     m_str_spawn = str_spawn;

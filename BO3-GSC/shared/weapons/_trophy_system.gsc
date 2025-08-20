@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_trophy_system.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\challenges_shared;
@@ -9,20 +13,9 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_tacticalinsertion;
 #using scripts\shared\weapons\_weaponobjects;
-
 #using_animtree("mp_trophy_system");
-
 #namespace trophy_system;
 
-/*
-	Name: init_shared
-	Namespace: trophy_system
-	Checksum: 0x534F85DF
-	Offset: 0x3F0
-	Size: 0x9C
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   level.trophylongflashfx = "weapon/fx_trophy_flash";
   level.trophydetonationfx = "weapon/fx_trophy_detonation";
@@ -33,29 +26,11 @@ function init_shared() {
   callback::on_spawned( & createtrophysystemwatcher);
 }
 
-/*
-	Name: register
-	Namespace: trophy_system
-	Checksum: 0xC0DB9C85
-	Offset: 0x498
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function register() {
   clientfield::register("missile", "trophy_system_state", 1, 2, "int");
   clientfield::register("scriptmover", "trophy_system_state", 1, 2, "int");
 }
 
-/*
-	Name: createtrophysystemwatcher
-	Namespace: trophy_system
-	Checksum: 0x28C00D1D
-	Offset: 0x508
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function createtrophysystemwatcher() {
   if(level.gametype == "infect" && self.team == game["attackers"]) {
     return;
@@ -78,20 +53,11 @@ function createtrophysystemwatcher() {
   watcher.stuntime = 1;
 }
 
-/*
-	Name: ontrophysystemspawn
-	Namespace: trophy_system
-	Checksum: 0x7607893B
-	Offset: 0x6B0
-	Size: 0x27C
-	Parameters: 2
-	Flags: Linked
-*/
 function ontrophysystemspawn(watcher, player) {
-  player endon(# "death");
-  player endon(# "disconnect");
-  level endon(# "game_ended");
-  self endon(# "death");
+  player endon("death");
+  player endon("disconnect");
+  level endon("game_ended");
+  self endon("death");
   self useanimtree($mp_trophy_system);
   self weaponobjects::onspawnuseweaponobject(watcher, player);
   self.trophysystemstationary = 0;
@@ -114,45 +80,18 @@ function ontrophysystemspawn(watcher, player) {
   self setreconmodeldeployed();
 }
 
-/*
-	Name: setreconmodeldeployed
-	Namespace: trophy_system
-	Checksum: 0xB05C3F98
-	Offset: 0x938
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function setreconmodeldeployed() {
   if(isdefined(self.reconmodelentity)) {
     self.reconmodelentity clientfield::set("trophy_system_state", 2);
   }
 }
 
-/*
-	Name: trophywatchhack
-	Namespace: trophy_system
-	Checksum: 0x17509010
-	Offset: 0x978
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function trophywatchhack() {
-  self endon(# "death");
-  self waittill(# "hacked", player);
+  self endon("death");
+  self waittill("hacked", player);
   self clientfield::set("trophy_system_state", 0);
 }
 
-/*
-	Name: ontrophysystemsmashed
-	Namespace: trophy_system
-	Checksum: 0xFCBD519B
-	Offset: 0x9C8
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function ontrophysystemsmashed(attacker) {
   playfx(level._effect["tacticalInsertionFizzle"], self.origin);
   self playsound("dst_trophy_smash");
@@ -166,19 +105,10 @@ function ontrophysystemsmashed(attacker) {
   self delete();
 }
 
-/*
-	Name: trophyactive
-	Namespace: trophy_system
-	Checksum: 0xE6CCF268
-	Offset: 0xAD0
-	Size: 0x37A
-	Parameters: 1
-	Flags: Linked
-*/
 function trophyactive(owner) {
-  owner endon(# "disconnect");
-  self endon(# "death");
-  self endon(# "hacked");
+  owner endon("disconnect");
+  self endon("death");
+  self endon("hacked");
   while (true) {
     if(!isdefined(self)) {
       return;
@@ -243,20 +173,11 @@ function trophyactive(owner) {
   }
 }
 
-/*
-	Name: projectileexplode
-	Namespace: trophy_system
-	Checksum: 0xCB25FEB4
-	Offset: 0xE58
-	Size: 0x14C
-	Parameters: 2
-	Flags: Linked
-*/
 function projectileexplode(projectile, trophy) {
-  self endon(# "death");
+  self endon("death");
   projposition = projectile.origin;
   playfx(level.trophydetonationfx, projposition);
-  projectile notify(# "trophy_destroyed");
+  projectile notify("trophy_destroyed");
   trophy radiusdamage(projposition, 128, 105, 10, self);
   scoreevents::processscoreevent("trophy_defense", self);
   self challenges::trophy_defense(projposition, 512);
@@ -267,17 +188,8 @@ function projectileexplode(projectile, trophy) {
   projectile delete();
 }
 
-/*
-	Name: trophydestroytacinsert
-	Namespace: trophy_system
-	Checksum: 0x63381435
-	Offset: 0xFB0
-	Size: 0x12C
-	Parameters: 2
-	Flags: None
-*/
 function trophydestroytacinsert(tacinsert, trophy) {
-  self endon(# "death");
+  self endon("death");
   tacpos = tacinsert.origin;
   playfx(level.trophydetonationfx, tacinsert.origin);
   tacinsert thread tacticalinsertion::tacticalinsertiondestroyedbytrophysystem(self, trophy);
@@ -289,15 +201,6 @@ function trophydestroytacinsert(tacinsert, trophy) {
   self addweaponstat(trophy.weapon, "CombatRecordStat", 1);
 }
 
-/*
-	Name: trophysystemdetonate
-	Namespace: trophy_system
-	Checksum: 0x507A48CF
-	Offset: 0x10E8
-	Size: 0x104
-	Parameters: 3
-	Flags: Linked
-*/
 function trophysystemdetonate(attacker, weapon, target) {
   if(!isdefined(weapon) || !weapon.isemp) {
     playfx(level._equipment_explode_fx_lg, self.origin);
@@ -310,18 +213,9 @@ function trophysystemdetonate(attacker, weapon, target) {
   self delete();
 }
 
-/*
-	Name: watchtrophysystemdamage
-	Namespace: trophy_system
-	Checksum: 0xEF86E522
-	Offset: 0x11F8
-	Size: 0x372
-	Parameters: 1
-	Flags: Linked
-*/
 function watchtrophysystemdamage(watcher) {
-  self endon(# "death");
-  self endon(# "hacked");
+  self endon("death");
+  self endon("hacked");
   self setcandamage(1);
   damagemax = 20;
   if(!self util::ishacked()) {
@@ -332,7 +226,7 @@ function watchtrophysystemdamage(watcher) {
   self setmaxhealth(self.maxhealth);
   attacker = undefined;
   while (true) {
-    self waittill(# "damage", damage, attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
+    self waittill("damage", damage, attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
     attacker = self[[level.figure_out_attacker]](attacker);
     if(!isplayer(attacker)) {
       continue;
@@ -368,42 +262,15 @@ function watchtrophysystemdamage(watcher) {
   }
 }
 
-/*
-	Name: ammo_scavenger
-	Namespace: trophy_system
-	Checksum: 0x4BFD03AD
-	Offset: 0x1578
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function ammo_scavenger(weapon) {
   self ammo_reset();
 }
 
-/*
-	Name: ammo_reset
-	Namespace: trophy_system
-	Checksum: 0x8690777A
-	Offset: 0x15A8
-	Size: 0x16
-	Parameters: 0
-	Flags: Linked
-*/
 function ammo_reset() {
   self._trophy_system_ammo1 = undefined;
   self._trophy_system_ammo2 = undefined;
 }
 
-/*
-	Name: ammo_get
-	Namespace: trophy_system
-	Checksum: 0x8CC2A621
-	Offset: 0x15C8
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function ammo_get(weapon) {
   totalammo = weapon.ammocountequipment;
   if(isdefined(self._trophy_system_ammo1) && !self util::ishacked()) {
@@ -417,15 +284,6 @@ function ammo_get(weapon) {
   return totalammo;
 }
 
-/*
-	Name: ammo_weapon_pickup
-	Namespace: trophy_system
-	Checksum: 0x93AA7869
-	Offset: 0x1668
-	Size: 0x50
-	Parameters: 1
-	Flags: Linked
-*/
 function ammo_weapon_pickup(ammo) {
   if(isdefined(ammo)) {
     if(isdefined(self._trophy_system_ammo1)) {
@@ -437,15 +295,6 @@ function ammo_weapon_pickup(ammo) {
   }
 }
 
-/*
-	Name: ammo_weapon_hacked
-	Namespace: trophy_system
-	Checksum: 0x3FA6DE87
-	Offset: 0x16C0
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function ammo_weapon_hacked(ammo) {
   self ammo_weapon_pickup(ammo);
 }

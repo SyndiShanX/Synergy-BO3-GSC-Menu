@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_perks.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -22,18 +26,8 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_zod_perks;
 
-/*
-	Name: init
-	Namespace: zm_zod_perks
-	Checksum: 0xD342191D
-	Offset: 0x4F0
-	Size: 0x1F4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("world", "perk_light_speed_cola", 1, 2, "int");
   clientfield::register("world", "perk_light_juggernog", 1, 2, "int");
@@ -48,15 +42,6 @@ function init() {
   thread function_9a03e439();
 }
 
-/*
-	Name: function_9a03e439
-	Namespace: zm_zod_perks
-	Checksum: 0xFAC6088E
-	Offset: 0x6F0
-	Size: 0x3F4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9a03e439() {
   level.initial_quick_revive_power_off = 1;
   level flag::wait_till("all_players_spawned");
@@ -112,100 +97,37 @@ function function_9a03e439() {
   }
 }
 
-/*
-	Name: function_5508b348
-	Namespace: zm_zod_perks
-	Checksum: 0xE0FD8DCA
-	Offset: 0xAF0
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5508b348() {
-  level waittill(# "revive_on");
+  level waittill("revive_on");
   clientfield::set("perk_light_quick_revive", 1);
 }
 
-/*
-	Name: function_4a2261fa
-	Namespace: zm_zod_perks
-	Checksum: 0xB3FB7D4C
-	Offset: 0xB28
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4a2261fa() {
-  level waittill(# "widows_wine_on");
+  level waittill("widows_wine_on");
   clientfield::set("perk_light_widows_wine", 1);
 }
 
-/*
-	Name: function_6753e7bb
-	Namespace: zm_zod_perks
-	Checksum: 0xC7000354
-	Offset: 0xB60
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6753e7bb() {
-  level waittill(# "additionalprimaryweapon_on");
+  level waittill("additionalprimaryweapon_on");
   clientfield::set("perk_light_mule_kick", 1);
 }
 
-/*
-	Name: function_55b919e6
-	Namespace: zm_zod_perks
-	Checksum: 0xBF64466
-	Offset: 0xB98
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_55b919e6() {
-  level waittill(# "marathon_on");
+  level waittill("marathon_on");
   level clientfield::set("perk_light_staminup", 1);
 }
 
-/*
-	Name: function_e840e164
-	Namespace: zm_zod_perks
-	Checksum: 0x7B9B9062
-	Offset: 0xBD8
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e840e164(var_d80a2da2) {
-  level waittill(# "sleight_on");
+  level waittill("sleight_on");
   level clientfield::set("perk_light_speed_cola", var_d80a2da2);
 }
 
-/*
-	Name: function_588068b3
-	Namespace: zm_zod_perks
-	Checksum: 0x75B15369
-	Offset: 0xC20
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_588068b3(var_d80a2da2) {
-  level waittill(# "juggernog_on");
+  level waittill("juggernog_on");
   level clientfield::set("perk_light_juggernog", var_d80a2da2);
 }
 
-/*
-	Name: function_8b929f79
-	Namespace: zm_zod_perks
-	Checksum: 0xD8053F79
-	Offset: 0xC68
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8b929f79(var_d80a2da2) {
-  level waittill(# "doubletap_on");
+  level waittill("doubletap_on");
   level clientfield::set("perk_light_doubletap", var_d80a2da2);
 }

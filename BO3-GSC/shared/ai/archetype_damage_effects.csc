@@ -1,49 +1,25 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\archetype_damage_effects.csc
+*************************************************/
+
 #using scripts\shared\array_shared;
 #using scripts\shared\audio_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace archetype_damage_effects;
 
-/*
-	Name: main
-	Namespace: archetype_damage_effects
-	Checksum: 0xF02A96FB
-	Offset: 0x11D0
-	Size: 0x24
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec main() {
   registerclientfields();
   loadeffects();
 }
 
-/*
-	Name: registerclientfields
-	Namespace: archetype_damage_effects
-	Checksum: 0x2862588D
-	Offset: 0x1200
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function registerclientfields() {
   clientfield::register("actor", "arch_actor_fire_fx", 1, 2, "int", & actor_fire_fx_state, 0, 0);
   clientfield::register("actor", "arch_actor_char", 1, 2, "int", & actor_char, 0, 0);
 }
 
-/*
-	Name: loadeffects
-	Namespace: archetype_damage_effects
-	Checksum: 0x2BC6036F
-	Offset: 0x12A0
-	Size: 0xA82
-	Parameters: 0
-	Flags: Linked
-*/
 function loadeffects() {
   level._effect["fire_human_j_elbow_le_loop"] = "fire/fx_fire_ai_human_arm_left_loop";
   level._effect["fire_human_j_elbow_ri_loop"] = "fire/fx_fire_ai_human_arm_right_loop";
@@ -143,15 +119,6 @@ function loadeffects() {
   level._effect["fire_robot_j_head_os"] = "fire/fx_fire_ai_robot_head_os";
 }
 
-/*
-	Name: _burntag
-	Namespace: archetype_damage_effects
-	Checksum: 0xE1450FB9
-	Offset: 0x1D30
-	Size: 0x15A
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _burntag(localclientnum, tag, postfix) {
   if(isdefined(self) && self hasdobj(localclientnum)) {
     fx_to_play = undefined;
@@ -172,20 +139,11 @@ function private _burntag(localclientnum, tag, postfix) {
   }
 }
 
-/*
-	Name: _burnstage
-	Namespace: archetype_damage_effects
-	Checksum: 0x6964BEC5
-	Offset: 0x1E98
-	Size: 0x14A
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private _burnstage(localclientnum, tagarray, shouldwait) {
   if(!isdefined(self)) {
     return;
   }
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   tags = array::randomize(tagarray);
   for (i = 1; i < tags.size; i++) {
     if(tags[i] == "null") {
@@ -200,21 +158,12 @@ function private _burnstage(localclientnum, tagarray, shouldwait) {
     wait(randomfloatrange(0, 1));
   }
   if(isdefined(self)) {
-    self notify(# "burn_stage_finished");
+    self notify("burn_stage_finished");
   }
 }
 
-/*
-	Name: _burnbody
-	Namespace: archetype_damage_effects
-	Checksum: 0x73388C1A
-	Offset: 0x1FF0
-	Size: 0x48C
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _burnbody(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self.burn_loop_sound_handle = self playloopsound("chr_burn_npc_loop1", 0.2);
   timer = 10;
   bonemodifier = "";
@@ -241,29 +190,20 @@ function private _burnbody(localclientnum) {
   self.activefx = [];
   self.activefx[self.activefx.size] = self thread _burnstage(localclientnum, stage1burntags, 1);
   self mapshaderconstant(localclientnum, 0, "scriptVector0", maturemask * 0.2);
-  self waittill(# "burn_stage_finished");
+  self waittill("burn_stage_finished");
   self.activefx[self.activefx.size] = self thread _burnstage(localclientnum, stage2burntags, 1);
   self mapshaderconstant(localclientnum, 0, "scriptVector0", maturemask * 0.4);
-  self waittill(# "burn_stage_finished");
+  self waittill("burn_stage_finished");
   self.activefx[self.activefx.size] = self thread _burnstage(localclientnum, stage3burntags, 1);
   self mapshaderconstant(localclientnum, 0, "scriptVector0", maturemask * 0.6);
-  self waittill(# "burn_stage_finished");
+  self waittill("burn_stage_finished");
   self.activefx[self.activefx.size] = self thread _burnstage(localclientnum, stage4burntags, 1);
   self mapshaderconstant(localclientnum, 0, "scriptVector0", maturemask * 0.8);
-  self waittill(# "burn_stage_finished");
+  self waittill("burn_stage_finished");
   self.activefx[self.activefx.size] = self thread _burnstage(localclientnum, stage5burntags, 1);
   self mapshaderconstant(localclientnum, 0, "scriptVector0", maturemask * 1);
 }
 
-/*
-	Name: sndstopburnloop
-	Namespace: archetype_damage_effects
-	Checksum: 0x6D57220
-	Offset: 0x2488
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function sndstopburnloop(timer) {
   self util::waittill_any_timeout(timer, "entityshutdown", "stopBurningSounds");
   if(isdefined(self)) {
@@ -273,17 +213,8 @@ function sndstopburnloop(timer) {
   }
 }
 
-/*
-	Name: _burncorpse
-	Namespace: archetype_damage_effects
-	Checksum: 0xEB0BA258
-	Offset: 0x24F8
-	Size: 0x3E4
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private _burncorpse(localclientnum, burningduration) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   timer = 10;
   bonemodifier = "";
   if(self.archetype == "robot") {
@@ -312,7 +243,7 @@ function private _burncorpse(localclientnum, burningduration) {
   if(isdefined(self)) {
     foreach(fx in self.activefx) {
       stopfx(localclientnum, fx);
-      self notify(# "stopburningsounds");
+      self notify("stopburningsounds");
     }
     if(isdefined(self)) {
       self.activefx = [];
@@ -320,17 +251,8 @@ function private _burncorpse(localclientnum, burningduration) {
   }
 }
 
-/*
-	Name: _smoldercorpse
-	Namespace: archetype_damage_effects
-	Checksum: 0x30E14D54
-	Offset: 0x28E8
-	Size: 0x2E2
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _smoldercorpse(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   bonemodifier = "";
   if(self.archetype == "robot") {
     bonemodifier = "_rot";
@@ -356,15 +278,6 @@ function private _smoldercorpse(localclientnum) {
   }
 }
 
-/*
-	Name: actor_fire_fx
-	Namespace: archetype_damage_effects
-	Checksum: 0x9D5A020F
-	Offset: 0x2BD8
-	Size: 0x16E
-	Parameters: 3
-	Flags: Linked
-*/
 function actor_fire_fx(localclientnum, value, burningduration) {
   switch (value) {
     case 0: {
@@ -392,28 +305,10 @@ function actor_fire_fx(localclientnum, value, burningduration) {
   }
 }
 
-/*
-	Name: actor_fire_fx_state
-	Namespace: archetype_damage_effects
-	Checksum: 0xE0AEE3E6
-	Offset: 0x2D50
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function actor_fire_fx_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self actor_fire_fx(localclientnum, newval, 14);
 }
 
-/*
-	Name: actor_char
-	Namespace: archetype_damage_effects
-	Checksum: 0x47EE5FC6
-	Offset: 0x2DB8
-	Size: 0x116
-	Parameters: 7
-	Flags: Linked
-*/
 function actor_char(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   maturemask = 0;
   if(util::is_mature()) {
@@ -435,17 +330,8 @@ function actor_char(localclientnum, oldval, newval, bnewent, binitialsnap, field
   }
 }
 
-/*
-	Name: actorcharrampto
-	Namespace: archetype_damage_effects
-	Checksum: 0xECB46D7
-	Offset: 0x2ED8
-	Size: 0x168
-	Parameters: 2
-	Flags: Linked
-*/
 function actorcharrampto(localclientnum, chardesired) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(!isdefined(self.curcharlevel)) {
     self.curcharlevel = 0;
   }
@@ -454,10 +340,8 @@ function actorcharrampto(localclientnum, chardesired) {
     maturemask = 1;
   }
   if(!isdefined(self.charsteps)) {
-    /#
     assert(isdefined(chardesired));
-    # /
-      self.charsteps = int(200);
+    self.charsteps = int(200);
     delta = chardesired - self.curcharlevel;
     self.charinc = delta / self.charsteps;
   }

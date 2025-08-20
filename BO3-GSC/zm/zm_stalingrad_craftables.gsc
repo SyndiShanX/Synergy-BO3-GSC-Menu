@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad_craftables.gsc
+*************************************************/
+
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -16,18 +20,8 @@
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\craftables\_zm_craftables;
 #using scripts\zm\zm_stalingrad_vo;
-
 #namespace zm_stalingrad_craftables;
 
-/*
-	Name: include_craftables
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0xFD679755
-	Offset: 0x580
-	Size: 0x384
-	Parameters: 0
-	Flags: Linked
-*/
 function include_craftables() {
   level.craftable_piece_swap_allowed = 0;
   shared_pieces = getnumexpectedplayers() == 1;
@@ -51,28 +45,10 @@ function include_craftables() {
   level flag::init("dragonride_crafted");
 }
 
-/*
-	Name: function_16bbd78d
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0x2BC26657
-	Offset: 0x910
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_16bbd78d() {
   zm_craftables::craftable_trigger_think("dragonride_zm_craftable_trigger", "dragonride", "dragonride", "", 1, 0);
 }
 
-/*
-	Name: init_craftables
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0xD644CB81
-	Offset: 0x958
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function init_craftables() {
   register_clientfields();
   zm_craftables::add_zombie_craftable("dragonride", & "ZM_STALINGRAD_DRAGONRIDE_CRAFT", "", "", & function_39c3c699);
@@ -80,15 +56,6 @@ function init_craftables() {
   level thread function_d7eb8f21();
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0x87CDB941
-	Offset: 0x9E8
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   shared_bits = 1;
   registerclientfield("world", ("dragonride" + "_") + "part_transmitter", 12000, shared_bits, "int", undefined, 0);
@@ -99,18 +66,9 @@ function register_clientfields() {
   clientfield::register("clientuimodel", "zmInventory.widget_dragonride_parts", 12000, 1, "int");
 }
 
-/*
-	Name: function_6545e739
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0x39E83562
-	Offset: 0xB70
-	Size: 0x1F4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6545e739(player) {
   level flag::set(((self.craftablename + "_") + self.piecename) + "_found");
-  level notify(# "hash_8d3f0071");
+  level notify("hash_8d3f0071");
   level.var_583e4a97.var_365bcb3c++;
   if(isdefined(level.var_583e4a97.s_radio)) {
     level.var_583e4a97.s_radio.b_used = 1;
@@ -136,15 +94,6 @@ function function_6545e739(player) {
   player thread zm_stalingrad_vo::function_5adc22c7();
 }
 
-/*
-	Name: function_7de936c2
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0xEF7F0BB2
-	Offset: 0xD70
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_7de936c2(player) {
   var_a23d8924 = getent("dragonride_fuse_box", "targetname");
   if(isdefined(var_a23d8924)) {
@@ -152,15 +101,6 @@ function function_7de936c2(player) {
   }
 }
 
-/*
-	Name: function_39c3c699
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0x4C4C03B0
-	Offset: 0xDD8
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_39c3c699() {
   level flag::set("dragonride_crafted");
   zm_spawner::register_zombie_death_event_callback();
@@ -171,46 +111,19 @@ function function_39c3c699() {
   return true;
 }
 
-/*
-	Name: function_7b29071e
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0x96BA6D0C
-	Offset: 0xE98
-	Size: 0x24
-	Parameters: 1
-	Flags: None
-*/
 function function_7b29071e(player) {
   return !flag::get("dragonride_crafted");
 }
 
-/*
-	Name: show_infotext_for_duration
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0xD193A5A1
-	Offset: 0xEC8
-	Size: 0x54
-	Parameters: 2
-	Flags: Linked
-*/
 function show_infotext_for_duration(str_infotext, n_duration) {
   self clientfield::set_to_player(str_infotext, 1);
   wait(n_duration);
   self clientfield::set_to_player(str_infotext, 0);
 }
 
-/*
-	Name: function_f5b7f61a
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0x25261CFD
-	Offset: 0xF28
-	Size: 0xA4
-	Parameters: 0
-	Flags: None
-*/
 function function_f5b7f61a() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(player zm_utility::in_revive_trigger()) {
       continue;
     }
@@ -225,29 +138,11 @@ function function_f5b7f61a() {
   }
 }
 
-/*
-	Name: function_59a8fb49
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0x48497906
-	Offset: 0xFD8
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function function_59a8fb49(trig_stub, player) {}
 
-/*
-	Name: function_d7eb8f21
-	Namespace: zm_stalingrad_craftables
-	Checksum: 0x5251D626
-	Offset: 0xFF8
-	Size: 0xB8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d7eb8f21() {
   while (true) {
-    level waittill(# "shield_built", e_who);
+    level waittill("shield_built", e_who);
     if(e_who.characterindex == 0) {
       var_4c5a66ad = 4;
     } else {

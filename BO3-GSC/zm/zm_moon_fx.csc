@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_fx.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\exploder_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_moon_fx;
 
-/*
-	Name: main
-	Namespace: zm_moon_fx
-	Checksum: 0x27558D1B
-	Offset: 0x10D8
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_createfx_fx();
   precache_scripted_fx();
@@ -29,15 +23,6 @@ function main() {
   level thread power_on_spinning_lights();
 }
 
-/*
-	Name: fog_triggers_setup
-	Namespace: zm_moon_fx
-	Checksum: 0xBDAED5A8
-	Offset: 0x11A0
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function fog_triggers_setup() {
   util::waitforclient(0);
   wait(3);
@@ -47,15 +32,6 @@ function fog_triggers_setup() {
   }
 }
 
-/*
-	Name: airlock_fx_init
-	Namespace: zm_moon_fx
-	Checksum: 0x313E8033
-	Offset: 0x1230
-	Size: 0x7E
-	Parameters: 0
-	Flags: Linked
-*/
 function airlock_fx_init() {
   util::waitforallclients();
   players = getlocalplayers();
@@ -64,17 +40,8 @@ function airlock_fx_init() {
   }
 }
 
-/*
-	Name: airlock_fx
-	Namespace: zm_moon_fx
-	Checksum: 0x2E319DCE
-	Offset: 0x12B8
-	Size: 0x14E
-	Parameters: 1
-	Flags: Linked
-*/
 function airlock_fx(localclientnum) {
-  level waittill(# "power_on");
+  level waittill("power_on");
   var_2043fd45 = struct::get_array("s_airlock_jambs_fx", "targetname");
   for (i = 0; i < var_2043fd45.size; i++) {
     if(isdefined(var_2043fd45[i].script_vector)) {
@@ -86,15 +53,6 @@ function airlock_fx(localclientnum) {
   }
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_moon_fx
-	Checksum: 0x52797ECE
-	Offset: 0x1410
-	Size: 0x3BA
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["switch_sparks"] = "env/electrical/fx_elec_wire_spark_burst";
   level._effect["zapper_fx"] = "maps/zombie/fx_zombie_zapper_powerbox_on";
@@ -132,15 +90,6 @@ function precache_scripted_fx() {
   level._effect["perk_machine_light_green"] = "dlc5/zmhd/fx_wonder_fizz_light_green";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_moon_fx
-	Checksum: 0x25AA980F
-	Offset: 0x17D8
-	Size: 0x382
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {
   level._effect["fx_mp_fog_xsm_int"] = "maps/zombie_old/fx_mp_fog_xsm_int";
   level._effect["fx_moon_fog_spawn_closet"] = "maps/zombie_moon/fx_moon_fog_spawn_closet";
@@ -176,28 +125,10 @@ function precache_createfx_fx() {
   level._effect["fx_quad_vent_break"] = "maps/zombie/fx_zombie_crawler_vent_break";
 }
 
-/*
-	Name: power_on_spinning_lights
-	Namespace: zm_moon_fx
-	Checksum: 0x372EACB2
-	Offset: 0x1B68
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function power_on_spinning_lights() {
-  level waittill(# "power_on");
+  level waittill("power_on");
 }
 
-/*
-	Name: trap_fx_monitor
-	Namespace: zm_moon_fx
-	Checksum: 0x17E182A
-	Offset: 0x1B80
-	Size: 0xB2
-	Parameters: 3
-	Flags: None
-*/
 function trap_fx_monitor(name, side, trap_type) {
   while (true) {
     level waittill(name);
@@ -208,67 +139,31 @@ function trap_fx_monitor(name, side, trap_type) {
   }
 }
 
-/*
-	Name: breach_receiving_fx
-	Namespace: zm_moon_fx
-	Checksum: 0xCD634DA9
-	Offset: 0x1C40
-	Size: 0x7A
-	Parameters: 0
-	Flags: Linked
-*/
 function breach_receiving_fx() {
   exploder::exploder("fxexp_300 ");
   if(!level clientfield::get("zombie_power_on")) {
     level util::waittill_any("power_on", "pwr", "ZPO");
   }
-  level notify(# "sl0");
+  level notify("sl0");
 }
 
-/*
-	Name: breach_labs_lower_fx
-	Namespace: zm_moon_fx
-	Checksum: 0x1B420036
-	Offset: 0x1CC8
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function breach_labs_lower_fx() {
   exploder::exploder("fxexp_320");
   if(!level clientfield::get("zombie_power_on")) {
     level util::waittill_any("power_on", "pwr", "ZPO");
   }
-  level notify(# "sl5");
-  level notify(# "sl6");
+  level notify("sl5");
+  level notify("sl6");
 }
 
-/*
-	Name: breach_labs_upper_fx
-	Namespace: zm_moon_fx
-	Checksum: 0x97857759
-	Offset: 0x1D58
-	Size: 0x7A
-	Parameters: 0
-	Flags: Linked
-*/
 function breach_labs_upper_fx() {
   exploder::exploder("fxexp_340");
   if(!level clientfield::get("zombie_power_on")) {
     level util::waittill_any("power_on", "pwr", "ZPO");
   }
-  level notify(# "sl4");
+  level notify("sl4");
 }
 
-/*
-	Name: electric_trap_fx
-	Namespace: zm_moon_fx
-	Checksum: 0xFBA9C75A
-	Offset: 0x1DE0
-	Size: 0x270
-	Parameters: 3
-	Flags: Linked
-*/
 function electric_trap_fx(name, side, trap_type) {
   ang = self.angles;
   forward = anglestoforward(ang);
@@ -304,15 +199,6 @@ function electric_trap_fx(name, side, trap_type) {
   self.loopfx = [];
 }
 
-/*
-	Name: moon_fog_triggers_init
-	Namespace: zm_moon_fx
-	Checksum: 0x606F9567
-	Offset: 0x2058
-	Size: 0x224
-	Parameters: 1
-	Flags: Linked
-*/
 function moon_fog_triggers_init(localclientnum) {
   exterior_array = getentarray(localclientnum, "zombie_moonExterior", "targetname");
   array::thread_all(exterior_array, & fog_trigger, & moon_exterior_fog_change);
@@ -328,38 +214,20 @@ function moon_fog_triggers_init(localclientnum) {
   }
 }
 
-/*
-	Name: fog_trigger
-	Namespace: zm_moon_fx
-	Checksum: 0x3F12A206
-	Offset: 0x2288
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked
-*/
 function fog_trigger(change_func) {
   while (true) {
-    self waittill(# "trigger", who);
+    self waittill("trigger", who);
     if(who islocalplayer()) {
       self thread util::trigger_thread(who, change_func);
     }
   }
 }
 
-/*
-	Name: moon_exterior_fog_change
-	Namespace: zm_moon_fx
-	Checksum: 0x19B8D9C5
-	Offset: 0x22F8
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked
-*/
 function moon_exterior_fog_change(ent_player) {
   if(!isdefined(ent_player)) {
     return;
   }
-  ent_player endon(# "entityshutdown");
+  ent_player endon("entityshutdown");
   start_dist = 2098.71;
   half_dist = 1740.12;
   half_height = 1332.23;
@@ -381,20 +249,11 @@ function moon_exterior_fog_change(ent_player) {
   setclientvolumetricfog(start_dist, half_dist, half_height, base_height, fog_r, fog_g, fog_b, fog_scale, sun_col_r, sun_col_g, sun_col_b, sun_dir_x, sun_dir_y, sun_dir_z, sun_start_ang, sun_stop_ang, time, max_fog_opacity);
 }
 
-/*
-	Name: moon_interior_fog_change
-	Namespace: zm_moon_fx
-	Checksum: 0x24C03F06
-	Offset: 0x24E0
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked
-*/
 function moon_interior_fog_change(ent_player) {
   if(!isdefined(ent_player)) {
     return;
   }
-  ent_player endon(# "entityshutdown");
+  ent_player endon("entityshutdown");
   start_dist = 2098.71;
   half_dist = 1740.12;
   half_height = 1332.23;
@@ -416,20 +275,11 @@ function moon_interior_fog_change(ent_player) {
   setclientvolumetricfog(start_dist, half_dist, half_height, base_height, fog_r, fog_g, fog_b, fog_scale, sun_col_r, sun_col_g, sun_col_b, sun_dir_x, sun_dir_y, sun_dir_z, sun_start_ang, sun_stop_ang, time, max_fog_opacity);
 }
 
-/*
-	Name: moon_biodome_fog_change
-	Namespace: zm_moon_fx
-	Checksum: 0x8DAC57ED
-	Offset: 0x26C8
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked
-*/
 function moon_biodome_fog_change(ent_player) {
   if(!isdefined(ent_player)) {
     return;
   }
-  ent_player endon(# "entityshutdown");
+  ent_player endon("entityshutdown");
   start_dist = 65.3744;
   half_dist = 860.241;
   half_height = 35.1158;
@@ -451,20 +301,11 @@ function moon_biodome_fog_change(ent_player) {
   setclientvolumetricfog(start_dist, half_dist, half_height, base_height, fog_r, fog_g, fog_b, fog_scale, sun_col_r, sun_col_g, sun_col_b, sun_dir_x, sun_dir_y, sun_dir_z, sun_start_ang, sun_stop_ang, time, max_fog_opacity);
 }
 
-/*
-	Name: moon_tunnels_fog_change
-	Namespace: zm_moon_fx
-	Checksum: 0xCFCC9BDF
-	Offset: 0x28B0
-	Size: 0x1DC
-	Parameters: 1
-	Flags: Linked
-*/
 function moon_tunnels_fog_change(ent_player) {
   if(!isdefined(ent_player)) {
     return;
   }
-  ent_player endon(# "entityshutdown");
+  ent_player endon("entityshutdown");
   start_dist = 1413.46;
   half_dist = 4300.81;
   half_height = 32.2476;
@@ -486,20 +327,11 @@ function moon_tunnels_fog_change(ent_player) {
   setclientvolumetricfog(start_dist, half_dist, half_height, base_height, fog_r, fog_g, fog_b, fog_scale, sun_col_r, sun_col_g, sun_col_b, sun_dir_x, sun_dir_y, sun_dir_z, sun_start_ang, sun_stop_ang, time, max_fog_opacity);
 }
 
-/*
-	Name: moon_nml_fog_change
-	Namespace: zm_moon_fx
-	Checksum: 0x99218139
-	Offset: 0x2A98
-	Size: 0x1F4
-	Parameters: 1
-	Flags: Linked
-*/
 function moon_nml_fog_change(ent_player) {
   if(!isdefined(ent_player) || (isdefined(level._dte_done) && level._dte_done)) {
     return;
   }
-  ent_player endon(# "entityshutdown");
+  ent_player endon("entityshutdown");
   start_dist = 1662.13;
   half_dist = 18604.1;
   half_height = 2618.86;

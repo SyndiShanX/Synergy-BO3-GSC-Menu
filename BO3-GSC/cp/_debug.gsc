@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_debug.gsc
+*************************************************/
+
 #using scripts\cp\_debug_menu;
 #using scripts\cp\_util;
 #using scripts\shared\ai\archetype_utility;
@@ -12,35 +16,13 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace debug;
 
-/*
-	Name: __init__sytem__
-	Namespace: debug
-	Checksum: 0x48227B8
-	Offset: 0x220
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
-  /#
   system::register("", & __init__, undefined, undefined);
-  # /
 }
 
-/*
-	Name: __init__
-	Namespace: debug
-	Checksum: 0x6A97CE95
-	Offset: 0x260
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
-  /#
   level.animsound_hudlimit = 14;
   level.debugteamcolors = [];
   level.debugteamcolors[""] = (1, 0, 0);
@@ -50,20 +32,9 @@ function __init__() {
   thread debugdvars();
   thread engagement_distance_debug_toggle();
   thread debug_coop_bot_test();
-  # /
 }
 
-/*
-	Name: drawenttag
-	Namespace: debug
-	Checksum: 0xBCDFA15D
-	Offset: 0x320
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function drawenttag(num) {
-  /#
   ai = getaiarray();
   for (i = 0; i < ai.size; i++) {
     if(ai[i] getentnum() != num) {
@@ -71,94 +42,37 @@ function drawenttag(num) {
     }
     ai[i] thread dragtaguntildeath(getdvarstring(""));
   }
-  /#
   setdvar("", "");
-  # /
-    # /
 }
 
-/*
-	Name: drawtag
-	Namespace: debug
-	Checksum: 0x59EC0D79
-	Offset: 0x408
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function drawtag(tag, opcolor) {
-  /#
   org = self gettagorigin(tag);
   ang = self gettagangles(tag);
   drawarrow(org, ang, opcolor);
-  # /
 }
 
-/*
-	Name: draworgforever
-	Namespace: debug
-	Checksum: 0x3A943FFF
-	Offset: 0x498
-	Size: 0x40
-	Parameters: 1
-	Flags: None
-*/
 function draworgforever(opcolor) {
-  /#
   for (;;) {
     drawarrow(self.origin, self.angles, opcolor);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: drawarrowforever
-	Namespace: debug
-	Checksum: 0x3793B79C
-	Offset: 0x4E0
-	Size: 0x40
-	Parameters: 2
-	Flags: None
-*/
 function drawarrowforever(org, ang) {
-  /#
   for (;;) {
     drawarrow(org, ang);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: draworiginforever
-	Namespace: debug
-	Checksum: 0x93399B64
-	Offset: 0x528
-	Size: 0x38
-	Parameters: 0
-	Flags: None
-*/
 function draworiginforever() {
-  /#
   for (;;) {
     drawarrow(self.origin, self.angles);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: drawarrow
-	Namespace: debug
-	Checksum: 0xC0B4A71A
-	Offset: 0x568
-	Size: 0x2BC
-	Parameters: 3
-	Flags: Linked
-*/
 function drawarrow(org, ang, opcolor) {
-  /#
   forward = anglestoforward(ang);
   forwardfar = vectorscale(forward, 50);
   forwardclose = vectorscale(forward, 50 * 0.8);
@@ -181,57 +95,24 @@ function drawarrow(org, ang, opcolor) {
   line(org + forwardfar, (org + forwardclose) + leftdraw, red, 0.9);
   line(org, org + right, blue, 0.9);
   line(org, org + up, green, 0.9);
-  # /
 }
 
-/*
-	Name: drawplayerviewforever
-	Namespace: debug
-	Checksum: 0x81E515F0
-	Offset: 0x830
-	Size: 0x50
-	Parameters: 0
-	Flags: None
-*/
 function drawplayerviewforever() {
-  /#
   for (;;) {
     drawarrow(level.player.origin, level.player getplayerangles(), (1, 1, 1));
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: drawtagforever
-	Namespace: debug
-	Checksum: 0xFF551FF8
-	Offset: 0x888
-	Size: 0x48
-	Parameters: 2
-	Flags: None
-*/
 function drawtagforever(tag, opcolor) {
-  /#
-  self endon(# "death");
+  self endon("death");
   for (;;) {
     drawtag(tag, opcolor);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: dragtaguntildeath
-	Namespace: debug
-	Checksum: 0xF5055DBA
-	Offset: 0x8D8
-	Size: 0x40
-	Parameters: 1
-	Flags: Linked
-*/
 function dragtaguntildeath(tag) {
-  /#
   for (;;) {
     if(!isdefined(self.origin)) {
       break;
@@ -239,20 +120,9 @@ function dragtaguntildeath(tag) {
     drawtag(tag);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: viewtag
-	Namespace: debug
-	Checksum: 0xAE1589C0
-	Offset: 0x920
-	Size: 0x10E
-	Parameters: 2
-	Flags: Linked
-*/
 function viewtag(type, tag) {
-  /#
   if(type == "") {
     ai = getaiarray();
     for (i = 0; i < ai.size; i++) {
@@ -264,20 +134,9 @@ function viewtag(type, tag) {
       vehicle[i] drawtag(tag);
     }
   }
-  # /
 }
 
-/*
-	Name: removeactivespawner
-	Namespace: debug
-	Checksum: 0xFE7DB7D3
-	Offset: 0xA38
-	Size: 0x90
-	Parameters: 1
-	Flags: None
-*/
 function removeactivespawner(spawner) {
-  /#
   newspawners = [];
   for (p = 0; p < level.activenodes.size; p++) {
     if(level.activenodes[p] == spawner) {
@@ -286,38 +145,16 @@ function removeactivespawner(spawner) {
     newspawners[newspawners.size] = level.activenodes[p];
   }
   level.activenodes = newspawners;
-  # /
 }
 
-/*
-	Name: createline
-	Namespace: debug
-	Checksum: 0xEBD5B11B
-	Offset: 0xAD0
-	Size: 0x68
-	Parameters: 1
-	Flags: None
-*/
 function createline(org) {
-  /#
   for (;;) {
     line(org + vectorscale((0, 0, 1), 35), org, (0.2, 0.5, 0.8), 0.5);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: createlineconstantly
-	Namespace: debug
-	Checksum: 0xA2078325
-	Offset: 0xB40
-	Size: 0xA8
-	Parameters: 1
-	Flags: None
-*/
 function createlineconstantly(ent) {
-  /#
   org = undefined;
   while (isalive(ent)) {
     org = ent.origin;
@@ -327,23 +164,12 @@ function createlineconstantly(ent) {
     line(org + vectorscale((0, 0, 1), 35), org, (1, 0.2, 0.1), 0.5);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: debugmisstime
-	Namespace: debug
-	Checksum: 0x988EE688
-	Offset: 0xBF0
-	Size: 0x118
-	Parameters: 0
-	Flags: Linked
-*/
 function debugmisstime() {
-  /#
-  self notify(# "stopdebugmisstime");
-  self endon(# "stopdebugmisstime");
-  self endon(# "death");
+  self notify("stopdebugmisstime");
+  self endon("stopdebugmisstime");
+  self endon("death");
   for (;;) {
     if(self.a.misstime <= 0) {
       print3d(self gettagorigin("") + vectorscale((0, 0, 1), 15), "", (0.3, 1, 1), 1);
@@ -352,54 +178,21 @@ function debugmisstime() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: debugmisstimeoff
-	Namespace: debug
-	Checksum: 0x6B45A073
-	Offset: 0xD10
-	Size: 0x16
-	Parameters: 0
-	Flags: Linked
-*/
 function debugmisstimeoff() {
-  /#
-  self notify(# "stopdebugmisstime");
-  # /
+  self notify("stopdebugmisstime");
 }
 
-/*
-	Name: setemptydvar
-	Namespace: debug
-	Checksum: 0xE3C73AC7
-	Offset: 0xD30
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function setemptydvar(dvar, setting) {
   /# /
   #
   if(getdvarstring(dvar) == "") {
     setdvar(dvar, setting);
   }
-  # /
-    # /
 }
 
-/*
-	Name: debugjump
-	Namespace: debug
-	Checksum: 0x6F6D57C1
-	Offset: 0xD98
-	Size: 0xF0
-	Parameters: 1
-	Flags: Linked
-*/
 function debugjump(num) {
-  /#
   ai = getaiarray();
   for (i = 0; i < ai.size; i++) {
     if(ai[i] getentnum() != num) {
@@ -409,20 +202,9 @@ function debugjump(num) {
     line(players[0].origin, ai[i].origin, (0.2, 0.3, 1));
     return;
   }
-  # /
 }
 
-/*
-	Name: debugdvars
-	Namespace: debug
-	Checksum: 0x63A43B57
-	Offset: 0xE90
-	Size: 0x1328
-	Parameters: 0
-	Flags: Linked
-*/
 function debugdvars() {
-  /#
   if(getdvarstring("") == "") {
     setdvar("", "");
   }
@@ -610,7 +392,7 @@ function debugdvars() {
     }
     if(noanimscripts && getdvarstring("") == "") {
       anim.defaultexception = & util::empty;
-      anim notify(# "hash_9a6633d5");
+      anim notify("hash_9a6633d5");
       noanimscripts = 0;
     }
     if(getdvarstring("") == "") {
@@ -626,25 +408,14 @@ function debugdvars() {
       thread dynamic_ai_spawner();
     } else if(getdvarstring("") == "" && isdefined(level.spawn_anywhere_active) && level.spawn_anywhere_active == 1) {
       level.spawn_anywhere_active = 0;
-      level notify(# "hash_d123a0a5");
+      level notify("hash_d123a0a5");
     }
     debug_ik_on_actors();
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: debug_ik_on_actors
-	Namespace: debug
-	Checksum: 0xF64BC17F
-	Offset: 0x21C0
-	Size: 0x1A2
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_ik_on_actors() {
-  /#
   toggleon = getdvarstring("") == "";
   if(!toggleon) {
     return;
@@ -664,55 +435,31 @@ function debug_ik_on_actors() {
     }
     ai lookatentity();
   }
-  # /
 }
 
-/*
-	Name: showdebugtrace
-	Namespace: debug
-	Checksum: 0xE4E1AA1A
-	Offset: 0x2370
-	Size: 0x180
-	Parameters: 0
-	Flags: Linked
-*/
 function showdebugtrace() {
-  /#
   startoverride = undefined;
   endoverride = undefined;
   startoverride = (15.1859, -12.2822, 4.071);
   endoverride = (947.2, -10918, 64.9514);
-  /#
   assert(!isdefined(level.traceend));
-  # /
-    for (;;) {
-      players = getplayers();
-      wait(0.05);
-      start = startoverride;
-      end = endoverride;
-      if(!isdefined(startoverride)) {
-        start = level.tracestart;
-      }
-      if(!isdefined(endoverride)) {
-        end = players[0] geteye();
-      }
-      trace = bullettrace(start, end, 0, undefined);
-      line(start, trace[""], (0.9, 0.5, 0.8), 0.5);
+  for (;;) {
+    players = getplayers();
+    wait(0.05);
+    start = startoverride;
+    end = endoverride;
+    if(!isdefined(startoverride)) {
+      start = level.tracestart;
     }
-  # /
+    if(!isdefined(endoverride)) {
+      end = players[0] geteye();
+    }
+    trace = bullettrace(start, end, 0, undefined);
+    line(start, trace[""], (0.9, 0.5, 0.8), 0.5);
+  }
 }
 
-/*
-	Name: hatmodel
-	Namespace: debug
-	Checksum: 0x1E358FF9
-	Offset: 0x24F8
-	Size: 0x1DE
-	Parameters: 0
-	Flags: None
-*/
 function hatmodel() {
-  /#
   for (;;) {
     if(getdvarstring("") == "") {
       return;
@@ -745,20 +492,9 @@ function hatmodel() {
     }
     wait(15);
   }
-  # /
 }
 
-/*
-	Name: debug_nuke
-	Namespace: debug
-	Checksum: 0x5D08F0E2
-	Offset: 0x26E0
-	Size: 0x2F4
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_nuke() {
-  /#
   players = getplayers();
   player = players[0];
   dvar = getdvarstring("");
@@ -788,49 +524,15 @@ function debug_nuke() {
     }
   }
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: debug_misstime
-	Namespace: debug
-	Checksum: 0x39FFB43E
-	Offset: 0x29E0
-	Size: 0x8
-	Parameters: 0
-	Flags: None
-*/
-function debug_misstime() {
-  /#
-  # /
-}
+function debug_misstime() {}
 
-/*
-	Name: freeplayer
-	Namespace: debug
-	Checksum: 0xD558006
-	Offset: 0x29F0
-	Size: 0x2C
-	Parameters: 0
-	Flags: None
-*/
 function freeplayer() {
-  /#
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: deathspawnerpreview
-	Namespace: debug
-	Checksum: 0xFBDAF281
-	Offset: 0x2A28
-	Size: 0x160
-	Parameters: 0
-	Flags: Linked
-*/
 function deathspawnerpreview() {
-  /#
   waittillframeend();
   for (i = 0; i < 50; i++) {
     if(!isdefined(level.deathspawnerents[i])) {
@@ -846,20 +548,9 @@ function deathspawnerpreview() {
       print3d(ent.origin, (i + "") + "", (0, 0.8, 0.6), 5);
     }
   }
-  # /
 }
 
-/*
-	Name: getchains
-	Namespace: debug
-	Checksum: 0xDACD9543
-	Offset: 0x2B90
-	Size: 0xA4
-	Parameters: 0
-	Flags: None
-*/
 function getchains() {
-  /#
   chainarray = [];
   chainarray = getentarray("", "");
   array = [];
@@ -867,20 +558,9 @@ function getchains() {
     array[i] = chainarray[i] getchain();
   }
   return array;
-  # /
 }
 
-/*
-	Name: getchain
-	Namespace: debug
-	Checksum: 0xB640BE75
-	Offset: 0x2C40
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function getchain() {
-  /#
   array = [];
   ent = self;
   while (isdefined(ent)) {
@@ -899,35 +579,13 @@ function getchain() {
     originarray[i] = array[i].origin;
   }
   return originarray;
-  # /
 }
 
-/*
-	Name: vecscale
-	Namespace: debug
-	Checksum: 0x63961390
-	Offset: 0x2D70
-	Size: 0x48
-	Parameters: 2
-	Flags: None
-*/
 function vecscale(vec, scalar) {
-  /#
   return (vec[0] * scalar, vec[1] * scalar, vec[2] * scalar);
-  # /
 }
 
-/*
-	Name: islookingatorigin
-	Namespace: debug
-	Checksum: 0x9BCC0140
-	Offset: 0x2DC8
-	Size: 0x12A
-	Parameters: 1
-	Flags: None
-*/
 function islookingatorigin(origin) {
-  /#
   normalvec = vectornormalize(origin - self getshootatpos());
   veccomp = vectornormalize((origin - vectorscale((0, 0, 1), 24)) - self getshootatpos());
   insidedot = vectordot(normalvec, veccomp);
@@ -937,20 +595,9 @@ function islookingatorigin(origin) {
     return true;
   }
   return false;
-  # /
 }
 
-/*
-	Name: fogcheck
-	Namespace: debug
-	Checksum: 0xF53F8B38
-	Offset: 0x2F00
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function fogcheck() {
-  /#
   if(getdvarstring("") == "") {
     setdvar("", "");
   }
@@ -960,36 +607,14 @@ function fogcheck() {
   close = getdvarint("");
   far = getdvarint("");
   setexpfog(close, far, 1, 1, 1, 0);
-  # /
 }
 
-/*
-	Name: debugthreat
-	Namespace: debug
-	Checksum: 0xE53222EC
-	Offset: 0x3020
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function debugthreat() {
-  /#
   level.last_threat_debug = gettime();
   thread debugthreatcalc();
-  # /
 }
 
-/*
-	Name: debugthreatcalc
-	Namespace: debug
-	Checksum: 0x2411F664
-	Offset: 0x3050
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function debugthreatcalc() {
-  /#
   ai = getaiarray();
   entnum = getdvarstring("");
   entity = undefined;
@@ -1011,21 +636,10 @@ function debugthreatcalc() {
   entitygroup = entity getthreatbiasgroup();
   array::thread_all(ai, & displaythreat, entity, entitygroup);
   players[0] thread displaythreat(entity, entitygroup);
-  # /
 }
 
-/*
-	Name: displaythreat
-	Namespace: debug
-	Checksum: 0x4B06F516
-	Offset: 0x31E8
-	Size: 0x3CE
-	Parameters: 2
-	Flags: Linked
-*/
 function displaythreat(entity, entitygroup) {
-  /#
-  self endon(# "death");
+  self endon("death");
   if(self.team == entity.team) {
     return;
   }
@@ -1067,20 +681,9 @@ function displaythreat(entity, entitygroup) {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: init_animsounds
-	Namespace: debug
-	Checksum: 0x311D95C7
-	Offset: 0x35C0
-	Size: 0xE6
-	Parameters: 0
-	Flags: Linked
-*/
 function init_animsounds() {
-  /#
   level.animsounds = [];
   level.animsound_aliases = [];
   waittillframeend();
@@ -1093,20 +696,9 @@ function init_animsounds() {
   for (i = 0; i < animnames.size; i++) {
     init_animsounds_for_animname(animnames[i]);
   }
-  # /
 }
 
-/*
-	Name: init_notetracks_for_animname
-	Namespace: debug
-	Checksum: 0x1F1A8413
-	Offset: 0x36B0
-	Size: 0x16E
-	Parameters: 1
-	Flags: Linked
-*/
 function init_notetracks_for_animname(animname) {
-  /#
   notetracks = getarraykeys(level.scr_notetrack[animname]);
   for (i = 0; i < notetracks.size; i++) {
     soundalias = level.scr_notetrack[animname][i][""];
@@ -1120,20 +712,9 @@ function init_notetracks_for_animname(animname) {
       level.animsound_aliases[animname][anime][notetrack][""] = 1;
     }
   }
-  # /
 }
 
-/*
-	Name: init_animsounds_for_animname
-	Namespace: debug
-	Checksum: 0x741F5161
-	Offset: 0x3828
-	Size: 0x102
-	Parameters: 1
-	Flags: Linked
-*/
 function init_animsounds_for_animname(animname) {
-  /#
   animes = getarraykeys(level.scr_animsound[animname]);
   for (i = 0; i < animes.size; i++) {
     anime = animes[i];
@@ -1141,20 +722,9 @@ function init_animsounds_for_animname(animname) {
     level.animsound_aliases[animname][anime]["" + anime][""] = soundalias;
     level.animsound_aliases[animname][anime]["" + anime][""] = 1;
   }
-  # /
 }
 
-/*
-	Name: add_hud_line
-	Namespace: debug
-	Checksum: 0x33A0EFE9
-	Offset: 0x3938
-	Size: 0xE6
-	Parameters: 3
-	Flags: Linked
-*/
 function add_hud_line(x, y, msg) {
-  /#
   hudelm = newhudelem();
   hudelm.alignx = "";
   hudelm.aligny = "";
@@ -1165,20 +735,9 @@ function add_hud_line(x, y, msg) {
   hudelm.label = msg;
   level.animsound_hud_extralines[level.animsound_hud_extralines.size] = hudelm;
   return hudelm;
-  # /
 }
 
-/*
-	Name: debug_animsound
-	Namespace: debug
-	Checksum: 0x9A542A82
-	Offset: 0x3A28
-	Size: 0x96C
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_animsound() {
-  /#
   enabled = getdvarstring("") == "";
   if(!isdefined(level.animsound_hud)) {
     if(!enabled) {
@@ -1298,20 +857,9 @@ function debug_animsound() {
   if(is_tagged) {
     draw_animsounds_in_hud();
   }
-  # /
 }
 
-/*
-	Name: draw_animsounds_in_hud
-	Namespace: debug
-	Checksum: 0x62FFED0B
-	Offset: 0x43A0
-	Size: 0x6EC
-	Parameters: 0
-	Flags: Linked
-*/
 function draw_animsounds_in_hud() {
-  /#
   guy = level.animsound_tagged;
   animsounds = guy.animsounds;
   animname = "";
@@ -1413,20 +961,9 @@ function draw_animsounds_in_hud() {
     level.animsound_aliases[animsound.animname][animsound.anime][animsound.notetrack] = undefined;
     debug_animsoundsave();
   }
-  # /
 }
 
-/*
-	Name: get_alias_from_stored
-	Namespace: debug
-	Checksum: 0xE89DA0A4
-	Offset: 0x4A98
-	Size: 0xD2
-	Parameters: 1
-	Flags: Linked
-*/
 function get_alias_from_stored(animsound) {
-  /#
   if(!isdefined(level.animsound_aliases[animsound.animname])) {
     return;
   }
@@ -1437,54 +974,21 @@ function get_alias_from_stored(animsound) {
     return;
   }
   return level.animsound_aliases[animsound.animname][animsound.anime][animsound.notetrack][""];
-  # /
 }
 
-/*
-	Name: is_from_animsound
-	Namespace: debug
-	Checksum: 0x64BF1628
-	Offset: 0x4B78
-	Size: 0x44
-	Parameters: 3
-	Flags: Linked
-*/
 function is_from_animsound(animname, anime, notetrack) {
-  /#
   return isdefined(level.animsound_aliases[animname][anime][notetrack][""]);
-  # /
 }
 
-/*
-	Name: display_animsound
-	Namespace: debug
-	Checksum: 0x200114FD
-	Offset: 0x4BC8
-	Size: 0x72
-	Parameters: 0
-	Flags: Linked
-*/
 function display_animsound() {
-  /#
   players = getplayers();
   if(distance(players[0].origin, self.origin) > 1500) {
     return;
   }
   level.animsounds_thisframe[level.animsounds_thisframe.size] = self;
-  # /
 }
 
-/*
-	Name: debug_animsoundtag
-	Namespace: debug
-	Checksum: 0x50D81A90
-	Offset: 0x4C48
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function debug_animsoundtag(tagnum) {
-  /#
   tag = getdvarstring("" + tagnum);
   if(tag == "") {
     iprintlnbold("");
@@ -1492,20 +996,9 @@ function debug_animsoundtag(tagnum) {
   }
   tag_sound(tag, tagnum - 1);
   setdvar("" + tagnum, "");
-  # /
 }
 
-/*
-	Name: debug_animsoundtagselected
-	Namespace: debug
-	Checksum: 0x711905BE
-	Offset: 0x4D08
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_animsoundtagselected() {
-  /#
   tag = getdvarstring("");
   if(tag == "") {
     iprintlnbold("");
@@ -1513,20 +1006,9 @@ function debug_animsoundtagselected() {
   }
   tag_sound(tag, level.animsound_selected);
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: tag_sound
-	Namespace: debug
-	Checksum: 0x71EC5DA1
-	Offset: 0x4DB0
-	Size: 0x164
-	Parameters: 2
-	Flags: Linked
-*/
 function tag_sound(tag, tagnum) {
-  /#
   if(!isdefined(level.animsound_tagged)) {
     return;
   }
@@ -1540,20 +1022,9 @@ function tag_sound(tag, tagnum) {
     level.animsound_aliases[animsound.animname][animsound.anime][animsound.notetrack][""] = 1;
     debug_animsoundsave();
   }
-  # /
 }
 
-/*
-	Name: debug_animsoundsave
-	Namespace: debug
-	Checksum: 0x591A8F25
-	Offset: 0x4F20
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_animsoundsave() {
-  /#
   filename = ("" + level.script) + "";
   file = openfile(filename, "");
   if(file == -1) {
@@ -1564,20 +1035,9 @@ function debug_animsoundsave() {
   print_aliases_to_file(file);
   saved = closefile(file);
   setdvar("", "");
-  # /
 }
 
-/*
-	Name: print_aliases_to_file
-	Namespace: debug
-	Checksum: 0x43768076
-	Offset: 0x5038
-	Size: 0x4B4
-	Parameters: 1
-	Flags: Linked
-*/
 function print_aliases_to_file(file) {
-  /#
   tab = "";
   fprintln(file, "");
   fprintln(file, "");
@@ -1611,27 +1071,15 @@ function print_aliases_to_file(file) {
     }
   }
   fprintln(file, "");
-  # /
 }
 
-/*
-	Name: function_2ceda325
-	Namespace: debug
-	Checksum: 0xBA2242B3
-	Offset: 0x54F8
-	Size: 0x2F4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2ceda325() {
-  /#
   setdvar("", 0);
   if(!isdefined(level.a_npcdeaths) || getdvarint("") != 1) {
     return;
   }
   players = getplayers();
   filename = ((("" + level.savename) + "") + players[0].playername) + "";
-  /#
   file = openfile(filename, "");
   if(file == -1) {
     iprintlnbold(("" + filename) + "");
@@ -1651,22 +1099,10 @@ function function_2ceda325() {
   fprintln(file, "");
   iprintlnbold("" + filename);
   saved = closefile(file);
-  # /
-    level.a_npcdeaths = [];
-  # /
+  level.a_npcdeaths = [];
 }
 
-/*
-	Name: tostr
-	Namespace: debug
-	Checksum: 0x94437A62
-	Offset: 0x57F8
-	Size: 0xBE
-	Parameters: 1
-	Flags: Linked
-*/
 function tostr(str) {
-  /#
   newstr = "";
   for (i = 0; i < str.size; i++) {
     if(str[i] == "") {
@@ -1678,53 +1114,20 @@ function tostr(str) {
   }
   newstr = newstr + "";
   return newstr;
-  # /
 }
 
-/*
-	Name: drawdebuglineinternal
-	Namespace: debug
-	Checksum: 0x7EDD907C
-	Offset: 0x58C0
-	Size: 0x76
-	Parameters: 4
-	Flags: Linked
-*/
 function drawdebuglineinternal(frompoint, topoint, color, durationframes) {
-  /#
   for (i = 0; i < durationframes; i++) {
     line(frompoint, topoint, color);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: drawdebugline
-	Namespace: debug
-	Checksum: 0x8C49236A
-	Offset: 0x5940
-	Size: 0x4C
-	Parameters: 4
-	Flags: None
-*/
 function drawdebugline(frompoint, topoint, color, durationframes) {
-  /#
   thread drawdebuglineinternal(frompoint, topoint, color, durationframes);
-  # /
 }
 
-/*
-	Name: drawdebugenttoentinternal
-	Namespace: debug
-	Checksum: 0xDAFA6D3A
-	Offset: 0x5998
-	Size: 0x9E
-	Parameters: 4
-	Flags: Linked
-*/
 function drawdebugenttoentinternal(ent1, ent2, color, durationframes) {
-  /#
   for (i = 0; i < durationframes; i++) {
     if(!isdefined(ent1) || !isdefined(ent2)) {
       return;
@@ -1732,35 +1135,13 @@ function drawdebugenttoentinternal(ent1, ent2, color, durationframes) {
     line(ent1.origin, ent2.origin, color);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: drawdebuglineenttoent
-	Namespace: debug
-	Checksum: 0x2AAA9B33
-	Offset: 0x5A40
-	Size: 0x4C
-	Parameters: 4
-	Flags: None
-*/
 function drawdebuglineenttoent(ent1, ent2, color, durationframes) {
-  /#
   thread drawdebugenttoentinternal(ent1, ent2, color, durationframes);
-  # /
 }
 
-/*
-	Name: new_hud
-	Namespace: debug
-	Checksum: 0x68479A06
-	Offset: 0x5A98
-	Size: 0xC0
-	Parameters: 5
-	Flags: None
-*/
 function new_hud(hud_name, msg, x, y, scale) {
-  /#
   if(!isdefined(level.hud_array)) {
     level.hud_array = [];
   }
@@ -1770,27 +1151,16 @@ function new_hud(hud_name, msg, x, y, scale) {
   hud = debug_menu::set_hudelem(msg, x, y, scale);
   level.hud_array[hud_name][level.hud_array[hud_name].size] = hud;
   return hud;
-  # /
 }
 
-/*
-	Name: debug_show_viewpos
-	Namespace: debug
-	Checksum: 0x4D031F93
-	Offset: 0x5B68
-	Size: 0x534
-	Parameters: 0
-	Flags: None
-*/
 function debug_show_viewpos() {
-  /#
   hud_title = newdebughudelem();
   hud_title.x = 10;
   hud_title.y = 300;
   hud_title.alpha = 0;
   hud_title.alignx = "";
   hud_title.fontscale = 1.2;
-  hud_title settext( & "");
+  hud_title settext(&"");
   x_pos = hud_title.x + 50;
   hud_x = newdebughudelem();
   hud_x.x = x_pos;
@@ -1839,20 +1209,9 @@ function debug_show_viewpos() {
     }
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: number_before_decimal
-	Namespace: debug
-	Checksum: 0x83971EDF
-	Offset: 0x60A8
-	Size: 0x82
-	Parameters: 1
-	Flags: Linked
-*/
 function number_before_decimal(num) {
-  /#
   abs_num = abs(num);
   count = 0;
   while (true) {
@@ -1862,37 +1221,15 @@ function number_before_decimal(num) {
       return count;
     }
   }
-  # /
 }
 
-/*
-	Name: round_to
-	Namespace: debug
-	Checksum: 0x30A54370
-	Offset: 0x6138
-	Size: 0x38
-	Parameters: 2
-	Flags: Linked
-*/
 function round_to(val, num) {
-  /#
   return (int(val * num)) / num;
-  # /
 }
 
-/*
-	Name: set_event_printname_thread
-	Namespace: debug
-	Checksum: 0xA31BDEBB
-	Offset: 0x6180
-	Size: 0x320
-	Parameters: 2
-	Flags: None
-*/
 function set_event_printname_thread(text, focus) {
-  /#
-  level notify(# "stop_event_name_thread");
-  level endon(# "stop_event_name_thread");
+  level notify("stop_event_name_thread");
+  level endon("stop_event_name_thread");
   if(getdvarint("") > 0) {
     return;
   }
@@ -1943,36 +1280,14 @@ function set_event_printname_thread(text, focus) {
     }
     wait(0.5);
   }
-  # /
 }
 
-/*
-	Name: get_playerone
-	Namespace: debug
-	Checksum: 0xE60D16C2
-	Offset: 0x64A8
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function get_playerone() {
-  /#
   return level.players[0];
-  # /
 }
 
-/*
-	Name: engagement_distance_debug_toggle
-	Namespace: debug
-	Checksum: 0xE9B3D32D
-	Offset: 0x64C8
-	Size: 0x130
-	Parameters: 0
-	Flags: Linked
-*/
 function engagement_distance_debug_toggle() {
-  /#
-  level endon(# "kill_engage_dist_debug_toggle_watcher");
+  level endon("kill_engage_dist_debug_toggle_watcher");
   laststate = getdvarint("");
   while (true) {
     currentstate = getdvarint("");
@@ -1982,43 +1297,21 @@ function engagement_distance_debug_toggle() {
       thread debug_ai_engage_dist();
       laststate = currentstate;
     } else if(!dvar_turned_on(currentstate) && dvar_turned_on(laststate)) {
-      level notify(# "kill_all_engage_dist_debug");
+      level notify("kill_all_engage_dist_debug");
       laststate = currentstate;
     }
     wait(0.3);
   }
-  # /
 }
 
-/*
-	Name: dvar_turned_on
-	Namespace: debug
-	Checksum: 0x8DF10036
-	Offset: 0x6600
-	Size: 0x28
-	Parameters: 1
-	Flags: Linked
-*/
 function dvar_turned_on(val) {
-  /#
   if(val <= 0) {
     return false;
   }
   return true;
-  # /
 }
 
-/*
-	Name: engagement_distance_debug_init
-	Namespace: debug
-	Checksum: 0xD87D2C89
-	Offset: 0x6638
-	Size: 0x34A
-	Parameters: 1
-	Flags: Linked
-*/
 function engagement_distance_debug_init(player) {
-  /#
   level.realtimeengagedist = newclienthudelem(player);
   level.realtimeengagedist.alignx = "";
   level.realtimeengagedist.fontscale = 1.5;
@@ -2056,38 +1349,16 @@ function engagement_distance_debug_init(player) {
   hudobjarray[2] = level.realtimeengagedist_middle;
   hudobjarray[3] = level.realtimeengagedist_offvalue;
   return hudobjarray;
-  # /
 }
 
-/*
-	Name: engage_dist_debug_hud_destroy
-	Namespace: debug
-	Checksum: 0x64CE37D8
-	Offset: 0x6990
-	Size: 0x66
-	Parameters: 2
-	Flags: Linked
-*/
 function engage_dist_debug_hud_destroy(hudarray, killnotify) {
-  /#
   level waittill(killnotify);
   for (i = 0; i < hudarray.size; i++) {
     hudarray[i] destroy();
   }
-  # /
 }
 
-/*
-	Name: weapon_engage_dists_init
-	Namespace: debug
-	Checksum: 0x1532F400
-	Offset: 0x6A00
-	Size: 0x35C
-	Parameters: 0
-	Flags: Linked
-*/
 function weapon_engage_dists_init() {
-  /#
   level.engagedists = [];
   genericpistol = spawnstruct();
   genericpistol.engagedistmin = 125;
@@ -2125,55 +1396,22 @@ function weapon_engage_dists_init() {
   engage_dists_add("", generichmg);
   engage_dists_add("", genericriflesa);
   level thread engage_dists_watcher();
-  # /
 }
 
-/*
-	Name: engage_dists_add
-	Namespace: debug
-	Checksum: 0x7B928B11
-	Offset: 0x6D68
-	Size: 0x2A
-	Parameters: 2
-	Flags: Linked
-*/
 function engage_dists_add(weaponname, values) {
-  /#
   level.engagedists[weaponname] = values;
-  # /
 }
 
-/*
-	Name: get_engage_dists
-	Namespace: debug
-	Checksum: 0x56C43DE2
-	Offset: 0x6DA0
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function get_engage_dists(weapon) {
-  /#
   if(isdefined(level.engagedists[weapon])) {
     return level.engagedists[weapon];
   }
   return undefined;
-  # /
 }
 
-/*
-	Name: engage_dists_watcher
-	Namespace: debug
-	Checksum: 0xEB02A8AD
-	Offset: 0x6DE8
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function engage_dists_watcher() {
-  /#
-  level endon(# "kill_all_engage_dist_debug");
-  level endon(# "kill_engage_dists_watcher");
+  level endon("kill_all_engage_dist_debug");
+  level endon("kill_engage_dists_watcher");
   while (true) {
     player = get_playerone();
     playerweapon = player getcurrentweapon();
@@ -2192,22 +1430,11 @@ function engage_dists_watcher() {
     player.lastweapon = playerweapon;
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: debug_realtime_engage_dist
-	Namespace: debug
-	Checksum: 0x9D0F0847
-	Offset: 0x6F18
-	Size: 0x450
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_realtime_engage_dist() {
-  /#
-  level endon(# "kill_all_engage_dist_debug");
-  level endon(# "kill_realtime_engagement_distance_debug");
+  level endon("kill_all_engage_dist_debug");
+  level endon("kill_realtime_engagement_distance_debug");
   player = get_playerone();
   hudobjarray = engagement_distance_debug_init(player);
   level thread engage_dist_debug_hud_destroy(hudobjarray, "");
@@ -2254,20 +1481,9 @@ function debug_realtime_engage_dist() {
     thread plot_circle_fortime(1, 1, 0.05, level.debugrtengagedistcolor, tracepoint, tracenormal);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: hudobj_changecolor
-	Namespace: debug
-	Checksum: 0x2B95FE36
-	Offset: 0x7370
-	Size: 0x92
-	Parameters: 2
-	Flags: Linked
-*/
 function hudobj_changecolor(hudobjarray, newcolor) {
-  /#
   for (i = 0; i < hudobjarray.size; i++) {
     hudobj = hudobjarray[i];
     if(hudobj.color != newcolor) {
@@ -2275,20 +1491,9 @@ function hudobj_changecolor(hudobjarray, newcolor) {
       level.debugrtengagedistcolor = newcolor;
     }
   }
-  # /
 }
 
-/*
-	Name: engagedist_hud_changetext
-	Namespace: debug
-	Checksum: 0xE1B5E4E9
-	Offset: 0x7410
-	Size: 0x2EC
-	Parameters: 2
-	Flags: Linked
-*/
 function engagedist_hud_changetext(engagedisttype, units) {
-  /#
   if(!isdefined(level.lastdisttype)) {
     level.lastdisttype = "";
   }
@@ -2328,22 +1533,11 @@ function engagedist_hud_changetext(engagedisttype, units) {
     }
   }
   level.lastdisttype = engagedisttype;
-  # /
 }
 
-/*
-	Name: debug_ai_engage_dist
-	Namespace: debug
-	Checksum: 0xEFD0CE04
-	Offset: 0x7708
-	Size: 0x374
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_ai_engage_dist() {
-  /#
-  level endon(# "kill_all_engage_dist_debug");
-  level endon(# "kill_ai_engagement_distance_debug");
+  level endon("kill_all_engage_dist_debug");
+  level endon("kill_ai_engagement_distance_debug");
   player = get_playerone();
   while (true) {
     axis = getaiteamarray("");
@@ -2389,20 +1583,9 @@ function debug_ai_engage_dist() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: bot_count
-	Namespace: debug
-	Checksum: 0x46DAE5D1
-	Offset: 0x7A88
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function bot_count() {
-  /#
   count = 0;
   foreach(player in level.players) {
     if(player istestclient()) {
@@ -2410,20 +1593,9 @@ function bot_count() {
     }
   }
   return count;
-  # /
 }
 
-/*
-	Name: function_6a200458
-	Namespace: debug
-	Checksum: 0x1F218DC0
-	Offset: 0x7B40
-	Size: 0xAE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6a200458() {
-  /#
   count = 0;
   foreach(player in level.players) {
     if(!player istestclient()) {
@@ -2431,20 +1603,9 @@ function function_6a200458() {
     }
   }
   return count;
-  # /
 }
 
-/*
-	Name: debug_coop_bot_test
-	Namespace: debug
-	Checksum: 0xD85D2E23
-	Offset: 0x7BF8
-	Size: 0x29A
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_coop_bot_test() {
-  /#
   adddebugcommand("");
   while (!isdefined(level.players)) {
     wait(0.5);
@@ -2479,18 +1640,8 @@ function debug_coop_bot_test() {
     }
     wait(1);
   }
-  # /
 }
 
-/*
-	Name: debugmsg
-	Namespace: debug
-	Checksum: 0x10EC1113
-	Offset: 0x7EA0
-	Size: 0x6C
-	Parameters: 1
-	Flags: Linked
-*/
 function debugmsg(str_txt) {
   /# /
   #
@@ -2498,21 +1649,9 @@ function debugmsg(str_txt) {
   if(isdefined(level.name)) {
     println((("" + level.name) + "") + str_txt);
   }
-  # /
-    # /
 }
 
-/*
-	Name: plot_circle_fortime
-	Namespace: debug
-	Checksum: 0x9E05FF1F
-	Offset: 0x7F18
-	Size: 0x184
-	Parameters: 6
-	Flags: Linked
-*/
 function plot_circle_fortime(radius1, radius2, time, color, origin, normal) {
-  /#
   if(!isdefined(color)) {
     color = (0, 1, 0);
   }
@@ -2528,46 +1667,24 @@ function plot_circle_fortime(radius1, radius2, time, color, origin, normal) {
     rad = rad + circleinc;
   }
   plot_points(plotpoints, color[0], color[1], color[2], time);
-  # /
 }
 
-/*
-	Name: dynamic_ai_spawner
-	Namespace: debug
-	Checksum: 0x5849E1F1
-	Offset: 0x80A8
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function dynamic_ai_spawner() {
-  /#
   if(!isdefined(level.debug_dynamic_ai_spawner)) {
     dynamic_ai_spawner_find_spawners();
     level.debug_dynamic_ai_spawner = 1;
   }
   getplayers()[0] thread spawn_guy_placement();
-  level waittill(# "hash_d123a0a5");
+  level waittill("hash_d123a0a5");
   if(isdefined(level.dynamic_spawn_hud)) {
     level.dynamic_spawn_hud destroy();
   }
   if(isdefined(level.dynamic_spawn_dummy_model)) {
     level.dynamic_spawn_dummy_model delete();
   }
-  # /
 }
 
-/*
-	Name: dynamic_ai_spawner_find_spawners
-	Namespace: debug
-	Checksum: 0x6710431C
-	Offset: 0x8160
-	Size: 0x1D8
-	Parameters: 0
-	Flags: Linked
-*/
 function dynamic_ai_spawner_find_spawners() {
-  /#
   spawners = getspawnerarray();
   level.aitypes = [];
   level.aitype_index = 0;
@@ -2589,25 +1706,12 @@ function dynamic_ai_spawner_find_spawners() {
       level.aitypes[level.aitypes.size] = struct;
     }
   }
-  # /
 }
 
-/*
-	Name: spawn_guy_placement
-	Namespace: debug
-	Checksum: 0x91AE4D9F
-	Offset: 0x8340
-	Size: 0x640
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_guy_placement() {
-  /#
-  level endon(# "hash_d123a0a5");
-  /#
+  level endon("hash_d123a0a5");
   assert(isdefined(level.aitypes) && level.aitypes.size > 0, "");
-  # /
-    level.dynamic_spawn_hud = newclienthudelem(getplayers()[0]);
+  level.dynamic_spawn_hud = newclienthudelem(getplayers()[0]);
   level.dynamic_spawn_hud.alignx = "";
   level.dynamic_spawn_hud.x = 0;
   level.dynamic_spawn_hud.y = 245;
@@ -2667,36 +1771,14 @@ function spawn_guy_placement() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: display_module_text
-	Namespace: debug
-	Checksum: 0x535E3DB2
-	Offset: 0x8988
-	Size: 0x3C
-	Parameters: 0
-	Flags: None
-*/
 function display_module_text() {
-  /#
   wait(1);
   iprintlnbold(("" + level.script) + "");
-  # /
 }
 
-/*
-	Name: debug_goalradius
-	Namespace: debug
-	Checksum: 0x6AF5BFD4
-	Offset: 0x89D0
-	Size: 0x23E
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_goalradius() {
-  /#
   guys = getaiarray();
   for (i = 0; i < guys.size; i++) {
     if(guys[i].team == "") {
@@ -2707,39 +1789,17 @@ function debug_goalradius() {
     print3d(guys[i].origin + vectorscale((0, 0, 1), 70), (isdefined(guys[i].goalradius) ? "" + guys[i].goalradius : ""), (0, 1, 0), 1, 1, 1);
     record3dtext("" + guys[i].goalradius, guys[i].origin + vectorscale((0, 0, 1), 70), (0, 1, 0), "");
   }
-  # /
 }
 
-/*
-	Name: debug_maxvisibledist
-	Namespace: debug
-	Checksum: 0x54771798
-	Offset: 0x8C18
-	Size: 0x13C
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_maxvisibledist() {
-  /#
   guys = getaiarray();
   for (i = 0; i < guys.size; i++) {
     recordenttext((isdefined(guys[i].maxvisibledist) ? "" + guys[i].maxvisibledist : ""), guys[i], level.debugteamcolors[guys[i].team], "");
   }
   recordenttext((isdefined(level.player.maxvisibledist) ? "" + level.player.maxvisibledist : ""), level.player, level.debugteamcolors[""], "");
-  # /
 }
 
-/*
-	Name: debug_health
-	Namespace: debug
-	Checksum: 0x7CA263FB
-	Offset: 0x8D60
-	Size: 0x334
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_health() {
-  /#
   v_print_pos = (0, 0, 0);
   guys = getaiarray();
   for (i = 0; i < guys.size; i++) {
@@ -2758,39 +1818,17 @@ function debug_health() {
   if(isdefined(level.player)) {
     recordenttext((isdefined(level.player.health) ? "" + level.player.health : ""), level.player, level.debugteamcolors[""], "");
   }
-  # /
 }
 
-/*
-	Name: debug_engagedist
-	Namespace: debug
-	Checksum: 0x883F4570
-	Offset: 0x90A0
-	Size: 0x10E
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_engagedist() {
-  /#
   guys = getaiarray();
   for (i = 0; i < guys.size; i++) {
     diststring = (((((guys[i].engageminfalloffdist + "") + guys[i].engagemindist) + "") + guys[i].engagemaxdist) + "") + guys[i].engagemaxfalloffdist;
     recordenttext(diststring, guys[i], level.debugteamcolors[guys[i].team], "");
   }
-  # /
 }
 
-/*
-	Name: debug_sphere
-	Namespace: debug
-	Checksum: 0x28EE4120
-	Offset: 0x91B8
-	Size: 0xCC
-	Parameters: 5
-	Flags: None
-*/
 function debug_sphere(origin, radius, color, alpha, time) {
-  /#
   if(!isdefined(time)) {
     time = 1000;
   }
@@ -2799,21 +1837,10 @@ function debug_sphere(origin, radius, color, alpha, time) {
   }
   sides = int(10 * (1 + (int(radius) % 100)));
   sphere(origin, radius, color, alpha, 1, sides, time);
-  # /
 }
 
-/*
-	Name: draw_arrow_time
-	Namespace: debug
-	Checksum: 0x51464E28
-	Offset: 0x9290
-	Size: 0x2B4
-	Parameters: 4
-	Flags: None
-*/
 function draw_arrow_time(start, end, color, frames) {
-  /#
-  level endon(# "newpath");
+  level endon("newpath");
   pts = [];
   angles = vectortoangles(start - end);
   right = anglestoright(angles);
@@ -2834,21 +1861,10 @@ function draw_arrow_time(start, end, color, frames) {
   g = color[1];
   b = color[2];
   plot_points(arrow, r, g, b, frames);
-  # /
 }
 
-/*
-	Name: draw_arrow
-	Namespace: debug
-	Checksum: 0x3D3EA8EB
-	Offset: 0x9550
-	Size: 0x1FE
-	Parameters: 3
-	Flags: None
-*/
 function draw_arrow(start, end, color) {
-  /#
-  level endon(# "newpath");
+  level endon("newpath");
   pts = [];
   angles = vectortoangles(start - end);
   right = anglestoright(angles);
@@ -2866,23 +1882,12 @@ function draw_arrow(start, end, color) {
     }
     line(arrow[p], arrow[nextpoint], color, 1);
   }
-  # /
 }
 
-/*
-	Name: debugorigin
-	Namespace: debug
-	Checksum: 0xEFD0D5C4
-	Offset: 0x9758
-	Size: 0x1D0
-	Parameters: 0
-	Flags: None
-*/
 function debugorigin() {
-  /#
-  self notify(# "hash_707e044");
-  self endon(# "hash_707e044");
-  self endon(# "death");
+  self notify("hash_707e044");
+  self endon("hash_707e044");
+  self endon("death");
   for (;;) {
     forward = anglestoforward(self.angles);
     forwardfar = vectorscale(forward, 30);
@@ -2895,20 +1900,9 @@ function debugorigin() {
     line(self.origin + forwardfar, (self.origin + forwardclose) + left, (0.9, 0.7, 0.6), 0.9);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: plot_points
-	Namespace: debug
-	Checksum: 0x7D643086
-	Offset: 0x9930
-	Size: 0x106
-	Parameters: 5
-	Flags: Linked
-*/
 function plot_points(plotpoints, r, g, b, timer) {
-  /#
   lastpoint = plotpoints[0];
   if(!isdefined(r)) {
     r = 1;
@@ -2926,40 +1920,18 @@ function plot_points(plotpoints, r, g, b, timer) {
     thread draw_line_for_time(lastpoint, plotpoints[i], r, g, b, timer);
     lastpoint = plotpoints[i];
   }
-  # /
 }
 
-/*
-	Name: draw_line_for_time
-	Namespace: debug
-	Checksum: 0x3ED2C25B
-	Offset: 0x9A40
-	Size: 0xB8
-	Parameters: 6
-	Flags: Linked
-*/
 function draw_line_for_time(org1, org2, r, g, b, timer) {
-  /#
   timer = gettime() + (timer * 1000);
   while (gettime() < timer) {
     line(org1, org2, (r, g, b), 1);
     recordline(org1, org2, (1, 1, 1), "");
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: _get_debug_color
-	Namespace: debug
-	Checksum: 0xD41D2234
-	Offset: 0x9B00
-	Size: 0x11E
-	Parameters: 1
-	Flags: None
-*/
 function _get_debug_color(str_color) {
-  /#
   switch (str_color) {
     case "": {
       return (1, 0, 0);
@@ -3003,20 +1975,9 @@ function _get_debug_color(str_color) {
       break;
     }
   }
-  # /
 }
 
-/*
-	Name: debug_info_screen
-	Namespace: debug
-	Checksum: 0x72B39D49
-	Offset: 0x9C28
-	Size: 0x79A
-	Parameters: 8
-	Flags: None
-*/
 function debug_info_screen(text_array, time, fade_in_bg_time, fade_out_bg_time, fade_in_text_time, fade_out_text_time, font_size, show_black_background) {
-  /#
   if(!isdefined(time)) {
     time = 3;
   }
@@ -3120,5 +2081,4 @@ function debug_info_screen(text_array, time, fade_in_bg_time, fade_out_bg_time, 
   foreach(text_elem in text_elems) {
     text_elem destroy();
   }
-  # /
 }

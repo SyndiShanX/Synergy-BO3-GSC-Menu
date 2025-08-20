@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_hackables_boards.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
@@ -7,18 +11,8 @@
 #using scripts\zm\_zm_equip_hacker;
 #using scripts\zm\_zm_score;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_hackables_boards;
 
-/*
-	Name: hack_boards
-	Namespace: zm_hackables_boards
-	Checksum: 0x4FB0F4FE
-	Offset: 0x190
-	Size: 0x296
-	Parameters: 0
-	Flags: Linked
-*/
 function hack_boards() {
   windows = struct::get_array("exterior_goal", "targetname");
   for (i = 0; i < windows.size; i++) {
@@ -53,15 +47,6 @@ function hack_boards() {
   }
 }
 
-/*
-	Name: board_hack
-	Namespace: zm_hackables_boards
-	Checksum: 0x1E06E7DD
-	Offset: 0x430
-	Size: 0x364
-	Parameters: 1
-	Flags: Linked
-*/
 function board_hack(hacker) {
   zm_equip_hacker::deregister_hackable_struct(self);
   num_chunks_checked = 0;
@@ -113,19 +98,10 @@ function board_hack(hacker) {
     }
   }
   zm_equip_hacker::register_pooled_hackable_struct(self, & board_hack, & board_qualifier);
-  self.window notify(# "blocker_hacked");
-  self.window notify(# "hash_46d36511");
+  self.window notify("blocker_hacked");
+  self.window notify("hash_46d36511");
 }
 
-/*
-	Name: board_qualifier
-	Namespace: zm_hackables_boards
-	Checksum: 0xDE0C4AF9
-	Offset: 0x7A0
-	Size: 0x66
-	Parameters: 1
-	Flags: Linked
-*/
 function board_qualifier(player) {
   if(zm_utility::all_chunks_intact(self.window, self.window.barrier_chunks) || zm_utility::no_valid_repairable_boards(self.window, self.window.barrier_chunks)) {
     return false;

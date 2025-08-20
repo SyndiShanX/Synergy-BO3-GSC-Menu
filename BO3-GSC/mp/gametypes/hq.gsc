@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\hq.gsc
+*************************************************/
+
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_battlechatter;
@@ -22,18 +26,8 @@
 #using scripts\shared\sound_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weapons;
-
 #namespace hq;
 
-/*
-	Name: main
-	Namespace: hq
-	Checksum: 0xE9C6511D
-	Offset: 0x8C8
-	Size: 0x3EC
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   util::registertimelimit(0, 1440);
@@ -75,15 +69,6 @@ function main() {
   }
 }
 
-/*
-	Name: updateobjectivehintmessages
-	Namespace: hq
-	Checksum: 0x85AE1A50
-	Offset: 0xCC0
-	Size: 0xDC
-	Parameters: 3
-	Flags: None
-*/
 function updateobjectivehintmessages(defenderteam, defendmessage, attackmessage) {
   foreach(team in level.teams) {
     if(defenderteam == team) {
@@ -94,30 +79,12 @@ function updateobjectivehintmessages(defenderteam, defendmessage, attackmessage)
   }
 }
 
-/*
-	Name: updateobjectivehintmessage
-	Namespace: hq
-	Checksum: 0xD3B471CB
-	Offset: 0xDA8
-	Size: 0x9C
-	Parameters: 1
-	Flags: None
-*/
 function updateobjectivehintmessage(message) {
   foreach(team in level.teams) {
     game["strings"]["objective_hint_" + team] = message;
   }
 }
 
-/*
-	Name: getrespawndelay
-	Namespace: hq
-	Checksum: 0x3F98D34F
-	Offset: 0xE50
-	Size: 0x124
-	Parameters: 0
-	Flags: None
-*/
 function getrespawndelay() {
   self.lowermessageoverride = undefined;
   if(!isdefined(level.radio.gameobject)) {
@@ -143,15 +110,6 @@ function getrespawndelay() {
   }
 }
 
-/*
-	Name: onstartgametype
-	Namespace: hq
-	Checksum: 0xBFEDDA14
-	Offset: 0xF80
-	Size: 0x4C4
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   if(!isdefined(game["switchedsides"])) {
     game["switchedsides"] = 0;
@@ -202,69 +160,36 @@ function onstartgametype() {
   setdemointermissionpoint(spawnpoint.origin, spawnpoint.angles);
   level.spawn_all = spawnlogic::get_spawnpoint_array("mp_tdm_spawn");
   if(!level.spawn_all.size) {
-    /#
     println("");
-    # /
-      callback::abort_level();
+    callback::abort_level();
     return;
   }
   thread setupradios();
   thread hqmainloop();
 }
 
-/*
-	Name: spawn_first_radio
-	Namespace: hq
-	Checksum: 0xAE82881E
-	Offset: 0x1450
-	Size: 0xF4
-	Parameters: 1
-	Flags: None
-*/
 function spawn_first_radio(delay) {
   if(level.randomhqspawn == 1) {
     level.radio = getnextradiofromqueue();
   } else {
     level.radio = getfirstradio();
   }
-  /#
   print(((((("" + level.radio.trigorigin[0]) + "") + level.radio.trigorigin[1]) + "") + level.radio.trigorigin[2]) + "");
-  # /
-    level.radio spawning::enable_influencers(1);
+  level.radio spawning::enable_influencers(1);
 }
 
-/*
-	Name: spawn_next_radio
-	Namespace: hq
-	Checksum: 0xE7F8A684
-	Offset: 0x1550
-	Size: 0xEC
-	Parameters: 0
-	Flags: None
-*/
 function spawn_next_radio() {
   if(level.randomhqspawn != 0) {
     level.radio = getnextradiofromqueue();
   } else {
     level.radio = getnextradio();
   }
-  /#
   print(((((("" + level.radio.trigorigin[0]) + "") + level.radio.trigorigin[1]) + "") + level.radio.trigorigin[2]) + "");
-  # /
-    level.radio spawning::enable_influencers(1);
+  level.radio spawning::enable_influencers(1);
 }
 
-/*
-	Name: hqmainloop
-	Namespace: hq
-	Checksum: 0x659ED1E5
-	Offset: 0x1648
-	Size: 0xC78
-	Parameters: 0
-	Flags: None
-*/
 function hqmainloop() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   level.hqrevealtime = -100000;
   hqspawninginstr = & "MP_HQ_AVAILABLE_IN";
   if(level.kothmode) {
@@ -294,7 +219,7 @@ function hqmainloop() {
     thread hidetimerdisplayongameend(timerdisplay[team]);
   }
   while (true) {
-    iprintln( & "MP_HQ_REVEALED");
+    iprintln(&"MP_HQ_REVEALED");
     sound::play_on_players("mp_suitcase_pickup");
     globallogic_audio::leader_dialog("hq_located");
     level.radio.gameobject gameobjects::set_model_visibility(1);
@@ -303,7 +228,7 @@ function hqmainloop() {
     radius = 75;
     for (index = 0; index < rcbombs.size; index++) {
       if(distancesquared(rcbombs[index], level.radio.origin) < (radius * radius)) {
-        rcbombs[index] notify(# "rcbomb_shutdown");
+        rcbombs[index] notify("rcbomb_shutdown");
       }
     }
     if(level.hqspawntime) {
@@ -330,13 +255,13 @@ function hqmainloop() {
     level.radio.gameobject.onupdateuserate = & onupdateuserate;
     level.radio.gameobject gameobjects::allow_use("any");
     level.radio.gameobject gameobjects::set_use_time(level.capturetime);
-    level.radio.gameobject gameobjects::set_use_text( & "MP_CAPTURING_HQ");
+    level.radio.gameobject gameobjects::set_use_text(&"MP_CAPTURING_HQ");
     level.radio.gameobject gameobjects::set_visible_team("any");
     level.radio.gameobject gameobjects::set_model_visibility(1);
     level.radio.gameobject.onuse = & onradiocapture;
     level.radio.gameobject.onbeginuse = & onbeginuse;
     level.radio.gameobject.onenduse = & onenduse;
-    level waittill(# "hq_captured");
+    level waittill("hq_captured");
     ownerteam = level.radio.gameobject gameobjects::get_owner_team();
     if(level.hqautodestroytime) {
       thread destroyhqaftertime(level.hqautodestroytime, ownerteam);
@@ -353,7 +278,7 @@ function hqmainloop() {
       }
       level.radio.gameobject gameobjects::allow_use("enemy");
       if(!level.kothmode) {
-        level.radio.gameobject gameobjects::set_use_text( & "MP_DESTROYING_HQ");
+        level.radio.gameobject gameobjects::set_use_text(&"MP_DESTROYING_HQ");
       }
       level.radio.gameobject.onuse = & onradiodestroy;
       if(level.hqautodestroytime) {
@@ -367,7 +292,7 @@ function hqmainloop() {
         }
       }
       level thread dropallaroundhq();
-      level waittill(# "hq_destroyed", destroy_team);
+      level waittill("hq_destroyed", destroy_team);
       level.radio spawning::enable_influencers(0);
       if(!level.kothmode || level.hqdestroyedbytimer) {
         break;
@@ -381,7 +306,7 @@ function hqmainloop() {
     level.radio.gameobject gameobjects::allow_use("none");
     level.radio.gameobject gameobjects::set_owner_team("neutral");
     level.radio.gameobject gameobjects::set_model_visibility(0);
-    level notify(# "hq_reset");
+    level notify("hq_reset");
     foreach(team in level.teams) {
       timerdisplay[team].alpha = 0;
     }
@@ -392,29 +317,11 @@ function hqmainloop() {
   }
 }
 
-/*
-	Name: hidetimerdisplayongameend
-	Namespace: hq
-	Checksum: 0x3B17EA2E
-	Offset: 0x22C8
-	Size: 0x28
-	Parameters: 1
-	Flags: None
-*/
 function hidetimerdisplayongameend(timerdisplay) {
-  level waittill(# "game_ended");
+  level waittill("game_ended");
   timerdisplay.alpha = 0;
 }
 
-/*
-	Name: forcespawnteam
-	Namespace: hq
-	Checksum: 0xAFA69286
-	Offset: 0x22F8
-	Size: 0xA6
-	Parameters: 1
-	Flags: None
-*/
 function forcespawnteam(team) {
   players = level.players;
   for (i = 0; i < players.size; i++) {
@@ -423,21 +330,12 @@ function forcespawnteam(team) {
       continue;
     }
     if(player.pers["team"] == team) {
-      player notify(# "force_spawn");
+      player notify("force_spawn");
       wait(0.1);
     }
   }
 }
 
-/*
-	Name: onbeginuse
-	Namespace: hq
-	Checksum: 0x2730F0D1
-	Offset: 0x23A8
-	Size: 0xAC
-	Parameters: 1
-	Flags: None
-*/
 function onbeginuse(player) {
   ownerteam = self gameobjects::get_owner_team();
   if(ownerteam == "neutral") {
@@ -447,34 +345,14 @@ function onbeginuse(player) {
   }
 }
 
-/*
-	Name: onenduse
-	Namespace: hq
-	Checksum: 0x7B2D2017
-	Offset: 0x2460
-	Size: 0x2C
-	Parameters: 3
-	Flags: None
-*/
 function onenduse(team, player, success) {
-  player notify(# "event_ended");
+  player notify("event_ended");
 }
 
-/*
-	Name: onradiocapture
-	Namespace: hq
-	Checksum: 0xB2E8B4E
-	Offset: 0x2498
-	Size: 0x268
-	Parameters: 1
-	Flags: None
-*/
 function onradiocapture(player) {
   capture_team = player.pers["team"];
-  /#
   print("");
-  # /
-    string = & "MP_HQ_CAPTURED_BY";
+  string = & "MP_HQ_CAPTURED_BY";
   level.usestartspawns = 0;
   thread give_capture_credit(self.touchlist[capture_team], string);
   oldteam = gameobjects::get_owner_team();
@@ -484,29 +362,20 @@ function onradiocapture(player) {
   }
   foreach(team in level.teams) {
     if(team == capture_team) {
-      thread util::printonteamarg( & "MP_HQ_CAPTURED_BY", team, player);
+      thread util::printonteamarg(&"MP_HQ_CAPTURED_BY", team, player);
       globallogic_audio::leader_dialog("hq_secured", team);
       thread sound::play_on_players("mp_war_objective_taken", team);
       continue;
     }
-    thread util::printonteam( & "MP_HQ_CAPTURED_BY_ENEMY", team);
+    thread util::printonteam(&"MP_HQ_CAPTURED_BY_ENEMY", team);
     globallogic_audio::leader_dialog("hq_enemy_captured", team);
     thread sound::play_on_players("mp_war_objective_lost", team);
   }
   level thread awardhqpoints(capture_team);
-  level notify(# "hq_captured");
-  player notify(# "event_ended");
+  level notify("hq_captured");
+  player notify("event_ended");
 }
 
-/*
-	Name: give_capture_credit
-	Namespace: hq
-	Checksum: 0xEAC50805
-	Offset: 0x2708
-	Size: 0x1C6
-	Parameters: 2
-	Flags: None
-*/
 function give_capture_credit(touchlist, string) {
   time = gettime();
   wait(0.05);
@@ -527,57 +396,28 @@ function give_capture_credit(touchlist, string) {
   }
 }
 
-/*
-	Name: dropalltoground
-	Namespace: hq
-	Checksum: 0x572F48D2
-	Offset: 0x28D8
-	Size: 0x8A
-	Parameters: 3
-	Flags: None
-*/
 function dropalltoground(origin, radius, stickyobjectradius) {
   physicsexplosionsphere(origin, radius, radius, 0);
   wait(0.05);
   weapons::drop_all_to_ground(origin, radius);
   supplydrop::dropcratestoground(origin, radius);
-  level notify(# "drop_objects_to_ground", origin, stickyobjectradius);
+  level notify("drop_objects_to_ground", origin, stickyobjectradius);
 }
 
-/*
-	Name: dropallaroundhq
-	Namespace: hq
-	Checksum: 0x9D896AF9
-	Offset: 0x2970
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function dropallaroundhq(radio) {
   origin = level.radio.origin;
-  level waittill(# "hq_reset");
+  level waittill("hq_reset");
   dropalltoground(origin, 100, 50);
 }
 
-/*
-	Name: onradiodestroy
-	Namespace: hq
-	Checksum: 0xFA3B4E3
-	Offset: 0x29D0
-	Size: 0x37C
-	Parameters: 1
-	Flags: None
-*/
 function onradiodestroy(firstplayer) {
   destroyed_team = firstplayer.pers["team"];
   touchlist = self.touchlist[destroyed_team];
   touchlistkeys = getarraykeys(touchlist);
   foreach(index in touchlistkeys) {
     player = touchlist[index].player;
-    /#
     print("");
-    # /
-      scoreevents::processscoreevent("hq_destroyed", player);
+    scoreevents::processscoreevent("hq_destroyed", player);
     player recordgameevent("destroy");
     player addplayerstatwithgametype("DESTRUCTIONS", 1);
     if(isdefined(player.pers["destructions"])) {
@@ -601,43 +441,25 @@ function onradiodestroy(firstplayer) {
     thread util::printonteam(otherteammessage, team);
     globallogic_audio::leader_dialog("hq_enemy_destroyed", team);
   }
-  level notify(# "hq_destroyed", destroyed_team);
+  level notify("hq_destroyed", destroyed_team);
   if(level.kothmode) {
     level thread awardhqpoints(destroyed_team);
   }
-  player notify(# "event_ended");
+  player notify("event_ended");
 }
 
-/*
-	Name: destroyhqaftertime
-	Namespace: hq
-	Checksum: 0x9769DAB
-	Offset: 0x2D58
-	Size: 0x9A
-	Parameters: 2
-	Flags: None
-*/
 function destroyhqaftertime(time, ownerteam) {
-  level endon(# "game_ended");
-  level endon(# "hq_reset");
+  level endon("game_ended");
+  level endon("hq_reset");
   level.hqdestroytime = gettime() + (time * 1000);
   level.hqdestroyedbytimer = 0;
   wait(time);
   globallogic_audio::leader_dialog("hq_offline");
   level.hqdestroyedbytimer = 1;
   checkplayercount(ownerteam);
-  level notify(# "hq_destroyed");
+  level notify("hq_destroyed");
 }
 
-/*
-	Name: checkplayercount
-	Namespace: hq
-	Checksum: 0x369E59D2
-	Offset: 0x2E00
-	Size: 0xDC
-	Parameters: 1
-	Flags: None
-*/
 function checkplayercount(ownerteam) {
   lastplayeralive = undefined;
   players = level.players;
@@ -657,20 +479,11 @@ function checkplayercount(ownerteam) {
   }
 }
 
-/*
-	Name: awardhqpoints
-	Namespace: hq
-	Checksum: 0x2AB2CFB4
-	Offset: 0x2EE8
-	Size: 0xE6
-	Parameters: 1
-	Flags: None
-*/
 function awardhqpoints(team) {
-  level endon(# "game_ended");
-  level endon(# "hq_destroyed");
-  level notify(# "awardhqpointsrunning");
-  level endon(# "awardhqpointsrunning");
+  level endon("game_ended");
+  level endon("hq_destroyed");
+  level notify("awardhqpointsrunning");
+  level endon("awardhqpointsrunning");
   seconds = 5;
   while (!level.gameended) {
     globallogic_score::giveteamscoreforobjective(team, seconds);
@@ -681,28 +494,10 @@ function awardhqpoints(team) {
   }
 }
 
-/*
-	Name: koth_playerspawnedcb
-	Namespace: hq
-	Checksum: 0x7543901F
-	Offset: 0x2FD8
-	Size: 0xE
-	Parameters: 0
-	Flags: None
-*/
 function koth_playerspawnedcb() {
   self.lowermessageoverride = undefined;
 }
 
-/*
-	Name: compareradioindexes
-	Namespace: hq
-	Checksum: 0x3BA938AF
-	Offset: 0x2FF0
-	Size: 0x10E
-	Parameters: 2
-	Flags: None
-*/
 function compareradioindexes(radio_a, radio_b) {
   script_index_a = radio_a.script_index;
   script_index_b = radio_b.script_index;
@@ -710,16 +505,12 @@ function compareradioindexes(radio_a, radio_b) {
     return false;
   }
   if(!isdefined(script_index_a) && isdefined(script_index_b)) {
-    /#
     println("" + radio_a.origin);
-    # /
-      return true;
+    return true;
   }
   if(isdefined(script_index_a) && !isdefined(script_index_b)) {
-    /#
     println("" + radio_b.origin);
-    # /
-      return false;
+    return false;
   }
   if(script_index_a > script_index_b) {
     return true;
@@ -727,15 +518,6 @@ function compareradioindexes(radio_a, radio_b) {
   return false;
 }
 
-/*
-	Name: getradioarray
-	Namespace: hq
-	Checksum: 0x49265BE3
-	Offset: 0x3108
-	Size: 0x132
-	Parameters: 0
-	Flags: None
-*/
 function getradioarray() {
   radios = getentarray("hq_hardpoint", "targetname");
   if(!isdefined(radios)) {
@@ -758,15 +540,6 @@ function getradioarray() {
   return radios;
 }
 
-/*
-	Name: setupradios
-	Namespace: hq
-	Checksum: 0xBD3BF250
-	Offset: 0x3248
-	Size: 0x492
-	Parameters: 0
-	Flags: None
-*/
 function setupradios() {
   maperrors = [];
   radios = getradioarray();
@@ -795,10 +568,8 @@ function setupradios() {
         continue;
       }
     }
-    /#
     assert(!errored);
-    # /
-      radio.trigorigin = radio.trig.origin;
+    radio.trigorigin = radio.trig.origin;
     visuals = [];
     visuals[0] = radio;
     othervisuals = getentarray(radio.target, "targetname");
@@ -815,15 +586,13 @@ function setupradios() {
     radio createradiospawninfluencer();
   }
   if(maperrors.size > 0) {
-    /#
     println("");
     for (i = 0; i < maperrors.size; i++) {
       println(maperrors[i]);
     }
     println("");
     util::error("");
-    # /
-      callback::abort_level();
+    callback::abort_level();
     return;
   }
   level.radios = radios;
@@ -832,15 +601,6 @@ function setupradios() {
   return true;
 }
 
-/*
-	Name: setupnearbyspawns
-	Namespace: hq
-	Checksum: 0x45CA9D27
-	Offset: 0x36E8
-	Size: 0x2A4
-	Parameters: 0
-	Flags: None
-*/
 function setupnearbyspawns() {
   spawns = level.spawn_all;
   for (i = 0; i < spawns.size; i++) {
@@ -876,15 +636,6 @@ function setupnearbyspawns() {
   self.gameobject.outerspawns = outer;
 }
 
-/*
-	Name: setupnodes
-	Namespace: hq
-	Checksum: 0xAE40ABC4
-	Offset: 0x3998
-	Size: 0x1C4
-	Parameters: 0
-	Flags: None
-*/
 function setupnodes() {
   self.points = [];
   temp = spawn("script_model", (0, 0, 0));
@@ -897,21 +648,10 @@ function setupnodes() {
       self.points[self.points.size] = point;
     }
   }
-  /#
   assert(self.points.size);
-  # /
-    temp delete();
+  temp delete();
 }
 
-/*
-	Name: getfirstradio
-	Namespace: hq
-	Checksum: 0xE0A66B2D
-	Offset: 0x3B68
-	Size: 0x80
-	Parameters: 0
-	Flags: None
-*/
 function getfirstradio() {
   radio = level.radios[0];
   level.prevradio2 = level.prevradio;
@@ -922,15 +662,6 @@ function getfirstradio() {
   return radio;
 }
 
-/*
-	Name: getnextradio
-	Namespace: hq
-	Checksum: 0x8A5CBE28
-	Offset: 0x3BF0
-	Size: 0x70
-	Parameters: 0
-	Flags: None
-*/
 function getnextradio() {
   nextradioindex = (level.prevradioindex + 1) % level.radios.size;
   radio = level.radios[nextradioindex];
@@ -940,15 +671,6 @@ function getnextradio() {
   return radio;
 }
 
-/*
-	Name: pickrandomradiotospawn
-	Namespace: hq
-	Checksum: 0xD30D966E
-	Offset: 0x3C68
-	Size: 0x6C
-	Parameters: 0
-	Flags: None
-*/
 function pickrandomradiotospawn() {
   level.prevradioindex = randomint(level.radios.size);
   radio = level.radios[level.prevradioindex];
@@ -957,15 +679,6 @@ function pickrandomradiotospawn() {
   return radio;
 }
 
-/*
-	Name: shuffleradios
-	Namespace: hq
-	Checksum: 0xA2625C11
-	Offset: 0x3CE0
-	Size: 0x146
-	Parameters: 0
-	Flags: None
-*/
 function shuffleradios() {
   level.radiospawnqueue = [];
   spawnqueue = arraycopy(level.radios);
@@ -989,36 +702,16 @@ function shuffleradios() {
   }
 }
 
-/*
-	Name: getnextradiofromqueue
-	Namespace: hq
-	Checksum: 0x78F9F265
-	Offset: 0x3E30
-	Size: 0x88
-	Parameters: 0
-	Flags: None
-*/
 function getnextradiofromqueue() {
   if(level.radiospawnqueue.size == 0) {
     shuffleradios();
   }
-  /#
   assert(level.radiospawnqueue.size > 0);
-  # /
-    next_radio = level.radiospawnqueue[0];
+  next_radio = level.radiospawnqueue[0];
   arrayremoveindex(level.radiospawnqueue, 0);
   return next_radio;
 }
 
-/*
-	Name: getcountofteamswithplayers
-	Namespace: hq
-	Checksum: 0x4A3B6322
-	Offset: 0x3EC0
-	Size: 0xA8
-	Parameters: 1
-	Flags: None
-*/
 function getcountofteamswithplayers(num) {
   has_players = 0;
   foreach(team in level.teams) {
@@ -1029,15 +722,6 @@ function getcountofteamswithplayers(num) {
   return has_players;
 }
 
-/*
-	Name: getpointcost
-	Namespace: hq
-	Checksum: 0x931D5089
-	Offset: 0x3F70
-	Size: 0x19A
-	Parameters: 2
-	Flags: None
-*/
 function getpointcost(avgpos, origin) {
   avg_distance = 0;
   total_error = 0;
@@ -1054,15 +738,6 @@ function getpointcost(avgpos, origin) {
   return total_error;
 }
 
-/*
-	Name: pickradiotospawn
-	Namespace: hq
-	Checksum: 0xB30D7168
-	Offset: 0x4118
-	Size: 0x43C
-	Parameters: 0
-	Flags: None
-*/
 function pickradiotospawn() {
   foreach(team in level.teams) {
     avgpos[team] = (0, 0, 0);
@@ -1111,36 +786,16 @@ function pickradiotospawn() {
       bestradio = radio;
     }
   }
-  /#
   assert(isdefined(bestradio));
-  # /
-    level.prevradio2 = level.prevradio;
+  level.prevradio2 = level.prevradio;
   level.prevradio = bestradio;
   return bestradio;
 }
 
-/*
-	Name: onroundswitch
-	Namespace: hq
-	Checksum: 0xBE96AE82
-	Offset: 0x4560
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function onroundswitch() {
   game["switchedsides"] = !game["switchedsides"];
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: hq
-	Checksum: 0xE31A118F
-	Offset: 0x4588
-	Size: 0x644
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(!isplayer(attacker) || (!self.touchtriggers.size && !attacker.touchtriggers.size) || attacker.pers["team"] == self.pers["team"]) {
     return;
@@ -1220,26 +875,17 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: killwhilecontesting
-	Namespace: hq
-	Checksum: 0x70680F64
-	Offset: 0x4BD8
-	Size: 0x168
-	Parameters: 1
-	Flags: None
-*/
 function killwhilecontesting(radio) {
-  self notify(# "killwhilecontesting");
-  self endon(# "killwhilecontesting");
-  self endon(# "disconnect");
+  self notify("killwhilecontesting");
+  self endon("killwhilecontesting");
+  self endon("disconnect");
   killtime = gettime();
   playerteam = self.pers["team"];
   if(!isdefined(self.clearenemycount)) {
     self.clearenemycount = 0;
   }
   self.clearenemycount++;
-  radio waittill(# "state_change");
+  radio waittill("state_change");
   if(playerteam != self.pers["team"] || (isdefined(self.spawntime) && killtime < self.spawntime)) {
     self.clearenemycount = 0;
     return;
@@ -1254,45 +900,18 @@ function killwhilecontesting(radio) {
   self.clearenemycount = 0;
 }
 
-/*
-	Name: onendgame
-	Namespace: hq
-	Checksum: 0x782E23A5
-	Offset: 0x4D48
-	Size: 0x66
-	Parameters: 1
-	Flags: None
-*/
 function onendgame(winningteam) {
   for (i = 0; i < level.radios.size; i++) {
     level.radios[i].gameobject gameobjects::allow_use("none");
   }
 }
 
-/*
-	Name: createradiospawninfluencer
-	Namespace: hq
-	Checksum: 0x8B1C3F6C
-	Offset: 0x4DB8
-	Size: 0x7C
-	Parameters: 0
-	Flags: None
-*/
 function createradiospawninfluencer() {
   self spawning::create_influencer("hq_large", self.gameobject.curorigin, 0);
   self spawning::create_influencer("hq_small", self.gameobject.curorigin, 0);
   self spawning::enable_influencers(0);
 }
 
-/*
-	Name: onupdateuserate
-	Namespace: hq
-	Checksum: 0xE77A9500
-	Offset: 0x4E40
-	Size: 0x14A
-	Parameters: 0
-	Flags: None
-*/
 function onupdateuserate() {
   if(!isdefined(self.currentcontendercount)) {
     self.currentcontendercount = 0;
@@ -1319,6 +938,6 @@ function onupdateuserate() {
     }
   }
   if(self.currentcontendercount != previousstate) {
-    self notify(# "state_change");
+    self notify("state_change");
   }
 }

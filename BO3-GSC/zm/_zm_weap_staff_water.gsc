@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_weap_staff_water.gsc
+*************************************************/
+
 #using scripts\shared\ai\zombie_shared;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\callbacks_shared;
@@ -13,31 +17,12 @@
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_weap_staff_common;
 #using scripts\zm\zm_tomb_utility;
-
 #namespace zm_weap_staff_water;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_weap_staff_water
-	Checksum: 0xA6809FFF
-	Offset: 0x4E0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_weap_staff_water", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_weap_staff_water
-	Checksum: 0x25C708A2
-	Offset: 0x520
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level._effect["staff_water_blizzard"] = "weapon/zmb_staff/fx_zmb_staff_ice_ug_impact_hit";
   level._effect["staff_water_ice_shard"] = "weapon/zmb_staff/fx_zmb_staff_ice_trail_bolt";
@@ -54,15 +39,6 @@ function __init__() {
   zm_spawner::add_custom_zombie_spawn_logic( & staff_water_on_zombie_spawned);
 }
 
-/*
-	Name: init_tag_array
-	Namespace: zm_weap_staff_water
-	Checksum: 0xA3C2D227
-	Offset: 0x6E8
-	Size: 0xB2
-	Parameters: 0
-	Flags: Linked
-*/
 function init_tag_array() {
   level.zombie_water_icicle_tag = [];
   level.zombie_water_icicle_tag[0] = "j_hip_le";
@@ -74,15 +50,6 @@ function init_tag_array() {
   level.zombie_water_icicle_tag[6] = "j_clavicle_ri";
 }
 
-/*
-	Name: water_dart_cleanup
-	Namespace: zm_weap_staff_water
-	Checksum: 0x2DAED048
-	Offset: 0x7A8
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function water_dart_cleanup() {
   while (true) {
     a_grenades = getentarray("grenade", "classname");
@@ -98,35 +65,17 @@ function water_dart_cleanup() {
   }
 }
 
-/*
-	Name: onplayerspawned
-	Namespace: zm_weap_staff_water
-	Checksum: 0xFF122F09
-	Offset: 0x8D8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerspawned() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self thread watch_staff_water_fired();
   self thread watch_staff_water_impact();
   self thread zm_tomb_utility::watch_staff_usage();
 }
 
-/*
-	Name: watch_staff_water_fired
-	Namespace: zm_weap_staff_water
-	Checksum: 0xEDDC2381
-	Offset: 0x938
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_staff_water_fired() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "missile_fire", e_projectile, str_weapon);
+    self waittill("missile_fire", e_projectile, str_weapon);
     if(str_weapon.name == "staff_water" || str_weapon.name == "staff_water_upgraded") {
       util::wait_network_frame();
       _icicle_locate_target(str_weapon);
@@ -138,19 +87,10 @@ function watch_staff_water_fired() {
   }
 }
 
-/*
-	Name: watch_staff_water_impact
-	Namespace: zm_weap_staff_water
-	Checksum: 0x95D559A5
-	Offset: 0xA30
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_staff_water_impact() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "projectile_impact", str_weapon, v_explode_point, n_radius, str_name, n_impact);
+    self waittill("projectile_impact", str_weapon, v_explode_point, n_radius, str_name, n_impact);
     if(str_weapon.name == "staff_water_upgraded2" || str_weapon.name == "staff_water_upgraded3") {
       n_lifetime = 6;
       if(str_weapon.name == "staff_water_upgraded3") {
@@ -161,20 +101,11 @@ function watch_staff_water_impact() {
   }
 }
 
-/*
-	Name: staff_water_kill_zombie
-	Namespace: zm_weap_staff_water
-	Checksum: 0x4CDA01EA
-	Offset: 0xB30
-	Size: 0xCC
-	Parameters: 2
-	Flags: Linked
-*/
 function staff_water_kill_zombie(player, str_weapon) {
   self freeze_zombie();
   self zm_tomb_utility::do_damage_network_safe(player, self.health, str_weapon, "MOD_RIFLE_BULLET");
   if(isdefined(self.deathanim)) {
-    self waittillmatch(# "death_anim");
+    self waittillmatch("death_anim");
   }
   if(isdefined(self)) {
     self thread frozen_zombie_shatter();
@@ -182,15 +113,6 @@ function staff_water_kill_zombie(player, str_weapon) {
   player zm_score::player_add_points("death", "", "");
 }
 
-/*
-	Name: freeze_zombie
-	Namespace: zm_weap_staff_water
-	Checksum: 0xE4BE0919
-	Offset: 0xC08
-	Size: 0x28
-	Parameters: 0
-	Flags: Linked
-*/
 function freeze_zombie() {
   if(isdefined(self.is_mechz) && self.is_mechz) {
     return;
@@ -198,42 +120,15 @@ function freeze_zombie() {
   self.var_93022f09 = 1;
 }
 
-/*
-	Name: _network_safe_play_fx
-	Namespace: zm_weap_staff_water
-	Checksum: 0xF3657466
-	Offset: 0xC38
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function _network_safe_play_fx(fx, v_origin) {
   playfx(fx, v_origin, (0, 0, 1), (1, 0, 0));
 }
 
-/*
-	Name: network_safe_play_fx
-	Namespace: zm_weap_staff_water
-	Checksum: 0x2A996FD4
-	Offset: 0xC78
-	Size: 0x64
-	Parameters: 4
-	Flags: Linked
-*/
 function network_safe_play_fx(id, max, fx, v_origin) {
   zm_net::network_safe_init(id, max);
   zm_net::network_choke_action(id, & _network_safe_play_fx, fx, v_origin);
 }
 
-/*
-	Name: frozen_zombie_shatter
-	Namespace: zm_weap_staff_water
-	Checksum: 0xCF59B722
-	Offset: 0xCE8
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function frozen_zombie_shatter() {
   if(isdefined(self.is_mechz) && self.is_mechz) {
     return;
@@ -249,15 +144,6 @@ function frozen_zombie_shatter() {
   }
 }
 
-/*
-	Name: frozen_zombie_gib
-	Namespace: zm_weap_staff_water
-	Checksum: 0xC5E8FF03
-	Offset: 0xDB8
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function frozen_zombie_gib(gib_type) {
   gibarray = [];
   gibarray[gibarray.size] = level._zombie_gib_piece_index_all;
@@ -269,19 +155,10 @@ function frozen_zombie_gib(gib_type) {
   }
 }
 
-/*
-	Name: staff_water_position_source
-	Namespace: zm_weap_staff_water
-	Checksum: 0xFE5293D9
-	Offset: 0xE50
-	Size: 0x1EC
-	Parameters: 3
-	Flags: Linked
-*/
 function staff_water_position_source(v_detonate, n_lifetime_sec, str_weapon) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(isdefined(v_detonate)) {
-    level notify(# "blizzard_shot");
+    level notify("blizzard_shot");
     e_fx = spawn("script_model", v_detonate + vectorscale((0, 0, 1), 33));
     e_fx setmodel("tag_origin");
     e_fx clientfield::set("staff_blizzard_fx", 1);
@@ -292,9 +169,9 @@ function staff_water_position_source(v_detonate, n_lifetime_sec, str_weapon) {
     e_fx thread zm_tomb_utility::whirlwind_rumble_nearby_players("blizzard_active");
     e_fx thread ice_staff_blizzard_timeout(n_lifetime_sec);
     e_fx thread ice_staff_blizzard_off();
-    e_fx waittill(# "blizzard_off");
+    e_fx waittill("blizzard_off");
     level flag::clear("blizzard_active");
-    e_fx notify(# "stop_debug_position");
+    e_fx notify("stop_debug_position");
     wait(0.1);
     e_fx clientfield::set("staff_blizzard_fx", 0);
     wait(0.1);
@@ -302,18 +179,9 @@ function staff_water_position_source(v_detonate, n_lifetime_sec, str_weapon) {
   }
 }
 
-/*
-	Name: ice_staff_blizzard_do_kills
-	Namespace: zm_weap_staff_water
-	Checksum: 0xC1437CE4
-	Offset: 0x1048
-	Size: 0x1A8
-	Parameters: 2
-	Flags: Linked
-*/
 function ice_staff_blizzard_do_kills(player, str_weapon) {
-  player endon(# "disconnect");
-  self endon(# "blizzard_off");
+  player endon("disconnect");
+  self endon("blizzard_off");
   while (true) {
     a_zombies = getaiarray();
     foreach(zombie in a_zombies) {
@@ -333,47 +201,20 @@ function ice_staff_blizzard_do_kills(player, str_weapon) {
   }
 }
 
-/*
-	Name: ice_staff_blizzard_timeout
-	Namespace: zm_weap_staff_water
-	Checksum: 0x7607E544
-	Offset: 0x11F8
-	Size: 0x36
-	Parameters: 1
-	Flags: Linked
-*/
 function ice_staff_blizzard_timeout(n_time) {
-  self endon(# "death");
-  self endon(# "blizzard_off");
+  self endon("death");
+  self endon("blizzard_off");
   wait(n_time);
-  self notify(# "blizzard_off");
+  self notify("blizzard_off");
 }
 
-/*
-	Name: ice_staff_blizzard_off
-	Namespace: zm_weap_staff_water
-	Checksum: 0x71A531C0
-	Offset: 0x1238
-	Size: 0x36
-	Parameters: 0
-	Flags: Linked
-*/
 function ice_staff_blizzard_off() {
-  self endon(# "death");
-  self endon(# "blizzard_off");
-  level waittill(# "blizzard_shot");
-  self notify(# "blizzard_off");
+  self endon("death");
+  self endon("blizzard_off");
+  level waittill("blizzard_shot");
+  self notify("blizzard_off");
 }
 
-/*
-	Name: get_ice_blast_range
-	Namespace: zm_weap_staff_water
-	Checksum: 0xC943B665
-	Offset: 0x1278
-	Size: 0x7A
-	Parameters: 1
-	Flags: None
-*/
 function get_ice_blast_range(n_charge) {
   switch (n_charge) {
     case 0:
@@ -393,15 +234,6 @@ function get_ice_blast_range(n_charge) {
   return n_range;
 }
 
-/*
-	Name: staff_water_zombie_range
-	Namespace: zm_weap_staff_water
-	Checksum: 0x29E8DE8F
-	Offset: 0x1300
-	Size: 0x16C
-	Parameters: 2
-	Flags: None
-*/
 function staff_water_zombie_range(v_source, n_range) {
   a_enemies = [];
   a_zombies = getaiarray();
@@ -426,28 +258,10 @@ function staff_water_zombie_range(v_source, n_range) {
   return a_enemies;
 }
 
-/*
-	Name: is_staff_water_damage
-	Namespace: zm_weap_staff_water
-	Checksum: 0x2B0D4B32
-	Offset: 0x1478
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function is_staff_water_damage(weapon) {
   return isdefined(weapon) && (weapon.name == "staff_water" || weapon.name == "staff_water_upgraded" || weapon.name == "staff_water_fake_dart_zm") && (!(isdefined(self.set_beacon_damage) && self.set_beacon_damage));
 }
 
-/*
-	Name: ice_affect_mechz
-	Namespace: zm_weap_staff_water
-	Checksum: 0x3C21A1D9
-	Offset: 0x1500
-	Size: 0xB0
-	Parameters: 2
-	Flags: Linked
-*/
 function ice_affect_mechz(e_player, is_upgraded) {
   if(isdefined(self.is_on_ice) && self.is_on_ice) {
     return;
@@ -462,17 +276,8 @@ function ice_affect_mechz(e_player, is_upgraded) {
   self.is_on_ice = 0;
 }
 
-/*
-	Name: ice_affect_zombie
-	Namespace: zm_weap_staff_water
-	Checksum: 0x4EBA9401
-	Offset: 0x15B8
-	Size: 0x358
-	Parameters: 4
-	Flags: Linked
-*/
 function ice_affect_zombie(str_weapon = "staff_water", e_player, always_kill = 0, n_mod = 1) {
-  self endon(# "death");
+  self endon("death");
   instakill_on = e_player zm_powerups::is_insta_kill_active();
   if(str_weapon.name == "staff_water") {
     n_damage = 2050;
@@ -513,15 +318,6 @@ function ice_affect_zombie(str_weapon = "staff_water", e_player, always_kill = 0
   }
 }
 
-/*
-	Name: set_anim_rate
-	Namespace: zm_weap_staff_water
-	Checksum: 0xD299AF7E
-	Offset: 0x1918
-	Size: 0x108
-	Parameters: 1
-	Flags: None
-*/
 function set_anim_rate(n_speed) {
   self clientfield::set("anim_rate", n_speed);
   n_rate = self clientfield::get("anim_rate");
@@ -532,7 +328,7 @@ function set_anim_rate(n_speed) {
   util::wait_network_frame();
   if(!(isdefined(self.is_traversing) && self.is_traversing)) {
     self.needs_run_update = 1;
-    self notify(# "needs_run_update");
+    self notify("needs_run_update");
   }
   util::wait_network_frame();
   if(n_speed == 1) {
@@ -540,51 +336,24 @@ function set_anim_rate(n_speed) {
   }
 }
 
-/*
-	Name: staff_water_on_zombie_spawned
-	Namespace: zm_weap_staff_water
-	Checksum: 0x87550CC
-	Offset: 0x1A28
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function staff_water_on_zombie_spawned() {
   self clientfield::set("anim_rate", 1);
   n_rate = self clientfield::get("anim_rate");
   self setentityanimrate(n_rate);
 }
 
-/*
-	Name: staff_water_death_event
-	Namespace: zm_weap_staff_water
-	Checksum: 0x5B2BCC29
-	Offset: 0x1AA0
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function staff_water_death_event(attacker) {
   if(is_staff_water_damage(self.damageweapon) && self.damagemod != "MOD_MELEE") {
     self.no_gib = 1;
     self.nodeathragdoll = 1;
     self freeze_zombie();
     if(isdefined(self.deathanim)) {
-      self waittillmatch(# "death_anim");
+      self waittillmatch("death_anim");
     }
     self thread frozen_zombie_shatter();
   }
 }
 
-/*
-	Name: _icicle_locate_target
-	Namespace: zm_weap_staff_water
-	Checksum: 0x60C23C50
-	Offset: 0x1B50
-	Size: 0x33C
-	Parameters: 1
-	Flags: Linked
-*/
 function _icicle_locate_target(str_weapon) {
   is_upgraded = str_weapon.name == "staff_water_upgraded";
   fire_angles = self getplayerangles();
@@ -620,15 +389,6 @@ function _icicle_locate_target(str_weapon) {
   }
 }
 
-/*
-	Name: _icicle_get_spread
-	Namespace: zm_weap_staff_water
-	Checksum: 0x4928F32D
-	Offset: 0x1E98
-	Size: 0xA6
-	Parameters: 1
-	Flags: None
-*/
 function _icicle_get_spread(n_spread) {
   n_x = randomintrange(n_spread * -1, n_spread);
   n_y = randomintrange(n_spread * -1, n_spread);
@@ -636,15 +396,6 @@ function _icicle_get_spread(n_spread) {
   return (n_x, n_y, n_z);
 }
 
-/*
-	Name: function_de3654ba
-	Namespace: zm_weap_staff_water
-	Checksum: 0xE3310B6
-	Offset: 0x1F48
-	Size: 0x2E6
-	Parameters: 1
-	Flags: Linked
-*/
 function function_de3654ba(is_frozen) {
   if(self.archetype !== "zombie") {
     return;

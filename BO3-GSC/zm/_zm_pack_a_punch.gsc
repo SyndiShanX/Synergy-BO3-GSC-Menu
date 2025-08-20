@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_pack_a_punch.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\aat_shared;
 #using scripts\shared\array_shared;
@@ -23,45 +27,17 @@
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace _zm_pack_a_punch;
 
-/*
-	Name: __init__sytem__
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x2B4F5016
-	Offset: 0x718
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_pack_a_punch", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x994DDDF
-	Offset: 0x760
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   zm_pap_util::init_parameters();
   clientfield::register("zbarrier", "pap_working_FX", 5000, 1, "int");
 }
 
-/*
-	Name: __main__
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x8DC97A36
-	Offset: 0x7B0
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   if(!isdefined(level.pap_zbarrier_state_func)) {
     level.pap_zbarrier_state_func = & process_pap_zbarrier_state;
@@ -78,15 +54,6 @@ function __main__() {
   level flag::init("pack_machine_in_use");
 }
 
-/*
-	Name: spawn_init
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x90676372
-	Offset: 0x8C8
-	Size: 0x484
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private spawn_init() {
   zbarriers = getentarray("zm_pack_a_punch", "targetname");
   for (i = 0; i < zbarriers.size; i++) {
@@ -135,18 +102,9 @@ function private spawn_init() {
   }
 }
 
-/*
-	Name: pap_trigger_hintstring_monitor
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x2DF1E363
-	Offset: 0xD58
-	Size: 0xE8
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private pap_trigger_hintstring_monitor() {
-  level endon(# "pack_a_punch_off");
-  level waittill(# "pack_a_punch_on");
+  level endon("pack_a_punch_off");
+  level waittill("pack_a_punch_on");
   self thread pap_trigger_hintstring_monitor_reset();
   while (true) {
     foreach(e_player in level.players) {
@@ -158,32 +116,14 @@ function private pap_trigger_hintstring_monitor() {
   }
 }
 
-/*
-	Name: pap_trigger_hintstring_monitor_reset
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xFD722404
-	Offset: 0xE48
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private pap_trigger_hintstring_monitor_reset() {
-  level waittill(# "pack_a_punch_off");
+  level waittill("pack_a_punch_off");
   self thread pap_trigger_hintstring_monitor();
 }
 
-/*
-	Name: third_person_weapon_upgrade
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x2FCA6D05
-	Offset: 0xE78
-	Size: 0x4BC
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private third_person_weapon_upgrade(current_weapon, upgrade_weapon, packa_rollers, pap_machine, trigger) {
-  level endon(# "pack_a_punch_off");
-  trigger endon(# "pap_player_disconnected");
+  level endon("pack_a_punch_off");
+  trigger endon("pap_player_disconnected");
   current_weapon = self getbuildkitweapon(current_weapon, 0);
   upgrade_weapon = self getbuildkitweapon(upgrade_weapon, 1);
   trigger.current_weapon = current_weapon;
@@ -229,15 +169,6 @@ function private third_person_weapon_upgrade(current_weapon, upgrade_weapon, pac
   rel_entity thread[[level.pack_a_punch.move_out_func]](self, trigger, origin_offset, interact_offset);
 }
 
-/*
-	Name: can_pack_weapon
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xE5E9C4E1
-	Offset: 0x1340
-	Size: 0xE6
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private can_pack_weapon(weapon) {
   if(weapon.isriotshield) {
     return false;
@@ -260,15 +191,6 @@ function private can_pack_weapon(weapon) {
   return true;
 }
 
-/*
-	Name: player_use_can_pack_now
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x572511FF
-	Offset: 0x1430
-	Size: 0x100
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private player_use_can_pack_now() {
   if(self laststand::player_is_in_laststand() || (isdefined(self.intermission) && self.intermission) || self isthrowinggrenade()) {
     return false;
@@ -286,20 +208,11 @@ function private player_use_can_pack_now() {
   return true;
 }
 
-/*
-	Name: pack_a_punch_machine_trigger_think
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x48227DCE
-	Offset: 0x1538
-	Size: 0x144
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private pack_a_punch_machine_trigger_think() {
-  self endon(# "death");
-  self endon(# "pack_a_punch_off");
-  self notify(# "pack_a_punch_trigger_think");
-  self endon(# "pack_a_punch_trigger_think");
+  self endon("death");
+  self endon("pack_a_punch_off");
+  self notify("pack_a_punch_trigger_think");
+  self endon("pack_a_punch_trigger_think");
   while (true) {
     players = getplayers();
     for (i = 0; i < players.size; i++) {
@@ -313,17 +226,8 @@ function private pack_a_punch_machine_trigger_think() {
   }
 }
 
-/*
-	Name: vending_weapon_upgrade
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x31E2906D
-	Offset: 0x1688
-	Size: 0xB88
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private vending_weapon_upgrade() {
-  level endon(# "pack_a_punch_off");
+  level endon("pack_a_punch_off");
   pap_machine = getent(self.target, "targetname");
   self.pap_machine = pap_machine;
   pap_machine_sound = getentarray("perksacola", "targetname");
@@ -332,13 +236,13 @@ function private vending_weapon_upgrade() {
   packa_rollers linkto(self);
   packa_timer linkto(self);
   self usetriggerrequirelookat();
-  self sethintstring( & "ZOMBIE_NEED_POWER");
+  self sethintstring(&"ZOMBIE_NEED_POWER");
   self setcursorhint("HINT_NOICON");
   power_off = !self is_on();
   if(power_off) {
     pap_array = [];
     pap_array[0] = pap_machine;
-    level waittill(# "pack_a_punch_on");
+    level waittill("pack_a_punch_on");
   }
   self triggerenable(1);
   if(isdefined(level.pack_a_punch.power_on_callback)) {
@@ -350,7 +254,7 @@ function private vending_weapon_upgrade() {
   self thread vending_weapon_upgrade_cost();
   for (;;) {
     self.pack_player = undefined;
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(isdefined(pap_machine.state) && pap_machine.state == "leaving") {
       continue;
     }
@@ -460,18 +364,9 @@ function private vending_weapon_upgrade() {
   }
 }
 
-/*
-	Name: shutoffpapsounds
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xCBC2B9B9
-	Offset: 0x2218
-	Size: 0xB0
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private shutoffpapsounds(ent1, ent2, ent3) {
   while (true) {
-    level waittill(# "pack_a_punch_off");
+    level waittill("pack_a_punch_off");
     level thread turnonpapsounds(ent1);
     ent1 stoploopsound(0.1);
     ent2 stoploopsound(0.1);
@@ -479,64 +374,33 @@ function private shutoffpapsounds(ent1, ent2, ent3) {
   }
 }
 
-/*
-	Name: turnonpapsounds
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x8657725F
-	Offset: 0x22D0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private turnonpapsounds(ent) {
-  level waittill(# "pack_a_punch_on");
+  level waittill("pack_a_punch_on");
   ent playloopsound("zmb_perks_packa_loop");
 }
 
-/*
-	Name: vending_weapon_upgrade_cost
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x1B0B260D
-	Offset: 0x2310
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private vending_weapon_upgrade_cost() {
-  level endon(# "pack_a_punch_off");
+  level endon("pack_a_punch_off");
   while (true) {
     self.cost = 5000;
     self.aat_cost = 2500;
-    level waittill(# "hash_ab83a4db");
+    level waittill("hash_ab83a4db");
     self.cost = 1000;
     self.aat_cost = 500;
-    level waittill(# "bonfire_sale_off");
+    level waittill("bonfire_sale_off");
   }
 }
 
-/*
-	Name: wait_for_player_to_take
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xDFF64BF0
-	Offset: 0x2380
-	Size: 0x64C
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private wait_for_player_to_take(player, weapon, packa_timer, b_weapon_supports_aat, isrepack) {
   current_weapon = self.current_weapon;
   upgrade_weapon = self.upgrade_weapon;
-  /#
   assert(isdefined(current_weapon), "");
-  # /
-    /#
   assert(isdefined(upgrade_weapon), "");
-  # /
-    self endon(# "pap_timeout");
-  level endon(# "pack_a_punch_off");
+  self endon("pap_timeout");
+  level endon("pack_a_punch_off");
   while (isdefined(player)) {
     packa_timer playloopsound("zmb_perks_packa_ticktock");
-    self waittill(# "trigger", trigger_player);
+    self waittill("trigger", trigger_player);
     if(level.pack_a_punch.grabbable_by_anyone) {
       player = trigger_player;
     }
@@ -545,82 +409,71 @@ function private wait_for_player_to_take(player, weapon, packa_timer, b_weapon_s
       player zm_stats::increment_client_stat("pap_weapon_grabbed");
       player zm_stats::increment_player_stat("pap_weapon_grabbed");
       current_weapon = player getcurrentweapon();
-      /#
       if(level.weaponnone == current_weapon) {
         iprintlnbold("");
       }
-      # /
-        if(zm_utility::is_player_valid(player) && !(player.is_drinking > 0) && !zm_utility::is_placeable_mine(current_weapon) && !zm_equipment::is_equipment(current_weapon) && !player zm_utility::is_player_revive_tool(current_weapon) && level.weaponnone != current_weapon && !player zm_equipment::hacker_active()) {
-          demo::bookmark("zm_player_grabbed_packapunch", gettime(), player);
-          self notify(# "pap_taken");
-          player notify(# "pap_taken");
-          player.pap_used = 1;
-          weapon_limit = zm_utility::get_player_weapon_limit(player);
-          player zm_weapons::take_fallback_weapon();
-          primaries = player getweaponslistprimaries();
-          if(isdefined(primaries) && primaries.size >= weapon_limit) {
-            upgrade_weapon = player zm_weapons::weapon_give(upgrade_weapon);
-          } else {
-            upgrade_weapon = player zm_weapons::give_build_kit_weapon(upgrade_weapon);
-            player givestartammo(upgrade_weapon);
-          }
-          player notify(# "weapon_give", upgrade_weapon);
-          aatid = -1;
-          if(isdefined(b_weapon_supports_aat) && b_weapon_supports_aat) {
-            player thread aat::acquire(upgrade_weapon);
-            aatobj = player aat::getaatonweapon(upgrade_weapon);
-            if(isdefined(aatobj)) {
-              aatid = aatobj.var_2c8ee667;
-            }
-          } else {
-            player thread aat::remove(upgrade_weapon);
-          }
-          weaponidx = undefined;
-          if(isdefined(weapon)) {
-            weaponidx = matchrecordgetweaponindex(weapon);
-          }
-          if(isdefined(weaponidx)) {
-            if(!isrepack) {
-              player recordmapevent(27, gettime(), player.origin, level.round_number, weaponidx, aatid);
-            } else {
-              player recordmapevent(28, gettime(), player.origin, level.round_number, weaponidx, aatid);
-            }
-          }
-          player switchtoweapon(upgrade_weapon);
-          if(isdefined(player.restore_ammo) && player.restore_ammo) {
-            new_clip = player.restore_clip + (upgrade_weapon.clipsize - player.restore_clip_size);
-            new_stock = player.restore_stock + (upgrade_weapon.maxammo - player.restore_max);
-            player setweaponammostock(upgrade_weapon, new_stock);
-            player setweaponammoclip(upgrade_weapon, new_clip);
-          }
-          player.restore_ammo = undefined;
-          player.restore_clip = undefined;
-          player.restore_stock = undefined;
-          player.restore_max = undefined;
-          player.restore_clip_size = undefined;
-          player zm_weapons::play_weapon_vo(upgrade_weapon);
-          return;
+      if(zm_utility::is_player_valid(player) && !(player.is_drinking > 0) && !zm_utility::is_placeable_mine(current_weapon) && !zm_equipment::is_equipment(current_weapon) && !player zm_utility::is_player_revive_tool(current_weapon) && level.weaponnone != current_weapon && !player zm_equipment::hacker_active()) {
+        demo::bookmark("zm_player_grabbed_packapunch", gettime(), player);
+        self notify("pap_taken");
+        player notify("pap_taken");
+        player.pap_used = 1;
+        weapon_limit = zm_utility::get_player_weapon_limit(player);
+        player zm_weapons::take_fallback_weapon();
+        primaries = player getweaponslistprimaries();
+        if(isdefined(primaries) && primaries.size >= weapon_limit) {
+          upgrade_weapon = player zm_weapons::weapon_give(upgrade_weapon);
+        } else {
+          upgrade_weapon = player zm_weapons::give_build_kit_weapon(upgrade_weapon);
+          player givestartammo(upgrade_weapon);
         }
+        player notify("weapon_give", upgrade_weapon);
+        aatid = -1;
+        if(isdefined(b_weapon_supports_aat) && b_weapon_supports_aat) {
+          player thread aat::acquire(upgrade_weapon);
+          aatobj = player aat::getaatonweapon(upgrade_weapon);
+          if(isdefined(aatobj)) {
+            aatid = aatobj.var_2c8ee667;
+          }
+        } else {
+          player thread aat::remove(upgrade_weapon);
+        }
+        weaponidx = undefined;
+        if(isdefined(weapon)) {
+          weaponidx = matchrecordgetweaponindex(weapon);
+        }
+        if(isdefined(weaponidx)) {
+          if(!isrepack) {
+            player recordmapevent(27, gettime(), player.origin, level.round_number, weaponidx, aatid);
+          } else {
+            player recordmapevent(28, gettime(), player.origin, level.round_number, weaponidx, aatid);
+          }
+        }
+        player switchtoweapon(upgrade_weapon);
+        if(isdefined(player.restore_ammo) && player.restore_ammo) {
+          new_clip = player.restore_clip + (upgrade_weapon.clipsize - player.restore_clip_size);
+          new_stock = player.restore_stock + (upgrade_weapon.maxammo - player.restore_max);
+          player setweaponammostock(upgrade_weapon, new_stock);
+          player setweaponammoclip(upgrade_weapon, new_clip);
+        }
+        player.restore_ammo = undefined;
+        player.restore_clip = undefined;
+        player.restore_stock = undefined;
+        player.restore_max = undefined;
+        player.restore_clip_size = undefined;
+        player zm_weapons::play_weapon_vo(upgrade_weapon);
+        return;
+      }
     }
     wait(0.05);
   }
 }
 
-/*
-	Name: wait_for_timeout
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x36EAFFD3
-	Offset: 0x29D8
-	Size: 0x204
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private wait_for_timeout(weapon, packa_timer, player, isrepack) {
-  self endon(# "pap_taken");
-  self endon(# "pap_player_disconnected");
+  self endon("pap_taken");
+  self endon("pap_player_disconnected");
   self thread wait_for_disconnect(player);
   wait(level.pack_a_punch.timeout);
-  self notify(# "pap_timeout");
+  self notify("pap_timeout");
   packa_timer stoploopsound(0.05);
   packa_timer playsound("zmb_perks_packa_deny");
   if(isdefined(player)) {
@@ -645,72 +498,34 @@ function private wait_for_timeout(weapon, packa_timer, player, isrepack) {
   }
 }
 
-/*
-	Name: wait_for_disconnect
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x6C21B74E
-	Offset: 0x2BE8
-	Size: 0x62
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private wait_for_disconnect(player) {
-  self endon(# "pap_taken");
-  self endon(# "pap_timeout");
+  self endon("pap_taken");
+  self endon("pap_timeout");
   while (isdefined(player)) {
     wait(0.1);
   }
-  /#
   println("");
-  # /
-    self notify(# "pap_player_disconnected");
+  self notify("pap_player_disconnected");
 }
 
-/*
-	Name: destroy_weapon_in_blackout
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xEFA9743C
-	Offset: 0x2C58
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private destroy_weapon_in_blackout(player) {
-  self endon(# "pap_timeout");
-  self endon(# "pap_taken");
-  self endon(# "pap_player_disconnected");
-  level waittill(# "pack_a_punch_off");
+  self endon("pap_timeout");
+  self endon("pap_taken");
+  self endon("pap_player_disconnected");
+  level waittill("pack_a_punch_off");
   self.zbarrier set_pap_zbarrier_state("take_gun");
   player playlocalsound(level.zmb_laugh_alias);
   wait(1.5);
   self.zbarrier set_pap_zbarrier_state("power_off");
 }
 
-/*
-	Name: do_knuckle_crack
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x2E8EC0DA
-	Offset: 0x2D08
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private do_knuckle_crack() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self upgrade_knuckle_crack_begin();
   self util::waittill_any("fake_death", "death", "player_downed", "weapon_change_complete");
   self upgrade_knuckle_crack_end();
 }
 
-/*
-	Name: upgrade_knuckle_crack_begin
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x783B0945
-	Offset: 0x2D88
-	Size: 0x13C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private upgrade_knuckle_crack_begin() {
   self zm_utility::increment_is_drinking();
   self zm_utility::disable_player_move_states(1);
@@ -718,7 +533,7 @@ function private upgrade_knuckle_crack_begin() {
   original_weapon = self getcurrentweapon();
   weapon = getweapon("zombie_knuckle_crack");
   if(original_weapon != level.weaponnone && !zm_utility::is_placeable_mine(original_weapon) && !zm_equipment::is_equipment(original_weapon)) {
-    self notify(# "zmb_lost_knife");
+    self notify("zmb_lost_knife");
     self takeweapon(original_weapon);
   } else {
     return;
@@ -727,15 +542,6 @@ function private upgrade_knuckle_crack_begin() {
   self switchtoweapon(weapon);
 }
 
-/*
-	Name: upgrade_knuckle_crack_end
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x22BD43A8
-	Offset: 0x2ED0
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private upgrade_knuckle_crack_end() {
   self zm_utility::enable_player_move_states();
   weapon = getweapon("zombie_knuckle_crack");
@@ -752,15 +558,6 @@ function private upgrade_knuckle_crack_end() {
   self zm_weapons::switch_back_primary_weapon();
 }
 
-/*
-	Name: get_range
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xF4F4E538
-	Offset: 0x2FE0
-	Size: 0xF2
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private get_range(delta, origin, radius) {
   if(isdefined(self.target)) {
     paporigin = self.target.origin;
@@ -776,49 +573,18 @@ function private get_range(delta, origin, radius) {
   return false;
 }
 
-/*
-	Name: turn_on
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x221ABC61
-	Offset: 0x30E0
-	Size: 0x42
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private turn_on(origin, radius) {
-  /#
   println("");
-  # /
-    level notify(# "pack_a_punch_on");
+  level notify("pack_a_punch_on");
 }
 
-/*
-	Name: turn_off
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x21CEBB9D
-	Offset: 0x3130
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private turn_off(origin, radius) {
-  /#
   println("");
-  # /
-    level notify(# "pack_a_punch_off");
-  self.target notify(# "death");
+  level notify("pack_a_punch_off");
+  self.target notify("death");
   self.target thread vending_weapon_upgrade();
 }
 
-/*
-	Name: is_on
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xB9B8C0FF
-	Offset: 0x31A8
-	Size: 0x22
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private is_on() {
   if(isdefined(self.powered)) {
     return self.powered.power;
@@ -826,15 +592,6 @@ function private is_on() {
   return 0;
 }
 
-/*
-	Name: get_start_state
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x95727F74
-	Offset: 0x31D8
-	Size: 0x22
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private get_start_state() {
   if(isdefined(level.vending_machines_powered_on_at_start) && level.vending_machines_powered_on_at_start) {
     return true;
@@ -842,15 +599,6 @@ function private get_start_state() {
   return false;
 }
 
-/*
-	Name: cost_func
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xAC719AD8
-	Offset: 0x3208
-	Size: 0x6E
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private cost_func() {
   if(isdefined(self.one_time_cost)) {
     cost = self.one_time_cost;
@@ -866,66 +614,30 @@ function private cost_func() {
   return 1;
 }
 
-/*
-	Name: toggle_think
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x4A89C120
-	Offset: 0x3280
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private toggle_think(powered_on) {
   if(!powered_on) {
     self.zbarrier set_pap_zbarrier_state("initial");
-    level waittill(# "pack_a_punch_on");
+    level waittill("pack_a_punch_on");
   }
   for (;;) {
     self.zbarrier set_pap_zbarrier_state("power_on");
-    level waittill(# "pack_a_punch_off");
+    level waittill("pack_a_punch_off");
     self.zbarrier set_pap_zbarrier_state("power_off");
-    level waittill(# "pack_a_punch_on");
+    level waittill("pack_a_punch_on");
   }
 }
 
-/*
-	Name: pap_initial
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xB6FB840B
-	Offset: 0x3330
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private pap_initial() {
   self zbarrierpieceuseattachweapon(3);
   self setzbarrierpiecestate(0, "closed");
 }
 
-/*
-	Name: pap_power_off
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x5671F2CE
-	Offset: 0x3378
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private pap_power_off() {
   self setzbarrierpiecestate(0, "closing");
 }
 
-/*
-	Name: pap_power_on
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x922584AA
-	Offset: 0x33A8
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private pap_power_on() {
-  self endon(# "zbarrier_state_change");
+  self endon("zbarrier_state_change");
   self setzbarrierpiecestate(0, "opening");
   while (self getzbarrierpiecestate(0) == "opening") {
     wait(0.05);
@@ -934,17 +646,8 @@ function private pap_power_on() {
   self thread set_pap_zbarrier_state("powered");
 }
 
-/*
-	Name: pap_powered
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x309C4005
-	Offset: 0x3450
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private pap_powered() {
-  self endon(# "zbarrier_state_change");
+  self endon("zbarrier_state_change");
   self setzbarrierpiecestate(4, "closed");
   if(self.classname === "zbarrier_zm_castle_packapunch" || self.classname === "zbarrier_zm_tomb_packapunch") {
     self clientfield::set("pap_working_FX", 0);
@@ -957,15 +660,6 @@ function private pap_powered() {
   }
 }
 
-/*
-	Name: pap_take_gun
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x7AAB39D1
-	Offset: 0x3548
-	Size: 0xB4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private pap_take_gun() {
   self setzbarrierpiecestate(1, "opening");
   self setzbarrierpiecestate(2, "opening");
@@ -976,30 +670,12 @@ function private pap_take_gun() {
   }
 }
 
-/*
-	Name: pap_eject_gun
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x1C6CA453
-	Offset: 0x3608
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private pap_eject_gun() {
   self setzbarrierpiecestate(1, "closing");
   self setzbarrierpiecestate(2, "closing");
   self setzbarrierpiecestate(3, "closing");
 }
 
-/*
-	Name: pap_leaving
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xBC096C7B
-	Offset: 0x3678
-	Size: 0x82
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private pap_leaving() {
   self setzbarrierpiecestate(5, "closing");
   do {
@@ -1007,20 +683,11 @@ function private pap_leaving() {
   }
   while (self getzbarrierpiecestate(5) == "closing");
   self setzbarrierpiecestate(5, "closed");
-  self notify(# "leave_anim_done");
+  self notify("leave_anim_done");
 }
 
-/*
-	Name: pap_arriving
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xAB54EAB1
-	Offset: 0x3708
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private pap_arriving() {
-  self endon(# "zbarrier_state_change");
+  self endon("zbarrier_state_change");
   self setzbarrierpiecestate(0, "opening");
   while (self getzbarrierpiecestate(0) == "opening") {
     wait(0.05);
@@ -1029,45 +696,18 @@ function private pap_arriving() {
   self thread set_pap_zbarrier_state("powered");
 }
 
-/*
-	Name: get_pap_zbarrier_state
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xBFB74BB9
-	Offset: 0x37B0
-	Size: 0xA
-	Parameters: 0
-	Flags: Private
-*/
 function private get_pap_zbarrier_state() {
   return self.state;
 }
 
-/*
-	Name: set_pap_zbarrier_state
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xE8B5831B
-	Offset: 0x37C8
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private set_pap_zbarrier_state(state) {
   for (i = 0; i < self getnumzbarrierpieces(); i++) {
     self hidezbarrierpiece(i);
   }
-  self notify(# "zbarrier_state_change");
+  self notify("zbarrier_state_change");
   self[[level.pap_zbarrier_state_func]](state);
 }
 
-/*
-	Name: process_pap_zbarrier_state
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x91BCEFC5
-	Offset: 0x3850
-	Size: 0x326
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private process_pap_zbarrier_state(state) {
   switch (state) {
     case "initial": {
@@ -1135,67 +775,22 @@ function private process_pap_zbarrier_state(state) {
   }
 }
 
-/*
-	Name: set_state_initial
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x40CB1AFE
-	Offset: 0x3B80
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function set_state_initial() {
   self set_pap_zbarrier_state("initial");
 }
 
-/*
-	Name: set_state_leaving
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xADCBDDB1
-	Offset: 0x3BB0
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function set_state_leaving() {
   self set_pap_zbarrier_state("leaving");
 }
 
-/*
-	Name: set_state_arriving
-	Namespace: _zm_pack_a_punch
-	Checksum: 0x788533D
-	Offset: 0x3BE0
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function set_state_arriving() {
   self set_pap_zbarrier_state("arriving");
 }
 
-/*
-	Name: set_state_power_on
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xF57FEA00
-	Offset: 0x3C10
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function set_state_power_on() {
   self set_pap_zbarrier_state("power_on");
 }
 
-/*
-	Name: set_state_hidden
-	Namespace: _zm_pack_a_punch
-	Checksum: 0xD3C7E32D
-	Offset: 0x3C40
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function set_state_hidden() {
   self set_pap_zbarrier_state("hidden");
 }

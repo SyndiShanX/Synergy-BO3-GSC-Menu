@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_load.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_arena;
 #using scripts\mp\_armblade;
@@ -83,25 +87,13 @@
 #using scripts\shared\weapons\_trophy_system;
 #using scripts\shared\weapons\_weaponobjects;
 #using scripts\shared\weapons\multilockapguidance;
-
 #namespace load;
 
-/*
-	Name: main
-	Namespace: load
-	Checksum: 0x6D2C6807
-	Offset: 0xCE0
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   /# /
   #
   assert(isdefined(level.first_frame), "");
-  # /
-    # /
-    level._loadstarted = 1;
+  level._loadstarted = 1;
   setclearanceceiling(30);
   register_clientfields();
   level.aitriggerspawnflags = getaitriggerflags();
@@ -113,38 +105,16 @@ function main() {
   level flagsys::set("load_main_complete");
 }
 
-/*
-	Name: setfootstepeffect
-	Namespace: load
-	Checksum: 0x71CACE33
-	Offset: 0xDF0
-	Size: 0xBA
-	Parameters: 2
-	Flags: Linked
-*/
 function setfootstepeffect(name, fx) {
-  /#
   assert(isdefined(name), "");
-  # /
-    /#
   assert(isdefined(fx), "");
-  # /
-    if(!isdefined(anim.optionalstepeffects)) {
-      anim.optionalstepeffects = [];
-    }
+  if(!isdefined(anim.optionalstepeffects)) {
+    anim.optionalstepeffects = [];
+  }
   anim.optionalstepeffects[anim.optionalstepeffects.size] = name;
   level._effect["step_" + name] = fx;
 }
 
-/*
-	Name: footsteps
-	Namespace: load
-	Checksum: 0xF6C331AD
-	Offset: 0xEB8
-	Size: 0x224
-	Parameters: 0
-	Flags: None
-*/
 function footsteps() {
   setfootstepeffect("asphalt", "_t6/bio/player/fx_footstep_dust");
   setfootstepeffect("brick", "_t6/bio/player/fx_footstep_dust");
@@ -165,15 +135,6 @@ function footsteps() {
   setfootstepeffect("wood", "_t6/bio/player/fx_footstep_dust");
 }
 
-/*
-	Name: init_traverse
-	Namespace: load
-	Checksum: 0x17992B6F
-	Offset: 0x10E8
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function init_traverse() {
   point = getent(self.target, "targetname");
   if(isdefined(point)) {
@@ -187,15 +148,6 @@ function init_traverse() {
   }
 }
 
-/*
-	Name: setup_traversals
-	Namespace: load
-	Checksum: 0x408CBE5E
-	Offset: 0x11B0
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_traversals() {
   potential_traverse_nodes = getallnodes();
   for (i = 0; i < potential_traverse_nodes.size; i++) {
@@ -206,15 +158,6 @@ function setup_traversals() {
   }
 }
 
-/*
-	Name: register_clientfields
-	Namespace: load
-	Checksum: 0x4A8AE350
-	Offset: 0x1250
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("missile", "cf_m_proximity", 1, 1, "int");
   clientfield::register("missile", "cf_m_emp", 1, 1, "int");

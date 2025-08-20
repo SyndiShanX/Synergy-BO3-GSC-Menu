@@ -1,21 +1,15 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_sumpf_magic_box.gsc
+*************************************************/
+
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
 #using scripts\zm\zm_sumpf_perks;
 #using scripts\zm\zm_sumpf_trap_pendulum;
 #using scripts\zm\zm_sumpf_zipline;
-
 #namespace zm_sumpf_magic_box;
 
-/*
-	Name: magic_box_init
-	Namespace: zm_sumpf_magic_box
-	Checksum: 0xD83F6499
-	Offset: 0x2C8
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_init() {
   level thread waitfor_flag_open_chest_location("nw_magic_box");
   level thread waitfor_flag_open_chest_location("ne_magic_box");
@@ -25,15 +19,6 @@ function magic_box_init() {
   level.pandora_fx_func = & swamp_pandora_fx_func;
 }
 
-/*
-	Name: swamp_pandora_fx_func
-	Namespace: zm_sumpf_magic_box
-	Checksum: 0x85698F57
-	Offset: 0x390
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function swamp_pandora_fx_func() {
   self.pandora_light = spawn("script_model", self.origin);
   self.pandora_light.angles = self.angles + (vectorscale((-1, -1, 0), 90));
@@ -45,15 +30,6 @@ function swamp_pandora_fx_func() {
   }
 }
 
-/*
-	Name: waitfor_flag_open_chest_location
-	Namespace: zm_sumpf_magic_box
-	Checksum: 0xDC865184
-	Offset: 0x490
-	Size: 0x2FA
-	Parameters: 1
-	Flags: Linked
-*/
 function waitfor_flag_open_chest_location(which) {
   wait(3);
   switch (which) {
@@ -119,19 +95,10 @@ function waitfor_flag_open_chest_location(which) {
   }
 }
 
-/*
-	Name: function_a0db1fb9
-	Namespace: zm_sumpf_magic_box
-	Checksum: 0x1AA1F55A
-	Offset: 0x798
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a0db1fb9() {
   penbuytrigger = getentarray("pendulum_buy_trigger", "targetname");
   foreach(var_d8a7af6f in penbuytrigger) {
-    var_d8a7af6f sethintstring( & "ZOMBIE_CLEAR_DEBRIS");
+    var_d8a7af6f sethintstring(&"ZOMBIE_CLEAR_DEBRIS");
     var_d8a7af6f setcursorhint("HINT_NOICON");
   }
   level flag::wait_till("nw_magic_box");

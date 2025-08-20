@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\ai\warlord.gsc
+*************************************************/
+
 #using scripts\shared\ai\archetype_locomotion_utility;
 #using scripts\shared\ai\archetype_mocomps_utility;
 #using scripts\shared\ai\archetype_utility;
@@ -20,31 +24,12 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace warlord;
 
-/*
-	Name: __init__sytem__
-	Namespace: warlord
-	Checksum: 0x297F0D08
-	Offset: 0x728
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("warlord", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: warlord
-	Checksum: 0x4CC9924B
-	Offset: 0x768
-	Size: 0x13C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   spawner::add_archetype_spawn_function("warlord", & warlordbehavior::archetypewarlordblackboardinit);
   spawner::add_archetype_spawn_function("warlord", & warlordserverutils::warlordspawnsetup);
@@ -59,15 +44,6 @@ function __init__() {
 
 #namespace warlordbehavior;
 
-/*
-	Name: registerbehaviorscriptfunctions
-	Namespace: warlordbehavior
-	Checksum: 0x8B1E11DC
-	Offset: 0x8B0
-	Size: 0x1AC
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec registerbehaviorscriptfunctions() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("warlordCanJukeCondition", & canjukecondition);
   behaviortreenetworkutility::registerbehaviortreescriptapi("warlordCanTacticalJukeCondition", & cantacticaljukecondition);
@@ -81,48 +57,19 @@ function autoexec registerbehaviorscriptfunctions() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("WarlordAngryAttack", & warlordangryattack);
 }
 
-/*
-	Name: archetypewarlordblackboardinit
-	Namespace: warlordbehavior
-	Checksum: 0x66861B70
-	Offset: 0xA68
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private archetypewarlordblackboardinit() {
   blackboard::createblackboardforentity(self);
   ai::createinterfaceforentity(self);
   self aiutility::registerutilityblackboardattributes();
   self.___archetypeonanimscriptedcallback = & archetypewarlordonanimscriptedcallback;
-  /#
   self finalizetrackedblackboardattributes();
-  # /
 }
 
-/*
-	Name: archetypewarlordonanimscriptedcallback
-	Namespace: warlordbehavior
-	Checksum: 0x725E3DA9
-	Offset: 0xAF0
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private archetypewarlordonanimscriptedcallback(entity) {
   entity.__blackboard = undefined;
   entity archetypewarlordblackboardinit();
 }
 
-/*
-	Name: shouldhuntenemyplayer
-	Namespace: warlordbehavior
-	Checksum: 0x6819054A
-	Offset: 0xB30
-	Size: 0x50
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private shouldhuntenemyplayer(entity) {
   if(isdefined(entity.enemy) && isdefined(entity.huntenemytime) && gettime() < entity.huntenemytime) {
     return true;
@@ -130,30 +77,17 @@ function private shouldhuntenemyplayer(entity) {
   return false;
 }
 
-/*
-	Name: _warlordhuntenemy
-	Namespace: warlordbehavior
-	Checksum: 0x310DC509
-	Offset: 0xB88
-	Size: 0x3AC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _warlordhuntenemy(entity) {
-  /#
   warlorddebughelpers::trystate(entity, 3, 1);
-  # /
-    if(distance2dsquared(entity.origin, self lastknownpos(self.enemy)) <= (250 * 250)) {
-      return false;
-    }
+  if(distance2dsquared(entity.origin, self lastknownpos(self.enemy)) <= (250 * 250)) {
+    return false;
+  }
   if(isdefined(entity.huntupdatenexttime) && gettime() < entity.huntupdatenexttime) {
     return false;
   }
   if(entity.isangryattack) {
-    /#
     warlorddebughelpers::printstate(3, (1, 0, 1), "");
-    # /
-      return false;
+    return false;
   }
   positiononnavmesh = getclosestpointonnavmesh(self lastknownpos(self.enemy), 200);
   if(!isdefined(positiononnavmesh)) {
@@ -175,30 +109,17 @@ function private _warlordhuntenemy(entity) {
       }
     }
     if(isdefined(closestpoint)) {
-      /#
       warlorddebughelpers::setcurrentstate(entity, 3, 1);
-      # /
-        entity useposition(closestpoint);
+      entity useposition(closestpoint);
       entity.huntupdatenexttime = gettime() + randomintrange(500, 1500);
       return true;
     }
   }
-  /#
   warlorddebughelpers::setstatefailed(entity, 3);
-  # /
-    entity.huntenemytime = undefined;
+  entity.huntenemytime = undefined;
   return false;
 }
 
-/*
-	Name: choosebetterpositionservice
-	Namespace: warlordbehavior
-	Checksum: 0xB162A48F
-	Offset: 0xF40
-	Size: 0x1284
-	Parameters: 1
-	Flags: Linked
-*/
 function choosebetterpositionservice(entity) {
   if(entity asmistransitionrunning() || entity getbehaviortreestatus() != 5 || entity asmissubstatepending() || entity asmistransdecrunning()) {
     return 0;
@@ -209,17 +130,15 @@ function choosebetterpositionservice(entity) {
   bapproachinggoal = entity isapproachinggoal();
   if(!bapproachinggoal) {
     warlordserverutils::clearpreferedpoint(entity);
-    /#
     warlorddebughelpers::setcurrentstate(entity, 6);
-    # /
-      if(isdefined(entity.goalent) || entity.goalradius < 72) {
-        goalposonmesh = getclosestpointonnavmesh(self.goalpos, 200);
-        if(!isdefined(goalposonmesh)) {
-          goalposonmesh = self.goalpos;
-        }
-        entity useposition(goalposonmesh);
-        return 1;
+    if(isdefined(entity.goalent) || entity.goalradius < 72) {
+      goalposonmesh = getclosestpointonnavmesh(self.goalpos, 200);
+      if(!isdefined(goalposonmesh)) {
+        goalposonmesh = self.goalpos;
       }
+      entity useposition(goalposonmesh);
+      return 1;
+    }
   }
   if(bapproachinggoal && shouldhuntenemyplayer(entity)) {
     return _warlordhuntenemy(entity);
@@ -230,10 +149,8 @@ function choosebetterpositionservice(entity) {
   if(isdefined(entity.lastenemysightpos) && !warlordserverutils::havetoolowtoattackenemy(entity)) {
     searchorigin = entity.lastenemysightpos;
   } else {
-    /#
     entity warlorddebughelpers::printstate(undefined, (1, 0, 0), "");
-    # /
-      searchorigin = entity.goalpos;
+    searchorigin = entity.goalpos;
   }
   if(isdefined(searchorigin)) {
     searchorigin = getclosestpointonnavmesh(searchorigin, 200);
@@ -245,10 +162,8 @@ function choosebetterpositionservice(entity) {
     shouldrepath = 1;
   }
   if(isdefined(entity.enemy) && !entity seerecently(entity.enemy, 2) && isdefined(entity.lastenemysightpos)) {
-    /#
     entity warlorddebughelpers::printstate(undefined, (1, 1, 1), "");
-    # /
-      istrackingenemylastpos = 1;
+    istrackingenemylastpos = 1;
     if(isdefined(entity.pathgoalpos)) {
       distancetogoalsqr = distancesquared(searchorigin, entity.pathgoalpos);
       if(distancetogoalsqr < (200 * 200)) {
@@ -365,10 +280,8 @@ function choosebetterpositionservice(entity) {
           }
           randompoints[randompoints.size] = entity.goalpos;
         } else {
-          /#
           warlorddebughelpers::setstatefailed(entity, 5);
-          # /
-            return 0;
+          return 0;
         }
       }
     }
@@ -411,11 +324,9 @@ function choosebetterpositionservice(entity) {
         goalweight = pointweight;
         goalposition = randompoints[index];
       }
-      /#
       if(getdvarint("") > 0 && isdefined(getentbynum(getdvarint(""))) && entity == getentbynum(getdvarint(""))) {
         as_debug::debugdrawweightedpoint(entity, randompoints[index], pointweight, -1.25, 1.75);
       }
-      # /
     }
     normalpointsmaxgoalweight = goalweight;
     foreach(point in preferedpoints) {
@@ -428,43 +339,28 @@ function choosebetterpositionservice(entity) {
         goalposition = point.origin;
         preferedpoint = point;
       }
-      /#
       if(getdvarint("") > 0 && isdefined(getentbynum(getdvarint(""))) && entity == getentbynum(getdvarint(""))) {
         as_debug::debugdrawweightedpoint(entity, point.origin, pointweight, -1.25, 1.75);
       }
-      # /
     }
     if(isdefined(goalposition)) {
       if(entity findpath(entity.origin, goalposition, 1, 0)) {
         entity useposition(goalposition);
         entity.nextfindbetterpositiontime = gettime() + entity.coversearchinterval;
         if(isdefined(preferedpoint)) {
-          /#
           warlorddebughelpers::setcurrentstate(entity, 4);
-          # /
-            warlordserverutils::setpreferedpoint(entity, preferedpoint);
+          warlordserverutils::setpreferedpoint(entity, preferedpoint);
         }
-        /#
         if(!isdefined(preferedpoint)) {
           warlorddebughelpers::setcurrentstate(entity, 5);
         }
-        # /
-          return 1;
+        return 1;
       }
     }
   }
   return 0;
 }
 
-/*
-	Name: canjukecondition
-	Namespace: warlordbehavior
-	Checksum: 0xE169C2F2
-	Offset: 0x21D0
-	Size: 0x4A
-	Parameters: 1
-	Flags: Linked
-*/
 function canjukecondition(behaviortreeentity) {
   if(isdefined(behaviortreeentity.nextjuketime) && gettime() < behaviortreeentity.nextjuketime) {
     return 0;
@@ -472,15 +368,6 @@ function canjukecondition(behaviortreeentity) {
   return warlordserverutils::warlordcanjuke(behaviortreeentity);
 }
 
-/*
-	Name: cantacticaljukecondition
-	Namespace: warlordbehavior
-	Checksum: 0x4E3031FE
-	Offset: 0x2228
-	Size: 0x4A
-	Parameters: 1
-	Flags: Linked
-*/
 function cantacticaljukecondition(behaviortreeentity) {
   if(isdefined(behaviortreeentity.nextjuketime) && gettime() < behaviortreeentity.nextjuketime) {
     return 0;
@@ -488,15 +375,6 @@ function cantacticaljukecondition(behaviortreeentity) {
   return warlordserverutils::warlordcantacticaljuke(behaviortreeentity);
 }
 
-/*
-	Name: warlordshouldnormalmelee
-	Namespace: warlordbehavior
-	Checksum: 0xAC318479
-	Offset: 0x2280
-	Size: 0x298
-	Parameters: 1
-	Flags: Linked
-*/
 function warlordshouldnormalmelee(behaviortreeentity) {
   if(isdefined(behaviortreeentity.enemy) && (!(isdefined(behaviortreeentity.enemy.allowdeath) && behaviortreeentity.enemy.allowdeath))) {
     return false;
@@ -532,28 +410,10 @@ function warlordshouldnormalmelee(behaviortreeentity) {
   return false;
 }
 
-/*
-	Name: cantakepaincondition
-	Namespace: warlordbehavior
-	Checksum: 0x4E15C437
-	Offset: 0x2520
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function cantakepaincondition(behaviortreeentity) {
   return gettime() >= behaviortreeentity.var_2ac908f2;
 }
 
-/*
-	Name: jukeaction
-	Namespace: warlordbehavior
-	Checksum: 0x5C456C57
-	Offset: 0x2548
-	Size: 0x1C0
-	Parameters: 2
-	Flags: Linked
-*/
 function jukeaction(behaviortreeentity, asmstatename) {
   if(warlordserverutils::havetoolowtoattackenemy(behaviortreeentity)) {
     nextjuketime = 1000;
@@ -582,15 +442,6 @@ function jukeaction(behaviortreeentity, asmstatename) {
   return 5;
 }
 
-/*
-	Name: jukeactionterminate
-	Namespace: warlordbehavior
-	Checksum: 0xFDCC7FFA
-	Offset: 0x2710
-	Size: 0xB0
-	Parameters: 2
-	Flags: Linked
-*/
 function jukeactionterminate(behaviortreeentity, asmstatename) {
   blackboard::setblackboardattribute(behaviortreeentity, "_juke_direction", undefined);
   clientfield::set("warlord_thruster_direction", 0);
@@ -602,44 +453,17 @@ function jukeactionterminate(behaviortreeentity, asmstatename) {
   return 4;
 }
 
-/*
-	Name: deathaction
-	Namespace: warlordbehavior
-	Checksum: 0x5E96BEC8
-	Offset: 0x27C8
-	Size: 0x50
-	Parameters: 2
-	Flags: Linked
-*/
 function deathaction(behaviortreeentity, asmstatename) {
   clientfield::set("warlord_damage_state", 3);
   animationstatenetworkutility::requeststate(behaviortreeentity, asmstatename);
   return 5;
 }
 
-/*
-	Name: exposedpainactionstart
-	Namespace: warlordbehavior
-	Checksum: 0xFA8D1E45
-	Offset: 0x2820
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function exposedpainactionstart(behaviortreeentity) {
   behaviortreeentity.var_2ac908f2 = gettime() + randomintrange(500, 2500);
   aiutility::keepclaimnode(behaviortreeentity);
 }
 
-/*
-	Name: shouldbeangrycondition
-	Namespace: warlordbehavior
-	Checksum: 0xF09D1CAA
-	Offset: 0x2880
-	Size: 0x12A
-	Parameters: 1
-	Flags: Linked
-*/
 function shouldbeangrycondition(behaviortreeentity) {
   if(isdefined(behaviortreeentity.nextangrytime) && gettime() < behaviortreeentity.nextangrytime) {
     return 0;
@@ -656,20 +480,9 @@ function shouldbeangrycondition(behaviortreeentity) {
   return behaviortreeentity.isangryattack;
 }
 
-/*
-	Name: warlordangryattack
-	Namespace: warlordbehavior
-	Checksum: 0xF2D3E11F
-	Offset: 0x29B8
-	Size: 0x2E0
-	Parameters: 1
-	Flags: Linked
-*/
 function warlordangryattack(entity) {
-  /#
   warlorddebughelpers::printstate(1, (0, 1, 0), "");
-  # /
-    entity.isangryattack = 1;
+  entity.isangryattack = 1;
   entity.forcefire = 1;
   entity.accumilateddamage = 0;
   entity.nextangrytime = gettime() + 13000;
@@ -696,43 +509,23 @@ function warlordangryattack(entity) {
   return true;
 }
 
-/*
-	Name: warlordangryattack_shootthemall
-	Namespace: warlordbehavior
-	Checksum: 0xC6CC73FA
-	Offset: 0x2CA0
-	Size: 0x14C
-	Parameters: 2
-	Flags: Linked
-*/
 function warlordangryattack_shootthemall(entity, attackersarray) {
-  entity endon(# "disconnect");
-  entity endon(# "death");
-  entity notify(# "hash_b160390f");
+  entity endon("disconnect");
+  entity endon("death");
+  entity notify("hash_b160390f");
   shoottime = getdvarfloat("warlordangryattack", 3);
   foreach(attacker in attackersarray) {
     if(isdefined(attacker)) {
       entity ai::shoot_at_target("normal", attacker, undefined, shoottime, undefined, 1);
     }
   }
-  /#
   warlorddebughelpers::printstate(1, (0, 0, 1), "");
-  # /
-    entity.forcefire = 0;
+  entity.forcefire = 0;
   entity.isangryattack = 0;
 }
 
 #namespace warlordserverutils;
 
-/*
-	Name: getaliveplayerscount
-	Namespace: warlordserverutils
-	Checksum: 0xCAD3D077
-	Offset: 0x2DF8
-	Size: 0x50
-	Parameters: 1
-	Flags: None
-*/
 function getaliveplayerscount(entity) {
   if(entity.team == "allies") {
     return level.alivecount["axis"];
@@ -740,15 +533,6 @@ function getaliveplayerscount(entity) {
   return level.alivecount["allies"];
 }
 
-/*
-	Name: setwarlordaggressivemode
-	Namespace: warlordserverutils
-	Checksum: 0x3AA3D7C8
-	Offset: 0x2E58
-	Size: 0x15A
-	Parameters: 2
-	Flags: Linked
-*/
 function setwarlordaggressivemode(entity, b_aggressive_mode) {
   entity.var_568222a9 = b_aggressive_mode;
   if(isdefined(b_aggressive_mode) && b_aggressive_mode) {
@@ -762,28 +546,15 @@ function setwarlordaggressivemode(entity, b_aggressive_mode) {
   }
 }
 
-/*
-	Name: addpreferedpoint
-	Namespace: warlordserverutils
-	Checksum: 0xE8D220CF
-	Offset: 0x2FC0
-	Size: 0x1D6
-	Parameters: 5
-	Flags: Linked
-*/
 function addpreferedpoint(entity, position, min_duration, max_duration, name) {
   positiononnavmesh = getclosestpointonnavmesh(position, 200, 25);
   if(!isdefined(positiononnavmesh)) {
-    /#
     println("" + position);
-    # /
-      return;
+    return;
   }
   position = positiononnavmesh;
   if(!entity isposatgoal(position)) {
-    /#
     println("" + position);
-    # /
   }
   point = spawnstruct();
   point.origin = position;
@@ -798,15 +569,6 @@ function addpreferedpoint(entity, position, min_duration, max_duration, name) {
   entity.prefered_points[entity.prefered_points.size] = point;
 }
 
-/*
-	Name: deletepreferedpoint
-	Namespace: warlordserverutils
-	Checksum: 0x1F35D680
-	Offset: 0x31A0
-	Size: 0x1C2
-	Parameters: 2
-	Flags: Linked
-*/
 function deletepreferedpoint(entity, name) {
   if(isdefined(entity.prefered_points)) {
     points_to_remove = [];
@@ -830,29 +592,11 @@ function deletepreferedpoint(entity, name) {
   return false;
 }
 
-/*
-	Name: clearallpreferedpoints
-	Namespace: warlordserverutils
-	Checksum: 0x9836F391
-	Offset: 0x3370
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function clearallpreferedpoints(entity) {
   clearpreferedpoint(entity);
   entity.prefered_points = [];
 }
 
-/*
-	Name: clearpreferedpointsoutsidegoal
-	Namespace: warlordserverutils
-	Checksum: 0xEA480D72
-	Offset: 0x33B0
-	Size: 0x1A2
-	Parameters: 1
-	Flags: Linked
-*/
 function clearpreferedpointsoutsidegoal(entity) {
   points_to_remove = [];
   foreach(point in entity.prefered_points) {
@@ -870,47 +614,18 @@ function clearpreferedpointsoutsidegoal(entity) {
   }
 }
 
-/*
-	Name: setpreferedpoint
-	Namespace: warlordserverutils
-	Checksum: 0xDBFFF006
-	Offset: 0x3560
-	Size: 0x44
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private setpreferedpoint(entity, point) {
   entity.var_541cb3cf = entity.current_prefered_point;
   entity.current_prefered_point = point;
 }
 
-/*
-	Name: clearpreferedpoint
-	Namespace: warlordserverutils
-	Checksum: 0x7FA14ED5
-	Offset: 0x35B0
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private clearpreferedpoint(entity) {
-  /#
   warlorddebughelpers::setcurrentstate(entity, undefined);
-  # /
-    entity.var_7e5dd3e4 = undefined;
+  entity.var_7e5dd3e4 = undefined;
   entity.current_prefered_point_expiration = undefined;
   entity.current_prefered_point = undefined;
 }
 
-/*
-	Name: atpreferedpoint
-	Namespace: warlordserverutils
-	Checksum: 0x884EF31C
-	Offset: 0x3610
-	Size: 0xB0
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private atpreferedpoint(entity) {
   if(isdefined(entity.current_prefered_point) && (distancesquared(entity.current_prefered_point.origin, entity.origin) < (36 * 36) && (abs(self.current_prefered_point.origin[2] - entity.origin[2])) < 45)) {
     return true;
@@ -918,15 +633,6 @@ function private atpreferedpoint(entity) {
   return false;
 }
 
-/*
-	Name: reachingpreferedpoint
-	Namespace: warlordserverutils
-	Checksum: 0x9A2E3624
-	Offset: 0x36C8
-	Size: 0x88
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private reachingpreferedpoint(entity) {
   if(!isdefined(entity.current_prefered_point)) {
     return false;
@@ -940,15 +646,6 @@ function private reachingpreferedpoint(entity) {
   return false;
 }
 
-/*
-	Name: updatepreferedpoint
-	Namespace: warlordserverutils
-	Checksum: 0xF0F30C96
-	Offset: 0x3758
-	Size: 0x204
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private updatepreferedpoint(entity) {
   if(isdefined(entity.current_prefered_point)) {
     if(atpreferedpoint(entity)) {
@@ -980,15 +677,6 @@ function private updatepreferedpoint(entity) {
   return false;
 }
 
-/*
-	Name: getpreferedvalidpoints
-	Namespace: warlordserverutils
-	Checksum: 0xB5364E33
-	Offset: 0x3968
-	Size: 0x244
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private getpreferedvalidpoints(entity) {
   validpoints = [];
   if(isdefined(entity.prefered_points)) {
@@ -1017,15 +705,6 @@ function private getpreferedvalidpoints(entity) {
   return validpoints;
 }
 
-/*
-	Name: getscaledforplayers
-	Namespace: warlordserverutils
-	Checksum: 0xA539659F
-	Offset: 0x3BB8
-	Size: 0xA6
-	Parameters: 4
-	Flags: Linked
-*/
 function getscaledforplayers(val, scale2, scale3, scale4) {
   if(!isdefined(level.players)) {
     return val;
@@ -1042,15 +721,6 @@ function getscaledforplayers(val, scale2, scale3, scale4) {
   return val;
 }
 
-/*
-	Name: warlordcanjuke
-	Namespace: warlordserverutils
-	Checksum: 0x52DEA568
-	Offset: 0x3C68
-	Size: 0x154
-	Parameters: 1
-	Flags: Linked
-*/
 function warlordcanjuke(entity) {
   if(!isdefined(entity.enemy)) {
     return false;
@@ -1074,15 +744,6 @@ function warlordcanjuke(entity) {
   return false;
 }
 
-/*
-	Name: warlordcantacticaljuke
-	Namespace: warlordserverutils
-	Checksum: 0xDCAACE65
-	Offset: 0x3DC8
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function warlordcantacticaljuke(entity) {
   if(entity haspath()) {
     locomotiondirection = aiutility::bb_getlocomotionfaceenemyquadrant();
@@ -1098,15 +759,6 @@ function warlordcantacticaljuke(entity) {
   return false;
 }
 
-/*
-	Name: isenemytoolowtoattack
-	Namespace: warlordserverutils
-	Checksum: 0xEE04B64
-	Offset: 0x3EC8
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked
-*/
 function isenemytoolowtoattack(enemy) {
   if(isplayer(enemy)) {
     if(isdefined(enemy.laststand) && enemy.laststand) {
@@ -1120,15 +772,6 @@ function isenemytoolowtoattack(enemy) {
   return false;
 }
 
-/*
-	Name: havetoolowtoattackenemy
-	Namespace: warlordserverutils
-	Checksum: 0xD70C1A6C
-	Offset: 0x3F78
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function havetoolowtoattackenemy(entity) {
   if(!isdefined(entity.lasttimetohavecrouchingenemy)) {
     return false;
@@ -1140,15 +783,6 @@ function havetoolowtoattackenemy(entity) {
   return false;
 }
 
-/*
-	Name: setenemytoolowtoattack
-	Namespace: warlordserverutils
-	Checksum: 0xE8FC266E
-	Offset: 0x3FD8
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function setenemytoolowtoattack(entity) {
   if(havetoolowtoattackenemy(entity)) {
     return;
@@ -1157,15 +791,6 @@ function setenemytoolowtoattack(entity) {
   entity.hascrouchingenemy = 1;
 }
 
-/*
-	Name: computeattackerthreat
-	Namespace: warlordserverutils
-	Checksum: 0xDB8C660C
-	Offset: 0x4030
-	Size: 0x1C4
-	Parameters: 2
-	Flags: Linked
-*/
 function computeattackerthreat(entity, attackerinfo) {
   if(attackerinfo.damage < 250) {
     return 0;
@@ -1196,15 +821,6 @@ function computeattackerthreat(entity, attackerinfo) {
   return threat;
 }
 
-/*
-	Name: shouldswitchtonewthreat
-	Namespace: warlordserverutils
-	Checksum: 0xFA89E166
-	Offset: 0x4200
-	Size: 0xB2
-	Parameters: 3
-	Flags: Linked
-*/
 function shouldswitchtonewthreat(entity, attacker, threat) {
   if(entity.enemy === attacker) {
     return false;
@@ -1224,15 +840,6 @@ function shouldswitchtonewthreat(entity, attacker, threat) {
   return true;
 }
 
-/*
-	Name: updateattackerslist
-	Namespace: warlordserverutils
-	Checksum: 0x23F4B590
-	Offset: 0x42C0
-	Size: 0x49C
-	Parameters: 3
-	Flags: Linked
-*/
 function updateattackerslist(entity, newattacker, damage) {
   if(!isdefined(entity.knownattackers)) {
     entity.knownattackers = [];
@@ -1288,15 +895,6 @@ function updateattackerslist(entity, newattacker, damage) {
   checkifweshouldmove(entity);
 }
 
-/*
-	Name: checkifweshouldmove
-	Namespace: warlordserverutils
-	Checksum: 0xBC7908AA
-	Offset: 0x4768
-	Size: 0x24C
-	Parameters: 1
-	Flags: Linked
-*/
 function checkifweshouldmove(entity) {
   if(!isdefined(entity.knownattackers) || entity.knownattackers.size <= 1) {
     return;
@@ -1333,45 +931,23 @@ function checkifweshouldmove(entity) {
   }
 }
 
-/*
-	Name: warlorddangerousenemyattack
-	Namespace: warlordserverutils
-	Checksum: 0xB8E19204
-	Offset: 0x49C0
-	Size: 0x14C
-	Parameters: 3
-	Flags: Linked
-*/
 function warlorddangerousenemyattack(entity, attacker, threat) {
-  entity endon(# "disconnect");
-  entity endon(# "death");
-  attacker endon(# "death");
-  entity endon(# "hash_b160390f");
-  entity notify(# "hash_beb03d5e");
-  entity endon(# "hash_beb03d5e");
+  entity endon("disconnect");
+  entity endon("death");
+  attacker endon("death");
+  entity endon("hash_b160390f");
+  entity notify("hash_beb03d5e");
+  entity endon("hash_beb03d5e");
   entity.lastdangerousattackertime = gettime();
   entity.currentdangerousattacker = attacker;
   entity.currentmaxthreat = threat;
-  /#
   warlorddebughelpers::printstate(0, (0, 1, 0), "");
-  # /
-    shoottime = getdvarfloat("warlordangryattack", 3);
+  shoottime = getdvarfloat("warlordangryattack", 3);
   entity ai::shoot_at_target("normal", attacker, undefined, shoottime, undefined, 1);
   entity.currentdangerousattacker = undefined;
-  /#
   warlorddebughelpers::printstate(0, (0, 0, 1), "");
-  # /
 }
 
-/*
-	Name: warlorddamageoverride
-	Namespace: warlordserverutils
-	Checksum: 0x81AB499E
-	Offset: 0x4B18
-	Size: 0x2F4
-	Parameters: 15
-	Flags: Linked
-*/
 function warlorddamageoverride(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, timeoffset, boneindex, modelindex, surfacetype, surfacenormal) {
   entity = self;
   if(!isplayer(eattacker)) {
@@ -1406,15 +982,6 @@ function warlorddamageoverride(einflictor, eattacker, idamage, idflags, smeansof
   return idamage;
 }
 
-/*
-	Name: warlordspawnsetup
-	Namespace: warlordserverutils
-	Checksum: 0x70401228
-	Offset: 0x4E18
-	Size: 0x236
-	Parameters: 0
-	Flags: Linked
-*/
 function warlordspawnsetup() {
   entity = self;
   entity.var_568222a9 = 0;
@@ -1444,15 +1011,6 @@ function warlordspawnsetup() {
   }
 }
 
-/*
-	Name: warlord_projectile_watcher
-	Namespace: warlordserverutils
-	Checksum: 0xEFBFE8FE
-	Offset: 0x5058
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function warlord_projectile_watcher() {
   if(!isdefined(self.missile_repulsor)) {
     self.missile_repulsor = missile_createrepulsorent(self, 40000, 256, 1);
@@ -1460,17 +1018,8 @@ function warlord_projectile_watcher() {
   self thread repulsor_fx();
 }
 
-/*
-	Name: remove_repulsor
-	Namespace: warlordserverutils
-	Checksum: 0xBA2D75E4
-	Offset: 0x50B8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function remove_repulsor() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.missile_repulsor)) {
     missile_deleteattractor(self.missile_repulsor);
     self.missile_repulsor = undefined;
@@ -1481,37 +1030,19 @@ function remove_repulsor() {
   }
 }
 
-/*
-	Name: repulsor_fx
-	Namespace: warlordserverutils
-	Checksum: 0x9B179A14
-	Offset: 0x5128
-	Size: 0xCE
-	Parameters: 0
-	Flags: Linked
-*/
 function repulsor_fx() {
-  self endon(# "death");
-  self endon(# "killing_repulsor");
+  self endon("death");
+  self endon("killing_repulsor");
   while (true) {
     self util::waittill_any("projectile_applyattractor", "play_meleefx");
     playfxontag("vehicle/fx_quadtank_airburst", self, "tag_origin");
     playfxontag("vehicle/fx_quadtank_airburst_ground", self, "tag_origin");
     self playsound("wpn_trophy_alert");
     self thread remove_repulsor();
-    self notify(# "killing_repulsor");
+    self notify("killing_repulsor");
   }
 }
 
-/*
-	Name: trigger_player_shock_fx
-	Namespace: warlordserverutils
-	Checksum: 0xCA21C26E
-	Offset: 0x5200
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function trigger_player_shock_fx() {
   if(!isdefined(self._player_shock_fx_quadtank_melee)) {
     self._player_shock_fx_quadtank_melee = 0;
@@ -1522,17 +1053,7 @@ function trigger_player_shock_fx() {
 
 #namespace warlorddebughelpers;
 
-/*
-	Name: printstate
-	Namespace: warlorddebughelpers
-	Checksum: 0x90CAF4EC
-	Offset: 0x5260
-	Size: 0x274
-	Parameters: 3
-	Flags: Linked
-*/
 function printstate(state, color, string) {
-  /#
   if(getdvarint("") > 0) {
     if(!isdefined(string)) {
       string = "";
@@ -1570,40 +1091,18 @@ function printstate(state, color, string) {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: trystate
-	Namespace: warlorddebughelpers
-	Checksum: 0x656E1237
-	Offset: 0x54E0
-	Size: 0x94
-	Parameters: 3
-	Flags: Linked
-*/
 function trystate(entity, state, bchecknew) {
-  /#
   if(getdvarint("") > 0) {
     if(!(isdefined(bchecknew) && isnewstate(entity, state))) {
       color = (1, 1, 1);
       entity printstate(state, color);
     }
   }
-  # /
 }
 
-/*
-	Name: setcurrentstate
-	Namespace: warlorddebughelpers
-	Checksum: 0x51C59591
-	Offset: 0x5580
-	Size: 0x118
-	Parameters: 3
-	Flags: Linked
-*/
 function setcurrentstate(entity, state, bcanupdate = 0) {
-  /#
   if(getdvarint("") > 0) {
     if(!isdefined(bcanupdate) || isnewstate(entity, state)) {
       color = (0, 1, 0);
@@ -1616,37 +1115,16 @@ function setcurrentstate(entity, state, bcanupdate = 0) {
     }
     entity printstate(state, color);
   }
-  # /
-    entity.currentstate = state;
+  entity.currentstate = state;
 }
 
-/*
-	Name: setstatefailed
-	Namespace: warlorddebughelpers
-	Checksum: 0x5896E1E2
-	Offset: 0x56A0
-	Size: 0x6C
-	Parameters: 2
-	Flags: Linked
-*/
 function setstatefailed(entity, state) {
-  /#
   if(getdvarint("") > 0) {
     color = (1, 1, 0);
     entity printstate(state, color);
   }
-  # /
 }
 
-/*
-	Name: isnewstate
-	Namespace: warlorddebughelpers
-	Checksum: 0xDB5AA654
-	Offset: 0x5718
-	Size: 0x7E
-	Parameters: 2
-	Flags: Linked
-*/
 function isnewstate(entity, state) {
   bnewstate = 0;
   if(!isdefined(entity.currentstate)) {

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/***********************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_zurich_coalescence_root_cinematics.gsc
+***********************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_dialog;
 #using scripts\cp\_load;
@@ -15,49 +19,21 @@
 #using scripts\shared\lui_shared;
 #using scripts\shared\scene_shared;
 #using scripts\shared\util_shared;
-
 #namespace root_cinematics;
 
-/*
-	Name: main
-	Namespace: root_cinematics
-	Checksum: 0x63AE019F
-	Offset: 0x768
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   init_clientfields();
 }
 
-/*
-	Name: init_clientfields
-	Namespace: root_cinematics
-	Checksum: 0x3C436333
-	Offset: 0x788
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function init_clientfields() {
   clientfield::register("scriptmover", "exploding_tree", 1, 1, "counter");
 }
 
-/*
-	Name: play_scene
-	Namespace: root_cinematics
-	Checksum: 0x2C0A4683
-	Offset: 0x7C8
-	Size: 0x1DC
-	Parameters: 2
-	Flags: Linked
-*/
 function play_scene(str_objective, e_player) {
   a_ai = getaiteamarray("axis");
   array::thread_all(a_ai, & zurich_util::function_48463818);
   if(isdefined(level.var_65070634)) {
-    level.var_65070634 notify(# "hash_11a8c313");
+    level.var_65070634 notify("hash_11a8c313");
   }
   function_32b529d8(str_objective, e_player);
   switch (str_objective) {
@@ -88,19 +64,10 @@ function play_scene(str_objective, e_player) {
   }
   level thread function_33367f39();
   function_c7ab7e12(str_movie);
-  level notify(# "root_scene_completed");
+  level notify("root_scene_completed");
   skipto::objective_completed(str_objective);
 }
 
-/*
-	Name: function_c7ab7e12
-	Namespace: root_cinematics
-	Checksum: 0xD0A3EDB8
-	Offset: 0x9B0
-	Size: 0x18C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c7ab7e12(str_movie) {
   foreach(player in level.players) {
     player.dont_show_hud = 1;
@@ -112,25 +79,16 @@ function function_c7ab7e12(str_movie) {
       player thread function_4b299142(str_movie);
     }
   }
-  level waittill(# "movie_done");
+  level waittill("movie_done");
   array::thread_all(level.players, & scene::clear_scene_skipping_ui);
 }
 
-/*
-	Name: function_4b299142
-	Namespace: root_cinematics
-	Checksum: 0x1EE30D0E
-	Offset: 0xB48
-	Size: 0x576
-	Parameters: 1
-	Flags: Linked
-*/
 function function_4b299142(str_movie) {
   if(sessionmodeiscampaignzombiesgame()) {
     return;
   }
-  self endon(# "disconnect");
-  level endon(# "movie_done");
+  self endon("disconnect");
+  level endon("movie_done");
   b_skip_scene = 0;
   foreach(player in level.players) {
     if(isdefined(player.skip_scene_menu_handle)) {
@@ -189,23 +147,14 @@ function function_4b299142(str_movie) {
       level.var_a2c60984 = 1;
     }
     foreach(player in level.players) {
-      player notify(# "menuresponse", "FullscreenMovie", "finished_movie_playback");
+      player notify("menuresponse", "FullscreenMovie", "finished_movie_playback");
     }
   }
 }
 
-/*
-	Name: function_550866c2
-	Namespace: root_cinematics
-	Checksum: 0x1EB8F19C
-	Offset: 0x10C8
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_550866c2() {
-  level endon(# "root_scene_completed");
-  level endon(# "movie_done");
+  level endon("root_scene_completed");
+  level endon("movie_done");
   wait(0.2);
   level thread namespace_67110270::function_38a68128();
   level dialog::remote("corv_i_was_born_in_the_0", 1, "NO_DNI");
@@ -217,18 +166,9 @@ function function_550866c2() {
   level dialog::remote("corv_then_darkness_1", 1, "NO_DNI");
 }
 
-/*
-	Name: function_7fdd0557
-	Namespace: root_cinematics
-	Checksum: 0xC3DA610B
-	Offset: 0x1260
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7fdd0557() {
-  level endon(# "root_scene_completed");
-  level endon(# "movie_done");
+  level endon("root_scene_completed");
+  level endon("movie_done");
   level thread namespace_67110270::function_67c7b7bc();
   level dialog::remote("corv_the_darkness_and_iso_0", 0, "NO_DNI");
   level dialog::remote("corv_suddenly_i_had_new_0", 0, "NO_DNI");
@@ -237,18 +177,9 @@ function function_7fdd0557() {
   level dialog::remote("corv_we_needed_answers_0", 0, "NO_DNI");
 }
 
-/*
-	Name: function_6cc3b883
-	Namespace: root_cinematics
-	Checksum: 0xEDABFBDC
-	Offset: 0x1388
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_6cc3b883() {
-  level endon(# "root_scene_completed");
-  level endon(# "movie_done");
+  level endon("root_scene_completed");
+  level endon("movie_done");
   level thread namespace_67110270::function_668ff14b();
   level dialog::remote("corv_the_harder_we_looked_0", 1, "NO_DNI");
   level dialog::remote("corv_in_our_search_for_an_0", 0, "NO_DNI");
@@ -258,15 +189,6 @@ function function_6cc3b883() {
   level dialog::remote("corv_do_you_know_0", 0, "NO_DNI");
 }
 
-/*
-	Name: function_33367f39
-	Namespace: root_cinematics
-	Checksum: 0x4E250363
-	Offset: 0x14E0
-	Size: 0x202
-	Parameters: 0
-	Flags: Linked
-*/
 function function_33367f39() {
   level.overrideplayerdamage = & player_callback_damage;
   level thread zurich_util::delete_all_ai();
@@ -275,7 +197,7 @@ function function_33367f39() {
     player playerlinktodelta(player.e_anchor, "tag_origin", 1, 15, 15, 0, 15);
     player freezecontrols(1);
   }
-  level waittill(# "root_scene_completed");
+  level waittill("root_scene_completed");
   level.overrideplayerdamage = undefined;
   foreach(player in level.players) {
     player freezecontrols(0);
@@ -285,15 +207,6 @@ function function_33367f39() {
   }
 }
 
-/*
-	Name: function_32b529d8
-	Namespace: root_cinematics
-	Checksum: 0x9D88A47A
-	Offset: 0x16F0
-	Size: 0x212
-	Parameters: 2
-	Flags: Linked
-*/
 function function_32b529d8(str_objective, e_player) {
   switch (str_objective) {
     case "root_zurich_vortex": {
@@ -323,22 +236,13 @@ function function_32b529d8(str_objective, e_player) {
   level scene::init(var_470af250);
   level thread function_98192f84(var_f9202c4e, var_470af250, str_exploder);
   level thread scene::play(str_player_scene, e_player);
-  level waittill(# "fade_out");
+  level waittill("fade_out");
   level thread util::screen_fade_out(1);
   level waittill(str_player_scene + "_done");
   level util::teleport_players_igc(str_objective + "_igc_end");
-  level notify(# "hash_87560491");
+  level notify("hash_87560491");
 }
 
-/*
-	Name: function_98192f84
-	Namespace: root_cinematics
-	Checksum: 0xA7B0FF5
-	Offset: 0x1910
-	Size: 0x74
-	Parameters: 3
-	Flags: Linked
-*/
 function function_98192f84(var_f9202c4e, var_470af250, str_exploder) {
   wait(4);
   exploder::stop_exploder(str_exploder);
@@ -346,28 +250,10 @@ function function_98192f84(var_f9202c4e, var_470af250, str_exploder) {
   level thread scene::play(var_470af250);
 }
 
-/*
-	Name: function_2fbd0bea
-	Namespace: root_cinematics
-	Checksum: 0xD49EEEDD
-	Offset: 0x1990
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_2fbd0bea(a_ents) {
   a_ents["dni_tree_break"] clientfield::set("corvus_tree_shader", 1);
 }
 
-/*
-	Name: player_callback_damage
-	Namespace: root_cinematics
-	Checksum: 0xC4A8F918
-	Offset: 0x19D8
-	Size: 0x5E
-	Parameters: 11
-	Flags: Linked
-*/
 function player_callback_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, psoffsettime, boneindex) {
   return false;
 }

@@ -1,37 +1,22 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_moon_fx.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_moon_fx;
 
-/*
-	Name: main
-	Namespace: zm_moon_fx
-	Checksum: 0xAD1C205C
-	Offset: 0x10C0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_createfx_fx();
   precache_scripted_fx();
   level thread fx_overrides();
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_moon_fx
-	Checksum: 0xC015E12E
-	Offset: 0x1108
-	Size: 0x382
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["large_ceiling_dust"] = "maps/zombie/fx_dust_ceiling_impact_lg_mdbrown";
   level._effect["poltergeist"] = "zombie/fx_barrier_buy_zmb";
@@ -67,15 +52,6 @@ function precache_scripted_fx() {
   level._effect["osc_button_glow"] = "dlc5/moon/fx_moon_button_console_glow";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_moon_fx
-	Checksum: 0xC3236DF1
-	Offset: 0x1498
-	Size: 0x34A
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {
   level._effect["fx_mp_fog_xsm_int"] = "maps/zombie_old/fx_mp_fog_xsm_int";
   level._effect["fx_moon_fog_spawn_closet"] = "maps/zombie_moon/fx_moon_fog_spawn_closet";
@@ -109,15 +85,6 @@ function precache_createfx_fx() {
   level._effect["fx_earth_destroyed"] = "maps/zombie_moon/fx_earth_destroyed";
 }
 
-/*
-	Name: fx_overrides
-	Namespace: zm_moon_fx
-	Checksum: 0x6D15C0F3
-	Offset: 0x17F0
-	Size: 0x102
-	Parameters: 0
-	Flags: Linked
-*/
 function fx_overrides() {
   level flagsys::wait_till("load_main_complete");
   level._effect["jugger_light"] = "dlc5/zmhd/fx_perk_juggernaut";

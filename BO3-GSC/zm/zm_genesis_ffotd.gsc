@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_genesis_ffotd.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -11,18 +15,8 @@
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_genesis_ffotd;
 
-/*
-	Name: main_start
-	Namespace: zm_genesis_ffotd
-	Checksum: 0xBF7C2DB2
-	Offset: 0x358
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function main_start() {
   var_6674aa0f = struct::get("upper_courtyard_landing_pad12");
   var_6674aa0f.origin = var_6674aa0f.origin + vectorscale((1, 0, 0), 30);
@@ -31,15 +25,6 @@ function main_start() {
   level.var_92a78c17.angles = vectorscale((0, 1, 0), 317.8);
 }
 
-/*
-	Name: main_end
-	Namespace: zm_genesis_ffotd
-	Checksum: 0x7D649F02
-	Offset: 0x428
-	Size: 0x10C
-	Parameters: 0
-	Flags: Linked
-*/
 function main_end() {
   if(getdvarint("splitscreen_playerCount") <= 2) {
     spawncollision("collision_player_slick_wedge_32x256", "collider", (469.127, -6376.75, -1241), (282, 317.999, -90.001));
@@ -49,15 +34,6 @@ function main_end() {
   level thread function_d7b99564();
 }
 
-/*
-	Name: function_dce2d8a9
-	Namespace: zm_genesis_ffotd
-	Checksum: 0x82D8D4A
-	Offset: 0x540
-	Size: 0x210
-	Parameters: 1
-	Flags: Linked
-*/
 function function_dce2d8a9(str_zone) {
   if(zm_zonemgr::any_player_in_zone(str_zone)) {
     return true;
@@ -86,15 +62,6 @@ function function_dce2d8a9(str_zone) {
   return false;
 }
 
-/*
-	Name: function_d51867e
-	Namespace: zm_genesis_ffotd
-	Checksum: 0x11154F23
-	Offset: 0x758
-	Size: 0xD6
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d51867e() {
   x = self.origin[0];
   y = self.origin[1];
@@ -108,15 +75,6 @@ function function_d51867e() {
   return false;
 }
 
-/*
-	Name: function_8921895f
-	Namespace: zm_genesis_ffotd
-	Checksum: 0x4D7A0ABA
-	Offset: 0x838
-	Size: 0x188
-	Parameters: 0
-	Flags: Linked
-*/
 function function_8921895f() {
   var_cdb0f86b = getarraykeys(level.zombie_powerups);
   var_b4442b55 = array("bonus_points_team", "shield_charge", "ww_grenade", "genesis_random_weapon");
@@ -138,15 +96,6 @@ function function_8921895f() {
   return var_d7a75a6e[0];
 }
 
-/*
-	Name: function_d7b99564
-	Namespace: zm_genesis_ffotd
-	Checksum: 0xCF32072C
-	Offset: 0x9C8
-	Size: 0x45C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d7b99564() {
   var_e8eee856 = struct::spawn((5670.5, -1164, 353.5), vectorscale((0, 1, 0), 197));
   var_e8eee856.targetname = "zm_asylum_power_room_zone_spawners";

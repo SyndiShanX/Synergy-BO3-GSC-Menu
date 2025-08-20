@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_globallogic_ui.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\bots\_bot;
 #using scripts\mp\gametypes\_globallogic;
@@ -11,29 +15,10 @@
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\hud_util_shared;
 #using scripts\shared\util_shared;
-
 #namespace globallogic_ui;
 
-/*
-	Name: init
-	Namespace: globallogic_ui
-	Checksum: 0x99EC1590
-	Offset: 0x2E0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {}
 
-/*
-	Name: setupcallbacks
-	Namespace: globallogic_ui
-	Checksum: 0xA6E6F810
-	Offset: 0x2F0
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function setupcallbacks() {
   level.autoassign = & menuautoassign;
   level.spectator = & menuspectator;
@@ -41,15 +26,6 @@ function setupcallbacks() {
   level.teammenu = & menuteam;
 }
 
-/*
-	Name: freegameplayhudelems
-	Namespace: globallogic_ui
-	Checksum: 0xD3FAA7C3
-	Offset: 0x360
-	Size: 0x27C
-	Parameters: 0
-	Flags: Linked
-*/
 function freegameplayhudelems() {
   if(isdefined(self.perkicon)) {
     for (numspecialties = 0; numspecialties < level.maxspecialties; numspecialties++) {
@@ -96,15 +72,6 @@ function freegameplayhudelems() {
   }
 }
 
-/*
-	Name: teamplayercountsequal
-	Namespace: globallogic_ui
-	Checksum: 0xE71CFFAB
-	Offset: 0x5E8
-	Size: 0xC6
-	Parameters: 1
-	Flags: Linked
-*/
 function teamplayercountsequal(playercounts) {
   count = undefined;
   foreach(team in level.teams) {
@@ -119,15 +86,6 @@ function teamplayercountsequal(playercounts) {
   return true;
 }
 
-/*
-	Name: teamwithlowestplayercount
-	Namespace: globallogic_ui
-	Checksum: 0x8135AD85
-	Offset: 0x6B8
-	Size: 0xDA
-	Parameters: 2
-	Flags: Linked
-*/
 function teamwithlowestplayercount(playercounts, ignore_team) {
   count = 9999;
   lowest_team = undefined;
@@ -140,15 +98,6 @@ function teamwithlowestplayercount(playercounts, ignore_team) {
   return lowest_team;
 }
 
-/*
-	Name: shouldbespectatorlatejoin
-	Namespace: globallogic_ui
-	Checksum: 0x25E5050E
-	Offset: 0x7A0
-	Size: 0xA6
-	Parameters: 2
-	Flags: Linked
-*/
 function shouldbespectatorlatejoin(teamname, comingfrommenu) {
   if(level.rankedmatch) {
     return false;
@@ -174,29 +123,18 @@ function shouldbespectatorlatejoin(teamname, comingfrommenu) {
   return true;
 }
 
-/*
-	Name: menuautoassign
-	Namespace: globallogic_ui
-	Checksum: 0x8DAAA8EC
-	Offset: 0x850
-	Size: 0x6E4
-	Parameters: 1
-	Flags: Linked
-*/
 function menuautoassign(comingfrommenu) {
   teamkeys = getarraykeys(level.teams);
   assignment = teamkeys[randomint(teamkeys.size)];
   self closemenus();
-  self luinotifyevent( & "clear_notification_queue");
+  self luinotifyevent(&"clear_notification_queue");
   if(level.teambased) {
     if(bot::is_bot_comp_stomp()) {
       host = util::gethostplayerforbots();
-      /#
       assert(isdefined(host));
-      # /
-        if(!isdefined(host.team) || host.team == "spectator") {
-          host.team = array::random(teamkeys);
-        }
+      if(!isdefined(host.team) || host.team == "spectator") {
+        host.team = array::random(teamkeys);
+      }
       if(!self util::is_bot()) {
         assignment = host.team;
       } else {
@@ -282,23 +220,14 @@ function menuautoassign(comingfrommenu) {
   if(!isalive(self)) {
     self.statusicon = "hud_status_dead";
   }
-  self notify(# "joined_team");
-  level notify(# "joined_team");
-  callback::callback(# "hash_95a6c4c0");
-  self notify(# "end_respawn");
+  self notify("joined_team");
+  level notify("joined_team");
+  callback::callback("hash_95a6c4c0");
+  self notify("end_respawn");
   self beginclasschoice();
   self setclientscriptmainmenu(game["menu_start_menu"]);
 }
 
-/*
-	Name: teamscoresequal
-	Namespace: globallogic_ui
-	Checksum: 0xB8BA63DF
-	Offset: 0xF40
-	Size: 0xCE
-	Parameters: 0
-	Flags: Linked
-*/
 function teamscoresequal() {
   score = undefined;
   foreach(team in level.teams) {
@@ -313,15 +242,6 @@ function teamscoresequal() {
   return true;
 }
 
-/*
-	Name: teamwithlowestscore
-	Namespace: globallogic_ui
-	Checksum: 0x461C38DF
-	Offset: 0x1018
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function teamwithlowestscore() {
   score = 99999999;
   lowest_team = undefined;
@@ -333,15 +253,6 @@ function teamwithlowestscore() {
   return lowest_team;
 }
 
-/*
-	Name: pickteamfromscores
-	Namespace: globallogic_ui
-	Checksum: 0xA8DD0199
-	Offset: 0x10E8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function pickteamfromscores(teams) {
   assignment = "allies";
   if(teamscoresequal()) {
@@ -352,15 +263,6 @@ function pickteamfromscores(teams) {
   return assignment;
 }
 
-/*
-	Name: get_splitscreen_team
-	Namespace: globallogic_ui
-	Checksum: 0x50AAFE1A
-	Offset: 0x1168
-	Size: 0xCE
-	Parameters: 0
-	Flags: Linked
-*/
 function get_splitscreen_team() {
   for (index = 0; index < level.players.size; index++) {
     if(!isdefined(level.players[index])) {
@@ -380,15 +282,6 @@ function get_splitscreen_team() {
   return "";
 }
 
-/*
-	Name: updateobjectivetext
-	Namespace: globallogic_ui
-	Checksum: 0x483B5982
-	Offset: 0x1240
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function updateobjectivetext() {
   if(self.pers["team"] == "spectator") {
     self setclientcgobjectivetext("");
@@ -401,33 +294,13 @@ function updateobjectivetext() {
   }
 }
 
-/*
-	Name: closemenus
-	Namespace: globallogic_ui
-	Checksum: 0xD130293B
-	Offset: 0x1318
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function closemenus() {
   self closeingamemenu();
 }
 
-/*
-	Name: beginclasschoice
-	Namespace: globallogic_ui
-	Checksum: 0x57E9FBB8
-	Offset: 0x1340
-	Size: 0x1C4
-	Parameters: 0
-	Flags: Linked
-*/
 function beginclasschoice() {
-  /#
   assert(isdefined(level.teams[self.pers[""]]));
-  # /
-    team = self.pers["team"];
+  team = self.pers["team"];
   if(level.disableclassselection == 1 || (isdefined(self.disableclassselection) && self.disableclassselection) || getdvarint("migration_soak") == 1) {
     started_waiting = gettime();
     while (!self isstreamerready(-1, 1) && (started_waiting + 90000) > gettime()) {
@@ -446,32 +319,12 @@ function beginclasschoice() {
   self openmenu(game["menu_changeclass_" + team]);
 }
 
-/*
-	Name: showmainmenuforteam
-	Namespace: globallogic_ui
-	Checksum: 0x60589B5F
-	Offset: 0x1510
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function showmainmenuforteam() {
-  /#
   assert(isdefined(level.teams[self.pers[""]]));
-  # /
-    team = self.pers["team"];
+  team = self.pers["team"];
   self openmenu(game["menu_changeclass_" + team]);
 }
 
-/*
-	Name: menuteam
-	Namespace: globallogic_ui
-	Checksum: 0xCEA42CB3
-	Offset: 0x1590
-	Size: 0x254
-	Parameters: 1
-	Flags: Linked
-*/
 function menuteam(team) {
   self closemenus();
   if(!level.console && level.allow_teamchange == "0" && (isdefined(self.hasdonecombat) && self.hasdonecombat)) {
@@ -488,7 +341,7 @@ function menuteam(team) {
       self.leaving_team = self.pers["team"];
       self suicide();
     }
-    self luinotifyevent( & "clear_notification_queue");
+    self luinotifyevent(&"clear_notification_queue");
     self.pers["team"] = team;
     self.team = team;
     self.pers["class"] = undefined;
@@ -501,23 +354,14 @@ function menuteam(team) {
     }
     self.sessionteam = team;
     self setclientscriptmainmenu(game["menu_start_menu"]);
-    self notify(# "joined_team");
-    level notify(# "joined_team");
-    callback::callback(# "hash_95a6c4c0");
-    self notify(# "end_respawn");
+    self notify("joined_team");
+    level notify("joined_team");
+    callback::callback("hash_95a6c4c0");
+    self notify("end_respawn");
   }
   self beginclasschoice();
 }
 
-/*
-	Name: menuspectator
-	Namespace: globallogic_ui
-	Checksum: 0x80D88FB6
-	Offset: 0x17F0
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function menuspectator() {
   self closemenus();
   if(self.pers["team"] != "spectator") {
@@ -541,20 +385,11 @@ function menuspectator() {
     ]();
     self thread globallogic_player::spectate_player_watcher();
     self setclientscriptmainmenu(game["menu_start_menu"]);
-    self notify(# "joined_spectators");
-    callback::callback(# "hash_4c5ae192");
+    self notify("joined_spectators");
+    callback::callback("hash_4c5ae192");
   }
 }
 
-/*
-	Name: menuclass
-	Namespace: globallogic_ui
-	Checksum: 0x4C12C3A7
-	Offset: 0x19A0
-	Size: 0x3CC
-	Parameters: 2
-	Flags: Linked
-*/
 function menuclass(response, forcedclass) {
   self closemenus();
   if(!isdefined(self.pers["team"]) || !isdefined(level.teams[self.pers["team"]])) {
@@ -569,7 +404,7 @@ function menuclass(response, forcedclass) {
     return;
   }
   self.pers["changed_class"] = 1;
-  self notify(# "changed_class");
+  self notify("changed_class");
   if(isdefined(self.curclass) && self.curclass == playerclass) {
     self.pers["changed_class"] = 0;
   }
@@ -616,19 +451,10 @@ function menuclass(response, forcedclass) {
   self thread spectating::set_permissions_for_machine();
 }
 
-/*
-	Name: removespawnmessageshortly
-	Namespace: globallogic_ui
-	Checksum: 0xDE9A4CB0
-	Offset: 0x1D78
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function removespawnmessageshortly(delay) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   waittillframeend();
-  self endon(# "end_respawn");
+  self endon("end_respawn");
   wait(delay);
   self util::clearlowermessage(2);
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/************************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cybercom\_cybercom_gadget_concussive_wave.gsc
+************************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_challenges;
 #using scripts\cp\cybercom\_cybercom;
@@ -14,31 +18,11 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #using_animtree("generic");
-
 #namespace cybercom_gadget_concussive_wave;
 
-/*
-	Name: init
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x99EC1590
-	Offset: 0x548
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {}
 
-/*
-	Name: main
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x9B7E42C4
-	Offset: 0x558
-	Size: 0x184
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   cybercom_gadget::registerability(1, 4, 1);
   level.cybercom.concussive_wave = spawnstruct();
@@ -52,37 +36,10 @@ function main() {
   level.cybercom.concussive_wave._is_primed = & _is_primed;
 }
 
-/*
-	Name: _is_flickering
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x5BF952C9
-	Offset: 0x6E8
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function _is_flickering(slot) {}
 
-/*
-	Name: _on_flicker
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0xF3CEFFC0
-	Offset: 0x700
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_flicker(slot, weapon) {}
 
-/*
-	Name: _on_give
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x48CC573F
-	Offset: 0x720
-	Size: 0x1A4
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_give(slot, weapon) {
   self.cybercom.concussive_wave_radius = getdvarint("scr_concussive_wave_radius", 310);
   self.cybercom.spikeweapon = getweapon("hero_gravityspikes_cybercom");
@@ -97,37 +54,10 @@ function _on_give(slot, weapon) {
   self thread cybercom::function_b5f4e597(weapon);
 }
 
-/*
-	Name: _on_take
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x8BD4B8D7
-	Offset: 0x8D0
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _on_take(slot, weapon) {}
 
-/*
-	Name: _on_connect
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x99EC1590
-	Offset: 0x8F0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function _on_connect() {}
 
-/*
-	Name: _on
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x1AAEEE4C
-	Offset: 0x900
-	Size: 0x1A4
-	Parameters: 2
-	Flags: Linked
-*/
 function _on(slot, weapon) {
   if(self getstance() == "prone") {
     self gadgetdeactivate(slot, weapon, 2);
@@ -152,58 +82,22 @@ function _on(slot, weapon) {
   }
 }
 
-/*
-	Name: _off
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x16603A71
-	Offset: 0xAB0
-	Size: 0x20
-	Parameters: 2
-	Flags: Linked
-*/
 function _off(slot, weapon) {
   level.var_61196c7 = gettime();
 }
 
-/*
-	Name: _is_primed
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x61077BD7
-	Offset: 0xAD8
-	Size: 0x14
-	Parameters: 2
-	Flags: Linked
-*/
 function _is_primed(slot, weapon) {}
 
-/*
-	Name: ai_activateconcussivewave
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x4C5460A0
-	Offset: 0xAF8
-	Size: 0xE4
-	Parameters: 2
-	Flags: Linked
-*/
 function ai_activateconcussivewave(damage, var_9bc2efcb = 1) {
   if(isdefined(var_9bc2efcb) && var_9bc2efcb) {
     type = self cybercom::function_5e3d3aa();
     self orientmode("face default");
     self animscripted("ai_cybercom_anim", self.origin, self.angles, ("ai_base_rifle_" + type) + "_exposed_cybercom_activate");
-    self waittillmatch(# "ai_cybercom_anim");
+    self waittillmatch("ai_cybercom_anim");
   }
   self create_concussion_wave(damage);
 }
 
-/*
-	Name: _get_valid_targets
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x50B7817F
-	Offset: 0xBE8
-	Size: 0x162
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _get_valid_targets(weapon) {
   humans = arraycombine(getaispeciesarray("axis", "human"), getaispeciesarray("team3", "human"), 0, 0);
   robots = arraycombine(getaispeciesarray("axis", "robot"), getaispeciesarray("team3", "robot"), 0, 0);
@@ -211,15 +105,6 @@ function private _get_valid_targets(weapon) {
   return arraycombine(zombies, arraycombine(humans, robots, 0, 0), 0, 0);
 }
 
-/*
-	Name: _lock_requirement
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x4A108F88
-	Offset: 0xD58
-	Size: 0x5E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private _lock_requirement(target) {
   if(target cybercom::cybercom_aicheckoptout("cybercom_concussive")) {
     return false;
@@ -230,37 +115,17 @@ function private _lock_requirement(target) {
   return true;
 }
 
-/*
-	Name: is_jumping
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x9D5316A2
-	Offset: 0xDC0
-	Size: 0x30
-	Parameters: 0
-	Flags: Linked
-*/
 function is_jumping() {
   ground_ent = self getgroundent();
   return !isdefined(ground_ent);
 }
 
-/*
-	Name: create_damage_wave
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x1F696B0C
-	Offset: 0xDF8
-	Size: 0x77A
-	Parameters: 2
-	Flags: Linked
-*/
 function create_damage_wave(damage, attacker) {
   if(!isplayer(attacker)) {
     playfx("weapon/fx_ability_concussive_wave_impact", attacker.origin);
   }
-  /#
   assert(isdefined(attacker));
-  # /
-    enemies = _get_valid_targets();
+  enemies = _get_valid_targets();
   if(enemies.size == 0) {
     return;
   }
@@ -278,15 +143,15 @@ function create_damage_wave(damage, attacker) {
       if(!cybercom::targetisvalid(enemy, weapon)) {
         continue;
       }
-      enemy notify(# "hash_f8c5dd60", weapon, attacker);
-      attacker notify(# "hash_f045e164");
+      enemy notify("hash_f8c5dd60", weapon, attacker);
+      attacker notify("hash_f045e164");
       if(enemy cybercom::function_421746e0()) {
         enemy kill(enemy.origin, attacker);
         continue;
       }
       if(enemy.archetype == "human" || enemy.archetype == "warlord" || enemy.archetype == "human_riotshield") {
         enemy dodamage(var_f52a5901, attacker.origin, attacker, attacker, "none", "MOD_UNKNOWN", 0, weapon, -1, 1);
-        enemy notify(# "bhtn_action_notify", "reactBodyBlow");
+        enemy notify("bhtn_action_notify", "reactBodyBlow");
         enemy thread function_78e146a3();
         attacker thread challenges::function_96ed590f("cybercom_uses_martial");
         attacker thread challenges::function_96ed590f("cybercom_uses_concussive");
@@ -318,67 +183,31 @@ function create_damage_wave(damage, attacker) {
   }
 }
 
-/*
-	Name: function_74fb2002
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0xA886E96D
-	Offset: 0x1580
-	Size: 0x74
-	Parameters: 3
-	Flags: Linked
-*/
 function function_74fb2002(n_time, attacker, weapon) {
-  self endon(# "death");
+  self endon("death");
   wait(n_time);
   self dodamage(self.health + 1, self.origin, attacker, attacker, "none", "MOD_UNKNOWN", 0, weapon);
 }
 
-/*
-	Name: function_f98dd1a9
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0xB8D005F9
-	Offset: 0x1600
-	Size: 0x92
-	Parameters: 2
-	Flags: Linked
-*/
 function function_f98dd1a9(enemy, attacker) {
   v_to_enemy = enemy.origin - attacker.origin;
   var_2e3e72d7 = anglestoforward(attacker.angles);
   return vectordot(var_2e3e72d7, vectornormalize(v_to_enemy));
 }
 
-/*
-	Name: function_78e146a3
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x4438C821
-	Offset: 0x16A0
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_78e146a3() {
-  self endon(# "death");
-  self endon(# "hash_c76d622a");
+  self endon("death");
+  self endon("hash_c76d622a");
   wait(1.75);
-  self notify(# "bhtn_action_notify", "concussiveReact");
+  self notify("bhtn_action_notify", "concussiveReact");
 }
 
-/*
-	Name: create_concussion_wave
-	Namespace: cybercom_gadget_concussive_wave
-	Checksum: 0x5821E62D
-	Offset: 0x16E8
-	Size: 0x39C
-	Parameters: 3
-	Flags: Linked
-*/
 function create_concussion_wave(damage, slot, weapon) {
   if(!isplayer(self)) {
     level thread create_damage_wave(damage, self);
     return;
   }
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.cybercom.var_dd2f3b84 = 1;
   self clientfield::set_to_player("cybercom_disabled", 1);
   self.var_bdd60914 = self allowsprint(0);
@@ -387,10 +216,8 @@ function create_concussion_wave(damage, slot, weapon) {
   } else {
     spikeweapon = getweapon("hero_gravityspikes_cybercom");
   }
-  /#
   assert(isdefined(spikeweapon));
-  # /
-    self.cybercom.var_ebeecfd5 = 1;
+  self.cybercom.var_ebeecfd5 = 1;
   self giveweapon(spikeweapon);
   self setweaponammoclip(spikeweapon, 2);
   if(self hascybercomability("cybercom_concussive") == 2) {

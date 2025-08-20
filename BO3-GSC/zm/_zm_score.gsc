@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_score.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -11,31 +15,12 @@
 #using scripts\zm\_zm_pers_upgrades_functions;
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_score;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_score
-	Checksum: 0x3E892F09
-	Offset: 0x6D8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_score", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_score
-	Checksum: 0x783F4106
-	Offset: 0x718
-	Size: 0x1EC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   score_cf_register_info("damage", 1, 7);
   score_cf_register_info("death_normal", 1, 3);
@@ -53,47 +38,20 @@ function __init__() {
   level.a_func_score_events = [];
 }
 
-/*
-	Name: register_score_event
-	Namespace: zm_score
-	Checksum: 0x91648EB7
-	Offset: 0x910
-	Size: 0x26
-	Parameters: 2
-	Flags: None
-*/
 function register_score_event(str_event, func_callback) {
   level.a_func_score_events[str_event] = func_callback;
 }
 
-/*
-	Name: reset_doublexp_timer
-	Namespace: zm_score
-	Checksum: 0xD3A8E937
-	Offset: 0x940
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function reset_doublexp_timer() {
-  self notify(# "reset_doublexp_timer");
+  self notify("reset_doublexp_timer");
   self thread doublexp_timer();
 }
 
-/*
-	Name: doublexp_timer
-	Namespace: zm_score
-	Checksum: 0x485763C5
-	Offset: 0x970
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function doublexp_timer() {
-  self notify(# "doublexp_timer");
-  self endon(# "doublexp_timer");
-  self endon(# "reset_doublexp_timer");
-  self endon(# "end_game");
+  self notify("doublexp_timer");
+  self endon("doublexp_timer");
+  self endon("reset_doublexp_timer");
+  self endon("end_game");
   level flagsys::wait_till("start_zombie_round_logic");
   if(!level.onlinegame) {
     return;
@@ -108,15 +66,6 @@ function doublexp_timer() {
   self thread reset_doublexp_timer();
 }
 
-/*
-	Name: player_on_spawned
-	Namespace: zm_score
-	Checksum: 0xF1800B87
-	Offset: 0xA28
-	Size: 0x40
-	Parameters: 0
-	Flags: Linked
-*/
 function player_on_spawned() {
   util::wait_network_frame();
   self thread doublexp_timer();
@@ -125,60 +74,24 @@ function player_on_spawned() {
   }
 }
 
-/*
-	Name: score_cf_register_info
-	Namespace: zm_score
-	Checksum: 0x4F9DCFF8
-	Offset: 0xA70
-	Size: 0x9E
-	Parameters: 3
-	Flags: Linked
-*/
 function score_cf_register_info(name, version, max_count) {
   for (i = 0; i < 4; i++) {
     clientfield::register("clientuimodel", (("PlayerList.client" + i) + ".score_cf_") + name, version, getminbitcountfornum(max_count), "counter");
   }
 }
 
-/*
-	Name: score_cf_increment_info
-	Namespace: zm_score
-	Checksum: 0xDA6FB307
-	Offset: 0xB18
-	Size: 0xB2
-	Parameters: 1
-	Flags: Linked
-*/
 function score_cf_increment_info(name) {
   foreach(player in level.players) {
     thread wait_score_cf_increment_info(player, (("PlayerList.client" + self.entity_num) + ".score_cf_") + name);
   }
 }
 
-/*
-	Name: wait_score_cf_increment_info
-	Namespace: zm_score
-	Checksum: 0xB5F8F17C
-	Offset: 0xBD8
-	Size: 0x5C
-	Parameters: 2
-	Flags: Linked
-*/
 function wait_score_cf_increment_info(player, cf) {
   if(isdefined(player) && (isdefined(player.ready_for_score_events) && player.ready_for_score_events)) {
     player clientfield::increment_uimodel(cf);
   }
 }
 
-/*
-	Name: player_add_points
-	Namespace: zm_score
-	Checksum: 0xA56108CA
-	Offset: 0xC40
-	Size: 0x890
-	Parameters: 6
-	Flags: Linked
-*/
 function player_add_points(event, mod, hit_location, is_dog, zombie_team, damage_weapon) {
   if(level.intermission) {
     return;
@@ -310,10 +223,8 @@ function player_add_points(event, mod, hit_location, is_dog, zombie_team, damage
         break;
       }
       default: {
-        /#
         assert(0, "");
-        # /
-          break;
+        break;
       }
     }
   }
@@ -340,15 +251,6 @@ function player_add_points(event, mod, hit_location, is_dog, zombie_team, damage
   }
 }
 
-/*
-	Name: get_points_multiplier
-	Namespace: zm_score
-	Checksum: 0x7E9FECE7
-	Offset: 0x14D8
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function get_points_multiplier(player) {
   multiplier = level.zombie_vars[player.team]["zombie_point_scalar"];
   if(isdefined(level.current_game_module) && level.current_game_module == 2) {
@@ -360,15 +262,6 @@ function get_points_multiplier(player) {
   return multiplier;
 }
 
-/*
-	Name: get_zombie_death_player_points
-	Namespace: zm_score
-	Checksum: 0x61EE3752
-	Offset: 0x1570
-	Size: 0xC6
-	Parameters: 0
-	Flags: Linked
-*/
 function get_zombie_death_player_points() {
   players = getplayers();
   if(players.size == 1) {
@@ -387,28 +280,10 @@ function get_zombie_death_player_points() {
   return points;
 }
 
-/*
-	Name: get_zombie_death_team_points
-	Namespace: zm_score
-	Checksum: 0x1C06FDA4
-	Offset: 0x1640
-	Size: 0x6
-	Parameters: 0
-	Flags: Linked
-*/
 function get_zombie_death_team_points() {
   return false;
 }
 
-/*
-	Name: player_add_points_kill_bonus
-	Namespace: zm_score
-	Checksum: 0xA7C39CDA
-	Offset: 0x1650
-	Size: 0x2CA
-	Parameters: 4
-	Flags: Linked
-*/
 function player_add_points_kill_bonus(mod, hit_location, weapon, player_points = undefined) {
   if(mod != "MOD_MELEE") {
     if("head" == hit_location || "helmet" == hit_location) {
@@ -461,15 +336,6 @@ function player_add_points_kill_bonus(mod, hit_location, weapon, player_points =
   return score;
 }
 
-/*
-	Name: player_reduce_points
-	Namespace: zm_score
-	Checksum: 0x99C33277
-	Offset: 0x1928
-	Size: 0x214
-	Parameters: 2
-	Flags: Linked
-*/
 function player_reduce_points(event, n_amount) {
   if(level.intermission) {
     return;
@@ -500,16 +366,14 @@ function player_reduce_points(event, n_amount) {
     }
     case "downed": {
       percent = level.zombie_vars["penalty_downed"];
-      self notify(# "i_am_down");
+      self notify("i_am_down");
       points = self.score * percent;
       self.score_lost_when_downed = zm_utility::round_up_to_ten(int(points));
       break;
     }
     default: {
-      /#
       assert(0, "");
-      # /
-        break;
+      break;
     }
   }
   points = self.score - zm_utility::round_up_to_ten(int(points));
@@ -519,15 +383,6 @@ function player_reduce_points(event, n_amount) {
   self.score = points;
 }
 
-/*
-	Name: add_to_player_score
-	Namespace: zm_score
-	Checksum: 0x6AC0D6A6
-	Offset: 0x1B48
-	Size: 0x138
-	Parameters: 3
-	Flags: Linked
-*/
 function add_to_player_score(points, b_add_to_total = 1, str_awarded_by = "") {
   if(!isdefined(points) || level.intermission) {
     return;
@@ -537,22 +392,13 @@ function add_to_player_score(points, b_add_to_total = 1, str_awarded_by = "") {
   self.score = self.score + n_points_to_add_to_currency;
   self.pers["score"] = self.score;
   self incrementplayerstat("scoreEarned", n_points_to_add_to_currency);
-  level notify(# "earned_points", self, points);
+  level notify("earned_points", self, points);
   if(b_add_to_total) {
     self.score_total = self.score_total + points;
     level.score_total = level.score_total + points;
   }
 }
 
-/*
-	Name: minus_to_player_score
-	Namespace: zm_score
-	Checksum: 0x9B24402B
-	Offset: 0x1C88
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function minus_to_player_score(points) {
   if(!isdefined(points) || level.intermission) {
     return;
@@ -565,43 +411,16 @@ function minus_to_player_score(points) {
   self.score = self.score - points;
   self.pers["score"] = self.score;
   self incrementplayerstat("scoreSpent", points);
-  level notify(# "spent_points", self, points);
+  level notify("spent_points", self, points);
   if(isdefined(level.bgb_in_use) && level.bgb_in_use && level.onlinegame) {
     self bgb_token::function_51cf4361(points);
   }
 }
 
-/*
-	Name: add_to_team_score
-	Namespace: zm_score
-	Checksum: 0x78584A02
-	Offset: 0x1DB0
-	Size: 0xC
-	Parameters: 1
-	Flags: None
-*/
 function add_to_team_score(points) {}
 
-/*
-	Name: minus_to_team_score
-	Namespace: zm_score
-	Checksum: 0x1B93DF85
-	Offset: 0x1DC8
-	Size: 0xC
-	Parameters: 1
-	Flags: None
-*/
 function minus_to_team_score(points) {}
 
-/*
-	Name: player_died_penalty
-	Namespace: zm_score
-	Checksum: 0xE69D43F9
-	Offset: 0x1DE0
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function player_died_penalty() {
   players = getplayers(self.team);
   for (i = 0; i < players.size; i++) {
@@ -611,31 +430,11 @@ function player_died_penalty() {
   }
 }
 
-/*
-	Name: player_downed_penalty
-	Namespace: zm_score
-	Checksum: 0x2586A463
-	Offset: 0x1E90
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function player_downed_penalty() {
-  /#
   println("");
-  # /
-    self player_reduce_points("downed");
+  self player_reduce_points("downed");
 }
 
-/*
-	Name: can_player_purchase
-	Namespace: zm_score
-	Checksum: 0x77A3BEE6
-	Offset: 0x1EE0
-	Size: 0x46
-	Parameters: 1
-	Flags: Linked
-*/
 function can_player_purchase(n_cost) {
   if(self.score >= n_cost) {
     return true;

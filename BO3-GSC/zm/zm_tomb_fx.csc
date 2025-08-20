@@ -1,31 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_fx.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\scene_shared;
 #using scripts\shared\util_shared;
-
 #namespace zm_tomb_fx;
 
-/*
-	Name: precache_util_fx
-	Namespace: zm_tomb_fx
-	Checksum: 0x99EC1590
-	Offset: 0x1D68
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_util_fx() {}
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_tomb_fx
-	Checksum: 0xD3A0C32
-	Offset: 0x1D78
-	Size: 0xA12
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["eye_glow"] = "zombie/fx_glow_eye_orange";
   level._effect["eye_glow_blue"] = "maps/zombie/fx_zombie_eye_single_blue";
@@ -121,15 +106,6 @@ function precache_scripted_fx() {
   level._effect["perk_machine_light_green"] = "dlc5/zmhd/fx_wonder_fizz_light_green";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_tomb_fx
-	Checksum: 0xBABE1F6B
-	Offset: 0x2798
-	Size: 0x40E
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {
   level._effect["fx_sky_dist_aa_tracers"] = "maps/zombie_tomb/fx_tomb_sky_dist_aa_tracers";
   level._effect["fx_tomb_vortex_glow"] = "maps/zombie_tomb/fx_tomb_vortex_glow";
@@ -170,15 +146,6 @@ function precache_createfx_fx() {
   level._effect["fx_tomb_skybox_vortex"] = "maps/zombie_tomb/fx_tomb_skybox_vortex";
 }
 
-/*
-	Name: main
-	Namespace: zm_tomb_fx
-	Checksum: 0x51E2C202
-	Offset: 0x2BB0
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_util_fx();
   precache_createfx_fx();
@@ -189,45 +156,18 @@ function main() {
   level thread trap_fx_monitor("flame_trap", "str_flame_trap");
 }
 
-/*
-	Name: setup_prop_anims
-	Namespace: zm_tomb_fx
-	Checksum: 0x205F1E3B
-	Offset: 0x2C58
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_prop_anims() {
   util::waitforclient(0);
   level thread play_fx_prop_anims();
 }
 
-/*
-	Name: play_fx_prop_anims
-	Namespace: zm_tomb_fx
-	Checksum: 0xB817EF89
-	Offset: 0x2C98
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function play_fx_prop_anims() {
   fxanim_props = struct::get_array("fxanim_chamber_rocks", "targetname");
   array::thread_all(fxanim_props, & function_1c1d65fb);
 }
 
-/*
-	Name: function_1c1d65fb
-	Namespace: zm_tomb_fx
-	Checksum: 0xC466133C
-	Offset: 0x2CF8
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1c1d65fb() {
-  self endon(# "delete");
+  self endon("delete");
   scene::add_scene_func(self.scriptbundlename, & function_b9b12551, "done");
   while (true) {
     self scene::play(self.scriptbundlename);
@@ -235,30 +175,12 @@ function function_1c1d65fb() {
   }
 }
 
-/*
-	Name: function_b9b12551
-	Namespace: zm_tomb_fx
-	Checksum: 0x32E3D0B3
-	Offset: 0x2D80
-	Size: 0x92
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b9b12551(a_ents) {
   foreach(e_ent in a_ents) {
     e_ent delete();
   }
 }
 
-/*
-	Name: trap_fx_monitor
-	Namespace: zm_tomb_fx
-	Checksum: 0x2C283D7F
-	Offset: 0x2E20
-	Size: 0xB2
-	Parameters: 2
-	Flags: Linked
-*/
 function trap_fx_monitor(str_name, str_side) {
   while (true) {
     level waittill(str_name);
@@ -271,15 +193,6 @@ function trap_fx_monitor(str_name, str_side) {
   }
 }
 
-/*
-	Name: function_ea3d061
-	Namespace: zm_tomb_fx
-	Checksum: 0x8654C2A5
-	Offset: 0x2EE0
-	Size: 0x280
-	Parameters: 2
-	Flags: Linked
-*/
 function function_ea3d061(str_name, str_side) {
   var_498b0d1c = self.angles;
   vec_forward = anglestoforward(var_498b0d1c);
@@ -312,15 +225,6 @@ function function_ea3d061(str_name, str_side) {
   self.var_6d5392e9 = [];
 }
 
-/*
-	Name: function_b8462abd
-	Namespace: zm_tomb_fx
-	Checksum: 0xA91DAD0F
-	Offset: 0x3168
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b8462abd() {
   wait(25);
   level.var_d9c7b303 = 0;

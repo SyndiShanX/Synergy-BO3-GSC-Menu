@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_turret.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -26,20 +30,9 @@
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #using_animtree("mp_autoturret");
-
 #namespace turret;
 
-/*
-	Name: init
-	Namespace: turret
-	Checksum: 0x576F3B4E
-	Offset: 0x8B0
-	Size: 0x2AC
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   killstreaks::register("autoturret", "autoturret", "killstreak_auto_turret", "auto_turret_used", & activateturret);
   killstreaks::register_alt_weapon("autoturret", "auto_gun_turret");
@@ -57,15 +50,6 @@ function init() {
   visionset_mgr::register_info("visionset", "turret_visionset", 1, 81, 16, 1, & visionset_mgr::ramp_in_out_thread_per_player, 0);
 }
 
-/*
-	Name: initturret
-	Namespace: turret
-	Checksum: 0x9DA83E11
-	Offset: 0xB68
-	Size: 0x1E8
-	Parameters: 0
-	Flags: Linked
-*/
 function initturret() {
   turretvehicle = self;
   turretvehicle.dontfreeme = 1;
@@ -89,21 +73,10 @@ function initturret() {
   turretvehicle.overridevehicledeath = & onturretdeath;
 }
 
-/*
-	Name: activateturret
-	Namespace: turret
-	Checksum: 0x1F47FDB6
-	Offset: 0xD58
-	Size: 0x288
-	Parameters: 0
-	Flags: Linked
-*/
 function activateturret() {
   player = self;
-  /#
   assert(isplayer(player));
-  # /
-    killstreakid = self killstreakrules::killstreakstart("autoturret", player.team, 0, 0);
+  killstreakid = self killstreakrules::killstreakstart("autoturret", player.team, 0, 0);
   if(killstreakid == -1) {
     return false;
   }
@@ -122,27 +95,15 @@ function activateturret() {
   return true;
 }
 
-/*
-	Name: onplaceturret
-	Namespace: turret
-	Checksum: 0xB366758F
-	Offset: 0xFE8
-	Size: 0x684
-	Parameters: 1
-	Flags: Linked
-*/
 function onplaceturret(turret) {
   player = self;
-  /#
   assert(isplayer(player));
-  # /
-    if(isdefined(turret.vehicle)) {
-      turret.vehicle.origin = turret.origin;
-      turret.vehicle.angles = turret.angles;
-      turret.vehicle thread util::ghost_wait_show(0.05);
-      turret.vehicle playsound("mpl_turret_startup");
-    }
-  else {
+  if(isdefined(turret.vehicle)) {
+    turret.vehicle.origin = turret.origin;
+    turret.vehicle.angles = turret.angles;
+    turret.vehicle thread util::ghost_wait_show(0.05);
+    turret.vehicle playsound("mpl_turret_startup");
+  } else {
     turret.vehicle = spawnvehicle("sentry_turret", turret.origin, turret.angles, "dynamic_spawn_ai");
     turret.vehicle.owner = player;
     turret.vehicle setowner(player);
@@ -185,15 +146,6 @@ function onplaceturret(turret) {
   player remote_weapons::useremoteweapon(turret.vehicle, "autoturret", 0);
 }
 
-/*
-	Name: hackedcallbackpre
-	Namespace: turret
-	Checksum: 0xCD5F5B28
-	Offset: 0x1678
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedcallbackpre(hacker) {
   turretvehicle = self;
   turretvehicle clientfield::set("enemyvehicle", 2);
@@ -207,47 +159,20 @@ function hackedcallbackpre(hacker) {
   turretvehicle clientfield::set("vehicletransition", 0);
 }
 
-/*
-	Name: hackedcallbackpost
-	Namespace: turret
-	Checksum: 0x45523602
-	Offset: 0x17B0
-	Size: 0x70
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedcallbackpost(hacker) {
   turretvehicle = self;
   hacker remote_weapons::useremoteweapon(turretvehicle, "autoturret", 0);
-  turretvehicle notify(# "watchremotecontroldeactivate_remoteweapons");
+  turretvehicle notify("watchremotecontroldeactivate_remoteweapons");
   turretvehicle.killstreak_end_time = hacker killstreak_hacking::set_vehicle_drivable_time_starting_now(turretvehicle);
 }
 
-/*
-	Name: play_deploy_anim_after_wait
-	Namespace: turret
-	Checksum: 0x907ED315
-	Offset: 0x1828
-	Size: 0x44
-	Parameters: 1
-	Flags: None
-*/
 function play_deploy_anim_after_wait(wait_time) {
   turret = self;
-  turret endon(# "death");
+  turret endon("death");
   wait(wait_time);
   turret play_deploy_anim();
 }
 
-/*
-	Name: play_deploy_anim
-	Namespace: turret
-	Checksum: 0x5FC5F0DE
-	Offset: 0x1878
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function play_deploy_anim() {
   turret = self;
   turret clientfield::set("auto_turret_close", 0);
@@ -257,28 +182,10 @@ function play_deploy_anim() {
   }
 }
 
-/*
-	Name: oncancelplacement
-	Namespace: turret
-	Checksum: 0x2A832F8B
-	Offset: 0x1920
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function oncancelplacement(turret) {
-  turret notify(# "sentry_turret_shutdown");
+  turret notify("sentry_turret_shutdown");
 }
 
-/*
-	Name: onpickupturret
-	Namespace: turret
-	Checksum: 0xD6754477
-	Offset: 0x1948
-	Size: 0x1E4
-	Parameters: 1
-	Flags: Linked
-*/
 function onpickupturret(turret) {
   player = self;
   turret.vehicle ghost();
@@ -288,7 +195,7 @@ function onpickupturret(turret) {
   turret clientfield::set("auto_turret_close", 1);
   turret.othermodel clientfield::set("auto_turret_close", 1);
   if(isdefined(turret.vehicle)) {
-    turret.vehicle notify(# "end_turret_scanning");
+    turret.vehicle notify("end_turret_scanning");
     turret.vehicle setturrettargetrelativeangles((0, 0, 0));
     turret.vehicle clientfield::set("auto_turret_open", 0);
     if(isdefined(turret.vehicle.usetrigger)) {
@@ -299,15 +206,6 @@ function onpickupturret(turret) {
   }
 }
 
-/*
-	Name: onturretdamage
-	Namespace: turret
-	Checksum: 0x2A5D3D71
-	Offset: 0x1B38
-	Size: 0x1D0
-	Parameters: 15
-	Flags: Linked
-*/
 function onturretdamage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   empdamage = int((idamage + (self.healthdefault * 1)) + 0.5);
   idamage = self killstreaks::ondamageperweapon("autoturret", eattacker, idamage, idflags, smeansofdeath, weapon, self.maxhealth, undefined, self.maxhealth * 0.4, undefined, empdamage, undefined, 1, 1);
@@ -322,28 +220,10 @@ function onturretdamage(einflictor, eattacker, idamage, idflags, smeansofdeath, 
   return idamage;
 }
 
-/*
-	Name: onturretdeath
-	Namespace: turret
-	Checksum: 0xC42F0680
-	Offset: 0x1D10
-	Size: 0x7C
-	Parameters: 8
-	Flags: Linked
-*/
 function onturretdeath(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   self ondeath(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime);
 }
 
-/*
-	Name: ondeathafterframeend
-	Namespace: turret
-	Checksum: 0xC7B9D837
-	Offset: 0x1D98
-	Size: 0x84
-	Parameters: 8
-	Flags: Linked
-*/
 function ondeathafterframeend(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   waittillframeend();
   if(isdefined(self)) {
@@ -351,15 +231,6 @@ function ondeathafterframeend(einflictor, eattacker, idamage, smeansofdeath, wea
   }
 }
 
-/*
-	Name: ondeath
-	Namespace: turret
-	Checksum: 0xFB971D0A
-	Offset: 0x1E28
-	Size: 0x454
-	Parameters: 8
-	Flags: Linked
-*/
 function ondeath(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime) {
   turretvehicle = self;
   if(turretvehicle.dead === 1) {
@@ -384,7 +255,7 @@ function ondeath(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, sh
     eattacker challenges::destroynonairscorestreak_poststatslock(weapon);
     eattacker addplayerstat("destroy_turret", 1);
     eattacker addweaponstat(weapon, "destroy_turret", 1);
-    luinotifyevent( & "player_callout", 2, & "KILLSTREAK_DESTROYED_AUTO_TURRET", eattacker.entnum);
+    luinotifyevent(&"player_callout", 2, & "KILLSTREAK_DESTROYED_AUTO_TURRET", eattacker.entnum);
   }
   turretvehicle vehicle_death::death_fx();
   turretvehicle playsound("mpl_m_turret_exp");
@@ -404,34 +275,14 @@ function ondeath(einflictor, eattacker, idamage, smeansofdeath, weapon, vdir, sh
   }
 }
 
-/*
-	Name: onshutdown
-	Namespace: turret
-	Checksum: 0x8721755C
-	Offset: 0x2288
-	Size: 0x1C
-	Parameters: 1
-	Flags: Linked
-*/
 function onshutdown(turret) {
-  turret notify(# "sentry_turret_shutdown");
+  turret notify("sentry_turret_shutdown");
 }
 
-/*
-	Name: startturretremotecontrol
-	Namespace: turret
-	Checksum: 0x1E6CD561
-	Offset: 0x22B0
-	Size: 0x1A4
-	Parameters: 1
-	Flags: Linked
-*/
 function startturretremotecontrol(turretvehicle) {
   player = self;
-  /#
   assert(isplayer(player));
-  # /
-    turretvehicle disable(0);
+  turretvehicle disable(0);
   turretvehicle usevehicle(player, 0);
   turretvehicle clientfield::set("vehicletransition", 1);
   turretvehicle.controlled = 1;
@@ -443,15 +294,6 @@ function startturretremotecontrol(turretvehicle) {
   visionset_mgr::activate("visionset", "turret_visionset", self, 1, 90000, 1);
 }
 
-/*
-	Name: endturretremotecontrol
-	Namespace: turret
-	Checksum: 0xD7838A77
-	Offset: 0x2460
-	Size: 0xEC
-	Parameters: 2
-	Flags: Linked
-*/
 function endturretremotecontrol(turretvehicle, exitrequestedbyowner) {
   if(exitrequestedbyowner) {
     turretvehicle thread enableturretafterwait(0.1);
@@ -465,35 +307,17 @@ function endturretremotecontrol(turretvehicle, exitrequestedbyowner) {
   turretvehicle.ignore_team_kills = 1;
 }
 
-/*
-	Name: enableturretafterwait
-	Namespace: turret
-	Checksum: 0x25DAA35A
-	Offset: 0x2558
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function enableturretafterwait(wait_time) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.owner)) {
-    self.owner endon(# "joined_team");
-    self.owner endon(# "disconnect");
-    self.owner endon(# "joined_spectators");
+    self.owner endon("joined_team");
+    self.owner endon("disconnect");
+    self.owner endon("joined_spectators");
   }
   wait(wait_time);
   self enable(0, 0);
 }
 
-/*
-	Name: createturretinfluencer
-	Namespace: turret
-	Checksum: 0x6828CB67
-	Offset: 0x25D8
-	Size: 0xCA
-	Parameters: 1
-	Flags: Linked
-*/
 function createturretinfluencer(name) {
   turret = self;
   preset = getinfluencerpreset(name);
@@ -504,19 +328,10 @@ function createturretinfluencer(name) {
   return spawning::create_enemy_influencer(name, turret.origin, turret.team);
 }
 
-/*
-	Name: turret_watch_owner_events
-	Namespace: turret
-	Checksum: 0x66936120
-	Offset: 0x26B0
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function turret_watch_owner_events() {
-  self notify(# "turret_watch_owner_events_singleton");
-  self endon(# "tturet_watch_owner_events_singleton");
-  self endon(# "death");
+  self notify("turret_watch_owner_events_singleton");
+  self endon("tturet_watch_owner_events_singleton");
+  self endon("death");
   self.owner util::waittill_any("joined_team", "disconnect", "joined_spectators");
   self makevehicleusable();
   self.controlled = 0;
@@ -532,18 +347,9 @@ function turret_watch_owner_events() {
   onshutdown(self);
 }
 
-/*
-	Name: turret_laser_watch
-	Namespace: turret
-	Checksum: 0x715EDEFA
-	Offset: 0x27E0
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function turret_laser_watch() {
   turretvehicle = self;
-  turretvehicle endon(# "death");
+  turretvehicle endon("death");
   while (true) {
     laser_should_be_on = !turretvehicle.controlled && turretvehicle does_have_target(0);
     if(laser_should_be_on) {
@@ -557,59 +363,32 @@ function turret_laser_watch() {
   }
 }
 
-/*
-	Name: setup_death_watch_for_new_targets
-	Namespace: turret
-	Checksum: 0x647C02A
-	Offset: 0x28C8
-	Size: 0x92
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_death_watch_for_new_targets() {
   turretvehicle = self;
-  turretvehicle endon(# "death");
+  turretvehicle endon("death");
   old_target = undefined;
   while (true) {
-    turretvehicle waittill(# "has_new_target", new_target);
+    turretvehicle waittill("has_new_target", new_target);
     if(isdefined(old_target)) {
-      old_target notify(# "abort_death_watch");
+      old_target notify("abort_death_watch");
     }
     new_target thread target_death_watch(turretvehicle);
     old_target = new_target;
   }
 }
 
-/*
-	Name: target_death_watch
-	Namespace: turret
-	Checksum: 0xF77EC26C
-	Offset: 0x2968
-	Size: 0x8C
-	Parameters: 1
-	Flags: Linked
-*/
 function target_death_watch(turretvehicle) {
   target = self;
-  target endon(# "abort_death_watch");
-  turretvehicle endon(# "death");
+  target endon("abort_death_watch");
+  turretvehicle endon("death");
   target util::waittill_any("death", "disconnect", "joined_team", "joined_spectators");
   turretvehicle stop(0, 1);
 }
 
-/*
-	Name: turretscanning
-	Namespace: turret
-	Checksum: 0x79F469CD
-	Offset: 0x2A00
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function turretscanning() {
   turretvehicle = self;
-  turretvehicle endon(# "death");
-  turretvehicle endon(# "end_turret_scanning");
+  turretvehicle endon("death");
+  turretvehicle endon("end_turret_scanning");
   turret_data = turretvehicle _get_turret_data(0);
   turretvehicle.do_not_clear_targets_during_think = 1;
   wait(0.8);
@@ -622,10 +401,8 @@ function turretscanning() {
       wait(0.25);
       continue;
     }
-    /#
     turret_data = turretvehicle _get_turret_data(0);
-    # /
-      turretvehicle clear_target(0);
+    turretvehicle clear_target(0);
     if(turretvehicle.scanpos === "left") {
       turretvehicle setturrettargetrelativeangles((0, turret_data.leftarc - 10, 0), 0);
       turretvehicle.scanpos = "right";
@@ -637,18 +414,9 @@ function turretscanning() {
   }
 }
 
-/*
-	Name: watchturretshutdown
-	Namespace: turret
-	Checksum: 0xCE31F7F7
-	Offset: 0x2BC8
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function watchturretshutdown(killstreakid, team) {
   turret = self;
-  turret waittill(# "sentry_turret_shutdown");
+  turret waittill("sentry_turret_shutdown");
   killstreakrules::killstreakstop("autoturret", team, killstreakid);
   if(isdefined(turret.vehicle)) {
     turret.vehicle spawning::remove_influencers();

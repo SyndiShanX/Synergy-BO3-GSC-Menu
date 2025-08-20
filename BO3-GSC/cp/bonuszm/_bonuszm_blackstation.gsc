@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\bonuszm\_bonuszm_blackstation.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_dialog;
 #using scripts\cp\_util;
@@ -9,18 +13,8 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_52273882;
 
-/*
-	Name: init
-	Namespace: namespace_52273882
-	Checksum: 0x9DE3A588
-	Offset: 0x960
-	Size: 0x1BC
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   function_f5c30bc9();
   if(!sessionmodeiscampaignzombiesgame()) {
@@ -46,15 +40,6 @@ function autoexec init() {
   level.bzm_blackstationdialogue5callback = & function_fee16c19;
 }
 
-/*
-	Name: function_f5c30bc9
-	Namespace: namespace_52273882
-	Checksum: 0x42E56F7D
-	Offset: 0xB28
-	Size: 0xF2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f5c30bc9() {
   wait(2);
   locationarray = [];
@@ -65,17 +50,8 @@ function function_f5c30bc9() {
   }
 }
 
-/*
-	Name: function_96eb55bd
-	Namespace: namespace_52273882
-	Checksum: 0x5E96A1B0
-	Offset: 0xC28
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function function_96eb55bd() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(6);
   namespace_36e5bc12::function_ef0ce9fb("plyz_the_singapore_quaran_0");
   wait(2);
@@ -95,30 +71,12 @@ function function_96eb55bd() {
   namespace_36e5bc12::function_ef0ce9fb("plyz_after_the_docks_our_0");
 }
 
-/*
-	Name: function_bcedd026
-	Namespace: namespace_52273882
-	Checksum: 0x1D810F60
-	Offset: 0xD58
-	Size: 0xE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bcedd026() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
 }
 
-/*
-	Name: function_e2f04a8f
-	Namespace: namespace_52273882
-	Checksum: 0xB43E4552
-	Offset: 0xD70
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_e2f04a8f() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(3);
   namespace_36e5bc12::function_cf21d35c("salm_more_vultures_0");
   namespace_36e5bc12::function_ef0ce9fb("plyz_praying_on_the_weak_0");
@@ -132,32 +90,14 @@ function function_e2f04a8f() {
   namespace_36e5bc12::function_ef0ce9fb("plyz_chance_is_a_billion_0");
 }
 
-/*
-	Name: function_72835fe7
-	Namespace: namespace_52273882
-	Checksum: 0x6BC0F971
-	Offset: 0xE50
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_72835fe7() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(5);
   namespace_36e5bc12::function_ef0ce9fb("plyz_the_winds_were_picki_0");
 }
 
-/*
-	Name: function_7bf0ac
-	Namespace: namespace_52273882
-	Checksum: 0xED173589
-	Offset: 0xE88
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7bf0ac() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   namespace_36e5bc12::function_ef0ce9fb("plyz_the_plan_was_to_wait_0");
   wait(1);
   namespace_36e5bc12::function_ef0ce9fb("plyz_the_missiles_were_in_0");
@@ -165,34 +105,16 @@ function function_7bf0ac() {
   namespace_36e5bc12::function_ef0ce9fb("plyz_hendricks_said_fuck_0");
 }
 
-/*
-	Name: function_267e6b15
-	Namespace: namespace_52273882
-	Checksum: 0x2B263EB6
-	Offset: 0xEF8
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function function_267e6b15() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   level flag::wait_till("container_console_active");
   namespace_36e5bc12::function_ef0ce9fb("plyz_we_secured_the_first_0");
   wait(1);
   namespace_36e5bc12::function_ef0ce9fb("plyz_hendricks_moved_to_s_0");
 }
 
-/*
-	Name: function_b476fbda
-	Namespace: namespace_52273882
-	Checksum: 0x90C231C1
-	Offset: 0xF68
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b476fbda() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(12);
   namespace_36e5bc12::function_ef0ce9fb("plyz_but_of_course_the_su_0");
   wait(3);
@@ -201,33 +123,15 @@ function function_b476fbda() {
   namespace_36e5bc12::function_ef0ce9fb("plyz_and_hang_on_for_dear_0");
 }
 
-/*
-	Name: function_da797643
-	Namespace: namespace_52273882
-	Checksum: 0xB0A057FF
-	Offset: 0xFE0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function function_da797643() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   namespace_36e5bc12::function_ef0ce9fb("plyz_we_d_been_set_to_ren_0");
   wait(2);
   namespace_36e5bc12::function_ef0ce9fb("plyz_we_cut_through_the_f_0");
 }
 
-/*
-	Name: function_d8def1b0
-	Namespace: namespace_52273882
-	Checksum: 0x43AE0C98
-	Offset: 0x1030
-	Size: 0x234
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d8def1b0() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(1.5);
   namespace_36e5bc12::function_ef0ce9fb("plyz_with_the_dead_cleare_0");
   wait(1);
@@ -264,30 +168,12 @@ function function_d8def1b0() {
   namespace_36e5bc12::function_ef0ce9fb("plyz_we_d_regroup_with_he_0");
 }
 
-/*
-	Name: function_eaea4ccc
-	Namespace: namespace_52273882
-	Checksum: 0x2CE90D2A
-	Offset: 0x1270
-	Size: 0xE
-	Parameters: 0
-	Flags: Linked
-*/
 function function_eaea4ccc() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
 }
 
-/*
-	Name: function_5cf1bc07
-	Namespace: namespace_52273882
-	Checksum: 0xFB231739
-	Offset: 0x1288
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5cf1bc07() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(1);
   namespace_36e5bc12::function_ef0ce9fb("plyz_with_their_comms_scr_0");
   wait(1);
@@ -301,17 +187,8 @@ function function_5cf1bc07() {
   namespace_36e5bc12::function_ef0ce9fb("plyz_i_just_felt_somet_0");
 }
 
-/*
-	Name: function_36ef419e
-	Namespace: namespace_52273882
-	Checksum: 0x2A016F2F
-	Offset: 0x1358
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_36ef419e() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(4);
   namespace_36e5bc12::function_ef0ce9fb("plyz_by_the_time_we_rende_0");
   wait(1);
@@ -324,17 +201,8 @@ function function_36ef419e() {
   namespace_36e5bc12::function_ef0ce9fb("plyz_like_a_berserker_li_0");
 }
 
-/*
-	Name: function_fee16c19
-	Namespace: namespace_52273882
-	Checksum: 0x6CDF8ADD
-	Offset: 0x1410
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fee16c19() {
-  level endon(# "bzm_sceneseqended");
+  level endon("bzm_sceneseqended");
   wait(1);
   namespace_36e5bc12::function_cf21d35c("salm_what_did_you_find_in_0");
   namespace_36e5bc12::function_ef0ce9fb("plyz_slaughtered_cia_staf_0");

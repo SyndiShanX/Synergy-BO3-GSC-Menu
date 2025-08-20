@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_load.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\_oob;
 #using scripts\shared\abilities\_ability_player;
@@ -30,73 +34,25 @@
 #using scripts\zm\_zm_traps;
 #using scripts\zm\craftables\_zm_craftables;
 #using scripts\zm\gametypes\_weaponobjects;
-
 #namespace load;
 
-/*
-	Name: levelnotifyhandler
-	Namespace: load
-	Checksum: 0xEEA521CA
-	Offset: 0x4F0
-	Size: 0x3A
-	Parameters: 3
-	Flags: Linked
-*/
 function levelnotifyhandler(clientnum, state, oldstate) {
   if(state != "") {
     level notify(state, clientnum);
   }
 }
 
-/*
-	Name: warnmissilelocking
-	Namespace: load
-	Checksum: 0x8AA5A2BB
-	Offset: 0x538
-	Size: 0x14
-	Parameters: 2
-	Flags: None
-*/
 function warnmissilelocking(localclientnum, set) {}
 
-/*
-	Name: warnmissilelocked
-	Namespace: load
-	Checksum: 0x45712ABB
-	Offset: 0x558
-	Size: 0x14
-	Parameters: 2
-	Flags: None
-*/
 function warnmissilelocked(localclientnum, set) {}
 
-/*
-	Name: warnmissilefired
-	Namespace: load
-	Checksum: 0x836BFE92
-	Offset: 0x578
-	Size: 0x14
-	Parameters: 2
-	Flags: None
-*/
 function warnmissilefired(localclientnum, set) {}
 
-/*
-	Name: main
-	Namespace: load
-	Checksum: 0x12999F87
-	Offset: 0x598
-	Size: 0x14C
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   /# /
   #
   assert(isdefined(level.first_frame), "");
-  # /
-    # /
-    zm::init();
+  zm::init();
   level thread server_time();
   level thread util::init_utility();
   util::register_system("levelNotify", & levelnotifyhandler);
@@ -110,15 +66,6 @@ function main() {
   level flagsys::set("load_main_complete");
 }
 
-/*
-	Name: server_time
-	Namespace: load
-	Checksum: 0x6D016E91
-	Offset: 0x6F0
-	Size: 0x30
-	Parameters: 0
-	Flags: Linked
-*/
 function server_time() {
   for (;;) {
     level.servertime = getservertime(0);
@@ -126,15 +73,6 @@ function server_time() {
   }
 }
 
-/*
-	Name: register_clientfields
-	Namespace: load
-	Checksum: 0xD69FF95C
-	Offset: 0x728
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("allplayers", "zmbLastStand", 1, 1, "int", & zm::laststand, 0, 1);
   clientfield::register("clientuimodel", "zmhud.swordEnergy", 1, 7, "float", undefined, 0, 0);

@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\codescripts\struct;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_sumpf_fx.csc
+*************************************************/
 
+#using scripts\codescripts\struct;
 #namespace zm_sumpf_fx;
 
-/*
-	Name: main
-	Namespace: zm_sumpf_fx
-	Checksum: 0xF1D6C74C
-	Offset: 0xDC8
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_scripted_fx();
   precache_createfx_fx();
@@ -21,15 +15,6 @@ function main() {
   level thread trap_fx_monitor("south_east_tgt", "south_east_elec_light");
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_sumpf_fx
-	Checksum: 0x7F3D1F97
-	Offset: 0xE98
-	Size: 0x232
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["eye_glow"] = "zombie/fx_glow_eye_orange";
   level._effect["zapper_fx"] = "maps/zombie/fx_zombie_zapper_powerbox_on";
@@ -53,15 +38,6 @@ function precache_scripted_fx() {
   level._effect["perk_machine_light_green"] = "dlc5/zmhd/fx_wonder_fizz_light_green";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_sumpf_fx
-	Checksum: 0xF0A4E329
-	Offset: 0x10D8
-	Size: 0x42A
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {
   level._effect["mp_fire_medium"] = "fire/fx_fire_fuel_sm";
   level._effect["mp_fire_large"] = "maps/zombie/fx_zmb_tranzit_fire_lrg";
@@ -103,15 +79,6 @@ function precache_createfx_fx() {
   level._effect["fx_light_god_ray_sm_sumpf_warm_v1"] = "env/light/fx_light_god_ray_sm_sumpf_warm_v1";
 }
 
-/*
-	Name: trap_fx_monitor
-	Namespace: zm_sumpf_fx
-	Checksum: 0x9A367DC5
-	Offset: 0x1510
-	Size: 0xA2
-	Parameters: 2
-	Flags: Linked
-*/
 function trap_fx_monitor(name, side) {
   while (true) {
     level waittill(name);
@@ -122,15 +89,6 @@ function trap_fx_monitor(name, side) {
   }
 }
 
-/*
-	Name: electric_trap_fx
-	Namespace: zm_sumpf_fx
-	Checksum: 0xB1F683A5
-	Offset: 0x15C0
-	Size: 0x1F0
-	Parameters: 2
-	Flags: Linked
-*/
 function electric_trap_fx(name, side) {
   ang = self.angles;
   forward = anglestoforward(ang);
@@ -156,15 +114,6 @@ function electric_trap_fx(name, side) {
   self.loopfx = [];
 }
 
-/*
-	Name: zapper_switch_fx
-	Namespace: zm_sumpf_fx
-	Checksum: 0xC994532A
-	Offset: 0x17B8
-	Size: 0x3EC
-	Parameters: 1
-	Flags: None
-*/
 function zapper_switch_fx(ent) {
   switchfx = struct::get("zapper_switch_fx_" + ent, "targetname");
   zapperfx = struct::get("zapper_fx_" + ent, "targetname");

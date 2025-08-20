@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\gametypes\doa.gsc
+*************************************************/
+
 #using scripts\cp\_callbacks;
 #using scripts\cp\_skipto;
 #using scripts\cp\_util;
@@ -12,18 +16,8 @@
 #using scripts\shared\math_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\throttle_shared;
-
 #namespace doa;
 
-/*
-	Name: ignore_systems
-	Namespace: doa
-	Checksum: 0x906F51FC
-	Offset: 0x350
-	Size: 0x17C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec ignore_systems() {
   level.var_be177839 = "";
   system::ignore("cybercom");
@@ -43,15 +37,6 @@ function autoexec ignore_systems() {
   system::ignore("friendlyfire");
 }
 
-/*
-	Name: main
-	Namespace: doa
-	Checksum: 0x5FCC44BF
-	Offset: 0x4D8
-	Size: 0x2D0
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   level.var_e2c19907 = 1;
   globallogic::init();
@@ -86,20 +71,9 @@ function main() {
   if(!isdefined(level.gib_throttle)) {
     level.gib_throttle = new throttle();
   }
-  [
-    [level.gib_throttle]
-  ] - > initialize(5, 0.2);
+  [[level.gib_throttle]] - > initialize(5, 0.2);
 }
 
-/*
-	Name: onstartgametype
-	Namespace: doa
-	Checksum: 0x4677315D
-	Offset: 0x7B0
-	Size: 0x208
-	Parameters: 0
-	Flags: Linked
-*/
 function onstartgametype() {
   level.displayroundendtext = 0;
   setclientnamemode("auto_change");
@@ -121,66 +95,21 @@ function onstartgametype() {
   level.zombie_use_zigzag_path = 1;
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: doa
-	Checksum: 0xF9E97F2D
-	Offset: 0x9C0
-	Size: 0x3C
-	Parameters: 2
-	Flags: Linked
-*/
 function onspawnplayer(predictedspawn, question) {
   pixbeginevent("COOP:onSpawnPlayer");
   pixendevent();
 }
 
-/*
-	Name: onendgame
-	Namespace: doa
-	Checksum: 0x497B97D5
-	Offset: 0xA08
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function onendgame(winningteam) {
   exitlevel(0);
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: doa
-	Checksum: 0xA0EC98E8
-	Offset: 0xA38
-	Size: 0x4C
-	Parameters: 9
-	Flags: Linked
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {}
 
-/*
-	Name: wait_to_spawn
-	Namespace: doa
-	Checksum: 0x8DD79B36
-	Offset: 0xA90
-	Size: 0x8
-	Parameters: 0
-	Flags: Linked
-*/
 function wait_to_spawn() {
   return true;
 }
 
-/*
-	Name: may_player_spawn
-	Namespace: doa
-	Checksum: 0xB4B721C
-	Offset: 0xAA0
-	Size: 0x8
-	Parameters: 0
-	Flags: Linked
-*/
 function may_player_spawn() {
   return true;
 }

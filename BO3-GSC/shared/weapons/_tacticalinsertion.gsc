@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_tacticalinsertion.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\challenges_shared;
@@ -9,18 +13,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_hacker_tool;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace tacticalinsertion;
 
-/*
-	Name: init_shared
-	Namespace: tacticalinsertion
-	Checksum: 0x4BF2B742
-	Offset: 0x448
-	Size: 0xCC
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   if(level.gametype == "infect") {
     level.weapontacticalinsertion = getweapon("trophy_system");
@@ -32,28 +26,10 @@ function init_shared() {
   callback::on_spawned( & on_player_spawned);
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: tacticalinsertion
-	Checksum: 0x5FBB91D4
-	Offset: 0x520
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self thread begin_other_grenade_tracking();
 }
 
-/*
-	Name: istacspawntouchingcrates
-	Namespace: tacticalinsertion
-	Checksum: 0xDDB00F46
-	Offset: 0x548
-	Size: 0xE8
-	Parameters: 2
-	Flags: Linked
-*/
 function istacspawntouchingcrates(origin, angles) {
   crate_ents = getentarray("care_package", "script_noteworthy");
   mins = (-17, -17, -40);
@@ -66,15 +42,6 @@ function istacspawntouchingcrates(origin, angles) {
   return false;
 }
 
-/*
-	Name: overridespawn
-	Namespace: tacticalinsertion
-	Checksum: 0xC01EBAB1
-	Offset: 0x638
-	Size: 0x148
-	Parameters: 1
-	Flags: None
-*/
 function overridespawn(ispredictedspawn) {
   if(!isdefined(self.tacticalinsertion)) {
     return false;
@@ -100,30 +67,12 @@ function overridespawn(ispredictedspawn) {
   return true;
 }
 
-/*
-	Name: waitanddelete
-	Namespace: tacticalinsertion
-	Checksum: 0xCA239D62
-	Offset: 0x788
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function waitanddelete(time) {
-  self endon(# "death");
+  self endon("death");
   wait(0.05);
   self delete();
 }
 
-/*
-	Name: watch
-	Namespace: tacticalinsertion
-	Checksum: 0xFA400B03
-	Offset: 0x7C8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function watch(player) {
   if(isdefined(player.tacticalinsertion)) {
     player.tacticalinsertion destroy_tactical_insertion();
@@ -132,19 +81,10 @@ function watch(player) {
   self waitanddelete(0.05);
 }
 
-/*
-	Name: watchusetrigger
-	Namespace: tacticalinsertion
-	Checksum: 0xBEB5C2A8
-	Offset: 0x848
-	Size: 0x1D2
-	Parameters: 4
-	Flags: Linked
-*/
 function watchusetrigger(trigger, callback, playersoundonuse, npcsoundonuse) {
-  self endon(# "delete");
+  self endon("delete");
   while (true) {
-    trigger waittill(# "trigger", player);
+    trigger waittill("trigger", player);
     if(!isalive(player)) {
       continue;
     }
@@ -172,46 +112,28 @@ function watchusetrigger(trigger, callback, playersoundonuse, npcsoundonuse) {
   }
 }
 
-/*
-	Name: watchdisconnect
-	Namespace: tacticalinsertion
-	Checksum: 0xCF66D2B6
-	Offset: 0xA28
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function watchdisconnect() {
-  self.tacticalinsertion endon(# "delete");
-  self waittill(# "disconnect");
+  self.tacticalinsertion endon("delete");
+  self waittill("disconnect");
   self.tacticalinsertion thread destroy_tactical_insertion();
 }
 
-/*
-	Name: destroy_tactical_insertion
-	Namespace: tacticalinsertion
-	Checksum: 0xDF66AEF9
-	Offset: 0xA70
-	Size: 0x1E4
-	Parameters: 1
-	Flags: Linked
-*/
 function destroy_tactical_insertion(attacker) {
   self.owner.tacticalinsertion = undefined;
-  self notify(# "delete");
-  self.owner notify(# "tactical_insertion_destroyed");
+  self notify("delete");
+  self.owner notify("tactical_insertion_destroyed");
   self.friendlytrigger delete();
   self.enemytrigger delete();
   if(isdefined(attacker) && isdefined(attacker.pers["team"]) && isdefined(self.owner) && isdefined(self.owner.pers["team"])) {
     if(level.teambased) {
       if(attacker.pers["team"] != self.owner.pers["team"]) {
-        attacker notify(# "destroyed_explosive");
+        attacker notify("destroyed_explosive");
         attacker challenges::destroyedequipment();
         attacker challenges::destroyedtacticalinsert();
         scoreevents::processscoreevent("destroyed_tac_insert", attacker);
       }
     } else if(attacker != self.owner) {
-      attacker notify(# "destroyed_explosive");
+      attacker notify("destroyed_explosive");
       attacker challenges::destroyedequipment();
       attacker challenges::destroyedtacticalinsert();
       scoreevents::processscoreevent("destroyed_tac_insert", attacker);
@@ -220,15 +142,6 @@ function destroy_tactical_insertion(attacker) {
   self delete();
 }
 
-/*
-	Name: fizzle
-	Namespace: tacticalinsertion
-	Checksum: 0xF1A555FD
-	Offset: 0xC60
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function fizzle(attacker) {
   if(isdefined(self.fizzle) && self.fizzle) {
     return;
@@ -244,15 +157,6 @@ function fizzle(attacker) {
   self destroy_tactical_insertion(attacker);
 }
 
-/*
-	Name: pickup
-	Namespace: tacticalinsertion
-	Checksum: 0x4E58DF5B
-	Offset: 0xD50
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function pickup(attacker) {
   player = self.owner;
   self destroy_tactical_insertion();
@@ -260,17 +164,8 @@ function pickup(attacker) {
   player setweaponammoclip(level.weapontacticalinsertion, 1);
 }
 
-/*
-	Name: spawntacticalinsertion
-	Namespace: tacticalinsertion
-	Checksum: 0x27334525
-	Offset: 0xDD0
-	Size: 0x8D0
-	Parameters: 0
-	Flags: Linked
-*/
 function spawntacticalinsertion() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   trace = bullettrace(self.origin, self.origin + (vectorscale((0, 0, -1), 30)), 0, self);
   trace["position"] = trace["position"] + (0, 0, 1);
   if(!self isonground() && bullettracepassed(self.origin, self.origin + (vectorscale((0, 0, -1), 30)), 0, self)) {
@@ -287,13 +182,13 @@ function spawntacticalinsertion() {
   self.tacticalinsertion.owner = self;
   self.tacticalinsertion setowner(self);
   self.tacticalinsertion setweapon(level.weapontacticalinsertion);
-  self.tacticalinsertion endon(# "delete");
+  self.tacticalinsertion endon("delete");
   self.tacticalinsertion hacker_tool::registerwithhackertool(level.equipmenthackertoolradius, level.equipmenthackertooltimems);
   triggerheight = 64;
   triggerradius = 128;
   self.tacticalinsertion.friendlytrigger = spawn("trigger_radius_use", self.tacticalinsertion.origin + vectorscale((0, 0, 1), 3));
   self.tacticalinsertion.friendlytrigger setcursorhint("HINT_NOICON", self.tacticalinsertion);
-  self.tacticalinsertion.friendlytrigger sethintstring( & "MP_TACTICAL_INSERTION_PICKUP");
+  self.tacticalinsertion.friendlytrigger sethintstring(&"MP_TACTICAL_INSERTION_PICKUP");
   if(level.teambased) {
     self.tacticalinsertion.friendlytrigger setteamfortrigger(self.team);
     self.tacticalinsertion.friendlytrigger.triggerteam = self.team;
@@ -302,7 +197,7 @@ function spawntacticalinsertion() {
   self.tacticalinsertion.friendlytrigger.claimedby = self;
   self.tacticalinsertion.enemytrigger = spawn("trigger_radius_use", self.tacticalinsertion.origin + vectorscale((0, 0, 1), 3));
   self.tacticalinsertion.enemytrigger setcursorhint("HINT_NOICON", self.tacticalinsertion);
-  self.tacticalinsertion.enemytrigger sethintstring( & "MP_TACTICAL_INSERTION_DESTROY");
+  self.tacticalinsertion.enemytrigger sethintstring(&"MP_TACTICAL_INSERTION_DESTROY");
   self.tacticalinsertion.enemytrigger setinvisibletoplayer(self);
   if(level.teambased) {
     self.tacticalinsertion.enemytrigger setexcludeteamfortrigger(self.team);
@@ -321,7 +216,7 @@ function spawntacticalinsertion() {
   self.tacticalinsertion setcandamage(1);
   self.tacticalinsertion.health = 1;
   while (true) {
-    self.tacticalinsertion waittill(# "damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon, idflags);
+    self.tacticalinsertion waittill("damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon, idflags);
     if(level.teambased && (!isdefined(attacker) || !isplayer(attacker) || attacker.team == self.team) && attacker != self) {
       continue;
     }
@@ -353,15 +248,6 @@ function spawntacticalinsertion() {
   }
 }
 
-/*
-	Name: cancel_button_think
-	Namespace: tacticalinsertion
-	Checksum: 0x6BA4F317
-	Offset: 0x16A8
-	Size: 0xE4
-	Parameters: 0
-	Flags: None
-*/
 function cancel_button_think() {
   if(!isdefined(self.tacticalinsertion)) {
     return;
@@ -377,15 +263,6 @@ function cancel_button_think() {
   }
 }
 
-/*
-	Name: canceltackinsertionbutton
-	Namespace: tacticalinsertion
-	Checksum: 0x27F4F62B
-	Offset: 0x1798
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function canceltackinsertionbutton() {
   if(level.console) {
     return self changeseatbuttonpressed();
@@ -393,37 +270,19 @@ function canceltackinsertionbutton() {
   return self jumpbuttonpressed();
 }
 
-/*
-	Name: cancel_button_press
-	Namespace: tacticalinsertion
-	Checksum: 0x60C973E8
-	Offset: 0x17E0
-	Size: 0x62
-	Parameters: 0
-	Flags: Linked
-*/
 function cancel_button_press() {
-  self endon(# "disconnect");
-  self endon(# "end_killcam");
-  self endon(# "abort_killcam");
+  self endon("disconnect");
+  self endon("end_killcam");
+  self endon("abort_killcam");
   while (true) {
     wait(0.05);
     if(self canceltackinsertionbutton()) {
       break;
     }
   }
-  self notify(# "tactical_insertion_canceled");
+  self notify("tactical_insertion_canceled");
 }
 
-/*
-	Name: cancel_text_create
-	Namespace: tacticalinsertion
-	Checksum: 0x672BAC1A
-	Offset: 0x1850
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function cancel_text_create() {
   text = newclienthudelem(self);
   text.archived = 0;
@@ -442,20 +301,11 @@ function cancel_text_create() {
   } else {
     text.fontscale = 1.6;
   }
-  text settext( & "PLATFORM_PRESS_TO_CANCEL_TACTICAL_INSERTION");
+  text settext(&"PLATFORM_PRESS_TO_CANCEL_TACTICAL_INSERTION");
   text.alpha = 1;
   return text;
 }
 
-/*
-	Name: gettacticalinsertions
-	Namespace: tacticalinsertion
-	Checksum: 0x8FAAE533
-	Offset: 0x19D8
-	Size: 0xB6
-	Parameters: 0
-	Flags: None
-*/
 function gettacticalinsertions() {
   tac_inserts = [];
   foreach(player in level.players) {
@@ -466,15 +316,6 @@ function gettacticalinsertions() {
   return tac_inserts;
 }
 
-/*
-	Name: tacticalinsertiondestroyedbytrophysystem
-	Namespace: tacticalinsertion
-	Checksum: 0x21FBC319
-	Offset: 0x1A98
-	Size: 0xE0
-	Parameters: 2
-	Flags: Linked
-*/
 function tacticalinsertiondestroyedbytrophysystem(attacker, trophysystem) {
   owner = self.owner;
   if(isdefined(attacker)) {
@@ -483,8 +324,8 @@ function tacticalinsertiondestroyedbytrophysystem(attacker, trophysystem) {
   }
   self thread fizzle();
   if(isdefined(owner)) {
-    owner endon(# "death");
-    owner endon(# "disconnect");
+    owner endon("death");
+    owner endon("disconnect");
     wait(0.05);
     if(isdefined(level.globallogic_audio_dialog_on_player_override)) {
       owner[[level.globallogic_audio_dialog_on_player_override]]("tact_destroyed", "item_destroyed");
@@ -492,22 +333,13 @@ function tacticalinsertiondestroyedbytrophysystem(attacker, trophysystem) {
   }
 }
 
-/*
-	Name: begin_other_grenade_tracking
-	Namespace: tacticalinsertion
-	Checksum: 0xB6D0258C
-	Offset: 0x1B80
-	Size: 0xE0
-	Parameters: 0
-	Flags: Linked
-*/
 function begin_other_grenade_tracking() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self notify(# "insertiontrackingstart");
-  self endon(# "insertiontrackingstart");
+  self endon("death");
+  self endon("disconnect");
+  self notify("insertiontrackingstart");
+  self endon("insertiontrackingstart");
   for (;;) {
-    self waittill(# "grenade_fire", grenade, weapon, cooktime);
+    self waittill("grenade_fire", grenade, weapon, cooktime);
     if(grenade util::ishacked()) {
       continue;
     }

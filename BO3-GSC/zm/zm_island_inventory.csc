@@ -1,22 +1,16 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_island_inventory.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\postfx_shared;
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_island_inventory;
 
-/*
-	Name: init
-	Namespace: zm_island_inventory
-	Checksum: 0x8B6AE55A
-	Offset: 0x398
-	Size: 0x644
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   clientfield::register("clientuimodel", "zmInventory.widget_bucket_parts", 9000, 1, "int", undefined, 0, 0);
   clientfield::register("toplayer", "bucket_held", 9000, getminbitcountfornum(2), "int", & zm_utility::setinventoryuimodels, 0, 0);
@@ -42,26 +36,8 @@ function init() {
   clientfield::register("toplayer", "wonderweapon_part_wwiii", 9000, 1, "int", & zm_utility::setsharedinventoryuimodels, 0, 0);
 }
 
-/*
-	Name: main
-	Namespace: zm_island_inventory
-	Checksum: 0x99EC1590
-	Offset: 0x9E8
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function main() {}
 
-/*
-	Name: function_67b53ed4
-	Namespace: zm_island_inventory
-	Checksum: 0x7F908EA1
-	Offset: 0x9F8
-	Size: 0x18C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_67b53ed4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.var_b6689566)) {
     self.var_b6689566 = createuimodel(getuimodelforcontroller(localclientnum), "zmInventory.gaskmask_gasmask_progress");
@@ -83,19 +59,10 @@ function function_67b53ed4(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_63119d2
-	Namespace: zm_island_inventory
-	Checksum: 0x26C3EF99
-	Offset: 0xB90
-	Size: 0x100
-	Parameters: 3
-	Flags: Linked
-*/
 function function_63119d2(var_1b778cf0, var_6e653641, n_new_value) {
-  self endon(# "death");
-  self notify(# "hash_63119d2");
-  self endon(# "hash_63119d2");
+  self endon("death");
+  self notify("hash_63119d2");
+  self endon("hash_63119d2");
   n_start_time = getrealtime();
   var_1c9f31e1 = 0;
   while (var_1c9f31e1 <= 1) {

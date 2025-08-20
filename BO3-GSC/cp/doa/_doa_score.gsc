@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_score.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\doa\_doa_pickups;
 #using scripts\cp\doa\_doa_player_utility;
@@ -9,81 +13,35 @@
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_64c6b720;
 
-/*
-	Name: init
-	Namespace: namespace_64c6b720
-	Checksum: 0x99EC1590
-	Offset: 0x210
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {}
 
-/*
-	Name: function_acd89108
-	Namespace: namespace_64c6b720
-	Checksum: 0x5F92D60B
-	Offset: 0x220
-	Size: 0x2E
-	Parameters: 1
-	Flags: None
-*/
 function function_acd89108(note) {
-  self endon(# "hash_a49bc808");
+  self endon("hash_a49bc808");
   self waittill(note);
-  self notify(# "hash_7c5410c4");
+  self notify("hash_7c5410c4");
 }
 
-/*
-	Name: function_7c5410c4
-	Namespace: namespace_64c6b720
-	Checksum: 0x4BE88CD
-	Offset: 0x258
-	Size: 0xFE
-	Parameters: 0
-	Flags: None
-*/
 function function_7c5410c4() {
-  self endon(# "hash_acd89108");
-  self waittill(# "hash_7c5410c4");
+  self endon("hash_acd89108");
+  self waittill("hash_7c5410c4");
   foreach(player in namespace_831a4a7c::function_5eb6e4d1()) {
     if(isdefined(player.doa.timerhud)) {
       player closeluimenu(player.doa.timerhud);
       player.doa.timerhud = undefined;
     }
   }
-  self notify(# "hash_a49bc808");
+  self notify("hash_a49bc808");
 }
 
-/*
-	Name: function_92c929ab
-	Namespace: namespace_64c6b720
-	Checksum: 0xCD67FF51
-	Offset: 0x360
-	Size: 0x32
-	Parameters: 1
-	Flags: None
-*/
 function function_92c929ab(val) {
   ret = (val << 2) + self.entnum;
   return ret;
 }
 
-/*
-	Name: function_676edeb7
-	Namespace: namespace_64c6b720
-	Checksum: 0x3A7181E3
-	Offset: 0x3A0
-	Size: 0x30C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_676edeb7() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(isdefined(self.doa)) {
     if(isdefined(self.doa.respawning) && self.doa.respawning) {
       var_132c0655 = math::clamp(self.var_9ea856f6 / 60, 0, 1);
@@ -109,15 +67,6 @@ function function_676edeb7() {
   }
 }
 
-/*
-	Name: function_93ccc5da
-	Namespace: namespace_64c6b720
-	Checksum: 0x84BB0B6A
-	Offset: 0x6B8
-	Size: 0x76
-	Parameters: 0
-	Flags: Linked
-*/
 function function_93ccc5da() {
   if(!isdefined(self) || !isdefined(self.doa)) {
     return 0;
@@ -125,15 +74,6 @@ function function_93ccc5da() {
   return self.doa.score + (self.doa.var_db3637c0 * (int((int(4000000) * 25) - 1)));
 }
 
-/*
-	Name: function_80eb303
-	Namespace: namespace_64c6b720
-	Checksum: 0x61C78C40
-	Offset: 0x738
-	Size: 0x3A4
-	Parameters: 2
-	Flags: Linked
-*/
 function function_80eb303(points, var_c979daec = 0) {
   if(!level flag::get("doa_game_is_running")) {
     return;
@@ -177,15 +117,6 @@ function function_80eb303(points, var_c979daec = 0) {
   }
 }
 
-/*
-	Name: function_126dc996
-	Namespace: namespace_64c6b720
-	Checksum: 0xB80DD6E7
-	Offset: 0xAE8
-	Size: 0x166
-	Parameters: 1
-	Flags: Linked
-*/
 function function_126dc996(multiplier) {
   max = level.doa.rules.max_multiplier;
   if(self.doa.fate == 11) {
@@ -200,15 +131,6 @@ function function_126dc996(multiplier) {
   }
 }
 
-/*
-	Name: function_850bb47e
-	Namespace: namespace_64c6b720
-	Checksum: 0x4C4DE764
-	Offset: 0xC58
-	Size: 0x234
-	Parameters: 2
-	Flags: Linked
-*/
 function function_850bb47e(increment, forcex) {
   if(!isdefined(forcex)) {
     if(!isdefined(increment)) {

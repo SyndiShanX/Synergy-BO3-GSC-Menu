@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicle_shared.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\filter_shared;
@@ -7,31 +11,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicleriders_shared;
-
 #namespace vehicle;
 
-/*
-	Name: __init__sytem__
-	Namespace: vehicle
-	Checksum: 0x806484A3
-	Offset: 0x6B8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("vehicle_shared", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: vehicle
-	Checksum: 0xFB287F0
-	Offset: 0x6F8
-	Size: 0xD9C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level._customvehiclecbfunc = & spawned_callback;
   clientfield::register("vehicle", "toggle_lockon", 1, 1, "int", & field_toggle_lockon_handler, 0, 0);
@@ -84,15 +69,6 @@ function __init__() {
   clientfield::register("toplayer", "static_postfx", 1, 1, "int", & set_static_postfxbundle, 0, 0);
 }
 
-/*
-	Name: add_vehicletype_callback
-	Namespace: vehicle
-	Checksum: 0x205773E8
-	Offset: 0x14A0
-	Size: 0x3E
-	Parameters: 2
-	Flags: Linked
-*/
 function add_vehicletype_callback(vehicletype, callback) {
   if(!isdefined(level.vehicletypecallbackarray)) {
     level.vehicletypecallbackarray = [];
@@ -100,15 +76,6 @@ function add_vehicletype_callback(vehicletype, callback) {
   level.vehicletypecallbackarray[vehicletype] = callback;
 }
 
-/*
-	Name: spawned_callback
-	Namespace: vehicle
-	Checksum: 0xA7093B3
-	Offset: 0x14E8
-	Size: 0xD6
-	Parameters: 1
-	Flags: Linked
-*/
 function spawned_callback(localclientnum) {
   if(isdefined(self.vehicleridersbundle)) {
     set_vehicleriders_bundle(self.vehicleridersbundle);
@@ -123,17 +90,8 @@ function spawned_callback(localclientnum) {
   }
 }
 
-/*
-	Name: rumble
-	Namespace: vehicle
-	Checksum: 0x63F580CD
-	Offset: 0x15C8
-	Size: 0x2A8
-	Parameters: 1
-	Flags: None
-*/
 function rumble(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(!isdefined(self.rumbletype) || self.rumbleradius == 0) {
     return;
   }
@@ -170,28 +128,10 @@ function rumble(localclientnum) {
   }
 }
 
-/*
-	Name: kill_treads_forever
-	Namespace: vehicle
-	Checksum: 0x9FC38D0C
-	Offset: 0x1878
-	Size: 0x12
-	Parameters: 0
-	Flags: Linked
-*/
 function kill_treads_forever() {
-  self notify(# "kill_treads_forever");
+  self notify("kill_treads_forever");
 }
 
-/*
-	Name: play_exhaust
-	Namespace: vehicle
-	Checksum: 0x71F807DE
-	Offset: 0x1898
-	Size: 0x1B4
-	Parameters: 1
-	Flags: Linked
-*/
 function play_exhaust(localclientnum) {
   if(isdefined(self.csf_no_exhaust) && self.csf_no_exhaust) {
     return;
@@ -207,10 +147,8 @@ function play_exhaust(localclientnum) {
   }
   if(isdefined(self.exhaust_fx) && isdefined(self.exhaustfxtag1)) {
     if(isalive(self)) {
-      /#
       assert(isdefined(self.exhaustfxtag1), self.vehicletype + "");
-      # /
-        self endon(# "entityshutdown");
+      self endon("entityshutdown");
       self wait_for_dobj(localclientnum);
       self.exhaust_id_left = playfxontag(localclientnum, self.exhaust_fx, self, self.exhaustfxtag1);
       if(!isdefined(self.exhaust_id_right) && isdefined(self.exhaustfxtag2)) {
@@ -221,17 +159,8 @@ function play_exhaust(localclientnum) {
   }
 }
 
-/*
-	Name: kill_exhaust_watcher
-	Namespace: vehicle
-	Checksum: 0xB0F956F7
-	Offset: 0x1A58
-	Size: 0x86
-	Parameters: 1
-	Flags: Linked
-*/
 function kill_exhaust_watcher(localclientnum) {
-  self waittill(# "stop_exhaust_fx");
+  self waittill("stop_exhaust_fx");
   if(isdefined(self.exhaust_id_left)) {
     stopfx(localclientnum, self.exhaust_id_left);
     self.exhaust_id_left = undefined;
@@ -242,32 +171,14 @@ function kill_exhaust_watcher(localclientnum) {
   }
 }
 
-/*
-	Name: stop_exhaust
-	Namespace: vehicle
-	Checksum: 0xC8650C06
-	Offset: 0x1AE8
-	Size: 0x1A
-	Parameters: 1
-	Flags: Linked
-*/
 function stop_exhaust(localclientnum) {
-  self notify(# "stop_exhaust_fx");
+  self notify("stop_exhaust_fx");
 }
 
-/*
-	Name: aircraft_dustkick
-	Namespace: vehicle
-	Checksum: 0x46D6B1E2
-	Offset: 0x1B10
-	Size: 0x2A6
-	Parameters: 0
-	Flags: Linked
-*/
 function aircraft_dustkick() {
   waittillframeend();
-  self endon(# "kill_treads_forever");
-  self endon(# "entityshutdown");
+  self endon("kill_treads_forever");
+  self endon("entityshutdown");
   if(!isdefined(self)) {
     return;
   }
@@ -318,19 +229,10 @@ function aircraft_dustkick() {
   }
 }
 
-/*
-	Name: weapon_fired
-	Namespace: vehicle
-	Checksum: 0xA1C60700
-	Offset: 0x1DC0
-	Size: 0x1BA
-	Parameters: 0
-	Flags: None
-*/
 function weapon_fired() {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   while (true) {
-    self waittill(# "weapon_fired");
+    self waittill("weapon_fired");
     players = level.localplayers;
     for (i = 0; i < players.size; i++) {
       player_distance = distancesquared(self.origin, players[i].origin);
@@ -352,40 +254,20 @@ function weapon_fired() {
   }
 }
 
-/*
-	Name: wait_for_dobj
-	Namespace: vehicle
-	Checksum: 0x81186169
-	Offset: 0x1F88
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_for_dobj(localclientnum) {
   count = 30;
   while (!self hasdobj(localclientnum)) {
     if(count < 0) {
-      /#
       iprintlnbold("");
-      # /
-        return;
+      return;
     }
     wait(0.016);
     count = count - 1;
   }
 }
 
-/*
-	Name: lights_on
-	Namespace: vehicle
-	Checksum: 0x235A4EFF
-	Offset: 0x2010
-	Size: 0x136
-	Parameters: 2
-	Flags: Linked
-*/
 function lights_on(localclientnum, team) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   lights_off(localclientnum);
   wait_for_dobj(localclientnum);
   if(isdefined(self.lightfxnamearray)) {
@@ -402,15 +284,6 @@ function lights_on(localclientnum, team) {
   }
 }
 
-/*
-	Name: addanimtolist
-	Namespace: vehicle
-	Checksum: 0x9E42FC82
-	Offset: 0x2150
-	Size: 0x112
-	Parameters: 6
-	Flags: Linked
-*/
 function addanimtolist(animitem, & liston, & listoff, playwhenoff, id, maxid) {
   if(isdefined(animitem) && id <= maxid) {
     if(playwhenoff === 1) {
@@ -431,17 +304,8 @@ function addanimtolist(animitem, & liston, & listoff, playwhenoff, id, maxid) {
   }
 }
 
-/*
-	Name: ambient_anim_toggle
-	Namespace: vehicle
-	Checksum: 0x34924C8C
-	Offset: 0x2270
-	Size: 0x5EE
-	Parameters: 3
-	Flags: Linked
-*/
 function ambient_anim_toggle(localclientnum, groupid, ison) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(!isdefined(self.scriptbundlesettings)) {
     return;
   }
@@ -497,69 +361,24 @@ function ambient_anim_toggle(localclientnum, groupid, ison) {
   }
 }
 
-/*
-	Name: field_toggle_ambient_anim_handler1
-	Namespace: vehicle
-	Checksum: 0x3C115FE6
-	Offset: 0x2868
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_ambient_anim_handler1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self ambient_anim_toggle(localclientnum, 1, newval);
 }
 
-/*
-	Name: field_toggle_ambient_anim_handler2
-	Namespace: vehicle
-	Checksum: 0x9795C8EA
-	Offset: 0x28D0
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_ambient_anim_handler2(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self ambient_anim_toggle(localclientnum, 2, newval);
 }
 
-/*
-	Name: field_toggle_ambient_anim_handler3
-	Namespace: vehicle
-	Checksum: 0x77F3C9F2
-	Offset: 0x2938
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_ambient_anim_handler3(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self ambient_anim_toggle(localclientnum, 3, newval);
 }
 
-/*
-	Name: field_toggle_ambient_anim_handler4
-	Namespace: vehicle
-	Checksum: 0x13202D04
-	Offset: 0x29A0
-	Size: 0x5C
-	Parameters: 7
-	Flags: None
-*/
 function field_toggle_ambient_anim_handler4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self ambient_anim_toggle(localclientnum, 4, newval);
 }
 
-/*
-	Name: lights_group_toggle
-	Namespace: vehicle
-	Checksum: 0xBF9AA550
-	Offset: 0x2A08
-	Size: 0x7A2
-	Parameters: 3
-	Flags: Linked
-*/
 function lights_group_toggle(localclientnum, id, ison) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(!isdefined(self.scriptbundlesettings)) {
     return;
   }
@@ -633,67 +452,22 @@ function lights_group_toggle(localclientnum, id, ison) {
   }
 }
 
-/*
-	Name: field_toggle_lights_group_handler1
-	Namespace: vehicle
-	Checksum: 0xB2754E46
-	Offset: 0x31B8
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_lights_group_handler1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self lights_group_toggle(localclientnum, 1, newval);
 }
 
-/*
-	Name: field_toggle_lights_group_handler2
-	Namespace: vehicle
-	Checksum: 0x29A93F2
-	Offset: 0x3220
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_lights_group_handler2(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self lights_group_toggle(localclientnum, 2, newval);
 }
 
-/*
-	Name: field_toggle_lights_group_handler3
-	Namespace: vehicle
-	Checksum: 0x4BFDF16A
-	Offset: 0x3288
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_lights_group_handler3(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self lights_group_toggle(localclientnum, 3, newval);
 }
 
-/*
-	Name: field_toggle_lights_group_handler4
-	Namespace: vehicle
-	Checksum: 0x6BFA43A9
-	Offset: 0x32F0
-	Size: 0x5C
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_lights_group_handler4(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self lights_group_toggle(localclientnum, 4, newval);
 }
 
-/*
-	Name: delete_alert_lights
-	Namespace: vehicle
-	Checksum: 0x1F9476D9
-	Offset: 0x3358
-	Size: 0x6E
-	Parameters: 1
-	Flags: Linked
-*/
 function delete_alert_lights(localclientnum) {
   if(isdefined(self.alert_light_fx_handles)) {
     for (i = 0; i < self.alert_light_fx_handles.size; i++) {
@@ -703,15 +477,6 @@ function delete_alert_lights(localclientnum) {
   self.alert_light_fx_handles = undefined;
 }
 
-/*
-	Name: lights_off
-	Namespace: vehicle
-	Checksum: 0x328F30B3
-	Offset: 0x33D0
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function lights_off(localclientnum) {
   if(isdefined(self.light_fx_handles)) {
     for (i = 0; i < self.light_fx_handles.size; i++) {
@@ -722,41 +487,14 @@ function lights_off(localclientnum) {
   delete_alert_lights(localclientnum);
 }
 
-/*
-	Name: field_toggle_emp
-	Namespace: vehicle
-	Checksum: 0x642D0FB0
-	Offset: 0x3460
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_emp(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self thread toggle_fx_bundle(localclientnum, "emp_base", newval == 1);
 }
 
-/*
-	Name: field_toggle_burn
-	Namespace: vehicle
-	Checksum: 0xF2E88636
-	Offset: 0x34D0
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_burn(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self thread toggle_fx_bundle(localclientnum, "burn_base", newval == 1);
 }
 
-/*
-	Name: toggle_fx_bundle
-	Namespace: vehicle
-	Checksum: 0x3FA75967
-	Offset: 0x3540
-	Size: 0x2CE
-	Parameters: 3
-	Flags: Linked
-*/
 function toggle_fx_bundle(localclientnum, name, turnon) {
   if(!isdefined(self.settings) && isdefined(self.scriptbundlesettings)) {
     self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
@@ -764,7 +502,7 @@ function toggle_fx_bundle(localclientnum, name, turnon) {
   if(!isdefined(self.settings)) {
     return;
   }
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self notify("end_toggle_field_fx_" + name);
   self endon("end_toggle_field_fx_" + name);
   wait_for_dobj(localclientnum);
@@ -796,17 +534,8 @@ function toggle_fx_bundle(localclientnum, name, turnon) {
   }
 }
 
-/*
-	Name: delayed_fx_thread
-	Namespace: vehicle
-	Checksum: 0xF556AE1E
-	Offset: 0x3818
-	Size: 0x138
-	Parameters: 5
-	Flags: Linked
-*/
 function delayed_fx_thread(localclientnum, name, fx, tag, delay) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self endon("end_toggle_field_fx_" + name);
   if(!isdefined(tag)) {
     return;
@@ -823,22 +552,13 @@ function delayed_fx_thread(localclientnum, name, fx, tag, delay) {
   self.fx_handles[name][self.fx_handles[name].size] = fx_handle;
 }
 
-/*
-	Name: field_toggle_sounds
-	Namespace: vehicle
-	Checksum: 0x20E365AB
-	Offset: 0x3958
-	Size: 0xD4
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_sounds(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.vehicleclass) && self.vehicleclass == "helicopter") {
     if(newval) {
-      self notify(# "stop_heli_sounds");
+      self notify("stop_heli_sounds");
       self.should_not_play_sounds = 1;
     } else {
-      self notify(# "play_heli_sounds");
+      self notify("play_heli_sounds");
       self.should_not_play_sounds = 0;
     }
   }
@@ -849,30 +569,12 @@ function field_toggle_sounds(localclientnum, oldval, newval, bnewent, binitialsn
   }
 }
 
-/*
-	Name: field_toggle_dnidamagefx
-	Namespace: vehicle
-	Checksum: 0xF54DD689
-	Offset: 0x3A38
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_dnidamagefx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self thread postfx::playpostfxbundle("pstfx_dni_vehicle_dmg");
   }
 }
 
-/*
-	Name: toggle_flir_postfxbundle
-	Namespace: vehicle
-	Checksum: 0xC3FBD217
-	Offset: 0x3AA8
-	Size: 0x19C
-	Parameters: 7
-	Flags: Linked
-*/
 function toggle_flir_postfxbundle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   player = self;
   if(newval == oldval) {
@@ -900,38 +602,18 @@ function toggle_flir_postfxbundle(localclientnum, oldval, newval, bnewent, binit
   }
 }
 
-/*
-	Name: shouldchangescreenpostfx
-	Namespace: vehicle
-	Checksum: 0x365C2241
-	Offset: 0x3C50
-	Size: 0xA0
-	Parameters: 1
-	Flags: Linked
-*/
 function shouldchangescreenpostfx(localclientnum) {
   player = self;
-  /#
   assert(isdefined(player));
-  # /
-    if(player getinkillcam(localclientnum)) {
-      killcamentity = player getkillcamentity(localclientnum);
-      if(isdefined(killcamentity) && killcamentity != player) {
-        return false;
-      }
+  if(player getinkillcam(localclientnum)) {
+    killcamentity = player getkillcamentity(localclientnum);
+    if(isdefined(killcamentity) && killcamentity != player) {
+      return false;
     }
+  }
   return true;
 }
 
-/*
-	Name: set_static_postfxbundle
-	Namespace: vehicle
-	Checksum: 0xEBFD0C44
-	Offset: 0x3CF8
-	Size: 0xD4
-	Parameters: 7
-	Flags: Linked
-*/
 function set_static_postfxbundle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   player = self;
   if(newval == oldval) {
@@ -947,15 +629,6 @@ function set_static_postfxbundle(localclientnum, oldval, newval, bnewent, biniti
   }
 }
 
-/*
-	Name: update_ui_fullscreen_filter_model
-	Namespace: vehicle
-	Checksum: 0x78C212D7
-	Offset: 0x3DD8
-	Size: 0x84
-	Parameters: 2
-	Flags: Linked
-*/
 function update_ui_fullscreen_filter_model(localclientnum, vision_set_value) {
   controllermodel = getuimodelforcontroller(localclientnum);
   model = getuimodel(controllermodel, "vehicle.fullscreenFilter");
@@ -964,28 +637,16 @@ function update_ui_fullscreen_filter_model(localclientnum, vision_set_value) {
   }
 }
 
-/*
-	Name: field_toggle_treadfx
-	Namespace: vehicle
-	Checksum: 0xE7FEDE0D
-	Offset: 0x3E68
-	Size: 0x234
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_treadfx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.vehicleclass) && self.vehicleclass == "helicopter" || (isdefined(self.vehicleclass) && self.vehicleclass == "plane")) {
-    /#
     println("");
-    # /
-      if(newval) {
-        if(isdefined(bnewent) && bnewent) {
-          self.csf_no_tread = 1;
-        } else {
-          self kill_treads_forever();
-        }
+    if(newval) {
+      if(isdefined(bnewent) && bnewent) {
+        self.csf_no_tread = 1;
+      } else {
+        self kill_treads_forever();
       }
-    else {
+    } else {
       if(isdefined(self.csf_no_tread)) {
         self.csf_no_tread = 0;
       }
@@ -994,42 +655,24 @@ function field_toggle_treadfx(localclientnum, oldval, newval, bnewent, binitials
     }
   } else {
     if(newval) {
-      /#
       println("");
-      # /
-        if(isdefined(bnewent) && bnewent) {
-          /#
-          println("" + self getentitynumber());
-          # /
-            self.csf_no_tread = 1;
-        }
-      else {
-        /#
+      if(isdefined(bnewent) && bnewent) {
         println("" + self getentitynumber());
-        # /
-          self kill_treads_forever();
+        self.csf_no_tread = 1;
+      } else {
+        println("" + self getentitynumber());
+        self kill_treads_forever();
       }
     } else {
-      /#
       println("");
-      # /
-        if(isdefined(self.csf_no_tread)) {
-          self.csf_no_tread = 0;
-        }
+      if(isdefined(self.csf_no_tread)) {
+        self.csf_no_tread = 0;
+      }
       self kill_treads_forever();
     }
   }
 }
 
-/*
-	Name: field_use_engine_damage_sounds
-	Namespace: vehicle
-	Checksum: 0xD22E2E61
-	Offset: 0x40A8
-	Size: 0xD6
-	Parameters: 7
-	Flags: Linked
-*/
 function field_use_engine_damage_sounds(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.vehicleclass) && self.vehicleclass == "helicopter") {
     switch (newval) {
@@ -1052,17 +695,8 @@ function field_use_engine_damage_sounds(localclientnum, oldval, newval, bnewent,
   }
 }
 
-/*
-	Name: field_do_deathfx
-	Namespace: vehicle
-	Checksum: 0x4DF672A
-	Offset: 0x4188
-	Size: 0xBC
-	Parameters: 7
-	Flags: Linked
-*/
 function field_do_deathfx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(newval == 2) {
     self field_do_empdeathfx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump);
   } else {
@@ -1070,15 +704,6 @@ function field_do_deathfx(localclientnum, oldval, newval, bnewent, binitialsnap,
   }
 }
 
-/*
-	Name: field_do_standarddeathfx
-	Namespace: vehicle
-	Checksum: 0x4810C4FA
-	Offset: 0x4250
-	Size: 0x17C
-	Parameters: 7
-	Flags: Linked
-*/
 function field_do_standarddeathfx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval && !binitialsnap) {
     wait_for_dobj(localclientnum);
@@ -1097,15 +722,6 @@ function field_do_standarddeathfx(localclientnum, oldval, newval, bnewent, binit
   }
 }
 
-/*
-	Name: field_do_empdeathfx
-	Namespace: vehicle
-	Checksum: 0x9968E423
-	Offset: 0x43D8
-	Size: 0x254
-	Parameters: 7
-	Flags: Linked
-*/
 function field_do_empdeathfx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.settings) && isdefined(self.scriptbundlesettings)) {
     self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
@@ -1132,15 +748,6 @@ function field_do_empdeathfx(localclientnum, oldval, newval, bnewent, binitialsn
   }
 }
 
-/*
-	Name: field_update_alert_level
-	Namespace: vehicle
-	Checksum: 0xA07AD81B
-	Offset: 0x4638
-	Size: 0x1D2
-	Parameters: 7
-	Flags: Linked
-*/
 function field_update_alert_level(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   delete_alert_lights(localclientnum);
   if(!isdefined(self.scriptbundlesettings)) {
@@ -1175,15 +782,6 @@ function field_update_alert_level(localclientnum, oldval, newval, bnewent, binit
   }
 }
 
-/*
-	Name: field_toggle_exhaustfx_handler
-	Namespace: vehicle
-	Checksum: 0x57D4882
-	Offset: 0x4818
-	Size: 0xD4
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_exhaustfx_handler(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     if(isdefined(bnewent) && bnewent) {
@@ -1200,15 +798,6 @@ function field_toggle_exhaustfx_handler(localclientnum, oldval, newval, bnewent,
   }
 }
 
-/*
-	Name: control_lights_groups
-	Namespace: vehicle
-	Checksum: 0xE23FD8C9
-	Offset: 0x48F8
-	Size: 0x1B4
-	Parameters: 2
-	Flags: Linked
-*/
 function control_lights_groups(localclientnum, on) {
   if(!isdefined(self.scriptbundlesettings)) {
     return;
@@ -1231,15 +820,6 @@ function control_lights_groups(localclientnum, on) {
   }
 }
 
-/*
-	Name: field_toggle_lights_handler
-	Namespace: vehicle
-	Checksum: 0xD5BBFC5C
-	Offset: 0x4AB8
-	Size: 0x104
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_lights_handler(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     self lights_off(localclientnum);
@@ -1257,26 +837,8 @@ function field_toggle_lights_handler(localclientnum, oldval, newval, bnewent, bi
   control_lights_groups(localclientnum, newval != 1);
 }
 
-/*
-	Name: field_toggle_lockon_handler
-	Namespace: vehicle
-	Checksum: 0xD9603104
-	Offset: 0x4BC8
-	Size: 0x3C
-	Parameters: 7
-	Flags: Linked
-*/
 function field_toggle_lockon_handler(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
-/*
-	Name: addfxandtagtolists
-	Namespace: vehicle
-	Checksum: 0x8BE55DB3
-	Offset: 0x4C10
-	Size: 0x10A
-	Parameters: 6
-	Flags: Linked
-*/
 function addfxandtagtolists(fx, tag, & fxlist, & taglist, id, maxid) {
   if(isdefined(fx) && isdefined(tag) && id <= maxid) {
     if(!isdefined(fxlist)) {
@@ -1294,15 +856,6 @@ function addfxandtagtolists(fx, tag, & fxlist, & taglist, id, maxid) {
   }
 }
 
-/*
-	Name: field_update_damage_state
-	Namespace: vehicle
-	Checksum: 0x7E10159A
-	Offset: 0x4D28
-	Size: 0x91C
-	Parameters: 7
-	Flags: Linked
-*/
 function field_update_damage_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.scriptbundlesettings)) {
     return;
@@ -1384,15 +937,6 @@ function field_update_damage_state(localclientnum, oldval, newval, bnewent, bini
   }
 }
 
-/*
-	Name: field_death_spawn_dynents
-	Namespace: vehicle
-	Checksum: 0xE86B8C28
-	Offset: 0x5650
-	Size: 0x76E
-	Parameters: 7
-	Flags: Linked
-*/
 function field_death_spawn_dynents(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.scriptbundlesettings)) {
     return;
@@ -1455,15 +999,6 @@ function field_death_spawn_dynents(localclientnum, oldval, newval, bnewent, bini
   }
 }
 
-/*
-	Name: field_gib_spawn_dynents
-	Namespace: vehicle
-	Checksum: 0x2F817E99
-	Offset: 0x5DC8
-	Size: 0x676
-	Parameters: 7
-	Flags: Linked
-*/
 function field_gib_spawn_dynents(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(self.scriptbundlesettings)) {
     return;
@@ -1510,15 +1045,6 @@ function field_gib_spawn_dynents(localclientnum, oldval, newval, bnewent, biniti
   }
 }
 
-/*
-	Name: build_damage_filter_list
-	Namespace: vehicle
-	Checksum: 0xD4FE13F6
-	Offset: 0x6448
-	Size: 0x8E
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec build_damage_filter_list() {
   if(!isdefined(level.vehicle_damage_filters)) {
     level.vehicle_damage_filters = [];
@@ -1530,15 +1056,6 @@ function autoexec build_damage_filter_list() {
   level.vehicle_damage_filters[4] = "generic_filter_rts_vehicle_damage";
 }
 
-/*
-	Name: init_damage_filter
-	Namespace: vehicle
-	Checksum: 0xD378F105
-	Offset: 0x64E0
-	Size: 0xDC
-	Parameters: 1
-	Flags: None
-*/
 function init_damage_filter(materialid) {
   level.localplayers[0].damage_filter_intensity = 0;
   materialname = level.vehicle_damage_filters[materialid];
@@ -1548,50 +1065,23 @@ function init_damage_filter(materialid) {
   filter::set_filter_vehicle_sun_position(level.localplayers[0], 3, 0, 0);
 }
 
-/*
-	Name: damage_filter_enable
-	Namespace: vehicle
-	Checksum: 0x9C32C6E
-	Offset: 0x65C8
-	Size: 0x94
-	Parameters: 2
-	Flags: None
-*/
 function damage_filter_enable(localclientnum, materialid) {
   filter::enable_filter_vehicle_damage(level.localplayers[0], 3, level.vehicle_damage_filters[materialid]);
   level.localplayers[0].damage_filter_intensity = 0;
   filter::set_filter_vehicle_damage_amount(level.localplayers[0], 3, level.localplayers[0].damage_filter_intensity);
 }
 
-/*
-	Name: damage_filter_disable
-	Namespace: vehicle
-	Checksum: 0x18B76C93
-	Offset: 0x6668
-	Size: 0x8C
-	Parameters: 1
-	Flags: None
-*/
 function damage_filter_disable(localclientnum) {
-  level notify(# "damage_filter_off");
+  level notify("damage_filter_off");
   level.localplayers[0].damage_filter_intensity = 0;
   filter::set_filter_vehicle_damage_amount(level.localplayers[0], 3, level.localplayers[0].damage_filter_intensity);
   filter::disable_filter_vehicle_damage(level.localplayers[0], 3);
 }
 
-/*
-	Name: damage_filter_off
-	Namespace: vehicle
-	Checksum: 0x9AC8AD0D
-	Offset: 0x6700
-	Size: 0x118
-	Parameters: 1
-	Flags: None
-*/
 function damage_filter_off(localclientnum) {
-  level endon(# "damage_filter");
-  level endon(# "damage_filter_off");
-  level endon(# "damage_filter_heavy");
+  level endon("damage_filter");
+  level endon("damage_filter_off");
+  level endon("damage_filter_heavy");
   if(!isdefined(level.localplayers[0].damage_filter_intensity)) {
     return;
   }
@@ -1605,19 +1095,10 @@ function damage_filter_off(localclientnum) {
   }
 }
 
-/*
-	Name: damage_filter_light
-	Namespace: vehicle
-	Checksum: 0x98D81339
-	Offset: 0x6820
-	Size: 0x108
-	Parameters: 1
-	Flags: None
-*/
 function damage_filter_light(localclientnum) {
-  level endon(# "damage_filter_off");
-  level endon(# "damage_filter_heavy");
-  level notify(# "damage_filter");
+  level endon("damage_filter_off");
+  level endon("damage_filter_heavy");
+  level notify("damage_filter");
   while (level.localplayers[0].damage_filter_intensity < 0.5) {
     level.localplayers[0].damage_filter_intensity = level.localplayers[0].damage_filter_intensity + 0.083335;
     if(level.localplayers[0].damage_filter_intensity > 0.5) {
@@ -1628,18 +1109,9 @@ function damage_filter_light(localclientnum) {
   }
 }
 
-/*
-	Name: damage_filter_heavy
-	Namespace: vehicle
-	Checksum: 0x418FCAA5
-	Offset: 0x6930
-	Size: 0xF8
-	Parameters: 1
-	Flags: None
-*/
 function damage_filter_heavy(localclientnum) {
-  level endon(# "damage_filter_off");
-  level notify(# "damage_filter_heavy");
+  level endon("damage_filter_off");
+  level notify("damage_filter_heavy");
   while (level.localplayers[0].damage_filter_intensity < 1) {
     level.localplayers[0].damage_filter_intensity = level.localplayers[0].damage_filter_intensity + 0.083335;
     if(level.localplayers[0].damage_filter_intensity > 1) {

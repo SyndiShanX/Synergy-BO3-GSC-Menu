@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\vehicles\_wasp.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -9,47 +13,18 @@
 #using scripts\shared\vehicle_ai_shared;
 #using scripts\shared\vehicle_death_shared;
 #using scripts\shared\vehicle_shared;
-
 #using_animtree("generic");
-
 #namespace wasp;
 
-/*
-	Name: __init__sytem__
-	Namespace: wasp
-	Checksum: 0x9FF9F541
-	Offset: 0x328
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("wasp", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: wasp
-	Checksum: 0x52D2787B
-	Offset: 0x368
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   vehicle::add_main_callback("wasp", & wasp_initialize);
   clientfield::register("vehicle", "rocket_wasp_hijacked", 1, 1, "int");
 }
 
-/*
-	Name: wasp_initialize
-	Namespace: wasp
-	Checksum: 0xF1ECB962
-	Offset: 0x3D0
-	Size: 0x274
-	Parameters: 0
-	Flags: Linked
-*/
 function wasp_initialize() {
   self useanimtree($generic);
   target_set(self, (0, 0, 0));
@@ -61,10 +36,8 @@ function wasp_initialize() {
   self.fovcosine = 0;
   self.fovcosinebusy = 0;
   self.vehaircraftcollisionenabled = 1;
-  /#
   assert(isdefined(self.scriptbundlesettings));
-  # /
-    self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
+  self.settings = struct::get_script_bundle("vehiclecustomsettings", self.scriptbundlesettings);
   self.goalradius = 999999;
   self.goalheight = 999999;
   self setgoal(self.origin, 0, self.goalradius, self.goalheight);
@@ -88,15 +61,6 @@ function wasp_initialize() {
   defaultrole();
 }
 
-/*
-	Name: defaultrole
-	Namespace: wasp
-	Checksum: 0x139C82BC
-	Offset: 0x650
-	Size: 0x28C
-	Parameters: 0
-	Flags: Linked
-*/
 function defaultrole() {
   self vehicle_ai::init_state_machine_for_role("default");
   self vehicle_ai::get_state_callbacks("combat").enter_func = & state_combat_enter;
@@ -115,17 +79,8 @@ function defaultrole() {
   vehicle_ai::startinitialstate("combat");
 }
 
-/*
-	Name: state_death_update
-	Namespace: wasp
-	Checksum: 0x5C6874C7
-	Offset: 0x8E8
-	Size: 0x3B4
-	Parameters: 1
-	Flags: Linked
-*/
 function state_death_update(params) {
-  self endon(# "death");
+  self endon("death");
   if(isarray(self.followers)) {
     foreach(follower in self.followers) {
       if(isdefined(follower)) {
@@ -182,26 +137,15 @@ function state_death_update(params) {
   }
 }
 
-/*
-	Name: state_emped_update
-	Namespace: wasp
-	Checksum: 0x3A8A53DE
-	Offset: 0xCA8
-	Size: 0x68C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_emped_update(params) {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   wait(0.05);
   gravity = 400;
-  self notify(# "end_nudge_collision");
+  self notify("end_nudge_collision");
   empdowntime = params.notify_param[0];
-  /#
   assert(isdefined(empdowntime));
-  # /
-    vehicle_ai::cooldown("emped_timer", empdowntime);
+  vehicle_ai::cooldown("emped_timer", empdowntime);
   wait(randomfloat(0.2));
   ang_vel = self getangularvelocity();
   pitch_vel = math::randomsign() * randomfloatrange(200, 250);
@@ -219,7 +163,7 @@ function state_emped_update(params) {
     killonimpact_speed = 1;
   }
   self fall_and_bounce(killonimpact_speed, self.settings.killonimpact_time);
-  self notify(# "landed");
+  self notify("landed");
   self setvehvelocity((0, 0, 0));
   self setphysacceleration((0, 0, (gravity * -1) * 0.1));
   self setangularvelocity((0, 0, 0));
@@ -268,18 +212,9 @@ function state_emped_update(params) {
   self vehicle::lights_off();
 }
 
-/*
-	Name: fall_and_bounce
-	Namespace: wasp
-	Checksum: 0x182A344
-	Offset: 0x1340
-	Size: 0x586
-	Parameters: 2
-	Flags: Linked
-*/
 function fall_and_bounce(killonimpact_speed, killonimpact_time) {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   maxbouncetime = 3;
   bouncescale = 0.3;
   velocityloss = 0.3;
@@ -290,7 +225,7 @@ function fall_and_bounce(killonimpact_speed, killonimpact_time) {
   anglesstablizeincrement = 0.2;
   fallstart = gettime();
   while (bouncedtime < maxbouncetime && lengthsquared(self.velocity) > (10 * 10)) {
-    self waittill(# "veh_collision", impact_vel, normal);
+    self waittill("veh_collision", impact_vel, normal);
     if(lengthsquared(impact_vel) > (killonimpact_speed * killonimpact_speed) || (vehicle_ai::timesince(fallstart) > killonimpact_time && lengthsquared(impact_vel) > (killonimpact_speed * 0.8) * (killonimpact_speed * 0.8))) {
       self kill();
     } else {
@@ -336,15 +271,6 @@ function fall_and_bounce(killonimpact_speed, killonimpact_time) {
   }
 }
 
-/*
-	Name: init_guard_points
-	Namespace: wasp
-	Checksum: 0xBF402367
-	Offset: 0x18D0
-	Size: 0x262
-	Parameters: 0
-	Flags: Linked
-*/
 function init_guard_points() {
   self._guard_points = [];
   if(!isdefined(self._guard_points)) {
@@ -379,18 +305,8 @@ function init_guard_points() {
   self._guard_points[self._guard_points.size] = (180, 0, 140);
 }
 
-/*
-	Name: guard_points_debug
-	Namespace: wasp
-	Checksum: 0x16B6976F
-	Offset: 0x1B40
-	Size: 0x110
-	Parameters: 0
-	Flags: None
-*/
 function guard_points_debug() {
-  /#
-  self endon(# "death");
+  self endon("death");
   if(self.isdebugdrawing === 1) {
     return;
   }
@@ -405,23 +321,11 @@ function guard_points_debug() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: get_guard_points
-	Namespace: wasp
-	Checksum: 0x78CC2892
-	Offset: 0x1C58
-	Size: 0x38E
-	Parameters: 1
-	Flags: Linked
-*/
 function get_guard_points(owner) {
-  /#
   assert(self._guard_points.size > 0, "");
-  # /
-    points_array = [];
+  points_array = [];
   foreach(point in self._guard_points) {
     offset = rotatepoint(point, owner.angles);
     worldpoint = (offset + owner.origin) + (owner getvelocity() * 0.5);
@@ -451,15 +355,6 @@ function get_guard_points(owner) {
   return points_array;
 }
 
-/*
-	Name: state_guard_can_enter
-	Namespace: wasp
-	Checksum: 0x8D69533C
-	Offset: 0x1FF0
-	Size: 0x11E
-	Parameters: 3
-	Flags: Linked
-*/
 function state_guard_can_enter(from_state, to_state, connection) {
   if(self.enable_guard !== 1 || !isdefined(self.owner)) {
     return false;
@@ -476,15 +371,6 @@ function state_guard_can_enter(from_state, to_state, connection) {
   return false;
 }
 
-/*
-	Name: state_guard_enter
-	Namespace: wasp
-	Checksum: 0x6B8368A2
-	Offset: 0x2118
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function state_guard_enter(params) {
   if(self.enable_target_laser === 1) {
     self laseroff();
@@ -492,45 +378,18 @@ function state_guard_enter(params) {
   self update_main_guard();
 }
 
-/*
-	Name: update_main_guard
-	Namespace: wasp
-	Checksum: 0x37FED2C6
-	Offset: 0x2170
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function update_main_guard() {
   if(isdefined(self.owner) && !isalive(self.owner.main_guard) || self.owner.main_guard.owner !== self.owner) {
     self.owner.main_guard = self;
   }
 }
 
-/*
-	Name: state_guard_exit
-	Namespace: wasp
-	Checksum: 0x5DA0A7FC
-	Offset: 0x21E8
-	Size: 0x3E
-	Parameters: 1
-	Flags: Linked
-*/
 function state_guard_exit(params) {
   if(isdefined(self.owner) && self.owner.main_guard === self) {
     self.owner.main_guard = undefined;
   }
 }
 
-/*
-	Name: test_get_back_point
-	Namespace: wasp
-	Checksum: 0xE34254
-	Offset: 0x2230
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function test_get_back_point(point) {
   if(sighttracepassed(self.origin, point, 0, self)) {
     if(bullettracepassed(self.origin, point, 0, self, self, 0, 1)) {
@@ -541,15 +400,6 @@ function test_get_back_point(point) {
   return -1;
 }
 
-/*
-	Name: test_get_back_queryresult
-	Namespace: wasp
-	Checksum: 0xEDFB84BE
-	Offset: 0x22A0
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function test_get_back_queryresult(queryresult) {
   getbackpoint = undefined;
   foreach(point in queryresult.data) {
@@ -564,18 +414,9 @@ function test_get_back_queryresult(queryresult) {
   return undefined;
 }
 
-/*
-	Name: state_guard_update
-	Namespace: wasp
-	Checksum: 0xF5F51A0B
-	Offset: 0x23A0
-	Size: 0x8A8
-	Parameters: 1
-	Flags: Linked
-*/
 function state_guard_update(params) {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   self sethoverparams(20, 40, 30);
   timenotatgoal = gettime();
   pointindex = 0;
@@ -624,15 +465,13 @@ function state_guard_update(params) {
             /# /
             #
             assert(0, "" + self.origin);
-            # /
-              v_box_min = (self.radius * -1, self.radius * -1, self.radius * -1);
+            v_box_min = (self.radius * -1, self.radius * -1, self.radius * -1);
             v_box_max = (self.radius, self.radius, self.radius);
             box(self.origin, v_box_min, v_box_max, self.angles[1], (1, 0, 0), 1, 0, 1000000);
             if(isdefined(stucklocation)) {
               line(stucklocation, self.origin, (1, 0, 0), 1, 1, 1000000);
             }
-            # /
-              self kill();
+            self kill();
           }
         }
       }
@@ -686,7 +525,7 @@ function state_guard_update(params) {
         if(self setvehgoalpos(self.current_pathto_pos, 1, usepathfinding)) {
           self playsound("veh_wasp_direction");
           self clearlookatent();
-          self notify(# "fire_stop");
+          self notify("fire_stop");
           self thread path_update_interrupt();
           if(onnavvolume) {
             self vehicle_ai::waittill_pathing_done(1);
@@ -703,15 +542,6 @@ function state_guard_update(params) {
   }
 }
 
-/*
-	Name: state_combat_enter
-	Namespace: wasp
-	Checksum: 0xD19A91FA
-	Offset: 0x2C50
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function state_combat_enter(params) {
   if(self.enable_target_laser === 1) {
     self laseron();
@@ -722,18 +552,9 @@ function state_combat_enter(params) {
   self thread turretfireupdate();
 }
 
-/*
-	Name: turretfireupdate
-	Namespace: wasp
-	Checksum: 0x9463690C
-	Offset: 0x2CE0
-	Size: 0x4AC
-	Parameters: 0
-	Flags: Linked
-*/
 function turretfireupdate() {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   isrockettype = self.variant === "rocket";
   while (true) {
     if(isdefined(self.enemy) && self vehcansee(self.enemy)) {
@@ -788,27 +609,18 @@ function turretfireupdate() {
   }
 }
 
-/*
-	Name: path_update_interrupt
-	Namespace: wasp
-	Checksum: 0xCD682AB0
-	Offset: 0x3198
-	Size: 0x1D4
-	Parameters: 0
-	Flags: Linked
-*/
 function path_update_interrupt() {
-  self endon(# "death");
-  self endon(# "change_state");
-  self endon(# "near_goal");
-  self endon(# "reached_end_node");
+  self endon("death");
+  self endon("change_state");
+  self endon("near_goal");
+  self endon("reached_end_node");
   old_enemy = self.enemy;
   wait(1);
   while (true) {
     if(isdefined(self.current_pathto_pos)) {
       if(distance2dsquared(self.current_pathto_pos, self.goalpos) > (self.goalradius * self.goalradius)) {
         wait(0.2);
-        self notify(# "near_goal");
+        self notify("near_goal");
       }
     }
     if(isdefined(self.enemy)) {
@@ -817,30 +629,21 @@ function path_update_interrupt() {
         self setlookatent(self.enemy);
       }
       if(!isdefined(old_enemy)) {
-        self notify(# "near_goal");
+        self notify("near_goal");
       } else if(self.enemy != old_enemy) {
-        self notify(# "near_goal");
+        self notify("near_goal");
       }
       if(self vehcansee(self.enemy) && distance2dsquared(self.origin, self.enemy.origin) < (250 * 250)) {
-        self notify(# "near_goal");
+        self notify("near_goal");
       }
     }
     wait(0.2);
   }
 }
 
-/*
-	Name: wait_till_something_happens
-	Namespace: wasp
-	Checksum: 0x4556863A
-	Offset: 0x3378
-	Size: 0x2D6
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_till_something_happens(timeout) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   wait(0.1);
   time = timeout;
   cant_see_count = 0;
@@ -885,15 +688,6 @@ function wait_till_something_happens(timeout) {
   }
 }
 
-/*
-	Name: drop_leader
-	Namespace: wasp
-	Checksum: 0x522BB99C
-	Offset: 0x3658
-	Size: 0x3E
-	Parameters: 0
-	Flags: Linked
-*/
 function drop_leader() {
   if(isdefined(self.leader)) {
     arrayremovevalue(self.leader.followers, self);
@@ -901,15 +695,6 @@ function drop_leader() {
   }
 }
 
-/*
-	Name: update_leader
-	Namespace: wasp
-	Checksum: 0xB1E74F7F
-	Offset: 0x36A0
-	Size: 0x20A
-	Parameters: 0
-	Flags: Linked
-*/
 function update_leader() {
   if(isdefined(self.no_group) && self.no_group == 1) {
     return;
@@ -948,15 +733,6 @@ function update_leader() {
   }
 }
 
-/*
-	Name: should_fly_forward
-	Namespace: wasp
-	Checksum: 0x47EE73D4
-	Offset: 0x38B8
-	Size: 0x148
-	Parameters: 1
-	Flags: Linked
-*/
 function should_fly_forward(distancetogoalsq) {
   if(self.always_face_enemy === 1) {
     return 0;
@@ -978,18 +754,9 @@ function should_fly_forward(distancetogoalsq) {
   return randomint(100) > 50;
 }
 
-/*
-	Name: state_combat_update
-	Namespace: wasp
-	Checksum: 0x63C0D4CB
-	Offset: 0x3A08
-	Size: 0x8AA
-	Parameters: 1
-	Flags: Linked
-*/
 function state_combat_update(params) {
-  self endon(# "change_state");
-  self endon(# "death");
+  self endon("change_state");
+  self endon("death");
   wait(0.1);
   stuckcount = 0;
   for (;;) {
@@ -1054,15 +821,13 @@ function state_combat_update(params) {
           /# /
           #
           assert(0, "" + self.origin);
-          # /
-            v_box_min = (self.radius * -1, self.radius * -1, self.radius * -1);
+          v_box_min = (self.radius * -1, self.radius * -1, self.radius * -1);
           v_box_max = (self.radius, self.radius, self.radius);
           box(self.origin, v_box_min, v_box_max, self.angles[1], (1, 0, 0), 1, 0, 1000000);
           if(isdefined(stucklocation)) {
             line(stucklocation, self.origin, (1, 0, 0), 1, 1, 1000000);
           }
-          # /
-            self kill();
+          self kill();
         }
       }
     } else {
@@ -1100,7 +865,7 @@ function state_combat_update(params) {
           }
           if(should_fly_forward(distancetogoalsq)) {
             self clearlookatent();
-            self notify(# "fire_stop");
+            self notify("fire_stop");
             self.noshoot = 1;
           }
           self thread path_update_interrupt();
@@ -1112,15 +877,6 @@ function state_combat_update(params) {
   }
 }
 
-/*
-	Name: getnextmoveposition_wander
-	Namespace: wasp
-	Checksum: 0x115BE87E
-	Offset: 0x42C0
-	Size: 0x296
-	Parameters: 0
-	Flags: Linked
-*/
 function getnextmoveposition_wander() {
   querymultiplier = 1;
   queryresult = positionquery_source_navigation(self.origin, 80, 500 * querymultiplier, 130, (3 * self.radius) * querymultiplier, self, self.radius * querymultiplier);
@@ -1133,13 +889,11 @@ function getnextmoveposition_wander() {
     randomscore = randomfloatrange(0, 100);
     disttooriginscore = point.disttoorigin2d * 0.2;
     point.score = point.score + (randomscore + disttooriginscore);
-    /#
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = disttooriginscore;
-    # /
-      point.score = point.score + disttooriginscore;
+    point.score = point.score + disttooriginscore;
     if(point.score > best_score) {
       best_score = point.score;
       best_point = point;
@@ -1152,15 +906,6 @@ function getnextmoveposition_wander() {
   return best_point.origin;
 }
 
-/*
-	Name: getnextmoveposition_tactical
-	Namespace: wasp
-	Checksum: 0xC1A8D307
-	Offset: 0x4560
-	Size: 0xCB2
-	Parameters: 0
-	Flags: Linked
-*/
 function getnextmoveposition_tactical() {
   if(!isdefined(self.enemy)) {
     return self getnextmoveposition_wander();
@@ -1187,22 +932,18 @@ function getnextmoveposition_tactical() {
           positionquery_filter_sight(queryresult, self.enemy geteye(), (0, 0, 0), self, 5, self, "visenemy");
           foreach(point in queryresult.data) {
             if(point.visowner === 1) {
-              /#
               if(!isdefined(point._scoredebug)) {
                 point._scoredebug = [];
               }
               point._scoredebug[""] = 300;
-              # /
-                point.score = point.score + 300;
+              point.score = point.score + 300;
             }
             if(point.visenemy === 1) {
-              /#
               if(!isdefined(point._scoredebug)) {
                 point._scoredebug = [];
               }
               point._scoredebug[""] = 300;
-              # /
-                point.score = point.score + 300;
+              point.score = point.score + 300;
             }
           }
         }
@@ -1233,55 +974,43 @@ function getnextmoveposition_tactical() {
   best_point = undefined;
   best_score = -999999;
   foreach(point in queryresult.data) {
-    /#
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = randomfloatrange(0, randomness);
-    # /
-      point.score = point.score + randomfloatrange(0, randomness);
-    /#
+    point.score = point.score + randomfloatrange(0, randomness);
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = point.distawayfromengagementarea * -1;
-    # /
-      point.score = point.score + (point.distawayfromengagementarea * -1);
-    /#
+    point.score = point.score + (point.distawayfromengagementarea * -1);
     if(!isdefined(point._scoredebug)) {
       point._scoredebug = [];
     }
     point._scoredebug[""] = (point.distengagementheight * -1) * 1.4;
-    # /
-      point.score = point.score + ((point.distengagementheight * -1) * 1.4);
+    point.score = point.score + ((point.distengagementheight * -1) * 1.4);
     if(point.disttoorigin2d < 120) {
-      /#
       if(!isdefined(point._scoredebug)) {
         point._scoredebug = [];
       }
       point._scoredebug[""] = (120 - point.disttoorigin2d) * -1.5;
-      # /
-        point.score = point.score + ((120 - point.disttoorigin2d) * -1.5);
+      point.score = point.score + ((120 - point.disttoorigin2d) * -1.5);
     }
     foreach(location in avoid_locations) {
       if(distancesquared(point.origin, location) < (avoid_radius * avoid_radius)) {
-        /#
         if(!isdefined(point._scoredebug)) {
           point._scoredebug = [];
         }
         point._scoredebug[""] = avoid_radius * -1;
-        # /
-          point.score = point.score + (avoid_radius * -1);
+        point.score = point.score + (avoid_radius * -1);
       }
     }
     if(point.inclaimedlocation) {
-      /#
       if(!isdefined(point._scoredebug)) {
         point._scoredebug = [];
       }
       point._scoredebug[""] = -500;
-      # /
-        point.score = point.score + -500;
+      point.score = point.score + -500;
     }
     if(point.score > best_score) {
       best_score = point.score;
@@ -1292,38 +1021,18 @@ function getnextmoveposition_tactical() {
   if(!isdefined(best_point)) {
     return undefined;
   }
-  /#
   if(isdefined(getdvarint("")) && getdvarint("")) {
     recordline(self.origin, best_point.origin, (0.3, 1, 0));
     recordline(self.origin, self.enemy.origin, (1, 0, 0.4));
   }
-  # /
-    return best_point.origin;
+  return best_point.origin;
 }
 
-/*
-	Name: drone_callback_damage
-	Namespace: wasp
-	Checksum: 0xA77CB908
-	Offset: 0x5220
-	Size: 0xD4
-	Parameters: 15
-	Flags: Linked
-*/
 function drone_callback_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   idamage = vehicle_ai::shared_callback_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal);
   return idamage;
 }
 
-/*
-	Name: drone_allowfriendlyfiredamage
-	Namespace: wasp
-	Checksum: 0xDF24CA8A
-	Offset: 0x5300
-	Size: 0x7C
-	Parameters: 4
-	Flags: Linked
-*/
 function drone_allowfriendlyfiredamage(einflictor, eattacker, smeansofdeath, weapon) {
   if(isdefined(eattacker) && isdefined(eattacker.archetype) && isdefined(smeansofdeath) && eattacker.archetype == "wasp" && smeansofdeath == "MOD_EXPLOSIVE") {
     return true;
@@ -1331,17 +1040,8 @@ function drone_allowfriendlyfiredamage(einflictor, eattacker, smeansofdeath, wea
   return false;
 }
 
-/*
-	Name: wasp_driving
-	Namespace: wasp
-	Checksum: 0x1010E945
-	Offset: 0x5388
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function wasp_driving(params) {
-  self endon(# "change_state");
+  self endon("change_state");
   driver = self getseatoccupant(0);
   if(isplayer(driver)) {
     clientfield::set("rocket_wasp_hijacked", 1);
@@ -1351,20 +1051,11 @@ function wasp_driving(params) {
   }
 }
 
-/*
-	Name: wasp_manage_camera_swaps
-	Namespace: wasp
-	Checksum: 0x756E94F1
-	Offset: 0x5440
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function wasp_manage_camera_swaps() {
-  self endon(# "death");
-  self endon(# "change_state");
+  self endon("death");
+  self endon("change_state");
   driver = self getseatoccupant(0);
-  driver endon(# "disconnect");
+  driver endon("disconnect");
   cam_low_type = self.vehicletype;
   cam_high_type = self.playerdrivenversion;
 }

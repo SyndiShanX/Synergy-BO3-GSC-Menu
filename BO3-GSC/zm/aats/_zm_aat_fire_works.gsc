@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\aats\_zm_aat_fire_works.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\aat_shared;
 #using scripts\shared\ai\systems\gib;
@@ -11,31 +15,12 @@
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_aat_fire_works;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_aat_fire_works
-	Checksum: 0xC17731D1
-	Offset: 0x278
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_aat_fire_works", & __init__, undefined, "aat");
 }
 
-/*
-	Name: __init__
-	Namespace: zm_aat_fire_works
-	Checksum: 0xBB18DE24
-	Offset: 0x2B8
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.aat_in_use) && level.aat_in_use)) {
     return;
@@ -46,28 +31,10 @@ function __init__() {
   zm_spawner::register_zombie_death_event_callback( & zm_aat_fire_works_death_callback);
 }
 
-/*
-	Name: result
-	Namespace: zm_aat_fire_works
-	Checksum: 0xB159B0AB
-	Offset: 0x3A8
-	Size: 0x44
-	Parameters: 4
-	Flags: Linked
-*/
 function result(death, attacker, mod, weapon) {
   self fire_works_summon(attacker, weapon);
 }
 
-/*
-	Name: fire_works_zombie_validation
-	Namespace: zm_aat_fire_works
-	Checksum: 0x2E06D898
-	Offset: 0x3F8
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function fire_works_zombie_validation() {
   if(isdefined(self.barricade_enter) && self.barricade_enter) {
     return false;
@@ -84,15 +51,6 @@ function fire_works_zombie_validation() {
   return true;
 }
 
-/*
-	Name: fire_works_summon
-	Namespace: zm_aat_fire_works
-	Checksum: 0xC8ECFECC
-	Offset: 0x488
-	Size: 0x3E4
-	Parameters: 2
-	Flags: Linked
-*/
 function fire_works_summon(e_player, w_weapon) {
   w_summoned_weapon = e_player getcurrentweapon();
   v_target_zombie_origin = self.origin;
@@ -108,7 +66,7 @@ function fire_works_summon(e_player, w_weapon) {
   mdl_weapon.allow_zombie_to_target_ai = 1;
   mdl_weapon thread clientfield::set("zm_aat_fire_works", 1);
   mdl_weapon moveto(v_firing_pos, 0.5);
-  mdl_weapon waittill(# "movedone");
+  mdl_weapon waittill("movedone");
   for (i = 0; i < 10; i++) {
     zombie = mdl_weapon zm_aat_fire_works_get_target();
     if(!isdefined(zombie)) {
@@ -124,7 +82,7 @@ function fire_works_summon(e_player, w_weapon) {
     util::wait_network_frame();
   }
   mdl_weapon moveto(v_target_zombie_origin, 0.5);
-  mdl_weapon waittill(# "movedone");
+  mdl_weapon waittill("movedone");
   mdl_weapon clientfield::set("zm_aat_fire_works", 0);
   util::wait_network_frame();
   util::wait_network_frame();
@@ -133,15 +91,6 @@ function fire_works_summon(e_player, w_weapon) {
   wait(0.25);
 }
 
-/*
-	Name: zm_aat_fire_works_get_target
-	Namespace: zm_aat_fire_works
-	Checksum: 0x67FA111B
-	Offset: 0x878
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function zm_aat_fire_works_get_target() {
   a_ai_zombies = array::randomize(getaiteamarray("axis"));
   los_checks = 0;
@@ -163,15 +112,6 @@ function zm_aat_fire_works_get_target() {
   return undefined;
 }
 
-/*
-	Name: zm_aat_fire_works_zombie_damage_response
-	Namespace: zm_aat_fire_works
-	Checksum: 0xB56BE1FC
-	Offset: 0x9A8
-	Size: 0x11C
-	Parameters: 13
-	Flags: Linked
-*/
 function zm_aat_fire_works_zombie_damage_response(str_mod, str_hit_location, v_hit_origin, e_attacker, n_amount, w_weapon, direction_vec, tagname, modelname, partname, dflags, inflictor, chargelevel) {
   if(isdefined(level.aat["zm_aat_fire_works"].immune_result_indirect[self.archetype]) && level.aat["zm_aat_fire_works"].immune_result_indirect[self.archetype]) {
     return false;
@@ -183,15 +123,6 @@ function zm_aat_fire_works_zombie_damage_response(str_mod, str_hit_location, v_h
   return false;
 }
 
-/*
-	Name: zm_aat_fire_works_death_callback
-	Namespace: zm_aat_fire_works
-	Checksum: 0x5C4DBB96
-	Offset: 0xAD0
-	Size: 0x68
-	Parameters: 1
-	Flags: Linked
-*/
 function zm_aat_fire_works_death_callback(attacker) {
   if(isdefined(attacker)) {
     if(isdefined(attacker.b_aat_fire_works_weapon) && attacker.b_aat_fire_works_weapon) {
@@ -202,15 +133,6 @@ function zm_aat_fire_works_death_callback(attacker) {
   }
 }
 
-/*
-	Name: zombie_death_gib
-	Namespace: zm_aat_fire_works
-	Checksum: 0x9D35D25F
-	Offset: 0xB40
-	Size: 0x104
-	Parameters: 3
-	Flags: Linked
-*/
 function zombie_death_gib(e_attacker, w_weapon, e_owner) {
   gibserverutils::gibhead(self);
   if(math::cointoss()) {

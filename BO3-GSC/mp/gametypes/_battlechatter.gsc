@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_battlechatter.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_dev;
@@ -12,36 +16,15 @@
 #using scripts\shared\killstreaks_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace battlechatter;
 
-/*
-	Name: __init__sytem__
-	Namespace: battlechatter
-	Checksum: 0x988120EB
-	Offset: 0xFE0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("battlechatter", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: battlechatter
-	Checksum: 0x5D18B264
-	Offset: 0x1020
-	Size: 0x7A0
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
-  /#
   level thread devgui_think();
-  # /
-    callback::on_joined_team( & on_joined_team);
+  callback::on_joined_team( & on_joined_team);
   callback::on_connect( & on_player_connect);
   callback::on_spawned( & on_player_spawned);
   level.heroplaydialog = & play_dialog;
@@ -101,31 +84,13 @@ function __init__() {
   level.playstartconversation = mpdialog_value("enableConversation", 0) && level.allowbattlechatter;
 }
 
-/*
-	Name: pick_boost_number
-	Namespace: battlechatter
-	Checksum: 0x7AA0497C
-	Offset: 0x17C8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function pick_boost_number() {
   wait(5);
   level clientfield::set("boost_number", randomint(4));
 }
 
-/*
-	Name: on_joined_team
-	Namespace: battlechatter
-	Checksum: 0x9A09DD22
-	Offset: 0x1810
-	Size: 0x1AA
-	Parameters: 0
-	Flags: Linked
-*/
 function on_joined_team() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(level.teambased) {
     if(self.team == "allies") {
       self set_blops_dialog();
@@ -153,56 +118,20 @@ function on_joined_team() {
   }
 }
 
-/*
-	Name: set_blops_dialog
-	Namespace: battlechatter
-	Checksum: 0x7C290948
-	Offset: 0x19C8
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function set_blops_dialog() {
   self.pers["mptaacom"] = "blops_taacom";
   self.pers["mpcommander"] = "blops_commander";
 }
 
-/*
-	Name: set_cdp_dialog
-	Namespace: battlechatter
-	Checksum: 0xD11D16D8
-	Offset: 0x1A10
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function set_cdp_dialog() {
   self.pers["mptaacom"] = "cdp_taacom";
   self.pers["mpcommander"] = "cdp_commander";
 }
 
-/*
-	Name: on_player_connect
-	Namespace: battlechatter
-	Checksum: 0x7E21C9BA
-	Offset: 0x1A58
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   self reset_dialog_fields();
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: battlechatter
-	Checksum: 0xBE5CDEFA
-	Offset: 0x1A80
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self reset_dialog_fields();
   if(level.splitscreen) {
@@ -218,15 +147,6 @@ function on_player_spawned() {
   }
 }
 
-/*
-	Name: reset_dialog_fields
-	Namespace: battlechatter
-	Checksum: 0xC6D64470
-	Offset: 0x1B48
-	Size: 0x80
-	Parameters: 0
-	Flags: Linked
-*/
 function reset_dialog_fields() {
   self.enemythreattime = 0;
   self.heartbeatsnd = 0;
@@ -240,15 +160,6 @@ function reset_dialog_fields() {
   self.playedgadgetsuccess = 1;
 }
 
-/*
-	Name: dialog_chance
-	Namespace: battlechatter
-	Checksum: 0x143E7AC
-	Offset: 0x1BD0
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function dialog_chance(chancekey) {
   dialogchance = mpdialog_value(chancekey);
   if(!isdefined(dialogchance) || dialogchance <= 0) {
@@ -260,15 +171,6 @@ function dialog_chance(chancekey) {
   return randomint(100) < dialogchance;
 }
 
-/*
-	Name: mpdialog_value
-	Namespace: battlechatter
-	Checksum: 0xCA07B64B
-	Offset: 0x1C58
-	Size: 0x9C
-	Parameters: 2
-	Flags: Linked
-*/
 function mpdialog_value(mpdialogkey, defaultvalue) {
   if(!isdefined(mpdialogkey)) {
     return defaultvalue;
@@ -284,25 +186,14 @@ function mpdialog_value(mpdialogkey, defaultvalue) {
   return structvalue;
 }
 
-/*
-	Name: water_vox
-	Namespace: battlechatter
-	Checksum: 0x740FC1C2
-	Offset: 0x1D00
-	Size: 0x21C
-	Parameters: 0
-	Flags: Linked
-*/
 function water_vox() {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   while (true) {
     interval = mpdialog_value("underwaterInterval", 0.05);
     if(interval <= 0) {
-      /#
       assert(interval > 0, "");
-      # /
-        return;
+      return;
     }
     wait(interval);
     if(util::isprophuntgametype() && self util::isprop()) {
@@ -331,15 +222,6 @@ function water_vox() {
   }
 }
 
-/*
-	Name: pain_vox
-	Namespace: battlechatter
-	Checksum: 0x43531411
-	Offset: 0x1F28
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked
-*/
 function pain_vox(meansofdeath) {
   if(dialog_chance("smallPainChance")) {
     if(meansofdeath == "MOD_DROWN") {
@@ -361,55 +243,28 @@ function pain_vox(meansofdeath) {
   }
 }
 
-/*
-	Name: on_player_suicide_or_team_kill
-	Namespace: battlechatter
-	Checksum: 0xF58220FD
-	Offset: 0x2030
-	Size: 0x38
-	Parameters: 2
-	Flags: Linked
-*/
 function on_player_suicide_or_team_kill(player, type) {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   waittillframeend();
   if(!level.teambased) {
     return;
   }
 }
 
-/*
-	Name: on_player_near_explodable
-	Namespace: battlechatter
-	Checksum: 0x1CAD6F47
-	Offset: 0x2070
-	Size: 0x2A
-	Parameters: 2
-	Flags: Linked
-*/
 function on_player_near_explodable(object, type) {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
 }
 
-/*
-	Name: enemy_threat
-	Namespace: battlechatter
-	Checksum: 0x8EBD3D23
-	Offset: 0x20A8
-	Size: 0x298
-	Parameters: 0
-	Flags: Linked
-*/
 function enemy_threat() {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   if(util::isprophuntgametype()) {
     return;
   }
   while (true) {
-    self waittill(# "weapon_ads");
+    self waittill("weapon_ads");
     if(self hasperk("specialty_quieter")) {
       continue;
     }
@@ -430,7 +285,7 @@ function enemy_threat() {
       if(isdefined(traceresult["entity"]) && traceresult["entity"].classname == "player" && traceresult["entity"].team != self.team) {
         if(dialog_chance("enemyContactChance")) {
           self thread play_dialog("threatInfantry", 1);
-          level notify(# "level_enemy_spotted", self.team);
+          level notify("level_enemy_spotted", self.team);
           self.enemythreattime = gettime();
         }
       }
@@ -438,19 +293,10 @@ function enemy_threat() {
   }
 }
 
-/*
-	Name: killed_by_sniper
-	Namespace: battlechatter
-	Checksum: 0x4892D87B
-	Offset: 0x2348
-	Size: 0x290
-	Parameters: 1
-	Flags: Linked
-*/
 function killed_by_sniper(sniper) {
-  self endon(# "disconnect");
-  sniper endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  sniper endon("disconnect");
+  level endon("game_ended");
   if(!level.teambased) {
     return false;
   }
@@ -478,15 +324,6 @@ function killed_by_sniper(sniper) {
   }
 }
 
-/*
-	Name: player_killed
-	Namespace: battlechatter
-	Checksum: 0x528B26C8
-	Offset: 0x25E0
-	Size: 0x154
-	Parameters: 2
-	Flags: Linked
-*/
 function player_killed(attacker, killstreaktype) {
   if(!level.teambased) {
     return;
@@ -507,15 +344,6 @@ function player_killed(attacker, killstreaktype) {
   }
 }
 
-/*
-	Name: say_kill_battle_chatter
-	Namespace: battlechatter
-	Checksum: 0x8ADEAD5D
-	Offset: 0x2740
-	Size: 0x574
-	Parameters: 4
-	Flags: Linked
-*/
 function say_kill_battle_chatter(attacker, weapon, victim, inflictor) {
   if(weapon.skipbattlechatterkill || !isdefined(attacker) || !isplayer(attacker) || !isalive(attacker) || attacker isremotecontrolling() || attacker isinvehicle() || attacker isweaponviewonlylinked() || !isdefined(victim) || !isplayer(victim) || util::isprophuntgametype()) {
     return;
@@ -567,20 +395,11 @@ function say_kill_battle_chatter(attacker, weapon, victim, inflictor) {
   attacker thread wait_play_dialog(mpdialog_value("enemyKillDelay", 0), killdialog, 1, undefined, victim, "cancel_kill_dialog");
 }
 
-/*
-	Name: grenade_tracking
-	Namespace: battlechatter
-	Checksum: 0x74D9C28C
-	Offset: 0x2CC0
-	Size: 0x160
-	Parameters: 0
-	Flags: Linked
-*/
 function grenade_tracking() {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "grenade_fire", grenade, weapon);
+    self waittill("grenade_fire", grenade, weapon);
     if(!isdefined(grenade.weapon) || !isdefined(grenade.weapon.rootweapon) || !dialog_chance("incomingProjectileChance")) {
       continue;
     }
@@ -592,20 +411,11 @@ function grenade_tracking() {
   }
 }
 
-/*
-	Name: missile_tracking
-	Namespace: battlechatter
-	Checksum: 0x81B38420
-	Offset: 0x2E28
-	Size: 0x160
-	Parameters: 0
-	Flags: Linked
-*/
 function missile_tracking() {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "missile_fire", missile, weapon);
+    self waittill("missile_fire", missile, weapon);
     if(!isdefined(missile.item) || !isdefined(missile.item.rootweapon) || !dialog_chance("incomingProjectileChance")) {
       continue;
     }
@@ -617,22 +427,11 @@ function missile_tracking() {
   }
 }
 
-/*
-	Name: incoming_projectile_alert
-	Namespace: battlechatter
-	Checksum: 0x4A9707
-	Offset: 0x2F90
-	Size: 0x1AA
-	Parameters: 4
-	Flags: Linked
-*/
 function incoming_projectile_alert(thrower, projectile, dialogkey, waittime) {
-  level endon(# "game_ended");
+  level endon("game_ended");
   if(waittime <= 0) {
-    /#
     assert(waittime > 0, "");
-    # /
-      return;
+    return;
   }
   if(util::isprophuntgametype()) {
     return;
@@ -659,20 +458,11 @@ function incoming_projectile_alert(thrower, projectile, dialogkey, waittime) {
   }
 }
 
-/*
-	Name: sticky_grenade_tracking
-	Namespace: battlechatter
-	Checksum: 0x1851EE5
-	Offset: 0x3148
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function sticky_grenade_tracking() {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "grenade_stuck", grenade);
+    self waittill("grenade_stuck", grenade);
     if(isalive(self) && isdefined(grenade) && isdefined(grenade.weapon)) {
       if(grenade.weapon.rootweapon.name == "sticky_grenade") {
         self thread play_dialog("stuckSticky", 6);
@@ -681,18 +471,9 @@ function sticky_grenade_tracking() {
   }
 }
 
-/*
-	Name: hero_weapon_success_reaction
-	Namespace: battlechatter
-	Checksum: 0x90B26441
-	Offset: 0x3218
-	Size: 0x38E
-	Parameters: 0
-	Flags: Linked
-*/
 function hero_weapon_success_reaction() {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   if(!level.teambased) {
     return;
   }
@@ -730,18 +511,9 @@ function hero_weapon_success_reaction() {
   }
 }
 
-/*
-	Name: play_promotion_reaction
-	Namespace: battlechatter
-	Checksum: 0xA9CE52D7
-	Offset: 0x35B0
-	Size: 0x294
-	Parameters: 0
-	Flags: Linked
-*/
 function play_promotion_reaction() {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   if(!level.teambased) {
     return;
   }
@@ -771,29 +543,11 @@ function play_promotion_reaction() {
   }
 }
 
-/*
-	Name: gametype_specific_battle_chatter
-	Namespace: battlechatter
-	Checksum: 0x8BDC17EA
-	Offset: 0x3850
-	Size: 0x2A
-	Parameters: 2
-	Flags: None
-*/
 function gametype_specific_battle_chatter(event, team) {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
 }
 
-/*
-	Name: play_death_vox
-	Namespace: battlechatter
-	Checksum: 0x9AB9B6E5
-	Offset: 0x3888
-	Size: 0xA4
-	Parameters: 4
-	Flags: Linked
-*/
 function play_death_vox(body, attacker, weapon, meansofdeath) {
   dialogkey = self get_death_vox(weapon, meansofdeath);
   dialogalias = self get_player_dialog_alias(dialogkey);
@@ -802,15 +556,6 @@ function play_death_vox(body, attacker, weapon, meansofdeath) {
   }
 }
 
-/*
-	Name: get_death_vox
-	Namespace: battlechatter
-	Checksum: 0x7D35BB1D
-	Offset: 0x3938
-	Size: 0xFE
-	Parameters: 2
-	Flags: Linked
-*/
 function get_death_vox(weapon, meansofdeath) {
   if(self isplayerunderwater()) {
     return "exertDeathDrowned";
@@ -843,15 +588,6 @@ function get_death_vox(weapon, meansofdeath) {
   return "exertDeath";
 }
 
-/*
-	Name: play_killstreak_threat
-	Namespace: battlechatter
-	Checksum: 0xCFCC7CA8
-	Offset: 0x3A40
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function play_killstreak_threat(killstreaktype) {
   if(!isdefined(killstreaktype) || !isdefined(level.killstreaks[killstreaktype])) {
     return;
@@ -859,18 +595,9 @@ function play_killstreak_threat(killstreaktype) {
   self thread play_dialog(level.killstreaks[killstreaktype].threatdialogkey, 1);
 }
 
-/*
-	Name: wait_play_dialog
-	Namespace: battlechatter
-	Checksum: 0x40D0BC94
-	Offset: 0x3AA8
-	Size: 0x9C
-	Parameters: 6
-	Flags: Linked
-*/
 function wait_play_dialog(waittime, dialogkey, dialogflags, dialogbuffer, enemy, endnotify) {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   if(isdefined(waittime) && waittime > 0) {
     if(isdefined(endnotify)) {
       self endon(endnotify);
@@ -880,18 +607,9 @@ function wait_play_dialog(waittime, dialogkey, dialogflags, dialogbuffer, enemy,
   self thread play_dialog(dialogkey, dialogflags, dialogbuffer, enemy);
 }
 
-/*
-	Name: play_dialog
-	Namespace: battlechatter
-	Checksum: 0x3F7D6454
-	Offset: 0x3B50
-	Size: 0x2DC
-	Parameters: 4
-	Flags: Linked
-*/
 function play_dialog(dialogkey, dialogflags, dialogbuffer, enemy) {
-  self endon(# "death");
-  level endon(# "game_ended");
+  self endon("death");
+  level endon("game_ended");
   if(!isdefined(dialogkey) || !isplayer(self) || !isalive(self) || level.gameended) {
     return;
   }
@@ -942,24 +660,15 @@ function play_dialog(dialogkey, dialogflags, dialogbuffer, enemy) {
       self playlocalsound(dialogalias);
     }
   }
-  self notify(# "played_dialog");
+  self notify("played_dialog");
   self thread wait_dialog_buffer(dialogbuffer);
 }
 
-/*
-	Name: wait_dialog_buffer
-	Namespace: battlechatter
-	Checksum: 0xA876A7CE
-	Offset: 0x3E38
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function wait_dialog_buffer(dialogbuffer) {
-  self endon(# "death");
-  self endon(# "played_dialog");
-  self endon(# "stop_dialog");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("played_dialog");
+  self endon("stop_dialog");
+  level endon("game_ended");
   self.playingdialog = 1;
   if(isdefined(dialogbuffer) && dialogbuffer > 0) {
     wait(dialogbuffer);
@@ -968,42 +677,15 @@ function wait_dialog_buffer(dialogbuffer) {
   self.playinggadgetreadydialog = 0;
 }
 
-/*
-	Name: stop_dialog
-	Namespace: battlechatter
-	Checksum: 0xB222CE59
-	Offset: 0x3EC0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function stop_dialog() {
-  self notify(# "stop_dialog");
+  self notify("stop_dialog");
   self stopsounds();
   self.playingdialog = 0;
   self.playinggadgetreadydialog = 0;
 }
 
-/*
-	Name: wait_playback_time
-	Namespace: battlechatter
-	Checksum: 0x5D0E1B41
-	Offset: 0x3F08
-	Size: 0xC
-	Parameters: 1
-	Flags: None
-*/
 function wait_playback_time(soundalias) {}
 
-/*
-	Name: get_player_dialog_alias
-	Namespace: battlechatter
-	Checksum: 0x77AC6D9C
-	Offset: 0x3F20
-	Size: 0xAA
-	Parameters: 1
-	Flags: Linked
-*/
 function get_player_dialog_alias(dialogkey) {
   if(!isplayer(self)) {
     return undefined;
@@ -1019,15 +701,6 @@ function get_player_dialog_alias(dialogkey) {
   return globallogic_audio::get_dialog_bundle_alias(playerbundle, dialogkey);
 }
 
-/*
-	Name: count_keys
-	Namespace: battlechatter
-	Checksum: 0x4E2D63C7
-	Offset: 0x3FD8
-	Size: 0xFA
-	Parameters: 2
-	Flags: Linked
-*/
 function count_keys(bundle, dialogkey) {
   i = 0;
   field = dialogkey + i;
@@ -1044,15 +717,6 @@ function count_keys(bundle, dialogkey) {
   bundle.keycounts[dialogkey] = i;
 }
 
-/*
-	Name: get_random_key
-	Namespace: battlechatter
-	Checksum: 0xB131A971
-	Offset: 0x40E0
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked
-*/
 function get_random_key(dialogkey) {
   bundlename = self getmpdialogname();
   if(!isdefined(bundlename)) {
@@ -1065,15 +729,6 @@ function get_random_key(dialogkey) {
   return dialogkey + randomint(playerbundle.keycounts[dialogkey]);
 }
 
-/*
-	Name: play_gadget_ready
-	Namespace: battlechatter
-	Checksum: 0xB1F3EBB9
-	Offset: 0x41C0
-	Size: 0x50C
-	Parameters: 2
-	Flags: Linked
-*/
 function play_gadget_ready(weapon, userflip = 0) {
   if(!isdefined(weapon)) {
     return;
@@ -1208,20 +863,11 @@ function play_gadget_ready(weapon, userflip = 0) {
   self.laststolengadget = weapon;
   self.laststolengadgettime = gettime();
   if(waittime) {
-    self notify(# "cancel_kill_dialog");
+    self notify("cancel_kill_dialog");
   }
   self thread wait_play_dialog(waittime, dialogkey, dialogflags);
 }
 
-/*
-	Name: play_gadget_activate
-	Namespace: battlechatter
-	Checksum: 0x49F2113D
-	Offset: 0x46D8
-	Size: 0x274
-	Parameters: 1
-	Flags: Linked
-*/
 function play_gadget_activate(weapon) {
   if(!isdefined(weapon)) {
     return;
@@ -1314,15 +960,6 @@ function play_gadget_activate(weapon) {
   self thread play_dialog(dialogkey, dialogflags, dialogbuffer);
 }
 
-/*
-	Name: play_gadget_success
-	Namespace: battlechatter
-	Checksum: 0x33B26E8D
-	Offset: 0x4958
-	Size: 0x2AC
-	Parameters: 3
-	Flags: Linked
-*/
 function play_gadget_success(weapon, waitkey, victim) {
   if(!isdefined(weapon)) {
     return;
@@ -1418,28 +1055,10 @@ function play_gadget_success(weapon, waitkey, victim) {
   self thread wait_play_dialog(waittime, dialogkey, 1, undefined, victim);
 }
 
-/*
-	Name: play_throw_hatchet
-	Namespace: battlechatter
-	Checksum: 0x7AFAF9E6
-	Offset: 0x4C10
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function play_throw_hatchet() {
   self thread play_dialog("exertAxeThrow", 21, mpdialog_value("playerExertBuffer", 0));
 }
 
-/*
-	Name: get_enemy_players
-	Namespace: battlechatter
-	Checksum: 0x6A98E8EE
-	Offset: 0x4C60
-	Size: 0x1BE
-	Parameters: 0
-	Flags: Linked
-*/
 function get_enemy_players() {
   players = [];
   if(level.teambased) {
@@ -1461,15 +1080,6 @@ function get_enemy_players() {
   return players;
 }
 
-/*
-	Name: get_friendly_players
-	Namespace: battlechatter
-	Checksum: 0xBEC860B1
-	Offset: 0x4E28
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function get_friendly_players() {
   players = [];
   if(level.teambased) {
@@ -1482,15 +1092,6 @@ function get_friendly_players() {
   return players;
 }
 
-/*
-	Name: can_play_dialog
-	Namespace: battlechatter
-	Checksum: 0x9A57E6BF
-	Offset: 0x4EF0
-	Size: 0xEE
-	Parameters: 1
-	Flags: Linked
-*/
 function can_play_dialog(teamonly) {
   if(!isplayer(self) || !isalive(self) || self.playingdialog === 1 || self isplayerunderwater() || self isremotecontrolling() || self isinvehicle() || self isweaponviewonlylinked()) {
     return false;
@@ -1501,15 +1102,6 @@ function can_play_dialog(teamonly) {
   return true;
 }
 
-/*
-	Name: get_closest_player_enemy
-	Namespace: battlechatter
-	Checksum: 0x89654807
-	Offset: 0x4FE8
-	Size: 0x108
-	Parameters: 2
-	Flags: Linked
-*/
 function get_closest_player_enemy(origin = self.origin, teamonly) {
   players = self get_enemy_players();
   players = arraysort(players, origin);
@@ -1522,15 +1114,6 @@ function get_closest_player_enemy(origin = self.origin, teamonly) {
   return undefined;
 }
 
-/*
-	Name: get_closest_player_ally
-	Namespace: battlechatter
-	Checksum: 0xA5CDEC1E
-	Offset: 0x50F8
-	Size: 0xFA
-	Parameters: 1
-	Flags: Linked
-*/
 function get_closest_player_ally(teamonly) {
   if(!level.teambased) {
     return undefined;
@@ -1546,15 +1129,6 @@ function get_closest_player_ally(teamonly) {
   return undefined;
 }
 
-/*
-	Name: check_boost_start_conversation
-	Namespace: battlechatter
-	Checksum: 0x111C94B8
-	Offset: 0x5200
-	Size: 0x1C4
-	Parameters: 0
-	Flags: Linked
-*/
 function check_boost_start_conversation() {
   if(!level.playstartconversation) {
     return;
@@ -1579,30 +1153,12 @@ function check_boost_start_conversation() {
   }
 }
 
-/*
-	Name: pick_boost_players
-	Namespace: battlechatter
-	Checksum: 0xC83824DE
-	Offset: 0x53D0
-	Size: 0x76
-	Parameters: 2
-	Flags: Linked
-*/
 function pick_boost_players(player1, player2) {
   player1 clientfield::set("play_boost", 1);
   player2 clientfield::set("play_boost", 2);
   game["boostPlayersPicked"][player1.team] = 1;
 }
 
-/*
-	Name: game_end_vox
-	Namespace: battlechatter
-	Checksum: 0xB2749565
-	Offset: 0x5450
-	Size: 0x1BA
-	Parameters: 1
-	Flags: Linked
-*/
 function game_end_vox(winner) {
   if(!level.allowspecialistdialog) {
     return;
@@ -1628,17 +1184,7 @@ function game_end_vox(winner) {
   }
 }
 
-/*
-	Name: devgui_think
-	Namespace: battlechatter
-	Checksum: 0x58DB8A52
-	Offset: 0x5618
-	Size: 0x380
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui_think() {
-  /#
   setdvar("", "");
   setdvar("", "");
   setdvar("", "");
@@ -1702,20 +1248,9 @@ function devgui_think() {
     }
     setdvar("", "");
   }
-  # /
 }
 
-/*
-	Name: test_other_dialog
-	Namespace: battlechatter
-	Checksum: 0xFA7736BB
-	Offset: 0x59A0
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function test_other_dialog(delay) {
-  /#
   players = arraysort(level.players, self.origin);
   foreach(player in players) {
     if(player != self && isalive(player)) {
@@ -1723,93 +1258,38 @@ function test_other_dialog(delay) {
       return;
     }
   }
-  # /
 }
 
-/*
-	Name: test_player_dialog
-	Namespace: battlechatter
-	Checksum: 0xEE7A2D00
-	Offset: 0x5AA0
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function test_player_dialog(delay) {
-  /#
   if(!isdefined(delay)) {
     delay = 0;
   }
   wait(delay);
   self playsoundontag(getdvarstring("", ""), "");
-  # /
 }
 
-/*
-	Name: test_taacom_dialog
-	Namespace: battlechatter
-	Checksum: 0xC71652A6
-	Offset: 0x5B10
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function test_taacom_dialog(delay) {
-  /#
   if(!isdefined(delay)) {
     delay = 0;
   }
   wait(delay);
   self playlocalsound(getdvarstring("", ""));
-  # /
 }
 
-/*
-	Name: test_commander_dialog
-	Namespace: battlechatter
-	Checksum: 0x27832BAB
-	Offset: 0x5B78
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function test_commander_dialog(delay) {
-  /#
   if(!isdefined(delay)) {
     delay = 0;
   }
   wait(delay);
   self playlocalsound(getdvarstring("", ""));
-  # /
 }
 
-/*
-	Name: play_test_dialog
-	Namespace: battlechatter
-	Checksum: 0x2F8526D5
-	Offset: 0x5BE0
-	Size: 0x5C
-	Parameters: 1
-	Flags: Linked
-*/
 function play_test_dialog(dialogkey) {
-  /#
   dialogalias = self get_player_dialog_alias(dialogkey);
   self playsoundontag(dialogalias, "");
-  # /
 }
 
-/*
-	Name: response_key
-	Namespace: battlechatter
-	Checksum: 0x30B80B24
-	Offset: 0x5C48
-	Size: 0xC2
-	Parameters: 0
-	Flags: Linked
-*/
 function response_key() {
-  /#
   switch (self getmpdialogname()) {
     case "": {
       return "";
@@ -1840,20 +1320,9 @@ function response_key() {
     }
   }
   return "";
-  # /
 }
 
-/*
-	Name: play_conv_self_other
-	Namespace: battlechatter
-	Checksum: 0xBFD80586
-	Offset: 0x5D18
-	Size: 0x156
-	Parameters: 0
-	Flags: Linked
-*/
 function play_conv_self_other() {
-  /#
   num = randomintrange(0, 4);
   self play_test_dialog("" + num);
   wait(4);
@@ -1864,20 +1333,9 @@ function play_conv_self_other() {
       break;
     }
   }
-  # /
 }
 
-/*
-	Name: play_conv_other_self
-	Namespace: battlechatter
-	Checksum: 0x858D8965
-	Offset: 0x5E78
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function play_conv_other_self() {
-  /#
   num = randomintrange(0, 4);
   players = arraysort(level.players, self.origin);
   foreach(player in players) {
@@ -1888,20 +1346,9 @@ function play_conv_other_self() {
   }
   wait(4);
   self play_test_dialog(("" + player response_key()) + num);
-  # /
 }
 
-/*
-	Name: play_conv_other_other
-	Namespace: battlechatter
-	Checksum: 0x6F286298
-	Offset: 0x5FE0
-	Size: 0x206
-	Parameters: 0
-	Flags: Linked
-*/
 function play_conv_other_other() {
-  /#
   num = randomintrange(0, 4);
   players = arraysort(level.players, self.origin);
   foreach(player in players) {
@@ -1918,5 +1365,4 @@ function play_conv_other_other() {
       break;
     }
   }
-  # /
 }

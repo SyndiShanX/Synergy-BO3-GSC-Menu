@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_blockers.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -21,31 +25,12 @@
 #using scripts\zm\_zm_unitrigger;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_zonemgr;
-
 #namespace zm_blockers;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_blockers
-	Checksum: 0xD7FDD2D3
-	Offset: 0xA08
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_blockers", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_blockers
-	Checksum: 0xD2FCFDC7
-	Offset: 0xA50
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   zm_utility::add_zombie_hint("default_buy_debris", & "ZOMBIE_BUTTON_BUY_CLEAR_DEBRIS_COST");
   zm_utility::add_zombie_hint("default_buy_door", & "ZOMBIE_BUTTON_BUY_OPEN_DOOR_COST");
@@ -53,15 +38,6 @@ function __init__() {
   init_blockers();
 }
 
-/*
-	Name: __main__
-	Namespace: zm_blockers
-	Checksum: 0x1A41C6DB
-	Offset: 0xAD0
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   if(isdefined(level.quantum_bomb_register_result_func)) {
     [
@@ -70,15 +46,6 @@ function __main__() {
   }
 }
 
-/*
-	Name: init_blockers
-	Namespace: zm_blockers
-	Checksum: 0xD8B74B61
-	Offset: 0xB20
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked
-*/
 function init_blockers() {
   level.exterior_goals = struct::get_array("exterior_goal", "targetname");
   array::thread_all(level.exterior_goals, & blocker_init);
@@ -93,15 +60,6 @@ function init_blockers() {
   array::thread_all(flag_blockers, & flag_blocker);
 }
 
-/*
-	Name: door_init
-	Namespace: zm_blockers
-	Checksum: 0xA27CF78
-	Offset: 0xC90
-	Size: 0x434
-	Parameters: 0
-	Flags: Linked
-*/
 function door_init() {
   self.type = undefined;
   self.purchaser = undefined;
@@ -141,7 +99,7 @@ function door_init() {
         self setinvisibletoall();
         return;
       }
-      self sethintstring( & "ZOMBIE_NEED_POWER");
+      self sethintstring(&"ZOMBIE_NEED_POWER");
       if(isdefined(level.door_dialog_function)) {
         self thread[[level.door_dialog_function]]();
       }
@@ -152,29 +110,20 @@ function door_init() {
         self setinvisibletoall();
         return;
       }
-      self sethintstring( & "ZOMBIE_NEED_LOCAL_POWER");
+      self sethintstring(&"ZOMBIE_NEED_LOCAL_POWER");
       if(isdefined(level.door_dialog_function)) {
         self thread[[level.door_dialog_function]]();
       }
       return;
     }
     if(self.script_noteworthy == "kill_counter_door") {
-      self sethintstring( & "ZOMBIE_DOOR_ACTIVATE_COUNTER", cost);
+      self sethintstring(&"ZOMBIE_DOOR_ACTIVATE_COUNTER", cost);
       return;
     }
   }
   self zm_utility::set_hint_string(self, "default_buy_door", cost);
 }
 
-/*
-	Name: door_classify
-	Namespace: zm_blockers
-	Checksum: 0x6AD24CE6
-	Offset: 0x10D0
-	Size: 0x2B6
-	Parameters: 1
-	Flags: Linked
-*/
 function door_classify(parent_trig) {
   if(isdefined(self.script_noteworthy) && self.script_noteworthy == "air_buy_gate") {
     unlinktraversal(self);
@@ -197,16 +146,10 @@ function door_classify(parent_trig) {
       }
       switch (self.script_string) {
         case "anim": {
-          /#
           assert(isdefined(self.script_animname), "" + self.targetname);
-          # /
-            /#
           assert(isdefined(level.scr_anim[self.script_animname]), "" + self.script_animname);
-          # /
-            /#
           assert(isdefined(level.blocker_anim_func), "");
-          # /
-            break;
+          break;
         }
         case "counter_1s": {
           parent_trig.counter_1s = self;
@@ -236,17 +179,8 @@ function door_classify(parent_trig) {
   parent_trig.doors[parent_trig.doors.size] = self;
 }
 
-/*
-	Name: door_buy
-	Namespace: zm_blockers
-	Checksum: 0xE0D2AE10
-	Offset: 0x1390
-	Size: 0x3E8
-	Parameters: 0
-	Flags: Linked
-*/
 function door_buy() {
-  self waittill(# "trigger", who, force);
+  self waittill("trigger", who, force);
   if(isdefined(level.custom_door_buy_check)) {
     if(!who[[level.custom_door_buy_check]](self)) {
       return false;
@@ -308,19 +242,10 @@ function door_buy() {
   return true;
 }
 
-/*
-	Name: blocker_update_prompt_visibility
-	Namespace: zm_blockers
-	Checksum: 0x6BA2A4C7
-	Offset: 0x1780
-	Size: 0x134
-	Parameters: 0
-	Flags: Linked
-*/
 function blocker_update_prompt_visibility() {
-  self endon(# "kill_door_think");
-  self endon(# "kill_debris_prompt_thread");
-  self endon(# "death");
+  self endon("kill_door_think");
+  self endon("kill_debris_prompt_thread");
+  self endon("death");
   dist = 16384;
   while (true) {
     players = level.players;
@@ -339,15 +264,6 @@ function blocker_update_prompt_visibility() {
   }
 }
 
-/*
-	Name: door_delay
-	Namespace: zm_blockers
-	Checksum: 0xA7930561
-	Offset: 0x18C0
-	Size: 0x1EE
-	Parameters: 0
-	Flags: Linked
-*/
 function door_delay() {
   if(isdefined(self.explosives)) {
     for (i = 0; i < self.explosives.size; i++) {
@@ -363,10 +279,8 @@ function door_delay() {
   }
   wait(self.script_int);
   for (i = 0; i < self.script_int; i++) {
-    /#
     iprintln(self.script_int - i);
-    # /
-      wait(1);
+    wait(1);
   }
   if(isdefined(self.explosives)) {
     for (i = 0; i < self.explosives.size; i++) {
@@ -376,15 +290,6 @@ function door_delay() {
   }
 }
 
-/*
-	Name: door_activate
-	Namespace: zm_blockers
-	Checksum: 0x95213B43
-	Offset: 0x1AB8
-	Size: 0x59C
-	Parameters: 4
-	Flags: Linked
-*/
 function door_activate(time, open = 1, quick, use_blocker_clip_for_pathing) {
   if(isdefined(self.script_noteworthy) && self.script_noteworthy == "air_buy_gate") {
     if(open) {
@@ -412,7 +317,7 @@ function door_activate(time, open = 1, quick, use_blocker_clip_for_pathing) {
     }
   }
   self.door_moving = 1;
-  level notify(# "snddooropening");
+  level notify("snddooropening");
   if(open || (!(isdefined(quick) && quick))) {
     self notsolid();
   }
@@ -496,15 +401,6 @@ function door_activate(time, open = 1, quick, use_blocker_clip_for_pathing) {
   }
 }
 
-/*
-	Name: kill_trapped_zombies
-	Namespace: zm_blockers
-	Checksum: 0x76F97894
-	Offset: 0x2060
-	Size: 0x156
-	Parameters: 1
-	Flags: Linked
-*/
 function kill_trapped_zombies(trigger) {
   zombies = getaiteamarray(level.zombie_team);
   if(!isdefined(zombies)) {
@@ -527,15 +423,6 @@ function kill_trapped_zombies(trigger) {
   }
 }
 
-/*
-	Name: any_player_touching
-	Namespace: zm_blockers
-	Checksum: 0x45679D15
-	Offset: 0x21C0
-	Size: 0xB4
-	Parameters: 1
-	Flags: None
-*/
 function any_player_touching(trigger) {
   foreach(player in getplayers()) {
     if(player istouching(trigger)) {
@@ -546,15 +433,6 @@ function any_player_touching(trigger) {
   return false;
 }
 
-/*
-	Name: any_player_touching_any
-	Namespace: zm_blockers
-	Checksum: 0x79B60412
-	Offset: 0x2280
-	Size: 0x192
-	Parameters: 2
-	Flags: Linked
-*/
 function any_player_touching_any(trigger, more_triggers) {
   foreach(player in getplayers()) {
     if(zm_utility::is_player_valid(player, 0, 1)) {
@@ -573,15 +451,6 @@ function any_player_touching_any(trigger, more_triggers) {
   return false;
 }
 
-/*
-	Name: any_zombie_touching_any
-	Namespace: zm_blockers
-	Checksum: 0xE1EF82AB
-	Offset: 0x2420
-	Size: 0x18A
-	Parameters: 2
-	Flags: Linked
-*/
 function any_zombie_touching_any(trigger, more_triggers) {
   zombies = getaiteamarray(level.zombie_team);
   foreach(zombie in zombies) {
@@ -599,79 +468,37 @@ function any_zombie_touching_any(trigger, more_triggers) {
   return false;
 }
 
-/*
-	Name: wait_trigger_clear
-	Namespace: zm_blockers
-	Checksum: 0xB2BA2388
-	Offset: 0x25B8
-	Size: 0x92
-	Parameters: 3
-	Flags: Linked
-*/
 function wait_trigger_clear(trigger, more_triggers, end_on) {
   self endon(end_on);
   while (any_player_touching_any(trigger, more_triggers) || any_zombie_touching_any(trigger, more_triggers)) {
     wait(1);
   }
-  /#
   println("");
-  # /
-    self notify(# "trigger_clear");
+  self notify("trigger_clear");
 }
 
-/*
-	Name: waittill_door_trigger_clear_local_power_off
-	Namespace: zm_blockers
-	Checksum: 0xE8BE0C79
-	Offset: 0x2658
-	Size: 0x98
-	Parameters: 2
-	Flags: Linked
-*/
 function waittill_door_trigger_clear_local_power_off(trigger, all_trigs) {
-  self endon(# "trigger_clear");
+  self endon("trigger_clear");
   while (true) {
     if(isdefined(self.local_power_on) && self.local_power_on) {
-      self waittill(# "local_power_off");
+      self waittill("local_power_off");
     }
-    /#
     println("");
-    # /
-      self wait_trigger_clear(trigger, all_trigs, "local_power_on");
+    self wait_trigger_clear(trigger, all_trigs, "local_power_on");
   }
 }
 
-/*
-	Name: waittill_door_trigger_clear_global_power_off
-	Namespace: zm_blockers
-	Checksum: 0xC89A3D75
-	Offset: 0x26F8
-	Size: 0x98
-	Parameters: 2
-	Flags: Linked
-*/
 function waittill_door_trigger_clear_global_power_off(trigger, all_trigs) {
-  self endon(# "trigger_clear");
+  self endon("trigger_clear");
   while (true) {
     if(isdefined(self.power_on) && self.power_on) {
-      self waittill(# "power_off");
+      self waittill("power_off");
     }
-    /#
     println("");
-    # /
-      self wait_trigger_clear(trigger, all_trigs, "power_on");
+    self wait_trigger_clear(trigger, all_trigs, "power_on");
   }
 }
 
-/*
-	Name: waittill_door_can_close
-	Namespace: zm_blockers
-	Checksum: 0x696E1D2E
-	Offset: 0x2798
-	Size: 0x186
-	Parameters: 0
-	Flags: Linked
-*/
 function waittill_door_can_close() {
   trigger = undefined;
   if(isdefined(self.door_hold_trigger)) {
@@ -684,7 +511,7 @@ function waittill_door_can_close() {
         self waittill_door_trigger_clear_local_power_off(trigger, all_trigs);
         self thread kill_trapped_zombies(trigger);
       } else if(isdefined(self.local_power_on) && self.local_power_on) {
-        self waittill(# "local_power_off");
+        self waittill("local_power_off");
       }
       return;
     }
@@ -695,24 +522,15 @@ function waittill_door_can_close() {
           self thread kill_trapped_zombies(trigger);
         }
       } else if(isdefined(self.power_on) && self.power_on) {
-        self waittill(# "power_off");
+        self waittill("power_off");
       }
       return;
     }
   }
 }
 
-/*
-	Name: door_think
-	Namespace: zm_blockers
-	Checksum: 0x87119AA0
-	Offset: 0x2928
-	Size: 0x4B6
-	Parameters: 0
-	Flags: Linked
-*/
 function door_think() {
-  self endon(# "kill_door_think");
+  self endon("kill_door_think");
   cost = 1000;
   if(isdefined(self.zombie_cost)) {
     cost = self.zombie_cost;
@@ -722,13 +540,11 @@ function door_think() {
     switch (self.script_noteworthy) {
       case "local_electric_door": {
         if(!(isdefined(self.local_power_on) && self.local_power_on)) {
-          self waittill(# "local_power_on");
+          self waittill("local_power_on");
         }
         if(!(isdefined(self._door_open) && self._door_open)) {
-          /#
           println("");
-          # /
-            self door_opened(cost, 1);
+          self door_opened(cost, 1);
           if(!isdefined(self.power_cost)) {
             self.power_cost = 0;
           }
@@ -742,24 +558,20 @@ function door_think() {
         self waittill_door_can_close();
         self door_block();
         if(isdefined(self._door_open) && self._door_open) {
-          /#
           println("");
-          # /
-            self door_opened(cost, 1);
+          self door_opened(cost, 1);
         }
-        self sethintstring( & "ZOMBIE_NEED_LOCAL_POWER");
+        self sethintstring(&"ZOMBIE_NEED_LOCAL_POWER");
         wait(3);
         continue;
       }
       case "electric_door": {
         if(!(isdefined(self.power_on) && self.power_on)) {
-          self waittill(# "power_on");
+          self waittill("power_on");
         }
         if(!(isdefined(self._door_open) && self._door_open)) {
-          /#
           println("");
-          # /
-            self door_opened(cost, 1);
+          self door_opened(cost, 1);
           if(!isdefined(self.power_cost)) {
             self.power_cost = 0;
           }
@@ -773,18 +585,16 @@ function door_think() {
         self waittill_door_can_close();
         self door_block();
         if(isdefined(self._door_open) && self._door_open) {
-          /#
           println("");
-          # /
-            self door_opened(cost, 1);
+          self door_opened(cost, 1);
         }
-        self sethintstring( & "ZOMBIE_NEED_POWER");
+        self sethintstring(&"ZOMBIE_NEED_POWER");
         wait(3);
         continue;
       }
       case "electric_buyable_door": {
         if(!(isdefined(self.power_on) && self.power_on)) {
-          self waittill(# "power_on");
+          self waittill("power_on");
         }
         self zm_utility::set_hint_string(self, "default_buy_door", cost);
         if(!self door_buy()) {
@@ -817,33 +627,15 @@ function door_think() {
   }
 }
 
-/*
-	Name: self_and_flag_wait
-	Namespace: zm_blockers
-	Checksum: 0x6FDBF3FB
-	Offset: 0x2DE8
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function self_and_flag_wait(msg) {
   self endon(msg);
   if(isdefined(self.power_door_ignore_flag_wait) && self.power_door_ignore_flag_wait) {
-    level waittill(# "forever");
+    level waittill("forever");
   } else {
     level flag::wait_till(msg);
   }
 }
 
-/*
-	Name: door_block
-	Namespace: zm_blockers
-	Checksum: 0xF066EAF7
-	Offset: 0x2E48
-	Size: 0xDE
-	Parameters: 0
-	Flags: Linked
-*/
 function door_block() {
   if(isdefined(self.doors)) {
     for (i = 0; i < self.doors.size; i++) {
@@ -854,15 +646,6 @@ function door_block() {
   }
 }
 
-/*
-	Name: door_opened
-	Namespace: zm_blockers
-	Checksum: 0x398BD78B
-	Offset: 0x2F30
-	Size: 0x75E
-	Parameters: 2
-	Flags: Linked
-*/
 function door_opened(cost, quick_close) {
   if(isdefined(self.door_is_moving) && self.door_is_moving) {
     return;
@@ -876,7 +659,7 @@ function door_opened(cost, quick_close) {
     trig.has_been_opened = 1;
     if(!isdefined(trig._door_open) || trig._door_open == 0) {
       trig._door_open = 1;
-      trig notify(# "door_opened");
+      trig notify("door_opened");
     } else {
       trig._door_open = 0;
     }
@@ -903,7 +686,7 @@ function door_opened(cost, quick_close) {
       trig zm_utility::set_hint_string(trig, "default_buy_door", cost);
     }
   }
-  level notify(# "door_opened");
+  level notify("door_opened");
   if(isdefined(self.doors)) {
     is_script_model_door = 0;
     have_moving_clip_for_door = 0;
@@ -951,35 +734,17 @@ function door_opened(cost, quick_close) {
   }
 }
 
-/*
-	Name: physics_launch_door
-	Namespace: zm_blockers
-	Checksum: 0xDE11CE2
-	Offset: 0x3698
-	Size: 0xDC
-	Parameters: 1
-	Flags: Linked
-*/
 function physics_launch_door(door_trig) {
   vec = vectorscale(vectornormalize(self.script_vector), 10);
   self rotateroll(5, 0.05);
   wait(0.05);
   self moveto(self.origin + vec, 0.1);
-  self waittill(# "movedone");
+  self waittill("movedone");
   self physicslaunch(self.origin, self.script_vector * 300);
   wait(60);
   self delete();
 }
 
-/*
-	Name: door_solid_thread
-	Namespace: zm_blockers
-	Checksum: 0x6D57AA36
-	Offset: 0x3780
-	Size: 0xF0
-	Parameters: 0
-	Flags: Linked
-*/
 function door_solid_thread() {
   self util::waittill_either("rotatedone", "movedone");
   self.door_moving = undefined;
@@ -1000,17 +765,8 @@ function door_solid_thread() {
   }
 }
 
-/*
-	Name: door_solid_thread_anim
-	Namespace: zm_blockers
-	Checksum: 0x7FC7E268
-	Offset: 0x3878
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function door_solid_thread_anim() {
-  self waittillmatch(# "door_anim");
+  self waittillmatch("door_anim");
   self.door_moving = undefined;
   while (true) {
     players = getplayers();
@@ -1029,42 +785,15 @@ function door_solid_thread_anim() {
   }
 }
 
-/*
-	Name: disconnect_paths_when_done
-	Namespace: zm_blockers
-	Checksum: 0xBDAA4C72
-	Offset: 0x3958
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function disconnect_paths_when_done() {
   self util::waittill_either("rotatedone", "movedone");
   self disconnectpaths();
 }
 
-/*
-	Name: self_disconnectpaths
-	Namespace: zm_blockers
-	Checksum: 0xA72FBA7B
-	Offset: 0x39A8
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function self_disconnectpaths() {
   self disconnectpaths();
 }
 
-/*
-	Name: debris_init
-	Namespace: zm_blockers
-	Checksum: 0x3B25E710
-	Offset: 0x39D0
-	Size: 0x2DC
-	Parameters: 0
-	Flags: Linked
-*/
 function debris_init() {
   cost = 1000;
   if(isdefined(self.zombie_cost)) {
@@ -1095,15 +824,6 @@ function debris_init() {
   self thread debris_think();
 }
 
-/*
-	Name: debris_think
-	Namespace: zm_blockers
-	Checksum: 0x851E8E17
-	Offset: 0x3CB8
-	Size: 0x80E
-	Parameters: 0
-	Flags: Linked
-*/
 function debris_think() {
   if(isdefined(level.custom_debris_function)) {
     self[[level.custom_debris_function]]();
@@ -1117,7 +837,7 @@ function debris_think() {
     }
   }
   while (true) {
-    self waittill(# "trigger", who, force);
+    self waittill("trigger", who, force);
     if(getdvarint("zombie_unlock_all") > 0 || (isdefined(force) && force)) {} else {
       if(!who usebuttonpressed()) {
         continue;
@@ -1145,7 +865,7 @@ function debris_think() {
           continue;
         }
       }
-      self notify(# "kill_debris_prompt_thread");
+      self notify("kill_debris_prompt_thread");
       junk = getentarray(self.target, "targetname");
       if(isdefined(self.script_flag)) {
         tokens = strtok(self.script_flag, ",");
@@ -1154,7 +874,7 @@ function debris_think() {
         }
       }
       zm_utility::play_sound_at_pos("purchase", self.origin);
-      level notify(# "hash_bf60bc80");
+      level notify("hash_bf60bc80");
       move_ent = undefined;
       a_clip = [];
       for (i = 0; i < junk.size; i++) {
@@ -1207,22 +927,13 @@ function debris_think() {
         a_clip[i] delete();
       }
       if(isdefined(move_ent)) {
-        move_ent waittill(# "movedone");
+        move_ent waittill("movedone");
       }
       break;
     }
   }
 }
 
-/*
-	Name: debris_zbarrier_move
-	Namespace: zm_blockers
-	Checksum: 0xC3054619
-	Offset: 0x44D0
-	Size: 0xA6
-	Parameters: 0
-	Flags: Linked
-*/
 function debris_zbarrier_move() {
   playsoundatposition("zmb_lightning_l", self.origin);
   playfx(level._effect["poltergeist"], self.origin);
@@ -1231,50 +942,23 @@ function debris_zbarrier_move() {
   }
 }
 
-/*
-	Name: door_zbarrier_move
-	Namespace: zm_blockers
-	Checksum: 0x7314B695
-	Offset: 0x4580
-	Size: 0x56
-	Parameters: 0
-	Flags: Linked
-*/
 function door_zbarrier_move() {
   for (i = 0; i < self getnumzbarrierpieces(); i++) {
     self thread move_chunk(i, 0);
   }
 }
 
-/*
-	Name: move_chunk
-	Namespace: zm_blockers
-	Checksum: 0x11261679
-	Offset: 0x45E0
-	Size: 0x94
-	Parameters: 2
-	Flags: Linked
-*/
 function move_chunk(index, b_hide) {
   self setzbarrierpiecestate(index, "opening");
   while (self getzbarrierpiecestate(index) == "opening") {
     wait(0.1);
   }
-  self notify(# "movedone");
+  self notify("movedone");
   if(b_hide) {
     self hidezbarrierpiece(index);
   }
 }
 
-/*
-	Name: debris_move
-	Namespace: zm_blockers
-	Checksum: 0x2CC9DD33
-	Offset: 0x4680
-	Size: 0x2F4
-	Parameters: 1
-	Flags: Linked
-*/
 function debris_move(struct) {
   self util::script_delay();
   self notsolid();
@@ -1301,7 +985,7 @@ function debris_move(struct) {
   }
   self moveto(struct.origin, time, time * 0.5);
   self rotateto(struct.angles, time * 0.75);
-  self waittill(# "movedone");
+  self waittill("movedone");
   if(isdefined(self.script_fxid)) {
     playfx(level._effect[self.script_fxid], self.origin);
     playsoundatposition("zmb_zombie_spawn", self.origin);
@@ -1309,37 +993,10 @@ function debris_move(struct) {
   self delete();
 }
 
-/*
-	Name: blocker_disconnect_paths
-	Namespace: zm_blockers
-	Checksum: 0x8D9DA19
-	Offset: 0x4980
-	Size: 0x1C
-	Parameters: 3
-	Flags: Linked
-*/
 function blocker_disconnect_paths(start_node, end_node, two_way) {}
 
-/*
-	Name: blocker_connect_paths
-	Namespace: zm_blockers
-	Checksum: 0x7045C17A
-	Offset: 0x49A8
-	Size: 0x1C
-	Parameters: 3
-	Flags: Linked
-*/
 function blocker_connect_paths(start_node, end_node, two_way) {}
 
-/*
-	Name: blocker_init
-	Namespace: zm_blockers
-	Checksum: 0xA1169536
-	Offset: 0x49D0
-	Size: 0x87C
-	Parameters: 0
-	Flags: Linked
-*/
 function blocker_init() {
   if(!isdefined(self.target)) {
     return;
@@ -1371,9 +1028,7 @@ function blocker_init() {
         if(isdefined(targets[j].script_noteworthy)) {
           if(targets[j].script_noteworthy == "2" || targets[j].script_noteworthy == "3" || targets[j].script_noteworthy == "4" || targets[j].script_noteworthy == "5" || targets[j].script_noteworthy == "6") {
             targets[j] hide();
-            /#
             iprintlnbold("");
-            # /
           }
         }
       } else {
@@ -1434,15 +1089,6 @@ function blocker_init() {
   self thread blocker_think();
 }
 
-/*
-	Name: should_delete_zbarriers
-	Namespace: zm_blockers
-	Checksum: 0xCF2AA762
-	Offset: 0x5258
-	Size: 0x70
-	Parameters: 0
-	Flags: Linked
-*/
 function should_delete_zbarriers() {
   gametype = getdvarstring("ui_gametype");
   if(!zm_utility::is_classic() && !zm_utility::is_standard() && gametype != "zgrief") {
@@ -1451,37 +1097,19 @@ function should_delete_zbarriers() {
   return false;
 }
 
-/*
-	Name: destructible_glass_barricade
-	Namespace: zm_blockers
-	Checksum: 0x840A7D05
-	Offset: 0x52D0
-	Size: 0x10C
-	Parameters: 2
-	Flags: Linked
-*/
 function destructible_glass_barricade(unbroken_section, node) {
   unbroken_section setcandamage(1);
   unbroken_section.health = 99999;
-  unbroken_section waittill(# "damage", amount, who);
+  unbroken_section waittill("damage", amount, who);
   if(zm_utility::is_player_valid(who) || who laststand::player_is_in_laststand()) {
     self thread zm_spawner::zombie_boardtear_offset_fx_horizontle(self, node);
     level thread remove_chunk(self, node, 1);
     self update_states("destroyed");
-    self notify(# "destroyed");
+    self notify("destroyed");
     self.unbroken = 0;
   }
 }
 
-/*
-	Name: blocker_attack_spots
-	Namespace: zm_blockers
-	Checksum: 0xE0BA3F46
-	Offset: 0x53E8
-	Size: 0x28C
-	Parameters: 0
-	Flags: Linked
-*/
 function blocker_attack_spots() {
   spots = [];
   numslots = self.zbarrier getzbarriernumattackslots();
@@ -1508,40 +1136,20 @@ function blocker_attack_spots() {
   }
   self.attack_spots_taken = taken;
   self.attack_spots = spots;
-  /#
   self thread zm_utility::debug_attack_spots_taken();
-  # /
 }
 
-/*
-	Name: blocker_choke
-	Namespace: zm_blockers
-	Checksum: 0x8988BA94
-	Offset: 0x5680
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function blocker_choke() {
   level._blocker_choke = 0;
-  level endon(# "stop_blocker_think");
+  level endon("stop_blocker_think");
   while (true) {
     wait(0.05);
     level._blocker_choke = 0;
   }
 }
 
-/*
-	Name: blocker_think
-	Namespace: zm_blockers
-	Checksum: 0xC078E8D9
-	Offset: 0x56C8
-	Size: 0x100
-	Parameters: 0
-	Flags: Linked
-*/
 function blocker_think() {
-  level endon(# "stop_blocker_think");
+  level endon("stop_blocker_think");
   if(!isdefined(level._blocker_choke)) {
     level thread blocker_choke();
   }
@@ -1567,15 +1175,6 @@ function blocker_think() {
   }
 }
 
-/*
-	Name: player_fails_blocker_repair_trigger_preamble
-	Namespace: zm_blockers
-	Checksum: 0x62993391
-	Offset: 0x57D0
-	Size: 0x12A
-	Parameters: 4
-	Flags: Linked
-*/
 function player_fails_blocker_repair_trigger_preamble(player, players, trigger, hold_required) {
   if(!isdefined(trigger)) {
     return true;
@@ -1601,15 +1200,6 @@ function player_fails_blocker_repair_trigger_preamble(player, players, trigger, 
   return false;
 }
 
-/*
-	Name: has_blocker_affecting_perk
-	Namespace: zm_blockers
-	Checksum: 0xF0CC700E
-	Offset: 0x5908
-	Size: 0x48
-	Parameters: 0
-	Flags: Linked
-*/
 function has_blocker_affecting_perk() {
   has_perk = undefined;
   if(self hasperk("specialty_fastreload")) {
@@ -1618,30 +1208,12 @@ function has_blocker_affecting_perk() {
   return has_perk;
 }
 
-/*
-	Name: do_post_chunk_repair_delay
-	Namespace: zm_blockers
-	Checksum: 0x9308B040
-	Offset: 0x5958
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function do_post_chunk_repair_delay(has_perk) {
   if(!self util::script_delay()) {
     wait(1);
   }
 }
 
-/*
-	Name: handle_post_board_repair_rewards
-	Namespace: zm_blockers
-	Checksum: 0xD7519D7C
-	Offset: 0x5990
-	Size: 0x154
-	Parameters: 2
-	Flags: Linked
-*/
 function handle_post_board_repair_rewards(cost, zbarrier) {
   self zm_stats::increment_client_stat("boards");
   self zm_stats::increment_player_stat("boards");
@@ -1659,41 +1231,21 @@ function handle_post_board_repair_rewards(cost, zbarrier) {
   }
 }
 
-/*
-	Name: blocker_unitrigger_think
-	Namespace: zm_blockers
-	Checksum: 0xDBB0B0DE
-	Offset: 0x5AF0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function blocker_unitrigger_think() {
-  self endon(# "kill_trigger");
+  self endon("kill_trigger");
   while (true) {
-    self waittill(# "trigger", player);
-    self.stub.trigger_target notify(# "trigger", player);
+    self waittill("trigger", player);
+    self.stub.trigger_target notify("trigger", player);
   }
 }
 
-/*
-	Name: blocker_trigger_think
-	Namespace: zm_blockers
-	Checksum: 0x7A7C8DA2
-	Offset: 0x5B50
-	Size: 0xA3E
-	Parameters: 0
-	Flags: Linked
-*/
 function blocker_trigger_think() {
-  self endon(# "blocker_hacked");
+  self endon("blocker_hacked");
   if(isdefined(level.no_board_repair) && level.no_board_repair) {
     return;
   }
-  /#
   println("");
-  # /
-    level endon(# "stop_blocker_think");
+  level endon("stop_blocker_think");
   cost = 10;
   if(isdefined(self.zombie_cost)) {
     cost = self.zombie_cost;
@@ -1733,122 +1285,102 @@ function blocker_trigger_think() {
   }
   self thread trigger_delete_on_repair();
   thread zm_unitrigger::register_static_unitrigger(self.unitrigger_stub, & blocker_unitrigger_think);
-  /#
   if(getdvarint("") > 0) {
     thread zm_utility::debug_blocker(trigger_pos, radius, height);
   }
-  # /
+  while (true) {
+    self waittill("trigger", player);
+    has_perk = player has_blocker_affecting_perk();
+    if(zm_utility::all_chunks_intact(self, self.barrier_chunks)) {
+      self notify("all_boards_repaired");
+      return;
+    }
+    if(zm_utility::no_valid_repairable_boards(self, self.barrier_chunks)) {
+      self notify("hash_46d36511");
+      return;
+    }
+    if(isdefined(level._zm_blocker_trigger_think_return_override)) {
+      if(self[[level._zm_blocker_trigger_think_return_override]](player)) {
+        return;
+      }
+    }
     while (true) {
-      self waittill(# "trigger", player);
-      has_perk = player has_blocker_affecting_perk();
+      players = getplayers();
+      trigger = self.unitrigger_stub zm_unitrigger::unitrigger_trigger(player);
+      if(player_fails_blocker_repair_trigger_preamble(player, players, trigger, 0)) {
+        break;
+      }
+      player notify("boarding_window", self);
+      if(isdefined(self.zbarrier)) {
+        chunk = zm_utility::get_random_destroyed_chunk(self, self.barrier_chunks);
+        self thread replace_chunk(self, chunk, has_perk, isdefined(player.pers_upgrades_awarded["board"]) && player.pers_upgrades_awarded["board"]);
+      } else {
+        chunk = zm_utility::get_random_destroyed_chunk(self, self.barrier_chunks);
+        if(isdefined(chunk.script_parameter) && chunk.script_parameters == "repair_board" || chunk.script_parameters == "barricade_vents") {
+          if(isdefined(chunk.unbroken_section)) {
+            chunk show();
+            chunk solid();
+            chunk.unbroken_section zm_utility::self_delete();
+          }
+        } else {
+          chunk show();
+        }
+        if(!isdefined(chunk.script_parameters) || chunk.script_parameters == "board" || chunk.script_parameters == "repair_board" || chunk.script_parameters == "barricade_vents") {
+          if(!(isdefined(level.use_clientside_board_fx) && level.use_clientside_board_fx)) {
+            if(!isdefined(chunk.material) || (isdefined(chunk.material) && chunk.material != "rock")) {
+              chunk zm_utility::play_sound_on_ent("rebuild_barrier_piece");
+            }
+            playsoundatposition("zmb_cha_ching", (0, 0, 0));
+          }
+        }
+        if(chunk.script_parameters == "bar") {
+          chunk zm_utility::play_sound_on_ent("rebuild_barrier_piece");
+          playsoundatposition("zmb_cha_ching", (0, 0, 0));
+        }
+        if(isdefined(chunk.script_parameters)) {
+          if(chunk.script_parameters == "bar") {
+            if(isdefined(chunk.script_noteworthy)) {
+              if(chunk.script_noteworthy == "5") {
+                chunk hide();
+              } else if(chunk.script_noteworthy == "3") {
+                chunk hide();
+              }
+            }
+          }
+        }
+        self thread replace_chunk(self, chunk, has_perk, isdefined(player.pers_upgrades_awarded["board"]) && player.pers_upgrades_awarded["board"]);
+      }
+      if(isdefined(self.clip)) {
+        self.clip triggerenable(1);
+        self.clip disconnectpaths();
+      } else {
+        blocker_disconnect_paths(self.neg_start, self.neg_end);
+      }
+      self do_post_chunk_repair_delay(has_perk);
+      if(!zm_utility::is_player_valid(player)) {
+        break;
+      }
+      player handle_post_board_repair_rewards(cost, self);
       if(zm_utility::all_chunks_intact(self, self.barrier_chunks)) {
-        self notify(# "all_boards_repaired");
+        self notify("all_boards_repaired");
+        player increment_window_repaired();
         return;
       }
       if(zm_utility::no_valid_repairable_boards(self, self.barrier_chunks)) {
-        self notify(# "hash_46d36511");
+        self notify("hash_46d36511");
+        player increment_window_repaired(self);
         return;
       }
-      if(isdefined(level._zm_blocker_trigger_think_return_override)) {
-        if(self[[level._zm_blocker_trigger_think_return_override]](player)) {
-          return;
-        }
-      }
-      while (true) {
-        players = getplayers();
-        trigger = self.unitrigger_stub zm_unitrigger::unitrigger_trigger(player);
-        if(player_fails_blocker_repair_trigger_preamble(player, players, trigger, 0)) {
-          break;
-        }
-        player notify(# "boarding_window", self);
-        if(isdefined(self.zbarrier)) {
-          chunk = zm_utility::get_random_destroyed_chunk(self, self.barrier_chunks);
-          self thread replace_chunk(self, chunk, has_perk, isdefined(player.pers_upgrades_awarded["board"]) && player.pers_upgrades_awarded["board"]);
-        } else {
-          chunk = zm_utility::get_random_destroyed_chunk(self, self.barrier_chunks);
-          if(isdefined(chunk.script_parameter) && chunk.script_parameters == "repair_board" || chunk.script_parameters == "barricade_vents") {
-            if(isdefined(chunk.unbroken_section)) {
-              chunk show();
-              chunk solid();
-              chunk.unbroken_section zm_utility::self_delete();
-            }
-          } else {
-            chunk show();
-          }
-          if(!isdefined(chunk.script_parameters) || chunk.script_parameters == "board" || chunk.script_parameters == "repair_board" || chunk.script_parameters == "barricade_vents") {
-            if(!(isdefined(level.use_clientside_board_fx) && level.use_clientside_board_fx)) {
-              if(!isdefined(chunk.material) || (isdefined(chunk.material) && chunk.material != "rock")) {
-                chunk zm_utility::play_sound_on_ent("rebuild_barrier_piece");
-              }
-              playsoundatposition("zmb_cha_ching", (0, 0, 0));
-            }
-          }
-          if(chunk.script_parameters == "bar") {
-            chunk zm_utility::play_sound_on_ent("rebuild_barrier_piece");
-            playsoundatposition("zmb_cha_ching", (0, 0, 0));
-          }
-          if(isdefined(chunk.script_parameters)) {
-            if(chunk.script_parameters == "bar") {
-              if(isdefined(chunk.script_noteworthy)) {
-                if(chunk.script_noteworthy == "5") {
-                  chunk hide();
-                } else if(chunk.script_noteworthy == "3") {
-                  chunk hide();
-                }
-              }
-            }
-          }
-          self thread replace_chunk(self, chunk, has_perk, isdefined(player.pers_upgrades_awarded["board"]) && player.pers_upgrades_awarded["board"]);
-        }
-        if(isdefined(self.clip)) {
-          self.clip triggerenable(1);
-          self.clip disconnectpaths();
-        } else {
-          blocker_disconnect_paths(self.neg_start, self.neg_end);
-        }
-        self do_post_chunk_repair_delay(has_perk);
-        if(!zm_utility::is_player_valid(player)) {
-          break;
-        }
-        player handle_post_board_repair_rewards(cost, self);
-        if(zm_utility::all_chunks_intact(self, self.barrier_chunks)) {
-          self notify(# "all_boards_repaired");
-          player increment_window_repaired();
-          return;
-        }
-        if(zm_utility::no_valid_repairable_boards(self, self.barrier_chunks)) {
-          self notify(# "hash_46d36511");
-          player increment_window_repaired(self);
-          return;
-        }
-      }
     }
+  }
 }
 
-/*
-	Name: increment_window_repaired
-	Namespace: zm_blockers
-	Checksum: 0xCD92605E
-	Offset: 0x6598
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function increment_window_repaired(s_barrier) {
   self zm_stats::increment_challenge_stat("SURVIVALIST_BOARD");
   self incrementplayerstat("windowsBoarded", 1);
   self thread zm_daily_challenges::increment_windows_repaired(s_barrier);
 }
 
-/*
-	Name: blockertrigger_update_prompt
-	Namespace: zm_blockers
-	Checksum: 0x6FA21FCE
-	Offset: 0x6608
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function blockertrigger_update_prompt(player) {
   can_use = self.stub blockerstub_update_prompt(player);
   self setinvisibletoplayer(player, !can_use);
@@ -1856,15 +1388,6 @@ function blockertrigger_update_prompt(player) {
   return can_use;
 }
 
-/*
-	Name: blockerstub_update_prompt
-	Namespace: zm_blockers
-	Checksum: 0x756338F2
-	Offset: 0x6690
-	Size: 0x66
-	Parameters: 1
-	Flags: Linked
-*/
 function blockerstub_update_prompt(player) {
   if(!zm_utility::is_player_valid(player)) {
     return false;
@@ -1878,29 +1401,11 @@ function blockerstub_update_prompt(player) {
   return true;
 }
 
-/*
-	Name: random_destroyed_chunk_show
-	Namespace: zm_blockers
-	Checksum: 0x3403525F
-	Offset: 0x6700
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function random_destroyed_chunk_show() {
   wait(0.5);
   self show();
 }
 
-/*
-	Name: door_repaired_rumble_n_sound
-	Namespace: zm_blockers
-	Checksum: 0x717675B5
-	Offset: 0x6730
-	Size: 0xBE
-	Parameters: 0
-	Flags: None
-*/
 function door_repaired_rumble_n_sound() {
   players = getplayers();
   for (i = 0; i < players.size; i++) {
@@ -1912,28 +1417,10 @@ function door_repaired_rumble_n_sound() {
   }
 }
 
-/*
-	Name: board_completion
-	Namespace: zm_blockers
-	Checksum: 0xD6EB5FF4
-	Offset: 0x67F8
-	Size: 0xE
-	Parameters: 0
-	Flags: Linked
-*/
 function board_completion() {
-  self endon(# "disconnect");
+  self endon("disconnect");
 }
 
-/*
-	Name: trigger_delete_on_repair
-	Namespace: zm_blockers
-	Checksum: 0x22C65212
-	Offset: 0x6810
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function trigger_delete_on_repair() {
   while (true) {
     self util::waittill_either("all_boards_repaired", "no valid boards");
@@ -1942,28 +1429,10 @@ function trigger_delete_on_repair() {
   }
 }
 
-/*
-	Name: rebuild_barrier_reward_reset
-	Namespace: zm_blockers
-	Checksum: 0x42F8C4C9
-	Offset: 0x6870
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function rebuild_barrier_reward_reset() {
   self.rebuild_barrier_reward = 0;
 }
 
-/*
-	Name: remove_chunk
-	Namespace: zm_blockers
-	Checksum: 0x1E03388F
-	Offset: 0x6888
-	Size: 0xE9C
-	Parameters: 4
-	Flags: Linked
-*/
 function remove_chunk(chunk, node, destroy_immediately, zomb) {
   chunk update_states("mid_tear");
   if(isdefined(chunk.script_parameters)) {
@@ -2043,7 +1512,7 @@ function remove_chunk(chunk, node, destroy_immediately, zomb) {
       ent delete();
     }
     chunk update_states("destroyed");
-    chunk notify(# "destroyed");
+    chunk notify("destroyed");
   }
   if(isdefined(chunk.script_parameters) && chunk.script_parameters == "board" || chunk.script_parameters == "repair_board" || chunk.script_parameters == "barricade_vents") {
     ent = spawn("script_origin", chunk.origin);
@@ -2084,7 +1553,7 @@ function remove_chunk(chunk, node, destroy_immediately, zomb) {
     wait(0.1);
     ent delete();
     chunk update_states("destroyed");
-    chunk notify(# "destroyed");
+    chunk notify("destroyed");
   }
   if(isdefined(chunk.script_parameters) && chunk.script_parameters == "grate") {
     if(isdefined(chunk.script_noteworthy) && chunk.script_noteworthy == "6") {
@@ -2109,24 +1578,15 @@ function remove_chunk(chunk, node, destroy_immediately, zomb) {
       chunk hide();
       ent delete();
       chunk update_states("destroyed");
-      chunk notify(# "destroyed");
+      chunk notify("destroyed");
     } else {
       chunk hide();
       chunk update_states("destroyed");
-      chunk notify(# "destroyed");
+      chunk notify("destroyed");
     }
   }
 }
 
-/*
-	Name: remove_chunk_rotate_grate
-	Namespace: zm_blockers
-	Checksum: 0x7EFB958D
-	Offset: 0x7730
-	Size: 0x7E
-	Parameters: 1
-	Flags: None
-*/
 function remove_chunk_rotate_grate(chunk) {
   if(isdefined(chunk.script_parameters) && chunk.script_parameters == "grate") {
     chunk vibrate(vectorscale((0, 1, 0), 270), 0.2, 0.4, 0.4);
@@ -2134,15 +1594,6 @@ function remove_chunk_rotate_grate(chunk) {
   }
 }
 
-/*
-	Name: zombie_boardtear_audio_offset
-	Namespace: zm_blockers
-	Checksum: 0x131296AE
-	Offset: 0x77B8
-	Size: 0x360
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_boardtear_audio_offset(chunk) {
   if(isdefined(chunk.material) && !isdefined(chunk.already_broken)) {
     chunk.already_broken = 0;
@@ -2184,15 +1635,6 @@ function zombie_boardtear_audio_offset(chunk) {
   }
 }
 
-/*
-	Name: zombie_bartear_audio_offset
-	Namespace: zm_blockers
-	Checksum: 0xA816D188
-	Offset: 0x7B20
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_bartear_audio_offset(chunk) {
   chunk zm_utility::play_sound_on_ent("grab_metal_bar");
   wait(randomfloatrange(0.3, 0.6));
@@ -2201,41 +1643,19 @@ function zombie_bartear_audio_offset(chunk) {
   chunk zm_utility::play_sound_on_ent("drop_metal_bar");
 }
 
-/*
-	Name: ensure_chunk_is_back_to_origin
-	Namespace: zm_blockers
-	Checksum: 0x1AFBE53D
-	Offset: 0x7BD8
-	Size: 0x52
-	Parameters: 1
-	Flags: None
-*/
 function ensure_chunk_is_back_to_origin(chunk) {
   if(chunk.origin != chunk.og_origin) {
     chunk notsolid();
-    chunk waittill(# "movedone");
+    chunk waittill("movedone");
   }
 }
 
-/*
-	Name: replace_chunk
-	Namespace: zm_blockers
-	Checksum: 0xC09A985A
-	Offset: 0x7C38
-	Size: 0x2B6
-	Parameters: 5
-	Flags: Linked
-*/
 function replace_chunk(barrier, chunk, perk, upgrade, via_powerup) {
   if(!isdefined(barrier.zbarrier)) {
     chunk update_states("mid_repair");
-    /#
     assert(isdefined(chunk.og_origin));
-    # /
-      /#
     assert(isdefined(chunk.og_angles));
-    # /
-      sound = "rebuild_barrier_hover";
+    sound = "rebuild_barrier_hover";
     if(isdefined(chunk.script_presound)) {
       sound = chunk.script_presound;
     }
@@ -2266,15 +1686,6 @@ function replace_chunk(barrier, chunk, perk, upgrade, via_powerup) {
   wait(waitduration);
 }
 
-/*
-	Name: open_all_zbarriers
-	Namespace: zm_blockers
-	Checksum: 0x3B39FFD2
-	Offset: 0x7EF8
-	Size: 0x17A
-	Parameters: 0
-	Flags: None
-*/
 function open_all_zbarriers() {
   foreach(barrier in level.exterior_goals) {
     if(isdefined(barrier.zbarrier)) {
@@ -2291,15 +1702,6 @@ function open_all_zbarriers() {
   }
 }
 
-/*
-	Name: zombie_boardtear_audio_plus_fx_offset_repair_horizontal
-	Namespace: zm_blockers
-	Checksum: 0x112829A9
-	Offset: 0x8080
-	Size: 0x1FC
-	Parameters: 1
-	Flags: None
-*/
 function zombie_boardtear_audio_plus_fx_offset_repair_horizontal(chunk) {
   if(isdefined(chunk.material) && chunk.material == "rock") {
     if(isdefined(level.use_clientside_rock_tearin_fx) && level.use_clientside_rock_tearin_fx) {
@@ -2320,15 +1722,6 @@ function zombie_boardtear_audio_plus_fx_offset_repair_horizontal(chunk) {
   }
 }
 
-/*
-	Name: zombie_boardtear_audio_plus_fx_offset_repair_verticle
-	Namespace: zm_blockers
-	Checksum: 0xCB16809C
-	Offset: 0x8288
-	Size: 0x1FC
-	Parameters: 1
-	Flags: None
-*/
 function zombie_boardtear_audio_plus_fx_offset_repair_verticle(chunk) {
   if(isdefined(chunk.material) && chunk.material == "rock") {
     if(isdefined(level.use_clientside_rock_tearin_fx) && level.use_clientside_rock_tearin_fx) {
@@ -2349,15 +1742,6 @@ function zombie_boardtear_audio_plus_fx_offset_repair_verticle(chunk) {
   }
 }
 
-/*
-	Name: zombie_gratetear_audio_plus_fx_offset_repair_horizontal
-	Namespace: zm_blockers
-	Checksum: 0xB4A7D4BB
-	Offset: 0x8490
-	Size: 0x55E
-	Parameters: 1
-	Flags: None
-*/
 function zombie_gratetear_audio_plus_fx_offset_repair_horizontal(chunk) {
   earthquake(randomfloatrange(0.3, 0.4), randomfloatrange(0.2, 0.4), chunk.origin, 150);
   chunk zm_utility::play_sound_on_ent("bar_rebuild_slam");
@@ -2411,15 +1795,6 @@ function zombie_gratetear_audio_plus_fx_offset_repair_horizontal(chunk) {
   }
 }
 
-/*
-	Name: zombie_bartear_audio_plus_fx_offset_repair_horizontal
-	Namespace: zm_blockers
-	Checksum: 0xC2F0FB78
-	Offset: 0x89F8
-	Size: 0x47E
-	Parameters: 1
-	Flags: None
-*/
 function zombie_bartear_audio_plus_fx_offset_repair_horizontal(chunk) {
   earthquake(randomfloatrange(0.3, 0.4), randomfloatrange(0.2, 0.4), chunk.origin, 150);
   chunk zm_utility::play_sound_on_ent("bar_rebuild_slam");
@@ -2473,15 +1848,6 @@ function zombie_bartear_audio_plus_fx_offset_repair_horizontal(chunk) {
   }
 }
 
-/*
-	Name: zombie_bartear_audio_plus_fx_offset_repair_verticle
-	Namespace: zm_blockers
-	Checksum: 0x3C7FE774
-	Offset: 0x8E80
-	Size: 0x47E
-	Parameters: 1
-	Flags: None
-*/
 function zombie_bartear_audio_plus_fx_offset_repair_verticle(chunk) {
   earthquake(randomfloatrange(0.3, 0.4), randomfloatrange(0.2, 0.4), chunk.origin, 150);
   chunk zm_utility::play_sound_on_ent("bar_rebuild_slam");
@@ -2535,21 +1901,10 @@ function zombie_bartear_audio_plus_fx_offset_repair_verticle(chunk) {
   }
 }
 
-/*
-	Name: flag_blocker
-	Namespace: zm_blockers
-	Checksum: 0xF795BB75
-	Offset: 0x9308
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function flag_blocker() {
   if(!isdefined(self.script_flag_wait)) {
-    /#
     assertmsg(("" + self.origin) + "");
-    # /
-      return;
+    return;
   }
   if(!isdefined(level.flag[self.script_flag_wait])) {
     level flag::init(self.script_flag_wait);
@@ -2570,36 +1925,14 @@ function flag_blocker() {
     self triggerenable(0);
     return;
   }
-  /#
   assertmsg(((("" + self.origin) + "") + type) + "");
-  # /
 }
 
-/*
-	Name: update_states
-	Namespace: zm_blockers
-	Checksum: 0x813A9A6A
-	Offset: 0x94B0
-	Size: 0x38
-	Parameters: 1
-	Flags: Linked
-*/
 function update_states(states) {
-  /#
   assert(isdefined(states));
-  # /
-    self.state = states;
+  self.state = states;
 }
 
-/*
-	Name: quantum_bomb_open_nearest_door_validation
-	Namespace: zm_blockers
-	Checksum: 0x145BD163
-	Offset: 0x94F0
-	Size: 0x1BE
-	Parameters: 1
-	Flags: Linked
-*/
 function quantum_bomb_open_nearest_door_validation(position) {
   range_squared = 32400;
   zombie_doors = getentarray("zombie_door", "targetname");
@@ -2623,22 +1956,13 @@ function quantum_bomb_open_nearest_door_validation(position) {
   return false;
 }
 
-/*
-	Name: quantum_bomb_open_nearest_door_result
-	Namespace: zm_blockers
-	Checksum: 0x582C6EA
-	Offset: 0x96B8
-	Size: 0x2AC
-	Parameters: 1
-	Flags: Linked
-*/
 function quantum_bomb_open_nearest_door_result(position) {
   range_squared = 32400;
   zombie_doors = getentarray("zombie_door", "targetname");
   for (i = 0; i < zombie_doors.size; i++) {
     if(distancesquared(zombie_doors[i].origin, position) < range_squared) {
       self thread zm_audio::create_and_play_dialog("kill", "quant_good");
-      zombie_doors[i] notify(# "trigger", self, 1);
+      zombie_doors[i] notify("trigger", self, 1);
       [
         [level.quantum_bomb_play_area_effect_func]
       ](position);
@@ -2649,7 +1973,7 @@ function quantum_bomb_open_nearest_door_result(position) {
   for (i = 0; i < zombie_airlock_doors.size; i++) {
     if(distancesquared(zombie_airlock_doors[i].origin, position) < range_squared) {
       self thread zm_audio::create_and_play_dialog("kill", "quant_good");
-      zombie_airlock_doors[i] notify(# "trigger", self, 1);
+      zombie_airlock_doors[i] notify("trigger", self, 1);
       [
         [level.quantum_bomb_play_area_effect_func]
       ](position);
@@ -2660,7 +1984,7 @@ function quantum_bomb_open_nearest_door_result(position) {
   for (i = 0; i < zombie_debris.size; i++) {
     if(distancesquared(zombie_debris[i].origin, position) < range_squared) {
       self thread zm_audio::create_and_play_dialog("kill", "quant_good");
-      zombie_debris[i] notify(# "trigger", self, 1);
+      zombie_debris[i] notify("trigger", self, 1);
       [
         [level.quantum_bomb_play_area_effect_func]
       ](position);

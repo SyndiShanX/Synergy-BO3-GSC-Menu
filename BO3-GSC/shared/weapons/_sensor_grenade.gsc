@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: shared\weapons\_sensor_grenade.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\challenges_shared;
@@ -10,32 +14,13 @@
 #using scripts\shared\weapons\_decoy;
 #using scripts\shared\weapons\_hacker_tool;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace sensor_grenade;
 
-/*
-	Name: init_shared
-	Namespace: sensor_grenade
-	Checksum: 0x2411EF02
-	Offset: 0x2D8
-	Size: 0x3C
-	Parameters: 0
-	Flags: None
-*/
 function init_shared() {
   level.isplayertrackedfunc = & isplayertracked;
   callback::add_weapon_watcher( & createsensorgrenadewatcher);
 }
 
-/*
-	Name: createsensorgrenadewatcher
-	Namespace: sensor_grenade
-	Checksum: 0x18F9A9E5
-	Offset: 0x320
-	Size: 0xCC
-	Parameters: 0
-	Flags: None
-*/
 function createsensorgrenadewatcher() {
   watcher = self weaponobjects::createuseweaponobjectwatcher("sensor_grenade", self.team);
   watcher.headicon = 0;
@@ -47,17 +32,8 @@ function createsensorgrenadewatcher() {
   watcher.enemydestroy = 1;
 }
 
-/*
-	Name: onspawnsensorgrenade
-	Namespace: sensor_grenade
-	Checksum: 0x2E9313F0
-	Offset: 0x3F8
-	Size: 0x134
-	Parameters: 2
-	Flags: None
-*/
 function onspawnsensorgrenade(watcher, player) {
-  self endon(# "death");
+  self endon("death");
   self thread weaponobjects::onspawnuseweaponobject(watcher, player);
   self setowner(player);
   self setteam(player.team);
@@ -70,52 +46,25 @@ function onspawnsensorgrenade(watcher, player) {
   self thread watch_for_decoys(player);
 }
 
-/*
-	Name: watchforstationary
-	Namespace: sensor_grenade
-	Checksum: 0x8D1C2086
-	Offset: 0x538
-	Size: 0x6C
-	Parameters: 1
-	Flags: None
-*/
 function watchforstationary(owner) {
-  self endon(# "death");
-  self endon(# "hacked");
-  self endon(# "explode");
-  owner endon(# "death");
-  owner endon(# "disconnect");
-  self waittill(# "stationary");
+  self endon("death");
+  self endon("hacked");
+  self endon("explode");
+  owner endon("death");
+  owner endon("disconnect");
+  self waittill("stationary");
   checkfortracking(self.origin);
 }
 
-/*
-	Name: watchforexplode
-	Namespace: sensor_grenade
-	Checksum: 0x2EA8088D
-	Offset: 0x5B0
-	Size: 0x74
-	Parameters: 1
-	Flags: None
-*/
 function watchforexplode(owner) {
-  self endon(# "hacked");
-  self endon(# "delete");
-  owner endon(# "death");
-  owner endon(# "disconnect");
-  self waittill(# "explode", origin);
+  self endon("hacked");
+  self endon("delete");
+  owner endon("death");
+  owner endon("disconnect");
+  self waittill("explode", origin);
   checkfortracking(origin + (0, 0, 1));
 }
 
-/*
-	Name: checkfortracking
-	Namespace: sensor_grenade
-	Checksum: 0x5B0E9354
-	Offset: 0x630
-	Size: 0x1D2
-	Parameters: 1
-	Flags: None
-*/
 function checkfortracking(origin) {
   if(isdefined(self.owner) == 0) {
     return;
@@ -135,15 +84,6 @@ function checkfortracking(origin) {
   }
 }
 
-/*
-	Name: tracksensorgrenadevictim
-	Namespace: sensor_grenade
-	Checksum: 0x8C6709B6
-	Offset: 0x810
-	Size: 0x5E
-	Parameters: 1
-	Flags: None
-*/
 function tracksensorgrenadevictim(victim) {
   if(!isdefined(self.sensorgrenadedata)) {
     self.sensorgrenadedata = [];
@@ -153,15 +93,6 @@ function tracksensorgrenadevictim(victim) {
   }
 }
 
-/*
-	Name: isplayertracked
-	Namespace: sensor_grenade
-	Checksum: 0x398E9F90
-	Offset: 0x878
-	Size: 0x82
-	Parameters: 2
-	Flags: None
-*/
 function isplayertracked(player, time) {
   playertracked = 0;
   if(isdefined(self.sensorgrenadedata) && isdefined(self.sensorgrenadedata[player.clientid])) {
@@ -172,15 +103,6 @@ function isplayertracked(player, time) {
   return playertracked;
 }
 
-/*
-	Name: sensorgrenadedestroyed
-	Namespace: sensor_grenade
-	Checksum: 0x28FF607B
-	Offset: 0x908
-	Size: 0x104
-	Parameters: 3
-	Flags: None
-*/
 function sensorgrenadedestroyed(attacker, weapon, target) {
   if(!isdefined(weapon) || !weapon.isemp) {
     playfx(level._equipment_explode_fx, self.origin);
@@ -195,18 +117,9 @@ function sensorgrenadedestroyed(attacker, weapon, target) {
   self delete();
 }
 
-/*
-	Name: watchsensorgrenadedamage
-	Namespace: sensor_grenade
-	Checksum: 0xD2D17739
-	Offset: 0xA18
-	Size: 0x35A
-	Parameters: 1
-	Flags: None
-*/
 function watchsensorgrenadedamage(watcher) {
-  self endon(# "death");
-  self endon(# "hacked");
+  self endon("death");
+  self endon("hacked");
   self setcandamage(1);
   damagemax = 1;
   if(!self util::ishacked()) {
@@ -215,7 +128,7 @@ function watchsensorgrenadedamage(watcher) {
   while (true) {
     self.maxhealth = 100000;
     self.health = self.maxhealth;
-    self waittill(# "damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon, idflags);
+    self waittill("damage", damage, attacker, direction, point, type, tagname, modelname, partname, weapon, idflags);
     if(!isdefined(attacker) || !isplayer(attacker)) {
       continue;
     }
@@ -250,17 +163,8 @@ function watchsensorgrenadedamage(watcher) {
   }
 }
 
-/*
-	Name: watch_for_decoys
-	Namespace: sensor_grenade
-	Checksum: 0x1D7938FD
-	Offset: 0xD80
-	Size: 0x142
-	Parameters: 1
-	Flags: None
-*/
 function watch_for_decoys(owner) {
-  self waittill(# "stationary");
+  self waittill("stationary");
   players = level.players;
   foreach(player in level.players) {
     if(player util::isenemyplayer(self.owner)) {
@@ -273,28 +177,10 @@ function watch_for_decoys(owner) {
   }
 }
 
-/*
-	Name: get_decoy_spawn_loc
-	Namespace: sensor_grenade
-	Checksum: 0x3A67BFA
-	Offset: 0xED0
-	Size: 0x26
-	Parameters: 0
-	Flags: None
-*/
 function get_decoy_spawn_loc() {
   return self.origin - (240 * anglestoforward(self.angles));
 }
 
-/*
-	Name: watch_decoy
-	Namespace: sensor_grenade
-	Checksum: 0x2B8DA758
-	Offset: 0xF00
-	Size: 0xF4
-	Parameters: 1
-	Flags: None
-*/
 function watch_decoy(sensor_grenade) {
   origin = self get_decoy_spawn_loc();
   decoy_grenade = sys::spawn("script_model", origin);
@@ -303,7 +189,7 @@ function watch_decoy(sensor_grenade) {
   decoy_grenade.initial_velocity = -1 * self getvelocity();
   decoy_grenade thread decoy::simulate_weapon_fire(self);
   wait(15);
-  decoy_grenade notify(# "done");
-  decoy_grenade notify(# "death_before_explode");
+  decoy_grenade notify("done");
+  decoy_grenade notify("death_before_explode");
   decoy_grenade delete();
 }

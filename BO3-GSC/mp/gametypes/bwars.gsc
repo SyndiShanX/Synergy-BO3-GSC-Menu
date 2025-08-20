@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\bwars.gsc
+*************************************************/
+
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
 #using scripts\mp\gametypes\_globallogic_audio;
@@ -16,18 +20,8 @@
 #using scripts\shared\popups_shared;
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\util_shared;
-
 #namespace bwars;
 
-/*
-	Name: main
-	Namespace: bwars
-	Checksum: 0xA02DF722
-	Offset: 0x8A8
-	Size: 0x274
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   util::registertimelimit(0, 1440);
@@ -56,26 +50,8 @@ function main() {
   globallogic::setvisiblescoreboardcolumns("score", "kills", "deaths", "captures", "defends");
 }
 
-/*
-	Name: onprecachegametype
-	Namespace: bwars
-	Checksum: 0x99EC1590
-	Offset: 0xB28
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function onprecachegametype() {}
 
-/*
-	Name: onstartgametype
-	Namespace: bwars
-	Checksum: 0xF5D6B2E
-	Offset: 0xB38
-	Size: 0x41C
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   util::setobjectivetext("allies", & "OBJECTIVES_DOM");
   util::setobjectivetext("axis", & "OBJECTIVES_DOM");
@@ -125,26 +101,8 @@ function onstartgametype() {
   bwars_spawns_update();
 }
 
-/*
-	Name: onendgame
-	Namespace: bwars
-	Checksum: 0x2A1AF82A
-	Offset: 0xF60
-	Size: 0xC
-	Parameters: 1
-	Flags: None
-*/
 function onendgame(winningteam) {}
 
-/*
-	Name: onroundendgame
-	Namespace: bwars
-	Checksum: 0x9007916C
-	Offset: 0xF78
-	Size: 0x10C
-	Parameters: 1
-	Flags: None
-*/
 function onroundendgame(roundwinner) {
   if(level.scoreroundwinbased) {
     [
@@ -154,12 +112,8 @@ function onroundendgame(roundwinner) {
       [level._setteamscore]
     ]("axis", game["roundswon"]["axis"]);
   }
-  axisscore = [
-    [level._getteamscore]
-  ]("axis");
-  alliedscore = [
-    [level._getteamscore]
-  ]("allies");
+  axisscore = [[level._getteamscore]]("axis");
+  alliedscore = [[level._getteamscore]]("allies");
   if(axisscore == alliedscore) {
     winner = "tie";
   } else {
@@ -172,15 +126,6 @@ function onroundendgame(roundwinner) {
   return winner;
 }
 
-/*
-	Name: updategametypedvars
-	Namespace: bwars
-	Checksum: 0x62905462
-	Offset: 0x1090
-	Size: 0x164
-	Parameters: 0
-	Flags: None
-*/
 function updategametypedvars() {
   level.flagcapturetime = getgametypesetting("captureTime");
   level.flagcapturelpm = math::clamp(getdvarfloat("maxFlagCapturePerMinute", 3), 0, 10);
@@ -190,15 +135,6 @@ function updategametypedvars() {
   level.playerdefensivemax = math::clamp(getdvarfloat("maxPlayerDefensive", 16), 0, 1000);
 }
 
-/*
-	Name: bwars_init
-	Namespace: bwars
-	Checksum: 0xED93ED58
-	Offset: 0x1200
-	Size: 0x2AC
-	Parameters: 0
-	Flags: None
-*/
 function bwars_init() {
   level.laststatus["allies"] = 0;
   level.laststatus["axis"] = 0;
@@ -216,7 +152,7 @@ function bwars_init() {
     gameobjects::release_obj_id(flag.objidallies);
     flag gameobjects::allow_use("any");
     flag gameobjects::set_use_time(level.flagcapturetime);
-    flag gameobjects::set_use_text( & "MP_CAPTURING_FLAG");
+    flag gameobjects::set_use_text(&"MP_CAPTURING_FLAG");
     flag gameobjects::set_visible_team("any");
     flag flag_compass_init();
     flag.onuse = & onuse;
@@ -227,15 +163,6 @@ function bwars_init() {
   }
 }
 
-/*
-	Name: player_hud_init
-	Namespace: bwars
-	Checksum: 0x44CA4A
-	Offset: 0x14B8
-	Size: 0x29C
-	Parameters: 0
-	Flags: None
-*/
 function player_hud_init() {
   if(isdefined(self.bwars_hud)) {
     return;
@@ -270,15 +197,6 @@ function player_hud_init() {
   level bwars_scoreboard_update();
 }
 
-/*
-	Name: player_hud_update
-	Namespace: bwars
-	Checksum: 0x2FBAD4B0
-	Offset: 0x1760
-	Size: 0x1AA
-	Parameters: 2
-	Flags: None
-*/
 function player_hud_update(names, scores) {
   if(!isdefined(self.bwars_hud)) {
     return;
@@ -300,15 +218,6 @@ function player_hud_update(names, scores) {
   }
 }
 
-/*
-	Name: bubblesort_players
-	Namespace: bwars
-	Checksum: 0xDEF0191F
-	Offset: 0x1918
-	Size: 0xFE
-	Parameters: 0
-	Flags: None
-*/
 function bubblesort_players() {
   players = getplayers();
   while (true) {
@@ -328,15 +237,6 @@ function bubblesort_players() {
   return players;
 }
 
-/*
-	Name: bwars_scoreboard_update
-	Namespace: bwars
-	Checksum: 0xE745FFC4
-	Offset: 0x1A20
-	Size: 0x16A
-	Parameters: 0
-	Flags: None
-*/
 function bwars_scoreboard_update() {
   names = [];
   scores = [];
@@ -355,15 +255,6 @@ function bwars_scoreboard_update() {
   }
 }
 
-/*
-	Name: flag_model_init
-	Namespace: bwars
-	Checksum: 0x96207E
-	Offset: 0x1B98
-	Size: 0x120
-	Parameters: 0
-	Flags: None
-*/
 function flag_model_init() {
   visuals = [];
   visuals[0] = spawn("script_model", self.origin);
@@ -377,15 +268,6 @@ function flag_model_init() {
   return visuals;
 }
 
-/*
-	Name: flag_model_update
-	Namespace: bwars
-	Checksum: 0xAC42A213
-	Offset: 0x1CC0
-	Size: 0xFC
-	Parameters: 0
-	Flags: None
-*/
 function flag_model_update() {
   owner = self gameobjects::get_owner_team();
   self.visuals[0] setmodel("p7_mp_flag_allies");
@@ -396,15 +278,6 @@ function flag_model_update() {
   self.visuals[1] setinvisibletoplayer(owner);
 }
 
-/*
-	Name: flag_compass_init
-	Namespace: bwars
-	Checksum: 0x6A9E41C9
-	Offset: 0x1DC8
-	Size: 0x16C
-	Parameters: 0
-	Flags: None
-*/
 function flag_compass_init() {
   self.compass_icons = [];
   self.compass_icons[0] = gameobjects::get_next_obj_id();
@@ -418,15 +291,6 @@ function flag_compass_init() {
   objective_setvisibletoall(self.compass_icons[1]);
 }
 
-/*
-	Name: flag_compass_update
-	Namespace: bwars
-	Checksum: 0xC394F135
-	Offset: 0x1F40
-	Size: 0x17C
-	Parameters: 0
-	Flags: None
-*/
 function flag_compass_update() {
   label = self gameobjects::get_label();
   owner = self gameobjects::get_owner_team();
@@ -440,15 +304,6 @@ function flag_compass_update() {
   objective_setinvisibletoplayer(self.compass_icons[1], owner);
 }
 
-/*
-	Name: player_world_icon_init
-	Namespace: bwars
-	Checksum: 0x9116E208
-	Offset: 0x20C8
-	Size: 0x194
-	Parameters: 0
-	Flags: None
-*/
 function player_world_icon_init() {
   if(isdefined(self.bwars_icons)) {
     return;
@@ -468,43 +323,23 @@ function player_world_icon_init() {
   self player_world_icon_update();
 }
 
-/*
-	Name: player_world_icon_update
-	Namespace: bwars
-	Checksum: 0xA5E81C02
-	Offset: 0x2268
-	Size: 0x1A2
-	Parameters: 0
-	Flags: None
-*/
 function player_world_icon_update() {
-  /#
   assert(isdefined(self.bwars_icons));
-  # /
-    foreach(icon in self.bwars_icons) {
-      label = icon.flag gameobjects::get_label();
-      owner = icon.flag gameobjects::get_owner_team();
-      if(isstring(owner) && owner == "neutral") {
-        icon setwaypoint(1, "waypoint_captureneutral" + label);
-        continue;
-      }
-      if(owner == self) {
-        icon setwaypoint(1, "waypoint_defend" + label);
-        continue;
-      }
-      icon setwaypoint(1, "waypoint_capture" + label);
+  foreach(icon in self.bwars_icons) {
+    label = icon.flag gameobjects::get_label();
+    owner = icon.flag gameobjects::get_owner_team();
+    if(isstring(owner) && owner == "neutral") {
+      icon setwaypoint(1, "waypoint_captureneutral" + label);
+      continue;
     }
+    if(owner == self) {
+      icon setwaypoint(1, "waypoint_defend" + label);
+      continue;
+    }
+    icon setwaypoint(1, "waypoint_capture" + label);
+  }
 }
 
-/*
-	Name: world_icon_update
-	Namespace: bwars
-	Checksum: 0x161325A1
-	Offset: 0x2418
-	Size: 0xA2
-	Parameters: 0
-	Flags: None
-*/
 function world_icon_update() {
   players = getplayers();
   foreach(player in players) {
@@ -512,15 +347,6 @@ function world_icon_update() {
   }
 }
 
-/*
-	Name: getunownedflagneareststart
-	Namespace: bwars
-	Checksum: 0x5BAD53C5
-	Offset: 0x24C8
-	Size: 0x12E
-	Parameters: 2
-	Flags: None
-*/
 function getunownedflagneareststart(team, excludeflag) {
   best = undefined;
   bestdistsq = undefined;
@@ -538,37 +364,10 @@ function getunownedflagneareststart(team, excludeflag) {
   return best;
 }
 
-/*
-	Name: onbeginuse
-	Namespace: bwars
-	Checksum: 0xCC266779
-	Offset: 0x2600
-	Size: 0xC
-	Parameters: 1
-	Flags: None
-*/
 function onbeginuse(player) {}
 
-/*
-	Name: onuseupdate
-	Namespace: bwars
-	Checksum: 0x2C1C1D66
-	Offset: 0x2618
-	Size: 0x1C
-	Parameters: 3
-	Flags: None
-*/
 function onuseupdate(team, progress, change) {}
 
-/*
-	Name: statusdialog
-	Namespace: bwars
-	Checksum: 0x1985EE64
-	Offset: 0x2640
-	Size: 0x6E
-	Parameters: 2
-	Flags: None
-*/
 function statusdialog(dialog, team) {
   time = gettime();
   if(gettime() < (level.laststatus[team] + 6000)) {
@@ -578,15 +377,6 @@ function statusdialog(dialog, team) {
   level.laststatus[team] = gettime();
 }
 
-/*
-	Name: statusdialogenemies
-	Namespace: bwars
-	Checksum: 0x67C599B8
-	Offset: 0x26B8
-	Size: 0xB2
-	Parameters: 2
-	Flags: None
-*/
 function statusdialogenemies(dialog, friend_team) {
   foreach(team in level.teams) {
     if(team == friend_team) {
@@ -596,37 +386,10 @@ function statusdialogenemies(dialog, friend_team) {
   }
 }
 
-/*
-	Name: onenduse
-	Namespace: bwars
-	Checksum: 0x7373A36B
-	Offset: 0x2778
-	Size: 0x1C
-	Parameters: 3
-	Flags: None
-*/
 function onenduse(team, player, success) {}
 
-/*
-	Name: resetflagbaseeffect
-	Namespace: bwars
-	Checksum: 0x99EC1590
-	Offset: 0x27A0
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function resetflagbaseeffect() {}
 
-/*
-	Name: onuse
-	Namespace: bwars
-	Checksum: 0xBC469AF
-	Offset: 0x27B0
-	Size: 0xA4
-	Parameters: 1
-	Flags: None
-*/
 function onuse(player) {
   self gameobjects::set_owner_team(player);
   self gameobjects::allow_use("enemy");
@@ -636,15 +399,6 @@ function onuse(player) {
   level bwars_spawns_update();
 }
 
-/*
-	Name: give_capture_credit
-	Namespace: bwars
-	Checksum: 0x3344B802
-	Offset: 0x2860
-	Size: 0x19E
-	Parameters: 2
-	Flags: None
-*/
 function give_capture_credit(touchlist, string) {
   wait(0.05);
   util::waittillslowprocessallowed();
@@ -665,44 +419,17 @@ function give_capture_credit(touchlist, string) {
   }
 }
 
-/*
-	Name: delayedleaderdialog
-	Namespace: bwars
-	Checksum: 0x57F1D6AC
-	Offset: 0x2A08
-	Size: 0x44
-	Parameters: 2
-	Flags: None
-*/
 function delayedleaderdialog(sound, team) {
   wait(0.1);
   util::waittillslowprocessallowed();
   globallogic_audio::leader_dialog(sound, team);
 }
 
-/*
-	Name: delayedleaderdialogbothteams
-	Namespace: bwars
-	Checksum: 0x1B522B10
-	Offset: 0x2A58
-	Size: 0x3C
-	Parameters: 4
-	Flags: None
-*/
 function delayedleaderdialogbothteams(sound1, team1, sound2, team2) {
   wait(0.1);
   util::waittillslowprocessallowed();
 }
 
-/*
-	Name: bwars_update_scores
-	Namespace: bwars
-	Checksum: 0x1A450DEF
-	Offset: 0x2AA0
-	Size: 0x1B0
-	Parameters: 0
-	Flags: None
-*/
 function bwars_update_scores() {
   while (!level.gameended) {
     foreach(flag in level.bwars_flags) {
@@ -721,15 +448,6 @@ function bwars_update_scores() {
   }
 }
 
-/*
-	Name: onroundswitch
-	Namespace: bwars
-	Checksum: 0x7A245E66
-	Offset: 0x2C58
-	Size: 0xA0
-	Parameters: 0
-	Flags: None
-*/
 function onroundswitch() {
   if(!isdefined(game["switchedsides"])) {
     game["switchedsides"] = 0;
@@ -745,26 +463,8 @@ function onroundswitch() {
   }
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: bwars
-	Checksum: 0x79966B49
-	Offset: 0x2D00
-	Size: 0x4C
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {}
 
-/*
-	Name: getteamflagcount
-	Namespace: bwars
-	Checksum: 0xB3F91ED4
-	Offset: 0x2D58
-	Size: 0x78
-	Parameters: 1
-	Flags: None
-*/
 function getteamflagcount(team) {
   score = 0;
   for (i = 0; i < level.flags.size; i++) {
@@ -775,28 +475,10 @@ function getteamflagcount(team) {
   return score;
 }
 
-/*
-	Name: getflagteam
-	Namespace: bwars
-	Checksum: 0x3C414528
-	Offset: 0x2DD8
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function getflagteam() {
   return self.useobj gameobjects::get_owner_team();
 }
 
-/*
-	Name: getboundaryflags
-	Namespace: bwars
-	Checksum: 0xFADCF887
-	Offset: 0x2E00
-	Size: 0x106
-	Parameters: 0
-	Flags: None
-*/
 function getboundaryflags() {
   bflags = [];
   for (i = 0; i < level.flags.size; i++) {
@@ -810,15 +492,6 @@ function getboundaryflags() {
   return bflags;
 }
 
-/*
-	Name: getboundaryflagspawns
-	Namespace: bwars
-	Checksum: 0x6E5B7E04
-	Offset: 0x2F10
-	Size: 0xF6
-	Parameters: 1
-	Flags: None
-*/
 function getboundaryflagspawns(team) {
   spawns = [];
   bflags = getboundaryflags();
@@ -833,15 +506,6 @@ function getboundaryflagspawns(team) {
   return spawns;
 }
 
-/*
-	Name: getspawnsboundingflag
-	Namespace: bwars
-	Checksum: 0x27A34972
-	Offset: 0x3010
-	Size: 0x13E
-	Parameters: 1
-	Flags: None
-*/
 function getspawnsboundingflag(avoidflag) {
   spawns = [];
   for (i = 0; i < level.flags.size; i++) {
@@ -866,15 +530,6 @@ function getspawnsboundingflag(avoidflag) {
   return spawns;
 }
 
-/*
-	Name: getownedandboundingflagspawns
-	Namespace: bwars
-	Checksum: 0x5B334FB0
-	Offset: 0x3158
-	Size: 0x1B8
-	Parameters: 1
-	Flags: None
-*/
 function getownedandboundingflagspawns(team) {
   spawns = [];
   for (i = 0; i < level.flags.size; i++) {
@@ -896,15 +551,6 @@ function getownedandboundingflagspawns(team) {
   return spawns;
 }
 
-/*
-	Name: getownedflagspawns
-	Namespace: bwars
-	Checksum: 0x446E5604
-	Offset: 0x3318
-	Size: 0xDA
-	Parameters: 1
-	Flags: None
-*/
 function getownedflagspawns(team) {
   spawns = [];
   for (i = 0; i < level.flags.size; i++) {
@@ -917,15 +563,6 @@ function getownedflagspawns(team) {
   return spawns;
 }
 
-/*
-	Name: flagsetup
-	Namespace: bwars
-	Checksum: 0xC819E9E8
-	Offset: 0x3400
-	Size: 0x68E
-	Parameters: 0
-	Flags: None
-*/
 function flagsetup() {
   maperrors = [];
   descriptorsbylinkname = [];
@@ -998,28 +635,17 @@ function flagsetup() {
     nearestflag.nearbyspawns[nearestflag.nearbyspawns.size] = spawnpoints[i];
   }
   if(maperrors.size > 0) {
-    /#
     println("");
     for (i = 0; i < maperrors.size; i++) {
       println(maperrors[i]);
     }
     println("");
     util::error("");
-    # /
-      callback::abort_level();
+    callback::abort_level();
     return;
   }
 }
 
-/*
-	Name: createflagspawninfluencers
-	Namespace: bwars
-	Checksum: 0x25255E0B
-	Offset: 0x3A98
-	Size: 0x124
-	Parameters: 0
-	Flags: None
-*/
 function createflagspawninfluencers() {
   ss = level.spawnsystem;
   for (flag_index = 0; flag_index < level.flags.size; flag_index++) {
@@ -1033,31 +659,15 @@ function createflagspawninfluencers() {
   self update_spawn_influencers("neutral");
 }
 
-/*
-	Name: update_spawn_influencers
-	Namespace: bwars
-	Checksum: 0x6133AD64
-	Offset: 0x3BC8
-	Size: 0x18C
-	Parameters: 1
-	Flags: None
-*/
 function update_spawn_influencers(team) {
-  /#
   assert(isdefined(self.neutral_flag_influencer));
-  # /
-    /#
   assert(isdefined(self.owned_flag_influencer));
-  # /
-    /#
   assert(isdefined(self.enemy_flag_influencer));
-  # /
-    if(team == "neutral") {
-      enableinfluencer(self.neutral_flag_influencer, 1);
-      enableinfluencer(self.owned_flag_influencer, 0);
-      enableinfluencer(self.enemy_flag_influencer, 0);
-    }
-  else {
+  if(team == "neutral") {
+    enableinfluencer(self.neutral_flag_influencer, 1);
+    enableinfluencer(self.owned_flag_influencer, 0);
+    enableinfluencer(self.enemy_flag_influencer, 0);
+  } else {
     enableinfluencer(self.neutral_flag_influencer, 0);
     enableinfluencer(self.owned_flag_influencer, 1);
     enableinfluencer(self.enemy_flag_influencer, 1);
@@ -1066,15 +676,6 @@ function update_spawn_influencers(team) {
   }
 }
 
-/*
-	Name: bwars_spawns_update
-	Namespace: bwars
-	Checksum: 0xFD84096C
-	Offset: 0x3D60
-	Size: 0x64
-	Parameters: 0
-	Flags: None
-*/
 function bwars_spawns_update() {
   spawnlogic::clear_spawn_points();
   spawnlogic::add_spawn_points("axis", "mp_dom_spawn");
@@ -1082,15 +683,6 @@ function bwars_spawns_update() {
   spawning::updateallspawnpoints();
 }
 
-/*
-	Name: dominated_challenge_check
-	Namespace: bwars
-	Checksum: 0xDF34B8AE
-	Offset: 0x3DD0
-	Size: 0xEC
-	Parameters: 0
-	Flags: None
-*/
 function dominated_challenge_check() {
   num_flags = level.flags.size;
   allied_flags = 0;
@@ -1113,15 +705,6 @@ function dominated_challenge_check() {
   return true;
 }
 
-/*
-	Name: dominated_check
-	Namespace: bwars
-	Checksum: 0xB45BC6D8
-	Offset: 0x3EC8
-	Size: 0xE4
-	Parameters: 0
-	Flags: None
-*/
 function dominated_check() {
   num_flags = level.flags.size;
   allied_flags = 0;
@@ -1140,15 +723,6 @@ function dominated_check() {
   return true;
 }
 
-/*
-	Name: updatecapsperminute
-	Namespace: bwars
-	Checksum: 0xE2D37F5F
-	Offset: 0x3FB8
-	Size: 0xDC
-	Parameters: 0
-	Flags: None
-*/
 function updatecapsperminute() {
   if(!isdefined(self.capsperminute)) {
     self.numcaps = 0;
@@ -1165,15 +739,6 @@ function updatecapsperminute() {
   }
 }
 
-/*
-	Name: isscoreboosting
-	Namespace: bwars
-	Checksum: 0x31ABFFDA
-	Offset: 0x40A0
-	Size: 0x84
-	Parameters: 2
-	Flags: None
-*/
 function isscoreboosting(player, flag) {
   if(!level.rankedmatch) {
     return false;

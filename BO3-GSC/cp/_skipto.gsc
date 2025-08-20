@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\_skipto.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_accolades;
 #using scripts\cp\_achievements;
@@ -26,44 +30,16 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\trigger_shared;
 #using scripts\shared\util_shared;
-
 #namespace skipto;
 
-/*
-	Name: __init__sytem__
-	Namespace: skipto
-	Checksum: 0xB3E302F9
-	Offset: 0x1008
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("skipto", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: function_97bb1111
-	Namespace: skipto
-	Checksum: 0xEB808336
-	Offset: 0x1050
-	Size: 0x18
-	Parameters: 1
-	Flags: Linked
-*/
 function function_97bb1111(mapname) {
   return mapname + "_nightmares";
 }
 
-/*
-	Name: function_23eda99c
-	Namespace: skipto
-	Checksum: 0x5333694A
-	Offset: 0x1070
-	Size: 0x178
-	Parameters: 0
-	Flags: Linked
-*/
 function function_23eda99c() {
   var_cfc9cbb7 = [];
   array::add(var_cfc9cbb7, "cp_mi_cairo_aquifer");
@@ -80,15 +56,6 @@ function function_23eda99c() {
   return var_cfc9cbb7;
 }
 
-/*
-	Name: __init__
-	Namespace: skipto
-	Checksum: 0x6CD7D766
-	Offset: 0x11F0
-	Size: 0x27C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level flag::init("start_skiptos");
   level flag::init("running_skipto");
@@ -107,56 +74,30 @@ function __init__() {
   callback::on_finalize_initialization( & on_finalize_initialization);
   callback::on_spawned( & on_player_spawn);
   callback::on_connect( & on_player_connect);
-  /#
   level thread update_billboard();
   callback::on_spawned( & update_player_billboard);
-  # /
 }
 
-/*
-	Name: __main__
-	Namespace: skipto
-	Checksum: 0x1296E8CA
-	Offset: 0x1478
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   level thread entity_mover_main();
   level thread handle();
   level thread function_52904bc9();
 }
 
-/*
-	Name: add
-	Namespace: skipto
-	Checksum: 0x91513088
-	Offset: 0x14D0
-	Size: 0x34C
-	Parameters: 7
-	Flags: Linked
-*/
 function add(skipto, func, str_name, cleanup_func, launch_after, end_before, var_2bc8bbd9 = 0) {
   if(!isdefined(level.default_skipto)) {
     level.default_skipto = skipto;
   }
   if(is_dev(skipto)) {
-    /#
     errormsg("");
-    # /
-      return;
+    return;
   }
   if(isdefined(launch_after) || isdefined(end_before)) {
-    /#
     errormsg("");
-    # /
-      return;
+    return;
   }
   if(level flag::get("level_has_skipto_branches")) {
-    /#
     errormsg("");
-    # /
   }
   if(!isdefined(launch_after)) {
     if(isdefined(level.last_skipto)) {
@@ -177,52 +118,28 @@ function add(skipto, func, str_name, cleanup_func, launch_after, end_before, var
     level.last_skipto = skipto;
   }
   if(!isdefined(func)) {
-    /#
     assert(isdefined(func), "");
-    # /
   }
   struct = add_internal(skipto, func, str_name, cleanup_func, launch_after, end_before, var_2bc8bbd9);
   struct.public = 1;
   level flag::set("level_has_skiptos");
 }
 
-/*
-	Name: function_d68e678e
-	Namespace: skipto
-	Checksum: 0xF4AE8E96
-	Offset: 0x1828
-	Size: 0x70
-	Parameters: 6
-	Flags: None
-*/
 function function_d68e678e(skipto, func, str_name, cleanup_func, launch_after, end_before) {
   struct = add(skipto, func, str_name, cleanup_func, launch_after, undefined, 1);
 }
 
-/*
-	Name: add_branch
-	Namespace: skipto
-	Checksum: 0xF40F861C
-	Offset: 0x18A0
-	Size: 0x318
-	Parameters: 6
-	Flags: Linked
-*/
 function add_branch(skipto, func, str_name, cleanup_func, launch_after, end_before) {
   if(!isdefined(level.default_skipto)) {
     level.default_skipto = skipto;
   }
   if(is_dev(skipto)) {
-    /#
     errormsg("");
-    # /
-      return;
+    return;
   }
   if(!isdefined(launch_after) && !isdefined(end_before)) {
-    /#
     errormsg("");
-    # /
-      return;
+    return;
   }
   if(!isdefined(launch_after)) {
     if(isdefined(level.last_skipto)) {
@@ -243,9 +160,7 @@ function add_branch(skipto, func, str_name, cleanup_func, launch_after, end_befo
     level.last_skipto = skipto;
   }
   if(!isdefined(func)) {
-    /#
     assert(isdefined(func), "");
-    # /
   }
   struct = add_internal(skipto, func, str_name, cleanup_func, launch_after, end_before);
   struct.public = 1;
@@ -254,15 +169,6 @@ function add_branch(skipto, func, str_name, cleanup_func, launch_after, end_befo
   return struct;
 }
 
-/*
-	Name: function_75d02344
-	Namespace: skipto
-	Checksum: 0x8ED1F06D
-	Offset: 0x1BC0
-	Size: 0x84
-	Parameters: 6
-	Flags: None
-*/
 function function_75d02344(skipto, func, str_name, cleanup_func, launch_after, end_before) {
   struct = add_branch(skipto, func, str_name, cleanup_func, launch_after, end_before);
   if(isdefined(struct)) {
@@ -270,15 +176,6 @@ function function_75d02344(skipto, func, str_name, cleanup_func, launch_after, e
   }
 }
 
-/*
-	Name: add_dev
-	Namespace: skipto
-	Checksum: 0x5A135921
-	Offset: 0x1C50
-	Size: 0xD4
-	Parameters: 6
-	Flags: None
-*/
 function add_dev(skipto, func, str_name, cleanup_func, launch_after, end_before) {
   if(!isdefined(level.default_skipto)) {
     level.default_skipto = skipto;
@@ -288,26 +185,13 @@ function add_dev(skipto, func, str_name, cleanup_func, launch_after, end_before)
     struct.dev_skipto = 1;
     return;
   }
-  /#
   errormsg("");
-  # /
 }
 
-/*
-	Name: objective_leave_incomplete
-	Namespace: skipto
-	Checksum: 0x70D4A16A
-	Offset: 0x1D30
-	Size: 0xFA
-	Parameters: 1
-	Flags: None
-*/
 function objective_leave_incomplete(skipto) {
   if(!isdefined(level.skipto_settings[skipto])) {
-    /#
     assertmsg(("" + skipto) + "");
-    # /
-      return;
+    return;
   }
   level.skipto_settings[skipto].objective_mark_complete = 0;
   foreach(player in level.players) {
@@ -315,15 +199,6 @@ function objective_leave_incomplete(skipto) {
   }
 }
 
-/*
-	Name: add_billboard
-	Namespace: skipto
-	Checksum: 0xAA2BA3B0
-	Offset: 0x1E38
-	Size: 0x72
-	Parameters: 5
-	Flags: None
-*/
 function add_billboard(skipto, event_name, event_type, event_size, event_state) {
   if(!isdefined(level.billboards)) {
     level.billboards = [];
@@ -331,20 +206,9 @@ function add_billboard(skipto, event_name, event_type, event_size, event_state) 
   level.billboards[skipto] = array(event_name, event_type, event_size, event_state);
 }
 
-/*
-	Name: add_internal
-	Namespace: skipto
-	Checksum: 0x9CBEEE9D
-	Offset: 0x1EB8
-	Size: 0x108
-	Parameters: 7
-	Flags: Linked
-*/
 function add_internal(msg, func, str_name, cleanup_func, launch_after, end_before, var_2bc8bbd9) {
-  /#
   assert(!isdefined(level._loadstarted), "");
-  # /
-    msg = tolower(msg);
+  msg = tolower(msg);
   struct = add_construct(msg, func, str_name, cleanup_func, launch_after, end_before, var_2bc8bbd9);
   level.skipto_settings[msg] = struct;
   level flag::init(msg);
@@ -352,15 +216,6 @@ function add_internal(msg, func, str_name, cleanup_func, launch_after, end_befor
   return struct;
 }
 
-/*
-	Name: change
-	Namespace: skipto
-	Checksum: 0x3CA0F9EE
-	Offset: 0x1FC8
-	Size: 0x124
-	Parameters: 6
-	Flags: None
-*/
 function change(msg, func, str_name, cleanup_func, launch_after, end_before) {
   struct = level.skipto_settings[msg];
   if(isdefined(func)) {
@@ -381,28 +236,10 @@ function change(msg, func, str_name, cleanup_func, launch_after, end_before) {
   }
 }
 
-/*
-	Name: set_skipto_cleanup_func
-	Namespace: skipto
-	Checksum: 0xD3FAB905
-	Offset: 0x20F8
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function set_skipto_cleanup_func(func) {
   level.func_skipto_cleanup = func;
 }
 
-/*
-	Name: add_construct
-	Namespace: skipto
-	Checksum: 0x2FA11FAB
-	Offset: 0x2118
-	Size: 0x1E0
-	Parameters: 7
-	Flags: Linked
-*/
 function add_construct(msg, func, str_name, cleanup_func, launch_after, end_before, var_2bc8bbd9 = 0) {
   struct = spawnstruct();
   struct.name = msg;
@@ -427,45 +264,16 @@ function add_construct(msg, func, str_name, cleanup_func, launch_after, end_befo
   return struct;
 }
 
-/*
-	Name: level_has_skipto_points
-	Namespace: skipto
-	Checksum: 0x553F2964
-	Offset: 0x2300
-	Size: 0x22
-	Parameters: 0
-	Flags: None
-*/
 function level_has_skipto_points() {
   return level flag::get("level_has_skiptos");
 }
 
-/*
-	Name: parse_error
-	Namespace: skipto
-	Checksum: 0x66DB5C6C
-	Offset: 0x2330
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function parse_error(msg) {
   /# /
   #
   assertmsg(msg);
-  # /
-    # /
 }
 
-/*
-	Name: split_top_level_and_or
-	Namespace: skipto
-	Checksum: 0x46097ECF
-	Offset: 0x2368
-	Size: 0x2F2
-	Parameters: 1
-	Flags: Linked
-*/
 function split_top_level_and_or(instring) {
   op = "";
   ret = [];
@@ -486,9 +294,7 @@ function split_top_level_and_or(instring) {
     }
     if(paren == 0 && c == ("&")) {
       if(op == ("|")) {
-        /#
         parse_error("" + instring);
-        # /
       }
       op = "&";
       outindex++;
@@ -497,9 +303,7 @@ function split_top_level_and_or(instring) {
     }
     if(paren == 0 && c == ("|")) {
       if(op == ("&")) {
-        /#
         parse_error("" + instring);
-        # /
       }
       op = "|";
       outindex++;
@@ -509,9 +313,7 @@ function split_top_level_and_or(instring) {
     ret[outindex] = ret[outindex] + c;
   }
   if(paren != 0) {
-    /#
     parse_error("" + instring);
-    # /
   }
   for (j = 0; j <= outindex; j++) {
     ret[j] = remove_parens(ret[j]);
@@ -523,23 +325,12 @@ function split_top_level_and_or(instring) {
   return ret;
 }
 
-/*
-	Name: remove_parens
-	Namespace: skipto
-	Checksum: 0x8A5DA9D9
-	Offset: 0x2668
-	Size: 0x16E
-	Parameters: 1
-	Flags: Linked
-*/
 function remove_parens(instring) {
   c = getsubstr(instring, 0, 1);
   if(c == "(") {
     c2 = getsubstr(instring, instring.size - 1, instring.size);
     if(c2 != ")") {
-      /#
       parse_error("" + instring);
-      # /
     }
     s = getsubstr(instring, 1, instring.size - 1);
     return split_top_level_and_or(s);
@@ -553,15 +344,6 @@ function remove_parens(instring) {
   return instring;
 }
 
-/*
-	Name: parse_launch_after
-	Namespace: skipto
-	Checksum: 0x9C926C7
-	Offset: 0x27E0
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function parse_launch_after(launch_after) {
   retval = split_top_level_and_or(launch_after);
   if(isarray(retval)) {
@@ -570,15 +352,6 @@ function parse_launch_after(launch_after) {
   return "";
 }
 
-/*
-	Name: check_skipto_condition
-	Namespace: skipto
-	Checksum: 0xB6056E57
-	Offset: 0x2840
-	Size: 0x170
-	Parameters: 2
-	Flags: Linked
-*/
 function check_skipto_condition(conditions, adding) {
   if(!isarray(conditions)) {
     if(isdefined(level.skipto_settings[conditions]) && (isdefined(level.skipto_settings[conditions].objective_running) && level.skipto_settings[conditions].objective_running || isinarray(adding, conditions))) {
@@ -602,15 +375,6 @@ function check_skipto_condition(conditions, adding) {
   return true;
 }
 
-/*
-	Name: check_skipto_conditions
-	Namespace: skipto
-	Checksum: 0x9AE446BA
-	Offset: 0x29C0
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function check_skipto_conditions(objectives) {
   result = [];
   foreach(name in objectives) {
@@ -626,15 +390,6 @@ function check_skipto_conditions(objectives) {
   return result;
 }
 
-/*
-	Name: build_objective_tree
-	Namespace: skipto
-	Checksum: 0x75A36697
-	Offset: 0x2AE8
-	Size: 0x71C
-	Parameters: 0
-	Flags: Linked
-*/
 function build_objective_tree() {
   foreach(struct in level.skipto_settings) {
     if(isdefined(struct.public) && struct.public) {
@@ -692,15 +447,6 @@ function build_objective_tree() {
   }
 }
 
-/*
-	Name: get_next_skiptos
-	Namespace: skipto
-	Checksum: 0xEB6401EA
-	Offset: 0x3210
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function get_next_skiptos(skipto_name) {
   if(isdefined(level.skipto_settings[skipto_name])) {
     return level.skipto_settings[skipto_name].next;
@@ -708,15 +454,6 @@ function get_next_skiptos(skipto_name) {
   return level.skipto_settings["_default"].next;
 }
 
-/*
-	Name: skiptos_to_string
-	Namespace: skipto
-	Checksum: 0xF7EDFE17
-	Offset: 0x3270
-	Size: 0xD8
-	Parameters: 1
-	Flags: Linked
-*/
 function skiptos_to_string(skiptos) {
   skiptostr = "";
   first = 1;
@@ -730,15 +467,6 @@ function skiptos_to_string(skiptos) {
   return skiptostr;
 }
 
-/*
-	Name: get_current_skiptos
-	Namespace: skipto
-	Checksum: 0xF3ABB158
-	Offset: 0x3350
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function get_current_skiptos(var_533a04a6) {
   var_c61bfb3e = getdvarstring("skipto_jump");
   if(isdefined(var_c61bfb3e) && var_c61bfb3e.size) {
@@ -758,15 +486,6 @@ function get_current_skiptos(var_533a04a6) {
   return result;
 }
 
-/*
-	Name: function_52c50cb8
-	Namespace: skipto
-	Checksum: 0x89792AAB
-	Offset: 0x3480
-	Size: 0x4E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_52c50cb8() {
   if(!isdefined(level.skipto_point) || !isdefined(level.skipto_settings[level.skipto_point])) {
     return -1;
@@ -774,15 +493,6 @@ function function_52c50cb8() {
   return level.skipto_settings[level.skipto_point].code_index;
 }
 
-/*
-	Name: set_current_skipto
-	Namespace: skipto
-	Checksum: 0x4B2D3652
-	Offset: 0x34D8
-	Size: 0x9C
-	Parameters: 1
-	Flags: Linked
-*/
 function set_current_skipto(skipto) {
   if(skipto != "" && level.skipto_settings[skipto].var_2bc8bbd9 === 1) {
     setskiptos(tolower(skipto), 1);
@@ -791,28 +501,10 @@ function set_current_skipto(skipto) {
   }
 }
 
-/*
-	Name: set_current_skiptos
-	Namespace: skipto
-	Checksum: 0xB09513E
-	Offset: 0x3580
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function set_current_skiptos(skiptos) {
   set_current_skipto(skiptos_to_string(skiptos));
 }
 
-/*
-	Name: use_default_skipto
-	Namespace: skipto
-	Checksum: 0xB7F0B3FE
-	Offset: 0x35C0
-	Size: 0x3C
-	Parameters: 0
-	Flags: None
-*/
 function use_default_skipto() {
   if(!isdefined(level.default_skipto)) {
     level.default_skipto = "";
@@ -820,17 +512,7 @@ function use_default_skipto() {
   set_current_skipto(level.default_skipto);
 }
 
-/*
-	Name: indicate
-	Namespace: skipto
-	Checksum: 0x9A685C4F
-	Offset: 0x3608
-	Size: 0x1F4
-	Parameters: 2
-	Flags: Linked
-*/
 function indicate(skipto, index) {
-  /#
   if(isdefined(getdvarstring("")) && getdvarint("")) {
     return;
   }
@@ -854,18 +536,8 @@ function indicate(skipto, index) {
   hudelem.alpha = 0;
   wait(0.75);
   hudelem destroy();
-  # /
 }
 
-/*
-	Name: validate_skiptos
-	Namespace: skipto
-	Checksum: 0x27646B6C
-	Offset: 0x3808
-	Size: 0xF6
-	Parameters: 1
-	Flags: Linked
-*/
 function validate_skiptos(skiptos) {
   done = 0;
   while (isdefined(skiptos) && skiptos.size && !done) {
@@ -881,15 +553,6 @@ function validate_skiptos(skiptos) {
   return skiptos;
 }
 
-/*
-	Name: handle
-	Namespace: skipto
-	Checksum: 0x5351EEED
-	Offset: 0x3908
-	Size: 0x33C
-	Parameters: 0
-	Flags: Linked
-*/
 function handle() {
   build_objective_tree();
   clear_menu();
@@ -901,13 +564,11 @@ function handle() {
     setdvar("skipto_jump", "");
   }
   skiptos = validate_skiptos(skiptos);
-  /#
   assert(isdefined(level.first_frame) && level.first_frame, "");
-  # /
-    if(isdefined(level.skipto_point)) {
-      skiptos = [];
-      skiptos[0] = level.skipto_point;
-    }
+  if(isdefined(level.skipto_point)) {
+    skiptos = [];
+    skiptos[0] = level.skipto_point;
+  }
   level.skipto_current_objective = skiptos;
   skipto = skiptos[0];
   if(isdefined(skipto) && isdefined(level.skipto_settings[skipto])) {
@@ -942,22 +603,11 @@ function handle() {
     thread savegame::load();
   }
   thread devgui();
-  /#
   waittillframeend();
   thread menu();
   level thread dev_warning();
-  # /
 }
 
-/*
-	Name: create
-	Namespace: skipto
-	Checksum: 0xCB8396EC
-	Offset: 0x3C50
-	Size: 0x1CC
-	Parameters: 2
-	Flags: Linked
-*/
 function create(skipto, index) {
   alpha = 1;
   color = vectorscale((1, 1, 1), 0.9);
@@ -986,29 +636,11 @@ function create(skipto, index) {
   return hudelem;
 }
 
-/*
-	Name: clear_menu
-	Namespace: skipto
-	Checksum: 0xA5831CCC
-	Offset: 0x3E28
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function clear_menu() {
   rootclear = "devgui_remove \"Map/Skipto\" \n";
   adddebugcommand(rootclear);
 }
 
-/*
-	Name: devgui
-	Namespace: skipto
-	Checksum: 0x4556B1F4
-	Offset: 0x3E60
-	Size: 0x2B8
-	Parameters: 0
-	Flags: Linked
-*/
 function devgui() {
   rootmenu = "devgui_cmd \"Map/Skipto/";
   jumpmenu = rootmenu + ("Jump to/");
@@ -1036,17 +668,7 @@ function devgui() {
   }
 }
 
-/*
-	Name: menu
-	Namespace: skipto
-	Checksum: 0xA6DD03B9
-	Offset: 0x4120
-	Size: 0x160
-	Parameters: 0
-	Flags: Linked
-*/
 function menu() {
-  /#
   level flag::wait_till("");
   player = getplayers()[0];
   while (isdefined(player) && player buttonpressed("")) {
@@ -1062,18 +684,8 @@ function menu() {
     }
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: key_combo_pressed
-	Namespace: skipto
-	Checksum: 0xDF90C5C
-	Offset: 0x4288
-	Size: 0xBE
-	Parameters: 0
-	Flags: Linked
-*/
 function key_combo_pressed() {
   player = getplayers()[0];
   if(isdefined(player) && player buttonpressed("BUTTON_X") && player buttonpressed("DPAD_RIGHT") && player buttonpressed("BUTTON_LSHLDR") && player buttonpressed("BUTTON_RSHLDR")) {
@@ -1082,15 +694,6 @@ function key_combo_pressed() {
   return false;
 }
 
-/*
-	Name: watch_key_combo
-	Namespace: skipto
-	Checksum: 0x7F65FE6B
-	Offset: 0x4350
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_key_combo() {
   for (;;) {
     while (!key_combo_pressed()) {
@@ -1103,15 +706,6 @@ function watch_key_combo() {
   }
 }
 
-/*
-	Name: change_completion_menu
-	Namespace: skipto
-	Checksum: 0x426A6B09
-	Offset: 0x43C0
-	Size: 0x152
-	Parameters: 1
-	Flags: Linked
-*/
 function change_completion_menu(objectives) {
   rootclear = "devgui_remove \"Map/Skipto/Complete\" \n";
   adddebugcommand(rootclear);
@@ -1125,15 +719,6 @@ function change_completion_menu(objectives) {
   }
 }
 
-/*
-	Name: get_names
-	Namespace: skipto
-	Checksum: 0x993781FD
-	Offset: 0x4520
-	Size: 0xC8
-	Parameters: 0
-	Flags: Linked
-*/
 function get_names() {
   index = 0;
   names = [];
@@ -1145,15 +730,6 @@ function get_names() {
   return names;
 }
 
-/*
-	Name: display
-	Namespace: skipto
-	Checksum: 0xAF9CB378
-	Offset: 0x45F0
-	Size: 0x634
-	Parameters: 0
-	Flags: Linked
-*/
 function display() {
   if(level.skipto_settings.size <= 0) {
     return;
@@ -1228,15 +804,6 @@ function display() {
   }
 }
 
-/*
-	Name: list_menu
-	Namespace: skipto
-	Checksum: 0x2D199890
-	Offset: 0x4C30
-	Size: 0x78
-	Parameters: 0
-	Flags: Linked
-*/
 function list_menu() {
   hud_array = [];
   for (i = 0; i < 8; i++) {
@@ -1246,15 +813,6 @@ function list_menu() {
   return hud_array;
 }
 
-/*
-	Name: list_settext
-	Namespace: skipto
-	Checksum: 0x5A753745
-	Offset: 0x4CB0
-	Size: 0xBE
-	Parameters: 3
-	Flags: Linked
-*/
 function list_settext(hud_array, strings, num) {
   for (i = 0; i < hud_array.size; i++) {
     index = i + (num - 4);
@@ -1267,15 +825,6 @@ function list_settext(hud_array, strings, num) {
   }
 }
 
-/*
-	Name: display_cleanup
-	Namespace: skipto
-	Checksum: 0x7E2EACEB
-	Offset: 0x4D78
-	Size: 0x76
-	Parameters: 2
-	Flags: Linked
-*/
 function display_cleanup(elems, title) {
   title destroy();
   for (i = 0; i < elems.size; i++) {
@@ -1283,15 +832,6 @@ function display_cleanup(elems, title) {
   }
 }
 
-/*
-	Name: nogame
-	Namespace: skipto
-	Checksum: 0xC77B9C1C
-	Offset: 0x4DF8
-	Size: 0x96
-	Parameters: 0
-	Flags: Linked
-*/
 function nogame() {
   guys = getaiarray();
   guys = arraycombine(guys, getspawnerarray(), 1, 0);
@@ -1300,15 +840,6 @@ function nogame() {
   }
 }
 
-/*
-	Name: dev_warning
-	Namespace: skipto
-	Checksum: 0x7E14FFB2
-	Offset: 0x4E98
-	Size: 0x13C
-	Parameters: 0
-	Flags: Linked
-*/
 function dev_warning() {
   if(!is_current_dev()) {
     return;
@@ -1329,15 +860,6 @@ function dev_warning() {
   hudelem destroy();
 }
 
-/*
-	Name: is_dev
-	Namespace: skipto
-	Checksum: 0x3CF53C0D
-	Offset: 0x4FE0
-	Size: 0x60
-	Parameters: 1
-	Flags: Linked
-*/
 function is_dev(skipto) {
   substr = tolower(getsubstr(skipto, 0, 4));
   if(substr == "dev_") {
@@ -1346,28 +868,10 @@ function is_dev(skipto) {
   return false;
 }
 
-/*
-	Name: is_current_dev
-	Namespace: skipto
-	Checksum: 0x5E4F9D2C
-	Offset: 0x5048
-	Size: 0x1A
-	Parameters: 0
-	Flags: Linked
-*/
 function is_current_dev() {
   return is_dev(level.skipto_point);
 }
 
-/*
-	Name: is_no_game
-	Namespace: skipto
-	Checksum: 0xFC91AAD1
-	Offset: 0x5070
-	Size: 0x32
-	Parameters: 0
-	Flags: Linked
-*/
 function is_no_game() {
   if(!isdefined(level.skipto_point)) {
     return 0;
@@ -1375,15 +879,6 @@ function is_no_game() {
   return issubstr(level.skipto_point, "no_game");
 }
 
-/*
-	Name: do_no_game
-	Namespace: skipto
-	Checksum: 0x90F8584E
-	Offset: 0x50B0
-	Size: 0xA0
-	Parameters: 0
-	Flags: None
-*/
 function do_no_game() {
   if(!is_no_game()) {
     return;
@@ -1394,58 +889,22 @@ function do_no_game() {
   }
   level thread load::all_players_spawned();
   array::thread_all(getentarray("water", "targetname"), & load::water_think);
-  level waittill(# "eternity");
+  level waittill("eternity");
 }
 
-/*
-	Name: set_cleanup_func
-	Namespace: skipto
-	Checksum: 0xF1480212
-	Offset: 0x5158
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function set_cleanup_func(func) {
   level.func_skipto_cleanup = func;
 }
 
-/*
-	Name: default_skipto
-	Namespace: skipto
-	Checksum: 0xE0EC05B8
-	Offset: 0x5178
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function default_skipto(skipto) {
   level.default_skipto = skipto;
 }
 
-/*
-	Name: teleport
-	Namespace: skipto
-	Checksum: 0x8056E64E
-	Offset: 0x5198
-	Size: 0x4C
-	Parameters: 3
-	Flags: None
-*/
 function teleport(skipto_name, friendly_ai, coop_sort) {
   teleport_ai(skipto_name, friendly_ai);
   teleport_players(skipto_name, coop_sort);
 }
 
-/*
-	Name: teleport_ai
-	Namespace: skipto
-	Checksum: 0x7C0D512D
-	Offset: 0x51F0
-	Size: 0x2DA
-	Parameters: 2
-	Flags: Linked
-*/
 function teleport_ai(skipto_name, friendly_ai) {
   if(!isdefined(friendly_ai)) {
     if(isdefined(level.heroes)) {
@@ -1462,12 +921,10 @@ function teleport_ai(skipto_name, friendly_ai) {
   }
   friendly_ai = array::remove_dead(friendly_ai);
   a_skipto_structs = arraycopy(struct::get_array(skipto_name + "_ai", "targetname"));
-  /#
   assert(a_skipto_structs.size >= friendly_ai.size, ((((("" + skipto_name) + "") + friendly_ai.size) + "") + a_skipto_structs.size) + "");
-  # /
-    if(!a_skipto_structs.size) {
-      return;
-    }
+  if(!a_skipto_structs.size) {
+    return;
+  }
   foreach(ai in friendly_ai) {
     if(isdefined(ai)) {
       start_i = 0;
@@ -1487,15 +944,6 @@ function teleport_ai(skipto_name, friendly_ai) {
   }
 }
 
-/*
-	Name: teleport_single_ai
-	Namespace: skipto
-	Checksum: 0xEF432080
-	Offset: 0x54D8
-	Size: 0x104
-	Parameters: 1
-	Flags: Linked
-*/
 function teleport_single_ai(ai_skipto_spot) {
   if(isdefined(ai_skipto_spot.angles)) {
     self forceteleport(ai_skipto_spot.origin, ai_skipto_spot.angles);
@@ -1512,40 +960,20 @@ function teleport_single_ai(ai_skipto_spot) {
   self setgoal(ai_skipto_spot.origin);
 }
 
-/*
-	Name: teleport_players
-	Namespace: skipto
-	Checksum: 0x688C44ED
-	Offset: 0x55E8
-	Size: 0x186
-	Parameters: 2
-	Flags: Linked
-*/
 function teleport_players(skipto_name, coop_sort) {
   level flag::wait_till("all_players_spawned");
   skipto_spots = get_spots(skipto_name, coop_sort);
-  /#
   assert(skipto_spots.size >= level.players.size, "");
-  # /
-    for (i = 0; i < level.players.size; i++) {
-      var_ac126ac5 = skipto_spots[i].origin;
-      var_ac126ac5 = level.players[i] player::get_snapped_spot_origin(var_ac126ac5);
-      level.players[i] setorigin(var_ac126ac5);
-      if(isdefined(skipto_spots[i].angles)) {
-        level.players[i] util::delay_network_frames(2, "disconnect", & setplayerangles, skipto_spots[i].angles);
-      }
+  for (i = 0; i < level.players.size; i++) {
+    var_ac126ac5 = skipto_spots[i].origin;
+    var_ac126ac5 = level.players[i] player::get_snapped_spot_origin(var_ac126ac5);
+    level.players[i] setorigin(var_ac126ac5);
+    if(isdefined(skipto_spots[i].angles)) {
+      level.players[i] util::delay_network_frames(2, "disconnect", & setplayerangles, skipto_spots[i].angles);
     }
+  }
 }
 
-/*
-	Name: get_spots
-	Namespace: skipto
-	Checksum: 0x1F19CE7D
-	Offset: 0x5778
-	Size: 0x206
-	Parameters: 2
-	Flags: Linked
-*/
 function get_spots(skipto_name, coop_sort = 0) {
   skipto_spots = struct::get_array(skipto_name, "targetname");
   if(!skipto_spots.size) {
@@ -1555,32 +983,19 @@ function get_spots(skipto_name, coop_sort = 0) {
   if(coop_sort) {
     for (i = 0; i < skipto_spots.size; i++) {
       for (j = i; j < skipto_spots.size; j++) {
-        /#
         assert(isdefined(skipto_spots[j].script_int), ("" + skipto_spots[j].origin) + "");
-        # /
-          /#
         assert(isdefined(skipto_spots[i].script_int), ("" + skipto_spots[i].origin) + "");
-        # /
-          if(skipto_spots[j].script_int < skipto_spots[i].script_int) {
-            temp = skipto_spots[i];
-            skipto_spots[i] = skipto_spots[j];
-            skipto_spots[j] = temp;
-          }
+        if(skipto_spots[j].script_int < skipto_spots[i].script_int) {
+          temp = skipto_spots[i];
+          skipto_spots[i] = skipto_spots[j];
+          skipto_spots[j] = temp;
+        }
       }
     }
   }
   return skipto_spots;
 }
 
-/*
-	Name: convert_token
-	Namespace: skipto
-	Checksum: 0x4927B4C7
-	Offset: 0x5988
-	Size: 0x108
-	Parameters: 3
-	Flags: Linked
-*/
 function convert_token(str, fromtok, totok) {
   sarray = strtok(str, fromtok);
   ostr = "";
@@ -1595,15 +1010,6 @@ function convert_token(str, fromtok, totok) {
   return ostr;
 }
 
-/*
-	Name: load_mission_table
-	Namespace: skipto
-	Checksum: 0xBA87A2F0
-	Offset: 0x5A98
-	Size: 0x174
-	Parameters: 3
-	Flags: Linked
-*/
 function load_mission_table(table, levelname, sublevel = "") {
   index = 0;
   row = tablelookuprow(table, index);
@@ -1621,39 +1027,12 @@ function load_mission_table(table, levelname, sublevel = "") {
   }
 }
 
-/*
-	Name: load_mission_init
-	Namespace: skipto
-	Checksum: 0x99EC1590
-	Offset: 0x5C18
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function load_mission_init() {}
 
-/*
-	Name: on_finalize_initialization
-	Namespace: skipto
-	Checksum: 0x25941DCA
-	Offset: 0x5C28
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function on_finalize_initialization() {
   level flag::set("start_skiptos");
 }
 
-/*
-	Name: on_player_spawn
-	Namespace: skipto
-	Checksum: 0xADDE746E
-	Offset: 0x5C58
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawn() {
   if(getdvarint("ui_blocksaves") == 0 && isdefined(self savegame::get_player_data("savegame_score"))) {
     return;
@@ -1661,32 +1040,14 @@ function on_player_spawn() {
   globallogic_player::function_a5ac6877();
 }
 
-/*
-	Name: function_f2b024f8
-	Namespace: skipto
-	Checksum: 0xF87EB6E1
-	Offset: 0x5CB8
-	Size: 0x36
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f2b024f8() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
     self function_a5a105e8();
     wait(5);
   }
 }
 
-/*
-	Name: function_bc7b05ac
-	Namespace: skipto
-	Checksum: 0xA63A30C3
-	Offset: 0x5CF8
-	Size: 0xA4
-	Parameters: 4
-	Flags: Linked
-*/
 function function_bc7b05ac(var_87fe1234, var_a3b4af10, var_eece3936, var_5db7ef95) {
   var_a88ef0ad = 0;
   var_17986f3e = 0;
@@ -1700,15 +1061,6 @@ function function_bc7b05ac(var_87fe1234, var_a3b4af10, var_eece3936, var_5db7ef9
   self matchrecordsetcheckpointstat(var_a3b4af10, var_87fe1234, var_96f7be40);
 }
 
-/*
-	Name: function_84008d8d
-	Namespace: skipto
-	Checksum: 0xA0ACAE66
-	Offset: 0x5DA8
-	Size: 0x744
-	Parameters: 2
-	Flags: Linked
-*/
 function function_84008d8d(objectivename, player) {
   objectiveindex = level.skipto_settings[objectivename].code_index;
   player function_bc7b05ac("kills_total", objectiveindex, player.var_dc615b.kills, player.kills);
@@ -1759,15 +1111,6 @@ function function_84008d8d(objectivename, player) {
   }
 }
 
-/*
-	Name: function_723221dd
-	Namespace: skipto
-	Checksum: 0x2CF64545
-	Offset: 0x64F8
-	Size: 0x4D8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_723221dd(player) {
   if(!isdefined(player.var_dc615b)) {
     player.var_dc615b = spawnstruct();
@@ -1812,15 +1155,6 @@ function function_723221dd(player) {
   player.var_dc615b.boosts_total = int(var_4dbe4ef9);
 }
 
-/*
-	Name: on_player_connect
-	Namespace: skipto
-	Checksum: 0xE77C4DBF
-	Offset: 0x69D8
-	Size: 0x58C
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_connect() {
   if(util::is_safehouse()) {
     return;
@@ -1883,20 +1217,9 @@ function on_player_connect() {
   function_723221dd(self);
 }
 
-/*
-	Name: objective_completed
-	Namespace: skipto
-	Checksum: 0x6C067933
-	Offset: 0x6F70
-	Size: 0x29C
-	Parameters: 2
-	Flags: Linked
-*/
 function objective_completed(name, player) {
-  /#
   assert(isdefined(level.skipto_settings[name]), ("" + name) + "");
-  # /
-    setdvar("NPCDeathTracking_Save", 1);
+  setdvar("NPCDeathTracking_Save", 1);
   foreach(var_eff42720 in level.players) {
     if(var_eff42720 istestclient()) {
       continue;
@@ -1922,15 +1245,6 @@ function objective_completed(name, player) {
   }
 }
 
-/*
-	Name: function_52904bc9
-	Namespace: skipto
-	Checksum: 0xA525A40F
-	Offset: 0x7218
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_52904bc9() {
   foreach(trig in trigger::get_all()) {
     if(isdefined(trig.var_22c28736)) {
@@ -1939,57 +1253,37 @@ function private function_52904bc9() {
   }
 }
 
-/*
-	Name: function_87fe8621
-	Namespace: skipto
-	Checksum: 0xFC459AD6
-	Offset: 0x72C8
-	Size: 0x272
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_87fe8621() {
-  self endon(# "death");
+  self endon("death");
   level flag::wait_till("all_players_spawned");
   var_717810f = function_659bb22b(self.var_22c28736);
-  /#
   assert(var_717810f.size >= 3, "");
-  # /
-    while (true) {
-      self waittill(# "trigger", lead_player);
-      if(isplayer(lead_player)) {
-        self notify(# "hash_c0b9931e");
-        foreach(player in level.players) {
-          if(player != lead_player) {
-            if(player.sessionstate === "playing") {
-              n_dist = (isdefined(self.var_3367c99d) ? self.var_3367c99d * self.var_3367c99d : 2250000);
-              n_player_dist = distancesquared(player.origin, lead_player.origin);
-              if(n_player_dist > n_dist) {
-                if(!player istouching(self)) {
-                  player thread function_61843b91(var_717810f, n_player_dist);
-                }
+  while (true) {
+    self waittill("trigger", lead_player);
+    if(isplayer(lead_player)) {
+      self notify("hash_c0b9931e");
+      foreach(player in level.players) {
+        if(player != lead_player) {
+          if(player.sessionstate === "playing") {
+            n_dist = (isdefined(self.var_3367c99d) ? self.var_3367c99d * self.var_3367c99d : 2250000);
+            n_player_dist = distancesquared(player.origin, lead_player.origin);
+            if(n_player_dist > n_dist) {
+              if(!player istouching(self)) {
+                player thread function_61843b91(var_717810f, n_player_dist);
               }
-              continue;
             }
-            if(player.sessionstate === "spectator" && (isdefined(player.initialloadoutgiven) && player.initialloadoutgiven)) {
-              player thread function_61843b91(var_717810f);
-            }
+            continue;
+          }
+          if(player.sessionstate === "spectator" && (isdefined(player.initialloadoutgiven) && player.initialloadoutgiven)) {
+            player thread function_61843b91(var_717810f);
           }
         }
-        break;
       }
+      break;
     }
+  }
 }
 
-/*
-	Name: function_659bb22b
-	Namespace: skipto
-	Checksum: 0x3E12E959
-	Offset: 0x7548
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function function_659bb22b(var_3a36166b) {
   a_ret = [];
   var_717810f = spawnlogic::get_all_spawn_points(1);
@@ -2006,23 +1300,14 @@ function function_659bb22b(var_3a36166b) {
   return a_ret;
 }
 
-/*
-	Name: function_61843b91
-	Namespace: skipto
-	Checksum: 0xAF9F131A
-	Offset: 0x7678
-	Size: 0x3D2
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private function_61843b91(var_717810f, n_player_dist) {
-  self endon(# "death");
+  self endon("death");
   if(self isinvehicle()) {
     vh_occupied = self getvehicleoccupied();
     n_seat = vh_occupied getoccupantseat(self);
     vh_occupied usevehicle(self, n_seat);
     if(isdefined(self.hijacked_vehicle_entity)) {
-      self waittill(# "transition_done");
+      self waittill("transition_done");
     }
   }
   if(isdefined(self.hijacked_vehicle_entity)) {
@@ -2032,7 +1317,7 @@ function private function_61843b91(var_717810f, n_player_dist) {
     self thread[[level.spawnplayer]]();
     waittillframeend();
   } else if(self laststand::player_is_in_laststand()) {
-    self notify(# "auto_revive");
+    self notify("auto_revive");
   }
   if(self isplayinganimscripted()) {
     self stopanimscripted();
@@ -2072,17 +1357,7 @@ function private function_61843b91(var_717810f, n_player_dist) {
   self.b_teleport_invulnerability = undefined;
 }
 
-/*
-	Name: show_level_objectives
-	Namespace: skipto
-	Checksum: 0x4C8F1864
-	Offset: 0x7A58
-	Size: 0x12C
-	Parameters: 1
-	Flags: Linked
-*/
 function show_level_objectives(objectives) {
-  /#
   setdvar("", 1);
   index = 0;
   foreach(name in objectives) {
@@ -2093,18 +1368,8 @@ function show_level_objectives(objectives) {
     }
   }
   setdvar("", 0);
-  # /
 }
 
-/*
-	Name: set_level_objective
-	Namespace: skipto
-	Checksum: 0x9C3965C4
-	Offset: 0x7B90
-	Size: 0x2FC
-	Parameters: 3
-	Flags: Linked
-*/
 function set_level_objective(objectives, starting, player) {
   clear_recursion();
   foreach(name in objectives) {
@@ -2117,15 +1382,13 @@ function set_level_objective(objectives, starting, player) {
       thread[[level.func_skipto_cleanup]](name);
     }
   }
-  /#
   thread show_level_objectives(objectives);
-  # /
-    start_objective_logic(objectives, starting);
+  start_objective_logic(objectives, starting);
   level.skipto_point = level.skipto_current_objective[0];
   if(!(isdefined(level.level_ending) && level.level_ending)) {
     set_current_skiptos(level.skipto_current_objective);
   }
-  level notify(# "objective_changed", level.skipto_current_objective);
+  level notify("objective_changed", level.skipto_current_objective);
   if(isdefined(level.var_26b4fb80)) {
     [
       [level.var_26b4fb80]
@@ -2142,19 +1405,10 @@ function set_level_objective(objectives, starting, player) {
   level thread update_spawn_points(starting);
 }
 
-/*
-	Name: update_spawn_points
-	Namespace: skipto
-	Checksum: 0x6BBE60D6
-	Offset: 0x7E98
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function update_spawn_points(starting) {
-  level notify(# "update_spawn_points");
-  level endon(# "update_spawn_points");
-  level endon(# "objective_changed");
+  level notify("update_spawn_points");
+  level endon("update_spawn_points");
+  level endon("objective_changed");
   level flag::wait_till("first_player_spawned");
   spawnlogic::clear_spawn_points();
   spawnlogic::add_spawn_points("allies", "cp_coop_spawn");
@@ -2162,15 +1416,6 @@ function update_spawn_points(starting) {
   spawning::updateallspawnpoints();
 }
 
-/*
-	Name: start_objective_logic
-	Namespace: skipto
-	Checksum: 0x4B808A76
-	Offset: 0x7F50
-	Size: 0x392
-	Parameters: 2
-	Flags: Linked
-*/
 function start_objective_logic(name, starting) {
   if(isarray(name)) {
     foreach(element in name) {
@@ -2208,30 +1453,12 @@ function start_objective_logic(name, starting) {
   }
 }
 
-/*
-	Name: clear_recursion
-	Namespace: skipto
-	Checksum: 0x2700A7FC
-	Offset: 0x82F0
-	Size: 0x86
-	Parameters: 0
-	Flags: Linked
-*/
 function clear_recursion() {
   foreach(skipto in level.skipto_settings) {
     skipto.cleanup_recursion = 0;
   }
 }
 
-/*
-	Name: stop_objective_logic
-	Namespace: skipto
-	Checksum: 0xF07E784E
-	Offset: 0x8380
-	Size: 0x404
-	Parameters: 4
-	Flags: Linked
-*/
 function stop_objective_logic(name, starting, direct, player) {
   if(isarray(name)) {
     foreach(element in name) {
@@ -2273,28 +1500,10 @@ function stop_objective_logic(name, starting, direct, player) {
   }
 }
 
-/*
-	Name: filter_spawnpoints
-	Namespace: skipto
-	Checksum: 0xB6DE3033
-	Offset: 0x8790
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function filter_spawnpoints(spawnpoints) {
   return filter_player_spawnpoints(undefined, spawnpoints);
 }
 
-/*
-	Name: filter_player_spawnpoints
-	Namespace: skipto
-	Checksum: 0xD1C03E7B
-	Offset: 0x87C0
-	Size: 0x424
-	Parameters: 3
-	Flags: Linked
-*/
 function filter_player_spawnpoints(player, spawnpoints, str_skipto) {
   objectives = (isdefined(str_skipto) ? str_skipto : level.skipto_current_objective);
   if(!isdefined(objectives) || !objectives.size) {
@@ -2354,15 +1563,6 @@ function filter_player_spawnpoints(player, spawnpoints, str_skipto) {
   return spawnpoints;
 }
 
-/*
-	Name: delete_start_spawns
-	Namespace: skipto
-	Checksum: 0xBA3A9EB1
-	Offset: 0x8BF0
-	Size: 0x102
-	Parameters: 1
-	Flags: None
-*/
 function delete_start_spawns(str_skipto) {
   a_spawns = spawnlogic::get_spawnpoint_array("cp_coop_spawn");
   foreach(spawn_point in a_spawns) {
@@ -2376,36 +1576,16 @@ function delete_start_spawns(str_skipto) {
   }
 }
 
-/*
-	Name: function_b0e512a3
-	Namespace: skipto
-	Checksum: 0xF2DB3205
-	Offset: 0x8D00
-	Size: 0x84
-	Parameters: 0
-	Flags: None
-*/
 function function_b0e512a3() {
   level.var_696b1f33 = 1;
   str_next_map = function_c7f783fe();
   if(should_skip_safehouse()) {
     switchmap_preload(str_next_map);
   } else {
-    /#
     assert(0, "");
-    # /
   }
 }
 
-/*
-	Name: function_2711019f
-	Namespace: skipto
-	Checksum: 0xBB640EEC
-	Offset: 0x8D90
-	Size: 0x62
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2711019f() {
   while (true) {
     var_14bd4dfe = getlobbyclientcount();
@@ -2417,18 +1597,9 @@ function function_2711019f() {
   }
 }
 
-/*
-	Name: function_f380969b
-	Namespace: skipto
-	Checksum: 0xDCF51043
-	Offset: 0x8E00
-	Size: 0x29C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f380969b() {
-  self endon(# "disconnect");
-  self endon(# "hash_33722592");
+  self endon("disconnect");
+  self endon("hash_33722592");
   var_67bda5a5 = self getdstat("currentRankXP");
   var_72c4032 = self rank::getrankxpstat();
   var_9e54448b = self getdstat("hasSeenMaxLevelNotification");
@@ -2438,15 +1609,15 @@ function function_f380969b() {
   } else {
     self.var_a4c14d95 = self openluimenu("RewardsOverlayCP");
   }
-  self waittill(# "menuresponse", menu, response);
+  self waittill("menuresponse", menu, response);
   while (response != "closed") {
-    self waittill(# "menuresponse", menu, response);
+    self waittill("menuresponse", menu, response);
   }
   foreach(player in getplayers()) {
     if(player == self) {
       continue;
     }
-    player notify(# "hash_33722592");
+    player notify("hash_33722592");
     player function_33722592();
   }
   self closeluimenu(self.var_a4c14d95);
@@ -2458,15 +1629,6 @@ function function_f380969b() {
   level.var_897126b5++;
 }
 
-/*
-	Name: function_c7f783fe
-	Namespace: skipto
-	Checksum: 0xC6EB198B
-	Offset: 0x90A8
-	Size: 0xDA
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c7f783fe() {
   str_next_map = getnextmap();
   if(isdefined(str_next_map) && sessionmodeiscampaignzombiesgame()) {
@@ -2480,15 +1642,6 @@ function function_c7f783fe() {
   return str_next_map;
 }
 
-/*
-	Name: function_ab286e9e
-	Namespace: skipto
-	Checksum: 0x514F4D9
-	Offset: 0x9190
-	Size: 0x10C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_ab286e9e(stat_name) {
   var_8edaf582 = self function_df7ef426(stat_name);
   var_571a5472 = self savegame::get_player_data("savegame_" + stat_name);
@@ -2498,24 +1651,11 @@ function function_ab286e9e(stat_name) {
   self setdstat("PlayerStatsByMap", getrootmapname(), "currentStats", stat_name, var_aa6cf955);
 }
 
-/*
-	Name: function_61688376
-	Namespace: skipto
-	Checksum: 0x9CED6753
-	Offset: 0x92A8
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_61688376() {
-  self endon(# "disconnect");
-  /#
+  self endon("disconnect");
   assert(isdefined(level.var_a7c3eb6f));
-  # /
-    /#
   assert(level flag::exists(""));
-  # /
-    self function_a5a105e8();
+  self function_a5a105e8();
   util::waittill_notify_or_timeout("stats_changed", 2);
   level.var_a7c3eb6f++;
   var_7fba07d2 = getlobbyclientcount();
@@ -2524,80 +1664,43 @@ function function_61688376() {
   }
 }
 
-/*
-	Name: function_88bd85cc
-	Namespace: skipto
-	Checksum: 0x8F684282
-	Offset: 0x9398
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_88bd85cc() {
-  /#
   assert(isdefined(self));
-  # /
-    /#
   assert(isplayer(self));
-  # /
-    if(isdefined(self.var_40ac72fa)) {
-      self closeluimenu(self.var_40ac72fa);
-      self freezecontrols(0);
-      if(self ishost()) {
-        if(savegame::function_f6ab8f28()) {
-          mapindex = getmaporder();
-          self setdstat("highestMapReached", mapindex + 1);
-        }
+  if(isdefined(self.var_40ac72fa)) {
+    self closeluimenu(self.var_40ac72fa);
+    self freezecontrols(0);
+    if(self ishost()) {
+      if(savegame::function_f6ab8f28()) {
+        mapindex = getmaporder();
+        self setdstat("highestMapReached", mapindex + 1);
       }
     }
+  }
   level flag::set("credits_done");
 }
 
-/*
-	Name: function_33722592
-	Namespace: skipto
-	Checksum: 0x5C044B6B
-	Offset: 0x94C0
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function function_33722592() {
-  /#
   assert(isdefined(self));
-  # /
-    /#
   assert(isplayer(self));
-  # /
-    if(isdefined(self.var_a4c14d95)) {
-      self closeluimenu(self.var_a4c14d95);
-      self luinotifyevent( & "close_cpaar", 0);
-      self thread lui::screen_fade_out(0.1, "black");
-      next_map = function_c7f783fe();
-      if(isdefined(next_map)) {
-        self globallogic_player::function_4cef9872(next_map);
-      }
-      self.var_a4c14d95 = undefined;
-      level.var_897126b5++;
+  if(isdefined(self.var_a4c14d95)) {
+    self closeluimenu(self.var_a4c14d95);
+    self luinotifyevent(&"close_cpaar", 0);
+    self thread lui::screen_fade_out(0.1, "black");
+    next_map = function_c7f783fe();
+    if(isdefined(next_map)) {
+      self globallogic_player::function_4cef9872(next_map);
     }
+    self.var_a4c14d95 = undefined;
+    level.var_897126b5++;
+  }
 }
 
-/*
-	Name: level_completed
-	Namespace: skipto
-	Checksum: 0x6CA61F8B
-	Offset: 0x95D0
-	Size: 0x196C
-	Parameters: 2
-	Flags: Linked
-*/
 function level_completed(skipto, starting) {
-  /#
   level thread function_27c2dde4();
-  # /
-    if(isdefined(level.level_ending) && level.level_ending) {
-      return;
-    }
+  if(isdefined(level.level_ending) && level.level_ending) {
+    return;
+  }
   level.level_ending = 1;
   foreach(var_63af5576 in level.players) {
     bb::logobjectivestatuschange("_level", var_63af5576, "complete");
@@ -2621,12 +1724,10 @@ function level_completed(skipto, starting) {
     str_next_map = function_c7f783fe();
   }
   if(isdefined(str_next_map)) {
-    /#
     if(skipto == "" && starting) {
       wait(4);
     }
-    # /
-      world.next_map = str_next_map;
+    world.next_map = str_next_map;
     if(!isdefined(world.highest_map_reached) || getmaporder(str_next_map) > getmaporder(world.highest_map_reached) && savegame::function_f6ab8f28()) {
       world.highest_map_reached = str_next_map;
       mapindex = getmaporder(str_next_map);
@@ -2772,7 +1873,7 @@ function level_completed(skipto, starting) {
       e_player function_178f7e85(getrootmapname(), level.gameskilllowest);
       achievements::function_733a6065(e_player, getrootmapname(), level.gameskilllowest, sessionmodeiscampaignzombiesgame());
       if(level.gameskilllowest >= 2) {
-        e_player notify(# "hash_ee109657", level.savename);
+        e_player notify("hash_ee109657", level.savename);
         e_player addplayerstat("mission_diff_" + getsubstr(getmissionname(), 0, 3), 1);
       }
       e_player function_95093ed5();
@@ -2841,7 +1942,7 @@ function level_completed(skipto, starting) {
       switchmap_switch();
       uploadstats();
     } else {
-      level notify(# "sndstopcreditsmusic");
+      level notify("sndstopcreditsmusic");
       music::setmusicstate("death");
       wait(1);
       if(sessionmodeiscampaignzombiesgame()) {
@@ -2858,34 +1959,16 @@ function level_completed(skipto, starting) {
   }
 }
 
-/*
-	Name: function_3d23f76a
-	Namespace: skipto
-	Checksum: 0x9A7A2330
-	Offset: 0xAF48
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3d23f76a() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
     self freezecontrols(1);
     wait(0.05);
   }
 }
 
-/*
-	Name: function_3fbee503
-	Namespace: skipto
-	Checksum: 0x35EBDAC0
-	Offset: 0xAF88
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3fbee503() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   level.var_897126b5++;
   self util::set_low_ready(1);
   self thread function_3d23f76a();
@@ -2894,22 +1977,13 @@ function function_3fbee503() {
   self closeluimenu(var_d21ab194);
 }
 
-/*
-	Name: function_4aa085d7
-	Namespace: skipto
-	Checksum: 0xA9660B8B
-	Offset: 0xB040
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function function_4aa085d7() {
-  self endon(# "disconnect");
-  self endon(# "hash_88bd85cc");
+  self endon("disconnect");
+  self endon("hash_88bd85cc");
   if(isdefined(self)) {
     self.var_40ac72fa = self openluimenu("Credit_Fullscreen", 1);
     self freezecontrols(1);
-    self waittill(# "menuresponse", menu, response);
+    self waittill("menuresponse", menu, response);
     self closeluimenu(self.var_40ac72fa);
     self freezecontrols(0);
     self.var_40ac72fa = undefined;
@@ -2917,24 +1991,15 @@ function function_4aa085d7() {
       if(player == self) {
         continue;
       }
-      player notify(# "hash_88bd85cc");
+      player notify("hash_88bd85cc");
       player function_88bd85cc();
     }
     level flag::set("credits_done");
   }
 }
 
-/*
-	Name: sndcreditsmusic
-	Namespace: skipto
-	Checksum: 0x3F576D67
-	Offset: 0xB1E0
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function sndcreditsmusic() {
-  level endon(# "sndstopcreditsmusic");
+  level endon("sndstopcreditsmusic");
   wait(59);
   music::setmusicstate("unstoppable_credits");
   wait(148);
@@ -2943,46 +2008,17 @@ function sndcreditsmusic() {
   music::setmusicstate("credits_song_loop");
 }
 
-/*
-	Name: function_cb7247d8
-	Namespace: skipto
-	Checksum: 0x6B704031
-	Offset: 0xB258
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function function_cb7247d8(next_level_name) {
   return !ismapsublevel(next_level_name);
 }
 
-/*
-	Name: function_df7ef426
-	Namespace: skipto
-	Checksum: 0x902EC35
-	Offset: 0xB288
-	Size: 0xFA
-	Parameters: 2
-	Flags: Linked
-*/
 function function_df7ef426(stat_name, map_name = getrootmapname()) {
   var_c10ccfdf = self getdstat("PlayerStatsByMap", map_name, "currentStats", stat_name);
   var_9948d116 = self getdstat("PlayerStatsList", stat_name, "statValue");
-  /#
   assert(var_c10ccfdf <= var_9948d116);
-  # /
-    return int(abs(var_9948d116 - var_c10ccfdf));
+  return int(abs(var_9948d116 - var_c10ccfdf));
 }
 
-/*
-	Name: function_95093ed5
-	Namespace: skipto
-	Checksum: 0xD4D3D9FA
-	Offset: 0xB390
-	Size: 0x39C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_95093ed5(map_name = getrootmapname()) {
   var_32c2816f = [];
   array::add(var_32c2816f, "KILLS");
@@ -2991,10 +2027,8 @@ function function_95093ed5(map_name = getrootmapname()) {
   array::add(var_32c2816f, "REVIVES");
   foreach(var_8dca536c in var_32c2816f) {
     var_43ea6c98 = function_df7ef426(var_8dca536c, map_name);
-    /#
     assert(var_43ea6c98 >= 0);
-    # /
-      var_c2a4cf78 = self getdstat("PlayerStatsByMap", map_name, "highestStats", var_8dca536c);
+    var_c2a4cf78 = self getdstat("PlayerStatsByMap", map_name, "highestStats", var_8dca536c);
     if(var_43ea6c98 > var_c2a4cf78) {
       self setdstat("PlayerStatsByMap", map_name, "highestStats", var_8dca536c, var_43ea6c98);
     }
@@ -3016,15 +2050,6 @@ function function_95093ed5(map_name = getrootmapname()) {
   }
 }
 
-/*
-	Name: function_8295f89d
-	Namespace: skipto
-	Checksum: 0x354B878D
-	Offset: 0xB738
-	Size: 0x138
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8295f89d(difficulty) {
   if(self getdstat("PlayerStatsByMap", getrootmapname(), "completedDifficulties", difficulty) == 1) {
     return false;
@@ -3041,15 +2066,6 @@ function function_8295f89d(difficulty) {
   return true;
 }
 
-/*
-	Name: function_178f7e85
-	Namespace: skipto
-	Checksum: 0x41890999
-	Offset: 0xB878
-	Size: 0x20E
-	Parameters: 2
-	Flags: Linked
-*/
 function function_178f7e85(var_deb20b04, difficulty) {
   if(self getdstat("PlayerStatsByMap", var_deb20b04, "receivedXPForDifficulty", difficulty) != 0) {
     return;
@@ -3086,15 +2102,6 @@ function function_178f7e85(var_deb20b04, difficulty) {
   }
 }
 
-/*
-	Name: function_a5a105e8
-	Namespace: skipto
-	Checksum: 0x9EE42BB2
-	Offset: 0xBA90
-	Size: 0x25E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a5a105e8() {
   playerlist = getplayers();
   for (i = 0; i < playerlist.size; i++) {
@@ -3113,15 +2120,6 @@ function function_a5a105e8() {
   }
 }
 
-/*
-	Name: function_54fdc879
-	Namespace: skipto
-	Checksum: 0x4E640D9
-	Offset: 0xBCF8
-	Size: 0x17A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_54fdc879() {
   var_cfc9cbb7 = function_23eda99c();
   foreach(player in level.players) {
@@ -3138,15 +2136,6 @@ function function_54fdc879() {
   }
 }
 
-/*
-	Name: standard_objective_init
-	Namespace: skipto
-	Checksum: 0x7A44328D
-	Offset: 0xBE80
-	Size: 0x86
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private standard_objective_init(skipto, starting) {
   if(isdefined(level.bzmstartobjectivecallback)) {
     [
@@ -3156,31 +2145,13 @@ function private standard_objective_init(skipto, starting) {
   level flag::set(skipto);
   level thread watch_completion(skipto);
   level.current_skipto = skipto;
-  level notify(# "update_billboard");
+  level notify("update_billboard");
 }
 
-/*
-	Name: set_level_start_flag
-	Namespace: skipto
-	Checksum: 0x60DF9955
-	Offset: 0xBF10
-	Size: 0x24
-	Parameters: 1
-	Flags: None
-*/
 function set_level_start_flag(str_flag) {
   util::set_level_start_flag(str_flag);
 }
 
-/*
-	Name: standard_objective_done
-	Namespace: skipto
-	Checksum: 0xBF3327C7
-	Offset: 0xBF40
-	Size: 0x29A
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private standard_objective_done(skipto, starting, direct, player) {
   if(isdefined(level.bzmwaitforobjectivecompletioncallback)) {
     [
@@ -3190,9 +2161,7 @@ function private standard_objective_done(skipto, starting, direct, player) {
   level flag::clear(skipto);
   level flag::set(skipto + "_completed");
   if(!isdefined(level.skipto_settings[skipto])) {
-    /#
     assertmsg("" + skipto);
-    # /
   }
   if(!(isdefined(level.preserve_script_objective_ents) && level.preserve_script_objective_ents)) {
     waittillframeend();
@@ -3206,7 +2175,7 @@ function private standard_objective_done(skipto, starting, direct, player) {
       }
       if(isvehicle(entity)) {
         entity.delete_on_death = 1;
-        entity notify(# "death");
+        entity notify("death");
         if(!isalive(entity)) {
           entity delete();
         }
@@ -3225,15 +2194,6 @@ function private standard_objective_done(skipto, starting, direct, player) {
   }
 }
 
-/*
-	Name: watch_completion
-	Namespace: skipto
-	Checksum: 0xF10A5D87
-	Offset: 0xC1E8
-	Size: 0x102
-	Parameters: 1
-	Flags: Linked
-*/
 function watch_completion(name) {
   first_trigger = undefined;
   objective_triggers = getentarray("objective", "targetname");
@@ -3247,15 +2207,6 @@ function watch_completion(name) {
   }
 }
 
-/*
-	Name: all_players_touching
-	Namespace: skipto
-	Checksum: 0xAC583600
-	Offset: 0xC2F8
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function all_players_touching(trigger) {
   foreach(player in getplayers()) {
     if(!player istouching(trigger)) {
@@ -3265,25 +2216,16 @@ function all_players_touching(trigger) {
   return true;
 }
 
-/*
-	Name: trigger_wait_completion
-	Namespace: skipto
-	Checksum: 0xC5A7A133
-	Offset: 0xC3B0
-	Size: 0x170
-	Parameters: 2
-	Flags: Linked
-*/
 function trigger_wait_completion(trigger, name) {
-  trigger endon(# "death");
+  trigger endon("death");
   level endon(name + "_terminate");
   if(trigger.script_noteworthy === "allplayers") {
     do {
-      trigger waittill(# "trigger", player);
+      trigger waittill("trigger", player);
     }
     while (!all_players_touching(trigger));
   } else {
-    trigger waittill(# "trigger", player);
+    trigger waittill("trigger", player);
     if(trigger.script_noteworthy === "warpplayers") {
       foreach(other_player in level.players) {
         if(other_player != player) {
@@ -3296,30 +2238,12 @@ function trigger_wait_completion(trigger, name) {
   return player;
 }
 
-/*
-	Name: trigger_watch_completion
-	Namespace: skipto
-	Checksum: 0x6782AF96
-	Offset: 0xC528
-	Size: 0x56
-	Parameters: 2
-	Flags: Linked
-*/
 function trigger_watch_completion(trigger, name) {
-  self endon(# "trigger_watch_completion");
+  self endon("trigger_watch_completion");
   player = trigger_wait_completion(trigger, name);
-  self notify(# "trigger_watch_completion");
+  self notify("trigger_watch_completion");
 }
 
-/*
-	Name: catch_up_teleport
-	Namespace: skipto
-	Checksum: 0xA7318D0
-	Offset: 0xC588
-	Size: 0xA2
-	Parameters: 0
-	Flags: Linked
-*/
 function catch_up_teleport() {
   self.suicide = 0;
   self.teamkilled = 0;
@@ -3328,23 +2252,14 @@ function catch_up_teleport() {
     timepassed = (gettime() - self.respawntimerstarttime) / 1000;
   }
   if(self laststand::player_is_in_laststand()) {
-    self notify(# "auto_revive");
+    self notify("auto_revive");
     waittillframeend();
   }
-  self notify(# "death");
+  self notify("death");
   self thread[[level.spawnclient]](timepassed);
   self.respawntimerstarttime = undefined;
 }
 
-/*
-	Name: entity_mover_main
-	Namespace: skipto
-	Checksum: 0x7B557F5D
-	Offset: 0xC638
-	Size: 0x248
-	Parameters: 0
-	Flags: Linked
-*/
 function entity_mover_main() {
   entity_movers = struct::get_array("entity_objective_loc");
   foreach(mover in entity_movers) {
@@ -3361,20 +2276,11 @@ function entity_mover_main() {
     }
   }
   for (;;) {
-    level waittill(# "objective_changed", objectives);
+    level waittill("objective_changed", objectives);
     entity_mover_use_objectives(objectives);
   }
 }
 
-/*
-	Name: entity_mover_use_objectives
-	Namespace: skipto
-	Checksum: 0x38D1310F
-	Offset: 0xC888
-	Size: 0x110
-	Parameters: 1
-	Flags: Linked
-*/
 function entity_mover_use_objectives(objectives) {
   foreach(objective in objectives) {
     foreach(mover in level.skipto_settings[objective].ent_movers) {
@@ -3383,15 +2289,6 @@ function entity_mover_use_objectives(objectives) {
   }
 }
 
-/*
-	Name: apply_mover
-	Namespace: skipto
-	Checksum: 0x28DFC60A
-	Offset: 0xC9A0
-	Size: 0x4E2
-	Parameters: 1
-	Flags: Linked
-*/
 function apply_mover(mover) {
   targets = getentarray(mover.target, "targetname");
   if(isdefined(mover.script_noteworthy) && mover.script_noteworthy == "relative") {
@@ -3414,9 +2311,7 @@ function apply_mover(mover) {
         speed = 0.05;
         continue;
       }
-      /#
       assert(start_mover == target.last_mover, "");
-      # /
     }
     if(!isdefined(start_mover) || start_mover == mover) {
       return;
@@ -3429,7 +2324,7 @@ function apply_mover(mover) {
     util::wait_network_frame();
     script_mover moveto(mover.origin, speed);
     script_mover rotateto(mover.angles, speed);
-    script_mover waittill(# "movedone");
+    script_mover waittill("movedone");
     foreach(target in targets) {
       target.last_mover = mover;
       target unlink();
@@ -3445,69 +2340,23 @@ function apply_mover(mover) {
   }
 }
 
-/*
-	Name: set_skip_safehouse
-	Namespace: skipto
-	Checksum: 0xE4066B0E
-	Offset: 0xCE90
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function set_skip_safehouse() {
   level flag::set("skip_safehouse_after_map");
 }
 
-/*
-	Name: should_skip_safehouse
-	Namespace: skipto
-	Checksum: 0x9234ABC6
-	Offset: 0xCEC0
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function should_skip_safehouse() {
   return level flag::get("skip_safehouse_after_map") || sessionmodeiscampaignzombiesgame();
 }
 
-/*
-	Name: set_final_level
-	Namespace: skipto
-	Checksum: 0xD3F81F36
-	Offset: 0xCF08
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function set_final_level() {
   level flag::set("final_level");
 }
 
-/*
-	Name: is_final_level
-	Namespace: skipto
-	Checksum: 0x1A5026A8
-	Offset: 0xCF38
-	Size: 0x22
-	Parameters: 0
-	Flags: Linked
-*/
 function is_final_level() {
   return level flag::get("final_level");
 }
 
-/*
-	Name: function_27c2dde4
-	Namespace: skipto
-	Checksum: 0xCE9AA465
-	Offset: 0xCF68
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_27c2dde4() {
-  /#
   if(isdefined(level.scriptbundles) && isdefined(level.scriptbundles[""])) {
     foreach(scene in level.scriptbundles[""]) {
       if(!isdefined(scene.used)) {
@@ -3515,21 +2364,10 @@ function function_27c2dde4() {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: update_billboard
-	Namespace: skipto
-	Checksum: 0x41883B8
-	Offset: 0xD058
-	Size: 0x244
-	Parameters: 0
-	Flags: Linked
-*/
 function update_billboard() {
-  /#
-  self endon(# "death");
+  self endon("death");
   while (true) {
     if(isdefined(level.billboards) && isdefined(level.billboards[level.current_skipto])) {
       event_name = level.billboards[level.current_skipto][0];
@@ -3540,37 +2378,20 @@ function update_billboard() {
         level.billboard_event_size = level.billboards[level.current_skipto][2];
         level.billboard_event_state = level.billboards[level.current_skipto][3];
         foreach(player in level.players) {
-          player notify(# "update_billboard");
+          player notify("update_billboard");
         }
       } else {
-        /#
         assert(level.billboard_event_type == level.billboards[level.current_skipto][1], "");
-        # /
-          /#
         assert(level.billboard_event_size == level.billboards[level.current_skipto][2], "");
-        # /
-          /#
         assert(level.billboard_event_state == level.billboards[level.current_skipto][3], "");
-        # /
       }
     }
-    level waittill(# "update_billboard");
+    level waittill("update_billboard");
   }
-  # /
 }
 
-/*
-	Name: update_player_billboard
-	Namespace: skipto
-	Checksum: 0xA6E94386
-	Offset: 0xD2A8
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function update_player_billboard() {
-  /#
-  self endon(# "death");
+  self endon("death");
   lui_menu = undefined;
   while (true) {
     if(isdefined(level.billboard_event)) {
@@ -3593,7 +2414,6 @@ function update_player_billboard() {
         self setluimenudata(lui_menu, "", level.billboard_event_size);
       }
     }
-    self waittill(# "update_billboard");
+    self waittill("update_billboard");
   }
-  # /
 }

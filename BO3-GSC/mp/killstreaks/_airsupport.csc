@@ -1,23 +1,17 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_airsupport.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_rewindobjects;
 #using scripts\mp\_util;
 #using scripts\mp\_vehicle;
 #using scripts\shared\util_shared;
-
 #namespace airsupport;
 
-/*
-	Name: planesounds
-	Namespace: airsupport
-	Checksum: 0xC94E3ADD
-	Offset: 0x230
-	Size: 0x8C
-	Parameters: 4
-	Flags: None
-*/
 function planesounds(localclientnum, spawnsound, flybysound, flybysoundloop) {
-  self endon(# "delete");
+  self endon("delete");
   playsound(0, spawnsound, (0, 0, 0));
   if(isdefined(flybysound)) {
     self playsound(0, flybysound);
@@ -25,58 +19,22 @@ function planesounds(localclientnum, spawnsound, flybysound, flybysoundloop) {
   self playloopsound(flybysoundloop, 0);
 }
 
-/*
-	Name: getplanemodel
-	Namespace: airsupport
-	Checksum: 0x6A7B11FD
-	Offset: 0x2C8
-	Size: 0x24
-	Parameters: 1
-	Flags: Linked
-*/
 function getplanemodel(teamfaction) {
   planemodel = "t5_veh_jet_f4_gearup";
   return planemodel;
 }
 
-/*
-	Name: planeturnright
-	Namespace: airsupport
-	Checksum: 0x6F0D486E
-	Offset: 0x2F8
-	Size: 0x54
-	Parameters: 5
-	Flags: None
-*/
 function planeturnright(localclientnum, plane, yaw, halflife, starttime) {
   planeturn(localclientnum, plane, yaw, halflife, starttime, 1);
 }
 
-/*
-	Name: planeturnleft
-	Namespace: airsupport
-	Checksum: 0xCF2B617D
-	Offset: 0x358
-	Size: 0x54
-	Parameters: 5
-	Flags: None
-*/
 function planeturnleft(localclientnum, plane, yaw, halflife, starttime) {
   planeturn(localclientnum, plane, yaw, halflife, starttime, 0);
 }
 
-/*
-	Name: planeturn
-	Namespace: airsupport
-	Checksum: 0x71290A37
-	Offset: 0x3B8
-	Size: 0xA4E
-	Parameters: 6
-	Flags: Linked
-*/
 function planeturn(localclientnum, plane, yaw, halflife, starttime, isturningright) {
-  plane endon(# "delete");
-  plane endon(# "entityshutdown");
+  plane endon("delete");
+  plane endon("entityshutdown");
   level endon("demo_jump" + localclientnum);
   leftturn = -1;
   rightturn = 1;
@@ -122,7 +80,7 @@ function planeturn(localclientnum, plane, yaw, halflife, starttime, isturningrig
     rotatedy = (sin(yaw) * oldx) + (cos(yaw) * oldy);
     endpoint = (origx + rotatedx, origy + rotatedy, plane.origin[2]);
     if(waitformovedone) {
-      plane waittill(# "movedone");
+      plane waittill("movedone");
     }
     waitformovedone = plane rewindobjects::servertimedmoveto(localclientnum, plane.origin, endpoint, starttime, waitamount);
     plane rewindobjects::servertimedrotateto(localclientnum, angles, starttime, waitamount);
@@ -159,7 +117,7 @@ function planeturn(localclientnum, plane, yaw, halflife, starttime, isturningrig
     rotatedy = (sin(yaw) * oldx) + (cos(yaw) * oldy);
     endpoint = (origx + rotatedx, origy + rotatedy, plane.origin[2]);
     if(waitformovedone) {
-      plane waittill(# "movedone");
+      plane waittill("movedone");
     }
     waitformovedone = plane rewindobjects::servertimedmoveto(localclientnum, plane.origin, endpoint, starttime, waitamount);
     plane rewindobjects::servertimedrotateto(localclientnum, angles, starttime, waitamount);
@@ -168,19 +126,10 @@ function planeturn(localclientnum, plane, yaw, halflife, starttime, isturningrig
   }
 }
 
-/*
-	Name: doabarrelroll
-	Namespace: airsupport
-	Checksum: 0x942A5D13
-	Offset: 0xE10
-	Size: 0x456
-	Parameters: 5
-	Flags: None
-*/
 function doabarrelroll(localclientnum, plane, endpoint, flytime, starttime) {
-  plane endon(# "entityshutdown");
-  plane endon(# "delete");
-  level endon(# "demo_jump");
+  plane endon("entityshutdown");
+  plane endon("delete");
+  level endon("demo_jump");
   origin = plane.origin;
   originalheight = origin[2];
   loopwaittime = getdvarfloat("scr_loopwaittime", 0.5);
@@ -216,7 +165,7 @@ function doabarrelroll(localclientnum, plane, endpoint, flytime, starttime) {
     nextheight = originalheight + (loopheight - ((cos(degreesrolled / 2)) * loopheight));
     nextpoint = (nextpoint[0], nextpoint[1], nextheight);
     if(waitformovedone) {
-      plane waittill(# "movedone");
+      plane waittill("movedone");
     }
     waitformovedone = plane rewindobjects::servertimedmoveto(localclientnum, plane.origin, nextpoint, starttime, waitamount);
     plane rewindobjects::servertimedrotateto(localclientnum, angles, starttime, waitamount);
@@ -224,21 +173,12 @@ function doabarrelroll(localclientnum, plane, endpoint, flytime, starttime) {
   }
 }
 
-/*
-	Name: planegostraight
-	Namespace: airsupport
-	Checksum: 0xBE9AF5C1
-	Offset: 0x1270
-	Size: 0xC6
-	Parameters: 6
-	Flags: None
-*/
 function planegostraight(localclientnum, plane, startpoint, endpoint, movetime, starttime) {
-  plane endon(# "delete");
-  level endon(# "demo_jump");
+  plane endon("delete");
+  level endon("demo_jump");
   distanceincreaseratio = 2;
   destpoint = rewindobjects::getpointonline(startpoint, endpoint, distanceincreaseratio);
   if(plane rewindobjects::servertimedmoveto(localclientnum, startpoint, destpoint, starttime, movetime)) {
-    plane waittill(# "movedone");
+    plane waittill("movedone");
   }
 }

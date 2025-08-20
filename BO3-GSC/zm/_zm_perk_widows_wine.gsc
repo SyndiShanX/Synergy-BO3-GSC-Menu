@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_perk_widows_wine.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -26,44 +30,16 @@
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_perk_widows_wine;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x4C2E276A
-	Offset: 0x680
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_perk_widows_wine", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_perk_widows_wine
-	Checksum: 0xA9CF0FF3
-	Offset: 0x6C0
-	Size: 0x14
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   enable_widows_wine_perk_for_level();
 }
 
-/*
-	Name: enable_widows_wine_perk_for_level
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x864F480F
-	Offset: 0x6E0
-	Size: 0x194
-	Parameters: 0
-	Flags: Linked
-*/
 function enable_widows_wine_perk_for_level() {
   zm_perks::register_perk_basic_info("specialty_widowswine", "widows_wine", 4000, & "ZOMBIE_PERK_WIDOWSWINE", getweapon("zombie_perk_bottle_widows_wine"));
   zm_perks::register_perk_precache_func("specialty_widowswine", & widows_wine_precache);
@@ -78,15 +54,6 @@ function enable_widows_wine_perk_for_level() {
   init_widows_wine();
 }
 
-/*
-	Name: widows_wine_precache
-	Namespace: zm_perk_widows_wine
-	Checksum: 0xE2369441
-	Offset: 0x880
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function widows_wine_precache() {
   if(isdefined(level.widows_wine_precache_override_func)) {
     [
@@ -102,43 +69,16 @@ function widows_wine_precache() {
   level.machine_assets["specialty_widowswine"].on_model = "p7_zm_vending_widows_wine";
 }
 
-/*
-	Name: widows_wine_register_clientfield
-	Namespace: zm_perk_widows_wine
-	Checksum: 0xA17358D7
-	Offset: 0x980
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function widows_wine_register_clientfield() {
   clientfield::register("clientuimodel", "hudItems.perks.widows_wine", 1, 2, "int");
   clientfield::register("actor", "widows_wine_wrapping", 1, 1, "int");
   clientfield::register("vehicle", "widows_wine_wrapping", 1, 1, "int");
 }
 
-/*
-	Name: widows_wine_set_clientfield
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x8C825795
-	Offset: 0xA20
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function widows_wine_set_clientfield(state) {
   self clientfield::set_player_uimodel("hudItems.perks.widows_wine", state);
 }
 
-/*
-	Name: widows_wine_perk_machine_setup
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x8F4AF229
-	Offset: 0xA58
-	Size: 0xBC
-	Parameters: 4
-	Flags: Linked
-*/
 function widows_wine_perk_machine_setup(use_trigger, perk_machine, bump_trigger, collision) {
   use_trigger.script_sound = "mus_perks_widow_jingle";
   use_trigger.script_string = "widowswine_perk";
@@ -151,15 +91,6 @@ function widows_wine_perk_machine_setup(use_trigger, perk_machine, bump_trigger,
   }
 }
 
-/*
-	Name: init_widows_wine
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x367F478A
-	Offset: 0xB20
-	Size: 0x164
-	Parameters: 0
-	Flags: Linked
-*/
 function init_widows_wine() {
   zm_utility::register_lethal_grenade_for_level("sticky_grenade_widows_wine");
   zm_spawner::register_zombie_damage_callback( & widows_wine_zombie_damage_response);
@@ -175,15 +106,6 @@ function init_widows_wine() {
   level.w_widows_wine_sickle_knife = getweapon("sickle_knife_widows_wine");
 }
 
-/*
-	Name: widows_wine_perk_activate
-	Namespace: zm_perk_widows_wine
-	Checksum: 0xC29B542D
-	Offset: 0xC90
-	Size: 0x2BC
-	Parameters: 0
-	Flags: Linked
-*/
 function widows_wine_perk_activate() {
   if(level.w_widows_wine_grenade == self zm_utility::get_player_lethal_grenade()) {
     return;
@@ -210,41 +132,19 @@ function widows_wine_perk_activate() {
       }
     }
   }
-  /#
   assert(!isdefined(self.check_override_wallbuy_purchase) || self.check_override_wallbuy_purchase == ( & widows_wine_override_wallbuy_purchase));
-  # /
-    /#
   assert(!isdefined(self.check_override_melee_wallbuy_purchase) || self.check_override_melee_wallbuy_purchase == ( & widows_wine_override_melee_wallbuy_purchase));
-  # /
-    self.check_override_wallbuy_purchase = & widows_wine_override_wallbuy_purchase;
+  self.check_override_wallbuy_purchase = & widows_wine_override_wallbuy_purchase;
   self.check_override_melee_wallbuy_purchase = & widows_wine_override_melee_wallbuy_purchase;
   self thread grenade_bounce_monitor();
 }
 
-/*
-	Name: widows_wine_contact_explosion
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x8FDB79D8
-	Offset: 0xF58
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function widows_wine_contact_explosion() {
   self magicgrenadetype(self.current_lethal_grenade, self.origin + vectorscale((0, 0, 1), 48), (0, 0, 0), 0);
   self setweaponammoclip(self.current_lethal_grenade, self getweaponammoclip(self.current_lethal_grenade) - 1);
   self clientfield::increment_to_player("widows_wine_1p_contact_explosion", 1);
 }
 
-/*
-	Name: widows_wine_zombie_damage_response
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x130C0C7A
-	Offset: 0x1008
-	Size: 0x20C
-	Parameters: 13
-	Flags: Linked
-*/
 function widows_wine_zombie_damage_response(str_mod, str_hit_location, v_hit_origin, e_player, n_amount, w_weapon, direction_vec, tagname, modelname, partname, dflags, inflictor, chargelevel) {
   if(isdefined(self.damageweapon) && self.damageweapon == level.w_widows_wine_grenade || (str_mod === "MOD_MELEE" && isdefined(e_player) && isplayer(e_player) && e_player hasperk("specialty_widowswine") && randomfloat(1) <= 0.5)) {
     if(!(isdefined(self.no_widows_wine) && self.no_widows_wine)) {
@@ -265,15 +165,6 @@ function widows_wine_zombie_damage_response(str_mod, str_hit_location, v_hit_ori
   return false;
 }
 
-/*
-	Name: widows_wine_vehicle_damage_response
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x81FCF018
-	Offset: 0x1220
-	Size: 0x164
-	Parameters: 15
-	Flags: Linked
-*/
 function widows_wine_vehicle_damage_response(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, vdamageorigin, psoffsettime, damagefromunderneath, modelindex, partname, vsurfacenormal) {
   if(isdefined(weapon) && weapon == level.w_widows_wine_grenade && (!(isdefined(self.b_widows_wine_cocoon) && self.b_widows_wine_cocoon))) {
     if(self.archetype === "parasite") {
@@ -289,15 +180,6 @@ function widows_wine_vehicle_damage_response(einflictor, eattacker, idamage, idf
   return idamage;
 }
 
-/*
-	Name: widows_wine_damage_callback
-	Namespace: zm_perk_widows_wine
-	Checksum: 0xD85CBE8F
-	Offset: 0x1390
-	Size: 0x12A
-	Parameters: 10
-	Flags: Linked
-*/
 function widows_wine_damage_callback(einflictor, eattacker, idamage, idflags, smeansofdeath, sweapon, vpoint, vdir, shitloc, psoffsettime) {
   if(sweapon == level.w_widows_wine_grenade) {
     return 0;
@@ -310,15 +192,6 @@ function widows_wine_damage_callback(einflictor, eattacker, idamage, idflags, sm
   }
 }
 
-/*
-	Name: widows_wine_zombie_death_watch
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x2EF179BC
-	Offset: 0x14C8
-	Size: 0x1B6
-	Parameters: 1
-	Flags: Linked
-*/
 function widows_wine_zombie_death_watch(attacker) {
   if(isdefined(self.b_widows_wine_cocoon) && self.b_widows_wine_cocoon || (isdefined(self.b_widows_wine_slow) && self.b_widows_wine_slow) && (!(isdefined(self.b_widows_wine_no_powerup) && self.b_widows_wine_no_powerup))) {
     if(isdefined(self.attacker) && isplayer(self.attacker) && self.attacker hasperk("specialty_widowswine")) {
@@ -338,19 +211,10 @@ function widows_wine_zombie_death_watch(attacker) {
   }
 }
 
-/*
-	Name: powerup_widows_wine_timeout
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x2C3FA0A2
-	Offset: 0x1688
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function powerup_widows_wine_timeout() {
-  self endon(# "powerup_grabbed");
-  self endon(# "death");
-  self endon(# "powerup_reset");
+  self endon("powerup_grabbed");
+  self endon("death");
+  self endon("powerup_reset");
   self zm_powerups::powerup_show(1);
   wait_time = 1;
   if(isdefined(level._powerup_timeout_custom_time)) {
@@ -382,23 +246,14 @@ function powerup_widows_wine_timeout() {
     }
     wait(0.1);
   }
-  self notify(# "powerup_timedout");
+  self notify("powerup_timedout");
   self zm_powerups::powerup_delete();
 }
 
-/*
-	Name: widows_wine_cocoon_zombie_score
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x166F266E
-	Offset: 0x1810
-	Size: 0xD4
-	Parameters: 3
-	Flags: Linked
-*/
 function widows_wine_cocoon_zombie_score(e_player, duration, max_score) {
-  self notify(# "widows_wine_cocoon_zombie_score");
-  self endon(# "widows_wine_cocoon_zombie_score");
-  self endon(# "death");
+  self notify("widows_wine_cocoon_zombie_score");
+  self endon("widows_wine_cocoon_zombie_score");
+  self endon("death");
   if(!isdefined(self.ww_points_given)) {
     self.ww_points_given = 0;
   }
@@ -410,18 +265,9 @@ function widows_wine_cocoon_zombie_score(e_player, duration, max_score) {
   }
 }
 
-/*
-	Name: widows_wine_cocoon_zombie
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x7D319063
-	Offset: 0x18F0
-	Size: 0x1B8
-	Parameters: 1
-	Flags: Linked
-*/
 function widows_wine_cocoon_zombie(e_player) {
-  self notify(# "widows_wine_cocoon");
-  self endon(# "widows_wine_cocoon");
+  self notify("widows_wine_cocoon");
+  self endon("widows_wine_cocoon");
   if(isdefined(self.kill_on_wine_coccon) && self.kill_on_wine_coccon) {
     self kill();
   }
@@ -450,18 +296,9 @@ function widows_wine_cocoon_zombie(e_player) {
   }
 }
 
-/*
-	Name: widows_wine_slow_zombie
-	Namespace: zm_perk_widows_wine
-	Checksum: 0xD8D2D9F2
-	Offset: 0x1AB0
-	Size: 0x1B0
-	Parameters: 1
-	Flags: Linked
-*/
 function widows_wine_slow_zombie(e_player) {
-  self notify(# "widows_wine_slow");
-  self endon(# "widows_wine_slow");
+  self notify("widows_wine_slow");
+  self endon("widows_wine_slow");
   if(isdefined(self.b_widows_wine_cocoon) && self.b_widows_wine_cocoon) {
     self thread widows_wine_cocoon_zombie(e_player);
     return;
@@ -490,51 +327,24 @@ function widows_wine_slow_zombie(e_player) {
   }
 }
 
-/*
-	Name: vehicle_stuck_grenade_monitor
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x39571478
-	Offset: 0x1C68
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function vehicle_stuck_grenade_monitor() {
-  self endon(# "death");
-  self waittill(# "grenade_stuck", e_grenade);
+  self endon("death");
+  self waittill("grenade_stuck", e_grenade);
   e_grenade detonate();
 }
 
-/*
-	Name: grenade_bounce_monitor
-	Namespace: zm_perk_widows_wine
-	Checksum: 0xF80BE930
-	Offset: 0x1CB0
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function grenade_bounce_monitor() {
-  self endon(# "disconnect");
-  self endon(# "stop_widows_wine");
+  self endon("disconnect");
+  self endon("stop_widows_wine");
   while (true) {
-    self waittill(# "grenade_fire", e_grenade);
+    self waittill("grenade_fire", e_grenade);
     e_grenade thread grenade_bounces();
   }
 }
 
-/*
-	Name: grenade_bounces
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x4DDD6088
-	Offset: 0x1D10
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function grenade_bounces() {
-  self endon(# "explode");
-  self waittill(# "grenade_bounce", pos, normal, e_target);
+  self endon("explode");
+  self waittill("grenade_bounce", pos, normal, e_target);
   if(isdefined(e_target)) {
     if(e_target.archetype === "parasite" || e_target.archetype === "raps") {
       self detonate();
@@ -542,17 +352,8 @@ function grenade_bounces() {
   }
 }
 
-/*
-	Name: widows_wine_vehicle_behavior
-	Namespace: zm_perk_widows_wine
-	Checksum: 0xCBF68945
-	Offset: 0x1DB0
-	Size: 0x10C
-	Parameters: 2
-	Flags: Linked
-*/
 function widows_wine_vehicle_behavior(attacker, weapon) {
-  self endon(# "death");
+  self endon("death");
   self.b_widows_wine_cocoon = 1;
   if(isdefined(self.archetype)) {
     if(self.archetype == "raps") {
@@ -567,20 +368,11 @@ function widows_wine_vehicle_behavior(attacker, weapon) {
   }
 }
 
-/*
-	Name: widows_wine_perk_lost
-	Namespace: zm_perk_widows_wine
-	Checksum: 0xFDE69A07
-	Offset: 0x1EC8
-	Size: 0x29C
-	Parameters: 3
-	Flags: Linked
-*/
 function widows_wine_perk_lost(b_pause, str_perk, str_result) {
-  self notify(# "stop_widows_wine");
-  self endon(# "death");
+  self notify("stop_widows_wine");
+  self endon("death");
   if(self laststand::player_is_in_laststand()) {
-    self waittill(# "player_revived");
+    self waittill("player_revived");
     if(self hasperk("specialty_widowswine")) {
       return;
     }
@@ -617,15 +409,6 @@ function widows_wine_perk_lost(b_pause, str_perk, str_result) {
   }
 }
 
-/*
-	Name: widows_wine_override_wallbuy_purchase
-	Namespace: zm_perk_widows_wine
-	Checksum: 0xB8CBB01
-	Offset: 0x2170
-	Size: 0x9C
-	Parameters: 2
-	Flags: Linked
-*/
 function widows_wine_override_wallbuy_purchase(weapon, wallbuy) {
   if(zm_utility::is_lethal_grenade(weapon)) {
     wallbuy zm_utility::play_sound_on_ent("no_purchase");
@@ -639,15 +422,6 @@ function widows_wine_override_wallbuy_purchase(weapon, wallbuy) {
   return false;
 }
 
-/*
-	Name: widows_wine_override_melee_wallbuy_purchase
-	Namespace: zm_perk_widows_wine
-	Checksum: 0x76FF6479
-	Offset: 0x2218
-	Size: 0x2EC
-	Parameters: 7
-	Flags: Linked
-*/
 function widows_wine_override_melee_wallbuy_purchase(vo_dialog_id, flourish_weapon, weapon, ballistic_weapon, ballistic_upgraded_weapon, flourish_fn, wallbuy) {
   if(zm_utility::is_melee_weapon(weapon)) {
     if(self.w_widows_wine_prev_knife != weapon) {
@@ -666,10 +440,8 @@ function widows_wine_override_melee_wallbuy_purchase(vo_dialog_id, flourish_weap
           }
         }
         self zm_score::minus_to_player_score(cost);
-        /#
         assert(weapon.name == "" || weapon.name == "");
-        # /
-          self.w_widows_wine_prev_knife = weapon;
+        self.w_widows_wine_prev_knife = weapon;
         if(self.w_widows_wine_prev_knife.name == "bowie_knife") {
           self thread zm_melee_weapon::give_melee_weapon(vo_dialog_id, flourish_weapon, weapon, ballistic_weapon, ballistic_upgraded_weapon, flourish_fn, wallbuy);
         } else if(self.w_widows_wine_prev_knife.name == "sickle_knife") {

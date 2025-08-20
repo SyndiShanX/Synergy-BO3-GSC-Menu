@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_helicopter.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_helicopter_sounds;
 #using scripts\mp\_util;
@@ -9,33 +13,13 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
-
 #using_animtree("mp_vehicles");
-
 #namespace helicopter;
 
-/*
-	Name: __init__sytem__
-	Namespace: helicopter
-	Checksum: 0x3A1FA0D2
-	Offset: 0x830
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("helicopter", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: helicopter
-	Checksum: 0x39708156
-	Offset: 0x870
-	Size: 0x774
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.chopper_fx["damage"]["light_smoke"] = "killstreaks/fx_heli_smk_trail_engine_33";
   level.chopper_fx["damage"]["heavy_smoke"] = "killstreaks/fx_heli_smk_trail_engine_66";
@@ -72,18 +56,9 @@ function __init__() {
   callback::on_spawned( & on_player_spawned);
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: helicopter
-	Checksum: 0x8788C6C4
-	Offset: 0xFF0
-	Size: 0xAA
-	Parameters: 1
-	Flags: Linked
-*/
 function on_player_spawned(localclientnum) {
   player = self;
-  player waittill(# "entityshutdown");
+  player waittill("entityshutdown");
   player.markerfx = undefined;
   if(isdefined(player.markerobj)) {
     player.markerobj delete();
@@ -94,30 +69,12 @@ function on_player_spawned(localclientnum) {
   }
 }
 
-/*
-	Name: setupanimtree
-	Namespace: helicopter
-	Checksum: 0xEB899463
-	Offset: 0x10A8
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function setupanimtree() {
   if(self hasanimtree() == 0) {
     self useanimtree($mp_vehicles);
   }
 }
 
-/*
-	Name: active_camo_changed
-	Namespace: helicopter
-	Checksum: 0xBD4C368F
-	Offset: 0x10F0
-	Size: 0x16C
-	Parameters: 7
-	Flags: Linked
-*/
 function active_camo_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 0) {
     self thread heli_comlink_lights_on_after_wait(localclientnum, 0.7);
@@ -130,23 +87,14 @@ function active_camo_changed(localclientnum, oldval, newval, bnewent, binitialsn
   if(flags_changed) {
     self duplicate_render::update_dr_filters(localclientnum);
   }
-  self notify(# "endtest");
+  self notify("endtest");
   self thread doreveal(localclientnum, newval != 0);
 }
 
-/*
-	Name: doreveal
-	Namespace: helicopter
-	Checksum: 0x4B855303
-	Offset: 0x1268
-	Size: 0x2BC
-	Parameters: 2
-	Flags: Linked
-*/
 function doreveal(local_client_num, direction) {
-  self notify(# "endtest");
-  self endon(# "endtest");
-  self endon(# "entityshutdown");
+  self notify("endtest");
+  self endon("endtest");
+  self endon("entityshutdown");
   if(direction) {
     self duplicate_render::update_dr_flag(local_client_num, "hide_model", 0);
     startval = 0;
@@ -183,34 +131,16 @@ function doreveal(local_client_num, direction) {
   }
 }
 
-/*
-	Name: heli_comlink_bootup_anim
-	Namespace: helicopter
-	Checksum: 0xEEF61BFF
-	Offset: 0x1530
-	Size: 0x9C
-	Parameters: 7
-	Flags: Linked
-*/
 function heli_comlink_bootup_anim(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
-  self endon(# "death");
+  self endon("entityshutdown");
+  self endon("death");
   self setupanimtree();
   self setanim( % mp_vehicles::veh_anim_future_heli_gearup_bay_open, 1, 0, 1);
 }
 
-/*
-	Name: supplydrop_care_package_state
-	Namespace: helicopter
-	Checksum: 0x25772C13
-	Offset: 0x15D8
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function supplydrop_care_package_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
-  self endon(# "death");
+  self endon("entityshutdown");
+  self endon("death");
   self setupanimtree();
   if(newval == 1) {
     self setanim( % mp_vehicles::o_drone_supply_care_idle, 1, 0, 1);
@@ -219,18 +149,9 @@ function supplydrop_care_package_state(localclientnum, oldval, newval, bnewent, 
   }
 }
 
-/*
-	Name: supplydrop_ai_tank_state
-	Namespace: helicopter
-	Checksum: 0x3562B167
-	Offset: 0x16D0
-	Size: 0xEC
-	Parameters: 7
-	Flags: Linked
-*/
 function supplydrop_ai_tank_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
-  self endon(# "death");
+  self endon("entityshutdown");
+  self endon("death");
   self setupanimtree();
   if(newval == 1) {
     self setanim( % mp_vehicles::o_drone_supply_agr_idle, 1, 0, 1);
@@ -239,15 +160,6 @@ function supplydrop_ai_tank_state(localclientnum, oldval, newval, bnewent, binit
   }
 }
 
-/*
-	Name: warnmissilelocking
-	Namespace: helicopter
-	Checksum: 0xE8138BB6
-	Offset: 0x17C8
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function warnmissilelocking(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval && !self islocalclientdriver(localclientnum)) {
     return;
@@ -255,15 +167,6 @@ function warnmissilelocking(localclientnum, oldval, newval, bnewent, binitialsna
   helicopter_sounds::play_targeted_sound(newval);
 }
 
-/*
-	Name: warnmissilelocked
-	Namespace: helicopter
-	Checksum: 0xC6D81DEE
-	Offset: 0x1850
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function warnmissilelocked(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval && !self islocalclientdriver(localclientnum)) {
     return;
@@ -271,15 +174,6 @@ function warnmissilelocked(localclientnum, oldval, newval, bnewent, binitialsnap
   helicopter_sounds::play_locked_sound(newval);
 }
 
-/*
-	Name: warnmissilefired
-	Namespace: helicopter
-	Checksum: 0x2655D7D1
-	Offset: 0x18D8
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function warnmissilefired(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval && !self islocalclientdriver(localclientnum)) {
     return;
@@ -287,15 +181,6 @@ function warnmissilefired(localclientnum, oldval, newval, bnewent, binitialsnap,
   helicopter_sounds::play_fired_sound(newval);
 }
 
-/*
-	Name: heli_deletefx
-	Namespace: helicopter
-	Checksum: 0x4BC21D8D
-	Offset: 0x1960
-	Size: 0x156
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_deletefx(localclientnum) {
   if(isdefined(self.exhaustleftfxhandle)) {
     deletefx(localclientnum, self.exhaustleftfxhandle);
@@ -323,17 +208,8 @@ function heli_deletefx(localclientnum) {
   }
 }
 
-/*
-	Name: startfx
-	Namespace: helicopter
-	Checksum: 0xCB21B051
-	Offset: 0x1AC0
-	Size: 0x354
-	Parameters: 1
-	Flags: Linked
-*/
 function startfx(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   if(isdefined(self.vehicletype)) {
     if(self.vehicletype == "remote_mortar_vehicle_mp") {
       return;
@@ -351,9 +227,7 @@ function startfx(localclientnum) {
       self.exhaustrightfxhandle = playfxontag(localclientnum, self.exhaustfx, self, "tag_engine_right");
     }
   } else {
-    /#
     println("");
-    # /
   }
   if(isdefined(self.vehicletype)) {
     light_fx = undefined;
@@ -392,17 +266,8 @@ function startfx(localclientnum) {
   self damage_fx_stages(localclientnum);
 }
 
-/*
-	Name: startfx_loop
-	Namespace: helicopter
-	Checksum: 0xD93BEAEE
-	Offset: 0x1E20
-	Size: 0xEC
-	Parameters: 1
-	Flags: Linked
-*/
 function startfx_loop(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   self thread helicopter_sounds::aircraft_dustkick(localclientnum);
   startfx(localclientnum);
   servertime = getservertime(0);
@@ -418,17 +283,8 @@ function startfx_loop(localclientnum) {
   }
 }
 
-/*
-	Name: damage_fx_stages
-	Namespace: helicopter
-	Checksum: 0x9673F366
-	Offset: 0x1F18
-	Size: 0x1CC
-	Parameters: 1
-	Flags: Linked
-*/
 function damage_fx_stages(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   last_damage_state = self gethelidamagestate();
   fx = undefined;
   for (;;) {
@@ -448,7 +304,7 @@ function damage_fx_stages(localclientnum) {
           if(isdefined(fx)) {
             stopfx(localclientnum, fx);
           }
-          self notify(# "hash_f6285749");
+          self notify("hash_f6285749");
         }
       }
       last_damage_state = self gethelidamagestate();
@@ -457,45 +313,18 @@ function damage_fx_stages(localclientnum) {
   }
 }
 
-/*
-	Name: trail_fx
-	Namespace: helicopter
-	Checksum: 0x1C697A84
-	Offset: 0x20F0
-	Size: 0x4C
-	Parameters: 3
-	Flags: Linked
-*/
 function trail_fx(localclientnum, trail_fx, trail_tag) {
   id = playfxontag(localclientnum, trail_fx, self, trail_tag);
   return id;
 }
 
-/*
-	Name: heli_comlink_lights_on_after_wait
-	Namespace: helicopter
-	Checksum: 0xF9695B8F
-	Offset: 0x2148
-	Size: 0x4C
-	Parameters: 2
-	Flags: Linked
-*/
 function heli_comlink_lights_on_after_wait(localclientnum, wait_time) {
-  self endon(# "entityshutdown");
-  self endon(# "heli_comlink_lights_off");
+  self endon("entityshutdown");
+  self endon("heli_comlink_lights_off");
   wait(wait_time);
   self heli_comlink_lights_on(localclientnum);
 }
 
-/*
-	Name: heli_comlink_lights_on
-	Namespace: helicopter
-	Checksum: 0xF3AEC881
-	Offset: 0x21A0
-	Size: 0x1A6
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_comlink_lights_on(localclientnum) {
   if(!isdefined(self.light_fx_handles_heli_comlink)) {
     self.light_fx_handles_heli_comlink = [];
@@ -511,17 +340,8 @@ function heli_comlink_lights_on(localclientnum) {
   }
 }
 
-/*
-	Name: heli_comlink_lights_off
-	Namespace: helicopter
-	Checksum: 0x5671EFF4
-	Offset: 0x2350
-	Size: 0x96
-	Parameters: 1
-	Flags: Linked
-*/
 function heli_comlink_lights_off(localclientnum) {
-  self notify(# "heli_comlink_lights_off");
+  self notify("heli_comlink_lights_off");
   if(isdefined(self.light_fx_handles_heli_comlink)) {
     for (i = 0; i < self.light_fx_handles_heli_comlink.size; i++) {
       if(isdefined(self.light_fx_handles_heli_comlink[i])) {
@@ -532,17 +352,8 @@ function heli_comlink_lights_off(localclientnum) {
   }
 }
 
-/*
-	Name: updatemarkerthread
-	Namespace: helicopter
-	Checksum: 0xC9FBF12C
-	Offset: 0x23F0
-	Size: 0x140
-	Parameters: 1
-	Flags: Linked
-*/
 function updatemarkerthread(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   player = self;
   killstreakcorebundle = struct::get_script_bundle("killstreak", "killstreak_core");
   while (isdefined(player.markerobj)) {
@@ -554,15 +365,6 @@ function updatemarkerthread(localclientnum) {
   }
 }
 
-/*
-	Name: stopcrateeffects
-	Namespace: helicopter
-	Checksum: 0x9B530366
-	Offset: 0x2538
-	Size: 0x12E
-	Parameters: 1
-	Flags: Linked
-*/
 function stopcrateeffects(localclientnum) {
   crate = self;
   if(isdefined(crate.thrusterfxhandle0)) {
@@ -583,32 +385,14 @@ function stopcrateeffects(localclientnum) {
   crate.thrusterfxhandle3 = undefined;
 }
 
-/*
-	Name: cleanupthrustersthread
-	Namespace: helicopter
-	Checksum: 0x2941D377
-	Offset: 0x2670
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function cleanupthrustersthread(localclientnum) {
   crate = self;
-  crate notify(# "cleanupthrustersthread_singleton");
-  crate endon(# "cleanupthrustersthread_singleton");
-  crate waittill(# "entityshutdown");
+  crate notify("cleanupthrustersthread_singleton");
+  crate endon("cleanupthrustersthread_singleton");
+  crate waittill("entityshutdown");
   crate stopcrateeffects(localclientnum);
 }
 
-/*
-	Name: setsupplydropthrustersstate
-	Namespace: helicopter
-	Checksum: 0x89113343
-	Offset: 0x26E0
-	Size: 0x1E4
-	Parameters: 7
-	Flags: Linked
-*/
 function setsupplydropthrustersstate(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   crate = self;
   params = struct::get_script_bundle("killstreak", "killstreak_supply_drop");
@@ -626,26 +410,8 @@ function setsupplydropthrustersstate(localclientnum, oldval, newval, bnewent, bi
   }
 }
 
-/*
-	Name: mothership_cb
-	Namespace: helicopter
-	Checksum: 0xB6F73
-	Offset: 0x28D0
-	Size: 0x3C
-	Parameters: 7
-	Flags: Linked
-*/
 function mothership_cb(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {}
 
-/*
-	Name: setaitankhrustersstate
-	Namespace: helicopter
-	Checksum: 0xBC7D536D
-	Offset: 0x2918
-	Size: 0x1E4
-	Parameters: 7
-	Flags: Linked
-*/
 function setaitankhrustersstate(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   crate = self;
   params = struct::get_script_bundle("killstreak", "killstreak_ai_tank_drop");
@@ -663,17 +429,8 @@ function setaitankhrustersstate(localclientnum, oldval, newval, bnewent, binitia
   }
 }
 
-/*
-	Name: marker_state_changed
-	Namespace: helicopter
-	Checksum: 0xD5650DBE
-	Offset: 0x2B08
-	Size: 0x2B4
-	Parameters: 7
-	Flags: Linked
-*/
 function marker_state_changed(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   player = self;
   killstreakcorebundle = struct::get_script_bundle("killstreak", "killstreak_core");
   if(newval == 1) {

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_prop_controls.gsc
+*************************************************/
+
 #using scripts\mp\_teamops;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_dogtags;
@@ -23,50 +27,20 @@
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\tweakables_shared;
 #using scripts\shared\util_shared;
-
 #namespace namespace_4c773ed3;
 
-/*
-	Name: notifyonplayercommand
-	Namespace: namespace_4c773ed3
-	Checksum: 0xFB4D26B8
-	Offset: 0x838
-	Size: 0x5C
-	Parameters: 2
-	Flags: None
-*/
 function notifyonplayercommand(command, key) {
-  /#
   assert(isplayer(self));
-  # /
-    self thread function_e17a8f06(command, key);
+  self thread function_e17a8f06(command, key);
 }
 
-/*
-	Name: notifyonplayercommandremove
-	Namespace: namespace_4c773ed3
-	Checksum: 0xBE563177
-	Offset: 0x8A0
-	Size: 0x2E
-	Parameters: 2
-	Flags: None
-*/
 function notifyonplayercommandremove(command, key) {
   self notify((command + "_") + key);
 }
 
-/*
-	Name: function_e17a8f06
-	Namespace: namespace_4c773ed3
-	Checksum: 0x320CBF53
-	Offset: 0x8D8
-	Size: 0x39E
-	Parameters: 2
-	Flags: None
-*/
 function function_e17a8f06(command, key) {
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  level endon("game_ended");
   self notify((command + "_") + key);
   self endon((command + "_") + key);
   switch (key) {
@@ -141,15 +115,6 @@ function function_e17a8f06(command, key) {
   }
 }
 
-/*
-	Name: function_c6639fc9
-	Namespace: namespace_4c773ed3
-	Checksum: 0x91E19DF8
-	Offset: 0xC80
-	Size: 0x64
-	Parameters: 2
-	Flags: None
-*/
 function function_c6639fc9(var_33b64687, command) {
   while (true) {
     while (!self[[var_33b64687]]()) {
@@ -162,15 +127,6 @@ function function_c6639fc9(var_33b64687, command) {
   }
 }
 
-/*
-	Name: function_b01c4bcb
-	Namespace: namespace_4c773ed3
-	Checksum: 0xFB703A77
-	Offset: 0xCF0
-	Size: 0x62
-	Parameters: 2
-	Flags: None
-*/
 function function_b01c4bcb(var_33b64687, command) {
   while (true) {
     while (!self[[var_33b64687]]()) {
@@ -183,15 +139,6 @@ function function_b01c4bcb(var_33b64687, command) {
   }
 }
 
-/*
-	Name: setupkeybindings
-	Namespace: namespace_4c773ed3
-	Checksum: 0x1025E606
-	Offset: 0xD60
-	Size: 0x184
-	Parameters: 0
-	Flags: None
-*/
 function setupkeybindings() {
   if(isai(self)) {
     return;
@@ -207,15 +154,6 @@ function setupkeybindings() {
   self notifyonplayercommand("hide", "+melee");
 }
 
-/*
-	Name: function_3122ae57
-	Namespace: namespace_4c773ed3
-	Checksum: 0xDF004209
-	Offset: 0xEF0
-	Size: 0x184
-	Parameters: 0
-	Flags: None
-*/
 function function_3122ae57() {
   if(isai(self)) {
     return;
@@ -231,28 +169,10 @@ function function_3122ae57() {
   self notifyonplayercommandremove("hide", "+melee");
 }
 
-/*
-	Name: is_player_gamepad_enabled
-	Namespace: namespace_4c773ed3
-	Checksum: 0x249680DE
-	Offset: 0x1080
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function is_player_gamepad_enabled() {
   return self gamepadusedlast();
 }
 
-/*
-	Name: addupperrighthudelem
-	Namespace: namespace_4c773ed3
-	Checksum: 0x3678A526
-	Offset: 0x10A8
-	Size: 0x224
-	Parameters: 4
-	Flags: None
-*/
 function addupperrighthudelem(label, value, text, labelpc) {
   hudelem = hud::createfontstring("default", 1.2);
   hudelem.x = -15;
@@ -287,79 +207,40 @@ function addupperrighthudelem(label, value, text, labelpc) {
   return hudelem;
 }
 
-/*
-	Name: propcontrolshud
-	Namespace: namespace_4c773ed3
-	Checksum: 0xC6AFB0C3
-	Offset: 0x12D8
-	Size: 0x1BC
-	Parameters: 0
-	Flags: None
-*/
 function propcontrolshud() {
-  /#
   assert(!isdefined(self.changepropkey));
-  # /
-    if(self issplitscreen()) {
-      self.currenthudy = -10;
-    }
-  else {
+  if(self issplitscreen()) {
+    self.currenthudy = -10;
+  } else {
     self.currenthudy = -80;
   }
   self.abilitykey = addupperrighthudelem();
-  self.clonekey = addupperrighthudelem( & "MP_PH_CLONE");
-  self.changepropkey = addupperrighthudelem( & "MP_PH_CHANGE", 0);
+  self.clonekey = addupperrighthudelem(&"MP_PH_CLONE");
+  self.changepropkey = addupperrighthudelem(&"MP_PH_CHANGE", 0);
   self.currenthudy = self.currenthudy - 20;
-  self.var_6f16621b = addupperrighthudelem( & "MP_PH_HIDEPROP");
-  self.matchslopekey = addupperrighthudelem( & "MP_PH_SLOPE", undefined, undefined, & "MP_PH_SLOPE_PC");
-  self.lockpropkey = addupperrighthudelem( & "MP_PH_LOCK");
-  self.spinpropkey = addupperrighthudelem( & "MP_PH_SPIN", undefined, undefined, & "MP_PH_SPIN_PC");
+  self.var_6f16621b = addupperrighthudelem(&"MP_PH_HIDEPROP");
+  self.matchslopekey = addupperrighthudelem(&"MP_PH_SLOPE", undefined, undefined, & "MP_PH_SLOPE_PC");
+  self.lockpropkey = addupperrighthudelem(&"MP_PH_LOCK");
+  self.spinpropkey = addupperrighthudelem(&"MP_PH_SPIN", undefined, undefined, & "MP_PH_SPIN_PC");
   self setnewabilityhud();
-  self.zoomkey = addupperrighthudelem( & "MP_PH_ZOOM");
+  self.zoomkey = addupperrighthudelem(&"MP_PH_ZOOM");
   self thread updatetextongamepadchange();
 }
 
-/*
-	Name: cleanuppropcontrolshudondeath
-	Namespace: namespace_4c773ed3
-	Checksum: 0x8C6846C5
-	Offset: 0x14A0
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function cleanuppropcontrolshudondeath() {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
-  self waittill(# "death");
+  level endon("game_ended");
+  self endon("disconnect");
+  self waittill("death");
   self thread function_3122ae57();
   self thread cleanuppropcontrolshud();
 }
 
-/*
-	Name: safedestroy
-	Namespace: namespace_4c773ed3
-	Checksum: 0xAE94B016
-	Offset: 0x1500
-	Size: 0x2C
-	Parameters: 1
-	Flags: None
-*/
 function safedestroy(hudelem) {
   if(isdefined(hudelem)) {
     hudelem destroy();
   }
 }
 
-/*
-	Name: cleanuppropcontrolshud
-	Namespace: namespace_4c773ed3
-	Checksum: 0x98FEB889
-	Offset: 0x1538
-	Size: 0xDC
-	Parameters: 0
-	Flags: None
-*/
 function cleanuppropcontrolshud() {
   safedestroy(self.changepropkey);
   safedestroy(self.spinpropkey);
@@ -372,19 +253,10 @@ function cleanuppropcontrolshud() {
   safedestroy(self.var_6f16621b);
 }
 
-/*
-	Name: updatetextongamepadchange
-	Namespace: namespace_4c773ed3
-	Checksum: 0x80F56F06
-	Offset: 0x1620
-	Size: 0x178
-	Parameters: 0
-	Flags: None
-*/
 function updatetextongamepadchange() {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
-  self endon(# "death");
+  level endon("game_ended");
+  self endon("disconnect");
+  self endon("death");
   if(level.console) {
     return;
   }
@@ -414,19 +286,10 @@ function updatetextongamepadchange() {
   }
 }
 
-/*
-	Name: propinputwatch
-	Namespace: namespace_4c773ed3
-	Checksum: 0xEE6AF523
-	Offset: 0x17A0
-	Size: 0x230
-	Parameters: 0
-	Flags: None
-*/
 function propinputwatch() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   if(isai(self)) {
     return;
   }
@@ -470,15 +333,6 @@ function propinputwatch() {
   }
 }
 
-/*
-	Name: proplockunlock
-	Namespace: namespace_4c773ed3
-	Checksum: 0x5D846836
-	Offset: 0x19D8
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function proplockunlock() {
   if(self ismantling()) {
     return;
@@ -490,15 +344,6 @@ function proplockunlock() {
   }
 }
 
-/*
-	Name: function_90ce903e
-	Namespace: namespace_4c773ed3
-	Checksum: 0xF2CF965E
-	Offset: 0x1A38
-	Size: 0xCC
-	Parameters: 0
-	Flags: None
-*/
 function function_90ce903e() {
   self.propent unlink();
   self.propent.angles = self.propent.angles + vectorscale((0, 1, 0), 45);
@@ -509,15 +354,6 @@ function function_90ce903e() {
   self.propent linkto(self.propanchor);
 }
 
-/*
-	Name: registerpreviousprop
-	Namespace: namespace_4c773ed3
-	Checksum: 0x1D7F12AD
-	Offset: 0x1B10
-	Size: 0xA8
-	Parameters: 1
-	Flags: None
-*/
 function registerpreviousprop(var_bc9de76b) {
   var_771596a5 = 3;
   if(!isdefined(var_bc9de76b.usedpropsindex)) {
@@ -530,15 +366,6 @@ function registerpreviousprop(var_bc9de76b) {
   }
 }
 
-/*
-	Name: propchange
-	Namespace: namespace_4c773ed3
-	Checksum: 0x9E4F481D
-	Offset: 0x1BC0
-	Size: 0x294
-	Parameters: 0
-	Flags: None
-*/
 function propchange() {
   if(!self prophaschangesleft()) {
     return;
@@ -550,10 +377,9 @@ function propchange() {
     }
     self.lastpropchangetime = gettime();
   }
-  self notify(# "hash_a603bd25");
+  self notify("hash_a603bd25");
   registerpreviousprop(self);
   self.prop.info = prop::getnextprop(self);
-  /#
   if(getdvarint("", 0) != 0) {
     self.prop.info = level.proplist[self.debugnextpropindex];
     self.debugnextpropindex++;
@@ -561,8 +387,7 @@ function propchange() {
       self.debugnextpropindex = 0;
     }
   }
-  # /
-    self propchangeto(self.prop.info);
+  self propchangeto(self.prop.info);
   if(level.phsettings.var_e332c699) {
     playfxontag("player/fx_plyr_clone_reaper_appear", self.prop, "tag_origin");
   }
@@ -574,59 +399,26 @@ function propchange() {
     self.abilitykey.alpha = 1;
     self.clonekey.alpha = 1;
   }
-  /#
   if(getdvarint("", 0) != 0) {
     return;
   }
-  # /
-    self propdeductchange();
+  self propdeductchange();
 }
 
-/*
-	Name: prophaschangesleft
-	Namespace: namespace_4c773ed3
-	Checksum: 0x738EF7AD
-	Offset: 0x1E60
-	Size: 0x2E
-	Parameters: 0
-	Flags: None
-*/
 function prophaschangesleft() {
-  /#
   if(isdefined(self.var_c4494f8d) && self.var_c4494f8d) {
     return 1;
   }
-  # /
-    return self.changesleft > 0;
+  return self.changesleft > 0;
 }
 
-/*
-	Name: propdeductchange
-	Namespace: namespace_4c773ed3
-	Checksum: 0x663C8F47
-	Offset: 0x1E98
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function propdeductchange() {
-  /#
   if(isdefined(self.var_c4494f8d) && self.var_c4494f8d) {
     return;
   }
-  # /
-    propsetchangesleft(self.changesleft - 1);
+  propsetchangesleft(self.changesleft - 1);
 }
 
-/*
-	Name: propsetchangesleft
-	Namespace: namespace_4c773ed3
-	Checksum: 0x31A18AB3
-	Offset: 0x1EE8
-	Size: 0x74
-	Parameters: 1
-	Flags: None
-*/
 function propsetchangesleft(newvalue) {
   self.changesleft = newvalue;
   if(prop::useprophudserver()) {
@@ -637,15 +429,6 @@ function propsetchangesleft(newvalue) {
   }
 }
 
-/*
-	Name: propchangeto
-	Namespace: namespace_4c773ed3
-	Checksum: 0xEF4A0DB8
-	Offset: 0x1F68
-	Size: 0x374
-	Parameters: 1
-	Flags: None
-*/
 function propchangeto(info) {
   self.prop.info = info;
   self.propinfo = info;
@@ -685,15 +468,6 @@ function propchangeto(info) {
   self setclientthirdperson(1, self.thirdpersonrange, self.thirdpersonheightoffset);
 }
 
-/*
-	Name: propmatchslope
-	Namespace: namespace_4c773ed3
-	Checksum: 0x75289AB7
-	Offset: 0x22E8
-	Size: 0x214
-	Parameters: 0
-	Flags: None
-*/
 function propmatchslope() {
   if(!(isdefined(self.slopelocked) && self.slopelocked)) {
     self.slopelocked = 1;
@@ -727,15 +501,6 @@ function propmatchslope() {
   }
 }
 
-/*
-	Name: propability
-	Namespace: namespace_4c773ed3
-	Checksum: 0xB929FB78
-	Offset: 0x2508
-	Size: 0x6C
-	Parameters: 0
-	Flags: None
-*/
 function propability() {
   if(!level flag::get("props_hide_over")) {
     return;
@@ -746,15 +511,6 @@ function propability() {
   }
 }
 
-/*
-	Name: propclonepower
-	Namespace: namespace_4c773ed3
-	Checksum: 0xF12C4CD6
-	Offset: 0x2580
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function propclonepower() {
   if(prophasclonesleft()) {
     self thread cloneprop();
@@ -762,51 +518,20 @@ function propclonepower() {
   }
 }
 
-/*
-	Name: prophasclonesleft
-	Namespace: namespace_4c773ed3
-	Checksum: 0x26838613
-	Offset: 0x25D0
-	Size: 0x2E
-	Parameters: 0
-	Flags: None
-*/
 function prophasclonesleft() {
-  /#
   if(isdefined(self.var_b53602f4) && self.var_b53602f4) {
     return 1;
   }
-  # /
-    return self.clonesleft > 0;
+  return self.clonesleft > 0;
 }
 
-/*
-	Name: propdeductclonechange
-	Namespace: namespace_4c773ed3
-	Checksum: 0x8D286D0F
-	Offset: 0x2608
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function propdeductclonechange() {
-  /#
   if(isdefined(self.var_b53602f4) && self.var_b53602f4) {
     return;
   }
-  # /
-    propsetclonesleft(self.clonesleft - 1);
+  propsetclonesleft(self.clonesleft - 1);
 }
 
-/*
-	Name: propsetclonesleft
-	Namespace: namespace_4c773ed3
-	Checksum: 0x1E11CF07
-	Offset: 0x2658
-	Size: 0xBC
-	Parameters: 1
-	Flags: None
-*/
 function propsetclonesleft(newvalue) {
   self.clonesleft = newvalue;
   if(prop::useprophudserver() && isdefined(self) && isalive(self) && isdefined(self.clonekey)) {
@@ -819,51 +544,20 @@ function propsetclonesleft(newvalue) {
   }
 }
 
-/*
-	Name: prophasflashesleft
-	Namespace: namespace_4c773ed3
-	Checksum: 0x52BC6043
-	Offset: 0x2720
-	Size: 0x2E
-	Parameters: 0
-	Flags: None
-*/
 function prophasflashesleft() {
-  /#
   if(isdefined(self.var_2f1101f4) && self.var_2f1101f4) {
     return 1;
   }
-  # /
-    return self.abilityleft > 0;
+  return self.abilityleft > 0;
 }
 
-/*
-	Name: propdeductflash
-	Namespace: namespace_4c773ed3
-	Checksum: 0xFE63C964
-	Offset: 0x2758
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function propdeductflash() {
-  /#
   if(isdefined(self.var_2f1101f4) && self.var_2f1101f4) {
     return;
   }
-  # /
-    propsetflashesleft(self.abilityleft - 1);
+  propsetflashesleft(self.abilityleft - 1);
 }
 
-/*
-	Name: propsetflashesleft
-	Namespace: namespace_4c773ed3
-	Checksum: 0x46EE740A
-	Offset: 0x27A8
-	Size: 0x74
-	Parameters: 1
-	Flags: None
-*/
 function propsetflashesleft(newvalue) {
   self.abilityleft = newvalue;
   if(prop::useprophudserver()) {
@@ -874,15 +568,6 @@ function propsetflashesleft(newvalue) {
   }
 }
 
-/*
-	Name: set_pitch_roll_for_ground_normal
-	Namespace: namespace_4c773ed3
-	Checksum: 0x480275B7
-	Offset: 0x2828
-	Size: 0x1F0
-	Parameters: 1
-	Flags: None
-*/
 function set_pitch_roll_for_ground_normal(var_a84e1ffa) {
   groundnormal = get_ground_normal(var_a84e1ffa, 0);
   if(!isdefined(groundnormal)) {
@@ -906,15 +591,6 @@ function set_pitch_roll_for_ground_normal(var_a84e1ffa) {
   self.angles = (var_4ef8701, self.angles[1], var_676ea8f0);
 }
 
-/*
-	Name: function_b811663a
-	Namespace: namespace_4c773ed3
-	Checksum: 0x2E4EE664
-	Offset: 0x2A20
-	Size: 0xD2
-	Parameters: 1
-	Flags: None
-*/
 function function_b811663a(var_32d4bb6a) {
   foreach(player in level.players) {
     if(isdefined(player.prop)) {
@@ -927,15 +603,6 @@ function function_b811663a(var_32d4bb6a) {
   }
 }
 
-/*
-	Name: function_af3207f6
-	Namespace: namespace_4c773ed3
-	Checksum: 0x37D45F6D
-	Offset: 0x2B00
-	Size: 0x148
-	Parameters: 1
-	Flags: None
-*/
 function function_af3207f6(var_32d4bb6a) {
   foreach(player in level.players) {
     if(isdefined(player.propclones)) {
@@ -952,15 +619,6 @@ function function_af3207f6(var_32d4bb6a) {
   }
 }
 
-/*
-	Name: get_ground_normal
-	Namespace: namespace_4c773ed3
-	Checksum: 0x6C49E6EB
-	Offset: 0x2C50
-	Size: 0x3BE
-	Parameters: 2
-	Flags: None
-*/
 function get_ground_normal(var_a84e1ffa, debug) {
   if(!isdefined(var_a84e1ffa)) {
     ignore = self;
@@ -991,7 +649,6 @@ function get_ground_normal(var_a84e1ffa, debug) {
       var_d54ec402 = var_d54ec402 + trace["normal"];
       var_6146aef8++;
     }
-    /#
     if(debug) {
       if(tracehit) {
         line(point, point + (trace[""] * 30), (0, 1, 0));
@@ -999,39 +656,25 @@ function get_ground_normal(var_a84e1ffa, debug) {
       }
       sphere(point, 3, (1, 0, 0));
     }
-    # /
   }
   function_b811663a(0);
   if(var_6146aef8 > 0) {
     var_d54ec402 = var_d54ec402 / var_6146aef8;
-    /#
     if(debug) {
       line(self.origin, self.origin + (var_d54ec402 * 20), (1, 1, 1));
     }
-    # /
-      return var_d54ec402;
+    return var_d54ec402;
   }
-  /#
   if(debug) {
     sphere(self.origin, 5, (1, 0, 0));
   }
-  # /
-    return undefined;
+  return undefined;
 }
 
-/*
-	Name: propmoveunlock
-	Namespace: namespace_4c773ed3
-	Checksum: 0x6C819B5D
-	Offset: 0x3018
-	Size: 0x18E
-	Parameters: 0
-	Flags: None
-*/
 function propmoveunlock() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   var_f98cbcda = 0;
   var_bc31618a = 0;
   var_449744f5 = 0;
@@ -1057,15 +700,6 @@ function propmoveunlock() {
   }
 }
 
-/*
-	Name: unlockprop
-	Namespace: namespace_4c773ed3
-	Checksum: 0xAB53B618
-	Offset: 0x31B0
-	Size: 0x13C
-	Parameters: 0
-	Flags: None
-*/
 function unlockprop() {
   self unlink();
   self resetdoublejumprechargetime();
@@ -1083,15 +717,6 @@ function unlockprop() {
   }
 }
 
-/*
-	Name: lockprop
-	Namespace: namespace_4c773ed3
-	Checksum: 0x6C4ADE18
-	Offset: 0x32F8
-	Size: 0x144
-	Parameters: 0
-	Flags: None
-*/
 function lockprop() {
   if(!canlock()) {
     return;
@@ -1106,28 +731,19 @@ function lockprop() {
     self.propent linkto(self.propanchor);
   }
   self.lock = 1;
-  self notify(# "locked");
+  self notify("locked");
   if(prop::useprophudserver()) {
     self.lockpropkey.label = & "MP_PH_LOCKED";
     self thread flashlockpropkey();
   }
 }
 
-/*
-	Name: flashlockpropkey
-	Namespace: namespace_4c773ed3
-	Checksum: 0xA93CFCF3
-	Offset: 0x3448
-	Size: 0xEC
-	Parameters: 0
-	Flags: None
-*/
 function flashlockpropkey() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
-  self notify(# "flashlockpropkey");
-  self endon(# "flashlockpropkey");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
+  self notify("flashlockpropkey");
+  self endon("flashlockpropkey");
   var_ec404e3d = self.lockpropkey.startfontscale + 0.75;
   self.lockpropkey changefontscaleovertime(0.1);
   self.lockpropkey.fontscale = var_ec404e3d;
@@ -1138,54 +754,22 @@ function flashlockpropkey() {
   }
 }
 
-/*
-	Name: function_fd824ee5
-	Namespace: namespace_4c773ed3
-	Checksum: 0xEEDEB620
-	Offset: 0x3540
-	Size: 0x7A
-	Parameters: 0
-	Flags: None
-*/
 function function_fd824ee5() {
-  /#
   assert(isplayer(self));
-  # /
-    start = self.origin;
+  start = self.origin;
   end = start + (vectorscale((0, 0, -1), 2000));
   return playerphysicstrace(start, end);
 }
 
-/*
-	Name: function_b9733d59
-	Namespace: namespace_4c773ed3
-	Checksum: 0xA7C9C622
-	Offset: 0x35C8
-	Size: 0x94
-	Parameters: 0
-	Flags: None
-*/
 function function_b9733d59() {
-  /#
   assert(isplayer(self));
-  # /
-    start = self.origin;
+  start = self.origin;
   end = start + (vectorscale((0, 0, -1), 2000));
   trace = bullettrace(start, end, 0, self.prop);
   return trace;
 }
 
-/*
-	Name: function_2dff88ca
-	Namespace: namespace_4c773ed3
-	Checksum: 0x2D6A8CDD
-	Offset: 0x3668
-	Size: 0x1A4
-	Parameters: 9
-	Flags: None
-*/
 function function_2dff88ca(success, type, player, origin1, text1, origin2, text2, origin3, text3) {
-  /#
   if(!isdefined(level.var_ec1690fd)) {
     level.var_ec1690fd = spawnstruct();
   }
@@ -1201,18 +785,8 @@ function function_2dff88ca(success, type, player, origin1, text1, origin2, text2
   level.var_ec1690fd.text2 = text2;
   level.var_ec1690fd.origin3 = origin3;
   level.var_ec1690fd.text3 = text3;
-  # /
 }
 
-/*
-	Name: canlock
-	Namespace: namespace_4c773ed3
-	Checksum: 0x870959C3
-	Offset: 0x3818
-	Size: 0x6D8
-	Parameters: 0
-	Flags: None
-*/
 function canlock() {
   killtriggers = getentarray("trigger_hurt", "classname");
   oobtriggers = getentarray("trigger_out_of_bounds", "classname");
@@ -1223,93 +797,64 @@ function canlock() {
   }
   foreach(trigger in triggers) {
     if(trigger istouchingvolume(self.origin, self getmins(), self getmaxs())) {
-      /#
       function_2dff88ca(0, "", self, trigger.origin, trigger.classname);
-      # /
-        return false;
+      return false;
     }
   }
   if(self isplayerswimming()) {
-    /#
     function_2dff88ca(1, "", self);
-    # /
-      return true;
+    return true;
   }
   if(!self isonground() || self iswallrunning()) {
     trace1 = self function_b9733d59();
     frac = trace1["fraction"];
     org1 = trace1["position"];
     if(frac == 1) {
-      /#
       function_2dff88ca(0, "", self, org1, "");
-      # /
-        return false;
+      return false;
     }
     foreach(trigger in triggers) {
       if(trigger istouchingvolume(org1, self getmins(), self getmaxs())) {
-        /#
         function_2dff88ca(0, "", self, trigger.origin, trigger.classname);
-        # /
-          return false;
+        return false;
       }
     }
     point = getnearestpathpoint(org1, 256);
     if(!isdefined(point)) {
-      /#
       function_2dff88ca(0, "", self, org1);
-      # /
-        return false;
+      return false;
     }
     distz = point[2] - org1[2];
     if(distz > 50) {
       point2 = getnearestpathpoint(org1, 50);
       if(!isdefined(point2)) {
-        /#
         function_2dff88ca(0, "", self, org1, "", point, "");
-        # /
-          return false;
+        return false;
       }
     }
     dist2d = distance2d(point, org1);
     if(dist2d > 100) {
-      /#
       function_2dff88ca(0, "", self, org1, "", point, "");
-      # /
-        return false;
+      return false;
     }
     org2 = self function_fd824ee5();
     foreach(trigger in triggers) {
       if(trigger istouchingvolume(org2, self getmins(), self getmaxs())) {
-        /#
         function_2dff88ca(0, "", self, trigger.origin, trigger.classname);
-        # /
-          return false;
+        return false;
       }
     }
-    /#
     function_2dff88ca(1, "", self, org1, "", org2, "", point, "" + distance(org1, point));
-    # /
-      return true;
-  }
-  /#
-  function_2dff88ca(1, "", self);
-  # /
     return true;
+  }
+  function_2dff88ca(1, "", self);
+  return true;
 }
 
-/*
-	Name: propcamerazoom
-	Namespace: namespace_4c773ed3
-	Checksum: 0xE48D10B9
-	Offset: 0x3F00
-	Size: 0x1C8
-	Parameters: 0
-	Flags: None
-*/
 function propcamerazoom() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   var_8ea3acea = 10;
   self.thirdpersonrange = self.prop.info.proprange;
   while (true) {
@@ -1334,15 +879,6 @@ function propcamerazoom() {
   }
 }
 
-/*
-	Name: setnewabilityhud
-	Namespace: namespace_4c773ed3
-	Checksum: 0x83D231CB
-	Offset: 0x40D0
-	Size: 0x66
-	Parameters: 0
-	Flags: None
-*/
 function setnewabilityhud() {
   switch (self.currentability) {
     case "FLASH": {
@@ -1350,23 +886,12 @@ function setnewabilityhud() {
       break;
     }
     default: {
-      /#
       assertmsg("");
-      # /
-        break;
+      break;
     }
   }
 }
 
-/*
-	Name: setnewabilitycount
-	Namespace: namespace_4c773ed3
-	Checksum: 0xE9446F13
-	Offset: 0x4140
-	Size: 0xD6
-	Parameters: 2
-	Flags: None
-*/
 function setnewabilitycount(var_9c968389, count) {
   switch (var_9c968389) {
     case "FLASH": {
@@ -1384,59 +909,30 @@ function setnewabilitycount(var_9c968389, count) {
       break;
     }
     default: {
-      /#
       assertmsg("" + var_9c968389);
-      # /
-        break;
+      break;
     }
   }
 }
 
-/*
-	Name: endondeath
-	Namespace: namespace_4c773ed3
-	Checksum: 0x34B087B9
-	Offset: 0x4220
-	Size: 0x1E
-	Parameters: 0
-	Flags: None
-*/
 function endondeath() {
-  self waittill(# "death");
+  self waittill("death");
   waittillframeend();
-  self notify(# "end_explode");
+  self notify("end_explode");
 }
 
-/*
-	Name: flashtheprops
-	Namespace: namespace_4c773ed3
-	Checksum: 0xABFE86D4
-	Offset: 0x4248
-	Size: 0x84
-	Parameters: 1
-	Flags: None
-*/
 function flashtheprops(var_e967d644) {
-  level endon(# "game_ended");
-  var_e967d644 endon(# "disconnect");
+  level endon("game_ended");
+  var_e967d644 endon("disconnect");
   self thread endondeath();
-  self endon(# "end_explode");
-  self waittill(# "explode", position);
+  self endon("end_explode");
+  self waittill("explode", position);
   if(!isdefined(var_e967d644)) {
     return;
   }
   flashenemies(var_e967d644, position);
 }
 
-/*
-	Name: flashenemies
-	Namespace: namespace_4c773ed3
-	Checksum: 0xADBF8D03
-	Offset: 0x42D8
-	Size: 0x33A
-	Parameters: 2
-	Flags: None
-*/
 function flashenemies(var_e967d644 = self, position = self.origin) {
   playfx(fx::get("propFlash"), position + vectorscale((0, 0, 1), 4));
   playsoundatposition("mpl_emp_equip_stun", position);
@@ -1463,21 +959,12 @@ function flashenemies(var_e967d644 = self, position = self.origin) {
       dir = vectornormalize(vec);
       fwd = anglestoforward(otherplayer getplayerangles());
       var_b02fb38d = vectordot(fwd, dir);
-      otherplayer notify(# "flashbang", var_bdf6b2ee, var_b02fb38d, var_e967d644);
+      otherplayer notify("flashbang", var_bdf6b2ee, var_b02fb38d, var_e967d644);
       var_e967d644 thread damagefeedback::update();
     }
   }
 }
 
-/*
-	Name: deletepropsifatmax
-	Namespace: namespace_4c773ed3
-	Checksum: 0x9EC5F38
-	Offset: 0x4620
-	Size: 0x1E0
-	Parameters: 0
-	Flags: None
-*/
 function deletepropsifatmax() {
   var_b793211e = 9;
   if(level.phsettings.var_78280ce0) {
@@ -1508,23 +995,12 @@ function deletepropsifatmax() {
     }
     clones[clones.size] = clone;
   }
-  /#
   assert(isdefined(var_1292f83e));
-  # /
-    var_1292f83e notify(# "hash_63ce821c");
+  var_1292f83e notify("hash_63ce821c");
   var_1292f83e delete();
   self.propclones = clones;
 }
 
-/*
-	Name: cloneprop
-	Namespace: namespace_4c773ed3
-	Checksum: 0x6DA9C3B
-	Offset: 0x4808
-	Size: 0x286
-	Parameters: 0
-	Flags: None
-*/
 function cloneprop() {
   if(!isdefined(self.propclones)) {
     self.propclones = [];
@@ -1557,15 +1033,6 @@ function cloneprop() {
   self.propclones[self.propclones.size] = var_a20cbf64;
 }
 
-/*
-	Name: damageclonewatch
-	Namespace: namespace_4c773ed3
-	Checksum: 0xBF1929A5
-	Offset: 0x4A98
-	Size: 0x174
-	Parameters: 10
-	Flags: None
-*/
 function damageclonewatch(damage, attacker, direction_vec, point, meansofdeath, modelname, tagname, partname, weapon, idflags) {
   if(!isdefined(attacker)) {
     return;
@@ -1588,30 +1055,12 @@ function damageclonewatch(damage, attacker, direction_vec, point, meansofdeath, 
   self.health = self.health + damage;
 }
 
-/*
-	Name: function_8e6b5244
-	Namespace: namespace_4c773ed3
-	Checksum: 0x7CBA58A
-	Offset: 0x4C18
-	Size: 0x48
-	Parameters: 0
-	Flags: None
-*/
 function function_8e6b5244() {
   self.var_86fdc107.alpha = 1;
   self.var_86fdc107 fadeovertime(3);
   self.var_86fdc107.alpha = 0;
 }
 
-/*
-	Name: function_de01cce2
-	Namespace: namespace_4c773ed3
-	Checksum: 0x4CC87F24
-	Offset: 0x4C68
-	Size: 0x134
-	Parameters: 0
-	Flags: None
-*/
 function function_de01cce2() {
   self.var_86fdc107 = hud::createfontstring("objective", 1);
   self.var_86fdc107.label = & "SCORE_DECOY_KILLED";
@@ -1628,15 +1077,6 @@ function function_de01cce2() {
   self.var_86fdc107.hidewheninmenu = 0;
 }
 
-/*
-	Name: function_7a923efa
-	Namespace: namespace_4c773ed3
-	Checksum: 0xF9C86014
-	Offset: 0x4DA8
-	Size: 0xA4
-	Parameters: 2
-	Flags: None
-*/
 function function_7a923efa(var_8847a584, attacker) {
   if(isdefined(var_8847a584)) {
     if(!isdefined(var_8847a584.var_86fdc107)) {
@@ -1652,15 +1092,6 @@ function function_7a923efa(var_8847a584, attacker) {
   }
 }
 
-/*
-	Name: function_a40d8853
-	Namespace: namespace_4c773ed3
-	Checksum: 0xF30A778
-	Offset: 0x4E58
-	Size: 0x174
-	Parameters: 0
-	Flags: None
-*/
 function function_a40d8853() {
   if(level.phsettings.var_78280ce0) {
     thread function_7a923efa(self.playerowner, self.lastattacker);
@@ -1683,18 +1114,9 @@ function function_a40d8853() {
   }
 }
 
-/*
-	Name: function_7244ebc6
-	Namespace: namespace_4c773ed3
-	Checksum: 0x14F6CE7E
-	Offset: 0x4FD8
-	Size: 0x30C
-	Parameters: 3
-	Flags: None
-*/
 function function_7244ebc6(var_ad5f9a75, fade_in_time, fade_out_time) {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
+  level endon("game_ended");
+  self endon("disconnect");
   if(!isdefined(var_ad5f9a75)) {
     var_ad5f9a75 = 5;
   }
@@ -1704,10 +1126,8 @@ function function_7244ebc6(var_ad5f9a75, fade_in_time, fade_out_time) {
   if(!isdefined(fade_out_time)) {
     fade_out_time = 1;
   }
-  /#
   assert((fade_out_time + fade_in_time) < var_ad5f9a75);
-  # /
-    overlay = newclienthudelem(self);
+  overlay = newclienthudelem(self);
   overlay.foreground = 0;
   overlay.x = 0;
   overlay.y = 0;
@@ -1739,42 +1159,24 @@ function function_7244ebc6(var_ad5f9a75, fade_in_time, fade_out_time) {
   safedestroy(overlay);
 }
 
-/*
-	Name: watchspecialgrenadethrow
-	Namespace: namespace_4c773ed3
-	Checksum: 0xCCAB25F7
-	Offset: 0x52F0
-	Size: 0x9C
-	Parameters: 0
-	Flags: None
-*/
 function watchspecialgrenadethrow() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
-  self notify(# "watchspecialgrenadethrow");
-  self endon(# "watchspecialgrenadethrow");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
+  self notify("watchspecialgrenadethrow");
+  self endon("watchspecialgrenadethrow");
   while (true) {
-    self waittill(# "grenade_fire", grenade, weapon);
+    self waittill("grenade_fire", grenade, weapon);
     self thread function_899a39ec(grenade);
     self.thrownspecialcount = self.thrownspecialcount + 1;
   }
 }
 
-/*
-	Name: function_899a39ec
-	Namespace: namespace_4c773ed3
-	Checksum: 0x96E1A1A
-	Offset: 0x5398
-	Size: 0x108
-	Parameters: 1
-	Flags: None
-*/
 function function_899a39ec(grenade) {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
+  level endon("game_ended");
+  self endon("disconnect");
   weapon = grenade.weapon;
-  grenade waittill(# "explode", damageorigin);
+  grenade waittill("explode", damageorigin);
   if(!isdefined(level.var_56d3e86e)) {
     level.var_56d3e86e = [];
   }
@@ -1789,15 +1191,6 @@ function function_899a39ec(grenade) {
   level.var_56d3e86e[index] = undefined;
 }
 
-/*
-	Name: function_141daf3d
-	Namespace: namespace_4c773ed3
-	Checksum: 0x3DA62B3E
-	Offset: 0x54A8
-	Size: 0x10C
-	Parameters: 5
-	Flags: None
-*/
 function function_141daf3d(attacker, damageorigin, weapon, damage, meansofdeath) {
   index = level.var_56d3e86e.size;
   level.var_56d3e86e[index] = spawnstruct();
@@ -1810,15 +1203,6 @@ function function_141daf3d(attacker, damageorigin, weapon, damage, meansofdeath)
   return index;
 }
 
-/*
-	Name: function_770b4cfa
-	Namespace: namespace_4c773ed3
-	Checksum: 0x5C5988A6
-	Offset: 0x55C0
-	Size: 0xFE
-	Parameters: 6
-	Flags: None
-*/
 function function_770b4cfa(attacker, var_bf500123, meansofdeath, damage, damageorigin, weapon) {
   if(!isdefined(level.var_56d3e86e)) {
     level.var_56d3e86e = [];
@@ -1833,15 +1217,6 @@ function function_770b4cfa(attacker, var_bf500123, meansofdeath, damage, damageo
   }
 }
 
-/*
-	Name: function_913d23
-	Namespace: namespace_4c773ed3
-	Checksum: 0x7823D6F3
-	Offset: 0x56C8
-	Size: 0xA8
-	Parameters: 1
-	Flags: None
-*/
 function function_913d23(damageorigin) {
   if(!isdefined(level.var_56d3e86e)) {
     return;
@@ -1853,15 +1228,6 @@ function function_913d23(damageorigin) {
   }
 }
 
-/*
-	Name: function_af4e8351
-	Namespace: namespace_4c773ed3
-	Checksum: 0xC47AF14A
-	Offset: 0x5778
-	Size: 0x31E
-	Parameters: 1
-	Flags: None
-*/
 function function_af4e8351(index) {
   if(!isdefined(level.var_56d3e86e) || !isdefined(level.var_56d3e86e[index].attacker)) {
     return;
@@ -1893,15 +1259,6 @@ function function_af4e8351(index) {
   }
 }
 
-/*
-	Name: function_73052bdb
-	Namespace: namespace_4c773ed3
-	Checksum: 0x1A5663D3
-	Offset: 0x5AA0
-	Size: 0x19A
-	Parameters: 1
-	Flags: None
-*/
 function function_73052bdb(var_d18ea86a) {
   foreach(player in level.players) {
     if(isdefined(player.prop)) {
@@ -1922,15 +1279,6 @@ function function_73052bdb(var_d18ea86a) {
   }
 }
 
-/*
-	Name: function_564fbbef
-	Namespace: namespace_4c773ed3
-	Checksum: 0x931210E6
-	Offset: 0x5C48
-	Size: 0x1D8
-	Parameters: 1
-	Flags: None
-*/
 function function_564fbbef(var_d18ea86a) {
   foreach(player in level.players) {
     if(isdefined(player.propclones)) {
@@ -1955,15 +1303,6 @@ function function_564fbbef(var_d18ea86a) {
   }
 }
 
-/*
-	Name: function_b7d2b256
-	Namespace: namespace_4c773ed3
-	Checksum: 0x69F510
-	Offset: 0x5E28
-	Size: 0x132
-	Parameters: 1
-	Flags: None
-*/
 function function_b7d2b256(var_d18ea86a) {
   foreach(player in level.players) {
     if(!player util::isprop() || !isalive(player)) {
@@ -1979,15 +1318,6 @@ function function_b7d2b256(var_d18ea86a) {
   }
 }
 
-/*
-	Name: function_56938929
-	Namespace: namespace_4c773ed3
-	Checksum: 0x6AB0BC25
-	Offset: 0x5F68
-	Size: 0x132
-	Parameters: 1
-	Flags: None
-*/
 function function_56938929(var_d18ea86a) {
   foreach(player in level.players) {
     if(!player prop::function_e4b2f23() || !isalive(player)) {
@@ -2003,15 +1333,6 @@ function function_56938929(var_d18ea86a) {
   }
 }
 
-/*
-	Name: function_94e1618c
-	Namespace: namespace_4c773ed3
-	Checksum: 0x21210D8F
-	Offset: 0x60A8
-	Size: 0x56
-	Parameters: 1
-	Flags: None
-*/
 function function_94e1618c(damageorigin) {
   index = function_913d23(damageorigin);
   if(isdefined(index)) {
@@ -2020,15 +1341,6 @@ function function_94e1618c(damageorigin) {
   return 0;
 }
 
-/*
-	Name: function_fde936b5
-	Namespace: namespace_4c773ed3
-	Checksum: 0xCD6CF48B
-	Offset: 0x6108
-	Size: 0xAA
-	Parameters: 1
-	Flags: None
-*/
 function function_fde936b5(index) {
   foreach(var_f07e80d9 in level.var_56d3e86e[index].players) {
     if(isdefined(var_f07e80d9) && var_f07e80d9 == self) {
@@ -2038,30 +1350,12 @@ function function_fde936b5(index) {
   return false;
 }
 
-/*
-	Name: safesetalpha
-	Namespace: namespace_4c773ed3
-	Checksum: 0x7408BDE4
-	Offset: 0x61C0
-	Size: 0x30
-	Parameters: 2
-	Flags: None
-*/
 function safesetalpha(hudelem, var_9a1ea53a) {
   if(isdefined(hudelem)) {
     hudelem.alpha = var_9a1ea53a;
   }
 }
 
-/*
-	Name: propabilitykeysvisible
-	Namespace: namespace_4c773ed3
-	Checksum: 0x5BCB9CBA
-	Offset: 0x61F8
-	Size: 0x194
-	Parameters: 2
-	Flags: None
-*/
 function propabilitykeysvisible(visible, override) {
   if(isdefined(visible) && visible) {
     var_4d23023a = 1;
@@ -2083,15 +1377,6 @@ function propabilitykeysvisible(visible, override) {
   }
 }
 
-/*
-	Name: function_8b7be7e3
-	Namespace: namespace_4c773ed3
-	Checksum: 0x253A6D32
-	Offset: 0x6398
-	Size: 0xD8
-	Parameters: 0
-	Flags: None
-*/
 function function_8b7be7e3() {
   if(!isdefined(self.var_4a35819e)) {
     self.var_4a35819e = 1;
@@ -2111,67 +1396,28 @@ function function_8b7be7e3() {
   }
 }
 
-/*
-	Name: function_bf45ce54
-	Namespace: namespace_4c773ed3
-	Checksum: 0x6D93B601
-	Offset: 0x6478
-	Size: 0x7C
-	Parameters: 0
-	Flags: None
-*/
 function function_bf45ce54() {
-  /#
   assert(!isdefined(self.var_b47d9b7e));
-  # /
-    if(self issplitscreen()) {
-      self.currenthudy = -50;
-    }
-  else {
+  if(self issplitscreen()) {
+    self.currenthudy = -50;
+  } else {
     self.currenthudy = -100;
   }
-  self.var_b47d9b7e = addupperrighthudelem( & "MP_PH_PING");
+  self.var_b47d9b7e = addupperrighthudelem(&"MP_PH_PING");
 }
 
-/*
-	Name: function_227409a5
-	Namespace: namespace_4c773ed3
-	Checksum: 0xE71C7110
-	Offset: 0x6500
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function function_227409a5() {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
-  self waittill(# "death");
+  level endon("game_ended");
+  self endon("disconnect");
+  self waittill("death");
   self thread function_b4c19c50();
   self thread function_7fd4f3ae();
 }
 
-/*
-	Name: function_7fd4f3ae
-	Namespace: namespace_4c773ed3
-	Checksum: 0x52AECDFA
-	Offset: 0x6560
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function function_7fd4f3ae() {
   safedestroy(self.var_b47d9b7e);
 }
 
-/*
-	Name: function_b6740059
-	Namespace: namespace_4c773ed3
-	Checksum: 0x8F8510F9
-	Offset: 0x6588
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function function_b6740059() {
   if(isai(self)) {
     return;
@@ -2179,15 +1425,6 @@ function function_b6740059() {
   self notifyonplayercommand("ping", "+smoke");
 }
 
-/*
-	Name: function_b4c19c50
-	Namespace: namespace_4c773ed3
-	Checksum: 0xD435B370
-	Offset: 0x65D8
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function function_b4c19c50() {
   if(isai(self)) {
     return;
@@ -2195,51 +1432,20 @@ function function_b4c19c50() {
   self notifyonplayercommandremove("ping", "+smoke");
 }
 
-/*
-	Name: function_5951cacf
-	Namespace: namespace_4c773ed3
-	Checksum: 0xE2DAD99B
-	Offset: 0x6628
-	Size: 0x2E
-	Parameters: 0
-	Flags: None
-*/
 function function_5951cacf() {
-  /#
   if(isdefined(self.var_74ca9cd1) && self.var_74ca9cd1) {
     return 1;
   }
-  # /
-    return self.var_292246d3 > 0;
+  return self.var_292246d3 > 0;
 }
 
-/*
-	Name: function_2c53f5e6
-	Namespace: namespace_4c773ed3
-	Checksum: 0x3FDFAC9
-	Offset: 0x6660
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function function_2c53f5e6() {
-  /#
   if(isdefined(self.var_74ca9cd1) && self.var_74ca9cd1) {
     return;
   }
-  # /
-    function_afeda2bf(self.var_292246d3 - 1);
+  function_afeda2bf(self.var_292246d3 - 1);
 }
 
-/*
-	Name: function_afeda2bf
-	Namespace: namespace_4c773ed3
-	Checksum: 0xFE48798A
-	Offset: 0x66B0
-	Size: 0x74
-	Parameters: 1
-	Flags: None
-*/
 function function_afeda2bf(newvalue) {
   self.var_292246d3 = newvalue;
   if(prop::useprophudserver()) {
@@ -2250,19 +1456,10 @@ function function_afeda2bf(newvalue) {
   }
 }
 
-/*
-	Name: function_1abcc66
-	Namespace: namespace_4c773ed3
-	Checksum: 0x44BC984
-	Offset: 0x6730
-	Size: 0xC0
-	Parameters: 0
-	Flags: None
-*/
 function function_1abcc66() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   if(isai(self)) {
     return;
   }
@@ -2278,15 +1475,6 @@ function function_1abcc66() {
   }
 }
 
-/*
-	Name: function_38543493
-	Namespace: namespace_4c773ed3
-	Checksum: 0xF20F30F2
-	Offset: 0x67F8
-	Size: 0x84
-	Parameters: 0
-	Flags: None
-*/
 function function_38543493() {
   if(!level flag::get("props_hide_over")) {
     return;
@@ -2300,19 +1488,10 @@ function function_38543493() {
   }
 }
 
-/*
-	Name: function_aac4667c
-	Namespace: namespace_4c773ed3
-	Checksum: 0xBEE6A8E1
-	Offset: 0x6888
-	Size: 0x2CA
-	Parameters: 0
-	Flags: None
-*/
 function function_aac4667c() {
-  level endon(# "game_ended");
-  self endon(# "disconnect");
-  self endon(# "death");
+  level endon("game_ended");
+  self endon("disconnect");
+  self endon("death");
   self.var_ad7b9a66 = 1;
   if(prop::useprophudserver()) {
     self.var_b47d9b7e.alpha = 0.5;
@@ -2338,21 +1517,12 @@ function function_aac4667c() {
     self.var_b47d9b7e.alpha = 1;
   }
   self.var_ad7b9a66 = 0;
-  self notify(# "hash_9c5a8370");
+  self notify("hash_9c5a8370");
 }
 
-/*
-	Name: function_41584b4b
-	Namespace: namespace_4c773ed3
-	Checksum: 0x87991EE3
-	Offset: 0x6B60
-	Size: 0x5C
-	Parameters: 1
-	Flags: None
-*/
 function function_41584b4b(var_6f71e4e9) {
-  level endon(# "game_ended");
-  self endon(# "hash_9c5a8370");
+  level endon("game_ended");
+  self endon("hash_9c5a8370");
   self util::waittill_either("disconnect", "death");
   gameobjects::release_obj_id(var_6f71e4e9);
 }

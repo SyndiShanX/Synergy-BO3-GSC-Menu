@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_tomb_teleporter.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
@@ -15,20 +19,9 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\zm_tomb_utility;
 #using scripts\zm\zm_tomb_vo;
-
 #using_animtree("generic");
-
 #namespace zm_tomb_teleporter;
 
-/*
-	Name: teleporter_init
-	Namespace: zm_tomb_teleporter
-	Checksum: 0xD465D605
-	Offset: 0x760
-	Size: 0x4EC
-	Parameters: 0
-	Flags: Linked
-*/
 function teleporter_init() {
   clientfield::register("scriptmover", "teleporter_fx", 21000, 1, "int");
   clientfield::register("allplayers", "teleport_arrival_departure_fx", 21000, 1, "counter");
@@ -70,29 +63,11 @@ function teleporter_init() {
   spawn_stargate_fx_origins();
 }
 
-/*
-	Name: main
-	Namespace: zm_tomb_teleporter
-	Checksum: 0x7B094424
-	Offset: 0xC58
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   a_s_teleporters = struct::get_array("trigger_teleport_pad", "targetname");
   array::thread_all(a_s_teleporters, & run_chamber_entrance_teleporter);
 }
 
-/*
-	Name: teleporter_samantha_chamber_line
-	Namespace: zm_tomb_teleporter
-	Checksum: 0xDBC81494
-	Offset: 0xCB8
-	Size: 0x1C0
-	Parameters: 0
-	Flags: Linked
-*/
 function teleporter_samantha_chamber_line() {
   max_dist_sq = 640000;
   level.sam_chamber_line_played = 0;
@@ -111,15 +86,6 @@ function teleporter_samantha_chamber_line() {
   }
 }
 
-/*
-	Name: play_teleporter_samantha_chamber_line
-	Namespace: zm_tomb_teleporter
-	Checksum: 0x9255FF40
-	Offset: 0xE80
-	Size: 0xF4
-	Parameters: 1
-	Flags: Linked
-*/
 function play_teleporter_samantha_chamber_line(e_player) {
   if(level.sam_chamber_line_played) {
     return;
@@ -134,15 +100,6 @@ function play_teleporter_samantha_chamber_line(e_player) {
   level flag::clear("story_vo_playing");
 }
 
-/*
-	Name: run_chamber_exit
-	Namespace: zm_tomb_teleporter
-	Checksum: 0x9569B4A7
-	Offset: 0xF80
-	Size: 0x618
-	Parameters: 1
-	Flags: Linked
-*/
 function run_chamber_exit(n_enum) {
   s_portal = level.a_teleport_exits[n_enum];
   s_activate_pos = level.a_teleport_exit_triggers[n_enum];
@@ -151,7 +108,7 @@ function run_chamber_exit(n_enum) {
   str_building_flag = e_portal_frame.targetname + "_building";
   level flag::init(str_building_flag);
   s_activate_pos.trigger_stub = zm_tomb_utility::tomb_spawn_trigger_radius(s_activate_pos.origin, 50, 1);
-  s_activate_pos.trigger_stub zm_tomb_utility::set_unitrigger_hint_string( & "ZM_TOMB_TELE");
+  s_activate_pos.trigger_stub zm_tomb_utility::set_unitrigger_hint_string(&"ZM_TOMB_TELE");
   s_portal.target = s_activate_pos.target;
   s_portal.origin = e_portal_frame gettagorigin("fx_portal_jnt");
   s_portal.angles = e_portal_frame gettagangles("fx_portal_jnt");
@@ -182,7 +139,7 @@ function run_chamber_exit(n_enum) {
   }
   level flag::wait_till("start_zombie_round_logic");
   while (true) {
-    s_activate_pos.trigger_stub waittill(# "trigger", e_player);
+    s_activate_pos.trigger_stub waittill("trigger", e_player);
     if(!zombie_utility::is_player_valid(e_player)) {
       continue;
     }
@@ -212,25 +169,16 @@ function run_chamber_exit(n_enum) {
     e_portal_frame thread scene::play("p7_fxanim_zm_ori_portal_collapse_bundle", e_portal_frame);
     e_portal_frame stoploopsound(0.5);
     e_portal_frame playsound("zmb_teleporter_anim_collapse_pew");
-    s_portal notify(# "teleporter_radius_stop");
+    s_portal notify("teleporter_radius_stop");
     e_fx clientfield::set("element_glow_fx", 0);
     wait(collapse_time);
     e_fx delete();
-    s_activate_pos.trigger_stub zm_tomb_utility::set_unitrigger_hint_string( & "ZM_TOMB_TELE");
+    s_activate_pos.trigger_stub zm_tomb_utility::set_unitrigger_hint_string(&"ZM_TOMB_TELE");
   }
 }
 
-/*
-	Name: run_chamber_entrance_teleporter
-	Namespace: zm_tomb_teleporter
-	Checksum: 0x4DACA049
-	Offset: 0x15A0
-	Size: 0x620
-	Parameters: 0
-	Flags: Linked
-*/
 function run_chamber_entrance_teleporter() {
-  self endon(# "death");
+  self endon("death");
   fx_glow = zm_tomb_utility::get_teleport_fx_from_enum(self.script_int);
   e_model = level.a_teleport_models[self.script_int];
   self.origin = e_model gettagorigin("fx_portal_jnt");
@@ -312,17 +260,8 @@ function run_chamber_entrance_teleporter() {
   }
 }
 
-/*
-	Name: teleporter_radius_think
-	Namespace: zm_tomb_teleporter
-	Checksum: 0xBEAD5EB0
-	Offset: 0x1BC8
-	Size: 0x1F8
-	Parameters: 1
-	Flags: Linked
-*/
 function teleporter_radius_think(radius = 120) {
-  self endon(# "teleporter_radius_stop");
+  self endon("teleporter_radius_stop");
   radius_sq = radius * radius;
   while (true) {
     a_players = getplayers();
@@ -338,80 +277,35 @@ function teleporter_radius_think(radius = 120) {
   }
 }
 
-/*
-	Name: stargate_teleport_think
-	Namespace: zm_tomb_teleporter
-	Checksum: 0x246970BA
-	Offset: 0x1DC8
-	Size: 0x148
-	Parameters: 0
-	Flags: Linked
-*/
 function stargate_teleport_think() {
-  self endon(# "death");
+  self endon("death");
   level endon("disable_teleporter_" + self.script_int);
   e_potal = level.a_teleport_models[self.script_int];
   while (true) {
-    self.trigger_stub waittill(# "trigger", e_player);
+    self.trigger_stub waittill("trigger", e_player);
     if(e_player getstance() != "prone" && (!(isdefined(e_player.teleporting) && e_player.teleporting))) {
       playfx(level._effect["teleport_3p"], self.origin, (1, 0, 0), (0, 0, 1));
       playsoundatposition("zmb_teleporter_tele_3d", self.origin);
-      level notify(# "player_teleported", e_player, self.script_int);
+      level notify("player_teleported", e_player, self.script_int);
       level thread stargate_teleport_player(self.target, e_player);
     }
   }
 }
 
-/*
-	Name: stargate_teleport_enable
-	Namespace: zm_tomb_teleporter
-	Checksum: 0xFF792546
-	Offset: 0x1F18
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function stargate_teleport_enable(n_index) {
   level flag::set("enable_teleporter_" + n_index);
 }
 
-/*
-	Name: stargate_teleport_disable
-	Namespace: zm_tomb_teleporter
-	Checksum: 0x7247448C
-	Offset: 0x1F50
-	Size: 0x2C
-	Parameters: 1
-	Flags: Linked
-*/
 function stargate_teleport_disable(n_index) {
   level flag::clear("enable_teleporter_" + n_index);
 }
 
-/*
-	Name: stargate_play_fx
-	Namespace: zm_tomb_teleporter
-	Checksum: 0x3DAC4BB3
-	Offset: 0x1F88
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function stargate_play_fx() {
   self.e_fx clientfield::set("teleporter_fx", 1);
-  self waittill(# "stop_teleport_fx");
+  self waittill("stop_teleport_fx");
   self.e_fx clientfield::set("teleporter_fx", 0);
 }
 
-/*
-	Name: spawn_stargate_fx_origins
-	Namespace: zm_tomb_teleporter
-	Checksum: 0x21494F7E
-	Offset: 0x1FF0
-	Size: 0x17E
-	Parameters: 0
-	Flags: Linked
-*/
 function spawn_stargate_fx_origins() {
   a_teleport_positions = struct::get_array("teleport_room", "script_noteworthy");
   foreach(s_teleport in a_teleport_positions) {
@@ -422,15 +316,6 @@ function spawn_stargate_fx_origins() {
   }
 }
 
-/*
-	Name: stargate_teleport_player
-	Namespace: zm_tomb_teleporter
-	Checksum: 0x3E21FBA1
-	Offset: 0x2178
-	Size: 0x6EC
-	Parameters: 4
-	Flags: Linked
-*/
 function stargate_teleport_player(str_teleport_to, player, n_teleport_time_sec = 2, show_fx = 1) {
   player.teleporting = 1;
   player clientfield::increment("teleport_arrival_departure_fx");
@@ -480,7 +365,7 @@ function stargate_teleport_player(str_teleport_to, player, n_teleport_time_sec =
     player thread hud::fade_to_black_for_x_sec(0, var_c5af343b + 0.3, 0, 0.5, "white");
     util::wait_network_frame();
   }
-  image_room notify(# "stop_teleport_fx");
+  image_room notify("stop_teleport_fx");
   a_pos = struct::get_array(str_teleport_to, "targetname");
   s_pos = get_free_teleport_pos(player, a_pos);
   player unlink();
@@ -499,18 +384,9 @@ function stargate_teleport_player(str_teleport_to, player, n_teleport_time_sec =
   }
   player.teleporting = 0;
   player clientfield::increment("teleport_arrival_departure_fx");
-  player notify(# "teleport_finished");
+  player notify("teleport_finished");
 }
 
-/*
-	Name: is_teleport_landing_valid
-	Namespace: zm_tomb_teleporter
-	Checksum: 0xBC98AC65
-	Offset: 0x2870
-	Size: 0xF2
-	Parameters: 2
-	Flags: Linked
-*/
 function is_teleport_landing_valid(s_pos, n_radius) {
   n_radius_sq = n_radius * n_radius;
   a_players = getplayers();
@@ -522,15 +398,6 @@ function is_teleport_landing_valid(s_pos, n_radius) {
   return true;
 }
 
-/*
-	Name: get_free_teleport_pos
-	Namespace: zm_tomb_teleporter
-	Checksum: 0x36C867A9
-	Offset: 0x2970
-	Size: 0xF0
-	Parameters: 2
-	Flags: Linked
-*/
 function get_free_teleport_pos(player, a_structs) {
   n_player_radius = 64;
   while (true) {

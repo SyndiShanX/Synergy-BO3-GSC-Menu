@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\_wager.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
@@ -12,44 +16,16 @@
 #using scripts\shared\persistence_shared;
 #using scripts\shared\rank_shared;
 #using scripts\shared\system_shared;
-
 #namespace wager;
 
-/*
-	Name: __init__sytem__
-	Namespace: wager
-	Checksum: 0x4536B6EE
-	Offset: 0x4A0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("wager", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: wager
-	Checksum: 0x3CADDBD5
-	Offset: 0x4E0
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
 }
 
-/*
-	Name: init
-	Namespace: wager
-	Checksum: 0xB9C22F27
-	Offset: 0x510
-	Size: 0x138
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   if(gamemodeismode(3)) {
     level.wagermatch = 1;
@@ -70,17 +46,8 @@ function init() {
   level.takelivesondeath = 1;
 }
 
-/*
-	Name: init_player
-	Namespace: wager
-	Checksum: 0x6C7AF0A0
-	Offset: 0x650
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_player() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(!isdefined(self.pers["wager"])) {
     self.pers["wager"] = 1;
     self.pers["wager_sideBetWinnings"] = 0;
@@ -96,30 +63,12 @@ function init_player() {
   self thread deduct_player_ante();
 }
 
-/*
-	Name: on_disconnect
-	Namespace: wager
-	Checksum: 0xDAC09660
-	Offset: 0x750
-	Size: 0x26
-	Parameters: 0
-	Flags: Linked
-*/
 function on_disconnect() {
-  level endon(# "game_ended");
-  self endon(# "player_eliminated");
-  level notify(# "player_eliminated");
+  level endon("game_ended");
+  self endon("player_eliminated");
+  level notify("player_eliminated");
 }
 
-/*
-	Name: deduct_player_ante
-	Namespace: wager
-	Checksum: 0x8CB060CA
-	Offset: 0x780
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function deduct_player_ante() {
   if(isdefined(self.pers["hasPaidWagerAnte"])) {
     return;
@@ -148,15 +97,6 @@ function deduct_player_ante() {
   self thread persistence::upload_stats_soon();
 }
 
-/*
-	Name: increment_escrow_for_player
-	Namespace: wager
-	Checksum: 0x7E34E204
-	Offset: 0x930
-	Size: 0xE6
-	Parameters: 1
-	Flags: Linked
-*/
 function increment_escrow_for_player(amount) {
   if(!isdefined(self) || !isplayer(self)) {
     return;
@@ -174,15 +114,6 @@ function increment_escrow_for_player(amount) {
   game["escrows"][game["escrows"].size] = escrowstruct;
 }
 
-/*
-	Name: clear_escrows
-	Namespace: wager
-	Checksum: 0x1871A970
-	Offset: 0xA20
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function clear_escrows() {
   if(!isdefined(game["escrows"])) {
     return;
@@ -195,44 +126,17 @@ function clear_escrows() {
   game["escrows"] = [];
 }
 
-/*
-	Name: add_recent_earnings_to_stat
-	Namespace: wager
-	Checksum: 0x388EFB3
-	Offset: 0xAC0
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function add_recent_earnings_to_stat(recentearnings) {
   currearnings = self persistence::get_recent_stat(1, 0, "score");
   self persistence::set_recent_stat(1, 0, "score", currearnings + recentearnings);
 }
 
-/*
-	Name: prematch_period
-	Namespace: wager
-	Checksum: 0xD805903C
-	Offset: 0xB30
-	Size: 0x10
-	Parameters: 0
-	Flags: None
-*/
 function prematch_period() {
   if(!level.wagermatch) {
     return;
   }
 }
 
-/*
-	Name: finalize_round
-	Namespace: wager
-	Checksum: 0x54364A0A
-	Offset: 0xB48
-	Size: 0x40
-	Parameters: 0
-	Flags: None
-*/
 function finalize_round() {
   if(level.wagermatch == 0) {
     return;
@@ -245,15 +149,6 @@ function finalize_round() {
   }
 }
 
-/*
-	Name: determine_winnings
-	Namespace: wager
-	Checksum: 0x57F695C7
-	Offset: 0xB90
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function determine_winnings() {
   shouldcalculatewinnings = !isdefined(level.dontcalcwagerwinnings) || !level.dontcalcwagerwinnings;
   if(!shouldcalculatewinnings) {
@@ -266,15 +161,6 @@ function determine_winnings() {
   }
 }
 
-/*
-	Name: calculate_free_for_all_payouts
-	Namespace: wager
-	Checksum: 0xE3D4035B
-	Offset: 0xC08
-	Size: 0x324
-	Parameters: 0
-	Flags: Linked
-*/
 function calculate_free_for_all_payouts() {
   playerrankings = level.placement["all"];
   payoutpercentages = array(0.5, 0.3, 0.2);
@@ -316,15 +202,6 @@ function calculate_free_for_all_payouts() {
   }
 }
 
-/*
-	Name: calculate_places_based_on_score
-	Namespace: wager
-	Checksum: 0xB112634B
-	Offset: 0xF38
-	Size: 0x16A
-	Parameters: 0
-	Flags: None
-*/
 function calculate_places_based_on_score() {
   level.playerplaces = array([], [], []);
   playerrankings = level.placement["all"];
@@ -343,15 +220,6 @@ function calculate_places_based_on_score() {
   }
 }
 
-/*
-	Name: calculate_team_payouts
-	Namespace: wager
-	Checksum: 0x153F95BB
-	Offset: 0x10B0
-	Size: 0x17C
-	Parameters: 0
-	Flags: Linked
-*/
 function calculate_team_payouts() {
   winner = globallogic::determineteamwinnerbygamestat("teamScores");
   if(winner == "tie") {
@@ -374,30 +242,12 @@ function calculate_team_payouts() {
   set_winnings_on_players(playersonwinningteam, winningssplit);
 }
 
-/*
-	Name: set_winnings_on_players
-	Namespace: wager
-	Checksum: 0x6471967
-	Offset: 0x1238
-	Size: 0x56
-	Parameters: 2
-	Flags: Linked
-*/
 function set_winnings_on_players(players, amount) {
   for (index = 0; index < players.size; index++) {
     players[index].wagerwinnings = amount;
   }
 }
 
-/*
-	Name: finalize_game
-	Namespace: wager
-	Checksum: 0xAC6BC935
-	Offset: 0x1298
-	Size: 0x17C
-	Parameters: 0
-	Flags: None
-*/
 function finalize_game() {
   level.wagergamefinalized = 1;
   if(level.wagermatch == 0) {
@@ -422,15 +272,6 @@ function finalize_game() {
   clear_escrows();
 }
 
-/*
-	Name: pay_out_winnings
-	Namespace: wager
-	Checksum: 0x92C75E49
-	Offset: 0x1420
-	Size: 0xA4
-	Parameters: 2
-	Flags: Linked
-*/
 function pay_out_winnings(player, winnings) {
   if(winnings == 0) {
     return;
@@ -441,15 +282,6 @@ function pay_out_winnings(player, winnings) {
   player add_recent_earnings_to_stat(winnings);
 }
 
-/*
-	Name: determine_top_earners
-	Namespace: wager
-	Checksum: 0xF5E7D3E7
-	Offset: 0x14D0
-	Size: 0x210
-	Parameters: 0
-	Flags: Linked
-*/
 function determine_top_earners() {
   topwinnings = array(-1, -1, -1);
   level.wagertopearners = [];
@@ -481,50 +313,23 @@ function determine_top_earners() {
   }
 }
 
-/*
-	Name: post_round_side_bet
-	Namespace: wager
-	Checksum: 0xA275EBE9
-	Offset: 0x16E8
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function post_round_side_bet() {
   if(isdefined(level.sidebet) && level.sidebet) {
-    level notify(# "side_bet_begin");
-    level waittill(# "side_bet_end");
+    level notify("side_bet_begin");
+    level waittill("side_bet_end");
   }
 }
 
-/*
-	Name: side_bet_timer
-	Namespace: wager
-	Checksum: 0x9672D0C5
-	Offset: 0x1728
-	Size: 0x5A
-	Parameters: 0
-	Flags: None
-*/
 function side_bet_timer() {
-  level endon(# "side_bet_end");
+  level endon("side_bet_end");
   secondstowait = (level.sidebetendtime - gettime()) / 1000;
   if(secondstowait < 0) {
     secondstowait = 0;
   }
   wait(secondstowait);
-  level notify(# "side_bet_end");
+  level notify("side_bet_end");
 }
 
-/*
-	Name: side_bet_all_bets_placed
-	Namespace: wager
-	Checksum: 0x84B1CF3C
-	Offset: 0x1790
-	Size: 0x5E
-	Parameters: 0
-	Flags: None
-*/
 function side_bet_all_bets_placed() {
   secondsleft = (level.sidebetendtime - gettime()) / 1000;
   if(secondsleft <= 3) {
@@ -532,18 +337,9 @@ function side_bet_all_bets_placed() {
   }
   level.sidebetendtime = gettime() + 3000;
   wait(3);
-  level notify(# "side_bet_end");
+  level notify("side_bet_end");
 }
 
-/*
-	Name: setup_blank_random_player
-	Namespace: wager
-	Checksum: 0x19C575F2
-	Offset: 0x17F8
-	Size: 0x1D4
-	Parameters: 3
-	Flags: None
-*/
 function setup_blank_random_player(takeweapons, chooserandombody, weapon) {
   if(!isdefined(chooserandombody) || chooserandombody) {
     if(!isdefined(self.pers["wagerBodyAssigned"])) {
@@ -571,50 +367,23 @@ function setup_blank_random_player(takeweapons, chooserandombody, weapon) {
   self set_radar_visibility();
 }
 
-/*
-	Name: assign_random_body
-	Namespace: wager
-	Checksum: 0x99EC1590
-	Offset: 0x19D8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function assign_random_body() {}
 
-/*
-	Name: queue_popup
-	Namespace: wager
-	Checksum: 0xE6FA9FD7
-	Offset: 0x19E8
-	Size: 0xEA
-	Parameters: 4
-	Flags: Linked
-*/
 function queue_popup(message, points, submessage, announcement) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   size = self.wagernotifyqueue.size;
   self.wagernotifyqueue[size] = spawnstruct();
   self.wagernotifyqueue[size].message = message;
   self.wagernotifyqueue[size].points = points;
   self.wagernotifyqueue[size].submessage = submessage;
   self.wagernotifyqueue[size].announcement = announcement;
-  self notify(# "hash_2528173");
+  self notify("hash_2528173");
 }
 
-/*
-	Name: help_game_end
-	Namespace: wager
-	Checksum: 0x27B05098
-	Offset: 0x1AE0
-	Size: 0x22C
-	Parameters: 0
-	Flags: Linked
-*/
 function help_game_end() {
-  level endon(# "game_ended");
+  level endon("game_ended");
   for (;;) {
-    level waittill(# "player_eliminated");
+    level waittill("player_eliminated");
     if(!isdefined(level.numlives) || !level.numlives) {
       continue;
     }
@@ -628,14 +397,12 @@ function help_game_end() {
     }
     if(playersleft == 2) {
       for (i = 0; i < players.size; i++) {
-        players[i] queue_popup( & "MP_HEADS_UP", 0, & "MP_U2_ONLINE", "wm_u2_online");
+        players[i] queue_popup(&"MP_HEADS_UP", 0, & "MP_U2_ONLINE", "wm_u2_online");
         players[i].pers["hasRadar"] = 1;
         players[i].hasspyplane = 1;
         if(level.teambased) {
-          /#
           assert(isdefined(players[i].team));
-          # /
-            level.activeplayeruavs[players[i].team]++;
+          level.activeplayeruavs[players[i].team]++;
         } else {
           level.activeplayeruavs[players[i] getentitynumber()]++;
         }
@@ -645,15 +412,6 @@ function help_game_end() {
   }
 }
 
-/*
-	Name: set_radar_visibility
-	Namespace: wager
-	Checksum: 0xC24C7CA8
-	Offset: 0x1D18
-	Size: 0x124
-	Parameters: 0
-	Flags: Linked
-*/
 function set_radar_visibility() {
   prevscoreplace = self.prevscoreplace;
   if(!isdefined(prevscoreplace)) {
@@ -674,18 +432,9 @@ function set_radar_visibility() {
   }
 }
 
-/*
-	Name: player_scored
-	Namespace: wager
-	Checksum: 0x2F4ACB0E
-	Offset: 0x1E48
-	Size: 0x24E
-	Parameters: 0
-	Flags: Linked
-*/
 function player_scored() {
-  self notify(# "wager_player_scored");
-  self endon(# "wager_player_scored");
+  self notify("wager_player_scored");
+  self endon("wager_player_scored");
   wait(0.05);
   globallogic::updateplacement();
   for (i = 0; i < level.placement["all"].size; i++) {
@@ -711,28 +460,10 @@ function player_scored() {
   }
 }
 
-/*
-	Name: announcer
-	Namespace: wager
-	Checksum: 0x40494DF4
-	Offset: 0x20A0
-	Size: 0x34
-	Parameters: 2
-	Flags: Linked
-*/
 function announcer(dialog, group) {
   self globallogic_audio::leader_dialog_on_player(dialog, group);
 }
 
-/*
-	Name: create_powerup
-	Namespace: wager
-	Checksum: 0x3DCCFCE4
-	Offset: 0x20E0
-	Size: 0xA4
-	Parameters: 4
-	Flags: Linked
-*/
 function create_powerup(name, type, displayname, iconmaterial) {
   powerup = spawnstruct();
   powerup.name = [];
@@ -743,15 +474,6 @@ function create_powerup(name, type, displayname, iconmaterial) {
   return powerup;
 }
 
-/*
-	Name: add_powerup
-	Namespace: wager
-	Checksum: 0x1497ACF0
-	Offset: 0x2190
-	Size: 0x106
-	Parameters: 4
-	Flags: None
-*/
 function add_powerup(name, type, displayname, iconmaterial) {
   if(!isdefined(level.poweruplist)) {
     level.poweruplist = [];
@@ -766,28 +488,10 @@ function add_powerup(name, type, displayname, iconmaterial) {
   level.poweruplist[level.poweruplist.size] = powerup;
 }
 
-/*
-	Name: copy_powerup
-	Namespace: wager
-	Checksum: 0xAB3DD321
-	Offset: 0x22A0
-	Size: 0x52
-	Parameters: 1
-	Flags: Linked
-*/
 function copy_powerup(powerup) {
   return create_powerup(powerup.name[0], powerup.type, powerup.displayname, powerup.iconmaterial);
 }
 
-/*
-	Name: apply_powerup
-	Namespace: wager
-	Checksum: 0xCE8A6409
-	Offset: 0x2300
-	Size: 0x2FA
-	Parameters: 1
-	Flags: Linked
-*/
 function apply_powerup(powerup) {
   weapon = level.weaponnone;
   switch (powerup.type) {
@@ -845,15 +549,6 @@ function apply_powerup(powerup) {
   }
 }
 
-/*
-	Name: give_powerup
-	Namespace: wager
-	Checksum: 0xA70BB669
-	Offset: 0x2608
-	Size: 0x124
-	Parameters: 2
-	Flags: None
-*/
 function give_powerup(powerup, doanimation) {
   if(!isdefined(self.powerups)) {
     self.powerups = [];
@@ -867,22 +562,13 @@ function give_powerup(powerup, doanimation) {
   self thread show_powerup_message(powerupindex, doanimation);
 }
 
-/*
-	Name: pulse_powerup_icon
-	Namespace: wager
-	Checksum: 0x38106C2F
-	Offset: 0x2738
-	Size: 0x2D4
-	Parameters: 1
-	Flags: None
-*/
 function pulse_powerup_icon(powerupindex) {
   if(!isdefined(self) || !isdefined(self.powerups) || !isdefined(self.powerups[powerupindex]) || !isdefined(self.powerups[powerupindex].hud_elem_icon)) {
     return;
   }
-  self endon(# "disconnect");
-  self endon(# "delete");
-  self endon(# "clearing_powerups");
+  self endon("disconnect");
+  self endon("delete");
+  self endon("clearing_powerups");
   pulsepercent = 1.5;
   pulsetime = 0.5;
   hud_elem = self.powerups[powerupindex].hud_elem_icon;
@@ -908,19 +594,10 @@ function pulse_powerup_icon(powerupindex) {
   hud_elem.y = origy;
 }
 
-/*
-	Name: show_powerup_message
-	Namespace: wager
-	Checksum: 0x5C8AAE69
-	Offset: 0x2A18
-	Size: 0xA70
-	Parameters: 2
-	Flags: Linked
-*/
 function show_powerup_message(powerupindex, doanimation) {
-  self endon(# "disconnect");
-  self endon(# "delete");
-  self endon(# "clearing_powerups");
+  self endon("disconnect");
+  self endon("delete");
+  self endon("clearing_powerups");
   if(!isdefined(doanimation)) {
     doanimation = 1;
   }
@@ -990,7 +667,7 @@ function show_powerup_message(powerupindex, doanimation) {
     wait(pulsetime);
   }
   if(level.inprematchperiod) {
-    level waittill(# "prematch_over");
+    level waittill("prematch_over");
   } else if(doanimation) {
     wait(pulsetime);
   }
@@ -1011,17 +688,8 @@ function show_powerup_message(powerupindex, doanimation) {
   self.powerups[powerupindex].hud_elem_icon.animating = 0;
 }
 
-/*
-	Name: clear_powerups
-	Namespace: wager
-	Checksum: 0xB0254735
-	Offset: 0x3490
-	Size: 0xF8
-	Parameters: 0
-	Flags: None
-*/
 function clear_powerups() {
-  self notify(# "clearing_powerups");
+  self notify("clearing_powerups");
   if(isdefined(self.powerups) && isdefined(self.powerups.size)) {
     for (i = 0; i < self.powerups.size; i++) {
       if(isdefined(self.powerups[i].hud_elem)) {
@@ -1035,15 +703,6 @@ function clear_powerups() {
   self.powerups = [];
 }
 
-/*
-	Name: track_weapon_usage
-	Namespace: wager
-	Checksum: 0x7568873E
-	Offset: 0x3590
-	Size: 0xB4
-	Parameters: 3
-	Flags: None
-*/
 function track_weapon_usage(name, incvalue, statname) {
   if(!isdefined(self.wagerweaponusage)) {
     self.wagerweaponusage = [];
@@ -1057,15 +716,6 @@ function track_weapon_usage(name, incvalue, statname) {
   self.wagerweaponusage[name][statname] = self.wagerweaponusage[name][statname] + incvalue;
 }
 
-/*
-	Name: get_highest_weapon_usage
-	Namespace: wager
-	Checksum: 0xA05E4232
-	Offset: 0x3650
-	Size: 0x136
-	Parameters: 1
-	Flags: Linked
-*/
 function get_highest_weapon_usage(statname) {
   if(!isdefined(self.wagerweaponusage)) {
     return undefined;
@@ -1089,15 +739,6 @@ function get_highest_weapon_usage(statname) {
   return bestweapon;
 }
 
-/*
-	Name: set_after_action_report_stats
-	Namespace: wager
-	Checksum: 0x44A3E55D
-	Offset: 0x3790
-	Size: 0x16E
-	Parameters: 0
-	Flags: None
-*/
 function set_after_action_report_stats() {
   topweapon = self get_highest_weapon_usage("kills");
   topkills = 0;
@@ -1109,9 +750,7 @@ function set_after_action_report_stats() {
   if(!isdefined(topweapon)) {
     topweapon = "";
   }
-  self persistence::set_after_action_report_stat("topWeaponItemIndex", getbaseweaponitemindex([
-    [level.get_base_weapon_param]
-  ](topweapon)));
+  self persistence::set_after_action_report_stat("topWeaponItemIndex", getbaseweaponitemindex([[level.get_base_weapon_param]](topweapon)));
   self persistence::set_after_action_report_stat("topWeaponKills", topkills);
   if(isdefined(level.onwagerawards)) {
     self[[level.onwagerawards]]();

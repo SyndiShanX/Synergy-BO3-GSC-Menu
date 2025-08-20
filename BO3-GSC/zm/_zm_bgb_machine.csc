@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_bgb_machine.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -8,31 +12,12 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_load;
 #using scripts\zm\_zm_bgb;
-
 #namespace bgb_machine;
 
-/*
-	Name: __init__sytem__
-	Namespace: bgb_machine
-	Checksum: 0xE3EA3E58
-	Offset: 0x980
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("bgb_machine", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: bgb_machine
-	Checksum: 0x587388D8
-	Offset: 0x9C0
-	Size: 0x4BC
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   if(!(isdefined(level.bgb_in_use) && level.bgb_in_use)) {
     return;
@@ -85,15 +70,6 @@ function __init__() {
   function_b90b22b6();
 }
 
-/*
-	Name: bgb_machine_init
-	Namespace: bgb_machine
-	Checksum: 0xF86E5C92
-	Offset: 0xE88
-	Size: 0x3CC
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private bgb_machine_init(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(isdefined(self.bgb_machine_fx)) {
     return;
@@ -144,15 +120,6 @@ function private bgb_machine_init(localclientnum, oldval, newval, bnewent, binit
   self thread bgb_machine_interior_light_shake_piece_think(localclientnum);
 }
 
-/*
-	Name: bgb_machine_selection
-	Namespace: bgb_machine
-	Checksum: 0x221F43A3
-	Offset: 0x1260
-	Size: 0x62
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private bgb_machine_selection(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!newval) {
     return;
@@ -160,18 +127,9 @@ function private bgb_machine_selection(localclientnum, oldval, newval, bnewent, 
   bgb = level.bgb_item_index_to_name[newval];
 }
 
-/*
-	Name: bgb_machine_play_random_sparks
-	Namespace: bgb_machine
-	Checksum: 0x5162026D
-	Offset: 0x12D0
-	Size: 0x100
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private bgb_machine_play_random_sparks(localclientnum, fx, piece) {
-  piece endon(# "opened");
-  piece endon(# "closed");
+  piece endon("opened");
+  piece endon("closed");
   self.bgb_machine_fx_bulb_tags = array::randomize(self.bgb_machine_fx_bulb_tags);
   for (i = 0; i < self.bgb_machine_fx_bulb_tags.size; i++) {
     if(randomintrange(0, 4)) {
@@ -184,15 +142,6 @@ function private bgb_machine_play_random_sparks(localclientnum, fx, piece) {
   }
 }
 
-/*
-	Name: bgb_machine_flying_ember_think
-	Namespace: bgb_machine
-	Checksum: 0x568D4594
-	Offset: 0x13D8
-	Size: 0x170
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private bgb_machine_flying_ember_think(localclientnum, notifyname, fx) {
   listen_piece = self zbarriergetpiece(3);
   fx_piece = self zbarriergetpiece(5);
@@ -206,15 +155,6 @@ function private bgb_machine_flying_ember_think(localclientnum, notifyname, fx) 
   }
 }
 
-/*
-	Name: bgb_machine_flying_gumballs_think
-	Namespace: bgb_machine
-	Checksum: 0x4A3F6CB9
-	Offset: 0x1550
-	Size: 0x314
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private bgb_machine_flying_gumballs_think(localclientnum) {
   gumballs_piece = self zbarriergetpiece(4);
   fx_piece = self zbarriergetpiece(5);
@@ -254,29 +194,11 @@ function private bgb_machine_flying_gumballs_think(localclientnum) {
   }
 }
 
-/*
-	Name: function_5885778a
-	Namespace: bgb_machine
-	Checksum: 0x5C4AF776
-	Offset: 0x1870
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_5885778a(piece) {
-  level endon(# "demo_jump");
+  level endon("demo_jump");
   piece util::waittill_any("opening", "closing");
 }
 
-/*
-	Name: bgb_machine_give_gumball_think
-	Namespace: bgb_machine
-	Checksum: 0x9EB4133D
-	Offset: 0x18B8
-	Size: 0x180
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private bgb_machine_give_gumball_think(localclientnum) {
   piece = self zbarriergetpiece(2);
   while (isdefined(self)) {
@@ -302,47 +224,20 @@ function private bgb_machine_give_gumball_think(localclientnum) {
   }
 }
 
-/*
-	Name: function_36a807de
-	Namespace: bgb_machine
-	Checksum: 0x9FECF8F6
-	Offset: 0x1A40
-	Size: 0x26
-	Parameters: 1
-	Flags: Linked
-*/
 function function_36a807de(piece) {
-  level endon(# "demo_jump");
-  piece waittill(# "opening");
+  level endon("demo_jump");
+  piece waittill("opening");
 }
 
-/*
-	Name: bgb_machine_interior_light_shake_piece_think
-	Namespace: bgb_machine
-	Checksum: 0x329CC8E6
-	Offset: 0x1A70
-	Size: 0x78
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private bgb_machine_interior_light_shake_piece_think(localclientnum) {
   piece = self zbarriergetpiece(1);
   for (;;) {
-    piece waittill(# "opening");
+    piece waittill("opening");
     bgb_machine_play_fx(localclientnum, piece, "tag_fx_glass_cntr_jnt", level._effect["zm_bgb_machine_light_interior"]);
     wait(0.01);
   }
 }
 
-/*
-	Name: bgb_machine_get_eye_fx_for_selected_bgb
-	Namespace: bgb_machine
-	Checksum: 0x830DBC28
-	Offset: 0x1AF0
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private bgb_machine_get_eye_fx_for_selected_bgb() {
   bgb_item_index = self clientfield::get("zm_bgb_machine_selection");
   bgb = level.bgb_item_index_to_name[bgb_item_index];
@@ -363,15 +258,6 @@ function private bgb_machine_get_eye_fx_for_selected_bgb() {
   return undefined;
 }
 
-/*
-	Name: bgb_machine_get_bulb_fx_for_selected_bgb
-	Namespace: bgb_machine
-	Checksum: 0x93521BB0
-	Offset: 0x1BE0
-	Size: 0xE4
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private bgb_machine_get_bulb_fx_for_selected_bgb() {
   bgb_item_index = self clientfield::get("zm_bgb_machine_selection");
   bgb = level.bgb_item_index_to_name[bgb_item_index];
@@ -392,15 +278,6 @@ function private bgb_machine_get_bulb_fx_for_selected_bgb() {
   return undefined;
 }
 
-/*
-	Name: bgb_machine_play_fx
-	Namespace: bgb_machine
-	Checksum: 0xB1E36F70
-	Offset: 0x1CD0
-	Size: 0xD8
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private bgb_machine_play_fx(localclientnum, piece, tag, fx, deleteimmediate = 1) {
   if(isdefined(self.bgb_machine_fx[tag][localclientnum])) {
     deletefx(localclientnum, self.bgb_machine_fx[tag][localclientnum], deleteimmediate);
@@ -411,70 +288,25 @@ function private bgb_machine_play_fx(localclientnum, piece, tag, fx, deleteimmed
   }
 }
 
-/*
-	Name: bgb_machine_play_top_fx
-	Namespace: bgb_machine
-	Checksum: 0x57F88F67
-	Offset: 0x1DB0
-	Size: 0x44
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private bgb_machine_play_top_fx(localclientnum, piece, fx) {
   bgb_machine_play_fx(localclientnum, piece, "tag_fx_light_top_jnt", fx);
 }
 
-/*
-	Name: bgb_machine_play_top_side_fx
-	Namespace: bgb_machine
-	Checksum: 0xE976FE0C
-	Offset: 0x1E00
-	Size: 0x6C
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private bgb_machine_play_top_side_fx(localclientnum, piece, fx) {
   bgb_machine_play_fx(localclientnum, piece, "tag_fx_light_side_lft_top_jnt", fx);
   bgb_machine_play_fx(localclientnum, piece, "tag_fx_light_side_rt_top_jnt", fx);
 }
 
-/*
-	Name: bgb_machine_play_mid_side_fx
-	Namespace: bgb_machine
-	Checksum: 0x46228CA6
-	Offset: 0x1E78
-	Size: 0x6C
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private bgb_machine_play_mid_side_fx(localclientnum, piece, fx) {
   bgb_machine_play_fx(localclientnum, piece, "tag_fx_light_side_lft_mid_jnt", fx);
   bgb_machine_play_fx(localclientnum, piece, "tag_fx_light_side_rt_mid_jnt", fx);
 }
 
-/*
-	Name: bgb_machine_play_btm_side_fx
-	Namespace: bgb_machine
-	Checksum: 0x15AC5003
-	Offset: 0x1EF0
-	Size: 0x6C
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private bgb_machine_play_btm_side_fx(localclientnum, piece, fx) {
   bgb_machine_play_fx(localclientnum, piece, "tag_fx_light_side_lft_btm_jnt", fx);
   bgb_machine_play_fx(localclientnum, piece, "tag_fx_light_side_rt_btm_jnt", fx);
 }
 
-/*
-	Name: bgb_machine_play_all_bulb_fx
-	Namespace: bgb_machine
-	Checksum: 0x4404DCD8
-	Offset: 0x1F68
-	Size: 0x9C
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private bgb_machine_play_all_bulb_fx(localclientnum, piece, fx) {
   bgb_machine_play_top_fx(localclientnum, piece, fx);
   bgb_machine_play_top_side_fx(localclientnum, piece, fx);
@@ -482,61 +314,25 @@ function private bgb_machine_play_all_bulb_fx(localclientnum, piece, fx) {
   bgb_machine_play_btm_side_fx(localclientnum, piece, fx);
 }
 
-/*
-	Name: bgb_machine_play_sound
-	Namespace: bgb_machine
-	Checksum: 0xB691EEF7
-	Offset: 0x2010
-	Size: 0x64
-	Parameters: 3
-	Flags: Linked, Private
-*/
 function private bgb_machine_play_sound(localclientnum, entity, alias) {
   origin = entity gettagorigin("tag_fx_light_top_jnt");
   playsound(localclientnum, alias, origin);
 }
 
-/*
-	Name: function_d5f882d0
-	Namespace: bgb_machine
-	Checksum: 0x7740EBF
-	Offset: 0x2080
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_d5f882d0(localclientnum) {
   self bgb_machine_play_fx(localclientnum, self zbarriergetpiece(5), "tag_origin", undefined);
 }
 
-/*
-	Name: function_eb5b80c5
-	Namespace: bgb_machine
-	Checksum: 0x62D16D2
-	Offset: 0x20D0
-	Size: 0xA4
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_eb5b80c5(localclientnum) {
-  self notify(# "bgb_machine_bulb_fx_start");
-  self endon(# "bgb_machine_bulb_fx_start");
+  self notify("bgb_machine_bulb_fx_start");
+  self endon("bgb_machine_bulb_fx_start");
   self bgb_machine_play_all_bulb_fx(localclientnum, self zbarriergetpiece(5), undefined);
   self bgb_machine_play_fx(localclientnum, self zbarriergetpiece(5), "tag_origin", level._effect["zm_bgb_machine_available"]);
 }
 
-/*
-	Name: bgb_machine_bulb_flash
-	Namespace: bgb_machine
-	Checksum: 0xA9376D4B
-	Offset: 0x2180
-	Size: 0xCE
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private bgb_machine_bulb_flash(localclientnum, piece, fx, flash_time, alias) {
-  self notify(# "bgb_machine_bulb_fx_start");
-  self endon(# "bgb_machine_bulb_fx_start");
+  self notify("bgb_machine_bulb_fx_start");
+  self endon("bgb_machine_bulb_fx_start");
   function_d5f882d0(localclientnum);
   for (;;) {
     bgb_machine_play_all_bulb_fx(localclientnum, piece, fx);
@@ -549,69 +345,24 @@ function private bgb_machine_bulb_flash(localclientnum, piece, fx, flash_time, a
   }
 }
 
-/*
-	Name: bgb_machine_bulb_flash_selected_bgb
-	Namespace: bgb_machine
-	Checksum: 0xD4F806F1
-	Offset: 0x2258
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private bgb_machine_bulb_flash_selected_bgb(localclientnum) {
   self thread bgb_machine_bulb_flash(localclientnum, self zbarriergetpiece(5), self bgb_machine_get_bulb_fx_for_selected_bgb(), 0.4, "zmb_bgb_machine_light_ready");
 }
 
-/*
-	Name: function_5f830538
-	Namespace: bgb_machine
-	Checksum: 0x47301EA5
-	Offset: 0x22C8
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_5f830538(localclientnum) {
   self thread bgb_machine_bulb_flash(localclientnum, self zbarriergetpiece(5), level._effect["zm_bgb_machine_bulb_available"], 0.2, "zmb_bgb_machine_light_click");
 }
 
-/*
-	Name: bgb_machine_bulb_flash_away
-	Namespace: bgb_machine
-	Checksum: 0xB3A8ED9E
-	Offset: 0x2338
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private bgb_machine_bulb_flash_away(localclientnum) {
   self thread bgb_machine_bulb_flash(localclientnum, self zbarriergetpiece(1), level._effect["zm_bgb_machine_bulb_away"], 0.4, "zmb_bgb_machine_light_leaving");
 }
 
-/*
-	Name: bgb_machine_bulb_solid_away
-	Namespace: bgb_machine
-	Checksum: 0x7AC62F10
-	Offset: 0x23A8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private bgb_machine_bulb_solid_away(localclientnum) {
-  self notify(# "bgb_machine_bulb_fx_start");
+  self notify("bgb_machine_bulb_fx_start");
   function_d5f882d0(localclientnum);
   bgb_machine_play_all_bulb_fx(localclientnum, self zbarriergetpiece(5), level._effect["zm_bgb_machine_bulb_away"]);
 }
 
-/*
-	Name: bgb_machine_fx_state
-	Namespace: bgb_machine
-	Checksum: 0x43AA040D
-	Offset: 0x2428
-	Size: 0x38C
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private bgb_machine_fx_state(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   bgb_machine_init(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump);
   if(!isdefined(self)) {
@@ -656,15 +407,6 @@ function private bgb_machine_fx_state(localclientnum, oldval, newval, bnewent, b
   bgb_machine_play_fx(localclientnum, eye_piece, "tag_fx_light_lion_rt_eye_jnt", eye_fx);
 }
 
-/*
-	Name: function_b90b22b6
-	Namespace: bgb_machine
-	Checksum: 0xED282766
-	Offset: 0x27C0
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b90b22b6() {
   if(!isdefined(level.bgb_machine_max_uses_per_round)) {
     level.bgb_machine_max_uses_per_round = 3;
@@ -699,15 +441,6 @@ function function_b90b22b6() {
   callback::on_localplayer_spawned( & on_player_spawned);
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: bgb_machine
-	Checksum: 0x6EB53440
-	Offset: 0x28E8
-	Size: 0xFC
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private on_player_spawned(localclientnum) {
   if(!isdefined(level.var_bb2b3f61[localclientnum])) {
     level.var_bb2b3f61[localclientnum] = 0;
@@ -724,19 +457,10 @@ function private on_player_spawned(localclientnum) {
   self thread function_fda54943(localclientnum);
 }
 
-/*
-	Name: function_763ef0fd
-	Namespace: bgb_machine
-	Checksum: 0x67486D7A
-	Offset: 0x29F0
-	Size: 0xCE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_763ef0fd(localclientnum) {
-  self notify(# "hash_763ef0fd");
-  self endon(# "hash_763ef0fd");
-  self endon(# "entityshutdown");
+  self notify("hash_763ef0fd");
+  self endon("hash_763ef0fd");
+  self endon("entityshutdown");
   while (true) {
     rounds = getroundsplayed(localclientnum);
     if(rounds != level.var_bb2b3f61[localclientnum]) {
@@ -747,21 +471,12 @@ function private function_763ef0fd(localclientnum) {
   }
 }
 
-/*
-	Name: function_5d9d13da
-	Namespace: bgb_machine
-	Checksum: 0xCD47F3D6
-	Offset: 0x2AC8
-	Size: 0xC0
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_5d9d13da(localclientnum) {
-  self notify(# "hash_5d9d13da");
-  self endon(# "hash_5d9d13da");
-  self endon(# "entityshutdown");
+  self notify("hash_5d9d13da");
+  self endon("hash_5d9d13da");
+  self endon("entityshutdown");
   while (true) {
-    self waittill(# "powerup", powerup, state);
+    self waittill("powerup", powerup, state);
     if(powerup == "powerup_fire_sale") {
       level.var_f26edb66[localclientnum] = state;
       function_725214c(localclientnum, level.var_bb2b3f61[localclientnum], level.var_32948a58[localclientnum], level.var_f26edb66[localclientnum]);
@@ -769,17 +484,8 @@ function private function_5d9d13da(localclientnum) {
   }
 }
 
-/*
-	Name: function_fda54943
-	Namespace: bgb_machine
-	Checksum: 0xF65EAE22
-	Offset: 0x2B90
-	Size: 0x16E
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_fda54943(localclientnum) {
-  self endon(# "entityshutdown");
+  self endon("entityshutdown");
   var_89caac36 = 160000;
   while (true) {
     if(isdefined(level.bgb_machines)) {
@@ -796,49 +502,20 @@ function private function_fda54943(localclientnum) {
   }
 }
 
-/*
-	Name: function_27a93844
-	Namespace: bgb_machine
-	Checksum: 0x717F7168
-	Offset: 0x2D08
-	Size: 0x8C
-	Parameters: 7
-	Flags: Linked, Private
-*/
 function private function_27a93844(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   level.var_32948a58[localclientnum] = newval;
   function_725214c(localclientnum, level.var_bb2b3f61[localclientnum], level.var_32948a58[localclientnum], level.var_f26edb66[localclientnum]);
 }
 
-/*
-	Name: function_725214c
-	Namespace: bgb_machine
-	Checksum: 0x1935A457
-	Offset: 0x2DA0
-	Size: 0x8C
-	Parameters: 4
-	Flags: Linked, Private
-*/
 function private function_725214c(localclientnum, rounds, buys, firesale) {
   base_cost = 500;
   if(firesale) {
     base_cost = 10;
   }
-  cost = [
-    [level.var_6c7a96b4]
-  ](self, base_cost, buys, rounds, firesale);
+  cost = [[level.var_6c7a96b4]](self, base_cost, buys, rounds, firesale);
   setbgbcost(localclientnum, cost);
 }
 
-/*
-	Name: function_6c7a96b4
-	Namespace: bgb_machine
-	Checksum: 0x5353186D
-	Offset: 0x2E38
-	Size: 0x1C8
-	Parameters: 5
-	Flags: Linked
-*/
 function function_6c7a96b4(player, base_cost, buys, rounds, firesale) {
   if(buys < 1 && getdvarint("scr_firstGumFree") === 1) {
     return 0;

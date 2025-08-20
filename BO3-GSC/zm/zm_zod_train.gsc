@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_train.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_shared;
 #using scripts\shared\ai\zombie_utility;
@@ -46,15 +50,7 @@ class czmtrain {
   var origin;
   var angles;
 
-  /*
-  	Name: constructor
-  	Namespace: czmtrain
-  	Checksum: 0x1AA5265D
-  	Offset: 0x1CE0
-  	Size: 0x226
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   constructor() {
     m_vh_train = undefined;
     m_s_trigger = undefined;
@@ -73,40 +69,22 @@ class czmtrain {
     var_9e0dc993 = 1;
     a_names = array("tag_enter_back_top", "tag_enter_front_top", "tag_enter_left_top", "tag_enter_right_top");
     a_anims = array("ai_zombie_zod_train_win_trav_from_roof_b", "ai_zombie_zod_train_win_trav_from_roof_f", "ai_zombie_zod_train_win_trav_from_roof_l", "ai_zombie_zod_train_win_trav_from_roof_r");
-    /#
     assert(a_names.size == a_anims.size);
-    # /
-      for (i = 0; i < a_names.size; i++) {
-        str_name = a_names[i];
-        str_anim = a_anims[i];
-        m_a_jumptags[str_name] = spawnstruct();
-        s_entrance = m_a_jumptags[str_name];
-        s_entrance.str_tag = str_name;
-        s_entrance.str_anim = str_anim;
-        s_entrance.occupied = 0;
-      }
+    for (i = 0; i < a_names.size; i++) {
+      str_name = a_names[i];
+      str_anim = a_anims[i];
+      m_a_jumptags[str_name] = spawnstruct();
+      s_entrance = m_a_jumptags[str_name];
+      s_entrance.str_tag = str_name;
+      s_entrance.str_anim = str_anim;
+      s_entrance.occupied = 0;
+    }
   }
 
-  /*
-  	Name: destructor
-  	Namespace: czmtrain
-  	Checksum: 0x99EC1590
-  	Offset: 0x7FD8
-  	Size: 0x4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   destructor() {}
 
-  /*
-  	Name: function_876255
-  	Namespace: czmtrain
-  	Checksum: 0x9BC27727
-  	Offset: 0x7DD0
-  	Size: 0x200
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_876255() {
     a_e_train_maps = getentarray("map_train", "targetname");
     while (true) {
@@ -136,28 +114,12 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: get_origin
-  	Namespace: czmtrain
-  	Checksum: 0x94A2A997
-  	Offset: 0x7DB0
-  	Size: 0x12
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_origin() {
     return m_vh_train.origin;
   }
 
-  /*
-  	Name: get_available_jumptag
-  	Namespace: czmtrain
-  	Checksum: 0xA8D9047B
-  	Offset: 0x7B00
-  	Size: 0x2A2
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_available_jumptag() {
     a_valid_tags = [];
     foreach(tag in m_a_jumptags) {
@@ -196,15 +158,7 @@ class czmtrain {
     return array::random(a_valid_tags);
   }
 
-  /*
-  	Name: any_player_facing_tag
-  	Namespace: czmtrain
-  	Checksum: 0x89FC4974
-  	Offset: 0x79D0
-  	Size: 0x128
-  	Parameters: 1
-  	Flags: Linked, Private
-  */
+
   function private any_player_facing_tag(str_tag) {
     foreach(e_player in level.players) {
       v_pos = m_vh_train gettagorigin(str_tag);
@@ -217,67 +171,27 @@ class czmtrain {
     return false;
   }
 
-  /*
-  	Name: is_offline
-  	Namespace: czmtrain
-  	Checksum: 0x58B6AC15
-  	Offset: 0x79A0
-  	Size: 0x22
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_offline() {
     return self flag::get("offline");
   }
 
-  /*
-  	Name: is_cooling_down
-  	Namespace: czmtrain
-  	Checksum: 0x73C29708
-  	Offset: 0x7970
-  	Size: 0x22
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_cooling_down() {
     return self flag::get("cooldown");
   }
 
-  /*
-  	Name: function_3e62f527
-  	Namespace: czmtrain
-  	Checksum: 0x55BB8013
-  	Offset: 0x7958
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_3e62f527() {
     return var_9e0dc993;
   }
 
-  /*
-  	Name: is_moving
-  	Namespace: czmtrain
-  	Checksum: 0x4DB9E472
-  	Offset: 0x7928
-  	Size: 0x22
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function is_moving() {
     return self flag::get("moving");
   }
 
-  /*
-  	Name: get_junction_origin
-  	Namespace: czmtrain
-  	Checksum: 0xCF2A6F09
-  	Offset: 0x7848
-  	Size: 0xD6
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_junction_origin() {
     v_origin = (0, 0, 0);
     foreach(s_station in m_a_s_stations) {
@@ -287,17 +201,9 @@ class czmtrain {
     return v_origin;
   }
 
-  /*
-  	Name: jump_into_train
-  	Namespace: czmtrain
-  	Checksum: 0x1C2AC7C1
-  	Offset: 0x76B0
-  	Size: 0x18C
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function jump_into_train(ai, str_tag) {
-    self endon(# "death");
+    self endon("death");
     s_tag = m_a_jumptags[str_tag];
     s_tag.occupied = 1;
     v_tag_pos = m_vh_train gettagorigin(str_tag);
@@ -314,97 +220,41 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: mark_jumper_time
-  	Namespace: czmtrain
-  	Checksum: 0x6857928C
-  	Offset: 0x7698
-  	Size: 0x10
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function mark_jumper_time() {
     m_n_last_jumper_time = gettime();
   }
 
-  /*
-  	Name: get_time_since_last_jumper
-  	Namespace: czmtrain
-  	Checksum: 0x4F33D043
-  	Offset: 0x7660
-  	Size: 0x2C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_time_since_last_jumper() {
     return (float(gettime() - m_n_last_jumper_time)) / 1000;
   }
 
-  /*
-  	Name: get_zombies_locked_in
-  	Namespace: czmtrain
-  	Checksum: 0x4E3CC587
-  	Offset: 0x7648
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_zombies_locked_in() {
     return m_a_zombies_locked_in;
   }
 
-  /*
-  	Name: locked_in_list_remove_undefined
-  	Namespace: czmtrain
-  	Checksum: 0x2855851E
-  	Offset: 0x7618
-  	Size: 0x24
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function locked_in_list_remove_undefined() {
     m_a_zombies_locked_in = array::remove_undefined(m_a_zombies_locked_in);
   }
 
-  /*
-  	Name: remove_zombie_locked_in
-  	Namespace: czmtrain
-  	Checksum: 0x1A0CCCA2
-  	Offset: 0x75C0
-  	Size: 0x4C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function remove_zombie_locked_in(ai_zombie) {
     ai_zombie.locked_in_train = 0;
     arrayremovevalue(m_a_zombies_locked_in, ai_zombie);
-    ai_zombie notify(# "released_from_train");
+    ai_zombie notify("released_from_train");
   }
 
-  /*
-  	Name: add_zombie_locked_in
-  	Namespace: czmtrain
-  	Checksum: 0x7D5F2F11
-  	Offset: 0x7560
-  	Size: 0x54
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function add_zombie_locked_in(ai_zombie) {
     ai_zombie.locked_in_train = 1;
     array::add(m_a_zombies_locked_in, ai_zombie, 0);
     thread watch_zombie_fall_off(ai_zombie);
   }
 
-  /*
-  	Name: get_players_on_train
-  	Namespace: czmtrain
-  	Checksum: 0xB9A1FCB3
-  	Offset: 0x7408
-  	Size: 0x14C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function get_players_on_train(b_valid_targets_only = 0) {
     a_players = [];
     foreach(e_player in level.players) {
@@ -423,31 +273,15 @@ class czmtrain {
     return a_players;
   }
 
-  /*
-  	Name: is_touching_train_volume
-  	Namespace: czmtrain
-  	Checksum: 0x78AAE0B6
-  	Offset: 0x73D0
-  	Size: 0x2A
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function is_touching_train_volume(ent) {
     return ent istouching(m_e_volume);
   }
 
-  /*
-  	Name: watch_zombie_fall_off
-  	Namespace: czmtrain
-  	Checksum: 0xCD16708F
-  	Offset: 0x7328
-  	Size: 0x9C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function watch_zombie_fall_off(ai) {
-    ai endon(# "death");
-    ai endon(# "released_from_train");
+    ai endon("death");
+    ai endon("released_from_train");
     zm_net::network_safe_init("train_fall_check", 1);
     while (self zm_net::network_choke_action("train_fall_check", & is_touching_train, ai)) {
       wait(2);
@@ -455,53 +289,25 @@ class czmtrain {
     remove_zombie_locked_in(ai);
   }
 
-  /*
-  	Name: is_touching_train
-  	Namespace: czmtrain
-  	Checksum: 0xDF58DF76
-  	Offset: 0x72F0
-  	Size: 0x2A
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function is_touching_train(e_ent) {
     return e_ent istouching(m_e_volume);
   }
 
-  /*
-  	Name: watch_players_on_train
-  	Namespace: czmtrain
-  	Checksum: 0x16D9C3ED
-  	Offset: 0x71A0
-  	Size: 0x144
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function watch_players_on_train() {
-    /#
     foreach(e_player in level.players) {
-      /#
       assert(isdefined(e_player.on_train));
-      # /
     }
-    # /
-      while (true) {
-        foreach(e_player in level.players) {
-          e_player.on_train = is_touching_train(e_player);
-        }
-        wait(0.5);
+    while (true) {
+      foreach(e_player in level.players) {
+        e_player.on_train = is_touching_train(e_player);
       }
+      wait(0.5);
+    }
   }
 
-  /*
-  	Name: function_ccd778ab
-  	Namespace: czmtrain
-  	Checksum: 0x669AB6C6
-  	Offset: 0x7100
-  	Size: 0x94
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_ccd778ab() {
     foreach(e_player in level.players) {
       if(is_touching_train(e_player)) {
@@ -511,15 +317,7 @@ class czmtrain {
     return true;
   }
 
-  /*
-  	Name: function_ca899bfc
-  	Namespace: czmtrain
-  	Checksum: 0x82EF5413
-  	Offset: 0x6F10
-  	Size: 0x1E4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_ca899bfc() {
     if(m_str_destination == "slums") {
       m_vh_train hidepart("tag_sign_footlight");
@@ -541,34 +339,18 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: function_de6e1f4f
-  	Namespace: czmtrain
-  	Checksum: 0x56F3A46
-  	Offset: 0x6E88
-  	Size: 0x7C
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_de6e1f4f(m_t_switch) {
-    m_vh_train endon(# "hash_51689c0f");
+    m_vh_train endon("hash_51689c0f");
     if(!flag::get("switches_enabled")) {
       flag::wait_till("switches_enabled");
     }
     m_t_switch.player_used = 0;
-    m_t_switch waittill(# "trigger");
+    m_t_switch waittill("trigger");
     m_t_switch.player_used = 1;
   }
 
-  /*
-  	Name: run_switch
-  	Namespace: czmtrain
-  	Checksum: 0xC6967EB0
-  	Offset: 0x6C60
-  	Size: 0x21E
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function run_switch() {
     while (true) {
       function_de6e1f4f(m_t_switch);
@@ -587,69 +369,45 @@ class czmtrain {
         if(level flag::get("callbox")) {
           level flag::clear("callbox");
         }
-        m_t_switch sethintstring( & "ZM_ZOD_SWITCHING_PROGRESS");
+        m_t_switch sethintstring(&"ZM_ZOD_SWITCHING_PROGRESS");
         wait(1);
         if(flag::get("switches_enabled")) {
-          m_t_switch sethintstring( & "ZM_ZOD_SWITCH_ENABLE");
+          m_t_switch sethintstring(&"ZM_ZOD_SWITCH_ENABLE");
         }
       }
-      level notify(# "hash_8939bd21");
+      level notify("hash_8939bd21");
     }
   }
 
-  /*
-  	Name: send_train
-  	Namespace: czmtrain
-  	Checksum: 0xB2E91FB7
-  	Offset: 0x6C28
-  	Size: 0x30
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function send_train() {
     if(isdefined(m_s_trigger)) {
       m_b_free = 1;
-      m_s_trigger notify(# "trigger");
+      m_s_trigger notify("trigger");
     }
   }
 
-  /*
-  	Name: update_use_trigger
-  	Namespace: czmtrain
-  	Checksum: 0x169B5F65
-  	Offset: 0x6B48
-  	Size: 0xD4
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function update_use_trigger() {
     if(!isdefined(m_s_trigger)) {
       return;
     }
     if(m_b_free) {
-      m_s_trigger zm_zod_util::set_unitrigger_hint_string( & "ZM_ZOD_TRAIN_USE_FREE");
+      m_s_trigger zm_zod_util::set_unitrigger_hint_string(&"ZM_ZOD_TRAIN_USE_FREE");
     } else {
       if(is_offline()) {
-        m_s_trigger zm_zod_util::set_unitrigger_hint_string( & "ZM_ZOD_TRAIN_OFFLINE");
+        m_s_trigger zm_zod_util::set_unitrigger_hint_string(&"ZM_ZOD_TRAIN_OFFLINE");
       } else {
         if(is_cooling_down()) {
-          m_s_trigger zm_zod_util::set_unitrigger_hint_string( & "ZM_ZOD_TRAIN_COOLDOWN");
+          m_s_trigger zm_zod_util::set_unitrigger_hint_string(&"ZM_ZOD_TRAIN_COOLDOWN");
         } else {
-          m_s_trigger zm_zod_util::set_unitrigger_hint_string( & "ZM_ZOD_TRAIN_USE", 500);
+          m_s_trigger zm_zod_util::set_unitrigger_hint_string(&"ZM_ZOD_TRAIN_USE", 500);
         }
       }
     }
   }
 
-  /*
-  	Name: recalc_zombies_locked_in_train
-  	Namespace: czmtrain
-  	Checksum: 0xE99250E8
-  	Offset: 0x6A10
-  	Size: 0x12A
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function recalc_zombies_locked_in_train() {
     zombies = getaiteamarray(level.zombie_team);
     n_counter = 0;
@@ -667,15 +425,7 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: function_285f0f0b
-  	Namespace: czmtrain
-  	Checksum: 0xADD75752
-  	Offset: 0x6998
-  	Size: 0x70
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_285f0f0b() {
     if(var_901503d0) {
       self scene::play("p7_fxanim_zm_zod_train_door_rt_close_bundle", self);
@@ -687,15 +437,7 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: function_9211290c
-  	Namespace: czmtrain
-  	Checksum: 0x870CAA11
-  	Offset: 0x6738
-  	Size: 0x252
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_9211290c() {
     foreach(e_door in m_a_mdl_doors) {
       v_pos = get_door_closed_pos(e_door);
@@ -704,7 +446,7 @@ class czmtrain {
       e_door.e_clip unlink();
       e_door.e_clip moveto(e_door.e_clip.var_b620e1b1.origin, 0.3);
     }
-    m_a_mdl_doors[0] waittill(# "movedone");
+    m_a_mdl_doors[0] waittill("movedone");
     util::wait_network_frame();
     foreach(e_door in m_a_mdl_doors) {
       v_pos = get_door_closed_pos(e_door);
@@ -715,15 +457,7 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: close_doors
-  	Namespace: czmtrain
-  	Checksum: 0x2A64A2CD
-  	Offset: 0x64B0
-  	Size: 0x27C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function close_doors() {
     m_vh_train function_285f0f0b();
     foreach(e_door in m_a_mdl_doors) {
@@ -733,7 +467,7 @@ class czmtrain {
       e_door.e_clip unlink();
       e_door.e_clip moveto(e_door.e_clip.var_b620e1b1.origin, 0.3);
     }
-    m_a_mdl_doors[0] waittill(# "movedone");
+    m_a_mdl_doors[0] waittill("movedone");
     util::wait_network_frame();
     foreach(e_door in m_a_mdl_doors) {
       v_pos = get_door_closed_pos(e_door);
@@ -745,15 +479,7 @@ class czmtrain {
     thread recalc_zombies_locked_in_train();
   }
 
-  /*
-  	Name: function_59722edc
-  	Namespace: czmtrain
-  	Checksum: 0x6EA4B71E
-  	Offset: 0x6420
-  	Size: 0x88
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_59722edc(str_side) {
     if(str_side == "right") {
       if(!var_901503d0) {
@@ -766,15 +492,7 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: open_doors
-  	Namespace: czmtrain
-  	Checksum: 0x16F263C8
-  	Offset: 0x6000
-  	Size: 0x418
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function open_doors(str_side = get_open_side()) {
     m_vh_train function_59722edc(str_side);
     var_7631d55c = vectorscale((0, 0, 1), 300);
@@ -795,7 +513,7 @@ class czmtrain {
       }
     }
     if(a_doors_moved.size > 0) {
-      a_doors_moved[0] waittill(# "movedone");
+      a_doors_moved[0] waittill("movedone");
       util::wait_network_frame();
     }
     util::wait_network_frame();
@@ -815,15 +533,7 @@ class czmtrain {
     m_a_zombies_locked_in = [];
   }
 
-  /*
-  	Name: is_door_open
-  	Namespace: czmtrain
-  	Checksum: 0x34141D98
-  	Offset: 0x5F68
-  	Size: 0x8A
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function is_door_open(e_door) {
     str_side = get_open_side();
     if(str_side == "left" && e_door.script_string == "train_rear_door" || (str_side == "right" && e_door.script_string == "train_front_door")) {
@@ -832,15 +542,7 @@ class czmtrain {
     return 0;
   }
 
-  /*
-  	Name: get_open_side
-  	Namespace: czmtrain
-  	Checksum: 0xD2C82C3A
-  	Offset: 0x5EF0
-  	Size: 0x70
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_open_side() {
     str_side = m_a_s_stations[m_str_station].door_side;
     if(!m_b_facing_forward) {
@@ -854,28 +556,12 @@ class czmtrain {
     return str_side;
   }
 
-  /*
-  	Name: get_door_closed_pos
-  	Namespace: czmtrain
-  	Checksum: 0xD4D64F94
-  	Offset: 0x5EC0
-  	Size: 0x22
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function get_door_closed_pos(e_door) {
     return e_door.script_origin.origin;
   }
 
-  /*
-  	Name: get_door_open_pos
-  	Namespace: czmtrain
-  	Checksum: 0x6ED9E238
-  	Offset: 0x5DF8
-  	Size: 0xBE
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function get_door_open_pos(e_door) {
     if(e_door.script_string == "front_door") {
       return e_door.script_origin.origin - (anglestoforward(e_door.script_origin.angles) * 100);
@@ -883,15 +569,7 @@ class czmtrain {
     return e_door.script_origin.origin + (anglestoforward(e_door.script_origin.angles) * 100);
   }
 
-  /*
-  	Name: run_gate
-  	Namespace: czmtrain
-  	Checksum: 0xF14137D4
-  	Offset: 0x5AA0
-  	Size: 0x350
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function run_gate(e_gate, a_jump_nodes) {
     nd_start = m_a_s_stations[e_gate.script_string].start_node;
     v_open = e_gate.origin;
@@ -913,7 +591,7 @@ class czmtrain {
       if(m_str_station == e_gate.script_string) {
         e_gate moveto(v_open, 1);
         b_open = 1;
-        e_gate waittill(# "movedone");
+        e_gate waittill("movedone");
         foreach(nd in a_jump_nodes) {
           b_fwd_node = nd.script_string === "forward";
           if(m_b_facing_forward && b_fwd_node || (!m_b_facing_forward && !b_fwd_node)) {
@@ -927,24 +605,14 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: run_callbox
-  	Namespace: czmtrain
-  	Checksum: 0x83A1C33E
-  	Offset: 0x5838
-  	Size: 0x260
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function run_callbox(str_callbox) {
-    /#
     assert(isdefined(m_str_station));
-    # /
-      e_lever = m_a_s_stations[str_callbox].callbox;
+    e_lever = m_a_s_stations[str_callbox].callbox;
     t_use = zm_zod_util::spawn_trigger_radius(e_lever.origin, 60, 1);
     thread run_callbox_hintstring(str_callbox, t_use, getent(e_lever.target, "targetname"));
     while (true) {
-      t_use waittill(# "trigger", e_who);
+      t_use waittill("trigger", e_who);
       if(!e_who zm_score::can_player_purchase(500)) {
         e_who zm_audio::create_and_play_dialog("general", "transport_deny");
         continue;
@@ -953,10 +621,10 @@ class czmtrain {
         m_b_free = 0;
         if(str_callbox != m_str_destination) {
           level flag::set("callbox");
-          m_t_switch notify(# "trigger");
-          level waittill(# "hash_8939bd21");
+          m_t_switch notify("trigger");
+          level waittill("hash_8939bd21");
         }
-        m_s_trigger notify(# "trigger", e_who);
+        m_s_trigger notify("trigger", e_who);
         util::wait_network_frame();
         m_b_free = 1;
         e_lever rotatepitch(180, 0.5);
@@ -967,89 +635,57 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: run_callbox_hintstring
-  	Namespace: czmtrain
-  	Checksum: 0x47FC1C3E
-  	Offset: 0x55D8
-  	Size: 0x258
-  	Parameters: 3
-  	Flags: Linked
-  */
+
   function run_callbox_hintstring(str_callbox, t_use, e_light) {
     while (true) {
       if(m_str_station == str_callbox) {
         e_light clientfield::set("train_callbox_light", 0);
-        t_use zm_zod_util::set_unitrigger_hint_string( & "");
+        t_use zm_zod_util::set_unitrigger_hint_string(&"");
       } else {
         e_light clientfield::set("train_callbox_light", 1);
-        t_use zm_zod_util::set_unitrigger_hint_string( & "ZM_ZOD_TRAIN_CALL", 500);
+        t_use zm_zod_util::set_unitrigger_hint_string(&"ZM_ZOD_TRAIN_CALL", 500);
       }
       self flag::wait_till("moving");
       e_light clientfield::set("train_callbox_light", 0);
-      t_use zm_zod_util::set_unitrigger_hint_string( & "ZM_ZOD_TRAIN_MOVING");
+      t_use zm_zod_util::set_unitrigger_hint_string(&"ZM_ZOD_TRAIN_MOVING");
       self flag::wait_till_clear("moving");
       wait(0.05);
       if(self flag::get("offline")) {
-        t_use zm_zod_util::set_unitrigger_hint_string( & "ZM_ZOD_TRAIN_OFFLINE");
+        t_use zm_zod_util::set_unitrigger_hint_string(&"ZM_ZOD_TRAIN_OFFLINE");
         e_light clientfield::set("train_callbox_light", 2);
         self flag::wait_till_clear("offline");
       } else {
         if(m_str_station == str_callbox) {
-          t_use zm_zod_util::set_unitrigger_hint_string( & "");
+          t_use zm_zod_util::set_unitrigger_hint_string(&"");
           self flag::wait_till_clear("cooldown");
         } else {
-          t_use zm_zod_util::set_unitrigger_hint_string( & "ZM_ZOD_TRAIN_COOLDOWN");
+          t_use zm_zod_util::set_unitrigger_hint_string(&"ZM_ZOD_TRAIN_COOLDOWN");
           self flag::wait_till_clear("cooldown");
         }
       }
     }
   }
 
-  /*
-  	Name: function_b0af9dac
-  	Namespace: czmtrain
-  	Checksum: 0x6D6EFD06
-  	Offset: 0x55A0
-  	Size: 0x30
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_b0af9dac() {
     while (true) {
-      level waittill(# "between_round_over");
+      level waittill("between_round_over");
       level.var_33c4ee76 = 0;
       wait(0.05);
     }
   }
 
-  /*
-  	Name: function_955e57a7
-  	Namespace: czmtrain
-  	Checksum: 0xB2896446
-  	Offset: 0x5538
-  	Size: 0x5C
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_955e57a7() {
     level flag::wait_till("ee_boss_defeated");
-    level notify(# "hash_12be7dbb");
+    level notify("hash_12be7dbb");
     self flag::clear("offline");
     update_use_trigger();
   }
 
-  /*
-  	Name: function_312bb6e1
-  	Namespace: czmtrain
-  	Checksum: 0xFD33D9E3
-  	Offset: 0x5440
-  	Size: 0xEC
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_312bb6e1() {
-    level endon(# "hash_12be7dbb");
+    level endon("hash_12be7dbb");
     if(level flag::get("ee_boss_defeated") && !level flag::get("ee_final_boss_defeated")) {
       return;
     }
@@ -1059,20 +695,12 @@ class czmtrain {
     self flag::set("offline");
     m_vh_train clientfield::set("train_switch_light", 2);
     update_use_trigger();
-    level waittill(# "between_round_over");
+    level waittill("between_round_over");
     self flag::clear("offline");
     wait(0.05);
   }
 
-  /*
-  	Name: function_a377ba46
-  	Namespace: czmtrain
-  	Checksum: 0x722C5A18
-  	Offset: 0x5330
-  	Size: 0x104
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_a377ba46() {
     if(flag::get("moving")) {
       var_38c97a3b = get_current_destination();
@@ -1101,15 +729,7 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: main
-  	Namespace: czmtrain
-  	Checksum: 0xC784593D
-  	Offset: 0x4B78
-  	Size: 0x7B0
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function main() {
     a_path_names = getarraykeys(m_a_s_stations);
     a_path_names = array::randomize(a_path_names);
@@ -1134,7 +754,7 @@ class czmtrain {
       level thread function_b0af9dac();
       while (true) {
         m_vh_train clientfield::set("train_switch_light", 1);
-        m_s_trigger waittill(# "trigger", e_who);
+        m_s_trigger waittill("trigger", e_who);
         m_vh_train clientfield::set("train_switch_light", 0);
         if(m_b_free) {
           m_b_free = 0;
@@ -1197,12 +817,10 @@ class czmtrain {
         self flag::set("cooldown");
         update_use_trigger();
         n_wait = 40;
-        /#
         if(getdvarint("") > 0) {
           n_wait = 5;
         }
-        # /
-          wait(n_wait);
+        wait(n_wait);
         m_s_trigger = zm_zod_util::spawn_trigger_radius(v_trig, 60, 1);
         self flag::clear("cooldown");
       } else {
@@ -1211,15 +829,7 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: function_6f6ab7a4
-  	Namespace: czmtrain
-  	Checksum: 0x3A33B794
-  	Offset: 0x49C0
-  	Size: 0x1AA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_6f6ab7a4() {
     for (i = 0; i < m_a_mdl_doors.size; i++) {
       e_door = m_a_mdl_doors[i];
@@ -1238,20 +848,10 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: initialize
-  	Namespace: czmtrain
-  	Checksum: 0x5CAA134C
-  	Offset: 0x4100
-  	Size: 0x8B2
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function initialize(e_train) {
-    /#
     assert(isdefined(e_train));
-    # /
-      m_vh_train = e_train;
+    m_vh_train = e_train;
     m_vh_train.var_619deb2d = 0;
     m_vh_train.var_901503d0 = 0;
     if(!self flag::exists("moving")) {
@@ -1271,19 +871,15 @@ class czmtrain {
     }
     m_vh_train.team = "spectator";
     initialize_stations();
-    /#
     thread debug_draw_paths();
     thread debug_draw_doors();
-    # /
-      a_e_children = getentarray(m_vh_train.target, "targetname");
+    a_e_children = getentarray(m_vh_train.target, "targetname");
     foreach(e_ent in a_e_children) {
       if(isdefined(e_ent.script_string)) {
         if(e_ent.script_string == "train_volume") {
           if(!isdefined(m_e_volume)) {
-            /#
             assert(!isdefined(m_e_volume));
-            # /
-              e_ent enablelinkto();
+            e_ent enablelinkto();
             m_e_volume = e_ent;
           }
         } else if(e_ent.script_string == "train_rear_door" || e_ent.script_string == "train_front_door") {
@@ -1302,23 +898,17 @@ class czmtrain {
         e_ent linkto(m_vh_train);
         continue;
       }
-      /#
       iprintlnbold(("" + zm_zod_util::vec_to_string(e_ent.origin)) + "");
-      # /
     }
     function_6f6ab7a4();
-    /#
     if(!isdefined(m_e_volume)) {
-      /#
       assertmsg(("" + zm_zod_util::vec_to_string(m_vh_train.origin)) + "");
-      # /
     }
-    # /
-      m_vh_train function_a8e2d7ff();
+    m_vh_train function_a8e2d7ff();
     m_t_switch = getent("m_s_switch_trigger", "targetname");
     m_t_switch triggerignoreteam();
     m_t_switch setteamfortrigger("none");
-    m_t_switch sethintstring( & "ZM_ZOD_SWITCH_DISABLE");
+    m_t_switch sethintstring(&"ZM_ZOD_SWITCH_DISABLE");
     m_t_switch setcursorhint("HINT_NOICON");
     m_t_switch enablelinkto();
     m_t_switch linkto(m_vh_train);
@@ -1345,15 +935,7 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: initialize_stations
-  	Namespace: czmtrain
-  	Checksum: 0x7762DE6C
-  	Offset: 0x37D0
-  	Size: 0x922
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function initialize_stations() {
     m_a_s_stations = [];
     a_path_nodes = getnodearray("train_pathnode", "targetname");
@@ -1421,48 +1003,28 @@ class czmtrain {
     a_callboxes = getentarray("train_call_lever", "targetname");
     foreach(e_callbox in a_callboxes) {
       e_station_closest = arraygetclosest(e_callbox.origin, m_a_s_stations);
-      /#
       assert(isdefined(e_station_closest));
-      # /
-        e_callbox.script_string = e_station_closest.station_id;
+      e_callbox.script_string = e_station_closest.station_id;
       e_station_closest.callbox = e_callbox;
     }
   }
 
-  /*
-  	Name: function_dda9a9d2
-  	Namespace: czmtrain
-  	Checksum: 0x4FA3ACD0
-  	Offset: 0x37B0
-  	Size: 0x14
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_dda9a9d2() {
     m_b_facing_forward = !m_b_facing_forward;
   }
 
-  /*
-  	Name: function_a9acf9e2
-  	Namespace: czmtrain
-  	Checksum: 0xDBC35E55
-  	Offset: 0x33A0
-  	Size: 0x402
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_a9acf9e2() {
     var_e19f73fe = [];
     foreach(e_player in level.players) {
       if(is_touching_train(e_player)) {
-        /#
         if(e_player isinmovemode("", "")) {
           continue;
         }
-        # /
-          if(!zm_utility::is_player_valid(e_player, 1, 0)) {
-            continue;
-          }
+        if(!zm_utility::is_player_valid(e_player, 1, 0)) {
+          continue;
+        }
         e_player.train_board_time = gettime();
         if(!isdefined(var_e19f73fe)) {
           var_e19f73fe = [];
@@ -1472,18 +1034,16 @@ class czmtrain {
         var_e19f73fe[var_e19f73fe.size] = e_player;
       }
     }
-    m_vh_train waittill(# "docked_in_station");
+    m_vh_train waittill("docked_in_station");
     var_1a8b64d3 = m_vh_train getcentroid();
     var_10b9b744 = 0;
     foreach(e_player in var_e19f73fe) {
-      /#
       if(e_player isinmovemode("", "")) {
         continue;
       }
-      # /
-        if(!zm_utility::is_player_valid(e_player, 1, 0)) {
-          continue;
-        }
+      if(!zm_utility::is_player_valid(e_player, 1, 0)) {
+        continue;
+      }
       if(!isdefined(e_player.train_board_time)) {
         continue;
       }
@@ -1525,15 +1085,7 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: function_eb9ee200
-  	Namespace: czmtrain
-  	Checksum: 0x275C672C
-  	Offset: 0x3258
-  	Size: 0x13E
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function function_eb9ee200(spawnpos) {
     foreach(e_player in level.players) {
       if(!zm_utility::is_player_valid(e_player, 0, 0)) {
@@ -1552,15 +1104,7 @@ class czmtrain {
     return true;
   }
 
-  /*
-  	Name: move
-  	Namespace: czmtrain
-  	Checksum: 0x47B4E91
-  	Offset: 0x2C48
-  	Size: 0x604
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function move() {
     m_b_incoming = 0;
     str_start = m_str_station;
@@ -1600,25 +1144,17 @@ class czmtrain {
     m_b_incoming = 1;
     var_97fef807 = str_chosen_path;
     level flag::set(m_a_s_stations[str_chosen_path].str_zone_flag);
-    m_vh_train waittill(# "reached_end_node");
+    m_vh_train waittill("reached_end_node");
     m_b_facing_forward = !m_b_facing_forward;
     m_str_station = str_chosen_path;
     m_str_destination = get_current_destination();
-    m_vh_train notify(# "docked_in_station", m_str_station);
+    m_vh_train notify("docked_in_station", m_str_station);
     sndnum = m_a_s_stations[m_str_station].audio_arrive;
     level clientfield::set("sndTrainVox", sndnum);
     m_vh_train playsoundontag(level.var_98f27ad[sndnum - 1], "tag_support_arm_01");
   }
 
-  /*
-  	Name: function_7eb2583b
-  	Namespace: czmtrain
-  	Checksum: 0x8836593C
-  	Offset: 0x2BE8
-  	Size: 0x58
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_7eb2583b() {
     timeout = 15;
     while (timeout > 0 && self flag::get("moving")) {
@@ -1627,19 +1163,11 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: watch_node_parameters
-  	Namespace: czmtrain
-  	Checksum: 0x320F6EBF
-  	Offset: 0x2A80
-  	Size: 0x15A
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function watch_node_parameters() {
-    m_vh_train endon(# "docked_in_station");
+    m_vh_train endon("docked_in_station");
     while (true) {
-      m_vh_train waittill(# "reached_node", nd);
+      m_vh_train waittill("reached_node", nd);
       if(isdefined(nd.script_parameters)) {
         switch (nd.script_parameters) {
           case "arrival_brakes": {
@@ -1657,25 +1185,15 @@ class czmtrain {
             break;
           }
           default: {
-            /#
             assertmsg("" + nd.script_parameters);
-            # /
-              break;
+            break;
           }
         }
       }
     }
   }
 
-  /*
-  	Name: get_current_destination
-  	Namespace: czmtrain
-  	Checksum: 0xB5995F60
-  	Offset: 0x2A18
-  	Size: 0x5E
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_current_destination() {
     if(m_a_s_stations[m_str_station].b_left_path_active) {
       return m_a_s_stations[m_str_station].left_path;
@@ -1683,28 +1201,12 @@ class czmtrain {
     return m_a_s_stations[m_str_station].right_path;
   }
 
-  /*
-  	Name: get_current_station
-  	Namespace: czmtrain
-  	Checksum: 0x82585757
-  	Offset: 0x2A00
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_current_station() {
     return m_str_station;
   }
 
-  /*
-  	Name: function_a8e2d7ff
-  	Namespace: czmtrain
-  	Checksum: 0x99DAB385
-  	Offset: 0x27D0
-  	Size: 0x228
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function function_a8e2d7ff() {
     var_aed9540e = [];
     var_aed9540e["moving"] = getentarray("lgt_train_lightrig_veh_placement", "targetname");
@@ -1722,49 +1224,25 @@ class czmtrain {
     }
   }
 
-  /*
-  	Name: get_train_vehicle
-  	Namespace: czmtrain
-  	Checksum: 0x4B6CC725
-  	Offset: 0x27B8
-  	Size: 0xA
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function get_train_vehicle() {
     return m_vh_train;
   }
 
-  /*
-  	Name: enable_train_switches
-  	Namespace: czmtrain
-  	Checksum: 0xB675E256
-  	Offset: 0x26F8
-  	Size: 0xB8
-  	Parameters: 1
-  	Flags: Linked
-  */
+
   function enable_train_switches(b_enabled) {
     if(b_enabled) {
       self flag::set("switches_enabled");
-      m_t_switch sethintstring( & "ZM_ZOD_SWITCH_ENABLE");
+      m_t_switch sethintstring(&"ZM_ZOD_SWITCH_ENABLE");
       function_ca899bfc();
     } else {
       self flag::clear("switches_enabled");
-      m_t_switch sethintstring( & "ZM_ZOD_SWITCH_DISABLE");
-      m_vh_train notify(# "hash_51689c0f");
+      m_t_switch sethintstring(&"ZM_ZOD_SWITCH_DISABLE");
+      m_vh_train notify("hash_51689c0f");
     }
   }
 
-  /*
-  	Name: switch_path_direction
-  	Namespace: czmtrain
-  	Checksum: 0x8B0F3DEB
-  	Offset: 0x2648
-  	Size: 0xA4
-  	Parameters: 2
-  	Flags: Linked
-  */
+
   function switch_path_direction(all_nodes, direction) {
     for (i = 0; i < all_nodes.size; i++) {
       prev_target = all_nodes[i].target;
@@ -1774,15 +1252,7 @@ class czmtrain {
     return !direction;
   }
 
-  /*
-  	Name: debug_draw_doors
-  	Namespace: czmtrain
-  	Checksum: 0xBBCBF00E
-  	Offset: 0x2328
-  	Size: 0x318
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function debug_draw_doors() {
     do {
       n_debug = getdvarint("train_debug_doors");
@@ -1801,41 +1271,24 @@ class czmtrain {
         forward = -1 * forward;
       }
       var_bba032ca = origin + (var_6ffe9d93 * forward);
-      /#
       line(origin, var_bba032ca, (1, 0, 0), 1, 1, duration);
-      # /
-        /#
       line(var_bba032ca, (var_bba032ca - (var_4dc5a359 * forward)) - (var_4dc5a359 * right), (1, 0, 0), 1, 1, duration);
-      # /
-        /#
       line(var_bba032ca, (var_bba032ca - (var_4dc5a359 * forward)) + (var_4dc5a359 * right), (1, 0, 0), 1, 1, duration);
-      # /
-        foreach(e_door in m_a_mdl_doors) {
-          var_d4280494 = e_door.origin;
-          open = is_door_open(e_door);
-          str_state = "closed";
-          if(open) {
-            str_state = "open";
-          }
-          /#
-          print3d(var_d4280494, str_state, (0, 0, 1), 1, 1, duration);
-          # /
+      foreach(e_door in m_a_mdl_doors) {
+        var_d4280494 = e_door.origin;
+        open = is_door_open(e_door);
+        str_state = "closed";
+        if(open) {
+          str_state = "open";
         }
+        print3d(var_d4280494, str_state, (0, 0, 1), 1, 1, duration);
+      }
       wait(0.05);
     }
   }
 
-  /*
-  	Name: debug_draw_paths
-  	Namespace: czmtrain
-  	Checksum: 0xB1E15503
-  	Offset: 0x1F10
-  	Size: 0x410
-  	Parameters: 0
-  	Flags: Linked
-  */
+
   function debug_draw_paths() {
-    /#
     do {
       n_debug = getdvarint("");
       wait(1);
@@ -1872,48 +1325,20 @@ class czmtrain {
       }
       wait(0.05);
     }
-    # /
   }
 
 }
 
 #namespace zm_train;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_train
-	Checksum: 0xBDD9C4EF
-	Offset: 0xCE0
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_train", & __init__, undefined, undefined);
 }
 
-/*
-	Name: onplayerconnect
-	Namespace: zm_train
-	Checksum: 0x3FA43A3F
-	Offset: 0xD20
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function onplayerconnect() {
   self.on_train = 0;
 }
 
-/*
-	Name: __init__
-	Namespace: zm_train
-	Checksum: 0x43133229
-	Offset: 0xD38
-	Size: 0x1C4
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_connect( & onplayerconnect);
   callback::on_spawned( & player_on_spawned);
@@ -1927,25 +1352,14 @@ function __init__() {
   level.player_intemission_spawn_callback = & player_intemission_spawn_callback;
   thread initialize_train();
   thread function_eb0db7bc();
-  /#
   thread train_devgui();
-  # /
 }
 
-/*
-	Name: function_eb0db7bc
-	Namespace: zm_train
-	Checksum: 0x68EA01F1
-	Offset: 0xF08
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_eb0db7bc() {
   level flag::wait_till("all_players_spawned");
   level flag::wait_till("zones_initialized");
   while (true) {
-    level waittill(# "host_migration_end");
+    level waittill("host_migration_end");
     [
       [level.o_zod_train]
     ] - > initialize_stations();
@@ -1961,15 +1375,6 @@ function function_eb0db7bc() {
   }
 }
 
-/*
-	Name: player_intemission_spawn_callback
-	Namespace: zm_train
-	Checksum: 0x49391276
-	Offset: 0xFC0
-	Size: 0xBC
-	Parameters: 2
-	Flags: Linked
-*/
 function player_intemission_spawn_callback(origin, angles) {
   ride_vehicle = undefined;
   self.ground_ent = self getgroundent();
@@ -1983,15 +1388,6 @@ function player_intemission_spawn_callback(origin, angles) {
   }
 }
 
-/*
-	Name: initialize_train
-	Namespace: zm_train
-	Checksum: 0xD73D9D57
-	Offset: 0x1088
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function initialize_train() {
   level flag::wait_till("all_players_spawned");
   level flag::wait_till("zones_initialized");
@@ -2000,22 +1396,11 @@ function initialize_train() {
   e_train.takedamage = 0;
   e_train clientfield::set("train_rain_fx_occluder", 1);
   level.o_zod_train = new czmtrain();
-  [
-    [level.o_zod_train]
-  ] - > initialize(e_train);
+  [[level.o_zod_train]] - > initialize(e_train);
   level thread autosend_train();
   level.var_33c4ee76 = 0;
 }
 
-/*
-	Name: function_f37aa349
-	Namespace: zm_train
-	Checksum: 0xEC474585
-	Offset: 0x1198
-	Size: 0xB6
-	Parameters: 1
-	Flags: None
-*/
 function function_f37aa349(sn) {
   ents = getentarray();
   foreach(ent in ents) {
@@ -2026,15 +1411,6 @@ function function_f37aa349(sn) {
   return undefined;
 }
 
-/*
-	Name: function_7465f87
-	Namespace: zm_train
-	Checksum: 0xF99BFCE4
-	Offset: 0x1258
-	Size: 0x33A
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7465f87() {
   trigs = getentarray("train_buyable_weapon", "script_noteworthy");
   foreach(trig in trigs) {
@@ -2061,61 +1437,34 @@ function function_7465f87() {
   }
 }
 
-/*
-	Name: player_on_spawned
-	Namespace: zm_train
-	Checksum: 0xAA3FE45E
-	Offset: 0x15A0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function player_on_spawned() {
   self thread function_69c89e00();
 }
 
-/*
-	Name: function_69c89e00
-	Namespace: zm_train
-	Checksum: 0x64908CD3
-	Offset: 0x15C8
-	Size: 0x142
-	Parameters: 0
-	Flags: Linked
-*/
 function function_69c89e00() {
-  self endon(# "disconnect");
-  self notify(# "hash_69c89e00");
-  self endon(# "hash_69c89e00");
+  self endon("disconnect");
+  self notify("hash_69c89e00");
+  self endon("hash_69c89e00");
   level flag::wait_till("all_players_spawned");
   level flag::wait_till("zones_initialized");
   wait(1);
   wallbuy = level.o_zod_train.m_vh_train.buyable_weapon;
-  self notify(# "zm_bgb_secret_shopper", wallbuy);
+  self notify("zm_bgb_secret_shopper", wallbuy);
   self.var_316060b3 = 0;
   while (isdefined(self)) {
     if(isdefined(self.on_train) && self.on_train) {
       if(!self.var_316060b3) {
-        self notify(# "zm_bgb_secret_shopper", wallbuy);
+        self notify("zm_bgb_secret_shopper", wallbuy);
       }
       wallbuy function_2e9b7fc1(self, wallbuy.weapon);
     } else if(self.var_316060b3) {
-      self notify(# "hash_a09e2c64");
+      self notify("hash_a09e2c64");
     }
     self.var_316060b3 = self.on_train;
     wait(1);
   }
 }
 
-/*
-	Name: function_2e9b7fc1
-	Namespace: zm_train
-	Checksum: 0x539A5EBF
-	Offset: 0x1718
-	Size: 0x4F8
-	Parameters: 2
-	Flags: Linked
-*/
 function function_2e9b7fc1(player, weapon = self.weapon) {
   player_has_weapon = player zm_weapons::has_weapon_or_upgrade(weapon);
   if(!player_has_weapon && (isdefined(level.weapons_using_ammo_sharing) && level.weapons_using_ammo_sharing)) {
@@ -2181,60 +1530,22 @@ function function_2e9b7fc1(player, weapon = self.weapon) {
   return true;
 }
 
-/*
-	Name: function_d7993b3d
-	Namespace: zm_train
-	Checksum: 0x619407B6
-	Offset: 0x1C18
-	Size: 0x64
-	Parameters: 1
-	Flags: Linked
-*/
 function function_d7993b3d(trigger) {
   self.var_5823efe0 = self.model;
   self setmodel("wpn_t7_none_world");
-  trigger waittill(# "trigger");
+  trigger waittill("trigger");
   self setmodel(self.var_5823efe0);
 }
 
-/*
-	Name: zombie_init
-	Namespace: zm_train
-	Checksum: 0x11518FA2
-	Offset: 0x1C88
-	Size: 0x10
-	Parameters: 0
-	Flags: Linked
-*/
 function zombie_init() {
   self.locked_in_train = 0;
 }
 
-/*
-	Name: autosend_train
-	Namespace: zm_train
-	Checksum: 0xDD56E2FA
-	Offset: 0x1CA0
-	Size: 0x38
-	Parameters: 0
-	Flags: Linked
-*/
 function autosend_train() {
   level flag::wait_till("connect_start_to_junction");
-  [
-    [level.o_zod_train]
-  ] - > send_train();
+  [[level.o_zod_train]] - > send_train();
 }
 
-/*
-	Name: in_range_2d
-	Namespace: zm_train
-	Checksum: 0x6822FD88
-	Offset: 0x8C18
-	Size: 0x7E
-	Parameters: 4
-	Flags: None
-*/
 function in_range_2d(v1, v2, range, vert_allowance) {
   if((abs(v1[2] - v2[2])) > vert_allowance) {
     return 0;
@@ -2242,55 +1553,20 @@ function in_range_2d(v1, v2, range, vert_allowance) {
   return distance2dsquared(v1, v2) < (range * range);
 }
 
-/*
-	Name: get_players_on_train
-	Namespace: zm_train
-	Checksum: 0x7B70A744
-	Offset: 0x8CA0
-	Size: 0x32
-	Parameters: 1
-	Flags: Linked
-*/
 function get_players_on_train(b_valid_targets_only = 0) {
-  return [
-    [level.o_zod_train]
-  ] - > get_players_on_train(1);
+  return [[level.o_zod_train]] - > get_players_on_train(1);
 }
 
-/*
-	Name: is_moving
-	Namespace: zm_train
-	Checksum: 0x9C7B626A
-	Offset: 0x8CE0
-	Size: 0x26
-	Parameters: 0
-	Flags: Linked
-*/
 function is_moving() {
   if(!isdefined(level.o_zod_train)) {
     return 0;
   }
-  return [
-    [level.o_zod_train]
-  ] - > is_moving();
+  return [[level.o_zod_train]] - > is_moving();
 }
 
-/*
-	Name: zombie_jump_onto_moving_train
-	Namespace: zm_train
-	Checksum: 0x95C19E39
-	Offset: 0x8D10
-	Size: 0x88
-	Parameters: 1
-	Flags: Linked
-*/
 function zombie_jump_onto_moving_train(ai) {
-  [
-    [level.o_zod_train]
-  ] - > mark_jumper_time();
-  spot = [
-    [level.o_zod_train]
-  ] - > get_available_jumptag();
+  [[level.o_zod_train]] - > mark_jumper_time();
+  spot = [[level.o_zod_train]] - > get_available_jumptag();
   if(isdefined(spot)) {
     ai.str_train_tag = spot.str_tag;
     [
@@ -2299,15 +1575,6 @@ function zombie_jump_onto_moving_train(ai) {
   }
 }
 
-/*
-	Name: remove_dead_zombie
-	Namespace: zm_train
-	Checksum: 0x514BEC09
-	Offset: 0x8DA0
-	Size: 0xE8
-	Parameters: 3
-	Flags: Linked
-*/
 function remove_dead_zombie(e_attacker, str_means_of_death, weapon) {
   if(isdefined(self)) {
     b_on_train = 0;
@@ -2334,61 +1601,20 @@ function remove_dead_zombie(e_attacker, str_means_of_death, weapon) {
   }
 }
 
-/*
-	Name: get_num_zombies_locked_in
-	Namespace: zm_train
-	Checksum: 0xDE13BFA5
-	Offset: 0x8E90
-	Size: 0x2A
-	Parameters: 0
-	Flags: Linked
-*/
 function get_num_zombies_locked_in() {
-  a_zombies = [
-    [level.o_zod_train]
-  ] - > get_zombies_locked_in();
+  a_zombies = [[level.o_zod_train]] - > get_zombies_locked_in();
   return a_zombies.size;
 }
 
-/*
-	Name: is_full
-	Namespace: zm_train
-	Checksum: 0xDAF9ED5D
-	Offset: 0x8EC8
-	Size: 0x18
-	Parameters: 0
-	Flags: Linked
-*/
 function is_full() {
   return get_num_zombies_locked_in() >= 6;
 }
 
-/*
-	Name: is_ready_for_jumper
-	Namespace: zm_train
-	Checksum: 0xC4210679
-	Offset: 0x8EE8
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function is_ready_for_jumper() {
-  return ([
-    [level.o_zod_train]
-  ] - > get_time_since_last_jumper()) > 10;
+  return ([[level.o_zod_train]] - > get_time_since_last_jumper()) > 10;
 }
 
-/*
-	Name: debug_go_to_train
-	Namespace: zm_train
-	Checksum: 0x9185ACAB
-	Offset: 0x8F10
-	Size: 0xDC
-	Parameters: 0
-	Flags: Linked
-*/
 function debug_go_to_train() {
-  /#
   train = getent("", "");
   if(isdefined(train)) {
     train_origin = train getorigin();
@@ -2398,20 +1624,9 @@ function debug_go_to_train() {
       player setorigin(train_origin);
     }
   }
-  # /
 }
 
-/*
-	Name: train_devgui
-	Namespace: zm_train
-	Checksum: 0x5577B68C
-	Offset: 0x8FF8
-	Size: 0x1F0
-	Parameters: 0
-	Flags: Linked
-*/
 function train_devgui() {
-  /#
   setdvar("", "");
   adddebugcommand("");
   adddebugcommand("");
@@ -2454,5 +1669,4 @@ function train_devgui() {
     }
     util::wait_network_frame();
   }
-  # /
 }

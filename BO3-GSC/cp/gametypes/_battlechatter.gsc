@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\gametypes\_battlechatter.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\gametypes\_globallogic;
 #using scripts\shared\array_shared;
@@ -6,46 +10,18 @@
 #using scripts\shared\spawner_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace battlechatter;
 
-/*
-	Name: __init__sytem__
-	Namespace: battlechatter
-	Checksum: 0x46335FE9
-	Offset: 0x858
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("battlechatter", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: battlechatter
-	Checksum: 0x49CE9F9B
-	Offset: 0x898
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & init);
   aispawnerarray = getactorspawnerarray();
   callback::on_ai_spawned( & on_joined_ai);
 }
 
-/*
-	Name: init
-	Namespace: battlechatter
-	Checksum: 0xB8ADF613
-	Offset: 0x908
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   callback::on_spawned( & on_player_spawned);
   level.battlechatter_init = 1;
@@ -54,18 +30,9 @@ function init() {
   level thread sndvehiclehijackwatcher();
 }
 
-/*
-	Name: sndvehiclehijackwatcher
-	Namespace: battlechatter
-	Checksum: 0xA863678F
-	Offset: 0x978
-	Size: 0x138
-	Parameters: 0
-	Flags: Linked
-*/
 function sndvehiclehijackwatcher() {
   while (true) {
-    level waittill(# "clonedentity", clone, vehentnum);
+    level waittill("clonedentity", clone, vehentnum);
     if(isdefined(clone) && isdefined(clone.archetype)) {
       vehiclename = clone.archetype;
       if(vehiclename == "wasp") {
@@ -89,17 +56,8 @@ function sndvehiclehijackwatcher() {
   }
 }
 
-/*
-	Name: on_joined_ai
-	Namespace: battlechatter
-	Checksum: 0x874E044C
-	Offset: 0xAB8
-	Size: 0x2F4
-	Parameters: 0
-	Flags: Linked
-*/
 function on_joined_ai() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   if(isdefined(level.deadops) && level.deadops) {
     return;
   }
@@ -143,19 +101,10 @@ function on_joined_ai() {
   }
 }
 
-/*
-	Name: function_c8397d24
-	Namespace: battlechatter
-	Checksum: 0xCFFDF2C7
-	Offset: 0xDB8
-	Size: 0xD8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c8397d24() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   while (true) {
     wait(randomintrange(6, 14));
     if(isdefined(self)) {
@@ -166,21 +115,12 @@ function function_c8397d24() {
   }
 }
 
-/*
-	Name: bc_ainotifyconvert
-	Namespace: battlechatter
-	Checksum: 0x9DB3B3DD
-	Offset: 0xE98
-	Size: 0xD7E
-	Parameters: 0
-	Flags: Linked
-*/
 function bc_ainotifyconvert() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "bhtn_action_notify", notify_string);
+    self waittill("bhtn_action_notify", notify_string);
     switch (notify_string) {
       case "pain": {
         if(!(isdefined(self.archetype) && self.archetype == "robot")) {
@@ -416,37 +356,19 @@ function bc_ainotifyconvert() {
   }
 }
 
-/*
-	Name: bc_scriptedline
-	Namespace: battlechatter
-	Checksum: 0xCE7DFC51
-	Offset: 0x1C20
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function bc_scriptedline() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "scriptedbc", alias_suffix);
+    self waittill("scriptedbc", alias_suffix);
     level thread bc_makeline(self, alias_suffix);
   }
 }
 
-/*
-	Name: bc_enemycontact
-	Namespace: battlechatter
-	Checksum: 0x484CC03E
-	Offset: 0x1C90
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function bc_enemycontact() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   if(randomintrange(0, 100) <= 35) {
     if(!(isdefined(level.bc_enemycontact) && level.bc_enemycontact)) {
       level thread bc_makeline(self, "enemy_contact");
@@ -455,35 +377,17 @@ function bc_enemycontact() {
   }
 }
 
-/*
-	Name: bc_enemycontact_wait
-	Namespace: battlechatter
-	Checksum: 0x93B2F612
-	Offset: 0x1D20
-	Size: 0x20
-	Parameters: 0
-	Flags: Linked
-*/
 function bc_enemycontact_wait() {
   level.bc_enemycontact = 1;
   wait(15);
   level.bc_enemycontact = 0;
 }
 
-/*
-	Name: bc_grenadewatcher
-	Namespace: battlechatter
-	Checksum: 0x366E049D
-	Offset: 0x1D48
-	Size: 0xF8
-	Parameters: 0
-	Flags: Linked
-*/
 function bc_grenadewatcher() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "grenade_fire", grenade, weapon);
+    self waittill("grenade_fire", grenade, weapon);
     if(weapon.name == "frag_grenade" || weapon.name == "frag_grenade_invisible") {
       if(randomintrange(0, 100) <= 80 && !isplayer(self)) {
         level thread bc_makeline(self, "grenade_toss");
@@ -493,15 +397,6 @@ function bc_grenadewatcher() {
   }
 }
 
-/*
-	Name: bc_incominggrenadewatcher
-	Namespace: battlechatter
-	Checksum: 0x688AE3FC
-	Offset: 0x1E48
-	Size: 0xF4
-	Parameters: 2
-	Flags: Linked
-*/
 function bc_incominggrenadewatcher(thrower, grenade) {
   if(randomintrange(0, 100) <= 95) {
     wait(1);
@@ -519,21 +414,12 @@ function bc_incominggrenadewatcher(thrower, grenade) {
   }
 }
 
-/*
-	Name: bc_stickygrenadewatcher
-	Namespace: battlechatter
-	Checksum: 0x995F7D5
-	Offset: 0x1F48
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function bc_stickygrenadewatcher() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "sticky_explode");
+  self endon("death");
+  self endon("disconnect");
+  self endon("sticky_explode");
   while (true) {
-    self waittill(# "grenade_stuck", grenade);
+    self waittill("grenade_stuck", grenade);
     if(isdefined(grenade)) {
       grenade.stucktoplayer = self;
     }
@@ -544,39 +430,21 @@ function bc_stickygrenadewatcher() {
   }
 }
 
-/*
-	Name: function_897d1130
-	Namespace: battlechatter
-	Checksum: 0x6DDA1D1C
-	Offset: 0x1FF8
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_897d1130() {
-  self endon(# "disconnect");
-  self waittill(# "death", attacker, meansofdeath);
+  self endon("disconnect");
+  self waittill("death", attacker, meansofdeath);
   if(isdefined(attacker) && !isplayer(attacker)) {
     if(meansofdeath == "MOD_MELEE") {
-      attacker notify(# "bhtn_action_notify", "meleeKill");
+      attacker notify("bhtn_action_notify", "meleeKill");
     } else {
-      attacker notify(# "bhtn_action_notify", "enemyKill");
+      attacker notify("bhtn_action_notify", "enemyKill");
     }
   }
 }
 
-/*
-	Name: bc_death
-	Namespace: battlechatter
-	Checksum: 0xD0B1A4F0
-	Offset: 0x20A0
-	Size: 0x38C
-	Parameters: 0
-	Flags: Linked
-*/
 function bc_death() {
-  self endon(# "disconnect");
-  self waittill(# "death", attacker, meansofdeath);
+  self endon("disconnect");
+  self waittill("death", attacker, meansofdeath);
   if(isdefined(self)) {
     meleeassassinate = isdefined(meansofdeath) && meansofdeath == "MOD_MELEE_ASSASSINATE";
     if(isdefined(self.archetype) && self.archetype == "warlord") {
@@ -600,9 +468,9 @@ function bc_death() {
     }
     if(isdefined(attacker) && !isplayer(attacker)) {
       if(meansofdeath == "MOD_MELEE") {
-        attacker notify(# "bhtn_action_notify", "meleeKill");
+        attacker notify("bhtn_action_notify", "meleeKill");
       } else {
-        attacker notify(# "bhtn_action_notify", "enemyKill");
+        attacker notify("bhtn_action_notify", "enemyKill");
       }
     }
     sniper = isdefined(attacker) && isdefined(attacker.scoretype) && attacker.scoretype == "_sniper";
@@ -620,15 +488,6 @@ function bc_death() {
   }
 }
 
-/*
-	Name: bc_ainearexplodable
-	Namespace: battlechatter
-	Checksum: 0x506C278F
-	Offset: 0x2438
-	Size: 0xC4
-	Parameters: 2
-	Flags: Linked
-*/
 function bc_ainearexplodable(object, type) {
   wait(randomfloatrange(0.1, 0.4));
   ai = get_closest_ai_to_object("both", object, 500);
@@ -641,19 +500,10 @@ function bc_ainearexplodable(object, type) {
   }
 }
 
-/*
-	Name: bc_robotbehindvox
-	Namespace: battlechatter
-	Checksum: 0x80159F15
-	Offset: 0x2508
-	Size: 0x4B2
-	Parameters: 0
-	Flags: Linked
-*/
 function bc_robotbehindvox() {
-  level endon(# "unloaded");
-  self endon(# "death_or_disconnect");
-  self endon(# "hash_f8c5dd60");
+  level endon("unloaded");
+  self endon("death_or_disconnect");
+  self endon("hash_f8c5dd60");
   if(!isdefined(level._bc_robotbehindvoxtime)) {
     level._bc_robotbehindvoxtime = 0;
     enemies = getaiteamarray("axis", "team3");
@@ -711,15 +561,6 @@ function bc_robotbehindvox() {
   }
 }
 
-/*
-	Name: getyawtospot
-	Namespace: battlechatter
-	Checksum: 0xBAD40E49
-	Offset: 0x29C8
-	Size: 0x74
-	Parameters: 1
-	Flags: Linked
-*/
 function getyawtospot(spot) {
   pos = spot;
   yaw = self.angles[1] - getyaw(pos);
@@ -727,35 +568,17 @@ function getyawtospot(spot) {
   return yaw;
 }
 
-/*
-	Name: getyaw
-	Namespace: battlechatter
-	Checksum: 0x6B19C29C
-	Offset: 0x2A48
-	Size: 0x42
-	Parameters: 1
-	Flags: Linked
-*/
 function getyaw(org) {
   angles = vectortoangles(org - self.origin);
   return angles[1];
 }
 
-/*
-	Name: bc_makeline
-	Namespace: battlechatter
-	Checksum: 0x4BCD9115
-	Offset: 0x2A98
-	Size: 0x16C
-	Parameters: 5
-	Flags: Linked
-*/
 function bc_makeline(ai, line, causeresponse, category, alwaysplay) {
   if(!isdefined(ai)) {
     return;
   }
-  ai endon(# "death");
-  ai endon(# "disconnect");
+  ai endon("death");
+  ai endon("disconnect");
   response = undefined;
   if(isdefined(causeresponse)) {
     response = line + "_response";
@@ -771,15 +594,6 @@ function bc_makeline(ai, line, causeresponse, category, alwaysplay) {
   ai thread do_sound(soundalias, alwaysplay, response, category);
 }
 
-/*
-	Name: do_sound
-	Namespace: battlechatter
-	Checksum: 0x418DE78F
-	Offset: 0x2C10
-	Size: 0x21C
-	Parameters: 4
-	Flags: Linked
-*/
 function do_sound(soundalias, alwaysplay, response, category) {
   if(!isdefined(soundalias)) {
     return;
@@ -799,7 +613,7 @@ function do_sound(soundalias, alwaysplay, response, category) {
       return;
     }
     if(isdefined(self.isspeaking) && self.isspeaking) {
-      self notify(# "bc_interrupt");
+      self notify("bc_interrupt");
     }
     if(isalive(self)) {
       self playsoundontag(soundalias, "J_neck");
@@ -821,15 +635,6 @@ function do_sound(soundalias, alwaysplay, response, category) {
   }
 }
 
-/*
-	Name: function_20dcacc5
-	Namespace: battlechatter
-	Checksum: 0x8115231E
-	Offset: 0x2E38
-	Size: 0x50
-	Parameters: 0
-	Flags: Linked
-*/
 function function_20dcacc5() {
   if(!isdefined(level.var_769cc2b1)) {
     level thread function_1af43712();
@@ -840,15 +645,6 @@ function function_20dcacc5() {
   level.var_769cc2b1++;
 }
 
-/*
-	Name: function_1af43712
-	Namespace: battlechatter
-	Checksum: 0xFC78A1DC
-	Offset: 0x2E90
-	Size: 0x30
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1af43712() {
   while (true) {
     level.var_769cc2b1 = 0;
@@ -856,15 +652,6 @@ function function_1af43712() {
   }
 }
 
-/*
-	Name: bc_allowed
-	Namespace: battlechatter
-	Checksum: 0xA3BE1CC8
-	Offset: 0x2EC8
-	Size: 0x96
-	Parameters: 1
-	Flags: Linked
-*/
 function bc_allowed(str_category = "bc") {
   if(isdefined(level.allowbattlechatter) && (!(isdefined(level.allowbattlechatter[str_category]) && level.allowbattlechatter[str_category]))) {
     return false;
@@ -875,17 +662,8 @@ function bc_allowed(str_category = "bc") {
   return true;
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: battlechatter
-	Checksum: 0x9705872B
-	Offset: 0x2F68
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.soundmod = "player";
   self.voxshouldgasp = 0;
   self.voxshouldgasploop = 1;
@@ -897,21 +675,12 @@ function on_player_spawned() {
   self thread cybercoremeleewatcher();
 }
 
-/*
-	Name: bc_plrnotifyconvert
-	Namespace: battlechatter
-	Checksum: 0x3964D763
-	Offset: 0x3030
-	Size: 0x82
-	Parameters: 0
-	Flags: Linked
-*/
 function bc_plrnotifyconvert() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "bhtn_action_notify", notify_string);
+    self waittill("bhtn_action_notify", notify_string);
     switch (notify_string) {
       case "firefly_deploy": {
         break;
@@ -926,15 +695,6 @@ function bc_plrnotifyconvert() {
   }
 }
 
-/*
-	Name: bc_doplayervox
-	Namespace: battlechatter
-	Checksum: 0xEBB7A07C
-	Offset: 0x30C0
-	Size: 0xA4
-	Parameters: 1
-	Flags: None
-*/
 function bc_doplayervox(suffix) {
   soundalias = "vox_plyr_" + suffix;
   if(self bc_allowed() && (!(isdefined(self.istalking) && self.istalking)) && (!(isdefined(self.isspeaking) && self.isspeaking))) {
@@ -943,20 +703,11 @@ function bc_doplayervox(suffix) {
   }
 }
 
-/*
-	Name: pain_vox
-	Namespace: battlechatter
-	Checksum: 0x25938FE3
-	Offset: 0x3170
-	Size: 0x100
-	Parameters: 0
-	Flags: Linked
-*/
 function pain_vox() {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "snd_pain_player", meansofdeath);
+    self waittill("snd_pain_player", meansofdeath);
     if(randomintrange(0, 100) <= 100) {
       if(isalive(self)) {
         if(meansofdeath == "MOD_DROWN") {
@@ -974,83 +725,47 @@ function pain_vox() {
   }
 }
 
-/*
-	Name: water_gasp
-	Namespace: battlechatter
-	Checksum: 0xA6CCC3FA
-	Offset: 0x3278
-	Size: 0xC0
-	Parameters: 0
-	Flags: Linked
-*/
 function water_gasp() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  self endon(# "snd_gasp");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  self endon("snd_gasp");
+  level endon("game_ended");
   self.voxshouldgasploop = 0;
   while (true) {
     if(!self isplayerunderwater() && self.voxshouldgasp) {
       self.voxshouldgasp = 0;
       self.voxshouldgasploop = 1;
       self thread do_sound("vox_pm1_gas_gasp", 1);
-      self notify(# "snd_gasp");
+      self notify("snd_gasp");
     }
     wait(0.5);
   }
 }
 
-/*
-	Name: cybercoremeleewatcher
-	Namespace: battlechatter
-	Checksum: 0xA05D64ED
-	Offset: 0x3340
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked
-*/
 function cybercoremeleewatcher() {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
   while (true) {
-    self waittill(# "melee_cybercom");
+    self waittill("melee_cybercom");
     self thread sndcybercoremeleeresponse();
   }
 }
 
-/*
-	Name: sndcybercoremeleeresponse
-	Namespace: battlechatter
-	Checksum: 0x9E652FE
-	Offset: 0x33A0
-	Size: 0x68
-	Parameters: 0
-	Flags: Linked
-*/
 function sndcybercoremeleeresponse() {
-  self endon(# "melee_cybercom");
+  self endon("melee_cybercom");
   wait(2);
   if(isdefined(self)) {
     ai = level get_closest_ai_to_object("axis", self, 700);
     if(isdefined(ai)) {
-      ai notify(# "bhtn_action_notify", "rapidstrike");
+      ai notify("bhtn_action_notify", "rapidstrike");
     }
   }
 }
 
-/*
-	Name: wait_playback_time
-	Namespace: battlechatter
-	Checksum: 0x5F424B52
-	Offset: 0x3410
-	Size: 0xA8
-	Parameters: 2
-	Flags: Linked
-*/
 function wait_playback_time(soundalias, timeout) {
-  self endon(# "death");
-  self endon(# "disconnect");
+  self endon("death");
+  self endon("disconnect");
   playbacktime = soundgetplaybacktime(soundalias);
   self.isspeaking = 1;
   if(playbacktime >= 0) {
@@ -1063,15 +778,6 @@ function wait_playback_time(soundalias, timeout) {
   self.isspeaking = 0;
 }
 
-/*
-	Name: get_closest_ai_on_sameteam
-	Namespace: battlechatter
-	Checksum: 0xDDF5BE60
-	Offset: 0x34C0
-	Size: 0x37E
-	Parameters: 2
-	Flags: Linked
-*/
 function get_closest_ai_on_sameteam(some_ai, maxdist) {
   if(isdefined(some_ai)) {
     aiarray = getaiteamarray(some_ai.team);
@@ -1109,15 +815,6 @@ function get_closest_ai_on_sameteam(some_ai, maxdist) {
   return undefined;
 }
 
-/*
-	Name: get_closest_ai_to_object
-	Namespace: battlechatter
-	Checksum: 0xF3730A1A
-	Offset: 0x3848
-	Size: 0x216
-	Parameters: 3
-	Flags: Linked
-*/
 function get_closest_ai_to_object(team, object, maxdist) {
   if(!isdefined(object)) {
     return;
@@ -1152,18 +849,7 @@ function get_closest_ai_to_object(team, object, maxdist) {
   return undefined;
 }
 
-/*
-	Name: function_d9f49fba
-	Namespace: battlechatter
-	Checksum: 0xB9E6B090
-	Offset: 0x3A68
-	Size: 0x66
-	Parameters: 2
-	Flags: Linked
-*/
 function function_d9f49fba(b_allow, str_category = "bc") {
-  /#
   assert(isdefined(b_allow), "");
-  # /
-    level.allowbattlechatter[str_category] = b_allow;
+  level.allowbattlechatter[str_category] = b_allow;
 }

@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\fr.gsc
+*************************************************/
+
 #using scripts\mp\_pickup_items;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
@@ -14,18 +18,8 @@
 #using scripts\shared\popups_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-
 #namespace fr;
 
-/*
-	Name: main
-	Namespace: fr
-	Checksum: 0xC216BCBE
-	Offset: 0xA58
-	Size: 0x6B4
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   level.trackweaponstats = 0;
   globallogic::init();
@@ -73,31 +67,16 @@ function main() {
   for (i = 0; i < 1; i++) {
     level.frgame.tracks[i] = spawnstruct();
     level.frgame.tracks[i].starttrigger = getent("fr_start_0" + i, "targetname");
-    /#
     assert(isdefined(level.frgame.tracks[i].starttrigger));
-    # /
-      level.frgame.tracks[i].goaltrigger = getent("fr_end_0" + i, "targetname");
-    /#
+    level.frgame.tracks[i].goaltrigger = getent("fr_end_0" + i, "targetname");
     assert(isdefined(level.frgame.tracks[i].goaltrigger));
-    # /
-      level.frgame.tracks[i].highscores = [];
+    level.frgame.tracks[i].highscores = [];
   }
   level.frgame.checkpointtriggers = getentarray("fr_checkpoint", "targetname");
-  /#
   assert(level.frgame.checkpointtriggers.size);
-  # /
-    globallogic::setvisiblescoreboardcolumns("pointstowin", "kills", "deaths", "headshots", "score");
+  globallogic::setvisiblescoreboardcolumns("pointstowin", "kills", "deaths", "headshots", "score");
 }
 
-/*
-	Name: setupteam
-	Namespace: fr
-	Checksum: 0x8FFB8AC1
-	Offset: 0x1118
-	Size: 0xB4
-	Parameters: 1
-	Flags: None
-*/
 function setupteam(team) {
   util::setobjectivetext(team, & "OBJECTIVES_FR");
   if(level.splitscreen) {
@@ -109,15 +88,6 @@ function setupteam(team) {
   spawnlogic::add_spawn_points(team, "mp_dm_spawn");
 }
 
-/*
-	Name: onstartgametype
-	Namespace: fr
-	Checksum: 0xC817BB6F
-	Offset: 0x11D8
-	Size: 0x8E4
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   setclientnamemode("auto_change");
   level.usexcamsforendgame = 0;
@@ -144,34 +114,26 @@ function onstartgametype() {
         trigger.spawnpoint = spawn;
       }
     }
-    /#
     assert(isdefined(trigger.spawnpoint));
-    # /
   }
   player_starts = spawnlogic::_get_spawnpoint_array("info_player_start");
-  /#
   assert(player_starts.size);
-  # /
-    foreach(track in level.frgame.tracks) {
-      closest = 99999999;
-      foreach(start in player_starts) {
-        dist = distancesquared(start.origin, track.starttrigger.origin);
-        if(dist < closest) {
-          closest = dist;
-          track.playerstart = start;
-        }
+  foreach(track in level.frgame.tracks) {
+    closest = 99999999;
+    foreach(start in player_starts) {
+      dist = distancesquared(start.origin, track.starttrigger.origin);
+      if(dist < closest) {
+        closest = dist;
+        track.playerstart = start;
       }
-      /#
-      assert(isdefined(track.playerstart));
-      # /
     }
+    assert(isdefined(track.playerstart));
+  }
   level.frgame.deathtriggers = getentarray("fr_die", "targetname");
-  /#
   assert(level.frgame.deathtriggers.size);
-  # /
-    foreach(trigger in level.frgame.deathtriggers) {
-      trigger thread watchdeathtrigger();
-    }
+  foreach(trigger in level.frgame.deathtriggers) {
+    trigger thread watchdeathtrigger();
+  }
   setup_tutorial();
   if(!isdefined(level.freerun)) {
     level.freerun = 1;
@@ -194,10 +156,8 @@ function onstartgametype() {
         item.checkpoint = trigger;
       }
     }
-    /#
     assert(isdefined(item.checkpoint));
-    # /
-      item.checkpoint.weapon = item.visuals[0].items[0].weapon;
+    item.checkpoint.weapon = item.visuals[0].items[0].weapon;
     item.checkpoint.weaponobject = item;
     item.checkpoint setup_weapon_targets();
   }
@@ -207,17 +167,8 @@ function onstartgametype() {
   level.frgame.mapversion = getmissionversion();
 }
 
-/*
-	Name: watch_for_game_end
-	Namespace: fr
-	Checksum: 0xA8E227E7
-	Offset: 0x1AC8
-	Size: 0x7C
-	Parameters: 0
-	Flags: None
-*/
 function watch_for_game_end() {
-  level waittill(# "game_ended");
+  level waittill("game_ended");
   if(!end_game_state()) {
     level clientfield::set("freerun_finishTime", 0);
   }
@@ -225,32 +176,14 @@ function watch_for_game_end() {
   level clientfield::set("freerun_state", 4);
 }
 
-/*
-	Name: on_player_connect
-	Namespace: fr
-	Checksum: 0xDFFDC193
-	Offset: 0x1B50
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function on_player_connect() {
   self thread on_menu_response();
 }
 
-/*
-	Name: on_menu_response
-	Namespace: fr
-	Checksum: 0xEE616712
-	Offset: 0x1B78
-	Size: 0xA0
-	Parameters: 0
-	Flags: None
-*/
 function on_menu_response() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   for (;;) {
-    self waittill(# "menuresponse", menu, response);
+    self waittill("menuresponse", menu, response);
     if(response == "fr_restart") {
       self playsoundtoplayer("uin_freerun_reset", self);
       self thread freerunmusic();
@@ -259,15 +192,6 @@ function on_menu_response() {
   }
 }
 
-/*
-	Name: onspawnplayer
-	Namespace: fr
-	Checksum: 0xF0646073
-	Offset: 0x1C20
-	Size: 0x13C
-	Parameters: 1
-	Flags: None
-*/
 function onspawnplayer(predictedspawn) {
   spawning::onspawnplayer(predictedspawn);
   if(predictedspawn) {
@@ -289,15 +213,6 @@ function onspawnplayer(predictedspawn) {
   self disableweaponcycling();
 }
 
-/*
-	Name: on_player_damage
-	Namespace: fr
-	Checksum: 0xF9062BB5
-	Offset: 0x1D68
-	Size: 0x9C
-	Parameters: 11
-	Flags: None
-*/
 function on_player_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, weapon, vpoint, vdir, shitloc, modelindex, psoffsettime) {
   if(idamage >= self.health) {
     self.health = self.maxhealth + 1;
@@ -307,17 +222,8 @@ function on_player_damage(einflictor, eattacker, idamage, idflags, smeansofdeath
   return idamage;
 }
 
-/*
-	Name: trackplayerorigin
-	Namespace: fr
-	Checksum: 0x14441C47
-	Offset: 0x1E10
-	Size: 0x42
-	Parameters: 0
-	Flags: None
-*/
 function trackplayerorigin() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
     self.prev_origin = self.origin;
     self.prev_time = gettime();
@@ -326,53 +232,24 @@ function trackplayerorigin() {
   }
 }
 
-/*
-	Name: readhighscores
-	Namespace: fr
-	Checksum: 0xA3831552
-	Offset: 0x1E60
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function readhighscores() {
   get_top_scores_stats();
   updatehighscores();
 }
 
-/*
-	Name: updatehighscores
-	Namespace: fr
-	Checksum: 0xDFF01670
-	Offset: 0x1E90
-	Size: 0xCC
-	Parameters: 0
-	Flags: None
-*/
 function updatehighscores() {
   self freerunsethighscores(level.frgame.activetrack.highscores[0].time, level.frgame.activetrack.highscores[1].time, level.frgame.activetrack.highscores[2].time);
   level clientfield::set("freerun_bestTime", level.frgame.activetrack.highscores[0].time);
 }
 
-/*
-	Name: activatetrack
-	Namespace: fr
-	Checksum: 0xD48063
-	Offset: 0x1F68
-	Size: 0x4C4
-	Parameters: 1
-	Flags: None
-*/
 function activatetrack(trackindex) {
-  level notify(# "activate_track");
-  /#
+  level notify("activate_track");
   if(level.frgame.tracks.size > 1) {
     iprintln("" + trackindex);
   }
-  # /
-    if(!isdefined(level.frgame.tutorials) || !level.frgame.tutorials) {
-      self playlocalsound("vox_tuto_tutorial_sequence_27");
-    }
+  if(!isdefined(level.frgame.tutorials) || !level.frgame.tutorials) {
+    self playlocalsound("vox_tuto_tutorial_sequence_27");
+  }
   level.frgame.lastplayedfaultvocheckpoint = -1;
   level.frgame.activetrackindex = trackindex;
   level.frgame.activetrack = level.frgame.tracks[trackindex];
@@ -409,15 +286,6 @@ function activatetrack(trackindex) {
   level.frgame.activetrack.starttrigger thread watchstartrun(self);
 }
 
-/*
-	Name: startrun
-	Namespace: fr
-	Checksum: 0x6922E96
-	Offset: 0x2438
-	Size: 0x114
-	Parameters: 0
-	Flags: None
-*/
 function startrun() {
   level.frgame.totalpausedtime = 0;
   level.frgame.pausedattime = 0;
@@ -431,15 +299,6 @@ function startrun() {
   self thread watchuserrespawn();
 }
 
-/*
-	Name: oncheckpointtrigger
-	Namespace: fr
-	Checksum: 0x214B0005
-	Offset: 0x2558
-	Size: 0xEC
-	Parameters: 2
-	Flags: None
-*/
 function oncheckpointtrigger(player, endonstring) {
   self endon(endonstring);
   level.frgame.activespawnlocation = getgroundpointfororigin(player.origin);
@@ -454,28 +313,10 @@ function oncheckpointtrigger(player, endonstring) {
   }
 }
 
-/*
-	Name: leavecheckpointtrigger
-	Namespace: fr
-	Checksum: 0x1C59A07A
-	Offset: 0x2650
-	Size: 0x24
-	Parameters: 1
-	Flags: None
-*/
 function leavecheckpointtrigger(player) {
   self thread watchcheckpointtrigger();
 }
 
-/*
-	Name: get_current_track_time
-	Namespace: fr
-	Checksum: 0xDE565B8A
-	Offset: 0x2680
-	Size: 0x10A
-	Parameters: 1
-	Flags: None
-*/
 function get_current_track_time(player) {
   curtime = gettime();
   dt = curtime - player.prev_time;
@@ -484,17 +325,8 @@ function get_current_track_time(player) {
   return int(current_time - (dt * (1 - frac)));
 }
 
-/*
-	Name: watchcheckpointtrigger
-	Namespace: fr
-	Checksum: 0xECEE3E93
-	Offset: 0x2798
-	Size: 0x284
-	Parameters: 0
-	Flags: None
-*/
 function watchcheckpointtrigger() {
-  self waittill(# "trigger", player);
+  self waittill("trigger", player);
   if(isplayer(player)) {
     if(level.frgame.activespawnpoint != self) {
       checkpoint_index = self.checkpointindex;
@@ -526,33 +358,15 @@ function watchcheckpointtrigger() {
   }
 }
 
-/*
-	Name: watchdeathtrigger
-	Namespace: fr
-	Checksum: 0x62BC6FFA
-	Offset: 0x2A28
-	Size: 0x58
-	Parameters: 0
-	Flags: None
-*/
 function watchdeathtrigger() {
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(isplayer(player)) {
       player faultdeath();
     }
   }
 }
 
-/*
-	Name: add_current_run_to_high_scores
-	Namespace: fr
-	Checksum: 0x9F0AE12A
-	Offset: 0x2A88
-	Size: 0x258
-	Parameters: 1
-	Flags: None
-*/
 function add_current_run_to_high_scores(player) {
   active_track = level.frgame.activetrack;
   run_data = create_high_score_struct(get_current_track_time(player), level.frgame.faults, level.frgame.userspawns, level.frgame.bulletpenalty);
@@ -585,19 +399,10 @@ function add_current_run_to_high_scores(player) {
   return new_record;
 }
 
-/*
-	Name: watchgoaltrigger
-	Namespace: fr
-	Checksum: 0x3F91BF70
-	Offset: 0x2CE8
-	Size: 0x32C
-	Parameters: 0
-	Flags: None
-*/
 function watchgoaltrigger() {
-  level notify(# "watch_goal_trigger");
-  level endon(# "watch_goal_trigger");
-  self waittill(# "trigger", player);
+  level notify("watch_goal_trigger");
+  level endon("watch_goal_trigger");
+  self waittill("trigger", player);
   if(isplayer(player)) {
     player playsoundtoplayer("uin_freerun_finish", player);
     player take_all_player_weapons(1, 0);
@@ -613,9 +418,9 @@ function watchgoaltrigger() {
     player updatehighscores();
     level clientfield::set("freerun_finishTime", get_current_track_time(player));
     level clientfield::set("freerun_state", 2);
-    level notify(# "finished_track");
+    level notify("finished_track");
     if(player ishost()) {
-      level notify(# "stop_tutorials");
+      level notify("stop_tutorials");
       take_players_out_of_tutorial_mode();
       level.frgame.tutorials = 0;
       setlocalprofilevar("com_firsttime_freerun", 1);
@@ -624,51 +429,22 @@ function watchgoaltrigger() {
         setlocalprofilevar("freerunHighestTrack", level.frgame.trackindex);
       }
     }
-    /#
     dumphighscores();
-    # /
-      wait(1.5);
+    wait(1.5);
     uploadstats();
     player uploadleaderboards();
     level clientfield::set("freerun_state", 5);
   }
 }
 
-/*
-	Name: freeze
-	Namespace: fr
-	Checksum: 0xEE209073
-	Offset: 0x3020
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function freeze() {
   self util::freeze_player_controls(1);
 }
 
-/*
-	Name: unfreeze
-	Namespace: fr
-	Checksum: 0xC837FE1B
-	Offset: 0x3048
-	Size: 0x1C
-	Parameters: 0
-	Flags: None
-*/
 function unfreeze() {
   self util::freeze_player_controls(0);
 }
 
-/*
-	Name: setup_weapon_targets
-	Namespace: fr
-	Checksum: 0xF2538684
-	Offset: 0x3070
-	Size: 0x41A
-	Parameters: 0
-	Flags: None
-*/
 function setup_weapon_targets() {
   target_name = self.weaponobject.visuals[0].target;
   if(!isdefined(target_name)) {
@@ -709,19 +485,10 @@ function setup_weapon_targets() {
   }
 }
 
-/*
-	Name: watch_target_trigger_thread
-	Namespace: fr
-	Checksum: 0xD0E83923
-	Offset: 0x3498
-	Size: 0x130
-	Parameters: 1
-	Flags: None
-*/
 function watch_target_trigger_thread(weaponobject) {
-  self endon(# "death");
+  self endon("death");
   while (true) {
-    self waittill(# "damage", damage, attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
+    self waittill("damage", damage, attacker, direction_vec, point, type, modelname, tagname, partname, weapon, idflags);
     if(level.frgame.activespawnpoint != self.checkpoint) {
       continue;
     }
@@ -737,15 +504,6 @@ function watch_target_trigger_thread(weaponobject) {
   }
 }
 
-/*
-	Name: turn_off_target
-	Namespace: fr
-	Checksum: 0x2E3C4E0B
-	Offset: 0x35D0
-	Size: 0xA4
-	Parameters: 1
-	Flags: None
-*/
 function turn_off_target(weapon) {
   self.disabled = 1;
   self.visual ghost();
@@ -755,15 +513,6 @@ function turn_off_target(weapon) {
   playsoundatposition(level.fr_target_disable_sound, self.origin);
 }
 
-/*
-	Name: blocker_enable
-	Namespace: fr
-	Checksum: 0xF4C0F48D
-	Offset: 0x3680
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function blocker_enable() {
   self.activetargetcount = self.targetcount;
   self.disabled = 0;
@@ -771,15 +520,6 @@ function blocker_enable() {
   self solid();
 }
 
-/*
-	Name: blocker_disable
-	Namespace: fr
-	Checksum: 0xAB6E8611
-	Offset: 0x36D8
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function blocker_disable() {
   self.activetargetcount--;
   if(self.activetargetcount == 0) {
@@ -789,15 +529,6 @@ function blocker_disable() {
   }
 }
 
-/*
-	Name: reset_targets
-	Namespace: fr
-	Checksum: 0x8022BB2D
-	Offset: 0x3738
-	Size: 0xE2
-	Parameters: 0
-	Flags: None
-*/
 function reset_targets() {
   foreach(target in self.targets) {
     target.blocker blocker_enable();
@@ -807,15 +538,6 @@ function reset_targets() {
   }
 }
 
-/*
-	Name: reset_all_targets
-	Namespace: fr
-	Checksum: 0xC8BC2FDC
-	Offset: 0x3828
-	Size: 0xAA
-	Parameters: 0
-	Flags: None
-*/
 function reset_all_targets() {
   foreach(trigger in level.frgame.checkpointtriggers) {
     if(isdefined(trigger.weaponobject)) {
@@ -824,17 +546,7 @@ function reset_all_targets() {
   }
 }
 
-/*
-	Name: dumphighscores
-	Namespace: fr
-	Checksum: 0x89A9A1CB
-	Offset: 0x38E0
-	Size: 0x120
-	Parameters: 0
-	Flags: None
-*/
 function dumphighscores() {
-  /#
   for (i = 0; i < level.frgame.activetrack.highscores.size; i++) {
     println(((i + 1) + "") + level.frgame.activetrack.highscores[i].time);
     if(i == 0) {
@@ -843,18 +555,8 @@ function dumphighscores() {
       }
     }
   }
-  # /
 }
 
-/*
-	Name: play_fault_vo
-	Namespace: fr
-	Checksum: 0xCDD71091
-	Offset: 0x3A08
-	Size: 0xE4
-	Parameters: 0
-	Flags: None
-*/
 function play_fault_vo() {
   current_time = gettime();
   fault_vo_interval = 20000;
@@ -872,15 +574,6 @@ function play_fault_vo() {
   self playlocalsound("vox_tuto_tutorial_fail");
 }
 
-/*
-	Name: faultdeath
-	Namespace: fr
-	Checksum: 0xD46742E6
-	Offset: 0x3AF8
-	Size: 0xB4
-	Parameters: 0
-	Flags: None
-*/
 function faultdeath() {
   self play_fault_vo();
   level.frgame.faults++;
@@ -890,67 +583,22 @@ function faultdeath() {
   self respawnatactivecheckpoint();
 }
 
-/*
-	Name: dpad_up_pressed
-	Namespace: fr
-	Checksum: 0xFEE01DB
-	Offset: 0x3BB8
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function dpad_up_pressed() {
   return self actionslotonebuttonpressed();
 }
 
-/*
-	Name: dpad_down_pressed
-	Namespace: fr
-	Checksum: 0xDBFE34BC
-	Offset: 0x3BE0
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function dpad_down_pressed() {
   return self actionslottwobuttonpressed();
 }
 
-/*
-	Name: dpad_right_pressed
-	Namespace: fr
-	Checksum: 0xCCA71874
-	Offset: 0x3C08
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function dpad_right_pressed() {
   return self actionslotfourbuttonpressed();
 }
 
-/*
-	Name: dpad_left_pressed
-	Namespace: fr
-	Checksum: 0xA8DA6C19
-	Offset: 0x3C30
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function dpad_left_pressed() {
   return self actionslotthreebuttonpressed();
 }
 
-/*
-	Name: end_game_state
-	Namespace: fr
-	Checksum: 0xF86A5E94
-	Offset: 0x3C58
-	Size: 0x62
-	Parameters: 0
-	Flags: None
-*/
 function end_game_state() {
   state = level clientfield::get("freerun_state");
   if(state == 2 || state == 4 || state == 5) {
@@ -959,15 +607,6 @@ function end_game_state() {
   return false;
 }
 
-/*
-	Name: watchtrackswitch
-	Namespace: fr
-	Checksum: 0xB47F34F1
-	Offset: 0x3CC8
-	Size: 0x232
-	Parameters: 0
-	Flags: None
-*/
 function watchtrackswitch() {
   track_count = level.frgame.tracks.size;
   while (true) {
@@ -976,7 +615,6 @@ function watchtrackswitch() {
     if(end_game_state()) {
       continue;
     }
-    /#
     if(self dpad_right_pressed() && track_count > 1) {
       switch_track = 1;
       curr_track_index = level.frgame.activetrackindex;
@@ -986,12 +624,11 @@ function watchtrackswitch() {
       curr_track_index = level.frgame.activetrackindex;
       curr_track_index--;
     }
-    # /
-      if(!switch_track && self dpad_up_pressed()) {
-        switch_track = 1;
-        curr_track_index = level.frgame.activetrackindex;
-        self thread freerunmusic();
-      }
+    if(!switch_track && self dpad_up_pressed()) {
+      switch_track = 1;
+      curr_track_index = level.frgame.activetrackindex;
+      self thread freerunmusic();
+    }
     if(switch_track) {
       if(curr_track_index == 1) {
         curr_track_index = 0;
@@ -1010,61 +647,39 @@ function watchtrackswitch() {
   }
 }
 
-/*
-	Name: watchuserrespawn
-	Namespace: fr
-	Checksum: 0x853DDDF1
-	Offset: 0x3F08
-	Size: 0x19A
-	Parameters: 0
-	Flags: None
-*/
 function watchuserrespawn() {
-  level endon(# "activate_track");
-  level endon(# "finished_track");
-  /#
+  level endon("activate_track");
+  level endon("finished_track");
   wasinnoclip = 0;
-  # /
-    while (true) {
-      wait(0.05);
-      if(end_game_state()) {
-        continue;
-      }
-      /#
-      if(self isinmovemode("")) {
-        wasinnoclip = 1;
-        continue;
-      }
-      if(wasinnoclip && self dpad_down_pressed()) {
-        continue;
-      }
-      wasinnoclip = 0;
-      # /
-        if(self dpad_down_pressed()) {
-          level.frgame.userspawns++;
-          self recordgameevent("retry");
-          level clientfield::set("freerun_retries", level.frgame.userspawns);
-          self playsoundtoplayer("uin_freerun_reset", self);
-          self respawnatactivecheckpoint();
-          while (true) {
-            wait(0.05);
-            if(!self dpad_down_pressed()) {
-              break;
-            }
-          }
-        }
+  while (true) {
+    wait(0.05);
+    if(end_game_state()) {
+      continue;
     }
+    if(self isinmovemode("")) {
+      wasinnoclip = 1;
+      continue;
+    }
+    if(wasinnoclip && self dpad_down_pressed()) {
+      continue;
+    }
+    wasinnoclip = 0;
+    if(self dpad_down_pressed()) {
+      level.frgame.userspawns++;
+      self recordgameevent("retry");
+      level clientfield::set("freerun_retries", level.frgame.userspawns);
+      self playsoundtoplayer("uin_freerun_reset", self);
+      self respawnatactivecheckpoint();
+      while (true) {
+        wait(0.05);
+        if(!self dpad_down_pressed()) {
+          break;
+        }
+      }
+    }
+  }
 }
 
-/*
-	Name: ignorebulletsfired
-	Namespace: fr
-	Checksum: 0x6F2B9882
-	Offset: 0x40B0
-	Size: 0x140
-	Parameters: 1
-	Flags: None
-*/
 function ignorebulletsfired(weapon) {
   if(!isdefined(level.frgame.activespawnpoint)) {
     return false;
@@ -1084,19 +699,10 @@ function ignorebulletsfired(weapon) {
   return true;
 }
 
-/*
-	Name: watchweaponfire
-	Namespace: fr
-	Checksum: 0x2A19272F
-	Offset: 0x41F8
-	Size: 0xA8
-	Parameters: 0
-	Flags: None
-*/
 function watchweaponfire() {
-  self endon(# "disconnect");
+  self endon("disconnect");
   while (true) {
-    self waittill(# "weapon_fired", weapon);
+    self waittill("weapon_fired", weapon);
     if(weapon == level.weaponbasemeleeheld) {
       continue;
     }
@@ -1108,46 +714,19 @@ function watchweaponfire() {
   }
 }
 
-/*
-	Name: getgroundpointfororigin
-	Namespace: fr
-	Checksum: 0x8674DB0D
-	Offset: 0x42A8
-	Size: 0x64
-	Parameters: 1
-	Flags: None
-*/
 function getgroundpointfororigin(position) {
   trace = bullettrace(position + vectorscale((0, 0, 1), 10), position - vectorscale((0, 0, 1), 1000), 0, undefined);
   return trace["position"];
 }
 
-/*
-	Name: watchstartrun
-	Namespace: fr
-	Checksum: 0xB7A10D1E
-	Offset: 0x4318
-	Size: 0x54
-	Parameters: 1
-	Flags: None
-*/
 function watchstartrun(player) {
-  level endon(# "activate_track");
-  self waittill(# "trigger", trigger_ent);
+  level endon("activate_track");
+  self waittill("trigger", trigger_ent);
   if(trigger_ent == player) {
     player startrun();
   }
 }
 
-/*
-	Name: respawnatactivecheckpoint
-	Namespace: fr
-	Checksum: 0x9652A0AD
-	Offset: 0x4378
-	Size: 0x21C
-	Parameters: 0
-	Flags: None
-*/
 function respawnatactivecheckpoint() {
   resetglass();
   reset_all_targets();
@@ -1174,15 +753,6 @@ function respawnatactivecheckpoint() {
   self take_all_player_weapons(1, 1);
 }
 
-/*
-	Name: givecustomloadout
-	Namespace: fr
-	Checksum: 0xECAF7197
-	Offset: 0x45A0
-	Size: 0x9A
-	Parameters: 0
-	Flags: None
-*/
 function givecustomloadout() {
   self takeallweapons();
   self clearperks();
@@ -1192,28 +762,10 @@ function givecustomloadout() {
   return level.weaponbasemeleeheld;
 }
 
-/*
-	Name: set_high_score_stat
-	Namespace: fr
-	Checksum: 0xB6DDD27D
-	Offset: 0x4648
-	Size: 0x64
-	Parameters: 4
-	Flags: None
-*/
 function set_high_score_stat(trackindex, slot, stat, value) {
   self setdstat("freerunTrackTimes", "track", trackindex, "topTimes", slot, stat, value);
 }
 
-/*
-	Name: write_high_scores_stats
-	Namespace: fr
-	Checksum: 0xDA1866A6
-	Offset: 0x46B8
-	Size: 0x20E
-	Parameters: 1
-	Flags: None
-*/
 function write_high_scores_stats(start_index) {
   active_track = level.frgame.activetrack;
   self setdstat("freerunTrackTimes", "track", level.frgame.trackindex, "mapUniqueId", level.frgame.mapuniqueid);
@@ -1226,15 +778,6 @@ function write_high_scores_stats(start_index) {
   }
 }
 
-/*
-	Name: write_checkpoint_times
-	Namespace: fr
-	Checksum: 0xE6CA5445
-	Offset: 0x48D0
-	Size: 0xBE
-	Parameters: 0
-	Flags: None
-*/
 function write_checkpoint_times() {
   level.frgame.activetrack.fastestruncheckpointtimes = level.frgame.checkpointtimes;
   for (i = 0; i < level.frgame.checkpointtriggers.size; i++) {
@@ -1242,28 +785,10 @@ function write_checkpoint_times() {
   }
 }
 
-/*
-	Name: get_high_score_stat
-	Namespace: fr
-	Checksum: 0xC6B5872B
-	Offset: 0x4998
-	Size: 0x52
-	Parameters: 3
-	Flags: None
-*/
 function get_high_score_stat(trackindex, slot, stat) {
   return self getdstat("freerunTrackTimes", "track", trackindex, "topTimes", slot, stat);
 }
 
-/*
-	Name: create_high_score_struct
-	Namespace: fr
-	Checksum: 0x6D77342
-	Offset: 0x49F8
-	Size: 0x94
-	Parameters: 4
-	Flags: None
-*/
 function create_high_score_struct(time, faults, retries, bulletpenalty) {
   score_set = spawnstruct();
   score_set.time = time;
@@ -1273,15 +798,6 @@ function create_high_score_struct(time, faults, retries, bulletpenalty) {
   return score_set;
 }
 
-/*
-	Name: get_stats_for_track
-	Namespace: fr
-	Checksum: 0xAF9041FA
-	Offset: 0x4A98
-	Size: 0xFA
-	Parameters: 2
-	Flags: None
-*/
 function get_stats_for_track(trackindex, slot) {
   time = self get_high_score_stat(trackindex, slot, "time");
   faults = self get_high_score_stat(trackindex, slot, "faults");
@@ -1290,30 +806,12 @@ function get_stats_for_track(trackindex, slot) {
   return create_high_score_struct(time, faults, retries, bulletpenalty);
 }
 
-/*
-	Name: get_checkpoint_times_for_track
-	Namespace: fr
-	Checksum: 0x44EFB5B7
-	Offset: 0x4BA0
-	Size: 0x9C
-	Parameters: 1
-	Flags: None
-*/
 function get_checkpoint_times_for_track(trackindex) {
   for (i = 0; i < level.frgame.checkpointtriggers.size; i++) {
     level.frgame.activetrack.fastestruncheckpointtimes[i] = self getdstat("freerunTrackTimes", "track", trackindex, "checkPointTimes", "time", i);
   }
 }
 
-/*
-	Name: get_top_scores_stats
-	Namespace: fr
-	Checksum: 0x95A5960
-	Offset: 0x4C48
-	Size: 0x230
-	Parameters: 0
-	Flags: None
-*/
 function get_top_scores_stats() {
   if(isdefined(level.frgame.activetrack.statsread)) {
     return;
@@ -1336,18 +834,9 @@ function get_top_scores_stats() {
   level.frgame.activetrack.statsread = 1;
 }
 
-/*
-	Name: take_all_player_weapons
-	Namespace: fr
-	Checksum: 0xD3279D06
-	Offset: 0x4E80
-	Size: 0x22A
-	Parameters: 2
-	Flags: None
-*/
 function take_all_player_weapons(only_default, immediate) {
-  self endon(# "disconnect");
-  self endon(# "death");
+  self endon("disconnect");
+  self endon("death");
   keep_weapon = level.weaponnone;
   if(isdefined(level.frgame.activespawnpoint.weapon) && !only_default) {
     keep_weapon = level.frgame.activespawnpoint.weapon;
@@ -1374,15 +863,6 @@ function take_all_player_weapons(only_default, immediate) {
   }
 }
 
-/*
-	Name: freerunmusic
-	Namespace: fr
-	Checksum: 0x2DD3E657
-	Offset: 0x50B8
-	Size: 0xF4
-	Parameters: 1
-	Flags: None
-*/
 function freerunmusic(start = 1) {
   player = self;
   if(start && (!(isdefined(player.musicstart) && player.musicstart))) {
@@ -1395,26 +875,8 @@ function freerunmusic(start = 1) {
   }
 }
 
-/*
-	Name: _tutorial_mode
-	Namespace: fr
-	Checksum: 0x7C6D8881
-	Offset: 0x51B8
-	Size: 0xC
-	Parameters: 1
-	Flags: None
-*/
 function _tutorial_mode(b_tutorial_mode) {}
 
-/*
-	Name: take_players_out_of_tutorial_mode
-	Namespace: fr
-	Checksum: 0xBDD3D0DC
-	Offset: 0x51D0
-	Size: 0xC2
-	Parameters: 0
-	Flags: None
-*/
 function take_players_out_of_tutorial_mode() {
   if(level.frgame.tutorials) {
     foreach(player in level.players) {
@@ -1423,15 +885,6 @@ function take_players_out_of_tutorial_mode() {
   }
 }
 
-/*
-	Name: put_players_in_tutorial_mode
-	Namespace: fr
-	Checksum: 0xF2A919
-	Offset: 0x52A0
-	Size: 0xCA
-	Parameters: 0
-	Flags: None
-*/
 function put_players_in_tutorial_mode() {
   if(level.frgame.tutorials) {
     foreach(player in level.players) {
@@ -1440,15 +893,6 @@ function put_players_in_tutorial_mode() {
   }
 }
 
-/*
-	Name: enable_all_tutorial_triggers
-	Namespace: fr
-	Checksum: 0xC7F5E1
-	Offset: 0x5378
-	Size: 0xAA
-	Parameters: 0
-	Flags: None
-*/
 function enable_all_tutorial_triggers() {
   if(level.frgame.tutorials) {
     foreach(trigger in level.frgame.tutorialtriggers) {
@@ -1457,15 +901,6 @@ function enable_all_tutorial_triggers() {
   }
 }
 
-/*
-	Name: activate_tutorial_mode
-	Namespace: fr
-	Checksum: 0xD1140893
-	Offset: 0x5430
-	Size: 0x10A
-	Parameters: 0
-	Flags: None
-*/
 function activate_tutorial_mode() {
   if(!self ishost() || getlocalprofileint("com_firsttime_freerun") && !getdvarint("freerun_tutorial")) {
     return;
@@ -1477,15 +912,6 @@ function activate_tutorial_mode() {
   }
 }
 
-/*
-	Name: setup_tutorial
-	Namespace: fr
-	Checksum: 0xA2A11DD6
-	Offset: 0x5548
-	Size: 0x74
-	Parameters: 0
-	Flags: None
-*/
 function setup_tutorial() {
   level.frgame.tutorials = 0;
   level.frgame.tutorialtriggers = getentarray("fr_tutorial", "targetname");
@@ -1493,19 +919,10 @@ function setup_tutorial() {
   register_tutorials();
 }
 
-/*
-	Name: watchtutorialtrigger
-	Namespace: fr
-	Checksum: 0x5B7F9A25
-	Offset: 0x55C8
-	Size: 0x80
-	Parameters: 0
-	Flags: None
-*/
 function watchtutorialtrigger() {
-  level endon(# "stop_tutorials");
+  level endon("stop_tutorials");
   while (true) {
-    self waittill(# "trigger", player);
+    self waittill("trigger", player);
     if(isplayer(player)) {
       player thread start_tutorial(self.script_noteworthy);
       self triggerenable(0);
@@ -1513,62 +930,33 @@ function watchtutorialtrigger() {
   }
 }
 
-/*
-	Name: stop_tutorial_when_restarting_track
-	Namespace: fr
-	Checksum: 0x56719FC8
-	Offset: 0x5650
-	Size: 0x84
-	Parameters: 0
-	Flags: None
-*/
 function stop_tutorial_when_restarting_track() {
-  self notify(# "stop_tutorial_when_restarting_track");
-  self waittill(# "stop_tutorial_when_restarting_track");
-  level waittill(# "activate_track");
+  self notify("stop_tutorial_when_restarting_track");
+  self waittill("stop_tutorial_when_restarting_track");
+  level waittill("activate_track");
   take_players_out_of_tutorial_mode();
   self util::hide_hint_text(0);
   self stop_tutorial_vo();
   self stopsounds();
 }
 
-/*
-	Name: start_tutorial
-	Namespace: fr
-	Checksum: 0xAC97C340
-	Offset: 0x56E0
-	Size: 0xCC
-	Parameters: 1
-	Flags: None
-*/
 function start_tutorial(tutorial) {
-  self endon(# "death");
-  self endon(# "disconnect");
-  level endon(# "game_ended");
-  level endon(# "activate_track");
+  self endon("death");
+  self endon("disconnect");
+  level endon("game_ended");
+  level endon("activate_track");
   if(!isdefined(level.frgame.tutorialfunctions[tutorial])) {
     return;
   }
-  level notify(# "playing_tutorial");
-  level endon(# "playing_tutorial");
+  level notify("playing_tutorial");
+  level endon("playing_tutorial");
   self thread stop_tutorial_when_restarting_track();
   put_players_in_tutorial_mode();
   wait(0.5);
-  [
-    [level.frgame.tutorialfunctions[tutorial]]
-  ]();
+  [[level.frgame.tutorialfunctions[tutorial]]]();
   take_players_out_of_tutorial_mode();
 }
 
-/*
-	Name: stop_tutorial_vo
-	Namespace: fr
-	Checksum: 0xFED16844
-	Offset: 0x57B8
-	Size: 0x36
-	Parameters: 0
-	Flags: None
-*/
 function stop_tutorial_vo() {
   if(isdefined(self.lasttutorialvoplayed)) {
     self stopsound(self.lasttutorialvoplayed);
@@ -1576,64 +964,28 @@ function stop_tutorial_vo() {
   }
 }
 
-/*
-	Name: play_tutorial_vo
-	Namespace: fr
-	Checksum: 0xC4B8205C
-	Offset: 0x57F8
-	Size: 0x68
-	Parameters: 1
-	Flags: None
-*/
 function play_tutorial_vo(aliasstring) {
   self stop_tutorial_vo();
   self.lasttutorialvoplayed = aliasstring;
   self playsoundwithnotify(aliasstring, "sounddone");
-  self waittill(# "sounddone");
+  self waittill("sounddone");
   wait(1);
 }
 
-/*
-	Name: play_tutorial_vo_with_hint
-	Namespace: fr
-	Checksum: 0xE0F49472
-	Offset: 0x5868
-	Size: 0x88
-	Parameters: 2
-	Flags: None
-*/
 function play_tutorial_vo_with_hint(aliasstring, text) {
   self stop_tutorial_vo();
   self thread _show_tutorial_hint_with_vo(text);
   self.lasttutorialvoplayed = aliasstring;
   self playsoundwithnotify(aliasstring, "sounddone");
-  self waittill(# "sounddone");
+  self waittill("sounddone");
   wait(1);
 }
 
-/*
-	Name: _show_tutorial_hint_with_vo
-	Namespace: fr
-	Checksum: 0xD667BD3D
-	Offset: 0x58F8
-	Size: 0x44
-	Parameters: 3
-	Flags: None
-*/
 function _show_tutorial_hint_with_vo(text, time, unlock_player) {
   wait(0.5);
   show_tutorial_hint(text, time, unlock_player);
 }
 
-/*
-	Name: show_tutorial_hint
-	Namespace: fr
-	Checksum: 0x46192B0A
-	Offset: 0x5948
-	Size: 0x84
-	Parameters: 3
-	Flags: None
-*/
 function show_tutorial_hint(text, time, unlock_player) {
   if(isdefined(unlock_player)) {
     take_players_out_of_tutorial_mode();
@@ -1645,28 +997,10 @@ function show_tutorial_hint(text, time, unlock_player) {
   wait(4.5);
 }
 
-/*
-	Name: show_tutorial_hint_with_full_movement
-	Namespace: fr
-	Checksum: 0x1B254FFF
-	Offset: 0x59D8
-	Size: 0x34
-	Parameters: 2
-	Flags: None
-*/
 function show_tutorial_hint_with_full_movement(text, time) {
   show_tutorial_hint(text, time, 1);
 }
 
-/*
-	Name: register_tutorials
-	Namespace: fr
-	Checksum: 0xBD79C9F3
-	Offset: 0x5A18
-	Size: 0x2FE
-	Parameters: 0
-	Flags: None
-*/
 function register_tutorials() {
   level.frgame.tutorialfunctions["tutorial_01"] = & tutorial_01;
   level.frgame.tutorialfunctions["tutorial_02"] = & tutorial_02;
@@ -1689,256 +1023,85 @@ function register_tutorials() {
   level.frgame.tutorialfunctions["tutorial_20"] = & tutorial_20;
 }
 
-/*
-	Name: tutorial_01
-	Namespace: fr
-	Checksum: 0xC1028871
-	Offset: 0x5D20
-	Size: 0x64
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_01() {
   self play_tutorial_vo("vox_tuto_tutorial_sequence_1");
   self play_tutorial_vo("vox_tuto_tutorial_sequence_2");
   self play_tutorial_vo("vox_tuto_tutorial_sequence_6");
 }
 
-/*
-	Name: tutorial_02
-	Namespace: fr
-	Checksum: 0x6F6F781A
-	Offset: 0x5D90
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_02() {
-  self show_tutorial_hint_with_full_movement( & "FREERUN_TUTORIAL_02");
+  self show_tutorial_hint_with_full_movement(&"FREERUN_TUTORIAL_02");
 }
 
-/*
-	Name: tutorial_03
-	Namespace: fr
-	Checksum: 0x767DAFB2
-	Offset: 0x5DC0
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_03() {
-  self show_tutorial_hint_with_full_movement( & "FREERUN_TUTORIAL_03");
+  self show_tutorial_hint_with_full_movement(&"FREERUN_TUTORIAL_03");
 }
 
-/*
-	Name: tutorial_06
-	Namespace: fr
-	Checksum: 0x8ABBA870
-	Offset: 0x5DF0
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_06() {
   self thread play_tutorial_vo("vox_tuto_tutorial_sequence_11");
-  self show_tutorial_hint_with_full_movement( & "FREERUN_TUTORIAL_09");
+  self show_tutorial_hint_with_full_movement(&"FREERUN_TUTORIAL_09");
 }
 
-/*
-	Name: tutorial_08
-	Namespace: fr
-	Checksum: 0xF1BA9BCB
-	Offset: 0x5E40
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_08() {
-  self show_tutorial_hint_with_full_movement( & "FREERUN_TUTORIAL_11");
+  self show_tutorial_hint_with_full_movement(&"FREERUN_TUTORIAL_11");
 }
 
-/*
-	Name: tutorial_09
-	Namespace: fr
-	Checksum: 0xE08273EC
-	Offset: 0x5E70
-	Size: 0x2C
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_09() {
   self play_tutorial_vo_with_hint("vox_tuto_tutorial_sequence_28", & "FREERUN_TUTORIAL_12");
 }
 
-/*
-	Name: tutorial_10
-	Namespace: fr
-	Checksum: 0xD9920DF4
-	Offset: 0x5EA8
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_10() {
   self play_tutorial_vo("vox_tuto_tutorial_sequence_10");
 }
 
-/*
-	Name: tutorial_10a
-	Namespace: fr
-	Checksum: 0x265EE480
-	Offset: 0x5ED8
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_10a() {
-  self show_tutorial_hint_with_full_movement( & "FREERUN_TUTORIAL_13");
+  self show_tutorial_hint_with_full_movement(&"FREERUN_TUTORIAL_13");
 }
 
-/*
-	Name: tutorial_12
-	Namespace: fr
-	Checksum: 0xD758F00A
-	Offset: 0x5F08
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_12() {
   self play_tutorial_vo("vox_tuto_tutorial_sequence_16");
 }
 
-/*
-	Name: tutorial_12a
-	Namespace: fr
-	Checksum: 0x1D1D61C0
-	Offset: 0x5F38
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_12a() {
-  self show_tutorial_hint_with_full_movement( & "FREERUN_TUTORIAL_14");
+  self show_tutorial_hint_with_full_movement(&"FREERUN_TUTORIAL_14");
 }
 
-/*
-	Name: tutorial_13
-	Namespace: fr
-	Checksum: 0xCE082E55
-	Offset: 0x5F68
-	Size: 0x6C
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_13() {
   self play_tutorial_vo_with_hint("vox_tuto_tutorial_sequence_17", & "FREERUN_TUTORIAL_14a");
   self play_tutorial_vo("vox_tuto_tutorial_sequence_18");
-  self show_tutorial_hint_with_full_movement( & "FREERUN_TUTORIAL_16");
+  self show_tutorial_hint_with_full_movement(&"FREERUN_TUTORIAL_16");
 }
 
-/*
-	Name: tutorial_14
-	Namespace: fr
-	Checksum: 0x44EDBFDD
-	Offset: 0x5FE0
-	Size: 0x44
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_14() {
   self play_tutorial_vo("vox_tuto_tutorial_sequence_19");
-  self show_tutorial_hint_with_full_movement( & "FREERUN_TUTORIAL_18");
+  self show_tutorial_hint_with_full_movement(&"FREERUN_TUTORIAL_18");
 }
 
-/*
-	Name: tutorial_15
-	Namespace: fr
-	Checksum: 0x8884FC08
-	Offset: 0x6030
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_15() {
   self play_tutorial_vo("vox_tuto_tutorial_sequence_20");
 }
 
-/*
-	Name: tutorial_16
-	Namespace: fr
-	Checksum: 0x3BF14A7E
-	Offset: 0x6060
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_16() {
   self play_tutorial_vo("vox_tuto_tutorial_sequence_29");
 }
 
-/*
-	Name: tutorial_17
-	Namespace: fr
-	Checksum: 0x55F2CB53
-	Offset: 0x6090
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_17() {
   self play_tutorial_vo("vox_tuto_tutorial_sequence_21");
 }
 
-/*
-	Name: tutorial_17a
-	Namespace: fr
-	Checksum: 0xF99E60AC
-	Offset: 0x60C0
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_17a() {
-  self show_tutorial_hint_with_full_movement( & "FREERUN_TUTORIAL_22");
+  self show_tutorial_hint_with_full_movement(&"FREERUN_TUTORIAL_22");
 }
 
-/*
-	Name: tutorial_18
-	Namespace: fr
-	Checksum: 0xCCEE1919
-	Offset: 0x60F0
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_18() {
   self play_tutorial_vo_with_hint("vox_tuto_tutorial_sequence_23", & "FREERUN_TUTORIAL_23");
-  self show_tutorial_hint_with_full_movement( & "FREERUN_TUTORIAL_22a");
+  self show_tutorial_hint_with_full_movement(&"FREERUN_TUTORIAL_22a");
 }
 
-/*
-	Name: tutorial_19
-	Namespace: fr
-	Checksum: 0xCD6D3988
-	Offset: 0x6148
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_19() {
   self play_tutorial_vo("vox_tuto_tutorial_sequence_25");
 }
 
-/*
-	Name: tutorial_20
-	Namespace: fr
-	Checksum: 0xF0D6F866
-	Offset: 0x6178
-	Size: 0x24
-	Parameters: 0
-	Flags: None
-*/
 function tutorial_20() {
   self play_tutorial_vo("vox_tuto_tutorial_sequence_26");
 }

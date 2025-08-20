@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\doa\_doa_pickups.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\doa\_doa_arena;
 #using scripts\cp\doa\_doa_chicken_pickup;
@@ -24,34 +28,13 @@
 #using scripts\shared\flagsys_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\util_shared;
-
 #namespace doa_pickups;
 
-/*
-	Name: precache
-	Namespace: doa_pickups
-	Checksum: 0x99EC1590
-	Offset: 0xDD8
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function precache() {}
 
-/*
-	Name: init
-	Namespace: doa_pickups
-	Checksum: 0xFB626921
-	Offset: 0xDE8
-	Size: 0x16B4
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
-  /#
   assert(isdefined(level.doa));
-  # /
-    precache();
+  precache();
   level.doa.pickups = spawnstruct();
   level.doa.pickups.var_dbd6e632 = 0;
   level.doa.pickups.money = [];
@@ -168,15 +151,6 @@ function init() {
   level thread function_b8d3f901();
 }
 
-/*
-	Name: function_58268dbd
-	Namespace: doa_pickups
-	Checksum: 0xB43EB30F
-	Offset: 0x24A8
-	Size: 0x1A6
-	Parameters: 6
-	Flags: Linked
-*/
 function function_58268dbd(gdtname, var_74f5c76, uber = 0, data = 0, modelscale = 1, variant) {
   pickup = spawnstruct();
   pickup.gdtname = gdtname;
@@ -194,15 +168,6 @@ function function_58268dbd(gdtname, var_74f5c76, uber = 0, data = 0, modelscale 
   }
 }
 
-/*
-	Name: function_db1442f2
-	Namespace: doa_pickups
-	Checksum: 0xDAEAA904
-	Offset: 0x2658
-	Size: 0x20E
-	Parameters: 12
-	Flags: Linked
-*/
 function function_db1442f2(gdtname, var_74f5c76, unique, minlevel, modelscale, chance, type, data, angles = vectorscale((0, 0, 1), 70), timeout, var_9b759e09, var_cffa7dd1) {
   pickup = spawnstruct();
   pickup.gdtname = gdtname;
@@ -226,15 +191,6 @@ function function_db1442f2(gdtname, var_74f5c76, unique, minlevel, modelscale, c
   level.doa.pickups.items[level.doa.pickups.items.size] = pickup;
 }
 
-/*
-	Name: function_c5bc781
-	Namespace: doa_pickups
-	Checksum: 0x8C0C183F
-	Offset: 0x2870
-	Size: 0x82
-	Parameters: 3
-	Flags: Linked
-*/
 function function_c5bc781(origin, width = 42, height = 130) {
   if(!mayspawnfakeentity()) {
     return;
@@ -242,15 +198,6 @@ function function_c5bc781(origin, width = 42, height = 130) {
   return spawn("trigger_radius", origin, 18, width, height);
 }
 
-/*
-	Name: function_9fc58738
-	Namespace: doa_pickups
-	Checksum: 0xE41A522D
-	Offset: 0x2900
-	Size: 0xAF0
-	Parameters: 8
-	Flags: Linked
-*/
 function function_9fc58738(var_742d8fb5, origin, launch = 0, ondeath = 0, var_b0d7c311, timeout = 1, wobble = 1, glow = 1) {
   if(!mayspawnentity()) {
     return;
@@ -297,8 +244,8 @@ function function_9fc58738(var_742d8fb5, origin, launch = 0, ondeath = 0, var_b0
     pickup thread function_80ed7f();
   }
   if(function_274c7b5(pickup) == 0) {
-    pickup notify(# "hash_c42bb828");
-    pickup notify(# "hash_c8c0fb8f");
+    pickup notify("hash_c42bb828");
+    pickup notify("hash_c8c0fb8f");
   }
   if(pickup.def.uber) {
     if(pickup.def.data == 32) {
@@ -403,15 +350,6 @@ function function_9fc58738(var_742d8fb5, origin, launch = 0, ondeath = 0, var_b0
   return pickup;
 }
 
-/*
-	Name: function_92d90e55
-	Namespace: doa_pickups
-	Checksum: 0x50E01DFF
-	Offset: 0x33F8
-	Size: 0x654
-	Parameters: 5
-	Flags: Linked
-*/
 function function_92d90e55(var_742d8fb5, location, timeout = 1, rotate = 1, angles) {
   if(!mayspawnentity()) {
     return;
@@ -420,7 +358,7 @@ function function_92d90e55(var_742d8fb5, location, timeout = 1, rotate = 1, angl
   if(!isdefined(pickup)) {
     return;
   }
-  pickup endon(# "death");
+  pickup endon("death");
   pickup.targetname = "pickup_item";
   pickup.var_18193c2a = location;
   pickup.def = var_742d8fb5;
@@ -471,8 +409,8 @@ function function_92d90e55(var_742d8fb5, location, timeout = 1, rotate = 1, angl
     pickup notsolid();
   }
   if(function_274c7b5(pickup) == 0) {
-    pickup notify(# "hash_c42bb828");
-    pickup notify(# "hash_c8c0fb8f");
+    pickup notify("hash_c42bb828");
+    pickup notify("hash_c8c0fb8f");
   }
   pickup thread namespace_eaa992c::function_285a2999(function_c41cf2a8(pickup));
   if(timeout) {
@@ -487,15 +425,6 @@ function function_92d90e55(var_742d8fb5, location, timeout = 1, rotate = 1, angl
   return pickup;
 }
 
-/*
-	Name: function_c41cf2a8
-	Namespace: doa_pickups
-	Checksum: 0xA1305B81
-	Offset: 0x3A58
-	Size: 0xB6
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c41cf2a8(pickup) {
   if(pickup.def.type == 23) {
     return undefined;
@@ -512,15 +441,6 @@ function function_c41cf2a8(pickup) {
   return "glow_item";
 }
 
-/*
-	Name: function_bbb6019d
-	Namespace: doa_pickups
-	Checksum: 0x5D283B5B
-	Offset: 0x3B18
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bbb6019d(pickup) {
   if(pickup.def.type == 23 || pickup.def.type == 36) {
     return false;
@@ -528,15 +448,6 @@ function function_bbb6019d(pickup) {
   return true;
 }
 
-/*
-	Name: function_274c7b5
-	Namespace: doa_pickups
-	Checksum: 0xC1E28F55
-	Offset: 0x3B78
-	Size: 0xCE
-	Parameters: 1
-	Flags: Linked
-*/
 function function_274c7b5(pickup) {
   if(pickup.def.type == 1) {
     return true;
@@ -553,15 +464,6 @@ function function_274c7b5(pickup) {
   return true;
 }
 
-/*
-	Name: function_90d1a97d
-	Namespace: doa_pickups
-	Checksum: 0x29BA8554
-	Offset: 0x3C50
-	Size: 0x11C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_90d1a97d(name) {
   for (i = 0; i < level.doa.pickups.var_3e3b7a53.size; i++) {
     if(level.doa.pickups.var_3e3b7a53[i].gdtname == name) {
@@ -575,15 +477,6 @@ function function_90d1a97d(name) {
   }
 }
 
-/*
-	Name: function_2d8cb175
-	Namespace: doa_pickups
-	Checksum: 0x95C447AD
-	Offset: 0x3D78
-	Size: 0x31E
-	Parameters: 10
-	Flags: Linked
-*/
 function function_2d8cb175(name, origin, amount = 1, launch = 0, ondeath = 0, scale, timeout = 1, wobble = 1, radius = 1, glow = 1) {
   pickup = function_90d1a97d(name);
   items = [];
@@ -622,17 +515,8 @@ function function_2d8cb175(name, origin, amount = 1, launch = 0, ondeath = 0, sc
   return items;
 }
 
-/*
-	Name: spawnubertreasure
-	Namespace: doa_pickups
-	Checksum: 0xE1C5BD7A
-	Offset: 0x40A0
-	Size: 0x30E
-	Parameters: 11
-	Flags: Linked
-*/
 function spawnubertreasure(spawn_point, amount, radius = 85, launch = 0, ondeath = 0, scale, specific, interval = 0.35, shouldtimeout = 1, var_71b8054b = 1, var_5278d8d7 = 1) {
-  level endon(# "stop_spawning_pickups");
+  level endon("stop_spawning_pickups");
   items = [];
   while (amount) {
     amount--;
@@ -666,17 +550,8 @@ function spawnubertreasure(spawn_point, amount, radius = 85, launch = 0, ondeath
   return items;
 }
 
-/*
-	Name: function_e904e32d
-	Namespace: doa_pickups
-	Checksum: 0xB7789007
-	Offset: 0x43B8
-	Size: 0x1BE
-	Parameters: 3
-	Flags: Linked
-*/
 function function_e904e32d(spawn_point, amount, radius = 85) {
-  level endon(# "stop_spawning_pickups");
+  level endon("stop_spawning_pickups");
   for (i = 0; i < amount; i++) {
     origin = spawn_point + (randomintrange(0 - radius, radius), randomintrange(0 - radius, radius), 24);
     if(randomfloat(getdvarint("scr_doa_uber_price_chance", 1000)) == 0) {
@@ -691,15 +566,6 @@ function function_e904e32d(spawn_point, amount, radius = 85) {
   }
 }
 
-/*
-	Name: function_68c8220
-	Namespace: doa_pickups
-	Checksum: 0xC5CA9735
-	Offset: 0x4580
-	Size: 0x1B4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_68c8220(player) {
   ent = spawn("script_origin", (0, 0, 0));
   ent playloopsound("zmb_pickup_umbrella_loop");
@@ -716,30 +582,12 @@ function function_68c8220(player) {
   ent delete();
 }
 
-/*
-	Name: function_ac410a13
-	Namespace: doa_pickups
-	Checksum: 0x844B642A
-	Offset: 0x4740
-	Size: 0x4E
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ac410a13() {
   if(level.doa.var_3361a074.size) {
     return level.doa.var_3361a074[randomint(level.doa.var_3361a074.size)];
   }
 }
 
-/*
-	Name: function_c41b5928
-	Namespace: doa_pickups
-	Checksum: 0x6130A89B
-	Offset: 0x4798
-	Size: 0x118
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_c41b5928() {
   if(isdefined(level.doa.var_2d09b979) && level.doa.var_2d09b979) {
     level.doa.var_2d09b979 = undefined;
@@ -751,35 +599,22 @@ function private function_c41b5928() {
       var_a60f3304++;
     }
   }
-  /#
   assert(var_a60f3304);
-  # /
-    if(level.doa.var_3cc04c3a.size < (var_a60f3304 / 4)) {
-      return true;
-    }
+  if(level.doa.var_3cc04c3a.size < (var_a60f3304 / 4)) {
+    return true;
+  }
   return false;
 }
 
-/*
-	Name: function_51b3bbf6
-	Namespace: doa_pickups
-	Checksum: 0xB38861D4
-	Offset: 0x48C0
-	Size: 0x318
-	Parameters: 1
-	Flags: Linked
-*/
 function function_51b3bbf6(type = 0) {
-  /#
   assert(level.doa.pickups.items.size);
-  # /
-    foreach(pickup in level.doa.pickups.items) {
-      if(isdefined(pickup.var_500db33e) && isinarray(pickup.var_500db33e, level.doa.round_number)) {
-        arrayremovevalue(pickup.var_500db33e, level.doa.round_number);
-        level.doa.var_2d09b979 = 1;
-        return pickup;
-      }
+  foreach(pickup in level.doa.pickups.items) {
+    if(isdefined(pickup.var_500db33e) && isinarray(pickup.var_500db33e, level.doa.round_number)) {
+      arrayremovevalue(pickup.var_500db33e, level.doa.round_number);
+      level.doa.var_2d09b979 = 1;
+      return pickup;
     }
+  }
   if(type != 0) {
     for (i = 0; i < level.doa.pickups.items.size; i++) {
       if(level.doa.pickups.items[i].type == type) {
@@ -801,37 +636,17 @@ function function_51b3bbf6(type = 0) {
   return pu;
 }
 
-/*
-	Name: function_bac08508
-	Namespace: doa_pickups
-	Checksum: 0xE3310CD1
-	Offset: 0x4BE0
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bac08508(type) {
   for (i = 0; i < level.doa.pickups.items.size; i++) {
     if(level.doa.pickups.items[i].type == type) {
       return level.doa.pickups.items[i];
     }
   }
-  /#
   assert(0);
-  # /
 }
 
-/*
-	Name: spawnmoneyglob
-	Namespace: doa_pickups
-	Checksum: 0x57B98E4D
-	Offset: 0x4CA0
-	Size: 0x12C
-	Parameters: 3
-	Flags: Linked
-*/
 function spawnmoneyglob(var_90658db9 = 0, numglobs = 1, waittime = 2) {
-  level endon(# "hash_e2918623");
+  level endon("hash_e2918623");
   while (numglobs > 0) {
     spawn_point = function_ac410a13();
     if(isdefined(spawn_point)) {
@@ -846,28 +661,17 @@ function spawnmoneyglob(var_90658db9 = 0, numglobs = 1, waittime = 2) {
   }
 }
 
-/*
-	Name: function_bfc8e78d
-	Namespace: doa_pickups
-	Checksum: 0xAC041D48
-	Offset: 0x4DD8
-	Size: 0x128
-	Parameters: 0
-	Flags: Linked
-*/
 function function_bfc8e78d() {
-  level notify(# "hash_bfc8e78d");
-  level endon(# "hash_bfc8e78d");
+  level notify("hash_bfc8e78d");
+  level endon("hash_bfc8e78d");
   while (true) {
     wait(randomfloatrange(10, 20));
     if(!level flag::get("doa_round_spawning")) {
       wait(1);
       continue;
     } else if(level.players.size == 1 && level.doa.var_9a1cbf58 && level.doa.var_677d1262 && gettime() > level.doa.var_677d1262) {
-      /#
       doa_utility::debugmsg("");
-      # /
-        wait(1);
+      wait(1);
       continue;
     }
     if(level flag::get("doa_game_is_over")) {
@@ -877,15 +681,6 @@ function function_bfc8e78d() {
   }
 }
 
-/*
-	Name: function_c87a0cd7
-	Namespace: doa_pickups
-	Checksum: 0xB4B5AACD
-	Offset: 0x4F08
-	Size: 0x98
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c87a0cd7(name) {
   for (i = 0; i < level.doa.pickups.items.size; i++) {
     if(level.doa.pickups.items[i].gdtname == name) {
@@ -894,15 +689,6 @@ function function_c87a0cd7(name) {
   }
 }
 
-/*
-	Name: function_e2dcc82a
-	Namespace: doa_pickups
-	Checksum: 0xA3731B3F
-	Offset: 0x4FA8
-	Size: 0x98
-	Parameters: 1
-	Flags: Linked
-*/
 function function_e2dcc82a(type) {
   for (i = 0; i < level.doa.pickups.items.size; i++) {
     if(level.doa.pickups.items[i].type == type) {
@@ -911,18 +697,9 @@ function function_e2dcc82a(type) {
   }
 }
 
-/*
-	Name: spawnitem
-	Namespace: doa_pickups
-	Checksum: 0xB2EE05F2
-	Offset: 0x5048
-	Size: 0xA0
-	Parameters: 1
-	Flags: Linked
-*/
 function spawnitem(type = 0) {
-  level notify(# "spawnitem");
-  level endon(# "spawnitem");
+  level notify("spawnitem");
+  level endon("spawnitem");
   while (true) {
     pickup = function_51b3bbf6(type);
     if(function_967df2b6(pickup)) {
@@ -933,18 +710,9 @@ function spawnitem(type = 0) {
   }
 }
 
-/*
-	Name: function_b8d3f901
-	Namespace: doa_pickups
-	Checksum: 0x73568E73
-	Offset: 0x50F0
-	Size: 0x170
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b8d3f901() {
-  self notify(# "hash_b8d3f901");
-  self endon(# "hash_b8d3f901");
+  self notify("hash_b8d3f901");
+  self endon("hash_b8d3f901");
   level.doa.var_cc2eacdf = [];
   while (true) {
     var_2029adc7 = 0;
@@ -964,23 +732,12 @@ function function_b8d3f901() {
   }
 }
 
-/*
-	Name: function_eaf49506
-	Namespace: doa_pickups
-	Checksum: 0x89A00FCD
-	Offset: 0x5268
-	Size: 0x17E
-	Parameters: 7
-	Flags: Linked
-*/
 function function_eaf49506(type, origin, amount = 1, timeout = 1, radius, rotate = 1, angles) {
   var_608f8df = spawnstruct();
   var_608f8df.pickup = function_e2dcc82a(type);
   var_608f8df.origin = origin;
-  /#
   assert(amount > 0, "");
-  # /
-    var_608f8df.amount = amount;
+  var_608f8df.amount = amount;
   var_608f8df.timeout = timeout;
   var_608f8df.radius = radius;
   var_608f8df.rotate = rotate;
@@ -988,23 +745,12 @@ function function_eaf49506(type, origin, amount = 1, timeout = 1, radius, rotate
   level.doa.var_cc2eacdf[level.doa.var_cc2eacdf.size] = var_608f8df;
 }
 
-/*
-	Name: function_3238133b
-	Namespace: doa_pickups
-	Checksum: 0x63F5FB5D
-	Offset: 0x53F0
-	Size: 0x17E
-	Parameters: 7
-	Flags: Linked
-*/
 function function_3238133b(name, origin, amount = 1, timeout = 1, radius, rotate = 1, angles) {
   var_608f8df = spawnstruct();
   var_608f8df.pickup = function_c87a0cd7(name);
   var_608f8df.origin = origin;
-  /#
   assert(amount > 0, "");
-  # /
-    var_608f8df.amount = amount;
+  var_608f8df.amount = amount;
   var_608f8df.timeout = timeout;
   var_608f8df.radius = radius;
   var_608f8df.rotate = rotate;
@@ -1012,15 +758,6 @@ function function_3238133b(name, origin, amount = 1, timeout = 1, radius, rotate
   level.doa.var_cc2eacdf[level.doa.var_cc2eacdf.size] = var_608f8df;
 }
 
-/*
-	Name: spawnspecificitem
-	Namespace: doa_pickups
-	Checksum: 0x6819EAC
-	Offset: 0x5578
-	Size: 0x266
-	Parameters: 7
-	Flags: Linked
-*/
 function spawnspecificitem(pickup, origin, amount = 1, timeout = 1, radius, rotate = 1, angle) {
   if(!isdefined(pickup)) {
     return;
@@ -1057,19 +794,10 @@ function spawnspecificitem(pickup, origin, amount = 1, timeout = 1, radius, rota
   return items;
 }
 
-/*
-	Name: function_53347911
-	Namespace: doa_pickups
-	Checksum: 0xF6527503
-	Offset: 0x57E8
-	Size: 0x124
-	Parameters: 1
-	Flags: Linked
-*/
 function function_53347911(player) {
-  self endon(# "picked_up");
-  self endon(# "death");
-  player endon(# "disconnect");
+  self endon("picked_up");
+  self endon("death");
+  player endon("disconnect");
   self.player = player;
   var_42b46711 = gettime() + 1500;
   while (isdefined(self) && gettime() < var_42b46711) {
@@ -1082,22 +810,13 @@ function function_53347911(player) {
     wait(0.05);
   }
   if(isdefined(self)) {
-    self.trigger notify(# "trigger", player);
+    self.trigger notify("trigger", player);
   }
 }
 
-/*
-	Name: function_30768f24
-	Namespace: doa_pickups
-	Checksum: 0xB2AC596D
-	Offset: 0x5918
-	Size: 0x1A2
-	Parameters: 2
-	Flags: Linked
-*/
 function function_30768f24(item, time) {
-  self endon(# "disconnect");
-  item endon(# "death");
+  self endon("disconnect");
+  item endon("death");
   if(time <= 0) {
     time = 1;
   }
@@ -1106,9 +825,7 @@ function function_30768f24(item, time) {
     dist = distance(self.origin, item.origin);
     step = (dist / time) / intervals;
     v_to_target = (vectornormalize(self.origin - item.origin)) * step;
-    /#
-    # /
-      item moveto(item.origin + v_to_target, 0.15);
+    item moveto(item.origin + v_to_target, 0.15);
     dist = distance(self.origin, item.origin);
     if(dist < 32) {
       break;
@@ -1116,20 +833,11 @@ function function_30768f24(item, time) {
     time = time - 0.15;
     wait(0.15);
   }
-  self notify(# "hash_30768f24");
+  self notify("hash_30768f24");
 }
 
-/*
-	Name: directeditemawardto
-	Namespace: doa_pickups
-	Checksum: 0xBA8CAB8A
-	Offset: 0x5AC8
-	Size: 0x10A
-	Parameters: 3
-	Flags: Linked
-*/
 function directeditemawardto(player, name, amount = 1) {
-  player endon(# "disconnect");
+  player endon("disconnect");
   var_1db3e61a = function_c87a0cd7(name);
   if(!isdefined(var_1db3e61a)) {
     return;
@@ -1150,27 +858,16 @@ function directeditemawardto(player, name, amount = 1) {
   }
 }
 
-/*
-	Name: function_2904bdc4
-	Namespace: doa_pickups
-	Checksum: 0x86A1F605
-	Offset: 0x5BE0
-	Size: 0x148
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2904bdc4() {
-  level notify(# "hash_2904bdc4");
-  level endon(# "hash_2904bdc4");
+  level notify("hash_2904bdc4");
+  level endon("hash_2904bdc4");
   while (true) {
     if(!level flag::get("doa_round_spawning")) {
       wait(1);
       continue;
     } else if(level.players.size == 1 && level.doa.var_9a1cbf58 && level.doa.var_677d1262 && gettime() > level.doa.var_677d1262) {
-      /#
       doa_utility::debugmsg("");
-      # /
-        wait(1);
+      wait(1);
       continue;
     }
     level thread spawnitem();
@@ -1182,15 +879,6 @@ function function_2904bdc4() {
   }
 }
 
-/*
-	Name: weaponspawn
-	Namespace: doa_pickups
-	Checksum: 0xF51BC2C3
-	Offset: 0x5D30
-	Size: 0x134
-	Parameters: 1
-	Flags: None
-*/
 function weaponspawn(gdtname) {
   if(!isdefined(gdtname)) {
     weapons = [];
@@ -1206,18 +894,9 @@ function weaponspawn(gdtname) {
   }
 }
 
-/*
-	Name: function_5bb8e0d1
-	Namespace: doa_pickups
-	Checksum: 0x49BF1DB9
-	Offset: 0x5E70
-	Size: 0x1F0
-	Parameters: 2
-	Flags: Linked
-*/
 function function_5bb8e0d1(var_742d8fb5, location) {
-  level notify(# "hash_5bb8e0d1");
-  level endon(# "hash_5bb8e0d1");
+  level notify("hash_5bb8e0d1");
+  level endon("hash_5bb8e0d1");
   while (true) {
     waittime = randomfloatrange(level.doa.rules.var_be9a9995, level.doa.rules.var_ab729583);
     while (waittime > 0) {
@@ -1249,15 +928,6 @@ function function_5bb8e0d1(var_742d8fb5, location) {
   }
 }
 
-/*
-	Name: function_c129719a
-	Namespace: doa_pickups
-	Checksum: 0x8A5B1463
-	Offset: 0x6068
-	Size: 0x4C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_c129719a(type) {
   switch (type) {
     case 1:
@@ -1271,15 +941,6 @@ function function_c129719a(type) {
   return false;
 }
 
-/*
-	Name: function_967df2b6
-	Namespace: doa_pickups
-	Checksum: 0x5110EEBC
-	Offset: 0x60C0
-	Size: 0x468
-	Parameters: 1
-	Flags: Linked
-*/
 function function_967df2b6(var_1db3e61a) {
   if(!mayspawnentity()) {
     return 0;
@@ -1339,22 +1000,13 @@ function function_967df2b6(var_1db3e61a) {
   return 1;
 }
 
-/*
-	Name: function_d526f0bb
-	Namespace: doa_pickups
-	Checksum: 0xCCBADD8A
-	Offset: 0x6530
-	Size: 0x11F8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d526f0bb() {
-  self notify(# "hash_d526f0bb");
-  self endon(# "hash_d526f0bb");
-  self endon(# "death");
+  self notify("hash_d526f0bb");
+  self endon("hash_d526f0bb");
+  self endon("death");
   wait(0.4);
   while (true) {
-    self.trigger waittill(# "trigger", player);
+    self.trigger waittill("trigger", player);
     if(isdefined(self.player) && self.player != player) {
       continue;
     }
@@ -1383,10 +1035,8 @@ function function_d526f0bb() {
       }
       switch (self.type) {
         case 32: {
-          /#
           assert(isdefined(self.var_25ffdef1), "");
-          # /
-            player.skulls++;
+          player.skulls++;
           if(!isdefined(player.doa.skulls)) {
             player.doa.skulls = 0;
             player.doa.var_fda5a6e5 = 0;
@@ -1418,10 +1068,8 @@ function function_d526f0bb() {
           player thread namespace_1a381543::function_90118d8c("zmb_pickup_weapon");
           player namespace_831a4a7c::function_d5f89a15(self.def.gdtname, 1);
           player.special_weapon = getweapon(self.def.gdtname);
-          /#
           assert(isdefined(player.special_weapon));
-          # /
-            break;
+          break;
         }
         case 10: {
           self thread namespace_1a381543::function_90118d8c("zmb_pickup_powerup");
@@ -1527,7 +1175,7 @@ function function_d526f0bb() {
         }
         case 28: {
           player thread namespace_1a381543::function_90118d8c("zmb_pickup_generic");
-          level notify(# "hash_bbc7bdf9", player);
+          level notify("hash_bbc7bdf9", player);
           break;
         }
         case 19: {
@@ -1598,10 +1246,8 @@ function function_d526f0bb() {
           break;
         }
         case 15: {
-          /#
           doa_utility::debugmsg("");
-          # /
-            break;
+          break;
         }
         case 37: {
           player thread namespace_1a381543::function_90118d8c("zmb_pickup_generic");
@@ -1609,14 +1255,12 @@ function function_d526f0bb() {
           break;
         }
         default: {
-          /#
           assert(0);
-          # /
-            break;
+          break;
         }
       }
       if(isdefined(var_9aec68f5) && var_9aec68f5 && isdefined(self)) {
-        self notify(# "picked_up");
+        self notify("picked_up");
         if(isdefined(self.trigger)) {
           self.trigger delete();
           self.trigger = undefined;
@@ -1629,19 +1273,10 @@ function function_d526f0bb() {
   }
 }
 
-/*
-	Name: function_cb119fa6
-	Namespace: doa_pickups
-	Checksum: 0x5DF32DEA
-	Offset: 0x7730
-	Size: 0xE8
-	Parameters: 1
-	Flags: None
-*/
 function function_cb119fa6(timeinterval = 1) {
-  self endon(# "disconnect");
-  self notify(# "hash_cb119fa6");
-  self endon(# "hash_cb119fa6");
+  self endon("disconnect");
+  self notify("hash_cb119fa6");
+  self endon("hash_cb119fa6");
   var_f2801f2d = int(self.maxhealth * 0.1);
   while (isdefined(self.doa.var_65f7f2a9) && self.doa.var_65f7f2a9) {
     wait(timeinterval);
@@ -1651,39 +1286,19 @@ function function_cb119fa6(timeinterval = 1) {
   }
 }
 
-/*
-	Name: function_bc81eba
-	Namespace: doa_pickups
-	Checksum: 0x2C548683
-	Offset: 0x7820
-	Size: 0x56
-	Parameters: 1
-	Flags: Linked
-*/
 function function_bc81eba(time = 1) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   self.doa.var_655cbff1 = 1;
   wait(time);
   self.doa.var_655cbff1 = undefined;
 }
 
-/*
-	Name: function_a2eecefa
-	Namespace: doa_pickups
-	Checksum: 0x571E8924
-	Offset: 0x7880
-	Size: 0x42C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a2eecefa() {
-  self notify(# "hash_a2eecefa");
-  self endon(# "hash_a2eecefa");
-  self endon(# "disconnect");
-  /#
+  self notify("hash_a2eecefa");
+  self endon("hash_a2eecefa");
+  self endon("disconnect");
   doa_utility::debugmsg("" + gettime());
-  # /
-    self thread namespace_831a4a7c::turnplayershieldon(0);
+  self thread namespace_831a4a7c::turnplayershieldon(0);
   self thread function_bc81eba();
   if(!(isdefined(self.doa.var_65f7f2a9) && self.doa.var_65f7f2a9)) {
     self.doa.var_65f7f2a9 = 1;
@@ -1697,7 +1312,7 @@ function function_a2eecefa() {
       self freezecontrols(0);
     }
   }
-  level notify(# "hash_32ccdb7a");
+  level notify("hash_32ccdb7a");
   self setclientthirdperson(0);
   self.doa.var_a3f61a60 = 4;
   self.topdowncamera = 0;
@@ -1715,25 +1330,14 @@ function function_a2eecefa() {
   self clientfield::increment_to_player("exitFPS");
   self clientfield::increment_to_player("controlBinding");
   self.doa.var_c1de140a = gettime() + 2500;
-  /#
   doa_utility::debugmsg("" + gettime());
-  # /
-    self allowsprint(isdefined(self.doa.var_65f7f2a9) && self.doa.var_65f7f2a9);
+  self allowsprint(isdefined(self.doa.var_65f7f2a9) && self.doa.var_65f7f2a9);
   self allowads(isdefined(self.doa.var_65f7f2a9) && self.doa.var_65f7f2a9);
 }
 
-/*
-	Name: function_2cd5668
-	Namespace: doa_pickups
-	Checksum: 0xECDC5D0D
-	Offset: 0x7CB8
-	Size: 0xA4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2cd5668() {
-  level endon(# "hash_8bf960cf");
-  level endon(# "hash_3b432f18");
+  level endon("hash_8bf960cf");
+  level endon("hash_3b432f18");
   level util::waittill_any_timeout(0.5, "doaGoFPS", "firstPersonForATime");
   setsharedviewport(0);
   if(mayspawnentity()) {
@@ -1742,18 +1346,9 @@ function function_2cd5668() {
   util::clientnotify("fpsg");
 }
 
-/*
-	Name: function_851d4a18
-	Namespace: doa_pickups
-	Checksum: 0xCBB544D6
-	Offset: 0x7D68
-	Size: 0x180
-	Parameters: 0
-	Flags: Linked
-*/
 function function_851d4a18() {
-  level endon(# "hash_8bf960cf");
-  level endon(# "hash_3b432f18");
+  level endon("hash_8bf960cf");
+  level endon("hash_3b432f18");
   while (isdefined(level.doa.var_2836c8ee) && level.doa.var_2836c8ee) {
     foreach(player in getplayers()) {
       if(!isdefined(player.doa)) {
@@ -1770,57 +1365,35 @@ function function_851d4a18() {
   }
 }
 
-/*
-	Name: function_8bf960cf
-	Namespace: doa_pickups
-	Checksum: 0x1D1926E
-	Offset: 0x7EF0
-	Size: 0x25C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_8bf960cf(player) {
-  level notify(# "hash_8bf960cf");
-  level endon(# "hash_8bf960cf");
+  level notify("hash_8bf960cf");
+  level endon("hash_8bf960cf");
   level.doa.var_2836c8ee = 1;
   level clientfield::set("doafps", 1);
   level thread function_2cd5668();
   util::wait_network_frame();
   level thread function_851d4a18();
-  /#
   doa_utility::debugmsg("" + gettime());
-  # /
-    time = int(player doa_utility::function_1ded48e6(getdvarint("scr_doa_fps_time", 60)));
+  time = int(player doa_utility::function_1ded48e6(getdvarint("scr_doa_fps_time", 60)));
   level thread function_197694d8();
   level util::waittill_any_timeout(time, "camera_changed", "doa_playerdumpFPS", "exit_taken", "host_migration_begin", "firstPersonForATime");
   level.doa.var_2836c8ee = undefined;
   foreach(player in getplayers()) {
-    player notify(# "hash_3b432f18");
+    player notify("hash_3b432f18");
   }
-  /#
   doa_utility::debugmsg("" + gettime());
-  # /
-    level notify(# "hash_3b432f18");
-  level notify(# "atf");
+  level notify("hash_3b432f18");
+  level notify("atf");
   setsharedviewport(1);
   level clientfield::set("doafps", 0);
 }
 
-/*
-	Name: function_197694d8
-	Namespace: doa_pickups
-	Checksum: 0x44B50C7D
-	Offset: 0x8158
-	Size: 0x104
-	Parameters: 0
-	Flags: Linked
-*/
 function function_197694d8() {
   if(!isdefined(level.var_8ebc0a1)) {
     level.var_8ebc0a1 = spawn("script_origin", (0, 0, 0));
   }
   level.var_8ebc0a1 playloopsound("evt_first_person_loop");
-  level waittill(# "atf");
+  level waittill("atf");
   if(mayspawnentity()) {
     playsoundatposition("evt_first_person_slam_out", (0, 0, 0));
   }
@@ -1834,17 +1407,8 @@ function function_197694d8() {
   }
 }
 
-/*
-	Name: function_6b4a5f81
-	Namespace: doa_pickups
-	Checksum: 0x834572AE
-	Offset: 0x8268
-	Size: 0x2B4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_6b4a5f81(player) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.var_52cf38a3) && self.var_52cf38a3) {
     var_28a41a34 = 0;
     if(isdefined(player)) {
@@ -1878,7 +1442,7 @@ function function_6b4a5f81(player) {
     } else {
       end_pt = self.origin + vectorscale((0, 0, 1), 3000);
     }
-    self notify(# "picked_up");
+    self notify("picked_up");
     wait(0.05);
     if(isdefined(self)) {
       self function_fbc5b316();
@@ -1893,17 +1457,8 @@ function function_6b4a5f81(player) {
   self delete();
 }
 
-/*
-	Name: function_77c1258e
-	Namespace: doa_pickups
-	Checksum: 0x51345F69
-	Offset: 0x8528
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_77c1258e() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.var_52cf38a3) && self.var_52cf38a3) {
     util::wait_network_frame();
     self clientfield::set("pickupwobble", 1);
@@ -1912,19 +1467,10 @@ function function_77c1258e() {
   }
 }
 
-/*
-	Name: function_ee036ce4
-	Namespace: doa_pickups
-	Checksum: 0x436D80AD
-	Offset: 0x85A8
-	Size: 0x158
-	Parameters: 0
-	Flags: Linked
-*/
 function function_ee036ce4() {
-  self notify(# "hash_b14b3cac");
-  self endon(# "hash_b14b3cac");
-  self endon(# "death");
+  self notify("hash_b14b3cac");
+  self endon("hash_b14b3cac");
+  self endon("death");
   while (isdefined(self)) {
     waittime = randomfloatrange(2.5, 5);
     yaw = randomint(360);
@@ -1939,17 +1485,8 @@ function function_ee036ce4() {
   }
 }
 
-/*
-	Name: pickuprotate
-	Namespace: doa_pickups
-	Checksum: 0x851D1E22
-	Offset: 0x8708
-	Size: 0x106
-	Parameters: 0
-	Flags: Linked
-*/
 function pickuprotate() {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.var_52cf38a3) && self.var_52cf38a3) {
     util::wait_network_frame();
     self clientfield::set("pickuprotate", 1);
@@ -1966,17 +1503,8 @@ function pickuprotate() {
   }
 }
 
-/*
-	Name: function_b3289e6d
-	Namespace: doa_pickups
-	Checksum: 0x87C0C3DE
-	Offset: 0x8818
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_b3289e6d(scale) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(self.var_52cf38a3) && self.var_52cf38a3) {
     util::wait_network_frame();
     if(scale > 16) {
@@ -1989,15 +1517,6 @@ function function_b3289e6d(scale) {
   }
 }
 
-/*
-	Name: function_32110b7d
-	Namespace: doa_pickups
-	Checksum: 0xE80E89DA
-	Offset: 0x88F8
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_32110b7d() {
   if(isdefined(self.var_52cf38a3) && self.var_52cf38a3) {
     self clientfield::set("pickupvisibility", 1);
@@ -2006,15 +1525,6 @@ function function_32110b7d() {
   }
 }
 
-/*
-	Name: function_fbc5b316
-	Namespace: doa_pickups
-	Checksum: 0x54AF141E
-	Offset: 0x8958
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function function_fbc5b316() {
   if(isdefined(self.var_52cf38a3) && self.var_52cf38a3) {
     self clientfield::set("pickupvisibility", 0);
@@ -2023,17 +1533,8 @@ function function_fbc5b316() {
   }
 }
 
-/*
-	Name: pickuptimeout
-	Namespace: doa_pickups
-	Checksum: 0xFA5AE28B
-	Offset: 0x89B8
-	Size: 0x1F4
-	Parameters: 0
-	Flags: Linked
-*/
 function pickuptimeout() {
-  self endon(# "death");
+  self endon("death");
   timetowait = (isdefined(self.timeout) ? self.timeout : level.doa.rules.powerup_timeout);
   wait(timetowait + randomfloatrange(0, 5));
   for (i = 0; i < 40; i++) {
@@ -2064,7 +1565,7 @@ function pickuptimeout() {
     wait(0.1);
     util::wait_network_frame();
   }
-  self notify(# "pickup_timeout");
+  self notify("pickup_timeout");
   wait(0.1);
   if(isdefined(self) && (!(isdefined(self.var_b2290d2d) && self.var_b2290d2d))) {
     if(isdefined(self.trigger)) {
@@ -2074,17 +1575,8 @@ function pickuptimeout() {
   }
 }
 
-/*
-	Name: function_c1869ec8
-	Namespace: doa_pickups
-	Checksum: 0xEBD58E20
-	Offset: 0x8BB8
-	Size: 0xF2
-	Parameters: 0
-	Flags: Linked
-*/
 function function_c1869ec8() {
-  level notify(# "stop_spawning_pickups");
+  level notify("stop_spawning_pickups");
   util::wait_network_frame();
   pickupsitems = getentarray("a_pickup_item", "script_noteworthy");
   for (i = 0; i < pickupsitems.size; i++) {
@@ -2096,18 +1588,9 @@ function function_c1869ec8() {
       pickup delete();
     }
   }
-  level notify(# "hash_229914a6");
+  level notify("hash_229914a6");
 }
 
-/*
-	Name: function_80ed7f
-	Namespace: doa_pickups
-	Checksum: 0x4158943
-	Offset: 0x8CB8
-	Size: 0x14C
-	Parameters: 1
-	Flags: Linked
-*/
 function function_80ed7f(popvec) {
   self.trigger triggerenable(0);
   if(!isdefined(popvec)) {
@@ -2125,30 +1608,12 @@ function function_80ed7f(popvec) {
   }
 }
 
-/*
-	Name: function_9615d68f
-	Namespace: doa_pickups
-	Checksum: 0x3363E031
-	Offset: 0x8E10
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9615d68f() {
   if(!isdefined(self.doa.var_a2d31b4a) || self.doa.var_a2d31b4a != self.doa.default_weap.name) {
     self namespace_831a4a7c::function_d5f89a15(self.doa.default_weap.name);
   }
 }
 
-/*
-	Name: function_972fe17c
-	Namespace: doa_pickups
-	Checksum: 0xF34251C9
-	Offset: 0x8E90
-	Size: 0x58
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_972fe17c() {
   if(self.def.type == 23 || self.def.type == 36) {
     return false;
@@ -2159,15 +1624,6 @@ function private function_972fe17c() {
   return true;
 }
 
-/*
-	Name: function_fd16eeab
-	Namespace: doa_pickups
-	Checksum: 0x84A74C17
-	Offset: 0x8EF0
-	Size: 0x7A
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fd16eeab(type) {
   if(type == 32) {
     return true;
@@ -2184,15 +1640,6 @@ function function_fd16eeab(type) {
   return false;
 }
 
-/*
-	Name: function_f56a2ab
-	Namespace: doa_pickups
-	Checksum: 0x448E66FB
-	Offset: 0x8F78
-	Size: 0x154
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_f56a2ab() {
   if(self.def.type == 32) {
     return true;
@@ -2216,20 +1663,11 @@ function private function_f56a2ab() {
   return false;
 }
 
-/*
-	Name: function_5441452b
-	Namespace: doa_pickups
-	Checksum: 0xD8648516
-	Offset: 0x90D8
-	Size: 0x3BE
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private function_5441452b(maxdistsq) {
-  self notify(# "hash_c42bb828");
-  self endon(# "hash_c42bb828");
-  self endon(# "picked_up");
-  self endon(# "death");
+  self notify("hash_c42bb828");
+  self endon("hash_c42bb828");
+  self endon("picked_up");
+  self endon("death");
   while (true) {
     wait(0.05);
     if(self.attractors.size == 0 && (isdefined(self.var_3033320e) && self.var_3033320e)) {
@@ -2267,20 +1705,11 @@ function private function_5441452b(maxdistsq) {
   }
 }
 
-/*
-	Name: function_b33393b3
-	Namespace: doa_pickups
-	Checksum: 0x40EA4B65
-	Offset: 0x94A0
-	Size: 0x2C8
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b33393b3() {
-  self notify(# "hash_c8c0fb8f");
-  self endon(# "hash_c8c0fb8f");
-  self endon(# "picked_up");
-  self endon(# "death");
+  self notify("hash_c8c0fb8f");
+  self endon("hash_c8c0fb8f");
+  self endon("picked_up");
+  self endon("death");
   self thread function_5441452b();
   if(isdefined(self.var_25e9e2fe)) {
     self[[self.var_25e9e2fe]]();
@@ -2316,15 +1745,6 @@ function function_b33393b3() {
   }
 }
 
-/*
-	Name: function_295872fa
-	Namespace: doa_pickups
-	Checksum: 0x48CA9549
-	Offset: 0x9770
-	Size: 0xAC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_295872fa(pickup) {
   if(isdefined(pickup.def.uber) && pickup.def.uber) {
     return false;
@@ -2335,15 +1755,6 @@ function function_295872fa(pickup) {
   return false;
 }
 
-/*
-	Name: function_411355c0
-	Namespace: doa_pickups
-	Checksum: 0x955706B5
-	Offset: 0x9828
-	Size: 0x1F6
-	Parameters: 3
-	Flags: Linked
-*/
 function function_411355c0(type, player, origin) {
   foreach(guardian in level.doa.var_af875fb7) {
     if(guardian.type == type) {
@@ -2357,46 +1768,26 @@ function function_411355c0(type, player, origin) {
   loc = spawnstruct();
   loc.angles = player.angles;
   loc.origin = origin;
-  ai = [
-    [var_f3cefb9b.spawnfunction]
-  ](var_f3cefb9b.spawner, loc);
+  ai = [[var_f3cefb9b.spawnfunction]](var_f3cefb9b.spawner, loc);
   if(isdefined(ai)) {
     ai.setgoaloverridecb = & doa_enemy::function_d30fe558;
     ai thread function_9908c4ec();
-    ai notify(# "hash_6e8326fc");
-    ai notify(# "hash_6dcbb83e");
-    ai notify(# "hash_67a97d62");
+    ai notify("hash_6e8326fc");
+    ai notify("hash_6dcbb83e");
+    ai notify("hash_67a97d62");
     ai thread[[var_f3cefb9b.initfunction]](player);
     level.doa.var_1332e37a[level.doa.var_1332e37a.size] = ai;
   }
 }
 
-/*
-	Name: function_9908c4ec
-	Namespace: doa_pickups
-	Checksum: 0xCBA41DCC
-	Offset: 0x9A28
-	Size: 0x6C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_9908c4ec() {
-  self waittill(# "death");
+  self waittill("death");
   if(!isdefined(level.doa.var_1332e37a)) {
     level.doa.var_1332e37a = [];
   }
   level.doa.var_1332e37a = array::remove_undefined(level.doa.var_1332e37a);
 }
 
-/*
-	Name: function_fce74a5f
-	Namespace: doa_pickups
-	Checksum: 0xF6043AEB
-	Offset: 0x9AA0
-	Size: 0x2AC
-	Parameters: 1
-	Flags: Linked
-*/
 function function_fce74a5f(heart) {
   zombies = arraycombine(getaispeciesarray("axis", "human"), arraycombine(getaispeciesarray("axis", "zombie"), getaispeciesarray("axis", "dog"), 0, 0), 0, 0);
   var_39339143 = 0;
@@ -2416,9 +1807,7 @@ function function_fce74a5f(heart) {
       } else {
         gibserverutils::gibleftarm(mf);
       }
-      /#
       assert(!(isdefined(mf.boss) && mf.boss));
-      # /
     }
     mf thread doa_utility::function_ba30b321(0.25);
     var_39339143++;
@@ -2432,17 +1821,8 @@ function function_fce74a5f(heart) {
   }
 }
 
-/*
-	Name: function_2e7c9798
-	Namespace: doa_pickups
-	Checksum: 0x91B9CB36
-	Offset: 0x9D58
-	Size: 0x1CC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_2e7c9798() {
-  self endon(# "death");
+  self endon("death");
   wait(level.doa.rules.powerup_timeout + randomfloatrange(0, 5));
   self clientfield::set("heartbeat", 2);
   for (i = 0; i < 40; i++) {
@@ -2469,7 +1849,7 @@ function function_2e7c9798() {
     }
     util::wait_network_frame();
   }
-  self notify(# "pickup_timeout");
+  self notify("pickup_timeout");
   wait(0.1);
   if(isdefined(self)) {
     if(isdefined(self.trigger)) {
@@ -2479,54 +1859,18 @@ function function_2e7c9798() {
   }
 }
 
-/*
-	Name: function_5c21c936
-	Namespace: doa_pickups
-	Checksum: 0x88724E57
-	Offset: 0x9F30
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function function_5c21c936() {
   self.origin = self.origin + (vectorscale((0, 0, -1), 12));
 }
 
-/*
-	Name: function_76a2dd5c
-	Namespace: doa_pickups
-	Checksum: 0x379E828C
-	Offset: 0x9F60
-	Size: 0x58
-	Parameters: 1
-	Flags: Linked
-*/
 function function_76a2dd5c(def) {
   def.var_500db33e = array(4, 7, 8, 12, 13, 16, 20, 25, 29, 40, 60);
 }
 
-/*
-	Name: function_644e08c5
-	Namespace: doa_pickups
-	Checksum: 0xEA3BA267
-	Offset: 0x9FC0
-	Size: 0x40
-	Parameters: 1
-	Flags: Linked
-*/
 function function_644e08c5(def) {
   def.var_500db33e = array(65, 72, 88, 119, 135);
 }
 
-/*
-	Name: function_d0397bc7
-	Namespace: doa_pickups
-	Checksum: 0xE2413AE0
-	Offset: 0xA008
-	Size: 0x32
-	Parameters: 0
-	Flags: Linked
-*/
 function function_d0397bc7() {
   switch (self.type) {
     case 31: {
@@ -2538,15 +1882,6 @@ function function_d0397bc7() {
   }
 }
 
-/*
-	Name: function_db3e0155
-	Namespace: doa_pickups
-	Checksum: 0x27453F81
-	Offset: 0xA048
-	Size: 0x1BC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_db3e0155() {
   self.var_25e9e2fe = & function_a40895ab;
   self.var_77ebedb = & function_b62ed8c1;
@@ -2560,7 +1895,7 @@ function function_db3e0155() {
   }
   self.trigger enablelinkto();
   self.trigger linkto(self);
-  self notify(# "hash_c8c0fb8f");
+  self notify("hash_c8c0fb8f");
   self thread function_d526f0bb();
   self thread function_b33393b3();
   self.var_af22fa93 = 20;
@@ -2570,29 +1905,11 @@ function function_db3e0155() {
   self.angles = (randomint(360), randomint(360), randomint(360));
 }
 
-/*
-	Name: function_a40895ab
-	Namespace: doa_pickups
-	Checksum: 0xE8AF0123
-	Offset: 0xA210
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_a40895ab() {
-  self notify(# "hash_c42bb828");
+  self notify("hash_c42bb828");
   self thread function_5441452b(level.doa.rules.var_6a4387bb);
 }
 
-/*
-	Name: function_b62ed8c1
-	Namespace: doa_pickups
-	Checksum: 0xF6B215B7
-	Offset: 0xA258
-	Size: 0x114
-	Parameters: 0
-	Flags: Linked
-*/
 function function_b62ed8c1() {
   self.attractors = [];
   foreach(player in namespace_831a4a7c::function_5eb6e4d1()) {
@@ -2605,19 +1922,10 @@ function function_b62ed8c1() {
   }
 }
 
-/*
-	Name: function_322262ea
-	Namespace: doa_pickups
-	Checksum: 0x4DB81FBD
-	Offset: 0xA378
-	Size: 0xCC
-	Parameters: 0
-	Flags: Linked
-*/
 function function_322262ea() {
-  self notify(# "hash_322262ea");
-  self endon(# "hash_322262ea");
-  self endon(# "disconnect");
+  self notify("hash_322262ea");
+  self endon("hash_322262ea");
+  self endon("disconnect");
   if(!isdefined(self) || !isdefined(self.doa) || !isdefined(self.doa.var_c2b9d7d0)) {
     return;
   }

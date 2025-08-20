@@ -1,17 +1,11 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
-#using scripts\shared\util_shared;
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_temple_fx.csc
+*************************************************/
 
+#using scripts\shared\util_shared;
 #namespace zm_temple_fx;
 
-/*
-	Name: main
-	Namespace: zm_temple_fx
-	Checksum: 0xDFA613F8
-	Offset: 0x1948
-	Size: 0x84
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   precache_util_fx();
   precache_createfx_fx();
@@ -22,15 +16,6 @@ function main() {
   }
 }
 
-/*
-	Name: precache_util_fx
-	Namespace: zm_temple_fx
-	Checksum: 0xC26523B8
-	Offset: 0x19D8
-	Size: 0xC6
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_util_fx() {
   level._effect["fx_trail_blood_streak"] = "trail/fx_trail_blood_streak";
   level._effect["eye_glow"] = "zombie/fx_glow_eye_orange";
@@ -41,15 +26,6 @@ function precache_util_fx() {
   level._effect["animscript_gibtrail_fx"] = "trail/fx_trail_blood_streak";
 }
 
-/*
-	Name: precache_scripted_fx
-	Namespace: zm_temple_fx
-	Checksum: 0x56D1D50A
-	Offset: 0x1AA8
-	Size: 0x18A
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_scripted_fx() {
   level._effect["napalm_zombie_footstep"] = "dlc5/temple/fx_ztem_napalm_zombie_ground2";
   level._effect["punji_dust"] = "dlc5/temple/fx_ztem_dust_punji";
@@ -67,15 +43,6 @@ function precache_scripted_fx() {
   level._effect["perk_machine_light_green"] = "dlc5/zmhd/fx_wonder_fizz_light_green";
 }
 
-/*
-	Name: precache_createfx_fx
-	Namespace: zm_temple_fx
-	Checksum: 0x66F6EB8E
-	Offset: 0x1C40
-	Size: 0x96A
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_createfx_fx() {
   level._effect["fx_water_temple_geyser_ready"] = "env/water/fx_water_temple_geyser_ready";
   level._effect["fx_fire_md"] = "env/fire/fx_fire_md";
@@ -165,15 +132,6 @@ function precache_createfx_fx() {
   level._effect["fx_crystal_water_trail"] = "dlc5/temple/fx_ztem_meteorite_splash_run";
 }
 
-/*
-	Name: precache_creek_fx
-	Namespace: zm_temple_fx
-	Checksum: 0x60BD856C
-	Offset: 0x25B8
-	Size: 0x3A
-	Parameters: 0
-	Flags: Linked
-*/
 function precache_creek_fx() {
   level._effect["fx_insect_swarm_lg"] = "maps/creek/fx_insect_swarm_lg";
   level._effect["fx_ztem_smoke_thick_indoor"] = "maps/zombie_temple/fx_ztem_smoke_thick_indoor";

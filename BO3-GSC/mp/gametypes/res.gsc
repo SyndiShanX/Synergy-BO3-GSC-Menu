@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\gametypes\res.gsc
+*************************************************/
+
 #using scripts\mp\_challenges;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_globallogic;
@@ -19,18 +23,8 @@
 #using scripts\shared\popups_shared;
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\util_shared;
-
 #namespace res;
 
-/*
-	Name: main
-	Namespace: res
-	Checksum: 0xB39F8C9C
-	Offset: 0x988
-	Size: 0x294
-	Parameters: 0
-	Flags: None
-*/
 function main() {
   globallogic::init();
   util::registerroundswitch(0, 9);
@@ -60,26 +54,8 @@ function main() {
   globallogic::setvisiblescoreboardcolumns("score", "kills", "deaths", "captures", "defends");
 }
 
-/*
-	Name: onprecachegametype
-	Namespace: res
-	Checksum: 0x99EC1590
-	Offset: 0xC28
-	Size: 0x4
-	Parameters: 0
-	Flags: None
-*/
 function onprecachegametype() {}
 
-/*
-	Name: onroundswitch
-	Namespace: res
-	Checksum: 0x65AB3AD2
-	Offset: 0xC38
-	Size: 0x10C
-	Parameters: 0
-	Flags: None
-*/
 function onroundswitch() {
   if(!isdefined(game["switchedsides"])) {
     game["switchedsides"] = 0;
@@ -98,15 +74,6 @@ function onroundswitch() {
   }
 }
 
-/*
-	Name: getbetterteam
-	Namespace: res
-	Checksum: 0xE29E2E7B
-	Offset: 0xD50
-	Size: 0x20A
-	Parameters: 0
-	Flags: None
-*/
 function getbetterteam() {
   kills["allies"] = 0;
   kills["axis"] = 0;
@@ -138,15 +105,6 @@ function getbetterteam() {
   return "axis";
 }
 
-/*
-	Name: onstartgametype
-	Namespace: res
-	Checksum: 0xC19D1332
-	Offset: 0xF68
-	Size: 0x684
-	Parameters: 0
-	Flags: None
-*/
 function onstartgametype() {
   if(!isdefined(game["switchedsides"])) {
     game["switchedsides"] = 0;
@@ -223,44 +181,17 @@ function onstartgametype() {
   }
 }
 
-/*
-	Name: onendgame
-	Namespace: res
-	Checksum: 0xFFE94DB4
-	Offset: 0x15F8
-	Size: 0x5E
-	Parameters: 1
-	Flags: None
-*/
 function onendgame(winningteam) {
   for (i = 0; i < level.resflags.size; i++) {
     level.resflags[i] gameobjects::allow_use("none");
   }
 }
 
-/*
-	Name: onroundendgame
-	Namespace: res
-	Checksum: 0x2604AA9F
-	Offset: 0x1660
-	Size: 0x34
-	Parameters: 1
-	Flags: None
-*/
 function onroundendgame(roundwinner) {
   winner = globallogic::determineteamwinnerbygamestat("roundswon");
   return winner;
 }
 
-/*
-	Name: res_endgame
-	Namespace: res
-	Checksum: 0xCE18C6B8
-	Offset: 0x16A0
-	Size: 0x64
-	Parameters: 2
-	Flags: None
-*/
 function res_endgame(winningteam, endreasontext) {
   if(isdefined(winningteam) && winningteam != "tie") {
     globallogic_score::giveteamscoreforobjective(winningteam, 1);
@@ -268,15 +199,6 @@ function res_endgame(winningteam, endreasontext) {
   thread globallogic::endgame(winningteam, endreasontext);
 }
 
-/*
-	Name: ontimelimit
-	Namespace: res
-	Checksum: 0xEB2D9948
-	Offset: 0x1710
-	Size: 0xB4
-	Parameters: 0
-	Flags: None
-*/
 function ontimelimit() {
   if(level.overtime) {
     if(isdefined(level.resprogressteam)) {
@@ -289,15 +211,6 @@ function ontimelimit() {
   }
 }
 
-/*
-	Name: gettimelimit
-	Namespace: res
-	Checksum: 0x801CA362
-	Offset: 0x17D0
-	Size: 0x7C
-	Parameters: 0
-	Flags: None
-*/
 function gettimelimit() {
   timelimit = globallogic_defaults::default_gettimelimit();
   if(level.usingextratime) {
@@ -310,15 +223,6 @@ function gettimelimit() {
   return timelimit;
 }
 
-/*
-	Name: updategametypedvars
-	Namespace: res
-	Checksum: 0x394EBD34
-	Offset: 0x1858
-	Size: 0x124
-	Parameters: 0
-	Flags: None
-*/
 function updategametypedvars() {
   level.flagcapturetime = getgametypesetting("captureTime");
   level.flagdecaytime = getgametypesetting("flagDecayTime");
@@ -331,15 +235,6 @@ function updategametypedvars() {
   level.playerdefensivemax = getgametypesetting("maxPlayerDefensive");
 }
 
-/*
-	Name: resflagsinit
-	Namespace: res
-	Checksum: 0x7393574E
-	Offset: 0x1988
-	Size: 0x66E
-	Parameters: 0
-	Flags: None
-*/
 function resflagsinit() {
   level.laststatus["allies"] = 0;
   level.laststatus["axis"] = 0;
@@ -348,10 +243,8 @@ function resflagsinit() {
   level.flagmodel["neutral"] = teams::get_flag_model("neutral");
   primaryflags = getentarray("res_flag_primary", "targetname");
   if(primaryflags.size < 2) {
-    /#
     println("");
-    # /
-      callback::abort_level();
+    callback::abort_level();
     return;
   }
   level.flags = [];
@@ -371,7 +264,7 @@ function resflagsinit() {
     resflag = gameobjects::create_use_object(game["defenders"], trigger, visuals, level.iconoffset);
     resflag gameobjects::allow_use("none");
     resflag gameobjects::set_use_time(level.flagcapturetime);
-    resflag gameobjects::set_use_text( & "MP_CAPTURING_FLAG");
+    resflag gameobjects::set_use_text(&"MP_CAPTURING_FLAG");
     resflag gameobjects::set_decay_time(level.flagdecaytime);
     label = resflag gameobjects::get_label();
     resflag.label = label;
@@ -404,15 +297,6 @@ function resflagsinit() {
   }
 }
 
-/*
-	Name: sortflags
-	Namespace: res
-	Checksum: 0x7541C0C2
-	Offset: 0x2000
-	Size: 0x1EA
-	Parameters: 0
-	Flags: None
-*/
 function sortflags() {
   flagorder["_a"] = 0;
   flagorder["_b"] = 1;
@@ -421,9 +305,7 @@ function sortflags() {
   flagorder["_e"] = 4;
   for (i = 0; i < level.resflags.size; i++) {
     level.resflags[i].orderindex = flagorder[level.resflags[i].label];
-    /#
     assert(isdefined(level.resflags[i].orderindex));
-    # /
   }
   for (i = 1; i < level.resflags.size; i++) {
     for (j = 0; j < (level.resflags.size - i); j++) {
@@ -436,15 +318,6 @@ function sortflags() {
   }
 }
 
-/*
-	Name: setupnextflag
-	Namespace: res
-	Checksum: 0x60AA1357
-	Offset: 0x21F8
-	Size: 0xA4
-	Parameters: 1
-	Flags: None
-*/
 function setupnextflag(flagindex) {
   prevflagindex = flagindex - 1;
   if(prevflagindex >= 0) {
@@ -458,15 +331,6 @@ function setupnextflag(flagindex) {
   }
 }
 
-/*
-	Name: createtimerdisplay
-	Namespace: res
-	Checksum: 0x980CC4AE
-	Offset: 0x22A8
-	Size: 0x274
-	Parameters: 0
-	Flags: None
-*/
 function createtimerdisplay() {
   flagspawninginstr = & "MP_HQ_AVAILABLE_IN";
   level.locationobjid = gameobjects::get_next_obj_id();
@@ -487,34 +351,14 @@ function createtimerdisplay() {
   thread hidetimerdisplayongameend(level.timerdisplay["axis"]);
 }
 
-/*
-	Name: hidetimerdisplayongameend
-	Namespace: res
-	Checksum: 0xF868B4FC
-	Offset: 0x2528
-	Size: 0x28
-	Parameters: 1
-	Flags: None
-*/
 function hidetimerdisplayongameend(timerdisplay) {
-  level waittill(# "game_ended");
+  level waittill("game_ended");
   timerdisplay.alpha = 0;
 }
 
-/*
-	Name: showflag
-	Namespace: res
-	Checksum: 0xB8D74C09
-	Offset: 0x2558
-	Size: 0x4DC
-	Parameters: 1
-	Flags: None
-*/
 function showflag(flagindex) {
-  /#
   assert(flagindex < level.resflags.size);
-  # /
-    resflag = level.resflags[flagindex];
+  resflag = level.resflags[flagindex];
   label = resflag.label;
   resflag gameobjects::set_visible_team("any");
   resflag gameobjects::set_model_visibility(1);
@@ -522,7 +366,7 @@ function showflag(flagindex) {
   if(level.flagactivatedelay) {
     hud_hideflagprogressbar();
     if(level.prematchperiod > 0 && level.inprematchperiod == 1) {
-      level waittill(# "prematch_over");
+      level waittill("prematch_over");
     }
     nextobjpoint = objpoints::create("objpoint_next_hq", resflag.curorigin + level.iconoffset, "all", "waypoint_targetneutral");
     nextobjpoint setwaypoint(1, "waypoint_targetneutral");
@@ -560,34 +404,14 @@ function showflag(flagindex) {
   resflag resetflagbaseeffect();
 }
 
-/*
-	Name: hideflag
-	Namespace: res
-	Checksum: 0x15A96523
-	Offset: 0x2A40
-	Size: 0xA4
-	Parameters: 1
-	Flags: None
-*/
 function hideflag(flagindex) {
-  /#
   assert(flagindex < level.resflags.size);
-  # /
-    resflag = level.resflags[flagindex];
+  resflag = level.resflags[flagindex];
   resflag gameobjects::allow_use("none");
   resflag gameobjects::set_visible_team("none");
   resflag gameobjects::set_model_visibility(0);
 }
 
-/*
-	Name: getunownedflagneareststart
-	Namespace: res
-	Checksum: 0x14418355
-	Offset: 0x2AF0
-	Size: 0x12E
-	Parameters: 2
-	Flags: None
-*/
 function getunownedflagneareststart(team, excludeflag) {
   best = undefined;
   bestdistsq = undefined;
@@ -605,15 +429,6 @@ function getunownedflagneareststart(team, excludeflag) {
   return best;
 }
 
-/*
-	Name: onbeginuse
-	Namespace: res
-	Checksum: 0x574FE7AA
-	Offset: 0x2C28
-	Size: 0x1CC
-	Parameters: 1
-	Flags: None
-*/
 function onbeginuse(player) {
   ownerteam = self gameobjects::get_owner_team();
   setdvar(("scr_obj" + self gameobjects::get_label()) + "_flash", 1);
@@ -636,15 +451,6 @@ function onbeginuse(player) {
   self.objpoints["axis"] thread objpoints::start_flashing();
 }
 
-/*
-	Name: onuseupdate
-	Namespace: res
-	Checksum: 0xB2290E39
-	Offset: 0x2E00
-	Size: 0x174
-	Parameters: 3
-	Flags: None
-*/
 function onuseupdate(team, progress, change) {
   if(!isdefined(level.resprogress)) {
     level.resprogress = progress;
@@ -669,29 +475,11 @@ function onuseupdate(team, progress, change) {
   hud_setflagprogressbar(progress, team);
 }
 
-/*
-	Name: onuseclear
-	Namespace: res
-	Checksum: 0xAE54133F
-	Offset: 0x2F80
-	Size: 0x2C
-	Parameters: 0
-	Flags: None
-*/
 function onuseclear() {
   globallogic_utils::resumetimer();
   hud_setflagprogressbar(0);
 }
 
-/*
-	Name: statusdialog
-	Namespace: res
-	Checksum: 0x3C59C3BE
-	Offset: 0x2FB8
-	Size: 0x6E
-	Parameters: 2
-	Flags: None
-*/
 function statusdialog(dialog, team) {
   time = gettime();
   if(gettime() < (level.laststatus[team] + 6000)) {
@@ -701,30 +489,12 @@ function statusdialog(dialog, team) {
   level.laststatus[team] = gettime();
 }
 
-/*
-	Name: onenduse
-	Namespace: res
-	Checksum: 0x4DF20EC4
-	Offset: 0x3030
-	Size: 0xA4
-	Parameters: 3
-	Flags: None
-*/
 function onenduse(team, player, success) {
   setdvar(("scr_obj" + self gameobjects::get_label()) + "_flash", 0);
   self.objpoints["allies"] thread objpoints::stop_flashing();
   self.objpoints["axis"] thread objpoints::stop_flashing();
 }
 
-/*
-	Name: resetflagbaseeffect
-	Namespace: res
-	Checksum: 0xBA315371
-	Offset: 0x30E0
-	Size: 0xBC
-	Parameters: 0
-	Flags: None
-*/
 function resetflagbaseeffect() {
   if(isdefined(self.baseeffect)) {
     return;
@@ -738,40 +508,27 @@ function resetflagbaseeffect() {
   triggerfx(self.baseeffect);
 }
 
-/*
-	Name: onuse
-	Namespace: res
-	Checksum: 0x7581182
-	Offset: 0x31A8
-	Size: 0x5C4
-	Parameters: 2
-	Flags: None
-*/
 function onuse(player, team) {
   team = player.pers["team"];
   oldteam = self gameobjects::get_owner_team();
   label = self gameobjects::get_label();
-  /#
   print("" + self.label);
-  # /
-    setupnextflag(self.orderindex + 1);
+  setupnextflag(self.orderindex + 1);
   if((self.orderindex + 1) == level.resflags.size || level.overtime) {
     setgameendtime(0);
     wait(1);
     res_endgame(player.team, game["strings"]["flags_capped"]);
   } else {
     level.usestartspawns = 0;
-    /#
     assert(team != "");
-    # /
-      if([
-          [level.gettimelimit]
-        ]() > 0 && level.extratime) {
-        level.usingextratime = 1;
-        if(!level.hardcoremode) {
-          iprintln( & "MP_TIME_EXTENDED");
-        }
+    if([
+        [level.gettimelimit]
+      ]() > 0 && level.extratime) {
+      level.usingextratime = 1;
+      if(!level.hardcoremode) {
+        iprintln(&"MP_TIME_EXTENDED");
       }
+    }
     spawnlogic::clear_spawn_points();
     spawnlogic::add_spawn_points("allies", "mp_res_spawn_allies");
     spawnlogic::add_spawn_points("axis", "mp_res_spawn_axis");
@@ -815,10 +572,8 @@ function onuse(player, team) {
         break;
       }
     }
-    /#
-    assert(string != ( & ""));
-    # /
-      touchlist = [];
+    assert(string != (&""));
+    touchlist = [];
     touchkeys = getarraykeys(self.touchlist[team]);
     for (i = 0; i < touchkeys.size; i++) {
       touchlist[touchkeys[i]] = self.touchlist[team][touchkeys[i]];
@@ -837,15 +592,6 @@ function onuse(player, team) {
   }
 }
 
-/*
-	Name: give_capture_credit
-	Namespace: res
-	Checksum: 0xD4BF53F0
-	Offset: 0x3778
-	Size: 0x176
-	Parameters: 2
-	Flags: None
-*/
 function give_capture_credit(touchlist, string) {
   wait(0.05);
   util::waittillslowprocessallowed();
@@ -863,37 +609,15 @@ function give_capture_credit(touchlist, string) {
   }
 }
 
-/*
-	Name: delayedleaderdialog
-	Namespace: res
-	Checksum: 0x3F1C2BA6
-	Offset: 0x38F8
-	Size: 0x44
-	Parameters: 2
-	Flags: None
-*/
 function delayedleaderdialog(sound, team) {
   wait(0.1);
   util::waittillslowprocessallowed();
   globallogic_audio::leader_dialog(sound, team);
 }
 
-/*
-	Name: onscoreclosemusic
-	Namespace: res
-	Checksum: 0x9E2AE65D
-	Offset: 0x3948
-	Size: 0x292
-	Parameters: 0
-	Flags: None
-*/
 function onscoreclosemusic() {
-  axisscore = [
-    [level._getteamscore]
-  ]("axis");
-  alliedscore = [
-    [level._getteamscore]
-  ]("allies");
+  axisscore = [[level._getteamscore]]("axis");
+  alliedscore = [[level._getteamscore]]("allies");
   scorelimit = level.scorelimit;
   scorethreshold = scorelimit * 0.1;
   scoredif = abs(axisscore - alliedscore);
@@ -908,7 +632,6 @@ function onscoreclosemusic() {
     currentscore = axisscore;
   }
   if(getdvarint("debug_music") > 0) {
-    /#
     println("" + scoredif);
     println("" + axisscore);
     println("" + alliedscore);
@@ -917,7 +640,6 @@ function onscoreclosemusic() {
     println("" + scorethreshold);
     println("" + scoredif);
     println("" + scorethresholdstart);
-    # /
   }
   if(scoredif <= scorethreshold && scorethresholdstart <= currentscore && level.playingactionmusic != 1) {
     thread globallogic_audio::set_music_on_team("timeOut");
@@ -926,15 +648,6 @@ function onscoreclosemusic() {
   }
 }
 
-/*
-	Name: onplayerkilled
-	Namespace: res
-	Checksum: 0xA3A7F56A
-	Offset: 0x3BE8
-	Size: 0x314
-	Parameters: 9
-	Flags: None
-*/
 function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vdir, shitloc, psoffsettime, deathanimduration) {
   if(self.touchtriggers.size && isplayer(attacker) && attacker.pers["team"] != self.pers["team"]) {
     triggerids = getarraykeys(self.touchtriggers);
@@ -970,15 +683,6 @@ function onplayerkilled(einflictor, attacker, idamage, smeansofdeath, weapon, vd
   }
 }
 
-/*
-	Name: getteamflagcount
-	Namespace: res
-	Checksum: 0x46AA31EF
-	Offset: 0x3F08
-	Size: 0x78
-	Parameters: 1
-	Flags: None
-*/
 function getteamflagcount(team) {
   score = 0;
   for (i = 0; i < level.flags.size; i++) {
@@ -989,42 +693,15 @@ function getteamflagcount(team) {
   return score;
 }
 
-/*
-	Name: getflagteam
-	Namespace: res
-	Checksum: 0x2674AA4D
-	Offset: 0x3F88
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function getflagteam() {
   return self.useobj gameobjects::get_owner_team();
 }
 
-/*
-	Name: updateobjectivehintmessages
-	Namespace: res
-	Checksum: 0x18F957F5
-	Offset: 0x3FB0
-	Size: 0x4A
-	Parameters: 2
-	Flags: None
-*/
 function updateobjectivehintmessages(alliesobjective, axisobjective) {
   game["strings"]["objective_hint_allies"] = alliesobjective;
   game["strings"]["objective_hint_axis"] = axisobjective;
 }
 
-/*
-	Name: createflagspawninfluencers
-	Namespace: res
-	Checksum: 0x21FEF450
-	Offset: 0x4008
-	Size: 0x124
-	Parameters: 0
-	Flags: None
-*/
 function createflagspawninfluencers() {
   ss = level.spawnsystem;
   for (flag_index = 0; flag_index < level.flags.size; flag_index++) {
@@ -1038,31 +715,15 @@ function createflagspawninfluencers() {
   self update_spawn_influencers("neutral");
 }
 
-/*
-	Name: update_spawn_influencers
-	Namespace: res
-	Checksum: 0xB8A020C2
-	Offset: 0x4138
-	Size: 0x18C
-	Parameters: 1
-	Flags: None
-*/
 function update_spawn_influencers(team) {
-  /#
   assert(isdefined(self.neutral_flag_influencer));
-  # /
-    /#
   assert(isdefined(self.owned_flag_influencer));
-  # /
-    /#
   assert(isdefined(self.enemy_flag_influencer));
-  # /
-    if(team == "neutral") {
-      enableinfluencer(self.neutral_flag_influencer, 1);
-      enableinfluencer(self.owned_flag_influencer, 0);
-      enableinfluencer(self.enemy_flag_influencer, 0);
-    }
-  else {
+  if(team == "neutral") {
+    enableinfluencer(self.neutral_flag_influencer, 1);
+    enableinfluencer(self.owned_flag_influencer, 0);
+    enableinfluencer(self.enemy_flag_influencer, 0);
+  } else {
     enableinfluencer(self.neutral_flag_influencer, 0);
     enableinfluencer(self.owned_flag_influencer, 1);
     enableinfluencer(self.enemy_flag_influencer, 1);
@@ -1071,59 +732,23 @@ function update_spawn_influencers(team) {
   }
 }
 
-/*
-	Name: hud_createflagprogressbar
-	Namespace: res
-	Checksum: 0x4C71CF1
-	Offset: 0x42D0
-	Size: 0x64
-	Parameters: 0
-	Flags: None
-*/
 function hud_createflagprogressbar() {
   level.attackerscaptureprogresshud = hud::createteamprogressbar(game["attackers"]);
   level.defenderscaptureprogresshud = hud::createteamprogressbar(game["defenders"]);
   hud_hideflagprogressbar();
 }
 
-/*
-	Name: hud_hideflagprogressbar
-	Namespace: res
-	Checksum: 0x81E7EC2
-	Offset: 0x4340
-	Size: 0x4C
-	Parameters: 0
-	Flags: None
-*/
 function hud_hideflagprogressbar() {
   hud_setflagprogressbar(0);
   level.attackerscaptureprogresshud hud::hideelem();
   level.defenderscaptureprogresshud hud::hideelem();
 }
 
-/*
-	Name: hud_showflagprogressbar
-	Namespace: res
-	Checksum: 0x5A5E1D2A
-	Offset: 0x4398
-	Size: 0x34
-	Parameters: 0
-	Flags: None
-*/
 function hud_showflagprogressbar() {
   level.attackerscaptureprogresshud hud::showelem();
   level.defenderscaptureprogresshud hud::showelem();
 }
 
-/*
-	Name: hud_setflagprogressbar
-	Namespace: res
-	Checksum: 0x6479D38C
-	Offset: 0x43D8
-	Size: 0x13C
-	Parameters: 2
-	Flags: None
-*/
 function hud_setflagprogressbar(value, cappingteam) {
   if(value < 0) {
     value = 0;

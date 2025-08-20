@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_cosmodrome_traps.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\clientfield_shared;
@@ -6,33 +10,14 @@
 #using scripts\shared\flag_shared;
 #using scripts\zm\_zm_traps;
 #using scripts\zm\zm_cosmodrome_amb;
-
 #namespace zm_cosmodrome_traps;
 
-/*
-	Name: init_traps
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0xCDDB22DB
-	Offset: 0x480
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function init_traps() {
   level thread rocket_init();
   level thread centrifuge_init();
   level thread door_firetrap_init();
 }
 
-/*
-	Name: claw_attach
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0x5DEFFD6B
-	Offset: 0x4D8
-	Size: 0x8E
-	Parameters: 2
-	Flags: Linked
-*/
 function claw_attach(arm, claw_name) {
   claws = getentarray(claw_name, "targetname");
   for (i = 0; i < claws.size; i++) {
@@ -40,15 +25,6 @@ function claw_attach(arm, claw_name) {
   }
 }
 
-/*
-	Name: claw_detach
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0x8C47CCED
-	Offset: 0x570
-	Size: 0x86
-	Parameters: 2
-	Flags: Linked
-*/
 function claw_detach(arm, claw_name) {
   claws = getentarray(claw_name, "targetname");
   for (i = 0; i < claws.size; i++) {
@@ -56,15 +32,6 @@ function claw_detach(arm, claw_name) {
   }
 }
 
-/*
-	Name: rocket_init
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0x620CADDF
-	Offset: 0x600
-	Size: 0x4C4
-	Parameters: 0
-	Flags: Linked
-*/
 function rocket_init() {
   level flag::wait_till("start_zombie_round_logic");
   wait(1);
@@ -105,47 +72,29 @@ function rocket_init() {
   level thread rocket_move_ready();
 }
 
-/*
-	Name: rocket_move_ready
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0xFC356A73
-	Offset: 0xAD0
-	Size: 0x244
-	Parameters: 0
-	Flags: Linked
-*/
 function rocket_move_ready() {
   start_spot = struct::get("rail_start_spot", "targetname");
   dock_spot = struct::get("rail_dock_spot", "targetname");
   level.claw_arm_r moveto(level.claw_retract_r_pos, 0.05);
   level.claw_arm_l moveto(level.claw_retract_l_pos, 0.05);
   level.rocket_lifter moveto(start_spot.origin, 0.05);
-  level.rocket_lifter waittill(# "movedone");
+  level.rocket_lifter waittill("movedone");
   level.rocket_lifter_arm unlink();
   level.rocket_lifter_arm rotateto(vectorscale((1, 0, 0), 13), 0.05);
-  level.rocket_lifter_arm waittill(# "rotatedone");
+  level.rocket_lifter_arm waittill("rotatedone");
   unlink_rocket_pieces();
-  level waittill(# "power_on");
+  level waittill("power_on");
   wait(5);
   link_rocket_pieces();
   level.rocket_lifter_arm linkto(level.rocket_lifter);
   level.rocket_lifter moveto(dock_spot.origin, 10, 3, 3);
   level.rocket_lifter playsound("evt_rocket_roll");
-  level.rocket_lifter waittill(# "movedone");
+  level.rocket_lifter waittill("movedone");
   level.rocket_lifter_arm unlink();
   rocket_move_vertical();
   unlink_rocket_pieces();
 }
 
-/*
-	Name: rocket_move_vertical
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0x535BBD8
-	Offset: 0xD20
-	Size: 0x122
-	Parameters: 0
-	Flags: Linked
-*/
 function rocket_move_vertical() {
   level thread rocket_arm_sounds();
   level.rocket_lifter_arm rotateto(vectorscale((1, 0, 0), 90), 15, 3, 5);
@@ -159,15 +108,6 @@ function rocket_move_vertical() {
   wait(3);
 }
 
-/*
-	Name: move_lifter_away
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0xCD16D319
-	Offset: 0xE50
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function move_lifter_away() {
   start_spot = struct::get("rail_start_spot", "targetname");
   level.rocket_lifter_arm linkto(level.rocket_lifter);
@@ -181,15 +121,6 @@ function move_lifter_away() {
   claw_detach(level.claw_arm_r, "claw_r");
 }
 
-/*
-	Name: centrifuge_init
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0x94096748
-	Offset: 0xFC8
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked
-*/
 function centrifuge_init() {
   centrifuge_trig = getent("trigger_centrifuge_damage", "targetname");
   centrifuge_trap = getent("rotating_trap_group1", "targetname");
@@ -199,39 +130,26 @@ function centrifuge_init() {
   /# /
   #
   assert(isdefined(centrifuge_collision_brush.target), "");
-  # /
-    # /
-    centrifuge_collision_brush linkto(getent(centrifuge_collision_brush.target, "targetname"));
+  centrifuge_collision_brush linkto(getent(centrifuge_collision_brush.target, "targetname"));
   tip_sound_origins = getentarray("origin_centrifuge_spinning_sound", "targetname");
   array::thread_all(tip_sound_origins, & centrifuge_spinning_edge_sounds);
   level flag::wait_till("start_zombie_round_logic");
   centrifuge_trap clientfield::set("COSMO_CENTRIFUGE_LIGHTS", 1);
   wait(4);
   centrifuge_trap rotateyaw(720, 10, 0, 4.5);
-  centrifuge_trap waittill(# "rotatedone");
+  centrifuge_trap waittill("rotatedone");
   centrifuge_trap playsound("zmb_cent_end");
   centrifuge_trap clientfield::set("COSMO_CENTRIFUGE_LIGHTS", 0);
   level thread centrifuge_random();
 }
 
-/*
-	Name: centrifuge_activate
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0xEB963764
-	Offset: 0x1220
-	Size: 0x44A
-	Parameters: 0
-	Flags: None
-*/
 function centrifuge_activate() {
   self._trap_duration = 30;
   self._trap_cooldown_time = 60;
-  /#
   if(getdvarint("") >= 1) {
     self._trap_cooldown_time = 5;
   }
-  # /
-    centrifuge = self._trap_movers[0];
+  centrifuge = self._trap_movers[0];
   old_angles = centrifuge.angles;
   self thread zm_traps::trig_update(centrifuge);
   for (i = 0; i < self._trap_movers.size; i++) {
@@ -269,24 +187,15 @@ function centrifuge_activate() {
     self._trap_movers[i] rotateyaw(360, 5, 0, 4);
   }
   wait(5);
-  self notify(# "trap_done");
+  self notify("trap_done");
   for (i = 0; i < self._trap_movers.size; i++) {
     self._trap_movers[i] rotateto((0, end_angle % 360, 0), 1, 0, 0.9);
   }
   wait(1);
   self playsound("zmb_cent_lockdown");
-  self notify(# "kill_counter_end");
+  self notify("kill_counter_end");
 }
 
-/*
-	Name: centrifuge_random
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0xADE46C63
-	Offset: 0x1678
-	Size: 0x2B8
-	Parameters: 0
-	Flags: Linked
-*/
 function centrifuge_random() {
   centrifuge_model = getent("rotating_trap_group1", "targetname");
   centrifuge_damage_trigger = getent("trigger_centrifuge_damage", "targetname");
@@ -295,10 +204,10 @@ function centrifuge_random() {
     if(!isdefined(level.var_6708aa9c) || !level.var_6708aa9c) {
       malfunction_for_round = randomint(10);
       if(malfunction_for_round > 6) {
-        level waittill(# "between_round_over");
+        level waittill("between_round_over");
       } else if(malfunction_for_round == 1) {
-        level waittill(# "between_round_over");
-        level waittill(# "between_round_over");
+        level waittill("between_round_over");
+        level waittill("between_round_over");
       }
       wait(randomintrange(24, 90));
     }
@@ -311,23 +220,14 @@ function centrifuge_random() {
     wait(3);
     centrifuge_model stoploopsound(4);
     centrifuge_model playsound("zmb_cent_end");
-    centrifuge_model waittill(# "rotatedone");
-    centrifuge_damage_trigger notify(# "trap_done");
+    centrifuge_model waittill("rotatedone");
+    centrifuge_damage_trigger notify("trap_done");
     centrifuge_model playsound("zmb_cent_lockdown");
     centrifuge_model clientfield::set("COSMO_CENTRIFUGE_LIGHTS", 0);
     centrifuge_model clientfield::set("COSMO_CENTRIFUGE_RUMBLE", 0);
   }
 }
 
-/*
-	Name: centrifuge_spin_warning
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0xADE3F95C
-	Offset: 0x1938
-	Size: 0xCC
-	Parameters: 1
-	Flags: Linked
-*/
 function centrifuge_spin_warning(ent_centrifuge_model) {
   ent_centrifuge_model clientfield::set("COSMO_CENTRIFUGE_LIGHTS", 1);
   ent_centrifuge_model playsound("zmb_cent_alarm");
@@ -339,21 +239,12 @@ function centrifuge_spin_warning(ent_centrifuge_model) {
   wait(1);
 }
 
-/*
-	Name: centrifuge_damage
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0xDA43A2EF
-	Offset: 0x1A10
-	Size: 0x1F8
-	Parameters: 0
-	Flags: Linked
-*/
 function centrifuge_damage() {
-  self endon(# "trap_done");
+  self endon("trap_done");
   self._trap_type = self.script_noteworthy;
   players = getplayers();
   while (true) {
-    self waittill(# "trigger", ent);
+    self waittill("trigger", ent);
     if(isplayer(ent) && ent.health > 1) {
       if(ent getstance() == "stand") {
         if(players.size == 1) {
@@ -373,24 +264,13 @@ function centrifuge_damage() {
   }
 }
 
-/*
-	Name: centrifuge_spinning_edge_sounds
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0x47535B22
-	Offset: 0x1C10
-	Size: 0x108
-	Parameters: 0
-	Flags: Linked
-*/
 function centrifuge_spinning_edge_sounds() {
   /# /
   #
   assert(isdefined(self.target), "");
-  # /
-    # /
-    if(!isdefined(self.target)) {
-      return;
-    }
+  if(!isdefined(self.target)) {
+    return;
+  }
   self linkto(getent(self.target, "targetname"));
   while (true) {
     level flag::wait_till("fuge_spining");
@@ -401,30 +281,12 @@ function centrifuge_spinning_edge_sounds() {
   }
 }
 
-/*
-	Name: rocket_arm_sounds
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0x7AF65900
-	Offset: 0x1D20
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function rocket_arm_sounds() {
   level.rocket_lifter playsound("evt_rocket_set_main");
   wait(13.8);
   level.rocket_lifter playsound("evt_rocket_set_impact");
 }
 
-/*
-	Name: door_firetrap_init
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0x28EDBF12
-	Offset: 0x1D78
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked
-*/
 function door_firetrap_init() {
   level flag::init("base_door_opened");
   door_trap = undefined;
@@ -432,26 +294,17 @@ function door_firetrap_init() {
   for (i = 0; i < traps.size; i++) {
     if(isdefined(traps[i].script_string) && traps[i].script_string == "f2") {
       door_trap = traps[i];
-      door_trap zm_traps::trap_set_string( & "ZOMBIE_NEED_POWER");
+      door_trap zm_traps::trap_set_string(&"ZOMBIE_NEED_POWER");
     }
   }
   level flag::wait_till("power_on");
   if(!level flag::get("base_entry_2_north_path")) {
-    door_trap zm_traps::trap_set_string( & "ZM_COSMODROME_DOOR_CLOSED");
+    door_trap zm_traps::trap_set_string(&"ZM_COSMODROME_DOOR_CLOSED");
   }
   level flag::wait_till("base_entry_2_north_path");
   level flag::set("base_door_opened");
 }
 
-/*
-	Name: unlink_rocket_pieces
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0x9E920B2A
-	Offset: 0x1F10
-	Size: 0x196
-	Parameters: 0
-	Flags: Linked
-*/
 function unlink_rocket_pieces() {
   claw_detach(level.claw_arm_l, "claw_l");
   claw_detach(level.claw_arm_r, "claw_r");
@@ -469,15 +322,6 @@ function unlink_rocket_pieces() {
   }
 }
 
-/*
-	Name: link_rocket_pieces
-	Namespace: zm_cosmodrome_traps
-	Checksum: 0x44FCF602
-	Offset: 0x20B0
-	Size: 0x1D6
-	Parameters: 0
-	Flags: Linked
-*/
 function link_rocket_pieces() {
   claw_attach(level.claw_arm_l, "claw_l");
   level.claw_arm_r = getent("claw_r_arm", "targetname");

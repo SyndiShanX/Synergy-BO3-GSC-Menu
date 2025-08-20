@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_blackstation_patch.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_load;
 #using scripts\cp\_objectives;
@@ -12,18 +16,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\vehicles\_quadtank;
-
 #namespace namespace_814e90c0;
 
-/*
-	Name: function_7403e82b
-	Namespace: namespace_814e90c0
-	Checksum: 0x5886DEAA
-	Offset: 0x310
-	Size: 0xA1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7403e82b() {
   collision1 = spawn("script_model", (-5538, 9256, 163));
   collision1 setmodel("p7_shelf_modern_02_e");

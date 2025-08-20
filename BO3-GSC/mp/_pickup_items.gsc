@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\_pickup_items.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_weaponobjects;
@@ -9,31 +13,12 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weaponobjects;
 #using scripts\shared\weapons\_weapons;
-
 #namespace pickup_items;
 
-/*
-	Name: __init__sytem__
-	Namespace: pickup_items
-	Checksum: 0x8D6F6560
-	Offset: 0x2E8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("pickup_items", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: pickup_items
-	Checksum: 0xD0FABDDA
-	Offset: 0x328
-	Size: 0x7C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   callback::on_start_gametype( & start_gametype);
   level.nullprimaryoffhand = getweapon("null_offhand_primary");
@@ -42,29 +27,11 @@ function __init__() {
   level.pickupitemrespawn = 1;
 }
 
-/*
-	Name: on_player_spawned
-	Namespace: pickup_items
-	Checksum: 0xA6BFCC0B
-	Offset: 0x3B0
-	Size: 0x16
-	Parameters: 0
-	Flags: Linked
-*/
 function on_player_spawned() {
   self.pickup_damage_scale = undefined;
   self.pickup_damage_scale_time = undefined;
 }
 
-/*
-	Name: start_gametype
-	Namespace: pickup_items
-	Checksum: 0x876AC5C0
-	Offset: 0x3D0
-	Size: 0x20C
-	Parameters: 0
-	Flags: Linked
-*/
 function start_gametype() {
   callback::on_spawned( & on_player_spawned);
   pickup_triggers = getentarray("pickup_item", "targetname");
@@ -72,10 +39,8 @@ function start_gametype() {
   visuals = [];
   foreach(trigger in pickup_triggers) {
     visuals[0] = get_visual_for_trigger(trigger, pickup_models);
-    /#
     assert(isdefined(visuals[0]));
-    # /
-      visuals[0] pickup_item_init();
+    visuals[0] pickup_item_init();
     pickup_item_object = gameobjects::create_use_object("neutral", trigger, visuals, vectorscale((0, 0, 1), 32), istring("pickup_item"));
     pickup_item_object gameobjects::allow_use("any");
     pickup_item_object gameobjects::set_use_time(0);
@@ -84,15 +49,6 @@ function start_gametype() {
   }
 }
 
-/*
-	Name: get_visual_for_trigger
-	Namespace: pickup_items
-	Checksum: 0x452A44F4
-	Offset: 0x5E8
-	Size: 0xA4
-	Parameters: 2
-	Flags: Linked
-*/
 function get_visual_for_trigger(trigger, pickup_models) {
   foreach(model in pickup_models) {
     if(model istouchingswept(trigger)) {
@@ -102,41 +58,14 @@ function get_visual_for_trigger(trigger, pickup_models) {
   return undefined;
 }
 
-/*
-	Name: set_pickup_bobbing
-	Namespace: pickup_items
-	Checksum: 0x38E77883
-	Offset: 0x698
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function set_pickup_bobbing() {
   self bobbing((0, 0, 1), 4, 1);
 }
 
-/*
-	Name: set_pickup_rotation
-	Namespace: pickup_items
-	Checksum: 0x63E049CB
-	Offset: 0x6C8
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function set_pickup_rotation() {
   self rotate(vectorscale((0, 1, 0), 175));
 }
 
-/*
-	Name: get_item_for_pickup
-	Namespace: pickup_items
-	Checksum: 0xF865C6AD
-	Offset: 0x6F8
-	Size: 0x82
-	Parameters: 0
-	Flags: Linked
-*/
 function get_item_for_pickup() {
   if(self.items.size == 1) {
     return self.items[0];
@@ -148,15 +77,6 @@ function get_item_for_pickup() {
   return array::pop_front(self.items_shuffle);
 }
 
-/*
-	Name: cycle_item
-	Namespace: pickup_items
-	Checksum: 0xC3769FF
-	Offset: 0x788
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function cycle_item() {
   self.current_item = self get_item_for_pickup();
   if(isdefined(self.current_item.model)) {
@@ -164,15 +84,6 @@ function cycle_item() {
   }
 }
 
-/*
-	Name: get_item_from_string_ammo
-	Namespace: pickup_items
-	Checksum: 0x8D096E5A
-	Offset: 0x7F0
-	Size: 0xB0
-	Parameters: 1
-	Flags: Linked
-*/
 function get_item_from_string_ammo(perks_string) {
   item_struct = spawnstruct();
   item_struct.name = "ammo";
@@ -183,15 +94,6 @@ function get_item_from_string_ammo(perks_string) {
   return item_struct;
 }
 
-/*
-	Name: get_item_from_string_damage
-	Namespace: pickup_items
-	Checksum: 0xCE2A4ABA
-	Offset: 0x8A8
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function get_item_from_string_damage(perks_string) {
   item_struct = spawnstruct();
   item_struct.name = "damage";
@@ -202,15 +104,6 @@ function get_item_from_string_damage(perks_string) {
   return item_struct;
 }
 
-/*
-	Name: get_item_from_string_health
-	Namespace: pickup_items
-	Checksum: 0x392FC599
-	Offset: 0x958
-	Size: 0xA8
-	Parameters: 1
-	Flags: Linked
-*/
 function get_item_from_string_health(perks_string) {
   item_struct = spawnstruct();
   item_struct.name = "health";
@@ -221,22 +114,11 @@ function get_item_from_string_health(perks_string) {
   return item_struct;
 }
 
-/*
-	Name: get_item_from_string_perk
-	Namespace: pickup_items
-	Checksum: 0xEDF5F8C6
-	Offset: 0xA08
-	Size: 0xF8
-	Parameters: 1
-	Flags: Linked
-*/
 function get_item_from_string_perk(perks_string) {
   item_struct = spawnstruct();
   if(!isdefined(level.perkspecialties[perks_string])) {
-    /#
     util::error((("" + perks_string) + "") + self.origin);
-    # /
-      return;
+    return;
   }
   item_struct.name = perks_string;
   item_struct.specialties = strtok(level.perkspecialties[perks_string], "|");
@@ -245,15 +127,6 @@ function get_item_from_string_perk(perks_string) {
   return item_struct;
 }
 
-/*
-	Name: get_item_from_string_weapon
-	Namespace: pickup_items
-	Checksum: 0x3FA61B7D
-	Offset: 0xB08
-	Size: 0x128
-	Parameters: 1
-	Flags: Linked
-*/
 function get_item_from_string_weapon(weapon_and_attachments_string) {
   item_struct = spawnstruct();
   weapon_and_attachments = strtok(weapon_and_attachments_string, "+");
@@ -266,15 +139,6 @@ function get_item_from_string_weapon(weapon_and_attachments_string) {
   return item_struct;
 }
 
-/*
-	Name: get_item_from_string
-	Namespace: pickup_items
-	Checksum: 0xA37DA4C8
-	Offset: 0xC38
-	Size: 0xC2
-	Parameters: 1
-	Flags: Linked
-*/
 function get_item_from_string(item_string) {
   switch (self.script_noteworthy) {
     case "ammo": {
@@ -295,15 +159,6 @@ function get_item_from_string(item_string) {
   }
 }
 
-/*
-	Name: init_items_for_pickup
-	Namespace: pickup_items
-	Checksum: 0x937FFEB9
-	Offset: 0xD08
-	Size: 0xEA
-	Parameters: 0
-	Flags: Linked
-*/
 function init_items_for_pickup() {
   items_string = self.script_parameters;
   items_array = strtok(items_string, " ");
@@ -314,15 +169,6 @@ function init_items_for_pickup() {
   return items;
 }
 
-/*
-	Name: pickup_item_respawn_time
-	Namespace: pickup_items
-	Checksum: 0x7B46A5FE
-	Offset: 0xE00
-	Size: 0x5E
-	Parameters: 0
-	Flags: Linked
-*/
 function pickup_item_respawn_time() {
   switch (self.script_noteworthy) {
     case "ammo": {
@@ -343,15 +189,6 @@ function pickup_item_respawn_time() {
   }
 }
 
-/*
-	Name: pickup_item_sound_pickup
-	Namespace: pickup_items
-	Checksum: 0x6D084ADC
-	Offset: 0xE68
-	Size: 0x6A
-	Parameters: 0
-	Flags: Linked
-*/
 function pickup_item_sound_pickup() {
   switch (self.script_noteworthy) {
     case "ammo": {
@@ -372,15 +209,6 @@ function pickup_item_sound_pickup() {
   }
 }
 
-/*
-	Name: pickup_item_sound_respawn
-	Namespace: pickup_items
-	Checksum: 0x925DA523
-	Offset: 0xEE0
-	Size: 0x6A
-	Parameters: 0
-	Flags: Linked
-*/
 function pickup_item_sound_respawn() {
   switch (self.script_noteworthy) {
     case "ammo": {
@@ -401,15 +229,6 @@ function pickup_item_sound_respawn() {
   }
 }
 
-/*
-	Name: pickup_item_init
-	Namespace: pickup_items
-	Checksum: 0x474A8571
-	Offset: 0xF58
-	Size: 0xD4
-	Parameters: 0
-	Flags: Linked
-*/
 function pickup_item_init() {
   self.items_shuffle = [];
   self set_pickup_bobbing();
@@ -421,17 +240,8 @@ function pickup_item_init() {
   self cycle_item();
 }
 
-/*
-	Name: on_touch
-	Namespace: pickup_items
-	Checksum: 0xEF247AFA
-	Offset: 0x1038
-	Size: 0x19C
-	Parameters: 1
-	Flags: Linked
-*/
 function on_touch(player) {
-  self endon(# "respawned");
+  self endon("respawned");
   pickup_item = self.visuals[0];
   switch (pickup_item.script_noteworthy) {
     case "ammo": {
@@ -466,17 +276,8 @@ function on_touch(player) {
   }
 }
 
-/*
-	Name: respawn_pickup
-	Namespace: pickup_items
-	Checksum: 0xE93E3580
-	Offset: 0x11E0
-	Size: 0x9C
-	Parameters: 0
-	Flags: Linked
-*/
 function respawn_pickup() {
-  self notify(# "respawned");
+  self notify("respawned");
   pickup_item = self.visuals[0];
   pickup_item playsound(pickup_item.sound_respawn);
   pickup_item cycle_item();
@@ -484,59 +285,23 @@ function respawn_pickup() {
   self gameobjects::allow_use("any");
 }
 
-/*
-	Name: respawn_all_pickups
-	Namespace: pickup_items
-	Checksum: 0x2F3069CC
-	Offset: 0x1288
-	Size: 0x8A
-	Parameters: 0
-	Flags: None
-*/
 function respawn_all_pickups() {
   foreach(item in level.pickup_items) {
     item respawn_pickup();
   }
 }
 
-/*
-	Name: on_touch_ammo
-	Namespace: pickup_items
-	Checksum: 0xE63049B8
-	Offset: 0x1320
-	Size: 0x34
-	Parameters: 1
-	Flags: Linked
-*/
 function on_touch_ammo(player) {
-  self notify(# "scavenger", player);
+  self notify("scavenger", player);
   player pickupammoevent();
 }
 
-/*
-	Name: on_touch_damage
-	Namespace: pickup_items
-	Checksum: 0xD599552C
-	Offset: 0x1360
-	Size: 0x54
-	Parameters: 1
-	Flags: Linked
-*/
 function on_touch_damage(player) {
   damage_scale_length = 15000;
   player.pickup_damage_scale = self.current_item.damage_scale;
   player.pickup_damage_scale_time = gettime() + damage_scale_length;
 }
 
-/*
-	Name: on_touch_health
-	Namespace: pickup_items
-	Checksum: 0xFE2E1091
-	Offset: 0x13C0
-	Size: 0x98
-	Parameters: 1
-	Flags: Linked
-*/
 function on_touch_health(player) {
   if(self.current_item.extra_health <= 100) {
     health = player.health + self.current_item.extra_health;
@@ -549,30 +314,12 @@ function on_touch_health(player) {
   player.health = health;
 }
 
-/*
-	Name: on_touch_perk
-	Namespace: pickup_items
-	Checksum: 0xFCC959FD
-	Offset: 0x1460
-	Size: 0xA2
-	Parameters: 1
-	Flags: Linked
-*/
 function on_touch_perk(player) {
   foreach(specialty in self.current_item.specialties) {
     player setperk(specialty);
   }
 }
 
-/*
-	Name: has_active_gadget
-	Namespace: pickup_items
-	Checksum: 0x5F4819B3
-	Offset: 0x1510
-	Size: 0x12C
-	Parameters: 0
-	Flags: Linked
-*/
 function has_active_gadget() {
   weapons = self getweaponslist(1);
   foreach(weapon in weapons) {
@@ -590,15 +337,6 @@ function has_active_gadget() {
   return false;
 }
 
-/*
-	Name: take_player_gadgets
-	Namespace: pickup_items
-	Checksum: 0x4850047D
-	Offset: 0x1648
-	Size: 0xC2
-	Parameters: 0
-	Flags: Linked
-*/
 function take_player_gadgets() {
   weapons = self getweaponslist(1);
   foreach(weapon in weapons) {
@@ -608,15 +346,6 @@ function take_player_gadgets() {
   }
 }
 
-/*
-	Name: take_offhand_weapon
-	Namespace: pickup_items
-	Checksum: 0x3781F63E
-	Offset: 0x1718
-	Size: 0xD4
-	Parameters: 1
-	Flags: Linked
-*/
 function take_offhand_weapon(offhandslot) {
   weapons = self getweaponslist(1);
   foreach(weapon in weapons) {
@@ -627,15 +356,6 @@ function take_offhand_weapon(offhandslot) {
   }
 }
 
-/*
-	Name: should_switch_to_pickup_weapon
-	Namespace: pickup_items
-	Checksum: 0x66D0C71B
-	Offset: 0x17F8
-	Size: 0x3A
-	Parameters: 1
-	Flags: Linked
-*/
 function should_switch_to_pickup_weapon(weapon) {
   if(weapon.isgadget) {
     return false;
@@ -646,15 +366,6 @@ function should_switch_to_pickup_weapon(weapon) {
   return true;
 }
 
-/*
-	Name: on_touch_weapon
-	Namespace: pickup_items
-	Checksum: 0x4767A20B
-	Offset: 0x1840
-	Size: 0x2A8
-	Parameters: 1
-	Flags: Linked
-*/
 function on_touch_weapon(player) {
   weapon = self.current_item.weapon;
   had_weapon = player hasweapon(weapon);

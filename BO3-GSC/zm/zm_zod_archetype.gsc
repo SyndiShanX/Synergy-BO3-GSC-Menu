@@ -1,19 +1,13 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_zod_archetype.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
-
 #namespace zm_zod_archetype;
 
-/*
-	Name: init
-	Namespace: zm_zod_archetype
-	Checksum: 0xE7A39EB6
-	Offset: 0xE8
-	Size: 0x84
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   zombie_utility::register_ignore_player_handler("margwa", & function_478e89a7);
   zombie_utility::register_ignore_player_handler("zombie", & function_478e89a7);
@@ -21,15 +15,6 @@ function autoexec init() {
   level.is_player_accessible_to_raps = & is_player_accessible_to_raps;
 }
 
-/*
-	Name: function_478e89a7
-	Namespace: zm_zod_archetype
-	Checksum: 0x3BEE7064
-	Offset: 0x178
-	Size: 0x216
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private function_478e89a7() {
   self.ignore_player = [];
   foreach(player in level.players) {
@@ -61,15 +46,6 @@ function private function_478e89a7() {
   }
 }
 
-/*
-	Name: raps_can_reach_inaccessible_location
-	Namespace: zm_zod_archetype
-	Checksum: 0xFFD17D44
-	Offset: 0x398
-	Size: 0x22
-	Parameters: 0
-	Flags: Linked
-*/
 function raps_can_reach_inaccessible_location() {
   if([
       [level.o_zod_train]
@@ -79,15 +55,6 @@ function raps_can_reach_inaccessible_location() {
   return false;
 }
 
-/*
-	Name: is_player_accessible_to_raps
-	Namespace: zm_zod_archetype
-	Checksum: 0x895C738A
-	Offset: 0x3C8
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function is_player_accessible_to_raps(player) {
   if(isdefined(player.on_train) && player.on_train) {
     var_d3443466 = [

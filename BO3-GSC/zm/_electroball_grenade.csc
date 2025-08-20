@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_electroball_grenade.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
@@ -7,31 +11,12 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\weapons\_weaponobjects;
-
 #namespace electroball_grenade;
 
-/*
-	Name: __init__sytem__
-	Namespace: electroball_grenade
-	Checksum: 0x73C4FF26
-	Offset: 0x3E8
-	Size: 0x34
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("electroball_grenade", & __init__, undefined, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: electroball_grenade
-	Checksum: 0xDB44F2AE
-	Offset: 0x428
-	Size: 0x224
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   clientfield::register("toplayer", "tazered", 1, 1, "int", undefined, 0, 0);
   clientfield::register("allplayers", "electroball_shock", 1, 1, "int", & function_1619af16, 0, 0);
@@ -47,15 +32,6 @@ function __init__() {
   level thread watchforproximityexplosion();
 }
 
-/*
-	Name: proximity_spawned
-	Namespace: electroball_grenade
-	Checksum: 0xC332E464
-	Offset: 0x658
-	Size: 0xB4
-	Parameters: 1
-	Flags: Linked
-*/
 function proximity_spawned(localclientnum) {
   self util::waittill_dobj(localclientnum);
   if(self isgrenadedud()) {
@@ -65,22 +41,13 @@ function proximity_spawned(localclientnum) {
   self.var_5470a25d = playfxontag(localclientnum, level._effect["fx_wpn_115_canister"], self, "j_grenade_back");
 }
 
-/*
-	Name: watchforproximityexplosion
-	Namespace: electroball_grenade
-	Checksum: 0x16981BD8
-	Offset: 0x718
-	Size: 0x198
-	Parameters: 0
-	Flags: Linked
-*/
 function watchforproximityexplosion() {
   if(getactivelocalclients() > 1) {
     return;
   }
   weapon_proximity = getweapon("electroball_grenade");
   while (true) {
-    level waittill(# "explode", localclientnum, position, mod, weapon, owner_cent);
+    level waittill("explode", localclientnum, position, mod, weapon, owner_cent);
     if(weapon.rootweapon != weapon_proximity) {
       continue;
     }
@@ -98,15 +65,6 @@ function watchforproximityexplosion() {
   }
 }
 
-/*
-	Name: function_72eeb2e6
-	Namespace: electroball_grenade
-	Checksum: 0x5EB9E134
-	Offset: 0x8B8
-	Size: 0x154
-	Parameters: 7
-	Flags: Linked
-*/
 function function_72eeb2e6(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   ai_zombie = self;
   if(isdefined(level.a_electroball_grenades)) {
@@ -123,28 +81,10 @@ function function_72eeb2e6(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_1619af16
-	Namespace: electroball_grenade
-	Checksum: 0x3C5059AA
-	Offset: 0xA18
-	Size: 0x78
-	Parameters: 7
-	Flags: Linked
-*/
 function function_1619af16(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   fx = playfxontag(localclientnum, level._effect["electroball_grenade_player_shock"], self, "J_SpineUpper");
 }
 
-/*
-	Name: function_bd1f6a88
-	Namespace: electroball_grenade
-	Checksum: 0x281DB941
-	Offset: 0xA98
-	Size: 0x124
-	Parameters: 7
-	Flags: Linked
-*/
 function function_bd1f6a88(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(!isdefined(level.a_electroball_grenades)) {
     level.a_electroball_grenades = [];
@@ -165,29 +105,11 @@ function function_bd1f6a88(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_1d823abf
-	Namespace: electroball_grenade
-	Checksum: 0xBA16B608
-	Offset: 0xBC8
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function function_1d823abf() {
-  self waittill(# "entityshutdown");
+  self waittill("entityshutdown");
   level.a_electroball_grenades = array::remove_undefined(level.a_electroball_grenades);
 }
 
-/*
-	Name: electroball_play_landed_fx
-	Namespace: electroball_grenade
-	Checksum: 0xDAD8F922
-	Offset: 0xC08
-	Size: 0xB8
-	Parameters: 7
-	Flags: Linked
-*/
 function electroball_play_landed_fx(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self.var_3b22ba3c = playfxontag(localclientnum, level._effect["fx_wpn_115_blob"], self, "tag_origin");
   dynent = createdynentandlaunch(localclientnum, "p7_zm_ctl_115_grenade_broken", self.origin, self.angles, self.origin, (0, 0, 0));

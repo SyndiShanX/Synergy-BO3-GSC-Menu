@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: cp\cp_mi_sing_biodomes_patch.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\cp\_load;
 #using scripts\cp\_objectives;
@@ -12,18 +16,8 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\vehicle_shared;
 #using scripts\shared\vehicles\_quadtank;
-
 #namespace namespace_e82fdc69;
 
-/*
-	Name: function_7403e82b
-	Namespace: namespace_e82fdc69
-	Checksum: 0xED0274C8
-	Offset: 0x2E8
-	Size: 0x44C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_7403e82b() {
   var_3d2d68be = spawn("script_model", (6509, 12522, 138));
   var_3d2d68be setmodel("p7_sin_ship_container_door_lt_red");

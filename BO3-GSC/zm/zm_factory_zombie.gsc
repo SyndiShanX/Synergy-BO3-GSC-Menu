@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_factory_zombie.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\systems\animation_state_machine_mocomp;
 #using scripts\shared\ai\systems\animation_state_machine_notetracks;
@@ -12,18 +16,8 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_behavior;
 #using scripts\zm\_zm_utility;
-
 #namespace zm_factory_zombie;
 
-/*
-	Name: init
-	Namespace: zm_factory_zombie
-	Checksum: 0x7E13F35D
-	Offset: 0x300
-	Size: 0x8C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec init() {
   initzmfactorybehaviorsandasm();
   level.zombie_init_done = & function_f06eec12;
@@ -34,29 +28,11 @@ function autoexec init() {
   level.pathdist_type = 2;
 }
 
-/*
-	Name: initzmfactorybehaviorsandasm
-	Namespace: zm_factory_zombie
-	Checksum: 0x7BFDEC8C
-	Offset: 0x398
-	Size: 0x64
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private initzmfactorybehaviorsandasm() {
   behaviortreenetworkutility::registerbehaviortreescriptapi("ZmFactoryTraversalService", & zmfactorytraversalservice);
   animationstatenetwork::registeranimationmocomp("mocomp_idle_special_factory", & mocompidlespecialfactorystart, undefined, & mocompidlespecialfactoryterminate);
 }
 
-/*
-	Name: zmfactorytraversalservice
-	Namespace: zm_factory_zombie
-	Checksum: 0xA49E322C
-	Offset: 0x408
-	Size: 0x44
-	Parameters: 1
-	Flags: Linked
-*/
 function zmfactorytraversalservice(entity) {
   if(isdefined(entity.traversestartnode)) {
     entity pushactors(0);
@@ -65,15 +41,6 @@ function zmfactorytraversalservice(entity) {
   return false;
 }
 
-/*
-	Name: mocompidlespecialfactorystart
-	Namespace: zm_factory_zombie
-	Checksum: 0x31DE441A
-	Offset: 0x458
-	Size: 0x104
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompidlespecialfactorystart(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {
   if(isdefined(entity.enemyoverride) && isdefined(entity.enemyoverride[1])) {
     entity orientmode("face direction", entity.enemyoverride[1].origin - entity.origin);
@@ -84,39 +51,12 @@ function private mocompidlespecialfactorystart(entity, mocompanim, mocompanimble
   }
 }
 
-/*
-	Name: mocompidlespecialfactoryterminate
-	Namespace: zm_factory_zombie
-	Checksum: 0x1FD3E9E8
-	Offset: 0x568
-	Size: 0x2C
-	Parameters: 5
-	Flags: Linked, Private
-*/
 function private mocompidlespecialfactoryterminate(entity, mocompanim, mocompanimblendouttime, mocompanimflag, mocompduration) {}
 
-/*
-	Name: function_f06eec12
-	Namespace: zm_factory_zombie
-	Checksum: 0x6C30432E
-	Offset: 0x5A0
-	Size: 0x1C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_f06eec12() {
   self pushactors(0);
 }
 
-/*
-	Name: factory_validate_last_closest_player
-	Namespace: zm_factory_zombie
-	Checksum: 0xC6405D0A
-	Offset: 0x5C8
-	Size: 0xFA
-	Parameters: 1
-	Flags: Linked, Private
-*/
 function private factory_validate_last_closest_player(players) {
   if(isdefined(self.last_closest_player) && (isdefined(self.last_closest_player.am_i_valid) && self.last_closest_player.am_i_valid)) {
     return;
@@ -131,15 +71,6 @@ function private factory_validate_last_closest_player(players) {
   self.last_closest_player = undefined;
 }
 
-/*
-	Name: factory_closest_player
-	Namespace: zm_factory_zombie
-	Checksum: 0xE248CEEF
-	Offset: 0x6D0
-	Size: 0x262
-	Parameters: 2
-	Flags: Linked, Private
-*/
 function private factory_closest_player(origin, players) {
   if(players.size == 0) {
     return undefined;
@@ -192,17 +123,8 @@ function private factory_closest_player(origin, players) {
   return self.last_closest_player;
 }
 
-/*
-	Name: update_closest_player
-	Namespace: zm_factory_zombie
-	Checksum: 0xD4E0AD5C
-	Offset: 0x940
-	Size: 0x18C
-	Parameters: 0
-	Flags: Linked, Private
-*/
 function private update_closest_player() {
-  level waittill(# "start_of_round");
+  level waittill("start_of_round");
   while (true) {
     reset_closest_player = 1;
     zombies = zombie_utility::get_round_enemy_array();

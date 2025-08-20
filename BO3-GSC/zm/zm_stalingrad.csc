@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\zm_stalingrad.csc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\ai\raz;
 #using scripts\shared\beam_shared;
@@ -58,43 +62,15 @@
 #using scripts\zm\zm_stalingrad_pap_quest;
 #using scripts\zm\zm_stalingrad_timer;
 #using scripts\zm\zm_stalingrad_wearables;
-
 #namespace zm_stalingrad;
 
-/*
-	Name: opt_in
-	Namespace: zm_stalingrad
-	Checksum: 0x6F6F64C6
-	Offset: 0x1B98
-	Size: 0x1C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec opt_in() {
   level.aat_in_use = 1;
   level.bgb_in_use = 1;
 }
 
-/*
-	Name: init_gamemodes
-	Namespace: zm_stalingrad
-	Checksum: 0x99EC1590
-	Offset: 0x1BC0
-	Size: 0x4
-	Parameters: 0
-	Flags: Linked
-*/
 function init_gamemodes() {}
 
-/*
-	Name: main
-	Namespace: zm_stalingrad
-	Checksum: 0x31D930
-	Offset: 0x1BD0
-	Size: 0x214
-	Parameters: 0
-	Flags: Linked
-*/
 function main() {
   scene::add_scene_func("p7_fxanim_gp_tracer_fire_01_bundle", & function_1c53c4e1);
   zm_stalingrad_ffotd::main_start();
@@ -124,17 +100,8 @@ function main() {
   level thread function_38b57afd();
 }
 
-/*
-	Name: function_1c53c4e1
-	Namespace: zm_stalingrad
-	Checksum: 0x6DF4BF3E
-	Offset: 0x1DF0
-	Size: 0xC8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_1c53c4e1(a_ents) {
-  level endon(# "zesn");
+  level endon("zesn");
   while (true) {
     while (!isdefined(level.localplayers[0]) || !isigcactive(level.localplayers[0].localclientnum)) {
       wait(1);
@@ -147,15 +114,6 @@ function function_1c53c4e1(a_ents) {
   }
 }
 
-/*
-	Name: register_clientfields
-	Namespace: zm_stalingrad
-	Checksum: 0x8B40FD1F
-	Offset: 0x1EC0
-	Size: 0x6A4
-	Parameters: 0
-	Flags: Linked
-*/
 function register_clientfields() {
   clientfield::register("clientuimodel", "zmInventory.widget_shield_parts", 12000, 1, "int", undefined, 0, 0);
   clientfield::register("clientuimodel", "zmInventory.widget_dragon_strike", 12000, 1, "int", undefined, 0, 0);
@@ -186,29 +144,11 @@ function register_clientfields() {
   level.var_48c1095e = [];
 }
 
-/*
-	Name: include_weapons
-	Namespace: zm_stalingrad
-	Checksum: 0xBE52B7C9
-	Offset: 0x2570
-	Size: 0x34
-	Parameters: 0
-	Flags: Linked
-*/
 function include_weapons() {
   zm_weapons::load_weapon_spec_from_table("gamedata/weapons/zm/zm_stalingrad_weapons.csv", 1);
   zm_weapons::autofill_wallbuys_init();
 }
 
-/*
-	Name: setup_personality_character_exerts
-	Namespace: zm_stalingrad
-	Checksum: 0x5C4870ED
-	Offset: 0x25B0
-	Size: 0x1072
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_personality_character_exerts() {
   level.exert_sounds[1]["playerbreathinsound"][0] = "vox_plr_0_exert_inhale_0";
   level.exert_sounds[2]["playerbreathinsound"][0] = "vox_plr_1_exert_inhale_0";
@@ -320,15 +260,6 @@ function setup_personality_character_exerts() {
   level.exert_sounds[4]["dtplandsoundplayer"][3] = "vox_plr_3_exert_pain_medium_3";
 }
 
-/*
-	Name: function_3a429aee
-	Namespace: zm_stalingrad
-	Checksum: 0x1D7AAB7E
-	Offset: 0x3630
-	Size: 0x19C
-	Parameters: 0
-	Flags: Linked
-*/
 function function_3a429aee() {
   forcestreamxmodel("p7_zm_vending_jugg");
   forcestreamxmodel("p7_zm_vending_revive");
@@ -349,15 +280,6 @@ function function_3a429aee() {
   forcestreamxmodel("p7_zm_sta_code_cylinder_yellow");
 }
 
-/*
-	Name: function_38b57afd
-	Namespace: zm_stalingrad
-	Checksum: 0x1F8F77C
-	Offset: 0x37D8
-	Size: 0x1A4
-	Parameters: 0
-	Flags: Linked
-*/
 function function_38b57afd() {
   var_beffc54 = struct::get_array("ambient_fxanim", "targetname");
   if(getdvarint("splitscreen_playerCount") >= 2) {
@@ -373,15 +295,6 @@ function function_38b57afd() {
   }
 }
 
-/*
-	Name: water_sheeting_toggle
-	Namespace: zm_stalingrad
-	Checksum: 0x9400E8C7
-	Offset: 0x3988
-	Size: 0x1B2
-	Parameters: 7
-	Flags: Linked
-*/
 function water_sheeting_toggle(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     startwatersheetingfx(localclientnum, 1);
@@ -394,23 +307,14 @@ function water_sheeting_toggle(localclientnum, oldval, newval, bnewent, binitial
   } else {
     stopwatersheetingfx(localclientnum, 0);
     self stoploopsound(self.var_5962d89c);
-    self notify(# "hash_e7cca3ce");
+    self notify("hash_e7cca3ce");
   }
 }
 
-/*
-	Name: function_da4ab728
-	Namespace: zm_stalingrad
-	Checksum: 0x92E8458C
-	Offset: 0x3B48
-	Size: 0xDA
-	Parameters: 2
-	Flags: Linked
-*/
 function function_da4ab728(localclientnum, var_b81de649) {
-  self endon(# "hash_e7cca3ce");
+  self endon("hash_e7cca3ce");
   while (true) {
-    var_b81de649 waittill(# "trigger", who);
+    var_b81de649 waittill("trigger", who);
     if(who islocalplayer()) {
       playsound(localclientnum, "zmb_stalingrad_sewer_pipe_exit");
       self stoploopsound(self.var_5962d89c);
@@ -421,43 +325,16 @@ function function_da4ab728(localclientnum, var_b81de649) {
   }
 }
 
-/*
-	Name: function_931fa0e1
-	Namespace: zm_stalingrad
-	Checksum: 0xAE0AD506
-	Offset: 0x3C30
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_931fa0e1(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self playrumbleonentity(localclientnum, "zm_stalingrad_sewer_landing");
   }
 }
 
-/*
-	Name: function_4b1f1b87
-	Namespace: zm_stalingrad
-	Checksum: 0xD9E1B74
-	Offset: 0x3CA0
-	Size: 0x4E
-	Parameters: 7
-	Flags: Linked
-*/
 function function_4b1f1b87(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   level.var_48c1095e[localclientnum] = self;
 }
 
-/*
-	Name: function_bfdc67e3
-	Namespace: zm_stalingrad
-	Checksum: 0x2622D9D1
-	Offset: 0x3CF8
-	Size: 0x114
-	Parameters: 7
-	Flags: Linked
-*/
 function function_bfdc67e3(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   e_egg = level.var_48c1095e[localclientnum];
   mdl_target = util::spawn_model(localclientnum, "tag_origin", e_egg.origin + vectorscale((0, 0, 1), 50));
@@ -465,15 +342,6 @@ function function_bfdc67e3(localclientnum, oldval, newval, bnewent, binitialsnap
   var_e43465f2 thread function_10e7e603(mdl_target);
 }
 
-/*
-	Name: function_10e7e603
-	Namespace: zm_stalingrad
-	Checksum: 0x98980533
-	Offset: 0x3E18
-	Size: 0xE4
-	Parameters: 1
-	Flags: Linked
-*/
 function function_10e7e603(mdl_target) {
   level beam::launch(self, "tag_origin", mdl_target, "tag_origin", "electric_arc_zombie_to_drop_pod");
   mdl_target playsound(0, "zmb_pod_electrocute");
@@ -484,15 +352,6 @@ function function_10e7e603(mdl_target) {
   self delete();
 }
 
-/*
-	Name: function_3931d3fe
-	Namespace: zm_stalingrad
-	Checksum: 0x60A02A77
-	Offset: 0x3F08
-	Size: 0xB4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_3931d3fe(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     self.n_fx_id = playfxontag(localclientnum, level._effect["dragon_egg_heat"], self, "tag_origin");
@@ -501,15 +360,6 @@ function function_3931d3fe(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_b116183d
-	Namespace: zm_stalingrad
-	Checksum: 0x11B68F70
-	Offset: 0x3FC8
-	Size: 0x7C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_b116183d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     forcestreamxmodel("p7_fxanim_zm_stal_dragon_incubator_egg_mod");
@@ -518,15 +368,6 @@ function function_b116183d(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_a96968f2
-	Namespace: zm_stalingrad
-	Checksum: 0x93761C2F
-	Offset: 0x4050
-	Size: 0xB4
-	Parameters: 7
-	Flags: Linked
-*/
 function function_a96968f2(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval == 1) {
     self.n_fx_id = playfxontag(localclientnum, level._effect["audio_log"], self, "tag_origin");
@@ -535,15 +376,6 @@ function function_a96968f2(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_21deab84
-	Namespace: zm_stalingrad
-	Checksum: 0x2B52DF5C
-	Offset: 0x4110
-	Size: 0x144
-	Parameters: 7
-	Flags: Linked
-*/
 function function_21deab84(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   var_1c7b6837 = getent(localclientnum, "sophia_eye", "targetname");
   if(!isdefined(var_1c7b6837)) {
@@ -553,30 +385,21 @@ function function_21deab84(localclientnum, oldval, newval, bnewent, binitialsnap
     var_1c7b6837 rotateto((0, 0, 0), 2, 0.5, 0.5);
     var_1c7b6837 mapshaderconstant(localclientnum, 0, "scriptVector2", newval, 0, 0);
   } else {
-    level notify(# "hash_deeb3634");
+    level notify("hash_deeb3634");
     wait(0.5);
     var_1c7b6837 rotateto((0, 0, 0), 0.2);
-    level waittill(# "outro_done");
+    level waittill("outro_done");
     var_1c7b6837 delete();
   }
 }
 
-/*
-	Name: function_a431bec5
-	Namespace: zm_stalingrad
-	Checksum: 0xADDE615E
-	Offset: 0x4260
-	Size: 0xFC
-	Parameters: 7
-	Flags: Linked
-*/
 function function_a431bec5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
-  level endon(# "demo_jump");
+  level endon("demo_jump");
   var_1c7b6837 = getent(localclientnum, "sophia_eye", "targetname");
   if(!isdefined(var_1c7b6837)) {
     return;
   }
-  level notify(# "hash_deeb3634");
+  level notify("hash_deeb3634");
   wait(0.5);
   if(!isdefined(var_1c7b6837)) {
     return;
@@ -589,20 +412,11 @@ function function_a431bec5(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_36666e11
-	Namespace: zm_stalingrad
-	Checksum: 0x82463136
-	Offset: 0x4368
-	Size: 0x1D8
-	Parameters: 1
-	Flags: Linked
-*/
 function function_36666e11(e_player) {
-  level endon(# "demo_jump");
-  level endon(# "hash_deeb3634");
-  e_player endon(# "death");
-  self endon(# "entityshutdown");
+  level endon("demo_jump");
+  level endon("hash_deeb3634");
+  e_player endon("death");
+  self endon("entityshutdown");
   while (isdefined(e_player)) {
     var_c746e6bf = e_player gettagorigin("j_head");
     var_933e0d32 = vectortoangles(self.origin - var_c746e6bf);
@@ -622,28 +436,10 @@ function function_36666e11(e_player) {
   }
 }
 
-/*
-	Name: function_70b3b237
-	Namespace: zm_stalingrad
-	Checksum: 0xA17D2129
-	Offset: 0x4548
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_70b3b237(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   self mapshaderconstant(localclientnum, 0, "scriptVector2", newval, 0, 0);
 }
 
-/*
-	Name: function_6cfcd54d
-	Namespace: zm_stalingrad
-	Checksum: 0xE13581C6
-	Offset: 0x45B8
-	Size: 0x10C
-	Parameters: 7
-	Flags: Linked
-*/
 function function_6cfcd54d(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   var_1c7b6837 = getent(localclientnum, "sophia_eye", "targetname");
   if(!isdefined(var_1c7b6837)) {
@@ -658,30 +454,12 @@ function function_6cfcd54d(localclientnum, oldval, newval, bnewent, binitialsnap
   }
 }
 
-/*
-	Name: function_bbbdcfd5
-	Namespace: zm_stalingrad
-	Checksum: 0xD54E9199
-	Offset: 0x46D0
-	Size: 0x64
-	Parameters: 7
-	Flags: Linked
-*/
 function function_bbbdcfd5(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   if(newval) {
     self playrumbleonentity(localclientnum, "zm_stalingrad_interact_rumble");
   }
 }
 
-/*
-	Name: deactivate_ai_vox
-	Namespace: zm_stalingrad
-	Checksum: 0xEFB38616
-	Offset: 0x4740
-	Size: 0x72
-	Parameters: 7
-	Flags: Linked
-*/
 function deactivate_ai_vox(localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwastimejump) {
   switch (newval) {
     case 0: {

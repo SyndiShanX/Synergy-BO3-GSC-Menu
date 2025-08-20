@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: mp\killstreaks\_remotemissile.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\mp\_util;
 #using scripts\mp\gametypes\_battlechatter;
@@ -16,18 +20,8 @@
 #using scripts\shared\scoreevents_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
-
 #namespace remotemissile;
 
-/*
-	Name: init
-	Namespace: remotemissile
-	Checksum: 0x86D6E32C
-	Offset: 0x8E0
-	Size: 0x24C
-	Parameters: 0
-	Flags: Linked
-*/
 function init() {
   level.rockets = [];
   killstreaks::register("remote_missile", "remote_missile", "killstreak_remote_missile", "remote_missle_used", & tryusepredatormissile, 1);
@@ -47,35 +41,17 @@ function init() {
   visionset_mgr::register_info("visionset", "remote_missile_visionset", 1, 110, 16, 1, & visionset_mgr::ramp_in_out_thread_per_player, 0);
 }
 
-/*
-	Name: remote_missile_game_end_think
-	Namespace: remotemissile
-	Checksum: 0x80FAFCC2
-	Offset: 0xB38
-	Size: 0x6A
-	Parameters: 3
-	Flags: Linked
-*/
 function remote_missile_game_end_think(rocket, team, killstreak_id) {
-  self endon(# "remotemissle_killstreak_done");
-  level waittill(# "game_ended");
+  self endon("remotemissle_killstreak_done");
+  level waittill("game_ended");
   self thread player_missile_end(rocket, 1, 1, team, killstreak_id);
-  self notify(# "remotemissle_killstreak_done");
+  self notify("remotemissle_killstreak_done");
 }
 
-/*
-	Name: tryusepredatormissile
-	Namespace: remotemissile
-	Checksum: 0x32A3B236
-	Offset: 0xBB0
-	Size: 0x154
-	Parameters: 1
-	Flags: Linked
-*/
 function tryusepredatormissile(lifeid) {
   waterdepth = self depthofplayerinwater();
   if(!self isonground() || self util::isusingremote() || waterdepth > 2 || self killstreaks::is_killstreak_start_blocked()) {
-    self iprintlnbold( & "KILLSTREAK_REMOTE_MISSILE_NOT_USABLE");
+    self iprintlnbold(&"KILLSTREAK_REMOTE_MISSILE_NOT_USABLE");
     return 0;
   }
   team = self.team;
@@ -88,15 +64,6 @@ function tryusepredatormissile(lifeid) {
   return returnvar;
 }
 
-/*
-	Name: getbestspawnpoint
-	Namespace: remotemissile
-	Checksum: 0x190C135B
-	Offset: 0xD10
-	Size: 0x488
-	Parameters: 1
-	Flags: Linked
-*/
 function getbestspawnpoint(remotemissilespawnpoints) {
   validenemies = [];
   foreach(spawnpoint in remotemissilespawnpoints) {
@@ -146,34 +113,14 @@ function getbestspawnpoint(remotemissilespawnpoints) {
   return bestspawn;
 }
 
-/*
-	Name: drawline
-	Namespace: remotemissile
-	Checksum: 0x8E2A717F
-	Offset: 0x11A0
-	Size: 0xA6
-	Parameters: 4
-	Flags: None
-*/
 function drawline(start, end, timeslice, color) {
-  /#
   drawtime = int(timeslice * 20);
   for (time = 0; time < drawtime; time++) {
     line(start, end, color, 0, 1);
     wait(0.05);
   }
-  # /
 }
 
-/*
-	Name: _fire
-	Namespace: remotemissile
-	Checksum: 0x58F41171
-	Offset: 0x1250
-	Size: 0x7F6
-	Parameters: 4
-	Flags: Linked
-*/
 function _fire(lifeid, player, team, killstreak_id) {
   remotemissilespawnarray = getentarray("remoteMissileSpawn", "targetname");
   foreach(spawn in remotemissilespawnarray) {
@@ -245,108 +192,54 @@ function _fire(lifeid, player, team, killstreak_id) {
   player thread sndwatchexplo();
   rocket spawning::create_entity_enemy_influencer("small_vehicle", rocket.team);
   player util::freeze_player_controls(0);
-  player waittill(# "remotemissle_killstreak_done");
+  player waittill("remotemissle_killstreak_done");
   return true;
 }
 
-/*
-	Name: hackedhealthupdate
-	Namespace: remotemissile
-	Checksum: 0xE403B7CE
-	Offset: 0x1A50
-	Size: 0xC
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedhealthupdate(hacker) {}
 
-/*
-	Name: hackedpostfunction
-	Namespace: remotemissile
-	Checksum: 0x45CDE0D0
-	Offset: 0x1A68
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function hackedpostfunction(hacker) {
   rocket = self;
   hacker missile_deploy(rocket, 1);
 }
 
-/*
-	Name: setup_rockect_map_icon
-	Namespace: remotemissile
-	Checksum: 0x5D4984AC
-	Offset: 0x1AB0
-	Size: 0x3C
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_rockect_map_icon() {
-  self endon(# "death");
+  self endon("death");
   wait(0.1);
   self clientfield::set("remote_missile_fired", 1);
 }
 
-/*
-	Name: watch_missile_kill_z
-	Namespace: remotemissile
-	Checksum: 0x7820C9EC
-	Offset: 0x1AF8
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_missile_kill_z() {
   if(!isdefined(level.remotemissile_kill_z)) {
     return;
   }
   rocket = self;
   kill_z = level.remotemissile_kill_z;
-  rocket endon(# "remotemissle_killstreak_done");
-  rocket endon(# "death");
+  rocket endon("remotemissle_killstreak_done");
+  rocket endon("death");
   while (rocket.origin[2] > kill_z) {
     wait(0.1);
   }
   rocket detonate();
 }
 
-/*
-	Name: watch_missile_death
-	Namespace: remotemissile
-	Checksum: 0x242F191E
-	Offset: 0x1B98
-	Size: 0x82
-	Parameters: 3
-	Flags: Linked
-*/
 function watch_missile_death(rocket, team, killstreak_id) {
-  self endon(# "remotemissle_killstreak_done");
-  rocket waittill(# "death");
+  self endon("remotemissle_killstreak_done");
+  rocket waittill("death");
   self thread player_missile_end(rocket, 1, 1, team, killstreak_id);
   self thread remotemissile_bda_dialog();
-  self notify(# "remotemissle_killstreak_done");
+  self notify("remotemissle_killstreak_done");
 }
 
-/*
-	Name: player_missile_end
-	Namespace: remotemissile
-	Checksum: 0x40F9E60F
-	Offset: 0x1C28
-	Size: 0x25C
-	Parameters: 5
-	Flags: Linked
-*/
 function player_missile_end(rocket, performplayerkillstreakend, unlink, team, killstreak_id) {
-  self notify(# "player_missile_end_singleton");
-  self endon(# "player_missile_end_singleton");
+  self notify("player_missile_end_singleton");
+  self endon("player_missile_end_singleton");
   if(isalive(rocket)) {
     rocket spawning::remove_influencers();
     rocket clientfield::set("remote_missile_fired", 0);
     rocket delete();
   }
-  self notify(# "snd1stpersonexplo");
+  self notify("snd1stpersonexplo");
   if(isdefined(self)) {
     self thread destroy_missile_hud();
     if(isdefined(performplayerkillstreakend) && performplayerkillstreakend) {
@@ -365,7 +258,7 @@ function player_missile_end(rocket, performplayerkillstreakend, unlink, team, ki
     if(unlink) {
       self unlinkfrommissile();
     }
-    self notify(# "remotemissile_done");
+    self notify("remotemissile_done");
     self util::freeze_player_controls(0);
     self killstreaks::clear_using_remote();
     self enableweaponcycling();
@@ -373,20 +266,11 @@ function player_missile_end(rocket, performplayerkillstreakend, unlink, team, ki
   }
 }
 
-/*
-	Name: missile_brake_timeout_watch
-	Namespace: remotemissile
-	Checksum: 0xC77F172D
-	Offset: 0x1E90
-	Size: 0xAC
-	Parameters: 0
-	Flags: Linked
-*/
 function missile_brake_timeout_watch() {
   rocket = self;
   player = rocket.owner;
-  self endon(# "death");
-  self waittill(# "missile_brake");
+  self endon("death");
+  self waittill("missile_brake");
   rocket playsound("wpn_remote_missile_brake_npc");
   player playlocalsound("wpn_remote_missile_brake_plr");
   wait(1.5);
@@ -395,54 +279,27 @@ function missile_brake_timeout_watch() {
   }
 }
 
-/*
-	Name: stopondeath
-	Namespace: remotemissile
-	Checksum: 0xFB177FA0
-	Offset: 0x1F48
-	Size: 0x3C
-	Parameters: 1
-	Flags: Linked
-*/
 function stopondeath(snd) {
-  self waittill(# "death");
+  self waittill("death");
   if(isdefined(snd)) {
     snd delete();
   }
 }
 
-/*
-	Name: cleanupwaiter
-	Namespace: remotemissile
-	Checksum: 0x5E1D5E41
-	Offset: 0x1F90
-	Size: 0x8A
-	Parameters: 3
-	Flags: Linked
-*/
 function cleanupwaiter(rocket, team, killstreak_id) {
-  self endon(# "remotemissle_killstreak_done");
+  self endon("remotemissle_killstreak_done");
   self util::waittill_any("joined_team", "joined_spectators", "disconnect");
   self thread player_missile_end(rocket, 0, 0, team, killstreak_id);
-  self notify(# "remotemissle_killstreak_done");
+  self notify("remotemissle_killstreak_done");
 }
 
-/*
-	Name: handledamage
-	Namespace: remotemissile
-	Checksum: 0x6E8BECDF
-	Offset: 0x2028
-	Size: 0x1F0
-	Parameters: 0
-	Flags: Linked
-*/
 function handledamage() {
-  self endon(# "death");
-  self endon(# "deleted");
+  self endon("death");
+  self endon("deleted");
   self setcandamage(1);
   self.health = 99999;
   for (;;) {
-    self waittill(# "damage", damage, attacker, direction_vec, point, meansofdeath, tagname, modelname, partname, weapon);
+    self waittill("damage", damage, attacker, direction_vec, point, meansofdeath, tagname, modelname, partname, weapon);
     if(isdefined(attacker) && isdefined(self.owner)) {
       if(self.owner util::isenemyplayer(attacker)) {
         challenges::destroyedaircraft(attacker, weapon, 1);
@@ -457,17 +314,8 @@ function handledamage() {
   }
 }
 
-/*
-	Name: staticeffect
-	Namespace: remotemissile
-	Checksum: 0xE31BF957
-	Offset: 0x2220
-	Size: 0x1BC
-	Parameters: 1
-	Flags: None
-*/
 function staticeffect(duration) {
-  self endon(# "disconnect");
+  self endon("disconnect");
   staticbg = newclienthudelem(self);
   staticbg.horzalign = "fullscreen";
   staticbg.vertalign = "fullscreen";
@@ -488,31 +336,13 @@ function staticeffect(duration) {
   staticbg destroy();
 }
 
-/*
-	Name: rocket_cleanupondeath
-	Namespace: remotemissile
-	Checksum: 0x5D4CD215
-	Offset: 0x23E8
-	Size: 0x54
-	Parameters: 0
-	Flags: None
-*/
 function rocket_cleanupondeath() {
   entitynumber = self getentitynumber();
   level.rockets[entitynumber] = self;
-  self waittill(# "death");
+  self waittill("death");
   level.rockets[entitynumber] = undefined;
 }
 
-/*
-	Name: missile_sound_play
-	Namespace: remotemissile
-	Checksum: 0x2B0D01AC
-	Offset: 0x2448
-	Size: 0x1CC
-	Parameters: 1
-	Flags: Linked
-*/
 function missile_sound_play(player) {
   self.snd_first = spawn("script_model", self.origin);
   self.snd_first setmodel("tag_origin");
@@ -530,48 +360,30 @@ function missile_sound_play(player) {
   self thread stopondeath(self.snd_third);
 }
 
-/*
-	Name: missile_sound_boost
-	Namespace: remotemissile
-	Checksum: 0x97CC2A21
-	Offset: 0x2620
-	Size: 0x14C
-	Parameters: 1
-	Flags: Linked
-*/
 function missile_sound_boost(rocket) {
-  self endon(# "remotemissile_done");
-  self endon(# "joined_team");
-  self endon(# "joined_spectators");
-  self endon(# "disconnect");
-  self waittill(# "missile_boost");
+  self endon("remotemissile_done");
+  self endon("joined_team");
+  self endon("joined_spectators");
+  self endon("disconnect");
+  self waittill("missile_boost");
   rocket playsound("wpn_remote_missile_fire_boost_npc");
   rocket.snd_third playloopsound("wpn_remote_missile_boost_npc");
   self playlocalsound("wpn_remote_missile_fire_boost_plr");
   rocket.snd_first playloopsound("wpn_remote_missile_boost_plr");
   self playrumbleonentity("sniper_fire");
   if((rocket.origin[2] - self.origin[2]) > 4000) {
-    rocket notify(# "stop_impact_sound");
+    rocket notify("stop_impact_sound");
     rocket thread missile_sound_impact(self, 6250);
   }
 }
 
-/*
-	Name: missile_sound_impact
-	Namespace: remotemissile
-	Checksum: 0x3F4AF68
-	Offset: 0x2778
-	Size: 0xB4
-	Parameters: 2
-	Flags: Linked
-*/
 function missile_sound_impact(player, distance) {
-  self endon(# "death");
-  self endon(# "stop_impact_sound");
-  player endon(# "disconnect");
-  player endon(# "remotemissile_done");
-  player endon(# "joined_team");
-  player endon(# "joined_spectators");
+  self endon("death");
+  self endon("stop_impact_sound");
+  player endon("disconnect");
+  player endon("remotemissile_done");
+  player endon("joined_team");
+  player endon("joined_spectators");
   for (;;) {
     if((self.origin[2] - player.origin[2]) < distance) {
       self playsound("wpn_remote_missile_inc");
@@ -581,48 +393,21 @@ function missile_sound_impact(player, distance) {
   }
 }
 
-/*
-	Name: sndwatchexplo
-	Namespace: remotemissile
-	Checksum: 0x4C3DE612
-	Offset: 0x2838
-	Size: 0x74
-	Parameters: 0
-	Flags: Linked
-*/
 function sndwatchexplo() {
-  self endon(# "remotemissle_killstreak_done");
-  self endon(# "remotemissile_done");
-  self endon(# "joined_team");
-  self endon(# "joined_spectators");
-  self endon(# "disconnect");
-  self endon(# "bomblets_deployed");
-  self waittill(# "snd1stpersonexplo");
+  self endon("remotemissle_killstreak_done");
+  self endon("remotemissile_done");
+  self endon("joined_team");
+  self endon("joined_spectators");
+  self endon("disconnect");
+  self endon("bomblets_deployed");
+  self waittill("snd1stpersonexplo");
   self playlocalsound("wpn_remote_missile_explode_plr");
 }
 
-/*
-	Name: missile_sound_deploy_bomblets
-	Namespace: remotemissile
-	Checksum: 0x35896E5A
-	Offset: 0x28B8
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function missile_sound_deploy_bomblets() {
   self.snd_first playloopsound("wpn_remote_missile_loop_plr", 0.5);
 }
 
-/*
-	Name: getvalidtargets
-	Namespace: remotemissile
-	Checksum: 0x97AB644A
-	Offset: 0x28F0
-	Size: 0x790
-	Parameters: 3
-	Flags: Linked
-*/
 function getvalidtargets(rocket, trace, max_targets) {
   pixbeginevent("remotemissile_getVTs_header");
   targets = [];
@@ -705,15 +490,6 @@ function getvalidtargets(rocket, trace, max_targets) {
   return targets;
 }
 
-/*
-	Name: create_missile_hud
-	Namespace: remotemissile
-	Checksum: 0xB82BDE9E
-	Offset: 0x3088
-	Size: 0x39C
-	Parameters: 1
-	Flags: Linked
-*/
 function create_missile_hud(rocket) {
   self.missile_target_icons = [];
   foreach(player in level.players) {
@@ -751,15 +527,6 @@ function create_missile_hud(rocket) {
   self thread targeting_hud_think(rocket);
 }
 
-/*
-	Name: destroy_missile_hud
-	Namespace: remotemissile
-	Checksum: 0x9EDFBC0C
-	Offset: 0x3430
-	Size: 0x146
-	Parameters: 0
-	Flags: Linked
-*/
 function destroy_missile_hud() {
   if(isdefined(self.missile_target_icons)) {
     foreach(player in level.players) {
@@ -781,20 +548,11 @@ function destroy_missile_hud() {
   }
 }
 
-/*
-	Name: targeting_hud_think
-	Namespace: remotemissile
-	Checksum: 0xF2117E7D
-	Offset: 0x3580
-	Size: 0x3F0
-	Parameters: 1
-	Flags: Linked
-*/
 function targeting_hud_think(rocket) {
-  self endon(# "disconnect");
-  self endon(# "remotemissile_done");
-  rocket endon(# "death");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  self endon("remotemissile_done");
+  rocket endon("death");
+  level endon("game_ended");
   targets = self getvalidtargets(rocket, 1, 6);
   framessincetargetscan = 0;
   while (true) {
@@ -814,10 +572,8 @@ function targeting_hud_think(rocket) {
         if(isplayer(target)) {
           if(isalive(target)) {
             index = target.clientid;
-            /#
             assert(isdefined(index));
-            # /
-              self.missile_target_icons[index].x = target.origin[0];
+            self.missile_target_icons[index].x = target.origin[0];
             self.missile_target_icons[index].y = target.origin[1];
             self.missile_target_icons[index].z = target.origin[2] + 47;
             self.missile_target_icons[index].alpha = 1;
@@ -839,21 +595,12 @@ function targeting_hud_think(rocket) {
   }
 }
 
-/*
-	Name: missile_deploy_watch
-	Namespace: remotemissile
-	Checksum: 0x2C0186F3
-	Offset: 0x3978
-	Size: 0xBC
-	Parameters: 1
-	Flags: Linked
-*/
 function missile_deploy_watch(rocket) {
-  self endon(# "disconnect");
-  self endon(# "remotemissile_done");
-  rocket endon(# "remotemissile_bomblets_launched");
-  rocket endon(# "death");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  self endon("remotemissile_done");
+  rocket endon("remotemissile_bomblets_launched");
+  rocket endon("death");
+  level endon("game_ended");
   wait(0.25);
   self thread create_missile_hud(rocket);
   while (true) {
@@ -865,17 +612,8 @@ function missile_deploy_watch(rocket) {
   }
 }
 
-/*
-	Name: missile_deploy
-	Namespace: remotemissile
-	Checksum: 0x48056452
-	Offset: 0x3A40
-	Size: 0x398
-	Parameters: 2
-	Flags: Linked
-*/
 function missile_deploy(rocket, hacked) {
-  rocket notify(# "remotemissile_bomblets_launched");
+  rocket notify("remotemissile_bomblets_launched");
   waitframes = 2;
   explosionradius = 0;
   targets = self getvalidtargets(rocket, 0, 6);
@@ -886,11 +624,11 @@ function missile_deploy(rocket, hacked) {
     }
   }
   if((rocket.origin[2] - self.origin[2]) > 4000) {
-    rocket notify(# "stop_impact_sound");
+    rocket notify("stop_impact_sound");
   }
   if(hacked == 1) {
     rocket.originalowner thread hud::fade_to_black_for_x_sec(0, 0.15, 0, 0, "white");
-    self notify(# "remotemissile_done");
+    self notify("remotemissile_done");
   }
   rocket clientfield::set("remote_missile_fired", 2);
   for (i = targets.size; i < 6; i++) {
@@ -908,58 +646,31 @@ function missile_deploy(rocket, hacked) {
   }
   rocket missile_sound_deploy_bomblets();
   self thread bomblet_camera_waiter(rocket);
-  self notify(# "bomblets_deployed");
+  self notify("bomblets_deployed");
   if(hacked == 1) {
-    rocket notify(# "death");
+    rocket notify("death");
   }
 }
 
-/*
-	Name: bomblet_camera_waiter
-	Namespace: remotemissile
-	Checksum: 0x161E0FD7
-	Offset: 0x3DE8
-	Size: 0x96
-	Parameters: 1
-	Flags: Linked
-*/
 function bomblet_camera_waiter(rocket) {
-  self endon(# "disconnect");
-  self endon(# "remotemissile_done");
-  rocket endon(# "death");
-  level endon(# "game_ended");
+  self endon("disconnect");
+  self endon("remotemissile_done");
+  rocket endon("death");
+  level endon("game_ended");
   delay = getdvarfloat("scr_rmbomblet_camera_delaytime", 1);
-  self waittill(# "bomblet_exploded");
+  self waittill("bomblet_exploded");
   wait(delay);
-  rocket notify(# "death");
-  self notify(# "remotemissile_done");
+  rocket notify("death");
+  self notify("remotemissile_done");
 }
 
-/*
-	Name: setup_bomblet_map_icon
-	Namespace: remotemissile
-	Checksum: 0xA54DB4D0
-	Offset: 0x3E88
-	Size: 0x5C
-	Parameters: 0
-	Flags: Linked
-*/
 function setup_bomblet_map_icon() {
-  self endon(# "death");
+  self endon("death");
   wait(0.1);
   self clientfield::set("remote_missile_bomblet_fired", 1);
   self clientfield::set("enemyvehicle", 1);
 }
 
-/*
-	Name: setup_bomblet
-	Namespace: remotemissile
-	Checksum: 0xD848D6B0
-	Offset: 0x3EF0
-	Size: 0x7C
-	Parameters: 1
-	Flags: Linked
-*/
 function setup_bomblet(bomb) {
   bomb.team = self.team;
   bomb setteam(self.team);
@@ -968,15 +679,6 @@ function setup_bomblet(bomb) {
   bomb thread bomblet_explostion_waiter(self);
 }
 
-/*
-	Name: fire_bomblet
-	Namespace: remotemissile
-	Checksum: 0x9743D814
-	Offset: 0x3F78
-	Size: 0xFC
-	Parameters: 4
-	Flags: Linked
-*/
 function fire_bomblet(rocket, explosionradius, target, waitframes) {
   origin = rocket.origin;
   targetorigin = target.origin + vectorscale((0, 0, 1), 50);
@@ -988,15 +690,6 @@ function fire_bomblet(rocket, explosionradius, target, waitframes) {
   setup_bomblet(bomb);
 }
 
-/*
-	Name: fire_random_bomblet
-	Namespace: remotemissile
-	Checksum: 0xB2186DBE
-	Offset: 0x4080
-	Size: 0x1EC
-	Parameters: 4
-	Flags: Linked
-*/
 function fire_random_bomblet(rocket, explosionradius, quadrant, waitframes) {
   origin = rocket.origin;
   angles = rocket.angles;
@@ -1011,18 +704,9 @@ function fire_random_bomblet(rocket, explosionradius, quadrant, waitframes) {
   setup_bomblet(bomb);
 }
 
-/*
-	Name: cleanup_bombs
-	Namespace: remotemissile
-	Checksum: 0x54C47E50
-	Offset: 0x4278
-	Size: 0x94
-	Parameters: 1
-	Flags: Linked
-*/
 function cleanup_bombs(bomb) {
   player = self;
-  bomb endon(# "death");
+  bomb endon("death");
   player util::waittill_any("joined_team", "joined_spectators", "disconnect");
   if(isdefined(bomb)) {
     bomb clientfield::set("remote_missile_bomblet_fired", 0);
@@ -1030,34 +714,16 @@ function cleanup_bombs(bomb) {
   }
 }
 
-/*
-	Name: bomblet_explostion_waiter
-	Namespace: remotemissile
-	Checksum: 0x226BECA6
-	Offset: 0x4318
-	Size: 0x70
-	Parameters: 1
-	Flags: Linked
-*/
 function bomblet_explostion_waiter(player) {
   player thread cleanup_bombs(self);
-  player endon(# "disconnect");
-  player endon(# "remotemissile_done");
-  player endon(# "death");
-  level endon(# "game_ended");
-  self waittill(# "death");
-  player notify(# "bomblet_exploded");
+  player endon("disconnect");
+  player endon("remotemissile_done");
+  player endon("death");
+  level endon("game_ended");
+  self waittill("death");
+  player notify("bomblet_exploded");
 }
 
-/*
-	Name: remotemissile_bda_dialog
-	Namespace: remotemissile
-	Checksum: 0x5C223770
-	Offset: 0x4390
-	Size: 0x13E
-	Parameters: 0
-	Flags: Linked
-*/
 function remotemissile_bda_dialog() {
   if(isdefined(self.remotemissilebda)) {
     if(self.remotemissilebda === 1) {

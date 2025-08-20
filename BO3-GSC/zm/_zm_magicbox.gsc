@@ -1,4 +1,8 @@
-// Decompiled by Serious. Credits to Scoba for his original tool, Cerberus, which I heavily upgraded to support remaining features, other games, and other platforms.
+/*************************************************
+ * Decompiled by Serious and Edited by SyndiShanX
+ * Script: zm\_zm_magicbox.gsc
+*************************************************/
+
 #using scripts\codescripts\struct;
 #using scripts\shared\aat_shared;
 #using scripts\shared\array_shared;
@@ -19,31 +23,12 @@
 #using scripts\zm\_zm_unitrigger;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
-
 #namespace zm_magicbox;
 
-/*
-	Name: __init__sytem__
-	Namespace: zm_magicbox
-	Checksum: 0x1C582414
-	Offset: 0x7C0
-	Size: 0x3C
-	Parameters: 0
-	Flags: AutoExec
-*/
 function autoexec __init__sytem__() {
   system::register("zm_magicbox", & __init__, & __main__, undefined);
 }
 
-/*
-	Name: __init__
-	Namespace: zm_magicbox
-	Checksum: 0x5D65CA71
-	Offset: 0x808
-	Size: 0x16C
-	Parameters: 0
-	Flags: Linked
-*/
 function __init__() {
   level.start_chest_name = "start_chest";
   level._effect["lght_marker"] = "zombie/fx_weapon_box_marker_zmb";
@@ -57,15 +42,6 @@ function __init__() {
   level thread magicbox_host_migration();
 }
 
-/*
-	Name: __main__
-	Namespace: zm_magicbox
-	Checksum: 0x616753F4
-	Offset: 0x980
-	Size: 0xBC
-	Parameters: 0
-	Flags: Linked
-*/
 function __main__() {
   if(!isdefined(level.chest_joker_model)) {
     level.chest_joker_model = "p7_zm_teddybear";
@@ -83,15 +59,6 @@ function __main__() {
   }
 }
 
-/*
-	Name: treasure_chest_init
-	Namespace: zm_magicbox
-	Checksum: 0xC6A45F99
-	Offset: 0xA48
-	Size: 0x2F4
-	Parameters: 1
-	Flags: Linked
-*/
 function treasure_chest_init(start_chest_name) {
   level flag::init("moving_chest_enabled");
   level flag::init("moving_chest_now");
@@ -129,15 +96,6 @@ function treasure_chest_init(start_chest_name) {
   array::thread_all(level.chests, & treasure_chest_think);
 }
 
-/*
-	Name: init_starting_chest_location
-	Namespace: zm_magicbox
-	Checksum: 0x9BD6CC7F
-	Offset: 0xD48
-	Size: 0x3CC
-	Parameters: 1
-	Flags: Linked
-*/
 function init_starting_chest_location(start_chest_name) {
   level.chest_index = 0;
   start_chest_found = 0;
@@ -186,28 +144,10 @@ function init_starting_chest_location(start_chest_name) {
   level.chests[level.chest_index] thread[[level.pandora_show_func]]();
 }
 
-/*
-	Name: set_treasure_chest_cost
-	Namespace: zm_magicbox
-	Checksum: 0x4B961495
-	Offset: 0x1120
-	Size: 0x18
-	Parameters: 1
-	Flags: None
-*/
 function set_treasure_chest_cost(cost) {
   level.zombie_treasure_chest_cost = cost;
 }
 
-/*
-	Name: get_chest_pieces
-	Namespace: zm_magicbox
-	Checksum: 0x96CEED19
-	Offset: 0x1140
-	Size: 0x2A0
-	Parameters: 0
-	Flags: Linked
-*/
 function get_chest_pieces() {
   self.chest_box = getent(self.script_noteworthy + "_zbarrier", "script_noteworthy");
   self.chest_rubble = [];
@@ -235,15 +175,6 @@ function get_chest_pieces() {
   self.zbarrier.owner = self;
 }
 
-/*
-	Name: boxtrigger_update_prompt
-	Namespace: zm_magicbox
-	Checksum: 0xCB44A37E
-	Offset: 0x13E8
-	Size: 0x90
-	Parameters: 1
-	Flags: Linked
-*/
 function boxtrigger_update_prompt(player) {
   can_use = self boxstub_update_prompt(player);
   if(isdefined(self.hint_string)) {
@@ -256,15 +187,6 @@ function boxtrigger_update_prompt(player) {
   return can_use;
 }
 
-/*
-	Name: boxstub_update_prompt
-	Namespace: zm_magicbox
-	Checksum: 0xE988B015
-	Offset: 0x1480
-	Size: 0x198
-	Parameters: 1
-	Flags: Linked
-*/
 function boxstub_update_prompt(player) {
   if(!self trigger_visible_to_player(player)) {
     return false;
@@ -296,28 +218,10 @@ function boxstub_update_prompt(player) {
   return true;
 }
 
-/*
-	Name: default_magic_box_check_equipment
-	Namespace: zm_magicbox
-	Checksum: 0x6100DBF1
-	Offset: 0x1620
-	Size: 0x22
-	Parameters: 1
-	Flags: Linked
-*/
 function default_magic_box_check_equipment(weapon) {
   return zm_utility::is_offhand_weapon(weapon);
 }
 
-/*
-	Name: trigger_visible_to_player
-	Namespace: zm_magicbox
-	Checksum: 0xB6066895
-	Offset: 0x1650
-	Size: 0x178
-	Parameters: 1
-	Flags: Linked
-*/
 function trigger_visible_to_player(player) {
   self setinvisibletoplayer(player);
   visible = 1;
@@ -338,45 +242,18 @@ function trigger_visible_to_player(player) {
   return true;
 }
 
-/*
-	Name: magicbox_unitrigger_think
-	Namespace: zm_magicbox
-	Checksum: 0x7B81AF1D
-	Offset: 0x17D0
-	Size: 0x54
-	Parameters: 0
-	Flags: Linked
-*/
 function magicbox_unitrigger_think() {
-  self endon(# "kill_trigger");
+  self endon("kill_trigger");
   while (true) {
-    self waittill(# "trigger", player);
-    self.stub.trigger_target notify(# "trigger", player);
+    self waittill("trigger", player);
+    self.stub.trigger_target notify("trigger", player);
   }
 }
 
-/*
-	Name: play_crazi_sound
-	Namespace: zm_magicbox
-	Checksum: 0x6031FB69
-	Offset: 0x1830
-	Size: 0x24
-	Parameters: 0
-	Flags: Linked
-*/
 function play_crazi_sound() {
   self playlocalsound(level.zmb_laugh_alias);
 }
 
-/*
-	Name: show_chest
-	Namespace: zm_magicbox
-	Checksum: 0xBC3B882C
-	Offset: 0x1860
-	Size: 0x10A
-	Parameters: 0
-	Flags: Linked
-*/
 function show_chest() {
   self.zbarrier set_magic_box_zbarrier_state("arriving");
   self.zbarrier util::waittill_any_timeout(5, "arrived");
@@ -390,15 +267,6 @@ function show_chest() {
   }
 }
 
-/*
-	Name: hide_chest
-	Namespace: zm_magicbox
-	Checksum: 0xC39F2666
-	Offset: 0x1978
-	Size: 0x21C
-	Parameters: 1
-	Flags: Linked
-*/
 function hide_chest(doboxleave) {
   if(isdefined(self.unitrigger_stub)) {
     thread zm_unitrigger::unregister_unitrigger(self.unitrigger_stub);
@@ -416,7 +284,7 @@ function hide_chest(doboxleave) {
       self.zbarrier clientfield::increment("zbarrier_leave_sounds");
       level thread zm_audio::sndannouncerplayvox("boxmove");
       self.zbarrier thread magic_box_zbarrier_leave();
-      self.zbarrier waittill(# "left");
+      self.zbarrier waittill("left");
       playfx(level._effect["poltergeist"], self.zbarrier.origin, anglestoup(self.zbarrier.angles), anglestoforward(self.zbarrier.angles));
       playsoundatposition("zmb_box_poof", self.zbarrier.origin);
     } else {
@@ -425,32 +293,14 @@ function hide_chest(doboxleave) {
   }
 }
 
-/*
-	Name: magic_box_zbarrier_leave
-	Namespace: zm_magicbox
-	Checksum: 0x7DAD4EE4
-	Offset: 0x1BA0
-	Size: 0x4C
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_zbarrier_leave() {
   self set_magic_box_zbarrier_state("leaving");
-  self waittill(# "left");
+  self waittill("left");
   self set_magic_box_zbarrier_state("away");
 }
 
-/*
-	Name: default_pandora_fx_func
-	Namespace: zm_magicbox
-	Checksum: 0x2121959C
-	Offset: 0x1BF8
-	Size: 0x11C
-	Parameters: 0
-	Flags: Linked
-*/
 function default_pandora_fx_func() {
-  self endon(# "death");
+  self endon("death");
   self.pandora_light = spawn("script_model", self.zbarrier.origin);
   self.pandora_light.angles = self.zbarrier.angles + (vectorscale((-1, 0, -1), 90));
   self.pandora_light setmodel("tag_origin");
@@ -464,15 +314,6 @@ function default_pandora_fx_func() {
   }
 }
 
-/*
-	Name: default_pandora_show_func
-	Namespace: zm_magicbox
-	Checksum: 0x2F60E6A9
-	Offset: 0x1D20
-	Size: 0x94
-	Parameters: 3
-	Flags: Linked
-*/
 function default_pandora_show_func(anchor, anchortarget, pieces) {
   if(!isdefined(self.pandora_light)) {
     if(!isdefined(level.pandora_fx_func)) {
@@ -483,33 +324,15 @@ function default_pandora_show_func(anchor, anchortarget, pieces) {
   playfx(level._effect["lght_marker_flare"], self.pandora_light.origin);
 }
 
-/*
-	Name: unregister_unitrigger_on_kill_think
-	Namespace: zm_magicbox
-	Checksum: 0xD7B871BE
-	Offset: 0x1DC0
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function unregister_unitrigger_on_kill_think() {
-  self notify(# "unregister_unitrigger_on_kill_think");
-  self endon(# "unregister_unitrigger_on_kill_think");
-  self waittill(# "kill_chest_think");
+  self notify("unregister_unitrigger_on_kill_think");
+  self endon("unregister_unitrigger_on_kill_think");
+  self waittill("kill_chest_think");
   thread zm_unitrigger::unregister_unitrigger(self.unitrigger_stub);
 }
 
-/*
-	Name: treasure_chest_think
-	Namespace: zm_magicbox
-	Checksum: 0x154FA84C
-	Offset: 0x1E10
-	Size: 0xF04
-	Parameters: 0
-	Flags: Linked
-*/
 function treasure_chest_think() {
-  self endon(# "kill_chest_think");
+  self endon("kill_chest_think");
   user = undefined;
   user_cost = undefined;
   self.box_rerespun = undefined;
@@ -517,7 +340,7 @@ function treasure_chest_think() {
   self thread unregister_unitrigger_on_kill_think();
   while (true) {
     if(!isdefined(self.forced_user)) {
-      self waittill(# "trigger", user);
+      self waittill("trigger", user);
       if(user == level) {
         continue;
       }
@@ -635,7 +458,7 @@ function treasure_chest_think() {
       }
     }
     while (!(isdefined(self.closed_by_emp) && self.closed_by_emp)) {
-      self waittill(# "trigger", grabber);
+      self waittill("trigger", grabber);
       self.weapon_out = undefined;
       if(isdefined(level.magic_box_grab_by_anyone) && level.magic_box_grab_by_anyone) {
         if(isplayer(grabber)) {
@@ -671,8 +494,8 @@ function treasure_chest_think() {
           if(isdefined(weaponidx)) {
             user recordmapevent(11, gettime(), user.origin, level.round_number, weaponidx);
           }
-          self notify(# "user_grabbed_weapon");
-          user notify(# "user_grabbed_weapon");
+          self notify("user_grabbed_weapon");
+          user notify("user_grabbed_weapon");
           user thread treasure_chest_give_weapon(self.zbarrier.weapon);
           demo::bookmark("zm_player_grabbed_magicbox", gettime(), user);
           user zm_stats::increment_client_stat("grabbed_from_magicbox");
@@ -694,7 +517,7 @@ function treasure_chest_think() {
       wait(0.05);
     }
     self.grab_weapon_hint = 0;
-    self.zbarrier notify(# "weapon_grabbed");
+    self.zbarrier notify("weapon_grabbed");
     if(!(isdefined(self._box_opened_by_fire_sale) && self._box_opened_by_fire_sale)) {
       level.chest_accessed = level.chest_accessed + 1;
     }
@@ -705,7 +528,7 @@ function treasure_chest_think() {
     if(isdefined(self.zbarrier)) {
       self.zbarrier set_magic_box_zbarrier_state("close");
       zm_utility::play_sound_at_pos("close_chest", self.origin);
-      self.zbarrier waittill(# "closed");
+      self.zbarrier waittill("closed");
       wait(1);
     } else {
       wait(3);
@@ -718,21 +541,12 @@ function treasure_chest_think() {
   self._box_opened_by_fire_sale = 0;
   self.unbearable_respin = undefined;
   self.chest_user = undefined;
-  self notify(# "chest_accessed");
+  self notify("chest_accessed");
   self thread treasure_chest_think();
 }
 
-/*
-	Name: watch_for_emp_close
-	Namespace: zm_magicbox
-	Checksum: 0x58C22F9B
-	Offset: 0x2D20
-	Size: 0x186
-	Parameters: 0
-	Flags: Linked
-*/
 function watch_for_emp_close() {
-  self endon(# "chest_accessed");
+  self endon("chest_accessed");
   self.closed_by_emp = 0;
   if(!zm_utility::should_watch_for_emp()) {
     return;
@@ -741,7 +555,7 @@ function watch_for_emp_close() {
     self.zbarrier.closed_by_emp = 0;
   }
   while (true) {
-    level waittill(# "emp_detonate", origin, radius);
+    level waittill("emp_detonate", origin, radius);
     if(distancesquared(origin, self.origin) < (radius * radius)) {
       break;
     }
@@ -752,27 +566,18 @@ function watch_for_emp_close() {
   self.closed_by_emp = 1;
   if(isdefined(self.zbarrier)) {
     self.zbarrier.closed_by_emp = 1;
-    self.zbarrier notify(# "box_hacked_respin");
+    self.zbarrier notify("box_hacked_respin");
     if(isdefined(self.zbarrier.weapon_model)) {
-      self.zbarrier.weapon_model notify(# "kill_weapon_movement");
+      self.zbarrier.weapon_model notify("kill_weapon_movement");
     }
     if(isdefined(self.zbarrier.weapon_model_dw)) {
-      self.zbarrier.weapon_model_dw notify(# "kill_weapon_movement");
+      self.zbarrier.weapon_model_dw notify("kill_weapon_movement");
     }
   }
   wait(0.1);
-  self notify(# "trigger", level);
+  self notify("trigger", level);
 }
 
-/*
-	Name: can_buy_weapon
-	Namespace: zm_magicbox
-	Checksum: 0x46C5BF59
-	Offset: 0x2EB0
-	Size: 0xE2
-	Parameters: 0
-	Flags: Linked
-*/
 function can_buy_weapon() {
   if(isdefined(self.is_drinking) && self.is_drinking > 0) {
     return false;
@@ -796,15 +601,6 @@ function can_buy_weapon() {
   return true;
 }
 
-/*
-	Name: default_box_move_logic
-	Namespace: zm_magicbox
-	Checksum: 0x26A26B03
-	Offset: 0x2FA0
-	Size: 0x170
-	Parameters: 0
-	Flags: Linked
-*/
 function default_box_move_logic() {
   index = -1;
   for (i = 0; i < level.chests.size; i++) {
@@ -828,23 +624,14 @@ function default_box_move_logic() {
   }
 }
 
-/*
-	Name: treasure_chest_move
-	Namespace: zm_magicbox
-	Checksum: 0xC6A2ED1C
-	Offset: 0x3118
-	Size: 0x380
-	Parameters: 1
-	Flags: Linked
-*/
 function treasure_chest_move(player_vox) {
-  level waittill(# "weapon_fly_away_start");
+  level waittill("weapon_fly_away_start");
   players = getplayers();
   array::thread_all(players, & play_crazi_sound);
   if(isdefined(player_vox)) {
     player_vox util::delay(randomintrange(2, 7), undefined, & zm_audio::create_and_play_dialog, "general", "box_move");
   }
-  level waittill(# "weapon_fly_away_end");
+  level waittill("weapon_fly_away_end");
   if(isdefined(self.zbarrier)) {
     self hide_chest(1);
   }
@@ -881,15 +668,6 @@ function treasure_chest_move(player_vox) {
   self.zbarrier.chest_moving = 0;
 }
 
-/*
-	Name: fire_sale_fix
-	Namespace: zm_magicbox
-	Checksum: 0x4ECC27B
-	Offset: 0x34A0
-	Size: 0xF4
-	Parameters: 0
-	Flags: Linked
-*/
 function fire_sale_fix() {
   if(!isdefined(level.zombie_vars["zombie_powerup_fire_sale_on"])) {
     return;
@@ -900,7 +678,7 @@ function fire_sale_fix() {
     self.zombie_cost = 10;
     self.unitrigger_stub zm_utility::unitrigger_set_hint_string(self, "default_treasure_chest", self.zombie_cost);
     util::wait_network_frame();
-    level waittill(# "fire_sale_off");
+    level waittill("fire_sale_off");
     while (isdefined(self._box_open) && self._box_open) {
       wait(0.1);
     }
@@ -909,15 +687,6 @@ function fire_sale_fix() {
   }
 }
 
-/*
-	Name: check_for_desirable_chest_location
-	Namespace: zm_magicbox
-	Checksum: 0xBE42826C
-	Offset: 0x35A0
-	Size: 0xEE
-	Parameters: 0
-	Flags: None
-*/
 function check_for_desirable_chest_location() {
   if(!isdefined(level.desirable_chest_location)) {
     return level.chest_index;
@@ -932,22 +701,11 @@ function check_for_desirable_chest_location() {
       return i;
     }
   }
-  /#
   iprintln(level.desirable_chest_location + "");
-  # /
-    level.desirable_chest_location = undefined;
+  level.desirable_chest_location = undefined;
   return level.chest_index;
 }
 
-/*
-	Name: rotateroll_box
-	Namespace: zm_magicbox
-	Checksum: 0x90E2EC1B
-	Offset: 0x3698
-	Size: 0x98
-	Parameters: 0
-	Flags: None
-*/
 function rotateroll_box() {
   angles = 40;
   angles2 = 0;
@@ -960,15 +718,6 @@ function rotateroll_box() {
   }
 }
 
-/*
-	Name: verify_chest_is_open
-	Namespace: zm_magicbox
-	Checksum: 0xA88E682F
-	Offset: 0x3738
-	Size: 0x8C
-	Parameters: 0
-	Flags: None
-*/
 function verify_chest_is_open() {
   for (i = 0; i < level.open_chest_location.size; i++) {
     if(isdefined(level.open_chest_location[i])) {
@@ -981,32 +730,14 @@ function verify_chest_is_open() {
   level.verify_chest = 0;
 }
 
-/*
-	Name: treasure_chest_timeout
-	Namespace: zm_magicbox
-	Checksum: 0x26656A14
-	Offset: 0x37D0
-	Size: 0x46
-	Parameters: 0
-	Flags: Linked
-*/
 function treasure_chest_timeout() {
-  self endon(# "user_grabbed_weapon");
-  self.zbarrier endon(# "box_hacked_respin");
-  self.zbarrier endon(# "box_hacked_rerespin");
+  self endon("user_grabbed_weapon");
+  self.zbarrier endon("box_hacked_respin");
+  self.zbarrier endon("box_hacked_rerespin");
   wait(12);
-  self notify(# "trigger", level);
+  self notify("trigger", level);
 }
 
-/*
-	Name: treasure_chest_lid_open
-	Namespace: zm_magicbox
-	Checksum: 0x8FA3814C
-	Offset: 0x3820
-	Size: 0x94
-	Parameters: 0
-	Flags: Linked
-*/
 function treasure_chest_lid_open() {
   openroll = 105;
   opentime = 0.5;
@@ -1015,32 +746,14 @@ function treasure_chest_lid_open() {
   zm_utility::play_sound_at_pos("music_chest", self.origin);
 }
 
-/*
-	Name: treasure_chest_lid_close
-	Namespace: zm_magicbox
-	Checksum: 0x6C36411C
-	Offset: 0x38C0
-	Size: 0x8A
-	Parameters: 1
-	Flags: Linked
-*/
 function treasure_chest_lid_close(timedout) {
   closeroll = -105;
   closetime = 0.5;
   self rotateroll(closeroll, closetime, closetime * 0.5);
   zm_utility::play_sound_at_pos("close_chest", self.origin);
-  self notify(# "lid_closed");
+  self notify("lid_closed");
 }
 
-/*
-	Name: treasure_chest_canplayerreceiveweapon
-	Namespace: zm_magicbox
-	Checksum: 0xB2CF9613
-	Offset: 0x3958
-	Size: 0x19C
-	Parameters: 3
-	Flags: Linked
-*/
 function treasure_chest_canplayerreceiveweapon(player, weapon, pap_triggers) {
   if(!zm_weapons::get_is_in_box(weapon)) {
     return 0;
@@ -1077,28 +790,17 @@ function treasure_chest_canplayerreceiveweapon(player, weapon, pap_triggers) {
   return 1;
 }
 
-/*
-	Name: treasure_chest_chooseweightedrandomweapon
-	Namespace: zm_magicbox
-	Checksum: 0x6616B999
-	Offset: 0x3B00
-	Size: 0x16C
-	Parameters: 1
-	Flags: Linked
-*/
 function treasure_chest_chooseweightedrandomweapon(player) {
   keys = array::randomize(getarraykeys(level.zombie_weapons));
   if(isdefined(level.customrandomweaponweights)) {
     keys = player[[level.customrandomweaponweights]](keys);
   }
-  /#
   forced_weapon_name = getdvarstring("");
   forced_weapon = getweapon(forced_weapon_name);
   if(forced_weapon_name != "" && isdefined(level.zombie_weapons[forced_weapon])) {
     arrayinsert(keys, forced_weapon, 0);
   }
-  # /
-    pap_triggers = zm_pap_util::get_triggers();
+  pap_triggers = zm_pap_util::get_triggers();
   for (i = 0; i < keys.size; i++) {
     if(treasure_chest_canplayerreceiveweapon(player, keys[i], pap_triggers)) {
       return keys[i];
@@ -1107,15 +809,6 @@ function treasure_chest_chooseweightedrandomweapon(player) {
   return keys[0];
 }
 
-/*
-	Name: weapon_show_hint_choke
-	Namespace: zm_magicbox
-	Checksum: 0xE98311E6
-	Offset: 0x3C78
-	Size: 0x30
-	Parameters: 0
-	Flags: Linked
-*/
 function weapon_show_hint_choke() {
   level._weapon_show_hint_choke = 0;
   while (true) {
@@ -1124,17 +817,8 @@ function weapon_show_hint_choke() {
   }
 }
 
-/*
-	Name: decide_hide_show_hint
-	Namespace: zm_magicbox
-	Checksum: 0x58E3825E
-	Offset: 0x3CB0
-	Size: 0x368
-	Parameters: 4
-	Flags: Linked
-*/
 function decide_hide_show_hint(endon_notify, second_endon_notify, onlyplayer, can_buy_weapon_extra_check_func) {
-  self endon(# "death");
+  self endon("death");
   if(isdefined(endon_notify)) {
     self endon(endon_notify);
   }
@@ -1187,15 +871,6 @@ function decide_hide_show_hint(endon_notify, second_endon_notify, onlyplayer, ca
   }
 }
 
-/*
-	Name: get_left_hand_weapon_model_name
-	Namespace: zm_magicbox
-	Checksum: 0xBEA68F5D
-	Offset: 0x4020
-	Size: 0x56
-	Parameters: 1
-	Flags: None
-*/
 function get_left_hand_weapon_model_name(weapon) {
   dw_weapon = weapon.dualwieldweapon;
   if(dw_weapon != level.weaponnone) {
@@ -1204,18 +879,9 @@ function get_left_hand_weapon_model_name(weapon) {
   return weapon.worldmodel;
 }
 
-/*
-	Name: clean_up_hacked_box
-	Namespace: zm_magicbox
-	Checksum: 0x5ABD3B85
-	Offset: 0x4080
-	Size: 0xEC
-	Parameters: 0
-	Flags: Linked
-*/
 function clean_up_hacked_box() {
-  self waittill(# "box_hacked_respin");
-  self endon(# "box_spin_done");
+  self waittill("box_hacked_respin");
+  self endon("box_spin_done");
   if(isdefined(self.weapon_model)) {
     self.weapon_model delete();
     self.weapon_model = undefined;
@@ -1230,28 +896,10 @@ function clean_up_hacked_box() {
   self setzbarrierpiecestate(4, "closed");
 }
 
-/*
-	Name: treasure_chest_firesale_active
-	Namespace: zm_magicbox
-	Checksum: 0x572FDD08
-	Offset: 0x4178
-	Size: 0x2C
-	Parameters: 0
-	Flags: Linked
-*/
 function treasure_chest_firesale_active() {
   return isdefined(level.zombie_vars["zombie_powerup_fire_sale_on"]) && level.zombie_vars["zombie_powerup_fire_sale_on"];
 }
 
-/*
-	Name: treasure_chest_should_move
-	Namespace: zm_magicbox
-	Checksum: 0xC2F050A9
-	Offset: 0x41B0
-	Size: 0x262
-	Parameters: 2
-	Flags: Linked
-*/
 function treasure_chest_should_move(chest, player) {
   if(getdvarstring("magic_chest_movable") == "1" && (!(isdefined(chest._box_opened_by_fire_sale) && chest._box_opened_by_fire_sale)) && !treasure_chest_firesale_active() && self[[level._zombiemode_check_firesale_loc_valid_func]]()) {
     random = randomint(100);
@@ -1304,15 +952,6 @@ function treasure_chest_should_move(chest, player) {
   return false;
 }
 
-/*
-	Name: spawn_joker_weapon_model
-	Namespace: zm_magicbox
-	Checksum: 0x5C7FDA98
-	Offset: 0x4420
-	Size: 0x88
-	Parameters: 4
-	Flags: Linked
-*/
 function spawn_joker_weapon_model(player, model, origin, angles) {
   weapon_model = spawn("script_model", origin);
   if(isdefined(angles)) {
@@ -1322,15 +961,6 @@ function spawn_joker_weapon_model(player, model, origin, angles) {
   return weapon_model;
 }
 
-/*
-	Name: treasure_chest_weapon_locking
-	Namespace: zm_magicbox
-	Checksum: 0xAD84792A
-	Offset: 0x44B0
-	Size: 0x114
-	Parameters: 3
-	Flags: Linked
-*/
 function treasure_chest_weapon_locking(player, weapon, onoff) {
   if(isdefined(self.locked_model)) {
     self.locked_model delete();
@@ -1347,22 +977,11 @@ function treasure_chest_weapon_locking(player, weapon, onoff) {
   }
 }
 
-/*
-	Name: treasure_chest_weapon_spawn
-	Namespace: zm_magicbox
-	Checksum: 0xDC57B80
-	Offset: 0x45D0
-	Size: 0xA3A
-	Parameters: 3
-	Flags: Linked
-*/
 function treasure_chest_weapon_spawn(chest, player, respin) {
-  self endon(# "box_hacked_respin");
+  self endon("box_hacked_respin");
   self thread clean_up_hacked_box();
-  /#
   assert(isdefined(player));
-  # /
-    self.chest_moving = 0;
+  self.chest_moving = 0;
   move_the_box = treasure_chest_should_move(chest, player);
   preferred_weapon = undefined;
   if(move_the_box) {
@@ -1442,15 +1061,15 @@ function treasure_chest_weapon_spawn(chest, player, respin) {
     if(isplayer(chest.chest_user) && chest.chest_user bgb::is_enabled("zm_bgb_unbearable")) {
       level.chest_accessed = 0;
       chest.unbearable_respin = 1;
-      chest.chest_user notify(# "zm_bgb_unbearable", chest);
-      chest waittill(# "forever");
+      chest.chest_user notify("zm_bgb_unbearable", chest);
+      chest waittill("forever");
     }
     self.chest_moving = 1;
     level flag::set("moving_chest_now");
     level.chest_accessed = 0;
     level.chest_moves++;
   }
-  self notify(# "randomization_done");
+  self notify("randomization_done");
   if(isdefined(self.chest_moving) && self.chest_moving) {
     if(isdefined(level.chest_joker_custom_movement)) {
       self[[level.chest_joker_custom_movement]]();
@@ -1461,7 +1080,7 @@ function treasure_chest_weapon_spawn(chest, player, respin) {
       self.weapon_model setmodel(level.chest_joker_model);
       self.weapon_model.angles = self.angles + vectorscale((0, 1, 0), 180);
       wait(0.5);
-      level notify(# "weapon_fly_away_start");
+      level notify("weapon_fly_away_start");
       wait(2);
       if(isdefined(self.weapon_model)) {
         v_fly_away = self.origin + (anglestoup(self.angles) * 500);
@@ -1471,14 +1090,14 @@ function treasure_chest_weapon_spawn(chest, player, respin) {
         v_fly_away = self.origin + (anglestoup(self.angles) * 500);
         self.weapon_model_dw moveto(v_fly_away, 4, 3);
       }
-      self.weapon_model waittill(# "movedone");
+      self.weapon_model waittill("movedone");
       self.weapon_model delete();
       if(isdefined(self.weapon_model_dw)) {
         self.weapon_model_dw delete();
         self.weapon_model_dw = undefined;
       }
-      self notify(# "box_moving");
-      level notify(# "weapon_fly_away_end");
+      self notify("box_moving");
+      level notify("weapon_fly_away_end");
     }
   } else {
     if(!isdefined(respin)) {
@@ -1500,7 +1119,7 @@ function treasure_chest_weapon_spawn(chest, player, respin) {
         self.weapon_model_dw thread timer_til_despawn(v_float);
       }
     }
-    self waittill(# "weapon_grabbed");
+    self waittill("weapon_grabbed");
     if(!chest.timedout) {
       if(isdefined(self.weapon_model)) {
         self.weapon_model delete();
@@ -1512,32 +1131,14 @@ function treasure_chest_weapon_spawn(chest, player, respin) {
   }
   chest treasure_chest_weapon_locking(player, preferred_weapon, 0);
   self.weapon = level.weaponnone;
-  self notify(# "box_spin_done");
+  self notify("box_spin_done");
 }
 
-/*
-	Name: chest_get_min_usage
-	Namespace: zm_magicbox
-	Checksum: 0x6C3E8EC3
-	Offset: 0x5018
-	Size: 0x1A
-	Parameters: 0
-	Flags: None
-*/
 function chest_get_min_usage() {
   min_usage = 4;
   return min_usage;
 }
 
-/*
-	Name: chest_get_max_usage
-	Namespace: zm_magicbox
-	Checksum: 0xFF98BCC9
-	Offset: 0x5040
-	Size: 0x116
-	Parameters: 0
-	Flags: None
-*/
 function chest_get_max_usage() {
   max_usage = 6;
   players = getplayers();
@@ -1573,17 +1174,8 @@ function chest_get_max_usage() {
   return max_usage;
 }
 
-/*
-	Name: timer_til_despawn
-	Namespace: zm_magicbox
-	Checksum: 0x502942CE
-	Offset: 0x5160
-	Size: 0x84
-	Parameters: 1
-	Flags: Linked
-*/
 function timer_til_despawn(v_float) {
-  self endon(# "kill_weapon_movement");
+  self endon("kill_weapon_movement");
   putbacktime = 12;
   self moveto(self.origin - (v_float * 0.85), putbacktime, putbacktime * 0.5);
   wait(putbacktime);
@@ -1592,15 +1184,6 @@ function timer_til_despawn(v_float) {
   }
 }
 
-/*
-	Name: treasure_chest_glowfx
-	Namespace: zm_magicbox
-	Checksum: 0x73CD7680
-	Offset: 0x51F0
-	Size: 0xC4
-	Parameters: 0
-	Flags: Linked
-*/
 function treasure_chest_glowfx() {
   self clientfield::set("magicbox_open_glow", 1);
   self clientfield::set("magicbox_closed_glow", 0);
@@ -1611,15 +1194,6 @@ function treasure_chest_glowfx() {
   }
 }
 
-/*
-	Name: treasure_chest_give_weapon
-	Namespace: zm_magicbox
-	Checksum: 0xA62CFEB7
-	Offset: 0x52C0
-	Size: 0x164
-	Parameters: 1
-	Flags: Linked
-*/
 function treasure_chest_give_weapon(weapon) {
   self.last_box_weapon = gettime();
   if(weapon.name == "ray_gun" || weapon.name == "raygun_mark2") {
@@ -1628,7 +1202,7 @@ function treasure_chest_give_weapon(weapon) {
   if(should_upgrade_weapon(self, weapon)) {
     if(self zm_weapons::can_upgrade_weapon(weapon)) {
       weapon = zm_weapons::get_upgrade_weapon(weapon);
-      self notify(# "zm_bgb_crate_power_used");
+      self notify("zm_bgb_crate_power_used");
     }
   }
   if(zm_utility::is_hero_weapon(weapon) && !self hasweapon(weapon)) {
@@ -1641,21 +1215,12 @@ function treasure_chest_give_weapon(weapon) {
   }
 }
 
-/*
-	Name: give_hero_weapon
-	Namespace: zm_magicbox
-	Checksum: 0x2606B205
-	Offset: 0x5430
-	Size: 0x114
-	Parameters: 1
-	Flags: Linked
-*/
 function give_hero_weapon(weapon) {
   w_previous = self getcurrentweapon();
   self zm_weapons::weapon_give(weapon);
   self gadgetpowerset(0, 99);
   self switchtoweapon(weapon);
-  self waittill(# "weapon_change_complete");
+  self waittill("weapon_change_complete");
   self setlowready(1);
   self switchtoweapon(w_previous);
   self util::waittill_any_timeout(1, "weapon_change_complete");
@@ -1663,15 +1228,6 @@ function give_hero_weapon(weapon) {
   self gadgetpowerset(0, 100);
 }
 
-/*
-	Name: should_upgrade_weapon
-	Namespace: zm_magicbox
-	Checksum: 0x7EB156D3
-	Offset: 0x5550
-	Size: 0x5E
-	Parameters: 2
-	Flags: Linked
-*/
 function should_upgrade_weapon(player, weapon) {
   if(isdefined(level.magicbox_should_upgrade_weapon_override)) {
     return [
@@ -1684,17 +1240,8 @@ function should_upgrade_weapon(player, weapon) {
   return 0;
 }
 
-/*
-	Name: magic_box_teddy_twitches
-	Namespace: zm_magicbox
-	Checksum: 0x57FDA026
-	Offset: 0x55B8
-	Size: 0xA8
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_teddy_twitches() {
-  self endon(# "zbarrier_state_change");
+  self endon("zbarrier_state_change");
   self setzbarrierpiecestate(0, "closed");
   while (true) {
     wait(randomfloatrange(180, 1800));
@@ -1704,99 +1251,45 @@ function magic_box_teddy_twitches() {
   }
 }
 
-/*
-	Name: magic_box_initial
-	Namespace: zm_magicbox
-	Checksum: 0x92B7DD7E
-	Offset: 0x5668
-	Size: 0x44
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_initial() {
   self setzbarrierpiecestate(1, "open");
   self clientfield::set("magicbox_closed_glow", 1);
 }
 
-/*
-	Name: magic_box_arrives
-	Namespace: zm_magicbox
-	Checksum: 0x8D61D350
-	Offset: 0x56B8
-	Size: 0x62
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_arrives() {
   self setzbarrierpiecestate(1, "opening");
   while (self getzbarrierpiecestate(1) == "opening") {
     wait(0.05);
   }
-  self notify(# "arrived");
+  self notify("arrived");
 }
 
-/*
-	Name: magic_box_leaves
-	Namespace: zm_magicbox
-	Checksum: 0x8C582CB6
-	Offset: 0x5728
-	Size: 0x62
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_leaves() {
   self setzbarrierpiecestate(1, "closing");
   while (self getzbarrierpiecestate(1) == "closing") {
     wait(0.1);
   }
-  self notify(# "left");
+  self notify("left");
 }
 
-/*
-	Name: magic_box_opens
-	Namespace: zm_magicbox
-	Checksum: 0x33913978
-	Offset: 0x5798
-	Size: 0x62
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_opens() {
   self setzbarrierpiecestate(2, "opening");
   while (self getzbarrierpiecestate(2) == "opening") {
     wait(0.1);
   }
-  self notify(# "opened");
+  self notify("opened");
 }
 
-/*
-	Name: magic_box_closes
-	Namespace: zm_magicbox
-	Checksum: 0xCAA92EA8
-	Offset: 0x5808
-	Size: 0x62
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_closes() {
   self setzbarrierpiecestate(2, "closing");
   while (self getzbarrierpiecestate(2) == "closing") {
     wait(0.1);
   }
-  self notify(# "closed");
+  self notify("closed");
 }
 
-/*
-	Name: magic_box_do_weapon_rise
-	Namespace: zm_magicbox
-	Checksum: 0x901BFA4E
-	Offset: 0x5878
-	Size: 0x15C
-	Parameters: 0
-	Flags: Linked
-*/
 function magic_box_do_weapon_rise() {
-  self endon(# "box_hacked_respin");
+  self endon("box_hacked_respin");
   self setzbarrierpiecestate(3, "closed");
   self setzbarrierpiecestate(4, "closed");
   util::wait_network_frame();
@@ -1813,29 +1306,11 @@ function magic_box_do_weapon_rise() {
   self hidezbarrierpiece(4);
 }
 
-/*
-	Name: magic_box_do_teddy_flyaway
-	Namespace: zm_magicbox
-	Checksum: 0xA93DCF1
-	Offset: 0x59E0
-	Size: 0x3C
-	Parameters: 0
-	Flags: None
-*/
 function magic_box_do_teddy_flyaway() {
   self showzbarrierpiece(3);
   self setzbarrierpiecestate(3, "closing");
 }
 
-/*
-	Name: is_chest_active
-	Namespace: zm_magicbox
-	Checksum: 0x1569FC17
-	Offset: 0x5A28
-	Size: 0x74
-	Parameters: 0
-	Flags: None
-*/
 function is_chest_active() {
   curr_state = self.zbarrier get_magic_box_zbarrier_state();
   if(level flag::get("moving_chest_now")) {
@@ -1847,45 +1322,18 @@ function is_chest_active() {
   return false;
 }
 
-/*
-	Name: get_magic_box_zbarrier_state
-	Namespace: zm_magicbox
-	Checksum: 0xB6046605
-	Offset: 0x5AA8
-	Size: 0xA
-	Parameters: 0
-	Flags: Linked
-*/
 function get_magic_box_zbarrier_state() {
   return self.state;
 }
 
-/*
-	Name: set_magic_box_zbarrier_state
-	Namespace: zm_magicbox
-	Checksum: 0x615F83E1
-	Offset: 0x5AC0
-	Size: 0x80
-	Parameters: 1
-	Flags: Linked
-*/
 function set_magic_box_zbarrier_state(state) {
   for (i = 0; i < self getnumzbarrierpieces(); i++) {
     self hidezbarrierpiece(i);
   }
-  self notify(# "zbarrier_state_change");
+  self notify("zbarrier_state_change");
   self[[level.magic_box_zbarrier_state_func]](state);
 }
 
-/*
-	Name: process_magic_box_zbarrier_state
-	Namespace: zm_magicbox
-	Checksum: 0xA0B17943
-	Offset: 0x5B48
-	Size: 0x252
-	Parameters: 1
-	Flags: Linked
-*/
 function process_magic_box_zbarrier_state(state) {
   switch (state) {
     case "away": {
@@ -1934,21 +1382,12 @@ function process_magic_box_zbarrier_state(state) {
   }
 }
 
-/*
-	Name: magicbox_host_migration
-	Namespace: zm_magicbox
-	Checksum: 0xC8C46AA7
-	Offset: 0x5DA8
-	Size: 0x14E
-	Parameters: 0
-	Flags: Linked
-*/
 function magicbox_host_migration() {
-  level endon(# "end_game");
-  level notify(# "mb_hostmigration");
-  level endon(# "mb_hostmigration");
+  level endon("end_game");
+  level notify("mb_hostmigration");
+  level endon("mb_hostmigration");
   while (true) {
-    level waittill(# "host_migration_end");
+    level waittill("host_migration_end");
     if(!isdefined(level.chests)) {
       continue;
     }
@@ -1963,18 +1402,9 @@ function magicbox_host_migration() {
   }
 }
 
-/*
-	Name: box_encounter_vo
-	Namespace: zm_magicbox
-	Checksum: 0xCD7C724B
-	Offset: 0x5F00
-	Size: 0x148
-	Parameters: 0
-	Flags: Linked
-*/
 function box_encounter_vo() {
   level flag::wait_till("initial_blackscreen_passed");
-  self endon(# "left");
+  self endon("left");
   while (true) {
     foreach(player in getplayers()) {
       distancefromplayertobox = distance(player.origin, self.origin);
