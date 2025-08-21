@@ -62,6 +62,7 @@ function initial_variable() {
 	self.menu_color_green = 255;
 	self.menu_color_blue = 255;
 	self.color_theme = "rainbow";
+	self.map_name = get_map_name();
 	self.point_increment = 100;
 	level.doors_done = false;
 
@@ -104,52 +105,55 @@ function initial_variable() {
 	self.syn["visions"]["origins"][0] = array("zm_tomb_in_plain_sight", "zm_factory_teleport");
 	self.syn["visions"]["origins"][1] = array("Zombie Blood", "Teleport");
 
-	self.syn["weapons"]["category"] = array("Assault Rifles", "Sub Machine Guns", "Sniper Rifles", "Shotguns", "Light Machine Guns", "Pistols", "Launchers", "Extras");
+	self.syn["weapons"]["category"] = array("Assault Rifles", "Sub Machine Guns", "Sniper Rifles", "Shotguns", "Light Machine Guns", "Pistols", "Launchers", "Melee", "Extras");
 
-	self.syn["weapons"]["extras"][0] = array("knife", "knife_widows_wine", "bowie_knife", "bowie_knife_widows_wine", "frag_grenade", "sticky_grenade_widows_wine", "bouncingbetty", "ray_gun", "minigun", "defaultweapon");
-	self.syn["weapons"]["extras"][1] = array("Knife", "Widow's Wine Knife", "Bowie Knife", "Bowie Knife Widow's Wine", "Frag Grenade", "Widow's Wine Grenade", "Trip Mines", "Ray Gun", "Death Machine", "Default Weapon");
+	self.syn["weapons"]["melee"][0] = array("knife", "knife_widows_wine", "bowie_knife", "bowie_knife_widows_wine");
+	self.syn["weapons"]["melee"][1] = array("Knife", "Widow's Wine Knife", "Bowie Knife", "Bowie Knife Widow's Wine");
 
-	self.syn["weapons"]["extras"]["soe"][0] = array("ar_standard_upgraded_companion", "smg_longrange", "pistol_standard", "octobomb", "octobomb_upgraded", "bouncingbetty_devil", "bouncingbetty_holly", "zod_riotshield", "zod_riotshield_upgraded", "glaive_apothicon_0", "glaive_keeper_0", "idgun_0", "idgun_1", "idgun_2", "idgun_3", "hero_gravityspikes");
-	self.syn["weapons"]["extras"]["soe"][1] = array("Civil Protector KN-44", "Razorback", "MR6", "Lil' Arnies", "Upgraded Lil' Arnies", "Donut Trip Mines", "Cream Cake Trip Mines", "Rocket Shield", "Upgraded Rocket Shield", "Sword", "Upgraded Sword", "Kor-Maroth", "Mar-Astagua", "Nar-Ullaqua", "Lor-Zarozzor", "Gravity Spikes");
+	self.syn["weapons"]["extras"][0] = array("ray_gun", "minigun", "defaultweapon", "bouncingbetty", "frag_grenade", "sticky_grenade_widows_wine");
+	self.syn["weapons"]["extras"][1] = array("Ray Gun", "Death Machine", "Default Weapon", "Trip Mines", "Frag Grenades", "Widow's Wine Grenades");
 
-	self.syn["weapons"]["extras"]["nzf"][0] = array("smg_longrange", "lmg_rpk", "cymbal_monkey", "hero_annihilator", "tesla_gun", "hero_gravityspikes");
-	self.syn["weapons"]["extras"]["nzf"][1] = array("Razorback", "RPK", "Monkey Bombs", "Annihilator", "Wunderwaffe DG-2", "Gravity Spikes");
+	self.syn["weapons"]["extras"]["soe"][0] = array("ar_standard_upgraded_companion", "octobomb", "octobomb_upgraded", "bouncingbetty_devil", "bouncingbetty_holly", "zod_riotshield", "zod_riotshield_upgraded", "glaive_apothicon_0", "glaive_keeper_0", "idgun_0", "idgun_1", "idgun_2", "idgun_3", "hero_gravityspikes");
+	self.syn["weapons"]["extras"]["soe"][1] = array("Civil Protector KN-44", "Lil' Arnies", "Upgraded Lil' Arnies", "Donut Trip Mines", "Cream Cake Trip Mines", "Rocket Shield", "Upgraded Rocket Shield", "Sword", "Upgraded Sword", "Kor-Maroth", "Mar-Astagua", "Nar-Ullaqua", "Lor-Zarozzor", "Gravity Spikes");
 
-	self.syn["weapons"]["extras"]["de"][0] = array("smg_longrange", "lmg_rpk", "cymbal_monkey", "castle_riotshield", "hero_gravityspikes_melee", "elemental_bow", "elemental_bow_storm", "elemental_bow_wolf_howl", "elemental_bow_rune_prison", "elemental_bow_demongate", "hero_gravityspikes");
-	self.syn["weapons"]["extras"]["de"][1] = array("Razorback", "RPK", "Monkey Bombs", "Rocket Shield", "Ragnarok DG-4", "Wrath of the Ancients", "Storm Bow", "Wolf Bow", "Fire Bow", "Void Bow", "Gravity Spikes");
+	self.syn["weapons"]["extras"]["nzf"][0] = array("cymbal_monkey", "hero_annihilator", "tesla_gun", "hero_gravityspikes");
+	self.syn["weapons"]["extras"]["nzf"][1] = array("Monkey Bombs", "Annihilator", "Wunderwaffe DG-2", "Gravity Spikes");
+
+	self.syn["weapons"]["extras"]["de"][0] = array("cymbal_monkey", "castle_riotshield", "hero_gravityspikes_melee", "elemental_bow", "elemental_bow_storm", "elemental_bow_wolf_howl", "elemental_bow_rune_prison", "elemental_bow_demongate", "hero_gravityspikes");
+	self.syn["weapons"]["extras"]["de"][1] = array("Monkey Bombs", "Rocket Shield", "Ragnarok DG-4", "Wrath of the Ancients", "Storm Bow", "Wolf Bow", "Fire Bow", "Void Bow", "Gravity Spikes");
 
 	self.syn["weapons"]["extras"]["zns"][0] = array("cymbal_monkey", "island_riotshield", "skull_gun", "hero_mirg2000", "hero_mirg2000_upgraded", "hero_gravityspikes");
 	self.syn["weapons"]["extras"]["zns"][1] = array("Monkey Bombs", "Rocket Shield", "Skull of Nan Sapwe", "KT-4", "Masamune", "Gravity Spikes");
 
-	self.syn["weapons"]["extras"]["gk"][0] = array("ar_famas", "lmg_rpk", "launcher_multi", "melee_wrench", "melee_dagger", "melee_fireaxe", "melee_sword", "special_crossbow_dw", "cymbal_monkey", "cymbal_monkey_upgraded", "dragonshield", "dragonshield_upgraded", "dragon_gauntlet_flamethrower", "launcher_dragon_strike", "raygun_mark3");
-	self.syn["weapons"]["extras"]["gk"][1] = array("FFAR", "RPK", "L4 Siege", "Wrench", "Malice", "Slash N' Burn", "Fury's Song", "NX Shadowclaw", "Monkey Bombs", "Upgraded Monkey Bombs", "Guard of Fafnir", "Upgraded Guard of Fafnir", "Gauntlet of Siegfried", "Dragon Strike", "Ray Gun Mark 3");
+	self.syn["weapons"]["extras"]["gk"][0] = array("cymbal_monkey", "cymbal_monkey_upgraded", "special_crossbow_dw", "dragonshield", "dragonshield_upgraded", "dragon_gauntlet_flamethrower", "launcher_dragon_strike", "raygun_mark3");
+	self.syn["weapons"]["extras"]["gk"][1] = array("Monkey Bombs", "Upgraded Monkey Bombs", "NX Shadowclaw", "Guard of Fafnir", "Upgraded Guard of Fafnir", "Gauntlet of Siegfried", "Dragon Strike", "Ray Gun Mark 3");
 
-	self.syn["weapons"]["extras"]["rev"][0] = array("ar_peacekeeper", "smg_thompson", "shotgun_energy", "pistol_energy", "melee_nunchuks", "melee_mace", "melee_improvise", "melee_boneglass", "melee_katana", "octobomb", "octobomb_upgraded", "dragonshield", "dragonshield_upgraded", "hero_gravityspikes_melee", "idgun_genesis_0", "thundergun", "hero_gravityspikes");
-	self.syn["weapons"]["extras"]["rev"][1] = array("Peacekeeper MK2", "M1927", "Banshii", "Rift E9", "Nunchuks", "Skull Splitter", "Buzz Cut", "Nightbreaker", "Path of Sorrows", "Lil' Arnies", "Upgraded Lil' Arnies", "Guard of Fafnir", "Upgraded Guard of Fafnir", "Ragnarok DG-4", "Estulla Astoth", "Thundergun", "Gravity Spikes");
+	self.syn["weapons"]["extras"]["rev"][0] = array("octobomb", "octobomb_upgraded", "dragonshield", "dragonshield_upgraded", "hero_gravityspikes_melee", "idgun_genesis_0", "thundergun", "hero_gravityspikes");
+	self.syn["weapons"]["extras"]["rev"][1] = array("Lil' Arnies", "Upgraded Lil' Arnies", "Guard of Fafnir", "Upgraded Guard of Fafnir", "Ragnarok DG-4", "Estulla Astoth", "Thundergun", "Gravity Spikes");
 
-	self.syn["weapons"]["extras"]["nzp"][0] = array("ar_stg44", "smg_mp40_1940", "cymbal_monkey", "raygun_mark2");
-	self.syn["weapons"]["extras"]["nzp"][1] = array("STG-44", "MP40", "Monkey Bombs", "Ray Gun Mark II");
+	self.syn["weapons"]["extras"]["nzp"][0] = array("cymbal_monkey", "raygun_mark2");
+	self.syn["weapons"]["extras"]["nzp"][1] = array("Monkey Bombs", "Ray Gun Mark II");
 
-	self.syn["weapons"]["extras"]["nza"][0] = array("ar_stg44", "smg_mp40_1940", "cymbal_monkey", "raygun_mark2");
-	self.syn["weapons"]["extras"]["nza"][1] = array("STG-44", "MP40", "Monkey Bombs", "Ray Gun Mark II");
+	self.syn["weapons"]["extras"]["nza"][0] = array("cymbal_monkey", "raygun_mark2", "thundergun");
+	self.syn["weapons"]["extras"]["nza"][1] = array("Monkey Bombs", "Ray Gun Mark II", "Thundergun");
 
-	self.syn["weapons"]["extras"]["nzs"][0] = array("ar_stg44", "smg_mp40_1940", "cymbal_monkey", "raygun_mark2");
-	self.syn["weapons"]["extras"]["nzs"][1] = array("STG-44", "MP40", "Monkey Bombs", "Ray Gun Mark II");
+	self.syn["weapons"]["extras"]["nzs"][0] = array("cymbal_monkey", "raygun_mark2", "tesla_gun");
+	self.syn["weapons"]["extras"]["nzs"][1] = array("Monkey Bombs", "Ray Gun Mark II", "Wunderwaffe DG-2");
 
-	self.syn["weapons"]["extras"]["kino"][0] = array("ar_m14", "ar_m16", "ar_galil", "smg_mp40_1940", "cymbal_monkey", "raygun_mark2");
-	self.syn["weapons"]["extras"]["kino"][1] = array("M14", "M16", "Galil", "MP40", "Monkey Bombs", "Ray Gun Mark II");
+	self.syn["weapons"]["extras"]["kino"][0] = array("cymbal_monkey", "raygun_mark2", "thundergun");
+	self.syn["weapons"]["extras"]["kino"][1] = array("Monkey Bombs", "Ray Gun Mark II", "Thundergun");
 
-	self.syn["weapons"]["extras"]["ascen"][0] = array("ar_m14", "ar_m16", "ar_galil", "sickle_knife", "nesting_dolls", "black_hole_bomb", "raygun_mark2");
-	self.syn["weapons"]["extras"]["ascen"][1] = array("M14", "M16", "Galil", "Sickle", "Matryoshka Doll", "Gersh Device", "Ray Gun Mark II");
+	self.syn["weapons"]["extras"]["ascen"][0] = array("sickle_knife", "nesting_dolls", "black_hole_bomb", "raygun_mark2", "thundergun");
+	self.syn["weapons"]["extras"]["ascen"][1] = array("Sickle", "Matryoshka Doll", "Gersh Device", "Ray Gun Mark II", "Thundergun");
 
-	self.syn["weapons"]["extras"]["shang"][0] = array("ar_m14", "ar_m16", "ar_galil", "cymbal_monkey", "raygun_mark2", "shrink_ray");
-	self.syn["weapons"]["extras"]["shang"][1] = array("M14", "M16", "Galil", "Monkey Bombs", "Ray Gun Mark II", "31-79 JGb215");
+	self.syn["weapons"]["extras"]["shang"][0] = array("cymbal_monkey", "raygun_mark2", "shrink_ray");
+	self.syn["weapons"]["extras"]["shang"][1] = array("Monkey Bombs", "Ray Gun Mark II", "31-79 JGb215");
 
-	self.syn["weapons"]["extras"]["moon"][0] = array("ar_m14", "ar_m16", "ar_galil", "black_hole_bomb", "quantum_bomb", "raygun_mark2", "microwavegundw");
-	self.syn["weapons"]["extras"]["moon"][1] = array("M14", "M16", "Galil", "Gersh Device", "Quantum Entaglement Device", "Ray Gun Mark II", "Zap Gun Dual Wield");
+	self.syn["weapons"]["extras"]["moon"][0] = array("black_hole_bomb", "quantum_bomb", "raygun_mark2", "microwavegundw");
+	self.syn["weapons"]["extras"]["moon"][1] = array("Gersh Device", "Quantum Entaglement Device", "Ray Gun Mark II", "Zap Gun Dual Wield");
 
-	self.syn["weapons"]["extras"]["origins"][0] = array("ar_m14", "ar_stg44", "smg_mp40_1940", "lmg_mg08", "pistol_c96", "cymbal_monkey", "beacon", "tomb_shield", "raygun_mark2", "staff_water", "staff_lightning", "staff_fire", "staff_air");
-	self.syn["weapons"]["extras"]["origins"][1] = array("M14", "STG-44", "MP40", "MG-08/15", "Mauser C96", "Monkey Bombs", "G-Strike", "Zombie Shield", "Ray Gun Mark II", "Ice Staff", "Lightning Staff", "Wind Staff", "Fire Staff");
+	self.syn["weapons"]["extras"]["origins"][0] = array("cymbal_monkey", "beacon", "tomb_shield", "raygun_mark2", "staff_water", "staff_lightning", "staff_fire", "staff_air");
+	self.syn["weapons"]["extras"]["origins"][1] = array("Monkey Bombs", "G-Strike", "Zombie Shield", "Ray Gun Mark II", "Ice Staff", "Lightning Staff", "Wind Staff", "Fire Staff");
 
 	self.syn["weapons"]["aats"][0] = array("zm_aat_blast_furnace", "zm_aat_dead_wire", "zm_aat_fire_works", "zm_aat_thunder_wall", "zm_aat_turned");
 	self.syn["weapons"]["aats"][1] = array("Blast Furnace", "Dead Wire", "Fireworks", "Thunder Wall", "Turned");
@@ -241,8 +245,74 @@ function initial_variable() {
 			weapons = spawnStruct();
 			weapons.name = makeLocalizedString(weapon.displayName);
 			weapons.id = weapon.name;
-			weapons.category = weapon.weapclass;
-			self.syn["weapons"][7][self.syn["weapons"][7].size] = weapons;
+
+			if(weapons.id == "launcher_dragon_fire") {
+				weapons.name = "Dragon Fire Launcher";
+			}
+
+			// Categorize Extra Weapons (Base Maps, Die Rise)
+
+			if(weapons.id == "ar_famas" || weapons.id == "ar_peacekeeper" || weapons.id == "ar_stg44" || weapons.id == "ar_m14" || weapons.id == "ar_m16" || weapons.id == "ar_galil") {
+				weapons.category = "weapon_assault";
+				self.syn["weapons"][0][self.syn["weapons"][0].size] = weapons;
+			} else if(weapons.id == "smg_longrange" || weapons.id == "smg_thompson" || weapons.id == "smg_mp40_1940") {
+				weapons.category = "weapon_smg";
+				self.syn["weapons"][1][self.syn["weapons"][1].size] = weapons;
+			} else if(weapons.id == "shotgun_energy") {
+				weapons.category = "weapon_cqb";
+				self.syn["weapons"][2][self.syn["weapons"][2].size] = weapons;
+			} else if(weapons.id == "lmg_rpk" || weapons.id == "lmg_mg08") {
+				weapons.category = "weapon_lmg";
+				self.syn["weapons"][3][self.syn["weapons"][3].size] = weapons;
+			} else if(weapons.id == "t6_xl_svu" || weapons.id == "t6_xl_dsr50" || weapons.id == "t6_xl_barrett" || weapons.id == "h2_wa2000_cresht") {
+				weapons.category = "weapon_sniper";
+				self.syn["weapons"][4][self.syn["weapons"][4].size] = weapons;
+			} else if(weapons.id == "t6_xl_executioner" || weapons.id == "pistol_standard" || weapons.id == "pistol_energy" || weapons.id == "pistol_c96") {
+				weapons.category = "weapon_pistol";
+				self.syn["weapons"][5][self.syn["weapons"][5].size] = weapons;
+			} else if(weapons.id == "t6_xl_war_machine" || weapons.id == "launcher_multi") {
+				weapons.category = "weapon_launcher";
+				self.syn["weapons"][6][self.syn["weapons"][6].size] = weapons;
+			} else if(weapons.id == "t8_tazer_knuckles" || weapons.id == "bowie_knife_electric" || weapons.id == "knife_ballistic" || weapons.id == "knife_ballistic_no_melee" || weapons.id == "knife_ballistic_bowie") {
+				weapons.category = "weapon_melee";
+				self.syn["weapons"][8][self.syn["weapons"][8].size] = weapons;
+			} else if(
+				weapons.id == "ray_gun" || weapons.id == "raygun_mark2"|| weapons.id == "raygun_mark3" || weapons.id == "thundergun" || weapons.id == "tesla_gun" ||
+				weapons.id == "idgun_0" || weapons.id == "idgun_1" || weapons.id == "idgun_2" || weapons.id == "idgun_3" || weapons.id == "idgun_genesis_0" ||
+				weapons.id == "elemental_bow" || weapons.id == "elemental_bow_demongate" || weapons.id == "elemental_bow_rune_prison" || weapons.id == "elemental_bow_storm" || weapons.id == "elemental_bow_wolf_howl" ||
+				weapons.id == "shrink_ray" || weapons.id == "microwavegundw" || weapons.id == "staff_water" || weapons.id == "staff_lightning" || weapons.id == "staff_fire" || weapons.id == "staff_air" ||
+				weapons.id == "staff_water_upgraded" || weapons.id == "staff_lightning_upgraded" || weapons.id == "staff_fire_upgraded" || weapons.id == "staff_air_upgraded" ||
+				weapons.id == "special_crossbow_dw" || weapons.id == "hero_annihilator" || weapons.id == "skull_gun" || weapons.id == "launcher_dragon_strike" ||
+				weapons.id == "t6_xl_ray_gun" || weapons.id == "t6_xl_raygun_mark2" || weapons.id == "t6_xl_slipgun"
+			) {
+				weapons.category = "weapon_extras";
+				self.syn["weapons"][7][self.syn["weapons"][7].size] = weapons;
+			} else {
+				if(weapon.weapclass == "rifle") {
+					weapons.category = "weapon_assault";
+					self.syn["weapons"][0][self.syn["weapons"][0].size] = weapons;
+				} else if(weapon.weapclass == "smg") {
+					weapons.category = "weapon_smg";
+					self.syn["weapons"][1][self.syn["weapons"][1].size] = weapons;
+				} else if(weapon.weapclass == "spread") {
+					weapons.category = "weapon_cqb";
+					self.syn["weapons"][2][self.syn["weapons"][2].size] = weapons;
+				} else if(weapon.weapclass == "mg") {
+					weapons.category = "weapon_lmg";
+					self.syn["weapons"][3][self.syn["weapons"][3].size] = weapons;
+				} else if(weapon.weapclass == "pistol") {
+					weapons.category = "weapon_pistol";
+					self.syn["weapons"][5][self.syn["weapons"][5].size] = weapons;
+				} else if(weapon.weapclass == "rocketlauncher") {
+					weapons.category = "weapon_launcher";
+					self.syn["weapons"][6][self.syn["weapons"][6].size] = weapons;
+				} else if(weapon.weapclass == "melee" && weapons.id != "bowie_knife") {
+					weapons.category = "weapon_melee";
+					self.syn["weapons"][8][self.syn["weapons"][8].size] = weapons;
+				} else {
+					self.syn["weapons"][7][self.syn["weapons"][7].size] = weapons;
+				}
+			}
 		}
 	}
 }
@@ -1061,7 +1131,6 @@ function display_option() {
 				}
 			}
 
-
 			if(!isDefined(self.structure[index].command)) {
 				element_color = self.color_theme;
 			} else {
@@ -1209,7 +1278,6 @@ function menu_option() {
 			self add_option("Map Options", undefined, &new_menu, "Map Options");
 			self add_option("Powerup Options", undefined, &new_menu, "Powerup Options");
 			self add_option("Menu Options", undefined, &new_menu, "Menu Options");
-			self add_option("Debug Options", undefined, &new_menu, "Debug Options");
 
 			break;
 		case "Basic Options":
@@ -1235,9 +1303,7 @@ function menu_option() {
 
 			self add_toggle("Forge Mode", undefined, &forge_mode, self.forge_mode);
 
-			map = get_map_name();
-
-			if(map != "soe") {
+			if(self.map_name != "soe") {
 				self add_toggle("Exo Movement", "Enable/Disable Exo-Suits", &exo_movement, self.exo_movement);
 				self add_toggle("Infinite Boost", undefined, &infinite_boost, self.infinite_boost);
 			}
@@ -1287,10 +1353,8 @@ function menu_option() {
 			self add_toggle("Freeze Box", "Locks the Mystery Box, so it can't move", &freeze_box, self.freeze_box);
 			self add_option("Open Doors", undefined, &open_doors);
 
-			map = get_map_name();
-
 			if(!level flag::get("power_on") || !level flag::get("all_power_on")) {
-				if(map == "soe") {
+				if(self.map_name == "soe") {
 					self add_option("Turn Power On", undefined, &shock_all_electrics);
 				} else {
 					self add_option("Turn Power On", undefined, &power_on);
@@ -1371,11 +1435,9 @@ function menu_option() {
 				self add_option(self.syn["visions"][1][i], undefined, &set_vision, self.syn["visions"][0][i]);
 			}
 
-			map = get_map_name();
-
-			if(map == "soe" || map == "nzf" || map == "de" || map == "zns" || map == "gk" || map == "rev" || map == "nzp" || map == "nza" || map == "nzs" || map == "kino" || map == "ascen" || map == "shang" || map == "moon" || map == "origins") {
-				for(i = 0; i < self.syn["visions"][map][0].size; i++) {
-					self add_option(self.syn["visions"][map][1][i], undefined, &set_vision, self.syn["visions"][map][0][i]);
+			if(self.map_name == "soe" || self.map_name == "nzf" || self.map_name == "de" || self.map_name == "zns" || self.map_name == "gk" || self.map_name == "rev" || self.map_name == "nzp" || self.map_name == "nza" || self.map_name == "nzs" || self.map_name == "kino" || self.map_name == "ascen" || self.map_name == "shang" || self.map_name == "moon" || self.map_name == "origins") {
+				for(i = 0; i < self.syn["visions"][self.map_name][0].size; i++) {
+					self add_option(self.syn["visions"][self.map_name][1][i], undefined, &set_vision, self.syn["visions"][self.map_name][0][i]);
 				}
 			}
 
@@ -1463,6 +1525,10 @@ function menu_option() {
 
 			load_weapons("weapon_smg");
 
+			if(self.map_name == "soe" || self.map_name == "nzf" || self.map_name == "de") {
+				self add_option("Razorback", undefined, &give_weapon, "smg_longrange");
+			}
+
 			break;
 		case "Light Machine Guns":
 			self add_menu(menu, menu.size);
@@ -1485,6 +1551,10 @@ function menu_option() {
 		case "Pistols":
 			self add_menu(menu, menu.size);
 
+			if(self.map_name == "soe") {
+				self add_option("MR6", undefined, &give_weapon, "pistol_standard");
+			}
+
 			load_weapons("weapon_pistol");
 
 			break;
@@ -1494,99 +1564,97 @@ function menu_option() {
 			load_weapons("weapon_launcher");
 
 			break;
+		case "Melee":
+			self add_menu(menu, menu.size);
+
+			for(i = 0; i < self.syn["weapons"]["melee"][0].size; i++) {
+				self add_option(self.syn["weapons"]["melee"][1][i], undefined, &give_weapon, self.syn["weapons"]["melee"][0][i]);
+			}
+
+			if(self.map_name == "gk") {
+				self add_option("Wrench", undefined, &give_weapon, "melee_wrench");
+			}
+
+			load_weapons("weapon_melee");
+
+			break;
 		case "Extras":
 			self add_menu(menu, menu.size);
+
+			if(self.map_name == "soe" || self.map_name == "nzf" || self.map_name == "de" || self.map_name == "zns" || self.map_name == "gk" || self.map_name == "rev" || self.map_name == "nzp" || self.map_name == "nza" || self.map_name == "nzs" || self.map_name == "kino" || self.map_name == "ascen" || self.map_name == "shang" || self.map_name == "moon" || self.map_name == "origins") {
+				for(i = 0; i < self.syn["weapons"]["extras"][self.map_name][0].size; i++) {
+					self add_option(self.syn["weapons"]["extras"][self.map_name][1][i], undefined, &give_weapon, self.syn["weapons"]["extras"][self.map_name][0][i]);
+				}
+			}
 
 			for(i = 0; i < self.syn["weapons"]["extras"][0].size; i++) {
 				self add_option(self.syn["weapons"]["extras"][1][i], undefined, &give_weapon, self.syn["weapons"]["extras"][0][i]);
 			}
 
-			map = get_map_name();
-
-			if(map == "soe" || map == "nzf" || map == "de" || map == "zns" || map == "gk" || map == "rev" || map == "nzp" || map == "nza" || map == "nzs" || map == "kino" || map == "ascen" || map == "shang" || map == "moon" || map == "origins") {
-				for(i = 0; i < self.syn["weapons"]["extras"][map][0].size; i++) {
-					self add_option(self.syn["weapons"]["extras"][map][1][i], undefined, &give_weapon, self.syn["weapons"]["extras"][map][0][i]);
-				}
-			}
-
 			forEach(weapon in self.syn["weapons"][7]) {
 				switch(weapon.id) {
-					case "ar_famas":
-					case "ar_galil":
-					case "ar_m14":
-					case "ar_m16":
-					case "ar_peacekeeper":
-					case "ar_standard_upgraded_companion":
-					case "ar_stg44":
-					case "beacon":
-					case "black_hole_bomb":
+					// Common
+					case "bowie_knife":
+					case "frag_grenade":
+					case "hero_annihilator":
+					case "ray_gun":
+					// Shadows of Evil
 					case "bouncingbetty":
 					case "bouncingbetty_devil":
 					case "bouncingbetty_holly":
-					case "bowie_knife":
-					case "bowie_knife_widows_wine":
-					case "castle_riotshield":
-					case "cymbal_monkey":
-					case "cymbal_monkey_upgraded":
-					case "defaultweapon":
-					case "dragon_gauntlet_flamethrower":
-					case "dragonshield":
-					case "dragonshield_upgraded":
-					case "elemental_bow":
-					case "elemental_bow_demongate":
-					case "elemental_bow_rune_prison":
-					case "elemental_bow_storm":
-					case "elemental_bow_wolf_howl":
-					case "frag_grenade":
-					case "glaive_apothicon_0":
-					case "glaive_keeper_0":
-					case "hero_annihilator":
-					case "hero_gravityspikes":
-					case "hero_gravityspikes_melee":
-					case "hero_mirg2000":
-					case "hero_mirg2000_upgraded":
 					case "idgun_0":
 					case "idgun_1":
 					case "idgun_2":
 					case "idgun_3":
-					case "idgun_genesis_0":
-					case "island_riotshield":
-					case "knife":
-					case "knife_widows_wine":
-					case "launcher_dragon_fire":
-					case "launcher_dragon_strike":
-					case "launcher_multi":
-					case "lmg_mg08":
-					case "lmg_rpk":
-					case "melee_boneglass":
-					case "melee_dagger":
-					case "melee_fireaxe":
-					case "melee_improvise":
-					case "melee_katana":
-					case "melee_mace":
-					case "melee_nunchuks":
-					case "melee_sword":
-					case "melee_wrench":
-					case "microwavegundw":
-					case "minigun":
-					case "nesting_dolls":
 					case "octobomb":
 					case "octobomb_upgraded":
-					case "pistol_c96":
-					case "pistol_energy":
-					case "pistol_standard":
-					case "quantum_bomb":
-					case "ray_gun":
-					case "raygun_mark2":
-					case "raygun_mark3":
-					case "shotgun_energy":
-					case "shrink_ray":
-					case "sickle_knife":
+					// The Giant
+					case "cymbal_monkey":
+					case "tesla_gun":
+					// Der Eisendrache
+					case "castle_riotshield":
+					case "elemental_bow" :
+					case "elemental_bow_demongate":
+					case "elemental_bow_rune_prison":
+					case "elemental_bow_storm":
+					case "elemental_bow_wolf_howl":
+					case "hero_gravityspikes":
+					case "hero_gravityspikes_melee":
+					// Zetsubou No Shima
+					case "hero_mirg2000":
+					case "hero_mirg2000_upgraded":
 					case "skull_gun":
-					case "smg_longrange":
-					case "smg_mp40_1940":
-					case "smg_thompson":
+					// Gorod Krovi
+					case "cymbal_monkey_upgraded":
+					case "dragon_gauntlet_flamethrower":
+					case "launcher_dragon_strike":
 					case "special_crossbow_dw":
+					case "raygun_mark3":
+					case "melee_wrench":
+					case "melee_dagger":
+					case "melee_fireaxe":
+					case "melee_sword":
+					// Revelations
+					case "idgun_genesis_0":
+					case "thundergun":
+					case "melee_nunchuks":
+					case "melee_mace":
+					case "melee_improvise":
+					case "melee_boneglass":
+					case "melee_katana":
+					// Chronicles Common
+					case "raygun_mark2":
+					//Ascension
+					case "black_hole_bomb":
+					case "nesting_dolls":
+					case "sickle_knife":
+					// Shangri-La
+					case "shrink_ray":
+					// Moon
+					case "microwavegundw":
+					case "quantum_bomb":
+					// Origins
+					case "beacon":
 					case "staff_air":
 					case "staff_fire":
 					case "staff_lightning":
@@ -1595,12 +1663,6 @@ function menu_option() {
 					case "staff_fire_upgraded":
 					case "staff_lightning_upgraded":
 					case "staff_water_upgraded":
-					case "sticky_grenade_widows_wine":
-					case "tesla_gun":
-					case "thundergun":
-					case "tomb_shield":
-					case "zod_riotshield":
-					case "zod_riotshield_upgraded_zm":
 						break;
 					default:
 						self add_option(weapon.name, "ID: " + weapon.id + " | Category: " + weapon.category, &give_weapon, weapon.id);
@@ -2215,7 +2277,7 @@ function get_power_trigger() {
 }
 
 function power_on() {
-	if(get_map_name() == "rev") {
+	if(self.map_name == "rev") {
 		for(i = 1; i < 5; i++) {
 			level flag::set("power_on" + i);
 		}
@@ -2229,7 +2291,7 @@ function power_on() {
 		trigger notify("trigger_activated", self);
 		return;
 	}
-	if(get_map_name() == "shang") {
+	if(self.map_name == "shang") {
 		directions = array("power_trigger_left", "power_trigger_right");
 		forEach(direction in directions) {
 			switch_trigger = getEnt("power_trigger_" + direction, "targetName");
@@ -2294,7 +2356,9 @@ function give_weapon(weapon) {
 	weapon = getWeapon(weapon);
 
 	if(isDefined(self.give_packed_weapon) && self.give_packed_weapon == 1) {
-		if(zm_weapons::can_upgrade_weapon(weapon)) {
+		if(weapon == "staff_air" || weapon == "staff_fire" || weapon == "staff_lightning" || weapon == "staff_water") {
+			weapon = weapon + "_upgraded";
+		} else if(zm_weapons::can_upgrade_weapon(weapon)) {
 			weapon = level.zombie_weapons[weapon].upgrade;
 		}
 	}
