@@ -65,7 +65,7 @@ function initial_variable() {
 	self.map_name = get_map_name();
 	self.point_increment = 100;
 	level.doors_done = false;
-	
+
 	// Visions
 
 	self.syn["visions"][0] = array("", "zm_bgb_idle_eyes", "zm_bgb_eye_candy_vs_1", "zm_bgb_eye_candy_vs_2", "zm_bgb_eye_candy_vs_3", "zm_bgb_eye_candy_vs_4", "zm_bgb_now_you_see_me", "zm_bgb_in_plain_sight", "drown_blur", "zm_health_blur");
@@ -106,7 +106,7 @@ function initial_variable() {
 
 	self.syn["visions"]["origins"][0] = array("zm_tomb_in_plain_sight", "zm_factory_teleport");
 	self.syn["visions"]["origins"][1] = array("Zombie Blood", "Teleport");
-	
+
 	// Weapons
 
 	self.syn["weapons"]["category"] = array("Assault Rifles", "Sub Machine Guns", "Sniper Rifles", "Shotguns", "Light Machine Guns", "Pistols", "Launchers", "Melee", "Equipment", "Extras");
@@ -139,11 +139,11 @@ function initial_variable() {
 
 	self.syn["weapons"]["aats"][0] = array("zm_aat_blast_furnace", "zm_aat_dead_wire", "zm_aat_fire_works", "zm_aat_thunder_wall", "zm_aat_turned");
 	self.syn["weapons"]["aats"][1] = array("Blast Furnace", "Dead Wire", "Fireworks", "Thunder Wall", "Turned");
-	
+
 	// Perks
 
-	self.syn["perks"]["common"][0] = array("specialty_quickrevive", "specialty_armorvest", "specialty_doubletap2", "specialty_staminup", "specialty_fastreload", "specialty_additionalprimaryweapon", "specialty_deadshot", "specialty_widowswine", "specialty_electriccherry", "specialty_phdflopper", "specialty_whoswho");
-	self.syn["perks"]["common"][1] = array("Quick Revive", "Juggernog", "Double Tap", "Stamin-Up", "Speed Cola", "Mule Kick", "Deadshot", "Widow's Wine", "Electric Cherry", "PhD Slider", "Who's Who");
+	self.syn["perks"]["common"][0] = array("specialty_quickrevive", "specialty_armorvest", "specialty_doubletap2", "specialty_staminup", "specialty_fastreload", "specialty_additionalprimaryweapon", "specialty_deadshot", "specialty_widowswine", "specialty_electriccherry", "specialty_phdflopper", "specialty_whoswho", "specialty_reserve", "specialty_vigor_rush", "specialty_bandolier", "specialty_blazephase", "specialty_bloodwolf", "specialty_da_death_perception", "specialty_dyingwish", "specialty_razor", "specialty_slider", "specialty_stronghold", 	"specialty_timeslip", "specialty_victorious", "specialty_winterwail", "specialty_zombshell", "specialty_elementalpop", "specialty_da_phd_slider", "specialty_vulture", "specialty_da_tombstone", "specialty_changechews", "specialty_bloodbullets", "specialty_cashback", "specialty_damnade", "specialty_downersdelight", "specialty_estatic", "specialty_inferno", "specialty_magnet", "specialty_mh_mocha", "specialty_nitrogen", "specialty_nukacola", "specialty_packbox", "specialty_point", "specialty_swarmscotch", "specialty_repairman", "specialty_nobear", "specialty_momentum", "specialty_spectorshot", "specialty_ffyl", "specialty_icu", "specialty_tactiquilla", "specialty_milk", "specialty_banana", "specialty_bull_ice", "specialty_crusade", "specialty_moonshine", "specialty_directionalfire", "specialty_nottargetedbyairsupport", "specialty_loudenemies");
+	self.syn["perks"]["common"][1] = array("Quick Revive", "Juggernog", "Double Tap", "Stamin-Up", "Speed Cola", "Mule Kick", "Deadshot", "Widow's Wine", "Electric Cherry", "PhD Slider", "Who's Who", "Reserve Soda", "Vigor Rush", "Bandolier Bandit", "Blaze Phase", "Blood Wolf Bite", "Death Perception", "Dying Wish", "Ethereal Razor", "PhD Slider (BO4)", "Stone Cold Stronghold", "Timeslip", "Victorious Tortoise", "Winter's Wail", "Zombshell", "Elemental Pop", "PhD Slider (Cold War)", "Vulture-Aid", "Tombstone", "Change Chews", "Blood Bullets", "Cashback Cocktail", "Dam-A-Nade", "Downers Delight", "Estatic Elixir", "Inciner-Brandy", "Magnet Margarita", "Miricle Hands Mocha", "Nitrogen Cooled", "Nuka Cola", "Pack-A-Box", "Point Crusher", "Swarm Scotch", "Repairman Rum", "No Bear Brew", "Momentum Mojito", "Spectre Shot", "Fighter's Fizz", "I.C.U", "Tactiquilla Sangria", "Muscle Milk", "Banana Colada", "Bull Ice Blast", "Crusaders Ale", "Madgaz Moonshine", "Directional Fire", "Ethereal Razor", "Timeslip");
 	self.syn["perks"]["all"] = getArrayKeys(level._custom_perks);
 
 	// Visions
@@ -172,7 +172,7 @@ function initial_variable() {
 			}
 		}
 	}
-	
+
 	// Powerups
 
 	self.syn["powerups"][0] = getArrayKeys(level.zombie_include_powerups);
@@ -183,7 +183,7 @@ function initial_variable() {
 			self.syn["powerups"][1][i] = "Widow's Wine Grenade";
 		}
 	}
-	
+
 	// Gobblegum
 
 	self.syn["gobblegum"][0] = getArrayKeys(level.bgb);
@@ -191,7 +191,7 @@ function initial_variable() {
 	for(i = 0; i < self.syn["gobblegum"][0].size; i++) {
 		self.syn["gobblegum"][1][i] = construct_string(replace_character(getSubStr(self.syn["gobblegum"][0][i], 7), "_", " "));
 	}
-	
+
 	// Weapons
 
 	weapon_types = array("assault", "smg", "cqb", "lmg", "sniper", "pistol", "launcher");
@@ -239,8 +239,14 @@ function initial_variable() {
 			weapons = spawnStruct();
 			weapons.name = makeLocalizedString(weapon.displayName);
 			weapons.id = weapon.name;
-			weapons.class_name = tablelookup("gamedata/weapons/zm/" + level.script + "_weapons.csv", 0, weapons.id, 16);
-			weapons.vo_name = tablelookup("gamedata/weapons/zm/" + level.script + "_weapons.csv", 0, weapons.id, 4);
+			weapon_table = "gamedata/weapons/zm/" + level.script + "_weapons.csv";
+			
+			if(tablelookup(weapon_table, 0, "weapon_name", 1) == "") {
+				weapon_table = "gamedata/weapons/zm/zm_levelcommon_weapons.csv";
+			}
+			
+			weapons.class_name = tablelookup(weapon_table, 0, weapons.id, 16);
+			weapons.vo_name = tablelookup(weapon_table, 0, weapons.id, 4);
 
 			if(weapons.id == "launcher_dragon_fire") {
 				weapons.name = "Dragon Fire Launcher";
@@ -405,6 +411,7 @@ function initial_observer() {
 function event_system() {
 	level endon("game_ended");
 	self endon("disconnect");
+	
 	for(;;) {
 		event_name = self util::waittill_any_return("spawned_player", "player_downed", "death", "joined_spectators");
 		switch (event_name) {
@@ -438,7 +445,7 @@ function event_system() {
 					self.controls["text"][2] = self create_text("Select: ^3[{+activate}] ^7Back: ^3[{+melee}]", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 4), (self.y_offset + 60), (0.75, 0.75, 0.75), 1, 10);
 					self.controls["text"][3] = self create_text("Sliders: ^3[{+smoke}] ^7and ^3[{+frag}]", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 4), (self.y_offset + 80), (0.75, 0.75, 0.75), 1, 10);
 
-					wait 8;
+					wait 12;
 
 					close_controls_menu();
 				}
@@ -459,6 +466,7 @@ function event_system() {
 function session_expired() {
 	level waittill("game_ended");
 	level endon("game_ended");
+	
 	foreach(index, player in level.players) {
 		if(!player has_access()) {
 			continue;
@@ -888,6 +896,7 @@ function empty_array() {
 
 function execute_function(command, parameter_1, parameter_2, parameter_3) {
 	self endon("disconnect");
+	
 	if(!isDefined(command)) {
 		return;
 	}
@@ -1596,10 +1605,8 @@ function menu_option() {
 
 			forEach(weapon in self.syn["weapons"][9]) {
 				switch(weapon.id) {
-					// Common
 					case "bowie_knife":
 					case "frag_grenade":
-					//// Origins
 					case "staff_air_upgraded":
 					case "staff_fire_upgraded":
 					case "staff_lightning_upgraded":
@@ -1843,7 +1850,8 @@ function god_mode() {
 
 function god_mode_loop() {
 	self endOn("stop_god_mode");
-	self endOn("game_ended");
+	self endon("disconnect");
+	level endon("game_ended");
 
 	for(;;) {
 		self enableInvulnerability();
@@ -1853,7 +1861,7 @@ function god_mode_loop() {
 
 function frag_no_clip() {
 	self endon("disconnect");
-	self endon("game_ended");
+	level endon("game_ended");
 
 	if(!isDefined(self.frag_no_clip)) {
 		self.frag_no_clip = true;
@@ -1875,6 +1883,7 @@ function frag_no_clip() {
 function frag_no_clip_loop() {
 	self endon("disconnect");
 	self endon("noclip_end");
+	
 	self disableWeapons();
 	self disableOffHandWeapons();
 	self.frag_no_clip_loop = true;
@@ -1926,7 +1935,7 @@ function infinite_ammo() {
 
 function infinite_ammo_loop() {
 	self endOn("stop_infinite_ammo");
-	self endOn("game_ended");
+	level endon("game_ended");
 
 	for(;;) {
 		weapons = self getWeaponsList();
@@ -1952,7 +1961,7 @@ function infinite_shield() {
 
 function infinite_shield_loop() {
 	self endOn("stop_infinite_shield");
-	self endOn("game_ended");
+	level endon("game_ended");
 
 	for(;;) {
 		self [[self.player_shield_reset_health]]();
@@ -2115,7 +2124,7 @@ function infinite_boost() {
 
 function infinite_boost_loop() {
 	self endOn("stop_infinite_boost");
-	self endOn("game_ended");
+	level endon("game_ended");
 
 	for(;;) {
 		self setDoubleJumpEnergy(100);
@@ -2275,7 +2284,7 @@ function shoot_powerups() {
 
 function shoot_powerups_loop() {
 	self endOn("stop_shoot_powerups");
-	self endOn("game_ended");
+	level endon("game_ended");
 
 	for(;;) {
 		while(self attackButtonPressed()) {
