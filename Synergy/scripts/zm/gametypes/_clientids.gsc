@@ -9,6 +9,7 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
+#using scripts\zm\_zm;
 #using scripts\zm\_zm_bgb;
 #using scripts\zm\_zm_blockers;
 #using scripts\zm\_zm_hero_weapon;
@@ -177,7 +178,7 @@ function initial_variable() {
 
 	self.syn["powerups"][0] = getArrayKeys(level.zombie_include_powerups);
   self.syn["powerups"][1] = [];
-  for (i = 0; i < self.syn["powerups"][0].size; i++) {
+  for(i = 0; i < self.syn["powerups"][0].size; i++) {
     self.syn["powerups"][1][i] = construct_string(replace_character(self.syn["powerups"][0][i], "_", " "));
 		if(self.syn["powerups"][1][i] == "Ww Grenade") {
 			self.syn["powerups"][1][i] = "Widow's Wine Grenade";
@@ -240,11 +241,11 @@ function initial_variable() {
 			weapons.name = makeLocalizedString(weapon.displayName);
 			weapons.id = weapon.name;
 			weapon_table = "gamedata/weapons/zm/" + level.script + "_weapons.csv";
-			
+
 			if(tablelookup(weapon_table, 0, "weapon_name", 1) == "") {
 				weapon_table = "gamedata/weapons/zm/zm_levelcommon_weapons.csv";
 			}
-			
+
 			weapons.class_name = tablelookup(weapon_table, 0, weapons.id, 16);
 			weapons.vo_name = tablelookup(weapon_table, 0, weapons.id, 4);
 
@@ -388,7 +389,11 @@ function initial_observer() {
 					}
 
 					if(isDefined(self.structure[cursor].array) || isDefined(self.structure[cursor].increment)) {
-						cursor_selected = set_variable(isDefined(self.structure[cursor].array), self.structure[cursor].array[self.slider[(menu + "_" + cursor)]], self.slider[(menu + "_" + cursor)]);
+						if(isDefined(self.structure[cursor].array)) {
+							cursor_selected = set_variable(isDefined(self.structure[cursor].array), self.structure[cursor].array[self.slider[(menu + "_" + cursor)]], self.slider[(menu + "_" + cursor)]);
+						} else {
+							cursor_selected = self.slider[(menu + "_" + cursor)];
+						}
 						self thread execute_function(self.structure[cursor].command, cursor_selected, self.structure[cursor].parameter_1, self.structure[cursor].parameter_2);
 					} else {
 						self thread execute_function(self.structure[cursor].command, self.structure[cursor].parameter_1, self.structure[cursor].parameter_2);
@@ -411,7 +416,7 @@ function initial_observer() {
 function event_system() {
 	level endon("game_ended");
 	self endon("disconnect");
-	
+
 	for(;;) {
 		event_name = self util::waittill_any_return("spawned_player", "player_downed", "death", "joined_spectators");
 		switch (event_name) {
@@ -466,7 +471,7 @@ function event_system() {
 function session_expired() {
 	level waittill("game_ended");
 	level endon("game_ended");
-	
+
 	foreach(index, player in level.players) {
 		if(!player has_access()) {
 			continue;
@@ -482,7 +487,7 @@ function player_connect() {
 	level endon("game_ended");
 
 	for(;;) {
-		level waitTill("connected", player);
+		level waittill("connected", player);
 		player.access = set_variable(player isHost(), "Host",  "None");
 		player thread event_system();
 	}
@@ -492,11 +497,14 @@ function player_disconnect() {
 	[[level.player_disconnect]]();
 }
 
-function player_damage(einflictor, eattacker, idamage, idflags, smeansofdeath, sweapon, vpoint, vdir, shitloc, psoffsettime) {
+function player_damage_callback(inflictor, attacker, damage, flags, death_reason, weapon, point, direction, hit_location, time_offset) {
+	self endon("disconnect");
+
 	if(isDefined(self.god_mode) && self.god_mode) {
 		return;
 	}
-	[[level.player_damage]](einflictor, eattacker, idamage, idflags, smeansofdeath, sweapon, vpoint, vdir, shitloc, psoffsettime);
+
+	[[level.OriginalCallbackPlayerDamage]](inflictor, attacker, damage, flags, death_reason, weapon, point, direction, hit_location, time_offset);
 }
 
 function player_downed(einflictor, eattacker, idamage, smeansofdeath, sweapon, vdir, shitloc, psoffsettime, deathanimduration) {
@@ -896,7 +904,7 @@ function empty_array() {
 
 function execute_function(command, parameter_1, parameter_2, parameter_3) {
 	self endon("disconnect");
-	
+
 	if(!isDefined(command)) {
 		return;
 	}
@@ -1137,7 +1145,6 @@ function display_option() {
 				}
 			}
 
-
 			if(!isDefined(self.structure[index].command)) {
 				element_color = self.color_theme;
 			} else {
@@ -1237,7 +1244,7 @@ function update_progression() {
 function update_scrollbar() {
 	maximum = min(self.structure.size, self.option_limit);
 	height = int((maximum * self.option_spacing));
-	adjustment = set_variable(self.structure.size > self.option_limit, ((180 / self.structure.size) * maximum), height);
+	adjustment = set_variable(self.structure.size > self.option_limit, ((self.menu["foreground"].height / self.structure.size) * maximum), height);
 	if(height - adjustment == 0) {
 		position = set_variable(self.structure.size > self.option_limit, 0, 0);
 	} else {
@@ -1349,7 +1356,8 @@ function menu_option() {
 			self add_option("Kill All Zombies", undefined, &kill_all_zombies);
 
 			self add_toggle("One Shot Zombies", undefined, &one_shot_zombies, self.one_shot_zombies);
-			self add_toggle("Set Round 60+ Health Cap", "Cap Zombies Health after Round 60", &set_zombie_health_cap, self.zombie_health_cap);
+			self add_increment("Set Round Health Cap", "Cap Zombies Health to Specified Round", &set_zombie_health_cap, 1, 1, 255, 1);
+			self add_option("Reset Zombie Health Cap", "Set Health Cap back to Normal", &reset_zombie_health_cap);
 
 			self add_array("Zombie ESP", "Set Colored Outlines around Zombies", &outline_zombies, array("None", "Orange", "Green", "Purple", "Blue"));
 
@@ -1693,14 +1701,14 @@ function get_map_name() {
 
 function iPrintString(string) {
   if(!isDefined(self.syn["string"])) {
-    self.syn["string"] = self create_text(string, "default", 1.5, "center", "top", 0, -115, (1,1,1), 1, 9999, false);
+    self.syn["string"] = self create_text(string, "default", 1.5, "center", "top", 0, -115, (1, 1, 1), 1, 9999, false);
   } else {
     self.syn["string"] set_text(string);
   }
   self.syn["string"] notify("stop_hud_fade");
   self.syn["string"].alpha = 1;
   self.syn["string"] setText(string);
-  self.syn["string"] thread fade_hud(0, 4);
+  self.syn["string"] thread fade_hud(0, 2.5);
 }
 
 function fade_hud(alpha, time) {
@@ -1785,6 +1793,7 @@ function set_menu_rainbow() {
 		self.color_theme = "rainbow";
 		self close_menu();
 		self open_menu();
+		self.menu["title"].x = 264.2;
 	}
 }
 
@@ -1804,6 +1813,7 @@ function set_menu_color(value, color) {
 	self.color_theme = (self.menu_color_red / 255, self.menu_color_green / 255, self.menu_color_blue / 255);
 	self close_menu();
 	self open_menu();
+	self.menu["title"].x = 264.2;
 }
 
 function watermark() {
@@ -1811,9 +1821,10 @@ function watermark() {
 	if(self.watermark) {
 		iPrintString("Watermark [^2ON^7]");
 		if(!isDefined(self.syn["watermark"])) {
-			self.syn["watermark"] = self create_text("SyndiShanX", self.font, 2, "TOP_LEFT", "TOPCENTER", -425, 10, "rainbow", 1, 3);
+			self.syn["watermark"] = self create_text("SyndiShanX", self.font, 2, "TOP_LEFT", "TOPCENTER", -425, 10, self.color_theme, 1, 3);
 		} else {
 			self.syn["watermark"].alpha = 1;
+			self.syn["watermark"].color = self.color_theme;
 		}
 	} else {
 		iPrintString("Watermark [^1OFF^7]");
@@ -1849,8 +1860,9 @@ function god_mode() {
 }
 
 function god_mode_loop() {
-	self endOn("stop_god_mode");
+	self endon("stop_god_mode");
 	self endon("disconnect");
+
 	level endon("game_ended");
 
 	for(;;) {
@@ -1861,6 +1873,7 @@ function god_mode_loop() {
 
 function frag_no_clip() {
 	self endon("disconnect");
+
 	level endon("game_ended");
 
 	if(!isDefined(self.frag_no_clip)) {
@@ -1882,8 +1895,9 @@ function frag_no_clip() {
 
 function frag_no_clip_loop() {
 	self endon("disconnect");
+
 	self endon("noclip_end");
-	
+
 	self disableWeapons();
 	self disableOffHandWeapons();
 	self.frag_no_clip_loop = true;
@@ -1934,7 +1948,7 @@ function infinite_ammo() {
 }
 
 function infinite_ammo_loop() {
-	self endOn("stop_infinite_ammo");
+	self endon("stop_infinite_ammo");
 	level endon("game_ended");
 
 	for(;;) {
@@ -1960,7 +1974,7 @@ function infinite_shield() {
 }
 
 function infinite_shield_loop() {
-	self endOn("stop_infinite_shield");
+	self endon("stop_infinite_shield");
 	level endon("game_ended");
 
 	for(;;) {
@@ -2046,8 +2060,9 @@ function forge_mode() {
 }
 
 function forge_mode_loop() {
-	self endOn("disconnect");
-	self endOn("stop_forge_mode");
+	self endon("disconnect");
+
+	self endon("stop_forge_mode");
 
 	while (true) {
 		trace = beamTrace(self getTagOrigin("j_head"), self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 1000000, 1, self);
@@ -2123,7 +2138,7 @@ function infinite_boost() {
 }
 
 function infinite_boost_loop() {
-	self endOn("stop_infinite_boost");
+	self endon("stop_infinite_boost");
 	level endon("game_ended");
 
 	for(;;) {
@@ -2232,7 +2247,7 @@ function power_on() {
 			level flag::set("power_on" + i);
 		}
 		level flag::set("all_power_on");
-		waitTillFrameEnd;
+		waittillFrameEnd;
 
 		while(!level flag::get("apothicon_near_trap")) {
 			wait .1;
@@ -2283,7 +2298,7 @@ function shoot_powerups() {
 }
 
 function shoot_powerups_loop() {
-	self endOn("stop_shoot_powerups");
+	self endon("stop_shoot_powerups");
 	level endon("game_ended");
 
 	for(;;) {
@@ -2447,31 +2462,54 @@ function one_shot_zombies() {
 	}
 }
 
-function set_zombie_health_cap() {
-	if(!isDefined(self.zombie_health_cap)) {
-		iPrintString("Round 60+ Health Cap [^2ON^7]");
-		self.zombie_health_cap = true;
-		while(isDefined(self.zombie_health_cap)) {
+function calculate_health(round_number) {
+  level.zombie_health = level.zombie_vars["zombie_health_start"];
+  for (i = 2; i <= round_number; i++) {
+    if(i >= 10) {
+      old_health = level.zombie_health;
+      level.zombie_health = level.zombie_health + (int(level.zombie_health * level.zombie_vars["zombie_health_increase_multiplier"]));
+    }
+    level.zombie_health = int(level.zombie_health + level.zombie_vars["zombie_health_increase"]);
+  }
+	return level.zombie_health;
+}
+
+function reset_zombie_health_cap() {
+	self notify("stop_zombie_health_cap");
+	wait 0.5;
+	level.zombie_health = calculate_health(zm::get_round_number());
+	forEach(zombie in get_zombies()) {
+		zombie.maxHealth = level.zombie_health;
+		zombie.health = level.zombie_health;
+	}
+}
+
+function set_zombie_health_cap(round) {
+	iPrintString("Set Round " + round + " Health Cap");
+	self notify("stop_zombie_health_cap");
+	wait 0.5;
+	self thread zombie_health_cap_loop(round, calculate_health(round));
+}
+
+function zombie_health_cap_loop(round, health_cap) {
+	self endon("stop_zombie_health_cap");
+	level endon("game_ended");
+	for(;;) {
+		if(round < zm::get_round_number()) {
+			level.zombie_health = health_cap;
+			
 			forEach(zombie in get_zombies()) {
-				if(zombie.maxHealth > 122086) {
-					level.zombie_health = 122086;
-					zombie.maxHealth = 122086;
+				if(zombie.maxHealth > health_cap) {
+					zombie.maxHealth = health_cap;
 				}
-				if(zombie.health > 122086) {
-					zombie.health = 122086;
+				if(zombie.health > health_cap) {
+					zombie.health = health_cap;
 				}
 			}
-			wait 0.01;
+		} else {
+			level waittill("start_of_round");
 		}
-	} else {
-		iPrintString("Round 60+ Health Cap [^1OFF^7]");
-		self.zombie_health_cap = undefined;
-		level.zombie_health = level.zombie_vars["zombie_health_start"];
-		forEach(zombie in get_zombies()) {
-			zombie.maxHealth = level.zombie_vars["zombie_health_start"];
-			zombie.health = level.zombie_vars["zombie_health_start"];
-		}
-		zombie_utility::ai_calculate_health(level.round_number);
+		wait 0.5;
 	}
 }
 
