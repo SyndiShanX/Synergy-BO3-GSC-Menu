@@ -136,6 +136,17 @@ function initial_variable() {
 	self.syn["weapons"]["extras"]["origins"][0] = array("tomb_shield");
 	self.syn["weapons"]["extras"]["origins"][1] = array("Zombie Shield");
 
+	// Camos
+
+	self.syn["camos"][0] = [];
+	for(i = 153; i <= 291; i++) {
+		if(i != 184 && i != 185 && i != 190 && i != 223 && i != 244 && i != 245 && i != 247 && i != 253 && i != 254 && i != 255 && i != 261 && i != 263 && i != 267 && i != 268 && i != 273 && i != 280 && i != 281 && i != 282 && i != 283) {
+			self.syn["camos"][0][self.syn["camos"][0].size] = i - 153;
+		}
+	}
+
+	self.syn["camos"][1] = array("None", "Jungle Tech", "Ash", "Flectarn", "Heat Stroke", "Snow Job", "Dante", "Integer", "6 Speed", "Policia", "Ardent", "Burnt", "Bliss", "Battle", "Chameleon", "Gold", "Diamond", "Dark Matter", "Arctic", "Jungle", "Hunstman", "Woodlums", "Contagious", "Fear", "WMD", "Red Hex", "Ritual", "Black Ops III", "Weaponized 115", "Cyborg", "True Vet", "Take Out", "Urban", "Nuk3town", "Transgression", "Storm", "Wartorn", "Prestige", "Mindful", "Etching", "Ice", "Dust", "Jungle Cat", "Jungle Party", "Contrast", "Verde", "Firebrand", "Field", "Stealth", "Light", "Spark", "Timber", "Inferno", "Hallucination", "Pixel", "Royal", "Infrared", "Heat", "Violet", "Halcyon", "Gem", "Monochrome", "Sunshine", "Swindler", "C.O.D.E. Warriors", "Intensity", "Zebra (Unnamed)", "Couch (Unnamed)", "Forest (Unnamed)", "Rust (Unnamed)", "Emergeon", "Topaz", "Garnet", "Sapphire", "Emerald", "Amethyst", "Quartz", "Overgrowth", "Bloody Valentine", "Haptic", "Dragon Fire", "Dragon Fire Blue", "Dragon Fire Green", "Dragon Fire Red", "Dragon Fire Purple", "COD XP", "CWL Champions", "Excellence", "MindFreak", "Nv", "OrbitGG", "Tainted Minds", "Epsilon eSports", "Team Infused", "Team LDLC", "Millenium", "Splyce", "Supremacy", "Cloud9", "eLevate", "Team EnVy", "Faze Clan", "OpTic Gaming", "Rise Nation", "Loading", "Underworld", "Revelations PAP 1", "Cosmic", "Into the Void", "Revelations PAP 4", "Revelations PAP 5", "Lucid", "Luck of the Irish", "Chronicles PAP", "Origins PAP", "Cherry Fizz", "Empire", "Permafrost", "Hive", "Watermelon");
+
 	// AATs
 
 	self.syn["weapons"]["aats"][0] = array("zm_aat_blast_furnace", "zm_aat_dead_wire", "zm_aat_fire_works", "zm_aat_thunder_wall", "zm_aat_turned");
@@ -1336,6 +1347,7 @@ function menu_option() {
 
 			self add_option("Give Weapons", undefined, &new_menu, "Give Weapons");
 			self add_toggle("Give Pack-a-Punched Weapons", "Weapons Given will be Pack-a-Punched", &give_packed_weapon, self.give_packed_weapon);
+			self add_option("Equip Camo", undefined, &new_menu, "Equip Camo");
 			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
 
 			self add_option("Take Current Weapon", undefined, &take_weapon);
@@ -1510,6 +1522,14 @@ function menu_option() {
 					default:
 						self add_option(vision.displayName, vision.name, &set_vision, vision.name);
 				}
+			}
+
+			break;
+		case "Equip Camo":
+			self add_menu(menu, menu.size);
+
+			for(i = 0; i < self.syn["camos"][0].size; i++) {
+				self add_option(self.syn["camos"][1][i], undefined, &equip_camo, self.syn["camos"][0][i]);
 			}
 
 			break;
@@ -2290,7 +2310,7 @@ function shoot_powerups() {
 	self.shoot_powerups = !return_toggle(self.shoot_powerups);
 	if(self.shoot_powerups) {
 		iPrintString("Shoot Powerups [^2ON^7]");
-		shoot_powerups_loop();
+		self thread shoot_powerups_loop();
 	} else {
 		iPrintString("Shoot Powerups [^1OFF^7]");
 		self notify("stop_shoot_powerups");
@@ -2388,6 +2408,19 @@ function give_weapon(weapon) {
 	}
 	wait .5;
 	self giveStartAmmo(weapon);
+}
+
+function equip_camo(camo_index) {
+	weapon = self getCurrentWeapon();
+  stock = self getWeaponAmmoStock(weapon);
+  clip = self getWeaponAmmoClip(weapon);
+
+  self takeWeapon(weapon);
+  self giveWeapon(weapon, self calcWeaponOptions(camo_index, 0, 0), 0);
+
+  self setWeaponAmmoStock(weapon, stock);
+  self setWeaponAmmoClip(weapon, clip);
+  self setSpawnWeapon(weapon, true);
 }
 
 function give_aat(value) {
@@ -2497,7 +2530,7 @@ function zombie_health_cap_loop(round, health_cap) {
 	for(;;) {
 		if(round < zm::get_round_number()) {
 			level.zombie_health = health_cap;
-			
+
 			forEach(zombie in get_zombies()) {
 				if(zombie.maxHealth > health_cap) {
 					zombie.maxHealth = health_cap;
