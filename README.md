@@ -33,7 +33,7 @@ If you have any Issues/Suggestions, please Submit them in [Issues](https://githu
 * Place the `mods` Folder from the Zip into the Game's Folder
   * (The `players` Folder is Optional, it adds Dark Matter and Fully Kitted Guns in Offline Mode and with the Menu)
 
-* Launch `modtools_launcher.bat`, tick `zm_mod` on the Left Side, tick the Link Box on the Right, Type `zm_mod.ff` in the Text Box above Build, then click Build
+* Launch the Mod Tools via Steam, tick `zm_mod` on the Left Side, tick the Link Box on the Right, Type `zm_mod.ff` in the Text Box above Build, then click Build
 
 * Launch the Game, and Enable Synergy in Mods and Enjoy
 
