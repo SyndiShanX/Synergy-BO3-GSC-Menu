@@ -65,7 +65,6 @@ function initial_variable() {
 	self.color_theme = "rainbow";
 	self.map_name = get_map_name();
 	self.point_increment = 100;
-	level.doors_done = false;
 
 	// Visions
 
@@ -506,16 +505,6 @@ function player_connect() {
 
 function player_disconnect() {
 	[[level.player_disconnect]]();
-}
-
-function player_damage_callback(inflictor, attacker, damage, flags, death_reason, weapon, point, direction, hit_location, time_offset) {
-	self endon("disconnect");
-
-	if(isDefined(self.god_mode) && self.god_mode) {
-		return;
-	}
-
-	[[level.OriginalCallbackPlayerDamage]](inflictor, attacker, damage, flags, death_reason, weapon, point, direction, hit_location, time_offset);
 }
 
 function player_downed(einflictor, eattacker, idamage, smeansofdeath, sweapon, vdir, shitloc, psoffsettime, deathanimduration) {
@@ -1103,10 +1092,6 @@ function display_option() {
 			self.menu["toggle"][0] = [];
 		}
 
-		if(!isDefined(self.menu["toggle"][1])) {
-			self.menu["toggle"][1] = [];
-		}
-
 		menu = self get_menu();
 		cursor = self get_cursor();
 		maximum = min(self.structure.size, self.option_limit);
@@ -1129,7 +1114,7 @@ function display_option() {
 			if(isDefined(self.structure[index].toggle)) { // Toggle Off
 				self.menu["toggle"][0][index] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 14), (self.y_offset + ((a * self.option_spacing) + 19)), 10, 10, (0.25, 0.25, 0.25), 1, 9);
 				if(self.structure[index].toggle) { // Toggle On
-					self.menu["toggle"][1][index] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 13), (self.y_offset + ((a * self.option_spacing) + 20)), 8, 8, (1, 1, 1), 1, 10);
+					self.menu["toggle"][0][index].color = (1, 1, 1);
 				}
 			}
 
@@ -1741,12 +1726,13 @@ function fade_hud(alpha, time) {
 function construct_string(string) {
 	final = "";
 	for(e = 0; e < string.size; e++) {
-		if(e == 0)
+		if(e == 0) {
 			final += toUpper(string[e]);
-		else if(string[e - 1] == " ")
+		} else if(string[e - 1] == " ") {
 			final += toUpper(string[e]);
-		else
+		} else {
 			final += string[e];
+		}
 	}
 	return final;
 }
@@ -1754,10 +1740,11 @@ function construct_string(string) {
 function replace_character(string, substring, replace) {
 	final = "";
 	for(e = 0; e < string.size; e++) {
-		if(string[e] == substring)
+		if(string[e] == substring) {
 			final += replace;
-		else
+		} else {
 			final += string[e];
+		}
 	}
 	return final;
 }
@@ -1867,7 +1854,6 @@ function hide_weapon() {
 
 function god_mode() {
 	self.god_mode = !return_toggle(self.god_mode);
-	wait .01;
 	if(self.god_mode) {
 		iPrintString("God Mode [^2ON^7]");
 		self enableInvulnerability();
@@ -2434,7 +2420,7 @@ function take_weapon() {
 }
 
 function drop_weapon() {
-	self dropitem(self getCurrentWeapon());
+	self dropItem(self getCurrentWeapon());
 }
 
 // Zombie Options
