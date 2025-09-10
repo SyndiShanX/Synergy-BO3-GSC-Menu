@@ -6,6 +6,7 @@
 #using scripts\shared\clientField_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\hud_util_shared;
+#using scripts\shared\spawner_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
@@ -123,8 +124,8 @@ function initial_variable() {
 	self.syn["weapons"]["extras"]["nzf"][0] = array("hero_annihilator", "hero_gravityspikes");
 	self.syn["weapons"]["extras"]["nzf"][1] = array("Annihilator", "Gravity Spikes");
 
-	self.syn["weapons"]["extras"]["zns"][0] = array("island_riotshield", "hero_gravityspikes");
-	self.syn["weapons"]["extras"]["zns"][1] = array("Zombie Shield", "Gravity Spikes");
+	self.syn["weapons"]["extras"]["zns"][0] = array("island_riotshield", "hero_gravityspikes", "controllable_spider");
+	self.syn["weapons"]["extras"]["zns"][1] = array("Zombie Shield", "Gravity Spikes", "Spider Bait");
 
 	self.syn["weapons"]["extras"]["gk"][0] = array("dragonshield", "dragonshield_upgraded");
 	self.syn["weapons"]["extras"]["gk"][1] = array("Guard of Fafnir", "Upgraded Guard of Fafnir");
@@ -156,6 +157,17 @@ function initial_variable() {
 	self.syn["perks"]["common"][0] = array("specialty_quickrevive", "specialty_armorvest", "specialty_doubletap2", "specialty_staminup", "specialty_fastreload", "specialty_additionalprimaryweapon", "specialty_deadshot", "specialty_widowswine", "specialty_electriccherry", "specialty_phdflopper", "specialty_whoswho", "specialty_reserve", "specialty_vigor_rush", "specialty_bandolier", "specialty_blazephase", "specialty_bloodwolf", "specialty_da_death_perception", "specialty_dyingwish", "specialty_razor", "specialty_slider", "specialty_stronghold", 	"specialty_timeslip", "specialty_victorious", "specialty_winterwail", "specialty_zombshell", "specialty_elementalpop", "specialty_da_phd_slider", "specialty_vulture", "specialty_da_tombstone", "specialty_changechews", "specialty_bloodbullets", "specialty_cashback", "specialty_damnade", "specialty_downersdelight", "specialty_estatic", "specialty_inferno", "specialty_magnet", "specialty_mh_mocha", "specialty_nitrogen", "specialty_nukacola", "specialty_packbox", "specialty_point", "specialty_swarmscotch", "specialty_repairman", "specialty_nobear", "specialty_momentum", "specialty_spectorshot", "specialty_ffyl", "specialty_icu", "specialty_tactiquilla", "specialty_milk", "specialty_banana", "specialty_bull_ice", "specialty_crusade", "specialty_moonshine", "specialty_directionalfire", "specialty_nottargetedbyairsupport", "specialty_loudenemies");
 	self.syn["perks"]["common"][1] = array("Quick Revive", "Juggernog", "Double Tap", "Stamin-Up", "Speed Cola", "Mule Kick", "Deadshot", "Widow's Wine", "Electric Cherry", "PhD Slider", "Who's Who", "Reserve Soda", "Vigor Rush", "Bandolier Bandit", "Blaze Phase", "Blood Wolf Bite", "Death Perception", "Dying Wish", "Ethereal Razor", "PhD Slider (BO4)", "Stone Cold Stronghold", "Timeslip", "Victorious Tortoise", "Winter's Wail", "Zombshell", "Elemental Pop", "PhD Slider (Cold War)", "Vulture-Aid", "Tombstone", "Change Chews", "Blood Bullets", "Cashback Cocktail", "Dam-A-Nade", "Downers Delight", "Estatic Elixir", "Inciner-Brandy", "Magnet Margarita", "Miricle Hands Mocha", "Nitrogen Cooled", "Nuka Cola", "Pack-A-Box", "Point Crusher", "Swarm Scotch", "Repairman Rum", "No Bear Brew", "Momentum Mojito", "Spectre Shot", "Fighter's Fizz", "I.C.U", "Tactiquilla Sangria", "Muscle Milk", "Banana Colada", "Bull Ice Blast", "Crusaders Ale", "Madgaz Moonshine", "Directional Fire", "Ethereal Razor", "Timeslip");
 	self.syn["perks"]["all"] = getArrayKeys(level._custom_perks);
+	
+	// Zombies
+
+	self.syn["zombies"]["zns"][0] = array("Thrasher");
+	self.syn["zombies"]["zns"][1] = array(getEntArray("zombie_thrasher_spawner", "script_noteworthy")[0]);
+
+	self.syn["zombies"]["rev"][0] = array("Fire Margwa", "Shadow Margwa");
+	self.syn["zombies"]["rev"][1] = array(getSpawnerArray("zombie_margwa_fire_spawner", "script_noteworthy")[0], getSpawnerArray("zombie_margwa_shadow_spawner", "script_noteworthy")[0]);
+
+	self.syn["zombies"]["moon"][0] = array("Astronaut");
+	self.syn["zombies"]["moon"][1] = array(getEntArray("astronaut_zombie", "targetname")[0]);
 
 	// Visions
 
@@ -1302,6 +1314,7 @@ function menu_option() {
 			self add_option("Give Perks", undefined, &new_menu, "Give Perks");
 			self add_option("Take Perks", undefined, &new_menu, "Take Perks");
 			self add_option("Give Perkaholic", undefined, &give_perkaholic);
+			self add_increment("Set Perk Limit", undefined, &set_perk_limit, 4, 1, 99, 1);
 
 			self add_option("Give Gobblegum", undefined, &new_menu, "Give Gobblegum");
 
@@ -1346,13 +1359,17 @@ function menu_option() {
 
 			self add_increment("Set Round", undefined, &set_round, 1, 1, 255, 1);
 
+			self add_option("Spawn Zombies", undefined, &new_menu, "Spawn Zombies");
+			self add_option("Kill All Zombies", undefined, &kill_all_zombies);
+			self add_option("Teleport Zombies to Me", undefined, &teleport_zombies);
+
+			self add_toggle("One Shot Zombies", undefined, &one_shot_zombies, self.one_shot_zombies);
+			self add_toggle("Freeze Zombies", undefined, &freeze_zombies, self.freeze_zombies);
 			self add_toggle("Slow Zombies", "Gives Zombies the Widow's Wine Effect to Slow them Down", &slow_zombies, self.slow_zombies);
 			self add_toggle("Disable Spawns", undefined, &disable_spawns, self.disable_spawns);
 
-			self add_option("Teleport Zombies to Me", undefined, &teleport_zombies);
-			self add_option("Kill All Zombies", undefined, &kill_all_zombies);
+			self add_array("Set Zombie Speed", undefined, &set_zombie_speed, array("Restore", "Walk", "Run", "Sprint", "Super Sprint"));
 
-			self add_toggle("One Shot Zombies", undefined, &one_shot_zombies, self.one_shot_zombies);
 			self add_increment("Set Round Health Cap", "Cap Zombies Health to Specified Round", &set_zombie_health_cap, 1, 1, 255, 1);
 			self add_option("Reset Zombie Health Cap", "Set Health Cap back to Normal", &reset_zombie_health_cap);
 
@@ -1507,6 +1524,22 @@ function menu_option() {
 					default:
 						self add_option(vision.displayName, vision.name, &set_vision, vision.name);
 				}
+			}
+
+			break;
+		case "Spawn Zombies":
+			self add_menu(menu, menu.size);
+			
+			self add_option("Spawn Zombie", undefined, &spawn_normal_zombie);
+
+			map = self.map_name;
+			
+			if(map == "de" || map == "rev" || map == "origins") {
+				self add_option("Spawn Panzer", undefined, &spawn_panzer);
+			}
+
+			for(i = 0; i < self.syn["zombies"][map][0].size; i++) {
+				self add_option("Spawn " + self.syn["zombies"][map][0][i], undefined, &spawn_zombie, self.syn["zombies"][map][1][i]);
 			}
 
 			break;
@@ -2015,6 +2048,10 @@ function give_perkaholic() {
 	self zm_utility::give_player_all_perks();
 }
 
+function set_perk_limit(value) {
+	level.perk_purchase_limit = value;
+}
+
 function get_gobblegum_name(gobblegum) {
 	for(i = 0; i < self.syn["gobblegum"][0].size; i++) {
 		if(gobblegum == self.syn["gobblegum"][0][i]) {
@@ -2425,6 +2462,10 @@ function drop_weapon() {
 
 // Zombie Options
 
+function get_zombies() {
+	return getaiteamarray(level.zombie_team);
+}
+
 function no_target() {
 	self.no_target = !return_toggle(self.no_target);
 	if(self.no_target) {
@@ -2438,10 +2479,55 @@ function no_target() {
 
 function set_round(value) {
 	self thread zm_utility::zombie_goto_round(value);
+  zombie_utility::ai_calculate_health(value);
 }
 
-function get_zombies() {
-	return getaiteamarray(level.zombie_team);
+function spawn_normal_zombie() {
+	spawner = array::random(level.zombie_spawners);
+	zombie = zombie_utility::spawn_zombie(spawner, spawner.targetName);
+}
+
+function spawn_panzer() {
+	player_modifier = 1;
+	switch (getPlayers().size) {
+		case 1: {
+			player_modifier = 1;
+			break;
+		}
+		case 2: {
+			player_modifier = 1.33;
+			break;
+		}
+		case 3: {
+			player_modifier = 1.66;
+			break;
+		}
+		case 4: {
+			player_modifier = 2;
+			break;
+		}
+	}
+	
+	zombie_health = level.zombie_health / level.zombie_vars["zombie_health_start"];
+	mechz_armor_health = int(player_modifier * (250 + (10 * zombie_health)));
+	
+	zombie = zombie_utility::spawn_zombie(level.mechz_spawners[0], "mechz");
+	zombie.health = int(player_modifier * (level.mechz_base_health + (level.mechz_health_increase * zombie_health)));
+	zombie.maxHealth = zombie.health;
+	zombie.faceplate_health = int(player_modifier * (level.var_fa14536d + (level.var_1a5bb9d8 * zombie_health)));
+  zombie.powercap_cover_health = int(player_modifier * (level.mechz_powercap_cover_health + (15 * zombie_health)));
+  zombie.powercap_health = int(player_modifier * (level.mechz_powercap_health + (15 * zombie_health)));
+  zombie.left_knee_armor_health = mechz_armor_health;
+  zombie.right_knee_armor_health = mechz_armor_health;
+  zombie.left_shoulder_armor_health = mechz_armor_health;
+  zombie.right_shoulder_armor_health = mechz_armor_health;
+	
+	zombie forceTeleport(self.origin + anglesToForward(self.angles) * 300);
+}
+
+function spawn_zombie(spawner) {
+	zombie = zombie_utility::spawn_zombie(spawner, spawner.targetName);
+	zombie forceTeleport(self.origin + anglesToForward(self.angles) * 300);
 }
 
 function kill_all_zombies() {
@@ -2478,6 +2564,130 @@ function one_shot_zombies() {
 			zombie.maxHealth = level.prev_health;
 			zombie.health = level.prev_health;
 		}
+	}
+}
+
+function freeze_zombies() {
+	if(!isDefined(self.freeze_zombies)) {
+		self.freeze_zombies = true;
+		while (isDefined(self.freeze_zombies)) {
+			foreach(zombie in getAIArray()) {
+				if(isAlive(zombie) && !zombie isPaused()) {
+					freeze_zombie(zombie);
+				}
+			}
+			wait .1;
+		}
+		foreach(zombie in getAIArray()) {
+			unfreeze_zombie(zombie);
+		}
+	} else {
+		self.freeze_zombies = undefined;
+	}
+}
+
+function freeze_zombie(zombie) {
+	zombie notify(#"hash_4e7f43fc");
+	zombie thread freeze_zombie_death();
+	zombie setEntityPaused(1);
+	zombie.var_70a58794 = zombie.b_ignore_cleanup;
+	zombie.b_ignore_cleanup = 1;
+	zombie.var_7f7a0b19 = zombie.is_inert;
+	zombie.is_inert = 1;
+}
+
+function freeze_zombie_death() {
+	self endon(#"hash_4e7f43fc");
+	self waittill("death");
+	if(isDefined(self) && self isPaused()) {
+		self setEntityPaused(0);
+		if(!self isRagdoll()) {
+			self startRagdoll();
+		}
+	}
+}
+
+function unfreeze_zombie(zombie) {
+	zombie notify(#"hash_4e7f43fc");
+	zombie setEntityPaused(0);
+	if(isDefined(zombie.var_7f7a0b19)) {
+		zombie.is_inert = zombie.var_7f7a0b19;
+	}
+	if(isDefined(zombie.var_70a58794)) {
+		zombie.b_ignore_cleanup = zombie.var_70a58794;
+	} else {
+		zombie.b_ignore_cleanup = 0;
+	}
+}
+
+function slow_zombies() {
+	if(!isDefined(self.slow_zombies)) {
+		iPrintString("Slow Zombies [^2ON^7]");
+		self.slow_zombies = true;
+		while(isDefined(self.slow_zombies)) {
+			forEach(zombie in get_zombies()) {
+				zombie.b_widows_wine_slow = 1;
+				zombie asmSetAnimationRate(0.7);
+				zombie clientField::set("widows_wine_wrapping", 1);
+			}
+			wait 0.1;
+		}
+	} else {
+		iPrintString("Slow Zombies [^1OFF^7]");
+		self.slow_zombies = undefined;
+		forEach(zombie in get_zombies()) {
+			zombie.b_widows_wine_slow = 0;
+			zombie asmSetAnimationRate(1);
+			zombie clientField::set("widows_wine_wrapping", 0);
+		}
+	}
+}
+
+function disable_spawns() {
+	self.disable_spawns = !return_toggle(self.disable_spawns);
+	if(self.disable_spawns) {
+		iPrintString("Disable Spawns [^2ON^7]");
+		level flag::clear("spawn_zombies");
+	} else {
+		iPrintString("Disable Spawns [^1OFF^7]");
+		level flag::set("spawn_zombies");
+	}
+}
+
+function set_zombie_speed(speed) {
+	level notify("stop_run_cycle");
+	level endon("stop_run_cycle");
+	
+	speed = toLower(speed);
+	
+	if(speed == "super sprint") {
+		speed = "super_sprint";
+	}
+	
+	if(!isDefined(level.run_cycle)) {
+		level.run_cycle = "restore";
+	}
+	if(level.run_cycle != speed) {
+		level.run_cycle = speed;
+	}
+	
+	spawner::remove_global_spawn_function("zombie", &update_zombie_speed);
+	if(level.run_cycle != "restore") {
+		spawner::add_archetype_spawn_function("zombie", &update_zombie_speed);
+		foreach(zombie in getAIArray())
+		zombie thread update_zombie_speed();
+	} else {
+		foreach(zombie in getAIArray())
+		zombie zombie_utility::set_zombie_run_cycle_restore_from_override();
+	}
+}
+
+function update_zombie_speed() {
+	if(level.run_cycle == "super_sprint" && !(isDefined(self.completed_emerging_into_playable_area) && self.completed_emerging_into_playable_area)) {
+		self util::waittill_any("death", "completed_emerging_into_playable_area");
+	}
+	if(level.run_cycle != "restore") {
+		self zombie_utility::set_zombie_run_cycle(level.run_cycle);
 	}
 }
 
@@ -2529,62 +2739,6 @@ function zombie_health_cap_loop(round, health_cap) {
 			level waittill("start_of_round");
 		}
 		wait 0.5;
-	}
-}
-
-function slow_zombies() {
-	if(!isDefined(self.slow_zombies)) {
-		iPrintString("Slow Zombies [^2ON^7]");
-		self.slow_zombies = true;
-		while(isDefined(self.slow_zombies)) {
-			forEach(zombie in get_zombies()) {
-				zombie.b_widows_wine_slow = 1;
-				zombie asmSetAnimationRate(0.7);
-				zombie clientField::set("widows_wine_wrapping", 1);
-			}
-			wait 0.1;
-		}
-	} else {
-		iPrintString("Slow Zombies [^1OFF^7]");
-		self.slow_zombies = undefined;
-		forEach(zombie in get_zombies()) {
-			zombie.b_widows_wine_slow = 0;
-			zombie asmSetAnimationRate(1);
-			zombie clientField::set("widows_wine_wrapping", 0);
-		}
-	}
-}
-
-function disable_spawns() {
-	self.disable_spawns = !return_toggle(self.disable_spawns);
-	if(self.disable_spawns) {
-		iPrintString("Disable Spawns [^2ON^7]");
-		level flag::clear("spawn_zombies");
-	} else {
-		iPrintString("Disable Spawns [^1OFF^7]");
-		level flag::set("spawn_zombies");
-	}
-}
-
-function set_zombie_speed(value) {
-	speed = toLower(value);
-
-	if(!isDefined(self.zombie_speed)) {
-		self.zombie_speed = true;
-		while(isDefined(self.zombie_speed)) {
-			forEach(zombie in get_zombies()) {
-				zombie.zombie_move_speed = speed;
-				wait .01;
-			}
-			wait .1;
-		}
-	} else {
-		self.zombie_speed = undefined;
-		if(level.gamedifficulty == 0) {
-      level.zombie_move_speed = level.round_number * level.zombie_vars["zombie_move_speed_multiplier_easy"];
-    } else {
-      level.zombie_move_speed = level.round_number * level.zombie_vars["zombie_move_speed_multiplier"];
-    }
 	}
 }
 
