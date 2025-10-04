@@ -72,35 +72,35 @@ function initial_variable() {
 	self.syn["visions"][0] = array("", "zm_bgb_idle_eyes", "zm_bgb_eye_candy_vs_1", "zm_bgb_eye_candy_vs_2", "zm_bgb_eye_candy_vs_3", "zm_bgb_eye_candy_vs_4", "zm_bgb_now_you_see_me", "zm_bgb_in_plain_sight", "drown_blur", "zm_health_blur");
 	self.syn["visions"][1] = array("None", "Idle Eyes", "Eye Candy 1", "Eye Candy 2", "Eye Candy 3", "Eye Candy 4", "Now You See Me", "In Plain Sight", "Drown Blur", "Health Blur");
 
-	self.syn["visions"]["soe"][0] = array("zm_idgun_vortex_visionset", "zm_idgun_vortex_blur", "zod_ritual_dim", "zombie_beast_2", "zombie_noire", "zm_zod_transported");
-	self.syn["visions"]["soe"][1] = array("Apothicon Servant Vortex", "Apothicon Servant Vortex Blur", "Low Visibility", "Beast Mode", "Noire", "WIP Teleport");
+	self.syn["visions"]["shadows_of_evil"][0] = array("zm_idgun_vortex_visionset", "zm_idgun_vortex_blur", "zod_ritual_dim", "zombie_beast_2", "zombie_noire", "zm_zod_transported");
+	self.syn["visions"]["shadows_of_evil"][1] = array("Apothicon Servant Vortex", "Apothicon Servant Vortex Blur", "Low Visibility", "Beast Mode", "Noire", "WIP Teleport");
 
-	self.syn["visions"]["de"][0] = array("zm_factory_teleport", "zm_trap_electric");
-	self.syn["visions"]["de"][1] = array("Teleport", "Electric Trap");
+	self.syn["visions"]["der_eisendrache"][0] = array("zm_factory_teleport", "zm_trap_electric");
+	self.syn["visions"]["der_eisendrache"][1] = array("Teleport", "Electric Trap");
 
-	self.syn["visions"]["zns"][0] = array("zm_isl_thrasher_stomach_visionset");
-	self.syn["visions"]["zns"][1] = array("Thrasher Stomach");
+	self.syn["visions"]["zetsubou_no_shima"][0] = array("zm_isl_thrasher_stomach_visionset");
+	self.syn["visions"]["zetsubou_no_shima"][1] = array("Thrasher Stomach");
 
-	self.syn["visions"]["gk"][0] = array("raygun_mark3_vortex_visionset", "raygun_mark3_vortex_blur", "zm_trap_electric");
-	self.syn["visions"]["gk"][1] = array("Ray Gun Mark 3 Vortex", "Ray Gun Mark 3 Vortex Blur", "Electric Trap");
+	self.syn["visions"]["gorod_krovi"][0] = array("raygun_mark3_vortex_visionset", "raygun_mark3_vortex_blur", "zm_trap_electric");
+	self.syn["visions"]["gorod_krovi"][1] = array("Ray Gun Mark 3 Vortex", "Ray Gun Mark 3 Vortex Blur", "Electric Trap");
 
-	self.syn["visions"]["rev"][0] = array("zm_factory_teleport", "zm_trap_electric", "zm_idgun_vortex_visionset", "zm_idgun_vortex_blur", "zm_chaos_organge");
-	self.syn["visions"]["rev"][1] = array("Teleport", "Electric Trap", "Apothicon Servant Vortex", "Apothicon Servant Vortex Blur", "Chaos Orange");
+	self.syn["visions"]["revelations"][0] = array("zm_factory_teleport", "zm_trap_electric", "zm_idgun_vortex_visionset", "zm_idgun_vortex_blur", "zm_chaos_organge");
+	self.syn["visions"]["revelations"][1] = array("Teleport", "Electric Trap", "Apothicon Servant Vortex", "Apothicon Servant Vortex Blur", "Chaos Orange");
 
-	self.syn["visions"]["nza"][0] = array("zm_trap_electric", "zm_waterfall_postfx", "zm_showerhead_postfx", "zm_showerhead");
-	self.syn["visions"]["nza"][1] = array("Electric Trap", "Waterfall", "Shower","Bloody Shower");
+	self.syn["visions"]["verruckt"][0] = array("zm_trap_electric", "zm_waterfall_postfx", "zm_showerhead_postfx", "zm_showerhead");
+	self.syn["visions"]["verruckt"][1] = array("Electric Trap", "Waterfall", "Shower","Bloody Shower");
 
-	self.syn["visions"]["nzs"][0] = array("zm_trap_electric");
-	self.syn["visions"]["nzs"][1] = array("Electric Trap");
+	self.syn["visions"]["shi_no_numa"][0] = array("zm_trap_electric");
+	self.syn["visions"]["shi_no_numa"][1] = array("Electric Trap");
 
-	self.syn["visions"]["kino"][0] = array("zm_trap_electric", "zm_ai_quad_blur");
-	self.syn["visions"]["kino"][1] = array("Electric Trap", "Blur");
+	self.syn["visions"]["kino_der_untoten"][0] = array("zm_trap_electric", "zm_ai_quad_blur");
+	self.syn["visions"]["kino_der_untoten"][1] = array("Electric Trap", "Blur");
 
-	self.syn["visions"]["ascen"][0] = array("zm_cosmodrome_no_power", "zm_cosmodrome_power_antic", "zm_cosmodrome_power_flare", "zm_cosmodrome_monkey_on", "zm_idgun_vortex_blur");
-	self.syn["visions"]["ascen"][1] = array("No Power", "Dim", "Bright", "Monkey Round", "Vortex Blur");
+	self.syn["visions"]["ascension"][0] = array("zm_cosmodrome_no_power", "zm_cosmodrome_power_antic", "zm_cosmodrome_power_flare", "zm_cosmodrome_monkey_on", "zm_idgun_vortex_blur");
+	self.syn["visions"]["ascension"][1] = array("No Power", "Dim", "Bright", "Monkey Round", "Vortex Blur");
 
-	self.syn["visions"]["shang"][0] = array("zm_ai_screecher_blur", "zm_temple_eclipse", "zm_waterfall_postfx");
-	self.syn["visions"]["shang"][1] = array("Screecher Blur", "Eclipse", "Waterfall");
+	self.syn["visions"]["shangri_la"][0] = array("zm_ai_screecher_blur", "zm_temple_eclipse", "zm_waterfall_postfx");
+	self.syn["visions"]["shangri_la"][1] = array("Screecher Blur", "Eclipse", "Waterfall");
 
 	self.syn["visions"]["moon"][0] = array("zm_gasmask_postfx", "zm_ai_quad_blur", "zm_idgun_vortex_blur");
 	self.syn["visions"]["moon"][1] = array("Gas Mask", "Blur", "Vortex Blur");
@@ -118,20 +118,20 @@ function initial_variable() {
 	self.syn["weapons"]["extras"][0] = array("minigun", "defaultweapon");
 	self.syn["weapons"]["extras"][1] = array("Death Machine", "Default Weapon");
 
-	self.syn["weapons"]["extras"]["soe"][0] = array("ar_standard_upgraded_companion", "zod_riotshield", "zod_riotshield_upgraded", "glaive_apothicon_0", "glaive_keeper_0", "hero_gravityspikes");
-	self.syn["weapons"]["extras"]["soe"][1] = array("Civil Protector KN-44", "Rocket Shield", "Upgraded Rocket Shield", "Sword", "Upgraded Sword", "Gravity Spikes");
+	self.syn["weapons"]["extras"]["shadows_of_evil"][0] = array("ar_standard_upgraded_companion", "zod_riotshield", "zod_riotshield_upgraded", "glaive_apothicon_0", "glaive_keeper_0", "hero_gravityspikes");
+	self.syn["weapons"]["extras"]["shadows_of_evil"][1] = array("Civil Protector KN-44", "Rocket Shield", "Upgraded Rocket Shield", "Sword", "Upgraded Sword", "Gravity Spikes");
 
-	self.syn["weapons"]["extras"]["nzf"][0] = array("hero_annihilator", "hero_gravityspikes");
-	self.syn["weapons"]["extras"]["nzf"][1] = array("Annihilator", "Gravity Spikes");
+	self.syn["weapons"]["extras"]["the_giant"][0] = array("hero_annihilator", "hero_gravityspikes");
+	self.syn["weapons"]["extras"]["the_giant"][1] = array("Annihilator", "Gravity Spikes");
 
-	self.syn["weapons"]["extras"]["zns"][0] = array("island_riotshield", "hero_gravityspikes", "controllable_spider");
-	self.syn["weapons"]["extras"]["zns"][1] = array("Zombie Shield", "Gravity Spikes", "Spider Bait");
+	self.syn["weapons"]["extras"]["zetsubou_no_shima"][0] = array("island_riotshield", "hero_gravityspikes", "controllable_spider");
+	self.syn["weapons"]["extras"]["zetsubou_no_shima"][1] = array("Zombie Shield", "Gravity Spikes", "Spider Bait");
 
-	self.syn["weapons"]["extras"]["gk"][0] = array("dragonshield", "dragonshield_upgraded");
-	self.syn["weapons"]["extras"]["gk"][1] = array("Guard of Fafnir", "Upgraded Guard of Fafnir");
+	self.syn["weapons"]["extras"]["gorod_krovi"][0] = array("dragonshield", "dragonshield_upgraded");
+	self.syn["weapons"]["extras"]["gorod_krovi"][1] = array("Guard of Fafnir", "Upgraded Guard of Fafnir");
 
-	self.syn["weapons"]["extras"]["rev"][0] = array("dragonshield", "dragonshield_upgraded");
-	self.syn["weapons"]["extras"]["rev"][1] = array("Guard of Fafnir", "Upgraded Guard of Fafnir");
+	self.syn["weapons"]["extras"]["revelations"][0] = array("dragonshield", "dragonshield_upgraded");
+	self.syn["weapons"]["extras"]["revelations"][1] = array("Guard of Fafnir", "Upgraded Guard of Fafnir");
 
 	self.syn["weapons"]["extras"]["origins"][0] = array("tomb_shield");
 	self.syn["weapons"]["extras"]["origins"][1] = array("Zombie Shield");
@@ -149,22 +149,22 @@ function initial_variable() {
 
 	// AATs
 
-	self.syn["weapons"]["aats"][0] = array("zm_aat_blast_furnace", "zm_aat_dead_wire", "zm_aat_fire_works", "zm_aat_thunder_wall", "zm_aat_turned");
-	self.syn["weapons"]["aats"][1] = array("Blast Furnace", "Dead Wire", "Fireworks", "Thunder Wall", "Turned");
+	self.syn["aats"][0] = array("zm_aat_blast_furnace", "zm_aat_dead_wire", "zm_aat_fire_works", "zm_aat_thunder_wall", "zm_aat_turned");
+	self.syn["aats"][1] = array("Blast Furnace", "Dead Wire", "Fireworks", "Thunder Wall", "Turned");
 
 	// Perks
 
 	self.syn["perks"]["common"][0] = array("specialty_quickrevive", "specialty_armorvest", "specialty_doubletap2", "specialty_staminup", "specialty_fastreload", "specialty_additionalprimaryweapon", "specialty_deadshot", "specialty_widowswine", "specialty_electriccherry", "specialty_phdflopper", "specialty_whoswho", "specialty_reserve", "specialty_vigor_rush", "specialty_bandolier", "specialty_blazephase", "specialty_bloodwolf", "specialty_da_death_perception", "specialty_dyingwish", "specialty_razor", "specialty_slider", "specialty_stronghold", 	"specialty_timeslip", "specialty_victorious", "specialty_winterwail", "specialty_zombshell", "specialty_elementalpop", "specialty_da_phd_slider", "specialty_vulture", "specialty_da_tombstone", "specialty_changechews", "specialty_bloodbullets", "specialty_cashback", "specialty_damnade", "specialty_downersdelight", "specialty_estatic", "specialty_inferno", "specialty_magnet", "specialty_mh_mocha", "specialty_nitrogen", "specialty_nukacola", "specialty_packbox", "specialty_point", "specialty_swarmscotch", "specialty_repairman", "specialty_nobear", "specialty_momentum", "specialty_spectorshot", "specialty_ffyl", "specialty_icu", "specialty_tactiquilla", "specialty_milk", "specialty_banana", "specialty_bull_ice", "specialty_crusade", "specialty_moonshine", "specialty_directionalfire", "specialty_nottargetedbyairsupport", "specialty_loudenemies");
 	self.syn["perks"]["common"][1] = array("Quick Revive", "Juggernog", "Double Tap", "Stamin-Up", "Speed Cola", "Mule Kick", "Deadshot", "Widow's Wine", "Electric Cherry", "PhD Slider", "Who's Who", "Reserve Soda", "Vigor Rush", "Bandolier Bandit", "Blaze Phase", "Blood Wolf Bite", "Death Perception", "Dying Wish", "Ethereal Razor", "PhD Slider (BO4)", "Stone Cold Stronghold", "Timeslip", "Victorious Tortoise", "Winter's Wail", "Zombshell", "Elemental Pop", "PhD Slider (Cold War)", "Vulture-Aid", "Tombstone", "Change Chews", "Blood Bullets", "Cashback Cocktail", "Dam-A-Nade", "Downers Delight", "Estatic Elixir", "Inciner-Brandy", "Magnet Margarita", "Miricle Hands Mocha", "Nitrogen Cooled", "Nuka Cola", "Pack-A-Box", "Point Crusher", "Swarm Scotch", "Repairman Rum", "No Bear Brew", "Momentum Mojito", "Spectre Shot", "Fighter's Fizz", "I.C.U", "Tactiquilla Sangria", "Muscle Milk", "Banana Colada", "Bull Ice Blast", "Crusaders Ale", "Madgaz Moonshine", "Directional Fire", "Ethereal Razor", "Timeslip");
 	self.syn["perks"]["all"] = getArrayKeys(level._custom_perks);
-	
+
 	// Zombies
 
-	self.syn["zombies"]["zns"][0] = array("Thrasher");
-	self.syn["zombies"]["zns"][1] = array(getEntArray("zombie_thrasher_spawner", "script_noteworthy")[0]);
+	self.syn["zombies"]["zetsubou_no_shima"][0] = array("Thrasher");
+	self.syn["zombies"]["zetsubou_no_shima"][1] = array(getEntArray("zombie_thrasher_spawner", "script_noteworthy")[0]);
 
-	self.syn["zombies"]["rev"][0] = array("Fire Margwa", "Shadow Margwa");
-	self.syn["zombies"]["rev"][1] = array(getSpawnerArray("zombie_margwa_fire_spawner", "script_noteworthy")[0], getSpawnerArray("zombie_margwa_shadow_spawner", "script_noteworthy")[0]);
+	self.syn["zombies"]["revelations"][0] = array("Fire Margwa", "Shadow Margwa");
+	self.syn["zombies"]["revelations"][1] = array(getSpawnerArray("zombie_margwa_fire_spawner", "script_noteworthy")[0], getSpawnerArray("zombie_margwa_shadow_spawner", "script_noteworthy")[0]);
 
 	self.syn["zombies"]["moon"][0] = array("Astronaut");
 	self.syn["zombies"]["moon"][1] = array(getEntArray("astronaut_zombie", "targetname")[0]);
@@ -200,11 +200,13 @@ function initial_variable() {
 
 	self.syn["powerups"][0] = getArrayKeys(level.zombie_include_powerups);
   self.syn["powerups"][1] = [];
+  self.syn["powerups"][2] = [];
   for(i = 0; i < self.syn["powerups"][0].size; i++) {
     self.syn["powerups"][1][i] = construct_string(replace_character(self.syn["powerups"][0][i], "_", " "));
 		if(self.syn["powerups"][1][i] == "Ww Grenade") {
 			self.syn["powerups"][1][i] = "Widow's Wine Grenade";
 		}
+		self.syn["powerups"][2][i] = false;
 	}
 
 	// Gobblegum
@@ -597,7 +599,7 @@ function create_rainbow_color() {
 		}
 
 		level.rainbow_color = (r/255, g/255, b/255);
-		wait .05;
+		wait 0.05;
 	}
 }
 
@@ -607,7 +609,7 @@ function start_rainbow() {
 	while(isDefined(self)) {
 		self fadeOverTime(.05);
 		self.color = level.rainbow_color;
-		wait .05;
+		wait 0.05;
 	}
 }
 
@@ -905,7 +907,7 @@ function is_locked() {
 
 function empty_option() {
 	option = array("Nothing To See Here!", "Quiet Here, Isn't It?", "Oops, Nothing Here Yet!", "Bit Empty, Don't You Think?");
-	return option[randomInt(option.size)];
+	return option[randomint(option.size)];
 }
 
 function empty_function() {}
@@ -1314,6 +1316,7 @@ function menu_option() {
 			self add_option("Give Perks", undefined, &new_menu, "Give Perks");
 			self add_option("Take Perks", undefined, &new_menu, "Take Perks");
 			self add_option("Give Perkaholic", undefined, &give_perkaholic);
+			self add_option("Take Perkaholic", undefined, &take_perkaholic);
 			self add_increment("Set Perk Limit", undefined, &set_perk_limit, 4, 1, 99, 1);
 
 			self add_option("Give Gobblegum", undefined, &new_menu, "Give Gobblegum");
@@ -1326,17 +1329,16 @@ function menu_option() {
 
 			self add_toggle("Forge Mode", undefined, &forge_mode, self.forge_mode);
 
-			if(self.map_name != "soe") {
+			if(self.map_name != "shadows_of_evil") {
 				self add_toggle("Exo Movement", "Enable/Disable Exo-Suits", &exo_movement, self.exo_movement);
 				self add_toggle("Infinite Boost", undefined, &infinite_boost, self.infinite_boost);
 			}
 
 			self add_increment("Set Speed", undefined, &set_speed, 1, 1, 15, 1);
-			self add_increment("Set Timescale", undefined, &set_timescale, 1, 1, 10, 1);
+			self add_increment("Set Timescale", undefined, &set_timescale, 1, 0.25, 10, 0.25);
 			self add_increment("Set Gravity", undefined, &set_gravity, 900, 130, 900, 10);
 
 			self add_toggle("Third Person", undefined, &third_person, self.third_person);
-
 			self add_option("Visions", undefined, &new_menu, "Visions");
 
 			break;
@@ -1383,7 +1385,7 @@ function menu_option() {
 			self add_option("Open Doors", undefined, &open_doors);
 
 			if(!level flag::get("power_on") || !level flag::get("all_power_on")) {
-				if(self.map_name == "soe") {
+				if(self.map_name == "shadows_of_evil") {
 					self add_option("Turn Power On", undefined, &shock_all_electrics);
 				} else {
 					self add_option("Turn Power On", undefined, &power_on);
@@ -1398,8 +1400,20 @@ function menu_option() {
 
 			self add_toggle("Shoot Powerups", undefined, &shoot_powerups, self.shoot_powerups);
 
+			self add_option("Remove Powerups", "Disable Select Powerup drops from Zombies", &new_menu, "Remove Powerups");
+
 			for(i = 0; i < self.syn["powerups"][0].size; i++) {
 				self add_option("Spawn " + self.syn["powerups"][1][i], undefined, &spawn_powerup, self.syn["powerups"][0][i]);
+			}
+
+			break;
+		case "Remove Powerups":
+			self add_menu(menu, menu.size);
+
+			self add_option("Reset", undefined, &reset_powerups);
+
+			for(i = 0; i < self.syn["powerups"][0].size; i++) {
+				self add_toggle("Disable " + self.syn["powerups"][1][i], undefined, &disable_powerup, self.syn["powerups"][2][i], self.syn["powerups"][0][i], i);
 			}
 
 			break;
@@ -1464,7 +1478,7 @@ function menu_option() {
 				self add_option(self.syn["visions"][1][i], undefined, &set_vision, self.syn["visions"][0][i]);
 			}
 
-			if(self.map_name == "soe" || self.map_name == "nzf" || self.map_name == "de" || self.map_name == "zns" || self.map_name == "gk" || self.map_name == "rev" || self.map_name == "nzp" || self.map_name == "nza" || self.map_name == "nzs" || self.map_name == "kino" || self.map_name == "ascen" || self.map_name == "shang" || self.map_name == "moon" || self.map_name == "origins") {
+			if(self.map_name == "shadows_of_evil" || self.map_name == "the_giant" || self.map_name == "der_eisendrache" || self.map_name == "zetsubou_no_shima" || self.map_name == "gorod_krovi" || self.map_name == "revelations" || self.map_name == "nacht_der_untoten" || self.map_name == "verruckt" || self.map_name == "shi_no_numa" || self.map_name == "kino_der_untoten" || self.map_name == "ascension" || self.map_name == "shangri_la" || self.map_name == "moon" || self.map_name == "origins") {
 				for(i = 0; i < self.syn["visions"][self.map_name][0].size; i++) {
 					self add_option(self.syn["visions"][self.map_name][1][i], undefined, &set_vision, self.syn["visions"][self.map_name][0][i]);
 				}
@@ -1529,12 +1543,12 @@ function menu_option() {
 			break;
 		case "Spawn Zombies":
 			self add_menu(menu, menu.size);
-			
+
 			self add_option("Spawn Zombie", undefined, &spawn_normal_zombie);
 
 			map = self.map_name;
-			
-			if(map == "de" || map == "rev" || map == "origins") {
+
+			if(map == "der_eisendrache" || map == "revelations" || map == "origins") {
 				self add_option("Spawn Panzer", undefined, &spawn_panzer);
 			}
 
@@ -1554,8 +1568,10 @@ function menu_option() {
 		case "Give AAT":
 			self add_menu(menu, menu.size);
 
-			for(i = 0; i < self.syn["weapons"]["aats"][0].size; i++) {
-				self add_option(self.syn["weapons"]["aats"][1][i], undefined, &give_aat, self.syn["weapons"]["aats"][0][i]);
+			self add_option("None", undefined, &take_aat);
+
+			for(i = 0; i < self.syn["aats"][0].size; i++) {
+				self add_option(self.syn["aats"][1][i], undefined, &give_aat, self.syn["aats"][0][i]);
 			}
 
 			break;
@@ -1578,7 +1594,7 @@ function menu_option() {
 
 			load_weapons("weapon_smg");
 
-			if(self.map_name == "soe" || self.map_name == "nzf" || self.map_name == "de") {
+			if(self.map_name == "shadows_of_evil" || self.map_name == "the_giant" || self.map_name == "der_eisendrache") {
 				self add_option("Razorback", undefined, &give_weapon, "smg_longrange");
 			}
 
@@ -1604,7 +1620,7 @@ function menu_option() {
 		case "Pistols":
 			self add_menu(menu, menu.size);
 
-			if(self.map_name == "soe") {
+			if(self.map_name == "shadows_of_evil") {
 				self add_option("MR6", undefined, &give_weapon, "pistol_standard");
 			}
 
@@ -1639,7 +1655,7 @@ function menu_option() {
 		case "Extras":
 			self add_menu(menu, menu.size);
 
-			if(self.map_name == "soe" || self.map_name == "nzf" || self.map_name == "zns" || self.map_name == "gk" || self.map_name == "rev" || self.map_name == "origins") {
+			if(self.map_name == "shadows_of_evil" || self.map_name == "the_giant" || self.map_name == "zetsubou_no_shima" || self.map_name == "gorod_krovi" || self.map_name == "revelations" || self.map_name == "origins") {
 				for(i = 0; i < self.syn["weapons"]["extras"][self.map_name][0].size; i++) {
 					self add_option(self.syn["weapons"]["extras"][self.map_name][1][i], undefined, &give_weapon, self.syn["weapons"]["extras"][self.map_name][0][i]);
 				}
@@ -1720,21 +1736,20 @@ function close_controls_menu() {
 }
 
 function get_map_name() {
-	if(level.script == "zm_zod") return "soe";
-	if(level.script == "zm_factory") return "nzf";
-	if(level.script == "zm_castle") return "de";
-	if(level.script == "zm_island") return "zns";
-	if(level.script == "zm_stalingrad") return "gk";
-	if(level.script == "zm_genesis") return "rev";
-	if(level.script == "zm_prototype") return "nzp";
-	if(level.script == "zm_asylum") return "nza";
-	if(level.script == "zm_sumpf") return "nzs";
-	if(level.script == "zm_theater") return "kino";
-	if(level.script == "zm_cosmodrome") return "ascen";
-	if(level.script == "zm_temple") return "shang";
+	if(level.script == "zm_zod") return "shadows_of_evil";
+	if(level.script == "zm_factory") return "the_giant";
+	if(level.script == "zm_castle") return "der_eisendrache";
+	if(level.script == "zm_island") return "zetsubou_no_shima";
+	if(level.script == "zm_stalingrad") return "gorod_krovi";
+	if(level.script == "zm_genesis") return "revelations";
+	if(level.script == "zm_prototype") return "nacht_der_untoten";
+	if(level.script == "zm_asylum") return "verruckt";
+	if(level.script == "zm_sumpf") return "shi_no_numa";
+	if(level.script == "zm_theater") return "kino_der_untoten";
+	if(level.script == "zm_cosmodrome") return "ascension";
+	if(level.script == "zm_temple") return "shangri_la";
 	if(level.script == "zm_moon") return "moon";
 	if(level.script == "zm_tomb") return "origins";
-	if(level.script == "credits") return "cred";
 }
 
 function iPrintString(string) {
@@ -1792,6 +1807,24 @@ function remove_duplicate_ent_array(name) {
 		}
 	}
 	return saved_array;
+}
+
+function array_remove(array, object) {
+  if(!isDefined(array) && !isDefined(object)) {
+    return;
+  }
+  new_array = [];
+  foreach(item in array) {
+    if(item != object) {
+      if(!isDefined(new_array)) {
+        new_array = [];
+      } else if(!isArray(new_array)) {
+        new_array = array(new_array);
+      }
+      new_array[new_array.size] = item;
+    }
+  }
+  return new_array;
 }
 
 function set_increment(value) {
@@ -1901,18 +1934,16 @@ function god_mode() {
 function god_mode_loop() {
 	self endon("stop_god_mode");
 	self endon("disconnect");
-
 	level endon("game_ended");
 
 	for(;;) {
 		self enableInvulnerability();
-		wait .1;
+		wait 0.1;
 	}
 }
 
 function frag_no_clip() {
 	self endon("disconnect");
-
 	level endon("game_ended");
 
 	if(!isDefined(self.frag_no_clip)) {
@@ -1924,7 +1955,7 @@ function frag_no_clip() {
 					self thread frag_no_clip_loop();
 				}
 			}
-			wait .05;
+			wait 0.05;
 		}
 	} else {
 		self.frag_no_clip = undefined;
@@ -1934,7 +1965,6 @@ function frag_no_clip() {
 
 function frag_no_clip_loop() {
 	self endon("disconnect");
-
 	self endon("noclip_end");
 
 	self disableWeapons();
@@ -1960,7 +1990,7 @@ function frag_no_clip_loop() {
 		if(self meleeButtonPressed()) {
 			break;
 		}
-		wait .05;
+		wait 0.05;
 	}
 
 	clip delete();
@@ -1997,7 +2027,7 @@ function infinite_ammo_loop() {
 		}
 		self setWeaponAmmoClip(self getCurrentWeapon(), 999);
 		self gadgetPowerSet(0, 100);
-		wait .05;
+		wait 0.05;
 	}
 }
 
@@ -2046,6 +2076,14 @@ function take_perk(perk) {
 
 function give_perkaholic() {
 	self zm_utility::give_player_all_perks();
+}
+
+function take_perkaholic() {
+	foreach(perk in self.syn["perks"]["all"]) {
+		if(self hasPerk(perk)) {
+			self notify(perk + "_stop");
+		}
+	}
 }
 
 function set_perk_limit(value) {
@@ -2104,7 +2142,6 @@ function forge_mode() {
 
 function forge_mode_loop() {
 	self endon("disconnect");
-
 	self endon("stop_forge_mode");
 
 	while (true) {
@@ -2114,33 +2151,33 @@ function forge_mode_loop() {
 				while (self adsButtonPressed()) {
 					trace["entity"] forceTeleport(self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 200);
 					trace["entity"].origin = self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 200;
-					wait .01;
+					wait 0.01;
 				}
 			}
 			if(self attackButtonPressed()) {
 				while (self attackButtonPressed()) {
-					trace["entity"] rotatePitch(1, .01);
-					wait .01;
+					trace["entity"] rotatePitch(1, 0.01);
+					wait 0.01;
 				}
 			}
 			if(self fragButtonPressed()) {
 				while (self fragButtonPressed()) {
-					trace["entity"] rotateYaw(1, .01);
-					wait .01;
+					trace["entity"] rotateYaw(1, 0.01);
+					wait 0.01;
 				}
 			}
 			if(self secondaryOffhandButtonPressed()) {
 				while (self secondaryOffhandButtonPressed()) {
-					trace["entity"] rotateRoll(1, .01);
-					wait .01;
+					trace["entity"] rotateRoll(1, 0.01);
+					wait 0.01;
 				}
 			}
 			if(!isPlayer(trace["entity"]) && self meleeButtonPressed()) {
 				trace["entity"] delete();
-				wait .2;
+				wait 0.2;
 			}
 		}
-		wait .05;
+		wait 0.05;
 	}
 }
 
@@ -2186,7 +2223,7 @@ function infinite_boost_loop() {
 
 	for(;;) {
 		self setDoubleJumpEnergy(100);
-		wait .1;
+		wait 0.1;
 	}
 }
 
@@ -2230,7 +2267,7 @@ function set_vision(vision) {
 	if(isDefined(self.prev_vision)) {
 		visionset_mgr::deactivate("visionset", self.prev_vision, self);
 		visionset_mgr::deactivate("overlay", self.prev_vision, self);
-		wait .25;
+		wait 0.25;
 	}
 	visionset_mgr::activate("visionset", vision, self);
 	visionset_mgr::activate("overlay", vision, self);
@@ -2285,7 +2322,7 @@ function get_power_trigger() {
 }
 
 function power_on() {
-	if(self.map_name == "rev") {
+	if(self.map_name == "revelations") {
 		for(i = 1; i < 5; i++) {
 			level flag::set("power_on" + i);
 		}
@@ -2293,13 +2330,13 @@ function power_on() {
 		waittillFrameEnd;
 
 		while(!level flag::get("apothicon_near_trap")) {
-			wait .1;
+			wait 0.1;
 		}
 		trigger = struct::get("apothicon_trap_trig", "targetName");
 		trigger notify("trigger_activated", self);
 		return;
 	}
-	if(self.map_name == "shang") {
+	if(self.map_name == "shangri_la") {
 		directions = array("power_trigger_left", "power_trigger_right");
 		forEach(direction in directions) {
 			switch_trigger = getEnt("power_trigger_" + direction, "targetName");
@@ -2348,10 +2385,19 @@ function shoot_powerups_loop() {
 		while(self attackButtonPressed()) {
 			powerup = self.syn["powerups"][0][randomint(self.syn["powerups"][0].size)];
 			zm_powerups::specific_powerup_drop(powerup, self.origin + anglesToForward(self.angles) * 115);
-			wait .5;
+			wait 0.5;
 		}
-		wait .05;
+		wait 0.05;
 	}
+}
+
+function reset_powerups() {
+	level.zombie_powerup_array = self.syn["powerups"][0];
+}
+
+function disable_powerup(powerup, i) {
+	self.syn["powerups"][2][i] = !return_toggle(self.syn["powerups"][2][i]);
+	level.zombie_powerup_array = array_remove(level.zombie_powerup_array, powerup);
 }
 
 // Weapon Options
@@ -2373,6 +2419,7 @@ function give_weapon(weapon) {
 
 	if(!self hasWeapon(weapon)) {
 		max_weapon_num = zm_utility::get_player_weapon_limit(self);
+		saved_weapon = undefined;
 
 		switch(weapon) {
 			case "beacon":
@@ -2421,15 +2468,15 @@ function give_weapon(weapon) {
 		self zm_weapons::weapon_give(weapon, undefined, undefined, undefined, true);
 
 		if(isDefined(saved_weapon)) {
-			wait .5;
+			wait 0.5;
 			self zm_weapons::weapon_give(saved_weapon, undefined, undefined, undefined, true);
-			saved_weapon = undefined;
 			self switchToWeaponImmediate(saved_weapon);
+			saved_weapon = undefined;
 		}
 	} else {
 		self switchToWeaponImmediate(weapon);
 	}
-	wait .5;
+	wait 0.5;
 	self giveStartAmmo(weapon);
 }
 
@@ -2449,6 +2496,11 @@ function equip_camo(camo_index) {
 function give_aat(value) {
 	weapon = self getCurrentWeapon();
 	self thread aat::acquire(weapon, value);
+}
+
+function take_aat() {
+	weapon = self getCurrentWeapon();
+	self thread aat::remove(weapon);
 }
 
 function take_weapon() {
@@ -2507,10 +2559,10 @@ function spawn_panzer() {
 			break;
 		}
 	}
-	
+
 	zombie_health = level.zombie_health / level.zombie_vars["zombie_health_start"];
 	mechz_armor_health = int(player_modifier * (250 + (10 * zombie_health)));
-	
+
 	zombie = zombie_utility::spawn_zombie(level.mechz_spawners[0], "mechz");
 	zombie.health = int(player_modifier * (level.mechz_base_health + (level.mechz_health_increase * zombie_health)));
 	zombie.maxHealth = zombie.health;
@@ -2521,7 +2573,7 @@ function spawn_panzer() {
   zombie.right_knee_armor_health = mechz_armor_health;
   zombie.left_shoulder_armor_health = mechz_armor_health;
   zombie.right_shoulder_armor_health = mechz_armor_health;
-	
+
 	zombie forceTeleport(self.origin + anglesToForward(self.angles) * 300);
 }
 
@@ -2571,14 +2623,14 @@ function freeze_zombies() {
 	if(!isDefined(self.freeze_zombies)) {
 		self.freeze_zombies = true;
 		while (isDefined(self.freeze_zombies)) {
-			foreach(zombie in getAIArray()) {
+			foreach(zombie in get_zombies()) {
 				if(isAlive(zombie) && !zombie isPaused()) {
 					freeze_zombie(zombie);
 				}
 			}
-			wait .1;
+			wait 0.1;
 		}
-		foreach(zombie in getAIArray()) {
+		foreach(zombie in get_zombies()) {
 			unfreeze_zombie(zombie);
 		}
 	} else {
@@ -2655,30 +2707,29 @@ function disable_spawns() {
 }
 
 function set_zombie_speed(speed) {
-	level notify("stop_run_cycle");
-	level endon("stop_run_cycle");
-	
 	speed = toLower(speed);
-	
+
 	if(speed == "super sprint") {
 		speed = "super_sprint";
 	}
-	
+
 	if(!isDefined(level.run_cycle)) {
 		level.run_cycle = "restore";
 	}
 	if(level.run_cycle != speed) {
 		level.run_cycle = speed;
 	}
-	
+
 	spawner::remove_global_spawn_function("zombie", &update_zombie_speed);
 	if(level.run_cycle != "restore") {
 		spawner::add_archetype_spawn_function("zombie", &update_zombie_speed);
-		foreach(zombie in getAIArray())
-		zombie thread update_zombie_speed();
+		foreach(zombie in get_zombies()) {
+			zombie thread update_zombie_speed();
+		}
 	} else {
-		foreach(zombie in getAIArray())
-		zombie zombie_utility::set_zombie_run_cycle_restore_from_override();
+		foreach(zombie in get_zombies()) {
+			zombie zombie_utility::set_zombie_run_cycle_restore_from_override();
+		}
 	}
 }
 
