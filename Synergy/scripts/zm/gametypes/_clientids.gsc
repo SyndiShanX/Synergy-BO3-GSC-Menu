@@ -136,6 +136,11 @@ function initial_variable() {
 	self.syn["weapons"]["extras"]["origins"][0] = array("tomb_shield");
 	self.syn["weapons"]["extras"]["origins"][1] = array("Zombie Shield");
 
+	// Attachments
+
+	self.syn["attachments"][0] = array("reflex", "reddot", "holo", "acog", "dualoptic", "ir", "rf", "damage", "extbarrel", "fastreload", "fmj", "grip", "quickdraw", "stalker", "steadyaim", "steadyaim_light", "swayreduc", "suppressed", "gmod6", "gmod7");
+	self.syn["attachments"][1] = array("Reflex Sight", "Elo Sight", "BOA 3 Sight", "Acog Scope", "Dual Optic", "Thermal Scope", "Rapid Fire", "High Caliber", "Long Barrel", "Fast Mags", "FMJ", "Grip", "Quickdraw", "Stock", "Laser", "Laser", "Ballistic CPU", "Suppressor", "Clan Tag", "Kill Counter");
+
 	// Camos
 
 	self.syn["camos"][0] = [];
@@ -171,8 +176,8 @@ function initial_variable() {
 
 	// Visions
 
-	forEach(type, v_array in level.vsmgr) {
-		forEach(v_name, v_struct in level.vsmgr[type].info) {
+	foreach(type, v_array in level.vsmgr) {
+		foreach(v_name, v_struct in level.vsmgr[type].info) {
 			vision = level.vsmgr[type].info[v_name];
 			if(vision.state.should_activate_per_player) {
 				displayName = construct_string(replace_character(vision.name, "_", " "));
@@ -183,7 +188,7 @@ function initial_variable() {
 					displayName = getSubStr(displayName, 4);
 				}
 				vision.displayName = displayName;
-				forEach(existingVision in self.syn["visions"]) {
+				foreach(existingVision in self.syn["visions"]) {
 					if(vision.name == existingVision.name) {
 						self.isInArray = true;
 					}
@@ -200,14 +205,15 @@ function initial_variable() {
 
 	self.syn["powerups"][0] = getArrayKeys(level.zombie_include_powerups);
   self.syn["powerups"][1] = [];
-  self.syn["powerups"][2] = [];
   for(i = 0; i < self.syn["powerups"][0].size; i++) {
     self.syn["powerups"][1][i] = construct_string(replace_character(self.syn["powerups"][0][i], "_", " "));
 		if(self.syn["powerups"][1][i] == "Ww Grenade") {
 			self.syn["powerups"][1][i] = "Widow's Wine Grenade";
 		}
-		self.syn["powerups"][2][i] = false;
 	}
+	self.syn["powerups"][2] = array(false, false, false, false, false);
+	self.syn["powerups"][3] = array("double_points", "full_ammo", "insta_kill", "nuke");
+	self.syn["powerups"][4] = array("Double Points", "Max Ammo", "Insta-Kill", "Nuke");
 
 	// Gobblegum
 
@@ -222,7 +228,7 @@ function initial_variable() {
 	weapon_types = array("assault", "smg", "cqb", "lmg", "sniper", "pistol", "launcher");
 
 	weapon_names = [];
-	forEach(weapon in getArrayKeys(level.zombie_weapons)) {
+	foreach(weapon in getArrayKeys(level.zombie_weapons)) {
 		weapon_names[weapon_names.size] = weapon.name;
 	}
 
@@ -250,7 +256,7 @@ function initial_variable() {
 	self.syn["weapons"][7] = [];
 	self.syn["weapons"][8] = [];
 	self.syn["weapons"][9] = [];
-	forEach(weapon in getArrayKeys(level.zombie_weapons)) {
+	foreach(weapon in getArrayKeys(level.zombie_weapons)) {
 		isInArray = false;
 		for(e = 0; e < self.syn["weapons"].size; e++) {
 			for(i = 0; i < self.syn["weapons"][e].size; i++) {
@@ -1350,6 +1356,14 @@ function menu_option() {
 			self add_option("Equip Camo", undefined, &new_menu, "Equip Camo");
 			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
 
+			category = get_category(self getCurrentWeapon().rootWeapon.name);
+
+			if(isDefined(category)) {
+				if(category != "weapon_melee" && category != "weapon_grenade") {
+					self add_option("Equip Attachment", undefined, &new_menu, "Equip Attachment");
+				}
+			}
+
 			self add_option("Take Current Weapon", undefined, &take_weapon);
 			self add_option("Drop Current Weapon", undefined, &drop_weapon);
 
@@ -1412,8 +1426,8 @@ function menu_option() {
 
 			self add_option("Reset", undefined, &reset_powerups);
 
-			for(i = 0; i < self.syn["powerups"][0].size; i++) {
-				self add_toggle("Disable " + self.syn["powerups"][1][i], undefined, &disable_powerup, self.syn["powerups"][2][i], self.syn["powerups"][0][i], i);
+			for(i = 0; i < self.syn["powerups"][3].size; i++) {
+				self add_toggle("Disable " + self.syn["powerups"][4][i], undefined, &disable_powerup, self.syn["powerups"][2][i], self.syn["powerups"][3][i], i);
 			}
 
 			break;
@@ -1437,7 +1451,7 @@ function menu_option() {
 		case "Give Perks":
 			self add_menu(menu, menu.size);
 
-			forEach(perk in self.syn["perks"]["all"]) {
+			foreach(perk in self.syn["perks"]["all"]) {
 				perk_name = get_perk_name(perk);
 				self add_option(perk_name, undefined, &give_perk, perk);
 			}
@@ -1446,7 +1460,7 @@ function menu_option() {
 		case "Take Perks":
 			self add_menu(menu, menu.size);
 
-			forEach(perk in self.syn["perks"]["all"]) {
+			foreach(perk in self.syn["perks"]["all"]) {
 				perk_name = get_perk_name(perk);
 				self add_option(perk_name, undefined, &take_perk, perk);
 			}
@@ -1455,7 +1469,7 @@ function menu_option() {
 		case "Give Gobblegum":
 			self add_menu(menu, menu.size);
 
-			forEach(gobblegum in self.syn["gobblegum"][0]) {
+			foreach(gobblegum in self.syn["gobblegum"][0]) {
 				gobblegum_name = get_gobblegum_name(gobblegum);
 				self add_option(gobblegum_name, undefined, &give_gobblegum, gobblegum);
 			}
@@ -1484,7 +1498,7 @@ function menu_option() {
 				}
 			}
 
-			forEach(vision in self.syn["visions"]) {
+			foreach(vision in self.syn["visions"]) {
 				switch(vision.name) {
 					case "":
 					case "cheat_bw_contrast":
@@ -1554,6 +1568,18 @@ function menu_option() {
 
 			for(i = 0; i < self.syn["zombies"][map][0].size; i++) {
 				self add_option("Spawn " + self.syn["zombies"][map][0][i], undefined, &spawn_zombie, self.syn["zombies"][map][1][i]);
+			}
+
+			break;
+		case "Equip Attachment":
+			self add_menu(menu, menu.size);
+
+			weapon_attachments = get_weapon_attachments();
+
+			foreach(attachment in weapon_attachments) {
+				if(isInArray(self.syn["attachments"][0], attachment)) {
+					self add_option(get_attachment_name(attachment), undefined, &equip_attachment, attachment);
+				}
 			}
 
 			break;
@@ -1665,7 +1691,7 @@ function menu_option() {
 				self add_option(self.syn["weapons"]["extras"][1][i], undefined, &give_weapon, self.syn["weapons"]["extras"][0][i]);
 			}
 
-			forEach(weapon in self.syn["weapons"][9]) {
+			foreach(weapon in self.syn["weapons"][9]) {
 				switch(weapon.id) {
 					case "bowie_knife":
 					case "frag_grenade":
@@ -1800,7 +1826,7 @@ function replace_character(string, substring, replace) {
 function remove_duplicate_ent_array(name) {
 	new_array = [];
 	saved_array = [];
-	forEach(item in getEntArray(name, "targetname")) {
+	foreach(item in getEntArray(name, "targetname")) {
 		if(!isInArray(new_array, item.script_noteworthy)) {
 			new_array[new_array.size] = item.script_noteworthy;
 			saved_array[saved_array.size] = item;
@@ -1841,9 +1867,19 @@ function set_variable(check, option_1, option_2) {
 
 function load_weapons(weapon_category) {
 	for(i = 0; i < self.syn["weapons"].size; i++) {
-		forEach(weapon in self.syn["weapons"][i]) {
+		foreach(weapon in self.syn["weapons"][i]) {
 			if(weapon.category == weapon_category) {
 				self add_option(weapon.name, undefined, &give_weapon, weapon.id);
+			}
+		}
+	}
+}
+
+function get_category(weapon_id) {
+	for(i = 0; i < self.syn["weapons"].size; i++) {
+		foreach(weapon in self.syn["weapons"][i]) {
+			if(weapon.id == weapon_id || weapon.id + "_upgraded" == weapon_id) {
+				return weapon.category;
 			}
 		}
 	}
@@ -2291,9 +2327,9 @@ function freeze_box() {
 
 function open_doors() {
 	types = array("zombie_door", "zombie_airlock_buy", "zombie_debris", "zombie_airlock_hackable", "zombie_door_airlock", "electric_buyable_door", "electric_door");
-	forEach(type in types) {
+	foreach(type in types) {
 		zombie_doors = getEntArray(type, "targetname");
-		forEach(door in zombie_doors) {
+		foreach(door in zombie_doors) {
 			if(type == "zombie_debris") {
         door.zombie_cost = 0;
         door notify("trigger", self);
@@ -2312,7 +2348,7 @@ function open_doors() {
 
 function get_power_trigger() {
 	presets = array("elec", "power", "master");
-	forEach(preset in presets) {
+	foreach(preset in presets) {
 		trigger = getEnt("use_" + preset + "_switch", "targetname");
 		if(isDefined(trigger)) {
 			return trigger;
@@ -2338,7 +2374,7 @@ function power_on() {
 	}
 	if(self.map_name == "shangri_la") {
 		directions = array("power_trigger_left", "power_trigger_right");
-		forEach(direction in directions) {
+		foreach(direction in directions) {
 			switch_trigger = getEnt("power_trigger_" + direction, "targetName");
 			switch_trigger notify("trigger", self);
 		}
@@ -2393,11 +2429,22 @@ function shoot_powerups_loop() {
 
 function reset_powerups() {
 	level.zombie_powerup_array = self.syn["powerups"][0];
+	for(i = 0; i < self.syn["powerups"][2].size; i++) {
+		self.syn["powerups"][2][i] = false;
+	}
 }
 
 function disable_powerup(powerup, i) {
 	self.syn["powerups"][2][i] = !return_toggle(self.syn["powerups"][2][i]);
-	level.zombie_powerup_array = array_remove(level.zombie_powerup_array, powerup);
+	if(self.syn["powerups"][2][i]) {
+		level.zombie_powerup_array = array_remove(level.zombie_powerup_array, powerup);
+	} else {
+		level.zombie_powerup_array[level.zombie_powerup_array.size] = powerup;
+	}
+	if(self.syn["powerups"][2][0] == true && self.syn["powerups"][2][1] == true && self.syn["powerups"][2][2] == true && self.syn["powerups"][2][3] == true) {
+		iPrintString("Powerup Table cannot be Empty, Enabling All Powerups");
+		reset_powerups();
+	}
 }
 
 // Weapon Options
@@ -2480,7 +2527,64 @@ function give_weapon(weapon) {
 	self giveStartAmmo(weapon);
 }
 
+function get_weapon_attachments() {
+	weapon = self getCurrentWeapon().rootWeapon.name;
+
+	attachments = tableLookup("gamedata/weapons/common/attachmentmappingstable.csv", 0, weapon, 1);
+
+	return strTok(attachments, " ");
+}
+
+function get_attachment_name(attachment) {
+	if(isSubStr(attachment, "reflex_")) {
+		return "Reflex Sight";
+	} else if(isSubStr(attachment, "reddot_")) {
+		return "Elo Sight";
+	} else if(isSubStr(attachment, "acog_")) {
+		return "Acog Scope";
+	} else if(isSubStr(attachment, "dualoptic_")) {
+		return "Dual Optic";
+	} else if(isSubStr(attachment, "ir_")) {
+		return "Thermal Scope";
+	} else if(isSubStr(attachment, "suppressed_")) {
+		return "Suppressor";
+	} else if(isSubStr(attachment, "stalker_")) {
+		return "Stock";
+	} else if(isSubStr(attachment, "rf_")) {
+		return "Rapid Fire";
+	} else if(isSubStr(attachment, "quickdraw_")) {
+		return "Quickdraw";
+	} else if(isSubStr(attachment, "fastreload_") && attachment != "fastreload_dualmag") {
+		return "Fast Mags";
+	} else if(isSubStr(attachment, "extclip_")) {
+		return "Extended Mags";
+	} else if(isSubStr(attachment, "extbarrel_")) {
+		return "Long Barrel";
+	} else {
+		for(i = 0; i < self.syn["attachments"][0].size; i++) {
+			if(attachment == self.syn["attachments"][0][i]) {
+				return self.syn["attachments"][1][i];
+			}
+		}
+	}
+	return attachment;
+}
+
+function equip_attachment(attachment) {
+	weapon = getWeapon(self getCurrentWeapon().rootWeapon.name, attachment);
+
+	self takeWeapon(self getCurrentWeapon());
+	if(isDefined(self.saved_camo)) {
+		self giveWeapon(weapon);
+		equip_camo(self.saved_camo);
+	} else {
+		self giveWeapon(weapon);
+	}
+	self switchToWeaponImmediate(weapon);
+}
+
 function equip_camo(camo_index) {
+	self.saved_camo = camo_index;
 	weapon = self getCurrentWeapon();
   stock = self getWeaponAmmoStock(weapon);
   clip = self getWeaponAmmoClip(weapon);
@@ -2584,14 +2688,14 @@ function spawn_zombie(spawner) {
 
 function kill_all_zombies() {
 	level.zombie_total = 0;
-	forEach(zombie in get_zombies()) {
+	foreach(zombie in get_zombies()) {
 		zombie doDamage(zombie.health * 5000, (0, 0, 0), self);
 		wait 0.05;
 	}
 }
 
 function teleport_zombies() {
-	forEach(zombie in get_zombies()) {
+	foreach(zombie in get_zombies()) {
 		zombie forceTeleport(self.origin + anglesToForward(self.angles) * 115);
 	}
 }
@@ -2603,7 +2707,7 @@ function one_shot_zombies() {
 		zombies = get_zombies();
 		level.prev_health = zombies[0].health;
 		while(isDefined(self.one_shot_zombies)) {
-			forEach(zombie in get_zombies()) {
+			foreach(zombie in get_zombies()) {
 				zombie.maxHealth = 1;
 				zombie.health = zombie.maxHealth;
 			}
@@ -2612,7 +2716,7 @@ function one_shot_zombies() {
 	} else {
 		iPrintString("One Shot Zombies [^1OFF^7]");
 		self.one_shot_zombies = undefined;
-		forEach(zombie in get_zombies()) {
+		foreach(zombie in get_zombies()) {
 			zombie.maxHealth = level.prev_health;
 			zombie.health = level.prev_health;
 		}
@@ -2677,7 +2781,7 @@ function slow_zombies() {
 		iPrintString("Slow Zombies [^2ON^7]");
 		self.slow_zombies = true;
 		while(isDefined(self.slow_zombies)) {
-			forEach(zombie in get_zombies()) {
+			foreach(zombie in get_zombies()) {
 				zombie.b_widows_wine_slow = 1;
 				zombie asmSetAnimationRate(0.7);
 				zombie clientField::set("widows_wine_wrapping", 1);
@@ -2687,7 +2791,7 @@ function slow_zombies() {
 	} else {
 		iPrintString("Slow Zombies [^1OFF^7]");
 		self.slow_zombies = undefined;
-		forEach(zombie in get_zombies()) {
+		foreach(zombie in get_zombies()) {
 			zombie.b_widows_wine_slow = 0;
 			zombie asmSetAnimationRate(1);
 			zombie clientField::set("widows_wine_wrapping", 0);
@@ -2758,7 +2862,7 @@ function reset_zombie_health_cap() {
 	self notify("stop_zombie_health_cap");
 	wait 0.5;
 	level.zombie_health = calculate_health(zm::get_round_number());
-	forEach(zombie in get_zombies()) {
+	foreach(zombie in get_zombies()) {
 		zombie.maxHealth = level.zombie_health;
 		zombie.health = level.zombie_health;
 	}
@@ -2778,7 +2882,7 @@ function zombie_health_cap_loop(round, health_cap) {
 		if(round < zm::get_round_number()) {
 			level.zombie_health = health_cap;
 
-			forEach(zombie in get_zombies()) {
+			foreach(zombie in get_zombies()) {
 				if(zombie.maxHealth > health_cap) {
 					zombie.maxHealth = health_cap;
 				}
