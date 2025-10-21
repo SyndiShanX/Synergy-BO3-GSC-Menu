@@ -138,8 +138,8 @@ function initial_variable() {
 
 	// Attachments
 
-	self.syn["attachments"][0] = array("reflex", "reddot", "holo", "acog", "dualoptic", "ir", "rf", "damage", "extbarrel", "fastreload", "fmj", "grip", "quickdraw", "stalker", "steadyaim", "steadyaim_light", "swayreduc", "suppressed", "gmod6", "gmod7");
-	self.syn["attachments"][1] = array("Reflex Sight", "Elo Sight", "BOA 3 Sight", "Acog Scope", "Dual Optic", "Thermal Scope", "Rapid Fire", "High Caliber", "Long Barrel", "Fast Mags", "FMJ", "Grip", "Quickdraw", "Stock", "Laser", "Laser", "Ballistic CPU", "Suppressor", "Clan Tag", "Kill Counter");
+	self.syn["attachments"][0] = array("reflex", "reddot", "holo", "acog", "dualoptic", "ir", "rf", "damage", "extbarrel", "fastreload", "fmj", "grip", "quickdraw", "stalker", "steadyaim", "steadyaim_light", "swayreduc", "suppressed");
+	self.syn["attachments"][1] = array("Reflex Sight", "Elo Sight", "BOA 3 Sight", "Acog Scope", "Dual Optic", "Thermal Scope", "Rapid Fire", "High Caliber", "Long Barrel", "Fast Mags", "FMJ", "Grip", "Quickdraw", "Stock", "Laser", "Laser", "Ballistic CPU", "Suppressor");
 
 	// Camos
 
@@ -204,16 +204,19 @@ function initial_variable() {
 	// Powerups
 
 	self.syn["powerups"][0] = getArrayKeys(level.zombie_include_powerups);
-  self.syn["powerups"][1] = [];
-  for(i = 0; i < self.syn["powerups"][0].size; i++) {
-    self.syn["powerups"][1][i] = construct_string(replace_character(self.syn["powerups"][0][i], "_", " "));
+	self.syn["powerups"][1] = [];
+	for(i = 0; i < self.syn["powerups"][0].size; i++) {
+	  self.syn["powerups"][1][i] = construct_string(replace_character(self.syn["powerups"][0][i], "_", " "));
 		if(self.syn["powerups"][1][i] == "Ww Grenade") {
 			self.syn["powerups"][1][i] = "Widow's Wine Grenade";
 		}
 	}
-	self.syn["powerups"][2] = array(false, false, false, false, false);
-	self.syn["powerups"][3] = array("double_points", "full_ammo", "insta_kill", "nuke");
-	self.syn["powerups"][4] = array("Double Points", "Max Ammo", "Insta-Kill", "Nuke");
+	for(i = 0; i < self.syn["powerups"][0].size; i++) {
+		self.syn["powerups"][2][self.syn["powerups"][2].size] = false;
+	}
+	foreach(powerup in self.syn["powerups"][0]) {
+		self.syn["powerups"][3][self.syn["powerups"][3].size] = level.zombie_powerups[powerup].func_should_drop_with_regular_powerups;
+	}
 
 	// Gobblegum
 
@@ -1359,7 +1362,7 @@ function menu_option() {
 			category = get_category(self getCurrentWeapon().rootWeapon.name);
 
 			if(isDefined(category)) {
-				if(category != "weapon_melee" && category != "weapon_grenade") {
+				if(category != "weapon_launcher" && category != "weapon_melee" && category != "weapon_grenade") {
 					self add_option("Equip Attachment", undefined, &new_menu, "Equip Attachment");
 				}
 			}
@@ -1426,8 +1429,8 @@ function menu_option() {
 
 			self add_option("Reset", undefined, &reset_powerups);
 
-			for(i = 0; i < self.syn["powerups"][3].size; i++) {
-				self add_toggle("Disable " + self.syn["powerups"][4][i], undefined, &disable_powerup, self.syn["powerups"][2][i], self.syn["powerups"][3][i], i);
+			for(i = 0; i < self.syn["powerups"][0].size; i++) {
+				self add_toggle("Disable " + self.syn["powerups"][1][i], undefined, &disable_powerup, self.syn["powerups"][2][i], self.syn["powerups"][0][i], i);
 			}
 
 			break;
@@ -1779,15 +1782,15 @@ function get_map_name() {
 }
 
 function iPrintString(string) {
-  if(!isDefined(self.syn["string"])) {
-    self.syn["string"] = self create_text(string, "default", 1.5, "center", "top", 0, -115, (1, 1, 1), 1, 9999, false);
-  } else {
-    self.syn["string"] set_text(string);
-  }
-  self.syn["string"] notify("stop_hud_fade");
-  self.syn["string"].alpha = 1;
-  self.syn["string"] setText(string);
-  self.syn["string"] thread fade_hud(0, 2.5);
+	if(!isDefined(self.syn["string"])) {
+	  self.syn["string"] = self create_text(string, "default", 1.5, "center", "top", 0, -115, (1, 1, 1), 1, 9999, false);
+	} else {
+	  self.syn["string"] set_text(string);
+	}
+	self.syn["string"] notify("stop_hud_fade");
+	self.syn["string"].alpha = 1;
+	self.syn["string"] setText(string);
+	self.syn["string"] thread fade_hud(0, 2.5);
 }
 
 function fade_hud(alpha, time) {
@@ -1835,22 +1838,17 @@ function remove_duplicate_ent_array(name) {
 	return saved_array;
 }
 
-function array_remove(array, object) {
-  if(!isDefined(array) && !isDefined(object)) {
-    return;
-  }
-  new_array = [];
-  foreach(item in array) {
-    if(item != object) {
-      if(!isDefined(new_array)) {
-        new_array = [];
-      } else if(!isArray(new_array)) {
-        new_array = array(new_array);
-      }
-      new_array[new_array.size] = item;
-    }
-  }
-  return new_array;
+function remove_from_array(array, object) {
+	if(!isDefined(array) || !isDefined(object)) {
+	  return;
+	}
+	new_array = [];
+	foreach(item in array) {
+	  if(item != object) {
+	    new_array[new_array.size] = item;
+	  }
+	}
+	return new_array;
 }
 
 function set_increment(value) {
@@ -2331,17 +2329,17 @@ function open_doors() {
 		zombie_doors = getEntArray(type, "targetname");
 		foreach(door in zombie_doors) {
 			if(type == "zombie_debris") {
-        door.zombie_cost = 0;
-        door notify("trigger", self);
-      } else if(door._door_open != true) {
-        door thread zm_blockers::door_opened(door.zombie_cost, 0);
-        door._door_open = true;
+	      door.zombie_cost = 0;
+	      door notify("trigger", self);
+	    } else if(door._door_open != true) {
+	      door thread zm_blockers::door_opened(door.zombie_cost, 0);
+	      door._door_open = true;
 
-        all_trigs = getEntArray(door.target, "target");
-        foreach(trig in all_trigs) {
+	      all_trigs = getEntArray(door.target, "target");
+	      foreach(trig in all_trigs) {
 					trig zm_utility::set_hint_string(trig, "");
 				}
-      }
+	    }
 		}
 	}
 }
@@ -2428,22 +2426,49 @@ function shoot_powerups_loop() {
 }
 
 function reset_powerups() {
-	level.zombie_powerup_array = self.syn["powerups"][0];
-	for(i = 0; i < self.syn["powerups"][2].size; i++) {
+	for(i = 0; i < self.syn["powerups"][0].size; i++) {
+		level.zombie_powerups[self.syn["powerups"][0][i]].func_should_drop_with_regular_powerups = self.syn["powerups"][3][i];
 		self.syn["powerups"][2][i] = false;
+	}
+	if (!level flag::get("zombie_drop_powerups")) {
+		level flag::set("zombie_drop_powerups");
 	}
 }
 
 function disable_powerup(powerup, i) {
 	self.syn["powerups"][2][i] = !return_toggle(self.syn["powerups"][2][i]);
 	if(self.syn["powerups"][2][i]) {
-		level.zombie_powerup_array = array_remove(level.zombie_powerup_array, powerup);
+		level.zombie_powerups[powerup].func_should_drop_with_regular_powerups = false;
 	} else {
-		level.zombie_powerup_array[level.zombie_powerup_array.size] = powerup;
+		level.zombie_powerups[powerup].func_should_drop_with_regular_powerups = true;
 	}
-	if(self.syn["powerups"][2][0] == true && self.syn["powerups"][2][1] == true && self.syn["powerups"][2][2] == true && self.syn["powerups"][2][3] == true) {
-		iPrintString("Powerup Table cannot be Empty, Enabling All Powerups");
-		reset_powerups();
+	
+	all_powerups_disabled = true;
+  for(i = 0; i < self.syn["powerups"][0].size; i++) {
+    if(level.zombie_powerups[self.syn["powerups"][0][i]].func_should_drop_with_regular_powerups) {
+			all_powerups_disabled = false;
+		}
+  }
+	
+	self.syn["powerups"][4] = [];
+	for(i = 0; i < self.syn["powerups"][0].size; i++) {
+		current_powerup = self.syn["powerups"][0][i];
+		if(current_powerup == "double_points" || current_powerup == "insta_kill" || current_powerup == "nuke" || current_powerup == "full_ammo") {
+			self.syn["powerups"][4][self.syn["powerups"][4].size] = self.syn["powerups"][2][i];
+		}
+	}
+	
+	core_powerups_disabled = true;
+	for(i = 0; i < self.syn["powerups"][4].size; i++) {
+		if(!self.syn["powerups"][4][i]) {
+			core_powerups_disabled = false;
+		}
+	}
+	
+	if(all_powerups_disabled || core_powerups_disabled) {
+		level flag::clear("zombie_drop_powerups");
+	} else {
+		level flag::set("zombie_drop_powerups");
 	}
 }
 
@@ -2570,31 +2595,72 @@ function get_attachment_name(attachment) {
 	return attachment;
 }
 
+function get_equipped_attachments(weapon) {
+	attachments = [];
+	equipped = strTok(weapon, "+");
+
+	for (i = 1; i < equipped.size; i++) {
+	  attachments[attachments.size] = equipped[i];
+	}
+
+	return attachments;
+}
+
 function equip_attachment(attachment) {
-	weapon = getWeapon(self getCurrentWeapon().rootWeapon.name, attachment);
+	weapon = self getCurrentWeapon();
+	stock = self getWeaponAmmoStock(weapon);
+	clip = self getWeaponAmmoClip(weapon);
+	attachments = get_equipped_attachments(weapon.name);
+
+	if(isInArray(attachments, attachment)) {
+		attachments = remove_from_array(attachments, attachment);
+	} else {
+		if(attachment == "reflex" || attachment == "reddot" || attachment == "holo" || attachment == "acog" || attachment == "dualoptic" || attachment == "ir") {
+			if(isInArray(attachments, "reflex")) {
+				attachments = remove_from_array(attachments, "reflex");
+			} else if(isInArray(attachments, "reddot")) {
+				attachments = remove_from_array(attachments, "reddot");
+			} else if(isInArray(attachments, "holo")) {
+				attachments = remove_from_array(attachments, "holo");
+			} else if(isInArray(attachments, "acog")) {
+				attachments = remove_from_array(attachments, "acog");
+			} else if(isInArray(attachments, "dualoptic")) {
+				attachments = remove_from_array(attachments, "dualoptic");
+			} else if(isInArray(attachments, "ir")) {
+				attachments = remove_from_array(attachments, "ir");
+			}
+		}
+		
+		attachments[attachments.size] = attachment;
+	}
+
+	weapon = getWeapon(weapon.rootWeapon.name, attachments);
 
 	self takeWeapon(self getCurrentWeapon());
+
 	if(isDefined(self.saved_camo)) {
-		self giveWeapon(weapon);
-		equip_camo(self.saved_camo);
+		self giveWeapon(weapon, self calcWeaponOptions(self.saved_camo, 0, 0), 0);
 	} else {
 		self giveWeapon(weapon);
 	}
-	self switchToWeaponImmediate(weapon);
+
+	self setWeaponAmmoStock(weapon, stock);
+	self setWeaponAmmoClip(weapon, clip);
+	self setSpawnWeapon(weapon, true);
 }
 
 function equip_camo(camo_index) {
 	self.saved_camo = camo_index;
 	weapon = self getCurrentWeapon();
-  stock = self getWeaponAmmoStock(weapon);
-  clip = self getWeaponAmmoClip(weapon);
+	stock = self getWeaponAmmoStock(weapon);
+	clip = self getWeaponAmmoClip(weapon);
 
-  self takeWeapon(weapon);
-  self giveWeapon(weapon, self calcWeaponOptions(camo_index, 0, 0), 0);
+	self takeWeapon(weapon);
+	self giveWeapon(weapon, self calcWeaponOptions(camo_index, 0, 0), 0);
 
-  self setWeaponAmmoStock(weapon, stock);
-  self setWeaponAmmoClip(weapon, clip);
-  self setSpawnWeapon(weapon, true);
+	self setWeaponAmmoStock(weapon, stock);
+	self setWeaponAmmoClip(weapon, clip);
+	self setSpawnWeapon(weapon, true);
 }
 
 function give_aat(value) {
@@ -2635,7 +2701,7 @@ function no_target() {
 
 function set_round(value) {
 	self thread zm_utility::zombie_goto_round(value);
-  zombie_utility::ai_calculate_health(value);
+	zombie_utility::ai_calculate_health(value);
 }
 
 function spawn_normal_zombie() {
@@ -2671,12 +2737,12 @@ function spawn_panzer() {
 	zombie.health = int(player_modifier * (level.mechz_base_health + (level.mechz_health_increase * zombie_health)));
 	zombie.maxHealth = zombie.health;
 	zombie.faceplate_health = int(player_modifier * (level.var_fa14536d + (level.var_1a5bb9d8 * zombie_health)));
-  zombie.powercap_cover_health = int(player_modifier * (level.mechz_powercap_cover_health + (15 * zombie_health)));
-  zombie.powercap_health = int(player_modifier * (level.mechz_powercap_health + (15 * zombie_health)));
-  zombie.left_knee_armor_health = mechz_armor_health;
-  zombie.right_knee_armor_health = mechz_armor_health;
-  zombie.left_shoulder_armor_health = mechz_armor_health;
-  zombie.right_shoulder_armor_health = mechz_armor_health;
+	zombie.powercap_cover_health = int(player_modifier * (level.mechz_powercap_cover_health + (15 * zombie_health)));
+	zombie.powercap_health = int(player_modifier * (level.mechz_powercap_health + (15 * zombie_health)));
+	zombie.left_knee_armor_health = mechz_armor_health;
+	zombie.right_knee_armor_health = mechz_armor_health;
+	zombie.left_shoulder_armor_health = mechz_armor_health;
+	zombie.right_shoulder_armor_health = mechz_armor_health;
 
 	zombie forceTeleport(self.origin + anglesToForward(self.angles) * 300);
 }
@@ -2847,14 +2913,14 @@ function update_zombie_speed() {
 }
 
 function calculate_health(round_number) {
-  level.zombie_health = level.zombie_vars["zombie_health_start"];
-  for (i = 2; i <= round_number; i++) {
-    if(i >= 10) {
-      old_health = level.zombie_health;
-      level.zombie_health = level.zombie_health + (int(level.zombie_health * level.zombie_vars["zombie_health_increase_multiplier"]));
-    }
-    level.zombie_health = int(level.zombie_health + level.zombie_vars["zombie_health_increase"]);
-  }
+	level.zombie_health = level.zombie_vars["zombie_health_start"];
+	for (i = 2; i <= round_number; i++) {
+	  if(i >= 10) {
+	    old_health = level.zombie_health;
+	    level.zombie_health = level.zombie_health + (int(level.zombie_health * level.zombie_vars["zombie_health_increase_multiplier"]));
+	  }
+	  level.zombie_health = int(level.zombie_health + level.zombie_vars["zombie_health_increase"]);
+	}
 	return level.zombie_health;
 }
 
