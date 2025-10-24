@@ -138,8 +138,8 @@ function initial_variable() {
 
 	// Attachments
 
-	self.syn["attachments"][0] = array("reflex", "reddot", "holo", "acog", "dualoptic", "ir", "rf", "damage", "extbarrel", "fastreload", "fmj", "grip", "quickdraw", "stalker", "steadyaim", "steadyaim_light", "swayreduc", "suppressed");
-	self.syn["attachments"][1] = array("Reflex Sight", "Elo Sight", "BOA 3 Sight", "Acog Scope", "Dual Optic", "Thermal Scope", "Rapid Fire", "High Caliber", "Long Barrel", "Fast Mags", "FMJ", "Grip", "Quickdraw", "Stock", "Laser", "Laser", "Ballistic CPU", "Suppressor");
+	self.syn["attachments"][0] = array("reflex", "reddot", "holo", "acog", "dualoptic", "ir", "rf", "damage", "extbarrel", "extclip", "fastreload", "fmj", "grip", "quickdraw", "stalker", "steadyaim", "swayreduc", "suppressed");
+	self.syn["attachments"][1] = array("Reflex Sight", "Elo Sight", "BOA 3 Sight", "Acog Scope", "Dual Optic", "Thermal Scope", "Rapid Fire", "High Caliber", "Long Barrel", "Extended Mags", "Fast Mags", "FMJ", "Grip", "Quickdraw", "Stock", "Laser", "Ballistic CPU", "Suppressor");
 
 	// Camos
 
@@ -1344,10 +1344,11 @@ function menu_option() {
 			}
 
 			self add_increment("Set Speed", undefined, &set_speed, 1, 1, 15, 1);
-			self add_increment("Set Timescale", undefined, &set_timescale, 1, 0.25, 10, 0.25);
+			self add_increment("Set Timescale", undefined, &set_timescale, 1, 0.125, 10, 0.125);
 			self add_increment("Set Gravity", undefined, &set_gravity, 900, 130, 900, 10);
 
 			self add_toggle("Third Person", undefined, &third_person, self.third_person);
+
 			self add_option("Visions", undefined, &new_menu, "Visions");
 
 			break;
@@ -1361,7 +1362,7 @@ function menu_option() {
 
 			category = get_category(self getCurrentWeapon().rootWeapon.name);
 
-			if(isDefined(category)) {
+			if(isDefined(category) || self getCurrentWeapon().rootWeapon.name == "smg_longrange") {
 				if(category != "weapon_launcher" && category != "weapon_melee" && category != "weapon_grenade") {
 					self add_option("Equip Attachment", undefined, &new_menu, "Equip Attachment");
 				}
@@ -1576,13 +1577,14 @@ function menu_option() {
 			break;
 		case "Equip Attachment":
 			self add_menu(menu, menu.size);
+			
+			self.syn["attachment_toggles"] = [];
 
 			weapon_attachments = get_weapon_attachments();
-
-			foreach(attachment in weapon_attachments) {
-				if(isInArray(self.syn["attachments"][0], attachment)) {
-					self add_option(get_attachment_name(attachment), undefined, &equip_attachment, attachment);
-				}
+			
+			for(i = 0; i < weapon_attachments.size; i++) {
+				self.syn["attachment_toggles"][i] = weaponHasAttachment(self getCurrentWeapon(), weapon_attachments[i]);
+				self add_toggle(get_attachment_name(weapon_attachments[i]), undefined, &equip_attachment, self.syn["attachment_toggles"][i], weapon_attachments[i], i);
 			}
 
 			break;
@@ -2554,42 +2556,29 @@ function give_weapon(weapon) {
 
 function get_weapon_attachments() {
 	weapon = self getCurrentWeapon().rootWeapon.name;
-
-	attachments = tableLookup("gamedata/weapons/common/attachmentmappingstable.csv", 0, weapon, 1);
-
-	return strTok(attachments, " ");
+	
+	if(isSubStr(weapon, "_upgraded")) {
+		weapon = strtok2(weapon, "_upgraded")[0];
+	}
+	
+	attachments = [];
+	
+	for(i = 0; i < tableLookupRowCount("gamedata/weapons/mp/mp_gunlevels.csv"); i++) {
+		row = tableLookupRow("gamedata/weapons/mp/mp_gunlevels.csv", i);
+		if(weapon == row[2]) {
+			if(row[3] != "dw" && row[3] != "extclip" && row[3] != "damage") {
+				attachments[attachments.size] = row[3];
+			}
+		}
+	}
+	
+	return attachments;
 }
 
 function get_attachment_name(attachment) {
-	if(isSubStr(attachment, "reflex_")) {
-		return "Reflex Sight";
-	} else if(isSubStr(attachment, "reddot_")) {
-		return "Elo Sight";
-	} else if(isSubStr(attachment, "acog_")) {
-		return "Acog Scope";
-	} else if(isSubStr(attachment, "dualoptic_")) {
-		return "Dual Optic";
-	} else if(isSubStr(attachment, "ir_")) {
-		return "Thermal Scope";
-	} else if(isSubStr(attachment, "suppressed_")) {
-		return "Suppressor";
-	} else if(isSubStr(attachment, "stalker_")) {
-		return "Stock";
-	} else if(isSubStr(attachment, "rf_")) {
-		return "Rapid Fire";
-	} else if(isSubStr(attachment, "quickdraw_")) {
-		return "Quickdraw";
-	} else if(isSubStr(attachment, "fastreload_") && attachment != "fastreload_dualmag") {
-		return "Fast Mags";
-	} else if(isSubStr(attachment, "extclip_")) {
-		return "Extended Mags";
-	} else if(isSubStr(attachment, "extbarrel_")) {
-		return "Long Barrel";
-	} else {
-		for(i = 0; i < self.syn["attachments"][0].size; i++) {
-			if(attachment == self.syn["attachments"][0][i]) {
-				return self.syn["attachments"][1][i];
-			}
+	for(i = 0; i < self.syn["attachments"][0].size; i++) {
+		if(attachment == self.syn["attachments"][0][i]) {
+			return self.syn["attachments"][1][i];
 		}
 	}
 	return attachment;
@@ -2606,7 +2595,7 @@ function get_equipped_attachments(weapon) {
 	return attachments;
 }
 
-function equip_attachment(attachment) {
+function equip_attachment(attachment, i) {
 	weapon = self getCurrentWeapon();
 	stock = self getWeaponAmmoStock(weapon);
 	clip = self getWeaponAmmoClip(weapon);
@@ -2647,6 +2636,7 @@ function equip_attachment(attachment) {
 	self setWeaponAmmoStock(weapon, stock);
 	self setWeaponAmmoClip(weapon, clip);
 	self setSpawnWeapon(weapon, true);
+	self.syn["attachment_toggles"][i] = weaponHasAttachment(weapon, attachment);
 }
 
 function equip_camo(camo_index) {
