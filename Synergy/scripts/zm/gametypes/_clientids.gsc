@@ -1363,6 +1363,18 @@ function menu_option() {
 			category = get_category(self getCurrentWeapon().rootWeapon.name);
 
 			if(isDefined(category) || self getCurrentWeapon().rootWeapon.name == "smg_longrange") {
+				if(category != "weapon_melee" && category != "weapon_grenade") {
+					if(self zm_score::can_player_purchase(get_ammo_cost())) {
+						price_color = "^2";
+					} else {
+						price_color = "^1";
+					}
+
+					self add_option("Refill Ammo (" + price_color + "$" + get_ammo_cost() + "^7)", undefined, &refill_ammo);
+				}
+			}
+
+			if(isDefined(category) || self getCurrentWeapon().rootWeapon.name == "smg_longrange") {
 				if(category != "weapon_launcher" && category != "weapon_melee" && category != "weapon_grenade") {
 					self add_option("Equip Attachment", undefined, &new_menu, "Equip Attachment");
 				}
@@ -1577,11 +1589,11 @@ function menu_option() {
 			break;
 		case "Equip Attachment":
 			self add_menu(menu, menu.size);
-			
+
 			self.syn["attachment_toggles"] = [];
 
 			weapon_attachments = get_weapon_attachments();
-			
+
 			for(i = 0; i < weapon_attachments.size; i++) {
 				self.syn["attachment_toggles"][i] = weaponHasAttachment(self getCurrentWeapon(), weapon_attachments[i]);
 				self add_toggle(get_attachment_name(weapon_attachments[i]), undefined, &equip_attachment, self.syn["attachment_toggles"][i], weapon_attachments[i], i);
@@ -2444,14 +2456,14 @@ function disable_powerup(powerup, i) {
 	} else {
 		level.zombie_powerups[powerup].func_should_drop_with_regular_powerups = true;
 	}
-	
+
 	all_powerups_disabled = true;
   for(i = 0; i < self.syn["powerups"][0].size; i++) {
     if(level.zombie_powerups[self.syn["powerups"][0][i]].func_should_drop_with_regular_powerups) {
 			all_powerups_disabled = false;
 		}
   }
-	
+
 	self.syn["powerups"][4] = [];
 	for(i = 0; i < self.syn["powerups"][0].size; i++) {
 		current_powerup = self.syn["powerups"][0][i];
@@ -2459,14 +2471,14 @@ function disable_powerup(powerup, i) {
 			self.syn["powerups"][4][self.syn["powerups"][4].size] = self.syn["powerups"][2][i];
 		}
 	}
-	
+
 	core_powerups_disabled = true;
 	for(i = 0; i < self.syn["powerups"][4].size; i++) {
 		if(!self.syn["powerups"][4][i]) {
 			core_powerups_disabled = false;
 		}
 	}
-	
+
 	if(all_powerups_disabled || core_powerups_disabled) {
 		level flag::clear("zombie_drop_powerups");
 	} else {
@@ -2556,13 +2568,13 @@ function give_weapon(weapon) {
 
 function get_weapon_attachments() {
 	weapon = self getCurrentWeapon().rootWeapon.name;
-	
+
 	if(isSubStr(weapon, "_upgraded")) {
 		weapon = strtok2(weapon, "_upgraded")[0];
 	}
-	
+
 	attachments = [];
-	
+
 	for(i = 0; i < tableLookupRowCount("gamedata/weapons/mp/mp_gunlevels.csv"); i++) {
 		row = tableLookupRow("gamedata/weapons/mp/mp_gunlevels.csv", i);
 		if(weapon == row[2]) {
@@ -2571,7 +2583,7 @@ function get_weapon_attachments() {
 			}
 		}
 	}
-	
+
 	return attachments;
 }
 
@@ -2619,7 +2631,7 @@ function equip_attachment(attachment, i) {
 				attachments = remove_from_array(attachments, "ir");
 			}
 		}
-		
+
 		attachments[attachments.size] = attachment;
 	}
 
@@ -2661,6 +2673,29 @@ function give_aat(value) {
 function take_aat() {
 	weapon = self getCurrentWeapon();
 	self thread aat::remove(weapon);
+}
+
+function get_ammo_cost() {
+	weapon = self getCurrentWeapon();
+	if(self zm_weapons::has_upgrade(weapon)) {
+		ammo_cost = zm_weapons::get_upgraded_ammo_cost(weapon);
+	} else {
+		ammo_cost = zm_weapons::get_ammo_cost(weapon);
+	}
+	if(ammo_cost == 0 || !isDefined(ammo_cost)) {
+		ammo_cost = zm_weapons::get_ammo_cost_for_weapon(weapon);
+	}
+	return ammo_cost;
+}
+
+function refill_ammo() {
+	ammo_cost = get_ammo_cost();
+	if(self zm_score::can_player_purchase(ammo_cost)) {
+		weapon = self getCurrentWeapon();
+		self setWeaponAmmoClip(weapon, 999);
+		self giveMaxAmmo(weapon);
+		take_points(ammo_cost);
+	}
 }
 
 function take_weapon() {
