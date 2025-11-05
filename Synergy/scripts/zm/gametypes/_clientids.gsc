@@ -43,7 +43,7 @@ function initial_variable() {
 	self.menu = [];
 	self.cursor = [];
 	self.slider = [];
-	self.previous_menu = [];
+	self.previous = [];
 
 	self.font = "default";
 	self.font_scale = 1;
@@ -380,7 +380,7 @@ function initial_observer() {
 					self playSoundToPlayer("uin_lobby_leave", self);
 				}
 
-				if(isDefined(self.previous_menu[(self.previous_menu.size - 1)])) {
+				if(isDefined(self.previous[(self.previous.size - 1)])) {
 					self new_menu();
 				} else {
 					self close_menu();
@@ -1036,15 +1036,15 @@ function add_increment(text, description, command = &empty_function, start, mini
 
 function new_menu(menu) {
 	if(!isDefined(menu)) {
-		menu = self.previous_menu[(self.previous_menu.size - 1)];
-		self.previous_menu[(self.previous_menu.size - 1)] = undefined;
+		menu = self.previous[(self.previous.size - 1)];
+		self.previous[(self.previous.size - 1)] = undefined;
 	} else {
 		if(self get_menu() == "All Players") {
 			player = level.players[self get_cursor()];
 			self.selected_player = player;
 		}
 
-		self.previous_menu[self.previous_menu.size] = self get_menu();
+		self.previous[self.previous.size] = self get_menu();
 	}
 
 	self set_menu(menu);
@@ -2704,8 +2704,8 @@ function get_ammo_cost() {
 	weapon = self getCurrentWeapon();
 	weapon_name = self getCurrentWeapon().rootWeapon.name;
 
-	if(self zm_weapons::has_upgrade(weapon)) {
-		ammo_cost = 4000;
+	if(self zm_weapons::is_weapon_upgraded(weapon)) {
+		ammo_cost = 4500;
 	} else {
 		weapon_cost = int(tablelookup("gamedata/weapons/zm/" + level.script + "_weapons.csv", 0, weapon_name, 3));
 		if(weapon_cost == 50 || weapon_name == "pistol_standard") {
