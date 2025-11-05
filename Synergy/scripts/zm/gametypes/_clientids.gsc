@@ -1388,7 +1388,7 @@ function menu_option() {
 			category = get_category(weapon_name);
 
 			if(isDefined(category) || weapon_name == "pistol_standard" || weapon_name == "smg_longrange") {
-				if(category != "weapon_melee" && category != "weapon_grenade") {
+				if(category != "weapon_melee" && category != "weapon_grenade" && category != "weapon_extras") {
 					if(self zm_score::can_player_purchase(int(get_ammo_cost()))) {
 						price_color = "^2";
 					} else {
@@ -1400,7 +1400,7 @@ function menu_option() {
 			}
 
 			if(isDefined(category) && weapon_name != "pistol_revolver38" && weapon_name != "smg_sten" || weapon_name == "smg_longrange") {
-				if(category != "weapon_launcher" && category != "weapon_melee" && category != "weapon_grenade") {
+				if(category != "weapon_launcher" && category != "weapon_melee" && category != "weapon_grenade" && category != "weapon_extras") {
 					self add_option("Equip Attachment", undefined, &new_menu, "Equip Attachment");
 				}
 			}
