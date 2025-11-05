@@ -43,7 +43,7 @@ function initial_variable() {
 	self.menu = [];
 	self.cursor = [];
 	self.slider = [];
-	self.previous = [];
+	self.previous_menu = [];
 
 	self.font = "default";
 	self.font_scale = 1;
@@ -380,7 +380,7 @@ function initial_observer() {
 					self playSoundToPlayer("uin_lobby_leave", self);
 				}
 
-				if(isDefined(self.previous[(self.previous.size - 1)])) {
+				if(isDefined(self.previous_menu[(self.previous_menu.size - 1)])) {
 					self new_menu();
 				} else {
 					self close_menu();
@@ -1036,15 +1036,15 @@ function add_increment(text, description, command = &empty_function, start, mini
 
 function new_menu(menu) {
 	if(!isDefined(menu)) {
-		menu = self.previous[(self.previous.size - 1)];
-		self.previous[(self.previous.size - 1)] = undefined;
+		menu = self.previous_menu[(self.previous_menu.size - 1)];
+		self.previous_menu[(self.previous_menu.size - 1)] = undefined;
 	} else {
 		if(self get_menu() == "All Players") {
 			player = level.players[self get_cursor()];
 			self.selected_player = player;
 		}
 
-		self.previous[self.previous.size] = self get_menu();
+		self.previous_menu[self.previous_menu.size] = self get_menu();
 	}
 
 	self set_menu(menu);
@@ -1053,13 +1053,28 @@ function new_menu(menu) {
 
 // Custom Structure
 
-function open_menu() {
+function create_menu() {
 	self.menu["border"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset - 1), (self.width + 250), 34, self.color_theme, 1, 1);
 	self.menu["background"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 1), self.y_offset, (self.width + 248), 32, (0.075, 0.075, 0.075), 1, 2);
 	self.menu["foreground"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 1), (self.y_offset + 16), (self.width + 248), 16, (0.1, 0.1, 0.1), 1, 3);
 	self.menu["cursor"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 1), (self.y_offset + 16), (self.width + 243), 16, (0.15, 0.15, 0.15), 1, 4);
 	self.menu["scrollbar"] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + (self.menu["background"].width + 1)), (self.y_offset + 16), 4, 16, (0.25, 0.25, 0.25), 1, 4);
+}
 
+function open_menu() {
+	if(!isDefined(self.menu["border"]) && !isDefined(self.menu["background"]) && !isDefined(self.menu["foreground"]) && !isDefined(self.menu["cursor"]) && !isDefined(self.menu["scrollbar"])) {
+		self create_menu();
+	} else {
+		self.menu["border"].alpha = 1;
+		self.menu["background"].alpha = 1;
+		self.menu["foreground"].alpha = 1;
+		self.menu["cursor"].alpha = 1;
+		self.menu["scrollbar"].alpha = 1;
+		self.menu["title"].alpha = 1;
+		self.menu["separator"][0].alpha = 1;
+		self.menu["separator"][1].alpha = 1;
+	}
+	
 	self set_state(true);
 	self update_display();
 }
@@ -1068,7 +1083,16 @@ function close_menu() {
 	self notify("menu_ended");
 	self set_state(false);
 	self destroy_option();
-	self destroy_all(self.menu);
+	
+	self.menu["title"].alpha = 0;
+	self.menu["separator"][0].alpha = 0;
+	self.menu["separator"][1].alpha = 0;
+	self.menu["border"].alpha = 0;
+	wait 0.01;
+	self.menu["background"].alpha = 0;
+	self.menu["foreground"].alpha = 0;
+	self.menu["cursor"].alpha = 0;
+	self.menu["scrollbar"].alpha = 0;
 }
 
 function display_title(title) {
@@ -1360,11 +1384,12 @@ function menu_option() {
 			self add_option("Equip Camo", undefined, &new_menu, "Equip Camo");
 			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
 
-			category = get_category(self getCurrentWeapon().rootWeapon.name);
+			weapon_name = self getCurrentWeapon().rootWeapon.name;
+			category = get_category(weapon_name);
 
-			if(isDefined(category) || self getCurrentWeapon().rootWeapon.name == "smg_longrange") {
+			if(isDefined(category) || weapon_name == "pistol_standard" || weapon_name == "smg_longrange") {
 				if(category != "weapon_melee" && category != "weapon_grenade") {
-					if(self zm_score::can_player_purchase(get_ammo_cost())) {
+					if(self zm_score::can_player_purchase(int(get_ammo_cost()))) {
 						price_color = "^2";
 					} else {
 						price_color = "^1";
@@ -1374,7 +1399,7 @@ function menu_option() {
 				}
 			}
 
-			if(isDefined(category) || self getCurrentWeapon().rootWeapon.name == "smg_longrange") {
+			if(isDefined(category) && weapon_name != "pistol_revolver38" && weapon_name != "smg_sten" || weapon_name == "smg_longrange") {
 				if(category != "weapon_launcher" && category != "weapon_melee" && category != "weapon_grenade") {
 					self add_option("Equip Attachment", undefined, &new_menu, "Equip Attachment");
 				}
@@ -2677,19 +2702,26 @@ function take_aat() {
 
 function get_ammo_cost() {
 	weapon = self getCurrentWeapon();
+	weapon_name = self getCurrentWeapon().rootWeapon.name;
+
 	if(self zm_weapons::has_upgrade(weapon)) {
-		ammo_cost = zm_weapons::get_upgraded_ammo_cost(weapon);
+		ammo_cost = 4000;
 	} else {
-		ammo_cost = zm_weapons::get_ammo_cost(weapon);
+		weapon_cost = int(tablelookup("gamedata/weapons/zm/" + level.script + "_weapons.csv", 0, weapon_name, 3));
+		if(weapon_cost == 50 || weapon_name == "pistol_standard") {
+			weapon_cost = 500;
+		} else if(weapon_cost == 5000 || weapon_cost == 10000 || weapon_cost == 0 || !isDefined(weapon_cost)) {
+			weapon_cost = 1500;
+		}
+		
+		ammo_cost = zm_utility::round_up_to_ten(int(weapon_cost * 0.5));
 	}
-	if(ammo_cost == 0 || !isDefined(ammo_cost)) {
-		ammo_cost = zm_weapons::get_ammo_cost_for_weapon(weapon);
-	}
-	return ammo_cost;
+
+	return ammo_cost + "";
 }
 
 function refill_ammo() {
-	ammo_cost = get_ammo_cost();
+	ammo_cost = int(get_ammo_cost());
 	if(self zm_score::can_player_purchase(ammo_cost)) {
 		weapon = self getCurrentWeapon();
 		self setWeaponAmmoClip(weapon, 999);
