@@ -10,6 +10,7 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
+#using scripts\zm\craftables\_zm_craftables;
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_bgb;
 #using scripts\zm\_zm_blockers;
@@ -1381,6 +1382,7 @@ function menu_option() {
 
 			self add_option("Give Weapons", undefined, &new_menu, "Give Weapons");
 			self add_toggle("Give Pack-a-Punched Weapons", "Weapons Given will be Pack-a-Punched", &give_packed_weapon, self.give_packed_weapon);
+			self add_option("Pack-a-Punch Current Weapon", "Held Weapon will be Pack-a-Punched", &pack_weapon);
 			self add_option("Equip Camo", undefined, &new_menu, "Equip Camo");
 			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
 
@@ -1445,6 +1447,10 @@ function menu_option() {
 				} else {
 					self add_option("Turn Power On", undefined, &power_on);
 				}
+			}
+
+			if(!isDefined(level.parts_collected)) {
+				self add_option("Pick up all Parts", undefined, &pick_up_parts);
 			}
 
 			self add_option("Restart Match", undefined, &restart_match);
@@ -2429,6 +2435,22 @@ function shock_all_electrics() {
 	}
 }
 
+function pick_up_parts() {
+  if(isDefined(level.parts_collected)) {
+    return;
+	}
+	
+  foreach(craftable in level.zombie_include_craftables) {
+    foreach(part in craftable.a_piecestubs) {
+      if(isDefined(part.pieceSpawn)) {
+        self zm_craftables::player_take_piece(part.pieceSpawn);
+			}
+    }
+  }
+	
+	level.parts_collected = true;
+}
+
 function restart_match() {
 	self notify("menuResponse", "", "restart_level_zm");
 }
@@ -2517,18 +2539,28 @@ function give_packed_weapon() {
 	self.give_packed_weapon = !return_toggle(self.give_packed_weapon);
 }
 
+function pack_weapon() {
+	self.pack_weapon = 1;
+	
+	weapon = zm_weapons::get_base_weapon(self getCurrentWeapon()).name;
+	
+	self takeWeapon(self getCurrentWeapon());
+	
+	give_weapon(weapon);
+}
+
 function give_weapon(weapon) {
 	weapon = getWeapon(weapon);
 
-	if(isDefined(self.give_packed_weapon) && self.give_packed_weapon == 1) {
+	if(isDefined(self.give_packed_weapon) && self.give_packed_weapon == 1 || isDefined(self.pack_weapon) && self.pack_weapon == 1) {
 		if(weapon == "staff_air" || weapon == "staff_fire" || weapon == "staff_lightning" || weapon == "staff_water") {
 			weapon = weapon + "_upgraded";
 		} else if(zm_weapons::can_upgrade_weapon(weapon)) {
-			weapon = level.zombie_weapons[weapon].upgrade;
+			weapon = zm_weapons::get_upgrade_weapon(weapon);
 		}
 	}
 
-	if(!self hasWeapon(weapon)) {
+	if(!self hasWeapon(weapon) || isDefined(self.pack_weapon) && self.pack_weapon == 1) {
 		max_weapon_num = zm_utility::get_player_weapon_limit(self);
 		saved_weapon = undefined;
 
@@ -2587,8 +2619,19 @@ function give_weapon(weapon) {
 	} else {
 		self switchToWeaponImmediate(weapon);
 	}
+	
+	self.pack_weapon = 0;
 	wait 0.5;
 	self giveStartAmmo(weapon);
+}
+
+function take_weapon() {
+	self takeWeapon(self getCurrentWeapon());
+	self switchToWeapon(self getWeaponsListPrimaries()[1]);
+}
+
+function drop_weapon() {
+	self dropItem(self getCurrentWeapon());
 }
 
 function get_weapon_attachments() {
@@ -2728,15 +2771,6 @@ function refill_ammo() {
 		self giveMaxAmmo(weapon);
 		take_points(ammo_cost);
 	}
-}
-
-function take_weapon() {
-	self takeWeapon(self getCurrentWeapon());
-	self switchToWeapon(self getWeaponsListPrimaries()[1]);
-}
-
-function drop_weapon() {
-	self dropItem(self getCurrentWeapon());
 }
 
 // Zombie Options
