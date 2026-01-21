@@ -61,9 +61,9 @@ function initial_variable() {
 	self set_menu();
 	self set_title();
 
-	self.menu_color_red = 255;
-	self.menu_color_green = 255;
-	self.menu_color_blue = 255;
+	self.menu_color_red = 0;
+	self.menu_color_green = 0;
+	self.menu_color_blue = 0;
 	self.color_theme = "rainbow";
 	self.map_name = get_map_name();
 	self.point_increment = 100;
@@ -832,6 +832,8 @@ function destroy_option() {
 
 		self.menu[element[a]] = [];
 	}
+
+	self.menu["description"] destroy();
 }
 
 function get_name() {
@@ -1075,7 +1077,7 @@ function open_menu() {
 		self.menu["separator"][0].alpha = 1;
 		self.menu["separator"][1].alpha = 1;
 	}
-	
+
 	self set_state(true);
 	self update_display();
 }
@@ -1084,7 +1086,7 @@ function close_menu() {
 	self notify("menu_ended");
 	self set_state(false);
 	self destroy_option();
-	
+
 	self.menu["title"].alpha = 0;
 	self.menu["separator"][0].alpha = 0;
 	self.menu["separator"][1].alpha = 0;
@@ -2439,7 +2441,7 @@ function pick_up_parts() {
   if(isDefined(level.parts_collected)) {
     return;
 	}
-	
+
   foreach(craftable in level.zombie_include_craftables) {
     foreach(part in craftable.a_piecestubs) {
       if(isDefined(part.pieceSpawn)) {
@@ -2447,7 +2449,7 @@ function pick_up_parts() {
 			}
     }
   }
-	
+
 	level.parts_collected = true;
 }
 
@@ -2541,11 +2543,11 @@ function give_packed_weapon() {
 
 function pack_weapon() {
 	self.pack_weapon = 1;
-	
+
 	weapon = zm_weapons::get_base_weapon(self getCurrentWeapon()).name;
-	
+
 	self takeWeapon(self getCurrentWeapon());
-	
+
 	give_weapon(weapon);
 }
 
@@ -2619,7 +2621,7 @@ function give_weapon(weapon) {
 	} else {
 		self switchToWeaponImmediate(weapon);
 	}
-	
+
 	self.pack_weapon = 0;
 	wait 0.5;
 	self giveStartAmmo(weapon);
@@ -2756,7 +2758,7 @@ function get_ammo_cost() {
 		} else if(weapon_cost == 5000 || weapon_cost == 10000 || weapon_cost == 0 || !isDefined(weapon_cost)) {
 			weapon_cost = 1500;
 		}
-		
+
 		ammo_cost = zm_utility::round_up_to_ten(int(weapon_cost * 0.5));
 	}
 
