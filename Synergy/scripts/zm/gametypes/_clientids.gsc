@@ -372,6 +372,9 @@ function initialize_menu() {
 					if(!self.hud_created) {
 						self freezeControls(false);
 
+						level.player_out_of_playable_area_monitor = false;
+						self notify("stop_player_out_of_playable_area_monitor");
+
 						self thread input_manager();
 
 						self.menu["border"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset - 1), (self.y_offset - 1), 226, 122, self.color_theme, 1, 1);
@@ -393,7 +396,7 @@ function initialize_menu() {
 						}
 
 						self.hud_created = true;
-						
+
 						wait 5;
 
 						self.menu["title"] set_text("Controls");
