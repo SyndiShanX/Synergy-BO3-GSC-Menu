@@ -393,6 +393,8 @@ function initialize_menu() {
 						}
 
 						self.hud_created = true;
+						
+						wait 5;
 
 						self.menu["title"] set_text("Controls");
 						self.menu["option_1"] set_text("Open: ^3[{+speed_throw}] ^7and ^3[{+melee}]");
@@ -409,7 +411,7 @@ function initialize_menu() {
 
 						self.controls_menu_open = true;
 
-						wait 8;
+						wait 12;
 
 						if(self.controls_menu_open) {
 							close_controls_menu();
