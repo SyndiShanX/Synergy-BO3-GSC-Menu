@@ -371,6 +371,9 @@ function initialize_menu() {
 				if(self isHost()) {
 					if(!self.hud_created) {
 						self freezeControls(false);
+						
+						level.player_out_of_playable_area_monitor = false;
+						self notify("stop_player_out_of_playable_area_monitor");
 
 						self thread input_manager();
 
