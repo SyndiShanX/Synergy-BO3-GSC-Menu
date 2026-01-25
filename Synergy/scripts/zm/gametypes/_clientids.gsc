@@ -34,39 +34,44 @@ function __init__() {
 function init() {
 	setDvar("sv_cheats", "1");
 
+	//precacheshader("ui_scrollbar_arrow_right");
+
 	level thread player_connect();
 	level thread create_rainbow_color();
 
-	level thread session_expired();
+	wait 0.5;
 }
 
-function initial_variable() {
-	self.menu = [];
-	self.cursor = [];
-	self.slider = [];
+function initial_variables() {
+	self.in_menu = false;
+	self.hud_created = false;
+	self.loaded_offset = false;
+	self.option_limit = 7;
+	self.current_menu = "Synergy";
+	self.structure = [];
 	self.previous = [];
+	self.saved_index = [];
+	self.saved_offset = [];
+	self.saved_trigger = [];
+	self.slider = [];
 
 	self.font = "default";
 	self.font_scale = 1;
-	self.option_limit = 10;
-	self.option_spacing = 16;
 	self.x_offset = 175;
 	self.y_offset = 160;
-	self.width = -20;
-	self.interaction_enabled = true;
-	self.description_enabled = true;
-	self.randomizing_enabled = true;
-	self.scrolling_buffer = 3;
 
-	self set_menu();
-	self set_title();
-
+	self.point_increment = 100;
+	self.map_name = get_map_name();
+	self.color_theme = "rainbow";
 	self.menu_color_red = 0;
 	self.menu_color_green = 0;
 	self.menu_color_blue = 0;
-	self.color_theme = "rainbow";
-	self.map_name = get_map_name();
-	self.point_increment = 100;
+
+	self.cursor_index = 0;
+	self.scrolling_offset = 0;
+	self.previous_scrolling_offset = 0;
+	self.description_height = 0;
+	self.previous_option = undefined;
 
 	// Visions
 
@@ -355,31 +360,102 @@ function initial_variable() {
 	}
 }
 
-function initial_observer() {
+function initialize_menu() {
 	level endon("game_ended");
 	self endon("disconnect");
 
-	while(self has_access()) {
-		if(!self in_menu()) {
-			if(self adsButtonPressed() && self meleeButtonPressed()) {
-				if(self.interaction_enabled) {
-					self playSoundToPlayer("uin_main_bootup", self);
+	for(;;) {
+		event_name = self util::waittill_any_return("spawned_player", "player_downed", "death", "joined_spectators");
+		switch (event_name) {
+			case "spawned_player":
+				if(self isHost()) {
+					if(!self.hud_created) {
+						self freezeControls(false);
+
+						self thread input_manager();
+
+						self.menu["border"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset - 1), (self.y_offset - 1), 226, 122, self.color_theme, 1, 1);
+						self.menu["background"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, self.y_offset, 224, 121, (0.075, 0.075, 0.075), 1, 2);
+						self.menu["foreground"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset + 15), 224, 106, (0.1, 0.1, 0.1), 1, 3);
+						self.menu["separator_1"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 5.5), (self.y_offset + 7.5), 42, 1, self.color_theme, 1, 10);
+						self.menu["separator_2"] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 220), (self.y_offset + 7.5), 42, 1, self.color_theme, 1, 10);
+						self.menu["cursor"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, 215, 224, 16, (0.15, 0.15, 0.15), 0, 4);
+
+						self.menu["title"] = self create_text("Title", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 94.5), (self.y_offset + 3), (1, 1, 1), 1, 10);
+						self.menu["description"] = self create_text("Description", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 5), (self.y_offset + (self.option_limit * 17.5)), (0.75, 0.75, 0.75), 0, 10);
+
+						for(i = 1; i <= self.option_limit; i++) {
+							self.menu["toggle_" + i] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 11), ((self.y_offset + 4) + (i * 15)), 8, 8, (0.25, 0.25, 0.25), 0, 9);
+							self.menu["slider_" + i] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset + (i * 15)), 224, 16, (0.25, 0.25, 0.25), 0, 5);
+							self.menu["option_" + i] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 5), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 1, 10);
+							self.menu["slider_text_" + i] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 132.5), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
+							self.menu["submenu_icon_" + i] = self create_text(">", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 215), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
+						}
+
+						self.hud_created = true;
+
+						self.menu["title"] set_text("Controls");
+						self.menu["option_1"] set_text("Open: ^3[{+speed_throw}] ^7and ^3[{+melee}]");
+						self.menu["option_2"] set_text("Scroll: ^3[{+speed_throw}] ^7and ^3[{+attack}]");
+						self.menu["option_3"] set_text("Select: ^3[{+activate}] ^7Back: ^3[{+melee}]");
+						self.menu["option_4"] set_text("Sliders: ^3[{+smoke}] ^7and ^3[{+frag}]");
+						self.menu["option_5"].alpha = 0;
+						self.menu["option_6"].alpha = 0;
+						self.menu["option_7"].alpha = 0;
+
+						self.menu["border"] set_shader("white", self.menu["border"].width, 78);
+						self.menu["background"] set_shader("white", self.menu["background"].width, 76);
+						self.menu["foreground"] set_shader("white", self.menu["foreground"].width, 61);
+
+						self.controls_menu_open = true;
+
+						wait 8;
+
+						if(self.controls_menu_open) {
+							close_controls_menu();
+						}
+					}
+				}
+				break;
+			default:
+				if(!self isHost()) {
+					continue;
 				}
 
-				close_controls_menu();
-				self open_menu();
+				if(self.in_menu) {
+					self close_menu();
+				}
+				break;
+		}
+	}
+}
+
+function input_manager() {
+	level endon("game_ended");
+	self endon("disconnect");
+
+	while(self isHost()) {
+		if(!self.in_menu) {
+			if(self adsButtonPressed() && self meleeButtonPressed()) {
+				if(self.controls_menu_open) {
+					close_controls_menu();
+				}
+
+				self playSoundToPlayer("uin_main_bootup", self);
+
+				open_menu();
 
 				while(self adsButtonPressed() && self meleeButtonPressed()) {
 					wait 0.2;
 				}
 			}
 		} else {
-			menu = self get_menu();
-			cursor = self get_cursor();
 			if(self meleeButtonPressed()) {
-				if(self.interaction_enabled) {
-					self playSoundToPlayer("uin_lobby_leave", self);
-				}
+				self.saved_index[self.current_menu] = self.cursor_index;
+				self.saved_offset[self.current_menu] = self.scrolling_offset;
+				self.saved_trigger[self.current_menu] = self.previous_trigger;
+
+				self playSoundToPlayer("uin_lobby_leave", self);
 
 				if(isDefined(self.previous[(self.previous.size - 1)])) {
 					self new_menu();
@@ -391,129 +467,52 @@ function initial_observer() {
 					wait 0.2;
 				}
 			} else if(self adsButtonPressed() && !self attackButtonPressed() || self attackButtonPressed() && !self adsButtonPressed()) {
-				if(isDefined(self.structure) && self.structure.size >= 2) {
-					if(self.interaction_enabled) {
-						self playSoundToPlayer("uin_main_nav", self);
-					}
 
-					scrolling = set_variable(self attackButtonPressed(), 1, -1);
+				self playSoundToPlayer("uin_main_nav", self);
 
-					self set_cursor((cursor + scrolling));
-					self update_scrolling(scrolling);
-				}
+				scroll_cursor(set_variable(self attackButtonPressed(), "down", "up"));
 
-				wait (0.05 * self.scrolling_buffer);
+				wait (0.2);
 			} else if(self fragButtonPressed() && !self secondaryOffhandButtonPressed() || !self fragButtonPressed() && self secondaryOffhandButtonPressed()) {
-				if(isDefined(self.structure[cursor].array) || isDefined(self.structure[cursor].increment)) {
-					if(self.interaction_enabled) {
-						self playSoundToPlayer("uin_main_nav", self);
-					}
 
-					scrolling = set_variable(self secondaryOffhandButtonPressed(), 1, -1);
+				self playSoundToPlayer("uin_main_nav", self);
 
-					self update_slider(scrolling);
-					self update_progression();
+				if(isDefined(self.structure[self.cursor_index].array) || isDefined(self.structure[self.cursor_index].increment)) {
+					scroll_slider(set_variable(self secondaryOffhandButtonPressed(), "left", "right"));
 				}
 
-				wait (0.05 * self.scrolling_buffer);
+				wait (0.2);
 			} else if(self useButtonPressed()) {
-				if(isDefined(self.structure[cursor]) && isDefined(self.structure[cursor].command)) {
-					if(self.interaction_enabled) {
-						self playSoundToPlayer("uin_main_pause", self);
-					}
+				self.saved_index[self.current_menu] = self.cursor_index;
+				self.saved_offset[self.current_menu] = self.scrolling_offset;
+				self.saved_trigger[self.current_menu] = self.previous_trigger;
 
-					if(isDefined(self.structure[cursor].array) || isDefined(self.structure[cursor].increment)) {
-						if(isDefined(self.structure[cursor].array)) {
-							cursor_selected = set_variable(isDefined(self.structure[cursor].array), self.structure[cursor].array[self.slider[(menu + "_" + cursor)]], self.slider[(menu + "_" + cursor)]);
-						} else {
-							cursor_selected = self.slider[(menu + "_" + cursor)];
-						}
-						self thread execute_function(self.structure[cursor].command, cursor_selected, self.structure[cursor].parameter_1, self.structure[cursor].parameter_2);
-					} else {
-						self thread execute_function(self.structure[cursor].command, self.structure[cursor].parameter_1, self.structure[cursor].parameter_2);
-					}
+				self playSoundToPlayer("uin_main_pause", self);
 
-					if(isDefined(self.structure[cursor]) && isDefined(self.structure[cursor].toggle)) {
-						self update_display();
-					}
+				if(self.structure[self.cursor_index].command == &new_menu) {
+					self.previous_option = self.structure[self.cursor_index].text;
 				}
+
+				if(isDefined(self.structure[self.cursor_index].array) || isDefined(self.structure[self.cursor_index].increment)) {
+					if(isDefined(self.structure[self.cursor_index].array)) {
+						cursor_selected = self.structure[self.cursor_index].array[self.slider[(self.current_menu + "_" + self.cursor_index)]];
+					} else {
+						cursor_selected = self.slider[(self.current_menu + "_" + (self.cursor_index))];
+					}
+					self thread execute_function(self.structure[self.cursor_index].command, cursor_selected, self.structure[self.cursor_index].parameter_1, self.structure[self.cursor_index].parameter_2, self.structure[self.cursor_index].parameter_3);
+				} else if(isDefined(self.structure[self.cursor_index]) && isDefined(self.structure[self.cursor_index].command)) {
+					self thread execute_function(self.structure[self.cursor_index].command, self.structure[self.cursor_index].parameter_1, self.structure[self.cursor_index].parameter_2, self.structure[self.cursor_index].parameter_3);
+				}
+
+				self menu_option();
+				set_options();
 
 				while(self useButtonPressed()) {
-					wait 0.1;
+					wait 0.2;
 				}
 			}
 		}
 		wait 0.05;
-	}
-}
-
-function event_system() {
-	level endon("game_ended");
-	self endon("disconnect");
-
-	for(;;) {
-		event_name = self util::waittill_any_return("spawned_player", "player_downed", "death", "joined_spectators");
-		switch (event_name) {
-			case "spawned_player":
-				self.spawn_origin = self.origin;
-				self.spawn_angles = self.angles;
-				if(!isDefined(self.finalized) && self has_access()) {
-					self.finalized = true;
-
-					level.player_out_of_playable_area_monitor = false;
-					self notify("stop_player_out_of_playable_area_monitor");
-
-					if(self isHost()) {
-						self freezeControls(false);
-					}
-
-					self initial_variable();
-					self thread initial_observer();
-
-					wait 5;
-
-					self.controls["title"] = self create_text("Controls", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 99), (self.y_offset + 4), self.color_theme, 1, 10);
-					self.controls["separator"][0] = self create_shader("white", "TOP_LEFT", "TOPCENTER", 181, (self.y_offset + 7.5), 37, 1, self.color_theme, 1, 10);
-					self.controls["separator"][1] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", 399, (self.y_offset + 7.5), 37, 1, self.color_theme, 1, 10);
-					self.controls["border"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset - 1), (self.width + 250), 97, self.color_theme, 1, 1);
-					self.controls["background"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 1), self.y_offset, (self.width + 248), 95, (0.075, 0.075, 0.075), 1, 2);
-					self.controls["foreground"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 1), (self.y_offset + 16), (self.width + 248), 79, (0.1, 0.1, 0.1), 1, 3);
-
-					self.controls["text"][0] = self create_text("Open: ^3[{+speed_throw}] ^7and ^3[{+melee}]", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 4), (self.y_offset + 20), (0.75, 0.75, 0.75), 1, 10);
-					self.controls["text"][1] = self create_text("Scroll: ^3[{+speed_throw}] ^7and ^3[{+attack}]", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 4), (self.y_offset + 40), (0.75, 0.75, 0.75), 1, 10);
-					self.controls["text"][2] = self create_text("Select: ^3[{+activate}] ^7Back: ^3[{+melee}]", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 4), (self.y_offset + 60), (0.75, 0.75, 0.75), 1, 10);
-					self.controls["text"][3] = self create_text("Sliders: ^3[{+smoke}] ^7and ^3[{+frag}]", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 4), (self.y_offset + 80), (0.75, 0.75, 0.75), 1, 10);
-
-					wait 12;
-
-					close_controls_menu();
-				}
-				break;
-			default:
-				if(!self has_access()) {
-					continue;
-				}
-
-				if(self in_menu()) {
-					self close_menu();
-				}
-				break;
-		}
-	}
-}
-
-function session_expired() {
-	level waittill("game_ended");
-	level endon("game_ended");
-
-	foreach(index, player in level.players) {
-		if(!player has_access()) {
-			continue;
-		}
-
-		if(player in_menu()) {
-			player close_menu();
-		}
 	}
 }
 
@@ -522,104 +521,78 @@ function player_connect() {
 
 	for(;;) {
 		level waittill("connected", player);
-		player.access = set_variable(player isHost(), "Host",  "None");
-		player thread event_system();
+
+		player.access = set_variable(player isHost(), "Host", "None");
+
+		player initial_variables();
+		player thread initialize_menu();
 	}
 }
 
-function player_disconnect() {
-	[[level.player_disconnect]]();
+// Hud Functions
+
+function open_menu() {
+	self.in_menu = true;
+
+	set_menu_visibility(1);
+
+	self menu_option();
+	scroll_cursor();
+	set_options();
 }
 
-function player_downed(einflictor, eattacker, idamage, smeansofdeath, sweapon, vdir, shitloc, psoffsettime, deathanimduration) {
-	self notify("player_downed");
-	[[level.player_downed]](einflictor, eattacker, idamage, smeansofdeath, sweapon, vdir, shitloc, psoffsettime, deathanimduration);
+function close_menu() {
+	set_menu_visibility(0);
+
+	self.in_menu = false;
 }
 
-// Utilities
+function close_controls_menu() {
+	self.menu["border"] set_shader("white", self.menu["border"].width, 123);
+	self.menu["background"] set_shader("white", self.menu["background"].width, 121);
+	self.menu["foreground"] set_shader("white", self.menu["foreground"].width, 106);
 
-function in_array(array, item) {
-	if(!isDefined(array) || !isArray(array)) {
-		return;
-	}
+	self.controls_menu_open = false;
 
-	for(a = 0; a < array.size; a++) {
-		if(array[a] == item) {
-			return true;
+	set_menu_visibility(0);
+
+	self.menu["title"] set_text("");
+	self.menu["option_1"] set_text("");
+	self.menu["option_2"] set_text("");
+	self.menu["option_3"] set_text("");
+	self.menu["option_4"] set_text("");
+
+	self.in_menu = false;
+}
+
+function set_menu_visibility(opacity) {
+	if(opacity == 0) {
+		self.menu["border"].alpha = opacity;
+		self.menu["description"].alpha = opacity;
+		for(i = 1; i <= self.option_limit; i++) {
+			self.menu["toggle_" + i].alpha = opacity;
+			self.menu["slider_" + i].alpha = opacity;
+			self.menu["submenu_icon_" + i].alpha = opacity;
 		}
 	}
 
-	return false;
-}
+	self.menu["title"].alpha = opacity;
+	self.menu["separator_1"].alpha = opacity;
+	self.menu["separator_2"].alpha = opacity;
 
-function auto_archive() {
-	if(!isDefined(self.element_result)) {
-		self.element_result = 0;
+	for(i = 1; i <= self.option_limit; i++) {
+		self.menu["option_" + i].alpha = opacity;
+		self.menu["slider_text_" + i].alpha = opacity;
 	}
 
-	if(!isAlive(self) || self.element_result > 22) {
-		return true;
-	}
+	wait 0.05;
 
-	return false;
-}
+	self.menu["background"].alpha = opacity;
+	self.menu["foreground"].alpha = opacity;
+	self.menu["cursor"].alpha = opacity;
 
-function create_rainbow_color() {
-	x = 0; y = 0;
-	r = 0; g = 0; b = 0;
-	level.rainbow_color = (0, 0, 0);
-
-	level endon("game_ended");
-
-	while(true) {
-		if(y >= 0 && y < 258) {
-			r = 255;
-			g = 0;
-			b = x;
-		} else if(y >= 258 && y < 516) {
-			r = 255 - x;
-			g = 0;
-			b = 255;
-		} else if(y >= 516 && y < 774) {
-			r = 0;
-			g = x;
-			b = 255;
-		} else if(y >= 774 && y < 1032) {
-			r = 0;
-			g = 255;
-			b = 255 - x;
-		} else if(y >= 1032 && y < 1290) {
-			r = x;
-			g = 255;
-			b = 0;
-		} else if(y >= 1290 && y < 1545) {
-			r = 255;
-			g = 255 - x;
-			b = 0;
-		}
-
-		x += 3;
-		if(x > 255) {
-			x = 0;
-		}
-
-		y += 3;
-		if(y > 1545) {
-			y = 0;
-		}
-
-		level.rainbow_color = (r/255, g/255, b/255);
-		wait 0.05;
-	}
-}
-
-function start_rainbow() {
-	level endon("game_ended");
-
-	while(isDefined(self)) {
-		self fadeOverTime(.05);
-		self.color = level.rainbow_color;
-		wait 0.05;
+	if(opacity == 1) {
+		self.menu["border"].alpha = opacity;
 	}
 }
 
@@ -638,15 +611,19 @@ function create_text(text, font, font_scale, align_x, align_y, x_offset, y_offse
 		textElement.hideWhenInMenu = true;
 	}
 
-	if(strIsNumber(color[0]) || color != "rainbow") {
-		textElement.color = color;
+	if(isDefined(color)) {
+		if(!isString(color)) {
+			textElement.color = color;
+		} else if(color == "rainbow") {
+			textElement.color = level.rainbow_color;
+			textElement thread start_rainbow();
+		}
 	} else {
-		textElement.color = level.rainbow_color;
-		textElement thread start_rainbow();
+		textElement.color = (0, 1, 1);
 	}
 
 	if(isDefined(text)) {
-		if(strIsNumber(text)) {
+		if(strisNumber(text)) {
 			textElement setValue(text);
 		} else {
 			textElement set_text(text);
@@ -672,11 +649,15 @@ function create_shader(shader, align_x, align_y, x_offset, y_offset, width, heig
 		shaderElement.hideWhenInMenu = true;
 	}
 
-	if(strIsNumber(color[0]) || color != "rainbow") {
-		shaderElement.color = color;
+	if(isDefined(color)) {
+		if(!isString(color)) {
+			shaderElement.color = color;
+		} else if(color == "rainbow") {
+			shaderElement.color = level.rainbow_color;
+			shaderElement thread start_rainbow();
+		}
 	} else {
-		shaderElement.color = level.rainbow_color;
-		shaderElement thread start_rainbow();
+		shaderElement.color = (0, 1, 1);
 	}
 
 	shaderElement hud::setParent(level.uiParent);
@@ -732,38 +713,216 @@ function set_shader(shader, width, height) {
 	self setShader(shader, width, height);
 }
 
-function clean_text(text) {
-	if(!isDefined(text) || text == "") {
+function auto_archive() {
+	if(!isDefined(self.element_result)) {
+		self.element_result = 0;
+	}
+
+	if(!isAlive(self) || self.element_result > 21) {
+		return true;
+	}
+
+	return false;
+}
+
+function update_element_positions() {
+	self.menu["border"].x = (self.x_offset - 1);
+	self.menu["border"].y = (self.y_offset - 1);
+
+	self.menu["background"].x = self.x_offset;
+	self.menu["background"].y = self.y_offset;
+
+	self.menu["foreground"].x = self.x_offset;
+	self.menu["foreground"].y = (self.y_offset + 15);
+
+	self.menu["separator_1"].x = (self.x_offset + 5);
+	self.menu["separator_1"].y = (self.y_offset + 7.5);
+
+	self.menu["separator_2"].x = (self.x_offset + 220);
+	self.menu["separator_2"].y = (self.y_offset + 7.5);
+
+	self.menu["cursor"].x = self.x_offset;
+
+	self.menu["description"].y = (self.y_offset + (self.option_limit * 17.5));
+
+	for(i = 1; i <= self.option_limit; i++) {
+		self.menu["toggle_" + i].x = (self.x_offset + 11);
+		self.menu["toggle_" + i].y = ((self.y_offset + 4) + (i * 15));
+
+		self.menu["slider_" + i].x = self.x_offset;
+		self.menu["slider_" + i].y = (self.y_offset + (i * 15));
+
+		self.menu["option_" + i].y = ((self.y_offset + 4) + (i * 15));
+
+		self.menu["slider_text_" + i].x = (self.x_offset + 132.5);
+		self.menu["slider_text_" + i].y = ((self.y_offset + 4) + (i * 15));
+
+		self.menu["submenu_icon_" + i].x = (self.x_offset + 215);
+		self.menu["submenu_icon_" + i].y = ((self.y_offset + 4) + (i * 15));
+	}
+}
+
+// Colors
+
+function create_rainbow_color() {
+	x = 0; y = 0;
+	r = 0; g = 0; b = 0;
+	level.rainbow_color = (0, 0, 0);
+
+	level endon("game_ended");
+
+	while(true) {
+		if(y >= 0 && y < 258) {
+			r = 255;
+			g = 0;
+			b = x;
+		} else if(y >= 258 && y < 516) {
+			r = 255 - x;
+			g = 0;
+			b = 255;
+		} else if(y >= 516 && y < 774) {
+			r = 0;
+			g = x;
+			b = 255;
+		} else if(y >= 774 && y < 1032) {
+			r = 0;
+			g = 255;
+			b = 255 - x;
+		} else if(y >= 1032 && y < 1290) {
+			r = x;
+			g = 255;
+			b = 0;
+		} else if(y >= 1290 && y < 1545) {
+			r = 255;
+			g = 255 - x;
+			b = 0;
+		}
+
+		x += 3;
+		if(x > 255) {
+			x = 0;
+		}
+
+		y += 3;
+		if(y > 1545) {
+			y = 0;
+		}
+
+		level.rainbow_color = (r/255, g/255, b/255);
+		wait 0.05;
+	}
+}
+
+function start_rainbow() {
+	level endon("game_ended");
+	self endon("stop_rainbow");
+	self.rainbow_enabled = true;
+
+	while(isDefined(self) && self.rainbow_enabled) {
+		self fadeOverTime(.05);
+		self.color = level.rainbow_color;
+		wait 0.05;
+	}
+}
+
+// Misc Functions
+
+function return_toggle(variable) {
+	return isDefined(variable) && variable;
+}
+
+function set_variable(check, option_1, option_2) {
+	if(check) {
+		return option_1;
+	} else {
+		return option_2;
+	}
+}
+
+function get_map_name() {
+	if(level.script == "zm_zod") return "shadows_of_evil";
+	if(level.script == "zm_factory") return "the_giant";
+	if(level.script == "zm_castle") return "der_eisendrache";
+	if(level.script == "zm_island") return "zetsubou_no_shima";
+	if(level.script == "zm_stalingrad") return "gorod_krovi";
+	if(level.script == "zm_genesis") return "revelations";
+	if(level.script == "zm_prototype") return "nacht_der_untoten";
+	if(level.script == "zm_asylum") return "verruckt";
+	if(level.script == "zm_sumpf") return "shi_no_numa";
+	if(level.script == "zm_theater") return "kino_der_untoten";
+	if(level.script == "zm_cosmodrome") return "ascension";
+	if(level.script == "zm_temple") return "shangri_la";
+	if(level.script == "zm_moon") return "moon";
+	if(level.script == "zm_tomb") return "origins";
+}
+
+function set_increment(value) {
+	self.point_increment = value;
+}
+
+function construct_string(string) {
+	final = "";
+	for(e = 0; e < string.size; e++) {
+		if(e == 0) {
+			final += toUpper(string[e]);
+		} else if(string[e - 1] == " ") {
+			final += toUpper(string[e]);
+		} else {
+			final += string[e];
+		}
+	}
+	return final;
+}
+
+function replace_character(string, substring, replace) {
+	final = "";
+	for(e = 0; e < string.size; e++) {
+		if(string[e] == substring) {
+			final += replace;
+		} else {
+			final += string[e];
+		}
+	}
+	return final;
+}
+
+function remove_duplicate_ent_array(name) {
+	new_array = [];
+	saved_array = [];
+	foreach(item in getEntArray(name, "targetname")) {
+		if(!isInArray(new_array, item.script_noteworthy)) {
+			new_array[new_array.size] = item.script_noteworthy;
+			saved_array[saved_array.size] = item;
+		}
+	}
+	return saved_array;
+}
+
+function remove_from_array(array, object) {
+	if(!isDefined(array) || !isDefined(object)) {
+	  return;
+	}
+	new_array = [];
+	foreach(item in array) {
+	  if(item != object) {
+	    new_array[new_array.size] = item;
+	  }
+	}
+	return new_array;
+}
+
+function in_array(array, item) {
+	if(!isDefined(array) || !isArray(array)) {
 		return;
 	}
 
-	if(text[0] == toUpper(text[0])) {
-		if(isSubStr(text, " ") && !isSubStr(text, "_")) {
-			return text;
+	for(a = 0; a < array.size; a++) {
+		if(array[a] == item) {
+			return true;
 		}
 	}
 
-	text = strTok(toLower(text), "_");
-	new_string = "";
-	for(a = 0; a < text.size; a++) {
-		illegal = array("player", "weapon", "wpn", "viewmodel", "camo");
-		replacement = " ";
-		if(in_array(illegal, text[a])) {
-			for(b = 0; b < text[a].size; b++) {
-				if(b != 0) {
-					new_string += text[a][b];
-				} else {
-					new_string += toUpper(text[a][b]);
-				}
-			}
-
-			if(a != (text.size - 1)) {
-				new_string += replacement;
-			}
-		}
-	}
-
-	return new_string;
+	return false;
 }
 
 function clean_name(name) {
@@ -791,51 +950,6 @@ function clean_name(name) {
 	return new_string;
 }
 
-function destroy_element() {
-	if(!isDefined(self)) {
-		return;
-	}
-
-	self destroy();
-	if(isDefined(self.anchor)) {
-		self.anchor.element_result--;
-	}
-}
-
-function destroy_all(array) {
-	if(!isDefined(array) || !isArray(array)) {
-		return;
-	}
-
-	keys = getarraykeys(array);
-	for(a = 0; a < keys.size; a++) {
-		if(isArray(array[keys[a]])) {
-			foreach(index, value in array[keys[a]]) {
-				if(isDefined(value)) {
-					value destroy_element();
-				}
-			}
-		} else {
-			if(isDefined(array[keys[a]])) {
-				array[keys[a]] destroy_element();
-			}
-		}
-	}
-}
-
-function destroy_option() {
-	element = array("text", "submenu", "toggle", "slider");
-	for(a = 0; a < element.size; a++) {
-		if(isDefined(self.menu[element[a]]) && self.menu[element[a]].size) {
-			destroy_all(self.menu[element[a]]);
-		}
-
-		self.menu[element[a]] = [];
-	}
-
-	self.menu["description"] destroy();
-}
-
 function get_name() {
 	name = self.name;
 	if(name[0] != "[") {
@@ -851,88 +965,37 @@ function get_name() {
 	return getSubStr(name, (a + 1));
 }
 
-function has_access() {
-	return isDefined(self.access) && self.access != "None";
-}
-
-function calculate_distance(origin, destination, velocity) {
-	return (distance(origin, destination) / velocity);
-}
-
-// Structure
-
-function set_menu(menu) {
-	self.current_menu = set_variable(isDefined(menu), menu, "Synergy");
-}
-
-function get_menu() {
-	if(!isDefined(self.current_menu)) {
-		self set_menu();
+function load_weapons(weapon_category) {
+	for(i = 0; i < self.syn["weapons"].size; i++) {
+		foreach(weapon in self.syn["weapons"][i]) {
+			if(weapon.category == weapon_category) {
+				self add_option(weapon.name, undefined, &give_weapon, weapon.id);
+			}
+		}
 	}
-
-	return self.current_menu;
 }
 
-function set_title(title) {
-	self.current_title = set_variable(isDefined(title), title, self get_menu());
-}
-
-function get_title() {
-	if(!isDefined(self.current_title)) {
-		self set_title();
+function get_category(weapon_id) {
+	for(i = 0; i < self.syn["weapons"].size; i++) {
+		foreach(weapon in self.syn["weapons"][i]) {
+			if(weapon.id == weapon_id || weapon.id + "_upgraded" == weapon_id) {
+				return weapon.category;
+			}
+		}
 	}
-
-	return self.current_title;
 }
 
-function set_cursor(index) {
-	self.cursor[self get_menu()] = set_variable(isDefined(index) && strIsNumber(index), index, 0);
-}
+// Custom Structure
 
-function get_cursor() {
-	if(!isDefined(self.cursor[self get_menu()])) {
-		self set_cursor();
-	}
-
-	return self.cursor[self get_menu()];
-}
-
-function get_description() {
-	return self.structure[self get_cursor()].description;
-}
-
-function set_state(state) {
-	self.in_menu = set_variable(isDefined(state) && state < 2, state, false);
-}
-
-function in_menu() {
-	return isDefined(self.in_menu) && self.in_menu;
-}
-
-function set_locked(state) {
-	self.is_locked = set_variable(isDefined(state) && state < 2, state, false);
-}
-
-function is_locked() {
-	return isDefined(self.is_locked) && self.is_locked;
-}
-
-function empty_option() {
-	option = array("Nothing To See Here!", "Quiet Here, Isn't It?", "Oops, Nothing Here Yet!", "Bit Empty, Don't You Think?");
-	return option[randomint(option.size)];
-}
-
-function empty_function() {}
-
-function empty_array() {
-	return array();
-}
-
-function execute_function(command, parameter_1, parameter_2, parameter_3) {
+function execute_function(command, parameter_1, parameter_2, parameter_3, parameter_4) {
 	self endon("disconnect");
 
 	if(!isDefined(command)) {
 		return;
+	}
+
+	if(isDefined(parameter_4)) {
+		return self thread[[command]](parameter_1, parameter_2, parameter_3, parameter_4);
 	}
 
 	if(isDefined(parameter_3)) {
@@ -950,91 +1013,145 @@ function execute_function(command, parameter_1, parameter_2, parameter_3) {
 	self thread[[command]]();
 }
 
-function add_menu(title, menu_size, extra) {
-	self.structure = [];
-	self set_title(title);
-
-	if(!isDefined(self get_cursor())) {
-		self set_cursor();
-	}
-
-	if(isDefined(self.menu["title"])) {
-		if(isDefined(extra)) {
-			self.menu["title"].x = (self.x_offset + 106) - menu_size - extra;
-		} else {
-			if(menu_size <= 7) {
-				self.menu["title"].x = (self.x_offset + 106) - menu_size;
-			} else {
-				self.menu["title"].x = (self.x_offset + 106) - (menu_size * 1.4);
-			}
-		}
-	}
-}
-
-function add_option(text, description, command = &empty_function, parameter_1, parameter_2) {
+function add_option(text, description, command, parameter_1, parameter_2, parameter_3) {
 	option = spawnStruct();
 	option.text = text;
-	option.description = description;
-	option.command = command;
-	option.parameter_1 = parameter_1;
-	option.parameter_2 = parameter_2;
+	if(isDefined(description)) {
+		option.description = description;
+	}
+	if(!isDefined(command)) {
+		option.command = &empty_function;
+	} else {
+		option.command = command;
+	}
+	if(isDefined(parameter_1)) {
+		option.parameter_1 = parameter_1;
+	}
+	if(isDefined(parameter_2)) {
+		option.parameter_2 = parameter_2;
+	}
+	if(isDefined(parameter_3)) {
+		option.parameter_3 = parameter_3;
+	}
 
 	self.structure[self.structure.size] = option;
 }
 
-function add_toggle(text, description, command = &empty_function, variable, parameter_1, parameter_2) {
+function add_toggle(text, description, command, variable, parameter_1, parameter_2) {
 	option = spawnStruct();
 	option.text = text;
-	option.description = description;
-	option.command = command;
+	if(isDefined(description)) {
+		option.description = description;
+	}
+	if(!isDefined(command)) {
+		option.command = &empty_function;
+	} else {
+		option.command = command;
+	}
 	option.toggle = isDefined(variable) && variable;
-	option.parameter_1 = parameter_1;
-	option.parameter_2 = parameter_2;
+	if(isDefined(parameter_1)) {
+		option.parameter_1 = parameter_1;
+	}
+	if(isDefined(parameter_2)) {
+		option.parameter_2 = parameter_2;
+	}
 
 	self.structure[self.structure.size] = option;
 }
 
-function add_array(text, description, command = &empty_function, array = &empty_array, parameter_1, parameter_2) {
+function add_array(text, description, command, array, parameter_1, parameter_2, parameter_3) {
 	option = spawnStruct();
 	option.text = text;
-	option.description = description;
-	option.command = command;
-	option.array = array;
-	option.parameter_1 = parameter_1;
-	option.parameter_2 = parameter_2;
+	if(isDefined(description)) {
+		option.description = description;
+	}
+	if(!isDefined(command)) {
+		option.command = &empty_function;
+	} else {
+		option.command = command;
+	}
+	if(!isDefined(command)) {
+		option.array = [];
+	} else {
+		option.array = array;
+	}
+	if(isDefined(parameter_1)) {
+		option.parameter_1 = parameter_1;
+	}
+	if(isDefined(parameter_2)) {
+		option.parameter_2 = parameter_2;
+	}
+	if(isDefined(parameter_3)) {
+		option.parameter_3 = parameter_3;
+	}
 
 	self.structure[self.structure.size] = option;
 }
 
-function add_increment(text, description, command = &empty_function, start, minimum, maximum, increment, parameter_1, parameter_2) {
+function add_increment(text, description, command, start, minimum, maximum, increment, parameter_1, parameter_2) {
 	option = spawnStruct();
 	option.text = text;
-	option.description = description;
-	option.command = command;
-	if(strIsNumber(start)) {
+	if(isDefined(description)) {
+		option.description = description;
+	}
+	if(!isDefined(command)) {
+		option.command = &empty_function;
+	} else {
+		option.command = command;
+	}
+	if(strisNumber(start)) {
 		option.start = start;
 	} else {
 		option.start = 0;
 	}
-	if(strIsNumber(minimum)) {
+	if(strisNumber(minimum)) {
 		option.minimum = minimum;
 	} else {
 		option.minimum = 0;
 	}
-	if(strIsNumber(maximum)) {
+	if(strisNumber(maximum)) {
 		option.maximum = maximum;
 	} else {
 		option.maximum = 10;
 	}
-	if(strIsNumber(increment)) {
+	if(strisNumber(increment)) {
 		option.increment = increment;
 	} else {
 		option.increment = 1;
 	}
-	option.parameter_1 = parameter_1;
-	option.parameter_2 = parameter_2;
+	if(isDefined(parameter_1)) {
+		option.parameter_1 = parameter_1;
+	}
+	if(isDefined(parameter_2)) {
+		option.parameter_2 = parameter_2;
+	}
 
 	self.structure[self.structure.size] = option;
+}
+
+function get_title_width(title) {
+	letter_index = array(" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+	letter_width = array(5, 12, 11, 11, 10, 10, 10, 11, 11, 5, 10, 10, 9, 12, 11, 11, 10, 12, 10, 19, 11, 10, 11, 14, 10, 11, 10);
+	title_width = 0;
+
+	for(i = 1; i < title.size; i++) {
+		for(x = 1; x < letter_index.size; x++) {
+			if(tolower(title[i]) == tolower(letter_index[x])) {
+				title_width = int(title_width) + int(letter_width[x]);
+			}
+		}
+	}
+
+	return title_width;
+}
+
+function add_menu(title) {
+	self.menu["title"] set_text(title);
+
+	title_width = get_title_width(title);
+
+	self.menu["title"].x = (self.x_offset + ceil((((-0.0000124 * title_width + 0.003832) * title_width - 0.52) * title_width + 115.258) * 10) / 10);
+	self.menu["title"].y = (self.y_offset + 3);
 }
 
 function new_menu(menu) {
@@ -1042,294 +1159,257 @@ function new_menu(menu) {
 		menu = self.previous[(self.previous.size - 1)];
 		self.previous[(self.previous.size - 1)] = undefined;
 	} else {
-		if(self get_menu() == "All Players") {
-			player = level.players[self get_cursor()];
-			self.selected_player = player;
-		}
-
-		self.previous[self.previous.size] = self get_menu();
+		self.previous[self.previous.size] = self.current_menu;
 	}
 
-	self set_menu(menu);
-	self update_display();
-}
+	if(!isDefined(self.slider[(menu + "_" + (self.cursor_index))])) {
+		self.slider[(menu + "_" + (self.cursor_index))] = 0;
+	}
 
-// Custom Structure
+	self.current_menu = set_variable(isDefined(menu), menu, "Synergy");
 
-function create_menu() {
-	self.menu["border"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset - 1), (self.width + 250), 34, self.color_theme, 1, 1);
-	self.menu["background"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 1), self.y_offset, (self.width + 248), 32, (0.075, 0.075, 0.075), 1, 2);
-	self.menu["foreground"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 1), (self.y_offset + 16), (self.width + 248), 16, (0.1, 0.1, 0.1), 1, 3);
-	self.menu["cursor"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 1), (self.y_offset + 16), (self.width + 243), 16, (0.15, 0.15, 0.15), 1, 4);
-	self.menu["scrollbar"] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + (self.menu["background"].width + 1)), (self.y_offset + 16), 4, 16, (0.25, 0.25, 0.25), 1, 4);
-}
-
-function open_menu() {
-	if(!isDefined(self.menu["border"]) && !isDefined(self.menu["background"]) && !isDefined(self.menu["foreground"]) && !isDefined(self.menu["cursor"]) && !isDefined(self.menu["scrollbar"])) {
-		self create_menu();
+	if(isDefined(self.saved_index[self.current_menu])) {
+		self.cursor_index = self.saved_index[self.current_menu];
+		self.scrolling_offset = self.saved_offset[self.current_menu];
+		self.previous_trigger = self.saved_trigger[self.current_menu];
+		self.loaded_offset = true;
 	} else {
-		self.menu["border"].alpha = 1;
-		self.menu["background"].alpha = 1;
-		self.menu["foreground"].alpha = 1;
-		self.menu["cursor"].alpha = 1;
-		self.menu["scrollbar"].alpha = 1;
-		self.menu["title"].alpha = 1;
-		self.menu["separator"][0].alpha = 1;
-		self.menu["separator"][1].alpha = 1;
+		self.cursor_index = 0;
+		self.scrolling_offset = 0;
+		self.previous_trigger = 0;
 	}
 
-	self set_state(true);
-	self update_display();
-}
-
-function close_menu() {
-	self notify("menu_ended");
-	self set_state(false);
-	self destroy_option();
-
-	self.menu["title"].alpha = 0;
-	self.menu["separator"][0].alpha = 0;
-	self.menu["separator"][1].alpha = 0;
-	self.menu["border"].alpha = 0;
-	wait 0.01;
-	self.menu["background"].alpha = 0;
-	self.menu["foreground"].alpha = 0;
-	self.menu["cursor"].alpha = 0;
-	self.menu["scrollbar"].alpha = 0;
-}
-
-function display_title(title) {
-	title = set_variable(isDefined(title), title, self get_title());
-	if(!isDefined(self.menu["title"])) {
-		self.menu["title"] = self create_text(title, self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 99), (self.y_offset + 4), self.color_theme, 1, 10);
-		self.menu["separator"][0] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 6), (self.y_offset + 7.5), int((self.menu["cursor"].width / 6)), 1, self.color_theme, 1, 10);
-		self.menu["separator"][1] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + (self.menu["cursor"].width - 2) + 3), (self.y_offset + 7.5), int((self.menu["cursor"].width / 6)), 1, self.color_theme, 1, 10);
-	} else {
-		self.menu["title"] set_text(title);
-	}
-}
-
-function display_description(description) {
-	description = set_variable(isDefined(description), description, self get_description());
-	if(isDefined(self.menu["description"]) && !self.description_enabled || isDefined(self.menu["description"]) && !isDefined(description)) {
-		self.menu["description"] destroy_element();
-	}
-
-	if(isDefined(description) && self.description_enabled) {
-		if(!isDefined(self.menu["description"])) {
-			self.menu["description"] = self create_text(description, self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 4), (self.y_offset + 36), (0.75, 0.75, 0.75), 1, 10);
-		} else {
-			self.menu["description"] set_text(description);
-		}
-	}
-}
-
-function display_option() {
-	self destroy_option();
 	self menu_option();
-	if(!isDefined(self.structure) || !self.structure.size) {
-		self add_option(empty_option());
-	}
-
-	self display_title();
-	self display_description();
-	if(isDefined(self.structure) && self.structure.size) {
-		if(self get_cursor() >= self.structure.size) {
-			self set_cursor((self.structure.size - 1));
-		}
-
-		if(!isDefined(self.menu["toggle"][0])) {
-			self.menu["toggle"][0] = [];
-		}
-
-		menu = self get_menu();
-		cursor = self get_cursor();
-		maximum = min(self.structure.size, self.option_limit);
-		for(a = 0; a < maximum; a++) {
-			if(self get_cursor() >= int((self.option_limit / 2)) && self.structure.size > self.option_limit) {
-				if((self get_cursor() + int((self.option_limit / 2))) >= (self.structure.size - 1)) {
-					start = (self.structure.size - self.option_limit);
-				} else {
-					start = (self get_cursor() - int((self.option_limit / 2)));
-				}
-			} else {
-				start = 0;
-			}
-			index = (a + start);
-			if(isDefined(self.structure[index].command) && self.structure[index].command == &new_menu) {
-				element_color = set_variable((cursor == index), (0.75, 0.75, 0.75), (0.5, 0.5, 0.5));
-				self.menu["submenu"][index] = self create_text(">", self.font, self.font_scale, "TOP_RIGHT", "TOPCENTER", (self.x_offset + 220), (self.y_offset + ((a * self.option_spacing) + 18.5)), element_color, 1, 10);
-			}
-
-			if(isDefined(self.structure[index].toggle)) { // Toggle Off
-				self.menu["toggle"][0][index] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 14), (self.y_offset + ((a * self.option_spacing) + 19)), 10, 10, (0.25, 0.25, 0.25), 1, 9);
-				if(self.structure[index].toggle) { // Toggle On
-					self.menu["toggle"][0][index].color = (1, 1, 1);
-				}
-			}
-
-			if(isDefined(self.structure[index].array) || isDefined(self.structure[index].increment)) {
-				if(isDefined(self.structure[index].array)) { // Array Text
-					element_color = set_variable((cursor == index), (0.75, 0.75, 0.75), (0.5, 0.5, 0.5));
-					self.menu["slider"][index] = self create_text(self.slider[(menu + "_" + index)], self.font, self.font_scale, "TOP_RIGHT", "TOPCENTER", (self.x_offset + (self.menu["cursor"].width - 2)), (self.y_offset + ((a * self.option_spacing) + 20)), element_color, 1, 10);
-				} else if(cursor == index) { // Increment Text
-					self.menu["slider"][index] = self create_text(self.slider[(menu + "_" + index)], self.font, self.font_scale, "TOP_RIGHT", "TOPCENTER", (self.x_offset + (self.menu["cursor"].width - 3)), (self.y_offset + ((a * self.option_spacing) + 20)), (0.75, 0.75, 0.75), 1, 10);
-				}
-
-				self update_slider(undefined, index);
-			}
-
-			text_string = set_variable((isDefined(self.structure[index].array) || isDefined(self.structure[index].increment)), (self.structure[index].text + ":"), self.structure[index].text);
-
-			if(isDefined(self.structure[index].toggle)) {
-				element_x_offset = (self.x_offset + 16);
-			} else {
-				if(!isDefined(self.structure[index].command)) {
-					element_x_offset = (self.x_offset + (self.menu["cursor"].width / 2));
-				} else {
-					element_x_offset = (self.x_offset + 4);
-				}
-			}
-
-			if(!isDefined(self.structure[index].command)) {
-				element_color = self.color_theme;
-			} else {
-				if((cursor == index)) {
-					element_color = (0.75, 0.75, 0.75);
-				} else {
-					element_color = (0.5, 0.5, 0.5);
-				}
-			}
-
-			self.menu["text"][index] = self create_text(text_string, self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", element_x_offset, (self.y_offset + ((a * self.option_spacing) + 20)), element_color, 1, 10);
-		}
-	}
+	scroll_cursor();
 }
 
-function update_display() {
-	self display_option();
-	self update_scrollbar();
-	self update_progression();
-	self update_rescaling();
+function empty_function() {}
+
+function empty_option() {
+	option = array("Nothing To See Here!", "Quiet Here, Isn't It?", "Oops, Nothing Here Yet!", "Bit Empty, Don't You Think?");
+	return option[randomInt(option.size)];
 }
 
-function update_scrolling(scrolling) {
-	if(isDefined(self.structure[self get_cursor()]) && !isDefined(self.structure[self get_cursor()].command)) {
-		self set_cursor((self get_cursor() + scrolling));
-		return self update_scrolling(scrolling);
+function scroll_cursor(direction) {
+	maximum = self.structure.size - 1;
+	fake_scroll = false;
+
+	if(maximum < 0) {
+		maximum = 0;
 	}
 
-	if(self get_cursor() >= self.structure.size || self get_cursor() < 0) {
-		self set_cursor(set_variable(self get_cursor() >= self.structure.size, 0, (self.structure.size - 1)));
-	}
-
-	self update_display();
-}
-
-function update_slider(scrolling, cursor) {
-	menu = self get_menu();
-	cursor = set_variable(isDefined(cursor), cursor, self get_cursor());
-	scrolling = set_variable(isDefined(scrolling), scrolling, 0);
-	if(!isDefined(self.slider[(menu + "_" + cursor)])) {
-		self.slider[(menu + "_" + cursor)] = set_variable(isDefined(self.structure[cursor].array), 0, self.structure[cursor].start);
-	}
-
-	if(isDefined(self.structure[cursor].array)) {
-		if(scrolling == -1) {
-			self.slider[(menu + "_" + cursor)]++;
-		}
-
-		if(scrolling == 1) {
-			self.slider[(menu + "_" + cursor)]--;
-		}
-
-		if(self.slider[(menu + "_" + cursor)] > (self.structure[cursor].array.size - 1) || self.slider[(menu + "_" + cursor)] < 0) {
-			self.slider[(menu + "_" + cursor)] = set_variable(self.slider[(menu + "_" + cursor)] > (self.structure[cursor].array.size - 1), 0, (self.structure[cursor].array.size - 1));
-		}
-
-		if(isDefined(self.menu["slider"][cursor])) {
-			self.menu["slider"][cursor] set_text((self.structure[cursor].array[self.slider[(menu + "_" + cursor)]] + " [" + (self.slider[(menu + "_" + cursor)] + 1) + "/" + self.structure[cursor].array.size + "]"));
+	if(isDefined(direction)) {
+		if(direction == "down") {
+			self.cursor_index++;
+			if(self.cursor_index > maximum) {
+				self.cursor_index = 0;
+				self.scrolling_offset = 0;
+			}
+		} else if(direction == "up") {
+			self.cursor_index--;
+			if(self.cursor_index < 0) {
+				self.cursor_index = maximum;
+				if(((self.cursor_index) + int((self.option_limit / 2))) >= (self.structure.size - 2)) {
+					self.scrolling_offset = (self.structure.size - self.option_limit);
+				}
+			}
 		}
 	} else {
-		if(scrolling == -1) {
-			self.slider[(menu + "_" + cursor)] += self.structure[cursor].increment;
+		while(self.cursor_index > maximum) {
+			self.cursor_index--;
 		}
-
-		if(scrolling == 1) {
-			self.slider[(menu + "_" + cursor)] -= self.structure[cursor].increment;
-		}
-
-		if(self.slider[(menu + "_" + cursor)] > self.structure[cursor].maximum || self.slider[(menu + "_" + cursor)] < self.structure[cursor].minimum) {
-			self.slider[(menu + "_" + cursor)] = set_variable(self.slider[(menu + "_" + cursor)] > self.structure[cursor].maximum, self.structure[cursor].minimum, self.structure[cursor].maximum);
-		}
-
-		if(isDefined(self.menu["slider"][cursor])) {
-			self.menu["slider"][cursor] setValue(self.slider[(menu + "_" + cursor)]);
-		}
+		self.menu["cursor"].y = int(self.y_offset + (((self.cursor_index + 1) - self.scrolling_offset) * 15));
 	}
-}
 
-function update_progression() {
-	if(isDefined(self.structure[self get_cursor()].increment) && self.slider[(self get_menu() + "_" + self get_cursor())] != 0) {
-		value = abs((self.structure[self get_cursor()].minimum - self.structure[self get_cursor()].maximum)) / (self.menu["cursor"].width);
-		width = ceil(((self.slider[(self get_menu() + "_" + self get_cursor())] - self.structure[self get_cursor()].minimum) / value));
-		if(!isDefined(self.menu["progression"])) {
-			self.menu["progression"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 1), self.menu["cursor"].y, int(width), 16, (0.3, 0.3, 0.3), 1, 5);
+	self.previous_scrolling_offset = self.scrolling_offset;
+
+	if(!self.loaded_offset) {
+		if(self.cursor_index >= int(self.option_limit / 2) && self.structure.size > self.option_limit) {
+			if((self.cursor_index + int(self.option_limit / 2)) >= (self.structure.size - 2)) {
+				self.scrolling_offset = (self.structure.size - self.option_limit);
+				if(self.previous_trigger == 2) {
+					self.scrolling_offset--;
+				}
+				if(self.previous_scrolling_offset != self.scrolling_offset) {
+					fake_scroll = true;
+					self.previous_trigger = 1;
+				}
+			} else {
+				self.scrolling_offset = (self.cursor_index - int(self.option_limit / 2));
+				self.previous_trigger = 2;
+			}
 		} else {
-			self.menu["progression"] set_shader(self.menu["progression"].shader, int(width), self.menu["progression"].height);
+			self.scrolling_offset = 0;
+			self.previous_trigger = 0;
 		}
-
-		if(self.menu["progression"].y != self.menu["cursor"].y) {
-			self.menu["progression"].y = self.menu["cursor"].y;
-		}
-	} else if(isDefined(self.menu["progression"])) {
-		self.menu["progression"] destroy_element();
 	}
-}
 
-function update_scrollbar() {
-	maximum = min(self.structure.size, self.option_limit);
-	height = int((maximum * self.option_spacing));
-	adjustment = set_variable(self.structure.size > self.option_limit, ((self.menu["foreground"].height / self.structure.size) * maximum), height);
-	if(height - adjustment == 0) {
-		position = set_variable(self.structure.size > self.option_limit, 0, 0);
+	if(self.scrolling_offset < 0) {
+		self.scrolling_offset = 0;
+	}
+
+	if(!fake_scroll) {
+		self.menu["cursor"].y = int(self.y_offset + (((self.cursor_index + 1) - self.scrolling_offset) * 15));
+	}
+
+	if(isDefined(self.structure[self.cursor_index]) && isDefined(self.structure[self.cursor_index].description)) {
+		self.menu["description"] set_text(self.structure[self.cursor_index].description);
+		self.description_height = 15;
+
+		self.menu["description"].x = (self.x_offset + 5);
+		self.menu["description"].alpha = 1;
 	} else {
-		position = set_variable(self.structure.size > self.option_limit, ((self.structure.size - 1) / (height - adjustment)), 0);
-	}
-	if(isDefined(self.menu["cursor"])) {
-		self.menu["cursor"].y = (self.menu["text"][self get_cursor()].y - 4);
+		self.menu["description"] set_text("");
+		self.menu["description"].alpha = 0;
+		self.description_height = 0;
 	}
 
-	if(isDefined(self.menu["scrollbar"])) {
-		self.menu["scrollbar"].y = (self.y_offset + 16);
-		if(self.structure.size > self.option_limit) {
-			self.menu["scrollbar"].y += (self get_cursor() / position);
+	self.loaded_offset = false;
+	set_options();
+}
+
+function scroll_slider(direction) {
+	current_slider_index = self.slider[(self.current_menu + "_" + (self.cursor_index))];
+	if(isDefined(direction)) {
+		if(isDefined(self.structure[self.cursor_index].array)) {
+			if(direction == "left") {
+				current_slider_index--;
+				if(current_slider_index < 0) {
+					current_slider_index = (self.structure[self.cursor_index].array.size - 1);
+				}
+			} else if(direction == "right") {
+				current_slider_index++;
+				if(current_slider_index > (self.structure[self.cursor_index].array.size - 1)) {
+					current_slider_index = 0;
+				}
+			}
+		} else {
+			if(direction == "left") {
+				current_slider_index -= self.structure[self.cursor_index].increment;
+				if(current_slider_index < self.structure[self.cursor_index].minimum) {
+					current_slider_index = self.structure[self.cursor_index].maximum;
+				}
+			} else if(direction == "right") {
+				current_slider_index += self.structure[self.cursor_index].increment;
+				if(current_slider_index > self.structure[self.cursor_index].maximum) {
+					current_slider_index = self.structure[self.cursor_index].minimum;
+				}
+			}
+		}
+	}
+	self.slider[(self.current_menu + "_" + (self.cursor_index))] = current_slider_index;
+	set_options();
+}
+
+function set_options() {
+	for(i = 1; i <= self.option_limit; i++) {
+		self.menu["toggle_" + i].alpha = 0;
+		self.menu["slider_" + i].alpha = 0;
+		self.menu["option_" + i] set_text("");
+		self.menu["slider_text_" + i] set_text("");
+		self.menu["submenu_icon_" + i].alpha = 0;
+	}
+
+	update_element_positions();
+
+	if(isDefined(self.structure)) {
+		if(self.structure.size == 0) {
+			self add_option(empty_option());
+		}
+
+		self.maximum = int(min(self.structure.size, self.option_limit));
+
+		if(self.structure.size <= self.option_limit) {
+			self.scrolling_offset = 0;
+		}
+
+		for(i = 1; i <= self.maximum; i++) {
+			x = ((i - 1) + self.scrolling_offset);
+
+			self.menu["option_" + i] set_text(self.structure[x].text);
+
+			if(isDefined(self.structure[x].toggle)) {
+				self.menu["option_" + i].x = (self.x_offset + 13.5);
+				self.menu["option_" + i].alpha = 1;
+				self.menu["toggle_" + i].alpha = 1;
+
+				if(self.structure[x].toggle) {
+					self.menu["toggle_" + i].color = (1, 1, 1);
+				} else {
+					self.menu["toggle_" + i].color = (0.25, 0.25, 0.25);
+				}
+			} else {
+				self.menu["option_" + i].x = (self.x_offset + 5);
+				self.menu["toggle_" + i].alpha = 0;
+			}
+
+			if(isDefined(self.structure[x].array) && (self.cursor_index) == x) {
+				if(!isDefined(self.slider[(self.current_menu + "_" + x)])) {
+					self.slider[(self.current_menu + "_" + x)] = 0;
+				}
+
+				if(self.slider[(self.current_menu + "_" + x)] > (self.structure[x].array.size - 1) || self.slider[(self.current_menu + "_" + x)] < 0) {
+					self.slider[(self.current_menu + "_" + x)] = set_variable(self.slider[(self.current_menu + "_" + x)] > (self.structure[x].array.size - 1), 0, (self.structure[x].array.size - 1));
+				}
+
+				slider_text = self.structure[x].array[self.slider[(self.current_menu + "_" + x)]] + " [" + (self.slider[(self.current_menu + "_" + x)] + 1) + "/" + self.structure[x].array.size + "]";
+
+				self.menu["slider_text_" + i] set_text(slider_text);
+			} else if(isDefined(self.structure[x].increment) && (self.cursor_index) == x) {
+				value = abs((self.structure[x].minimum - self.structure[x].maximum)) / 224;
+				width = ceil((self.slider[(self.current_menu + "_" + x)] - self.structure[x].minimum) / value);
+
+				if(width >= 0) {
+					self.menu["slider_" + i] set_shader("white", int(width), 16);
+				} else {
+					self.menu["slider_" + i] set_shader("white", 0, 16);
+					self.menu["slider_" + i].alpha = 0;
+				}
+
+				if(!isDefined(self.slider[(self.current_menu + "_" + x)]) || self.slider[(self.current_menu + "_" + x)] < self.structure[x].minimum) {
+					self.slider[(self.current_menu + "_" + x)] = self.structure[x].start;
+				}
+
+				slider_value = self.slider[(self.current_menu + "_" + x)];
+				self.menu["slider_text_" + i] set_text("" + slider_value);
+				self.menu["slider_" + i].alpha = 1;
+			}
+
+			if(isDefined(self.structure[x].command) && self.structure[x].command == &new_menu) {
+				self.menu["submenu_icon_" + i].alpha = 1;
+			}
+
+			if(!isDefined(self.structure[x].command)) {
+				self.menu["option_" + i].color = (0.75, 0.75, 0.75);
+			} else {
+				if((self.cursor_index) == x) {
+					self.menu["option_" + i].color = (0.75, 0.75, 0.75);
+					self.menu["submenu_icon_" + i].color = (0.75, 0.75, 0.75);
+				} else {
+					self.menu["option_" + i].color = (0.5, 0.5, 0.5);
+					self.menu["submenu_icon_" + i].color = (0.5, 0.5, 0.5);
+				}
+			}
 		}
 	}
 
-	self.menu["scrollbar"] set_shader(self.menu["scrollbar"].shader, self.menu["scrollbar"].width, int(adjustment));
+	menu_height = int(18 + (self.maximum * 15));
+
+	self.menu["description"].y = int((self.y_offset + 4) + ((self.maximum + 1) * 15));
+
+	self.menu["border"] set_shader("white", self.menu["border"].width, int(menu_height + self.description_height));
+	self.menu["background"] set_shader("white", self.menu["background"].width, int((menu_height - 2) + self.description_height));
+	self.menu["foreground"] set_shader("white", self.menu["foreground"].width, int(menu_height - 17));
 }
 
-function update_rescaling() {
-	maximum = min(self.structure.size, self.option_limit);
-	height = int((maximum * self.option_spacing));
-	if(isDefined(self.menu["description"])) {
-		self.menu["description"].y = (self.y_offset + (height + 20));
-	}
-
-	description_height = set_variable(isDefined(self get_description()) && self.description_enabled, (height + 34), (height + 18));
-	self.menu["border"] set_shader(self.menu["border"].shader, self.menu["border"].width, description_height);
-	self.menu["background"] set_shader(self.menu["background"].shader, self.menu["background"].width, description_height - 2);
-	self.menu["foreground"] set_shader(self.menu["foreground"].shader, self.menu["foreground"].width, height);
-}
-
-// Option Structure
+// Menu Options
 
 function menu_option() {
-	menu = self get_menu();
-	switch (menu) {
+	self.structure = [];
+	menu = self.current_menu;
+	switch(menu) {
 		case "Synergy":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_option("Basic Options", undefined, &new_menu, "Basic Options");
 			self add_option("Fun Options", undefined, &new_menu, "Fun Options");
@@ -1341,7 +1421,7 @@ function menu_option() {
 
 			break;
 		case "Basic Options":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_toggle("God Mode", "Makes you Invincible", &god_mode, self.god_mode);
 			self add_toggle("Frag No Clip", "Fly through the Map using (^3[{+frag}]^7)", &frag_no_clip, self.frag_no_clip);
@@ -1361,7 +1441,7 @@ function menu_option() {
 
 			break;
 		case "Fun Options":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_toggle("Forge Mode", undefined, &forge_mode, self.forge_mode);
 
@@ -1380,7 +1460,7 @@ function menu_option() {
 
 			break;
 		case "Weapon Options":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_option("Give Weapons", undefined, &new_menu, "Give Weapons");
 			self add_toggle("Give Pack-a-Punched Weapons", "Weapons Given will be Pack-a-Punched", &give_packed_weapon, self.give_packed_weapon);
@@ -1414,7 +1494,7 @@ function menu_option() {
 
 			break;
 		case "Zombie Options":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_toggle("No Target", "Zombies won't Target You", &no_target, self.no_target);
 
@@ -1438,7 +1518,7 @@ function menu_option() {
 
 			break;
 		case "Map Options":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_toggle("Freeze Box", "Locks the Mystery Box, so it can't move", &freeze_box, self.freeze_box);
 			self add_option("Open Doors", undefined, &open_doors);
@@ -1459,7 +1539,7 @@ function menu_option() {
 
 			break;
 		case "Powerup Options":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_toggle("Shoot Powerups", undefined, &shoot_powerups, self.shoot_powerups);
 
@@ -1471,7 +1551,7 @@ function menu_option() {
 
 			break;
 		case "Remove Powerups":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_option("Reset", undefined, &reset_powerups);
 
@@ -1481,7 +1561,7 @@ function menu_option() {
 
 			break;
 		case "Menu Options":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_increment("Move Menu X", "Move the Menu around Horizontally", &modify_menu_position, 0, -600, 20, 10, "x");
 			self add_increment("Move Menu Y", "Move the Menu around Vertically", &modify_menu_position, 0, -100, 30, 10, "y");
@@ -1492,13 +1572,12 @@ function menu_option() {
 			self add_increment("Green", "Set the Green Value for the Menu Outline Color", &set_menu_color, 255, 1, 255, 1, "Green");
 			self add_increment("Blue", "Set the Blue Value for the Menu Outline Color", &set_menu_color, 255, 1, 255, 1, "Blue");
 
-			self add_toggle("Watermark", "Enable/Disable Watermark in the Top Left Corner", &watermark, self.watermark);
 			self add_toggle("Hide UI", undefined, &hide_ui, self.hide_ui);
 			self add_toggle("Hide Weapon", undefined, &hide_weapon, self.hide_weapon);
 
 			break;
 		case "Give Perks":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			foreach(perk in self.syn["perks"]["all"]) {
 				perk_name = get_perk_name(perk);
@@ -1507,7 +1586,7 @@ function menu_option() {
 
 			break;
 		case "Take Perks":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			foreach(perk in self.syn["perks"]["all"]) {
 				perk_name = get_perk_name(perk);
@@ -1516,7 +1595,7 @@ function menu_option() {
 
 			break;
 		case "Give Gobblegum":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			foreach(gobblegum in self.syn["gobblegum"][0]) {
 				gobblegum_name = get_gobblegum_name(gobblegum);
@@ -1525,7 +1604,7 @@ function menu_option() {
 
 			break;
 		case "Point Options":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_increment("Set Increment", undefined, &set_increment, 100, 100, 10000, 100);
 
@@ -1535,7 +1614,7 @@ function menu_option() {
 
 			break;
 		case "Visions":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			for(i = 0; i < self.syn["visions"][0].size; i++) {
 				self add_option(self.syn["visions"][1][i], undefined, &set_vision, self.syn["visions"][0][i]);
@@ -1605,7 +1684,7 @@ function menu_option() {
 
 			break;
 		case "Spawn Zombies":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_option("Spawn Zombie", undefined, &spawn_normal_zombie);
 
@@ -1621,7 +1700,7 @@ function menu_option() {
 
 			break;
 		case "Equip Attachment":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self.syn["attachment_toggles"] = [];
 
@@ -1634,7 +1713,7 @@ function menu_option() {
 
 			break;
 		case "Equip Camo":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			for(i = 0; i < self.syn["camos"][0].size; i++) {
 				self add_option(self.syn["camos"][1][i], undefined, &equip_camo, self.syn["camos"][0][i]);
@@ -1642,7 +1721,7 @@ function menu_option() {
 
 			break;
 		case "Give AAT":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_option("None", undefined, &take_aat);
 
@@ -1652,7 +1731,7 @@ function menu_option() {
 
 			break;
 		case "Give Weapons":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			for(i = 0; i < self.syn["weapons"]["category"].size; i++) {
 				self add_option(self.syn["weapons"]["category"][i], undefined, &new_menu, self.syn["weapons"]["category"][i]);
@@ -1660,13 +1739,13 @@ function menu_option() {
 
 			break;
 		case "Assault Rifles":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			load_weapons("weapon_assault");
 
 			break;
 		case "Sub Machine Guns":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			load_weapons("weapon_smg");
 
@@ -1676,25 +1755,25 @@ function menu_option() {
 
 			break;
 		case "Light Machine Guns":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			load_weapons("weapon_lmg");
 
 			break;
 		case "Sniper Rifles":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			load_weapons("weapon_sniper");
 
 			break;
 		case "Shotguns":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			load_weapons("weapon_cqb");
 
 			break;
 		case "Pistols":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			if(self.map_name == "shadows_of_evil") {
 				self add_option("MR6", undefined, &give_weapon, "pistol_standard");
@@ -1704,13 +1783,13 @@ function menu_option() {
 
 			break;
 		case "Launchers":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			load_weapons("weapon_launcher");
 
 			break;
 		case "Melee":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			for(i = 0; i < self.syn["weapons"]["melee"][0].size; i++) {
 				self add_option(self.syn["weapons"]["melee"][1][i], undefined, &give_weapon, self.syn["weapons"]["melee"][0][i]);
@@ -1720,7 +1799,7 @@ function menu_option() {
 
 			break;
 		case "Equipment":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			self add_option("Frag Grenades", undefined, &give_weapon, "frag_grenade");
 			self add_option("Widow's Wine Grenades", undefined, &give_weapon, "sticky_grenade_widows_wine");
@@ -1729,7 +1808,7 @@ function menu_option() {
 
 			break;
 		case "Extras":
-			self add_menu(menu, menu.size);
+			self add_menu(menu);
 
 			if(self.map_name == "shadows_of_evil" || self.map_name == "the_giant" || self.map_name == "zetsubou_no_shima" || self.map_name == "gorod_krovi" || self.map_name == "revelations" || self.map_name == "origins") {
 				for(i = 0; i < self.syn["weapons"]["extras"][self.map_name][0].size; i++) {
@@ -1789,44 +1868,7 @@ function player_option(menu, player) {
 	}
 }
 
-// Misc Options
-
-function return_toggle(variable) {
-	return isDefined(variable) && variable;
-}
-
-function close_controls_menu() {
-	if(isDefined(self.controls["title"])) {
-		self.controls["title"] destroy();
-		self.controls["separator"][0] destroy();
-		self.controls["separator"][1] destroy();
-		self.controls["border"] destroy();
-		self.controls["background"] destroy();
-		self.controls["foreground"] destroy();
-
-		self.controls["text"][0] destroy();
-		self.controls["text"][1] destroy();
-		self.controls["text"][2] destroy();
-		self.controls["text"][3] destroy();
-	}
-}
-
-function get_map_name() {
-	if(level.script == "zm_zod") return "shadows_of_evil";
-	if(level.script == "zm_factory") return "the_giant";
-	if(level.script == "zm_castle") return "der_eisendrache";
-	if(level.script == "zm_island") return "zetsubou_no_shima";
-	if(level.script == "zm_stalingrad") return "gorod_krovi";
-	if(level.script == "zm_genesis") return "revelations";
-	if(level.script == "zm_prototype") return "nacht_der_untoten";
-	if(level.script == "zm_asylum") return "verruckt";
-	if(level.script == "zm_sumpf") return "shi_no_numa";
-	if(level.script == "zm_theater") return "kino_der_untoten";
-	if(level.script == "zm_cosmodrome") return "ascension";
-	if(level.script == "zm_temple") return "shangri_la";
-	if(level.script == "zm_moon") return "moon";
-	if(level.script == "zm_tomb") return "origins";
-}
+// Menu Options
 
 function iPrintString(string) {
 	if(!isDefined(self.syn["string"])) {
@@ -1847,91 +1889,6 @@ function fade_hud(alpha, time) {
 	wait time;
 }
 
-function construct_string(string) {
-	final = "";
-	for(e = 0; e < string.size; e++) {
-		if(e == 0) {
-			final += toUpper(string[e]);
-		} else if(string[e - 1] == " ") {
-			final += toUpper(string[e]);
-		} else {
-			final += string[e];
-		}
-	}
-	return final;
-}
-
-function replace_character(string, substring, replace) {
-	final = "";
-	for(e = 0; e < string.size; e++) {
-		if(string[e] == substring) {
-			final += replace;
-		} else {
-			final += string[e];
-		}
-	}
-	return final;
-}
-
-function remove_duplicate_ent_array(name) {
-	new_array = [];
-	saved_array = [];
-	foreach(item in getEntArray(name, "targetname")) {
-		if(!isInArray(new_array, item.script_noteworthy)) {
-			new_array[new_array.size] = item.script_noteworthy;
-			saved_array[saved_array.size] = item;
-		}
-	}
-	return saved_array;
-}
-
-function remove_from_array(array, object) {
-	if(!isDefined(array) || !isDefined(object)) {
-	  return;
-	}
-	new_array = [];
-	foreach(item in array) {
-	  if(item != object) {
-	    new_array[new_array.size] = item;
-	  }
-	}
-	return new_array;
-}
-
-function set_increment(value) {
-	self.point_increment = value;
-}
-
-function set_variable(check, option_1, option_2) {
-	if(check) {
-		return option_1;
-	} else {
-		return option_2;
-	}
-}
-
-function load_weapons(weapon_category) {
-	for(i = 0; i < self.syn["weapons"].size; i++) {
-		foreach(weapon in self.syn["weapons"][i]) {
-			if(weapon.category == weapon_category) {
-				self add_option(weapon.name, undefined, &give_weapon, weapon.id);
-			}
-		}
-	}
-}
-
-function get_category(weapon_id) {
-	for(i = 0; i < self.syn["weapons"].size; i++) {
-		foreach(weapon in self.syn["weapons"][i]) {
-			if(weapon.id == weapon_id || weapon.id + "_upgraded" == weapon_id) {
-				return weapon.category;
-			}
-		}
-	}
-}
-
-// Menu Options
-
 function modify_menu_position(offset, axis) {
 	if(axis == "x") {
 		self.x_offset = 175 + offset;
@@ -1945,9 +1902,12 @@ function modify_menu_position(offset, axis) {
 function set_menu_rainbow() {
 	if(!isString(self.color_theme)) {
 		self.color_theme = "rainbow";
-		self close_menu();
-		self open_menu();
-		self.menu["title"].x = 264.2;
+		self.menu["border"] thread start_rainbow();
+		self.menu["separator_1"] thread start_rainbow();
+		self.menu["separator_2"] thread start_rainbow();
+		self.menu["border"].color = self.color_theme;
+		self.menu["separator_1"].color = self.color_theme;
+		self.menu["separator_2"].color = self.color_theme;
 	}
 }
 
@@ -1965,25 +1925,15 @@ function set_menu_color(value, color) {
 		iPrintString(value + " | " + color);
 	}
 	self.color_theme = (self.menu_color_red / 255, self.menu_color_green / 255, self.menu_color_blue / 255);
-	self close_menu();
-	self open_menu();
-	self.menu["title"].x = 264.2;
-}
-
-function watermark() {
-	self.watermark = !return_toggle(self.watermark);
-	if(self.watermark) {
-		iPrintString("Watermark [^2ON^7]");
-		if(!isDefined(self.syn["watermark"])) {
-			self.syn["watermark"] = self create_text("SyndiShanX", self.font, 2, "TOP_LEFT", "TOPCENTER", -425, 10, self.color_theme, 1, 3);
-		} else {
-			self.syn["watermark"].alpha = 1;
-			self.syn["watermark"].color = self.color_theme;
-		}
-	} else {
-		iPrintString("Watermark [^1OFF^7]");
-		self.syn["watermark"].alpha = 0;
-	}
+	self.menu["border"] notify("stop_rainbow");
+	self.menu["separator_1"] notify("stop_rainbow");
+	self.menu["separator_2"] notify("stop_rainbow");
+	self.menu["border"].rainbow_enabled = false;
+	self.menu["separator_1"].rainbow_enabled = false;
+	self.menu["separator_2"].rainbow_enabled = false;
+	self.menu["border"].color = self.color_theme;
+	self.menu["separator_1"].color = self.color_theme;
+	self.menu["separator_2"].color = self.color_theme;
 }
 
 function hide_ui() {
