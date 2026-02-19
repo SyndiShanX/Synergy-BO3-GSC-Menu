@@ -639,6 +639,15 @@ function create_text(text, font, font_scale, align_x, align_y, x_offset, y_offse
 	return textElement;
 }
 
+function set_text(text) {
+	if(!isDefined(self) || !isDefined(text)) {
+		return;
+	}
+
+	self.text = text;
+	self setText(text);
+}
+
 function create_shader(shader, align_x, align_y, x_offset, y_offset, width, height, color, alpha, z_index, hide_when_in_menu) {
 	shaderElement = newClientHudElem(self);
 	shaderElement.elemType = "icon";
@@ -672,15 +681,6 @@ function create_shader(shader, align_x, align_y, x_offset, y_offset, width, heig
 
 	self.element_result++;
 	return shaderElement;
-}
-
-function set_text(text) {
-	if(!isDefined(self) || !isDefined(text)) {
-		return;
-	}
-
-	self.text = text;
-	self setText(text);
 }
 
 function set_shader(shader, width, height) {
@@ -2393,17 +2393,17 @@ function shock_all_electrics() {
 }
 
 function pick_up_parts() {
-  if(isDefined(level.parts_collected)) {
-    return;
+	if(isDefined(level.parts_collected)) {
+	  return;
 	}
 
-  foreach(craftable in level.zombie_include_craftables) {
-    foreach(part in craftable.a_piecestubs) {
-      if(isDefined(part.pieceSpawn)) {
-        self zm_craftables::player_take_piece(part.pieceSpawn);
+	foreach(craftable in level.zombie_include_craftables) {
+	  foreach(part in craftable.a_piecestubs) {
+	    if(isDefined(part.pieceSpawn)) {
+	      self zm_craftables::player_take_piece(part.pieceSpawn);
 			}
-    }
-  }
+	  }
+	}
 
 	level.parts_collected = true;
 }
@@ -2462,11 +2462,11 @@ function disable_powerup(powerup, i) {
 	}
 
 	all_powerups_disabled = true;
-  for(i = 0; i < self.syn["powerups"][0].size; i++) {
-    if(level.zombie_powerups[self.syn["powerups"][0][i]].func_should_drop_with_regular_powerups) {
+	for(i = 0; i < self.syn["powerups"][0].size; i++) {
+	  if(level.zombie_powerups[self.syn["powerups"][0][i]].func_should_drop_with_regular_powerups) {
 			all_powerups_disabled = false;
 		}
-  }
+	}
 
 	self.syn["powerups"][4] = [];
 	for(i = 0; i < self.syn["powerups"][0].size; i++) {
