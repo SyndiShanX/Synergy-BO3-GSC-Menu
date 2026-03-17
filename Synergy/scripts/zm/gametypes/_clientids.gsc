@@ -4,6 +4,7 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientField_shared;
+#using scripts\shared\damagefeedback_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\hud_util_shared;
 #using scripts\shared\spawner_shared;
@@ -18,6 +19,7 @@
 #using scripts\zm\_zm_perks;
 #using scripts\zm\_zm_powerups;
 #using scripts\zm\_zm_score;
+#using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 
@@ -33,8 +35,6 @@ function __init__() {
 
 function init() {
 	setDvar("sv_cheats", "1");
-
-	//precacheshader("ui_scrollbar_arrow_right");
 
 	level thread player_connect();
 	level thread create_rainbow_color();
@@ -1452,7 +1452,7 @@ function menu_option() {
 
 			if(self.map_name != "shadows_of_evil") {
 				self add_toggle("Exo Movement", "Enable/Disable Exo-Suits", &exo_movement, self.exo_movement);
-				self add_toggle("Infinite Boost", undefined, &infinite_boost, self.infinite_boost);
+				self add_toggle("Infinite Boost", "Enables Infinite Exo-Boost", &infinite_boost, self.infinite_boost);
 			}
 
 			self add_increment("Set Speed", undefined, &set_speed, 1, 1, 15, 1);
@@ -1502,6 +1502,8 @@ function menu_option() {
 			self add_menu(menu);
 
 			self add_toggle("No Target", "Zombies won't Target You", &no_target, self.no_target);
+			
+			self add_toggle("Enable Hitmarkers", undefined, &enable_hitmarkers, self.enable_hitmarkers);
 
 			self add_increment("Set Round", undefined, &set_round, 1, 1, 255, 1);
 
@@ -2733,7 +2735,7 @@ function refill_ammo() {
 // Zombie Options
 
 function get_zombies() {
-	return getaiteamarray(level.zombie_team);
+	return getAITeamArray(level.zombie_team);
 }
 
 function no_target() {
@@ -2744,6 +2746,29 @@ function no_target() {
 	} else {
 		iPrintString("No Target [^1OFF^7]");
 		self zm_utility::decrement_ignoreMe();
+	}
+}
+
+function enable_hitmarkers() {
+	self.enable_hitmarkers = !return_toggle(self.enable_hitmarkers);
+	if(self.enable_hitmarkers) {
+		zm::register_zombie_damage_override_callback(&hitmarker);
+		zm_spawner::register_zombie_death_event_callback(&kill_hitmarker);
+	} else {
+		arrayremovevalue(level.zombie_damage_override_callbacks, &hitmarker);
+		arrayremovevalue(level.zombie_death_callbacks, &kill_hitmarker);
+	}
+}
+
+function hitmarker(willbekilled, inflictor, attacker, damage, flags, meansofdeath, weapon, point, dir, hitloc, offsettime, damagefromunderneath, surfacenormal) {
+	if(isDefined(attacker) && isPlayer(attacker)) {
+		attacker thread damagefeedback::update_override("damage_feedback", "", undefined);
+	}
+}
+
+function kill_hitmarker(attacker) {
+	if(isDefined(attacker) && isPlayer(attacker)) {
+		attacker thread damagefeedback::update_override("damage_feedback_glow_orange", "", undefined);
 	}
 }
 
