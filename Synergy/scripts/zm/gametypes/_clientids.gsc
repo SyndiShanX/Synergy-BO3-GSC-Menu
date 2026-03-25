@@ -360,53 +360,19 @@ function initial_variables() {
 	}
 }
 
-function create_menu() {
-	self freezeControls(false);
-	
-	level.player_out_of_playable_area_monitor = false;
-	self notify("stop_player_out_of_playable_area_monitor");
-	
-	self thread input_manager();
-	
-	self.menu["border"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset - 1), (self.y_offset - 1), 226, 122, self.color_theme, 1, 1);
-	self.menu["background"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, self.y_offset, 224, 121, (0.075, 0.075, 0.075), 1, 2);
-	self.menu["foreground"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset + 15), 224, 106, (0.1, 0.1, 0.1), 1, 3);
-	self.menu["separator_1"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 5.5), (self.y_offset + 7.5), 42, 1, self.color_theme, 1, 10);
-	self.menu["separator_2"] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 220), (self.y_offset + 7.5), 42, 1, self.color_theme, 1, 10);
-	self.menu["cursor"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, 215, 224, 16, (0.15, 0.15, 0.15), 0, 4);
-	
-	self.menu["title"] = self create_text("Title", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 94.5), (self.y_offset + 3), (1, 1, 1), 1, 10);
-	self.menu["description"] = self create_text("Description", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 5), (self.y_offset + (self.option_limit * 17.5)), (0.75, 0.75, 0.75), 0, 10);
-	
-	for(i = 1; i <= self.option_limit; i++) {
-		self.menu["toggle_" + i] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 11), ((self.y_offset + 4) + (i * 15)), 8, 8, (0.25, 0.25, 0.25), 0, 9);
-		self.menu["slider_" + i] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset + (i * 15)), 224, 16, (0.25, 0.25, 0.25), 0, 5);
-		self.menu["option_" + i] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 5), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 1, 10);
-		self.menu["slider_text_" + i] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 132.5), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
-		self.menu["submenu_icon_" + i] = self create_text(">", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 215), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
-	}
-	
-	self.hud_created = true;
-	
-	self.menu["title"] set_text("Controls");
-	self.menu["option_1"] set_text("Open: ^3[{+speed_throw}] ^7and ^3[{+melee}]");
-	self.menu["option_2"] set_text("Scroll: ^3[{+speed_throw}] ^7and ^3[{+attack}]");
-	self.menu["option_3"] set_text("Select: ^3[{+activate}] ^7Back: ^3[{+melee}]");
-	self.menu["option_4"] set_text("Sliders: ^3[{+smoke}] ^7and ^3[{+frag}]");
-	self.menu["option_5"].alpha = 0;
-	self.menu["option_6"].alpha = 0;
-	self.menu["option_7"].alpha = 0;
-	
-	self.menu["border"] set_shader("white", self.menu["border"].width, 78);
-	self.menu["background"] set_shader("white", self.menu["background"].width, 76);
-	self.menu["foreground"] set_shader("white", self.menu["foreground"].width, 61);
-	
-	self.controls_menu_open = true;
-	
-	wait 8;
-	
-	if(self.controls_menu_open) {
-		close_controls_menu();
+function player_connect() {
+	level endon("game_ended");
+
+	for(;;) {
+		level waittill("connected", player);
+
+		player.access = "None";
+
+		if(player isHost()) {
+			player.access = "Host";
+			player initial_variables();
+			player thread initialize_menu();
+		}
 	}
 }
 
@@ -415,14 +381,13 @@ function initialize_menu() {
 	self endon("disconnect");
 
 	while(!self.initialized) {
-		if(self isHost()) {
-			if(!self.hud_created) {
-				self.initialized = true;
-				
-				level waittill("initial_blackscreen_passed");
-				
-				create_menu();
-			}
+		if(!self.hud_created) {
+			self.initialized = true;
+			self freezeControls(false);
+
+			level waittill("initial_blackscreen_passed");
+
+			create_menu();
 		}
 	}
 }
@@ -431,17 +396,62 @@ function initialize_verified_menu() {
 	level endon("game_ended");
 	self endon("disconnect");
 
-	for(;;) {
+	while(!self.initialized) {
 		if(self.access != "None") {
 			if(!self.hud_created) {
 				self initial_variables();
-
-				wait 0.25;
-
+				self.initialized = true;
 				self create_menu();
 			}
 		}
-		wait 1;
+	}
+}
+
+function create_menu() {
+	level.player_out_of_playable_area_monitor = false;
+	self notify("stop_player_out_of_playable_area_monitor");
+
+	self thread input_manager();
+
+	self.menu["border"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset - 1), (self.y_offset - 1), 226, 122, self.color_theme, 1, 1);
+	self.menu["background"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, self.y_offset, 224, 121, (0.075, 0.075, 0.075), 1, 2);
+	self.menu["foreground"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset + 15), 224, 106, (0.1, 0.1, 0.1), 1, 3);
+	self.menu["separator_1"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 5.5), (self.y_offset + 7.5), 42, 1, self.color_theme, 1, 10);
+	self.menu["separator_2"] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 220), (self.y_offset + 7.5), 42, 1, self.color_theme, 1, 10);
+	self.menu["cursor"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, 215, 224, 16, (0.15, 0.15, 0.15), 0, 4);
+
+	self.menu["title"] = self create_text("Title", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 94.5), (self.y_offset + 3), (1, 1, 1), 1, 10);
+	self.menu["description"] = self create_text("Description", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 5), (self.y_offset + (self.option_limit * 17.5)), (0.75, 0.75, 0.75), 0, 10);
+
+	for(i = 1; i <= self.option_limit; i++) {
+		self.menu["toggle_" + i] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 11), ((self.y_offset + 4) + (i * 15)), 8, 8, (0.25, 0.25, 0.25), 0, 9);
+		self.menu["slider_" + i] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset + (i * 15)), 224, 16, (0.25, 0.25, 0.25), 0, 5);
+		self.menu["option_" + i] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 5), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 1, 10);
+		self.menu["slider_text_" + i] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 132.5), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
+		self.menu["submenu_icon_" + i] = self create_text(">", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 215), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
+	}
+
+	self.hud_created = true;
+
+	self.menu["title"] set_text("Controls");
+	self.menu["option_1"] set_text("Open: ^3[{+speed_throw}] ^7and ^3[{+melee}]");
+	self.menu["option_2"] set_text("Scroll: ^3[{+speed_throw}] ^7and ^3[{+attack}]");
+	self.menu["option_3"] set_text("Select: ^3[{+activate}] ^7Back: ^3[{+melee}]");
+	self.menu["option_4"] set_text("Sliders: ^3[{+smoke}] ^7and ^3[{+frag}]");
+	self.menu["option_5"].alpha = 0;
+	self.menu["option_6"].alpha = 0;
+	self.menu["option_7"].alpha = 0;
+
+	self.menu["border"] set_shader("white", self.menu["border"].width, 78);
+	self.menu["background"] set_shader("white", self.menu["background"].width, 76);
+	self.menu["foreground"] set_shader("white", self.menu["foreground"].width, 61);
+
+	self.controls_menu_open = true;
+
+	wait 8;
+
+	if(self.controls_menu_open) {
+		close_controls_menu();
 	}
 }
 
@@ -531,21 +541,6 @@ function input_manager() {
 	}
 }
 
-function player_connect() {
-	level endon("game_ended");
-
-	for(;;) {
-		level waittill("connected", player);
-
-		player.access = set_variable(player isHost(), "Host", "None");
-
-		if(player isHost()) {
-			player initial_variables();
-			player thread initialize_menu();
-		}
-	}
-}
-
 // Hud Functions
 
 function open_menu() {
@@ -566,7 +561,7 @@ function close_menu() {
 
 function close_controls_menu() {
 	set_menu_visibility(0);
-	
+
 	self.menu["border"] set_shader("white", self.menu["border"].width, 123);
 	self.menu["background"] set_shader("white", self.menu["background"].width, 121);
 	self.menu["foreground"] set_shader("white", self.menu["foreground"].width, 106);
@@ -1515,7 +1510,7 @@ function menu_option() {
 			self add_menu(menu);
 
 			self add_toggle("No Target", "Zombies won't Target You", &no_target, self.no_target);
-			
+
 			self add_toggle("Enable Hitmarkers", undefined, &enable_hitmarkers, self.enable_hitmarkers);
 
 			self add_increment("Set Round", undefined, &set_round, 1, 1, 255, 1);
@@ -1617,11 +1612,11 @@ function menu_option() {
 
 			if(isDefined(target)) {
 				self add_option("Print", "Print Player Name", &print_player_name, target);
-				
+
 				if(!target isHost() && target.access == "None") {
 					self add_option("Verify", "Give the Player Mod Menu Access", &verify_player, target);
 				}
-				
+
 				if(!target isHost()) {
 					self add_option("Kick", "Kick the Player from the Game", &kick_player, target);
 				}
