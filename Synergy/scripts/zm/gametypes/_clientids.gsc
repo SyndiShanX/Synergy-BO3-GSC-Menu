@@ -1478,6 +1478,7 @@ function menu_option() {
 			self add_option("Give Weapons", undefined, &new_menu, "Give Weapons");
 			self add_toggle("Give Pack-a-Punched Weapons", "Weapons Given will be Pack-a-Punched", &give_packed_weapon, self.give_packed_weapon);
 			self add_option("Pack-a-Punch Current Weapon", "Held Weapon will be Pack-a-Punched", &pack_weapon);
+			self add_option("Un-Pack-a-Punch Current Weapon", "Held Weapon will be Un-Pack-a-Punched", &unpack_weapon);
 			self add_option("Equip Camo", undefined, &new_menu, "Equip Camo");
 			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
 
@@ -1525,6 +1526,8 @@ function menu_option() {
 			self add_toggle("Disable Spawns", undefined, &disable_spawns, self.disable_spawns);
 
 			self add_array("Set Zombie Speed", undefined, &set_zombie_speed, array("Restore", "Walk", "Run", "Sprint", "Super Sprint"));
+			
+			self add_increment("Set Zombie Cap", undefined, &set_zombie_cap, 24, 1, 31, 1);
 
 			self add_increment("Set Round Health Cap", "Cap Zombies Health to Specified Round", &set_zombie_health_cap, 1, 1, 255, 1);
 			self add_option("Reset Zombie Health Cap", "Set Health Cap back to Normal", &reset_zombie_health_cap);
@@ -2565,6 +2568,16 @@ function pack_weapon() {
 	give_weapon(weapon);
 }
 
+function unpack_weapon() {
+	self.pack_weapon = undefined;
+
+	weapon = zm_weapons::get_base_weapon(self getCurrentWeapon()).name;
+
+	self takeWeapon(self getCurrentWeapon());
+
+	give_weapon(weapon);
+}
+
 function give_weapon(weapon) {
 	weapon = getWeapon(weapon);
 
@@ -3040,6 +3053,10 @@ function update_zombie_speed() {
 	if(level.run_cycle != "restore") {
 		self zombie_utility::set_zombie_run_cycle(level.run_cycle);
 	}
+}
+
+function set_zombie_cap(value) {
+	level.zombie_ai_limit = int(value);
 }
 
 function calculate_health(round_number) {
