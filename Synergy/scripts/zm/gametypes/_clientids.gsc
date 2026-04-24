@@ -1532,7 +1532,7 @@ function menu_option() {
 			self add_increment("Set Round Health Cap", "Cap Zombies Health to Specified Round", &set_zombie_health_cap, 1, 1, 255, 1);
 			self add_option("Reset Zombie Health Cap", "Set Health Cap back to Normal", &reset_zombie_health_cap);
 
-			self add_array("Zombie ESP", "Set Colored Outlines around Zombies", &outline_zombies, array("None", "Orange", "Green", "Purple", "Blue"));
+			self add_array("Zombie Color", "Set Zombie Color", &color_zombies, array("None", "Orange", "Green", "Purple", "Blue"));
 
 			break;
 		case "Map Options":
@@ -3110,7 +3110,7 @@ function zombie_health_cap_loop(round, health_cap) {
 	}
 }
 
-function outline_zombies(color) {
+function color_zombies(color) {
 	if(color == "None") {
 		value = 0;
 	} else if(color == "Orange") {
