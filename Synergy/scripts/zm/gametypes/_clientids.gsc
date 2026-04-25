@@ -1513,6 +1513,8 @@ function menu_option() {
 			self add_toggle("No Target", "Zombies won't Target You", &no_target, self.no_target);
 
 			self add_toggle("Enable Hitmarkers", undefined, &enable_hitmarkers, self.enable_hitmarkers);
+			
+			self add_toggle("Zombie Counter", undefined, &zombie_counter, self.zombie_counter);
 
 			self add_increment("Set Round", undefined, &set_round, 1, 1, 255, 1);
 
@@ -2839,6 +2841,24 @@ function hitmarker(willbekilled, inflictor, attacker, damage, flags, meansofdeat
 function kill_hitmarker(attacker) {
 	if(isDefined(attacker) && isPlayer(attacker)) {
 		attacker thread damagefeedback::update_override("damage_feedback_glow_orange", "", undefined);
+	}
+}
+
+function zombie_counter() {
+	if(!isDefined(self.zombie_counter)) {
+		self.zombie_counter = true;
+		while(isDefined(self.zombie_counter)) {
+			count = zombie_utility::get_current_zombie_count();
+			if(!isDefined(self.syn["counter"])) {
+				self.syn["counter"] = self create_text("Zombies Alive: " + count, "default", 1.5, "TOP_LEFT", "TOPCENTER", 250, 0, (1, 1, 1), 1, 9999, false);
+			} else {
+				self.syn["counter"] set_text("Zombies Alive: " + count);
+			}
+			wait 0.01;
+		}
+	} else {
+		self.zombie_counter = undefined;
+		self.syn["counter"] destroy();
 	}
 }
 
