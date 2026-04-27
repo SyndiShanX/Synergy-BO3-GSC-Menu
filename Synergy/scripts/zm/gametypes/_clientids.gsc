@@ -1490,11 +1490,17 @@ function menu_option() {
 			self add_toggle("Give Pack-a-Punched Weapons", "Weapons Given will be Pack-a-Punched", &give_packed_weapon, self.give_packed_weapon);
 			self add_option("Pack-a-Punch Current Weapon", "Held Weapon will be Pack-a-Punched", &pack_weapon);
 			self add_option("Un-Pack-a-Punch Current Weapon", "Held Weapon will be Un-Pack-a-Punched", &unpack_weapon);
-			self add_option("Equip Camo", undefined, &new_menu, "Equip Camo");
-			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
-
+			
 			weapon_name = self getCurrentWeapon().rootWeapon.name;
 			category = get_category(weapon_name);
+			
+			if(isDefined(category) && weapon_name != "pistol_revolver38" && weapon_name != "smg_sten" || weapon_name == "smg_longrange") {
+				if(category != "weapon_launcher" && category != "weapon_melee" && category != "weapon_grenade" && category != "weapon_extras") {
+					self add_option("Equip Attachment", undefined, &new_menu, "Equip Attachment");
+				}
+			}
+			self add_option("Equip Camo", undefined, &new_menu, "Equip Camo");
+			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
 
 			if(isDefined(category) || weapon_name == "pistol_standard" || weapon_name == "smg_longrange") {
 				if(category != "weapon_melee" && category != "weapon_grenade" && category != "weapon_extras") {
@@ -1505,12 +1511,6 @@ function menu_option() {
 					}
 
 					self add_option("Refill Ammo (" + price_color + "$" + get_ammo_cost() + "^7)", undefined, &refill_ammo);
-				}
-			}
-
-			if(isDefined(category) && weapon_name != "pistol_revolver38" && weapon_name != "smg_sten" || weapon_name == "smg_longrange") {
-				if(category != "weapon_launcher" && category != "weapon_melee" && category != "weapon_grenade" && category != "weapon_extras") {
-					self add_option("Equip Attachment", undefined, &new_menu, "Equip Attachment");
 				}
 			}
 
