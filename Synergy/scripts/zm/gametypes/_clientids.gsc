@@ -72,6 +72,8 @@ function initial_variables() {
 	self.previous_scrolling_offset = 0;
 	self.description_height = 0;
 	self.previous_option = undefined;
+	
+	self.equip_attachment_in_progress = false;
 
 	// Visions
 
@@ -146,6 +148,7 @@ function initial_variables() {
 
 	self.syn["attachments"][0] = array("reflex", "reddot", "holo", "acog", "dualoptic", "ir", "rf", "damage", "extbarrel", "extclip", "fastreload", "fmj", "grip", "quickdraw", "stalker", "steadyaim", "swayreduc", "suppressed");
 	self.syn["attachments"][1] = array("Reflex Sight", "Elo Sight", "BOA 3 Sight", "Acog Scope", "Dual Optic", "Thermal Scope", "Rapid Fire", "High Caliber", "Long Barrel", "Extended Mags", "Fast Mags", "FMJ", "Grip", "Quickdraw", "Stock", "Laser", "Ballistic CPU", "Suppressor");
+	self.syn["optics"] = array("reflex", "reddot", "holo", "acog", "dualoptic", "ir");
 
 	// Camos
 
@@ -494,6 +497,8 @@ function input_manager() {
 			} else if(self adsButtonPressed() && !self attackButtonPressed() || self attackButtonPressed() && !self adsButtonPressed()) {
 
 				self playSoundToPlayer("uin_main_nav", self);
+				
+				self menu_option();
 
 				scroll_cursor(set_variable(self attackButtonPressed(), "down", "up"));
 
@@ -1157,7 +1162,7 @@ function get_title_width(title) {
 	return title_width;
 }
 
-function add_menu(title) {
+function set_title(title) {
 	self.menu["title"] set_text(title);
 
 	title_width = get_title_width(title);
@@ -1314,6 +1319,12 @@ function scroll_slider(direction) {
 }
 
 function set_options() {
+	if(isDefined(self.equip_attachment_in_progress)) {
+		while(self.equip_attachment_in_progress) {
+			wait 0.05;
+		}
+	}
+	
 	for(i = 1; i <= self.option_limit; i++) {
 		self.menu["toggle_" + i].alpha = 0;
 		self.menu["slider_" + i].alpha = 0;
@@ -1421,7 +1432,7 @@ function menu_option() {
 	menu = self.current_menu;
 	switch(menu) {
 		case "Synergy":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_option("Basic Options", undefined, &new_menu, "Basic Options");
 			self add_option("Fun Options", undefined, &new_menu, "Fun Options");
@@ -1434,7 +1445,7 @@ function menu_option() {
 
 			break;
 		case "Basic Options":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_toggle("God Mode", "Makes you Invincible", &god_mode, self.god_mode);
 			self add_toggle("Frag No Clip", "Fly through the Map using (^3[{+frag}]^7)", &frag_no_clip, self.frag_no_clip);
@@ -1454,7 +1465,7 @@ function menu_option() {
 
 			break;
 		case "Fun Options":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_toggle("Forge Mode", undefined, &forge_mode, self.forge_mode);
 
@@ -1473,7 +1484,7 @@ function menu_option() {
 
 			break;
 		case "Weapon Options":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_option("Give Weapons", undefined, &new_menu, "Give Weapons");
 			self add_toggle("Give Pack-a-Punched Weapons", "Weapons Given will be Pack-a-Punched", &give_packed_weapon, self.give_packed_weapon);
@@ -1508,7 +1519,7 @@ function menu_option() {
 
 			break;
 		case "Zombie Options":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_toggle("No Target", "Zombies won't Target You", &no_target, self.no_target);
 
@@ -1538,7 +1549,7 @@ function menu_option() {
 
 			break;
 		case "Map Options":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_toggle("Freeze Box", "Locks the Mystery Box, so it can't move", &freeze_box, self.freeze_box);
 			self add_option("Open Doors", undefined, &open_doors);
@@ -1559,7 +1570,7 @@ function menu_option() {
 
 			break;
 		case "Powerup Options":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_toggle("Shoot Powerups", undefined, &shoot_powerups, self.shoot_powerups);
 
@@ -1571,7 +1582,7 @@ function menu_option() {
 
 			break;
 		case "Remove Powerups":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_option("Reset", undefined, &reset_powerups);
 
@@ -1581,7 +1592,7 @@ function menu_option() {
 
 			break;
 		case "Menu Options":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_increment("Move Menu X", "Move the Menu around Horizontally", &modify_menu_position, 0, -600, 20, 10, "x");
 			self add_increment("Move Menu Y", "Move the Menu around Vertically", &modify_menu_position, 0, -100, 30, 10, "y");
@@ -1597,7 +1608,7 @@ function menu_option() {
 
 			break;
 		case "All Players":
-			self add_menu(menu);
+			self set_title(menu);
 
 			foreach(player in level.players) {
 				self add_option(player.name, undefined, &new_menu, "Player Option");
@@ -1605,7 +1616,7 @@ function menu_option() {
 
 			break;
 		case "Player Option":
-			self add_menu(menu);
+			self set_title(menu);
 
 			target = undefined;
 			foreach(player in level.players) {
@@ -1631,7 +1642,7 @@ function menu_option() {
 
 			break;
 		case "Give Perks":
-			self add_menu(menu);
+			self set_title(menu);
 
 			foreach(perk in self.syn["perks"]["all"]) {
 				perk_name = get_perk_name(perk);
@@ -1640,7 +1651,7 @@ function menu_option() {
 
 			break;
 		case "Take Perks":
-			self add_menu(menu);
+			self set_title(menu);
 
 			foreach(perk in self.syn["perks"]["all"]) {
 				perk_name = get_perk_name(perk);
@@ -1649,7 +1660,7 @@ function menu_option() {
 
 			break;
 		case "Give Gobblegum":
-			self add_menu(menu);
+			self set_title(menu);
 
 			foreach(gobblegum in self.syn["gobblegum"][0]) {
 				gobblegum_name = get_gobblegum_name(gobblegum);
@@ -1658,7 +1669,7 @@ function menu_option() {
 
 			break;
 		case "Point Options":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_increment("Set Increment", undefined, &set_increment, 100, 100, 10000, 100);
 
@@ -1668,7 +1679,7 @@ function menu_option() {
 
 			break;
 		case "Visions":
-			self add_menu(menu);
+			self set_title(menu);
 
 			for(i = 0; i < self.syn["visions"][0].size; i++) {
 				self add_option(self.syn["visions"][1][i], undefined, &set_vision, self.syn["visions"][0][i]);
@@ -1738,7 +1749,7 @@ function menu_option() {
 
 			break;
 		case "Spawn Zombies":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_option("Spawn Zombie", undefined, &spawn_normal_zombie);
 
@@ -1754,20 +1765,30 @@ function menu_option() {
 
 			break;
 		case "Equip Attachment":
-			self add_menu(menu);
+			self set_title(menu);
+
+			self.equip_attachment_in_progress = true;
 
 			self.syn["attachment_toggles"] = [];
 
+			while(self getCurrentWeapon() == getWeapon(#"none")) {
+				wait 0.05;
+			}
+
 			weapon_attachments = get_weapon_attachments();
 
-			for(i = 0; i < weapon_attachments.size; i++) {
-				self.syn["attachment_toggles"][i] = weaponHasAttachment(self getCurrentWeapon(), weapon_attachments[i]);
-				self add_toggle(get_attachment_name(weapon_attachments[i]), undefined, &equip_attachment, self.syn["attachment_toggles"][i], weapon_attachments[i], i);
+			if(isDefined(weapon_attachments) && isArray(weapon_attachments) && weapon_attachments.size > 0) {
+				for(i = 0; i < weapon_attachments.size; i++) {
+					self.syn["attachment_toggles"][i] = weaponHasAttachment(self getCurrentWeapon(), weapon_attachments[i]);
+					self add_toggle(get_attachment_name(weapon_attachments[i]), undefined, &equip_attachment, self.syn["attachment_toggles"][i], weapon_attachments[i], i);
+				}
 			}
+
+			self.equip_attachment_in_progress = false;
 
 			break;
 		case "Equip Camo":
-			self add_menu(menu);
+			self set_title(menu);
 
 			for(i = 0; i < self.syn["camos"][0].size; i++) {
 				self add_option(self.syn["camos"][1][i], undefined, &equip_camo, self.syn["camos"][0][i]);
@@ -1775,7 +1796,7 @@ function menu_option() {
 
 			break;
 		case "Give AAT":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_option("None", undefined, &take_aat);
 
@@ -1785,7 +1806,7 @@ function menu_option() {
 
 			break;
 		case "Give Weapons":
-			self add_menu(menu);
+			self set_title(menu);
 
 			for(i = 0; i < self.syn["weapons"]["category"].size; i++) {
 				self add_option(self.syn["weapons"]["category"][i], undefined, &new_menu, self.syn["weapons"]["category"][i]);
@@ -1793,13 +1814,13 @@ function menu_option() {
 
 			break;
 		case "Assault Rifles":
-			self add_menu(menu);
+			self set_title(menu);
 
 			load_weapons("weapon_assault");
 
 			break;
 		case "Sub Machine Guns":
-			self add_menu(menu);
+			self set_title(menu);
 
 			load_weapons("weapon_smg");
 
@@ -1809,25 +1830,25 @@ function menu_option() {
 
 			break;
 		case "Light Machine Guns":
-			self add_menu(menu);
+			self set_title(menu);
 
 			load_weapons("weapon_lmg");
 
 			break;
 		case "Sniper Rifles":
-			self add_menu(menu);
+			self set_title(menu);
 
 			load_weapons("weapon_sniper");
 
 			break;
 		case "Shotguns":
-			self add_menu(menu);
+			self set_title(menu);
 
 			load_weapons("weapon_cqb");
 
 			break;
 		case "Pistols":
-			self add_menu(menu);
+			self set_title(menu);
 
 			if(self.map_name == "shadows_of_evil") {
 				self add_option("MR6", undefined, &give_weapon, "pistol_standard");
@@ -1837,13 +1858,13 @@ function menu_option() {
 
 			break;
 		case "Launchers":
-			self add_menu(menu);
+			self set_title(menu);
 
 			load_weapons("weapon_launcher");
 
 			break;
 		case "Melee":
-			self add_menu(menu);
+			self set_title(menu);
 
 			for(i = 0; i < self.syn["weapons"]["melee"][0].size; i++) {
 				self add_option(self.syn["weapons"]["melee"][1][i], undefined, &give_weapon, self.syn["weapons"]["melee"][0][i]);
@@ -1853,7 +1874,7 @@ function menu_option() {
 
 			break;
 		case "Equipment":
-			self add_menu(menu);
+			self set_title(menu);
 
 			self add_option("Frag Grenades", undefined, &give_weapon, "frag_grenade");
 			self add_option("Widow's Wine Grenades", undefined, &give_weapon, "sticky_grenade_widows_wine");
@@ -1862,7 +1883,7 @@ function menu_option() {
 
 			break;
 		case "Extras":
-			self add_menu(menu);
+			self set_title(menu);
 
 			if(self.map_name == "shadows_of_evil" || self.map_name == "the_giant" || self.map_name == "zetsubou_no_shima" || self.map_name == "gorod_krovi" || self.map_name == "revelations" || self.map_name == "origins") {
 				for(i = 0; i < self.syn["weapons"]["extras"][self.map_name][0].size; i++) {
@@ -1906,16 +1927,16 @@ function player_option(menu, player) {
 
 	switch (menu) {
 		case "Player Option":
-			self add_menu(clean_name(player get_name()));
+			self set_title(clean_name(player get_name()));
 			break;
 		case "Error":
-			self add_menu();
+			self set_title();
 			self add_option("Oops, Something Went Wrong!", "Condition: Undefined");
 			break;
 		default:
 			error = true;
 			if(error) {
-				self add_menu("Critical Error");
+				self set_title("Critical Error");
 				self add_option("Oops, Something Went Wrong!", "Condition: Menu Index");
 			}
 			break;
@@ -2708,33 +2729,28 @@ function get_equipped_attachments(weapon) {
 
 function equip_attachment(attachment, i) {
 	weapon = self getCurrentWeapon();
+	
 	stock = self getWeaponAmmoStock(weapon);
 	clip = self getWeaponAmmoClip(weapon);
 	attachments = get_equipped_attachments(weapon.name);
 
-	if(isInArray(attachments, attachment)) {
-		attachments = remove_from_array(attachments, attachment);
-	} else {
-		if(attachment == "reflex" || attachment == "reddot" || attachment == "holo" || attachment == "acog" || attachment == "dualoptic" || attachment == "ir") {
-			if(isInArray(attachments, "reflex")) {
-				attachments = remove_from_array(attachments, "reflex");
-			} else if(isInArray(attachments, "reddot")) {
-				attachments = remove_from_array(attachments, "reddot");
-			} else if(isInArray(attachments, "holo")) {
-				attachments = remove_from_array(attachments, "holo");
-			} else if(isInArray(attachments, "acog")) {
-				attachments = remove_from_array(attachments, "acog");
-			} else if(isInArray(attachments, "dualoptic")) {
-				attachments = remove_from_array(attachments, "dualoptic");
-			} else if(isInArray(attachments, "ir")) {
-				attachments = remove_from_array(attachments, "ir");
+	if(isArray(attachments)) {
+		if(isInArray(attachments, attachment)) {
+			attachments = remove_from_array(attachments, attachment);
+		} else {
+			if(isInArray(self.syn["optics"], attachment)) {
+				foreach(optic in self.syn["optics"]) {
+					if(isInArray(attachments, optic)) {
+						attachments = remove_from_array(attachments, optic);
+					}
+				}
 			}
+	
+			attachments[attachments.size] = attachment;
 		}
-
-		attachments[attachments.size] = attachment;
+	
+		weapon = getWeapon(weapon.rootWeapon.name, attachments);
 	}
-
-	weapon = getWeapon(weapon.rootWeapon.name, attachments);
 
 	self takeWeapon(self getCurrentWeapon());
 
@@ -2747,7 +2763,6 @@ function equip_attachment(attachment, i) {
 	self setWeaponAmmoStock(weapon, stock);
 	self setWeaponAmmoClip(weapon, clip);
 	self setSpawnWeapon(weapon, true);
-	self.syn["attachment_toggles"][i] = weaponHasAttachment(weapon, attachment);
 }
 
 function equip_camo(camo_index) {
