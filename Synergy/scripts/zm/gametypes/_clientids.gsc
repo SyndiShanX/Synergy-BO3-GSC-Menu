@@ -2863,11 +2863,11 @@ function zombie_counter() {
 	if(!isDefined(self.zombie_counter)) {
 		self.zombie_counter = true;
 		while(isDefined(self.zombie_counter)) {
-			count = zombie_utility::get_current_zombie_count();
+			count = (zombie_utility::get_current_zombie_count() + level.zombie_total) + level.zombie_respawns;
 			if(!isDefined(self.syn["counter"])) {
-				self.syn["counter"] = self create_text("Zombies Alive: " + count, "default", 1.5, "TOP_LEFT", "TOPCENTER", 250, 0, (1, 1, 1), 1, 9999, false);
+				self.syn["counter"] = self create_text("Zombies Remaining: " + count, "default", 1.5, "TOP_LEFT", "TOPCENTER", 250, 0, (1, 1, 1), 1, 9999, false);
 			} else {
-				self.syn["counter"] set_text("Zombies Alive: " + count);
+				self.syn["counter"] set_text("Zombies Remaining: " + count);
 			}
 			wait 0.01;
 		}
