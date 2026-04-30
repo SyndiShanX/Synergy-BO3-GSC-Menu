@@ -423,15 +423,15 @@ function create_menu() {
 	self.menu["separator_2"] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 220), (self.y_offset + 7.5), 42, 1, self.color_theme, 1, 10);
 	self.menu["cursor"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, 215, 224, 16, (0.15, 0.15, 0.15), 0, 4);
 
-	self.menu["title"] = self create_text("Title", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 94.5), (self.y_offset + 3), (1, 1, 1), 1, 10);
+	self.menu["title"] = self create_text("Title", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 94.5), (self.y_offset + 1), (1, 1, 1), 1, 10);
 	self.menu["description"] = self create_text("Description", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 5), (self.y_offset + (self.option_limit * 17.5)), (0.75, 0.75, 0.75), 0, 10);
 
 	for(i = 1; i <= self.option_limit; i++) {
 		self.menu["toggle_" + i] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 11), ((self.y_offset + 4) + (i * 15)), 8, 8, (0.25, 0.25, 0.25), 0, 9);
 		self.menu["slider_" + i] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset + (i * 15)), 224, 16, (0.25, 0.25, 0.25), 0, 5);
-		self.menu["option_" + i] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 5), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 1, 10);
-		self.menu["slider_text_" + i] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 132.5), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
-		self.menu["submenu_icon_" + i] = self create_text(">", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 215), ((self.y_offset + 4) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
+		self.menu["option_" + i] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 5), ((self.y_offset + 2) + (i * 15)), (0.75, 0.75, 0.75), 1, 10);
+		self.menu["slider_text_" + i] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 132.5), ((self.y_offset + 2) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
+		self.menu["submenu_icon_" + i] = self create_text(">", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 215), ((self.y_offset + 1) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
 	}
 
 	self.hud_created = true;
@@ -769,13 +769,13 @@ function update_element_positions() {
 		self.menu["slider_" + i].x = self.x_offset;
 		self.menu["slider_" + i].y = (self.y_offset + (i * 15));
 
-		self.menu["option_" + i].y = ((self.y_offset + 4) + (i * 15));
+		self.menu["option_" + i].y = ((self.y_offset + 2) + (i * 15));
 
 		self.menu["slider_text_" + i].x = (self.x_offset + 132.5);
-		self.menu["slider_text_" + i].y = ((self.y_offset + 4) + (i * 15));
+		self.menu["slider_text_" + i].y = ((self.y_offset + 2) + (i * 15));
 
 		self.menu["submenu_icon_" + i].x = (self.x_offset + 215);
-		self.menu["submenu_icon_" + i].y = ((self.y_offset + 4) + (i * 15));
+		self.menu["submenu_icon_" + i].y = ((self.y_offset + 1) + (i * 15));
 	}
 }
 
@@ -940,46 +940,6 @@ function in_array(array, item) {
 	}
 
 	return false;
-}
-
-function clean_name(name) {
-	if(!isDefined(name) || name == "") {
-		return;
-	}
-
-	illegal = array("^A", "^B", "^F", "^H", "^I", "^0", "^1", "^2", "^3", "^4", "^5", "^6", "^7", "^8", "^9", "^:");
-	new_string = "";
-	for(a = 0; a < name.size; a++) {
-		if(a < (name.size - 1)) {
-			if(in_array(illegal, (name[a] + name[(a + 1)]))) {
-				a += 2;
-				if(a >= name.size) {
-					break;
-				}
-			}
-		}
-
-		if(isDefined(name[a]) && a < name.size) {
-			new_string += name[a];
-		}
-	}
-
-	return new_string;
-}
-
-function get_name() {
-	name = self.name;
-	if(name[0] != "[") {
-		return name;
-	}
-
-	for(a = (name.size - 1); a >= 0; a--) {
-		if(name[a] == "]") {
-			break;
-		}
-	}
-
-	return getSubStr(name, (a + 1));
 }
 
 function load_weapons(weapon_category) {
@@ -1168,7 +1128,7 @@ function set_title(title) {
 	title_width = get_title_width(title);
 
 	self.menu["title"].x = (self.x_offset + ceil((((-0.0000124 * title_width + 0.003832) * title_width - 0.52) * title_width + 115.258) * 10) / 10);
-	self.menu["title"].y = (self.y_offset + 3);
+	self.menu["title"].y = (self.y_offset + 1);
 }
 
 function new_menu(menu) {
@@ -1418,7 +1378,7 @@ function set_options() {
 
 	menu_height = int(18 + (self.maximum * 15));
 
-	self.menu["description"].y = int((self.y_offset + 4) + ((self.maximum + 1) * 15));
+	self.menu["description"].y = int((self.y_offset + 2) + ((self.maximum + 1) * 15));
 
 	self.menu["border"] set_shader("white", self.menu["border"].width, int(menu_height + self.description_height));
 	self.menu["background"] set_shader("white", self.menu["background"].width, int((menu_height - 2) + self.description_height));
@@ -1490,6 +1450,7 @@ function menu_option() {
 			self add_toggle("Give Pack-a-Punched Weapons", "Weapons Given will be Pack-a-Punched", &give_packed_weapon, self.give_packed_weapon);
 			self add_option("Pack-a-Punch Current Weapon", "Held Weapon will be Pack-a-Punched", &pack_weapon);
 			self add_option("Un-Pack-a-Punch Current Weapon", "Held Weapon will be Un-Pack-a-Punched", &unpack_weapon);
+			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
 			
 			weapon_name = self getCurrentWeapon().rootWeapon.name;
 			category = get_category(weapon_name);
@@ -1500,7 +1461,6 @@ function menu_option() {
 				}
 			}
 			self add_option("Equip Camo", undefined, &new_menu, "Equip Camo");
-			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
 
 			if(isDefined(category) || weapon_name == "pistol_standard" || weapon_name == "smg_longrange") {
 				if(category != "weapon_melee" && category != "weapon_grenade" && category != "weapon_extras") {
@@ -1916,29 +1876,6 @@ function menu_option() {
 			}
 
 			self player_option(menu, self.selected_player);
-			break;
-	}
-}
-
-function player_option(menu, player) {
-	if(!isDefined(menu) || !isDefined(player) || !isplayer(player)) {
-		menu = "Error";
-	}
-
-	switch (menu) {
-		case "Player Option":
-			self set_title(clean_name(player get_name()));
-			break;
-		case "Error":
-			self set_title();
-			self add_option("Oops, Something Went Wrong!", "Condition: Undefined");
-			break;
-		default:
-			error = true;
-			if(error) {
-				self set_title("Critical Error");
-				self add_option("Oops, Something Went Wrong!", "Condition: Menu Index");
-			}
 			break;
 	}
 }
@@ -2381,6 +2318,69 @@ function set_vision(vision) {
 }
 
 // Player Options
+
+function player_option(menu, player) {
+	if(!isDefined(menu) || !isDefined(player) || !isplayer(player)) {
+		menu = "Error";
+	}
+
+	switch (menu) {
+		case "Player Option":
+			self set_title(clean_name(player get_name()));
+			break;
+		case "Error":
+			self set_title();
+			self add_option("Oops, Something Went Wrong!", "Condition: Undefined");
+			break;
+		default:
+			error = true;
+			if(error) {
+				self set_title("Critical Error");
+				self add_option("Oops, Something Went Wrong!", "Condition: Menu Index");
+			}
+			break;
+	}
+}
+
+function get_name() {
+	name = self.name;
+	if(name[0] != "[") {
+		return name;
+	}
+
+	for(a = (name.size - 1); a >= 0; a--) {
+		if(name[a] == "]") {
+			break;
+		}
+	}
+
+	return getSubStr(name, (a + 1));
+}
+
+function clean_name(name) {
+	if(!isDefined(name) || name == "") {
+		return;
+	}
+
+	illegal = array("^A", "^B", "^F", "^H", "^I", "^0", "^1", "^2", "^3", "^4", "^5", "^6", "^7", "^8", "^9", "^:");
+	new_string = "";
+	for(a = 0; a < name.size; a++) {
+		if(a < (name.size - 1)) {
+			if(in_array(illegal, (name[a] + name[(a + 1)]))) {
+				a += 2;
+				if(a >= name.size) {
+					break;
+				}
+			}
+		}
+
+		if(isDefined(name[a]) && a < name.size) {
+			new_string += name[a];
+		}
+	}
+
+	return new_string;
+}
 
 function print_player_name(target) {
 	iPrintString(target);
