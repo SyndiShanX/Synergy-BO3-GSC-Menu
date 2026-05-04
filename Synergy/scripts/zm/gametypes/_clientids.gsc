@@ -1429,7 +1429,7 @@ function menu_option() {
 
 			self add_toggle("Forge Mode", undefined, &forge_mode, self.forge_mode);
 
-			if(self.map_name != "shadows_of_evil") {
+			if(self.map_name != "shadows_of_evil" && self.map_name != "der_eisendrache") {
 				self add_toggle("Exo Movement", "Enable/Disable Exo-Suits", &exo_movement, self.exo_movement);
 				self add_toggle("Infinite Boost", "Enables Infinite Exo-Boost", &infinite_boost, self.infinite_boost);
 			}
@@ -2235,6 +2235,7 @@ function exo_movement() {
 		setDvar("sprintLeap_enabled", 1);
 		setDvar("traverse_mode", 1);
 		setDvar("weaponrest_enabled", 1);
+		self thread exo_movement_loop();
 	} else {
 		iPrintString("Exo Movement [^1OFF^7]");
 		setDvar("doublejump_enabled", 0);
@@ -2244,8 +2245,25 @@ function exo_movement() {
 		setDvar("sprintLeap_enabled", 0);
 		setDvar("traverse_mode", 0);
 		setDvar("weaponrest_enabled", 0);
+		self notify("stop_exo_movement");
 	}
 }
+
+function exo_movement_loop() {
+	self endon("stop_exo_movement");
+	level endon("game_ended");
+
+	for(;;) {
+    if(self jumpButtonPressed()) {
+			exo_blast = self playSoundToPlayer("zmb_bgb_powerup_burnedout", self);
+			while(self jumpButtonPressed()) {
+				wait 0.1;
+			}
+		}
+		wait 0.1;
+	}
+}
+
 
 function infinite_boost() {
 	if(self.exo_movement) {
