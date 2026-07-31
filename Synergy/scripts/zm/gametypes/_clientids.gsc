@@ -282,7 +282,13 @@ function initial_variables() {
 			weapons = spawnStruct();
 			weapons.name = makeLocalizedString(weapon.displayName);
 			weapons.id = weapon.name;
-			weapon_table = "gamedata/weapons/zm/" + level.script + "_weapons.csv";
+			
+			if(level.script == "zm_pentagon") {
+				weapon_table = "gamedata/weapons/zm/zm_pentagon_weapons_t5.csv";
+				weapon_table_alt = "gamedata/weapons/zm/zm_pentagon_weapons_t9.csv";
+			} else {
+				weapon_table = "gamedata/weapons/zm/" + level.script + "_weapons.csv";
+			}
 
 			if(tablelookup(weapon_table, 0, "weapon_name", 1) == "") {
 				weapon_table = "gamedata/weapons/zm/zm_levelcommon_weapons.csv";
@@ -290,6 +296,14 @@ function initial_variables() {
 
 			weapons.class_name = tablelookup(weapon_table, 0, weapons.id, 16);
 			weapons.vo_name = tablelookup(weapon_table, 0, weapons.id, 4);
+			
+			if(weapons.class_name == "" && isDefined(weapon_table_alt)) {
+				weapons.class_name = tablelookup(weapon_table_alt, 0, weapons.id, 16);
+			}
+			
+			if(weapons.vo_name == "" && isDefined(weapon_table_alt)) {
+				weapons.vo_name = tablelookup(weapon_table_alt, 0, weapons.id, 4);
+			}
 
 			if(weapons.id == "launcher_dragon_fire") {
 				weapons.name = "Dragon Fire Launcher";
@@ -309,18 +323,21 @@ function initial_variables() {
 				weapons.name = "Upgraded Cymbal Monkey";
 			} else if(weapons.id == "knife_ballistic_no_melee") {
 				weapons.name = "Ballistic Knife (No Melee)";
-			} else if(weapons.id == "knife_ballistic_bowie") {
+			} else if(weapons.id == "knife_ballistic_bowie" || weapons.id == "t5_bk_bowie_normal") {
 				weapons.name = "Ballistic Knife (Bowie)";
 			} else if(weapons.id == "bowie_knife_electric") {
 				weapons.name = "Electric Bowie Knife";
+			} else if(weapons.id == "t9_pi_burst_rdw") {
+				weapons.name = "Diamatti Dual Wield";
 			}
 
-			// Categorize Extra Weapons (Base Maps, Die Rise)
+			// Categorize Extra Weapons (Base Maps, Die Rise, Five)
 
-			if(weapons.id == "t6_xl_war_machine" || weapons.id == "launcher_multi") {
+			if(weapons.id == "t6_xl_war_machine" || weapons.id == "launcher_multi" || weapons.id == "t5_china_lake" || weapons.id == "t5_crossbow" || weapons.id == "t9_sp_crossbow") {
 				weapons.category = "weapon_launcher";
 				self.syn["weapons"][6][self.syn["weapons"][6].size] = weapons;
-			} else if(weapons.id == "t8_tazer_knuckles" || weapons.id == "knife_ballistic" || weapons.id == "knife_ballistic_no_melee" || weapons.id == "knife_ballistic_bowie") {
+			} else if(weapons.id == "t8_tazer_knuckles" || weapons.id == "knife_ballistic" || weapons.id == "knife_ballistic_no_melee" || weapons.id == "knife_ballistic_bowie" ||
+								weapons.id == "t5_bk_base_normal" || weapons.id == "t5_bk_bowie_normal" || weapons.id == "t9_sp_ballistic_knife") {
 				weapons.category = "weapon_melee";
 				self.syn["weapons"][7][self.syn["weapons"][7].size] = weapons;
 			} else if(weapons.vo_name == "staff" || weapons.id == "elemental_bow" || weapons.id == "elemental_bow_demongate" || weapons.id == "elemental_bow_rune_prison" ||
@@ -926,20 +943,6 @@ function remove_from_array(array, object) {
 	  }
 	}
 	return new_array;
-}
-
-function in_array(array, item) {
-	if(!isDefined(array) || !isArray(array)) {
-		return;
-	}
-
-	for(a = 0; a < array.size; a++) {
-		if(array[a] == item) {
-			return true;
-		}
-	}
-
-	return false;
 }
 
 function load_weapons(weapon_category) {
@@ -1740,7 +1743,7 @@ function menu_option() {
 			if(isDefined(weapon_attachments) && isArray(weapon_attachments) && weapon_attachments.size > 0) {
 				for(i = 0; i < weapon_attachments.size; i++) {
 					self.syn["attachment_toggles"][i] = weaponHasAttachment(self getCurrentWeapon(), weapon_attachments[i]);
-					self add_toggle(get_attachment_name(weapon_attachments[i]), undefined, &equip_attachment, self.syn["attachment_toggles"][i], weapon_attachments[i], i);
+					self add_toggle(get_attachment_name(weapon_attachments[i]), undefined, &equip_attachment, self.syn["attachment_toggles"][i], weapon_attachments[i]);
 				}
 			}
 
@@ -2384,7 +2387,7 @@ function clean_name(name) {
 	new_string = "";
 	for(a = 0; a < name.size; a++) {
 		if(a < (name.size - 1)) {
-			if(in_array(illegal, (name[a] + name[(a + 1)]))) {
+			if(isInArray(illegal, (name[a] + name[(a + 1)]))) {
 				a += 2;
 				if(a >= name.size) {
 					break;
@@ -2745,7 +2748,7 @@ function get_equipped_attachments(weapon) {
 	return attachments;
 }
 
-function equip_attachment(attachment, i) {
+function equip_attachment(attachment) {
 	weapon = self getCurrentWeapon();
 	
 	stock = self getWeaponAmmoStock(weapon);
