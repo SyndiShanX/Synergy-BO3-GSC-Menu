@@ -72,8 +72,19 @@ function initial_variables() {
 	self.previous_scrolling_offset = 0;
 	self.description_height = 0;
 	self.previous_option = undefined;
-	
+
 	self.equip_attachment_in_progress = false;
+
+	self.speed_cola_fastads = true;
+	self.speed_cola_fastweaponswitch = true;
+	self.speed_cola_fastequipmentuse = true;
+
+	self.stamin_up_sprintfire = true;
+	self.stamin_up_stalker = true;
+	self.stamin_up_unlimitedsprint = true;
+	self.stamin_up_fastladderclimb = true;
+	self.stamin_up_fastmantle = true;
+	self.stamin_up_sprintequipment = true;
 
 	// Visions
 
@@ -282,7 +293,7 @@ function initial_variables() {
 			weapons = spawnStruct();
 			weapons.name = makeLocalizedString(weapon.displayName);
 			weapons.id = weapon.name;
-			
+
 			if(level.script == "zm_pentagon") {
 				weapon_table = "gamedata/weapons/zm/zm_pentagon_weapons_t5.csv";
 				weapon_table_alt = "gamedata/weapons/zm/zm_pentagon_weapons_t9.csv";
@@ -296,11 +307,11 @@ function initial_variables() {
 
 			weapons.class_name = tablelookup(weapon_table, 0, weapons.id, 16);
 			weapons.vo_name = tablelookup(weapon_table, 0, weapons.id, 4);
-			
+
 			if(weapons.class_name == "" && isDefined(weapon_table_alt)) {
 				weapons.class_name = tablelookup(weapon_table_alt, 0, weapons.id, 16);
 			}
-			
+
 			if(weapons.vo_name == "" && isDefined(weapon_table_alt)) {
 				weapons.vo_name = tablelookup(weapon_table_alt, 0, weapons.id, 4);
 			}
@@ -514,7 +525,7 @@ function input_manager() {
 			} else if(self adsButtonPressed() && !self attackButtonPressed() || self attackButtonPressed() && !self adsButtonPressed()) {
 
 				self playSoundToPlayer("uin_main_nav", self);
-				
+
 				self menu_option();
 
 				scroll_cursor(set_variable(self attackButtonPressed(), "down", "up"));
@@ -1287,7 +1298,7 @@ function set_options() {
 			wait 0.05;
 		}
 	}
-	
+
 	for(i = 1; i <= self.option_limit; i++) {
 		self.menu["toggle_" + i].alpha = 0;
 		self.menu["slider_" + i].alpha = 0;
@@ -1400,6 +1411,7 @@ function menu_option() {
 			self add_option("Basic Options", undefined, &new_menu, "Basic Options");
 			self add_option("Fun Options", undefined, &new_menu, "Fun Options");
 			self add_option("Weapon Options", undefined, &new_menu, "Weapon Options");
+			self add_option("Perk Options", undefined, &new_menu, "Perk Options");
 			self add_option("Zombie Options", undefined, &new_menu, "Zombie Options");
 			self add_option("Map Options", undefined, &new_menu, "Map Options");
 			self add_option("Powerup Options", undefined, &new_menu, "Powerup Options");
@@ -1415,12 +1427,6 @@ function menu_option() {
 
 			self add_toggle("Infinite Ammo", "Gives you Infinite Ammo, Grenades, and Specialist", &infinite_ammo, self.infinite_ammo);
 			self add_toggle("Infinite Shield", "Gives you Infinite Shield Durability", &infinite_shield, self.infinite_shield);
-
-			self add_option("Give Perks", undefined, &new_menu, "Give Perks");
-			self add_option("Take Perks", undefined, &new_menu, "Take Perks");
-			self add_option("Give Perkaholic", undefined, &give_perkaholic);
-			self add_option("Take Perkaholic", undefined, &take_perkaholic);
-			self add_increment("Set Perk Limit", undefined, &set_perk_limit, 4, 1, 99, 1);
 
 			self add_option("Give Gobblegum", undefined, &new_menu, "Give Gobblegum");
 
@@ -1454,10 +1460,10 @@ function menu_option() {
 			self add_option("Pack-a-Punch Current Weapon", "Held Weapon will be Pack-a-Punched", &pack_weapon);
 			self add_option("Un-Pack-a-Punch Current Weapon", "Held Weapon will be Un-Pack-a-Punched", &unpack_weapon);
 			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
-			
+
 			weapon_name = self getCurrentWeapon().rootWeapon.name;
 			category = get_category(weapon_name);
-			
+
 			if(isDefined(category) && weapon_name != "pistol_revolver38" && weapon_name != "smg_sten" || weapon_name == "smg_longrange") {
 				if(category != "weapon_launcher" && category != "weapon_melee" && category != "weapon_grenade" && category != "weapon_extras") {
 					self add_option("Equip Attachment", undefined, &new_menu, "Equip Attachment");
@@ -1481,13 +1487,30 @@ function menu_option() {
 			self add_option("Drop Current Weapon", undefined, &drop_weapon);
 
 			break;
+		case "Perk Options":
+			self set_title(menu);
+
+			self add_option("Give Perks", undefined, &new_menu, "Give Perks");
+			self add_option("Take Perks", undefined, &new_menu, "Take Perks");
+			self add_option("Give Perkaholic", undefined, &give_perkaholic);
+			self add_option("Take Perkaholic", undefined, &take_perkaholic);
+
+			self add_increment("Set Perk Limit", undefined, &set_perk_limit, 4, 1, 99, 1);
+
+			self add_toggle("Keep Mule Kick Weapon", "Gives Mule Kick Weapon back when Rebuying the Perk", &keep_mule_kick_weapon, self.keep_mule_kick_weapon);
+			self add_toggle("Speed Cola Buff", "Speed Cola has bonus Speed Effects", &speed_cola_buff, self.speed_cola_buff);
+			self add_option("Speed Cola Buff Options", undefined, &new_menu, "Speed Cola Buff Options");
+			self add_toggle("Stamin-Up Buff", "Stamin-Up has bonus Speed Effects", &stamin_up_buff, self.stamin_up_buff);
+			self add_option("Stamin-Up Buff Options", undefined, &new_menu, "Stamin-Up Buff Options");
+
+			break;
 		case "Zombie Options":
 			self set_title(menu);
 
 			self add_toggle("No Target", "Zombies won't Target You", &no_target, self.no_target);
 
 			self add_toggle("Enable Hitmarkers", undefined, &enable_hitmarkers, self.enable_hitmarkers);
-			
+
 			self add_toggle("Zombie Counter", undefined, &zombie_counter, self.zombie_counter);
 
 			self add_increment("Set Round", undefined, &set_round, 1, 1, 255, 1);
@@ -1502,7 +1525,7 @@ function menu_option() {
 			self add_toggle("Disable Spawns", undefined, &disable_spawns, self.disable_spawns);
 
 			self add_array("Set Zombie Speed", undefined, &set_zombie_speed, array("Restore", "Walk", "Run", "Sprint", "Super Sprint"));
-			
+
 			self add_increment("Set Zombie Cap", undefined, &set_zombie_cap, 24, 1, 31, 1);
 
 			self add_increment("Set Round Health Cap", "Cap Zombies Health to Specified Round", &set_zombie_health_cap, 1, 1, 255, 1);
@@ -1604,6 +1627,25 @@ function menu_option() {
 			}
 
 			break;
+		case "Give Gobblegum":
+			self set_title(menu);
+
+			foreach(gobblegum in self.syn["gobblegum"][0]) {
+				gobblegum_name = get_gobblegum_name(gobblegum);
+				self add_option(gobblegum_name, undefined, &give_gobblegum, gobblegum);
+			}
+
+			break;
+		case "Point Options":
+			self set_title(menu);
+
+			self add_increment("Set Increment", undefined, &set_increment, 100, 100, 10000, 100);
+
+			self add_increment("Set Points", undefined, &set_points, 500, 500, 100000, self.point_increment);
+			self add_increment("Add Points", undefined, &add_points, 500, 500, 100000, self.point_increment);
+			self add_increment("Take Points", undefined, &take_points, 500, 500, 100000, self.point_increment);
+
+			break;
 		case "Give Perks":
 			self set_title(menu);
 
@@ -1622,23 +1664,23 @@ function menu_option() {
 			}
 
 			break;
-		case "Give Gobblegum":
+		case "Speed Cola Buff Options":
 			self set_title(menu);
 
-			foreach(gobblegum in self.syn["gobblegum"][0]) {
-				gobblegum_name = get_gobblegum_name(gobblegum);
-				self add_option(gobblegum_name, undefined, &give_gobblegum, gobblegum);
-			}
+			self add_toggle("Fast ADS", undefined, &toggle_speed_cola_buff_option, self.speed_cola_fastads, "fastads");
+			self add_toggle("Fast Weapon Swap", undefined, &toggle_speed_cola_buff_option, self.speed_cola_fastweaponswitch, "fastweaponswitch)");
+			self add_toggle("Fast Equipment Use", undefined, &toggle_speed_cola_buff_option, self.speed_cola_fastequipmentuse, "fastequipmentuse");
 
 			break;
-		case "Point Options":
+		case "Stamin-Up Buff Options":
 			self set_title(menu);
 
-			self add_increment("Set Increment", undefined, &set_increment, 100, 100, 10000, 100);
-
-			self add_increment("Set Points", undefined, &set_points, 500, 500, 100000, self.point_increment);
-			self add_increment("Add Points", undefined, &add_points, 500, 500, 100000, self.point_increment);
-			self add_increment("Take Points", undefined, &take_points, 500, 500, 100000, self.point_increment);
+			self add_toggle("Fire while Sprinting", undefined, &toggle_stamin_up_buff_option, self.stamin_up_sprintfire, "sprintfire");
+			self add_toggle("Faster ADS Movement", undefined, &toggle_stamin_up_buff_option, self.stamin_up_stalker, "stalker");
+			self add_toggle("Infinite Sprint", undefined, &toggle_stamin_up_buff_option, self.stamin_up_unlimitedsprint, "unlimitedsprint");
+			self add_toggle("Climb Ladders Faster", undefined, &toggle_stamin_up_buff_option, self.stamin_up_fastladderclimb, "fastladderclimb");
+			self add_toggle("Mantle Faster", undefined, &toggle_stamin_up_buff_option, self.stamin_up_fastmantle, "fastmantle");
+			self add_toggle("Use Equipment while Sprinting", undefined, &toggle_stamin_up_buff_option, self.stamin_up_sprintequipment, "sprintequipment");
 
 			break;
 		case "Visions":
@@ -2098,44 +2140,6 @@ function infinite_shield_loop() {
 	}
 }
 
-function get_perk_name(perk) {
-	for(i = 0; i < self.syn["perks"]["common"][0].size; i++) {
-		if(perk == self.syn["perks"]["common"][0][i]) {
-			return self.syn["perks"]["common"][1][i];
-		}
-	}
-	return perk;
-}
-
-function give_perk(perk) {
-	if(!self hasPerk(perk)) {
-		self setPerk(perk);
-		self zm_perks::vending_trigger_post_think(self, perk);
-	}
-}
-
-function take_perk(perk) {
-	if(self hasPerk(perk)) {
-		self notify(perk + "_stop");
-	}
-}
-
-function give_perkaholic() {
-	self zm_utility::give_player_all_perks();
-}
-
-function take_perkaholic() {
-	foreach(perk in self.syn["perks"]["all"]) {
-		if(self hasPerk(perk)) {
-			self notify(perk + "_stop");
-		}
-	}
-}
-
-function set_perk_limit(value) {
-	level.perk_purchase_limit = value;
-}
-
 function get_gobblegum_name(gobblegum) {
 	for(i = 0; i < self.syn["gobblegum"][0].size; i++) {
 		if(gobblegum == self.syn["gobblegum"][0][i]) {
@@ -2267,7 +2271,6 @@ function exo_movement_loop() {
 	}
 }
 
-
 function infinite_boost() {
 	if(self.exo_movement) {
 		self.infinite_boost = !return_toggle(self.infinite_boost);
@@ -2336,6 +2339,220 @@ function set_vision(vision) {
 	visionset_mgr::activate("visionset", vision, self);
 	visionset_mgr::activate("overlay", vision, self);
 	self.prev_vision = vision;
+}
+
+// Perk Options
+
+function get_perk_name(perk) {
+	for(i = 0; i < self.syn["perks"]["common"][0].size; i++) {
+		if(perk == self.syn["perks"]["common"][0][i]) {
+			return self.syn["perks"]["common"][1][i];
+		}
+	}
+	return perk;
+}
+
+function give_perk(perk) {
+	if(!self hasPerk(perk)) {
+		self setPerk(perk);
+		self zm_perks::vending_trigger_post_think(self, perk);
+	}
+}
+
+function take_perk(perk) {
+	if(self hasPerk(perk)) {
+		self notify(perk + "_stop");
+	}
+}
+
+function give_perkaholic() {
+	self zm_utility::give_player_all_perks();
+}
+
+function take_perkaholic() {
+	foreach(perk in self.syn["perks"]["all"]) {
+		if(self hasPerk(perk)) {
+			self notify(perk + "_stop");
+		}
+	}
+}
+
+function set_perk_limit(value) {
+	level.perk_purchase_limit = value;
+}
+
+function keep_mule_kick_weapon() {
+	self.keep_mule_kick_weapon = !return_toggle(self.keep_mule_kick_weapon);
+	if(self.keep_mule_kick_weapon) {
+		iPrintString("Keep Mule Kick Weapon [^2ON^7]");
+		self thread keep_mule_kick_weapon_loop();
+	} else {
+		iPrintString("Keep Mule Kick Weapon [^1OFF^7]");
+		self notify("stop_keep_mule_kick_weapon");
+	}
+}
+
+function keep_mule_kick_weapon_loop() {
+	self endon("stop_keep_mule_kick_weapon");
+	level endon("game_ended");
+
+	for(;;) {
+   if(self hasPerk("specialty_additionalprimaryweapon") && isDefined(self.weapon_taken_by_losing_specialty_additionalprimaryweapon)) {
+			if(isDefined(level.return_additionalprimaryweapon)) {
+				self[[level.return_additionalprimaryweapon]](self.weapon_taken_by_losing_specialty_additionalprimaryweapon);
+			} else {
+				self zm_weapons::give_build_kit_weapon(self.weapon_taken_by_losing_specialty_additionalprimaryweapon);
+			}
+			self.weapon_taken_by_losing_specialty_additionalprimaryweapon = undefined;
+		}
+		wait 5;
+	}
+}
+
+function speed_cola_buff() {
+	self.speed_cola_buff = !return_toggle(self.speed_cola_buff);
+	if(self.speed_cola_buff) {
+		iPrintString("Speed Cola Buff [^2ON^7]");
+		self thread speed_cola_buff_loop();
+	} else {
+		iPrintString("Speed Cola Buff [^1OFF^7]");
+		self notify("stop_speed_cola_buff");
+		wait 1.1;
+		self unsetPerk("specialty_fastads");
+    self unsetPerk("specialty_fastweaponswitch");
+    self unsetPerk("specialty_fastequipmentuse");
+    self unsetPerk("specialty_fasttoss");
+	}
+}
+
+function speed_cola_buff_loop() {
+	self endon("stop_speed_cola_buff");
+	level endon("game_ended");
+
+	for(;;) {
+		if(self hasPerk("specialty_fastreload") && !(self hasPerk("specialty_fastads") || self hasPerk("specialty_fastweaponswitch") || self hasPerk("specialty_fastequipmentuse") || self hasPerk("specialty_fasttoss"))) {
+      if(self.speed_cola_fastads) {
+				self setPerk("specialty_fastads");
+			}
+			if(self.speed_cola_fastweaponswitch) {
+				self setPerk("specialty_fastweaponswitch");
+			}
+			if(self.speed_cola_fastequipmentuse) {
+				self setPerk("specialty_fastequipmentuse");
+				self setPerk("specialty_fasttoss");
+			}
+    } else if(!self hasPerk("specialty_fastreload")) {
+			self unsetPerk("specialty_fastads");
+      self unsetPerk("specialty_fastweaponswitch");
+      self unsetPerk("specialty_fastequipmentuse");
+      self unsetPerk("specialty_fasttoss");
+		}
+		wait 1;
+	}
+}
+
+function stamin_up_buff() {
+	self.stamin_up_buff = !return_toggle(self.stamin_up_buff);
+	if(self.stamin_up_buff) {
+		iPrintString("Stamin-Up Buff [^2ON^7]");
+		self thread stamin_up_buff_loop();
+	} else {
+		iPrintString("Stamin-Up Buff [^1OFF^7]");
+		self notify("stop_stamin_up_buff");
+		wait 1.1;
+		self unsetPerk("specialty_sprintfire");
+		self unsetPerk("specialty_sprintfirerecovery");
+		self unsetPerk("specialty_stalker");
+		self unsetPerk("specialty_unlimitedsprint");
+		self unsetPerk("specialty_fastladderclimb");
+		self unsetPerk("specialty_fastmantle");
+		self unsetPerk("specialty_sprintequipment");
+		self unsetPerk("specialty_sprintgrenadelethal");
+		self unsetPerk("specialty_sprintgrenadetactical");
+	}
+}
+
+function stamin_up_buff_loop() {
+	self endon("stop_stamin_up_buff");
+	level endon("game_ended");
+
+	for(;;) {
+		if(self hasPerk("specialty_staminup") && !(self hasPerk("specialty_sprintfire") || self hasPerk("specialty_sprintfirerecovery") || self hasPerk("specialty_stalker") || self hasPerk("specialty_unlimitedsprint") || self hasPerk("specialty_fastladderclimb") || self hasPerk("specialty_fastmantle") || self hasPerk("specialty_sprintequipment"))) {
+			if(self.stamin_up_sprintfire) {
+				self setPerk("specialty_sprintfire");
+				self setPerk("specialty_sprintfirerecovery");
+			}
+			if(self.stamin_up_stalker) {
+				self setPerk("specialty_stalker");
+			}
+			if(self.stamin_up_unlimitedsprint) {
+				self setPerk("specialty_unlimitedsprint");
+			}
+			if(self.stamin_up_fastladderclimb) {
+				self setPerk("specialty_fastladderclimb");
+			}
+			if(self.stamin_up_fastmantle) {
+				self setPerk("specialty_fastmantle");
+			}
+			if(self.stamin_up_sprintequipment) {
+				self setPerk("specialty_sprintequipment");
+				self setPerk("specialty_sprintgrenadelethal");
+				self setPerk("specialty_sprintgrenadetactical");
+			}
+    } else if(!self hasPerk("specialty_staminup")) {
+			self unsetPerk("specialty_sprintfire");
+			self unsetPerk("specialty_sprintfirerecovery");
+			self unsetPerk("specialty_stalker");
+			self unsetPerk("specialty_unlimitedsprint");
+			self unsetPerk("specialty_fastladderclimb");
+			self unsetPerk("specialty_fastmantle");
+			self unsetPerk("specialty_sprintequipment");
+			self unsetPerk("specialty_sprintgrenadelethal");
+			self unsetPerk("specialty_sprintgrenadetactical");
+		}
+		wait 1;
+	}
+}
+
+function toggle_speed_cola_buff_option(option) {
+	if(option == "fastads") {
+		self.speed_cola_fastads = !return_toggle(self.speed_cola_fastads);
+	} else if(option == "fastweaponswitch)") {
+		self.speed_cola_fastweaponswitch = !return_toggle(self.speed_cola_fastweaponswitch);
+	} else if(option == "fastequipmentuse") {
+		self.speed_cola_fastequipmentuse = !return_toggle(self.speed_cola_fastequipmentuse);
+	}
+
+	self unsetPerk("specialty_fastads");
+	self unsetPerk("specialty_fastweaponswitch");
+	self unsetPerk("specialty_fastequipmentuse");
+	self unsetPerk("specialty_fasttoss");
+}
+
+function toggle_stamin_up_buff_option(option) {
+	if(option == "sprintfire") {
+		self.stamin_up_sprintfire = !return_toggle(self.stamin_up_sprintfire);
+	} else if(option == "stalker") {
+		self.stamin_up_stalker = !return_toggle(self.stamin_up_stalker);
+	} else if(option == "unlimitedsprint") {
+		self.stamin_up_unlimitedsprint = !return_toggle(self.stamin_up_unlimitedsprint);
+	} else if(option == "fastladderclimb") {
+		self.stamin_up_fastladderclimb = !return_toggle(self.stamin_up_fastladderclimb);
+	} else if(option == "fastmantle") {
+		self.stamin_up_fastmantle = !return_toggle(self.stamin_up_fastmantle);
+	} else if(option == "sprintequipment") {
+		self.stamin_up_sprintequipment = !return_toggle(self.stamin_up_sprintequipment);
+	}
+
+	self unsetPerk("specialty_sprintfire");
+	self unsetPerk("specialty_sprintfirerecovery");
+	self unsetPerk("specialty_stalker");
+	self unsetPerk("specialty_unlimitedsprint");
+	self unsetPerk("specialty_fastladderclimb");
+	self unsetPerk("specialty_fastmantle");
+	self unsetPerk("specialty_sprintequipment");
+	self unsetPerk("specialty_sprintgrenadelethal");
+	self unsetPerk("specialty_sprintgrenadetactical");
 }
 
 // Player Options
@@ -2750,7 +2967,7 @@ function get_equipped_attachments(weapon) {
 
 function equip_attachment(attachment) {
 	weapon = self getCurrentWeapon();
-	
+
 	stock = self getWeaponAmmoStock(weapon);
 	clip = self getWeaponAmmoClip(weapon);
 	attachments = get_equipped_attachments(weapon.name);
@@ -2766,10 +2983,10 @@ function equip_attachment(attachment) {
 					}
 				}
 			}
-	
+
 			attachments[attachments.size] = attachment;
 		}
-	
+
 		weapon = getWeapon(weapon.rootWeapon.name, attachments);
 	}
 
