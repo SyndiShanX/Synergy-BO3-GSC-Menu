@@ -42,49 +42,68 @@ function init() {
 	wait 0.5;
 }
 
+function player_connect() {
+	level endon("game_ended");
+
+	for(;;) {
+		level waittill("connected", player);
+
+		player.syn_access = "None";
+
+		if(player isHost()) {
+			player.syn_access = "Host";
+			player initial_variables();
+			player thread initialize_menu();
+		}
+	}
+}
+
 function initial_variables() {
-	self.in_menu = false;
-	self.hud_created = false;
-	self.loaded_offset = false;
-	self.option_limit = 7;
-	self.current_menu = "Synergy";
-	self.structure = [];
-	self.previous = [];
-	self.saved_index = [];
-	self.saved_offset = [];
-	self.saved_trigger = [];
-	self.slider = [];
+	self.syn = [];
+	self.menu = [];
+	self.syn_in_menu = false;
+	self.syn_hud_created = false;
+	self.syn_loaded_offset = false;
+	self.syn_initialized = false;
+	self.syn_option_limit = 7;
+	self.syn_current_menu = "Synergy";
+	self.syn_structure = [];
+	self.syn_previous = [];
+	self.syn_saved_index = [];
+	self.syn_saved_offset = [];
+	self.syn_saved_trigger = [];
+	self.syn_slider = [];
 
-	self.font = "default";
-	self.font_scale = 1;
-	self.x_offset = 175;
-	self.y_offset = 160;
+	self.syn_font = "default";
+	self.syn_font_scale = 1;
+	self.syn_x_offset = 175;
+	self.syn_y_offset = 160;
 
-	self.point_increment = 100;
-	self.map_name = get_map_name();
-	self.color_theme = "rainbow";
-	self.menu_color_red = 0;
-	self.menu_color_green = 0;
-	self.menu_color_blue = 0;
+	self.syn_point_increment = 100;
+	self.syn_map_name = get_map_name();
+	self.syn_color_theme = "rainbow";
+	self.syn_menu_color_red = 0;
+	self.syn_menu_color_green = 0;
+	self.syn_menu_color_blue = 0;
 
-	self.cursor_index = 0;
-	self.scrolling_offset = 0;
-	self.previous_scrolling_offset = 0;
-	self.description_height = 0;
-	self.previous_option = undefined;
+	self.syn_cursor_index = 0;
+	self.syn_scrolling_offset = 0;
+	self.syn_previous_scrolling_offset = 0;
+	self.syn_description_height = 0;
+	self.syn_previous_option = undefined;
 
-	self.equip_attachment_in_progress = false;
+	self.syn_equip_attachment_in_progress = false;
 
-	self.speed_cola_fastads = true;
-	self.speed_cola_fastweaponswitch = true;
-	self.speed_cola_fastequipmentuse = true;
+	self.syn_speed_cola_fastads = true;
+	self.syn_speed_cola_fastweaponswitch = true;
+	self.syn_speed_cola_fastequipmentuse = true;
 
-	self.stamin_up_sprintfire = true;
-	self.stamin_up_stalker = true;
-	self.stamin_up_unlimitedsprint = true;
-	self.stamin_up_fastladderclimb = true;
-	self.stamin_up_fastmantle = true;
-	self.stamin_up_sprintequipment = true;
+	self.syn_stamin_up_sprintfire = true;
+	self.syn_stamin_up_stalker = true;
+	self.syn_stamin_up_unlimitedsprint = true;
+	self.syn_stamin_up_fastladderclimb = true;
+	self.syn_stamin_up_fastmantle = true;
+	self.syn_stamin_up_sprintequipment = true;
 
 	// Visions
 
@@ -196,6 +215,8 @@ function initial_variables() {
 
 	// Visions
 
+	self.syn["visions"][3] = [];
+
 	foreach(type, v_array in level.vsmgr) {
 		foreach(v_name, v_struct in level.vsmgr[type].info) {
 			vision = level.vsmgr[type].info[v_name];
@@ -208,15 +229,7 @@ function initial_variables() {
 					displayName = getSubStr(displayName, 4);
 				}
 				vision.displayName = displayName;
-				foreach(existingVision in self.syn["visions"]) {
-					if(vision.name == existingVision.name) {
-						self.isInArray = true;
-					}
-				}
-				if(!isDefined(self.isInArray)) {
-					array::add(self.syn["visions"], vision, 0);
-				}
-				self.isInArray = undefined;
+				array::add(self.syn["visions"][3], vision, 0);
 			}
 		}
 	}
@@ -225,6 +238,8 @@ function initial_variables() {
 
 	self.syn["powerups"][0] = getArrayKeys(level.zombie_include_powerups);
 	self.syn["powerups"][1] = [];
+	self.syn["powerups"][2] = [];
+	self.syn["powerups"][3] = [];
 	for(i = 0; i < self.syn["powerups"][0].size; i++) {
 	  self.syn["powerups"][1][i] = construct_string(replace_character(self.syn["powerups"][0][i], "_", " "));
 		if(self.syn["powerups"][1][i] == "Ww Grenade") {
@@ -255,6 +270,8 @@ function initial_variables() {
 		weapon_names[weapon_names.size] = weapon.name;
 	}
 
+	self.syn["weapons"] = [];
+
 	for(i = 0; i < weapon_types.size; i++) {
 		self.syn["weapons"][i] = [];
 		for(e = 1; e < 100; e++) {
@@ -282,10 +299,12 @@ function initial_variables() {
 	foreach(weapon in getArrayKeys(level.zombie_weapons)) {
 		isInArray = false;
 		for(e = 0; e < self.syn["weapons"].size; e++) {
-			for(i = 0; i < self.syn["weapons"][e].size; i++) {
-				if(isDefined(self.syn["weapons"][e][i]) && self.syn["weapons"][e][i].id == weapon.name) {
-					isInArray = true;
-					break;
+			if(isDefined(self.syn["weapons"][e])) {
+				for(i = 0; i < self.syn["weapons"][e].size; i++) {
+					if(isDefined(self.syn["weapons"][e][i]) && self.syn["weapons"][e][i].id == weapon.name) {
+						isInArray = true;
+						break;
+					}
 				}
 			}
 		}
@@ -391,29 +410,13 @@ function initial_variables() {
 	}
 }
 
-function player_connect() {
-	level endon("game_ended");
-
-	for(;;) {
-		level waittill("connected", player);
-
-		player.access = "None";
-
-		if(player isHost()) {
-			player.access = "Host";
-			player initial_variables();
-			player thread initialize_menu();
-		}
-	}
-}
-
 function initialize_menu() {
 	level endon("game_ended");
 	self endon("disconnect");
 
-	while(!self.initialized) {
-		if(!self.hud_created) {
-			self.initialized = true;
+	while(!self.syn_initialized) {
+		if(!self.syn_hud_created) {
+			self.syn_initialized = true;
 			self freezeControls(false);
 
 			level waittill("initial_blackscreen_passed");
@@ -427,11 +430,11 @@ function initialize_verified_menu() {
 	level endon("game_ended");
 	self endon("disconnect");
 
-	while(!self.initialized) {
-		if(self.access != "None") {
-			if(!self.hud_created) {
+	while(!self.syn_initialized) {
+		if(self.syn_access != "None") {
+			if(!self.syn_hud_created) {
 				self initial_variables();
-				self.initialized = true;
+				self.syn_initialized = true;
 				self create_menu();
 			}
 		}
@@ -444,25 +447,25 @@ function create_menu() {
 
 	self thread input_manager();
 
-	self.menu["border"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset - 1), (self.y_offset - 1), 226, 122, self.color_theme, 1, 1);
-	self.menu["background"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, self.y_offset, 224, 121, (0.075, 0.075, 0.075), 1, 2);
-	self.menu["foreground"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset + 15), 224, 106, (0.1, 0.1, 0.1), 1, 3);
-	self.menu["separator_1"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.x_offset + 5.5), (self.y_offset + 7.5), 42, 1, self.color_theme, 1, 10);
-	self.menu["separator_2"] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 220), (self.y_offset + 7.5), 42, 1, self.color_theme, 1, 10);
-	self.menu["cursor"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, 215, 224, 16, (0.15, 0.15, 0.15), 0, 4);
+	self.menu["border"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.syn_x_offset - 1), (self.syn_y_offset - 1), 226, 122, self.syn_color_theme, 1, 1);
+	self.menu["background"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.syn_x_offset, self.syn_y_offset, 224, 121, (0.075, 0.075, 0.075), 1, 2);
+	self.menu["foreground"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.syn_x_offset, (self.syn_y_offset + 15), 224, 106, (0.1, 0.1, 0.1), 1, 3);
+	self.menu["separator_1"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", (self.syn_x_offset + 5.5), (self.syn_y_offset + 7.5), 42, 1, self.syn_color_theme, 1, 10);
+	self.menu["separator_2"] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.syn_x_offset + 220), (self.syn_y_offset + 7.5), 42, 1, self.syn_color_theme, 1, 10);
+	self.menu["cursor"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.syn_x_offset, 215, 224, 16, (0.15, 0.15, 0.15), 0, 4);
 
-	self.menu["title"] = self create_text("Title", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 94.5), (self.y_offset + 1), (1, 1, 1), 1, 10);
-	self.menu["description"] = self create_text("Description", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 5), (self.y_offset + (self.option_limit * 17.5)), (0.75, 0.75, 0.75), 0, 10);
-	self.menu["slider_text"] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 132.5), (self.y_offset + 19), (0.75, 0.75, 0.75), 0, 10);
-	self.menu["slider"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.x_offset, (self.y_offset + 15), 224, 16, (0.25, 0.25, 0.25), 0, 5);
+	self.menu["title"] = self create_text("Title", self.syn_font, self.syn_font_scale, "TOP_LEFT", "TOPCENTER", (self.syn_x_offset + 94.5), (self.syn_y_offset + 1), (1, 1, 1), 1, 10);
+	self.menu["description"] = self create_text("Description", self.syn_font, self.syn_font_scale, "TOP_LEFT", "TOPCENTER", (self.syn_x_offset + 5), (self.syn_y_offset + (self.syn_option_limit * 17.5)), (0.75, 0.75, 0.75), 0, 10);
+	self.menu["slider_text"] = self create_text("", self.syn_font, self.syn_font_scale, "TOP_LEFT", "TOPCENTER", (self.syn_x_offset + 132.5), (self.syn_y_offset + 19), (0.75, 0.75, 0.75), 0, 10);
+	self.menu["slider"] = self create_shader("white", "TOP_LEFT", "TOPCENTER", self.syn_x_offset, (self.syn_y_offset + 15), 224, 16, (0.25, 0.25, 0.25), 0, 5);
 
-	for(i = 1; i <= self.option_limit; i++) {
-		self.menu["toggle_" + i] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.x_offset + 11), ((self.y_offset + 4) + (i * 15)), 8, 8, (0.25, 0.25, 0.25), 0, 9);
-		self.menu["option_" + i] = self create_text("", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 5), ((self.y_offset + 2) + (i * 15)), (0.75, 0.75, 0.75), 1, 10);
-		self.menu["submenu_icon_" + i] = self create_text(">", self.font, self.font_scale, "TOP_LEFT", "TOPCENTER", (self.x_offset + 215), ((self.y_offset + 1) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
+	for(i = 1; i <= self.syn_option_limit; i++) {
+		self.menu["toggle_" + i] = self create_shader("white", "TOP_RIGHT", "TOPCENTER", (self.syn_x_offset + 11), ((self.syn_y_offset + 4) + (i * 15)), 8, 8, (0.25, 0.25, 0.25), 0, 9);
+		self.menu["option_" + i] = self create_text("", self.syn_font, self.syn_font_scale, "TOP_LEFT", "TOPCENTER", (self.syn_x_offset + 5), ((self.syn_y_offset + 2) + (i * 15)), (0.75, 0.75, 0.75), 1, 10);
+		self.menu["submenu_icon_" + i] = self create_text(">", self.syn_font, self.syn_font_scale, "TOP_LEFT", "TOPCENTER", (self.syn_x_offset + 215), ((self.syn_y_offset + 1) + (i * 15)), (0.75, 0.75, 0.75), 0, 10);
 	}
 
-	self.hud_created = true;
+	self.syn_hud_created = true;
 
 	self.menu["title"] set_text("Controls");
 	self.menu["option_1"] set_text("Open: ^3[{+speed_throw}] ^7and ^3[{+melee}]");
@@ -477,11 +480,11 @@ function create_menu() {
 	self.menu["background"] set_shader("white", self.menu["background"].width, 76);
 	self.menu["foreground"] set_shader("white", self.menu["foreground"].width, 61);
 
-	self.controls_menu_open = true;
+	self.syn_controls_menu_open = true;
 
 	wait 8;
 
-	if(self.controls_menu_open) {
+	if(self.syn_controls_menu_open) {
 		close_controls_menu();
 	}
 }
@@ -490,10 +493,10 @@ function input_manager() {
 	level endon("game_ended");
 	self endon("disconnect");
 
-	while(self.access != "None") {
-		if(!self.in_menu) {
+	while(self.syn_access != "None") {
+		if(!self.syn_in_menu) {
 			if(self adsButtonPressed() && self meleeButtonPressed()) {
-				if(self.controls_menu_open) {
+				if(self.syn_controls_menu_open) {
 					close_controls_menu();
 				}
 
@@ -507,13 +510,15 @@ function input_manager() {
 			}
 		} else {
 			if(self meleeButtonPressed()) {
-				self.saved_index[self.current_menu] = self.cursor_index;
-				self.saved_offset[self.current_menu] = self.scrolling_offset;
-				self.saved_trigger[self.current_menu] = self.previous_trigger;
+				if(isDefined(self.syn_current_menu)) {
+					self.syn_saved_index[self.syn_current_menu] = self.syn_cursor_index;
+					self.syn_saved_offset[self.syn_current_menu] = self.syn_scrolling_offset;
+					self.syn_saved_trigger[self.syn_current_menu] = self.syn_previous_trigger;
+				}
 
 				self playSoundToPlayer("uin_lobby_leave", self);
 
-				if(isDefined(self.previous[(self.previous.size - 1)])) {
+				if(isDefined(self.syn_previous[(self.syn_previous.size - 1)])) {
 					self new_menu();
 				} else {
 					self close_menu();
@@ -535,31 +540,31 @@ function input_manager() {
 
 				self playSoundToPlayer("uin_main_nav", self);
 
-				if(isDefined(self.structure[self.cursor_index].array) || isDefined(self.structure[self.cursor_index].increment)) {
+				if(isDefined(self.syn_structure[self.syn_cursor_index].array) || isDefined(self.syn_structure[self.syn_cursor_index].increment)) {
 					scroll_slider(set_variable(self secondaryOffhandButtonPressed(), "left", "right"));
 				}
 
 				wait (0.2);
 			} else if(self useButtonPressed()) {
-				self.saved_index[self.current_menu] = self.cursor_index;
-				self.saved_offset[self.current_menu] = self.scrolling_offset;
-				self.saved_trigger[self.current_menu] = self.previous_trigger;
+				self.syn_saved_index[self.syn_current_menu] = self.syn_cursor_index;
+				self.syn_saved_offset[self.syn_current_menu] = self.syn_scrolling_offset;
+				self.syn_saved_trigger[self.syn_current_menu] = self.syn_previous_trigger;
 
 				self playSoundToPlayer("uin_main_pause", self);
 
-				if(self.structure[self.cursor_index].command == &new_menu) {
-					self.previous_option = self.structure[self.cursor_index].text;
+				if(self.syn_structure[self.syn_cursor_index].command == &new_menu) {
+					self.syn_previous_option = self.syn_structure[self.syn_cursor_index].text;
 				}
 
-				if(isDefined(self.structure[self.cursor_index].array) || isDefined(self.structure[self.cursor_index].increment)) {
-					if(isDefined(self.structure[self.cursor_index].array)) {
-						cursor_selected = self.structure[self.cursor_index].array[self.slider[(self.current_menu + "_" + self.cursor_index)]];
+				if(isDefined(self.syn_structure[self.syn_cursor_index].array) || isDefined(self.syn_structure[self.syn_cursor_index].increment)) {
+					if(isDefined(self.syn_structure[self.syn_cursor_index].array)) {
+						cursor_selected = self.syn_structure[self.syn_cursor_index].array[self.syn_slider[(self.syn_current_menu + "_" + self.syn_cursor_index)]];
 					} else {
-						cursor_selected = self.slider[(self.current_menu + "_" + (self.cursor_index))];
+						cursor_selected = self.syn_slider[(self.syn_current_menu + "_" + (self.syn_cursor_index))];
 					}
-					self thread execute_function(self.structure[self.cursor_index].command, cursor_selected, self.structure[self.cursor_index].parameter_1, self.structure[self.cursor_index].parameter_2, self.structure[self.cursor_index].parameter_3);
-				} else if(isDefined(self.structure[self.cursor_index]) && isDefined(self.structure[self.cursor_index].command)) {
-					self thread execute_function(self.structure[self.cursor_index].command, self.structure[self.cursor_index].parameter_1, self.structure[self.cursor_index].parameter_2, self.structure[self.cursor_index].parameter_3);
+					self thread execute_function(self.syn_structure[self.syn_cursor_index].command, cursor_selected, self.syn_structure[self.syn_cursor_index].parameter_1, self.syn_structure[self.syn_cursor_index].parameter_2, self.syn_structure[self.syn_cursor_index].parameter_3);
+				} else if(isDefined(self.syn_structure[self.syn_cursor_index]) && isDefined(self.syn_structure[self.syn_cursor_index].command)) {
+					self thread execute_function(self.syn_structure[self.syn_cursor_index].command, self.syn_structure[self.syn_cursor_index].parameter_1, self.syn_structure[self.syn_cursor_index].parameter_2, self.syn_structure[self.syn_cursor_index].parameter_3);
 				}
 
 				self menu_option();
@@ -577,7 +582,7 @@ function input_manager() {
 // Hud Functions
 
 function open_menu() {
-	self.in_menu = true;
+	self.syn_in_menu = true;
 
 	set_menu_visibility(1);
 
@@ -589,7 +594,7 @@ function open_menu() {
 function close_menu() {
 	set_menu_visibility(0);
 
-	self.in_menu = false;
+	self.syn_in_menu = false;
 }
 
 function close_controls_menu() {
@@ -599,7 +604,7 @@ function close_controls_menu() {
 	self.menu["background"] set_shader("white", self.menu["background"].width, 121);
 	self.menu["foreground"] set_shader("white", self.menu["foreground"].width, 106);
 
-	self.controls_menu_open = false;
+	self.syn_controls_menu_open = false;
 
 	self.menu["title"] set_text("");
 	self.menu["option_1"] set_text("");
@@ -607,7 +612,7 @@ function close_controls_menu() {
 	self.menu["option_3"] set_text("");
 	self.menu["option_4"] set_text("");
 
-	self.in_menu = false;
+	self.syn_in_menu = false;
 }
 
 function set_menu_visibility(opacity) {
@@ -615,7 +620,7 @@ function set_menu_visibility(opacity) {
 		self.menu["border"].alpha = opacity;
 		self.menu["description"].alpha = opacity;
 		self.menu["slider"].alpha = opacity;
-		for(i = 1; i <= self.option_limit; i++) {
+		for(i = 1; i <= self.syn_option_limit; i++) {
 			self.menu["toggle_" + i].alpha = opacity;
 			self.menu["submenu_icon_" + i].alpha = opacity;
 		}
@@ -626,7 +631,7 @@ function set_menu_visibility(opacity) {
 	self.menu["separator_2"].alpha = opacity;
 	self.menu["slider_text"].alpha = opacity;
 
-	for(i = 1; i <= self.option_limit; i++) {
+	for(i = 1; i <= self.syn_option_limit; i++) {
 		self.menu["option_" + i].alpha = opacity;
 	}
 
@@ -771,39 +776,39 @@ function auto_archive() {
 }
 
 function update_element_positions() {
-	self.menu["border"].x = (self.x_offset - 1);
-	self.menu["border"].y = (self.y_offset - 1);
+	self.menu["border"].x = (self.syn_x_offset - 1);
+	self.menu["border"].y = (self.syn_y_offset - 1);
 
-	self.menu["background"].x = self.x_offset;
-	self.menu["background"].y = self.y_offset;
+	self.menu["background"].x = self.syn_x_offset;
+	self.menu["background"].y = self.syn_y_offset;
 
-	self.menu["foreground"].x = self.x_offset;
-	self.menu["foreground"].y = (self.y_offset + 15);
+	self.menu["foreground"].x = self.syn_x_offset;
+	self.menu["foreground"].y = (self.syn_y_offset + 15);
 
-	self.menu["separator_1"].x = (self.x_offset + 5);
-	self.menu["separator_1"].y = (self.y_offset + 7.5);
+	self.menu["separator_1"].x = (self.syn_x_offset + 5);
+	self.menu["separator_1"].y = (self.syn_y_offset + 7.5);
 
-	self.menu["separator_2"].x = (self.x_offset + 220);
-	self.menu["separator_2"].y = (self.y_offset + 7.5);
+	self.menu["separator_2"].x = (self.syn_x_offset + 220);
+	self.menu["separator_2"].y = (self.syn_y_offset + 7.5);
 
-	self.menu["cursor"].x = self.x_offset;
+	self.menu["cursor"].x = self.syn_x_offset;
 
-	self.menu["description"].y = (self.y_offset + (self.option_limit * 17.5));
+	self.menu["description"].y = (self.syn_y_offset + (self.syn_option_limit * 17.5));
 
-	self.menu["slider_text"].x = (self.x_offset + 132.5);
-	self.menu["slider_text"].y = ((self.y_offset + 4) + (((self.cursor_index + 1) - self.scrolling_offset) * 15));
+	self.menu["slider_text"].x = (self.syn_x_offset + 132.5);
+	self.menu["slider_text"].y = ((self.syn_y_offset + 4) + (((self.syn_cursor_index + 1) - self.syn_scrolling_offset) * 15));
 
-	self.menu["slider"].x = self.x_offset;
-	self.menu["slider"].y = (self.y_offset + (((self.cursor_index + 1) - self.scrolling_offset) * 15));
+	self.menu["slider"].x = self.syn_x_offset;
+	self.menu["slider"].y = (self.syn_y_offset + (((self.syn_cursor_index + 1) - self.syn_scrolling_offset) * 15));
 
-	for(i = 1; i <= self.option_limit; i++) {
-		self.menu["toggle_" + i].x = (self.x_offset + 11);
-		self.menu["toggle_" + i].y = ((self.y_offset + 4) + (i * 15));
+	for(i = 1; i <= self.syn_option_limit; i++) {
+		self.menu["toggle_" + i].x = (self.syn_x_offset + 11);
+		self.menu["toggle_" + i].y = ((self.syn_y_offset + 4) + (i * 15));
 
-		self.menu["option_" + i].y = ((self.y_offset + 2) + (i * 15));
+		self.menu["option_" + i].y = ((self.syn_y_offset + 2) + (i * 15));
 
-		self.menu["submenu_icon_" + i].x = (self.x_offset + 215);
-		self.menu["submenu_icon_" + i].y = ((self.y_offset + 1) + (i * 15));
+		self.menu["submenu_icon_" + i].x = (self.syn_x_offset + 215);
+		self.menu["submenu_icon_" + i].y = ((self.syn_y_offset + 1) + (i * 15));
 	}
 }
 
@@ -861,9 +866,9 @@ function create_rainbow_color() {
 function start_rainbow() {
 	level endon("game_ended");
 	self endon("stop_rainbow");
-	self.rainbow_enabled = true;
+	self.syn_rainbow_enabled = true;
 
-	while(isDefined(self) && self.rainbow_enabled) {
+	while(isDefined(self) && self.syn_rainbow_enabled) {
 		self fadeOverTime(.05);
 		self.color = level.rainbow_color;
 		wait 0.05;
@@ -902,7 +907,7 @@ function get_map_name() {
 }
 
 function set_increment(value) {
-	self.point_increment = value;
+	self.syn_point_increment = value;
 }
 
 function construct_string(string) {
@@ -1025,7 +1030,7 @@ function add_option(text, description, command, parameter_1, parameter_2, parame
 		option.parameter_3 = parameter_3;
 	}
 
-	self.structure[self.structure.size] = option;
+	self.syn_structure[self.syn_structure.size] = option;
 }
 
 function add_toggle(text, description, command, variable, parameter_1, parameter_2) {
@@ -1047,7 +1052,7 @@ function add_toggle(text, description, command, variable, parameter_1, parameter
 		option.parameter_2 = parameter_2;
 	}
 
-	self.structure[self.structure.size] = option;
+	self.syn_structure[self.syn_structure.size] = option;
 }
 
 function add_array(text, description, command, array, show_options, parameter_1, parameter_2, parameter_3) {
@@ -1081,7 +1086,7 @@ function add_array(text, description, command, array, show_options, parameter_1,
 		option.parameter_3 = parameter_3;
 	}
 
-	self.structure[self.structure.size] = option;
+	self.syn_structure[self.syn_structure.size] = option;
 }
 
 function add_increment(text, description, command, start, minimum, maximum, increment, parameter_1, parameter_2) {
@@ -1122,7 +1127,7 @@ function add_increment(text, description, command, start, minimum, maximum, incr
 		option.parameter_2 = parameter_2;
 	}
 
-	self.structure[self.structure.size] = option;
+	self.syn_structure[self.syn_structure.size] = option;
 }
 
 function get_title_width(title) {
@@ -1146,33 +1151,33 @@ function set_title(title) {
 
 	title_width = get_title_width(title);
 
-	self.menu["title"].x = (self.x_offset + ceil((((-0.0000124 * title_width + 0.003832) * title_width - 0.52) * title_width + 115.258) * 10) / 10);
-	self.menu["title"].y = (self.y_offset + 1);
+	self.menu["title"].x = (self.syn_x_offset + ceil((((-0.0000124 * title_width + 0.003832) * title_width - 0.52) * title_width + 115.258) * 10) / 10);
+	self.menu["title"].y = (self.syn_y_offset + 1);
 }
 
 function new_menu(menu) {
 	if(!isDefined(menu)) {
-		menu = self.previous[(self.previous.size - 1)];
-		self.previous[(self.previous.size - 1)] = undefined;
+		menu = self.syn_previous[(self.syn_previous.size - 1)];
+		self.syn_previous[(self.syn_previous.size - 1)] = undefined;
 	} else {
-		self.previous[self.previous.size] = self.current_menu;
+		self.syn_previous[self.syn_previous.size] = self.syn_current_menu;
 	}
 
-	if(!isDefined(self.slider[(menu + "_" + (self.cursor_index))])) {
-		self.slider[(menu + "_" + (self.cursor_index))] = 0;
+	if(!isDefined(self.syn_slider[(menu + "_" + (self.syn_cursor_index))])) {
+		self.syn_slider[(menu + "_" + (self.syn_cursor_index))] = 0;
 	}
 
-	self.current_menu = set_variable(isDefined(menu), menu, "Synergy");
+	self.syn_current_menu = set_variable(isDefined(menu), menu, "Synergy");
 
-	if(isDefined(self.saved_index[self.current_menu])) {
-		self.cursor_index = self.saved_index[self.current_menu];
-		self.scrolling_offset = self.saved_offset[self.current_menu];
-		self.previous_trigger = self.saved_trigger[self.current_menu];
-		self.loaded_offset = true;
+	if(isDefined(self.syn_saved_index[self.syn_current_menu])) {
+		self.syn_cursor_index = self.syn_saved_index[self.syn_current_menu];
+		self.syn_scrolling_offset = self.syn_saved_offset[self.syn_current_menu];
+		self.syn_previous_trigger = self.syn_saved_trigger[self.syn_current_menu];
+		self.syn_loaded_offset = true;
 	} else {
-		self.cursor_index = 0;
-		self.scrolling_offset = 0;
-		self.previous_trigger = 0;
+		self.syn_cursor_index = 0;
+		self.syn_scrolling_offset = 0;
+		self.syn_previous_trigger = 0;
 	}
 
 	self menu_option();
@@ -1187,7 +1192,7 @@ function empty_option() {
 }
 
 function scroll_cursor(direction) {
-	maximum = self.structure.size - 1;
+	maximum = self.syn_structure.size - 1;
 	fake_scroll = false;
 
 	if(maximum < 0) {
@@ -1196,110 +1201,110 @@ function scroll_cursor(direction) {
 
 	if(isDefined(direction)) {
 		if(direction == "down") {
-			self.cursor_index++;
-			if(self.cursor_index > maximum) {
-				self.cursor_index = 0;
-				self.scrolling_offset = 0;
+			self.syn_cursor_index++;
+			if(self.syn_cursor_index > maximum) {
+				self.syn_cursor_index = 0;
+				self.syn_scrolling_offset = 0;
 			}
 		} else if(direction == "up") {
-			self.cursor_index--;
-			if(self.cursor_index < 0) {
-				self.cursor_index = maximum;
-				if(((self.cursor_index) + int((self.option_limit / 2))) >= (self.structure.size - 2)) {
-					self.scrolling_offset = (self.structure.size - self.option_limit);
+			self.syn_cursor_index--;
+			if(self.syn_cursor_index < 0) {
+				self.syn_cursor_index = maximum;
+				if(((self.syn_cursor_index) + int((self.syn_option_limit / 2))) >= (self.syn_structure.size - 2)) {
+					self.syn_scrolling_offset = (self.syn_structure.size - self.syn_option_limit);
 				}
 			}
 		}
 	} else {
-		while(self.cursor_index > maximum) {
-			self.cursor_index--;
+		while(self.syn_cursor_index > maximum) {
+			self.syn_cursor_index--;
 		}
-		self.menu["cursor"].y = int(self.y_offset + (((self.cursor_index + 1) - self.scrolling_offset) * 15));
+		self.menu["cursor"].y = int(self.syn_y_offset + (((self.syn_cursor_index + 1) - self.syn_scrolling_offset) * 15));
 	}
 
-	self.previous_scrolling_offset = self.scrolling_offset;
+	self.syn_previous_scrolling_offset = self.syn_scrolling_offset;
 
-	if(!self.loaded_offset) {
-		if(self.cursor_index >= int(self.option_limit / 2) && self.structure.size > self.option_limit) {
-			if((self.cursor_index + int(self.option_limit / 2)) >= (self.structure.size - 2)) {
-				self.scrolling_offset = (self.structure.size - self.option_limit);
-				if(self.previous_trigger == 2) {
-					self.scrolling_offset--;
+	if(!self.syn_loaded_offset) {
+		if(self.syn_cursor_index >= int(self.syn_option_limit / 2) && self.syn_structure.size > self.syn_option_limit) {
+			if((self.syn_cursor_index + int(self.syn_option_limit / 2)) >= (self.syn_structure.size - 2)) {
+				self.syn_scrolling_offset = (self.syn_structure.size - self.syn_option_limit);
+				if(self.syn_previous_trigger == 2) {
+					self.syn_scrolling_offset--;
 				}
-				if(self.previous_scrolling_offset != self.scrolling_offset) {
+				if(self.syn_previous_scrolling_offset != self.syn_scrolling_offset) {
 					fake_scroll = true;
-					self.previous_trigger = 1;
+					self.syn_previous_trigger = 1;
 				}
 			} else {
-				self.scrolling_offset = (self.cursor_index - int(self.option_limit / 2));
-				self.previous_trigger = 2;
+				self.syn_scrolling_offset = (self.syn_cursor_index - int(self.syn_option_limit / 2));
+				self.syn_previous_trigger = 2;
 			}
 		} else {
-			self.scrolling_offset = 0;
-			self.previous_trigger = 0;
+			self.syn_scrolling_offset = 0;
+			self.syn_previous_trigger = 0;
 		}
 	}
 
-	if(self.scrolling_offset < 0) {
-		self.scrolling_offset = 0;
+	if(self.syn_scrolling_offset < 0) {
+		self.syn_scrolling_offset = 0;
 	}
 
 	if(!fake_scroll) {
-		self.menu["cursor"].y = int(self.y_offset + (((self.cursor_index + 1) - self.scrolling_offset) * 15));
+		self.menu["cursor"].y = int(self.syn_y_offset + (((self.syn_cursor_index + 1) - self.syn_scrolling_offset) * 15));
 	}
 
-	if(isDefined(self.structure[self.cursor_index]) && isDefined(self.structure[self.cursor_index].description)) {
-		self.menu["description"] set_text(self.structure[self.cursor_index].description);
-		self.description_height = 15;
+	if(isDefined(self.syn_structure[self.syn_cursor_index]) && isDefined(self.syn_structure[self.syn_cursor_index].description)) {
+		self.menu["description"] set_text(self.syn_structure[self.syn_cursor_index].description);
+		self.syn_description_height = 15;
 
-		self.menu["description"].x = (self.x_offset + 5);
+		self.menu["description"].x = (self.syn_x_offset + 5);
 		self.menu["description"].alpha = 1;
 	} else {
 		self.menu["description"] set_text("");
 		self.menu["description"].alpha = 0;
-		self.description_height = 0;
+		self.syn_description_height = 0;
 	}
 
-	self.loaded_offset = false;
+	self.syn_loaded_offset = false;
 	set_options();
 }
 
 function scroll_slider(direction) {
-	current_slider_index = self.slider[(self.current_menu + "_" + (self.cursor_index))];
+	current_slider_index = self.syn_slider[(self.syn_current_menu + "_" + (self.syn_cursor_index))];
 	if(isDefined(direction)) {
-		if(isDefined(self.structure[self.cursor_index].array)) {
+		if(isDefined(self.syn_structure[self.syn_cursor_index].array)) {
 			if(direction == "left") {
 				current_slider_index--;
 				if(current_slider_index < 0) {
-					current_slider_index = (self.structure[self.cursor_index].array.size - 1);
+					current_slider_index = (self.syn_structure[self.syn_cursor_index].array.size - 1);
 				}
 			} else if(direction == "right") {
 				current_slider_index++;
-				if(current_slider_index > (self.structure[self.cursor_index].array.size - 1)) {
+				if(current_slider_index > (self.syn_structure[self.syn_cursor_index].array.size - 1)) {
 					current_slider_index = 0;
 				}
 			}
 		} else {
 			if(direction == "left") {
-				current_slider_index -= self.structure[self.cursor_index].increment;
-				if(current_slider_index < self.structure[self.cursor_index].minimum) {
-					current_slider_index = self.structure[self.cursor_index].maximum;
+				current_slider_index -= self.syn_structure[self.syn_cursor_index].increment;
+				if(current_slider_index < self.syn_structure[self.syn_cursor_index].minimum) {
+					current_slider_index = self.syn_structure[self.syn_cursor_index].maximum;
 				}
 			} else if(direction == "right") {
-				current_slider_index += self.structure[self.cursor_index].increment;
-				if(current_slider_index > self.structure[self.cursor_index].maximum) {
-					current_slider_index = self.structure[self.cursor_index].minimum;
+				current_slider_index += self.syn_structure[self.syn_cursor_index].increment;
+				if(current_slider_index > self.syn_structure[self.syn_cursor_index].maximum) {
+					current_slider_index = self.syn_structure[self.syn_cursor_index].minimum;
 				}
 			}
 		}
 	}
-	self.slider[(self.current_menu + "_" + (self.cursor_index))] = current_slider_index;
+	self.syn_slider[(self.syn_current_menu + "_" + (self.syn_cursor_index))] = current_slider_index;
 	set_options();
 }
 
 function set_options() {
-	if(isDefined(self.equip_attachment_in_progress)) {
-		while(self.equip_attachment_in_progress) {
+	if(isDefined(self.syn_equip_attachment_in_progress)) {
+		while(self.syn_equip_attachment_in_progress) {
 			wait 0.05;
 		}
 	}
@@ -1307,7 +1312,7 @@ function set_options() {
 	self.menu["slider_text"] set_text("");
 	self.menu["slider"].alpha = 0;
 
-	for(i = 1; i <= self.option_limit; i++) {
+	for(i = 1; i <= self.syn_option_limit; i++) {
 		self.menu["toggle_" + i].alpha = 0;
 		self.menu["submenu_icon_" + i].alpha = 0;
 
@@ -1316,59 +1321,59 @@ function set_options() {
 
 	update_element_positions();
 
-	if(isDefined(self.structure)) {
-		if(self.structure.size == 0) {
+	if(isDefined(self.syn_structure)) {
+		if(self.syn_structure.size == 0) {
 			self add_option(empty_option());
 		}
 
-		self.maximum = int(min(self.structure.size, self.option_limit));
+		self.syn_maximum = int(min(self.syn_structure.size, self.syn_option_limit));
 
-		if(self.structure.size <= self.option_limit) {
-			self.scrolling_offset = 0;
+		if(self.syn_structure.size <= self.syn_option_limit) {
+			self.syn_scrolling_offset = 0;
 		}
 
-		for(i = 1; i <= self.maximum; i++) {
-			x = ((i - 1) + self.scrolling_offset);
+		for(i = 1; i <= self.syn_maximum; i++) {
+			x = ((i - 1) + self.syn_scrolling_offset);
 
-			self.menu["option_" + i] set_text(self.structure[x].text);
+			self.menu["option_" + i] set_text(self.syn_structure[x].text);
 
-			if(isDefined(self.structure[x].toggle)) {
-				self.menu["option_" + i].x = (self.x_offset + 13.5);
+			if(isDefined(self.syn_structure[x].toggle)) {
+				self.menu["option_" + i].x = (self.syn_x_offset + 13.5);
 				self.menu["option_" + i].alpha = 1;
 				self.menu["toggle_" + i].alpha = 1;
 
-				if(self.structure[x].toggle) {
+				if(self.syn_structure[x].toggle) {
 					self.menu["toggle_" + i].color = (1, 1, 1);
 				} else {
 					self.menu["toggle_" + i].color = (0.25, 0.25, 0.25);
 				}
 			} else {
-				self.menu["option_" + i].x = (self.x_offset + 5);
+				self.menu["option_" + i].x = (self.syn_x_offset + 5);
 				self.menu["toggle_" + i].alpha = 0;
 			}
 
-			if(isDefined(self.structure[x].array) && (self.cursor_index) == x) {
-				if(!isDefined(self.slider[(self.current_menu + "_" + x)])) {
-					self.slider[(self.current_menu + "_" + x)] = 0;
+			if(isDefined(self.syn_structure[x].array) && (self.syn_cursor_index) == x) {
+				if(!isDefined(self.syn_slider[(self.syn_current_menu + "_" + x)])) {
+					self.syn_slider[(self.syn_current_menu + "_" + x)] = 0;
 				}
 
-				if(self.slider[(self.current_menu + "_" + x)] > (self.structure[x].array.size - 1) || self.slider[(self.current_menu + "_" + x)] < 0) {
-					self.slider[(self.current_menu + "_" + x)] = set_variable(self.slider[(self.current_menu + "_" + x)] > (self.structure[x].array.size - 1), 0, (self.structure[x].array.size - 1));
+				if(self.syn_slider[(self.syn_current_menu + "_" + x)] > (self.syn_structure[x].array.size - 1) || self.syn_slider[(self.syn_current_menu + "_" + x)] < 0) {
+					self.syn_slider[(self.syn_current_menu + "_" + x)] = set_variable(self.syn_slider[(self.syn_current_menu + "_" + x)] > (self.syn_structure[x].array.size - 1), 0, (self.syn_structure[x].array.size - 1));
 				}
 
-				if(self.structure[x].show_options) {
-					slider_text = self.structure[x].array[self.slider[(self.current_menu + "_" + x)]] + " [" + (self.slider[(self.current_menu + "_" + x)] + 1) + "/" + self.structure[x].array.size + "]";
+				if(self.syn_structure[x].show_options) {
+					slider_text = self.syn_structure[x].array[self.syn_slider[(self.syn_current_menu + "_" + x)]] + " [" + (self.syn_slider[(self.syn_current_menu + "_" + x)] + 1) + "/" + self.syn_structure[x].array.size + "]";
 				} else {
-					slider_text = self.structure[x].array[self.slider[(self.current_menu + "_" + x)]];
+					slider_text = self.syn_structure[x].array[self.syn_slider[(self.syn_current_menu + "_" + x)]];
 				}
 
 				self.menu["slider_text_" + i] set_text(slider_text);
-			} else if(isDefined(self.structure[x].increment) && (self.cursor_index) == x) {
-				if(!isDefined(self.slider[(self.current_menu + "_" + x)])) {
-					self.slider[(self.current_menu + "_" + x)] = 0;
+			} else if(isDefined(self.syn_structure[x].increment) && (self.syn_cursor_index) == x) {
+				if(!isDefined(self.syn_slider[(self.syn_current_menu + "_" + x)])) {
+					self.syn_slider[(self.syn_current_menu + "_" + x)] = 0;
 				}
-				value = abs((self.structure[x].minimum - self.structure[x].maximum)) / 224;
-				width = ceil((self.slider[(self.current_menu + "_" + x)] - self.structure[x].minimum) / value);
+				value = abs((self.syn_structure[x].minimum - self.syn_structure[x].maximum)) / 224;
+				width = ceil((self.syn_slider[(self.syn_current_menu + "_" + x)] - self.syn_structure[x].minimum) / value);
 
 				if(width >= 0) {
 					self.menu["slider"] set_shader("white", int(width), 16);
@@ -1377,23 +1382,23 @@ function set_options() {
 					self.menu["slider"].alpha = 0;
 				}
 
-				if(!isDefined(self.slider[(self.current_menu + "_" + x)]) || self.slider[(self.current_menu + "_" + x)] < self.structure[x].minimum) {
-					self.slider[(self.current_menu + "_" + x)] = self.structure[x].start;
+				if(!isDefined(self.syn_slider[(self.syn_current_menu + "_" + x)]) || self.syn_slider[(self.syn_current_menu + "_" + x)] < self.syn_structure[x].minimum) {
+					self.syn_slider[(self.syn_current_menu + "_" + x)] = self.syn_structure[x].start;
 				}
 
-				slider_value = self.slider[(self.current_menu + "_" + x)];
+				slider_value = self.syn_slider[(self.syn_current_menu + "_" + x)];
 				self.menu["slider_text"] set_text("" + slider_value);
 				self.menu["slider"].alpha = 1;
 			}
 
-			if(isDefined(self.structure[x].command) && self.structure[x].command == &new_menu) {
+			if(isDefined(self.syn_structure[x].command) && self.syn_structure[x].command == &new_menu) {
 				self.menu["submenu_icon_" + i].alpha = 1;
 			}
 
-			if(!isDefined(self.structure[x].command)) {
+			if(!isDefined(self.syn_structure[x].command)) {
 				self.menu["option_" + i].color = (0.75, 0.75, 0.75);
 			} else {
-				if((self.cursor_index) == x) {
+				if((self.syn_cursor_index) == x) {
 					self.menu["option_" + i].color = (0.75, 0.75, 0.75);
 					self.menu["submenu_icon_" + i].color = (0.75, 0.75, 0.75);
 				} else {
@@ -1404,20 +1409,20 @@ function set_options() {
 		}
 	}
 
-	menu_height = int(18 + (self.maximum * 15));
+	menu_height = int(18 + (self.syn_maximum * 15));
 
-	self.menu["description"].y = int((self.y_offset + 2) + ((self.maximum + 1) * 15));
+	self.menu["description"].y = int((self.syn_y_offset + 2) + ((self.syn_maximum + 1) * 15));
 
-	self.menu["border"] set_shader("white", self.menu["border"].width, int(menu_height + self.description_height));
-	self.menu["background"] set_shader("white", self.menu["background"].width, int((menu_height - 2) + self.description_height));
+	self.menu["border"] set_shader("white", self.menu["border"].width, int(menu_height + self.syn_description_height));
+	self.menu["background"] set_shader("white", self.menu["background"].width, int((menu_height - 2) + self.syn_description_height));
 	self.menu["foreground"] set_shader("white", self.menu["foreground"].width, int(menu_height - 17));
 }
 
 // Menu Options
 
 function menu_option() {
-	self.structure = [];
-	menu = self.current_menu;
+	self.syn_structure = [];
+	menu = self.syn_current_menu;
 	switch(menu) {
 		case "Synergy":
 			self set_title(menu);
@@ -1436,11 +1441,11 @@ function menu_option() {
 		case "Basic Options":
 			self set_title(menu);
 
-			self add_toggle("God Mode", "Makes you Invincible", &god_mode, self.god_mode);
-			self add_toggle("Frag No Clip", "Fly through the Map using (^3[{+frag}]^7)", &frag_no_clip, self.frag_no_clip);
+			self add_toggle("God Mode", "Makes you Invincible", &god_mode, self.syn_god_mode);
+			self add_toggle("Frag No Clip", "Fly through the Map using (^3[{+frag}]^7)", &frag_no_clip, self.syn_frag_no_clip);
 
-			self add_toggle("Infinite Ammo", "Gives you Infinite Ammo, Grenades, and Specialist", &infinite_ammo, self.infinite_ammo);
-			self add_toggle("Infinite Shield", "Gives you Infinite Shield Durability", &infinite_shield, self.infinite_shield);
+			self add_toggle("Infinite Ammo", "Gives you Infinite Ammo, Grenades, and Specialist", &infinite_ammo, self.syn_infinite_ammo);
+			self add_toggle("Infinite Shield", "Gives you Infinite Shield Durability", &infinite_shield, self.syn_infinite_shield);
 
 			self add_option("Give Gobblegum", undefined, &new_menu, "Give Gobblegum");
 
@@ -1450,18 +1455,18 @@ function menu_option() {
 		case "Fun Options":
 			self set_title(menu);
 
-			self add_toggle("Forge Mode", undefined, &forge_mode, self.forge_mode);
+			self add_toggle("Forge Mode", undefined, &forge_mode, self.syn_forge_mode);
 
-			if(self.map_name != "shadows_of_evil" && self.map_name != "der_eisendrache") {
-				self add_toggle("Exo Movement", "Enable/Disable Exo-Suits", &exo_movement, self.exo_movement);
-				self add_toggle("Infinite Boost", "Enables Infinite Exo-Boost", &infinite_boost, self.infinite_boost);
+			if(self.syn_map_name != "shadows_of_evil" && self.syn_map_name != "der_eisendrache") {
+				self add_toggle("Exo Movement", "Enable/Disable Exo-Suits", &exo_movement, self.syn_exo_movement);
+				self add_toggle("Infinite Boost", "Enables Infinite Exo-Boost", &infinite_boost, self.syn_infinite_boost);
 			}
 
 			self add_increment("Set Speed", undefined, &set_speed, 1, 1, 15, 1);
 			self add_increment("Set Timescale", undefined, &set_timescale, 1, 0.125, 10, 0.125);
 			self add_increment("Set Gravity", undefined, &set_gravity, 900, 130, 900, 10);
 
-			self add_toggle("Third Person", undefined, &third_person, self.third_person);
+			self add_toggle("Third Person", undefined, &third_person, self.syn_third_person);
 
 			self add_option("Visions", undefined, &new_menu, "Visions");
 
@@ -1470,7 +1475,7 @@ function menu_option() {
 			self set_title(menu);
 
 			self add_option("Give Weapons", undefined, &new_menu, "Give Weapons");
-			self add_toggle("Give Pack-a-Punched Weapons", "Weapons Given will be Pack-a-Punched", &give_packed_weapon, self.give_packed_weapon);
+			self add_toggle("Give Pack-a-Punched Weapons", "Weapons Given will be Pack-a-Punched", &give_packed_weapon, self.syn_give_packed_weapon);
 			self add_option("Pack-a-Punch Current Weapon", "Held Weapon will be Pack-a-Punched", &pack_weapon);
 			self add_option("Un-Pack-a-Punch Current Weapon", "Held Weapon will be Un-Pack-a-Punched", &unpack_weapon);
 			self add_option("Give AAT", undefined, &new_menu, "Give AAT");
@@ -1511,21 +1516,21 @@ function menu_option() {
 
 			self add_increment("Set Perk Limit", undefined, &set_perk_limit, 4, 1, 99, 1);
 
-			self add_toggle("Keep Mule Kick Weapon", "Gives Mule Kick Weapon back when Rebuying the Perk", &keep_mule_kick_weapon, self.keep_mule_kick_weapon);
-			self add_toggle("Speed Cola Buff", "Speed Cola has bonus Speed Effects", &speed_cola_buff, self.speed_cola_buff);
+			self add_toggle("Keep Mule Kick Weapon", "Gives Mule Kick Weapon back when Rebuying the Perk", &keep_mule_kick_weapon, self.syn_keep_mule_kick_weapon);
+			self add_toggle("Speed Cola Buff", "Speed Cola has bonus Speed Effects", &speed_cola_buff, self.syn_speed_cola_buff);
 			self add_option("Speed Cola Buff Options", undefined, &new_menu, "Speed Cola Buff Options");
-			self add_toggle("Stamin-Up Buff", "Stamin-Up has bonus Speed Effects", &stamin_up_buff, self.stamin_up_buff);
+			self add_toggle("Stamin-Up Buff", "Stamin-Up has bonus Speed Effects", &stamin_up_buff, self.syn_stamin_up_buff);
 			self add_option("Stamin-Up Buff Options", undefined, &new_menu, "Stamin-Up Buff Options");
 
 			break;
 		case "Zombie Options":
 			self set_title(menu);
 
-			self add_toggle("No Target", "Zombies won't Target You", &no_target, self.no_target);
+			self add_toggle("No Target", "Zombies won't Target You", &no_target, self.syn_no_target);
 
-			self add_toggle("Enable Hitmarkers", undefined, &enable_hitmarkers, self.enable_hitmarkers);
+			self add_toggle("Enable Hitmarkers", undefined, &enable_hitmarkers, self.syn_enable_hitmarkers);
 
-			self add_toggle("Zombie Counter", undefined, &zombie_counter, self.zombie_counter);
+			self add_toggle("Zombie Counter", undefined, &zombie_counter, self.syn_zombie_counter);
 
 			self add_increment("Set Round", undefined, &set_round, 1, 1, 255, 1);
 
@@ -1533,10 +1538,10 @@ function menu_option() {
 			self add_option("Kill All Zombies", undefined, &kill_all_zombies);
 			self add_option("Teleport Zombies to Me", undefined, &teleport_zombies);
 
-			self add_toggle("One Shot Zombies", undefined, &one_shot_zombies, self.one_shot_zombies);
-			self add_toggle("Freeze Zombies", undefined, &freeze_zombies, self.freeze_zombies);
-			self add_toggle("Slow Zombies", "Gives Zombies the Widow's Wine Effect to Slow them Down", &slow_zombies, self.slow_zombies);
-			self add_toggle("Disable Spawns", undefined, &disable_spawns, self.disable_spawns);
+			self add_toggle("One Shot Zombies", undefined, &one_shot_zombies, self.syn_one_shot_zombies);
+			self add_toggle("Freeze Zombies", undefined, &freeze_zombies, self.syn_freeze_zombies);
+			self add_toggle("Slow Zombies", "Gives Zombies the Widow's Wine Effect to Slow them Down", &slow_zombies, self.syn_slow_zombies);
+			self add_toggle("Disable Spawns", undefined, &disable_spawns, self.syn_disable_spawns);
 
 			self add_array("Set Zombie Speed", undefined, &set_zombie_speed, array("Restore", "Walk", "Run", "Sprint", "Super Sprint"), true);
 
@@ -1551,11 +1556,11 @@ function menu_option() {
 		case "Map Options":
 			self set_title(menu);
 
-			self add_toggle("Freeze Box", "Locks the Mystery Box, so it can't move", &freeze_box, self.freeze_box);
+			self add_toggle("Freeze Box", "Locks the Mystery Box, so it can't move", &freeze_box, self.syn_freeze_box);
 			self add_option("Open Doors", undefined, &open_doors);
 
 			if(!level flag::get("power_on") || !level flag::get("all_power_on")) {
-				if(self.map_name == "shadows_of_evil") {
+				if(self.syn_map_name == "shadows_of_evil") {
 					self add_option("Turn Power On", undefined, &shock_all_electrics);
 				} else {
 					self add_option("Turn Power On", undefined, &power_on);
@@ -1572,7 +1577,7 @@ function menu_option() {
 		case "Powerup Options":
 			self set_title(menu);
 
-			self add_toggle("Shoot Powerups", undefined, &shoot_powerups, self.shoot_powerups);
+			self add_toggle("Shoot Powerups", undefined, &shoot_powerups, self.syn_shoot_powerups);
 
 			self add_option("Remove Powerups", "Disable Select Powerup drops from Zombies", &new_menu, "Remove Powerups");
 
@@ -1603,8 +1608,8 @@ function menu_option() {
 			self add_increment("Green", "Set the Green Value for the Menu Outline Color", &set_menu_color, 255, 1, 255, 1, "Green");
 			self add_increment("Blue", "Set the Blue Value for the Menu Outline Color", &set_menu_color, 255, 1, 255, 1, "Blue");
 
-			self add_toggle("Hide UI", undefined, &hide_ui, self.hide_ui);
-			self add_toggle("Hide Weapon", undefined, &hide_weapon, self.hide_weapon);
+			self add_toggle("Hide UI", undefined, &hide_ui, self.syn_hide_ui);
+			self add_toggle("Hide Weapon", undefined, &hide_weapon, self.syn_hide_weapon);
 
 			break;
 		case "All Players":
@@ -1620,7 +1625,7 @@ function menu_option() {
 
 			target = undefined;
 			foreach(player in level.players) {
-				if(player.name == self.previous_option) {
+				if(player.name == self.syn_previous_option) {
 					target = player;
 					break;
 				}
@@ -1655,9 +1660,9 @@ function menu_option() {
 
 			self add_increment("Set Increment", undefined, &set_increment, 100, 100, 10000, 100);
 
-			self add_increment("Set Points", undefined, &set_points, 500, 500, 100000, self.point_increment);
-			self add_increment("Add Points", undefined, &add_points, 500, 500, 100000, self.point_increment);
-			self add_increment("Take Points", undefined, &take_points, 500, 500, 100000, self.point_increment);
+			self add_increment("Set Points", undefined, &set_points, 500, 500, 100000, self.syn_point_increment);
+			self add_increment("Add Points", undefined, &add_points, 500, 500, 100000, self.syn_point_increment);
+			self add_increment("Take Points", undefined, &take_points, 500, 500, 100000, self.syn_point_increment);
 
 			break;
 		case "Give Perks":
@@ -1681,20 +1686,20 @@ function menu_option() {
 		case "Speed Cola Buff Options":
 			self set_title(menu);
 
-			self add_toggle("Fast ADS", undefined, &toggle_speed_cola_buff_option, self.speed_cola_fastads, "fastads");
-			self add_toggle("Fast Weapon Swap", undefined, &toggle_speed_cola_buff_option, self.speed_cola_fastweaponswitch, "fastweaponswitch)");
-			self add_toggle("Fast Equipment Use", undefined, &toggle_speed_cola_buff_option, self.speed_cola_fastequipmentuse, "fastequipmentuse");
+			self add_toggle("Fast ADS", undefined, &toggle_speed_cola_buff_option, self.syn_speed_cola_fastads, "fastads");
+			self add_toggle("Fast Weapon Swap", undefined, &toggle_speed_cola_buff_option, self.syn_speed_cola_fastweaponswitch, "fastweaponswitch)");
+			self add_toggle("Fast Equipment Use", undefined, &toggle_speed_cola_buff_option, self.syn_speed_cola_fastequipmentuse, "fastequipmentuse");
 
 			break;
 		case "Stamin-Up Buff Options":
 			self set_title(menu);
 
-			self add_toggle("Fire while Sprinting", undefined, &toggle_stamin_up_buff_option, self.stamin_up_sprintfire, "sprintfire");
-			self add_toggle("Faster ADS Movement", undefined, &toggle_stamin_up_buff_option, self.stamin_up_stalker, "stalker");
-			self add_toggle("Infinite Sprint", undefined, &toggle_stamin_up_buff_option, self.stamin_up_unlimitedsprint, "unlimitedsprint");
-			self add_toggle("Climb Ladders Faster", undefined, &toggle_stamin_up_buff_option, self.stamin_up_fastladderclimb, "fastladderclimb");
-			self add_toggle("Mantle Faster", undefined, &toggle_stamin_up_buff_option, self.stamin_up_fastmantle, "fastmantle");
-			self add_toggle("Use Equipment while Sprinting", undefined, &toggle_stamin_up_buff_option, self.stamin_up_sprintequipment, "sprintequipment");
+			self add_toggle("Fire while Sprinting", undefined, &toggle_stamin_up_buff_option, self.syn_stamin_up_sprintfire, "sprintfire");
+			self add_toggle("Faster ADS Movement", undefined, &toggle_stamin_up_buff_option, self.syn_stamin_up_stalker, "stalker");
+			self add_toggle("Infinite Sprint", undefined, &toggle_stamin_up_buff_option, self.syn_stamin_up_unlimitedsprint, "unlimitedsprint");
+			self add_toggle("Climb Ladders Faster", undefined, &toggle_stamin_up_buff_option, self.syn_stamin_up_fastladderclimb, "fastladderclimb");
+			self add_toggle("Mantle Faster", undefined, &toggle_stamin_up_buff_option, self.syn_stamin_up_fastmantle, "fastmantle");
+			self add_toggle("Use Equipment while Sprinting", undefined, &toggle_stamin_up_buff_option, self.syn_stamin_up_sprintequipment, "sprintequipment");
 
 			break;
 		case "Visions":
@@ -1704,13 +1709,13 @@ function menu_option() {
 				self add_option(self.syn["visions"][1][i], undefined, &set_vision, self.syn["visions"][0][i]);
 			}
 
-			if(self.map_name == "shadows_of_evil" || self.map_name == "the_giant" || self.map_name == "der_eisendrache" || self.map_name == "zetsubou_no_shima" || self.map_name == "gorod_krovi" || self.map_name == "revelations" || self.map_name == "nacht_der_untoten" || self.map_name == "verruckt" || self.map_name == "shi_no_numa" || self.map_name == "kino_der_untoten" || self.map_name == "ascension" || self.map_name == "shangri_la" || self.map_name == "moon" || self.map_name == "origins") {
-				for(i = 0; i < self.syn["visions"][self.map_name][0].size; i++) {
-					self add_option(self.syn["visions"][self.map_name][1][i], undefined, &set_vision, self.syn["visions"][self.map_name][0][i]);
+			if(self.syn_map_name == "shadows_of_evil" || self.syn_map_name == "der_eisendrache" || self.syn_map_name == "zetsubou_no_shima" || self.syn_map_name == "gorod_krovi" || self.syn_map_name == "revelations" || self.syn_map_name == "verruckt" || self.syn_map_name == "shi_no_numa" || self.syn_map_name == "kino_der_untoten" || self.syn_map_name == "ascension" || self.syn_map_name == "shangri_la" || self.syn_map_name == "moon" || self.syn_map_name == "origins") {
+				for(i = 0; i < self.syn["visions"][self.syn_map_name][0].size; i++) {
+					self add_option(self.syn["visions"][self.syn_map_name][1][i], undefined, &set_vision, self.syn["visions"][self.syn_map_name][0][i]);
 				}
 			}
 
-			foreach(vision in self.syn["visions"]) {
+			foreach(vision in self.syn["visions"][3]) {
 				switch(vision.name) {
 					case "":
 					case "cheat_bw_contrast":
@@ -1772,21 +1777,23 @@ function menu_option() {
 
 			self add_option("Spawn Zombie", undefined, &spawn_normal_zombie);
 
-			map = self.map_name;
+			map = self.syn_map_name;
 
 			if(map == "der_eisendrache" || map == "revelations" || map == "origins") {
 				self add_option("Spawn Panzer", undefined, &spawn_panzer);
 			}
 
-			for(i = 0; i < self.syn["zombies"][map][0].size; i++) {
-				self add_option("Spawn " + self.syn["zombies"][map][0][i], undefined, &spawn_zombie, self.syn["zombies"][map][1][i]);
+			if(map == "zetsubou_no_shima" || map == "revelations" || map == "moon") {
+				for(i = 0; i < self.syn["zombies"][map][0].size; i++) {
+					self add_option("Spawn " + self.syn["zombies"][map][0][i], undefined, &spawn_zombie, self.syn["zombies"][map][1][i]);
+				}
 			}
 
 			break;
 		case "Equip Attachment":
 			self set_title(menu);
 
-			self.equip_attachment_in_progress = true;
+			self.syn_equip_attachment_in_progress = true;
 
 			self.syn["attachment_toggles"] = [];
 
@@ -1803,7 +1810,7 @@ function menu_option() {
 				}
 			}
 
-			self.equip_attachment_in_progress = false;
+			self.syn_equip_attachment_in_progress = false;
 
 			break;
 		case "Equip Camo":
@@ -1843,7 +1850,7 @@ function menu_option() {
 
 			load_weapons("weapon_smg");
 
-			if(self.map_name == "shadows_of_evil" || self.map_name == "the_giant" || self.map_name == "der_eisendrache") {
+			if(self.syn_map_name == "shadows_of_evil" || self.syn_map_name == "the_giant" || self.syn_map_name == "der_eisendrache") {
 				self add_option("Razorback", undefined, &give_weapon, "smg_longrange");
 			}
 
@@ -1869,7 +1876,7 @@ function menu_option() {
 		case "Pistols":
 			self set_title(menu);
 
-			if(self.map_name == "shadows_of_evil") {
+			if(self.syn_map_name == "shadows_of_evil") {
 				self add_option("MR6", undefined, &give_weapon, "pistol_standard");
 			}
 
@@ -1904,9 +1911,9 @@ function menu_option() {
 		case "Extras":
 			self set_title(menu);
 
-			if(self.map_name == "shadows_of_evil" || self.map_name == "the_giant" || self.map_name == "zetsubou_no_shima" || self.map_name == "gorod_krovi" || self.map_name == "revelations" || self.map_name == "origins") {
-				for(i = 0; i < self.syn["weapons"]["extras"][self.map_name][0].size; i++) {
-					self add_option(self.syn["weapons"]["extras"][self.map_name][1][i], undefined, &give_weapon, self.syn["weapons"]["extras"][self.map_name][0][i]);
+			if(self.syn_map_name == "shadows_of_evil" || self.syn_map_name == "the_giant" || self.syn_map_name == "zetsubou_no_shima" || self.syn_map_name == "gorod_krovi" || self.syn_map_name == "revelations" || self.syn_map_name == "origins") {
+				for(i = 0; i < self.syn["weapons"]["extras"][self.syn_map_name][0].size; i++) {
+					self add_option(self.syn["weapons"]["extras"][self.syn_map_name][1][i], undefined, &give_weapon, self.syn["weapons"]["extras"][self.syn_map_name][0][i]);
 				}
 			}
 
@@ -1930,11 +1937,11 @@ function menu_option() {
 
 			break;
 		default:
-			if(!isDefined(self.selected_player)) {
-				self.selected_player = self;
+			if(!isDefined(self.syn_selected_player)) {
+				self.syn_selected_player = self;
 			}
 
-			self player_option(menu, self.selected_player);
+			self player_option(menu, self.syn_selected_player);
 			break;
 	}
 }
@@ -1962,67 +1969,67 @@ function fade_hud(alpha, time) {
 
 function modify_menu_position(offset, axis) {
 	if(axis == "x") {
-		self.x_offset = 175 + offset;
+		self.syn_x_offset = 175 + offset;
 	} else {
-		self.y_offset = 160 + offset;
+		self.syn_y_offset = 160 + offset;
 	}
 	self close_menu();
 	self open_menu();
 }
 
 function set_menu_rainbow() {
-	if(!isString(self.color_theme)) {
-		self.color_theme = "rainbow";
+	if(!isString(self.syn_color_theme)) {
+		self.syn_color_theme = "rainbow";
 		self.menu["border"] thread start_rainbow();
 		self.menu["separator_1"] thread start_rainbow();
 		self.menu["separator_2"] thread start_rainbow();
-		self.menu["border"].color = self.color_theme;
-		self.menu["separator_1"].color = self.color_theme;
-		self.menu["separator_2"].color = self.color_theme;
+		self.menu["border"].color = self.syn_color_theme;
+		self.menu["separator_1"].color = self.syn_color_theme;
+		self.menu["separator_2"].color = self.syn_color_theme;
 	}
 }
 
 function set_menu_color(value, color) {
 	if(color == "Red") {
-		self.menu_color_red = value;
+		self.syn_menu_color_red = value;
 		iPrintString(color + " Changed to " + value);
 	} else if(color == "Green") {
-		self.menu_color_green = value;
+		self.syn_menu_color_green = value;
 		iPrintString(color + " Changed to " + value);
 	} else if(color == "Blue") {
-		self.menu_color_blue = value;
+		self.syn_menu_color_blue = value;
 		iPrintString(color + " Changed to " + value);
 	} else {
 		iPrintString(value + " | " + color);
 	}
-	self.color_theme = (self.menu_color_red / 255, self.menu_color_green / 255, self.menu_color_blue / 255);
+	self.syn_color_theme = (self.syn_menu_color_red / 255, self.syn_menu_color_green / 255, self.syn_menu_color_blue / 255);
 	self.menu["border"] notify("stop_rainbow");
 	self.menu["separator_1"] notify("stop_rainbow");
 	self.menu["separator_2"] notify("stop_rainbow");
 	self.menu["border"].rainbow_enabled = false;
 	self.menu["separator_1"].rainbow_enabled = false;
 	self.menu["separator_2"].rainbow_enabled = false;
-	self.menu["border"].color = self.color_theme;
-	self.menu["separator_1"].color = self.color_theme;
-	self.menu["separator_2"].color = self.color_theme;
+	self.menu["border"].color = self.syn_color_theme;
+	self.menu["separator_1"].color = self.syn_color_theme;
+	self.menu["separator_2"].color = self.syn_color_theme;
 }
 
 function hide_ui() {
-	self.hide_ui = !return_toggle(self.hide_ui);
-	setDvar("\ui_enabled", !self.hide_ui);
-	setDvar("\cg_draw2d", !self.hide_ui);
+	self.syn_hide_ui = !return_toggle(self.syn_hide_ui);
+	setDvar("\ui_enabled", !self.syn_hide_ui);
+	setDvar("\cg_draw2d", !self.syn_hide_ui);
 }
 
 function hide_weapon() {
-	self.hide_weapon = !return_toggle(self.hide_weapon);
-	setDvar("\cg_drawgun", !self.hide_weapon);
+	self.syn_hide_weapon = !return_toggle(self.syn_hide_weapon);
+	setDvar("\cg_drawgun", !self.syn_hide_weapon);
 }
 
 // Basic Options
 
 function god_mode() {
-	self.god_mode = !return_toggle(self.god_mode);
-	if(self.god_mode) {
+	self.syn_god_mode = !return_toggle(self.syn_god_mode);
+	if(self.syn_god_mode) {
 		iPrintString("God Mode [^2ON^7]");
 		self enableInvulnerability();
 		god_mode_loop();
@@ -2048,19 +2055,19 @@ function frag_no_clip() {
 	self endon("disconnect");
 	level endon("game_ended");
 
-	if(!isDefined(self.frag_no_clip)) {
-		self.frag_no_clip = true;
+	if(!isDefined(self.syn_frag_no_clip)) {
+		self.syn_frag_no_clip = true;
 		iPrintString("Frag No Clip [^2ON^7], Press ^3[{+frag}]^7 to Enter and ^3[{+melee}]^7 to Exit");
-		while (isDefined(self.frag_no_clip)) {
+		while(isDefined(self.syn_frag_no_clip)) {
 			if(self fragButtonPressed()) {
-				if(!isDefined(self.frag_no_clip_loop)) {
+				if(!isDefined(self.syn_frag_no_clip_loop)) {
 					self thread frag_no_clip_loop();
 				}
 			}
 			wait 0.05;
 		}
 	} else {
-		self.frag_no_clip = undefined;
+		self.syn_frag_no_clip = undefined;
 		iPrintString("Frag No Clip [^1OFF^7]");
 	}
 }
@@ -2071,13 +2078,13 @@ function frag_no_clip_loop() {
 
 	self disableWeapons();
 	self disableOffHandWeapons();
-	self.frag_no_clip_loop = true;
+	self.syn_frag_no_clip_loop = true;
 
 	clip = spawn("script_origin", self.origin);
 	self playerLinkTo(clip);
-	if(!isDefined(self.god_mode) || !self.god_mode) {
+	if(!isDefined(self.syn_god_mode) || !self.syn_god_mode) {
 		self enableInvulnerability();
-		self.temp_god_mode = true;
+		self.syn_temp_god_mode = true;
 	}
 
 	while (true) {
@@ -2099,17 +2106,17 @@ function frag_no_clip_loop() {
 	self enableWeapons();
 	self enableOffhandWeapons();
 
-	if(isDefined(self.temp_god_mode)) {
+	if(isDefined(self.syn_temp_god_mode)) {
 		self disableInvulnerability();
-		self.temp_god_mode = undefined;
+		self.syn_temp_god_mode = undefined;
 	}
 
-	self.frag_no_clip_loop = undefined;
+	self.syn_frag_no_clip_loop = undefined;
 }
 
 function infinite_ammo() {
-	self.infinite_ammo = !return_toggle(self.infinite_ammo);
-	if(self.infinite_ammo) {
+	self.syn_infinite_ammo = !return_toggle(self.syn_infinite_ammo);
+	if(self.syn_infinite_ammo) {
 		iPrintString("Infinite Ammo [^2ON^7]");
 		self thread infinite_ammo_loop();
 	} else {
@@ -2134,8 +2141,8 @@ function infinite_ammo_loop() {
 }
 
 function infinite_shield() {
-	self.infinite_shield = !return_toggle(self.infinite_shield);
-	if(self.infinite_shield) {
+	self.syn_infinite_shield = !return_toggle(self.syn_infinite_shield);
+	if(self.syn_infinite_shield) {
 		iPrintString("Infinite Shield [^2ON^7]");
 		self thread infinite_shield_loop();
 	} else {
@@ -2149,7 +2156,9 @@ function infinite_shield_loop() {
 	level endon("game_ended");
 
 	for(;;) {
-		self [[self.player_shield_reset_health]]();
+		if(isDefined(self.player_shield_reset_health)) {
+			self[[self.player_shield_reset_health]]();
+		}
 		wait 2.5;
 	}
 }
@@ -2194,8 +2203,8 @@ function take_points(value) {
 // Fun Options
 
 function forge_mode() {
-	self.forge_mode = !return_toggle(self.forge_mode);
-	if(self.forge_mode) {
+	self.syn_forge_mode = !return_toggle(self.syn_forge_mode);
+	if(self.syn_forge_mode) {
 		iPrintString("Forge Mode [^2ON^7], Press ^3[{+speed_throw}]^7 to Pick Up/Drop Objects");
 		self thread forge_mode_loop();
 	} else {
@@ -2213,8 +2222,11 @@ function forge_mode_loop() {
 		if(isDefined(trace["entity"])) {
 			if(self adsButtonPressed()) {
 				while (self adsButtonPressed()) {
-					trace["entity"] forceTeleport(self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 200);
-					trace["entity"].origin = self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 200;
+					if(isActor(trace["entity"])) {
+						trace["entity"] forceTeleport(self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 200);
+					} else {
+						trace["entity"].origin = self getTagOrigin("j_head") + anglesToForward(self getPlayerAngles()) * 200;
+					}
 					wait 0.01;
 				}
 			}
@@ -2246,8 +2258,8 @@ function forge_mode_loop() {
 }
 
 function exo_movement() {
-	self.exo_movement = !return_toggle(self.exo_movement);
-	if(self.exo_movement) {
+	self.syn_exo_movement = !return_toggle(self.syn_exo_movement);
+	if(self.syn_exo_movement) {
 		iPrintString("Exo Movement [^2ON^7]");
 		setDvar("doublejump_enabled", 1);
 		setDvar("juke_enabled", 1);
@@ -2286,9 +2298,9 @@ function exo_movement_loop() {
 }
 
 function infinite_boost() {
-	if(self.exo_movement) {
-		self.infinite_boost = !return_toggle(self.infinite_boost);
-		if(self.infinite_boost) {
+	if(self.syn_exo_movement) {
+		self.syn_infinite_boost = !return_toggle(self.syn_infinite_boost);
+		if(self.syn_infinite_boost) {
 			iPrintString("Infinite Boost [^2ON^7]");
 			self thread infinite_boost_loop();
 		} else {
@@ -2329,8 +2341,8 @@ function set_gravity(value) {
 }
 
 function third_person() {
-	self.third_person = !return_toggle(self.third_person);
-	if(self.third_person) {
+	self.syn_third_person = !return_toggle(self.syn_third_person);
+	if(self.syn_third_person) {
 		iPrintString("Third Person [^2ON^7]");
 		self setClientThirdPerson(1);
 		self setClientThirdPersonAngle(354);
@@ -2345,14 +2357,14 @@ function third_person() {
 }
 
 function set_vision(vision) {
-	if(isDefined(self.prev_vision)) {
-		visionset_mgr::deactivate("visionset", self.prev_vision, self);
-		visionset_mgr::deactivate("overlay", self.prev_vision, self);
+	if(isDefined(self.syn_prev_vision)) {
+		visionset_mgr::deactivate("visionset", self.syn_prev_vision, self);
+		visionset_mgr::deactivate("overlay", self.syn_prev_vision, self);
 		wait 0.25;
 	}
 	visionset_mgr::activate("visionset", vision, self);
 	visionset_mgr::activate("overlay", vision, self);
-	self.prev_vision = vision;
+	self.syn_prev_vision = vision;
 }
 
 // Perk Options
@@ -2396,8 +2408,8 @@ function set_perk_limit(value) {
 }
 
 function keep_mule_kick_weapon() {
-	self.keep_mule_kick_weapon = !return_toggle(self.keep_mule_kick_weapon);
-	if(self.keep_mule_kick_weapon) {
+	self.syn_keep_mule_kick_weapon = !return_toggle(self.syn_keep_mule_kick_weapon);
+	if(self.syn_keep_mule_kick_weapon) {
 		iPrintString("Keep Mule Kick Weapon [^2ON^7]");
 		self thread keep_mule_kick_weapon_loop();
 	} else {
@@ -2424,8 +2436,8 @@ function keep_mule_kick_weapon_loop() {
 }
 
 function speed_cola_buff() {
-	self.speed_cola_buff = !return_toggle(self.speed_cola_buff);
-	if(self.speed_cola_buff) {
+	self.syn_speed_cola_buff = !return_toggle(self.syn_speed_cola_buff);
+	if(self.syn_speed_cola_buff) {
 		iPrintString("Speed Cola Buff [^2ON^7]");
 		self thread speed_cola_buff_loop();
 	} else {
@@ -2445,13 +2457,13 @@ function speed_cola_buff_loop() {
 
 	for(;;) {
 		if(self hasPerk("specialty_fastreload") && !(self hasPerk("specialty_fastads") || self hasPerk("specialty_fastweaponswitch") || self hasPerk("specialty_fastequipmentuse") || self hasPerk("specialty_fasttoss"))) {
-      if(self.speed_cola_fastads) {
+      if(self.syn_speed_cola_fastads) {
 				self setPerk("specialty_fastads");
 			}
-			if(self.speed_cola_fastweaponswitch) {
+			if(self.syn_speed_cola_fastweaponswitch) {
 				self setPerk("specialty_fastweaponswitch");
 			}
-			if(self.speed_cola_fastequipmentuse) {
+			if(self.syn_speed_cola_fastequipmentuse) {
 				self setPerk("specialty_fastequipmentuse");
 				self setPerk("specialty_fasttoss");
 			}
@@ -2466,8 +2478,8 @@ function speed_cola_buff_loop() {
 }
 
 function stamin_up_buff() {
-	self.stamin_up_buff = !return_toggle(self.stamin_up_buff);
-	if(self.stamin_up_buff) {
+	self.syn_stamin_up_buff = !return_toggle(self.syn_stamin_up_buff);
+	if(self.syn_stamin_up_buff) {
 		iPrintString("Stamin-Up Buff [^2ON^7]");
 		self thread stamin_up_buff_loop();
 	} else {
@@ -2492,23 +2504,23 @@ function stamin_up_buff_loop() {
 
 	for(;;) {
 		if(self hasPerk("specialty_staminup") && !(self hasPerk("specialty_sprintfire") || self hasPerk("specialty_sprintfirerecovery") || self hasPerk("specialty_stalker") || self hasPerk("specialty_unlimitedsprint") || self hasPerk("specialty_fastladderclimb") || self hasPerk("specialty_fastmantle") || self hasPerk("specialty_sprintequipment"))) {
-			if(self.stamin_up_sprintfire) {
+			if(self.syn_stamin_up_sprintfire) {
 				self setPerk("specialty_sprintfire");
 				self setPerk("specialty_sprintfirerecovery");
 			}
-			if(self.stamin_up_stalker) {
+			if(self.syn_stamin_up_stalker) {
 				self setPerk("specialty_stalker");
 			}
-			if(self.stamin_up_unlimitedsprint) {
+			if(self.syn_stamin_up_unlimitedsprint) {
 				self setPerk("specialty_unlimitedsprint");
 			}
-			if(self.stamin_up_fastladderclimb) {
+			if(self.syn_stamin_up_fastladderclimb) {
 				self setPerk("specialty_fastladderclimb");
 			}
-			if(self.stamin_up_fastmantle) {
+			if(self.syn_stamin_up_fastmantle) {
 				self setPerk("specialty_fastmantle");
 			}
-			if(self.stamin_up_sprintequipment) {
+			if(self.syn_stamin_up_sprintequipment) {
 				self setPerk("specialty_sprintequipment");
 				self setPerk("specialty_sprintgrenadelethal");
 				self setPerk("specialty_sprintgrenadetactical");
@@ -2530,11 +2542,11 @@ function stamin_up_buff_loop() {
 
 function toggle_speed_cola_buff_option(option) {
 	if(option == "fastads") {
-		self.speed_cola_fastads = !return_toggle(self.speed_cola_fastads);
+		self.syn_speed_cola_fastads = !return_toggle(self.syn_speed_cola_fastads);
 	} else if(option == "fastweaponswitch)") {
-		self.speed_cola_fastweaponswitch = !return_toggle(self.speed_cola_fastweaponswitch);
+		self.syn_speed_cola_fastweaponswitch = !return_toggle(self.syn_speed_cola_fastweaponswitch);
 	} else if(option == "fastequipmentuse") {
-		self.speed_cola_fastequipmentuse = !return_toggle(self.speed_cola_fastequipmentuse);
+		self.syn_speed_cola_fastequipmentuse = !return_toggle(self.syn_speed_cola_fastequipmentuse);
 	}
 
 	self unsetPerk("specialty_fastads");
@@ -2545,17 +2557,17 @@ function toggle_speed_cola_buff_option(option) {
 
 function toggle_stamin_up_buff_option(option) {
 	if(option == "sprintfire") {
-		self.stamin_up_sprintfire = !return_toggle(self.stamin_up_sprintfire);
+		self.syn_stamin_up_sprintfire = !return_toggle(self.syn_stamin_up_sprintfire);
 	} else if(option == "stalker") {
-		self.stamin_up_stalker = !return_toggle(self.stamin_up_stalker);
+		self.syn_stamin_up_stalker = !return_toggle(self.syn_stamin_up_stalker);
 	} else if(option == "unlimitedsprint") {
-		self.stamin_up_unlimitedsprint = !return_toggle(self.stamin_up_unlimitedsprint);
+		self.syn_stamin_up_unlimitedsprint = !return_toggle(self.syn_stamin_up_unlimitedsprint);
 	} else if(option == "fastladderclimb") {
-		self.stamin_up_fastladderclimb = !return_toggle(self.stamin_up_fastladderclimb);
+		self.syn_stamin_up_fastladderclimb = !return_toggle(self.syn_stamin_up_fastladderclimb);
 	} else if(option == "fastmantle") {
-		self.stamin_up_fastmantle = !return_toggle(self.stamin_up_fastmantle);
+		self.syn_stamin_up_fastmantle = !return_toggle(self.syn_stamin_up_fastmantle);
 	} else if(option == "sprintequipment") {
-		self.stamin_up_sprintequipment = !return_toggle(self.stamin_up_sprintequipment);
+		self.syn_stamin_up_sprintequipment = !return_toggle(self.syn_stamin_up_sprintequipment);
 	}
 
 	self unsetPerk("specialty_sprintfire");
@@ -2650,8 +2662,8 @@ function kick_player(target) {
 // Map Options
 
 function freeze_box() {
-	self.freeze_box = !return_toggle(self.freeze_box);
-	if(self.freeze_box) {
+	self.syn_freeze_box = !return_toggle(self.syn_freeze_box);
+	if(self.syn_freeze_box) {
 		iPrintString("Freeze Box [^2ON^7]");
 		wait 5;
 		level.chest_min_move_usage = 999;
@@ -2695,7 +2707,7 @@ function get_power_trigger() {
 }
 
 function power_on() {
-	if(self.map_name == "revelations") {
+	if(self.syn_map_name == "revelations") {
 		for(i = 1; i < 5; i++) {
 			level flag::set("power_on" + i);
 		}
@@ -2709,7 +2721,7 @@ function power_on() {
 		trigger notify("trigger_activated", self);
 		return;
 	}
-	if(self.map_name == "shangri_la") {
+	if(self.syn_map_name == "shangri_la") {
 		directions = array("power_trigger_left", "power_trigger_right");
 		foreach(direction in directions) {
 			switch_trigger = getEnt("power_trigger_" + direction, "targetName");
@@ -2756,8 +2768,8 @@ function spawn_powerup(powerup) {
 }
 
 function shoot_powerups() {
-	self.shoot_powerups = !return_toggle(self.shoot_powerups);
-	if(self.shoot_powerups) {
+	self.syn_shoot_powerups = !return_toggle(self.syn_shoot_powerups);
+	if(self.syn_shoot_powerups) {
 		iPrintString("Shoot Powerups [^2ON^7]");
 		self thread shoot_powerups_loop();
 	} else {
@@ -2830,11 +2842,11 @@ function disable_powerup(powerup, i) {
 // Weapon Options
 
 function give_packed_weapon() {
-	self.give_packed_weapon = !return_toggle(self.give_packed_weapon);
+	self.syn_give_packed_weapon = !return_toggle(self.syn_give_packed_weapon);
 }
 
 function pack_weapon() {
-	self.pack_weapon = 1;
+	self.syn_pack_weapon = 1;
 
 	weapon = zm_weapons::get_base_weapon(self getCurrentWeapon()).name;
 
@@ -2844,7 +2856,7 @@ function pack_weapon() {
 }
 
 function unpack_weapon() {
-	self.pack_weapon = undefined;
+	self.syn_pack_weapon = undefined;
 
 	weapon = zm_weapons::get_base_weapon(self getCurrentWeapon()).name;
 
@@ -2856,7 +2868,7 @@ function unpack_weapon() {
 function give_weapon(weapon) {
 	weapon = getWeapon(weapon);
 
-	if(isDefined(self.give_packed_weapon) && self.give_packed_weapon == 1 || isDefined(self.pack_weapon) && self.pack_weapon == 1) {
+	if(isDefined(self.syn_give_packed_weapon) && self.syn_give_packed_weapon == 1 || isDefined(self.syn_pack_weapon) && self.syn_pack_weapon == 1) {
 		if(weapon == "staff_air" || weapon == "staff_fire" || weapon == "staff_lightning" || weapon == "staff_water") {
 			weapon = weapon + "_upgraded";
 		} else if(zm_weapons::can_upgrade_weapon(weapon)) {
@@ -2864,7 +2876,7 @@ function give_weapon(weapon) {
 		}
 	}
 
-	if(!self hasWeapon(weapon) || isDefined(self.pack_weapon) && self.pack_weapon == 1) {
+	if(!self hasWeapon(weapon) || isDefined(self.syn_pack_weapon) && self.syn_pack_weapon == 1) {
 		max_weapon_num = zm_utility::get_player_weapon_limit(self);
 		saved_weapon = undefined;
 
@@ -2924,7 +2936,7 @@ function give_weapon(weapon) {
 		self switchToWeaponImmediate(weapon);
 	}
 
-	self.pack_weapon = 0;
+	self.syn_pack_weapon = 0;
 	wait 0.5;
 	self giveStartAmmo(weapon);
 }
@@ -3006,8 +3018,8 @@ function equip_attachment(attachment) {
 
 	self takeWeapon(self getCurrentWeapon());
 
-	if(isDefined(self.saved_camo)) {
-		self giveWeapon(weapon, self calcWeaponOptions(self.saved_camo, 0, 0), 0);
+	if(isDefined(self.syn_saved_camo)) {
+		self giveWeapon(weapon, self calcWeaponOptions(self.syn_saved_camo, 0, 0), 0);
 	} else {
 		self giveWeapon(weapon);
 	}
@@ -3018,7 +3030,7 @@ function equip_attachment(attachment) {
 }
 
 function equip_camo(camo_index) {
-	self.saved_camo = camo_index;
+	self.syn_saved_camo = camo_index;
 	weapon = self getCurrentWeapon();
 	stock = self getWeaponAmmoStock(weapon);
 	clip = self getWeaponAmmoClip(weapon);
@@ -3078,8 +3090,8 @@ function get_zombies() {
 }
 
 function no_target() {
-	self.no_target = !return_toggle(self.no_target);
-	if(self.no_target) {
+	self.syn_no_target = !return_toggle(self.syn_no_target);
+	if(self.syn_no_target) {
 		iPrintString("No Target [^2ON^7]");
 		self zm_utility::increment_ignoreMe();
 	} else {
@@ -3089,8 +3101,8 @@ function no_target() {
 }
 
 function enable_hitmarkers() {
-	self.enable_hitmarkers = !return_toggle(self.enable_hitmarkers);
-	if(self.enable_hitmarkers) {
+	self.syn_enable_hitmarkers = !return_toggle(self.syn_enable_hitmarkers);
+	if(self.syn_enable_hitmarkers) {
 		zm::register_zombie_damage_override_callback(&hitmarker);
 		zm_spawner::register_zombie_death_event_callback(&kill_hitmarker);
 	} else {
@@ -3112,9 +3124,9 @@ function kill_hitmarker(attacker) {
 }
 
 function zombie_counter() {
-	if(!isDefined(self.zombie_counter)) {
-		self.zombie_counter = true;
-		while(isDefined(self.zombie_counter)) {
+	if(!isDefined(self.syn_zombie_counter)) {
+		self.syn_zombie_counter = true;
+		while(isDefined(self.syn_zombie_counter)) {
 			count = (zombie_utility::get_current_zombie_count() + level.zombie_total) + level.zombie_respawns;
 			if(!isDefined(self.syn["counter"])) {
 				self.syn["counter"] = self create_text("Zombies Remaining: " + count, "default", 1.5, "TOP_LEFT", "TOPCENTER", 250, 0, (1, 1, 1), 1, 9999, false);
@@ -3124,7 +3136,7 @@ function zombie_counter() {
 			wait 0.01;
 		}
 	} else {
-		self.zombie_counter = undefined;
+		self.syn_zombie_counter = undefined;
 		self.syn["counter"] destroy();
 	}
 }
@@ -3197,12 +3209,12 @@ function teleport_zombies() {
 }
 
 function one_shot_zombies() {
-	if(!isDefined(self.one_shot_zombies)) {
+	if(!isDefined(self.syn_one_shot_zombies)) {
 		iPrintString("One Shot Zombies [^2ON^7]");
-		self.one_shot_zombies = true;
+		self.syn_one_shot_zombies = true;
 		zombies = get_zombies();
 		level.prev_health = zombies[0].health;
-		while(isDefined(self.one_shot_zombies)) {
+		while(isDefined(self.syn_one_shot_zombies)) {
 			foreach(zombie in get_zombies()) {
 				zombie.maxHealth = 1;
 				zombie.health = zombie.maxHealth;
@@ -3211,7 +3223,7 @@ function one_shot_zombies() {
 		}
 	} else {
 		iPrintString("One Shot Zombies [^1OFF^7]");
-		self.one_shot_zombies = undefined;
+		self.syn_one_shot_zombies = undefined;
 		foreach(zombie in get_zombies()) {
 			zombie.maxHealth = level.prev_health;
 			zombie.health = level.prev_health;
@@ -3220,9 +3232,9 @@ function one_shot_zombies() {
 }
 
 function freeze_zombies() {
-	if(!isDefined(self.freeze_zombies)) {
-		self.freeze_zombies = true;
-		while (isDefined(self.freeze_zombies)) {
+	if(!isDefined(self.syn_freeze_zombies)) {
+		self.syn_freeze_zombies = true;
+		while (isDefined(self.syn_freeze_zombies)) {
 			foreach(zombie in get_zombies()) {
 				if(isAlive(zombie) && !zombie isPaused()) {
 					freeze_zombie(zombie);
@@ -3234,7 +3246,7 @@ function freeze_zombies() {
 			unfreeze_zombie(zombie);
 		}
 	} else {
-		self.freeze_zombies = undefined;
+		self.syn_freeze_zombies = undefined;
 	}
 }
 
@@ -3273,10 +3285,10 @@ function unfreeze_zombie(zombie) {
 }
 
 function slow_zombies() {
-	if(!isDefined(self.slow_zombies)) {
+	if(!isDefined(self.syn_slow_zombies)) {
 		iPrintString("Slow Zombies [^2ON^7]");
-		self.slow_zombies = true;
-		while(isDefined(self.slow_zombies)) {
+		self.syn_slow_zombies = true;
+		while(isDefined(self.syn_slow_zombies)) {
 			foreach(zombie in get_zombies()) {
 				zombie.b_widows_wine_slow = 1;
 				zombie asmSetAnimationRate(0.7);
@@ -3286,7 +3298,7 @@ function slow_zombies() {
 		}
 	} else {
 		iPrintString("Slow Zombies [^1OFF^7]");
-		self.slow_zombies = undefined;
+		self.syn_slow_zombies = undefined;
 		foreach(zombie in get_zombies()) {
 			zombie.b_widows_wine_slow = 0;
 			zombie asmSetAnimationRate(1);
@@ -3296,8 +3308,8 @@ function slow_zombies() {
 }
 
 function disable_spawns() {
-	self.disable_spawns = !return_toggle(self.disable_spawns);
-	if(self.disable_spawns) {
+	self.syn_disable_spawns = !return_toggle(self.syn_disable_spawns);
+	if(self.syn_disable_spawns) {
 		iPrintString("Disable Spawns [^2ON^7]");
 		level flag::clear("spawn_zombies");
 	} else {
