@@ -148,6 +148,8 @@ function initial_variables() {
 
 	// Weapons
 
+	self.syn["weapons"] = [];
+
 	self.syn["weapons"]["category"] = array("Assault Rifles", "Sub Machine Guns", "Sniper Rifles", "Shotguns", "Light Machine Guns", "Pistols", "Launchers", "Melee", "Equipment", "Extras");
 
 	self.syn["weapons"]["melee"][0] = array("knife", "knife_widows_wine", "bowie_knife", "bowie_knife_widows_wine");
@@ -270,8 +272,6 @@ function initial_variables() {
 		weapon_names[weapon_names.size] = weapon.name;
 	}
 
-	self.syn["weapons"] = [];
-
 	for(i = 0; i < weapon_types.size; i++) {
 		self.syn["weapons"][i] = [];
 		for(e = 1; e < 100; e++) {
@@ -318,10 +318,7 @@ function initial_variables() {
 				weapon_table_alt = "gamedata/weapons/zm/zm_pentagon_weapons_t9.csv";
 			} else {
 				weapon_table = "gamedata/weapons/zm/" + level.script + "_weapons.csv";
-			}
-
-			if(tablelookup(weapon_table, 0, "weapon_name", 1) == "") {
-				weapon_table = "gamedata/weapons/zm/zm_levelcommon_weapons.csv";
+				weapon_table_alt = "gamedata/weapons/zm/zm_levelcommon_weapons.csv";
 			}
 
 			weapons.class_name = tablelookup(weapon_table, 0, weapons.id, 16);
@@ -363,7 +360,10 @@ function initial_variables() {
 
 			// Categorize Extra Weapons (Base Maps, Die Rise, Five)
 
-			if(weapons.id == "t6_xl_war_machine" || weapons.id == "launcher_multi" || weapons.id == "t5_china_lake" || weapons.id == "t5_crossbow" || weapons.id == "t9_sp_crossbow") {
+			if(weapons.id == "s1_mgturret") {
+				weapons.category = "weapon_lmg";
+				self.syn["weapons"][3][self.syn["weapons"][3].size] = weapons;
+			} else if(weapons.id == "t6_xl_war_machine" || weapons.id == "launcher_multi" || weapons.id == "t5_china_lake" || weapons.id == "t5_crossbow" || weapons.id == "t9_sp_crossbow") {
 				weapons.category = "weapon_launcher";
 				self.syn["weapons"][6][self.syn["weapons"][6].size] = weapons;
 			} else if(weapons.id == "t8_tazer_knuckles" || weapons.id == "knife_ballistic" || weapons.id == "knife_ballistic_no_melee" || weapons.id == "knife_ballistic_bowie" ||
@@ -393,7 +393,7 @@ function initial_variables() {
 				} else if(weapons.class_name == "pistol") {
 					weapons.category = "weapon_pistol";
 					self.syn["weapons"][5][self.syn["weapons"][5].size] = weapons;
-				} else if(weapon.weapclass == "rocketlauncher") {
+				} else if(weapon.weapclass == "rocketlauncher" || weapons.class_name == "launcher") {
 					weapons.category = "weapon_launcher";
 					self.syn["weapons"][6][self.syn["weapons"][6].size] = weapons;
 				} else if(weapon.weapclass == "melee" && weapons.id != "bowie_knife" && weapons.id != "hero_gravityspikes_melee") {
@@ -403,6 +403,7 @@ function initial_variables() {
 					weapons.category = "weapon_grenade";
 					self.syn["weapons"][8][self.syn["weapons"][8].size] = weapons;
 				} else {
+					//weapons.category = weapons.class_name;
 					self.syn["weapons"][9][self.syn["weapons"][9].size] = weapons;
 				}
 			}
@@ -1932,6 +1933,7 @@ function menu_option() {
 						break;
 					default:
 						self add_option(weapon.name, "ID: " + weapon.id + " | Category: " + weapon.category, &give_weapon, weapon.id);
+						break;
 				}
 			}
 
