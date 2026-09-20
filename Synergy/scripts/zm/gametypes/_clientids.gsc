@@ -511,11 +511,9 @@ function input_manager() {
 			}
 		} else {
 			if(self meleeButtonPressed()) {
-				if(isDefined(self.syn_current_menu)) {
-					self.syn_saved_index[self.syn_current_menu] = self.syn_cursor_index;
-					self.syn_saved_offset[self.syn_current_menu] = self.syn_scrolling_offset;
-					self.syn_saved_trigger[self.syn_current_menu] = self.syn_previous_trigger;
-				}
+				self.syn_saved_index[self.syn_current_menu] = self.syn_cursor_index;
+				self.syn_saved_offset[self.syn_current_menu] = self.syn_scrolling_offset;
+				self.syn_saved_trigger[self.syn_current_menu] = self.syn_previous_trigger;
 
 				self playSoundToPlayer("uin_lobby_leave", self);
 
@@ -1232,7 +1230,7 @@ function scroll_cursor(direction) {
 				if(self.syn_previous_trigger == 2) {
 					self.syn_scrolling_offset--;
 				}
-				if(self.syn_previous_scrolling_offset != self.syn_scrolling_offset) {
+				if(self.syn_previous_scrolling_offset != self.syn_scrolling_offset && self.syn_previous_trigger != 1) {
 					fake_scroll = true;
 					self.syn_previous_trigger = 1;
 				}
@@ -1368,7 +1366,7 @@ function set_options() {
 					slider_text = self.syn_structure[x].array[self.syn_slider[(self.syn_current_menu + "_" + x)]];
 				}
 
-				self.menu["slider_text_" + i] set_text(slider_text);
+				self.menu["slider_text"] set_text(slider_text);
 			} else if(isDefined(self.syn_structure[x].increment) && (self.syn_cursor_index) == x) {
 				if(!isDefined(self.syn_slider[(self.syn_current_menu + "_" + x)])) {
 					self.syn_slider[(self.syn_current_menu + "_" + x)] = 0;
@@ -1551,7 +1549,7 @@ function menu_option() {
 			self add_increment("Set Round Health Cap", "Cap Zombies Health to Specified Round", &set_zombie_health_cap, 1, 1, 255, 1);
 			self add_option("Reset Zombie Health Cap", "Set Health Cap back to Normal", &reset_zombie_health_cap);
 
-			self add_array("Zombie Color", "Set Zombie Color", &color_zombies, array("None", "Orange", "Green", "Purple", "Blue"));
+			self add_array("Zombie Color", "Set Zombie Color", &color_zombies, array("None", "Orange", "Green", "Purple", "Blue"), true);
 
 			break;
 		case "Map Options":
@@ -1635,7 +1633,7 @@ function menu_option() {
 			if(isDefined(target)) {
 				self add_option("Print", "Print Player Name", &print_player_name, target);
 
-				if(!target isHost() && target.access == "None") {
+				if(!target isHost() && target.syn_access == "None") {
 					self add_option("Verify", "Give the Player Mod Menu Access", &verify_player, target);
 				}
 
@@ -3146,6 +3144,8 @@ function zombie_counter() {
 function set_round(value) {
 	self thread zm_utility::zombie_goto_round(value);
 	zombie_utility::ai_calculate_health(value);
+	wait 5;
+	set_zombie_speed("restore");
 }
 
 function spawn_normal_zombie() {
