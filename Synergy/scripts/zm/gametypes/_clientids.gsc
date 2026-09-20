@@ -79,7 +79,6 @@ function initial_variables() {
 	self.syn_x_offset = 175;
 	self.syn_y_offset = 160;
 
-	self.syn_point_increment = 100;
 	self.syn_map_name = get_map_name();
 	self.syn_color_theme = "rainbow";
 	self.syn_menu_color_red = 0;
@@ -91,6 +90,9 @@ function initial_variables() {
 	self.syn_previous_scrolling_offset = 0;
 	self.syn_description_height = 0;
 	self.syn_previous_option = undefined;
+
+	self.syn_point_increment = 100;
+	self.syn_round_increment = 1;
 
 	self.syn_equip_attachment_in_progress = false;
 
@@ -795,7 +797,7 @@ function update_element_positions() {
 	self.menu["description"].y = (self.syn_y_offset + (self.syn_option_limit * 17.5));
 
 	self.menu["slider_text"].x = (self.syn_x_offset + 132.5);
-	self.menu["slider_text"].y = ((self.syn_y_offset + 4) + (((self.syn_cursor_index + 1) - self.syn_scrolling_offset) * 15));
+	self.menu["slider_text"].y = ((self.syn_y_offset + 2) + (((self.syn_cursor_index + 1) - self.syn_scrolling_offset) * 15));
 
 	self.menu["slider"].x = self.syn_x_offset;
 	self.menu["slider"].y = (self.syn_y_offset + (((self.syn_cursor_index + 1) - self.syn_scrolling_offset) * 15));
@@ -905,10 +907,6 @@ function get_map_name() {
 	if(level.script == "zm_tomb") return "origins";
 }
 
-function set_increment(value) {
-	self.syn_point_increment = value;
-}
-
 function construct_string(string) {
 	final = "";
 	for(e = 0; e < string.size; e++) {
@@ -958,6 +956,13 @@ function remove_from_array(array, object) {
 	  }
 	}
 	return new_array;
+}
+
+function get_bullet_trace_position() {
+	start = self getEye();
+	end = vectorScale(anglesToForward(self getPlayerAngles()), 9999);
+
+	return bulletTrace(start, start + end, false, self)["position"];
 }
 
 function load_weapons(weapon_category) {
@@ -1525,29 +1530,27 @@ function menu_option() {
 		case "Zombie Options":
 			self set_title(menu);
 
+			self add_option("Round Options", undefined, &new_menu, "Round Options");
+
 			self add_toggle("No Target", "Zombies won't Target You", &no_target, self.syn_no_target);
 
 			self add_toggle("Enable Hitmarkers", undefined, &enable_hitmarkers, self.syn_enable_hitmarkers);
-
 			self add_toggle("Zombie Counter", undefined, &zombie_counter, self.syn_zombie_counter);
 
-			self add_increment("Set Round", undefined, &set_round, 1, 1, 255, 1);
+			map = self.syn_map_name;
 
-			self add_option("Spawn Zombies", undefined, &new_menu, "Spawn Zombies");
+			if(map == "der_eisendrache" || map == "revelations" || map == "origins" || map == "zetsubou_no_shima" || map == "moon") {
+				self add_option("Spawn Zombies", undefined, &new_menu, "Spawn Zombies");
+			} else {
+				self add_option("Spawn Zombie", undefined, &spawn_normal_zombie);
+			}
 			self add_option("Kill All Zombies", undefined, &kill_all_zombies);
-			self add_option("Teleport Zombies to Me", undefined, &teleport_zombies);
+			self add_option("Teleport Zombies to Crosshair", undefined, &teleport_zombies);
 
 			self add_toggle("One Shot Zombies", undefined, &one_shot_zombies, self.syn_one_shot_zombies);
 			self add_toggle("Freeze Zombies", undefined, &freeze_zombies, self.syn_freeze_zombies);
 			self add_toggle("Slow Zombies", "Gives Zombies the Widow's Wine Effect to Slow them Down", &slow_zombies, self.syn_slow_zombies);
 			self add_toggle("Disable Spawns", undefined, &disable_spawns, self.syn_disable_spawns);
-
-			self add_array("Set Zombie Speed", undefined, &set_zombie_speed, array("Restore", "Walk", "Run", "Sprint", "Super Sprint"), true);
-
-			self add_increment("Set Zombie Cap", undefined, &set_zombie_cap, 24, 1, 31, 1);
-
-			self add_increment("Set Round Health Cap", "Cap Zombies Health to Specified Round", &set_zombie_health_cap, 1, 1, 255, 1);
-			self add_option("Reset Zombie Health Cap", "Set Health Cap back to Normal", &reset_zombie_health_cap);
 
 			self add_array("Zombie Color", "Set Zombie Color", &color_zombies, array("None", "Orange", "Green", "Purple", "Blue"), true);
 
@@ -1657,7 +1660,7 @@ function menu_option() {
 		case "Point Options":
 			self set_title(menu);
 
-			self add_increment("Set Increment", undefined, &set_increment, 100, 100, 10000, 100);
+			self add_increment("Set Points Increment", undefined, &set_points_increment, 100, 100, 10000, 100);
 
 			self add_increment("Set Points", undefined, &set_points, 500, 500, 100000, self.syn_point_increment);
 			self add_increment("Add Points", undefined, &add_points, 500, 500, 100000, self.syn_point_increment);
@@ -1769,6 +1772,18 @@ function menu_option() {
 						self add_option(vision.displayName, vision.name, &set_vision, vision.name);
 				}
 			}
+
+			break;
+		case "Round Options":
+			self add_increment("Set Round Increment", undefined, &set_round_increment, 1, 1, 10, 1);
+			self add_increment("Set Round", undefined, &set_round, 1, 1, 255, self.syn_round_increment);
+
+			self add_increment("Set Zombie Cap", undefined, &set_zombie_cap, 24, 1, 31, 1);
+
+			self add_array("Set Zombie Speed", undefined, &set_zombie_speed, array("Restore", "Walk", "Run", "Sprint", "Super Sprint"), true);
+
+			self add_increment("Set Round Health Cap", "Cap Zombies Health to Specified Round", &set_zombie_health_cap, 1, 1, 100, 1);
+			self add_option("Reset Zombie Health Cap", "Set Health Cap back to Normal", &reset_zombie_health_cap);
 
 			break;
 		case "Spawn Zombies":
@@ -2185,6 +2200,10 @@ function give_gobblegum(gobblegum) {
 		self zm_weapons::switch_back_primary_weapon(saved_weapon);
 		bgb::give(gobblegum);
 	}
+}
+
+function set_points_increment(value) {
+	self.syn_point_increment = value;
 }
 
 function set_points(value) {
@@ -2785,7 +2804,7 @@ function shoot_powerups_loop() {
 	for(;;) {
 		while(self attackButtonPressed()) {
 			powerup = self.syn["powerups"][0][randomint(self.syn["powerups"][0].size)];
-			zm_powerups::specific_powerup_drop(powerup, self.origin + anglesToForward(self.angles) * 115);
+			zm_powerups::specific_powerup_drop(powerup, get_bullet_trace_position());
 			wait 0.5;
 		}
 		wait 0.05;
@@ -3083,6 +3102,149 @@ function refill_ammo() {
 	}
 }
 
+// Round Options
+
+function set_round_increment(value) {
+	self.syn_round_increment = value;
+}
+
+function set_round(value) {
+	self thread zm_utility::zombie_goto_round(value);
+	wait 1;
+	zombie_utility::ai_calculate_health(value);
+	wait 3;
+	if(!isDefined(level.syn_zombie_run_speed)) {
+		level.zombie_move_speed = level.round_number * level.zombie_vars["zombie_move_speed_multiplier"];
+		self zombie_utility::set_run_speed();
+	}
+}
+
+function set_zombie_cap(value) {
+	level.zombie_ai_limit = int(value);
+}
+
+function set_zombie_speed(speed) {
+	self.syn_zombie_run_speed_loop = false;
+
+	speed = toLower(speed);
+
+	if(speed == "super sprint") {
+		speed = "super_sprint";
+	}
+
+	if(!isDefined(level.run_cycle)) {
+		level.run_cycle = "restore";
+	}
+
+	level.syn_zombie_run_speed = speed;
+	level.run_cycle = speed;
+
+	wait 0.25;
+
+	if(level.run_cycle == "restore") {
+		level.syn_zombie_run_speed = undefined;
+		self thread update_zombie_speed_restore();
+	} else {
+		self.syn_zombie_run_speed_loop = true;
+		self thread update_zombie_speed();
+	}
+}
+
+function update_zombie_speed_restore() {
+  if(level.round_number < 5) {
+    level.run_cycle = "walk";
+  } else {
+    if(level.round_number < 10) {
+      level.run_cycle = "run";
+    } else {
+      level.run_cycle = "sprint";
+    }
+  }
+
+	foreach(zombie in get_zombies()) {
+		zombie.syn_set_speed = undefined;
+		zombie zombie_utility::set_zombie_run_cycle(level.run_cycle);
+	}
+}
+
+function update_zombie_speed() {
+	while(self.syn_zombie_run_speed_loop) {
+		foreach(zombie in get_zombies()) {
+			if(!isDefined(zombie.syn_set_speed) && (isDefined(zombie.completed_emerging_into_playable_area) && zombie.completed_emerging_into_playable_area)) {
+				zombie.syn_set_speed = true;
+				zombie zombie_utility::set_zombie_run_cycle(level.syn_zombie_run_speed);
+			}
+		}
+		wait 0.5;
+	}
+}
+
+function calculate_health(round_number) {
+	zombie_health = level.zombie_vars["zombie_health_start"];
+
+	for(i = 2; i <= round_number; i++) {
+		if(round_number >= 10) {
+			zombie_health = zombie_health + (int(zombie_health * level.zombie_vars["zombie_health_increase_multiplier"]));
+		} else {
+			if(round_number != 1) {
+				zombie_health = int(zombie_health + level.zombie_vars["zombie_health_increase"]);
+			}
+		}
+	}
+
+	if(zombie_health < 0) {
+		zombie_health = abs(zombie_health);
+	}
+
+	if(zombie_health > 11371108) {
+		zombie_health = 11371108;
+	}
+
+	return zombie_health;
+}
+
+function reset_zombie_health_cap() {
+	self notify("stop_zombie_health_cap");
+	wait 0.75;
+
+	level.zombie_health = calculate_health(zm::get_round_number());
+
+	foreach(zombie in get_zombies()) {
+		zombie.syn_set_health = undefined;
+		zombie.maxHealth = level.zombie_health;
+		if(zombie.health > zombie.maxHealth) {
+			zombie.health = level.zombie_health;
+		}
+	}
+}
+
+function set_zombie_health_cap(round) {
+	self notify("stop_zombie_health_cap");
+
+	wait 0.5;
+
+	health_cap = calculate_health(round);
+	self thread zombie_health_cap_loop(round, health_cap);
+}
+
+function zombie_health_cap_loop(round, health_cap) {
+	self endon("stop_zombie_health_cap");
+	level endon("game_ended");
+
+	for(;;) {
+		foreach(zombie in get_zombies()) {
+			if(!isDefined(zombie.syn_set_health) && zombie.maxHealth != health_cap && (zombie.maxHealth > health_cap || zombie.health > health_cap) && (isDefined(zombie.completed_emerging_into_playable_area) && zombie.completed_emerging_into_playable_area)) {
+				zombie.syn_set_health = true;
+				zombie.maxHealth = health_cap;
+				if(zombie.health > zombie.maxHealth) {
+					zombie.health = health_cap;
+				}
+			}
+		}
+		wait 0.5;
+	}
+}
+
 // Zombie Options
 
 function get_zombies() {
@@ -3141,13 +3303,6 @@ function zombie_counter() {
 	}
 }
 
-function set_round(value) {
-	self thread zm_utility::zombie_goto_round(value);
-	zombie_utility::ai_calculate_health(value);
-	wait 5;
-	set_zombie_speed("restore");
-}
-
 function spawn_normal_zombie() {
 	spawner = array::random(level.zombie_spawners);
 	zombie = zombie_utility::spawn_zombie(spawner, spawner.targetName);
@@ -3199,14 +3354,14 @@ function spawn_zombie(spawner) {
 function kill_all_zombies() {
 	level.zombie_total = 0;
 	foreach(zombie in get_zombies()) {
-		zombie doDamage(zombie.health * 5000, (0, 0, 0), self);
+		zombie doDamage(abs(zombie.health) + 999, (0, 0, 0));
 		wait 0.05;
 	}
 }
 
 function teleport_zombies() {
 	foreach(zombie in get_zombies()) {
-		zombie forceTeleport(self.origin + anglesToForward(self.angles) * 115);
+		zombie forceTeleport(get_bullet_trace_position());
 	}
 }
 
@@ -3317,97 +3472,6 @@ function disable_spawns() {
 	} else {
 		iPrintString("Disable Spawns [^1OFF^7]");
 		level flag::set("spawn_zombies");
-	}
-}
-
-function set_zombie_speed(speed) {
-	speed = toLower(speed);
-
-	if(speed == "super sprint") {
-		speed = "super_sprint";
-	}
-
-	if(!isDefined(level.run_cycle)) {
-		level.run_cycle = "restore";
-	}
-	if(level.run_cycle != speed) {
-		level.run_cycle = speed;
-	}
-
-	spawner::remove_global_spawn_function("zombie", &update_zombie_speed);
-	if(level.run_cycle != "restore") {
-		spawner::add_archetype_spawn_function("zombie", &update_zombie_speed);
-		foreach(zombie in get_zombies()) {
-			zombie thread update_zombie_speed();
-		}
-	} else {
-		foreach(zombie in get_zombies()) {
-			zombie zombie_utility::set_zombie_run_cycle_restore_from_override();
-		}
-	}
-}
-
-function update_zombie_speed() {
-	if(level.run_cycle == "super_sprint" && !(isDefined(self.completed_emerging_into_playable_area) && self.completed_emerging_into_playable_area)) {
-		self util::waittill_any("death", "completed_emerging_into_playable_area");
-	}
-	if(level.run_cycle != "restore") {
-		self zombie_utility::set_zombie_run_cycle(level.run_cycle);
-	}
-}
-
-function set_zombie_cap(value) {
-	level.zombie_ai_limit = int(value);
-}
-
-function calculate_health(round_number) {
-	level.zombie_health = level.zombie_vars["zombie_health_start"];
-	for (i = 2; i <= round_number; i++) {
-	  if(i >= 10) {
-	    old_health = level.zombie_health;
-	    level.zombie_health = level.zombie_health + (int(level.zombie_health * level.zombie_vars["zombie_health_increase_multiplier"]));
-	  }
-	  level.zombie_health = int(level.zombie_health + level.zombie_vars["zombie_health_increase"]);
-	}
-	return level.zombie_health;
-}
-
-function reset_zombie_health_cap() {
-	self notify("stop_zombie_health_cap");
-	wait 0.5;
-	level.zombie_health = calculate_health(zm::get_round_number());
-	foreach(zombie in get_zombies()) {
-		zombie.maxHealth = level.zombie_health;
-		zombie.health = level.zombie_health;
-	}
-}
-
-function set_zombie_health_cap(round) {
-	iPrintString("Set Round " + round + " Health Cap");
-	self notify("stop_zombie_health_cap");
-	wait 0.5;
-	self thread zombie_health_cap_loop(round, calculate_health(round));
-}
-
-function zombie_health_cap_loop(round, health_cap) {
-	self endon("stop_zombie_health_cap");
-	level endon("game_ended");
-	for(;;) {
-		if(round < zm::get_round_number()) {
-			level.zombie_health = health_cap;
-
-			foreach(zombie in get_zombies()) {
-				if(zombie.maxHealth > health_cap) {
-					zombie.maxHealth = health_cap;
-				}
-				if(zombie.health > health_cap) {
-					zombie.health = health_cap;
-				}
-			}
-		} else {
-			level waittill("start_of_round");
-		}
-		wait 0.5;
 	}
 }
 
